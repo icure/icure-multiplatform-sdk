@@ -1,8 +1,16 @@
+import com.android.build.api.dsl.LintOptions
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
+import java.util.Properties
 
+val localProperties = Properties().apply {
+    load(rootProject.file("local.properties").reader())
+}
+
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    kotlin("multiplatform")
-    id("com.android.library")
+    alias(libs.plugins.kotlinMultiplatform)
+    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.kotestMultiplatform)
 }
 
 kotlin {
@@ -11,23 +19,28 @@ kotlin {
         compilations.all {
             kotlinOptions.jvmTarget = "1.8"
         }
-        testRuns["test"].executionTask.configure {
-            useJUnitPlatform()
-        }
     }
     js(IR) {
         browser { }
         binaries.executable()
     }
-    android()
-    listOf(
-        iosArm64(),
+    android {
+
+    }
+    val iosSimulators = listOf(
         iosX64(),
         iosSimulatorArm64()
-    ).forEach {
-        it.binaries.framework {
+    )
+    val iosAll = iosSimulators + iosArm64()
+    iosAll.forEach { target ->
+        target.binaries.framework {
             baseName = "icure-sdk"
             xcf.add(this)
+        }
+    }
+    iosSimulators.forEach { target ->
+        target.testRuns.forEach { testRun ->
+            (localProperties["ios.simulator"] as? String)?.let { testRun.deviceId = it }
         }
     }
 
@@ -37,14 +50,47 @@ kotlin {
                 optIn("kotlin.js.ExperimentalJsExport")
             }
         }
-        val commonMain by getting
-        val commonTest by getting
-        val jvmMain by getting
-        val jvmTest by getting
-        val jsMain by getting
+        val commonMain by getting {
+            dependencies {
+                implementation(libs.coroutines)
+                implementation(libs.ktorClientCore)
+            }
+        }
+        val commonTest by getting {
+            dependencies {
+                implementation(libs.kotestAssertions)
+                implementation(libs.kotestEngine)
+                implementation(libs.kotestDatatest)
+                implementation(kotlin("test-common"))
+                implementation(kotlin("test-annotations-common"))
+            }
+        }
+        val jvmMain by getting {
+            dependencies {
+                implementation(libs.ktorClientEngineJvm)
+            }
+        }
+        val jvmTest by getting {
+            dependencies {
+                implementation(libs.kotestRunnerJunit)
+            }
+        }
+        val jsMain by getting {
+            dependencies {
+                implementation(libs.ktorClientEngineJs)
+            }
+        }
         val jsTest by getting
-        val androidMain by getting
-        val androidTest by getting
+        val androidMain by getting {
+            dependencies {
+                implementation(libs.ktorClientEngineAndroid)
+            }
+        }
+        val androidTest by getting {
+            dependencies {
+                implementation(libs.kotestRunnerJunit)
+            }
+        }
         val iosX64Main by getting
         val iosX64Test by getting
         val iosArm64Main by getting
@@ -56,6 +102,9 @@ kotlin {
             iosX64Main.dependsOn(this)
             iosArm64Main.dependsOn(this)
             iosSimulatorArm64Main.dependsOn(this)
+            dependencies {
+                implementation(libs.ktorClientEngineIos)
+            }
         }
         val iosTest by creating {
             dependsOn(commonTest)
@@ -66,6 +115,7 @@ kotlin {
     }
 }
 
+@Suppress("UnstableApiUsage")
 android {
     compileSdk = 32
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
@@ -77,9 +127,34 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+    testOptions {
+        unitTests.all {
+            it.useJUnitPlatform()
+        }
+    }
+    lint {
+        checkReleaseBuilds = false
+        abortOnError = false
+    }
 }
 
 tasks.register("prepareJsExample") {
     dependsOn("jsPublicPackageJson")
     dependsOn("jsBrowserProductionWebpack")
+}
+
+tasks.named<Test>("jvmTest") {
+    useJUnitPlatform()
+    filter {
+        isFailOnNoMatchingTests = false
+    }
+    testLogging {
+        showExceptions = true
+        showStandardStreams = true
+        events = setOf(
+            org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED,
+            org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED
+        )
+        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+    }
 }

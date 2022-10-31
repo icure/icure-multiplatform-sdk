@@ -1,0 +1,23 @@
+[versions]
+kotlin = "1.7.20"
+ktor = "2.1.3"
+coroutines = "1.6.4"
+kotest = "5.5.3"
+androidLibrary = "7.2.0"
+
+[libraries]
+ktorClientCore = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
+ktorClientEngineAndroid = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor" }
+ktorClientEngineIos = { group = "io.ktor", name = "ktor-client-darwin", version.ref = "ktor" }
+ktorClientEngineJs = { group = "io.ktor", name = "ktor-client-js", version.ref = "ktor" }
+ktorClientEngineJvm = { group = "io.ktor", name = "ktor-client-jetty", version.ref = "ktor" }
+coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
+kotestAssertions = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
+kotestEngine = { module = "io.kotest:kotest-framework-engine", version.ref = "kotest" }
+kotestDatatest = { module = "io.kotest:kotest-framework-datatest", version.ref = "kotest" }
+kotestRunnerJunit = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }
+
+[plugins]
+kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotestMultiplatform = { id = "io.kotest.multiplatform", version.ref = "kotest" }
+androidLibrary = { id = "com.android.library", version.ref = "androidLibrary" }

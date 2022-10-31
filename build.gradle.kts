@@ -1,6 +1,8 @@
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    kotlin("multiplatform") version "1.7.20" apply false
-    id("com.android.library") version "7.2.0" apply false
+    alias(libs.plugins.kotlinMultiplatform) apply false
+    alias(libs.plugins.androidLibrary) apply false
+    alias(libs.plugins.kotestMultiplatform) apply false
 }
 
 group = "com.icure"
