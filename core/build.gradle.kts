@@ -1,4 +1,5 @@
 import com.android.build.api.dsl.LintOptions
+import org.jetbrains.kotlin.gradle.internal.Kapt3GradleSubplugin.Companion.classLoadersCacheSize
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 import java.util.Properties
 
@@ -11,6 +12,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotestMultiplatform)
+    alias(libs.plugins.kotlinSerialization)
 }
 
 kotlin {
@@ -41,6 +43,7 @@ kotlin {
     iosSimulators.forEach { target ->
         target.testRuns.forEach { testRun ->
             (localProperties["ios.simulator"] as? String)?.let { testRun.deviceId = it }
+
         }
     }
 
@@ -54,6 +57,9 @@ kotlin {
             dependencies {
                 implementation(libs.coroutines)
                 implementation(libs.ktorClientCore)
+                implementation(libs.ktorContentNegotiation)
+                implementation(libs.ktorSerializationJson)
+                implementation(libs.kotlinSerialization)
             }
         }
         val commonTest by getting {
