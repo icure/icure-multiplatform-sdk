@@ -1,5 +1,3 @@
-import com.android.build.api.dsl.LintOptions
-import org.jetbrains.kotlin.gradle.internal.Kapt3GradleSubplugin.Companion.classLoadersCacheSize
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 import java.util.Properties
 
@@ -23,12 +21,18 @@ kotlin {
         }
     }
     js(IR) {
-        browser { }
+        browser  {
+            testTask {
+                useKarma {
+                    useChromeHeadless()
+                    useFirefoxHeadless()
+                }
+            }
+        }
+        nodejs {  }
         binaries.executable()
     }
-    android {
-
-    }
+    android {}
     val iosSimulators = listOf(
         iosX64(),
         iosSimulatorArm64()
@@ -43,7 +47,6 @@ kotlin {
     iosSimulators.forEach { target ->
         target.testRuns.forEach { testRun ->
             (localProperties["ios.simulator"] as? String)?.let { testRun.deviceId = it }
-
         }
     }
 
@@ -142,11 +145,6 @@ android {
         checkReleaseBuilds = false
         abortOnError = false
     }
-}
-
-tasks.register("prepareJsExample") {
-    dependsOn("jsPublicPackageJson")
-    dependsOn("jsBrowserProductionWebpack")
 }
 
 tasks.named<Test>("jvmTest") {

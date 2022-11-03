@@ -19,10 +19,10 @@ ktorSerializationJson = { group = "io.ktor", name = "ktor-serialization-kotlinx-
 coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
 kotlinSerialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinSerialization" }
 # Kotest
-kotestAssertions = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
-kotestEngine = { module = "io.kotest:kotest-framework-engine", version.ref = "kotest" }
-kotestDatatest = { module = "io.kotest:kotest-framework-datatest", version.ref = "kotest" }
-kotestRunnerJunit = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }
+kotestAssertions = { group = "io.kotest", name = "kotest-assertions-core", version.ref = "kotest" }
+kotestEngine = { group = "io.kotest", name = "kotest-framework-engine", version.ref = "kotest" }
+kotestDatatest = { group = "io.kotest", name = "kotest-framework-datatest", version.ref = "kotest" }
+kotestRunnerJunit = { group = "io.kotest", name = "kotest-runner-junit5", version.ref = "kotest" }
 
 [plugins]
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }

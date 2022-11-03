@@ -20,11 +20,11 @@ import kotlinx.serialization.json.jsonObject
 data class Example(val a: String, val b: Double)
 
 class SampleTest : StringSpec({
-    "Ktor get should work" {
+    "Ktor get should work".config(enabled = false) {
         HttpClient().get("https://echo.zuplo.io/").also { println(it) }.status shouldBe HttpStatusCode.OK
     }
 
-    "Ktor post should work" {
+    "Ktor post should work".config(enabled = false) {
         val example = Example("banana", 1.234)
         HttpClient {
             install(ContentNegotiation) {
