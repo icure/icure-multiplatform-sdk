@@ -77,6 +77,7 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation(libs.ktorClientEngineJvm)
+                implementation(libs.bouncyCastle)
             }
         }
         val jvmTest by getting {
@@ -129,7 +130,7 @@ android {
     compileSdk = 32
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
-        minSdk = 24
+        minSdk = 26
         targetSdk = 32
     }
     compileOptions {

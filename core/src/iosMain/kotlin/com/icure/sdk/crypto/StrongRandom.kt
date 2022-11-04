@@ -17,4 +17,5 @@ actual val strongRandom = object : StrongRandom {
     }
 
     // Not sure if UUID is cryptographically strong in iOS: not specified in the documentation.
+    // Use default implementation based on randomBytes.
 }

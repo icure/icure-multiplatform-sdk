@@ -5,6 +5,7 @@ coroutines = "1.6.4"
 kotlinSerialization = "1.4.1"
 kotest = "5.5.3"
 androidLibrary = "7.2.0"
+bouncyCastle = "1.70"
 
 [libraries]
 # Ktor
@@ -23,6 +24,8 @@ kotestAssertions = { group = "io.kotest", name = "kotest-assertions-core", versi
 kotestEngine = { group = "io.kotest", name = "kotest-framework-engine", version.ref = "kotest" }
 kotestDatatest = { group = "io.kotest", name = "kotest-framework-datatest", version.ref = "kotest" }
 kotestRunnerJunit = { group = "io.kotest", name = "kotest-runner-junit5", version.ref = "kotest" }
+# Other
+bouncyCastle = { group = "org.bouncycastle", name = "bcprov-jdk15on", version.ref = "bouncyCastle" }
 
 [plugins]
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
