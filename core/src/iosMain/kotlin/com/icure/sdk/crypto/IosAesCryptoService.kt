@@ -13,30 +13,26 @@ import kotlinx.cinterop.usePinned
 import kotlinx.cinterop.value
 import platform.CoreCrypto.CCCrypt
 import platform.CoreCrypto.kCCAlgorithmAES
-import platform.CoreCrypto.kCCDecodeError
 import platform.CoreCrypto.kCCDecrypt
 import platform.CoreCrypto.kCCEncrypt
-import platform.CoreCrypto.kCCInvalidKey
 import platform.CoreCrypto.kCCKeySizeAES128
 import platform.CoreCrypto.kCCKeySizeAES192
 import platform.CoreCrypto.kCCKeySizeAES256
 import platform.CoreCrypto.kCCOptionPKCS7Padding
 import platform.CoreCrypto.kCCSuccess
 import platform.Foundation.NSData
-import platform.Foundation.NSMutableData
-import platform.Foundation.create
 
 object IosAesCryptoService : AesCryptoService {
-    override fun generateKey(size: AesCryptoService.KeySize): NSData =
+    override suspend fun generateKey(size: AesCryptoService.KeySize): NSData =
         strongRandom.randomBytes(size.byteSize).toNSData()
 
-    override fun exportKey(key: AesKey): ByteArray =
+    override suspend fun exportKey(key: AesKey): ByteArray =
         key.toByteArray()
 
-    override fun loadKey(bytes: ByteArray): NSData =
+    override suspend fun loadKey(bytes: ByteArray): NSData =
         bytes.toNSData()
 
-    override fun encrypt(data: ByteArray, key: NSData, iv: ByteArray?): ByteArray {
+    override suspend fun encrypt(data: ByteArray, key: NSData, iv: ByteArray?): ByteArray {
         if (iv != null) require(iv.size == IV_BYTE_LENGTH) {
             "Initialization vector must be $IV_BYTE_LENGTH bytes long (got ${iv.size})."
         }
@@ -73,7 +69,7 @@ object IosAesCryptoService : AesCryptoService {
         return outBytes
     }
 
-    override fun decrypt(ivAndEncryptedData: ByteArray, key: NSData): ByteArray {
+    override suspend fun decrypt(ivAndEncryptedData: ByteArray, key: NSData): ByteArray {
         val outBytes = ByteArray(ivAndEncryptedData.size - IV_BYTE_LENGTH)
         return memScoped {
             val dataOutMoved = alloc<ULongVar>()
@@ -95,21 +91,14 @@ object IosAesCryptoService : AesCryptoService {
                 }
             }
             // Refer to Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/usr/include/CommonCrypto/CommonCryptoError.h
-            when {
-                operationResult == kCCDecodeError ->
-                    throw AesDecryptionException("Could not decrypt data", null)
-                operationResult == kCCInvalidKey ->
-                    throw AesDecryptionException("Invalid key", null)
-                operationResult != kCCSuccess -> // Any other failure
-                    throw IllegalStateException("Decryption failed with unexpected error code: $operationResult")
-            }
+            check(operationResult == kCCSuccess) { "Decryption failed with error code: $operationResult" }
             outBytes.copyOf(dataOutMoved.value.toInt())
         }
     }
 
     private fun validateAndGetKeySize(key: NSData): ULong = when (key.length) {
         AesCryptoService.KeySize.AES_128.byteSize.toULong() -> kCCKeySizeAES128.toULong()
-        AesCryptoService.KeySize.AES_192.byteSize.toULong() -> kCCKeySizeAES192.toULong()
+        // AesCryptoService.KeySize.AES_192.byteSize.toULong() -> kCCKeySizeAES192.toULong()
         AesCryptoService.KeySize.AES_256.byteSize.toULong() -> kCCKeySizeAES256.toULong()
         else -> throw IllegalArgumentException("Invalid size for key: ${key.length}")
     }

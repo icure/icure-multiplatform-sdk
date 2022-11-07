@@ -6,5 +6,4 @@ actual class PrivateRsaKey
 // TODO
 actual class PublicRsaKey
 
-// TODO
-actual class AesKey
+actual typealias AesKey = Any
