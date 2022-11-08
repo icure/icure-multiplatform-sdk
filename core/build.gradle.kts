@@ -94,6 +94,7 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 implementation(libs.ktorClientEngineAndroid)
+                implementation(libs.bouncyCastle)
             }
         }
         val androidTest by getting {
