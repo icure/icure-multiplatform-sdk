@@ -1,14 +1,23 @@
 package com.icure.sdk.crypto
 
-import javax.crypto.spec.SecretKeySpec
+import java.security.PublicKey
+import java.security.interfaces.RSAPrivateCrtKey
+import javax.crypto.SecretKey
 
-// TODO
-actual class PrivateRsaKey
-
-// TODO
-actual class PublicRsaKey
+// We can't use interface typealias for expect class nor the opposite, so the best solution is to create a class which
+// through delegation implements the required interfaces.
 
 /**
- * Represents an AesKey through the java-specific class for usage with the Cipher class.
+ * Represents a private rsa key.
  */
-actual typealias AesKey = SecretKeySpec
+actual class PrivateRsaKey(internal val key: RSAPrivateCrtKey) : RSAPrivateCrtKey by key
+
+/**
+ * Represents a public rsa key.
+ */
+actual class PublicRsaKey(internal val key: PublicKey) : PublicKey by key
+
+/**
+ * Represents an AesKey.
+ */
+actual class AesKey(internal val key: SecretKey) : SecretKey by key

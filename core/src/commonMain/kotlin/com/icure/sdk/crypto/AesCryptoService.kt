@@ -27,12 +27,16 @@ interface AesCryptoService {
 
     /**
      * Possible sizes for aes keys.
+     * @param bitSize Size in bits.
      */
-    enum class KeySize(val byteSize: Int) {
+    enum class KeySize(val bitSize: Int) {
         // Currently not all platforms support AES-192
-        AES_128(16), /* AES_192(24), */ AES_256(32);
+        AES_128(128), /* AES_192(192), */ AES_256(256);
 
-        val bitSize: Int get() = byteSize * 8
+        /**
+         * Size in bytes.
+         */
+        val byteSize: Int get() = bitSize / 8
     }
 
     /**

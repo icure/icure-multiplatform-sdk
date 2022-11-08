@@ -9,6 +9,7 @@ import java.security.Security
 actual val cryptoService = object : CryptoService {
     init { Security.addProvider(BouncyCastleProvider()) }
 
-    override val aes: AesCryptoService = JavaAesCryptoService
-    override val rsa: RsaCryptoService get() = TODO("Not yet implemented")
+    override val aes: AesCryptoService = JvmAesCryptoService
+
+    override val rsa: RsaCryptoService = JvmRsaCryptoService
 }
