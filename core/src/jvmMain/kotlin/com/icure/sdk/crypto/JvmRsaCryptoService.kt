@@ -2,8 +2,11 @@ package com.icure.sdk.crypto
 
 import java.security.KeyFactory
 import java.security.KeyPairGenerator
+import java.security.Signature
 import java.security.interfaces.RSAPrivateCrtKey
+import java.security.spec.MGF1ParameterSpec
 import java.security.spec.PKCS8EncodedKeySpec
+import java.security.spec.PSSParameterSpec
 import java.security.spec.RSAPublicKeySpec
 import java.security.spec.X509EncodedKeySpec
 import javax.crypto.Cipher
@@ -12,46 +15,87 @@ object JvmRsaCryptoService : RsaCryptoService {
     private const val SPKI_FORMAT = "X.509"
     private const val PKCS8_FORMAT = "PKCS#8"
 
-    private fun getCipher() = Cipher.getInstance("RSA/NONE/OAEPWithSHA-1AndMGF1Padding")
+    private fun getCipher(algorithm: RsaAlgorithm.RsaEncryptionAlgorithm) = when (algorithm) {
+        RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha1 -> Cipher.getInstance("RSA/NONE/OAEPWithSHA-1AndMGF1Padding")
+        else -> throw IllegalStateException("Algorithm not yet supported $algorithm")
+    }
 
-    override fun generateKeyPair(keySize: RsaCryptoService.KeySize): RsaKeypair {
+    private fun getSignature(algorithm: RsaAlgorithm.RsaSignatureAlgorithm) = when (algorithm) {
+        RsaAlgorithm.RsaSignatureAlgorithm.PssWithSha256 -> Signature.getInstance("SHA256withRSA/PSS").also {
+            it.setParameter(PSSParameterSpec("SHA-256", "MGF1", MGF1ParameterSpec.SHA256, 32, PSSParameterSpec.TRAILER_FIELD_BC))
+        }
+    }
+
+    override suspend fun <A : RsaAlgorithm> generateKeyPair(
+        algorithm: A,
+        keySize: RsaCryptoService.KeySize
+    ): RsaKeypair<A> {
         val rsaKeyGenerator: KeyPairGenerator = KeyPairGenerator.getInstance("RSA", "BC")
         rsaKeyGenerator.initialize(keySize.bitSize)
         val pair = rsaKeyGenerator.generateKeyPair()
         return RsaKeypair(
-            PrivateRsaKey(pair.private as RSAPrivateCrtKey).checkFormat(),
-            PublicRsaKey(pair.public).checkFormat()
+            PrivateRsaKey(pair.private as RSAPrivateCrtKey, algorithm).checkFormat(),
+            PublicRsaKey(pair.public, algorithm).checkFormat()
         )
     }
 
-    override fun exportPrivateKeyPkcs8(key: PrivateRsaKey): ByteArray =
+    override suspend fun exportPrivateKeyPkcs8(key: PrivateRsaKey<*>): ByteArray =
         key.checkFormat().encoded
 
-    override fun exportPublicKeySpki(key: PublicRsaKey): ByteArray =
+    override suspend fun exportPublicKeySpki(key: PublicRsaKey<*>): ByteArray =
         key.checkFormat().encoded
 
-    override fun loadKeyPairPkcs8(privateKeyPkcs8: ByteArray): RsaKeypair {
+    override suspend fun <A : RsaAlgorithm> loadKeyPairPkcs8(algorithm: A, privateKeyPkcs8: ByteArray): RsaKeypair<A> {
         val keyFactory = KeyFactory.getInstance("RSA")
         val privateKeySpec = PKCS8EncodedKeySpec(privateKeyPkcs8)
-        val privateKey = PrivateRsaKey(keyFactory.generatePrivate(privateKeySpec) as RSAPrivateCrtKey)
+        val privateKey = PrivateRsaKey(keyFactory.generatePrivate(privateKeySpec) as RSAPrivateCrtKey, algorithm)
         val publicKeySpec = RSAPublicKeySpec(privateKey.modulus, privateKey.publicExponent)
-        val publicKey = PublicRsaKey(keyFactory.generatePublic(publicKeySpec))
+        val publicKey = PublicRsaKey(keyFactory.generatePublic(publicKeySpec), algorithm)
         return RsaKeypair(privateKey, publicKey)
     }
 
-    override fun loadPublicKeySpki(publicKeySpki: ByteArray): PublicRsaKey {
+    override suspend fun <A : RsaAlgorithm> loadPublicKeySpki(algorithm: A, publicKeySpki: ByteArray): PublicRsaKey<A> {
         val keyFactory = KeyFactory.getInstance("RSA")
         val publicKeySpec = X509EncodedKeySpec(publicKeySpki)
-        return PublicRsaKey(keyFactory.generatePublic(publicKeySpec))
+        return PublicRsaKey(keyFactory.generatePublic(publicKeySpec), algorithm)
     }
 
-    override fun encrypt(data: ByteArray, publicKey: PublicRsaKey): ByteArray =
-        getCipher().apply { init(Cipher.ENCRYPT_MODE, publicKey.key) }.doFinal(data)
+    override suspend fun <A : RsaAlgorithm.RsaEncryptionAlgorithm> encrypt(
+        algorithm: A,
+        data: ByteArray,
+        publicKey: PublicRsaKey<A>
+    ): ByteArray =
+        getCipher(algorithm).apply { init(Cipher.ENCRYPT_MODE, publicKey.key) }.doFinal(data)
 
-    override fun decrypt(data: ByteArray, privateKey: PrivateRsaKey): ByteArray =
-        getCipher().apply { init(Cipher.DECRYPT_MODE, privateKey.key) }.doFinal(data)
+    override suspend fun <A : RsaAlgorithm.RsaEncryptionAlgorithm> decrypt(
+        algorithm: A,
+        data: ByteArray,
+        privateKey: PrivateRsaKey<A>
+    ): ByteArray =
+        getCipher(algorithm).apply { init(Cipher.DECRYPT_MODE, privateKey.key) }.doFinal(data)
 
-    private fun PublicRsaKey.checkFormat() = this.also {
+    override suspend fun <A : RsaAlgorithm.RsaSignatureAlgorithm> sign(
+        algorithm: A,
+        data: ByteArray,
+        privateKey: PrivateRsaKey<A>
+    ): ByteArray =
+        getSignature(algorithm).apply {
+            initSign(privateKey.key)
+            update(data)
+        }.sign()
+
+    override suspend fun <A : RsaAlgorithm.RsaSignatureAlgorithm> verifySignature(
+        algorithm: A,
+        signature: ByteArray,
+        data: ByteArray,
+        publicKey: PublicRsaKey<A>
+    ): Boolean =
+        getSignature(algorithm).apply {
+            initVerify(publicKey.key)
+            update(data)
+        }.verify(signature)
+
+    private fun <A : RsaAlgorithm> PublicRsaKey<A>.checkFormat() = this.also {
         check(format == SPKI_FORMAT) {
             """
             Generated public key should have format $SPKI_FORMAT but got $format.
@@ -60,7 +104,7 @@ object JvmRsaCryptoService : RsaCryptoService {
         }
     }
 
-    private fun PrivateRsaKey.checkFormat() = this.also {
+    private fun <A : RsaAlgorithm> PrivateRsaKey<A>.checkFormat() = this.also {
         check(format == PKCS8_FORMAT) {
             """
             Generated private key should have format $PKCS8_FORMAT but got $format.

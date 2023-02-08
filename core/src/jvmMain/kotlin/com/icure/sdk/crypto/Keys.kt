@@ -10,12 +10,18 @@ import javax.crypto.SecretKey
 /**
  * Represents a private rsa key.
  */
-actual class PrivateRsaKey(internal val key: RSAPrivateCrtKey) : RSAPrivateCrtKey by key
+actual class PrivateRsaKey<A : RsaAlgorithm>(
+    internal val key: RSAPrivateCrtKey,
+    internal val algorithm: A
+) : RSAPrivateCrtKey by key
 
 /**
  * Represents a public rsa key.
  */
-actual class PublicRsaKey(internal val key: PublicKey) : PublicKey by key
+actual class PublicRsaKey<A : RsaAlgorithm>(
+    internal val key: PublicKey,
+    internal val algorithm: A
+) : PublicKey by key
 
 /**
  * Represents an AesKey.
