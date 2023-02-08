@@ -11,4 +11,4 @@ fun ArrayBuffer.toByteArray(): ByteArray = Int8Array(this).unsafeCast<ByteArray>
 /**
  * Convert an [ByteArray] to a [ArrayBuffer]
  */
-fun ByteArray.toArrayBuffer(): ArrayBuffer = this.unsafeCast<Int8Array>().buffer
+fun ByteArray.toArrayBuffer(): ArrayBuffer = Int8Array(this.toTypedArray()).buffer

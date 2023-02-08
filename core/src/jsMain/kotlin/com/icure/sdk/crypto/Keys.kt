@@ -1,10 +1,16 @@
 package com.icure.sdk.crypto
 
 // TODO
-actual class PrivateRsaKey
+actual class PrivateRsaKey<A : RsaAlgorithm>(
+    internal val key: dynamic,
+    internal val algorithm: A
+)
 
 // TODO
-actual class PublicRsaKey
+actual class PublicRsaKey<A : RsaAlgorithm>(
+    internal val key: dynamic,
+    internal val algorithm: A
+)
 
 /**
  * This would actually be [CryptoKey](https://developer.mozilla.org/en-US/docs/Web/API/CryptoKey) but there is no easy

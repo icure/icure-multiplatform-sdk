@@ -71,9 +71,9 @@ class AesCryptoServiceTest : StringSpec({
 
     "Encrypted data should match expected" {
         val iv = base64Decode(encryptedDataSamplesIv)
-        encryptedDataSamples.forEach { (dataToKeyIndices, expectedEncryptedData) ->
-            val d = data[dataToKeyIndices.first].toByteArray(Charsets.UTF_8)
-            val key = cryptoService.aes.loadKey(base64Decode(encryptedDataSamplesKeys[dataToKeyIndices.second]))
+        encryptedDataSamples.forEach { (dataAndKeyIndices, expectedEncryptedData) ->
+            val d = data[dataAndKeyIndices.first].toByteArray(Charsets.UTF_8)
+            val key = cryptoService.aes.loadKey(base64Decode(encryptedDataSamplesKeys[dataAndKeyIndices.second]))
             base64Encode(cryptoService.aes.encrypt(d, key, iv)) shouldBe expectedEncryptedData
         }
     }

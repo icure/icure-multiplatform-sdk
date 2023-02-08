@@ -5,6 +5,7 @@ import com.icure.sdk.js.toArrayBuffer
 import com.icure.sdk.js.toByteArray
 import kotlinx.coroutines.await
 import org.khronos.webgl.ArrayBuffer
+import org.khronos.webgl.Int8Array
 import kotlin.js.json
 
 object JsAesCryptoService : AesCryptoService {
@@ -30,7 +31,7 @@ object JsAesCryptoService : AesCryptoService {
 
 
     override suspend fun exportKey(key: AesKey): ByteArray =
-        jsCrypto.subtle.exportKey(RAW, key).await().toByteArray()
+        (jsCrypto.subtle.exportKey(RAW, key).await() as ArrayBuffer).toByteArray()
 
     override suspend fun loadKey(bytes: ByteArray): AesKey =
         jsCrypto.subtle.importKey(RAW, bytes.toArrayBuffer(), algorithmJson, true, USAGES).await() as AesKey
