@@ -2,6 +2,7 @@
 
 ![Organization](readme-resources/organization.svg)
 
+
 The core module contains the logic of the iCure sdk. Part of this logic, such as encryption, requires platform-specific 
 implementations, using the platform sdks.
 
