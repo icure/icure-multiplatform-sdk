@@ -17,7 +17,7 @@ kotlin {
     val xcf = XCFramework()
     jvm {
         compilations.all {
-            kotlinOptions.jvmTarget = "21"
+            kotlinOptions.jvmTarget = "1.8"
         }
     }
     js(IR) {
@@ -33,6 +33,9 @@ kotlin {
         binaries.executable()
     }
     androidTarget {
+        compilations.all {
+            kotlinOptions.jvmTarget = "1.8"
+        }
     }
     val iosSimulators = listOf(
         iosX64(),
@@ -110,20 +113,10 @@ kotlin {
         val iosArm64Test by getting
         val iosSimulatorArm64Main by getting
         val iosSimulatorArm64Test by getting
-        val iosMain by creating {
-            dependsOn(commonMain)
-            iosX64Main.dependsOn(this)
-            iosArm64Main.dependsOn(this)
-            iosSimulatorArm64Main.dependsOn(this)
+        iosMain {
             dependencies {
                 implementation(libs.ktorClientEngineIos)
             }
-        }
-        val iosTest by creating {
-            dependsOn(commonTest)
-            iosX64Test.dependsOn(this)
-            iosArm64Test.dependsOn(this)
-            iosSimulatorArm64Test.dependsOn(this)
         }
     }
 }
@@ -138,8 +131,8 @@ android {
         targetSdk = 32
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
     testOptions {
         unitTests.all {
