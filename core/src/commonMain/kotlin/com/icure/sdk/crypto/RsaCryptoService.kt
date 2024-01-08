@@ -5,6 +5,22 @@ package com.icure.sdk.crypto
  */
 interface RsaCryptoService {
     companion object {
+        //Other paddings overhead (from https://crypto.stackexchange.com/questions/32692/what-is-the-typical-block-size-in-rsa)(
+        //
+        //RSA/ECB/PKCS1Padding, 11
+        //RSA/ECB/NoPadding, 0
+        //RSA/ECB/OAEPPadding, 42 // Actually it's OAEPWithSHA1AndMGF1Padding
+        //RSA/ECB/OAEPWithMD5AndMGF1Padding, 34
+        //RSA/ECB/OAEPWithSHA1AndMGF1Padding, 42
+        //RSA/ECB/OAEPWithSHA224AndMGF1Padding, 58
+        //RSA/ECB/OAEPWithSHA256AndMGF1Padding, 66
+        //RSA/ECB/OAEPWithSHA384AndMGF1Padding, 98
+        //RSA/ECB/OAEPWithSHA512AndMGF1Padding, 130
+        //RSA/ECB/OAEPWithSHA3-224AndMGF1Padding, 58
+        //RSA/ECB/OAEPWithSHA3-256AndMGF1Padding, 66
+        //RSA/ECB/OAEPWithSHA3-384AndMGF1Padding, 98
+        //RSA/ECB/OAEPWithSHA3-512AndMGF1Padding, 130
+
         /**
          * Bytes overhead for OAEP padding with SHA1
          */

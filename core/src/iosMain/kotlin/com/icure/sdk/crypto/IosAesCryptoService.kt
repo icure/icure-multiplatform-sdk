@@ -23,16 +23,16 @@ import platform.CoreCrypto.kCCSuccess
 import platform.Foundation.NSData
 
 object IosAesCryptoService : AesCryptoService {
-    override suspend fun generateKey(size: AesCryptoService.KeySize): NSData =
-        strongRandom.randomBytes(size.byteSize).toNSData()
+    override suspend fun generateKey(size: AesCryptoService.KeySize): AesKey =
+        strongRandom.randomBytes(size.byteSize)
 
     override suspend fun exportKey(key: AesKey): ByteArray =
-        key.toByteArray()
+        key.copyOf()
 
-    override suspend fun loadKey(bytes: ByteArray): NSData =
-        bytes.toNSData()
+    override suspend fun loadKey(bytes: ByteArray): AesKey =
+        bytes.copyOf()
 
-    override suspend fun encrypt(data: ByteArray, key: NSData, iv: ByteArray?): ByteArray {
+    override suspend fun encrypt(data: ByteArray, key: AesKey, iv: ByteArray?): ByteArray {
         if (iv != null) require(iv.size == IV_BYTE_LENGTH) {
             "Initialization vector must be $IV_BYTE_LENGTH bytes long (got ${iv.size})."
         }
@@ -43,19 +43,21 @@ object IosAesCryptoService : AesCryptoService {
             val operationResult = data.usePinned { pinnedData ->
                 generatedIv.usePinned { pinnedIv ->
                     outBytes.usePinned { pinnedOut ->
-                        CCCrypt(
-                            kCCEncrypt,
-                            kCCAlgorithmAES,
-                            kCCOptionPKCS7Padding,
-                            key.bytes,
-                            validateAndGetKeySize(key),
-                            pinnedIv.addressOf(0),
-                            pinnedData.addressOf(0),
-                            data.size.toULong(),
-                            pinnedOut.addressOf(IV_BYTE_LENGTH),
-                            (outBytes.size - IV_BYTE_LENGTH).toULong(),
-                            dataOutMoved.ptr
-                        )
+                        key.usePinned { pinnedKey ->
+                            CCCrypt(
+                                kCCEncrypt,
+                                kCCAlgorithmAES,
+                                kCCOptionPKCS7Padding,
+                                pinnedKey.addressOf(0),
+                                validateAndGetKeySize(key),
+                                pinnedIv.addressOf(0),
+                                pinnedData.addressOf(0),
+                                data.size.toULong(),
+                                pinnedOut.addressOf(IV_BYTE_LENGTH),
+                                (outBytes.size - IV_BYTE_LENGTH).toULong(),
+                                dataOutMoved.ptr
+                            )
+                        }
                     }
                 }
             }
@@ -69,25 +71,27 @@ object IosAesCryptoService : AesCryptoService {
         return outBytes
     }
 
-    override suspend fun decrypt(ivAndEncryptedData: ByteArray, key: NSData): ByteArray {
+    override suspend fun decrypt(ivAndEncryptedData: ByteArray, key: AesKey): ByteArray {
         val outBytes = ByteArray(ivAndEncryptedData.size - IV_BYTE_LENGTH)
         return memScoped {
             val dataOutMoved = alloc<ULongVar>()
             val operationResult = outBytes.usePinned { pinnedOutBytes ->
                 ivAndEncryptedData.usePinned { pinnedIvAndEncryptedData ->
-                    CCCrypt(
-                        kCCDecrypt,
-                        kCCAlgorithmAES,
-                        kCCOptionPKCS7Padding,
-                        key.bytes,
-                        validateAndGetKeySize(key),
-                        pinnedIvAndEncryptedData.addressOf(0),
-                        pinnedIvAndEncryptedData.addressOf(IV_BYTE_LENGTH),
-                        (ivAndEncryptedData.size - IV_BYTE_LENGTH).toULong(),
-                        pinnedOutBytes.addressOf(0),
-                        outBytes.size.toULong(),
-                        dataOutMoved.ptr
-                    )
+                    key.usePinned { pinnedKey ->
+                        CCCrypt(
+                            kCCDecrypt,
+                            kCCAlgorithmAES,
+                            kCCOptionPKCS7Padding,
+                            pinnedKey.addressOf(0),
+                            validateAndGetKeySize(key),
+                            pinnedIvAndEncryptedData.addressOf(0),
+                            pinnedIvAndEncryptedData.addressOf(IV_BYTE_LENGTH),
+                            (ivAndEncryptedData.size - IV_BYTE_LENGTH).toULong(),
+                            pinnedOutBytes.addressOf(0),
+                            outBytes.size.toULong(),
+                            dataOutMoved.ptr
+                        )
+                    }
                 }
             }
             // Refer to Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/usr/include/CommonCrypto/CommonCryptoError.h
@@ -96,10 +100,10 @@ object IosAesCryptoService : AesCryptoService {
         }
     }
 
-    private fun validateAndGetKeySize(key: NSData): ULong = when (key.length) {
-        AesCryptoService.KeySize.AES_128.byteSize.toULong() -> kCCKeySizeAES128.toULong()
+    private fun validateAndGetKeySize(key: AesKey): ULong = when (key.size) {
+        AesCryptoService.KeySize.AES_128.byteSize -> kCCKeySizeAES128.toULong()
         // AesCryptoService.KeySize.AES_192.byteSize.toULong() -> kCCKeySizeAES192.toULong()
-        AesCryptoService.KeySize.AES_256.byteSize.toULong() -> kCCKeySizeAES256.toULong()
-        else -> throw IllegalArgumentException("Invalid size for key: ${key.length}")
+        AesCryptoService.KeySize.AES_256.byteSize -> kCCKeySizeAES256.toULong()
+        else -> throw IllegalArgumentException("Invalid size for key: ${key.size}")
     }
 }

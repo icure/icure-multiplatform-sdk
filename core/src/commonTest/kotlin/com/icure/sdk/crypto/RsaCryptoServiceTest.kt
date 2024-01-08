@@ -287,7 +287,7 @@ class RsaCryptoServiceTest : StringSpec({
         }
     }
 
-    "Decrypted data should match expected" {
+    "Decrypted data should match expected - test with data encrypted by other platforms" {
         val keyPairs = dataSamplesKeys.map {
             it.first to cryptoService.rsa.loadKeyPairPkcs8(OaepWithSha1, base64Decode(it.second))
         }
@@ -303,7 +303,7 @@ class RsaCryptoServiceTest : StringSpec({
         }
     }
 
-    "Signature verification should match expected" {
+    "Signature verification should match expected - test with data signed by other platforms" {
         val keyPairs = dataSamplesKeys.map {
             cryptoService.rsa.loadKeyPairPkcs8(PssWithSha256, base64Decode(it.second))
         }

@@ -1,49 +1,58 @@
 package com.icure.sdk.crypto.asn
 
-fun ByteArray.toInt() = this.toLong().toInt()
-fun ByteArray.toLong() = this.fold(0L) { acc, byte -> (acc shl 8) or byte.toUByte().toLong() }
+import com.icure.sdk.crypto.asn.AsnUtils.prependTagAndLength
+import com.icure.sdk.crypto.asn.AsnUtils.toByteArray
+import com.icure.sdk.crypto.asn.AsnUtils.toInt
+import com.icure.sdk.crypto.asn.AsnUtils.toOidByteArray
 
-fun String.toOidByteArray(): ByteArray {
-    val oidParts = this.split('.').map { it.toInt() }
-    val firstByte = (oidParts[0] * 40 + oidParts[1]).toByte()
-    val otherBytes = oidParts.drop(2).flatMap { it.toBase128() }
-    return byteArrayOf(firstByte) + otherBytes.toByteArray()
-}
+// Collection of utilities to parse and generate ASN.1 objects. We may generalise them in future if needed, but for
+// now they are very specific for this use case and should not be used elsewhere.
+object AsnUtils {
+    fun ByteArray.toInt() = this.toLong().toInt()
+    fun ByteArray.toLong() = this.fold(0L) { acc, byte -> (acc shl 8) or byte.toUByte().toLong() }
 
-fun Int.toBase128(): List<Byte> {
-    var value = this
-    val bytes = mutableListOf<Byte>()
-    do {
-        var byte = (value and 0x7F)
-        if (bytes.isNotEmpty()) byte = byte or 0x80
-        bytes.add(0, byte.toByte())
-        value = value shr 7
-    } while (value != 0)
-    return bytes
-}
-
-fun Int.toAsn1Length(): ByteArray {
-    return if (this < 0x80) {
-        byteArrayOf(this.toByte())
-    } else {
-        val lengthBytes = this.toByteArray().dropWhile { it == 0.toByte() }
-        byteArrayOf((0x80 or lengthBytes.size).toByte()) + lengthBytes
+    fun String.toOidByteArray(): ByteArray {
+        val oidParts = this.split('.').map { it.toInt() }
+        val firstByte = (oidParts[0] * 40 + oidParts[1]).toByte()
+        val otherBytes = oidParts.drop(2).flatMap { it.toBase128() }
+        return byteArrayOf(firstByte) + otherBytes.toByteArray()
     }
-}
 
-fun ByteArray.prependTagAndLength(tag: Int): ByteArray {
-    return byteArrayOf(tag.toByte()) + this.size.toAsn1Length() + this
-}
-
-fun Int.toByteArray(): ByteArray {
-    if (this == 0) return byteArrayOf(0)
-    var i = this
-    val result = ByteArray(4)
-    for (index in 3 downTo 0) {
-        result[index] = (i and 0xFF).toByte()
-        i = i shr 8
+    fun Int.toBase128(): List<Byte> {
+        var value = this
+        val bytes = mutableListOf<Byte>()
+        do {
+            var byte = (value and 0x7F)
+            if (bytes.isNotEmpty()) byte = byte or 0x80
+            bytes.add(0, byte.toByte())
+            value = value shr 7
+        } while (value != 0)
+        return bytes
     }
-    return result.dropWhile { it == 0.toByte() }.toByteArray()
+
+    fun Int.toAsn1Length(): ByteArray {
+        return if (this < 0x80) {
+            byteArrayOf(this.toByte())
+        } else {
+            val lengthBytes = this.toByteArray().dropWhile { it == 0.toByte() }
+            byteArrayOf((0x80 or lengthBytes.size).toByte()) + lengthBytes
+        }
+    }
+
+    fun ByteArray.prependTagAndLength(tag: Int): ByteArray {
+        return byteArrayOf(tag.toByte()) + this.size.toAsn1Length() + this
+    }
+
+    fun Int.toByteArray(): ByteArray {
+        if (this == 0) return byteArrayOf(0)
+        var i = this
+        val result = ByteArray(4)
+        for (index in 3 downTo 0) {
+            result[index] = (i and 0xFF).toByte()
+            i = i shr 8
+        }
+        return result.dropWhile { it == 0.toByte() }.toByteArray()
+    }
 }
 
 sealed interface Asn1Object {

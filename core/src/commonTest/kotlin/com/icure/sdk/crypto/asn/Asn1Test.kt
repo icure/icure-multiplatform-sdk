@@ -1,5 +1,7 @@
 package com.icure.sdk.crypto.asn
 
+import com.icure.sdk.crypto.asn.AsnUtils.toByteArray
+import com.icure.sdk.crypto.asn.AsnUtils.toLong
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf

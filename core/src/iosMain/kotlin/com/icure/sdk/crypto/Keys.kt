@@ -1,17 +1,27 @@
 package com.icure.sdk.crypto
 
-import platform.Foundation.NSData
+/**
+ * Represents an rsa private key, as a pkcs1-encoded key.
+ * The appropriate type for keys is actually SecKeyRef, however that needs to be released through CFRelease.
+ * By representing the key as a normal kotlin byte array we can garbage-collect it. This requires to convert the key on
+ * each use but the overhead is actually very small.
+ * The measured overhead is of ~10 ms over a total of ~1400 ms necessary to perform encryption and decryption of 500
+ * arrays of 100 bytes each.
+ */
+actual class PrivateRsaKey<A : RsaAlgorithm>(internal val rawKey: ByteArray)
 
-// TODO
-actual class PrivateRsaKey
-
-// TODO
-actual class PublicRsaKey
+/**
+ * Represents an rsa public key, as a pkcs1-encoded key.
+ * The appropriate type for keys is actually SecKeyRef, however that needs to be released through CFRelease.
+ * By representing the key as a normal kotlin byte array we can garbage-collect it. This requires to convert the key on
+ * each use but the overhead is actually very small.
+ * The measured overhead is of ~10 ms over a total of ~1400 ms necessary to perform encryption and decryption of 500
+ * arrays of 100 bytes each.
+ */
+actual class PublicRsaKey<A : RsaAlgorithm>(internal val rawKey: ByteArray)
 
 /**
  * Represents an aes key.
- * On CommonCrypto there is no specific class to represent an AesKey, any form of byte array is fine, however
- * representing the key as NSData should make the key more compatible to use with platform-specific functions, which
- * could be useful for example if the user needs to save it.
+ * On CommonCrypto there is no specific class to represent an AesKey, any form of byte array is fine.
  */
-actual typealias AesKey = NSData
+actual typealias AesKey = ByteArray
