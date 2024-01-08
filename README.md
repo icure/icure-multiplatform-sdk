@@ -25,3 +25,8 @@ performs the necessary conversions and makes the exposed API callable from javas
 ### Dart and react native wrappers
 These wrappers allow to use the iCure sdk from react native or dart. They connect the react/dart interfaces to the ios 
 and android implementations.
+
+## Notes
+
+With multiple modules the yarn lock may have some issues...
+https://youtrack.jetbrains.com/issue/KT-55701/KJS-Gradle-kotlinUpgradeYarnLock-and-kotlinStoreYarnLock-dont-support-configureondemand-if-building-one-module-only

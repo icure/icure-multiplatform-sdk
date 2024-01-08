@@ -17,7 +17,7 @@ kotlin {
     val xcf = XCFramework()
     jvm {
         compilations.all {
-            kotlinOptions.jvmTarget = "1.8"
+            kotlinOptions.jvmTarget = "21"
         }
     }
     js(IR) {
@@ -32,7 +32,8 @@ kotlin {
         nodejs {  }
         binaries.executable()
     }
-    android {}
+    androidTarget {
+    }
     val iosSimulators = listOf(
         iosX64(),
         iosSimulatorArm64()
@@ -54,6 +55,7 @@ kotlin {
         all {
             languageSettings.apply {
                 optIn("kotlin.js.ExperimentalJsExport")
+                optIn("kotlinx.cinterop.ExperimentalForeignApi")
             }
         }
         val commonMain by getting {
@@ -97,7 +99,7 @@ kotlin {
                 implementation(libs.bouncyCastle)
             }
         }
-        val androidTest by getting {
+        val androidUnitTest by getting {
             dependencies {
                 implementation(libs.kotestRunnerJunit)
             }
@@ -128,6 +130,7 @@ kotlin {
 
 @Suppress("UnstableApiUsage")
 android {
+    namespace = "com.icure.sdk"
     compileSdk = 32
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
@@ -135,8 +138,8 @@ android {
         targetSdk = 32
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
     testOptions {
         unitTests.all {
