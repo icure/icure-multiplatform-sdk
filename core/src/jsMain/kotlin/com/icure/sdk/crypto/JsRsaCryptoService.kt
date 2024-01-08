@@ -51,13 +51,12 @@ object JsRsaCryptoService : RsaCryptoService {
         ).await()
         // https://stackoverflow.com/questions/56807959/generate-public-key-from-private-key-using-webcrypto-api
         val jwkPrivateKey = jsCrypto.subtle.exportKey("jwk", rawPrivateKey).await()
-        val pubKeyOps = publicKeyUses(algorithm)
-        js("delete jwkPrivateKey.d")
-        js("delete jwkPrivateKey.dp")
-        js("delete jwkPrivateKey.dq")
-        js("delete jwkPrivateKey.q")
-        js("delete jwkPrivateKey.qi")
-        js("jwkPrivateKey.key_ops = pubKeyOps")
+        jwkPrivateKey.d = undefined
+        jwkPrivateKey.dp = undefined
+        jwkPrivateKey.dq = undefined
+        jwkPrivateKey.q = undefined
+        jwkPrivateKey.qi = undefined
+        jwkPrivateKey.key_ops = publicKeyUses(algorithm)
         val rawPublicKey = jsCrypto.subtle.importKey(
             "jwk",
             jwkPrivateKey,
