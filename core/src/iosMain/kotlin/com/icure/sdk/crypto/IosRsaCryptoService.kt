@@ -1,5 +1,6 @@
 package com.icure.sdk.crypto
 
+import com.icure.sdk.crypto.IosRsaCryptoService.toSecKey
 import com.icure.sdk.ios.toByteArray
 import com.icure.sdk.ios.toCFData
 import kotlinx.cinterop.alloc
@@ -24,8 +25,10 @@ import platform.Security.SecKeyCopyPublicKey
 import platform.Security.SecKeyCreateDecryptedData
 import platform.Security.SecKeyCreateEncryptedData
 import platform.Security.SecKeyCreateRandomKey
+import platform.Security.SecKeyCreateSignature
 import platform.Security.SecKeyCreateWithData
 import platform.Security.SecKeyRef
+import platform.Security.SecKeyVerifySignature
 import platform.Security.kSecAttrKeyClass
 import platform.Security.kSecAttrKeyClassPrivate
 import platform.Security.kSecAttrKeyClassPublic
@@ -34,12 +37,18 @@ import platform.Security.kSecAttrKeyType
 import platform.Security.kSecAttrKeyTypeRSA
 import platform.Security.kSecKeyAlgorithmRSAEncryptionOAEPSHA1
 import platform.Security.kSecKeyAlgorithmRSAEncryptionOAEPSHA256
+import platform.Security.kSecKeyAlgorithmRSASignatureMessagePSSSHA256
 
 object IosRsaCryptoService : RsaCryptoService {
-    private val secKeyEncryptionAlgorithms: Map<RsaAlgorithm, SecKeyAlgorithm> = mapOf(
+    private val secKeyEncryptionAlgorithms: Map<RsaAlgorithm.RsaEncryptionAlgorithm, SecKeyAlgorithm> = mapOf(
         RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha1 to checkNotNull(kSecKeyAlgorithmRSAEncryptionOAEPSHA1) { "kSecKeyAlgorithmRSAEncryptionOAEPSHA1 is null" },
         RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256 to checkNotNull(kSecKeyAlgorithmRSAEncryptionOAEPSHA256) { "kSecKeyAlgorithmRSAEncryptionOAEPSHA256 is null" },
     )
+
+    private val secKeySignatureAlgorithms: Map<RsaAlgorithm.RsaSignatureAlgorithm, SecKeyAlgorithm> = mapOf(
+        RsaAlgorithm.RsaSignatureAlgorithm.PssWithSha256 to checkNotNull(kSecKeyAlgorithmRSASignatureMessagePSSSHA256) { "kSecKeyAlgorithmRSASignatureMessagePSSSHA256 is null" },
+    )
+
 
     private val generationAttr = RsaCryptoService.KeySize.values().associateWith { keySize ->
         CFDictionaryCreateMutable(
@@ -184,7 +193,29 @@ object IosRsaCryptoService : RsaCryptoService {
         data: ByteArray,
         privateKey: PrivateRsaKey<A>
     ): ByteArray {
-        TODO("iOS RSA sign/verify")
+        val secKey = privateKey.toSecKey()
+        val cfData = data.toCFData()
+        return try {
+            memScoped {
+                val error = alloc<CFErrorRefVar>()
+                val signature = SecKeyCreateSignature(
+                    secKey,
+                    secKeySignatureAlgorithms.getValue(algorithm),
+                    cfData,
+                    error.ptr
+                )
+                check(error.value == null) {
+                    val nsError = CFBridgingRelease(error.value) as NSError
+                    if (signature != null) CFRelease(signature)
+                    "Failed to sign data: ${nsError.localizedDescription}"
+                }
+                checkNotNull(signature) { "Signature didn't give an error but result is null" }
+                signature.toByteArray()
+            }
+        } finally {
+            CFRelease(cfData)
+            CFRelease(secKey)
+        }
     }
 
     override suspend fun <A : RsaAlgorithm.RsaSignatureAlgorithm> verifySignature(
@@ -193,7 +224,33 @@ object IosRsaCryptoService : RsaCryptoService {
         data: ByteArray,
         publicKey: PublicRsaKey<A>
     ): Boolean {
-        TODO("iOS RSA sign/verify")
+        val secKey = publicKey.toSecKey()
+        val cfData = data.toCFData()
+        val cfSignature = signature.toCFData()
+        return try {
+            memScoped {
+                val error = alloc<CFErrorRefVar>()
+                val verification = SecKeyVerifySignature(
+                    secKey,
+                    secKeySignatureAlgorithms.getValue(algorithm),
+                    cfData,
+                    cfSignature,
+                    error.ptr
+                )
+                if (error.value != null) {
+                    val nsError = CFBridgingRelease(error.value) as NSError
+                    check (nsError.code == -67808L) { // Error code for invalid signature
+                        "Failed to verify data: ${nsError.localizedDescription}"
+                    }
+                    false
+                } else {
+                    verification
+                }
+            }
+        } finally {
+            CFRelease(cfData)
+            CFRelease(secKey)
+        }
     }
 
     override suspend fun exportPrivateKeyPkcs8(key: PrivateRsaKey<*>): ByteArray =
