@@ -1,6 +1,6 @@
 rootProject.name = "icure-multiplatform-sdk"
 
-include("core")
+include("kryptom")
 
 pluginManagement {
     repositories {
@@ -14,5 +14,6 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        mavenLocal()
     }
 }
