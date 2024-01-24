@@ -3,7 +3,15 @@ package com.icure.sdk.crypto
 /**
  * Provides access to RSA functions.
  *
- *
+ * Keys are typed by the algorithm they are intended to be used for. This is to prevent accidentally using a key for
+ * the wrong algorithm. To get maximum support from the type system it is recommended to never use the generic interface
+ * for algorithm, and instead always use a generic parameter with the interface as upper bound, for example:
+ * ```kotlin
+ * // Don't do this
+ * fun doSomeEncryptionWithSomeAlgorithm(algorithm: RsaAlgorithm.RsaEncryptionAlgorithm)
+ * // Do this instead
+ * fun <A : RsaAlgorithm.RsaEncryptionAlgorithm> doSomeEncryptionWithSomeAlgorithm(algorithm: A)
+ * ```
  */
 interface RsaCryptoService {
     companion object {
