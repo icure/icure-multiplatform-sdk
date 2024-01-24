@@ -24,7 +24,7 @@ import platform.Foundation.NSData
 
 object IosAesCryptoService : AesCryptoService {
     override suspend fun generateKey(size: AesCryptoService.KeySize): AesKey =
-        strongRandom.randomBytes(size.byteSize)
+        IosStrongRandom.randomBytes(size.byteSize)
 
     override suspend fun exportKey(key: AesKey): ByteArray =
         key.copyOf()
@@ -36,7 +36,7 @@ object IosAesCryptoService : AesCryptoService {
         if (iv != null) require(iv.size == IV_BYTE_LENGTH) {
             "Initialization vector must be $IV_BYTE_LENGTH bytes long (got ${iv.size})."
         }
-        val generatedIv = iv ?: strongRandom.randomBytes(IV_BYTE_LENGTH)
+        val generatedIv = iv ?: IosStrongRandom.randomBytes(IV_BYTE_LENGTH)
         val outBytes = generatedIv.copyOf(IV_BYTE_LENGTH + aesEncryptedSizeFor(data.size))
         memScoped {
             val dataOutMoved = alloc<ULongVar>()

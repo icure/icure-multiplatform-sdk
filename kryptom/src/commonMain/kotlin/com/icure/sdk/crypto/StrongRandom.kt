@@ -3,12 +3,6 @@ package com.icure.sdk.crypto
 import com.icure.sdk.utils.toHexString
 
 /**
- * Provides access to a cryptographically strong random generator.
- * Thread safe.
- */
-expect val strongRandom: StrongRandom
-
-/**
  * Cryptographically strong random generator. The implementation must be thread safe.
  */
 interface StrongRandom {

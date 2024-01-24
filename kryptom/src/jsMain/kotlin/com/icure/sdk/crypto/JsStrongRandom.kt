@@ -2,7 +2,7 @@ package com.icure.sdk.crypto
 
 import com.icure.sdk.js.jsCrypto
 
-actual val strongRandom = object : StrongRandom {
+object JsStrongRandom : StrongRandom {
     override fun randomBytes(length: Int): ByteArray =
         jsCrypto.getRandomValues(ByteArray(length))
 

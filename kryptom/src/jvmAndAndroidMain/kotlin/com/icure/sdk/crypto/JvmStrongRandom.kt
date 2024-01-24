@@ -7,8 +7,8 @@ import java.util.UUID
  * Provides access to a cryptographically secure random generator.
  * Thread safe.
  */
-actual val strongRandom = object : StrongRandom {
-    val random = SecureRandom()
+object JvmStrongRandom : StrongRandom {
+    private val random = SecureRandom()
 
     override fun randomBytes(length: Int): ByteArray =
         ByteArray(length).also { random.nextBytes(it) }

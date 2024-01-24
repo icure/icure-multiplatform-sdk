@@ -7,7 +7,7 @@ import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 
 object JvmAesCryptoService : AesCryptoService {
-    fun newCipherAES(): Cipher = Cipher.getInstance("AES/CBC/PKCS7Padding")
+    private fun newCipherAES(): Cipher = Cipher.getInstance("AES/CBC/PKCS7Padding")
 
     override suspend fun generateKey(size: AesCryptoService.KeySize): AesKey {
         val keyGen: KeyGenerator = KeyGenerator.getInstance("AES")
@@ -24,7 +24,7 @@ object JvmAesCryptoService : AesCryptoService {
     }
 
     override suspend fun encrypt(data: ByteArray, key: AesKey, iv: ByteArray?): ByteArray {
-        val generatedIv = iv ?: strongRandom.randomBytes(IV_BYTE_LENGTH)
+        val generatedIv = iv ?: JvmStrongRandom.randomBytes(IV_BYTE_LENGTH)
         val cipher = newCipherAES().apply { init(Cipher.ENCRYPT_MODE, key.key, IvParameterSpec(generatedIv)) }
         return generatedIv + cipher.doFinal(data)
     }

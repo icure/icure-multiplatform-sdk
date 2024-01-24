@@ -9,6 +9,8 @@ actual val cryptoService = object : CryptoService {
     override val aes: AesCryptoService = JvmAesCryptoService
 
     override val rsa: RsaCryptoService = JvmRsaCryptoService
+
+    override val strongRandom: StrongRandom = JvmStrongRandom
 }
 
 expect fun initCryptoProvider()

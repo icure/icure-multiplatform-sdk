@@ -13,7 +13,7 @@ object JsAesCryptoService : AesCryptoService {
     private const val ALGORITHM_NAME = "AES-CBC"
     private val USAGES = arrayOf("encrypt", "decrypt")
 
-    private val sizeToAlgorithmParam = AesCryptoService.KeySize.values().associateWith {
+    private val sizeToAlgorithmParam = AesCryptoService.KeySize.entries.associateWith {
         json(
             "name" to ALGORITHM_NAME,
             "length" to it.bitSize
@@ -37,7 +37,7 @@ object JsAesCryptoService : AesCryptoService {
         jsCrypto.subtle.importKey(RAW, bytes.toArrayBuffer(), algorithmJson, true, USAGES).await() as AesKey
 
     override suspend fun encrypt(data: ByteArray, key: AesKey, iv: ByteArray?): ByteArray {
-        val generatedIv = iv ?: strongRandom.randomBytes(16)
+        val generatedIv = iv ?: JsStrongRandom.randomBytes(16)
         val encrypted = jsCrypto.subtle.encrypt(
             encryptionParam(generatedIv.toArrayBuffer()),
             key,

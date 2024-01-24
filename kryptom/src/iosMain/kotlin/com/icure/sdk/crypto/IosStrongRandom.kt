@@ -6,8 +6,6 @@ import platform.Security.SecRandomCopyBytes
 import platform.Security.errSecSuccess
 import platform.Security.kSecRandomDefault
 
-actual val strongRandom: StrongRandom = IosStrongRandom
-
 object IosStrongRandom : StrongRandom {
     override fun randomBytes(length: Int): ByteArray {
         val bytes = ByteArray(length)

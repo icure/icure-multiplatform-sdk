@@ -20,4 +20,10 @@ interface CryptoService {
      * Cryptographic functions for RSA.
      */
     val rsa: RsaCryptoService
+
+    /**
+     * Provides access to a cryptographically strong random generator.
+     * Thread safe.
+     */
+    val strongRandom: StrongRandom
 }

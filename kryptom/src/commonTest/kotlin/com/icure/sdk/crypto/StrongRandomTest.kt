@@ -15,7 +15,7 @@ class StrongRandomTest : StringSpec({
             1000,
             1024
         ).forEach { size ->
-            strongRandom.randomBytes(size).size shouldBe size
+            cryptoService.strongRandom.randomBytes(size).size shouldBe size
         }
     }
 
@@ -25,7 +25,7 @@ class StrongRandomTest : StringSpec({
         val uuidStringLength = 36
         val allHexDigits = "0123456789abcdef".toSet()
         val uuids = (0 until count).map {
-            strongRandom.randomUUID().also { it shouldHaveLength uuidStringLength }
+            cryptoService.strongRandom.randomUUID().also { it shouldHaveLength uuidStringLength }
         }
         // Checks all ids are different
         uuids shouldHaveSize count

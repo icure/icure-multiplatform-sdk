@@ -7,4 +7,6 @@ actual val cryptoService: CryptoService = object : CryptoService {
     override val aes: AesCryptoService = IosAesCryptoService
 
     override val rsa: RsaCryptoService = IosRsaCryptoService
+
+    override val strongRandom: StrongRandom = IosStrongRandom
 }
