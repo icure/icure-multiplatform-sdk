@@ -11,15 +11,15 @@ sealed interface RsaAlgorithm {
         /**
          * RSA-OAEP public-key as specified in RFC 3447, using sha-1 for the padding
          */
-        object OaepWithSha1 : RsaEncryptionAlgorithm
-        object OaepWithSha256 : RsaEncryptionAlgorithm
+        data object OaepWithSha1 : RsaEncryptionAlgorithm
+        data object OaepWithSha256 : RsaEncryptionAlgorithm
     }
 
     /**
      * Represents an RSA signature algorithm.
      */
     sealed interface RsaSignatureAlgorithm : RsaAlgorithm {
-        object PssWithSha256 : RsaSignatureAlgorithm
+        data object PssWithSha256 : RsaSignatureAlgorithm
     }
 }
 

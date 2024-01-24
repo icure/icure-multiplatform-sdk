@@ -1,35 +1,43 @@
 package com.icure.sdk.crypto
 
 /**
- * Provides access to RSA functions
+ * Provides access to RSA functions.
+ *
+ *
  */
 interface RsaCryptoService {
     companion object {
-        //Other paddings overhead (from https://crypto.stackexchange.com/questions/32692/what-is-the-typical-block-size-in-rsa)(
-        //
-        //RSA/ECB/PKCS1Padding, 11
-        //RSA/ECB/NoPadding, 0
-        //RSA/ECB/OAEPPadding, 42 // Actually it's OAEPWithSHA1AndMGF1Padding
-        //RSA/ECB/OAEPWithMD5AndMGF1Padding, 34
-        //RSA/ECB/OAEPWithSHA1AndMGF1Padding, 42
-        //RSA/ECB/OAEPWithSHA224AndMGF1Padding, 58
-        //RSA/ECB/OAEPWithSHA256AndMGF1Padding, 66
-        //RSA/ECB/OAEPWithSHA384AndMGF1Padding, 98
-        //RSA/ECB/OAEPWithSHA512AndMGF1Padding, 130
-        //RSA/ECB/OAEPWithSHA3-224AndMGF1Padding, 58
-        //RSA/ECB/OAEPWithSHA3-256AndMGF1Padding, 66
-        //RSA/ECB/OAEPWithSHA3-384AndMGF1Padding, 98
-        //RSA/ECB/OAEPWithSHA3-512AndMGF1Padding, 130
-
         /**
-         * Bytes overhead for OAEP padding with SHA1
+         * Most RSA encryption techniques use some padding. This class contains the size of padding for the supported
+         * algorithms.
          */
-        private const val OAEP_WITH_SHA1_OVERHEAD = 42
+        private object EncryptionPaddingSize {
+            //Other paddings overhead (from https://crypto.stackexchange.com/questions/32692/what-is-the-typical-block-size-in-rsa)(
+            //
+            //RSA/ECB/PKCS1Padding, 11
+            //RSA/ECB/NoPadding, 0
+            //RSA/ECB/OAEPPadding, 42 // Actually it's OAEPWithSHA1AndMGF1Padding
+            //RSA/ECB/OAEPWithMD5AndMGF1Padding, 34
+            //RSA/ECB/OAEPWithSHA1AndMGF1Padding, 42
+            //RSA/ECB/OAEPWithSHA224AndMGF1Padding, 58
+            //RSA/ECB/OAEPWithSHA256AndMGF1Padding, 66
+            //RSA/ECB/OAEPWithSHA384AndMGF1Padding, 98
+            //RSA/ECB/OAEPWithSHA512AndMGF1Padding, 130
+            //RSA/ECB/OAEPWithSHA3-224AndMGF1Padding, 58
+            //RSA/ECB/OAEPWithSHA3-256AndMGF1Padding, 66
+            //RSA/ECB/OAEPWithSHA3-384AndMGF1Padding, 98
+            //RSA/ECB/OAEPWithSHA3-512AndMGF1Padding, 130
 
-        /**
-         * Bytes overhead for OAEP padding with SHA256
-         */
-        private const val OAEP_WITH_SHA256_OVERHEAD = 66
+            /**
+             * Bytes overhead for OAEP padding with SHA1
+             */
+            const val OAEP_WITH_SHA1 = 42
+
+            /**
+             * Bytes overhead for OAEP padding with SHA256
+             */
+            const val OAEP_WITH_SHA256 = 66
+        }
     }
 
     /**
@@ -48,15 +56,18 @@ interface RsaCryptoService {
          * Maximum size for data which can be encrypted with an RSA key of this size for the provided algorithm.
          */
         fun maxEncryptionSizeBytes(algorithm: RsaAlgorithm.RsaEncryptionAlgorithm) = byteSize - when (algorithm) {
-            RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha1 -> OAEP_WITH_SHA1_OVERHEAD
-            RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256 -> OAEP_WITH_SHA256_OVERHEAD
+            RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha1 -> EncryptionPaddingSize.OAEP_WITH_SHA1
+            RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256 -> EncryptionPaddingSize.OAEP_WITH_SHA256
         }
     }
 
     /**
      * Generates a new rsa key pair, with default modulus length 2048.
-     * For security reasons the generated key should be used only for the provided algorithm, although there is no
-     * characteristic of the key pair itself which prevents from using the keys for other algorithms.
+     * For security reasons the generated key should be used only for the provided algorithm.
+     * There is nothing in the underlying cryptographic algorithms that prevents you from using a
+     * key for various algorithms, but the actual implementations of the service may add metadata
+     * to keep track of the declared intended usage of the key and throw an exception when
+     * attempting to use the key for other purposes.
      * For more info see https://crypto.stackexchange.com/questions/81819/same-private-key-for-signing-and-decryption
      */
     suspend fun <A : RsaAlgorithm> generateKeyPair(algorithm: A, keySize: KeySize = KeySize.RSA_2048): RsaKeypair<A>

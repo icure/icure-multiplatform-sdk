@@ -59,7 +59,7 @@ class AesCryptoServiceTest : StringSpec({
     }
 
     "Service should be able to encrypt and decrypt data with keys of any size" {
-        AesCryptoService.KeySize.values().forEach { keySize ->
+        AesCryptoService.KeySize.entries.forEach { keySize ->
             val key = cryptoService.aes.generateKey(keySize)
             data.forEach { d ->
                 val encrypted = cryptoService.aes.encrypt(d.toByteArray(Charsets.UTF_8), key)
