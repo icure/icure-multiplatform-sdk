@@ -44,3 +44,20 @@ data class RsaKeypair<A : RsaAlgorithm>(val private: PrivateRsaKey<A>, val publi
  * Represents an aes key.
  */
 expect class AesKey
+
+sealed interface HmacAlgorithm {
+    /**
+     * The recommended key size for this algorithm in bytes. Since some platform implementations of cryptographic
+     * libraries only allow key of the recommended size this will always be the actual key size used.
+     */
+    val recommendedKeySize: Int
+
+    /**
+     * Hmac with sha 512.
+     */
+    data object HmacSha512 : HmacAlgorithm {
+        override val recommendedKeySize: Int = 128
+    }
+}
+
+expect class HmacKey<A : HmacAlgorithm>

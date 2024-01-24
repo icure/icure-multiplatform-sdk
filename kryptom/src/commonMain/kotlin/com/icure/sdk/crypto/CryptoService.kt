@@ -26,4 +26,8 @@ interface CryptoService {
      * Thread safe.
      */
     val strongRandom: StrongRandom
+
+    val digest: DigestService
+
+    val hmac: HmacCryptoService
 }
