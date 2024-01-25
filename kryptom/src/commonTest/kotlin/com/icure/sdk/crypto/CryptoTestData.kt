@@ -18,6 +18,15 @@ val data = listOf(
     "Exactly 16 bytes"
 )
 
+fun String.mutations(): List<String> = listOf(
+    drop(1),
+    dropLast(1),
+    "x$this",
+    "$this;",
+    "@${this.drop(1)}",
+    "${this.dropLast(1)}#"
+)
+
 // Sample rsa private keys in pkcs8 (to use only for testing purposes)
 val sampleRsaKeys = listOf(
     Pair(

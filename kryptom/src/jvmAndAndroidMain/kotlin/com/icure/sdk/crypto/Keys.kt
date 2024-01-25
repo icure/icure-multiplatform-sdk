@@ -27,3 +27,11 @@ actual class PublicRsaKey<A : RsaAlgorithm>(
  * Represents an AesKey.
  */
 actual class AesKey(internal val key: SecretKey) : SecretKey by key
+
+/**
+ * Represents an Hmac key.
+ */
+actual class HmacKey<A : HmacAlgorithm>(
+    internal val key: SecretKey,
+    internal val algorithm: A
+) : SecretKey by key

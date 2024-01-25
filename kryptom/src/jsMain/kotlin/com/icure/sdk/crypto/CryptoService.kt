@@ -9,5 +9,9 @@ actual val cryptoService: CryptoService = object : CryptoService {
     override val rsa: RsaCryptoService = JsRsaCryptoService
 
     override val strongRandom: StrongRandom  = JsStrongRandom
+
+    override val digest: DigestService = JsDigestService
+
+    override val hmac: HmacCryptoService = JsHmacCryptoService
 }
 

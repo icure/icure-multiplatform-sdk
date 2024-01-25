@@ -18,3 +18,8 @@ actual class PublicRsaKey<A : RsaAlgorithm>(
  * `SubtleCrypto` anyway there is no arm in just treating it as `Any`.
  */
 actual typealias AesKey = Any
+
+actual class HmacKey<A : HmacAlgorithm>(
+    internal val key: dynamic,
+    internal val algorithm: A
+)

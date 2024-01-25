@@ -13,18 +13,16 @@ object JsAesCryptoService : AesCryptoService {
     private const val ALGORITHM_NAME = "AES-CBC"
     private val USAGES = arrayOf("encrypt", "decrypt")
 
-    private val sizeToAlgorithmParam = AesCryptoService.KeySize.entries.associateWith {
-        json(
-            "name" to ALGORITHM_NAME,
-            "length" to it.bitSize
-        )
-    }
+    private fun algorithmParams(keySize: AesCryptoService.KeySize) = json(
+        "name" to ALGORITHM_NAME,
+        "length" to keySize.bitSize
+    )
 
     private val algorithmJson = json("name" to ALGORITHM_NAME)
 
     override suspend fun generateKey(size: AesCryptoService.KeySize): AesKey =
         jsCrypto.subtle.generateKey(
-            sizeToAlgorithmParam.getValue(size),
+            algorithmParams(size),
             true,
             USAGES
         ).await() as AesKey

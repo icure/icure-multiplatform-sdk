@@ -9,4 +9,8 @@ actual val cryptoService: CryptoService = object : CryptoService {
     override val rsa: RsaCryptoService = IosRsaCryptoService
 
     override val strongRandom: StrongRandom = IosStrongRandom
+
+    override val digest: DigestService = IosDigestService
+
+    override val hmac: HmacCryptoService = IosHmacService
 }

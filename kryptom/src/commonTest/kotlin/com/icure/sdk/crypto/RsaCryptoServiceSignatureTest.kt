@@ -81,15 +81,6 @@ private val dataSamplesSignatures: Map<RsaAlgorithm.RsaSignatureAlgorithm, List<
 )
 
 class RsaCryptoServiceSignatureTest : StringSpec({
-    fun String.mutations(): List<String> = listOf(
-        drop(1),
-        dropLast(1),
-        "x$this",
-        "$this;",
-        "@${this.drop(1)}",
-        "${this.dropLast(1)}#"
-    )
-
     fun <A : RsaAlgorithm.RsaSignatureAlgorithm> doSignatureTestsByAlgorithm(signatureAlgorithm: A) {
         "$signatureAlgorithm - Service should be able to sign and verify data" {
             RsaCryptoService.KeySize.entries.forEach { keySize ->

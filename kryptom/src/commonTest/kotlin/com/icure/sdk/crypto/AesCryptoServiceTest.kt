@@ -51,7 +51,7 @@ class AesCryptoServiceTest : StringSpec({
         AesCryptoService.KeySize.values().forEach { keySize ->
             val key = cryptoService.aes.generateKey(keySize)
             data.forEach { d ->
-                val iv = strongRandom.randomBytes(AesCryptoService.IV_BYTE_LENGTH)
+                val iv = cryptoService.strongRandom.randomBytes(AesCryptoService.IV_BYTE_LENGTH)
                 val encrypted = cryptoService.aes.encrypt(d.toByteArray(Charsets.UTF_8), key, iv)
                 encrypted.take(AesCryptoService.IV_BYTE_LENGTH) shouldBe iv.toList()
             }

@@ -82,4 +82,9 @@ internal external class SubtleCrypto {
      * https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/verify
      */
     fun verify(algorithm: Json, key: dynamic, signature: ArrayBuffer, data: ArrayBuffer): Promise<Boolean>
+
+    /**
+     * https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/digest
+     */
+    fun digest(algorithm: String, data: ArrayBuffer): Promise<ArrayBuffer>
 }
