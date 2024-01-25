@@ -4,13 +4,13 @@ package com.icure.sdk.crypto
  * Gives access to cryptographic functions.
  */
 actual val cryptoService: CryptoService = object : CryptoService {
-    override val aes: AesCryptoService = IosAesCryptoService
+    override val aes: AesService = IosAesService
 
-    override val rsa: RsaCryptoService = IosRsaCryptoService
+    override val rsa: RsaService = IosRsaService
 
     override val strongRandom: StrongRandom = IosStrongRandom
 
     override val digest: DigestService = IosDigestService
 
-    override val hmac: HmacCryptoService = IosHmacService
+    override val hmac: HmacService = IosHmacService
 }

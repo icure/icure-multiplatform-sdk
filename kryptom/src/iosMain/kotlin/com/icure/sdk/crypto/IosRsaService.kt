@@ -1,6 +1,5 @@
 package com.icure.sdk.crypto
 
-import com.icure.sdk.crypto.IosRsaCryptoService.toSecKey
 import com.icure.sdk.ios.toByteArray
 import com.icure.sdk.ios.toCFData
 import kotlinx.cinterop.alloc
@@ -39,7 +38,7 @@ import platform.Security.kSecKeyAlgorithmRSAEncryptionOAEPSHA1
 import platform.Security.kSecKeyAlgorithmRSAEncryptionOAEPSHA256
 import platform.Security.kSecKeyAlgorithmRSASignatureMessagePSSSHA256
 
-object IosRsaCryptoService : RsaCryptoService {
+object IosRsaService : RsaService {
     private val secKeyEncryptionAlgorithms: Map<RsaAlgorithm.RsaEncryptionAlgorithm, SecKeyAlgorithm> = mapOf(
         RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha1 to checkNotNull(kSecKeyAlgorithmRSAEncryptionOAEPSHA1) { "kSecKeyAlgorithmRSAEncryptionOAEPSHA1 is null" },
         RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256 to checkNotNull(kSecKeyAlgorithmRSAEncryptionOAEPSHA256) { "kSecKeyAlgorithmRSAEncryptionOAEPSHA256 is null" },
@@ -50,7 +49,7 @@ object IosRsaCryptoService : RsaCryptoService {
     )
 
 
-    private val generationAttr = RsaCryptoService.KeySize.values().associateWith { keySize ->
+    private val generationAttr = RsaService.KeySize.values().associateWith { keySize ->
         CFDictionaryCreateMutable(
             kCFAllocatorDefault,
             2,
@@ -84,7 +83,7 @@ object IosRsaCryptoService : RsaCryptoService {
 
     override suspend fun <A : RsaAlgorithm> generateKeyPair(
         algorithm: A,
-        keySize: RsaCryptoService.KeySize
+        keySize: RsaService.KeySize
     ): RsaKeypair<A> = memScoped {
         // https://github.com/JetBrains/kotlin-native/issues/3013
         // https://youtrack.jetbrains.com/issue/KT-50990

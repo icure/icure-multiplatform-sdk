@@ -4,7 +4,7 @@ import javax.crypto.KeyGenerator
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 
-object JvmHmacCryptoService : HmacCryptoService {
+object JvmHmacService : HmacService {
     private val HmacAlgorithm.name get() = when (this) {
         HmacAlgorithm.HmacSha512 -> "HMac-SHA512"
     }

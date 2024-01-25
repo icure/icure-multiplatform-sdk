@@ -11,7 +11,7 @@ import java.security.spec.RSAPublicKeySpec
 import java.security.spec.X509EncodedKeySpec
 import javax.crypto.Cipher
 
-object JvmRsaCryptoService : RsaCryptoService {
+object JvmRsaService : RsaService {
     private const val SPKI_FORMAT = "X.509"
     private const val PKCS8_FORMAT = "PKCS#8"
 
@@ -35,7 +35,7 @@ object JvmRsaCryptoService : RsaCryptoService {
 
     override suspend fun <A : RsaAlgorithm> generateKeyPair(
         algorithm: A,
-        keySize: RsaCryptoService.KeySize
+        keySize: RsaService.KeySize
     ): RsaKeypair<A> {
         val rsaKeyGenerator: KeyPairGenerator = KeyPairGenerator.getInstance("RSA")
         rsaKeyGenerator.initialize(keySize.bitSize)

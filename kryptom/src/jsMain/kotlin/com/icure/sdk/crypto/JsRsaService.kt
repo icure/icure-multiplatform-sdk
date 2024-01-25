@@ -6,15 +6,14 @@ import com.icure.sdk.js.toByteArray
 import kotlinx.coroutines.await
 import org.khronos.webgl.ArrayBuffer
 import org.khronos.webgl.Uint8Array
-import kotlin.js.Json
 import kotlin.js.json
 
-object JsRsaCryptoService : RsaCryptoService {
+object JsRsaService : RsaService {
     private val publicExponentData = Uint8Array(byteArrayOf(0x01, 0x00, 0x01).toTypedArray())
 
     override suspend fun <A : RsaAlgorithm> generateKeyPair(
         algorithm: A,
-        keySize: RsaCryptoService.KeySize
+        keySize: RsaService.KeySize
     ): RsaKeypair<A> {
         val pair = jsCrypto.subtle.generateKey(
             keyGenParams(keySize, algorithm),
@@ -127,7 +126,7 @@ object JsRsaCryptoService : RsaCryptoService {
             data.toArrayBuffer()
         ).await()
 
-    private fun keyGenParams(keySize: RsaCryptoService.KeySize, algorithm: RsaAlgorithm) = json(
+    private fun keyGenParams(keySize: RsaService.KeySize, algorithm: RsaAlgorithm) = json(
         "name" to algorithmName(algorithm),
         "modulusLength" to keySize.bitSize,
         "publicExponent" to publicExponentData,

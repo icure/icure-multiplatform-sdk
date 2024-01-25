@@ -1,9 +1,7 @@
 package com.icure.sdk.crypto
 
-import com.icure.sdk.crypto.AesCryptoService.Companion.aesEncryptedSizeFor
-import com.icure.sdk.crypto.AesCryptoService.Companion.IV_BYTE_LENGTH
-import com.icure.sdk.ios.toByteArray
-import com.icure.sdk.ios.toNSData
+import com.icure.sdk.crypto.AesService.Companion.aesEncryptedSizeFor
+import com.icure.sdk.crypto.AesService.Companion.IV_BYTE_LENGTH
 import kotlinx.cinterop.ULongVar
 import kotlinx.cinterop.addressOf
 import kotlinx.cinterop.alloc
@@ -16,14 +14,12 @@ import platform.CoreCrypto.kCCAlgorithmAES
 import platform.CoreCrypto.kCCDecrypt
 import platform.CoreCrypto.kCCEncrypt
 import platform.CoreCrypto.kCCKeySizeAES128
-import platform.CoreCrypto.kCCKeySizeAES192
 import platform.CoreCrypto.kCCKeySizeAES256
 import platform.CoreCrypto.kCCOptionPKCS7Padding
 import platform.CoreCrypto.kCCSuccess
-import platform.Foundation.NSData
 
-object IosAesCryptoService : AesCryptoService {
-    override suspend fun generateKey(size: AesCryptoService.KeySize): AesKey =
+object IosAesService : AesService {
+    override suspend fun generateKey(size: AesService.KeySize): AesKey =
         IosStrongRandom.randomBytes(size.byteSize)
 
     override suspend fun exportKey(key: AesKey): ByteArray =
@@ -101,9 +97,9 @@ object IosAesCryptoService : AesCryptoService {
     }
 
     private fun validateAndGetKeySize(key: AesKey): ULong = when (key.size) {
-        AesCryptoService.KeySize.AES_128.byteSize -> kCCKeySizeAES128.toULong()
+        AesService.KeySize.AES_128.byteSize -> kCCKeySizeAES128.toULong()
         // AesCryptoService.KeySize.AES_192.byteSize.toULong() -> kCCKeySizeAES192.toULong()
-        AesCryptoService.KeySize.AES_256.byteSize -> kCCKeySizeAES256.toULong()
+        AesService.KeySize.AES_256.byteSize -> kCCKeySizeAES256.toULong()
         else -> throw IllegalArgumentException("Invalid size for key: ${key.size}")
     }
 }

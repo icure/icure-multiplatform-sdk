@@ -3,7 +3,6 @@ package com.icure.sdk.crypto
 import com.icure.sdk.crypto.RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha1
 import com.icure.sdk.crypto.RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256
 import com.icure.sdk.utils.base64Decode
-import com.icure.sdk.utils.base64Encode
 import io.kotest.assertions.throwables.shouldThrowAny
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
@@ -153,13 +152,13 @@ private val dataSamplesEncrypted: Map<RsaAlgorithm.RsaEncryptionAlgorithm, List<
     )
 )
 
-class RsaCryptoServiceEncryptionTest : StringSpec({
-    fun List<String>.trimToKeySize(keySize: RsaCryptoService.KeySize, algorithm: RsaAlgorithm.RsaEncryptionAlgorithm) =
+class RsaServiceEncryptionTest : StringSpec({
+    fun List<String>.trimToKeySize(keySize: RsaService.KeySize, algorithm: RsaAlgorithm.RsaEncryptionAlgorithm) =
         map { it.take(keySize.maxEncryptionSizeBytes(algorithm)) }
 
     fun <A : RsaAlgorithm.RsaEncryptionAlgorithm> doEncryptionTestsByAlgorithm(encryptionAlgorithm: A) {
         "$encryptionAlgorithm - Service should be able to encrypt and decrypt data" {
-            RsaCryptoService.KeySize.entries.forEach { keySize ->
+            RsaService.KeySize.entries.forEach { keySize ->
                 val keys = cryptoService.rsa.generateKeyPair(encryptionAlgorithm, keySize)
                 data.trimToKeySize(keySize, encryptionAlgorithm).forEach { d ->
                     val encrypted = cryptoService.rsa.encrypt(encryptionAlgorithm, d.toByteArray(Charsets.UTF_8), keys.public)
@@ -170,7 +169,7 @@ class RsaCryptoServiceEncryptionTest : StringSpec({
         }
 
         "$encryptionAlgorithm - Service should be able to use exported then re-imported keys for encryption" {
-            RsaCryptoService.KeySize.entries.forEach { keySize ->
+            RsaService.KeySize.entries.forEach { keySize ->
                 val keys = cryptoService.rsa.generateKeyPair(encryptionAlgorithm, keySize)
                 val exportedPrivate = cryptoService.rsa.exportPrivateKeyPkcs8(keys.private)
                 val exportedPublic = cryptoService.rsa.exportPublicKeySpki(keys.public)
@@ -193,7 +192,7 @@ class RsaCryptoServiceEncryptionTest : StringSpec({
 
         "$encryptionAlgorithm - Generated encryption keys should have expected size" {
             // Checking size by verifying the maximum data size for encryption.
-            RsaCryptoService.KeySize.entries.forEach { keySize ->
+            RsaService.KeySize.entries.forEach { keySize ->
                 val keys = cryptoService.rsa.generateKeyPair(encryptionAlgorithm, keySize)
                 val dataOverMax = Random.nextBytes(keySize.maxEncryptionSizeBytes(encryptionAlgorithm) + 1)
                 val maxData = dataOverMax.sliceArray(0 until keySize.maxEncryptionSizeBytes(encryptionAlgorithm))
@@ -203,7 +202,7 @@ class RsaCryptoServiceEncryptionTest : StringSpec({
         }
 
         "$encryptionAlgorithm - Attempting to load invalid keys should result in an error" {
-            RsaCryptoService.KeySize.entries.forEach { keySize ->
+            RsaService.KeySize.entries.forEach { keySize ->
                 val keys = cryptoService.rsa.generateKeyPair(encryptionAlgorithm, keySize)
                 val exportedPrivate = cryptoService.rsa.exportPrivateKeyPkcs8(keys.private)
                 val exportedPublic = cryptoService.rsa.exportPublicKeySpki(keys.public)

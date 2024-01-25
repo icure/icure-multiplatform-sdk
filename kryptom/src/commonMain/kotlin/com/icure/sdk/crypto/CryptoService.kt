@@ -14,12 +14,12 @@ interface CryptoService {
     /**
      * Cryptographic functions for AES.
      */
-    val aes: AesCryptoService
+    val aes: AesService
 
     /**
      * Cryptographic functions for RSA.
      */
-    val rsa: RsaCryptoService
+    val rsa: RsaService
 
     /**
      * Provides access to a cryptographically strong random generator.
@@ -29,5 +29,5 @@ interface CryptoService {
 
     val digest: DigestService
 
-    val hmac: HmacCryptoService
+    val hmac: HmacService
 }

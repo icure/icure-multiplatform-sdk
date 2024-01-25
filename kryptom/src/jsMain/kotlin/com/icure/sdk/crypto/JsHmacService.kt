@@ -7,7 +7,7 @@ import kotlinx.coroutines.await
 import org.khronos.webgl.ArrayBuffer
 import kotlin.js.json
 
-object JsHmacCryptoService : HmacCryptoService {
+object JsHmacService : HmacService {
     private const val ALGORITHM_NAME = "HMAC"
     private const val RAW = "raw"
 

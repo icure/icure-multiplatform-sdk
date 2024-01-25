@@ -80,10 +80,10 @@ private val dataSamplesSignatures: Map<RsaAlgorithm.RsaSignatureAlgorithm, List<
     )
 )
 
-class RsaCryptoServiceSignatureTest : StringSpec({
+class RsaServiceSignatureTest : StringSpec({
     fun <A : RsaAlgorithm.RsaSignatureAlgorithm> doSignatureTestsByAlgorithm(signatureAlgorithm: A) {
         "$signatureAlgorithm - Service should be able to sign and verify data" {
-            RsaCryptoService.KeySize.entries.forEach { keySize ->
+            RsaService.KeySize.entries.forEach { keySize ->
                 val keys = cryptoService.rsa.generateKeyPair(
                     signatureAlgorithm,
                     keySize

@@ -3,7 +3,7 @@ package com.icure.sdk.crypto
 /**
  * Provides access to AES functions
  */
-interface AesCryptoService {
+interface AesService {
     companion object {
         /**
          * Length of initialization vector for AES in bytes. This is equal to the block size.

@@ -30,7 +30,7 @@ fun String.mutations(): List<String> = listOf(
 // Sample rsa private keys in pkcs8 (to use only for testing purposes)
 val sampleRsaKeys = listOf(
     Pair(
-        RsaCryptoService.KeySize.RSA_2048,
+        RsaService.KeySize.RSA_2048,
         "MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDRwnz+NTVzKu7mPhVqLMT6clQG/FZAkv7ATpfbGZpjsuIRj/8ZU3a9oXmIH4f0" +
             "wKbqN9lRECwmfgWxaXdjoUilDXqMUrk4onHa/EfFfzb+BPxGj1cM0wVyZiYbq68vdmI4TAZicB8BUngvX74EJFA31Df5nghjnKnqpqbHaKtw" +
             "+kiWRCE5Guz6A3BdcDc/qDmBd9vSqLryfljXMF1bZGXlzcyjegqy9jaYFi0vuQOoXOPWLnHmMU29Rdiw+8UEHqHE6DRLgGXrumSDFE68L0va" +
@@ -48,7 +48,7 @@ val sampleRsaKeys = listOf(
             "SddU0+LL7HrLUX9b8swAkMn6tSF6wcT4prCVkaa4Iti85Q/DMqs2He2Y+dGI6+ZUORih68SwP9w3J8LYPdBzuMGM3IJG8fyUkxPKSVbeixZq"
     ),
     Pair(
-        RsaCryptoService.KeySize.RSA_4096,
+        RsaService.KeySize.RSA_4096,
         "MIIJQgIBADANBgkqhkiG9w0BAQEFAASCCSwwggkoAgEAAoICAQCzfY2orHA37YIxLcQwSwxx54DjJ4BzzoloyjdPTkg5LR40XD00ez1h3H+q0EZ8" +
             "l3mfkzHQ7vzNRmy4kjxYbFr8vbx1Tslgeef4kDzAaozILizFx6rGMpBz/0xtxOyEEdTlq+UDEPB5xd8m2cjPfAtHp5wCh3KGz28LNhj3BvhB" +
             "qn5nlRvXDFHZmd6OLNX6CJMB6GnuJYM50wJn3UV7swOby7q6ruoxVEd9bXEpCPAmMAty3n3mdA6d67QFkwk3/hu4uARG4YpzOmw/pdNJoT/E" +

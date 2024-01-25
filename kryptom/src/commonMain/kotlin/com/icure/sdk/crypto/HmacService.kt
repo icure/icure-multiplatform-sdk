@@ -1,6 +1,6 @@
 package com.icure.sdk.crypto
 
-interface HmacCryptoService {
+interface HmacService {
     /**
      * Generates a new hmac key for a specific algorithm. The key size is determined by the algorithm.
      */

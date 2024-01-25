@@ -5,22 +5,21 @@ import com.icure.sdk.js.toArrayBuffer
 import com.icure.sdk.js.toByteArray
 import kotlinx.coroutines.await
 import org.khronos.webgl.ArrayBuffer
-import org.khronos.webgl.Int8Array
 import kotlin.js.json
 
-object JsAesCryptoService : AesCryptoService {
+object JsAesService : AesService {
     private const val RAW = "raw"
     private const val ALGORITHM_NAME = "AES-CBC"
     private val USAGES = arrayOf("encrypt", "decrypt")
 
-    private fun algorithmParams(keySize: AesCryptoService.KeySize) = json(
+    private fun algorithmParams(keySize: AesService.KeySize) = json(
         "name" to ALGORITHM_NAME,
         "length" to keySize.bitSize
     )
 
     private val algorithmJson = json("name" to ALGORITHM_NAME)
 
-    override suspend fun generateKey(size: AesCryptoService.KeySize): AesKey =
+    override suspend fun generateKey(size: AesService.KeySize): AesKey =
         jsCrypto.subtle.generateKey(
             algorithmParams(size),
             true,
@@ -46,8 +45,8 @@ object JsAesCryptoService : AesCryptoService {
 
     override suspend fun decrypt(ivAndEncryptedData: ByteArray, key: AesKey): ByteArray {
         val buffer = ivAndEncryptedData.toArrayBuffer()
-        val iv = buffer.slice(0, AesCryptoService.IV_BYTE_LENGTH)
-        val data = buffer.slice(AesCryptoService.IV_BYTE_LENGTH)
+        val iv = buffer.slice(0, AesService.IV_BYTE_LENGTH)
+        val data = buffer.slice(AesService.IV_BYTE_LENGTH)
         return jsCrypto.subtle.decrypt(encryptionParam(iv), key, data).await().toByteArray()
     }
 

@@ -1,15 +1,15 @@
 package com.icure.sdk.crypto
 
-import com.icure.sdk.crypto.AesCryptoService.Companion.IV_BYTE_LENGTH
+import com.icure.sdk.crypto.AesService.Companion.IV_BYTE_LENGTH
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 
-object JvmAesCryptoService : AesCryptoService {
+object JvmAesService : AesService {
     private fun newCipherAES(): Cipher = Cipher.getInstance("AES/CBC/PKCS7Padding")
 
-    override suspend fun generateKey(size: AesCryptoService.KeySize): AesKey {
+    override suspend fun generateKey(size: AesService.KeySize): AesKey {
         val keyGen: KeyGenerator = KeyGenerator.getInstance("AES")
         keyGen.init(size.bitSize)
         return AesKey(keyGen.generateKey())
@@ -19,7 +19,7 @@ object JvmAesCryptoService : AesCryptoService {
         key.encoded
 
     override suspend fun loadKey(bytes: ByteArray): AesKey {
-        require(bytes.size in AesCryptoService.validKeySizes) { "Invalid key length: ${bytes.size}" }
+        require(bytes.size in AesService.validKeySizes) { "Invalid key length: ${bytes.size}" }
         return AesKey(SecretKeySpec(bytes, "AES"))
     }
 

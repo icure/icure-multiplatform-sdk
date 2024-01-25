@@ -13,7 +13,7 @@ package com.icure.sdk.crypto
  * fun <A : RsaAlgorithm.RsaEncryptionAlgorithm> doSomeEncryptionWithSomeAlgorithm(algorithm: A)
  * ```
  */
-interface RsaCryptoService {
+interface RsaService {
     companion object {
         /**
          * Most RSA encryption techniques use some padding. This class contains the size of padding for the supported

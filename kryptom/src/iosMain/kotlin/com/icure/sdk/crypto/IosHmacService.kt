@@ -8,7 +8,7 @@ import kotlinx.cinterop.refTo
 import platform.CoreCrypto.CCHmac
 import platform.CoreCrypto.kCCHmacAlgSHA512
 
-object IosHmacService : HmacCryptoService {
+object IosHmacService : HmacService {
     override suspend fun <A : HmacAlgorithm> generateKey(algorithm: A): HmacKey<A> =
         HmacKey(IosStrongRandom.randomBytes(algorithm.recommendedKeySize))
 

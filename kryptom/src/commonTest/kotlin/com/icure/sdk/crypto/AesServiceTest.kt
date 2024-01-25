@@ -46,20 +46,20 @@ private val encryptedDataSamples = mapOf(
     )
 )
 
-class AesCryptoServiceTest : StringSpec({
+class AesServiceTest : StringSpec({
     "Encrypted data should start with iv" {
-        AesCryptoService.KeySize.values().forEach { keySize ->
+        AesService.KeySize.values().forEach { keySize ->
             val key = cryptoService.aes.generateKey(keySize)
             data.forEach { d ->
-                val iv = cryptoService.strongRandom.randomBytes(AesCryptoService.IV_BYTE_LENGTH)
+                val iv = cryptoService.strongRandom.randomBytes(AesService.IV_BYTE_LENGTH)
                 val encrypted = cryptoService.aes.encrypt(d.toByteArray(Charsets.UTF_8), key, iv)
-                encrypted.take(AesCryptoService.IV_BYTE_LENGTH) shouldBe iv.toList()
+                encrypted.take(AesService.IV_BYTE_LENGTH) shouldBe iv.toList()
             }
         }
     }
 
     "Service should be able to encrypt and decrypt data with keys of any size" {
-        AesCryptoService.KeySize.entries.forEach { keySize ->
+        AesService.KeySize.entries.forEach { keySize ->
             val key = cryptoService.aes.generateKey(keySize)
             data.forEach { d ->
                 val encrypted = cryptoService.aes.encrypt(d.toByteArray(Charsets.UTF_8), key)
@@ -79,7 +79,7 @@ class AesCryptoServiceTest : StringSpec({
     }
 
     "Exported then re-imported key should be able to decrypt data encrypted with the original key" {
-        AesCryptoService.KeySize.values().forEach { keySize ->
+        AesService.KeySize.values().forEach { keySize ->
             val key = cryptoService.aes.generateKey(keySize)
             val reimportedKey = cryptoService.aes.loadKey(cryptoService.aes.exportKey(key))
             data.forEach { d ->
@@ -91,7 +91,7 @@ class AesCryptoServiceTest : StringSpec({
     }
 
     "Generated keys should have the requested size" {
-        AesCryptoService.KeySize.values().forEach { keySize ->
+        AesService.KeySize.values().forEach { keySize ->
             val key = cryptoService.aes.generateKey(keySize)
             cryptoService.aes.exportKey(key).size shouldBe keySize.byteSize
         }

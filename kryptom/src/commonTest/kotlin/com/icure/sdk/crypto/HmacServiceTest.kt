@@ -1,8 +1,6 @@
 package com.icure.sdk.crypto
 
 import com.icure.sdk.utils.base64Decode
-import com.icure.sdk.utils.base64Encode
-import com.icure.sdk.utils.toHexString
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import io.ktor.utils.io.charsets.Charsets
@@ -33,7 +31,7 @@ private val signatures = mapOf<HmacAlgorithm, List<Pair<Pair<Int, Int>, String>>
     )
 )
 
-class HmacCryptoServiceTest : StringSpec({
+class HmacServiceTest : StringSpec({
     fun <A : HmacAlgorithm> doTest(algorithm: A) {
         "$algorithm -  key should have recommended size" {
             val key = cryptoService.hmac.generateKey(algorithm)

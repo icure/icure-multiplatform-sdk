@@ -6,15 +6,15 @@ package com.icure.sdk.crypto
 actual val cryptoService = object : CryptoService {
     init { initCryptoProvider() }
 
-    override val aes: AesCryptoService = JvmAesCryptoService
+    override val aes: AesService = JvmAesService
 
-    override val rsa: RsaCryptoService = JvmRsaCryptoService
+    override val rsa: RsaService = JvmRsaService
 
     override val strongRandom: StrongRandom = JvmStrongRandom
 
     override val digest: DigestService = JvmDigestService
 
-    override val hmac: HmacCryptoService = JvmHmacCryptoService
+    override val hmac: HmacService = JvmHmacService
 }
 
 expect fun initCryptoProvider()
