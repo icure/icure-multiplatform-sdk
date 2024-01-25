@@ -1,4 +1,34 @@
-## Organization 
+## Using the project
+
+You need to create a local properties file in the root of the project with the following properties:
+
+```properties
+# Path to the android sdk, by default on mac /Users/you/Library/Android/sdk
+sdk.dir=/path/to/android/sdk
+# Name of ios simulator to use for testing, e.g. iPhone 13 Pro Max
+ios.simulator=iPhone name
+```
+
+## Multiplatform sdk modules
+
+### Kryptom - kotlin crypto multiplatform
+
+This could be technically a separate project, but for now only what is needed for the iCure sdk is implemented.
+
+Provides access from kotlin multiplatform to:
+- Native cryptographic primitives and digest algorithms including:
+  - Secure random
+  - Aes encryption
+  - Rsa encryption and signing
+  - Hmac signing
+- Byte array encoding and decoding (hex, base64)
+
+## Notes
+
+With multiple modules the yarn lock may have some issues...
+https://youtrack.jetbrains.com/issue/KT-55701/KJS-Gradle-kotlinUpgradeYarnLock-and-kotlinStoreYarnLock-dont-support-configureondemand-if-building-one-module-only
+
+## Original organization plan 
 
 ![Organization](readme-resources/organization.svg)
 
@@ -25,8 +55,3 @@ performs the necessary conversions and makes the exposed API callable from javas
 ### Dart and react native wrappers
 These wrappers allow to use the iCure sdk from react native or dart. They connect the react/dart interfaces to the ios 
 and android implementations.
-
-## Notes
-
-With multiple modules the yarn lock may have some issues...
-https://youtrack.jetbrains.com/issue/KT-55701/KJS-Gradle-kotlinUpgradeYarnLock-and-kotlinStoreYarnLock-dont-support-configureondemand-if-building-one-module-only
