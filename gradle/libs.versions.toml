@@ -10,6 +10,10 @@ androidConscrypt = "2.5.2"
 
 [libraries]
 # Ktor
+kotlinMultiplatformPlugin = { group = "org.jetbrains.kotlin.multiplatform", name = "org.jetbrains.kotlin.multiplatform.gradle.plugin", version.ref = "kotlin" }
+kotlinSerializationPlugin = { group = "org.jetbrains.kotlin.plugin.serialization", name = "org.jetbrains.kotlin.plugin.serialization.gradle.plugin", version.ref = "kotlin" }
+kotestMultiplatformPlugin = { group = "io.kotest.multiplatform", name = "io.kotest.multiplatform.gradle.plugin", version.ref = "kotest" }
+androidLibraryPlugin = { group = "com.android.library", name = "com.android.library.gradle.plugin", version.ref = "androidLibrary" }
 ktorClientCore = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
 ktorClientEngineAndroid = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor" }
 ktorClientEngineIos = { group = "io.ktor", name = "ktor-client-darwin", version.ref = "ktor" }
@@ -28,9 +32,3 @@ kotestRunnerJunit = { group = "io.kotest", name = "kotest-runner-junit5", versio
 # Cryptography providers
 bouncyCastle = { group = "org.bouncycastle", name = "bcprov-jdk15on", version.ref = "bouncyCastle" }
 androidConscrypt = { group = "org.conscrypt", name = "conscrypt-android", version.ref = "androidConscrypt" }
-
-[plugins]
-kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
-kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-kotestMultiplatform = { id = "io.kotest.multiplatform", version.ref = "kotest" }
-androidLibrary = { id = "com.android.library", version.ref = "androidLibrary" }
