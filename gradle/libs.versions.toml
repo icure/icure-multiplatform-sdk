@@ -6,14 +6,17 @@ kotlinSerialization = "1.6.1"
 kotest = "5.8.0"
 androidLibrary = "8.2.0"
 bouncyCastle = "1.70"
-androidConscrypt = "2.5.2"
 
 [libraries]
-# Ktor
+
+# Gradle plugins
 kotlinMultiplatformPlugin = { group = "org.jetbrains.kotlin.multiplatform", name = "org.jetbrains.kotlin.multiplatform.gradle.plugin", version.ref = "kotlin" }
 kotlinSerializationPlugin = { group = "org.jetbrains.kotlin.plugin.serialization", name = "org.jetbrains.kotlin.plugin.serialization.gradle.plugin", version.ref = "kotlin" }
 kotestMultiplatformPlugin = { group = "io.kotest.multiplatform", name = "io.kotest.multiplatform.gradle.plugin", version.ref = "kotest" }
 androidLibraryPlugin = { group = "com.android.library", name = "com.android.library.gradle.plugin", version.ref = "androidLibrary" }
+
+# Ktor
+ktorUtils = { group = "io.ktor", name = "ktor-utils", version.ref = "ktor" }
 ktorClientCore = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
 ktorClientEngineAndroid = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor" }
 ktorClientEngineIos = { group = "io.ktor", name = "ktor-client-darwin", version.ref = "ktor" }
@@ -21,14 +24,16 @@ ktorClientEngineJs = { group = "io.ktor", name = "ktor-client-js", version.ref =
 ktorClientEngineJvm = { group = "io.ktor", name = "ktor-client-jetty", version.ref = "ktor" }
 ktorContentNegotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
 ktorSerializationJson = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
+
 # Kotlinx
 coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
 kotlinSerialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinSerialization" }
+
 # Kotest
 kotestAssertions = { group = "io.kotest", name = "kotest-assertions-core", version.ref = "kotest" }
 kotestEngine = { group = "io.kotest", name = "kotest-framework-engine", version.ref = "kotest" }
 kotestDatatest = { group = "io.kotest", name = "kotest-framework-datatest", version.ref = "kotest" }
 kotestRunnerJunit = { group = "io.kotest", name = "kotest-runner-junit5", version.ref = "kotest" }
+
 # Cryptography providers
 bouncyCastle = { group = "org.bouncycastle", name = "bcprov-jdk15on", version.ref = "bouncyCastle" }
-androidConscrypt = { group = "org.conscrypt", name = "conscrypt-android", version.ref = "androidConscrypt" }

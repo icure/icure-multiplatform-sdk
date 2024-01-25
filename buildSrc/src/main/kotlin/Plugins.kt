@@ -15,10 +15,3 @@ fun PluginDependenciesSpecScope.kotestMultiplatform(apply: Boolean = true) {
 fun PluginDependenciesSpecScope.androidLibrary(apply: Boolean = true) {
     id("com.android.library").apply(apply)
 }
-
-fun PluginDependenciesSpecScope.defaultModulePlugins() {
-    kotlinMultiplatform()
-    kotlinSerialization()
-    kotestMultiplatform()
-    androidLibrary()
-}

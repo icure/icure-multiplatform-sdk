@@ -1,12 +1,8 @@
 plugins {
-    defaultModulePlugins()
+    kotlinMultiplatform()
+    kotestMultiplatform()
+    androidLibrary()
 }
-
-android {
-    configureAndroidLibrary()
-}
-
-configureJvmTest()
 
 kotlin {
     configureMultiplatform(this)
@@ -14,11 +10,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(libs.coroutines)
-                implementation(libs.ktorClientCore)
-                implementation(libs.ktorContentNegotiation)
-                implementation(libs.ktorSerializationJson)
-                implementation(libs.kotlinSerialization)
+                implementation(libs.ktorUtils)
             }
         }
         val commonTest by getting {
@@ -32,7 +24,6 @@ kotlin {
         }
         val jvmMain by getting {
             dependencies {
-                implementation(libs.ktorClientEngineJvm)
                 implementation(libs.bouncyCastle)
             }
         }
@@ -43,12 +34,10 @@ kotlin {
         }
         val jsMain by getting {
             dependencies {
-                implementation(libs.ktorClientEngineJs)
             }
         }
         val androidMain by getting {
             dependencies {
-                implementation(libs.ktorClientEngineAndroid)
                 implementation(libs.bouncyCastle)
             }
         }
@@ -59,8 +48,13 @@ kotlin {
         }
         iosMain {
             dependencies {
-                implementation(libs.ktorClientEngineIos)
             }
         }
     }
 }
+
+android {
+    configureAndroidLibrary()
+}
+
+configureJvmTest()
