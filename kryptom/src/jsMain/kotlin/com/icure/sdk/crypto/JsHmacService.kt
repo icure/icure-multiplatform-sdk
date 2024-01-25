@@ -20,20 +20,28 @@ object JsHmacService : HmacService {
             "length" to algorithm.recommendedKeySize * 8
         )
 
-    override suspend fun <A : HmacAlgorithm> generateKey(algorithm: A): HmacKey<A> = HmacKey(
-        jsCrypto.subtle.generateKey(
+    override suspend fun <A : HmacAlgorithm> generateKey(algorithm: A): HmacKey<A> {
+        val generatedKey = jsCrypto.subtle.generateKey(
             paramsForAlgorithm(algorithm),
             true,
             arrayOf("sign", "verify")
-        ).await(),
-        algorithm
-    )
+        ).await()
+        val generatedKeySize = exportRawKey(generatedKey).byteLength
+        check(generatedKeySize == algorithm.recommendedKeySize) {
+            "Invalid key size for algorithm $algorithm, got ${generatedKeySize}"
+        }
+        return HmacKey(generatedKey, algorithm)
+    }
 
     override suspend fun exportKey(key: HmacKey<*>): ByteArray =
-        (jsCrypto.subtle.exportKey(RAW, key.key).await() as ArrayBuffer).toByteArray()
+       exportRawKey(key.key).toByteArray()
 
-    override suspend fun <A : HmacAlgorithm> loadKey(algorithm: A, bytes: ByteArray): HmacKey<A> =
-        HmacKey(
+    private suspend fun exportRawKey(rawKey: dynamic) =
+        jsCrypto.subtle.exportKey(RAW, rawKey).await() as ArrayBuffer
+
+    override suspend fun <A : HmacAlgorithm> loadKey(algorithm: A, bytes: ByteArray): HmacKey<A> {
+        require(bytes.size == algorithm.recommendedKeySize) { "Invalid key size for algorithm $algorithm" }
+        return HmacKey(
             jsCrypto.subtle.importKey(
                 RAW,
                 bytes.toArrayBuffer(),
@@ -43,23 +51,29 @@ object JsHmacService : HmacService {
             ).await(),
             algorithm
         )
+    }
 
-    override suspend fun <A : HmacAlgorithm> sign(algorithm: A, data: ByteArray, key: HmacKey<A>): ByteArray =
-        jsCrypto.subtle.sign(
+    override suspend fun <A : HmacAlgorithm> sign(algorithm: A, data: ByteArray, key: HmacKey<A>): ByteArray {
+        require(key.algorithm == algorithm) { "Invalid key: requested algorithm $algorithm, but got key for $algorithm" }
+        return jsCrypto.subtle.sign(
             paramsForAlgorithm(algorithm),
             key.key,
             data.toArrayBuffer()
         ).await().toByteArray()
+    }
 
     override suspend fun <A : HmacAlgorithm> verify(
         algorithm: A,
         signature: ByteArray,
         data: ByteArray,
         key: HmacKey<A>
-    ): Boolean = jsCrypto.subtle.verify(
-        paramsForAlgorithm(algorithm),
-        key.key,
-        signature.toArrayBuffer(),
-        data.toArrayBuffer()
-    ).await()
+    ): Boolean {
+        require(key.algorithm == algorithm) { "Invalid key: requested algorithm $algorithm, but got key for $algorithm" }
+        return jsCrypto.subtle.verify(
+            paramsForAlgorithm(algorithm),
+            key.key,
+            signature.toArrayBuffer(),
+            data.toArrayBuffer()
+        ).await()
+    }
 }

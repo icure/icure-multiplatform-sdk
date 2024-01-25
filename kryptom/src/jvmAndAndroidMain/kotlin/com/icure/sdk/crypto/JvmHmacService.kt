@@ -23,8 +23,10 @@ object JvmHmacService : HmacService {
         return HmacKey(SecretKeySpec(bytes, algorithm.name), algorithm)
     }
 
-    override suspend fun <A : HmacAlgorithm> sign(algorithm: A, data: ByteArray, key: HmacKey<A>): ByteArray =
-        Mac.getInstance(algorithm.name).apply { init(key) }.doFinal(data)
+    override suspend fun <A : HmacAlgorithm> sign(algorithm: A, data: ByteArray, key: HmacKey<A>): ByteArray {
+        require(key.algorithm == algorithm) { "Invalid key: requested algorithm $algorithm, but got key for $algorithm" }
+        return Mac.getInstance(algorithm.name).apply { init(key) }.doFinal(data)
+    }
 
     override suspend fun <A : HmacAlgorithm> verify(
         algorithm: A,

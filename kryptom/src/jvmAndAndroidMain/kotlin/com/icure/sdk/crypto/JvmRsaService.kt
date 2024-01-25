@@ -71,36 +71,44 @@ object JvmRsaService : RsaService {
         algorithm: A,
         data: ByteArray,
         publicKey: PublicRsaKey<A>
-    ): ByteArray =
-        getCipher(algorithm).apply { init(Cipher.ENCRYPT_MODE, publicKey.key) }.doFinal(data)
+    ): ByteArray {
+        require(publicKey.algorithm == algorithm) { "Invalid key: requested algorithm $algorithm, but got key for $algorithm" }
+        return getCipher(algorithm).apply { init(Cipher.ENCRYPT_MODE, publicKey.key) }.doFinal(data)
+    }
 
     override suspend fun <A : RsaAlgorithm.RsaEncryptionAlgorithm> decrypt(
         algorithm: A,
         data: ByteArray,
         privateKey: PrivateRsaKey<A>
-    ): ByteArray =
-        getCipher(algorithm).apply { init(Cipher.DECRYPT_MODE, privateKey.key) }.doFinal(data)
+    ): ByteArray {
+        require(privateKey.algorithm == algorithm) { "Invalid key: requested algorithm $algorithm, but got key for $algorithm" }
+        return getCipher(algorithm).apply { init(Cipher.DECRYPT_MODE, privateKey.key) }.doFinal(data)
+    }
 
     override suspend fun <A : RsaAlgorithm.RsaSignatureAlgorithm> sign(
         algorithm: A,
         data: ByteArray,
         privateKey: PrivateRsaKey<A>
-    ): ByteArray =
-        getSignature(algorithm).apply {
+    ): ByteArray {
+        require(privateKey.algorithm == algorithm) { "Invalid key: requested algorithm $algorithm, but got key for $algorithm" }
+        return getSignature(algorithm).apply {
             initSign(privateKey.key)
             update(data)
         }.sign()
+    }
 
     override suspend fun <A : RsaAlgorithm.RsaSignatureAlgorithm> verifySignature(
         algorithm: A,
         signature: ByteArray,
         data: ByteArray,
         publicKey: PublicRsaKey<A>
-    ): Boolean =
-        getSignature(algorithm).apply {
+    ): Boolean {
+        require(publicKey.algorithm == algorithm) { "Invalid key: requested algorithm $algorithm, but got key for $algorithm" }
+        return getSignature(algorithm).apply {
             initVerify(publicKey.key)
             update(data)
         }.verify(signature)
+    }
 
     private fun <A : RsaAlgorithm> PublicRsaKey<A>.checkFormat() = this.also {
         check(format == SPKI_FORMAT) {

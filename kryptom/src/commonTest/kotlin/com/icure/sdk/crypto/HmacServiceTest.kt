@@ -52,6 +52,19 @@ class HmacServiceTest : StringSpec({
             }
         }
 
+        "$algorithm - Exported and reimported key should work" {
+            val keyBytes = cryptoService.hmac.exportKey(cryptoService.hmac.generateKey(algorithm))
+            val key = cryptoService.hmac.loadKey(algorithm, keyBytes)
+            data.forEach { data ->
+                val dataBytes = data.toByteArray(Charsets.UTF_8)
+                val signature = cryptoService.hmac.sign(algorithm, dataBytes, key)
+                cryptoService.hmac.verify(algorithm, signature, dataBytes, key) shouldBe true
+                data.mutations().forEach { mutatedData ->
+                    cryptoService.hmac.verify(algorithm, signature, mutatedData.toByteArray(Charsets.UTF_8), key) shouldBe false
+                }
+            }
+        }
+
         "$algorithm - Signature verification should match expected - signature from other sources" {
             val importedKeys = keys.getValue(algorithm).map { cryptoService.hmac.loadKey(algorithm, base64Decode(it)) }
             signatures.getValue(algorithm).forEach { (dataAndKeyIndex, signature) ->

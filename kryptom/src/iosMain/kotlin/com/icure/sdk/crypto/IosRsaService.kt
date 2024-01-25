@@ -101,7 +101,7 @@ object IosRsaService : RsaService {
             "Public key extraction from private key should not fail"
         }
         try {
-            RsaKeypair(PrivateRsaKey(privateKey.toPkcs1()), PublicRsaKey(publicKey.toPkcs1()))
+            RsaKeypair(PrivateRsaKey(privateKey.toPkcs1(), algorithm), PublicRsaKey(publicKey.toPkcs1(), algorithm))
         } finally {
             CFRelease(privateKey)
             CFRelease(publicKey)
@@ -117,7 +117,7 @@ object IosRsaService : RsaService {
             "Public key extraction from private key should not fail"
         }
         return try {
-            RsaKeypair(PrivateRsaKey(privateKey), PublicRsaKey(publicSecKey.toPkcs1()))
+            RsaKeypair(PrivateRsaKey(privateKey, algorithm), PublicRsaKey(publicSecKey.toPkcs1(), algorithm))
         } finally {
             CFRelease(privateSecKey)
             CFRelease(publicSecKey)
@@ -125,13 +125,14 @@ object IosRsaService : RsaService {
     }
 
     override suspend fun <A : RsaAlgorithm> loadPublicKeySpki(algorithm: A, publicKeySpki: ByteArray): PublicRsaKey<A> =
-        PublicRsaKey(spkiToPcks1(publicKeySpki))
+        PublicRsaKey(spkiToPcks1(publicKeySpki), algorithm)
 
     override suspend fun <A : RsaAlgorithm.RsaEncryptionAlgorithm> encrypt(
         algorithm: A,
         data: ByteArray,
         publicKey: PublicRsaKey<A>
     ): ByteArray {
+        require(publicKey.algorithm == algorithm) { "Invalid key: requested algorithm $algorithm, but got key for $algorithm" }
         val secKey = publicKey.toSecKey()
         val cfData = data.toCFData()
         return try {
@@ -162,6 +163,7 @@ object IosRsaService : RsaService {
         data: ByteArray,
         privateKey: PrivateRsaKey<A>
     ): ByteArray {
+        require(privateKey.algorithm == algorithm) { "Invalid key: requested algorithm $algorithm, but got key for $algorithm" }
         val secKey = privateKey.toSecKey()
         val cfData = data.toCFData()
         return try {
@@ -192,6 +194,7 @@ object IosRsaService : RsaService {
         data: ByteArray,
         privateKey: PrivateRsaKey<A>
     ): ByteArray {
+        require(privateKey.algorithm == algorithm) { "Invalid key: requested algorithm $algorithm, but got key for $algorithm" }
         val secKey = privateKey.toSecKey()
         val cfData = data.toCFData()
         return try {
@@ -223,6 +226,7 @@ object IosRsaService : RsaService {
         data: ByteArray,
         publicKey: PublicRsaKey<A>
     ): Boolean {
+        require(publicKey.algorithm == algorithm) { "Invalid key: requested algorithm $algorithm, but got key for $algorithm" }
         val secKey = publicKey.toSecKey()
         val cfData = data.toCFData()
         val cfSignature = signature.toCFData()
