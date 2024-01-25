@@ -53,10 +53,16 @@ sealed interface HmacAlgorithm {
     val recommendedKeySize: Int
 
     /**
+     * The size of the digest produced by this algorithm in bytes.
+     */
+    val digestSize: Int
+
+    /**
      * Hmac with sha 512.
      */
     data object HmacSha512 : HmacAlgorithm {
         override val recommendedKeySize: Int = 128
+        override val digestSize: Int = 64
     }
 }
 

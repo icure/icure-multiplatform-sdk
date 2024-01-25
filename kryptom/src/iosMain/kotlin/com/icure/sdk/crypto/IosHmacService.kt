@@ -1,20 +1,36 @@
 package com.icure.sdk.crypto
 
-object IosHmacService : HmacCryptoService {
-    override suspend fun <A : HmacAlgorithm> generateKey(algorithm: A): HmacKey<A> {
-        TODO("Not yet implemented")
-    }
+import kotlinx.cinterop.UByteVar
+import kotlinx.cinterop.allocArray
+import kotlinx.cinterop.memScoped
+import kotlinx.cinterop.readBytes
+import kotlinx.cinterop.refTo
+import platform.CoreCrypto.CCHmac
+import platform.CoreCrypto.kCCHmacAlgSHA512
 
-    override suspend fun exportKey(key: HmacKey<*>): ByteArray {
-        TODO("Not yet implemented")
-    }
+object IosHmacService : HmacCryptoService {
+    override suspend fun <A : HmacAlgorithm> generateKey(algorithm: A): HmacKey<A> =
+        HmacKey(IosStrongRandom.randomBytes(algorithm.recommendedKeySize))
+
+    override suspend fun exportKey(key: HmacKey<*>): ByteArray =
+        key.rawKey.copyOf()
 
     override suspend fun <A : HmacAlgorithm> loadKey(algorithm: A, bytes: ByteArray): HmacKey<A> {
-        TODO("Not yet implemented")
+        require(bytes.size == algorithm.recommendedKeySize) { "Invalid key size for algorithm $algorithm" }
+        return HmacKey(bytes.copyOf())
     }
 
-    override suspend fun <A : HmacAlgorithm> sign(algorithm: A, data: ByteArray, key: HmacKey<A>): ByteArray {
-        TODO("Not yet implemented")
+    override suspend fun <A : HmacAlgorithm> sign(algorithm: A, data: ByteArray, key: HmacKey<A>): ByteArray = memScoped {
+        val out = allocArray<UByteVar>(algorithm.digestSize)
+        CCHmac(
+            kCCHmacAlgSHA512,
+            key.rawKey.refTo(0),
+            key.rawKey.size.toULong(),
+            data.refTo(0),
+            data.size.toULong(),
+            out
+        )
+        out.readBytes(algorithm.digestSize)
     }
 
     override suspend fun <A : HmacAlgorithm> verify(
@@ -23,6 +39,6 @@ object IosHmacService : HmacCryptoService {
         data: ByteArray,
         key: HmacKey<A>
     ): Boolean {
-        TODO("Not yet implemented")
+        return sign(algorithm, data, key).contentEquals(signature)
     }
 }
