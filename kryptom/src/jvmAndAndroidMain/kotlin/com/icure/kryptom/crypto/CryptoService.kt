@@ -3,7 +3,7 @@ package com.icure.kryptom.crypto
 /**
  * Gives access to cryptographic functions.
  */
-actual val cryptoService = object : CryptoService {
+actual val defaultCryptoService = object : CryptoService {
     init { initCryptoProvider() }
 
     override val aes: AesService = JvmAesService

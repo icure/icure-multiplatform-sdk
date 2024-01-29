@@ -84,23 +84,23 @@ class RsaServiceSignatureTest : StringSpec({
     fun <A : RsaAlgorithm.RsaSignatureAlgorithm> doSignatureTestsByAlgorithm(signatureAlgorithm: A) {
         "$signatureAlgorithm - Service should be able to sign and verify data" {
             RsaService.KeySize.entries.forEach { keySize ->
-                val keys = cryptoService.rsa.generateKeyPair(
+                val keys = defaultCryptoService.rsa.generateKeyPair(
                     signatureAlgorithm,
                     keySize
                 )
                 data.forEach { d ->
-                    val signature = cryptoService.rsa.sign(
+                    val signature = defaultCryptoService.rsa.sign(
                         signatureAlgorithm, d.toByteArray(
                             Charsets.UTF_8
                         ), keys.private
                     )
-                    cryptoService.rsa.verifySignature(
+                    defaultCryptoService.rsa.verifySignature(
                         signatureAlgorithm, signature, d.toByteArray(
                             Charsets.UTF_8
                         ), keys.public
                     ) shouldBe true
                     d.mutations().forEach { w ->
-                        cryptoService.rsa.verifySignature(
+                        defaultCryptoService.rsa.verifySignature(
                             signatureAlgorithm,
                             signature,
                             w.toByteArray(
@@ -115,14 +115,14 @@ class RsaServiceSignatureTest : StringSpec({
 
         "$signatureAlgorithm - Signature verification should match expected - test with data signed by other platforms" {
             val keyPairs = sampleRsaKeys.map {
-                cryptoService.rsa.loadKeyPairPkcs8(
+                defaultCryptoService.rsa.loadKeyPairPkcs8(
                     signatureAlgorithm,
                     base64Decode(it.second)
                 )
             }
             dataSamplesSignatures.getValue(signatureAlgorithm).forEach { (dataAndKeyIndices, signature) ->
                 val keyPair = keyPairs[dataAndKeyIndices.second]
-                cryptoService.rsa.verifySignature(
+                defaultCryptoService.rsa.verifySignature(
                     signatureAlgorithm,
                     base64Decode(signature),
                     data[dataAndKeyIndices.first].toByteArray(Charsets.UTF_8),

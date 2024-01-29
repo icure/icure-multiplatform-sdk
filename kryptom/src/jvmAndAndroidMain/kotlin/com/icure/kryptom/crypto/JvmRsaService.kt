@@ -18,7 +18,6 @@ object JvmRsaService : RsaService {
     private fun getCipher(algorithm: RsaAlgorithm.RsaEncryptionAlgorithm): Cipher = when (algorithm) {
         RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha1 -> Cipher.getInstance("RSA/NONE/OAEPWithSHA1AndMGF1Padding")
         RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256 -> Cipher.getInstance("RSA/NONE/OAEPWithSHA256AndMGF1Padding")
-        else -> throw IllegalStateException("Algorithm not yet supported $algorithm")
     }
 
     private fun getSignature(algorithm: RsaAlgorithm.RsaSignatureAlgorithm): Signature = when (algorithm) {

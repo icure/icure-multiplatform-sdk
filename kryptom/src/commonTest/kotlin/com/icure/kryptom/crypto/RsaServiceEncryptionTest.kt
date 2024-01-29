@@ -159,10 +159,10 @@ class RsaServiceEncryptionTest : StringSpec({
     fun <A : RsaAlgorithm.RsaEncryptionAlgorithm> doEncryptionTestsByAlgorithm(encryptionAlgorithm: A) {
         "$encryptionAlgorithm - Service should be able to encrypt and decrypt data" {
             RsaService.KeySize.entries.forEach { keySize ->
-                val keys = cryptoService.rsa.generateKeyPair(encryptionAlgorithm, keySize)
+                val keys = defaultCryptoService.rsa.generateKeyPair(encryptionAlgorithm, keySize)
                 data.trimToKeySize(keySize, encryptionAlgorithm).forEach { d ->
-                    val encrypted = cryptoService.rsa.encrypt(encryptionAlgorithm, d.toByteArray(Charsets.UTF_8), keys.public)
-                    val decrypted = cryptoService.rsa.decrypt(encryptionAlgorithm, encrypted, keys.private)
+                    val encrypted = defaultCryptoService.rsa.encrypt(encryptionAlgorithm, d.toByteArray(Charsets.UTF_8), keys.public)
+                    val decrypted = defaultCryptoService.rsa.decrypt(encryptionAlgorithm, encrypted, keys.private)
                     String(decrypted, charset = Charsets.UTF_8) shouldBe d
                 }
             }
@@ -170,18 +170,18 @@ class RsaServiceEncryptionTest : StringSpec({
 
         "$encryptionAlgorithm - Service should be able to use exported then re-imported keys for encryption" {
             RsaService.KeySize.entries.forEach { keySize ->
-                val keys = cryptoService.rsa.generateKeyPair(encryptionAlgorithm, keySize)
-                val exportedPrivate = cryptoService.rsa.exportPrivateKeyPkcs8(keys.private)
-                val exportedPublic = cryptoService.rsa.exportPublicKeySpki(keys.public)
-                val reimportedKeys = cryptoService.rsa.loadKeyPairPkcs8(encryptionAlgorithm, exportedPrivate)
-                val reimportedPublicOnly = cryptoService.rsa.loadPublicKeySpki(encryptionAlgorithm, exportedPublic)
+                val keys = defaultCryptoService.rsa.generateKeyPair(encryptionAlgorithm, keySize)
+                val exportedPrivate = defaultCryptoService.rsa.exportPrivateKeyPkcs8(keys.private)
+                val exportedPublic = defaultCryptoService.rsa.exportPublicKeySpki(keys.public)
+                val reimportedKeys = defaultCryptoService.rsa.loadKeyPairPkcs8(encryptionAlgorithm, exportedPrivate)
+                val reimportedPublicOnly = defaultCryptoService.rsa.loadPublicKeySpki(encryptionAlgorithm, exportedPublic)
 
                 data.trimToKeySize(keySize, encryptionAlgorithm).forEach { d ->
                     listOf(keys.public, reimportedKeys.public, reimportedPublicOnly).map { // Encrypt with each public key
-                        cryptoService.rsa.encrypt(encryptionAlgorithm, d.toByteArray(Charsets.UTF_8), it)
+                        defaultCryptoService.rsa.encrypt(encryptionAlgorithm, d.toByteArray(Charsets.UTF_8), it)
                     }.flatMap { encrypted -> // Decrypt with each private keys
                         listOf(keys.private, reimportedKeys.private).map {
-                            cryptoService.rsa.decrypt(encryptionAlgorithm, encrypted, keys.private)
+                            defaultCryptoService.rsa.decrypt(encryptionAlgorithm, encrypted, keys.private)
                         }
                     }.forEach {  // Ensure content is valid
                         String(it, charset = Charsets.UTF_8) shouldBe d
@@ -193,32 +193,32 @@ class RsaServiceEncryptionTest : StringSpec({
         "$encryptionAlgorithm - Generated encryption keys should have expected size" {
             // Checking size by verifying the maximum data size for encryption.
             RsaService.KeySize.entries.forEach { keySize ->
-                val keys = cryptoService.rsa.generateKeyPair(encryptionAlgorithm, keySize)
+                val keys = defaultCryptoService.rsa.generateKeyPair(encryptionAlgorithm, keySize)
                 val dataOverMax = Random.nextBytes(keySize.maxEncryptionSizeBytes(encryptionAlgorithm) + 1)
                 val maxData = dataOverMax.sliceArray(0 until keySize.maxEncryptionSizeBytes(encryptionAlgorithm))
-                cryptoService.rsa.encrypt(encryptionAlgorithm, maxData, keys.public)
-                shouldThrowAny { cryptoService.rsa.encrypt(encryptionAlgorithm, dataOverMax, keys.public) }
+                defaultCryptoService.rsa.encrypt(encryptionAlgorithm, maxData, keys.public)
+                shouldThrowAny { defaultCryptoService.rsa.encrypt(encryptionAlgorithm, dataOverMax, keys.public) }
             }
         }
 
         "$encryptionAlgorithm - Attempting to load invalid keys should result in an error" {
             RsaService.KeySize.entries.forEach { keySize ->
-                val keys = cryptoService.rsa.generateKeyPair(encryptionAlgorithm, keySize)
-                val exportedPrivate = cryptoService.rsa.exportPrivateKeyPkcs8(keys.private)
-                val exportedPublic = cryptoService.rsa.exportPublicKeySpki(keys.public)
-                shouldThrowAny { cryptoService.rsa.loadKeyPairPkcs8(encryptionAlgorithm, exportedPublic) }
-                shouldThrowAny { cryptoService.rsa.loadPublicKeySpki(encryptionAlgorithm, exportedPrivate) }
+                val keys = defaultCryptoService.rsa.generateKeyPair(encryptionAlgorithm, keySize)
+                val exportedPrivate = defaultCryptoService.rsa.exportPrivateKeyPkcs8(keys.private)
+                val exportedPublic = defaultCryptoService.rsa.exportPublicKeySpki(keys.public)
+                shouldThrowAny { defaultCryptoService.rsa.loadKeyPairPkcs8(encryptionAlgorithm, exportedPublic) }
+                shouldThrowAny { defaultCryptoService.rsa.loadPublicKeySpki(encryptionAlgorithm, exportedPrivate) }
             }
         }
 
         "$encryptionAlgorithm - Decrypted data should match expected - test with data encrypted by other platforms" {
             val keyPairs = sampleRsaKeys.map {
-                it.first to cryptoService.rsa.loadKeyPairPkcs8(encryptionAlgorithm, base64Decode(it.second))
+                it.first to defaultCryptoService.rsa.loadKeyPairPkcs8(encryptionAlgorithm, base64Decode(it.second))
             }
             dataSamplesEncrypted.getValue(encryptionAlgorithm).forEach { (dataAndKeyIndices, encryptedData) ->
                 val keySizeAndPair = keyPairs[dataAndKeyIndices.second]
                 val expectedData = data[dataAndKeyIndices.first].take(keySizeAndPair.first.maxEncryptionSizeBytes(encryptionAlgorithm))
-                val decrypted = cryptoService.rsa.decrypt(
+                val decrypted = defaultCryptoService.rsa.decrypt(
                     encryptionAlgorithm,
                     base64Decode(encryptedData),
                     keySizeAndPair.second.private

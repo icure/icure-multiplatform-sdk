@@ -1,3 +1,4 @@
+import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.all
 import org.gradle.kotlin.dsl.dependencies
@@ -5,6 +6,7 @@ import org.gradle.kotlin.dsl.get
 import org.gradle.kotlin.dsl.jvm
 import org.gradle.kotlin.dsl.kotlin
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 import java.util.Properties
 
@@ -60,17 +62,24 @@ fun Project.configureMultiplatform(
     applyDefaultHierarchyTemplate()
 
     with(sourceSets) {
-        all {
-            languageSettings.apply {
-                optIn("kotlin.js.ExperimentalJsExport")
-                optIn("kotlinx.cinterop.ExperimentalForeignApi")
-            }
-        }
         val commonMain = get("commonMain")
         val jvmAndAndroidMain = create("jvmAndAndroidMain").apply {
             dependsOn(commonMain)
         }
         get("jvmMain").dependsOn(jvmAndAndroidMain)
         get("androidMain").dependsOn(jvmAndAndroidMain)
+    }
+}
+
+fun NamedDomainObjectContainer<KotlinSourceSet>.optInIos(vararg optIns: String) {
+    listOf(
+        get("iosMain"),
+        get("iosArm64Main"),
+        get("iosX64Main"),
+        get("iosSimulatorArm64Main"),
+    ).forEach { sourceSet ->
+        optIns.forEach { optIn ->
+            sourceSet.languageSettings.optIn(optIn)
+        }
     }
 }

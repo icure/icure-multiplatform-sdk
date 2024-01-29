@@ -18,7 +18,7 @@ private val dataHashes = listOf(
 class DigestServiceTest : StringSpec({
     "Sha256 digest should match expected" {
         data.zip(dataHashes).forEach { (data, hash) ->
-            cryptoService.digest.sha256(data.toByteArray(Charsets.UTF_8)).toHexString() shouldBe hash
+            defaultCryptoService.digest.sha256(data.toByteArray(Charsets.UTF_8)).toHexString() shouldBe hash
         }
     }
 })

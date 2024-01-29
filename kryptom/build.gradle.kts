@@ -1,11 +1,18 @@
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+
 plugins {
     kotlinMultiplatform()
     kotestMultiplatform()
     androidLibrary()
 }
 
+@OptIn(ExperimentalKotlinGradlePluginApi::class)
 kotlin {
     configureMultiplatform(this)
+
+    compilerOptions {
+        freeCompilerArgs.add("-Xexpect-actual-classes")
+    }
 
     sourceSets {
         val commonMain by getting {
@@ -46,14 +53,12 @@ kotlin {
                 implementation(libs.kotestRunnerJunit)
             }
         }
-        iosMain {
-            dependencies {
-            }
-        }
+        optInIos("kotlinx.cinterop.ExperimentalForeignApi", "kotlinx.cinterop.BetaInteropApi")
     }
 }
 
 android {
+    namespace = "com.icure.kryptom"
     configureAndroidLibrary()
 }
 

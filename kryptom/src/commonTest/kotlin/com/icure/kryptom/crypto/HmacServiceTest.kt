@@ -34,50 +34,50 @@ private val signatures = mapOf<HmacAlgorithm, List<Pair<Pair<Int, Int>, String>>
 class HmacServiceTest : StringSpec({
     fun <A : HmacAlgorithm> doTest(algorithm: A) {
         "$algorithm -  key should have recommended size" {
-            val key = cryptoService.hmac.generateKey(algorithm)
-            cryptoService.hmac.exportKey(key).size shouldBe algorithm.recommendedKeySize
+            val key = defaultCryptoService.hmac.generateKey(algorithm)
+            defaultCryptoService.hmac.exportKey(key).size shouldBe algorithm.recommendedKeySize
         }
 
         "$algorithm - Signature generation and verification should match expected" {
-            val key = cryptoService.hmac.generateKey(algorithm)
-            val wrongKey = cryptoService.hmac.generateKey(algorithm)
+            val key = defaultCryptoService.hmac.generateKey(algorithm)
+            val wrongKey = defaultCryptoService.hmac.generateKey(algorithm)
             data.forEach { data ->
                 val dataBytes = data.toByteArray(Charsets.UTF_8)
-                val signature = cryptoService.hmac.sign(algorithm, dataBytes, key)
-                cryptoService.hmac.verify(algorithm, signature, dataBytes, key) shouldBe true
-                cryptoService.hmac.verify(algorithm, signature, dataBytes, wrongKey) shouldBe false
+                val signature = defaultCryptoService.hmac.sign(algorithm, dataBytes, key)
+                defaultCryptoService.hmac.verify(algorithm, signature, dataBytes, key) shouldBe true
+                defaultCryptoService.hmac.verify(algorithm, signature, dataBytes, wrongKey) shouldBe false
                 data.mutations().forEach { mutatedData ->
-                    cryptoService.hmac.verify(algorithm, signature, mutatedData.toByteArray(Charsets.UTF_8), key) shouldBe false
+                    defaultCryptoService.hmac.verify(algorithm, signature, mutatedData.toByteArray(Charsets.UTF_8), key) shouldBe false
                 }
             }
         }
 
         "$algorithm - Exported and reimported key should work" {
-            val keyBytes = cryptoService.hmac.exportKey(cryptoService.hmac.generateKey(algorithm))
-            val key = cryptoService.hmac.loadKey(algorithm, keyBytes)
+            val keyBytes = defaultCryptoService.hmac.exportKey(defaultCryptoService.hmac.generateKey(algorithm))
+            val key = defaultCryptoService.hmac.loadKey(algorithm, keyBytes)
             data.forEach { data ->
                 val dataBytes = data.toByteArray(Charsets.UTF_8)
-                val signature = cryptoService.hmac.sign(algorithm, dataBytes, key)
-                cryptoService.hmac.verify(algorithm, signature, dataBytes, key) shouldBe true
+                val signature = defaultCryptoService.hmac.sign(algorithm, dataBytes, key)
+                defaultCryptoService.hmac.verify(algorithm, signature, dataBytes, key) shouldBe true
                 data.mutations().forEach { mutatedData ->
-                    cryptoService.hmac.verify(algorithm, signature, mutatedData.toByteArray(Charsets.UTF_8), key) shouldBe false
+                    defaultCryptoService.hmac.verify(algorithm, signature, mutatedData.toByteArray(Charsets.UTF_8), key) shouldBe false
                 }
             }
         }
 
         "$algorithm - Signature verification should match expected - signature from other sources" {
-            val importedKeys = keys.getValue(algorithm).map { cryptoService.hmac.loadKey(algorithm, base64Decode(it)) }
+            val importedKeys = keys.getValue(algorithm).map { defaultCryptoService.hmac.loadKey(algorithm, base64Decode(it)) }
             signatures.getValue(algorithm).forEach { (dataAndKeyIndex, signature) ->
                 val (dataIndex, keyIndex) = dataAndKeyIndex
                 val key = importedKeys[keyIndex]
                 val dataString = data[dataIndex]
                 val signatureBytes = base64Decode(signature)
-                cryptoService.hmac.verify(algorithm, signatureBytes, dataString.toByteArray(Charsets.UTF_8), key) shouldBe true
+                defaultCryptoService.hmac.verify(algorithm, signatureBytes, dataString.toByteArray(Charsets.UTF_8), key) shouldBe true
                 dataString.mutations().forEach { mutatedData ->
-                    cryptoService.hmac.verify(algorithm, signatureBytes, mutatedData.toByteArray(Charsets.UTF_8), key) shouldBe false
+                    defaultCryptoService.hmac.verify(algorithm, signatureBytes, mutatedData.toByteArray(Charsets.UTF_8), key) shouldBe false
                 }
                 val wrongKey = importedKeys[(keyIndex + 1) % importedKeys.size]
-                cryptoService.hmac.verify(algorithm, signatureBytes, dataString.toByteArray(Charsets.UTF_8), wrongKey) shouldBe false
+                defaultCryptoService.hmac.verify(algorithm, signatureBytes, dataString.toByteArray(Charsets.UTF_8), wrongKey) shouldBe false
             }
         }
     }
