@@ -11,23 +11,23 @@ expect val defaultCryptoService: CryptoService
  * Implementations must be thread safe.
  */
 interface CryptoService {
-    /**
-     * Cryptographic functions for AES.
-     */
-    val aes: AesService
+	/**
+	 * Cryptographic functions for AES.
+	 */
+	val aes: AesService
 
-    /**
-     * Cryptographic functions for RSA.
-     */
-    val rsa: RsaService
+	/**
+	 * Cryptographic functions for RSA.
+	 */
+	val rsa: RsaService
 
-    /**
-     * Provides access to a cryptographically strong random generator.
-     * Thread safe.
-     */
-    val strongRandom: StrongRandom
+	/**
+	 * Provides access to a cryptographically strong random generator.
+	 * Thread safe.
+	 */
+	val strongRandom: StrongRandom
 
-    val digest: DigestService
+	val digest: DigestService
 
-    val hmac: HmacService
+	val hmac: HmacService
 }

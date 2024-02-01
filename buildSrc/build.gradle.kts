@@ -1,18 +1,18 @@
 import org.gradle.kotlin.dsl.`kotlin-dsl`
 
 plugins {
-    `kotlin-dsl`
+	`kotlin-dsl`
 }
 
 repositories {
-    mavenCentral()
-    gradlePluginPortal()
-    google()
+	mavenCentral()
+	gradlePluginPortal()
+	google()
 }
 
 dependencies {
-    implementation(libs.kotlinMultiplatformPlugin)
-    implementation(libs.kotlinSerializationPlugin)
-    implementation(libs.kotestMultiplatformPlugin)
-    implementation(libs.androidLibraryPlugin)
+	implementation(libs.kotlinMultiplatformPlugin)
+	implementation(libs.kotlinSerializationPlugin)
+	implementation(libs.kotestMultiplatformPlugin)
+	implementation(libs.androidLibraryPlugin)
 }

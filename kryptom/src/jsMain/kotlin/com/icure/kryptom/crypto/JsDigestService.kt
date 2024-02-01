@@ -6,6 +6,6 @@ import com.icure.kryptom.js.toByteArray
 import kotlinx.coroutines.await
 
 object JsDigestService : DigestService {
-    override suspend fun sha256(data: ByteArray): ByteArray =
-        jsCrypto.subtle.digest("SHA-256", data.toArrayBuffer()).await().toByteArray()
+	override suspend fun sha256(data: ByteArray): ByteArray =
+		jsCrypto.subtle.digest("SHA-256", data.toArrayBuffer()).await().toByteArray()
 }

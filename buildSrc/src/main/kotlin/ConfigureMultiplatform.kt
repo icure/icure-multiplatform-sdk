@@ -14,72 +14,72 @@ import java.util.Properties
  * Configures targets and source sets for multiplatform modules.
  */
 fun Project.configureMultiplatform(
-    kotlinMultiplatformExtension: KotlinMultiplatformExtension
-) = with (kotlinMultiplatformExtension) {
-    val xcf = XCFramework()
-    jvm {
-        compilations.all {
-            kotlinOptions.jvmTarget = "1.8"
-        }
-    }
-    js(IR) {
-        browser  {
-            testTask {
-                useKarma {
-                    useChromeHeadless()
-                    useFirefoxHeadless()
-                }
-            }
-        }
-        nodejs {  }
-        binaries.executable()
-    }
-    androidTarget {
-        compilations.all {
-            kotlinOptions.jvmTarget = "1.8"
-        }
-    }
-    val iosSimulators = listOf(
-        iosX64(),
-        iosSimulatorArm64()
-    )
-    val iosAll = iosSimulators + iosArm64()
-    iosAll.forEach { target ->
-        target.binaries.framework {
-            baseName = "icure-sdk"
-            xcf.add(this)
-        }
-    }
-    val localProperties = Properties().apply {
-        load(rootProject.file("local.properties").reader())
-    }
-    iosSimulators.forEach { target ->
-        target.testRuns.forEach { testRun ->
-            (localProperties["ios.simulator"] as? String)?.let { testRun.deviceId = it }
-        }
-    }
+	kotlinMultiplatformExtension: KotlinMultiplatformExtension
+) = with(kotlinMultiplatformExtension) {
+	val xcf = XCFramework()
+	jvm {
+		compilations.all {
+			kotlinOptions.jvmTarget = "1.8"
+		}
+	}
+	js(IR) {
+		browser {
+			testTask {
+				useKarma {
+					useChromeHeadless()
+					useFirefoxHeadless()
+				}
+			}
+		}
+		nodejs { }
+		binaries.executable()
+	}
+	androidTarget {
+		compilations.all {
+			kotlinOptions.jvmTarget = "1.8"
+		}
+	}
+	val iosSimulators = listOf(
+		iosX64(),
+		iosSimulatorArm64()
+	)
+	val iosAll = iosSimulators + iosArm64()
+	iosAll.forEach { target ->
+		target.binaries.framework {
+			baseName = "icure-sdk"
+			xcf.add(this)
+		}
+	}
+	val localProperties = Properties().apply {
+		load(rootProject.file("local.properties").reader())
+	}
+	iosSimulators.forEach { target ->
+		target.testRuns.forEach { testRun ->
+			(localProperties["ios.simulator"] as? String)?.let { testRun.deviceId = it }
+		}
+	}
 
-    applyDefaultHierarchyTemplate()
+	applyDefaultHierarchyTemplate()
 
-    with(sourceSets) {
-        val commonMain = get("commonMain")
-        val jvmAndAndroidMain = create("jvmAndAndroidMain").apply {
-            dependsOn(commonMain)
-        }
-        get("jvmMain").dependsOn(jvmAndAndroidMain)
-        get("androidMain").dependsOn(jvmAndAndroidMain)
-    }
+	with(sourceSets) {
+		val commonMain = get("commonMain")
+		val jvmAndAndroidMain = create("jvmAndAndroidMain").apply {
+			dependsOn(commonMain)
+		}
+		get("jvmMain").dependsOn(jvmAndAndroidMain)
+		get("androidMain").dependsOn(jvmAndAndroidMain)
+	}
 }
 
 fun NamedDomainObjectContainer<KotlinSourceSet>.optInIos(vararg optIns: String) {
-    listOf(
-        get("iosMain"),
-        get("iosArm64Main"),
-        get("iosX64Main"),
-        get("iosSimulatorArm64Main"),
-    ).forEach { sourceSet ->
-        optIns.forEach { optIn ->
-            sourceSet.languageSettings.optIn(optIn)
-        }
-    }
+	listOf(
+		get("iosMain"),
+		get("iosArm64Main"),
+		get("iosX64Main"),
+		get("iosSimulatorArm64Main"),
+	).forEach { sourceSet ->
+		optIns.forEach { optIn ->
+			sourceSet.languageSettings.optIn(optIn)
+		}
+	}
 }

@@ -5,8 +5,8 @@ package com.icure.kryptom.crypto
  * Algorithm can be used to check if the declared usage for a generated or imported key matches the requested usage.
  */
 actual class PrivateRsaKey<A : RsaAlgorithm>(
-    internal val key: dynamic,
-    internal val algorithm: A
+	internal val key: dynamic,
+	internal val algorithm: A
 )
 
 /**
@@ -14,8 +14,8 @@ actual class PrivateRsaKey<A : RsaAlgorithm>(
  * Algorithm can be used to check if the declared usage for a generated or imported key matches the requested usage.
  */
 actual class PublicRsaKey<A : RsaAlgorithm>(
-    internal val key: dynamic,
-    internal val algorithm: A
+	internal val key: dynamic,
+	internal val algorithm: A
 )
 
 /**
@@ -30,6 +30,6 @@ actual typealias AesKey = Any
  * Algorithm can be used to check if the declared usage for a generated or imported key matches the requested usage.
  */
 actual class HmacKey<A : HmacAlgorithm>(
-    internal val key: dynamic,
-    internal val algorithm: A
+	internal val key: dynamic,
+	internal val algorithm: A
 )

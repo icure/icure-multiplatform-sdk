@@ -11,7 +11,7 @@ import io.ktor.utils.io.core.toByteArray
  */
 @OptIn(ExperimentalUnsignedTypes::class)
 fun ByteArray.toHexString(): String =
-    asUByteArray().toHexString()
+	asUByteArray().toHexString()
 
 /**
  * Represents the byte array as a hexadecimal string.
@@ -19,7 +19,7 @@ fun ByteArray.toHexString(): String =
  */
 @OptIn(ExperimentalUnsignedTypes::class)
 fun UByteArray.toHexString(): String =
-    joinToString("") { it.toString(radix = 16).padStart(2, '0') }
+	joinToString("") { it.toString(radix = 16).padStart(2, '0') }
 
 // TODO compare performances with native solutions making sure the native respect the contract
 
@@ -33,7 +33,7 @@ fun UByteArray.toHexString(): String =
  * @return the base64 representation of the bytes.
  */
 fun base64Encode(bytes: ByteArray): String =
-    String(JavaBase64.encoder.encode(bytes), charset = Charsets.UTF_8)
+	String(JavaBase64.encoder.encode(bytes), charset = Charsets.UTF_8)
 
 /**
  * Decodes a base 64 string.
@@ -46,4 +46,4 @@ fun base64Encode(bytes: ByteArray): String =
  * @throws IllegalArgumentException if the input string is not a valid base64 string.
  */
 fun base64Decode(base64String: String): ByteArray =
-    JavaBase64.decoder.decode(base64String.toByteArray(Charsets.UTF_8))
+	JavaBase64.decoder.decode(base64String.toByteArray(Charsets.UTF_8))

@@ -14,12 +14,12 @@ import platform.posix.memcpy
  * Converts a kotlin [ByteArray] to [NSData], for interoperability with objective-c.
  */
 fun ByteArray.toNSData(): NSData =
-    // This `create` copies the bytes, so it if fine to return the NSData outside of the `memScoped`, even though the
-    // allocated array is free
-    memScoped { NSData.create(bytes = allocArrayOf(this@toNSData), length = this@toNSData.size.toULong()) }
+	// This `create` copies the bytes, so it if fine to return the NSData outside of the `memScoped`, even though the
+	// allocated array is free
+	memScoped { NSData.create(bytes = allocArrayOf(this@toNSData), length = this@toNSData.size.toULong()) }
 
 /**
  * Converts [NSData] to a kotlin [ByteArray], for interoperability with objective-c.
  */
 fun NSData.toByteArray(): ByteArray =
-    ByteArray(length.toInt()).also { array -> array.usePinned { memcpy(it.addressOf(0), bytes, length) } }
+	ByteArray(length.toInt()).also { array -> array.usePinned { memcpy(it.addressOf(0), bytes, length) } }

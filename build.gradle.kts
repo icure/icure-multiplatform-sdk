@@ -1,9 +1,9 @@
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    kotlinMultiplatform(false)
-    kotlinSerialization(false)
-    kotestMultiplatform(false)
-    androidLibrary(false)
+	kotlinMultiplatform(false)
+	kotlinSerialization(false)
+	kotestMultiplatform(false)
+	androidLibrary(false)
 }
 
 group = "com.icure"

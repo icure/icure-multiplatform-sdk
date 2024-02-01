@@ -12,118 +12,120 @@ import java.security.spec.X509EncodedKeySpec
 import javax.crypto.Cipher
 
 object JvmRsaService : RsaService {
-    private const val SPKI_FORMAT = "X.509"
-    private const val PKCS8_FORMAT = "PKCS#8"
+	private const val SPKI_FORMAT = "X.509"
+	private const val PKCS8_FORMAT = "PKCS#8"
 
-    private fun getCipher(algorithm: RsaAlgorithm.RsaEncryptionAlgorithm): Cipher = when (algorithm) {
-        RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha1 -> Cipher.getInstance("RSA/NONE/OAEPWithSHA1AndMGF1Padding")
-        RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256 -> Cipher.getInstance("RSA/NONE/OAEPWithSHA256AndMGF1Padding")
-    }
+	private fun getCipher(algorithm: RsaAlgorithm.RsaEncryptionAlgorithm): Cipher = when (algorithm) {
+		RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha1 -> Cipher.getInstance("RSA/NONE/OAEPWithSHA1AndMGF1Padding")
+		RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256 -> Cipher.getInstance("RSA/NONE/OAEPWithSHA256AndMGF1Padding")
+	}
 
-    private fun getSignature(algorithm: RsaAlgorithm.RsaSignatureAlgorithm): Signature = when (algorithm) {
-        RsaAlgorithm.RsaSignatureAlgorithm.PssWithSha256 -> Signature.getInstance("SHA256withRSA/PSS").also {
-            it.setParameter(PSSParameterSpec(
-                "SHA-256",
-                "MGF1",
-                MGF1ParameterSpec.SHA256,
-                32,
-                1 // From PSSParameterSpec.TRAILER_FIELD_BC
-            ))
-        }
-    }
+	private fun getSignature(algorithm: RsaAlgorithm.RsaSignatureAlgorithm): Signature = when (algorithm) {
+		RsaAlgorithm.RsaSignatureAlgorithm.PssWithSha256 -> Signature.getInstance("SHA256withRSA/PSS").also {
+			it.setParameter(
+				PSSParameterSpec(
+					"SHA-256",
+					"MGF1",
+					MGF1ParameterSpec.SHA256,
+					32,
+					1 // From PSSParameterSpec.TRAILER_FIELD_BC
+				)
+			)
+		}
+	}
 
-    override suspend fun <A : RsaAlgorithm> generateKeyPair(
-        algorithm: A,
-        keySize: RsaService.KeySize
-    ): RsaKeypair<A> {
-        val rsaKeyGenerator: KeyPairGenerator = KeyPairGenerator.getInstance("RSA")
-        rsaKeyGenerator.initialize(keySize.bitSize)
-        val pair = rsaKeyGenerator.generateKeyPair()
-        return RsaKeypair(
-            PrivateRsaKey(pair.private as RSAPrivateCrtKey, algorithm).checkFormat(),
-            PublicRsaKey(pair.public, algorithm).checkFormat()
-        )
-    }
+	override suspend fun <A : RsaAlgorithm> generateKeyPair(
+		algorithm: A,
+		keySize: RsaService.KeySize
+	): RsaKeypair<A> {
+		val rsaKeyGenerator: KeyPairGenerator = KeyPairGenerator.getInstance("RSA")
+		rsaKeyGenerator.initialize(keySize.bitSize)
+		val pair = rsaKeyGenerator.generateKeyPair()
+		return RsaKeypair(
+			PrivateRsaKey(pair.private as RSAPrivateCrtKey, algorithm).checkFormat(),
+			PublicRsaKey(pair.public, algorithm).checkFormat()
+		)
+	}
 
-    override suspend fun exportPrivateKeyPkcs8(key: PrivateRsaKey<*>): ByteArray =
-        key.checkFormat().encoded
+	override suspend fun exportPrivateKeyPkcs8(key: PrivateRsaKey<*>): ByteArray =
+		key.checkFormat().encoded
 
-    override suspend fun exportPublicKeySpki(key: PublicRsaKey<*>): ByteArray =
-        key.checkFormat().encoded
+	override suspend fun exportPublicKeySpki(key: PublicRsaKey<*>): ByteArray =
+		key.checkFormat().encoded
 
-    override suspend fun <A : RsaAlgorithm> loadKeyPairPkcs8(algorithm: A, privateKeyPkcs8: ByteArray): RsaKeypair<A> {
-        val keyFactory = KeyFactory.getInstance("RSA")
-        val privateKeySpec = PKCS8EncodedKeySpec(privateKeyPkcs8)
-        val privateKey = PrivateRsaKey(keyFactory.generatePrivate(privateKeySpec) as RSAPrivateCrtKey, algorithm)
-        val publicKeySpec = RSAPublicKeySpec(privateKey.modulus, privateKey.publicExponent)
-        val publicKey = PublicRsaKey(keyFactory.generatePublic(publicKeySpec), algorithm)
-        return RsaKeypair(privateKey, publicKey)
-    }
+	override suspend fun <A : RsaAlgorithm> loadKeyPairPkcs8(algorithm: A, privateKeyPkcs8: ByteArray): RsaKeypair<A> {
+		val keyFactory = KeyFactory.getInstance("RSA")
+		val privateKeySpec = PKCS8EncodedKeySpec(privateKeyPkcs8)
+		val privateKey = PrivateRsaKey(keyFactory.generatePrivate(privateKeySpec) as RSAPrivateCrtKey, algorithm)
+		val publicKeySpec = RSAPublicKeySpec(privateKey.modulus, privateKey.publicExponent)
+		val publicKey = PublicRsaKey(keyFactory.generatePublic(publicKeySpec), algorithm)
+		return RsaKeypair(privateKey, publicKey)
+	}
 
-    override suspend fun <A : RsaAlgorithm> loadPublicKeySpki(algorithm: A, publicKeySpki: ByteArray): PublicRsaKey<A> {
-        val keyFactory = KeyFactory.getInstance("RSA")
-        val publicKeySpec = X509EncodedKeySpec(publicKeySpki)
-        return PublicRsaKey(keyFactory.generatePublic(publicKeySpec), algorithm)
-    }
+	override suspend fun <A : RsaAlgorithm> loadPublicKeySpki(algorithm: A, publicKeySpki: ByteArray): PublicRsaKey<A> {
+		val keyFactory = KeyFactory.getInstance("RSA")
+		val publicKeySpec = X509EncodedKeySpec(publicKeySpki)
+		return PublicRsaKey(keyFactory.generatePublic(publicKeySpec), algorithm)
+	}
 
-    override suspend fun <A : RsaAlgorithm.RsaEncryptionAlgorithm> encrypt(
-        algorithm: A,
-        data: ByteArray,
-        publicKey: PublicRsaKey<A>
-    ): ByteArray {
-        require(publicKey.algorithm == algorithm) { "Invalid key: requested algorithm $algorithm, but got key for $algorithm" }
-        return getCipher(algorithm).apply { init(Cipher.ENCRYPT_MODE, publicKey.key) }.doFinal(data)
-    }
+	override suspend fun <A : RsaAlgorithm.RsaEncryptionAlgorithm> encrypt(
+		algorithm: A,
+		data: ByteArray,
+		publicKey: PublicRsaKey<A>
+	): ByteArray {
+		require(publicKey.algorithm == algorithm) { "Invalid key: requested algorithm $algorithm, but got key for $algorithm" }
+		return getCipher(algorithm).apply { init(Cipher.ENCRYPT_MODE, publicKey.key) }.doFinal(data)
+	}
 
-    override suspend fun <A : RsaAlgorithm.RsaEncryptionAlgorithm> decrypt(
-        algorithm: A,
-        data: ByteArray,
-        privateKey: PrivateRsaKey<A>
-    ): ByteArray {
-        require(privateKey.algorithm == algorithm) { "Invalid key: requested algorithm $algorithm, but got key for $algorithm" }
-        return getCipher(algorithm).apply { init(Cipher.DECRYPT_MODE, privateKey.key) }.doFinal(data)
-    }
+	override suspend fun <A : RsaAlgorithm.RsaEncryptionAlgorithm> decrypt(
+		algorithm: A,
+		data: ByteArray,
+		privateKey: PrivateRsaKey<A>
+	): ByteArray {
+		require(privateKey.algorithm == algorithm) { "Invalid key: requested algorithm $algorithm, but got key for $algorithm" }
+		return getCipher(algorithm).apply { init(Cipher.DECRYPT_MODE, privateKey.key) }.doFinal(data)
+	}
 
-    override suspend fun <A : RsaAlgorithm.RsaSignatureAlgorithm> sign(
-        algorithm: A,
-        data: ByteArray,
-        privateKey: PrivateRsaKey<A>
-    ): ByteArray {
-        require(privateKey.algorithm == algorithm) { "Invalid key: requested algorithm $algorithm, but got key for $algorithm" }
-        return getSignature(algorithm).apply {
-            initSign(privateKey.key)
-            update(data)
-        }.sign()
-    }
+	override suspend fun <A : RsaAlgorithm.RsaSignatureAlgorithm> sign(
+		algorithm: A,
+		data: ByteArray,
+		privateKey: PrivateRsaKey<A>
+	): ByteArray {
+		require(privateKey.algorithm == algorithm) { "Invalid key: requested algorithm $algorithm, but got key for $algorithm" }
+		return getSignature(algorithm).apply {
+			initSign(privateKey.key)
+			update(data)
+		}.sign()
+	}
 
-    override suspend fun <A : RsaAlgorithm.RsaSignatureAlgorithm> verifySignature(
-        algorithm: A,
-        signature: ByteArray,
-        data: ByteArray,
-        publicKey: PublicRsaKey<A>
-    ): Boolean {
-        require(publicKey.algorithm == algorithm) { "Invalid key: requested algorithm $algorithm, but got key for $algorithm" }
-        return getSignature(algorithm).apply {
-            initVerify(publicKey.key)
-            update(data)
-        }.verify(signature)
-    }
+	override suspend fun <A : RsaAlgorithm.RsaSignatureAlgorithm> verifySignature(
+		algorithm: A,
+		signature: ByteArray,
+		data: ByteArray,
+		publicKey: PublicRsaKey<A>
+	): Boolean {
+		require(publicKey.algorithm == algorithm) { "Invalid key: requested algorithm $algorithm, but got key for $algorithm" }
+		return getSignature(algorithm).apply {
+			initVerify(publicKey.key)
+			update(data)
+		}.verify(signature)
+	}
 
-    private fun <A : RsaAlgorithm> PublicRsaKey<A>.checkFormat() = this.also {
-        check(format == SPKI_FORMAT) {
-            """
+	private fun <A : RsaAlgorithm> PublicRsaKey<A>.checkFormat() = this.also {
+		check(format == SPKI_FORMAT) {
+			"""
             Generated public key should have format $SPKI_FORMAT but got $format.
             Make sure that the default security provider generates keys in the appropriate format.
             """.trimIndent()
-        }
-    }
+		}
+	}
 
-    private fun <A : RsaAlgorithm> PrivateRsaKey<A>.checkFormat() = this.also {
-        check(format == PKCS8_FORMAT) {
-            """
+	private fun <A : RsaAlgorithm> PrivateRsaKey<A>.checkFormat() = this.also {
+		check(format == PKCS8_FORMAT) {
+			"""
             Generated private key should have format $PKCS8_FORMAT but got $format.
             Make sure that the default security provider generates keys in the appropriate format.
             """.trimIndent()
-        }
-    }
+		}
+	}
 }
