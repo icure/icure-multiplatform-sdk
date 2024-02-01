@@ -19,15 +19,14 @@ interface HmacService {
 	/**
 	 * Generates a signature for some data using the provided key and algorithm.
 	 */
-	suspend fun <A : HmacAlgorithm> sign(algorithm: A, data: ByteArray, key: HmacKey<A>): ByteArray
+	suspend fun sign(data: ByteArray, key: HmacKey<*>): ByteArray
 
 	/**
 	 * Verifies that a signature matches the provided data, using the provided key and algorithm.
 	 */
-	suspend fun <A : HmacAlgorithm> verify(
-		algorithm: A,
+	suspend fun verify(
 		signature: ByteArray,
 		data: ByteArray,
-		key: HmacKey<A>
+		key: HmacKey<*>
 	): Boolean
 }

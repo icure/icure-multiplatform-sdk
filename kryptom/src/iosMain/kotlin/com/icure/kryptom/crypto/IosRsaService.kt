@@ -49,7 +49,7 @@ object IosRsaService : RsaService {
 	)
 
 
-	private val generationAttr = RsaService.KeySize.values().associateWith { keySize ->
+	private val generationAttr = RsaService.KeySize.entries.associateWith { keySize ->
 		CFDictionaryCreateMutable(
 			kCFAllocatorDefault,
 			2,
@@ -128,11 +128,9 @@ object IosRsaService : RsaService {
 		PublicRsaKey(spkiToPcks1(publicKeySpki), algorithm)
 
 	override suspend fun <A : RsaAlgorithm.RsaEncryptionAlgorithm> encrypt(
-		algorithm: A,
 		data: ByteArray,
 		publicKey: PublicRsaKey<A>
 	): ByteArray {
-		require(publicKey.algorithm == algorithm) { "Invalid key: requested algorithm $algorithm, but got key for $algorithm" }
 		val secKey = publicKey.toSecKey()
 		val cfData = data.toCFData()
 		return try {
@@ -140,7 +138,7 @@ object IosRsaService : RsaService {
 				val error = alloc<CFErrorRefVar>()
 				val encrypted = SecKeyCreateEncryptedData(
 					secKey,
-					secKeyEncryptionAlgorithms.getValue(algorithm),
+					secKeyEncryptionAlgorithms.getValue(publicKey.algorithm),
 					cfData,
 					error.ptr
 				)
@@ -159,11 +157,9 @@ object IosRsaService : RsaService {
 	}
 
 	override suspend fun <A : RsaAlgorithm.RsaEncryptionAlgorithm> decrypt(
-		algorithm: A,
 		data: ByteArray,
 		privateKey: PrivateRsaKey<A>
 	): ByteArray {
-		require(privateKey.algorithm == algorithm) { "Invalid key: requested algorithm $algorithm, but got key for $algorithm" }
 		val secKey = privateKey.toSecKey()
 		val cfData = data.toCFData()
 		return try {
@@ -171,7 +167,7 @@ object IosRsaService : RsaService {
 				val error = alloc<CFErrorRefVar>()
 				val decrypted = SecKeyCreateDecryptedData(
 					secKey,
-					secKeyEncryptionAlgorithms.getValue(algorithm),
+					secKeyEncryptionAlgorithms.getValue(privateKey.algorithm),
 					cfData,
 					error.ptr
 				)
@@ -190,11 +186,9 @@ object IosRsaService : RsaService {
 	}
 
 	override suspend fun <A : RsaAlgorithm.RsaSignatureAlgorithm> sign(
-		algorithm: A,
 		data: ByteArray,
 		privateKey: PrivateRsaKey<A>
 	): ByteArray {
-		require(privateKey.algorithm == algorithm) { "Invalid key: requested algorithm $algorithm, but got key for $algorithm" }
 		val secKey = privateKey.toSecKey()
 		val cfData = data.toCFData()
 		return try {
@@ -202,7 +196,7 @@ object IosRsaService : RsaService {
 				val error = alloc<CFErrorRefVar>()
 				val signature = SecKeyCreateSignature(
 					secKey,
-					secKeySignatureAlgorithms.getValue(algorithm),
+					secKeySignatureAlgorithms.getValue(privateKey.algorithm),
 					cfData,
 					error.ptr
 				)
@@ -221,12 +215,10 @@ object IosRsaService : RsaService {
 	}
 
 	override suspend fun <A : RsaAlgorithm.RsaSignatureAlgorithm> verifySignature(
-		algorithm: A,
 		signature: ByteArray,
 		data: ByteArray,
 		publicKey: PublicRsaKey<A>
 	): Boolean {
-		require(publicKey.algorithm == algorithm) { "Invalid key: requested algorithm $algorithm, but got key for $algorithm" }
 		val secKey = publicKey.toSecKey()
 		val cfData = data.toCFData()
 		val cfSignature = signature.toCFData()
@@ -235,7 +227,7 @@ object IosRsaService : RsaService {
 				val error = alloc<CFErrorRefVar>()
 				val verification = SecKeyVerifySignature(
 					secKey,
-					secKeySignatureAlgorithms.getValue(algorithm),
+					secKeySignatureAlgorithms.getValue(publicKey.algorithm),
 					cfData,
 					cfSignature,
 					error.ptr

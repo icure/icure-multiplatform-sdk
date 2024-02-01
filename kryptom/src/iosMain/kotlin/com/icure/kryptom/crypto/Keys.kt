@@ -8,7 +8,7 @@ package com.icure.kryptom.crypto
  * The measured overhead is of ~10 ms over a total of ~1400 ms necessary to perform encryption and decryption of 500
  * arrays of 100 bytes each.
  */
-actual class PrivateRsaKey<A : RsaAlgorithm>(internal val rawKey: ByteArray, internal val algorithm: A)
+actual class PrivateRsaKey<out A : RsaAlgorithm>(internal val rawKey: ByteArray, actual val algorithm: A): RsaKey
 
 /**
  * Represents an rsa public key, as a pkcs1-encoded key.
@@ -18,7 +18,7 @@ actual class PrivateRsaKey<A : RsaAlgorithm>(internal val rawKey: ByteArray, int
  * The measured overhead is of ~10 ms over a total of ~1400 ms necessary to perform encryption and decryption of 500
  * arrays of 100 bytes each.
  */
-actual class PublicRsaKey<A : RsaAlgorithm>(internal val rawKey: ByteArray, internal val algorithm: A)
+actual class PublicRsaKey<out A : RsaAlgorithm>(internal val rawKey: ByteArray, actual val algorithm: A): RsaKey
 
 /**
  * Represents an aes key.
@@ -26,4 +26,4 @@ actual class PublicRsaKey<A : RsaAlgorithm>(internal val rawKey: ByteArray, inte
  */
 actual typealias AesKey = ByteArray
 
-actual class HmacKey<A : HmacAlgorithm>(internal val rawKey: ByteArray, internal val algorithm: A)
+actual class HmacKey<out A : HmacAlgorithm>(internal val rawKey: ByteArray, actual val algorithm: A)

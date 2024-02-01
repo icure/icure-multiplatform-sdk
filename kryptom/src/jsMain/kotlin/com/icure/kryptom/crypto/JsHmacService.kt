@@ -53,24 +53,21 @@ object JsHmacService : HmacService {
 		)
 	}
 
-	override suspend fun <A : HmacAlgorithm> sign(algorithm: A, data: ByteArray, key: HmacKey<A>): ByteArray {
-		require(key.algorithm == algorithm) { "Invalid key: requested algorithm $algorithm, but got key for $algorithm" }
+	override suspend fun sign(data: ByteArray, key: HmacKey<*>): ByteArray {
 		return jsCrypto.subtle.sign(
-			paramsForAlgorithm(algorithm),
+			paramsForAlgorithm(key.algorithm),
 			key.key,
 			data.toArrayBuffer()
 		).await().toByteArray()
 	}
 
-	override suspend fun <A : HmacAlgorithm> verify(
-		algorithm: A,
+	override suspend fun verify(
 		signature: ByteArray,
 		data: ByteArray,
-		key: HmacKey<A>
+		key: HmacKey<*>
 	): Boolean {
-		require(key.algorithm == algorithm) { "Invalid key: requested algorithm $algorithm, but got key for $algorithm" }
 		return jsCrypto.subtle.verify(
-			paramsForAlgorithm(algorithm),
+			paramsForAlgorithm(key.algorithm),
 			key.key,
 			signature.toArrayBuffer(),
 			data.toArrayBuffer()

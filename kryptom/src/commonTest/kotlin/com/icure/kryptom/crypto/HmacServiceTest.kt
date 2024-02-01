@@ -43,12 +43,11 @@ class HmacServiceTest : StringSpec({
 			val wrongKey = defaultCryptoService.hmac.generateKey(algorithm)
 			data.forEach { data ->
 				val dataBytes = data.toByteArray(Charsets.UTF_8)
-				val signature = defaultCryptoService.hmac.sign(algorithm, dataBytes, key)
-				defaultCryptoService.hmac.verify(algorithm, signature, dataBytes, key) shouldBe true
-				defaultCryptoService.hmac.verify(algorithm, signature, dataBytes, wrongKey) shouldBe false
+				val signature = defaultCryptoService.hmac.sign(dataBytes, key)
+				defaultCryptoService.hmac.verify(signature, dataBytes, key) shouldBe true
+				defaultCryptoService.hmac.verify(signature, dataBytes, wrongKey) shouldBe false
 				data.mutations().forEach { mutatedData ->
 					defaultCryptoService.hmac.verify(
-						algorithm,
 						signature,
 						mutatedData.toByteArray(Charsets.UTF_8),
 						key
@@ -62,11 +61,10 @@ class HmacServiceTest : StringSpec({
 			val key = defaultCryptoService.hmac.loadKey(algorithm, keyBytes)
 			data.forEach { data ->
 				val dataBytes = data.toByteArray(Charsets.UTF_8)
-				val signature = defaultCryptoService.hmac.sign(algorithm, dataBytes, key)
-				defaultCryptoService.hmac.verify(algorithm, signature, dataBytes, key) shouldBe true
+				val signature = defaultCryptoService.hmac.sign(dataBytes, key)
+				defaultCryptoService.hmac.verify(signature, dataBytes, key) shouldBe true
 				data.mutations().forEach { mutatedData ->
 					defaultCryptoService.hmac.verify(
-						algorithm,
 						signature,
 						mutatedData.toByteArray(Charsets.UTF_8),
 						key
@@ -84,14 +82,12 @@ class HmacServiceTest : StringSpec({
 				val dataString = data[dataIndex]
 				val signatureBytes = base64Decode(signature)
 				defaultCryptoService.hmac.verify(
-					algorithm,
 					signatureBytes,
 					dataString.toByteArray(Charsets.UTF_8),
 					key
 				) shouldBe true
 				dataString.mutations().forEach { mutatedData ->
 					defaultCryptoService.hmac.verify(
-						algorithm,
 						signatureBytes,
 						mutatedData.toByteArray(Charsets.UTF_8),
 						key
@@ -99,7 +95,6 @@ class HmacServiceTest : StringSpec({
 				}
 				val wrongKey = importedKeys[(keyIndex + 1) % importedKeys.size]
 				defaultCryptoService.hmac.verify(
-					algorithm,
 					signatureBytes,
 					dataString.toByteArray(Charsets.UTF_8),
 					wrongKey

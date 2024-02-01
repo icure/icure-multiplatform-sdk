@@ -2,16 +2,6 @@ package com.icure.kryptom.crypto
 
 /**
  * Provides access to RSA functions.
- *
- * Keys are typed by the algorithm they are intended to be used for. This is to prevent accidentally using a key for
- * the wrong algorithm. To get maximum support from the type system it is recommended to never use the generic interface
- * for algorithm, and instead always use a generic parameter with the interface as upper bound, for example:
- * ```kotlin
- * // Don't do this
- * fun doSomeEncryptionWithSomeAlgorithm(algorithm: RsaAlgorithm.RsaEncryptionAlgorithm)
- * // Do this instead
- * fun <A : RsaAlgorithm.RsaEncryptionAlgorithm> doSomeEncryptionWithSomeAlgorithm(algorithm: A)
- * ```
  */
 interface RsaService {
 	companion object {
@@ -112,7 +102,6 @@ interface RsaService {
 	 * depending on the chosen algorithm and key size.
 	 */
 	suspend fun <A : RsaAlgorithm.RsaEncryptionAlgorithm> encrypt(
-		algorithm: A,
 		data: ByteArray,
 		publicKey: PublicRsaKey<A>
 	): ByteArray
@@ -121,7 +110,6 @@ interface RsaService {
 	 * Decrypts data using the provided key and algorithm.
 	 */
 	suspend fun <A : RsaAlgorithm.RsaEncryptionAlgorithm> decrypt(
-		algorithm: A,
 		data: ByteArray,
 		privateKey: PrivateRsaKey<A>
 	): ByteArray
@@ -130,7 +118,6 @@ interface RsaService {
 	 * Generates a signature for some data using the provided key and algorithm.
 	 */
 	suspend fun <A : RsaAlgorithm.RsaSignatureAlgorithm> sign(
-		algorithm: A,
 		data: ByteArray,
 		privateKey: PrivateRsaKey<A>
 	): ByteArray
@@ -139,7 +126,6 @@ interface RsaService {
 	 * Verifies that a signature matches the provided data, using the provided key and algorithm.
 	 */
 	suspend fun <A : RsaAlgorithm.RsaSignatureAlgorithm> verifySignature(
-		algorithm: A,
 		signature: ByteArray,
 		data: ByteArray,
 		publicKey: PublicRsaKey<A>

@@ -162,11 +162,10 @@ class RsaServiceEncryptionTest : StringSpec({
 				val keys = defaultCryptoService.rsa.generateKeyPair(encryptionAlgorithm, keySize)
 				data.trimToKeySize(keySize, encryptionAlgorithm).forEach { d ->
 					val encrypted = defaultCryptoService.rsa.encrypt(
-						encryptionAlgorithm,
 						d.toByteArray(Charsets.UTF_8),
 						keys.public
 					)
-					val decrypted = defaultCryptoService.rsa.decrypt(encryptionAlgorithm, encrypted, keys.private)
+					val decrypted = defaultCryptoService.rsa.decrypt(encrypted, keys.private)
 					String(decrypted, charset = Charsets.UTF_8) shouldBe d
 				}
 			}
@@ -187,10 +186,10 @@ class RsaServiceEncryptionTest : StringSpec({
 						reimportedKeys.public,
 						reimportedPublicOnly
 					).map { // Encrypt with each public key
-						defaultCryptoService.rsa.encrypt(encryptionAlgorithm, d.toByteArray(Charsets.UTF_8), it)
+						defaultCryptoService.rsa.encrypt(d.toByteArray(Charsets.UTF_8), it)
 					}.flatMap { encrypted -> // Decrypt with each private keys
 						listOf(keys.private, reimportedKeys.private).map {
-							defaultCryptoService.rsa.decrypt(encryptionAlgorithm, encrypted, keys.private)
+							defaultCryptoService.rsa.decrypt(encrypted, keys.private)
 						}
 					}.forEach {  // Ensure content is valid
 						String(it, charset = Charsets.UTF_8) shouldBe d
@@ -205,8 +204,8 @@ class RsaServiceEncryptionTest : StringSpec({
 				val keys = defaultCryptoService.rsa.generateKeyPair(encryptionAlgorithm, keySize)
 				val dataOverMax = Random.nextBytes(keySize.maxEncryptionSizeBytes(encryptionAlgorithm) + 1)
 				val maxData = dataOverMax.sliceArray(0 until keySize.maxEncryptionSizeBytes(encryptionAlgorithm))
-				defaultCryptoService.rsa.encrypt(encryptionAlgorithm, maxData, keys.public)
-				shouldThrowAny { defaultCryptoService.rsa.encrypt(encryptionAlgorithm, dataOverMax, keys.public) }
+				defaultCryptoService.rsa.encrypt(maxData, keys.public)
+				shouldThrowAny { defaultCryptoService.rsa.encrypt(dataOverMax, keys.public) }
 			}
 		}
 
@@ -229,7 +228,6 @@ class RsaServiceEncryptionTest : StringSpec({
 				val expectedData =
 					data[dataAndKeyIndices.first].take(keySizeAndPair.first.maxEncryptionSizeBytes(encryptionAlgorithm))
 				val decrypted = defaultCryptoService.rsa.decrypt(
-					encryptionAlgorithm,
 					base64Decode(encryptedData),
 					keySizeAndPair.second.private
 				)
@@ -240,24 +238,4 @@ class RsaServiceEncryptionTest : StringSpec({
 
 	doEncryptionTestsByAlgorithm(OaepWithSha1)
 	doEncryptionTestsByAlgorithm(OaepWithSha256)
-	/*
-	"Write samples" {
-		val keyPairs = sampleRsaKeys.map {
-			it.first to cryptoService.rsa.loadKeyPairPkcs8(OaepWithSha256, base64Decode(it.second))
-		}
-		data.forEachIndexed { dataIndex, d ->
-			keyPairs.forEachIndexed { keyIndex, k ->
-				val keySizeAndPair = keyPairs[keyIndex]
-				val trimmedData = d.take(keySizeAndPair.first.maxEncryptionSizeBytes(OaepWithSha256))
-				val encrypted = cryptoService.rsa.encrypt(
-					OaepWithSha256,
-					trimmedData.toByteArray(Charsets.UTF_8),
-					keySizeAndPair.second.public
-				)
-				println("Pair($dataIndex, $keyIndex) to \"${base64Encode(encrypted)}\",")
-			}
-		}
-	}
-
-	 */
 })

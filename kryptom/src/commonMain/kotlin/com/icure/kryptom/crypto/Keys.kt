@@ -24,21 +24,34 @@ sealed interface RsaAlgorithm {
 }
 
 /**
+ * Marker interface for a rsa key or key pair.
+ */
+interface RsaKey
+
+/**
  * Represents a private rsa key. Each key should be used only for a specific algorithm, which is represented by [A].
  */
-expect class PrivateRsaKey<A : RsaAlgorithm>
+expect class PrivateRsaKey<out A : RsaAlgorithm> : RsaKey {
+	val algorithm: A
+}
 
 /**
  * Represents a public rsa key. Each key should be used only for a specific algorithm, which is represented by [A].
  */
-expect class PublicRsaKey<A : RsaAlgorithm>
+expect class PublicRsaKey<out A : RsaAlgorithm> : RsaKey {
+	val algorithm: A
+}
 
 /**
  * Represents an rsa key pair.
  * @param private a private rsa key.
  * @param public the public rsa key corresponding to the private key.
  */
-data class RsaKeypair<A : RsaAlgorithm>(val private: PrivateRsaKey<A>, val public: PublicRsaKey<A>)
+data class RsaKeypair<out A : RsaAlgorithm>(val private: PrivateRsaKey<A>, val public: PublicRsaKey<A>) : RsaKey {
+	init {
+		require(private.algorithm == public.algorithm) { "Private and public keys must have the same algorithm" }
+	}
+}
 
 /**
  * Represents an aes key.
@@ -66,4 +79,6 @@ sealed interface HmacAlgorithm {
 	}
 }
 
-expect class HmacKey<A : HmacAlgorithm>
+expect class HmacKey<out A : HmacAlgorithm> {
+	val algorithm: A
+}

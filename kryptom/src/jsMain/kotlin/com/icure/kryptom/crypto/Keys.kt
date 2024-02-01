@@ -4,19 +4,19 @@ package com.icure.kryptom.crypto
  * Key should ony be used with subtle crypto.
  * Algorithm can be used to check if the declared usage for a generated or imported key matches the requested usage.
  */
-actual class PrivateRsaKey<A : RsaAlgorithm>(
+actual class PrivateRsaKey<out A : RsaAlgorithm>(
 	internal val key: dynamic,
-	internal val algorithm: A
-)
+	actual val algorithm: A
+) : RsaKey
 
 /**
  * Key should ony be used with subtle crypto.
  * Algorithm can be used to check if the declared usage for a generated or imported key matches the requested usage.
  */
-actual class PublicRsaKey<A : RsaAlgorithm>(
+actual class PublicRsaKey<out A : RsaAlgorithm>(
 	internal val key: dynamic,
-	internal val algorithm: A
-)
+	actual val algorithm: A
+) : RsaKey
 
 /**
  * This would actually be [CryptoKey](https://developer.mozilla.org/en-US/docs/Web/API/CryptoKey) but there is no easy
@@ -29,7 +29,7 @@ actual typealias AesKey = Any
  * Key should ony be used with subtle crypto.
  * Algorithm can be used to check if the declared usage for a generated or imported key matches the requested usage.
  */
-actual class HmacKey<A : HmacAlgorithm>(
+actual class HmacKey<out A : HmacAlgorithm>(
 	internal val key: dynamic,
-	internal val algorithm: A
+	actual val algorithm: A
 )

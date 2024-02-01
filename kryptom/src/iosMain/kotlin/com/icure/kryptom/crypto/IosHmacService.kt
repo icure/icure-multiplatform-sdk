@@ -20,27 +20,29 @@ object IosHmacService : HmacService {
 		return HmacKey(bytes.copyOf(), algorithm)
 	}
 
-	override suspend fun <A : HmacAlgorithm> sign(algorithm: A, data: ByteArray, key: HmacKey<A>): ByteArray =
+	override suspend fun sign(data: ByteArray, key: HmacKey<*>): ByteArray =
 		memScoped {
-			require(key.algorithm == algorithm) { "Invalid key: requested algorithm $algorithm, but got key for $algorithm" }
-			val out = allocArray<UByteVar>(algorithm.digestSize)
+			val out = allocArray<UByteVar>(key.algorithm.digestSize)
 			CCHmac(
-				kCCHmacAlgSHA512,
+				key.algorithm.coreCryptoAlgorithm,
 				key.rawKey.refTo(0),
 				key.rawKey.size.toULong(),
 				data.refTo(0),
 				data.size.toULong(),
 				out
 			)
-			out.readBytes(algorithm.digestSize)
+			out.readBytes(key.algorithm.digestSize)
 		}
 
-	override suspend fun <A : HmacAlgorithm> verify(
-		algorithm: A,
+	override suspend fun verify(
 		signature: ByteArray,
 		data: ByteArray,
-		key: HmacKey<A>
+		key: HmacKey<*>
 	): Boolean {
-		return sign(algorithm, data, key).contentEquals(signature)
+		return sign(data, key).contentEquals(signature)
+	}
+
+	private val HmacAlgorithm.coreCryptoAlgorithm: UInt get() = when (this) {
+		HmacAlgorithm.HmacSha512 -> kCCHmacAlgSHA512
 	}
 }

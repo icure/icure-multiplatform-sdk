@@ -81,46 +81,42 @@ object JsRsaService : RsaService {
 	}
 
 	override suspend fun <A : RsaAlgorithm.RsaEncryptionAlgorithm> encrypt(
-		algorithm: A,
 		data: ByteArray,
 		publicKey: PublicRsaKey<A>
 	): ByteArray =
 		jsCrypto.subtle.encrypt(
-			algorithmParams(algorithm),
+			encryptionAlgorithmParams(publicKey.algorithm),
 			publicKey.key,
 			data.toArrayBuffer()
 		).await().toByteArray()
 
 	override suspend fun <A : RsaAlgorithm.RsaEncryptionAlgorithm> decrypt(
-		algorithm: A,
 		data: ByteArray,
 		privateKey: PrivateRsaKey<A>
 	): ByteArray =
 		jsCrypto.subtle.decrypt(
-			algorithmParams(algorithm),
+			encryptionAlgorithmParams(privateKey.algorithm),
 			privateKey.key,
 			data.toArrayBuffer()
 		).await().toByteArray()
 
 	override suspend fun <A : RsaAlgorithm.RsaSignatureAlgorithm> sign(
-		algorithm: A,
 		data: ByteArray,
 		privateKey: PrivateRsaKey<A>
 	): ByteArray =
 		jsCrypto.subtle.sign(
-			algorithmParams(algorithm),
+			signatureAlgorithmParams(privateKey.algorithm),
 			privateKey.key,
 			data.toArrayBuffer()
 		).await().toByteArray()
 
 	override suspend fun <A : RsaAlgorithm.RsaSignatureAlgorithm> verifySignature(
-		algorithm: A,
 		signature: ByteArray,
 		data: ByteArray,
 		publicKey: PublicRsaKey<A>
 	): Boolean =
 		jsCrypto.subtle.verify(
-			algorithmParams(algorithm),
+			signatureAlgorithmParams(publicKey.algorithm),
 			publicKey.key,
 			signature.toArrayBuffer(),
 			data.toArrayBuffer()
@@ -138,11 +134,13 @@ object JsRsaService : RsaService {
 		"hash" to json("name" to hashName(algorithm))
 	)
 
-	private fun algorithmParams(algorithm: RsaAlgorithm) = when (algorithm) {
+	private fun encryptionAlgorithmParams(algorithm: RsaAlgorithm.RsaEncryptionAlgorithm) = when (algorithm) {
 		RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha1, RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256 -> json(
 			"name" to algorithmName(algorithm)
 		)
+	}
 
+	private fun signatureAlgorithmParams(algorithm: RsaAlgorithm.RsaSignatureAlgorithm) = when (algorithm) {
 		RsaAlgorithm.RsaSignatureAlgorithm.PssWithSha256 -> json(
 			"name" to algorithmName(algorithm),
 			"saltLength" to 32
