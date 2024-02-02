@@ -4,6 +4,7 @@ import com.icure.kryptom.utils.base64Decode
 import com.icure.kryptom.utils.toHexString
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldContainExactly
+import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldMatch
 
 class RsaServiceKeyFormatTest : StringSpec({
@@ -41,7 +42,7 @@ class RsaServiceKeyFormatTest : StringSpec({
 			val bytes = defaultCryptoService.strongRandom.randomBytes(29)
 			val encrypted = defaultCryptoService.rsa.encrypt(bytes, importedPublic)
 			val decrypted = defaultCryptoService.rsa.decrypt(encrypted, importedPair.private)
-			decrypted.toList() shouldContainExactly bytes.toList()
+			decrypted.toList() shouldBe bytes.toList()
 		}
 	}
 })
