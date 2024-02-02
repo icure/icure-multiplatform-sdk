@@ -4,7 +4,7 @@ ktor = "2.3.7"
 coroutines = "1.7.3"
 kotlinSerialization = "1.6.1"
 kotest = "5.8.0"
-androidLibrary = "8.2.0"
+androidLibrary = "8.2.2"
 bouncyCastle = "1.70"
 
 [libraries]
