@@ -7,7 +7,7 @@ import com.icure.sdk.model.KeypairFingerprintV1String
 import com.icure.sdk.utils.InternalIcureApi
 
 @InternalIcureApi
-interface KeyRecovery {
+interface IcureKeyRecovery {
 	/*TODO
 	 * Currently there is no support for the recovery of signature keys. When implementing a recovery solution we should consider:
 	 * - unlike decryption keys signature keys are completely useless if not verified.

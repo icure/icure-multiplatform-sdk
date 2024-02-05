@@ -1,4 +1,4 @@
-package com.icure.sdk.apis
+package com.icure.sdk.api
 
 data class Properties(
 	val baseUrl: String,

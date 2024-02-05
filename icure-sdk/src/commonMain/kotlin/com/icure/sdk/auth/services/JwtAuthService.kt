@@ -1,18 +1,18 @@
 package com.icure.sdk.auth.services
 
 import com.icure.kryptom.utils.base64Decode
-import com.icure.sdk.api.AnonymousAuthApi
+import com.icure.sdk.api.extended.AnonymousAuthApi
 import com.icure.sdk.auth.AuthenticationClass
 import com.icure.sdk.auth.Credentials
 import com.icure.sdk.auth.Jwt
 import com.icure.sdk.auth.ThirdPartyTokens
 import com.icure.sdk.auth.UsernamePassword
+import com.icure.sdk.utils.Serialization
 import io.ktor.client.request.*
 import io.ktor.util.date.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.Json
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
@@ -101,7 +101,7 @@ class JwtAuthService(
 	private fun isJwtExpiredOrInvalid(jwt: String): Boolean {
 		val parts = jwt.split(".")
 		return parts.size == 3 && runCatching {
-			val payload = Json.decodeFromString<JwtPayload>(base64Decode(parts[1]).toString())
+			val payload = Serialization.lenientJson.decodeFromString<JwtPayload>(base64Decode(parts[1]).toString())
 			(payload.exp * 1000) < (GMTDate().timestamp - refreshPadding.inWholeMilliseconds)
 		}.getOrDefault(false)
 	}

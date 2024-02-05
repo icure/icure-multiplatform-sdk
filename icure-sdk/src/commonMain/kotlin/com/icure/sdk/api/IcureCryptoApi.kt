@@ -1,4 +1,4 @@
-package com.icure.sdk.apis
+package com.icure.sdk.api
 
 interface IcureCryptoApi {
 }

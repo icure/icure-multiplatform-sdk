@@ -1,4 +1,4 @@
-package com.icure.sdk.api
+package com.icure.sdk.api.extended
 
 import com.icure.sdk.auth.Jwt
 import com.icure.sdk.auth.ThirdPartyProvider

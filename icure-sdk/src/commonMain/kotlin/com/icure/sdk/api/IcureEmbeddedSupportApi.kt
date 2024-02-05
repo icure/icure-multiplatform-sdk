@@ -1,4 +1,4 @@
-package com.icure.sdk.apis
+package com.icure.sdk.api
 
 import com.icure.sdk.model.AccessLevel
 import com.icure.sdk.model.EntityWithDelegationTypeName
