@@ -16,6 +16,8 @@ open class HttpResponse<T : Any>(val response: io.ktor.client.statement.HttpResp
     else
         throw RequestStatusException(response.call.request.method, response.call.request.url.toString(), status.value)
 
+    suspend fun successBodyOrNull404(): T? = if (status == HttpStatusCode.NotFound) null else successBody()
+
     companion object {
         private fun Headers.mapEntries(): Map<String, List<String>> {
             val result = mutableMapOf<String, List<String>>()

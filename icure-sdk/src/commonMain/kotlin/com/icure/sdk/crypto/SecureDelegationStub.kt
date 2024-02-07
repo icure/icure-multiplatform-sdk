@@ -4,6 +4,7 @@ import com.icure.sdk.model.AccessLevel
 import com.icure.sdk.model.EntityWithDelegationTypeName
 import com.icure.sdk.model.HexString
 import com.icure.sdk.model.Sha256HexString
+import com.icure.sdk.model.SecureDelegation
 
 /**
  * A stub to support the creation of a secure delegation.

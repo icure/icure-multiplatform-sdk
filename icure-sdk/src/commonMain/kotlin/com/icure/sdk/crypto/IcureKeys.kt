@@ -81,6 +81,16 @@ open class RsaKeysSet<KeyType : RsaKey>(
 	 */
 	fun getByFingerprintV2(publicKeyFingerprintV2: KeypairFingerprintV2String): KeyType? =
 		keysByFingerprintV2[publicKeyFingerprintV2]
+
+	/**
+	 * Get all keys in this set
+	 */
+	val allKeys: Collection<IcureKeyInfo<KeyType>> get() = keys
+
+	/**
+	 * @true if the set contains at least one element
+	 */
+	fun isNotEmpty(): Boolean = keys.isNotEmpty()
 }
 
 /**

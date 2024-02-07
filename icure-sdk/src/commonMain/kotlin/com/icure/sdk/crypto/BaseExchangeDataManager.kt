@@ -169,7 +169,7 @@ interface BaseExchangeDataManager {
 	suspend fun tryRawDecryptExchangeData(
 		exchangeData: ExchangeData,
 		decryptionKeys: RsaDecryptionKeysSet
-	): RawDecryptedExchangeData
+	): RawDecryptedExchangeData?
 
 	/**
 	 * Updates existing exchange data and uploads it to the cloud in order to share it also with additional public keys, useful for example in cases

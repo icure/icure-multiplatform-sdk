@@ -6,6 +6,7 @@ kotlinSerialization = "1.6.1"
 kotest = "5.8.0"
 androidLibrary = "8.2.2"
 bouncyCastle = "1.70"
+kermit = "2.0.3"
 
 [libraries]
 
@@ -37,3 +38,6 @@ kotestRunnerJunit = { group = "io.kotest", name = "kotest-runner-junit5", versio
 
 # Cryptography providers
 bouncyCastle = { group = "org.bouncycastle", name = "bcprov-jdk15on", version.ref = "bouncyCastle" }
+
+# Logging
+kermit = { group = "co.touchlab", name = "kermit", version.ref = "kermit" }
