@@ -133,9 +133,9 @@ interface CryptoStrategies {
 	 */
 	suspend fun verifyDelegatePublicKeys(
 		delegate: CryptoActorStubWithType,
-		publicKeys: List<String>,
+		publicKeys: List<SpkiHexString>,
 		cryptoPrimitives: CryptoService
-	): List<String>
+	): List<SpkiHexString>
 
 	/**
 	 * Specifies if a data owner requires anonymous delegations, i.e. his id should not appear unencrypted in new secure delegations. This should always

@@ -115,7 +115,7 @@ class BaseExchangeDataManagerImpl(
 	override suspend fun tryDecryptSharedSignatureKeys(
 		exchangeData: List<ExchangeData>,
 		decryptionKeys: RsaDecryptionKeysSet
-	): DecryptionResult<ExchangeData, HmacKey<*>> =
+	): DecryptionResult<ExchangeData, HmacKey<HmacAlgorithm.HmacSha512>> =
 		tryDecryptExchangeData(
 			exchangeData,
 			decryptionKeys,

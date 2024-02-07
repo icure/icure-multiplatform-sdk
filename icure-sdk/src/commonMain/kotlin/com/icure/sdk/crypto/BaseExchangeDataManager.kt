@@ -140,7 +140,7 @@ interface BaseExchangeDataManager {
 	suspend fun tryDecryptSharedSignatureKeys(
 		exchangeData: List<ExchangeData>,
 		decryptionKeys: RsaDecryptionKeysSet
-	): DecryptionResult<ExchangeData, HmacKey<*>>
+	): DecryptionResult<ExchangeData, HmacKey<HmacAlgorithm.HmacSha512>>
 
 	/**
 	 * Creates exchange data from the current data owner to the provided delegate, uploading the newly created exchange data to the cloud.

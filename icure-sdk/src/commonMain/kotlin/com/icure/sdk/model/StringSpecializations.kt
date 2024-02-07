@@ -1,5 +1,6 @@
 package com.icure.sdk.model
 
+import com.icure.kryptom.utils.hexToByteArray
 import kotlinx.serialization.Serializable
 import kotlin.jvm.JvmInline
 
@@ -34,6 +35,9 @@ value class SpkiHexString(
 	fun fingerprintV2(): KeypairFingerprintV2String {
 		return KeypairFingerprintV2String.fromPublicKeySpki(this)
 	}
+
+	fun bytes(): ByteArray =
+		hexToByteArray(s)
 }
 
 @JvmInline

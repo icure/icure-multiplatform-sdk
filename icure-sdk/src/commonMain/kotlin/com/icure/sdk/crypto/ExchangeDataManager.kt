@@ -2,6 +2,7 @@ package com.icure.sdk.crypto
 
 import com.icure.sdk.model.EntityWithDelegationTypeName
 import com.icure.sdk.model.ExchangeData
+import com.icure.sdk.model.SpkiHexString
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.ResourceNotFoundException
 
@@ -25,9 +26,9 @@ interface ExchangeDataManager {
 	 * Updates all exchange data between the current data owner and another data owner to allow the other data owner to access existing exchange data
 	 * using a new public key.
 	 * @param otherDataOwner the other data owner.
-	 * @param newDataOwnerPublicKey a new public key of the other data owner.
+	 * @param newDataOwnerPublicKey a new public key of the other data owner. The key MUST BE VERIFIED.
 	 */
-	suspend fun giveAccessBackTo(otherDataOwner: String, newDataOwnerPublicKey: String)
+	suspend fun giveAccessBackTo(otherDataOwner: String, newDataOwnerPublicKey: SpkiHexString)
 
 	/**
 	 * Gets any existing and verified exchange data from the current data owner to the provided delegate or creates new data if no verified data is

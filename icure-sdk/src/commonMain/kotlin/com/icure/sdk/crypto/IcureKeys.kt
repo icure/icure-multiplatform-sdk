@@ -18,7 +18,7 @@ import com.icure.sdk.utils.InternalIcureApi
  * a private key or a full key pair). No additional information of the key is used (e.g. the algorithm of the intended
  * key use is ignored).
  */
-class IcureKeyInfo<KeyType : RsaKey>(
+class IcureKeyInfo<out KeyType : RsaKey>(
 	val pubSpkiHexString: SpkiHexString,
 	val key: KeyType
 ) {
