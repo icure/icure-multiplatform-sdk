@@ -2,12 +2,13 @@ package com.icure.sdk.crypto
 
 import com.icure.kryptom.crypto.PublicRsaKey
 import com.icure.kryptom.crypto.RsaAlgorithm
+import com.icure.kryptom.crypto.RsaKeypair
 
 interface UserSignatureKeysManager {
 	/**
 	 * Get a key which can be used to sign data in order to allow verification of the data authenticity in the future.
 	 */
-	suspend fun getOrCreateSignatureKeyPair(): IcureKeypair<RsaAlgorithm.RsaSignatureAlgorithm.PssWithSha256>
+	suspend fun getOrCreateSignatureKeyPair(): IcureKeyInfo<RsaKeypair<RsaAlgorithm.RsaSignatureAlgorithm.PssWithSha256>>
 
 	/**
 	 * Get a key which can be used to verify the authenticity of a signature created by the current data owner.

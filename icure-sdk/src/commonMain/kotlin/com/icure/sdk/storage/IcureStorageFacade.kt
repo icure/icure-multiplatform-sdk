@@ -39,7 +39,7 @@ class IcureStorageFacade(
 	 */
 	private val lookupKeysInLegacyTsLocations: Boolean
 ) {
-	data class LoadedKeyPairDetails(
+	data class LoadedKeypairDetails(
 		val pair: RsaKeypair<RsaEncryptionAlgorithm>,
 		val isDevice: Boolean
 	)
@@ -77,7 +77,7 @@ class IcureStorageFacade(
 		publicKeyFingerprint: KeypairFingerprintV1String,
 		legacyPublicKey: SpkiHexString?,
 		algorithm: RsaEncryptionAlgorithm
-	): LoadedKeyPairDetails? {
+	): LoadedKeypairDetails? {
 		if (
 			legacyPublicKey != null
 			&& publicKeyFingerprint == KeypairFingerprintV1String.fromPublicKeySpki(legacyPublicKey)
@@ -89,12 +89,12 @@ class IcureStorageFacade(
 				loadKeyFromLegacyAesExchangeKeysLocation(dataOwnerId, publicKeyFingerprint, algorithm)
 				?: loadKeyFromLegacySingleKeyLocation(dataOwnerId, publicKeyFingerprint, legacyPublicKey, algorithm)
 			} else null
-		if (deviceKey != null) return LoadedKeyPairDetails(
+		if (deviceKey != null) return LoadedKeypairDetails(
 			pair = cryptoService.rsa.loadKeyPairPkcs8(algorithm, deviceKey),
 			isDevice = true
 		)
 		val cachedKey = keys.getPrivateKeyPkcs8(entryFor.cachedRecoveredKeypairOfDataOwner(dataOwnerId, publicKeyFingerprint))
-		if (cachedKey != null) return LoadedKeyPairDetails(
+		if (cachedKey != null) return LoadedKeypairDetails(
 			pair = cryptoService.rsa.loadKeyPairPkcs8(algorithm, cachedKey),
 			isDevice = false
 		)

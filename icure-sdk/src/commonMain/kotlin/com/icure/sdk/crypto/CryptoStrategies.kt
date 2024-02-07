@@ -7,6 +7,7 @@ import com.icure.sdk.model.CryptoActorStubWithType
 import com.icure.sdk.model.DataOwnerWithType
 import com.icure.sdk.model.HexString
 import com.icure.sdk.model.KeypairFingerprintV1String
+import com.icure.sdk.model.SpkiHexString
 
 /**
  * Allows to customise the behaviour of the crypto api to better suit your needs.
@@ -25,18 +26,18 @@ interface CryptoStrategies {
 		/**
 		 * The data owner for which the key data should be recovered.
 		 */
-		val dataOwner: DataOwnerWithType,
+		val dataOwnerDetails: DataOwnerWithType,
 		/**
 		 * All public keys (in hex-encoded spki format) of `dataOwner` for which the authenticity status (verified or unverified) is
 		 * unknown (no result was cached from a previous api instantiation and the key was not generated on the current device).
 		 * This could include keys that were recovered automatically by the sdk.
 		 */
-		val unknownKeys: List<HexString>,
+		val unknownKeys: List<SpkiHexString>,
 		/**
 		 * All public keys (in hex-encoded spki format) of `dataOwner` for which the sdk could not recover a private key. May overlap
 		 * (partially or completely) with `unknownKeys`.
 		 */
-		val unavailableKeys: List<String>
+		val unavailableKeys: List<SpkiHexString>
 	)
 
 	/**

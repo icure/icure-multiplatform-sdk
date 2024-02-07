@@ -6,6 +6,9 @@ import com.icure.sdk.model.DataOwnerWithType
 import com.icure.sdk.model.KeypairFingerprintV1String
 import com.icure.sdk.utils.InternalIcureApi
 
+/**
+ * Automatic recovery using iCure own key recovery methods (such as transfer keys and shamir recovery).
+ */
 @InternalIcureApi
 interface IcureKeyRecovery {
 	/*TODO
@@ -28,8 +31,8 @@ interface IcureKeyRecovery {
 	 */
 	suspend fun recoverKeys(
 		dataOwner: DataOwnerWithType,
-		knownKeys: Map<KeypairFingerprintV1String, RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>
-	): Map<KeypairFingerprintV1String, RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>
+		knownKeys: Set<IcureKeyInfo<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>>
+	): Set<IcureKeyInfo<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>>
 
 	/*TODO?
 	 * Ask access back suggestion: if by getting access back to an exchange key with another data owner I may recover additional keys we could suggest
