@@ -52,4 +52,8 @@ interface Encryptable {
 	 * The base64 encoded data of this object, formatted as JSON and encrypted in AES using the random master key from encryptionKeys.
 	 */
 	val encryptedSelf: Base64String?
+
+	fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata): Encryptable
+
+	val type: EntityWithDelegationTypeName
 }

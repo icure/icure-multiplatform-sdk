@@ -44,6 +44,9 @@ class DataOwnerApi(
 	suspend fun getDataOwner(ownerId: String): DataOwnerWithType =
 		rawApi.getDataOwner(ownerId).successBody()
 
+	suspend fun getDataOwnerStub(ownerId: String): CryptoActorStubWithType =
+		rawApi.getDataOwnerStub(ownerId).successBody()
+
 	/**
 	 * Get the hierarchy for the current data owner starting from the specified parent.
 	 * @return an array starting at the topmost parent and ending at the provided parent id.

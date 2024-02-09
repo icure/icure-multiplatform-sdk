@@ -54,7 +54,7 @@ data class SecureDelegation(
 	 * Key of the parent delegation in the [SecurityMetadata.secureDelegations]. Users are allowed to modify/delete
 	 * only [SecureDelegation] that they can directly access or any children delegations.
 	 */
-	val parentDelegations: Set<Sha256HexString> = emptySet(),
+	val parentDelegations: Set<SecureDelegationKeyString> = emptySet(),
 	/**
 	 * If both the [delegator] and [delegate] are explicit in this secure delegation this field will hold the id of the exchange
 	 * data used for the encryption of this delegation. Otherwise, this will be null.

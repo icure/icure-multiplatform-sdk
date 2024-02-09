@@ -24,7 +24,7 @@ interface SecureDelegationsEncryption {
 
 	suspend fun encryptEncryptionKey(hexKey: String, key: AesKey): Base64String
 
-	suspend fun encryptEncryptionKeys(hexKeys: List<String>, key: AesKey): List<Base64String>
+	suspend fun encryptEncryptionKeys(hexKeys: List<String>, key: AesKey): Set<Base64String>
 
 	suspend fun decryptEncryptionKey(encrypted: String, key: AesKey): HexString
 
@@ -32,7 +32,7 @@ interface SecureDelegationsEncryption {
 	
 	suspend fun encryptSecretId(secretId: String, key: AesKey): Base64String
 
-	suspend fun encryptSecretIds(secretIds: List<String>, key: AesKey): List<Base64String>
+	suspend fun encryptSecretIds(secretIds: List<String>, key: AesKey): Set<Base64String>
 
 	suspend fun decryptSecretId(encrypted: String, key: AesKey): String
 
@@ -40,7 +40,7 @@ interface SecureDelegationsEncryption {
 
 	suspend fun encryptOwningEntityId(owningEntityId: String, key: AesKey): Base64String
 
-	suspend fun encryptOwningEntityIds(owningEntityIds: List<String>, key: AesKey): List<Base64String>
+	suspend fun encryptOwningEntityIds(owningEntityIds: List<String>, key: AesKey): Set<Base64String>
 
 	suspend fun decryptOwningEntityId(encrypted: String, key: AesKey): String
 

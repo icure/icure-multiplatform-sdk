@@ -3,6 +3,7 @@ package com.icure.sdk.crypto
 import com.icure.kryptom.crypto.AesKey
 import com.icure.kryptom.crypto.HmacAlgorithm
 import com.icure.kryptom.crypto.HmacKey
+import com.icure.sdk.model.AccessControlSecret
 import com.icure.sdk.model.ExchangeData
 import com.icure.sdk.utils.InternalIcureApi
 
@@ -16,7 +17,7 @@ import com.icure.sdk.utils.InternalIcureApi
 @InternalIcureApi
 data class UnencryptedExchangeDataContent(
 	val exchangeKey: AesKey,
-	val accessControlSecret: String,
+	val accessControlSecret: AccessControlSecret,
 	val sharedSignatureKey: HmacKey<HmacAlgorithm.HmacSha512>
 )
 
@@ -114,7 +115,7 @@ interface BaseExchangeDataManager {
 	suspend fun tryDecryptAccessControlSecret(
 		exchangeData: List<ExchangeData>,
 		decryptionKeys: RsaDecryptionKeysSet
-	): DecryptionResult<ExchangeData, String>
+	): DecryptionResult<ExchangeData, AccessControlSecret>
 
 	/**
 	 * Extract and decrypts the exchange keys from the provided exchange data.

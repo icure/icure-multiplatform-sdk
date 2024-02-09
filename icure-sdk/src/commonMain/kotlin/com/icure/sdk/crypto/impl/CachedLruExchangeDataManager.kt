@@ -2,7 +2,6 @@ package com.icure.sdk.crypto.impl
 
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.sdk.api.extended.DataOwnerApi
-import com.icure.sdk.crypto.AccessControlSecretUtils
 import com.icure.sdk.crypto.BaseExchangeDataManager
 import com.icure.sdk.crypto.CryptoStrategies
 import com.icure.sdk.crypto.ExchangeDataWithPotentiallyDecryptedContent
@@ -23,7 +22,6 @@ class CachedLruExchangeDataManager(
 	base: BaseExchangeDataManager,
 	userEncryptionKeys: UserEncryptionKeysManager,
 	signatureKeys: UserSignatureKeysManager,
-	accessControlSecret: AccessControlSecretUtils,
 	cryptoStrategies: CryptoStrategies,
 	dataOwnerApi: DataOwnerApi,
 	cryptoService: CryptoService,
@@ -33,7 +31,6 @@ class CachedLruExchangeDataManager(
 	base,
 	userEncryptionKeys,
 	signatureKeys,
-	accessControlSecret,
 	cryptoStrategies,
 	dataOwnerApi,
 	cryptoService,
@@ -115,7 +112,12 @@ class CachedLruExchangeDataManager(
 	}
 
 	private suspend fun getOrRetrieveExchangeDataWithId(exchangeDataId: String): CachedExchangeDataDetails =
-		exchangeDataByIdCache.getCachedOrRetrieve(exchangeDataId) { retrieveExchangeData(exchangeDataId) }
+		exchangeDataByIdCache.getCachedOrRetrieve(exchangeDataId) {
+			retrieveExchangeData(exchangeDataId)
+		}.also {
+			// Always cache secure delegation keys, regardless of whether it was retrieved by this or not to refresh usage.
+			cacheSecureDelegationKeysFor(it)
+		}
 
 	private suspend fun getOrRetrieveExchangeDataWithIds(exchangeDataIds: List<String>): Map<String, CachedExchangeDataDetails> =
 	// This takes and release lock of the cache many times... may want to try to make a "batch" version of getCachedOrRetrieve
@@ -144,7 +146,15 @@ class CachedLruExchangeDataManager(
 			)
 		}.also {
 			exchangeDataByIdCache.set(it.exchangeData.id, it)
+			cacheSecureDelegationKeysFor(it)
 		}
+
+	private suspend fun cacheSecureDelegationKeysFor(cachedExchangeDataDetails: CachedExchangeDataDetails) {
+		cachedExchangeDataDetails.decryptedContentAndVerificationStatus?.first?.accessControlSecret?.let { accessControlSecret ->
+			val keys = accessControlSecret.allAccessControlKeys(cryptoService).map { it.toSecureDelegationKeyString(cryptoService) }
+			secureDelegationKeysToExchangeDataId.setMany(keys.map { it to cachedExchangeDataDetails.exchangeData.id })
+		}
+	}
 
 	override suspend fun getAccessControlKeysValue(entityType: EntityWithDelegationTypeName): String? =
 		null

@@ -32,4 +32,12 @@ class SynchronisedLruCache<K : Any, V : Any>(
 	suspend fun getMany(keys: Collection<K>): Map<K, V> = mutex.withLock {
 		keys.mapNotNull { k -> cache.get(k)?.let { v -> k to v } }
 	}.toMap()
+
+	/**
+	 * Sets the provided values. You can get an equivalent result by calling set many times, but
+	 * this ensures the lock is taken only once.
+	 */
+	suspend fun setMany(keys: Collection<Pair<K, V>>): Unit = mutex.withLock {
+		keys.forEach { (k, v) -> cache.set(k, v) }
+	}
 }

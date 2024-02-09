@@ -16,6 +16,7 @@ import com.icure.sdk.crypto.RsaSignatureKeysSet
 import com.icure.sdk.crypto.RsaVerificationKeyProvider
 import com.icure.sdk.crypto.UnencryptedExchangeDataContent
 import com.icure.sdk.crypto.VerifiedRsaEncryptionKeysSet
+import com.icure.sdk.model.AccessControlSecret
 import com.icure.sdk.model.Base64String
 import com.icure.sdk.model.ExchangeData
 import com.icure.sdk.model.KeypairFingerprintV2String
@@ -95,7 +96,7 @@ class BaseExchangeDataManagerImpl(
 	override suspend fun tryDecryptAccessControlSecret(
 		exchangeData: List<ExchangeData>,
 		decryptionKeys: RsaDecryptionKeysSet
-	): DecryptionResult<ExchangeData, String> =
+	): DecryptionResult<ExchangeData, AccessControlSecret> =
 		tryDecryptExchangeData(
 			exchangeData,
 			decryptionKeys,
@@ -333,7 +334,7 @@ class BaseExchangeDataManagerImpl(
 	private suspend fun bytesToSignForSharedSignature(
 		delegator: String,
 		delegate: String,
-		decryptedAccessControlSecret: String,
+		decryptedAccessControlSecret: AccessControlSecret,
 		decryptedExchangeKey: AesKey,
 		publicKeysFingerprints: Set<KeypairFingerprintV2String>
 	): ByteArray =
@@ -373,9 +374,9 @@ class BaseExchangeDataManagerImpl(
 		cryptoService.hmac.loadKey(HmacAlgorithm.HmacSha512, decryptedBytes)
 
 	// Generates a new access control secret
-	private fun generateAccessControlSecret(): Pair<String, ByteArray> =
-		cryptoService.strongRandom.randomBytes(16).let { it.toHexString() to it }
+	private fun generateAccessControlSecret(): Pair<AccessControlSecret, ByteArray> =
+		cryptoService.strongRandom.randomBytes(16).let { AccessControlSecret(it.toHexString()) to it }
 
-	private fun importAccessControlSecret(decryptedBytes: ByteArray): String  =
-		decryptedBytes.toHexString()
+	private fun importAccessControlSecret(decryptedBytes: ByteArray): AccessControlSecret  =
+		AccessControlSecret(decryptedBytes.toHexString())
 }

@@ -1,6 +1,10 @@
 package com.icure.sdk.model
 
+import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.utils.hexToByteArray
+import com.icure.kryptom.utils.toHexString
+import io.ktor.utils.io.charsets.Charsets
+import io.ktor.utils.io.core.toByteArray
 import kotlinx.serialization.Serializable
 import kotlin.jvm.JvmInline
 
@@ -17,6 +21,43 @@ value class HexString(val s: String)
 @JvmInline
 @Serializable
 value class Sha256HexString(val s: String)
+
+@JvmInline
+@Serializable
+value class AccessControlSecret(val s: String) {
+	/**
+	 * One way operation to get all possible secure delegation keys corresponding to this access control secret
+	 */
+	suspend fun allAccessControlKeys(cryptoService: CryptoService): Set<AccessControlKeyString> =
+		EntityWithDelegationTypeName.entries.mapTo(mutableSetOf()) { toAccessControlKeyStringFor(it, cryptoService) }
+
+	/**
+	 * Get the secure delegation key corresponding to an access control secret for a specific entity type
+	 */
+	suspend fun toAccessControlKeyStringFor(
+		entityType: EntityWithDelegationTypeName,
+		cryptoService: CryptoService
+	): AccessControlKeyString =
+		AccessControlKeyString(cryptoService.digest.sha256((s + entityType.id).toByteArray(Charsets.UTF_8)).toHexString())
+
+	suspend fun toSecureDelegationKeyFor(
+		entityType: EntityWithDelegationTypeName,
+		cryptoService: CryptoService
+	) = toAccessControlKeyStringFor(entityType, cryptoService).toSecureDelegationKeyString(cryptoService)
+}
+
+@JvmInline
+@Serializable
+value class AccessControlKeyString(val s: String) {
+	/**
+	 * One way operation to get the secure delegation key string corresponding to an access control key string
+	 */
+	suspend fun toSecureDelegationKeyString(cryptoService: CryptoService): SecureDelegationKeyString {
+		return SecureDelegationKeyString(cryptoService.digest.sha256(bytes()).toHexString())
+	}
+
+	fun bytes(): ByteArray = hexToByteArray(s)
+}
 
 @JvmInline
 @Serializable

@@ -8,6 +8,9 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
+/**
+ * Note: not thread safe
+ */
 @InternalIcureApi
 class LruCache<K : Any, V : Any>(
 	private val maxCacheSize: Int,

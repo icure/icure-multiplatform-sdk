@@ -18,6 +18,7 @@ import com.icure.sdk.crypto.UserSignatureKeysManager
 import com.icure.sdk.crypto.VerifiedRsaEncryptionKeysSet
 import com.icure.sdk.crypto.toPrivateKeyInfo
 import com.icure.sdk.crypto.toPublicKeyInfo
+import com.icure.sdk.model.AccessControlSecret
 import com.icure.sdk.model.ExchangeData
 import com.icure.sdk.model.SpkiHexString
 import com.icure.sdk.model.extensions.algorithmOfEncryptionKey
@@ -28,15 +29,14 @@ abstract class AbstractExchangeDataManager(
 	protected val base: BaseExchangeDataManager,
 	private val userEncryptionKeys: UserEncryptionKeysManager,
 	private val signatureKeys: UserSignatureKeysManager,
-	private val accessControlSecret: AccessControlSecretUtils,
 	private val cryptoStrategies: CryptoStrategies,
 	protected val dataOwnerApi: DataOwnerApi,
-	private val cryptoService: CryptoService,
+	protected val cryptoService: CryptoService,
 	private val useParentKeys: Boolean
 ) : ExchangeDataManager {
 	protected data class DecryptedExchangeDataContent(
 		val exchangeKey: AesKey,
-		val accessControlSecret: String,
+		val accessControlSecret: AccessControlSecret,
 		val sharedSignatureKey: HmacKey<HmacAlgorithm.HmacSha512>,
 		val verified: Boolean
 	)

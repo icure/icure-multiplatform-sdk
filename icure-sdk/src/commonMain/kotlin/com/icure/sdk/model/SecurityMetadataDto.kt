@@ -12,6 +12,6 @@ data class SecurityMetadata(
 	 * Note that it is also possible for a secure delegation in this map to have no entry for secretId, encryptionKey or owningEntityId.
 	 * This could happen in situations where a user should have access only to the unencrypted content of an entity.
 	 */
-	val secureDelegations: Map<Sha256HexString, SecureDelegation>
+	val secureDelegations: Map<SecureDelegationKeyString, SecureDelegation>
 )
 
