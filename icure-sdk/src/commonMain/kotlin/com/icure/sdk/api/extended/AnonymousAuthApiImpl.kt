@@ -18,6 +18,8 @@ package com.icure.sdk.api.extended
 import com.icure.sdk.api.raw.ApiClient
 import com.icure.sdk.auth.Jwt
 import com.icure.sdk.auth.ThirdPartyProvider
+import com.icure.sdk.utils.ensure
+import com.icure.sdk.utils.validateResponseContent
 import io.ktor.client.call.body
 import kotlinx.serialization.Serializable
 import org.openapitools.client.infrastructure.RequestConfig
@@ -59,7 +61,9 @@ open class AnonymousAuthApiImpl(
 		).body()
 
 		if (!response.successful) throw IllegalArgumentException("Invalid credentials?")
-		check(response.token != null && response.refreshToken != null) { "Token is null" }
+		validateResponseContent(response.token != null && response.refreshToken != null) {
+			"Login response is successful but does not contain token information."
+		}
 		return Jwt(response.token, response.refreshToken)
 	}
 
@@ -89,7 +93,9 @@ open class AnonymousAuthApiImpl(
 		).body()
 
 		if (!response.successful) throw IllegalArgumentException("Invalid credentials?")
-		check(response.token != null && response.refreshToken != null) { "Token is null" }
+		validateResponseContent(response.token != null && response.refreshToken != null) {
+			"Refresh response is successful but does not contain token information."
+		}
 		return Jwt(response.token, response.refreshToken)
 	}
 }

@@ -1,6 +1,5 @@
 package com.icure.sdk.api.extended
 
-import com.icure.sdk.api.raw.HttpResponse
 import com.icure.sdk.api.raw.RawDataownerApi
 import com.icure.sdk.model.CryptoActor
 import com.icure.sdk.model.CryptoActorStubWithType
@@ -10,7 +9,7 @@ import com.icure.sdk.model.HealthcareParty
 import com.icure.sdk.model.extensions.publicKeysSpki
 import com.icure.sdk.model.extensions.toStub
 import com.icure.sdk.utils.IllegalEntityException
-import com.icure.sdk.utils.SuspendCache
+import com.icure.sdk.utils.SingleValueAsyncCache
 
 class DataOwnerApi(
 	private val rawApi: RawDataownerApi,
@@ -19,7 +18,7 @@ class DataOwnerApi(
 		val hierarchy: List<String>,
 		val type: DataOwnerType,
 	)
-	private val dataOwnerInfoCache: SuspendCache<DataOwnerInfo, List<DataOwnerWithType>> = SuspendCache()
+	private val dataOwnerInfoCache: SingleValueAsyncCache<DataOwnerInfo, List<DataOwnerWithType>> = SingleValueAsyncCache()
 
 	suspend fun getCurrentDataOwner(): DataOwnerWithType =
 		rawApi.getCurrentDataOwner().successBody()

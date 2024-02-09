@@ -2,6 +2,7 @@ package com.icure.sdk.crypto
 
 import com.icure.sdk.model.EntityWithDelegationTypeName
 import com.icure.sdk.model.ExchangeData
+import com.icure.sdk.model.SecureDelegationKeyString
 import com.icure.sdk.model.SpkiHexString
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.ResourceNotFoundException
@@ -53,9 +54,9 @@ interface ExchangeDataManager {
 	 * @return the exchange data and decrypted key associated to that hash if cached
 	 */
 	suspend fun getCachedDecryptionDataKeyByAccessControlHash(
-		hashes: List<String>,
+		hashes: List<SecureDelegationKeyString>,
 		entityType: EntityWithDelegationTypeName,
-	): Map<String, ExchangeDataWithUnencryptedContent>
+	): Map<SecureDelegationKeyString, ExchangeDataWithUnencryptedContent>
 
 	/**
 	 * Retrieves the exchange data with the provided id (from the cache if available or from the server otherwise if allowed by

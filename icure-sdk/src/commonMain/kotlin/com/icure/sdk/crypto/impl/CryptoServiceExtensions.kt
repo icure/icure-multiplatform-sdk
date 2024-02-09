@@ -3,7 +3,6 @@ package com.icure.sdk.crypto.impl
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.crypto.PublicRsaKey
 import com.icure.kryptom.crypto.RsaAlgorithm
-import com.icure.kryptom.utils.base64Encode
 import com.icure.sdk.crypto.IcureKeyInfo
 import com.icure.sdk.crypto.RsaSignatureKeysSet
 import com.icure.sdk.crypto.VerifiedRsaEncryptionKeysSet
@@ -11,11 +10,11 @@ import com.icure.sdk.model.Base64String
 import com.icure.sdk.model.CryptoActor
 import com.icure.sdk.model.KeypairFingerprintV1String
 import com.icure.sdk.model.KeypairFingerprintV2String
-import com.icure.sdk.model.SpkiHexString
 import com.icure.sdk.model.extensions.publicKeysWithSha1Spki
 import com.icure.sdk.model.extensions.publicKeysWithSha256Spki
 import com.icure.sdk.utils.IllegalEntityException
 import com.icure.sdk.utils.InternalIcureApi
+import com.icure.sdk.utils.base64Encode
 
 @InternalIcureApi
 sealed interface KeyIdentifierFormat<T> {
@@ -37,7 +36,7 @@ suspend fun <T> CryptoService.signDataWithKeys(
 	keyIdentifierFormat: KeyIdentifierFormat<T>
 ): Map<T, Base64String> =
 	signatureKeysSet.allKeys.associate { keyInfo ->
-		keyIdentifierFormat.format(keyInfo) to base64Encode(rsa.sign(data, keyInfo.key))
+		keyIdentifierFormat.format(keyInfo) to rsa.sign(data, keyInfo.key).base64Encode()
 	}
 
 @InternalIcureApi
@@ -47,7 +46,8 @@ suspend fun <T> CryptoService.encryptDataWithKeys(
 	keyIdentifierFormat: KeyIdentifierFormat<T>,
 ): Map<T, Base64String> =
 	encryptionKeysSet.allKeys.associate { keyInfo ->
-		keyIdentifierFormat.format(keyInfo) to base64Encode(rsa.encrypt(data, keyInfo.key))
+		keyIdentifierFormat.format(keyInfo) to rsa.encrypt(data, keyInfo.key).base64Encode()
+
 	}
 
 suspend fun CryptoService.loadEncryptionKeysForDataOwner(

@@ -5,9 +5,22 @@ import kotlinx.serialization.Serializable
 import kotlin.jvm.JvmInline
 
 
-typealias Base64String = String
-typealias HexString = String
-typealias Sha256HexString = String
+
+@JvmInline
+@Serializable
+value class Base64String(val s: String)
+
+@JvmInline
+@Serializable
+value class HexString(val s: String)
+
+@JvmInline
+@Serializable
+value class Sha256HexString(val s: String)
+
+@JvmInline
+@Serializable
+value class SecureDelegationKeyString(val s: String)
 
 // We may want to disable the inits once the sdk is ready, but now they help to secure the development
 

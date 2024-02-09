@@ -104,20 +104,20 @@ object JvmRsaService : RsaService {
 	}
 
 	private fun <A : RsaAlgorithm> PublicRsaKey<A>.checkFormat() = this.also {
-		check(key.format == SPKI_FORMAT) {
+		assert(key.format == SPKI_FORMAT) {
 			"""
-            Generated public key should have format $SPKI_FORMAT but got ${key.format}.
-            Make sure that the default security provider generates keys in the appropriate format.
-            """.trimIndent()
+			Generated public key should have format $SPKI_FORMAT but got ${key.format}.
+			Make sure that the default security provider generates keys in the appropriate format.
+			""".trimIndent()
 		}
 	}
 
 	private fun <A : RsaAlgorithm> PrivateRsaKey<A>.checkFormat() = this.also {
-		check(key.format == PKCS8_FORMAT) {
+		assert(key.format == PKCS8_FORMAT) {
 			"""
-            Generated private key should have format $PKCS8_FORMAT but got ${key.format}.
-            Make sure that the default security provider generates keys in the appropriate format.
-            """.trimIndent()
+			Generated private key should have format $PKCS8_FORMAT but got ${key.format}.
+			Make sure that the default security provider generates keys in the appropriate format.
+			""".trimIndent()
 		}
 	}
 }

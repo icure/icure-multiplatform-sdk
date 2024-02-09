@@ -3,6 +3,7 @@ package com.icure.kryptom.crypto
 import com.icure.kryptom.js.jsCrypto
 import com.icure.kryptom.js.toArrayBuffer
 import com.icure.kryptom.js.toByteArray
+import com.icure.kryptom.utils.PlatformMethodException
 import kotlinx.coroutines.await
 import org.khronos.webgl.ArrayBuffer
 import org.khronos.webgl.Uint8Array
@@ -21,11 +22,11 @@ object JsRsaService : RsaService {
 			keyPairUses(algorithm)
 		).await()
 		val privateKey = PrivateRsaKey(
-			checkNotNull(pair["privateKey"]) { "Pair returned by generator should have private key" },
+			pair["privateKey"] ?: throw PlatformMethodException("Pair returned by generator should have private key"),
 			algorithm
 		)
 		val publicKey = PublicRsaKey(
-			checkNotNull(pair["publicKey"]) { "Pair returned by generator should have public key" },
+			pair["publicKey"] ?: throw PlatformMethodException("Pair returned by generator should have public key"),
 			algorithm
 		)
 		return RsaKeypair(privateKey, publicKey)

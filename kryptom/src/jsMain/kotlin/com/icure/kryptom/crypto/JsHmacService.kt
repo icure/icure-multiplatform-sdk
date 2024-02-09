@@ -27,9 +27,9 @@ object JsHmacService : HmacService {
 			arrayOf("sign", "verify")
 		).await()
 		val generatedKeySize = exportRawKey(generatedKey).byteLength
-		check(generatedKeySize == algorithm.recommendedKeySize) {
-			"Invalid key size for algorithm $algorithm, got ${generatedKeySize}"
-		}
+		if (generatedKeySize != algorithm.recommendedKeySize) throw AssertionError(
+			"Invalid key size for algorithm $algorithm, got $generatedKeySize"
+		)
 		return HmacKey(generatedKey, algorithm)
 	}
 

@@ -4,8 +4,6 @@ import com.icure.kryptom.crypto.AesKey
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.crypto.HmacAlgorithm
 import com.icure.kryptom.crypto.HmacKey
-import com.icure.kryptom.utils.base64Decode
-import com.icure.kryptom.utils.base64Encode
 import com.icure.kryptom.utils.toHexString
 import com.icure.sdk.api.extended.DataOwnerApi
 import com.icure.sdk.api.raw.RawExchangeDataApi
@@ -22,8 +20,12 @@ import com.icure.sdk.model.Base64String
 import com.icure.sdk.model.ExchangeData
 import com.icure.sdk.model.KeypairFingerprintV2String
 import com.icure.sdk.utils.InternalIcureApi
+import com.icure.sdk.utils.base64Encode
+import com.icure.sdk.utils.decode
+import com.icure.sdk.utils.ensure
 import com.icure.sdk.utils.exhaustPaginatedRequest
 import com.icure.sdk.utils.getLogger
+import com.icure.sdk.utils.validateResponseContent
 import io.ktor.utils.io.charsets.Charsets
 import io.ktor.utils.io.core.toByteArray
 import kotlinx.coroutines.flow.toList
@@ -45,8 +47,8 @@ class BaseExchangeDataManagerImpl(
 		if (!selfIsAnonymousDataOwner) return null
 		val selfId = dataOwnerApi.getCurrentDataOwnerId()
 		return exhaustPaginatedRequest { next ->
-			check(next == null || (next.startKey as? JsonPrimitive)?.takeIf { it.isString }?.content == selfId) {
-				"Received next key should be the current data owner id; incompatible backend version?"
+			validateResponseContent(next == null || (next.startKey as? JsonPrimitive)?.takeIf { it.isString }?.content == selfId) {
+				"Received next key should be the current data owner id"
 			}
 			rawApi.getExchangeDataByParticipant(selfId, startDocumentId = next?.startKeyDocId).successBody()
 		}.toList()
@@ -84,7 +86,7 @@ class BaseExchangeDataManagerImpl(
 			)
 		)
 		return cryptoService.hmac.verify(
-			signature = base64Decode(data.exchangeData.sharedSignature),
+			signature = data.exchangeData.sharedSignature.decode(),
 			data = sharedSignatureData,
 			key = data.unencryptedContent.sharedSignatureKey
 		)
@@ -129,8 +131,8 @@ class BaseExchangeDataManagerImpl(
 		encryptionKeys: VerifiedRsaEncryptionKeysSet,
 		exchangeDataId: String?
 	): ExchangeDataWithUnencryptedContent {
-		require (signatureKeys.isNotEmpty() && encryptionKeys.isNotEmpty()) {
-			"At least one signature key and one encryption key must be provided"
+		ensure (signatureKeys.isNotEmpty() && encryptionKeys.isNotEmpty()) {
+			"At least one signature key and one encryption key should have been provided"
 		}
 		val (exchangeKey, rawExchangeKey) = generateExchangeKey()
 		val (sharedSignatureKey, rawSharedSignatureKey) = generateSharedSignatureKey()
@@ -139,7 +141,7 @@ class BaseExchangeDataManagerImpl(
 		val encryptedSharedSignatureKey = cryptoService.encryptDataWithKeys(rawSharedSignatureKey, encryptionKeys, KeyIdentifierFormat.FingerprintV2)
 		val encryptedAccessControlSecret = cryptoService.encryptDataWithKeys(rawAccessControlSecret, encryptionKeys, KeyIdentifierFormat.FingerprintV2)
 		val delegator = dataOwnerApi.getCurrentDataOwnerId()
-		val sharedSignature = base64Encode(cryptoService.hmac.sign(
+		val sharedSignature = cryptoService.hmac.sign(
 			bytesToSignForSharedSignature(
 				delegator = delegator,
 				delegate = delegateId,
@@ -148,7 +150,7 @@ class BaseExchangeDataManagerImpl(
 				publicKeysFingerprints = encryptionKeys.allKeys.mapTo(mutableSetOf()) { it.pubSpkiHexString.fingerprintV2() }
 			),
 			sharedSignatureKey
-		))
+		).base64Encode()
 		val delegatorSignature = cryptoService.signDataWithKeys(
 			bytesToSignForDelegatorSignature(sharedSignatureKey = sharedSignatureKey),
 			signatureKeys,
@@ -253,7 +255,7 @@ class BaseExchangeDataManagerImpl(
 				verifyAsDelegator = false
 			)
 			if (isVerified) it.copy(
-				base64Encode(cryptoService.hmac.sign(
+				sharedSignature = cryptoService.hmac.sign(
 					bytesToSignForSharedSignature(
 						delegator = it.delegator,
 						delegate = it.delegate,
@@ -262,7 +264,7 @@ class BaseExchangeDataManagerImpl(
 						publicKeysFingerprints = it.exchangeKey.keys
 					),
 					sharedSignatureKey
-				))
+				).base64Encode()
 			) else it
 		}
 
@@ -301,7 +303,7 @@ class BaseExchangeDataManagerImpl(
 		encryptedData.firstNotNullOfOrNull { (fp, encrypted) ->
 			kotlin.runCatching {
 				decryptionKeys.getByFingerprintV2(fp)?.let {
-					cryptoService.rsa.decrypt(base64Decode(encrypted), it)
+					cryptoService.rsa.decrypt(encrypted.decode(), it)
 				}
 			}.onFailure {
 				log.w(it) { "Failed to decrypt data using RSA key $fp" }
@@ -321,7 +323,7 @@ class BaseExchangeDataManagerImpl(
 			verificationKeyProvider.getByFingerprint(fp)?.let { it to signature }
 		}.takeIf { it.isNotEmpty() }?.all { (key, signature) ->
 			cryptoService.rsa.verifySignature(
-				signature = base64Decode(signature),
+				signature = signature.decode(),
 				data = delegatorSignatureData,
 				publicKey = key
 			)

@@ -2,6 +2,8 @@ package com.icure.sdk.crypto.impl
 
 import com.icure.kryptom.crypto.AesKey
 import com.icure.kryptom.crypto.CryptoService
+import com.icure.kryptom.crypto.HmacAlgorithm
+import com.icure.kryptom.crypto.HmacKey
 import com.icure.sdk.api.extended.DataOwnerApi
 import com.icure.sdk.crypto.AccessControlSecretUtils
 import com.icure.sdk.crypto.BaseExchangeDataManager
@@ -23,18 +25,19 @@ import com.icure.sdk.utils.InternalIcureApi
 
 @InternalIcureApi
 abstract class AbstractExchangeDataManager(
-	private val base: BaseExchangeDataManager,
+	protected val base: BaseExchangeDataManager,
 	private val userEncryptionKeys: UserEncryptionKeysManager,
 	private val signatureKeys: UserSignatureKeysManager,
 	private val accessControlSecret: AccessControlSecretUtils,
 	private val cryptoStrategies: CryptoStrategies,
-	private val dataOwnerApi: DataOwnerApi,
+	protected val dataOwnerApi: DataOwnerApi,
 	private val cryptoService: CryptoService,
 	private val useParentKeys: Boolean
 ) : ExchangeDataManager {
 	protected data class DecryptedExchangeDataContent(
 		val exchangeKey: AesKey,
 		val accessControlSecret: String,
+		val sharedSignatureKey: HmacKey<HmacAlgorithm.HmacSha512>,
 		val verified: Boolean
 	)
 
@@ -71,6 +74,7 @@ abstract class AbstractExchangeDataManager(
 		return DecryptedExchangeDataContent(
 			accessControlSecret = decryptedAccessControlSecret,
 			exchangeKey = decryptedExchangeKey,
+			sharedSignatureKey = decryptedSharedSignatureKey,
 			verified = verified
 		)
 	}
@@ -88,16 +92,20 @@ abstract class AbstractExchangeDataManager(
 				require(allowNoDelegateKeys) { "Delegate $delegateId has no public keys and the current operation does not allow for creation of exchange data without any delegate keys." }
 				emptyList()
 			} else {
+				val delegateKeysBySpki = delegateKeys.associateBy { it.pubSpkiHexString }
 				val verifiedSpki = if (useParentKeys && delegateId in dataOwnerApi.getCurrentDataOwnerHierarchyIds()) {
-					userEncryptionKeys.getVerifiedPublicKeysFor(delegate.stub)
+					userEncryptionKeys.getVerifiedPublicKeysFor(delegate.stub).filter { delegateKeysBySpki.containsKey(it) }
 				} else {
 					cryptoStrategies.verifyDelegatePublicKeys(delegate, delegateKeys.map { it.pubSpkiHexString }, cryptoService)
 				}
-				check (allowNoDelegateKeys || verifiedSpki.isNotEmpty()) {
+				require (allowNoDelegateKeys || verifiedSpki.isNotEmpty()) {
 					"Could not create exchange data to $delegateId as no public key for the delegate could be verified."
 				}
-				val delegateKeysBySpki = delegateKeys.associateBy { it.pubSpkiHexString }
-				verifiedSpki.map { checkNotNull(delegateKeysBySpki[it]) { "Key $it is verified but is not a key of data owner ${delegate.stub.id}"} }
+				verifiedSpki.map {
+					requireNotNull(delegateKeysBySpki[it]) {
+						"Key $it was marked as verified but is not a key of data owner ${delegate.stub.id}"
+					}
+				}
 			}
 		} else emptyList()
 		val signatureKey = signatureKeys.getOrCreateSignatureKeyPair()

@@ -1,6 +1,8 @@
 package com.icure.sdk.utils
 
 import io.ktor.http.HttpMethod
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.contract
 import kotlin.reflect.KClass
 
 /**
@@ -26,3 +28,34 @@ class RequestStatusException(
 ) : Exception(
 	"Request $requestMethod $url failed with status code $statusCode"
 )
+
+class UnexpectedResponseContentException(message: String) : Exception(message)
+
+/**
+ * Checks an invariant at runtime. If value is not true there is an implementation error on iCure's side.
+ */
+@OptIn(ExperimentalContracts::class)
+@InternalIcureApi
+inline fun ensure(value: Boolean, lazyMessage: () -> String) {
+	contract {
+		returns() implies value
+	}
+	if (!value) {
+		throw AssertionError(lazyMessage())
+	}
+}
+
+@OptIn(ExperimentalContracts::class)
+@InternalIcureApi
+inline fun validateResponseContent(
+	isValid: Boolean,
+	lazyMessage: () -> String
+) {
+	contract {
+		returns() implies isValid
+	}
+	if (!isValid) {
+		throw UnexpectedResponseContentException(lazyMessage())
+	}
+}
+

@@ -11,6 +11,7 @@ import com.icure.sdk.model.SpkiHexString
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.IllegalEntityException
 import com.icure.sdk.utils.Serialization
+import com.icure.sdk.utils.ensure
 import kotlinx.serialization.encodeToString
 
 /**
@@ -81,7 +82,7 @@ class IcureStorageFacade(
 		if (
 			legacyPublicKey != null
 			&& publicKeyFingerprint == KeypairFingerprintV1String.fromPublicKeySpki(legacyPublicKey)
-		) check(algorithm == RsaEncryptionAlgorithm.OaepWithSha1) {
+		) ensure (algorithm == RsaEncryptionAlgorithm.OaepWithSha1) {
 			"Required key is the legacy public key, algorithm must be OaepWithSha1, but got $algorithm"
 		}
 		val deviceKey = keys.getPrivateKeyPkcs8(entryFor.deviceKeypairOfDataOwner(dataOwnerId, publicKeyFingerprint))
@@ -189,7 +190,7 @@ class IcureStorageFacade(
 		algorithm: RsaEncryptionAlgorithm
 	): ByteArray? =
 		keys.getPrivateKeyPkcs8("org.taktik.icure.rsa.${dataOwnerId}.${publicKeyFingerprint}")?.also {
-			check(algorithm == RsaEncryptionAlgorithm.OaepWithSha1) {
+			ensure(algorithm == RsaEncryptionAlgorithm.OaepWithSha1) {
 				"Found a key in legacy aes exchange keys location, algorithm must be OaepWithSha1, but got $algorithm"
 			}
 		}
@@ -204,7 +205,7 @@ class IcureStorageFacade(
 		legacyPublicKey?.takeIf {
 			KeypairFingerprintV1String.fromPublicKeySpki(it) == publicKeyFingerprint
 		}?.let {
-			check(algorithm == RsaEncryptionAlgorithm.OaepWithSha1) {
+			ensure(algorithm == RsaEncryptionAlgorithm.OaepWithSha1) {
 				"Required key is the legacy public key, algorithm must be OaepWithSha1, but got $algorithm"
 			}
 			keys.getPrivateKeyPkcs8("org.taktik.icure.rsa.${dataOwnerId}")

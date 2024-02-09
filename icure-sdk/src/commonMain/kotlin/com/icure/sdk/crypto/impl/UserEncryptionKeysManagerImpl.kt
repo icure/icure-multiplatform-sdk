@@ -25,6 +25,7 @@ import com.icure.sdk.model.extensions.publicKeysWithSha256Spki
 import com.icure.sdk.model.extensions.toStub
 import com.icure.sdk.storage.IcureStorageFacade
 import com.icure.sdk.utils.InternalIcureApi
+import com.icure.sdk.utils.ensure
 import com.icure.sdk.utils.tryWithLock
 import kotlinx.coroutines.sync.Mutex
 import kotlin.concurrent.Volatile
@@ -34,7 +35,7 @@ class UserEncryptionKeysManagerImpl private constructor (
 	initialKeyData: KeyData,
 	private val keyLoader: KeyLoader
 ) : UserEncryptionKeysManager {
-	@Volatile
+	@Volatile // Writes use mutex, but reads do not.
 	private var cachedKeyData: KeyData = initialKeyData
 	private val cacheWriteMutex: Mutex = Mutex(false)
 
@@ -46,10 +47,9 @@ class UserEncryptionKeysManagerImpl private constructor (
 	override suspend fun reloadKeys() {
 		cacheWriteMutex.tryWithLock {
 			val (updatedKeys, newKey) = keyLoader.doLoadKeys(
-				NoOpRecoveryFunction,
-				{ _, _ -> throw IllegalStateException("Can't create new key during key reload") }
-			)
-			check (newKey == null) { "New key created during key reload. This should not happen." }
+				NoOpRecoveryFunction
+			) { _, _ -> throw IllegalStateException("Can't create new key during key reload") }
+			ensure (newKey == null) { "New key created during key reload." }
 			cachedKeyData = updatedKeys
 		} ?: throw IllegalStateException("Multiple concurrent requests to reload keys. This is not allowed.")
 	}

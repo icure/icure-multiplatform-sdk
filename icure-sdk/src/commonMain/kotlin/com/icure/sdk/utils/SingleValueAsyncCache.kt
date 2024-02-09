@@ -9,7 +9,8 @@ import kotlinx.coroutines.sync.withLock
 import kotlin.concurrent.Volatile
 
 /**
- * Cache with unlimited duration which can use suspend functions when retrieving the value.
+ * Caches a single value with unlimited duration. The cache population/value retrieval function can be a suspend
+ * function when retrieving the value.
  * If multiple coroutines try to retrieve the value at once only one will actually perform the work, while others will
  * wait for the result.
  * If a coroutine B is waiting for the result that is being processed by coroutine A, and coroutine A is cancelled, then
@@ -18,9 +19,10 @@ import kotlin.concurrent.Volatile
  * @param TRetrieved type of the retrieved value. Usually it is the same as the cached type, but it can be different if
  * the retrieved value has some potential uses but can't be safely cached long term (it is subject to too many changes).
  */
-class SuspendCache<TCached : Any, TRetrieved : Any> {
+@InternalIcureApi
+class SingleValueAsyncCache<TCached : Any, TRetrieved : Any> {
 	private val mutex: Mutex = Mutex(false)
-	@Volatile
+	@Volatile // Writes use mutex, but reads do not.
 	private var cache: Deferred<TCached>? = null
 
 	/**

@@ -1,12 +1,16 @@
 package com.icure.sdk.model
 
+import com.icure.sdk.utils.InternalIcureApi
+import com.icure.sdk.utils.ensure
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+@InternalIcureApi
 data class BulkShareOrUpdateMetadataParams(
 	val requestsByEntityId: Map<String, EntityRequestInformationDto>
 )
 
+@InternalIcureApi
 data class EntityRequestInformationDto(
 	val requests: Map<String, EntityShareOrMetadataUpdateRequest>,
 	/**
@@ -16,13 +20,14 @@ data class EntityRequestInformationDto(
 	val potentialParentDelegations: Set<String>
 )
 
+@InternalIcureApi
 data class EntityShareOrMetadataUpdateRequest(
 	val share: EntityShareRequest? = null,
 	val update: EntitySharedMetadataUpdateRequest? = null,
 ) {
 	init {
-		require(share != null || update != null) { "Either share or update must be specified" }
-		require(share == null || update == null) { "Only one of share or update must be specified" }
+		ensure(share != null || update != null) { "Either share or update must be specified" }
+		ensure(share == null || update == null) { "Only one of share or update must be specified" }
 	}
 }
 
