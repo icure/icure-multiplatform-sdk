@@ -16,7 +16,6 @@ import com.icure.sdk.model.SecureDelegationKeyString
 import com.icure.sdk.utils.SynchronisedLruCache
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.LruCacheWithAsyncRetrieve
-import com.icure.sdk.utils.LruCacheWithAsyncRetrieveImpl
 import com.icure.sdk.utils.ResourceNotFoundException
 
 @InternalIcureApi

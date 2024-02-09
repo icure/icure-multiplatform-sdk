@@ -1,8 +1,10 @@
 package com.icure.sdk.utils
 
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
+import kotlinx.coroutines.completeWith
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -19,10 +21,9 @@ import kotlin.concurrent.Volatile
  * @param TRetrieved type of the retrieved value. Usually it is the same as the cached type, but it can be different if
  * the retrieved value has some potential uses but can't be safely cached long term (it is subject to too many changes).
  */
-@InternalIcureApi
 class SingleValueAsyncCache<TCached : Any, TRetrieved : Any> {
 	private val mutex: Mutex = Mutex(false)
-	@Volatile // Writes use mutex, but reads do not.
+	@Volatile
 	private var cache: Deferred<TCached>? = null
 
 	/**
@@ -50,8 +51,16 @@ class SingleValueAsyncCache<TCached : Any, TRetrieved : Any> {
 						null
 					}
 				}
-			} ?: async(start = CoroutineStart.LAZY) { doRetrieve() }.also {
-				cache = async(start = CoroutineStart.LAZY) { it.await().first }
+			} ?: kotlin.run {
+				val completableCache = CompletableDeferred<TCached>()
+				cache = completableCache
+				async(start = CoroutineStart.LAZY) {
+					kotlin.runCatching {
+						doRetrieve()
+					}.also { res ->
+						completableCache.completeWith(res.map { it.first })
+					}.getOrThrow()
+				}
 			}
 		}
 		/*
