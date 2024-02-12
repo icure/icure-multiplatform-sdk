@@ -54,7 +54,7 @@ interface ExchangeDataManager {
 	 * @return the exchange data and decrypted key associated to that hash if cached
 	 */
 	suspend fun getCachedDecryptionDataKeyByAccessControlHash(
-		hashes: List<SecureDelegationKeyString>,
+		hashes: Collection<SecureDelegationKeyString>,
 		entityType: EntityWithDelegationTypeName,
 	): Map<SecureDelegationKeyString, ExchangeDataWithUnencryptedContent>
 

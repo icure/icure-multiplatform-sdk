@@ -2,6 +2,7 @@ package com.icure.sdk.crypto
 
 import com.icure.sdk.model.AccessLevel
 import com.icure.sdk.model.Encryptable
+import com.icure.sdk.model.HexString
 import com.icure.sdk.utils.InternalIcureApi
 import kotlinx.coroutines.flow.Flow
 
@@ -9,11 +10,11 @@ import kotlinx.coroutines.flow.Flow
  * Contains decrypted metadata and the data owners which have access to it.
  */
 @InternalIcureApi
-data class DecryptedMetadataDetails(
+data class DecryptedMetadataDetails<T : Any>(
 	/**
 	 * The decrypted metadata
 	 */
-	val value: String,
+	val value: T,
 	/**
 	 * The ids of data owners know to have access to [value]
 	 */
@@ -34,10 +35,10 @@ interface SecurityMetadataDecryptor {
 	 * @return a flow containing the decrypted exchange keys. Note that the values may not be repeated (for example if the
 	 * same metadata was shared by multiple users to the one of the provided data owners).
 	 */
-	suspend fun decryptEncryptionKeysOf(
+	fun decryptEncryptionKeysOf(
 		typedEntity: Encryptable,
 		dataOwnersHierarchySubset: List<String>
-	): Flow<DecryptedMetadataDetails>
+	): Flow<DecryptedMetadataDetails<HexString>>
 
 	/**
 	 * Decrypt the secret ids for an entity.
@@ -48,10 +49,10 @@ interface SecurityMetadataDecryptor {
 	 * @return a flow containing the decrypted secret ids. Note that the values may not be repeated (for example if the
 	 * same metadata was shared by multiple users to the one of the provided data owners).
 	 */
-	suspend fun decryptSecretIdsOf(
+	fun decryptSecretIdsOf(
 		typedEntity: Encryptable,
 		dataOwnersHierarchySubset: List<String>
-	): Flow<DecryptedMetadataDetails>
+	): Flow<DecryptedMetadataDetails<String>>
 
 	/**
 	 * Decrypt the owning entity ids of an entity.
@@ -62,10 +63,10 @@ interface SecurityMetadataDecryptor {
 	 * @return a flow containing the decrypted owning entity ids. Note that the values may not be repeated (for example if the
 	 * same metadata was shared by multiple users to the one of the provided data owners).
 	 */
-	suspend fun decryptOwningEntityIdsOf(
+	fun decryptOwningEntityIdsOf(
 		typedEntity: Encryptable,
 		dataOwnersHierarchySubset: List<String>
-	): Flow<DecryptedMetadataDetails>
+	): Flow<DecryptedMetadataDetails<String>>
 
 	/**
 	 * Get the maximum access level that any data owner in {@link dataOwnersHierarchySubset} has to {@link typedEntity}, according to the metadata

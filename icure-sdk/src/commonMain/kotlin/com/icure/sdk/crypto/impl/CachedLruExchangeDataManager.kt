@@ -73,7 +73,7 @@ class CachedLruExchangeDataManager(
 	}
 
 	override suspend fun getCachedDecryptionDataKeyByAccessControlHash(
-		hashes: List<SecureDelegationKeyString>,
+		hashes: Collection<SecureDelegationKeyString>,
 		entityType: EntityWithDelegationTypeName
 	): Map<SecureDelegationKeyString, ExchangeDataWithUnencryptedContent> {
 		val hashesToExchangeDataId = secureDelegationKeysToExchangeDataId.getMany(hashes)
