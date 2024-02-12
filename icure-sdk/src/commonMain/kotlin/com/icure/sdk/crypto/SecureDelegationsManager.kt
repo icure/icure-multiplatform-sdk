@@ -3,6 +3,7 @@ package com.icure.sdk.crypto
 import com.icure.sdk.model.AccessLevel
 import com.icure.sdk.model.Encryptable
 import com.icure.sdk.model.EntityShareOrMetadataUpdateRequest
+import com.icure.sdk.model.HexString
 import com.icure.sdk.model.RequestedPermission
 import com.icure.sdk.utils.InternalIcureApi
 
@@ -23,7 +24,7 @@ interface SecureDelegationsManager {
 		entity: T,
 		secretIds: List<String>,
 		owningEntityIds: List<String>,
-		encryptionKeys: List<String>,
+		encryptionKeys: List<HexString>,
 		autoDelegations: Map<String, AccessLevel>
 	): T
 
@@ -46,7 +47,7 @@ interface SecureDelegationsManager {
 		entity: Encryptable,
 		delegateId: String,
 		shareSecretIds: List<String>,
-		shareEncryptionKeys: List<String>,
+		shareEncryptionKeys: List<HexString>,
 		shareOwningEntityIds: List<String>,
 		newDelegationPermissions: RequestedPermission
 	): EntityShareOrMetadataUpdateRequest?

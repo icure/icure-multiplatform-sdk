@@ -22,11 +22,11 @@ interface SecureDelegationsEncryption {
 	 */
 	suspend fun encryptExchangeDataId(exchangeDataId: String, publicKeys: VerifiedRsaEncryptionKeysSet): Map<KeypairFingerprintV2String, Base64String>
 
-	suspend fun encryptEncryptionKey(hexKey: String, key: AesKey): Base64String
+	suspend fun encryptEncryptionKey(hexKey: HexString, key: AesKey): Base64String
 
-	suspend fun encryptEncryptionKeys(hexKeys: List<String>, key: AesKey): Set<Base64String>
+	suspend fun encryptEncryptionKeys(hexKeys: List<HexString>, key: AesKey): Set<Base64String>
 
-	suspend fun decryptEncryptionKey(encrypted: String, key: AesKey): HexString
+	suspend fun decryptEncryptionKey(encrypted: Base64String, key: AesKey): HexString
 
 	suspend fun decryptEncryptionKeys(delegation: SecureDelegation, key: AesKey): List<HexString>
 	
@@ -34,7 +34,7 @@ interface SecureDelegationsEncryption {
 
 	suspend fun encryptSecretIds(secretIds: List<String>, key: AesKey): Set<Base64String>
 
-	suspend fun decryptSecretId(encrypted: String, key: AesKey): String
+	suspend fun decryptSecretId(encrypted: Base64String, key: AesKey): String
 
 	suspend fun decryptSecretIds(delegation: SecureDelegation, key: AesKey): List<String>
 
@@ -42,7 +42,7 @@ interface SecureDelegationsEncryption {
 
 	suspend fun encryptOwningEntityIds(owningEntityIds: List<String>, key: AesKey): Set<Base64String>
 
-	suspend fun decryptOwningEntityId(encrypted: String, key: AesKey): String
+	suspend fun decryptOwningEntityId(encrypted: Base64String, key: AesKey): String
 
 	suspend fun decryptOwningEntityIds(delegation: SecureDelegation, key: AesKey): List<String>
 }

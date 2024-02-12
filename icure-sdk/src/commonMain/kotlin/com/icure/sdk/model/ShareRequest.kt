@@ -51,7 +51,7 @@ data class EntityShareRequest(
 	 * Values generated using the access control secret of the exchange data used for the encryption of the ids and keys
 	 * to share. Once hashed they are used as secure delegation keys.
 	 */
-	val accessControlKeys: Set<HexString>,
+	val accessControlKeys: Set<AccessControlKeyString>,
 	/**
 	 * Encrypted secret ids to share with the delegate.
 	 */
@@ -147,22 +147,22 @@ data class EntitySharedMetadataUpdateRequest(
 	/**
 	 * Access control hash of the metadata to update.
 	 */
-	val metadataAccessControlHash: String,
+	val metadataAccessControlHash: SecureDelegationKeyString,
 	/**
 	 * Updates for secret ids: the key is an encrypted secret id and the value is if an entry with that encrypted secret
 	 * id should be created or deleted.
 	 */
-	val secretIds: Map<String, EntryUpdateTypeDto> = emptyMap(),
+	val secretIds: Map<Base64String, EntryUpdateTypeDto> = emptyMap(),
 	/**
 	 * Updates for encryption keys: a key in the map is an encrypted encryption key and the value is if an entry with
 	 * that encrypted encryption key should be created or deleted.
 	 */
-	val encryptionKeys: Map<String, EntryUpdateTypeDto> = emptyMap(),
+	val encryptionKeys: Map<Base64String, EntryUpdateTypeDto> = emptyMap(),
 	/**
 	 * Updates for owning entity ids: the key is the encrypted id of an owning entity and the value is if an entry with
 	 * that encrypted owning entity id should be created or deleted.
 	 */
-	val owningEntityIds: Map<String, EntryUpdateTypeDto> = emptyMap(),
+	val owningEntityIds: Map<Base64String, EntryUpdateTypeDto> = emptyMap(),
 ) {
 	/**
 	 * Specifies if an entry should be created anew or deleted
