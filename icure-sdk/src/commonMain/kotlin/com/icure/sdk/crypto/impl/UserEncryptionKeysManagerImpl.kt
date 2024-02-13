@@ -198,7 +198,7 @@ private class KeyLoader(
 		recoveredKeyData.forEach { (dataOwnerId, recoveredData) ->
 			val currDataOwnerRequest = recoveryRequest.first { it.dataOwnerDetails.dataOwner.id == dataOwnerId }
 			val allRequestedKeys = currDataOwnerRequest.unknownKeys + currDataOwnerRequest.unavailableKeys
-			require (allRequestedKeys.containsAll(recoveredData.keyAuthenticity.keys + recoveredData.recoveredKeys)) {
+			require (allRequestedKeys.map { it.fingerprintV1() }.containsAll(recoveredData.keyAuthenticity.keys + recoveredData.recoveredKeys.keys)) {
 				"Recovery function should return entries only for the requested keys"
 			}
 			// Save keys

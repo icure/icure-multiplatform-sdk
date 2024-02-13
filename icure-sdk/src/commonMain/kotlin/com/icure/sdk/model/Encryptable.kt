@@ -53,7 +53,7 @@ interface Encryptable {
 	 */
 	val encryptedSelf: Base64String?
 
-	fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata): Encryptable
+	fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): Encryptable
 
 	val type: EntityWithDelegationTypeName
 }

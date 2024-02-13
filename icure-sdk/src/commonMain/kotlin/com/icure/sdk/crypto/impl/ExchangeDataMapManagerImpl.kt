@@ -37,6 +37,6 @@ class ExchangeDataMapManagerImpl(
 		accessControlKeyHashes: List<SecureDelegationKeyString>
 	): List<ExchangeDataMap> =
 		rawApi.getExchangeDataMapBatch(ListOfIds(accessControlKeyHashes.map { it.s })).successBody().also { retrieved ->
-			cache.setMany(retrieved.map { SecureDelegationKeyString(it.id) to Unit })
+			cache.setMany(retrieved.map { it.id to Unit })
 		}
 }

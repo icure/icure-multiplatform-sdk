@@ -1,5 +1,7 @@
 package com.icure.sdk.model
 
+import kotlinx.serialization.Serializable
+
 /**
  * Represents a delegation which allows a data owner to access the encrypted data of an entity and specifies his access control level.
  * The encrypted  metadata is created by a "delegator" data owner, and can be used also by a "delegate" data owner. To create new
@@ -25,6 +27,7 @@ package com.icure.sdk.model
  * In general users will want to hide the delegator/delegate id for patient and medical devices data owners, in order to keep
  * data confidentiality. For hcps instead the best choice depends is likely to change depending on the product.
  */
+@Serializable
 data class SecureDelegation(
 	/**
 	 * Optionally the id of the delegator data owner for this [SecureDelegation]. May be null if this information must

@@ -11,7 +11,6 @@ import com.icure.sdk.model.RequestedPermission
 import com.icure.sdk.utils.InternalIcureApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonNames
 
 @InternalIcureApi
 data class HierarchicallyDecryptedMetadata<T : Any>(
@@ -357,7 +356,8 @@ interface EntityEncryptionService {
 	 * Decrypts an encrypted entity, returns null if the entity could not be decrypted.
 	 */
 	suspend fun <E : Encryptable, D: Encryptable> decryptEntity(
-		entity: E,
+		encryptedEntity: E,
+		encryptedEntityJson: JsonElement,
 		constructor: (json: JsonElement) -> D
 	): D?
 
@@ -380,6 +380,7 @@ interface EntityEncryptionService {
 	 */
 	suspend fun <E : Encryptable, D: Encryptable> tryEncryptEntity(
 		decryptedEntity: D,
+		decryptedEntityJson: JsonElement,
 		fieldsToEncrypt: EncryptedFieldsManifest,
 		encodeBinaryData: Boolean,
 		requireEncryption: Boolean,

@@ -10,4 +10,5 @@ interface CryptoActor : Revisionable<String> {
 	val privateKeyShamirPartitions: Map<String, String>
 	val publicKey: String?
 	val publicKeysForOaepWithSha256: Set<String>
+	val tags: Set<CodeStub>
 }

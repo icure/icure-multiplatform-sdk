@@ -301,15 +301,7 @@ class BaseExchangeDataManagerImpl(
 		encryptedData: Map<KeypairFingerprintV2String, Base64String>,
 		decryptionKeys: RsaDecryptionKeysSet,
 	): ByteArray? =
-		encryptedData.firstNotNullOfOrNull { (fp, encrypted) ->
-			kotlin.runCatching {
-				decryptionKeys.getByFingerprintV2(fp)?.let {
-					cryptoService.rsa.decrypt(encrypted.decode(), it)
-				}
-			}.onFailure {
-				log.w(it) { "Failed to decrypt data using RSA key $fp" }
-			}.getOrNull()
-		}
+		cryptoService.decryptDataWithKeys(encryptedData, decryptionKeys, KeyIdentifierFormat.FingerprintV2)
 
 	private suspend fun verifyDelegatorSignature(
 		exchangeData: ExchangeData,

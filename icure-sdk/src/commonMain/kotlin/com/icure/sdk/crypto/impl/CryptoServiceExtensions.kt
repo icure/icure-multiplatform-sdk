@@ -1,9 +1,11 @@
 package com.icure.sdk.crypto.impl
 
 import com.icure.kryptom.crypto.CryptoService
+import com.icure.kryptom.crypto.PrivateRsaKey
 import com.icure.kryptom.crypto.PublicRsaKey
 import com.icure.kryptom.crypto.RsaAlgorithm
 import com.icure.sdk.crypto.IcureKeyInfo
+import com.icure.sdk.crypto.RsaDecryptionKeysSet
 import com.icure.sdk.crypto.RsaSignatureKeysSet
 import com.icure.sdk.crypto.VerifiedRsaEncryptionKeysSet
 import com.icure.sdk.model.Base64String
@@ -15,17 +17,25 @@ import com.icure.sdk.model.extensions.publicKeysWithSha256Spki
 import com.icure.sdk.utils.IllegalEntityException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.base64Encode
+import com.icure.sdk.utils.decode
+import com.icure.sdk.utils.getLogger
 
 @InternalIcureApi
 sealed interface KeyIdentifierFormat<T> {
 	fun format(key: IcureKeyInfo<*>): T
+	fun takeKeyFrom(rsaDecryptionKeys: RsaDecryptionKeysSet, identifier: T): PrivateRsaKey<RsaAlgorithm.RsaEncryptionAlgorithm>?
 
 	data object FingerprintV1 : KeyIdentifierFormat<KeypairFingerprintV1String> {
 		override fun format(key: IcureKeyInfo<*>) = key.pubSpkiHexString.fingerprintV1()
+		override fun takeKeyFrom(rsaDecryptionKeys: RsaDecryptionKeysSet, identifier: KeypairFingerprintV1String) =
+			rsaDecryptionKeys.getByFingerprintV1(identifier)
 	}
 
 	data object FingerprintV2 : KeyIdentifierFormat<KeypairFingerprintV2String> {
 		override fun format(key: IcureKeyInfo<*>) = key.pubSpkiHexString.fingerprintV2()
+
+		override fun takeKeyFrom(rsaDecryptionKeys: RsaDecryptionKeysSet, identifier: KeypairFingerprintV2String) =
+			rsaDecryptionKeys.getByFingerprintV2(identifier)
 	}
 }
 
@@ -47,7 +57,22 @@ suspend fun <T> CryptoService.encryptDataWithKeys(
 ): Map<T, Base64String> =
 	encryptionKeysSet.allKeys.associate { keyInfo ->
 		keyIdentifierFormat.format(keyInfo) to rsa.encrypt(data, keyInfo.key).base64Encode()
+	}
 
+@InternalIcureApi
+suspend fun <T> CryptoService.decryptDataWithKeys(
+	data: Map<T, Base64String>,
+	decryptionKeys: RsaDecryptionKeysSet,
+	keyIdentifierFormat: KeyIdentifierFormat<T>
+): ByteArray? =
+	data.firstNotNullOfOrNull { (fp, encrypted) ->
+		kotlin.runCatching {
+			keyIdentifierFormat.takeKeyFrom(decryptionKeys, fp)?.let {
+				rsa.decrypt(encrypted.decode(), it)
+			}
+		}.onFailure {
+			log.w(it) { "Failed to decrypt data using RSA key $fp" }
+		}.getOrNull()
 	}
 
 suspend fun CryptoService.loadEncryptionKeysForDataOwner(
@@ -70,3 +95,5 @@ suspend fun CryptoService.loadEncryptionKeysForDataOwner(
 		)
 	}
 }
+
+private val log = getLogger("CryptoService")

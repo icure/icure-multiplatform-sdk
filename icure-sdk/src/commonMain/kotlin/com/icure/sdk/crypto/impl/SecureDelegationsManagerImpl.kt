@@ -46,6 +46,7 @@ class SecureDelegationsManagerImpl (
 		entity: T,
 		secretIds: List<String>,
 		owningEntityIds: List<String>,
+		owningEntitySecretIds: List<String>,
 		encryptionKeys: List<HexString>,
 		autoDelegations: Map<String, AccessLevel>
 	): T {
@@ -74,9 +75,12 @@ class SecureDelegationsManagerImpl (
 			otherDelegationsInfo.mapNotNull { info -> info.encryptedExchangeDataId?.let { info.canonicalAccessControlKey to it } }.toMap()
 		))
 		@Suppress("UNCHECKED_CAST")
-		return entity.copyWithSecurityMetadata(SecurityMetadata(
-			secureDelegations = (listOf(rootDelegationInfo) + otherDelegationsInfo).associate { it.canonicalDelegationKey to it.delegation }
-		)) as T
+		return entity.copyWithSecurityMetadata(
+			securityMetadata = SecurityMetadata(
+				secureDelegations = (listOf(rootDelegationInfo) + otherDelegationsInfo).associate { it.canonicalDelegationKey to it.delegation },
+			),
+			secretForeignKeys = owningEntitySecretIds.toSet(),
+		) as T
 	}
 
 	override suspend fun makeShareOrUpdateRequestParams(
@@ -95,16 +99,14 @@ class SecureDelegationsManagerImpl (
 		val secureDelegationKey = accessControlKey.toSecureDelegationKeyString(cryptoService)
 		val existingDelegation = entity.securityMetadata?.secureDelegations?.get(secureDelegationKey)
 		return if (existingDelegation != null) {
-			EntityShareOrMetadataUpdateRequest(
-				update = makeUpdateRequestParams(
-					canonicalKey = secureDelegationKey,
-					existingDelegation = existingDelegation,
-					exchangeDataInfo = exchangeData,
-					shareSecretIds = shareSecretIds,
-					shareEncryptionKeys = shareEncryptionKeys,
-					shareOwningEntityIds = shareOwningEntityIds
-				)
-			)
+			makeUpdateRequestParams(
+				canonicalKey = secureDelegationKey,
+				existingDelegation = existingDelegation,
+				exchangeDataInfo = exchangeData,
+				shareSecretIds = shareSecretIds,
+				shareEncryptionKeys = shareEncryptionKeys,
+				shareOwningEntityIds = shareOwningEntityIds
+			)?.let { EntityShareOrMetadataUpdateRequest(update = it) }
 		} else {
 			EntityShareOrMetadataUpdateRequest(
 				share = makeShareRequestParams(
@@ -176,9 +178,9 @@ class SecureDelegationsManagerImpl (
 		val existingEncryptionKeys = secureDelegationsEncryption.decryptEncryptionKeys(existingDelegation, exchangeDataInfo.unencryptedContent.exchangeKey).toSet()
 		val existingOwningEntityIds = secureDelegationsEncryption.decryptOwningEntityIds(existingDelegation, exchangeDataInfo.unencryptedContent.exchangeKey).toSet()
 
-		val newSecretIds = shareSecretIds.filter { !existingSecretIds.contains(it) }
-		val newEncryptionKeys = shareEncryptionKeys.filter { !existingEncryptionKeys.contains(it) }
-		val newOwningEntityIds = shareOwningEntityIds.filter { !existingOwningEntityIds.contains(it) }
+		val newSecretIds = shareSecretIds.filterTo(mutableSetOf()) { !existingSecretIds.contains(it) }
+		val newEncryptionKeys = shareEncryptionKeys.filterTo(mutableSetOf()) { !existingEncryptionKeys.contains(it) }
+		val newOwningEntityIds = shareOwningEntityIds.filterTo(mutableSetOf()) { !existingOwningEntityIds.contains(it) }
 
 		return if (newSecretIds.isNotEmpty() || newEncryptionKeys.isNotEmpty() || newOwningEntityIds.isNotEmpty()) {
 			val encryptedNewSecretIds = secureDelegationsEncryption.encryptSecretIds(newSecretIds, exchangeDataInfo.unencryptedContent.exchangeKey)
@@ -236,9 +238,9 @@ class SecureDelegationsManagerImpl (
 		} else {
 			makeExchangeDataIdInfoForDelegate(selfId, delegateId, exchangeDataInfo)
 		}
-		val encryptedSecretIds = secureDelegationsEncryption.encryptSecretIds(shareSecretIds, exchangeDataInfo.unencryptedContent.exchangeKey)
-		val encryptedEncryptionKeys = secureDelegationsEncryption.encryptEncryptionKeys(shareEncryptionKeys, exchangeDataInfo.unencryptedContent.exchangeKey)
-		val encryptedOwningEntityIds = secureDelegationsEncryption.encryptOwningEntityIds(shareOwningEntityIds, exchangeDataInfo.unencryptedContent.exchangeKey)
+		val encryptedSecretIds = secureDelegationsEncryption.encryptSecretIds(shareSecretIds.toSet(), exchangeDataInfo.unencryptedContent.exchangeKey)
+		val encryptedEncryptionKeys = secureDelegationsEncryption.encryptEncryptionKeys(shareEncryptionKeys.toSet(), exchangeDataInfo.unencryptedContent.exchangeKey)
+		val encryptedOwningEntityIds = secureDelegationsEncryption.encryptOwningEntityIds(shareOwningEntityIds.toSet(), exchangeDataInfo.unencryptedContent.exchangeKey)
 		return EncryptedExchangeDataInfo(
 			secretIds = encryptedSecretIds,
 			encryptionKeys = encryptedEncryptionKeys,

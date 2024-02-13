@@ -24,6 +24,7 @@ interface SecureDelegationsManager {
 		entity: T,
 		secretIds: List<String>,
 		owningEntityIds: List<String>,
+		owningEntitySecretIds: List<String>,
 		encryptionKeys: List<HexString>,
 		autoDelegations: Map<String, AccessLevel>
 	): T

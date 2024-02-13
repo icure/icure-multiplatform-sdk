@@ -16,7 +16,9 @@ value class Base64String(val s: String)
 
 @JvmInline
 @Serializable
-value class HexString(val s: String)
+value class HexString(val s: String) {
+	fun decodedBytes(): ByteArray = hexToByteArray(s)
+}
 
 @JvmInline
 @Serializable

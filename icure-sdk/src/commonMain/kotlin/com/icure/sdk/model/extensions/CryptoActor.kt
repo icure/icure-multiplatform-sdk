@@ -41,7 +41,8 @@ fun CryptoActor.toStub() =
 		transferKeys = transferKeys,
 		privateKeyShamirPartitions = privateKeyShamirPartitions,
 		publicKey = publicKey,
-		publicKeysForOaepWithSha256 = publicKeysForOaepWithSha256
+		publicKeysForOaepWithSha256 = publicKeysForOaepWithSha256,
+		tags = tags
 	)
 
 fun DataOwnerWithType.toStub(): CryptoActorStubWithType =

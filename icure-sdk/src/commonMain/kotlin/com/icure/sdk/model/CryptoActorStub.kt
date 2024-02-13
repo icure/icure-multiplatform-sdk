@@ -16,5 +16,5 @@ data class CryptoActorStub(
 	override val publicKey: String? = null,
 	override val publicKeysForOaepWithSha256: Set<String> = emptySet(),
 	val revHistory: Map<String, String>? = null,
-	val tags: Set<CodeStub> = emptySet(),
+	override val tags: Set<CodeStub> = emptySet(),
 ) : Revisionable<String>, CryptoActor

@@ -18,6 +18,7 @@ package com.icure.sdk.api.extended
 import com.icure.sdk.api.raw.ApiClient
 import com.icure.sdk.auth.Jwt
 import com.icure.sdk.auth.ThirdPartyProvider
+import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.ensure
 import com.icure.sdk.utils.validateResponseContent
 import io.ktor.client.call.body
@@ -25,6 +26,7 @@ import kotlinx.serialization.Serializable
 import org.openapitools.client.infrastructure.RequestConfig
 import org.openapitools.client.infrastructure.RequestMethod
 
+@InternalIcureApi
 open class AnonymousAuthApiImpl(
 	baseUrl: String,
 ) : ApiClient(baseUrl, null), AnonymousAuthApi {

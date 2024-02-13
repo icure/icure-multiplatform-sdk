@@ -5,7 +5,6 @@ import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.crypto.HmacAlgorithm
 import com.icure.kryptom.crypto.HmacKey
 import com.icure.sdk.api.extended.DataOwnerApi
-import com.icure.sdk.crypto.AccessControlSecretUtils
 import com.icure.sdk.crypto.BaseExchangeDataManager
 import com.icure.sdk.crypto.CryptoStrategies
 import com.icure.sdk.crypto.ExchangeDataManager

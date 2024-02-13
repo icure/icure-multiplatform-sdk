@@ -1,11 +1,13 @@
 package com.icure.sdk.api.raw
 
 import com.icure.sdk.utils.RequestStatusException
+import io.ktor.client.call.body
 import io.ktor.http.Headers
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.isSuccess
 import io.ktor.util.reflect.TypeInfo
 import io.ktor.util.reflect.typeInfo
+import kotlinx.serialization.json.JsonElement
 
 open class HttpResponse<T : Any>(val response: io.ktor.client.statement.HttpResponse, val provider: BodyProvider<T>) {
     val status: HttpStatusCode = response.status
@@ -14,7 +16,10 @@ open class HttpResponse<T : Any>(val response: io.ktor.client.statement.HttpResp
     suspend fun successBody(): T = if (status.isSuccess())
         provider.body(response)
     else
-        throw RequestStatusException(response.call.request.method, response.call.request.url.toString(), status.value)
+        throw RequestStatusException(response.call.request.method, response.call.request.url.toString(), status.value).also {
+            // TODO temporary
+            println(response.body<JsonElement>())
+        }
 
     suspend fun successBodyOrNull404(): T? = if (status == HttpStatusCode.NotFound) null else successBody()
 

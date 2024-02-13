@@ -1,8 +1,11 @@
 package com.icure.sdk.model
 
+import kotlinx.serialization.Serializable
+
 /**
  * Holds information for user-based access control and encryption of entities.
  */
+@Serializable
 data class SecurityMetadata(
 	/**
 	 * This maps the hex-encoded sha256 hash of a key created by the client using a certain [ExchangeData.accessControlSecret] to the

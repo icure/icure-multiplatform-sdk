@@ -20,7 +20,7 @@ class RawExchangeDataApi(
     @Suppress("UNCHECKED_CAST")
     open suspend fun createExchangeData(exchangeData: ExchangeData): HttpResponse<ExchangeData> {
 
-        val localVariableBody = ExchangeData
+        val localVariableBody = exchangeData
 
         val localVariableQuery = mutableMapOf<String, List<String>>()
         val localVariableHeaders = mutableMapOf<String, String>()

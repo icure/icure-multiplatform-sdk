@@ -1,5 +1,8 @@
 package com.icure.sdk.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Contact(
 	override val id: String,
 	override val rev: String? = null,
@@ -37,6 +40,6 @@ data class Contact(
 	override val type: EntityWithDelegationTypeName
 		get() = EntityWithDelegationTypeName.Contact
 
-	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata): Contact =
-		copy(securityMetadata = securityMetadata)
+	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): Contact =
+		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 }

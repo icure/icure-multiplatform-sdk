@@ -17,5 +17,6 @@ data class Device(
 	override val transferKeys: Map<String, Map<String, String>> = emptyMap(),
 	override val privateKeyShamirPartitions: Map<String, String> = emptyMap(), //Format is hcpId of key that has been partitionned : "threshold⎮partition in hex"
 	override val publicKey: String? = null,
-	override val publicKeysForOaepWithSha256: Set<String> = emptySet()
+	override val publicKeysForOaepWithSha256: Set<String> = emptySet(),
+	override val tags: Set<CodeStub> = emptySet()
 ): Revisionable<String>, CryptoActor
