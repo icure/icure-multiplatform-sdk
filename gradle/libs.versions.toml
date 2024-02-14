@@ -22,7 +22,7 @@ ktorClientCore = { group = "io.ktor", name = "ktor-client-core", version.ref = "
 ktorClientEngineAndroid = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor" }
 ktorClientEngineIos = { group = "io.ktor", name = "ktor-client-darwin", version.ref = "ktor" }
 ktorClientEngineJs = { group = "io.ktor", name = "ktor-client-js", version.ref = "ktor" }
-ktorClientEngineJvm = { group = "io.ktor", name = "ktor-client-jetty", version.ref = "ktor" }
+ktorClientEngineJvm = { group = "io.ktor", name = "ktor-client-java", version.ref = "ktor" }
 ktorContentNegotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
 ktorSerializationJson = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
 

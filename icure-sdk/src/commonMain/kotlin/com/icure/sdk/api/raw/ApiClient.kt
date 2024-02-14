@@ -2,6 +2,7 @@ package com.icure.sdk.api.raw
 
 import com.icure.sdk.auth.services.AuthService
 import com.icure.sdk.auth.services.setAuthorizationWith
+import com.icure.sdk.utils.KtorEngine
 import com.icure.sdk.utils.Serialization
 import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
@@ -27,7 +28,7 @@ open class ApiClient(
     private val baseUrl: String,
     private val authService: AuthService<*>?,
 ) {
-    private val client: HttpClient = HttpClient {
+    private val client: HttpClient = HttpClient(KtorEngine) {
         install(ContentNegotiation) {
             json(json = Serialization.json)
         }
