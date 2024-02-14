@@ -7,7 +7,7 @@ plugins {
 	id("maven-publish")
 }
 
-project.version = "0.0.1"
+project.version = "0.0.2"
 
 @OptIn(ExperimentalKotlinGradlePluginApi::class)
 kotlin {

@@ -1,12 +1,9 @@
 package com.icure.sdk.api.raw
 
 import com.icure.sdk.auth.services.AuthService
-import com.icure.sdk.auth.services.setAuthorizationWith
-import com.icure.sdk.utils.KtorEngine
 import com.icure.sdk.utils.Serialization
+import com.icure.sdk.utils.platformHttpClient
 import io.ktor.client.HttpClient
-import io.ktor.client.HttpClientConfig
-import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.*
 import io.ktor.client.request.forms.FormDataContent
@@ -19,7 +16,6 @@ import io.ktor.serialization.kotlinx.json.json
 import io.ktor.http.*
 import io.ktor.http.content.PartData
 import io.ktor.http.contentType
-import kotlin.Unit
 import kotlinx.serialization.json.Json
 import org.openapitools.client.infrastructure.RequestConfig
 import org.openapitools.client.infrastructure.RequestMethod
@@ -28,7 +24,7 @@ open class ApiClient(
     private val baseUrl: String,
     private val authService: AuthService<*>?,
 ) {
-    private val client: HttpClient = HttpClient(KtorEngine) {
+    private val client: HttpClient = platformHttpClient {
         install(ContentNegotiation) {
             json(json = Serialization.json)
         }

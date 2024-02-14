@@ -38,6 +38,8 @@ fun Project.configureMultiplatform(
 		compilations.all {
 			kotlinOptions.jvmTarget = "1.8"
 		}
+		// Important: otherwise android will use the jvm library and it will not work...
+		publishLibraryVariants("release", "debug")
 	}
 	val iosSimulators = listOf(
 		iosX64(),
