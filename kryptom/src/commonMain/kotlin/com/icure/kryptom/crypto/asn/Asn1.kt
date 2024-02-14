@@ -218,9 +218,31 @@ fun Asn1Object.pkcs1ToSpki() = Asn1Object.Asn1Sequence(
 			)
 		),
 		Asn1Object.Asn1BitString(((this as? Asn1Object.Asn1Sequence)?.takeIf { it.value.size == 2 }
-			?: throw IllegalArgumentException("PKCS1 is a sequence of 9 integers")).pack().let { byteArrayOf(0) + it })
+			?: throw IllegalArgumentException("PKCS1 is a sequence of 2 integers")).pack().let { byteArrayOf(0) + it })
 	)
 )
+
+fun Asn1Object.pkcs8PrivateToSpkiPublic() = Asn1Object.Asn1Sequence(
+	listOf(
+		Asn1Object.Asn1Sequence(
+			listOf(
+				Asn1Object.Asn1Oid("1.2.840.113549.1.1.1"),
+				Asn1Object.Asn1Null()
+			)
+		),
+		Asn1Object.Asn1BitString(
+			(
+				requireNotNull((this as? Asn1Object.Asn1Sequence)) { "Pksc8 should be a sequence" }
+					.also { require (it.value.size == 3) { "Pkcs8 should have 3 elements" } }
+					.value[2].let { requireNotNull(it as? Asn1Object.Asn1OctetString) { "3rd element of pkcs8 should be an octet string" } }
+					.let { requireNotNull(it.nested as? Asn1Object.Asn1Sequence) { "3rd element of pkcs8 should represent a nested sequence" } }
+					.also { require(it.value.size == 9) { "3rd element of pkcs8 should have 9 elements" } }
+					.let { Asn1Object.Asn1Sequence(listOf(it.value[1], it.value[2])) }
+			).pack().let { byteArrayOf(0) + it }
+		)
+	)
+)
+
 
 fun Asn1Object.spkiToPkcs1(): Asn1Object.Asn1Sequence = ((((this as? Asn1Object.Asn1Sequence)?.takeIf {
 	it.value.size == 2 &&

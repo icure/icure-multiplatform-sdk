@@ -1,7 +1,7 @@
 package com.icure.kryptom.crypto
 
+import java.security.PrivateKey
 import java.security.PublicKey
-import java.security.interfaces.RSAPrivateCrtKey
 import javax.crypto.SecretKey
 
 // We can't use interface typealias for expect class nor the opposite, so the best solution is to create a class which
@@ -11,7 +11,7 @@ import javax.crypto.SecretKey
  * Represents a private rsa key.
  */
 actual class PrivateRsaKey<out A : RsaAlgorithm>(
-	internal val key: RSAPrivateCrtKey,
+	internal val key: PrivateKey,
 	actual val algorithm: A
 ) : RsaKey
 
