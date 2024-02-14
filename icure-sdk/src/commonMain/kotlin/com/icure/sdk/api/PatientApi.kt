@@ -33,8 +33,7 @@ class PatientApi(
 	suspend fun encryptAndCreate(patient: Patient) = encryptionService.tryEncryptEntity(
 		patient,
 		Serialization.json.encodeToJsonElement(patient),
-		EncryptedFieldsManifest("Patient.", listOf("note"), emptyMap(), emptyMap(), emptyMap()),
-		true,
+		EncryptedFieldsManifest("Patient.", setOf("note"), emptyMap(), emptyMap(), emptyMap()),
 		true,
 	) { Serialization.json.decodeFromJsonElement<Patient>(it) }.let { rawApi.createPatient(it) }.successBody().let {
 		encryptionService.decryptEntity(it, Serialization.json.encodeToJsonElement(it)) { Serialization.json.decodeFromJsonElement<Patient>(it) }

@@ -2,7 +2,6 @@ package com.icure.sdk.crypto.impl
 
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.utils.base64Decode
-import com.icure.kryptom.utils.base64Encode
 import com.icure.kryptom.utils.toHexString
 import com.icure.sdk.api.extended.DataOwnerApi
 import com.icure.sdk.crypto.BulkShareResult
@@ -13,6 +12,7 @@ import com.icure.sdk.crypto.EntityEncryptionKeyDetails
 import com.icure.sdk.crypto.EntityEncryptionMetadataInitialisationResult
 import com.icure.sdk.crypto.EntityEncryptionService
 import com.icure.sdk.crypto.HierarchicallyDecryptedMetadata
+import com.icure.sdk.crypto.JsonEncryptionService
 import com.icure.sdk.crypto.MinimalBulkShareResult
 import com.icure.sdk.crypto.SecureDelegationsManager
 import com.icure.sdk.crypto.SecurityMetadataDecryptor
@@ -27,11 +27,8 @@ import com.icure.sdk.model.MinimalEntityBulkShareResult
 import com.icure.sdk.utils.IllegalEntityException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
-import io.ktor.utils.io.charsets.Charsets
-import io.ktor.utils.io.core.toByteArray
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.flow.toSet
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
@@ -44,7 +41,8 @@ class EntityEncryptionServiceImpl(
 	private val secureDelegationsManager: SecureDelegationsManager,
 	private val securityMetadataDecryptor: SecurityMetadataDecryptor,
 	private val dataOwnerApi: DataOwnerApi,
-	private val cryptoService: CryptoService
+	private val cryptoService: CryptoService,
+	private val jsonEncryptionService: JsonEncryptionService
 ) : EntityEncryptionService {
 
 	override suspend fun secretIdsOf(entity: Encryptable, dataOwnerId: String?): Set<String> =
@@ -54,28 +52,15 @@ class EntityEncryptionServiceImpl(
 			.toSet()
 
 	override suspend fun <E : Encryptable, D : Encryptable> tryEncryptEntity(
-		decryptedEntity: D,
-		decryptedEntityJson: JsonElement,
+		unencryptedEntity: D,
+		unencryptedEntityJson: JsonElement,
 		fieldsToEncrypt: EncryptedFieldsManifest,
-		encodeBinaryData: Boolean, // Ignoring it right now
 		requireEncryption: Boolean, // Ignoring it right now
 		constructor: (json: JsonElement) -> E
 	): E {
-		val key = decryptAndImportAnyEncryptionKey(decryptedEntity)
-		val obj = decryptedEntityJson.jsonObject
-		if (
-			fieldsToEncrypt.mapsValuesKeys.isNotEmpty()
-			|| fieldsToEncrypt.arraysValuesKeys.isNotEmpty()
-			|| fieldsToEncrypt.nestedObjectsKeys.isNotEmpty()
-		) TODO("Only top level fields encryption is currently supported.")
-		val objWithoutEncryptedFields = obj.filter { it.key !in fieldsToEncrypt.topLevelFields }
-		val fieldsToEncrypt = JsonObject(obj.filter { it.key in fieldsToEncrypt.topLevelFields })
-		// TODO If encrypted self is the same as fields to encrypt no need to update it
-		val encryptedSelf = base64Encode(cryptoService.aes.encrypt(
-			fieldsToEncrypt.toString().toByteArray(Charsets.UTF_8),
-			key.key
-		))
-		return constructor(JsonObject(objWithoutEncryptedFields + ("encryptedSelf" to JsonPrimitive(encryptedSelf))))
+		val key = decryptAndImportAnyEncryptionKey(unencryptedEntity)
+		val encrypted = jsonEncryptionService.encrypt(key.key, unencryptedEntityJson.jsonObject, fieldsToEncrypt)
+		return constructor(encrypted)
 	}
 
 
@@ -84,16 +69,9 @@ class EntityEncryptionServiceImpl(
 		encryptedEntityJson: JsonElement,
 		constructor: (json: JsonElement) -> D
 	): D? {
+		// TODO decryptAndImportAnyEncryptionKey should return nullable (if key is not available)
 		val key = decryptAndImportAnyEncryptionKey(encryptedEntity)
-		// TODO nested decrypt
-		val obj = encryptedEntityJson.jsonObject
-		val encryptedSelf = obj["encryptedSelf"]?.jsonPrimitive?.also {
-			if (!it.isString) throw IllegalEntityException("encryptedSelf must be a string")
-		}?.content
-		if (encryptedSelf == null) return constructor(encryptedEntityJson)
-		val decryptedSelf = cryptoService.aes.decrypt(base64Decode(encryptedSelf), key.key).decodeToString()
-		val decryptedSelfJson = Serialization.json.parseToJsonElement(decryptedSelf)
-		return constructor(JsonObject(obj + decryptedSelfJson.jsonObject))
+		return constructor(jsonEncryptionService.decrypt(key.key, encryptedEntityJson.jsonObject))
 	}
 
 	override suspend fun <T : Encryptable> entityWithInitialisedEncryptedMetadata(

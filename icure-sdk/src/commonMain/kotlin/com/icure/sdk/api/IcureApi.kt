@@ -17,6 +17,7 @@ import com.icure.sdk.crypto.impl.BasicCryptoStrategies
 import com.icure.sdk.crypto.impl.CachedLruExchangeDataManager
 import com.icure.sdk.crypto.impl.EntityEncryptionServiceImpl
 import com.icure.sdk.crypto.impl.ExchangeDataMapManagerImpl
+import com.icure.sdk.crypto.impl.JsonEncryptionServiceImpl
 import com.icure.sdk.crypto.impl.NoopIcureKeyRecovery
 import com.icure.sdk.crypto.impl.NoopKeyRecoverer
 import com.icure.sdk.crypto.impl.SecureDelegationsDecryptorImpl
@@ -118,7 +119,8 @@ interface IcureApi {
 				secureDelegationsManager,
 				secureDelegationsDecryptor,
 				dataOwnerApi,
-				cryptoService
+				cryptoService,
+				JsonEncryptionServiceImpl(cryptoService)
 			)
 			return IcureApiImpl(
 				ContactApi(

@@ -39,7 +39,7 @@ data class EntityEncryptionKeyDetails(
 @InternalIcureApi
 data class EncryptedFieldsManifest(
 	val path: String,
-	val topLevelFields: List<String>,
+	val topLevelFields: Set<String>,
 	val nestedObjectsKeys: Map<String, EncryptedFieldsManifest>,
 	val mapsValuesKeys: Map<String, EncryptedFieldsManifest>,
 	val arraysValuesKeys: Map<String, EncryptedFieldsManifest>,
@@ -379,10 +379,9 @@ interface EntityEncryptionService {
 	 * a value for any field which should be encrypted the method throws an error, otherwise the method returns the original entity.
 	 */
 	suspend fun <E : Encryptable, D: Encryptable> tryEncryptEntity(
-		decryptedEntity: D,
-		decryptedEntityJson: JsonElement,
+		unencryptedEntity: D,
+		unencryptedEntityJson: JsonElement,
 		fieldsToEncrypt: EncryptedFieldsManifest,
-		encodeBinaryData: Boolean,
 		requireEncryption: Boolean,
 		constructor: (json: JsonElement) -> E
 	): E

@@ -32,11 +32,11 @@ class ContactApi(
 		encryptionService.decryptEntity(c, Serialization.json.encodeToJsonElement(c),) { Serialization.json.decodeFromJsonElement<Contact>(it) }
 	}
 
+	// TODO need to handle services...
 	suspend fun encryptAndCreate(contact: Contact) = encryptionService.tryEncryptEntity(
 		contact,
 		Serialization.json.encodeToJsonElement(contact),
-		EncryptedFieldsManifest("Contact.", listOf("descr"), emptyMap(), emptyMap(), emptyMap()),
-		true,
+		EncryptedFieldsManifest("Contact.", setOf("descr"), emptyMap(), emptyMap(), emptyMap()),
 		true,
 	) { Serialization.json.decodeFromJsonElement<Contact>(it) }.let { rawApi.createContact(it) }.successBody().let {
 		encryptionService.decryptEntity(it, Serialization.json.encodeToJsonElement(it)) { Serialization.json.decodeFromJsonElement<Contact>(it) }
