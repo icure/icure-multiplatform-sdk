@@ -155,7 +155,7 @@ interface EntityEncryptionService {
 	 * @param dataOwnerId optionally a data owner part of the hierarchy for the current data owner, defaults to the current data owner.
 	 * @return the encryption keys that the provided data owner can decrypt, deduplicated.
 	 */
-	suspend fun encryptionKeysOf(entity: Encryptable, dataOwnerId: String?): List<HexString>
+	suspend fun encryptionKeysOf(entity: Encryptable, dataOwnerId: String?): Set<HexString>
 
 	/**
 	 * Get the encryption keys of an entity that the current data owner and his parents can access. The resulting array contains the keys for each data
@@ -174,7 +174,7 @@ interface EntityEncryptionService {
 	 * @param dataOwnerId optionally a data owner part of the hierarchy for the current data owner, defaults to the current data owner.
 	 * @return the secret ids (SFKs) that the provided data owner can decrypt, deduplicated.
 	 */
-	suspend fun secretIdsOf(entity: Encryptable, dataOwnerId: String?): List<String>
+	suspend fun secretIdsOf(entity: Encryptable, dataOwnerId: String?): Set<String>
 
 	/**
 	 * Get the secret ids (SFKs) of an entity that the current data owner and his parents can access. The resulting array contains the ids for each data
@@ -196,7 +196,7 @@ interface EntityEncryptionService {
 	 * @param dataOwnerId optionally a data owner part of the hierarchy for the current data owner, defaults to the current data owner.
 	 * @return the owning entity ids (CFKs) that the provided data owner can decrypt, deduplicated.
 	 */
-	suspend fun owningEntityIdsOf(entity: Encryptable, dataOwnerId: String?): List<String>
+	suspend fun owningEntityIdsOf(entity: Encryptable, dataOwnerId: String?): Set<String>
 
 	/**
 	 * Get the decrypted owning entity ids (formerly CFKs) for the provided entity that can be decrypted using the private keys of the current data

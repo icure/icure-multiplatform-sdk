@@ -41,4 +41,7 @@ class ContactApi(
 	) { Serialization.json.decodeFromJsonElement<Contact>(it) }.let { rawApi.createContact(it) }.successBody().let {
 		encryptionService.decryptEntity(it, Serialization.json.encodeToJsonElement(it)) { Serialization.json.decodeFromJsonElement<Contact>(it) }
 	}
+
+	suspend fun getEncryptionKeyOf(contact: Contact) =
+		encryptionService.encryptionKeysOf(contact, null).single()
 }

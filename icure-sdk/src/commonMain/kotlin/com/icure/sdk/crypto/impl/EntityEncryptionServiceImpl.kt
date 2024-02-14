@@ -32,6 +32,7 @@ import io.ktor.utils.io.core.toByteArray
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.flow.toSet
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
@@ -46,11 +47,11 @@ class EntityEncryptionServiceImpl(
 	private val cryptoService: CryptoService
 ) : EntityEncryptionService {
 
-	override suspend fun secretIdsOf(entity: Encryptable, dataOwnerId: String?): List<String> =
+	override suspend fun secretIdsOf(entity: Encryptable, dataOwnerId: String?): Set<String> =
 		securityMetadataDecryptor
 			.decryptSecretIdsOf(entity, dataOwnerApi.getCurrentDataOwnerHierarchyIds())
 			.map { it.value }
-			.toList()
+			.toSet()
 
 	override suspend fun <E : Encryptable, D : Encryptable> tryEncryptEntity(
 		decryptedEntity: D,
@@ -135,11 +136,13 @@ class EntityEncryptionServiceImpl(
 		return EntityEncryptionKeyDetails(cryptoService.aes.loadKey(key.decodedBytes()), key)
 	}
 
-	// TODO later on
+	override suspend fun encryptionKeysOf(entity: Encryptable, dataOwnerId: String?): Set<HexString> =
+		securityMetadataDecryptor
+			.decryptEncryptionKeysOf(entity, dataOwnerApi.getCurrentDataOwnerHierarchyIds())
+			.map { it.value }
+			.toSet()
 
-	override suspend fun encryptionKeysOf(entity: Encryptable, dataOwnerId: String?): List<HexString> {
-		TODO("Not yet implemented")
-	}
+	// TODO later on
 
 	override suspend fun encryptionKeysForHcpHierarchyOf(entity: Encryptable): List<HierarchicallyDecryptedMetadata<HexString>> {
 		TODO("Not yet implemented")
@@ -149,7 +152,7 @@ class EntityEncryptionServiceImpl(
 		TODO("Not yet implemented")
 	}
 
-	override suspend fun owningEntityIdsOf(entity: Encryptable, dataOwnerId: String?): List<String> {
+	override suspend fun owningEntityIdsOf(entity: Encryptable, dataOwnerId: String?): Set<String> {
 		TODO("Not yet implemented")
 	}
 
