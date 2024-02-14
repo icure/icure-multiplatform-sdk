@@ -3,7 +3,10 @@ plugins {
 	kotlinSerialization()
 	kotestMultiplatform()
 	androidLibrary()
+	id("maven-publish")
 }
+
+project.version = "0.0.1"
 
 kotlin {
 	configureMultiplatform(this)
@@ -70,3 +73,9 @@ android {
 }
 
 configureJvmTest()
+
+publishing {
+	repositories {
+		mavenLocal()
+	}
+}
