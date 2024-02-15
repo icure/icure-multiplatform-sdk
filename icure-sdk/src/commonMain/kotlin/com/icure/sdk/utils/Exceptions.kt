@@ -32,6 +32,12 @@ class RequestStatusException(
 class UnexpectedResponseContentException(message: String) : Exception(message)
 
 /**
+ * Represents a failure in the iCure SDK implementation. This exception is thrown in case of unexpected behaviours which
+ * are most likely caused by bugs in the SDK. If you encounter this exception, please report it to the iCure team.
+ */
+class InternalIcureException(message: String, cause: Throwable? = null) : Exception(message, cause)
+
+/**
  * Checks an invariant at runtime. If value is not true there is an implementation error on iCure's side.
  */
 @OptIn(ExperimentalContracts::class)
@@ -41,7 +47,7 @@ inline fun ensure(value: Boolean, lazyMessage: () -> String) {
 		returns() implies value
 	}
 	if (!value) {
-		throw AssertionError(lazyMessage())
+		throw InternalIcureException(lazyMessage())
 	}
 }
 
