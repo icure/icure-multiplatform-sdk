@@ -25,7 +25,7 @@ data class Contact(
 	val externalId: String? = null,
 //	val encounterType: CodeStubDto? = null,
 //	val subContacts: Set<SubContactDto> = emptySet(),
-//	val services: Set<ServiceDto> = emptySet(),
+	val services: Set<Service> = emptySet(),
 
 	@get:Deprecated("Use responsible") val healthcarePartyId: String? = null, //Redundant... Should be responsible
 	@get:Deprecated("Use groupId") val modifiedContactId: String? = null,
