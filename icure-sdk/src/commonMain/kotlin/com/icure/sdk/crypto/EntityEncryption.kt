@@ -30,21 +30,6 @@ data class EntityEncryptionKeyDetails(
 	val raw: HexString
 )
 
-/**
- * Configuration for the encryption of an object.
- * @param topLevelFields the fields of the object to encrypt. All the fields will be encrypted in a single encryptedSelf field which is added to the
- * object.
- * @param nestedObjectsKeys the name of fields which are expected to contain a nested object (or undefined). Allows to specify
- */
-@InternalIcureApi
-data class EncryptedFieldsManifest(
-	val path: String,
-	val topLevelFields: Set<String>,
-	val nestedObjectsKeys: Map<String, EncryptedFieldsManifest>,
-	val mapsValuesKeys: Map<String, EncryptedFieldsManifest>,
-	val arraysValuesKeys: Map<String, EncryptedFieldsManifest>,
-)
-
 @InternalIcureApi
 data class EntityDataEncryptionResult<T : Encryptable>(
 	val updatedEntity: T,

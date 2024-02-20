@@ -113,7 +113,7 @@ class IcureStorageFacade(
 		dataOwnerId: String,
 		verificationDetails: Map<KeypairFingerprintV1String, Boolean>
 	): Map<KeypairFingerprintV1String, Boolean> {
-		val stored = loadSelfVerifiedKeys(dataOwnerId) ?: emptyMap()
+		val stored = loadSelfVerifiedKeys(dataOwnerId)
 		val updated = stored + verificationDetails
 		data.setItem(
 			entryFor.selfPublicKeysVerificationCacheForDataOwner(dataOwnerId),
@@ -141,7 +141,6 @@ class IcureStorageFacade(
 	/**
 	 * Saves a signature and verification key pair. Overrides previously saved signature keys (but keeps signature verification keys).
 	 * @param dataOwnerId id of the data owner with the key.
-	 * @param publicKeyFingerprint fingerprint of the public key of the pair.
 	 * @param keyPair the key pair to save.
 	 */
 	suspend fun saveSignatureKeyPair(
