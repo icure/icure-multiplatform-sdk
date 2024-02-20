@@ -1,4 +1,4 @@
-package com.icure.sdk.crypto
+package com.icure.sdk.crypto.entities
 
 import com.icure.kryptom.crypto.PrivateRsaKey
 import com.icure.kryptom.crypto.PublicRsaKey
@@ -18,6 +18,7 @@ import com.icure.sdk.utils.InternalIcureApi
  * a private key or a full key pair). No additional information of the key is used (e.g. the algorithm of the intended
  * key use is ignored).
  */
+@InternalIcureApi
 class IcureKeyInfo<out KeyType : RsaKey>(
 	val pubSpkiHexString: SpkiHexString,
 	val key: KeyType
@@ -43,9 +44,11 @@ class IcureKeyInfo<out KeyType : RsaKey>(
 	}
 }
 
+@InternalIcureApi
 fun <A : RsaAlgorithm, K : RsaKeypair<A>> IcureKeyInfo<K>.toPrivateKeyInfo() =
 	IcureKeyInfo(pubSpkiHexString, key.private)
 
+@InternalIcureApi
 fun <A : RsaAlgorithm, K : RsaKeypair<A>> IcureKeyInfo<K>.toPublicKeyInfo() =
 	IcureKeyInfo(pubSpkiHexString, key.public)
 

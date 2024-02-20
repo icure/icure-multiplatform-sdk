@@ -4,10 +4,10 @@ import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.crypto.PrivateRsaKey
 import com.icure.kryptom.crypto.PublicRsaKey
 import com.icure.kryptom.crypto.RsaAlgorithm
-import com.icure.sdk.crypto.IcureKeyInfo
-import com.icure.sdk.crypto.RsaDecryptionKeysSet
-import com.icure.sdk.crypto.RsaSignatureKeysSet
-import com.icure.sdk.crypto.VerifiedRsaEncryptionKeysSet
+import com.icure.sdk.crypto.entities.IcureKeyInfo
+import com.icure.sdk.crypto.entities.RsaDecryptionKeysSet
+import com.icure.sdk.crypto.entities.RsaSignatureKeysSet
+import com.icure.sdk.crypto.entities.VerifiedRsaEncryptionKeysSet
 import com.icure.sdk.model.Base64String
 import com.icure.sdk.model.CryptoActor
 import com.icure.sdk.model.KeypairFingerprintV1String

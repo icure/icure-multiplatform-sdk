@@ -1,6 +1,7 @@
 package com.icure.sdk.crypto
 
 import com.icure.kryptom.crypto.AesKey
+import com.icure.sdk.crypto.entities.VerifiedRsaEncryptionKeysSet
 import com.icure.sdk.model.Base64String
 import com.icure.sdk.model.HexString
 import com.icure.sdk.model.KeypairFingerprintV2String

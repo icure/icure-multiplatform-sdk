@@ -4,9 +4,9 @@ import com.icure.kryptom.crypto.CryptoService
 import com.icure.sdk.api.extended.DataOwnerApi
 import com.icure.sdk.crypto.BaseExchangeDataManager
 import com.icure.sdk.crypto.CryptoStrategies
-import com.icure.sdk.crypto.ExchangeDataWithPotentiallyDecryptedContent
-import com.icure.sdk.crypto.ExchangeDataWithUnencryptedContent
-import com.icure.sdk.crypto.UnencryptedExchangeDataContent
+import com.icure.sdk.crypto.entities.ExchangeDataWithPotentiallyDecryptedContent
+import com.icure.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
+import com.icure.sdk.crypto.entities.UnencryptedExchangeDataContent
 import com.icure.sdk.crypto.UserEncryptionKeysManager
 import com.icure.sdk.crypto.UserSignatureKeysManager
 import com.icure.sdk.model.EntityWithDelegationTypeName

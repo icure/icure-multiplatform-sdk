@@ -2,51 +2,14 @@ package com.icure.sdk.crypto
 
 import com.icure.kryptom.crypto.RsaAlgorithm
 import com.icure.kryptom.crypto.RsaKeypair
+import com.icure.sdk.crypto.entities.CachedKeypairDetails
+import com.icure.sdk.crypto.entities.IcureKeyInfo
+import com.icure.sdk.crypto.entities.RsaDecryptionKeysSet
+import com.icure.sdk.crypto.entities.UserKeyPairInformation
 import com.icure.sdk.model.CryptoActorStub
 import com.icure.sdk.model.KeypairFingerprintV2String
 import com.icure.sdk.model.SpkiHexString
 import com.icure.sdk.utils.InternalIcureApi
-
-@InternalIcureApi
-data class UserKeyPairInformation(
-	/**
-	 * Id and keys of the current data owner.
-	 */
-	val self: DataOwnerKeyInfo,
-	/**
-	 * Id and keys of the current data owner parents, starting from the topmost ancestor (at index 0) to the direct parent
-	 * of the current data owner (at the last index, may be the same as the topmost ancestor).
-	 */
-	val parents: List<DataOwnerKeyInfo>
-)
-
-@InternalIcureApi
-data class DataOwnerKeyInfo(
-	val dataOwnerId: String,
-	val keys: List<CachedKeypairDetails>
-)
-
-@InternalIcureApi
-data class CachedKeypairDetails(
-	/**
-	 * The key pair
-	 */
-	val keyPair: IcureKeyInfo<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>,
-	/**
-	 * If the keypair authenticity was verified through the [CryptoStrategies] OR through cached verification
-	 * information.
-	 */
-	val isVerified: Boolean,
-	/**
-	 * If the keypair was created on the current device.
-	 */
-	val isDevice: Boolean
-) {
-	/**
-	 * If the keypair is safe to use for encryption. True if [isVerified] or [isDevice] is true.
-	 */
-	val isSafeForEncryption: Boolean = isVerified || isDevice
-}
 
 /**
  * Allows to manage public and private keys for the current user and his parent hierarchy.

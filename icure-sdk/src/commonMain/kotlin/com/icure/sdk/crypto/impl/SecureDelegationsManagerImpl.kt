@@ -5,12 +5,12 @@ import com.icure.sdk.api.extended.DataOwnerApi
 import com.icure.sdk.crypto.CryptoStrategies
 import com.icure.sdk.crypto.ExchangeDataManager
 import com.icure.sdk.crypto.ExchangeDataMapManager
-import com.icure.sdk.crypto.ExchangeDataWithUnencryptedContent
+import com.icure.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
 import com.icure.sdk.crypto.SecureDelegationsEncryption
 import com.icure.sdk.crypto.SecureDelegationsManager
 import com.icure.sdk.crypto.UserEncryptionKeysManager
-import com.icure.sdk.crypto.VerifiedRsaEncryptionKeysSet
-import com.icure.sdk.crypto.toPublicKeyInfo
+import com.icure.sdk.crypto.entities.VerifiedRsaEncryptionKeysSet
+import com.icure.sdk.crypto.entities.toPublicKeyInfo
 import com.icure.sdk.model.AccessControlKeyString
 import com.icure.sdk.model.AccessLevel
 import com.icure.sdk.model.Base64String

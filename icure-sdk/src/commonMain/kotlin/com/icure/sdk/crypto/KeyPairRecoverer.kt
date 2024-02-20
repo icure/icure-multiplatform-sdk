@@ -2,7 +2,7 @@ package com.icure.sdk.crypto
 
 import com.icure.kryptom.crypto.RsaAlgorithm
 import com.icure.kryptom.crypto.RsaKeypair
-import com.icure.sdk.model.HexString
+import com.icure.sdk.crypto.entities.RecoveryResult
 import com.icure.sdk.model.SpkiHexString
 
 /**

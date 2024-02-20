@@ -1,131 +1,23 @@
 package com.icure.sdk.crypto
 
-import com.icure.kryptom.crypto.AesKey
+import com.icure.sdk.crypto.entities.BulkShareResult
+import com.icure.sdk.crypto.entities.DelegateShareOptions
+import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
+import com.icure.sdk.crypto.entities.EntityDataEncryptionResult
+import com.icure.sdk.crypto.entities.EntityEncryptionKeyDetails
+import com.icure.sdk.crypto.entities.EntityEncryptionMetadataInitialisationResult
+import com.icure.sdk.crypto.entities.HierarchicallyDecryptedMetadata
+import com.icure.sdk.crypto.entities.MinimalBulkShareResult
+import com.icure.sdk.crypto.entities.ShareResult
+import com.icure.sdk.crypto.entities.SimpleDelegateShareOptions
 import com.icure.sdk.model.AccessLevel
 import com.icure.sdk.model.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.Encryptable
 import com.icure.sdk.model.EntityBulkShareResult
 import com.icure.sdk.model.HexString
 import com.icure.sdk.model.MinimalEntityBulkShareResult
-import com.icure.sdk.model.RequestedPermission
 import com.icure.sdk.utils.InternalIcureApi
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.json.JsonElement
-
-@InternalIcureApi
-data class HierarchicallyDecryptedMetadata<T : Any>(
-	/**
-	 * The decrypted metadata
-	 */
-	val extracted: List<T>,
-	/**
-	 * The ids of a data owner part
-	 */
-	val ownerId: String
-)
-
-@InternalIcureApi
-data class EntityEncryptionKeyDetails(
-	val key: AesKey,
-	val raw: HexString
-)
-
-@InternalIcureApi
-data class EntityDataEncryptionResult<T : Encryptable>(
-	val updatedEntity: T,
-	val encryptedData: ByteArray
-)
-
-@InternalIcureApi
-data class EntityEncryptionMetadataInitialisationResult<T : Encryptable>(
-	val updatedEntity: T,
-	val rawEncryptionKey: HexString?,
-	val secretId: String?
-)
-
-data class DelegateShareOptions(
-	val shareSecretIds: List<String>,
-	val shareEncryptionKeys: List<HexString>,
-	val shareOwningEntityIds: List<String>,
-	val requestedPermissions: RequestedPermission
-)
-
-@InternalIcureApi
-data class SimpleDelegateShareOptions(
-	val shareSecretIds: List<String>,
-	val shareEncryptionKeys: ShareMetadataBehaviour,
-	val shareOwningEntityIds: ShareMetadataBehaviour,
-	val requestedPermissions: RequestedPermission
-)
-
-/**
- * Specifies a behaviour for the sharing of encryption keys or owning entity ids in the extended apis 'share' methods.
- */
-enum class ShareMetadataBehaviour {
-	/**
-	 * The method must share the metadata with the delegate. If this is not possible, because for example the current user has no access to this kind of
-	 * metadata, the method will throw an error.
-	 */
-	@SerialName("REQUIRED")
-	Required,
-	/**
-	 * The method must share the metadata with the delegate if available. If this is not possible, because for example the current user has no access to
-	 * this kind of metadata, the method will simply not share this metadata.
-	 */
-	@SerialName("IF_AVAILABLE")
-	IfAvailable,
-	/**
-	 * The method must not share the metadata with the delegate, even if the current data owner can access it.
-	 */
-	@SerialName("NEVER")
-	Never
-}
-
-data class FailedRequestDetails(
-	val entityId: String,
-	val delegateId: String,
-	val updatedForMigration: Boolean,
-	val code: Int?,
-	val reason: String?,
-	val request: DelegateShareOptions
-)
-
-data class BulkShareResult<T : Encryptable>(
-	val updatedEntities: List<T>,
-	val unmodifiedEntitiesIds: List<String>,
-	val updateErrors: List<FailedRequestDetails>
-)
-
-data class MinimalBulkShareResult(
-	val updatedEntitiesIds: List<String>,
-	val unmodifiedEntitiesIds: List<String>,
-	val updateErrors: List<FailedRequestDetails>
-)
-
-interface ShareResult<out T : Encryptable> {
-	val isSuccess: Boolean
-
-	/**
-	 * Return the updated entity if the share operation was successful, else throw an error.
-	 */
-	fun updatedEntityOrThrow(): T
-
-	/**
-	 * Represents the result of a successful share operation.
-	 */
-	data class Success<T : Encryptable>(val updatedEntity: T) : ShareResult<T> {
-		override val isSuccess: Boolean get() = true
-		override fun updatedEntityOrThrow(): T = updatedEntity
-	}
-
-	data class Failure(val errorsDetails: List<FailedRequestDetails>) : ShareResult<Nothing> {
-		override val isSuccess: Boolean get() = false
-
-		override fun updatedEntityOrThrow(): Nothing {
-			throw IllegalStateException("One or more share requests failed. Details: $errorsDetails")
-		}
-	}
-}
 
 /**
  * Gives access to several functions to access encrypted entities metadata.

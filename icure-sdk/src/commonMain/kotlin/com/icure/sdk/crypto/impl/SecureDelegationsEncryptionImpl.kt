@@ -5,7 +5,7 @@ import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.utils.toHexString
 import com.icure.sdk.crypto.SecureDelegationsEncryption
 import com.icure.sdk.crypto.UserEncryptionKeysManager
-import com.icure.sdk.crypto.VerifiedRsaEncryptionKeysSet
+import com.icure.sdk.crypto.entities.VerifiedRsaEncryptionKeysSet
 import com.icure.sdk.model.Base64String
 import com.icure.sdk.model.HexString
 import com.icure.sdk.model.KeypairFingerprintV2String

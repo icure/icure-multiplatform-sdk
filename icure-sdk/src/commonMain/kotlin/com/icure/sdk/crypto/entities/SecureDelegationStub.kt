@@ -1,4 +1,4 @@
-package com.icure.sdk.crypto
+package com.icure.sdk.crypto.entities
 
 import com.icure.sdk.model.AccessLevel
 import com.icure.sdk.model.EntityWithDelegationTypeName

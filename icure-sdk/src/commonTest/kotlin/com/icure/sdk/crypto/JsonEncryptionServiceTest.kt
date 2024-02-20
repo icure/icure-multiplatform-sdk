@@ -1,6 +1,7 @@
 package com.icure.sdk.crypto
 
 import com.icure.kryptom.crypto.defaultCryptoService
+import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.impl.JsonEncryptionServiceImpl
 import com.icure.sdk.utils.InternalIcureApi
 import io.kotest.assertions.throwables.shouldThrow

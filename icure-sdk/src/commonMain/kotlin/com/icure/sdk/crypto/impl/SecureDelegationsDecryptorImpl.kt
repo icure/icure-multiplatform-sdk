@@ -2,13 +2,13 @@ package com.icure.sdk.crypto.impl
 
 import com.icure.kryptom.crypto.AesKey
 import com.icure.sdk.api.extended.DataOwnerApi
-import com.icure.sdk.crypto.DecryptedMetadataDetails
+import com.icure.sdk.crypto.entities.DecryptedMetadataDetails
 import com.icure.sdk.crypto.ExchangeDataManager
 import com.icure.sdk.crypto.ExchangeDataMapManager
-import com.icure.sdk.crypto.SecureDelegationMembersDetails
+import com.icure.sdk.crypto.entities.SecureDelegationMembersDetails
 import com.icure.sdk.crypto.SecureDelegationsDecryptor
 import com.icure.sdk.crypto.SecureDelegationsEncryption
-import com.icure.sdk.crypto.UnencryptedExchangeDataContent
+import com.icure.sdk.crypto.entities.UnencryptedExchangeDataContent
 import com.icure.sdk.model.AccessLevel
 import com.icure.sdk.model.Base64String
 import com.icure.sdk.model.Encryptable
@@ -150,7 +150,8 @@ class SecureDelegationsDecryptorImpl(
 					fullyExplicit = false,
 					accessControlSecret = unencryptedExchangeDataContent.accessControlSecret,
 					accessLevel = delegation.permissions
-				))
+				)
+				)
 			}.let { remainingDelegations ->
 				// 3. Emit all remaining delegations where the current user and/or parent is not an explicit member; keep the rest for next step
 				val currentHierarchyIds = dataOwnerApi.getCurrentDataOwnerHierarchyIds()
@@ -164,7 +165,8 @@ class SecureDelegationsDecryptorImpl(
 						fullyExplicit = false,
 						accessControlSecret = null,
 						accessLevel = secureDelegationInfo.second.permissions
-					))
+					)
+					)
 				}
 				delegationsWithCurrentHierarchyMember
 			}.let { remainingDelegations ->
@@ -178,7 +180,8 @@ class SecureDelegationsDecryptorImpl(
 						fullyExplicit = false,
 						accessControlSecret = unencryptedExchangeDataContent?.accessControlSecret,
 						accessLevel = delegation.permissions
-					))
+					)
+					)
 				}
 			}.forEach { (delegationKey, delegation) ->
 				// 5. Emit all remaining delegations where the current user and/or parent is an explicit member but could not identify the anonymous data owner
@@ -188,7 +191,8 @@ class SecureDelegationsDecryptorImpl(
 					fullyExplicit = false,
 					accessControlSecret = null,
 					accessLevel = delegation.permissions
-				))
+				)
+				)
 			}
 		}.toList()
 		(mixedAndFullyAnonymousInfo + fullyExplicitInfo).toMap()

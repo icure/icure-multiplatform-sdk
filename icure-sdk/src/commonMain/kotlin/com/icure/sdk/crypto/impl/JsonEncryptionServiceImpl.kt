@@ -4,7 +4,7 @@ import com.icure.kryptom.crypto.AesKey
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.utils.base64Decode
 import com.icure.kryptom.utils.base64Encode
-import com.icure.sdk.crypto.EncryptedFieldsManifest
+import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.JsonEncryptionService
 import com.icure.sdk.model.Encryptable
 import com.icure.sdk.utils.IllegalEntityException

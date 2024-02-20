@@ -1,22 +1,12 @@
 package com.icure.sdk.crypto
 
+import com.icure.sdk.crypto.entities.ExchangeDataWithPotentiallyDecryptedContent
+import com.icure.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
 import com.icure.sdk.model.EntityWithDelegationTypeName
-import com.icure.sdk.model.ExchangeData
 import com.icure.sdk.model.SecureDelegationKeyString
 import com.icure.sdk.model.SpkiHexString
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.ResourceNotFoundException
-
-/**
- * A container for exchange data and, if the SDK could decrypt the exchange data content, its unencrypted content.
- * @param exchangeData some exchange data
- * @param decryptedContent the unencrypted content of the exchange data if it could be decrypted, else null
- */
-@InternalIcureApi
-data class ExchangeDataWithPotentiallyDecryptedContent(
-	val exchangeData: ExchangeData,
-	val decryptedContent: UnencryptedExchangeDataContent?,
-)
 
 /**
  * Exchange data manager which automatically handles decryption and cache

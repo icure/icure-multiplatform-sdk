@@ -1,7 +1,7 @@
 package com.icure.sdk.api
 
 import com.icure.sdk.api.raw.RawContactApi
-import com.icure.sdk.crypto.EncryptedFieldsManifest
+import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.EntityEncryptionService
 import com.icure.sdk.model.Contact
 import com.icure.sdk.model.Patient

@@ -3,6 +3,7 @@ package com.icure.sdk.crypto
 import com.icure.kryptom.crypto.PublicRsaKey
 import com.icure.kryptom.crypto.RsaAlgorithm
 import com.icure.kryptom.crypto.RsaKeypair
+import com.icure.sdk.crypto.entities.IcureKeyInfo
 import com.icure.sdk.model.KeypairFingerprintV2String
 import com.icure.sdk.utils.InternalIcureApi
 

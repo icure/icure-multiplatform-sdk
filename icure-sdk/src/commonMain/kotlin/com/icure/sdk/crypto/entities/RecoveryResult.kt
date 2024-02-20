@@ -1,4 +1,4 @@
-package com.icure.sdk.crypto
+package com.icure.sdk.crypto.entities
 
 
 sealed interface RecoveryResult<out T> {

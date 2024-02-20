@@ -6,7 +6,7 @@ import com.icure.kryptom.crypto.RsaAlgorithm
 import com.icure.kryptom.crypto.RsaKeypair
 import com.icure.kryptom.crypto.RsaService
 import com.icure.sdk.api.extended.DataOwnerApi
-import com.icure.sdk.crypto.IcureKeyInfo
+import com.icure.sdk.crypto.entities.IcureKeyInfo
 import com.icure.sdk.crypto.UserSignatureKeysManager
 import com.icure.sdk.crypto.exportSpkiHex
 import com.icure.sdk.model.KeypairFingerprintV1String
