@@ -35,7 +35,8 @@ class SecureDelegationsEncryptionImpl(
 		cryptoService.decryptDataWithKeys(
 			encryptedExchangeIds,
 			userEncryptionKeys.getDecryptionKeys(),
-			KeyIdentifierFormat.FingerprintV2
+			KeyIdentifierFormat.FingerprintV2,
+			EncodedDataFormat.Base64
 		)?.decodeToString()
 
 	override suspend fun encryptExchangeDataId(

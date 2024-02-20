@@ -4,14 +4,18 @@ import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.crypto.PrivateRsaKey
 import com.icure.kryptom.crypto.PublicRsaKey
 import com.icure.kryptom.crypto.RsaAlgorithm
+import com.icure.kryptom.crypto.RsaService
+import com.icure.kryptom.utils.toHexString
 import com.icure.sdk.crypto.entities.IcureKeyInfo
 import com.icure.sdk.crypto.entities.RsaDecryptionKeysSet
 import com.icure.sdk.crypto.entities.RsaSignatureKeysSet
 import com.icure.sdk.crypto.entities.VerifiedRsaEncryptionKeysSet
 import com.icure.sdk.model.Base64String
 import com.icure.sdk.model.CryptoActor
+import com.icure.sdk.model.HexString
 import com.icure.sdk.model.KeypairFingerprintV1String
 import com.icure.sdk.model.KeypairFingerprintV2String
+import com.icure.sdk.model.SpkiHexString
 import com.icure.sdk.model.extensions.publicKeysWithSha1Spki
 import com.icure.sdk.model.extensions.publicKeysWithSha256Spki
 import com.icure.sdk.utils.IllegalEntityException
@@ -19,6 +23,8 @@ import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.base64Encode
 import com.icure.sdk.utils.decode
 import com.icure.sdk.utils.getLogger
+
+private val log = getLogger("CryptoService")
 
 @InternalIcureApi
 sealed interface KeyIdentifierFormat<T> {
@@ -36,6 +42,19 @@ sealed interface KeyIdentifierFormat<T> {
 
 		override fun takeKeyFrom(rsaDecryptionKeys: RsaDecryptionKeysSet, identifier: KeypairFingerprintV2String) =
 			rsaDecryptionKeys.getByFingerprintV2(identifier)
+	}
+}
+
+@InternalIcureApi
+sealed interface EncodedDataFormat<T> {
+	fun decode(encoded: T): ByteArray
+
+	data object Base64 : EncodedDataFormat<Base64String> {
+		override fun decode(encoded: Base64String) = encoded.decode()
+	}
+
+	data object Hex : EncodedDataFormat<HexString> {
+		override fun decode(encoded: HexString) = encoded.decodedBytes()
 	}
 }
 
@@ -60,21 +79,23 @@ suspend fun <T> CryptoService.encryptDataWithKeys(
 	}
 
 @InternalIcureApi
-suspend fun <T> CryptoService.decryptDataWithKeys(
-	data: Map<T, Base64String>,
+suspend fun <KeyIdentifier, EncodedData> CryptoService.decryptDataWithKeys(
+	data: Map<KeyIdentifier, EncodedData>,
 	decryptionKeys: RsaDecryptionKeysSet,
-	keyIdentifierFormat: KeyIdentifierFormat<T>
+	keyIdentifierFormat: KeyIdentifierFormat<KeyIdentifier>,
+	encodedDataFormat: EncodedDataFormat<EncodedData>
 ): ByteArray? =
-	data.firstNotNullOfOrNull { (fp, encrypted) ->
+	data.firstNotNullOfOrNull { (fp, encryptedAndEncoded) ->
 		kotlin.runCatching {
 			keyIdentifierFormat.takeKeyFrom(decryptionKeys, fp)?.let {
-				rsa.decrypt(encrypted.decode(), it)
+				rsa.decrypt(encodedDataFormat.decode(encryptedAndEncoded), it)
 			}
 		}.onFailure {
 			log.w(it) { "Failed to decrypt data using RSA key $fp" }
 		}.getOrNull()
 	}
 
+@InternalIcureApi
 suspend fun CryptoService.loadEncryptionKeysForDataOwner(
 	cryptoActor: CryptoActor
 ): List<IcureKeyInfo<PublicRsaKey<RsaAlgorithm.RsaEncryptionAlgorithm>>> {
@@ -96,4 +117,21 @@ suspend fun CryptoService.loadEncryptionKeysForDataOwner(
 	}
 }
 
-private val log = getLogger("CryptoService")
+@InternalIcureApi
+suspend fun CryptoService.loadEncryptionKeyForDataOwner(
+	cryptoActor: CryptoActor,
+	spki: SpkiHexString
+): PublicRsaKey<RsaAlgorithm.RsaEncryptionAlgorithm> =
+	when (spki) {
+		in cryptoActor.publicKeysWithSha1Spki -> {
+			rsa.loadPublicKeySpki(RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha1, spki.bytes())
+		}
+		in cryptoActor.publicKeysWithSha256Spki -> {
+			rsa.loadPublicKeySpki(RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256, spki.bytes())
+		}
+		else -> throw IllegalArgumentException("The provided spki $spki is not a public key of the crypto actor ${cryptoActor.id}.")
+	}
+
+@InternalIcureApi
+suspend fun RsaService.exportSpkiHex(publicKey: PublicRsaKey<*>) =
+	SpkiHexString(exportPublicKeySpki(publicKey).toHexString())

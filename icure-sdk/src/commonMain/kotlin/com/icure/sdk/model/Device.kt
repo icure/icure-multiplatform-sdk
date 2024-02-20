@@ -12,11 +12,11 @@ data class Device(
 	val name: String? = null,
 	val lastName: String? = null,
 	val firstName: String? = null,
-	override val hcPartyKeys: Map<String, List<String>> = emptyMap(),
-	override val aesExchangeKeys: Map<String, Map<String, Map<String, String>>> = emptyMap(),
+	override val hcPartyKeys: Map<String, List<HexString>> = emptyMap(),
+	override val aesExchangeKeys: Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> = emptyMap(),
 	override val transferKeys: Map<String, Map<String, String>> = emptyMap(),
 	override val privateKeyShamirPartitions: Map<String, String> = emptyMap(), //Format is hcpId of key that has been partitionned : "threshold⎮partition in hex"
-	override val publicKey: String? = null,
-	override val publicKeysForOaepWithSha256: Set<String> = emptySet(),
+	override val publicKey: SpkiHexString? = null,
+	override val publicKeysForOaepWithSha256: Set<SpkiHexString> = emptySet(),
 	override val tags: Set<CodeStub> = emptySet()
 ): Revisionable<String>, CryptoActor

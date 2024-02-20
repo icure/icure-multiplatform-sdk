@@ -8,7 +8,18 @@ import io.ktor.utils.io.core.toByteArray
 import kotlinx.serialization.Serializable
 import kotlin.jvm.JvmInline
 
-
+/**
+ * A string that represents the keypair used for the encryption of an aes exchange key entry. This should usually be
+ * a fingerprint v1, but due to bugs in older iCure version it may also be a public key in hex-encoded spki format, or
+ * due to corruption of some healthcare parties public key it may also be an empty string, to represent the fact that
+ * the key used for the encryption is unknown.
+ */
+@JvmInline
+@Serializable
+value class AesExchangeKeyEncryptionKeypairIdentifier(val s: String) {
+	fun toFingerprintV1OrNull(): KeypairFingerprintV1String? =
+		if (s.length >= 32) KeypairFingerprintV1String(s.takeLast(32)) else null
+}
 
 @JvmInline
 @Serializable

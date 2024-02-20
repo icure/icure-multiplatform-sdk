@@ -7,6 +7,7 @@ import com.icure.sdk.crypto.entities.RsaDecryptionKeysSet
 import com.icure.sdk.model.DataOwnerType
 import com.icure.sdk.model.HexString
 import com.icure.sdk.model.KeypairFingerprintV1String
+import com.icure.sdk.model.SpkiHexString
 import com.icure.sdk.utils.InternalIcureApi
 
 @InternalIcureApi
@@ -20,7 +21,7 @@ interface BaseExchangeKeysManager {
 	 */
 	suspend fun giveAccessBackTo(
 		otherDataOwner: String,
-		newDataOwnerPublicKey: String,
+		newDataOwnerPublicKey: SpkiHexString,
 		keyPairsByFingerprint: RsaDecryptionKeysSet
 	)
 
@@ -33,7 +34,7 @@ interface BaseExchangeKeysManager {
 	suspend fun getEncryptedExchangeKeysFor(
 		delegatorId: String,
 		delegateId: String
-	): List<Map<KeypairFingerprintV1String, HexString>>
+	): List<Map<KeypairFingerprintV1String?, HexString>>
 
 	/**
 	 * Get all exchange keys where the provided data owner is involved either as the delegator or as the delegate.
@@ -54,7 +55,7 @@ interface BaseExchangeKeysManager {
 	 * @return an array all successfully decrypted exchange keys and an array containing all exchange keys which could not be decrypted.
 	 */
 	suspend fun tryDecryptExchangeKeys(
-		encryptedExchangeKeys: List<Map<KeypairFingerprintV1String, HexString>>,
+		encryptedExchangeKeys: List<Map<KeypairFingerprintV1String?, HexString>>,
 		keyPairsByFingerprint: RsaDecryptionKeysSet
-	): DecryptionResult<Map<KeypairFingerprintV1String, HexString>, AesKey>
+	): DecryptionResult<Map<KeypairFingerprintV1String?, HexString>, AesKey>
 }

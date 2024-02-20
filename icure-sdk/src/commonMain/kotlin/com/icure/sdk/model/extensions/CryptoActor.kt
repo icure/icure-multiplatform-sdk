@@ -11,19 +11,19 @@ import com.icure.sdk.model.SpkiHexString
  * All public keys of the crypto actor to be used for OAEP with SHA1
  */
 val CryptoActor.publicKeysWithSha1Spki: Set<SpkiHexString> get() =
-	(aesExchangeKeys.keys + listOfNotNull(publicKey)).mapTo(mutableSetOf()) { SpkiHexString(it) }
+	(aesExchangeKeys.keys + listOfNotNull(publicKey)).toSet()
 
 /**
  * All public keys of the crypto actor to be used for OAEP with SHA256
  */
 val CryptoActor.publicKeysWithSha256Spki: Set<SpkiHexString> get() =
-	publicKeysForOaepWithSha256.mapTo(mutableSetOf()) { SpkiHexString(it) }
+	publicKeysForOaepWithSha256.toSet()
 
 /**
  * All public keys of the crypto actor
  */
 val CryptoActor.publicKeysSpki: Set<SpkiHexString> get() =
-	(aesExchangeKeys.keys + publicKeysForOaepWithSha256 + listOfNotNull(publicKey)).mapTo(mutableSetOf()) { SpkiHexString(it) }
+	(aesExchangeKeys.keys + publicKeysForOaepWithSha256 + listOfNotNull(publicKey)).toSet()
 
 fun CryptoActor.algorithmOfEncryptionKey(encryptionKey: SpkiHexString) =
 	when {

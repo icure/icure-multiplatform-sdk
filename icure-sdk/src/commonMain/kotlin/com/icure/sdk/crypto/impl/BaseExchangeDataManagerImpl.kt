@@ -301,7 +301,7 @@ class BaseExchangeDataManagerImpl(
 		encryptedData: Map<KeypairFingerprintV2String, Base64String>,
 		decryptionKeys: RsaDecryptionKeysSet,
 	): ByteArray? =
-		cryptoService.decryptDataWithKeys(encryptedData, decryptionKeys, KeyIdentifierFormat.FingerprintV2)
+		cryptoService.decryptDataWithKeys(encryptedData, decryptionKeys, KeyIdentifierFormat.FingerprintV2, EncodedDataFormat.Base64)
 
 	private suspend fun verifyDelegatorSignature(
 		exchangeData: ExchangeData,

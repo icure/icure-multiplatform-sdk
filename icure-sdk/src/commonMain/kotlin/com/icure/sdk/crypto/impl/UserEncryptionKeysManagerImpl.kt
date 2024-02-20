@@ -14,7 +14,6 @@ import com.icure.sdk.crypto.KeyPairRecoverer
 import com.icure.sdk.crypto.entities.RsaDecryptionKeysSet
 import com.icure.sdk.crypto.UserEncryptionKeysManager
 import com.icure.sdk.crypto.entities.UserKeyPairInformation
-import com.icure.sdk.crypto.exportSpkiHex
 import com.icure.sdk.crypto.entities.toPrivateKeyInfo
 import com.icure.sdk.model.CryptoActorStub
 import com.icure.sdk.model.DataOwnerWithType

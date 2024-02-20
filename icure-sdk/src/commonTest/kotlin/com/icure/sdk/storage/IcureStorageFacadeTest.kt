@@ -3,7 +3,7 @@ package com.icure.sdk.storage
 import com.icure.kryptom.crypto.RsaAlgorithm
 import com.icure.kryptom.crypto.RsaService
 import com.icure.kryptom.crypto.defaultCryptoService
-import com.icure.sdk.crypto.exportSpkiHex
+import com.icure.sdk.crypto.impl.exportSpkiHex
 import com.icure.sdk.storage.impl.DefaultStorageEntryKeysFactory
 import com.icure.sdk.storage.impl.JsonAndBase64KeyStorage
 import com.icure.sdk.storage.impl.VolatileStorageFacade
