@@ -32,7 +32,7 @@ class SecureDelegationsDecryptorImpl(
 ) : SecureDelegationsDecryptor {
 	override fun decryptEncryptionKeysOf(
 		typedEntity: Encryptable,
-		dataOwnersHierarchySubset: List<String>
+		dataOwnersHierarchySubset: Set<String>
 	): Flow<DecryptedMetadataDetails<HexString>> =
 		decryptSecureDelegations(
 			typedEntity,
@@ -43,7 +43,7 @@ class SecureDelegationsDecryptorImpl(
 
 	override fun decryptSecretIdsOf(
 		typedEntity: Encryptable,
-		dataOwnersHierarchySubset: List<String>
+		dataOwnersHierarchySubset: Set<String>
 	): Flow<DecryptedMetadataDetails<String>> =
 		decryptSecureDelegations(
 			typedEntity,
@@ -53,7 +53,7 @@ class SecureDelegationsDecryptorImpl(
 		)
 	override fun decryptOwningEntityIdsOf(
 		typedEntity: Encryptable,
-		dataOwnersHierarchySubset: List<String>
+		dataOwnersHierarchySubset: Set<String>
 	): Flow<DecryptedMetadataDetails<String>> =
 		decryptSecureDelegations(
 			typedEntity,
@@ -67,7 +67,7 @@ class SecureDelegationsDecryptorImpl(
 
 	override suspend fun getEntityAccessLevel(
 		typedEntity: Encryptable,
-		dataOwnersHierarchySubset: List<String>
+		dataOwnersHierarchySubset: Set<String>
 	): AccessLevel? {
 		ensure(dataOwnersHierarchySubset.isNotEmpty()) { "`dataOwnersHierarchySubset` should not be empty" }
 		val allAccessibleDelegations = dataOwnersHierarchySubset.flatMap {
@@ -97,7 +97,7 @@ class SecureDelegationsDecryptorImpl(
 
 	private fun <T : Any> decryptSecureDelegations(
 		typedEntity: Encryptable,
-		dataOwnersHierarchySubset: List<String>,
+		dataOwnersHierarchySubset: Set<String>,
 		getDataToDecrypt: (delegation: SecureDelegation) -> Set<Base64String>,
 		decryptDataWithKey: suspend (encryptedData: Base64String, key: AesKey) -> T
 	): Flow<DecryptedMetadataDetails<T>> {
@@ -112,7 +112,7 @@ class SecureDelegationsDecryptorImpl(
 				}?.map {
 					DecryptedMetadataDetails(
 						decryptDataWithKey(it, exchangeKey),
-						listOf(exchangeData.delegator, exchangeData.delegate)
+						setOf(exchangeData.delegator, exchangeData.delegate)
 					)
 				}
 			} ?: emptyList()
@@ -200,7 +200,7 @@ class SecureDelegationsDecryptorImpl(
 
 	private fun <T : Any> decryptSecureDelegations(
 		typedEntity: Encryptable,
-		dataOwnersHierarchySubset: List<String>,
+		dataOwnersHierarchySubset: Set<String>,
 		decryptExchangeData: suspend (SecureDelegationKeyString, SecureDelegation, ExchangeData, UnencryptedExchangeDataContent?) -> List<DecryptedMetadataDetails<T>>
 	): Flow<DecryptedMetadataDetails<T>> = flow {
 		/*
@@ -220,7 +220,7 @@ class SecureDelegationsDecryptorImpl(
 			decryptExchangeData
 		).filter { (_ , delegation) ->
 			// If the current data owner was anonymous all his delegations were already emitted. Now only keep delegations where the current data owner appears explicitly
-			dataOwnersHierarchySubset.any { it == delegation.delegator || it == delegation.delegate }
+			delegation.delegate in dataOwnersHierarchySubset || delegation.delegator in dataOwnersHierarchySubset
 		}.let { remainingDelegations ->
 			// Step 2) Secure delegations with cached exchange data by id for explicit->explicit delegations where delegator and/or delegate is me or parent
 			processFullyExplicitDelegationsAndEmit(

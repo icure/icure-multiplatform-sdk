@@ -7,7 +7,7 @@ data class HierarchicallyDecryptedMetadata<T : Any>(
 	/**
 	 * The decrypted metadata
 	 */
-	val extracted: List<T>,
+	val extracted: Set<T>,
 	/**
 	 * The ids of a data owner part
 	 */

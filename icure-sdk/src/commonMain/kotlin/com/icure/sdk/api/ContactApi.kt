@@ -29,17 +29,16 @@ class ContactApi(
 	).updatedEntity
 
 	suspend fun getAndDecrypt(contactId: String) = rawApi.getContact(contactId).successBody().let { c ->
-		encryptionService.decryptEntity(c, Serialization.json.encodeToJsonElement(c),) { Serialization.json.decodeFromJsonElement<Contact>(it) }
+		encryptionService.tryDecryptEntity(c, Serialization.json.encodeToJsonElement(c),) { Serialization.json.decodeFromJsonElement<Contact>(it) }
 	}
 
 	// TODO need to handle services...
-	suspend fun encryptAndCreate(contact: Contact) = encryptionService.tryEncryptEntity(
+	suspend fun encryptAndCreate(contact: Contact) = encryptionService.encryptEntity(
 		contact,
 		Serialization.json.encodeToJsonElement(contact),
 		EncryptedFieldsManifest("Contact.", setOf("descr"), emptyMap(), emptyMap(), emptyMap()),
-		true,
 	) { Serialization.json.decodeFromJsonElement<Contact>(it) }.let { rawApi.createContact(it) }.successBody().let {
-		encryptionService.decryptEntity(it, Serialization.json.encodeToJsonElement(it)) { Serialization.json.decodeFromJsonElement<Contact>(it) }
+		encryptionService.tryDecryptEntity(it, Serialization.json.encodeToJsonElement(it)) { Serialization.json.decodeFromJsonElement<Contact>(it) }
 	}
 
 	suspend fun getEncryptionKeyOf(contact: Contact) =

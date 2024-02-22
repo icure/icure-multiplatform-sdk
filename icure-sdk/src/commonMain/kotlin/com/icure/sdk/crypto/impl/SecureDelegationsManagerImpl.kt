@@ -44,10 +44,10 @@ class SecureDelegationsManagerImpl (
 
 	override suspend fun <T : Encryptable> entityWithInitialisedEncryptedMetadata(
 		entity: T,
-		secretIds: List<String>,
-		owningEntityIds: List<String>,
-		owningEntitySecretIds: List<String>,
-		encryptionKeys: List<HexString>,
+		secretIds: Set<String>,
+		owningEntityIds: Set<String>,
+		owningEntitySecretIds: Set<String>,
+		encryptionKeys: Set<HexString>,
 		autoDelegations: Map<String, AccessLevel>
 	): T {
 		val selfId = dataOwnerApi.getCurrentDataOwnerId()
@@ -86,9 +86,9 @@ class SecureDelegationsManagerImpl (
 	override suspend fun makeShareOrUpdateRequestParams(
 		entity: Encryptable,
 		delegateId: String,
-		shareSecretIds: List<String>,
-		shareEncryptionKeys: List<HexString>,
-		shareOwningEntityIds: List<String>,
+		shareSecretIds: Set<String>,
+		shareEncryptionKeys: Set<HexString>,
+		shareOwningEntityIds: Set<String>,
 		newDelegationPermissions: RequestedPermission
 	): EntityShareOrMetadataUpdateRequest? {
 		val exchangeData = exchangeDataManager.getOrCreateEncryptionDataTo(delegateId, false)
@@ -106,19 +106,17 @@ class SecureDelegationsManagerImpl (
 				shareSecretIds = shareSecretIds,
 				shareEncryptionKeys = shareEncryptionKeys,
 				shareOwningEntityIds = shareOwningEntityIds
-			)?.let { EntityShareOrMetadataUpdateRequest(update = it) }
+			)?.wrap()
 		} else {
-			EntityShareOrMetadataUpdateRequest(
-				share = makeShareRequestParams(
-					exchangeDataInfo = exchangeData,
-					accessControlKey = accessControlKey,
-					delegateId = delegateId,
-					shareSecretIds = shareSecretIds,
-					shareEncryptionKeys = shareEncryptionKeys,
-					shareOwningEntityIds = shareOwningEntityIds,
-					newDelegationPermissions = newDelegationPermissions
-				)
-			)
+			makeShareRequestParams(
+				exchangeDataInfo = exchangeData,
+				accessControlKey = accessControlKey,
+				delegateId = delegateId,
+				shareSecretIds = shareSecretIds,
+				shareEncryptionKeys = shareEncryptionKeys,
+				shareOwningEntityIds = shareOwningEntityIds,
+				newDelegationPermissions = newDelegationPermissions
+			).wrap()
 		}
 	}
 
@@ -129,9 +127,9 @@ class SecureDelegationsManagerImpl (
 	private suspend fun makeSecureDelegationInfo(
 		entity: Encryptable,
 		delegateId: String,
-		shareSecretIds: List<String>,
-		shareEncryptionKeys: List<HexString>,
-		shareOwningEntityIds: List<String>,
+		shareSecretIds: Set<String>,
+		shareEncryptionKeys: Set<HexString>,
+		shareOwningEntityIds: Set<String>,
 		permissions: AccessLevel,
 		parentDelegationKey: SecureDelegationKeyString?
 	): SecureDelegationInfo {
@@ -170,13 +168,13 @@ class SecureDelegationsManagerImpl (
 		canonicalKey: SecureDelegationKeyString,
 		existingDelegation: SecureDelegation,
 		exchangeDataInfo: ExchangeDataWithUnencryptedContent,
-		shareSecretIds: List<String>,
-		shareEncryptionKeys: List<HexString>,
-		shareOwningEntityIds: List<String>
+		shareSecretIds: Set<String>,
+		shareEncryptionKeys: Set<HexString>,
+		shareOwningEntityIds: Set<String>
 	): EntitySharedMetadataUpdateRequest? {
-		val existingSecretIds = secureDelegationsEncryption.decryptSecretIds(existingDelegation, exchangeDataInfo.unencryptedContent.exchangeKey).toSet()
-		val existingEncryptionKeys = secureDelegationsEncryption.decryptEncryptionKeys(existingDelegation, exchangeDataInfo.unencryptedContent.exchangeKey).toSet()
-		val existingOwningEntityIds = secureDelegationsEncryption.decryptOwningEntityIds(existingDelegation, exchangeDataInfo.unencryptedContent.exchangeKey).toSet()
+		val existingSecretIds = secureDelegationsEncryption.decryptSecretIds(existingDelegation, exchangeDataInfo.unencryptedContent.exchangeKey)
+		val existingEncryptionKeys = secureDelegationsEncryption.decryptEncryptionKeys(existingDelegation, exchangeDataInfo.unencryptedContent.exchangeKey)
+		val existingOwningEntityIds = secureDelegationsEncryption.decryptOwningEntityIds(existingDelegation, exchangeDataInfo.unencryptedContent.exchangeKey)
 
 		val newSecretIds = shareSecretIds.filterTo(mutableSetOf()) { !existingSecretIds.contains(it) }
 		val newEncryptionKeys = shareEncryptionKeys.filterTo(mutableSetOf()) { !existingEncryptionKeys.contains(it) }
@@ -200,9 +198,9 @@ class SecureDelegationsManagerImpl (
 		exchangeDataInfo: ExchangeDataWithUnencryptedContent,
 		accessControlKey: AccessControlKeyString,
 		delegateId: String,
-		shareSecretIds: List<String>,
-		shareEncryptionKeys: List<HexString>,
-		shareOwningEntityIds: List<String>,
+		shareSecretIds: Set<String>,
+		shareEncryptionKeys: Set<HexString>,
+		shareOwningEntityIds: Set<String>,
 		newDelegationPermissions: RequestedPermission
 	): EntityShareRequest {
 		val secureDelegationInfo = makeSecureDelegationEncryptedData(
@@ -228,9 +226,9 @@ class SecureDelegationsManagerImpl (
 	private suspend fun makeSecureDelegationEncryptedData(
 		exchangeDataInfo: ExchangeDataWithUnencryptedContent,
 		delegateId: String,
-		shareSecretIds: List<String>,
-		shareEncryptionKeys: List<HexString>,
-		shareOwningEntityIds: List<String>
+		shareSecretIds: Set<String>,
+		shareEncryptionKeys: Set<HexString>,
+		shareOwningEntityIds: Set<String>
 	): EncryptedExchangeDataInfo {
 		val selfId = this.dataOwnerApi.getCurrentDataOwnerId()
 		val exchangeDataIdInfo = if (delegateId === selfId) {

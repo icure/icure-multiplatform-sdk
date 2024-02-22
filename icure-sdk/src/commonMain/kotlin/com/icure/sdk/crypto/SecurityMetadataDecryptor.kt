@@ -23,7 +23,7 @@ interface SecurityMetadataDecryptor {
 	 */
 	fun decryptEncryptionKeysOf(
 		typedEntity: Encryptable,
-		dataOwnersHierarchySubset: List<String>
+		dataOwnersHierarchySubset: Set<String>
 	): Flow<DecryptedMetadataDetails<HexString>>
 
 	/**
@@ -37,7 +37,7 @@ interface SecurityMetadataDecryptor {
 	 */
 	fun decryptSecretIdsOf(
 		typedEntity: Encryptable,
-		dataOwnersHierarchySubset: List<String>
+		dataOwnersHierarchySubset: Set<String>
 	): Flow<DecryptedMetadataDetails<String>>
 
 	/**
@@ -51,7 +51,7 @@ interface SecurityMetadataDecryptor {
 	 */
 	fun decryptOwningEntityIdsOf(
 		typedEntity: Encryptable,
-		dataOwnersHierarchySubset: List<String>
+		dataOwnersHierarchySubset: Set<String>
 	): Flow<DecryptedMetadataDetails<String>>
 
 	/**
@@ -67,7 +67,7 @@ interface SecurityMetadataDecryptor {
 	 * access level. This array should contain only data owners from the current data owner hierarchy.
 	 * @return the access level to the entity or undefined if none of the data owners has full access to the entity.
 	 */
-	suspend fun getEntityAccessLevel(typedEntity: Encryptable, dataOwnersHierarchySubset: List<String>): AccessLevel?
+	suspend fun getEntityAccessLevel(typedEntity: Encryptable, dataOwnersHierarchySubset: Set<String>): AccessLevel?
 
 	/**
 	 * Verifies if there is at least one (encrypted) encryption key in the metadata supported by this decryptor, even if it can't be decrypted by the

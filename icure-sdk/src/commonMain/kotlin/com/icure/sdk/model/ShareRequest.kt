@@ -17,7 +17,7 @@ data class EntityRequestInformationDto(
 	 * Which delegations can be parents to any newly requested non-root delegations. Some may be ignored in order to
 	 * simplify the delegation graph, or if the requested permission is root.
 	 */
-	val potentialParentDelegations: Set<String>
+	val potentialParentDelegations: Set<SecureDelegationKeyString>
 )
 
 @InternalIcureApi
@@ -78,7 +78,10 @@ data class EntityShareRequest(
 	 * Permissions for the delegate.
 	 */
 	val requestedPermissions: RequestedPermission = RequestedPermission.MaxWrite
-)
+) {
+	@InternalIcureApi
+	fun wrap() = EntityShareOrMetadataUpdateRequest(share = this)
+}
 
 
 /**
@@ -175,6 +178,9 @@ data class EntitySharedMetadataUpdateRequest(
 		@SerialName("DELETE")
 		Delete
 	}
+
+	@InternalIcureApi
+	fun wrap() = EntityShareOrMetadataUpdateRequest(update = this)
 }
 
 /**

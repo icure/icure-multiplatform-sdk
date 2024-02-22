@@ -6,8 +6,8 @@ import com.icure.sdk.utils.InternalIcureApi
 
 @InternalIcureApi
 data class DelegateShareOptions(
-	val shareSecretIds: List<String>,
-	val shareEncryptionKeys: List<HexString>,
-	val shareOwningEntityIds: List<String>,
+	val shareSecretIds: Set<String>,
+	val shareEncryptionKeys: Set<HexString>,
+	val shareOwningEntityIds: Set<String>,
 	val requestedPermissions: RequestedPermission
 )

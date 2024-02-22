@@ -27,15 +27,14 @@ class PatientApi(
 	).updatedEntity
 
 	suspend fun getAndDecrypt(contactId: String) = rawApi.getPatient(contactId).successBody().let { p ->
-		encryptionService.decryptEntity(p, Serialization.json.encodeToJsonElement(p)) { Serialization.json.decodeFromJsonElement<Patient>(it) }
+		encryptionService.tryDecryptEntity(p, Serialization.json.encodeToJsonElement(p)) { Serialization.json.decodeFromJsonElement<Patient>(it) }
 	}
 
-	suspend fun encryptAndCreate(patient: Patient) = encryptionService.tryEncryptEntity(
+	suspend fun encryptAndCreate(patient: Patient) = encryptionService.encryptEntity(
 		patient,
 		Serialization.json.encodeToJsonElement(patient),
 		EncryptedFieldsManifest("Patient.", setOf("note"), emptyMap(), emptyMap(), emptyMap()),
-		true,
 	) { Serialization.json.decodeFromJsonElement<Patient>(it) }.let { rawApi.createPatient(it) }.successBody().let {
-		encryptionService.decryptEntity(it, Serialization.json.encodeToJsonElement(it)) { Serialization.json.decodeFromJsonElement<Patient>(it) }
+		encryptionService.tryDecryptEntity(it, Serialization.json.encodeToJsonElement(it)) { Serialization.json.decodeFromJsonElement<Patient>(it) }
 	}
 }

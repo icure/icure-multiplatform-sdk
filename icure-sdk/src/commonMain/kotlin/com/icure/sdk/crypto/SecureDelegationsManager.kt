@@ -22,10 +22,10 @@ interface SecureDelegationsManager {
 	 */
 	suspend fun <T : Encryptable> entityWithInitialisedEncryptedMetadata(
 		entity: T,
-		secretIds: List<String>,
-		owningEntityIds: List<String>,
-		owningEntitySecretIds: List<String>,
-		encryptionKeys: List<HexString>,
+		secretIds: Set<String>,
+		owningEntityIds: Set<String>,
+		owningEntitySecretIds: Set<String>,
+		encryptionKeys: Set<HexString>,
 		autoDelegations: Map<String, AccessLevel>
 	): T
 
@@ -47,9 +47,9 @@ interface SecureDelegationsManager {
 	suspend fun makeShareOrUpdateRequestParams(
 		entity: Encryptable,
 		delegateId: String,
-		shareSecretIds: List<String>,
-		shareEncryptionKeys: List<HexString>,
-		shareOwningEntityIds: List<String>,
+		shareSecretIds: Set<String>,
+		shareEncryptionKeys: Set<HexString>,
+		shareOwningEntityIds: Set<String>,
 		newDelegationPermissions: RequestedPermission
 	): EntityShareOrMetadataUpdateRequest?
 

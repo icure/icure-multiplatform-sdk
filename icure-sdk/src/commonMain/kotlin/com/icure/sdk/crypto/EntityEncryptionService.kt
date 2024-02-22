@@ -8,7 +8,7 @@ import com.icure.sdk.crypto.entities.EntityEncryptionKeyDetails
 import com.icure.sdk.crypto.entities.EntityEncryptionMetadataInitialisationResult
 import com.icure.sdk.crypto.entities.HierarchicallyDecryptedMetadata
 import com.icure.sdk.crypto.entities.MinimalBulkShareResult
-import com.icure.sdk.crypto.entities.ShareResult
+import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.SimpleDelegateShareOptions
 import com.icure.sdk.model.AccessLevel
 import com.icure.sdk.model.BulkShareOrUpdateMetadataParams
@@ -17,6 +17,7 @@ import com.icure.sdk.model.EntityBulkShareResult
 import com.icure.sdk.model.HexString
 import com.icure.sdk.model.MinimalEntityBulkShareResult
 import com.icure.sdk.utils.InternalIcureApi
+import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.json.JsonElement
 
 /**
@@ -187,7 +188,7 @@ interface EntityEncryptionService {
 		unusedSecretIds: Boolean,
 		delegates: Map<String, SimpleDelegateShareOptions>,
 		doRequestBulkShareOrUpdate: (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<T>>
-	): ShareResult<T>
+	): SimpleShareResult<T>
 	// endregion
 
 	// region content encryption and decryption
@@ -203,7 +204,7 @@ interface EntityEncryptionService {
 	 * @return the encrypted data and, if a new encryption key was initialised for the entity, the updated entity.
 	 * @throws if the provided data owner can't access any encryption keys for the entity.
 	 */
-	suspend fun <T : Encryptable> encryptDataOf(
+	suspend fun <T : Encryptable> encryptAttachmentOf(
 	entity: T,
 	content: ByteArray,
 	saveEntity: suspend (entity: T) -> T
@@ -223,7 +224,7 @@ interface EntityEncryptionService {
 	 * @throws if the provided data owner can't access any encryption keys for the entity, or if no key could be found which provided valid decrypted
 	 * content according to the validator.
 	 */
-	suspend fun tryDecryptDataOf(
+	suspend fun tryDecryptAttachmentOf(
 		entity: Encryptable,
 		content: ByteArray,
 		validator: suspend (decryptedData: ByteArray) -> Boolean
@@ -232,42 +233,42 @@ interface EntityEncryptionService {
 	/**
 	 * Decrypts an encrypted entity, returns null if the entity could not be decrypted.
 	 */
-	suspend fun <E : Encryptable, D: Encryptable> decryptEntity(
+	suspend fun <E : Encryptable, D: Encryptable> tryDecryptEntity(
 		encryptedEntity: E,
-		encryptedEntityJson: JsonElement,
+		encryptedEntitySerializer: SerializationStrategy<E>,
 		constructor: (json: JsonElement) -> D
 	): D?
 
 	/**
-	 * Tries to decrypt data to a json object using the provided keys.
+	 * Encrypts the content of an entity according to the provided manifest. The encryption key will be extracted from
+	 * the metadata of the unencrypted entity.
+	 * @throws IllegalArgumentException if no encryption key could be extracted from the unencrypted entity.
 	 */
-	suspend fun tryDecryptJson(
-		potentialKeys: List<EntityEncryptionKeyDetails>,
-		encrypted: ByteArray,
-		truncateTrailingDecryptedNulls: Boolean
-	): JsonElement
-
-	/**
-	 * Tries to encrypt the content of an encrypted entity.
-	 * 1. If valid key for encryption is found the method returns the entity with the encrypted fields specified by cryptedKeys
-	 * 2. If requireEncryption is true and no key could be found for encryption of the entity the method fails.
-	 * 3. If requireEncryption is false and no key could be found for encryption the method will only check that the entity does not specify any value
-	 * for fields which should be encrypted according to cryptedKeys (e.g. note in a patient using the default configuration). If the entity specifies
-	 * a value for any field which should be encrypted the method throws an error, otherwise the method returns the original entity.
-	 */
-	suspend fun <E : Encryptable, D: Encryptable> tryEncryptEntity(
+	suspend fun <E : Encryptable, D: Encryptable> encryptEntity(
 		unencryptedEntity: D,
-		unencryptedEntityJson: JsonElement,
+		unencryptedEntitySerializer: SerializationStrategy<D>,
 		fieldsToEncrypt: EncryptedFieldsManifest,
-		requireEncryption: Boolean,
 		constructor: (json: JsonElement) -> E
 	): E
 
 	/**
-	 * Returns the first encryption key which could be properly decrypted from the entity using the current data owner.
-	 * @throws if no key could be decrypted.
+	 * Verifies that the provided entity does not expose any field which should be encrypted according to the provided
+	 * manifest.
+	 * @throws IllegalArgumentException if any of the content of the entity should be encrypted but is still in clear
+	 * in the entity.
+	 * @return [encryptedEntity] unmodified if it is valid (throws exception if not).
 	 */
-	suspend fun decryptAndImportAnyEncryptionKey(entity: Encryptable): EntityEncryptionKeyDetails
+	suspend fun <E: Encryptable> validateEncryptedEntity(
+		encryptedEntity: E,
+		encryptedEntitySerializer: SerializationStrategy<E>,
+		fieldsToEncrypt: EncryptedFieldsManifest
+	): E
+
+	/**
+	 * Returns the first encryption key which could be properly decrypted from the entity using the current data owner,
+	 * or null if no key could be decrypted.
+	 */
+	suspend fun tryDecryptAndImportAnyEncryptionKey(entity: Encryptable): EntityEncryptionKeyDetails?
 
 	/**
 	 * Returns all encryption keys which could be properly decrypted from the entity using the current data owner. The keys returned by this method
