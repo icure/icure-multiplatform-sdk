@@ -7,7 +7,6 @@ import com.icure.sdk.model.Patient
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import kotlinx.serialization.json.decodeFromJsonElement
-import kotlinx.serialization.json.encodeToJsonElement
 
 @OptIn(InternalIcureApi::class)
 class PatientApi(
@@ -27,14 +26,14 @@ class PatientApi(
 	).updatedEntity
 
 	suspend fun getAndDecrypt(contactId: String) = rawApi.getPatient(contactId).successBody().let { p ->
-		encryptionService.tryDecryptEntity(p, Serialization.json.encodeToJsonElement(p)) { Serialization.json.decodeFromJsonElement<Patient>(it) }
+		encryptionService.tryDecryptEntity(p, Patient.serializer()) { Serialization.json.decodeFromJsonElement<Patient>(it) }
 	}
 
 	suspend fun encryptAndCreate(patient: Patient) = encryptionService.encryptEntity(
 		patient,
-		Serialization.json.encodeToJsonElement(patient),
+		Patient.serializer(),
 		EncryptedFieldsManifest("Patient.", setOf("note"), emptyMap(), emptyMap(), emptyMap()),
 	) { Serialization.json.decodeFromJsonElement<Patient>(it) }.let { rawApi.createPatient(it) }.successBody().let {
-		encryptionService.tryDecryptEntity(it, Serialization.json.encodeToJsonElement(it)) { Serialization.json.decodeFromJsonElement<Patient>(it) }
+		encryptionService.tryDecryptEntity(it, Patient.serializer()) { Serialization.json.decodeFromJsonElement<Patient>(it) }
 	}
 }

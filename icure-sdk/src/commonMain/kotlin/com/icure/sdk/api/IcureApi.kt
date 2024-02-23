@@ -11,7 +11,6 @@ import com.icure.sdk.api.raw.RawExchangeDataMapApi
 import com.icure.sdk.api.raw.RawPatientApi
 import com.icure.sdk.auth.UsernamePassword
 import com.icure.sdk.auth.services.JwtAuthService
-import com.icure.sdk.crypto.CryptoStrategies
 import com.icure.sdk.crypto.impl.BaseExchangeDataManagerImpl
 import com.icure.sdk.crypto.impl.BasicCryptoStrategies
 import com.icure.sdk.crypto.impl.CachedLruExchangeDataManager

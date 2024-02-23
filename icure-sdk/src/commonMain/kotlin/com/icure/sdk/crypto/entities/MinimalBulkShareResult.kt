@@ -4,7 +4,12 @@ import com.icure.sdk.utils.InternalIcureApi
 
 @InternalIcureApi
 data class MinimalBulkShareResult(
-	val updatedEntitiesIds: List<String>,
-	val unmodifiedEntitiesIds: List<String>,
+	val successfulUpdates: Set<MinimalRequestDetails>,
+	val unmodifiedEntitiesIds: Set<String>,
 	val updateErrors: List<FailedRequestDetails>
-)
+) {
+	data class MinimalRequestDetails(
+		val delegateId: String,
+		val entityId: String
+	)
+}

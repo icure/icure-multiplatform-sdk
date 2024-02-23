@@ -29,6 +29,7 @@ import com.icure.sdk.model.EntityRequestInformationDto
 import com.icure.sdk.model.EntityShareOrMetadataUpdateRequest
 import com.icure.sdk.model.HexString
 import com.icure.sdk.model.MinimalEntityBulkShareResult
+import com.icure.sdk.model.RejectedShareOrMetadataUpdateRequest
 import com.icure.sdk.model.RequestedPermission
 import com.icure.sdk.model.SecureDelegationKeyString
 import com.icure.sdk.utils.IllegalEntityException
@@ -252,9 +253,7 @@ class EntityEncryptionServiceImpl(
 		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<T>>
 	): BulkShareResult<T> {
 		val requestDetails = prepareBulkShareRequests(entitiesUpdates)
-		val updatedEntities = mutableListOf<T>()
-		val updateErrors = mutableListOf<FailedRequestDetails>()
-		doRequestBulkShareOrUpdate(
+		val shareResult = doRequestBulkShareOrUpdate(
 			BulkShareOrUpdateMetadataParams(
 				requestDetails.requestsByEntityId.mapValues { (_, details) ->
 					EntityRequestInformationDto(
@@ -263,23 +262,10 @@ class EntityEncryptionServiceImpl(
 					)
 				}
 			)
-		).forEach { result ->
-			if (result.updatedEntity != null) {
-				updatedEntities.add(result.updatedEntity)
-			}
-			result.rejectedRequests.forEach { (rejectedRequestId, error) ->
-				val originalRequestDetails = requestDetails.requestsByEntityId.getValue(result.entityId).requests.getValue(rejectedRequestId)
-				updateErrors.add(
-					FailedRequestDetails(
-						delegateId = originalRequestDetails.delegateId,
-						entityId = result.entityId,
-						request = originalRequestDetails.options,
-						updatedForMigration = originalRequestDetails.updatedForMigration,
-						code = error.code,
-						reason = error.reason
-					)
-				)
-			}
+		)
+		val updatedEntities = shareResult.mapNotNull { it.updatedEntity }
+		val updateErrors = shareResult.flatMap { result ->
+			makeFailedRequestDetails(result.entityId, result.rejectedRequests, requestDetails)
 		}
 		return BulkShareResult(updatedEntities, requestDetails.unmodifiedEntityIds, updateErrors)
 	}
@@ -288,8 +274,50 @@ class EntityEncryptionServiceImpl(
 		entitiesUpdates: List<Pair<Encryptable, Map<String, DelegateShareOptions>>>,
 		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<MinimalEntityBulkShareResult>
 	): MinimalBulkShareResult {
-		TODO("Not yet implemented")
+		val requestDetails = prepareBulkShareRequests(entitiesUpdates)
+		val shareResult = doRequestBulkShareOrUpdate(
+			BulkShareOrUpdateMetadataParams(
+				requestDetails.requestsByEntityId.mapValues { (_, details) ->
+					EntityRequestInformationDto(
+						details.requests.mapValues { it.value.request },
+						details.potentialParentDelegations
+					)
+				}
+			)
+		)
+		val updateErrors = shareResult.flatMap { result ->
+			makeFailedRequestDetails(result.entityId, result.rejectedRequests, requestDetails)
+		}
+		val failedRequestsMinimalDetails = updateErrors.mapTo(mutableSetOf()) {
+			MinimalBulkShareResult.MinimalRequestDetails(delegateId = it.delegateId, entityId = it.entityId)
+		}
+		val successfulUpdates =  requestDetails.requestsByEntityId.flatMapTo(mutableSetOf()) { (entityId, request) ->
+			request.requests.values.mapNotNull { delegateRequest ->
+				MinimalBulkShareResult.MinimalRequestDetails(delegateId = delegateRequest.delegateId, entityId = entityId).takeIf {
+					!failedRequestsMinimalDetails.contains(it)
+				}
+			}
+		}
+		return MinimalBulkShareResult(successfulUpdates, requestDetails.unmodifiedEntityIds, updateErrors)
 	}
+
+	private fun makeFailedRequestDetails(
+		entityId: String,
+		shareResultRejectedRequests: Map<String, RejectedShareOrMetadataUpdateRequest>,
+		requestDetails: BulkShareRequestsDetails
+	) =
+		shareResultRejectedRequests.map { (rejectedRequestId, error) ->
+			val originalRequestDetails = requestDetails.requestsByEntityId.getValue(entityId).requests.getValue(rejectedRequestId)
+			FailedRequestDetails(
+				delegateId = originalRequestDetails.delegateId,
+				entityId = entityId,
+				request = originalRequestDetails.options,
+				updatedForMigration = originalRequestDetails.updatedForMigration,
+				code = error.code,
+				reason = error.reason
+			)
+		}
+
 
 	private data class BulkShareRequestsDetails(
 		val unmodifiedEntityIds: Set<String>,
