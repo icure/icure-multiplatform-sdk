@@ -14,7 +14,7 @@ import kotlin.reflect.KClass
 class ResourceNotFoundException(
 	val resourceId: String,
 	val resourceClass: KClass<*>
-) : Exception("Resource $resourceId of type $resourceClass not found")
+) : Exception("Resource $resourceId of type ${resourceClass.qualifiedName} not found")
 
 /**
  * Exception thrown when a retrieved entity does not conform to the expected format.

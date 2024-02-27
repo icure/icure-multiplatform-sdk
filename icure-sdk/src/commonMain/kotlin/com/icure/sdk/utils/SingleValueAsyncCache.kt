@@ -77,9 +77,11 @@ class SingleValueAsyncCache<TCached : Any, TRetrieved : Any> { // TODO test
 		val updated = mutex.withLock {
 			val currCache = cache
 			val completableCache = CompletableDeferred<TCached>()
-			async {
+			async(start = CoroutineStart.LAZY) {
 				kotlin.runCatching {
-					doUpdate(currCache?.takeIf { !it.isCancelled }?.await())
+					// If I inline prev in the do update the compiler crashes... on 1.9.22
+					val prev = currCache?.takeIf { !it.isCancelled }?.await()
+					doUpdate(prev)
 				}.also {
 					completableCache.completeWith(it.map { it.first })
 				}.getOrThrow()

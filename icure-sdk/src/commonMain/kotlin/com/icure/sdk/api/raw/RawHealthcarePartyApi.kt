@@ -17,6 +17,7 @@ package com.icure.sdk.api.raw
 
 import com.icure.sdk.auth.services.AuthService
 import com.icure.sdk.model.AesExchangeKeyEncryptionKeypairIdentifier
+import com.icure.sdk.model.HealthcareParty
 import com.icure.sdk.model.HexString
 import com.icure.sdk.utils.InternalIcureApi
 import org.openapitools.client.infrastructure.*
@@ -37,31 +38,27 @@ open class RawHealthcarePartyApi(
 //     * @return HealthcarePartyDto
 //     */
 //    @Suppress("UNCHECKED_CAST")
-//    open suspend fun createHealthcareParty(healthcarePartyDto: HealthcarePartyDto): HttpResponse<HealthcarePartyDto> {
-//
-//        val localVariableAuthNames = listOf<String>()
-//
-//        val localVariableBody = healthcarePartyDto
-//
-//        val localVariableQuery = mutableMapOf<String, List<String>>()
-//        val localVariableHeaders = mutableMapOf<String, String>()
-//
-//        val localVariableConfig = RequestConfig<kotlin.Any?>(
-//            RequestMethod.POST,
-//            "/rest/v2/hcparty",
-//            query = localVariableQuery,
-//            headers = localVariableHeaders,
-//            requiresAuthentication = false,
-//        )
-//
-//        return jsonRequest(
-//            localVariableConfig,
-//            localVariableBody,
-//            localVariableAuthNames
-//        ).wrap()
-//    }
-//
-//
+    open suspend fun createHealthcareParty(healthcarePartyDto: HealthcareParty): HttpResponse<HealthcareParty> {
+        val localVariableBody = healthcarePartyDto
+
+        val localVariableQuery = mutableMapOf<String, List<String>>()
+        val localVariableHeaders = mutableMapOf<String, String>()
+
+        val localVariableConfig = RequestConfig<kotlin.Any?>(
+            RequestMethod.POST,
+            "/rest/v2/hcparty",
+            query = localVariableQuery,
+            headers = localVariableHeaders,
+            requiresAuthentication = false,
+        )
+
+        return jsonRequest(
+            localVariableConfig,
+            localVariableBody,
+        ).wrap()
+    }
+
+
 //
 //    /**
 //     * Create a healthcare party
@@ -70,30 +67,29 @@ open class RawHealthcarePartyApi(
 //     * @param healthcarePartyDto
 //     * @return HealthcarePartyDto
 //     */
-//    @Suppress("UNCHECKED_CAST")
-//    open suspend fun createHealthcarePartyInGroup(groupId: kotlin.String, healthcarePartyDto: HealthcarePartyDto): HttpResponse<HealthcarePartyDto> {
-//
-//        val localVariableAuthNames = listOf<String>()
-//
-//        val localVariableBody = healthcarePartyDto
-//
-//        val localVariableQuery = mutableMapOf<String, List<String>>()
-//        val localVariableHeaders = mutableMapOf<String, String>()
-//
-//        val localVariableConfig = RequestConfig<kotlin.Any?>(
-//            RequestMethod.POST,
-//            "/rest/v2/hcparty/inGroup/{groupId}".replace("{" + "groupId" + "}", "$groupId"),
-//            query = localVariableQuery,
-//            headers = localVariableHeaders,
-//            requiresAuthentication = false,
-//        )
-//
-//        return jsonRequest(
-//            localVariableConfig,
-//            localVariableBody,
-//            localVariableAuthNames
-//        ).wrap()
-//    }
+    @Suppress("UNCHECKED_CAST")
+    open suspend fun createHealthcarePartyInGroup(groupId: kotlin.String, healthcarePartyDto: HealthcareParty): HttpResponse<HealthcareParty> {
+
+        val localVariableAuthNames = listOf<String>()
+
+        val localVariableBody = healthcarePartyDto
+
+        val localVariableQuery = mutableMapOf<String, List<String>>()
+        val localVariableHeaders = mutableMapOf<String, String>()
+
+        val localVariableConfig = RequestConfig<kotlin.Any?>(
+            RequestMethod.POST,
+            "/rest/v2/hcparty/inGroup/{groupId}".replace("{" + "groupId" + "}", "$groupId"),
+            query = localVariableQuery,
+            headers = localVariableHeaders,
+            requiresAuthentication = false,
+        )
+
+        return jsonRequest(
+            localVariableConfig,
+            localVariableBody,
+        ).wrap()
+    }
 //
 //
 //

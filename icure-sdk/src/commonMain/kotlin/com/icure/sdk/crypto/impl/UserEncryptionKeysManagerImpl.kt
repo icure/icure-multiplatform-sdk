@@ -257,7 +257,7 @@ private class KeyLoader(
 			}
 			val newKeySpki = cryptoService.rsa.exportSpkiHex(newKey.public)
 			val selfWithNewKey = selfInfo.toStub().let {
-				it.copy(stub = it.stub.copy(publicKeysForOaepWithSha256 = it.stub.publicKeysForOaepWithSha256 + newKeySpki.s))
+				it.copy(stub = it.stub.copy(publicKeysForOaepWithSha256 = it.stub.publicKeysForOaepWithSha256 + newKeySpki))
 			}
 			dataOwnerApi.modifyDataOwnerStub(selfWithNewKey)
 			KeyData(
@@ -299,7 +299,7 @@ private class KeyLoader(
 	private suspend fun loadAndIcureRecoverKeysFor(
 		dataOwnerInfo: DataOwnerWithType,
 	): Pair<Collection<DataOwnerKeyInfo.Found>, Collection<DataOwnerKeyInfo.Missing>> {
-		val legacyKey = dataOwnerInfo.dataOwner.publicKey?.let { SpkiHexString(it) }
+		val legacyKey = dataOwnerInfo.dataOwner.publicKey
 		val verificationDetails = icureStorage.loadSelfVerifiedKeys(dataOwnerInfo.dataOwner.id)
 		val keysWithAlgorithm = (
 			dataOwnerInfo.dataOwner.publicKeysWithSha1Spki.map {
