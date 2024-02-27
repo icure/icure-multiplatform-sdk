@@ -7,6 +7,9 @@ import com.icure.kryptom.crypto.PublicRsaKey
 import com.icure.kryptom.crypto.RsaAlgorithm
 import com.icure.kryptom.utils.toHexString
 import com.icure.sdk.api.extended.DataOwnerApi
+import com.icure.sdk.api.raw.RawDeviceApi
+import com.icure.sdk.api.raw.RawHealthcarePartyApi
+import com.icure.sdk.api.raw.RawPatientApi
 import com.icure.sdk.crypto.BaseExchangeKeysManager
 import com.icure.sdk.crypto.entities.DataOwnerExchangeKeys
 import com.icure.sdk.crypto.entities.DecryptionResult
@@ -26,7 +29,10 @@ import kotlinx.coroutines.sync.withLock
 @InternalIcureApi
 class BaseExchangeKeysManagerImpl(
 	private val cryptoService: CryptoService,
-	private val dataOwnerApi: DataOwnerApi
+	private val dataOwnerApi: DataOwnerApi,
+	private val rawPatientApi: RawPatientApi,
+	private val rawDeviceApi: RawDeviceApi,
+	private val rawHealthcarePartyApi: RawHealthcarePartyApi
 ) : BaseExchangeKeysManager {
 	private companion object {
 		val log = getLogger("BaseExchangeKeysManager")
@@ -65,9 +71,15 @@ class BaseExchangeKeysManagerImpl(
 	}
 
 	// { [delegatorId: string]: { [delegatorPubKeyFingerprint: string]: { [delegatePubKeyFingerprint: string]: string } } }
-	private fun aesExchangeKeysFromHcpToDelegate(delegateId: String): Map<String, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> = TODO("from raw api")
-	private fun aesExchangeKeysFromPatientToDelegate(delegateId: String): Map<String, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> = TODO("from raw api")
-	private fun aesExchangeKeysFromDeviceToDelegate(delegateId: String): Map<String, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> = TODO("from raw api")
+	private suspend fun aesExchangeKeysFromHcpsToDelegate(delegateId: String): Map<String, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> =
+		rawHealthcarePartyApi.getAesExchangeKeysForDelegate(delegateId).successBody()
+
+	private suspend fun aesExchangeKeysFromPatientsToDelegate(delegateId: String): Map<String, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> =
+		rawPatientApi.getPatientAesExchangeKeysForDelegate(delegateId).successBody()
+
+	private suspend fun aesExchangeKeysFromDevicesToDelegate(delegateId: String): Map<String, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> =
+		rawDeviceApi.getDeviceAesExchangeKeysForDelegate(delegateId).successBody()
+
 
 	override suspend fun getAllExchangeKeysWith(
 		dataOwnerId: String,
@@ -75,9 +87,9 @@ class BaseExchangeKeysManagerImpl(
 	): DataOwnerExchangeKeys {
 		val keysToOwner = otherOwnerTypes.fold(emptyMap<String, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>>()) { acc, ownerType ->
 			acc + when (ownerType) {
-				DataOwnerType.Hcp -> aesExchangeKeysFromHcpToDelegate(dataOwnerId)
-				DataOwnerType.Patient -> aesExchangeKeysFromPatientToDelegate(dataOwnerId)
-				DataOwnerType.Device -> aesExchangeKeysFromDeviceToDelegate(dataOwnerId)
+				DataOwnerType.Hcp -> aesExchangeKeysFromHcpsToDelegate(dataOwnerId)
+				DataOwnerType.Patient -> aesExchangeKeysFromPatientsToDelegate(dataOwnerId)
+				DataOwnerType.Device -> aesExchangeKeysFromDevicesToDelegate(dataOwnerId)
 			}
 		}
 		val dataOwner = dataOwnerApi.getCryptoActorStub(dataOwnerId)

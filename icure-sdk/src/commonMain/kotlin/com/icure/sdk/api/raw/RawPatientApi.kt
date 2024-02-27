@@ -16,6 +16,8 @@
 package com.icure.sdk.api.raw
 
 import com.icure.sdk.auth.services.AuthService
+import com.icure.sdk.model.AesExchangeKeyEncryptionKeypairIdentifier
+import com.icure.sdk.model.HexString
 import com.icure.sdk.model.Patient
 import org.openapitools.client.infrastructure.RequestConfig
 import org.openapitools.client.infrastructure.RequestMethod
@@ -809,31 +811,26 @@ open class RawPatientApi(
 //     * @param patientId
 //     * @return kotlin.collections.Map<kotlin.String, kotlin.collections.Map<kotlin.String, kotlin.collections.Map<kotlin.String, kotlin.String>>>
 //     */
-//    @Suppress("UNCHECKED_CAST")
-//    open suspend fun getPatientAesExchangeKeysForDelegate(patientId: kotlin.String): HttpResponse<kotlin.collections.Map<kotlin.String, kotlin.collections.Map<kotlin.String, kotlin.collections.Map<kotlin.String, kotlin.String>>>> {
-//
-//        val localVariableAuthNames = listOf<String>()
-//
-//        val localVariableBody =
-//            io.ktor.client.utils.EmptyContent
-//
-//        val localVariableQuery = mutableMapOf<String, List<String>>()
-//        val localVariableHeaders = mutableMapOf<String, String>()
-//
-//        val localVariableConfig = RequestConfig<kotlin.Any?>(
-//            RequestMethod.GET,
-//            "/rest/v2/patient/{patientId}/aesExchangeKeys".replace("{" + "patientId" + "}", "$patientId"),
-//            query = localVariableQuery,
-//            headers = localVariableHeaders,
-//            requiresAuthentication = false,
-//        )
-//
-//        return request(
-//            localVariableConfig,
-//            localVariableBody,
-//            localVariableAuthNames
-//        ).wrap<GetPatientAesExchangeKeysForDelegateResponse>().map { value }
-//    }
+    open suspend fun getPatientAesExchangeKeysForDelegate(patientId: kotlin.String): HttpResponse<Map<String, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>>> {
+        val localVariableBody =
+            io.ktor.client.utils.EmptyContent
+
+        val localVariableQuery = mutableMapOf<String, List<String>>()
+        val localVariableHeaders = mutableMapOf<String, String>()
+
+        val localVariableConfig = RequestConfig<kotlin.Any?>(
+            RequestMethod.GET,
+            "/rest/v2/patient/{patientId}/aesExchangeKeys".replace("{" + "patientId" + "}", "$patientId"), // TODO this is actually a delegate id
+            query = localVariableQuery,
+            headers = localVariableHeaders,
+            requiresAuthentication = true,
+        )
+
+        return request(
+            localVariableConfig,
+            localVariableBody,
+        ).wrap()
+    }
 //
 //    @Serializable(GetPatientAesExchangeKeysForDelegateResponse.Companion::class)
 //    private class GetPatientAesExchangeKeysForDelegateResponse(val value: Map<kotlin.String, kotlin.collections.Map>) {

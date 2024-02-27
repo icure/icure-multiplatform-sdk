@@ -17,8 +17,6 @@ package com.icure.sdk.api.raw
 
 import com.icure.sdk.auth.services.AuthService
 import com.icure.sdk.model.Contact
-import com.icure.sdk.model.EntityBulkShareResult
-import com.icure.sdk.model.EntityShareOrMetadataUpdateRequest
 import com.icure.sdk.utils.InternalIcureApi
 import org.openapitools.client.infrastructure.RequestConfig
 import org.openapitools.client.infrastructure.RequestMethod

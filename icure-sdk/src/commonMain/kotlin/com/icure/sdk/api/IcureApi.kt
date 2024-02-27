@@ -6,8 +6,10 @@ import com.icure.sdk.api.extended.AnonymousAuthApiImpl
 import com.icure.sdk.api.extended.DataOwnerApi
 import com.icure.sdk.api.raw.RawContactApi
 import com.icure.sdk.api.raw.RawDataownerApi
+import com.icure.sdk.api.raw.RawDeviceApi
 import com.icure.sdk.api.raw.RawExchangeDataApi
 import com.icure.sdk.api.raw.RawExchangeDataMapApi
+import com.icure.sdk.api.raw.RawHealthcarePartyApi
 import com.icure.sdk.api.raw.RawPatientApi
 import com.icure.sdk.auth.UsernamePassword
 import com.icure.sdk.auth.services.JwtAuthService
@@ -58,6 +60,9 @@ interface IcureApi {
 			val dataOwnerApi = DataOwnerApi(RawDataownerApi(apiUrl, authService))
 			val self = dataOwnerApi.getCurrentDataOwner()
 			val selfIsAnonymous = cryptoStrategies.dataOwnerRequiresAnonymousDelegation(self.toStub())
+			val rawPatientApi = RawPatientApi(apiUrl, authService)
+			val rawHealthcarePartyApi = RawHealthcarePartyApi(apiUrl, authService)
+			val rawDeviceApi = RawDeviceApi(apiUrl, authService)
 			val exchangeDataMapManager = ExchangeDataMapManagerImpl(
 				RawExchangeDataMapApi(apiUrl, authService),
 				cryptoService
@@ -130,7 +135,10 @@ interface IcureApi {
 			)
 			val baseExchangeKeysManager = BaseExchangeKeysManagerImpl(
 				cryptoService,
-				dataOwnerApi
+				dataOwnerApi,
+				rawPatientApi,
+				rawDeviceApi,
+				rawHealthcarePartyApi,
 			)
 			val exchangeKeysManager = ExchangeKeysManagerImpl(
 				dataOwnerApi,
@@ -157,7 +165,7 @@ interface IcureApi {
 					entityEncryptionService,
 				),
 				PatientApi(
-					RawPatientApi(apiUrl, authService),
+					rawPatientApi,
 					entityEncryptionService,
 				)
 			)
