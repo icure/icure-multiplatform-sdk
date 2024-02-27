@@ -21,7 +21,7 @@ import kotlin.concurrent.Volatile
  * @param TRetrieved type of the retrieved value. Usually it is the same as the cached type, but it can be different if
  * the retrieved value has some potential uses but can't be safely cached long term (it is subject to too many changes).
  */
-class SingleValueAsyncCache<TCached : Any, TRetrieved : Any> {
+class SingleValueAsyncCache<TCached : Any, TRetrieved : Any> { // TODO test
 	private val mutex: Mutex = Mutex(false)
 	@Volatile
 	private var cache: Deferred<TCached>? = null
@@ -70,6 +70,23 @@ class SingleValueAsyncCache<TCached : Any, TRetrieved : Any> {
 		 */
 		cacheInfo.await()
 	} ?: joinOrRetrieve(doRetrieve)
+
+	suspend fun update(
+		doUpdate: suspend (TCached?) -> Pair<TCached, TRetrieved>
+	): Pair<TCached, TRetrieved> = coroutineScope {
+		val updated = mutex.withLock {
+			val currCache = cache
+			val completableCache = CompletableDeferred<TCached>()
+			async {
+				kotlin.runCatching {
+					doUpdate(currCache?.takeIf { !it.isCancelled }?.await())
+				}.also {
+					completableCache.completeWith(it.map { it.first })
+				}.getOrThrow()
+			}
+		}
+		updated.await()
+	}
 
 	/**
 	 * Delete the cached value. It will be retrieved again the next time it is requested.

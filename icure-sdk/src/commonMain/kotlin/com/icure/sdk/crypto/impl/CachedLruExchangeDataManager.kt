@@ -9,6 +9,7 @@ import com.icure.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
 import com.icure.sdk.crypto.entities.UnencryptedExchangeDataContent
 import com.icure.sdk.crypto.UserEncryptionKeysManager
 import com.icure.sdk.crypto.UserSignatureKeysManager
+import com.icure.sdk.model.Base64String
 import com.icure.sdk.model.EntityWithDelegationTypeName
 import com.icure.sdk.model.ExchangeData
 import com.icure.sdk.model.SecureDelegationKeyString
@@ -36,11 +37,6 @@ class CachedLruExchangeDataManager(
 	cryptoService,
 	useParentKeys
 ) {
-	private data class CachedExchangeDataDetails(
-		val exchangeData: ExchangeData,
-		val decryptedContentAndVerificationStatus: Pair<UnencryptedExchangeDataContent, Boolean>?
-	)
-
 	private val exchangeDataByIdCache: LruCacheWithAsyncRetrieve<String, CachedExchangeDataDetails> =
 		LruCacheWithAsyncRetrieve(maxCacheSize)
 	private val delegateToVerifiedExchangeDataId: LruCacheWithAsyncRetrieve<String, String> =
@@ -156,9 +152,6 @@ class CachedLruExchangeDataManager(
 		}
 	}
 
-	override suspend fun getAccessControlKeysValue(entityType: EntityWithDelegationTypeName): String? =
-		null
-
-	override suspend fun getAllDelegationKeys(entityType: EntityWithDelegationTypeName): List<String>? =
+	override suspend fun getAccessControlKeysValue(entityType: EntityWithDelegationTypeName): List<Base64String>? =
 		null
 }

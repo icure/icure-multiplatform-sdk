@@ -12,11 +12,15 @@ import com.icure.sdk.api.raw.RawPatientApi
 import com.icure.sdk.auth.UsernamePassword
 import com.icure.sdk.auth.services.JwtAuthService
 import com.icure.sdk.crypto.impl.BaseExchangeDataManagerImpl
+import com.icure.sdk.crypto.impl.BaseExchangeKeysManagerImpl
 import com.icure.sdk.crypto.impl.BasicCryptoStrategies
 import com.icure.sdk.crypto.impl.CachedLruExchangeDataManager
 import com.icure.sdk.crypto.impl.EntityEncryptionServiceImpl
 import com.icure.sdk.crypto.impl.ExchangeDataMapManagerImpl
+import com.icure.sdk.crypto.impl.ExchangeKeysManagerImpl
+import com.icure.sdk.crypto.impl.FullyCachedExchangeDataManager
 import com.icure.sdk.crypto.impl.JsonEncryptionServiceImpl
+import com.icure.sdk.crypto.impl.LegacyDelegationsDecryptor
 import com.icure.sdk.crypto.impl.NoopIcureKeyRecovery
 import com.icure.sdk.crypto.impl.NoopKeyRecoverer
 import com.icure.sdk.crypto.impl.SecureDelegationsDecryptorImpl
@@ -41,7 +45,8 @@ interface IcureApi {
 		suspend fun initialise(
 			baseUrl: String,
 			usernamePassword: UsernamePassword,
-			baseStorage: StorageFacade
+			baseStorage: StorageFacade,
+			useParentKeys: Boolean
 		): IcureApi {
 			val cryptoStrategies = BasicCryptoStrategies
 			val cryptoService = defaultCryptoService
@@ -53,7 +58,6 @@ interface IcureApi {
 			val dataOwnerApi = DataOwnerApi(RawDataownerApi(apiUrl, authService))
 			val self = dataOwnerApi.getCurrentDataOwner()
 			val selfIsAnonymous = cryptoStrategies.dataOwnerRequiresAnonymousDelegation(self.toStub())
-			if (selfIsAnonymous) TODO("Currently only explicit data owners are supported -> HCPs")
 			val exchangeDataMapManager = ExchangeDataMapManagerImpl(
 				RawExchangeDataMapApi(apiUrl, authService),
 				cryptoService
@@ -71,7 +75,7 @@ interface IcureApi {
 				iCureStorage,
 				NoopIcureKeyRecovery,
 				NoopKeyRecoverer,
-				false // TODO no parent keys for now
+				useParentKeys,
 			).initialise().also { initInfo ->
 				initInfo.newKey?.let {
 					println("GOT NEW KEY")
@@ -83,17 +87,27 @@ interface IcureApi {
 				dataOwnerApi,
 				cryptoService
 			)
-			// TODO depends on selfIsAnonymous
-			val exchangeDataManager = CachedLruExchangeDataManager(
-				baseExchangeDataManager,
-				userEncryptionKeys,
-				userSignatureKeysManager,
-				cryptoStrategies,
-				dataOwnerApi,
-				cryptoService,
-				false, // TODO no parent keys for now
-				100
-			)
+			val exchangeDataManager = if (selfIsAnonymous)
+				FullyCachedExchangeDataManager(
+					baseExchangeDataManager,
+					userEncryptionKeys,
+					userSignatureKeysManager,
+					cryptoStrategies,
+					dataOwnerApi,
+					cryptoService,
+					useParentKeys,
+				)
+			else
+				CachedLruExchangeDataManager(
+					baseExchangeDataManager,
+					userEncryptionKeys,
+					userSignatureKeysManager,
+					cryptoStrategies,
+					dataOwnerApi,
+					cryptoService,
+					useParentKeys,
+					100
+				)
 			val secureDelegationsEncryption = SecureDelegationsEncryptionImpl(
 				userEncryptionKeys,
 				cryptoService
@@ -114,12 +128,28 @@ interface IcureApi {
 				secureDelegationsEncryption,
 				dataOwnerApi
 			)
+			val baseExchangeKeysManager = BaseExchangeKeysManagerImpl(
+				cryptoService,
+				dataOwnerApi
+			)
+			val exchangeKeysManager = ExchangeKeysManagerImpl(
+				dataOwnerApi,
+				baseExchangeKeysManager,
+				userEncryptionKeys
+			)
+			val legacyDelegationsDecryptor = LegacyDelegationsDecryptor(
+				cryptoService,
+				exchangeKeysManager
+			)
 			val entityEncryptionService = EntityEncryptionServiceImpl(
 				secureDelegationsManager,
 				secureDelegationsDecryptor,
+				legacyDelegationsDecryptor,
 				dataOwnerApi,
 				cryptoService,
-				JsonEncryptionServiceImpl(cryptoService)
+				JsonEncryptionServiceImpl(cryptoService),
+				useParentKeys,
+				false // TODO should be true only for MS
 			)
 			return IcureApiImpl(
 				ContactApi(

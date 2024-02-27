@@ -15,7 +15,7 @@ import kotlinx.coroutines.sync.withLock
 @InternalIcureApi
 class LruCacheWithAsyncRetrieve<K : Any, V : Any>(
 	maxCacheSize: Int,
-) {
+) { // TODO test
 	private data class ValueHolder<V>(var valueJob: Deferred<V>)
 
 	private val mutex: Mutex = Mutex()

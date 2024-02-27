@@ -6,5 +6,5 @@ data class ExchangeDataMapCreationBatch(
 	 * key while the value is another map that associated the encrypted ExchangeData id to the fingerprint
 	 * of the public key used to encrypt it.
 	 */
-	val batch: Map<AccessControlKeyString, Map<KeypairFingerprintV2String, Base64String>> = emptyMap()
+	val batch: Map<AccessControlKeyHexString, Map<KeypairFingerprintV2String, Base64String>> = emptyMap()
 )

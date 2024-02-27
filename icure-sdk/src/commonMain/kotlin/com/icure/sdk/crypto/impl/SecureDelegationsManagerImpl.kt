@@ -11,7 +11,7 @@ import com.icure.sdk.crypto.SecureDelegationsManager
 import com.icure.sdk.crypto.UserEncryptionKeysManager
 import com.icure.sdk.crypto.entities.VerifiedRsaEncryptionKeysSet
 import com.icure.sdk.crypto.entities.toPublicKeyInfo
-import com.icure.sdk.model.AccessControlKeyString
+import com.icure.sdk.model.AccessControlKeyHexString
 import com.icure.sdk.model.AccessLevel
 import com.icure.sdk.model.Base64String
 import com.icure.sdk.model.Encryptable
@@ -196,7 +196,7 @@ class SecureDelegationsManagerImpl (
 
 	private suspend fun makeShareRequestParams(
 		exchangeDataInfo: ExchangeDataWithUnencryptedContent,
-		accessControlKey: AccessControlKeyString,
+		accessControlKey: AccessControlKeyHexString,
 		delegateId: String,
 		shareSecretIds: Set<String>,
 		shareEncryptionKeys: Set<HexString>,
@@ -333,7 +333,7 @@ class SecureDelegationsManagerImpl (
 
 	data class SecureDelegationInfo(
 		val canonicalDelegationKey: SecureDelegationKeyString,
-		val canonicalAccessControlKey: AccessControlKeyString,
+		val canonicalAccessControlKey: AccessControlKeyHexString,
 		val delegation: SecureDelegation,
 		val encryptedExchangeDataId: Map<KeypairFingerprintV2String, Base64String>?
 	)

@@ -51,7 +51,7 @@ data class EntityShareRequest(
 	 * Values generated using the access control secret of the exchange data used for the encryption of the ids and keys
 	 * to share. Once hashed they are used as secure delegation keys.
 	 */
-	val accessControlKeys: Set<AccessControlKeyString>,
+	val accessControlKeys: Set<AccessControlKeyHexString>,
 	/**
 	 * Encrypted secret ids to share with the delegate.
 	 */

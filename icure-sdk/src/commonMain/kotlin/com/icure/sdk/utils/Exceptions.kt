@@ -53,6 +53,18 @@ inline fun ensure(value: Boolean, lazyMessage: () -> String) {
 
 @OptIn(ExperimentalContracts::class)
 @InternalIcureApi
+inline fun <T> ensureNonNull(value: T?, lazyMessage: () -> String): T {
+	contract {
+		returns() implies (value != null)
+	}
+	if (value == null) {
+		throw InternalIcureException(lazyMessage())
+	} else return value
+}
+
+
+@OptIn(ExperimentalContracts::class)
+@InternalIcureApi
 inline fun validateResponseContent(
 	isValid: Boolean,
 	lazyMessage: () -> String

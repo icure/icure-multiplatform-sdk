@@ -33,6 +33,15 @@ abstract class AbstractExchangeDataManager(
 	protected val cryptoService: CryptoService,
 	private val useParentKeys: Boolean
 ) : ExchangeDataManager {
+	protected data class CachedExchangeDataDetails(
+		val exchangeData: ExchangeData,
+		/**
+		 * If it could be decrypted a pair with
+		 * 1. the decrypted content
+		 * 2. If the data was verified
+		 */
+		val decryptedContentAndVerificationStatus: Pair<UnencryptedExchangeDataContent, Boolean>?
+	)
 	protected data class DecryptedExchangeDataContent(
 		val exchangeKey: AesKey,
 		val accessControlSecret: AccessControlSecret,

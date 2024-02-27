@@ -14,7 +14,7 @@ import kotlinx.coroutines.sync.withLock
 @InternalIcureApi
 class LruCache<K : Any, V : Any>(
 	private val maxCacheSize: Int,
-) {
+) { // TODO test
 	// Most recently used
 	private var lastNode: CacheNode<K, V>? = null
 	// Least recently used

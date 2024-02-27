@@ -2,6 +2,7 @@ package com.icure.sdk.crypto
 
 import com.icure.sdk.crypto.entities.ExchangeDataWithPotentiallyDecryptedContent
 import com.icure.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
+import com.icure.sdk.model.Base64String
 import com.icure.sdk.model.EntityWithDelegationTypeName
 import com.icure.sdk.model.SecureDelegationKeyString
 import com.icure.sdk.model.SpkiHexString
@@ -77,13 +78,5 @@ interface ExchangeDataManager {
 	 * concatenation of all available access control keys for the current data owner.
 	 * If the current data owner is explicit returns null.
 	 */
-	suspend fun getAccessControlKeysValue(entityType: EntityWithDelegationTypeName): String?
-
-	/**
-	 * If the current data owner is "anonymous" this returns the access control keys which may be used in secure
-	 * delegations from/to the data owner for entities of the provided type; these can be used to search for data shared
-	 * with the data owner.
-	 * If the current data owner is explicit returns null.
-	 */
-	suspend fun getAllDelegationKeys(entityType: EntityWithDelegationTypeName): List<String>?
+	suspend fun getAccessControlKeysValue(entityType: EntityWithDelegationTypeName): List<Base64String>?
 }
