@@ -30,7 +30,7 @@ class JwtAuthService(
 	private val authApi: AnonymousAuthApi,
 	private val credentials: Credentials,
 	private val refreshPadding: Duration = 30L.seconds
-) : AuthService<Jwt> {
+) : TokenBasedAuthService<Jwt> {
 
 	private lateinit var jwt: Jwt
 	private val jwtMutex = Mutex()

@@ -8,7 +8,8 @@ import com.icure.sdk.model.DataOwnerWithType
 import com.icure.sdk.utils.InternalIcureApi
 
 /**
- * Temporary implementation of the key recovery interface. Does not recover anything.
+ * TODO Temporary implementation of the key recovery interface. Does not recover anything.
+ * The real implementation should recover using shamir and transfer keys
  */
 @InternalIcureApi
 object NoopIcureKeyRecovery : IcureKeyRecovery{

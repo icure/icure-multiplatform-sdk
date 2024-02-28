@@ -6,6 +6,9 @@ import com.icure.sdk.crypto.KeyPairRecoverer
 import com.icure.sdk.crypto.entities.RecoveryResult
 import com.icure.sdk.model.SpkiHexString
 
+/**
+ * TODO Temporary implementation of the key recovery interface. Always fails.
+ */
 object NoopKeyRecoverer : KeyPairRecoverer {
 	override suspend fun recoverWithRecoveryKey(
 		recoveryKey: String,

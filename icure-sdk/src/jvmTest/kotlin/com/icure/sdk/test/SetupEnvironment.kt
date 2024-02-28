@@ -3,7 +3,6 @@
 package com.icure.sdk.test
 
 import com.icure.kryptom.crypto.RsaAlgorithm
-import com.icure.kryptom.crypto.RsaKey
 import com.icure.kryptom.crypto.RsaKeypair
 import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.kryptom.utils.toHexString
@@ -11,10 +10,12 @@ import com.icure.sdk.api.IcureApi
 import com.icure.sdk.api.extended.AnonymousAuthApiImpl
 import com.icure.sdk.api.raw.RawGroupApi
 import com.icure.sdk.api.raw.RawHealthcarePartyApi
+import com.icure.sdk.api.raw.RawPatientApi
 import com.icure.sdk.auth.UsernamePassword
 import com.icure.sdk.auth.services.JwtAuthService
-import com.icure.sdk.crypto.entities.IcureKeyInfo
+import com.icure.sdk.crypto.impl.NoAccessControlKeysHeadersProvider
 import com.icure.sdk.model.HealthcareParty
+import com.icure.sdk.model.Patient
 import com.icure.sdk.model.SpkiHexString
 import com.icure.sdk.model.User
 import com.icure.sdk.storage.IcureStorageFacade
@@ -86,7 +87,7 @@ suspend fun initialiseTestEnvironment() {
 			))
 		)
 	}
-	println("Creating admin user")
+	println("Creating admin user - $testGroupAdmin:$testGroupAdminPassword")
 	RawUserApi(baseUrl, superadminAuth).createAdminUserInGroup(
 		testGroupId,
 		User(
@@ -126,7 +127,7 @@ data class DataOwnerDetails(
 		)
 }
 
-suspend fun createHcp(): DataOwnerDetails {
+suspend fun createHcpUser(): DataOwnerDetails {
 	val hcpRawApi = RawHealthcarePartyApi(baseUrl, testGroupAdminAuth)
 	val userRawApi = RawUserApi(baseUrl, testGroupAdminAuth)
 	val hcpId = UUID.randomUUID().toString()
@@ -150,5 +151,32 @@ suspend fun createHcp(): DataOwnerDetails {
 			healthcarePartyId = hcp.id
 		)
 	).successBody()
-	return DataOwnerDetails(hcpId, login, password, keypair)
+	return DataOwnerDetails(hcpId, login, password, keypair).also { println("Created hcp $it") }
+}
+
+suspend fun createPatientUser(): DataOwnerDetails {
+	val patientRawApi = RawPatientApi(baseUrl, testGroupAdminAuth, null)
+	val userRawApi = RawUserApi(baseUrl, testGroupAdminAuth)
+	val patientId = UUID.randomUUID().toString()
+	val login = "patient-${UUID.randomUUID()}"
+	val password = UUID.randomUUID().toString()
+	val keypair = defaultCryptoService.rsa.generateKeyPair(RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256)
+	val patient = patientRawApi.createPatient(
+		Patient(
+			patientId,
+			firstName = "Patient-$patientId",
+			lastName = "Patient-$patientId",
+			publicKeysForOaepWithSha256 = setOf(defaultCryptoService.rsa.exportPublicKeySpki(keypair.public).toHexString().let { SpkiHexString(it) })
+		)
+	).successBody()
+	userRawApi.createUser(
+		User(
+			UUID.randomUUID().toString(),
+			login = login,
+			email = login,
+			passwordHash = password,
+			patientId = patient.id
+		)
+	).successBody()
+	return DataOwnerDetails(patientId, login, password, keypair).also { println("Created patient $it") }
 }

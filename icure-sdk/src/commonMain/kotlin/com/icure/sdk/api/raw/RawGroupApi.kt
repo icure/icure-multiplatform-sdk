@@ -32,7 +32,7 @@ import kotlinx.serialization.json.JsonObject
 
 open class RawGroupApi(
     baseUrl: String,
-    authService: AuthService<*>
+    authService: AuthService
 ) : ApiClient(baseUrl, authService) {
 //    /**
 //     * Transfers the ownership of a group

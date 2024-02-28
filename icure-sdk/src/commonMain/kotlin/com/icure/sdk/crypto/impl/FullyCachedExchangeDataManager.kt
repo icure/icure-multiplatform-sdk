@@ -82,10 +82,14 @@ class FullyCachedExchangeDataManager(
 					val secureDelegationKeysToExchangeDataId =
 						createdData.unencryptedContent.accessControlSecret.allAccessControlKeys(cryptoService)
 							.map { it.toSecureDelegationKeyString(cryptoService) to cachedDetails }
-					existingCache.copy(
+					val allAccessControlSecrets = existingCache.dataById.values.mapNotNull { it.decryptedContentAndVerificationStatus?.first?.accessControlSecret } + createdData.unencryptedContent.accessControlSecret
+					CachedKeys(
 						dataById = existingCache.dataById + (createdData.exchangeData.id to cachedDetails),
 						verifiedDataByDelegateId = existingCache.verifiedDataByDelegateId + (delegateId to cachedDetails),
-						dataByDelegationKey = existingCache.dataByDelegationKey + secureDelegationKeysToExchangeDataId
+						dataByDelegationKey = existingCache.dataByDelegationKey + secureDelegationKeysToExchangeDataId,
+						entityTypeToAccessControlKeysValue = EntityWithDelegationTypeName.entries.associateWith {
+							encodeAccessControlKeys(allAccessControlSecrets.map { s -> s.toAccessControlKeyStringFor(it, cryptoService) })
+						}
 					)
 				}
 			}

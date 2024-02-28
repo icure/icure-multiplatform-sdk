@@ -467,7 +467,7 @@ class EntityEncryptionServiceImpl(
 		entity: T,
 		unusedSecretIds: Boolean,
 		delegates: Map<String, SimpleDelegateShareOptions>,
-		doRequestBulkShareOrUpdate: (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<T>>
+		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<T>>
 	): SimpleShareResult<T> {
 		val availableEncryptionKeys = encryptionKeysOf(entity, null)
 		val availableOwningEntityIds = owningEntityIdsOf(entity, null)

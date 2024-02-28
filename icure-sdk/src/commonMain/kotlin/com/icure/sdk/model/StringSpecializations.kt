@@ -52,7 +52,7 @@ value class AccessControlSecret(val s: String) {
 		entityType: EntityWithDelegationTypeName,
 		cryptoService: CryptoService
 	): AccessControlKeyHexString =
-		AccessControlKeyHexString(cryptoService.digest.sha256((s + entityType.id).toByteArray(Charsets.UTF_8)).toHexString())
+		AccessControlKeyHexString(cryptoService.digest.sha256((s + entityType.id).toByteArray(Charsets.UTF_8)).sliceArray(0 until AccessControlKeyHexString.BYTES_LENGTH).toHexString())
 
 	suspend fun toSecureDelegationKeyFor(
 		entityType: EntityWithDelegationTypeName,
@@ -63,6 +63,10 @@ value class AccessControlSecret(val s: String) {
 @JvmInline
 @Serializable
 value class AccessControlKeyHexString(val s: String) {
+	companion object {
+		val BYTES_LENGTH = 16
+		private val HEX_LENGTH = 32
+	}
 	/**
 	 * One way operation to get the secure delegation key string corresponding to an access control key string
 	 */
@@ -71,6 +75,10 @@ value class AccessControlKeyHexString(val s: String) {
 	}
 
 	fun bytes(): ByteArray = hexToByteArray(s)
+
+	init {
+		require(s.length == HEX_LENGTH) { "An access control key should be exactly $BYTES_LENGTH bytes (before encoding); got $s" }
+	}
 }
 
 @JvmInline

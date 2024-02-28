@@ -9,7 +9,7 @@ import org.openapitools.client.infrastructure.RequestMethod
 
 class RawExchangeDataMapApi(
     baseUrl: String,
-    authService: AuthService<*>
+    authService: AuthService
 ) : ApiClient(baseUrl, authService) {
 
     /**

@@ -20,15 +20,17 @@ import kotlinx.serialization.json.Json
 import org.openapitools.client.infrastructure.RequestConfig
 import org.openapitools.client.infrastructure.RequestMethod
 
-open class ApiClient(
+abstract class ApiClient(
     private val baseUrl: String,
-    private val authService: AuthService<*>?,
+    private val authService: AuthService?,
 ) {
     private val client: HttpClient = platformHttpClient {
         install(ContentNegotiation) {
             json(json = Serialization.json)
         }
     }
+
+    protected open suspend fun getAccessControlKeysHeaderValues(): List<String>? = null
 
     companion object {
         const val BASE_URL = "https://krakenc.icure.cloud"
@@ -38,6 +40,7 @@ open class ApiClient(
           isLenient = true
         }
         protected val UNSAFE_HEADERS = listOf(HttpHeaders.ContentType)
+        private const val ACCESS_CONTROL_KEYS_HEADER = "Icure-Access-Control-Keys"
     }
 
     protected suspend fun <T: Any?> multipartFormRequest(requestConfig: RequestConfig<T>, body: kotlin.collections.List<PartData>?): HttpResponse {
@@ -55,6 +58,15 @@ open class ApiClient(
 
         return client.request {
             authService?.setAuthorizationInRequest(this)
+            if (requestConfig.requiresAccessControlKeys) {
+                getAccessControlKeysHeaderValues()?.let { accessControlKeys ->
+                    headers {
+                        accessControlKeys.forEach {
+                            append(ACCESS_CONTROL_KEYS_HEADER, it)
+                        }
+                    }
+                }
+            }
 
             this.url {
                 this.takeFrom(URLBuilder(baseUrl))

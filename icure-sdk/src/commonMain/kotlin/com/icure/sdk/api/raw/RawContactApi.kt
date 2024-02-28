@@ -16,17 +16,26 @@
 package com.icure.sdk.api.raw
 
 import com.icure.sdk.auth.services.AuthService
+import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.model.Contact
+import com.icure.sdk.model.EntityWithDelegationTypeName
 import com.icure.sdk.utils.InternalIcureApi
+import com.icure.sdk.utils.ensureNonNull
+import io.ktor.client.request.HttpRequestBuilder
 import org.openapitools.client.infrastructure.RequestConfig
 import org.openapitools.client.infrastructure.RequestMethod
 
 @InternalIcureApi
 open class RawContactApi(
     baseUrl: String,
-    authService: AuthService<*>
+    authService: AuthService,
+    private val accessControlKeysHeadersProvider: AccessControlKeysHeadersProvider?
 ) : ApiClient(baseUrl, authService) {
-//    /**
+    override suspend fun getAccessControlKeysHeaderValues(): List<String>? =
+        ensureNonNull(accessControlKeysHeadersProvider) {
+            "Trying to use a method which requires access control keys authentication in a raw api without the required provider"
+        }.getAccessControlKeysHeadersFor(EntityWithDelegationTypeName.Contact)
+    //    /**
 //     *
 //     * Shares one or more contacts with one or more data owners&lt;br&gt;
 //     * @param requestBody
@@ -190,6 +199,7 @@ open class RawContactApi(
             query = localVariableQuery,
             headers = localVariableHeaders,
             requiresAuthentication = true,
+            requiresAccessControlKeys = false
         )
 
         return jsonRequest(
@@ -518,6 +528,7 @@ open class RawContactApi(
             query = localVariableQuery,
             headers = localVariableHeaders,
             requiresAuthentication = false,
+            requiresAccessControlKeys = true
         )
 
         return request(

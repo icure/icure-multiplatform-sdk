@@ -8,7 +8,7 @@ import org.openapitools.client.infrastructure.RequestMethod
 
 class RawDataownerApi(
 	baseUrl: String,
-	authService: AuthService<*>
+	authService: AuthService
 ) : ApiClient(baseUrl, authService) {
 
 	/**

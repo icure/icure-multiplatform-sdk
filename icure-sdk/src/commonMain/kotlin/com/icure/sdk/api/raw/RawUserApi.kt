@@ -34,7 +34,7 @@ import kotlinx.serialization.encoding.*
 
 open class RawUserApi(
     baseUrl: String,
-    authService: AuthService<*>
+    authService: AuthService
 ) : ApiClient(baseUrl, authService) {
 //    /**
 //     * Add roles to an existing user.
@@ -179,7 +179,7 @@ open class RawUserApi(
 //     * @return UserDto
 //     */
 //    @Suppress("UNCHECKED_CAST")
-    open suspend fun createAdminUserInGroup(groupId: kotlin.String, userDto: User): HttpResponse<User> {
+    open suspend fun  createAdminUserInGroup(groupId: kotlin.String, userDto: User): HttpResponse<User> {
 
         val localVariableAuthNames = listOf<String>()
 

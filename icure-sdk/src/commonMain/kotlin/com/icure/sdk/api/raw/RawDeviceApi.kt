@@ -28,7 +28,7 @@ import kotlinx.serialization.encoding.*
 @InternalIcureApi
 open class RawDeviceApi(
     baseUrl: String,
-    authService: AuthService<*>
+    authService: AuthService
 ) : ApiClient(baseUrl, authService) {
 //
 //    /**

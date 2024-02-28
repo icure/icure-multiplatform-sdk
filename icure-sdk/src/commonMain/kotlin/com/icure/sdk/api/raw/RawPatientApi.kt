@@ -16,46 +16,68 @@
 package com.icure.sdk.api.raw
 
 import com.icure.sdk.auth.services.AuthService
+import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.model.AesExchangeKeyEncryptionKeypairIdentifier
+import com.icure.sdk.model.BulkShareOrUpdateMetadataParams
+import com.icure.sdk.model.EntityBulkShareResult
+import com.icure.sdk.model.EntityShareOrMetadataUpdateRequest
+import com.icure.sdk.model.EntityWithDelegationTypeName
 import com.icure.sdk.model.HexString
+import com.icure.sdk.model.MinimalEntityBulkShareResult
 import com.icure.sdk.model.Patient
+import com.icure.sdk.utils.InternalIcureApi
+import com.icure.sdk.utils.Serialization
+import com.icure.sdk.utils.ensureNonNull
+import io.ktor.client.call.body
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.decodeFromJsonElement
+import kotlinx.serialization.json.jsonArray
+import kotlinx.serialization.json.jsonObject
 import org.openapitools.client.infrastructure.RequestConfig
 import org.openapitools.client.infrastructure.RequestMethod
 
+@InternalIcureApi
 open class RawPatientApi(
     baseUrl: String,
-    authService: AuthService<*>
+    authService: AuthService,
+    private val accessControlKeysHeadersProvider: AccessControlKeysHeadersProvider?
 ) : ApiClient(baseUrl, authService) {
-//    /**
-//     *
-//     * Shares one or more patients with one or more data owners&lt;br&gt;
-//     * @param requestBody
-//     * @return kotlin.collections.List<EntityBulkShareResultDtoPatientDto>
-//     */
-//    @Suppress("UNCHECKED_CAST")
-//    open suspend fun bulkShare4(requestBody: kotlin.collections.Map<kotlin.String, kotlin.collections.Map<kotlin.String, EntityShareOrMetadataUpdateRequestDto>>): HttpResponse<kotlin.collections.List<EntityBulkShareResultDtoPatientDto>> {
-//
-//        val localVariableAuthNames = listOf<String>()
-//
-//        val localVariableBody = BulkShare4Request(requestBody)
-//
-//        val localVariableQuery = mutableMapOf<String, List<String>>()
-//        val localVariableHeaders = mutableMapOf<String, String>()
-//
-//        val localVariableConfig = RequestConfig<kotlin.Any?>(
-//            RequestMethod.PUT,
-//            "/rest/v2/patient/bulkSharedMetadataUpdate",
-//            query = localVariableQuery,
-//            headers = localVariableHeaders,
-//            requiresAuthentication = false,
-//        )
-//
-//        return jsonRequest(
-//            localVariableConfig,
-//            localVariableBody,
-//            localVariableAuthNames
-//        ).wrap<BulkShare4Response>().map { value }
-//    }
+    override suspend fun getAccessControlKeysHeaderValues(): List<String>? =
+        ensureNonNull(accessControlKeysHeadersProvider) {
+            "Trying to use a method which requires access control keys authentication in a raw api without the required provider"
+        }.getAccessControlKeysHeadersFor(EntityWithDelegationTypeName.Patient)
+
+    /**
+     *
+     * Shares one or more patients with one or more data owners&lt;br&gt;
+     * @param requestBody
+     * @return kotlin.collections.List<EntityBulkShareResultDtoPatientDto>
+     */
+    @Suppress("UNCHECKED_CAST")
+    open suspend fun bulkShare(requestBody: BulkShareOrUpdateMetadataParams): HttpResponse<kotlin.collections.List<EntityBulkShareResult<Patient>>> {
+
+        val localVariableAuthNames = listOf<String>()
+
+        val localVariableBody = requestBody
+
+        val localVariableQuery = mutableMapOf<String, List<String>>()
+        val localVariableHeaders = mutableMapOf<String, String>()
+
+        val localVariableConfig = RequestConfig<kotlin.Any?>(
+            RequestMethod.PUT,
+            "/rest/v2/patient/bulkSharedMetadataUpdate",
+            query = localVariableQuery,
+            headers = localVariableHeaders,
+            requiresAuthentication = false,
+            requiresAccessControlKeys = true
+        )
+
+        return jsonRequest(
+            localVariableConfig,
+            localVariableBody,
+        ).wrap()
+    }
 //
 //    @Serializable(BulkShare4Request.Companion::class)
 //    private class BulkShare4Request(val value: Map<kotlin.String, kotlin.collections.Map>) {
@@ -796,6 +818,7 @@ open class RawPatientApi(
             query = localVariableQuery,
             headers = localVariableHeaders,
             requiresAuthentication = false,
+            requiresAccessControlKeys = true
         )
 
         return request(

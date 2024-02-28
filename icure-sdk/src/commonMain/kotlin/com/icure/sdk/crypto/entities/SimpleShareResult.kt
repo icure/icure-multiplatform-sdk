@@ -3,7 +3,6 @@ package com.icure.sdk.crypto.entities
 import com.icure.sdk.model.Encryptable
 import com.icure.sdk.utils.InternalIcureApi
 
-@InternalIcureApi
 interface SimpleShareResult<out T : Encryptable> {
 	val isSuccess: Boolean
 

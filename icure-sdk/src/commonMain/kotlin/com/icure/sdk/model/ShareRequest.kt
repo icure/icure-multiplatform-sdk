@@ -6,11 +6,13 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @InternalIcureApi
+@Serializable
 data class BulkShareOrUpdateMetadataParams(
 	val requestsByEntityId: Map<String, EntityRequestInformationDto>
 )
 
 @InternalIcureApi
+@Serializable
 data class EntityRequestInformationDto(
 	val requests: Map<String, EntityShareOrMetadataUpdateRequest>,
 	/**
@@ -21,6 +23,7 @@ data class EntityRequestInformationDto(
 )
 
 @InternalIcureApi
+@Serializable
 data class EntityShareOrMetadataUpdateRequest(
 	val share: EntityShareRequest? = null,
 	val update: EntitySharedMetadataUpdateRequest? = null,
@@ -34,6 +37,7 @@ data class EntityShareOrMetadataUpdateRequest(
 /**
  * Holds parameters necessary to share an entity.
  */
+@Serializable
 data class EntityShareRequest(
 	/**
 	 * Id of the data owner which is sharing the entity (delegator), if it should be explicitly indicated or null if the
@@ -208,6 +212,7 @@ data class RejectedShareOrMetadataUpdateRequest(
 /**
  * Result of a bulk share operation.
  */
+@Serializable
 data class MinimalEntityBulkShareResult(
 	/**
 	 * Id of the entity for which the update was requested.
@@ -228,6 +233,7 @@ data class MinimalEntityBulkShareResult(
 /**
  * Result of a bulk share operation.
  */
+@Serializable
 data class EntityBulkShareResult<T : Encryptable>(
 	/**
 	 * The updated entity. Non-null if at least one of the requests succeeded.

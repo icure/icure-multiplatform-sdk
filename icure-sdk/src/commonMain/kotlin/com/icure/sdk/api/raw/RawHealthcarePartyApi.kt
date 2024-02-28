@@ -28,7 +28,7 @@ import kotlinx.serialization.encoding.*
 @InternalIcureApi
 open class RawHealthcarePartyApi(
     baseUrl: String,
-    authService: AuthService<*>
+    authService: AuthService
 ) : ApiClient(baseUrl, authService) {
 //
 //    /**

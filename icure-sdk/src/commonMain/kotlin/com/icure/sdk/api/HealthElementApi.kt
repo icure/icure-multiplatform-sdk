@@ -1,11 +1,12 @@
 package com.icure.sdk.api
 
-import com.icure.sdk.api.raw.RawPatientApi
+import com.icure.sdk.api.raw.RawHealthElementApi
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.EntityEncryptionService
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleDelegateShareOptions
 import com.icure.sdk.crypto.entities.SimpleShareResult
+import com.icure.sdk.model.HealthElement
 import com.icure.sdk.model.Patient
 import com.icure.sdk.model.RequestedPermission
 import com.icure.sdk.utils.InternalIcureApi
@@ -13,57 +14,56 @@ import com.icure.sdk.utils.Serialization
 import kotlinx.serialization.json.decodeFromJsonElement
 
 @OptIn(InternalIcureApi::class)
-class PatientApi(
-	private val rawApi: RawPatientApi,
+class HealthElementApi(
+	private val rawApi: RawHealthElementApi,
 	private val encryptionService: EntityEncryptionService
 ) {
 	suspend fun initialiseEncryptionMetadata(
+		he: HealthElement,
 		patient: Patient,
 		// Temporary, needs a lot more stuff to match typescript implementation
-	): Patient =
+	): HealthElement =
 		// TODO auto delegations
 		encryptionService.entityWithInitialisedEncryptedMetadata(
-			patient,
-			null,
-			null,
+			he,
+			patient.id,
+			encryptionService.secretIdsOf(patient, null).first(),
 			true,
-			true,
+			false,
 			emptyMap()
 		).updatedEntity
 
-	suspend fun getAndDecrypt(patientId: String) = rawApi.getPatient(patientId).successBody().let { p ->
-		encryptionService.tryDecryptEntity(p, Patient.serializer()) { Serialization.json.decodeFromJsonElement<Patient>(it) }
+	suspend fun getAndDecrypt(contactId: String) = rawApi.getHealthElement(contactId).successBody().let { p ->
+		encryptionService.tryDecryptEntity(p, HealthElement.serializer()) { Serialization.json.decodeFromJsonElement<HealthElement>(it) }
 	}
 
-	suspend fun encryptAndCreate(patient: Patient) = encryptionService.encryptEntity(
-		patient,
-		Patient.serializer(),
-		EncryptedFieldsManifest("Patient.", setOf("note"), emptyMap(), emptyMap(), emptyMap()),
-	) { Serialization.json.decodeFromJsonElement<Patient>(it) }.let { rawApi.createPatient(it) }.successBody().let {
-		encryptionService.tryDecryptEntity(it, Patient.serializer()) { Serialization.json.decodeFromJsonElement<Patient>(it) }
+	suspend fun encryptAndCreate(he: HealthElement) = encryptionService.encryptEntity(
+		he,
+		HealthElement.serializer(),
+		EncryptedFieldsManifest("HealthElement.", setOf("note", "descr"), emptyMap(), emptyMap(), emptyMap()),
+	) { Serialization.json.decodeFromJsonElement<HealthElement>(it) }.let { rawApi.createHealthElement(it) }.successBody().let {
+		encryptionService.tryDecryptEntity(it, HealthElement.serializer()) { Serialization.json.decodeFromJsonElement<HealthElement>(it) }
 	}
 
 	suspend fun shareWith(
 		delegateId: String,
-		patient: Patient,
-		shareSecretIds: Set<String>,
+		he: HealthElement,
 		shareEncryptionKeys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
+		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
 		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite
-	): SimpleShareResult<Patient> =
+	): SimpleShareResult<HealthElement> =
 		encryptionService.simpleShareOrUpdateEncryptedEntityMetadata(
-			patient,
-			false,
+			he,
+			true,
 			mapOf(
 				delegateId to SimpleDelegateShareOptions(
-					shareSecretIds = shareSecretIds,
+					shareSecretIds = null,
 					shareEncryptionKeys = shareEncryptionKeys,
-					shareOwningEntityIds = ShareMetadataBehaviour.Never,
+					shareOwningEntityIds = shareOwningEntityIds,
 					requestedPermissions = requestedPermission
 				)
 			)
 		) {
 			rawApi.bulkShare(it).successBody()
 		}
-
-	suspend fun getSecretIdsOf(patient: Patient): Set<String> = encryptionService.secretIdsOf(patient, null)
 }

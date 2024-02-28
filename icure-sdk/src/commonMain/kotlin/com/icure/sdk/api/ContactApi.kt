@@ -19,14 +19,16 @@ class ContactApi(
 		contact: Contact,
 		patient: Patient,
 		// Temporary, needs a lot more stuff to match typescript implementation
-	): Contact = encryptionService.entityWithInitialisedEncryptedMetadata(
-		contact,
-		patient.id,
-		encryptionService.secretIdsOf(patient, null).first(),
-		true,
-		false,
-		emptyMap()
-	).updatedEntity
+	): Contact =
+		// TODO auto delegations
+		encryptionService.entityWithInitialisedEncryptedMetadata(
+			contact,
+			patient.id,
+			encryptionService.secretIdsOf(patient, null).first(),
+			true,
+			false,
+			emptyMap()
+		).updatedEntity
 
 	suspend fun getAndDecrypt(contactId: String) = rawApi.getContact(contactId).successBody().let { c ->
 		encryptionService.tryDecryptEntity(c, Contact.serializer()) { Serialization.json.decodeFromJsonElement<Contact>(it) }
