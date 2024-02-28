@@ -1,5 +1,8 @@
 package com.icure.sdk.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class ExchangeDataMapCreationBatch(
 	/**
 	 * Each entry of this map can be used to create a new ExchangeDataMap. Each key is the hex-encoded access control

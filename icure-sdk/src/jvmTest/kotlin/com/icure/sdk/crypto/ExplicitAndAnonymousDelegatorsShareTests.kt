@@ -1,6 +1,7 @@
 package com.icure.sdk.crypto
 
 import com.icure.sdk.api.IcureApi
+import com.icure.sdk.model.AccessLevel
 import com.icure.sdk.model.HealthElement
 import com.icure.sdk.model.Patient
 import com.icure.sdk.test.DataOwnerDetails
@@ -14,14 +15,53 @@ import io.kotest.matchers.shouldBe
 import java.util.UUID
 
 class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
+	val patientNote = "This will be encrypted - patient"
+	val heNote = "This will be encrypted - he"
+
 	beforeAny {
 		initialiseTestEnvironment()
 	}
 
+	suspend fun testCreateSharedData(delegator: DataOwnerDetails, delegate: DataOwnerDetails) {
+		val delegatorApi: IcureApi = delegator.api()
+		val patient = delegatorApi.patient.encryptAndCreate(
+			delegatorApi.patient.initialiseEncryptionMetadata(
+				Patient(
+					id = UUID.randomUUID().toString(),
+					firstName = "John",
+					lastName = "Doe",
+					note = patientNote
+				),
+				mapOf(delegate.dataOwnerId to AccessLevel.Write)
+			)
+		).shouldNotBeNull()
+		val he = delegatorApi.healthElement.encryptAndCreate(
+			delegatorApi.healthElement.initialiseEncryptionMetadata(
+				he = HealthElement(
+					id = UUID.randomUUID().toString(),
+					note = heNote,
+				),
+				patient = patient,
+				delegates = mapOf(delegate.dataOwnerId to AccessLevel.Write)
+			)
+		).shouldNotBeNull()
+		val delegateApi: IcureApi = delegate.api()
+		delegateApi.patient.getAndDecrypt(patient.id).shouldNotBeNull().run {
+			note shouldBe patientNote
+		}
+		delegateApi.healthElement.getAndDecrypt(he.id).shouldNotBeNull().run {
+			note shouldBe heNote
+		}
+		delegatorApi.patient.getAndDecrypt(patient.id).shouldNotBeNull().run {
+			note shouldBe patientNote
+		}
+		delegatorApi.healthElement.getAndDecrypt(he.id).shouldNotBeNull().run {
+			note shouldBe heNote
+		}
+	}
+
 	suspend fun testShareExistingData(delegator: DataOwnerDetails, delegate: DataOwnerDetails) {
 		val delegatorApi: IcureApi =  delegator.api()
-		val patientNote = "This will be encrypted - patient"
-		val heNote = "This will be encrypted - he"
 		val patient = delegatorApi.patient.encryptAndCreate(
 			delegatorApi.patient.initialiseEncryptionMetadata(Patient(
 				id = UUID.randomUUID().toString(),
@@ -62,6 +102,22 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 		delegatorApi.healthElement.getAndDecrypt(he.id).shouldNotBeNull().run {
 			note shouldBe heNote
 		}
+	}
+
+	"Test create shared data explicit->explicit" {
+		testCreateSharedData(createHcpUser(), createHcpUser())
+	}
+
+	"Test create shared data explicit->anonymous" {
+		testCreateSharedData(createHcpUser(), createPatientUser())
+	}
+
+	"Test create shared data anonymous->explicit" {
+		testCreateSharedData(createHcpUser(), createPatientUser())
+	}
+
+	"Test create shared data anonymous->anonymous" {
+		testCreateSharedData(createPatientUser(), createPatientUser())
 	}
 
 	"Test share existing data explicit->explicit" {

@@ -6,6 +6,7 @@ import com.icure.sdk.crypto.EntityEncryptionService
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleDelegateShareOptions
 import com.icure.sdk.crypto.entities.SimpleShareResult
+import com.icure.sdk.model.AccessLevel
 import com.icure.sdk.model.HealthElement
 import com.icure.sdk.model.Patient
 import com.icure.sdk.model.RequestedPermission
@@ -21,16 +22,16 @@ class HealthElementApi(
 	suspend fun initialiseEncryptionMetadata(
 		he: HealthElement,
 		patient: Patient,
+		delegates: Map<String, AccessLevel> = emptyMap()
 		// Temporary, needs a lot more stuff to match typescript implementation
 	): HealthElement =
-		// TODO auto delegations
 		encryptionService.entityWithInitialisedEncryptedMetadata(
 			he,
 			patient.id,
 			encryptionService.secretIdsOf(patient, null).first(),
 			true,
 			false,
-			emptyMap()
+			delegates // TODO add auto delegations
 		).updatedEntity
 
 	suspend fun getAndDecrypt(contactId: String) = rawApi.getHealthElement(contactId).successBody().let { p ->
