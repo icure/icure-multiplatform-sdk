@@ -40,6 +40,7 @@ import com.icure.sdk.storage.StorageFacade
 import com.icure.sdk.storage.impl.DefaultStorageEntryKeysFactory
 import com.icure.sdk.storage.impl.JsonAndBase64KeyStorage
 import com.icure.sdk.utils.InternalIcureApi
+import kotlin.js.JsExport
 
 interface IcureApi {
 	val contact: ContactApi

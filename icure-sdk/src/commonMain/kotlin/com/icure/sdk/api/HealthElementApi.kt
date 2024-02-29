@@ -3,6 +3,7 @@ package com.icure.sdk.api
 import com.icure.sdk.api.raw.RawHealthElementApi
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.EntityEncryptionService
+import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleDelegateShareOptions
 import com.icure.sdk.crypto.entities.SimpleShareResult
@@ -22,13 +23,14 @@ class HealthElementApi(
 	suspend fun initialiseEncryptionMetadata(
 		he: HealthElement,
 		patient: Patient,
-		delegates: Map<String, AccessLevel> = emptyMap()
+		delegates: Map<String, AccessLevel> = emptyMap(),
+		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent
 		// Temporary, needs a lot more stuff to match typescript implementation
 	): HealthElement =
 		encryptionService.entityWithInitialisedEncryptedMetadata(
 			he,
 			patient.id,
-			encryptionService.secretIdsOf(patient, null).first(),
+			encryptionService.resolveSecretIdOption(patient, secretId),
 			true,
 			false,
 			delegates // TODO add auto delegations
@@ -67,4 +69,16 @@ class HealthElementApi(
 		) {
 			rawApi.bulkShare(it).successBody()
 		}
+
+	suspend fun getHealthElementsFor(
+		hcpId: String, // TODO This is slightly ugly... How was it done?
+		patient: Patient
+	): List<HealthElement> =
+		rawApi.findHealthElementsByHCPartyPatientForeignKeys(
+			hcpId,
+			encryptionService.secretIdsOf(patient, null).toList()
+		).successBody().mapNotNull { decrypt(it) }
+
+	suspend fun decrypt(he: HealthElement) =
+		encryptionService.tryDecryptEntity(he, HealthElement.serializer()) { Serialization.json.decodeFromJsonElement<HealthElement>(it) }
 }

@@ -11,6 +11,7 @@ import com.icure.sdk.model.Patient
 import com.icure.sdk.model.RequestedPermission
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
+import com.icure.sdk.utils.ensureNonNull
 import kotlinx.serialization.json.decodeFromJsonElement
 
 @OptIn(InternalIcureApi::class)
@@ -67,4 +68,16 @@ class PatientApi(
 		}
 
 	suspend fun getSecretIdsOf(patient: Patient): Set<String> = encryptionService.secretIdsOf(patient, null)
+
+	suspend fun getConfidentialSecretIdsOf(patient: Patient): Set<String> = encryptionService.getConfidentialSecretIdsOf(patient, null)
+
+	suspend fun initialiseConfidentialSecretId(patient: Patient): Patient {
+		val updatedPatient =
+			if (patient.rev != null)
+				patient
+			else
+				ensureNonNull(encryptAndCreate(patient)) { "Could not create patient for confidential secret id initialisation" }
+		return encryptionService.initialiseConfidentialSecretId(patient) { rawApi.bulkShare(it).successBody() }
+			?: updatedPatient
+	}
 }

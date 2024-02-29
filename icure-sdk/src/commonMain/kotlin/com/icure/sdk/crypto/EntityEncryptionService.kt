@@ -8,6 +8,7 @@ import com.icure.sdk.crypto.entities.EntityEncryptionKeyDetails
 import com.icure.sdk.crypto.entities.EntityEncryptionMetadataInitialisationResult
 import com.icure.sdk.crypto.entities.HierarchicallyDecryptedMetadata
 import com.icure.sdk.crypto.entities.MinimalBulkShareResult
+import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.SimpleDelegateShareOptions
 import com.icure.sdk.model.AccessLevel
@@ -50,7 +51,7 @@ interface EntityEncryptionService {
 	 * Get the secret ids (SFKs) of an entity that the provided data owner can access, potentially using the keys for his parent.
 	 * @param entity an encrypted entity.
 	 * @param dataOwnerId optionally a data owner part of the hierarchy for the current data owner, defaults to the current data owner.
-	 * @return the secret ids (SFKs) that the provided data owner can decrypt, deduplicated.
+	 * @return the secret ids (SFKs) that the provided data owner can decrypt, deduplicated (including keys decrypted from the hierarchy).
 	 */
 	suspend fun secretIdsOf(entity: Encryptable, dataOwnerId: String?): Set<String>
 
@@ -124,7 +125,7 @@ interface EntityEncryptionService {
 	suspend fun <T : Encryptable> entityWithInitialisedEncryptedMetadata(
 		entity: T,
 		owningEntityId: String?,
-		owningEntitySecretId: String?,
+		owningEntitySecretId: Set<String>?,
 		initialiseEncryptionKey: Boolean,
 		initialiseSecretId: Boolean,
 		autoDelegations: Map<String, AccessLevel>
@@ -205,9 +206,9 @@ interface EntityEncryptionService {
 	 * @throws if the provided data owner can't access any encryption keys for the entity.
 	 */
 	suspend fun <T : Encryptable> encryptAttachmentOf(
-	entity: T,
-	content: ByteArray,
-	saveEntity: suspend (entity: T) -> T
+		entity: T,
+		content: ByteArray,
+		saveEntity: suspend (entity: T) -> T
 	): EntityDataEncryptionResult<T>
 
 	/**
@@ -285,5 +286,53 @@ interface EntityEncryptionService {
 	 * After this method is called, if it returns an entity it should also be re-encrypted (using the new key) and saved to the cloud.
 	 */
 	suspend fun <T : Encryptable> ensureEncryptionKeysInitialised(entity: T): T?
+	// endregion
+
+	// region confidential sfks
+
+	/**
+	 * Ensures that the current data owner has access to a confidential secret id for the provided entity: this is an id that is known to the data owner
+	 * but is not known by any of his parents. If there is currently no confidential secret id for this entity the method returns a copy of the entity
+	 * with a new confidential secret id for the current data owner (the entity in the database won't be updated), else this method returns undefined.
+	 * New confidential secret ids will have an appropriate tag, but existing confidential secret ids may not necessarily have it.
+	 * @param entity an entity which needs to have a confidential secret id for the current data owner
+	 * @param entityType the type of the entity
+	 * @param doRequestBulkShareOrUpdate perform the request to share or update an entity encrypted metadata on the cloud API (and save to DB).
+	 * @return undefined if the entity already had a confidential secret id for the current user, or the updated AND SAVED entity with the new
+	 * confidential secret id.
+	 */
+	suspend fun <T : Encryptable> initialiseConfidentialSecretId(
+		entity: T,
+		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<T>>
+	): T?
+
+	/**
+	 * Get all existing confidential secret ids of the provided entity for [dataOwnerId] (current data owner if null).
+	 * A confidential secret id is a secret id known by the data owner but not known by any of his parents: note however
+	 * that children will know confidential secret ids.
+	 * @param entity an entity for which you want to retrieve the confidential secret id.
+	 * @param dataOwnerId (current data owner by default) a data owner for which you want to get a confidential secret id.
+	 * @return the confidential secret ids for the data owner (may be empty).
+	 */
+	suspend fun getConfidentialSecretIdsOf(entity: Encryptable, dataOwnerId: String?): Set<String>
+
+	/**
+	 * Gets all secret ids known by the topmost parent of the current data owner hierarchy (or all secret ids known by
+	 * the current data owner if he is not part of any data owner hierarchy).
+	 * @param entity an entity.
+	 * @return all secret ids known by the topmost parent of the current data owner hierarchy, may be empty.
+	 */
+	suspend fun getSecretIdsSharedWithParentsOf(entity: Encryptable): Set<String>
+
+	/**
+	 * Get the secret ids for [entity] that match the provided [secretIdOption]. Note that if [secretIdOption] is
+	 * [SecretIdOption.Use] the secret id won't be validated.
+	 * @throws IllegalArgumentException if there is no valid secret id matching the requested option
+	 * @return a set of secret ids to use for the entity. Never empty.
+	 */
+	suspend fun resolveSecretIdOption(
+		entity: Encryptable,
+		secretIdOption: SecretIdOption
+	): Set<String>
 	// endregion
 }

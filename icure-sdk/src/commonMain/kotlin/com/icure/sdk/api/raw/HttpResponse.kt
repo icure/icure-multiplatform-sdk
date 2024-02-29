@@ -16,10 +16,7 @@ open class HttpResponse<T : Any>(val response: io.ktor.client.statement.HttpResp
     suspend fun successBody(): T = if (status.isSuccess())
         provider.body(response)
     else
-        throw RequestStatusException(response.call.request.method, response.call.request.url.toString(), status.value).also {
-            // TODO temporary
-            println(response.body<JsonElement>())
-        }
+        throw RequestStatusException(response.call.request.method, response.call.request.url.toString(), status.value)
 
     suspend fun successBodyOrNull404(): T? = if (status == HttpStatusCode.NotFound) null else successBody()
 

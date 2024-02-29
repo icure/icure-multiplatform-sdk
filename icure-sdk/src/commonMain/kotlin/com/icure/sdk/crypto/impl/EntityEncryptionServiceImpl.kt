@@ -18,6 +18,7 @@ import com.icure.sdk.crypto.SecureDelegationsManager
 import com.icure.sdk.crypto.SecurityMetadataDecryptor
 import com.icure.sdk.crypto.entities.DecryptedMetadataDetails
 import com.icure.sdk.crypto.entities.FailedRequestDetails
+import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.SimpleDelegateShareOptions
@@ -35,6 +36,7 @@ import com.icure.sdk.model.SecureDelegationKeyString
 import com.icure.sdk.utils.IllegalEntityException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
+import com.icure.sdk.utils.ensure
 import com.icure.sdk.utils.getLogger
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
@@ -136,7 +138,7 @@ class EntityEncryptionServiceImpl(
 	override suspend fun <T : Encryptable> entityWithInitialisedEncryptedMetadata(
 		entity: T,
 		owningEntityId: String?,
-		owningEntitySecretId: String?,
+		owningEntitySecretId: Set<String>?,
 		initialiseEncryptionKey: Boolean,
 		initialiseSecretId: Boolean,
 		autoDelegations: Map<String, AccessLevel>
@@ -155,7 +157,7 @@ class EntityEncryptionServiceImpl(
 			secretIds = setOfNotNull(newSecretId),
 			owningEntityIds = setOfNotNull(owningEntityId),
 			encryptionKeys = setOfNotNull(newRawKey),
-			owningEntitySecretIds = setOfNotNull(owningEntitySecretId),
+			owningEntitySecretIds = owningEntitySecretId ?: emptySet(),
 			autoDelegations = autoDelegations,
 		)
 		return EntityEncryptionMetadataInitialisationResult(
@@ -180,7 +182,7 @@ class EntityEncryptionServiceImpl(
 
 	override suspend fun encryptionKeysOf(entity: Encryptable, dataOwnerId: String?): Set<HexString> =
 		allDecryptors
-			.decryptEncryptionKeysOf(entity, dataOwnerId?.let(::setOf) ?: dataOwnersForDecryption(null).toSet())
+			.decryptEncryptionKeysOf(entity, dataOwnersForDecryption(dataOwnerId).toSet())
 			.map { it.value }
 			.toSet()
 
@@ -192,7 +194,7 @@ class EntityEncryptionServiceImpl(
 
 	override suspend fun owningEntityIdsOf(entity: Encryptable, dataOwnerId: String?): Set<String> =
 		allDecryptors
-			.decryptOwningEntityIdsOf(entity, dataOwnerId?.let(::setOf) ?: dataOwnersForDecryption(null).toSet())
+			.decryptOwningEntityIdsOf(entity, dataOwnersForDecryption(dataOwnerId).toSet())
 			.map { it.value }
 			.toSet()
 
@@ -538,14 +540,64 @@ class EntityEncryptionServiceImpl(
 		)
 	}
 
+	override suspend fun <T : Encryptable> initialiseConfidentialSecretId(
+		entity: T,
+		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<T>>
+	): T? {
+		if (entity.rev == null) {
+			throw IllegalArgumentException("Entity must be an existing entity to initialise a confidential secret id")
+		}
+		if (getConfidentialSecretIdsOf(entity, null).isNotEmpty()) return null
+		return simpleShareOrUpdateEncryptedEntityMetadata(
+			entity,
+			false,
+			mapOf(dataOwnerApi.getCurrentDataOwnerId() to SimpleDelegateShareOptions(
+				shareSecretIds = setOf(cryptoService.strongRandom.randomUUID()),
+				shareEncryptionKeys = ShareMetadataBehaviour.Never,
+				shareOwningEntityIds = ShareMetadataBehaviour.Never,
+				requestedPermissions = RequestedPermission.MaxWrite
+			)),
+			doRequestBulkShareOrUpdate
+		).updatedEntityOrThrow()
+	}
+
+	override suspend fun getConfidentialSecretIdsOf(entity: Encryptable, dataOwnerId: String?): Set<String> {
+		val secretIdsInfo = secretIdsForHcpHierarchyOf(entity)
+		val targetDataOwner = dataOwnerId ?: dataOwnerApi.getCurrentDataOwnerId()
+		val parents = secretIdsInfo.takeWhile { it.ownerId != targetDataOwner }
+		require(parents.size < secretIdsInfo.size) {
+			"Target data owner $targetDataOwner is not in the hierarchy of the logged data owner"
+		}
+		val res = secretIdsInfo[parents.size].extracted.toMutableSet()
+		parents.forEach { res -= it.extracted }
+		return res
+	}
+
+	override suspend fun getSecretIdsSharedWithParentsOf(entity: Encryptable): Set<String> =
+		secretIdsForHcpHierarchyOf(entity).first().extracted
+
+	override suspend fun resolveSecretIdOption(entity: Encryptable, secretIdOption: SecretIdOption): Set<String> =
+		when (secretIdOption) {
+			is SecretIdOption.Use -> secretIdOption.secretIds
+			SecretIdOption.UseAnyConfidential -> getConfidentialSecretIdsOf(entity, null)
+			SecretIdOption.UseAnySharedWithParent -> getSecretIdsSharedWithParentsOf(entity)
+		}.also {
+			require(it.isNotEmpty()) { "No valid secret id found for option $secretIdOption" }
+		}
+
 	private suspend fun dataOwnersForDecryption(startingFrom: String?) =
-		if (useParentKeys)
+		if (useParentKeys) {
 			if (startingFrom != null)
 				dataOwnerApi.getCurrentDataOwnerHierarchyIdsFrom(startingFrom)
 			else
 				dataOwnerApi.getCurrentDataOwnerHierarchyIds()
-		else
-			listOf(dataOwnerApi.getCurrentDataOwnerId())
+		} else {
+			val self = dataOwnerApi.getCurrentDataOwnerId()
+			ensure(startingFrom == null || startingFrom == self) {
+				"$startingFrom is not part of the current data owner hierarchy"
+			}
+			listOf(self)
+		}
 
 	private suspend inline fun <T : Any> Iterable<DecryptedMetadataDetails<T>>.valuesAvailableToDataOwners(dataOwners: Set<String>): Set<T> =
 		mapNotNullTo(mutableSetOf()) { decryptedDataDetails -> if (dataOwners.any { it in decryptedDataDetails.dataOwnersWithAccess }) decryptedDataDetails.value else null }

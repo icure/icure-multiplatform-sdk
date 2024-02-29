@@ -340,30 +340,30 @@ open class RawHealthElementApi(
 //     * @return kotlin.collections.List<HealthElementDto>
 //     */
 //    @Suppress("UNCHECKED_CAST")
-//    open suspend fun findHealthElementsByHCPartyPatientForeignKeys(hcPartyId: kotlin.String, requestBody: kotlin.collections.List<kotlin.String>): HttpResponse<kotlin.collections.List<HealthElementDto>> {
-//
-//        val localVariableAuthNames = listOf<String>()
-//
-//        val localVariableBody = FindHealthElementsByHCPartyPatientForeignKeysRequest(requestBody)
-//
-//        val localVariableQuery = mutableMapOf<String, List<String>>()
-//        hcPartyId?.apply { localVariableQuery["hcPartyId"] = listOf("$hcPartyId") }
-//        val localVariableHeaders = mutableMapOf<String, String>()
-//
-//        val localVariableConfig = RequestConfig<kotlin.Any?>(
-//            RequestMethod.POST,
-//            "/rest/v2/helement/byHcPartySecretForeignKeys",
-//            query = localVariableQuery,
-//            headers = localVariableHeaders,
-//            requiresAuthentication = false,
-//        )
-//
-//        return jsonRequest(
-//            localVariableConfig,
-//            localVariableBody,
-//            localVariableAuthNames
-//        ).wrap<FindHealthElementsByHCPartyPatientForeignKeysResponse>().map { value }
-//    }
+    open suspend fun findHealthElementsByHCPartyPatientForeignKeys(hcPartyId: kotlin.String, requestBody: kotlin.collections.List<kotlin.String>): HttpResponse<kotlin.collections.List<HealthElement>> {
+
+        val localVariableAuthNames = listOf<String>()
+
+        val localVariableBody = requestBody
+
+        val localVariableQuery = mutableMapOf<String, List<String>>()
+        hcPartyId?.apply { localVariableQuery["hcPartyId"] = listOf("$hcPartyId") }
+        val localVariableHeaders = mutableMapOf<String, String>()
+
+        val localVariableConfig = RequestConfig<kotlin.Any?>(
+            RequestMethod.POST,
+            "/rest/v2/helement/byHcPartySecretForeignKeys",
+            query = localVariableQuery,
+            headers = localVariableHeaders,
+            requiresAuthentication = false,
+            requiresAccessControlKeys = true
+        )
+
+        return jsonRequest(
+            localVariableConfig,
+            localVariableBody,
+        ).wrap()
+    }
 //
 //    @Serializable(FindHealthElementsByHCPartyPatientForeignKeysRequest.Companion::class)
 //    private class FindHealthElementsByHCPartyPatientForeignKeysRequest(val value: List<kotlin.String>) {

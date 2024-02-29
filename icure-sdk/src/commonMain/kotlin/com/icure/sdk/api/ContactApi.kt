@@ -3,12 +3,13 @@ package com.icure.sdk.api
 import com.icure.sdk.api.raw.RawContactApi
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.EntityEncryptionService
+import com.icure.sdk.crypto.entities.SecretIdOption
+import com.icure.sdk.model.AccessLevel
 import com.icure.sdk.model.Contact
 import com.icure.sdk.model.Patient
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import kotlinx.serialization.json.decodeFromJsonElement
-import kotlinx.serialization.json.encodeToJsonElement
 
 @OptIn(InternalIcureApi::class)
 class ContactApi(
@@ -18,16 +19,17 @@ class ContactApi(
 	suspend fun initialiseEncryptionMetadata(
 		contact: Contact,
 		patient: Patient,
+		delegates: Map<String, AccessLevel> = emptyMap(),
+		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent
 		// Temporary, needs a lot more stuff to match typescript implementation
 	): Contact =
-		// TODO auto delegations
 		encryptionService.entityWithInitialisedEncryptedMetadata(
 			contact,
 			patient.id,
-			encryptionService.secretIdsOf(patient, null).first(),
+			encryptionService.resolveSecretIdOption(patient, secretId),
 			true,
 			false,
-			emptyMap()
+			delegates // TODO auto delegations
 		).updatedEntity
 
 	suspend fun getAndDecrypt(contactId: String) = rawApi.getContact(contactId).successBody().let { c ->

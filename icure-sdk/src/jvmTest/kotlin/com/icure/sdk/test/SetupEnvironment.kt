@@ -44,7 +44,7 @@ private val superadminAuth = JwtAuthService(
 )
 private val defaultRoles = mapOf(
 	"PATIENT" to "BASIC_USER\", \"BASIC_DATA_OWNER",
-	"HCP" to "BASIC_USER\", \"BASIC_DATA_OWNER\", \"PATIENT_USER_MANAGER\", \"LEGACY_MESSAGE_MANAGER",
+	"HCP" to "BASIC_USER\", \"BASIC_DATA_OWNER\", \"PATIENT_USER_MANAGER\", \"LEGACY_MESSAGE_MANAGER\", \"HIERARCHICAL_DATA_OWNER",
 	"DEVICE" to "BASIC_USER\", \"BASIC_DATA_OWNER",
 	"USER" to "BASIC_USER"
 )
@@ -104,30 +104,41 @@ data class DataOwnerDetails(
 	val dataOwnerId: String,
 	val username: String,
 	val password: String,
-	val keypair: RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>
+	val keypair: RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>,
+	val parent: DataOwnerDetails?
 ) {
-	suspend fun api(): IcureApi =
-		IcureApi.initialise(
+	suspend fun api(): IcureApi {
+		return IcureApi.initialise(
 			baseUrl,
 			UsernamePassword(username, password),
 			VolatileStorageFacade().also {
-				IcureStorageFacade(
+				addKeyToStorage(IcureStorageFacade(
 					JsonAndBase64KeyStorage(it),
 					it,
 					DefaultStorageEntryKeysFactory,
 					defaultCryptoService,
 					false
-				).saveEncryptionKeypair(
-					dataOwnerId,
-					keypair,
-					true
-				)
+				))
 			},
 			true
 		)
+	}
+
+	private suspend fun addKeyToStorage(storage: IcureStorageFacade) {
+		storage.saveEncryptionKeypair(
+			dataOwnerId,
+			keypair,
+			true
+		)
+		parent?.addKeyToStorage(storage)
+	}
 }
 
-suspend fun createHcpUser(): DataOwnerDetails {
+/**
+ * @param parent if not null, specifies the direct parent of this data owner. If that parent has a parent then the
+ * latter will be the grandparent of this data owner, and so on. If null the data owner will not have any parent.
+ */
+suspend fun createHcpUser(parent: DataOwnerDetails? = null): DataOwnerDetails {
 	val hcpRawApi = RawHealthcarePartyApi(baseUrl, testGroupAdminAuth)
 	val userRawApi = RawUserApi(baseUrl, testGroupAdminAuth)
 	val hcpId = UUID.randomUUID().toString()
@@ -139,7 +150,8 @@ suspend fun createHcpUser(): DataOwnerDetails {
 			hcpId,
 			firstName = "Hcp-$hcpId",
 			lastName = "Hcp-$hcpId",
-			publicKeysForOaepWithSha256 = setOf(defaultCryptoService.rsa.exportPublicKeySpki(keypair.public).toHexString().let { SpkiHexString(it) })
+			publicKeysForOaepWithSha256 = setOf(defaultCryptoService.rsa.exportPublicKeySpki(keypair.public).toHexString().let { SpkiHexString(it) }),
+			parentId = parent?.dataOwnerId
 		)
 	).successBody()
 	userRawApi.createUser(
@@ -151,7 +163,7 @@ suspend fun createHcpUser(): DataOwnerDetails {
 			healthcarePartyId = hcp.id
 		)
 	).successBody()
-	return DataOwnerDetails(hcpId, login, password, keypair).also { println("Created hcp $it") }
+	return DataOwnerDetails(hcpId, login, password, keypair, parent).also { println("Created hcp $it") }
 }
 
 suspend fun createPatientUser(): DataOwnerDetails {
@@ -178,5 +190,5 @@ suspend fun createPatientUser(): DataOwnerDetails {
 			patientId = patient.id
 		)
 	).successBody()
-	return DataOwnerDetails(patientId, login, password, keypair).also { println("Created patient $it") }
+	return DataOwnerDetails(patientId, login, password, keypair, null).also { println("Created patient $it") }
 }
