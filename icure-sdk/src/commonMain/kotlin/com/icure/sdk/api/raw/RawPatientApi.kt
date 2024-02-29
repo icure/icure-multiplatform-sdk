@@ -1191,29 +1191,28 @@ open class RawPatientApi(
 //     * @return PatientDto
 //     */
 //    @Suppress("UNCHECKED_CAST")
-//    open suspend fun modifyPatient(patientDto: PatientDto): HttpResponse<PatientDto> {
-//
-//        val localVariableAuthNames = listOf<String>()
-//
-//        val localVariableBody = patientDto
-//
-//        val localVariableQuery = mutableMapOf<String, List<String>>()
-//        val localVariableHeaders = mutableMapOf<String, String>()
-//
-//        val localVariableConfig = RequestConfig<kotlin.Any?>(
-//            RequestMethod.PUT,
-//            "/rest/v2/patient",
-//            query = localVariableQuery,
-//            headers = localVariableHeaders,
-//            requiresAuthentication = false,
-//        )
-//
-//        return jsonRequest(
-//            localVariableConfig,
-//            localVariableBody,
-//            localVariableAuthNames
-//        ).wrap()
-//    }
+    open suspend fun modifyPatient(patientDto: Patient): HttpResponse<Patient> {
+
+        val localVariableAuthNames = listOf<String>()
+
+        val localVariableBody = patientDto
+
+        val localVariableQuery = mutableMapOf<String, List<String>>()
+        val localVariableHeaders = mutableMapOf<String, String>()
+
+        val localVariableConfig = RequestConfig<kotlin.Any?>(
+            RequestMethod.PUT,
+            "/rest/v2/patient",
+            query = localVariableQuery,
+            headers = localVariableHeaders,
+            requiresAuthentication = false,
+        )
+
+        return jsonRequest(
+            localVariableConfig,
+            localVariableBody,
+        ).wrap()
+    }
 //
 //
 //

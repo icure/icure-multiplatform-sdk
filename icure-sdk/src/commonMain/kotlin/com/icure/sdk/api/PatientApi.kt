@@ -17,9 +17,11 @@ import kotlinx.serialization.json.decodeFromJsonElement
 
 @OptIn(InternalIcureApi::class)
 class PatientApi(
-	private val rawApi: RawPatientApi,
+	internal val rawApi: RawPatientApi,
 	private val encryptionService: EntityEncryptionService
 ) {
+	private val manifest = EncryptedFieldsManifest("Patient.", setOf("note"), emptyMap(), emptyMap(), emptyMap())
+
 	suspend fun initialiseEncryptionMetadata(
 		patient: Patient,
 		delegates: Map<String, AccessLevel> = emptyMap()
@@ -41,7 +43,7 @@ class PatientApi(
 	suspend fun encryptAndCreate(patient: Patient) = encryptionService.encryptEntity(
 		patient,
 		Patient.serializer(),
-		EncryptedFieldsManifest("Patient.", setOf("note"), emptyMap(), emptyMap(), emptyMap()),
+		manifest,
 	) { Serialization.json.decodeFromJsonElement<Patient>(it) }.let { rawApi.createPatient(it) }.successBody().let {
 		encryptionService.tryDecryptEntity(it, Patient.serializer()) { Serialization.json.decodeFromJsonElement<Patient>(it) }
 	}
@@ -83,4 +85,16 @@ class PatientApi(
 	}
 
 	suspend fun getEncryptionKeysOf(patient: Patient): Set<HexString> = encryptionService.encryptionKeysOf(patient, null)
+
+	suspend fun tryEncryptAndUpdatePatient(patient: Patient): Patient {
+		// TODO very bad implementation and signature, only here temporarily until we have the "flavoured" apis
+		val encrypted = if (kotlin.runCatching { encryptionService.validateEncryptedEntity(patient, Patient.serializer(), manifest) }.isSuccess) {
+			patient
+		} else {
+			encryptionService.encryptEntity(patient, Patient.serializer(), manifest) { Serialization.json.decodeFromJsonElement<Patient>(it) }
+		}
+		return rawApi.modifyPatient(encrypted).successBody().let {
+			encryptionService.tryDecryptEntity(it, Patient.serializer()) { Serialization.json.decodeFromJsonElement<Patient>(it) } ?: it
+		}
+	}
 }

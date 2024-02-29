@@ -8,11 +8,11 @@ import com.icure.sdk.storage.StorageEntryKeysFactory
  */
 object DefaultStorageEntryKeysFactory : StorageEntryKeysFactory {
 	override fun cachedRecoveredKeypairOfDataOwner(dataOwnerId: String, publicKeyFingerprint: KeypairFingerprintV1String): String {
-		return "org.taktik.icure.rsa.recovered.${dataOwnerId}.${publicKeyFingerprint}"
+		return "org.taktik.icure.rsa.recovered.${dataOwnerId}.${publicKeyFingerprint.s}"
 	}
 
 	override fun deviceKeypairOfDataOwner(dataOwnerId: String, publicKeyFingerprint: KeypairFingerprintV1String): String {
-		return "org.taktik.icure.rsa.device.${dataOwnerId}.${publicKeyFingerprint}"
+		return "org.taktik.icure.rsa.device.${dataOwnerId}.${publicKeyFingerprint.s}"
 	}
 
 	override fun selfPublicKeysVerificationCacheForDataOwner(dataOwnerId: String): String {
@@ -24,6 +24,6 @@ object DefaultStorageEntryKeysFactory : StorageEntryKeysFactory {
 	}
 
 	override fun signatureVerificationKeyForDataOwner(dataOwnerId: String, publicKeyFingerprint: KeypairFingerprintV1String): String {
-		return "org.taktik.icure.rsa.sign.verify.${dataOwnerId}.${publicKeyFingerprint}"
+		return "org.taktik.icure.rsa.sign.verify.${dataOwnerId}.${publicKeyFingerprint.s}"
 	}
 }

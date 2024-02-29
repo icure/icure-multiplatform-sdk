@@ -192,3 +192,26 @@ suspend fun createPatientUser(): DataOwnerDetails {
 	).successBody()
 	return DataOwnerDetails(patientId, login, password, keypair, null).also { println("Created patient $it") }
 }
+
+suspend fun createUserFromExistingPatient(patient: Patient): DataOwnerDetails {
+	val patientRawApi = RawPatientApi(baseUrl, testGroupAdminAuth, NoAccessControlKeysHeadersProvider)
+	val userRawApi = RawUserApi(baseUrl, testGroupAdminAuth)
+	val login = "patient-${UUID.randomUUID()}"
+	val password = UUID.randomUUID().toString()
+	val keypair = defaultCryptoService.rsa.generateKeyPair(RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256)
+	val updatedPatient = patientRawApi.modifyPatient(
+		patientRawApi.getPatient(patient.id).successBody().copy(
+			publicKeysForOaepWithSha256 = setOf(defaultCryptoService.rsa.exportPublicKeySpki(keypair.public).toHexString().let { SpkiHexString(it) })
+		)
+	).successBody()
+	userRawApi.createUser(
+		User(
+			UUID.randomUUID().toString(),
+			login = login,
+			email = login,
+			passwordHash = password,
+			patientId = updatedPatient.id
+		)
+	).successBody()
+	return DataOwnerDetails(patient.id, login, password, keypair, null).also { println("Created user for patient $it") }
+}

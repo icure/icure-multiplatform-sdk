@@ -288,15 +288,15 @@ class LegacyMetadataMigrationTest : StringSpec({
 	}
 
 	/*
- * Entity E with legacy metadata created by A and shared with P.
- * There is also a confidential secret id (known by A but not P).
- * A wants to share with X as read only.
- * Expected outcome:
- * - A root secure delegation for A
- * - A->A includes the confidential secret id known by A
- * - A delegation from A to P
- * - Through the delegation A->P A and P can access all the legacy metadata available to P (but not the confidential secret id)
- */
+	 * Entity E with legacy metadata created by A and shared with P.
+	 * There is also a confidential secret id (known by A but not P).
+	 * A wants to share with X as read only.
+	 * Expected outcome:
+	 * - A root secure delegation for A
+	 * - A->A includes the confidential secret id known by A
+	 * - A delegation from A to P
+	 * - Through the delegation A->P A and P can access all the legacy metadata available to P (but not the confidential secret id)
+	 */
 	"sharing data created with legacy api by the same user" {
 		println("Creating test data and apis")
 		val testData = createTestDataAndApis().also { println(it) }
