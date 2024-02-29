@@ -20,6 +20,7 @@ import com.icure.sdk.api.raw.HttpResponse
 import com.icure.sdk.api.raw.wrap
 import com.icure.sdk.auth.services.AuthService
 import com.icure.sdk.model.User
+import com.icure.sdk.utils.InternalIcureApi
 
 import org.openapitools.client.infrastructure.*
 import io.ktor.client.HttpClient
@@ -32,6 +33,7 @@ import kotlinx.serialization.*
 import kotlinx.serialization.descriptors.*
 import kotlinx.serialization.encoding.*
 
+@InternalIcureApi
 open class RawUserApi(
     baseUrl: String,
     authService: AuthService

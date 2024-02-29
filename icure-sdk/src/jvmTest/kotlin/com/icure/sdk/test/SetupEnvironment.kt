@@ -29,12 +29,12 @@ import kotlinx.serialization.json.JsonObject
 import org.openapitools.client.apis.RawUserApi
 import java.util.UUID
 
-private val baseUrl = "http://localhost:16044"
+val baseUrl = "http://localhost:16044"
 private val testGroupName = "testgroup"
 private val testGroupId = testGroupName
 private val testGroupAdmin = "admin-${UUID.randomUUID()}@icure.com"
 private val testGroupAdminPassword = "admin-${UUID.randomUUID()}"
-private val testGroupAdminAuth = JwtAuthService(
+val testGroupAdminAuth = JwtAuthService(
 	AnonymousAuthApiImpl(baseUrl),
 	UsernamePassword(testGroupAdmin, testGroupAdminPassword),
 )

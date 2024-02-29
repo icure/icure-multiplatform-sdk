@@ -428,7 +428,7 @@ class EntityEncryptionServiceImpl(
 			if (selfId == entity.id && currMember == selfId)
 				AccessLevel.Write
 			else
-				legacyDelegationsDecryptor.getEntityAccessLevel(entity, setOf(currMember))
+				legacyDelegationsDecryptor.getEntityAccessLevel(entity, subHierarchySet)
 		if (legacyAccess == null) return null
 		val delegateLegacySecretIds = legacySecretIds.valuesAvailableToDataOwners(subHierarchySet)
 		val delegateLegacyOwningEntityIds = legacyOwningEntityIds.valuesAvailableToDataOwners(subHierarchySet)
@@ -437,17 +437,17 @@ class EntityEncryptionServiceImpl(
 			if (delegateLegacySecretIds.isEmpty())
 				delegateLegacySecretIds
 			else
-				(secureDelegationsDecryptor.decryptSecretIdsOf(entity, setOf(currMember)).map { it.value }.toSet() - delegateLegacySecretIds)
+				(delegateLegacySecretIds - secureDelegationsDecryptor.decryptSecretIdsOf(entity, setOf(currMember)).map { it.value }.toSet())
 		val missingLegacyOwningEntityIds =
 			if (delegateLegacyOwningEntityIds.isEmpty())
 				delegateLegacyOwningEntityIds
 			else
-				(secureDelegationsDecryptor.decryptOwningEntityIdsOf(entity, setOf(currMember)).map { it.value }.toSet() - delegateLegacyOwningEntityIds)
+				(delegateLegacyOwningEntityIds - secureDelegationsDecryptor.decryptOwningEntityIdsOf(entity, setOf(currMember)).map { it.value }.toSet())
 		val missingLegacyEncryptionKeys =
 			if (delegateLegacyEncryptionKeys.isEmpty())
 				delegateLegacyEncryptionKeys
 			else
-				(secureDelegationsDecryptor.decryptEncryptionKeysOf(entity, setOf(currMember)).map { it.value }.toSet() - delegateLegacyEncryptionKeys)
+				(delegateLegacyEncryptionKeys - secureDelegationsDecryptor.decryptEncryptionKeysOf(entity, setOf(currMember)).map { it.value }.toSet())
 		return if (missingLegacySecretIds.isNotEmpty() || missingLegacyOwningEntityIds.isNotEmpty() || missingLegacyEncryptionKeys.isNotEmpty()) {
 			val requestedPermissions =
 				if (currMember == selfId)
