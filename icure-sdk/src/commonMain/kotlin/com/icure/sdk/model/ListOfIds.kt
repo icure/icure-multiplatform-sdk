@@ -1,5 +1,10 @@
 package com.icure.sdk.model
 
-data class ListOfIds(
-	val ids: List<String> = emptyList()
+import kotlin.String
+import kotlin.collections.List
+import kotlinx.serialization.Serializable
+
+@Serializable
+public data class ListOfIds(
+  public val ids: List<String> = emptyList(),
 )

@@ -3,7 +3,7 @@ package com.icure.sdk.model
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CryptoActorStubWithType(
-	val type: DataOwnerType,
-	val stub: CryptoActorStub
+public data class CryptoActorStubWithType(
+  public val type: DataOwnerType,
+  public val stub: CryptoActorStub,
 )
