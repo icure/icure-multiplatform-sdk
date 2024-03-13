@@ -8,7 +8,7 @@ import com.icure.sdk.auth.Jwt
 import com.icure.sdk.auth.ThirdPartyTokens
 import com.icure.sdk.auth.UsernamePassword
 import io.ktor.client.request.*
-import io.ktor.util.date.*
+import io.ktor.util.date.GMTDate
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.Serializable

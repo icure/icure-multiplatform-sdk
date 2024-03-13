@@ -1,5 +1,6 @@
 package com.icure.sdk.utils
 
+import io.ktor.http.*
 import kotlin.reflect.KClass
 
 /**
@@ -17,3 +18,9 @@ class ResourceNotFoundException(
  * Exception thrown when a retrieved entity does not conform to the expected format.
  */
 class IllegalEntityException(message: String, cause: Throwable? = null) : Exception(message, cause)
+
+class RequestStatusException(
+	val requestMethod: HttpMethod,
+	val url: String,
+	val statusCode: Int,
+) : Exception("Request $requestMethod $url failed with status code $statusCode")
