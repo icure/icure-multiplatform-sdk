@@ -28,6 +28,7 @@ ktorSerializationJson = { group = "io.ktor", name = "ktor-serialization-kotlinx-
 # Kotlinx
 coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
 kotlinSerialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinSerialization" }
+kotlinDatetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version = "0.6.0-RC.2"}
 
 # Kotest
 kotestAssertions = { group = "io.kotest", name = "kotest-assertions-core", version.ref = "kotest" }
