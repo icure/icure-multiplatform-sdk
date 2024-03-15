@@ -20,6 +20,7 @@ kotlin {
 					implementation(libs.ktorContentNegotiation)
 					implementation(libs.ktorSerializationJson)
 					implementation(libs.kotlinSerialization)
+					implementation(libs.kotlinDateTime)
 					implementation(libs.kermit)
 					implementation(libs.coroutinesCore)
 					implementation(project(":kryptom"))

@@ -3,6 +3,7 @@ kotlin = "1.9.22"
 ktor = "2.3.8"
 coroutines = "1.8.0"
 kotlinSerialization = "1.6.1"
+kotlinDateTime = "0.6.0-RC.2"
 kotest = "5.8.0"
 androidLibrary = "8.2.2"
 bouncyCastle = "1.70"
@@ -33,6 +34,7 @@ ktorSerializationJson = { group = "io.ktor", name = "ktor-serialization-kotlinx-
 coroutinesCore = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
 coroutinesSlf4j = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-slf4j", version.ref = "coroutines" }
 kotlinSerialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinSerialization" }
+kotlinDateTime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinDateTime" }
 
 # Kotest
 kotestAssertions = { group = "io.kotest", name = "kotest-assertions-core", version.ref = "kotest" }
