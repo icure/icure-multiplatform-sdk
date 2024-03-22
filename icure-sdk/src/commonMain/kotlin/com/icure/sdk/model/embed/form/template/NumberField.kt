@@ -8,9 +8,12 @@ import kotlin.collections.Map
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+// WARNING: This file is auto-generated. If you change it manually, you changes will be lost.
+// If you want to change the way this class is generated, see [this repo](TODO: URL HERE).
+
 @SerialName("number-field")
 @Serializable
-public data class NumberField(
+data class NumberField(
   override val `field`: String,
   override val shortLabel: String? = null,
   override val rows: Int? = null,
@@ -28,4 +31,7 @@ public data class NumberField(
   override val hideCondition: String? = null,
   override val now: Boolean? = null,
   override val translate: Boolean? = null,
-) : Field
+) : Field {
+	// region NumberField-NumberField
+	// endregion
+}

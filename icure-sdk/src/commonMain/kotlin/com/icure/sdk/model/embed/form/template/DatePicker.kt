@@ -8,9 +8,12 @@ import kotlin.collections.Map
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+// WARNING: This file is auto-generated. If you change it manually, you changes will be lost.
+// If you want to change the way this class is generated, see [this repo](TODO: URL HERE).
+
 @SerialName("date-picker")
 @Serializable
-public data class DatePicker(
+data class DatePicker(
   override val `field`: String,
   override val shortLabel: String? = null,
   override val rows: Int? = null,
@@ -28,4 +31,7 @@ public data class DatePicker(
   override val hideCondition: String? = null,
   override val now: Boolean? = null,
   override val translate: Boolean? = null,
-) : Field
+) : Field {
+	// region DatePicker-DatePicker
+	// endregion
+}

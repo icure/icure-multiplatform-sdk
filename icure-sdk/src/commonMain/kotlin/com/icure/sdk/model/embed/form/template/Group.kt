@@ -4,8 +4,14 @@ import kotlin.String
 import kotlin.collections.List
 import kotlinx.serialization.Serializable
 
+// WARNING: This file is auto-generated. If you change it manually, you changes will be lost.
+// If you want to change the way this class is generated, see [this repo](TODO: URL HERE).
+
 @Serializable
-public data class Group(
+data class Group(
   public val group: String,
   public val fields: List<StructureElement>? = null,
-) : StructureElement
+) : StructureElement {
+	// region Group-Group
+	// endregion
+}
