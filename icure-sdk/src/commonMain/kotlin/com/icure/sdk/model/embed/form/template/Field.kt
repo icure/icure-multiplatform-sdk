@@ -7,11 +7,8 @@ import kotlin.collections.List
 import kotlin.collections.Map
 import kotlinx.serialization.Serializable
 
-// WARNING: This file is auto-generated. If you change it manually, you changes will be lost.
-// If you want to change the way this class is generated, see [this repo](TODO: URL HERE).
-
 @Serializable
-sealed interface Field : StructureElement {
+public sealed interface Field : StructureElement {
   public val `field`: String
 
   public val shortLabel: String?
@@ -45,8 +42,4 @@ sealed interface Field : StructureElement {
   public val now: Boolean?
 
   public val translate: Boolean?
-
-
-	// region Field-Field
-	// endregion
 }
