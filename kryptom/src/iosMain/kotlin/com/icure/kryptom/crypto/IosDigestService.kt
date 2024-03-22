@@ -1,5 +1,6 @@
 package com.icure.kryptom.crypto
 
+import com.icure.kryptom.utils.PlatformMethodException
 import kotlinx.cinterop.UByteVar
 import kotlinx.cinterop.addressOf
 import kotlinx.cinterop.allocArray
@@ -17,9 +18,10 @@ object IosDigestService : DigestService {
 		val out = allocArray<UByteVar>(SHA256_DIGEST_LENGTH)
 		data.usePinned { pinnedData ->
 			val shaResult = CC_SHA256(pinnedData.addressOf(0), data.size.toUInt(), out)
-			check(shaResult.toLong() == out.toLong()) {
-				"CC_SHA256 should have returned the output address but got ${shaResult.toLong()} instead."
-			}
+			if (shaResult.toLong() != out.toLong()) throw PlatformMethodException(
+				"CC_SHA256 should have returned the output address but got ${shaResult.toLong()} instead.",
+				null
+			)
 		}
 		out.readBytes(SHA256_DIGEST_LENGTH)
 	}

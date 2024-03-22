@@ -6,5 +6,7 @@ plugins {
 	androidLibrary(false)
 }
 
-group = "com.icure"
+allprojects {
+	group = "com.icure"
+}
 version = "0.0.1"

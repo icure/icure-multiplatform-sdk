@@ -1,8 +1,11 @@
 package com.icure.sdk.model
 
+import kotlinx.serialization.Serializable
+
 /**
  * Holds information for user-based access control and encryption of entities.
  */
+@Serializable
 data class SecurityMetadata(
 	/**
 	 * This maps the hex-encoded sha256 hash of a key created by the client using a certain [ExchangeData.accessControlSecret] to the
@@ -12,6 +15,6 @@ data class SecurityMetadata(
 	 * Note that it is also possible for a secure delegation in this map to have no entry for secretId, encryptionKey or owningEntityId.
 	 * This could happen in situations where a user should have access only to the unencrypted content of an entity.
 	 */
-	val secureDelegations: Map<Sha256HexString, SecureDelegation>
+	val secureDelegations: Map<SecureDelegationKeyString, SecureDelegation>
 )
 

@@ -2,6 +2,7 @@ package com.icure.kryptom.crypto
 
 import com.icure.kryptom.ios.toByteArray
 import com.icure.kryptom.ios.toCFData
+import com.icure.kryptom.utils.PlatformMethodException
 import kotlinx.cinterop.alloc
 import kotlinx.cinterop.memScoped
 import kotlinx.cinterop.ptr
@@ -89,16 +90,22 @@ object IosRsaService : RsaService {
 		// https://youtrack.jetbrains.com/issue/KT-50990
 		val error = alloc<CFErrorRefVar>()
 		val privateKey = SecKeyCreateRandomKey(generationAttr.getValue(keySize), error.ptr)
-		check(error.value == null) {
+		if (error.value != null) {
 			val nsError = CFBridgingRelease(error.value) as NSError
 			if (privateKey != null) CFRelease(privateKey)
-			"Failed to create private key (error code ${nsError.code}): ${nsError.localizedDescription}"
+			throw PlatformMethodException(
+				"Failed to create private key (error code ${nsError.code}): ${nsError.localizedDescription}",
+				nsError.code.toInt()
+			)
 		}
-		checkNotNull(privateKey) { "Private key should not be null if key creation did not give any error" }
+		if (privateKey == null) throw PlatformMethodException(
+			"Private key creation didn't give an error but result is null",
+			null
+		)
 		val publicKey = SecKeyCopyPublicKey(privateKey)
-		checkNotNull(publicKey) {
+		if (publicKey == null) {
 			CFRelease(privateKey)
-			"Public key extraction from private key should not fail"
+			throw PlatformMethodException("Public key extraction from private key should not fail", null)
 		}
 		try {
 			RsaKeypair(PrivateRsaKey(privateKey.toPkcs1(), algorithm), PublicRsaKey(publicKey.toPkcs1(), algorithm))
@@ -112,9 +119,9 @@ object IosRsaService : RsaService {
 		val privateKey = pkcs8ToPcks1(privateKeyPkcs8)
 		val privateSecKey = toSecKey(privateKey, loadPrivateSecKeyAttr)
 		val publicSecKey = SecKeyCopyPublicKey(privateSecKey)
-		checkNotNull(publicSecKey) {
+		if (publicSecKey == null) {
 			CFRelease(privateSecKey)
-			"Public key extraction from private key should not fail"
+			throw PlatformMethodException("Public key extraction from private key should not fail", null)
 		}
 		return try {
 			RsaKeypair(PrivateRsaKey(privateKey, algorithm), PublicRsaKey(publicSecKey.toPkcs1(), algorithm))
@@ -142,12 +149,18 @@ object IosRsaService : RsaService {
 					cfData,
 					error.ptr
 				)
-				check(error.value == null) {
+				if (error.value != null) {
 					val nsError = CFBridgingRelease(error.value) as NSError
 					if (encrypted != null) CFRelease(encrypted)
-					"Failed to encrypt data: ${nsError.localizedDescription}"
+					throw PlatformMethodException(
+						"Failed to encrypt data: ${nsError.localizedDescription}",
+						nsError.code.toInt()
+					)
 				}
-				checkNotNull(encrypted) { "Encryption didn't give an error but result is null" }
+				if (encrypted == null) throw PlatformMethodException(
+					"Encryption didn't give an error but result is null",
+					null
+				)
 				encrypted.toByteArray()
 			}
 		} finally {
@@ -171,12 +184,18 @@ object IosRsaService : RsaService {
 					cfData,
 					error.ptr
 				)
-				check(error.value == null) {
+				if (error.value != null) {
 					val nsError = CFBridgingRelease(error.value) as NSError
 					if (decrypted != null) CFRelease(decrypted)
-					"Failed to decrypt data: ${nsError.localizedDescription}"
+					throw PlatformMethodException(
+						"Failed to decrypt data: ${nsError.localizedDescription}",
+						nsError.code.toInt()
+					)
 				}
-				checkNotNull(decrypted) { "Decryption didn't give an error but result is null" }
+				if (decrypted == null) throw PlatformMethodException(
+					"Decryption didn't give an error but result is null",
+					null
+				)
 				decrypted.toByteArray()
 			}
 		} finally {
@@ -200,12 +219,18 @@ object IosRsaService : RsaService {
 					cfData,
 					error.ptr
 				)
-				check(error.value == null) {
+				if (error.value != null) {
 					val nsError = CFBridgingRelease(error.value) as NSError
 					if (signature != null) CFRelease(signature)
-					"Failed to sign data: ${nsError.localizedDescription}"
+					throw PlatformMethodException(
+						"Failed to sign data: ${nsError.localizedDescription}",
+						nsError.code.toInt()
+					)
 				}
-				checkNotNull(signature) { "Signature didn't give an error but result is null" }
+				if (signature == null) throw PlatformMethodException(
+					"Signing didn't give an error but result is null",
+					null
+				)
 				signature.toByteArray()
 			}
 		} finally {
@@ -234,9 +259,11 @@ object IosRsaService : RsaService {
 				)
 				if (error.value != null) {
 					val nsError = CFBridgingRelease(error.value) as NSError
-					check(nsError.code == -67808L) { // Error code for invalid signature
-						"Failed to verify data: ${nsError.localizedDescription}"
-					}
+					// Error code for invalid signature
+					if (nsError.code != -67808L) throw PlatformMethodException(
+						"Failed to verify data: ${nsError.localizedDescription}",
+						nsError.code.toInt()
+					)
 					false
 				} else {
 					verification
@@ -257,12 +284,18 @@ object IosRsaService : RsaService {
 	private fun SecKeyRef.toPkcs1(): ByteArray = memScoped {
 		val error = alloc<CFErrorRefVar>()
 		val result = SecKeyCopyExternalRepresentation(this@toPkcs1, error.ptr)
-		check(error.value == null) {
+		if (error.value != null) {
 			val nsError = CFBridgingRelease(error.value) as NSError
 			if (result != null) CFRelease(result)
-			"Failed to export SecKey: ${nsError.localizedDescription}"
+			throw PlatformMethodException(
+				"Failed to export SecKey: ${nsError.localizedDescription}",
+				nsError.code.toInt()
+			)
 		}
-		checkNotNull(result) { "SecKey export didn't give an error but result is null" }
+		if (result == null) throw PlatformMethodException(
+			"SecKey export didn't give an error but result is null",
+			null
+		)
 		result.toByteArray()
 	}
 
@@ -278,12 +311,18 @@ object IosRsaService : RsaService {
 		val cfdata = pkcs1Key.toCFData()
 		val result = SecKeyCreateWithData(cfdata, attrs, error.ptr)
 		CFRelease(cfdata)
-		check(error.value == null) {
+		if (error.value != null) {
 			val nsError = CFBridgingRelease(error.value) as NSError
 			if (result != null) CFRelease(result)
-			"Failed to import SecKey: ${nsError.localizedDescription}"
+			throw PlatformMethodException(
+				"Failed to import SecKey: ${nsError.localizedDescription}",
+				nsError.code.toInt()
+			)
 		}
-		checkNotNull(result) { "SecKey import didn't give an error but result is null" }
+		if (result == null) throw PlatformMethodException(
+			"SecKey import didn't give an error but result is null",
+			null
+		)
 		result
 	}
 }

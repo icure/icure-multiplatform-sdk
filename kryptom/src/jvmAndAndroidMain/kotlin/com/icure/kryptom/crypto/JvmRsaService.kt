@@ -1,13 +1,13 @@
 package com.icure.kryptom.crypto
 
+import com.icure.kryptom.crypto.asn.pkcs8PrivateToSpkiPublic
+import com.icure.kryptom.crypto.asn.toAsn1
 import java.security.KeyFactory
 import java.security.KeyPairGenerator
 import java.security.Signature
-import java.security.interfaces.RSAPrivateCrtKey
 import java.security.spec.MGF1ParameterSpec
 import java.security.spec.PKCS8EncodedKeySpec
 import java.security.spec.PSSParameterSpec
-import java.security.spec.RSAPublicKeySpec
 import java.security.spec.X509EncodedKeySpec
 import javax.crypto.Cipher
 
@@ -42,7 +42,7 @@ object JvmRsaService : RsaService {
 		rsaKeyGenerator.initialize(keySize.bitSize)
 		val pair = rsaKeyGenerator.generateKeyPair()
 		return RsaKeypair(
-			PrivateRsaKey(pair.private as RSAPrivateCrtKey, algorithm).checkFormat(),
+			PrivateRsaKey(pair.private, algorithm).checkFormat(),
 			PublicRsaKey(pair.public, algorithm).checkFormat()
 		)
 	}
@@ -56,8 +56,8 @@ object JvmRsaService : RsaService {
 	override suspend fun <A : RsaAlgorithm> loadKeyPairPkcs8(algorithm: A, privateKeyPkcs8: ByteArray): RsaKeypair<A> {
 		val keyFactory = KeyFactory.getInstance("RSA")
 		val privateKeySpec = PKCS8EncodedKeySpec(privateKeyPkcs8)
-		val privateKey = PrivateRsaKey(keyFactory.generatePrivate(privateKeySpec) as RSAPrivateCrtKey, algorithm)
-		val publicKeySpec = RSAPublicKeySpec(privateKey.key.modulus, privateKey.key.publicExponent)
+		val privateKey = PrivateRsaKey(keyFactory.generatePrivate(privateKeySpec), algorithm)
+		val publicKeySpec = X509EncodedKeySpec(privateKeyPkcs8.toAsn1().pkcs8PrivateToSpkiPublic().pack())
 		val publicKey = PublicRsaKey(keyFactory.generatePublic(publicKeySpec), algorithm)
 		return RsaKeypair(privateKey, publicKey)
 	}
@@ -104,20 +104,20 @@ object JvmRsaService : RsaService {
 	}
 
 	private fun <A : RsaAlgorithm> PublicRsaKey<A>.checkFormat() = this.also {
-		check(key.format == SPKI_FORMAT) {
+		assert(key.format == SPKI_FORMAT) {
 			"""
-            Generated public key should have format $SPKI_FORMAT but got ${key.format}.
-            Make sure that the default security provider generates keys in the appropriate format.
-            """.trimIndent()
+			Generated public key should have format $SPKI_FORMAT but got ${key.format}.
+			Make sure that the default security provider generates keys in the appropriate format.
+			""".trimIndent()
 		}
 	}
 
 	private fun <A : RsaAlgorithm> PrivateRsaKey<A>.checkFormat() = this.also {
-		check(key.format == PKCS8_FORMAT) {
+		assert(key.format == PKCS8_FORMAT) {
 			"""
-            Generated private key should have format $PKCS8_FORMAT but got ${key.format}.
-            Make sure that the default security provider generates keys in the appropriate format.
-            """.trimIndent()
+			Generated private key should have format $PKCS8_FORMAT but got ${key.format}.
+			Make sure that the default security provider generates keys in the appropriate format.
+			""".trimIndent()
 		}
 	}
 }

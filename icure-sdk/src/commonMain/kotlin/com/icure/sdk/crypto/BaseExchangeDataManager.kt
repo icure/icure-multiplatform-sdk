@@ -3,54 +3,15 @@ package com.icure.sdk.crypto
 import com.icure.kryptom.crypto.AesKey
 import com.icure.kryptom.crypto.HmacAlgorithm
 import com.icure.kryptom.crypto.HmacKey
+import com.icure.sdk.crypto.entities.DecryptionResult
+import com.icure.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
+import com.icure.sdk.crypto.entities.RawDecryptedExchangeData
+import com.icure.sdk.crypto.entities.RsaDecryptionKeysSet
+import com.icure.sdk.crypto.entities.RsaSignatureKeysSet
+import com.icure.sdk.crypto.entities.VerifiedRsaEncryptionKeysSet
+import com.icure.sdk.model.AccessControlSecret
 import com.icure.sdk.model.ExchangeData
 import com.icure.sdk.utils.InternalIcureApi
-
-/**
- * A container for the unencrypted content of some exchange data (it could have been decrypted from some retrieved
- * exchange data, or it is the content before encryption).
- * @param accessControlSecret the access control secret of the exchange data.
- * @param exchangeKey the exchange key of the exchange data.
- * @param sharedSignatureKey the shared signature key of the exchange data.
- */
-@InternalIcureApi
-data class UnencryptedExchangeDataContent(
-	val exchangeKey: AesKey,
-	val accessControlSecret: String,
-	val sharedSignatureKey: HmacKey<HmacAlgorithm.HmacSha512>
-)
-
-/**
- * A container for the exchange data and its unencrypted content.
- * @param exchangeData the exchange data.
- * @param unencryptedContent the unencrypted content of the exchange data.
- */
-@InternalIcureApi
-data class ExchangeDataWithUnencryptedContent(
-	val exchangeData: ExchangeData,
-	val unencryptedContent: UnencryptedExchangeDataContent
-)
-
-/**
- * The raw decrypted content of an exchange data.
- * @param exchangeKey the raw exchange key of the exchange data.
- * @param accessControlSecret the raw access control secret of the exchange data.
- * @param sharedSignatureKey the raw shared signature key of the exchange data.
- */
-@InternalIcureApi
-data class RawDecryptedExchangeData(
-	val exchangeKey: ByteArray,
-	val accessControlSecret: ByteArray,
-	val sharedSignatureKey: ByteArray
-) {
-	override fun hashCode(): Int {
-		throw UnsupportedOperationException("There should be no reason to use `hashCode` for this class")
-	}
-
-	override fun equals(other: Any?): Boolean {
-		throw UnsupportedOperationException("There should be no reason to use `equals` for this class")
-	}
-}
 
 /**
  * Functions to create and get exchange data.
@@ -114,7 +75,7 @@ interface BaseExchangeDataManager {
 	suspend fun tryDecryptAccessControlSecret(
 		exchangeData: List<ExchangeData>,
 		decryptionKeys: RsaDecryptionKeysSet
-	): DecryptionResult<ExchangeData, String>
+	): DecryptionResult<ExchangeData, AccessControlSecret>
 
 	/**
 	 * Extract and decrypts the exchange keys from the provided exchange data.
@@ -140,7 +101,7 @@ interface BaseExchangeDataManager {
 	suspend fun tryDecryptSharedSignatureKeys(
 		exchangeData: List<ExchangeData>,
 		decryptionKeys: RsaDecryptionKeysSet
-	): DecryptionResult<ExchangeData, HmacKey<*>>
+	): DecryptionResult<ExchangeData, HmacKey<HmacAlgorithm.HmacSha512>>
 
 	/**
 	 * Creates exchange data from the current data owner to the provided delegate, uploading the newly created exchange data to the cloud.
@@ -169,7 +130,7 @@ interface BaseExchangeDataManager {
 	suspend fun tryRawDecryptExchangeData(
 		exchangeData: ExchangeData,
 		decryptionKeys: RsaDecryptionKeysSet
-	): RawDecryptedExchangeData
+	): RawDecryptedExchangeData?
 
 	/**
 	 * Updates existing exchange data and uploads it to the cloud in order to share it also with additional public keys, useful for example in cases

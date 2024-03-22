@@ -1,34 +1,43 @@
 package com.icure.sdk.model
 
+import com.icure.sdk.utils.InternalIcureApi
+import com.icure.sdk.utils.ensure
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+@InternalIcureApi
+@Serializable
 data class BulkShareOrUpdateMetadataParams(
 	val requestsByEntityId: Map<String, EntityRequestInformationDto>
 )
 
+@InternalIcureApi
+@Serializable
 data class EntityRequestInformationDto(
 	val requests: Map<String, EntityShareOrMetadataUpdateRequest>,
 	/**
 	 * Which delegations can be parents to any newly requested non-root delegations. Some may be ignored in order to
 	 * simplify the delegation graph, or if the requested permission is root.
 	 */
-	val potentialParentDelegations: Set<String>
+	val potentialParentDelegations: Set<SecureDelegationKeyString>
 )
 
+@InternalIcureApi
+@Serializable
 data class EntityShareOrMetadataUpdateRequest(
 	val share: EntityShareRequest? = null,
 	val update: EntitySharedMetadataUpdateRequest? = null,
 ) {
 	init {
-		require(share != null || update != null) { "Either share or update must be specified" }
-		require(share == null || update == null) { "Only one of share or update must be specified" }
+		ensure(share != null || update != null) { "Either share or update must be specified" }
+		ensure(share == null || update == null) { "Only one of share or update must be specified" }
 	}
 }
 
 /**
  * Holds parameters necessary to share an entity.
  */
+@Serializable
 data class EntityShareRequest(
 	/**
 	 * Id of the data owner which is sharing the entity (delegator), if it should be explicitly indicated or null if the
@@ -46,7 +55,7 @@ data class EntityShareRequest(
 	 * Values generated using the access control secret of the exchange data used for the encryption of the ids and keys
 	 * to share. Once hashed they are used as secure delegation keys.
 	 */
-	val accessControlKeys: Set<HexString>,
+	val accessControlKeys: Set<AccessControlKeyHexString>,
 	/**
 	 * Encrypted secret ids to share with the delegate.
 	 */
@@ -73,7 +82,10 @@ data class EntityShareRequest(
 	 * Permissions for the delegate.
 	 */
 	val requestedPermissions: RequestedPermission = RequestedPermission.MaxWrite
-)
+) {
+	@InternalIcureApi
+	fun wrap() = EntityShareOrMetadataUpdateRequest(share = this)
+}
 
 
 /**
@@ -129,6 +141,7 @@ enum class RequestedPermission {
 	 * can revoke it.
 	 */
 	@SerialName("ROOT")
+	@InternalIcureApi
 	Root
 }
 
@@ -142,22 +155,22 @@ data class EntitySharedMetadataUpdateRequest(
 	/**
 	 * Access control hash of the metadata to update.
 	 */
-	val metadataAccessControlHash: String,
+	val metadataAccessControlHash: SecureDelegationKeyString,
 	/**
 	 * Updates for secret ids: the key is an encrypted secret id and the value is if an entry with that encrypted secret
 	 * id should be created or deleted.
 	 */
-	val secretIds: Map<String, EntryUpdateTypeDto> = emptyMap(),
+	val secretIds: Map<Base64String, EntryUpdateTypeDto> = emptyMap(),
 	/**
 	 * Updates for encryption keys: a key in the map is an encrypted encryption key and the value is if an entry with
 	 * that encrypted encryption key should be created or deleted.
 	 */
-	val encryptionKeys: Map<String, EntryUpdateTypeDto> = emptyMap(),
+	val encryptionKeys: Map<Base64String, EntryUpdateTypeDto> = emptyMap(),
 	/**
 	 * Updates for owning entity ids: the key is the encrypted id of an owning entity and the value is if an entry with
 	 * that encrypted owning entity id should be created or deleted.
 	 */
-	val owningEntityIds: Map<String, EntryUpdateTypeDto> = emptyMap(),
+	val owningEntityIds: Map<Base64String, EntryUpdateTypeDto> = emptyMap(),
 ) {
 	/**
 	 * Specifies if an entry should be created anew or deleted
@@ -169,11 +182,58 @@ data class EntitySharedMetadataUpdateRequest(
 		@SerialName("DELETE")
 		Delete
 	}
+
+	@InternalIcureApi
+	fun wrap() = EntityShareOrMetadataUpdateRequest(update = this)
 }
+
+/**
+ * Represents a reason why a share requests failed or was rejected.
+ */
+@Serializable
+data class RejectedShareOrMetadataUpdateRequest(
+	/**
+	 * Code of the error, mimics an http status code (400 general user error, 409 conflict, ...).
+	 */
+	val code: Int,
+	/**
+	 * If true a new share request with the same content may succeed so the user is encouraged to retry. This could
+	 * happen if the entity to share changed while verifying the validity of the request (correctness, permissions,
+	 * ...), and if the entity did not change in ways incompatible with the request re-performing the request in
+	 * the same way may succeed.
+	 */
+	val shouldRetry: Boolean = false,
+	/**
+	 * Human-friendly message explaining the reason of the failure.
+	 */
+	val reason: String
+)
 
 /**
  * Result of a bulk share operation.
  */
+@Serializable
+data class MinimalEntityBulkShareResult(
+	/**
+	 * Id of the entity for which the update was requested.
+	 */
+	val entityId: String,
+	/**
+	 * Last known revision of the entity before any update, non-null only if an entity matching the requests could be
+	 * found. This can help to understand if an error is caused by an outdated version of the entity on the client-side.
+	 */
+	val entityRev: String? = null,
+	/**
+	 * If a `bulkShare` method fails to apply any of the share requests for an entity this map associates the id of the
+	 * original failed request to the reason of failure.
+	 */
+	val rejectedRequests: Map<String, RejectedShareOrMetadataUpdateRequest> = emptyMap()
+)
+
+/**
+ * Result of a bulk share operation.
+ */
+@Serializable
 data class EntityBulkShareResult<T : Encryptable>(
 	/**
 	 * The updated entity. Non-null if at least one of the requests succeeded.
@@ -193,26 +253,4 @@ data class EntityBulkShareResult<T : Encryptable>(
 	 * original failed request to the reason of failure.
 	 */
 	val rejectedRequests: Map<String, RejectedShareOrMetadataUpdateRequest> = emptyMap()
-) {
-	/**
-	 * Represents a reason why a share requests failed or was rejected.
-	 */
-	@Serializable
-	data class RejectedShareOrMetadataUpdateRequest(
-		/**
-		 * Code of the error, mimics an http status code (400 general user error, 409 conflict, ...).
-		 */
-		val code: Int,
-		/**
-		 * If true a new share request with the same content may succeed so the user is encouraged to retry. This could
-		 * happen if the entity to share changed while verifying the validity of the request (correctness, permissions,
-		 * ...), and if the entity did not change in ways incompatible with the request re-performing the request in
-		 * the same way may succeed.
-		 */
-		val shouldRetry: Boolean = false,
-		/**
-		 * Human-friendly message explaining the reason of the failure.
-		 */
-		val reason: String
-	)
-}
+)

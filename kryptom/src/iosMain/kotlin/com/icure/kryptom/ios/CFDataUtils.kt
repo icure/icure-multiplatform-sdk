@@ -1,5 +1,6 @@
 package com.icure.kryptom.ios
 
+import com.icure.kryptom.utils.PlatformMethodException
 import kotlinx.cinterop.CPointer
 import kotlinx.cinterop.addressOf
 import kotlinx.cinterop.usePinned
@@ -20,9 +21,8 @@ import platform.darwin.UInt8Var
  */
 fun ByteArray.toCFData(): CFDataRef = this.usePinned {
 	@Suppress("UNCHECKED_CAST") // Using raw bytes, no need to do "proper" conversions
-	checkNotNull(CFDataCreate(kCFAllocatorDefault, it.addressOf(0) as CPointer<UInt8Var>, size.toLong())) {
-		"Could not create CFData"
-	}
+	CFDataCreate(kCFAllocatorDefault, it.addressOf(0) as CPointer<UInt8Var>, size.toLong())
+		?: throw PlatformMethodException("Could not create CFData from byte array, got null result", null)
 }
 
 /**

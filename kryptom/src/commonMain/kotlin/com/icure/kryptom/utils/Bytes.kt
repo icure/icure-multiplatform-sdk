@@ -9,17 +9,21 @@ import io.ktor.utils.io.core.toByteArray
  * Represents the byte array as a hexadecimal string.
  * @return hex representation of the array
  */
-@OptIn(ExperimentalUnsignedTypes::class)
+@OptIn(ExperimentalStdlibApi::class)
 fun ByteArray.toHexString(): String =
-	asUByteArray().toHexString()
+	toHexString(HexFormat.Default)
 
 /**
  * Represents the byte array as a hexadecimal string.
  * @return hex representation of the array
  */
-@OptIn(ExperimentalUnsignedTypes::class)
+@OptIn(ExperimentalStdlibApi::class, ExperimentalUnsignedTypes::class)
 fun UByteArray.toHexString(): String =
-	joinToString("") { it.toString(radix = 16).padStart(2, '0') }
+	toHexString(HexFormat.Default)
+
+@OptIn(ExperimentalStdlibApi::class)
+fun hexToByteArray(hexString: String): ByteArray =
+	hexString.hexToByteArray(HexFormat.Default)
 
 // TODO compare performances with native solutions making sure the native respect the contract
 

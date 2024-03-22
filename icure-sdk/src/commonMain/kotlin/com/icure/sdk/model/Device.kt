@@ -1,0 +1,22 @@
+package com.icure.sdk.model
+
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class Device(
+	override val id: String,
+	override val rev: String? = null,
+	val created: Long? = null,
+	val modified: Long? = null,
+	val deletionDate: Long? = null,
+	val name: String? = null,
+	val lastName: String? = null,
+	val firstName: String? = null,
+	override val hcPartyKeys: Map<String, List<HexString>> = emptyMap(),
+	override val aesExchangeKeys: Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> = emptyMap(),
+	override val transferKeys: Map<String, Map<String, String>> = emptyMap(),
+	override val privateKeyShamirPartitions: Map<String, String> = emptyMap(), //Format is hcpId of key that has been partitionned : "threshold⎮partition in hex"
+	override val publicKey: SpkiHexString? = null,
+	override val publicKeysForOaepWithSha256: Set<SpkiHexString> = emptySet(),
+	override val tags: Set<CodeStub> = emptySet()
+): Revisionable<String>, CryptoActor

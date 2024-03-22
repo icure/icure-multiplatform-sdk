@@ -1,30 +1,14 @@
 package com.icure.sdk.crypto
 
 import com.icure.kryptom.crypto.AesKey
+import com.icure.sdk.crypto.entities.DataOwnerExchangeKeys
+import com.icure.sdk.crypto.entities.DecryptionResult
+import com.icure.sdk.crypto.entities.RsaDecryptionKeysSet
 import com.icure.sdk.model.DataOwnerType
 import com.icure.sdk.model.HexString
 import com.icure.sdk.model.KeypairFingerprintV1String
+import com.icure.sdk.model.SpkiHexString
 import com.icure.sdk.utils.InternalIcureApi
-
-typealias EncryptedExchangeKeyContent = Map<KeypairFingerprintV1String, HexString>
-
-/**
- * A container for the exchange keys of a data owner.
- */
-data class DataOwnerExchangeKeys(
-	/**
-	 * The id of a data owner
-	 */
-	val dataOwnerId: String,
-	/**
-	 * Exchange keys where [dataOwnerId] is the delegator and the map key is a delegate.
-	 */
-	val exchangeKeysByDataOwnerTo: Map<String, List<EncryptedExchangeKeyContent>>,
-	/**
-	 * Exchange keys where [dataOwnerId] is the delegate and the map key is a delegator.
-	 */
-	val exchangeKeysToDataOwnerFrom: Map<String, List<EncryptedExchangeKeyContent>>
-)
 
 @InternalIcureApi
 interface BaseExchangeKeysManager {
@@ -37,7 +21,7 @@ interface BaseExchangeKeysManager {
 	 */
 	suspend fun giveAccessBackTo(
 		otherDataOwner: String,
-		newDataOwnerPublicKey: String,
+		newDataOwnerPublicKey: SpkiHexString,
 		keyPairsByFingerprint: RsaDecryptionKeysSet
 	)
 
@@ -50,7 +34,7 @@ interface BaseExchangeKeysManager {
 	suspend fun getEncryptedExchangeKeysFor(
 		delegatorId: String,
 		delegateId: String
-	): List<Map<KeypairFingerprintV1String, HexString>>
+	): List<Map<KeypairFingerprintV1String?, HexString>>
 
 	/**
 	 * Get all exchange keys where the provided data owner is involved either as the delegator or as the delegate.
@@ -71,7 +55,7 @@ interface BaseExchangeKeysManager {
 	 * @return an array all successfully decrypted exchange keys and an array containing all exchange keys which could not be decrypted.
 	 */
 	suspend fun tryDecryptExchangeKeys(
-		encryptedExchangeKeys: List<Map<KeypairFingerprintV1String, HexString>>,
+		encryptedExchangeKeys: List<Map<KeypairFingerprintV1String?, HexString>>,
 		keyPairsByFingerprint: RsaDecryptionKeysSet
-	): DecryptionResult<EncryptedExchangeKeyContent, AesKey>
+	): DecryptionResult<Map<KeypairFingerprintV1String?, HexString>, AesKey>
 }

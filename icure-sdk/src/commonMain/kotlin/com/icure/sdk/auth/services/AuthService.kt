@@ -8,7 +8,7 @@ import io.ktor.client.request.HttpRequestBuilder
  * Specifies the behaviour for all the services that manage authentication.
  * Each implementation is responsible for providing a valid authentication token [T].
  */
-sealed interface AuthService<T : AuthToken> {
+sealed interface AuthService {
 
 	/**
 	 * Configures the authentication mechanism in a ktor request.
@@ -21,11 +21,6 @@ sealed interface AuthService<T : AuthToken> {
 	 */
 	suspend fun setAuthorizationInRequest(builder: HttpRequestBuilder, authenticationClass: AuthenticationClass? = null)
 
-	/**
-	 * @return the authentication token [T] provided by the concrete implementation fo this class.
-	 */
-	suspend fun getToken(): T
-
 	class UnavailableAuthenticationClassException(authenticationClass: AuthenticationClass)
 		: Exception("Cannot generate a token with authentication class $authenticationClass")
 
@@ -34,5 +29,5 @@ sealed interface AuthService<T : AuthToken> {
 /**
  * @see [AuthService.setAuthorizationInRequest]
  */
-suspend fun HttpRequestBuilder.setAuthorizationWith(service: AuthService<*>, authenticationClass: AuthenticationClass? = null) =
+suspend fun HttpRequestBuilder.setAuthorizationWith(service: AuthService, authenticationClass: AuthenticationClass? = null) =
 	service.setAuthorizationInRequest(this, authenticationClass)

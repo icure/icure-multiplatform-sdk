@@ -2,6 +2,7 @@ package com.icure.kryptom.crypto
 
 import com.icure.kryptom.crypto.AesService.Companion.aesEncryptedSizeFor
 import com.icure.kryptom.crypto.AesService.Companion.IV_BYTE_LENGTH
+import com.icure.kryptom.utils.PlatformMethodException
 import kotlinx.cinterop.ULongVar
 import kotlinx.cinterop.addressOf
 import kotlinx.cinterop.alloc
@@ -57,12 +58,14 @@ object IosAesService : AesService {
 					}
 				}
 			}
-			check(dataOutMoved.value == (outBytes.size - IV_BYTE_LENGTH).toULong()) {
-				"Expected ${outBytes.size - IV_BYTE_LENGTH} encrypted bytes but got ${dataOutMoved.value}"
-			}
-			check(operationResult == kCCSuccess) {
-				"Encryption failed with error code $operationResult"
-			}
+			if (operationResult != kCCSuccess) throw PlatformMethodException(
+				"Encryption failed with error code $operationResult",
+				operationResult
+			)
+			if (dataOutMoved.value == (outBytes.size - IV_BYTE_LENGTH).toULong()) throw PlatformMethodException(
+				"Expected ${outBytes.size - IV_BYTE_LENGTH} encrypted bytes but got ${dataOutMoved.value}",
+				null
+			)
 		}
 		return outBytes
 	}
@@ -91,7 +94,10 @@ object IosAesService : AesService {
 				}
 			}
 			// Refer to Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/usr/include/CommonCrypto/CommonCryptoError.h
-			check(operationResult == kCCSuccess) { "Decryption failed with error code: $operationResult" }
+			if (operationResult != kCCSuccess) throw PlatformMethodException(
+				"Decryption failed with error code: $operationResult",
+				operationResult
+			)
 			outBytes.copyOf(dataOutMoved.value.toInt())
 		}
 	}

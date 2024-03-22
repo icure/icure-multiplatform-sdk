@@ -1,6 +1,7 @@
 package com.icure.sdk.crypto
 
 import com.icure.kryptom.crypto.AesKey
+import com.icure.sdk.crypto.entities.VerifiedRsaEncryptionKeysSet
 import com.icure.sdk.model.Base64String
 import com.icure.sdk.model.HexString
 import com.icure.sdk.model.KeypairFingerprintV2String
@@ -22,27 +23,27 @@ interface SecureDelegationsEncryption {
 	 */
 	suspend fun encryptExchangeDataId(exchangeDataId: String, publicKeys: VerifiedRsaEncryptionKeysSet): Map<KeypairFingerprintV2String, Base64String>
 
-	suspend fun encryptEncryptionKey(hexKey: String, key: AesKey): Base64String
+	suspend fun encryptEncryptionKey(hexKey: HexString, key: AesKey): Base64String
 
-	suspend fun encryptEncryptionKeys(hexKeys: List<String>, key: AesKey): List<Base64String>
+	suspend fun encryptEncryptionKeys(hexKeys: Set<HexString>, key: AesKey): Set<Base64String>
 
-	suspend fun decryptEncryptionKey(encrypted: String, key: AesKey): HexString
+	suspend fun decryptEncryptionKey(encrypted: Base64String, key: AesKey): HexString
 
-	suspend fun decryptEncryptionKeys(delegation: SecureDelegation, key: AesKey): List<HexString>
+	suspend fun decryptEncryptionKeys(delegation: SecureDelegation, key: AesKey): Set<HexString>
 	
 	suspend fun encryptSecretId(secretId: String, key: AesKey): Base64String
 
-	suspend fun encryptSecretIds(secretIds: List<String>, key: AesKey): List<Base64String>
+	suspend fun encryptSecretIds(secretIds: Set<String>, key: AesKey): Set<Base64String>
 
-	suspend fun decryptSecretId(encrypted: String, key: AesKey): String
+	suspend fun decryptSecretId(encrypted: Base64String, key: AesKey): String
 
-	suspend fun decryptSecretIds(delegation: SecureDelegation, key: AesKey): List<String>
+	suspend fun decryptSecretIds(delegation: SecureDelegation, key: AesKey): Set<String>
 
 	suspend fun encryptOwningEntityId(owningEntityId: String, key: AesKey): Base64String
 
-	suspend fun encryptOwningEntityIds(owningEntityIds: List<String>, key: AesKey): List<Base64String>
+	suspend fun encryptOwningEntityIds(owningEntityIds: Set<String>, key: AesKey): Set<Base64String>
 
-	suspend fun decryptOwningEntityId(encrypted: String, key: AesKey): String
+	suspend fun decryptOwningEntityId(encrypted: Base64String, key: AesKey): String
 
-	suspend fun decryptOwningEntityIds(delegation: SecureDelegation, key: AesKey): List<String>
+	suspend fun decryptOwningEntityIds(delegation: SecureDelegation, key: AesKey): Set<String>
 }

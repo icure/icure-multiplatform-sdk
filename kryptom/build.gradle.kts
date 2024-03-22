@@ -4,7 +4,10 @@ plugins {
 	kotlinMultiplatform()
 	kotestMultiplatform()
 	androidLibrary()
+	id("maven-publish")
 }
+
+project.version = "0.0.2"
 
 @OptIn(ExperimentalKotlinGradlePluginApi::class)
 kotlin {
@@ -63,3 +66,9 @@ android {
 }
 
 configureJvmTest()
+
+publishing {
+	repositories {
+		mavenLocal()
+	}
+}

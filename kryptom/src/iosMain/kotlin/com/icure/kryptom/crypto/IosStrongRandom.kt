@@ -1,5 +1,6 @@
 package com.icure.kryptom.crypto
 
+import com.icure.kryptom.utils.PlatformMethodException
 import kotlinx.cinterop.addressOf
 import kotlinx.cinterop.usePinned
 import platform.Security.SecRandomCopyBytes
@@ -12,7 +13,10 @@ object IosStrongRandom : StrongRandom {
 		val returnCode = bytes.usePinned {
 			SecRandomCopyBytes(kSecRandomDefault, length.toULong(), it.addressOf(0))
 		}
-		check(returnCode == errSecSuccess) { "Random bytes generation failed with code $returnCode" }
+		if (returnCode != errSecSuccess) throw PlatformMethodException(
+			"Random bytes generation failed with code $returnCode",
+			null
+		)
 		return bytes
 	}
 

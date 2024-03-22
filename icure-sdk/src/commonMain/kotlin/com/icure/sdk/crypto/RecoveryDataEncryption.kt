@@ -2,23 +2,11 @@ package com.icure.sdk.crypto
 
 import com.icure.kryptom.crypto.RsaAlgorithm
 import com.icure.kryptom.crypto.RsaKeypair
-import com.icure.sdk.model.Base64String
+import com.icure.sdk.crypto.entities.ExchangeDataRecoveryDetails
+import com.icure.sdk.crypto.entities.RecoveryResult
 import com.icure.sdk.model.SpkiHexString
 import com.icure.sdk.utils.InternalIcureApi
-import kotlinx.serialization.Serializable
 
-
-/**
- * Information on some exchange data and its decrypted content.
- */
-@Serializable
-@InternalIcureApi
-data class ExchangeDataRecoveryDetails(
-	val exchangeDataId: String,
-	val rawAccessControlSecret: Base64String,
-	val rawSharedSignatureKey: Base64String,
-	val rawExchangeKey: Base64String
-)
 
 @InternalIcureApi
 interface RecoveryDataEncryption {
@@ -55,9 +43,9 @@ interface RecoveryDataEncryption {
 	 * @param lifetimeSeconds the lifetime of the recovery data in seconds. If null, the recovery data will never expire.
 	 */
 	suspend fun createAndSaveExchangeDataRecoveryData(
-	recipient: String,
-	exchangeDataInfo: List<ExchangeDataRecoveryDetails>,
-	lifetimeSeconds: Long?
+		recipient: String,
+		exchangeDataInfo: List<ExchangeDataRecoveryDetails>,
+		lifetimeSeconds: Long?
 	): String
 
 	/**

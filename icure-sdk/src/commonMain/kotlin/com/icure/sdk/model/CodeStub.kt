@@ -1,5 +1,8 @@
 package com.icure.sdk.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class CodeStub(
 	val id: String, // id = type|code|version  => this must be unique
 	val context: String? = null, //ex: When embedded the context where this code is used

@@ -1,12 +1,89 @@
 package com.icure.sdk.model
 
+import com.icure.kryptom.crypto.CryptoService
+import com.icure.kryptom.utils.hexToByteArray
+import com.icure.kryptom.utils.toHexString
+import com.icure.sdk.utils.base64Encode
+import io.ktor.utils.io.charsets.Charsets
+import io.ktor.utils.io.core.toByteArray
 import kotlinx.serialization.Serializable
 import kotlin.jvm.JvmInline
 
+/**
+ * A string that represents the keypair used for the encryption of an aes exchange key entry. This should usually be
+ * a fingerprint v1, but due to bugs in older iCure version it may also be a public key in hex-encoded spki format, or
+ * due to corruption of some healthcare parties public key it may also be an empty string, to represent the fact that
+ * the key used for the encryption is unknown.
+ */
+@JvmInline
+@Serializable
+value class AesExchangeKeyEncryptionKeypairIdentifier(val s: String) {
+	fun toFingerprintV1OrNull(): KeypairFingerprintV1String? =
+		if (s.length >= 32) KeypairFingerprintV1String(s.takeLast(32)) else null
+}
 
-typealias Base64String = String
-typealias HexString = String
-typealias Sha256HexString = String
+@JvmInline
+@Serializable
+value class Base64String(val s: String)
+
+@JvmInline
+@Serializable
+value class HexString(val s: String) {
+	fun decodedBytes(): ByteArray = hexToByteArray(s)
+}
+
+@JvmInline
+@Serializable
+value class Sha256HexString(val s: String)
+
+@JvmInline
+@Serializable
+value class AccessControlSecret(val s: String) {
+	/**
+	 * One way operation to get all possible secure delegation keys corresponding to this access control secret
+	 */
+	suspend fun allAccessControlKeys(cryptoService: CryptoService): Set<AccessControlKeyHexString> =
+		EntityWithDelegationTypeName.entries.mapTo(mutableSetOf()) { toAccessControlKeyStringFor(it, cryptoService) }
+
+	/**
+	 * Get the secure delegation key corresponding to an access control secret for a specific entity type
+	 */
+	suspend fun toAccessControlKeyStringFor(
+		entityType: EntityWithDelegationTypeName,
+		cryptoService: CryptoService
+	): AccessControlKeyHexString =
+		AccessControlKeyHexString(cryptoService.digest.sha256((s + entityType.id).toByteArray(Charsets.UTF_8)).sliceArray(0 until AccessControlKeyHexString.BYTES_LENGTH).toHexString())
+
+	suspend fun toSecureDelegationKeyFor(
+		entityType: EntityWithDelegationTypeName,
+		cryptoService: CryptoService
+	) = toAccessControlKeyStringFor(entityType, cryptoService).toSecureDelegationKeyString(cryptoService)
+}
+
+@JvmInline
+@Serializable
+value class AccessControlKeyHexString(val s: String) {
+	companion object {
+		val BYTES_LENGTH = 16
+		private val HEX_LENGTH = 32
+	}
+	/**
+	 * One way operation to get the secure delegation key string corresponding to an access control key string
+	 */
+	suspend fun toSecureDelegationKeyString(cryptoService: CryptoService): SecureDelegationKeyString {
+		return SecureDelegationKeyString(cryptoService.digest.sha256(bytes()).toHexString())
+	}
+
+	fun bytes(): ByteArray = hexToByteArray(s)
+
+	init {
+		require(s.length == HEX_LENGTH) { "An access control key should be exactly $BYTES_LENGTH bytes (before encoding); got $s" }
+	}
+}
+
+@JvmInline
+@Serializable
+value class SecureDelegationKeyString(val s: String)
 
 // We may want to disable the inits once the sdk is ready, but now they help to secure the development
 
@@ -34,6 +111,9 @@ value class SpkiHexString(
 	fun fingerprintV2(): KeypairFingerprintV2String {
 		return KeypairFingerprintV2String.fromPublicKeySpki(this)
 	}
+
+	fun bytes(): ByteArray =
+		hexToByteArray(s)
 }
 
 @JvmInline

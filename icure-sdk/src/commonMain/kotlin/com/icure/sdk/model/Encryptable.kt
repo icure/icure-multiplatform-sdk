@@ -1,6 +1,6 @@
 package com.icure.sdk.model
 
-interface Encryptable {
+interface Encryptable : Revisionable<String> {
 	/**
 	 * Security metadata for the entity, contains metadata necessary for access control.
 	 * In [Encryptable] entities this is also used to store additional encrypted metadata on the entity, including encryption keys for the
@@ -52,4 +52,8 @@ interface Encryptable {
 	 * The base64 encoded data of this object, formatted as JSON and encrypted in AES using the random master key from encryptionKeys.
 	 */
 	val encryptedSelf: Base64String?
+
+	fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): Encryptable
+
+	val type: EntityWithDelegationTypeName
 }

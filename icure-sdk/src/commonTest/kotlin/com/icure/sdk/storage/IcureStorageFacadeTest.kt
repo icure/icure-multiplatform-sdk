@@ -3,11 +3,12 @@ package com.icure.sdk.storage
 import com.icure.kryptom.crypto.RsaAlgorithm
 import com.icure.kryptom.crypto.RsaService
 import com.icure.kryptom.crypto.defaultCryptoService
-import com.icure.sdk.crypto.exportSpkiHex
+import com.icure.sdk.crypto.impl.exportSpkiHex
 import com.icure.sdk.storage.impl.DefaultStorageEntryKeysFactory
 import com.icure.sdk.storage.impl.JsonAndBase64KeyStorage
 import com.icure.sdk.storage.impl.VolatileStorageFacade
 import com.icure.sdk.utils.InternalIcureApi
+import com.icure.sdk.utils.InternalIcureException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.maps.shouldBeEmpty
@@ -159,7 +160,7 @@ class IcureStorageFacadeTest : StringSpec({
 			RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha1
 		).shouldBeNull()
 		// Legacy key must have appropriate algorithm
-		shouldThrow<IllegalStateException> {
+		shouldThrow<InternalIcureException> {
 			storage.loadEncryptionKeypair(
 				dataOwner,
 				key1Spki.fingerprintV1(),
@@ -183,7 +184,7 @@ class IcureStorageFacadeTest : StringSpec({
 			defaultCryptoService.rsa.exportPrivateKeyPkcs8(key2.private)
 		)
 		// Also requires valid algorithm
-		shouldThrow<IllegalStateException> {
+		shouldThrow<InternalIcureException> {
 			storage.loadEncryptionKeypair(
 				dataOwner,
 				key2Spki.fingerprintV1(),

@@ -3,7 +3,10 @@ plugins {
 	kotlinSerialization()
 	kotestMultiplatform()
 	androidLibrary()
+	id("maven-publish")
 }
+
+project.version = "0.0.2"
 
 kotlin {
 	configureMultiplatform(this)
@@ -17,8 +20,11 @@ kotlin {
 					implementation(libs.ktorContentNegotiation)
 					implementation(libs.ktorSerializationJson)
 					implementation(libs.kotlinSerialization)
-					implementation(libs.kotlinDatetime)
+					implementation(libs.kotlinDateTime)
+					implementation(libs.kermit)
+					implementation(libs.coroutinesCore)
 					implementation(project(":kryptom"))
+					implementation(kotlin("reflect"))
 				}
 			}
 			val commonTest by getting {
@@ -32,12 +38,15 @@ kotlin {
 			}
 			val jvmMain by getting {
 				dependencies {
-					implementation(libs.ktorClientEngineJvm)
+					implementation(libs.ktorClientEngineOkhttp)
 				}
 			}
 			val jvmTest by getting {
 				dependencies {
 					implementation(libs.kotestRunnerJunit)
+					implementation("io.icure:icure-e2e-test-setup:0.0.24-gc854bb2431")
+					implementation(libs.ktorClientEngineCio) // Currently needed by test setup, remove later
+					implementation(libs.bouncyCastle) // TODO Why do I need this? in common test it was working perfectly...
 				}
 			}
 			val jsMain by getting {
@@ -47,7 +56,7 @@ kotlin {
 			}
 			val androidMain by getting {
 				dependencies {
-					implementation(libs.ktorClientEngineAndroid)
+					implementation(libs.ktorClientEngineOkhttp)
 				}
 			}
 			val androidUnitTest by getting {
@@ -57,7 +66,7 @@ kotlin {
 			}
 			iosMain {
 				dependencies {
-					implementation(libs.ktorClientEngineIos)
+					implementation(libs.ktorClientEngineDarwin)
 				}
 			}
 		}
@@ -70,3 +79,9 @@ android {
 }
 
 configureJvmTest()
+
+publishing {
+	repositories {
+		mavenLocal()
+	}
+}

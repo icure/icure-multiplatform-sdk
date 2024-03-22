@@ -1,20 +1,13 @@
 package com.icure.sdk.crypto
 
+import com.icure.sdk.crypto.entities.ExchangeDataWithPotentiallyDecryptedContent
+import com.icure.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
+import com.icure.sdk.model.Base64String
 import com.icure.sdk.model.EntityWithDelegationTypeName
-import com.icure.sdk.model.ExchangeData
+import com.icure.sdk.model.SecureDelegationKeyString
+import com.icure.sdk.model.SpkiHexString
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.ResourceNotFoundException
-
-/**
- * A container for exchange data and, if the SDK could decrypt the exchange data content, its unencrypted content.
- * @param exchangeData some exchange data
- * @param decryptedContent the unencrypted content of the exchange data if it could be decrypted, else null
- */
-@InternalIcureApi
-data class ExchangeDataWithPotentiallyDecryptedContent(
-	val exchangeData: ExchangeData,
-	val decryptedContent: UnencryptedExchangeDataContent?,
-)
 
 /**
  * Exchange data manager which automatically handles decryption and cache
@@ -25,9 +18,9 @@ interface ExchangeDataManager {
 	 * Updates all exchange data between the current data owner and another data owner to allow the other data owner to access existing exchange data
 	 * using a new public key.
 	 * @param otherDataOwner the other data owner.
-	 * @param newDataOwnerPublicKey a new public key of the other data owner.
+	 * @param newDataOwnerPublicKey a new public key of the other data owner. The key MUST BE VERIFIED.
 	 */
-	suspend fun giveAccessBackTo(otherDataOwner: String, newDataOwnerPublicKey: String)
+	suspend fun giveAccessBackTo(otherDataOwner: String, newDataOwnerPublicKey: SpkiHexString)
 
 	/**
 	 * Gets any existing and verified exchange data from the current data owner to the provided delegate or creates new data if no verified data is
@@ -52,9 +45,9 @@ interface ExchangeDataManager {
 	 * @return the exchange data and decrypted key associated to that hash if cached
 	 */
 	suspend fun getCachedDecryptionDataKeyByAccessControlHash(
-		hashes: List<String>,
+		hashes: Collection<SecureDelegationKeyString>,
 		entityType: EntityWithDelegationTypeName,
-	): Map<String, ExchangeDataWithUnencryptedContent>
+	): Map<SecureDelegationKeyString, ExchangeDataWithUnencryptedContent>
 
 	/**
 	 * Retrieves the exchange data with the provided id (from the cache if available or from the server otherwise if allowed by
@@ -85,13 +78,5 @@ interface ExchangeDataManager {
 	 * concatenation of all available access control keys for the current data owner.
 	 * If the current data owner is explicit returns null.
 	 */
-	suspend fun getAccessControlKeysValue(entityType: EntityWithDelegationTypeName): String?
-
-	/**
-	 * If the current data owner is "anonymous" this returns the access control keys which may be used in secure
-	 * delegations from/to the data owner for entities of the provided type; these can be used to search for data shared
-	 * with the data owner.
-	 * If the current data owner is explicit returns null.
-	 */
-	suspend fun getAllDelegationKeys(entityType: EntityWithDelegationTypeName): List<String>?
+	suspend fun getAccessControlKeysValue(entityType: EntityWithDelegationTypeName): List<Base64String>?
 }

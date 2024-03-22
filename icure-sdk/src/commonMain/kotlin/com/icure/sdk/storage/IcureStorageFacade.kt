@@ -5,12 +5,13 @@ import com.icure.kryptom.crypto.PublicRsaKey
 import com.icure.kryptom.crypto.RsaAlgorithm.RsaEncryptionAlgorithm
 import com.icure.kryptom.crypto.RsaAlgorithm.RsaSignatureAlgorithm
 import com.icure.kryptom.crypto.RsaKeypair
-import com.icure.sdk.crypto.exportSpkiHex
+import com.icure.sdk.crypto.impl.exportSpkiHex
 import com.icure.sdk.model.KeypairFingerprintV1String
 import com.icure.sdk.model.SpkiHexString
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.IllegalEntityException
 import com.icure.sdk.utils.Serialization
+import com.icure.sdk.utils.ensure
 import kotlinx.serialization.encodeToString
 
 /**
@@ -39,7 +40,7 @@ class IcureStorageFacade(
 	 */
 	private val lookupKeysInLegacyTsLocations: Boolean
 ) {
-	data class LoadedKeyPairDetails(
+	data class LoadedKeypairDetails(
 		val pair: RsaKeypair<RsaEncryptionAlgorithm>,
 		val isDevice: Boolean
 	)
@@ -77,11 +78,11 @@ class IcureStorageFacade(
 		publicKeyFingerprint: KeypairFingerprintV1String,
 		legacyPublicKey: SpkiHexString?,
 		algorithm: RsaEncryptionAlgorithm
-	): LoadedKeyPairDetails? {
+	): LoadedKeypairDetails? {
 		if (
 			legacyPublicKey != null
 			&& publicKeyFingerprint == KeypairFingerprintV1String.fromPublicKeySpki(legacyPublicKey)
-		) check(algorithm == RsaEncryptionAlgorithm.OaepWithSha1) {
+		) ensure (algorithm == RsaEncryptionAlgorithm.OaepWithSha1) {
 			"Required key is the legacy public key, algorithm must be OaepWithSha1, but got $algorithm"
 		}
 		val deviceKey = keys.getPrivateKeyPkcs8(entryFor.deviceKeypairOfDataOwner(dataOwnerId, publicKeyFingerprint))
@@ -89,12 +90,12 @@ class IcureStorageFacade(
 				loadKeyFromLegacyAesExchangeKeysLocation(dataOwnerId, publicKeyFingerprint, algorithm)
 				?: loadKeyFromLegacySingleKeyLocation(dataOwnerId, publicKeyFingerprint, legacyPublicKey, algorithm)
 			} else null
-		if (deviceKey != null) return LoadedKeyPairDetails(
+		if (deviceKey != null) return LoadedKeypairDetails(
 			pair = cryptoService.rsa.loadKeyPairPkcs8(algorithm, deviceKey),
 			isDevice = true
 		)
 		val cachedKey = keys.getPrivateKeyPkcs8(entryFor.cachedRecoveredKeypairOfDataOwner(dataOwnerId, publicKeyFingerprint))
-		if (cachedKey != null) return LoadedKeyPairDetails(
+		if (cachedKey != null) return LoadedKeypairDetails(
 			pair = cryptoService.rsa.loadKeyPairPkcs8(algorithm, cachedKey),
 			isDevice = false
 		)
@@ -112,7 +113,7 @@ class IcureStorageFacade(
 		dataOwnerId: String,
 		verificationDetails: Map<KeypairFingerprintV1String, Boolean>
 	): Map<KeypairFingerprintV1String, Boolean> {
-		val stored = loadSelfVerifiedKeys(dataOwnerId) ?: emptyMap()
+		val stored = loadSelfVerifiedKeys(dataOwnerId)
 		val updated = stored + verificationDetails
 		data.setItem(
 			entryFor.selfPublicKeysVerificationCacheForDataOwner(dataOwnerId),
@@ -140,7 +141,6 @@ class IcureStorageFacade(
 	/**
 	 * Saves a signature and verification key pair. Overrides previously saved signature keys (but keeps signature verification keys).
 	 * @param dataOwnerId id of the data owner with the key.
-	 * @param publicKeyFingerprint fingerprint of the public key of the pair.
 	 * @param keyPair the key pair to save.
 	 */
 	suspend fun saveSignatureKeyPair(
@@ -189,7 +189,7 @@ class IcureStorageFacade(
 		algorithm: RsaEncryptionAlgorithm
 	): ByteArray? =
 		keys.getPrivateKeyPkcs8("org.taktik.icure.rsa.${dataOwnerId}.${publicKeyFingerprint}")?.also {
-			check(algorithm == RsaEncryptionAlgorithm.OaepWithSha1) {
+			ensure(algorithm == RsaEncryptionAlgorithm.OaepWithSha1) {
 				"Found a key in legacy aes exchange keys location, algorithm must be OaepWithSha1, but got $algorithm"
 			}
 		}
@@ -204,7 +204,7 @@ class IcureStorageFacade(
 		legacyPublicKey?.takeIf {
 			KeypairFingerprintV1String.fromPublicKeySpki(it) == publicKeyFingerprint
 		}?.let {
-			check(algorithm == RsaEncryptionAlgorithm.OaepWithSha1) {
+			ensure(algorithm == RsaEncryptionAlgorithm.OaepWithSha1) {
 				"Required key is the legacy public key, algorithm must be OaepWithSha1, but got $algorithm"
 			}
 			keys.getPrivateKeyPkcs8("org.taktik.icure.rsa.${dataOwnerId}")
