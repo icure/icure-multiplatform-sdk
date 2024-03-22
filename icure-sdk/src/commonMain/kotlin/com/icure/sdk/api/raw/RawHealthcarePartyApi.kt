@@ -16,9 +16,9 @@
 package com.icure.sdk.api.raw
 
 import com.icure.sdk.auth.services.AuthService
-import com.icure.sdk.model.AesExchangeKeyEncryptionKeypairIdentifier
+import com.icure.sdk.model.specializations.AesExchangeKeyEncryptionKeypairIdentifier
 import com.icure.sdk.model.HealthcareParty
-import com.icure.sdk.model.HexString
+import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.utils.InternalIcureApi
 import org.openapitools.client.infrastructure.*
 import kotlinx.serialization.*

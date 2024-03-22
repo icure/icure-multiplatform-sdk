@@ -6,8 +6,8 @@ import com.icure.sdk.crypto.EntityEncryptionService
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleDelegateShareOptions
 import com.icure.sdk.crypto.entities.SimpleShareResult
-import com.icure.sdk.model.AccessLevel
-import com.icure.sdk.model.HexString
+import com.icure.sdk.model.embed.AccessLevel
+import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.model.Patient
 import com.icure.sdk.model.RequestedPermission
 import com.icure.sdk.utils.InternalIcureApi

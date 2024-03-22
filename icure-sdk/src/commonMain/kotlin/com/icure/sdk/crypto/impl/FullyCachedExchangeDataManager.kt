@@ -9,11 +9,11 @@ import com.icure.sdk.crypto.UserSignatureKeysManager
 import com.icure.sdk.crypto.entities.ExchangeDataWithPotentiallyDecryptedContent
 import com.icure.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
 import com.icure.sdk.crypto.entities.UnencryptedExchangeDataContent
-import com.icure.sdk.model.AccessControlKeyHexString
-import com.icure.sdk.model.AccessControlSecret
-import com.icure.sdk.model.Base64String
+import com.icure.sdk.model.specializations.AccessControlKeyHexString
+import com.icure.sdk.model.specializations.AccessControlSecret
+import com.icure.sdk.model.specializations.Base64String
 import com.icure.sdk.model.EntityWithDelegationTypeName
-import com.icure.sdk.model.SecureDelegationKeyString
+import com.icure.sdk.model.specializations.SecureDelegationKeyString
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.InternalIcureException
 import com.icure.sdk.utils.SingleValueAsyncCache

@@ -1,32 +1,33 @@
 package com.icure.sdk.model
 
-import kotlinx.serialization.ExperimentalSerializationApi
+import com.icure.sdk.model.base.CryptoActor
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.JsonClassDiscriminator
 
-@OptIn(ExperimentalSerializationApi::class)
+// WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
+// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
+
 @Serializable
-@JsonClassDiscriminator("type")
 sealed interface DataOwnerWithType {
-	val type: DataOwnerType
-	val dataOwner: CryptoActor
+  public val dataOwner: CryptoActor
 
-	@Serializable
-	@SerialName(DataOwnerType.SerialNames.PATIENT)
-	data class PatientDataOwner(override val dataOwner: Patient): DataOwnerWithType {
-		override val type: DataOwnerType = DataOwnerType.Patient
-	}
+  @Serializable
+  @SerialName("hcp")
+  public data class HcpDataOwner(
+    override val dataOwner: HealthcareParty,
+  ) : DataOwnerWithType
 
-	@Serializable
-	@SerialName(DataOwnerType.SerialNames.HCP)
-	data class HcpDataOwner(override val dataOwner: HealthcareParty): DataOwnerWithType {
-		override val type: DataOwnerType = DataOwnerType.Hcp
-	}
+  @Serializable
+  @SerialName("patient")
+  public data class PatientDataOwner(
+    override val dataOwner: Patient,
+  ) : DataOwnerWithType
 
-	@Serializable
-	@SerialName(DataOwnerType.SerialNames.DEVICE)
-	data class DeviceDataOwner(override val dataOwner: Device): DataOwnerWithType {
-		override val type: DataOwnerType = DataOwnerType.Device
-	}
+  @Serializable
+  @SerialName("device")
+  public data class DeviceDataOwner(
+    override val dataOwner: Device,
+  ) : DataOwnerWithType
+	// region DataOwnerWithType-DataOwnerWithType
+	// endregion
 }

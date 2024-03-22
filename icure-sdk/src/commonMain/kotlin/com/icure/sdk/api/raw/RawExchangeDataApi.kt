@@ -110,7 +110,7 @@ class RawExchangeDataApi(
      * @return PaginatedListExchangeData
      */
     @Suppress("UNCHECKED_CAST")
-    open suspend fun getExchangeDataByParticipant(dataOwnerId: kotlin.String, startDocumentId: kotlin.String? = null, limit: kotlin.Int? = null): HttpResponse<PaginatedList<ExchangeData>> {
+    open suspend fun getExchangeDataByParticipant(dataOwnerId: kotlin.String, startDocumentId: kotlin.String? = null, limit: kotlin.Int? = null): HttpResponse<PaginatedList<ExchangeData, String>> {
         val localVariableBody =
             io.ktor.client.utils.EmptyContent
 

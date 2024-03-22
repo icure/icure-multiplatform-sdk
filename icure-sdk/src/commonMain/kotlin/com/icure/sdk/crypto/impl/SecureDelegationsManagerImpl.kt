@@ -11,20 +11,21 @@ import com.icure.sdk.crypto.SecureDelegationsManager
 import com.icure.sdk.crypto.UserEncryptionKeysManager
 import com.icure.sdk.crypto.entities.VerifiedRsaEncryptionKeysSet
 import com.icure.sdk.crypto.entities.toPublicKeyInfo
-import com.icure.sdk.model.AccessControlKeyHexString
-import com.icure.sdk.model.AccessLevel
-import com.icure.sdk.model.Base64String
-import com.icure.sdk.model.Encryptable
+import com.icure.sdk.model.specializations.AccessControlKeyHexString
+import com.icure.sdk.model.embed.AccessLevel
+import com.icure.sdk.model.specializations.Base64String
+import com.icure.sdk.model.base.Encryptable
 import com.icure.sdk.model.EntityShareOrMetadataUpdateRequest
 import com.icure.sdk.model.EntityShareRequest
 import com.icure.sdk.model.EntitySharedMetadataUpdateRequest
 import com.icure.sdk.model.ExchangeDataMapCreationBatch
-import com.icure.sdk.model.HexString
-import com.icure.sdk.model.KeypairFingerprintV2String
+import com.icure.sdk.model.specializations.HexString
+import com.icure.sdk.model.specializations.KeypairFingerprintV2String
 import com.icure.sdk.model.RequestedPermission
-import com.icure.sdk.model.SecureDelegation
-import com.icure.sdk.model.SecureDelegationKeyString
-import com.icure.sdk.model.SecurityMetadata
+import com.icure.sdk.model.embed.SecureDelegation
+import com.icure.sdk.model.specializations.SecureDelegationKeyString
+import com.icure.sdk.model.embed.SecurityMetadata
+
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.SynchronisedLruCache
 

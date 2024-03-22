@@ -11,12 +11,12 @@ import com.icure.sdk.crypto.entities.MinimalBulkShareResult
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.SimpleDelegateShareOptions
-import com.icure.sdk.model.AccessLevel
+import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.BulkShareOrUpdateMetadataParams
-import com.icure.sdk.model.Encryptable
 import com.icure.sdk.model.EntityBulkShareResult
-import com.icure.sdk.model.HexString
+import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.model.MinimalEntityBulkShareResult
+import com.icure.sdk.model.base.Encryptable
 import com.icure.sdk.utils.InternalIcureApi
 import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.json.JsonElement

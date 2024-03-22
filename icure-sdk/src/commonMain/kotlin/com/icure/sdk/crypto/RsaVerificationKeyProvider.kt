@@ -2,7 +2,7 @@ package com.icure.sdk.crypto
 
 import com.icure.kryptom.crypto.PublicRsaKey
 import com.icure.kryptom.crypto.RsaAlgorithm.RsaSignatureAlgorithm
-import com.icure.sdk.model.KeypairFingerprintV2String
+import com.icure.sdk.model.specializations.KeypairFingerprintV2String
 
 /**
  * Provides access to public keys of the current user that can be used to verify the authenticity of exchange data.

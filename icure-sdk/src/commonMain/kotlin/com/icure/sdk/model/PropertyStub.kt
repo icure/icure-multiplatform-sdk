@@ -1,0 +1,65 @@
+package com.icure.sdk.model
+
+import com.icure.sdk.model.embed.DecryptedTypedValue
+import com.icure.sdk.model.embed.Encrypted
+import com.icure.sdk.model.embed.EncryptedTypedValue
+import com.icure.sdk.model.embed.TypedValue
+import kotlin.Long
+import kotlin.String
+import kotlinx.serialization.Serializable
+
+// WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
+// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
+
+@Serializable
+sealed interface PropertyStub : Encrypted {
+  public val id: String?
+
+  public val type: PropertyTypeStub?
+
+  public val typedValue: TypedValue<*>?
+
+  public val deletionDate: Long?
+
+  override val encryptedSelf: String?
+	// region PropertyStub-PropertyStub
+	// endregion
+}
+
+data class DecryptedPropertyStub(
+  override val id: String? = null,
+  override val type: PropertyTypeStub? = null,
+  override val typedValue: DecryptedTypedValue<*>? = null,
+  override val deletionDate: Long? = null,
+  override val encryptedSelf: String? = null,
+) : PropertyStub {
+	// region PropertyStub-DecryptedPropertyStub
+	// endregion
+}
+
+data class EncryptedPropertyStub(
+  override val id: String? = null,
+  override val type: PropertyTypeStub? = null,
+  override val typedValue: EncryptedTypedValue<*>? = null,
+  override val deletionDate: Long? = null,
+  override val encryptedSelf: String? = null,
+) : PropertyStub {
+	// region PropertyStub-EncryptedPropertyStub
+	// endregion
+}
+
+public fun PropertyStub.copy(
+  id: String? = this.id,
+  type: PropertyTypeStub? = this.type,
+  typedValue: TypedValue<*>? = this.typedValue,
+  deletionDate: Long? = this.deletionDate,
+  encryptedSelf: String? = this.encryptedSelf,
+): PropertyStub {
+                                      return when(this) {
+                                          is DecryptedPropertyStub -> copy(id = id, type = type,
+          typedValue = typedValue, deletionDate = deletionDate, encryptedSelf = encryptedSelf)
+      is EncryptedPropertyStub -> copy(id = id, type = type, typedValue = typedValue, deletionDate =
+          deletionDate, encryptedSelf = encryptedSelf)
+                                          }
+
+}

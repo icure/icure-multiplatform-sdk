@@ -1,5 +1,6 @@
 package com.icure.sdk.api.raw
 
+import com.icure.sdk.utils.Serialization
 import io.ktor.client.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
@@ -12,9 +13,11 @@ abstract class BaseRawApi(
 	requestTimeout : Duration?
 ) {
 
+	protected open suspend fun getAccessControlKeysHeaderValues(): List<String>? = null
+
 	protected val httpClient = HttpClient {
 		install(ContentNegotiation) {
-			json()
+			json(json = Serialization.json)
 		}
 		requestTimeout?.also {
 			install(HttpTimeout) {

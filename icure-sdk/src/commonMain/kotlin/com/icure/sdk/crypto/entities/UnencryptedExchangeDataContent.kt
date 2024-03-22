@@ -3,7 +3,7 @@ package com.icure.sdk.crypto.entities
 import com.icure.kryptom.crypto.AesKey
 import com.icure.kryptom.crypto.HmacAlgorithm
 import com.icure.kryptom.crypto.HmacKey
-import com.icure.sdk.model.AccessControlSecret
+import com.icure.sdk.model.specializations.AccessControlSecret
 import com.icure.sdk.utils.InternalIcureApi
 
 /**

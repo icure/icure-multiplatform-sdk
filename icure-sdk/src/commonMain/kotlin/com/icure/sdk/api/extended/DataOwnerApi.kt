@@ -1,13 +1,14 @@
 package com.icure.sdk.api.extended
 
 import com.icure.sdk.api.raw.RawDataownerApi
-import com.icure.sdk.model.CryptoActor
 import com.icure.sdk.model.CryptoActorStubWithType
 import com.icure.sdk.model.DataOwnerType
 import com.icure.sdk.model.DataOwnerWithType
 import com.icure.sdk.model.HealthcareParty
+import com.icure.sdk.model.base.CryptoActor
 import com.icure.sdk.model.extensions.publicKeysSpki
 import com.icure.sdk.model.extensions.toStub
+import com.icure.sdk.model.extensions.type
 import com.icure.sdk.utils.IllegalEntityException
 import com.icure.sdk.utils.SingleValueAsyncCache
 

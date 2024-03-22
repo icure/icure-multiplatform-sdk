@@ -7,9 +7,9 @@ import com.icure.kryptom.crypto.RsaAlgorithm.RsaEncryptionAlgorithm
 import com.icure.kryptom.crypto.RsaAlgorithm.RsaSignatureAlgorithm
 import com.icure.kryptom.crypto.RsaKey
 import com.icure.kryptom.crypto.RsaKeypair
-import com.icure.sdk.model.KeypairFingerprintV1String
-import com.icure.sdk.model.KeypairFingerprintV2String
-import com.icure.sdk.model.SpkiHexString
+import com.icure.sdk.model.specializations.KeypairFingerprintV1String
+import com.icure.sdk.model.specializations.KeypairFingerprintV2String
+import com.icure.sdk.model.specializations.SpkiHexString
 import com.icure.sdk.utils.InternalIcureApi
 
 /**

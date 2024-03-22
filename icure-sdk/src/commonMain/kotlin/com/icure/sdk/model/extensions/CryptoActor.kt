@@ -1,11 +1,12 @@
 package com.icure.sdk.model.extensions
 
 import com.icure.kryptom.crypto.RsaAlgorithm
-import com.icure.sdk.model.CryptoActor
 import com.icure.sdk.model.CryptoActorStub
 import com.icure.sdk.model.CryptoActorStubWithType
+import com.icure.sdk.model.DataOwnerType
 import com.icure.sdk.model.DataOwnerWithType
-import com.icure.sdk.model.SpkiHexString
+import com.icure.sdk.model.base.CryptoActor
+import com.icure.sdk.model.specializations.SpkiHexString
 
 /**
  * All public keys of the crypto actor to be used for OAEP with SHA1
@@ -44,6 +45,12 @@ fun CryptoActor.toStub() =
 		publicKeysForOaepWithSha256 = publicKeysForOaepWithSha256,
 		tags = tags
 	)
+
+val DataOwnerWithType.type: DataOwnerType get() = when(this) {
+	is DataOwnerWithType.DeviceDataOwner -> DataOwnerType.Device
+	is DataOwnerWithType.HcpDataOwner -> DataOwnerType.Hcp
+	is DataOwnerWithType.PatientDataOwner -> DataOwnerType.Patient
+}
 
 fun DataOwnerWithType.toStub(): CryptoActorStubWithType =
 	CryptoActorStubWithType(type = type, stub = dataOwner.toStub())

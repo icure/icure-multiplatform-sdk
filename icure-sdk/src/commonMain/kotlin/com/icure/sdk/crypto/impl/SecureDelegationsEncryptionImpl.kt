@@ -6,10 +6,10 @@ import com.icure.kryptom.utils.toHexString
 import com.icure.sdk.crypto.SecureDelegationsEncryption
 import com.icure.sdk.crypto.UserEncryptionKeysManager
 import com.icure.sdk.crypto.entities.VerifiedRsaEncryptionKeysSet
-import com.icure.sdk.model.Base64String
-import com.icure.sdk.model.HexString
-import com.icure.sdk.model.KeypairFingerprintV2String
-import com.icure.sdk.model.SecureDelegation
+import com.icure.sdk.model.specializations.Base64String
+import com.icure.sdk.model.specializations.HexString
+import com.icure.sdk.model.specializations.KeypairFingerprintV2String
+import com.icure.sdk.model.embed.SecureDelegation
 import com.icure.sdk.utils.IllegalEntityException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.base64Encode

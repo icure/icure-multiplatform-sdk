@@ -9,10 +9,10 @@ import com.icure.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
 import com.icure.sdk.crypto.entities.UnencryptedExchangeDataContent
 import com.icure.sdk.crypto.UserEncryptionKeysManager
 import com.icure.sdk.crypto.UserSignatureKeysManager
-import com.icure.sdk.model.Base64String
+import com.icure.sdk.model.specializations.Base64String
 import com.icure.sdk.model.EntityWithDelegationTypeName
 import com.icure.sdk.model.ExchangeData
-import com.icure.sdk.model.SecureDelegationKeyString
+import com.icure.sdk.model.specializations.SecureDelegationKeyString
 import com.icure.sdk.utils.SynchronisedLruCache
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.LruCacheWithAsyncRetrieve

@@ -4,7 +4,7 @@ import com.icure.sdk.api.raw.RawContactApi
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.EntityEncryptionService
 import com.icure.sdk.crypto.entities.SecretIdOption
-import com.icure.sdk.model.AccessLevel
+import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.Contact
 import com.icure.sdk.model.Patient
 import com.icure.sdk.utils.InternalIcureApi

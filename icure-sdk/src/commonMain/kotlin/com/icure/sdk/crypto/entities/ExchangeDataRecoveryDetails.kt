@@ -1,6 +1,6 @@
 package com.icure.sdk.crypto.entities
 
-import com.icure.sdk.model.Base64String
+import com.icure.sdk.model.specializations.Base64String
 import com.icure.sdk.utils.InternalIcureApi
 import kotlinx.serialization.Serializable
 

@@ -1,9 +1,9 @@
 package com.icure.sdk.crypto
 
 import com.icure.sdk.crypto.entities.DecryptedMetadataDetails
-import com.icure.sdk.model.AccessLevel
-import com.icure.sdk.model.Encryptable
-import com.icure.sdk.model.HexString
+import com.icure.sdk.model.embed.AccessLevel
+import com.icure.sdk.model.base.Encryptable
+import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.utils.InternalIcureApi
 import kotlinx.coroutines.flow.Flow
 

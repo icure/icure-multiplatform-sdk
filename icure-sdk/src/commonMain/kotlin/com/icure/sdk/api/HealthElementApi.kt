@@ -7,7 +7,7 @@ import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleDelegateShareOptions
 import com.icure.sdk.crypto.entities.SimpleShareResult
-import com.icure.sdk.model.AccessLevel
+import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.HealthElement
 import com.icure.sdk.model.Patient
 import com.icure.sdk.model.RequestedPermission

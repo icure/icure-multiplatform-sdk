@@ -4,7 +4,7 @@ import com.icure.kryptom.crypto.RsaAlgorithm
 import com.icure.kryptom.crypto.RsaKeypair
 import com.icure.sdk.crypto.entities.ExchangeDataRecoveryDetails
 import com.icure.sdk.crypto.entities.RecoveryResult
-import com.icure.sdk.model.SpkiHexString
+import com.icure.sdk.model.specializations.SpkiHexString
 import com.icure.sdk.utils.InternalIcureApi
 
 

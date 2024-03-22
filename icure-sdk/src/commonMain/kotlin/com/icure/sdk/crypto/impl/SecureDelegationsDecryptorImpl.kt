@@ -9,13 +9,13 @@ import com.icure.sdk.crypto.entities.SecureDelegationMembersDetails
 import com.icure.sdk.crypto.SecureDelegationsDecryptor
 import com.icure.sdk.crypto.SecureDelegationsEncryption
 import com.icure.sdk.crypto.entities.UnencryptedExchangeDataContent
-import com.icure.sdk.model.AccessLevel
-import com.icure.sdk.model.Base64String
-import com.icure.sdk.model.Encryptable
+import com.icure.sdk.model.embed.AccessLevel
+import com.icure.sdk.model.specializations.Base64String
+import com.icure.sdk.model.base.Encryptable
 import com.icure.sdk.model.ExchangeData
-import com.icure.sdk.model.HexString
-import com.icure.sdk.model.SecureDelegation
-import com.icure.sdk.model.SecureDelegationKeyString
+import com.icure.sdk.model.specializations.HexString
+import com.icure.sdk.model.embed.SecureDelegation
+import com.icure.sdk.model.specializations.SecureDelegationKeyString
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.ensure
 import kotlinx.coroutines.flow.Flow
@@ -300,7 +300,7 @@ class SecureDelegationsDecryptorImpl(
 		val mixedDelegationKeys = remainingDelegations.filter { (_, delegation) ->
 			(delegation.delegate == null) != (delegation.delegator == null) // Exactly one of the two is null
 		}.map { it.first }
-		val exchangeDataMaps = exchangeDataMap.getExchangeDataMapBatch(mixedDelegationKeys).associateBy { it.id }
+		val exchangeDataMaps = exchangeDataMap.getExchangeDataMapBatch(mixedDelegationKeys).associateBy { SecureDelegationKeyString(it.id) }
 		val updatedRemaining = mutableListOf<Pair<SecureDelegationKeyString, SecureDelegation>>()
 		remainingDelegations.forEach { secureDelegationInfo ->
 			exchangeDataMaps[secureDelegationInfo.first]?.let {

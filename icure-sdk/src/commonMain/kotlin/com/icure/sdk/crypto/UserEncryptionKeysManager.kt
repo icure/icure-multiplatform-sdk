@@ -7,8 +7,8 @@ import com.icure.sdk.crypto.entities.IcureKeyInfo
 import com.icure.sdk.crypto.entities.RsaDecryptionKeysSet
 import com.icure.sdk.crypto.entities.UserKeyPairInformation
 import com.icure.sdk.model.CryptoActorStub
-import com.icure.sdk.model.KeypairFingerprintV2String
-import com.icure.sdk.model.SpkiHexString
+import com.icure.sdk.model.specializations.KeypairFingerprintV2String
+import com.icure.sdk.model.specializations.SpkiHexString
 import com.icure.sdk.utils.InternalIcureApi
 
 /**

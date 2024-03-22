@@ -1,8 +1,8 @@
 package com.icure.sdk.crypto
 
 import com.icure.sdk.crypto.entities.SecureDelegationMembersDetails
-import com.icure.sdk.model.Encryptable
-import com.icure.sdk.model.SecureDelegationKeyString
+import com.icure.sdk.model.base.Encryptable
+import com.icure.sdk.model.specializations.SecureDelegationKeyString
 import com.icure.sdk.utils.InternalIcureApi
 
 @InternalIcureApi

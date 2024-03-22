@@ -1,8 +1,7 @@
 package com.icure.sdk.crypto.entities
 
-import com.icure.sdk.model.HexString
+import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.model.RequestedPermission
-import com.icure.sdk.utils.InternalIcureApi
 
 data class DelegateShareOptions(
 	val shareSecretIds: Set<String>,

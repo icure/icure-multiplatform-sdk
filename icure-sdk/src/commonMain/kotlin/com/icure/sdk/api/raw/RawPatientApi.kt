@@ -17,23 +17,14 @@ package com.icure.sdk.api.raw
 
 import com.icure.sdk.auth.services.AuthService
 import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
-import com.icure.sdk.model.AesExchangeKeyEncryptionKeypairIdentifier
+import com.icure.sdk.model.specializations.AesExchangeKeyEncryptionKeypairIdentifier
 import com.icure.sdk.model.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.EntityBulkShareResult
-import com.icure.sdk.model.EntityShareOrMetadataUpdateRequest
 import com.icure.sdk.model.EntityWithDelegationTypeName
-import com.icure.sdk.model.HexString
-import com.icure.sdk.model.MinimalEntityBulkShareResult
+import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.model.Patient
 import com.icure.sdk.utils.InternalIcureApi
-import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.ensureNonNull
-import io.ktor.client.call.body
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.decodeFromJsonElement
-import kotlinx.serialization.json.jsonArray
-import kotlinx.serialization.json.jsonObject
 import org.openapitools.client.infrastructure.RequestConfig
 import org.openapitools.client.infrastructure.RequestMethod
 

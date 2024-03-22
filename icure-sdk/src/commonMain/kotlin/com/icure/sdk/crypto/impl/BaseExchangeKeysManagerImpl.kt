@@ -16,10 +16,10 @@ import com.icure.sdk.crypto.entities.DecryptionResult
 import com.icure.sdk.crypto.entities.RsaDecryptionKeysSet
 import com.icure.sdk.model.CryptoActorStubWithType
 import com.icure.sdk.model.DataOwnerType
-import com.icure.sdk.model.HexString
-import com.icure.sdk.model.KeypairFingerprintV1String
-import com.icure.sdk.model.AesExchangeKeyEncryptionKeypairIdentifier
-import com.icure.sdk.model.SpkiHexString
+import com.icure.sdk.model.specializations.HexString
+import com.icure.sdk.model.specializations.KeypairFingerprintV1String
+import com.icure.sdk.model.specializations.AesExchangeKeyEncryptionKeypairIdentifier
+import com.icure.sdk.model.specializations.SpkiHexString
 import com.icure.sdk.model.extensions.toStub
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.getLogger

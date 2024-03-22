@@ -1,29 +1,11 @@
 package com.icure.sdk.api.raw
 
-import com.icure.kryptom.crypto.RsaAlgorithm
-import com.icure.kryptom.crypto.defaultCryptoService
-import com.icure.kryptom.utils.hexToByteArray
-import com.icure.sdk.api.IcureApi
-import com.icure.sdk.api.extended.AnonymousAuthApiImpl
-import com.icure.sdk.auth.UsernamePassword
-import com.icure.sdk.auth.services.JwtAuthService
-import com.icure.sdk.model.Base64String
-import com.icure.sdk.model.Contact
-import com.icure.sdk.model.ExchangeData
-import com.icure.sdk.model.Patient
-import com.icure.sdk.storage.IcureStorageFacade
-import com.icure.sdk.storage.impl.DefaultStorageEntryKeysFactory
-import com.icure.sdk.storage.impl.JsonAndBase64KeyStorage
-import com.icure.sdk.storage.impl.VolatileStorageFacade
 import com.icure.sdk.utils.InternalIcureApi
 import io.kotest.core.spec.style.StringSpec
-import io.kotest.matchers.nulls.shouldNotBeNull
-import io.ktor.util.Identity.encode
 import kotlinx.serialization.EncodeDefault
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.encodeToJsonElement
 
 //const val baseUrl = "http://127.0.0.1:16044"
 //const val username = "user-6cbd09c8-ee1b-4ffc-a500-824729e99afa"

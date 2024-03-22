@@ -6,7 +6,7 @@ import com.icure.kryptom.utils.base64Decode
 import com.icure.kryptom.utils.base64Encode
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.JsonEncryptionService
-import com.icure.sdk.model.Encryptable
+import com.icure.sdk.model.base.Encryptable
 import com.icure.sdk.utils.IllegalEntityException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.InternalIcureException

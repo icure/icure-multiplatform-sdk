@@ -5,9 +5,8 @@ import com.icure.kryptom.crypto.RsaAlgorithm.RsaEncryptionAlgorithm
 import com.icure.kryptom.crypto.RsaKeypair
 import com.icure.sdk.model.CryptoActorStubWithType
 import com.icure.sdk.model.DataOwnerWithType
-import com.icure.sdk.model.HexString
-import com.icure.sdk.model.KeypairFingerprintV1String
-import com.icure.sdk.model.SpkiHexString
+import com.icure.sdk.model.specializations.KeypairFingerprintV1String
+import com.icure.sdk.model.specializations.SpkiHexString
 
 /**
  * Allows to customise the behaviour of the crypto api to better suit your needs.

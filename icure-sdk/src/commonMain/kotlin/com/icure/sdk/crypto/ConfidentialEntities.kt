@@ -1,9 +1,9 @@
 package com.icure.sdk.crypto
 
 import com.icure.sdk.model.BulkShareOrUpdateMetadataParams
-import com.icure.sdk.model.Encryptable
 import com.icure.sdk.model.EntityBulkShareResult
 import com.icure.sdk.model.EntityWithDelegationTypeName
+import com.icure.sdk.model.base.Encryptable
 import com.icure.sdk.utils.InternalIcureApi
 
 /**

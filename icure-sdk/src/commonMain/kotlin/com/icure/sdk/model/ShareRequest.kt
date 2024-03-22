@@ -1,5 +1,10 @@
 package com.icure.sdk.model
 
+import com.icure.sdk.model.base.Encryptable
+import com.icure.sdk.model.specializations.AccessControlKeyHexString
+import com.icure.sdk.model.specializations.Base64String
+import com.icure.sdk.model.specializations.KeypairFingerprintV2String
+import com.icure.sdk.model.specializations.SecureDelegationKeyString
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.ensure
 import kotlinx.serialization.SerialName

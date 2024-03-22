@@ -6,7 +6,7 @@ import com.icure.sdk.crypto.KeyPairRecoverer
 import com.icure.sdk.model.CryptoActorStubWithType
 import com.icure.sdk.model.DataOwnerType
 import com.icure.sdk.model.DataOwnerWithType
-import com.icure.sdk.model.SpkiHexString
+import com.icure.sdk.model.specializations.SpkiHexString
 
 object BasicCryptoStrategies : CryptoStrategies {
 	override suspend fun recoverAndVerifySelfHierarchyKeys(

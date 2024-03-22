@@ -1,6 +1,6 @@
 package com.icure.sdk.storage.impl
 
-import com.icure.sdk.model.KeypairFingerprintV1String
+import com.icure.sdk.model.specializations.KeypairFingerprintV1String
 import com.icure.sdk.storage.StorageEntryKeysFactory
 
 /**

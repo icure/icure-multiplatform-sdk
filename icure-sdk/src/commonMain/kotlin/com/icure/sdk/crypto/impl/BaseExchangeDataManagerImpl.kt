@@ -16,10 +16,10 @@ import com.icure.sdk.crypto.entities.RsaSignatureKeysSet
 import com.icure.sdk.crypto.RsaVerificationKeyProvider
 import com.icure.sdk.crypto.entities.UnencryptedExchangeDataContent
 import com.icure.sdk.crypto.entities.VerifiedRsaEncryptionKeysSet
-import com.icure.sdk.model.AccessControlSecret
-import com.icure.sdk.model.Base64String
+import com.icure.sdk.model.specializations.AccessControlSecret
+import com.icure.sdk.model.specializations.Base64String
 import com.icure.sdk.model.ExchangeData
-import com.icure.sdk.model.KeypairFingerprintV2String
+import com.icure.sdk.model.specializations.KeypairFingerprintV2String
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.base64Encode
 import com.icure.sdk.utils.decode
@@ -369,6 +369,6 @@ class BaseExchangeDataManagerImpl(
 	private fun generateAccessControlSecret(): Pair<AccessControlSecret, ByteArray> =
 		cryptoService.strongRandom.randomBytes(16).let { AccessControlSecret(it.toHexString()) to it }
 
-	private fun importAccessControlSecret(decryptedBytes: ByteArray): AccessControlSecret  =
+	private fun importAccessControlSecret(decryptedBytes: ByteArray): AccessControlSecret =
 		AccessControlSecret(decryptedBytes.toHexString())
 }

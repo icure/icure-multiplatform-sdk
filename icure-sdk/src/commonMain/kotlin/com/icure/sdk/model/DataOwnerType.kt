@@ -3,21 +3,16 @@ package com.icure.sdk.model
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/**
- * Represents the type of a data owner
- */
-@Serializable
-enum class DataOwnerType {
-	@SerialName(SerialNames.PATIENT)
-	Patient,
-	@SerialName(SerialNames.HCP)
-	Hcp,
-	@SerialName(SerialNames.DEVICE)
-	Device;
+// WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
+// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 
-	object SerialNames {
-		const val PATIENT = "patient"
-		const val HCP = "hcp"
-		const val DEVICE = "device"
-	}
+@Serializable
+enum class DataOwnerType() {
+  @SerialName("hcp")
+  Hcp,
+  @SerialName("device")
+  Device,
+  @SerialName("patient")
+  Patient,
+
 }

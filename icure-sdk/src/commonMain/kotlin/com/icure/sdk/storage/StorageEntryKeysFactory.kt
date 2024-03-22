@@ -1,6 +1,6 @@
 package com.icure.sdk.storage
 
-import com.icure.sdk.model.KeypairFingerprintV1String
+import com.icure.sdk.model.specializations.KeypairFingerprintV1String
 
 /**
  * Specifies the entry keys to use for storage of data needed by iCure.

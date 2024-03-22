@@ -5,9 +5,9 @@ import com.icure.sdk.crypto.entities.DataOwnerExchangeKeys
 import com.icure.sdk.crypto.entities.DecryptionResult
 import com.icure.sdk.crypto.entities.RsaDecryptionKeysSet
 import com.icure.sdk.model.DataOwnerType
-import com.icure.sdk.model.HexString
-import com.icure.sdk.model.KeypairFingerprintV1String
-import com.icure.sdk.model.SpkiHexString
+import com.icure.sdk.model.specializations.HexString
+import com.icure.sdk.model.specializations.KeypairFingerprintV1String
+import com.icure.sdk.model.specializations.SpkiHexString
 import com.icure.sdk.utils.InternalIcureApi
 
 @InternalIcureApi

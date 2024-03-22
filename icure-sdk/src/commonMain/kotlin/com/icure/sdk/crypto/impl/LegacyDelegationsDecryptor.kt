@@ -5,10 +5,10 @@ import com.icure.kryptom.utils.hexToByteArray
 import com.icure.sdk.crypto.ExchangeKeysManager
 import com.icure.sdk.crypto.SecurityMetadataDecryptor
 import com.icure.sdk.crypto.entities.DecryptedMetadataDetails
-import com.icure.sdk.model.AccessLevel
-import com.icure.sdk.model.Delegation
-import com.icure.sdk.model.Encryptable
-import com.icure.sdk.model.HexString
+import com.icure.sdk.model.embed.AccessLevel
+import com.icure.sdk.model.embed.Delegation
+import com.icure.sdk.model.base.Encryptable
+import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.ensure
 import com.icure.sdk.utils.getLogger

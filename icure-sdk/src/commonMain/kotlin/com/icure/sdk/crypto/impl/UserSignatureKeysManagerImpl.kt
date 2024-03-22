@@ -8,9 +8,8 @@ import com.icure.kryptom.crypto.RsaService
 import com.icure.sdk.api.extended.DataOwnerApi
 import com.icure.sdk.crypto.entities.IcureKeyInfo
 import com.icure.sdk.crypto.UserSignatureKeysManager
-import com.icure.sdk.crypto.impl.exportSpkiHex
-import com.icure.sdk.model.KeypairFingerprintV1String
-import com.icure.sdk.model.KeypairFingerprintV2String
+import com.icure.sdk.model.specializations.KeypairFingerprintV1String
+import com.icure.sdk.model.specializations.KeypairFingerprintV2String
 import com.icure.sdk.storage.IcureStorageFacade
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.LruCacheWithAsyncRetrieve

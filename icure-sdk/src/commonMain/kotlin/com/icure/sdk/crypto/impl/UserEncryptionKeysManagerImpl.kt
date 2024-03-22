@@ -17,8 +17,8 @@ import com.icure.sdk.crypto.entities.UserKeyPairInformation
 import com.icure.sdk.crypto.entities.toPrivateKeyInfo
 import com.icure.sdk.model.CryptoActorStub
 import com.icure.sdk.model.DataOwnerWithType
-import com.icure.sdk.model.KeypairFingerprintV2String
-import com.icure.sdk.model.SpkiHexString
+import com.icure.sdk.model.specializations.KeypairFingerprintV2String
+import com.icure.sdk.model.specializations.SpkiHexString
 import com.icure.sdk.model.extensions.publicKeysWithSha1Spki
 import com.icure.sdk.model.extensions.publicKeysWithSha256Spki
 import com.icure.sdk.model.extensions.toStub

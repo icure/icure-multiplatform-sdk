@@ -9,7 +9,7 @@ import com.icure.sdk.crypto.entities.RawDecryptedExchangeData
 import com.icure.sdk.crypto.entities.RsaDecryptionKeysSet
 import com.icure.sdk.crypto.entities.RsaSignatureKeysSet
 import com.icure.sdk.crypto.entities.VerifiedRsaEncryptionKeysSet
-import com.icure.sdk.model.AccessControlSecret
+import com.icure.sdk.model.specializations.AccessControlSecret
 import com.icure.sdk.model.ExchangeData
 import com.icure.sdk.utils.InternalIcureApi
 

@@ -2,7 +2,7 @@ package com.icure.sdk.crypto
 
 import com.icure.sdk.model.ExchangeDataMap
 import com.icure.sdk.model.ExchangeDataMapCreationBatch
-import com.icure.sdk.model.SecureDelegationKeyString
+import com.icure.sdk.model.specializations.SecureDelegationKeyString
 import com.icure.sdk.utils.InternalIcureApi
 
 @InternalIcureApi

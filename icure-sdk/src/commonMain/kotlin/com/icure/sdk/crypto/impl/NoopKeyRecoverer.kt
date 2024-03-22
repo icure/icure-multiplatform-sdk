@@ -4,7 +4,7 @@ import com.icure.kryptom.crypto.RsaAlgorithm
 import com.icure.kryptom.crypto.RsaKeypair
 import com.icure.sdk.crypto.KeyPairRecoverer
 import com.icure.sdk.crypto.entities.RecoveryResult
-import com.icure.sdk.model.SpkiHexString
+import com.icure.sdk.model.specializations.SpkiHexString
 
 /**
  * TODO Temporary implementation of the key recovery interface. Always fails.

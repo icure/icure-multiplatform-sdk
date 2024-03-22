@@ -16,7 +16,7 @@ import com.icure.sdk.auth.services.JwtAuthService
 import com.icure.sdk.crypto.impl.NoAccessControlKeysHeadersProvider
 import com.icure.sdk.model.HealthcareParty
 import com.icure.sdk.model.Patient
-import com.icure.sdk.model.SpkiHexString
+import com.icure.sdk.model.specializations.SpkiHexString
 import com.icure.sdk.model.User
 import com.icure.sdk.storage.IcureStorageFacade
 import com.icure.sdk.storage.impl.DefaultStorageEntryKeysFactory

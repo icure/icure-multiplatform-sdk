@@ -17,9 +17,9 @@ import com.icure.sdk.crypto.UserSignatureKeysManager
 import com.icure.sdk.crypto.entities.VerifiedRsaEncryptionKeysSet
 import com.icure.sdk.crypto.entities.toPrivateKeyInfo
 import com.icure.sdk.crypto.entities.toPublicKeyInfo
-import com.icure.sdk.model.AccessControlSecret
+import com.icure.sdk.model.specializations.AccessControlSecret
 import com.icure.sdk.model.ExchangeData
-import com.icure.sdk.model.SpkiHexString
+import com.icure.sdk.model.specializations.SpkiHexString
 import com.icure.sdk.model.extensions.algorithmOfEncryptionKey
 import com.icure.sdk.utils.InternalIcureApi
 

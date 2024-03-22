@@ -2,7 +2,7 @@ package com.icure.sdk.crypto
 
 import com.icure.sdk.api.IcureApi
 import com.icure.sdk.crypto.entities.SecretIdOption
-import com.icure.sdk.model.AccessLevel
+import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.HealthElement
 import com.icure.sdk.model.Patient
 import com.icure.sdk.test.createHcpUser

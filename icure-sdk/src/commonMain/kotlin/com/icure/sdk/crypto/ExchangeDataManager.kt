@@ -2,10 +2,10 @@ package com.icure.sdk.crypto
 
 import com.icure.sdk.crypto.entities.ExchangeDataWithPotentiallyDecryptedContent
 import com.icure.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
-import com.icure.sdk.model.Base64String
+import com.icure.sdk.model.specializations.Base64String
 import com.icure.sdk.model.EntityWithDelegationTypeName
-import com.icure.sdk.model.SecureDelegationKeyString
-import com.icure.sdk.model.SpkiHexString
+import com.icure.sdk.model.specializations.SecureDelegationKeyString
+import com.icure.sdk.model.specializations.SpkiHexString
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.ResourceNotFoundException
 

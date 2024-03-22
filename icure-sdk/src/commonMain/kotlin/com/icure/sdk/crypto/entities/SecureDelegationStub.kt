@@ -1,10 +1,10 @@
 package com.icure.sdk.crypto.entities
 
-import com.icure.sdk.model.AccessLevel
+import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.EntityWithDelegationTypeName
-import com.icure.sdk.model.HexString
-import com.icure.sdk.model.Sha256HexString
-import com.icure.sdk.model.SecureDelegation
+import com.icure.sdk.model.specializations.HexString
+import com.icure.sdk.model.specializations.Sha256HexString
+import com.icure.sdk.model.embed.SecureDelegation
 
 /**
  * A stub to support the creation of a secure delegation.

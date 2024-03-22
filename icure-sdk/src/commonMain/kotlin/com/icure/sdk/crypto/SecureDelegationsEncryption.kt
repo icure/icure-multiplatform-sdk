@@ -2,10 +2,10 @@ package com.icure.sdk.crypto
 
 import com.icure.kryptom.crypto.AesKey
 import com.icure.sdk.crypto.entities.VerifiedRsaEncryptionKeysSet
-import com.icure.sdk.model.Base64String
-import com.icure.sdk.model.HexString
-import com.icure.sdk.model.KeypairFingerprintV2String
-import com.icure.sdk.model.SecureDelegation
+import com.icure.sdk.model.specializations.Base64String
+import com.icure.sdk.model.specializations.HexString
+import com.icure.sdk.model.specializations.KeypairFingerprintV2String
+import com.icure.sdk.model.embed.SecureDelegation
 import com.icure.sdk.utils.InternalIcureApi
 @InternalIcureApi
 interface SecureDelegationsEncryption {

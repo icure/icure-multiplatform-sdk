@@ -1,6 +1,6 @@
 package com.icure.sdk.crypto.entities
 
-import com.icure.sdk.model.Encryptable
+import com.icure.sdk.model.base.Encryptable
 import com.icure.sdk.utils.InternalIcureApi
 
 interface SimpleShareResult<out T : Encryptable> {
