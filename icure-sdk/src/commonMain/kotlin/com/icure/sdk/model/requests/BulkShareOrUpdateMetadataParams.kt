@@ -1,5 +1,6 @@
 package com.icure.sdk.model.requests
 
+import com.icure.sdk.model.specializations.SecureDelegationKeyString
 import kotlin.String
 import kotlin.collections.Map
 import kotlin.collections.Set
@@ -15,8 +16,8 @@ data class BulkShareOrUpdateMetadataParams(
   @Serializable
   public data class EntityRequestInformation(
     public val requests: Map<String, EntityShareOrMetadataUpdateRequest> = emptyMap(),
-    public val potentialParentDelegations: Set<String> = emptySet(),
+    public val potentialParentDelegations: Set<SecureDelegationKeyString> = emptySet(),
   )
-	// region BulkShareOrUpdateMetadataParams-BulkShareOrUpdateMetadataParams
-	// endregion
+  // region BulkShareOrUpdateMetadataParams-BulkShareOrUpdateMetadataParams
+  // endregion
 }

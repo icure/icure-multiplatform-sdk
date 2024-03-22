@@ -2,11 +2,14 @@ package com.icure.sdk.api.raw
 
 import com.icure.sdk.auth.services.AuthService
 import com.icure.sdk.auth.services.setAuthorizationWith
-import com.icure.sdk.model.ExchangeData
+import com.icure.sdk.model.Agenda
+import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
+import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.specializations.JsonString
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.request.`get`
+import io.ktor.client.request.delete
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.put
@@ -24,7 +27,7 @@ import kotlin.time.Duration
 // WARNING: This class is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 @InternalIcureApi
-class RawExchangeDataApi(
+class RawAgendaApi(
 	private val apiUrl: String,
 	private val authService: AuthService,
 	additionalHeaders: Map<String, String> = emptyMap(),
@@ -33,49 +36,11 @@ class RawExchangeDataApi(
 
 	// region common endpoints
 
-	suspend fun createExchangeData(exchangeData: ExchangeData): HttpResponse<ExchangeData> =
-			httpClient.post {
+	suspend fun getAgendas(startDocumentId: String? = null, limit: Int? = null):
+			HttpResponse<PaginatedList<Agenda, JsonString>> = httpClient.get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","exchangedata")
-			}
-			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			setBody(exchangeData)
-		}.wrap()
-
-
-	suspend fun modifyExchangeData(exchangeData: ExchangeData): HttpResponse<ExchangeData> =
-			httpClient.put {
-			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","exchangedata")
-			}
-			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			setBody(exchangeData)
-		}.wrap()
-
-
-	suspend fun getExchangeDataById(exchangeDataId: String): HttpResponse<ExchangeData> =
-			httpClient.get {
-			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","exchangedata",exchangeDataId)
-				parameter("ts", GMTDate().timestamp)
-			}
-			setAuthorizationWith(authService)
-		}.wrap()
-
-
-	suspend fun getExchangeDataByParticipant(
-		dataOwnerId: String,
-		startDocumentId: String? = null,
-		limit: Int? = null,
-	): HttpResponse<PaginatedList<ExchangeData, JsonString>> = httpClient.get {
-			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","exchangedata","byParticipant",dataOwnerId)
+				appendPathSegments("rest","v2","agenda")
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
 				parameter("ts", GMTDate().timestamp)
@@ -84,26 +49,80 @@ class RawExchangeDataApi(
 		}.wrap()
 
 
-	suspend fun getExchangeDataByDelegatorDelegate(delegatorId: String, delegateId: String):
-			HttpResponse<List<ExchangeData>> = httpClient.get {
+	suspend fun createAgenda(agendaDto: Agenda): HttpResponse<Agenda> = httpClient.post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","exchangedata","byDelegatorDelegate",delegatorId,delegateId)
+				appendPathSegments("rest","v2","agenda")
+			}
+			setAuthorizationWith(authService)
+			contentType(ContentType.Application.Json)
+			setBody(agendaDto)
+		}.wrap()
+
+
+	suspend fun deleteAgendas(agendaIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
+			httpClient.post {
+			url {
+				host = apiUrl
+				appendPathSegments("rest","v2","agenda","delete","batch")
+			}
+			setAuthorizationWith(authService)
+			contentType(ContentType.Application.Json)
+			setBody(agendaIds)
+		}.wrap()
+
+
+	suspend fun deleteAgenda(agendaId: String): HttpResponse<DocIdentifier> =
+			httpClient.delete {
+			url {
+				host = apiUrl
+				appendPathSegments("rest","v2","agenda",agendaId)
+			}
+			setAuthorizationWith(authService)
+		}.wrap()
+
+
+	suspend fun getAgenda(agendaId: String): HttpResponse<Agenda> = httpClient.get {
+			url {
+				host = apiUrl
+				appendPathSegments("rest","v2","agenda",agendaId)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
 
-	suspend fun getParticipantCounterparts(dataOwnerId: String, counterpartsTypes: String):
-			HttpResponse<List<String>> = httpClient.get {
+	suspend fun getAgendasForUser(userId: String): HttpResponse<Agenda> = httpClient.get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","exchangedata","byParticipant",dataOwnerId,"counterparts")
-				parameter("counterpartsTypes", counterpartsTypes)
+				appendPathSegments("rest","v2","agenda","byUser")
+				parameter("userId", userId)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+		}.wrap()
+
+
+	suspend fun getReadableAgendasForUser(userId: String): HttpResponse<List<Agenda>> =
+			httpClient.get {
+			url {
+				host = apiUrl
+				appendPathSegments("rest","v2","agenda","readableForUser")
+				parameter("userId", userId)
+				parameter("ts", GMTDate().timestamp)
+			}
+			setAuthorizationWith(authService)
+		}.wrap()
+
+
+	suspend fun modifyAgenda(agendaDto: Agenda): HttpResponse<Agenda> = httpClient.put {
+			url {
+				host = apiUrl
+				appendPathSegments("rest","v2","agenda")
+			}
+			setAuthorizationWith(authService)
+			contentType(ContentType.Application.Json)
+			setBody(agendaDto)
 		}.wrap()
 
 	// endregion

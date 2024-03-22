@@ -2,8 +2,10 @@ package com.icure.sdk.api.raw
 
 import com.icure.sdk.auth.services.AuthService
 import com.icure.sdk.auth.services.setAuthorizationWith
-import com.icure.sdk.model.ExchangeData
+import com.icure.sdk.model.ListOfIds
+import com.icure.sdk.model.MedicalLocation
 import com.icure.sdk.model.PaginatedList
+import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.specializations.JsonString
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.request.`get`
@@ -24,7 +26,7 @@ import kotlin.time.Duration
 // WARNING: This class is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 @InternalIcureApi
-class RawExchangeDataApi(
+class RawMedicalLocationApi(
 	private val apiUrl: String,
 	private val authService: AuthService,
 	additionalHeaders: Map<String, String> = emptyMap(),
@@ -33,49 +35,46 @@ class RawExchangeDataApi(
 
 	// region common endpoints
 
-	suspend fun createExchangeData(exchangeData: ExchangeData): HttpResponse<ExchangeData> =
-			httpClient.post {
+	suspend fun createMedicalLocation(medicalLocationDto: MedicalLocation):
+			HttpResponse<MedicalLocation> = httpClient.post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","exchangedata")
+				appendPathSegments("rest","v2","medicallocation")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
-			setBody(exchangeData)
+			setBody(medicalLocationDto)
 		}.wrap()
 
 
-	suspend fun modifyExchangeData(exchangeData: ExchangeData): HttpResponse<ExchangeData> =
-			httpClient.put {
+	suspend fun deleteMedicalLocations(locationIds: ListOfIds):
+			HttpResponse<List<DocIdentifier>> = httpClient.post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","exchangedata")
+				appendPathSegments("rest","v2","medicallocation","delete","batch")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
-			setBody(exchangeData)
+			setBody(locationIds)
 		}.wrap()
 
 
-	suspend fun getExchangeDataById(exchangeDataId: String): HttpResponse<ExchangeData> =
+	suspend fun getMedicalLocation(locationId: String): HttpResponse<MedicalLocation> =
 			httpClient.get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","exchangedata",exchangeDataId)
+				appendPathSegments("rest","v2","medicallocation",locationId)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
 
-	suspend fun getExchangeDataByParticipant(
-		dataOwnerId: String,
-		startDocumentId: String? = null,
-		limit: Int? = null,
-	): HttpResponse<PaginatedList<ExchangeData, JsonString>> = httpClient.get {
+	suspend fun getMedicalLocations(startDocumentId: String? = null, limit: Int? = null):
+			HttpResponse<PaginatedList<MedicalLocation, JsonString>> = httpClient.get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","exchangedata","byParticipant",dataOwnerId)
+				appendPathSegments("rest","v2","medicallocation")
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
 				parameter("ts", GMTDate().timestamp)
@@ -84,26 +83,15 @@ class RawExchangeDataApi(
 		}.wrap()
 
 
-	suspend fun getExchangeDataByDelegatorDelegate(delegatorId: String, delegateId: String):
-			HttpResponse<List<ExchangeData>> = httpClient.get {
+	suspend fun modifyMedicalLocation(medicalLocationDto: MedicalLocation):
+			HttpResponse<MedicalLocation> = httpClient.put {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","exchangedata","byDelegatorDelegate",delegatorId,delegateId)
-				parameter("ts", GMTDate().timestamp)
+				appendPathSegments("rest","v2","medicallocation")
 			}
 			setAuthorizationWith(authService)
-		}.wrap()
-
-
-	suspend fun getParticipantCounterparts(dataOwnerId: String, counterpartsTypes: String):
-			HttpResponse<List<String>> = httpClient.get {
-			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","exchangedata","byParticipant",dataOwnerId,"counterparts")
-				parameter("counterpartsTypes", counterpartsTypes)
-				parameter("ts", GMTDate().timestamp)
-			}
-			setAuthorizationWith(authService)
+			contentType(ContentType.Application.Json)
+			setBody(medicalLocationDto)
 		}.wrap()
 
 	// endregion

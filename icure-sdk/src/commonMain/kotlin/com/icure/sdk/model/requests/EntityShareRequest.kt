@@ -3,6 +3,7 @@ package com.icure.sdk.model.requests
 import com.icure.sdk.model.specializations.AccessControlKeyHexString
 import com.icure.sdk.model.specializations.Base64String
 import com.icure.sdk.model.specializations.KeypairFingerprintV2String
+import com.icure.sdk.utils.InternalIcureApi
 import kotlin.String
 import kotlin.collections.Map
 import kotlin.collections.Set
@@ -24,5 +25,7 @@ data class EntityShareRequest(
   public val requestedPermissions: RequestedPermission,
 ) {
   // region EntityShareRequest-EntityShareRequest
+  @InternalIcureApi
+  fun wrap() = EntityShareOrMetadataUpdateRequest(share = this)
   // endregion
 }

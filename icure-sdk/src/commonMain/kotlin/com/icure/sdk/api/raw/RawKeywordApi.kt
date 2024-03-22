@@ -2,8 +2,10 @@ package com.icure.sdk.api.raw
 
 import com.icure.sdk.auth.services.AuthService
 import com.icure.sdk.auth.services.setAuthorizationWith
-import com.icure.sdk.model.ExchangeData
+import com.icure.sdk.model.Keyword
+import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
+import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.specializations.JsonString
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.request.`get`
@@ -24,7 +26,7 @@ import kotlin.time.Duration
 // WARNING: This class is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 @InternalIcureApi
-class RawExchangeDataApi(
+class RawKeywordApi(
 	private val apiUrl: String,
 	private val authService: AuthService,
 	additionalHeaders: Map<String, String> = emptyMap(),
@@ -33,49 +35,43 @@ class RawExchangeDataApi(
 
 	// region common endpoints
 
-	suspend fun createExchangeData(exchangeData: ExchangeData): HttpResponse<ExchangeData> =
-			httpClient.post {
+	suspend fun createKeyword(c: Keyword): HttpResponse<Keyword> = httpClient.post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","exchangedata")
+				appendPathSegments("rest","v2","keyword")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
-			setBody(exchangeData)
+			setBody(c)
 		}.wrap()
 
 
-	suspend fun modifyExchangeData(exchangeData: ExchangeData): HttpResponse<ExchangeData> =
-			httpClient.put {
+	suspend fun getKeyword(keywordId: String): HttpResponse<Keyword> = httpClient.get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","exchangedata")
-			}
-			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			setBody(exchangeData)
-		}.wrap()
-
-
-	suspend fun getExchangeDataById(exchangeDataId: String): HttpResponse<ExchangeData> =
-			httpClient.get {
-			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","exchangedata",exchangeDataId)
+				appendPathSegments("rest","v2","keyword",keywordId)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
 
-	suspend fun getExchangeDataByParticipant(
-		dataOwnerId: String,
-		startDocumentId: String? = null,
-		limit: Int? = null,
-	): HttpResponse<PaginatedList<ExchangeData, JsonString>> = httpClient.get {
+	suspend fun getKeywordsByUser(userId: String): HttpResponse<List<Keyword>> =
+			httpClient.get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","exchangedata","byParticipant",dataOwnerId)
+				appendPathSegments("rest","v2","keyword","byUser",userId)
+				parameter("ts", GMTDate().timestamp)
+			}
+			setAuthorizationWith(authService)
+		}.wrap()
+
+
+	suspend fun getKeywords(startDocumentId: String? = null, limit: Int? = null):
+			HttpResponse<PaginatedList<Keyword, JsonString>> = httpClient.get {
+			url {
+				host = apiUrl
+				appendPathSegments("rest","v2","keyword")
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
 				parameter("ts", GMTDate().timestamp)
@@ -84,26 +80,26 @@ class RawExchangeDataApi(
 		}.wrap()
 
 
-	suspend fun getExchangeDataByDelegatorDelegate(delegatorId: String, delegateId: String):
-			HttpResponse<List<ExchangeData>> = httpClient.get {
+	suspend fun deleteKeywords(keywordIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
+			httpClient.post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","exchangedata","byDelegatorDelegate",delegatorId,delegateId)
-				parameter("ts", GMTDate().timestamp)
+				appendPathSegments("rest","v2","keyword","delete","batch")
 			}
 			setAuthorizationWith(authService)
+			contentType(ContentType.Application.Json)
+			setBody(keywordIds)
 		}.wrap()
 
 
-	suspend fun getParticipantCounterparts(dataOwnerId: String, counterpartsTypes: String):
-			HttpResponse<List<String>> = httpClient.get {
+	suspend fun modifyKeyword(keywordDto: Keyword): HttpResponse<Keyword> = httpClient.put {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","exchangedata","byParticipant",dataOwnerId,"counterparts")
-				parameter("counterpartsTypes", counterpartsTypes)
-				parameter("ts", GMTDate().timestamp)
+				appendPathSegments("rest","v2","keyword")
 			}
 			setAuthorizationWith(authService)
+			contentType(ContentType.Application.Json)
+			setBody(keywordDto)
 		}.wrap()
 
 	// endregion

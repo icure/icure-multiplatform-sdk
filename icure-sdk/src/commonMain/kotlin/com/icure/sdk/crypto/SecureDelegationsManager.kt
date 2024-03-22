@@ -1,10 +1,10 @@
 package com.icure.sdk.crypto
 
 import com.icure.sdk.model.embed.AccessLevel
-import com.icure.sdk.model.EntityShareOrMetadataUpdateRequest
 import com.icure.sdk.model.specializations.HexString
-import com.icure.sdk.model.RequestedPermission
 import com.icure.sdk.model.base.Encryptable
+import com.icure.sdk.model.requests.EntityShareOrMetadataUpdateRequest
+import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.utils.InternalIcureApi
 
 @InternalIcureApi

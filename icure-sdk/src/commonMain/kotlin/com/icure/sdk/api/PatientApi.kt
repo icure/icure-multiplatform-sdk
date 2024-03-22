@@ -9,7 +9,7 @@ import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.model.Patient
-import com.icure.sdk.model.RequestedPermission
+import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.ensureNonNull

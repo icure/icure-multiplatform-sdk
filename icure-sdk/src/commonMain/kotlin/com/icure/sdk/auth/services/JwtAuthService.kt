@@ -1,12 +1,16 @@
 package com.icure.sdk.auth.services
 
 import com.icure.kryptom.utils.base64Decode
-import com.icure.sdk.api.extended.AnonymousAuthApi
+import com.icure.sdk.api.raw.RawAnonymousAuthApi
 import com.icure.sdk.auth.AuthenticationClass
 import com.icure.sdk.auth.Credentials
 import com.icure.sdk.auth.Jwt
+import com.icure.sdk.auth.ThirdPartyProvider
 import com.icure.sdk.auth.ThirdPartyTokens
 import com.icure.sdk.auth.UsernamePassword
+import com.icure.sdk.model.LoginCredentials
+import com.icure.sdk.model.security.jwt.JwtResponse
+import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import io.ktor.client.request.*
 import io.ktor.util.date.GMTDate
@@ -26,8 +30,9 @@ import kotlin.time.Duration.Companion.seconds
  * @param refreshPadding a [Duration]. Both the authentication and refresh will be refreshed before their actual expiration
  * according to the duration specified in the parameter, to avoid the mid-flight expiration of the token.
  */
+@InternalIcureApi
 class JwtAuthService(
-	private val authApi: AnonymousAuthApi,
+	private val authApi: RawAnonymousAuthApi,
 	private val credentials: Credentials,
 	private val refreshPadding: Duration = 30L.seconds
 ) : TokenBasedAuthService<Jwt> {
@@ -45,10 +50,12 @@ class JwtAuthService(
 	 * Note: if the [credentials] are of type [Jwt], then a new Jwt cannot be generated when the refresh token expires.
 	 */
 	private suspend fun generateJwt(): Jwt = when(credentials) {
-		is UsernamePassword -> authApi.login(credentials.username, credentials.password)
+		is UsernamePassword -> authApi.login(
+			loginCredentials = LoginCredentials(credentials.username, credentials.password)
+		).successBody().toJwt()
 		is ThirdPartyTokens -> credentials.tokens.map { (thirdParty, token) ->
 				runCatching {
-					authApi.loginWithThirdPartyToken(thirdParty, token)
+					loginWithThirdParty(thirdParty, token)
 				}
 			}.let { results ->
 				results.firstNotNullOfOrNull { it.getOrNull() }
@@ -57,6 +64,10 @@ class JwtAuthService(
 			}
 		is Jwt -> if(!isJwtExpiredOrInvalid(credentials.refreshJwt)) credentials
 			else throw IllegalArgumentException("Cannot refresh auth, refresh JWT expired.")
+	}
+
+	private suspend fun loginWithThirdParty(thirdPartyProvider: ThirdPartyProvider, token: String) = when(thirdPartyProvider) {
+		ThirdPartyProvider.GOOGLE -> authApi.loginGoogle(token).successBody().toJwt()
 	}
 
 	override suspend fun setAuthorizationInRequest(
@@ -91,7 +102,7 @@ class JwtAuthService(
 		jwt = if(!::jwt.isInitialized || isJwtExpiredOrInvalid(jwt.refreshJwt)) {
 			generateJwt()
 		} else {
-			authApi.refresh(jwt.refreshJwt)
+			authApi.refresh(jwt.refreshJwt).successBody().toJwt()
 		}
 	}
 
@@ -105,4 +116,6 @@ class JwtAuthService(
 			(payload.exp * 1000) < (GMTDate().timestamp - refreshPadding.inWholeMilliseconds)
 		}.getOrDefault(false)
 	}
+
+	private fun JwtResponse.toJwt() = Jwt(requireNotNull(token), requireNotNull(refreshToken))
 }

@@ -3,10 +3,10 @@ package com.icure.sdk.api
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.kryptom.utils.toHexString
-import com.icure.sdk.api.extended.AnonymousAuthApiImpl
 import com.icure.sdk.api.extended.DataOwnerApi
+import com.icure.sdk.api.raw.RawAnonymousAuthApi
 import com.icure.sdk.api.raw.RawContactApi
-import com.icure.sdk.api.raw.RawDataownerApi
+import com.icure.sdk.api.raw.RawDataOwnerApi
 import com.icure.sdk.api.raw.RawDeviceApi
 import com.icure.sdk.api.raw.RawExchangeDataApi
 import com.icure.sdk.api.raw.RawExchangeDataMapApi
@@ -39,8 +39,8 @@ import com.icure.sdk.crypto.impl.SecureDelegationsManagerImpl
 import com.icure.sdk.crypto.impl.UserEncryptionKeysManagerImpl
 import com.icure.sdk.crypto.impl.UserSignatureKeysManagerImpl
 import com.icure.sdk.model.DataOwnerWithType
-import com.icure.sdk.model.RequestedPermission
 import com.icure.sdk.model.extensions.toStub
+import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.storage.IcureStorageFacade
 import com.icure.sdk.storage.StorageFacade
 import com.icure.sdk.storage.impl.DefaultStorageEntryKeysFactory
@@ -64,12 +64,12 @@ interface IcureApi {
 		): IcureApi {
 			val cryptoStrategies = BasicCryptoStrategies
 			val cryptoService = defaultCryptoService
-			val apiUrl = "$baseUrl"
+			val apiUrl = baseUrl
 			val keysStorage = JsonAndBase64KeyStorage(baseStorage)
 			val iCureStorage = IcureStorageFacade(keysStorage, baseStorage, DefaultStorageEntryKeysFactory, cryptoService, false)
-			val authApi = AnonymousAuthApiImpl(apiUrl)
+			val authApi = RawAnonymousAuthApi(apiUrl)
 			val authService = JwtAuthService(authApi, usernamePassword)
-			val dataOwnerApi = DataOwnerApi(RawDataownerApi(apiUrl, authService))
+			val dataOwnerApi = DataOwnerApi(RawDataOwnerApi(apiUrl, authService))
 			val self = dataOwnerApi.getCurrentDataOwner()
 			val selfIsAnonymous = cryptoStrategies.dataOwnerRequiresAnonymousDelegation(self.toStub())
 			val rawPatientApiNoAccessKeys = RawPatientApi(apiUrl, authService, null)

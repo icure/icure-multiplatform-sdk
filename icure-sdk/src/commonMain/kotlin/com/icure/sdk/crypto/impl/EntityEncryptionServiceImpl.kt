@@ -23,15 +23,13 @@ import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.SimpleDelegateShareOptions
 import com.icure.sdk.model.embed.AccessLevel
-import com.icure.sdk.model.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.base.Encryptable
-import com.icure.sdk.model.EntityBulkShareResult
-import com.icure.sdk.model.EntityRequestInformationDto
-import com.icure.sdk.model.EntityShareOrMetadataUpdateRequest
 import com.icure.sdk.model.specializations.HexString
-import com.icure.sdk.model.MinimalEntityBulkShareResult
-import com.icure.sdk.model.RejectedShareOrMetadataUpdateRequest
-import com.icure.sdk.model.RequestedPermission
+import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
+import com.icure.sdk.model.requests.EntityBulkShareResult
+import com.icure.sdk.model.requests.EntityShareOrMetadataUpdateRequest
+import com.icure.sdk.model.requests.MinimalEntityBulkShareResult
+import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.SecureDelegationKeyString
 import com.icure.sdk.utils.IllegalEntityException
 import com.icure.sdk.utils.InternalIcureApi
@@ -252,13 +250,13 @@ class EntityEncryptionServiceImpl(
 
 	override suspend fun <T : Encryptable> bulkShareOrUpdateEncryptedEntityMetadata(
 		entitiesUpdates: List<Pair<T, Map<String, DelegateShareOptions>>>,
-		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<T>>
+		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<out T>>
 	): BulkShareResult<T> {
 		val requestDetails = prepareBulkShareRequests(entitiesUpdates)
 		val shareResult = doRequestBulkShareOrUpdate(
 			BulkShareOrUpdateMetadataParams(
 				requestDetails.requestsByEntityId.mapValues { (_, details) ->
-					EntityRequestInformationDto(
+					BulkShareOrUpdateMetadataParams.EntityRequestInformation(
 						details.requests.mapValues { it.value.request },
 						details.potentialParentDelegations
 					)
@@ -280,7 +278,7 @@ class EntityEncryptionServiceImpl(
 		val shareResult = doRequestBulkShareOrUpdate(
 			BulkShareOrUpdateMetadataParams(
 				requestDetails.requestsByEntityId.mapValues { (_, details) ->
-					EntityRequestInformationDto(
+					BulkShareOrUpdateMetadataParams.EntityRequestInformation(
 						details.requests.mapValues { it.value.request },
 						details.potentialParentDelegations
 					)
@@ -305,7 +303,7 @@ class EntityEncryptionServiceImpl(
 
 	private fun makeFailedRequestDetails(
 		entityId: String,
-		shareResultRejectedRequests: Map<String, RejectedShareOrMetadataUpdateRequest>,
+		shareResultRejectedRequests: Map<String, EntityBulkShareResult.RejectedShareOrMetadataUpdateRequest>,
 		requestDetails: BulkShareRequestsDetails
 	) =
 		shareResultRejectedRequests.map { (rejectedRequestId, error) ->
@@ -469,7 +467,7 @@ class EntityEncryptionServiceImpl(
 		entity: T,
 		unusedSecretIds: Boolean,
 		delegates: Map<String, SimpleDelegateShareOptions>,
-		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<T>>
+		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<out T>>
 	): SimpleShareResult<T> {
 		val availableEncryptionKeys = encryptionKeysOf(entity, null)
 		val availableOwningEntityIds = owningEntityIdsOf(entity, null)
@@ -542,7 +540,7 @@ class EntityEncryptionServiceImpl(
 
 	override suspend fun <T : Encryptable> initialiseConfidentialSecretId(
 		entity: T,
-		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<T>>
+		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<out T>>
 	): T? {
 		if (entity.rev == null) {
 			throw IllegalArgumentException("Entity must be an existing entity to initialise a confidential secret id")

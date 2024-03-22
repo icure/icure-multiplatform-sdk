@@ -12,11 +12,11 @@ import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.SimpleDelegateShareOptions
 import com.icure.sdk.model.embed.AccessLevel
-import com.icure.sdk.model.BulkShareOrUpdateMetadataParams
-import com.icure.sdk.model.EntityBulkShareResult
 import com.icure.sdk.model.specializations.HexString
-import com.icure.sdk.model.MinimalEntityBulkShareResult
 import com.icure.sdk.model.base.Encryptable
+import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
+import com.icure.sdk.model.requests.EntityBulkShareResult
+import com.icure.sdk.model.requests.MinimalEntityBulkShareResult
 import com.icure.sdk.utils.InternalIcureApi
 import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.json.JsonElement
@@ -156,7 +156,7 @@ interface EntityEncryptionService {
 	 */
 	suspend fun <T : Encryptable> bulkShareOrUpdateEncryptedEntityMetadata(
 		entitiesUpdates: List<Pair<T, Map<String, DelegateShareOptions>>>,
-		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<T>>
+		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<out T>>
 	): BulkShareResult<T>
 
 	suspend fun bulkShareOrUpdateEncryptedEntityMetadataNoEntities(
@@ -188,7 +188,7 @@ interface EntityEncryptionService {
 		entity: T,
 		unusedSecretIds: Boolean,
 		delegates: Map<String, SimpleDelegateShareOptions>,
-		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<T>>
+		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<out T>>
 	): SimpleShareResult<T>
 	// endregion
 
@@ -303,7 +303,7 @@ interface EntityEncryptionService {
 	 */
 	suspend fun <T : Encryptable> initialiseConfidentialSecretId(
 		entity: T,
-		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<T>>
+		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<out T>>
 	): T?
 
 	/**

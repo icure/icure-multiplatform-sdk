@@ -2,11 +2,17 @@ package com.icure.sdk.api.raw
 
 import com.icure.sdk.auth.services.AuthService
 import com.icure.sdk.auth.services.setAuthorizationWith
-import com.icure.sdk.model.ExchangeData
+import com.icure.sdk.model.Article
+import com.icure.sdk.model.EncryptedArticle
+import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
+import com.icure.sdk.model.couchdb.DocIdentifier
+import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
+import com.icure.sdk.model.requests.EntityBulkShareResult
 import com.icure.sdk.model.specializations.JsonString
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.request.`get`
+import io.ktor.client.request.delete
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.put
@@ -24,7 +30,7 @@ import kotlin.time.Duration
 // WARNING: This class is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 @InternalIcureApi
-class RawExchangeDataApi(
+class RawArticleApi(
 	private val apiUrl: String,
 	private val authService: AuthService,
 	additionalHeaders: Map<String, String> = emptyMap(),
@@ -33,49 +39,67 @@ class RawExchangeDataApi(
 
 	// region common endpoints
 
-	suspend fun createExchangeData(exchangeData: ExchangeData): HttpResponse<ExchangeData> =
+	suspend fun createArticle(articleDto: Article): HttpResponse<EncryptedArticle> =
 			httpClient.post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","exchangedata")
+				appendPathSegments("rest","v2","article")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
-			setBody(exchangeData)
+			setBody(articleDto)
 		}.wrap()
 
 
-	suspend fun modifyExchangeData(exchangeData: ExchangeData): HttpResponse<ExchangeData> =
-			httpClient.put {
+	suspend fun deleteArticles(articleIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
+			httpClient.post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","exchangedata")
+				appendPathSegments("rest","v2","article","delete","batch")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
-			setBody(exchangeData)
+			setBody(articleIds)
 		}.wrap()
 
 
-	suspend fun getExchangeDataById(exchangeDataId: String): HttpResponse<ExchangeData> =
-			httpClient.get {
+	suspend fun deleteArticle(articleId: String): HttpResponse<DocIdentifier> =
+			httpClient.delete {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","exchangedata",exchangeDataId)
+				appendPathSegments("rest","v2","article",articleId)
+			}
+			setAuthorizationWith(authService)
+		}.wrap()
+
+
+	suspend fun getArticle(articleId: String): HttpResponse<EncryptedArticle> = httpClient.get {
+			url {
+				host = apiUrl
+				appendPathSegments("rest","v2","article",articleId)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
 
-	suspend fun getExchangeDataByParticipant(
-		dataOwnerId: String,
-		startDocumentId: String? = null,
-		limit: Int? = null,
-	): HttpResponse<PaginatedList<ExchangeData, JsonString>> = httpClient.get {
+	suspend fun modifyArticle(articleDto: Article): HttpResponse<EncryptedArticle> =
+			httpClient.put {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","exchangedata","byParticipant",dataOwnerId)
+				appendPathSegments("rest","v2","article")
+			}
+			setAuthorizationWith(authService)
+			contentType(ContentType.Application.Json)
+			setBody(articleDto)
+		}.wrap()
+
+
+	suspend fun getArticles(startDocumentId: String? = null, limit: Int? = null):
+			HttpResponse<PaginatedList<EncryptedArticle, JsonString>> = httpClient.get {
+			url {
+				host = apiUrl
+				appendPathSegments("rest","v2","article")
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
 				parameter("ts", GMTDate().timestamp)
@@ -84,26 +108,15 @@ class RawExchangeDataApi(
 		}.wrap()
 
 
-	suspend fun getExchangeDataByDelegatorDelegate(delegatorId: String, delegateId: String):
-			HttpResponse<List<ExchangeData>> = httpClient.get {
+	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams):
+			HttpResponse<List<EntityBulkShareResult<EncryptedArticle>>> = httpClient.put {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","exchangedata","byDelegatorDelegate",delegatorId,delegateId)
-				parameter("ts", GMTDate().timestamp)
+				appendPathSegments("rest","v2","article","bulkSharedMetadataUpdate")
 			}
 			setAuthorizationWith(authService)
-		}.wrap()
-
-
-	suspend fun getParticipantCounterparts(dataOwnerId: String, counterpartsTypes: String):
-			HttpResponse<List<String>> = httpClient.get {
-			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","exchangedata","byParticipant",dataOwnerId,"counterparts")
-				parameter("counterpartsTypes", counterpartsTypes)
-				parameter("ts", GMTDate().timestamp)
-			}
-			setAuthorizationWith(authService)
+			contentType(ContentType.Application.Json)
+			setBody(request)
 		}.wrap()
 
 	// endregion

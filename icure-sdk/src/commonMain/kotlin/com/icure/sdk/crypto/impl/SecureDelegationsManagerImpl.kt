@@ -15,16 +15,17 @@ import com.icure.sdk.model.specializations.AccessControlKeyHexString
 import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.specializations.Base64String
 import com.icure.sdk.model.base.Encryptable
-import com.icure.sdk.model.EntityShareOrMetadataUpdateRequest
-import com.icure.sdk.model.EntityShareRequest
-import com.icure.sdk.model.EntitySharedMetadataUpdateRequest
 import com.icure.sdk.model.ExchangeDataMapCreationBatch
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.model.specializations.KeypairFingerprintV2String
-import com.icure.sdk.model.RequestedPermission
 import com.icure.sdk.model.embed.SecureDelegation
 import com.icure.sdk.model.specializations.SecureDelegationKeyString
 import com.icure.sdk.model.embed.SecurityMetadata
+import com.icure.sdk.model.requests.EntityShareOrMetadataUpdateRequest
+import com.icure.sdk.model.requests.EntityShareRequest
+import com.icure.sdk.model.requests.EntitySharedMetadataUpdateRequest
+import com.icure.sdk.model.requests.EntryUpdateType
+import com.icure.sdk.model.requests.RequestedPermission
 
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.SynchronisedLruCache
@@ -188,9 +189,9 @@ class SecureDelegationsManagerImpl (
 
 			EntitySharedMetadataUpdateRequest(
 				metadataAccessControlHash = canonicalKey,
-				secretIds = encryptedNewSecretIds.associateWith { EntitySharedMetadataUpdateRequest.EntryUpdateTypeDto.Create },
-				encryptionKeys = encryptedNewEncryptionKeys.associateWith { EntitySharedMetadataUpdateRequest.EntryUpdateTypeDto.Create },
-				owningEntityIds = encryptedNewOwningEntityIds.associateWith { EntitySharedMetadataUpdateRequest.EntryUpdateTypeDto.Create }
+				secretIds = encryptedNewSecretIds.associateWith { EntryUpdateType.Create },
+				encryptionKeys = encryptedNewEncryptionKeys.associateWith { EntryUpdateType.Create },
+				owningEntityIds = encryptedNewOwningEntityIds.associateWith { EntryUpdateType.Create }
 			)
 		} else null
 	}

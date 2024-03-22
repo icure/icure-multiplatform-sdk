@@ -1,6 +1,6 @@
 package com.icure.sdk.crypto.entities
 
-import com.icure.sdk.model.RequestedPermission
+import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.utils.InternalIcureApi
 
 @InternalIcureApi
