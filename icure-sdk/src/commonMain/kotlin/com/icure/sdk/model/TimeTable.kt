@@ -93,7 +93,7 @@ data class DecryptedTimeTable(
 ) : TimeTable {
 	// region TimeTable-DecryptedTimeTable
 	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Contact
+		get() = EntityWithDelegationTypeName.TimeTable
 
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedTimeTable =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
@@ -126,7 +126,7 @@ data class EncryptedTimeTable(
 ) : TimeTable {
 	// region TimeTable-EncryptedTimeTable
 	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Contact
+		get() = EntityWithDelegationTypeName.TimeTable
 
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedTimeTable =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)

@@ -91,7 +91,7 @@ data class DecryptedMaintenanceTask(
 ) : MaintenanceTask {
 	// region MaintenanceTask-DecryptedMaintenanceTask
 	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Contact
+		get() = EntityWithDelegationTypeName.MaintenanceTask
 
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedMaintenanceTask =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
@@ -123,7 +123,7 @@ data class EncryptedMaintenanceTask(
 ) : MaintenanceTask {
 	// region MaintenanceTask-EncryptedMaintenanceTask
 	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Contact
+		get() = EntityWithDelegationTypeName.MaintenanceTask
 
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedMaintenanceTask =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)

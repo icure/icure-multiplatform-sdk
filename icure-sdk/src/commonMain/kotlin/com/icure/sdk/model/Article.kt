@@ -87,7 +87,7 @@ data class DecryptedArticle(
 ) : Article {
 	// region Article-DecryptedArticle
 	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Contact
+		get() = EntityWithDelegationTypeName.Article
 
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedArticle =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
@@ -118,7 +118,7 @@ data class EncryptedArticle(
 ) : Article {
 	// region Article-EncryptedArticle
 	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Contact
+		get() = EntityWithDelegationTypeName.Article
 
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedArticle =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)

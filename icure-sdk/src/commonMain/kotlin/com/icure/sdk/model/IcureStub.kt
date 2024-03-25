@@ -73,7 +73,7 @@ data class DecryptedIcureStub(
 ) : IcureStub {
 	// region IcureStub-DecryptedIcureStub
 	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Contact
+		get() = TODO()
 
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedIcureStub =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
@@ -100,7 +100,7 @@ data class EncryptedIcureStub(
 ) : IcureStub {
 	// region IcureStub-EncryptedIcureStub
 	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Contact
+		get() = TODO()
 
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedIcureStub =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)

@@ -59,7 +59,7 @@ data class DecryptedSecureDelegationKeyMap(
 ) : SecureDelegationKeyMap {
 	// region SecureDelegationKeyMap-DecryptedSecureDelegationKeyMap
 	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Contact
+		get() = TODO()
 
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedSecureDelegationKeyMap =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
@@ -82,7 +82,7 @@ data class EncryptedSecureDelegationKeyMap(
 ) : SecureDelegationKeyMap {
 	// region SecureDelegationKeyMap-EncryptedSecureDelegationKeyMap
 	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Contact
+		get() = TODO()
 
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedSecureDelegationKeyMap =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)

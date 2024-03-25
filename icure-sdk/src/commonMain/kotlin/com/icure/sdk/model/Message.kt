@@ -146,7 +146,7 @@ data class DecryptedMessage(
 ) : Message {
 	// region Message-DecryptedMessage
 	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Contact
+		get() = EntityWithDelegationTypeName.Message
 
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedMessage =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
@@ -196,7 +196,7 @@ data class EncryptedMessage(
 ) : Message {
 	// region Message-EncryptedMessage
 	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Contact
+		get() = EntityWithDelegationTypeName.Message
 
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedMessage =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)

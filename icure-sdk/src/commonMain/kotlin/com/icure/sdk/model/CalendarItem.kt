@@ -154,7 +154,7 @@ data class DecryptedCalendarItem(
 ) : CalendarItem {
 	// region CalendarItem-DecryptedCalendarItem
 	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Contact
+		get() = EntityWithDelegationTypeName.CalendarItem
 
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedCalendarItem =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
@@ -206,7 +206,7 @@ data class EncryptedCalendarItem(
 ) : CalendarItem {
 	// region CalendarItem-EncryptedCalendarItem
 	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Contact
+		get() = EntityWithDelegationTypeName.CalendarItem
 
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedCalendarItem =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)

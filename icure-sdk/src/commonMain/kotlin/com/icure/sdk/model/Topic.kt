@@ -94,7 +94,7 @@ data class DecryptedTopic(
 ) : Topic {
 	// region Topic-DecryptedTopic
 	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Contact
+		get() = EntityWithDelegationTypeName.Topic
 
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedTopic =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
@@ -128,7 +128,7 @@ data class EncryptedTopic(
 ) : Topic {
 	// region Topic-EncryptedTopic
 	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Contact
+		get() = EntityWithDelegationTypeName.Topic
 
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedTopic =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)

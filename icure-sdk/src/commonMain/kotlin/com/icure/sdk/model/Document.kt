@@ -140,7 +140,7 @@ data class DecryptedDocument(
 ) : Document {
 	// region Document-DecryptedDocument
 	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Contact
+		get() = EntityWithDelegationTypeName.Document
 
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedDocument =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
@@ -187,7 +187,7 @@ data class EncryptedDocument(
 ) : Document {
 	// region Document-EncryptedDocument
 	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Contact
+		get() = EntityWithDelegationTypeName.Document
 
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedDocument =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)

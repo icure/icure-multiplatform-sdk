@@ -110,7 +110,7 @@ data class DecryptedForm(
 ) : Form {
 	// region Form-DecryptedForm
 	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Contact
+		get() = EntityWithDelegationTypeName.Form
 
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedForm =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
@@ -149,7 +149,7 @@ data class EncryptedForm(
 ) : Form {
 	// region Form-EncryptedForm
 	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Contact
+		get() = EntityWithDelegationTypeName.Form
 
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedForm =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)

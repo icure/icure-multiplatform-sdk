@@ -97,7 +97,7 @@ data class DecryptedAccessLog(
 ) : AccessLog {
 	// region AccessLog-DecryptedAccessLog
 	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Contact
+		get() = EntityWithDelegationTypeName.AccessLog
 
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedAccessLog =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
@@ -132,7 +132,7 @@ data class EncryptedAccessLog(
 ) : AccessLog {
 	// region AccessLog-EncryptedAccessLog
 	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Contact
+		get() = EntityWithDelegationTypeName.AccessLog
 
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedAccessLog =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)

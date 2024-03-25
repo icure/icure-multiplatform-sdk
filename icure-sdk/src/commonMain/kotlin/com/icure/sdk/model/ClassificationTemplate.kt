@@ -82,7 +82,7 @@ data class DecryptedClassificationTemplate(
 ) : ClassificationTemplate {
 	// region ClassificationTemplate-DecryptedClassificationTemplate
 	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Contact
+		get() = EntityWithDelegationTypeName.ClassificationTemplate
 
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedClassificationTemplate =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
@@ -112,7 +112,7 @@ data class EncryptedClassificationTemplate(
 ) : ClassificationTemplate {
 	// region ClassificationTemplate-EncryptedClassificationTemplate
 	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Contact
+		get() = EntityWithDelegationTypeName.ClassificationTemplate
 
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedClassificationTemplate =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)

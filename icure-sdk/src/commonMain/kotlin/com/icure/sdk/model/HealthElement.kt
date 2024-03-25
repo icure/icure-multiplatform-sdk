@@ -142,7 +142,7 @@ data class DecryptedHealthElement(
 ) : HealthElement {
 	// region HealthElement-DecryptedHealthElement
 	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Contact
+		get() = EntityWithDelegationTypeName.HealthElement
 
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedHealthElement =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
@@ -187,7 +187,7 @@ data class EncryptedHealthElement(
 ) : HealthElement {
 	// region HealthElement-EncryptedHealthElement
 	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Contact
+		get() = EntityWithDelegationTypeName.HealthElement
 
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedHealthElement =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)

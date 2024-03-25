@@ -251,7 +251,7 @@ data class DecryptedInvoice(
 ) : Invoice {
 	// region Invoice-DecryptedInvoice
 	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Contact
+		get() = EntityWithDelegationTypeName.Invoice
 
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedInvoice =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
@@ -333,7 +333,7 @@ data class EncryptedInvoice(
 ) : Invoice {
 	// region Invoice-EncryptedInvoice
 	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Contact
+		get() = EntityWithDelegationTypeName.Invoice
 
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedInvoice =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)

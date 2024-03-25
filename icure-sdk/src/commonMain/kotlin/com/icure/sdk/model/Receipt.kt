@@ -93,7 +93,7 @@ data class DecryptedReceipt(
 ) : Receipt {
 	// region Receipt-DecryptedReceipt
 	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Contact
+		get() = EntityWithDelegationTypeName.Receipt
 
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedReceipt =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
@@ -126,7 +126,7 @@ data class EncryptedReceipt(
 ) : Receipt {
 	// region Receipt-EncryptedReceipt
 	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Contact
+		get() = EntityWithDelegationTypeName.Receipt
 
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedReceipt =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)

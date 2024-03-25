@@ -303,7 +303,7 @@ data class DecryptedPatient(
 ) : Patient {
 	// region Patient-DecryptedPatient
 	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Contact
+		get() = EntityWithDelegationTypeName.Patient
 
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedPatient =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
@@ -397,7 +397,7 @@ data class EncryptedPatient(
 ) : Patient {
 	// region Patient-EncryptedPatient
 	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Contact
+		get() = EntityWithDelegationTypeName.Patient
 
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedPatient =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)

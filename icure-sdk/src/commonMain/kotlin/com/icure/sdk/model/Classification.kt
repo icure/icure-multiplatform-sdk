@@ -85,7 +85,7 @@ data class DecryptedClassification(
 ) : Classification {
 	// region Classification-DecryptedClassification
 	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Contact
+		get() = EntityWithDelegationTypeName.Classification
 
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedClassification =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
@@ -116,7 +116,7 @@ data class EncryptedClassification(
 ) : Classification {
 	// region Classification-EncryptedClassification
 	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Contact
+		get() = EntityWithDelegationTypeName.Classification
 
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedClassification =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
