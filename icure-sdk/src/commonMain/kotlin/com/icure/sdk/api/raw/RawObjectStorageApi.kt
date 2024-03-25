@@ -40,7 +40,7 @@ class RawObjectStorageApi(
 		md5Hash: String,
 		startByte: Long? = null,
 		content: ByteArray,
-	): HttpResponse<Unit> = httpClient.post {
+	): HttpResponse<Unit> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","objectstorage{entityGroup}",entityId,attachmentId)
@@ -58,7 +58,7 @@ class RawObjectStorageApi(
 		entityGroup: String,
 		entityId: String,
 		attachmentId: String,
-	): HttpResponse<ByteArray> = httpClient.get {
+	): HttpResponse<ByteArray> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","objectstorage{entityGroup}",entityId,attachmentId)
@@ -72,7 +72,7 @@ class RawObjectStorageApi(
 		entityGroup: String,
 		entityId: String,
 		attachmentId: String,
-	): HttpResponse<StoredObjectInformation> = httpClient.get {
+	): HttpResponse<StoredObjectInformation> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","objectstorage{entityGroup}",entityId,attachmentId,"info")

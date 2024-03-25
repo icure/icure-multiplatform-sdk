@@ -35,7 +35,7 @@ class RawPlaceApi(
 
 	// region common endpoints
 
-	suspend fun createPlace(placeDto: Place): HttpResponse<Place> = httpClient.post {
+	suspend fun createPlace(placeDto: Place): HttpResponse<Place> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","place")
@@ -46,8 +46,7 @@ class RawPlaceApi(
 		}.wrap()
 
 
-	suspend fun deletePlaces(placeIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
-			httpClient.post {
+	suspend fun deletePlaces(placeIds: ListOfIds): HttpResponse<List<DocIdentifier>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","place","delete","batch")
@@ -58,7 +57,7 @@ class RawPlaceApi(
 		}.wrap()
 
 
-	suspend fun getPlace(placeId: String): HttpResponse<Place> = httpClient.get {
+	suspend fun getPlace(placeId: String): HttpResponse<Place> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","place",placeId)
@@ -69,7 +68,7 @@ class RawPlaceApi(
 
 
 	suspend fun getPlaces(startDocumentId: String? = null, limit: Int? = null):
-			HttpResponse<PaginatedList<Place, JsonString>> = httpClient.get {
+			HttpResponse<PaginatedList<Place, JsonString>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","place")
@@ -81,7 +80,7 @@ class RawPlaceApi(
 		}.wrap()
 
 
-	suspend fun modifyPlace(placeDto: Place): HttpResponse<Place> = httpClient.put {
+	suspend fun modifyPlace(placeDto: Place): HttpResponse<Place> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","place")

@@ -47,7 +47,7 @@ class RawUserApi(
 
 	// region common endpoints
 
-	suspend fun getCurrentUser(): HttpResponse<User> = httpClient.get {
+	suspend fun getCurrentUser(): HttpResponse<User> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","user","current")
@@ -62,7 +62,7 @@ class RawUserApi(
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		skipPatients: Boolean? = null,
-	): HttpResponse<PaginatedList<User, JsonString>> = httpClient.get {
+	): HttpResponse<PaginatedList<User, JsonString>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","user")
@@ -76,7 +76,7 @@ class RawUserApi(
 		}.wrap()
 
 
-	suspend fun createUser(userDto: User): HttpResponse<User> = httpClient.post {
+	suspend fun createUser(userDto: User): HttpResponse<User> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","user")
@@ -87,7 +87,7 @@ class RawUserApi(
 		}.wrap()
 
 
-	suspend fun getUser(userId: String): HttpResponse<User> = httpClient.get {
+	suspend fun getUser(userId: String): HttpResponse<User> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","user",userId)
@@ -97,7 +97,7 @@ class RawUserApi(
 		}.wrap()
 
 
-	suspend fun getUserByEmail(email: String): HttpResponse<User> = httpClient.get {
+	suspend fun getUserByEmail(email: String): HttpResponse<User> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","user","byEmail",email)
@@ -107,7 +107,7 @@ class RawUserApi(
 		}.wrap()
 
 
-	suspend fun getUserByPhoneNumber(phoneNumber: String): HttpResponse<User> = httpClient.get {
+	suspend fun getUserByPhoneNumber(phoneNumber: String): HttpResponse<User> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","user","byPhoneNumber",phoneNumber)
@@ -117,7 +117,7 @@ class RawUserApi(
 		}.wrap()
 
 
-	suspend fun findByHcpartyId(id: String): HttpResponse<List<String>> = httpClient.get {
+	suspend fun findByHcpartyId(id: String): HttpResponse<List<String>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","user","byHealthcarePartyId",id)
@@ -127,7 +127,7 @@ class RawUserApi(
 		}.wrap()
 
 
-	suspend fun findByPatientId(id: String): HttpResponse<List<String>> = httpClient.get {
+	suspend fun findByPatientId(id: String): HttpResponse<List<String>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","user","byPatientId",id)
@@ -137,7 +137,7 @@ class RawUserApi(
 		}.wrap()
 
 
-	suspend fun deleteUser(userId: String): HttpResponse<DocIdentifier> = httpClient.delete {
+	suspend fun deleteUser(userId: String): HttpResponse<DocIdentifier> = delete {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","user",userId)
@@ -146,7 +146,7 @@ class RawUserApi(
 		}.wrap()
 
 
-	suspend fun modifyUser(userDto: User): HttpResponse<User> = httpClient.put {
+	suspend fun modifyUser(userDto: User): HttpResponse<User> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","user")
@@ -157,8 +157,7 @@ class RawUserApi(
 		}.wrap()
 
 
-	suspend fun assignHealthcareParty(healthcarePartyId: String): HttpResponse<User> =
-			httpClient.put {
+	suspend fun assignHealthcareParty(healthcarePartyId: String): HttpResponse<User> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","user","current","hcparty",healthcarePartyId)
@@ -169,7 +168,7 @@ class RawUserApi(
 
 
 	suspend fun modifyProperties(userId: String, properties: List<PropertyStub>?):
-			HttpResponse<User> = httpClient.put {
+			HttpResponse<User> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","user",userId,"properties")
@@ -185,7 +184,7 @@ class RawUserApi(
 		key: String,
 		tokenValidity: Long? = null,
 		token: String? = null,
-	): HttpResponse<String> = httpClient.post {
+	): HttpResponse<String> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","user","token",userId,key)
@@ -201,7 +200,7 @@ class RawUserApi(
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		filterChain: FilterChain<User>,
-	): HttpResponse<PaginatedList<User, *>> = httpClient.post {
+	): HttpResponse<PaginatedList<User, *>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","user","filter")
@@ -214,8 +213,7 @@ class RawUserApi(
 		}.wrap()
 
 
-	suspend fun matchUsersBy(filter: AbstractFilter<User>): HttpResponse<List<String>> =
-			httpClient.post {
+	suspend fun matchUsersBy(filter: AbstractFilter<User>): HttpResponse<List<String>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","user","match")
@@ -229,7 +227,7 @@ class RawUserApi(
 
 	// region cloud endpoints
 
-	suspend fun getMatchingUsers(): HttpResponse<List<UserGroup>> = httpClient.get {
+	suspend fun getMatchingUsers(): HttpResponse<List<UserGroup>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","user","matches")
@@ -244,7 +242,7 @@ class RawUserApi(
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<User, JsonString>> = httpClient.get {
+	): HttpResponse<PaginatedList<User, JsonString>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","user","inGroup",groupId)
@@ -257,8 +255,7 @@ class RawUserApi(
 		}.wrap()
 
 
-	suspend fun createUserInGroup(groupId: String, userDto: User): HttpResponse<User> =
-			httpClient.post {
+	suspend fun createUserInGroup(groupId: String, userDto: User): HttpResponse<User> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","user","inGroup",groupId)
@@ -269,8 +266,7 @@ class RawUserApi(
 		}.wrap()
 
 
-	suspend fun modifyUserInGroup(groupId: String, userDto: User): HttpResponse<User> =
-			httpClient.put {
+	suspend fun modifyUserInGroup(groupId: String, userDto: User): HttpResponse<User> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","user","inGroup",groupId)
@@ -282,7 +278,7 @@ class RawUserApi(
 
 
 	suspend fun deleteUserInGroup(groupId: String, userId: String): HttpResponse<DocIdentifier>
-			= httpClient.delete {
+			= delete {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","user","inGroup",groupId,userId)
@@ -291,8 +287,7 @@ class RawUserApi(
 		}.wrap()
 
 
-	suspend fun addRolesToUser(userId: String, rolesId: ListOfIds): HttpResponse<User> =
-			httpClient.post {
+	suspend fun addRolesToUser(userId: String, rolesId: ListOfIds): HttpResponse<User> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","user",userId,"roles","set")
@@ -307,7 +302,7 @@ class RawUserApi(
 		userId: String,
 		groupId: String,
 		rolesId: ListOfIds,
-	): HttpResponse<User> = httpClient.post {
+	): HttpResponse<User> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","user",userId,"inGroup",groupId,"roles","set")
@@ -318,7 +313,7 @@ class RawUserApi(
 		}.wrap()
 
 
-	suspend fun removeRolesFromUser(userId: String): HttpResponse<User> = httpClient.post {
+	suspend fun removeRolesFromUser(userId: String): HttpResponse<User> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","user",userId,"roles","reset")
@@ -329,7 +324,7 @@ class RawUserApi(
 
 
 	suspend fun removeRolesFromUserInGroup(userId: String, groupId: String): HttpResponse<User>
-			= httpClient.post {
+			= post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","user",userId,"inGroup",groupId,"roles","reset")
@@ -345,7 +340,7 @@ class RawUserApi(
 		key: String,
 		token: String? = null,
 		tokenValidity: Long? = null,
-	): HttpResponse<String> = httpClient.post {
+	): HttpResponse<String> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","user","inGroup",groupId,"token",userId,key)
@@ -362,7 +357,7 @@ class RawUserApi(
 		key: String,
 		token: String? = null,
 		tokenValidity: Long? = null,
-	): HttpResponse<List<TokenWithGroup>> = httpClient.post {
+	): HttpResponse<List<TokenWithGroup>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","user","inAllGroups","token",userIdentifier,key)
@@ -379,7 +374,7 @@ class RawUserApi(
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		filterChain: FilterChain<User>,
-	): HttpResponse<PaginatedList<User, Nothing>> = httpClient.post {
+	): HttpResponse<PaginatedList<User, Nothing>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","user","filter","inGroup",groupId)
@@ -396,7 +391,7 @@ class RawUserApi(
 		userId: String,
 		groupId: String,
 		request: Enable2faRequest,
-	): HttpResponse<Unit> = httpClient.post {
+	): HttpResponse<Unit> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","user",userId,"inGroup",groupId,"2fa")
@@ -408,7 +403,7 @@ class RawUserApi(
 
 
 	suspend fun enable2faForUser(userId: String, request: Enable2faRequest): HttpResponse<Unit>
-			= httpClient.post {
+			= post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","user",userId,"2fa")
@@ -420,7 +415,7 @@ class RawUserApi(
 
 
 	suspend fun disable2faForUser(userId: String, groupId: String): HttpResponse<Unit> =
-			httpClient.delete {
+			delete {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","user",userId,"inGroup",groupId,"2fa")
@@ -429,7 +424,7 @@ class RawUserApi(
 		}.wrap()
 
 
-	suspend fun disable2faForUser(userId: String): HttpResponse<Unit> = httpClient.delete {
+	suspend fun disable2faForUser(userId: String): HttpResponse<Unit> = delete {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","user",userId,"2fa")
@@ -438,7 +433,7 @@ class RawUserApi(
 		}.wrap()
 
 
-	suspend fun createAdminUser(userDto: User): HttpResponse<User> = httpClient.post {
+	suspend fun createAdminUser(userDto: User): HttpResponse<User> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","user","admin")
@@ -450,7 +445,7 @@ class RawUserApi(
 
 
 	suspend fun createAdminUserInGroup(groupId: String, userDto: User): HttpResponse<User> =
-			httpClient.post {
+			post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","user","admin","inGroup",groupId)

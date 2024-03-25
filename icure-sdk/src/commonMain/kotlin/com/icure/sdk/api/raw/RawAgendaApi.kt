@@ -37,7 +37,7 @@ class RawAgendaApi(
 	// region common endpoints
 
 	suspend fun getAgendas(startDocumentId: String? = null, limit: Int? = null):
-			HttpResponse<PaginatedList<Agenda, JsonString>> = httpClient.get {
+			HttpResponse<PaginatedList<Agenda, JsonString>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","agenda")
@@ -49,7 +49,7 @@ class RawAgendaApi(
 		}.wrap()
 
 
-	suspend fun createAgenda(agendaDto: Agenda): HttpResponse<Agenda> = httpClient.post {
+	suspend fun createAgenda(agendaDto: Agenda): HttpResponse<Agenda> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","agenda")
@@ -60,8 +60,7 @@ class RawAgendaApi(
 		}.wrap()
 
 
-	suspend fun deleteAgendas(agendaIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
-			httpClient.post {
+	suspend fun deleteAgendas(agendaIds: ListOfIds): HttpResponse<List<DocIdentifier>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","agenda","delete","batch")
@@ -72,8 +71,7 @@ class RawAgendaApi(
 		}.wrap()
 
 
-	suspend fun deleteAgenda(agendaId: String): HttpResponse<DocIdentifier> =
-			httpClient.delete {
+	suspend fun deleteAgenda(agendaId: String): HttpResponse<DocIdentifier> = delete {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","agenda",agendaId)
@@ -82,7 +80,7 @@ class RawAgendaApi(
 		}.wrap()
 
 
-	suspend fun getAgenda(agendaId: String): HttpResponse<Agenda> = httpClient.get {
+	suspend fun getAgenda(agendaId: String): HttpResponse<Agenda> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","agenda",agendaId)
@@ -92,7 +90,7 @@ class RawAgendaApi(
 		}.wrap()
 
 
-	suspend fun getAgendasForUser(userId: String): HttpResponse<Agenda> = httpClient.get {
+	suspend fun getAgendasForUser(userId: String): HttpResponse<Agenda> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","agenda","byUser")
@@ -103,8 +101,7 @@ class RawAgendaApi(
 		}.wrap()
 
 
-	suspend fun getReadableAgendasForUser(userId: String): HttpResponse<List<Agenda>> =
-			httpClient.get {
+	suspend fun getReadableAgendasForUser(userId: String): HttpResponse<List<Agenda>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","agenda","readableForUser")
@@ -115,7 +112,7 @@ class RawAgendaApi(
 		}.wrap()
 
 
-	suspend fun modifyAgenda(agendaDto: Agenda): HttpResponse<Agenda> = httpClient.put {
+	suspend fun modifyAgenda(agendaDto: Agenda): HttpResponse<Agenda> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","agenda")

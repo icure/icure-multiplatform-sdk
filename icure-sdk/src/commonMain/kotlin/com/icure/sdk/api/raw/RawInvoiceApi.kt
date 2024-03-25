@@ -2,8 +2,10 @@ package com.icure.sdk.api.raw
 
 import com.icure.sdk.auth.services.AuthService
 import com.icure.sdk.auth.services.setAuthorizationWith
+import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.model.EncryptedIcureStub
 import com.icure.sdk.model.EncryptedInvoice
+import com.icure.sdk.model.EntityWithDelegationTypeName
 import com.icure.sdk.model.Invoice
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
@@ -41,14 +43,17 @@ import kotlin.time.Duration
 class RawInvoiceApi(
 	private val apiUrl: String,
 	private val authService: AuthService,
+	private val accessControlKeysHeadersProvider: AccessControlKeysHeadersProvider?,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
 
+	override suspend fun getAccessControlKeysHeaderValues(): List<String>? =
+			accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithDelegationTypeName.Invoice)
+
 	// region common endpoints
 
-	suspend fun createInvoice(invoiceDto: Invoice): HttpResponse<EncryptedInvoice> =
-			httpClient.post {
+	suspend fun createInvoice(invoiceDto: Invoice): HttpResponse<EncryptedInvoice> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","invoice")
@@ -59,8 +64,7 @@ class RawInvoiceApi(
 		}.wrap()
 
 
-	suspend fun deleteInvoice(invoiceId: String): HttpResponse<DocIdentifier> =
-			httpClient.delete {
+	suspend fun deleteInvoice(invoiceId: String): HttpResponse<DocIdentifier> = delete {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","invoice",invoiceId)
@@ -69,7 +73,7 @@ class RawInvoiceApi(
 		}.wrap()
 
 
-	suspend fun getInvoice(invoiceId: String): HttpResponse<EncryptedInvoice> = httpClient.get {
+	suspend fun getInvoice(invoiceId: String): HttpResponse<EncryptedInvoice> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","invoice",invoiceId)
@@ -80,7 +84,7 @@ class RawInvoiceApi(
 
 
 	suspend fun getInvoices(invoiceIds: ListOfIds): HttpResponse<List<EncryptedInvoice>> =
-			httpClient.post {
+			post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","invoice","byIds")
@@ -91,8 +95,7 @@ class RawInvoiceApi(
 		}.wrap()
 
 
-	suspend fun modifyInvoice(invoiceDto: Invoice): HttpResponse<EncryptedInvoice> =
-			httpClient.put {
+	suspend fun modifyInvoice(invoiceDto: Invoice): HttpResponse<EncryptedInvoice> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","invoice")
@@ -103,8 +106,7 @@ class RawInvoiceApi(
 		}.wrap()
 
 
-	suspend fun reassignInvoice(invoiceDto: Invoice): HttpResponse<EncryptedInvoice> =
-			httpClient.post {
+	suspend fun reassignInvoice(invoiceDto: Invoice): HttpResponse<EncryptedInvoice> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","invoice","reassign")
@@ -116,7 +118,7 @@ class RawInvoiceApi(
 
 
 	suspend fun mergeTo(invoiceId: String, ids: ListOfIds): HttpResponse<EncryptedInvoice> =
-			httpClient.post {
+			post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","invoice","mergeTo",invoiceId)
@@ -131,7 +133,7 @@ class RawInvoiceApi(
 		invoiceId: String,
 		scheme: String,
 		forcedValue: String,
-	): HttpResponse<EncryptedInvoice> = httpClient.post {
+	): HttpResponse<EncryptedInvoice> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","invoice","validate",invoiceId)
@@ -152,7 +154,7 @@ class RawInvoiceApi(
 		invoiceId: String? = null,
 		gracePeriod: Int? = null,
 		invoicingCodes: List<InvoicingCode>,
-	): HttpResponse<List<EncryptedInvoice>> = httpClient.post {
+	): HttpResponse<List<EncryptedInvoice>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","invoice","byauthor",userId,"append",type,sentMediumType)
@@ -172,7 +174,7 @@ class RawInvoiceApi(
 		serviceId: String,
 		secretFKeys: String,
 		tarificationIds: List<String>,
-	): HttpResponse<List<EncryptedInvoice>> = httpClient.post {
+	): HttpResponse<List<EncryptedInvoice>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","invoice","byauthor",userId,"service",serviceId)
@@ -191,7 +193,7 @@ class RawInvoiceApi(
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedInvoice, JsonString>> = httpClient.get {
+	): HttpResponse<PaginatedList<EncryptedInvoice, JsonString>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","invoice","byauthor",hcPartyId)
@@ -207,7 +209,7 @@ class RawInvoiceApi(
 
 
 	suspend fun listInvoicesByHCPartyAndPatientForeignKeys(hcPartyId: String,
-			secretFKeys: String): HttpResponse<List<EncryptedInvoice>> = httpClient.get {
+			secretFKeys: String): HttpResponse<List<EncryptedInvoice>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","invoice","byHcPartySecretForeignKeys")
@@ -220,7 +222,7 @@ class RawInvoiceApi(
 
 
 	suspend fun findInvoicesByHCPartyPatientForeignKeys(hcPartyId: String,
-			secretPatientKeys: List<String>): HttpResponse<List<EncryptedInvoice>> = httpClient.post {
+			secretPatientKeys: List<String>): HttpResponse<List<EncryptedInvoice>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","invoice","byHcPartySecretForeignKeys")
@@ -233,7 +235,7 @@ class RawInvoiceApi(
 
 
 	suspend fun listInvoicesDelegationsStubsByHCPartyAndPatientForeignKeys(hcPartyId: String,
-			secretFKeys: String): HttpResponse<List<EncryptedIcureStub>> = httpClient.get {
+			secretFKeys: String): HttpResponse<List<EncryptedIcureStub>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","invoice","byHcPartySecretForeignKeys","delegations")
@@ -251,7 +253,7 @@ class RawInvoiceApi(
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedInvoice, JsonString>> = httpClient.get {
+	): HttpResponse<PaginatedList<EncryptedInvoice, JsonString>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","invoice","byHcPartySecretForeignKey")
@@ -267,7 +269,7 @@ class RawInvoiceApi(
 
 
 	suspend fun findInvoicesDelegationsStubsByHCPartyPatientForeignKeys(hcPartyId: String,
-			secretPatientKeys: List<String>): HttpResponse<List<EncryptedIcureStub>> = httpClient.post {
+			secretPatientKeys: List<String>): HttpResponse<List<EncryptedIcureStub>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","invoice","byHcPartySecretForeignKeys","delegations")
@@ -280,7 +282,7 @@ class RawInvoiceApi(
 
 
 	suspend fun listInvoicesByHcPartyAndGroupId(hcPartyId: String, groupId: String):
-			HttpResponse<List<EncryptedInvoice>> = httpClient.get {
+			HttpResponse<List<EncryptedInvoice>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","invoice","byHcPartyGroupId",hcPartyId,groupId)
@@ -297,7 +299,7 @@ class RawInvoiceApi(
 		sent: Boolean,
 		from: Long? = null,
 		to: Long? = null,
-	): HttpResponse<List<EncryptedInvoice>> = httpClient.get {
+	): HttpResponse<List<EncryptedInvoice>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","invoice","byHcParty",hcPartyId,"mediumType","$sentMediumType","invoiceType","$invoiceType","sent","$sent")
@@ -310,7 +312,7 @@ class RawInvoiceApi(
 
 
 	suspend fun listInvoicesByContactIds(contactIds: ListOfIds):
-			HttpResponse<List<EncryptedInvoice>> = httpClient.post {
+			HttpResponse<List<EncryptedInvoice>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","invoice","byContacts")
@@ -322,7 +324,7 @@ class RawInvoiceApi(
 
 
 	suspend fun listInvoicesByRecipientsIds(recipientIds: String):
-			HttpResponse<List<EncryptedInvoice>> = httpClient.get {
+			HttpResponse<List<EncryptedInvoice>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","invoice","to",recipientIds)
@@ -333,7 +335,7 @@ class RawInvoiceApi(
 
 
 	suspend fun listToInsurances(userIds: String? = null): HttpResponse<List<EncryptedInvoice>>
-			= httpClient.get {
+			= get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","invoice","toInsurances")
@@ -345,7 +347,7 @@ class RawInvoiceApi(
 
 
 	suspend fun listToInsurancesUnsent(userIds: String? = null):
-			HttpResponse<List<EncryptedInvoice>> = httpClient.get {
+			HttpResponse<List<EncryptedInvoice>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","invoice","toInsurances","unsent")
@@ -357,7 +359,7 @@ class RawInvoiceApi(
 
 
 	suspend fun listToPatients(hcPartyId: String? = null): HttpResponse<List<EncryptedInvoice>>
-			= httpClient.get {
+			= get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","invoice","toPatients")
@@ -369,7 +371,7 @@ class RawInvoiceApi(
 
 
 	suspend fun listToPatientsUnsent(hcPartyId: String? = null):
-			HttpResponse<List<EncryptedInvoice>> = httpClient.get {
+			HttpResponse<List<EncryptedInvoice>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","invoice","toPatients","unsent")
@@ -381,7 +383,7 @@ class RawInvoiceApi(
 
 
 	suspend fun listInvoicesByIds(invoiceIds: String): HttpResponse<List<EncryptedInvoice>> =
-			httpClient.get {
+			get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","invoice","byIds",invoiceIds)
@@ -397,7 +399,7 @@ class RawInvoiceApi(
 		status: String? = null,
 		from: Long? = null,
 		to: Long? = null,
-	): HttpResponse<List<EncryptedInvoice>> = httpClient.get {
+	): HttpResponse<List<EncryptedInvoice>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","invoice","byHcpartySendingModeStatusDate",hcPartyId)
@@ -412,7 +414,7 @@ class RawInvoiceApi(
 
 
 	suspend fun listInvoicesByServiceIds(serviceIds: String):
-			HttpResponse<List<EncryptedInvoice>> = httpClient.get {
+			HttpResponse<List<EncryptedInvoice>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","invoice","byServiceIds",serviceIds)
@@ -427,7 +429,7 @@ class RawInvoiceApi(
 		from: Long? = null,
 		to: Long? = null,
 		hcpIds: ListOfIds,
-	): HttpResponse<List<EncryptedInvoice>> = httpClient.post {
+	): HttpResponse<List<EncryptedInvoice>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","invoice","allHcpsByStatus",status)
@@ -441,7 +443,7 @@ class RawInvoiceApi(
 
 
 	suspend fun getTarificationsCodesOccurrences(minOccurrences: Long):
-			HttpResponse<List<LabelledOccurence>> = httpClient.get {
+			HttpResponse<List<LabelledOccurence>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","invoice","codes","$minOccurrences")
@@ -452,7 +454,7 @@ class RawInvoiceApi(
 
 
 	suspend fun filterInvoicesBy(filterChain: FilterChain<Invoice>):
-			HttpResponse<List<EncryptedInvoice>> = httpClient.post {
+			HttpResponse<List<EncryptedInvoice>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","invoice","filter")
@@ -464,7 +466,7 @@ class RawInvoiceApi(
 
 
 	suspend fun modifyInvoices(invoiceDtos: List<Invoice>): HttpResponse<List<EncryptedInvoice>>
-			= httpClient.put {
+			= put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","invoice","batch")
@@ -476,7 +478,7 @@ class RawInvoiceApi(
 
 
 	suspend fun createInvoices(invoiceDtos: List<Invoice>): HttpResponse<List<EncryptedInvoice>>
-			= httpClient.post {
+			= post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","invoice","batch")
@@ -488,7 +490,7 @@ class RawInvoiceApi(
 
 
 	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams):
-			HttpResponse<List<EntityBulkShareResult<EncryptedInvoice>>> = httpClient.put {
+			HttpResponse<List<EntityBulkShareResult<EncryptedInvoice>>> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","invoice","bulkSharedMetadataUpdate")
@@ -500,7 +502,7 @@ class RawInvoiceApi(
 
 
 	suspend fun bulkShareMinimal(request: BulkShareOrUpdateMetadataParams):
-			HttpResponse<List<EntityBulkShareResult<EncryptedInvoice>>> = httpClient.put {
+			HttpResponse<List<EntityBulkShareResult<EncryptedInvoice>>> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","invoice","bulkSharedMetadataUpdateMinimal")

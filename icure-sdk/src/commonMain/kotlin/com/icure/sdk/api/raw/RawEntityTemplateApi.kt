@@ -38,7 +38,7 @@ class RawEntityTemplateApi(
 		type: String,
 		searchString: String? = null,
 		includeEntities: Boolean? = null,
-	): HttpResponse<List<EntityTemplate>> = httpClient.get {
+	): HttpResponse<List<EntityTemplate>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","entitytemplate","find",userId,type)
@@ -54,7 +54,7 @@ class RawEntityTemplateApi(
 		type: String,
 		searchString: String? = null,
 		includeEntities: Boolean? = null,
-	): HttpResponse<List<EntityTemplate>> = httpClient.get {
+	): HttpResponse<List<EntityTemplate>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","entitytemplate","findAll",type)
@@ -71,7 +71,7 @@ class RawEntityTemplateApi(
 		type: String,
 		keyword: String,
 		includeEntities: Boolean? = null,
-	): HttpResponse<List<EntityTemplate>> = httpClient.get {
+	): HttpResponse<List<EntityTemplate>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","entitytemplate","find",userId,type,"keyword",keyword)
@@ -86,7 +86,7 @@ class RawEntityTemplateApi(
 		type: String,
 		keyword: String,
 		includeEntities: Boolean? = null,
-	): HttpResponse<List<EntityTemplate>> = httpClient.get {
+	): HttpResponse<List<EntityTemplate>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","entitytemplate","findAll",type,"keyword",keyword)
@@ -97,8 +97,7 @@ class RawEntityTemplateApi(
 		}.wrap()
 
 
-	suspend fun createEntityTemplate(c: EntityTemplate): HttpResponse<EntityTemplate> =
-			httpClient.post {
+	suspend fun createEntityTemplate(c: EntityTemplate): HttpResponse<EntityTemplate> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","entitytemplate")
@@ -110,7 +109,7 @@ class RawEntityTemplateApi(
 
 
 	suspend fun getEntityTemplates(entityTemplateIds: ListOfIds):
-			HttpResponse<List<EntityTemplate>> = httpClient.post {
+			HttpResponse<List<EntityTemplate>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","entitytemplate","byIds")
@@ -122,7 +121,7 @@ class RawEntityTemplateApi(
 
 
 	suspend fun getEntityTemplate(entityTemplateId: String): HttpResponse<EntityTemplate> =
-			httpClient.get {
+			get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","entitytemplate",entityTemplateId)
@@ -133,7 +132,7 @@ class RawEntityTemplateApi(
 
 
 	suspend fun modifyEntityTemplate(entityTemplateDto: EntityTemplate):
-			HttpResponse<EntityTemplate> = httpClient.put {
+			HttpResponse<EntityTemplate> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","entitytemplate")
@@ -145,7 +144,7 @@ class RawEntityTemplateApi(
 
 
 	suspend fun modifyEntityTemplates(entityTemplateDtos: List<EntityTemplate>):
-			HttpResponse<List<EntityTemplate>> = httpClient.put {
+			HttpResponse<List<EntityTemplate>> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","entitytemplate","batch")
@@ -157,7 +156,7 @@ class RawEntityTemplateApi(
 
 
 	suspend fun createEntityTemplates(entityTemplateDtos: List<EntityTemplate>):
-			HttpResponse<List<EntityTemplate>> = httpClient.post {
+			HttpResponse<List<EntityTemplate>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","entitytemplate","batch")
@@ -169,7 +168,7 @@ class RawEntityTemplateApi(
 
 
 	suspend fun deleteEntityTemplate(entityTemplateIds: ListOfIds):
-			HttpResponse<List<DocIdentifier>> = httpClient.post {
+			HttpResponse<List<DocIdentifier>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","entitytemplate","delete","batch")

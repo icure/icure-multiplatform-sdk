@@ -29,8 +29,7 @@ class RawDataOwnerApi(
 
 	// region common endpoints
 
-	suspend fun getDataOwner(dataOwnerId: String): HttpResponse<DataOwnerWithType> =
-			httpClient.get {
+	suspend fun getDataOwner(dataOwnerId: String): HttpResponse<DataOwnerWithType> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","dataowner",dataOwnerId)
@@ -41,7 +40,7 @@ class RawDataOwnerApi(
 
 
 	suspend fun getDataOwnerStub(dataOwnerId: String): HttpResponse<CryptoActorStubWithType> =
-			httpClient.get {
+			get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","dataowner","stub",dataOwnerId)
@@ -52,7 +51,7 @@ class RawDataOwnerApi(
 
 
 	suspend fun modifyDataOwnerStub(updated: CryptoActorStubWithType):
-			HttpResponse<CryptoActorStubWithType> = httpClient.put {
+			HttpResponse<CryptoActorStubWithType> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","dataowner","stub")
@@ -63,7 +62,7 @@ class RawDataOwnerApi(
 		}.wrap()
 
 
-	suspend fun getCurrentDataOwner(): HttpResponse<DataOwnerWithType> = httpClient.get {
+	suspend fun getCurrentDataOwner(): HttpResponse<DataOwnerWithType> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","dataowner","current")

@@ -35,7 +35,7 @@ class RawAnonymousApi(
 		userId: String,
 		startDate: Long,
 		endDate: Long,
-	): HttpResponse<List<AppointmentTypeAndPlace>> = httpClient.get {
+	): HttpResponse<List<AppointmentTypeAndPlace>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","aa","appointmentType","inGroup",groupId,"forUser",userId)
@@ -56,7 +56,7 @@ class RawAnonymousApi(
 		hcpId: String,
 		placeId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<List<Long>> = httpClient.get {
+	): HttpResponse<List<Long>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","aa","available","inGroup",groupId,"forUser",userId,"type",calendarItemTypeId)
@@ -75,7 +75,7 @@ class RawAnonymousApi(
 	// region anonymous healthcareparty endpoints
 
 	suspend fun listHealthcarePartiesInGroup(groupId: String):
-			HttpResponse<List<HealthcareParty>> = httpClient.get {
+			HttpResponse<List<HealthcareParty>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","aa","hcparty","inGroup",groupId)
@@ -92,7 +92,7 @@ class RawAnonymousApi(
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<AnonymousMedicalLocation, JsonString>> = httpClient.get {
+	): HttpResponse<PaginatedList<AnonymousMedicalLocation, JsonString>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","aa","medicallocation","byGroup",groupId)

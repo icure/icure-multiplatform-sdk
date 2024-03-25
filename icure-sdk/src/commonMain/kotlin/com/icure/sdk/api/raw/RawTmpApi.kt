@@ -55,7 +55,7 @@ class RawTmpApi(
 
 	// region cloud endpoints
 
-	suspend fun createTmpDatabase(): HttpResponse<Unit> = httpClient.post {
+	suspend fun createTmpDatabase(): HttpResponse<Unit> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp")
@@ -65,7 +65,7 @@ class RawTmpApi(
 		}.wrap()
 
 
-	suspend fun destroyTmpDatabase(): HttpResponse<Unit> = httpClient.delete {
+	suspend fun destroyTmpDatabase(): HttpResponse<Unit> = delete {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp")
@@ -75,7 +75,7 @@ class RawTmpApi(
 
 
 	suspend fun replicateToTmpDatabase(from: String, ids: List<String>):
-			HttpResponse<ReplicatorDocument> = httpClient.post {
+			HttpResponse<ReplicatorDocument> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","replicate","from",from)
@@ -86,7 +86,7 @@ class RawTmpApi(
 		}.wrap()
 
 
-	suspend fun getTmpPatient(id: String): HttpResponse<EncryptedPatient> = httpClient.get {
+	suspend fun getTmpPatient(id: String): HttpResponse<EncryptedPatient> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","patient","byId",id)
@@ -96,7 +96,7 @@ class RawTmpApi(
 		}.wrap()
 
 
-	suspend fun createTmpPatient(c: Patient): HttpResponse<EncryptedPatient> = httpClient.post {
+	suspend fun createTmpPatient(c: Patient): HttpResponse<EncryptedPatient> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","patient")
@@ -107,8 +107,7 @@ class RawTmpApi(
 		}.wrap()
 
 
-	suspend fun modifyTmpPatient(patientDto: Patient): HttpResponse<EncryptedPatient> =
-			httpClient.put {
+	suspend fun modifyTmpPatient(patientDto: Patient): HttpResponse<EncryptedPatient> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","patient")
@@ -119,8 +118,7 @@ class RawTmpApi(
 		}.wrap()
 
 
-	suspend fun getTmpPatients(ids: List<String>): HttpResponse<List<EncryptedPatient>> =
-			httpClient.post {
+	suspend fun getTmpPatients(ids: List<String>): HttpResponse<List<EncryptedPatient>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","patient","get")
@@ -132,7 +130,7 @@ class RawTmpApi(
 
 
 	suspend fun modifyTmpPatients(patientDtos: List<Patient>):
-			HttpResponse<List<EncryptedPatient>> = httpClient.put {
+			HttpResponse<List<EncryptedPatient>> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","patient","batch")
@@ -144,7 +142,7 @@ class RawTmpApi(
 
 
 	suspend fun createTmpPatients(patientDtos: List<Patient>):
-			HttpResponse<List<EncryptedPatient>> = httpClient.post {
+			HttpResponse<List<EncryptedPatient>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","patient","batch")
@@ -156,7 +154,7 @@ class RawTmpApi(
 
 
 	suspend fun listTmpPatients(firstPatientId: String? = null, pageSize: Int? = null):
-			HttpResponse<PaginatedList<EncryptedPatient, Nothing>> = httpClient.get {
+			HttpResponse<PaginatedList<EncryptedPatient, Nothing>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","patient","list")
@@ -168,8 +166,7 @@ class RawTmpApi(
 		}.wrap()
 
 
-	suspend fun getTmpHealthElement(id: String): HttpResponse<EncryptedHealthElement> =
-			httpClient.get {
+	suspend fun getTmpHealthElement(id: String): HttpResponse<EncryptedHealthElement> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","healthElement","byId",id)
@@ -180,7 +177,7 @@ class RawTmpApi(
 
 
 	suspend fun createTmpHealthElement(c: HealthElement): HttpResponse<EncryptedHealthElement> =
-			httpClient.post {
+			post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","healthElement")
@@ -192,7 +189,7 @@ class RawTmpApi(
 
 
 	suspend fun modifyTmpHealthElement(healthElementDto: HealthElement):
-			HttpResponse<EncryptedHealthElement> = httpClient.put {
+			HttpResponse<EncryptedHealthElement> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","healthElement")
@@ -204,7 +201,7 @@ class RawTmpApi(
 
 
 	suspend fun getTmpHealthElements(ids: List<String>):
-			HttpResponse<List<EncryptedHealthElement>> = httpClient.post {
+			HttpResponse<List<EncryptedHealthElement>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","healthElement","get")
@@ -216,7 +213,7 @@ class RawTmpApi(
 
 
 	suspend fun modifyTmpHealthElements(healthElementDtos: List<HealthElement>):
-			HttpResponse<List<EncryptedHealthElement>> = httpClient.put {
+			HttpResponse<List<EncryptedHealthElement>> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","healthElement","batch")
@@ -228,7 +225,7 @@ class RawTmpApi(
 
 
 	suspend fun createTmpHealthElements(healthElementDtos: List<HealthElement>):
-			HttpResponse<List<EncryptedHealthElement>> = httpClient.post {
+			HttpResponse<List<EncryptedHealthElement>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","healthElement","batch")
@@ -240,7 +237,7 @@ class RawTmpApi(
 
 
 	suspend fun listTmpHealthElements(firstHealthElementId: String? = null, pageSize: Int? =
-			null): HttpResponse<PaginatedList<EncryptedHealthElement, Nothing>> = httpClient.get {
+			null): HttpResponse<PaginatedList<EncryptedHealthElement, Nothing>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","healthElement","list")
@@ -252,7 +249,7 @@ class RawTmpApi(
 		}.wrap()
 
 
-	suspend fun getTmpForm(id: String): HttpResponse<EncryptedForm> = httpClient.get {
+	suspend fun getTmpForm(id: String): HttpResponse<EncryptedForm> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","form","byId",id)
@@ -262,7 +259,7 @@ class RawTmpApi(
 		}.wrap()
 
 
-	suspend fun createTmpForm(c: Form): HttpResponse<EncryptedForm> = httpClient.post {
+	suspend fun createTmpForm(c: Form): HttpResponse<EncryptedForm> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","form")
@@ -273,7 +270,7 @@ class RawTmpApi(
 		}.wrap()
 
 
-	suspend fun modifyTmpForm(formDto: Form): HttpResponse<EncryptedForm> = httpClient.put {
+	suspend fun modifyTmpForm(formDto: Form): HttpResponse<EncryptedForm> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","form")
@@ -284,8 +281,7 @@ class RawTmpApi(
 		}.wrap()
 
 
-	suspend fun getTmpForms(ids: List<String>): HttpResponse<List<EncryptedForm>> =
-			httpClient.post {
+	suspend fun getTmpForms(ids: List<String>): HttpResponse<List<EncryptedForm>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","form","get")
@@ -296,8 +292,7 @@ class RawTmpApi(
 		}.wrap()
 
 
-	suspend fun modifyTmpForms(formDtos: List<Form>): HttpResponse<List<EncryptedForm>> =
-			httpClient.put {
+	suspend fun modifyTmpForms(formDtos: List<Form>): HttpResponse<List<EncryptedForm>> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","form","batch")
@@ -308,8 +303,7 @@ class RawTmpApi(
 		}.wrap()
 
 
-	suspend fun createTmpForms(formDtos: List<Form>): HttpResponse<List<EncryptedForm>> =
-			httpClient.post {
+	suspend fun createTmpForms(formDtos: List<Form>): HttpResponse<List<EncryptedForm>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","form","batch")
@@ -321,7 +315,7 @@ class RawTmpApi(
 
 
 	suspend fun listTmpForms(firstFormId: String? = null, pageSize: Int? = null):
-			HttpResponse<PaginatedList<EncryptedForm, Nothing>> = httpClient.get {
+			HttpResponse<PaginatedList<EncryptedForm, Nothing>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","form","list")
@@ -333,7 +327,7 @@ class RawTmpApi(
 		}.wrap()
 
 
-	suspend fun getTmpContact(id: String): HttpResponse<EncryptedContact> = httpClient.get {
+	suspend fun getTmpContact(id: String): HttpResponse<EncryptedContact> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","contact","byId",id)
@@ -343,7 +337,7 @@ class RawTmpApi(
 		}.wrap()
 
 
-	suspend fun createTmpContact(c: Contact): HttpResponse<EncryptedContact> = httpClient.post {
+	suspend fun createTmpContact(c: Contact): HttpResponse<EncryptedContact> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","contact")
@@ -354,8 +348,7 @@ class RawTmpApi(
 		}.wrap()
 
 
-	suspend fun modifyTmpContact(contactDto: Contact): HttpResponse<EncryptedContact> =
-			httpClient.put {
+	suspend fun modifyTmpContact(contactDto: Contact): HttpResponse<EncryptedContact> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","contact")
@@ -366,8 +359,7 @@ class RawTmpApi(
 		}.wrap()
 
 
-	suspend fun getTmpContacts(ids: List<String>): HttpResponse<List<EncryptedContact>> =
-			httpClient.post {
+	suspend fun getTmpContacts(ids: List<String>): HttpResponse<List<EncryptedContact>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","contact","get")
@@ -379,7 +371,7 @@ class RawTmpApi(
 
 
 	suspend fun modifyTmpContacts(contactDtos: List<Contact>):
-			HttpResponse<List<EncryptedContact>> = httpClient.put {
+			HttpResponse<List<EncryptedContact>> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","contact","batch")
@@ -391,7 +383,7 @@ class RawTmpApi(
 
 
 	suspend fun createTmpContacts(contactDtos: List<Contact>):
-			HttpResponse<List<EncryptedContact>> = httpClient.post {
+			HttpResponse<List<EncryptedContact>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","contact","batch")
@@ -403,7 +395,7 @@ class RawTmpApi(
 
 
 	suspend fun listTmpContacts(firstContactId: String? = null, pageSize: Int? = null):
-			HttpResponse<PaginatedList<EncryptedContact, Nothing>> = httpClient.get {
+			HttpResponse<PaginatedList<EncryptedContact, Nothing>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","contact","list")
@@ -415,7 +407,7 @@ class RawTmpApi(
 		}.wrap()
 
 
-	suspend fun getTmpMessage(id: String): HttpResponse<EncryptedMessage> = httpClient.get {
+	suspend fun getTmpMessage(id: String): HttpResponse<EncryptedMessage> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","message","byId",id)
@@ -425,7 +417,7 @@ class RawTmpApi(
 		}.wrap()
 
 
-	suspend fun createTmpMessage(c: Message): HttpResponse<EncryptedMessage> = httpClient.post {
+	suspend fun createTmpMessage(c: Message): HttpResponse<EncryptedMessage> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","message")
@@ -436,8 +428,7 @@ class RawTmpApi(
 		}.wrap()
 
 
-	suspend fun modifyTmpMessage(messageDto: Message): HttpResponse<EncryptedMessage> =
-			httpClient.put {
+	suspend fun modifyTmpMessage(messageDto: Message): HttpResponse<EncryptedMessage> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","message")
@@ -448,8 +439,7 @@ class RawTmpApi(
 		}.wrap()
 
 
-	suspend fun getTmpMessages(ids: List<String>): HttpResponse<List<EncryptedMessage>> =
-			httpClient.post {
+	suspend fun getTmpMessages(ids: List<String>): HttpResponse<List<EncryptedMessage>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","message","get")
@@ -461,7 +451,7 @@ class RawTmpApi(
 
 
 	suspend fun modifyTmpMessages(messageDtos: List<Message>):
-			HttpResponse<List<EncryptedMessage>> = httpClient.put {
+			HttpResponse<List<EncryptedMessage>> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","message","batch")
@@ -473,7 +463,7 @@ class RawTmpApi(
 
 
 	suspend fun createTmpMessages(messageDtos: List<Message>):
-			HttpResponse<List<EncryptedMessage>> = httpClient.post {
+			HttpResponse<List<EncryptedMessage>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","message","batch")
@@ -485,7 +475,7 @@ class RawTmpApi(
 
 
 	suspend fun listTmpMessages(firstMessageId: String? = null, pageSize: Int? = null):
-			HttpResponse<PaginatedList<EncryptedInvoice, Nothing>> = httpClient.get {
+			HttpResponse<PaginatedList<EncryptedInvoice, Nothing>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","message","list")
@@ -497,7 +487,7 @@ class RawTmpApi(
 		}.wrap()
 
 
-	suspend fun getTmpInvoice(id: String): HttpResponse<EncryptedInvoice> = httpClient.get {
+	suspend fun getTmpInvoice(id: String): HttpResponse<EncryptedInvoice> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","invoice","byId",id)
@@ -507,7 +497,7 @@ class RawTmpApi(
 		}.wrap()
 
 
-	suspend fun createTmpInvoice(c: Invoice): HttpResponse<EncryptedInvoice> = httpClient.post {
+	suspend fun createTmpInvoice(c: Invoice): HttpResponse<EncryptedInvoice> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","invoice")
@@ -518,8 +508,7 @@ class RawTmpApi(
 		}.wrap()
 
 
-	suspend fun modifyTmpInvoice(invoiceDto: Invoice): HttpResponse<EncryptedInvoice> =
-			httpClient.put {
+	suspend fun modifyTmpInvoice(invoiceDto: Invoice): HttpResponse<EncryptedInvoice> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","invoice")
@@ -530,8 +519,7 @@ class RawTmpApi(
 		}.wrap()
 
 
-	suspend fun getTmpInvoices(ids: List<String>): HttpResponse<List<EncryptedInvoice>> =
-			httpClient.post {
+	suspend fun getTmpInvoices(ids: List<String>): HttpResponse<List<EncryptedInvoice>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","invoice","get")
@@ -543,7 +531,7 @@ class RawTmpApi(
 
 
 	suspend fun modifyTmpInvoices(invoiceDtos: List<Invoice>):
-			HttpResponse<List<EncryptedInvoice>> = httpClient.put {
+			HttpResponse<List<EncryptedInvoice>> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","invoice","batch")
@@ -555,7 +543,7 @@ class RawTmpApi(
 
 
 	suspend fun createTmpInvoices(invoiceDtos: List<Invoice>):
-			HttpResponse<List<EncryptedInvoice>> = httpClient.post {
+			HttpResponse<List<EncryptedInvoice>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","invoice","batch")
@@ -567,7 +555,7 @@ class RawTmpApi(
 
 
 	suspend fun listTmpInvoices(firstInvoiceId: String? = null, pageSize: Int? = null):
-			HttpResponse<PaginatedList<EncryptedInvoice, Nothing>> = httpClient.get {
+			HttpResponse<PaginatedList<EncryptedInvoice, Nothing>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","invoice","list")
@@ -579,7 +567,7 @@ class RawTmpApi(
 		}.wrap()
 
 
-	suspend fun getTmpDocument(id: String): HttpResponse<EncryptedDocument> = httpClient.get {
+	suspend fun getTmpDocument(id: String): HttpResponse<EncryptedDocument> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","document","byId",id)
@@ -594,7 +582,7 @@ class RawTmpApi(
 		attachmentId: String,
 		enckeys: String? = null,
 		fileName: String? = null,
-	): HttpResponse<ByteArray> = httpClient.get {
+	): HttpResponse<ByteArray> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","document",documentId,"attachment",attachmentId)
@@ -607,7 +595,7 @@ class RawTmpApi(
 
 
 	suspend fun deleteTmpDocumentAttachment(documentId: String): HttpResponse<EncryptedDocument>
-			= httpClient.delete {
+			= delete {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","document",documentId,"attachment")
@@ -620,7 +608,7 @@ class RawTmpApi(
 		documentId: String,
 		enckeys: String? = null,
 		payload: ByteArray,
-	): HttpResponse<EncryptedDocument> = httpClient.put {
+	): HttpResponse<EncryptedDocument> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","document",documentId,"attachment")
@@ -632,8 +620,7 @@ class RawTmpApi(
 		}.wrap()
 
 
-	suspend fun createTmpDocument(c: Document): HttpResponse<EncryptedDocument> =
-			httpClient.post {
+	suspend fun createTmpDocument(c: Document): HttpResponse<EncryptedDocument> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","document")
@@ -645,7 +632,7 @@ class RawTmpApi(
 
 
 	suspend fun modifyTmpDocument(documentDto: Document): HttpResponse<EncryptedDocument> =
-			httpClient.put {
+			put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","document")
@@ -657,7 +644,7 @@ class RawTmpApi(
 
 
 	suspend fun getTmpDocuments(ids: List<String>): HttpResponse<List<EncryptedDocument>> =
-			httpClient.post {
+			post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","document","get")
@@ -669,7 +656,7 @@ class RawTmpApi(
 
 
 	suspend fun modifyTmpDocuments(documentDtos: List<Document>):
-			HttpResponse<List<EncryptedDocument>> = httpClient.put {
+			HttpResponse<List<EncryptedDocument>> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","document","batch")
@@ -681,7 +668,7 @@ class RawTmpApi(
 
 
 	suspend fun createTmpDocuments(documentDtos: List<Document>):
-			HttpResponse<List<EncryptedDocument>> = httpClient.post {
+			HttpResponse<List<EncryptedDocument>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","document","batch")
@@ -693,7 +680,7 @@ class RawTmpApi(
 
 
 	suspend fun listTmpDocuments(firstDocumentId: String? = null, pageSize: Int? = null):
-			HttpResponse<PaginatedList<EncryptedDocument, Nothing>> = httpClient.get {
+			HttpResponse<PaginatedList<EncryptedDocument, Nothing>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","document","list")
@@ -705,8 +692,7 @@ class RawTmpApi(
 		}.wrap()
 
 
-	suspend fun getTmpClassification(id: String): HttpResponse<EncryptedClassification> =
-			httpClient.get {
+	suspend fun getTmpClassification(id: String): HttpResponse<EncryptedClassification> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","classification","byId",id)
@@ -717,7 +703,7 @@ class RawTmpApi(
 
 
 	suspend fun createTmpClassification(c: Classification):
-			HttpResponse<EncryptedClassification> = httpClient.post {
+			HttpResponse<EncryptedClassification> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","classification")
@@ -729,7 +715,7 @@ class RawTmpApi(
 
 
 	suspend fun modifyTmpClassification(classificationDto: Classification):
-			HttpResponse<EncryptedClassification> = httpClient.put {
+			HttpResponse<EncryptedClassification> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","classification")
@@ -741,7 +727,7 @@ class RawTmpApi(
 
 
 	suspend fun getTmpClassifications(ids: List<String>):
-			HttpResponse<List<EncryptedClassification>> = httpClient.post {
+			HttpResponse<List<EncryptedClassification>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","classification","get")
@@ -753,7 +739,7 @@ class RawTmpApi(
 
 
 	suspend fun modifyTmpClassifications(classificationDtos: List<Classification>):
-			HttpResponse<List<EncryptedClassification>> = httpClient.put {
+			HttpResponse<List<EncryptedClassification>> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","classification","batch")
@@ -765,7 +751,7 @@ class RawTmpApi(
 
 
 	suspend fun createTmpClassifications(classificationDtos: List<Classification>):
-			HttpResponse<List<EncryptedClassification>> = httpClient.post {
+			HttpResponse<List<EncryptedClassification>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","classification","batch")
@@ -777,7 +763,7 @@ class RawTmpApi(
 
 
 	suspend fun listTmpClassifications(firstClassificationId: String? = null, pageSize: Int? =
-			null): HttpResponse<PaginatedList<EncryptedClassification, Nothing>> = httpClient.get {
+			null): HttpResponse<PaginatedList<EncryptedClassification, Nothing>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","classification","list")
@@ -789,8 +775,7 @@ class RawTmpApi(
 		}.wrap()
 
 
-	suspend fun getTmpEntityTemplate(id: String): HttpResponse<EntityTemplate> =
-			httpClient.get {
+	suspend fun getTmpEntityTemplate(id: String): HttpResponse<EntityTemplate> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","entityTemplate","byId",id)
@@ -801,7 +786,7 @@ class RawTmpApi(
 
 
 	suspend fun createTmpEntityTemplate(c: EntityTemplate): HttpResponse<EntityTemplate> =
-			httpClient.post {
+			post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","entityTemplate")
@@ -813,7 +798,7 @@ class RawTmpApi(
 
 
 	suspend fun modifyTmpEntityTemplate(entityTemplateDto: EntityTemplate):
-			HttpResponse<EntityTemplate> = httpClient.put {
+			HttpResponse<EntityTemplate> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","entityTemplate")
@@ -825,7 +810,7 @@ class RawTmpApi(
 
 
 	suspend fun getTmpEntityTemplates(ids: List<String>): HttpResponse<List<EntityTemplate>> =
-			httpClient.post {
+			post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","entityTemplate","get")
@@ -837,7 +822,7 @@ class RawTmpApi(
 
 
 	suspend fun modifyTmpEntityTemplates(entityTemplateDtos: List<EntityTemplate>):
-			HttpResponse<List<EntityTemplate>> = httpClient.put {
+			HttpResponse<List<EntityTemplate>> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","entityTemplate","batch")
@@ -849,7 +834,7 @@ class RawTmpApi(
 
 
 	suspend fun createTmpEntityTemplates(entityTemplateDtos: List<EntityTemplate>):
-			HttpResponse<List<EntityTemplate>> = httpClient.post {
+			HttpResponse<List<EntityTemplate>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","entityTemplate","batch")
@@ -861,7 +846,7 @@ class RawTmpApi(
 
 
 	suspend fun listTmpEntityTemplates(firstEntityTemplateId: String? = null, pageSize: Int? =
-			null): HttpResponse<PaginatedList<EntityTemplate, Nothing>> = httpClient.get {
+			null): HttpResponse<PaginatedList<EntityTemplate, Nothing>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","entityTemplate","list")
@@ -873,8 +858,7 @@ class RawTmpApi(
 		}.wrap()
 
 
-	suspend fun deleteTmpItems(ids: List<String>): HttpResponse<List<DocIdentifier>> =
-			httpClient.post {
+	suspend fun deleteTmpItems(ids: List<String>): HttpResponse<List<DocIdentifier>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","batch","delete")
@@ -885,8 +869,7 @@ class RawTmpApi(
 		}.wrap()
 
 
-	suspend fun purgeTmpItems(ids: List<String>): HttpResponse<List<DocIdentifier>> =
-			httpClient.post {
+	suspend fun purgeTmpItems(ids: List<String>): HttpResponse<List<DocIdentifier>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tmp","batch","purge")

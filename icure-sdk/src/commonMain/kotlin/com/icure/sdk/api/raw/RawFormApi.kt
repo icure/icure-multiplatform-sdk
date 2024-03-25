@@ -2,8 +2,10 @@ package com.icure.sdk.api.raw
 
 import com.icure.sdk.auth.services.AuthService
 import com.icure.sdk.auth.services.setAuthorizationWith
+import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.model.EncryptedForm
 import com.icure.sdk.model.EncryptedIcureStub
+import com.icure.sdk.model.EntityWithDelegationTypeName
 import com.icure.sdk.model.Form
 import com.icure.sdk.model.FormTemplate
 import com.icure.sdk.model.ListOfIds
@@ -38,13 +40,17 @@ import kotlin.time.Duration
 class RawFormApi(
 	private val apiUrl: String,
 	private val authService: AuthService,
+	private val accessControlKeysHeadersProvider: AccessControlKeysHeadersProvider?,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
 
+	override suspend fun getAccessControlKeysHeaderValues(): List<String>? =
+			accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithDelegationTypeName.Form)
+
 	// region common endpoints
 
-	suspend fun getForm(formId: String): HttpResponse<EncryptedForm> = httpClient.get {
+	suspend fun getForm(formId: String): HttpResponse<EncryptedForm> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","form",formId)
@@ -54,8 +60,7 @@ class RawFormApi(
 		}.wrap()
 
 
-	suspend fun getForms(formIds: ListOfIds): HttpResponse<List<EncryptedForm>> =
-			httpClient.post {
+	suspend fun getForms(formIds: ListOfIds): HttpResponse<List<EncryptedForm>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","form","byIds")
@@ -66,8 +71,7 @@ class RawFormApi(
 		}.wrap()
 
 
-	suspend fun getFormByLogicalUuid(logicalUuid: String): HttpResponse<EncryptedForm> =
-			httpClient.get {
+	suspend fun getFormByLogicalUuid(logicalUuid: String): HttpResponse<EncryptedForm> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","form","logicalUuid",logicalUuid)
@@ -78,7 +82,7 @@ class RawFormApi(
 
 
 	suspend fun getFormsByLogicalUuid(logicalUuid: String): HttpResponse<List<EncryptedForm>> =
-			httpClient.get {
+			get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","form","all","logicalUuid",logicalUuid)
@@ -88,8 +92,7 @@ class RawFormApi(
 		}.wrap()
 
 
-	suspend fun getFormsByUniqueId(uniqueId: String): HttpResponse<List<EncryptedForm>> =
-			httpClient.get {
+	suspend fun getFormsByUniqueId(uniqueId: String): HttpResponse<List<EncryptedForm>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","form","all","uniqueId",uniqueId)
@@ -99,8 +102,7 @@ class RawFormApi(
 		}.wrap()
 
 
-	suspend fun getFormByUniqueId(uniqueId: String): HttpResponse<EncryptedForm> =
-			httpClient.get {
+	suspend fun getFormByUniqueId(uniqueId: String): HttpResponse<EncryptedForm> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","form","uniqueId",uniqueId)
@@ -111,7 +113,7 @@ class RawFormApi(
 
 
 	suspend fun getChildrenForms(formId: String, hcPartyId: String):
-			HttpResponse<List<EncryptedForm>> = httpClient.get {
+			HttpResponse<List<EncryptedForm>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","form","childrenOf",formId,hcPartyId)
@@ -121,7 +123,7 @@ class RawFormApi(
 		}.wrap()
 
 
-	suspend fun createForm(ft: Form): HttpResponse<EncryptedForm> = httpClient.post {
+	suspend fun createForm(ft: Form): HttpResponse<EncryptedForm> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","form")
@@ -132,7 +134,7 @@ class RawFormApi(
 		}.wrap()
 
 
-	suspend fun modifyForm(formDto: Form): HttpResponse<EncryptedForm> = httpClient.put {
+	suspend fun modifyForm(formDto: Form): HttpResponse<EncryptedForm> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","form")
@@ -143,8 +145,7 @@ class RawFormApi(
 		}.wrap()
 
 
-	suspend fun deleteForms(formIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
-			httpClient.post {
+	suspend fun deleteForms(formIds: ListOfIds): HttpResponse<List<DocIdentifier>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","form","delete","batch")
@@ -155,7 +156,7 @@ class RawFormApi(
 		}.wrap()
 
 
-	suspend fun deleteForm(formId: String): HttpResponse<DocIdentifier> = httpClient.delete {
+	suspend fun deleteForm(formId: String): HttpResponse<DocIdentifier> = delete {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","form",formId)
@@ -164,8 +165,7 @@ class RawFormApi(
 		}.wrap()
 
 
-	suspend fun modifyForms(formDtos: List<Form>): HttpResponse<List<EncryptedForm>> =
-			httpClient.put {
+	suspend fun modifyForms(formDtos: List<Form>): HttpResponse<List<EncryptedForm>> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","form","batch")
@@ -176,8 +176,7 @@ class RawFormApi(
 		}.wrap()
 
 
-	suspend fun createForms(formDtos: List<Form>): HttpResponse<List<EncryptedForm>> =
-			httpClient.post {
+	suspend fun createForms(formDtos: List<Form>): HttpResponse<List<EncryptedForm>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","form","batch")
@@ -194,7 +193,7 @@ class RawFormApi(
 		healthElementId: String? = null,
 		planOfActionId: String? = null,
 		formTemplateId: String? = null,
-	): HttpResponse<List<EncryptedForm>> = httpClient.get {
+	): HttpResponse<List<EncryptedForm>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","form","byHcPartySecretForeignKeys")
@@ -215,7 +214,7 @@ class RawFormApi(
 		healthElementId: String? = null,
 		planOfActionId: String? = null,
 		formTemplateId: String? = null,
-	): HttpResponse<List<EncryptedForm>> = httpClient.post {
+	): HttpResponse<List<EncryptedForm>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","form","byHcPartySecretForeignKeys")
@@ -236,7 +235,7 @@ class RawFormApi(
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedForm, JsonString>> = httpClient.get {
+	): HttpResponse<PaginatedList<EncryptedForm, JsonString>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","form","byHcPartySecretForeignKey")
@@ -252,7 +251,7 @@ class RawFormApi(
 
 
 	suspend fun listFormsDelegationsStubsByHCPartyAndPatientForeignKeys(hcPartyId: String,
-			secretFKeys: String): HttpResponse<List<EncryptedIcureStub>> = httpClient.get {
+			secretFKeys: String): HttpResponse<List<EncryptedIcureStub>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","form","byHcPartySecretForeignKeys","delegations")
@@ -265,7 +264,7 @@ class RawFormApi(
 
 
 	suspend fun listFormsDelegationsStubsByHCPartyAndPatientForeignKeys(hcPartyId: String,
-			secretPatientKeys: List<String>): HttpResponse<List<EncryptedIcureStub>> = httpClient.post {
+			secretPatientKeys: List<String>): HttpResponse<List<EncryptedIcureStub>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","form","byHcPartySecretForeignKeys","delegations")
@@ -278,7 +277,7 @@ class RawFormApi(
 
 
 	suspend fun getFormTemplate(formTemplateId: String, raw: Boolean? = null):
-			HttpResponse<FormTemplate> = httpClient.get {
+			HttpResponse<FormTemplate> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","form","template",formTemplateId)
@@ -293,7 +292,7 @@ class RawFormApi(
 		formTemplateGuid: String,
 		specialityCode: String,
 		raw: Boolean? = null,
-	): HttpResponse<List<FormTemplate>> = httpClient.get {
+	): HttpResponse<List<FormTemplate>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","form","template",specialityCode,"guid",formTemplateGuid)
@@ -308,7 +307,7 @@ class RawFormApi(
 		specialityCode: String,
 		loadLayout: Boolean? = null,
 		raw: Boolean? = null,
-	): HttpResponse<List<FormTemplate>> = httpClient.get {
+	): HttpResponse<List<FormTemplate>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","form","template","bySpecialty",specialityCode)
@@ -321,7 +320,7 @@ class RawFormApi(
 
 
 	suspend fun getFormTemplates(loadLayout: Boolean? = null, raw: Boolean? = null):
-			HttpResponse<List<FormTemplate>> = httpClient.get {
+			HttpResponse<List<FormTemplate>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","form","template")
@@ -333,8 +332,7 @@ class RawFormApi(
 		}.wrap()
 
 
-	suspend fun createFormTemplate(ft: FormTemplate): HttpResponse<FormTemplate> =
-			httpClient.post {
+	suspend fun createFormTemplate(ft: FormTemplate): HttpResponse<FormTemplate> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","form","template")
@@ -346,7 +344,7 @@ class RawFormApi(
 
 
 	suspend fun deleteFormTemplate(formTemplateId: String): HttpResponse<DocIdentifier> =
-			httpClient.delete {
+			delete {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","form","template",formTemplateId)
@@ -356,7 +354,7 @@ class RawFormApi(
 
 
 	suspend fun updateFormTemplate(formTemplateId: String, ft: FormTemplate):
-			HttpResponse<FormTemplate> = httpClient.put {
+			HttpResponse<FormTemplate> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","form","template",formTemplateId)
@@ -368,7 +366,7 @@ class RawFormApi(
 
 
 	suspend fun setTemplateAttachment(formTemplateId: String, payload: ByteArray):
-			HttpResponse<String> = httpClient.put {
+			HttpResponse<String> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","form","template",formTemplateId,"attachment")
@@ -380,7 +378,7 @@ class RawFormApi(
 
 
 	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams):
-			HttpResponse<List<EntityBulkShareResult<EncryptedForm>>> = httpClient.put {
+			HttpResponse<List<EntityBulkShareResult<EncryptedForm>>> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","form","bulkSharedMetadataUpdate")
@@ -392,7 +390,7 @@ class RawFormApi(
 
 
 	suspend fun bulkShareMinimal(request: BulkShareOrUpdateMetadataParams):
-			HttpResponse<List<EntityBulkShareResult<EncryptedForm>>> = httpClient.put {
+			HttpResponse<List<EntityBulkShareResult<EncryptedForm>>> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","form","bulkSharedMetadataUpdateMinimal")

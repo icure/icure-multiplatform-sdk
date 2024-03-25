@@ -36,7 +36,7 @@ class RawCalendarItemTypeApi(
 	// region common endpoints
 
 	suspend fun getCalendarItemTypes(startDocumentId: String? = null, limit: Int? = null):
-			HttpResponse<PaginatedList<CalendarItemType, JsonString>> = httpClient.get {
+			HttpResponse<PaginatedList<CalendarItemType, JsonString>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","calendarItemType")
@@ -52,7 +52,7 @@ class RawCalendarItemTypeApi(
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<CalendarItemType, JsonString>> = httpClient.get {
+	): HttpResponse<PaginatedList<CalendarItemType, JsonString>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","calendarItemType","includeDeleted")
@@ -66,7 +66,7 @@ class RawCalendarItemTypeApi(
 
 
 	suspend fun createCalendarItemType(calendarItemTypeDto: CalendarItemType):
-			HttpResponse<CalendarItemType> = httpClient.post {
+			HttpResponse<CalendarItemType> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","calendarItemType")
@@ -78,7 +78,7 @@ class RawCalendarItemTypeApi(
 
 
 	suspend fun deleteCalendarItemTypes(calendarItemTypeIds: ListOfIds):
-			HttpResponse<List<DocIdentifier>> = httpClient.post {
+			HttpResponse<List<DocIdentifier>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","calendarItemType","delete","batch")
@@ -90,7 +90,7 @@ class RawCalendarItemTypeApi(
 
 
 	suspend fun getCalendarItemType(calendarItemTypeId: String): HttpResponse<CalendarItemType>
-			= httpClient.get {
+			= get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","calendarItemType",calendarItemTypeId)
@@ -101,7 +101,7 @@ class RawCalendarItemTypeApi(
 
 
 	suspend fun modifyCalendarItemType(calendarItemTypeDto: CalendarItemType):
-			HttpResponse<CalendarItemType> = httpClient.put {
+			HttpResponse<CalendarItemType> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","calendarItemType")

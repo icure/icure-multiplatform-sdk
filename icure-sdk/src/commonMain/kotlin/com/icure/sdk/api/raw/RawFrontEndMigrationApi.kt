@@ -32,8 +32,7 @@ class RawFrontEndMigrationApi(
 
 	// region common endpoints
 
-	suspend fun getFrontEndMigrations(): HttpResponse<List<FrontEndMigration>> =
-			httpClient.get {
+	suspend fun getFrontEndMigrations(): HttpResponse<List<FrontEndMigration>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","frontendmigration")
@@ -44,7 +43,7 @@ class RawFrontEndMigrationApi(
 
 
 	suspend fun createFrontEndMigration(frontEndMigrationDto: FrontEndMigration):
-			HttpResponse<FrontEndMigration> = httpClient.post {
+			HttpResponse<FrontEndMigration> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","frontendmigration")
@@ -56,7 +55,7 @@ class RawFrontEndMigrationApi(
 
 
 	suspend fun deleteFrontEndMigration(frontEndMigrationId: String):
-			HttpResponse<DocIdentifier> = httpClient.delete {
+			HttpResponse<DocIdentifier> = delete {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","frontendmigration",frontEndMigrationId)
@@ -66,7 +65,7 @@ class RawFrontEndMigrationApi(
 
 
 	suspend fun getFrontEndMigration(frontEndMigrationId: String):
-			HttpResponse<FrontEndMigration> = httpClient.get {
+			HttpResponse<FrontEndMigration> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","frontendmigration",frontEndMigrationId)
@@ -77,7 +76,7 @@ class RawFrontEndMigrationApi(
 
 
 	suspend fun getFrontEndMigrationByName(frontEndMigrationName: String):
-			HttpResponse<List<FrontEndMigration>> = httpClient.get {
+			HttpResponse<List<FrontEndMigration>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","frontendmigration","byName",frontEndMigrationName)
@@ -88,7 +87,7 @@ class RawFrontEndMigrationApi(
 
 
 	suspend fun modifyFrontEndMigration(frontEndMigrationDto: FrontEndMigration):
-			HttpResponse<FrontEndMigration> = httpClient.put {
+			HttpResponse<FrontEndMigration> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","frontendmigration")

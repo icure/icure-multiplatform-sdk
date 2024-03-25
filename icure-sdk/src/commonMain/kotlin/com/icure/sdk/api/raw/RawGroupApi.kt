@@ -64,7 +64,7 @@ class RawGroupApi(
 		n: Int? = null,
 		superGroup: String? = null,
 		initialisationData: DatabaseInitialisation,
-	): HttpResponse<Group> = httpClient.post {
+	): HttpResponse<Group> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","group",id)
@@ -86,7 +86,7 @@ class RawGroupApi(
 		type: GroupType? = null,
 		role: PermissionType? = null,
 		registrationInformation: RegistrationInformation,
-	): HttpResponse<RegistrationSuccess> = httpClient.post {
+	): HttpResponse<RegistrationSuccess> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","group","register","trial")
@@ -99,7 +99,7 @@ class RawGroupApi(
 		}.wrap()
 
 
-	suspend fun listGroups(): HttpResponse<List<Group>> = httpClient.get {
+	suspend fun listGroups(): HttpResponse<List<Group>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","group")
@@ -109,7 +109,7 @@ class RawGroupApi(
 		}.wrap()
 
 
-	suspend fun listApps(): HttpResponse<List<Group>> = httpClient.get {
+	suspend fun listApps(): HttpResponse<List<Group>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","group","apps")
@@ -123,7 +123,7 @@ class RawGroupApi(
 		id: String,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<Group, JsonString>> = httpClient.get {
+	): HttpResponse<PaginatedList<Group, JsonString>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","group",id,"children")
@@ -141,7 +141,7 @@ class RawGroupApi(
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<Group, JsonString>> = httpClient.get {
+	): HttpResponse<PaginatedList<Group, JsonString>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","group",id,"children","search")
@@ -155,7 +155,7 @@ class RawGroupApi(
 		}.wrap()
 
 
-	suspend fun getGroup(id: String): HttpResponse<Group> = httpClient.get {
+	suspend fun getGroup(id: String): HttpResponse<Group> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","group",id)
@@ -165,7 +165,7 @@ class RawGroupApi(
 		}.wrap()
 
 
-	suspend fun getNameOfGroupParent(id: String): HttpResponse<String> = httpClient.get {
+	suspend fun getNameOfGroupParent(id: String): HttpResponse<String> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","group",id,"parent","name")
@@ -175,8 +175,7 @@ class RawGroupApi(
 		}.wrap()
 
 
-	suspend fun modifyGroupName(id: String, name: String): HttpResponse<Group> =
-			httpClient.put {
+	suspend fun modifyGroupName(id: String, name: String): HttpResponse<Group> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","group",id,"name",name)
@@ -190,7 +189,7 @@ class RawGroupApi(
 		operation: Operation,
 		duration: Long?,
 		description: String? = null,
-	): HttpResponse<String> = httpClient.post {
+	): HttpResponse<String> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","group","operationToken")
@@ -203,7 +202,7 @@ class RawGroupApi(
 		}.wrap()
 
 
-	suspend fun deleteOperationToken(tokenId: String): HttpResponse<Unit> = httpClient.delete {
+	suspend fun deleteOperationToken(tokenId: String): HttpResponse<Unit> = delete {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","group","operationToken",tokenId)
@@ -216,7 +215,7 @@ class RawGroupApi(
 		groupId: String,
 		userType: String,
 		roleIds: ListOfIds,
-	): HttpResponse<Group> = httpClient.post {
+	): HttpResponse<Group> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","group",groupId,"defaultRoles")
@@ -229,7 +228,7 @@ class RawGroupApi(
 
 
 	suspend fun getDefaultRoles(groupId: String): HttpResponse<Map<UserType, RoleConfiguration>>
-			= httpClient.get {
+			= get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","group",groupId,"defaultRoles")
@@ -240,7 +239,7 @@ class RawGroupApi(
 
 
 	suspend fun changeSuperGroup(childGroupId: String, operationToken: String):
-			HttpResponse<Group> = httpClient.post {
+			HttpResponse<Group> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","group",childGroupId,"transfer")
@@ -251,7 +250,7 @@ class RawGroupApi(
 		}.wrap()
 
 
-	suspend fun deleteGroup(id: String): HttpResponse<Group> = httpClient.delete {
+	suspend fun deleteGroup(id: String): HttpResponse<Group> = delete {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","group",id)
@@ -260,8 +259,7 @@ class RawGroupApi(
 		}.wrap()
 
 
-	suspend fun hardDeleteGroup(id: String): HttpResponse<List<GroupDeletionReport>> =
-			httpClient.delete {
+	suspend fun hardDeleteGroup(id: String): HttpResponse<List<GroupDeletionReport>> = delete {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","group","hard",id)
@@ -271,7 +269,7 @@ class RawGroupApi(
 
 
 	suspend fun modifyGroupProperties(id: String, properties: ListOfProperties):
-			HttpResponse<Group> = httpClient.put {
+			HttpResponse<Group> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","group",id,"properties")
@@ -282,8 +280,7 @@ class RawGroupApi(
 		}.wrap()
 
 
-	suspend fun setGroupPassword(id: String, password: String): HttpResponse<Group> =
-			httpClient.put {
+	suspend fun setGroupPassword(id: String, password: String): HttpResponse<Group> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","group",id,"password")
@@ -299,7 +296,7 @@ class RawGroupApi(
 		clazz: String? = null,
 		warmup: Boolean?,
 		dryRun: Boolean?,
-	): HttpResponse<List<DesignDocument>> = httpClient.put {
+	): HttpResponse<List<DesignDocument>> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","group",id,"dd")
@@ -316,7 +313,7 @@ class RawGroupApi(
 		id: String,
 		limit: Int?,
 		warmup: Boolean?,
-	): HttpResponse<List<IdWithRev>> = httpClient.post {
+	): HttpResponse<List<IdWithRev>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","group",id,"conflicts")
@@ -333,7 +330,7 @@ class RawGroupApi(
 		q: Int? = null,
 		n: Int? = null,
 		databases: ListOfIds,
-	): HttpResponse<Unit> = httpClient.post {
+	): HttpResponse<Unit> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","group",id,"reset","storage")
@@ -347,7 +344,7 @@ class RawGroupApi(
 
 
 	suspend fun getGroupsStorageInfos(groups: ListOfIds): HttpResponse<List<GroupDatabasesInfo>>
-			= httpClient.post {
+			= post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","group","storage","info")
@@ -358,7 +355,7 @@ class RawGroupApi(
 		}.wrap()
 
 
-	suspend fun getReplicationInfo(id: String): HttpResponse<ReplicationInfo> = httpClient.get {
+	suspend fun getReplicationInfo(id: String): HttpResponse<ReplicationInfo> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","group",id,"r")
@@ -368,7 +365,7 @@ class RawGroupApi(
 		}.wrap()
 
 
-	suspend fun getHierarchy(id: String): HttpResponse<List<String>> = httpClient.get {
+	suspend fun getHierarchy(id: String): HttpResponse<List<String>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","group",id,"hierarchy")
@@ -378,7 +375,7 @@ class RawGroupApi(
 		}.wrap()
 
 
-	suspend fun listAllGroupsIds(): HttpResponse<List<DocIdentifier>> = httpClient.get {
+	suspend fun listAllGroupsIds(): HttpResponse<List<DocIdentifier>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","group","all")

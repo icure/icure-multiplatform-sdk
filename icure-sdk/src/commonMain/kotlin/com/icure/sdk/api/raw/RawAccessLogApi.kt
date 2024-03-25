@@ -2,8 +2,10 @@ package com.icure.sdk.api.raw
 
 import com.icure.sdk.auth.services.AuthService
 import com.icure.sdk.auth.services.setAuthorizationWith
+import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.model.AccessLog
 import com.icure.sdk.model.EncryptedAccessLog
+import com.icure.sdk.model.EntityWithDelegationTypeName
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
@@ -35,14 +37,18 @@ import kotlin.time.Duration
 class RawAccessLogApi(
 	private val apiUrl: String,
 	private val authService: AuthService,
+	private val accessControlKeysHeadersProvider: AccessControlKeysHeadersProvider?,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
 
+	override suspend fun getAccessControlKeysHeaderValues(): List<String>? =
+			accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithDelegationTypeName.AccessLog)
+
 	// region common endpoints
 
 	suspend fun createAccessLog(accessLogDto: AccessLog): HttpResponse<EncryptedAccessLog> =
-			httpClient.post {
+			post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","accesslog")
@@ -54,7 +60,7 @@ class RawAccessLogApi(
 
 
 	suspend fun deleteAccessLogs(accessLogIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
-			httpClient.post {
+			post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","accesslog","delete","batch")
@@ -65,8 +71,7 @@ class RawAccessLogApi(
 		}.wrap()
 
 
-	suspend fun deleteAccessLog(accessLogId: String): HttpResponse<DocIdentifier> =
-			httpClient.delete {
+	suspend fun deleteAccessLog(accessLogId: String): HttpResponse<DocIdentifier> = delete {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","accesslog",accessLogId)
@@ -75,8 +80,7 @@ class RawAccessLogApi(
 		}.wrap()
 
 
-	suspend fun getAccessLog(accessLogId: String): HttpResponse<EncryptedAccessLog> =
-			httpClient.get {
+	suspend fun getAccessLog(accessLogId: String): HttpResponse<EncryptedAccessLog> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","accesslog",accessLogId)
@@ -93,7 +97,7 @@ class RawAccessLogApi(
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		descending: Boolean? = null,
-	): HttpResponse<PaginatedList<EncryptedAccessLog, JsonString>> = httpClient.get {
+	): HttpResponse<PaginatedList<EncryptedAccessLog, JsonString>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","accesslog")
@@ -117,7 +121,7 @@ class RawAccessLogApi(
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		descending: Boolean? = null,
-	): HttpResponse<PaginatedList<EncryptedAccessLog, JsonString>> = httpClient.get {
+	): HttpResponse<PaginatedList<EncryptedAccessLog, JsonString>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","accesslog","byUser")
@@ -135,7 +139,7 @@ class RawAccessLogApi(
 
 
 	suspend fun listAccessLogsByHCPartyAndPatientForeignKeys(hcPartyId: String,
-			secretFKeys: String): HttpResponse<List<EncryptedAccessLog>> = httpClient.get {
+			secretFKeys: String): HttpResponse<List<EncryptedAccessLog>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","accesslog","byHcPartySecretForeignKeys")
@@ -153,7 +157,7 @@ class RawAccessLogApi(
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedAccessLog, JsonString>> = httpClient.get {
+	): HttpResponse<PaginatedList<EncryptedAccessLog, JsonString>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","accesslog","byHcPartySecretForeignKey")
@@ -169,7 +173,7 @@ class RawAccessLogApi(
 
 
 	suspend fun findAccessLogsByHCPartyPatientForeignKeys(hcPartyId: String,
-			secretPatientKeys: List<String>): HttpResponse<List<EncryptedAccessLog>> = httpClient.post {
+			secretPatientKeys: List<String>): HttpResponse<List<EncryptedAccessLog>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","accesslog","byHcPartySecretForeignKeys")
@@ -182,7 +186,7 @@ class RawAccessLogApi(
 
 
 	suspend fun modifyAccessLog(accessLogDto: AccessLog): HttpResponse<EncryptedAccessLog> =
-			httpClient.put {
+			put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","accesslog")
@@ -194,7 +198,7 @@ class RawAccessLogApi(
 
 
 	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams):
-			HttpResponse<List<EntityBulkShareResult<EncryptedAccessLog>>> = httpClient.put {
+			HttpResponse<List<EntityBulkShareResult<EncryptedAccessLog>>> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","accesslog","bulkSharedMetadataUpdate")
@@ -215,7 +219,7 @@ class RawAccessLogApi(
 		startKey: Long? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedAccessLog, JsonString>> = httpClient.get {
+	): HttpResponse<PaginatedList<EncryptedAccessLog, JsonString>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","accesslog","inGroup",groupId)

@@ -37,7 +37,7 @@ class RawInsuranceApi(
 	// region common endpoints
 
 	suspend fun getAllInsurances(startDocumentId: String? = null, limit: Int? = null):
-			HttpResponse<PaginatedList<Insurance, JsonString>> = httpClient.get {
+			HttpResponse<PaginatedList<Insurance, JsonString>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","insurance")
@@ -49,8 +49,7 @@ class RawInsuranceApi(
 		}.wrap()
 
 
-	suspend fun createInsurance(insuranceDto: Insurance): HttpResponse<Insurance> =
-			httpClient.post {
+	suspend fun createInsurance(insuranceDto: Insurance): HttpResponse<Insurance> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","insurance")
@@ -61,8 +60,7 @@ class RawInsuranceApi(
 		}.wrap()
 
 
-	suspend fun deleteInsurance(insuranceId: String): HttpResponse<DocIdentifier> =
-			httpClient.delete {
+	suspend fun deleteInsurance(insuranceId: String): HttpResponse<DocIdentifier> = delete {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","insurance",insuranceId)
@@ -71,7 +69,7 @@ class RawInsuranceApi(
 		}.wrap()
 
 
-	suspend fun getInsurance(insuranceId: String): HttpResponse<Insurance> = httpClient.get {
+	suspend fun getInsurance(insuranceId: String): HttpResponse<Insurance> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","insurance",insuranceId)
@@ -81,8 +79,7 @@ class RawInsuranceApi(
 		}.wrap()
 
 
-	suspend fun getInsurances(insuranceIds: ListOfIds): HttpResponse<List<Insurance>> =
-			httpClient.post {
+	suspend fun getInsurances(insuranceIds: ListOfIds): HttpResponse<List<Insurance>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","insurance","byIds")
@@ -94,7 +91,7 @@ class RawInsuranceApi(
 
 
 	suspend fun listInsurancesByCode(insuranceCode: String): HttpResponse<List<Insurance>> =
-			httpClient.get {
+			get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","insurance","byCode",insuranceCode)
@@ -105,7 +102,7 @@ class RawInsuranceApi(
 
 
 	suspend fun listInsurancesByName(insuranceName: String): HttpResponse<List<Insurance>> =
-			httpClient.get {
+			get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","insurance","byName",insuranceName)
@@ -115,8 +112,7 @@ class RawInsuranceApi(
 		}.wrap()
 
 
-	suspend fun modifyInsurance(insuranceDto: Insurance): HttpResponse<Insurance> =
-			httpClient.put {
+	suspend fun modifyInsurance(insuranceDto: Insurance): HttpResponse<Insurance> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","insurance")

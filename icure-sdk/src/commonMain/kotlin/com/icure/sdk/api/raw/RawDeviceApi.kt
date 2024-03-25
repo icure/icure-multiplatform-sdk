@@ -40,7 +40,7 @@ class RawDeviceApi(
 
 	// region common endpoints
 
-	suspend fun getDevice(deviceId: String): HttpResponse<Device> = httpClient.get {
+	suspend fun getDevice(deviceId: String): HttpResponse<Device> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","device",deviceId)
@@ -50,7 +50,7 @@ class RawDeviceApi(
 		}.wrap()
 
 
-	suspend fun getDevices(deviceIds: ListOfIds): HttpResponse<List<Device>> = httpClient.post {
+	suspend fun getDevices(deviceIds: ListOfIds): HttpResponse<List<Device>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","device","byIds")
@@ -61,7 +61,7 @@ class RawDeviceApi(
 		}.wrap()
 
 
-	suspend fun createDevice(p: Device): HttpResponse<Device> = httpClient.post {
+	suspend fun createDevice(p: Device): HttpResponse<Device> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","device")
@@ -72,7 +72,7 @@ class RawDeviceApi(
 		}.wrap()
 
 
-	suspend fun updateDevice(deviceDto: Device): HttpResponse<Device> = httpClient.put {
+	suspend fun updateDevice(deviceDto: Device): HttpResponse<Device> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","device")
@@ -83,8 +83,7 @@ class RawDeviceApi(
 		}.wrap()
 
 
-	suspend fun createDevices(deviceDtos: List<Device>): HttpResponse<List<IdWithRev>> =
-			httpClient.post {
+	suspend fun createDevices(deviceDtos: List<Device>): HttpResponse<List<IdWithRev>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","device","bulk")
@@ -95,8 +94,7 @@ class RawDeviceApi(
 		}.wrap()
 
 
-	suspend fun updateDevices(deviceDtos: List<Device>): HttpResponse<List<IdWithRev>> =
-			httpClient.put {
+	suspend fun updateDevices(deviceDtos: List<Device>): HttpResponse<List<IdWithRev>> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","device","bulk")
@@ -111,7 +109,7 @@ class RawDeviceApi(
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		filterChain: FilterChain<Device>,
-	): HttpResponse<PaginatedList<Device, *>> = httpClient.post {
+	): HttpResponse<PaginatedList<Device, *>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","device","filter")
@@ -126,7 +124,7 @@ class RawDeviceApi(
 
 	suspend fun getDeviceAesExchangeKeysForDelegate(deviceId: String):
 			HttpResponse<Map<String, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>>>
-			= httpClient.get {
+			= get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","device",deviceId,"aesExchangeKeys")
@@ -137,7 +135,7 @@ class RawDeviceApi(
 
 
 	suspend fun matchDevicesBy(filter: AbstractFilter<Device>): HttpResponse<List<String>> =
-			httpClient.post {
+			post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","device","match")
@@ -148,8 +146,7 @@ class RawDeviceApi(
 		}.wrap()
 
 
-	suspend fun deleteDevice(deviceId: String): HttpResponse<DocIdentifier> =
-			httpClient.delete {
+	suspend fun deleteDevice(deviceId: String): HttpResponse<DocIdentifier> = delete {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","device",deviceId)
@@ -158,8 +155,7 @@ class RawDeviceApi(
 		}.wrap()
 
 
-	suspend fun deleteDevices(deviceIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
-			httpClient.post {
+	suspend fun deleteDevices(deviceIds: ListOfIds): HttpResponse<List<DocIdentifier>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","device","delete","batch")
@@ -174,7 +170,7 @@ class RawDeviceApi(
 	// region cloud endpoints
 
 	suspend fun getDevicesInGroup(groupId: String, deviceIds: ListOfIds? = null):
-			HttpResponse<List<Device>> = httpClient.post {
+			HttpResponse<List<Device>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","device","inGroup",groupId,"byIds")
@@ -186,7 +182,7 @@ class RawDeviceApi(
 
 
 	suspend fun modifyDeviceInGroup(groupId: String, deviceDto: Device): HttpResponse<Device> =
-			httpClient.put {
+			put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","device","inGroup",groupId)
@@ -198,7 +194,7 @@ class RawDeviceApi(
 
 
 	suspend fun createDeviceInGroup(groupId: String, deviceDto: Device): HttpResponse<Device> =
-			httpClient.post {
+			post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","device","inGroup",groupId)
@@ -210,7 +206,7 @@ class RawDeviceApi(
 
 
 	suspend fun deleteDevicesInGroup(groupId: String, deviceIds: String):
-			HttpResponse<List<DocIdentifier>> = httpClient.delete {
+			HttpResponse<List<DocIdentifier>> = delete {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","device","inGroup",groupId,deviceIds)

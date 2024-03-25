@@ -38,7 +38,7 @@ class RawDocumentTemplateApi(
 	// region common endpoints
 
 	suspend fun getDocumentTemplate(documentTemplateId: String): HttpResponse<DocumentTemplate>
-			= httpClient.get {
+			= get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","doctemplate",documentTemplateId)
@@ -49,7 +49,7 @@ class RawDocumentTemplateApi(
 
 
 	suspend fun deleteDocumentTemplates(documentTemplateIds: ListOfIds):
-			HttpResponse<List<DocIdentifier>> = httpClient.post {
+			HttpResponse<List<DocIdentifier>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","doctemplate","delete","batch")
@@ -61,7 +61,7 @@ class RawDocumentTemplateApi(
 
 
 	suspend fun listDocumentTemplatesBySpeciality(specialityCode: String):
-			HttpResponse<List<DocumentTemplate>> = httpClient.get {
+			HttpResponse<List<DocumentTemplate>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","doctemplate","bySpecialty",specialityCode)
@@ -72,7 +72,7 @@ class RawDocumentTemplateApi(
 
 
 	suspend fun listDocumentTemplatesByDocumentType(documentTypeCode: String):
-			HttpResponse<List<DocumentTemplate>> = httpClient.get {
+			HttpResponse<List<DocumentTemplate>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","doctemplate","byDocumentType",documentTypeCode)
@@ -83,7 +83,7 @@ class RawDocumentTemplateApi(
 
 
 	suspend fun listDocumentTemplatesByDocumentTypeForCurrentUser(documentTypeCode: String):
-			HttpResponse<List<DocumentTemplate>> = httpClient.get {
+			HttpResponse<List<DocumentTemplate>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","doctemplate","byDocumentTypeForCurrentUser",documentTypeCode)
@@ -93,7 +93,7 @@ class RawDocumentTemplateApi(
 		}.wrap()
 
 
-	suspend fun listDocumentTemplates(): HttpResponse<List<DocumentTemplate>> = httpClient.get {
+	suspend fun listDocumentTemplates(): HttpResponse<List<DocumentTemplate>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","doctemplate")
@@ -107,7 +107,7 @@ class RawDocumentTemplateApi(
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<DocumentTemplate, JsonString>> = httpClient.get {
+	): HttpResponse<PaginatedList<DocumentTemplate, JsonString>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","doctemplate","find","all")
@@ -121,7 +121,7 @@ class RawDocumentTemplateApi(
 
 
 	suspend fun createDocumentTemplate(ft: DocumentTemplate): HttpResponse<DocumentTemplate> =
-			httpClient.post {
+			post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","doctemplate")
@@ -133,7 +133,7 @@ class RawDocumentTemplateApi(
 
 
 	suspend fun modifyDocumentTemplate(documentTemplateId: String, ft: DocumentTemplate):
-			HttpResponse<DocumentTemplate> = httpClient.put {
+			HttpResponse<DocumentTemplate> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","doctemplate",documentTemplateId)
@@ -145,7 +145,7 @@ class RawDocumentTemplateApi(
 
 
 	suspend fun getDocumentTemplateAttachment(documentTemplateId: String, attachmentId: String):
-			HttpResponse<ByteArray> = httpClient.get {
+			HttpResponse<ByteArray> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","doctemplate",documentTemplateId,"attachment",attachmentId)
@@ -156,7 +156,7 @@ class RawDocumentTemplateApi(
 
 
 	suspend fun getAttachmentText(documentTemplateId: String, attachmentId: String):
-			HttpResponse<ByteArray> = httpClient.get {
+			HttpResponse<ByteArray> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","doctemplate",documentTemplateId,"attachmentText",attachmentId)
@@ -167,7 +167,7 @@ class RawDocumentTemplateApi(
 
 
 	suspend fun setDocumentTemplateAttachment(documentTemplateId: String, payload: ByteArray):
-			HttpResponse<DocumentTemplate> = httpClient.put {
+			HttpResponse<DocumentTemplate> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","doctemplate",documentTemplateId,"attachment")

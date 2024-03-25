@@ -23,7 +23,7 @@ class RawAuthApi(
 
 	// region common endpoints
 
-	suspend fun token(method: String, path: String): HttpResponse<String> = httpClient.get {
+	suspend fun token(method: String, path: String): HttpResponse<String> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","auth","token",method,path)

@@ -2,7 +2,9 @@ package com.icure.sdk.api.raw
 
 import com.icure.sdk.auth.services.AuthService
 import com.icure.sdk.auth.services.setAuthorizationWith
+import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.model.EncryptedReceipt
+import com.icure.sdk.model.EntityWithDelegationTypeName
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.Receipt
 import com.icure.sdk.model.couchdb.DocIdentifier
@@ -32,14 +34,17 @@ import kotlin.time.Duration
 class RawReceiptApi(
 	private val apiUrl: String,
 	private val authService: AuthService,
+	private val accessControlKeysHeadersProvider: AccessControlKeysHeadersProvider?,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
 
+	override suspend fun getAccessControlKeysHeaderValues(): List<String>? =
+			accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithDelegationTypeName.Receipt)
+
 	// region common endpoints
 
-	suspend fun createReceipt(receiptDto: Receipt): HttpResponse<EncryptedReceipt> =
-			httpClient.post {
+	suspend fun createReceipt(receiptDto: Receipt): HttpResponse<EncryptedReceipt> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","receipt")
@@ -51,7 +56,7 @@ class RawReceiptApi(
 
 
 	suspend fun deleteReceipts(receiptIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
-			httpClient.post {
+			post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","receipt","delete","batch")
@@ -62,8 +67,7 @@ class RawReceiptApi(
 		}.wrap()
 
 
-	suspend fun deleteReceipt(receiptId: String): HttpResponse<DocIdentifier> =
-			httpClient.delete {
+	suspend fun deleteReceipt(receiptId: String): HttpResponse<DocIdentifier> = delete {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","receipt",receiptId)
@@ -73,7 +77,7 @@ class RawReceiptApi(
 
 
 	suspend fun getReceiptAttachment(receiptId: String, attachmentId: String):
-			HttpResponse<ByteArray> = httpClient.get {
+			HttpResponse<ByteArray> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","receipt",receiptId,"attachment",attachmentId)
@@ -88,7 +92,7 @@ class RawReceiptApi(
 		blobType: String,
 		rev: String,
 		payload: ByteArray,
-	): HttpResponse<EncryptedReceipt> = httpClient.put {
+	): HttpResponse<EncryptedReceipt> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","receipt",receiptId,"attachment",blobType)
@@ -100,7 +104,7 @@ class RawReceiptApi(
 		}.wrap()
 
 
-	suspend fun getReceipt(receiptId: String): HttpResponse<EncryptedReceipt> = httpClient.get {
+	suspend fun getReceipt(receiptId: String): HttpResponse<EncryptedReceipt> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","receipt",receiptId)
@@ -110,8 +114,7 @@ class RawReceiptApi(
 		}.wrap()
 
 
-	suspend fun listByReference(ref: String): HttpResponse<List<EncryptedReceipt>> =
-			httpClient.get {
+	suspend fun listByReference(ref: String): HttpResponse<List<EncryptedReceipt>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","receipt","byRef",ref)
@@ -121,8 +124,7 @@ class RawReceiptApi(
 		}.wrap()
 
 
-	suspend fun modifyReceipt(receiptDto: Receipt): HttpResponse<EncryptedReceipt> =
-			httpClient.put {
+	suspend fun modifyReceipt(receiptDto: Receipt): HttpResponse<EncryptedReceipt> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","receipt")
@@ -134,7 +136,7 @@ class RawReceiptApi(
 
 
 	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams):
-			HttpResponse<List<EntityBulkShareResult<EncryptedReceipt>>> = httpClient.put {
+			HttpResponse<List<EntityBulkShareResult<EncryptedReceipt>>> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","receipt","bulkSharedMetadataUpdate")

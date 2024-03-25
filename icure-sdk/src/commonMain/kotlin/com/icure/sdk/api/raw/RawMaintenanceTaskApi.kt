@@ -2,7 +2,9 @@ package com.icure.sdk.api.raw
 
 import com.icure.sdk.auth.services.AuthService
 import com.icure.sdk.auth.services.setAuthorizationWith
+import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.model.EncryptedMaintenanceTask
+import com.icure.sdk.model.EntityWithDelegationTypeName
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.MaintenanceTask
 import com.icure.sdk.model.PaginatedList
@@ -33,14 +35,18 @@ import kotlin.time.Duration
 class RawMaintenanceTaskApi(
 	private val apiUrl: String,
 	private val authService: AuthService,
+	private val accessControlKeysHeadersProvider: AccessControlKeysHeadersProvider?,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
 
+	override suspend fun getAccessControlKeysHeaderValues(): List<String>? =
+			accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithDelegationTypeName.MaintenanceTask)
+
 	// region common endpoints
 
 	suspend fun createMaintenanceTask(maintenanceTaskDto: MaintenanceTask):
-			HttpResponse<EncryptedMaintenanceTask> = httpClient.post {
+			HttpResponse<EncryptedMaintenanceTask> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","maintenancetask")
@@ -52,7 +58,7 @@ class RawMaintenanceTaskApi(
 
 
 	suspend fun deleteMaintenanceTasks(maintenanceTaskIds: ListOfIds):
-			HttpResponse<List<DocIdentifier>> = httpClient.post {
+			HttpResponse<List<DocIdentifier>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","maintenancetask","delete","batch")
@@ -64,7 +70,7 @@ class RawMaintenanceTaskApi(
 
 
 	suspend fun deleteMaintenanceTask(maintenanceTaskId: String): HttpResponse<DocIdentifier> =
-			httpClient.delete {
+			delete {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","maintenancetask",maintenanceTaskId)
@@ -74,7 +80,7 @@ class RawMaintenanceTaskApi(
 
 
 	suspend fun getMaintenanceTask(maintenanceTaskId: String):
-			HttpResponse<EncryptedMaintenanceTask> = httpClient.get {
+			HttpResponse<EncryptedMaintenanceTask> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","maintenancetask",maintenanceTaskId)
@@ -85,7 +91,7 @@ class RawMaintenanceTaskApi(
 
 
 	suspend fun modifyMaintenanceTask(maintenanceTaskDto: MaintenanceTask):
-			HttpResponse<EncryptedMaintenanceTask> = httpClient.put {
+			HttpResponse<EncryptedMaintenanceTask> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","maintenancetask")
@@ -100,7 +106,7 @@ class RawMaintenanceTaskApi(
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		filterChain: FilterChain<MaintenanceTask>,
-	): HttpResponse<PaginatedList<EncryptedMaintenanceTask, *>> = httpClient.post {
+	): HttpResponse<PaginatedList<EncryptedMaintenanceTask, *>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","maintenancetask","filter")
@@ -114,7 +120,7 @@ class RawMaintenanceTaskApi(
 
 
 	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams):
-			HttpResponse<List<EntityBulkShareResult<EncryptedMaintenanceTask>>> = httpClient.put {
+			HttpResponse<List<EntityBulkShareResult<EncryptedMaintenanceTask>>> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","maintenancetask","bulkSharedMetadataUpdate")

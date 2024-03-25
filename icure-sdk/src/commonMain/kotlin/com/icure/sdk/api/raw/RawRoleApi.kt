@@ -25,7 +25,7 @@ class RawRoleApi(
 
 	// region cloud endpoints
 
-	suspend fun getAllRoles(): HttpResponse<List<Role>> = httpClient.get {
+	suspend fun getAllRoles(): HttpResponse<List<Role>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","role")

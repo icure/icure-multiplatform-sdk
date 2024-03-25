@@ -32,7 +32,7 @@ class RawAnonymousAuthApi(
 		duration: Long? = null,
 		loginCredentials: LoginCredentials,
 		groupId: String? = null,
-	): HttpResponse<JwtResponse> = httpClient.post {
+	): HttpResponse<JwtResponse> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","auth","login")
@@ -45,7 +45,7 @@ class RawAnonymousAuthApi(
 
 
 	suspend fun refresh(refreshToken: String, totp: String? = null): HttpResponse<JwtResponse> =
-			httpClient.post {
+			post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","auth","refresh")
@@ -56,8 +56,7 @@ class RawAnonymousAuthApi(
 		}.wrap()
 
 
-	suspend fun check(loginCredentials: LoginCredentials): HttpResponse<Unit> =
-			httpClient.post {
+	suspend fun check(loginCredentials: LoginCredentials): HttpResponse<Unit> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","auth","check")
@@ -71,7 +70,7 @@ class RawAnonymousAuthApi(
 	// region cloud endpoints
 
 	suspend fun switchGroup(refreshToken: String, groupId: String): HttpResponse<JwtResponse> =
-			httpClient.post {
+			post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","auth","switch",groupId)
@@ -82,7 +81,7 @@ class RawAnonymousAuthApi(
 
 
 	suspend fun loginGoogle(token: String, groupId: String? = null): HttpResponse<JwtResponse> =
-			httpClient.post {
+			post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","auth","login","google")
@@ -94,7 +93,7 @@ class RawAnonymousAuthApi(
 
 
 	suspend fun loginFas(token: String, groupId: String? = null): HttpResponse<JwtResponse> =
-			httpClient.post {
+			post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","auth","login","be.fas")
@@ -105,8 +104,7 @@ class RawAnonymousAuthApi(
 		}.wrap()
 
 
-	suspend fun invalidateRefreshJWT(refreshToken: String): HttpResponse<Unit> =
-			httpClient.post {
+	suspend fun invalidateRefreshJWT(refreshToken: String): HttpResponse<Unit> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","auth","invalidate")

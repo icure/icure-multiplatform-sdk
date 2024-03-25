@@ -2,8 +2,10 @@ package com.icure.sdk.api.raw
 
 import com.icure.sdk.auth.services.AuthService
 import com.icure.sdk.auth.services.setAuthorizationWith
+import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.model.Article
 import com.icure.sdk.model.EncryptedArticle
+import com.icure.sdk.model.EntityWithDelegationTypeName
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
@@ -33,14 +35,17 @@ import kotlin.time.Duration
 class RawArticleApi(
 	private val apiUrl: String,
 	private val authService: AuthService,
+	private val accessControlKeysHeadersProvider: AccessControlKeysHeadersProvider?,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
 
+	override suspend fun getAccessControlKeysHeaderValues(): List<String>? =
+			accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithDelegationTypeName.Article)
+
 	// region common endpoints
 
-	suspend fun createArticle(articleDto: Article): HttpResponse<EncryptedArticle> =
-			httpClient.post {
+	suspend fun createArticle(articleDto: Article): HttpResponse<EncryptedArticle> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","article")
@@ -52,7 +57,7 @@ class RawArticleApi(
 
 
 	suspend fun deleteArticles(articleIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
-			httpClient.post {
+			post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","article","delete","batch")
@@ -63,8 +68,7 @@ class RawArticleApi(
 		}.wrap()
 
 
-	suspend fun deleteArticle(articleId: String): HttpResponse<DocIdentifier> =
-			httpClient.delete {
+	suspend fun deleteArticle(articleId: String): HttpResponse<DocIdentifier> = delete {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","article",articleId)
@@ -73,7 +77,7 @@ class RawArticleApi(
 		}.wrap()
 
 
-	suspend fun getArticle(articleId: String): HttpResponse<EncryptedArticle> = httpClient.get {
+	suspend fun getArticle(articleId: String): HttpResponse<EncryptedArticle> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","article",articleId)
@@ -83,8 +87,7 @@ class RawArticleApi(
 		}.wrap()
 
 
-	suspend fun modifyArticle(articleDto: Article): HttpResponse<EncryptedArticle> =
-			httpClient.put {
+	suspend fun modifyArticle(articleDto: Article): HttpResponse<EncryptedArticle> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","article")
@@ -96,7 +99,7 @@ class RawArticleApi(
 
 
 	suspend fun getArticles(startDocumentId: String? = null, limit: Int? = null):
-			HttpResponse<PaginatedList<EncryptedArticle, JsonString>> = httpClient.get {
+			HttpResponse<PaginatedList<EncryptedArticle, JsonString>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","article")
@@ -109,7 +112,7 @@ class RawArticleApi(
 
 
 	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams):
-			HttpResponse<List<EntityBulkShareResult<EncryptedArticle>>> = httpClient.put {
+			HttpResponse<List<EntityBulkShareResult<EncryptedArticle>>> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","article","bulkSharedMetadataUpdate")

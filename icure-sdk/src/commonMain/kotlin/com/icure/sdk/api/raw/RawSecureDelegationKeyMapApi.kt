@@ -33,7 +33,7 @@ class RawSecureDelegationKeyMapApi(
 	// region common endpoints
 
 	suspend fun createSecureDelegationKeyMap(secureDelegationKeyMap: SecureDelegationKeyMap):
-			HttpResponse<EncryptedSecureDelegationKeyMap> = httpClient.post {
+			HttpResponse<EncryptedSecureDelegationKeyMap> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","securedelegationkeymap")
@@ -45,7 +45,7 @@ class RawSecureDelegationKeyMapApi(
 
 
 	suspend fun findByDelegationKeys(delegationKeys: ListOfIds):
-			HttpResponse<List<EncryptedSecureDelegationKeyMap>> = httpClient.post {
+			HttpResponse<List<EncryptedSecureDelegationKeyMap>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","securedelegationkeymap","bydelegationkeys")
@@ -57,7 +57,7 @@ class RawSecureDelegationKeyMapApi(
 
 
 	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams):
-			HttpResponse<List<EntityBulkShareResult<EncryptedSecureDelegationKeyMap>>> = httpClient.put {
+			HttpResponse<List<EntityBulkShareResult<EncryptedSecureDelegationKeyMap>>> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","securedelegationkeymap","bulkSharedMetadataUpdate")

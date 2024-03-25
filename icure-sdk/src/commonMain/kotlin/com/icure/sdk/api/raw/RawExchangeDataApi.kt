@@ -34,7 +34,7 @@ class RawExchangeDataApi(
 	// region common endpoints
 
 	suspend fun createExchangeData(exchangeData: ExchangeData): HttpResponse<ExchangeData> =
-			httpClient.post {
+			post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","exchangedata")
@@ -46,7 +46,7 @@ class RawExchangeDataApi(
 
 
 	suspend fun modifyExchangeData(exchangeData: ExchangeData): HttpResponse<ExchangeData> =
-			httpClient.put {
+			put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","exchangedata")
@@ -57,8 +57,7 @@ class RawExchangeDataApi(
 		}.wrap()
 
 
-	suspend fun getExchangeDataById(exchangeDataId: String): HttpResponse<ExchangeData> =
-			httpClient.get {
+	suspend fun getExchangeDataById(exchangeDataId: String): HttpResponse<ExchangeData> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","exchangedata",exchangeDataId)
@@ -72,7 +71,7 @@ class RawExchangeDataApi(
 		dataOwnerId: String,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<ExchangeData, JsonString>> = httpClient.get {
+	): HttpResponse<PaginatedList<ExchangeData, JsonString>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","exchangedata","byParticipant",dataOwnerId)
@@ -85,7 +84,7 @@ class RawExchangeDataApi(
 
 
 	suspend fun getExchangeDataByDelegatorDelegate(delegatorId: String, delegateId: String):
-			HttpResponse<List<ExchangeData>> = httpClient.get {
+			HttpResponse<List<ExchangeData>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","exchangedata","byDelegatorDelegate",delegatorId,delegateId)
@@ -96,7 +95,7 @@ class RawExchangeDataApi(
 
 
 	suspend fun getParticipantCounterparts(dataOwnerId: String, counterpartsTypes: String):
-			HttpResponse<List<String>> = httpClient.get {
+			HttpResponse<List<String>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","exchangedata","byParticipant",dataOwnerId,"counterparts")

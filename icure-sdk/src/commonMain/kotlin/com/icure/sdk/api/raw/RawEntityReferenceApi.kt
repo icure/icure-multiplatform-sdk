@@ -28,7 +28,7 @@ class RawEntityReferenceApi(
 
 	// region common endpoints
 
-	suspend fun getLatest(prefix: String): HttpResponse<EntityReference> = httpClient.get {
+	suspend fun getLatest(prefix: String): HttpResponse<EntityReference> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","entityref","latest",prefix)
@@ -39,7 +39,7 @@ class RawEntityReferenceApi(
 
 
 	suspend fun createEntityReference(er: EntityReference): HttpResponse<EntityReference> =
-			httpClient.post {
+			post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","entityref")

@@ -5,6 +5,7 @@ import com.icure.sdk.auth.services.setAuthorizationWith
 import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.model.EncryptedHealthElement
 import com.icure.sdk.model.EncryptedIcureStub
+import com.icure.sdk.model.EntityWithDelegationTypeName
 import com.icure.sdk.model.HealthElement
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
@@ -42,10 +43,13 @@ class RawHealthElementApi(
 	timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
 
+	override suspend fun getAccessControlKeysHeaderValues(): List<String>? =
+			accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithDelegationTypeName.HealthElement)
+
 	// region common endpoints
 
 	suspend fun createHealthElement(c: HealthElement): HttpResponse<EncryptedHealthElement> =
-			httpClient.post {
+			post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","helement")
@@ -57,7 +61,7 @@ class RawHealthElementApi(
 
 
 	suspend fun getHealthElement(healthElementId: String): HttpResponse<EncryptedHealthElement>
-			= httpClient.get {
+			= get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","helement",healthElementId)
@@ -68,7 +72,7 @@ class RawHealthElementApi(
 
 
 	suspend fun getHealthElements(healthElementIds: ListOfIds):
-			HttpResponse<List<EncryptedHealthElement>> = httpClient.post {
+			HttpResponse<List<EncryptedHealthElement>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","helement","byIds")
@@ -80,7 +84,7 @@ class RawHealthElementApi(
 
 
 	suspend fun listHealthElementsByHCPartyAndPatientForeignKeys(hcPartyId: String,
-			secretFKeys: String): HttpResponse<List<EncryptedHealthElement>> = httpClient.get {
+			secretFKeys: String): HttpResponse<List<EncryptedHealthElement>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","helement","byHcPartySecretForeignKeys")
@@ -98,7 +102,7 @@ class RawHealthElementApi(
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedHealthElement, JsonString>> = httpClient.get {
+	): HttpResponse<PaginatedList<EncryptedHealthElement, JsonString>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","helement","byHcPartySecretForeignKey")
@@ -114,7 +118,7 @@ class RawHealthElementApi(
 
 
 	suspend fun findHealthElementsByHCPartyPatientForeignKeys(hcPartyId: String,
-			secretPatientKeys: List<String>): HttpResponse<List<EncryptedHealthElement>> = httpClient.post {
+			secretPatientKeys: List<String>): HttpResponse<List<EncryptedHealthElement>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","helement","byHcPartySecretForeignKeys")
@@ -128,7 +132,7 @@ class RawHealthElementApi(
 
 	public suspend
 			fun listHealthElementsDelegationsStubsByHCPartyAndPatientForeignKeys(hcPartyId: String,
-			secretFKeys: String): HttpResponse<List<EncryptedIcureStub>> = httpClient.get {
+			secretFKeys: String): HttpResponse<List<EncryptedIcureStub>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","helement","byHcPartySecretForeignKeys","delegations")
@@ -141,7 +145,7 @@ class RawHealthElementApi(
 
 
 	suspend fun findHealthElementsDelegationsStubsByHCPartyPatientForeignKeys(hcPartyId: String,
-			secretPatientKeys: List<String>): HttpResponse<List<EncryptedIcureStub>> = httpClient.post {
+			secretPatientKeys: List<String>): HttpResponse<List<EncryptedIcureStub>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","helement","byHcPartySecretForeignKeys","delegations")
@@ -154,7 +158,7 @@ class RawHealthElementApi(
 
 
 	suspend fun deleteHealthElements(healthElementIds: ListOfIds):
-			HttpResponse<List<DocIdentifier>> = httpClient.post {
+			HttpResponse<List<DocIdentifier>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","helement","delete","batch")
@@ -166,7 +170,7 @@ class RawHealthElementApi(
 
 
 	suspend fun deleteHealthElement(healthElementId: String): HttpResponse<DocIdentifier> =
-			httpClient.delete {
+			delete {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","helement",healthElementId)
@@ -176,7 +180,7 @@ class RawHealthElementApi(
 
 
 	suspend fun modifyHealthElement(healthElementDto: HealthElement):
-			HttpResponse<EncryptedHealthElement> = httpClient.put {
+			HttpResponse<EncryptedHealthElement> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","helement")
@@ -188,7 +192,7 @@ class RawHealthElementApi(
 
 
 	suspend fun modifyHealthElements(healthElementDtos: List<HealthElement>):
-			HttpResponse<List<EncryptedHealthElement>> = httpClient.put {
+			HttpResponse<List<EncryptedHealthElement>> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","helement","batch")
@@ -200,7 +204,7 @@ class RawHealthElementApi(
 
 
 	suspend fun createHealthElements(healthElementDtos: List<HealthElement>):
-			HttpResponse<List<EncryptedHealthElement>> = httpClient.post {
+			HttpResponse<List<EncryptedHealthElement>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","helement","batch")
@@ -215,7 +219,7 @@ class RawHealthElementApi(
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		filterChain: FilterChain<HealthElement>,
-	): HttpResponse<PaginatedList<EncryptedHealthElement, *>> = httpClient.post {
+	): HttpResponse<PaginatedList<EncryptedHealthElement, *>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","helement","filter")
@@ -229,7 +233,7 @@ class RawHealthElementApi(
 
 
 	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams):
-			HttpResponse<List<EntityBulkShareResult<EncryptedHealthElement>>> = httpClient.put {
+			HttpResponse<List<EntityBulkShareResult<EncryptedHealthElement>>> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","helement","bulkSharedMetadataUpdate")
@@ -241,7 +245,7 @@ class RawHealthElementApi(
 
 
 	suspend fun matchHealthElementsBy(filter: AbstractFilter<HealthElement>):
-			HttpResponse<List<String>> = httpClient.post {
+			HttpResponse<List<String>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","helement","match")
@@ -253,7 +257,7 @@ class RawHealthElementApi(
 
 
 	suspend fun bulkShareMinimal(request: BulkShareOrUpdateMetadataParams):
-			HttpResponse<List<EntityBulkShareResult<EncryptedHealthElement>>> = httpClient.put {
+			HttpResponse<List<EntityBulkShareResult<EncryptedHealthElement>>> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","helement","bulkSharedMetadataUpdateMinimal")

@@ -48,7 +48,7 @@ class RawCodeApi(
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<Code, JsonString>> = httpClient.get {
+	): HttpResponse<PaginatedList<Code, JsonString>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","code","byLabel")
@@ -74,7 +74,7 @@ class RawCodeApi(
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<Code, JsonString>> = httpClient.get {
+	): HttpResponse<PaginatedList<Code, JsonString>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","code")
@@ -97,7 +97,7 @@ class RawCodeApi(
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<Code, JsonString>> = httpClient.get {
+	): HttpResponse<PaginatedList<Code, JsonString>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","code","byLink",linkType)
@@ -116,7 +116,7 @@ class RawCodeApi(
 		type: String? = null,
 		code: String? = null,
 		version: String? = null,
-	): HttpResponse<List<Code>> = httpClient.get {
+	): HttpResponse<List<Code>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","code","byRegionTypeCode")
@@ -131,7 +131,7 @@ class RawCodeApi(
 
 
 	suspend fun listCodeTypesBy(region: String? = null, type: String? = null):
-			HttpResponse<List<String>> = httpClient.get {
+			HttpResponse<List<String>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","code","codetype","byRegionType")
@@ -144,7 +144,7 @@ class RawCodeApi(
 
 
 	suspend fun listTagTypesBy(region: String? = null, type: String? = null):
-			HttpResponse<List<String>> = httpClient.get {
+			HttpResponse<List<String>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","code","tagtype","byRegionType")
@@ -156,7 +156,7 @@ class RawCodeApi(
 		}.wrap()
 
 
-	suspend fun createCode(c: Code): HttpResponse<Code> = httpClient.post {
+	suspend fun createCode(c: Code): HttpResponse<Code> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","code")
@@ -167,7 +167,7 @@ class RawCodeApi(
 		}.wrap()
 
 
-	suspend fun createCodes(codeBatch: List<Code>): HttpResponse<List<Code>> = httpClient.post {
+	suspend fun createCodes(codeBatch: List<Code>): HttpResponse<List<Code>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","code","batch")
@@ -182,7 +182,7 @@ class RawCodeApi(
 		type: String,
 		code: String,
 		version: String?,
-	): HttpResponse<BooleanResponse> = httpClient.get {
+	): HttpResponse<BooleanResponse> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","code","isValid")
@@ -200,7 +200,7 @@ class RawCodeApi(
 		label: String,
 		type: String,
 		languages: String?,
-	): HttpResponse<Code> = httpClient.get {
+	): HttpResponse<Code> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","code","byRegionLanguagesTypeLabel")
@@ -214,7 +214,7 @@ class RawCodeApi(
 		}.wrap()
 
 
-	suspend fun getCodes(codeIds: ListOfIds): HttpResponse<List<Code>> = httpClient.post {
+	suspend fun getCodes(codeIds: ListOfIds): HttpResponse<List<Code>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","code","byIds")
@@ -225,7 +225,7 @@ class RawCodeApi(
 		}.wrap()
 
 
-	suspend fun getCode(codeId: String): HttpResponse<Code> = httpClient.get {
+	suspend fun getCode(codeId: String): HttpResponse<Code> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","code",codeId)
@@ -239,7 +239,7 @@ class RawCodeApi(
 		type: String,
 		code: String,
 		version: String,
-	): HttpResponse<Code> = httpClient.get {
+	): HttpResponse<Code> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","code",type,code,version)
@@ -249,7 +249,7 @@ class RawCodeApi(
 		}.wrap()
 
 
-	suspend fun modifyCode(codeDto: Code): HttpResponse<Code> = httpClient.put {
+	suspend fun modifyCode(codeDto: Code): HttpResponse<Code> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","code")
@@ -260,7 +260,7 @@ class RawCodeApi(
 		}.wrap()
 
 
-	suspend fun modifyCodes(codeBatch: List<Code>): HttpResponse<List<Code>> = httpClient.put {
+	suspend fun modifyCodes(codeBatch: List<Code>): HttpResponse<List<Code>> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","code","batch")
@@ -279,7 +279,7 @@ class RawCodeApi(
 		sort: String? = null,
 		desc: Boolean? = null,
 		filterChain: FilterChain<Code>,
-	): HttpResponse<PaginatedList<Code, *>> = httpClient.post {
+	): HttpResponse<PaginatedList<Code, *>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","code","filter")
@@ -296,8 +296,7 @@ class RawCodeApi(
 		}.wrap()
 
 
-	suspend fun matchCodesBy(filter: AbstractFilter<Code>): HttpResponse<List<String>> =
-			httpClient.post {
+	suspend fun matchCodesBy(filter: AbstractFilter<Code>): HttpResponse<List<String>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","code","match")
@@ -308,7 +307,7 @@ class RawCodeApi(
 		}.wrap()
 
 
-	suspend fun importCodes(codeType: String): HttpResponse<Unit> = httpClient.post {
+	suspend fun importCodes(codeType: String): HttpResponse<Unit> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","code",codeType)

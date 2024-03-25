@@ -35,7 +35,7 @@ class RawKeywordApi(
 
 	// region common endpoints
 
-	suspend fun createKeyword(c: Keyword): HttpResponse<Keyword> = httpClient.post {
+	suspend fun createKeyword(c: Keyword): HttpResponse<Keyword> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","keyword")
@@ -46,7 +46,7 @@ class RawKeywordApi(
 		}.wrap()
 
 
-	suspend fun getKeyword(keywordId: String): HttpResponse<Keyword> = httpClient.get {
+	suspend fun getKeyword(keywordId: String): HttpResponse<Keyword> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","keyword",keywordId)
@@ -56,8 +56,7 @@ class RawKeywordApi(
 		}.wrap()
 
 
-	suspend fun getKeywordsByUser(userId: String): HttpResponse<List<Keyword>> =
-			httpClient.get {
+	suspend fun getKeywordsByUser(userId: String): HttpResponse<List<Keyword>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","keyword","byUser",userId)
@@ -68,7 +67,7 @@ class RawKeywordApi(
 
 
 	suspend fun getKeywords(startDocumentId: String? = null, limit: Int? = null):
-			HttpResponse<PaginatedList<Keyword, JsonString>> = httpClient.get {
+			HttpResponse<PaginatedList<Keyword, JsonString>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","keyword")
@@ -81,7 +80,7 @@ class RawKeywordApi(
 
 
 	suspend fun deleteKeywords(keywordIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
-			httpClient.post {
+			post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","keyword","delete","batch")
@@ -92,7 +91,7 @@ class RawKeywordApi(
 		}.wrap()
 
 
-	suspend fun modifyKeyword(keywordDto: Keyword): HttpResponse<Keyword> = httpClient.put {
+	suspend fun modifyKeyword(keywordDto: Keyword): HttpResponse<Keyword> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","keyword")

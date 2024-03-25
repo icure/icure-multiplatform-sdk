@@ -36,7 +36,7 @@ class RawMedicalLocationApi(
 	// region common endpoints
 
 	suspend fun createMedicalLocation(medicalLocationDto: MedicalLocation):
-			HttpResponse<MedicalLocation> = httpClient.post {
+			HttpResponse<MedicalLocation> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","medicallocation")
@@ -48,7 +48,7 @@ class RawMedicalLocationApi(
 
 
 	suspend fun deleteMedicalLocations(locationIds: ListOfIds):
-			HttpResponse<List<DocIdentifier>> = httpClient.post {
+			HttpResponse<List<DocIdentifier>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","medicallocation","delete","batch")
@@ -59,8 +59,7 @@ class RawMedicalLocationApi(
 		}.wrap()
 
 
-	suspend fun getMedicalLocation(locationId: String): HttpResponse<MedicalLocation> =
-			httpClient.get {
+	suspend fun getMedicalLocation(locationId: String): HttpResponse<MedicalLocation> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","medicallocation",locationId)
@@ -71,7 +70,7 @@ class RawMedicalLocationApi(
 
 
 	suspend fun getMedicalLocations(startDocumentId: String? = null, limit: Int? = null):
-			HttpResponse<PaginatedList<MedicalLocation, JsonString>> = httpClient.get {
+			HttpResponse<PaginatedList<MedicalLocation, JsonString>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","medicallocation")
@@ -84,7 +83,7 @@ class RawMedicalLocationApi(
 
 
 	suspend fun modifyMedicalLocation(medicalLocationDto: MedicalLocation):
-			HttpResponse<MedicalLocation> = httpClient.put {
+			HttpResponse<MedicalLocation> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","medicallocation")

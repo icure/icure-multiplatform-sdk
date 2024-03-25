@@ -34,7 +34,7 @@ class RawICureApi(
 
 	// region common endpoints
 
-	suspend fun getVersion(): HttpResponse<String> = httpClient.get {
+	suspend fun getVersion(): HttpResponse<String> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","icure","v")
@@ -44,7 +44,7 @@ class RawICureApi(
 		}.wrap()
 
 
-	suspend fun isReady(): HttpResponse<String> = httpClient.get {
+	suspend fun isReady(): HttpResponse<String> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","icure","ok")
@@ -54,7 +54,7 @@ class RawICureApi(
 		}.wrap()
 
 
-	suspend fun getProcessInfo(): HttpResponse<String> = httpClient.get {
+	suspend fun getProcessInfo(): HttpResponse<String> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","icure","p")
@@ -64,7 +64,7 @@ class RawICureApi(
 		}.wrap()
 
 
-	suspend fun getIndexingInfo(): HttpResponse<IndexingInfo> = httpClient.get {
+	suspend fun getIndexingInfo(): HttpResponse<IndexingInfo> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","icure","i")
@@ -74,7 +74,7 @@ class RawICureApi(
 		}.wrap()
 
 
-	suspend fun getReplicationInfo(): HttpResponse<ReplicationInfo> = httpClient.get {
+	suspend fun getReplicationInfo(): HttpResponse<ReplicationInfo> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","icure","r")
@@ -85,7 +85,7 @@ class RawICureApi(
 
 
 	suspend fun updateDesignDoc(entityName: String, warmup: Boolean? = null):
-			HttpResponse<Boolean> = httpClient.post {
+			HttpResponse<Boolean> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","icure","dd",entityName)
@@ -97,7 +97,7 @@ class RawICureApi(
 
 
 	suspend fun resolvePatientsConflicts(limit: Int? = null): HttpResponse<List<IdWithRev>> =
-			httpClient.post {
+			post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","icure","conflicts","patient")
@@ -109,7 +109,7 @@ class RawICureApi(
 
 
 	suspend fun resolveContactsConflicts(limit: Int? = null): HttpResponse<List<IdWithRev>> =
-			httpClient.post {
+			post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","icure","conflicts","contact")
@@ -121,7 +121,7 @@ class RawICureApi(
 
 
 	suspend fun resolveFormsConflicts(limit: Int? = null): HttpResponse<List<IdWithRev>> =
-			httpClient.post {
+			post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","icure","conflicts","form")
@@ -133,7 +133,7 @@ class RawICureApi(
 
 
 	suspend fun resolveHealthElementsConflicts(limit: Int? = null):
-			HttpResponse<List<IdWithRev>> = httpClient.post {
+			HttpResponse<List<IdWithRev>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","icure","conflicts","healthelement")
@@ -145,7 +145,7 @@ class RawICureApi(
 
 
 	suspend fun resolveInvoicesConflicts(limit: Int? = null): HttpResponse<List<IdWithRev>> =
-			httpClient.post {
+			post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","icure","conflicts","invoice")
@@ -157,7 +157,7 @@ class RawICureApi(
 
 
 	suspend fun resolveMessagesConflicts(limit: Int? = null): HttpResponse<List<IdWithRev>> =
-			httpClient.post {
+			post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","icure","conflicts","message")
@@ -169,7 +169,7 @@ class RawICureApi(
 
 
 	suspend fun resolveDocumentsConflicts(ids: String? = null, limit: Int? = null):
-			HttpResponse<List<IdWithRev>> = httpClient.post {
+			HttpResponse<List<IdWithRev>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","icure","conflicts","document")
@@ -184,8 +184,7 @@ class RawICureApi(
 
 	// region cloud endpoints
 
-	suspend fun getIndexingInfoByGroup(groupId: String): HttpResponse<IndexingInfo> =
-			httpClient.get {
+	suspend fun getIndexingInfoByGroup(groupId: String): HttpResponse<IndexingInfo> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","icure","byGroup",groupId,"i")
@@ -195,8 +194,7 @@ class RawICureApi(
 		}.wrap()
 
 
-	suspend fun getReplicatorInfo(id: String): HttpResponse<ReplicatorDocument> =
-			httpClient.get {
+	suspend fun getReplicatorInfo(id: String): HttpResponse<ReplicatorDocument> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","icure","r",id)
@@ -206,7 +204,7 @@ class RawICureApi(
 		}.wrap()
 
 
-	suspend fun evictAllFromMap(mapName: String): HttpResponse<String> = httpClient.delete {
+	suspend fun evictAllFromMap(mapName: String): HttpResponse<String> = delete {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","icure","hzc",mapName)

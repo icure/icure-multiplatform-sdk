@@ -28,7 +28,7 @@ class RawPermissionApi(
 	// region cloud endpoints
 
 	suspend fun modifyUserPermissions(userId: String, permissions: Permission):
-			HttpResponse<List<Permission>> = httpClient.put {
+			HttpResponse<List<Permission>> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","permissions",userId)

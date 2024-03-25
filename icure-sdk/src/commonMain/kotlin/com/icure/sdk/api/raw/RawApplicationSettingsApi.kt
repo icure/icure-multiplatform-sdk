@@ -30,8 +30,7 @@ class RawApplicationSettingsApi(
 
 	// region common endpoints
 
-	suspend fun getApplicationSettings(): HttpResponse<List<ApplicationSettings>> =
-			httpClient.get {
+	suspend fun getApplicationSettings(): HttpResponse<List<ApplicationSettings>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","appsettings")
@@ -42,7 +41,7 @@ class RawApplicationSettingsApi(
 
 
 	suspend fun createApplicationSettings(applicationSettingsDto: ApplicationSettings):
-			HttpResponse<ApplicationSettings> = httpClient.post {
+			HttpResponse<ApplicationSettings> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","appsettings")
@@ -54,7 +53,7 @@ class RawApplicationSettingsApi(
 
 
 	suspend fun updateApplicationSettings(applicationSettingsDto: ApplicationSettings):
-			HttpResponse<ApplicationSettings> = httpClient.put {
+			HttpResponse<ApplicationSettings> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","appsettings")

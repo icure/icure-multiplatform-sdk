@@ -2,7 +2,9 @@ package com.icure.sdk.api.raw
 
 import com.icure.sdk.auth.services.AuthService
 import com.icure.sdk.auth.services.setAuthorizationWith
+import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.model.EncryptedTopic
+import com.icure.sdk.model.EntityWithDelegationTypeName
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.Topic
@@ -37,13 +39,14 @@ import kotlin.time.Duration
 class RawTopicApi(
 	private val apiUrl: String,
 	private val authService: AuthService,
+	private val accessControlKeysHeadersProvider: AccessControlKeysHeadersProvider?,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
 
 	// region cloud endpoints
 
-	suspend fun getTopic(topicId: String): HttpResponse<EncryptedTopic> = httpClient.get {
+	suspend fun getTopic(topicId: String): HttpResponse<EncryptedTopic> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","topic",topicId)
@@ -53,8 +56,7 @@ class RawTopicApi(
 		}.wrap()
 
 
-	suspend fun getTopics(topicIds: ListOfIds): HttpResponse<List<EncryptedTopic>> =
-			httpClient.post {
+	suspend fun getTopics(topicIds: ListOfIds): HttpResponse<List<EncryptedTopic>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","topic","byIds")
@@ -65,7 +67,7 @@ class RawTopicApi(
 		}.wrap()
 
 
-	suspend fun createTopic(ft: Topic): HttpResponse<EncryptedTopic> = httpClient.post {
+	suspend fun createTopic(ft: Topic): HttpResponse<EncryptedTopic> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","topic")
@@ -76,7 +78,7 @@ class RawTopicApi(
 		}.wrap()
 
 
-	suspend fun modifyTopic(topicDto: Topic): HttpResponse<EncryptedTopic> = httpClient.put {
+	suspend fun modifyTopic(topicDto: Topic): HttpResponse<EncryptedTopic> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","topic")
@@ -87,8 +89,7 @@ class RawTopicApi(
 		}.wrap()
 
 
-	suspend fun deleteTopics(topicIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
-			httpClient.post {
+	suspend fun deleteTopics(topicIds: ListOfIds): HttpResponse<List<DocIdentifier>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","topic","delete","batch")
@@ -99,7 +100,7 @@ class RawTopicApi(
 		}.wrap()
 
 
-	suspend fun deleteTopic(topicId: String): HttpResponse<DocIdentifier> = httpClient.delete {
+	suspend fun deleteTopic(topicId: String): HttpResponse<DocIdentifier> = delete {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","topic",topicId)
@@ -109,7 +110,7 @@ class RawTopicApi(
 
 
 	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams):
-			HttpResponse<List<EntityBulkShareResult<EncryptedTopic>>> = httpClient.put {
+			HttpResponse<List<EntityBulkShareResult<EncryptedTopic>>> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","topic","bulkSharedMetadataUpdate")
@@ -124,7 +125,7 @@ class RawTopicApi(
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		filterChain: FilterChain<Topic>,
-	): HttpResponse<PaginatedList<EncryptedTopic, Nothing>> = httpClient.post {
+	): HttpResponse<PaginatedList<EncryptedTopic, Nothing>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","topic","filter")
@@ -138,7 +139,7 @@ class RawTopicApi(
 
 
 	suspend fun matchTopicsBy(filter: AbstractFilter<Topic>): HttpResponse<List<String>> =
-			httpClient.post {
+			post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","topic","match")
@@ -150,7 +151,7 @@ class RawTopicApi(
 
 
 	suspend fun addParticipant(topicId: String, request: AddParticipant):
-			HttpResponse<EncryptedTopic> = httpClient.post {
+			HttpResponse<EncryptedTopic> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","topic",topicId,"addParticipant")
@@ -162,7 +163,7 @@ class RawTopicApi(
 
 
 	suspend fun removeParticipant(topicId: String, request: RemoveParticipant):
-			HttpResponse<EncryptedTopic> = httpClient.post {
+			HttpResponse<EncryptedTopic> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","topic",topicId,"removeParticipant")

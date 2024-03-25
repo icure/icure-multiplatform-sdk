@@ -43,7 +43,7 @@ class RawHealthcarePartyApi(
 
 	// region common endpoints
 
-	suspend fun getCurrentHealthcareParty(): HttpResponse<HealthcareParty> = httpClient.get {
+	suspend fun getCurrentHealthcareParty(): HttpResponse<HealthcareParty> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","hcparty","current")
@@ -58,7 +58,7 @@ class RawHealthcarePartyApi(
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		desc: Boolean? = null,
-	): HttpResponse<PaginatedList<HealthcareParty, JsonString>> = httpClient.get {
+	): HttpResponse<PaginatedList<HealthcareParty, JsonString>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","hcparty")
@@ -78,7 +78,7 @@ class RawHealthcarePartyApi(
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		desc: Boolean? = null,
-	): HttpResponse<PaginatedList<HealthcareParty, JsonString>> = httpClient.get {
+	): HttpResponse<PaginatedList<HealthcareParty, JsonString>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","hcparty","byName")
@@ -99,7 +99,7 @@ class RawHealthcarePartyApi(
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		desc: Boolean = false,
-	): HttpResponse<PaginatedList<HealthcareParty, JsonString>> = httpClient.get {
+	): HttpResponse<PaginatedList<HealthcareParty, JsonString>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","hcparty","byNihiiOrSsin",searchValue)
@@ -114,7 +114,7 @@ class RawHealthcarePartyApi(
 
 
 	suspend fun listHealthcarePartiesByName(name: String): HttpResponse<List<HealthcareParty>> =
-			httpClient.get {
+			get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","hcparty","byNameStrict",name)
@@ -132,7 +132,7 @@ class RawHealthcarePartyApi(
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<HealthcareParty, JsonString>> = httpClient.get {
+	): HttpResponse<PaginatedList<HealthcareParty, JsonString>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","hcparty","bySpecialityAndPostCode",type,spec,firstCode,"to",lastCode)
@@ -146,7 +146,7 @@ class RawHealthcarePartyApi(
 
 
 	suspend fun createHealthcareParty(h: HealthcareParty): HttpResponse<HealthcareParty> =
-			httpClient.post {
+			post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","hcparty")
@@ -159,7 +159,7 @@ class RawHealthcarePartyApi(
 
 	suspend fun getAesExchangeKeysForDelegate(healthcarePartyId: String):
 			HttpResponse<Map<String, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>>>
-			= httpClient.get {
+			= get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","hcparty",healthcarePartyId,"aesExchangeKeys")
@@ -170,7 +170,7 @@ class RawHealthcarePartyApi(
 
 
 	suspend fun getHealthcareParty(healthcarePartyId: String): HttpResponse<HealthcareParty> =
-			httpClient.get {
+			get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","hcparty",healthcarePartyId)
@@ -181,7 +181,7 @@ class RawHealthcarePartyApi(
 
 
 	suspend fun getHealthcareParties(healthcarePartyIds: ListOfIds):
-			HttpResponse<List<HealthcareParty>> = httpClient.post {
+			HttpResponse<List<HealthcareParty>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","hcparty","byIds")
@@ -193,7 +193,7 @@ class RawHealthcarePartyApi(
 
 
 	suspend fun listHealthcarePartiesByParentId(parentId: String):
-			HttpResponse<List<HealthcareParty>> = httpClient.get {
+			HttpResponse<List<HealthcareParty>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","hcparty",parentId,"children")
@@ -203,8 +203,7 @@ class RawHealthcarePartyApi(
 		}.wrap()
 
 
-	suspend fun getPublicKey(healthcarePartyId: String): HttpResponse<PublicKey> =
-			httpClient.get {
+	suspend fun getPublicKey(healthcarePartyId: String): HttpResponse<PublicKey> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","hcparty",healthcarePartyId,"publicKey")
@@ -215,7 +214,7 @@ class RawHealthcarePartyApi(
 
 
 	suspend fun deleteHealthcareParties(healthcarePartyIds: ListOfIds):
-			HttpResponse<List<DocIdentifier>> = httpClient.post {
+			HttpResponse<List<DocIdentifier>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","hcparty","delete","batch")
@@ -227,7 +226,7 @@ class RawHealthcarePartyApi(
 
 
 	suspend fun deleteHealthcareParty(healthcarePartyId: String): HttpResponse<DocIdentifier> =
-			httpClient.delete {
+			delete {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","hcparty",healthcarePartyId)
@@ -237,7 +236,7 @@ class RawHealthcarePartyApi(
 
 
 	suspend fun modifyHealthcareParty(healthcarePartyDto: HealthcareParty):
-			HttpResponse<HealthcareParty> = httpClient.put {
+			HttpResponse<HealthcareParty> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","hcparty")
@@ -249,7 +248,7 @@ class RawHealthcarePartyApi(
 
 
 	suspend fun matchHealthcarePartiesBy(filter: AbstractFilter<HealthcareParty>):
-			HttpResponse<List<String>> = httpClient.post {
+			HttpResponse<List<String>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","hcparty","match")
@@ -264,7 +263,7 @@ class RawHealthcarePartyApi(
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		filterChain: FilterChain<HealthcareParty>,
-	): HttpResponse<PaginatedList<HealthcareParty, *>> = httpClient.post {
+	): HttpResponse<PaginatedList<HealthcareParty, *>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","hcparty","filter")
@@ -281,7 +280,7 @@ class RawHealthcarePartyApi(
 	// region cloud endpoints
 
 	suspend fun getHealthcarePartiesInGroup(groupId: String, healthcarePartyIds: ListOfIds? =
-			null): HttpResponse<List<HealthcareParty>> = httpClient.post {
+			null): HttpResponse<List<HealthcareParty>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","hcparty","inGroup",groupId,"byIds")
@@ -293,7 +292,7 @@ class RawHealthcarePartyApi(
 
 
 	suspend fun deleteHealthcarePartiesInGroup(groupId: String, healthcarePartyIds: ListOfIds):
-			HttpResponse<List<DocIdentifier>> = httpClient.post {
+			HttpResponse<List<DocIdentifier>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","hcparty","delete","batch","inGroup",groupId)
@@ -305,7 +304,7 @@ class RawHealthcarePartyApi(
 
 
 	suspend fun deleteHealthcarePartyInGroup(healthcarePartyId: String, groupId: String):
-			HttpResponse<DocIdentifier> = httpClient.delete {
+			HttpResponse<DocIdentifier> = delete {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","hcparty",healthcarePartyId,"inGroup",groupId)
@@ -315,7 +314,7 @@ class RawHealthcarePartyApi(
 
 
 	suspend fun modifyHealthcarePartyInGroup(groupId: String,
-			healthcarePartyDto: HealthcareParty): HttpResponse<HealthcareParty> = httpClient.put {
+			healthcarePartyDto: HealthcareParty): HttpResponse<HealthcareParty> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","hcparty","inGroup",groupId)
@@ -327,7 +326,7 @@ class RawHealthcarePartyApi(
 
 
 	suspend fun createHealthcarePartyInGroup(groupId: String, h: HealthcareParty):
-			HttpResponse<HealthcareParty> = httpClient.post {
+			HttpResponse<HealthcareParty> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","hcparty","inGroup",groupId)
@@ -344,7 +343,7 @@ class RawHealthcarePartyApi(
 		token: String? = null,
 		useShortToken: Boolean? = null,
 		hcp: HealthcareParty,
-	): HttpResponse<DataOwnerRegistrationSuccess> = httpClient.post {
+	): HttpResponse<DataOwnerRegistrationSuccess> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","hcparty","register","inGroup",groupId)

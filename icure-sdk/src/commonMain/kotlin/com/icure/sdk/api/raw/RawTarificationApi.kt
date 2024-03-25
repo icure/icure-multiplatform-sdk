@@ -42,7 +42,7 @@ class RawTarificationApi(
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<Tarification, JsonString>> = httpClient.get {
+	): HttpResponse<PaginatedList<Tarification, JsonString>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tarification","byLabel")
@@ -67,7 +67,7 @@ class RawTarificationApi(
 		startDocumentId: String? = null,
 		startKey: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<Tarification, JsonString>> = httpClient.get {
+	): HttpResponse<PaginatedList<Tarification, JsonString>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tarification")
@@ -89,7 +89,7 @@ class RawTarificationApi(
 		type: String? = null,
 		tarification: String? = null,
 		version: String? = null,
-	): HttpResponse<List<Tarification>> = httpClient.get {
+	): HttpResponse<List<Tarification>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tarification","byRegionTypeTarification")
@@ -103,8 +103,7 @@ class RawTarificationApi(
 		}.wrap()
 
 
-	suspend fun createTarification(c: Tarification): HttpResponse<Tarification> =
-			httpClient.post {
+	suspend fun createTarification(c: Tarification): HttpResponse<Tarification> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tarification")
@@ -116,7 +115,7 @@ class RawTarificationApi(
 
 
 	suspend fun getTarifications(tarificationIds: ListOfIds): HttpResponse<List<Tarification>> =
-			httpClient.post {
+			post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tarification","byIds")
@@ -127,8 +126,7 @@ class RawTarificationApi(
 		}.wrap()
 
 
-	suspend fun getTarification(tarificationId: String): HttpResponse<Tarification> =
-			httpClient.get {
+	suspend fun getTarification(tarificationId: String): HttpResponse<Tarification> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tarification",tarificationId)
@@ -142,7 +140,7 @@ class RawTarificationApi(
 		type: String,
 		tarification: String,
 		version: String,
-	): HttpResponse<Tarification> = httpClient.get {
+	): HttpResponse<Tarification> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tarification",type,tarification,version)
@@ -153,7 +151,7 @@ class RawTarificationApi(
 
 
 	suspend fun modifyTarification(tarificationDto: Tarification): HttpResponse<Tarification> =
-			httpClient.put {
+			put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","tarification")

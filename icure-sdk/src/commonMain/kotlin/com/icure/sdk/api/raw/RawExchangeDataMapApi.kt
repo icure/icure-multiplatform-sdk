@@ -31,7 +31,7 @@ class RawExchangeDataMapApi(
 	// region common endpoints
 
 	suspend fun createOrUpdateExchangeDataMapBatch(batch: ExchangeDataMapCreationBatch):
-			HttpResponse<String> = httpClient.put {
+			HttpResponse<String> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","exchangedatamap","batch")
@@ -43,7 +43,7 @@ class RawExchangeDataMapApi(
 
 
 	suspend fun getExchangeDataMapBatch(ids: ListOfIds): HttpResponse<List<ExchangeDataMap>> =
-			httpClient.post {
+			post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","exchangedatamap","batch")

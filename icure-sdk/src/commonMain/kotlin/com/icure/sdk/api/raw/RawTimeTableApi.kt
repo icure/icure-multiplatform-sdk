@@ -2,7 +2,9 @@ package com.icure.sdk.api.raw
 
 import com.icure.sdk.auth.services.AuthService
 import com.icure.sdk.auth.services.setAuthorizationWith
+import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.model.EncryptedTimeTable
+import com.icure.sdk.model.EntityWithDelegationTypeName
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.TimeTable
 import com.icure.sdk.model.couchdb.DocIdentifier
@@ -31,14 +33,18 @@ import kotlin.time.Duration
 class RawTimeTableApi(
 	private val apiUrl: String,
 	private val authService: AuthService,
+	private val accessControlKeysHeadersProvider: AccessControlKeysHeadersProvider?,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
 
+	override suspend fun getAccessControlKeysHeaderValues(): List<String>? =
+			accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithDelegationTypeName.TimeTable)
+
 	// region common endpoints
 
 	suspend fun createTimeTable(timeTableDto: TimeTable): HttpResponse<EncryptedTimeTable> =
-			httpClient.post {
+			post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","timeTable")
@@ -50,7 +56,7 @@ class RawTimeTableApi(
 
 
 	suspend fun deleteTimeTables(timeTableIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
-			httpClient.post {
+			post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","timeTable","delete","batch")
@@ -61,8 +67,7 @@ class RawTimeTableApi(
 		}.wrap()
 
 
-	suspend fun deleteTimeTable(timeTableId: String): HttpResponse<DocIdentifier> =
-			httpClient.delete {
+	suspend fun deleteTimeTable(timeTableId: String): HttpResponse<DocIdentifier> = delete {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","timeTable",timeTableId)
@@ -71,8 +76,7 @@ class RawTimeTableApi(
 		}.wrap()
 
 
-	suspend fun getTimeTable(timeTableId: String): HttpResponse<EncryptedTimeTable> =
-			httpClient.get {
+	suspend fun getTimeTable(timeTableId: String): HttpResponse<EncryptedTimeTable> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","timeTable",timeTableId)
@@ -83,7 +87,7 @@ class RawTimeTableApi(
 
 
 	suspend fun modifyTimeTable(timeTableDto: TimeTable): HttpResponse<EncryptedTimeTable> =
-			httpClient.put {
+			put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","timeTable")
@@ -98,7 +102,7 @@ class RawTimeTableApi(
 		startDate: Long,
 		endDate: Long,
 		agendaId: String,
-	): HttpResponse<List<EncryptedTimeTable>> = httpClient.post {
+	): HttpResponse<List<EncryptedTimeTable>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","timeTable","byPeriodAndAgendaId")
@@ -112,7 +116,7 @@ class RawTimeTableApi(
 
 
 	suspend fun getTimeTablesByAgendaId(agendaId: String):
-			HttpResponse<List<EncryptedTimeTable>> = httpClient.post {
+			HttpResponse<List<EncryptedTimeTable>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","timeTable","byAgendaId")
@@ -124,7 +128,7 @@ class RawTimeTableApi(
 
 
 	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams):
-			HttpResponse<List<EntityBulkShareResult<EncryptedTimeTable>>> = httpClient.put {
+			HttpResponse<List<EntityBulkShareResult<EncryptedTimeTable>>> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","timeTable","bulkSharedMetadataUpdate")

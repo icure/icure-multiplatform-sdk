@@ -32,7 +32,7 @@ class RawRecoveryDataApi(
 	// region common endpoints
 
 	suspend fun createRecoveryData(recoveryData: RecoveryData): HttpResponse<RecoveryData> =
-			httpClient.post {
+			post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","recoverydata")
@@ -43,7 +43,7 @@ class RawRecoveryDataApi(
 		}.wrap()
 
 
-	suspend fun getRecoveryData(id: String): HttpResponse<RecoveryData> = httpClient.get {
+	suspend fun getRecoveryData(id: String): HttpResponse<RecoveryData> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","recoverydata",id)
@@ -53,8 +53,7 @@ class RawRecoveryDataApi(
 		}.wrap()
 
 
-	suspend fun deleteRecoveryData(id: String): HttpResponse<DocIdentifier> =
-			httpClient.delete {
+	suspend fun deleteRecoveryData(id: String): HttpResponse<DocIdentifier> = delete {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","recoverydata",id)
@@ -64,7 +63,7 @@ class RawRecoveryDataApi(
 
 
 	suspend fun deleteAllRecoveryDataForRecipient(recipientId: String): HttpResponse<Content> =
-			httpClient.delete {
+			delete {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","recoverydataforRecipient",recipientId)
@@ -74,7 +73,7 @@ class RawRecoveryDataApi(
 
 
 	suspend fun deleteAllRecoveryDataOfTypeForRecipient(type: RecoveryData.Type,
-			recipientId: String): HttpResponse<Content> = httpClient.delete {
+			recipientId: String): HttpResponse<Content> = delete {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","recoverydataforRecipient",recipientId,"ofType","$type")

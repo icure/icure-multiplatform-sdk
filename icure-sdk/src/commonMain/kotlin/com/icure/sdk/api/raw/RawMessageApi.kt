@@ -2,7 +2,9 @@ package com.icure.sdk.api.raw
 
 import com.icure.sdk.auth.services.AuthService
 import com.icure.sdk.auth.services.setAuthorizationWith
+import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.model.EncryptedMessage
+import com.icure.sdk.model.EntityWithDelegationTypeName
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.Message
 import com.icure.sdk.model.MessagesReadStatusUpdate
@@ -38,14 +40,17 @@ import kotlin.time.Duration
 class RawMessageApi(
 	private val apiUrl: String,
 	private val authService: AuthService,
+	private val accessControlKeysHeadersProvider: AccessControlKeysHeadersProvider?,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
 
+	override suspend fun getAccessControlKeysHeaderValues(): List<String>? =
+			accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithDelegationTypeName.Message)
+
 	// region common endpoints
 
-	suspend fun createMessage(messageDto: Message): HttpResponse<EncryptedMessage> =
-			httpClient.post {
+	suspend fun createMessage(messageDto: Message): HttpResponse<EncryptedMessage> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","message")
@@ -57,7 +62,7 @@ class RawMessageApi(
 
 
 	suspend fun deleteMessages(messageIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
-			httpClient.post {
+			post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","message","delete","batch")
@@ -68,8 +73,7 @@ class RawMessageApi(
 		}.wrap()
 
 
-	suspend fun deleteMessage(messageId: String): HttpResponse<DocIdentifier> =
-			httpClient.delete {
+	suspend fun deleteMessage(messageId: String): HttpResponse<DocIdentifier> = delete {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","message",messageId)
@@ -78,7 +82,7 @@ class RawMessageApi(
 		}.wrap()
 
 
-	suspend fun getMessage(messageId: String): HttpResponse<EncryptedMessage> = httpClient.get {
+	suspend fun getMessage(messageId: String): HttpResponse<EncryptedMessage> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","message",messageId)
@@ -89,7 +93,7 @@ class RawMessageApi(
 
 
 	suspend fun listMessagesByTransportGuids(hcpId: String, transportGuids: ListOfIds):
-			HttpResponse<List<EncryptedMessage>> = httpClient.post {
+			HttpResponse<List<EncryptedMessage>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","message","byTransportGuid","list")
@@ -102,7 +106,7 @@ class RawMessageApi(
 
 
 	suspend fun findMessagesByHCPartyPatientForeignKeys(secretFKeys: String):
-			HttpResponse<List<EncryptedMessage>> = httpClient.get {
+			HttpResponse<List<EncryptedMessage>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","message","byHcPartySecretForeignKeys")
@@ -114,7 +118,7 @@ class RawMessageApi(
 
 
 	suspend fun findMessagesByHCPartyPatientForeignKeys(secretPatientKeys: List<String>):
-			HttpResponse<List<EncryptedMessage>> = httpClient.post {
+			HttpResponse<List<EncryptedMessage>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","message","byHcPartySecretForeignKeys")
@@ -130,7 +134,7 @@ class RawMessageApi(
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedMessage, JsonString>> = httpClient.get {
+	): HttpResponse<PaginatedList<EncryptedMessage, JsonString>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","message","byHcPartySecretForeignKey")
@@ -148,7 +152,7 @@ class RawMessageApi(
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedMessage, JsonString>> = httpClient.get {
+	): HttpResponse<PaginatedList<EncryptedMessage, JsonString>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","message")
@@ -162,7 +166,7 @@ class RawMessageApi(
 
 
 	suspend fun getChildrenMessages(messageId: String): HttpResponse<List<EncryptedMessage>> =
-			httpClient.get {
+			get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","message",messageId,"children")
@@ -173,7 +177,7 @@ class RawMessageApi(
 
 
 	suspend fun getMessagesChildren(parentIds: ListOfIds): HttpResponse<List<EncryptedMessage>>
-			= httpClient.post {
+			= post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","message","children","batch")
@@ -185,7 +189,7 @@ class RawMessageApi(
 
 
 	suspend fun listMessagesByInvoices(ids: ListOfIds): HttpResponse<List<EncryptedMessage>> =
-			httpClient.post {
+			post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","message","byInvoice")
@@ -203,7 +207,7 @@ class RawMessageApi(
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		hcpId: String? = null,
-	): HttpResponse<PaginatedList<EncryptedMessage, JsonString>> = httpClient.get {
+	): HttpResponse<PaginatedList<EncryptedMessage, JsonString>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","message","byTransportGuid")
@@ -227,7 +231,7 @@ class RawMessageApi(
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		hcpId: String? = null,
-	): HttpResponse<PaginatedList<EncryptedMessage, JsonString>> = httpClient.get {
+	): HttpResponse<PaginatedList<EncryptedMessage, JsonString>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","message","byTransportGuidSentDate")
@@ -251,7 +255,7 @@ class RawMessageApi(
 		limit: Int? = null,
 		reverse: Boolean? = null,
 		hcpId: String? = null,
-	): HttpResponse<PaginatedList<EncryptedMessage, JsonString>> = httpClient.get {
+	): HttpResponse<PaginatedList<EncryptedMessage, JsonString>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","message","byToAddress")
@@ -273,7 +277,7 @@ class RawMessageApi(
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		hcpId: String? = null,
-	): HttpResponse<PaginatedList<EncryptedMessage, JsonString>> = httpClient.get {
+	): HttpResponse<PaginatedList<EncryptedMessage, JsonString>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","message","byFromAddress")
@@ -288,8 +292,7 @@ class RawMessageApi(
 		}.wrap()
 
 
-	suspend fun modifyMessage(messageDto: Message): HttpResponse<EncryptedMessage> =
-			httpClient.put {
+	suspend fun modifyMessage(messageDto: Message): HttpResponse<EncryptedMessage> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","message")
@@ -301,7 +304,7 @@ class RawMessageApi(
 
 
 	suspend fun setMessagesStatusBits(status: Int, messageIds: ListOfIds):
-			HttpResponse<List<EncryptedMessage>> = httpClient.put {
+			HttpResponse<List<EncryptedMessage>> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","message","status","$status")
@@ -313,7 +316,7 @@ class RawMessageApi(
 
 
 	suspend fun setMessagesReadStatus(`data`: MessagesReadStatusUpdate):
-			HttpResponse<List<EncryptedMessage>> = httpClient.put {
+			HttpResponse<List<EncryptedMessage>> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","message","readstatus")
@@ -325,7 +328,7 @@ class RawMessageApi(
 
 
 	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams):
-			HttpResponse<List<EntityBulkShareResult<EncryptedMessage>>> = httpClient.put {
+			HttpResponse<List<EntityBulkShareResult<EncryptedMessage>>> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","message","bulkSharedMetadataUpdate")
@@ -340,7 +343,7 @@ class RawMessageApi(
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		filterChain: FilterChain<Message>,
-	): HttpResponse<PaginatedList<EncryptedMessage, *>> = httpClient.post {
+	): HttpResponse<PaginatedList<EncryptedMessage, *>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","message","filter")
@@ -354,7 +357,7 @@ class RawMessageApi(
 
 
 	suspend fun matchMessagesBy(filter: AbstractFilter<Message>): HttpResponse<List<String>> =
-			httpClient.post {
+			post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","message","match")
@@ -369,7 +372,7 @@ class RawMessageApi(
 	// region cloud endpoints
 
 	suspend fun createMessageInTopic(messageDto: Message): HttpResponse<EncryptedMessage> =
-			httpClient.post {
+			post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","message","topic")

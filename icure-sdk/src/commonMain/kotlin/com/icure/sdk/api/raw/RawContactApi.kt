@@ -6,6 +6,7 @@ import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.model.Contact
 import com.icure.sdk.model.EncryptedContact
 import com.icure.sdk.model.EncryptedIcureStub
+import com.icure.sdk.model.EntityWithDelegationTypeName
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.`data`.LabelledOccurence
@@ -49,9 +50,12 @@ class RawContactApi(
 	timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
 
+	override suspend fun getAccessControlKeysHeaderValues(): List<String>? =
+			accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithDelegationTypeName.Contact)
+
 	// region common endpoints
 
-	suspend fun getEmptyContent(): HttpResponse<Content> = httpClient.get {
+	suspend fun getEmptyContent(): HttpResponse<Content> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","contact","service","content","empty")
@@ -61,7 +65,7 @@ class RawContactApi(
 		}.wrap()
 
 
-	suspend fun createContact(c: Contact): HttpResponse<EncryptedContact> = httpClient.post {
+	suspend fun createContact(c: Contact): HttpResponse<EncryptedContact> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","contact")
@@ -72,7 +76,7 @@ class RawContactApi(
 		}.wrap()
 
 
-	suspend fun getContact(contactId: String): HttpResponse<EncryptedContact> = httpClient.get {
+	suspend fun getContact(contactId: String): HttpResponse<EncryptedContact> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","contact",contactId)
@@ -83,7 +87,7 @@ class RawContactApi(
 
 
 	suspend fun getContacts(contactIds: ListOfIds): HttpResponse<List<EncryptedContact>> =
-			httpClient.post {
+			post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","contact","byIds")
@@ -95,7 +99,7 @@ class RawContactApi(
 
 
 	suspend fun getServiceCodesOccurrences(codeType: String, minOccurrences: Long):
-			HttpResponse<List<LabelledOccurence>> = httpClient.get {
+			HttpResponse<List<LabelledOccurence>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","contact","service","codes",codeType,"$minOccurrences")
@@ -106,7 +110,7 @@ class RawContactApi(
 
 
 	suspend fun listContactByHCPartyServiceId(hcPartyId: String, serviceId: String):
-			HttpResponse<List<EncryptedContact>> = httpClient.get {
+			HttpResponse<List<EncryptedContact>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","contact","byHcPartyServiceId")
@@ -119,7 +123,7 @@ class RawContactApi(
 
 
 	suspend fun listContactsByExternalId(externalId: String):
-			HttpResponse<List<EncryptedContact>> = httpClient.post {
+			HttpResponse<List<EncryptedContact>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","contact","byExternalId")
@@ -131,7 +135,7 @@ class RawContactApi(
 
 
 	suspend fun listContactsByHCPartyAndFormId(hcPartyId: String, formId: String):
-			HttpResponse<List<EncryptedContact>> = httpClient.get {
+			HttpResponse<List<EncryptedContact>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","contact","byHcPartyFormId")
@@ -144,7 +148,7 @@ class RawContactApi(
 
 
 	suspend fun listContactsByHCPartyAndFormIds(hcPartyId: String, formIds: ListOfIds):
-			HttpResponse<List<EncryptedContact>> = httpClient.post {
+			HttpResponse<List<EncryptedContact>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","contact","byHcPartyFormIds")
@@ -157,7 +161,7 @@ class RawContactApi(
 
 
 	suspend fun listContactsByHCPartyAndPatientForeignKeys(hcPartyId: String,
-			patientForeignKeys: ListOfIds): HttpResponse<List<EncryptedContact>> = httpClient.post {
+			patientForeignKeys: ListOfIds): HttpResponse<List<EncryptedContact>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","contact","byHcPartyPatientForeignKeys")
@@ -175,7 +179,7 @@ class RawContactApi(
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedContact, JsonString>> = httpClient.get {
+	): HttpResponse<PaginatedList<EncryptedContact, JsonString>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","contact","byHcPartyPatientForeignKey")
@@ -195,7 +199,7 @@ class RawContactApi(
 		secretFKeys: String,
 		planOfActionsIds: String? = null,
 		skipClosedContacts: Boolean? = null,
-	): HttpResponse<List<EncryptedContact>> = httpClient.get {
+	): HttpResponse<List<EncryptedContact>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","contact","byHcPartySecretForeignKeys")
@@ -214,7 +218,7 @@ class RawContactApi(
 		secretPatientKeys: List<String>,
 		planOfActionsIds: String? = null,
 		skipClosedContacts: Boolean? = null,
-	): HttpResponse<List<EncryptedContact>> = httpClient.post {
+	): HttpResponse<List<EncryptedContact>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","contact","byHcPartySecretForeignKeys")
@@ -229,7 +233,7 @@ class RawContactApi(
 
 
 	suspend fun listContactsDelegationsStubsByHCPartyAndPatientForeignKeys(hcPartyId: String,
-			secretFKeys: String): HttpResponse<List<EncryptedIcureStub>> = httpClient.get {
+			secretFKeys: String): HttpResponse<List<EncryptedIcureStub>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","contact","byHcPartySecretForeignKeys","delegations")
@@ -242,7 +246,7 @@ class RawContactApi(
 
 
 	suspend fun findContactsDelegationsStubsByHCPartyPatientForeignKeys(hcPartyId: String,
-			secretPatientKeys: List<String>): HttpResponse<List<EncryptedIcureStub>> = httpClient.post {
+			secretPatientKeys: List<String>): HttpResponse<List<EncryptedIcureStub>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","contact","byHcPartySecretForeignKeys","delegations")
@@ -255,7 +259,7 @@ class RawContactApi(
 
 
 	suspend fun closeForHCPartyPatientForeignKeys(hcPartyId: String, secretFKeys: String):
-			HttpResponse<List<EncryptedContact>> = httpClient.put {
+			HttpResponse<List<EncryptedContact>> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","contact","byHcPartySecretForeignKeys","close")
@@ -268,7 +272,7 @@ class RawContactApi(
 
 
 	suspend fun deleteContacts(contactIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
-			httpClient.post {
+			post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","contact","delete","batch")
@@ -279,8 +283,7 @@ class RawContactApi(
 		}.wrap()
 
 
-	suspend fun deleteContact(contactId: String): HttpResponse<DocIdentifier> =
-			httpClient.delete {
+	suspend fun deleteContact(contactId: String): HttpResponse<DocIdentifier> = delete {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","contact",contactId)
@@ -289,8 +292,7 @@ class RawContactApi(
 		}.wrap()
 
 
-	suspend fun modifyContact(contactDto: Contact): HttpResponse<EncryptedContact> =
-			httpClient.put {
+	suspend fun modifyContact(contactDto: Contact): HttpResponse<EncryptedContact> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","contact")
@@ -302,7 +304,7 @@ class RawContactApi(
 
 
 	suspend fun modifyContacts(contactDtos: List<Contact>): HttpResponse<List<EncryptedContact>>
-			= httpClient.put {
+			= put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","contact","batch")
@@ -314,7 +316,7 @@ class RawContactApi(
 
 
 	suspend fun createContacts(contactDtos: List<Contact>): HttpResponse<List<EncryptedContact>>
-			= httpClient.post {
+			= post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","contact","batch")
@@ -329,7 +331,7 @@ class RawContactApi(
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		filterChain: FilterChain<Contact>,
-	): HttpResponse<PaginatedList<EncryptedContact, *>> = httpClient.post {
+	): HttpResponse<PaginatedList<EncryptedContact, *>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","contact","filter")
@@ -343,7 +345,7 @@ class RawContactApi(
 
 
 	suspend fun matchContactsBy(filter: AbstractFilter<Contact>): HttpResponse<List<String>> =
-			httpClient.post {
+			post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","contact","match")
@@ -354,7 +356,7 @@ class RawContactApi(
 		}.wrap()
 
 
-	suspend fun getService(serviceId: String): HttpResponse<EncryptedService> = httpClient.get {
+	suspend fun getService(serviceId: String): HttpResponse<EncryptedService> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","contact","service",serviceId)
@@ -368,7 +370,7 @@ class RawContactApi(
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		filterChain: FilterChain<Service>,
-	): HttpResponse<PaginatedList<EncryptedService, Nothing>> = httpClient.post {
+	): HttpResponse<PaginatedList<EncryptedService, Nothing>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","contact","service","filter")
@@ -382,7 +384,7 @@ class RawContactApi(
 
 
 	suspend fun matchServicesBy(filter: AbstractFilter<Service>): HttpResponse<List<String>> =
-			httpClient.post {
+			post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","contact","service","match")
@@ -393,8 +395,7 @@ class RawContactApi(
 		}.wrap()
 
 
-	suspend fun getServices(ids: ListOfIds): HttpResponse<List<EncryptedService>> =
-			httpClient.post {
+	suspend fun getServices(ids: ListOfIds): HttpResponse<List<EncryptedService>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","contact","service")
@@ -406,7 +407,7 @@ class RawContactApi(
 
 
 	suspend fun getServicesLinkedTo(linkType: String? = null, ids: ListOfIds):
-			HttpResponse<List<EncryptedService>> = httpClient.post {
+			HttpResponse<List<EncryptedService>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","contact","service","linkedTo")
@@ -419,7 +420,7 @@ class RawContactApi(
 
 
 	suspend fun listServicesByAssociationId(associationId: String):
-			HttpResponse<List<EncryptedService>> = httpClient.get {
+			HttpResponse<List<EncryptedService>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","contact","service","associationId")
@@ -431,7 +432,7 @@ class RawContactApi(
 
 
 	suspend fun listServicesByHealthElementId(healthElementId: String, hcPartyId: String):
-			HttpResponse<List<EncryptedService>> = httpClient.get {
+			HttpResponse<List<EncryptedService>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","contact","service","healthElementId",healthElementId)
@@ -449,7 +450,7 @@ class RawContactApi(
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedContact, JsonString>> = httpClient.get {
+	): HttpResponse<PaginatedList<EncryptedContact, JsonString>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","contact","byOpeningDate")
@@ -466,7 +467,7 @@ class RawContactApi(
 
 
 	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams):
-			HttpResponse<List<EntityBulkShareResult<EncryptedContact>>> = httpClient.put {
+			HttpResponse<List<EntityBulkShareResult<EncryptedContact>>> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","contact","bulkSharedMetadataUpdate")
@@ -478,7 +479,7 @@ class RawContactApi(
 
 
 	suspend fun bulkShareMinimal(request: BulkShareOrUpdateMetadataParams):
-			HttpResponse<List<EntityBulkShareResult<EncryptedContact>>> = httpClient.put {
+			HttpResponse<List<EntityBulkShareResult<EncryptedContact>>> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","contact","bulkSharedMetadataUpdateMinimal")

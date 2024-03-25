@@ -16,6 +16,7 @@ enum class EntityWithDelegationTypeName(
 	AccessLog("AccessLog"),
 	CalendarItem("CalendarItem"),
 	Classification("Classification"),
+	ClassificationTemplate("ClassificationTemplate"),
 	Contact("Contact"),
 	Document("Document"),
 	Form("Form"),

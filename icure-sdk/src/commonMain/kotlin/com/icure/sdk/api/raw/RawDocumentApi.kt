@@ -2,8 +2,10 @@ package com.icure.sdk.api.raw
 
 import com.icure.sdk.auth.services.AuthService
 import com.icure.sdk.auth.services.setAuthorizationWith
+import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.model.Document
 import com.icure.sdk.model.EncryptedDocument
+import com.icure.sdk.model.EntityWithDelegationTypeName
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
@@ -38,14 +40,18 @@ import kotlin.time.Duration
 class RawDocumentApi(
 	private val apiUrl: String,
 	private val authService: AuthService,
+	private val accessControlKeysHeadersProvider: AccessControlKeysHeadersProvider?,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
 
+	override suspend fun getAccessControlKeysHeaderValues(): List<String>? =
+			accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithDelegationTypeName.Document)
+
 	// region common endpoints
 
 	suspend fun createDocument(documentDto: Document, strict: Boolean? = null):
-			HttpResponse<EncryptedDocument> = httpClient.post {
+			HttpResponse<EncryptedDocument> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","document")
@@ -58,7 +64,7 @@ class RawDocumentApi(
 
 
 	suspend fun deleteDocuments(documentIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
-			httpClient.post {
+			post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","document","delete","batch")
@@ -69,8 +75,7 @@ class RawDocumentApi(
 		}.wrap()
 
 
-	suspend fun deleteDocument(documentId: String): HttpResponse<DocIdentifier> =
-			httpClient.delete {
+	suspend fun deleteDocument(documentId: String): HttpResponse<DocIdentifier> = delete {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","document",documentId)
@@ -80,7 +85,7 @@ class RawDocumentApi(
 
 
 	suspend fun getMainAttachment(documentId: String, fileName: String? = null):
-			HttpResponse<ByteArray> = httpClient.get {
+			HttpResponse<ByteArray> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","document",documentId,"attachment")
@@ -92,7 +97,7 @@ class RawDocumentApi(
 
 
 	suspend fun deleteAttachment(documentId: String, rev: String):
-			HttpResponse<EncryptedDocument> = httpClient.delete {
+			HttpResponse<EncryptedDocument> = delete {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","document",documentId,"attachment")
@@ -109,7 +114,7 @@ class RawDocumentApi(
 		payload: ByteArray,
 		lengthHeader: Long?,
 		encrypted: Boolean? = null,
-	): HttpResponse<EncryptedDocument> = httpClient.put {
+	): HttpResponse<EncryptedDocument> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","document",documentId,"attachment")
@@ -124,8 +129,7 @@ class RawDocumentApi(
 		}.wrap()
 
 
-	suspend fun getDocument(documentId: String): HttpResponse<EncryptedDocument> =
-			httpClient.get {
+	suspend fun getDocument(documentId: String): HttpResponse<EncryptedDocument> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","document",documentId)
@@ -136,7 +140,7 @@ class RawDocumentApi(
 
 
 	suspend fun getDocumentByExternalUuid(externalUuid: String): HttpResponse<EncryptedDocument>
-			= httpClient.get {
+			= get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","document","externaluuid",externalUuid)
@@ -147,7 +151,7 @@ class RawDocumentApi(
 
 
 	suspend fun getDocumentsByExternalUuid(externalUuid: String):
-			HttpResponse<List<EncryptedDocument>> = httpClient.get {
+			HttpResponse<List<EncryptedDocument>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","document","externaluuid",externalUuid,"all")
@@ -158,7 +162,7 @@ class RawDocumentApi(
 
 
 	suspend fun getDocuments(documentIds: ListOfIds): HttpResponse<List<EncryptedDocument>> =
-			httpClient.post {
+			post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","document","byIds")
@@ -169,8 +173,7 @@ class RawDocumentApi(
 		}.wrap()
 
 
-	suspend fun modifyDocument(documentDto: Document): HttpResponse<EncryptedDocument> =
-			httpClient.put {
+	suspend fun modifyDocument(documentDto: Document): HttpResponse<EncryptedDocument> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","document")
@@ -182,7 +185,7 @@ class RawDocumentApi(
 
 
 	suspend fun modifyDocuments(documentDtos: List<Document>):
-			HttpResponse<List<EncryptedDocument>> = httpClient.put {
+			HttpResponse<List<EncryptedDocument>> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","document","batch")
@@ -194,7 +197,7 @@ class RawDocumentApi(
 
 
 	suspend fun listDocumentsByHCPartyAndPatientForeignKeys(hcPartyId: String,
-			secretFKeys: String): HttpResponse<List<EncryptedDocument>> = httpClient.get {
+			secretFKeys: String): HttpResponse<List<EncryptedDocument>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","document","byHcPartySecretForeignKeys")
@@ -207,7 +210,7 @@ class RawDocumentApi(
 
 
 	suspend fun findDocumentsByHCPartyPatientForeignKeys(hcPartyId: String,
-			secretMessageKeys: List<String>): HttpResponse<List<EncryptedDocument>> = httpClient.post {
+			secretMessageKeys: List<String>): HttpResponse<List<EncryptedDocument>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","document","byHcPartySecretForeignKeys")
@@ -225,7 +228,7 @@ class RawDocumentApi(
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedDocument, JsonString>> = httpClient.get {
+	): HttpResponse<PaginatedList<EncryptedDocument, JsonString>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","document","byHcPartySecretForeignKey")
@@ -244,7 +247,7 @@ class RawDocumentApi(
 		documentTypeCode: String,
 		hcPartyId: String,
 		secretFKeys: String,
-	): HttpResponse<List<EncryptedDocument>> = httpClient.get {
+	): HttpResponse<List<EncryptedDocument>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","document","byTypeHcPartySecretForeignKeys")
@@ -258,7 +261,7 @@ class RawDocumentApi(
 
 
 	suspend fun findWithoutDelegation(limit: Int? = null): HttpResponse<List<EncryptedDocument>>
-			= httpClient.get {
+			= get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","document","woDelegation")
@@ -277,7 +280,7 @@ class RawDocumentApi(
 		payload: ByteArray,
 		lengthHeader: Long?,
 		encrypted: Boolean? = null,
-	): HttpResponse<EncryptedDocument> = httpClient.put {
+	): HttpResponse<EncryptedDocument> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","document",documentId,"secondaryAttachments",key)
@@ -296,7 +299,7 @@ class RawDocumentApi(
 		documentId: String,
 		key: String,
 		fileName: String? = null,
-	): HttpResponse<ByteArray> = httpClient.get {
+	): HttpResponse<ByteArray> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","document",documentId,"secondaryAttachments",key)
@@ -311,7 +314,7 @@ class RawDocumentApi(
 		documentId: String,
 		key: String,
 		rev: String,
-	): HttpResponse<EncryptedDocument> = httpClient.delete {
+	): HttpResponse<EncryptedDocument> = delete {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","document",documentId,"secondaryAttachments",key)
@@ -322,7 +325,7 @@ class RawDocumentApi(
 
 
 	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams):
-			HttpResponse<List<EntityBulkShareResult<EncryptedDocument>>> = httpClient.put {
+			HttpResponse<List<EntityBulkShareResult<EncryptedDocument>>> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","document","bulkSharedMetadataUpdate")
@@ -334,7 +337,7 @@ class RawDocumentApi(
 
 
 	suspend fun bulkShareMinimal(request: BulkShareOrUpdateMetadataParams):
-			HttpResponse<List<EntityBulkShareResult<EncryptedDocument>>> = httpClient.put {
+			HttpResponse<List<EntityBulkShareResult<EncryptedDocument>>> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","document","bulkSharedMetadataUpdateMinimal")

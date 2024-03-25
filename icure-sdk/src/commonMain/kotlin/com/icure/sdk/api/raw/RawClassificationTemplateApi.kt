@@ -2,8 +2,10 @@ package com.icure.sdk.api.raw
 
 import com.icure.sdk.auth.services.AuthService
 import com.icure.sdk.auth.services.setAuthorizationWith
+import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.model.ClassificationTemplate
 import com.icure.sdk.model.EncryptedClassificationTemplate
+import com.icure.sdk.model.EntityWithDelegationTypeName
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
@@ -33,14 +35,18 @@ import kotlin.time.Duration
 class RawClassificationTemplateApi(
 	private val apiUrl: String,
 	private val authService: AuthService,
+	private val accessControlKeysHeadersProvider: AccessControlKeysHeadersProvider?,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
 
+	override suspend fun getAccessControlKeysHeaderValues(): List<String>? =
+			accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithDelegationTypeName.ClassificationTemplate)
+
 	// region common endpoints
 
 	suspend fun createClassificationTemplate(c: ClassificationTemplate):
-			HttpResponse<EncryptedClassificationTemplate> = httpClient.post {
+			HttpResponse<EncryptedClassificationTemplate> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","classificationTemplate")
@@ -52,7 +58,7 @@ class RawClassificationTemplateApi(
 
 
 	suspend fun getClassificationTemplate(classificationTemplateId: String):
-			HttpResponse<EncryptedClassificationTemplate> = httpClient.get {
+			HttpResponse<EncryptedClassificationTemplate> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","classificationTemplate",classificationTemplateId)
@@ -63,7 +69,7 @@ class RawClassificationTemplateApi(
 
 
 	suspend fun getClassificationTemplateByIds(ids: String):
-			HttpResponse<List<EncryptedClassificationTemplate>> = httpClient.get {
+			HttpResponse<List<EncryptedClassificationTemplate>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","classificationTemplate","byIds",ids)
@@ -74,7 +80,7 @@ class RawClassificationTemplateApi(
 
 
 	suspend fun listClassificationTemplatesByHCPartyPatientForeignKeys(hcPartyId: String,
-			secretFKeys: String): HttpResponse<List<EncryptedClassificationTemplate>> = httpClient.get {
+			secretFKeys: String): HttpResponse<List<EncryptedClassificationTemplate>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","classificationTemplate","byHcPartySecretForeignKeys")
@@ -92,7 +98,7 @@ class RawClassificationTemplateApi(
 		startKey: String?,
 		startDocumentId: String?,
 		limit: Int?,
-	): HttpResponse<PaginatedList<EncryptedClassificationTemplate, JsonString>> = httpClient.get {
+	): HttpResponse<PaginatedList<EncryptedClassificationTemplate, JsonString>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","classificationTemplate","byHcPartySecretForeignKey")
@@ -105,7 +111,7 @@ class RawClassificationTemplateApi(
 
 
 	suspend fun deleteClassificationTemplates(classificationTemplateIds: ListOfIds):
-			HttpResponse<List<DocIdentifier>> = httpClient.post {
+			HttpResponse<List<DocIdentifier>> = post {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","classificationTemplate","delete","batch")
@@ -117,7 +123,7 @@ class RawClassificationTemplateApi(
 
 
 	suspend fun deleteClassificationTemplate(classificationTemplateId: String):
-			HttpResponse<DocIdentifier> = httpClient.delete {
+			HttpResponse<DocIdentifier> = delete {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","classificationTemplate",classificationTemplateId)
@@ -127,7 +133,7 @@ class RawClassificationTemplateApi(
 
 
 	suspend fun modifyClassificationTemplate(classificationTemplateDto: ClassificationTemplate):
-			HttpResponse<EncryptedClassificationTemplate> = httpClient.put {
+			HttpResponse<EncryptedClassificationTemplate> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","classificationTemplate")
@@ -142,7 +148,7 @@ class RawClassificationTemplateApi(
 		startKey: String?,
 		startDocumentId: String?,
 		limit: Int?,
-	): HttpResponse<PaginatedList<EncryptedClassificationTemplate, JsonString>> = httpClient.get {
+	): HttpResponse<PaginatedList<EncryptedClassificationTemplate, JsonString>> = get {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","classificationTemplate")
@@ -153,7 +159,7 @@ class RawClassificationTemplateApi(
 
 
 	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams):
-			HttpResponse<List<EntityBulkShareResult<EncryptedClassificationTemplate>>> = httpClient.put {
+			HttpResponse<List<EntityBulkShareResult<EncryptedClassificationTemplate>>> = put {
 			url {
 				host = apiUrl
 				appendPathSegments("rest","v2","classificationTemplate","bulkSharedMetadataUpdate")
