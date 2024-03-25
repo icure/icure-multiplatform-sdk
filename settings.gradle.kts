@@ -8,6 +8,7 @@ pluginManagement {
 		google()
 		gradlePluginPortal()
 		mavenCentral()
+		maven { url = uri("https://maven.taktik.be/content/groups/public") }
 	}
 }
 
