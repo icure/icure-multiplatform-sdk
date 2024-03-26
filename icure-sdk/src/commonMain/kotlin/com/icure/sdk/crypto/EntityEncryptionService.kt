@@ -25,7 +25,7 @@ import kotlinx.serialization.json.JsonElement
  * Gives access to several functions to access encrypted entities metadata.
  */
 @InternalIcureApi
-interface EntityEncryptionService {
+interface EntityEncryptionService : EntityValidationService {
 	// region metadata decryption
 	/**
 	 * Get the encryption keys of an entity that the provided data owner can access, potentially using the keys for his parent.
@@ -250,19 +250,6 @@ interface EntityEncryptionService {
 		unencryptedEntitySerializer: SerializationStrategy<D>,
 		fieldsToEncrypt: EncryptedFieldsManifest,
 		constructor: (json: JsonElement) -> E
-	): E
-
-	/**
-	 * Verifies that the provided entity does not expose any field which should be encrypted according to the provided
-	 * manifest.
-	 * @throws IllegalArgumentException if any of the content of the entity should be encrypted but is still in clear
-	 * in the entity.
-	 * @return [encryptedEntity] unmodified if it is valid (throws exception if not).
-	 */
-	suspend fun <E: Encryptable> validateEncryptedEntity(
-		encryptedEntity: E,
-		encryptedEntitySerializer: SerializationStrategy<E>,
-		fieldsToEncrypt: EncryptedFieldsManifest
 	): E
 
 	/**

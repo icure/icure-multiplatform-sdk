@@ -10,6 +10,7 @@ import com.icure.sdk.crypto.entities.EntityDataEncryptionResult
 import com.icure.sdk.crypto.entities.EntityEncryptionKeyDetails
 import com.icure.sdk.crypto.entities.EntityEncryptionMetadataInitialisationResult
 import com.icure.sdk.crypto.EntityEncryptionService
+import com.icure.sdk.crypto.EntityValidationService
 import com.icure.sdk.crypto.entities.HierarchicallyDecryptedMetadata
 import com.icure.sdk.crypto.JsonEncryptionService
 import com.icure.sdk.crypto.SecureDelegationsDecryptor
@@ -56,7 +57,7 @@ class EntityEncryptionServiceImpl(
 	private val jsonEncryptionService: JsonEncryptionService,
 	private val useParentKeys: Boolean,
 	private val autoCreateEncryptionKeyForExistingLegacyData: Boolean
-) : EntityEncryptionService {
+) : EntityEncryptionService, EntityValidationService by EntityValidationServiceImpl(jsonEncryptionService) {
 	companion object {
 		private val log = getLogger("EntityEncryptionService")
 	}
@@ -85,18 +86,6 @@ class EntityEncryptionServiceImpl(
 	): D? = tryDecryptAndImportAnyEncryptionKey(encryptedEntity)?.let { keyInfo ->
 		val encryptedJson = Serialization.json.encodeToJsonElement(encryptedEntitySerializer, encryptedEntity).jsonObject
 		constructor(jsonEncryptionService.decrypt(keyInfo.key, encryptedJson))
-	}
-
-	override suspend fun <E : Encryptable> validateEncryptedEntity(
-		encryptedEntity: E,
-		encryptedEntitySerializer: SerializationStrategy<E>,
-		fieldsToEncrypt: EncryptedFieldsManifest
-	): E {
-		val encryptedJson = Serialization.json.encodeToJsonElement(encryptedEntitySerializer, encryptedEntity).jsonObject
-		require (!jsonEncryptionService.requiresEncryption(encryptedJson, fieldsToEncrypt)) {
-			"${encryptedEntity.type.id} ${encryptedEntity.id} has some fields which should be encrypted according to the manifest but are not encrypted; you should not modify encrypted fields when working directly with encrypted entities."
-		}
-		return encryptedEntity
 	}
 
 	override suspend fun <T : Encryptable> encryptAttachmentOf(

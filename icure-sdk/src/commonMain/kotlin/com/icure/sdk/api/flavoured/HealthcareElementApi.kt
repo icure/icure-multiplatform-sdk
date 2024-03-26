@@ -2,6 +2,7 @@ package com.icure.sdk.api.flavoured
 
 import com.icure.sdk.api.raw.RawHealthElementApi
 import com.icure.sdk.crypto.EntityEncryptionService
+import com.icure.sdk.crypto.EntityValidationService
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleShareResult
@@ -43,7 +44,7 @@ interface HealthElementApi : HealthElementBasicFlavourlessApi, HealthElementFlav
 
 interface HealthElementBasicApi : HealthElementBasicFlavourlessApi, HealthElementBasicFlavouredApi<EncryptedHealthElement>
 
-@OptIn(InternalIcureApi::class)
+@InternalIcureApi
 private abstract class AbstractHealthElementBasicFlavouredApi<E: HealthElement>(protected val rawApi: RawHealthElementApi): HealthElementBasicFlavouredApi<E> {
     override suspend fun getHealthElement(entityId: String): E = rawApi.getHealthElement(entityId).successBody().let {
         maybeDecrypt(it)
@@ -56,7 +57,7 @@ private abstract class AbstractHealthElementBasicFlavouredApi<E: HealthElement>(
     abstract suspend fun maybeDecrypt(entity: EncryptedHealthElement): E
 }
 
-@OptIn(InternalIcureApi::class)
+@InternalIcureApi
 private abstract class AbstractHealthElementFlavouredApi<E: HealthElement>(rawApi: RawHealthElementApi): AbstractHealthElementBasicFlavouredApi<E>(rawApi), HealthElementFlavouredApi<E> {
     override suspend fun shareWith(
         delegateId: String,
@@ -69,14 +70,26 @@ private abstract class AbstractHealthElementFlavouredApi<E: HealthElement>(rawAp
     }
 }
 
+@InternalIcureApi
 private class AbstractHealthElementBasicFlavourlessApi : HealthElementBasicFlavourlessApi {
     override suspend fun matchHealthElementsBy(filter: AbstractFilter<HealthElement>): List<String> {
         TODO()
     }
 }
 
-@OptIn(InternalIcureApi::class)
-class HealthElementApiImpl(
+@InternalIcureApi
+private class EncryptedHealthElementFlavouredApi(
+    rawApi: RawHealthElementApi,
+    private val validationService: EntityValidationService,
+    private val fieldsToEncrypt: EncryptedFieldsManifest
+) : AbstractHealthElementFlavouredApi<EncryptedHealthElement>(rawApi) {
+    override suspend fun validateAndMaybeEncrypt(entity: EncryptedHealthElement): EncryptedHealthElement =
+        validationService.validateEncryptedEntity(entity, EncryptedHealthElement.serializer(), fieldsToEncrypt)
+    override suspend fun maybeDecrypt(entity: EncryptedHealthElement): EncryptedHealthElement = entity
+}
+
+@InternalIcureApi
+internal class HealthElementApiImpl(
     private val rawApi: RawHealthElementApi,
     private val encryptionService: EntityEncryptionService,
     private val fieldsToEncrypt: EncryptedFieldsManifest =
@@ -116,14 +129,14 @@ class HealthElementApiImpl(
     }
 }
 
-@OptIn(InternalIcureApi::class)
-class HealthElementBasicApiImpl(
+@InternalIcureApi
+internal class HealthElementBasicApiImpl(
     private val rawApi: RawHealthElementApi,
-    private val encryptionService: EntityEncryptionService, //TODO: Extract validation service
+    private val validationService: EntityValidationService,
     private val fieldsToEncrypt: EncryptedFieldsManifest =
         EncryptedFieldsManifest("HealthElement.", setOf("note", "descr"), emptyMap(), emptyMap(), emptyMap())
 ) : HealthElementBasicApi, HealthElementBasicFlavouredApi<EncryptedHealthElement> by object : AbstractHealthElementBasicFlavouredApi<EncryptedHealthElement>(rawApi) {
     override suspend fun validateAndMaybeEncrypt(entity: EncryptedHealthElement): EncryptedHealthElement =
-        encryptionService.validateEncryptedEntity(entity, EncryptedHealthElement.serializer(), fieldsToEncrypt)
+        validationService.validateEncryptedEntity(entity, EncryptedHealthElement.serializer(), fieldsToEncrypt)
     override suspend fun maybeDecrypt(entity: EncryptedHealthElement): EncryptedHealthElement = entity
 }, HealthElementBasicFlavourlessApi by AbstractHealthElementBasicFlavourlessApi()
