@@ -5,11 +5,8 @@ import kotlin.String
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-// WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
-// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
 @Serializable
-sealed interface StoredObjectInformation {
+public sealed interface StoredObjectInformation {
   @Serializable
   @SerialName("Available")
   public data class Available(
@@ -26,6 +23,4 @@ sealed interface StoredObjectInformation {
   @Serializable
   @SerialName("NotStored")
   public data object NotStored : StoredObjectInformation
-	// region StoredObjectInformation-StoredObjectInformation
-	// endregion
 }

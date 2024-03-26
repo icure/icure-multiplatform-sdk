@@ -14,11 +14,8 @@ import kotlin.collections.Map
 import kotlin.collections.Set
 import kotlinx.serialization.Serializable
 
-// WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
-// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
 @Serializable
-data class Group(
+public data class Group(
   override val id: String,
   override val rev: String? = null,
   override val deletionDate: Long? = null,
@@ -34,7 +31,4 @@ data class Group(
   public val minimumKrakenVersion: String? = null,
   public val minimumAuthenticationClassForElevatedPrivileges: AuthenticationClass,
   public val superGroup: String? = null,
-) : StoredDocument, HasTags {
-	// region Group-Group
-	// endregion
-}
+) : StoredDocument, HasTags

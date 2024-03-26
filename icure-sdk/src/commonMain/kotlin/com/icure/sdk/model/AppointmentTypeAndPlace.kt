@@ -7,11 +7,8 @@ import kotlin.String
 import kotlin.collections.Map
 import kotlinx.serialization.Serializable
 
-// WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
-// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
 @Serializable
-data class AppointmentTypeAndPlace(
+public data class AppointmentTypeAndPlace(
   public val calendarItemTypeId: String,
   public val name: String? = null,
   public val color: String? = null,
@@ -20,7 +17,4 @@ data class AppointmentTypeAndPlace(
   public val placeId: String? = null,
   public val address: Address? = null,
   public val acceptsNewPatients: Boolean,
-) {
-	// region AppointmentTypeAndPlace-AppointmentTypeAndPlace
-	// endregion
-}
+)

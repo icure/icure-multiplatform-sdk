@@ -5,11 +5,8 @@ import kotlin.collections.Set
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-// WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
-// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
 @Serializable
-data class RoleConfiguration(
+public data class RoleConfiguration(
   public val source: Source,
   public val roles: Set<String> = emptySet(),
 ) {
@@ -22,6 +19,4 @@ data class RoleConfiguration(
     @SerialName("DEFAULT")
     Default,
   }
-  // region RoleConfiguration-RoleConfiguration
-  // endregion
 }

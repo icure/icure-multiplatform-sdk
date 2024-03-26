@@ -18,11 +18,8 @@ import kotlin.collections.Set
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-// WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
-// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
 @Serializable
-data class Tarification(
+public data class Tarification(
   override val id: String,
   override val rev: String? = null,
   override val deletionDate: Long? = null,
@@ -51,7 +48,4 @@ data class Tarification(
   @SerialName("nGroup")
   public val ngroup: String? = null,
   public val letterValues: List<LetterValue> = emptyList(),
-) : StoredDocument, CodeIdentification<String> {
-	// region Tarification-Tarification
-	// endregion
-}
+) : StoredDocument, CodeIdentification<String>

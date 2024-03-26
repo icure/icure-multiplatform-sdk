@@ -3,11 +3,8 @@ package com.icure.sdk.model.embed
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-// WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
-// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
 @Serializable
-enum class PartnershipType() {
+public enum class PartnershipType() {
   @SerialName("primary_contact")
   PrimaryContact,
   @SerialName("primary_contact_for")
@@ -80,5 +77,4 @@ enum class PartnershipType() {
   Seealso,
   @SerialName("refer")
   Refer,
-
 }

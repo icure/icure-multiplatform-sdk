@@ -11,11 +11,8 @@ import kotlin.collections.Map
 import kotlin.collections.Set
 import kotlinx.serialization.Serializable
 
-// WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
-// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
 @Serializable(with = EntityTemplateSerializer::class)
-data class EntityTemplate(
+public data class EntityTemplate(
   override val id: String,
   override val rev: String? = null,
   override val deletionDate: Long? = null,
@@ -26,7 +23,4 @@ data class EntityTemplate(
   public val subType: String? = null,
   public val defaultTemplate: Boolean? = null,
   public val entity: List<Map<String, Any>> = emptyList(),
-) : StoredDocument {
-	// region EntityTemplate-EntityTemplate
-	// endregion
-}
+) : StoredDocument

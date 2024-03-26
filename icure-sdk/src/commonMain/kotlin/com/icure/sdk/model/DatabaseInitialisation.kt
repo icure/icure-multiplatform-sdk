@@ -4,16 +4,10 @@ import kotlin.String
 import kotlin.collections.List
 import kotlinx.serialization.Serializable
 
-// WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
-// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
 @Serializable
-data class DatabaseInitialisation(
+public data class DatabaseInitialisation(
   public val users: List<User>? = null,
   public val healthcareParties: List<HealthcareParty>? = null,
   public val replication: Replication? = null,
   public val minimumKrakenVersion: String? = null,
-) {
-	// region DatabaseInitialisation-DatabaseInitialisation
-	// endregion
-}
+)

@@ -1,18 +1,15 @@
 package com.icure.sdk.model.embed
 
-import com.icure.sdk.model.specializations.Base64String
 import kotlin.Boolean
 import kotlin.Int
 import kotlin.Long
 import kotlin.String
 import kotlin.collections.Map
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-// WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
-// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
 @Serializable
-sealed interface MedicalHouseContract : Encryptable {
+public sealed interface MedicalHouseContract : Encryptable {
   public val contractId: String?
 
   public val validFrom: Long?
@@ -77,88 +74,82 @@ sealed interface MedicalHouseContract : Encryptable {
 
   public val receipts: Map<String, String>
 
-  override val encryptedSelf: Base64String?
-	// region MedicalHouseContract-MedicalHouseContract
-	// endregion
+  override val encryptedSelf: String?
 }
 
-data class DecryptedMedicalHouseContract(
-	override val contractId: String? = null,
-	override val validFrom: Long? = null,
-	override val validTo: Long? = null,
-	override val mmNihii: String? = null,
-	override val hcpId: String? = null,
-	override val changeType: ContractChangeType? = null,
-	override val parentContractId: String? = null,
-	override val changedBy: String? = null,
-	override val startOfContract: Long? = null,
-	override val startOfCoverage: Long? = null,
-	override val endOfContract: Long? = null,
-	override val endOfCoverage: Long? = null,
-	override val kine: Boolean = false,
-	override val gp: Boolean = false,
-	override val ptd: Boolean = false,
-	override val nurse: Boolean = false,
-	override val noKine: Boolean = false,
-	override val noGp: Boolean = false,
-	override val noNurse: Boolean = false,
-	override val unsubscriptionReasonId: Int? = null,
-	override val ptdStart: Long? = null,
-	override val ptdEnd: Long? = null,
-	override val ptdLastInvoiced: Long? = null,
-	override val startOfSuspension: Long? = null,
-	override val endOfSuspension: Long? = null,
-	override val suspensionReason: SuspensionReason? = null,
-	override val suspensionSource: String? = null,
-	override val forcedSuspension: Boolean = false,
-	override val signatureType: MhcSignatureType? = null,
-	override val status: Int? = null,
-	override val options: Map<String, String> = emptyMap(),
-	override val receipts: Map<String, String> = emptyMap(),
-	override val encryptedSelf: Base64String? = null,
-) : MedicalHouseContract {
-	// region MedicalHouseContract-DecryptedMedicalHouseContract
-	// endregion
-}
+@SerialName
+public data class DecryptedMedicalHouseContract(
+  override val contractId: String? = null,
+  override val validFrom: Long? = null,
+  override val validTo: Long? = null,
+  override val mmNihii: String? = null,
+  override val hcpId: String? = null,
+  override val changeType: ContractChangeType? = null,
+  override val parentContractId: String? = null,
+  override val changedBy: String? = null,
+  override val startOfContract: Long? = null,
+  override val startOfCoverage: Long? = null,
+  override val endOfContract: Long? = null,
+  override val endOfCoverage: Long? = null,
+  override val kine: Boolean = false,
+  override val gp: Boolean = false,
+  override val ptd: Boolean = false,
+  override val nurse: Boolean = false,
+  override val noKine: Boolean = false,
+  override val noGp: Boolean = false,
+  override val noNurse: Boolean = false,
+  override val unsubscriptionReasonId: Int? = null,
+  override val ptdStart: Long? = null,
+  override val ptdEnd: Long? = null,
+  override val ptdLastInvoiced: Long? = null,
+  override val startOfSuspension: Long? = null,
+  override val endOfSuspension: Long? = null,
+  override val suspensionReason: SuspensionReason? = null,
+  override val suspensionSource: String? = null,
+  override val forcedSuspension: Boolean = false,
+  override val signatureType: MhcSignatureType? = null,
+  override val status: Int? = null,
+  override val options: Map<String, String> = emptyMap(),
+  override val receipts: Map<String, String> = emptyMap(),
+  override val encryptedSelf: String? = null,
+) : MedicalHouseContract
 
-data class EncryptedMedicalHouseContract(
-	override val contractId: String? = null,
-	override val validFrom: Long? = null,
-	override val validTo: Long? = null,
-	override val mmNihii: String? = null,
-	override val hcpId: String? = null,
-	override val changeType: ContractChangeType? = null,
-	override val parentContractId: String? = null,
-	override val changedBy: String? = null,
-	override val startOfContract: Long? = null,
-	override val startOfCoverage: Long? = null,
-	override val endOfContract: Long? = null,
-	override val endOfCoverage: Long? = null,
-	override val kine: Boolean = false,
-	override val gp: Boolean = false,
-	override val ptd: Boolean = false,
-	override val nurse: Boolean = false,
-	override val noKine: Boolean = false,
-	override val noGp: Boolean = false,
-	override val noNurse: Boolean = false,
-	override val unsubscriptionReasonId: Int? = null,
-	override val ptdStart: Long? = null,
-	override val ptdEnd: Long? = null,
-	override val ptdLastInvoiced: Long? = null,
-	override val startOfSuspension: Long? = null,
-	override val endOfSuspension: Long? = null,
-	override val suspensionReason: SuspensionReason? = null,
-	override val suspensionSource: String? = null,
-	override val forcedSuspension: Boolean = false,
-	override val signatureType: MhcSignatureType? = null,
-	override val status: Int? = null,
-	override val options: Map<String, String> = emptyMap(),
-	override val receipts: Map<String, String> = emptyMap(),
-	override val encryptedSelf: Base64String? = null,
-) : MedicalHouseContract {
-	// region MedicalHouseContract-EncryptedMedicalHouseContract
-	// endregion
-}
+@SerialName
+public data class EncryptedMedicalHouseContract(
+  override val contractId: String? = null,
+  override val validFrom: Long? = null,
+  override val validTo: Long? = null,
+  override val mmNihii: String? = null,
+  override val hcpId: String? = null,
+  override val changeType: ContractChangeType? = null,
+  override val parentContractId: String? = null,
+  override val changedBy: String? = null,
+  override val startOfContract: Long? = null,
+  override val startOfCoverage: Long? = null,
+  override val endOfContract: Long? = null,
+  override val endOfCoverage: Long? = null,
+  override val kine: Boolean = false,
+  override val gp: Boolean = false,
+  override val ptd: Boolean = false,
+  override val nurse: Boolean = false,
+  override val noKine: Boolean = false,
+  override val noGp: Boolean = false,
+  override val noNurse: Boolean = false,
+  override val unsubscriptionReasonId: Int? = null,
+  override val ptdStart: Long? = null,
+  override val ptdEnd: Long? = null,
+  override val ptdLastInvoiced: Long? = null,
+  override val startOfSuspension: Long? = null,
+  override val endOfSuspension: Long? = null,
+  override val suspensionReason: SuspensionReason? = null,
+  override val suspensionSource: String? = null,
+  override val forcedSuspension: Boolean = false,
+  override val signatureType: MhcSignatureType? = null,
+  override val status: Int? = null,
+  override val options: Map<String, String> = emptyMap(),
+  override val receipts: Map<String, String> = emptyMap(),
+  override val encryptedSelf: String? = null,
+) : MedicalHouseContract
 
 public fun MedicalHouseContract.copy(
   contractId: String? = this.contractId,
@@ -193,7 +184,7 @@ public fun MedicalHouseContract.copy(
   status: Int? = this.status,
   options: Map<String, String> = this.options,
   receipts: Map<String, String> = this.receipts,
-  encryptedSelf: Base64String? = this.encryptedSelf,
+  encryptedSelf: String? = this.encryptedSelf,
 ): MedicalHouseContract {
                                       return when(this) {
                                           is DecryptedMedicalHouseContract -> copy(contractId =
@@ -219,5 +210,4 @@ public fun MedicalHouseContract.copy(
           forcedSuspension, signatureType = signatureType, status = status, options = options,
           receipts = receipts, encryptedSelf = encryptedSelf)
                                           }
-
 }

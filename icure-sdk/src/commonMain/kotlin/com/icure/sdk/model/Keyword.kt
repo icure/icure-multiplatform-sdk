@@ -9,11 +9,8 @@ import kotlin.String
 import kotlin.collections.Set
 import kotlinx.serialization.Serializable
 
-// WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
-// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
 @Serializable
-data class Keyword(
+public data class Keyword(
   override val id: String,
   override val rev: String? = null,
   override val created: Long? = null,
@@ -28,7 +25,4 @@ data class Keyword(
   public val `value`: String? = null,
   public val subWords: Set<KeywordSubword> = emptySet(),
   public val userId: String? = null,
-) : StoredDocument, ICureDocument<String> {
-	// region Keyword-Keyword
-	// endregion
-}
+) : StoredDocument, ICureDocument<String>

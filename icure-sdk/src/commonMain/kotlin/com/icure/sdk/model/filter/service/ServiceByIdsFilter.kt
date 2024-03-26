@@ -8,15 +8,9 @@ import kotlin.collections.Set
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-// WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
-// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
 @SerialName("ServiceByIdsFilter")
 @Serializable
-data class ServiceByIdsFilter(
+public data class ServiceByIdsFilter(
   override val ids: Set<String> = emptySet(),
   override val desc: String? = null,
-) : AbstractFilter<Service>, Filter.IdsFilter<String, Service> {
-	// region ServiceByIdsFilter-ServiceByIdsFilter
-	// endregion
-}
+) : AbstractFilter<Service>, Filter.IdsFilter<String, Service>

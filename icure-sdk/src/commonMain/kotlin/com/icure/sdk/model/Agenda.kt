@@ -10,11 +10,8 @@ import kotlin.collections.List
 import kotlin.collections.Set
 import kotlinx.serialization.Serializable
 
-// WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
-// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
 @Serializable
-data class Agenda(
+public data class Agenda(
   override val id: String,
   override val rev: String? = null,
   override val created: Long? = null,
@@ -29,7 +26,4 @@ data class Agenda(
   public val name: String? = null,
   public val userId: String? = null,
   public val rights: List<Right> = emptyList(),
-) : StoredDocument, ICureDocument<String> {
-	// region Agenda-Agenda
-	// endregion
-}
+) : StoredDocument, ICureDocument<String>

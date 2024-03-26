@@ -7,17 +7,11 @@ import kotlin.Long
 import kotlin.String
 import kotlinx.serialization.Serializable
 
-// WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
-// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
 @Serializable
-data class Place(
+public data class Place(
   override val id: String,
   override val rev: String? = null,
   override val deletionDate: Long? = null,
   override val name: String? = null,
   public val address: Address? = null,
-) : StoredDocument, Named {
-	// region Place-Place
-	// endregion
-}
+) : StoredDocument, Named

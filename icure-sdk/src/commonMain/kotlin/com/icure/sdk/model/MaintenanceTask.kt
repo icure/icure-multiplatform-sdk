@@ -15,13 +15,12 @@ import kotlin.String
 import kotlin.collections.List
 import kotlin.collections.Map
 import kotlin.collections.Set
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-// WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
-// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
 @Serializable
-sealed interface MaintenanceTask : StoredDocument, ICureDocument<String>, HasEncryptionMetadata, Encryptable {
+public sealed interface MaintenanceTask : StoredDocument, ICureDocument<String>,
+    HasEncryptionMetadata, Encryptable {
   override val id: String
 
   override val rev: String?
@@ -62,91 +61,81 @@ sealed interface MaintenanceTask : StoredDocument, ICureDocument<String>, HasEnc
 
   override val encryptedSelf: Base64String?
 
-	override val securityMetadata: SecurityMetadata?
-	// region MaintenanceTask-MaintenanceTask
-	// endregion
+  override val securityMetadata: SecurityMetadata?
 }
 
-data class DecryptedMaintenanceTask(
-	override val id: String,
-	override val rev: String? = null,
-	override val identifier: List<Identifier> = emptyList(),
-	override val created: Long? = null,
-	override val modified: Long? = null,
-	override val author: String? = null,
-	override val responsible: String? = null,
-	override val medicalLocationId: String? = null,
-	override val tags: Set<CodeStub> = emptySet(),
-	override val codes: Set<CodeStub> = emptySet(),
-	override val endOfLife: Long? = null,
-	override val deletionDate: Long? = null,
-	override val taskType: String? = null,
-	override val properties: Set<DecryptedPropertyStub> = emptySet(),
-	override val status: TaskStatus,
-	override val secretForeignKeys: Set<String> = emptySet(),
-	override val cryptedForeignKeys: Map<String, Set<Delegation>> = emptyMap(),
-	override val delegations: Map<String, Set<Delegation>> = emptyMap(),
-	override val encryptionKeys: Map<String, Set<Delegation>> = emptyMap(),
-	override val encryptedSelf: Base64String? = null,
-	override val securityMetadata: SecurityMetadata? = null,
-) : MaintenanceTask {
-	// region MaintenanceTask-DecryptedMaintenanceTask
-	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedMaintenanceTask =
-		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
-	// endregion
-}
+@SerialName
+public data class DecryptedMaintenanceTask(
+  override val id: String,
+  override val rev: String? = null,
+  override val identifier: List<Identifier> = emptyList(),
+  override val created: Long? = null,
+  override val modified: Long? = null,
+  override val author: String? = null,
+  override val responsible: String? = null,
+  override val medicalLocationId: String? = null,
+  override val tags: Set<CodeStub> = emptySet(),
+  override val codes: Set<CodeStub> = emptySet(),
+  override val endOfLife: Long? = null,
+  override val deletionDate: Long? = null,
+  override val taskType: String? = null,
+  override val properties: Set<DecryptedPropertyStub> = emptySet(),
+  override val status: TaskStatus,
+  override val secretForeignKeys: Set<String> = emptySet(),
+  override val cryptedForeignKeys: Map<String, Set<Delegation>> = emptyMap(),
+  override val delegations: Map<String, Set<Delegation>> = emptyMap(),
+  override val encryptionKeys: Map<String, Set<Delegation>> = emptyMap(),
+  override val encryptedSelf: Base64String? = null,
+  override val securityMetadata: SecurityMetadata? = null,
+) : MaintenanceTask
 
-data class EncryptedMaintenanceTask(
-	override val id: String,
-	override val rev: String? = null,
-	override val identifier: List<Identifier> = emptyList(),
-	override val created: Long? = null,
-	override val modified: Long? = null,
-	override val author: String? = null,
-	override val responsible: String? = null,
-	override val medicalLocationId: String? = null,
-	override val tags: Set<CodeStub> = emptySet(),
-	override val codes: Set<CodeStub> = emptySet(),
-	override val endOfLife: Long? = null,
-	override val deletionDate: Long? = null,
-	override val taskType: String? = null,
-	override val properties: Set<EncryptedPropertyStub> = emptySet(),
-	override val status: TaskStatus,
-	override val secretForeignKeys: Set<String> = emptySet(),
-	override val cryptedForeignKeys: Map<String, Set<Delegation>> = emptyMap(),
-	override val delegations: Map<String, Set<Delegation>> = emptyMap(),
-	override val encryptionKeys: Map<String, Set<Delegation>> = emptyMap(),
-	override val encryptedSelf: Base64String? = null,
-	override val securityMetadata: SecurityMetadata? = null,
-) : MaintenanceTask {
-	// region MaintenanceTask-EncryptedMaintenanceTask
-	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedMaintenanceTask =
-		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
-	// endregion
-}
+@SerialName
+public data class EncryptedMaintenanceTask(
+  override val id: String,
+  override val rev: String? = null,
+  override val identifier: List<Identifier> = emptyList(),
+  override val created: Long? = null,
+  override val modified: Long? = null,
+  override val author: String? = null,
+  override val responsible: String? = null,
+  override val medicalLocationId: String? = null,
+  override val tags: Set<CodeStub> = emptySet(),
+  override val codes: Set<CodeStub> = emptySet(),
+  override val endOfLife: Long? = null,
+  override val deletionDate: Long? = null,
+  override val taskType: String? = null,
+  override val properties: Set<EncryptedPropertyStub> = emptySet(),
+  override val status: TaskStatus,
+  override val secretForeignKeys: Set<String> = emptySet(),
+  override val cryptedForeignKeys: Map<String, Set<Delegation>> = emptyMap(),
+  override val delegations: Map<String, Set<Delegation>> = emptyMap(),
+  override val encryptionKeys: Map<String, Set<Delegation>> = emptyMap(),
+  override val encryptedSelf: Base64String? = null,
+  override val securityMetadata: SecurityMetadata? = null,
+) : MaintenanceTask
 
 public fun MaintenanceTask.copy(
-	id: String = this.id,
-	rev: String? = this.rev,
-	identifier: List<Identifier> = this.identifier,
-	created: Long? = this.created,
-	modified: Long? = this.modified,
-	author: String? = this.author,
-	responsible: String? = this.responsible,
-	medicalLocationId: String? = this.medicalLocationId,
-	tags: Set<CodeStub> = this.tags,
-	codes: Set<CodeStub> = this.codes,
-	endOfLife: Long? = this.endOfLife,
-	deletionDate: Long? = this.deletionDate,
-	taskType: String? = this.taskType,
-	properties: Set<PropertyStub> = this.properties,
-	status: TaskStatus = this.status,
-	secretForeignKeys: Set<String> = this.secretForeignKeys,
-	cryptedForeignKeys: Map<String, Set<Delegation>> = this.cryptedForeignKeys,
-	delegations: Map<String, Set<Delegation>> = this.delegations,
-	encryptionKeys: Map<String, Set<Delegation>> = this.encryptionKeys,
-	encryptedSelf: Base64String? = this.encryptedSelf,
-	securityMetadata: SecurityMetadata? = this.securityMetadata,
+  id: String = this.id,
+  rev: String? = this.rev,
+  identifier: List<Identifier> = this.identifier,
+  created: Long? = this.created,
+  modified: Long? = this.modified,
+  author: String? = this.author,
+  responsible: String? = this.responsible,
+  medicalLocationId: String? = this.medicalLocationId,
+  tags: Set<CodeStub> = this.tags,
+  codes: Set<CodeStub> = this.codes,
+  endOfLife: Long? = this.endOfLife,
+  deletionDate: Long? = this.deletionDate,
+  taskType: String? = this.taskType,
+  properties: Set<PropertyStub> = this.properties,
+  status: TaskStatus = this.status,
+  secretForeignKeys: Set<String> = this.secretForeignKeys,
+  cryptedForeignKeys: Map<String, Set<Delegation>> = this.cryptedForeignKeys,
+  delegations: Map<String, Set<Delegation>> = this.delegations,
+  encryptionKeys: Map<String, Set<Delegation>> = this.encryptionKeys,
+  encryptedSelf: Base64String? = this.encryptedSelf,
+  securityMetadata: SecurityMetadata? = this.securityMetadata,
 ): MaintenanceTask {
                                       return when(this) {
                                           is DecryptedMaintenanceTask -> copy(id = id, rev = rev,
@@ -164,5 +153,4 @@ public fun MaintenanceTask.copy(
           delegations = delegations, encryptionKeys = encryptionKeys, encryptedSelf = encryptedSelf,
           securityMetadata = securityMetadata)
                                           }
-
 }

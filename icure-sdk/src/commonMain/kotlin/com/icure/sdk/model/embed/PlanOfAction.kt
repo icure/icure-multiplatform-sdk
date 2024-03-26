@@ -3,20 +3,17 @@ package com.icure.sdk.model.embed
 import com.icure.sdk.model.base.CodeStub
 import com.icure.sdk.model.base.ICureDocument
 import com.icure.sdk.model.base.Named
-import com.icure.sdk.model.specializations.Base64String
 import kotlin.Boolean
 import kotlin.Int
 import kotlin.Long
 import kotlin.String
 import kotlin.collections.List
 import kotlin.collections.Set
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-// WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
-// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
 @Serializable
-sealed interface PlanOfAction : Encryptable, ICureDocument<String>, Named {
+public sealed interface PlanOfAction : Encryptable, ICureDocument<String>, Named {
   override val id: String
 
   override val created: Long?
@@ -65,72 +62,66 @@ sealed interface PlanOfAction : Encryptable, ICureDocument<String>, Named {
 
   public val relevant: Boolean
 
-  override val encryptedSelf: Base64String?
-	// region PlanOfAction-PlanOfAction
-	// endregion
+  override val encryptedSelf: String?
 }
 
-data class DecryptedPlanOfAction(
-	override val id: String,
-	override val created: Long? = null,
-	override val modified: Long? = null,
-	override val author: String? = null,
-	override val responsible: String? = null,
-	override val medicalLocationId: String? = null,
-	override val tags: Set<CodeStub> = emptySet(),
-	override val codes: Set<CodeStub> = emptySet(),
-	override val endOfLife: Long? = null,
-	override val prescriberId: String? = null,
-	override val valueDate: Long? = null,
-	override val openingDate: Long? = null,
-	override val closingDate: Long? = null,
-	override val deadlineDate: Long? = null,
-	override val name: String? = null,
-	override val descr: String? = null,
-	override val note: String? = null,
-	override val idOpeningContact: String? = null,
-	override val idClosingContact: String? = null,
-	override val status: Int = 0,
-	override val documentIds: Set<String> = emptySet(),
-	override val numberOfCares: Int? = null,
-	override val careTeamMemberships: List<DecryptedCareTeamMembership?> = emptyList(),
-	override val relevant: Boolean = true,
-	override val encryptedSelf: Base64String? = null,
-) : PlanOfAction {
-	// region PlanOfAction-DecryptedPlanOfAction
-	// endregion
-}
+@SerialName
+public data class DecryptedPlanOfAction(
+  override val id: String,
+  override val created: Long? = null,
+  override val modified: Long? = null,
+  override val author: String? = null,
+  override val responsible: String? = null,
+  override val medicalLocationId: String? = null,
+  override val tags: Set<CodeStub> = emptySet(),
+  override val codes: Set<CodeStub> = emptySet(),
+  override val endOfLife: Long? = null,
+  override val prescriberId: String? = null,
+  override val valueDate: Long? = null,
+  override val openingDate: Long? = null,
+  override val closingDate: Long? = null,
+  override val deadlineDate: Long? = null,
+  override val name: String? = null,
+  override val descr: String? = null,
+  override val note: String? = null,
+  override val idOpeningContact: String? = null,
+  override val idClosingContact: String? = null,
+  override val status: Int = 0,
+  override val documentIds: Set<String> = emptySet(),
+  override val numberOfCares: Int? = null,
+  override val careTeamMemberships: List<DecryptedCareTeamMembership?> = emptyList(),
+  override val relevant: Boolean = true,
+  override val encryptedSelf: String? = null,
+) : PlanOfAction
 
-data class EncryptedPlanOfAction(
-	override val id: String,
-	override val created: Long? = null,
-	override val modified: Long? = null,
-	override val author: String? = null,
-	override val responsible: String? = null,
-	override val medicalLocationId: String? = null,
-	override val tags: Set<CodeStub> = emptySet(),
-	override val codes: Set<CodeStub> = emptySet(),
-	override val endOfLife: Long? = null,
-	override val prescriberId: String? = null,
-	override val valueDate: Long? = null,
-	override val openingDate: Long? = null,
-	override val closingDate: Long? = null,
-	override val deadlineDate: Long? = null,
-	override val name: String? = null,
-	override val descr: String? = null,
-	override val note: String? = null,
-	override val idOpeningContact: String? = null,
-	override val idClosingContact: String? = null,
-	override val status: Int = 0,
-	override val documentIds: Set<String> = emptySet(),
-	override val numberOfCares: Int? = null,
-	override val careTeamMemberships: List<EncryptedCareTeamMembership?> = emptyList(),
-	override val relevant: Boolean = true,
-	override val encryptedSelf: Base64String? = null,
-) : PlanOfAction {
-	// region PlanOfAction-EncryptedPlanOfAction
-	// endregion
-}
+@SerialName
+public data class EncryptedPlanOfAction(
+  override val id: String,
+  override val created: Long? = null,
+  override val modified: Long? = null,
+  override val author: String? = null,
+  override val responsible: String? = null,
+  override val medicalLocationId: String? = null,
+  override val tags: Set<CodeStub> = emptySet(),
+  override val codes: Set<CodeStub> = emptySet(),
+  override val endOfLife: Long? = null,
+  override val prescriberId: String? = null,
+  override val valueDate: Long? = null,
+  override val openingDate: Long? = null,
+  override val closingDate: Long? = null,
+  override val deadlineDate: Long? = null,
+  override val name: String? = null,
+  override val descr: String? = null,
+  override val note: String? = null,
+  override val idOpeningContact: String? = null,
+  override val idClosingContact: String? = null,
+  override val status: Int = 0,
+  override val documentIds: Set<String> = emptySet(),
+  override val numberOfCares: Int? = null,
+  override val careTeamMemberships: List<EncryptedCareTeamMembership?> = emptyList(),
+  override val relevant: Boolean = true,
+  override val encryptedSelf: String? = null,
+) : PlanOfAction
 
 public fun PlanOfAction.copy(
   id: String = this.id,
@@ -157,7 +148,7 @@ public fun PlanOfAction.copy(
   numberOfCares: Int? = this.numberOfCares,
   careTeamMemberships: List<CareTeamMembership?> = this.careTeamMemberships,
   relevant: Boolean = this.relevant,
-  encryptedSelf: Base64String? = this.encryptedSelf,
+  encryptedSelf: String? = this.encryptedSelf,
 ): PlanOfAction {
                                       return when(this) {
                                           is DecryptedPlanOfAction -> copy(id = id, created =
@@ -177,5 +168,4 @@ public fun PlanOfAction.copy(
           numberOfCares, careTeamMemberships = careTeamMemberships, relevant = relevant,
           encryptedSelf = encryptedSelf)
                                           }
-
 }

@@ -5,11 +5,8 @@ import kotlinx.datetime.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-// WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
-// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
 @Serializable
-data class NotificationEvent(
+public data class NotificationEvent(
   @Serializable(with = InstantSerializer::class)
   public val date: Instant? = null,
   public val status: Status? = null,
@@ -23,6 +20,4 @@ data class NotificationEvent(
     @SerialName("ERROR")
     Error,
   }
-  // region NotificationEvent-NotificationEvent
-  // endregion
 }

@@ -10,11 +10,8 @@ import kotlin.collections.List
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 
-// WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
-// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
 @Serializable
-data class Content(
+public data class Content(
   public val stringValue: String? = null,
   public val numberValue: Double? = null,
   public val booleanValue: Boolean? = null,
@@ -29,7 +26,4 @@ data class Content(
   public val compoundValue: List<Service>? = null,
   public val ratio: List<Measure>? = null,
   public val range: List<Measure>? = null,
-) {
-	// region Content-Content
-	// endregion
-}
+)

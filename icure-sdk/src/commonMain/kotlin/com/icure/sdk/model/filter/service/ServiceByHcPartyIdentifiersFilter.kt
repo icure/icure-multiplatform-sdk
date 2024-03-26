@@ -8,16 +8,10 @@ import kotlin.collections.List
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-// WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
-// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
 @SerialName("ServiceByHcPartyIdentifiersFilter")
 @Serializable
-data class ServiceByHcPartyIdentifiersFilter(
+public data class ServiceByHcPartyIdentifiersFilter(
   public val healthcarePartyId: String? = null,
   public val identifiers: List<Identifier> = emptyList(),
   override val desc: String? = null,
-) : AbstractFilter<Service> {
-	// region ServiceByHcPartyIdentifiersFilter-ServiceByHcPartyIdentifiersFilter
-	// endregion
-}
+) : AbstractFilter<Service>

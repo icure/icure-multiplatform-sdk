@@ -12,11 +12,8 @@ import kotlin.String
 import kotlin.collections.Set
 import kotlinx.serialization.Serializable
 
-// WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
-// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
 @Serializable
-data class DocumentTemplate(
+public data class DocumentTemplate(
   override val id: String,
   override val rev: String? = null,
   override val created: Long? = null,
@@ -41,7 +38,4 @@ data class DocumentTemplate(
   public val descr: String? = null,
   public val disabled: String? = null,
   public val specialty: CodeStub? = null,
-) : StoredDocument, ICureDocument<String> {
-	// region DocumentTemplate-DocumentTemplate
-	// endregion
-}
+) : StoredDocument, ICureDocument<String>

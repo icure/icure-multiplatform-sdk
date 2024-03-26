@@ -5,11 +5,8 @@ import kotlin.String
 import kotlin.collections.List
 import kotlinx.serialization.Serializable
 
-// WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
-// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
 @Serializable
-data class PersonName(
+public data class PersonName(
   public val lastName: String? = null,
   public val firstNames: List<String> = emptyList(),
   public val start: Long? = null,
@@ -18,7 +15,4 @@ data class PersonName(
   public val suffix: List<String> = emptyList(),
   public val text: String? = null,
   public val use: PersonNameUse? = null,
-) {
-	// region PersonName-PersonName
-	// endregion
-}
+)

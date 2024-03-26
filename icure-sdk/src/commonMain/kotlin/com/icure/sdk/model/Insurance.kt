@@ -8,11 +8,8 @@ import kotlin.String
 import kotlin.collections.Map
 import kotlinx.serialization.Serializable
 
-// WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
-// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
 @Serializable
-data class Insurance(
+public data class Insurance(
   override val id: String,
   override val rev: String? = null,
   override val deletionDate: Long? = null,
@@ -24,7 +21,4 @@ data class Insurance(
   public val agreementNumber: String? = null,
   public val parent: String? = null,
   public val address: Address,
-) : StoredDocument {
-	// region Insurance-Insurance
-	// endregion
-}
+) : StoredDocument

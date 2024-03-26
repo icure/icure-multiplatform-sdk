@@ -6,11 +6,8 @@ import kotlin.String
 import kotlin.collections.Map
 import kotlinx.serialization.Serializable
 
-// WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
-// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
 @Serializable
-data class EntityBulkShareResult<T>(
+public data class EntityBulkShareResult<T>(
   public val updatedEntity: T? = null,
   public val entityId: String,
   public val entityRev: String? = null,
@@ -22,6 +19,4 @@ data class EntityBulkShareResult<T>(
     public val shouldRetry: Boolean,
     public val reason: String,
   )
-	// region EntityBulkShareResult-EntityBulkShareResult
-	// endregion
 }

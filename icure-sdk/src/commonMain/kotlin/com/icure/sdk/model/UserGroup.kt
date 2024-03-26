@@ -4,11 +4,8 @@ import kotlin.String
 import kotlin.collections.List
 import kotlinx.serialization.Serializable
 
-// WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
-// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
 @Serializable
-data class UserGroup(
+public data class UserGroup(
   public val groupId: String? = null,
   public val groupName: String? = null,
   public val groupsHierarchy: List<Group> = emptyList(),
@@ -21,7 +18,4 @@ data class UserGroup(
   public val healthcarePartyId: String? = null,
   public val deviceId: String? = null,
   public val nameOfParentOfTopmostGroupInHierarchy: String? = null,
-) {
-	// region UserGroup-UserGroup
-	// endregion
-}
+)

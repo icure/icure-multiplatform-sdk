@@ -4,11 +4,8 @@ import kotlin.String
 import kotlin.collections.Map
 import kotlinx.serialization.Serializable
 
-// WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
-// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
 @Serializable
-data class CodeStub(
+public data class CodeStub(
   override val id: String? = null,
   override val context: String? = null,
   override val type: String? = null,
@@ -16,7 +13,4 @@ data class CodeStub(
   override val version: String? = null,
   public val contextLabel: String? = null,
   override val label: Map<String, String>? = null,
-) : CodeIdentification<String?> {
-	// region CodeStub-CodeStub
-	// endregion
-}
+) : CodeIdentification<String?>

@@ -4,20 +4,17 @@ import com.icure.sdk.model.base.CodeStub
 import com.icure.sdk.model.base.ICureDocument
 import com.icure.sdk.model.base.Identifier
 import com.icure.sdk.model.base.LinkQualification
-import com.icure.sdk.model.specializations.Base64String
 import kotlin.Int
 import kotlin.Long
 import kotlin.String
 import kotlin.collections.List
 import kotlin.collections.Map
 import kotlin.collections.Set
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-// WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
-// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
 @Serializable
-sealed interface Service : Encryptable, ICureDocument<String> {
+public sealed interface Service : Encryptable, ICureDocument<String> {
   override val id: String
 
   public val transactionId: String?
@@ -86,14 +83,13 @@ sealed interface Service : Encryptable, ICureDocument<String> {
 
   override val tags: Set<CodeStub>
 
-  override val encryptedSelf: Base64String?
+  override val encryptedSelf: String?
 
   public val securityMetadata: SecurityMetadata?
-	// region Service-Service
-	// endregion
 }
 
-data class DecryptedService(
+@SerialName
+public data class DecryptedService(
   override val id: String,
   override val transactionId: String? = null,
   override val identifier: List<Identifier> = emptyList(),
@@ -128,14 +124,12 @@ data class DecryptedService(
   override val qualifiedLinks: Map<LinkQualification, Map<String, String>> = emptyMap(),
   override val codes: Set<CodeStub> = emptySet(),
   override val tags: Set<CodeStub> = emptySet(),
-  override val encryptedSelf: Base64String? = null,
+  override val encryptedSelf: String? = null,
   override val securityMetadata: SecurityMetadata? = null,
-) : Service {
-	// region Service-DecryptedService
-	// endregion
-}
+) : Service
 
-data class EncryptedService(
+@SerialName
+public data class EncryptedService(
   override val id: String,
   override val transactionId: String? = null,
   override val identifier: List<Identifier> = emptyList(),
@@ -170,12 +164,9 @@ data class EncryptedService(
   override val qualifiedLinks: Map<LinkQualification, Map<String, String>> = emptyMap(),
   override val codes: Set<CodeStub> = emptySet(),
   override val tags: Set<CodeStub> = emptySet(),
-  override val encryptedSelf: Base64String? = null,
+  override val encryptedSelf: String? = null,
   override val securityMetadata: SecurityMetadata? = null,
-) : Service {
-	// region Service-EncryptedService
-	// endregion
-}
+) : Service
 
 public fun Service.copy(
   id: String = this.id,
@@ -212,7 +203,7 @@ public fun Service.copy(
   qualifiedLinks: Map<LinkQualification, Map<String, String>> = this.qualifiedLinks,
   codes: Set<CodeStub> = this.codes,
   tags: Set<CodeStub> = this.tags,
-  encryptedSelf: Base64String? = this.encryptedSelf,
+  encryptedSelf: String? = this.encryptedSelf,
   securityMetadata: SecurityMetadata? = this.securityMetadata,
 ): Service {
                                       return when(this) {
@@ -240,5 +231,4 @@ public fun Service.copy(
           = invoicingCodes, notes = notes, qualifiedLinks = qualifiedLinks, codes = codes, tags =
           tags, encryptedSelf = encryptedSelf, securityMetadata = securityMetadata)
                                           }
-
 }

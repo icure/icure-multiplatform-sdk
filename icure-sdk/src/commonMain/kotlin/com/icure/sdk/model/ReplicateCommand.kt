@@ -4,11 +4,8 @@ import kotlin.String
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-// WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
-// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
 @Serializable
-data class ReplicateCommand(
+public data class ReplicateCommand(
   @SerialName("source_url")
   public val sourceUrl: String,
   @SerialName("source_username")
@@ -22,7 +19,4 @@ data class ReplicateCommand(
   @SerialName("target_password")
   public val targetPassword: String,
   public val id: String? = null,
-) {
-	// region ReplicateCommand-ReplicateCommand
-	// endregion
-}
+)

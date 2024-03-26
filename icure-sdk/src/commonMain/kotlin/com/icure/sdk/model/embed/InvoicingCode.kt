@@ -1,18 +1,15 @@
 package com.icure.sdk.model.embed
 
-import com.icure.sdk.model.specializations.Base64String
 import kotlin.Boolean
 import kotlin.Double
 import kotlin.Int
 import kotlin.Long
 import kotlin.String
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-// WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
-// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
 @Serializable
-sealed interface InvoicingCode : Encryptable {
+public sealed interface InvoicingCode : Encryptable {
   public val id: String?
 
   public val dateCode: Long?
@@ -115,126 +112,120 @@ sealed interface InvoicingCode : Encryptable {
 
   public val status: Long?
 
-  override val encryptedSelf: Base64String?
-	// region InvoicingCode-InvoicingCode
-	// endregion
+  override val encryptedSelf: String?
 }
 
-data class DecryptedInvoicingCode(
-	override val id: String? = null,
-	override val dateCode: Long? = null,
-	override val logicalId: String? = null,
-	override val label: String? = null,
-	override val userId: String? = null,
-	override val contactId: String? = null,
-	override val serviceId: String? = null,
-	override val tarificationId: String? = null,
-	override val code: String? = null,
-	override val paymentType: PaymentType? = null,
-	override val paid: Double? = null,
-	override val totalAmount: Double? = null,
-	override val reimbursement: Double? = null,
-	override val patientIntervention: Double? = null,
-	override val doctorSupplement: Double? = null,
-	override val conventionAmount: Double? = null,
-	override val vat: Double? = null,
-	override val error: String? = null,
-	override val contract: String? = null,
-	override val contractDate: Long? = null,
-	override val units: Int? = null,
-	override val side: Int? = null,
-	override val timeOfDay: Int? = null,
-	override val eidReadingHour: Int? = null,
-	override val eidReadingValue: String? = null,
-	override val override3rdPayerCode: Int? = null,
-	override val override3rdPayerReason: String? = null,
-	override val transplantationCode: Int? = null,
-	override val prescriberNorm: Int? = null,
-	override val percentNorm: Int? = null,
-	override val prescriberNihii: String? = null,
-	override val relatedCode: String? = null,
-	override val prescriptionDate: Long? = null,
-	override val derogationMaxNumber: Int? = null,
-	override val prescriberSsin: String? = null,
-	override val prescriberLastName: String? = null,
-	override val prescriberFirstName: String? = null,
-	override val prescriberCdHcParty: String? = null,
-	override val locationNihii: String? = null,
-	override val locationCdHcParty: String? = null,
-	override val locationService: Int? = null,
-	override val admissionDate: Long? = null,
-	override val canceled: Boolean? = null,
-	override val accepted: Boolean? = null,
-	override val pending: Boolean? = null,
-	override val resent: Boolean? = null,
-	override val archived: Boolean? = null,
-	override val lost: Boolean? = null,
-	override val insuranceJustification: Int? = null,
-	override val cancelPatientInterventionReason: Int? = null,
-	override val status: Long? = null,
-	override val encryptedSelf: Base64String? = null,
-) : InvoicingCode {
-	// region InvoicingCode-DecryptedInvoicingCode
-	// endregion
-}
+@SerialName
+public data class DecryptedInvoicingCode(
+  override val id: String? = null,
+  override val dateCode: Long? = null,
+  override val logicalId: String? = null,
+  override val label: String? = null,
+  override val userId: String? = null,
+  override val contactId: String? = null,
+  override val serviceId: String? = null,
+  override val tarificationId: String? = null,
+  override val code: String? = null,
+  override val paymentType: PaymentType? = null,
+  override val paid: Double? = null,
+  override val totalAmount: Double? = null,
+  override val reimbursement: Double? = null,
+  override val patientIntervention: Double? = null,
+  override val doctorSupplement: Double? = null,
+  override val conventionAmount: Double? = null,
+  override val vat: Double? = null,
+  override val error: String? = null,
+  override val contract: String? = null,
+  override val contractDate: Long? = null,
+  override val units: Int? = null,
+  override val side: Int? = null,
+  override val timeOfDay: Int? = null,
+  override val eidReadingHour: Int? = null,
+  override val eidReadingValue: String? = null,
+  override val override3rdPayerCode: Int? = null,
+  override val override3rdPayerReason: String? = null,
+  override val transplantationCode: Int? = null,
+  override val prescriberNorm: Int? = null,
+  override val percentNorm: Int? = null,
+  override val prescriberNihii: String? = null,
+  override val relatedCode: String? = null,
+  override val prescriptionDate: Long? = null,
+  override val derogationMaxNumber: Int? = null,
+  override val prescriberSsin: String? = null,
+  override val prescriberLastName: String? = null,
+  override val prescriberFirstName: String? = null,
+  override val prescriberCdHcParty: String? = null,
+  override val locationNihii: String? = null,
+  override val locationCdHcParty: String? = null,
+  override val locationService: Int? = null,
+  override val admissionDate: Long? = null,
+  override val canceled: Boolean? = null,
+  override val accepted: Boolean? = null,
+  override val pending: Boolean? = null,
+  override val resent: Boolean? = null,
+  override val archived: Boolean? = null,
+  override val lost: Boolean? = null,
+  override val insuranceJustification: Int? = null,
+  override val cancelPatientInterventionReason: Int? = null,
+  override val status: Long? = null,
+  override val encryptedSelf: String? = null,
+) : InvoicingCode
 
-data class EncryptedInvoicingCode(
-	override val id: String? = null,
-	override val dateCode: Long? = null,
-	override val logicalId: String? = null,
-	override val label: String? = null,
-	override val userId: String? = null,
-	override val contactId: String? = null,
-	override val serviceId: String? = null,
-	override val tarificationId: String? = null,
-	override val code: String? = null,
-	override val paymentType: PaymentType? = null,
-	override val paid: Double? = null,
-	override val totalAmount: Double? = null,
-	override val reimbursement: Double? = null,
-	override val patientIntervention: Double? = null,
-	override val doctorSupplement: Double? = null,
-	override val conventionAmount: Double? = null,
-	override val vat: Double? = null,
-	override val error: String? = null,
-	override val contract: String? = null,
-	override val contractDate: Long? = null,
-	override val units: Int? = null,
-	override val side: Int? = null,
-	override val timeOfDay: Int? = null,
-	override val eidReadingHour: Int? = null,
-	override val eidReadingValue: String? = null,
-	override val override3rdPayerCode: Int? = null,
-	override val override3rdPayerReason: String? = null,
-	override val transplantationCode: Int? = null,
-	override val prescriberNorm: Int? = null,
-	override val percentNorm: Int? = null,
-	override val prescriberNihii: String? = null,
-	override val relatedCode: String? = null,
-	override val prescriptionDate: Long? = null,
-	override val derogationMaxNumber: Int? = null,
-	override val prescriberSsin: String? = null,
-	override val prescriberLastName: String? = null,
-	override val prescriberFirstName: String? = null,
-	override val prescriberCdHcParty: String? = null,
-	override val locationNihii: String? = null,
-	override val locationCdHcParty: String? = null,
-	override val locationService: Int? = null,
-	override val admissionDate: Long? = null,
-	override val canceled: Boolean? = null,
-	override val accepted: Boolean? = null,
-	override val pending: Boolean? = null,
-	override val resent: Boolean? = null,
-	override val archived: Boolean? = null,
-	override val lost: Boolean? = null,
-	override val insuranceJustification: Int? = null,
-	override val cancelPatientInterventionReason: Int? = null,
-	override val status: Long? = null,
-	override val encryptedSelf: Base64String? = null,
-) : InvoicingCode {
-	// region InvoicingCode-EncryptedInvoicingCode
-	// endregion
-}
+@SerialName
+public data class EncryptedInvoicingCode(
+  override val id: String? = null,
+  override val dateCode: Long? = null,
+  override val logicalId: String? = null,
+  override val label: String? = null,
+  override val userId: String? = null,
+  override val contactId: String? = null,
+  override val serviceId: String? = null,
+  override val tarificationId: String? = null,
+  override val code: String? = null,
+  override val paymentType: PaymentType? = null,
+  override val paid: Double? = null,
+  override val totalAmount: Double? = null,
+  override val reimbursement: Double? = null,
+  override val patientIntervention: Double? = null,
+  override val doctorSupplement: Double? = null,
+  override val conventionAmount: Double? = null,
+  override val vat: Double? = null,
+  override val error: String? = null,
+  override val contract: String? = null,
+  override val contractDate: Long? = null,
+  override val units: Int? = null,
+  override val side: Int? = null,
+  override val timeOfDay: Int? = null,
+  override val eidReadingHour: Int? = null,
+  override val eidReadingValue: String? = null,
+  override val override3rdPayerCode: Int? = null,
+  override val override3rdPayerReason: String? = null,
+  override val transplantationCode: Int? = null,
+  override val prescriberNorm: Int? = null,
+  override val percentNorm: Int? = null,
+  override val prescriberNihii: String? = null,
+  override val relatedCode: String? = null,
+  override val prescriptionDate: Long? = null,
+  override val derogationMaxNumber: Int? = null,
+  override val prescriberSsin: String? = null,
+  override val prescriberLastName: String? = null,
+  override val prescriberFirstName: String? = null,
+  override val prescriberCdHcParty: String? = null,
+  override val locationNihii: String? = null,
+  override val locationCdHcParty: String? = null,
+  override val locationService: Int? = null,
+  override val admissionDate: Long? = null,
+  override val canceled: Boolean? = null,
+  override val accepted: Boolean? = null,
+  override val pending: Boolean? = null,
+  override val resent: Boolean? = null,
+  override val archived: Boolean? = null,
+  override val lost: Boolean? = null,
+  override val insuranceJustification: Int? = null,
+  override val cancelPatientInterventionReason: Int? = null,
+  override val status: Long? = null,
+  override val encryptedSelf: String? = null,
+) : InvoicingCode
 
 public fun InvoicingCode.copy(
   id: String? = this.id,
@@ -288,7 +279,7 @@ public fun InvoicingCode.copy(
   insuranceJustification: Int? = this.insuranceJustification,
   cancelPatientInterventionReason: Int? = this.cancelPatientInterventionReason,
   status: Long? = this.status,
-  encryptedSelf: Base64String? = this.encryptedSelf,
+  encryptedSelf: String? = this.encryptedSelf,
 ): InvoicingCode {
                                       return when(this) {
                                           is DecryptedInvoicingCode -> copy(id = id, dateCode =
@@ -329,5 +320,4 @@ public fun InvoicingCode.copy(
           insuranceJustification = insuranceJustification, cancelPatientInterventionReason =
           cancelPatientInterventionReason, status = status, encryptedSelf = encryptedSelf)
                                           }
-
 }

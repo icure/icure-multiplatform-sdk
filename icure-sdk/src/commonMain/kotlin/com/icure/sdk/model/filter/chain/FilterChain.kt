@@ -6,14 +6,8 @@ import com.icure.sdk.model.filter.predicate.Predicate
 import kotlin.String
 import kotlinx.serialization.Serializable
 
-// WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
-// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
 @Serializable
-data class FilterChain<O : Identifiable<String>>(
+public data class FilterChain<O : Identifiable<String>>(
   public val filter: AbstractFilter<O>,
   public val predicate: Predicate? = null,
-) {
-	// region FilterChain-FilterChain
-	// endregion
-}
+)
