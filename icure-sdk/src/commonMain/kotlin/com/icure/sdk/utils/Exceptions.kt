@@ -21,6 +21,8 @@ class ResourceNotFoundException(
  */
 class IllegalEntityException(message: String, cause: Throwable? = null) : Exception(message, cause)
 
+class EntityDecryptionException(message: String, cause: Throwable? = null) : Exception(message, cause)
+
 class RequestStatusException(
 	val requestMethod: HttpMethod,
 	val url: String,

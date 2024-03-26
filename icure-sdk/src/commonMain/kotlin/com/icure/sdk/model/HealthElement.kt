@@ -104,6 +104,7 @@ sealed interface HealthElement : StoredDocument, ICureDocument<String>, Encrypta
 	// endregion
 }
 
+@Serializable
 data class DecryptedHealthElement(
 	override val id: String,
 	override val identifiers: List<Identifier> = emptyList(),
@@ -149,6 +150,7 @@ data class DecryptedHealthElement(
 	// endregion
 }
 
+@Serializable
 data class EncryptedHealthElement(
 	override val id: String,
 	override val identifiers: List<Identifier> = emptyList(),
