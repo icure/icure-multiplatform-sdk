@@ -2,6 +2,7 @@ package com.icure.sdk.crypto
 
 import com.icure.sdk.crypto.entities.BulkShareResult
 import com.icure.sdk.crypto.entities.DelegateShareOptions
+import com.icure.sdk.crypto.entities.EntityWithTypeInfo
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.EntityDataEncryptionResult
 import com.icure.sdk.crypto.entities.EntityEncryptionKeyDetails
@@ -11,9 +12,10 @@ import com.icure.sdk.crypto.entities.MinimalBulkShareResult
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.SimpleDelegateShareOptions
-import com.icure.sdk.model.embed.AccessLevel
-import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.model.base.HasEncryptionMetadata
+import com.icure.sdk.model.embed.AccessLevel
+import com.icure.sdk.model.embed.Encryptable
+import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
 import com.icure.sdk.model.requests.MinimalEntityBulkShareResult
@@ -34,7 +36,7 @@ interface EntityEncryptionService : EntityValidationService {
 	 * @param dataOwnerId optionally a data owner part of the hierarchy for the current data owner, defaults to the current data owner.
 	 * @return the encryption keys that the provided data owner can decrypt, deduplicated.
 	 */
-	suspend fun encryptionKeysOf(entity: HasEncryptionMetadata, dataOwnerId: String?): Set<HexString>
+	suspend fun encryptionKeysOf(entity: EntityWithTypeInfo<*>, dataOwnerId: String?): Set<HexString>
 
 	/**
 	 * Get the encryption keys of an entity that the current data owner and his parents can access. The resulting array contains the keys for each data
@@ -45,7 +47,7 @@ interface EntityEncryptionService : EntityValidationService {
 	 * @param entity an encrypted entity.
 	 * @return the encryption keys that each member of the current data owner hierarchy can decrypt using only his keys and not keys of his parents.
 	 */
-	suspend fun encryptionKeysForHcpHierarchyOf(entity: HasEncryptionMetadata): List<HierarchicallyDecryptedMetadata<HexString>>
+	suspend fun encryptionKeysForHcpHierarchyOf(entity: EntityWithTypeInfo<*>): List<HierarchicallyDecryptedMetadata<HexString>>
 
 	/**
 	 * Get the secret ids (SFKs) of an entity that the provided data owner can access, potentially using the keys for his parent.
@@ -53,7 +55,7 @@ interface EntityEncryptionService : EntityValidationService {
 	 * @param dataOwnerId optionally a data owner part of the hierarchy for the current data owner, defaults to the current data owner.
 	 * @return the secret ids (SFKs) that the provided data owner can decrypt, deduplicated (including keys decrypted from the hierarchy).
 	 */
-	suspend fun secretIdsOf(entity: HasEncryptionMetadata, dataOwnerId: String?): Set<String>
+	suspend fun secretIdsOf(entity: EntityWithTypeInfo<*>, dataOwnerId: String?): Set<String>
 
 	/**
 	 * Get the secret ids (SFKs) of an entity that the current data owner and his parents can access. The resulting array contains the ids for each data
@@ -63,7 +65,7 @@ interface EntityEncryptionService : EntityValidationService {
 	 * @param entity an encrypted entity.
 	 * @return the secret ids that each member of the current data owner hierarchy can decrypt using only his keys and not keys of his parents.
 	 */
-	suspend fun secretIdsForHcpHierarchyOf(entity: HasEncryptionMetadata): List<HierarchicallyDecryptedMetadata<String>>
+	suspend fun secretIdsForHcpHierarchyOf(entity: EntityWithTypeInfo<*>): List<HierarchicallyDecryptedMetadata<String>>
 
 	/**
 	 * Get the decrypted owning entity ids (formerly CFKs) for the provided entity that can be decrypted using the private keys of the current data
@@ -75,7 +77,7 @@ interface EntityEncryptionService : EntityValidationService {
 	 * @param dataOwnerId optionally a data owner part of the hierarchy for the current data owner, defaults to the current data owner.
 	 * @return the owning entity ids (CFKs) that the provided data owner can decrypt, deduplicated.
 	 */
-	suspend fun owningEntityIdsOf(entity: HasEncryptionMetadata, dataOwnerId: String?): Set<String>
+	suspend fun owningEntityIdsOf(entity: EntityWithTypeInfo<*>, dataOwnerId: String?): Set<String>
 
 	/**
 	 * Get the decrypted owning entity ids (formerly CFKs) for the provided entity that can be decrypted using the private keys of the current data
@@ -90,20 +92,20 @@ interface EntityEncryptionService : EntityValidationService {
 	 * @param entity an encrypted entity.
 	 * @return the owning entity ids that each member of the current data owner hierarchy can decrypt using only his keys and not keys of his parents.
 	 */
-	suspend fun owningEntityIdsForHcpHierarchyOf(entity: HasEncryptionMetadata): List<HierarchicallyDecryptedMetadata<String>>
+	suspend fun owningEntityIdsForHcpHierarchyOf(entity: EntityWithTypeInfo<*>): List<HierarchicallyDecryptedMetadata<String>>
 
 	/**
 	 * Get if the current data owner has write access to the content of the entity.
 	 * @param entity an entity
 	 * @return if the current data owner (or one of his parents) has write access to the content of the entity.
 	 */
-	suspend fun hasWriteAccess(entity: HasEncryptionMetadata): Boolean
+	suspend fun hasWriteAccess(entity: EntityWithTypeInfo<*>): Boolean
 
 	/**
 	 * @param entity an entity
 	 * @return if the entity has no encryption metadata and can be safely initialised using .
 	 */
-	fun hasEmptyEncryptionMetadata(entity: HasEncryptionMetadata): Boolean
+	fun hasEmptyEncryptionMetadata(entity: EntityWithTypeInfo<*>): Boolean
 	// endregion
 
 	// region metadata initialisation and share
@@ -123,7 +125,7 @@ interface EntityEncryptionService : EntityValidationService {
 	 * @return an updated copy of the entity.
 	 */
 	suspend fun <T : HasEncryptionMetadata> entityWithInitialisedEncryptedMetadata(
-		entity: T,
+		entity: EntityWithTypeInfo<T>,
 		owningEntityId: String?,
 		owningEntitySecretId: Set<String>?,
 		initialiseEncryptionKey: Boolean,
@@ -155,12 +157,12 @@ interface EntityEncryptionService : EntityValidationService {
 	 * an error code mirroring an http status code, and a human-friendly description of the error (but not necessarily end-user friendly).
 	 */
 	suspend fun <T : HasEncryptionMetadata> bulkShareOrUpdateEncryptedEntityMetadata(
-		entitiesUpdates: List<Pair<T, Map<String, DelegateShareOptions>>>,
+		entitiesUpdates: List<Pair<EntityWithTypeInfo<T>, Map<String, DelegateShareOptions>>>,
 		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<out T>>
 	): BulkShareResult<T>
 
 	suspend fun bulkShareOrUpdateEncryptedEntityMetadataNoEntities(
-		entitiesUpdates: List<Pair<HasEncryptionMetadata, Map<String, DelegateShareOptions>>>,
+		entitiesUpdates: List<Pair<EntityWithTypeInfo<*>, Map<String, DelegateShareOptions>>>,
 		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<MinimalEntityBulkShareResult>
 	): MinimalBulkShareResult
 
@@ -185,7 +187,7 @@ interface EntityEncryptionService : EntityValidationService {
 	 * value for the required metadata.
 	 */
 	suspend fun <T : HasEncryptionMetadata> simpleShareOrUpdateEncryptedEntityMetadata(
-		entity: T,
+		entity: EntityWithTypeInfo<T>,
 		unusedSecretIds: Boolean,
 		delegates: Map<String, SimpleDelegateShareOptions>,
 		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<out T>>
@@ -206,7 +208,7 @@ interface EntityEncryptionService : EntityValidationService {
 	 * @throws if the provided data owner can't access any encryption keys for the entity.
 	 */
 	suspend fun <T : HasEncryptionMetadata> encryptAttachmentOf(
-		entity: T,
+		entity: EntityWithTypeInfo<T>,
 		content: ByteArray,
 		saveEntity: suspend (entity: T) -> T
 	): EntityDataEncryptionResult<T>
@@ -226,7 +228,7 @@ interface EntityEncryptionService : EntityValidationService {
 	 * content according to the validator.
 	 */
 	suspend fun tryDecryptAttachmentOf(
-		entity: HasEncryptionMetadata,
+		entity: EntityWithTypeInfo<*>,
 		content: ByteArray,
 		validator: suspend (decryptedData: ByteArray) -> Boolean
 	): ByteArray?
@@ -234,29 +236,29 @@ interface EntityEncryptionService : EntityValidationService {
 	/**
 	 * Decrypts an encrypted entity, returns null if the entity could not be decrypted.
 	 */
-	suspend fun <E : HasEncryptionMetadata, D: HasEncryptionMetadata> tryDecryptEntity(
-		encryptedEntity: E,
+	suspend fun <E, D> tryDecryptEntity(
+		encryptedEntity: EntityWithTypeInfo<E>,
 		encryptedEntitySerializer: SerializationStrategy<E>,
 		constructor: (json: JsonElement) -> D
-	): D?
+	): D? where E : HasEncryptionMetadata, E : Encryptable, D : HasEncryptionMetadata, D : Encryptable
 
 	/**
 	 * Encrypts the content of an entity according to the provided manifest. The encryption key will be extracted from
 	 * the metadata of the unencrypted entity.
 	 * @throws IllegalArgumentException if no encryption key could be extracted from the unencrypted entity.
 	 */
-	suspend fun <E : HasEncryptionMetadata, D: HasEncryptionMetadata> encryptEntity(
-		unencryptedEntity: D,
+	suspend fun <E, D> encryptEntity(
+		unencryptedEntity: EntityWithTypeInfo<D>,
 		unencryptedEntitySerializer: SerializationStrategy<D>,
 		fieldsToEncrypt: EncryptedFieldsManifest,
 		constructor: (json: JsonElement) -> E
-	): E
+	): E where E : HasEncryptionMetadata, E : Encryptable, D : HasEncryptionMetadata, D : Encryptable
 
 	/**
 	 * Returns the first encryption key which could be properly decrypted from the entity using the current data owner,
 	 * or null if no key could be decrypted.
 	 */
-	suspend fun tryDecryptAndImportAnyEncryptionKey(entity: HasEncryptionMetadata): EntityEncryptionKeyDetails?
+	suspend fun tryDecryptAndImportAnyEncryptionKey(entity: EntityWithTypeInfo<*>): EntityEncryptionKeyDetails?
 
 	/**
 	 * Returns all encryption keys which could be properly decrypted from the entity using the current data owner. The keys returned by this method
@@ -264,7 +266,7 @@ interface EntityEncryptionService : EntityValidationService {
 	 * This is because this for data from pre-2018 users this method may return also keys from old formats of entities which are not safe anymore for
 	 * encryption.
 	 */
-	suspend fun decryptAndImportAllDecryptionKeys(entity: HasEncryptionMetadata): List<EntityEncryptionKeyDetails>
+	suspend fun decryptAndImportAllDecryptionKeys(entity: EntityWithTypeInfo<*>): List<EntityEncryptionKeyDetails>
 
 	/**
 	 * Verifies if the entity has valid encryption keys (regardless of whether the current data owner has access to them or not). If not this method
@@ -272,7 +274,7 @@ interface EntityEncryptionService : EntityValidationService {
 	 * key not safe for encryption anymore, in which case this method will return the entity with a new and safe encryption key.
 	 * After this method is called, if it returns an entity it should also be re-encrypted (using the new key) and saved to the cloud.
 	 */
-	suspend fun <T : HasEncryptionMetadata> ensureEncryptionKeysInitialised(entity: T): T?
+	suspend fun <T : HasEncryptionMetadata> ensureEncryptionKeysInitialised(entity: EntityWithTypeInfo<T>): T?
 	// endregion
 
 	// region confidential sfks
@@ -289,7 +291,7 @@ interface EntityEncryptionService : EntityValidationService {
 	 * confidential secret id.
 	 */
 	suspend fun <T : HasEncryptionMetadata> initialiseConfidentialSecretId(
-		entity: T,
+		entity: EntityWithTypeInfo<T>,
 		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<out T>>
 	): T?
 
@@ -301,7 +303,7 @@ interface EntityEncryptionService : EntityValidationService {
 	 * @param dataOwnerId (current data owner by default) a data owner for which you want to get a confidential secret id.
 	 * @return the confidential secret ids for the data owner (may be empty).
 	 */
-	suspend fun getConfidentialSecretIdsOf(entity: HasEncryptionMetadata, dataOwnerId: String?): Set<String>
+	suspend fun getConfidentialSecretIdsOf(entity: EntityWithTypeInfo<*>, dataOwnerId: String?): Set<String>
 
 	/**
 	 * Gets all secret ids known by the topmost parent of the current data owner hierarchy (or all secret ids known by
@@ -309,7 +311,7 @@ interface EntityEncryptionService : EntityValidationService {
 	 * @param entity an entity.
 	 * @return all secret ids known by the topmost parent of the current data owner hierarchy, may be empty.
 	 */
-	suspend fun getSecretIdsSharedWithParentsOf(entity: HasEncryptionMetadata): Set<String>
+	suspend fun getSecretIdsSharedWithParentsOf(entity: EntityWithTypeInfo<*>): Set<String>
 
 	/**
 	 * Get the secret ids for [entity] that match the provided [secretIdOption]. Note that if [secretIdOption] is
@@ -318,7 +320,7 @@ interface EntityEncryptionService : EntityValidationService {
 	 * @return a set of secret ids to use for the entity. Never empty.
 	 */
 	suspend fun resolveSecretIdOption(
-		entity: HasEncryptionMetadata,
+		entity: EntityWithTypeInfo<*>,
 		secretIdOption: SecretIdOption
 	): Set<String>
 	// endregion

@@ -99,7 +99,7 @@ sealed interface Message : StoredDocument, ICureDocument<String>, HasEncryptionM
 
   override val encryptedSelf: Base64String?
 
-  override val securityMetadata: SecurityMetadata?
+	override val securityMetadata: SecurityMetadata?
 	// region Message-Message
 	// endregion
 }
@@ -146,9 +146,6 @@ data class DecryptedMessage(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : Message {
 	// region Message-DecryptedMessage
-	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Message
-
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedMessage =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
@@ -196,9 +193,6 @@ data class EncryptedMessage(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : Message {
 	// region Message-EncryptedMessage
-	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Message
-
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedMessage =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion

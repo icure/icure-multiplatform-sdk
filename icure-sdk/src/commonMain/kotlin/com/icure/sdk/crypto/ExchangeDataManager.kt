@@ -3,7 +3,7 @@ package com.icure.sdk.crypto
 import com.icure.sdk.crypto.entities.ExchangeDataWithPotentiallyDecryptedContent
 import com.icure.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
 import com.icure.sdk.model.specializations.Base64String
-import com.icure.sdk.model.EntityWithDelegationTypeName
+import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.model.specializations.SecureDelegationKeyString
 import com.icure.sdk.model.specializations.SpkiHexString
 import com.icure.sdk.utils.InternalIcureApi
@@ -46,7 +46,7 @@ interface ExchangeDataManager {
 	 */
 	suspend fun getCachedDecryptionDataKeyByAccessControlHash(
 		hashes: Collection<SecureDelegationKeyString>,
-		entityType: EntityWithDelegationTypeName,
+		entityType: EntityWithEncryptionMetadataTypeName,
 	): Map<SecureDelegationKeyString, ExchangeDataWithUnencryptedContent>
 
 	/**
@@ -78,5 +78,5 @@ interface ExchangeDataManager {
 	 * concatenation of all available access control keys for the current data owner.
 	 * If the current data owner is explicit returns null.
 	 */
-	suspend fun getAccessControlKeysValue(entityType: EntityWithDelegationTypeName): List<Base64String>?
+	suspend fun getAccessControlKeysValue(entityType: EntityWithEncryptionMetadataTypeName): List<Base64String>?
 }

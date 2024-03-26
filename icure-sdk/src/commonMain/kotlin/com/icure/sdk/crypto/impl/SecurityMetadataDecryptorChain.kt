@@ -2,6 +2,7 @@ package com.icure.sdk.crypto.impl
 
 import com.icure.sdk.crypto.SecurityMetadataDecryptor
 import com.icure.sdk.crypto.entities.DecryptedMetadataDetails
+import com.icure.sdk.crypto.entities.EntityWithTypeInfo
 import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.base.HasEncryptionMetadata
 import com.icure.sdk.model.specializations.HexString
@@ -18,25 +19,25 @@ class SecurityMetadataDecryptorChain(
 	private val decryptors: List<SecurityMetadataDecryptor>
 ): SecurityMetadataDecryptor {
 	override fun decryptEncryptionKeysOf(
-		typedEntity: HasEncryptionMetadata,
+		typedEntity: EntityWithTypeInfo<*>,
 		dataOwnersHierarchySubset: Set<String>
 	): Flow<DecryptedMetadataDetails<HexString>> =
 		decryptors.asFlow().map { it.decryptEncryptionKeysOf(typedEntity, dataOwnersHierarchySubset) }.flattenConcat()
 
 	override fun decryptSecretIdsOf(
-		typedEntity: HasEncryptionMetadata,
+		typedEntity: EntityWithTypeInfo<*>,
 		dataOwnersHierarchySubset: Set<String>
 	): Flow<DecryptedMetadataDetails<String>> =
 		decryptors.asFlow().map { it.decryptSecretIdsOf(typedEntity, dataOwnersHierarchySubset) }.flattenConcat()
 
 	override fun decryptOwningEntityIdsOf(
-		typedEntity: HasEncryptionMetadata,
+		typedEntity: EntityWithTypeInfo<*>,
 		dataOwnersHierarchySubset: Set<String>
 	): Flow<DecryptedMetadataDetails<String>> =
 		decryptors.asFlow().map { it.decryptOwningEntityIdsOf(typedEntity, dataOwnersHierarchySubset) }.flattenConcat()
 
 	override suspend fun getEntityAccessLevel(
-		typedEntity: HasEncryptionMetadata,
+		typedEntity: EntityWithTypeInfo<*>,
 		dataOwnersHierarchySubset: Set<String>
 	): AccessLevel? =
 		decryptors.fold<SecurityMetadataDecryptor, AccessLevel?>(null) { acc, currDecryptor ->

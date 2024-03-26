@@ -63,7 +63,7 @@ sealed interface TimeTable : StoredDocument, ICureDocument<String>, HasEncryptio
 
   override val encryptedSelf: Base64String?
 
-  override val securityMetadata: SecurityMetadata?
+	override val securityMetadata: SecurityMetadata?
 	// region TimeTable-TimeTable
 	// endregion
 }
@@ -93,9 +93,6 @@ data class DecryptedTimeTable(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : TimeTable {
 	// region TimeTable-DecryptedTimeTable
-	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.TimeTable
-
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedTimeTable =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
@@ -126,9 +123,6 @@ data class EncryptedTimeTable(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : TimeTable {
 	// region TimeTable-EncryptedTimeTable
-	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.TimeTable
-
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedTimeTable =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion

@@ -96,7 +96,7 @@ sealed interface Document : StoredDocument, ICureDocument<String>, HasEncryption
 
   override val encryptedSelf: Base64String?
 
-  override val securityMetadata: SecurityMetadata?
+	override val securityMetadata: SecurityMetadata?
 	// region Document-Document
 	// endregion
 }
@@ -140,9 +140,6 @@ data class DecryptedDocument(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : Document {
 	// region Document-DecryptedDocument
-	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Document
-
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedDocument =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
@@ -187,9 +184,6 @@ data class EncryptedDocument(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : Document {
 	// region Document-EncryptedDocument
-	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Document
-
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedDocument =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion

@@ -5,6 +5,7 @@ import com.icure.kryptom.utils.hexToByteArray
 import com.icure.sdk.crypto.ExchangeKeysManager
 import com.icure.sdk.crypto.SecurityMetadataDecryptor
 import com.icure.sdk.crypto.entities.DecryptedMetadataDetails
+import com.icure.sdk.crypto.entities.EntityWithTypeInfo
 import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.embed.Delegation
 import com.icure.sdk.model.base.HasEncryptionMetadata
@@ -25,7 +26,7 @@ class LegacyDelegationsDecryptor(
 	}
 
 	override fun decryptEncryptionKeysOf(
-		typedEntity: HasEncryptionMetadata,
+		typedEntity: EntityWithTypeInfo<*>,
 		dataOwnersHierarchySubset: Set<String>
 	): Flow<DecryptedMetadataDetails<HexString>> = extractFromDelegations(
 		dataOwnersHierarchySubset,
@@ -41,7 +42,7 @@ class LegacyDelegationsDecryptor(
 	}
 
 	override fun decryptSecretIdsOf(
-		typedEntity: HasEncryptionMetadata,
+		typedEntity: EntityWithTypeInfo<*>,
 		dataOwnersHierarchySubset: Set<String>
 	): Flow<DecryptedMetadataDetails<String>> = extractFromDelegations(
 		dataOwnersHierarchySubset,
@@ -49,7 +50,7 @@ class LegacyDelegationsDecryptor(
 	) { decrypted -> decrypted.takeIf { it.isNotBlank() } }
 
 	override fun decryptOwningEntityIdsOf(
-		typedEntity: HasEncryptionMetadata,
+		typedEntity: EntityWithTypeInfo<*>,
 		dataOwnersHierarchySubset: Set<String>
 	): Flow<DecryptedMetadataDetails<String>> = extractFromDelegations(
 		dataOwnersHierarchySubset,
@@ -57,7 +58,7 @@ class LegacyDelegationsDecryptor(
 	) { decrypted -> decrypted.takeIf { it.isNotBlank() } }
 
 	override suspend fun getEntityAccessLevel(
-		typedEntity: HasEncryptionMetadata,
+		typedEntity: EntityWithTypeInfo<*>,
 		dataOwnersHierarchySubset: Set<String>
 	): AccessLevel? =
 		if (dataOwnersHierarchySubset.any { typedEntity.delegations.containsKey(it) }) {

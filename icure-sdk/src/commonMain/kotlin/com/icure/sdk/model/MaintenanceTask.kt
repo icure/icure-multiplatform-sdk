@@ -62,7 +62,7 @@ sealed interface MaintenanceTask : StoredDocument, ICureDocument<String>, HasEnc
 
   override val encryptedSelf: Base64String?
 
-  override val securityMetadata: SecurityMetadata?
+	override val securityMetadata: SecurityMetadata?
 	// region MaintenanceTask-MaintenanceTask
 	// endregion
 }
@@ -91,9 +91,6 @@ data class DecryptedMaintenanceTask(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : MaintenanceTask {
 	// region MaintenanceTask-DecryptedMaintenanceTask
-	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.MaintenanceTask
-
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedMaintenanceTask =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
@@ -123,9 +120,6 @@ data class EncryptedMaintenanceTask(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : MaintenanceTask {
 	// region MaintenanceTask-EncryptedMaintenanceTask
-	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.MaintenanceTask
-
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedMaintenanceTask =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion

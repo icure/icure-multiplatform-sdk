@@ -6,6 +6,6 @@ import com.icure.sdk.model.specializations.Base64String
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 interface Encryptable {
   public val encryptedSelf: Base64String?
-	// region Encrypted-Encrypted
+  // region Encrypted-Encrypted
 	// endregion
 }

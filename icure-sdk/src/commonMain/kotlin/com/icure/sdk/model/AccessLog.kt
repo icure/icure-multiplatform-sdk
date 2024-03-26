@@ -65,7 +65,7 @@ sealed interface AccessLog : StoredDocument, ICureDocument<String>, HasEncryptio
 
   override val encryptedSelf: Base64String?
 
-  override val securityMetadata: SecurityMetadata?
+	override val securityMetadata: SecurityMetadata?
 	// region AccessLog-AccessLog
 	// endregion
 }
@@ -97,9 +97,6 @@ data class DecryptedAccessLog(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : AccessLog {
 	// region AccessLog-DecryptedAccessLog
-	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.AccessLog
-
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedAccessLog =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
@@ -132,9 +129,6 @@ data class EncryptedAccessLog(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : AccessLog {
 	// region AccessLog-EncryptedAccessLog
-	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.AccessLog
-
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedAccessLog =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion

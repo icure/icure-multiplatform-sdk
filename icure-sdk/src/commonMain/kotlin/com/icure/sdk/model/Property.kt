@@ -26,29 +26,29 @@ sealed interface Property : StoredDocument, Encryptable {
   public val typedValue: TypedValue<*>?
 
   override val encryptedSelf: Base64String?
-	// region Property-Property
+    // region Property-Property
 	// endregion
 }
 
 data class DecryptedProperty(
-  override val id: String,
-  override val rev: String? = null,
-  override val deletionDate: Long? = null,
-  override val type: PropertyType? = null,
-  override val typedValue: DecryptedTypedValue<*>? = null,
-  override val encryptedSelf: Base64String? = null,
+    override val id: String,
+    override val rev: String? = null,
+    override val deletionDate: Long? = null,
+    override val type: PropertyType? = null,
+    override val typedValue: DecryptedTypedValue<*>? = null,
+    override val encryptedSelf: Base64String? = null,
 ) : Property {
 	// region Property-DecryptedProperty
 	// endregion
 }
 
 data class EncryptedProperty(
-  override val id: String,
-  override val rev: String? = null,
-  override val deletionDate: Long? = null,
-  override val type: PropertyType? = null,
-  override val typedValue: EncryptedTypedValue<*>? = null,
-  override val encryptedSelf: Base64String? = null,
+    override val id: String,
+    override val rev: String? = null,
+    override val deletionDate: Long? = null,
+    override val type: PropertyType? = null,
+    override val typedValue: EncryptedTypedValue<*>? = null,
+    override val encryptedSelf: Base64String? = null,
 ) : Property {
 	// region Property-EncryptedProperty
 	// endregion

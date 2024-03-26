@@ -57,7 +57,7 @@ sealed interface Classification : StoredDocument, ICureDocument<String>, HasEncr
 
   override val encryptedSelf: Base64String?
 
-  override val securityMetadata: SecurityMetadata?
+	override val securityMetadata: SecurityMetadata?
 	// region Classification-Classification
 	// endregion
 }
@@ -85,9 +85,6 @@ data class DecryptedClassification(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : Classification {
 	// region Classification-DecryptedClassification
-	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Classification
-
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedClassification =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
@@ -116,9 +113,6 @@ data class EncryptedClassification(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : Classification {
 	// region Classification-EncryptedClassification
-	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Classification
-
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedClassification =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion

@@ -23,27 +23,27 @@ sealed interface PropertyStub : Encryptable {
   public val deletionDate: Long?
 
   override val encryptedSelf: Base64String?
-	// region PropertyStub-PropertyStub
+    // region PropertyStub-PropertyStub
 	// endregion
 }
 
 data class DecryptedPropertyStub(
-  override val id: String? = null,
-  override val type: PropertyTypeStub? = null,
-  override val typedValue: DecryptedTypedValue<*>? = null,
-  override val deletionDate: Long? = null,
-  override val encryptedSelf: Base64String? = null,
+    override val id: String? = null,
+    override val type: PropertyTypeStub? = null,
+    override val typedValue: DecryptedTypedValue<*>? = null,
+    override val deletionDate: Long? = null,
+    override val encryptedSelf: Base64String? = null,
 ) : PropertyStub {
 	// region PropertyStub-DecryptedPropertyStub
 	// endregion
 }
 
 data class EncryptedPropertyStub(
-  override val id: String? = null,
-  override val type: PropertyTypeStub? = null,
-  override val typedValue: EncryptedTypedValue<*>? = null,
-  override val deletionDate: Long? = null,
-  override val encryptedSelf: Base64String? = null,
+    override val id: String? = null,
+    override val type: PropertyTypeStub? = null,
+    override val typedValue: EncryptedTypedValue<*>? = null,
+    override val deletionDate: Long? = null,
+    override val encryptedSelf: Base64String? = null,
 ) : PropertyStub {
 	// region PropertyStub-EncryptedPropertyStub
 	// endregion

@@ -105,7 +105,7 @@ sealed interface CalendarItem : StoredDocument, ICureDocument<String>, HasEncryp
 
   override val encryptedSelf: Base64String?
 
-  override val securityMetadata: SecurityMetadata?
+	override val securityMetadata: SecurityMetadata?
 	// region CalendarItem-CalendarItem
 	// endregion
 }
@@ -154,9 +154,6 @@ data class DecryptedCalendarItem(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : CalendarItem {
 	// region CalendarItem-DecryptedCalendarItem
-	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.CalendarItem
-
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedCalendarItem =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
@@ -206,9 +203,6 @@ data class EncryptedCalendarItem(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : CalendarItem {
 	// region CalendarItem-EncryptedCalendarItem
-	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.CalendarItem
-
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedCalendarItem =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion

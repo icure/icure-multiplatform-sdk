@@ -100,7 +100,7 @@ sealed interface HealthElement : StoredDocument, ICureDocument<String>, HasEncry
 
   override val encryptedSelf: Base64String?
 
-  override val securityMetadata: SecurityMetadata?
+	override val securityMetadata: SecurityMetadata?
 	// region HealthElement-HealthElement
 	// endregion
 }
@@ -142,9 +142,6 @@ data class DecryptedHealthElement(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : HealthElement {
 	// region HealthElement-DecryptedHealthElement
-	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.HealthElement
-
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedHealthElement =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
@@ -187,9 +184,6 @@ data class EncryptedHealthElement(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : HealthElement {
 	// region HealthElement-EncryptedHealthElement
-	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.HealthElement
-
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedHealthElement =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion

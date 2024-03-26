@@ -188,7 +188,7 @@ sealed interface Patient : StoredDocument, ICureDocument<String>, Person, Encryp
 
   override val encryptedSelf: Base64String?
 
-  override val securityMetadata: SecurityMetadata?
+	override val securityMetadata: SecurityMetadata?
 
   override val medicalLocationId: String?
 
@@ -303,9 +303,6 @@ data class DecryptedPatient(
 	override val employementInfos: List<EmploymentInfo> = emptyList(),
 ) : Patient {
 	// region Patient-DecryptedPatient
-	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Patient
-
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedPatient =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
@@ -397,9 +394,6 @@ data class EncryptedPatient(
 	override val employementInfos: List<EmploymentInfo> = emptyList(),
 ) : Patient {
 	// region Patient-EncryptedPatient
-	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Patient
-
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedPatient =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion

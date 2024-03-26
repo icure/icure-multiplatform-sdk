@@ -37,7 +37,7 @@ sealed interface SecureDelegationKeyMap : StoredDocument, HasEncryptionMetadata,
 
   override val encryptedSelf: Base64String?
 
-  override val securityMetadata: SecurityMetadata?
+	override val securityMetadata: SecurityMetadata?
 
   override val deletionDate: Long?
 	// region SecureDelegationKeyMap-SecureDelegationKeyMap
@@ -59,9 +59,6 @@ data class DecryptedSecureDelegationKeyMap(
 	override val deletionDate: Long? = null,
 ) : SecureDelegationKeyMap {
 	// region SecureDelegationKeyMap-DecryptedSecureDelegationKeyMap
-	override val type: EntityWithDelegationTypeName
-		get() = TODO()
-
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedSecureDelegationKeyMap =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
@@ -82,9 +79,6 @@ data class EncryptedSecureDelegationKeyMap(
 	override val deletionDate: Long? = null,
 ) : SecureDelegationKeyMap {
 	// region SecureDelegationKeyMap-EncryptedSecureDelegationKeyMap
-	override val type: EntityWithDelegationTypeName
-		get() = TODO()
-
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedSecureDelegationKeyMap =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion

@@ -4,6 +4,7 @@ import com.icure.sdk.model.base.CodeStub
 import com.icure.sdk.model.base.ICureDocument
 import com.icure.sdk.model.base.Identifier
 import com.icure.sdk.model.base.LinkQualification
+import com.icure.sdk.model.specializations.Base64String
 import kotlin.Int
 import kotlin.Long
 import kotlin.String
@@ -85,7 +86,7 @@ sealed interface Service : Encryptable, ICureDocument<String> {
 
   override val tags: Set<CodeStub>
 
-  override val encryptedSelf: String?
+  override val encryptedSelf: Base64String?
 
   public val securityMetadata: SecurityMetadata?
 	// region Service-Service
@@ -127,7 +128,7 @@ data class DecryptedService(
   override val qualifiedLinks: Map<LinkQualification, Map<String, String>> = emptyMap(),
   override val codes: Set<CodeStub> = emptySet(),
   override val tags: Set<CodeStub> = emptySet(),
-  override val encryptedSelf: String? = null,
+  override val encryptedSelf: Base64String? = null,
   override val securityMetadata: SecurityMetadata? = null,
 ) : Service {
 	// region Service-DecryptedService
@@ -169,7 +170,7 @@ data class EncryptedService(
   override val qualifiedLinks: Map<LinkQualification, Map<String, String>> = emptyMap(),
   override val codes: Set<CodeStub> = emptySet(),
   override val tags: Set<CodeStub> = emptySet(),
-  override val encryptedSelf: String? = null,
+  override val encryptedSelf: Base64String? = null,
   override val securityMetadata: SecurityMetadata? = null,
 ) : Service {
 	// region Service-EncryptedService
@@ -211,7 +212,7 @@ public fun Service.copy(
   qualifiedLinks: Map<LinkQualification, Map<String, String>> = this.qualifiedLinks,
   codes: Set<CodeStub> = this.codes,
   tags: Set<CodeStub> = this.tags,
-  encryptedSelf: String? = this.encryptedSelf,
+  encryptedSelf: Base64String? = this.encryptedSelf,
   securityMetadata: SecurityMetadata? = this.securityMetadata,
 ): Service {
                                       return when(this) {

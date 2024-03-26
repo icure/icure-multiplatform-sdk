@@ -63,7 +63,7 @@ sealed interface Receipt : StoredDocument, ICureDocument<String>, HasEncryptionM
 
   override val encryptedSelf: Base64String?
 
-  override val securityMetadata: SecurityMetadata?
+	override val securityMetadata: SecurityMetadata?
 	// region Receipt-Receipt
 	// endregion
 }
@@ -93,9 +93,6 @@ data class DecryptedReceipt(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : Receipt {
 	// region Receipt-DecryptedReceipt
-	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Receipt
-
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedReceipt =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
@@ -126,9 +123,6 @@ data class EncryptedReceipt(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : Receipt {
 	// region Receipt-EncryptedReceipt
-	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Receipt
-
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedReceipt =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion

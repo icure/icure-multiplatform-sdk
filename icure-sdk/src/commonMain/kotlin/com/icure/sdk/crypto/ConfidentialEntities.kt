@@ -1,6 +1,6 @@
 package com.icure.sdk.crypto
 
-import com.icure.sdk.model.EntityWithDelegationTypeName
+import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.model.base.HasEncryptionMetadata
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
@@ -29,7 +29,7 @@ interface ConfidentialEntities {
 	 */
 	suspend fun <T : HasEncryptionMetadata> initialiseConfidentialSecretId(
 		entity: T,
-		entityType: EntityWithDelegationTypeName,
+		entityType: EntityWithEncryptionMetadataTypeName,
 		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<T>>
 	): T?
 

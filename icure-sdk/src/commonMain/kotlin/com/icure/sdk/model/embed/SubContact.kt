@@ -2,6 +2,7 @@ package com.icure.sdk.model.embed
 
 import com.icure.sdk.model.base.CodeStub
 import com.icure.sdk.model.base.ICureDocument
+import com.icure.sdk.model.specializations.Base64String
 import kotlin.Int
 import kotlin.Long
 import kotlin.String
@@ -48,54 +49,54 @@ sealed interface SubContact : Encryptable, ICureDocument<String?> {
 
   public val services: List<ServiceLink>
 
-  override val encryptedSelf: String?
+  override val encryptedSelf: Base64String?
 	// region SubContact-SubContact
 	// endregion
 }
 
 data class DecryptedSubContact(
-  override val id: String? = null,
-  override val created: Long? = null,
-  override val modified: Long? = null,
-  override val author: String? = null,
-  override val responsible: String? = null,
-  override val medicalLocationId: String? = null,
-  override val tags: Set<CodeStub> = emptySet(),
-  override val codes: Set<CodeStub> = emptySet(),
-  override val endOfLife: Long? = null,
-  override val descr: String? = null,
-  override val protocol: String? = null,
-  override val status: Int? = null,
-  override val formId: String? = null,
-  override val planOfActionId: String? = null,
-  override val healthElementId: String? = null,
-  override val classificationId: String? = null,
-  override val services: List<ServiceLink> = emptyList(),
-  override val encryptedSelf: String? = null,
+	override val id: String? = null,
+	override val created: Long? = null,
+	override val modified: Long? = null,
+	override val author: String? = null,
+	override val responsible: String? = null,
+	override val medicalLocationId: String? = null,
+	override val tags: Set<CodeStub> = emptySet(),
+	override val codes: Set<CodeStub> = emptySet(),
+	override val endOfLife: Long? = null,
+	override val descr: String? = null,
+	override val protocol: String? = null,
+	override val status: Int? = null,
+	override val formId: String? = null,
+	override val planOfActionId: String? = null,
+	override val healthElementId: String? = null,
+	override val classificationId: String? = null,
+	override val services: List<ServiceLink> = emptyList(),
+	override val encryptedSelf: Base64String? = null,
 ) : SubContact {
 	// region SubContact-DecryptedSubContact
 	// endregion
 }
 
 data class EncryptedSubContact(
-  override val id: String? = null,
-  override val created: Long? = null,
-  override val modified: Long? = null,
-  override val author: String? = null,
-  override val responsible: String? = null,
-  override val medicalLocationId: String? = null,
-  override val tags: Set<CodeStub> = emptySet(),
-  override val codes: Set<CodeStub> = emptySet(),
-  override val endOfLife: Long? = null,
-  override val descr: String? = null,
-  override val protocol: String? = null,
-  override val status: Int? = null,
-  override val formId: String? = null,
-  override val planOfActionId: String? = null,
-  override val healthElementId: String? = null,
-  override val classificationId: String? = null,
-  override val services: List<ServiceLink> = emptyList(),
-  override val encryptedSelf: String? = null,
+	override val id: String? = null,
+	override val created: Long? = null,
+	override val modified: Long? = null,
+	override val author: String? = null,
+	override val responsible: String? = null,
+	override val medicalLocationId: String? = null,
+	override val tags: Set<CodeStub> = emptySet(),
+	override val codes: Set<CodeStub> = emptySet(),
+	override val endOfLife: Long? = null,
+	override val descr: String? = null,
+	override val protocol: String? = null,
+	override val status: Int? = null,
+	override val formId: String? = null,
+	override val planOfActionId: String? = null,
+	override val healthElementId: String? = null,
+	override val classificationId: String? = null,
+	override val services: List<ServiceLink> = emptyList(),
+	override val encryptedSelf: Base64String? = null,
 ) : SubContact {
 	// region SubContact-EncryptedSubContact
 	// endregion
@@ -119,7 +120,7 @@ public fun SubContact.copy(
   healthElementId: String? = this.healthElementId,
   classificationId: String? = this.classificationId,
   services: List<ServiceLink> = this.services,
-  encryptedSelf: String? = this.encryptedSelf,
+  encryptedSelf: Base64String? = this.encryptedSelf,
 ): SubContact {
                                       return when(this) {
                                           is DecryptedSubContact -> copy(id = id, created = created,

@@ -1,5 +1,6 @@
 package com.icure.sdk.model.embed
 
+import com.icure.sdk.model.specializations.Base64String
 import kotlin.Long
 import kotlin.String
 import kotlinx.serialization.Serializable
@@ -17,28 +18,28 @@ sealed interface CareTeamMembership : Encryptable {
 
   public val membershipType: MembershipType?
 
-  override val encryptedSelf: String?
+  override val encryptedSelf: Base64String?
 	// region CareTeamMembership-CareTeamMembership
 	// endregion
 }
 
 data class DecryptedCareTeamMembership(
-  override val startDate: Long? = null,
-  override val endDate: Long? = null,
-  override val careTeamMemberId: String? = null,
-  override val membershipType: MembershipType? = null,
-  override val encryptedSelf: String? = null,
+	override val startDate: Long? = null,
+	override val endDate: Long? = null,
+	override val careTeamMemberId: String? = null,
+	override val membershipType: MembershipType? = null,
+	override val encryptedSelf: Base64String? = null,
 ) : CareTeamMembership {
 	// region CareTeamMembership-DecryptedCareTeamMembership
 	// endregion
 }
 
 data class EncryptedCareTeamMembership(
-  override val startDate: Long? = null,
-  override val endDate: Long? = null,
-  override val careTeamMemberId: String? = null,
-  override val membershipType: MembershipType? = null,
-  override val encryptedSelf: String? = null,
+	override val startDate: Long? = null,
+	override val endDate: Long? = null,
+	override val careTeamMemberId: String? = null,
+	override val membershipType: MembershipType? = null,
+	override val encryptedSelf: Base64String? = null,
 ) : CareTeamMembership {
 	// region CareTeamMembership-EncryptedCareTeamMembership
 	// endregion
@@ -49,7 +50,7 @@ public fun CareTeamMembership.copy(
   endDate: Long? = this.endDate,
   careTeamMemberId: String? = this.careTeamMemberId,
   membershipType: MembershipType? = this.membershipType,
-  encryptedSelf: String? = this.encryptedSelf,
+  encryptedSelf: Base64String? = this.encryptedSelf,
 ): CareTeamMembership {
                                       return when(this) {
                                           is DecryptedCareTeamMembership -> copy(startDate =

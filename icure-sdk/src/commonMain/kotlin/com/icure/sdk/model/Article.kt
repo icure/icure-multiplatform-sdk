@@ -59,7 +59,7 @@ sealed interface Article : StoredDocument, ICureDocument<String>, HasEncryptionM
 
   override val encryptedSelf: Base64String?
 
-  override val securityMetadata: SecurityMetadata?
+	override val securityMetadata: SecurityMetadata?
 	// region Article-Article
 	// endregion
 }
@@ -87,9 +87,6 @@ data class DecryptedArticle(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : Article {
 	// region Article-DecryptedArticle
-	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Article
-
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedArticle =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
@@ -118,9 +115,6 @@ data class EncryptedArticle(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : Article {
 	// region Article-EncryptedArticle
-	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Article
-
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedArticle =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion

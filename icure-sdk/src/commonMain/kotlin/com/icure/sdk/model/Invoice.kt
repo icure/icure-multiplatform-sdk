@@ -172,7 +172,7 @@ sealed interface Invoice : StoredDocument, ICureDocument<String>, HasEncryptionM
 
   override val encryptedSelf: Base64String?
 
-  override val securityMetadata: SecurityMetadata?
+	override val securityMetadata: SecurityMetadata?
 	// region Invoice-Invoice
 	// endregion
 }
@@ -251,9 +251,6 @@ data class DecryptedInvoice(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : Invoice {
 	// region Invoice-DecryptedInvoice
-	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Invoice
-
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedInvoice =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
@@ -333,9 +330,6 @@ data class EncryptedInvoice(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : Invoice {
 	// region Invoice-EncryptedInvoice
-	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Invoice
-
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedInvoice =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion

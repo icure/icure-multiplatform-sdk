@@ -1,12 +1,12 @@
 package com.icure.sdk.model
 
+import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.model.base.CodeStub
 import com.icure.sdk.model.base.HasEncryptionMetadata
 import com.icure.sdk.model.base.ICureDocument
 import com.icure.sdk.model.base.Versionable
 import com.icure.sdk.model.embed.Delegation
 import com.icure.sdk.model.embed.SecurityMetadata
-import com.icure.sdk.model.specializations.Base64String
 import kotlin.Long
 import kotlin.String
 import kotlin.collections.Map
@@ -69,8 +69,6 @@ data class DecryptedIcureStub(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : IcureStub {
 	// region IcureStub-DecryptedIcureStub
-	override val type: EntityWithDelegationTypeName
-		get() = TODO()
 
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedIcureStub =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
@@ -95,8 +93,6 @@ data class EncryptedIcureStub(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : IcureStub {
 	// region IcureStub-EncryptedIcureStub
-	override val type: EntityWithDelegationTypeName
-		get() = TODO()
 
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedIcureStub =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)

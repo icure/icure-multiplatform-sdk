@@ -74,7 +74,7 @@ sealed interface Form : StoredDocument, ICureDocument<String>, HasEncryptionMeta
 
   override val encryptedSelf: Base64String?
 
-  override val securityMetadata: SecurityMetadata?
+	override val securityMetadata: SecurityMetadata?
 	// region Form-Form
 	// endregion
 }
@@ -110,9 +110,6 @@ data class DecryptedForm(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : Form {
 	// region Form-DecryptedForm
-	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Form
-
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedForm =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
@@ -149,9 +146,6 @@ data class EncryptedForm(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : Form {
 	// region Form-EncryptedForm
-	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Form
-
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedForm =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion

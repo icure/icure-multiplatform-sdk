@@ -4,6 +4,7 @@ import com.icure.sdk.api.raw.RawContactApi
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.EntityEncryptionService
 import com.icure.sdk.crypto.entities.SecretIdOption
+import com.icure.sdk.crypto.entities.withTypeInfo
 import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.Contact
 import com.icure.sdk.model.Patient
@@ -24,27 +25,27 @@ class ContactApi(
 		// Temporary, needs a lot more stuff to match typescript implementation
 	): Contact =
 		encryptionService.entityWithInitialisedEncryptedMetadata(
-			contact,
+			contact.withTypeInfo(),
 			patient.id,
-			encryptionService.resolveSecretIdOption(patient, secretId),
+			encryptionService.resolveSecretIdOption(patient.withTypeInfo(), secretId),
 			true,
 			false,
 			delegates // TODO auto delegations
 		).updatedEntity
 
 	suspend fun getAndDecrypt(contactId: String) = rawApi.getContact(contactId).successBody().let { c ->
-		encryptionService.tryDecryptEntity(c, Contact.serializer()) { Serialization.json.decodeFromJsonElement<Contact>(it) }
+		encryptionService.tryDecryptEntity(c.withTypeInfo(), Contact.serializer()) { Serialization.json.decodeFromJsonElement<Contact>(it) }
 	}
 
 	// TODO need to handle services...
 	suspend fun encryptAndCreate(contact: Contact) = encryptionService.encryptEntity(
-		contact,
+		contact.withTypeInfo(),
 		Contact.serializer(),
 		EncryptedFieldsManifest("Contact.", setOf("descr"), emptyMap(), emptyMap(), emptyMap()),
 	) { Serialization.json.decodeFromJsonElement<Contact>(it) }.let { rawApi.createContact(it) }.successBody().let {
-		encryptionService.tryDecryptEntity(it, Contact.serializer()) { Serialization.json.decodeFromJsonElement<Contact>(it) }
+		encryptionService.tryDecryptEntity(it.withTypeInfo(), Contact.serializer()) { Serialization.json.decodeFromJsonElement<Contact>(it) }
 	}
 
 	suspend fun getEncryptionKeyOf(contact: Contact) =
-		encryptionService.encryptionKeysOf(contact, null).single()
+		encryptionService.encryptionKeysOf(contact.withTypeInfo(), null).single()
 }

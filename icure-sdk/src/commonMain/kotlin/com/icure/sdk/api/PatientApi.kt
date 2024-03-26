@@ -6,6 +6,7 @@ import com.icure.sdk.crypto.EntityEncryptionService
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleDelegateShareOptions
 import com.icure.sdk.crypto.entities.SimpleShareResult
+import com.icure.sdk.crypto.entities.withTypeInfo
 import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.model.Patient
@@ -28,7 +29,7 @@ class PatientApi(
 		// Temporary, needs a lot more stuff to match typescript implementation
 	): Patient =
 		encryptionService.entityWithInitialisedEncryptedMetadata(
-			patient,
+			patient.withTypeInfo(),
 			null,
 			null,
 			true,
@@ -37,15 +38,15 @@ class PatientApi(
 		).updatedEntity
 
 	suspend fun getAndDecrypt(patientId: String) = rawApi.getPatient(patientId).successBody().let { p ->
-		encryptionService.tryDecryptEntity(p, Patient.serializer()) { Serialization.json.decodeFromJsonElement<Patient>(it) }
+		encryptionService.tryDecryptEntity(p.withTypeInfo(), Patient.serializer()) { Serialization.json.decodeFromJsonElement<Patient>(it) }
 	}
 
 	suspend fun encryptAndCreate(patient: Patient) = encryptionService.encryptEntity(
-		patient,
+		patient.withTypeInfo(),
 		Patient.serializer(),
 		manifest,
 	) { Serialization.json.decodeFromJsonElement<Patient>(it) }.let { rawApi.createPatient(it) }.successBody().let {
-		encryptionService.tryDecryptEntity(it, Patient.serializer()) { Serialization.json.decodeFromJsonElement<Patient>(it) }
+		encryptionService.tryDecryptEntity(it.withTypeInfo(), Patient.serializer()) { Serialization.json.decodeFromJsonElement<Patient>(it) }
 	}
 
 	suspend fun shareWith(
@@ -56,7 +57,7 @@ class PatientApi(
 		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite
 	): SimpleShareResult<Patient> =
 		encryptionService.simpleShareOrUpdateEncryptedEntityMetadata(
-			patient,
+			patient.withTypeInfo(),
 			false,
 			mapOf(
 				delegateId to SimpleDelegateShareOptions(
@@ -70,9 +71,9 @@ class PatientApi(
 			rawApi.bulkShare(it).successBody()
 		}
 
-	suspend fun getSecretIdsOf(patient: Patient): Set<String> = encryptionService.secretIdsOf(patient, null)
+	suspend fun getSecretIdsOf(patient: Patient): Set<String> = encryptionService.secretIdsOf(patient.withTypeInfo(), null)
 
-	suspend fun getConfidentialSecretIdsOf(patient: Patient): Set<String> = encryptionService.getConfidentialSecretIdsOf(patient, null)
+	suspend fun getConfidentialSecretIdsOf(patient: Patient): Set<String> = encryptionService.getConfidentialSecretIdsOf(patient.withTypeInfo(), null)
 
 	suspend fun initialiseConfidentialSecretId(patient: Patient): Patient {
 		val updatedPatient =
@@ -80,21 +81,21 @@ class PatientApi(
 				patient
 			else
 				ensureNonNull(encryptAndCreate(patient)) { "Could not create patient for confidential secret id initialisation" }
-		return encryptionService.initialiseConfidentialSecretId(patient) { rawApi.bulkShare(it).successBody() }
+		return encryptionService.initialiseConfidentialSecretId(patient.withTypeInfo()) { rawApi.bulkShare(it).successBody() }
 			?: updatedPatient
 	}
 
-	suspend fun getEncryptionKeysOf(patient: Patient): Set<HexString> = encryptionService.encryptionKeysOf(patient, null)
+	suspend fun getEncryptionKeysOf(patient: Patient): Set<HexString> = encryptionService.encryptionKeysOf(patient.withTypeInfo(), null)
 
 	suspend fun tryEncryptAndUpdatePatient(patient: Patient): Patient {
 		// TODO very bad implementation and signature, only here temporarily until we have the "flavoured" apis
-		val encrypted = if (kotlin.runCatching { encryptionService.validateEncryptedEntity(patient, Patient.serializer(), manifest) }.isSuccess) {
+		val encrypted = if (kotlin.runCatching { encryptionService.validateEncryptedEntity(patient.withTypeInfo(), Patient.serializer(), manifest) }.isSuccess) {
 			patient
 		} else {
-			encryptionService.encryptEntity(patient, Patient.serializer(), manifest) { Serialization.json.decodeFromJsonElement<Patient>(it) }
+			encryptionService.encryptEntity(patient.withTypeInfo(), Patient.serializer(), manifest) { Serialization.json.decodeFromJsonElement<Patient>(it) }
 		}
 		return rawApi.modifyPatient(encrypted).successBody().let {
-			encryptionService.tryDecryptEntity(it, Patient.serializer()) { Serialization.json.decodeFromJsonElement<Patient>(it) } ?: it
+			encryptionService.tryDecryptEntity(it.withTypeInfo(), Patient.serializer()) { Serialization.json.decodeFromJsonElement<Patient>(it) } ?: it
 		}
 	}
 }

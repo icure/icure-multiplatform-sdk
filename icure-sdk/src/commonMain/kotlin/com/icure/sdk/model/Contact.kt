@@ -84,7 +84,7 @@ sealed interface Contact : StoredDocument, ICureDocument<String>, HasEncryptionM
 
   override val encryptedSelf: Base64String?
 
-  override val securityMetadata: SecurityMetadata?
+	override val securityMetadata: SecurityMetadata?
 
   public val notes: List<Annotation>
 	// region Contact-Contact
@@ -124,9 +124,6 @@ data class DecryptedContact(
 	override val notes: List<Annotation> = emptyList(),
 ) : Contact {
 	// region Contact-DecryptedContact
-	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Contact
-
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedContact =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
@@ -165,9 +162,6 @@ data class EncryptedContact(
 	override val notes: List<Annotation> = emptyList(),
 ) : Contact {
 	// region Contact-EncryptedContact
-	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Contact
-
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedContact =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion

@@ -1,6 +1,6 @@
 package com.icure.sdk.model.base
 
-import com.icure.sdk.model.EntityWithDelegationTypeName
+import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.model.embed.Delegation
 import com.icure.sdk.model.embed.SecurityMetadata
 
@@ -19,8 +19,6 @@ interface HasEncryptionMetadata : Versionable<String> {
 	// region Encryptable-Encryptable
 
   fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): HasEncryptionMetadata
-
-  val type: EntityWithDelegationTypeName
 
 	// endregion
 }
