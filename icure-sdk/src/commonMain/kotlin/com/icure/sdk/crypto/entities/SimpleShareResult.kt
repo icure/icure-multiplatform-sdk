@@ -1,9 +1,8 @@
 package com.icure.sdk.crypto.entities
 
-import com.icure.sdk.model.base.Encryptable
-import com.icure.sdk.utils.InternalIcureApi
+import com.icure.sdk.model.base.HasEncryptionMetadata
 
-interface SimpleShareResult<out T : Encryptable> {
+interface SimpleShareResult<out T : HasEncryptionMetadata> {
 	val isSuccess: Boolean
 
 	/**
@@ -14,7 +13,7 @@ interface SimpleShareResult<out T : Encryptable> {
 	/**
 	 * Represents the result of a successful share operation.
 	 */
-	data class Success<T : Encryptable>(val updatedEntity: T) : SimpleShareResult<T> {
+	data class Success<T : HasEncryptionMetadata>(val updatedEntity: T) : SimpleShareResult<T> {
 		override val isSuccess: Boolean get() = true
 		override fun updatedEntityOrThrow(): T = updatedEntity
 	}

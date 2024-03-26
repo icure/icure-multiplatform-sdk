@@ -11,7 +11,7 @@ import kotlinx.serialization.Serializable
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 
 @Serializable
-sealed interface InvoicingCode : Encrypted {
+sealed interface InvoicingCode : Encryptable {
   public val id: String?
 
   public val dateCode: Long?

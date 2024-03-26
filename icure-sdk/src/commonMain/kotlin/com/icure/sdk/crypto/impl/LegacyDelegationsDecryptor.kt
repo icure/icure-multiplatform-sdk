@@ -7,7 +7,7 @@ import com.icure.sdk.crypto.SecurityMetadataDecryptor
 import com.icure.sdk.crypto.entities.DecryptedMetadataDetails
 import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.embed.Delegation
-import com.icure.sdk.model.base.Encryptable
+import com.icure.sdk.model.base.HasEncryptionMetadata
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.ensure
@@ -25,7 +25,7 @@ class LegacyDelegationsDecryptor(
 	}
 
 	override fun decryptEncryptionKeysOf(
-		typedEntity: Encryptable,
+		typedEntity: HasEncryptionMetadata,
 		dataOwnersHierarchySubset: Set<String>
 	): Flow<DecryptedMetadataDetails<HexString>> = extractFromDelegations(
 		dataOwnersHierarchySubset,
@@ -41,7 +41,7 @@ class LegacyDelegationsDecryptor(
 	}
 
 	override fun decryptSecretIdsOf(
-		typedEntity: Encryptable,
+		typedEntity: HasEncryptionMetadata,
 		dataOwnersHierarchySubset: Set<String>
 	): Flow<DecryptedMetadataDetails<String>> = extractFromDelegations(
 		dataOwnersHierarchySubset,
@@ -49,7 +49,7 @@ class LegacyDelegationsDecryptor(
 	) { decrypted -> decrypted.takeIf { it.isNotBlank() } }
 
 	override fun decryptOwningEntityIdsOf(
-		typedEntity: Encryptable,
+		typedEntity: HasEncryptionMetadata,
 		dataOwnersHierarchySubset: Set<String>
 	): Flow<DecryptedMetadataDetails<String>> = extractFromDelegations(
 		dataOwnersHierarchySubset,
@@ -57,7 +57,7 @@ class LegacyDelegationsDecryptor(
 	) { decrypted -> decrypted.takeIf { it.isNotBlank() } }
 
 	override suspend fun getEntityAccessLevel(
-		typedEntity: Encryptable,
+		typedEntity: HasEncryptionMetadata,
 		dataOwnersHierarchySubset: Set<String>
 	): AccessLevel? =
 		if (dataOwnersHierarchySubset.any { typedEntity.delegations.containsKey(it) }) {
@@ -66,7 +66,7 @@ class LegacyDelegationsDecryptor(
 			null
 		}
 
-	override fun hasAnyEncryptionKeys(entity: Encryptable): Boolean =
+	override fun hasAnyEncryptionKeys(entity: HasEncryptionMetadata): Boolean =
 		entity.encryptionKeys.values.any { it.isNotEmpty() }
 
 	private fun <T : Any> extractFromDelegations(

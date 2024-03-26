@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 
 @Serializable
-sealed interface Address : Encrypted {
+sealed interface Address : Encryptable {
   public val addressType: AddressType?
 
   public val descr: String?

@@ -1,9 +1,10 @@
 package com.icure.sdk.model
 
 import com.icure.sdk.model.embed.DecryptedTypedValue
-import com.icure.sdk.model.embed.Encrypted
+import com.icure.sdk.model.embed.Encryptable
 import com.icure.sdk.model.embed.EncryptedTypedValue
 import com.icure.sdk.model.embed.TypedValue
+import com.icure.sdk.model.specializations.Base64String
 import kotlin.Long
 import kotlin.String
 import kotlinx.serialization.Serializable
@@ -12,7 +13,7 @@ import kotlinx.serialization.Serializable
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 
 @Serializable
-sealed interface PropertyStub : Encrypted {
+sealed interface PropertyStub : Encryptable {
   public val id: String?
 
   public val type: PropertyTypeStub?
@@ -21,7 +22,7 @@ sealed interface PropertyStub : Encrypted {
 
   public val deletionDate: Long?
 
-  override val encryptedSelf: String?
+  override val encryptedSelf: Base64String?
 	// region PropertyStub-PropertyStub
 	// endregion
 }
@@ -31,7 +32,7 @@ data class DecryptedPropertyStub(
   override val type: PropertyTypeStub? = null,
   override val typedValue: DecryptedTypedValue<*>? = null,
   override val deletionDate: Long? = null,
-  override val encryptedSelf: String? = null,
+  override val encryptedSelf: Base64String? = null,
 ) : PropertyStub {
 	// region PropertyStub-DecryptedPropertyStub
 	// endregion
@@ -42,7 +43,7 @@ data class EncryptedPropertyStub(
   override val type: PropertyTypeStub? = null,
   override val typedValue: EncryptedTypedValue<*>? = null,
   override val deletionDate: Long? = null,
-  override val encryptedSelf: String? = null,
+  override val encryptedSelf: Base64String? = null,
 ) : PropertyStub {
 	// region PropertyStub-EncryptedPropertyStub
 	// endregion
@@ -53,7 +54,7 @@ public fun PropertyStub.copy(
   type: PropertyTypeStub? = this.type,
   typedValue: TypedValue<*>? = this.typedValue,
   deletionDate: Long? = this.deletionDate,
-  encryptedSelf: String? = this.encryptedSelf,
+  encryptedSelf: Base64String? = this.encryptedSelf,
 ): PropertyStub {
                                       return when(this) {
                                           is DecryptedPropertyStub -> copy(id = id, type = type,

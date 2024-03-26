@@ -12,7 +12,7 @@ import kotlinx.serialization.Serializable
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 
 @Serializable
-sealed interface Valorisation : Encrypted {
+sealed interface Valorisation : Encryptable {
   public val startOfValidity: Long?
 
   public val endOfValidity: Long?

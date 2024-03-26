@@ -16,7 +16,7 @@ import kotlinx.serialization.Serializable
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 
 @Serializable
-sealed interface Service : Encrypted, ICureDocument<String> {
+sealed interface Service : Encryptable, ICureDocument<String> {
   override val id: String
 
   public val transactionId: String?

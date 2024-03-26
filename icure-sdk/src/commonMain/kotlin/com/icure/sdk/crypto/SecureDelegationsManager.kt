@@ -2,7 +2,7 @@ package com.icure.sdk.crypto
 
 import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.specializations.HexString
-import com.icure.sdk.model.base.Encryptable
+import com.icure.sdk.model.base.HasEncryptionMetadata
 import com.icure.sdk.model.requests.EntityShareOrMetadataUpdateRequest
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.utils.InternalIcureApi
@@ -20,7 +20,7 @@ interface SecureDelegationsManager {
 	 * they will have on the entity.
 	 * @return the entity with the security metadata initialised for the provided parameters.
 	 */
-	suspend fun <T : Encryptable> entityWithInitialisedEncryptedMetadata(
+	suspend fun <T : HasEncryptionMetadata> entityWithInitialisedEncryptedMetadata(
 		entity: T,
 		secretIds: Set<String>,
 		owningEntityIds: Set<String>,
@@ -45,7 +45,7 @@ interface SecureDelegationsManager {
 	 * the entity to allow the delegate to access the provided data.
 	 */
 	suspend fun makeShareOrUpdateRequestParams(
-		entity: Encryptable,
+		entity: HasEncryptionMetadata,
 		delegateId: String,
 		shareSecretIds: Set<String>,
 		shareEncryptionKeys: Set<HexString>,

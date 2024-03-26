@@ -12,7 +12,7 @@ import kotlinx.serialization.Serializable
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 
 @Serializable
-sealed interface TypedValue<T> : Encrypted {
+sealed interface TypedValue<T> : Encryptable {
   public val type: TypedValuesType?
 
   public val booleanValue: Boolean?

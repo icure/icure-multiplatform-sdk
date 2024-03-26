@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 
 @Serializable
-sealed interface Telecom : Encrypted {
+sealed interface Telecom : Encryptable {
   public val telecomType: TelecomType?
 
   public val telecomNumber: String?

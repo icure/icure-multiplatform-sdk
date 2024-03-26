@@ -1,9 +1,9 @@
 package com.icure.sdk.crypto
 
 import com.icure.sdk.api.IcureApi
+import com.icure.sdk.model.DecryptedHealthElement
+import com.icure.sdk.model.DecryptedPatient
 import com.icure.sdk.model.embed.AccessLevel
-import com.icure.sdk.model.HealthElement
-import com.icure.sdk.model.Patient
 import com.icure.sdk.test.DataOwnerDetails
 import com.icure.sdk.test.createHcpUser
 import com.icure.sdk.test.createPatientUser
@@ -26,7 +26,7 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 		val delegatorApi: IcureApi = delegator.api()
 		val patient = delegatorApi.patient.encryptAndCreate(
 			delegatorApi.patient.initialiseEncryptionMetadata(
-				Patient(
+				DecryptedPatient(
 					id = UUID.randomUUID().toString(),
 					firstName = "John",
 					lastName = "Doe",
@@ -37,7 +37,7 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 		).shouldNotBeNull()
 		val he = delegatorApi.healthElement.encryptAndCreate(
 			delegatorApi.healthElement.initialiseEncryptionMetadata(
-				he = HealthElement(
+				he = DecryptedHealthElement(
 					id = UUID.randomUUID().toString(),
 					note = heNote,
 				),
@@ -63,7 +63,7 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 	suspend fun testShareExistingData(delegator: DataOwnerDetails, delegate: DataOwnerDetails) {
 		val delegatorApi: IcureApi =  delegator.api()
 		val patient = delegatorApi.patient.encryptAndCreate(
-			delegatorApi.patient.initialiseEncryptionMetadata(Patient(
+			delegatorApi.patient.initialiseEncryptionMetadata(DecryptedPatient(
 				id = UUID.randomUUID().toString(),
 				firstName = "John",
 				lastName = "Doe",
@@ -73,7 +73,7 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 		val sfk = delegatorApi.patient.getSecretIdsOf(patient).also { it shouldHaveSize 1 }
 		val he = delegatorApi.healthElement.encryptAndCreate(
 			delegatorApi.healthElement.initialiseEncryptionMetadata(
-				he = HealthElement(
+				he = DecryptedHealthElement(
 					id = UUID.randomUUID().toString(),
 					note = heNote,
 				),

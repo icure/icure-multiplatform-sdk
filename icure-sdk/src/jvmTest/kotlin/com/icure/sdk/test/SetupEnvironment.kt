@@ -7,13 +7,16 @@ import com.icure.kryptom.crypto.RsaKeypair
 import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.kryptom.utils.toHexString
 import com.icure.sdk.api.IcureApi
-import com.icure.sdk.api.extended.AnonymousAuthApiImpl
+import com.icure.sdk.api.raw.RawAnonymousAuthApi
 import com.icure.sdk.api.raw.RawGroupApi
 import com.icure.sdk.api.raw.RawHealthcarePartyApi
 import com.icure.sdk.api.raw.RawPatientApi
+import com.icure.sdk.api.raw.RawUserApi
 import com.icure.sdk.auth.UsernamePassword
 import com.icure.sdk.auth.services.JwtAuthService
 import com.icure.sdk.crypto.impl.NoAccessControlKeysHeadersProvider
+import com.icure.sdk.model.DatabaseInitialisation
+import com.icure.sdk.model.DecryptedPatient
 import com.icure.sdk.model.HealthcareParty
 import com.icure.sdk.model.Patient
 import com.icure.sdk.model.specializations.SpkiHexString
@@ -24,9 +27,6 @@ import com.icure.sdk.storage.impl.JsonAndBase64KeyStorage
 import com.icure.sdk.storage.impl.VolatileStorageFacade
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.test.setup.ICureTestSetup
-import kotlinx.serialization.json.JsonArray
-import kotlinx.serialization.json.JsonObject
-import org.openapitools.client.apis.RawUserApi
 import java.util.UUID
 
 val baseUrl = "http://localhost:16044"
@@ -35,11 +35,11 @@ private val testGroupId = testGroupName
 private val testGroupAdmin = "admin-${UUID.randomUUID()}@icure.com"
 private val testGroupAdminPassword = "admin-${UUID.randomUUID()}"
 val testGroupAdminAuth = JwtAuthService(
-	AnonymousAuthApiImpl(baseUrl),
+	RawAnonymousAuthApi(baseUrl),
 	UsernamePassword(testGroupAdmin, testGroupAdminPassword),
 )
 private val superadminAuth = JwtAuthService(
-	AnonymousAuthApiImpl(baseUrl),
+	RawAnonymousAuthApi(baseUrl),
 	UsernamePassword("john", "LetMeIn"),
 )
 private val defaultRoles = mapOf(
@@ -80,11 +80,11 @@ suspend fun initialiseTestEnvironment() {
 		groupApi.createGroup(
 			testGroupId,
 			testGroupName,
-			UUID.randomUUID().toString(),
-			JsonObject(mapOf(
-				"users" to JsonArray(emptyList()),
-				"healthcareParties" to JsonArray(emptyList())
-			))
+			password = UUID.randomUUID().toString(),
+			initialisationData = DatabaseInitialisation(
+				users = emptyList(),
+				healthcareParties = emptyList(),
+			)
 		)
 	}
 	println("Creating admin user - $testGroupAdmin:$testGroupAdminPassword")
@@ -174,7 +174,7 @@ suspend fun createPatientUser(): DataOwnerDetails {
 	val password = UUID.randomUUID().toString()
 	val keypair = defaultCryptoService.rsa.generateKeyPair(RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256)
 	val patient = patientRawApi.createPatient(
-		Patient(
+		DecryptedPatient(
 			patientId,
 			firstName = "Patient-$patientId",
 			lastName = "Patient-$patientId",

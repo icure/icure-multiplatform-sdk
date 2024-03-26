@@ -10,7 +10,7 @@ import kotlinx.serialization.Serializable
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 
 @Serializable
-sealed interface Episode : Encrypted, Identifiable<String>, Named {
+sealed interface Episode : Encryptable, Identifiable<String>, Named {
   override val id: String
 
   override val name: String?

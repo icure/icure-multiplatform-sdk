@@ -13,7 +13,7 @@ import kotlinx.serialization.Serializable
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 
 @Serializable
-sealed interface SubContact : Encrypted, ICureDocument<String?> {
+sealed interface SubContact : Encryptable, ICureDocument<String?> {
   override val id: String?
 
   override val created: Long?

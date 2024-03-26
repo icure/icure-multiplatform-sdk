@@ -10,7 +10,7 @@ import kotlinx.serialization.Serializable
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 
 @Serializable
-sealed interface Insurability : Encrypted {
+sealed interface Insurability : Encryptable {
   public val parameters: Map<String, String>
 
   public val hospitalisation: Boolean?

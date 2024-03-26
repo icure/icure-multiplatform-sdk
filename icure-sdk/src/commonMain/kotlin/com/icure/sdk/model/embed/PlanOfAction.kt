@@ -15,7 +15,7 @@ import kotlinx.serialization.Serializable
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 
 @Serializable
-sealed interface PlanOfAction : Encrypted, ICureDocument<String>, Named {
+sealed interface PlanOfAction : Encryptable, ICureDocument<String>, Named {
   override val id: String
 
   override val created: Long?

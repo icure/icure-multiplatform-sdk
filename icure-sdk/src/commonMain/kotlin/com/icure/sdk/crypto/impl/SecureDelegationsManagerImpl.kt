@@ -14,7 +14,7 @@ import com.icure.sdk.crypto.entities.toPublicKeyInfo
 import com.icure.sdk.model.specializations.AccessControlKeyHexString
 import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.specializations.Base64String
-import com.icure.sdk.model.base.Encryptable
+import com.icure.sdk.model.base.HasEncryptionMetadata
 import com.icure.sdk.model.ExchangeDataMapCreationBatch
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.model.specializations.KeypairFingerprintV2String
@@ -44,7 +44,7 @@ class SecureDelegationsManagerImpl (
 	// Data owner id -> is anonymous
 	private val dataOwnerAnonymityCache = SynchronisedLruCache<String, Boolean>(1000)
 
-	override suspend fun <T : Encryptable> entityWithInitialisedEncryptedMetadata(
+	override suspend fun <T : HasEncryptionMetadata> entityWithInitialisedEncryptedMetadata(
 		entity: T,
 		secretIds: Set<String>,
 		owningEntityIds: Set<String>,
@@ -86,7 +86,7 @@ class SecureDelegationsManagerImpl (
 	}
 
 	override suspend fun makeShareOrUpdateRequestParams(
-		entity: Encryptable,
+		entity: HasEncryptionMetadata,
 		delegateId: String,
 		shareSecretIds: Set<String>,
 		shareEncryptionKeys: Set<HexString>,
@@ -127,7 +127,7 @@ class SecureDelegationsManagerImpl (
 	}
 
 	private suspend fun makeSecureDelegationInfo(
-		entity: Encryptable,
+		entity: HasEncryptionMetadata,
 		delegateId: String,
 		shareSecretIds: Set<String>,
 		shareEncryptionKeys: Set<HexString>,

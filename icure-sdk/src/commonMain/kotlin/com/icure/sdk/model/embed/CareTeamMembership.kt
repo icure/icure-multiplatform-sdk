@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 
 @Serializable
-sealed interface CareTeamMembership : Encrypted {
+sealed interface CareTeamMembership : Encryptable {
   public val startDate: Long?
 
   public val endDate: Long?

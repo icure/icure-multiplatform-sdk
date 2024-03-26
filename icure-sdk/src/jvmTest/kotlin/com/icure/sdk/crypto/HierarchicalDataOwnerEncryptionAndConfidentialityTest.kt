@@ -2,6 +2,8 @@ package com.icure.sdk.crypto
 
 import com.icure.sdk.api.IcureApi
 import com.icure.sdk.crypto.entities.SecretIdOption
+import com.icure.sdk.model.DecryptedHealthElement
+import com.icure.sdk.model.DecryptedPatient
 import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.HealthElement
 import com.icure.sdk.model.Patient
@@ -31,7 +33,7 @@ class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec ({
 		val note = "This will be encrypted"
 		val patient = hcpApi.patient.encryptAndCreate(
 			hcpApi.patient.initialiseEncryptionMetadata(
-				Patient(
+				DecryptedPatient(
 					id = UUID.randomUUID().toString(),
 					firstName = "John",
 					lastName = "Doe",
@@ -54,7 +56,7 @@ class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec ({
 		val hcpApi = hcp.api()
 		val patient = hcpApi.patient.encryptAndCreate(
 			hcpApi.patient.initialiseEncryptionMetadata(
-				Patient(
+				DecryptedPatient(
 					id = UUID.randomUUID().toString(),
 					firstName = "John",
 					lastName = "Doe",
@@ -71,7 +73,7 @@ class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec ({
 		val nonConfidentialNote = "Encrypted - non confidential he"
 		val nonConfidentialHe = hcpApi.healthElement.encryptAndCreate(
 			hcpApi.healthElement.initialiseEncryptionMetadata(
-				HealthElement(
+				DecryptedHealthElement(
 					id = UUID.randomUUID().toString(),
 					note = nonConfidentialNote
 				),
@@ -82,7 +84,7 @@ class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec ({
 		val confidentialNote = "Encrypted - confidential he"
 		val confidentialHe = hcpApi.healthElement.encryptAndCreate(
 			hcpApi.healthElement.initialiseEncryptionMetadata(
-				HealthElement(
+				DecryptedHealthElement(
 					id = UUID.randomUUID().toString(),
 					note = confidentialNote
 				),

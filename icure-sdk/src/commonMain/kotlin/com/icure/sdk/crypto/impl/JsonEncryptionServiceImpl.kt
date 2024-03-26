@@ -6,7 +6,7 @@ import com.icure.kryptom.utils.base64Decode
 import com.icure.kryptom.utils.base64Encode
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.JsonEncryptionService
-import com.icure.sdk.model.base.Encryptable
+import com.icure.sdk.model.base.HasEncryptionMetadata
 import com.icure.sdk.utils.IllegalEntityException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.InternalIcureException
@@ -28,7 +28,7 @@ class JsonEncryptionServiceImpl(
 	private val cryptoService: CryptoService
 ) : JsonEncryptionService {
 	companion object {
-		private val ENCRYPTED_SELF = Encryptable::encryptedSelf.name
+		private val ENCRYPTED_SELF = HasEncryptionMetadata::encryptedSelf.name
 		private val ENCRYPTED_FIELD_MANIFEST_REGEX =
 			Regex("^([_a-zA-Z][_a-zA-Z0-9]*)(?:(\\.\\*\\.|\\[]\\.|\\.)(?:[_a-zA-Z].*|\\[.*]))?$")
 	}
