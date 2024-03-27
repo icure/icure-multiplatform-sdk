@@ -23,73 +23,74 @@ import kotlin.collections.List
 import kotlin.collections.Map
 import kotlin.time.Duration
 
-// WARNING: This class is auto-generated. If you change it manually, your changes will be lost.
-// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
+// WARNING: This class is auto-generated. If you change it manually, you changes will be lost.
+// If you want to change the way this class is generated, see [this repo](TODO: URL HERE).
 @InternalIcureApi
 class RawPlaceApi(
-	private val apiUrl: String,
-	private val authService: AuthService,
-	additionalHeaders: Map<String, String> = emptyMap(),
-	timeout: Duration? = null,
+    private val apiUrl: String,
+    private val authService: AuthService,
+    additionalHeaders: Map<String, String> = emptyMap(),
+    timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
+    // region common endpoints
 
-	// region common endpoints
+    suspend fun createPlace(placeDto: Place): HttpResponse<Place> =
+        post {
+            url {
+                host = apiUrl
+                appendPathSegments("rest", "v2", "place")
+            }
+            setAuthorizationWith(authService)
+            contentType(ContentType.Application.Json)
+            setBody(placeDto)
+        }.wrap()
 
-	suspend fun createPlace(placeDto: Place): HttpResponse<Place> = post {
-			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","place")
-			}
-			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			setBody(placeDto)
-		}.wrap()
+    suspend fun deletePlaces(placeIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
+        post {
+            url {
+                host = apiUrl
+                appendPathSegments("rest", "v2", "place", "delete", "batch")
+            }
+            setAuthorizationWith(authService)
+            contentType(ContentType.Application.Json)
+            setBody(placeIds)
+        }.wrap()
 
+    suspend fun getPlace(placeId: String): HttpResponse<Place> =
+        get {
+            url {
+                host = apiUrl
+                appendPathSegments("rest", "v2", "place", placeId)
+                parameter("ts", GMTDate().timestamp)
+            }
+            setAuthorizationWith(authService)
+        }.wrap()
 
-	suspend fun deletePlaces(placeIds: ListOfIds): HttpResponse<List<DocIdentifier>> = post {
-			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","place","delete","batch")
-			}
-			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			setBody(placeIds)
-		}.wrap()
+    suspend fun getPlaces(
+        startDocumentId: String? = null,
+        limit: Int? = null,
+    ): HttpResponse<PaginatedList<Place, JsonString>> =
+        get {
+            url {
+                host = apiUrl
+                appendPathSegments("rest", "v2", "place")
+                parameter("startDocumentId", startDocumentId)
+                parameter("limit", limit)
+                parameter("ts", GMTDate().timestamp)
+            }
+            setAuthorizationWith(authService)
+        }.wrap()
 
+    suspend fun modifyPlace(placeDto: Place): HttpResponse<Place> =
+        put {
+            url {
+                host = apiUrl
+                appendPathSegments("rest", "v2", "place")
+            }
+            setAuthorizationWith(authService)
+            contentType(ContentType.Application.Json)
+            setBody(placeDto)
+        }.wrap()
 
-	suspend fun getPlace(placeId: String): HttpResponse<Place> = get {
-			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","place",placeId)
-				parameter("ts", GMTDate().timestamp)
-			}
-			setAuthorizationWith(authService)
-		}.wrap()
-
-
-	suspend fun getPlaces(startDocumentId: String? = null, limit: Int? = null):
-			HttpResponse<PaginatedList<Place, JsonString>> = get {
-			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","place")
-				parameter("startDocumentId", startDocumentId)
-				parameter("limit", limit)
-				parameter("ts", GMTDate().timestamp)
-			}
-			setAuthorizationWith(authService)
-		}.wrap()
-
-
-	suspend fun modifyPlace(placeDto: Place): HttpResponse<Place> = put {
-			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","place")
-			}
-			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			setBody(placeDto)
-		}.wrap()
-
-	// endregion
-
+    // endregion
 }

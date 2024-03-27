@@ -16,39 +16,37 @@ import kotlin.String
 import kotlin.collections.Map
 import kotlin.time.Duration
 
-// WARNING: This class is auto-generated. If you change it manually, your changes will be lost.
-// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
+// WARNING: This class is auto-generated. If you change it manually, you changes will be lost.
+// If you want to change the way this class is generated, see [this repo](TODO: URL HERE).
 @InternalIcureApi
 class RawEntityReferenceApi(
-	private val apiUrl: String,
-	private val authService: AuthService,
-	additionalHeaders: Map<String, String> = emptyMap(),
-	timeout: Duration? = null,
+    private val apiUrl: String,
+    private val authService: AuthService,
+    additionalHeaders: Map<String, String> = emptyMap(),
+    timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
+    // region common endpoints
 
-	// region common endpoints
+    suspend fun getLatest(prefix: String): HttpResponse<EntityReference> =
+        get {
+            url {
+                host = apiUrl
+                appendPathSegments("rest", "v2", "entityref", "latest", prefix)
+                parameter("ts", GMTDate().timestamp)
+            }
+            setAuthorizationWith(authService)
+        }.wrap()
 
-	suspend fun getLatest(prefix: String): HttpResponse<EntityReference> = get {
-			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","entityref","latest",prefix)
-				parameter("ts", GMTDate().timestamp)
-			}
-			setAuthorizationWith(authService)
-		}.wrap()
+    suspend fun createEntityReference(er: EntityReference): HttpResponse<EntityReference> =
+        post {
+            url {
+                host = apiUrl
+                appendPathSegments("rest", "v2", "entityref")
+            }
+            setAuthorizationWith(authService)
+            contentType(ContentType.Application.Json)
+            setBody(er)
+        }.wrap()
 
-
-	suspend fun createEntityReference(er: EntityReference): HttpResponse<EntityReference> =
-			post {
-			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","entityref")
-			}
-			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			setBody(er)
-		}.wrap()
-
-	// endregion
-
+    // endregion
 }

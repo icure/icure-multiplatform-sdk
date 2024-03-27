@@ -23,84 +23,84 @@ import kotlin.collections.List
 import kotlin.collections.Map
 import kotlin.time.Duration
 
-// WARNING: This class is auto-generated. If you change it manually, your changes will be lost.
-// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
+// WARNING: This class is auto-generated. If you change it manually, you changes will be lost.
+// If you want to change the way this class is generated, see [this repo](TODO: URL HERE).
 @InternalIcureApi
 class RawKeywordApi(
-	private val apiUrl: String,
-	private val authService: AuthService,
-	additionalHeaders: Map<String, String> = emptyMap(),
-	timeout: Duration? = null,
+    private val apiUrl: String,
+    private val authService: AuthService,
+    additionalHeaders: Map<String, String> = emptyMap(),
+    timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
+    // region common endpoints
 
-	// region common endpoints
+    suspend fun createKeyword(c: Keyword): HttpResponse<Keyword> =
+        post {
+            url {
+                host = apiUrl
+                appendPathSegments("rest", "v2", "keyword")
+            }
+            setAuthorizationWith(authService)
+            contentType(ContentType.Application.Json)
+            setBody(c)
+        }.wrap()
 
-	suspend fun createKeyword(c: Keyword): HttpResponse<Keyword> = post {
-			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","keyword")
-			}
-			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			setBody(c)
-		}.wrap()
+    suspend fun getKeyword(keywordId: String): HttpResponse<Keyword> =
+        get {
+            url {
+                host = apiUrl
+                appendPathSegments("rest", "v2", "keyword", keywordId)
+                parameter("ts", GMTDate().timestamp)
+            }
+            setAuthorizationWith(authService)
+        }.wrap()
 
+    suspend fun getKeywordsByUser(userId: String): HttpResponse<List<Keyword>> =
+        get {
+            url {
+                host = apiUrl
+                appendPathSegments("rest", "v2", "keyword", "byUser", userId)
+                parameter("ts", GMTDate().timestamp)
+            }
+            setAuthorizationWith(authService)
+        }.wrap()
 
-	suspend fun getKeyword(keywordId: String): HttpResponse<Keyword> = get {
-			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","keyword",keywordId)
-				parameter("ts", GMTDate().timestamp)
-			}
-			setAuthorizationWith(authService)
-		}.wrap()
+    suspend fun getKeywords(
+        startDocumentId: String? = null,
+        limit: Int? = null,
+    ): HttpResponse<PaginatedList<Keyword, JsonString>> =
+        get {
+            url {
+                host = apiUrl
+                appendPathSegments("rest", "v2", "keyword")
+                parameter("startDocumentId", startDocumentId)
+                parameter("limit", limit)
+                parameter("ts", GMTDate().timestamp)
+            }
+            setAuthorizationWith(authService)
+        }.wrap()
 
+    suspend fun deleteKeywords(keywordIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
+        post {
+            url {
+                host = apiUrl
+                appendPathSegments("rest", "v2", "keyword", "delete", "batch")
+            }
+            setAuthorizationWith(authService)
+            contentType(ContentType.Application.Json)
+            setBody(keywordIds)
+        }.wrap()
 
-	suspend fun getKeywordsByUser(userId: String): HttpResponse<List<Keyword>> = get {
-			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","keyword","byUser",userId)
-				parameter("ts", GMTDate().timestamp)
-			}
-			setAuthorizationWith(authService)
-		}.wrap()
+    suspend fun modifyKeyword(keywordDto: Keyword): HttpResponse<Keyword> =
+        put {
+            url {
+                host = apiUrl
+                appendPathSegments("rest", "v2", "keyword")
+            }
+            setAuthorizationWith(authService)
+            contentType(ContentType.Application.Json)
+            setBody(keywordDto)
+        }.wrap()
 
-
-	suspend fun getKeywords(startDocumentId: String? = null, limit: Int? = null):
-			HttpResponse<PaginatedList<Keyword, JsonString>> = get {
-			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","keyword")
-				parameter("startDocumentId", startDocumentId)
-				parameter("limit", limit)
-				parameter("ts", GMTDate().timestamp)
-			}
-			setAuthorizationWith(authService)
-		}.wrap()
-
-
-	suspend fun deleteKeywords(keywordIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
-			post {
-			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","keyword","delete","batch")
-			}
-			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			setBody(keywordIds)
-		}.wrap()
-
-
-	suspend fun modifyKeyword(keywordDto: Keyword): HttpResponse<Keyword> = put {
-			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","keyword")
-			}
-			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			setBody(keywordDto)
-		}.wrap()
-
-	// endregion
-
+    // endregion
 }

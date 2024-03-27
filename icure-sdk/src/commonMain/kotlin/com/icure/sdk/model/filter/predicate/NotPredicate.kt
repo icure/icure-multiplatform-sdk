@@ -7,8 +7,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class NotPredicate(
-  public val predicate: Predicate,
+    public val predicate: Predicate,
 ) : Predicate {
 	// region NotPredicate-NotPredicate
+
 	// endregion
 }

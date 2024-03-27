@@ -21,90 +21,91 @@ import kotlin.collections.List
 import kotlin.collections.Map
 import kotlin.time.Duration
 
-// WARNING: This class is auto-generated. If you change it manually, your changes will be lost.
-// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
+// WARNING: This class is auto-generated. If you change it manually, you changes will be lost.
+// If you want to change the way this class is generated, see [this repo](TODO: URL HERE).
 @InternalIcureApi
 class RawExchangeDataApi(
-	private val apiUrl: String,
-	private val authService: AuthService,
-	additionalHeaders: Map<String, String> = emptyMap(),
-	timeout: Duration? = null,
+    private val apiUrl: String,
+    private val authService: AuthService,
+    additionalHeaders: Map<String, String> = emptyMap(),
+    timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
+    // region common endpoints
 
-	// region common endpoints
+    suspend fun createExchangeData(exchangeData: ExchangeData): HttpResponse<ExchangeData> =
+        post {
+            url {
+                host = apiUrl
+                appendPathSegments("rest", "v2", "exchangedata")
+            }
+            setAuthorizationWith(authService)
+            contentType(ContentType.Application.Json)
+            setBody(exchangeData)
+        }.wrap()
 
-	suspend fun createExchangeData(exchangeData: ExchangeData): HttpResponse<ExchangeData> =
-			post {
-			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","exchangedata")
-			}
-			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			setBody(exchangeData)
-		}.wrap()
+    suspend fun modifyExchangeData(exchangeData: ExchangeData): HttpResponse<ExchangeData> =
+        put {
+            url {
+                host = apiUrl
+                appendPathSegments("rest", "v2", "exchangedata")
+            }
+            setAuthorizationWith(authService)
+            contentType(ContentType.Application.Json)
+            setBody(exchangeData)
+        }.wrap()
 
+    suspend fun getExchangeDataById(exchangeDataId: String): HttpResponse<ExchangeData> =
+        get {
+            url {
+                host = apiUrl
+                appendPathSegments("rest", "v2", "exchangedata", exchangeDataId)
+                parameter("ts", GMTDate().timestamp)
+            }
+            setAuthorizationWith(authService)
+        }.wrap()
 
-	suspend fun modifyExchangeData(exchangeData: ExchangeData): HttpResponse<ExchangeData> =
-			put {
-			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","exchangedata")
-			}
-			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			setBody(exchangeData)
-		}.wrap()
+    suspend fun getExchangeDataByParticipant(
+        dataOwnerId: String,
+        startDocumentId: String? = null,
+        limit: Int? = null,
+    ): HttpResponse<PaginatedList<ExchangeData, JsonString>> =
+        get {
+            url {
+                host = apiUrl
+                appendPathSegments("rest", "v2", "exchangedata", "byParticipant", dataOwnerId)
+                parameter("startDocumentId", startDocumentId)
+                parameter("limit", limit)
+                parameter("ts", GMTDate().timestamp)
+            }
+            setAuthorizationWith(authService)
+        }.wrap()
 
+    suspend fun getExchangeDataByDelegatorDelegate(
+        delegatorId: String,
+        delegateId: String,
+    ): HttpResponse<List<ExchangeData>> =
+        get {
+            url {
+                host = apiUrl
+                appendPathSegments("rest", "v2", "exchangedata", "byDelegatorDelegate", delegatorId, delegateId)
+                parameter("ts", GMTDate().timestamp)
+            }
+            setAuthorizationWith(authService)
+        }.wrap()
 
-	suspend fun getExchangeDataById(exchangeDataId: String): HttpResponse<ExchangeData> = get {
-			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","exchangedata",exchangeDataId)
-				parameter("ts", GMTDate().timestamp)
-			}
-			setAuthorizationWith(authService)
-		}.wrap()
+    suspend fun getParticipantCounterparts(
+        dataOwnerId: String,
+        counterpartsTypes: String,
+    ): HttpResponse<List<String>> =
+        get {
+            url {
+                host = apiUrl
+                appendPathSegments("rest", "v2", "exchangedata", "byParticipant", dataOwnerId, "counterparts")
+                parameter("counterpartsTypes", counterpartsTypes)
+                parameter("ts", GMTDate().timestamp)
+            }
+            setAuthorizationWith(authService)
+        }.wrap()
 
-
-	suspend fun getExchangeDataByParticipant(
-		dataOwnerId: String,
-		startDocumentId: String? = null,
-		limit: Int? = null,
-	): HttpResponse<PaginatedList<ExchangeData, JsonString>> = get {
-			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","exchangedata","byParticipant",dataOwnerId)
-				parameter("startDocumentId", startDocumentId)
-				parameter("limit", limit)
-				parameter("ts", GMTDate().timestamp)
-			}
-			setAuthorizationWith(authService)
-		}.wrap()
-
-
-	suspend fun getExchangeDataByDelegatorDelegate(delegatorId: String, delegateId: String):
-			HttpResponse<List<ExchangeData>> = get {
-			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","exchangedata","byDelegatorDelegate",delegatorId,delegateId)
-				parameter("ts", GMTDate().timestamp)
-			}
-			setAuthorizationWith(authService)
-		}.wrap()
-
-
-	suspend fun getParticipantCounterparts(dataOwnerId: String, counterpartsTypes: String):
-			HttpResponse<List<String>> = get {
-			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","exchangedata","byParticipant",dataOwnerId,"counterparts")
-				parameter("counterpartsTypes", counterpartsTypes)
-				parameter("ts", GMTDate().timestamp)
-			}
-			setAuthorizationWith(authService)
-		}.wrap()
-
-	// endregion
-
+    // endregion
 }

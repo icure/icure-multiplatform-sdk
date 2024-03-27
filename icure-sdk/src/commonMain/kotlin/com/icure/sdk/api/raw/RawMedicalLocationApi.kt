@@ -23,76 +23,74 @@ import kotlin.collections.List
 import kotlin.collections.Map
 import kotlin.time.Duration
 
-// WARNING: This class is auto-generated. If you change it manually, your changes will be lost.
-// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
+// WARNING: This class is auto-generated. If you change it manually, you changes will be lost.
+// If you want to change the way this class is generated, see [this repo](TODO: URL HERE).
 @InternalIcureApi
 class RawMedicalLocationApi(
-	private val apiUrl: String,
-	private val authService: AuthService,
-	additionalHeaders: Map<String, String> = emptyMap(),
-	timeout: Duration? = null,
+    private val apiUrl: String,
+    private val authService: AuthService,
+    additionalHeaders: Map<String, String> = emptyMap(),
+    timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
+    // region common endpoints
 
-	// region common endpoints
+    suspend fun createMedicalLocation(medicalLocationDto: MedicalLocation): HttpResponse<MedicalLocation> =
+        post {
+            url {
+                host = apiUrl
+                appendPathSegments("rest", "v2", "medicallocation")
+            }
+            setAuthorizationWith(authService)
+            contentType(ContentType.Application.Json)
+            setBody(medicalLocationDto)
+        }.wrap()
 
-	suspend fun createMedicalLocation(medicalLocationDto: MedicalLocation):
-			HttpResponse<MedicalLocation> = post {
-			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","medicallocation")
-			}
-			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			setBody(medicalLocationDto)
-		}.wrap()
+    suspend fun deleteMedicalLocations(locationIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
+        post {
+            url {
+                host = apiUrl
+                appendPathSegments("rest", "v2", "medicallocation", "delete", "batch")
+            }
+            setAuthorizationWith(authService)
+            contentType(ContentType.Application.Json)
+            setBody(locationIds)
+        }.wrap()
 
+    suspend fun getMedicalLocation(locationId: String): HttpResponse<MedicalLocation> =
+        get {
+            url {
+                host = apiUrl
+                appendPathSegments("rest", "v2", "medicallocation", locationId)
+                parameter("ts", GMTDate().timestamp)
+            }
+            setAuthorizationWith(authService)
+        }.wrap()
 
-	suspend fun deleteMedicalLocations(locationIds: ListOfIds):
-			HttpResponse<List<DocIdentifier>> = post {
-			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","medicallocation","delete","batch")
-			}
-			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			setBody(locationIds)
-		}.wrap()
+    suspend fun getMedicalLocations(
+        startDocumentId: String? = null,
+        limit: Int? = null,
+    ): HttpResponse<PaginatedList<MedicalLocation, JsonString>> =
+        get {
+            url {
+                host = apiUrl
+                appendPathSegments("rest", "v2", "medicallocation")
+                parameter("startDocumentId", startDocumentId)
+                parameter("limit", limit)
+                parameter("ts", GMTDate().timestamp)
+            }
+            setAuthorizationWith(authService)
+        }.wrap()
 
+    suspend fun modifyMedicalLocation(medicalLocationDto: MedicalLocation): HttpResponse<MedicalLocation> =
+        put {
+            url {
+                host = apiUrl
+                appendPathSegments("rest", "v2", "medicallocation")
+            }
+            setAuthorizationWith(authService)
+            contentType(ContentType.Application.Json)
+            setBody(medicalLocationDto)
+        }.wrap()
 
-	suspend fun getMedicalLocation(locationId: String): HttpResponse<MedicalLocation> = get {
-			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","medicallocation",locationId)
-				parameter("ts", GMTDate().timestamp)
-			}
-			setAuthorizationWith(authService)
-		}.wrap()
-
-
-	suspend fun getMedicalLocations(startDocumentId: String? = null, limit: Int? = null):
-			HttpResponse<PaginatedList<MedicalLocation, JsonString>> = get {
-			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","medicallocation")
-				parameter("startDocumentId", startDocumentId)
-				parameter("limit", limit)
-				parameter("ts", GMTDate().timestamp)
-			}
-			setAuthorizationWith(authService)
-		}.wrap()
-
-
-	suspend fun modifyMedicalLocation(medicalLocationDto: MedicalLocation):
-			HttpResponse<MedicalLocation> = put {
-			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","medicallocation")
-			}
-			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			setBody(medicalLocationDto)
-		}.wrap()
-
-	// endregion
-
+    // endregion
 }

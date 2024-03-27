@@ -10,19 +10,22 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class NotificationEvent(
-  @Serializable(with = InstantSerializer::class)
-  public val date: Instant? = null,
-  public val status: Status? = null,
+    @Serializable(with = InstantSerializer::class)
+    public val date: Instant? = null,
+    public val status: Status? = null,
 ) {
-  @Serializable
-  public enum class Status() {
-    @SerialName("SENT")
-    Sent,
-    @SerialName("RECEIVED")
-    Received,
-    @SerialName("ERROR")
-    Error,
-  }
+    @Serializable
+    public enum class Status() {
+        @SerialName("SENT")
+        Sent,
+
+        @SerialName("RECEIVED")
+        Received,
+
+        @SerialName("ERROR")
+        Error,
+    }
   // region NotificationEvent-NotificationEvent
+
   // endregion
 }

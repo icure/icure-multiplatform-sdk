@@ -8,11 +8,12 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class AppendixType() {
-  @SerialName("externalLink")
-  ExternalLink,
-  @SerialName("video")
-  Video,
-  @SerialName("description")
-  Description,
+    @SerialName("externalLink")
+    ExternalLink,
 
+    @SerialName("video")
+    Video,
+
+    @SerialName("description")
+    Description,
 }

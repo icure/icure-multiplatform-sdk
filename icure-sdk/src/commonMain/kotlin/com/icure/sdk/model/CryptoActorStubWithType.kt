@@ -7,9 +7,10 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CryptoActorStubWithType(
-  public val type: DataOwnerType,
-  public val stub: CryptoActorStub,
+    public val type: DataOwnerType,
+    public val stub: CryptoActorStub,
 ) {
 	// region CryptoActorStubWithType-CryptoActorStubWithType
+
 	// endregion
 }
