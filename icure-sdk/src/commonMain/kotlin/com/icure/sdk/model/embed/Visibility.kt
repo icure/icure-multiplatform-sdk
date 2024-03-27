@@ -8,15 +8,18 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class Visibility() {
-  @SerialName("maskedfromsummary")
-  Maskedfromsummary,
-  @SerialName("maskedfromexportedfile")
-  Maskedfromexportedfile,
-  @SerialName("proeminent")
-  Proeminent,
-  @SerialName("highlighted")
-  Highlighted,
-  @SerialName("visible")
-  Visible,
+	@SerialName("maskedfromsummary")
+	Maskedfromsummary,
 
+	@SerialName("maskedfromexportedfile")
+	Maskedfromexportedfile,
+
+	@SerialName("proeminent")
+	Proeminent,
+
+	@SerialName("highlighted")
+	Highlighted,
+
+	@SerialName("visible")
+	Visible,
 }

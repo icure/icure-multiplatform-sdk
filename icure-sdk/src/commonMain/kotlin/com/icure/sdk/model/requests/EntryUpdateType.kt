@@ -8,9 +8,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class EntryUpdateType() {
-  @SerialName("CREATE")
-  Create,
-  @SerialName("DELETE")
-  Delete,
+	@SerialName("CREATE")
+	Create,
 
+	@SerialName("DELETE")
+	Delete,
 }

@@ -26,51 +26,48 @@ class RawDataOwnerApi(
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
-
 	// region common endpoints
 
-	suspend fun getDataOwner(dataOwnerId: String): HttpResponse<DataOwnerWithType> = get {
+	suspend fun getDataOwner(dataOwnerId: String): HttpResponse<DataOwnerWithType> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","dataowner",dataOwnerId)
+				appendPathSegments("rest", "v2", "dataowner", dataOwnerId)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
-
 
 	suspend fun getDataOwnerStub(dataOwnerId: String): HttpResponse<CryptoActorStubWithType> =
-			get {
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","dataowner","stub",dataOwnerId)
+				appendPathSegments("rest", "v2", "dataowner", "stub", dataOwnerId)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun modifyDataOwnerStub(updated: CryptoActorStubWithType):
-			HttpResponse<CryptoActorStubWithType> = put {
+	suspend fun modifyDataOwnerStub(updated: CryptoActorStubWithType): HttpResponse<CryptoActorStubWithType> =
+		put {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","dataowner","stub")
+				appendPathSegments("rest", "v2", "dataowner", "stub")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(updated)
 		}.wrap()
 
-
-	suspend fun getCurrentDataOwner(): HttpResponse<DataOwnerWithType> = get {
+	suspend fun getCurrentDataOwner(): HttpResponse<DataOwnerWithType> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","dataowner","current")
+				appendPathSegments("rest", "v2", "dataowner", "current")
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
 	// endregion
-
 }

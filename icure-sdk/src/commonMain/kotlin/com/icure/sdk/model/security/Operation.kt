@@ -8,7 +8,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class Operation() {
-  @SerialName("TRANSFER_GROUP")
-  TransferGroup,
-
+	@SerialName("TRANSFER_GROUP")
+	TransferGroup,
 }

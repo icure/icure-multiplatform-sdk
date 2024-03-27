@@ -8,9 +8,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class Laterality() {
-  @SerialName("left")
-  Left,
-  @SerialName("right")
-  Right,
+	@SerialName("left")
+	Left,
 
+	@SerialName("right")
+	Right,
 }
