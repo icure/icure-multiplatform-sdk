@@ -20,6 +20,8 @@ sealed interface Telecom : Encryptable {
 	// endregion
 }
 
+
+@Serializable
 data class DecryptedTelecom(
 	override val telecomType: TelecomType? = null,
 	override val telecomNumber: String? = null,
@@ -30,6 +32,8 @@ data class DecryptedTelecom(
 	// endregion
 }
 
+
+@Serializable
 data class EncryptedTelecom(
 	override val telecomType: TelecomType? = null,
 	override val telecomNumber: String? = null,

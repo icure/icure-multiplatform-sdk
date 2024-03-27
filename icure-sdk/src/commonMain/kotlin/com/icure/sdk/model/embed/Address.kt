@@ -39,6 +39,8 @@ sealed interface Address : Encryptable {
 	// endregion
 }
 
+
+@Serializable
 data class DecryptedAddress(
   override val addressType: AddressType? = null,
   override val descr: String? = null,
@@ -58,6 +60,8 @@ data class DecryptedAddress(
 	// endregion
 }
 
+
+@Serializable
 data class EncryptedAddress(
   override val addressType: AddressType? = null,
   override val descr: String? = null,

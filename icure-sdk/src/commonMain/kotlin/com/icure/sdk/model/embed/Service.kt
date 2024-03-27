@@ -93,6 +93,8 @@ sealed interface Service : Encryptable, ICureDocument<String> {
 	// endregion
 }
 
+
+@Serializable
 data class DecryptedService(
   override val id: String,
   override val transactionId: String? = null,
@@ -135,6 +137,8 @@ data class DecryptedService(
 	// endregion
 }
 
+
+@Serializable
 data class EncryptedService(
   override val id: String,
   override val transactionId: String? = null,

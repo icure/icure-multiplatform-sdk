@@ -82,6 +82,8 @@ sealed interface MedicalHouseContract : Encryptable {
 	// endregion
 }
 
+
+@Serializable
 data class DecryptedMedicalHouseContract(
 	override val contractId: String? = null,
 	override val validFrom: Long? = null,
@@ -121,6 +123,8 @@ data class DecryptedMedicalHouseContract(
 	// endregion
 }
 
+
+@Serializable
 data class EncryptedMedicalHouseContract(
 	override val contractId: String? = null,
 	override val validFrom: Long? = null,

@@ -39,6 +39,8 @@ sealed interface Valorisation : Encryptable {
 	// endregion
 }
 
+
+@Serializable
 data class DecryptedValorisation(
 	override val startOfValidity: Long? = null,
 	override val endOfValidity: Long? = null,
@@ -56,6 +58,8 @@ data class DecryptedValorisation(
 	// endregion
 }
 
+
+@Serializable
 data class EncryptedValorisation(
 	override val startOfValidity: Long? = null,
 	override val endOfValidity: Long? = null,

@@ -13,7 +13,7 @@ import kotlinx.serialization.Serializable
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 
 @Serializable
-sealed interface TypedValue<T> : Encryptable {
+sealed interface TypedValue : Encryptable {
   public val type: TypedValuesType?
 
   public val booleanValue: Boolean?
@@ -31,7 +31,9 @@ sealed interface TypedValue<T> : Encryptable {
 	// endregion
 }
 
-data class DecryptedTypedValue<T>(
+
+@Serializable
+data class DecryptedTypedValue(
 	override val type: TypedValuesType? = null,
 	override val booleanValue: Boolean? = null,
 	override val integerValue: Long? = null,
@@ -40,26 +42,28 @@ data class DecryptedTypedValue<T>(
 	@Serializable(with = InstantSerializer::class)
   override val dateValue: Instant? = null,
 	override val encryptedSelf: Base64String? = null,
-) : TypedValue<T> {
+) : TypedValue {
 	// region TypedValue-DecryptedTypedValue
 	// endregion
 }
 
-data class EncryptedTypedValue<T>(
-	override val type: TypedValuesType? = null,
-	override val booleanValue: Boolean? = null,
-	override val integerValue: Long? = null,
-	override val doubleValue: Double? = null,
-	override val stringValue: String? = null,
-	@Serializable(with = InstantSerializer::class)
+
+@Serializable
+data class EncryptedTypedValue(
+  override val type: TypedValuesType? = null,
+  override val booleanValue: Boolean? = null,
+  override val integerValue: Long? = null,
+  override val doubleValue: Double? = null,
+  override val stringValue: String? = null,
+  @Serializable(with = InstantSerializer::class)
   override val dateValue: Instant? = null,
-	override val encryptedSelf: Base64String? = null,
-) : TypedValue<T> {
+  override val encryptedSelf: Base64String? = null,
+) : TypedValue {
 	// region TypedValue-EncryptedTypedValue
 	// endregion
 }
 
-public fun <T> TypedValue<T>.copy(
+public fun TypedValue.copy(
   type: TypedValuesType? = this.type,
   booleanValue: Boolean? = this.booleanValue,
   integerValue: Long? = this.integerValue,
@@ -67,7 +71,7 @@ public fun <T> TypedValue<T>.copy(
   stringValue: String? = this.stringValue,
   dateValue: Instant? = this.dateValue,
   encryptedSelf: Base64String? = this.encryptedSelf,
-): TypedValue<T> {
+): TypedValue {
                                       return when(this) {
                                           is DecryptedTypedValue -> copy(type = type, booleanValue =
           booleanValue, integerValue = integerValue, doubleValue = doubleValue, stringValue =

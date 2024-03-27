@@ -120,6 +120,8 @@ sealed interface InvoicingCode : Encryptable {
 	// endregion
 }
 
+
+@Serializable
 data class DecryptedInvoicingCode(
 	override val id: String? = null,
 	override val dateCode: Long? = null,
@@ -178,6 +180,8 @@ data class DecryptedInvoicingCode(
 	// endregion
 }
 
+
+@Serializable
 data class EncryptedInvoicingCode(
 	override val id: String? = null,
 	override val dateCode: Long? = null,

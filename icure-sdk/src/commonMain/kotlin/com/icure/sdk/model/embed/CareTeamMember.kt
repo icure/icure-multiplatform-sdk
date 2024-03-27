@@ -24,6 +24,8 @@ sealed interface CareTeamMember : Encryptable, Identifiable<String> {
 	// endregion
 }
 
+
+@Serializable
 data class DecryptedCareTeamMember(
 	override val id: String,
 	override val careTeamMemberType: CareTeamMemberType? = null,
@@ -35,6 +37,8 @@ data class DecryptedCareTeamMember(
 	// endregion
 }
 
+
+@Serializable
 data class EncryptedCareTeamMember(
 	override val id: String,
 	override val careTeamMemberType: CareTeamMemberType? = null,

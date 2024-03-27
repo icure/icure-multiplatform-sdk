@@ -35,6 +35,8 @@ sealed interface Insurability : Encryptable {
 	// endregion
 }
 
+
+@Serializable
 data class DecryptedInsurability(
 	override val parameters: Map<String, String> = emptyMap(),
 	override val hospitalisation: Boolean? = null,
@@ -51,6 +53,8 @@ data class DecryptedInsurability(
 	// endregion
 }
 
+
+@Serializable
 data class EncryptedInsurability(
 	override val parameters: Map<String, String> = emptyMap(),
 	override val hospitalisation: Boolean? = null,

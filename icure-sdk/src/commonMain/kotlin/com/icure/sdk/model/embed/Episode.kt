@@ -27,6 +27,8 @@ sealed interface Episode : Encryptable, Identifiable<String>, Named {
 	// endregion
 }
 
+
+@Serializable
 data class DecryptedEpisode(
 	override val id: String,
 	override val name: String? = null,
@@ -39,6 +41,8 @@ data class DecryptedEpisode(
 	// endregion
 }
 
+
+@Serializable
 data class EncryptedEpisode(
 	override val id: String,
 	override val name: String? = null,

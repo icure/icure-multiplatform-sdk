@@ -27,6 +27,8 @@ sealed interface PatientHealthCareParty : Encryptable {
 	// endregion
 }
 
+
+@Serializable
 data class DecryptedPatientHealthCareParty(
 	override val type: PatientHealthCarePartyType? = null,
 	override val healthcarePartyId: String? = null,
@@ -39,6 +41,8 @@ data class DecryptedPatientHealthCareParty(
 	// endregion
 }
 
+
+@Serializable
 data class EncryptedPatientHealthCareParty(
 	override val type: PatientHealthCarePartyType? = null,
 	override val healthcarePartyId: String? = null,
