@@ -2,7 +2,7 @@ package com.icure.sdk.model
 
 import com.icure.sdk.model.base.CodeStub
 import com.icure.sdk.model.base.CryptoActor
-import com.icure.sdk.model.base.Encryptable
+import com.icure.sdk.model.base.HasEncryptionMetadata
 import com.icure.sdk.model.base.ICureDocument
 import com.icure.sdk.model.base.Identifier
 import com.icure.sdk.model.base.Person
@@ -17,6 +17,7 @@ import com.icure.sdk.model.embed.DecryptedMedicalHouseContract
 import com.icure.sdk.model.embed.DecryptedPatientHealthCareParty
 import com.icure.sdk.model.embed.Delegation
 import com.icure.sdk.model.embed.EmploymentInfo
+import com.icure.sdk.model.embed.Encryptable
 import com.icure.sdk.model.embed.EncryptedAddress
 import com.icure.sdk.model.embed.EncryptedFinancialInstitutionInformation
 import com.icure.sdk.model.embed.EncryptedInsurability
@@ -50,7 +51,7 @@ import kotlinx.serialization.Serializable
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 
 @Serializable
-sealed interface Patient : StoredDocument, ICureDocument<String>, Person, Encryptable,
+sealed interface Patient : StoredDocument, ICureDocument<String>, Person, Encryptable, HasEncryptionMetadata,
     CryptoActor {
   override val id: String
 
@@ -187,7 +188,7 @@ sealed interface Patient : StoredDocument, ICureDocument<String>, Person, Encryp
 
   override val encryptedSelf: Base64String?
 
-  override val securityMetadata: SecurityMetadata?
+	override val securityMetadata: SecurityMetadata?
 
   override val medicalLocationId: String?
 
@@ -302,9 +303,6 @@ data class DecryptedPatient(
 	override val employementInfos: List<EmploymentInfo> = emptyList(),
 ) : Patient {
 	// region Patient-DecryptedPatient
-	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Patient
-
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedPatient =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
@@ -396,9 +394,6 @@ data class EncryptedPatient(
 	override val employementInfos: List<EmploymentInfo> = emptyList(),
 ) : Patient {
 	// region Patient-EncryptedPatient
-	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Patient
-
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedPatient =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion

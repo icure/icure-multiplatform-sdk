@@ -19,6 +19,7 @@ import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.crypto.EntityEncryptionService
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleDelegateShareOptions
+import com.icure.sdk.crypto.entities.withTypeInfo
 import com.icure.sdk.crypto.impl.AccessControlKeysHeadersProviderImpl
 import com.icure.sdk.crypto.impl.BaseExchangeDataManagerImpl
 import com.icure.sdk.crypto.impl.BaseExchangeKeysManagerImpl
@@ -46,7 +47,6 @@ import com.icure.sdk.storage.StorageFacade
 import com.icure.sdk.storage.impl.DefaultStorageEntryKeysFactory
 import com.icure.sdk.storage.impl.JsonAndBase64KeyStorage
 import com.icure.sdk.utils.InternalIcureApi
-import kotlin.js.JsExport
 
 interface IcureApi {
 	val contact: ContactApi
@@ -215,9 +215,10 @@ private suspend fun ensureDelegationForSelf(
 	if (self is DataOwnerWithType.PatientDataOwner) {
 		val availableSecretIds = patientApi.getSecretIdsOf(self.dataOwner)
 		if (availableSecretIds.isEmpty()) {
-			if (encryptionService.hasEmptyEncryptionMetadata(self.dataOwner)) {
+			val patientSelf = self.dataOwner.withTypeInfo()
+			if (encryptionService.hasEmptyEncryptionMetadata(patientSelf)) {
 				val updatedPatient = encryptionService.entityWithInitialisedEncryptedMetadata(
-					entity = self.dataOwner,
+					entity = patientSelf,
 					owningEntityId = null,
 					owningEntitySecretId = null,
 					initialiseEncryptionKey = true,
@@ -227,7 +228,7 @@ private suspend fun ensureDelegationForSelf(
 				patientApi.tryEncryptAndUpdatePatient(updatedPatient)
 			} else {
 				encryptionService.simpleShareOrUpdateEncryptedEntityMetadata(
-					self.dataOwner,
+					patientSelf,
 					false,
 					mapOf(
 						self.dataOwner.id to SimpleDelegateShareOptions(

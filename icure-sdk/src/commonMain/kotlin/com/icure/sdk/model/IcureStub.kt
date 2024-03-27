@@ -1,12 +1,12 @@
 package com.icure.sdk.model
 
+import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.model.base.CodeStub
-import com.icure.sdk.model.base.Encryptable
+import com.icure.sdk.model.base.HasEncryptionMetadata
 import com.icure.sdk.model.base.ICureDocument
 import com.icure.sdk.model.base.Versionable
 import com.icure.sdk.model.embed.Delegation
 import com.icure.sdk.model.embed.SecurityMetadata
-import com.icure.sdk.model.specializations.Base64String
 import kotlin.Long
 import kotlin.String
 import kotlin.collections.Map
@@ -17,7 +17,7 @@ import kotlinx.serialization.Serializable
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 
 @Serializable
-sealed interface IcureStub : ICureDocument<String>, Versionable<String>, Encryptable {
+sealed interface IcureStub : ICureDocument<String>, Versionable<String>, HasEncryptionMetadata {
   override val id: String
 
   override val rev: String?
@@ -46,8 +46,6 @@ sealed interface IcureStub : ICureDocument<String>, Versionable<String>, Encrypt
 
   override val encryptionKeys: Map<String, Set<Delegation>>
 
-  override val encryptedSelf: Base64String?
-
   override val securityMetadata: SecurityMetadata?
 	// region IcureStub-IcureStub
 	// endregion
@@ -68,12 +66,9 @@ data class DecryptedIcureStub(
 	override val cryptedForeignKeys: Map<String, Set<Delegation>> = emptyMap(),
 	override val delegations: Map<String, Set<Delegation>> = emptyMap(),
 	override val encryptionKeys: Map<String, Set<Delegation>> = emptyMap(),
-	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,
 ) : IcureStub {
 	// region IcureStub-DecryptedIcureStub
-	override val type: EntityWithDelegationTypeName
-		get() = TODO()
 
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedIcureStub =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
@@ -95,12 +90,9 @@ data class EncryptedIcureStub(
 	override val cryptedForeignKeys: Map<String, Set<Delegation>> = emptyMap(),
 	override val delegations: Map<String, Set<Delegation>> = emptyMap(),
 	override val encryptionKeys: Map<String, Set<Delegation>> = emptyMap(),
-	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,
 ) : IcureStub {
 	// region IcureStub-EncryptedIcureStub
-	override val type: EntityWithDelegationTypeName
-		get() = TODO()
 
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedIcureStub =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
@@ -122,7 +114,6 @@ public fun IcureStub.copy(
 	cryptedForeignKeys: Map<String, Set<Delegation>> = this.cryptedForeignKeys,
 	delegations: Map<String, Set<Delegation>> = this.delegations,
 	encryptionKeys: Map<String, Set<Delegation>> = this.encryptionKeys,
-	encryptedSelf: Base64String? = this.encryptedSelf,
 	securityMetadata: SecurityMetadata? = this.securityMetadata,
 ): IcureStub {
                                       return when(this) {
@@ -130,13 +121,13 @@ public fun IcureStub.copy(
           = created, modified = modified, author = author, responsible = responsible,
           medicalLocationId = medicalLocationId, tags = tags, codes = codes, endOfLife = endOfLife,
           secretForeignKeys = secretForeignKeys, cryptedForeignKeys = cryptedForeignKeys,
-          delegations = delegations, encryptionKeys = encryptionKeys, encryptedSelf = encryptedSelf,
+          delegations = delegations, encryptionKeys = encryptionKeys,
           securityMetadata = securityMetadata)
       is EncryptedIcureStub -> copy(id = id, rev = rev, created = created, modified = modified,
           author = author, responsible = responsible, medicalLocationId = medicalLocationId, tags =
           tags, codes = codes, endOfLife = endOfLife, secretForeignKeys = secretForeignKeys,
           cryptedForeignKeys = cryptedForeignKeys, delegations = delegations, encryptionKeys =
-          encryptionKeys, encryptedSelf = encryptedSelf, securityMetadata = securityMetadata)
+          encryptionKeys, securityMetadata = securityMetadata)
                                           }
 
 }

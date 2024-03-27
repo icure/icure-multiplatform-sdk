@@ -1,7 +1,6 @@
 package com.icure.sdk.crypto.entities
 
 import com.icure.sdk.model.embed.AccessLevel
-import com.icure.sdk.model.EntityWithDelegationTypeName
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.model.specializations.Sha256HexString
 import com.icure.sdk.model.embed.SecureDelegation
@@ -26,7 +25,7 @@ data class SecureDelegationStub(
 	 * This stub is only applicable for the creation of secure delegations in entities of this type.
 	 * Note: this MUST NOT be included in the created secure delegation nor in the security metadata.
 	 */
-	val applicableEntity: EntityWithDelegationTypeName,
+	val applicableEntity: EntityWithEncryptionMetadataTypeName,
 	/**
 	 * The value to use for [SecureDelegation.delegator].
 	 */

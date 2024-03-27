@@ -1,8 +1,9 @@
 package com.icure.sdk.model
 
-import com.icure.sdk.model.base.Encryptable
+import com.icure.sdk.model.base.HasEncryptionMetadata
 import com.icure.sdk.model.base.StoredDocument
 import com.icure.sdk.model.embed.Delegation
+import com.icure.sdk.model.embed.Encryptable
 import com.icure.sdk.model.embed.SecurityMetadata
 import com.icure.sdk.model.specializations.Base64String
 import kotlin.Long
@@ -15,7 +16,7 @@ import kotlinx.serialization.Serializable
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 
 @Serializable
-sealed interface SecureDelegationKeyMap : StoredDocument, Encryptable {
+sealed interface SecureDelegationKeyMap : StoredDocument, HasEncryptionMetadata, Encryptable {
   override val id: String
 
   override val rev: String?
@@ -36,7 +37,7 @@ sealed interface SecureDelegationKeyMap : StoredDocument, Encryptable {
 
   override val encryptedSelf: Base64String?
 
-  override val securityMetadata: SecurityMetadata?
+	override val securityMetadata: SecurityMetadata?
 
   override val deletionDate: Long?
 	// region SecureDelegationKeyMap-SecureDelegationKeyMap
@@ -58,9 +59,6 @@ data class DecryptedSecureDelegationKeyMap(
 	override val deletionDate: Long? = null,
 ) : SecureDelegationKeyMap {
 	// region SecureDelegationKeyMap-DecryptedSecureDelegationKeyMap
-	override val type: EntityWithDelegationTypeName
-		get() = TODO()
-
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedSecureDelegationKeyMap =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
@@ -81,9 +79,6 @@ data class EncryptedSecureDelegationKeyMap(
 	override val deletionDate: Long? = null,
 ) : SecureDelegationKeyMap {
 	// region SecureDelegationKeyMap-EncryptedSecureDelegationKeyMap
-	override val type: EntityWithDelegationTypeName
-		get() = TODO()
-
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedSecureDelegationKeyMap =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion

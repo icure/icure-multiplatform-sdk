@@ -1,5 +1,6 @@
 package com.icure.sdk.model.embed
 
+import com.icure.sdk.model.specializations.Base64String
 import com.icure.sdk.serialization.InstantSerializer
 import kotlin.Boolean
 import kotlin.Double
@@ -12,7 +13,7 @@ import kotlinx.serialization.Serializable
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 
 @Serializable
-sealed interface TypedValue<T> : Encrypted {
+sealed interface TypedValue<T> : Encryptable {
   public val type: TypedValuesType?
 
   public val booleanValue: Boolean?
@@ -25,34 +26,34 @@ sealed interface TypedValue<T> : Encrypted {
 
   public val dateValue: Instant?
 
-  override val encryptedSelf: String?
+  override val encryptedSelf: Base64String?
 	// region TypedValue-TypedValue
 	// endregion
 }
 
 data class DecryptedTypedValue<T>(
-  override val type: TypedValuesType? = null,
-  override val booleanValue: Boolean? = null,
-  override val integerValue: Long? = null,
-  override val doubleValue: Double? = null,
-  override val stringValue: String? = null,
-  @Serializable(with = InstantSerializer::class)
+	override val type: TypedValuesType? = null,
+	override val booleanValue: Boolean? = null,
+	override val integerValue: Long? = null,
+	override val doubleValue: Double? = null,
+	override val stringValue: String? = null,
+	@Serializable(with = InstantSerializer::class)
   override val dateValue: Instant? = null,
-  override val encryptedSelf: String? = null,
+	override val encryptedSelf: Base64String? = null,
 ) : TypedValue<T> {
 	// region TypedValue-DecryptedTypedValue
 	// endregion
 }
 
 data class EncryptedTypedValue<T>(
-  override val type: TypedValuesType? = null,
-  override val booleanValue: Boolean? = null,
-  override val integerValue: Long? = null,
-  override val doubleValue: Double? = null,
-  override val stringValue: String? = null,
-  @Serializable(with = InstantSerializer::class)
+	override val type: TypedValuesType? = null,
+	override val booleanValue: Boolean? = null,
+	override val integerValue: Long? = null,
+	override val doubleValue: Double? = null,
+	override val stringValue: String? = null,
+	@Serializable(with = InstantSerializer::class)
   override val dateValue: Instant? = null,
-  override val encryptedSelf: String? = null,
+	override val encryptedSelf: Base64String? = null,
 ) : TypedValue<T> {
 	// region TypedValue-EncryptedTypedValue
 	// endregion
@@ -65,7 +66,7 @@ public fun <T> TypedValue<T>.copy(
   doubleValue: Double? = this.doubleValue,
   stringValue: String? = this.stringValue,
   dateValue: Instant? = this.dateValue,
-  encryptedSelf: String? = this.encryptedSelf,
+  encryptedSelf: Base64String? = this.encryptedSelf,
 ): TypedValue<T> {
                                       return when(this) {
                                           is DecryptedTypedValue -> copy(type = type, booleanValue =

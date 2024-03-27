@@ -1,13 +1,14 @@
 package com.icure.sdk.model
 
 import com.icure.sdk.model.base.CodeStub
-import com.icure.sdk.model.base.Encryptable
+import com.icure.sdk.model.base.HasEncryptionMetadata
 import com.icure.sdk.model.base.ICureDocument
 import com.icure.sdk.model.base.StoredDocument
 import com.icure.sdk.model.embed.Address
 import com.icure.sdk.model.embed.CalendarItemTag
 import com.icure.sdk.model.embed.DecryptedAddress
 import com.icure.sdk.model.embed.Delegation
+import com.icure.sdk.model.embed.Encryptable
 import com.icure.sdk.model.embed.EncryptedAddress
 import com.icure.sdk.model.embed.FlowItem
 import com.icure.sdk.model.embed.SecurityMetadata
@@ -23,7 +24,7 @@ import kotlinx.serialization.Serializable
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 
 @Serializable
-sealed interface CalendarItem : StoredDocument, ICureDocument<String>, Encryptable {
+sealed interface CalendarItem : StoredDocument, ICureDocument<String>, HasEncryptionMetadata, Encryptable {
   override val id: String
 
   override val rev: String?
@@ -104,7 +105,7 @@ sealed interface CalendarItem : StoredDocument, ICureDocument<String>, Encryptab
 
   override val encryptedSelf: Base64String?
 
-  override val securityMetadata: SecurityMetadata?
+	override val securityMetadata: SecurityMetadata?
 	// region CalendarItem-CalendarItem
 	// endregion
 }
@@ -153,9 +154,6 @@ data class DecryptedCalendarItem(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : CalendarItem {
 	// region CalendarItem-DecryptedCalendarItem
-	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.CalendarItem
-
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedCalendarItem =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
@@ -205,9 +203,6 @@ data class EncryptedCalendarItem(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : CalendarItem {
 	// region CalendarItem-EncryptedCalendarItem
-	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.CalendarItem
-
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedCalendarItem =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion

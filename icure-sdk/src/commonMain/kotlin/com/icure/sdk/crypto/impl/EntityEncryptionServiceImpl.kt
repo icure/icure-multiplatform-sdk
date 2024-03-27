@@ -18,13 +18,15 @@ import com.icure.sdk.crypto.entities.MinimalBulkShareResult
 import com.icure.sdk.crypto.SecureDelegationsManager
 import com.icure.sdk.crypto.SecurityMetadataDecryptor
 import com.icure.sdk.crypto.entities.DecryptedMetadataDetails
+import com.icure.sdk.crypto.entities.EntityWithTypeInfo
 import com.icure.sdk.crypto.entities.FailedRequestDetails
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.SimpleDelegateShareOptions
 import com.icure.sdk.model.embed.AccessLevel
-import com.icure.sdk.model.base.Encryptable
+import com.icure.sdk.model.base.HasEncryptionMetadata
+import com.icure.sdk.model.embed.Encryptable
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
@@ -64,46 +66,47 @@ class EntityEncryptionServiceImpl(
 
 	private val allDecryptors = SecurityMetadataDecryptorChain(listOf(secureDelegationsDecryptor, legacyDelegationsDecryptor))
 
-	override suspend fun <E : Encryptable, D : Encryptable> encryptEntity(
-		unencryptedEntity: D,
+	override suspend fun <E, D> encryptEntity(
+		unencryptedEntity: EntityWithTypeInfo<D>,
 		unencryptedEntitySerializer: SerializationStrategy<D>,
 		fieldsToEncrypt: EncryptedFieldsManifest,
 		constructor: (json: JsonElement) -> E
-	): E {
-		val updatedEntity = ensureEncryptionKeysInitialised(unencryptedEntity) ?: unencryptedEntity
+	): E where E : HasEncryptionMetadata, E : Encryptable, D : HasEncryptionMetadata, D : Encryptable {
+		val updatedEntity = ensureEncryptionKeysInitialised(unencryptedEntity)?.let { EntityWithTypeInfo(it, unencryptedEntity.type) } ?: unencryptedEntity
 		val keyInfo = requireNotNull(tryDecryptAndImportAnyEncryptionKey(updatedEntity)) {
 			"${updatedEntity.type.id} ${updatedEntity.id} has no encryption key, and can't be encrypted; entity may have not been initialised properly."
 		}
-		val plainJson = Serialization.json.encodeToJsonElement(unencryptedEntitySerializer, updatedEntity).jsonObject
+		val plainJson = Serialization.json.encodeToJsonElement(unencryptedEntitySerializer, updatedEntity.entity).jsonObject
 		val encryptedJson = jsonEncryptionService.encrypt(keyInfo.key, plainJson, fieldsToEncrypt)
 		return constructor(encryptedJson)
 	}
 
-	override suspend fun <E : Encryptable, D : Encryptable> tryDecryptEntity(
-		encryptedEntity: E,
+	override suspend fun <E, D> tryDecryptEntity(
+		encryptedEntity: EntityWithTypeInfo<E>,
 		encryptedEntitySerializer: SerializationStrategy<E>,
 		constructor: (json: JsonElement) -> D
-	): D? = tryDecryptAndImportAnyEncryptionKey(encryptedEntity)?.let { keyInfo ->
-		val encryptedJson = Serialization.json.encodeToJsonElement(encryptedEntitySerializer, encryptedEntity).jsonObject
-		constructor(jsonEncryptionService.decrypt(keyInfo.key, encryptedJson))
-	}
+	): D? where E : HasEncryptionMetadata, E : Encryptable, D : HasEncryptionMetadata, D : Encryptable =
+		tryDecryptAndImportAnyEncryptionKey(encryptedEntity)?.let { keyInfo ->
+			val encryptedJson = Serialization.json.encodeToJsonElement(encryptedEntitySerializer, encryptedEntity.entity).jsonObject
+			constructor(jsonEncryptionService.decrypt(keyInfo.key, encryptedJson))
+		}
 
-	override suspend fun <T : Encryptable> encryptAttachmentOf(
-		entity: T,
+	override suspend fun <T : HasEncryptionMetadata> encryptAttachmentOf(
+		entity: EntityWithTypeInfo<T>,
 		content: ByteArray,
 		saveEntity: suspend (entity: T) -> T
 	): EntityDataEncryptionResult<T> {
-		val updatedEntity = ensureEncryptionKeysInitialised(entity)?.let { saveEntity(it) }
+		val updatedEntity = ensureEncryptionKeysInitialised(entity)?.let { EntityWithTypeInfo(saveEntity(it), entity.type) }
 		val encryptionKey = tryDecryptAndImportAnyEncryptionKey(updatedEntity ?: entity)?.key
 			?: throw IllegalArgumentException("Could not decrypt any encryption key for ${entity.type.id} ${entity.id}")
 		return EntityDataEncryptionResult(
-			updatedEntity,
+			updatedEntity?.entity,
 			cryptoService.aes.encrypt(content, encryptionKey),
 		)
 	}
 
 	override suspend fun tryDecryptAttachmentOf(
-		entity: Encryptable,
+		entity: EntityWithTypeInfo<*>,
 		content: ByteArray,
 		validator: suspend (decryptedData: ByteArray) -> Boolean
 	): ByteArray? {
@@ -122,8 +125,8 @@ class EntityEncryptionServiceImpl(
 		}.firstOrNull()
 	}
 
-	override suspend fun <T : Encryptable> entityWithInitialisedEncryptedMetadata(
-		entity: T,
+	override suspend fun <T : HasEncryptionMetadata> entityWithInitialisedEncryptedMetadata(
+		entity: EntityWithTypeInfo<T>,
 		owningEntityId: String?,
 		owningEntitySecretId: Set<String>?,
 		initialiseEncryptionKey: Boolean,
@@ -154,49 +157,49 @@ class EntityEncryptionServiceImpl(
 		)
 	}
 
-	override suspend fun tryDecryptAndImportAnyEncryptionKey(entity: Encryptable): EntityEncryptionKeyDetails? =
+	override suspend fun tryDecryptAndImportAnyEncryptionKey(entity: EntityWithTypeInfo<*>): EntityEncryptionKeyDetails? =
 		decryptAndImportDecryptionKeysFlow(entity).firstOrNull()
 
-	override suspend fun decryptAndImportAllDecryptionKeys(entity: Encryptable): List<EntityEncryptionKeyDetails> =
+	override suspend fun decryptAndImportAllDecryptionKeys(entity: EntityWithTypeInfo<*>): List<EntityEncryptionKeyDetails> =
 		decryptAndImportDecryptionKeysFlow(entity).toList()
 
-	private suspend fun decryptAndImportDecryptionKeysFlow(entity: Encryptable): Flow<EntityEncryptionKeyDetails> =
+	private suspend fun decryptAndImportDecryptionKeysFlow(entity: EntityWithTypeInfo<*>): Flow<EntityEncryptionKeyDetails> =
 		allDecryptors.decryptEncryptionKeysOf(entity, dataOwnersForDecryption(null).toSet()).mapNotNull {
 			kotlin.runCatching {
 				EntityEncryptionKeyDetails(cryptoService.aes.loadKey(it.value.decodedBytes()), it.value)
 			}.getOrNull()
 		}
 
-	override suspend fun encryptionKeysOf(entity: Encryptable, dataOwnerId: String?): Set<HexString> =
+	override suspend fun encryptionKeysOf(entity: EntityWithTypeInfo<*>, dataOwnerId: String?): Set<HexString> =
 		allDecryptors
 			.decryptEncryptionKeysOf(entity, dataOwnersForDecryption(dataOwnerId).toSet())
 			.map { it.value }
 			.toSet()
 
-	override suspend fun secretIdsOf(entity: Encryptable, dataOwnerId: String?): Set<String> =
+	override suspend fun secretIdsOf(entity: EntityWithTypeInfo<*>, dataOwnerId: String?): Set<String> =
 		allDecryptors
 			.decryptSecretIdsOf(entity, dataOwnerId?.let(::setOf) ?: dataOwnersForDecryption(null).toSet())
 			.map { it.value }
 			.toSet()
 
-	override suspend fun owningEntityIdsOf(entity: Encryptable, dataOwnerId: String?): Set<String> =
+	override suspend fun owningEntityIdsOf(entity: EntityWithTypeInfo<*>, dataOwnerId: String?): Set<String> =
 		allDecryptors
 			.decryptOwningEntityIdsOf(entity, dataOwnersForDecryption(dataOwnerId).toSet())
 			.map { it.value }
 			.toSet()
 
-	override suspend fun encryptionKeysForHcpHierarchyOf(entity: Encryptable): List<HierarchicallyDecryptedMetadata<HexString>> =
+	override suspend fun encryptionKeysForHcpHierarchyOf(entity: EntityWithTypeInfo<*>): List<HierarchicallyDecryptedMetadata<HexString>> =
 		decryptDataForHierarchy(entity) { e, h -> decryptEncryptionKeysOf(e, h) }
 
-	override suspend fun secretIdsForHcpHierarchyOf(entity: Encryptable): List<HierarchicallyDecryptedMetadata<String>> =
+	override suspend fun secretIdsForHcpHierarchyOf(entity: EntityWithTypeInfo<*>): List<HierarchicallyDecryptedMetadata<String>> =
 		decryptDataForHierarchy(entity) { e, h -> decryptSecretIdsOf(e, h) }
 
-	override suspend fun owningEntityIdsForHcpHierarchyOf(entity: Encryptable): List<HierarchicallyDecryptedMetadata<String>> =
+	override suspend fun owningEntityIdsForHcpHierarchyOf(entity: EntityWithTypeInfo<*>): List<HierarchicallyDecryptedMetadata<String>> =
 		decryptDataForHierarchy(entity) { e, h -> decryptOwningEntityIdsOf(e, h) }
 
 	private suspend fun <T : Any> decryptDataForHierarchy(
-		entity: Encryptable,
-		doDecrypt: SecurityMetadataDecryptor.(entity: Encryptable, dataOwnersHierarchyIds: Set<String>) -> Flow<DecryptedMetadataDetails<T>>
+		entity: EntityWithTypeInfo<*>,
+		doDecrypt: SecurityMetadataDecryptor.(entity: EntityWithTypeInfo<*>, dataOwnersHierarchyIds: Set<String>) -> Flow<DecryptedMetadataDetails<T>>
 	): List<HierarchicallyDecryptedMetadata<T>> {
 		val dataOwnersHierarchyIds = dataOwnersForDecryption(null)
 		val allDecryptedData = allDecryptors.doDecrypt(entity, dataOwnersHierarchyIds.toSet()).toList()
@@ -209,13 +212,13 @@ class EntityEncryptionServiceImpl(
 		}
 	}
 
-	override suspend fun hasWriteAccess(entity: Encryptable): Boolean =
+	override suspend fun hasWriteAccess(entity: EntityWithTypeInfo<*>): Boolean =
 		allDecryptors.getEntityAccessLevel(entity, dataOwnersForDecryption(null).toSet()) == AccessLevel.Write
 
-	override fun hasEmptyEncryptionMetadata(entity: Encryptable): Boolean =
+	override fun hasEmptyEncryptionMetadata(entity: EntityWithTypeInfo<*>): Boolean =
 		hasEmptyEncryptionMetadata(entity, throwIfNonEmpty = false)
 
-	private fun hasEmptyEncryptionMetadata(entity: Encryptable, throwIfNonEmpty: Boolean): Boolean {
+	private fun hasEmptyEncryptionMetadata(entity: EntityWithTypeInfo<*>, throwIfNonEmpty: Boolean): Boolean {
 		if (entity.securityMetadata != null) {
 			if (throwIfNonEmpty) {
 				throw IllegalArgumentException("Entity already has initialised security metadata")
@@ -237,8 +240,8 @@ class EntityEncryptionServiceImpl(
 		return true
 	}
 
-	override suspend fun <T : Encryptable> bulkShareOrUpdateEncryptedEntityMetadata(
-		entitiesUpdates: List<Pair<T, Map<String, DelegateShareOptions>>>,
+	override suspend fun <T : HasEncryptionMetadata> bulkShareOrUpdateEncryptedEntityMetadata(
+		entitiesUpdates: List<Pair<EntityWithTypeInfo<T>, Map<String, DelegateShareOptions>>>,
 		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<out T>>
 	): BulkShareResult<T> {
 		val requestDetails = prepareBulkShareRequests(entitiesUpdates)
@@ -260,7 +263,7 @@ class EntityEncryptionServiceImpl(
 	}
 
 	override suspend fun bulkShareOrUpdateEncryptedEntityMetadataNoEntities(
-		entitiesUpdates: List<Pair<Encryptable, Map<String, DelegateShareOptions>>>,
+		entitiesUpdates: List<Pair<EntityWithTypeInfo<*>, Map<String, DelegateShareOptions>>>,
 		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<MinimalEntityBulkShareResult>
 	): MinimalBulkShareResult {
 		val requestDetails = prepareBulkShareRequests(entitiesUpdates)
@@ -324,7 +327,7 @@ class EntityEncryptionServiceImpl(
 	)
 
 	private suspend fun prepareBulkShareRequests(
-		entitiesUpdates: List<Pair<Encryptable, Map<String, DelegateShareOptions>>>
+		entitiesUpdates: List<Pair<EntityWithTypeInfo<*>, Map<String, DelegateShareOptions>>>
 	): BulkShareRequestsDetails {
 		require (entitiesUpdates.distinctBy { it.first.id }.size == entitiesUpdates.size) {
 			"Duplicate requests: the same entity id is present more than once in the input"
@@ -381,7 +384,7 @@ class EntityEncryptionServiceImpl(
 	}
 
 	private suspend fun prepareMigrationRequestsIfNeeded(
-		entity: Encryptable,
+		entity: EntityWithTypeInfo<*>,
 		optionsForDelegates: Map<String, DelegateShareOptions>
 	): Map<String, EntityShareOrMetadataUpdateRequest> {
 		val hierarchy = dataOwnersForDecryption(null)
@@ -401,7 +404,7 @@ class EntityEncryptionServiceImpl(
 	}
 
 	private suspend fun makeMigrationRequestForMemberOfHierarchy(
-		entity: Encryptable,
+		entity: EntityWithTypeInfo<*>,
 		currMember: String,
 		userRequest: DelegateShareOptions?,
 		legacySecretIds: List<DecryptedMetadataDetails<String>>,
@@ -452,8 +455,8 @@ class EntityEncryptionServiceImpl(
 		} else null
 	}
 
-	override suspend fun <T : Encryptable> simpleShareOrUpdateEncryptedEntityMetadata(
-		entity: T,
+	override suspend fun <T : HasEncryptionMetadata> simpleShareOrUpdateEncryptedEntityMetadata(
+		entity: EntityWithTypeInfo<T>,
 		unusedSecretIds: Boolean,
 		delegates: Map<String, SimpleDelegateShareOptions>,
 		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<out T>>
@@ -485,7 +488,7 @@ class EntityEncryptionServiceImpl(
 			doRequestBulkShareOrUpdate
 		)
 		if (shareResult.unmodifiedEntitiesIds.contains(entity.id)) {
-			return SimpleShareResult.Success(entity)
+			return SimpleShareResult.Success(entity.entity)
 		}
 		if (shareResult.updateErrors.isEmpty() && shareResult.updatedEntities.size == 1) {
 			return SimpleShareResult.Success(shareResult.updatedEntities.first())
@@ -498,7 +501,7 @@ class EntityEncryptionServiceImpl(
 		return SimpleShareResult.Failure(shareResult.updateErrors)
 	}
 
-	override suspend fun <T : Encryptable> ensureEncryptionKeysInitialised(entity: T): T? {
+	override suspend fun <T : HasEncryptionMetadata> ensureEncryptionKeysInitialised(entity: EntityWithTypeInfo<T>): T? {
 		if (allDecryptors.hasAnyEncryptionKeys(entity)) {
 			return null
 		}
@@ -527,8 +530,8 @@ class EntityEncryptionServiceImpl(
 		)
 	}
 
-	override suspend fun <T : Encryptable> initialiseConfidentialSecretId(
-		entity: T,
+	override suspend fun <T : HasEncryptionMetadata> initialiseConfidentialSecretId(
+		entity: EntityWithTypeInfo<T>,
 		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<out T>>
 	): T? {
 		if (entity.rev == null) {
@@ -548,7 +551,7 @@ class EntityEncryptionServiceImpl(
 		).updatedEntityOrThrow()
 	}
 
-	override suspend fun getConfidentialSecretIdsOf(entity: Encryptable, dataOwnerId: String?): Set<String> {
+	override suspend fun getConfidentialSecretIdsOf(entity: EntityWithTypeInfo<*>, dataOwnerId: String?): Set<String> {
 		val secretIdsInfo = secretIdsForHcpHierarchyOf(entity)
 		val targetDataOwner = dataOwnerId ?: dataOwnerApi.getCurrentDataOwnerId()
 		val parents = secretIdsInfo.takeWhile { it.ownerId != targetDataOwner }
@@ -560,10 +563,10 @@ class EntityEncryptionServiceImpl(
 		return res
 	}
 
-	override suspend fun getSecretIdsSharedWithParentsOf(entity: Encryptable): Set<String> =
+	override suspend fun getSecretIdsSharedWithParentsOf(entity: EntityWithTypeInfo<*>): Set<String> =
 		secretIdsForHcpHierarchyOf(entity).first().extracted
 
-	override suspend fun resolveSecretIdOption(entity: Encryptable, secretIdOption: SecretIdOption): Set<String> =
+	override suspend fun resolveSecretIdOption(entity: EntityWithTypeInfo<*>, secretIdOption: SecretIdOption): Set<String> =
 		when (secretIdOption) {
 			is SecretIdOption.Use -> secretIdOption.secretIds
 			SecretIdOption.UseAnyConfidential -> getConfidentialSecretIdsOf(entity, null)

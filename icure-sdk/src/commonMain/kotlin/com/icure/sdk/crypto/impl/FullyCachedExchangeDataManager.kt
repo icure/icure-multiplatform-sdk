@@ -12,7 +12,7 @@ import com.icure.sdk.crypto.entities.UnencryptedExchangeDataContent
 import com.icure.sdk.model.specializations.AccessControlKeyHexString
 import com.icure.sdk.model.specializations.AccessControlSecret
 import com.icure.sdk.model.specializations.Base64String
-import com.icure.sdk.model.EntityWithDelegationTypeName
+import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.model.specializations.SecureDelegationKeyString
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.InternalIcureException
@@ -50,7 +50,7 @@ class FullyCachedExchangeDataManager(
 		val dataById: Map<String, CachedExchangeDataDetails>,
 		val dataByDelegationKey: Map<SecureDelegationKeyString, CachedExchangeDataDetails>,
 		val verifiedDataByDelegateId: Map<String, CachedExchangeDataDetails>,
-		val entityTypeToAccessControlKeysValue: Map<EntityWithDelegationTypeName, List<Base64String>>
+		val entityTypeToAccessControlKeysValue: Map<EntityWithEncryptionMetadataTypeName, List<Base64String>>
 	)
 	private sealed interface CacheUpdateResult {
 		data object Success : CacheUpdateResult
@@ -87,7 +87,7 @@ class FullyCachedExchangeDataManager(
 						dataById = existingCache.dataById + (createdData.exchangeData.id to cachedDetails),
 						verifiedDataByDelegateId = existingCache.verifiedDataByDelegateId + (delegateId to cachedDetails),
 						dataByDelegationKey = existingCache.dataByDelegationKey + secureDelegationKeysToExchangeDataId,
-						entityTypeToAccessControlKeysValue = EntityWithDelegationTypeName.entries.associateWith {
+						entityTypeToAccessControlKeysValue = EntityWithEncryptionMetadataTypeName.entries.associateWith {
 							encodeAccessControlKeys(allAccessControlSecrets.map { s -> s.toAccessControlKeyStringFor(it, cryptoService) })
 						}
 					)
@@ -116,7 +116,7 @@ class FullyCachedExchangeDataManager(
 
 	override suspend fun getCachedDecryptionDataKeyByAccessControlHash(
 		hashes: Collection<SecureDelegationKeyString>,
-		entityType: EntityWithDelegationTypeName
+		entityType: EntityWithEncryptionMetadataTypeName
 	): Map<SecureDelegationKeyString, ExchangeDataWithUnencryptedContent> =
 		cached().let { cachedKeys ->
 			hashes.mapNotNull { secDelKey ->
@@ -165,7 +165,7 @@ class FullyCachedExchangeDataManager(
 		cache.update { getAllKeysInfo() to CacheUpdateResult.Success }
 	}
 
-	override suspend fun getAccessControlKeysValue(entityType: EntityWithDelegationTypeName): List<Base64String> =
+	override suspend fun getAccessControlKeysValue(entityType: EntityWithEncryptionMetadataTypeName): List<Base64String> =
 		cached().entityTypeToAccessControlKeysValue.getValue(entityType)
 
 	private suspend fun getAllKeysInfo(): CachedKeys {
@@ -202,7 +202,7 @@ class FullyCachedExchangeDataManager(
 				cacheById[exchangeData.id] = CachedExchangeDataDetails(exchangeData, null)
 			}
 		}
-		val encodedAccessControlKeysCache = EntityWithDelegationTypeName.entries.associateWith {
+		val encodedAccessControlKeysCache = EntityWithEncryptionMetadataTypeName.entries.associateWith {
 			encodeAccessControlKeys(allAccessControlSecrets.map { s -> s.toAccessControlKeyStringFor(it, cryptoService) })
 		}
 		return CachedKeys(

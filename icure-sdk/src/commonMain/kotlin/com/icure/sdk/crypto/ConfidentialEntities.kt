@@ -1,7 +1,7 @@
 package com.icure.sdk.crypto
 
-import com.icure.sdk.model.EntityWithDelegationTypeName
-import com.icure.sdk.model.base.Encryptable
+import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
+import com.icure.sdk.model.base.HasEncryptionMetadata
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
 import com.icure.sdk.utils.InternalIcureApi
@@ -27,9 +27,9 @@ interface ConfidentialEntities {
 	 * @return undefined if the entity already had a confidential secret id for the current user, or the updated AND SAVED entity with the new
 	 * confidential secret id.
 	 */
-	suspend fun <T : Encryptable> initialiseConfidentialSecretId(
+	suspend fun <T : HasEncryptionMetadata> initialiseConfidentialSecretId(
 		entity: T,
-		entityType: EntityWithDelegationTypeName,
+		entityType: EntityWithEncryptionMetadataTypeName,
 		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<T>>
 	): T?
 
@@ -40,7 +40,7 @@ interface ConfidentialEntities {
 	 * @param dataOwnerId (current data owner by default) a data owner for which you want to get a confidential secret id.
 	 * @return the confidential secret id or undefined if there is no confidential secret id for the provided data owner.
 	 */
-	suspend fun getConfidentialSecretId(entity: Encryptable, dataOwnerId: String? = null): String?
+	suspend fun getConfidentialSecretId(entity: HasEncryptionMetadata, dataOwnerId: String? = null): String?
 
 	/**
 	 * Get all existing confidential secret ids of the provided entity for the provided data owner (current data owner by default). A confidential secret
@@ -49,7 +49,7 @@ interface ConfidentialEntities {
 	 * @param dataOwnerId (current data owner by default) a data owner for which you want to get a confidential secret id.
 	 * @return the confidential secret ids for the data owner (may be empty).
 	 */
-	suspend fun getConfidentialSecretIds(entity: Encryptable, dataOwnerId: String? = null): List<String>
+	suspend fun getConfidentialSecretIds(entity: HasEncryptionMetadata, dataOwnerId: String? = null): List<String>
 
 	/**
 	 * Gets a secret id known by the topmost parent of the current data owner hierarchy. If there is multiple secret ids shared with the topmost parent
@@ -58,7 +58,7 @@ interface ConfidentialEntities {
 	 * @return a secret id known by the topmost parent of the current data owner hierarchy, or undefined if there is no secret id currently available
 	 * for the topmost parent.
 	 */
-	suspend fun getAnySecretIdSharedWithParents(entity: Encryptable): String?
+	suspend fun getAnySecretIdSharedWithParents(entity: HasEncryptionMetadata): String?
 
 	/**
 	 * Gets all secret ids known by the topmost parent of the current data owner hierarchy (or all secret ids known by the current data owner if he is
@@ -66,5 +66,5 @@ interface ConfidentialEntities {
 	 * @param entity an entity.
 	 * @return all secret ids known by the topmost parent of the current data owner hierarchy, may be empty.
 	 */
-	suspend fun getSecretIdsSharedWithParents(entity: Encryptable): List<String>
+	suspend fun getSecretIdsSharedWithParents(entity: HasEncryptionMetadata): List<String>
 }

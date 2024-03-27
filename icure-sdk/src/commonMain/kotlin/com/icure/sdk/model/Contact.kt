@@ -1,7 +1,7 @@
 package com.icure.sdk.model
 
 import com.icure.sdk.model.base.CodeStub
-import com.icure.sdk.model.base.Encryptable
+import com.icure.sdk.model.base.HasEncryptionMetadata
 import com.icure.sdk.model.base.ICureDocument
 import com.icure.sdk.model.base.Identifier
 import com.icure.sdk.model.base.StoredDocument
@@ -9,6 +9,7 @@ import com.icure.sdk.model.embed.Annotation
 import com.icure.sdk.model.embed.DecryptedService
 import com.icure.sdk.model.embed.DecryptedSubContact
 import com.icure.sdk.model.embed.Delegation
+import com.icure.sdk.model.embed.Encryptable
 import com.icure.sdk.model.embed.EncryptedService
 import com.icure.sdk.model.embed.EncryptedSubContact
 import com.icure.sdk.model.embed.SecurityMetadata
@@ -26,7 +27,7 @@ import kotlinx.serialization.Serializable
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 
 @Serializable
-sealed interface Contact : StoredDocument, ICureDocument<String>, Encryptable {
+sealed interface Contact : StoredDocument, ICureDocument<String>, HasEncryptionMetadata, Encryptable {
   override val id: String
 
   override val rev: String?
@@ -83,7 +84,7 @@ sealed interface Contact : StoredDocument, ICureDocument<String>, Encryptable {
 
   override val encryptedSelf: Base64String?
 
-  override val securityMetadata: SecurityMetadata?
+	override val securityMetadata: SecurityMetadata?
 
   public val notes: List<Annotation>
 	// region Contact-Contact
@@ -123,9 +124,6 @@ data class DecryptedContact(
 	override val notes: List<Annotation> = emptyList(),
 ) : Contact {
 	// region Contact-DecryptedContact
-	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Contact
-
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedContact =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
@@ -164,9 +162,6 @@ data class EncryptedContact(
 	override val notes: List<Annotation> = emptyList(),
 ) : Contact {
 	// region Contact-EncryptedContact
-	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Contact
-
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedContact =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion

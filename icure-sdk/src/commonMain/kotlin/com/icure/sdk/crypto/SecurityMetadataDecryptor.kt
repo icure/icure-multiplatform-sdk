@@ -1,8 +1,9 @@
 package com.icure.sdk.crypto
 
 import com.icure.sdk.crypto.entities.DecryptedMetadataDetails
+import com.icure.sdk.crypto.entities.EntityWithTypeInfo
 import com.icure.sdk.model.embed.AccessLevel
-import com.icure.sdk.model.base.Encryptable
+import com.icure.sdk.model.base.HasEncryptionMetadata
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.utils.InternalIcureApi
 import kotlinx.coroutines.flow.Flow
@@ -22,7 +23,7 @@ interface SecurityMetadataDecryptor {
 	 * same metadata was shared by multiple users to the one of the provided data owners).
 	 */
 	fun decryptEncryptionKeysOf(
-		typedEntity: Encryptable,
+		typedEntity: EntityWithTypeInfo<*>,
 		dataOwnersHierarchySubset: Set<String>
 	): Flow<DecryptedMetadataDetails<HexString>>
 
@@ -36,7 +37,7 @@ interface SecurityMetadataDecryptor {
 	 * same metadata was shared by multiple users to the one of the provided data owners).
 	 */
 	fun decryptSecretIdsOf(
-		typedEntity: Encryptable,
+		typedEntity: EntityWithTypeInfo<*>,
 		dataOwnersHierarchySubset: Set<String>
 	): Flow<DecryptedMetadataDetails<String>>
 
@@ -50,7 +51,7 @@ interface SecurityMetadataDecryptor {
 	 * same metadata was shared by multiple users to the one of the provided data owners).
 	 */
 	fun decryptOwningEntityIdsOf(
-		typedEntity: Encryptable,
+		typedEntity: EntityWithTypeInfo<*>,
 		dataOwnersHierarchySubset: Set<String>
 	): Flow<DecryptedMetadataDetails<String>>
 
@@ -67,13 +68,13 @@ interface SecurityMetadataDecryptor {
 	 * access level. This array should contain only data owners from the current data owner hierarchy.
 	 * @return the access level to the entity or undefined if none of the data owners has full access to the entity.
 	 */
-	suspend fun getEntityAccessLevel(typedEntity: Encryptable, dataOwnersHierarchySubset: Set<String>): AccessLevel?
+	suspend fun getEntityAccessLevel(typedEntity: EntityWithTypeInfo<*>, dataOwnersHierarchySubset: Set<String>): AccessLevel?
 
 	/**
 	 * Verifies if there is at least one (encrypted) encryption key in the metadata supported by this decryptor, even if it can't be decrypted by the
 	 * current data owner.
 	 */
-	fun hasAnyEncryptionKeys(entity: Encryptable): Boolean
+	fun hasAnyEncryptionKeys(entity: HasEncryptionMetadata): Boolean
 }
 
 

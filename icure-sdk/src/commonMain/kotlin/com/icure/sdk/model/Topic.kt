@@ -1,10 +1,11 @@
 package com.icure.sdk.model
 
 import com.icure.sdk.model.base.CodeStub
-import com.icure.sdk.model.base.Encryptable
+import com.icure.sdk.model.base.HasEncryptionMetadata
 import com.icure.sdk.model.base.ICureDocument
 import com.icure.sdk.model.base.StoredDocument
 import com.icure.sdk.model.embed.Delegation
+import com.icure.sdk.model.embed.Encryptable
 import com.icure.sdk.model.embed.SecurityMetadata
 import com.icure.sdk.model.specializations.Base64String
 import kotlin.Long
@@ -17,7 +18,7 @@ import kotlinx.serialization.Serializable
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 
 @Serializable
-sealed interface Topic : StoredDocument, ICureDocument<String>, Encryptable {
+sealed interface Topic : StoredDocument, ICureDocument<String>, HasEncryptionMetadata, Encryptable {
   override val id: String
 
   override val rev: String?
@@ -60,7 +61,7 @@ sealed interface Topic : StoredDocument, ICureDocument<String>, Encryptable {
 
   override val encryptedSelf: Base64String?
 
-  public val linkedHealthElements: Set<String>
+	public val linkedHealthElements: Set<String>
 
   public val linkedServices: Set<String>
 	// region Topic-Topic
@@ -93,9 +94,6 @@ data class DecryptedTopic(
 	override val linkedServices: Set<String> = emptySet(),
 ) : Topic {
 	// region Topic-DecryptedTopic
-	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Topic
-
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedTopic =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
@@ -127,9 +125,6 @@ data class EncryptedTopic(
 	override val linkedServices: Set<String> = emptySet(),
 ) : Topic {
 	// region Topic-EncryptedTopic
-	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Topic
-
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedTopic =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion

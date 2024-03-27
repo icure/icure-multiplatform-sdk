@@ -1,7 +1,7 @@
 package com.icure.sdk.model
 
 import com.icure.sdk.model.base.CodeStub
-import com.icure.sdk.model.base.Encryptable
+import com.icure.sdk.model.base.HasEncryptionMetadata
 import com.icure.sdk.model.base.ICureDocument
 import com.icure.sdk.model.base.Identifier
 import com.icure.sdk.model.base.StoredDocument
@@ -11,6 +11,7 @@ import com.icure.sdk.model.embed.DecryptedCareTeamMember
 import com.icure.sdk.model.embed.DecryptedEpisode
 import com.icure.sdk.model.embed.DecryptedPlanOfAction
 import com.icure.sdk.model.embed.Delegation
+import com.icure.sdk.model.embed.Encryptable
 import com.icure.sdk.model.embed.EncryptedCareTeamMember
 import com.icure.sdk.model.embed.EncryptedEpisode
 import com.icure.sdk.model.embed.EncryptedPlanOfAction
@@ -32,7 +33,7 @@ import kotlinx.serialization.Serializable
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 
 @Serializable
-sealed interface HealthElement : StoredDocument, ICureDocument<String>, Encryptable {
+sealed interface HealthElement : StoredDocument, ICureDocument<String>, HasEncryptionMetadata, Encryptable {
   override val id: String
 
   public val identifiers: List<Identifier>
@@ -99,7 +100,7 @@ sealed interface HealthElement : StoredDocument, ICureDocument<String>, Encrypta
 
   override val encryptedSelf: Base64String?
 
-  override val securityMetadata: SecurityMetadata?
+	override val securityMetadata: SecurityMetadata?
 	// region HealthElement-HealthElement
 	// endregion
 }
@@ -125,7 +126,7 @@ data class DecryptedHealthElement(
 	override val descr: String? = null,
 	override val note: String? = null,
 	override val notes: List<Annotation> = emptyList(),
-	override val relevant: Boolean,
+	override val relevant: Boolean = true,
 	override val idOpeningContact: String? = null,
 	override val idClosingContact: String? = null,
 	override val idService: String? = null,
@@ -142,9 +143,6 @@ data class DecryptedHealthElement(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : HealthElement {
 	// region HealthElement-DecryptedHealthElement
-	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.HealthElement
-
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedHealthElement =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
@@ -171,7 +169,7 @@ data class EncryptedHealthElement(
 	override val descr: String? = null,
 	override val note: String? = null,
 	override val notes: List<Annotation> = emptyList(),
-	override val relevant: Boolean,
+	override val relevant: Boolean = true,
 	override val idOpeningContact: String? = null,
 	override val idClosingContact: String? = null,
 	override val idService: String? = null,
@@ -188,9 +186,6 @@ data class EncryptedHealthElement(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : HealthElement {
 	// region HealthElement-EncryptedHealthElement
-	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.HealthElement
-
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedHealthElement =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion

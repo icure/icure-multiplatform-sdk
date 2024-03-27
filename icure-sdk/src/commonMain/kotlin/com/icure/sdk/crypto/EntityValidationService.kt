@@ -1,7 +1,9 @@
 package com.icure.sdk.crypto
 
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
-import com.icure.sdk.model.base.Encryptable
+import com.icure.sdk.crypto.entities.EntityWithTypeInfo
+import com.icure.sdk.model.base.HasEncryptionMetadata
+import com.icure.sdk.model.embed.Encryptable
 import com.icure.sdk.utils.InternalIcureApi
 import kotlinx.serialization.SerializationStrategy
 
@@ -18,9 +20,9 @@ interface EntityValidationService {
 	 * in the entity.
 	 * @return [encryptedEntity] unmodified if it is valid (throws exception if not).
 	 */
-	suspend fun <E: Encryptable> validateEncryptedEntity(
-		encryptedEntity: E,
+	suspend fun <E> validateEncryptedEntity(
+		encryptedEntity: EntityWithTypeInfo<E>,
 		encryptedEntitySerializer: SerializationStrategy<E>,
 		fieldsToEncrypt: EncryptedFieldsManifest
-	): E
+	): E where E : Encryptable, E : HasEncryptionMetadata
 }

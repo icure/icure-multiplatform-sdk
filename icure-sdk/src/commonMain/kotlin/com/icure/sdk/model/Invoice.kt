@@ -1,11 +1,12 @@
 package com.icure.sdk.model
 
 import com.icure.sdk.model.base.CodeStub
-import com.icure.sdk.model.base.Encryptable
+import com.icure.sdk.model.base.HasEncryptionMetadata
 import com.icure.sdk.model.base.ICureDocument
 import com.icure.sdk.model.base.StoredDocument
 import com.icure.sdk.model.embed.DecryptedInvoicingCode
 import com.icure.sdk.model.embed.Delegation
+import com.icure.sdk.model.embed.Encryptable
 import com.icure.sdk.model.embed.EncryptedInvoicingCode
 import com.icure.sdk.model.embed.IdentityDocumentReader
 import com.icure.sdk.model.embed.InvoiceInterventionType
@@ -30,7 +31,7 @@ import kotlinx.serialization.Serializable
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 
 @Serializable
-sealed interface Invoice : StoredDocument, ICureDocument<String>, Encryptable {
+sealed interface Invoice : StoredDocument, ICureDocument<String>, HasEncryptionMetadata, Encryptable {
   override val id: String
 
   override val rev: String?
@@ -171,7 +172,7 @@ sealed interface Invoice : StoredDocument, ICureDocument<String>, Encryptable {
 
   override val encryptedSelf: Base64String?
 
-  override val securityMetadata: SecurityMetadata?
+	override val securityMetadata: SecurityMetadata?
 	// region Invoice-Invoice
 	// endregion
 }
@@ -250,9 +251,6 @@ data class DecryptedInvoice(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : Invoice {
 	// region Invoice-DecryptedInvoice
-	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Invoice
-
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedInvoice =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
@@ -332,9 +330,6 @@ data class EncryptedInvoice(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : Invoice {
 	// region Invoice-EncryptedInvoice
-	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Invoice
-
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedInvoice =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion

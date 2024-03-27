@@ -1,5 +1,6 @@
 package com.icure.sdk.model.embed
 
+import com.icure.sdk.model.specializations.Base64String
 import kotlin.String
 import kotlin.collections.Set
 import kotlinx.serialization.Serializable
@@ -8,7 +9,7 @@ import kotlinx.serialization.Serializable
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 
 @Serializable
-sealed interface FinancialInstitutionInformation : Encrypted {
+sealed interface FinancialInstitutionInformation : Encryptable {
   public val name: String?
 
   public val key: String?
@@ -23,34 +24,34 @@ sealed interface FinancialInstitutionInformation : Encrypted {
 
   public val preferredFiiForPartners: Set<String>
 
-  override val encryptedSelf: String?
+  override val encryptedSelf: Base64String?
 	// region FinancialInstitutionInformation-FinancialInstitutionInformation
 	// endregion
 }
 
 data class DecryptedFinancialInstitutionInformation(
-  override val name: String? = null,
-  override val key: String? = null,
-  override val bankAccount: String? = null,
-  override val bic: String? = null,
-  override val proxyBankAccount: String? = null,
-  override val proxyBic: String? = null,
-  override val preferredFiiForPartners: Set<String> = emptySet(),
-  override val encryptedSelf: String? = null,
+	override val name: String? = null,
+	override val key: String? = null,
+	override val bankAccount: String? = null,
+	override val bic: String? = null,
+	override val proxyBankAccount: String? = null,
+	override val proxyBic: String? = null,
+	override val preferredFiiForPartners: Set<String> = emptySet(),
+	override val encryptedSelf: Base64String? = null,
 ) : FinancialInstitutionInformation {
 	// region FinancialInstitutionInformation-DecryptedFinancialInstitutionInformation
 	// endregion
 }
 
 data class EncryptedFinancialInstitutionInformation(
-  override val name: String? = null,
-  override val key: String? = null,
-  override val bankAccount: String? = null,
-  override val bic: String? = null,
-  override val proxyBankAccount: String? = null,
-  override val proxyBic: String? = null,
-  override val preferredFiiForPartners: Set<String> = emptySet(),
-  override val encryptedSelf: String? = null,
+	override val name: String? = null,
+	override val key: String? = null,
+	override val bankAccount: String? = null,
+	override val bic: String? = null,
+	override val proxyBankAccount: String? = null,
+	override val proxyBic: String? = null,
+	override val preferredFiiForPartners: Set<String> = emptySet(),
+	override val encryptedSelf: Base64String? = null,
 ) : FinancialInstitutionInformation {
 	// region FinancialInstitutionInformation-EncryptedFinancialInstitutionInformation
 	// endregion
@@ -64,7 +65,7 @@ public fun FinancialInstitutionInformation.copy(
   proxyBankAccount: String? = this.proxyBankAccount,
   proxyBic: String? = this.proxyBic,
   preferredFiiForPartners: Set<String> = this.preferredFiiForPartners,
-  encryptedSelf: String? = this.encryptedSelf,
+  encryptedSelf: Base64String? = this.encryptedSelf,
 ): FinancialInstitutionInformation {
                                       return when(this) {
                                           is DecryptedFinancialInstitutionInformation -> copy(name =

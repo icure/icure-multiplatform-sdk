@@ -1,10 +1,11 @@
 package com.icure.sdk.model
 
 import com.icure.sdk.model.base.CodeStub
-import com.icure.sdk.model.base.Encryptable
+import com.icure.sdk.model.base.HasEncryptionMetadata
 import com.icure.sdk.model.base.ICureDocument
 import com.icure.sdk.model.base.StoredDocument
 import com.icure.sdk.model.embed.Delegation
+import com.icure.sdk.model.embed.Encryptable
 import com.icure.sdk.model.embed.MessageAttachment
 import com.icure.sdk.model.embed.MessageReadStatus
 import com.icure.sdk.model.embed.SecurityMetadata
@@ -21,7 +22,7 @@ import kotlinx.serialization.Serializable
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 
 @Serializable
-sealed interface Message : StoredDocument, ICureDocument<String>, Encryptable {
+sealed interface Message : StoredDocument, ICureDocument<String>, HasEncryptionMetadata, Encryptable {
   override val id: String
 
   override val rev: String?
@@ -98,7 +99,7 @@ sealed interface Message : StoredDocument, ICureDocument<String>, Encryptable {
 
   override val encryptedSelf: Base64String?
 
-  override val securityMetadata: SecurityMetadata?
+	override val securityMetadata: SecurityMetadata?
 	// region Message-Message
 	// endregion
 }
@@ -145,9 +146,6 @@ data class DecryptedMessage(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : Message {
 	// region Message-DecryptedMessage
-	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Message
-
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedMessage =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
@@ -195,9 +193,6 @@ data class EncryptedMessage(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : Message {
 	// region Message-EncryptedMessage
-	override val type: EntityWithDelegationTypeName
-		get() = EntityWithDelegationTypeName.Message
-
 	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedMessage =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion

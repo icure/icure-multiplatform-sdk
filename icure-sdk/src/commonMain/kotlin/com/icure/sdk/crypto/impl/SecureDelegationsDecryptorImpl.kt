@@ -8,10 +8,11 @@ import com.icure.sdk.crypto.ExchangeDataMapManager
 import com.icure.sdk.crypto.entities.SecureDelegationMembersDetails
 import com.icure.sdk.crypto.SecureDelegationsDecryptor
 import com.icure.sdk.crypto.SecureDelegationsEncryption
+import com.icure.sdk.crypto.entities.EntityWithTypeInfo
 import com.icure.sdk.crypto.entities.UnencryptedExchangeDataContent
 import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.specializations.Base64String
-import com.icure.sdk.model.base.Encryptable
+import com.icure.sdk.model.base.HasEncryptionMetadata
 import com.icure.sdk.model.ExchangeData
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.model.embed.SecureDelegation
@@ -31,7 +32,7 @@ class SecureDelegationsDecryptorImpl(
 	private val dataOwnerApi: DataOwnerApi
 ) : SecureDelegationsDecryptor {
 	override fun decryptEncryptionKeysOf(
-		typedEntity: Encryptable,
+		typedEntity: EntityWithTypeInfo<*>,
 		dataOwnersHierarchySubset: Set<String>
 	): Flow<DecryptedMetadataDetails<HexString>> =
 		decryptSecureDelegations(
@@ -42,7 +43,7 @@ class SecureDelegationsDecryptorImpl(
 		)
 
 	override fun decryptSecretIdsOf(
-		typedEntity: Encryptable,
+		typedEntity: EntityWithTypeInfo<*>,
 		dataOwnersHierarchySubset: Set<String>
 	): Flow<DecryptedMetadataDetails<String>> =
 		decryptSecureDelegations(
@@ -52,7 +53,7 @@ class SecureDelegationsDecryptorImpl(
 			{ e, k -> this.secureDelegationsEncryption.decryptSecretId(e, k) }
 		)
 	override fun decryptOwningEntityIdsOf(
-		typedEntity: Encryptable,
+		typedEntity: EntityWithTypeInfo<*>,
 		dataOwnersHierarchySubset: Set<String>
 	): Flow<DecryptedMetadataDetails<String>> =
 		decryptSecureDelegations(
@@ -62,11 +63,11 @@ class SecureDelegationsDecryptorImpl(
 			{ e, k -> this.secureDelegationsEncryption.decryptOwningEntityId(e, k) }
 		)
 
-	override fun hasAnyEncryptionKeys(entity: Encryptable): Boolean =
+	override fun hasAnyEncryptionKeys(entity: HasEncryptionMetadata): Boolean =
 		entity.securityMetadata?.secureDelegations?.values?.any { it.encryptionKeys.isNotEmpty() } ?: false
 
 	override suspend fun getEntityAccessLevel(
-		typedEntity: Encryptable,
+		typedEntity: EntityWithTypeInfo<*>,
 		dataOwnersHierarchySubset: Set<String>
 	): AccessLevel? {
 		ensure(dataOwnersHierarchySubset.isNotEmpty()) { "`dataOwnersHierarchySubset` should not be empty" }
@@ -82,7 +83,7 @@ class SecureDelegationsDecryptorImpl(
 
 	// Only works if the provided data owner id comes from the current data owner hierarchy
 	private suspend fun accessibleDelegationsForDataOwnerOfHierarchy(
-		entity: Encryptable,
+		entity: EntityWithTypeInfo<*>,
 		dataOwnerId: String,
 	): Collection<SecureDelegation> {
 		// If the data owner is explicit all delegations he can access has his id. If the delegator is anonymous all delegations he can access are
@@ -96,7 +97,7 @@ class SecureDelegationsDecryptorImpl(
 	}
 
 	private fun <T : Any> decryptSecureDelegations(
-		typedEntity: Encryptable,
+		typedEntity: EntityWithTypeInfo<*>,
 		dataOwnersHierarchySubset: Set<String>,
 		getDataToDecrypt: (delegation: SecureDelegation) -> Set<Base64String>,
 		decryptDataWithKey: suspend (encryptedData: Base64String, key: AesKey) -> T
@@ -120,7 +121,7 @@ class SecureDelegationsDecryptorImpl(
 	}
 
 	override suspend fun getDelegationMemberDetails(
-		entity: Encryptable
+		entity: EntityWithTypeInfo<*>
 	): Map<SecureDelegationKeyString, SecureDelegationMembersDetails> = entity.securityMetadata?.let { securityMetadata ->
 		// 1. Add all information from fully explicit delegations.
 		val fullyExplicitInfo = securityMetadata.secureDelegations.mapNotNull { (key, delegation) ->
@@ -199,7 +200,7 @@ class SecureDelegationsDecryptorImpl(
 	} ?: emptyMap()
 
 	private fun <T : Any> decryptSecureDelegations(
-		typedEntity: Encryptable,
+		typedEntity: EntityWithTypeInfo<*>,
 		dataOwnersHierarchySubset: Set<String>,
 		decryptExchangeData: suspend (SecureDelegationKeyString, SecureDelegation, ExchangeData, UnencryptedExchangeDataContent?) -> List<DecryptedMetadataDetails<T>>
 	): Flow<DecryptedMetadataDetails<T>> = flow {
@@ -246,7 +247,7 @@ class SecureDelegationsDecryptorImpl(
 
 	private suspend fun <T : Any> FlowCollector<T>.processDelegationsWithCachedKeyAndEmit(
 		remainingDelegations: List<Pair<SecureDelegationKeyString, SecureDelegation>>,
-		typedEntity: Encryptable,
+		typedEntity: EntityWithTypeInfo<*>,
 		process: suspend (SecureDelegationKeyString, SecureDelegation, ExchangeData, UnencryptedExchangeDataContent) -> List<T>
 	): List<Pair<SecureDelegationKeyString, SecureDelegation>> {
 		if (remainingDelegations.isEmpty()) return emptyList()

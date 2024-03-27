@@ -1,6 +1,8 @@
 package com.icure.sdk.crypto
 
 import com.icure.sdk.model.DataOwnerWithType
+import com.icure.sdk.model.DecryptedHealthElement
+import com.icure.sdk.model.DecryptedPatient
 import com.icure.sdk.model.HealthElement
 import com.icure.sdk.model.Patient
 import com.icure.sdk.test.createHcpUser
@@ -22,7 +24,7 @@ class PatientUserTest : StringSpec({
 		val patientDetails = createUserFromExistingPatient(
 			hcpApi.patient.encryptAndCreate(
 				hcpApi.patient.initialiseEncryptionMetadata(
-					Patient(
+					DecryptedPatient(
 						id = UUID.randomUUID().toString(),
 						firstName = "John",
 						lastName = "Doe",
@@ -36,7 +38,7 @@ class PatientUserTest : StringSpec({
 		val encryptedPatient = patientApi.dataOwner.getCurrentDataOwner().shouldBeInstanceOf<DataOwnerWithType.PatientDataOwner>().dataOwner
 		val createdData = patientApi.healthElement.encryptAndCreate(
 			patientApi.healthElement.initialiseEncryptionMetadata(
-				HealthElement(
+				DecryptedHealthElement(
 					id = UUID.randomUUID().toString(),
 					note = "Some note"
 				),

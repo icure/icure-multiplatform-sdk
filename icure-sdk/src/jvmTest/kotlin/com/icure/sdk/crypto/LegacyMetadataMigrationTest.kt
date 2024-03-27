@@ -7,10 +7,12 @@ import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.kryptom.utils.hexToByteArray
 import com.icure.sdk.api.raw.RawHealthcarePartyApi
 import com.icure.sdk.api.raw.RawPatientApi
+import com.icure.sdk.api.raw.RawUserApi
 import com.icure.sdk.model.HealthcareParty
 import com.icure.sdk.model.Patient
-import com.icure.sdk.model.RequestedPermission
 import com.icure.sdk.model.User
+import com.icure.sdk.model.copy
+import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.test.DataOwnerDetails
 import com.icure.sdk.test.baseUrl
 import com.icure.sdk.test.createHcpUser
@@ -18,7 +20,6 @@ import com.icure.sdk.test.initialiseTestEnvironment
 import com.icure.sdk.test.testGroupAdminAuth
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
-import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
@@ -26,7 +27,6 @@ import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.collections.shouldNotContain
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
-import org.openapitools.client.apis.RawUserApi
 import java.util.UUID
 
 private data class TestData(

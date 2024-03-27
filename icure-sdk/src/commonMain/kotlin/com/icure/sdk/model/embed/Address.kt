@@ -1,5 +1,6 @@
 package com.icure.sdk.model.embed
 
+import com.icure.sdk.model.specializations.Base64String
 import kotlin.String
 import kotlin.collections.List
 import kotlinx.serialization.Serializable
@@ -8,7 +9,7 @@ import kotlinx.serialization.Serializable
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 
 @Serializable
-sealed interface Address : Encrypted {
+sealed interface Address : Encryptable {
   public val addressType: AddressType?
 
   public val descr: String?
@@ -33,8 +34,8 @@ sealed interface Address : Encrypted {
 
   public val telecoms: List<Telecom>
 
-  override val encryptedSelf: String?
-	// region Address-Address
+  override val encryptedSelf: Base64String?
+  // region Address-Address
 	// endregion
 }
 
@@ -51,7 +52,7 @@ data class DecryptedAddress(
   override val note: String? = null,
   override val notes: List<Annotation> = emptyList(),
   override val telecoms: List<DecryptedTelecom> = emptyList(),
-  override val encryptedSelf: String? = null,
+  override val encryptedSelf: Base64String? = null,
 ) : Address {
 	// region Address-DecryptedAddress
 	// endregion
@@ -70,7 +71,7 @@ data class EncryptedAddress(
   override val note: String? = null,
   override val notes: List<Annotation> = emptyList(),
   override val telecoms: List<EncryptedTelecom> = emptyList(),
-  override val encryptedSelf: String? = null,
+  override val encryptedSelf: Base64String? = null,
 ) : Address {
 	// region Address-EncryptedAddress
 	// endregion
@@ -89,7 +90,7 @@ public fun Address.copy(
   note: String? = this.note,
   notes: List<Annotation> = this.notes,
   telecoms: List<Telecom> = this.telecoms,
-  encryptedSelf: String? = this.encryptedSelf,
+  encryptedSelf: Base64String? = this.encryptedSelf,
 ): Address {
                                       return when(this) {
                                           is DecryptedAddress -> copy(addressType = addressType,
