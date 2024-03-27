@@ -180,7 +180,7 @@ internal class HealthElementApiImpl(
 			entity.withTypeInfo(),
 			HealthElement.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedHealthElement>(it) }
-			?: throw EntityDecryptionException("Created entity cannot be created")
+			?: throw EntityDecryptionException("Entity ${entity.id} cannot be created")
 	}
 }, HealthElementBasicFlavourlessApi by AbstractHealthElementBasicFlavourlessApi(rawApi) {
 	override val encrypted: HealthElementFlavouredApi<EncryptedHealthElement> =
@@ -220,7 +220,7 @@ internal class HealthElementApiImpl(
 		return rawApi.createHealthElement(
 			encrypt(entity),
 		).successBody().let {
-			decrypt(it) { "Created entity cannot be created" }
+			decrypt(it) { "Created entity cannot be decrypted" }
 		}
 	}
 
@@ -231,7 +231,7 @@ internal class HealthElementApiImpl(
 				encrypt(it)
 			},
 		).successBody().map {
-			decrypt(it) { "Created entity cannot be created" }
+			decrypt(it) { "Created entity cannot be decrypted" }
 		}
 	}
 
@@ -260,7 +260,7 @@ internal class HealthElementApiImpl(
 	): List<DecryptedHealthElement> = rawApi.findHealthElementsByHCPartyPatientForeignKeys(
 		hcPartyId,
 		encryptionService.secretIdsOf(patient.withTypeInfo(), null).toList()
-	).successBody().map { decrypt(it) { "Loaded healthcare element cannot be found"} }
+	).successBody().map { decrypt(it) { "Found healthcare element cannot be decrypted"} }
 
 	private suspend fun encrypt(entity: DecryptedHealthElement) = encryptionService.encryptEntity(
 		entity.withTypeInfo(),
