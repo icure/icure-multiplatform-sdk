@@ -15,5 +15,11 @@ data class PaginatedList<T, O>(
   public val nextKeyPair: PaginatedDocumentKeyIdPair<O>? = null,
 ) {
 	// region PaginatedList-PaginatedList
+	inline fun <Q> map(mapper: (T) -> Q): PaginatedList<Q, *> = PaginatedList(
+		pageSize = pageSize,
+		totalSize = totalSize,
+		rows = rows.map { mapper(it) },
+		nextKeyPair = nextKeyPair
+	)
 	// endregion
 }
