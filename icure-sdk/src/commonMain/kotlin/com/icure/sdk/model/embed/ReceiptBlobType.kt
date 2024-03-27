@@ -8,19 +8,24 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class ReceiptBlobType() {
-  @SerialName("xades")
-  Xades,
-  @SerialName("kmehrRequest")
-  KmehrRequest,
-  @SerialName("kmehrResponse")
-  KmehrResponse,
-  @SerialName("soapRequest")
-  SoapRequest,
-  @SerialName("soapResponse")
-  SoapResponse,
-  @SerialName("soapConversation")
-  SoapConversation,
-  @SerialName("tack")
-  Tack,
+    @SerialName("xades")
+    Xades,
 
+    @SerialName("kmehrRequest")
+    KmehrRequest,
+
+    @SerialName("kmehrResponse")
+    KmehrResponse,
+
+    @SerialName("soapRequest")
+    SoapRequest,
+
+    @SerialName("soapResponse")
+    SoapResponse,
+
+    @SerialName("soapConversation")
+    SoapConversation,
+
+    @SerialName("tack")
+    Tack,
 }

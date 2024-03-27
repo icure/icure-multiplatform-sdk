@@ -8,11 +8,12 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class CareTeamMemberType() {
-  @SerialName("physician")
-  Physician,
-  @SerialName("specialist")
-  Specialist,
-  @SerialName("other")
-  Other,
+    @SerialName("physician")
+    Physician,
 
+    @SerialName("specialist")
+    Specialist,
+
+    @SerialName("other")
+    Other,
 }

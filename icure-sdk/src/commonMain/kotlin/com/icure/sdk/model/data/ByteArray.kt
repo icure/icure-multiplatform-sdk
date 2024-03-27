@@ -1,4 +1,4 @@
-package com.icure.sdk.model.`data`
+package com.icure.sdk.model.data
 
 import kotlinx.serialization.Serializable
 
@@ -7,8 +7,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ByteArray(
-  public val `data`: kotlin.ByteArray,
+    public val `data`: kotlin.ByteArray,
 ) {
-	// region ByteArray-ByteArray
-	// endregion
+    // region ByteArray-ByteArray
+    // endregion
 }
