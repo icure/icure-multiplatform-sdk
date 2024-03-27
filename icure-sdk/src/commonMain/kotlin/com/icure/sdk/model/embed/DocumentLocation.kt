@@ -8,9 +8,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class DocumentLocation() {
-  @SerialName("annex")
-  Annex,
-  @SerialName("body")
-  Body,
+    @SerialName("annex")
+    Annex,
 
+    @SerialName("body")
+    Body,
 }

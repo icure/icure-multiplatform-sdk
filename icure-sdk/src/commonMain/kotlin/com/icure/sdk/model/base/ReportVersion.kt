@@ -8,7 +8,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class ReportVersion() {
-  @SerialName("V1_0_0")
-  V1_0_0,
-
+    @SerialName("V1_0_0")
+    V1_0_0,
 }

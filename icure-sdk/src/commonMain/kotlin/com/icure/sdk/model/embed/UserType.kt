@@ -8,13 +8,15 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class UserType() {
-  @SerialName("HCP")
-  Hcp,
-  @SerialName("PATIENT")
-  Patient,
-  @SerialName("DEVICE")
-  Device,
-  @SerialName("USER")
-  User,
+    @SerialName("HCP")
+    Hcp,
 
+    @SerialName("PATIENT")
+    Patient,
+
+    @SerialName("DEVICE")
+    Device,
+
+    @SerialName("USER")
+    User,
 }

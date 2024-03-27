@@ -7,9 +7,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class EntityShareOrMetadataUpdateRequest(
-  public val share: EntityShareRequest? = null,
-  public val update: EntitySharedMetadataUpdateRequest? = null,
-) {
-	// region EntityShareOrMetadataUpdateRequest-EntityShareOrMetadataUpdateRequest
-	// endregion
-}
+    public val share: EntityShareRequest? = null,
+    public val update: EntitySharedMetadataUpdateRequest? = null,
+)
