@@ -76,6 +76,13 @@ interface HealthElementApi : HealthElementBasicFlavourlessApi, HealthElementFlav
 		delegates: Map<String, AccessLevel> = emptyMap(),
 		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent,
     ): DecryptedHealthElement
+	suspend fun findHealthElementsByHcPartyPatient(
+		hcPartyId: String,
+		patient: Patient,
+		startKey: String? = null,
+		startDocumentId: String? = null,
+		limit: Int? = null,
+	): List<DecryptedHealthElement>
 
 	val encrypted: HealthElementFlavouredApi<EncryptedHealthElement>
 	val tryAndRecover: HealthElementFlavouredApi<HealthElement>
@@ -211,17 +218,9 @@ internal class HealthElementApiImpl(
 	override suspend fun createHealthElement(entity: DecryptedHealthElement): DecryptedHealthElement {
 		require(entity.securityMetadata != null) { "Entity must have security metadata initialised. You can use the initialiseEncryptionMetadata for that very purpose." }
 		return rawApi.createHealthElement(
-            encryptionService.encryptEntity(
-                entity.withTypeInfo(),
-                DecryptedHealthElement.serializer(),
-                fieldsToEncrypt,
-            ) { Serialization.json.decodeFromJsonElement<EncryptedHealthElement>(it) },
+			encrypt(entity),
 		).successBody().let {
-			encryptionService.tryDecryptEntity(
-                entity.withTypeInfo(),
-                HealthElement.serializer(),
-            ) { Serialization.json.decodeFromJsonElement<DecryptedHealthElement>(it) }
-				?: throw EntityDecryptionException("Created entity cannot be created")
+			decrypt(it) { "Created entity cannot be created" }
 		}
 	}
 
@@ -229,18 +228,10 @@ internal class HealthElementApiImpl(
 		require(entities.all { it.securityMetadata != null }) { "All entities must have security metadata initialised. You can use the initialiseEncryptionMetadata for that very purpose." }
 		return rawApi.createHealthElements(
             entities.map {
-                encryptionService.encryptEntity(
-                    it.withTypeInfo(),
-                    DecryptedHealthElement.serializer(),
-                    fieldsToEncrypt,
-                ) { Serialization.json.decodeFromJsonElement<EncryptedHealthElement>(it) }
+				encrypt(it)
             },
 		).successBody().map {
-			encryptionService.tryDecryptEntity(
-                it.withTypeInfo(),
-                HealthElement.serializer(),
-            ) { Serialization.json.decodeFromJsonElement<DecryptedHealthElement>(it) }
-				?: throw EntityDecryptionException("Created entity cannot be created")
+			decrypt(it) { "Created entity cannot be created" }
 		}
 	}
 
@@ -259,6 +250,30 @@ internal class HealthElementApiImpl(
             false,
             delegates, // TODO auto delegations
         ).updatedEntity
+
+	override suspend fun findHealthElementsByHcPartyPatient(
+		hcPartyId: String,
+		patient: Patient,
+		startKey: String?,
+		startDocumentId: String?,
+		limit: Int?,
+	): List<DecryptedHealthElement> = rawApi.findHealthElementsByHCPartyPatientForeignKeys(
+		hcPartyId,
+		encryptionService.secretIdsOf(patient.withTypeInfo(), null).toList()
+	).successBody().map { decrypt(it) { "Loaded healthcare element cannot be found"} }
+
+	private suspend fun encrypt(entity: DecryptedHealthElement) = encryptionService.encryptEntity(
+		entity.withTypeInfo(),
+		DecryptedHealthElement.serializer(),
+		fieldsToEncrypt,
+	) { Serialization.json.decodeFromJsonElement<EncryptedHealthElement>(it) }
+
+	suspend fun decrypt(entity: EncryptedHealthElement, errorMessage: () -> String): DecryptedHealthElement = encryptionService.tryDecryptEntity(
+		entity.withTypeInfo(),
+		HealthElement.serializer(),
+	) { Serialization.json.decodeFromJsonElement<DecryptedHealthElement>(it) }
+		?: throw EntityDecryptionException(errorMessage())
+
 }
 
 @InternalIcureApi
