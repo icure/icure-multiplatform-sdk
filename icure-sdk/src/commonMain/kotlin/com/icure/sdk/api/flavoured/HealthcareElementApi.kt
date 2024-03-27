@@ -63,7 +63,7 @@ interface HealthElementFlavouredApi<E : HealthElement> : HealthElementBasicFlavo
 		shareEncryptionKeys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
 		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
 		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
-    ): SimpleShareResult<E>
+	): SimpleShareResult<E>
 }
 
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
@@ -75,7 +75,7 @@ interface HealthElementApi : HealthElementBasicFlavourlessApi, HealthElementFlav
 		patient: Patient,
 		delegates: Map<String, AccessLevel> = emptyMap(),
 		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent,
-    ): DecryptedHealthElement
+	): DecryptedHealthElement
 	suspend fun findHealthElementsByHcPartyPatient(
 		hcPartyId: String,
 		patient: Patient,
@@ -133,19 +133,19 @@ private abstract class AbstractHealthElementFlavouredApi<E : HealthElement>(
 		shareEncryptionKeys: ShareMetadataBehaviour,
 		shareOwningEntityIds: ShareMetadataBehaviour,
 		requestedPermission: RequestedPermission,
-    ): SimpleShareResult<E> =
+	): SimpleShareResult<E> =
 		encryptionService.simpleShareOrUpdateEncryptedEntityMetadata(
-            healthcareElement.withTypeInfo(),
-            true,
-            mapOf(
-                delegateId to SimpleDelegateShareOptions(
-                    shareSecretIds = null,
-                    shareEncryptionKeys = shareEncryptionKeys,
-                    shareOwningEntityIds = shareOwningEntityIds,
-                    requestedPermissions = requestedPermission,
-                ),
-            ),
-        ) {
+			healthcareElement.withTypeInfo(),
+			true,
+			mapOf(
+				delegateId to SimpleDelegateShareOptions(
+					shareSecretIds = null,
+					shareEncryptionKeys = shareEncryptionKeys,
+					shareOwningEntityIds = shareOwningEntityIds,
+					requestedPermissions = requestedPermission,
+				),
+			),
+		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
 		}
 }
@@ -170,16 +170,16 @@ internal class HealthElementApiImpl(
 	AbstractHealthElementFlavouredApi<DecryptedHealthElement>(rawApi, encryptionService) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedHealthElement): EncryptedHealthElement =
 		encryptionService.encryptEntity(
-            entity.withTypeInfo(),
-            DecryptedHealthElement.serializer(),
-            fieldsToEncrypt,
-        ) { Serialization.json.decodeFromJsonElement<EncryptedHealthElement>(it) }
+			entity.withTypeInfo(),
+			DecryptedHealthElement.serializer(),
+			fieldsToEncrypt,
+		) { Serialization.json.decodeFromJsonElement<EncryptedHealthElement>(it) }
 
 	override suspend fun maybeDecrypt(entity: EncryptedHealthElement): DecryptedHealthElement {
 		return encryptionService.tryDecryptEntity(
-            entity.withTypeInfo(),
-            HealthElement.serializer(),
-        ) { Serialization.json.decodeFromJsonElement<DecryptedHealthElement>(it) }
+			entity.withTypeInfo(),
+			HealthElement.serializer(),
+		) { Serialization.json.decodeFromJsonElement<DecryptedHealthElement>(it) }
 			?: throw EntityDecryptionException("Created entity cannot be created")
 	}
 }, HealthElementBasicFlavourlessApi by AbstractHealthElementBasicFlavourlessApi(rawApi) {
@@ -195,23 +195,23 @@ internal class HealthElementApiImpl(
 		object : AbstractHealthElementFlavouredApi<HealthElement>(rawApi, encryptionService) {
 			override suspend fun maybeDecrypt(entity: EncryptedHealthElement): HealthElement =
 				encryptionService.tryDecryptEntity(
-                    entity.withTypeInfo(),
-                    HealthElement.serializer(),
-                ) { Serialization.json.decodeFromJsonElement<DecryptedHealthElement>(it) }
+					entity.withTypeInfo(),
+					HealthElement.serializer(),
+				) { Serialization.json.decodeFromJsonElement<DecryptedHealthElement>(it) }
 					?: entity
 
 			override suspend fun validateAndMaybeEncrypt(entity: HealthElement): EncryptedHealthElement = when (entity) {
 				is EncryptedHealthElement -> encryptionService.validateEncryptedEntity(
-                    entity.withTypeInfo(),
-                    EncryptedHealthElement.serializer(),
-                    fieldsToEncrypt,
-                )
+					entity.withTypeInfo(),
+					EncryptedHealthElement.serializer(),
+					fieldsToEncrypt,
+				)
 
 				is DecryptedHealthElement -> encryptionService.encryptEntity(
-                    entity.withTypeInfo(),
-                    DecryptedHealthElement.serializer(),
-                    fieldsToEncrypt,
-                ) { Serialization.json.decodeFromJsonElement<EncryptedHealthElement>(it) }
+					entity.withTypeInfo(),
+					DecryptedHealthElement.serializer(),
+					fieldsToEncrypt,
+				) { Serialization.json.decodeFromJsonElement<EncryptedHealthElement>(it) }
 			}
 		}
 
@@ -227,9 +227,9 @@ internal class HealthElementApiImpl(
 	override suspend fun createHealthElements(entities: List<DecryptedHealthElement>): List<DecryptedHealthElement> {
 		require(entities.all { it.securityMetadata != null }) { "All entities must have security metadata initialised. You can use the initialiseEncryptionMetadata for that very purpose." }
 		return rawApi.createHealthElements(
-            entities.map {
+			entities.map {
 				encrypt(it)
-            },
+			},
 		).successBody().map {
 			decrypt(it) { "Created entity cannot be created" }
 		}
@@ -240,16 +240,16 @@ internal class HealthElementApiImpl(
 		patient: Patient,
 		delegates: Map<String, AccessLevel>,
 		secretId: SecretIdOption,
-        // Temporary, needs a lot more stuff to match typescript implementation
-    ): DecryptedHealthElement =
+		// Temporary, needs a lot more stuff to match typescript implementation
+	): DecryptedHealthElement =
 		encryptionService.entityWithInitialisedEncryptedMetadata(
-            healthcareElement.withTypeInfo(),
-            patient.id,
-            encryptionService.resolveSecretIdOption(patient.withTypeInfo(), secretId),
-            true,
-            false,
-            delegates, // TODO auto delegations
-        ).updatedEntity
+			healthcareElement.withTypeInfo(),
+			patient.id,
+			encryptionService.resolveSecretIdOption(patient.withTypeInfo(), secretId),
+			true,
+			false,
+			delegates, // TODO auto delegations
+		).updatedEntity
 
 	override suspend fun findHealthElementsByHcPartyPatient(
 		hcPartyId: String,
