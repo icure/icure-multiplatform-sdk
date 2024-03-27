@@ -6,7 +6,4 @@ import kotlinx.serialization.Serializable
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 
 @Serializable
-class AlwaysPredicate() : Predicate {
-	// region AlwaysPredicate-AlwaysPredicate
-	// endregion
-}
+class AlwaysPredicate() : Predicate

@@ -8,19 +8,24 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class MediumType() {
-  @SerialName("cdrom")
-  Cdrom,
-  @SerialName("eattest")
-  Eattest,
-  @SerialName("efact")
-  Efact,
-  @SerialName("email")
-  Email,
-  @SerialName("mediprima")
-  Mediprima,
-  @SerialName("paper")
-  Paper,
-  @SerialName("stat")
-  Stat,
+    @SerialName("cdrom")
+    Cdrom,
 
+    @SerialName("eattest")
+    Eattest,
+
+    @SerialName("efact")
+    Efact,
+
+    @SerialName("email")
+    Email,
+
+    @SerialName("mediprima")
+    Mediprima,
+
+    @SerialName("paper")
+    Paper,
+
+    @SerialName("stat")
+    Stat,
 }

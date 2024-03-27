@@ -8,11 +8,12 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class GroupType() {
-  @SerialName("root")
-  Root,
-  @SerialName("app")
-  App,
-  @SerialName("database")
-  Database,
+    @SerialName("root")
+    Root,
 
+    @SerialName("app")
+    App,
+
+    @SerialName("database")
+    Database,
 }

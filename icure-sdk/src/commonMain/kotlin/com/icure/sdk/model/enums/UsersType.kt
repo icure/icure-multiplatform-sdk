@@ -8,11 +8,12 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class UsersType() {
-  @SerialName("database")
-  Database,
-  @SerialName("ldap")
-  Ldap,
-  @SerialName("token")
-  Token,
+    @SerialName("database")
+    Database,
 
+    @SerialName("ldap")
+    Ldap,
+
+    @SerialName("token")
+    Token,
 }

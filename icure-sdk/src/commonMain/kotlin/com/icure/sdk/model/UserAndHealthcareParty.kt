@@ -7,9 +7,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class UserAndHealthcareParty(
-  public val user: User,
-  public val healthcareParty: HealthcareParty,
-) {
-	// region UserAndHealthcareParty-UserAndHealthcareParty
-	// endregion
-}
+    public val user: User,
+    public val healthcareParty: HealthcareParty,
+)
