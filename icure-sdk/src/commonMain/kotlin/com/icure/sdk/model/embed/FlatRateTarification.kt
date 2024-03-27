@@ -24,6 +24,8 @@ sealed interface FlatRateTarification : Encryptable {
 	// endregion
 }
 
+
+@Serializable
 data class DecryptedFlatRateTarification(
 	override val code: String? = null,
 	override val flatRateType: FlatRateType? = null,
@@ -35,6 +37,8 @@ data class DecryptedFlatRateTarification(
 	// endregion
 }
 
+
+@Serializable
 data class EncryptedFlatRateTarification(
 	override val code: String? = null,
 	override val flatRateType: FlatRateType? = null,

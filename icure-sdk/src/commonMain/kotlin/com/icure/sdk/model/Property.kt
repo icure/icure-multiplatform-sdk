@@ -23,32 +23,36 @@ sealed interface Property : StoredDocument, Encryptable {
 
   public val type: PropertyType?
 
-  public val typedValue: TypedValue<*>?
+  public val typedValue: TypedValue?
 
   override val encryptedSelf: Base64String?
-    // region Property-Property
+	// region Property-Property
 	// endregion
 }
 
+
+@Serializable
 data class DecryptedProperty(
-    override val id: String,
-    override val rev: String? = null,
-    override val deletionDate: Long? = null,
-    override val type: PropertyType? = null,
-    override val typedValue: DecryptedTypedValue<*>? = null,
-    override val encryptedSelf: Base64String? = null,
+  override val id: String,
+  override val rev: String? = null,
+  override val deletionDate: Long? = null,
+  override val type: PropertyType? = null,
+  override val typedValue: DecryptedTypedValue? = null,
+  override val encryptedSelf: Base64String? = null,
 ) : Property {
 	// region Property-DecryptedProperty
 	// endregion
 }
 
+
+@Serializable
 data class EncryptedProperty(
-    override val id: String,
-    override val rev: String? = null,
-    override val deletionDate: Long? = null,
-    override val type: PropertyType? = null,
-    override val typedValue: EncryptedTypedValue<*>? = null,
-    override val encryptedSelf: Base64String? = null,
+  override val id: String,
+  override val rev: String? = null,
+  override val deletionDate: Long? = null,
+  override val type: PropertyType? = null,
+  override val typedValue: EncryptedTypedValue? = null,
+  override val encryptedSelf: Base64String? = null,
 ) : Property {
 	// region Property-EncryptedProperty
 	// endregion
@@ -59,7 +63,7 @@ public fun Property.copy(
   rev: String? = this.rev,
   deletionDate: Long? = this.deletionDate,
   type: PropertyType? = this.type,
-  typedValue: TypedValue<*>? = this.typedValue,
+  typedValue: TypedValue? = this.typedValue,
   encryptedSelf: Base64String? = this.encryptedSelf,
 ): Property {
                                       return when(this) {

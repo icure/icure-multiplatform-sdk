@@ -18,32 +18,36 @@ sealed interface PropertyStub : Encryptable {
 
   public val type: PropertyTypeStub?
 
-  public val typedValue: TypedValue<*>?
+  public val typedValue: TypedValue?
 
   public val deletionDate: Long?
 
   override val encryptedSelf: Base64String?
-    // region PropertyStub-PropertyStub
+	// region PropertyStub-PropertyStub
 	// endregion
 }
 
+
+@Serializable
 data class DecryptedPropertyStub(
-    override val id: String? = null,
-    override val type: PropertyTypeStub? = null,
-    override val typedValue: DecryptedTypedValue<*>? = null,
-    override val deletionDate: Long? = null,
-    override val encryptedSelf: Base64String? = null,
+  override val id: String? = null,
+  override val type: PropertyTypeStub? = null,
+  override val typedValue: DecryptedTypedValue? = null,
+  override val deletionDate: Long? = null,
+  override val encryptedSelf: Base64String? = null,
 ) : PropertyStub {
 	// region PropertyStub-DecryptedPropertyStub
 	// endregion
 }
 
+
+@Serializable
 data class EncryptedPropertyStub(
-    override val id: String? = null,
-    override val type: PropertyTypeStub? = null,
-    override val typedValue: EncryptedTypedValue<*>? = null,
-    override val deletionDate: Long? = null,
-    override val encryptedSelf: Base64String? = null,
+  override val id: String? = null,
+  override val type: PropertyTypeStub? = null,
+  override val typedValue: EncryptedTypedValue? = null,
+  override val deletionDate: Long? = null,
+  override val encryptedSelf: Base64String? = null,
 ) : PropertyStub {
 	// region PropertyStub-EncryptedPropertyStub
 	// endregion
@@ -52,7 +56,7 @@ data class EncryptedPropertyStub(
 public fun PropertyStub.copy(
   id: String? = this.id,
   type: PropertyTypeStub? = this.type,
-  typedValue: TypedValue<*>? = this.typedValue,
+  typedValue: TypedValue? = this.typedValue,
   deletionDate: Long? = this.deletionDate,
   encryptedSelf: Base64String? = this.encryptedSelf,
 ): PropertyStub {

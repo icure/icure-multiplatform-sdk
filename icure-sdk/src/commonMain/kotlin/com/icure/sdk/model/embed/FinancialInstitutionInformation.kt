@@ -29,6 +29,8 @@ sealed interface FinancialInstitutionInformation : Encryptable {
 	// endregion
 }
 
+
+@Serializable
 data class DecryptedFinancialInstitutionInformation(
 	override val name: String? = null,
 	override val key: String? = null,
@@ -43,6 +45,8 @@ data class DecryptedFinancialInstitutionInformation(
 	// endregion
 }
 
+
+@Serializable
 data class EncryptedFinancialInstitutionInformation(
 	override val name: String? = null,
 	override val key: String? = null,

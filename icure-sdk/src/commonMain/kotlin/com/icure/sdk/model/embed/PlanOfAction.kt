@@ -70,6 +70,8 @@ sealed interface PlanOfAction : Encryptable, ICureDocument<String>, Named {
 	// endregion
 }
 
+
+@Serializable
 data class DecryptedPlanOfAction(
 	override val id: String,
 	override val created: Long? = null,
@@ -101,6 +103,8 @@ data class DecryptedPlanOfAction(
 	// endregion
 }
 
+
+@Serializable
 data class EncryptedPlanOfAction(
 	override val id: String,
 	override val created: Long? = null,

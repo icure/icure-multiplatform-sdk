@@ -54,6 +54,8 @@ sealed interface SubContact : Encryptable, ICureDocument<String?> {
 	// endregion
 }
 
+
+@Serializable
 data class DecryptedSubContact(
 	override val id: String? = null,
 	override val created: Long? = null,
@@ -78,6 +80,8 @@ data class DecryptedSubContact(
 	// endregion
 }
 
+
+@Serializable
 data class EncryptedSubContact(
 	override val id: String? = null,
 	override val created: Long? = null,

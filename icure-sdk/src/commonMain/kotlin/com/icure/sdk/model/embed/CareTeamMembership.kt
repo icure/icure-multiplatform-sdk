@@ -23,6 +23,8 @@ sealed interface CareTeamMembership : Encryptable {
 	// endregion
 }
 
+
+@Serializable
 data class DecryptedCareTeamMembership(
 	override val startDate: Long? = null,
 	override val endDate: Long? = null,
@@ -34,6 +36,8 @@ data class DecryptedCareTeamMembership(
 	// endregion
 }
 
+
+@Serializable
 data class EncryptedCareTeamMembership(
 	override val startDate: Long? = null,
 	override val endDate: Long? = null,
