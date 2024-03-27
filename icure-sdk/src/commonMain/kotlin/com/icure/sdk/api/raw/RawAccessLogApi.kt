@@ -3,9 +3,8 @@ package com.icure.sdk.api.raw
 import com.icure.sdk.auth.services.AuthService
 import com.icure.sdk.auth.services.setAuthorizationWith
 import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
-import com.icure.sdk.model.AccessLog
 import com.icure.sdk.model.EncryptedAccessLog
-import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
+import com.icure.sdk.model.EntityWithDelegationTypeName
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
@@ -13,7 +12,11 @@ import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
 import com.icure.sdk.model.specializations.JsonString
 import com.icure.sdk.utils.InternalIcureApi
+import io.ktor.client.request.delete
+import io.ktor.client.request.`get`
 import io.ktor.client.request.parameter
+import io.ktor.client.request.post
+import io.ktor.client.request.put
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
@@ -37,54 +40,51 @@ class RawAccessLogApi(
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
-
 	override suspend fun getAccessControlKeysHeaderValues(): List<String>? =
-			accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithEncryptionMetadataTypeName.AccessLog)
+		accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithDelegationTypeName.AccessLog)
 
 	// region common endpoints
 
-	suspend fun createAccessLog(accessLogDto: AccessLog): HttpResponse<EncryptedAccessLog> =
-			post {
+	suspend fun createAccessLog(accessLogDto: EncryptedAccessLog): HttpResponse<EncryptedAccessLog> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","accesslog")
+				appendPathSegments("rest", "v2", "accesslog")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(accessLogDto)
 		}.wrap()
 
-
 	suspend fun deleteAccessLogs(accessLogIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
-			post {
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","accesslog","delete","batch")
+				appendPathSegments("rest", "v2", "accesslog", "delete", "batch")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(accessLogIds)
 		}.wrap()
 
-
-	suspend fun deleteAccessLog(accessLogId: String): HttpResponse<DocIdentifier> = delete {
+	suspend fun deleteAccessLog(accessLogId: String): HttpResponse<DocIdentifier> =
+		delete {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","accesslog",accessLogId)
+				appendPathSegments("rest", "v2", "accesslog", accessLogId)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun getAccessLog(accessLogId: String): HttpResponse<EncryptedAccessLog> = get {
+	suspend fun getAccessLog(accessLogId: String): HttpResponse<EncryptedAccessLog> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","accesslog",accessLogId)
+				appendPathSegments("rest", "v2", "accesslog", accessLogId)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
-
 
 	suspend fun findAccessLogsBy(
 		fromEpoch: Long? = null,
@@ -93,10 +93,11 @@ class RawAccessLogApi(
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		descending: Boolean? = null,
-	): HttpResponse<PaginatedList<EncryptedAccessLog, JsonString>> = get {
+	): HttpResponse<PaginatedList<EncryptedAccessLog, JsonString>> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","accesslog")
+				appendPathSegments("rest", "v2", "accesslog")
 				parameter("fromEpoch", fromEpoch)
 				parameter("toEpoch", toEpoch)
 				parameter("startKey", startKey)
@@ -108,7 +109,6 @@ class RawAccessLogApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
 	suspend fun findAccessLogsByUserAfterDate(
 		userId: String,
 		accessType: String? = null,
@@ -117,10 +117,11 @@ class RawAccessLogApi(
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		descending: Boolean? = null,
-	): HttpResponse<PaginatedList<EncryptedAccessLog, JsonString>> = get {
+	): HttpResponse<PaginatedList<EncryptedAccessLog, JsonString>> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","accesslog","byUser")
+				appendPathSegments("rest", "v2", "accesslog", "byUser")
 				parameter("userId", userId)
 				parameter("accessType", accessType)
 				parameter("startDate", startDate)
@@ -133,12 +134,14 @@ class RawAccessLogApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun listAccessLogsByHCPartyAndPatientForeignKeys(hcPartyId: String,
-			secretFKeys: String): HttpResponse<List<EncryptedAccessLog>> = get {
+	suspend fun listAccessLogsByHCPartyAndPatientForeignKeys(
+		hcPartyId: String,
+		secretFKeys: String,
+	): HttpResponse<List<EncryptedAccessLog>> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","accesslog","byHcPartySecretForeignKeys")
+				appendPathSegments("rest", "v2", "accesslog", "byHcPartySecretForeignKeys")
 				parameter("hcPartyId", hcPartyId)
 				parameter("secretFKeys", secretFKeys)
 				parameter("ts", GMTDate().timestamp)
@@ -146,17 +149,17 @@ class RawAccessLogApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
 	suspend fun findAccessLogsByHCPartyPatientForeignKey(
 		hcPartyId: String,
 		secretFKey: String,
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedAccessLog, JsonString>> = get {
+	): HttpResponse<PaginatedList<EncryptedAccessLog, JsonString>> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","accesslog","byHcPartySecretForeignKey")
+				appendPathSegments("rest", "v2", "accesslog", "byHcPartySecretForeignKey")
 				parameter("hcPartyId", hcPartyId)
 				parameter("secretFKey", secretFKey)
 				parameter("startKey", startKey)
@@ -167,12 +170,14 @@ class RawAccessLogApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun findAccessLogsByHCPartyPatientForeignKeys(hcPartyId: String,
-			secretPatientKeys: List<String>): HttpResponse<List<EncryptedAccessLog>> = post {
+	suspend fun findAccessLogsByHCPartyPatientForeignKeys(
+		hcPartyId: String,
+		secretPatientKeys: List<String>,
+	): HttpResponse<List<EncryptedAccessLog>> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","accesslog","byHcPartySecretForeignKeys")
+				appendPathSegments("rest", "v2", "accesslog", "byHcPartySecretForeignKeys")
 				parameter("hcPartyId", hcPartyId)
 			}
 			setAuthorizationWith(authService)
@@ -180,24 +185,22 @@ class RawAccessLogApi(
 			setBody(secretPatientKeys)
 		}.wrap()
 
-
-	suspend fun modifyAccessLog(accessLogDto: AccessLog): HttpResponse<EncryptedAccessLog> =
-			put {
+	suspend fun modifyAccessLog(accessLogDto: EncryptedAccessLog): HttpResponse<EncryptedAccessLog> =
+		put {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","accesslog")
+				appendPathSegments("rest", "v2", "accesslog")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(accessLogDto)
 		}.wrap()
 
-
-	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams):
-			HttpResponse<List<EntityBulkShareResult<EncryptedAccessLog>>> = put {
+	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<EncryptedAccessLog>>> =
+		put {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","accesslog","bulkSharedMetadataUpdate")
+				appendPathSegments("rest", "v2", "accesslog", "bulkSharedMetadataUpdate")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
@@ -215,10 +218,11 @@ class RawAccessLogApi(
 		startKey: Long? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedAccessLog, JsonString>> = get {
+	): HttpResponse<PaginatedList<EncryptedAccessLog, JsonString>> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","accesslog","inGroup",groupId)
+				appendPathSegments("rest", "v2", "accesslog", "inGroup", groupId)
 				parameter("fromEpoch", fromEpoch)
 				parameter("toEpoch", toEpoch)
 				parameter("startKey", startKey)
@@ -230,5 +234,4 @@ class RawAccessLogApi(
 		}.wrap()
 
 	// endregion
-
 }

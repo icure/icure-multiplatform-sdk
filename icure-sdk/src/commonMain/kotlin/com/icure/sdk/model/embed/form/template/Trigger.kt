@@ -8,19 +8,24 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class Trigger() {
-  @SerialName("INIT")
-  Init,
-  @SerialName("CHANGE")
-  Change,
-  @SerialName("CLICK")
-  Click,
-  @SerialName("VISIBLE")
-  Visible,
-  @SerialName("ERROR")
-  Error,
-  @SerialName("VALID")
-  Valid,
-  @SerialName("EVENT")
-  Event,
+	@SerialName("INIT")
+	Init,
 
+	@SerialName("CHANGE")
+	Change,
+
+	@SerialName("CLICK")
+	Click,
+
+	@SerialName("VISIBLE")
+	Visible,
+
+	@SerialName("ERROR")
+	Error,
+
+	@SerialName("VALID")
+	Valid,
+
+	@SerialName("EVENT")
+	Event,
 }

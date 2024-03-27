@@ -32,46 +32,48 @@ class RawPlaceApi(
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
-
 	// region common endpoints
 
-	suspend fun createPlace(placeDto: Place): HttpResponse<Place> = post {
+	suspend fun createPlace(placeDto: Place): HttpResponse<Place> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","place")
+				appendPathSegments("rest", "v2", "place")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(placeDto)
 		}.wrap()
 
-
-	suspend fun deletePlaces(placeIds: ListOfIds): HttpResponse<List<DocIdentifier>> = post {
+	suspend fun deletePlaces(placeIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","place","delete","batch")
+				appendPathSegments("rest", "v2", "place", "delete", "batch")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(placeIds)
 		}.wrap()
 
-
-	suspend fun getPlace(placeId: String): HttpResponse<Place> = get {
+	suspend fun getPlace(placeId: String): HttpResponse<Place> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","place",placeId)
+				appendPathSegments("rest", "v2", "place", placeId)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun getPlaces(startDocumentId: String? = null, limit: Int? = null):
-			HttpResponse<PaginatedList<Place, JsonString>> = get {
+	suspend fun getPlaces(
+		startDocumentId: String? = null,
+		limit: Int? = null,
+	): HttpResponse<PaginatedList<Place, JsonString>> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","place")
+				appendPathSegments("rest", "v2", "place")
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
 				parameter("ts", GMTDate().timestamp)
@@ -79,11 +81,11 @@ class RawPlaceApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun modifyPlace(placeDto: Place): HttpResponse<Place> = put {
+	suspend fun modifyPlace(placeDto: Place): HttpResponse<Place> =
+		put {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","place")
+				appendPathSegments("rest", "v2", "place")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
@@ -91,5 +93,4 @@ class RawPlaceApi(
 		}.wrap()
 
 	// endregion
-
 }

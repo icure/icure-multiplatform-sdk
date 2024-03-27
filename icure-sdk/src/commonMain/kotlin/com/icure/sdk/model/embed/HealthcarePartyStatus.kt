@@ -8,11 +8,12 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class HealthcarePartyStatus() {
-  @SerialName("trainee")
-  Trainee,
-  @SerialName("withconvention")
-  Withconvention,
-  @SerialName("accreditated")
-  Accreditated,
+	@SerialName("trainee")
+	Trainee,
 
+	@SerialName("withconvention")
+	Withconvention,
+
+	@SerialName("accreditated")
+	Accreditated,
 }

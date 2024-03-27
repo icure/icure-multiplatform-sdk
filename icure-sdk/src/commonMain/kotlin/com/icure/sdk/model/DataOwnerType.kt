@@ -8,11 +8,12 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class DataOwnerType() {
-  @SerialName("hcp")
-  Hcp,
-  @SerialName("device")
-  Device,
-  @SerialName("patient")
-  Patient,
+	@SerialName("hcp")
+	Hcp,
 
+	@SerialName("device")
+	Device,
+
+	@SerialName("patient")
+	Patient,
 }

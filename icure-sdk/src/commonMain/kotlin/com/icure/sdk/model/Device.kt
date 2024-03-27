@@ -10,13 +10,13 @@ import com.icure.sdk.model.base.StoredDocument
 import com.icure.sdk.model.specializations.AesExchangeKeyEncryptionKeypairIdentifier
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.model.specializations.SpkiHexString
+import kotlinx.serialization.Serializable
 import kotlin.ByteArray
 import kotlin.Long
 import kotlin.String
 import kotlin.collections.List
 import kotlin.collections.Map
 import kotlin.collections.Set
-import kotlinx.serialization.Serializable
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
@@ -45,14 +45,14 @@ data class Device(
 	public val picture: ByteArray? = null,
 	override val properties: Set<PropertyStub> = emptySet(),
 	override val hcPartyKeys: Map<String, List<HexString>> = emptyMap(),
-	override val aesExchangeKeys:
-      Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> =
-      emptyMap(),
+	override val aesExchangeKeys: Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> =
+		emptyMap(),
 	override val transferKeys: Map<String, Map<String, String>> = emptyMap(),
 	override val privateKeyShamirPartitions: Map<String, String> = emptyMap(),
 	override val publicKey: SpkiHexString? = null,
 	override val publicKeysForOaepWithSha256: Set<SpkiHexString> = emptySet(),
 ) : StoredDocument, ICureDocument<String>, Named, CryptoActor, DataOwner {
 	// region Device-Device
+
 	// endregion
 }

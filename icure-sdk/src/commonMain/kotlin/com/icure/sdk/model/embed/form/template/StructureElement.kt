@@ -8,5 +8,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 sealed interface StructureElement {
 	// region StructureElement-StructureElement
+
 	// endregion
 }
