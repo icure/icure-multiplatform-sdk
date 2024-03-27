@@ -16,8 +16,10 @@ import com.icure.sdk.model.HealthElement
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.Patient
+import com.icure.sdk.model.User
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.embed.AccessLevel
+import com.icure.sdk.model.embed.DelegationTag
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.requests.RequestedPermission
@@ -73,6 +75,7 @@ interface HealthElementApi : HealthElementBasicFlavourlessApi, HealthElementFlav
 	suspend fun initialiseEncryptionMetadata(
 		healthcareElement: DecryptedHealthElement,
 		patient: Patient,
+		user: User,
 		delegates: Map<String, AccessLevel> = emptyMap(),
 		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent,
 	): DecryptedHealthElement
@@ -238,6 +241,7 @@ internal class HealthElementApiImpl(
 	override suspend fun initialiseEncryptionMetadata(
 		healthcareElement: DecryptedHealthElement,
 		patient: Patient,
+		user: User,
 		delegates: Map<String, AccessLevel>,
 		secretId: SecretIdOption,
 		// Temporary, needs a lot more stuff to match typescript implementation
@@ -246,9 +250,12 @@ internal class HealthElementApiImpl(
 			healthcareElement.withTypeInfo(),
 			patient.id,
 			encryptionService.resolveSecretIdOption(patient.withTypeInfo(), secretId),
-			true,
-			false,
-			delegates, // TODO auto delegations
+			initialiseEncryptionKey = true,
+			initialiseSecretId = false,
+			autoDelegations = delegates + (
+				(user.autoDelegations[DelegationTag.MedicalInformation] ?: emptySet()) +
+					(user.autoDelegations[DelegationTag.All] ?: emptySet())
+				).associateWith { AccessLevel.Write },
 		).updatedEntity
 
 	override suspend fun findHealthElementsByHcPartyPatient(
