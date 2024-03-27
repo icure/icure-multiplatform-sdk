@@ -6,7 +6,4 @@ import kotlinx.serialization.Serializable
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 
 @Serializable
-class GetFormReply() {
-	// region GetFormReply-GetFormReply
-	// endregion
-}
+class GetFormReply()

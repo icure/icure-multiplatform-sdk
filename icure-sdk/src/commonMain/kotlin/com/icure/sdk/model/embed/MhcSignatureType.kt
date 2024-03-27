@@ -8,13 +8,15 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class MhcSignatureType() {
-  @SerialName("holderEid")
-  HolderEid,
-  @SerialName("holderPaper")
-  HolderPaper,
-  @SerialName("legalrepresentativeEid")
-  LegalrepresentativeEid,
-  @SerialName("legalrepresentativePaper")
-  LegalrepresentativePaper,
+    @SerialName("holderEid")
+    HolderEid,
 
+    @SerialName("holderPaper")
+    HolderPaper,
+
+    @SerialName("legalrepresentativeEid")
+    LegalrepresentativeEid,
+
+    @SerialName("legalrepresentativePaper")
+    LegalrepresentativePaper,
 }

@@ -7,8 +7,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class RemoteAuthentication(
-  public val basic: Basic? = null,
-) {
-	// region RemoteAuthentication-RemoteAuthentication
-	// endregion
-}
+    public val basic: Basic? = null,
+)

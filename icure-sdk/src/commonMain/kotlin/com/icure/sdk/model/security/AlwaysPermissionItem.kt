@@ -10,9 +10,7 @@ import kotlinx.serialization.Serializable
 @SerialName("AlwaysPermissionItemDto")
 @Serializable
 data class AlwaysPermissionItem(
-  override val type: PermissionType,
+    override val type: PermissionType,
 ) : PermissionItem {
-  override val predicate: AlwaysPredicate = AlwaysPredicate()
-	// region AlwaysPermissionItem-AlwaysPermissionItem
-	// endregion
+    override val predicate: AlwaysPredicate = AlwaysPredicate()
 }

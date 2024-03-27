@@ -8,9 +8,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Periodicity(
-  public val relatedCode: CodeStub? = null,
-  public val relatedPeriodicity: CodeStub? = null,
-) {
-	// region Periodicity-Periodicity
-	// endregion
-}
+    public val relatedCode: CodeStub? = null,
+    public val relatedPeriodicity: CodeStub? = null,
+)

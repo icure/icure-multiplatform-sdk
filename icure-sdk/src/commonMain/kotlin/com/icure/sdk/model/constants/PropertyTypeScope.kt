@@ -8,15 +8,18 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class PropertyTypeScope() {
-  @SerialName("SYSTEM")
-  System,
-  @SerialName("NODE")
-  Node,
-  @SerialName("ROLE")
-  Role,
-  @SerialName("USER")
-  User,
-  @SerialName("EVENT")
-  Event,
+    @SerialName("SYSTEM")
+    System,
 
+    @SerialName("NODE")
+    Node,
+
+    @SerialName("ROLE")
+    Role,
+
+    @SerialName("USER")
+    User,
+
+    @SerialName("EVENT")
+    Event,
 }
