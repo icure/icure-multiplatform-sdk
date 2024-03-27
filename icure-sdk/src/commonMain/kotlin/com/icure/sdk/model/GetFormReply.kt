@@ -7,6 +7,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 class GetFormReply() {
-	// region GetFormReply-GetFormReply
-	// endregion
+    // region GetFormReply-GetFormReply
+
+    // endregion
 }

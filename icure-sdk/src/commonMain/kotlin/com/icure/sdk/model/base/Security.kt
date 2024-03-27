@@ -7,9 +7,10 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Security(
-  public val admins: Right = Right(),
-  public val members: Right = Right(),
+    public val admins: Right = Right(),
+    public val members: Right = Right(),
 ) {
-	// region Security-Security
-	// endregion
+    // region Security-Security
+
+    // endregion
 }
