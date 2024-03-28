@@ -30,6 +30,4 @@ interface CryptoService {
 	val digest: DigestService
 
 	val hmac: HmacService
-
-	val shamirService: ShamirService
 }
