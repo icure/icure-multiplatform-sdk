@@ -8,11 +8,12 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class TopicRole() {
-  @SerialName("PARTICIPANT")
-  Participant,
-  @SerialName("ADMIN")
-  Admin,
-  @SerialName("OWNER")
-  Owner,
+	@SerialName("PARTICIPANT")
+	Participant,
 
+	@SerialName("ADMIN")
+	Admin,
+
+	@SerialName("OWNER")
+	Owner,
 }

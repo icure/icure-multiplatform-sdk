@@ -4,16 +4,19 @@ import com.icure.sdk.auth.services.AuthService
 import com.icure.sdk.auth.services.setAuthorizationWith
 import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.model.EncryptedMaintenanceTask
-import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
+import com.icure.sdk.model.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.model.ListOfIds
-import com.icure.sdk.model.MaintenanceTask
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
 import com.icure.sdk.utils.InternalIcureApi
+import io.ktor.client.request.delete
+import io.ktor.client.request.`get`
 import io.ktor.client.request.parameter
+import io.ktor.client.request.post
+import io.ktor.client.request.put
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
@@ -35,77 +38,72 @@ class RawMaintenanceTaskApi(
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
-
-	override suspend fun getAccessControlKeysHeaderValues(): List<String>? =
-			accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithEncryptionMetadataTypeName.MaintenanceTask)
-
 	// region common endpoints
 
-	suspend fun createMaintenanceTask(maintenanceTaskDto: MaintenanceTask):
-			HttpResponse<EncryptedMaintenanceTask> = post {
+	override suspend fun getAccessControlKeysHeaderValues(): List<String>? =
+		accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithEncryptionMetadataTypeName.MaintenanceTask)
+
+	suspend fun createMaintenanceTask(maintenanceTaskDto: EncryptedMaintenanceTask): HttpResponse<EncryptedMaintenanceTask> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","maintenancetask")
+				appendPathSegments("rest", "v2", "maintenancetask")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(maintenanceTaskDto)
 		}.wrap()
 
-
-	suspend fun deleteMaintenanceTasks(maintenanceTaskIds: ListOfIds):
-			HttpResponse<List<DocIdentifier>> = post {
+	suspend fun deleteMaintenanceTasks(maintenanceTaskIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","maintenancetask","delete","batch")
+				appendPathSegments("rest", "v2", "maintenancetask", "delete", "batch")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(maintenanceTaskIds)
 		}.wrap()
 
-
 	suspend fun deleteMaintenanceTask(maintenanceTaskId: String): HttpResponse<DocIdentifier> =
-			delete {
+		delete {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","maintenancetask",maintenanceTaskId)
+				appendPathSegments("rest", "v2", "maintenancetask", maintenanceTaskId)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun getMaintenanceTask(maintenanceTaskId: String):
-			HttpResponse<EncryptedMaintenanceTask> = get {
+	suspend fun getMaintenanceTask(maintenanceTaskId: String): HttpResponse<EncryptedMaintenanceTask> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","maintenancetask",maintenanceTaskId)
+				appendPathSegments("rest", "v2", "maintenancetask", maintenanceTaskId)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun modifyMaintenanceTask(maintenanceTaskDto: MaintenanceTask):
-			HttpResponse<EncryptedMaintenanceTask> = put {
+	suspend fun modifyMaintenanceTask(maintenanceTaskDto: EncryptedMaintenanceTask): HttpResponse<EncryptedMaintenanceTask> =
+		put {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","maintenancetask")
+				appendPathSegments("rest", "v2", "maintenancetask")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(maintenanceTaskDto)
 		}.wrap()
 
-
 	suspend fun filterMaintenanceTasksBy(
 		startDocumentId: String? = null,
 		limit: Int? = null,
-		filterChain: FilterChain<MaintenanceTask>,
-	): HttpResponse<PaginatedList<EncryptedMaintenanceTask, *>> = post {
+		filterChain: FilterChain<EncryptedMaintenanceTask>,
+	): HttpResponse<PaginatedList<EncryptedMaintenanceTask, *>> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","maintenancetask","filter")
+				appendPathSegments("rest", "v2", "maintenancetask", "filter")
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
 			}
@@ -114,12 +112,11 @@ class RawMaintenanceTaskApi(
 			setBody(filterChain)
 		}.wrap()
 
-
-	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams):
-			HttpResponse<List<EntityBulkShareResult<EncryptedMaintenanceTask>>> = put {
+	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<EncryptedMaintenanceTask>>> =
+		put {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","maintenancetask","bulkSharedMetadataUpdate")
+				appendPathSegments("rest", "v2", "maintenancetask", "bulkSharedMetadataUpdate")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
@@ -127,5 +124,4 @@ class RawMaintenanceTaskApi(
 		}.wrap()
 
 	// endregion
-
 }

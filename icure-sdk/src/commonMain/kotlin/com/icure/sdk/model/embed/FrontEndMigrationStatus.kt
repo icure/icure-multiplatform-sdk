@@ -8,13 +8,15 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class FrontEndMigrationStatus() {
-  @SerialName("STARTED")
-  Started,
-  @SerialName("PAUSED")
-  Paused,
-  @SerialName("ERROR")
-  Error,
-  @SerialName("SUCCESS")
-  Success,
+	@SerialName("STARTED")
+	Started,
 
+	@SerialName("PAUSED")
+	Paused,
+
+	@SerialName("ERROR")
+	Error,
+
+	@SerialName("SUCCESS")
+	Success,
 }

@@ -32,45 +32,47 @@ class RawKeywordApi(
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
-
 	// region common endpoints
 
-	suspend fun createKeyword(c: Keyword): HttpResponse<Keyword> = post {
+	suspend fun createKeyword(c: Keyword): HttpResponse<Keyword> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","keyword")
+				appendPathSegments("rest", "v2", "keyword")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(c)
 		}.wrap()
 
-
-	suspend fun getKeyword(keywordId: String): HttpResponse<Keyword> = get {
+	suspend fun getKeyword(keywordId: String): HttpResponse<Keyword> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","keyword",keywordId)
+				appendPathSegments("rest", "v2", "keyword", keywordId)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun getKeywordsByUser(userId: String): HttpResponse<List<Keyword>> = get {
+	suspend fun getKeywordsByUser(userId: String): HttpResponse<List<Keyword>> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","keyword","byUser",userId)
+				appendPathSegments("rest", "v2", "keyword", "byUser", userId)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun getKeywords(startDocumentId: String? = null, limit: Int? = null):
-			HttpResponse<PaginatedList<Keyword, JsonString>> = get {
+	suspend fun getKeywords(
+		startDocumentId: String? = null,
+		limit: Int? = null,
+	): HttpResponse<PaginatedList<Keyword, JsonString>> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","keyword")
+				appendPathSegments("rest", "v2", "keyword")
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
 				parameter("ts", GMTDate().timestamp)
@@ -78,23 +80,22 @@ class RawKeywordApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
 	suspend fun deleteKeywords(keywordIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
-			post {
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","keyword","delete","batch")
+				appendPathSegments("rest", "v2", "keyword", "delete", "batch")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(keywordIds)
 		}.wrap()
 
-
-	suspend fun modifyKeyword(keywordDto: Keyword): HttpResponse<Keyword> = put {
+	suspend fun modifyKeyword(keywordDto: Keyword): HttpResponse<Keyword> =
+		put {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","keyword")
+				appendPathSegments("rest", "v2", "keyword")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
@@ -102,5 +103,4 @@ class RawKeywordApi(
 		}.wrap()
 
 	// endregion
-
 }

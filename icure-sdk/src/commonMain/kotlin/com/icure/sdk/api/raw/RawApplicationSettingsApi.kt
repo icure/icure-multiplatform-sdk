@@ -27,36 +27,34 @@ class RawApplicationSettingsApi(
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
-
 	// region common endpoints
 
-	suspend fun getApplicationSettings(): HttpResponse<List<ApplicationSettings>> = get {
+	suspend fun getApplicationSettings(): HttpResponse<List<ApplicationSettings>> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","appsettings")
+				appendPathSegments("rest", "v2", "appsettings")
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun createApplicationSettings(applicationSettingsDto: ApplicationSettings):
-			HttpResponse<ApplicationSettings> = post {
+	suspend fun createApplicationSettings(applicationSettingsDto: ApplicationSettings): HttpResponse<ApplicationSettings> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","appsettings")
+				appendPathSegments("rest", "v2", "appsettings")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(applicationSettingsDto)
 		}.wrap()
 
-
-	suspend fun updateApplicationSettings(applicationSettingsDto: ApplicationSettings):
-			HttpResponse<ApplicationSettings> = put {
+	suspend fun updateApplicationSettings(applicationSettingsDto: ApplicationSettings): HttpResponse<ApplicationSettings> =
+		put {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","appsettings")
+				appendPathSegments("rest", "v2", "appsettings")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
@@ -64,5 +62,4 @@ class RawApplicationSettingsApi(
 		}.wrap()
 
 	// endregion
-
 }

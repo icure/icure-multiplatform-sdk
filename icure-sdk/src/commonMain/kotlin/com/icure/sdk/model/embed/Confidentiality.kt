@@ -8,11 +8,12 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class Confidentiality() {
-  @SerialName("freeaccess")
-  Freeaccess,
-  @SerialName("personal")
-  Personal,
-  @SerialName("secret")
-  Secret,
+	@SerialName("freeaccess")
+	Freeaccess,
 
+	@SerialName("personal")
+	Personal,
+
+	@SerialName("secret")
+	Secret,
 }

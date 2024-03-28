@@ -8,23 +8,30 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class DocumentStatus() {
-  @SerialName("draft")
-  Draft,
-  @SerialName("finalized")
-  Finalized,
-  @SerialName("pending_review")
-  PendingReview,
-  @SerialName("reviewed")
-  Reviewed,
-  @SerialName("pending_signature")
-  PendingSignature,
-  @SerialName("signed")
-  Signed,
-  @SerialName("canceled")
-  Canceled,
-  @SerialName("sent")
-  Sent,
-  @SerialName("delivered")
-  Delivered,
+	@SerialName("draft")
+	Draft,
 
+	@SerialName("finalized")
+	Finalized,
+
+	@SerialName("pending_review")
+	PendingReview,
+
+	@SerialName("reviewed")
+	Reviewed,
+
+	@SerialName("pending_signature")
+	PendingSignature,
+
+	@SerialName("signed")
+	Signed,
+
+	@SerialName("canceled")
+	Canceled,
+
+	@SerialName("sent")
+	Sent,
+
+	@SerialName("delivered")
+	Delivered,
 }

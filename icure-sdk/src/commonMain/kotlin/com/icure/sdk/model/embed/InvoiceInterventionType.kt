@@ -8,9 +8,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class InvoiceInterventionType() {
-  @SerialName("total")
-  Total,
-  @SerialName("userfees")
-  Userfees,
+	@SerialName("total")
+	Total,
 
+	@SerialName("userfees")
+	Userfees,
 }

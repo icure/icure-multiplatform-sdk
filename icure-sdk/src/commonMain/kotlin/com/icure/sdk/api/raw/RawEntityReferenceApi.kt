@@ -25,24 +25,23 @@ class RawEntityReferenceApi(
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
-
 	// region common endpoints
 
-	suspend fun getLatest(prefix: String): HttpResponse<EntityReference> = get {
+	suspend fun getLatest(prefix: String): HttpResponse<EntityReference> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","entityref","latest",prefix)
+				appendPathSegments("rest", "v2", "entityref", "latest", prefix)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
 	suspend fun createEntityReference(er: EntityReference): HttpResponse<EntityReference> =
-			post {
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","entityref")
+				appendPathSegments("rest", "v2", "entityref")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
@@ -50,5 +49,4 @@ class RawEntityReferenceApi(
 		}.wrap()
 
 	// endregion
-
 }
