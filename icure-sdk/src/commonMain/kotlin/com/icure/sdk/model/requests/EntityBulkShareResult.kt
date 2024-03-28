@@ -23,5 +23,13 @@ data class EntityBulkShareResult<T>(
     public val reason: String,
   )
 	// region EntityBulkShareResult-EntityBulkShareResult
+
+	inline fun <O>map(mapper: (T) -> O): EntityBulkShareResult<O> = EntityBulkShareResult(
+		updatedEntity = updatedEntity?.let { mapper(it) },
+		entityId = entityId,
+		entityRev = entityRev,
+		rejectedRequests = rejectedRequests
+	)
+
 	// endregion
 }
