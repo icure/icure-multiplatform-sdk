@@ -8,15 +8,18 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class RequestedPermission() {
-  @SerialName("MAX_READ")
-  MaxRead,
-  @SerialName("FULL_READ")
-  FullRead,
-  @SerialName("MAX_WRITE")
-  MaxWrite,
-  @SerialName("FULL_WRITE")
-  FullWrite,
-  @SerialName("ROOT")
-  Root,
+	@SerialName("MAX_READ")
+	MaxRead,
 
+	@SerialName("FULL_READ")
+	FullRead,
+
+	@SerialName("MAX_WRITE")
+	MaxWrite,
+
+	@SerialName("FULL_WRITE")
+	FullWrite,
+
+	@SerialName("ROOT")
+	Root,
 }

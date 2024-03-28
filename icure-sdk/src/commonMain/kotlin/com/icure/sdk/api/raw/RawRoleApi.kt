@@ -22,18 +22,17 @@ class RawRoleApi(
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
-
 	// region cloud endpoints
 
-	suspend fun getAllRoles(): HttpResponse<List<Role>> = get {
+	suspend fun getAllRoles(): HttpResponse<List<Role>> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","role")
+				appendPathSegments("rest", "v2", "role")
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
 	// endregion
-
 }

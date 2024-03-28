@@ -4,14 +4,17 @@ import com.icure.sdk.auth.services.AuthService
 import com.icure.sdk.auth.services.setAuthorizationWith
 import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.model.EncryptedTimeTable
-import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
+import com.icure.sdk.model.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.model.ListOfIds
-import com.icure.sdk.model.TimeTable
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
 import com.icure.sdk.utils.InternalIcureApi
+import io.ktor.client.request.delete
+import io.ktor.client.request.`get`
 import io.ktor.client.request.parameter
+import io.ktor.client.request.post
+import io.ktor.client.request.put
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
@@ -33,75 +36,72 @@ class RawTimeTableApi(
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
-
-	override suspend fun getAccessControlKeysHeaderValues(): List<String>? =
-			accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithEncryptionMetadataTypeName.TimeTable)
-
 	// region common endpoints
 
-	suspend fun createTimeTable(timeTableDto: TimeTable): HttpResponse<EncryptedTimeTable> =
-			post {
+	override suspend fun getAccessControlKeysHeaderValues(): List<String>? =
+		accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithEncryptionMetadataTypeName.TimeTable)
+
+	suspend fun createTimeTable(timeTableDto: EncryptedTimeTable): HttpResponse<EncryptedTimeTable> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","timeTable")
+				appendPathSegments("rest", "v2", "timeTable")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(timeTableDto)
 		}.wrap()
 
-
 	suspend fun deleteTimeTables(timeTableIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
-			post {
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","timeTable","delete","batch")
+				appendPathSegments("rest", "v2", "timeTable", "delete", "batch")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(timeTableIds)
 		}.wrap()
 
-
-	suspend fun deleteTimeTable(timeTableId: String): HttpResponse<DocIdentifier> = delete {
+	suspend fun deleteTimeTable(timeTableId: String): HttpResponse<DocIdentifier> =
+		delete {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","timeTable",timeTableId)
+				appendPathSegments("rest", "v2", "timeTable", timeTableId)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun getTimeTable(timeTableId: String): HttpResponse<EncryptedTimeTable> = get {
+	suspend fun getTimeTable(timeTableId: String): HttpResponse<EncryptedTimeTable> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","timeTable",timeTableId)
+				appendPathSegments("rest", "v2", "timeTable", timeTableId)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun modifyTimeTable(timeTableDto: TimeTable): HttpResponse<EncryptedTimeTable> =
-			put {
+	suspend fun modifyTimeTable(timeTableDto: EncryptedTimeTable): HttpResponse<EncryptedTimeTable> =
+		put {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","timeTable")
+				appendPathSegments("rest", "v2", "timeTable")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(timeTableDto)
 		}.wrap()
 
-
 	suspend fun getTimeTablesByPeriodAndAgendaId(
 		startDate: Long,
 		endDate: Long,
 		agendaId: String,
-	): HttpResponse<List<EncryptedTimeTable>> = post {
+	): HttpResponse<List<EncryptedTimeTable>> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","timeTable","byPeriodAndAgendaId")
+				appendPathSegments("rest", "v2", "timeTable", "byPeriodAndAgendaId")
 				parameter("startDate", startDate)
 				parameter("endDate", endDate)
 				parameter("agendaId", agendaId)
@@ -110,24 +110,22 @@ class RawTimeTableApi(
 			contentType(ContentType.Application.Json)
 		}.wrap()
 
-
-	suspend fun getTimeTablesByAgendaId(agendaId: String):
-			HttpResponse<List<EncryptedTimeTable>> = post {
+	suspend fun getTimeTablesByAgendaId(agendaId: String): HttpResponse<List<EncryptedTimeTable>> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","timeTable","byAgendaId")
+				appendPathSegments("rest", "v2", "timeTable", "byAgendaId")
 				parameter("agendaId", agendaId)
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 		}.wrap()
 
-
-	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams):
-			HttpResponse<List<EntityBulkShareResult<EncryptedTimeTable>>> = put {
+	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<EncryptedTimeTable>>> =
+		put {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","timeTable","bulkSharedMetadataUpdate")
+				appendPathSegments("rest", "v2", "timeTable", "bulkSharedMetadataUpdate")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
@@ -135,5 +133,4 @@ class RawTimeTableApi(
 		}.wrap()
 
 	// endregion
-
 }

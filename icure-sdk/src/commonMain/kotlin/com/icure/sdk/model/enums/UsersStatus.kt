@@ -8,11 +8,12 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class UsersStatus() {
-  @SerialName("ACTIVE")
-  Active,
-  @SerialName("DISABLED")
-  Disabled,
-  @SerialName("REGISTERING")
-  Registering,
+	@SerialName("ACTIVE")
+	Active,
 
+	@SerialName("DISABLED")
+	Disabled,
+
+	@SerialName("REGISTERING")
+	Registering,
 }

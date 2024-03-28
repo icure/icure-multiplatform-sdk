@@ -8,15 +8,18 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class SuspensionReason() {
-  @SerialName("notInsured")
-  NotInsured,
-  @SerialName("noReasonGiven")
-  NoReasonGiven,
-  @SerialName("isHospitalized")
-  IsHospitalized,
-  @SerialName("outsideOfCountry")
-  OutsideOfCountry,
-  @SerialName("changeOfMutuality")
-  ChangeOfMutuality,
+	@SerialName("notInsured")
+	NotInsured,
 
+	@SerialName("noReasonGiven")
+	NoReasonGiven,
+
+	@SerialName("isHospitalized")
+	IsHospitalized,
+
+	@SerialName("outsideOfCountry")
+	OutsideOfCountry,
+
+	@SerialName("changeOfMutuality")
+	ChangeOfMutuality,
 }

@@ -8,17 +8,21 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class InvoiceType() {
-  @SerialName("patient")
-  Patient,
-  @SerialName("mutualfund")
-  Mutualfund,
-  @SerialName("payingagency")
-  Payingagency,
-  @SerialName("insurance")
-  Insurance,
-  @SerialName("efact")
-  Efact,
-  @SerialName("other")
-  Other,
+	@SerialName("patient")
+	Patient,
 
+	@SerialName("mutualfund")
+	Mutualfund,
+
+	@SerialName("payingagency")
+	Payingagency,
+
+	@SerialName("insurance")
+	Insurance,
+
+	@SerialName("efact")
+	Efact,
+
+	@SerialName("other")
+	Other,
 }
