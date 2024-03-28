@@ -10,8 +10,9 @@ import java.util.UUID
 object JvmStrongRandom : StrongRandom {
 	private val random = SecureRandom()
 
-	override fun randomBytes(length: Int): ByteArray =
-		ByteArray(length).also { random.nextBytes(it) }
+	override fun fill(array: ByteArray) {
+		random.nextBytes(array)
+	}
 
 	// UUID.randomUUID is cryptographically strong by contract
 	// https://docs.oracle.com/javase/8/docs/api/java/util/UUID.html#randomUUID--

@@ -8,16 +8,14 @@ import platform.Security.errSecSuccess
 import platform.Security.kSecRandomDefault
 
 object IosStrongRandom : StrongRandom {
-	override fun randomBytes(length: Int): ByteArray {
-		val bytes = ByteArray(length)
-		val returnCode = bytes.usePinned {
-			SecRandomCopyBytes(kSecRandomDefault, length.toULong(), it.addressOf(0))
+	override fun fill(array: ByteArray) {
+		val returnCode = array.usePinned {
+			SecRandomCopyBytes(kSecRandomDefault, array.size.toULong(), it.addressOf(0))
 		}
 		if (returnCode != errSecSuccess) throw PlatformMethodException(
 			"Random bytes generation failed with code $returnCode",
 			null
 		)
-		return bytes
 	}
 
 	// Not sure if UUID is cryptographically strong in iOS: not specified in the documentation.

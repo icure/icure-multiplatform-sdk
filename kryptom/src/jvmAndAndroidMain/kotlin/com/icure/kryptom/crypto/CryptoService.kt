@@ -17,6 +17,8 @@ actual val defaultCryptoService = object : CryptoService {
 	override val digest: DigestService = JvmDigestService
 
 	override val hmac: HmacService = JvmHmacService
+
+	override val shamirService: ShamirService = ShamirService(strongRandom)
 }
 
 expect fun initCryptoProvider()

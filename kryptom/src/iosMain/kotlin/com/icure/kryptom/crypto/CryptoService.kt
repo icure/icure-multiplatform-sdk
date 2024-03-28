@@ -13,4 +13,6 @@ actual val defaultCryptoService: CryptoService = object : CryptoService {
 	override val digest: DigestService = IosDigestService
 
 	override val hmac: HmacService = IosHmacService
+
+	override val shamirService: ShamirService = ShamirService(strongRandom)
 }
