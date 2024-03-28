@@ -20,18 +20,20 @@ class RawAuthApi(
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
-
 	// region common endpoints
 
-	suspend fun token(method: String, path: String): HttpResponse<String> = get {
+	suspend fun token(
+		method: String,
+		path: String,
+	): HttpResponse<String> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","auth","token",method,path)
+				appendPathSegments("rest", "v2", "auth", "token", method, path)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
 	// endregion
-
 }

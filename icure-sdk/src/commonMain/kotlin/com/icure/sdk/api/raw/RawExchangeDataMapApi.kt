@@ -6,7 +6,6 @@ import com.icure.sdk.model.ExchangeDataMap
 import com.icure.sdk.model.ExchangeDataMapCreationBatch
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.utils.InternalIcureApi
-import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.put
 import io.ktor.client.request.setBody
@@ -27,26 +26,24 @@ class RawExchangeDataMapApi(
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
-
 	// region common endpoints
 
-	suspend fun createOrUpdateExchangeDataMapBatch(batch: ExchangeDataMapCreationBatch):
-			HttpResponse<String> = put {
+	suspend fun createOrUpdateExchangeDataMapBatch(batch: ExchangeDataMapCreationBatch): HttpResponse<String> =
+		put {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","exchangedatamap","batch")
+				appendPathSegments("rest", "v2", "exchangedatamap", "batch")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(batch)
 		}.wrap()
 
-
 	suspend fun getExchangeDataMapBatch(ids: ListOfIds): HttpResponse<List<ExchangeDataMap>> =
-			post {
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","exchangedatamap","batch")
+				appendPathSegments("rest", "v2", "exchangedatamap", "batch")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
@@ -54,5 +51,4 @@ class RawExchangeDataMapApi(
 		}.wrap()
 
 	// endregion
-
 }

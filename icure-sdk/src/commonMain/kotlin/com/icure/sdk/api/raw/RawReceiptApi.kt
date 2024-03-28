@@ -4,14 +4,17 @@ import com.icure.sdk.auth.services.AuthService
 import com.icure.sdk.auth.services.setAuthorizationWith
 import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.model.EncryptedReceipt
-import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
+import com.icure.sdk.model.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.model.ListOfIds
-import com.icure.sdk.model.Receipt
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
 import com.icure.sdk.utils.InternalIcureApi
+import io.ktor.client.request.delete
+import io.ktor.client.request.`get`
 import io.ktor.client.request.parameter
+import io.ktor.client.request.post
+import io.ktor.client.request.put
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
@@ -34,64 +37,65 @@ class RawReceiptApi(
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
-
-	override suspend fun getAccessControlKeysHeaderValues(): List<String>? =
-			accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithEncryptionMetadataTypeName.Receipt)
-
 	// region common endpoints
 
-	suspend fun createReceipt(receiptDto: Receipt): HttpResponse<EncryptedReceipt> = post {
+	override suspend fun getAccessControlKeysHeaderValues(): List<String>? =
+		accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithEncryptionMetadataTypeName.Receipt)
+
+	suspend fun createReceipt(receiptDto: EncryptedReceipt): HttpResponse<EncryptedReceipt> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","receipt")
+				appendPathSegments("rest", "v2", "receipt")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(receiptDto)
 		}.wrap()
 
-
 	suspend fun deleteReceipts(receiptIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
-			post {
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","receipt","delete","batch")
+				appendPathSegments("rest", "v2", "receipt", "delete", "batch")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(receiptIds)
 		}.wrap()
 
-
-	suspend fun deleteReceipt(receiptId: String): HttpResponse<DocIdentifier> = delete {
+	suspend fun deleteReceipt(receiptId: String): HttpResponse<DocIdentifier> =
+		delete {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","receipt",receiptId)
+				appendPathSegments("rest", "v2", "receipt", receiptId)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun getReceiptAttachment(receiptId: String, attachmentId: String):
-			HttpResponse<ByteArray> = get {
+	suspend fun getReceiptAttachment(
+		receiptId: String,
+		attachmentId: String,
+	): HttpResponse<ByteArray> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","receipt",receiptId,"attachment",attachmentId)
+				appendPathSegments("rest", "v2", "receipt", receiptId, "attachment", attachmentId)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
-
 
 	suspend fun setReceiptAttachment(
 		receiptId: String,
 		blobType: String,
 		rev: String,
 		payload: ByteArray,
-	): HttpResponse<EncryptedReceipt> = put {
+	): HttpResponse<EncryptedReceipt> =
+		put {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","receipt",receiptId,"attachment",blobType)
+				appendPathSegments("rest", "v2", "receipt", receiptId, "attachment", blobType)
 				parameter("rev", rev)
 			}
 			setAuthorizationWith(authService)
@@ -99,43 +103,42 @@ class RawReceiptApi(
 			setBody(ByteReadChannel(payload))
 		}.wrap()
 
-
-	suspend fun getReceipt(receiptId: String): HttpResponse<EncryptedReceipt> = get {
+	suspend fun getReceipt(receiptId: String): HttpResponse<EncryptedReceipt> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","receipt",receiptId)
+				appendPathSegments("rest", "v2", "receipt", receiptId)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun listByReference(ref: String): HttpResponse<List<EncryptedReceipt>> = get {
+	suspend fun listByReference(ref: String): HttpResponse<List<EncryptedReceipt>> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","receipt","byRef",ref)
+				appendPathSegments("rest", "v2", "receipt", "byRef", ref)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun modifyReceipt(receiptDto: Receipt): HttpResponse<EncryptedReceipt> = put {
+	suspend fun modifyReceipt(receiptDto: EncryptedReceipt): HttpResponse<EncryptedReceipt> =
+		put {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","receipt")
+				appendPathSegments("rest", "v2", "receipt")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(receiptDto)
 		}.wrap()
 
-
-	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams):
-			HttpResponse<List<EntityBulkShareResult<EncryptedReceipt>>> = put {
+	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<EncryptedReceipt>>> =
+		put {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","receipt","bulkSharedMetadataUpdate")
+				appendPathSegments("rest", "v2", "receipt", "bulkSharedMetadataUpdate")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
@@ -143,5 +146,4 @@ class RawReceiptApi(
 		}.wrap()
 
 	// endregion
-
 }
