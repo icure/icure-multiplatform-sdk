@@ -8,15 +8,20 @@ import io.ktor.utils.io.core.toByteArray
 
 class ShamirServiceTest : StringSpec({
 	val shamirService = defaultCryptoService.shamirService
+	infix fun ByteArray.shouldBe(expected: ByteArray) = this.toList() shouldBe expected.toList()
 
-	fun testCombine(shares: List<String>, secret: String, threshold: Int) {
+	fun testCombine(shares: List<String>, secret: ByteArray, threshold: Int) {
 		shamirService.combine(shares) shouldBe secret
 		repeat(10) {
 			shamirService.combine(shares.shuffled().take(threshold)) shouldBe secret
 		}
 		if (threshold > 2) {
 			repeat(10) {
-				shamirService.combine(shares.shuffled().take(threshold - 1)) shouldNotBe secret
+				try {
+					shamirService.combine(shares.shuffled().take(threshold - 1)) shouldNotBe secret
+				} catch (e: IllegalArgumentException) {
+					// this is a valid possibility but there is no guarantee it is thrown every time
+				}
 			}
 		}
 	}
@@ -32,7 +37,7 @@ class ShamirServiceTest : StringSpec({
 		).forEach { (threshold, numberOfShares) ->
 			listOf(8, 255, 256, 257, 2048).forEach { secretLength ->
 				println("Testing $threshold of $numberOfShares with secret length $secretLength")
-				val secret = defaultCryptoService.strongRandom.randomBytes(secretLength).toHexString()
+				val secret = defaultCryptoService.strongRandom.randomBytes(secretLength)
 				val shares = shamirService.share(
 					secret,
 					numberOfShares,
@@ -44,7 +49,7 @@ class ShamirServiceTest : StringSpec({
 	}
 
 	"Should be able to combine secrets from the original typescript SDK" {
-		val secret = "This secret was created using the og iCure typescript SDK".toByteArray().toHexString()
+		val secret = "This secret was created using the og iCure typescript SDK".toByteArray()
 		val shares = listOf(
 			"801162ab4b5061600ba382f8dcedf844961226c36e982947d306753655587ae0b069e90f8ba9580552bc18633512f18357141c48053918cdd598a74",
 			"8026116a305779d642a71b3cc2350912378f522fb36075fc19b92626c133a7d71b5197e9bdd8a5b78f7f0e7550c3a55e1c32668b242aafaad6c402a",
