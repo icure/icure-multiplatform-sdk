@@ -7,10 +7,7 @@ import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.Tarification
 import com.icure.sdk.model.specializations.JsonString
 import com.icure.sdk.utils.InternalIcureApi
-import io.ktor.client.request.`get`
 import io.ktor.client.request.parameter
-import io.ktor.client.request.post
-import io.ktor.client.request.put
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
@@ -31,7 +28,6 @@ class RawTarificationApi(
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
-
 	// region common endpoints
 
 	suspend fun findTarificationsByLabel(
@@ -42,10 +38,11 @@ class RawTarificationApi(
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<Tarification, JsonString>> = get {
+	): HttpResponse<PaginatedList<Tarification, JsonString>> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","tarification","byLabel")
+				appendPathSegments("rest", "v2", "tarification", "byLabel")
 				parameter("region", region)
 				parameter("types", types)
 				parameter("language", language)
@@ -58,7 +55,6 @@ class RawTarificationApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
 	suspend fun findTarificationsBy(
 		region: String? = null,
 		type: String? = null,
@@ -67,10 +63,11 @@ class RawTarificationApi(
 		startDocumentId: String? = null,
 		startKey: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<Tarification, JsonString>> = get {
+	): HttpResponse<PaginatedList<Tarification, JsonString>> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","tarification")
+				appendPathSegments("rest", "v2", "tarification")
 				parameter("region", region)
 				parameter("type", type)
 				parameter("tarification", tarification)
@@ -83,16 +80,16 @@ class RawTarificationApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
 	suspend fun findTarificationsBy(
 		region: String? = null,
 		type: String? = null,
 		tarification: String? = null,
 		version: String? = null,
-	): HttpResponse<List<Tarification>> = get {
+	): HttpResponse<List<Tarification>> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","tarification","byRegionTypeTarification")
+				appendPathSegments("rest", "v2", "tarification", "byRegionTypeTarification")
 				parameter("region", region)
 				parameter("type", type)
 				parameter("tarification", tarification)
@@ -102,59 +99,57 @@ class RawTarificationApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun createTarification(c: Tarification): HttpResponse<Tarification> = post {
+	suspend fun createTarification(c: Tarification): HttpResponse<Tarification> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","tarification")
+				appendPathSegments("rest", "v2", "tarification")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(c)
 		}.wrap()
 
-
 	suspend fun getTarifications(tarificationIds: ListOfIds): HttpResponse<List<Tarification>> =
-			post {
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","tarification","byIds")
+				appendPathSegments("rest", "v2", "tarification", "byIds")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(tarificationIds)
 		}.wrap()
 
-
-	suspend fun getTarification(tarificationId: String): HttpResponse<Tarification> = get {
+	suspend fun getTarification(tarificationId: String): HttpResponse<Tarification> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","tarification",tarificationId)
+				appendPathSegments("rest", "v2", "tarification", tarificationId)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
-
 
 	suspend fun getTarificationWithParts(
 		type: String,
 		tarification: String,
 		version: String,
-	): HttpResponse<Tarification> = get {
+	): HttpResponse<Tarification> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","tarification",type,tarification,version)
+				appendPathSegments("rest", "v2", "tarification", type, tarification, version)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
 	suspend fun modifyTarification(tarificationDto: Tarification): HttpResponse<Tarification> =
-			put {
+		put {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","tarification")
+				appendPathSegments("rest", "v2", "tarification")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
@@ -162,5 +157,4 @@ class RawTarificationApi(
 		}.wrap()
 
 	// endregion
-
 }

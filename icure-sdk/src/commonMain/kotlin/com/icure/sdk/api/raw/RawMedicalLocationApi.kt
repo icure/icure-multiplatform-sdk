@@ -8,10 +8,7 @@ import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.specializations.JsonString
 import com.icure.sdk.utils.InternalIcureApi
-import io.ktor.client.request.`get`
 import io.ktor.client.request.parameter
-import io.ktor.client.request.post
-import io.ktor.client.request.put
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
@@ -32,48 +29,48 @@ class RawMedicalLocationApi(
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
-
 	// region common endpoints
 
-	suspend fun createMedicalLocation(medicalLocationDto: MedicalLocation):
-			HttpResponse<MedicalLocation> = post {
+	suspend fun createMedicalLocation(medicalLocationDto: MedicalLocation): HttpResponse<MedicalLocation> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","medicallocation")
+				appendPathSegments("rest", "v2", "medicallocation")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(medicalLocationDto)
 		}.wrap()
 
-
-	suspend fun deleteMedicalLocations(locationIds: ListOfIds):
-			HttpResponse<List<DocIdentifier>> = post {
+	suspend fun deleteMedicalLocations(locationIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","medicallocation","delete","batch")
+				appendPathSegments("rest", "v2", "medicallocation", "delete", "batch")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(locationIds)
 		}.wrap()
 
-
-	suspend fun getMedicalLocation(locationId: String): HttpResponse<MedicalLocation> = get {
+	suspend fun getMedicalLocation(locationId: String): HttpResponse<MedicalLocation> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","medicallocation",locationId)
+				appendPathSegments("rest", "v2", "medicallocation", locationId)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun getMedicalLocations(startDocumentId: String? = null, limit: Int? = null):
-			HttpResponse<PaginatedList<MedicalLocation, JsonString>> = get {
+	suspend fun getMedicalLocations(
+		startDocumentId: String? = null,
+		limit: Int? = null,
+	): HttpResponse<PaginatedList<MedicalLocation, JsonString>> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","medicallocation")
+				appendPathSegments("rest", "v2", "medicallocation")
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
 				parameter("ts", GMTDate().timestamp)
@@ -81,12 +78,11 @@ class RawMedicalLocationApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun modifyMedicalLocation(medicalLocationDto: MedicalLocation):
-			HttpResponse<MedicalLocation> = put {
+	suspend fun modifyMedicalLocation(medicalLocationDto: MedicalLocation): HttpResponse<MedicalLocation> =
+		put {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","medicallocation")
+				appendPathSegments("rest", "v2", "medicallocation")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
@@ -94,5 +90,4 @@ class RawMedicalLocationApi(
 		}.wrap()
 
 	// endregion
-
 }

@@ -8,13 +8,15 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class ContractChangeType() {
-  @SerialName("inscriptionStart")
-  InscriptionStart,
-  @SerialName("inscriptionEnd")
-  InscriptionEnd,
-  @SerialName("suspension")
-  Suspension,
-  @SerialName("coverageChange")
-  CoverageChange,
+	@SerialName("inscriptionStart")
+	InscriptionStart,
 
+	@SerialName("inscriptionEnd")
+	InscriptionEnd,
+
+	@SerialName("suspension")
+	Suspension,
+
+	@SerialName("coverageChange")
+	CoverageChange,
 }

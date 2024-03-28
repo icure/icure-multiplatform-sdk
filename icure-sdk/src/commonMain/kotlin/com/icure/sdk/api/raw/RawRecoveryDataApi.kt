@@ -6,10 +6,7 @@ import com.icure.sdk.model.RecoveryData
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.embed.Content
 import com.icure.sdk.utils.InternalIcureApi
-import io.ktor.client.request.`get`
-import io.ktor.client.request.delete
 import io.ktor.client.request.parameter
-import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
@@ -28,59 +25,58 @@ class RawRecoveryDataApi(
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
-
 	// region common endpoints
 
 	suspend fun createRecoveryData(recoveryData: RecoveryData): HttpResponse<RecoveryData> =
-			post {
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","recoverydata")
+				appendPathSegments("rest", "v2", "recoverydata")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(recoveryData)
 		}.wrap()
 
-
-	suspend fun getRecoveryData(id: String): HttpResponse<RecoveryData> = get {
+	suspend fun getRecoveryData(id: String): HttpResponse<RecoveryData> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","recoverydata",id)
+				appendPathSegments("rest", "v2", "recoverydata", id)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun deleteRecoveryData(id: String): HttpResponse<DocIdentifier> = delete {
+	suspend fun deleteRecoveryData(id: String): HttpResponse<DocIdentifier> =
+		delete {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","recoverydata",id)
+				appendPathSegments("rest", "v2", "recoverydata", id)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
-
 
 	suspend fun deleteAllRecoveryDataForRecipient(recipientId: String): HttpResponse<Content> =
-			delete {
+		delete {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","recoverydataforRecipient",recipientId)
+				appendPathSegments("rest", "v2", "recoverydataforRecipient", recipientId)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun deleteAllRecoveryDataOfTypeForRecipient(type: RecoveryData.Type,
-			recipientId: String): HttpResponse<Content> = delete {
+	suspend fun deleteAllRecoveryDataOfTypeForRecipient(
+		type: RecoveryData.Type,
+		recipientId: String,
+	): HttpResponse<Content> =
+		delete {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","recoverydataforRecipient",recipientId,"ofType","$type")
+				appendPathSegments("rest", "v2", "recoverydataforRecipient", recipientId, "ofType", "$type")
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
 	// endregion
-
 }

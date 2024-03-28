@@ -4,9 +4,7 @@ import com.icure.sdk.auth.services.AuthService
 import com.icure.sdk.auth.services.setAuthorizationWith
 import com.icure.sdk.model.objectstorage.StoredObjectInformation
 import com.icure.sdk.utils.InternalIcureApi
-import io.ktor.client.request.`get`
 import io.ktor.client.request.parameter
-import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
@@ -29,7 +27,6 @@ class RawObjectStorageApi(
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
-
 	// region cloud endpoints
 
 	suspend fun createAttachment(
@@ -40,10 +37,11 @@ class RawObjectStorageApi(
 		md5Hash: String,
 		startByte: Long? = null,
 		content: ByteArray,
-	): HttpResponse<Unit> = post {
+	): HttpResponse<Unit> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","objectstorage{entityGroup}",entityId,attachmentId)
+				appendPathSegments("rest", "v2", "objectstorage{entityGroup}", entityId, attachmentId)
 				parameter("size", size)
 				parameter("md5Hash", md5Hash)
 				parameter("startByte", startByte)
@@ -53,34 +51,33 @@ class RawObjectStorageApi(
 			setBody(ByteReadChannel(content))
 		}.wrap()
 
-
 	suspend fun getAttachment(
 		entityGroup: String,
 		entityId: String,
 		attachmentId: String,
-	): HttpResponse<ByteArray> = get {
+	): HttpResponse<ByteArray> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","objectstorage{entityGroup}",entityId,attachmentId)
+				appendPathSegments("rest", "v2", "objectstorage{entityGroup}", entityId, attachmentId)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
 	suspend fun getAttachmentInfo(
 		entityGroup: String,
 		entityId: String,
 		attachmentId: String,
-	): HttpResponse<StoredObjectInformation> = get {
+	): HttpResponse<StoredObjectInformation> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","objectstorage{entityGroup}",entityId,attachmentId,"info")
+				appendPathSegments("rest", "v2", "objectstorage{entityGroup}", entityId, attachmentId, "info")
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
 	// endregion
-
 }

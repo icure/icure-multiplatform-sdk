@@ -6,7 +6,6 @@ import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.model.EncryptedTopic
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
-import com.icure.sdk.model.Topic
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
@@ -22,7 +21,6 @@ import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.util.date.GMTDate
 import kotlin.Int
-import kotlin.Nothing
 import kotlin.String
 import kotlin.collections.List
 import kotlin.collections.Map
@@ -38,92 +36,91 @@ class RawTopicApi(
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
-
 	// region cloud endpoints
 
-	suspend fun getTopic(topicId: String): HttpResponse<EncryptedTopic> = get {
+	suspend fun getTopic(topicId: String): HttpResponse<EncryptedTopic> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","topic",topicId)
+				appendPathSegments("rest", "v2", "topic", topicId)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun getTopics(topicIds: ListOfIds): HttpResponse<List<EncryptedTopic>> = post {
+	suspend fun getTopics(topicIds: ListOfIds): HttpResponse<List<EncryptedTopic>> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","topic","byIds")
+				appendPathSegments("rest", "v2", "topic", "byIds")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(topicIds)
 		}.wrap()
 
-
-	suspend fun createTopic(ft: Topic): HttpResponse<EncryptedTopic> = post {
+	suspend fun createTopic(ft: EncryptedTopic): HttpResponse<EncryptedTopic> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","topic")
+				appendPathSegments("rest", "v2", "topic")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(ft)
 		}.wrap()
 
-
-	suspend fun modifyTopic(topicDto: Topic): HttpResponse<EncryptedTopic> = put {
+	suspend fun modifyTopic(topicDto: EncryptedTopic): HttpResponse<EncryptedTopic> =
+		put {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","topic")
+				appendPathSegments("rest", "v2", "topic")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(topicDto)
 		}.wrap()
 
-
-	suspend fun deleteTopics(topicIds: ListOfIds): HttpResponse<List<DocIdentifier>> = post {
+	suspend fun deleteTopics(topicIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","topic","delete","batch")
+				appendPathSegments("rest", "v2", "topic", "delete", "batch")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(topicIds)
 		}.wrap()
 
-
-	suspend fun deleteTopic(topicId: String): HttpResponse<DocIdentifier> = delete {
+	suspend fun deleteTopic(topicId: String): HttpResponse<DocIdentifier> =
+		delete {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","topic",topicId)
+				appendPathSegments("rest", "v2", "topic", topicId)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams):
-			HttpResponse<List<EntityBulkShareResult<EncryptedTopic>>> = put {
+	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<EncryptedTopic>>> =
+		put {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","topic","bulkSharedMetadataUpdate")
+				appendPathSegments("rest", "v2", "topic", "bulkSharedMetadataUpdate")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(request)
 		}.wrap()
 
-
 	suspend fun filterTopicsBy(
 		startDocumentId: String? = null,
 		limit: Int? = null,
-		filterChain: FilterChain<Topic>,
-	): HttpResponse<PaginatedList<EncryptedTopic, Nothing>> = post {
+		filterChain: FilterChain<EncryptedTopic>,
+	): HttpResponse<PaginatedList<EncryptedTopic, *>> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","topic","filter")
+				appendPathSegments("rest", "v2", "topic", "filter")
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
 			}
@@ -132,36 +129,39 @@ class RawTopicApi(
 			setBody(filterChain)
 		}.wrap()
 
-
-	suspend fun matchTopicsBy(filter: AbstractFilter<Topic>): HttpResponse<List<String>> =
-			post {
+	suspend fun matchTopicsBy(filter: AbstractFilter<EncryptedTopic>): HttpResponse<List<String>> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","topic","match")
+				appendPathSegments("rest", "v2", "topic", "match")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(filter)
 		}.wrap()
 
-
-	suspend fun addParticipant(topicId: String, request: AddParticipant):
-			HttpResponse<EncryptedTopic> = post {
+	suspend fun addParticipant(
+		topicId: String,
+		request: AddParticipant,
+	): HttpResponse<EncryptedTopic> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","topic",topicId,"addParticipant")
+				appendPathSegments("rest", "v2", "topic", topicId, "addParticipant")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(request)
 		}.wrap()
 
-
-	suspend fun removeParticipant(topicId: String, request: RemoveParticipant):
-			HttpResponse<EncryptedTopic> = post {
+	suspend fun removeParticipant(
+		topicId: String,
+		request: RemoveParticipant,
+	): HttpResponse<EncryptedTopic> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","topic",topicId,"removeParticipant")
+				appendPathSegments("rest", "v2", "topic", topicId, "removeParticipant")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
@@ -169,5 +169,4 @@ class RawTopicApi(
 		}.wrap()
 
 	// endregion
-
 }

@@ -2,20 +2,20 @@ package com.icure.sdk.api.raw
 
 import com.icure.sdk.auth.services.AuthService
 import com.icure.sdk.auth.services.setAuthorizationWith
+import com.icure.sdk.model.EncryptedPropertyStub
+import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
-import com.icure.sdk.model.PropertyStub
 import com.icure.sdk.model.User
+import com.icure.sdk.model.UserGroup
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
+import com.icure.sdk.model.security.Enable2faRequest
+import com.icure.sdk.model.security.TokenWithGroup
 import com.icure.sdk.model.specializations.JsonString
 import com.icure.sdk.utils.InternalIcureApi
-import io.ktor.client.request.`get`
 import io.ktor.client.request.`header`
-import io.ktor.client.request.delete
 import io.ktor.client.request.parameter
-import io.ktor.client.request.post
-import io.ktor.client.request.put
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
@@ -25,15 +25,10 @@ import kotlin.Boolean
 import kotlin.Int
 import kotlin.Long
 import kotlin.String
+import kotlin.Unit
 import kotlin.collections.List
 import kotlin.collections.Map
 import kotlin.time.Duration
-import com.icure.sdk.model.ListOfIds
-import com.icure.sdk.model.UserGroup
-import com.icure.sdk.model.security.Enable2faRequest
-import com.icure.sdk.model.security.TokenWithGroup
-import kotlin.Nothing
-import kotlin.Unit
 
 // WARNING: This class is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
@@ -44,28 +39,28 @@ class RawUserApi(
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
-
 	// region common endpoints
 
-	suspend fun getCurrentUser(): HttpResponse<User> = get {
+	suspend fun getCurrentUser(): HttpResponse<User> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","user","current")
+				appendPathSegments("rest", "v2", "user", "current")
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
-
 
 	suspend fun listUsersBy(
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		skipPatients: Boolean? = null,
-	): HttpResponse<PaginatedList<User, JsonString>> = get {
+	): HttpResponse<PaginatedList<User, JsonString>> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","user")
+				appendPathSegments("rest", "v2", "user")
 				parameter("startKey", startKey)
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
@@ -75,119 +70,121 @@ class RawUserApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun createUser(userDto: User): HttpResponse<User> = post {
+	suspend fun createUser(userDto: User): HttpResponse<User> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","user")
+				appendPathSegments("rest", "v2", "user")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(userDto)
 		}.wrap()
 
-
-	suspend fun getUser(userId: String): HttpResponse<User> = get {
+	suspend fun getUser(userId: String): HttpResponse<User> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","user",userId)
+				appendPathSegments("rest", "v2", "user", userId)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun getUserByEmail(email: String): HttpResponse<User> = get {
+	suspend fun getUserByEmail(email: String): HttpResponse<User> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","user","byEmail",email)
+				appendPathSegments("rest", "v2", "user", "byEmail", email)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun getUserByPhoneNumber(phoneNumber: String): HttpResponse<User> = get {
+	suspend fun getUserByPhoneNumber(phoneNumber: String): HttpResponse<User> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","user","byPhoneNumber",phoneNumber)
+				appendPathSegments("rest", "v2", "user", "byPhoneNumber", phoneNumber)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun findByHcpartyId(id: String): HttpResponse<List<String>> = get {
+	suspend fun findByHcpartyId(id: String): HttpResponse<List<String>> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","user","byHealthcarePartyId",id)
+				appendPathSegments("rest", "v2", "user", "byHealthcarePartyId", id)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun findByPatientId(id: String): HttpResponse<List<String>> = get {
+	suspend fun findByPatientId(id: String): HttpResponse<List<String>> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","user","byPatientId",id)
+				appendPathSegments("rest", "v2", "user", "byPatientId", id)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun deleteUser(userId: String): HttpResponse<DocIdentifier> = delete {
+	suspend fun deleteUser(userId: String): HttpResponse<DocIdentifier> =
+		delete {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","user",userId)
+				appendPathSegments("rest", "v2", "user", userId)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun modifyUser(userDto: User): HttpResponse<User> = put {
+	suspend fun modifyUser(userDto: User): HttpResponse<User> =
+		put {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","user")
+				appendPathSegments("rest", "v2", "user")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(userDto)
 		}.wrap()
 
-
-	suspend fun assignHealthcareParty(healthcarePartyId: String): HttpResponse<User> = put {
+	suspend fun assignHealthcareParty(healthcarePartyId: String): HttpResponse<User> =
+		put {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","user","current","hcparty",healthcarePartyId)
+				appendPathSegments("rest", "v2", "user", "current", "hcparty", healthcarePartyId)
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 		}.wrap()
 
-
-	suspend fun modifyProperties(userId: String, properties: List<PropertyStub>?):
-			HttpResponse<User> = put {
+	suspend fun modifyProperties(
+		userId: String,
+		properties: List<EncryptedPropertyStub>?,
+	): HttpResponse<User> =
+		put {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","user",userId,"properties")
+				appendPathSegments("rest", "v2", "user", userId, "properties")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(properties)
 		}.wrap()
 
-
 	suspend fun getToken(
 		userId: String,
 		key: String,
 		tokenValidity: Long? = null,
 		token: String? = null,
-	): HttpResponse<String> = post {
+	): HttpResponse<String> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","user","token",userId,key)
+				appendPathSegments("rest", "v2", "user", "token", userId, key)
 				parameter("tokenValidity", tokenValidity)
 			}
 			setAuthorizationWith(authService)
@@ -195,15 +192,15 @@ class RawUserApi(
 			header("token", token)
 		}.wrap()
 
-
 	suspend fun filterUsersBy(
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		filterChain: FilterChain<User>,
-	): HttpResponse<PaginatedList<User, *>> = post {
+	): HttpResponse<PaginatedList<User, *>> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","user","filter")
+				appendPathSegments("rest", "v2", "user", "filter")
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
 			}
@@ -212,11 +209,11 @@ class RawUserApi(
 			setBody(filterChain)
 		}.wrap()
 
-
-	suspend fun matchUsersBy(filter: AbstractFilter<User>): HttpResponse<List<String>> = post {
+	suspend fun matchUsersBy(filter: AbstractFilter<User>): HttpResponse<List<String>> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","user","match")
+				appendPathSegments("rest", "v2", "user", "match")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
@@ -227,25 +224,26 @@ class RawUserApi(
 
 	// region cloud endpoints
 
-	suspend fun getMatchingUsers(): HttpResponse<List<UserGroup>> = get {
+	suspend fun getMatchingUsers(): HttpResponse<List<UserGroup>> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","user","matches")
+				appendPathSegments("rest", "v2", "user", "matches")
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
-
 
 	suspend fun listUsersInGroup(
 		groupId: String,
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<User, JsonString>> = get {
+	): HttpResponse<PaginatedList<User, JsonString>> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","user","inGroup",groupId)
+				appendPathSegments("rest", "v2", "user", "inGroup", groupId)
 				parameter("startKey", startKey)
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
@@ -254,85 +252,97 @@ class RawUserApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun createUserInGroup(groupId: String, userDto: User): HttpResponse<User> = post {
+	suspend fun createUserInGroup(
+		groupId: String,
+		userDto: User,
+	): HttpResponse<User> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","user","inGroup",groupId)
+				appendPathSegments("rest", "v2", "user", "inGroup", groupId)
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(userDto)
 		}.wrap()
 
-
-	suspend fun modifyUserInGroup(groupId: String, userDto: User): HttpResponse<User> = put {
+	suspend fun modifyUserInGroup(
+		groupId: String,
+		userDto: User,
+	): HttpResponse<User> =
+		put {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","user","inGroup",groupId)
+				appendPathSegments("rest", "v2", "user", "inGroup", groupId)
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(userDto)
 		}.wrap()
 
-
-	suspend fun deleteUserInGroup(groupId: String, userId: String): HttpResponse<DocIdentifier>
-			= delete {
+	suspend fun deleteUserInGroup(
+		groupId: String,
+		userId: String,
+	): HttpResponse<DocIdentifier> =
+		delete {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","user","inGroup",groupId,userId)
+				appendPathSegments("rest", "v2", "user", "inGroup", groupId, userId)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun addRolesToUser(userId: String, rolesId: ListOfIds): HttpResponse<User> = post {
+	suspend fun addRolesToUser(
+		userId: String,
+		rolesId: ListOfIds,
+	): HttpResponse<User> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","user",userId,"roles","set")
+				appendPathSegments("rest", "v2", "user", userId, "roles", "set")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(rolesId)
 		}.wrap()
-
 
 	suspend fun addRolesToUserInGroup(
 		userId: String,
 		groupId: String,
 		rolesId: ListOfIds,
-	): HttpResponse<User> = post {
+	): HttpResponse<User> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","user",userId,"inGroup",groupId,"roles","set")
+				appendPathSegments("rest", "v2", "user", userId, "inGroup", groupId, "roles", "set")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(rolesId)
 		}.wrap()
 
-
-	suspend fun removeRolesFromUser(userId: String): HttpResponse<User> = post {
+	suspend fun removeRolesFromUser(userId: String): HttpResponse<User> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","user",userId,"roles","reset")
+				appendPathSegments("rest", "v2", "user", userId, "roles", "reset")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 		}.wrap()
 
-
-	suspend fun removeRolesFromUserInGroup(userId: String, groupId: String): HttpResponse<User>
-			= post {
+	suspend fun removeRolesFromUserInGroup(
+		userId: String,
+		groupId: String,
+	): HttpResponse<User> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","user",userId,"inGroup",groupId,"roles","reset")
+				appendPathSegments("rest", "v2", "user", userId, "inGroup", groupId, "roles", "reset")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 		}.wrap()
-
 
 	suspend fun getTokenInGroup(
 		groupId: String,
@@ -340,27 +350,28 @@ class RawUserApi(
 		key: String,
 		token: String? = null,
 		tokenValidity: Long? = null,
-	): HttpResponse<String> = post {
+	): HttpResponse<String> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","user","inGroup",groupId,"token",userId,key)
+				appendPathSegments("rest", "v2", "user", "inGroup", groupId, "token", userId, key)
 				parameter("tokenValidity", tokenValidity)
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			header("token", token)
 		}.wrap()
-
 
 	suspend fun getTokenInAllGroups(
 		userIdentifier: String,
 		key: String,
 		token: String? = null,
 		tokenValidity: Long? = null,
-	): HttpResponse<List<TokenWithGroup>> = post {
+	): HttpResponse<List<TokenWithGroup>> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","user","inAllGroups","token",userIdentifier,key)
+				appendPathSegments("rest", "v2", "user", "inAllGroups", "token", userIdentifier, key)
 				parameter("tokenValidity", tokenValidity)
 			}
 			setAuthorizationWith(authService)
@@ -368,16 +379,16 @@ class RawUserApi(
 			header("token", token)
 		}.wrap()
 
-
 	suspend fun filterUsersInGroupBy(
 		groupId: String,
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		filterChain: FilterChain<User>,
-	): HttpResponse<PaginatedList<User, Nothing>> = post {
+	): HttpResponse<PaginatedList<User, *>> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","user","filter","inGroup",groupId)
+				appendPathSegments("rest", "v2", "user", "filter", "inGroup", groupId)
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
 			}
@@ -386,69 +397,75 @@ class RawUserApi(
 			setBody(filterChain)
 		}.wrap()
 
-
 	suspend fun enable2faForUser(
 		userId: String,
 		groupId: String,
 		request: Enable2faRequest,
-	): HttpResponse<Unit> = post {
+	): HttpResponse<Unit> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","user",userId,"inGroup",groupId,"2fa")
+				appendPathSegments("rest", "v2", "user", userId, "inGroup", groupId, "2fa")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(request)
 		}.wrap()
 
-
-	suspend fun enable2faForUser(userId: String, request: Enable2faRequest): HttpResponse<Unit>
-			= post {
+	suspend fun enable2faForUser(
+		userId: String,
+		request: Enable2faRequest,
+	): HttpResponse<Unit> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","user",userId,"2fa")
+				appendPathSegments("rest", "v2", "user", userId, "2fa")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(request)
 		}.wrap()
 
-
-	suspend fun disable2faForUser(userId: String, groupId: String): HttpResponse<Unit> =
-			delete {
+	suspend fun disable2faForUser(
+		userId: String,
+		groupId: String,
+	): HttpResponse<Unit> =
+		delete {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","user",userId,"inGroup",groupId,"2fa")
+				appendPathSegments("rest", "v2", "user", userId, "inGroup", groupId, "2fa")
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun disable2faForUser(userId: String): HttpResponse<Unit> = delete {
+	suspend fun disable2faForUser(userId: String): HttpResponse<Unit> =
+		delete {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","user",userId,"2fa")
+				appendPathSegments("rest", "v2", "user", userId, "2fa")
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun createAdminUser(userDto: User): HttpResponse<User> = post {
+	suspend fun createAdminUser(userDto: User): HttpResponse<User> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","user","admin")
+				appendPathSegments("rest", "v2", "user", "admin")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(userDto)
 		}.wrap()
 
-
-	suspend fun createAdminUserInGroup(groupId: String, userDto: User): HttpResponse<User> =
-			post {
+	suspend fun createAdminUserInGroup(
+		groupId: String,
+		userDto: User,
+	): HttpResponse<User> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","user","admin","inGroup",groupId)
+				appendPathSegments("rest", "v2", "user", "admin", "inGroup", groupId)
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
@@ -456,5 +473,4 @@ class RawUserApi(
 		}.wrap()
 
 	// endregion
-
 }

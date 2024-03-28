@@ -3,10 +3,9 @@ package com.icure.sdk.api.raw
 import com.icure.sdk.auth.services.AuthService
 import com.icure.sdk.auth.services.setAuthorizationWith
 import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
-import com.icure.sdk.model.EncryptedHealthElement
-import com.icure.sdk.model.EncryptedIcureStub
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
-import com.icure.sdk.model.HealthElement
+import com.icure.sdk.model.EncryptedHealthElement
+import com.icure.sdk.model.IcureStub
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
@@ -38,52 +37,51 @@ class RawHealthElementApi(
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
-
 	override suspend fun getAccessControlKeysHeaderValues(): List<String>? =
-			accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithEncryptionMetadataTypeName.HealthElement)
+		accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithEncryptionMetadataTypeName.HealthElement)
 
 	// region common endpoints
 
-	suspend fun createHealthElement(c: HealthElement): HttpResponse<EncryptedHealthElement> =
-			post {
+	suspend fun createHealthElement(c: EncryptedHealthElement): HttpResponse<EncryptedHealthElement> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","helement")
+				appendPathSegments("rest", "v2", "helement")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(c)
 		}.wrap()
 
-
-	suspend fun getHealthElement(healthElementId: String): HttpResponse<EncryptedHealthElement>
-			= get {
+	suspend fun getHealthElement(healthElementId: String): HttpResponse<EncryptedHealthElement> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","helement",healthElementId)
+				appendPathSegments("rest", "v2", "helement", healthElementId)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun getHealthElements(healthElementIds: ListOfIds):
-			HttpResponse<List<EncryptedHealthElement>> = post {
+	suspend fun getHealthElements(healthElementIds: ListOfIds): HttpResponse<List<EncryptedHealthElement>> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","helement","byIds")
+				appendPathSegments("rest", "v2", "helement", "byIds")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(healthElementIds)
 		}.wrap()
 
-
-	suspend fun listHealthElementsByHCPartyAndPatientForeignKeys(hcPartyId: String,
-			secretFKeys: String): HttpResponse<List<EncryptedHealthElement>> = get {
+	suspend fun listHealthElementsByHCPartyAndPatientForeignKeys(
+		hcPartyId: String,
+		secretFKeys: String,
+	): HttpResponse<List<EncryptedHealthElement>> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","helement","byHcPartySecretForeignKeys")
+				appendPathSegments("rest", "v2", "helement", "byHcPartySecretForeignKeys")
 				parameter("hcPartyId", hcPartyId)
 				parameter("secretFKeys", secretFKeys)
 				parameter("ts", GMTDate().timestamp)
@@ -91,17 +89,17 @@ class RawHealthElementApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
 	suspend fun findHealthElementsByHCPartyPatientForeignKey(
 		hcPartyId: String,
 		secretFKey: String,
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedHealthElement, JsonString>> = get {
+	): HttpResponse<PaginatedList<EncryptedHealthElement, JsonString>> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","helement","byHcPartySecretForeignKey")
+				appendPathSegments("rest", "v2", "helement", "byHcPartySecretForeignKey")
 				parameter("hcPartyId", hcPartyId)
 				parameter("secretFKey", secretFKey)
 				parameter("startKey", startKey)
@@ -112,12 +110,14 @@ class RawHealthElementApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun findHealthElementsByHCPartyPatientForeignKeys(hcPartyId: String,
-			secretPatientKeys: List<String>): HttpResponse<List<EncryptedHealthElement>> = post {
+	suspend fun findHealthElementsByHCPartyPatientForeignKeys(
+		hcPartyId: String,
+		secretPatientKeys: List<String>,
+	): HttpResponse<List<EncryptedHealthElement>> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","helement","byHcPartySecretForeignKeys")
+				appendPathSegments("rest", "v2", "helement", "byHcPartySecretForeignKeys")
 				parameter("hcPartyId", hcPartyId)
 			}
 			setAuthorizationWith(authService)
@@ -125,13 +125,14 @@ class RawHealthElementApi(
 			setBody(secretPatientKeys)
 		}.wrap()
 
-
-	public suspend
-			fun listHealthElementsDelegationsStubsByHCPartyAndPatientForeignKeys(hcPartyId: String,
-			secretFKeys: String): HttpResponse<List<EncryptedIcureStub>> = get {
+	public suspend fun listHealthElementsDelegationsStubsByHCPartyAndPatientForeignKeys(
+		hcPartyId: String,
+		secretFKeys: String,
+	): HttpResponse<List<IcureStub>> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","helement","byHcPartySecretForeignKeys","delegations")
+				appendPathSegments("rest", "v2", "helement", "byHcPartySecretForeignKeys", "delegations")
 				parameter("hcPartyId", hcPartyId)
 				parameter("secretFKeys", secretFKeys)
 				parameter("ts", GMTDate().timestamp)
@@ -139,12 +140,14 @@ class RawHealthElementApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun findHealthElementsDelegationsStubsByHCPartyPatientForeignKeys(hcPartyId: String,
-			secretPatientKeys: List<String>): HttpResponse<List<EncryptedIcureStub>> = post {
+	suspend fun findHealthElementsDelegationsStubsByHCPartyPatientForeignKeys(
+		hcPartyId: String,
+		secretPatientKeys: List<String>,
+	): HttpResponse<List<IcureStub>> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","helement","byHcPartySecretForeignKeys","delegations")
+				appendPathSegments("rest", "v2", "helement", "byHcPartySecretForeignKeys", "delegations")
 				parameter("hcPartyId", hcPartyId)
 			}
 			setAuthorizationWith(authService)
@@ -152,73 +155,68 @@ class RawHealthElementApi(
 			setBody(secretPatientKeys)
 		}.wrap()
 
-
-	suspend fun deleteHealthElements(healthElementIds: ListOfIds):
-			HttpResponse<List<DocIdentifier>> = post {
+	suspend fun deleteHealthElements(healthElementIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","helement","delete","batch")
+				appendPathSegments("rest", "v2", "helement", "delete", "batch")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(healthElementIds)
 		}.wrap()
 
-
 	suspend fun deleteHealthElement(healthElementId: String): HttpResponse<DocIdentifier> =
-			delete {
+		delete {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","helement",healthElementId)
+				appendPathSegments("rest", "v2", "helement", healthElementId)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun modifyHealthElement(healthElementDto: HealthElement):
-			HttpResponse<EncryptedHealthElement> = put {
+	suspend fun modifyHealthElement(healthElementDto: EncryptedHealthElement): HttpResponse<EncryptedHealthElement> =
+		put {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","helement")
+				appendPathSegments("rest", "v2", "helement")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(healthElementDto)
 		}.wrap()
 
-
-	suspend fun modifyHealthElements(healthElementDtos: List<HealthElement>):
-			HttpResponse<List<EncryptedHealthElement>> = put {
+	suspend fun modifyHealthElements(healthElementDtos: List<EncryptedHealthElement>): HttpResponse<List<EncryptedHealthElement>> =
+		put {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","helement","batch")
+				appendPathSegments("rest", "v2", "helement", "batch")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(healthElementDtos)
 		}.wrap()
 
-
-	suspend fun createHealthElements(healthElementDtos: List<HealthElement>):
-			HttpResponse<List<EncryptedHealthElement>> = post {
+	suspend fun createHealthElements(healthElementDtos: List<EncryptedHealthElement>): HttpResponse<List<EncryptedHealthElement>> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","helement","batch")
+				appendPathSegments("rest", "v2", "helement", "batch")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(healthElementDtos)
 		}.wrap()
-
 
 	suspend fun filterHealthElementsBy(
 		startDocumentId: String? = null,
 		limit: Int? = null,
-		filterChain: FilterChain<HealthElement>,
-	): HttpResponse<PaginatedList<EncryptedHealthElement, *>> = post {
+		filterChain: FilterChain<EncryptedHealthElement>,
+	): HttpResponse<PaginatedList<EncryptedHealthElement, *>> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","helement","filter")
+				appendPathSegments("rest", "v2", "helement", "filter")
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
 			}
@@ -227,36 +225,35 @@ class RawHealthElementApi(
 			setBody(filterChain)
 		}.wrap()
 
-
-	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams):
-			HttpResponse<List<EntityBulkShareResult<EncryptedHealthElement>>> = put {
+	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<EncryptedHealthElement>>> =
+		put {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","helement","bulkSharedMetadataUpdate")
+				appendPathSegments("rest", "v2", "helement", "bulkSharedMetadataUpdate")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(request)
 		}.wrap()
 
-
-	suspend fun matchHealthElementsBy(filter: AbstractFilter<HealthElement>):
-			HttpResponse<List<String>> = post {
+	suspend fun matchHealthElementsBy(filter: AbstractFilter<EncryptedHealthElement>): HttpResponse<List<String>> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","helement","match")
+				appendPathSegments("rest", "v2", "helement", "match")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(filter)
 		}.wrap()
 
-
-	suspend fun bulkShareMinimal(request: BulkShareOrUpdateMetadataParams):
-			HttpResponse<List<EntityBulkShareResult<EncryptedHealthElement>>> = put {
+	suspend fun bulkShareMinimal(
+		request: BulkShareOrUpdateMetadataParams,
+	): HttpResponse<List<EntityBulkShareResult<EncryptedHealthElement>>> =
+		put {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","helement","bulkSharedMetadataUpdateMinimal")
+				appendPathSegments("rest", "v2", "helement", "bulkSharedMetadataUpdateMinimal")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
@@ -264,5 +261,4 @@ class RawHealthElementApi(
 		}.wrap()
 
 	// endregion
-
 }

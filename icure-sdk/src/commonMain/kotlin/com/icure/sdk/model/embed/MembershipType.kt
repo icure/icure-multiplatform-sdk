@@ -8,15 +8,18 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class MembershipType() {
-  @SerialName("doctor")
-  Doctor,
-  @SerialName("mutuality")
-  Mutuality,
-  @SerialName("patient")
-  Patient,
-  @SerialName("specialist")
-  Specialist,
-  @SerialName("other")
-  Other,
+	@SerialName("doctor")
+	Doctor,
 
+	@SerialName("mutuality")
+	Mutuality,
+
+	@SerialName("patient")
+	Patient,
+
+	@SerialName("specialist")
+	Specialist,
+
+	@SerialName("other")
+	Other,
 }

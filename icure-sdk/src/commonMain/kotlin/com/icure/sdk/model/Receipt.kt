@@ -9,65 +9,71 @@ import com.icure.sdk.model.embed.Encryptable
 import com.icure.sdk.model.embed.ReceiptBlobType
 import com.icure.sdk.model.embed.SecurityMetadata
 import com.icure.sdk.model.specializations.Base64String
+import kotlinx.serialization.Serializable
 import kotlin.Long
 import kotlin.String
 import kotlin.collections.List
 import kotlin.collections.Map
 import kotlin.collections.Set
-import kotlinx.serialization.Serializable
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 
 @Serializable
-sealed interface Receipt : StoredDocument, ICureDocument<String>, HasEncryptionMetadata, Encryptable {
-  override val id: String
+sealed interface Receipt :
+	StoredDocument,
+	ICureDocument<String>,
+	HasEncryptionMetadata,
+	Encryptable {
+	override val id: String
 
-  override val rev: String?
+	override val rev: String?
 
-  override val created: Long?
+	override val created: Long?
 
-  override val modified: Long?
+	override val modified: Long?
 
-  override val author: String?
+	override val author: String?
 
-  override val responsible: String?
+	override val responsible: String?
 
-  override val medicalLocationId: String?
+	override val medicalLocationId: String?
 
-  override val tags: Set<CodeStub>
+	override val tags: Set<CodeStub>
 
-  override val codes: Set<CodeStub>
+	override val codes: Set<CodeStub>
 
-  override val endOfLife: Long?
+	override val endOfLife: Long?
 
-  override val deletionDate: Long?
+	override val deletionDate: Long?
 
-  public val attachmentIds: Map<ReceiptBlobType, String>
+	public val attachmentIds: Map<ReceiptBlobType, String>
 
-  public val references: List<String>
+	public val references: List<String>
 
-  public val documentId: String?
+	public val documentId: String?
 
-  public val category: String?
+	public val category: String?
 
-  public val subCategory: String?
+	public val subCategory: String?
 
-  override val secretForeignKeys: Set<String>
+	override val secretForeignKeys: Set<String>
 
-  override val cryptedForeignKeys: Map<String, Set<Delegation>>
+	override val cryptedForeignKeys: Map<String, Set<Delegation>>
 
-  override val delegations: Map<String, Set<Delegation>>
+	override val delegations: Map<String, Set<Delegation>>
 
-  override val encryptionKeys: Map<String, Set<Delegation>>
+	override val encryptionKeys: Map<String, Set<Delegation>>
 
-  override val encryptedSelf: Base64String?
+	override val encryptedSelf: Base64String?
 
 	override val securityMetadata: SecurityMetadata?
 	// region Receipt-Receipt
+
 	// endregion
 }
 
+@Serializable
 data class DecryptedReceipt(
 	override val id: String,
 	override val rev: String? = null,
@@ -93,11 +99,12 @@ data class DecryptedReceipt(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : Receipt {
 	// region Receipt-DecryptedReceipt
-	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedReceipt =
+override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedReceipt =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
 }
 
+@Serializable
 data class EncryptedReceipt(
 	override val id: String,
 	override val rev: String? = null,
@@ -123,7 +130,7 @@ data class EncryptedReceipt(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : Receipt {
 	// region Receipt-EncryptedReceipt
-	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedReceipt =
+override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedReceipt =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
 }
@@ -152,22 +159,62 @@ public fun Receipt.copy(
 	encryptedSelf: Base64String? = this.encryptedSelf,
 	securityMetadata: SecurityMetadata? = this.securityMetadata,
 ): Receipt {
-                                      return when(this) {
-                                          is DecryptedReceipt -> copy(id = id, rev = rev, created =
-          created, modified = modified, author = author, responsible = responsible,
-          medicalLocationId = medicalLocationId, tags = tags, codes = codes, endOfLife = endOfLife,
-          deletionDate = deletionDate, attachmentIds = attachmentIds, references = references,
-          documentId = documentId, category = category, subCategory = subCategory, secretForeignKeys
-          = secretForeignKeys, cryptedForeignKeys = cryptedForeignKeys, delegations = delegations,
-          encryptionKeys = encryptionKeys, encryptedSelf = encryptedSelf, securityMetadata =
-          securityMetadata)
-      is EncryptedReceipt -> copy(id = id, rev = rev, created = created, modified = modified, author
-          = author, responsible = responsible, medicalLocationId = medicalLocationId, tags = tags,
-          codes = codes, endOfLife = endOfLife, deletionDate = deletionDate, attachmentIds =
-          attachmentIds, references = references, documentId = documentId, category = category,
-          subCategory = subCategory, secretForeignKeys = secretForeignKeys, cryptedForeignKeys =
-          cryptedForeignKeys, delegations = delegations, encryptionKeys = encryptionKeys,
-          encryptedSelf = encryptedSelf, securityMetadata = securityMetadata)
-                                          }
-
+	return when (this) {
+		is DecryptedReceipt ->
+			copy(
+				id = id,
+				rev = rev,
+				created =
+				created,
+				modified = modified,
+				author = author,
+				responsible = responsible,
+				medicalLocationId = medicalLocationId,
+				tags = tags,
+				codes = codes,
+				endOfLife = endOfLife,
+				deletionDate = deletionDate,
+				attachmentIds = attachmentIds,
+				references = references,
+				documentId = documentId,
+				category = category,
+				subCategory = subCategory,
+				secretForeignKeys =
+				secretForeignKeys,
+				cryptedForeignKeys = cryptedForeignKeys,
+				delegations = delegations,
+				encryptionKeys = encryptionKeys,
+				encryptedSelf = encryptedSelf,
+				securityMetadata =
+				securityMetadata,
+			)
+		is EncryptedReceipt ->
+			copy(
+				id = id,
+				rev = rev,
+				created = created,
+				modified = modified,
+				author =
+				author,
+				responsible = responsible,
+				medicalLocationId = medicalLocationId,
+				tags = tags,
+				codes = codes,
+				endOfLife = endOfLife,
+				deletionDate = deletionDate,
+				attachmentIds =
+				attachmentIds,
+				references = references,
+				documentId = documentId,
+				category = category,
+				subCategory = subCategory,
+				secretForeignKeys = secretForeignKeys,
+				cryptedForeignKeys =
+				cryptedForeignKeys,
+				delegations = delegations,
+				encryptionKeys = encryptionKeys,
+				encryptedSelf = encryptedSelf,
+				securityMetadata = securityMetadata,
+			)
+	}
 }
