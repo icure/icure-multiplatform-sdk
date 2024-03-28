@@ -8,11 +8,12 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class InsuranceStatus() {
-  @SerialName("titular")
-  Titular,
-  @SerialName("child")
-  Child,
-  @SerialName("spouse")
-  Spouse,
+	@SerialName("titular")
+	Titular,
 
+	@SerialName("child")
+	Child,
+
+	@SerialName("spouse")
+	Spouse,
 }

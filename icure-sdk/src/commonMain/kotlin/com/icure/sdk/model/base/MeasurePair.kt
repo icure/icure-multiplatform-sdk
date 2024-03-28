@@ -8,9 +8,10 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class MeasurePair(
-  public val first: Measure? = null,
-  public val second: Measure? = null,
+	public val first: Measure? = null,
+	public val second: Measure? = null,
 ) {
 	// region MeasurePair-MeasurePair
+
 	// endregion
 }

@@ -1,12 +1,10 @@
 package com.icure.sdk.api.raw
 
-import com.icure.sdk.auth.services.setAuthorizationWith
 import com.icure.sdk.model.LoginCredentials
 import com.icure.sdk.model.security.jwt.JwtResponse
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.request.`header`
 import io.ktor.client.request.parameter
-import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
@@ -25,17 +23,17 @@ class RawAnonymousAuthApi(
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
-
 	// region common endpoints
 
 	suspend fun login(
 		duration: Long? = null,
 		loginCredentials: LoginCredentials,
 		groupId: String? = null,
-	): HttpResponse<JwtResponse> = post {
+	): HttpResponse<JwtResponse> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","auth","login")
+				appendPathSegments("rest", "v2", "auth", "login")
 				parameter("duration", duration)
 				parameter("groupId", groupId)
 			}
@@ -43,23 +41,25 @@ class RawAnonymousAuthApi(
 			setBody(loginCredentials)
 		}.wrap()
 
-
-	suspend fun refresh(refreshToken: String, totp: String? = null): HttpResponse<JwtResponse> =
-			post {
+	suspend fun refresh(
+		refreshToken: String,
+		totp: String? = null,
+	): HttpResponse<JwtResponse> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","auth","refresh")
+				appendPathSegments("rest", "v2", "auth", "refresh")
 				parameter("totp", totp)
 			}
 			contentType(ContentType.Application.Json)
 			header("Refresh-Token", refreshToken)
 		}.wrap()
 
-
-	suspend fun check(loginCredentials: LoginCredentials): HttpResponse<Unit> = post {
+	suspend fun check(loginCredentials: LoginCredentials): HttpResponse<Unit> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","auth","check")
+				appendPathSegments("rest", "v2", "auth", "check")
 			}
 			contentType(ContentType.Application.Json)
 			setBody(loginCredentials)
@@ -69,50 +69,56 @@ class RawAnonymousAuthApi(
 
 	// region cloud endpoints
 
-	suspend fun switchGroup(refreshToken: String, groupId: String): HttpResponse<JwtResponse> =
-			post {
+	suspend fun switchGroup(
+		refreshToken: String,
+		groupId: String,
+	): HttpResponse<JwtResponse> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","auth","switch",groupId)
+				appendPathSegments("rest", "v2", "auth", "switch", groupId)
 			}
 			contentType(ContentType.Application.Json)
 			header("Refresh-Token", refreshToken)
 		}.wrap()
 
-
-	suspend fun loginGoogle(token: String, groupId: String? = null): HttpResponse<JwtResponse> =
-			post {
+	suspend fun loginGoogle(
+		token: String,
+		groupId: String? = null,
+	): HttpResponse<JwtResponse> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","auth","login","google")
+				appendPathSegments("rest", "v2", "auth", "login", "google")
 				parameter("groupId", groupId)
 			}
 			contentType(ContentType.Application.Json)
 			header("token", token)
 		}.wrap()
 
-
-	suspend fun loginFas(token: String, groupId: String? = null): HttpResponse<JwtResponse> =
-			post {
+	suspend fun loginFas(
+		token: String,
+		groupId: String? = null,
+	): HttpResponse<JwtResponse> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","auth","login","be.fas")
+				appendPathSegments("rest", "v2", "auth", "login", "be.fas")
 				parameter("groupId", groupId)
 			}
 			contentType(ContentType.Application.Json)
 			header("token", token)
 		}.wrap()
 
-
-	suspend fun invalidateRefreshJWT(refreshToken: String): HttpResponse<Unit> = post {
+	suspend fun invalidateRefreshJWT(refreshToken: String): HttpResponse<Unit> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","auth","invalidate")
+				appendPathSegments("rest", "v2", "auth", "invalidate")
 			}
 			contentType(ContentType.Application.Json)
 			header("Refresh-Token", refreshToken)
 		}.wrap()
 
 	// endregion
-
 }

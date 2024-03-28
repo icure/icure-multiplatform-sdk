@@ -8,5 +8,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 class AlwaysPredicate() : Predicate {
 	// region AlwaysPredicate-AlwaysPredicate
+
 	// endregion
 }

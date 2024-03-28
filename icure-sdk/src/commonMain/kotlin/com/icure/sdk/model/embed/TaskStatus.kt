@@ -8,13 +8,15 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class TaskStatus() {
-  @SerialName("pending")
-  Pending,
-  @SerialName("ongoing")
-  Ongoing,
-  @SerialName("cancelled")
-  Cancelled,
-  @SerialName("completed")
-  Completed,
+	@SerialName("pending")
+	Pending,
 
+	@SerialName("ongoing")
+	Ongoing,
+
+	@SerialName("cancelled")
+	Cancelled,
+
+	@SerialName("completed")
+	Completed,
 }

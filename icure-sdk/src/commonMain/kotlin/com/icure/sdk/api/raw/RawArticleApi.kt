@@ -3,9 +3,8 @@ package com.icure.sdk.api.raw
 import com.icure.sdk.auth.services.AuthService
 import com.icure.sdk.auth.services.setAuthorizationWith
 import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
-import com.icure.sdk.model.Article
-import com.icure.sdk.model.EncryptedArticle
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
+import com.icure.sdk.model.EncryptedArticle
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
@@ -35,70 +34,71 @@ class RawArticleApi(
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
-
-	override suspend fun getAccessControlKeysHeaderValues(): List<String>? =
-			accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithEncryptionMetadataTypeName.Article)
-
 	// region common endpoints
 
-	suspend fun createArticle(articleDto: Article): HttpResponse<EncryptedArticle> = post {
+	override suspend fun getAccessControlKeysHeaderValues(): List<String>? =
+		accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithEncryptionMetadataTypeName.Article)
+
+	suspend fun createArticle(articleDto: EncryptedArticle): HttpResponse<EncryptedArticle> =
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","article")
+				appendPathSegments("rest", "v2", "article")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(articleDto)
 		}.wrap()
 
-
 	suspend fun deleteArticles(articleIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
-			post {
+		post {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","article","delete","batch")
+				appendPathSegments("rest", "v2", "article", "delete", "batch")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(articleIds)
 		}.wrap()
 
-
-	suspend fun deleteArticle(articleId: String): HttpResponse<DocIdentifier> = delete {
+	suspend fun deleteArticle(articleId: String): HttpResponse<DocIdentifier> =
+		delete {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","article",articleId)
+				appendPathSegments("rest", "v2", "article", articleId)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun getArticle(articleId: String): HttpResponse<EncryptedArticle> = get {
+	suspend fun getArticle(articleId: String): HttpResponse<EncryptedArticle> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","article",articleId)
+				appendPathSegments("rest", "v2", "article", articleId)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun modifyArticle(articleDto: Article): HttpResponse<EncryptedArticle> = put {
+	suspend fun modifyArticle(articleDto: EncryptedArticle): HttpResponse<EncryptedArticle> =
+		put {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","article")
+				appendPathSegments("rest", "v2", "article")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(articleDto)
 		}.wrap()
 
-
-	suspend fun getArticles(startDocumentId: String? = null, limit: Int? = null):
-			HttpResponse<PaginatedList<EncryptedArticle, JsonString>> = get {
+	suspend fun getArticles(
+		startDocumentId: String? = null,
+		limit: Int? = null,
+	): HttpResponse<PaginatedList<EncryptedArticle, JsonString>> =
+		get {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","article")
+				appendPathSegments("rest", "v2", "article")
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
 				parameter("ts", GMTDate().timestamp)
@@ -106,12 +106,11 @@ class RawArticleApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams):
-			HttpResponse<List<EntityBulkShareResult<EncryptedArticle>>> = put {
+	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<EncryptedArticle>>> =
+		put {
 			url {
 				host = apiUrl
-				appendPathSegments("rest","v2","article","bulkSharedMetadataUpdate")
+				appendPathSegments("rest", "v2", "article", "bulkSharedMetadataUpdate")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
@@ -119,5 +118,4 @@ class RawArticleApi(
 		}.wrap()
 
 	// endregion
-
 }
