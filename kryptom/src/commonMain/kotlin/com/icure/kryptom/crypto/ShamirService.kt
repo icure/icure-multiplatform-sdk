@@ -1,904 +1,331 @@
-/*
- * Copyright © 2020 Suraj Tiwari (surajtiwari020@gmail.com)
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-/*
- * Original repo: https://github.com/Suraj-Tiwari/ShamirSecretSharing
- * Changes:
- * - Adapted for multiplatform and use of kryptom version of SecureRandom
- * - Single file
- */
-
 package com.icure.kryptom.crypto
-
-import kotlin.collections.HashMap
-import kotlin.experimental.xor
 
 class ShamirService(
 	private val random: StrongRandom
 ) {
-	private fun generate(degree: Int, x: Byte): ByteArray {
-		val p = ByteArray(degree + 1)
-		do {
-			random.fill(p)
-		} while (GF256.degree(p) != degree)
-		p[0] = x
-		return p
-	}
+	private companion object {
+		private const val bits = 8 // default number of bits
+		private const val radix = 16 // work with HEX by default
+		private const val size = 2.shl(bits - 1) // 2^bits
+		private const val max = 2.shl(bits - 1) - 1 // 2^bits - 1
+		private const val minBits = 3
+		private const val maxBits = 16 // this permits up to 65,535 shares
+		private const val bytesPerChar = 2
+		private const val maxBytesPerChar = 6 // Math.pow(256,7) > Math.pow(2,53)
 
-	fun generateKeys(secret: ByteArray, totalKeys: Int, minKeys: Int): Map<Int, ByteArray> {
-		val values = Array(totalKeys) { ByteArray(secret.size) }
-		for (i in secret.indices) {
-			val p = generate(minKeys - 1, secret[i])
-			for (x in 1..totalKeys) {
-				values[x - 1][i] = GF256.eval(p, x.toByte())
-			}
-		}
-		val parts = HashMap<Int, ByteArray>(totalKeys)
-		for (i in values.indices) {
-			parts[i + 1] = values[i]
-		}
-		return parts.toMap()
-	}
+		// Primitive polynomials (in decimal form) for Galois Fields GF(2^n), for 2 <= n <= 30
+		// The index of each term in the array corresponds to the n for that polynomial
+		// i.e. to get the polynomial for n=16, use primitivePolynomials[16]
+		private val primitivePolynomials = arrayOf(
+			null,
+			null,
+			1,
+			3,
+			3,
+			5,
+			3,
+			3,
+			29,
+			17,
+			9,
+			5,
+			83,
+			27,
+			43,
+			3,
+			45,
+			9,
+			39,
+			39,
+			9,
+			5,
+			3,
+			33,
+			27,
+			9,
+			71,
+			39,
+			9,
+			5,
+			83
+		)
+		private val logs = IntArray(size)
+		private val exps = IntArray(size)
 
-	fun getSecret(parts: Map<Int, ByteArray>): ByteArray {
-		if (parts.size < 0) {
-			println("Invalid Secrets")
-			throw NullPointerException()
-		}
-		val lengths = parts.values.map { v -> v.size }.distinct().toIntArray()
-		if (lengths.size != 1) {
-			println("Invalid length")
-			throw NullPointerException()
-		}
-		val secret = ByteArray(lengths[0])
-		for (i in secret.indices) {
-			val points = Array<ByteArray>(parts.size) { ByteArray(2) }
-			for ((j, part) in parts.entries.withIndex()) {
-				points[j][0] = part.key.toByte()
-				points[j][1] = part.value[i]
-			}
-			secret[i] = GF256.interpolate(points)
-		}
-		return secret
-	}
-}
+		init {
+			val primitive = primitivePolynomials[bits]!!
 
-private object GF256 {
-	private val ALPHA = byteArrayOf(
-		0xff.toByte(),
-		0x00.toByte(),
-		0x19.toByte(),
-		0x01.toByte(),
-		0x32.toByte(),
-		0x02.toByte(),
-		0x1a.toByte(),
-		0xc6.toByte(),
-		0x4b.toByte(),
-		0xc7.toByte(),
-		0x1b.toByte(),
-		0x68.toByte(),
-		0x33.toByte(),
-		0xee.toByte(),
-		0xdf.toByte(),
-		0x03.toByte(),
-		0x64.toByte(),
-		0x04.toByte(),
-		0xe0.toByte(),
-		0x0e.toByte(),
-		0x34.toByte(),
-		0x8d.toByte(),
-		0x81.toByte(),
-		0xef.toByte(),
-		0x4c.toByte(),
-		0x71.toByte(),
-		0x08.toByte(),
-		0xc8.toByte(),
-		0xf8.toByte(),
-		0x69.toByte(),
-		0x1c.toByte(),
-		0xc1.toByte(),
-		0x7d.toByte(),
-		0xc2.toByte(),
-		0x1d.toByte(),
-		0xb5.toByte(),
-		0xf9.toByte(),
-		0xb9.toByte(),
-		0x27.toByte(),
-		0x6a.toByte(),
-		0x4d.toByte(),
-		0xe4.toByte(),
-		0xa6.toByte(),
-		0x72.toByte(),
-		0x9a.toByte(),
-		0xc9.toByte(),
-		0x09.toByte(),
-		0x78.toByte(),
-		0x65.toByte(),
-		0x2f.toByte(),
-		0x8a.toByte(),
-		0x05.toByte(),
-		0x21.toByte(),
-		0x0f.toByte(),
-		0xe1.toByte(),
-		0x24.toByte(),
-		0x12.toByte(),
-		0xf0.toByte(),
-		0x82.toByte(),
-		0x45.toByte(),
-		0x35.toByte(),
-		0x93.toByte(),
-		0xda.toByte(),
-		0x8e.toByte(),
-		0x96.toByte(),
-		0x8f.toByte(),
-		0xdb.toByte(),
-		0xbd.toByte(),
-		0x36.toByte(),
-		0xd0.toByte(),
-		0xce.toByte(),
-		0x94.toByte(),
-		0x13.toByte(),
-		0x5c.toByte(),
-		0xd2.toByte(),
-		0xf1.toByte(),
-		0x40.toByte(),
-		0x46.toByte(),
-		0x83.toByte(),
-		0x38.toByte(),
-		0x66.toByte(),
-		0xdd.toByte(),
-		0xfd.toByte(),
-		0x30.toByte(),
-		0xbf.toByte(),
-		0x06.toByte(),
-		0x8b.toByte(),
-		0x62.toByte(),
-		0xb3.toByte(),
-		0x25.toByte(),
-		0xe2.toByte(),
-		0x98.toByte(),
-		0x22.toByte(),
-		0x88.toByte(),
-		0x91.toByte(),
-		0x10.toByte(),
-		0x7e.toByte(),
-		0x6e.toByte(),
-		0x48.toByte(),
-		0xc3.toByte(),
-		0xa3.toByte(),
-		0xb6.toByte(),
-		0x1e.toByte(),
-		0x42.toByte(),
-		0x3a.toByte(),
-		0x6b.toByte(),
-		0x28.toByte(),
-		0x54.toByte(),
-		0xfa.toByte(),
-		0x85.toByte(),
-		0x3d.toByte(),
-		0xba.toByte(),
-		0x2b.toByte(),
-		0x79.toByte(),
-		0x0a.toByte(),
-		0x15.toByte(),
-		0x9b.toByte(),
-		0x9f.toByte(),
-		0x5e.toByte(),
-		0xca.toByte(),
-		0x4e.toByte(),
-		0xd4.toByte(),
-		0xac.toByte(),
-		0xe5.toByte(),
-		0xf3.toByte(),
-		0x73.toByte(),
-		0xa7.toByte(),
-		0x57.toByte(),
-		0xaf.toByte(),
-		0x58.toByte(),
-		0xa8.toByte(),
-		0x50.toByte(),
-		0xf4.toByte(),
-		0xea.toByte(),
-		0xd6.toByte(),
-		0x74.toByte(),
-		0x4f.toByte(),
-		0xae.toByte(),
-		0xe9.toByte(),
-		0xd5.toByte(),
-		0xe7.toByte(),
-		0xe6.toByte(),
-		0xad.toByte(),
-		0xe8.toByte(),
-		0x2c.toByte(),
-		0xd7.toByte(),
-		0x75.toByte(),
-		0x7a.toByte(),
-		0xeb.toByte(),
-		0x16.toByte(),
-		0x0b.toByte(),
-		0xf5.toByte(),
-		0x59.toByte(),
-		0xcb.toByte(),
-		0x5f.toByte(),
-		0xb0.toByte(),
-		0x9c.toByte(),
-		0xa9.toByte(),
-		0x51.toByte(),
-		0xa0.toByte(),
-		0x7f.toByte(),
-		0x0c.toByte(),
-		0xf6.toByte(),
-		0x6f.toByte(),
-		0x17.toByte(),
-		0xc4.toByte(),
-		0x49.toByte(),
-		0xec.toByte(),
-		0xd8.toByte(),
-		0x43.toByte(),
-		0x1f.toByte(),
-		0x2d.toByte(),
-		0xa4.toByte(),
-		0x76.toByte(),
-		0x7b.toByte(),
-		0xb7.toByte(),
-		0xcc.toByte(),
-		0xbb.toByte(),
-		0x3e.toByte(),
-		0x5a.toByte(),
-		0xfb.toByte(),
-		0x60.toByte(),
-		0xb1.toByte(),
-		0x86.toByte(),
-		0x3b.toByte(),
-		0x52.toByte(),
-		0xa1.toByte(),
-		0x6c.toByte(),
-		0xaa.toByte(),
-		0x55.toByte(),
-		0x29.toByte(),
-		0x9d.toByte(),
-		0x97.toByte(),
-		0xb2.toByte(),
-		0x87.toByte(),
-		0x90.toByte(),
-		0x61.toByte(),
-		0xbe.toByte(),
-		0xdc.toByte(),
-		0xfc.toByte(),
-		0xbc.toByte(),
-		0x95.toByte(),
-		0xcf.toByte(),
-		0xcd.toByte(),
-		0x37.toByte(),
-		0x3f.toByte(),
-		0x5b.toByte(),
-		0xd1.toByte(),
-		0x53.toByte(),
-		0x39.toByte(),
-		0x84.toByte(),
-		0x3c.toByte(),
-		0x41.toByte(),
-		0xa2.toByte(),
-		0x6d.toByte(),
-		0x47.toByte(),
-		0x14.toByte(),
-		0x2a.toByte(),
-		0x9e.toByte(),
-		0x5d.toByte(),
-		0x56.toByte(),
-		0xf2.toByte(),
-		0xd3.toByte(),
-		0xab.toByte(),
-		0x44.toByte(),
-		0x11.toByte(),
-		0x92.toByte(),
-		0xd9.toByte(),
-		0x23.toByte(),
-		0x20.toByte(),
-		0x2e.toByte(),
-		0x89.toByte(),
-		0xb4.toByte(),
-		0x7c.toByte(),
-		0xb8.toByte(),
-		0x26.toByte(),
-		0x77.toByte(),
-		0x99.toByte(),
-		0xe3.toByte(),
-		0xa5.toByte(),
-		0x67.toByte(),
-		0x4a.toByte(),
-		0xed.toByte(),
-		0xde.toByte(),
-		0xc5.toByte(),
-		0x31.toByte(),
-		0xfe.toByte(),
-		0x18.toByte(),
-		0x0d.toByte(),
-		0x63.toByte(),
-		0x8c.toByte(),
-		0x80.toByte(),
-		0xc0.toByte(),
-		0xf7.toByte(),
-		0x70.toByte(),
-		0x07.toByte()
-	).also { println("ALPHA: " + it.size) }
-	private val BETA = byteArrayOf(
-		0x01.toByte(),
-		0x03.toByte(),
-		0x05.toByte(),
-		0x0f.toByte(),
-		0x11.toByte(),
-		0x33.toByte(),
-		0x55.toByte(),
-		0xff.toByte(),
-		0x1a.toByte(),
-		0x2e.toByte(),
-		0x72.toByte(),
-		0x96.toByte(),
-		0xa1.toByte(),
-		0xf8.toByte(),
-		0x13.toByte(),
-		0x35.toByte(),
-		0x5f.toByte(),
-		0xe1.toByte(),
-		0x38.toByte(),
-		0x48.toByte(),
-		0xd8.toByte(),
-		0x73.toByte(),
-		0x95.toByte(),
-		0xa4.toByte(),
-		0xf7.toByte(),
-		0x02.toByte(),
-		0x06.toByte(),
-		0x0a.toByte(),
-		0x1e.toByte(),
-		0x22.toByte(),
-		0x66.toByte(),
-		0xaa.toByte(),
-		0xe5.toByte(),
-		0x34.toByte(),
-		0x5c.toByte(),
-		0xe4.toByte(),
-		0x37.toByte(),
-		0x59.toByte(),
-		0xeb.toByte(),
-		0x26.toByte(),
-		0x6a.toByte(),
-		0xbe.toByte(),
-		0xd9.toByte(),
-		0x70.toByte(),
-		0x90.toByte(),
-		0xab.toByte(),
-		0xe6.toByte(),
-		0x31.toByte(),
-		0x53.toByte(),
-		0xf5.toByte(),
-		0x04.toByte(),
-		0x0c.toByte(),
-		0x14.toByte(),
-		0x3c.toByte(),
-		0x44.toByte(),
-		0xcc.toByte(),
-		0x4f.toByte(),
-		0xd1.toByte(),
-		0x68.toByte(),
-		0xb8.toByte(),
-		0xd3.toByte(),
-		0x6e.toByte(),
-		0xb2.toByte(),
-		0xcd.toByte(),
-		0x4c.toByte(),
-		0xd4.toByte(),
-		0x67.toByte(),
-		0xa9.toByte(),
-		0xe0.toByte(),
-		0x3b.toByte(),
-		0x4d.toByte(),
-		0xd7.toByte(),
-		0x62.toByte(),
-		0xa6.toByte(),
-		0xf1.toByte(),
-		0x08.toByte(),
-		0x18.toByte(),
-		0x28.toByte(),
-		0x78.toByte(),
-		0x88.toByte(),
-		0x83.toByte(),
-		0x9e.toByte(),
-		0xb9.toByte(),
-		0xd0.toByte(),
-		0x6b.toByte(),
-		0xbd.toByte(),
-		0xdc.toByte(),
-		0x7f.toByte(),
-		0x81.toByte(),
-		0x98.toByte(),
-		0xb3.toByte(),
-		0xce.toByte(),
-		0x49.toByte(),
-		0xdb.toByte(),
-		0x76.toByte(),
-		0x9a.toByte(),
-		0xb5.toByte(),
-		0xc4.toByte(),
-		0x57.toByte(),
-		0xf9.toByte(),
-		0x10.toByte(),
-		0x30.toByte(),
-		0x50.toByte(),
-		0xf0.toByte(),
-		0x0b.toByte(),
-		0x1d.toByte(),
-		0x27.toByte(),
-		0x69.toByte(),
-		0xbb.toByte(),
-		0xd6.toByte(),
-		0x61.toByte(),
-		0xa3.toByte(),
-		0xfe.toByte(),
-		0x19.toByte(),
-		0x2b.toByte(),
-		0x7d.toByte(),
-		0x87.toByte(),
-		0x92.toByte(),
-		0xad.toByte(),
-		0xec.toByte(),
-		0x2f.toByte(),
-		0x71.toByte(),
-		0x93.toByte(),
-		0xae.toByte(),
-		0xe9.toByte(),
-		0x20.toByte(),
-		0x60.toByte(),
-		0xa0.toByte(),
-		0xfb.toByte(),
-		0x16.toByte(),
-		0x3a.toByte(),
-		0x4e.toByte(),
-		0xd2.toByte(),
-		0x6d.toByte(),
-		0xb7.toByte(),
-		0xc2.toByte(),
-		0x5d.toByte(),
-		0xe7.toByte(),
-		0x32.toByte(),
-		0x56.toByte(),
-		0xfa.toByte(),
-		0x15.toByte(),
-		0x3f.toByte(),
-		0x41.toByte(),
-		0xc3.toByte(),
-		0x5e.toByte(),
-		0xe2.toByte(),
-		0x3d.toByte(),
-		0x47.toByte(),
-		0xc9.toByte(),
-		0x40.toByte(),
-		0xc0.toByte(),
-		0x5b.toByte(),
-		0xed.toByte(),
-		0x2c.toByte(),
-		0x74.toByte(),
-		0x9c.toByte(),
-		0xbf.toByte(),
-		0xda.toByte(),
-		0x75.toByte(),
-		0x9f.toByte(),
-		0xba.toByte(),
-		0xd5.toByte(),
-		0x64.toByte(),
-		0xac.toByte(),
-		0xef.toByte(),
-		0x2a.toByte(),
-		0x7e.toByte(),
-		0x82.toByte(),
-		0x9d.toByte(),
-		0xbc.toByte(),
-		0xdf.toByte(),
-		0x7a.toByte(),
-		0x8e.toByte(),
-		0x89.toByte(),
-		0x80.toByte(),
-		0x9b.toByte(),
-		0xb6.toByte(),
-		0xc1.toByte(),
-		0x58.toByte(),
-		0xe8.toByte(),
-		0x23.toByte(),
-		0x65.toByte(),
-		0xaf.toByte(),
-		0xea.toByte(),
-		0x25.toByte(),
-		0x6f.toByte(),
-		0xb1.toByte(),
-		0xc8.toByte(),
-		0x43.toByte(),
-		0xc5.toByte(),
-		0x54.toByte(),
-		0xfc.toByte(),
-		0x1f.toByte(),
-		0x21.toByte(),
-		0x63.toByte(),
-		0xa5.toByte(),
-		0xf4.toByte(),
-		0x07.toByte(),
-		0x09.toByte(),
-		0x1b.toByte(),
-		0x2d.toByte(),
-		0x77.toByte(),
-		0x99.toByte(),
-		0xb0.toByte(),
-		0xcb.toByte(),
-		0x46.toByte(),
-		0xca.toByte(),
-		0x45.toByte(),
-		0xcf.toByte(),
-		0x4a.toByte(),
-		0xde.toByte(),
-		0x79.toByte(),
-		0x8b.toByte(),
-		0x86.toByte(),
-		0x91.toByte(),
-		0xa8.toByte(),
-		0xe3.toByte(),
-		0x3e.toByte(),
-		0x42.toByte(),
-		0xc6.toByte(),
-		0x51.toByte(),
-		0xf3.toByte(),
-		0x0e.toByte(),
-		0x12.toByte(),
-		0x36.toByte(),
-		0x5a.toByte(),
-		0xee.toByte(),
-		0x29.toByte(),
-		0x7b.toByte(),
-		0x8d.toByte(),
-		0x8c.toByte(),
-		0x8f.toByte(),
-		0x8a.toByte(),
-		0x85.toByte(),
-		0x94.toByte(),
-		0xa7.toByte(),
-		0xf2.toByte(),
-		0x0d.toByte(),
-		0x17.toByte(),
-		0x39.toByte(),
-		0x4b.toByte(),
-		0xdd.toByte(),
-		0x7c.toByte(),
-		0x84.toByte(),
-		0x97.toByte(),
-		0xa2.toByte(),
-		0xfd.toByte(),
-		0x1c.toByte(),
-		0x24.toByte(),
-		0x6c.toByte(),
-		0xb4.toByte(),
-		0xc7.toByte(),
-		0x52.toByte(),
-		0xf6.toByte(),
-		0x01.toByte(),
-		0x03.toByte(),
-		0x05.toByte(),
-		0x0f.toByte(),
-		0x11.toByte(),
-		0x33.toByte(),
-		0x55.toByte(),
-		0xff.toByte(),
-		0x1a.toByte(),
-		0x2e.toByte(),
-		0x72.toByte(),
-		0x96.toByte(),
-		0xa1.toByte(),
-		0xf8.toByte(),
-		0x13.toByte(),
-		0x35.toByte(),
-		0x5f.toByte(),
-		0xe1.toByte(),
-		0x38.toByte(),
-		0x48.toByte(),
-		0xd8.toByte(),
-		0x73.toByte(),
-		0x95.toByte(),
-		0xa4.toByte(),
-		0xf7.toByte(),
-		0x02.toByte(),
-		0x06.toByte(),
-		0x0a.toByte(),
-		0x1e.toByte(),
-		0x22.toByte(),
-		0x66.toByte(),
-		0xaa.toByte(),
-		0xe5.toByte(),
-		0x34.toByte(),
-		0x5c.toByte(),
-		0xe4.toByte(),
-		0x37.toByte(),
-		0x59.toByte(),
-		0xeb.toByte(),
-		0x26.toByte(),
-		0x6a.toByte(),
-		0xbe.toByte(),
-		0xd9.toByte(),
-		0x70.toByte(),
-		0x90.toByte(),
-		0xab.toByte(),
-		0xe6.toByte(),
-		0x31.toByte(),
-		0x53.toByte(),
-		0xf5.toByte(),
-		0x04.toByte(),
-		0x0c.toByte(),
-		0x14.toByte(),
-		0x3c.toByte(),
-		0x44.toByte(),
-		0xcc.toByte(),
-		0x4f.toByte(),
-		0xd1.toByte(),
-		0x68.toByte(),
-		0xb8.toByte(),
-		0xd3.toByte(),
-		0x6e.toByte(),
-		0xb2.toByte(),
-		0xcd.toByte(),
-		0x4c.toByte(),
-		0xd4.toByte(),
-		0x67.toByte(),
-		0xa9.toByte(),
-		0xe0.toByte(),
-		0x3b.toByte(),
-		0x4d.toByte(),
-		0xd7.toByte(),
-		0x62.toByte(),
-		0xa6.toByte(),
-		0xf1.toByte(),
-		0x08.toByte(),
-		0x18.toByte(),
-		0x28.toByte(),
-		0x78.toByte(),
-		0x88.toByte(),
-		0x83.toByte(),
-		0x9e.toByte(),
-		0xb9.toByte(),
-		0xd0.toByte(),
-		0x6b.toByte(),
-		0xbd.toByte(),
-		0xdc.toByte(),
-		0x7f.toByte(),
-		0x81.toByte(),
-		0x98.toByte(),
-		0xb3.toByte(),
-		0xce.toByte(),
-		0x49.toByte(),
-		0xdb.toByte(),
-		0x76.toByte(),
-		0x9a.toByte(),
-		0xb5.toByte(),
-		0xc4.toByte(),
-		0x57.toByte(),
-		0xf9.toByte(),
-		0x10.toByte(),
-		0x30.toByte(),
-		0x50.toByte(),
-		0xf0.toByte(),
-		0x0b.toByte(),
-		0x1d.toByte(),
-		0x27.toByte(),
-		0x69.toByte(),
-		0xbb.toByte(),
-		0xd6.toByte(),
-		0x61.toByte(),
-		0xa3.toByte(),
-		0xfe.toByte(),
-		0x19.toByte(),
-		0x2b.toByte(),
-		0x7d.toByte(),
-		0x87.toByte(),
-		0x92.toByte(),
-		0xad.toByte(),
-		0xec.toByte(),
-		0x2f.toByte(),
-		0x71.toByte(),
-		0x93.toByte(),
-		0xae.toByte(),
-		0xe9.toByte(),
-		0x20.toByte(),
-		0x60.toByte(),
-		0xa0.toByte(),
-		0xfb.toByte(),
-		0x16.toByte(),
-		0x3a.toByte(),
-		0x4e.toByte(),
-		0xd2.toByte(),
-		0x6d.toByte(),
-		0xb7.toByte(),
-		0xc2.toByte(),
-		0x5d.toByte(),
-		0xe7.toByte(),
-		0x32.toByte(),
-		0x56.toByte(),
-		0xfa.toByte(),
-		0x15.toByte(),
-		0x3f.toByte(),
-		0x41.toByte(),
-		0xc3.toByte(),
-		0x5e.toByte(),
-		0xe2.toByte(),
-		0x3d.toByte(),
-		0x47.toByte(),
-		0xc9.toByte(),
-		0x40.toByte(),
-		0xc0.toByte(),
-		0x5b.toByte(),
-		0xed.toByte(),
-		0x2c.toByte(),
-		0x74.toByte(),
-		0x9c.toByte(),
-		0xbf.toByte(),
-		0xda.toByte(),
-		0x75.toByte(),
-		0x9f.toByte(),
-		0xba.toByte(),
-		0xd5.toByte(),
-		0x64.toByte(),
-		0xac.toByte(),
-		0xef.toByte(),
-		0x2a.toByte(),
-		0x7e.toByte(),
-		0x82.toByte(),
-		0x9d.toByte(),
-		0xbc.toByte(),
-		0xdf.toByte(),
-		0x7a.toByte(),
-		0x8e.toByte(),
-		0x89.toByte(),
-		0x80.toByte(),
-		0x9b.toByte(),
-		0xb6.toByte(),
-		0xc1.toByte(),
-		0x58.toByte(),
-		0xe8.toByte(),
-		0x23.toByte(),
-		0x65.toByte(),
-		0xaf.toByte(),
-		0xea.toByte(),
-		0x25.toByte(),
-		0x6f.toByte(),
-		0xb1.toByte(),
-		0xc8.toByte(),
-		0x43.toByte(),
-		0xc5.toByte(),
-		0x54.toByte(),
-		0xfc.toByte(),
-		0x1f.toByte(),
-		0x21.toByte(),
-		0x63.toByte(),
-		0xa5.toByte(),
-		0xf4.toByte(),
-		0x07.toByte(),
-		0x09.toByte(),
-		0x1b.toByte(),
-		0x2d.toByte(),
-		0x77.toByte(),
-		0x99.toByte(),
-		0xb0.toByte(),
-		0xcb.toByte(),
-		0x46.toByte(),
-		0xca.toByte(),
-		0x45.toByte(),
-		0xcf.toByte(),
-		0x4a.toByte(),
-		0xde.toByte(),
-		0x79.toByte(),
-		0x8b.toByte(),
-		0x86.toByte(),
-		0x91.toByte(),
-		0xa8.toByte(),
-		0xe3.toByte(),
-		0x3e.toByte(),
-		0x42.toByte(),
-		0xc6.toByte(),
-		0x51.toByte(),
-		0xf3.toByte(),
-		0x0e.toByte(),
-		0x12.toByte(),
-		0x36.toByte(),
-		0x5a.toByte(),
-		0xee.toByte(),
-		0x29.toByte(),
-		0x7b.toByte(),
-		0x8d.toByte(),
-		0x8c.toByte(),
-		0x8f.toByte(),
-		0x8a.toByte(),
-		0x85.toByte(),
-		0x94.toByte(),
-		0xa7.toByte(),
-		0xf2.toByte(),
-		0x0d.toByte(),
-		0x17.toByte(),
-		0x39.toByte(),
-		0x4b.toByte(),
-		0xdd.toByte(),
-		0x7c.toByte(),
-		0x84.toByte(),
-		0x97.toByte(),
-		0xa2.toByte(),
-		0xfd.toByte(),
-		0x1c.toByte(),
-		0x24.toByte(),
-		0x6c.toByte(),
-		0xb4.toByte(),
-		0xc7.toByte(),
-		0x52.toByte(),
-		0xf6.toByte()
-	).also { println("BETA: " + it.size) }
-
-	fun add(a: Byte, b: Byte): Byte {
-		return (a xor b)
-	}
-
-	fun sub(a: Byte, b: Byte): Byte {
-		return add(a, b)
-	}
-
-	fun mul(a: Byte, b: Byte): Byte {
-		if (a.toInt() == 0 || b.toInt() == 0) {
-			return 0
-		}
-		return BETA[ALPHA[a.toUByte().toInt()].toUByte().toInt() + ALPHA[b.toUByte().toInt()].toUByte().toInt()]
-	}
-
-	fun div(a: Byte, b: Byte): Byte {
-		return mul(a, BETA[255 - ALPHA[b.toUByte().toInt()].toUByte().toInt()])
-	}
-
-	fun eval(p: ByteArray, x: Byte): Byte {
-		var result: Byte = 0
-		for (i in p.indices.reversed()) {
-			result = add(mul(result, x), p[i])
-		}
-		return result
-	}
-
-	fun degree(p: ByteArray): Int {
-		for (i in p.size - 1 downTo 1) {
-			if (p[i].toInt() != 0) {
-				return i
-			}
-		}
-		return 0
-	}
-
-	fun interpolate(points: Array<ByteArray>): Byte {
-		val x: Byte = 0
-		var y: Byte = 0
-		for (i in points.indices) {
-			val aX = points[i][0]
-			val aY = points[i][1]
-			var li: Byte = 1
-			for (j in points.indices) {
-				val bX = points[j][0]
-				if (i != j) {
-					li = mul(li, div(sub(x, bX), sub(aX, bX)))
+			var x = 1
+			for (i in 0 until size) {
+				exps[i] = x
+				logs[x] = i
+				x = x.shl(1)
+				if (x >= size) {
+					x = x.xor(primitive)
+					x = x.and(max)
 				}
 			}
-			y = add(y, mul(li, aY))
 		}
-		return y
+	}
+
+	/**
+	 * Splits a number string `bits`-length segments, after first
+	 * optionally zero-padding it to a length that is a multiple of `padLength.
+	 * Returns array of integers (each less than 2^bits-1), with each element
+	 * representing a `bits`-length segment of the input string from right to left,
+	 * i.e. parts[0] represents the right-most `bits`-length segment of the input string.
+	 */
+	private fun split(str: String, padLength: Int = 0): List<Int> {
+		val paddedStr = if (padLength != 0) {
+			padLeft(str, padLength)
+		} else str
+		val parts = mutableListOf<Int>()
+		var i = paddedStr.length
+		while (i > bits) {
+			parts.add(paddedStr.substring(i - bits, i).toInt(2))
+			i -= bits
+		}
+		parts.add(paddedStr.substring(0, i).toInt(2))
+		return parts
+	}
+
+	private fun padLeft(str: String, bits: Int = ShamirService.bits): String {
+		val missing = str.length % bits
+		return if (missing > 0) {
+			"0".repeat(bits - missing) + str
+		} else str
+	}
+
+	private fun bin2hex(str: String): String {
+		val hexSb = StringBuilder()
+		val paddedStr = padLeft(str, 4)
+		for (i in 4..paddedStr.length step 4) {
+			hexSb.append(
+				when (paddedStr.substring(i - 4, i)) {
+					"0000" -> "0"
+					"0001" -> "1"
+					"0010" -> "2"
+					"0011" -> "3"
+					"0100" -> "4"
+					"0101" -> "5"
+					"0110" -> "6"
+					"0111" -> "7"
+					"1000" -> "8"
+					"1001" -> "9"
+					"1010" -> "a"
+					"1011" -> "b"
+					"1100" -> "c"
+					"1101" -> "d"
+					"1110" -> "e"
+					"1111" -> "f"
+					else -> throw IllegalArgumentException("Invalid binary string")
+				}
+			)
+		}
+		return hexSb.toString()
+	}
+
+	private fun hex2bin(str: String): String {
+		val binSb = StringBuilder()
+		for (i in str.indices) {
+			binSb.append(
+				when (val it = str[i]) {
+					'0' -> "0000"
+					'1' -> "0001"
+					'2' -> "0010"
+					'3' -> "0011"
+					'4' -> "0100"
+					'5' -> "0101"
+					'6' -> "0110"
+					'7' -> "0111"
+					'8' -> "1000"
+					'9' -> "1001"
+					'a' -> "1010"
+					'b' -> "1011"
+					'c' -> "1100"
+					'd' -> "1101"
+					'e' -> "1110"
+					'f' -> "1111"
+					else -> throw IllegalArgumentException("Invalid hex character $it")
+				}
+			)
+		}
+		return binSb.toString()
+	}
+
+	private fun random(bits: Int): String {
+		fun construct(bits: Int, arr: ByteArray, size: Int): String? {
+			var str = ""
+			var i = 0
+			val len = arr.size - 1
+			while (i < len || str.length < bits) {
+				str += padLeft(arr[i].toUByte().toString(radix), size)
+				i++
+			}
+			str = str.substring(str.length - bits / 4)
+			return if (str.any { it != '0' }) str else null
+		}
+
+		val elems = if (bits % 32 == 0) bits / 32 else (bits / 32) + 1
+		val arr = ByteArray(elems)
+		while (true) {
+			random.fill(arr)
+			val str = construct(bits, arr, 8)
+			if (str != null) {
+				return str
+			}
+		}
+	}
+
+	fun share(secretString: String, numShares: Int, threshold: Int): List<String> {
+		if (numShares < 2 || numShares > max) {
+			throw IllegalArgumentException("Number of shares must be an integer between 2 and 2^bits-1 ($max), inclusive.")
+		}
+		if (threshold > numShares || threshold < 2) {
+			throw IllegalArgumentException("Threshold number of shares must be less than or equal to the number of shares and must be at least 2.")
+		}
+		val secret = split("1" + hex2bin(secretString), 0)
+		val x = Array(numShares) { "" }
+		val y = Array(numShares) { "" }
+		for (i in secret.indices) {
+			val subShares = getShares(secret[i], numShares, threshold)
+			for (j in 0 until numShares) {
+				x[j] = x[j].takeIf { it.isNotEmpty() } ?: subShares[j].x.toString(radix)
+				y[j] = padLeft(subShares[j].y.toString(2)) + (if (y[j].isNotEmpty()) y[j] else "")
+			}
+		}
+		val padding = max.toString(radix).length
+		return y.mapIndexed { idx, b -> bits.toString(radix) + padLeft(x[idx], padding) + bin2hex(b) }
+	}
+
+	private data class Point(val x: Int, val y: Int)
+
+	private fun getShares(secret: Int, numShares: Int, threshold: Int): List<Point> {
+		val shares = mutableListOf<Point>()
+		val coeffs = mutableListOf(secret)
+		for (i in 1 until threshold) {
+			coeffs.add(random(bits).toInt(radix))
+		}
+		for (i in 1..numShares) {
+			shares.add(
+				Point(
+					i,
+					horner(i, coeffs)
+				)
+			)
+		}
+		return shares
+	}
+
+	private fun horner(x: Int, coeffs: List<Int>): Int {
+		var fx = 0
+		for (i in (coeffs.size - 1) downTo 0) {
+			if (fx == 0) {
+				fx = coeffs[i]
+				continue
+			}
+			fx = exps[(logs[x] + logs[fx]) % max] xor coeffs[i]
+		}
+		return fx
+	}
+
+	private data class ShareInfo(
+		val bits: Int,
+		val id: Int,
+		val value: String
+	)
+
+	private fun processShare(share: String): ShareInfo {
+		val bits = when (val it = share[0]) {
+			'3' -> 3
+			'4' -> 4
+			'5' -> 5
+			'6' -> 6
+			'7' -> 7
+			'8' -> 8
+			'9' -> 9
+			'a' -> 10
+			'b' -> 11
+			'c' -> 12
+			'd' -> 13
+			'e' -> 14
+			'f' -> 15
+			else -> throw IllegalArgumentException("Invalid share: invalid number of bits $it.")
+		}
+		val max = 2.shl(bits - 1) - 1
+		val idLength = max.toString(radix).length
+
+		val id = share.drop(1).take(idLength).toInt(radix)
+		if (id < 1 || id > max) {
+			throw IllegalArgumentException("Share id must be an integer between 1 and $max, inclusive.")
+		}
+		val shareValue = share.substring(idLength + 1)
+		if (shareValue.isEmpty()) {
+			throw IllegalArgumentException("Invalid share: zero-length share.")
+		}
+		return ShareInfo(bits, id, shareValue)
+	}
+
+	fun combine(shares: List<String>) =
+		combineAt(0, shares)
+
+	private fun combineAt(at: Int, shares: List<String>): String {
+		require(shares.all { it.length == shares.first().length }) {
+			"Shares should have the same length."
+		}
+		val x = mutableListOf<Int>()
+		val y = mutableListOf<MutableList<Int>>()
+		var result = ""
+		var idx: Int
+		for (share in shares) {
+			val shareInfo = processShare(share)
+			if (x.contains(shareInfo.id)) {
+				continue
+			}
+			x.add(shareInfo.id)
+			val shareValues = split(hex2bin(shareInfo.value))
+			for (j in shareValues.indices) {
+				val curr = y.getOrNull(j) ?: if (j == y.size) mutableListOf<Int>().also { y.add(it) } else throw AssertionError("Something unexpected occurred: invalid index.")
+				curr.add(shareValues[j])
+			}
+		}
+
+		for (i in y.indices) {
+			result = padLeft(lagrange(at, x, y[i]).toString(2)) + result
+		}
+
+		if (at == 0) {
+			// reconstructing the secret
+			return bin2hex(result.drop(result.indexOf('1') + 1))
+		} else {
+			// generating a new share
+			return bin2hex(result)
+		}
+	}
+
+	private fun lagrange(at: Int, x: List<Int>, y: List<Int>): Int {
+		var sum = 0
+		var product: Int
+		for (i in x.indices) {
+			if (y[i] == 0) {
+				continue
+			}
+			product = logs[y[i]]
+			for (j in x.indices) {
+				if (i == j) {
+					continue
+				}
+				if (at == x[j]) {
+					// happens when computing a share that is in the list of shares used to compute it
+					product = -1 // fix for a zero product term, after which the sum should be sum^0 = sum, not sum^1
+					break
+				}
+				product =
+					(product + logs[at xor x[j]] - logs[x[i] xor x[j]] + max) % max
+			}
+
+			sum = if (product == -1) sum else sum xor exps[product]
+		}
+		return sum
 	}
 }

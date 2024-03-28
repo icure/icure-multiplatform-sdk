@@ -1,39 +1,57 @@
 package com.icure.kryptom.crypto
 
-import com.icure.kryptom.utils.hexToByteArray
+import com.icure.kryptom.utils.toHexString
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
 import io.ktor.utils.io.core.toByteArray
 
-@OptIn(ExperimentalStdlibApi::class)
 class ShamirServiceTest : StringSpec({
-	"Should be able to split and recombine" {
-		repeat(100) {
-			val secret = "This is a secret message."
-			val shares = defaultCryptoService.shamirService.generateKeys(
-				secret.toByteArray(),
-				5,
-				2
-			).toList().shuffled()
-			println(shares)
-			val regenerated = defaultCryptoService.shamirService.getSecret(
-				shares.drop(3).toMap()
-			)
-			println(regenerated.decodeToString())
+	val shamirService = defaultCryptoService.shamirService
+
+	fun testCombine(shares: List<String>, secret: String, threshold: Int) {
+		shamirService.combine(shares) shouldBe secret
+		repeat(10) {
+			shamirService.combine(shares.shuffled().take(threshold)) shouldBe secret
+		}
+		if (threshold > 2) {
+			repeat(10) {
+				shamirService.combine(shares.shuffled().take(threshold - 1)) shouldNotBe secret
+			}
 		}
 	}
 
-	"Test" {
-		val shares = mapOf(
-			1 to hexToByteArray("0b3247caf8a5c28a384d8aa1ef7ce36eaeb4d9f20e72db254daa98ef8c45a2484d2c521519d54af8b6c69284ff9d7938d408523baad1830a2796328d19c4fc777453dd943f4034e7fbcfd8b5711ff97cea06979de5fa4cac1c0675dc9d05663ce6e2471f2a2f6b02742acd4de22022c9d0aa232ccaa1c73117e715fbab97c7cc"),
-			2 to hexToByteArray("e76256dfcfcb4fce076d689774489838a1fe78adda01f9bbe547c69dcefdd87f84eb8149226431d7d5380152621e0988e7ce90a72036117900109a35425c8f62ea34c96dd48a26fb940fd401b2e7263dd6b4286c25ab3c24868000a21a6b1f3685d45ddb39717faf61cfeb40b1825519708dc0b34631f3397102a5f4941ac617"),
-			3 to hexToByteArray("ec501115376e8d443f20e2369b347b560f4aa15fd473229ea8ed5e7242b87a37c9c7d35c3bb17b2f63fe93d69d8370b033c6c29c8ae792732786a8b85b9873159e6714f9ebca121c6fc00cb4c3f8df413cb2bff0c03070e19ae5751d870f796363421ab7133b14cf15c5266853ca77b3a007e3fa8cfe34696686b0603fe4019f"),
-			4 to hexToByteArray("30dcebe60bc1e1bacf2149340e6a3cc7f8f78b0a96b1ba8836b61a428a2693656d3d8b0304a3cc5b1deee2a5fad8d9ca86deed30f9720a5b25a4f6a259bbb6cec11a2aa72721694bd4144cc724904f49cdaf3ce6a54bd2bcd31c8f4ec05a55245a57d1e3db7760d1dc2866e6c254ee5bf3cdbfd997876616836c51c66efdd887"),
-			5 to hexToByteArray("3beeac2cf3642330f76cc395e116dfa9564352f898c361ad7b1c82ad0663312d2011d9161d7686a3ab2870210545a0f252d6bf0b53a389510232c42f407f4ab9b549f73318615dac2fdb9472558fb63527a9ab7a40d09e79cf79faf15d3e3371bcc1968ff13d0bb1a822abce201cccf123479c905d48a14694e84452c5031f0f"),
+	"Should be able to split and recombine" {
+		listOf(
+			2 to 3,
+			3 to 5,
+			5 to 5,
+			2 to 10,
+			9 to 16,
+			10 to 255,
+		).forEach { (threshold, numberOfShares) ->
+			listOf(8, 255, 256, 257, 2048).forEach { secretLength ->
+				println("Testing $threshold of $numberOfShares with secret length $secretLength")
+				val secret = defaultCryptoService.strongRandom.randomBytes(secretLength).toHexString()
+				val shares = shamirService.share(
+					secret,
+					numberOfShares,
+					threshold
+				)
+				testCombine(shares, secret, threshold)
+			}
+		}
+	}
+
+	"Should be able to combine secrets from the original typescript SDK" {
+		val secret = "This secret was created using the og iCure typescript SDK".toByteArray().toHexString()
+		val shares = listOf(
+			"801162ab4b5061600ba382f8dcedf844961226c36e982947d306753655587ae0b069e90f8ba9580552bc18633512f18357141c48053918cdd598a74",
+			"8026116a305779d642a71b3cc2350912378f522fb36075fc19b92626c133a7d71b5197e9bdd8a5b78f7f0e7550c3a55e1c32668b242aafaad6c402a",
+			"80376687fd902ab17f52aee2499af620b6af72dbfbae4bfd9cfd5447a2fd3b45ac7ef8b430878fb449f4413037d6134a4d714cf40784b0250668e15",
+			"804e41246b2e424be6ced1ca722b6d2add9f480798663dd5ac6a92a8195903d9e7fb0c41302f04ef2bb85d84f672fbe23361d080b5ecde4928162f5",
+			"805f36c9a6e9112cdb3b6414f98492185cbf68f3d0a803d4292ee0c97a979f4b50d4631cbd702eeced3312c191674df66222faff9642c1c6f8bacca"
 		)
-		val regenerated = defaultCryptoService.shamirService.getSecret(
-			shares
-		)
-		println(regenerated.decodeToString())
+		testCombine(shares, secret, 3)
 	}
 })
