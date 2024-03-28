@@ -1,5 +1,8 @@
 package com.icure.kryptom.crypto
 
+import com.icure.kryptom.utils.hexToByteArray
+import com.icure.kryptom.utils.toHexString
+
 class ShamirService(
 	private val random: StrongRandom
 ) {
@@ -8,53 +11,15 @@ class ShamirService(
 		private const val radix = 16 // work with HEX by default
 		private const val size = 2.shl(bits - 1) // 2^bits
 		private const val max = 2.shl(bits - 1) - 1 // 2^bits - 1
-		private const val minBits = 3
-		private const val maxBits = 16 // this permits up to 65,535 shares
-		private const val bytesPerChar = 2
-		private const val maxBytesPerChar = 6 // Math.pow(256,7) > Math.pow(2,53)
 
 		// Primitive polynomials (in decimal form) for Galois Fields GF(2^n), for 2 <= n <= 30
 		// The index of each term in the array corresponds to the n for that polynomial
 		// i.e. to get the polynomial for n=16, use primitivePolynomials[16]
-		private val primitivePolynomials = arrayOf(
-			null,
-			null,
-			1,
-			3,
-			3,
-			5,
-			3,
-			3,
-			29,
-			17,
-			9,
-			5,
-			83,
-			27,
-			43,
-			3,
-			45,
-			9,
-			39,
-			39,
-			9,
-			5,
-			3,
-			33,
-			27,
-			9,
-			71,
-			39,
-			9,
-			5,
-			83
-		)
+		private val primitive = 29
 		private val logs = IntArray(size)
 		private val exps = IntArray(size)
 
 		init {
-			val primitive = primitivePolynomials[bits]!!
-
 			var x = 1
 			for (i in 0 until size) {
 				exps[i] = x
@@ -66,6 +31,46 @@ class ShamirService(
 				}
 			}
 		}
+	}
+
+	/**
+	 * Combines shares into the original secret.
+	 * @throws IllegalArgumentException occasionally if the shares provided do not form a valid secret (for example
+	 * if they are not the minimum required by the threshold).
+	 * @return the secret. Note that if the method returns there is no guarantee that the secret was correctly combined:
+	 * in some situations the method will not throw an exception but the result will be garbage.
+	 */
+	fun combine(shares: List<String>) =
+		combineAt(0, shares).let {
+			kotlin.runCatching { hexToByteArray(it) }.getOrNull()
+				?: throw IllegalArgumentException("The shares provided do not form a valid secret.")
+		}
+
+	/**
+	 * Splits a secret into `numShares` shares with a threshold of `threshold` shares required for recombination.
+	 * @return a list of shares. Passing at least `threshold` shares to [combine] will allow retrieval of the original
+	 * secret.
+	 */
+	fun share(secret: ByteArray, numShares: Int, threshold: Int): List<String> {
+		val secretString = secret.toHexString()
+		if (numShares < 2 || numShares > max) {
+			throw IllegalArgumentException("Number of shares must be an integer between 2 and 2^bits-1 ($max), inclusive.")
+		}
+		if (threshold > numShares || threshold < 2) {
+			throw IllegalArgumentException("Threshold number of shares must be less than or equal to the number of shares and must be at least 2.")
+		}
+		val splitSecret = split("1" + hex2bin(secretString), 0)
+		val x = Array(numShares) { "" }
+		val y = Array(numShares) { "" }
+		for (i in splitSecret.indices) {
+			val subShares = getShares(splitSecret[i], numShares, threshold)
+			for (j in 0 until numShares) {
+				x[j] = x[j].takeIf { it.isNotEmpty() } ?: subShares[j].x.toString(radix)
+				y[j] = padLeft(subShares[j].y.toString(2)) + (if (y[j].isNotEmpty()) y[j] else "")
+			}
+		}
+		val padding = max.toString(radix).length
+		return y.mapIndexed { idx, b -> bits.toString(radix) + padLeft(x[idx], padding) + bin2hex(b) }
 	}
 
 	/**
@@ -177,27 +182,6 @@ class ShamirService(
 		}
 	}
 
-	fun share(secretString: String, numShares: Int, threshold: Int): List<String> {
-		if (numShares < 2 || numShares > max) {
-			throw IllegalArgumentException("Number of shares must be an integer between 2 and 2^bits-1 ($max), inclusive.")
-		}
-		if (threshold > numShares || threshold < 2) {
-			throw IllegalArgumentException("Threshold number of shares must be less than or equal to the number of shares and must be at least 2.")
-		}
-		val secret = split("1" + hex2bin(secretString), 0)
-		val x = Array(numShares) { "" }
-		val y = Array(numShares) { "" }
-		for (i in secret.indices) {
-			val subShares = getShares(secret[i], numShares, threshold)
-			for (j in 0 until numShares) {
-				x[j] = x[j].takeIf { it.isNotEmpty() } ?: subShares[j].x.toString(radix)
-				y[j] = padLeft(subShares[j].y.toString(2)) + (if (y[j].isNotEmpty()) y[j] else "")
-			}
-		}
-		val padding = max.toString(radix).length
-		return y.mapIndexed { idx, b -> bits.toString(radix) + padLeft(x[idx], padding) + bin2hex(b) }
-	}
-
 	private data class Point(val x: Int, val y: Int)
 
 	private fun getShares(secret: Int, numShares: Int, threshold: Int): List<Point> {
@@ -266,9 +250,6 @@ class ShamirService(
 		return ShareInfo(bits, id, shareValue)
 	}
 
-	fun combine(shares: List<String>) =
-		combineAt(0, shares)
-
 	private fun combineAt(at: Int, shares: List<String>): String {
 		require(shares.all { it.length == shares.first().length }) {
 			"Shares should have the same length."
@@ -276,9 +257,9 @@ class ShamirService(
 		val x = mutableListOf<Int>()
 		val y = mutableListOf<MutableList<Int>>()
 		var result = ""
-		var idx: Int
 		for (share in shares) {
 			val shareInfo = processShare(share)
+			if (shareInfo.bits != bits) throw IllegalArgumentException("This method can only process shares for 8 bits")
 			if (x.contains(shareInfo.id)) {
 				continue
 			}
