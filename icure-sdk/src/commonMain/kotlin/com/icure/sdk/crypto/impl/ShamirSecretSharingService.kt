@@ -1,9 +1,11 @@
-package com.icure.kryptom.crypto
+package com.icure.sdk.crypto.impl
 
+import com.icure.kryptom.crypto.StrongRandom
 import com.icure.kryptom.utils.hexToByteArray
 import com.icure.kryptom.utils.toHexString
+import kotlin.jvm.JvmInline
 
-class ShamirService(
+class ShamirSecretSharingService(
 	private val random: StrongRandom
 ) {
 	private companion object {
@@ -40,8 +42,8 @@ class ShamirService(
 	 * @return the secret. Note that if the method returns there is no guarantee that the secret was correctly combined:
 	 * in some situations the method will not throw an exception but the result will be garbage.
 	 */
-	fun combine(shares: List<String>) =
-		combineAt(0, shares).let {
+	fun combine(shares: List<ShamirSecretShare>) =
+		combineAt(0, shares.map { it.v }).let {
 			kotlin.runCatching { hexToByteArray(it) }.getOrNull()
 				?: throw IllegalArgumentException("The shares provided do not form a valid secret.")
 		}
@@ -51,7 +53,7 @@ class ShamirService(
 	 * @return a list of shares. Passing at least `threshold` shares to [combine] will allow retrieval of the original
 	 * secret.
 	 */
-	fun share(secret: ByteArray, numShares: Int, threshold: Int): List<String> {
+	fun share(secret: ByteArray, numShares: Int, threshold: Int): List<ShamirSecretShare> {
 		val secretString = secret.toHexString()
 		if (numShares < 2 || numShares > max) {
 			throw IllegalArgumentException("Number of shares must be an integer between 2 and 2^bits-1 ($max), inclusive.")
@@ -70,7 +72,7 @@ class ShamirService(
 			}
 		}
 		val padding = max.toString(radix).length
-		return y.mapIndexed { idx, b -> bits.toString(radix) + padLeft(x[idx], padding) + bin2hex(b) }
+		return y.mapIndexed { idx, b -> ShamirSecretShare(bits.toString(radix) + padLeft(x[idx], padding) + bin2hex(b)) }
 	}
 
 	/**
@@ -94,7 +96,7 @@ class ShamirService(
 		return parts
 	}
 
-	private fun padLeft(str: String, bits: Int = ShamirService.bits): String {
+	private fun padLeft(str: String, bits: Int = Companion.bits): String {
 		val missing = str.length % bits
 		return if (missing > 0) {
 			"0".repeat(bits - missing) + str
@@ -310,3 +312,6 @@ class ShamirService(
 		return sum
 	}
 }
+
+@JvmInline
+value class ShamirSecretShare(val v: String)
