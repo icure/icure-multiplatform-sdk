@@ -8,15 +8,18 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class StateToUpdate() {
-  @SerialName("VALUE")
-  Value,
-  @SerialName("VISIBLE")
-  Visible,
-  @SerialName("READONLY")
-  Readonly,
-  @SerialName("CLAZZ")
-  Clazz,
-  @SerialName("REQUIRED")
-  Required,
+	@SerialName("VALUE")
+	Value,
 
+	@SerialName("VISIBLE")
+	Visible,
+
+	@SerialName("READONLY")
+	Readonly,
+
+	@SerialName("CLAZZ")
+	Clazz,
+
+	@SerialName("REQUIRED")
+	Required,
 }

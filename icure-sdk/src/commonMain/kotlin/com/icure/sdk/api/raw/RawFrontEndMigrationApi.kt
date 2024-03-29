@@ -5,15 +5,12 @@ import com.icure.sdk.auth.services.setAuthorizationWith
 import com.icure.sdk.model.FrontEndMigration
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.utils.InternalIcureApi
-import io.ktor.client.request.`get`
-import io.ktor.client.request.delete
 import io.ktor.client.request.parameter
-import io.ktor.client.request.post
-import io.ktor.client.request.put
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
+import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import kotlin.String
 import kotlin.collections.List
@@ -29,68 +26,63 @@ class RawFrontEndMigrationApi(
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
-
 	// region common endpoints
 
-	suspend fun getFrontEndMigrations(): HttpResponse<List<FrontEndMigration>> = get {
+	suspend fun getFrontEndMigrations(): HttpResponse<List<FrontEndMigration>> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","frontendmigration")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "frontendmigration")
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun createFrontEndMigration(frontEndMigrationDto: FrontEndMigration):
-			HttpResponse<FrontEndMigration> = post {
+	suspend fun createFrontEndMigration(frontEndMigrationDto: FrontEndMigration): HttpResponse<FrontEndMigration> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","frontendmigration")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "frontendmigration")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(frontEndMigrationDto)
 		}.wrap()
 
-
-	suspend fun deleteFrontEndMigration(frontEndMigrationId: String):
-			HttpResponse<DocIdentifier> = delete {
+	suspend fun deleteFrontEndMigration(frontEndMigrationId: String): HttpResponse<DocIdentifier> =
+		delete {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","frontendmigration",frontEndMigrationId)
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "frontendmigration", frontEndMigrationId)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun getFrontEndMigration(frontEndMigrationId: String):
-			HttpResponse<FrontEndMigration> = get {
+	suspend fun getFrontEndMigration(frontEndMigrationId: String): HttpResponse<FrontEndMigration> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","frontendmigration",frontEndMigrationId)
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "frontendmigration", frontEndMigrationId)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun getFrontEndMigrationByName(frontEndMigrationName: String):
-			HttpResponse<List<FrontEndMigration>> = get {
+	suspend fun getFrontEndMigrationByName(frontEndMigrationName: String): HttpResponse<List<FrontEndMigration>> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","frontendmigration","byName",frontEndMigrationName)
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "frontendmigration", "byName", frontEndMigrationName)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun modifyFrontEndMigration(frontEndMigrationDto: FrontEndMigration):
-			HttpResponse<FrontEndMigration> = put {
+	suspend fun modifyFrontEndMigration(frontEndMigrationDto: FrontEndMigration): HttpResponse<FrontEndMigration> =
+		put {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","frontendmigration")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "frontendmigration")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
@@ -98,5 +90,4 @@ class RawFrontEndMigrationApi(
 		}.wrap()
 
 	// endregion
-
 }

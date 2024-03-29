@@ -1,25 +1,25 @@
 package com.icure.sdk.model.embed
 
 import com.icure.sdk.model.specializations.Base64String
-import kotlin.String
 import kotlinx.serialization.Serializable
+import kotlin.String
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 
 @Serializable
 sealed interface Telecom : Encryptable {
-  public val telecomType: TelecomType?
+	public val telecomType: TelecomType?
 
-  public val telecomNumber: String?
+	public val telecomNumber: String?
 
-  public val telecomDescription: String?
+	public val telecomDescription: String?
 
-  override val encryptedSelf: Base64String?
+	override val encryptedSelf: Base64String?
 	// region Telecom-Telecom
+
 	// endregion
 }
-
 
 @Serializable
 data class DecryptedTelecom(
@@ -29,9 +29,9 @@ data class DecryptedTelecom(
 	override val encryptedSelf: Base64String? = null,
 ) : Telecom {
 	// region Telecom-DecryptedTelecom
+
 	// endregion
 }
-
 
 @Serializable
 data class EncryptedTelecom(
@@ -41,21 +41,31 @@ data class EncryptedTelecom(
 	override val encryptedSelf: Base64String? = null,
 ) : Telecom {
 	// region Telecom-EncryptedTelecom
+
 	// endregion
 }
 
 public fun Telecom.copy(
-  telecomType: TelecomType? = this.telecomType,
-  telecomNumber: String? = this.telecomNumber,
-  telecomDescription: String? = this.telecomDescription,
-  encryptedSelf: Base64String? = this.encryptedSelf,
+	telecomType: TelecomType? = this.telecomType,
+	telecomNumber: String? = this.telecomNumber,
+	telecomDescription: String? = this.telecomDescription,
+	encryptedSelf: Base64String? = this.encryptedSelf,
 ): Telecom {
-                                      return when(this) {
-                                          is DecryptedTelecom -> copy(telecomType = telecomType,
-          telecomNumber = telecomNumber, telecomDescription = telecomDescription, encryptedSelf =
-          encryptedSelf)
-      is EncryptedTelecom -> copy(telecomType = telecomType, telecomNumber = telecomNumber,
-          telecomDescription = telecomDescription, encryptedSelf = encryptedSelf)
-                                          }
-
+	return when (this) {
+		is DecryptedTelecom ->
+			copy(
+				telecomType = telecomType,
+				telecomNumber = telecomNumber,
+				telecomDescription = telecomDescription,
+				encryptedSelf =
+				encryptedSelf,
+			)
+		is EncryptedTelecom ->
+			copy(
+				telecomType = telecomType,
+				telecomNumber = telecomNumber,
+				telecomDescription = telecomDescription,
+				encryptedSelf = encryptedSelf,
+			)
+	}
 }

@@ -2,9 +2,6 @@ package com.icure.sdk.api.raw
 
 import com.icure.sdk.auth.services.AuthService
 import com.icure.sdk.auth.services.setAuthorizationWith
-import com.icure.sdk.model.Classification
-import com.icure.sdk.model.Contact
-import com.icure.sdk.model.Document
 import com.icure.sdk.model.EncryptedClassification
 import com.icure.sdk.model.EncryptedContact
 import com.icure.sdk.model.EncryptedDocument
@@ -14,29 +11,20 @@ import com.icure.sdk.model.EncryptedInvoice
 import com.icure.sdk.model.EncryptedMessage
 import com.icure.sdk.model.EncryptedPatient
 import com.icure.sdk.model.EntityTemplate
-import com.icure.sdk.model.Form
-import com.icure.sdk.model.HealthElement
-import com.icure.sdk.model.Invoice
-import com.icure.sdk.model.Message
 import com.icure.sdk.model.PaginatedList
-import com.icure.sdk.model.Patient
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.couchdb.ReplicatorDocument
 import com.icure.sdk.utils.InternalIcureApi
-import io.ktor.client.request.`get`
-import io.ktor.client.request.delete
 import io.ktor.client.request.parameter
-import io.ktor.client.request.post
-import io.ktor.client.request.put
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
+import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import io.ktor.utils.io.ByteReadChannel
 import kotlin.ByteArray
 import kotlin.Int
-import kotlin.Nothing
 import kotlin.String
 import kotlin.Unit
 import kotlin.collections.List
@@ -52,112 +40,114 @@ class RawTmpApi(
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
-
 	// region cloud endpoints
 
-	suspend fun createTmpDatabase(): HttpResponse<Unit> = post {
+	suspend fun createTmpDatabase(): HttpResponse<Unit> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 		}.wrap()
 
-
-	suspend fun destroyTmpDatabase(): HttpResponse<Unit> = delete {
+	suspend fun destroyTmpDatabase(): HttpResponse<Unit> =
+		delete {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp")
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun replicateToTmpDatabase(from: String, ids: List<String>):
-			HttpResponse<ReplicatorDocument> = post {
+	suspend fun replicateToTmpDatabase(
+		from: String,
+		ids: List<String>,
+	): HttpResponse<ReplicatorDocument> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","replicate","from",from)
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "replicate", "from", from)
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(ids)
 		}.wrap()
 
-
-	suspend fun getTmpPatient(id: String): HttpResponse<EncryptedPatient> = get {
+	suspend fun getTmpPatient(id: String): HttpResponse<EncryptedPatient> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","patient","byId",id)
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "patient", "byId", id)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun createTmpPatient(c: Patient): HttpResponse<EncryptedPatient> = post {
+	suspend fun createTmpPatient(c: EncryptedPatient): HttpResponse<EncryptedPatient> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","patient")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "patient")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(c)
 		}.wrap()
 
-
-	suspend fun modifyTmpPatient(patientDto: Patient): HttpResponse<EncryptedPatient> = put {
+	suspend fun modifyTmpPatient(patientDto: EncryptedPatient): HttpResponse<EncryptedPatient> =
+		put {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","patient")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "patient")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(patientDto)
 		}.wrap()
 
-
-	suspend fun getTmpPatients(ids: List<String>): HttpResponse<List<EncryptedPatient>> = post {
+	suspend fun getTmpPatients(ids: List<String>): HttpResponse<List<EncryptedPatient>> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","patient","get")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "patient", "get")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(ids)
 		}.wrap()
 
-
-	suspend fun modifyTmpPatients(patientDtos: List<Patient>):
-			HttpResponse<List<EncryptedPatient>> = put {
+	suspend fun modifyTmpPatients(patientDtos: List<EncryptedPatient>): HttpResponse<List<EncryptedPatient>> =
+		put {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","patient","batch")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "patient", "batch")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(patientDtos)
 		}.wrap()
 
-
-	suspend fun createTmpPatients(patientDtos: List<Patient>):
-			HttpResponse<List<EncryptedPatient>> = post {
+	suspend fun createTmpPatients(patientDtos: List<EncryptedPatient>): HttpResponse<List<EncryptedPatient>> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","patient","batch")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "patient", "batch")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(patientDtos)
 		}.wrap()
 
-
-	suspend fun listTmpPatients(firstPatientId: String? = null, pageSize: Int? = null):
-			HttpResponse<PaginatedList<EncryptedPatient, Nothing>> = get {
+	suspend fun listTmpPatients(
+		firstPatientId: String? = null,
+		pageSize: Int? = null,
+	): HttpResponse<PaginatedList<EncryptedPatient, *>> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","patient","list")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "patient", "list")
 				parameter("firstPatientId", firstPatientId)
 				parameter("pageSize", pageSize)
 				parameter("ts", GMTDate().timestamp)
@@ -165,82 +155,80 @@ class RawTmpApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun getTmpHealthElement(id: String): HttpResponse<EncryptedHealthElement> = get {
+	suspend fun getTmpHealthElement(id: String): HttpResponse<EncryptedHealthElement> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","healthElement","byId",id)
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "healthElement", "byId", id)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun createTmpHealthElement(c: HealthElement): HttpResponse<EncryptedHealthElement> =
-			post {
+	suspend fun createTmpHealthElement(c: EncryptedHealthElement): HttpResponse<EncryptedHealthElement> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","healthElement")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "healthElement")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(c)
 		}.wrap()
 
-
-	suspend fun modifyTmpHealthElement(healthElementDto: HealthElement):
-			HttpResponse<EncryptedHealthElement> = put {
+	suspend fun modifyTmpHealthElement(healthElementDto: EncryptedHealthElement): HttpResponse<EncryptedHealthElement> =
+		put {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","healthElement")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "healthElement")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(healthElementDto)
 		}.wrap()
 
-
-	suspend fun getTmpHealthElements(ids: List<String>):
-			HttpResponse<List<EncryptedHealthElement>> = post {
+	suspend fun getTmpHealthElements(ids: List<String>): HttpResponse<List<EncryptedHealthElement>> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","healthElement","get")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "healthElement", "get")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(ids)
 		}.wrap()
 
-
-	suspend fun modifyTmpHealthElements(healthElementDtos: List<HealthElement>):
-			HttpResponse<List<EncryptedHealthElement>> = put {
+	suspend fun modifyTmpHealthElements(healthElementDtos: List<EncryptedHealthElement>): HttpResponse<List<EncryptedHealthElement>> =
+		put {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","healthElement","batch")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "healthElement", "batch")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(healthElementDtos)
 		}.wrap()
 
-
-	suspend fun createTmpHealthElements(healthElementDtos: List<HealthElement>):
-			HttpResponse<List<EncryptedHealthElement>> = post {
+	suspend fun createTmpHealthElements(healthElementDtos: List<EncryptedHealthElement>): HttpResponse<List<EncryptedHealthElement>> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","healthElement","batch")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "healthElement", "batch")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(healthElementDtos)
 		}.wrap()
 
-
-	suspend fun listTmpHealthElements(firstHealthElementId: String? = null, pageSize: Int? =
-			null): HttpResponse<PaginatedList<EncryptedHealthElement, Nothing>> = get {
+	suspend fun listTmpHealthElements(
+		firstHealthElementId: String? = null,
+		pageSize: Int? =
+			null,
+	): HttpResponse<PaginatedList<EncryptedHealthElement, *>> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","healthElement","list")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "healthElement", "list")
 				parameter("firstHealthElementId", firstHealthElementId)
 				parameter("pageSize", pageSize)
 				parameter("ts", GMTDate().timestamp)
@@ -248,77 +236,79 @@ class RawTmpApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun getTmpForm(id: String): HttpResponse<EncryptedForm> = get {
+	suspend fun getTmpForm(id: String): HttpResponse<EncryptedForm> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","form","byId",id)
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "form", "byId", id)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun createTmpForm(c: Form): HttpResponse<EncryptedForm> = post {
+	suspend fun createTmpForm(c: EncryptedForm): HttpResponse<EncryptedForm> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","form")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "form")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(c)
 		}.wrap()
 
-
-	suspend fun modifyTmpForm(formDto: Form): HttpResponse<EncryptedForm> = put {
+	suspend fun modifyTmpForm(formDto: EncryptedForm): HttpResponse<EncryptedForm> =
+		put {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","form")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "form")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(formDto)
 		}.wrap()
 
-
-	suspend fun getTmpForms(ids: List<String>): HttpResponse<List<EncryptedForm>> = post {
+	suspend fun getTmpForms(ids: List<String>): HttpResponse<List<EncryptedForm>> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","form","get")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "form", "get")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(ids)
 		}.wrap()
 
-
-	suspend fun modifyTmpForms(formDtos: List<Form>): HttpResponse<List<EncryptedForm>> = put {
+	suspend fun modifyTmpForms(formDtos: List<EncryptedForm>): HttpResponse<List<EncryptedForm>> =
+		put {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","form","batch")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "form", "batch")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(formDtos)
 		}.wrap()
 
-
-	suspend fun createTmpForms(formDtos: List<Form>): HttpResponse<List<EncryptedForm>> = post {
+	suspend fun createTmpForms(formDtos: List<EncryptedForm>): HttpResponse<List<EncryptedForm>> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","form","batch")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "form", "batch")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(formDtos)
 		}.wrap()
 
-
-	suspend fun listTmpForms(firstFormId: String? = null, pageSize: Int? = null):
-			HttpResponse<PaginatedList<EncryptedForm, Nothing>> = get {
+	suspend fun listTmpForms(
+		firstFormId: String? = null,
+		pageSize: Int? = null,
+	): HttpResponse<PaginatedList<EncryptedForm, *>> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","form","list")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "form", "list")
 				parameter("firstFormId", firstFormId)
 				parameter("pageSize", pageSize)
 				parameter("ts", GMTDate().timestamp)
@@ -326,79 +316,79 @@ class RawTmpApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun getTmpContact(id: String): HttpResponse<EncryptedContact> = get {
+	suspend fun getTmpContact(id: String): HttpResponse<EncryptedContact> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","contact","byId",id)
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "contact", "byId", id)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun createTmpContact(c: Contact): HttpResponse<EncryptedContact> = post {
+	suspend fun createTmpContact(c: EncryptedContact): HttpResponse<EncryptedContact> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","contact")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "contact")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(c)
 		}.wrap()
 
-
-	suspend fun modifyTmpContact(contactDto: Contact): HttpResponse<EncryptedContact> = put {
+	suspend fun modifyTmpContact(contactDto: EncryptedContact): HttpResponse<EncryptedContact> =
+		put {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","contact")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "contact")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(contactDto)
 		}.wrap()
 
-
-	suspend fun getTmpContacts(ids: List<String>): HttpResponse<List<EncryptedContact>> = post {
+	suspend fun getTmpContacts(ids: List<String>): HttpResponse<List<EncryptedContact>> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","contact","get")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "contact", "get")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(ids)
 		}.wrap()
 
-
-	suspend fun modifyTmpContacts(contactDtos: List<Contact>):
-			HttpResponse<List<EncryptedContact>> = put {
+	suspend fun modifyTmpContacts(contactDtos: List<EncryptedContact>): HttpResponse<List<EncryptedContact>> =
+		put {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","contact","batch")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "contact", "batch")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(contactDtos)
 		}.wrap()
 
-
-	suspend fun createTmpContacts(contactDtos: List<Contact>):
-			HttpResponse<List<EncryptedContact>> = post {
+	suspend fun createTmpContacts(contactDtos: List<EncryptedContact>): HttpResponse<List<EncryptedContact>> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","contact","batch")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "contact", "batch")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(contactDtos)
 		}.wrap()
 
-
-	suspend fun listTmpContacts(firstContactId: String? = null, pageSize: Int? = null):
-			HttpResponse<PaginatedList<EncryptedContact, Nothing>> = get {
+	suspend fun listTmpContacts(
+		firstContactId: String? = null,
+		pageSize: Int? = null,
+	): HttpResponse<PaginatedList<EncryptedInvoice, *>> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","contact","list")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "contact", "list")
 				parameter("firstContactId", firstContactId)
 				parameter("pageSize", pageSize)
 				parameter("ts", GMTDate().timestamp)
@@ -406,79 +396,79 @@ class RawTmpApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun getTmpMessage(id: String): HttpResponse<EncryptedMessage> = get {
+	suspend fun getTmpMessage(id: String): HttpResponse<EncryptedMessage> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","message","byId",id)
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "message", "byId", id)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun createTmpMessage(c: Message): HttpResponse<EncryptedMessage> = post {
+	suspend fun createTmpMessage(c: EncryptedMessage): HttpResponse<EncryptedMessage> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","message")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "message")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(c)
 		}.wrap()
 
-
-	suspend fun modifyTmpMessage(messageDto: Message): HttpResponse<EncryptedMessage> = put {
+	suspend fun modifyTmpMessage(messageDto: EncryptedMessage): HttpResponse<EncryptedMessage> =
+		put {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","message")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "message")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(messageDto)
 		}.wrap()
 
-
-	suspend fun getTmpMessages(ids: List<String>): HttpResponse<List<EncryptedMessage>> = post {
+	suspend fun getTmpMessages(ids: List<String>): HttpResponse<List<EncryptedMessage>> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","message","get")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "message", "get")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(ids)
 		}.wrap()
 
-
-	suspend fun modifyTmpMessages(messageDtos: List<Message>):
-			HttpResponse<List<EncryptedMessage>> = put {
+	suspend fun modifyTmpMessages(messageDtos: List<EncryptedMessage>): HttpResponse<List<EncryptedMessage>> =
+		put {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","message","batch")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "message", "batch")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(messageDtos)
 		}.wrap()
 
-
-	suspend fun createTmpMessages(messageDtos: List<Message>):
-			HttpResponse<List<EncryptedMessage>> = post {
+	suspend fun createTmpMessages(messageDtos: List<EncryptedMessage>): HttpResponse<List<EncryptedMessage>> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","message","batch")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "message", "batch")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(messageDtos)
 		}.wrap()
 
-
-	suspend fun listTmpMessages(firstMessageId: String? = null, pageSize: Int? = null):
-			HttpResponse<PaginatedList<EncryptedInvoice, Nothing>> = get {
+	suspend fun listTmpMessages(
+		firstMessageId: String? = null,
+		pageSize: Int? = null,
+	): HttpResponse<PaginatedList<EncryptedInvoice, *>> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","message","list")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "message", "list")
 				parameter("firstMessageId", firstMessageId)
 				parameter("pageSize", pageSize)
 				parameter("ts", GMTDate().timestamp)
@@ -486,79 +476,79 @@ class RawTmpApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun getTmpInvoice(id: String): HttpResponse<EncryptedInvoice> = get {
+	suspend fun getTmpInvoice(id: String): HttpResponse<EncryptedInvoice> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","invoice","byId",id)
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "invoice", "byId", id)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun createTmpInvoice(c: Invoice): HttpResponse<EncryptedInvoice> = post {
+	suspend fun createTmpInvoice(c: EncryptedInvoice): HttpResponse<EncryptedInvoice> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","invoice")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "invoice")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(c)
 		}.wrap()
 
-
-	suspend fun modifyTmpInvoice(invoiceDto: Invoice): HttpResponse<EncryptedInvoice> = put {
+	suspend fun modifyTmpInvoice(invoiceDto: EncryptedInvoice): HttpResponse<EncryptedInvoice> =
+		put {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","invoice")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "invoice")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(invoiceDto)
 		}.wrap()
 
-
-	suspend fun getTmpInvoices(ids: List<String>): HttpResponse<List<EncryptedInvoice>> = post {
+	suspend fun getTmpInvoices(ids: List<String>): HttpResponse<List<EncryptedInvoice>> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","invoice","get")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "invoice", "get")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(ids)
 		}.wrap()
 
-
-	suspend fun modifyTmpInvoices(invoiceDtos: List<Invoice>):
-			HttpResponse<List<EncryptedInvoice>> = put {
+	suspend fun modifyTmpInvoices(invoiceDtos: List<EncryptedInvoice>): HttpResponse<List<EncryptedInvoice>> =
+		put {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","invoice","batch")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "invoice", "batch")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(invoiceDtos)
 		}.wrap()
 
-
-	suspend fun createTmpInvoices(invoiceDtos: List<Invoice>):
-			HttpResponse<List<EncryptedInvoice>> = post {
+	suspend fun createTmpInvoices(invoiceDtos: List<EncryptedInvoice>): HttpResponse<List<EncryptedInvoice>> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","invoice","batch")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "invoice", "batch")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(invoiceDtos)
 		}.wrap()
 
-
-	suspend fun listTmpInvoices(firstInvoiceId: String? = null, pageSize: Int? = null):
-			HttpResponse<PaginatedList<EncryptedInvoice, Nothing>> = get {
+	suspend fun listTmpInvoices(
+		firstInvoiceId: String? = null,
+		pageSize: Int? = null,
+	): HttpResponse<PaginatedList<EncryptedInvoice, *>> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","invoice","list")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "invoice", "list")
 				parameter("firstInvoiceId", firstInvoiceId)
 				parameter("pageSize", pageSize)
 				parameter("ts", GMTDate().timestamp)
@@ -566,26 +556,26 @@ class RawTmpApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun getTmpDocument(id: String): HttpResponse<EncryptedDocument> = get {
+	suspend fun getTmpDocument(id: String): HttpResponse<EncryptedDocument> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","document","byId",id)
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "document", "byId", id)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
-
 
 	suspend fun getTmpDocumentAttachment(
 		documentId: String,
 		attachmentId: String,
 		enckeys: String? = null,
 		fileName: String? = null,
-	): HttpResponse<ByteArray> = get {
+	): HttpResponse<ByteArray> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","document",documentId,"attachment",attachmentId)
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "document", documentId, "attachment", attachmentId)
 				parameter("enckeys", enckeys)
 				parameter("fileName", fileName)
 				parameter("ts", GMTDate().timestamp)
@@ -593,25 +583,24 @@ class RawTmpApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun deleteTmpDocumentAttachment(documentId: String): HttpResponse<EncryptedDocument>
-			= delete {
+	suspend fun deleteTmpDocumentAttachment(documentId: String): HttpResponse<EncryptedDocument> =
+		delete {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","document",documentId,"attachment")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "document", documentId, "attachment")
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
-
 
 	suspend fun setTmpDocumentAttachment(
 		documentId: String,
 		enckeys: String? = null,
 		payload: ByteArray,
-	): HttpResponse<EncryptedDocument> = put {
+	): HttpResponse<EncryptedDocument> =
+		put {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","document",documentId,"attachment")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "document", documentId, "attachment")
 				parameter("enckeys", enckeys)
 			}
 			setAuthorizationWith(authService)
@@ -619,71 +608,69 @@ class RawTmpApi(
 			setBody(ByteReadChannel(payload))
 		}.wrap()
 
-
-	suspend fun createTmpDocument(c: Document): HttpResponse<EncryptedDocument> = post {
+	suspend fun createTmpDocument(c: EncryptedDocument): HttpResponse<EncryptedDocument> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","document")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "document")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(c)
 		}.wrap()
 
-
-	suspend fun modifyTmpDocument(documentDto: Document): HttpResponse<EncryptedDocument> =
-			put {
+	suspend fun modifyTmpDocument(documentDto: EncryptedDocument): HttpResponse<EncryptedDocument> =
+		put {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","document")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "document")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(documentDto)
 		}.wrap()
 
-
 	suspend fun getTmpDocuments(ids: List<String>): HttpResponse<List<EncryptedDocument>> =
-			post {
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","document","get")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "document", "get")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(ids)
 		}.wrap()
 
-
-	suspend fun modifyTmpDocuments(documentDtos: List<Document>):
-			HttpResponse<List<EncryptedDocument>> = put {
+	suspend fun modifyTmpDocuments(documentDtos: List<EncryptedDocument>): HttpResponse<List<EncryptedDocument>> =
+		put {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","document","batch")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "document", "batch")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(documentDtos)
 		}.wrap()
 
-
-	suspend fun createTmpDocuments(documentDtos: List<Document>):
-			HttpResponse<List<EncryptedDocument>> = post {
+	suspend fun createTmpDocuments(documentDtos: List<EncryptedDocument>): HttpResponse<List<EncryptedDocument>> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","document","batch")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "document", "batch")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(documentDtos)
 		}.wrap()
 
-
-	suspend fun listTmpDocuments(firstDocumentId: String? = null, pageSize: Int? = null):
-			HttpResponse<PaginatedList<EncryptedDocument, Nothing>> = get {
+	suspend fun listTmpDocuments(
+		firstDocumentId: String? = null,
+		pageSize: Int? = null,
+	): HttpResponse<PaginatedList<EncryptedDocument, *>> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","document","list")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "document", "list")
 				parameter("firstDocumentId", firstDocumentId)
 				parameter("pageSize", pageSize)
 				parameter("ts", GMTDate().timestamp)
@@ -691,82 +678,80 @@ class RawTmpApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun getTmpClassification(id: String): HttpResponse<EncryptedClassification> = get {
+	suspend fun getTmpClassification(id: String): HttpResponse<EncryptedClassification> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","classification","byId",id)
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "classification", "byId", id)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun createTmpClassification(c: Classification):
-			HttpResponse<EncryptedClassification> = post {
+	suspend fun createTmpClassification(c: EncryptedClassification): HttpResponse<EncryptedClassification> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","classification")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "classification")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(c)
 		}.wrap()
 
-
-	suspend fun modifyTmpClassification(classificationDto: Classification):
-			HttpResponse<EncryptedClassification> = put {
+	suspend fun modifyTmpClassification(classificationDto: EncryptedClassification): HttpResponse<EncryptedClassification> =
+		put {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","classification")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "classification")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(classificationDto)
 		}.wrap()
 
-
-	suspend fun getTmpClassifications(ids: List<String>):
-			HttpResponse<List<EncryptedClassification>> = post {
+	suspend fun getTmpClassifications(ids: List<String>): HttpResponse<List<EncryptedClassification>> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","classification","get")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "classification", "get")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(ids)
 		}.wrap()
 
-
-	suspend fun modifyTmpClassifications(classificationDtos: List<Classification>):
-			HttpResponse<List<EncryptedClassification>> = put {
+	suspend fun modifyTmpClassifications(classificationDtos: List<EncryptedClassification>): HttpResponse<List<EncryptedClassification>> =
+		put {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","classification","batch")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "classification", "batch")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(classificationDtos)
 		}.wrap()
 
-
-	suspend fun createTmpClassifications(classificationDtos: List<Classification>):
-			HttpResponse<List<EncryptedClassification>> = post {
+	suspend fun createTmpClassifications(classificationDtos: List<EncryptedClassification>): HttpResponse<List<EncryptedClassification>> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","classification","batch")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "classification", "batch")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(classificationDtos)
 		}.wrap()
 
-
-	suspend fun listTmpClassifications(firstClassificationId: String? = null, pageSize: Int? =
-			null): HttpResponse<PaginatedList<EncryptedClassification, Nothing>> = get {
+	suspend fun listTmpClassifications(
+		firstClassificationId: String? = null,
+		pageSize: Int? =
+			null,
+	): HttpResponse<PaginatedList<EncryptedClassification, *>> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","classification","list")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "classification", "list")
 				parameter("firstClassificationId", firstClassificationId)
 				parameter("pageSize", pageSize)
 				parameter("ts", GMTDate().timestamp)
@@ -774,82 +759,80 @@ class RawTmpApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun getTmpEntityTemplate(id: String): HttpResponse<EntityTemplate> = get {
+	suspend fun getTmpEntityTemplate(id: String): HttpResponse<EntityTemplate> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","entityTemplate","byId",id)
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "entityTemplate", "byId", id)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
 	suspend fun createTmpEntityTemplate(c: EntityTemplate): HttpResponse<EntityTemplate> =
-			post {
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","entityTemplate")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "entityTemplate")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(c)
 		}.wrap()
 
-
-	suspend fun modifyTmpEntityTemplate(entityTemplateDto: EntityTemplate):
-			HttpResponse<EntityTemplate> = put {
+	suspend fun modifyTmpEntityTemplate(entityTemplateDto: EntityTemplate): HttpResponse<EntityTemplate> =
+		put {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","entityTemplate")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "entityTemplate")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(entityTemplateDto)
 		}.wrap()
 
-
 	suspend fun getTmpEntityTemplates(ids: List<String>): HttpResponse<List<EntityTemplate>> =
-			post {
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","entityTemplate","get")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "entityTemplate", "get")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(ids)
 		}.wrap()
 
-
-	suspend fun modifyTmpEntityTemplates(entityTemplateDtos: List<EntityTemplate>):
-			HttpResponse<List<EntityTemplate>> = put {
+	suspend fun modifyTmpEntityTemplates(entityTemplateDtos: List<EntityTemplate>): HttpResponse<List<EntityTemplate>> =
+		put {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","entityTemplate","batch")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "entityTemplate", "batch")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(entityTemplateDtos)
 		}.wrap()
 
-
-	suspend fun createTmpEntityTemplates(entityTemplateDtos: List<EntityTemplate>):
-			HttpResponse<List<EntityTemplate>> = post {
+	suspend fun createTmpEntityTemplates(entityTemplateDtos: List<EntityTemplate>): HttpResponse<List<EntityTemplate>> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","entityTemplate","batch")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "entityTemplate", "batch")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(entityTemplateDtos)
 		}.wrap()
 
-
-	suspend fun listTmpEntityTemplates(firstEntityTemplateId: String? = null, pageSize: Int? =
-			null): HttpResponse<PaginatedList<EntityTemplate, Nothing>> = get {
+	suspend fun listTmpEntityTemplates(
+		firstEntityTemplateId: String? = null,
+		pageSize: Int? =
+			null,
+	): HttpResponse<PaginatedList<EntityTemplate, *>> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","entityTemplate","list")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "entityTemplate", "list")
 				parameter("firstEntityTemplateId", firstEntityTemplateId)
 				parameter("pageSize", pageSize)
 				parameter("ts", GMTDate().timestamp)
@@ -857,22 +840,22 @@ class RawTmpApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun deleteTmpItems(ids: List<String>): HttpResponse<List<DocIdentifier>> = post {
+	suspend fun deleteTmpItems(ids: List<String>): HttpResponse<List<DocIdentifier>> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","batch","delete")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "batch", "delete")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(ids)
 		}.wrap()
 
-
-	suspend fun purgeTmpItems(ids: List<String>): HttpResponse<List<DocIdentifier>> = post {
+	suspend fun purgeTmpItems(ids: List<String>): HttpResponse<List<DocIdentifier>> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","tmp","batch","purge")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "tmp", "batch", "purge")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
@@ -880,5 +863,4 @@ class RawTmpApi(
 		}.wrap()
 
 	// endregion
-
 }

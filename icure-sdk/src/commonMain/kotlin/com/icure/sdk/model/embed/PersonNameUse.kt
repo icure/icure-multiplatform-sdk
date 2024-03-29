@@ -8,21 +8,27 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class PersonNameUse() {
-  @SerialName("usual")
-  Usual,
-  @SerialName("official")
-  Official,
-  @SerialName("temp")
-  Temp,
-  @SerialName("nickname")
-  Nickname,
-  @SerialName("anonymous")
-  Anonymous,
-  @SerialName("maiden")
-  Maiden,
-  @SerialName("old")
-  Old,
-  @SerialName("other")
-  Other,
+	@SerialName("usual")
+	Usual,
 
+	@SerialName("official")
+	Official,
+
+	@SerialName("temp")
+	Temp,
+
+	@SerialName("nickname")
+	Nickname,
+
+	@SerialName("anonymous")
+	Anonymous,
+
+	@SerialName("maiden")
+	Maiden,
+
+	@SerialName("old")
+	Old,
+
+	@SerialName("other")
+	Other,
 }

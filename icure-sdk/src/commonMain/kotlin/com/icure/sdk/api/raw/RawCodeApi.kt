@@ -10,14 +10,12 @@ import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.specializations.JsonString
 import com.icure.sdk.utils.InternalIcureApi
-import io.ktor.client.request.`get`
 import io.ktor.client.request.parameter
-import io.ktor.client.request.post
-import io.ktor.client.request.put
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
+import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import kotlin.Boolean
 import kotlin.Int
@@ -36,7 +34,6 @@ class RawCodeApi(
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
-
 	// region common endpoints
 
 	suspend fun findCodesByLabel(
@@ -48,10 +45,11 @@ class RawCodeApi(
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<Code, JsonString>> = get {
+	): HttpResponse<PaginatedList<Code, JsonString>> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","code","byLabel")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "code", "byLabel")
 				parameter("region", region)
 				parameter("types", types)
 				parameter("language", language)
@@ -65,7 +63,6 @@ class RawCodeApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
 	suspend fun findCodesByType(
 		region: String,
 		type: String? = null,
@@ -74,10 +71,11 @@ class RawCodeApi(
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<Code, JsonString>> = get {
+	): HttpResponse<PaginatedList<Code, JsonString>> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","code")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "code")
 				parameter("region", region)
 				parameter("type", type)
 				parameter("code", code)
@@ -90,17 +88,17 @@ class RawCodeApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
 	suspend fun findCodesByLink(
 		linkType: String,
 		linkedId: String? = null,
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<Code, JsonString>> = get {
+	): HttpResponse<PaginatedList<Code, JsonString>> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","code","byLink",linkType)
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "code", "byLink", linkType)
 				parameter("linkedId", linkedId)
 				parameter("startKey", startKey)
 				parameter("startDocumentId", startDocumentId)
@@ -110,16 +108,16 @@ class RawCodeApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
 	suspend fun listCodesByRegionTypeCodeVersion(
 		region: String,
 		type: String? = null,
 		code: String? = null,
 		version: String? = null,
-	): HttpResponse<List<Code>> = get {
+	): HttpResponse<List<Code>> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","code","byRegionTypeCode")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "code", "byRegionTypeCode")
 				parameter("region", region)
 				parameter("type", type)
 				parameter("code", code)
@@ -129,12 +127,14 @@ class RawCodeApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun listCodeTypesBy(region: String? = null, type: String? = null):
-			HttpResponse<List<String>> = get {
+	suspend fun listCodeTypesBy(
+		region: String? = null,
+		type: String? = null,
+	): HttpResponse<List<String>> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","code","codetype","byRegionType")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "code", "codetype", "byRegionType")
 				parameter("region", region)
 				parameter("type", type)
 				parameter("ts", GMTDate().timestamp)
@@ -142,12 +142,14 @@ class RawCodeApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun listTagTypesBy(region: String? = null, type: String? = null):
-			HttpResponse<List<String>> = get {
+	suspend fun listTagTypesBy(
+		region: String? = null,
+		type: String? = null,
+	): HttpResponse<List<String>> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","code","tagtype","byRegionType")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "code", "tagtype", "byRegionType")
 				parameter("region", region)
 				parameter("type", type)
 				parameter("ts", GMTDate().timestamp)
@@ -155,37 +157,37 @@ class RawCodeApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun createCode(c: Code): HttpResponse<Code> = post {
+	suspend fun createCode(c: Code): HttpResponse<Code> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","code")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "code")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(c)
 		}.wrap()
 
-
-	suspend fun createCodes(codeBatch: List<Code>): HttpResponse<List<Code>> = post {
+	suspend fun createCodes(codeBatch: List<Code>): HttpResponse<List<Code>> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","code","batch")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "code", "batch")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(codeBatch)
 		}.wrap()
 
-
 	suspend fun isCodeValid(
 		type: String,
 		code: String,
 		version: String?,
-	): HttpResponse<BooleanResponse> = get {
+	): HttpResponse<BooleanResponse> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","code","isValid")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "code", "isValid")
 				parameter("type", type)
 				parameter("code", code)
 				parameter("version", version)
@@ -194,16 +196,16 @@ class RawCodeApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
 	suspend fun getCodeByRegionLanguageTypeLabel(
 		region: String,
 		label: String,
 		type: String,
 		languages: String?,
-	): HttpResponse<Code> = get {
+	): HttpResponse<Code> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","code","byRegionLanguagesTypeLabel")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "code", "byRegionLanguagesTypeLabel")
 				parameter("region", region)
 				parameter("label", label)
 				parameter("type", type)
@@ -213,63 +215,62 @@ class RawCodeApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun getCodes(codeIds: ListOfIds): HttpResponse<List<Code>> = post {
+	suspend fun getCodes(codeIds: ListOfIds): HttpResponse<List<Code>> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","code","byIds")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "code", "byIds")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(codeIds)
 		}.wrap()
 
-
-	suspend fun getCode(codeId: String): HttpResponse<Code> = get {
+	suspend fun getCode(codeId: String): HttpResponse<Code> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","code",codeId)
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "code", codeId)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
-
 
 	suspend fun getCodeWithParts(
 		type: String,
 		code: String,
 		version: String,
-	): HttpResponse<Code> = get {
+	): HttpResponse<Code> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","code",type,code,version)
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "code", type, code, version)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun modifyCode(codeDto: Code): HttpResponse<Code> = put {
+	suspend fun modifyCode(codeDto: Code): HttpResponse<Code> =
+		put {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","code")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "code")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(codeDto)
 		}.wrap()
 
-
-	suspend fun modifyCodes(codeBatch: List<Code>): HttpResponse<List<Code>> = put {
+	suspend fun modifyCodes(codeBatch: List<Code>): HttpResponse<List<Code>> =
+		put {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","code","batch")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "code", "batch")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(codeBatch)
 		}.wrap()
-
 
 	suspend fun filterCodesBy(
 		startKey: String? = null,
@@ -279,10 +280,11 @@ class RawCodeApi(
 		sort: String? = null,
 		desc: Boolean? = null,
 		filterChain: FilterChain<Code>,
-	): HttpResponse<PaginatedList<Code, *>> = post {
+	): HttpResponse<PaginatedList<Code, *>> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","code","filter")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "code", "filter")
 				parameter("startKey", startKey)
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
@@ -295,27 +297,26 @@ class RawCodeApi(
 			setBody(filterChain)
 		}.wrap()
 
-
-	suspend fun matchCodesBy(filter: AbstractFilter<Code>): HttpResponse<List<String>> = post {
+	suspend fun matchCodesBy(filter: AbstractFilter<Code>): HttpResponse<List<String>> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","code","match")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "code", "match")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(filter)
 		}.wrap()
 
-
-	suspend fun importCodes(codeType: String): HttpResponse<Unit> = post {
+	suspend fun importCodes(codeType: String): HttpResponse<Unit> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","code",codeType)
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "code", codeType)
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 		}.wrap()
 
 	// endregion
-
 }

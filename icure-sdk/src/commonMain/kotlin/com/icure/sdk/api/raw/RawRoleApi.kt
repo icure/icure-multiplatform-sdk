@@ -4,9 +4,9 @@ import com.icure.sdk.auth.services.AuthService
 import com.icure.sdk.auth.services.setAuthorizationWith
 import com.icure.sdk.model.Role
 import com.icure.sdk.utils.InternalIcureApi
-import io.ktor.client.request.`get`
 import io.ktor.client.request.parameter
 import io.ktor.http.appendPathSegments
+import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import kotlin.String
 import kotlin.collections.List
@@ -22,18 +22,17 @@ class RawRoleApi(
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
-
 	// region cloud endpoints
 
-	suspend fun getAllRoles(): HttpResponse<List<Role>> = get {
+	suspend fun getAllRoles(): HttpResponse<List<Role>> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","role")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "role")
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
 	// endregion
-
 }

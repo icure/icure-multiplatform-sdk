@@ -22,16 +22,13 @@ import com.icure.sdk.model.security.Operation
 import com.icure.sdk.model.security.PermissionType
 import com.icure.sdk.model.specializations.JsonString
 import com.icure.sdk.utils.InternalIcureApi
-import io.ktor.client.request.`get`
 import io.ktor.client.request.`header`
-import io.ktor.client.request.delete
 import io.ktor.client.request.parameter
-import io.ktor.client.request.post
-import io.ktor.client.request.put
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
+import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import kotlin.Boolean
 import kotlin.Int
@@ -51,7 +48,6 @@ class RawGroupApi(
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
-
 	// region cloud endpoints
 
 	suspend fun createGroup(
@@ -64,10 +60,11 @@ class RawGroupApi(
 		n: Int? = null,
 		superGroup: String? = null,
 		initialisationData: DatabaseInitialisation,
-	): HttpResponse<Group> = post {
+	): HttpResponse<Group> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","group",id)
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "group", id)
 				parameter("name", name)
 				parameter("type", type)
 				parameter("server", server)
@@ -81,15 +78,15 @@ class RawGroupApi(
 			setBody(initialisationData)
 		}.wrap()
 
-
 	suspend fun registerNewGroupAdministrator(
 		type: GroupType? = null,
 		role: PermissionType? = null,
 		registrationInformation: RegistrationInformation,
-	): HttpResponse<RegistrationSuccess> = post {
+	): HttpResponse<RegistrationSuccess> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","group","register","trial")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "group", "register", "trial")
 				parameter("type", type)
 				parameter("role", role)
 			}
@@ -98,35 +95,35 @@ class RawGroupApi(
 			setBody(registrationInformation)
 		}.wrap()
 
-
-	suspend fun listGroups(): HttpResponse<List<Group>> = get {
+	suspend fun listGroups(): HttpResponse<List<Group>> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","group")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "group")
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun listApps(): HttpResponse<List<Group>> = get {
+	suspend fun listApps(): HttpResponse<List<Group>> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","group","apps")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "group", "apps")
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
-
 
 	suspend fun findGroups(
 		id: String,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<Group, JsonString>> = get {
+	): HttpResponse<PaginatedList<Group, JsonString>> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","group",id,"children")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "group", id, "children")
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
 				parameter("ts", GMTDate().timestamp)
@@ -134,17 +131,17 @@ class RawGroupApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
 	suspend fun findGroupsWithContent(
 		id: String,
 		searchString: String,
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<Group, JsonString>> = get {
+	): HttpResponse<PaginatedList<Group, JsonString>> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","group",id,"children","search")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "group", id, "children", "search")
 				parameter("searchString", searchString)
 				parameter("startKey", startKey)
 				parameter("startDocumentId", startDocumentId)
@@ -154,45 +151,48 @@ class RawGroupApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun getGroup(id: String): HttpResponse<Group> = get {
+	suspend fun getGroup(id: String): HttpResponse<Group> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","group",id)
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "group", id)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun getNameOfGroupParent(id: String): HttpResponse<String> = get {
+	suspend fun getNameOfGroupParent(id: String): HttpResponse<String> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","group",id,"parent","name")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "group", id, "parent", "name")
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun modifyGroupName(id: String, name: String): HttpResponse<Group> = put {
+	suspend fun modifyGroupName(
+		id: String,
+		name: String,
+	): HttpResponse<Group> =
+		put {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","group",id,"name",name)
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "group", id, "name", name)
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 		}.wrap()
 
-
 	suspend fun getOperationToken(
 		operation: Operation,
 		duration: Long?,
 		description: String? = null,
-	): HttpResponse<String> = post {
+	): HttpResponse<String> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","group","operationToken")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "group", "operationToken")
 				parameter("operation", operation)
 				parameter("duration", duration)
 				parameter("description", description)
@@ -201,24 +201,24 @@ class RawGroupApi(
 			contentType(ContentType.Application.Json)
 		}.wrap()
 
-
-	suspend fun deleteOperationToken(tokenId: String): HttpResponse<Unit> = delete {
+	suspend fun deleteOperationToken(tokenId: String): HttpResponse<Unit> =
+		delete {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","group","operationToken",tokenId)
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "group", "operationToken", tokenId)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
-
 
 	suspend fun setDefaultRoles(
 		groupId: String,
 		userType: String,
 		roleIds: ListOfIds,
-	): HttpResponse<Group> = post {
+	): HttpResponse<Group> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","group",groupId,"defaultRoles")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "group", groupId, "defaultRoles")
 				parameter("userType", userType)
 			}
 			setAuthorizationWith(authService)
@@ -226,80 +226,86 @@ class RawGroupApi(
 			setBody(roleIds)
 		}.wrap()
 
-
-	suspend fun getDefaultRoles(groupId: String): HttpResponse<Map<UserType, RoleConfiguration>>
-			= get {
+	suspend fun getDefaultRoles(groupId: String): HttpResponse<Map<UserType, List<RoleConfiguration>>> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","group",groupId,"defaultRoles")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "group", groupId, "defaultRoles")
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun changeSuperGroup(childGroupId: String, operationToken: String):
-			HttpResponse<Group> = post {
+	suspend fun changeSuperGroup(
+		childGroupId: String,
+		operationToken: String,
+	): HttpResponse<Group> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","group",childGroupId,"transfer")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "group", childGroupId, "transfer")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			header("Operation-Token", operationToken)
 		}.wrap()
 
-
-	suspend fun deleteGroup(id: String): HttpResponse<Group> = delete {
+	suspend fun deleteGroup(id: String): HttpResponse<Group> =
+		delete {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","group",id)
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "group", id)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun hardDeleteGroup(id: String): HttpResponse<List<GroupDeletionReport>> = delete {
+	suspend fun hardDeleteGroup(id: String): HttpResponse<List<GroupDeletionReport>> =
+		delete {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","group","hard",id)
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "group", "hard", id)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun modifyGroupProperties(id: String, properties: ListOfProperties):
-			HttpResponse<Group> = put {
+	suspend fun modifyGroupProperties(
+		id: String,
+		properties: ListOfProperties,
+	): HttpResponse<Group> =
+		put {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","group",id,"properties")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "group", id, "properties")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(properties)
 		}.wrap()
 
-
-	suspend fun setGroupPassword(id: String, password: String): HttpResponse<Group> = put {
+	suspend fun setGroupPassword(
+		id: String,
+		password: String,
+	): HttpResponse<Group> =
+		put {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","group",id,"password")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "group", id, "password")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			header("password", password)
 		}.wrap()
 
-
 	suspend fun initDesignDocs(
 		id: String,
 		clazz: String? = null,
 		warmup: Boolean?,
 		dryRun: Boolean?,
-	): HttpResponse<List<DesignDocument>> = put {
+	): HttpResponse<List<DesignDocument>> =
+		put {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","group",id,"dd")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "group", id, "dd")
 				parameter("clazz", clazz)
 				parameter("warmup", warmup)
 				parameter("dryRun", dryRun)
@@ -308,15 +314,15 @@ class RawGroupApi(
 			contentType(ContentType.Application.Json)
 		}.wrap()
 
-
 	suspend fun solveConflicts(
 		id: String,
 		limit: Int?,
 		warmup: Boolean?,
-	): HttpResponse<List<IdWithRev>> = post {
+	): HttpResponse<List<IdWithRev>> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","group",id,"conflicts")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "group", id, "conflicts")
 				parameter("limit", limit)
 				parameter("warmup", warmup)
 			}
@@ -324,16 +330,16 @@ class RawGroupApi(
 			contentType(ContentType.Application.Json)
 		}.wrap()
 
-
 	suspend fun resetStorage(
 		id: String,
 		q: Int? = null,
 		n: Int? = null,
 		databases: ListOfIds,
-	): HttpResponse<Unit> = post {
+	): HttpResponse<Unit> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","group",id,"reset","storage")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "group", id, "reset", "storage")
 				parameter("q", q)
 				parameter("n", n)
 			}
@@ -342,48 +348,46 @@ class RawGroupApi(
 			setBody(databases)
 		}.wrap()
 
-
-	suspend fun getGroupsStorageInfos(groups: ListOfIds): HttpResponse<List<GroupDatabasesInfo>>
-			= post {
+	suspend fun getGroupsStorageInfos(groups: ListOfIds): HttpResponse<List<GroupDatabasesInfo>> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","group","storage","info")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "group", "storage", "info")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(groups)
 		}.wrap()
 
-
-	suspend fun getReplicationInfo(id: String): HttpResponse<ReplicationInfo> = get {
+	suspend fun getReplicationInfo(id: String): HttpResponse<ReplicationInfo> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","group",id,"r")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "group", id, "r")
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun getHierarchy(id: String): HttpResponse<List<String>> = get {
+	suspend fun getHierarchy(id: String): HttpResponse<List<String>> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","group",id,"hierarchy")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "group", id, "hierarchy")
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun listAllGroupsIds(): HttpResponse<List<DocIdentifier>> = get {
+	suspend fun listAllGroupsIds(): HttpResponse<List<DocIdentifier>> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","group","all")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "group", "all")
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
 	// endregion
-
 }

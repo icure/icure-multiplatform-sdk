@@ -3,16 +3,15 @@ package com.icure.sdk.api.raw
 import com.icure.sdk.auth.services.AuthService
 import com.icure.sdk.auth.services.setAuthorizationWith
 import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
-import com.icure.sdk.model.EncryptedIcureStub
-import com.icure.sdk.model.EncryptedInvoice
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
-import com.icure.sdk.model.Invoice
+import com.icure.sdk.model.EncryptedInvoice
+import com.icure.sdk.model.IcureStub
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
-import com.icure.sdk.model.`data`.LabelledOccurence
 import com.icure.sdk.model.couchdb.DocIdentifier
+import com.icure.sdk.model.`data`.LabelledOccurence
+import com.icure.sdk.model.embed.EncryptedInvoicingCode
 import com.icure.sdk.model.embed.InvoiceType
-import com.icure.sdk.model.embed.InvoicingCode
 import com.icure.sdk.model.embed.MediumType
 import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
@@ -24,6 +23,7 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
+import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import kotlin.Boolean
 import kotlin.Int
@@ -43,103 +43,103 @@ class RawInvoiceApi(
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
-
 	override suspend fun getAccessControlKeysHeaderValues(): List<String>? =
-			accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithEncryptionMetadataTypeName.Invoice)
+		accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithEncryptionMetadataTypeName.Invoice)
 
 	// region common endpoints
 
-	suspend fun createInvoice(invoiceDto: Invoice): HttpResponse<EncryptedInvoice> = post {
+	suspend fun createInvoice(invoiceDto: EncryptedInvoice): HttpResponse<EncryptedInvoice> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","invoice")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "invoice")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(invoiceDto)
 		}.wrap()
 
-
-	suspend fun deleteInvoice(invoiceId: String): HttpResponse<DocIdentifier> = delete {
+	suspend fun deleteInvoice(invoiceId: String): HttpResponse<DocIdentifier> =
+		delete {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","invoice",invoiceId)
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "invoice", invoiceId)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun getInvoice(invoiceId: String): HttpResponse<EncryptedInvoice> = get {
+	suspend fun getInvoice(invoiceId: String): HttpResponse<EncryptedInvoice> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","invoice",invoiceId)
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "invoice", invoiceId)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
 	suspend fun getInvoices(invoiceIds: ListOfIds): HttpResponse<List<EncryptedInvoice>> =
-			post {
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","invoice","byIds")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "invoice", "byIds")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(invoiceIds)
 		}.wrap()
 
-
-	suspend fun modifyInvoice(invoiceDto: Invoice): HttpResponse<EncryptedInvoice> = put {
+	suspend fun modifyInvoice(invoiceDto: EncryptedInvoice): HttpResponse<EncryptedInvoice> =
+		put {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","invoice")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "invoice")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(invoiceDto)
 		}.wrap()
 
-
-	suspend fun reassignInvoice(invoiceDto: Invoice): HttpResponse<EncryptedInvoice> = post {
+	suspend fun reassignInvoice(invoiceDto: EncryptedInvoice): HttpResponse<EncryptedInvoice> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","invoice","reassign")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "invoice", "reassign")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(invoiceDto)
 		}.wrap()
 
-
-	suspend fun mergeTo(invoiceId: String, ids: ListOfIds): HttpResponse<EncryptedInvoice> =
-			post {
+	suspend fun mergeTo(
+		invoiceId: String,
+		ids: ListOfIds,
+	): HttpResponse<EncryptedInvoice> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","invoice","mergeTo",invoiceId)
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "invoice", "mergeTo", invoiceId)
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(ids)
 		}.wrap()
 
-
 	suspend fun validate(
 		invoiceId: String,
 		scheme: String,
 		forcedValue: String,
-	): HttpResponse<EncryptedInvoice> = post {
+	): HttpResponse<EncryptedInvoice> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","invoice","validate",invoiceId)
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "invoice", "validate", invoiceId)
 				parameter("scheme", scheme)
 				parameter("forcedValue", forcedValue)
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 		}.wrap()
-
 
 	suspend fun appendCodes(
 		userId: String,
@@ -149,11 +149,12 @@ class RawInvoiceApi(
 		insuranceId: String? = null,
 		invoiceId: String? = null,
 		gracePeriod: Int? = null,
-		invoicingCodes: List<InvoicingCode>,
-	): HttpResponse<List<EncryptedInvoice>> = post {
+		invoicingCodes: List<EncryptedInvoicingCode>,
+	): HttpResponse<List<EncryptedInvoice>> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","invoice","byauthor",userId,"append",type,sentMediumType)
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "invoice", "byauthor", userId, "append", type, sentMediumType)
 				parameter("secretFKeys", secretFKeys)
 				parameter("insuranceId", insuranceId)
 				parameter("invoiceId", invoiceId)
@@ -164,23 +165,22 @@ class RawInvoiceApi(
 			setBody(invoicingCodes)
 		}.wrap()
 
-
 	suspend fun removeCodes(
 		userId: String,
 		serviceId: String,
 		secretFKeys: String,
 		tarificationIds: List<String>,
-	): HttpResponse<List<EncryptedInvoice>> = post {
+	): HttpResponse<List<EncryptedInvoice>> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","invoice","byauthor",userId,"service",serviceId)
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "invoice", "byauthor", userId, "service", serviceId)
 				parameter("secretFKeys", secretFKeys)
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(tarificationIds)
 		}.wrap()
-
 
 	suspend fun findInvoicesByAuthor(
 		hcPartyId: String,
@@ -189,10 +189,11 @@ class RawInvoiceApi(
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedInvoice, JsonString>> = get {
+	): HttpResponse<PaginatedList<EncryptedInvoice, JsonString>> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","invoice","byauthor",hcPartyId)
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "invoice", "byauthor", hcPartyId)
 				parameter("fromDate", fromDate)
 				parameter("toDate", toDate)
 				parameter("startKey", startKey)
@@ -203,12 +204,14 @@ class RawInvoiceApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun listInvoicesByHCPartyAndPatientForeignKeys(hcPartyId: String,
-			secretFKeys: String): HttpResponse<List<EncryptedInvoice>> = get {
+	suspend fun listInvoicesByHCPartyAndPatientForeignKeys(
+		hcPartyId: String,
+		secretFKeys: String,
+	): HttpResponse<List<EncryptedInvoice>> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","invoice","byHcPartySecretForeignKeys")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "invoice", "byHcPartySecretForeignKeys")
 				parameter("hcPartyId", hcPartyId)
 				parameter("secretFKeys", secretFKeys)
 				parameter("ts", GMTDate().timestamp)
@@ -216,12 +219,14 @@ class RawInvoiceApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun findInvoicesByHCPartyPatientForeignKeys(hcPartyId: String,
-			secretPatientKeys: List<String>): HttpResponse<List<EncryptedInvoice>> = post {
+	suspend fun findInvoicesByHCPartyPatientForeignKeys(
+		hcPartyId: String,
+		secretPatientKeys: List<String>,
+	): HttpResponse<List<EncryptedInvoice>> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","invoice","byHcPartySecretForeignKeys")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "invoice", "byHcPartySecretForeignKeys")
 				parameter("hcPartyId", hcPartyId)
 			}
 			setAuthorizationWith(authService)
@@ -229,12 +234,14 @@ class RawInvoiceApi(
 			setBody(secretPatientKeys)
 		}.wrap()
 
-
-	suspend fun listInvoicesDelegationsStubsByHCPartyAndPatientForeignKeys(hcPartyId: String,
-			secretFKeys: String): HttpResponse<List<EncryptedIcureStub>> = get {
+	suspend fun listInvoicesDelegationsStubsByHCPartyAndPatientForeignKeys(
+		hcPartyId: String,
+		secretFKeys: String,
+	): HttpResponse<List<IcureStub>> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","invoice","byHcPartySecretForeignKeys","delegations")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "invoice", "byHcPartySecretForeignKeys", "delegations")
 				parameter("hcPartyId", hcPartyId)
 				parameter("secretFKeys", secretFKeys)
 				parameter("ts", GMTDate().timestamp)
@@ -242,17 +249,17 @@ class RawInvoiceApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
 	suspend fun findInvoicesByHCPartyPatientForeignKey(
 		hcPartyId: String,
 		secretFKey: String,
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedInvoice, JsonString>> = get {
+	): HttpResponse<PaginatedList<EncryptedInvoice, JsonString>> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","invoice","byHcPartySecretForeignKey")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "invoice", "byHcPartySecretForeignKey")
 				parameter("hcPartyId", hcPartyId)
 				parameter("secretFKey", secretFKey)
 				parameter("startKey", startKey)
@@ -263,12 +270,14 @@ class RawInvoiceApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun findInvoicesDelegationsStubsByHCPartyPatientForeignKeys(hcPartyId: String,
-			secretPatientKeys: List<String>): HttpResponse<List<EncryptedIcureStub>> = post {
+	suspend fun findInvoicesDelegationsStubsByHCPartyPatientForeignKeys(
+		hcPartyId: String,
+		secretPatientKeys: List<String>,
+	): HttpResponse<List<IcureStub>> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","invoice","byHcPartySecretForeignKeys","delegations")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "invoice", "byHcPartySecretForeignKeys", "delegations")
 				parameter("hcPartyId", hcPartyId)
 			}
 			setAuthorizationWith(authService)
@@ -276,17 +285,18 @@ class RawInvoiceApi(
 			setBody(secretPatientKeys)
 		}.wrap()
 
-
-	suspend fun listInvoicesByHcPartyAndGroupId(hcPartyId: String, groupId: String):
-			HttpResponse<List<EncryptedInvoice>> = get {
+	suspend fun listInvoicesByHcPartyAndGroupId(
+		hcPartyId: String,
+		groupId: String,
+	): HttpResponse<List<EncryptedInvoice>> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","invoice","byHcPartyGroupId",hcPartyId,groupId)
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "invoice", "byHcPartyGroupId", hcPartyId, groupId)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
-
 
 	suspend fun listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(
 		hcPartyId: String,
@@ -295,10 +305,23 @@ class RawInvoiceApi(
 		sent: Boolean,
 		from: Long? = null,
 		to: Long? = null,
-	): HttpResponse<List<EncryptedInvoice>> = get {
+	): HttpResponse<List<EncryptedInvoice>> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","invoice","byHcParty",hcPartyId,"mediumType","$sentMediumType","invoiceType","$invoiceType","sent","$sent")
+				takeFrom(apiUrl)
+				appendPathSegments(
+					"rest",
+					"v2",
+					"invoice",
+					"byHcParty",
+					hcPartyId,
+					"mediumType",
+					"$sentMediumType",
+					"invoiceType",
+					"$invoiceType",
+					"sent",
+					"$sent",
+				)
 				parameter("from", from)
 				parameter("to", to)
 				parameter("ts", GMTDate().timestamp)
@@ -306,88 +329,80 @@ class RawInvoiceApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun listInvoicesByContactIds(contactIds: ListOfIds):
-			HttpResponse<List<EncryptedInvoice>> = post {
+	suspend fun listInvoicesByContactIds(contactIds: ListOfIds): HttpResponse<List<EncryptedInvoice>> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","invoice","byContacts")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "invoice", "byContacts")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(contactIds)
 		}.wrap()
 
-
-	suspend fun listInvoicesByRecipientsIds(recipientIds: String):
-			HttpResponse<List<EncryptedInvoice>> = get {
+	suspend fun listInvoicesByRecipientsIds(recipientIds: String): HttpResponse<List<EncryptedInvoice>> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","invoice","to",recipientIds)
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "invoice", "to", recipientIds)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun listToInsurances(userIds: String? = null): HttpResponse<List<EncryptedInvoice>>
-			= get {
+	suspend fun listToInsurances(userIds: String? = null): HttpResponse<List<EncryptedInvoice>> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","invoice","toInsurances")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "invoice", "toInsurances")
 				parameter("userIds", userIds)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun listToInsurancesUnsent(userIds: String? = null):
-			HttpResponse<List<EncryptedInvoice>> = get {
+	suspend fun listToInsurancesUnsent(userIds: String? = null): HttpResponse<List<EncryptedInvoice>> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","invoice","toInsurances","unsent")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "invoice", "toInsurances", "unsent")
 				parameter("userIds", userIds)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun listToPatients(hcPartyId: String? = null): HttpResponse<List<EncryptedInvoice>>
-			= get {
+	suspend fun listToPatients(hcPartyId: String? = null): HttpResponse<List<EncryptedInvoice>> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","invoice","toPatients")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "invoice", "toPatients")
 				parameter("hcPartyId", hcPartyId)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun listToPatientsUnsent(hcPartyId: String? = null):
-			HttpResponse<List<EncryptedInvoice>> = get {
+	suspend fun listToPatientsUnsent(hcPartyId: String? = null): HttpResponse<List<EncryptedInvoice>> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","invoice","toPatients","unsent")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "invoice", "toPatients", "unsent")
 				parameter("hcPartyId", hcPartyId)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
-
 
 	suspend fun listInvoicesByIds(invoiceIds: String): HttpResponse<List<EncryptedInvoice>> =
-			get {
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","invoice","byIds",invoiceIds)
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "invoice", "byIds", invoiceIds)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
-
 
 	suspend fun listInvoicesByHcpartySendingModeStatusDate(
 		hcPartyId: String,
@@ -395,10 +410,11 @@ class RawInvoiceApi(
 		status: String? = null,
 		from: Long? = null,
 		to: Long? = null,
-	): HttpResponse<List<EncryptedInvoice>> = get {
+	): HttpResponse<List<EncryptedInvoice>> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","invoice","byHcpartySendingModeStatusDate",hcPartyId)
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "invoice", "byHcpartySendingModeStatusDate", hcPartyId)
 				parameter("sendingMode", sendingMode)
 				parameter("status", status)
 				parameter("from", from)
@@ -408,27 +424,26 @@ class RawInvoiceApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun listInvoicesByServiceIds(serviceIds: String):
-			HttpResponse<List<EncryptedInvoice>> = get {
+	suspend fun listInvoicesByServiceIds(serviceIds: String): HttpResponse<List<EncryptedInvoice>> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","invoice","byServiceIds",serviceIds)
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "invoice", "byServiceIds", serviceIds)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
-
 
 	suspend fun listAllHcpsByStatus(
 		status: String,
 		from: Long? = null,
 		to: Long? = null,
 		hcpIds: ListOfIds,
-	): HttpResponse<List<EncryptedInvoice>> = post {
+	): HttpResponse<List<EncryptedInvoice>> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","invoice","allHcpsByStatus",status)
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "invoice", "allHcpsByStatus", status)
 				parameter("from", from)
 				parameter("to", to)
 			}
@@ -437,71 +452,65 @@ class RawInvoiceApi(
 			setBody(hcpIds)
 		}.wrap()
 
-
-	suspend fun getTarificationsCodesOccurrences(minOccurrences: Long):
-			HttpResponse<List<LabelledOccurence>> = get {
+	suspend fun getTarificationsCodesOccurrences(minOccurrences: Long): HttpResponse<List<LabelledOccurence>> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","invoice","codes","$minOccurrences")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "invoice", "codes", "$minOccurrences")
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun filterInvoicesBy(filterChain: FilterChain<Invoice>):
-			HttpResponse<List<EncryptedInvoice>> = post {
+	suspend fun filterInvoicesBy(filterChain: FilterChain<EncryptedInvoice>): HttpResponse<List<EncryptedInvoice>> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","invoice","filter")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "invoice", "filter")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(filterChain)
 		}.wrap()
 
-
-	suspend fun modifyInvoices(invoiceDtos: List<Invoice>): HttpResponse<List<EncryptedInvoice>>
-			= put {
+	suspend fun modifyInvoices(invoiceDtos: List<EncryptedInvoice>): HttpResponse<List<EncryptedInvoice>> =
+		put {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","invoice","batch")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "invoice", "batch")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(invoiceDtos)
 		}.wrap()
 
-
-	suspend fun createInvoices(invoiceDtos: List<Invoice>): HttpResponse<List<EncryptedInvoice>>
-			= post {
+	suspend fun createInvoices(invoiceDtos: List<EncryptedInvoice>): HttpResponse<List<EncryptedInvoice>> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","invoice","batch")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "invoice", "batch")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(invoiceDtos)
 		}.wrap()
 
-
-	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams):
-			HttpResponse<List<EntityBulkShareResult<EncryptedInvoice>>> = put {
+	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<EncryptedInvoice>>> =
+		put {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","invoice","bulkSharedMetadataUpdate")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "invoice", "bulkSharedMetadataUpdate")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(request)
 		}.wrap()
 
-
-	suspend fun bulkShareMinimal(request: BulkShareOrUpdateMetadataParams):
-			HttpResponse<List<EntityBulkShareResult<EncryptedInvoice>>> = put {
+	suspend fun bulkShareMinimal(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<EncryptedInvoice>>> =
+		put {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","invoice","bulkSharedMetadataUpdateMinimal")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "invoice", "bulkSharedMetadataUpdateMinimal")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
@@ -509,5 +518,4 @@ class RawInvoiceApi(
 		}.wrap()
 
 	// endregion
-
 }

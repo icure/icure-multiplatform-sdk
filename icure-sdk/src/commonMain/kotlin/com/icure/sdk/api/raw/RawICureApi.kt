@@ -5,13 +5,13 @@ import com.icure.sdk.auth.services.setAuthorizationWith
 import com.icure.sdk.model.IdWithRev
 import com.icure.sdk.model.IndexingInfo
 import com.icure.sdk.model.ReplicationInfo
+import com.icure.sdk.model.couchdb.ReplicatorDocument
 import com.icure.sdk.utils.InternalIcureApi
-import io.ktor.client.request.`get`
 import io.ktor.client.request.parameter
-import io.ktor.client.request.post
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
+import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import kotlin.Boolean
 import kotlin.Int
@@ -19,8 +19,6 @@ import kotlin.String
 import kotlin.collections.List
 import kotlin.collections.Map
 import kotlin.time.Duration
-import com.icure.sdk.model.couchdb.ReplicatorDocument
-import io.ktor.client.request.delete
 
 // WARNING: This class is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
@@ -31,148 +29,146 @@ class RawICureApi(
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
-
 	// region common endpoints
 
-	suspend fun getVersion(): HttpResponse<String> = get {
+	suspend fun getVersion(): HttpResponse<String> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","icure","v")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "icure", "v")
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun isReady(): HttpResponse<String> = get {
+	suspend fun isReady(): HttpResponse<String> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","icure","ok")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "icure", "ok")
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun getProcessInfo(): HttpResponse<String> = get {
+	suspend fun getProcessInfo(): HttpResponse<String> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","icure","p")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "icure", "p")
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun getIndexingInfo(): HttpResponse<IndexingInfo> = get {
+	suspend fun getIndexingInfo(): HttpResponse<IndexingInfo> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","icure","i")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "icure", "i")
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun getReplicationInfo(): HttpResponse<ReplicationInfo> = get {
+	suspend fun getReplicationInfo(): HttpResponse<ReplicationInfo> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","icure","r")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "icure", "r")
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun updateDesignDoc(entityName: String, warmup: Boolean? = null):
-			HttpResponse<Boolean> = post {
+	suspend fun updateDesignDoc(
+		entityName: String,
+		warmup: Boolean? = null,
+	): HttpResponse<Boolean> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","icure","dd",entityName)
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "icure", "dd", entityName)
 				parameter("warmup", warmup)
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 		}.wrap()
 
-
 	suspend fun resolvePatientsConflicts(limit: Int? = null): HttpResponse<List<IdWithRev>> =
-			post {
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","icure","conflicts","patient")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "icure", "conflicts", "patient")
 				parameter("limit", limit)
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 		}.wrap()
-
 
 	suspend fun resolveContactsConflicts(limit: Int? = null): HttpResponse<List<IdWithRev>> =
-			post {
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","icure","conflicts","contact")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "icure", "conflicts", "contact")
 				parameter("limit", limit)
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 		}.wrap()
-
 
 	suspend fun resolveFormsConflicts(limit: Int? = null): HttpResponse<List<IdWithRev>> =
-			post {
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","icure","conflicts","form")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "icure", "conflicts", "form")
 				parameter("limit", limit)
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 		}.wrap()
 
-
-	suspend fun resolveHealthElementsConflicts(limit: Int? = null):
-			HttpResponse<List<IdWithRev>> = post {
+	suspend fun resolveHealthElementsConflicts(limit: Int? = null): HttpResponse<List<IdWithRev>> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","icure","conflicts","healthelement")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "icure", "conflicts", "healthelement")
 				parameter("limit", limit)
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 		}.wrap()
-
 
 	suspend fun resolveInvoicesConflicts(limit: Int? = null): HttpResponse<List<IdWithRev>> =
-			post {
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","icure","conflicts","invoice")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "icure", "conflicts", "invoice")
 				parameter("limit", limit)
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 		}.wrap()
-
 
 	suspend fun resolveMessagesConflicts(limit: Int? = null): HttpResponse<List<IdWithRev>> =
-			post {
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","icure","conflicts","message")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "icure", "conflicts", "message")
 				parameter("limit", limit)
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 		}.wrap()
 
-
-	suspend fun resolveDocumentsConflicts(ids: String? = null, limit: Int? = null):
-			HttpResponse<List<IdWithRev>> = post {
+	suspend fun resolveDocumentsConflicts(
+		ids: String? = null,
+		limit: Int? = null,
+	): HttpResponse<List<IdWithRev>> =
+		post {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","icure","conflicts","document")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "icure", "conflicts", "document")
 				parameter("ids", ids)
 				parameter("limit", limit)
 			}
@@ -184,34 +180,34 @@ class RawICureApi(
 
 	// region cloud endpoints
 
-	suspend fun getIndexingInfoByGroup(groupId: String): HttpResponse<IndexingInfo> = get {
+	suspend fun getIndexingInfoByGroup(groupId: String): HttpResponse<IndexingInfo> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","icure","byGroup",groupId,"i")
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "icure", "byGroup", groupId, "i")
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun getReplicatorInfo(id: String): HttpResponse<ReplicatorDocument> = get {
+	suspend fun getReplicatorInfo(id: String): HttpResponse<ReplicatorDocument> =
+		get {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","icure","r",id)
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "icure", "r", id)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun evictAllFromMap(mapName: String): HttpResponse<String> = delete {
+	suspend fun evictAllFromMap(mapName: String): HttpResponse<String> =
+		delete {
 			url {
-				host = apiUrl
-				appendPathSegments("rest","v2","icure","hzc",mapName)
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "icure", "hzc", mapName)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
 	// endregion
-
 }
