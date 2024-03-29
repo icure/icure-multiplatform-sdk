@@ -40,7 +40,7 @@ class HealthElementApi(
 		).updatedEntity
 
 	suspend fun getAndDecrypt(contactId: String) = rawApi.getHealthElement(contactId).successBody().let { p ->
-		encryptionService.tryDecryptEntity(p.withTypeInfo(), HealthElement.serializer()) { Serialization.json.decodeFromJsonElement<HealthElement>(it) }
+		encryptionService.tryDecryptEntity(p.withTypeInfo(), EncryptedHealthElement.serializer()) { Serialization.json.decodeFromJsonElement<DecryptedHealthElement>(it) }
 	}
 
 	suspend fun encryptAndCreate(he: DecryptedHealthElement) = encryptionService.encryptEntity(
@@ -82,6 +82,6 @@ class HealthElementApi(
 			encryptionService.secretIdsOf(patient.withTypeInfo(), null).toList()
 		).successBody().mapNotNull { decrypt(it) }
 
-	suspend fun decrypt(he: HealthElement) =
-		encryptionService.tryDecryptEntity(he.withTypeInfo(), HealthElement.serializer()) { Serialization.json.decodeFromJsonElement<HealthElement>(it) }
+	suspend fun decrypt(he: EncryptedHealthElement) =
+		encryptionService.tryDecryptEntity(he.withTypeInfo(), EncryptedHealthElement.serializer()) { Serialization.json.decodeFromJsonElement<DecryptedHealthElement>(it) }
 }

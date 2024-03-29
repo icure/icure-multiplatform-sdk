@@ -11,8 +11,8 @@ import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.withTypeInfo
 import com.icure.sdk.model.DecryptedHealthElement
 import com.icure.sdk.model.EncryptedHealthElement
-import com.icure.sdk.model.IcureStub
 import com.icure.sdk.model.HealthElement
+import com.icure.sdk.model.IcureStub
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.Patient
@@ -181,7 +181,7 @@ internal class HealthElementApiImpl(
 	override suspend fun maybeDecrypt(entity: EncryptedHealthElement): DecryptedHealthElement {
 		return encryptionService.tryDecryptEntity(
 			entity.withTypeInfo(),
-			HealthElement.serializer(),
+			EncryptedHealthElement.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedHealthElement>(it) }
 			?: throw EntityDecryptionException("Entity ${entity.id} cannot be created")
 	}
@@ -199,7 +199,7 @@ internal class HealthElementApiImpl(
 			override suspend fun maybeDecrypt(entity: EncryptedHealthElement): HealthElement =
 				encryptionService.tryDecryptEntity(
 					entity.withTypeInfo(),
-					HealthElement.serializer(),
+					EncryptedHealthElement.serializer(),
 				) { Serialization.json.decodeFromJsonElement<DecryptedHealthElement>(it) }
 					?: entity
 
@@ -277,7 +277,7 @@ internal class HealthElementApiImpl(
 
 	suspend fun decrypt(entity: EncryptedHealthElement, errorMessage: () -> String): DecryptedHealthElement = encryptionService.tryDecryptEntity(
 		entity.withTypeInfo(),
-		HealthElement.serializer(),
+		EncryptedHealthElement.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedHealthElement>(it) }
 		?: throw EntityDecryptionException(errorMessage())
 
