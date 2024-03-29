@@ -11,7 +11,7 @@ import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.couchdb.SortDirection
-import com.icure.sdk.model.embed.Content
+import com.icure.sdk.model.embed.EncryptedContent
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
@@ -167,7 +167,7 @@ class RawPatientApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-	suspend fun countOfPatients(hcPartyId: String): HttpResponse<Content> =
+	suspend fun countOfPatients(hcPartyId: String): HttpResponse<EncryptedContent> =
 		get {
 			url {
 				takeFrom(apiUrl)

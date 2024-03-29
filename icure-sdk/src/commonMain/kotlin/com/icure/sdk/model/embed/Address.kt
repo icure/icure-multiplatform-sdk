@@ -7,8 +7,6 @@ import kotlin.collections.List
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
-@Serializable
 sealed interface Address : Encryptable {
 	public val addressType: AddressType?
 
@@ -80,57 +78,4 @@ data class EncryptedAddress(
 	// region Address-EncryptedAddress
 
 	// endregion
-}
-
-public fun Address.copy(
-	addressType: AddressType? = this.addressType,
-	descr: String? = this.descr,
-	street: String? = this.street,
-	houseNumber: String? = this.houseNumber,
-	postboxNumber: String? = this.postboxNumber,
-	postalCode: String? = this.postalCode,
-	city: String? = this.city,
-	state: String? = this.state,
-	country: String? = this.country,
-	note: String? = this.note,
-	notes: List<Annotation> = this.notes,
-	telecoms: List<Telecom> = this.telecoms,
-	encryptedSelf: Base64String? = this.encryptedSelf,
-): Address {
-	return when (this) {
-		is DecryptedAddress ->
-			copy(
-				addressType = addressType,
-				descr = descr,
-				street = street,
-				houseNumber = houseNumber,
-				postboxNumber = postboxNumber,
-				postalCode = postalCode,
-				city = city,
-				state = state,
-				country = country,
-				note = note,
-				notes =
-				notes,
-				telecoms = telecoms,
-				encryptedSelf = encryptedSelf,
-			)
-		is EncryptedAddress ->
-			copy(
-				addressType = addressType,
-				descr = descr,
-				street = street,
-				houseNumber = houseNumber,
-				postboxNumber = postboxNumber,
-				postalCode = postalCode,
-				city =
-				city,
-				state = state,
-				country = country,
-				note = note,
-				notes = notes,
-				telecoms = telecoms,
-				encryptedSelf = encryptedSelf,
-			)
-	}
 }

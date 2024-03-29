@@ -10,7 +10,7 @@ import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.`data`.LabelledOccurence
-import com.icure.sdk.model.embed.Content
+import com.icure.sdk.model.embed.EncryptedContent
 import com.icure.sdk.model.embed.EncryptedService
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
@@ -49,7 +49,7 @@ class RawContactApi(
 
 	// region common endpoints
 
-	suspend fun getEmptyContent(): HttpResponse<Content> =
+	suspend fun getEmptyContent(): HttpResponse<EncryptedContent> =
 		get {
 			url {
 				takeFrom(apiUrl)

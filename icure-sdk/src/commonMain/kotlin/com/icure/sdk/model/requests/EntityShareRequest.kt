@@ -13,7 +13,7 @@ import kotlinx.serialization.Serializable
 data class EntityShareRequest(
 	public val explicitDelegator: String? = null,
 	public val explicitDelegate: String? = null,
-	public val accessControlKeys: Set<AccessControlKeyHexString> = emptySet(),
+	public val accessControlKeys: Set<AccessControlKeyHexString>,
 	public val secretIds: Set<Base64String> = emptySet(),
 	public val encryptionKeys: Set<Base64String> = emptySet(),
 	public val owningEntityIds: Set<Base64String> = emptySet(),

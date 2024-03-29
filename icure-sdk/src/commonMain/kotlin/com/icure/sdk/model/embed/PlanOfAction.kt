@@ -14,8 +14,6 @@ import kotlin.collections.Set
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
-@Serializable
 sealed interface PlanOfAction : Encryptable, ICureDocument<String>, Named {
 	override val id: String
 
@@ -135,98 +133,4 @@ data class EncryptedPlanOfAction(
 	// region PlanOfAction-EncryptedPlanOfAction
 
 	// endregion
-}
-
-public fun PlanOfAction.copy(
-	id: String = this.id,
-	created: Long? = this.created,
-	modified: Long? = this.modified,
-	author: String? = this.author,
-	responsible: String? = this.responsible,
-	medicalLocationId: String? = this.medicalLocationId,
-	tags: Set<CodeStub> = this.tags,
-	codes: Set<CodeStub> = this.codes,
-	endOfLife: Long? = this.endOfLife,
-	prescriberId: String? = this.prescriberId,
-	valueDate: Long? = this.valueDate,
-	openingDate: Long? = this.openingDate,
-	closingDate: Long? = this.closingDate,
-	deadlineDate: Long? = this.deadlineDate,
-	name: String? = this.name,
-	descr: String? = this.descr,
-	note: String? = this.note,
-	idOpeningContact: String? = this.idOpeningContact,
-	idClosingContact: String? = this.idClosingContact,
-	status: Int = this.status,
-	documentIds: Set<String> = this.documentIds,
-	numberOfCares: Int? = this.numberOfCares,
-	careTeamMemberships: List<CareTeamMembership?> = this.careTeamMemberships,
-	relevant: Boolean = this.relevant,
-	encryptedSelf: Base64String? = this.encryptedSelf,
-): PlanOfAction {
-	return when (this) {
-		is DecryptedPlanOfAction ->
-			copy(
-				id = id,
-				created =
-				created,
-				modified = modified,
-				author = author,
-				responsible = responsible,
-				medicalLocationId = medicalLocationId,
-				tags = tags,
-				codes = codes,
-				endOfLife = endOfLife,
-				prescriberId = prescriberId,
-				valueDate = valueDate,
-				openingDate = openingDate,
-				closingDate =
-				closingDate,
-				deadlineDate = deadlineDate,
-				name = name,
-				descr = descr,
-				note = note,
-				idOpeningContact = idOpeningContact,
-				idClosingContact = idClosingContact,
-				status = status,
-				documentIds = documentIds,
-				numberOfCares = numberOfCares,
-				careTeamMemberships =
-				careTeamMemberships,
-				relevant = relevant,
-				encryptedSelf = encryptedSelf,
-			)
-		is EncryptedPlanOfAction ->
-			copy(
-				id = id,
-				created = created,
-				modified = modified,
-				author =
-				author,
-				responsible = responsible,
-				medicalLocationId = medicalLocationId,
-				tags = tags,
-				codes = codes,
-				endOfLife = endOfLife,
-				prescriberId = prescriberId,
-				valueDate = valueDate,
-				openingDate = openingDate,
-				closingDate = closingDate,
-				deadlineDate = deadlineDate,
-				name =
-				name,
-				descr = descr,
-				note = note,
-				idOpeningContact = idOpeningContact,
-				idClosingContact =
-				idClosingContact,
-				status = status,
-				documentIds = documentIds,
-				numberOfCares =
-				numberOfCares,
-				careTeamMemberships = careTeamMemberships,
-				relevant = relevant,
-				encryptedSelf = encryptedSelf,
-			)
-	}
 }

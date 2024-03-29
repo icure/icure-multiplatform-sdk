@@ -16,7 +16,7 @@ import kotlin.collections.Set
 data class ServiceByContactsAndSubcontactsFilter(
 	override val desc: String? = null,
 	public val healthcarePartyId: String? = null,
-	public val contacts: Set<String> = emptySet(),
+	public val contacts: Set<String>,
 	public val subContacts: Set<String>? = null,
 	public val startValueDate: Long? = null,
 	public val endValueDate: Long? = null,

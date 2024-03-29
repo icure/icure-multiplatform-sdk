@@ -10,7 +10,7 @@ import kotlin.String
 data class TokenWithGroup(
 	public val token: String,
 	public val groupId: String,
-	public val groupName: String? = null,
+	public val groupName: String?,
 ) {
 	// region TokenWithGroup-TokenWithGroup
 

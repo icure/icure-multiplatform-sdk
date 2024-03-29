@@ -53,7 +53,7 @@ data class User(
 ) : StoredDocument, Principal {
 	@Serializable
 	public data class SystemMetadata(
-		public val roles: Set<String> = emptySet(),
+		public val roles: Set<String>,
 		public val isAdmin: Boolean,
 		public val inheritsRoles: Boolean,
 	)

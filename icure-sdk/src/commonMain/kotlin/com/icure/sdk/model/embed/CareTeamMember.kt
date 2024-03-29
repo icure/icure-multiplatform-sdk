@@ -8,8 +8,6 @@ import kotlin.String
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
-@Serializable
 sealed interface CareTeamMember : Encryptable, Identifiable<String> {
 	override val id: String
 
@@ -49,32 +47,4 @@ data class EncryptedCareTeamMember(
 	// region CareTeamMember-EncryptedCareTeamMember
 
 	// endregion
-}
-
-public fun CareTeamMember.copy(
-	id: String = this.id,
-	careTeamMemberType: CareTeamMemberType? = this.careTeamMemberType,
-	healthcarePartyId: String? = this.healthcarePartyId,
-	quality: CodeStub? = this.quality,
-	encryptedSelf: Base64String? = this.encryptedSelf,
-): CareTeamMember {
-	return when (this) {
-		is DecryptedCareTeamMember ->
-			copy(
-				id = id,
-				careTeamMemberType = careTeamMemberType,
-				healthcarePartyId = healthcarePartyId,
-				quality =
-				quality,
-				encryptedSelf = encryptedSelf,
-			)
-		is EncryptedCareTeamMember ->
-			copy(
-				id = id,
-				careTeamMemberType = careTeamMemberType,
-				healthcarePartyId = healthcarePartyId,
-				quality = quality,
-				encryptedSelf = encryptedSelf,
-			)
-	}
 }

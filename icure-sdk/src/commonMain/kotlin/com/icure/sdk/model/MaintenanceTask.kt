@@ -19,8 +19,6 @@ import kotlin.collections.Set
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
-@Serializable
 sealed interface MaintenanceTask :
 	StoredDocument,
 	ICureDocument<String>,
@@ -97,7 +95,7 @@ data class DecryptedMaintenanceTask(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : MaintenanceTask {
 	// region MaintenanceTask-DecryptedMaintenanceTask
-	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedMaintenanceTask =
+override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedMaintenanceTask =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
 }
@@ -127,87 +125,7 @@ data class EncryptedMaintenanceTask(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : MaintenanceTask {
 	// region MaintenanceTask-EncryptedMaintenanceTask
-	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedMaintenanceTask =
+override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedMaintenanceTask =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
-}
-
-public fun MaintenanceTask.copy(
-	id: String = this.id,
-	rev: String? = this.rev,
-	identifier: List<Identifier> = this.identifier,
-	created: Long? = this.created,
-	modified: Long? = this.modified,
-	author: String? = this.author,
-	responsible: String? = this.responsible,
-	medicalLocationId: String? = this.medicalLocationId,
-	tags: Set<CodeStub> = this.tags,
-	codes: Set<CodeStub> = this.codes,
-	endOfLife: Long? = this.endOfLife,
-	deletionDate: Long? = this.deletionDate,
-	taskType: String? = this.taskType,
-	properties: Set<PropertyStub> = this.properties,
-	status: TaskStatus = this.status,
-	secretForeignKeys: Set<String> = this.secretForeignKeys,
-	cryptedForeignKeys: Map<String, Set<Delegation>> = this.cryptedForeignKeys,
-	delegations: Map<String, Set<Delegation>> = this.delegations,
-	encryptionKeys: Map<String, Set<Delegation>> = this.encryptionKeys,
-	encryptedSelf: Base64String? = this.encryptedSelf,
-	securityMetadata: SecurityMetadata? = this.securityMetadata,
-): MaintenanceTask {
-	return when (this) {
-		is DecryptedMaintenanceTask ->
-			copy(
-				id = id,
-				rev = rev,
-				identifier = identifier,
-				created = created,
-				modified = modified,
-				author = author,
-				responsible = responsible,
-				medicalLocationId = medicalLocationId,
-				tags = tags,
-				codes =
-				codes,
-				endOfLife = endOfLife,
-				deletionDate = deletionDate,
-				taskType = taskType,
-				properties =
-				properties,
-				status = status,
-				secretForeignKeys = secretForeignKeys,
-				cryptedForeignKeys =
-				cryptedForeignKeys,
-				delegations = delegations,
-				encryptionKeys = encryptionKeys,
-				encryptedSelf = encryptedSelf,
-				securityMetadata = securityMetadata,
-			)
-		is EncryptedMaintenanceTask ->
-			copy(
-				id = id,
-				rev = rev,
-				identifier = identifier,
-				created =
-				created,
-				modified = modified,
-				author = author,
-				responsible = responsible,
-				medicalLocationId = medicalLocationId,
-				tags = tags,
-				codes = codes,
-				endOfLife = endOfLife,
-				deletionDate = deletionDate,
-				taskType = taskType,
-				properties = properties,
-				status =
-				status,
-				secretForeignKeys = secretForeignKeys,
-				cryptedForeignKeys = cryptedForeignKeys,
-				delegations = delegations,
-				encryptionKeys = encryptionKeys,
-				encryptedSelf = encryptedSelf,
-				securityMetadata = securityMetadata,
-			)
-	}
 }

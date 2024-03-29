@@ -10,7 +10,7 @@ import kotlin.collections.Map
 
 @Serializable
 data class SecurityMetadata(
-	public val secureDelegations: Map<SecureDelegationKeyString, SecureDelegation> = emptyMap(),
+	public val secureDelegations: Map<SecureDelegationKeyString, SecureDelegation>,
 	public val keysEquivalences: Map<Sha256HexString, Sha256HexString> = emptyMap(),
 ) {
 	// region SecurityMetadata-SecurityMetadata

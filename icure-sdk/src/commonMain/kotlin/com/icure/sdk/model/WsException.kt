@@ -11,7 +11,7 @@ import kotlin.collections.Map
 class WsException(
 	public val level: String,
 	public val error: String,
-	public val translations: Map<String, String> = emptyMap(),
+	public val translations: Map<String, String>,
 ) {
 	// region WsException-WsException
 

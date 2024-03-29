@@ -7,8 +7,6 @@ import kotlin.collections.Set
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
-@Serializable
 sealed interface FinancialInstitutionInformation : Encryptable {
 	public val name: String?
 
@@ -60,43 +58,4 @@ data class EncryptedFinancialInstitutionInformation(
 	// region FinancialInstitutionInformation-EncryptedFinancialInstitutionInformation
 
 	// endregion
-}
-
-public fun FinancialInstitutionInformation.copy(
-	name: String? = this.name,
-	key: String? = this.key,
-	bankAccount: String? = this.bankAccount,
-	bic: String? = this.bic,
-	proxyBankAccount: String? = this.proxyBankAccount,
-	proxyBic: String? = this.proxyBic,
-	preferredFiiForPartners: Set<String> = this.preferredFiiForPartners,
-	encryptedSelf: Base64String? = this.encryptedSelf,
-): FinancialInstitutionInformation {
-	return when (this) {
-		is DecryptedFinancialInstitutionInformation ->
-			copy(
-				name =
-				name,
-				key = key,
-				bankAccount = bankAccount,
-				bic = bic,
-				proxyBankAccount =
-				proxyBankAccount,
-				proxyBic = proxyBic,
-				preferredFiiForPartners = preferredFiiForPartners,
-				encryptedSelf = encryptedSelf,
-			)
-		is EncryptedFinancialInstitutionInformation ->
-			copy(
-				name = name,
-				key = key,
-				bankAccount =
-				bankAccount,
-				bic = bic,
-				proxyBankAccount = proxyBankAccount,
-				proxyBic = proxyBic,
-				preferredFiiForPartners = preferredFiiForPartners,
-				encryptedSelf = encryptedSelf,
-			)
-	}
 }

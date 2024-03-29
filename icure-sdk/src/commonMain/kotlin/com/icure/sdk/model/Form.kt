@@ -17,8 +17,6 @@ import kotlin.collections.Set
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
-@Serializable
 sealed interface Form :
 	StoredDocument,
 	ICureDocument<String>,
@@ -116,7 +114,7 @@ data class DecryptedForm(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : Form {
 	// region Form-DecryptedForm
-	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedForm =
+override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedForm =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
 }
@@ -153,110 +151,7 @@ data class EncryptedForm(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : Form {
 	// region Form-EncryptedForm
-	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedForm =
+override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedForm =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
-}
-
-public fun Form.copy(
-	id: String = this.id,
-	rev: String? = this.rev,
-	created: Long? = this.created,
-	modified: Long? = this.modified,
-	author: String? = this.author,
-	responsible: String? = this.responsible,
-	medicalLocationId: String? = this.medicalLocationId,
-	tags: Set<CodeStub> = this.tags,
-	codes: Set<CodeStub> = this.codes,
-	endOfLife: Long? = this.endOfLife,
-	deletionDate: Long? = this.deletionDate,
-	openingDate: Long? = this.openingDate,
-	status: String? = this.status,
-	version: Int? = this.version,
-	logicalUuid: String? = this.logicalUuid,
-	descr: String? = this.descr,
-	uniqueId: String? = this.uniqueId,
-	formTemplateId: String? = this.formTemplateId,
-	contactId: String? = this.contactId,
-	healthElementId: String? = this.healthElementId,
-	planOfActionId: String? = this.planOfActionId,
-	parent: String? = this.parent,
-	secretForeignKeys: Set<String> = this.secretForeignKeys,
-	cryptedForeignKeys: Map<String, Set<Delegation>> = this.cryptedForeignKeys,
-	delegations: Map<String, Set<Delegation>> = this.delegations,
-	encryptionKeys: Map<String, Set<Delegation>> = this.encryptionKeys,
-	encryptedSelf: Base64String? = this.encryptedSelf,
-	securityMetadata: SecurityMetadata? = this.securityMetadata,
-): Form {
-	return when (this) {
-		is DecryptedForm ->
-			copy(
-				id = id,
-				rev = rev,
-				created =
-				created,
-				modified = modified,
-				author = author,
-				responsible = responsible,
-				medicalLocationId = medicalLocationId,
-				tags = tags,
-				codes = codes,
-				endOfLife = endOfLife,
-				deletionDate = deletionDate,
-				openingDate = openingDate,
-				status = status,
-				version =
-				version,
-				logicalUuid = logicalUuid,
-				descr = descr,
-				uniqueId = uniqueId,
-				formTemplateId =
-				formTemplateId,
-				contactId = contactId,
-				healthElementId = healthElementId,
-				planOfActionId =
-				planOfActionId,
-				parent = parent,
-				secretForeignKeys = secretForeignKeys,
-				cryptedForeignKeys =
-				cryptedForeignKeys,
-				delegations = delegations,
-				encryptionKeys = encryptionKeys,
-				encryptedSelf = encryptedSelf,
-				securityMetadata = securityMetadata,
-			)
-		is EncryptedForm ->
-			copy(
-				id = id,
-				rev = rev,
-				created = created,
-				modified = modified,
-				author =
-				author,
-				responsible = responsible,
-				medicalLocationId = medicalLocationId,
-				tags = tags,
-				codes = codes,
-				endOfLife = endOfLife,
-				deletionDate = deletionDate,
-				openingDate =
-				openingDate,
-				status = status,
-				version = version,
-				logicalUuid = logicalUuid,
-				descr = descr,
-				uniqueId = uniqueId,
-				formTemplateId = formTemplateId,
-				contactId = contactId,
-				healthElementId = healthElementId,
-				planOfActionId = planOfActionId,
-				parent = parent,
-				secretForeignKeys = secretForeignKeys,
-				cryptedForeignKeys = cryptedForeignKeys,
-				delegations = delegations,
-				encryptionKeys = encryptionKeys,
-				encryptedSelf = encryptedSelf,
-				securityMetadata = securityMetadata,
-			)
-	}
 }

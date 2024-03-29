@@ -10,8 +10,6 @@ import kotlin.String
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
-@Serializable
 sealed interface InvoicingCode : Encryptable {
 	public val id: String?
 
@@ -123,7 +121,7 @@ sealed interface InvoicingCode : Encryptable {
 
 @Serializable
 data class DecryptedInvoicingCode(
-	override val id: String? = null,
+	override val id: String?,
 	override val dateCode: Long? = null,
 	override val logicalId: String? = null,
 	override val label: String? = null,
@@ -183,7 +181,7 @@ data class DecryptedInvoicingCode(
 
 @Serializable
 data class EncryptedInvoicingCode(
-	override val id: String? = null,
+	override val id: String?,
 	override val dateCode: Long? = null,
 	override val logicalId: String? = null,
 	override val label: String? = null,
@@ -239,193 +237,4 @@ data class EncryptedInvoicingCode(
 	// region InvoicingCode-EncryptedInvoicingCode
 
 	// endregion
-}
-
-public fun InvoicingCode.copy(
-	id: String? = this.id,
-	dateCode: Long? = this.dateCode,
-	logicalId: String? = this.logicalId,
-	label: String? = this.label,
-	userId: String? = this.userId,
-	contactId: String? = this.contactId,
-	serviceId: String? = this.serviceId,
-	tarificationId: String? = this.tarificationId,
-	code: String? = this.code,
-	paymentType: PaymentType? = this.paymentType,
-	paid: Double? = this.paid,
-	totalAmount: Double? = this.totalAmount,
-	reimbursement: Double? = this.reimbursement,
-	patientIntervention: Double? = this.patientIntervention,
-	doctorSupplement: Double? = this.doctorSupplement,
-	conventionAmount: Double? = this.conventionAmount,
-	vat: Double? = this.vat,
-	error: String? = this.error,
-	contract: String? = this.contract,
-	contractDate: Long? = this.contractDate,
-	units: Int? = this.units,
-	side: Int? = this.side,
-	timeOfDay: Int? = this.timeOfDay,
-	eidReadingHour: Int? = this.eidReadingHour,
-	eidReadingValue: String? = this.eidReadingValue,
-	override3rdPayerCode: Int? = this.override3rdPayerCode,
-	override3rdPayerReason: String? = this.override3rdPayerReason,
-	transplantationCode: Int? = this.transplantationCode,
-	prescriberNorm: Int? = this.prescriberNorm,
-	percentNorm: Int? = this.percentNorm,
-	prescriberNihii: String? = this.prescriberNihii,
-	relatedCode: String? = this.relatedCode,
-	prescriptionDate: Long? = this.prescriptionDate,
-	derogationMaxNumber: Int? = this.derogationMaxNumber,
-	prescriberSsin: String? = this.prescriberSsin,
-	prescriberLastName: String? = this.prescriberLastName,
-	prescriberFirstName: String? = this.prescriberFirstName,
-	prescriberCdHcParty: String? = this.prescriberCdHcParty,
-	locationNihii: String? = this.locationNihii,
-	locationCdHcParty: String? = this.locationCdHcParty,
-	locationService: Int? = this.locationService,
-	admissionDate: Long? = this.admissionDate,
-	canceled: Boolean? = this.canceled,
-	accepted: Boolean? = this.accepted,
-	pending: Boolean? = this.pending,
-	resent: Boolean? = this.resent,
-	archived: Boolean? = this.archived,
-	lost: Boolean? = this.lost,
-	insuranceJustification: Int? = this.insuranceJustification,
-	cancelPatientInterventionReason: Int? = this.cancelPatientInterventionReason,
-	status: Long? = this.status,
-	encryptedSelf: Base64String? = this.encryptedSelf,
-): InvoicingCode {
-	return when (this) {
-		is DecryptedInvoicingCode ->
-			copy(
-				id = id,
-				dateCode =
-				dateCode,
-				logicalId = logicalId,
-				label = label,
-				userId = userId,
-				contactId = contactId,
-				serviceId = serviceId,
-				tarificationId = tarificationId,
-				code = code,
-				paymentType =
-				paymentType,
-				paid = paid,
-				totalAmount = totalAmount,
-				reimbursement = reimbursement,
-				patientIntervention = patientIntervention,
-				doctorSupplement = doctorSupplement,
-				conventionAmount = conventionAmount,
-				vat = vat,
-				error = error,
-				contract = contract,
-				contractDate = contractDate,
-				units = units,
-				side = side,
-				timeOfDay = timeOfDay,
-				eidReadingHour = eidReadingHour,
-				eidReadingValue = eidReadingValue,
-				override3rdPayerCode =
-				override3rdPayerCode,
-				override3rdPayerReason = override3rdPayerReason,
-				transplantationCode =
-				transplantationCode,
-				prescriberNorm = prescriberNorm,
-				percentNorm = percentNorm,
-				prescriberNihii = prescriberNihii,
-				relatedCode = relatedCode,
-				prescriptionDate =
-				prescriptionDate,
-				derogationMaxNumber = derogationMaxNumber,
-				prescriberSsin =
-				prescriberSsin,
-				prescriberLastName = prescriberLastName,
-				prescriberFirstName =
-				prescriberFirstName,
-				prescriberCdHcParty = prescriberCdHcParty,
-				locationNihii =
-				locationNihii,
-				locationCdHcParty = locationCdHcParty,
-				locationService = locationService,
-				admissionDate = admissionDate,
-				canceled = canceled,
-				accepted = accepted,
-				pending =
-				pending,
-				resent = resent,
-				archived = archived,
-				lost = lost,
-				insuranceJustification =
-				insuranceJustification,
-				cancelPatientInterventionReason = cancelPatientInterventionReason,
-				status = status,
-				encryptedSelf = encryptedSelf,
-			)
-		is EncryptedInvoicingCode ->
-			copy(
-				id = id,
-				dateCode = dateCode,
-				logicalId = logicalId,
-				label =
-				label,
-				userId = userId,
-				contactId = contactId,
-				serviceId = serviceId,
-				tarificationId =
-				tarificationId,
-				code = code,
-				paymentType = paymentType,
-				paid = paid,
-				totalAmount =
-				totalAmount,
-				reimbursement = reimbursement,
-				patientIntervention = patientIntervention,
-				doctorSupplement = doctorSupplement,
-				conventionAmount = conventionAmount,
-				vat = vat,
-				error =
-				error,
-				contract = contract,
-				contractDate = contractDate,
-				units = units,
-				side = side,
-				timeOfDay = timeOfDay,
-				eidReadingHour = eidReadingHour,
-				eidReadingValue = eidReadingValue,
-				override3rdPayerCode = override3rdPayerCode,
-				override3rdPayerReason =
-				override3rdPayerReason,
-				transplantationCode = transplantationCode,
-				prescriberNorm =
-				prescriberNorm,
-				percentNorm = percentNorm,
-				prescriberNihii = prescriberNihii,
-				relatedCode =
-				relatedCode,
-				prescriptionDate = prescriptionDate,
-				derogationMaxNumber =
-				derogationMaxNumber,
-				prescriberSsin = prescriberSsin,
-				prescriberLastName =
-				prescriberLastName,
-				prescriberFirstName = prescriberFirstName,
-				prescriberCdHcParty =
-				prescriberCdHcParty,
-				locationNihii = locationNihii,
-				locationCdHcParty = locationCdHcParty,
-				locationService = locationService,
-				admissionDate = admissionDate,
-				canceled = canceled,
-				accepted = accepted,
-				pending = pending,
-				resent = resent,
-				archived = archived,
-				lost = lost,
-				insuranceJustification = insuranceJustification,
-				cancelPatientInterventionReason =
-				cancelPatientInterventionReason,
-				status = status,
-				encryptedSelf = encryptedSelf,
-			)
-	}
 }

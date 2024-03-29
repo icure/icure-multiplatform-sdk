@@ -20,8 +20,6 @@ import kotlin.collections.Set
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
-@Serializable
 sealed interface Message :
 	StoredDocument,
 	ICureDocument<String>,
@@ -152,7 +150,7 @@ data class DecryptedMessage(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : Message {
 	// region Message-DecryptedMessage
-	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedMessage =
+override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedMessage =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
 }
@@ -200,147 +198,7 @@ data class EncryptedMessage(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : Message {
 	// region Message-EncryptedMessage
-	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedMessage =
+override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedMessage =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
-}
-
-public fun Message.copy(
-	id: String = this.id,
-	rev: String? = this.rev,
-	created: Long? = this.created,
-	modified: Long? = this.modified,
-	author: String? = this.author,
-	responsible: String? = this.responsible,
-	medicalLocationId: String? = this.medicalLocationId,
-	tags: Set<CodeStub> = this.tags,
-	codes: Set<CodeStub> = this.codes,
-	endOfLife: Long? = this.endOfLife,
-	deletionDate: Long? = this.deletionDate,
-	fromAddress: String? = this.fromAddress,
-	fromHealthcarePartyId: String? = this.fromHealthcarePartyId,
-	formId: String? = this.formId,
-	status: Int? = this.status,
-	recipientsType: String? = this.recipientsType,
-	recipients: Set<String> = this.recipients,
-	toAddresses: Set<String> = this.toAddresses,
-	received: Long? = this.received,
-	sent: Long? = this.sent,
-	metas: Map<String, String> = this.metas,
-	readStatus: Map<String, MessageReadStatus> = this.readStatus,
-	messageAttachments: List<MessageAttachment> = this.messageAttachments,
-	transportGuid: String? = this.transportGuid,
-	remark: String? = this.remark,
-	conversationGuid: String? = this.conversationGuid,
-	subject: String? = this.subject,
-	invoiceIds: Set<String> = this.invoiceIds,
-	parentId: String? = this.parentId,
-	externalRef: String? = this.externalRef,
-	unassignedResults: Set<String> = this.unassignedResults,
-	assignedResults: Map<String, String> = this.assignedResults,
-	senderReferences: Map<String, String> = this.senderReferences,
-	secretForeignKeys: Set<String> = this.secretForeignKeys,
-	cryptedForeignKeys: Map<String, Set<Delegation>> = this.cryptedForeignKeys,
-	delegations: Map<String, Set<Delegation>> = this.delegations,
-	encryptionKeys: Map<String, Set<Delegation>> = this.encryptionKeys,
-	encryptedSelf: Base64String? = this.encryptedSelf,
-	securityMetadata: SecurityMetadata? = this.securityMetadata,
-): Message {
-	return when (this) {
-		is DecryptedMessage ->
-			copy(
-				id = id,
-				rev = rev,
-				created =
-				created,
-				modified = modified,
-				author = author,
-				responsible = responsible,
-				medicalLocationId = medicalLocationId,
-				tags = tags,
-				codes = codes,
-				endOfLife = endOfLife,
-				deletionDate = deletionDate,
-				fromAddress = fromAddress,
-				fromHealthcarePartyId =
-				fromHealthcarePartyId,
-				formId = formId,
-				status = status,
-				recipientsType = recipientsType,
-				recipients = recipients,
-				toAddresses = toAddresses,
-				received = received,
-				sent = sent,
-				metas = metas,
-				readStatus = readStatus,
-				messageAttachments = messageAttachments,
-				transportGuid = transportGuid,
-				remark = remark,
-				conversationGuid = conversationGuid,
-				subject = subject,
-				invoiceIds = invoiceIds,
-				parentId = parentId,
-				externalRef =
-				externalRef,
-				unassignedResults = unassignedResults,
-				assignedResults = assignedResults,
-				senderReferences = senderReferences,
-				secretForeignKeys = secretForeignKeys,
-				cryptedForeignKeys = cryptedForeignKeys,
-				delegations = delegations,
-				encryptionKeys =
-				encryptionKeys,
-				encryptedSelf = encryptedSelf,
-				securityMetadata = securityMetadata,
-			)
-		is EncryptedMessage ->
-			copy(
-				id = id,
-				rev = rev,
-				created = created,
-				modified = modified,
-				author =
-				author,
-				responsible = responsible,
-				medicalLocationId = medicalLocationId,
-				tags = tags,
-				codes = codes,
-				endOfLife = endOfLife,
-				deletionDate = deletionDate,
-				fromAddress =
-				fromAddress,
-				fromHealthcarePartyId = fromHealthcarePartyId,
-				formId = formId,
-				status =
-				status,
-				recipientsType = recipientsType,
-				recipients = recipients,
-				toAddresses =
-				toAddresses,
-				received = received,
-				sent = sent,
-				metas = metas,
-				readStatus = readStatus,
-				messageAttachments = messageAttachments,
-				transportGuid = transportGuid,
-				remark = remark,
-				conversationGuid = conversationGuid,
-				subject = subject,
-				invoiceIds = invoiceIds,
-				parentId =
-				parentId,
-				externalRef = externalRef,
-				unassignedResults = unassignedResults,
-				assignedResults = assignedResults,
-				senderReferences = senderReferences,
-				secretForeignKeys =
-				secretForeignKeys,
-				cryptedForeignKeys = cryptedForeignKeys,
-				delegations = delegations,
-				encryptionKeys = encryptionKeys,
-				encryptedSelf = encryptedSelf,
-				securityMetadata =
-				securityMetadata,
-			)
-	}
 }

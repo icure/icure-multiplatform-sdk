@@ -12,8 +12,6 @@ import kotlin.collections.Set
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
-@Serializable
 sealed interface SubContact : Encryptable, ICureDocument<String?> {
 	override val id: String?
 
@@ -105,73 +103,4 @@ data class EncryptedSubContact(
 	// region SubContact-EncryptedSubContact
 
 	// endregion
-}
-
-public fun SubContact.copy(
-	id: String? = this.id,
-	created: Long? = this.created,
-	modified: Long? = this.modified,
-	author: String? = this.author,
-	responsible: String? = this.responsible,
-	medicalLocationId: String? = this.medicalLocationId,
-	tags: Set<CodeStub> = this.tags,
-	codes: Set<CodeStub> = this.codes,
-	endOfLife: Long? = this.endOfLife,
-	descr: String? = this.descr,
-	protocol: String? = this.protocol,
-	status: Int? = this.status,
-	formId: String? = this.formId,
-	planOfActionId: String? = this.planOfActionId,
-	healthElementId: String? = this.healthElementId,
-	classificationId: String? = this.classificationId,
-	services: List<ServiceLink> = this.services,
-	encryptedSelf: Base64String? = this.encryptedSelf,
-): SubContact {
-	return when (this) {
-		is DecryptedSubContact ->
-			copy(
-				id = id,
-				created = created,
-				modified = modified,
-				author = author,
-				responsible = responsible,
-				medicalLocationId =
-				medicalLocationId,
-				tags = tags,
-				codes = codes,
-				endOfLife = endOfLife,
-				descr = descr,
-				protocol = protocol,
-				status = status,
-				formId = formId,
-				planOfActionId = planOfActionId,
-				healthElementId = healthElementId,
-				classificationId = classificationId,
-				services =
-				services,
-				encryptedSelf = encryptedSelf,
-			)
-		is EncryptedSubContact ->
-			copy(
-				id = id,
-				created = created,
-				modified = modified,
-				author =
-				author,
-				responsible = responsible,
-				medicalLocationId = medicalLocationId,
-				tags = tags,
-				codes = codes,
-				endOfLife = endOfLife,
-				descr = descr,
-				protocol = protocol,
-				status = status,
-				formId = formId,
-				planOfActionId = planOfActionId,
-				healthElementId = healthElementId,
-				classificationId = classificationId,
-				services = services,
-				encryptedSelf = encryptedSelf,
-			)
-	}
 }

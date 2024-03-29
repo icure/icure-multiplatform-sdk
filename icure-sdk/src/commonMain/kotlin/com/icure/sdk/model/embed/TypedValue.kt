@@ -11,8 +11,6 @@ import kotlin.String
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
-@Serializable
 sealed interface TypedValue : Encryptable {
 	public val type: TypedValuesType?
 
@@ -62,40 +60,4 @@ data class EncryptedTypedValue(
 	// region TypedValue-EncryptedTypedValue
 
 	// endregion
-}
-
-public fun TypedValue.copy(
-	type: TypedValuesType? = this.type,
-	booleanValue: Boolean? = this.booleanValue,
-	integerValue: Long? = this.integerValue,
-	doubleValue: Double? = this.doubleValue,
-	stringValue: String? = this.stringValue,
-	dateValue: Instant? = this.dateValue,
-	encryptedSelf: Base64String? = this.encryptedSelf,
-): TypedValue {
-	return when (this) {
-		is DecryptedTypedValue ->
-			copy(
-				type = type,
-				booleanValue =
-				booleanValue,
-				integerValue = integerValue,
-				doubleValue = doubleValue,
-				stringValue =
-				stringValue,
-				dateValue = dateValue,
-				encryptedSelf = encryptedSelf,
-			)
-		is EncryptedTypedValue ->
-			copy(
-				type = type,
-				booleanValue = booleanValue,
-				integerValue =
-				integerValue,
-				doubleValue = doubleValue,
-				stringValue = stringValue,
-				dateValue = dateValue,
-				encryptedSelf = encryptedSelf,
-			)
-	}
 }

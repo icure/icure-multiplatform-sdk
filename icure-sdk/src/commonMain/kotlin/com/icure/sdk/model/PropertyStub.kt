@@ -11,8 +11,6 @@ import kotlin.String
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
-@Serializable
 sealed interface PropertyStub : Encryptable {
 	public val id: String?
 
@@ -52,32 +50,4 @@ data class EncryptedPropertyStub(
 	// region PropertyStub-EncryptedPropertyStub
 
 	// endregion
-}
-
-public fun PropertyStub.copy(
-	id: String? = this.id,
-	type: PropertyTypeStub? = this.type,
-	typedValue: TypedValue? = this.typedValue,
-	deletionDate: Long? = this.deletionDate,
-	encryptedSelf: Base64String? = this.encryptedSelf,
-): PropertyStub {
-	return when (this) {
-		is DecryptedPropertyStub ->
-			copy(
-				id = id,
-				type = type,
-				typedValue = typedValue,
-				deletionDate = deletionDate,
-				encryptedSelf = encryptedSelf,
-			)
-		is EncryptedPropertyStub ->
-			copy(
-				id = id,
-				type = type,
-				typedValue = typedValue,
-				deletionDate =
-				deletionDate,
-				encryptedSelf = encryptedSelf,
-			)
-	}
 }

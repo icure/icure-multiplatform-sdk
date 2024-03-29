@@ -6,8 +6,6 @@ import kotlin.String
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
-@Serializable
 sealed interface Telecom : Encryptable {
 	public val telecomType: TelecomType?
 
@@ -43,29 +41,4 @@ data class EncryptedTelecom(
 	// region Telecom-EncryptedTelecom
 
 	// endregion
-}
-
-public fun Telecom.copy(
-	telecomType: TelecomType? = this.telecomType,
-	telecomNumber: String? = this.telecomNumber,
-	telecomDescription: String? = this.telecomDescription,
-	encryptedSelf: Base64String? = this.encryptedSelf,
-): Telecom {
-	return when (this) {
-		is DecryptedTelecom ->
-			copy(
-				telecomType = telecomType,
-				telecomNumber = telecomNumber,
-				telecomDescription = telecomDescription,
-				encryptedSelf =
-				encryptedSelf,
-			)
-		is EncryptedTelecom ->
-			copy(
-				telecomType = telecomType,
-				telecomNumber = telecomNumber,
-				telecomDescription = telecomDescription,
-				encryptedSelf = encryptedSelf,
-			)
-	}
 }

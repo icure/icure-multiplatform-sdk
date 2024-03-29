@@ -11,7 +11,7 @@ import kotlin.collections.List
 @Serializable
 data class GroupDatabasesInfo(
 	public val groupId: String,
-	public val databasesInfo: List<DatabaseInfo> = emptyList(),
+	public val databasesInfo: List<DatabaseInfo>,
 	public val gcpStorageSize: Long,
 ) {
 	// region GroupDatabasesInfo-GroupDatabasesInfo
