@@ -1,9 +1,9 @@
 package com.icure.sdk.model.filter.predicate
 
-import kotlin.OptIn
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonClassDiscriminator
+import kotlin.OptIn
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
@@ -13,5 +13,6 @@ import kotlinx.serialization.json.JsonClassDiscriminator
 @Serializable
 sealed interface Predicate {
 	// region Predicate-Predicate
+
 	// endregion
 }

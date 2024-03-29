@@ -3,9 +3,8 @@ package com.icure.sdk.api.raw
 import com.icure.sdk.auth.services.AuthService
 import com.icure.sdk.auth.services.setAuthorizationWith
 import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
-import com.icure.sdk.model.ClassificationTemplate
-import com.icure.sdk.model.EncryptedClassificationTemplate
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
+import com.icure.sdk.model.EncryptedClassificationTemplate
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
@@ -36,51 +35,50 @@ class RawClassificationTemplateApi(
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
-
 	override suspend fun getAccessControlKeysHeaderValues(): List<String>? =
-			accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithEncryptionMetadataTypeName.ClassificationTemplate)
+		accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithEncryptionMetadataTypeName.ClassificationTemplate)
 
 	// region common endpoints
 
-	suspend fun createClassificationTemplate(c: ClassificationTemplate):
-			HttpResponse<EncryptedClassificationTemplate> = post {
+	suspend fun createClassificationTemplate(c: EncryptedClassificationTemplate): HttpResponse<EncryptedClassificationTemplate> =
+		post {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest","v2","classificationTemplate")
+				appendPathSegments("rest", "v2", "classificationTemplate")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(c)
 		}.wrap()
 
-
-	suspend fun getClassificationTemplate(classificationTemplateId: String):
-			HttpResponse<EncryptedClassificationTemplate> = get {
+	suspend fun getClassificationTemplate(classificationTemplateId: String): HttpResponse<EncryptedClassificationTemplate> =
+		get {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest","v2","classificationTemplate",classificationTemplateId)
+				appendPathSegments("rest", "v2", "classificationTemplate", classificationTemplateId)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun getClassificationTemplateByIds(ids: String):
-			HttpResponse<List<EncryptedClassificationTemplate>> = get {
+	suspend fun getClassificationTemplateByIds(ids: String): HttpResponse<List<EncryptedClassificationTemplate>> =
+		get {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest","v2","classificationTemplate","byIds",ids)
+				appendPathSegments("rest", "v2", "classificationTemplate", "byIds", ids)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun listClassificationTemplatesByHCPartyPatientForeignKeys(hcPartyId: String,
-			secretFKeys: String): HttpResponse<List<EncryptedClassificationTemplate>> = get {
+	suspend fun listClassificationTemplatesByHCPartyPatientForeignKeys(
+		hcPartyId: String,
+		secretFKeys: String,
+	): HttpResponse<List<EncryptedClassificationTemplate>> =
+		get {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest","v2","classificationTemplate","byHcPartySecretForeignKeys")
+				appendPathSegments("rest", "v2", "classificationTemplate", "byHcPartySecretForeignKeys")
 				parameter("hcPartyId", hcPartyId)
 				parameter("secretFKeys", secretFKeys)
 				parameter("ts", GMTDate().timestamp)
@@ -88,17 +86,17 @@ class RawClassificationTemplateApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
 	suspend fun findClassificationTemplatesByHCPartyPatientForeignKey(
 		hcPartyId: String,
 		secretFKey: String,
 		startKey: String?,
 		startDocumentId: String?,
 		limit: Int?,
-	): HttpResponse<PaginatedList<EncryptedClassificationTemplate, JsonString>> = get {
+	): HttpResponse<PaginatedList<EncryptedClassificationTemplate, JsonString>> =
+		get {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest","v2","classificationTemplate","byHcPartySecretForeignKey")
+				appendPathSegments("rest", "v2", "classificationTemplate", "byHcPartySecretForeignKey")
 				parameter("hcPartyId", hcPartyId)
 				parameter("secretFKey", secretFKey)
 				parameter("ts", GMTDate().timestamp)
@@ -106,60 +104,60 @@ class RawClassificationTemplateApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun deleteClassificationTemplates(classificationTemplateIds: ListOfIds):
-			HttpResponse<List<DocIdentifier>> = post {
+	suspend fun deleteClassificationTemplates(classificationTemplateIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
+		post {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest","v2","classificationTemplate","delete","batch")
+				appendPathSegments("rest", "v2", "classificationTemplate", "delete", "batch")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(classificationTemplateIds)
 		}.wrap()
 
-
-	suspend fun deleteClassificationTemplate(classificationTemplateId: String):
-			HttpResponse<DocIdentifier> = delete {
+	suspend fun deleteClassificationTemplate(classificationTemplateId: String): HttpResponse<DocIdentifier> =
+		delete {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest","v2","classificationTemplate",classificationTemplateId)
+				appendPathSegments("rest", "v2", "classificationTemplate", classificationTemplateId)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun modifyClassificationTemplate(classificationTemplateDto: ClassificationTemplate):
-			HttpResponse<EncryptedClassificationTemplate> = put {
+	public suspend fun modifyClassificationTemplate(
+		classificationTemplateDto: EncryptedClassificationTemplate,
+	): HttpResponse<EncryptedClassificationTemplate> =
+		put {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest","v2","classificationTemplate")
+				appendPathSegments("rest", "v2", "classificationTemplate")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(classificationTemplateDto)
 		}.wrap()
 
-
 	suspend fun findClassificationTemplatesBy(
 		startKey: String?,
 		startDocumentId: String?,
 		limit: Int?,
-	): HttpResponse<PaginatedList<EncryptedClassificationTemplate, JsonString>> = get {
+	): HttpResponse<PaginatedList<EncryptedClassificationTemplate, JsonString>> =
+		get {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest","v2","classificationTemplate")
+				appendPathSegments("rest", "v2", "classificationTemplate")
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams):
-			HttpResponse<List<EntityBulkShareResult<EncryptedClassificationTemplate>>> = put {
+	suspend fun bulkShare(
+		request: BulkShareOrUpdateMetadataParams,
+	): HttpResponse<List<EntityBulkShareResult<EncryptedClassificationTemplate>>> =
+		put {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest","v2","classificationTemplate","bulkSharedMetadataUpdate")
+				appendPathSegments("rest", "v2", "classificationTemplate", "bulkSharedMetadataUpdate")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
@@ -167,5 +165,4 @@ class RawClassificationTemplateApi(
 		}.wrap()
 
 	// endregion
-
 }

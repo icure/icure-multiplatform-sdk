@@ -8,11 +8,12 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class PartnershipStatus() {
-  @SerialName("active")
-  Active,
-  @SerialName("complicated")
-  Complicated,
-  @SerialName("past")
-  Past,
+	@SerialName("active")
+	Active,
 
+	@SerialName("complicated")
+	Complicated,
+
+	@SerialName("past")
+	Past,
 }

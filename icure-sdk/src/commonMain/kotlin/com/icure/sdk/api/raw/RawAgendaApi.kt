@@ -8,11 +8,7 @@ import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.specializations.JsonString
 import com.icure.sdk.utils.InternalIcureApi
-import io.ktor.client.request.`get`
-import io.ktor.client.request.delete
 import io.ktor.client.request.parameter
-import io.ktor.client.request.post
-import io.ktor.client.request.put
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
@@ -34,14 +30,16 @@ class RawAgendaApi(
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
-
 	// region common endpoints
 
-	suspend fun getAgendas(startDocumentId: String? = null, limit: Int? = null):
-			HttpResponse<PaginatedList<Agenda, JsonString>> = get {
+	suspend fun getAgendas(
+		startDocumentId: String? = null,
+		limit: Int? = null,
+	): HttpResponse<PaginatedList<Agenda, JsonString>> =
+		get {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest","v2","agenda")
+				appendPathSegments("rest", "v2", "agenda")
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
 				parameter("ts", GMTDate().timestamp)
@@ -49,74 +47,74 @@ class RawAgendaApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun createAgenda(agendaDto: Agenda): HttpResponse<Agenda> = post {
+	suspend fun createAgenda(agendaDto: Agenda): HttpResponse<Agenda> =
+		post {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest","v2","agenda")
+				appendPathSegments("rest", "v2", "agenda")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(agendaDto)
 		}.wrap()
 
-
-	suspend fun deleteAgendas(agendaIds: ListOfIds): HttpResponse<List<DocIdentifier>> = post {
+	suspend fun deleteAgendas(agendaIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
+		post {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest","v2","agenda","delete","batch")
+				appendPathSegments("rest", "v2", "agenda", "delete", "batch")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(agendaIds)
 		}.wrap()
 
-
-	suspend fun deleteAgenda(agendaId: String): HttpResponse<DocIdentifier> = delete {
+	suspend fun deleteAgenda(agendaId: String): HttpResponse<DocIdentifier> =
+		delete {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest","v2","agenda",agendaId)
+				appendPathSegments("rest", "v2", "agenda", agendaId)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun getAgenda(agendaId: String): HttpResponse<Agenda> = get {
+	suspend fun getAgenda(agendaId: String): HttpResponse<Agenda> =
+		get {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest","v2","agenda",agendaId)
+				appendPathSegments("rest", "v2", "agenda", agendaId)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun getAgendasForUser(userId: String): HttpResponse<Agenda> = get {
+	suspend fun getAgendasForUser(userId: String): HttpResponse<Agenda> =
+		get {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest","v2","agenda","byUser")
+				appendPathSegments("rest", "v2", "agenda", "byUser")
 				parameter("userId", userId)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun getReadableAgendasForUser(userId: String): HttpResponse<List<Agenda>> = get {
+	suspend fun getReadableAgendasForUser(userId: String): HttpResponse<List<Agenda>> =
+		get {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest","v2","agenda","readableForUser")
+				appendPathSegments("rest", "v2", "agenda", "readableForUser")
 				parameter("userId", userId)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
-	suspend fun modifyAgenda(agendaDto: Agenda): HttpResponse<Agenda> = put {
+	suspend fun modifyAgenda(agendaDto: Agenda): HttpResponse<Agenda> =
+		put {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest","v2","agenda")
+				appendPathSegments("rest", "v2", "agenda")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
@@ -124,5 +122,4 @@ class RawAgendaApi(
 		}.wrap()
 
 	// endregion
-
 }

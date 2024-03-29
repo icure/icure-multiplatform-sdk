@@ -11,7 +11,7 @@ import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.withTypeInfo
 import com.icure.sdk.model.DecryptedHealthElement
 import com.icure.sdk.model.EncryptedHealthElement
-import com.icure.sdk.model.EncryptedIcureStub
+import com.icure.sdk.model.IcureStub
 import com.icure.sdk.model.HealthElement
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
@@ -34,10 +34,10 @@ private val ENCRYPTED_FIELDS_MANIFEST =
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface HealthElementBasicFlavourlessApi {
-	suspend fun matchHealthElementsBy(filter: AbstractFilter<HealthElement>): List<String>
+	suspend fun matchHealthElementsBy(filter: AbstractFilter<EncryptedHealthElement>): List<String>
 	suspend fun deleteHealthElement(entityId: String): DocIdentifier
 	suspend fun deleteHealthElements(entityIds: List<String>): List<DocIdentifier>
-	suspend fun findHealthElementsDelegationsStubsByHcPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<EncryptedIcureStub>
+	suspend fun findHealthElementsDelegationsStubsByHcPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<IcureStub>
 }
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
@@ -46,7 +46,7 @@ interface HealthElementBasicFlavouredApi<E : HealthElement> {
 	suspend fun modifyHealthElements(entities: List<E>): List<E>
 	suspend fun getHealthElement(entityId: String): E
 	suspend fun getHealthElements(entityIds: List<String>): List<E>
-	suspend fun filterHealthElementsBy(filterChain: FilterChain<HealthElement>, startDocumentId: String?, limit: Int?): PaginatedList<E, *>
+	suspend fun filterHealthElementsBy(filterChain: FilterChain<EncryptedHealthElement>, startDocumentId: String?, limit: Int?): PaginatedList<E, *>
 	suspend fun findHealthElementsByHcPartyPatientForeignKey(
 		hcPartyId: String,
 		secretPatientKey: String,
@@ -106,7 +106,7 @@ private abstract class AbstractHealthElementBasicFlavouredApi<E : HealthElement>
 	override suspend fun getHealthElements(entityIds: List<String>): List<E> =
 		rawApi.getHealthElements(ListOfIds(entityIds)).successBody().map { maybeDecrypt(it) }
 
-	override suspend fun filterHealthElementsBy(filterChain: FilterChain<HealthElement>, startDocumentId: String?, limit: Int?): PaginatedList<E, *> =
+	override suspend fun filterHealthElementsBy(filterChain: FilterChain<EncryptedHealthElement>, startDocumentId: String?, limit: Int?): PaginatedList<E, *> =
 		rawApi.filterHealthElementsBy(startDocumentId, limit, filterChain).successBody().map { maybeDecrypt(it) }
 
 	override suspend fun findHealthElementsByHcPartyPatientForeignKey(
@@ -155,7 +155,7 @@ private abstract class AbstractHealthElementFlavouredApi<E : HealthElement>(
 
 @InternalIcureApi
 private class AbstractHealthElementBasicFlavourlessApi(val rawApi: RawHealthElementApi) : HealthElementBasicFlavourlessApi {
-	override suspend fun matchHealthElementsBy(filter: AbstractFilter<HealthElement>) = rawApi.matchHealthElementsBy(filter).successBody()
+	override suspend fun matchHealthElementsBy(filter: AbstractFilter<EncryptedHealthElement>) = rawApi.matchHealthElementsBy(filter).successBody()
 	override suspend fun deleteHealthElement(entityId: String) = rawApi.deleteHealthElement(entityId).successBody()
 	override suspend fun deleteHealthElements(entityIds: List<String>) = rawApi.deleteHealthElements(ListOfIds(entityIds)).successBody()
 	override suspend fun findHealthElementsDelegationsStubsByHcPartyPatientForeignKeys(

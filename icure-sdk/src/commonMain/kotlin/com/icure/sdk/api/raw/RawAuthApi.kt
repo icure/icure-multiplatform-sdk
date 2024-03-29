@@ -3,7 +3,6 @@ package com.icure.sdk.api.raw
 import com.icure.sdk.auth.services.AuthService
 import com.icure.sdk.auth.services.setAuthorizationWith
 import com.icure.sdk.utils.InternalIcureApi
-import io.ktor.client.request.`get`
 import io.ktor.client.request.parameter
 import io.ktor.http.appendPathSegments
 import io.ktor.http.takeFrom
@@ -21,18 +20,20 @@ class RawAuthApi(
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
-
 	// region common endpoints
 
-	suspend fun token(method: String, path: String): HttpResponse<String> = get {
+	suspend fun token(
+		method: String,
+		path: String,
+	): HttpResponse<String> =
+		get {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest","v2","auth","token",method,path)
+				appendPathSegments("rest", "v2", "auth", "token", method, path)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
 	// endregion
-
 }

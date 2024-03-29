@@ -4,9 +4,7 @@ import com.icure.sdk.auth.services.AuthService
 import com.icure.sdk.auth.services.setAuthorizationWith
 import com.icure.sdk.model.EntityReference
 import com.icure.sdk.utils.InternalIcureApi
-import io.ktor.client.request.`get`
 import io.ktor.client.request.parameter
-import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
@@ -26,24 +24,23 @@ class RawEntityReferenceApi(
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
-
 	// region common endpoints
 
-	suspend fun getLatest(prefix: String): HttpResponse<EntityReference> = get {
+	suspend fun getLatest(prefix: String): HttpResponse<EntityReference> =
+		get {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest","v2","entityref","latest",prefix)
+				appendPathSegments("rest", "v2", "entityref", "latest", prefix)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-
 	suspend fun createEntityReference(er: EntityReference): HttpResponse<EntityReference> =
-			post {
+		post {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest","v2","entityref")
+				appendPathSegments("rest", "v2", "entityref")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
@@ -51,5 +48,4 @@ class RawEntityReferenceApi(
 		}.wrap()
 
 	// endregion
-
 }

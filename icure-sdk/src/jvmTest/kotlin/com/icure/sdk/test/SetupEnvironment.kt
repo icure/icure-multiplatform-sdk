@@ -16,11 +16,11 @@ import com.icure.sdk.auth.UsernamePassword
 import com.icure.sdk.auth.services.JwtAuthService
 import com.icure.sdk.crypto.impl.NoAccessControlKeysHeadersProvider
 import com.icure.sdk.model.DatabaseInitialisation
-import com.icure.sdk.model.DecryptedPatient
+import com.icure.sdk.model.EncryptedPatient
 import com.icure.sdk.model.HealthcareParty
 import com.icure.sdk.model.Patient
-import com.icure.sdk.model.specializations.SpkiHexString
 import com.icure.sdk.model.User
+import com.icure.sdk.model.specializations.SpkiHexString
 import com.icure.sdk.storage.IcureStorageFacade
 import com.icure.sdk.storage.impl.DefaultStorageEntryKeysFactory
 import com.icure.sdk.storage.impl.JsonAndBase64KeyStorage
@@ -174,7 +174,7 @@ suspend fun createPatientUser(): DataOwnerDetails {
 	val password = UUID.randomUUID().toString()
 	val keypair = defaultCryptoService.rsa.generateKeyPair(RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256)
 	val patient = patientRawApi.createPatient(
-		DecryptedPatient(
+		EncryptedPatient(
 			patientId,
 			firstName = "Patient-$patientId",
 			lastName = "Patient-$patientId",

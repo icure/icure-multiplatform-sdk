@@ -90,7 +90,7 @@ class GroupApi(
         roleIds: ListOfIds,
     ): Group = rawApi.setDefaultRoles(groupId, userType, roleIds).successBody()
 
-    suspend fun getDefaultRoles(groupId: String): Map<UserType, RoleConfiguration> =
+    suspend fun getDefaultRoles(groupId: String): Map<UserType, List<RoleConfiguration>> =
         rawApi.getDefaultRoles(groupId).successBody()
 
     suspend fun deleteGroup(id: String): Group = rawApi.deleteGroup(id).successBody()
