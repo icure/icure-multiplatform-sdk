@@ -257,7 +257,7 @@ data class DecryptedInvoice(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : Invoice {
 	// region Invoice-DecryptedInvoice
-override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedInvoice =
+	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedInvoice =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
 }
@@ -337,7 +337,7 @@ data class EncryptedInvoice(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : Invoice {
 	// region Invoice-EncryptedInvoice
-override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedInvoice =
+	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedInvoice =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
 }

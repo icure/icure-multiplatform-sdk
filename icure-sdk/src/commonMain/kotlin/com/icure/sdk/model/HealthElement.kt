@@ -148,7 +148,7 @@ data class DecryptedHealthElement(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : HealthElement {
 	// region HealthElement-DecryptedHealthElement
-override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedHealthElement =
+	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedHealthElement =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
 }
@@ -191,7 +191,7 @@ data class EncryptedHealthElement(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : HealthElement {
 	// region HealthElement-EncryptedHealthElement
-override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedHealthElement =
+	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedHealthElement =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
 }

@@ -100,7 +100,7 @@ data class DecryptedTopic(
 	override val linkedServices: Set<String> = emptySet(),
 ) : Topic {
 	// region Topic-DecryptedTopic
-override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedTopic =
+	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedTopic =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
 }
@@ -132,7 +132,7 @@ data class EncryptedTopic(
 	override val linkedServices: Set<String> = emptySet(),
 ) : Topic {
 	// region Topic-EncryptedTopic
-override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedTopic =
+	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedTopic =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
 }

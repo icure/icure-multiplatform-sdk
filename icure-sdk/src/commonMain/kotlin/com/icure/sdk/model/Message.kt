@@ -152,7 +152,7 @@ data class DecryptedMessage(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : Message {
 	// region Message-DecryptedMessage
-override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedMessage =
+	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedMessage =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
 }
@@ -200,7 +200,7 @@ data class EncryptedMessage(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : Message {
 	// region Message-EncryptedMessage
-override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedMessage =
+	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedMessage =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
 }

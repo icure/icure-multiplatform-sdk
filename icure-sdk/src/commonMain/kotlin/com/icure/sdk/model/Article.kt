@@ -93,7 +93,7 @@ data class DecryptedArticle(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : Article {
 	// region Article-DecryptedArticle
-override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedArticle =
+	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedArticle =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
 }
@@ -122,7 +122,7 @@ data class EncryptedArticle(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : Article {
 	// region Article-EncryptedArticle
-override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedArticle =
+	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedArticle =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
 }

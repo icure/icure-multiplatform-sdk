@@ -130,7 +130,7 @@ data class DecryptedContact(
 	override val notes: List<Annotation> = emptyList(),
 ) : Contact {
 	// region Contact-DecryptedContact
-override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedContact =
+	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedContact =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
 }
@@ -169,7 +169,7 @@ data class EncryptedContact(
 	override val notes: List<Annotation> = emptyList(),
 ) : Contact {
 	// region Contact-EncryptedContact
-override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedContact =
+	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedContact =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
 }

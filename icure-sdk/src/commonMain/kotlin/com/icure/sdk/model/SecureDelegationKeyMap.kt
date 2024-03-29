@@ -61,7 +61,7 @@ data class DecryptedSecureDelegationKeyMap(
 	override val deletionDate: Long? = null,
 ) : SecureDelegationKeyMap {
 	// region SecureDelegationKeyMap-DecryptedSecureDelegationKeyMap
-override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedSecureDelegationKeyMap =
+	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedSecureDelegationKeyMap =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
 }
@@ -82,7 +82,7 @@ data class EncryptedSecureDelegationKeyMap(
 	override val deletionDate: Long? = null,
 ) : SecureDelegationKeyMap {
 	// region SecureDelegationKeyMap-EncryptedSecureDelegationKeyMap
-override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedSecureDelegationKeyMap =
+	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedSecureDelegationKeyMap =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
 }

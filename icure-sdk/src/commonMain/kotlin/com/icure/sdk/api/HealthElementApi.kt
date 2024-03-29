@@ -1,16 +1,18 @@
 package com.icure.sdk.api
 
 import com.icure.sdk.api.raw.RawHealthElementApi
-import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.EntityEncryptionService
+import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleDelegateShareOptions
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.withTypeInfo
-import com.icure.sdk.model.embed.AccessLevel
+import com.icure.sdk.model.DecryptedHealthElement
+import com.icure.sdk.model.EncryptedHealthElement
 import com.icure.sdk.model.HealthElement
 import com.icure.sdk.model.Patient
+import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
@@ -22,12 +24,12 @@ class HealthElementApi(
 	private val encryptionService: EntityEncryptionService
 ) {
 	suspend fun initialiseEncryptionMetadata(
-		he: HealthElement,
+		he: DecryptedHealthElement,
 		patient: Patient,
 		delegates: Map<String, AccessLevel> = emptyMap(),
 		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent
 		// Temporary, needs a lot more stuff to match typescript implementation
-	): HealthElement =
+	): DecryptedHealthElement =
 		encryptionService.entityWithInitialisedEncryptedMetadata(
 			he.withTypeInfo(),
 			patient.id,
@@ -41,12 +43,12 @@ class HealthElementApi(
 		encryptionService.tryDecryptEntity(p.withTypeInfo(), HealthElement.serializer()) { Serialization.json.decodeFromJsonElement<HealthElement>(it) }
 	}
 
-	suspend fun encryptAndCreate(he: HealthElement) = encryptionService.encryptEntity(
+	suspend fun encryptAndCreate(he: DecryptedHealthElement) = encryptionService.encryptEntity(
 		he.withTypeInfo(),
-		HealthElement.serializer(),
+		DecryptedHealthElement.serializer(),
 		EncryptedFieldsManifest("HealthElement.", setOf("note", "descr"), emptyMap(), emptyMap(), emptyMap()),
-	) { Serialization.json.decodeFromJsonElement<HealthElement>(it) }.let { rawApi.createHealthElement(it) }.successBody().let {
-		encryptionService.tryDecryptEntity(it.withTypeInfo(), HealthElement.serializer()) { Serialization.json.decodeFromJsonElement<HealthElement>(it) }
+	) { Serialization.json.decodeFromJsonElement<EncryptedHealthElement>(it) }.let { rawApi.createHealthElement(it) }.successBody().let {
+		encryptionService.tryDecryptEntity(it.withTypeInfo(), EncryptedHealthElement.serializer()) { Serialization.json.decodeFromJsonElement<DecryptedHealthElement>(it) }
 	}
 
 	suspend fun shareWith(

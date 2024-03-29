@@ -160,7 +160,7 @@ data class DecryptedCalendarItem(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : CalendarItem {
 	// region CalendarItem-DecryptedCalendarItem
-override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedCalendarItem =
+	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedCalendarItem =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
 }
@@ -210,7 +210,7 @@ data class EncryptedCalendarItem(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : CalendarItem {
 	// region CalendarItem-EncryptedCalendarItem
-override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedCalendarItem =
+	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedCalendarItem =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
 }

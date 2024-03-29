@@ -91,7 +91,7 @@ data class DecryptedClassification(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : Classification {
 	// region Classification-DecryptedClassification
-override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedClassification =
+	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedClassification =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
 }
@@ -120,7 +120,7 @@ data class EncryptedClassification(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : Classification {
 	// region Classification-EncryptedClassification
-override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedClassification =
+	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedClassification =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
 }

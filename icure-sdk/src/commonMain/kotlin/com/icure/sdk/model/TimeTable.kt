@@ -99,7 +99,7 @@ data class DecryptedTimeTable(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : TimeTable {
 	// region TimeTable-DecryptedTimeTable
-override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedTimeTable =
+	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedTimeTable =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
 }
@@ -130,7 +130,7 @@ data class EncryptedTimeTable(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : TimeTable {
 	// region TimeTable-EncryptedTimeTable
-override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedTimeTable =
+	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedTimeTable =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
 }

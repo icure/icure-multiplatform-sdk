@@ -8,10 +8,9 @@ import com.icure.kryptom.utils.hexToByteArray
 import com.icure.sdk.api.raw.RawHealthcarePartyApi
 import com.icure.sdk.api.raw.RawPatientApi
 import com.icure.sdk.api.raw.RawUserApi
+import com.icure.sdk.model.EncryptedPatient
 import com.icure.sdk.model.HealthcareParty
-import com.icure.sdk.model.Patient
 import com.icure.sdk.model.User
-import com.icure.sdk.model.copy
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.test.DataOwnerDetails
 import com.icure.sdk.test.baseUrl
@@ -140,7 +139,7 @@ private suspend fun createTestDataAndApis(): TestData {
 		"email": "$bLogin"
 	}""")
 	val patientConfidentialSecretId = "24cd8cf5-0958-4ee9-8e90-95f3d25a47d7"
-	val patientBase: Patient = Serialization.json.decodeFromString("""{
+	val patientBase: EncryptedPatient = Serialization.json.decodeFromString("""{
 		"id": "${UUID.randomUUID()}",
 		"firstName": "John",
 		"lastName": "Doe",

@@ -97,7 +97,7 @@ data class DecryptedMaintenanceTask(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : MaintenanceTask {
 	// region MaintenanceTask-DecryptedMaintenanceTask
-override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedMaintenanceTask =
+	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedMaintenanceTask =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
 }
@@ -127,7 +127,7 @@ data class EncryptedMaintenanceTask(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : MaintenanceTask {
 	// region MaintenanceTask-EncryptedMaintenanceTask
-override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedMaintenanceTask =
+	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedMaintenanceTask =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
 }

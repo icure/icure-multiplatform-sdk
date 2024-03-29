@@ -309,7 +309,7 @@ data class DecryptedPatient(
 	override val employementInfos: List<EmploymentInfo> = emptyList(),
 ) : Patient {
 	// region Patient-DecryptedPatient
-override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedPatient =
+	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedPatient =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
 }
@@ -400,7 +400,7 @@ data class EncryptedPatient(
 	override val employementInfos: List<EmploymentInfo> = emptyList(),
 ) : Patient {
 	// region Patient-EncryptedPatient
-override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedPatient =
+	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedPatient =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
 }
