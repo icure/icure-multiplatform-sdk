@@ -20,6 +20,7 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
+import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import kotlin.Boolean
 import kotlin.Int
@@ -49,7 +50,7 @@ class RawUserApi(
 
 	suspend fun getCurrentUser(): HttpResponse<User> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","user","current")
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -64,7 +65,7 @@ class RawUserApi(
 		skipPatients: Boolean? = null,
 	): HttpResponse<PaginatedList<User, JsonString>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","user")
 				parameter("startKey", startKey)
 				parameter("startDocumentId", startDocumentId)
@@ -78,7 +79,7 @@ class RawUserApi(
 
 	suspend fun createUser(userDto: User): HttpResponse<User> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","user")
 			}
 			setAuthorizationWith(authService)
@@ -89,7 +90,7 @@ class RawUserApi(
 
 	suspend fun getUser(userId: String): HttpResponse<User> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","user",userId)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -99,7 +100,7 @@ class RawUserApi(
 
 	suspend fun getUserByEmail(email: String): HttpResponse<User> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","user","byEmail",email)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -109,7 +110,7 @@ class RawUserApi(
 
 	suspend fun getUserByPhoneNumber(phoneNumber: String): HttpResponse<User> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","user","byPhoneNumber",phoneNumber)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -119,7 +120,7 @@ class RawUserApi(
 
 	suspend fun findByHcpartyId(id: String): HttpResponse<List<String>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","user","byHealthcarePartyId",id)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -129,7 +130,7 @@ class RawUserApi(
 
 	suspend fun findByPatientId(id: String): HttpResponse<List<String>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","user","byPatientId",id)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -139,7 +140,7 @@ class RawUserApi(
 
 	suspend fun deleteUser(userId: String): HttpResponse<DocIdentifier> = delete {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","user",userId)
 			}
 			setAuthorizationWith(authService)
@@ -148,7 +149,7 @@ class RawUserApi(
 
 	suspend fun modifyUser(userDto: User): HttpResponse<User> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","user")
 			}
 			setAuthorizationWith(authService)
@@ -159,7 +160,7 @@ class RawUserApi(
 
 	suspend fun assignHealthcareParty(healthcarePartyId: String): HttpResponse<User> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","user","current","hcparty",healthcarePartyId)
 			}
 			setAuthorizationWith(authService)
@@ -170,7 +171,7 @@ class RawUserApi(
 	suspend fun modifyProperties(userId: String, properties: List<PropertyStub>?):
 			HttpResponse<User> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","user",userId,"properties")
 			}
 			setAuthorizationWith(authService)
@@ -186,7 +187,7 @@ class RawUserApi(
 		token: String? = null,
 	): HttpResponse<String> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","user","token",userId,key)
 				parameter("tokenValidity", tokenValidity)
 			}
@@ -202,7 +203,7 @@ class RawUserApi(
 		filterChain: FilterChain<User>,
 	): HttpResponse<PaginatedList<User, *>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","user","filter")
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
@@ -215,7 +216,7 @@ class RawUserApi(
 
 	suspend fun matchUsersBy(filter: AbstractFilter<User>): HttpResponse<List<String>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","user","match")
 			}
 			setAuthorizationWith(authService)
@@ -229,7 +230,7 @@ class RawUserApi(
 
 	suspend fun getMatchingUsers(): HttpResponse<List<UserGroup>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","user","matches")
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -244,7 +245,7 @@ class RawUserApi(
 		limit: Int? = null,
 	): HttpResponse<PaginatedList<User, JsonString>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","user","inGroup",groupId)
 				parameter("startKey", startKey)
 				parameter("startDocumentId", startDocumentId)
@@ -257,7 +258,7 @@ class RawUserApi(
 
 	suspend fun createUserInGroup(groupId: String, userDto: User): HttpResponse<User> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","user","inGroup",groupId)
 			}
 			setAuthorizationWith(authService)
@@ -268,7 +269,7 @@ class RawUserApi(
 
 	suspend fun modifyUserInGroup(groupId: String, userDto: User): HttpResponse<User> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","user","inGroup",groupId)
 			}
 			setAuthorizationWith(authService)
@@ -280,7 +281,7 @@ class RawUserApi(
 	suspend fun deleteUserInGroup(groupId: String, userId: String): HttpResponse<DocIdentifier>
 			= delete {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","user","inGroup",groupId,userId)
 			}
 			setAuthorizationWith(authService)
@@ -289,7 +290,7 @@ class RawUserApi(
 
 	suspend fun addRolesToUser(userId: String, rolesId: ListOfIds): HttpResponse<User> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","user",userId,"roles","set")
 			}
 			setAuthorizationWith(authService)
@@ -304,7 +305,7 @@ class RawUserApi(
 		rolesId: ListOfIds,
 	): HttpResponse<User> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","user",userId,"inGroup",groupId,"roles","set")
 			}
 			setAuthorizationWith(authService)
@@ -315,7 +316,7 @@ class RawUserApi(
 
 	suspend fun removeRolesFromUser(userId: String): HttpResponse<User> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","user",userId,"roles","reset")
 			}
 			setAuthorizationWith(authService)
@@ -326,7 +327,7 @@ class RawUserApi(
 	suspend fun removeRolesFromUserInGroup(userId: String, groupId: String): HttpResponse<User>
 			= post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","user",userId,"inGroup",groupId,"roles","reset")
 			}
 			setAuthorizationWith(authService)
@@ -342,7 +343,7 @@ class RawUserApi(
 		tokenValidity: Long? = null,
 	): HttpResponse<String> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","user","inGroup",groupId,"token",userId,key)
 				parameter("tokenValidity", tokenValidity)
 			}
@@ -359,7 +360,7 @@ class RawUserApi(
 		tokenValidity: Long? = null,
 	): HttpResponse<List<TokenWithGroup>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","user","inAllGroups","token",userIdentifier,key)
 				parameter("tokenValidity", tokenValidity)
 			}
@@ -376,7 +377,7 @@ class RawUserApi(
 		filterChain: FilterChain<User>,
 	): HttpResponse<PaginatedList<User, Nothing>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","user","filter","inGroup",groupId)
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
@@ -393,7 +394,7 @@ class RawUserApi(
 		request: Enable2faRequest,
 	): HttpResponse<Unit> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","user",userId,"inGroup",groupId,"2fa")
 			}
 			setAuthorizationWith(authService)
@@ -405,7 +406,7 @@ class RawUserApi(
 	suspend fun enable2faForUser(userId: String, request: Enable2faRequest): HttpResponse<Unit>
 			= post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","user",userId,"2fa")
 			}
 			setAuthorizationWith(authService)
@@ -417,7 +418,7 @@ class RawUserApi(
 	suspend fun disable2faForUser(userId: String, groupId: String): HttpResponse<Unit> =
 			delete {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","user",userId,"inGroup",groupId,"2fa")
 			}
 			setAuthorizationWith(authService)
@@ -426,7 +427,7 @@ class RawUserApi(
 
 	suspend fun disable2faForUser(userId: String): HttpResponse<Unit> = delete {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","user",userId,"2fa")
 			}
 			setAuthorizationWith(authService)
@@ -435,7 +436,7 @@ class RawUserApi(
 
 	suspend fun createAdminUser(userDto: User): HttpResponse<User> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","user","admin")
 			}
 			setAuthorizationWith(authService)
@@ -447,7 +448,7 @@ class RawUserApi(
 	suspend fun createAdminUserInGroup(groupId: String, userDto: User): HttpResponse<User> =
 			post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","user","admin","inGroup",groupId)
 			}
 			setAuthorizationWith(authService)

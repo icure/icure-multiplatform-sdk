@@ -11,6 +11,7 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
+import io.ktor.http.takeFrom
 import kotlin.Long
 import kotlin.String
 import kotlin.Unit
@@ -34,7 +35,7 @@ class RawAnonymousAuthApi(
 		groupId: String? = null,
 	): HttpResponse<JwtResponse> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","auth","login")
 				parameter("duration", duration)
 				parameter("groupId", groupId)
@@ -47,7 +48,7 @@ class RawAnonymousAuthApi(
 	suspend fun refresh(refreshToken: String, totp: String? = null): HttpResponse<JwtResponse> =
 			post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","auth","refresh")
 				parameter("totp", totp)
 			}
@@ -58,7 +59,7 @@ class RawAnonymousAuthApi(
 
 	suspend fun check(loginCredentials: LoginCredentials): HttpResponse<Unit> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","auth","check")
 			}
 			contentType(ContentType.Application.Json)
@@ -72,7 +73,7 @@ class RawAnonymousAuthApi(
 	suspend fun switchGroup(refreshToken: String, groupId: String): HttpResponse<JwtResponse> =
 			post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","auth","switch",groupId)
 			}
 			contentType(ContentType.Application.Json)
@@ -83,7 +84,7 @@ class RawAnonymousAuthApi(
 	suspend fun loginGoogle(token: String, groupId: String? = null): HttpResponse<JwtResponse> =
 			post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","auth","login","google")
 				parameter("groupId", groupId)
 			}
@@ -95,7 +96,7 @@ class RawAnonymousAuthApi(
 	suspend fun loginFas(token: String, groupId: String? = null): HttpResponse<JwtResponse> =
 			post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","auth","login","be.fas")
 				parameter("groupId", groupId)
 			}
@@ -106,7 +107,7 @@ class RawAnonymousAuthApi(
 
 	suspend fun invalidateRefreshJWT(refreshToken: String): HttpResponse<Unit> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","auth","invalidate")
 			}
 			contentType(ContentType.Application.Json)

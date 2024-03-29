@@ -15,6 +15,7 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
+import io.ktor.http.takeFrom
 import kotlin.String
 import kotlin.collections.List
 import kotlin.collections.Map
@@ -35,7 +36,7 @@ class RawSecureDelegationKeyMapApi(
 	suspend fun createSecureDelegationKeyMap(secureDelegationKeyMap: SecureDelegationKeyMap):
 			HttpResponse<EncryptedSecureDelegationKeyMap> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","securedelegationkeymap")
 			}
 			setAuthorizationWith(authService)
@@ -47,7 +48,7 @@ class RawSecureDelegationKeyMapApi(
 	suspend fun findByDelegationKeys(delegationKeys: ListOfIds):
 			HttpResponse<List<EncryptedSecureDelegationKeyMap>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","securedelegationkeymap","bydelegationkeys")
 			}
 			setAuthorizationWith(authService)
@@ -59,7 +60,7 @@ class RawSecureDelegationKeyMapApi(
 	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams):
 			HttpResponse<List<EntityBulkShareResult<EncryptedSecureDelegationKeyMap>>> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","securedelegationkeymap","bulkSharedMetadataUpdate")
 			}
 			setAuthorizationWith(authService)

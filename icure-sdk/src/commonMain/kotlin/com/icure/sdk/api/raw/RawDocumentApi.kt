@@ -19,6 +19,7 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
+import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import io.ktor.utils.io.ByteReadChannel
 import kotlin.Boolean
@@ -49,7 +50,7 @@ class RawDocumentApi(
 	suspend fun createDocument(documentDto: Document, strict: Boolean? = null):
 			HttpResponse<EncryptedDocument> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","document")
 				parameter("strict", strict)
 			}
@@ -62,7 +63,7 @@ class RawDocumentApi(
 	suspend fun deleteDocuments(documentIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
 			post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","document","delete","batch")
 			}
 			setAuthorizationWith(authService)
@@ -73,7 +74,7 @@ class RawDocumentApi(
 
 	suspend fun deleteDocument(documentId: String): HttpResponse<DocIdentifier> = delete {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","document",documentId)
 			}
 			setAuthorizationWith(authService)
@@ -83,7 +84,7 @@ class RawDocumentApi(
 	suspend fun getMainAttachment(documentId: String, fileName: String? = null):
 			HttpResponse<ByteArray> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","document",documentId,"attachment")
 				parameter("fileName", fileName)
 				parameter("ts", GMTDate().timestamp)
@@ -95,7 +96,7 @@ class RawDocumentApi(
 	suspend fun deleteAttachment(documentId: String, rev: String):
 			HttpResponse<EncryptedDocument> = delete {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","document",documentId,"attachment")
 				parameter("rev", rev)
 			}
@@ -112,7 +113,7 @@ class RawDocumentApi(
 		encrypted: Boolean? = null,
 	): HttpResponse<EncryptedDocument> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","document",documentId,"attachment")
 				parameter("rev", rev)
 				parameter("utis", utis)
@@ -127,7 +128,7 @@ class RawDocumentApi(
 
 	suspend fun getDocument(documentId: String): HttpResponse<EncryptedDocument> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","document",documentId)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -138,7 +139,7 @@ class RawDocumentApi(
 	suspend fun getDocumentByExternalUuid(externalUuid: String): HttpResponse<EncryptedDocument>
 			= get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","document","externaluuid",externalUuid)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -149,7 +150,7 @@ class RawDocumentApi(
 	suspend fun getDocumentsByExternalUuid(externalUuid: String):
 			HttpResponse<List<EncryptedDocument>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","document","externaluuid",externalUuid,"all")
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -160,7 +161,7 @@ class RawDocumentApi(
 	suspend fun getDocuments(documentIds: ListOfIds): HttpResponse<List<EncryptedDocument>> =
 			post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","document","byIds")
 			}
 			setAuthorizationWith(authService)
@@ -171,7 +172,7 @@ class RawDocumentApi(
 
 	suspend fun modifyDocument(documentDto: Document): HttpResponse<EncryptedDocument> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","document")
 			}
 			setAuthorizationWith(authService)
@@ -183,7 +184,7 @@ class RawDocumentApi(
 	suspend fun modifyDocuments(documentDtos: List<Document>):
 			HttpResponse<List<EncryptedDocument>> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","document","batch")
 			}
 			setAuthorizationWith(authService)
@@ -195,7 +196,7 @@ class RawDocumentApi(
 	suspend fun listDocumentsByHCPartyAndPatientForeignKeys(hcPartyId: String,
 			secretFKeys: String): HttpResponse<List<EncryptedDocument>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","document","byHcPartySecretForeignKeys")
 				parameter("hcPartyId", hcPartyId)
 				parameter("secretFKeys", secretFKeys)
@@ -208,7 +209,7 @@ class RawDocumentApi(
 	suspend fun findDocumentsByHCPartyPatientForeignKeys(hcPartyId: String,
 			secretMessageKeys: List<String>): HttpResponse<List<EncryptedDocument>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","document","byHcPartySecretForeignKeys")
 				parameter("hcPartyId", hcPartyId)
 			}
@@ -226,7 +227,7 @@ class RawDocumentApi(
 		limit: Int? = null,
 	): HttpResponse<PaginatedList<EncryptedDocument, JsonString>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","document","byHcPartySecretForeignKey")
 				parameter("hcPartyId", hcPartyId)
 				parameter("secretFKey", secretFKey)
@@ -245,7 +246,7 @@ class RawDocumentApi(
 		secretFKeys: String,
 	): HttpResponse<List<EncryptedDocument>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","document","byTypeHcPartySecretForeignKeys")
 				parameter("documentTypeCode", documentTypeCode)
 				parameter("hcPartyId", hcPartyId)
@@ -259,7 +260,7 @@ class RawDocumentApi(
 	suspend fun findWithoutDelegation(limit: Int? = null): HttpResponse<List<EncryptedDocument>>
 			= get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","document","woDelegation")
 				parameter("limit", limit)
 				parameter("ts", GMTDate().timestamp)
@@ -278,7 +279,7 @@ class RawDocumentApi(
 		encrypted: Boolean? = null,
 	): HttpResponse<EncryptedDocument> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","document",documentId,"secondaryAttachments",key)
 				parameter("rev", rev)
 				parameter("utis", utis)
@@ -297,7 +298,7 @@ class RawDocumentApi(
 		fileName: String? = null,
 	): HttpResponse<ByteArray> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","document",documentId,"secondaryAttachments",key)
 				parameter("fileName", fileName)
 				parameter("ts", GMTDate().timestamp)
@@ -312,7 +313,7 @@ class RawDocumentApi(
 		rev: String,
 	): HttpResponse<EncryptedDocument> = delete {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","document",documentId,"secondaryAttachments",key)
 				parameter("rev", rev)
 			}
@@ -323,7 +324,7 @@ class RawDocumentApi(
 	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams):
 			HttpResponse<List<EntityBulkShareResult<EncryptedDocument>>> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","document","bulkSharedMetadataUpdate")
 			}
 			setAuthorizationWith(authService)
@@ -335,7 +336,7 @@ class RawDocumentApi(
 	suspend fun bulkShareMinimal(request: BulkShareOrUpdateMetadataParams):
 			HttpResponse<List<EntityBulkShareResult<EncryptedDocument>>> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","document","bulkSharedMetadataUpdateMinimal")
 			}
 			setAuthorizationWith(authService)

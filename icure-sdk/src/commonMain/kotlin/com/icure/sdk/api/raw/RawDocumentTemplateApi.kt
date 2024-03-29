@@ -16,6 +16,7 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
+import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import io.ktor.utils.io.ByteReadChannel
 import kotlin.ByteArray
@@ -40,7 +41,7 @@ class RawDocumentTemplateApi(
 	suspend fun getDocumentTemplate(documentTemplateId: String): HttpResponse<DocumentTemplate>
 			= get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","doctemplate",documentTemplateId)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -51,7 +52,7 @@ class RawDocumentTemplateApi(
 	suspend fun deleteDocumentTemplates(documentTemplateIds: ListOfIds):
 			HttpResponse<List<DocIdentifier>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","doctemplate","delete","batch")
 			}
 			setAuthorizationWith(authService)
@@ -63,7 +64,7 @@ class RawDocumentTemplateApi(
 	suspend fun listDocumentTemplatesBySpeciality(specialityCode: String):
 			HttpResponse<List<DocumentTemplate>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","doctemplate","bySpecialty",specialityCode)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -74,7 +75,7 @@ class RawDocumentTemplateApi(
 	suspend fun listDocumentTemplatesByDocumentType(documentTypeCode: String):
 			HttpResponse<List<DocumentTemplate>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","doctemplate","byDocumentType",documentTypeCode)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -85,7 +86,7 @@ class RawDocumentTemplateApi(
 	suspend fun listDocumentTemplatesByDocumentTypeForCurrentUser(documentTypeCode: String):
 			HttpResponse<List<DocumentTemplate>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","doctemplate","byDocumentTypeForCurrentUser",documentTypeCode)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -95,7 +96,7 @@ class RawDocumentTemplateApi(
 
 	suspend fun listDocumentTemplates(): HttpResponse<List<DocumentTemplate>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","doctemplate")
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -109,7 +110,7 @@ class RawDocumentTemplateApi(
 		limit: Int? = null,
 	): HttpResponse<PaginatedList<DocumentTemplate, JsonString>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","doctemplate","find","all")
 				parameter("startKey", startKey)
 				parameter("startDocumentId", startDocumentId)
@@ -123,7 +124,7 @@ class RawDocumentTemplateApi(
 	suspend fun createDocumentTemplate(ft: DocumentTemplate): HttpResponse<DocumentTemplate> =
 			post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","doctemplate")
 			}
 			setAuthorizationWith(authService)
@@ -135,7 +136,7 @@ class RawDocumentTemplateApi(
 	suspend fun modifyDocumentTemplate(documentTemplateId: String, ft: DocumentTemplate):
 			HttpResponse<DocumentTemplate> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","doctemplate",documentTemplateId)
 			}
 			setAuthorizationWith(authService)
@@ -147,7 +148,7 @@ class RawDocumentTemplateApi(
 	suspend fun getDocumentTemplateAttachment(documentTemplateId: String, attachmentId: String):
 			HttpResponse<ByteArray> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","doctemplate",documentTemplateId,"attachment",attachmentId)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -158,7 +159,7 @@ class RawDocumentTemplateApi(
 	suspend fun getAttachmentText(documentTemplateId: String, attachmentId: String):
 			HttpResponse<ByteArray> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","doctemplate",documentTemplateId,"attachmentText",attachmentId)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -169,7 +170,7 @@ class RawDocumentTemplateApi(
 	suspend fun setDocumentTemplateAttachment(documentTemplateId: String, payload: ByteArray):
 			HttpResponse<DocumentTemplate> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","doctemplate",documentTemplateId,"attachment")
 			}
 			setAuthorizationWith(authService)

@@ -18,6 +18,7 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
+import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import kotlin.Int
 import kotlin.String
@@ -43,7 +44,7 @@ class RawArticleApi(
 
 	suspend fun createArticle(articleDto: Article): HttpResponse<EncryptedArticle> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","article")
 			}
 			setAuthorizationWith(authService)
@@ -55,7 +56,7 @@ class RawArticleApi(
 	suspend fun deleteArticles(articleIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
 			post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","article","delete","batch")
 			}
 			setAuthorizationWith(authService)
@@ -66,7 +67,7 @@ class RawArticleApi(
 
 	suspend fun deleteArticle(articleId: String): HttpResponse<DocIdentifier> = delete {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","article",articleId)
 			}
 			setAuthorizationWith(authService)
@@ -75,7 +76,7 @@ class RawArticleApi(
 
 	suspend fun getArticle(articleId: String): HttpResponse<EncryptedArticle> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","article",articleId)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -85,7 +86,7 @@ class RawArticleApi(
 
 	suspend fun modifyArticle(articleDto: Article): HttpResponse<EncryptedArticle> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","article")
 			}
 			setAuthorizationWith(authService)
@@ -97,7 +98,7 @@ class RawArticleApi(
 	suspend fun getArticles(startDocumentId: String? = null, limit: Int? = null):
 			HttpResponse<PaginatedList<EncryptedArticle, JsonString>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","article")
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
@@ -110,7 +111,7 @@ class RawArticleApi(
 	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams):
 			HttpResponse<List<EntityBulkShareResult<EncryptedArticle>>> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","article","bulkSharedMetadataUpdate")
 			}
 			setAuthorizationWith(authService)

@@ -11,6 +11,7 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
+import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import io.ktor.utils.io.ByteReadChannel
 import kotlin.ByteArray
@@ -42,7 +43,7 @@ class RawObjectStorageApi(
 		content: ByteArray,
 	): HttpResponse<Unit> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","objectstorage{entityGroup}",entityId,attachmentId)
 				parameter("size", size)
 				parameter("md5Hash", md5Hash)
@@ -60,7 +61,7 @@ class RawObjectStorageApi(
 		attachmentId: String,
 	): HttpResponse<ByteArray> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","objectstorage{entityGroup}",entityId,attachmentId)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -74,7 +75,7 @@ class RawObjectStorageApi(
 		attachmentId: String,
 	): HttpResponse<StoredObjectInformation> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","objectstorage{entityGroup}",entityId,attachmentId,"info")
 				parameter("ts", GMTDate().timestamp)
 			}

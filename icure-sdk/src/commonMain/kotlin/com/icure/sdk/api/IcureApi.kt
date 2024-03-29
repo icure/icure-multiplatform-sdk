@@ -180,7 +180,7 @@ interface IcureApi {
 				RawPatientApi(apiUrl, authService, headersProvider),
 				entityEncryptionService,
 			)
-			ensureDelegationForSelf(dataOwnerApi, entityEncryptionService, patientApi, cryptoService)
+			ensureDelegationForSelf(dataOwnerApi, entityEncryptionService, patientApi.rawApi, cryptoService)
 			return IcureApiImpl(
 				ContactApi(
 					RawContactApi(apiUrl, authService, headersProvider),
@@ -208,12 +208,12 @@ private class IcureApiImpl(
 private suspend fun ensureDelegationForSelf(
 	dataOwnerApi: DataOwnerApi,
 	encryptionService: EntityEncryptionService,
-	patientApi: PatientApi,
+	patientApi: RawPatientApi,
 	cryptoService: CryptoService
 ) {
 	val self = dataOwnerApi.getCurrentDataOwner()
 	if (self is DataOwnerWithType.PatientDataOwner) {
-		val availableSecretIds = patientApi.getSecretIdsOf(self.dataOwner)
+		val availableSecretIds = encryptionService.secretIdsOf(self.dataOwner.withTypeInfo(), null)
 		if (availableSecretIds.isEmpty()) {
 			val patientSelf = self.dataOwner.withTypeInfo()
 			if (encryptionService.hasEmptyEncryptionMetadata(patientSelf)) {
@@ -225,7 +225,7 @@ private suspend fun ensureDelegationForSelf(
 					initialiseSecretId = true,
 					autoDelegations = emptyMap()
 				).updatedEntity
-				patientApi.tryEncryptAndUpdatePatient(updatedPatient)
+				patientApi.modifyPatient(updatedPatient)
 			} else {
 				encryptionService.simpleShareOrUpdateEncryptedEntityMetadata(
 					patientSelf,
@@ -238,7 +238,7 @@ private suspend fun ensureDelegationForSelf(
 							requestedPermissions = RequestedPermission.Root
 						)
 					),
-				) { patientApi.rawApi.bulkShare(it).successBody() }.updatedEntityOrThrow()
+				) { patientApi.bulkShare(it).successBody() }.updatedEntityOrThrow()
 			}
 		}
 	}

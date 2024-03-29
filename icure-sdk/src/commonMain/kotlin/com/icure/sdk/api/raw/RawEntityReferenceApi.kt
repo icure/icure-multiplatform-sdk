@@ -11,6 +11,7 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
+import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import kotlin.String
 import kotlin.collections.Map
@@ -30,7 +31,7 @@ class RawEntityReferenceApi(
 
 	suspend fun getLatest(prefix: String): HttpResponse<EntityReference> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","entityref","latest",prefix)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -41,7 +42,7 @@ class RawEntityReferenceApi(
 	suspend fun createEntityReference(er: EntityReference): HttpResponse<EntityReference> =
 			post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","entityref")
 			}
 			setAuthorizationWith(authService)

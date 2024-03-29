@@ -13,6 +13,7 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
+import io.ktor.http.takeFrom
 import kotlin.String
 import kotlin.collections.List
 import kotlin.collections.Map
@@ -33,7 +34,7 @@ class RawExchangeDataMapApi(
 	suspend fun createOrUpdateExchangeDataMapBatch(batch: ExchangeDataMapCreationBatch):
 			HttpResponse<String> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","exchangedatamap","batch")
 			}
 			setAuthorizationWith(authService)
@@ -45,7 +46,7 @@ class RawExchangeDataMapApi(
 	suspend fun getExchangeDataMapBatch(ids: ListOfIds): HttpResponse<List<ExchangeDataMap>> =
 			post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","exchangedatamap","batch")
 			}
 			setAuthorizationWith(authService)

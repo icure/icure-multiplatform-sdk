@@ -15,6 +15,7 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
+import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import kotlin.Int
 import kotlin.String
@@ -44,7 +45,7 @@ class RawTarificationApi(
 		limit: Int? = null,
 	): HttpResponse<PaginatedList<Tarification, JsonString>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tarification","byLabel")
 				parameter("region", region)
 				parameter("types", types)
@@ -69,7 +70,7 @@ class RawTarificationApi(
 		limit: Int? = null,
 	): HttpResponse<PaginatedList<Tarification, JsonString>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tarification")
 				parameter("region", region)
 				parameter("type", type)
@@ -91,7 +92,7 @@ class RawTarificationApi(
 		version: String? = null,
 	): HttpResponse<List<Tarification>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tarification","byRegionTypeTarification")
 				parameter("region", region)
 				parameter("type", type)
@@ -105,7 +106,7 @@ class RawTarificationApi(
 
 	suspend fun createTarification(c: Tarification): HttpResponse<Tarification> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tarification")
 			}
 			setAuthorizationWith(authService)
@@ -117,7 +118,7 @@ class RawTarificationApi(
 	suspend fun getTarifications(tarificationIds: ListOfIds): HttpResponse<List<Tarification>> =
 			post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tarification","byIds")
 			}
 			setAuthorizationWith(authService)
@@ -128,7 +129,7 @@ class RawTarificationApi(
 
 	suspend fun getTarification(tarificationId: String): HttpResponse<Tarification> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tarification",tarificationId)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -142,7 +143,7 @@ class RawTarificationApi(
 		version: String,
 	): HttpResponse<Tarification> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tarification",type,tarification,version)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -153,7 +154,7 @@ class RawTarificationApi(
 	suspend fun modifyTarification(tarificationDto: Tarification): HttpResponse<Tarification> =
 			put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tarification")
 			}
 			setAuthorizationWith(authService)

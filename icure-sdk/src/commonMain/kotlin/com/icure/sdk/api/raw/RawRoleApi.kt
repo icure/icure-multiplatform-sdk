@@ -7,6 +7,7 @@ import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.request.`get`
 import io.ktor.client.request.parameter
 import io.ktor.http.appendPathSegments
+import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import kotlin.String
 import kotlin.collections.List
@@ -27,7 +28,7 @@ class RawRoleApi(
 
 	suspend fun getAllRoles(): HttpResponse<List<Role>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","role")
 				parameter("ts", GMTDate().timestamp)
 			}

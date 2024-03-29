@@ -21,6 +21,7 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
+import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import kotlin.Int
 import kotlin.String
@@ -47,7 +48,7 @@ class RawHealthElementApi(
 	suspend fun createHealthElement(c: HealthElement): HttpResponse<EncryptedHealthElement> =
 			post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","helement")
 			}
 			setAuthorizationWith(authService)
@@ -59,7 +60,7 @@ class RawHealthElementApi(
 	suspend fun getHealthElement(healthElementId: String): HttpResponse<EncryptedHealthElement>
 			= get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","helement",healthElementId)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -70,7 +71,7 @@ class RawHealthElementApi(
 	suspend fun getHealthElements(healthElementIds: ListOfIds):
 			HttpResponse<List<EncryptedHealthElement>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","helement","byIds")
 			}
 			setAuthorizationWith(authService)
@@ -82,7 +83,7 @@ class RawHealthElementApi(
 	suspend fun listHealthElementsByHCPartyAndPatientForeignKeys(hcPartyId: String,
 			secretFKeys: String): HttpResponse<List<EncryptedHealthElement>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","helement","byHcPartySecretForeignKeys")
 				parameter("hcPartyId", hcPartyId)
 				parameter("secretFKeys", secretFKeys)
@@ -100,7 +101,7 @@ class RawHealthElementApi(
 		limit: Int? = null,
 	): HttpResponse<PaginatedList<EncryptedHealthElement, JsonString>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","helement","byHcPartySecretForeignKey")
 				parameter("hcPartyId", hcPartyId)
 				parameter("secretFKey", secretFKey)
@@ -116,7 +117,7 @@ class RawHealthElementApi(
 	suspend fun findHealthElementsByHCPartyPatientForeignKeys(hcPartyId: String,
 			secretPatientKeys: List<String>): HttpResponse<List<EncryptedHealthElement>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","helement","byHcPartySecretForeignKeys")
 				parameter("hcPartyId", hcPartyId)
 			}
@@ -130,7 +131,7 @@ class RawHealthElementApi(
 			fun listHealthElementsDelegationsStubsByHCPartyAndPatientForeignKeys(hcPartyId: String,
 			secretFKeys: String): HttpResponse<List<EncryptedIcureStub>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","helement","byHcPartySecretForeignKeys","delegations")
 				parameter("hcPartyId", hcPartyId)
 				parameter("secretFKeys", secretFKeys)
@@ -143,7 +144,7 @@ class RawHealthElementApi(
 	suspend fun findHealthElementsDelegationsStubsByHCPartyPatientForeignKeys(hcPartyId: String,
 			secretPatientKeys: List<String>): HttpResponse<List<EncryptedIcureStub>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","helement","byHcPartySecretForeignKeys","delegations")
 				parameter("hcPartyId", hcPartyId)
 			}
@@ -156,7 +157,7 @@ class RawHealthElementApi(
 	suspend fun deleteHealthElements(healthElementIds: ListOfIds):
 			HttpResponse<List<DocIdentifier>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","helement","delete","batch")
 			}
 			setAuthorizationWith(authService)
@@ -168,7 +169,7 @@ class RawHealthElementApi(
 	suspend fun deleteHealthElement(healthElementId: String): HttpResponse<DocIdentifier> =
 			delete {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","helement",healthElementId)
 			}
 			setAuthorizationWith(authService)
@@ -178,7 +179,7 @@ class RawHealthElementApi(
 	suspend fun modifyHealthElement(healthElementDto: HealthElement):
 			HttpResponse<EncryptedHealthElement> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","helement")
 			}
 			setAuthorizationWith(authService)
@@ -190,7 +191,7 @@ class RawHealthElementApi(
 	suspend fun modifyHealthElements(healthElementDtos: List<HealthElement>):
 			HttpResponse<List<EncryptedHealthElement>> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","helement","batch")
 			}
 			setAuthorizationWith(authService)
@@ -202,7 +203,7 @@ class RawHealthElementApi(
 	suspend fun createHealthElements(healthElementDtos: List<HealthElement>):
 			HttpResponse<List<EncryptedHealthElement>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","helement","batch")
 			}
 			setAuthorizationWith(authService)
@@ -217,7 +218,7 @@ class RawHealthElementApi(
 		filterChain: FilterChain<HealthElement>,
 	): HttpResponse<PaginatedList<EncryptedHealthElement, *>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","helement","filter")
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
@@ -231,7 +232,7 @@ class RawHealthElementApi(
 	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams):
 			HttpResponse<List<EntityBulkShareResult<EncryptedHealthElement>>> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","helement","bulkSharedMetadataUpdate")
 			}
 			setAuthorizationWith(authService)
@@ -243,7 +244,7 @@ class RawHealthElementApi(
 	suspend fun matchHealthElementsBy(filter: AbstractFilter<HealthElement>):
 			HttpResponse<List<String>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","helement","match")
 			}
 			setAuthorizationWith(authService)
@@ -255,7 +256,7 @@ class RawHealthElementApi(
 	suspend fun bulkShareMinimal(request: BulkShareOrUpdateMetadataParams):
 			HttpResponse<List<EntityBulkShareResult<EncryptedHealthElement>>> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","helement","bulkSharedMetadataUpdateMinimal")
 			}
 			setAuthorizationWith(authService)

@@ -14,6 +14,7 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
+import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import kotlin.Int
 import kotlin.String
@@ -36,7 +37,7 @@ class RawExchangeDataApi(
 	suspend fun createExchangeData(exchangeData: ExchangeData): HttpResponse<ExchangeData> =
 			post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","exchangedata")
 			}
 			setAuthorizationWith(authService)
@@ -48,7 +49,7 @@ class RawExchangeDataApi(
 	suspend fun modifyExchangeData(exchangeData: ExchangeData): HttpResponse<ExchangeData> =
 			put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","exchangedata")
 			}
 			setAuthorizationWith(authService)
@@ -59,7 +60,7 @@ class RawExchangeDataApi(
 
 	suspend fun getExchangeDataById(exchangeDataId: String): HttpResponse<ExchangeData> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","exchangedata",exchangeDataId)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -73,7 +74,7 @@ class RawExchangeDataApi(
 		limit: Int? = null,
 	): HttpResponse<PaginatedList<ExchangeData, JsonString>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","exchangedata","byParticipant",dataOwnerId)
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
@@ -86,7 +87,7 @@ class RawExchangeDataApi(
 	suspend fun getExchangeDataByDelegatorDelegate(delegatorId: String, delegateId: String):
 			HttpResponse<List<ExchangeData>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","exchangedata","byDelegatorDelegate",delegatorId,delegateId)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -97,7 +98,7 @@ class RawExchangeDataApi(
 	suspend fun getParticipantCounterparts(dataOwnerId: String, counterpartsTypes: String):
 			HttpResponse<List<String>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","exchangedata","byParticipant",dataOwnerId,"counterparts")
 				parameter("counterpartsTypes", counterpartsTypes)
 				parameter("ts", GMTDate().timestamp)

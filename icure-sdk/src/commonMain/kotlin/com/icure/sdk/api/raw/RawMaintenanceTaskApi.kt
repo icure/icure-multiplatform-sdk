@@ -18,6 +18,7 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
+import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import kotlin.Int
 import kotlin.String
@@ -44,7 +45,7 @@ class RawMaintenanceTaskApi(
 	suspend fun createMaintenanceTask(maintenanceTaskDto: MaintenanceTask):
 			HttpResponse<EncryptedMaintenanceTask> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","maintenancetask")
 			}
 			setAuthorizationWith(authService)
@@ -56,7 +57,7 @@ class RawMaintenanceTaskApi(
 	suspend fun deleteMaintenanceTasks(maintenanceTaskIds: ListOfIds):
 			HttpResponse<List<DocIdentifier>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","maintenancetask","delete","batch")
 			}
 			setAuthorizationWith(authService)
@@ -68,7 +69,7 @@ class RawMaintenanceTaskApi(
 	suspend fun deleteMaintenanceTask(maintenanceTaskId: String): HttpResponse<DocIdentifier> =
 			delete {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","maintenancetask",maintenanceTaskId)
 			}
 			setAuthorizationWith(authService)
@@ -78,7 +79,7 @@ class RawMaintenanceTaskApi(
 	suspend fun getMaintenanceTask(maintenanceTaskId: String):
 			HttpResponse<EncryptedMaintenanceTask> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","maintenancetask",maintenanceTaskId)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -89,7 +90,7 @@ class RawMaintenanceTaskApi(
 	suspend fun modifyMaintenanceTask(maintenanceTaskDto: MaintenanceTask):
 			HttpResponse<EncryptedMaintenanceTask> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","maintenancetask")
 			}
 			setAuthorizationWith(authService)
@@ -104,7 +105,7 @@ class RawMaintenanceTaskApi(
 		filterChain: FilterChain<MaintenanceTask>,
 	): HttpResponse<PaginatedList<EncryptedMaintenanceTask, *>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","maintenancetask","filter")
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
@@ -118,7 +119,7 @@ class RawMaintenanceTaskApi(
 	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams):
 			HttpResponse<List<EntityBulkShareResult<EncryptedMaintenanceTask>>> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","maintenancetask","bulkSharedMetadataUpdate")
 			}
 			setAuthorizationWith(authService)

@@ -17,6 +17,7 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
+import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import kotlin.Int
 import kotlin.String
@@ -39,7 +40,7 @@ class RawAgendaApi(
 	suspend fun getAgendas(startDocumentId: String? = null, limit: Int? = null):
 			HttpResponse<PaginatedList<Agenda, JsonString>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","agenda")
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
@@ -51,7 +52,7 @@ class RawAgendaApi(
 
 	suspend fun createAgenda(agendaDto: Agenda): HttpResponse<Agenda> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","agenda")
 			}
 			setAuthorizationWith(authService)
@@ -62,7 +63,7 @@ class RawAgendaApi(
 
 	suspend fun deleteAgendas(agendaIds: ListOfIds): HttpResponse<List<DocIdentifier>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","agenda","delete","batch")
 			}
 			setAuthorizationWith(authService)
@@ -73,7 +74,7 @@ class RawAgendaApi(
 
 	suspend fun deleteAgenda(agendaId: String): HttpResponse<DocIdentifier> = delete {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","agenda",agendaId)
 			}
 			setAuthorizationWith(authService)
@@ -82,7 +83,7 @@ class RawAgendaApi(
 
 	suspend fun getAgenda(agendaId: String): HttpResponse<Agenda> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","agenda",agendaId)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -92,7 +93,7 @@ class RawAgendaApi(
 
 	suspend fun getAgendasForUser(userId: String): HttpResponse<Agenda> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","agenda","byUser")
 				parameter("userId", userId)
 				parameter("ts", GMTDate().timestamp)
@@ -103,7 +104,7 @@ class RawAgendaApi(
 
 	suspend fun getReadableAgendasForUser(userId: String): HttpResponse<List<Agenda>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","agenda","readableForUser")
 				parameter("userId", userId)
 				parameter("ts", GMTDate().timestamp)
@@ -114,7 +115,7 @@ class RawAgendaApi(
 
 	suspend fun modifyAgenda(agendaDto: Agenda): HttpResponse<Agenda> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","agenda")
 			}
 			setAuthorizationWith(authService)

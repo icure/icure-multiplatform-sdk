@@ -20,6 +20,7 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
+import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import kotlin.Int
 import kotlin.Nothing
@@ -43,7 +44,7 @@ class RawTopicApi(
 
 	suspend fun getTopic(topicId: String): HttpResponse<EncryptedTopic> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","topic",topicId)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -53,7 +54,7 @@ class RawTopicApi(
 
 	suspend fun getTopics(topicIds: ListOfIds): HttpResponse<List<EncryptedTopic>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","topic","byIds")
 			}
 			setAuthorizationWith(authService)
@@ -64,7 +65,7 @@ class RawTopicApi(
 
 	suspend fun createTopic(ft: Topic): HttpResponse<EncryptedTopic> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","topic")
 			}
 			setAuthorizationWith(authService)
@@ -75,7 +76,7 @@ class RawTopicApi(
 
 	suspend fun modifyTopic(topicDto: Topic): HttpResponse<EncryptedTopic> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","topic")
 			}
 			setAuthorizationWith(authService)
@@ -86,7 +87,7 @@ class RawTopicApi(
 
 	suspend fun deleteTopics(topicIds: ListOfIds): HttpResponse<List<DocIdentifier>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","topic","delete","batch")
 			}
 			setAuthorizationWith(authService)
@@ -97,7 +98,7 @@ class RawTopicApi(
 
 	suspend fun deleteTopic(topicId: String): HttpResponse<DocIdentifier> = delete {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","topic",topicId)
 			}
 			setAuthorizationWith(authService)
@@ -107,7 +108,7 @@ class RawTopicApi(
 	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams):
 			HttpResponse<List<EntityBulkShareResult<EncryptedTopic>>> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","topic","bulkSharedMetadataUpdate")
 			}
 			setAuthorizationWith(authService)
@@ -122,7 +123,7 @@ class RawTopicApi(
 		filterChain: FilterChain<Topic>,
 	): HttpResponse<PaginatedList<EncryptedTopic, Nothing>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","topic","filter")
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
@@ -136,7 +137,7 @@ class RawTopicApi(
 	suspend fun matchTopicsBy(filter: AbstractFilter<Topic>): HttpResponse<List<String>> =
 			post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","topic","match")
 			}
 			setAuthorizationWith(authService)
@@ -148,7 +149,7 @@ class RawTopicApi(
 	suspend fun addParticipant(topicId: String, request: AddParticipant):
 			HttpResponse<EncryptedTopic> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","topic",topicId,"addParticipant")
 			}
 			setAuthorizationWith(authService)
@@ -160,7 +161,7 @@ class RawTopicApi(
 	suspend fun removeParticipant(topicId: String, request: RemoveParticipant):
 			HttpResponse<EncryptedTopic> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","topic",topicId,"removeParticipant")
 			}
 			setAuthorizationWith(authService)

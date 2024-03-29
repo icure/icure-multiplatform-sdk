@@ -1,6 +1,7 @@
 package com.icure.sdk.api.raw
 
 import com.icure.sdk.utils.Serialization
+import com.icure.sdk.utils.platformHttpClient
 import io.ktor.client.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
@@ -20,7 +21,7 @@ abstract class BaseRawApi(
 
 	protected open suspend fun getAccessControlKeysHeaderValues(): List<String>? = null
 
-	protected val httpClient = HttpClient {
+	protected val httpClient = platformHttpClient {
 		install(ContentNegotiation) {
 			json(json = Serialization.json)
 		}

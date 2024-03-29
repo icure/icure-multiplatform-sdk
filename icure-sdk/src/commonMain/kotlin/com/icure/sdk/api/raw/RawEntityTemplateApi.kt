@@ -14,6 +14,7 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
+import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import kotlin.Boolean
 import kotlin.String
@@ -40,7 +41,7 @@ class RawEntityTemplateApi(
 		includeEntities: Boolean? = null,
 	): HttpResponse<List<EntityTemplate>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","entitytemplate","find",userId,type)
 				parameter("searchString", searchString)
 				parameter("includeEntities", includeEntities)
@@ -56,7 +57,7 @@ class RawEntityTemplateApi(
 		includeEntities: Boolean? = null,
 	): HttpResponse<List<EntityTemplate>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","entitytemplate","findAll",type)
 				parameter("searchString", searchString)
 				parameter("includeEntities", includeEntities)
@@ -73,7 +74,7 @@ class RawEntityTemplateApi(
 		includeEntities: Boolean? = null,
 	): HttpResponse<List<EntityTemplate>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","entitytemplate","find",userId,type,"keyword",keyword)
 				parameter("includeEntities", includeEntities)
 				parameter("ts", GMTDate().timestamp)
@@ -88,7 +89,7 @@ class RawEntityTemplateApi(
 		includeEntities: Boolean? = null,
 	): HttpResponse<List<EntityTemplate>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","entitytemplate","findAll",type,"keyword",keyword)
 				parameter("includeEntities", includeEntities)
 				parameter("ts", GMTDate().timestamp)
@@ -99,7 +100,7 @@ class RawEntityTemplateApi(
 
 	suspend fun createEntityTemplate(c: EntityTemplate): HttpResponse<EntityTemplate> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","entitytemplate")
 			}
 			setAuthorizationWith(authService)
@@ -111,7 +112,7 @@ class RawEntityTemplateApi(
 	suspend fun getEntityTemplates(entityTemplateIds: ListOfIds):
 			HttpResponse<List<EntityTemplate>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","entitytemplate","byIds")
 			}
 			setAuthorizationWith(authService)
@@ -123,7 +124,7 @@ class RawEntityTemplateApi(
 	suspend fun getEntityTemplate(entityTemplateId: String): HttpResponse<EntityTemplate> =
 			get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","entitytemplate",entityTemplateId)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -134,7 +135,7 @@ class RawEntityTemplateApi(
 	suspend fun modifyEntityTemplate(entityTemplateDto: EntityTemplate):
 			HttpResponse<EntityTemplate> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","entitytemplate")
 			}
 			setAuthorizationWith(authService)
@@ -146,7 +147,7 @@ class RawEntityTemplateApi(
 	suspend fun modifyEntityTemplates(entityTemplateDtos: List<EntityTemplate>):
 			HttpResponse<List<EntityTemplate>> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","entitytemplate","batch")
 			}
 			setAuthorizationWith(authService)
@@ -158,7 +159,7 @@ class RawEntityTemplateApi(
 	suspend fun createEntityTemplates(entityTemplateDtos: List<EntityTemplate>):
 			HttpResponse<List<EntityTemplate>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","entitytemplate","batch")
 			}
 			setAuthorizationWith(authService)
@@ -170,7 +171,7 @@ class RawEntityTemplateApi(
 	suspend fun deleteEntityTemplate(entityTemplateIds: ListOfIds):
 			HttpResponse<List<DocIdentifier>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","entitytemplate","delete","batch")
 			}
 			setAuthorizationWith(authService)

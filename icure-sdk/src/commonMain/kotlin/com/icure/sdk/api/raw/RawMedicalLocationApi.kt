@@ -16,6 +16,7 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
+import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import kotlin.Int
 import kotlin.String
@@ -38,7 +39,7 @@ class RawMedicalLocationApi(
 	suspend fun createMedicalLocation(medicalLocationDto: MedicalLocation):
 			HttpResponse<MedicalLocation> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","medicallocation")
 			}
 			setAuthorizationWith(authService)
@@ -50,7 +51,7 @@ class RawMedicalLocationApi(
 	suspend fun deleteMedicalLocations(locationIds: ListOfIds):
 			HttpResponse<List<DocIdentifier>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","medicallocation","delete","batch")
 			}
 			setAuthorizationWith(authService)
@@ -61,7 +62,7 @@ class RawMedicalLocationApi(
 
 	suspend fun getMedicalLocation(locationId: String): HttpResponse<MedicalLocation> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","medicallocation",locationId)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -72,7 +73,7 @@ class RawMedicalLocationApi(
 	suspend fun getMedicalLocations(startDocumentId: String? = null, limit: Int? = null):
 			HttpResponse<PaginatedList<MedicalLocation, JsonString>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","medicallocation")
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
@@ -85,7 +86,7 @@ class RawMedicalLocationApi(
 	suspend fun modifyMedicalLocation(medicalLocationDto: MedicalLocation):
 			HttpResponse<MedicalLocation> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","medicallocation")
 			}
 			setAuthorizationWith(authService)

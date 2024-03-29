@@ -20,7 +20,7 @@ sealed interface DataOwnerWithType {
   @Serializable
   @SerialName("patient")
   public data class PatientDataOwner(
-    override val dataOwner: Patient,
+    override val dataOwner: EncryptedPatient,
   ) : DataOwnerWithType
 
   @Serializable

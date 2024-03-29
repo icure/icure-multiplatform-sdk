@@ -12,6 +12,7 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
+import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import kotlin.String
 import kotlin.collections.Map
@@ -31,7 +32,7 @@ class RawDataOwnerApi(
 
 	suspend fun getDataOwner(dataOwnerId: String): HttpResponse<DataOwnerWithType> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","dataowner",dataOwnerId)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -42,7 +43,7 @@ class RawDataOwnerApi(
 	suspend fun getDataOwnerStub(dataOwnerId: String): HttpResponse<CryptoActorStubWithType> =
 			get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","dataowner","stub",dataOwnerId)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -53,7 +54,7 @@ class RawDataOwnerApi(
 	suspend fun modifyDataOwnerStub(updated: CryptoActorStubWithType):
 			HttpResponse<CryptoActorStubWithType> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","dataowner","stub")
 			}
 			setAuthorizationWith(authService)
@@ -64,7 +65,7 @@ class RawDataOwnerApi(
 
 	suspend fun getCurrentDataOwner(): HttpResponse<DataOwnerWithType> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","dataowner","current")
 				parameter("ts", GMTDate().timestamp)
 			}

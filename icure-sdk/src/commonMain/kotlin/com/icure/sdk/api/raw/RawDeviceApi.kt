@@ -21,6 +21,7 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
+import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import kotlin.Int
 import kotlin.String
@@ -42,7 +43,7 @@ class RawDeviceApi(
 
 	suspend fun getDevice(deviceId: String): HttpResponse<Device> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","device",deviceId)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -52,7 +53,7 @@ class RawDeviceApi(
 
 	suspend fun getDevices(deviceIds: ListOfIds): HttpResponse<List<Device>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","device","byIds")
 			}
 			setAuthorizationWith(authService)
@@ -63,7 +64,7 @@ class RawDeviceApi(
 
 	suspend fun createDevice(p: Device): HttpResponse<Device> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","device")
 			}
 			setAuthorizationWith(authService)
@@ -74,7 +75,7 @@ class RawDeviceApi(
 
 	suspend fun updateDevice(deviceDto: Device): HttpResponse<Device> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","device")
 			}
 			setAuthorizationWith(authService)
@@ -85,7 +86,7 @@ class RawDeviceApi(
 
 	suspend fun createDevices(deviceDtos: List<Device>): HttpResponse<List<IdWithRev>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","device","bulk")
 			}
 			setAuthorizationWith(authService)
@@ -96,7 +97,7 @@ class RawDeviceApi(
 
 	suspend fun updateDevices(deviceDtos: List<Device>): HttpResponse<List<IdWithRev>> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","device","bulk")
 			}
 			setAuthorizationWith(authService)
@@ -111,7 +112,7 @@ class RawDeviceApi(
 		filterChain: FilterChain<Device>,
 	): HttpResponse<PaginatedList<Device, *>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","device","filter")
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
@@ -126,7 +127,7 @@ class RawDeviceApi(
 			HttpResponse<Map<String, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>>>
 			= get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","device",deviceId,"aesExchangeKeys")
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -137,7 +138,7 @@ class RawDeviceApi(
 	suspend fun matchDevicesBy(filter: AbstractFilter<Device>): HttpResponse<List<String>> =
 			post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","device","match")
 			}
 			setAuthorizationWith(authService)
@@ -148,7 +149,7 @@ class RawDeviceApi(
 
 	suspend fun deleteDevice(deviceId: String): HttpResponse<DocIdentifier> = delete {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","device",deviceId)
 			}
 			setAuthorizationWith(authService)
@@ -157,7 +158,7 @@ class RawDeviceApi(
 
 	suspend fun deleteDevices(deviceIds: ListOfIds): HttpResponse<List<DocIdentifier>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","device","delete","batch")
 			}
 			setAuthorizationWith(authService)
@@ -172,7 +173,7 @@ class RawDeviceApi(
 	suspend fun getDevicesInGroup(groupId: String, deviceIds: ListOfIds? = null):
 			HttpResponse<List<Device>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","device","inGroup",groupId,"byIds")
 			}
 			setAuthorizationWith(authService)
@@ -184,7 +185,7 @@ class RawDeviceApi(
 	suspend fun modifyDeviceInGroup(groupId: String, deviceDto: Device): HttpResponse<Device> =
 			put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","device","inGroup",groupId)
 			}
 			setAuthorizationWith(authService)
@@ -196,7 +197,7 @@ class RawDeviceApi(
 	suspend fun createDeviceInGroup(groupId: String, deviceDto: Device): HttpResponse<Device> =
 			post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","device","inGroup",groupId)
 			}
 			setAuthorizationWith(authService)
@@ -208,7 +209,7 @@ class RawDeviceApi(
 	suspend fun deleteDevicesInGroup(groupId: String, deviceIds: String):
 			HttpResponse<List<DocIdentifier>> = delete {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","device","inGroup",groupId,deviceIds)
 			}
 			setAuthorizationWith(authService)

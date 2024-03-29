@@ -12,6 +12,7 @@ import io.ktor.client.request.post
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
+import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import kotlin.Boolean
 import kotlin.Int
@@ -36,7 +37,7 @@ class RawICureApi(
 
 	suspend fun getVersion(): HttpResponse<String> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","icure","v")
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -46,7 +47,7 @@ class RawICureApi(
 
 	suspend fun isReady(): HttpResponse<String> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","icure","ok")
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -56,7 +57,7 @@ class RawICureApi(
 
 	suspend fun getProcessInfo(): HttpResponse<String> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","icure","p")
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -66,7 +67,7 @@ class RawICureApi(
 
 	suspend fun getIndexingInfo(): HttpResponse<IndexingInfo> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","icure","i")
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -76,7 +77,7 @@ class RawICureApi(
 
 	suspend fun getReplicationInfo(): HttpResponse<ReplicationInfo> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","icure","r")
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -87,7 +88,7 @@ class RawICureApi(
 	suspend fun updateDesignDoc(entityName: String, warmup: Boolean? = null):
 			HttpResponse<Boolean> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","icure","dd",entityName)
 				parameter("warmup", warmup)
 			}
@@ -99,7 +100,7 @@ class RawICureApi(
 	suspend fun resolvePatientsConflicts(limit: Int? = null): HttpResponse<List<IdWithRev>> =
 			post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","icure","conflicts","patient")
 				parameter("limit", limit)
 			}
@@ -111,7 +112,7 @@ class RawICureApi(
 	suspend fun resolveContactsConflicts(limit: Int? = null): HttpResponse<List<IdWithRev>> =
 			post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","icure","conflicts","contact")
 				parameter("limit", limit)
 			}
@@ -123,7 +124,7 @@ class RawICureApi(
 	suspend fun resolveFormsConflicts(limit: Int? = null): HttpResponse<List<IdWithRev>> =
 			post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","icure","conflicts","form")
 				parameter("limit", limit)
 			}
@@ -135,7 +136,7 @@ class RawICureApi(
 	suspend fun resolveHealthElementsConflicts(limit: Int? = null):
 			HttpResponse<List<IdWithRev>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","icure","conflicts","healthelement")
 				parameter("limit", limit)
 			}
@@ -147,7 +148,7 @@ class RawICureApi(
 	suspend fun resolveInvoicesConflicts(limit: Int? = null): HttpResponse<List<IdWithRev>> =
 			post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","icure","conflicts","invoice")
 				parameter("limit", limit)
 			}
@@ -159,7 +160,7 @@ class RawICureApi(
 	suspend fun resolveMessagesConflicts(limit: Int? = null): HttpResponse<List<IdWithRev>> =
 			post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","icure","conflicts","message")
 				parameter("limit", limit)
 			}
@@ -171,7 +172,7 @@ class RawICureApi(
 	suspend fun resolveDocumentsConflicts(ids: String? = null, limit: Int? = null):
 			HttpResponse<List<IdWithRev>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","icure","conflicts","document")
 				parameter("ids", ids)
 				parameter("limit", limit)
@@ -186,7 +187,7 @@ class RawICureApi(
 
 	suspend fun getIndexingInfoByGroup(groupId: String): HttpResponse<IndexingInfo> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","icure","byGroup",groupId,"i")
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -196,7 +197,7 @@ class RawICureApi(
 
 	suspend fun getReplicatorInfo(id: String): HttpResponse<ReplicatorDocument> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","icure","r",id)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -206,7 +207,7 @@ class RawICureApi(
 
 	suspend fun evictAllFromMap(mapName: String): HttpResponse<String> = delete {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","icure","hzc",mapName)
 			}
 			setAuthorizationWith(authService)

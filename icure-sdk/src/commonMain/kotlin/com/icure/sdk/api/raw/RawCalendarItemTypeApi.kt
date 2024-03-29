@@ -16,6 +16,7 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
+import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import kotlin.Int
 import kotlin.String
@@ -38,7 +39,7 @@ class RawCalendarItemTypeApi(
 	suspend fun getCalendarItemTypes(startDocumentId: String? = null, limit: Int? = null):
 			HttpResponse<PaginatedList<CalendarItemType, JsonString>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","calendarItemType")
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
@@ -54,7 +55,7 @@ class RawCalendarItemTypeApi(
 		limit: Int? = null,
 	): HttpResponse<PaginatedList<CalendarItemType, JsonString>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","calendarItemType","includeDeleted")
 				parameter("startKey", startKey)
 				parameter("startDocumentId", startDocumentId)
@@ -68,7 +69,7 @@ class RawCalendarItemTypeApi(
 	suspend fun createCalendarItemType(calendarItemTypeDto: CalendarItemType):
 			HttpResponse<CalendarItemType> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","calendarItemType")
 			}
 			setAuthorizationWith(authService)
@@ -80,7 +81,7 @@ class RawCalendarItemTypeApi(
 	suspend fun deleteCalendarItemTypes(calendarItemTypeIds: ListOfIds):
 			HttpResponse<List<DocIdentifier>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","calendarItemType","delete","batch")
 			}
 			setAuthorizationWith(authService)
@@ -92,7 +93,7 @@ class RawCalendarItemTypeApi(
 	suspend fun getCalendarItemType(calendarItemTypeId: String): HttpResponse<CalendarItemType>
 			= get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","calendarItemType",calendarItemTypeId)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -103,7 +104,7 @@ class RawCalendarItemTypeApi(
 	suspend fun modifyCalendarItemType(calendarItemTypeDto: CalendarItemType):
 			HttpResponse<CalendarItemType> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","calendarItemType")
 			}
 			setAuthorizationWith(authService)

@@ -17,6 +17,7 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
+import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import kotlin.Int
 import kotlin.String
@@ -39,7 +40,7 @@ class RawInsuranceApi(
 	suspend fun getAllInsurances(startDocumentId: String? = null, limit: Int? = null):
 			HttpResponse<PaginatedList<Insurance, JsonString>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","insurance")
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
@@ -51,7 +52,7 @@ class RawInsuranceApi(
 
 	suspend fun createInsurance(insuranceDto: Insurance): HttpResponse<Insurance> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","insurance")
 			}
 			setAuthorizationWith(authService)
@@ -62,7 +63,7 @@ class RawInsuranceApi(
 
 	suspend fun deleteInsurance(insuranceId: String): HttpResponse<DocIdentifier> = delete {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","insurance",insuranceId)
 			}
 			setAuthorizationWith(authService)
@@ -71,7 +72,7 @@ class RawInsuranceApi(
 
 	suspend fun getInsurance(insuranceId: String): HttpResponse<Insurance> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","insurance",insuranceId)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -81,7 +82,7 @@ class RawInsuranceApi(
 
 	suspend fun getInsurances(insuranceIds: ListOfIds): HttpResponse<List<Insurance>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","insurance","byIds")
 			}
 			setAuthorizationWith(authService)
@@ -93,7 +94,7 @@ class RawInsuranceApi(
 	suspend fun listInsurancesByCode(insuranceCode: String): HttpResponse<List<Insurance>> =
 			get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","insurance","byCode",insuranceCode)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -104,7 +105,7 @@ class RawInsuranceApi(
 	suspend fun listInsurancesByName(insuranceName: String): HttpResponse<List<Insurance>> =
 			get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","insurance","byName",insuranceName)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -114,7 +115,7 @@ class RawInsuranceApi(
 
 	suspend fun modifyInsurance(insuranceDto: Insurance): HttpResponse<Insurance> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","insurance")
 			}
 			setAuthorizationWith(authService)

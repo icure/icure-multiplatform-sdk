@@ -12,6 +12,7 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
+import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import kotlin.String
 import kotlin.collections.List
@@ -32,7 +33,7 @@ class RawApplicationSettingsApi(
 
 	suspend fun getApplicationSettings(): HttpResponse<List<ApplicationSettings>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","appsettings")
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -43,7 +44,7 @@ class RawApplicationSettingsApi(
 	suspend fun createApplicationSettings(applicationSettingsDto: ApplicationSettings):
 			HttpResponse<ApplicationSettings> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","appsettings")
 			}
 			setAuthorizationWith(authService)
@@ -55,7 +56,7 @@ class RawApplicationSettingsApi(
 	suspend fun updateApplicationSettings(applicationSettingsDto: ApplicationSettings):
 			HttpResponse<ApplicationSettings> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","appsettings")
 			}
 			setAuthorizationWith(authService)

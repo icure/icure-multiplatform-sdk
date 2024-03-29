@@ -16,6 +16,7 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
+import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import kotlin.Int
 import kotlin.String
@@ -37,7 +38,7 @@ class RawKeywordApi(
 
 	suspend fun createKeyword(c: Keyword): HttpResponse<Keyword> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","keyword")
 			}
 			setAuthorizationWith(authService)
@@ -48,7 +49,7 @@ class RawKeywordApi(
 
 	suspend fun getKeyword(keywordId: String): HttpResponse<Keyword> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","keyword",keywordId)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -58,7 +59,7 @@ class RawKeywordApi(
 
 	suspend fun getKeywordsByUser(userId: String): HttpResponse<List<Keyword>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","keyword","byUser",userId)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -69,7 +70,7 @@ class RawKeywordApi(
 	suspend fun getKeywords(startDocumentId: String? = null, limit: Int? = null):
 			HttpResponse<PaginatedList<Keyword, JsonString>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","keyword")
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
@@ -82,7 +83,7 @@ class RawKeywordApi(
 	suspend fun deleteKeywords(keywordIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
 			post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","keyword","delete","batch")
 			}
 			setAuthorizationWith(authService)
@@ -93,7 +94,7 @@ class RawKeywordApi(
 
 	suspend fun modifyKeyword(keywordDto: Keyword): HttpResponse<Keyword> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","keyword")
 			}
 			setAuthorizationWith(authService)

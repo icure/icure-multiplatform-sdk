@@ -14,6 +14,7 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
+import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import kotlin.String
 import kotlin.collections.Map
@@ -34,7 +35,7 @@ class RawRecoveryDataApi(
 	suspend fun createRecoveryData(recoveryData: RecoveryData): HttpResponse<RecoveryData> =
 			post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","recoverydata")
 			}
 			setAuthorizationWith(authService)
@@ -45,7 +46,7 @@ class RawRecoveryDataApi(
 
 	suspend fun getRecoveryData(id: String): HttpResponse<RecoveryData> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","recoverydata",id)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -55,7 +56,7 @@ class RawRecoveryDataApi(
 
 	suspend fun deleteRecoveryData(id: String): HttpResponse<DocIdentifier> = delete {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","recoverydata",id)
 			}
 			setAuthorizationWith(authService)
@@ -65,7 +66,7 @@ class RawRecoveryDataApi(
 	suspend fun deleteAllRecoveryDataForRecipient(recipientId: String): HttpResponse<Content> =
 			delete {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","recoverydataforRecipient",recipientId)
 			}
 			setAuthorizationWith(authService)
@@ -75,7 +76,7 @@ class RawRecoveryDataApi(
 	suspend fun deleteAllRecoveryDataOfTypeForRecipient(type: RecoveryData.Type,
 			recipientId: String): HttpResponse<Content> = delete {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","recoverydataforRecipient",recipientId,"ofType","$type")
 			}
 			setAuthorizationWith(authService)

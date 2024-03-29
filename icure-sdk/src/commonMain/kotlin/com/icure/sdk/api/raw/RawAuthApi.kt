@@ -6,6 +6,7 @@ import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.request.`get`
 import io.ktor.client.request.parameter
 import io.ktor.http.appendPathSegments
+import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import kotlin.String
 import kotlin.collections.Map
@@ -25,7 +26,7 @@ class RawAuthApi(
 
 	suspend fun token(method: String, path: String): HttpResponse<String> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","auth","token",method,path)
 				parameter("ts", GMTDate().timestamp)
 			}

@@ -16,6 +16,7 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
+import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import io.ktor.utils.io.ByteReadChannel
 import kotlin.ByteArray
@@ -42,7 +43,7 @@ class RawReceiptApi(
 
 	suspend fun createReceipt(receiptDto: Receipt): HttpResponse<EncryptedReceipt> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","receipt")
 			}
 			setAuthorizationWith(authService)
@@ -54,7 +55,7 @@ class RawReceiptApi(
 	suspend fun deleteReceipts(receiptIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
 			post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","receipt","delete","batch")
 			}
 			setAuthorizationWith(authService)
@@ -65,7 +66,7 @@ class RawReceiptApi(
 
 	suspend fun deleteReceipt(receiptId: String): HttpResponse<DocIdentifier> = delete {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","receipt",receiptId)
 			}
 			setAuthorizationWith(authService)
@@ -75,7 +76,7 @@ class RawReceiptApi(
 	suspend fun getReceiptAttachment(receiptId: String, attachmentId: String):
 			HttpResponse<ByteArray> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","receipt",receiptId,"attachment",attachmentId)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -90,7 +91,7 @@ class RawReceiptApi(
 		payload: ByteArray,
 	): HttpResponse<EncryptedReceipt> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","receipt",receiptId,"attachment",blobType)
 				parameter("rev", rev)
 			}
@@ -102,7 +103,7 @@ class RawReceiptApi(
 
 	suspend fun getReceipt(receiptId: String): HttpResponse<EncryptedReceipt> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","receipt",receiptId)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -112,7 +113,7 @@ class RawReceiptApi(
 
 	suspend fun listByReference(ref: String): HttpResponse<List<EncryptedReceipt>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","receipt","byRef",ref)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -122,7 +123,7 @@ class RawReceiptApi(
 
 	suspend fun modifyReceipt(receiptDto: Receipt): HttpResponse<EncryptedReceipt> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","receipt")
 			}
 			setAuthorizationWith(authService)
@@ -134,7 +135,7 @@ class RawReceiptApi(
 	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams):
 			HttpResponse<List<EntityBulkShareResult<EncryptedReceipt>>> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","receipt","bulkSharedMetadataUpdate")
 			}
 			setAuthorizationWith(authService)

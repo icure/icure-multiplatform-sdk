@@ -10,6 +10,7 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
+import io.ktor.http.takeFrom
 import kotlin.String
 import kotlin.collections.List
 import kotlin.collections.Map
@@ -30,7 +31,7 @@ class RawPermissionApi(
 	suspend fun modifyUserPermissions(userId: String, permissions: Permission):
 			HttpResponse<List<Permission>> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","permissions",userId)
 			}
 			setAuthorizationWith(authService)

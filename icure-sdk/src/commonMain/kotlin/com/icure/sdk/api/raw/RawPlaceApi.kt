@@ -16,6 +16,7 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
+import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import kotlin.Int
 import kotlin.String
@@ -37,7 +38,7 @@ class RawPlaceApi(
 
 	suspend fun createPlace(placeDto: Place): HttpResponse<Place> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","place")
 			}
 			setAuthorizationWith(authService)
@@ -48,7 +49,7 @@ class RawPlaceApi(
 
 	suspend fun deletePlaces(placeIds: ListOfIds): HttpResponse<List<DocIdentifier>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","place","delete","batch")
 			}
 			setAuthorizationWith(authService)
@@ -59,7 +60,7 @@ class RawPlaceApi(
 
 	suspend fun getPlace(placeId: String): HttpResponse<Place> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","place",placeId)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -70,7 +71,7 @@ class RawPlaceApi(
 	suspend fun getPlaces(startDocumentId: String? = null, limit: Int? = null):
 			HttpResponse<PaginatedList<Place, JsonString>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","place")
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
@@ -82,7 +83,7 @@ class RawPlaceApi(
 
 	suspend fun modifyPlace(placeDto: Place): HttpResponse<Place> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","place")
 			}
 			setAuthorizationWith(authService)

@@ -18,6 +18,7 @@ import com.icure.sdk.model.HealthcareParty
 import com.icure.sdk.model.AnonymousMedicalLocation
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.specializations.JsonString
+import io.ktor.http.takeFrom
 
 // WARNING: This class is auto-generated. If you change it manually, you changes will be lost.
 // If you want to change the way this class is generated, see [this repo](TODO: URL HERE).
@@ -37,7 +38,7 @@ class RawAnonymousApi(
 		endDate: Long,
 	): HttpResponse<List<AppointmentTypeAndPlace>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","aa","appointmentType","inGroup",groupId,"forUser",userId)
 				parameter("startDate", startDate)
 				parameter("endDate", endDate)
@@ -58,7 +59,7 @@ class RawAnonymousApi(
 		limit: Int? = null,
 	): HttpResponse<List<Long>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","aa","available","inGroup",groupId,"forUser",userId,"type",calendarItemTypeId)
 				parameter("isNewPatient", isNewPatient)
 				parameter("startDate", startDate)
@@ -77,7 +78,7 @@ class RawAnonymousApi(
 	suspend fun listHealthcarePartiesInGroup(groupId: String):
 			HttpResponse<List<HealthcareParty>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","aa","hcparty","inGroup",groupId)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -94,7 +95,7 @@ class RawAnonymousApi(
 		limit: Int? = null,
 	): HttpResponse<PaginatedList<AnonymousMedicalLocation, JsonString>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","aa","medicallocation","byGroup",groupId)
 				parameter("startKey", startKey)
 				parameter("startDocumentId", startDocumentId)

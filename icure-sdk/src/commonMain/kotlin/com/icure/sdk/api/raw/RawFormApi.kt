@@ -20,6 +20,7 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
+import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import io.ktor.utils.io.ByteReadChannel
 import kotlin.Boolean
@@ -48,7 +49,7 @@ class RawFormApi(
 
 	suspend fun getForm(formId: String): HttpResponse<EncryptedForm> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","form",formId)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -58,7 +59,7 @@ class RawFormApi(
 
 	suspend fun getForms(formIds: ListOfIds): HttpResponse<List<EncryptedForm>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","form","byIds")
 			}
 			setAuthorizationWith(authService)
@@ -69,7 +70,7 @@ class RawFormApi(
 
 	suspend fun getFormByLogicalUuid(logicalUuid: String): HttpResponse<EncryptedForm> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","form","logicalUuid",logicalUuid)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -80,7 +81,7 @@ class RawFormApi(
 	suspend fun getFormsByLogicalUuid(logicalUuid: String): HttpResponse<List<EncryptedForm>> =
 			get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","form","all","logicalUuid",logicalUuid)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -90,7 +91,7 @@ class RawFormApi(
 
 	suspend fun getFormsByUniqueId(uniqueId: String): HttpResponse<List<EncryptedForm>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","form","all","uniqueId",uniqueId)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -100,7 +101,7 @@ class RawFormApi(
 
 	suspend fun getFormByUniqueId(uniqueId: String): HttpResponse<EncryptedForm> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","form","uniqueId",uniqueId)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -111,7 +112,7 @@ class RawFormApi(
 	suspend fun getChildrenForms(formId: String, hcPartyId: String):
 			HttpResponse<List<EncryptedForm>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","form","childrenOf",formId,hcPartyId)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -121,7 +122,7 @@ class RawFormApi(
 
 	suspend fun createForm(ft: Form): HttpResponse<EncryptedForm> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","form")
 			}
 			setAuthorizationWith(authService)
@@ -132,7 +133,7 @@ class RawFormApi(
 
 	suspend fun modifyForm(formDto: Form): HttpResponse<EncryptedForm> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","form")
 			}
 			setAuthorizationWith(authService)
@@ -143,7 +144,7 @@ class RawFormApi(
 
 	suspend fun deleteForms(formIds: ListOfIds): HttpResponse<List<DocIdentifier>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","form","delete","batch")
 			}
 			setAuthorizationWith(authService)
@@ -154,7 +155,7 @@ class RawFormApi(
 
 	suspend fun deleteForm(formId: String): HttpResponse<DocIdentifier> = delete {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","form",formId)
 			}
 			setAuthorizationWith(authService)
@@ -163,7 +164,7 @@ class RawFormApi(
 
 	suspend fun modifyForms(formDtos: List<Form>): HttpResponse<List<EncryptedForm>> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","form","batch")
 			}
 			setAuthorizationWith(authService)
@@ -174,7 +175,7 @@ class RawFormApi(
 
 	suspend fun createForms(formDtos: List<Form>): HttpResponse<List<EncryptedForm>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","form","batch")
 			}
 			setAuthorizationWith(authService)
@@ -191,7 +192,7 @@ class RawFormApi(
 		formTemplateId: String? = null,
 	): HttpResponse<List<EncryptedForm>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","form","byHcPartySecretForeignKeys")
 				parameter("hcPartyId", hcPartyId)
 				parameter("secretFKeys", secretFKeys)
@@ -212,7 +213,7 @@ class RawFormApi(
 		formTemplateId: String? = null,
 	): HttpResponse<List<EncryptedForm>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","form","byHcPartySecretForeignKeys")
 				parameter("hcPartyId", hcPartyId)
 				parameter("healthElementId", healthElementId)
@@ -233,7 +234,7 @@ class RawFormApi(
 		limit: Int? = null,
 	): HttpResponse<PaginatedList<EncryptedForm, JsonString>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","form","byHcPartySecretForeignKey")
 				parameter("hcPartyId", hcPartyId)
 				parameter("secretPatientKey", secretPatientKey)
@@ -249,7 +250,7 @@ class RawFormApi(
 	suspend fun listFormsDelegationsStubsByHCPartyAndPatientForeignKeys(hcPartyId: String,
 			secretFKeys: String): HttpResponse<List<EncryptedIcureStub>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","form","byHcPartySecretForeignKeys","delegations")
 				parameter("hcPartyId", hcPartyId)
 				parameter("secretFKeys", secretFKeys)
@@ -262,7 +263,7 @@ class RawFormApi(
 	suspend fun listFormsDelegationsStubsByHCPartyAndPatientForeignKeys(hcPartyId: String,
 			secretPatientKeys: List<String>): HttpResponse<List<EncryptedIcureStub>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","form","byHcPartySecretForeignKeys","delegations")
 				parameter("hcPartyId", hcPartyId)
 			}
@@ -275,7 +276,7 @@ class RawFormApi(
 	suspend fun getFormTemplate(formTemplateId: String, raw: Boolean? = null):
 			HttpResponse<FormTemplate> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","form","template",formTemplateId)
 				parameter("raw", raw)
 				parameter("ts", GMTDate().timestamp)
@@ -290,7 +291,7 @@ class RawFormApi(
 		raw: Boolean? = null,
 	): HttpResponse<List<FormTemplate>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","form","template",specialityCode,"guid",formTemplateGuid)
 				parameter("raw", raw)
 				parameter("ts", GMTDate().timestamp)
@@ -305,7 +306,7 @@ class RawFormApi(
 		raw: Boolean? = null,
 	): HttpResponse<List<FormTemplate>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","form","template","bySpecialty",specialityCode)
 				parameter("loadLayout", loadLayout)
 				parameter("raw", raw)
@@ -318,7 +319,7 @@ class RawFormApi(
 	suspend fun getFormTemplates(loadLayout: Boolean? = null, raw: Boolean? = null):
 			HttpResponse<List<FormTemplate>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","form","template")
 				parameter("loadLayout", loadLayout)
 				parameter("raw", raw)
@@ -330,7 +331,7 @@ class RawFormApi(
 
 	suspend fun createFormTemplate(ft: FormTemplate): HttpResponse<FormTemplate> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","form","template")
 			}
 			setAuthorizationWith(authService)
@@ -342,7 +343,7 @@ class RawFormApi(
 	suspend fun deleteFormTemplate(formTemplateId: String): HttpResponse<DocIdentifier> =
 			delete {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","form","template",formTemplateId)
 			}
 			setAuthorizationWith(authService)
@@ -352,7 +353,7 @@ class RawFormApi(
 	suspend fun updateFormTemplate(formTemplateId: String, ft: FormTemplate):
 			HttpResponse<FormTemplate> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","form","template",formTemplateId)
 			}
 			setAuthorizationWith(authService)
@@ -364,7 +365,7 @@ class RawFormApi(
 	suspend fun setTemplateAttachment(formTemplateId: String, payload: ByteArray):
 			HttpResponse<String> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","form","template",formTemplateId,"attachment")
 			}
 			setAuthorizationWith(authService)
@@ -376,7 +377,7 @@ class RawFormApi(
 	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams):
 			HttpResponse<List<EntityBulkShareResult<EncryptedForm>>> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","form","bulkSharedMetadataUpdate")
 			}
 			setAuthorizationWith(authService)
@@ -388,7 +389,7 @@ class RawFormApi(
 	suspend fun bulkShareMinimal(request: BulkShareOrUpdateMetadataParams):
 			HttpResponse<List<EntityBulkShareResult<EncryptedForm>>> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","form","bulkSharedMetadataUpdateMinimal")
 			}
 			setAuthorizationWith(authService)

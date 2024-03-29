@@ -19,23 +19,7 @@ import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
 
 object Serialization {
-
-	@OptIn(ExperimentalSerializationApi::class)
-	val json = Json {
-		encodeDefaults = false
-		// TODO this is temporary, as long as I don't have the real models. Later we change
-		println("Temporarily we are ignoring unknown keys")
-		ignoreUnknownKeys = true
-		explicitNulls = false
-		serializersModule = ICureSerializerModule
-	}
-
-	val lenientJson = Json {
-		encodeDefaults = false
-		ignoreUnknownKeys = true
-		serializersModule = ICureSerializerModule
-	}
-
+	// Note: order matters, serializer module must be defined before the Json configurations
 	private val ICureSerializerModule = SerializersModule {
 		polymorphic(StructureElement::class) {
 			subclass(TimePicker::class)
@@ -52,5 +36,21 @@ object Serialization {
 				Group.serializer()
 			}
 		}
+	}
+
+	@OptIn(ExperimentalSerializationApi::class)
+	val json = Json {
+		encodeDefaults = false
+		explicitNulls = false
+		ignoreUnknownKeys = false
+		serializersModule = ICureSerializerModule
+	}
+
+	@OptIn(ExperimentalSerializationApi::class)
+	val lenientJson = Json {
+		encodeDefaults = false
+		explicitNulls = false
+		ignoreUnknownKeys = true
+		serializersModule = ICureSerializerModule
 	}
 }

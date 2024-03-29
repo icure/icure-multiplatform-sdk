@@ -9,8 +9,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class PaginatedList<T, O>(
-  public val pageSize: Int,
-  public val totalSize: Int,
+  public val pageSize: Int = 0,
+  public val totalSize: Int = 0,
   public val rows: List<T> = emptyList(),
   public val nextKeyPair: PaginatedDocumentKeyIdPair<O>? = null,
 ) {

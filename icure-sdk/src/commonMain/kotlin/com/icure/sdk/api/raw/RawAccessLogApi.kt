@@ -18,6 +18,7 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
+import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import kotlin.Boolean
 import kotlin.Int
@@ -46,7 +47,7 @@ class RawAccessLogApi(
 	suspend fun createAccessLog(accessLogDto: AccessLog): HttpResponse<EncryptedAccessLog> =
 			post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","accesslog")
 			}
 			setAuthorizationWith(authService)
@@ -58,7 +59,7 @@ class RawAccessLogApi(
 	suspend fun deleteAccessLogs(accessLogIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
 			post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","accesslog","delete","batch")
 			}
 			setAuthorizationWith(authService)
@@ -69,7 +70,7 @@ class RawAccessLogApi(
 
 	suspend fun deleteAccessLog(accessLogId: String): HttpResponse<DocIdentifier> = delete {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","accesslog",accessLogId)
 			}
 			setAuthorizationWith(authService)
@@ -78,7 +79,7 @@ class RawAccessLogApi(
 
 	suspend fun getAccessLog(accessLogId: String): HttpResponse<EncryptedAccessLog> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","accesslog",accessLogId)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -95,7 +96,7 @@ class RawAccessLogApi(
 		descending: Boolean? = null,
 	): HttpResponse<PaginatedList<EncryptedAccessLog, JsonString>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","accesslog")
 				parameter("fromEpoch", fromEpoch)
 				parameter("toEpoch", toEpoch)
@@ -119,7 +120,7 @@ class RawAccessLogApi(
 		descending: Boolean? = null,
 	): HttpResponse<PaginatedList<EncryptedAccessLog, JsonString>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","accesslog","byUser")
 				parameter("userId", userId)
 				parameter("accessType", accessType)
@@ -137,7 +138,7 @@ class RawAccessLogApi(
 	suspend fun listAccessLogsByHCPartyAndPatientForeignKeys(hcPartyId: String,
 			secretFKeys: String): HttpResponse<List<EncryptedAccessLog>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","accesslog","byHcPartySecretForeignKeys")
 				parameter("hcPartyId", hcPartyId)
 				parameter("secretFKeys", secretFKeys)
@@ -155,7 +156,7 @@ class RawAccessLogApi(
 		limit: Int? = null,
 	): HttpResponse<PaginatedList<EncryptedAccessLog, JsonString>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","accesslog","byHcPartySecretForeignKey")
 				parameter("hcPartyId", hcPartyId)
 				parameter("secretFKey", secretFKey)
@@ -171,7 +172,7 @@ class RawAccessLogApi(
 	suspend fun findAccessLogsByHCPartyPatientForeignKeys(hcPartyId: String,
 			secretPatientKeys: List<String>): HttpResponse<List<EncryptedAccessLog>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","accesslog","byHcPartySecretForeignKeys")
 				parameter("hcPartyId", hcPartyId)
 			}
@@ -184,7 +185,7 @@ class RawAccessLogApi(
 	suspend fun modifyAccessLog(accessLogDto: AccessLog): HttpResponse<EncryptedAccessLog> =
 			put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","accesslog")
 			}
 			setAuthorizationWith(authService)
@@ -196,7 +197,7 @@ class RawAccessLogApi(
 	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams):
 			HttpResponse<List<EntityBulkShareResult<EncryptedAccessLog>>> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","accesslog","bulkSharedMetadataUpdate")
 			}
 			setAuthorizationWith(authService)
@@ -217,7 +218,7 @@ class RawAccessLogApi(
 		limit: Int? = null,
 	): HttpResponse<PaginatedList<EncryptedAccessLog, JsonString>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","accesslog","inGroup",groupId)
 				parameter("fromEpoch", fromEpoch)
 				parameter("toEpoch", toEpoch)

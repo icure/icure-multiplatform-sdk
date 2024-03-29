@@ -14,6 +14,7 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
+import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import kotlin.String
 import kotlin.collections.List
@@ -34,7 +35,7 @@ class RawFrontEndMigrationApi(
 
 	suspend fun getFrontEndMigrations(): HttpResponse<List<FrontEndMigration>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","frontendmigration")
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -45,7 +46,7 @@ class RawFrontEndMigrationApi(
 	suspend fun createFrontEndMigration(frontEndMigrationDto: FrontEndMigration):
 			HttpResponse<FrontEndMigration> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","frontendmigration")
 			}
 			setAuthorizationWith(authService)
@@ -57,7 +58,7 @@ class RawFrontEndMigrationApi(
 	suspend fun deleteFrontEndMigration(frontEndMigrationId: String):
 			HttpResponse<DocIdentifier> = delete {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","frontendmigration",frontEndMigrationId)
 			}
 			setAuthorizationWith(authService)
@@ -67,7 +68,7 @@ class RawFrontEndMigrationApi(
 	suspend fun getFrontEndMigration(frontEndMigrationId: String):
 			HttpResponse<FrontEndMigration> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","frontendmigration",frontEndMigrationId)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -78,7 +79,7 @@ class RawFrontEndMigrationApi(
 	suspend fun getFrontEndMigrationByName(frontEndMigrationName: String):
 			HttpResponse<List<FrontEndMigration>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","frontendmigration","byName",frontEndMigrationName)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -89,7 +90,7 @@ class RawFrontEndMigrationApi(
 	suspend fun modifyFrontEndMigration(frontEndMigrationDto: FrontEndMigration):
 			HttpResponse<FrontEndMigration> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","frontendmigration")
 			}
 			setAuthorizationWith(authService)

@@ -16,6 +16,7 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
+import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import kotlin.Long
 import kotlin.String
@@ -42,7 +43,7 @@ class RawTimeTableApi(
 	suspend fun createTimeTable(timeTableDto: TimeTable): HttpResponse<EncryptedTimeTable> =
 			post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","timeTable")
 			}
 			setAuthorizationWith(authService)
@@ -54,7 +55,7 @@ class RawTimeTableApi(
 	suspend fun deleteTimeTables(timeTableIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
 			post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","timeTable","delete","batch")
 			}
 			setAuthorizationWith(authService)
@@ -65,7 +66,7 @@ class RawTimeTableApi(
 
 	suspend fun deleteTimeTable(timeTableId: String): HttpResponse<DocIdentifier> = delete {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","timeTable",timeTableId)
 			}
 			setAuthorizationWith(authService)
@@ -74,7 +75,7 @@ class RawTimeTableApi(
 
 	suspend fun getTimeTable(timeTableId: String): HttpResponse<EncryptedTimeTable> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","timeTable",timeTableId)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -85,7 +86,7 @@ class RawTimeTableApi(
 	suspend fun modifyTimeTable(timeTableDto: TimeTable): HttpResponse<EncryptedTimeTable> =
 			put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","timeTable")
 			}
 			setAuthorizationWith(authService)
@@ -100,7 +101,7 @@ class RawTimeTableApi(
 		agendaId: String,
 	): HttpResponse<List<EncryptedTimeTable>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","timeTable","byPeriodAndAgendaId")
 				parameter("startDate", startDate)
 				parameter("endDate", endDate)
@@ -114,7 +115,7 @@ class RawTimeTableApi(
 	suspend fun getTimeTablesByAgendaId(agendaId: String):
 			HttpResponse<List<EncryptedTimeTable>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","timeTable","byAgendaId")
 				parameter("agendaId", agendaId)
 			}
@@ -126,7 +127,7 @@ class RawTimeTableApi(
 	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams):
 			HttpResponse<List<EntityBulkShareResult<EncryptedTimeTable>>> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","timeTable","bulkSharedMetadataUpdate")
 			}
 			setAuthorizationWith(authService)

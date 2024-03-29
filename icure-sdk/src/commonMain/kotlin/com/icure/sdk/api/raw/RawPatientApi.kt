@@ -25,6 +25,7 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
+import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import kotlin.Boolean
 import kotlin.Int
@@ -60,7 +61,7 @@ class RawPatientApi(
 		sortDirection: SortDirection = SortDirection.Asc,
 	): HttpResponse<PaginatedList<EncryptedPatient, JsonString>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","patient","byNameBirthSsinAuto")
 				parameter("healthcarePartyId", healthcarePartyId)
 				parameter("filterValue", filterValue)
@@ -83,7 +84,7 @@ class RawPatientApi(
 		sortDirection: SortDirection = SortDirection.Asc,
 	): HttpResponse<PaginatedList<EncryptedPatient, JsonString>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","patient","ofHcParty",hcPartyId)
 				parameter("sortField", sortField)
 				parameter("startKey", startKey)
@@ -98,7 +99,7 @@ class RawPatientApi(
 
 	suspend fun listOfMergesAfter(date: Long): HttpResponse<List<EncryptedPatient>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","patient","merges","$date")
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -113,7 +114,7 @@ class RawPatientApi(
 		limit: Int? = null,
 	): HttpResponse<PaginatedList<EncryptedPatient, JsonString>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","patient","modifiedAfter","$date")
 				parameter("startKey", startKey)
 				parameter("startDocumentId", startDocumentId)
@@ -133,7 +134,7 @@ class RawPatientApi(
 		sortDirection: SortDirection = SortDirection.Asc,
 	): HttpResponse<PaginatedList<EncryptedPatient, JsonString>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","patient","hcParty",hcPartyId)
 				parameter("sortField", sortField)
 				parameter("startKey", startKey)
@@ -149,7 +150,7 @@ class RawPatientApi(
 	suspend fun getPatientHcPartyKeysForDelegate(patientId: String):
 			HttpResponse<Map<String, String>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","patient",patientId,"keys")
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -161,7 +162,7 @@ class RawPatientApi(
 			HttpResponse<Map<String, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>>>
 			= get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","patient",patientId,"aesExchangeKeys")
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -171,7 +172,7 @@ class RawPatientApi(
 
 	suspend fun countOfPatients(hcPartyId: String): HttpResponse<Content> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","patient","hcParty",hcPartyId,"count")
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -188,7 +189,7 @@ class RawPatientApi(
 		sortDirection: SortDirection = SortDirection.Asc,
 	): HttpResponse<PaginatedList<EncryptedPatient, JsonString>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","patient")
 				parameter("hcPartyId", hcPartyId)
 				parameter("sortField", sortField)
@@ -209,7 +210,7 @@ class RawPatientApi(
 		limit: Int? = null,
 	): HttpResponse<PaginatedList<String, JsonString>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","patient","byHcPartyId")
 				parameter("hcPartyId", hcPartyId)
 				parameter("startKey", startKey)
@@ -224,7 +225,7 @@ class RawPatientApi(
 	suspend fun getPatientByExternalId(externalId: String): HttpResponse<EncryptedPatient> =
 			get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","patient","byExternalId",externalId)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -241,7 +242,7 @@ class RawPatientApi(
 		limit: Int? = null,
 	): HttpResponse<PaginatedList<EncryptedPatient, Long>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","patient","byAccess",userId)
 				parameter("accessType", accessType)
 				parameter("startDate", startDate)
@@ -264,7 +265,7 @@ class RawPatientApi(
 		filterChain: FilterChain<Patient>,
 	): HttpResponse<PaginatedList<EncryptedPatient, *>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","patient","filter")
 				parameter("startKey", startKey)
 				parameter("startDocumentId", startDocumentId)
@@ -282,7 +283,7 @@ class RawPatientApi(
 	suspend fun matchPatientsBy(filter: AbstractFilter<Patient>): HttpResponse<List<String>> =
 			post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","patient","match")
 			}
 			setAuthorizationWith(authService)
@@ -297,7 +298,7 @@ class RawPatientApi(
 		dateOfBirth: Int? = null,
 	): HttpResponse<List<EncryptedPatient>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","patient","fuzzy")
 				parameter("firstName", firstName)
 				parameter("lastName", lastName)
@@ -310,7 +311,7 @@ class RawPatientApi(
 
 	suspend fun createPatient(p: Patient): HttpResponse<EncryptedPatient> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","patient")
 			}
 			setAuthorizationWith(authService)
@@ -322,7 +323,7 @@ class RawPatientApi(
 	suspend fun deletePatients(patientIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
 			post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","patient","delete","batch")
 			}
 			setAuthorizationWith(authService)
@@ -333,7 +334,7 @@ class RawPatientApi(
 
 	suspend fun deletePatient(patientId: String): HttpResponse<DocIdentifier> = delete {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","patient",patientId)
 			}
 			setAuthorizationWith(authService)
@@ -349,7 +350,7 @@ class RawPatientApi(
 		limit: Int? = null,
 	): HttpResponse<PaginatedList<EncryptedPatient, JsonString>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","patient","deleted","byDate")
 				parameter("startDate", startDate)
 				parameter("endDate", endDate)
@@ -366,7 +367,7 @@ class RawPatientApi(
 	suspend fun listDeletedPatientsByName(firstName: String? = null, lastName: String? = null):
 			HttpResponse<List<EncryptedPatient>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","patient","deleted","by_name")
 				parameter("firstName", firstName)
 				parameter("lastName", lastName)
@@ -378,7 +379,7 @@ class RawPatientApi(
 
 	suspend fun undeletePatient(patientIds: String): HttpResponse<List<DocIdentifier>> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","patient","undelete",patientIds)
 			}
 			setAuthorizationWith(authService)
@@ -389,7 +390,7 @@ class RawPatientApi(
 	suspend fun getPatients(patientIds: ListOfIds): HttpResponse<List<EncryptedPatient>> =
 			post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","patient","byIds")
 			}
 			setAuthorizationWith(authService)
@@ -400,7 +401,7 @@ class RawPatientApi(
 
 	suspend fun getPatient(patientId: String): HttpResponse<EncryptedPatient> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","patient",patientId)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -414,7 +415,7 @@ class RawPatientApi(
 		system: String? = null,
 	): HttpResponse<EncryptedPatient> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","patient",hcPartyId,id)
 				parameter("system", system)
 				parameter("ts", GMTDate().timestamp)
@@ -426,7 +427,7 @@ class RawPatientApi(
 	suspend fun createPatients(patientDtos: List<Patient>): HttpResponse<List<IdWithRev>> =
 			post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","patient","batch")
 			}
 			setAuthorizationWith(authService)
@@ -438,7 +439,7 @@ class RawPatientApi(
 	suspend fun modifyPatients(patientDtos: List<Patient>): HttpResponse<List<IdWithRev>> =
 			put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","patient","batch")
 			}
 			setAuthorizationWith(authService)
@@ -449,7 +450,7 @@ class RawPatientApi(
 
 	suspend fun modifyPatient(patientDto: Patient): HttpResponse<EncryptedPatient> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","patient")
 			}
 			setAuthorizationWith(authService)
@@ -465,7 +466,7 @@ class RawPatientApi(
 		end: Long? = null,
 	): HttpResponse<EncryptedPatient> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","patient",patientId,"referral",referralId)
 				parameter("start", start)
 				parameter("end", end)
@@ -482,7 +483,7 @@ class RawPatientApi(
 		limit: Int? = null,
 	): HttpResponse<PaginatedList<EncryptedPatient, JsonString>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","patient","duplicates","ssin")
 				parameter("hcPartyId", hcPartyId)
 				parameter("startKey", startKey)
@@ -501,7 +502,7 @@ class RawPatientApi(
 		limit: Int? = null,
 	): HttpResponse<PaginatedList<EncryptedPatient, JsonString>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","patient","duplicates","name")
 				parameter("hcPartyId", hcPartyId)
 				parameter("startKey", startKey)
@@ -516,7 +517,7 @@ class RawPatientApi(
 	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams):
 			HttpResponse<List<EntityBulkShareResult<EncryptedPatient>>> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","patient","bulkSharedMetadataUpdate")
 			}
 			setAuthorizationWith(authService)
@@ -528,7 +529,7 @@ class RawPatientApi(
 	suspend fun bulkShareMinimal(request: BulkShareOrUpdateMetadataParams):
 			HttpResponse<List<EntityBulkShareResult<EncryptedPatient>>> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","patient","bulkSharedMetadataUpdateMinimal")
 			}
 			setAuthorizationWith(authService)
@@ -544,7 +545,7 @@ class RawPatientApi(
 		updatedInto: Patient,
 	): HttpResponse<EncryptedPatient> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","patient","mergeInto",intoId,"from",fromId)
 				parameter("expectedFromRev", expectedFromRev)
 			}
@@ -566,7 +567,7 @@ class RawPatientApi(
 		p: Patient,
 	): HttpResponse<DataOwnerRegistrationSuccess> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","patient","register","forHcp",hcPartyId,"inGroup",groupId)
 				parameter("token", token)
 				parameter("useShortToken", useShortToken)

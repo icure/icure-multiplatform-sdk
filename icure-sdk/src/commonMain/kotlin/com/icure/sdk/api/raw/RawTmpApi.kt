@@ -32,6 +32,7 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
+import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import io.ktor.utils.io.ByteReadChannel
 import kotlin.ByteArray
@@ -57,7 +58,7 @@ class RawTmpApi(
 
 	suspend fun createTmpDatabase(): HttpResponse<Unit> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp")
 			}
 			setAuthorizationWith(authService)
@@ -67,7 +68,7 @@ class RawTmpApi(
 
 	suspend fun destroyTmpDatabase(): HttpResponse<Unit> = delete {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp")
 			}
 			setAuthorizationWith(authService)
@@ -77,7 +78,7 @@ class RawTmpApi(
 	suspend fun replicateToTmpDatabase(from: String, ids: List<String>):
 			HttpResponse<ReplicatorDocument> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","replicate","from",from)
 			}
 			setAuthorizationWith(authService)
@@ -88,7 +89,7 @@ class RawTmpApi(
 
 	suspend fun getTmpPatient(id: String): HttpResponse<EncryptedPatient> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","patient","byId",id)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -98,7 +99,7 @@ class RawTmpApi(
 
 	suspend fun createTmpPatient(c: Patient): HttpResponse<EncryptedPatient> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","patient")
 			}
 			setAuthorizationWith(authService)
@@ -109,7 +110,7 @@ class RawTmpApi(
 
 	suspend fun modifyTmpPatient(patientDto: Patient): HttpResponse<EncryptedPatient> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","patient")
 			}
 			setAuthorizationWith(authService)
@@ -120,7 +121,7 @@ class RawTmpApi(
 
 	suspend fun getTmpPatients(ids: List<String>): HttpResponse<List<EncryptedPatient>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","patient","get")
 			}
 			setAuthorizationWith(authService)
@@ -132,7 +133,7 @@ class RawTmpApi(
 	suspend fun modifyTmpPatients(patientDtos: List<Patient>):
 			HttpResponse<List<EncryptedPatient>> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","patient","batch")
 			}
 			setAuthorizationWith(authService)
@@ -144,7 +145,7 @@ class RawTmpApi(
 	suspend fun createTmpPatients(patientDtos: List<Patient>):
 			HttpResponse<List<EncryptedPatient>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","patient","batch")
 			}
 			setAuthorizationWith(authService)
@@ -156,7 +157,7 @@ class RawTmpApi(
 	suspend fun listTmpPatients(firstPatientId: String? = null, pageSize: Int? = null):
 			HttpResponse<PaginatedList<EncryptedPatient, Nothing>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","patient","list")
 				parameter("firstPatientId", firstPatientId)
 				parameter("pageSize", pageSize)
@@ -168,7 +169,7 @@ class RawTmpApi(
 
 	suspend fun getTmpHealthElement(id: String): HttpResponse<EncryptedHealthElement> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","healthElement","byId",id)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -179,7 +180,7 @@ class RawTmpApi(
 	suspend fun createTmpHealthElement(c: HealthElement): HttpResponse<EncryptedHealthElement> =
 			post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","healthElement")
 			}
 			setAuthorizationWith(authService)
@@ -191,7 +192,7 @@ class RawTmpApi(
 	suspend fun modifyTmpHealthElement(healthElementDto: HealthElement):
 			HttpResponse<EncryptedHealthElement> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","healthElement")
 			}
 			setAuthorizationWith(authService)
@@ -203,7 +204,7 @@ class RawTmpApi(
 	suspend fun getTmpHealthElements(ids: List<String>):
 			HttpResponse<List<EncryptedHealthElement>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","healthElement","get")
 			}
 			setAuthorizationWith(authService)
@@ -215,7 +216,7 @@ class RawTmpApi(
 	suspend fun modifyTmpHealthElements(healthElementDtos: List<HealthElement>):
 			HttpResponse<List<EncryptedHealthElement>> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","healthElement","batch")
 			}
 			setAuthorizationWith(authService)
@@ -227,7 +228,7 @@ class RawTmpApi(
 	suspend fun createTmpHealthElements(healthElementDtos: List<HealthElement>):
 			HttpResponse<List<EncryptedHealthElement>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","healthElement","batch")
 			}
 			setAuthorizationWith(authService)
@@ -239,7 +240,7 @@ class RawTmpApi(
 	suspend fun listTmpHealthElements(firstHealthElementId: String? = null, pageSize: Int? =
 			null): HttpResponse<PaginatedList<EncryptedHealthElement, Nothing>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","healthElement","list")
 				parameter("firstHealthElementId", firstHealthElementId)
 				parameter("pageSize", pageSize)
@@ -251,7 +252,7 @@ class RawTmpApi(
 
 	suspend fun getTmpForm(id: String): HttpResponse<EncryptedForm> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","form","byId",id)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -261,7 +262,7 @@ class RawTmpApi(
 
 	suspend fun createTmpForm(c: Form): HttpResponse<EncryptedForm> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","form")
 			}
 			setAuthorizationWith(authService)
@@ -272,7 +273,7 @@ class RawTmpApi(
 
 	suspend fun modifyTmpForm(formDto: Form): HttpResponse<EncryptedForm> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","form")
 			}
 			setAuthorizationWith(authService)
@@ -283,7 +284,7 @@ class RawTmpApi(
 
 	suspend fun getTmpForms(ids: List<String>): HttpResponse<List<EncryptedForm>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","form","get")
 			}
 			setAuthorizationWith(authService)
@@ -294,7 +295,7 @@ class RawTmpApi(
 
 	suspend fun modifyTmpForms(formDtos: List<Form>): HttpResponse<List<EncryptedForm>> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","form","batch")
 			}
 			setAuthorizationWith(authService)
@@ -305,7 +306,7 @@ class RawTmpApi(
 
 	suspend fun createTmpForms(formDtos: List<Form>): HttpResponse<List<EncryptedForm>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","form","batch")
 			}
 			setAuthorizationWith(authService)
@@ -317,7 +318,7 @@ class RawTmpApi(
 	suspend fun listTmpForms(firstFormId: String? = null, pageSize: Int? = null):
 			HttpResponse<PaginatedList<EncryptedForm, Nothing>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","form","list")
 				parameter("firstFormId", firstFormId)
 				parameter("pageSize", pageSize)
@@ -329,7 +330,7 @@ class RawTmpApi(
 
 	suspend fun getTmpContact(id: String): HttpResponse<EncryptedContact> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","contact","byId",id)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -339,7 +340,7 @@ class RawTmpApi(
 
 	suspend fun createTmpContact(c: Contact): HttpResponse<EncryptedContact> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","contact")
 			}
 			setAuthorizationWith(authService)
@@ -350,7 +351,7 @@ class RawTmpApi(
 
 	suspend fun modifyTmpContact(contactDto: Contact): HttpResponse<EncryptedContact> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","contact")
 			}
 			setAuthorizationWith(authService)
@@ -361,7 +362,7 @@ class RawTmpApi(
 
 	suspend fun getTmpContacts(ids: List<String>): HttpResponse<List<EncryptedContact>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","contact","get")
 			}
 			setAuthorizationWith(authService)
@@ -373,7 +374,7 @@ class RawTmpApi(
 	suspend fun modifyTmpContacts(contactDtos: List<Contact>):
 			HttpResponse<List<EncryptedContact>> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","contact","batch")
 			}
 			setAuthorizationWith(authService)
@@ -385,7 +386,7 @@ class RawTmpApi(
 	suspend fun createTmpContacts(contactDtos: List<Contact>):
 			HttpResponse<List<EncryptedContact>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","contact","batch")
 			}
 			setAuthorizationWith(authService)
@@ -397,7 +398,7 @@ class RawTmpApi(
 	suspend fun listTmpContacts(firstContactId: String? = null, pageSize: Int? = null):
 			HttpResponse<PaginatedList<EncryptedContact, Nothing>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","contact","list")
 				parameter("firstContactId", firstContactId)
 				parameter("pageSize", pageSize)
@@ -409,7 +410,7 @@ class RawTmpApi(
 
 	suspend fun getTmpMessage(id: String): HttpResponse<EncryptedMessage> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","message","byId",id)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -419,7 +420,7 @@ class RawTmpApi(
 
 	suspend fun createTmpMessage(c: Message): HttpResponse<EncryptedMessage> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","message")
 			}
 			setAuthorizationWith(authService)
@@ -430,7 +431,7 @@ class RawTmpApi(
 
 	suspend fun modifyTmpMessage(messageDto: Message): HttpResponse<EncryptedMessage> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","message")
 			}
 			setAuthorizationWith(authService)
@@ -441,7 +442,7 @@ class RawTmpApi(
 
 	suspend fun getTmpMessages(ids: List<String>): HttpResponse<List<EncryptedMessage>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","message","get")
 			}
 			setAuthorizationWith(authService)
@@ -453,7 +454,7 @@ class RawTmpApi(
 	suspend fun modifyTmpMessages(messageDtos: List<Message>):
 			HttpResponse<List<EncryptedMessage>> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","message","batch")
 			}
 			setAuthorizationWith(authService)
@@ -465,7 +466,7 @@ class RawTmpApi(
 	suspend fun createTmpMessages(messageDtos: List<Message>):
 			HttpResponse<List<EncryptedMessage>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","message","batch")
 			}
 			setAuthorizationWith(authService)
@@ -477,7 +478,7 @@ class RawTmpApi(
 	suspend fun listTmpMessages(firstMessageId: String? = null, pageSize: Int? = null):
 			HttpResponse<PaginatedList<EncryptedInvoice, Nothing>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","message","list")
 				parameter("firstMessageId", firstMessageId)
 				parameter("pageSize", pageSize)
@@ -489,7 +490,7 @@ class RawTmpApi(
 
 	suspend fun getTmpInvoice(id: String): HttpResponse<EncryptedInvoice> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","invoice","byId",id)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -499,7 +500,7 @@ class RawTmpApi(
 
 	suspend fun createTmpInvoice(c: Invoice): HttpResponse<EncryptedInvoice> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","invoice")
 			}
 			setAuthorizationWith(authService)
@@ -510,7 +511,7 @@ class RawTmpApi(
 
 	suspend fun modifyTmpInvoice(invoiceDto: Invoice): HttpResponse<EncryptedInvoice> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","invoice")
 			}
 			setAuthorizationWith(authService)
@@ -521,7 +522,7 @@ class RawTmpApi(
 
 	suspend fun getTmpInvoices(ids: List<String>): HttpResponse<List<EncryptedInvoice>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","invoice","get")
 			}
 			setAuthorizationWith(authService)
@@ -533,7 +534,7 @@ class RawTmpApi(
 	suspend fun modifyTmpInvoices(invoiceDtos: List<Invoice>):
 			HttpResponse<List<EncryptedInvoice>> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","invoice","batch")
 			}
 			setAuthorizationWith(authService)
@@ -545,7 +546,7 @@ class RawTmpApi(
 	suspend fun createTmpInvoices(invoiceDtos: List<Invoice>):
 			HttpResponse<List<EncryptedInvoice>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","invoice","batch")
 			}
 			setAuthorizationWith(authService)
@@ -557,7 +558,7 @@ class RawTmpApi(
 	suspend fun listTmpInvoices(firstInvoiceId: String? = null, pageSize: Int? = null):
 			HttpResponse<PaginatedList<EncryptedInvoice, Nothing>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","invoice","list")
 				parameter("firstInvoiceId", firstInvoiceId)
 				parameter("pageSize", pageSize)
@@ -569,7 +570,7 @@ class RawTmpApi(
 
 	suspend fun getTmpDocument(id: String): HttpResponse<EncryptedDocument> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","document","byId",id)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -584,7 +585,7 @@ class RawTmpApi(
 		fileName: String? = null,
 	): HttpResponse<ByteArray> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","document",documentId,"attachment",attachmentId)
 				parameter("enckeys", enckeys)
 				parameter("fileName", fileName)
@@ -597,7 +598,7 @@ class RawTmpApi(
 	suspend fun deleteTmpDocumentAttachment(documentId: String): HttpResponse<EncryptedDocument>
 			= delete {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","document",documentId,"attachment")
 			}
 			setAuthorizationWith(authService)
@@ -610,7 +611,7 @@ class RawTmpApi(
 		payload: ByteArray,
 	): HttpResponse<EncryptedDocument> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","document",documentId,"attachment")
 				parameter("enckeys", enckeys)
 			}
@@ -622,7 +623,7 @@ class RawTmpApi(
 
 	suspend fun createTmpDocument(c: Document): HttpResponse<EncryptedDocument> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","document")
 			}
 			setAuthorizationWith(authService)
@@ -634,7 +635,7 @@ class RawTmpApi(
 	suspend fun modifyTmpDocument(documentDto: Document): HttpResponse<EncryptedDocument> =
 			put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","document")
 			}
 			setAuthorizationWith(authService)
@@ -646,7 +647,7 @@ class RawTmpApi(
 	suspend fun getTmpDocuments(ids: List<String>): HttpResponse<List<EncryptedDocument>> =
 			post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","document","get")
 			}
 			setAuthorizationWith(authService)
@@ -658,7 +659,7 @@ class RawTmpApi(
 	suspend fun modifyTmpDocuments(documentDtos: List<Document>):
 			HttpResponse<List<EncryptedDocument>> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","document","batch")
 			}
 			setAuthorizationWith(authService)
@@ -670,7 +671,7 @@ class RawTmpApi(
 	suspend fun createTmpDocuments(documentDtos: List<Document>):
 			HttpResponse<List<EncryptedDocument>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","document","batch")
 			}
 			setAuthorizationWith(authService)
@@ -682,7 +683,7 @@ class RawTmpApi(
 	suspend fun listTmpDocuments(firstDocumentId: String? = null, pageSize: Int? = null):
 			HttpResponse<PaginatedList<EncryptedDocument, Nothing>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","document","list")
 				parameter("firstDocumentId", firstDocumentId)
 				parameter("pageSize", pageSize)
@@ -694,7 +695,7 @@ class RawTmpApi(
 
 	suspend fun getTmpClassification(id: String): HttpResponse<EncryptedClassification> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","classification","byId",id)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -705,7 +706,7 @@ class RawTmpApi(
 	suspend fun createTmpClassification(c: Classification):
 			HttpResponse<EncryptedClassification> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","classification")
 			}
 			setAuthorizationWith(authService)
@@ -717,7 +718,7 @@ class RawTmpApi(
 	suspend fun modifyTmpClassification(classificationDto: Classification):
 			HttpResponse<EncryptedClassification> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","classification")
 			}
 			setAuthorizationWith(authService)
@@ -729,7 +730,7 @@ class RawTmpApi(
 	suspend fun getTmpClassifications(ids: List<String>):
 			HttpResponse<List<EncryptedClassification>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","classification","get")
 			}
 			setAuthorizationWith(authService)
@@ -741,7 +742,7 @@ class RawTmpApi(
 	suspend fun modifyTmpClassifications(classificationDtos: List<Classification>):
 			HttpResponse<List<EncryptedClassification>> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","classification","batch")
 			}
 			setAuthorizationWith(authService)
@@ -753,7 +754,7 @@ class RawTmpApi(
 	suspend fun createTmpClassifications(classificationDtos: List<Classification>):
 			HttpResponse<List<EncryptedClassification>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","classification","batch")
 			}
 			setAuthorizationWith(authService)
@@ -765,7 +766,7 @@ class RawTmpApi(
 	suspend fun listTmpClassifications(firstClassificationId: String? = null, pageSize: Int? =
 			null): HttpResponse<PaginatedList<EncryptedClassification, Nothing>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","classification","list")
 				parameter("firstClassificationId", firstClassificationId)
 				parameter("pageSize", pageSize)
@@ -777,7 +778,7 @@ class RawTmpApi(
 
 	suspend fun getTmpEntityTemplate(id: String): HttpResponse<EntityTemplate> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","entityTemplate","byId",id)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -788,7 +789,7 @@ class RawTmpApi(
 	suspend fun createTmpEntityTemplate(c: EntityTemplate): HttpResponse<EntityTemplate> =
 			post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","entityTemplate")
 			}
 			setAuthorizationWith(authService)
@@ -800,7 +801,7 @@ class RawTmpApi(
 	suspend fun modifyTmpEntityTemplate(entityTemplateDto: EntityTemplate):
 			HttpResponse<EntityTemplate> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","entityTemplate")
 			}
 			setAuthorizationWith(authService)
@@ -812,7 +813,7 @@ class RawTmpApi(
 	suspend fun getTmpEntityTemplates(ids: List<String>): HttpResponse<List<EntityTemplate>> =
 			post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","entityTemplate","get")
 			}
 			setAuthorizationWith(authService)
@@ -824,7 +825,7 @@ class RawTmpApi(
 	suspend fun modifyTmpEntityTemplates(entityTemplateDtos: List<EntityTemplate>):
 			HttpResponse<List<EntityTemplate>> = put {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","entityTemplate","batch")
 			}
 			setAuthorizationWith(authService)
@@ -836,7 +837,7 @@ class RawTmpApi(
 	suspend fun createTmpEntityTemplates(entityTemplateDtos: List<EntityTemplate>):
 			HttpResponse<List<EntityTemplate>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","entityTemplate","batch")
 			}
 			setAuthorizationWith(authService)
@@ -848,7 +849,7 @@ class RawTmpApi(
 	suspend fun listTmpEntityTemplates(firstEntityTemplateId: String? = null, pageSize: Int? =
 			null): HttpResponse<PaginatedList<EntityTemplate, Nothing>> = get {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","entityTemplate","list")
 				parameter("firstEntityTemplateId", firstEntityTemplateId)
 				parameter("pageSize", pageSize)
@@ -860,7 +861,7 @@ class RawTmpApi(
 
 	suspend fun deleteTmpItems(ids: List<String>): HttpResponse<List<DocIdentifier>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","batch","delete")
 			}
 			setAuthorizationWith(authService)
@@ -871,7 +872,7 @@ class RawTmpApi(
 
 	suspend fun purgeTmpItems(ids: List<String>): HttpResponse<List<DocIdentifier>> = post {
 			url {
-				host = apiUrl
+				takeFrom(apiUrl)
 				appendPathSegments("rest","v2","tmp","batch","purge")
 			}
 			setAuthorizationWith(authService)
