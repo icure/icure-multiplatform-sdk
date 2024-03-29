@@ -20,7 +20,7 @@ sealed interface StoredObjectInformation {
 	@SerialName("Storing")
 	public data class Storing(
 		public val nextByte: Long,
-		public val md5HashHexString: String? = null,
+		public val md5HashHexString: String?,
 	) : StoredObjectInformation
 
 	@Serializable

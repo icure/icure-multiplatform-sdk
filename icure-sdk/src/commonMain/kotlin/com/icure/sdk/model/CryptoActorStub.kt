@@ -26,7 +26,7 @@ data class CryptoActorStub(
 	override val transferKeys: Map<String, Map<String, String>> = emptyMap(),
 	override val privateKeyShamirPartitions: Map<String, String> = emptyMap(),
 	override val publicKey: SpkiHexString? = null,
-	override val publicKeysForOaepWithSha256: Set<SpkiHexString> = emptySet(),
+	override val publicKeysForOaepWithSha256: Set<SpkiHexString>,
 	override val tags: Set<CodeStub> = emptySet(),
 ) : Versionable<String>, CryptoActor, HasTags {
 	// region CryptoActorStub-CryptoActorStub

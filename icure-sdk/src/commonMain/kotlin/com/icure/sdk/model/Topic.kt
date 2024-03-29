@@ -16,8 +16,6 @@ import kotlin.collections.Set
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
-@Serializable
 sealed interface Topic :
 	StoredDocument,
 	ICureDocument<String>,
@@ -100,7 +98,7 @@ data class DecryptedTopic(
 	override val linkedServices: Set<String> = emptySet(),
 ) : Topic {
 	// region Topic-DecryptedTopic
-	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedTopic =
+override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedTopic =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
 }
@@ -132,99 +130,7 @@ data class EncryptedTopic(
 	override val linkedServices: Set<String> = emptySet(),
 ) : Topic {
 	// region Topic-EncryptedTopic
-	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedTopic =
+override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedTopic =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
-}
-
-public fun Topic.copy(
-	id: String = this.id,
-	rev: String? = this.rev,
-	created: Long? = this.created,
-	modified: Long? = this.modified,
-	healthElementId: String? = this.healthElementId,
-	contactId: String? = this.contactId,
-	description: String? = this.description,
-	codes: Set<CodeStub> = this.codes,
-	tags: Set<CodeStub> = this.tags,
-	author: String? = this.author,
-	responsible: String? = this.responsible,
-	medicalLocationId: String? = this.medicalLocationId,
-	endOfLife: Long? = this.endOfLife,
-	deletionDate: Long? = this.deletionDate,
-	activeParticipants: Map<String, TopicRole> = this.activeParticipants,
-	securityMetadata: SecurityMetadata? = this.securityMetadata,
-	secretForeignKeys: Set<String> = this.secretForeignKeys,
-	cryptedForeignKeys: Map<String, Set<Delegation>> = this.cryptedForeignKeys,
-	delegations: Map<String, Set<Delegation>> = this.delegations,
-	encryptionKeys: Map<String, Set<Delegation>> = this.encryptionKeys,
-	encryptedSelf: Base64String? = this.encryptedSelf,
-	linkedHealthElements: Set<String> = this.linkedHealthElements,
-	linkedServices: Set<String> = this.linkedServices,
-): Topic {
-	return when (this) {
-		is DecryptedTopic ->
-			copy(
-				id = id,
-				rev = rev,
-				created =
-				created,
-				modified = modified,
-				healthElementId = healthElementId,
-				contactId = contactId,
-				description = description,
-				codes = codes,
-				tags = tags,
-				author = author,
-				responsible =
-				responsible,
-				medicalLocationId = medicalLocationId,
-				endOfLife = endOfLife,
-				deletionDate =
-				deletionDate,
-				activeParticipants = activeParticipants,
-				securityMetadata =
-				securityMetadata,
-				secretForeignKeys = secretForeignKeys,
-				cryptedForeignKeys =
-				cryptedForeignKeys,
-				delegations = delegations,
-				encryptionKeys = encryptionKeys,
-				encryptedSelf = encryptedSelf,
-				linkedHealthElements = linkedHealthElements,
-				linkedServices =
-				linkedServices,
-			)
-		is EncryptedTopic ->
-			copy(
-				id = id,
-				rev = rev,
-				created = created,
-				modified = modified,
-				healthElementId = healthElementId,
-				contactId = contactId,
-				description = description,
-				codes =
-				codes,
-				tags = tags,
-				author = author,
-				responsible = responsible,
-				medicalLocationId =
-				medicalLocationId,
-				endOfLife = endOfLife,
-				deletionDate = deletionDate,
-				activeParticipants =
-				activeParticipants,
-				securityMetadata = securityMetadata,
-				secretForeignKeys =
-				secretForeignKeys,
-				cryptedForeignKeys = cryptedForeignKeys,
-				delegations = delegations,
-				encryptionKeys = encryptionKeys,
-				encryptedSelf = encryptedSelf,
-				linkedHealthElements =
-				linkedHealthElements,
-				linkedServices = linkedServices,
-			)
-	}
 }

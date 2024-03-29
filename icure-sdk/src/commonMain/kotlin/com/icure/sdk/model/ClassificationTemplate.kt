@@ -16,8 +16,6 @@ import kotlin.collections.Set
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
-@Serializable
 sealed interface ClassificationTemplate :
 	StoredDocument,
 	ICureDocument<String>,
@@ -78,7 +76,7 @@ data class DecryptedClassificationTemplate(
 	override val codes: Set<CodeStub> = emptySet(),
 	override val endOfLife: Long? = null,
 	override val deletionDate: Long? = null,
-	override val parentId: String? = null,
+	override val parentId: String?,
 	override val label: String,
 	override val secretForeignKeys: Set<String> = emptySet(),
 	override val cryptedForeignKeys: Map<String, Set<Delegation>> = emptyMap(),
@@ -88,7 +86,7 @@ data class DecryptedClassificationTemplate(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : ClassificationTemplate {
 	// region ClassificationTemplate-DecryptedClassificationTemplate
-	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedClassificationTemplate =
+override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedClassificationTemplate =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
 }
@@ -106,7 +104,7 @@ data class EncryptedClassificationTemplate(
 	override val codes: Set<CodeStub> = emptySet(),
 	override val endOfLife: Long? = null,
 	override val deletionDate: Long? = null,
-	override val parentId: String? = null,
+	override val parentId: String?,
 	override val label: String,
 	override val secretForeignKeys: Set<String> = emptySet(),
 	override val cryptedForeignKeys: Map<String, Set<Delegation>> = emptyMap(),
@@ -116,83 +114,7 @@ data class EncryptedClassificationTemplate(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : ClassificationTemplate {
 	// region ClassificationTemplate-EncryptedClassificationTemplate
-	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedClassificationTemplate =
+override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedClassificationTemplate =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
-}
-
-public fun ClassificationTemplate.copy(
-	id: String = this.id,
-	rev: String? = this.rev,
-	created: Long? = this.created,
-	modified: Long? = this.modified,
-	author: String? = this.author,
-	responsible: String? = this.responsible,
-	medicalLocationId: String? = this.medicalLocationId,
-	tags: Set<CodeStub> = this.tags,
-	codes: Set<CodeStub> = this.codes,
-	endOfLife: Long? = this.endOfLife,
-	deletionDate: Long? = this.deletionDate,
-	parentId: String? = this.parentId,
-	label: String = this.label,
-	secretForeignKeys: Set<String> = this.secretForeignKeys,
-	cryptedForeignKeys: Map<String, Set<Delegation>> = this.cryptedForeignKeys,
-	delegations: Map<String, Set<Delegation>> = this.delegations,
-	encryptionKeys: Map<String, Set<Delegation>> = this.encryptionKeys,
-	encryptedSelf: Base64String? = this.encryptedSelf,
-	securityMetadata: SecurityMetadata? = this.securityMetadata,
-): ClassificationTemplate {
-	return when (this) {
-		is DecryptedClassificationTemplate ->
-			copy(
-				id = id,
-				rev =
-				rev,
-				created = created,
-				modified = modified,
-				author = author,
-				responsible = responsible,
-				medicalLocationId = medicalLocationId,
-				tags = tags,
-				codes = codes,
-				endOfLife = endOfLife,
-				deletionDate = deletionDate,
-				parentId = parentId,
-				label = label,
-				secretForeignKeys =
-				secretForeignKeys,
-				cryptedForeignKeys = cryptedForeignKeys,
-				delegations = delegations,
-				encryptionKeys = encryptionKeys,
-				encryptedSelf = encryptedSelf,
-				securityMetadata =
-				securityMetadata,
-			)
-		is EncryptedClassificationTemplate ->
-			copy(
-				id = id,
-				rev = rev,
-				created = created,
-				modified =
-				modified,
-				author = author,
-				responsible = responsible,
-				medicalLocationId =
-				medicalLocationId,
-				tags = tags,
-				codes = codes,
-				endOfLife = endOfLife,
-				deletionDate =
-				deletionDate,
-				parentId = parentId,
-				label = label,
-				secretForeignKeys = secretForeignKeys,
-				cryptedForeignKeys = cryptedForeignKeys,
-				delegations = delegations,
-				encryptionKeys =
-				encryptionKeys,
-				encryptedSelf = encryptedSelf,
-				securityMetadata = securityMetadata,
-			)
-	}
 }

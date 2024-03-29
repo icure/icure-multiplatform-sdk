@@ -7,5 +7,6 @@ import com.icure.sdk.model.specializations.Base64String
 interface Encryptable {
 	public val encryptedSelf: Base64String?
 	// region Encryptable-Encryptable
+
 	// endregion
 }

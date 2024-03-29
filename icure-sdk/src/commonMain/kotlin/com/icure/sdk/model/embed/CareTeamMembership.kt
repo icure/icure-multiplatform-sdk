@@ -7,8 +7,6 @@ import kotlin.String
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
-@Serializable
 sealed interface CareTeamMembership : Encryptable {
 	public val startDate: Long?
 
@@ -48,34 +46,4 @@ data class EncryptedCareTeamMembership(
 	// region CareTeamMembership-EncryptedCareTeamMembership
 
 	// endregion
-}
-
-public fun CareTeamMembership.copy(
-	startDate: Long? = this.startDate,
-	endDate: Long? = this.endDate,
-	careTeamMemberId: String? = this.careTeamMemberId,
-	membershipType: MembershipType? = this.membershipType,
-	encryptedSelf: Base64String? = this.encryptedSelf,
-): CareTeamMembership {
-	return when (this) {
-		is DecryptedCareTeamMembership ->
-			copy(
-				startDate =
-				startDate,
-				endDate = endDate,
-				careTeamMemberId = careTeamMemberId,
-				membershipType =
-				membershipType,
-				encryptedSelf = encryptedSelf,
-			)
-		is EncryptedCareTeamMembership ->
-			copy(
-				startDate = startDate,
-				endDate = endDate,
-				careTeamMemberId = careTeamMemberId,
-				membershipType = membershipType,
-				encryptedSelf =
-				encryptedSelf,
-			)
-	}
 }

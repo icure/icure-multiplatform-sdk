@@ -12,8 +12,6 @@ import kotlin.String
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
-@Serializable
 sealed interface Property : StoredDocument, Encryptable {
 	override val id: String
 
@@ -57,35 +55,4 @@ data class EncryptedProperty(
 	// region Property-EncryptedProperty
 
 	// endregion
-}
-
-public fun Property.copy(
-	id: String = this.id,
-	rev: String? = this.rev,
-	deletionDate: Long? = this.deletionDate,
-	type: PropertyType? = this.type,
-	typedValue: TypedValue? = this.typedValue,
-	encryptedSelf: Base64String? = this.encryptedSelf,
-): Property {
-	return when (this) {
-		is DecryptedProperty ->
-			copy(
-				id = id,
-				rev = rev,
-				deletionDate = deletionDate,
-				type = type,
-				typedValue = typedValue,
-				encryptedSelf =
-				encryptedSelf,
-			)
-		is EncryptedProperty ->
-			copy(
-				id = id,
-				rev = rev,
-				deletionDate = deletionDate,
-				type = type,
-				typedValue = typedValue,
-				encryptedSelf = encryptedSelf,
-			)
-	}
 }

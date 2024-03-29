@@ -18,8 +18,6 @@ import kotlin.collections.Set
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
-@Serializable
 sealed interface TimeTable :
 	StoredDocument,
 	ICureDocument<String>,
@@ -99,7 +97,7 @@ data class DecryptedTimeTable(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : TimeTable {
 	// region TimeTable-DecryptedTimeTable
-	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedTimeTable =
+override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedTimeTable =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
 }
@@ -130,88 +128,7 @@ data class EncryptedTimeTable(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : TimeTable {
 	// region TimeTable-EncryptedTimeTable
-	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedTimeTable =
+override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedTimeTable =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
-}
-
-public fun TimeTable.copy(
-	id: String = this.id,
-	rev: String? = this.rev,
-	created: Long? = this.created,
-	modified: Long? = this.modified,
-	author: String? = this.author,
-	responsible: String? = this.responsible,
-	medicalLocationId: String? = this.medicalLocationId,
-	tags: Set<CodeStub> = this.tags,
-	codes: Set<CodeStub> = this.codes,
-	endOfLife: Long? = this.endOfLife,
-	deletionDate: Long? = this.deletionDate,
-	name: String? = this.name,
-	agendaId: String? = this.agendaId,
-	startTime: Long? = this.startTime,
-	endTime: Long? = this.endTime,
-	items: List<TimeTableItem> = this.items,
-	secretForeignKeys: Set<String> = this.secretForeignKeys,
-	cryptedForeignKeys: Map<String, Set<Delegation>> = this.cryptedForeignKeys,
-	delegations: Map<String, Set<Delegation>> = this.delegations,
-	encryptionKeys: Map<String, Set<Delegation>> = this.encryptionKeys,
-	encryptedSelf: Base64String? = this.encryptedSelf,
-	securityMetadata: SecurityMetadata? = this.securityMetadata,
-): TimeTable {
-	return when (this) {
-		is DecryptedTimeTable ->
-			copy(
-				id = id,
-				rev = rev,
-				created =
-				created,
-				modified = modified,
-				author = author,
-				responsible = responsible,
-				medicalLocationId = medicalLocationId,
-				tags = tags,
-				codes = codes,
-				endOfLife = endOfLife,
-				deletionDate = deletionDate,
-				name = name,
-				agendaId = agendaId,
-				startTime = startTime,
-				endTime = endTime,
-				items = items,
-				secretForeignKeys = secretForeignKeys,
-				cryptedForeignKeys = cryptedForeignKeys,
-				delegations = delegations,
-				encryptionKeys =
-				encryptionKeys,
-				encryptedSelf = encryptedSelf,
-				securityMetadata = securityMetadata,
-			)
-		is EncryptedTimeTable ->
-			copy(
-				id = id,
-				rev = rev,
-				created = created,
-				modified = modified,
-				author = author,
-				responsible = responsible,
-				medicalLocationId = medicalLocationId,
-				tags =
-				tags,
-				codes = codes,
-				endOfLife = endOfLife,
-				deletionDate = deletionDate,
-				name = name,
-				agendaId = agendaId,
-				startTime = startTime,
-				endTime = endTime,
-				items = items,
-				secretForeignKeys = secretForeignKeys,
-				cryptedForeignKeys = cryptedForeignKeys,
-				delegations = delegations,
-				encryptionKeys = encryptionKeys,
-				encryptedSelf = encryptedSelf,
-				securityMetadata = securityMetadata,
-			)
-	}
 }

@@ -9,8 +9,6 @@ import kotlin.collections.Map
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
-@Serializable
 sealed interface PatientHealthCareParty : Encryptable {
 	public val type: PatientHealthCarePartyType?
 
@@ -54,35 +52,4 @@ data class EncryptedPatientHealthCareParty(
 	// region PatientHealthCareParty-EncryptedPatientHealthCareParty
 
 	// endregion
-}
-
-public fun PatientHealthCareParty.copy(
-	type: PatientHealthCarePartyType? = this.type,
-	healthcarePartyId: String? = this.healthcarePartyId,
-	sendFormats: Map<TelecomType, String> = this.sendFormats,
-	referralPeriods: List<ReferralPeriod> = this.referralPeriods,
-	referral: Boolean = this.referral,
-	encryptedSelf: Base64String? = this.encryptedSelf,
-): PatientHealthCareParty {
-	return when (this) {
-		is DecryptedPatientHealthCareParty ->
-			copy(
-				type = type,
-				healthcarePartyId = healthcarePartyId,
-				sendFormats = sendFormats,
-				referralPeriods =
-				referralPeriods,
-				referral = referral,
-				encryptedSelf = encryptedSelf,
-			)
-		is EncryptedPatientHealthCareParty ->
-			copy(
-				type = type,
-				healthcarePartyId = healthcarePartyId,
-				sendFormats = sendFormats,
-				referralPeriods = referralPeriods,
-				referral = referral,
-				encryptedSelf = encryptedSelf,
-			)
-	}
 }

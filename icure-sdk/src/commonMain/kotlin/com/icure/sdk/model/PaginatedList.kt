@@ -1,7 +1,6 @@
 package com.icure.sdk.model
 
 import kotlinx.serialization.Serializable
-import kotlin.Int
 import kotlin.collections.List
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
@@ -9,8 +8,6 @@ import kotlin.collections.List
 
 @Serializable
 data class PaginatedList<T, O>(
-	public val pageSize: Int = 0,
-	public val totalSize: Int = 0,
 	public val rows: List<T> = emptyList(),
 	public val nextKeyPair: PaginatedDocumentKeyIdPair<O>? = null,
 ) {

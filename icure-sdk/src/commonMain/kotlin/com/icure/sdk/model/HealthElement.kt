@@ -31,8 +31,6 @@ import kotlin.collections.Set
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
-@Serializable
 sealed interface HealthElement :
 	StoredDocument,
 	ICureDocument<String>,
@@ -148,7 +146,7 @@ data class DecryptedHealthElement(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : HealthElement {
 	// region HealthElement-DecryptedHealthElement
-	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedHealthElement =
+override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedHealthElement =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
 }
@@ -191,132 +189,7 @@ data class EncryptedHealthElement(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : HealthElement {
 	// region HealthElement-EncryptedHealthElement
-	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedHealthElement =
+override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedHealthElement =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
-}
-
-public fun HealthElement.copy(
-	id: String = this.id,
-	identifiers: List<Identifier> = this.identifiers,
-	rev: String? = this.rev,
-	created: Long? = this.created,
-	modified: Long? = this.modified,
-	author: String? = this.author,
-	responsible: String? = this.responsible,
-	medicalLocationId: String? = this.medicalLocationId,
-	tags: Set<CodeStub> = this.tags,
-	codes: Set<CodeStub> = this.codes,
-	endOfLife: Long? = this.endOfLife,
-	deletionDate: Long? = this.deletionDate,
-	healthElementId: String? = this.healthElementId,
-	valueDate: Long? = this.valueDate,
-	openingDate: Long? = this.openingDate,
-	closingDate: Long? = this.closingDate,
-	descr: String? = this.descr,
-	note: String? = this.note,
-	notes: List<Annotation> = this.notes,
-	relevant: Boolean = this.relevant,
-	idOpeningContact: String? = this.idOpeningContact,
-	idClosingContact: String? = this.idClosingContact,
-	idService: String? = this.idService,
-	status: Int = this.status,
-	laterality: Laterality? = this.laterality,
-	plansOfAction: List<PlanOfAction> = this.plansOfAction,
-	episodes: List<Episode> = this.episodes,
-	careTeam: List<CareTeamMember> = this.careTeam,
-	secretForeignKeys: Set<String> = this.secretForeignKeys,
-	cryptedForeignKeys: Map<String, Set<Delegation>> = this.cryptedForeignKeys,
-	delegations: Map<String, Set<Delegation>> = this.delegations,
-	encryptionKeys: Map<String, Set<Delegation>> = this.encryptionKeys,
-	encryptedSelf: Base64String? = this.encryptedSelf,
-	securityMetadata: SecurityMetadata? = this.securityMetadata,
-): HealthElement {
-	return when (this) {
-		is DecryptedHealthElement ->
-			copy(
-				id = id,
-				identifiers =
-				identifiers,
-				rev = rev,
-				created = created,
-				modified = modified,
-				author = author,
-				responsible = responsible,
-				medicalLocationId = medicalLocationId,
-				tags = tags,
-				codes =
-				codes,
-				endOfLife = endOfLife,
-				deletionDate = deletionDate,
-				healthElementId =
-				healthElementId,
-				valueDate = valueDate,
-				openingDate = openingDate,
-				closingDate =
-				closingDate,
-				descr = descr,
-				note = note,
-				notes = notes,
-				relevant = relevant,
-				idOpeningContact = idOpeningContact,
-				idClosingContact = idClosingContact,
-				idService =
-				idService,
-				status = status,
-				laterality = laterality,
-				plansOfAction = plansOfAction,
-				episodes = episodes,
-				careTeam = careTeam,
-				secretForeignKeys = secretForeignKeys,
-				cryptedForeignKeys = cryptedForeignKeys,
-				delegations = delegations,
-				encryptionKeys =
-				encryptionKeys,
-				encryptedSelf = encryptedSelf,
-				securityMetadata = securityMetadata,
-			)
-		is EncryptedHealthElement ->
-			copy(
-				id = id,
-				identifiers = identifiers,
-				rev = rev,
-				created =
-				created,
-				modified = modified,
-				author = author,
-				responsible = responsible,
-				medicalLocationId = medicalLocationId,
-				tags = tags,
-				codes = codes,
-				endOfLife = endOfLife,
-				deletionDate = deletionDate,
-				healthElementId = healthElementId,
-				valueDate = valueDate,
-				openingDate = openingDate,
-				closingDate = closingDate,
-				descr = descr,
-				note = note,
-				notes =
-				notes,
-				relevant = relevant,
-				idOpeningContact = idOpeningContact,
-				idClosingContact =
-				idClosingContact,
-				idService = idService,
-				status = status,
-				laterality = laterality,
-				plansOfAction = plansOfAction,
-				episodes = episodes,
-				careTeam = careTeam,
-				secretForeignKeys =
-				secretForeignKeys,
-				cryptedForeignKeys = cryptedForeignKeys,
-				delegations = delegations,
-				encryptionKeys = encryptionKeys,
-				encryptedSelf = encryptedSelf,
-				securityMetadata =
-				securityMetadata,
-			)
-	}
 }

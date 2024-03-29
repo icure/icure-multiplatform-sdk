@@ -13,7 +13,7 @@ import kotlin.collections.Set
 @Serializable
 data class IdsFilter<O : Identifiable<String>>(
 	override val desc: String? = null,
-	override val ids: Set<String> = emptySet(),
+	override val ids: Set<String>,
 ) : AbstractFilter<O>, Filter.IdsFilter<String, O> {
 	// region IdsFilter-IdsFilter
 

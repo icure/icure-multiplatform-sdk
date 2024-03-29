@@ -11,8 +11,6 @@ import kotlin.collections.Map
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
-@Serializable
 sealed interface Valorisation : Encryptable {
 	public val startOfValidity: Long?
 
@@ -76,54 +74,4 @@ data class EncryptedValorisation(
 	// region Valorisation-EncryptedValorisation
 
 	// endregion
-}
-
-public fun Valorisation.copy(
-	startOfValidity: Long? = this.startOfValidity,
-	endOfValidity: Long? = this.endOfValidity,
-	predicate: String? = this.predicate,
-	reference: List<Int>? = this.reference,
-	totalAmount: Double? = this.totalAmount,
-	reimbursement: Double? = this.reimbursement,
-	patientIntervention: Double? = this.patientIntervention,
-	doctorSupplement: Double? = this.doctorSupplement,
-	vat: Double? = this.vat,
-	label: Map<String, String>? = this.label,
-	encryptedSelf: Base64String? = this.encryptedSelf,
-): Valorisation {
-	return when (this) {
-		is DecryptedValorisation ->
-			copy(
-				startOfValidity =
-				startOfValidity,
-				endOfValidity = endOfValidity,
-				predicate = predicate,
-				reference =
-				reference,
-				totalAmount = totalAmount,
-				reimbursement = reimbursement,
-				patientIntervention =
-				patientIntervention,
-				doctorSupplement = doctorSupplement,
-				vat = vat,
-				label = label,
-				encryptedSelf = encryptedSelf,
-			)
-		is EncryptedValorisation ->
-			copy(
-				startOfValidity = startOfValidity,
-				endOfValidity =
-				endOfValidity,
-				predicate = predicate,
-				reference = reference,
-				totalAmount = totalAmount,
-				reimbursement = reimbursement,
-				patientIntervention = patientIntervention,
-				doctorSupplement =
-				doctorSupplement,
-				vat = vat,
-				label = label,
-				encryptedSelf = encryptedSelf,
-			)
-	}
 }

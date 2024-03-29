@@ -18,8 +18,6 @@ import kotlin.collections.Set
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
-@Serializable
 sealed interface AccessLog :
 	StoredDocument,
 	ICureDocument<String>,
@@ -86,7 +84,7 @@ data class DecryptedAccessLog(
 	override val medicalLocationId: String? = null,
 	override val tags: Set<CodeStub> = emptySet(),
 	override val codes: Set<CodeStub> = emptySet(),
-	override val endOfLife: Long? = null,
+	override val endOfLife: Long?,
 	override val deletionDate: Long? = null,
 	override val objectId: String? = null,
 	override val accessType: String? = null,
@@ -103,7 +101,7 @@ data class DecryptedAccessLog(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : AccessLog {
 	// region AccessLog-DecryptedAccessLog
-	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedAccessLog =
+override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedAccessLog =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
 }
@@ -119,7 +117,7 @@ data class EncryptedAccessLog(
 	override val medicalLocationId: String? = null,
 	override val tags: Set<CodeStub> = emptySet(),
 	override val codes: Set<CodeStub> = emptySet(),
-	override val endOfLife: Long? = null,
+	override val endOfLife: Long?,
 	override val deletionDate: Long? = null,
 	override val objectId: String? = null,
 	override val accessType: String? = null,
@@ -136,94 +134,7 @@ data class EncryptedAccessLog(
 	override val securityMetadata: SecurityMetadata? = null,
 ) : AccessLog {
 	// region AccessLog-EncryptedAccessLog
-	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedAccessLog =
+override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedAccessLog =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
-}
-
-public fun AccessLog.copy(
-	id: String = this.id,
-	rev: String? = this.rev,
-	created: Long? = this.created,
-	modified: Long? = this.modified,
-	author: String? = this.author,
-	responsible: String? = this.responsible,
-	medicalLocationId: String? = this.medicalLocationId,
-	tags: Set<CodeStub> = this.tags,
-	codes: Set<CodeStub> = this.codes,
-	endOfLife: Long? = this.endOfLife,
-	deletionDate: Long? = this.deletionDate,
-	objectId: String? = this.objectId,
-	accessType: String? = this.accessType,
-	user: String? = this.user,
-	detail: String? = this.detail,
-	date: Instant? = this.date,
-	patientId: String? = this.patientId,
-	secretForeignKeys: Set<String> = this.secretForeignKeys,
-	cryptedForeignKeys: Map<String, Set<Delegation>> = this.cryptedForeignKeys,
-	delegations: Map<String, Set<Delegation>> = this.delegations,
-	encryptionKeys: Map<String, Set<Delegation>> = this.encryptionKeys,
-	encryptedSelf: Base64String? = this.encryptedSelf,
-	securityMetadata: SecurityMetadata? = this.securityMetadata,
-): AccessLog {
-	return when (this) {
-		is DecryptedAccessLog ->
-			copy(
-				id = id,
-				rev = rev,
-				created =
-				created,
-				modified = modified,
-				author = author,
-				responsible = responsible,
-				medicalLocationId = medicalLocationId,
-				tags = tags,
-				codes = codes,
-				endOfLife = endOfLife,
-				deletionDate = deletionDate,
-				objectId = objectId,
-				accessType = accessType,
-				user = user,
-				detail = detail,
-				date = date,
-				patientId = patientId,
-				secretForeignKeys =
-				secretForeignKeys,
-				cryptedForeignKeys = cryptedForeignKeys,
-				delegations = delegations,
-				encryptionKeys = encryptionKeys,
-				encryptedSelf = encryptedSelf,
-				securityMetadata =
-				securityMetadata,
-			)
-		is EncryptedAccessLog ->
-			copy(
-				id = id,
-				rev = rev,
-				created = created,
-				modified = modified,
-				author = author,
-				responsible = responsible,
-				medicalLocationId = medicalLocationId,
-				tags =
-				tags,
-				codes = codes,
-				endOfLife = endOfLife,
-				deletionDate = deletionDate,
-				objectId =
-				objectId,
-				accessType = accessType,
-				user = user,
-				detail = detail,
-				date = date,
-				patientId =
-				patientId,
-				secretForeignKeys = secretForeignKeys,
-				cryptedForeignKeys = cryptedForeignKeys,
-				delegations = delegations,
-				encryptionKeys = encryptionKeys,
-				encryptedSelf = encryptedSelf,
-				securityMetadata = securityMetadata,
-			)
-	}
 }

@@ -15,7 +15,7 @@ import kotlin.collections.Set
 data class ServiceBySecretForeignKeys(
 	override val desc: String? = null,
 	public val healthcarePartyId: String? = null,
-	public val patientSecretForeignKeys: Set<String> = emptySet(),
+	public val patientSecretForeignKeys: Set<String>,
 ) : AbstractFilter<Service> {
 	// region ServiceBySecretForeignKeys-ServiceBySecretForeignKeys
 

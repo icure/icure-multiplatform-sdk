@@ -12,7 +12,7 @@ import kotlin.collections.List
 @Serializable
 data class ReplicateCommand(
 	override val id: String,
-	override val rev: String? = null,
+	override val rev: String?,
 	public val continuous: Boolean,
 	public val createTarget: Boolean,
 	public val docIds: List<String>? = null,

@@ -12,10 +12,10 @@ import kotlin.collections.List
 
 @Serializable
 data class Subscription<O : Identifiable<String>>(
-	public val eventTypes: List<SubscriptionEventType> = emptyList(),
+	public val eventTypes: List<SubscriptionEventType>,
 	public val entityClass: String,
-	public val filter: FilterChain<O>? = null,
-	public val accessControlKeys: List<AccessControlKeyHexString>? = null,
+	public val filter: FilterChain<O>?,
+	public val accessControlKeys: List<AccessControlKeyHexString>?,
 ) {
   // region Subscription-Subscription
 

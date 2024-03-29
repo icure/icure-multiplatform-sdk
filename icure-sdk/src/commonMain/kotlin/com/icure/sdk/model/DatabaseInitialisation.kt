@@ -12,7 +12,7 @@ data class DatabaseInitialisation(
 	public val users: List<User>? = null,
 	public val healthcareParties: List<HealthcareParty>? = null,
 	public val replication: Replication? = null,
-	public val minimumKrakenVersion: String? = null,
+	public val minimumKrakenVersion: String?,
 ) {
 	// region DatabaseInitialisation-DatabaseInitialisation
 

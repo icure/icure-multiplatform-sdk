@@ -10,7 +10,7 @@ import kotlin.collections.List
 @Serializable
 data class Section(
 	public val section: String,
-	public val fields: List<StructureElement> = emptyList(),
+	public val fields: List<StructureElement>,
 	public val description: String? = null,
 	public val keywords: List<String>? = null,
 ) {

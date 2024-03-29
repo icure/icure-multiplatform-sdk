@@ -17,8 +17,8 @@ data class AppointmentTypeAndPlace(
 	public val color: String? = null,
 	public val duration: Int = 0,
 	public val subjectByLanguage: Map<String, String>? = null,
-	public val placeId: String? = null,
-	public val address: Address? = null,
+	public val placeId: String?,
+	public val address: Address?,
 	public val acceptsNewPatients: Boolean,
 ) {
 	// region AppointmentTypeAndPlace-AppointmentTypeAndPlace

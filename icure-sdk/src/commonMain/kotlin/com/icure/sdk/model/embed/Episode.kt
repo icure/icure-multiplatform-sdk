@@ -9,8 +9,6 @@ import kotlin.String
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
-@Serializable
 sealed interface Episode : Encryptable, Identifiable<String>, Named {
 	override val id: String
 
@@ -54,35 +52,4 @@ data class EncryptedEpisode(
 	// region Episode-EncryptedEpisode
 
 	// endregion
-}
-
-public fun Episode.copy(
-	id: String = this.id,
-	name: String? = this.name,
-	comment: String? = this.comment,
-	startDate: Long? = this.startDate,
-	endDate: Long? = this.endDate,
-	encryptedSelf: Base64String? = this.encryptedSelf,
-): Episode {
-	return when (this) {
-		is DecryptedEpisode ->
-			copy(
-				id = id,
-				name = name,
-				comment =
-				comment,
-				startDate = startDate,
-				endDate = endDate,
-				encryptedSelf = encryptedSelf,
-			)
-		is EncryptedEpisode ->
-			copy(
-				id = id,
-				name = name,
-				comment = comment,
-				startDate = startDate,
-				endDate = endDate,
-				encryptedSelf = encryptedSelf,
-			)
-	}
 }

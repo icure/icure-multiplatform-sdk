@@ -25,8 +25,6 @@ import kotlin.collections.Set
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
-@Serializable
 sealed interface Contact :
 	StoredDocument,
 	ICureDocument<String>,
@@ -130,7 +128,7 @@ data class DecryptedContact(
 	override val notes: List<Annotation> = emptyList(),
 ) : Contact {
 	// region Contact-DecryptedContact
-	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedContact =
+override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedContact =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
 }
@@ -169,119 +167,7 @@ data class EncryptedContact(
 	override val notes: List<Annotation> = emptyList(),
 ) : Contact {
 	// region Contact-EncryptedContact
-	override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedContact =
+override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedContact =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
 	// endregion
-}
-
-public fun Contact.copy(
-	id: String = this.id,
-	rev: String? = this.rev,
-	created: Long? = this.created,
-	modified: Long? = this.modified,
-	author: String? = this.author,
-	responsible: String? = this.responsible,
-	medicalLocationId: String? = this.medicalLocationId,
-	tags: Set<CodeStub> = this.tags,
-	codes: Set<CodeStub> = this.codes,
-	identifier: List<Identifier> = this.identifier,
-	endOfLife: Long? = this.endOfLife,
-	deletionDate: Long? = this.deletionDate,
-	groupId: String? = this.groupId,
-	openingDate: Long? = this.openingDate,
-	closingDate: Long? = this.closingDate,
-	descr: String? = this.descr,
-	location: String? = this.location,
-	externalId: String? = this.externalId,
-	encounterType: CodeStub? = this.encounterType,
-	subContacts: Set<SubContact> = this.subContacts,
-	services: Set<Service> = this.services,
-	healthcarePartyId: String? = this.healthcarePartyId,
-	modifiedContactId: String? = this.modifiedContactId,
-	secretForeignKeys: Set<String> = this.secretForeignKeys,
-	cryptedForeignKeys: Map<String, Set<Delegation>> = this.cryptedForeignKeys,
-	delegations: Map<String, Set<Delegation>> = this.delegations,
-	encryptionKeys: Map<String, Set<Delegation>> = this.encryptionKeys,
-	encryptedSelf: Base64String? = this.encryptedSelf,
-	securityMetadata: SecurityMetadata? = this.securityMetadata,
-	notes: List<Annotation> = this.notes,
-): Contact {
-	return when (this) {
-		is DecryptedContact ->
-			copy(
-				id = id,
-				rev = rev,
-				created =
-				created,
-				modified = modified,
-				author = author,
-				responsible = responsible,
-				medicalLocationId = medicalLocationId,
-				tags = tags,
-				codes = codes,
-				identifier =
-				identifier,
-				endOfLife = endOfLife,
-				deletionDate = deletionDate,
-				groupId = groupId,
-				openingDate = openingDate,
-				closingDate = closingDate,
-				descr = descr,
-				location = location,
-				externalId = externalId,
-				encounterType = encounterType,
-				subContacts = subContacts,
-				services = services,
-				healthcarePartyId = healthcarePartyId,
-				modifiedContactId =
-				modifiedContactId,
-				secretForeignKeys = secretForeignKeys,
-				cryptedForeignKeys =
-				cryptedForeignKeys,
-				delegations = delegations,
-				encryptionKeys = encryptionKeys,
-				encryptedSelf = encryptedSelf,
-				securityMetadata = securityMetadata,
-				notes = notes,
-			)
-		is EncryptedContact ->
-			copy(
-				id = id,
-				rev = rev,
-				created = created,
-				modified = modified,
-				author =
-				author,
-				responsible = responsible,
-				medicalLocationId = medicalLocationId,
-				tags = tags,
-				codes = codes,
-				identifier = identifier,
-				endOfLife = endOfLife,
-				deletionDate =
-				deletionDate,
-				groupId = groupId,
-				openingDate = openingDate,
-				closingDate = closingDate,
-				descr = descr,
-				location = location,
-				externalId = externalId,
-				encounterType =
-				encounterType,
-				subContacts = subContacts,
-				services = services,
-				healthcarePartyId =
-				healthcarePartyId,
-				modifiedContactId = modifiedContactId,
-				secretForeignKeys =
-				secretForeignKeys,
-				cryptedForeignKeys = cryptedForeignKeys,
-				delegations = delegations,
-				encryptionKeys = encryptionKeys,
-				encryptedSelf = encryptedSelf,
-				securityMetadata =
-				securityMetadata,
-				notes = notes,
-			)
-	}
 }
