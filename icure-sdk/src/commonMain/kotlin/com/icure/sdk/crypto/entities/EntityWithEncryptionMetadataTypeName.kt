@@ -1,7 +1,5 @@
 package com.icure.sdk.crypto.entities
 
-import com.icure.sdk.model.Article
-
 /**
  * Types of encryptable entities, to support segregation of secure delegation keys.
  * These types do not include stubs and metadata entities (such as SecureDelegationKeyMap) since they use the actual
@@ -22,6 +20,7 @@ enum class EntityWithEncryptionMetadataTypeName(
 	Classification("Classification"),
 	ClassificationTemplate("ClassificationTemplate"),
 	Contact("Contact"),
+	Service("Service"),
 	Document("Document"),
 	Form("Form"),
 	HealthElement("HealthElement"),
