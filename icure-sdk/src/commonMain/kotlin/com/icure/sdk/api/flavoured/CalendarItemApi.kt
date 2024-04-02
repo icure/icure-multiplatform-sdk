@@ -46,6 +46,18 @@ interface CalendarItemBasicFlavouredApi<E : CalendarItem> {
 		startDocumentId: String?,
 		limit: Int
 	): PaginatedList<E, *>
+
+	suspend fun deleteCalendarItems(entityIds: String): List<DocIdentifier>
+	suspend fun getCalendarItemsByPeriodAndHcPartyId(startDate: Long, endDate: Long, hcPartyId: String): List<E>
+	suspend fun getCalendarsByPeriodAndAgendaId(startDate: Long, endDate: Long, agendaId: String): List<E>
+	suspend fun getCalendarItemsWithIds(entityIds: List<String>): List<E>
+	suspend fun listCalendarItemsByHCPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<E>
+	suspend fun findCalendarItemsByRecurrenceId(
+		recurrenceId: String,
+		startKey: String?,
+		startDocumentId: String?,
+		limit: Int
+	): PaginatedList<E, *>
 }
 
 /* The extra API calls declared in this interface are the ones that can be used on encrypted or decrypted items but only when the user is a data owner */
@@ -69,13 +81,14 @@ interface CalendarItemApi : CalendarItemBasicFlavourlessApi, CalendarItemFlavour
 		delegates: Map<String, AccessLevel> = emptyMap(),
 		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent,
 	): DecryptedCalendarItem
+	suspend fun listCalendarItemsByHcPartyPatient(hcPartyId: String, patient: Patient): List<DecryptedCalendarItem>
 	suspend fun findCalendarItemsByHcPartyPatient(
 		hcPartyId: String,
 		patient: Patient,
-		startKey: String? = null,
-		startDocumentId: String? = null,
-		limit: Int? = null,
-	): List<DecryptedCalendarItem>
+		startKey: String?,
+		startDocumentId: String?,
+		limit: Int
+	): PaginatedList<DecryptedCalendarItem, *>
 
 	val encrypted: CalendarItemFlavouredApi<EncryptedCalendarItem>
 	val tryAndRecover: CalendarItemFlavouredApi<CalendarItem>
@@ -99,6 +112,40 @@ private abstract class AbstractCalendarItemBasicFlavouredApi<E : CalendarItem>(p
 		limit: Int,
 	): PaginatedList<E, *> =
 		rawApi.findCalendarItemsByHCPartyPatientForeignKeys(hcPartyId, secretPatientKey, startKey, startDocumentId, limit).successBody().map { maybeDecrypt(it) }
+
+
+	override suspend fun deleteCalendarItems(entityIds: String): List<DocIdentifier> =
+		rawApi.deleteCalendarItemsWithPost(entityIds).successBody()
+
+	override suspend fun getCalendarItemsByPeriodAndHcPartyId(
+		startDate: Long,
+		endDate: Long,
+		hcPartyId: String,
+	): List<E> = rawApi.getCalendarItemsByPeriodAndHcPartyId(startDate, endDate, hcPartyId).successBody().map { maybeDecrypt(it) }
+
+	override suspend fun getCalendarsByPeriodAndAgendaId(
+		startDate: Long,
+		endDate: Long,
+		agendaId: String,
+	): List<E> = rawApi.getCalendarsByPeriodAndAgendaId(startDate, endDate, agendaId).successBody().map { maybeDecrypt(it) }
+
+	override suspend fun getCalendarItemsWithIds(entityIds: List<String>): List<E> =
+		rawApi.getCalendarItemsWithIds(ListOfIds(entityIds)).successBody().map { maybeDecrypt(it) }
+
+	override suspend fun listCalendarItemsByHCPartyPatientForeignKeys(
+		hcPartyId: String,
+		secretPatientKeys: List<String>,
+	): List<E> =
+		rawApi.listCalendarItemsByHCPartyPatientForeignKeys(hcPartyId, secretPatientKeys).successBody().map { maybeDecrypt(it) }
+
+	override suspend fun findCalendarItemsByRecurrenceId(
+		recurrenceId: String,
+		startKey: String?,
+		startDocumentId: String?,
+		limit: Int,
+	): PaginatedList<E, *> =
+		rawApi.findCalendarItemsByRecurrenceId(recurrenceId, startKey, startDocumentId, limit).successBody().map { maybeDecrypt(it) }
+
 
 	abstract suspend fun validateAndMaybeEncrypt(entity: E): EncryptedCalendarItem
 	abstract suspend fun maybeDecrypt(entity: EncryptedCalendarItem): E
@@ -221,15 +268,26 @@ internal class CalendarItemApiImpl(
 				).associateWith { AccessLevel.Write },
 		).updatedEntity
 
+	override suspend fun listCalendarItemsByHcPartyPatient(
+		hcPartyId: String,
+		patient: Patient,
+	): List<DecryptedCalendarItem> =
+		rawApi.listCalendarItemsByHCPartyPatientForeignKeys(
+			hcPartyId,
+			encryptionService.secretIdsOf(patient.withTypeInfo(), null).toList(),
+		).successBody().map { decrypt(it) { "Found calendar item cannot be decrypted" } }
+
 	override suspend fun findCalendarItemsByHcPartyPatient(
 		hcPartyId: String,
 		patient: Patient,
 		startKey: String?,
 		startDocumentId: String?,
-		limit: Int?,
-	): List<DecryptedCalendarItem> {
-		TODO("Not yet implemented, but @vcp can you have a look ?")
-	}
+		limit: Int,
+	): PaginatedList<DecryptedCalendarItem, *> = rawApi.findCalendarItemsByHCPartyPatientForeignKeys(
+		hcPartyId,
+		encryptionService.secretIdsOf(patient.withTypeInfo(), null).toList(),
+		startKey, startDocumentId, limit
+	).successBody().map { decrypt(it) { "Found calendar item cannot be decrypted"} }
 
 	private suspend fun encrypt(entity: DecryptedCalendarItem) = encryptionService.encryptEntity(
 		entity.withTypeInfo(),
