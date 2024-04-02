@@ -61,6 +61,7 @@ data class DecryptedContent(
 	override val range: List<Measure>? = null,
 ) : Content {
 	// region Content-DecryptedContent
+
 	// endregion
 }
 
@@ -82,6 +83,6 @@ data class EncryptedContent(
 	override val range: List<Measure>? = null,
 ) : Content {
 	// region Content-EncryptedContent
+
 	// endregion
 }
-

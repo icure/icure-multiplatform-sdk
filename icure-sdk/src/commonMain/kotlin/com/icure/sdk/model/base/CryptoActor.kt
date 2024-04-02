@@ -2,6 +2,7 @@ package com.icure.sdk.model.base
 
 import com.icure.sdk.model.specializations.AesExchangeKeyEncryptionKeypairIdentifier
 import com.icure.sdk.model.specializations.HexString
+import com.icure.sdk.model.specializations.KeypairFingerprintV1String
 import com.icure.sdk.model.specializations.SpkiHexString
 import kotlin.String
 import kotlin.collections.List
@@ -16,9 +17,10 @@ interface CryptoActor : Versionable<String>, HasTags {
 	public val aesExchangeKeys:
 		Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>>
 
-	public val transferKeys: Map<String, Map<String, String>>
+	public val transferKeys:
+		Map<KeypairFingerprintV1String, Map<KeypairFingerprintV1String, HexString>>
 
-	public val privateKeyShamirPartitions: Map<String, String>
+	public val privateKeyShamirPartitions: Map<String, HexString>
 
 	public val publicKey: SpkiHexString?
 
