@@ -62,7 +62,7 @@ object IosAesService : AesService {
 				"Encryption failed with error code $operationResult",
 				operationResult
 			)
-			if (dataOutMoved.value == (outBytes.size - IV_BYTE_LENGTH).toULong()) throw PlatformMethodException(
+			if (dataOutMoved.value != (outBytes.size - IV_BYTE_LENGTH).toULong()) throw PlatformMethodException(
 				"Expected ${outBytes.size - IV_BYTE_LENGTH} encrypted bytes but got ${dataOutMoved.value}",
 				null
 			)
