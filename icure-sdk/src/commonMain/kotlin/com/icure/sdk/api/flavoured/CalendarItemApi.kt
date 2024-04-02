@@ -9,10 +9,9 @@ import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleDelegateShareOptions
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.withTypeInfo
+import com.icure.sdk.model.CalendarItem
 import com.icure.sdk.model.DecryptedCalendarItem
 import com.icure.sdk.model.EncryptedCalendarItem
-import com.icure.sdk.model.EncryptedIcureStub
-import com.icure.sdk.model.CalendarItem
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.Patient
@@ -20,8 +19,6 @@ import com.icure.sdk.model.User
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.embed.DelegationTag
-import com.icure.sdk.model.filter.AbstractFilter
-import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.utils.EntityDecryptionException
 import com.icure.sdk.utils.InternalIcureApi
@@ -45,9 +42,9 @@ interface CalendarItemBasicFlavouredApi<E : CalendarItem> {
 	suspend fun findCalendarItemsByHcPartyPatientForeignKey(
 		hcPartyId: String,
 		secretPatientKey: String,
-		startKey: String? = null,
-		startDocumentId: String? = null,
-		limit: Int? = null,
+		startKey: String?,
+		startDocumentId: String?,
+		limit: Int
 	): PaginatedList<E, *>
 }
 
@@ -99,9 +96,9 @@ private abstract class AbstractCalendarItemBasicFlavouredApi<E : CalendarItem>(p
 		secretPatientKey: String,
 		startKey: String?,
 		startDocumentId: String?,
-		limit: Int?,
+		limit: Int,
 	): PaginatedList<E, *> =
-		rawApi.findCalendarItemsByHCPartyPatientForeignKey(hcPartyId, secretPatientKey, startKey, startDocumentId, limit).successBody().map { maybeDecrypt(it) }
+		rawApi.findCalendarItemsByHCPartyPatientForeignKeys(hcPartyId, secretPatientKey, startKey, startDocumentId, limit).successBody().map { maybeDecrypt(it) }
 
 	abstract suspend fun validateAndMaybeEncrypt(entity: E): EncryptedCalendarItem
 	abstract suspend fun maybeDecrypt(entity: EncryptedCalendarItem): E
@@ -158,7 +155,7 @@ internal class CalendarItemApiImpl(
 	override suspend fun maybeDecrypt(entity: EncryptedCalendarItem): DecryptedCalendarItem {
 		return encryptionService.tryDecryptEntity(
 			entity.withTypeInfo(),
-			CalendarItem.serializer(),
+			EncryptedCalendarItem.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedCalendarItem>(it) }
 			?: throw EntityDecryptionException("Entity ${entity.id} cannot be created")
 	}
@@ -176,7 +173,7 @@ internal class CalendarItemApiImpl(
 			override suspend fun maybeDecrypt(entity: EncryptedCalendarItem): CalendarItem =
 				encryptionService.tryDecryptEntity(
 					entity.withTypeInfo(),
-					CalendarItem.serializer(),
+					EncryptedCalendarItem.serializer(),
 				) { Serialization.json.decodeFromJsonElement<DecryptedCalendarItem>(it) }
 					?: entity
 
@@ -242,7 +239,7 @@ internal class CalendarItemApiImpl(
 
 	suspend fun decrypt(entity: EncryptedCalendarItem, errorMessage: () -> String): DecryptedCalendarItem = encryptionService.tryDecryptEntity(
 		entity.withTypeInfo(),
-		CalendarItem.serializer(),
+		EncryptedCalendarItem.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedCalendarItem>(it) }
 		?: throw EntityDecryptionException(errorMessage())
 
