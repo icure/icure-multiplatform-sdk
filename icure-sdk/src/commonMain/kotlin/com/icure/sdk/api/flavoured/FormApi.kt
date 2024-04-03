@@ -12,6 +12,7 @@ import com.icure.sdk.crypto.entities.withTypeInfo
 import com.icure.sdk.model.DecryptedForm
 import com.icure.sdk.model.EncryptedForm
 import com.icure.sdk.model.Form
+import com.icure.sdk.model.FormTemplate
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.Patient
@@ -33,6 +34,14 @@ private val ENCRYPTED_FIELDS_MANIFEST =
 interface FormBasicFlavourlessApi {
 	suspend fun deleteForm(entityId: String): DocIdentifier
 	suspend fun deleteForms(entityIds: List<String>): List<DocIdentifier>
+	suspend fun getFormTemplate(formTemplateId: String, raw: Boolean? = null): FormTemplate
+	suspend fun getFormTemplatesByGuid(formTemplateGuid: String, specialityCode: String, raw: Boolean? = null): List<FormTemplate>
+	suspend fun listFormTemplatesBySpeciality(specialityCode: String, raw: Boolean? = null): List<FormTemplate>
+	suspend fun getFormTemplates(loadLayout: Boolean? = null, raw: Boolean? = null): List<FormTemplate>
+	suspend fun createFormTemplate(formTemplate: FormTemplate): FormTemplate
+	suspend fun deleteFormTemplate(formTemplateId: String): DocIdentifier
+	suspend fun updateFormTemplate(formTemplate: FormTemplate): FormTemplate
+	suspend fun setTemplateAttachment(formTemplateId: String, payload: ByteArray): String
 }
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
@@ -48,6 +57,19 @@ interface FormBasicFlavouredApi<E : Form> {
 		startDocumentId: String? = null,
 		limit: Int? = null,
 	): PaginatedList<E, *>
+
+	suspend fun getFormByLogicalUuid(logicalUuid: String): E
+	suspend fun getFormsByLogicalUuid(logicalUuid: String): List<E>
+	suspend fun getFormsByUniqueId(uniqueId: String): List<E>
+	suspend fun getFormByUniqueId(uniqueId: String): E
+	suspend fun getChildrenForms(hcPartyId: String, parentId: String): List<E>
+	suspend fun listFormsByHCPartyAndPatientForeignKeys(
+		hcPartyId: String,
+		secretFKeys: String,
+		healthElementId: String? = null,
+		planOfActionId: String? = null,
+		formTemplateId: String? = null
+	): List<E>
 }
 
 /* The extra API calls declared in this interface are the ones that can be used on encrypted or decrypted items but only when the user is a data owner */
@@ -72,6 +94,7 @@ interface FormApi : FormBasicFlavourlessApi, FormFlavouredApi<DecryptedForm> {
 		delegates: Map<String, AccessLevel> = emptyMap(),
 		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent,
 	): DecryptedForm
+
 	suspend fun findFormsByHcPartyPatient(
 		hcPartyId: String,
 		patient: Patient,
@@ -106,7 +129,26 @@ private abstract class AbstractFormBasicFlavouredApi<E : Form>(protected val raw
 		startDocumentId: String?,
 		limit: Int?,
 	): PaginatedList<E, *> =
-		rawApi.findFormsByHCPartyPatientForeignKey(hcPartyId, secretPatientKey, startKey, startDocumentId, limit).successBody().map { maybeDecrypt(it) }
+		rawApi.findFormsByHCPartyPatientForeignKey(hcPartyId, secretPatientKey, startKey, startDocumentId, limit).successBody()
+			.map { maybeDecrypt(it) }
+
+	override suspend fun getFormByLogicalUuid(logicalUuid: String) = rawApi.getFormByLogicalUuid(logicalUuid).successBody().let { maybeDecrypt(it) }
+
+	override suspend fun getFormsByLogicalUuid(logicalUuid: String) = rawApi.getFormsByLogicalUuid(logicalUuid).successBody().map { maybeDecrypt(it) }
+
+	override suspend fun getFormsByUniqueId(uniqueId: String) = rawApi.getFormsByUniqueId(uniqueId).successBody().map { maybeDecrypt(it) }
+
+	override suspend fun getFormByUniqueId(uniqueId: String) = rawApi.getFormByUniqueId(uniqueId).successBody().let { maybeDecrypt(it) }
+
+	override suspend fun getChildrenForms(hcPartyId: String, parentId: String) = rawApi.getChildrenForms(parentId, hcPartyId).successBody().map { maybeDecrypt(it) }
+
+	override suspend fun listFormsByHCPartyAndPatientForeignKeys(
+		hcPartyId: String,
+		secretFKeys: String,
+		healthElementId: String?,
+		planOfActionId: String?,
+		formTemplateId: String?,
+		) = rawApi.listFormsByHCPartyAndPatientForeignKeys(hcPartyId, secretFKeys, healthElementId, planOfActionId, formTemplateId).successBody().map { maybeDecrypt(it) }
 
 	abstract suspend fun validateAndMaybeEncrypt(entity: E): EncryptedForm
 	abstract suspend fun maybeDecrypt(entity: EncryptedForm): E
@@ -144,6 +186,43 @@ private abstract class AbstractFormFlavouredApi<E : Form>(
 private class AbstractFormBasicFlavourlessApi(val rawApi: RawFormApi) : FormBasicFlavourlessApi {
 	override suspend fun deleteForm(entityId: String) = rawApi.deleteForm(entityId).successBody()
 	override suspend fun deleteForms(entityIds: List<String>) = rawApi.deleteForms(ListOfIds(entityIds)).successBody()
+	override suspend fun getFormTemplate(
+		formTemplateId: String,
+		raw: Boolean?,
+	) = rawApi.getFormTemplate(formTemplateId, raw).successBody()
+
+	override suspend fun getFormTemplatesByGuid(
+		formTemplateGuid: String,
+		specialityCode: String,
+		raw: Boolean?,
+	) = rawApi.getFormTemplatesByGuid(formTemplateGuid, specialityCode, raw).successBody()
+
+	override suspend fun listFormTemplatesBySpeciality(
+		specialityCode: String,
+		raw: Boolean?,
+	) = rawApi.listFormTemplatesBySpeciality(specialityCode, raw).successBody()
+
+	override suspend fun getFormTemplates(
+		loadLayout: Boolean?,
+		raw: Boolean?,
+	) = rawApi.getFormTemplates(loadLayout, raw).successBody()
+
+	override suspend fun createFormTemplate(
+		formTemplate: FormTemplate,
+	) = rawApi.createFormTemplate(formTemplate).successBody()
+
+	override suspend fun deleteFormTemplate(
+		formTemplateId: String,
+	) = rawApi.deleteFormTemplate(formTemplateId).successBody()
+
+	override suspend fun updateFormTemplate(
+		formTemplate: FormTemplate,
+	) = rawApi.updateFormTemplate(formTemplate.id, formTemplate).successBody()
+
+	override suspend fun setTemplateAttachment(
+		formTemplateId: String,
+		payload: ByteArray,
+    ) = rawApi.setTemplateAttachment(formTemplateId, payload).successBody()
 }
 
 @InternalIcureApi
