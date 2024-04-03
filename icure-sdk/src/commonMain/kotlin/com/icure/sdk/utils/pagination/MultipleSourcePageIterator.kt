@@ -3,9 +3,10 @@ package com.icure.sdk.utils.pagination
 import com.icure.sdk.model.Identifiable
 import com.icure.sdk.model.PaginatedDocumentKeyIdPair
 import com.icure.sdk.model.PaginatedList
+import com.icure.sdk.model.base.Versionable
 import com.icure.sdk.model.specializations.JsonString
 
-class MultipleSourcePageIterator<T : Identifiable<String>, P : Any>(
+class MultipleSourcePageIterator<T : Versionable<String>, P : Any>(
 	requestParameters: List<P>,
 	private val elementComparator: Comparator<T> = Comparator { a, b -> a.id.compareTo(b.id) },
 	request: suspend (params: P, nextKeyPair: PaginatedDocumentKeyIdPair<JsonString>?) -> PaginatedList<T, JsonString>
@@ -17,25 +18,42 @@ class MultipleSourcePageIterator<T : Identifiable<String>, P : Any>(
 	private val emissionBuffer: MutableList<T?> = MutableList(requestParameters.size) { null }
 	private val emittedIds: MutableSet<String> = mutableSetOf()
 
-	override suspend fun hasNext(): Boolean = iteratorBuffer.any { it.hasNext() }
+	private suspend fun tryNextUntilNotEmitted(idx: Int): T? {
+		var next: T?
+		do {
+			next = iteratorBuffer[idx].tryNext()
+		} while (next != null && emittedIds.contains(next.id))
+		return next
+	}
+
+	override suspend fun hasNext(): Boolean =
+		iteratorBuffer.mapIndexed { idx, iterator ->
+			when {
+				emissionBuffer[idx] != null && !emittedIds.contains(emissionBuffer[idx]?.id) -> true
+				!iterator.hasNext() -> {
+					emissionBuffer[idx] = null
+					false
+				}
+				iterator.hasNext() -> {
+					val next = tryNextUntilNotEmitted(idx)
+					emissionBuffer[idx] = next
+					next != null
+				}
+				else -> {
+					emissionBuffer[idx] = null
+					false
+				}
+			}
+		}.any { it }
 
 	override suspend fun tryNext(): T? {
 		if(!hasNext()) return null
 
-		iteratorBuffer.forEachIndexed { idx, iterator ->
-			if(emissionBuffer[idx] == null) {
-				emissionBuffer[idx] = iterator.tryNext()
-			}
-		}
 		return emissionBuffer.filterNotNull().takeIf { it.isNotEmpty() }?.minWith(elementComparator)?.let { minElement ->
 			val minIndex = emissionBuffer.indexOfFirst { it?.id == minElement.id }
 			emissionBuffer[minIndex] = null
-			if(emittedIds.contains(minElement.id)) {
-				tryNext()
-			} else {
-				emittedIds.add(minElement.id)
-				minElement
-			}
+			emittedIds.add(minElement.id)
+			minElement
 		}
 	}
 

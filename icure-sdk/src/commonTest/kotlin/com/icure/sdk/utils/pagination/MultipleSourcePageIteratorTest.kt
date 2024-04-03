@@ -4,6 +4,7 @@ import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.sdk.model.Identifiable
 import com.icure.sdk.model.PaginatedDocumentKeyIdPair
 import com.icure.sdk.model.PaginatedList
+import com.icure.sdk.model.base.Versionable
 import com.icure.sdk.model.specializations.JsonString
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
@@ -14,8 +15,9 @@ class MultipleSourcePageIteratorTest : StringSpec({
 
 	data class Datum(
 		override val id: String = defaultCryptoService.strongRandom.randomUUID(),
+		override val rev: String? = null,
 		val someValue: Int
-	) : Identifiable<String>
+	) : Versionable<String>
 
 	fun createIterator(): Pair<MultipleSourcePageIterator<Datum, Int>, List<Datum>> {
 		val firstPagesElements = List(60) { Datum(someValue = it) }
@@ -74,7 +76,7 @@ class MultipleSourcePageIteratorTest : StringSpec({
 		return iterator to (firstPagesElements + secondPagesElements + thirdPagesElements)
 	}
 
-	suspend fun <T: Identifiable<String>, P : Any> MultipleSourcePageIterator<T, P>.shouldHaveNoMoreElements() {
+	suspend fun <T: Versionable<String>, P : Any> MultipleSourcePageIterator<T, P>.shouldHaveNoMoreElements() {
 		hasNext() shouldBe false
 		tryNext() shouldBe null
 		shouldThrow<NoSuchElementException> { next() }
@@ -136,6 +138,51 @@ class MultipleSourcePageIteratorTest : StringSpec({
 		val iterator = MultipleSourcePageIterator<Datum, Int>(
 			requestParameters = listOf(1,2,3,4,5,6)
 		) { _, _ -> PaginatedList() }
+		iterator.shouldHaveNoMoreElements()
+	}
+
+	"A MultipleSourceIterator will ignore any duplicate based on the id" {
+		val elements = listOf(
+			Datum(someValue = 1),
+			Datum(someValue = 2),
+			Datum(someValue = 3),
+			Datum(someValue = 4)
+		)
+		val firstPage = PaginatedList<Datum, JsonString>(rows = listOf(elements[0], elements[0], elements[1], elements[1], elements[3]))
+		val secondPages = listOf(
+			PaginatedList(
+				rows = listOf(elements[0], elements[0], elements[0], elements[1], elements[2]),
+				nextKeyPair = PaginatedDocumentKeyIdPair("key", "id")
+			),
+			PaginatedList(rows = listOf(elements[2], elements[2], elements[3], elements[3], elements[3]),)
+		)
+		var firstEmitted = false
+		var secondEmitted = false
+		val iterator = MultipleSourcePageIterator(
+			requestParameters = List(2) { it },
+			elementComparator = { a, b -> a.someValue.compareTo(b.someValue) }
+		) { params, nextKeyPair ->
+			when {
+				params == 0 && !firstEmitted -> {
+					firstEmitted = true
+					firstPage
+				}
+				params == 1 && !secondEmitted -> {
+					secondEmitted = true
+					secondPages.first()
+				}
+				nextKeyPair?.startKey == "key" -> secondPages.last()
+
+				else -> throw IllegalStateException("This should not happen")
+			}
+		}
+
+		val results = mutableListOf<Datum>()
+		while(iterator.hasNext()) {
+			results.add(iterator.next())
+		}
+
+		results shouldContainExactly elements
 		iterator.shouldHaveNoMoreElements()
 	}
 

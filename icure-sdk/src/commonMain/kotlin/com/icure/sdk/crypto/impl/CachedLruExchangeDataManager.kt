@@ -152,6 +152,9 @@ class CachedLruExchangeDataManager(
 		}
 	}
 
-	override suspend fun getAccessControlKeysValue(entityType: EntityWithEncryptionMetadataTypeName): List<Base64String>? =
+	override suspend fun getEncodedAccessControlKeysValue(entityType: EntityWithEncryptionMetadataTypeName): List<Base64String>? =
+		null
+
+	override suspend fun getAccessControlKeysValue(entityType: EntityWithEncryptionMetadataTypeName): List<SecureDelegationKeyString>? =
 		null
 }

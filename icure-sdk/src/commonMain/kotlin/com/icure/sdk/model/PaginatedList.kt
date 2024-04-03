@@ -12,7 +12,7 @@ data class PaginatedList<T, O>(
 	public val nextKeyPair: PaginatedDocumentKeyIdPair<O>? = null,
 ) {
 	// region PaginatedList-PaginatedList
-inline fun <Q> map(mapper: (T) -> Q): PaginatedList<Q, *> = PaginatedList(
+inline fun <Q> map(mapper: (T) -> Q): PaginatedList<Q, O> = PaginatedList(
 		rows = rows.map { mapper(it) },
 		nextKeyPair = nextKeyPair
 	)

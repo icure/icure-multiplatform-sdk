@@ -3,7 +3,9 @@ package com.icure.sdk.api.flavoured
 import com.icure.sdk.api.raw.RawCalendarItemApi
 import com.icure.sdk.crypto.EntityEncryptionService
 import com.icure.sdk.crypto.EntityValidationService
+import com.icure.sdk.crypto.ExchangeDataManager
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
+import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleDelegateShareOptions
@@ -23,6 +25,9 @@ import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.utils.EntityDecryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
+import com.icure.sdk.utils.pagination.MultipleSourcePageIterator
+import com.icure.sdk.utils.pagination.PaginatedListIterator
+import com.icure.sdk.utils.vectorProduct
 import kotlinx.serialization.json.decodeFromJsonElement
 
 @OptIn(InternalIcureApi::class)
@@ -39,19 +44,11 @@ interface CalendarItemBasicFlavourlessApi {
 interface CalendarItemBasicFlavouredApi<E : CalendarItem> {
 	suspend fun modifyCalendarItem(entity: E): E
 	suspend fun getCalendarItem(entityId: String): E
-	suspend fun findCalendarItemsByHcPartyPatientForeignKey(
-		hcPartyId: String,
-		secretPatientKey: String,
-		startKey: String?,
-		startDocumentId: String?,
-		limit: Int
-	): PaginatedList<E, *>
-
 	suspend fun deleteCalendarItems(entityIds: String): List<DocIdentifier>
 	suspend fun getCalendarItemsByPeriodAndHcPartyId(startDate: Long, endDate: Long, hcPartyId: String): List<E>
 	suspend fun getCalendarsByPeriodAndAgendaId(startDate: Long, endDate: Long, agendaId: String): List<E>
 	suspend fun getCalendarItemsWithIds(entityIds: List<String>): List<E>
-	suspend fun listCalendarItemsByHCPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<E>
+	suspend fun listCalendarItemsByHCPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): PaginatedListIterator<E>
 	suspend fun findCalendarItemsByRecurrenceId(
 		recurrenceId: String,
 		startKey: String?,
@@ -98,22 +95,18 @@ interface CalendarItemApi : CalendarItemBasicFlavourlessApi, CalendarItemFlavour
 interface CalendarItemBasicApi : CalendarItemBasicFlavourlessApi, CalendarItemBasicFlavouredApi<EncryptedCalendarItem>
 
 @InternalIcureApi
-private abstract class AbstractCalendarItemBasicFlavouredApi<E : CalendarItem>(protected val rawApi: RawCalendarItemApi) :
+private abstract class AbstractCalendarItemBasicFlavouredApi<E : CalendarItem>(
+	protected val rawApi: RawCalendarItemApi,
+	protected val exchangeDataManager: ExchangeDataManager
+) :
 	CalendarItemBasicFlavouredApi<E> {
+
+	private suspend fun getSecureDelegationKeys() = exchangeDataManager
+		.getAccessControlKeysValue(EntityWithEncryptionMetadataTypeName.CalendarItem)?.map { it.s } ?: emptyList()
 	override suspend fun modifyCalendarItem(entity: E): E =
 		rawApi.modifyCalendarItem(validateAndMaybeEncrypt(entity)).successBody().let { maybeDecrypt(it) }
 
 	override suspend fun getCalendarItem(entityId: String): E = rawApi.getCalendarItem(entityId).successBody().let { maybeDecrypt(it) }
-
-	override suspend fun findCalendarItemsByHcPartyPatientForeignKey(
-		hcPartyId: String,
-		secretPatientKey: String,
-		startKey: String?,
-		startDocumentId: String?,
-		limit: Int,
-	): PaginatedList<E, *> =
-		rawApi.findCalendarItemsByHCPartyPatientForeignKeys(hcPartyId, secretPatientKey, startKey, startDocumentId, limit).successBody().map { maybeDecrypt(it) }
-
 
 	override suspend fun deleteCalendarItems(entityIds: String): List<DocIdentifier> =
 		rawApi.deleteCalendarItemsWithPost(entityIds).successBody()
@@ -136,8 +129,20 @@ private abstract class AbstractCalendarItemBasicFlavouredApi<E : CalendarItem>(p
 	override suspend fun listCalendarItemsByHCPartyPatientForeignKeys(
 		hcPartyId: String,
 		secretPatientKeys: List<String>,
-	): List<E> =
-		rawApi.listCalendarItemsByHCPartyPatientForeignKeys(hcPartyId, secretPatientKeys).successBody().map { maybeDecrypt(it) }
+	): PaginatedListIterator<E> {
+		val accessKeys = getSecureDelegationKeys() + hcPartyId
+		return MultipleSourcePageIterator(
+			requestParameters = accessKeys vectorProduct secretPatientKeys
+		) { params, nextKey ->
+			rawApi.findCalendarItemsByHCPartyPatientForeignKeys(
+				hcPartyId = params.first,
+				secretFKeys = params.second,
+				startKey = nextKey?.startKey,
+				startDocumentId = nextKey?.startKeyDocId,
+				limit = 1000
+			).successBody().map { maybeDecrypt(it) }
+		}
+	}
 
 	override suspend fun findCalendarItemsByRecurrenceId(
 		recurrenceId: String,
@@ -155,7 +160,8 @@ private abstract class AbstractCalendarItemBasicFlavouredApi<E : CalendarItem>(p
 private abstract class AbstractCalendarItemFlavouredApi<E : CalendarItem>(
 	rawApi: RawCalendarItemApi,
 	private val encryptionService: EntityEncryptionService,
-) : AbstractCalendarItemBasicFlavouredApi<E>(rawApi), CalendarItemFlavouredApi<E> {
+	exchangeDataManager: ExchangeDataManager
+) : AbstractCalendarItemBasicFlavouredApi<E>(rawApi, exchangeDataManager), CalendarItemFlavouredApi<E> {
 	override suspend fun shareWith(
 		delegateId: String,
 		healthcareElement: E,
@@ -213,8 +219,9 @@ internal class CalendarItemApiImpl(
 	private val rawApi: RawCalendarItemApi,
 	private val encryptionService: EntityEncryptionService,
 	private val fieldsToEncrypt: EncryptedFieldsManifest = ENCRYPTED_FIELDS_MANIFEST,
+	private val exchangeDataManager: ExchangeDataManager
 ) : CalendarItemApi, CalendarItemFlavouredApi<DecryptedCalendarItem> by object :
-	AbstractCalendarItemFlavouredApi<DecryptedCalendarItem>(rawApi, encryptionService) {
+	AbstractCalendarItemFlavouredApi<DecryptedCalendarItem>(rawApi, encryptionService, exchangeDataManager) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedCalendarItem): EncryptedCalendarItem =
 		encryptionService.encryptEntity(
 			entity.withTypeInfo(),
@@ -231,7 +238,7 @@ internal class CalendarItemApiImpl(
 	}
 }, CalendarItemBasicFlavourlessApi by AbstractCalendarItemBasicFlavourlessApi(rawApi) {
 	override val encrypted: CalendarItemFlavouredApi<EncryptedCalendarItem> =
-		object : AbstractCalendarItemFlavouredApi<EncryptedCalendarItem>(rawApi, encryptionService) {
+		object : AbstractCalendarItemFlavouredApi<EncryptedCalendarItem>(rawApi, encryptionService, exchangeDataManager) {
 			override suspend fun validateAndMaybeEncrypt(entity: EncryptedCalendarItem): EncryptedCalendarItem =
 				encryptionService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedCalendarItem.serializer(), fieldsToEncrypt)
 
@@ -239,7 +246,7 @@ internal class CalendarItemApiImpl(
 		}
 
 	override val tryAndRecover: CalendarItemFlavouredApi<CalendarItem> =
-		object : AbstractCalendarItemFlavouredApi<CalendarItem>(rawApi, encryptionService) {
+		object : AbstractCalendarItemFlavouredApi<CalendarItem>(rawApi, encryptionService, exchangeDataManager) {
 			override suspend fun maybeDecrypt(entity: EncryptedCalendarItem): CalendarItem =
 				encryptionService.tryDecryptEntity(
 					entity.withTypeInfo(),
@@ -310,8 +317,9 @@ internal class CalendarItemBasicApiImpl(
 	rawApi: RawCalendarItemApi,
 	private val validationService: EntityValidationService,
 	private val fieldsToEncrypt: EncryptedFieldsManifest = ENCRYPTED_FIELDS_MANIFEST,
+	exchangeDataManager: ExchangeDataManager
 ) : CalendarItemBasicApi, CalendarItemBasicFlavouredApi<EncryptedCalendarItem> by object :
-	AbstractCalendarItemBasicFlavouredApi<EncryptedCalendarItem>(rawApi) {
+	AbstractCalendarItemBasicFlavouredApi<EncryptedCalendarItem>(rawApi, exchangeDataManager) {
 	override suspend fun validateAndMaybeEncrypt(entity: EncryptedCalendarItem): EncryptedCalendarItem =
 		validationService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedCalendarItem.serializer(), fieldsToEncrypt)
 
