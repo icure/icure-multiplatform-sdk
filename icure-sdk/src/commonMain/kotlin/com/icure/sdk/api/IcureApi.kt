@@ -21,6 +21,7 @@ import com.icure.sdk.api.raw.RawUserApi
 import com.icure.sdk.auth.UsernamePassword
 import com.icure.sdk.auth.services.JwtAuthService
 import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
+import com.icure.sdk.crypto.CryptoStrategies
 import com.icure.sdk.crypto.EntityEncryptionService
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleDelegateShareOptions
@@ -28,20 +29,20 @@ import com.icure.sdk.crypto.entities.withTypeInfo
 import com.icure.sdk.crypto.impl.AccessControlKeysHeadersProviderImpl
 import com.icure.sdk.crypto.impl.BaseExchangeDataManagerImpl
 import com.icure.sdk.crypto.impl.BaseExchangeKeysManagerImpl
-import com.icure.sdk.crypto.impl.BasicCryptoStrategies
 import com.icure.sdk.crypto.impl.CachedLruExchangeDataManager
 import com.icure.sdk.crypto.impl.EntityEncryptionServiceImpl
 import com.icure.sdk.crypto.impl.ExchangeDataMapManagerImpl
 import com.icure.sdk.crypto.impl.ExchangeKeysManagerImpl
 import com.icure.sdk.crypto.impl.FullyCachedExchangeDataManager
+import com.icure.sdk.crypto.impl.IcureKeyRecoveryImpl
 import com.icure.sdk.crypto.impl.JsonEncryptionServiceImpl
 import com.icure.sdk.crypto.impl.LegacyDelegationsDecryptor
 import com.icure.sdk.crypto.impl.NoAccessControlKeysHeadersProvider
-import com.icure.sdk.crypto.impl.NoopIcureKeyRecovery
 import com.icure.sdk.crypto.impl.NoopKeyRecoverer
 import com.icure.sdk.crypto.impl.SecureDelegationsDecryptorImpl
 import com.icure.sdk.crypto.impl.SecureDelegationsEncryptionImpl
 import com.icure.sdk.crypto.impl.SecureDelegationsManagerImpl
+import com.icure.sdk.crypto.impl.ShamirKeysManagerImpl
 import com.icure.sdk.crypto.impl.ShamirSecretSharingService
 import com.icure.sdk.crypto.impl.UserEncryptionKeysManagerImpl
 import com.icure.sdk.crypto.impl.UserSignatureKeysManagerImpl
@@ -60,6 +61,7 @@ interface IcureApi {
 	val healthElement: HealthcareElementApi
 	val dataOwner: DataOwnerApi
 	val user: UserApi
+	val crypto: CryptoApi
 
 	companion object {
 		@OptIn(InternalIcureApi::class)
@@ -67,9 +69,9 @@ interface IcureApi {
 			baseUrl: String,
 			usernamePassword: UsernamePassword,
 			baseStorage: StorageFacade,
-			useParentKeys: Boolean
+			useParentKeys: Boolean,
+			cryptoStrategies: CryptoStrategies
 		): IcureApi {
-			val cryptoStrategies = BasicCryptoStrategies
 			val cryptoService = defaultCryptoService
 			val apiUrl = baseUrl
 			val keysStorage = JsonAndBase64KeyStorage(baseStorage)
@@ -100,12 +102,18 @@ interface IcureApi {
 				rawHealthcarePartyApi,
 			)
 			val shamirService = ShamirSecretSharingService(cryptoService.strongRandom)
+			val icureKeyRecovery = IcureKeyRecoveryImpl(
+				baseExchangeKeysManager,
+				baseExchangeDataManager,
+				cryptoService,
+				shamirService
+			)
 			val userEncryptionKeys = UserEncryptionKeysManagerImpl.Factory(
 				cryptoService,
 				cryptoStrategies,
 				dataOwnerApi,
 				iCureStorage,
-				NoopIcureKeyRecovery,
+				icureKeyRecovery,
 				NoopKeyRecoverer,
 				useParentKeys,
 			).initialise().also { initInfo ->
@@ -202,7 +210,19 @@ interface IcureApi {
 					entityEncryptionService,
 				),
 				dataOwnerApi,
-				UserApi(RawUserApi(apiUrl, authService))
+				UserApi(RawUserApi(apiUrl, authService)),
+				CryptoApi(
+					ShamirKeysManagerImpl(
+						dataOwnerApi,
+						userEncryptionKeys,
+						exchangeDataManager,
+						cryptoService,
+						shamirService
+					),
+					exchangeDataManager,
+					baseExchangeKeysManager,
+					userEncryptionKeys
+				)
 			)
 		}
 	}
@@ -213,7 +233,8 @@ private class IcureApiImpl(
 	override val patient: PatientApi,
 	override val healthElement: HealthcareElementApi,
 	override val dataOwner: DataOwnerApi,
-	override val user: UserApi
+	override val user: UserApi,
+	override val crypto: CryptoApi
 ): IcureApi
 
 @InternalIcureApi
