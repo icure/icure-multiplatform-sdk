@@ -36,6 +36,7 @@ import com.icure.sdk.model.embed.SecurityMetadata
 import com.icure.sdk.model.specializations.AesExchangeKeyEncryptionKeypairIdentifier
 import com.icure.sdk.model.specializations.Base64String
 import com.icure.sdk.model.specializations.HexString
+import com.icure.sdk.model.specializations.KeypairFingerprintV1String
 import com.icure.sdk.model.specializations.SpkiHexString
 import kotlinx.serialization.Serializable
 import kotlin.Boolean
@@ -173,9 +174,10 @@ sealed interface Patient :
 	override val aesExchangeKeys:
 		Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>>
 
-	override val transferKeys: Map<String, Map<String, String>>
+	override val transferKeys:
+		Map<KeypairFingerprintV1String, Map<KeypairFingerprintV1String, HexString>>
 
-	override val privateKeyShamirPartitions: Map<String, String>
+	override val privateKeyShamirPartitions: Map<String, HexString>
 
 	override val publicKey: SpkiHexString?
 
@@ -283,8 +285,8 @@ data class DecryptedPatient(
 	override val hcPartyKeys: Map<String, List<HexString>> = emptyMap(),
 	override val aesExchangeKeys: Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> =
 		emptyMap(),
-	override val transferKeys: Map<String, Map<String, String>> = emptyMap(),
-	override val privateKeyShamirPartitions: Map<String, String> = emptyMap(),
+	override val transferKeys: Map<KeypairFingerprintV1String, Map<KeypairFingerprintV1String, HexString>> = emptyMap(),
+	override val privateKeyShamirPartitions: Map<String, HexString> = emptyMap(),
 	override val publicKey: SpkiHexString? = null,
 	override val publicKeysForOaepWithSha256: Set<SpkiHexString> = emptySet(),
 	override val secretForeignKeys: Set<String> = emptySet(),
@@ -374,8 +376,8 @@ data class EncryptedPatient(
 	override val hcPartyKeys: Map<String, List<HexString>> = emptyMap(),
 	override val aesExchangeKeys: Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> =
 		emptyMap(),
-	override val transferKeys: Map<String, Map<String, String>> = emptyMap(),
-	override val privateKeyShamirPartitions: Map<String, String> = emptyMap(),
+	override val transferKeys: Map<KeypairFingerprintV1String, Map<KeypairFingerprintV1String, HexString>> = emptyMap(),
+	override val privateKeyShamirPartitions: Map<String, HexString> = emptyMap(),
 	override val publicKey: SpkiHexString? = null,
 	override val publicKeysForOaepWithSha256: Set<SpkiHexString> = emptySet(),
 	override val secretForeignKeys: Set<String> = emptySet(),

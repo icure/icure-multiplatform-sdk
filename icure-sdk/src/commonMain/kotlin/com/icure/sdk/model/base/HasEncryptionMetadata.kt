@@ -19,6 +19,6 @@ interface HasEncryptionMetadata : Versionable<String> {
 
 	public val securityMetadata: SecurityMetadata?
 	// region HasEncryptionMetadata-HasEncryptionMetadata
-	fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): HasEncryptionMetadata
+fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): HasEncryptionMetadata
 	// endregion
 }
