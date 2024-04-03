@@ -35,13 +35,14 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 				mapOf(delegate.dataOwnerId to AccessLevel.Write)
 			)
 		).shouldNotBeNull()
-		val he = delegatorApi.healthElement.encryptAndCreate(
+		val he = delegatorApi.healthElement.createHealthcareElement(
 			delegatorApi.healthElement.initialiseEncryptionMetadata(
-				he = DecryptedHealthElement(
+				healthcareElement = DecryptedHealthElement(
 					id = UUID.randomUUID().toString(),
 					note = heNote,
 				),
 				patient = patient,
+				user = delegatorApi.user.getCurrentUser(),
 				delegates = mapOf(delegate.dataOwnerId to AccessLevel.Write)
 			)
 		).shouldNotBeNull()
@@ -49,13 +50,13 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 		delegateApi.patient.getAndDecrypt(patient.id).shouldNotBeNull().run {
 			note shouldBe patientNote
 		}
-		delegateApi.healthElement.getAndDecrypt(he.id).shouldNotBeNull().run {
+		delegateApi.healthElement.getHealthcareElement(he.id).shouldNotBeNull().run {
 			note shouldBe heNote
 		}
 		delegatorApi.patient.getAndDecrypt(patient.id).shouldNotBeNull().run {
 			note shouldBe patientNote
 		}
-		delegatorApi.healthElement.getAndDecrypt(he.id).shouldNotBeNull().run {
+		delegatorApi.healthElement.getHealthcareElement(he.id).shouldNotBeNull().run {
 			note shouldBe heNote
 		}
 	}
@@ -71,12 +72,13 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 			))
 		).shouldNotBeNull()
 		val sfk = delegatorApi.patient.getSecretIdsOf(patient).also { it shouldHaveSize 1 }
-		val he = delegatorApi.healthElement.encryptAndCreate(
+		val he = delegatorApi.healthElement.createHealthcareElement(
 			delegatorApi.healthElement.initialiseEncryptionMetadata(
-				he = DecryptedHealthElement(
+				healthcareElement = DecryptedHealthElement(
 					id = UUID.randomUUID().toString(),
 					note = heNote,
 				),
+				user = delegatorApi.user.getCurrentUser(),
 				patient = patient
 			)
 		).shouldNotBeNull()
@@ -93,13 +95,13 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 		delegateApi.patient.getAndDecrypt(patient.id).shouldNotBeNull().run {
 			note shouldBe patientNote
 		}
-		delegateApi.healthElement.getAndDecrypt(he.id).shouldNotBeNull().run {
+		delegateApi.healthElement.getHealthcareElement(he.id).shouldNotBeNull().run {
 			note shouldBe heNote
 		}
 		delegatorApi.patient.getAndDecrypt(patient.id).shouldNotBeNull().run {
 			note shouldBe patientNote
 		}
-		delegatorApi.healthElement.getAndDecrypt(he.id).shouldNotBeNull().run {
+		delegatorApi.healthElement.getHealthcareElement(he.id).shouldNotBeNull().run {
 			note shouldBe heNote
 		}
 	}
