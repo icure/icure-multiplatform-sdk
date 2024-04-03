@@ -147,7 +147,6 @@ private abstract class AbstractCalendarItemBasicFlavouredApi<E : CalendarItem>(p
 	): PaginatedList<E, *> =
 		rawApi.findCalendarItemsByRecurrenceId(recurrenceId, startKey, startDocumentId, limit).successBody().map { maybeDecrypt(it) }
 
-
 	abstract suspend fun validateAndMaybeEncrypt(entity: E): EncryptedCalendarItem
 	abstract suspend fun maybeDecrypt(entity: EncryptedCalendarItem): E
 }

@@ -1,4 +1,4 @@
-package com.icure.sdk.utils
+package com.icure.sdk.utils.pagination
 
 import com.icure.sdk.model.PaginatedDocumentKeyIdPair
 import com.icure.sdk.model.PaginatedList
