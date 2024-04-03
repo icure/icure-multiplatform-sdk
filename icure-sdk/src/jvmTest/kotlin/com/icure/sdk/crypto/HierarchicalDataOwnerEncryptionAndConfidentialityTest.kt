@@ -5,8 +5,6 @@ import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.model.DecryptedHealthElement
 import com.icure.sdk.model.DecryptedPatient
 import com.icure.sdk.model.embed.AccessLevel
-import com.icure.sdk.model.HealthElement
-import com.icure.sdk.model.Patient
 import com.icure.sdk.test.createHcpUser
 import com.icure.sdk.test.initialiseTestEnvironment
 import com.icure.sdk.utils.RequestStatusException
@@ -71,24 +69,26 @@ class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec ({
 		confidentialSecretIds shouldHaveSize 1
 		allSecretIds shouldContain confidentialSecretIds.single()
 		val nonConfidentialNote = "Encrypted - non confidential he"
-		val nonConfidentialHe = hcpApi.healthElement.encryptAndCreate(
+		val nonConfidentialHe = hcpApi.healthElement.createHealthcareElement(
 			hcpApi.healthElement.initialiseEncryptionMetadata(
 				DecryptedHealthElement(
 					id = UUID.randomUUID().toString(),
 					note = nonConfidentialNote
 				),
 				patient,
+				hcpApi.user.getCurrentUser(),
 				mapOf(parent.dataOwnerId to AccessLevel.Write)
 			)
 		).shouldNotBeNull()
 		val confidentialNote = "Encrypted - confidential he"
-		val confidentialHe = hcpApi.healthElement.encryptAndCreate(
+		val confidentialHe = hcpApi.healthElement.createHealthcareElement(
 			hcpApi.healthElement.initialiseEncryptionMetadata(
 				DecryptedHealthElement(
 					id = UUID.randomUUID().toString(),
 					note = confidentialNote
 				),
 				patient,
+				hcpApi.user.getCurrentUser(),
 				mapOf(parent.dataOwnerId to AccessLevel.Write),
 				SecretIdOption.UseAnyConfidential
 			)
@@ -97,7 +97,7 @@ class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec ({
 			hcpIds: List<String>,
 			api: IcureApi
 		) = hcpIds.flatMap { hcpId ->
-			api.healthElement.getHealthElementsFor(hcpId, patient)
+			api.healthElement.findHealthcareElementsByHcPartyPatient(hcpId, patient, limit = 100)
 		}.distinctBy { it.id }
 		findHealthElementsFor(listOf(hcp.dataOwnerId, parent.dataOwnerId), hcpApi).also { retrievedHes ->
 			retrievedHes shouldHaveSize 2
@@ -116,7 +116,7 @@ class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec ({
 				retrievedHes.single().note shouldBe nonConfidentialNote
 			}
 			// Entity was still shared, so it can still be retrieved by id (not a real use case, would not make sense to share an entity that is confidential)
-			relativeApi.healthElement.getAndDecrypt(confidentialHe.id).shouldNotBeNull().note shouldBe confidentialNote
+			relativeApi.healthElement.getHealthcareElement(confidentialHe.id).shouldNotBeNull().note shouldBe confidentialNote
 		}
 	}
 })

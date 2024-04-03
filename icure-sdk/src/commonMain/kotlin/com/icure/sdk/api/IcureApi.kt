@@ -4,6 +4,10 @@ import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.kryptom.utils.toHexString
 import com.icure.sdk.api.extended.DataOwnerApi
+import com.icure.sdk.api.flavoured.ContactApi
+import com.icure.sdk.api.flavoured.ContactApiImpl
+import com.icure.sdk.api.flavoured.HealthcareElementApi
+import com.icure.sdk.api.flavoured.HealthcareElementApiImpl
 import com.icure.sdk.api.raw.RawAnonymousAuthApi
 import com.icure.sdk.api.raw.RawContactApi
 import com.icure.sdk.api.raw.RawDataOwnerApi
@@ -13,6 +17,7 @@ import com.icure.sdk.api.raw.RawExchangeDataMapApi
 import com.icure.sdk.api.raw.RawHealthElementApi
 import com.icure.sdk.api.raw.RawHealthcarePartyApi
 import com.icure.sdk.api.raw.RawPatientApi
+import com.icure.sdk.api.raw.RawUserApi
 import com.icure.sdk.auth.UsernamePassword
 import com.icure.sdk.auth.services.JwtAuthService
 import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
@@ -37,6 +42,7 @@ import com.icure.sdk.crypto.impl.NoopKeyRecoverer
 import com.icure.sdk.crypto.impl.SecureDelegationsDecryptorImpl
 import com.icure.sdk.crypto.impl.SecureDelegationsEncryptionImpl
 import com.icure.sdk.crypto.impl.SecureDelegationsManagerImpl
+import com.icure.sdk.crypto.impl.ShamirSecretSharingService
 import com.icure.sdk.crypto.impl.UserEncryptionKeysManagerImpl
 import com.icure.sdk.crypto.impl.UserSignatureKeysManagerImpl
 import com.icure.sdk.model.DataOwnerWithType
@@ -51,8 +57,9 @@ import com.icure.sdk.utils.InternalIcureApi
 interface IcureApi {
 	val contact: ContactApi
 	val patient: PatientApi
-	val healthElement: HealthElementApi
+	val healthElement: HealthcareElementApi
 	val dataOwner: DataOwnerApi
+	val user: UserApi
 
 	companion object {
 		@OptIn(InternalIcureApi::class)
@@ -85,6 +92,14 @@ interface IcureApi {
 				cryptoService,
 				selfIsAnonymous
 			)
+			val baseExchangeKeysManager = BaseExchangeKeysManagerImpl(
+				cryptoService,
+				dataOwnerApi,
+				rawPatientApiNoAccessKeys,
+				rawDeviceApi,
+				rawHealthcarePartyApi,
+			)
+			val shamirService = ShamirSecretSharingService(cryptoService.strongRandom)
 			val userEncryptionKeys = UserEncryptionKeysManagerImpl.Factory(
 				cryptoService,
 				cryptoStrategies,
@@ -145,13 +160,6 @@ interface IcureApi {
 				secureDelegationsEncryption,
 				dataOwnerApi
 			)
-			val baseExchangeKeysManager = BaseExchangeKeysManagerImpl(
-				cryptoService,
-				dataOwnerApi,
-				rawPatientApiNoAccessKeys,
-				rawDeviceApi,
-				rawHealthcarePartyApi,
-			)
 			val exchangeKeysManager = ExchangeKeysManagerImpl(
 				dataOwnerApi,
 				baseExchangeKeysManager,
@@ -161,13 +169,14 @@ interface IcureApi {
 				cryptoService,
 				exchangeKeysManager
 			)
+			val jsonEncryptionService = JsonEncryptionServiceImpl(cryptoService)
 			val entityEncryptionService = EntityEncryptionServiceImpl(
 				secureDelegationsManager,
 				secureDelegationsDecryptor,
 				legacyDelegationsDecryptor,
 				dataOwnerApi,
 				cryptoService,
-				JsonEncryptionServiceImpl(cryptoService),
+				jsonEncryptionService,
 				useParentKeys,
 				false // TODO should be true only for MS
 			)
@@ -182,16 +191,18 @@ interface IcureApi {
 			)
 			ensureDelegationForSelf(dataOwnerApi, entityEncryptionService, patientApi.rawApi, cryptoService)
 			return IcureApiImpl(
-				ContactApi(
+				ContactApiImpl(
 					RawContactApi(apiUrl, authService, headersProvider),
 					entityEncryptionService,
+					jsonEncryptionService
 				),
 				patientApi,
-				HealthElementApi(
+				HealthcareElementApiImpl(
 					RawHealthElementApi(apiUrl, authService, headersProvider),
 					entityEncryptionService,
 				),
-				dataOwnerApi
+				dataOwnerApi,
+				UserApi(RawUserApi(apiUrl, authService))
 			)
 		}
 	}
@@ -200,8 +211,9 @@ interface IcureApi {
 private class IcureApiImpl(
 	override val contact: ContactApi,
 	override val patient: PatientApi,
-	override val healthElement: HealthElementApi,
-	override val dataOwner: DataOwnerApi
+	override val healthElement: HealthcareElementApi,
+	override val dataOwner: DataOwnerApi,
+	override val user: UserApi
 ): IcureApi
 
 @InternalIcureApi
