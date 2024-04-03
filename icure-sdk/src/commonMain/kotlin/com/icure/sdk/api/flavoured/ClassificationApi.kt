@@ -27,7 +27,7 @@ import kotlinx.serialization.json.decodeFromJsonElement
 
 @OptIn(InternalIcureApi::class)
 private val ENCRYPTED_FIELDS_MANIFEST =
-	EncryptedFieldsManifest("lCassification.", setOf("note", "descr"), emptyMap(), emptyMap(), emptyMap())
+	EncryptedFieldsManifest("lCassification.", emptySet(), emptyMap(), emptyMap(), emptyMap())
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface ClassificationBasicFlavourlessApi {
