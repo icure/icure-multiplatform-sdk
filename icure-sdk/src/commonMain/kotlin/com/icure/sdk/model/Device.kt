@@ -47,7 +47,8 @@ data class Device(
 	override val hcPartyKeys: Map<String, List<HexString>> = emptyMap(),
 	override val aesExchangeKeys: Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> =
 		emptyMap(),
-	override val transferKeys: Map<AesExchangeKeyEncryptionKeypairIdentifier, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>> = emptyMap(),
+	override val transferKeys: Map<AesExchangeKeyEncryptionKeypairIdentifier, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>> =
+		emptyMap(),
 	override val privateKeyShamirPartitions: Map<String, HexString> = emptyMap(),
 	override val publicKey: SpkiHexString? = null,
 	override val publicKeysForOaepWithSha256: Set<SpkiHexString> = emptySet(),
