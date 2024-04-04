@@ -23,7 +23,7 @@ import com.icure.sdk.model.embed.DelegationTag
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.requests.RequestedPermission
-import com.icure.sdk.utils.EntityDecryptionException
+import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import kotlinx.serialization.json.decodeFromJsonElement
@@ -195,7 +195,7 @@ internal class HealthcareElementApiImpl(
 			entity.withTypeInfo(),
 			EncryptedHealthElement.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedHealthElement>(it) }
-			?: throw EntityDecryptionException("Entity ${entity.id} cannot be created")
+			?: throw EntityEncryptionException("Entity ${entity.id} cannot be created")
 	}
 }, HealthcareElementBasicFlavourlessApi by AbstractHealthcareElementBasicFlavourlessApi(rawApi) {
 	override val encrypted: HealthcareElementFlavouredApi<EncryptedHealthElement> =
@@ -280,7 +280,7 @@ internal class HealthcareElementApiImpl(
 		entity.withTypeInfo(),
 		EncryptedHealthElement.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedHealthElement>(it) }
-		?: throw EntityDecryptionException(errorMessage())
+		?: throw EntityEncryptionException(errorMessage())
 
 }
 

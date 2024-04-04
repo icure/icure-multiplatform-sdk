@@ -19,7 +19,7 @@ import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.embed.DelegationTag
 import com.icure.sdk.model.requests.RequestedPermission
-import com.icure.sdk.utils.EntityDecryptionException
+import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import kotlinx.serialization.json.decodeFromJsonElement
@@ -142,7 +142,7 @@ internal class TimeTableApiImpl(
 			entity.withTypeInfo(),
 			EncryptedTimeTable.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedTimeTable>(it) }
-			?: throw EntityDecryptionException("Entity ${entity.id} cannot be created")
+			?: throw EntityEncryptionException("Entity ${entity.id} cannot be created")
 	}
 }, TimeTableBasicFlavourlessApi by AbstractTimeTableBasicFlavourlessApi(rawApi) {
 	override val encrypted: TimeTableFlavouredApi<EncryptedTimeTable> =
@@ -216,7 +216,7 @@ internal class TimeTableApiImpl(
 		entity.withTypeInfo(),
 		EncryptedTimeTable.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedTimeTable>(it) }
-		?: throw EntityDecryptionException(errorMessage())
+		?: throw EntityEncryptionException(errorMessage())
 
 }
 

@@ -14,7 +14,7 @@ import com.icure.sdk.model.Patient
 import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
-import com.icure.sdk.utils.EntityDecryptionException
+import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.ensureNonNull
@@ -75,7 +75,7 @@ class PatientApi(
 			rawApi.bulkShare(shareParams).successBody().map { r ->
 				r.map {
 					encryptionService.tryDecryptEntity(it.withTypeInfo(), EncryptedPatient.serializer()) { Serialization.json.decodeFromJsonElement<DecryptedPatient>(it) }
-						?: throw EntityDecryptionException("Could not decrypt shared patient")
+						?: throw EntityEncryptionException("Could not decrypt shared patient")
 				}
 			}
 		}
@@ -95,7 +95,7 @@ class PatientApi(
 			rawApi.bulkShare(it).successBody().map { r ->
 				r.map {
 					encryptionService.tryDecryptEntity(it.withTypeInfo(), EncryptedPatient.serializer()) { Serialization.json.decodeFromJsonElement<DecryptedPatient>(it) }
-						?: throw EntityDecryptionException("Could not decrypt shared patient")
+						?: throw EntityEncryptionException("Could not decrypt shared patient")
 				}
 			}
 		} ?: updatedPatient

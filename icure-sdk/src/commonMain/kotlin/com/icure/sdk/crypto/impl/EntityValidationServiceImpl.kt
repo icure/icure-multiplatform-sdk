@@ -6,6 +6,7 @@ import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.EntityWithTypeInfo
 import com.icure.sdk.model.base.HasEncryptionMetadata
 import com.icure.sdk.model.embed.Encryptable
+import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import kotlinx.serialization.SerializationStrategy
@@ -21,9 +22,9 @@ class EntityValidationServiceImpl(
 		fieldsToEncrypt: EncryptedFieldsManifest
 	): E where E : Encryptable, E : HasEncryptionMetadata {
 		val encryptedJson = Serialization.json.encodeToJsonElement(encryptedEntitySerializer, encryptedEntity.entity).jsonObject
-		require (!jsonEncryptionService.requiresEncryption(encryptedJson, fieldsToEncrypt)) {
+		if (jsonEncryptionService.requiresEncryption(encryptedJson, fieldsToEncrypt)) throw EntityEncryptionException(
 			"${encryptedEntity.type.id} ${encryptedEntity.id} has some fields which should be encrypted according to the manifest but are not encrypted; you should not modify encrypted fields when working directly with encrypted entities."
-		}
+		)
 		return encryptedEntity.entity
 	}
 }

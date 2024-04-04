@@ -31,7 +31,7 @@ import com.icure.sdk.model.embed.Service
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.requests.RequestedPermission
-import com.icure.sdk.utils.EntityDecryptionException
+import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.InternalIcureException
 import com.icure.sdk.utils.Serialization
@@ -397,7 +397,7 @@ internal class ContactApiImpl(
 				it.encrypt(
 					jsonEncryptionService,
 					encryptionService.tryDecryptAndImportAnyEncryptionKey(entity.withTypeInfo())?.key
-						?: throw EntityDecryptionException("Cannot obtain key from contact"),
+						?: throw EntityEncryptionException("Cannot obtain key from contact"),
 				)
 			}.toSet(),
 		)
@@ -407,7 +407,7 @@ internal class ContactApiImpl(
 			entity.withTypeInfo(),
 			EncryptedContact.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedContact>(it) }
-			?: throw EntityDecryptionException("Entity ${entity.id} cannot be decrypted")
+			?: throw EntityEncryptionException("Entity ${entity.id} cannot be decrypted")
 	}
 
 	override suspend fun maybeDecryptService(entity: EncryptedService): DecryptedService =
@@ -421,7 +421,7 @@ internal class ContactApiImpl(
 				.let {
 					Serialization.json.decodeFromJsonElement<DecryptedService>(it)
 				}
-		} ?: throw EntityDecryptionException("Service ${entity.id} cannot be decrypted")
+		} ?: throw EntityEncryptionException("Service ${entity.id} cannot be decrypted")
 
 }, ContactBasicFlavourlessApi by AbstractContactBasicFlavourlessApi(rawApi) {
 	override val encrypted: ContactFlavouredApi<EncryptedContact, EncryptedService> =
@@ -478,7 +478,7 @@ internal class ContactApiImpl(
 						it.encrypt(
 							jsonEncryptionService,
 							encryptionService.tryDecryptAndImportAnyEncryptionKey(entity.withTypeInfo())?.key
-								?: throw EntityDecryptionException("Cannot obtain key from contact"),
+								?: throw EntityEncryptionException("Cannot obtain key from contact"),
 						)
 					}.toSet(),
 				)
@@ -534,7 +534,7 @@ internal class ContactApiImpl(
 			it.encrypt(
 				jsonEncryptionService,
 				encryptionService.tryDecryptAndImportAnyEncryptionKey(entity.withTypeInfo())?.key
-					?: throw EntityDecryptionException("Cannot obtain key from contact"),
+					?: throw EntityEncryptionException("Cannot obtain key from contact"),
 			)
 		}.toSet(),
 	)
@@ -543,7 +543,7 @@ internal class ContactApiImpl(
 		entity.withTypeInfo(),
 		EncryptedContact.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedContact>(it) }
-		?: throw EntityDecryptionException(errorMessage())
+		?: throw EntityEncryptionException(errorMessage())
 
 }
 

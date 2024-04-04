@@ -3,37 +3,38 @@ package com.icure.sdk.crypto.impl
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.utils.toHexString
 import com.icure.sdk.api.extended.DataOwnerApi
+import com.icure.sdk.crypto.EntityEncryptionService
+import com.icure.sdk.crypto.EntityValidationService
+import com.icure.sdk.crypto.JsonEncryptionService
+import com.icure.sdk.crypto.SecureDelegationsDecryptor
+import com.icure.sdk.crypto.SecureDelegationsManager
+import com.icure.sdk.crypto.SecurityMetadataDecryptor
 import com.icure.sdk.crypto.entities.BulkShareResult
+import com.icure.sdk.crypto.entities.DecryptedMetadataDetails
 import com.icure.sdk.crypto.entities.DelegateShareOptions
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.EntityDataEncryptionResult
 import com.icure.sdk.crypto.entities.EntityEncryptionKeyDetails
 import com.icure.sdk.crypto.entities.EntityEncryptionMetadataInitialisationResult
-import com.icure.sdk.crypto.EntityEncryptionService
-import com.icure.sdk.crypto.EntityValidationService
-import com.icure.sdk.crypto.entities.HierarchicallyDecryptedMetadata
-import com.icure.sdk.crypto.JsonEncryptionService
-import com.icure.sdk.crypto.SecureDelegationsDecryptor
-import com.icure.sdk.crypto.entities.MinimalBulkShareResult
-import com.icure.sdk.crypto.SecureDelegationsManager
-import com.icure.sdk.crypto.SecurityMetadataDecryptor
-import com.icure.sdk.crypto.entities.DecryptedMetadataDetails
 import com.icure.sdk.crypto.entities.EntityWithTypeInfo
 import com.icure.sdk.crypto.entities.FailedRequestDetails
+import com.icure.sdk.crypto.entities.HierarchicallyDecryptedMetadata
+import com.icure.sdk.crypto.entities.MinimalBulkShareResult
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
-import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.SimpleDelegateShareOptions
-import com.icure.sdk.model.embed.AccessLevel
+import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.model.base.HasEncryptionMetadata
+import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.embed.Encryptable
-import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
 import com.icure.sdk.model.requests.EntityShareOrMetadataUpdateRequest
 import com.icure.sdk.model.requests.MinimalEntityBulkShareResult
 import com.icure.sdk.model.requests.RequestedPermission
+import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.model.specializations.SecureDelegationKeyString
+import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.IllegalEntityException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
@@ -73,9 +74,8 @@ class EntityEncryptionServiceImpl(
 		constructor: (json: JsonElement) -> E
 	): E where E : HasEncryptionMetadata, E : Encryptable, D : HasEncryptionMetadata, D : Encryptable {
 		val updatedEntity = ensureEncryptionKeysInitialised(unencryptedEntity)?.let { EntityWithTypeInfo(it, unencryptedEntity.type) } ?: unencryptedEntity
-		val keyInfo = requireNotNull(tryDecryptAndImportAnyEncryptionKey(updatedEntity)) {
-			"${updatedEntity.type.id} ${updatedEntity.id} has no encryption key, and can't be encrypted; entity may have not been initialised properly."
-		}
+		val keyInfo = tryDecryptAndImportAnyEncryptionKey(updatedEntity)
+			?: throw EntityEncryptionException("${updatedEntity.type.id} ${updatedEntity.id} has no encryption key, and can't be encrypted; entity may have not been initialised properly.")
 		val plainJson = Serialization.json.encodeToJsonElement(unencryptedEntitySerializer, updatedEntity.entity).jsonObject
 		val encryptedJson = jsonEncryptionService.encrypt(keyInfo.key, plainJson, fieldsToEncrypt)
 		return constructor(encryptedJson)

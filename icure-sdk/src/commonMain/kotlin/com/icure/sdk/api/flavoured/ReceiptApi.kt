@@ -20,7 +20,7 @@ import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.embed.DelegationTag
 import com.icure.sdk.model.requests.RequestedPermission
-import com.icure.sdk.utils.EntityDecryptionException
+import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import kotlinx.serialization.json.decodeFromJsonElement
@@ -148,7 +148,7 @@ internal class ReceiptApiImpl(
 			entity.withTypeInfo(),
 			EncryptedReceipt.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedReceipt>(it) }
-			?: throw EntityDecryptionException("Entity ${entity.id} cannot be created")
+			?: throw EntityEncryptionException("Entity ${entity.id} cannot be created")
 	}
 }, ReceiptBasicFlavourlessApi by AbstractReceiptBasicFlavourlessApi(rawApi) {
 	override val encrypted: ReceiptFlavouredApi<EncryptedReceipt> =
@@ -215,13 +215,13 @@ internal class ReceiptApiImpl(
 	override suspend fun getAndDecryptReceiptAttachment(receipt: Receipt, attachmentId: String) =
 		rawApi.getReceiptAttachment(receipt.id, attachmentId).successBody().let {
 			val aesKey = encryptionService.tryDecryptAndImportAnyEncryptionKey(receipt.withTypeInfo())?.key
-				?: throw EntityDecryptionException("Cannot extract decryption key from receipt")
+				?: throw EntityEncryptionException("Cannot extract decryption key from receipt")
 			cryptoService.aes.decrypt(it, aesKey)
 		}
 
 	override suspend fun encryptAndSetReceiptAttachment(receipt: Receipt, blobType: String, attachment: ByteArray): EncryptedReceipt {
 		val aesKey = encryptionService.tryDecryptAndImportAnyEncryptionKey(receipt.withTypeInfo())?.key
-			?: throw EntityDecryptionException("Cannot extract encryption key from receipt")
+			?: throw EntityEncryptionException("Cannot extract encryption key from receipt")
 		val payload = cryptoService.aes.encrypt(attachment, aesKey)
 		return rawApi.setReceiptAttachment(
 			receipt.id,
@@ -241,7 +241,7 @@ internal class ReceiptApiImpl(
 		entity.withTypeInfo(),
 		EncryptedReceipt.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedReceipt>(it) }
-		?: throw EntityDecryptionException(errorMessage())
+		?: throw EntityEncryptionException(errorMessage())
 
 }
 

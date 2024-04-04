@@ -22,7 +22,7 @@ import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.embed.DelegationTag
 import com.icure.sdk.model.requests.RequestedPermission
-import com.icure.sdk.utils.EntityDecryptionException
+import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.pagination.MultipleSourcePageIterator
@@ -268,7 +268,7 @@ internal class AccessLogApiImpl(
 			entity.withTypeInfo(),
 			EncryptedAccessLog.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedAccessLog>(it) }
-			?: throw EntityDecryptionException("Entity ${entity.id} cannot be created")
+			?: throw EntityEncryptionException("Entity ${entity.id} cannot be created")
 	}
 }, AccessLogBasicFlavourlessApi by AbstractAccessLogBasicFlavourlessApi(rawApi) {
 
@@ -363,7 +363,7 @@ internal class AccessLogApiImpl(
 		entity.withTypeInfo(),
 		EncryptedAccessLog.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedAccessLog>(it) }
-		?: throw EntityDecryptionException(errorMessage())
+		?: throw EntityEncryptionException(errorMessage())
 
 }
 

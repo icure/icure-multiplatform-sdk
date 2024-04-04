@@ -21,7 +21,11 @@ class ResourceNotFoundException(
  */
 class IllegalEntityException(message: String, cause: Throwable? = null) : Exception(message, cause)
 
-class EntityDecryptionException(message: String, cause: Throwable? = null) : Exception(message, cause)
+/**
+ * Signals that an error occurred during the encryption/decryption (e.g. can't find a key) or encryption validation (e.g. something that
+ * should be encrypted according to the manifest is not encrypted) of an entity.
+ */
+class EntityEncryptionException(message: String, cause: Throwable? = null) : Exception(message, cause)
 
 class RequestStatusException(
 	val requestMethod: HttpMethod,

@@ -21,7 +21,7 @@ import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.embed.DelegationTag
 import com.icure.sdk.model.requests.RequestedPermission
-import com.icure.sdk.utils.EntityDecryptionException
+import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import kotlinx.serialization.json.decodeFromJsonElement
@@ -253,7 +253,7 @@ internal class FormApiImpl(
 			entity.withTypeInfo(),
 			EncryptedForm.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedForm>(it) }
-			?: throw EntityDecryptionException("Entity ${entity.id} cannot be created")
+			?: throw EntityEncryptionException("Entity ${entity.id} cannot be created")
 	}
 }, FormBasicFlavourlessApi by AbstractFormBasicFlavourlessApi(rawApi) {
 	override val encrypted: FormFlavouredApi<EncryptedForm> =
@@ -338,7 +338,7 @@ internal class FormApiImpl(
 		entity.withTypeInfo(),
 		EncryptedForm.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedForm>(it) }
-		?: throw EntityDecryptionException(errorMessage())
+		?: throw EntityEncryptionException(errorMessage())
 
 }
 

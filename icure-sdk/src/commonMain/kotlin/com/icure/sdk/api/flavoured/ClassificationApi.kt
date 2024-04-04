@@ -13,14 +13,13 @@ import com.icure.sdk.model.Classification
 import com.icure.sdk.model.DecryptedClassification
 import com.icure.sdk.model.EncryptedClassification
 import com.icure.sdk.model.ListOfIds
-import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.Patient
 import com.icure.sdk.model.User
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.embed.DelegationTag
 import com.icure.sdk.model.requests.RequestedPermission
-import com.icure.sdk.utils.EntityDecryptionException
+import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import kotlinx.serialization.json.decodeFromJsonElement
@@ -167,7 +166,7 @@ internal class ClassificationApiImpl(
 			entity.withTypeInfo(),
 			EncryptedClassification.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedClassification>(it) }
-			?: throw EntityDecryptionException("Entity ${entity.id} cannot be created")
+			?: throw EntityEncryptionException("Entity ${entity.id} cannot be created")
 	}
 }, ClassificationBasicFlavourlessApi by AbstractClassificationBasicFlavourlessApi(rawApi) {
 	override val encrypted: ClassificationFlavouredApi<EncryptedClassification> =
@@ -241,7 +240,7 @@ internal class ClassificationApiImpl(
 		entity.withTypeInfo(),
 		EncryptedClassification.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedClassification>(it) }
-		?: throw EntityDecryptionException(errorMessage())
+		?: throw EntityEncryptionException(errorMessage())
 
 }
 

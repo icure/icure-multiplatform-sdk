@@ -26,7 +26,7 @@ import com.icure.sdk.model.embed.InvoiceType
 import com.icure.sdk.model.embed.MediumType
 import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.requests.RequestedPermission
-import com.icure.sdk.utils.EntityDecryptionException
+import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import kotlinx.serialization.json.decodeFromJsonElement
@@ -355,7 +355,7 @@ internal class InvoiceApiImpl(
 			entity.withTypeInfo(),
 			EncryptedInvoice.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedInvoice>(it) }
-			?: throw EntityDecryptionException("Entity ${entity.id} cannot be created")
+			?: throw EntityEncryptionException("Entity ${entity.id} cannot be created")
 	}
 }, InvoiceBasicFlavourlessApi by AbstractInvoiceBasicFlavourlessApi(rawApi) {
 	override val encrypted: InvoiceFlavouredApi<EncryptedInvoice> =
@@ -440,7 +440,7 @@ internal class InvoiceApiImpl(
 		entity.withTypeInfo(),
 		EncryptedInvoice.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedInvoice>(it) }
-		?: throw EntityDecryptionException(errorMessage())
+		?: throw EntityEncryptionException(errorMessage())
 
 }
 

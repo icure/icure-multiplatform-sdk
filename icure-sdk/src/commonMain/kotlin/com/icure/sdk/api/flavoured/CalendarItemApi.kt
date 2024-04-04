@@ -22,7 +22,7 @@ import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.embed.DelegationTag
 import com.icure.sdk.model.requests.RequestedPermission
-import com.icure.sdk.utils.EntityDecryptionException
+import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.pagination.MultipleSourcePageIterator
@@ -234,7 +234,7 @@ internal class CalendarItemApiImpl(
 			entity.withTypeInfo(),
 			EncryptedCalendarItem.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedCalendarItem>(it) }
-			?: throw EntityDecryptionException("Entity ${entity.id} cannot be created")
+			?: throw EntityEncryptionException("Entity ${entity.id} cannot be created")
 	}
 }, CalendarItemBasicFlavourlessApi by AbstractCalendarItemBasicFlavourlessApi(rawApi) {
 	override val encrypted: CalendarItemFlavouredApi<EncryptedCalendarItem> =
@@ -308,7 +308,7 @@ internal class CalendarItemApiImpl(
 		entity.withTypeInfo(),
 		EncryptedCalendarItem.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedCalendarItem>(it) }
-		?: throw EntityDecryptionException(errorMessage())
+		?: throw EntityEncryptionException(errorMessage())
 
 }
 

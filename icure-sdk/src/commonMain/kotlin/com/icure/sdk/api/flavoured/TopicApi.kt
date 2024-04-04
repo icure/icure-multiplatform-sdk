@@ -25,7 +25,7 @@ import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.requests.topic.AddParticipant
 import com.icure.sdk.model.requests.topic.RemoveParticipant
-import com.icure.sdk.utils.EntityDecryptionException
+import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import kotlinx.serialization.json.decodeFromJsonElement
@@ -163,7 +163,7 @@ internal class TopicApiImpl(
 			entity.withTypeInfo(),
 			EncryptedTopic.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedTopic>(it) }
-			?: throw EntityDecryptionException("Entity ${entity.id} cannot be created")
+			?: throw EntityEncryptionException("Entity ${entity.id} cannot be created")
 	}
 }, TopicBasicFlavourlessApi by AbstractTopicBasicFlavourlessApi(rawApi) {
 	override val encrypted: TopicFlavouredApi<EncryptedTopic> =
@@ -237,7 +237,7 @@ internal class TopicApiImpl(
 		entity.withTypeInfo(),
 		EncryptedTopic.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedTopic>(it) }
-		?: throw EntityDecryptionException(errorMessage())
+		?: throw EntityEncryptionException(errorMessage())
 
 }
 
