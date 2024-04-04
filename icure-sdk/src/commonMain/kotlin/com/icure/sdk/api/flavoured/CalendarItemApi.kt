@@ -98,11 +98,11 @@ interface CalendarItemBasicApi : CalendarItemBasicFlavourlessApi, CalendarItemBa
 private abstract class AbstractCalendarItemBasicFlavouredApi<E : CalendarItem>(
 	protected val rawApi: RawCalendarItemApi,
 	protected val exchangeDataManager: ExchangeDataManager
-) :
-	CalendarItemBasicFlavouredApi<E> {
+) : CalendarItemBasicFlavouredApi<E> {
 
 	private suspend fun getSecureDelegationKeys() = exchangeDataManager
 		.getAccessControlKeysValue(EntityWithEncryptionMetadataTypeName.CalendarItem)?.map { it.s } ?: emptyList()
+
 	override suspend fun modifyCalendarItem(entity: E): E =
 		rawApi.modifyCalendarItem(validateAndMaybeEncrypt(entity)).successBody().let { maybeDecrypt(it) }
 
@@ -218,8 +218,8 @@ private class AbstractCalendarItemBasicFlavourlessApi(val rawApi: RawCalendarIte
 internal class CalendarItemApiImpl(
 	private val rawApi: RawCalendarItemApi,
 	private val encryptionService: EntityEncryptionService,
-	private val fieldsToEncrypt: EncryptedFieldsManifest = ENCRYPTED_FIELDS_MANIFEST,
-	private val exchangeDataManager: ExchangeDataManager
+	private val exchangeDataManager: ExchangeDataManager,
+	private val fieldsToEncrypt: EncryptedFieldsManifest = ENCRYPTED_FIELDS_MANIFEST
 ) : CalendarItemApi, CalendarItemFlavouredApi<DecryptedCalendarItem> by object :
 	AbstractCalendarItemFlavouredApi<DecryptedCalendarItem>(rawApi, encryptionService, exchangeDataManager) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedCalendarItem): EncryptedCalendarItem =

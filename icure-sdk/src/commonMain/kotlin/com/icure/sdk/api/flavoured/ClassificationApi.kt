@@ -27,7 +27,7 @@ import kotlinx.serialization.json.decodeFromJsonElement
 
 @OptIn(InternalIcureApi::class)
 private val ENCRYPTED_FIELDS_MANIFEST =
-	EncryptedFieldsManifest("lCassification.", emptySet(), emptyMap(), emptyMap(), emptyMap())
+	EncryptedFieldsManifest("Classification.", emptySet(), emptyMap(), emptyMap(), emptyMap())
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface ClassificationBasicFlavourlessApi {
@@ -39,14 +39,6 @@ interface ClassificationBasicFlavourlessApi {
 interface ClassificationBasicFlavouredApi<E : Classification> {
 	suspend fun modifyClassification(entity: E): E
 	suspend fun getClassification(entityId: String): E
-	suspend fun findClassificationsByHcPartyPatientForeignKey(
-		hcPartyId: String,
-		secretPatientKey: String,
-		startKey: String? = null,
-		startDocumentId: String? = null,
-		limit: Int? = null,
-	): PaginatedList<E, *>
-
 	suspend fun findClassificationsByHcPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<E>
 	suspend fun getClassificationByHcPartyId(ids: String): List<E>
 }
@@ -100,16 +92,6 @@ private abstract class AbstractClassificationBasicFlavouredApi<E : Classificatio
 	//TODO: Check method name
 	override suspend fun getClassificationByHcPartyId(ids: String): List<E> =
 		rawApi.getClassificationByHcPartyId(ids).successBody().map { maybeDecrypt(it) }
-
-	override suspend fun findClassificationsByHcPartyPatientForeignKey(
-		hcPartyId: String,
-		secretPatientKey: String,
-		startKey: String?,
-		startDocumentId: String?,
-		limit: Int?,
-	): PaginatedList<E, *> =
-		rawApi.findClassificationsByHCPartyPatientForeignKey(hcPartyId, secretPatientKey, startKey, startDocumentId, limit).successBody()
-			.map { maybeDecrypt(it) }
 
 	override suspend fun findClassificationsByHcPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<E> =
 		rawApi.findClassificationsByHCPartyPatientForeignKeys(hcPartyId, secretPatientKeys.joinToString(",")).successBody().map { maybeDecrypt(it) }

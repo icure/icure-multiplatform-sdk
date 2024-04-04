@@ -4,11 +4,14 @@ import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.kryptom.utils.toHexString
 import com.icure.sdk.api.extended.DataOwnerApi
+import com.icure.sdk.api.flavoured.CalendarItemApi
+import com.icure.sdk.api.flavoured.CalendarItemApiImpl
 import com.icure.sdk.api.flavoured.ContactApi
 import com.icure.sdk.api.flavoured.ContactApiImpl
 import com.icure.sdk.api.flavoured.HealthcareElementApi
 import com.icure.sdk.api.flavoured.HealthcareElementApiImpl
 import com.icure.sdk.api.raw.RawAnonymousAuthApi
+import com.icure.sdk.api.raw.RawCalendarItemApi
 import com.icure.sdk.api.raw.RawContactApi
 import com.icure.sdk.api.raw.RawDataOwnerApi
 import com.icure.sdk.api.raw.RawDeviceApi
@@ -56,6 +59,7 @@ import com.icure.sdk.storage.impl.JsonAndBase64KeyStorage
 import com.icure.sdk.utils.InternalIcureApi
 
 interface IcureApi {
+	val calendarItem: CalendarItemApi
 	val contact: ContactApi
 	val patient: PatientApi
 	val healthElement: HealthcareElementApi
@@ -199,19 +203,24 @@ interface IcureApi {
 			)
 			ensureDelegationForSelf(dataOwnerApi, entityEncryptionService, patientApi.rawApi, cryptoService)
 			return IcureApiImpl(
-				ContactApiImpl(
+				calendarItem = CalendarItemApiImpl(
+					RawCalendarItemApi(apiUrl, authService, headersProvider),
+					entityEncryptionService,
+					exchangeDataManager
+				),
+				contact = ContactApiImpl(
 					RawContactApi(apiUrl, authService, headersProvider),
 					entityEncryptionService,
 					jsonEncryptionService
 				),
-				patientApi,
-				HealthcareElementApiImpl(
+				patient = patientApi,
+				healthElement = HealthcareElementApiImpl(
 					RawHealthElementApi(apiUrl, authService, headersProvider),
 					entityEncryptionService,
 				),
-				dataOwnerApi,
-				UserApi(RawUserApi(apiUrl, authService)),
-				CryptoApi(
+				dataOwner = dataOwnerApi,
+				user = UserApi(RawUserApi(apiUrl, authService)),
+				crypto = CryptoApi(
 					ShamirKeysManagerImpl(
 						dataOwnerApi,
 						userEncryptionKeys,
@@ -229,6 +238,7 @@ interface IcureApi {
 }
 
 private class IcureApiImpl(
+	override val calendarItem: CalendarItemApi,
 	override val contact: ContactApi,
 	override val patient: PatientApi,
 	override val healthElement: HealthcareElementApi,

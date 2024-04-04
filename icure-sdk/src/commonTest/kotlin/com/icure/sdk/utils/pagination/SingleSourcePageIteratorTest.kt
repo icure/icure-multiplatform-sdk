@@ -3,6 +3,7 @@ package com.icure.sdk.utils.pagination
 import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.sdk.model.PaginatedDocumentKeyIdPair
 import com.icure.sdk.model.PaginatedList
+import com.icure.sdk.model.base.Versionable
 import com.icure.sdk.model.specializations.JsonString
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
