@@ -86,6 +86,16 @@ interface AccessLogFlavouredApi<E : AccessLog> : AccessLogBasicFlavouredApi<E> {
 		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
 		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
 	): SimpleShareResult<E>
+
+	suspend fun findAccessLogsByHcPartyPatient(
+		hcPartyId: String,
+		patient: Patient,
+		startKey: String? = null,
+		startDocumentId: String? = null,
+		limit: Int? = null,
+	): List<E>
+
+
 }
 
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
@@ -98,14 +108,6 @@ interface AccessLogApi : AccessLogBasicFlavourlessApi, AccessLogFlavouredApi<Dec
 		delegates: Map<String, AccessLevel> = emptyMap(),
 		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent,
 	): DecryptedAccessLog
-
-	suspend fun findAccessLogsByHcPartyPatient(
-		hcPartyId: String,
-		patient: Patient,
-		startKey: String? = null,
-		startDocumentId: String? = null,
-		limit: Int? = null,
-	): List<DecryptedAccessLog>
 
 	val encrypted: AccessLogFlavouredApi<EncryptedAccessLog>
 	val tryAndRecover: AccessLogFlavouredApi<AccessLog>
@@ -201,6 +203,18 @@ private abstract class AbstractAccessLogFlavouredApi<E : AccessLog>(
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
 		}
+
+	override suspend fun findAccessLogsByHcPartyPatient(
+		hcPartyId: String,
+		patient: Patient,
+		startKey: String?,
+		startDocumentId: String?,
+		limit: Int?,
+	): List<E> = rawApi.findAccessLogsByHCPartyPatientForeignKeys(
+		hcPartyId,
+		encryptionService.secretIdsOf(patient.withTypeInfo(), null).toList(),
+	).successBody().map { maybeDecrypt(it) }
+
 }
 
 @InternalIcureApi
@@ -291,17 +305,6 @@ internal class AccessLogApiImpl(
 					(user.autoDelegations[DelegationTag.All] ?: emptySet())
 				).associateWith { AccessLevel.Write },
 		).updatedEntity
-
-	override suspend fun findAccessLogsByHcPartyPatient(
-		hcPartyId: String,
-		patient: Patient,
-		startKey: String?,
-		startDocumentId: String?,
-		limit: Int?,
-	): List<DecryptedAccessLog> = rawApi.findAccessLogsByHCPartyPatientForeignKeys(
-        hcPartyId,
-        encryptionService.secretIdsOf(patient.withTypeInfo(), null).toList(),
-    ).successBody().map { decrypt(it) { "Found healthcare element cannot be decrypted" } }
 
 	private suspend fun encrypt(entity: DecryptedAccessLog) = encryptionService.encryptEntity(
 		entity.withTypeInfo(),

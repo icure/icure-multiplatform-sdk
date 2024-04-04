@@ -120,6 +120,13 @@ interface InvoiceFlavouredApi<E : Invoice> : InvoiceBasicFlavouredApi<E> {
 		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
 		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
 	): SimpleShareResult<E>
+	suspend fun findInvoicesByHcPartyPatient(
+		hcPartyId: String,
+		patient: Patient,
+		startKey: String? = null,
+		startDocumentId: String? = null,
+		limit: Int? = null,
+	): List<E>
 }
 
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
@@ -133,13 +140,6 @@ interface InvoiceApi : InvoiceBasicFlavourlessApi, InvoiceFlavouredApi<Decrypted
 		delegates: Map<String, AccessLevel> = emptyMap(),
 		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent,
 	): DecryptedInvoice
-	suspend fun findInvoicesByHcPartyPatient(
-		hcPartyId: String,
-		patient: Patient,
-		startKey: String? = null,
-		startDocumentId: String? = null,
-		limit: Int? = null,
-	): List<DecryptedInvoice>
 
 	val encrypted: InvoiceFlavouredApi<EncryptedInvoice>
 	val tryAndRecover: InvoiceFlavouredApi<Invoice>
@@ -308,6 +308,18 @@ private abstract class AbstractInvoiceFlavouredApi<E : Invoice>(
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
 		}
+	override suspend fun findInvoicesByHcPartyPatient(
+		hcPartyId: String,
+		patient: Patient,
+		startKey: String?,
+		startDocumentId: String?,
+		limit: Int?,
+	): List<E> = rawApi.findInvoicesByHCPartyPatientForeignKeys(
+		hcPartyId,
+		encryptionService.secretIdsOf(patient.withTypeInfo(), null).toList()
+	).successBody().map { maybeDecrypt(it) }
+
+
 }
 
 @InternalIcureApi
@@ -417,17 +429,6 @@ internal class InvoiceApiImpl(
 					(user.autoDelegations[DelegationTag.All] ?: emptySet())
 				).associateWith { AccessLevel.Write },
 		).updatedEntity
-
-	override suspend fun findInvoicesByHcPartyPatient(
-		hcPartyId: String,
-		patient: Patient,
-		startKey: String?,
-		startDocumentId: String?,
-		limit: Int?,
-	): List<DecryptedInvoice> = rawApi.findInvoicesByHCPartyPatientForeignKeys(
-		hcPartyId,
-		encryptionService.secretIdsOf(patient.withTypeInfo(), null).toList()
-	).successBody().map { decrypt(it) { "Found healthcare element cannot be decrypted"} }
 
 	private suspend fun encrypt(entity: DecryptedInvoice) = encryptionService.encryptEntity(
 		entity.withTypeInfo(),

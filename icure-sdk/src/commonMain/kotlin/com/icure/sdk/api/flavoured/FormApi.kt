@@ -81,6 +81,13 @@ interface FormFlavouredApi<E : Form> : FormBasicFlavouredApi<E> {
 		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
 		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
 	): SimpleShareResult<E>
+	suspend fun findFormsByHcPartyPatient(
+		hcPartyId: String,
+		patient: Patient,
+		startKey: String? = null,
+		startDocumentId: String? = null,
+		limit: Int? = null,
+	): List<DecryptedForm>
 }
 
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
@@ -94,14 +101,6 @@ interface FormApi : FormBasicFlavourlessApi, FormFlavouredApi<DecryptedForm> {
 		delegates: Map<String, AccessLevel> = emptyMap(),
 		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent,
 	): DecryptedForm
-
-	suspend fun findFormsByHcPartyPatient(
-		hcPartyId: String,
-		patient: Patient,
-		startKey: String? = null,
-		startDocumentId: String? = null,
-		limit: Int? = null,
-	): List<DecryptedForm>
 
 	val encrypted: FormFlavouredApi<EncryptedForm>
 	val tryAndRecover: FormFlavouredApi<Form>
@@ -180,6 +179,16 @@ private abstract class AbstractFormFlavouredApi<E : Form>(
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
 		}
+
+	override suspend fun findFormsByHcPartyPatient(
+		hcPartyId: String,
+		patient: Patient,
+		startKey: String?,
+		startDocumentId: String?,
+		limit: Int?,
+	): List<DecryptedForm> {
+		TODO("@vcp")
+	}
 }
 
 @InternalIcureApi
@@ -318,16 +327,6 @@ internal class FormApiImpl(
 					(user.autoDelegations[DelegationTag.All] ?: emptySet())
 				).associateWith { AccessLevel.Write },
 		).updatedEntity
-
-	override suspend fun findFormsByHcPartyPatient(
-		hcPartyId: String,
-		patient: Patient,
-		startKey: String?,
-		startDocumentId: String?,
-		limit: Int?,
-	): List<DecryptedForm> {
-		TODO("Not yet implemented, but @vcp can you have a look ?")
-	}
 
 	private suspend fun encrypt(entity: DecryptedForm) = encryptionService.encryptEntity(
 		entity.withTypeInfo(),

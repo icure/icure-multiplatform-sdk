@@ -66,6 +66,14 @@ interface HealthcareElementFlavouredApi<E : HealthElement> : HealthcareElementBa
 		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
 		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
 	): SimpleShareResult<E>
+	suspend fun findHealthcareElementsByHcPartyPatient(
+		hcPartyId: String,
+		patient: Patient,
+		startKey: String? = null,
+		startDocumentId: String? = null,
+		limit: Int? = null,
+	): List<E>
+
 }
 
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
@@ -79,13 +87,6 @@ interface HealthcareElementApi : HealthcareElementBasicFlavourlessApi, Healthcar
 		delegates: Map<String, AccessLevel> = emptyMap(),
 		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent,
 	): DecryptedHealthElement
-	suspend fun findHealthcareElementsByHcPartyPatient(
-		hcPartyId: String,
-		patient: Patient,
-		startKey: String? = null,
-		startDocumentId: String? = null,
-		limit: Int? = null,
-	): List<DecryptedHealthElement>
 
 	val encrypted: HealthcareElementFlavouredApi<EncryptedHealthElement>
 	val tryAndRecover: HealthcareElementFlavouredApi<HealthElement>
@@ -151,6 +152,17 @@ private abstract class AbstractHealthcareElementFlavouredApi<E : HealthElement>(
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
 		}
+	override suspend fun findHealthcareElementsByHcPartyPatient(
+		hcPartyId: String,
+		patient: Patient,
+		startKey: String?,
+		startDocumentId: String?,
+		limit: Int?,
+	): List<E> = rawApi.findHealthElementsByHCPartyPatientForeignKeys(
+		hcPartyId,
+		encryptionService.secretIdsOf(patient.withTypeInfo(), null).toList()
+	).successBody().map { maybeDecrypt(it) }
+
 }
 
 @InternalIcureApi
@@ -257,17 +269,6 @@ internal class HealthcareElementApiImpl(
 					(user.autoDelegations[DelegationTag.All] ?: emptySet())
 				).associateWith { AccessLevel.Write },
 		).updatedEntity
-
-	override suspend fun findHealthcareElementsByHcPartyPatient(
-		hcPartyId: String,
-		patient: Patient,
-		startKey: String?,
-		startDocumentId: String?,
-		limit: Int?,
-	): List<DecryptedHealthElement> = rawApi.findHealthElementsByHCPartyPatientForeignKeys(
-		hcPartyId,
-		encryptionService.secretIdsOf(patient.withTypeInfo(), null).toList()
-	).successBody().map { decrypt(it) { "Found healthcare element cannot be decrypted"} }
 
 	private suspend fun encrypt(entity: DecryptedHealthElement) = encryptionService.encryptEntity(
 		entity.withTypeInfo(),

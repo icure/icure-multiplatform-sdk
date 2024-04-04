@@ -60,6 +60,15 @@ interface ClassificationFlavouredApi<E : Classification> : ClassificationBasicFl
 		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
 		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
 	): SimpleShareResult<E>
+
+	suspend fun findClassificationsByHcPartyPatient(
+		hcPartyId: String,
+		patient: Patient,
+		startKey: String? = null,
+		startDocumentId: String? = null,
+		limit: Int? = null,
+	): List<E>
+
 }
 
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
@@ -72,14 +81,6 @@ interface ClassificationApi : ClassificationBasicFlavourlessApi, ClassificationF
 		delegates: Map<String, AccessLevel> = emptyMap(),
 		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent,
 	): DecryptedClassification
-
-	suspend fun findClassificationsByHcPartyPatient(
-		hcPartyId: String,
-		patient: Patient,
-		startKey: String? = null,
-		startDocumentId: String? = null,
-		limit: Int? = null,
-	): List<DecryptedClassification>
 
 	val encrypted: ClassificationFlavouredApi<EncryptedClassification>
 	val tryAndRecover: ClassificationFlavouredApi<Classification>
@@ -144,6 +145,19 @@ private abstract class AbstractClassificationFlavouredApi<E : Classification>(
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
 		}
+
+	override suspend fun findClassificationsByHcPartyPatient(
+		hcPartyId: String,
+		patient: Patient,
+		startKey: String?,
+		startDocumentId: String?,
+		limit: Int?,
+	): List<E> = rawApi.findClassificationsByHCPartyPatientForeignKeys(
+		hcPartyId,
+		encryptionService.secretIdsOf(patient.withTypeInfo(), null).toList().joinToString(","),
+	).successBody().map { maybeDecrypt(it) }
+
+
 }
 
 @InternalIcureApi
@@ -234,17 +248,6 @@ internal class ClassificationApiImpl(
 					(user.autoDelegations[DelegationTag.All] ?: emptySet())
 				).associateWith { AccessLevel.Write },
 		).updatedEntity
-
-	override suspend fun findClassificationsByHcPartyPatient(
-		hcPartyId: String,
-		patient: Patient,
-		startKey: String?,
-		startDocumentId: String?,
-		limit: Int?,
-	): List<DecryptedClassification> = rawApi.findClassificationsByHCPartyPatientForeignKeys(
-        hcPartyId,
-        encryptionService.secretIdsOf(patient.withTypeInfo(), null).toList().joinToString(","),
-    ).successBody().map { decrypt(it) { "Found healthcare element cannot be decrypted" } }
 
 	private suspend fun encrypt(entity: DecryptedClassification) = encryptionService.encryptEntity(
 		entity.withTypeInfo(),
