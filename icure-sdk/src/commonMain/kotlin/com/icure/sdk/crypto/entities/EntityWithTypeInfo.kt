@@ -4,7 +4,6 @@ import com.icure.sdk.model.AccessLog
 import com.icure.sdk.model.Article
 import com.icure.sdk.model.CalendarItem
 import com.icure.sdk.model.Classification
-import com.icure.sdk.model.ClassificationTemplate
 import com.icure.sdk.model.Contact
 import com.icure.sdk.model.Document
 import com.icure.sdk.model.Form
@@ -27,7 +26,6 @@ fun <T:Article> T.withTypeInfo() = EntityWithTypeInfo(this, EntityWithEncryption
 fun <T:AccessLog> T.withTypeInfo() = EntityWithTypeInfo(this, EntityWithEncryptionMetadataTypeName.AccessLog)
 fun <T:CalendarItem> T.withTypeInfo() = EntityWithTypeInfo(this, EntityWithEncryptionMetadataTypeName.CalendarItem)
 fun <T:Classification> T.withTypeInfo() = EntityWithTypeInfo(this, EntityWithEncryptionMetadataTypeName.Classification)
-fun <T:ClassificationTemplate> T.withTypeInfo() = EntityWithTypeInfo(this, EntityWithEncryptionMetadataTypeName.ClassificationTemplate)
 fun <T:Contact> T.withTypeInfo() = EntityWithTypeInfo(this, EntityWithEncryptionMetadataTypeName.Contact)
 fun <T:Document> T.withTypeInfo() = EntityWithTypeInfo(this, EntityWithEncryptionMetadataTypeName.Document)
 fun <T:Form> T.withTypeInfo() = EntityWithTypeInfo(this, EntityWithEncryptionMetadataTypeName.Form)

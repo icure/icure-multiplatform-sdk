@@ -4,12 +4,10 @@ import com.icure.sdk.auth.services.AuthService
 import com.icure.sdk.auth.services.setAuthorizationWith
 import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
-import com.icure.sdk.model.EncryptedClassificationTemplate
+import com.icure.sdk.model.ClassificationTemplate
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
-import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
-import com.icure.sdk.model.requests.EntityBulkShareResult
 import com.icure.sdk.model.specializations.JsonString
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.request.parameter
@@ -40,7 +38,7 @@ class RawClassificationTemplateApi(
 
 	// region common endpoints
 
-	suspend fun createClassificationTemplate(c: EncryptedClassificationTemplate): HttpResponse<EncryptedClassificationTemplate> =
+	suspend fun createClassificationTemplate(c: ClassificationTemplate): HttpResponse<ClassificationTemplate> =
 		post {
 			url {
 				takeFrom(apiUrl)
@@ -51,7 +49,7 @@ class RawClassificationTemplateApi(
 			setBody(c)
 		}.wrap()
 
-	suspend fun getClassificationTemplate(classificationTemplateId: String): HttpResponse<EncryptedClassificationTemplate> =
+	suspend fun getClassificationTemplate(classificationTemplateId: String): HttpResponse<ClassificationTemplate> =
 		get {
 			url {
 				takeFrom(apiUrl)
@@ -61,44 +59,11 @@ class RawClassificationTemplateApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-	suspend fun getClassificationTemplateByIds(ids: String): HttpResponse<List<EncryptedClassificationTemplate>> =
+	suspend fun getClassificationTemplateByIds(ids: String): HttpResponse<List<ClassificationTemplate>> =
 		get {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "classificationTemplate", "byIds", ids)
-				parameter("ts", GMTDate().timestamp)
-			}
-			setAuthorizationWith(authService)
-		}.wrap()
-
-	suspend fun listClassificationTemplatesByHCPartyPatientForeignKeys(
-		hcPartyId: String,
-		secretFKeys: String,
-	): HttpResponse<List<EncryptedClassificationTemplate>> =
-		get {
-			url {
-				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "classificationTemplate", "byHcPartySecretForeignKeys")
-				parameter("hcPartyId", hcPartyId)
-				parameter("secretFKeys", secretFKeys)
-				parameter("ts", GMTDate().timestamp)
-			}
-			setAuthorizationWith(authService)
-		}.wrap()
-
-	suspend fun findClassificationTemplatesByHCPartyPatientForeignKey(
-		hcPartyId: String,
-		secretFKey: String,
-		startKey: String?,
-		startDocumentId: String?,
-		limit: Int?,
-	): HttpResponse<PaginatedList<EncryptedClassificationTemplate, JsonString>> =
-		get {
-			url {
-				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "classificationTemplate", "byHcPartySecretForeignKey")
-				parameter("hcPartyId", hcPartyId)
-				parameter("secretFKey", secretFKey)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
@@ -124,9 +89,7 @@ class RawClassificationTemplateApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-	public suspend fun modifyClassificationTemplate(
-		classificationTemplateDto: EncryptedClassificationTemplate,
-	): HttpResponse<EncryptedClassificationTemplate> =
+	suspend fun modifyClassificationTemplate(classificationTemplateDto: ClassificationTemplate): HttpResponse<ClassificationTemplate> =
 		put {
 			url {
 				takeFrom(apiUrl)
@@ -141,7 +104,7 @@ class RawClassificationTemplateApi(
 		startKey: String?,
 		startDocumentId: String?,
 		limit: Int?,
-	): HttpResponse<PaginatedList<EncryptedClassificationTemplate, JsonString>> =
+	): HttpResponse<PaginatedList<ClassificationTemplate, JsonString>> =
 		get {
 			url {
 				takeFrom(apiUrl)
@@ -149,19 +112,6 @@ class RawClassificationTemplateApi(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
-		}.wrap()
-
-	suspend fun bulkShare(
-		request: BulkShareOrUpdateMetadataParams,
-	): HttpResponse<List<EntityBulkShareResult<EncryptedClassificationTemplate>>> =
-		put {
-			url {
-				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "classificationTemplate", "bulkSharedMetadataUpdate")
-			}
-			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			setBody(request)
 		}.wrap()
 
 	// endregion
