@@ -94,12 +94,14 @@ class RawExchangeDataApi(
 	suspend fun getParticipantCounterparts(
 		dataOwnerId: String,
 		counterpartsTypes: String,
+		ignoreOnEntryForFingerprint: String? = null,
 	): HttpResponse<List<String>> =
 		get {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "exchangedata", "byParticipant", dataOwnerId, "counterparts")
 				parameter("counterpartsTypes", counterpartsTypes)
+				parameter("ignoreOnEntryForFingerprint", ignoreOnEntryForFingerprint)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
