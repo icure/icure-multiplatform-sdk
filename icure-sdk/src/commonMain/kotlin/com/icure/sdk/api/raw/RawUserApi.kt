@@ -12,7 +12,6 @@ import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.security.Enable2faRequest
 import com.icure.sdk.model.security.TokenWithGroup
-import com.icure.sdk.model.specializations.JsonString
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.request.`header`
 import io.ktor.client.request.parameter
@@ -57,7 +56,7 @@ class RawUserApi(
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		skipPatients: Boolean? = null,
-	): HttpResponse<PaginatedList<User, JsonString>> =
+	): HttpResponse<PaginatedList<User>> =
 		get {
 			url {
 				takeFrom(apiUrl)
@@ -240,7 +239,7 @@ class RawUserApi(
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<User, JsonString>> =
+	): HttpResponse<PaginatedList<User>> =
 		get {
 			url {
 				takeFrom(apiUrl)

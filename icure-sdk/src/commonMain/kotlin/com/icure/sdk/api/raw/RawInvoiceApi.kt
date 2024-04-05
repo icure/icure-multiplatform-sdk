@@ -16,7 +16,6 @@ import com.icure.sdk.model.embed.MediumType
 import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
-import com.icure.sdk.model.specializations.JsonString
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
@@ -189,7 +188,7 @@ class RawInvoiceApi(
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedInvoice, JsonString>> =
+	): HttpResponse<PaginatedList<EncryptedInvoice>> =
 		get {
 			url {
 				takeFrom(apiUrl)
@@ -255,7 +254,7 @@ class RawInvoiceApi(
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedInvoice, JsonString>> =
+	): HttpResponse<PaginatedList<EncryptedInvoice>> =
 		get {
 			url {
 				takeFrom(apiUrl)
