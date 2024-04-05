@@ -30,6 +30,8 @@ import com.icure.sdk.auth.services.JwtAuthService
 import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.crypto.CryptoStrategies
 import com.icure.sdk.crypto.EntityEncryptionService
+import com.icure.sdk.crypto.JsonEncryptionService
+import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleDelegateShareOptions
 import com.icure.sdk.crypto.entities.withTypeInfo
@@ -42,6 +44,7 @@ import com.icure.sdk.crypto.impl.ExchangeDataMapManagerImpl
 import com.icure.sdk.crypto.impl.ExchangeKeysManagerImpl
 import com.icure.sdk.crypto.impl.FullyCachedExchangeDataManager
 import com.icure.sdk.crypto.impl.IcureKeyRecoveryImpl
+import com.icure.sdk.crypto.impl.InternalCryptoApiImpl
 import com.icure.sdk.crypto.impl.JsonEncryptionServiceImpl
 import com.icure.sdk.crypto.impl.LegacyDelegationsDecryptor
 import com.icure.sdk.crypto.impl.NoAccessControlKeysHeadersProvider
@@ -79,8 +82,8 @@ interface IcureApi {
 			baseUrl: String,
 			usernamePassword: UsernamePassword,
 			baseStorage: StorageFacade,
-			useParentKeys: Boolean,
-			cryptoStrategies: CryptoStrategies
+			cryptoStrategies: CryptoStrategies,
+			options: ApiOptions = ApiOptions()
 		): IcureApi {
 			val cryptoService = defaultCryptoService
 			val apiUrl = baseUrl
@@ -125,7 +128,7 @@ interface IcureApi {
 				iCureStorage,
 				icureKeyRecovery,
 				NoopKeyRecoverer,
-				useParentKeys,
+				!options.disableParentKeysInitialisation,
 			).initialise().also { initInfo ->
 				initInfo.newKey?.let {
 					println("GOT NEW KEY")
@@ -145,7 +148,7 @@ interface IcureApi {
 					cryptoStrategies,
 					dataOwnerApi,
 					cryptoService,
-					useParentKeys,
+					!options.disableParentKeysInitialisation,
 				).also { it.initialiseCache() }
 			else
 				CachedLruExchangeDataManager(
@@ -155,7 +158,7 @@ interface IcureApi {
 					cryptoStrategies,
 					dataOwnerApi,
 					cryptoService,
-					useParentKeys,
+					!options.disableParentKeysInitialisation,
 					100
 				)
 			val secureDelegationsEncryption = SecureDelegationsEncryptionImpl(
@@ -195,7 +198,7 @@ interface IcureApi {
 				dataOwnerApi,
 				cryptoService,
 				jsonEncryptionService,
-				useParentKeys,
+				!options.disableParentKeysInitialisation,
 				false // TODO should be true only for MS
 			)
 			val headersProvider: AccessControlKeysHeadersProvider =
@@ -208,16 +211,25 @@ interface IcureApi {
 				entityEncryptionService,
 			)
 			ensureDelegationForSelf(dataOwnerApi, entityEncryptionService, patientApi.rawApi, cryptoService)
+			val crypto = InternalCryptoApiImpl(
+				entityEncryptionService,
+				cryptoService,
+				exchangeDataManager,
+				jsonEncryptionService
+			)
+			val manifests = EntitiesEncryptedFieldsManifests.fromEncryptedFields(jsonEncryptionService, options.encryptedFields)
 			val maintenanceTaskApi = MaintenanceTaskApiImpl(
 				RawMaintenanceTaskApi(apiUrl, authService, headersProvider),
-				entityEncryptionService,
-				cryptoService.strongRandom
+				crypto,
+				manifests.maintenanceTask,
+				!selfIsAnonymous,
 			)
 			return IcureApiImpl(
 				calendarItem = CalendarItemApiImpl(
 					RawCalendarItemApi(apiUrl, authService, headersProvider),
-					entityEncryptionService,
-					exchangeDataManager
+					crypto,
+					manifests.calendarItem,
+					!selfIsAnonymous,
 				),
 				contact = ContactApiImpl(
 					RawContactApi(apiUrl, authService, headersProvider),
@@ -303,6 +315,85 @@ private suspend fun ensureDelegationForSelf(
 					),
 				) { patientApi.bulkShare(it).successBody() }.updatedEntityOrThrow()
 			}
+		}
+	}
+}
+
+/**
+ * Parse the fields on api initialization to avoid late throw of errors
+ */
+@InternalIcureApi
+private class EntitiesEncryptedFieldsManifests private constructor(
+	val accessLog: EncryptedFieldsManifest,
+	val calendarItem: EncryptedFieldsManifest,
+	val contact: EncryptedFieldsManifest,
+	val service: EncryptedFieldsManifest,
+	val healthElement: EncryptedFieldsManifest,
+	val maintenanceTask: EncryptedFieldsManifest,
+	val patient: EncryptedFieldsManifest,
+	val message: EncryptedFieldsManifest,
+	val topic: EncryptedFieldsManifest,
+) {
+	companion object {
+		private object Default {
+			val accessLog = setOf("detail", "objectId")
+			val calendarItem = setOf("details", "title", "patientId")
+			val contact = setOf("descr", "notes[].markdown")
+			val service = setOf("notes[].markdown")
+			val healthElement = setOf("descr", "note", "notes[].markdown")
+			val maintenanceTask = setOf("properties")
+			val patient = setOf("note", "notes[].markdown")
+			val message = setOf<String>()
+			val topic = setOf("description", "linkedServices", "linkedHealthElements")
+		}
+
+		fun fromEncryptedFields(jsonEncryptionService: JsonEncryptionService, encryptedFields: EncryptedFields?): EntitiesEncryptedFieldsManifests {
+			val contactManifest = jsonEncryptionService.parseEncryptedFields(
+				encryptedFields?.contact ?: Default.contact,
+				"Contact."
+			)
+			require("services" !in contactManifest.allKeys) {
+				"You can't customise encryption of the `services` field of Contact. Use the serviceEncryptedKeys parameter instead."
+			}
+			val serviceManifest = jsonEncryptionService.parseEncryptedFields(
+				encryptedFields?.service ?: Default.service,
+				"Service."
+			)
+			require("content" !in serviceManifest.allKeys) {
+				"You can't customise encryption of the `content` of a Service. The content values for services is automatically encrypted."
+			}
+			return EntitiesEncryptedFieldsManifests(
+				contact = contactManifest,
+				service = serviceManifest,
+				accessLog = jsonEncryptionService.parseEncryptedFields(
+					encryptedFields?.accessLog ?: Default.accessLog,
+					"AccessLog."
+				),
+				calendarItem = jsonEncryptionService.parseEncryptedFields(
+					encryptedFields?.calendarItem ?: Default.calendarItem,
+					"CalendarItem."
+				),
+				healthElement = jsonEncryptionService.parseEncryptedFields(
+					encryptedFields?.healthElement ?: Default.healthElement,
+					"HealthElement."
+				),
+				maintenanceTask = jsonEncryptionService.parseEncryptedFields(
+					encryptedFields?.maintenanceTask ?: Default.maintenanceTask,
+					"MaintenanceTask."
+				),
+				patient = jsonEncryptionService.parseEncryptedFields(
+					encryptedFields?.patient ?: Default.patient,
+					"Patient."
+				),
+				message = jsonEncryptionService.parseEncryptedFields(
+					encryptedFields?.message ?: Default.message,
+					"Message."
+				),
+				topic = jsonEncryptionService.parseEncryptedFields(
+					encryptedFields?.topic ?: Default.topic,
+					"Topic."
+				)
+			)
 		}
 	}
 }

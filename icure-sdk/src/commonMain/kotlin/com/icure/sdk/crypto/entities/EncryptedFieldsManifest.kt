@@ -33,4 +33,6 @@ data class EncryptedFieldsManifest(
 	 * Specifies manifests to use for all values of nested arrays.
 	 */
 	val arraysValuesKeys: Map<String, EncryptedFieldsManifest>,
-)
+) {
+	val allKeys get() = topLevelFields + nestedObjectsKeys.keys + mapsValuesKeys.keys + arraysValuesKeys.keys
+}

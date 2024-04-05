@@ -7,6 +7,7 @@ import com.icure.kryptom.crypto.RsaAlgorithm
 import com.icure.kryptom.crypto.RsaKeypair
 import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.kryptom.utils.toHexString
+import com.icure.sdk.api.ApiOptions
 import com.icure.sdk.api.IcureApi
 import com.icure.sdk.api.raw.RawAnonymousAuthApi
 import com.icure.sdk.api.raw.RawGroupApi
@@ -179,8 +180,10 @@ data class DataOwnerDetails(
 					false
 				).also { fillStorage(it) }
 			},
-			true,
-			cryptoStrategies
+			cryptoStrategies,
+			ApiOptions(
+				disableParentKeysInitialisation = false
+			)
 		)
 
 	private suspend fun addInitialKeysToStorage(storage: IcureStorageFacade) {

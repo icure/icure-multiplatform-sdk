@@ -1,9 +1,8 @@
 package com.icure.sdk.api.flavoured
 
 import com.icure.sdk.api.raw.RawAccessLogApi
-import com.icure.sdk.crypto.EntityEncryptionService
-import com.icure.sdk.crypto.EntityValidationService
-import com.icure.sdk.crypto.ExchangeDataManager
+import com.icure.sdk.crypto.BasicCryptoApi
+import com.icure.sdk.crypto.InternalCryptoApi
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.crypto.entities.SecretIdOption
@@ -21,18 +20,18 @@ import com.icure.sdk.model.User
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.embed.DelegationTag
+import com.icure.sdk.model.extensions.autoDelegationsFor
+import com.icure.sdk.model.extensions.dataOwnerId
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
+import com.icure.sdk.utils.currentEpochInstant
+import com.icure.sdk.utils.currentEpochMs
 import com.icure.sdk.utils.pagination.MultipleSourcePageIterator
 import com.icure.sdk.utils.pagination.PaginatedListIterator
 import com.icure.sdk.utils.vectorProduct
 import kotlinx.serialization.json.decodeFromJsonElement
-
-@OptIn(InternalIcureApi::class)
-private val ENCRYPTED_FIELDS_MANIFEST =
-	EncryptedFieldsManifest("AccessLog.", setOf("detail", "objectId"), emptyMap(), emptyMap(), emptyMap())
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface AccessLogBasicFlavourlessApi {
@@ -99,24 +98,22 @@ interface AccessLogFlavouredApi<E : AccessLog> : AccessLogBasicFlavouredApi<E> {
 		limit: Int? = null,
 	): List<E>
 
-
+	suspend fun findAccessLogsByHcPartyPatient(
+		hcPartyId: String,
+		patient: Patient,
+	): PaginatedListIterator<E>
 }
 
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
 interface AccessLogApi : AccessLogBasicFlavourlessApi, AccessLogFlavouredApi<DecryptedAccessLog> {
 	suspend fun createAccessLog(entity: DecryptedAccessLog): DecryptedAccessLog
-	suspend fun initialiseEncryptionMetadata(
-		healthcareElement: DecryptedAccessLog,
+	suspend fun withEncryptionMetadata(
+		base: DecryptedAccessLog?,
 		patient: Patient,
-		user: User,
+		user: User?,
 		delegates: Map<String, AccessLevel> = emptyMap(),
 		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent,
 	): DecryptedAccessLog
-
-	suspend fun findAccessLogsByHcPartyPatient(
-		hcPartyId: String,
-		patient: Patient,
-	): PaginatedListIterator<DecryptedAccessLog>
 
 	val encrypted: AccessLogFlavouredApi<EncryptedAccessLog>
 	val tryAndRecover: AccessLogFlavouredApi<AccessLog>
@@ -126,12 +123,9 @@ interface AccessLogBasicApi : AccessLogBasicFlavourlessApi, AccessLogBasicFlavou
 
 @InternalIcureApi
 private abstract class AbstractAccessLogBasicFlavouredApi<E : AccessLog>(
-	protected val rawApi: RawAccessLogApi,
-	protected val exchangeDataManager: ExchangeDataManager
+	protected val rawApi: RawAccessLogApi
 ) : AccessLogBasicFlavouredApi<E> {
-
-	private suspend fun getSecureDelegationKeys() = exchangeDataManager
-		.getAccessControlKeysValue(EntityWithEncryptionMetadataTypeName.AccessLog)?.map { it.s } ?: emptyList()
+	protected open suspend fun getSecureDelegationKeys() = emptyList<String>()
 
 	override suspend fun modifyAccessLog(entity: E): E =
 		rawApi.modifyAccessLog(validateAndMaybeEncrypt(entity)).successBody().let { maybeDecrypt(it) }
@@ -204,9 +198,11 @@ private abstract class AbstractAccessLogBasicFlavouredApi<E : AccessLog>(
 @InternalIcureApi
 private abstract class AbstractAccessLogFlavouredApi<E : AccessLog>(
 	rawApi: RawAccessLogApi,
-	private val encryptionService: EntityEncryptionService,
-	exchangeDataManager: ExchangeDataManager
-) : AbstractAccessLogBasicFlavouredApi<E>(rawApi, exchangeDataManager), AccessLogFlavouredApi<E> {
+	private val crypto: InternalCryptoApi
+) : AbstractAccessLogBasicFlavouredApi<E>(rawApi), AccessLogFlavouredApi<E> {
+	override suspend fun getSecureDelegationKeys(): List<String> =
+		crypto.exchangeDataManager.getAccessControlKeysValue(EntityWithEncryptionMetadataTypeName.AccessLog)?.map { it.s } ?: emptyList()
+
 	override suspend fun shareWith(
 		delegateId: String,
 		healthcareElement: E,
@@ -214,7 +210,7 @@ private abstract class AbstractAccessLogFlavouredApi<E : AccessLog>(
 		shareOwningEntityIds: ShareMetadataBehaviour,
 		requestedPermission: RequestedPermission,
 	): SimpleShareResult<E> =
-		encryptionService.simpleShareOrUpdateEncryptedEntityMetadata(
+		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			healthcareElement.withTypeInfo(),
 			true,
 			mapOf(
@@ -237,8 +233,26 @@ private abstract class AbstractAccessLogFlavouredApi<E : AccessLog>(
 		limit: Int?,
 	): List<E> = rawApi.findAccessLogsByHCPartyPatientForeignKeys(
 		hcPartyId,
-		encryptionService.secretIdsOf(patient.withTypeInfo(), null).toList(),
+		crypto.entity.secretIdsOf(patient.withTypeInfo(), null).toList(),
 	).successBody().map { maybeDecrypt(it) }
+
+	override suspend fun findAccessLogsByHcPartyPatient(
+		hcPartyId: String,
+		patient: Patient
+	): PaginatedListIterator<E> {
+		val accessKeys = getSecureDelegationKeys() + hcPartyId
+		return MultipleSourcePageIterator(
+			requestParameters = accessKeys vectorProduct crypto.entity.secretIdsOf(patient.withTypeInfo(), null).toList()
+		) { params, nextKey ->
+			rawApi.findAccessLogsByHCPartyPatientForeignKey(
+				hcPartyId = params.first,
+				secretFKey = params.second,
+				startKey = nextKey?.startKey,
+				startDocumentId = nextKey?.startKeyDocId,
+				limit = 1000
+			).successBody().map { maybeDecrypt(it) }
+		}
+	}
 
 }
 
@@ -251,20 +265,20 @@ private class AbstractAccessLogBasicFlavourlessApi(val rawApi: RawAccessLogApi) 
 @InternalIcureApi
 internal class AccessLogApiImpl(
 	private val rawApi: RawAccessLogApi,
-	private val encryptionService: EntityEncryptionService,
-	private val exchangeDataManager: ExchangeDataManager,
-	private val fieldsToEncrypt: EncryptedFieldsManifest = ENCRYPTED_FIELDS_MANIFEST,
+	private val autofillAuthor: Boolean,
+	private val crypto: InternalCryptoApi,
+	private val fieldsToEncrypt: EncryptedFieldsManifest,
 ) : AccessLogApi, AccessLogFlavouredApi<DecryptedAccessLog> by object :
-	AbstractAccessLogFlavouredApi<DecryptedAccessLog>(rawApi, encryptionService, exchangeDataManager) {
+	AbstractAccessLogFlavouredApi<DecryptedAccessLog>(rawApi, crypto) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedAccessLog): EncryptedAccessLog =
-		encryptionService.encryptEntity(
+		crypto.entity.encryptEntity(
 			entity.withTypeInfo(),
 			DecryptedAccessLog.serializer(),
 			fieldsToEncrypt,
 		) { Serialization.json.decodeFromJsonElement<EncryptedAccessLog>(it) }
 
 	override suspend fun maybeDecrypt(entity: EncryptedAccessLog): DecryptedAccessLog {
-		return encryptionService.tryDecryptEntity(
+		return crypto.entity.tryDecryptEntity(
 			entity.withTypeInfo(),
 			EncryptedAccessLog.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedAccessLog>(it) }
@@ -272,34 +286,31 @@ internal class AccessLogApiImpl(
 	}
 }, AccessLogBasicFlavourlessApi by AbstractAccessLogBasicFlavourlessApi(rawApi) {
 
-	private suspend fun getSecureDelegationKeys() = exchangeDataManager
-		.getAccessControlKeysValue(EntityWithEncryptionMetadataTypeName.AccessLog)?.map { it.s } ?: emptyList()
-
 	override val encrypted: AccessLogFlavouredApi<EncryptedAccessLog> =
-		object : AbstractAccessLogFlavouredApi<EncryptedAccessLog>(rawApi, encryptionService, exchangeDataManager) {
+		object : AbstractAccessLogFlavouredApi<EncryptedAccessLog>(rawApi, crypto) {
 			override suspend fun validateAndMaybeEncrypt(entity: EncryptedAccessLog): EncryptedAccessLog =
-				encryptionService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedAccessLog.serializer(), fieldsToEncrypt)
+				crypto.entity.validateEncryptedEntity(entity.withTypeInfo(), EncryptedAccessLog.serializer(), fieldsToEncrypt)
 
 			override suspend fun maybeDecrypt(entity: EncryptedAccessLog): EncryptedAccessLog = entity
 		}
 
 	override val tryAndRecover: AccessLogFlavouredApi<AccessLog> =
-		object : AbstractAccessLogFlavouredApi<AccessLog>(rawApi, encryptionService, exchangeDataManager) {
+		object : AbstractAccessLogFlavouredApi<AccessLog>(rawApi, crypto) {
 			override suspend fun maybeDecrypt(entity: EncryptedAccessLog): AccessLog =
-				encryptionService.tryDecryptEntity(
+				crypto.entity.tryDecryptEntity(
 					entity.withTypeInfo(),
 					EncryptedAccessLog.serializer(),
 				) { Serialization.json.decodeFromJsonElement<DecryptedAccessLog>(it) }
 					?: entity
 
 			override suspend fun validateAndMaybeEncrypt(entity: AccessLog): EncryptedAccessLog = when (entity) {
-				is EncryptedAccessLog -> encryptionService.validateEncryptedEntity(
+				is EncryptedAccessLog -> crypto.entity.validateEncryptedEntity(
 					entity.withTypeInfo(),
 					EncryptedAccessLog.serializer(),
 					fieldsToEncrypt,
 				)
 
-				is DecryptedAccessLog -> encryptionService.encryptEntity(
+				is DecryptedAccessLog -> crypto.entity.encryptEntity(
 					entity.withTypeInfo(),
 					DecryptedAccessLog.serializer(),
 					fieldsToEncrypt,
@@ -316,50 +327,38 @@ internal class AccessLogApiImpl(
 		}
 	}
 
-	override suspend fun initialiseEncryptionMetadata(
-		healthcareElement: DecryptedAccessLog,
+	override suspend fun withEncryptionMetadata(
+		accessLog: DecryptedAccessLog?,
 		patient: Patient,
-		user: User,
+		user: User?,
 		delegates: Map<String, AccessLevel>,
 		secretId: SecretIdOption,
 		// Temporary, needs a lot more stuff to match typescript implementation
 	): DecryptedAccessLog =
-		encryptionService.entityWithInitialisedEncryptedMetadata(
-			healthcareElement.withTypeInfo(),
+		crypto.entity.entityWithInitialisedEncryptedMetadata(
+			(accessLog ?: DecryptedAccessLog(crypto.primitives.strongRandom.randomUUID())).copy(
+				created = accessLog?.created ?: currentEpochMs(),
+				modified = accessLog?.modified ?: currentEpochMs(),
+				date = accessLog?.date ?: currentEpochInstant(),
+				responsible = accessLog?.responsible ?: user?.takeIf { autofillAuthor }?.dataOwnerId,
+				author = accessLog?.author ?: user?.id?.takeIf { autofillAuthor },
+				patientId = accessLog?.patientId ?: patient.id,
+				accessType = accessLog?.accessType ?: "USER_ACCESS",
+			).withTypeInfo(),
 			patient.id,
-			encryptionService.resolveSecretIdOption(patient.withTypeInfo(), secretId),
+			crypto.entity.resolveSecretIdOption(patient.withTypeInfo(), secretId),
 			initialiseEncryptionKey = true,
 			initialiseSecretId = false,
-			autoDelegations = delegates + (
-				(user.autoDelegations[DelegationTag.MedicalInformation] ?: emptySet()) +
-					(user.autoDelegations[DelegationTag.All] ?: emptySet())
-				).associateWith { AccessLevel.Write },
+			autoDelegations = delegates + user?.autoDelegationsFor(DelegationTag.AdministrativeData).orEmpty(),
 		).updatedEntity
 
-	override suspend fun findAccessLogsByHcPartyPatient(
-		hcPartyId: String,
-		patient: Patient
-	): PaginatedListIterator<DecryptedAccessLog> {
-		val accessKeys = getSecureDelegationKeys() + hcPartyId
-		return MultipleSourcePageIterator(
-			requestParameters = accessKeys vectorProduct encryptionService.secretIdsOf(patient.withTypeInfo(), null).toList()
-		) { params, nextKey ->
-			rawApi.findAccessLogsByHCPartyPatientForeignKey(
-				hcPartyId = params.first,
-				secretFKey = params.second,
-				startKey = nextKey?.startKey,
-				startDocumentId = nextKey?.startKeyDocId,
-				limit = 1000
-			).successBody().map { decrypt(it) { "Found healthcare element cannot be decrypted" } }
-		}
-	}
-	private suspend fun encrypt(entity: DecryptedAccessLog) = encryptionService.encryptEntity(
+	private suspend fun encrypt(entity: DecryptedAccessLog) = crypto.entity.encryptEntity(
 		entity.withTypeInfo(),
 		DecryptedAccessLog.serializer(),
 		fieldsToEncrypt,
 	) { Serialization.json.decodeFromJsonElement<EncryptedAccessLog>(it) }
 
-	suspend fun decrypt(entity: EncryptedAccessLog, errorMessage: () -> String): DecryptedAccessLog = encryptionService.tryDecryptEntity(
+	suspend fun decrypt(entity: EncryptedAccessLog, errorMessage: () -> String): DecryptedAccessLog = crypto.entity.tryDecryptEntity(
 		entity.withTypeInfo(),
 		EncryptedAccessLog.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedAccessLog>(it) }
@@ -370,13 +369,12 @@ internal class AccessLogApiImpl(
 @InternalIcureApi
 internal class AccessLogBasicApiImpl(
 	rawApi: RawAccessLogApi,
-	private val validationService: EntityValidationService,
-	exchangeDataManager: ExchangeDataManager,
-	private val fieldsToEncrypt: EncryptedFieldsManifest = ENCRYPTED_FIELDS_MANIFEST,
+	private val crypto: BasicCryptoApi,
+	private val fieldsToEncrypt: EncryptedFieldsManifest,
 ) : AccessLogBasicApi, AccessLogBasicFlavouredApi<EncryptedAccessLog> by object :
-	AbstractAccessLogBasicFlavouredApi<EncryptedAccessLog>(rawApi, exchangeDataManager) {
+	AbstractAccessLogBasicFlavouredApi<EncryptedAccessLog>(rawApi) {
 	override suspend fun validateAndMaybeEncrypt(entity: EncryptedAccessLog): EncryptedAccessLog =
-		validationService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedAccessLog.serializer(), fieldsToEncrypt)
+		crypto.validationService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedAccessLog.serializer(), fieldsToEncrypt)
 
 	override suspend fun maybeDecrypt(entity: EncryptedAccessLog): EncryptedAccessLog = entity
 }, AccessLogBasicFlavourlessApi by AbstractAccessLogBasicFlavourlessApi(rawApi)
