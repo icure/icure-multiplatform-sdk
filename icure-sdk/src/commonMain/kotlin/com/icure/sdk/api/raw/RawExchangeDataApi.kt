@@ -13,10 +13,6 @@ import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
-import kotlin.Int
-import kotlin.String
-import kotlin.collections.List
-import kotlin.collections.Map
 import kotlin.time.Duration
 
 // WARNING: This class is auto-generated. If you change it manually, your changes will be lost.
@@ -94,12 +90,14 @@ class RawExchangeDataApi(
 	suspend fun getParticipantCounterparts(
 		dataOwnerId: String,
 		counterpartsTypes: String,
+		ignoreOnEntryForFingerprint: String? = null,
 	): HttpResponse<List<String>> =
 		get {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "exchangedata", "byParticipant", dataOwnerId, "counterparts")
 				parameter("counterpartsTypes", counterpartsTypes)
+				parameter("ignoreOnEntryForFingerprint", ignoreOnEntryForFingerprint)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)

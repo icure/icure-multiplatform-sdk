@@ -4,12 +4,15 @@ import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.kryptom.utils.toHexString
 import com.icure.sdk.api.extended.DataOwnerApi
+import com.icure.sdk.api.extended.IcureMaintenanceTaskApi
 import com.icure.sdk.api.flavoured.CalendarItemApi
 import com.icure.sdk.api.flavoured.CalendarItemApiImpl
 import com.icure.sdk.api.flavoured.ContactApi
 import com.icure.sdk.api.flavoured.ContactApiImpl
 import com.icure.sdk.api.flavoured.HealthcareElementApi
 import com.icure.sdk.api.flavoured.HealthcareElementApiImpl
+import com.icure.sdk.api.flavoured.MaintenanceTaskApi
+import com.icure.sdk.api.flavoured.MaintenanceTaskApiImpl
 import com.icure.sdk.api.raw.RawAnonymousAuthApi
 import com.icure.sdk.api.raw.RawCalendarItemApi
 import com.icure.sdk.api.raw.RawContactApi
@@ -19,6 +22,7 @@ import com.icure.sdk.api.raw.RawExchangeDataApi
 import com.icure.sdk.api.raw.RawExchangeDataMapApi
 import com.icure.sdk.api.raw.RawHealthElementApi
 import com.icure.sdk.api.raw.RawHealthcarePartyApi
+import com.icure.sdk.api.raw.RawMaintenanceTaskApi
 import com.icure.sdk.api.raw.RawPatientApi
 import com.icure.sdk.api.raw.RawUserApi
 import com.icure.sdk.auth.UsernamePassword
@@ -66,6 +70,8 @@ interface IcureApi {
 	val dataOwner: DataOwnerApi
 	val user: UserApi
 	val crypto: CryptoApi
+	val icureMaintenanceTask: IcureMaintenanceTaskApi
+	val maintenanceTask: MaintenanceTaskApi
 
 	companion object {
 		@OptIn(InternalIcureApi::class)
@@ -202,6 +208,11 @@ interface IcureApi {
 				entityEncryptionService,
 			)
 			ensureDelegationForSelf(dataOwnerApi, entityEncryptionService, patientApi.rawApi, cryptoService)
+			val maintenanceTaskApi = MaintenanceTaskApiImpl(
+				RawMaintenanceTaskApi(apiUrl, authService, headersProvider),
+				entityEncryptionService,
+				cryptoService.strongRandom
+			)
 			return IcureApiImpl(
 				calendarItem = CalendarItemApiImpl(
 					RawCalendarItemApi(apiUrl, authService, headersProvider),
@@ -227,10 +238,17 @@ interface IcureApi {
 						exchangeDataManager,
 						cryptoService,
 						shamirService
-					),
+					)
+				),
+				maintenanceTask = maintenanceTaskApi,
+				icureMaintenanceTask = IcureMaintenanceTaskApi(
 					exchangeDataManager,
 					baseExchangeKeysManager,
-					userEncryptionKeys
+					userEncryptionKeys,
+					maintenanceTaskApi,
+					RawExchangeDataApi(apiUrl, authService),
+					dataOwnerApi,
+					cryptoService.strongRandom,
 				)
 			)
 		}
@@ -244,7 +262,9 @@ private class IcureApiImpl(
 	override val healthElement: HealthcareElementApi,
 	override val dataOwner: DataOwnerApi,
 	override val user: UserApi,
-	override val crypto: CryptoApi
+	override val crypto: CryptoApi,
+	override val icureMaintenanceTask: IcureMaintenanceTaskApi,
+	override val maintenanceTask : MaintenanceTaskApi
 ): IcureApi
 
 @InternalIcureApi

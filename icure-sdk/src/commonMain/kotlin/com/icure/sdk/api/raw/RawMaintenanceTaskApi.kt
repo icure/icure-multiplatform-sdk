@@ -19,10 +19,6 @@ import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
-import kotlin.Int
-import kotlin.String
-import kotlin.collections.List
-import kotlin.collections.Map
 import kotlin.time.Duration
 
 // WARNING: This class is auto-generated. If you change it manually, your changes will be lost.
@@ -96,7 +92,7 @@ class RawMaintenanceTaskApi(
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		filterChain: FilterChain<EncryptedMaintenanceTask>,
-	): HttpResponse<PaginatedList<EncryptedMaintenanceTask, *>> =
+	): HttpResponse<PaginatedList<EncryptedMaintenanceTask, Unit>> = // TODO TMP
 		post {
 			url {
 				takeFrom(apiUrl)

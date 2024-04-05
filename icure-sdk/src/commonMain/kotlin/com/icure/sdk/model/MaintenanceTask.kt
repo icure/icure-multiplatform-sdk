@@ -11,11 +11,6 @@ import com.icure.sdk.model.embed.SecurityMetadata
 import com.icure.sdk.model.embed.TaskStatus
 import com.icure.sdk.model.specializations.Base64String
 import kotlinx.serialization.Serializable
-import kotlin.Long
-import kotlin.String
-import kotlin.collections.List
-import kotlin.collections.Map
-import kotlin.collections.Set
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
@@ -86,7 +81,7 @@ data class DecryptedMaintenanceTask(
 	override val deletionDate: Long? = null,
 	override val taskType: String? = null,
 	override val properties: Set<DecryptedPropertyStub> = emptySet(),
-	override val status: TaskStatus,
+	override val status: TaskStatus = TaskStatus.Pending,
 	override val secretForeignKeys: Set<String> = emptySet(),
 	override val cryptedForeignKeys: Map<String, Set<Delegation>> = emptyMap(),
 	override val delegations: Map<String, Set<Delegation>> = emptyMap(),
@@ -116,7 +111,7 @@ data class EncryptedMaintenanceTask(
 	override val deletionDate: Long? = null,
 	override val taskType: String? = null,
 	override val properties: Set<EncryptedPropertyStub> = emptySet(),
-	override val status: TaskStatus,
+	override val status: TaskStatus = TaskStatus.Pending,
 	override val secretForeignKeys: Set<String> = emptySet(),
 	override val cryptedForeignKeys: Map<String, Set<Delegation>> = emptyMap(),
 	override val delegations: Map<String, Set<Delegation>> = emptyMap(),

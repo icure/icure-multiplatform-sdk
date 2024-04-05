@@ -3,6 +3,7 @@ package com.icure.sdk.crypto
 import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.sdk.crypto.impl.exportSpkiHex
 import com.icure.sdk.model.DecryptedPatient
+import com.icure.sdk.model.sdk.KeyPairUpdateNotification
 import com.icure.sdk.test.DataOwnerDetails
 import com.icure.sdk.test.createHcpUser
 import com.icure.sdk.test.initialiseTestEnvironment
@@ -43,9 +44,11 @@ class ShamirKeyRecovery : StringSpec({
 		val (lostKeyApi, newKey) = userDetails.apiWithLostKeys()
 		lostKeyApi.patient.getAndDecrypt(patientId = createdPatient!!.id).shouldBeNull() // TODO Should not be able to decrypt note, will throw exception in actual implementation
 		askAccessBackTo.forEach { giveAccessBackDataOwner ->
-			giveAccessBackDataOwner.api().crypto.giveAccessBackTo(
-				dataOwnerId = userDetails.dataOwnerId,
-				key = defaultCryptoService.rsa.exportSpkiHex(newKey.public)
+			giveAccessBackDataOwner.api().icureMaintenanceTask.applyKeyPairUpdate(
+				KeyPairUpdateNotification(
+					concernedDataOwnerId = userDetails.dataOwnerId,
+					newPublicKey = defaultCryptoService.rsa.exportSpkiHex(newKey.public)
+				)
 			)
 		}
 		val recoveredThroughShamirApi = userDetails.apiWithKeys(newKey)
