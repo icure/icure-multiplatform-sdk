@@ -26,19 +26,6 @@ class RawAnonymousApi(
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
-	// region anonymous healthcareparty endpoints
-
-	suspend fun listHealthcarePartiesInGroup(groupId: String): HttpResponse<List<UserAndHealthcareParty>> =
-		get {
-			url {
-				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "aa", "hcparty", "inGroup", groupId)
-				parameter("ts", GMTDate().timestamp)
-			}
-		}.wrap()
-
-	// endregion
-
 	// region anonymous calendaritem endpoints
 
 	suspend fun listAppointmentTypesForUser(
@@ -99,6 +86,19 @@ class RawAnonymousApi(
 				parameter("startKey", startKey)
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
+				parameter("ts", GMTDate().timestamp)
+			}
+		}.wrap()
+
+	// endregion
+
+	// region anonymous healthcareparty endpoints
+
+	suspend fun listHealthcarePartiesInGroup(groupId: String): HttpResponse<List<UserAndHealthcareParty>> =
+		get {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "aa", "hcparty", "inGroup", groupId)
 				parameter("ts", GMTDate().timestamp)
 			}
 		}.wrap()
