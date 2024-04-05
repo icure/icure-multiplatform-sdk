@@ -68,7 +68,7 @@ interface MaintenanceTaskApi : MaintenanceTaskBasicFlavourlessApi, MaintenanceTa
 	 * @param delegates users that will be granted access to the maintenance task (in addition to the current data owner
 	 * and, if user is non-null, auto-delegations).
 	 */
-	suspend fun initialiseEncryptionMetadata(
+	suspend fun withEncryptionMetadata(
 		maintenanceTask: DecryptedMaintenanceTask?,
 		user: User?,
 		delegates: Map<String, AccessLevel> = emptyMap(),
@@ -199,7 +199,7 @@ internal class MaintenanceTaskApiImpl(
 		}
 	}
 
-	override suspend fun initialiseEncryptionMetadata(
+	override suspend fun withEncryptionMetadata(
 		maintenanceTask: DecryptedMaintenanceTask?,
 		user: User?,
 		delegates: Map<String, AccessLevel>,

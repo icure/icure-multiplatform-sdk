@@ -109,7 +109,7 @@ class IcureMaintenanceTaskApi(
 		other: String,
 		key: SpkiHexString
 	) =
-		maintenanceTaskApi.initialiseEncryptionMetadata(
+		maintenanceTaskApi.withEncryptionMetadata(
 			DecryptedMaintenanceTask(
 				id = strongRandom.randomUUID(),
 				taskType = KeyPairUpdateNotification.TASK_TYPE,
