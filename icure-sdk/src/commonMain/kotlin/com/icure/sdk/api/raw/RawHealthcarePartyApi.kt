@@ -12,7 +12,6 @@ import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.specializations.AesExchangeKeyEncryptionKeypairIdentifier
 import com.icure.sdk.model.specializations.HexString
-import com.icure.sdk.model.specializations.JsonString
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
@@ -54,7 +53,7 @@ class RawHealthcarePartyApi(
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		desc: Boolean? = null,
-	): HttpResponse<PaginatedList<HealthcareParty, JsonString>> =
+	): HttpResponse<PaginatedList<HealthcareParty>> =
 		get {
 			url {
 				takeFrom(apiUrl)
@@ -74,7 +73,7 @@ class RawHealthcarePartyApi(
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		desc: Boolean? = null,
-	): HttpResponse<PaginatedList<HealthcareParty, JsonString>> =
+	): HttpResponse<PaginatedList<HealthcareParty>> =
 		get {
 			url {
 				takeFrom(apiUrl)
@@ -95,7 +94,7 @@ class RawHealthcarePartyApi(
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		desc: Boolean = false,
-	): HttpResponse<PaginatedList<HealthcareParty, JsonString>> =
+	): HttpResponse<PaginatedList<HealthcareParty>> =
 		get {
 			url {
 				takeFrom(apiUrl)
@@ -127,7 +126,7 @@ class RawHealthcarePartyApi(
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<HealthcareParty, JsonString>> =
+	): HttpResponse<PaginatedList<HealthcareParty>> =
 		get {
 			url {
 				takeFrom(apiUrl)

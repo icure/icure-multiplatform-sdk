@@ -4,7 +4,6 @@ import com.icure.sdk.model.AnonymousMedicalLocation
 import com.icure.sdk.model.AppointmentTypeAndPlace
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.UserAndHealthcareParty
-import com.icure.sdk.model.specializations.JsonString
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.request.parameter
 import io.ktor.http.appendPathSegments
@@ -26,19 +25,6 @@ class RawAnonymousApi(
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
 ) : BaseRawApi(additionalHeaders, timeout) {
-	// region anonymous healthcareparty endpoints
-
-	suspend fun listHealthcarePartiesInGroup(groupId: String): HttpResponse<List<UserAndHealthcareParty>> =
-		get {
-			url {
-				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "aa", "hcparty", "inGroup", groupId)
-				parameter("ts", GMTDate().timestamp)
-			}
-		}.wrap()
-
-	// endregion
-
 	// region anonymous calendaritem endpoints
 
 	suspend fun listAppointmentTypesForUser(
@@ -91,7 +77,7 @@ class RawAnonymousApi(
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<AnonymousMedicalLocation, JsonString>> =
+	): HttpResponse<PaginatedList<AnonymousMedicalLocation>> =
 		get {
 			url {
 				takeFrom(apiUrl)
@@ -99,6 +85,19 @@ class RawAnonymousApi(
 				parameter("startKey", startKey)
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
+				parameter("ts", GMTDate().timestamp)
+			}
+		}.wrap()
+
+	// endregion
+
+	// region anonymous healthcareparty endpoints
+
+	suspend fun listHealthcarePartiesInGroup(groupId: String): HttpResponse<List<UserAndHealthcareParty>> =
+		get {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "aa", "hcparty", "inGroup", groupId)
 				parameter("ts", GMTDate().timestamp)
 			}
 		}.wrap()

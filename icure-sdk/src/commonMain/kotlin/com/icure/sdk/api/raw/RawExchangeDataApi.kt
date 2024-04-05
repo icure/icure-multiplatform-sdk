@@ -4,7 +4,6 @@ import com.icure.sdk.auth.services.AuthService
 import com.icure.sdk.auth.services.setAuthorizationWith
 import com.icure.sdk.model.ExchangeData
 import com.icure.sdk.model.PaginatedList
-import com.icure.sdk.model.specializations.JsonString
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
@@ -66,7 +65,7 @@ class RawExchangeDataApi(
 		dataOwnerId: String,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<ExchangeData, JsonString>> =
+	): HttpResponse<PaginatedList<ExchangeData>> =
 		get {
 			url {
 				takeFrom(apiUrl)
@@ -94,12 +93,14 @@ class RawExchangeDataApi(
 	suspend fun getParticipantCounterparts(
 		dataOwnerId: String,
 		counterpartsTypes: String,
+		ignoreOnEntryForFingerprint: String? = null,
 	): HttpResponse<List<String>> =
 		get {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "exchangedata", "byParticipant", dataOwnerId, "counterparts")
 				parameter("counterpartsTypes", counterpartsTypes)
+				parameter("ignoreOnEntryForFingerprint", ignoreOnEntryForFingerprint)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
