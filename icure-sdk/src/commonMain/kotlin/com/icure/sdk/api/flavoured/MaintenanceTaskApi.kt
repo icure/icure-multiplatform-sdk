@@ -41,7 +41,7 @@ interface MaintenanceTaskBasicFlavouredApi<E : MaintenanceTask> {
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		filterChain: FilterChain<MaintenanceTask>
-	): PaginatedList<E, *>
+	): PaginatedList<E>
 }
 
 /* The extra API calls declared in this interface are the ones that can be used on encrypted or decrypted items but only when the user is a data owner */
@@ -93,7 +93,7 @@ private abstract class AbstractMaintenanceTaskBasicFlavouredApi<E : MaintenanceT
 		startDocumentId: String?,
 		limit: Int?,
 		filterChain: FilterChain<MaintenanceTask>,
-	): PaginatedList<E, *> =
+	): PaginatedList<E> =
 		// TODO fix filter typing
 		rawApi.filterMaintenanceTasksBy(startDocumentId, limit, filterChain as FilterChain<EncryptedMaintenanceTask>).successBody().map { maybeDecrypt(it) }
 

@@ -52,7 +52,7 @@ interface CalendarItemBasicFlavouredApi<E : CalendarItem> {
 		startKey: String?,
 		startDocumentId: String?,
 		limit: Int
-	): PaginatedList<E, *>
+	): PaginatedList<E>
 }
 
 /* The extra API calls declared in this interface are the ones that can be used on encrypted or decrypted items but only when the user is a data owner */
@@ -71,7 +71,7 @@ interface CalendarItemFlavouredApi<E : CalendarItem> : CalendarItemBasicFlavoure
 		startKey: String?,
 		startDocumentId: String?,
 		limit: Int
-	): PaginatedList<E, *>
+	): PaginatedList<E>
 
 }
 
@@ -139,7 +139,7 @@ private abstract class AbstractCalendarItemBasicFlavouredApi<E : CalendarItem>(
 			rawApi.findCalendarItemsByHCPartyPatientForeignKeys(
 				hcPartyId = params.first,
 				secretFKeys = params.second,
-				startKey = nextKey?.startKey,
+				startKey = nextKey?.startKey.encodeStartKey(),
 				startDocumentId = nextKey?.startKeyDocId,
 				limit = 1000
 			).successBody().map { maybeDecrypt(it) }
@@ -151,7 +151,7 @@ private abstract class AbstractCalendarItemBasicFlavouredApi<E : CalendarItem>(
 		startKey: String?,
 		startDocumentId: String?,
 		limit: Int,
-	): PaginatedList<E, *> =
+	): PaginatedList<E> =
 		rawApi.findCalendarItemsByRecurrenceId(recurrenceId, startKey, startDocumentId, limit).successBody().map { maybeDecrypt(it) }
 
 	abstract suspend fun validateAndMaybeEncrypt(entity: E): EncryptedCalendarItem
@@ -204,7 +204,7 @@ private abstract class AbstractCalendarItemFlavouredApi<E : CalendarItem>(
 		startKey: String?,
 		startDocumentId: String?,
 		limit: Int,
-	): PaginatedList<E, *> = rawApi.findCalendarItemsByHCPartyPatientForeignKeys(
+	): PaginatedList<E> = rawApi.findCalendarItemsByHCPartyPatientForeignKeys(
 		hcPartyId,
 		crypto.entity.secretIdsOf(patient.withTypeInfo(), null).toList(),
 		startKey, startDocumentId, limit

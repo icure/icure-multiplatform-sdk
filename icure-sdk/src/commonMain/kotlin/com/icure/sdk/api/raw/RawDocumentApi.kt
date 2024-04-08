@@ -10,7 +10,6 @@ import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
-import com.icure.sdk.model.specializations.JsonString
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.request.`header`
 import io.ktor.client.request.parameter
@@ -228,7 +227,7 @@ class RawDocumentApi(
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedDocument, JsonString>> =
+	): HttpResponse<PaginatedList<EncryptedDocument>> =
 		get {
 			url {
 				takeFrom(apiUrl)

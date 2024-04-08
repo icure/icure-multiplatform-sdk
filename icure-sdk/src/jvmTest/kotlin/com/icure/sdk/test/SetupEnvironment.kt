@@ -56,6 +56,7 @@ private val defaultRoles = mapOf(
 )
 private var initialised = false
 
+@OptIn(InternalIcureApi::class)
 suspend fun initialiseTestEnvironment() {
 	if (initialised) {
 		return

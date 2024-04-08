@@ -105,7 +105,7 @@ class RawDeviceApi(
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		filterChain: FilterChain<Device>,
-	): HttpResponse<PaginatedList<Device, *>> =
+	): HttpResponse<PaginatedList<Device>> =
 		post {
 			url {
 				takeFrom(apiUrl)

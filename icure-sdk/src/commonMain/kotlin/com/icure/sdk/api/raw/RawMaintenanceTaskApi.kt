@@ -92,7 +92,7 @@ class RawMaintenanceTaskApi(
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		filterChain: FilterChain<EncryptedMaintenanceTask>,
-	): HttpResponse<PaginatedList<EncryptedMaintenanceTask, Unit>> = // TODO TMP
+	): HttpResponse<PaginatedList<EncryptedMaintenanceTask>> =
 		post {
 			url {
 				takeFrom(apiUrl)

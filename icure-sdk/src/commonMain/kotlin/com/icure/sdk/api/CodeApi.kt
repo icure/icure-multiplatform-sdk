@@ -1,5 +1,6 @@
 package com.icure.sdk.api
 
+import com.icure.sdk.api.flavoured.encodeStartKey
 import com.icure.sdk.api.raw.RawCodeApi
 import com.icure.sdk.model.BooleanResponse
 import com.icure.sdk.model.Code
@@ -8,6 +9,7 @@ import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.utils.InternalIcureApi
+import kotlinx.serialization.json.JsonElement
 
 @OptIn(InternalIcureApi::class)
 class CodeApi(
@@ -19,28 +21,28 @@ class CodeApi(
         language: String,
         label: String,
         version: String? = null,
-        startKey: String? = null,
+        startKey: JsonElement? = null,
         startDocumentId: String? = null,
         limit: Int? = null,
-    ): PaginatedList<Code, String> = rawApi.findCodesByLabel(region, types, language, label, version, startKey, startDocumentId, limit).successBody()
+    ): PaginatedList<Code> = rawApi.findCodesByLabel(region, types, language, label, version, startKey.encodeStartKey(), startDocumentId, limit).successBody()
 
     suspend fun findCodesByType(
         region: String,
         type: String? = null,
         code: String? = null,
         version: String? = null,
-        startKey: String? = null,
+        startKey: JsonElement? = null,
         startDocumentId: String? = null,
         limit: Int? = null,
-    ): PaginatedList<Code, String> = rawApi.findCodesByType(region, type, code, version, startKey, startDocumentId, limit).successBody()
+    ): PaginatedList<Code> = rawApi.findCodesByType(region, type, code, version, startKey.encodeStartKey(), startDocumentId, limit).successBody()
 
     suspend fun findCodesByLink(
         linkType: String,
         linkedId: String? = null,
-        startKey: String? = null,
+        startKey: JsonElement? = null,
         startDocumentId: String? = null,
         limit: Int? = null,
-    ): PaginatedList<Code, String> = rawApi.findCodesByLink(linkType, linkedId, startKey, startDocumentId, limit).successBody()
+    ): PaginatedList<Code> = rawApi.findCodesByLink(linkType, linkedId, startKey.encodeStartKey(), startDocumentId, limit).successBody()
 
     suspend fun listCodesByRegionTypeCodeVersion(
         region: String,
@@ -85,14 +87,14 @@ class CodeApi(
     suspend fun modifyCodes(codeBatch: List<Code>): List<Code> = rawApi.modifyCodes(codeBatch).successBody()
 
     suspend fun filterCodesBy(
-        startKey: String? = null,
+        startKey: JsonElement? = null,
         startDocumentId: String? = null,
         limit: Int? = null,
         skip: Int? = null,
         sort: String? = null,
         desc: Boolean? = null,
         filterChain: FilterChain<Code>,
-    ): PaginatedList<Code, *> = rawApi.filterCodesBy(startKey, startDocumentId, limit, skip, sort, desc, filterChain).successBody()
+    ): PaginatedList<Code> = rawApi.filterCodesBy(startKey.encodeStartKey(), startDocumentId, limit, skip, sort, desc, filterChain).successBody()
 
     suspend fun matchCodesBy(filter: AbstractFilter<Code>): List<String> = rawApi.matchCodesBy(filter).successBody()
 

@@ -50,7 +50,7 @@ interface TopicBasicFlavouredApi<E : Topic> {
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		filterChain: FilterChain<EncryptedTopic>
-	): PaginatedList<E, *>
+	): PaginatedList<E>
 
 	suspend fun addParticipant(entityId: String, dataOwnerId: String, topicRole: TopicRole): E
 	suspend fun removeParticipant(entityId: String, dataOwnerId: String): E

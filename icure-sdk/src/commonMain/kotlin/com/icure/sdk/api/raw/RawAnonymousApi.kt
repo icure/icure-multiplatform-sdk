@@ -4,7 +4,6 @@ import com.icure.sdk.model.AnonymousMedicalLocation
 import com.icure.sdk.model.AppointmentTypeAndPlace
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.UserAndHealthcareParty
-import com.icure.sdk.model.specializations.JsonString
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.request.parameter
 import io.ktor.http.appendPathSegments
@@ -91,7 +90,7 @@ class RawAnonymousApi(
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<AnonymousMedicalLocation, JsonString>> =
+	): HttpResponse<PaginatedList<AnonymousMedicalLocation>> =
 		get {
 			url {
 				takeFrom(apiUrl)

@@ -143,7 +143,7 @@ class RawTmpApi(
 	suspend fun listTmpPatients(
 		firstPatientId: String? = null,
 		pageSize: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedPatient, *>> =
+	): HttpResponse<PaginatedList<EncryptedPatient>> =
 		get {
 			url {
 				takeFrom(apiUrl)
@@ -224,7 +224,7 @@ class RawTmpApi(
 		firstHealthElementId: String? = null,
 		pageSize: Int? =
 			null,
-	): HttpResponse<PaginatedList<EncryptedHealthElement, *>> =
+	): HttpResponse<PaginatedList<EncryptedHealthElement>> =
 		get {
 			url {
 				takeFrom(apiUrl)
@@ -304,7 +304,7 @@ class RawTmpApi(
 	suspend fun listTmpForms(
 		firstFormId: String? = null,
 		pageSize: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedForm, *>> =
+	): HttpResponse<PaginatedList<EncryptedForm>> =
 		get {
 			url {
 				takeFrom(apiUrl)
@@ -384,7 +384,7 @@ class RawTmpApi(
 	suspend fun listTmpContacts(
 		firstContactId: String? = null,
 		pageSize: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedInvoice, *>> =
+	): HttpResponse<PaginatedList<EncryptedInvoice>> =
 		get {
 			url {
 				takeFrom(apiUrl)
@@ -464,7 +464,7 @@ class RawTmpApi(
 	suspend fun listTmpMessages(
 		firstMessageId: String? = null,
 		pageSize: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedInvoice, *>> =
+	): HttpResponse<PaginatedList<EncryptedInvoice>> =
 		get {
 			url {
 				takeFrom(apiUrl)
@@ -544,7 +544,7 @@ class RawTmpApi(
 	suspend fun listTmpInvoices(
 		firstInvoiceId: String? = null,
 		pageSize: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedInvoice, *>> =
+	): HttpResponse<PaginatedList<EncryptedInvoice>> =
 		get {
 			url {
 				takeFrom(apiUrl)
@@ -666,7 +666,7 @@ class RawTmpApi(
 	suspend fun listTmpDocuments(
 		firstDocumentId: String? = null,
 		pageSize: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedDocument, *>> =
+	): HttpResponse<PaginatedList<EncryptedDocument>> =
 		get {
 			url {
 				takeFrom(apiUrl)
@@ -747,7 +747,7 @@ class RawTmpApi(
 		firstClassificationId: String? = null,
 		pageSize: Int? =
 			null,
-	): HttpResponse<PaginatedList<EncryptedClassification, *>> =
+	): HttpResponse<PaginatedList<EncryptedClassification>> =
 		get {
 			url {
 				takeFrom(apiUrl)
@@ -828,7 +828,7 @@ class RawTmpApi(
 		firstEntityTemplateId: String? = null,
 		pageSize: Int? =
 			null,
-	): HttpResponse<PaginatedList<EntityTemplate, *>> =
+	): HttpResponse<PaginatedList<EntityTemplate>> =
 		get {
 			url {
 				takeFrom(apiUrl)
