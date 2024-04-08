@@ -5,6 +5,7 @@ import com.icure.sdk.model.AppointmentTypeAndPlace
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.UserAndHealthcareParty
 import com.icure.sdk.utils.InternalIcureApi
+import io.ktor.client.HttpClient
 import io.ktor.client.request.parameter
 import io.ktor.http.appendPathSegments
 import io.ktor.http.takeFrom
@@ -22,9 +23,10 @@ import kotlin.time.Duration
 @InternalIcureApi
 class RawAnonymousApi(
 	private val apiUrl: String,
+	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
-) : BaseRawApi(additionalHeaders, timeout) {
+) : BaseRawApi(httpClient, additionalHeaders, timeout) {
 	// region anonymous healthcareparty endpoints
 
 	suspend fun listHealthcarePartiesInGroup(groupId: String): HttpResponse<List<UserAndHealthcareParty>> =
