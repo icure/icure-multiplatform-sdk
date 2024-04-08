@@ -24,6 +24,7 @@ import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
+import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.decodeFromJsonElement
 
 @OptIn(InternalIcureApi::class)
@@ -53,10 +54,10 @@ interface FormBasicFlavouredApi<E : Form> {
 	suspend fun findFormsByHcPartyPatientForeignKey(
 		hcPartyId: String,
 		secretPatientKey: String,
-		startKey: String? = null,
+		startKey: JsonElement? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): PaginatedList<E, *>
+	): PaginatedList<E>
 
 	suspend fun getFormByLogicalUuid(logicalUuid: String): E
 	suspend fun getFormsByLogicalUuid(logicalUuid: String): List<E>
@@ -84,7 +85,7 @@ interface FormFlavouredApi<E : Form> : FormBasicFlavouredApi<E> {
 	suspend fun findFormsByHcPartyPatient(
 		hcPartyId: String,
 		patient: Patient,
-		startKey: String? = null,
+		startKey: JsonElement? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
 	): List<DecryptedForm>
@@ -124,11 +125,11 @@ private abstract class AbstractFormBasicFlavouredApi<E : Form>(protected val raw
 	override suspend fun findFormsByHcPartyPatientForeignKey(
 		hcPartyId: String,
 		secretPatientKey: String,
-		startKey: String?,
+		startKey: JsonElement?,
 		startDocumentId: String?,
 		limit: Int?,
-	): PaginatedList<E, *> =
-		rawApi.findFormsByHCPartyPatientForeignKey(hcPartyId, secretPatientKey, startKey, startDocumentId, limit).successBody()
+	): PaginatedList<E> =
+		rawApi.findFormsByHCPartyPatientForeignKey(hcPartyId, secretPatientKey, startKey.encodeStartKey(), startDocumentId, limit).successBody()
 			.map { maybeDecrypt(it) }
 
 	override suspend fun getFormByLogicalUuid(logicalUuid: String) = rawApi.getFormByLogicalUuid(logicalUuid).successBody().let { maybeDecrypt(it) }
@@ -183,7 +184,7 @@ private abstract class AbstractFormFlavouredApi<E : Form>(
 	override suspend fun findFormsByHcPartyPatient(
 		hcPartyId: String,
 		patient: Patient,
-		startKey: String?,
+		startKey: JsonElement?,
 		startDocumentId: String?,
 		limit: Int?,
 	): List<DecryptedForm> {

@@ -26,6 +26,7 @@ import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
+import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.decodeFromJsonElement
 
 @OptIn(InternalIcureApi::class)
@@ -43,38 +44,38 @@ interface MessageBasicFlavourlessApi {
 interface MessageBasicFlavouredApi<E : Message> {
 	suspend fun modifyMessage(entity: E): E
 	suspend fun getMessage(entityId: String): E
-	suspend fun filterMessagesBy(filterChain: FilterChain<EncryptedMessage>, startDocumentId: String?, limit: Int?): PaginatedList<E, *>
+	suspend fun filterMessagesBy(filterChain: FilterChain<EncryptedMessage>, startDocumentId: String?, limit: Int?): PaginatedList<E>
 	suspend fun findMessagesByHcPartyPatientForeignKey(
 		secretPatientKey: String,
-		startKey: String?,
+		startKey: JsonElement?,
 		startDocumentId: String?,
 		limit: Int?,
-	): PaginatedList<E, *>
+	): PaginatedList<E>
 
 	suspend fun listMessagesByTransportGuids(hcPartyId: String, transportGuids: List<String>): List<E>
 	suspend fun findMessagesByHCPartyPatientForeignKeys(secretPatientKeys: List<String>): List<E>
-	suspend fun findMessages(startKey: String?, startDocumentId: String?, limit: Int?): PaginatedList<E, *>
+	suspend fun findMessages(startKey: JsonElement?, startDocumentId: String?, limit: Int?): PaginatedList<E>
 	suspend fun getChildrenMessages(messageId: String): List<E>
 	suspend fun getMessagesChildren(messageIds: List<String>): List<E>
 	suspend fun listMessagesByInvoices(invoiceIds: List<String>): List<E>
-	suspend fun findMessagesByTransportGuid(transportGuid: String): PaginatedList<E, *>
+	suspend fun findMessagesByTransportGuid(transportGuid: String): PaginatedList<E>
 	suspend fun findMessagesByTransportGuidSentDate(
 		transportGuid: String,
 		from: Long,
 		to: Long,
-		startKey: String? = null,
+		startKey: JsonElement? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		hcpId: String? = null,
-	): PaginatedList<E, *>
+	): PaginatedList<E>
 
-	suspend fun findMessagesByToAddress(toAddress: String, startKey: String?, startDocumentId: String?, limit: Int?): PaginatedList<E, *>
+	suspend fun findMessagesByToAddress(toAddress: String, startKey: JsonElement?, startDocumentId: String?, limit: Int?): PaginatedList<E>
 	suspend fun findMessagesByFromAddress(
 		fromAddress: String,
-		startKey: String?,
+		startKey: JsonElement?,
 		startDocumentId: String?,
 		limit: Int?,
-    ): PaginatedList<E, *>
+    ): PaginatedList<E>
 
 	suspend fun setMessagesStatusBits(entityIds: List<String>, statusBits: Int): List<E>
 	suspend fun setMessagesReadStatus(entityIds: List<String>, time: Long?, readStatus: Boolean, userId: String): List<E>
@@ -122,16 +123,16 @@ private abstract class AbstractMessageBasicFlavouredApi<E : Message>(protected v
 		filterChain: FilterChain<EncryptedMessage>,
 		startDocumentId: String?,
 		limit: Int?,
-	): PaginatedList<E, *> =
+	): PaginatedList<E> =
 		rawApi.filterMessagesBy(startDocumentId, limit, filterChain).successBody().map { maybeDecrypt(it) }
 
 	override suspend fun findMessagesByHcPartyPatientForeignKey(
 		secretPatientKey: String,
-		startKey: String?,
+		startKey: JsonElement?,
 		startDocumentId: String?,
 		limit: Int?,
-	): PaginatedList<E, *> =
-		rawApi.findMessagesByHCPartyPatientForeignKey(secretPatientKey, startKey, startDocumentId, limit).successBody()
+	): PaginatedList<E> =
+		rawApi.findMessagesByHCPartyPatientForeignKey(secretPatientKey, startKey.encodeStartKey(), startDocumentId, limit).successBody()
 			.map { maybeDecrypt(it) }
 
 	override suspend fun listMessagesByTransportGuids(hcPartyId: String, transportGuids: List<String>) =
@@ -142,10 +143,10 @@ private abstract class AbstractMessageBasicFlavouredApi<E : Message>(protected v
 	) = rawApi.findMessagesByHCPartyPatientForeignKeys(secretPatientKeys).successBody().map { maybeDecrypt(it) }
 
 	override suspend fun findMessages(
-		startKey: String?,
+		startKey: JsonElement?,
 		startDocumentId: String?,
 		limit: Int?,
-	) = rawApi.findMessages(startKey, startDocumentId, limit).successBody().map { maybeDecrypt(it) }
+	) = rawApi.findMessages(startKey.encodeStartKey(), startDocumentId, limit).successBody().map { maybeDecrypt(it) }
 
 	override suspend fun getChildrenMessages(
 		messageId: String,
@@ -164,26 +165,26 @@ private abstract class AbstractMessageBasicFlavouredApi<E : Message>(protected v
 		transportGuid: String,
 		from: Long,
 		to: Long,
-		startKey: String?,
+		startKey: JsonElement?,
 		startDocumentId: String?,
 		limit: Int?,
 		hcpId: String?,
-	) = rawApi.findMessagesByTransportGuidSentDate(transportGuid, from, to, startKey, startDocumentId, limit, hcpId).successBody()
+	) = rawApi.findMessagesByTransportGuidSentDate(transportGuid, from, to, startKey.encodeStartKey(), startDocumentId, limit, hcpId).successBody()
 		.map { maybeDecrypt(it) }
 
 	override suspend fun findMessagesByToAddress(
 		toAddress: String,
-		startKey: String?,
+		startKey: JsonElement?,
 		startDocumentId: String?,
 		limit: Int?,
-	) = rawApi.findMessagesByToAddress(toAddress, startKey, startDocumentId, limit).successBody().map { maybeDecrypt(it) }
+	) = rawApi.findMessagesByToAddress(toAddress, startKey.encodeStartKey(), startDocumentId, limit).successBody().map { maybeDecrypt(it) }
 
 	override suspend fun findMessagesByFromAddress(
 		fromAddress: String,
-		startKey: String?,
+		startKey: JsonElement?,
 		startDocumentId: String?,
 		limit: Int?,
-	) = rawApi.findMessagesByFromAddress(fromAddress, startKey, startDocumentId, limit).successBody().map { maybeDecrypt(it) }
+	) = rawApi.findMessagesByFromAddress(fromAddress, startKey.encodeStartKey(), startDocumentId, limit).successBody().map { maybeDecrypt(it) }
 
 	override suspend fun setMessagesStatusBits(
 		entityIds: List<String>,

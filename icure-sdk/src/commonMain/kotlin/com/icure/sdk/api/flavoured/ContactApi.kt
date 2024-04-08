@@ -37,6 +37,7 @@ import com.icure.sdk.utils.InternalIcureException
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.ensure
 import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.decodeFromJsonElement
@@ -82,14 +83,14 @@ interface ContactBasicFlavouredApi<E : Contact, S : Service> {
 	suspend fun modifyContacts(entities: List<E>): List<E>
 	suspend fun getContact(entityId: String): E
 	suspend fun getContacts(entityIds: List<String>): List<E>
-	suspend fun filterContactsBy(filterChain: FilterChain<EncryptedContact>, startDocumentId: String?, limit: Int?): PaginatedList<E, *>
+	suspend fun filterContactsBy(filterChain: FilterChain<EncryptedContact>, startDocumentId: String?, limit: Int?): PaginatedList<E>
 	suspend fun findContactsByHcPartyPatientForeignKey(
 		hcPartyId: String,
 		secretPatientKey: String,
-		startKey: String? = null,
+		startKey: JsonElement? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): PaginatedList<E, *>
+	): PaginatedList<E>
 
 	suspend fun listContactByHCPartyServiceId(hcPartyId: String, serviceId: String): List<E>
 	suspend fun listContactsByExternalId(externalId: String): List<E>
@@ -113,12 +114,12 @@ interface ContactBasicFlavouredApi<E : Contact, S : Service> {
 		startDate: Long,
 		endDate: Long,
 		hcPartyId: String,
-		startKey: String? = null,
+		startKey: JsonElement? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): PaginatedList<E, *>
+	): PaginatedList<E>
 
-	suspend fun filterServicesBy(filterChain: FilterChain<EncryptedService>, startDocumentId: String?, limit: Int?): PaginatedList<S, *>
+	suspend fun filterServicesBy(filterChain: FilterChain<EncryptedService>, startDocumentId: String?, limit: Int?): PaginatedList<S>
 }
 
 /* The extra API calls declared in this interface are the ones that can be used on encrypted or decrypted items but only when the user is a data owner */
@@ -176,17 +177,17 @@ private abstract class AbstractContactBasicFlavouredApi<E : Contact, S : Service
 		filterChain: FilterChain<EncryptedContact>,
 		startDocumentId: String?,
 		limit: Int?,
-	): PaginatedList<E, *> =
+	): PaginatedList<E> =
 		rawApi.filterContactsBy(startDocumentId, limit, filterChain).successBody().map { maybeDecrypt(it) }
 
 	override suspend fun findContactsByHcPartyPatientForeignKey(
 		hcPartyId: String,
 		secretPatientKey: String,
-		startKey: String?,
+		startKey: JsonElement?,
 		startDocumentId: String?,
 		limit: Int?,
-	): PaginatedList<E, *> =
-		rawApi.findContactsByHCPartyPatientForeignKey(hcPartyId, secretPatientKey, startKey, startDocumentId, limit).successBody()
+	): PaginatedList<E> =
+		rawApi.findContactsByHCPartyPatientForeignKey(hcPartyId, secretPatientKey, startKey.encodeStartKey(), startDocumentId, limit).successBody()
 			.map { maybeDecrypt(it) }
 
 	override suspend fun listContactByHCPartyServiceId(hcPartyId: String, serviceId: String): List<E> =
@@ -223,7 +224,7 @@ private abstract class AbstractContactBasicFlavouredApi<E : Contact, S : Service
 		filterChain: FilterChain<EncryptedService>,
 		startDocumentId: String?,
 		limit: Int?,
-	): PaginatedList<S, *> =
+	): PaginatedList<S> =
 		rawApi.filterServicesBy(startDocumentId, limit, filterChain).successBody().map { maybeDecryptService(it) }
 
 	override suspend fun getServices(entityIds: List<String>): List<S> =
@@ -242,10 +243,10 @@ private abstract class AbstractContactBasicFlavouredApi<E : Contact, S : Service
 		startDate: Long,
 		endDate: Long,
 		hcPartyId: String,
-		startKey: String?,
+		startKey: JsonElement?,
 		startDocumentId: String?,
 		limit: Int?,
-	): PaginatedList<E, *> = rawApi.findContactsByOpeningDate(startDate, endDate, hcPartyId, startKey, startDocumentId, limit).successBody()
+	): PaginatedList<E> = rawApi.findContactsByOpeningDate(startDate, endDate, hcPartyId, startKey.encodeStartKey(), startDocumentId, limit).successBody()
 		.map { maybeDecrypt(it) }
 
 

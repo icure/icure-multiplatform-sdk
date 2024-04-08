@@ -2,12 +2,11 @@ package com.icure.sdk.utils.pagination
 
 import com.icure.sdk.model.PaginatedDocumentKeyIdPair
 import com.icure.sdk.model.PaginatedList
-import com.icure.sdk.model.specializations.JsonString
 
 class SingleSourcePageIterator<T : Any>(
-	private val requestNextPage: suspend (nextKeyPair: PaginatedDocumentKeyIdPair<JsonString>?) -> PaginatedList<T, JsonString>
+	private val requestNextPage: suspend (nextKeyPair: PaginatedDocumentKeyIdPair?) -> PaginatedList<T>
 ) : PaginatedListIterator<T> {
-	private var currentPage: PaginatedList<T, JsonString>? = null
+	private var currentPage: PaginatedList<T>? = null
 	private var currentIndex: Int = 0
 
 	private fun getAndIncrement(): T? {

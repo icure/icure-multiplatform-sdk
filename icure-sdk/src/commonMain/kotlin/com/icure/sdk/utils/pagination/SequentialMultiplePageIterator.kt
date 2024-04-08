@@ -3,12 +3,11 @@ package com.icure.sdk.utils.pagination
 import com.icure.sdk.model.PaginatedDocumentKeyIdPair
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.base.Versionable
-import com.icure.sdk.model.specializations.JsonString
 
 class SequentialMultiplePageIterator<T : Versionable<String>, P>(
 	requestParameters: List<P>,
 	parametersComparator: Comparator<P> ? = null,
-	private val requestNextPage: suspend (params: P, nextKeyPair: PaginatedDocumentKeyIdPair<JsonString>?) -> PaginatedList<T, JsonString>
+	private val requestNextPage: suspend (params: P, nextKeyPair: PaginatedDocumentKeyIdPair?) -> PaginatedList<T>
 ) : PaginatedListIterator<T> {
 
 	private val requestParams = (parametersComparator?.let { requestParameters.sortedWith(it) } ?: requestParameters)
