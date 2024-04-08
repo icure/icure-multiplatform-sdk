@@ -117,7 +117,7 @@ class RawTopicApi(
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		filterChain: FilterChain<EncryptedTopic>,
-	): HttpResponse<PaginatedList<EncryptedTopic, *>> =
+	): HttpResponse<PaginatedList<EncryptedTopic>> =
 		post {
 			url {
 				takeFrom(apiUrl)

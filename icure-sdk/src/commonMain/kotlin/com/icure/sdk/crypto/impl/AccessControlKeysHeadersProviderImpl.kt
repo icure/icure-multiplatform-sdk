@@ -11,7 +11,7 @@ class AccessControlKeysHeadersProviderImpl(
 	private val exchangeDataManager: ExchangeDataManager
 ): AccessControlKeysHeadersProvider {
 	override suspend fun getAccessControlKeysHeadersFor(entityType: EntityWithEncryptionMetadataTypeName): List<String> =
-		ensureNonNull(exchangeDataManager.getAccessControlKeysValue(entityType)) {
+		ensureNonNull(exchangeDataManager.getEncodedAccessControlKeysValue(entityType)) {
 			"Exchange data manager does not allow for retrieval of access control keys"
 		}.map { it.s }
 }

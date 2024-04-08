@@ -24,13 +24,14 @@ import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.model.requests.RequestedPermission
-import com.icure.sdk.utils.EntityDecryptionException
+import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.websocket.Connection
 import com.icure.sdk.websocket.ConnectionImpl
 import com.icure.sdk.websocket.Subscribable
 import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.decodeFromJsonElement
 
 @OptIn(InternalIcureApi::class)
@@ -58,16 +59,14 @@ interface HealthcareElementBasicFlavouredApi<E : HealthElement> : Subscribable<H
 		filterChain: FilterChain<EncryptedHealthElement>,
 		startDocumentId: String?,
 		limit: Int?,
-	): PaginatedList<E, *>
-
+	): PaginatedList<E>
 	suspend fun findHealthcareElementsByHcPartyPatientForeignKey(
 		hcPartyId: String,
 		secretPatientKey: String,
-		startKey: String? = null,
+		startKey: JsonElement? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): PaginatedList<E, *>
-
+	): PaginatedList<E>
 	suspend fun findHealthcareElementsByHcPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<E>
 }
 
@@ -80,6 +79,14 @@ interface HealthcareElementFlavouredApi<E : HealthElement> : HealthcareElementBa
 		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
 		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
 	): SimpleShareResult<E>
+	suspend fun findHealthcareElementsByHcPartyPatient(
+		hcPartyId: String,
+		patient: Patient,
+		startKey: JsonElement? = null,
+		startDocumentId: String? = null,
+		limit: Int? = null,
+	): List<E>
+
 }
 
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
@@ -93,14 +100,6 @@ interface HealthcareElementApi : HealthcareElementBasicFlavourlessApi, Healthcar
 		delegates: Map<String, AccessLevel> = emptyMap(),
 		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent,
 	): DecryptedHealthElement
-
-	suspend fun findHealthcareElementsByHcPartyPatient(
-		hcPartyId: String,
-		patient: Patient,
-		startKey: String? = null,
-		startDocumentId: String? = null,
-		limit: Int? = null,
-	): List<DecryptedHealthElement>
 
 	val encrypted: HealthcareElementFlavouredApi<EncryptedHealthElement>
 	val tryAndRecover: HealthcareElementFlavouredApi<HealthElement>
@@ -127,17 +126,17 @@ private abstract class AbstractHealthcareElementBasicFlavouredApi<E : HealthElem
 		filterChain: FilterChain<EncryptedHealthElement>,
 		startDocumentId: String?,
 		limit: Int?,
-	): PaginatedList<E, *> =
+	): PaginatedList<E> =
 		rawApi.filterHealthElementsBy(startDocumentId, limit, filterChain).successBody().map { maybeDecrypt(it) }
 
 	override suspend fun findHealthcareElementsByHcPartyPatientForeignKey(
 		hcPartyId: String,
 		secretPatientKey: String,
-		startKey: String?,
+		startKey: JsonElement?,
 		startDocumentId: String?,
 		limit: Int?,
-	): PaginatedList<E, *> =
-		rawApi.findHealthElementsByHCPartyPatientForeignKey(hcPartyId, secretPatientKey, startKey, startDocumentId, limit).successBody()
+	): PaginatedList<E> =
+		rawApi.findHealthElementsByHCPartyPatientForeignKey(hcPartyId, secretPatientKey, startKey.encodeStartKey(), startDocumentId, limit).successBody()
 			.map { maybeDecrypt(it) }
 
 	override suspend fun findHealthcareElementsByHcPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<E> =
@@ -196,6 +195,17 @@ private abstract class AbstractHealthcareElementFlavouredApi<E : HealthElement>(
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
 		}
+	override suspend fun findHealthcareElementsByHcPartyPatient(
+		hcPartyId: String,
+		patient: Patient,
+		startKey: JsonElement?,
+		startDocumentId: String?,
+		limit: Int?,
+	): List<E> = rawApi.findHealthElementsByHCPartyPatientForeignKeys(
+		hcPartyId,
+		encryptionService.secretIdsOf(patient.withTypeInfo(), null).toList()
+	).successBody().map { maybeDecrypt(it) }
+
 }
 
 @InternalIcureApi
@@ -235,6 +245,7 @@ internal class HealthcareElementApiImpl(
 			entity.withTypeInfo(),
 			EncryptedHealthElement.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedHealthElement>(it) }
+			?: throw EntityEncryptionException("Entity ${entity.id} cannot be created")
 	}
 }, HealthcareElementBasicFlavourlessApi by AbstractHealthcareElementBasicFlavourlessApi(rawApi) {
 
@@ -315,17 +326,6 @@ internal class HealthcareElementApiImpl(
 				).associateWith { AccessLevel.Write },
 		).updatedEntity
 
-	override suspend fun findHealthcareElementsByHcPartyPatient(
-		hcPartyId: String,
-		patient: Patient,
-		startKey: String?,
-		startDocumentId: String?,
-		limit: Int?,
-	): List<DecryptedHealthElement> = rawApi.findHealthElementsByHCPartyPatientForeignKeys(
-		hcPartyId,
-		encryptionService.secretIdsOf(patient.withTypeInfo(), null).toList(),
-	).successBody().map { decrypt(it) { "Found healthcare element cannot be decrypted" } }
-
 	private suspend fun encrypt(entity: DecryptedHealthElement) = encryptionService.encryptEntity(
 		entity.withTypeInfo(),
 		DecryptedHealthElement.serializer(),
@@ -337,7 +337,7 @@ internal class HealthcareElementApiImpl(
 			entity.withTypeInfo(),
 			EncryptedHealthElement.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedHealthElement>(it) }
-			?: throw EntityDecryptionException(errorMessage())
+			?: throw EntityEncryptionException(errorMessage())
 
 }
 

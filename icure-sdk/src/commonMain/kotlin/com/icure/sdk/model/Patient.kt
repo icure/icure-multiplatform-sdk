@@ -36,7 +36,6 @@ import com.icure.sdk.model.embed.SecurityMetadata
 import com.icure.sdk.model.specializations.AesExchangeKeyEncryptionKeypairIdentifier
 import com.icure.sdk.model.specializations.Base64String
 import com.icure.sdk.model.specializations.HexString
-import com.icure.sdk.model.specializations.KeypairFingerprintV1String
 import com.icure.sdk.model.specializations.SpkiHexString
 import kotlinx.serialization.Serializable
 import kotlin.Boolean
@@ -175,7 +174,7 @@ sealed interface Patient :
 		Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>>
 
 	override val transferKeys:
-		Map<KeypairFingerprintV1String, Map<KeypairFingerprintV1String, HexString>>
+		Map<AesExchangeKeyEncryptionKeypairIdentifier, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>
 
 	override val privateKeyShamirPartitions: Map<String, HexString>
 
@@ -285,7 +284,8 @@ data class DecryptedPatient(
 	override val hcPartyKeys: Map<String, List<HexString>> = emptyMap(),
 	override val aesExchangeKeys: Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> =
 		emptyMap(),
-	override val transferKeys: Map<KeypairFingerprintV1String, Map<KeypairFingerprintV1String, HexString>> = emptyMap(),
+	override val transferKeys: Map<AesExchangeKeyEncryptionKeypairIdentifier, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>> =
+		emptyMap(),
 	override val privateKeyShamirPartitions: Map<String, HexString> = emptyMap(),
 	override val publicKey: SpkiHexString? = null,
 	override val publicKeysForOaepWithSha256: Set<SpkiHexString> = emptySet(),
@@ -376,7 +376,8 @@ data class EncryptedPatient(
 	override val hcPartyKeys: Map<String, List<HexString>> = emptyMap(),
 	override val aesExchangeKeys: Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> =
 		emptyMap(),
-	override val transferKeys: Map<KeypairFingerprintV1String, Map<KeypairFingerprintV1String, HexString>> = emptyMap(),
+	override val transferKeys: Map<AesExchangeKeyEncryptionKeypairIdentifier, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>> =
+		emptyMap(),
 	override val privateKeyShamirPartitions: Map<String, HexString> = emptyMap(),
 	override val publicKey: SpkiHexString? = null,
 	override val publicKeysForOaepWithSha256: Set<SpkiHexString> = emptySet(),

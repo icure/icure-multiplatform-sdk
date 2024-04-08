@@ -1,5 +1,6 @@
 package com.icure.sdk.api
 
+import com.icure.sdk.api.flavoured.encodeStartKey
 import com.icure.sdk.api.raw.RawGroupApi
 import com.icure.sdk.model.DatabaseInitialisation
 import com.icure.sdk.model.Group
@@ -20,6 +21,7 @@ import com.icure.sdk.model.embed.UserType
 import com.icure.sdk.model.security.Operation
 import com.icure.sdk.model.security.PermissionType
 import com.icure.sdk.utils.InternalIcureApi
+import kotlinx.serialization.json.JsonElement
 
 @OptIn(InternalIcureApi::class)
 class GroupApi(
@@ -61,16 +63,16 @@ class GroupApi(
         id: String,
         startDocumentId: String? = null,
         limit: Int? = null,
-    ): PaginatedList<Group, String> = rawApi.findGroups(id, startDocumentId, limit).successBody()
+    ): PaginatedList<Group> = rawApi.findGroups(id, startDocumentId, limit).successBody()
 
     suspend fun findGroupsWithContent(
         id: String,
         searchString: String,
-        startKey: String? = null,
+        startKey: JsonElement? = null,
         startDocumentId: String? = null,
         limit: Int? = null,
-    ): PaginatedList<Group, String> =
-        rawApi.findGroupsWithContent(id, searchString, startKey, startDocumentId, limit).successBody()
+    ): PaginatedList<Group> =
+        rawApi.findGroupsWithContent(id, searchString, startKey.encodeStartKey(), startDocumentId, limit).successBody()
 
     suspend fun getNameOfGroupParent(id: String): String = rawApi.getNameOfGroupParent(id).successBody()
 

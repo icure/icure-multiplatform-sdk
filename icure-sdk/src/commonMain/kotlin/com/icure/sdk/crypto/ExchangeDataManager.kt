@@ -78,5 +78,11 @@ interface ExchangeDataManager {
 	 * concatenation of all available access control keys for the current data owner.
 	 * If the current data owner is explicit returns null.
 	 */
-	suspend fun getAccessControlKeysValue(entityType: EntityWithEncryptionMetadataTypeName): List<Base64String>?
+	suspend fun getEncodedAccessControlKeysValue(entityType: EntityWithEncryptionMetadataTypeName): List<Base64String>?
+
+	/**
+	 * If the current data owner requires anonymous delegations this returns all available the access control keys for the current data owner.
+	 * If the current data owner is explicit returns null.
+	 */
+	suspend fun getAccessControlKeysValue(entityType: EntityWithEncryptionMetadataTypeName): List<SecureDelegationKeyString>?
 }

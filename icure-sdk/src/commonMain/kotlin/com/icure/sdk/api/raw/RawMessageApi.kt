@@ -13,7 +13,6 @@ import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
-import com.icure.sdk.model.specializations.JsonString
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
@@ -128,7 +127,7 @@ class RawMessageApi(
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedMessage, JsonString>> =
+	): HttpResponse<PaginatedList<EncryptedMessage>> =
 		get {
 			url {
 				takeFrom(apiUrl)
@@ -146,7 +145,7 @@ class RawMessageApi(
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedMessage, JsonString>> =
+	): HttpResponse<PaginatedList<EncryptedMessage>> =
 		get {
 			url {
 				takeFrom(apiUrl)
@@ -198,7 +197,7 @@ class RawMessageApi(
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		hcpId: String? = null,
-	): HttpResponse<PaginatedList<EncryptedMessage, JsonString>> =
+	): HttpResponse<PaginatedList<EncryptedMessage>> =
 		get {
 			url {
 				takeFrom(apiUrl)
@@ -222,7 +221,7 @@ class RawMessageApi(
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		hcpId: String? = null,
-	): HttpResponse<PaginatedList<EncryptedMessage, JsonString>> =
+	): HttpResponse<PaginatedList<EncryptedMessage>> =
 		get {
 			url {
 				takeFrom(apiUrl)
@@ -246,7 +245,7 @@ class RawMessageApi(
 		limit: Int? = null,
 		reverse: Boolean? = null,
 		hcpId: String? = null,
-	): HttpResponse<PaginatedList<EncryptedMessage, JsonString>> =
+	): HttpResponse<PaginatedList<EncryptedMessage>> =
 		get {
 			url {
 				takeFrom(apiUrl)
@@ -268,7 +267,7 @@ class RawMessageApi(
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		hcpId: String? = null,
-	): HttpResponse<PaginatedList<EncryptedMessage, JsonString>> =
+	): HttpResponse<PaginatedList<EncryptedMessage>> =
 		get {
 			url {
 				takeFrom(apiUrl)
@@ -334,7 +333,7 @@ class RawMessageApi(
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		filterChain: FilterChain<EncryptedMessage>,
-	): HttpResponse<PaginatedList<EncryptedMessage, *>> =
+	): HttpResponse<PaginatedList<EncryptedMessage>> =
 		post {
 			url {
 				takeFrom(apiUrl)

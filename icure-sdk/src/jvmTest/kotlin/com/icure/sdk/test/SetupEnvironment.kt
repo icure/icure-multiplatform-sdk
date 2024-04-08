@@ -2,10 +2,12 @@
 
 package com.icure.sdk.test
 
+import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.crypto.RsaAlgorithm
 import com.icure.kryptom.crypto.RsaKeypair
 import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.kryptom.utils.toHexString
+import com.icure.sdk.api.ApiOptions
 import com.icure.sdk.api.IcureApi
 import com.icure.sdk.api.raw.RawAnonymousAuthApi
 import com.icure.sdk.api.raw.RawGroupApi
@@ -14,7 +16,10 @@ import com.icure.sdk.api.raw.RawPatientApi
 import com.icure.sdk.api.raw.RawUserApi
 import com.icure.sdk.auth.UsernamePassword
 import com.icure.sdk.auth.services.JwtAuthService
+import com.icure.sdk.crypto.CryptoStrategies
+import com.icure.sdk.crypto.impl.BasicCryptoStrategies
 import com.icure.sdk.crypto.impl.NoAccessControlKeysHeadersProvider
+import com.icure.sdk.model.DataOwnerWithType
 import com.icure.sdk.model.DatabaseInitialisation
 import com.icure.sdk.model.EncryptedPatient
 import com.icure.sdk.model.HealthcareParty
@@ -27,6 +32,7 @@ import com.icure.sdk.storage.impl.JsonAndBase64KeyStorage
 import com.icure.sdk.storage.impl.VolatileStorageFacade
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.test.setup.ICureTestSetup
+import io.kotest.common.runBlocking
 import java.util.UUID
 
 val baseUrl = "http://localhost:16044"
@@ -50,6 +56,7 @@ private val defaultRoles = mapOf(
 )
 private var initialised = false
 
+@OptIn(InternalIcureApi::class)
 suspend fun initialiseTestEnvironment() {
 	if (initialised) {
 		return
@@ -107,30 +114,86 @@ data class DataOwnerDetails(
 	val keypair: RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>,
 	val parent: DataOwnerDetails?
 ) {
-	suspend fun api(): IcureApi {
-		return IcureApi.initialise(
+	val publicKeySpki = runBlocking { SpkiHexString(defaultCryptoService.rsa.exportPublicKeySpki(keypair.public).toHexString()) }
+
+	/**
+	 * Creates a new api with access to the original key of the user and his parents.
+	 */
+	suspend fun api(): IcureApi =
+		initApi(BasicCryptoStrategies) { addInitialKeysToStorage(it) }
+
+	/**
+	 * Creates a new api with access to the provided keys.
+	 * All the keys must be keys of the data owner and not of parents.
+	 */
+	suspend fun apiWithKeys(
+		vararg keys: RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>
+	): IcureApi =
+		initApi(BasicCryptoStrategies) { storage ->
+			keys.forEach { key ->
+				storage.saveEncryptionKeypair(
+					dataOwnerId,
+					key,
+					true
+				)
+			}
+		}
+
+	/**
+	 * Creates an api simulating the loss of all keys for the user, prompting the creation of a new key.
+	 * @return the api and the new key
+ 	 */
+	suspend fun apiWithLostKeys(): Pair<IcureApi, RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>> {
+		val newKey = defaultCryptoService.rsa.generateKeyPair(RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256)
+		return Pair(
+			initApi(
+				object : CryptoStrategies by BasicCryptoStrategies {
+					override suspend fun generateNewKeyForDataOwner(
+						self: DataOwnerWithType,
+						cryptoPrimitives: CryptoService,
+					): CryptoStrategies.KeyGenerationRequestResult =
+						CryptoStrategies.KeyGenerationRequestResult.Use(newKey)
+				}
+			) { storage ->
+				storage.saveEncryptionKeypair(
+					dataOwnerId,
+					newKey,
+					true
+				)
+			},
+			newKey
+		)
+	}
+
+	private suspend fun initApi(
+		cryptoStrategies: CryptoStrategies,
+		fillStorage: suspend (storage: IcureStorageFacade) -> Unit
+	): IcureApi =
+		IcureApi.initialise(
 			baseUrl,
 			UsernamePassword(username, password),
 			VolatileStorageFacade().also {
-				addKeyToStorage(IcureStorageFacade(
+				IcureStorageFacade(
 					JsonAndBase64KeyStorage(it),
 					it,
 					DefaultStorageEntryKeysFactory,
 					defaultCryptoService,
 					false
-				))
+				).also { fillStorage(it) }
 			},
-			true
+			cryptoStrategies,
+			ApiOptions(
+				disableParentKeysInitialisation = false
+			)
 		)
-	}
 
-	private suspend fun addKeyToStorage(storage: IcureStorageFacade) {
+	private suspend fun addInitialKeysToStorage(storage: IcureStorageFacade) {
 		storage.saveEncryptionKeypair(
 			dataOwnerId,
 			keypair,
 			true
 		)
-		parent?.addKeyToStorage(storage)
+		parent?.addInitialKeysToStorage(storage)
 	}
 }
 
@@ -138,19 +201,27 @@ data class DataOwnerDetails(
  * @param parent if not null, specifies the direct parent of this data owner. If that parent has a parent then the
  * latter will be the grandparent of this data owner, and so on. If null the data owner will not have any parent.
  */
-suspend fun createHcpUser(parent: DataOwnerDetails? = null): DataOwnerDetails {
+suspend fun createHcpUser(parent: DataOwnerDetails? = null, useLegacyKey: Boolean = false): DataOwnerDetails {
 	val hcpRawApi = RawHealthcarePartyApi(baseUrl, testGroupAdminAuth)
 	val userRawApi = RawUserApi(baseUrl, testGroupAdminAuth)
 	val hcpId = UUID.randomUUID().toString()
 	val login = "hcp-${UUID.randomUUID()}"
 	val password = UUID.randomUUID().toString()
-	val keypair = defaultCryptoService.rsa.generateKeyPair(RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256)
+	val keypair = defaultCryptoService.rsa.generateKeyPair(
+		if (useLegacyKey)
+			RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha1
+		else
+			RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256
+
+	)
+	val exportedPublic = defaultCryptoService.rsa.exportPublicKeySpki(keypair.public).toHexString().let { SpkiHexString(it) }
 	val hcp = hcpRawApi.createHealthcareParty(
 		HealthcareParty(
 			hcpId,
 			firstName = "Hcp-$hcpId",
 			lastName = "Hcp-$hcpId",
-			publicKeysForOaepWithSha256 = setOf(defaultCryptoService.rsa.exportPublicKeySpki(keypair.public).toHexString().let { SpkiHexString(it) }),
+			publicKeysForOaepWithSha256 = if (useLegacyKey) emptySet() else setOf(exportedPublic),
+			publicKey = if (useLegacyKey) exportedPublic else null,
 			parentId = parent?.dataOwnerId
 		)
 	).successBody()

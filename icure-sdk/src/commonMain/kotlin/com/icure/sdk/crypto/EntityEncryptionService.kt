@@ -2,23 +2,24 @@ package com.icure.sdk.crypto
 
 import com.icure.sdk.crypto.entities.BulkShareResult
 import com.icure.sdk.crypto.entities.DelegateShareOptions
-import com.icure.sdk.crypto.entities.EntityWithTypeInfo
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.EntityDataEncryptionResult
 import com.icure.sdk.crypto.entities.EntityEncryptionKeyDetails
 import com.icure.sdk.crypto.entities.EntityEncryptionMetadataInitialisationResult
+import com.icure.sdk.crypto.entities.EntityWithTypeInfo
 import com.icure.sdk.crypto.entities.HierarchicallyDecryptedMetadata
 import com.icure.sdk.crypto.entities.MinimalBulkShareResult
 import com.icure.sdk.crypto.entities.SecretIdOption
-import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.SimpleDelegateShareOptions
+import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.model.base.HasEncryptionMetadata
 import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.embed.Encryptable
-import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
 import com.icure.sdk.model.requests.MinimalEntityBulkShareResult
+import com.icure.sdk.model.specializations.HexString
+import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.json.JsonElement
@@ -245,7 +246,7 @@ interface EntityEncryptionService : EntityValidationService {
 	/**
 	 * Encrypts the content of an entity according to the provided manifest. The encryption key will be extracted from
 	 * the metadata of the unencrypted entity.
-	 * @throws IllegalArgumentException if no encryption key could be extracted from the unencrypted entity.
+	 * @throws EntityEncryptionException if no encryption key could be extracted from the unencrypted entity.
 	 */
 	suspend fun <E, D> encryptEntity(
 		unencryptedEntity: EntityWithTypeInfo<D>,

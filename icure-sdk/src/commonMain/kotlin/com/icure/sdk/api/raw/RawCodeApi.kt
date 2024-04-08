@@ -8,7 +8,6 @@ import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
-import com.icure.sdk.model.specializations.JsonString
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
@@ -45,7 +44,7 @@ class RawCodeApi(
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<Code, JsonString>> =
+	): HttpResponse<PaginatedList<Code>> =
 		get {
 			url {
 				takeFrom(apiUrl)
@@ -71,7 +70,7 @@ class RawCodeApi(
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<Code, JsonString>> =
+	): HttpResponse<PaginatedList<Code>> =
 		get {
 			url {
 				takeFrom(apiUrl)
@@ -94,7 +93,7 @@ class RawCodeApi(
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<Code, JsonString>> =
+	): HttpResponse<PaginatedList<Code>> =
 		get {
 			url {
 				takeFrom(apiUrl)
@@ -280,7 +279,7 @@ class RawCodeApi(
 		sort: String? = null,
 		desc: Boolean? = null,
 		filterChain: FilterChain<Code>,
-	): HttpResponse<PaginatedList<Code, *>> =
+	): HttpResponse<PaginatedList<Code>> =
 		post {
 			url {
 				takeFrom(apiUrl)

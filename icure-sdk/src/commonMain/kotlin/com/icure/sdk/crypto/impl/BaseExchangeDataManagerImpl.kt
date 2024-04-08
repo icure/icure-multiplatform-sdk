@@ -24,7 +24,7 @@ import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.base64Encode
 import com.icure.sdk.utils.decode
 import com.icure.sdk.utils.ensure
-import com.icure.sdk.utils.exhaustPaginatedRequest
+import com.icure.sdk.utils.pagination.exhaustPaginatedRequest
 import com.icure.sdk.utils.getLogger
 import com.icure.sdk.utils.validateResponseContent
 import io.ktor.utils.io.charsets.Charsets

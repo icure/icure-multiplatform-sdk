@@ -29,6 +29,7 @@ class JsonEncryptionServiceImpl(
 ) : JsonEncryptionService {
 	companion object {
 		private val ENCRYPTED_SELF = Encryptable::encryptedSelf.name
+		@Suppress("RegExpRedundantEscape") // Suppressed because in node is not redundant
 		private val ENCRYPTED_FIELD_MANIFEST_REGEX =
 			Regex("^([_a-zA-Z][_a-zA-Z0-9]*)(?:(\\.\\*\\.|\\[\\]\\.|\\.)(?:[_a-zA-Z].*|\\[.*\\]))?$")
 	}

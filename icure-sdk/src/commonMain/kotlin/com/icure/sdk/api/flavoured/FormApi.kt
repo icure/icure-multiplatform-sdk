@@ -21,9 +21,10 @@ import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.embed.DelegationTag
 import com.icure.sdk.model.requests.RequestedPermission
-import com.icure.sdk.utils.EntityDecryptionException
+import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
+import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.decodeFromJsonElement
 
 @OptIn(InternalIcureApi::class)
@@ -53,10 +54,10 @@ interface FormBasicFlavouredApi<E : Form> {
 	suspend fun findFormsByHcPartyPatientForeignKey(
 		hcPartyId: String,
 		secretPatientKey: String,
-		startKey: String? = null,
+		startKey: JsonElement? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): PaginatedList<E, *>
+	): PaginatedList<E>
 
 	suspend fun getFormByLogicalUuid(logicalUuid: String): E
 	suspend fun getFormsByLogicalUuid(logicalUuid: String): List<E>
@@ -81,6 +82,13 @@ interface FormFlavouredApi<E : Form> : FormBasicFlavouredApi<E> {
 		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
 		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
 	): SimpleShareResult<E>
+	suspend fun findFormsByHcPartyPatient(
+		hcPartyId: String,
+		patient: Patient,
+		startKey: JsonElement? = null,
+		startDocumentId: String? = null,
+		limit: Int? = null,
+	): List<DecryptedForm>
 }
 
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
@@ -94,14 +102,6 @@ interface FormApi : FormBasicFlavourlessApi, FormFlavouredApi<DecryptedForm> {
 		delegates: Map<String, AccessLevel> = emptyMap(),
 		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent,
 	): DecryptedForm
-
-	suspend fun findFormsByHcPartyPatient(
-		hcPartyId: String,
-		patient: Patient,
-		startKey: String? = null,
-		startDocumentId: String? = null,
-		limit: Int? = null,
-	): List<DecryptedForm>
 
 	val encrypted: FormFlavouredApi<EncryptedForm>
 	val tryAndRecover: FormFlavouredApi<Form>
@@ -125,11 +125,11 @@ private abstract class AbstractFormBasicFlavouredApi<E : Form>(protected val raw
 	override suspend fun findFormsByHcPartyPatientForeignKey(
 		hcPartyId: String,
 		secretPatientKey: String,
-		startKey: String?,
+		startKey: JsonElement?,
 		startDocumentId: String?,
 		limit: Int?,
-	): PaginatedList<E, *> =
-		rawApi.findFormsByHCPartyPatientForeignKey(hcPartyId, secretPatientKey, startKey, startDocumentId, limit).successBody()
+	): PaginatedList<E> =
+		rawApi.findFormsByHCPartyPatientForeignKey(hcPartyId, secretPatientKey, startKey.encodeStartKey(), startDocumentId, limit).successBody()
 			.map { maybeDecrypt(it) }
 
 	override suspend fun getFormByLogicalUuid(logicalUuid: String) = rawApi.getFormByLogicalUuid(logicalUuid).successBody().let { maybeDecrypt(it) }
@@ -180,6 +180,16 @@ private abstract class AbstractFormFlavouredApi<E : Form>(
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
 		}
+
+	override suspend fun findFormsByHcPartyPatient(
+		hcPartyId: String,
+		patient: Patient,
+		startKey: JsonElement?,
+		startDocumentId: String?,
+		limit: Int?,
+	): List<DecryptedForm> {
+		TODO("@vcp")
+	}
 }
 
 @InternalIcureApi
@@ -244,7 +254,7 @@ internal class FormApiImpl(
 			entity.withTypeInfo(),
 			EncryptedForm.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedForm>(it) }
-			?: throw EntityDecryptionException("Entity ${entity.id} cannot be created")
+			?: throw EntityEncryptionException("Entity ${entity.id} cannot be created")
 	}
 }, FormBasicFlavourlessApi by AbstractFormBasicFlavourlessApi(rawApi) {
 	override val encrypted: FormFlavouredApi<EncryptedForm> =
@@ -319,16 +329,6 @@ internal class FormApiImpl(
 				).associateWith { AccessLevel.Write },
 		).updatedEntity
 
-	override suspend fun findFormsByHcPartyPatient(
-		hcPartyId: String,
-		patient: Patient,
-		startKey: String?,
-		startDocumentId: String?,
-		limit: Int?,
-	): List<DecryptedForm> {
-		TODO("Not yet implemented, but @vcp can you have a look ?")
-	}
-
 	private suspend fun encrypt(entity: DecryptedForm) = encryptionService.encryptEntity(
 		entity.withTypeInfo(),
 		DecryptedForm.serializer(),
@@ -339,7 +339,7 @@ internal class FormApiImpl(
 		entity.withTypeInfo(),
 		EncryptedForm.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedForm>(it) }
-		?: throw EntityDecryptionException(errorMessage())
+		?: throw EntityEncryptionException(errorMessage())
 
 }
 

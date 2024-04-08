@@ -31,12 +31,13 @@ import com.icure.sdk.model.embed.Service
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.requests.RequestedPermission
-import com.icure.sdk.utils.EntityDecryptionException
+import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.InternalIcureException
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.ensure
 import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.decodeFromJsonElement
@@ -82,14 +83,14 @@ interface ContactBasicFlavouredApi<E : Contact, S : Service> {
 	suspend fun modifyContacts(entities: List<E>): List<E>
 	suspend fun getContact(entityId: String): E
 	suspend fun getContacts(entityIds: List<String>): List<E>
-	suspend fun filterContactsBy(filterChain: FilterChain<EncryptedContact>, startDocumentId: String?, limit: Int?): PaginatedList<E, *>
+	suspend fun filterContactsBy(filterChain: FilterChain<EncryptedContact>, startDocumentId: String?, limit: Int?): PaginatedList<E>
 	suspend fun findContactsByHcPartyPatientForeignKey(
 		hcPartyId: String,
 		secretPatientKey: String,
-		startKey: String? = null,
+		startKey: JsonElement? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): PaginatedList<E, *>
+	): PaginatedList<E>
 
 	suspend fun listContactByHCPartyServiceId(hcPartyId: String, serviceId: String): List<E>
 	suspend fun listContactsByExternalId(externalId: String): List<E>
@@ -113,12 +114,12 @@ interface ContactBasicFlavouredApi<E : Contact, S : Service> {
 		startDate: Long,
 		endDate: Long,
 		hcPartyId: String,
-		startKey: String? = null,
+		startKey: JsonElement? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): PaginatedList<E, *>
+	): PaginatedList<E>
 
-	suspend fun filterServicesBy(filterChain: FilterChain<EncryptedService>, startDocumentId: String?, limit: Int?): PaginatedList<S, *>
+	suspend fun filterServicesBy(filterChain: FilterChain<EncryptedService>, startDocumentId: String?, limit: Int?): PaginatedList<S>
 }
 
 /* The extra API calls declared in this interface are the ones that can be used on encrypted or decrypted items but only when the user is a data owner */
@@ -130,6 +131,15 @@ interface ContactFlavouredApi<E : Contact, S : Service> : ContactBasicFlavouredA
 		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
 		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
 	): SimpleShareResult<E>
+
+	suspend fun findContactsByHcPartyPatient(
+		hcPartyId: String,
+		patient: Patient,
+		startKey: String? = null,
+		startDocumentId: String? = null,
+		limit: Int? = null,
+	): List<DecryptedContact>
+
 }
 
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
@@ -143,14 +153,6 @@ interface ContactApi : ContactBasicFlavourlessApi, ContactFlavouredApi<Decrypted
 		delegates: Map<String, AccessLevel> = emptyMap(),
 		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent,
 	): DecryptedContact
-
-	suspend fun findContactsByHcPartyPatient(
-		hcPartyId: String,
-		patient: Patient,
-		startKey: String? = null,
-		startDocumentId: String? = null,
-		limit: Int? = null,
-	): List<DecryptedContact>
 
 	val encrypted: ContactFlavouredApi<EncryptedContact, EncryptedService>
 	val tryAndRecover: ContactFlavouredApi<Contact, Service>
@@ -175,17 +177,17 @@ private abstract class AbstractContactBasicFlavouredApi<E : Contact, S : Service
 		filterChain: FilterChain<EncryptedContact>,
 		startDocumentId: String?,
 		limit: Int?,
-	): PaginatedList<E, *> =
+	): PaginatedList<E> =
 		rawApi.filterContactsBy(startDocumentId, limit, filterChain).successBody().map { maybeDecrypt(it) }
 
 	override suspend fun findContactsByHcPartyPatientForeignKey(
 		hcPartyId: String,
 		secretPatientKey: String,
-		startKey: String?,
+		startKey: JsonElement?,
 		startDocumentId: String?,
 		limit: Int?,
-	): PaginatedList<E, *> =
-		rawApi.findContactsByHCPartyPatientForeignKey(hcPartyId, secretPatientKey, startKey, startDocumentId, limit).successBody()
+	): PaginatedList<E> =
+		rawApi.findContactsByHCPartyPatientForeignKey(hcPartyId, secretPatientKey, startKey.encodeStartKey(), startDocumentId, limit).successBody()
 			.map { maybeDecrypt(it) }
 
 	override suspend fun listContactByHCPartyServiceId(hcPartyId: String, serviceId: String): List<E> =
@@ -222,7 +224,7 @@ private abstract class AbstractContactBasicFlavouredApi<E : Contact, S : Service
 		filterChain: FilterChain<EncryptedService>,
 		startDocumentId: String?,
 		limit: Int?,
-	): PaginatedList<S, *> =
+	): PaginatedList<S> =
 		rawApi.filterServicesBy(startDocumentId, limit, filterChain).successBody().map { maybeDecryptService(it) }
 
 	override suspend fun getServices(entityIds: List<String>): List<S> =
@@ -241,10 +243,10 @@ private abstract class AbstractContactBasicFlavouredApi<E : Contact, S : Service
 		startDate: Long,
 		endDate: Long,
 		hcPartyId: String,
-		startKey: String?,
+		startKey: JsonElement?,
 		startDocumentId: String?,
 		limit: Int?,
-	): PaginatedList<E, *> = rawApi.findContactsByOpeningDate(startDate, endDate, hcPartyId, startKey, startDocumentId, limit).successBody()
+	): PaginatedList<E> = rawApi.findContactsByOpeningDate(startDate, endDate, hcPartyId, startKey.encodeStartKey(), startDocumentId, limit).successBody()
 		.map { maybeDecrypt(it) }
 
 
@@ -279,6 +281,18 @@ private abstract class AbstractContactFlavouredApi<E : Contact, S : Service>(
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
 		}
+
+	override suspend fun findContactsByHcPartyPatient(
+		hcPartyId: String,
+		patient: Patient,
+		startKey: String?,
+		startDocumentId: String?,
+		limit: Int?,
+	): List<DecryptedContact> {
+		TODO("@vcp")
+	}
+
+
 }
 
 suspend fun JsonObject.walkCompounds(transform: suspend (JsonObject) -> JsonObject): JsonObject =
@@ -384,7 +398,7 @@ internal class ContactApiImpl(
 				it.encrypt(
 					jsonEncryptionService,
 					encryptionService.tryDecryptAndImportAnyEncryptionKey(entity.withTypeInfo())?.key
-						?: throw EntityDecryptionException("Cannot obtain key from contact"),
+						?: throw EntityEncryptionException("Cannot obtain key from contact"),
 				)
 			}.toSet(),
 		)
@@ -394,7 +408,7 @@ internal class ContactApiImpl(
 			entity.withTypeInfo(),
 			EncryptedContact.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedContact>(it) }
-			?: throw EntityDecryptionException("Entity ${entity.id} cannot be decrypted")
+			?: throw EntityEncryptionException("Entity ${entity.id} cannot be decrypted")
 	}
 
 	override suspend fun maybeDecryptService(entity: EncryptedService): DecryptedService =
@@ -408,7 +422,7 @@ internal class ContactApiImpl(
 				.let {
 					Serialization.json.decodeFromJsonElement<DecryptedService>(it)
 				}
-		} ?: throw EntityDecryptionException("Service ${entity.id} cannot be decrypted")
+		} ?: throw EntityEncryptionException("Service ${entity.id} cannot be decrypted")
 
 }, ContactBasicFlavourlessApi by AbstractContactBasicFlavourlessApi(rawApi) {
 	override val encrypted: ContactFlavouredApi<EncryptedContact, EncryptedService> =
@@ -465,7 +479,7 @@ internal class ContactApiImpl(
 						it.encrypt(
 							jsonEncryptionService,
 							encryptionService.tryDecryptAndImportAnyEncryptionKey(entity.withTypeInfo())?.key
-								?: throw EntityDecryptionException("Cannot obtain key from contact"),
+								?: throw EntityEncryptionException("Cannot obtain key from contact"),
 						)
 					}.toSet(),
 				)
@@ -512,16 +526,6 @@ internal class ContactApiImpl(
 				).associateWith { AccessLevel.Write },
 		).updatedEntity
 
-	override suspend fun findContactsByHcPartyPatient(
-		hcPartyId: String,
-		patient: Patient,
-		startKey: String?,
-		startDocumentId: String?,
-		limit: Int?,
-	): List<DecryptedContact> {
-		TODO("Not yet implemented, but @vcp can you have a look ?")
-	}
-
 	private suspend fun encrypt(entity: DecryptedContact) = encryptionService.encryptEntity(
 		entity.withTypeInfo(),
 		DecryptedContact.serializer(),
@@ -531,7 +535,7 @@ internal class ContactApiImpl(
 			it.encrypt(
 				jsonEncryptionService,
 				encryptionService.tryDecryptAndImportAnyEncryptionKey(entity.withTypeInfo())?.key
-					?: throw EntityDecryptionException("Cannot obtain key from contact"),
+					?: throw EntityEncryptionException("Cannot obtain key from contact"),
 			)
 		}.toSet(),
 	)
@@ -540,7 +544,7 @@ internal class ContactApiImpl(
 		entity.withTypeInfo(),
 		EncryptedContact.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedContact>(it) }
-		?: throw EntityDecryptionException(errorMessage())
+		?: throw EntityEncryptionException(errorMessage())
 
 }
 

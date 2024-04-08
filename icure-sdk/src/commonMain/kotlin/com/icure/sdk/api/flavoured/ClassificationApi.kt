@@ -13,21 +13,20 @@ import com.icure.sdk.model.Classification
 import com.icure.sdk.model.DecryptedClassification
 import com.icure.sdk.model.EncryptedClassification
 import com.icure.sdk.model.ListOfIds
-import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.Patient
 import com.icure.sdk.model.User
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.embed.DelegationTag
 import com.icure.sdk.model.requests.RequestedPermission
-import com.icure.sdk.utils.EntityDecryptionException
+import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import kotlinx.serialization.json.decodeFromJsonElement
 
 @OptIn(InternalIcureApi::class)
 private val ENCRYPTED_FIELDS_MANIFEST =
-	EncryptedFieldsManifest("lCassification.", setOf("note", "descr"), emptyMap(), emptyMap(), emptyMap())
+	EncryptedFieldsManifest("Classification.", emptySet(), emptyMap(), emptyMap(), emptyMap())
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface ClassificationBasicFlavourlessApi {
@@ -39,14 +38,6 @@ interface ClassificationBasicFlavourlessApi {
 interface ClassificationBasicFlavouredApi<E : Classification> {
 	suspend fun modifyClassification(entity: E): E
 	suspend fun getClassification(entityId: String): E
-	suspend fun findClassificationsByHcPartyPatientForeignKey(
-		hcPartyId: String,
-		secretPatientKey: String,
-		startKey: String? = null,
-		startDocumentId: String? = null,
-		limit: Int? = null,
-	): PaginatedList<E, *>
-
 	suspend fun findClassificationsByHcPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<E>
 	suspend fun getClassificationByHcPartyId(ids: String): List<E>
 }
@@ -60,6 +51,15 @@ interface ClassificationFlavouredApi<E : Classification> : ClassificationBasicFl
 		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
 		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
 	): SimpleShareResult<E>
+
+	suspend fun findClassificationsByHcPartyPatient(
+		hcPartyId: String,
+		patient: Patient,
+		startKey: String? = null,
+		startDocumentId: String? = null,
+		limit: Int? = null,
+	): List<E>
+
 }
 
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
@@ -72,14 +72,6 @@ interface ClassificationApi : ClassificationBasicFlavourlessApi, ClassificationF
 		delegates: Map<String, AccessLevel> = emptyMap(),
 		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent,
 	): DecryptedClassification
-
-	suspend fun findClassificationsByHcPartyPatient(
-		hcPartyId: String,
-		patient: Patient,
-		startKey: String? = null,
-		startDocumentId: String? = null,
-		limit: Int? = null,
-	): List<DecryptedClassification>
 
 	val encrypted: ClassificationFlavouredApi<EncryptedClassification>
 	val tryAndRecover: ClassificationFlavouredApi<Classification>
@@ -99,16 +91,6 @@ private abstract class AbstractClassificationBasicFlavouredApi<E : Classificatio
 	//TODO: Check method name
 	override suspend fun getClassificationByHcPartyId(ids: String): List<E> =
 		rawApi.getClassificationByHcPartyId(ids).successBody().map { maybeDecrypt(it) }
-
-	override suspend fun findClassificationsByHcPartyPatientForeignKey(
-		hcPartyId: String,
-		secretPatientKey: String,
-		startKey: String?,
-		startDocumentId: String?,
-		limit: Int?,
-	): PaginatedList<E, *> =
-		rawApi.findClassificationsByHCPartyPatientForeignKey(hcPartyId, secretPatientKey, startKey, startDocumentId, limit).successBody()
-			.map { maybeDecrypt(it) }
 
 	override suspend fun findClassificationsByHcPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<E> =
 		rawApi.findClassificationsByHCPartyPatientForeignKeys(hcPartyId, secretPatientKeys.joinToString(",")).successBody().map { maybeDecrypt(it) }
@@ -144,6 +126,19 @@ private abstract class AbstractClassificationFlavouredApi<E : Classification>(
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
 		}
+
+	override suspend fun findClassificationsByHcPartyPatient(
+		hcPartyId: String,
+		patient: Patient,
+		startKey: String?,
+		startDocumentId: String?,
+		limit: Int?,
+	): List<E> = rawApi.findClassificationsByHCPartyPatientForeignKeys(
+		hcPartyId,
+		encryptionService.secretIdsOf(patient.withTypeInfo(), null).toList().joinToString(","),
+	).successBody().map { maybeDecrypt(it) }
+
+
 }
 
 @InternalIcureApi
@@ -171,7 +166,7 @@ internal class ClassificationApiImpl(
 			entity.withTypeInfo(),
 			EncryptedClassification.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedClassification>(it) }
-			?: throw EntityDecryptionException("Entity ${entity.id} cannot be created")
+			?: throw EntityEncryptionException("Entity ${entity.id} cannot be created")
 	}
 }, ClassificationBasicFlavourlessApi by AbstractClassificationBasicFlavourlessApi(rawApi) {
 	override val encrypted: ClassificationFlavouredApi<EncryptedClassification> =
@@ -235,17 +230,6 @@ internal class ClassificationApiImpl(
 				).associateWith { AccessLevel.Write },
 		).updatedEntity
 
-	override suspend fun findClassificationsByHcPartyPatient(
-		hcPartyId: String,
-		patient: Patient,
-		startKey: String?,
-		startDocumentId: String?,
-		limit: Int?,
-	): List<DecryptedClassification> = rawApi.findClassificationsByHCPartyPatientForeignKeys(
-        hcPartyId,
-        encryptionService.secretIdsOf(patient.withTypeInfo(), null).toList().joinToString(","),
-    ).successBody().map { decrypt(it) { "Found healthcare element cannot be decrypted" } }
-
 	private suspend fun encrypt(entity: DecryptedClassification) = encryptionService.encryptEntity(
 		entity.withTypeInfo(),
 		DecryptedClassification.serializer(),
@@ -256,7 +240,7 @@ internal class ClassificationApiImpl(
 		entity.withTypeInfo(),
 		EncryptedClassification.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedClassification>(it) }
-		?: throw EntityDecryptionException(errorMessage())
+		?: throw EntityEncryptionException(errorMessage())
 
 }
 
