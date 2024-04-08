@@ -13,7 +13,6 @@ import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
-import com.icure.sdk.model.specializations.JsonString
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
@@ -96,7 +95,7 @@ class RawHealthElementApi(
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedHealthElement, JsonString>> =
+	): HttpResponse<PaginatedList<EncryptedHealthElement>> =
 		get {
 			url {
 				takeFrom(apiUrl)
@@ -213,7 +212,7 @@ class RawHealthElementApi(
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		filterChain: FilterChain<EncryptedHealthElement>,
-	): HttpResponse<PaginatedList<EncryptedHealthElement, *>> =
+	): HttpResponse<PaginatedList<EncryptedHealthElement>> =
 		post {
 			url {
 				takeFrom(apiUrl)

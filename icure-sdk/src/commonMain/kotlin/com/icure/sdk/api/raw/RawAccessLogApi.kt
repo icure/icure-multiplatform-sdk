@@ -10,7 +10,6 @@ import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
-import com.icure.sdk.model.specializations.JsonString
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
@@ -90,7 +89,7 @@ class RawAccessLogApi(
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		descending: Boolean? = null,
-	): HttpResponse<PaginatedList<EncryptedAccessLog, JsonString>> =
+	): HttpResponse<PaginatedList<EncryptedAccessLog>> =
 		get {
 			url {
 				takeFrom(apiUrl)
@@ -114,7 +113,7 @@ class RawAccessLogApi(
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		descending: Boolean? = null,
-	): HttpResponse<PaginatedList<EncryptedAccessLog, JsonString>> =
+	): HttpResponse<PaginatedList<EncryptedAccessLog>> =
 		get {
 			url {
 				takeFrom(apiUrl)
@@ -152,7 +151,7 @@ class RawAccessLogApi(
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedAccessLog, JsonString>> =
+	): HttpResponse<PaginatedList<EncryptedAccessLog>> =
 		get {
 			url {
 				takeFrom(apiUrl)
@@ -215,7 +214,7 @@ class RawAccessLogApi(
 		startKey: Long? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedAccessLog, JsonString>> =
+	): HttpResponse<PaginatedList<EncryptedAccessLog>> =
 		get {
 			url {
 				takeFrom(apiUrl)

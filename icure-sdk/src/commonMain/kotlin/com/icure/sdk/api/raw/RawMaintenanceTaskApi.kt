@@ -96,7 +96,7 @@ class RawMaintenanceTaskApi(
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		filterChain: FilterChain<EncryptedMaintenanceTask>,
-	): HttpResponse<PaginatedList<EncryptedMaintenanceTask, *>> =
+	): HttpResponse<PaginatedList<EncryptedMaintenanceTask>> =
 		post {
 			url {
 				takeFrom(apiUrl)

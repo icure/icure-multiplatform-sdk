@@ -18,7 +18,6 @@ import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
 import com.icure.sdk.model.specializations.AesExchangeKeyEncryptionKeypairIdentifier
 import com.icure.sdk.model.specializations.HexString
-import com.icure.sdk.model.specializations.JsonString
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
@@ -57,7 +56,7 @@ class RawPatientApi(
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		sortDirection: SortDirection = SortDirection.Asc,
-	): HttpResponse<PaginatedList<EncryptedPatient, JsonString>> =
+	): HttpResponse<PaginatedList<EncryptedPatient>> =
 		get {
 			url {
 				takeFrom(apiUrl)
@@ -80,7 +79,7 @@ class RawPatientApi(
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		sortDirection: SortDirection = SortDirection.Asc,
-	): HttpResponse<PaginatedList<EncryptedPatient, JsonString>> =
+	): HttpResponse<PaginatedList<EncryptedPatient>> =
 		get {
 			url {
 				takeFrom(apiUrl)
@@ -110,7 +109,7 @@ class RawPatientApi(
 		startKey: Long? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedPatient, JsonString>> =
+	): HttpResponse<PaginatedList<EncryptedPatient>> =
 		get {
 			url {
 				takeFrom(apiUrl)
@@ -130,7 +129,7 @@ class RawPatientApi(
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		sortDirection: SortDirection = SortDirection.Asc,
-	): HttpResponse<PaginatedList<EncryptedPatient, JsonString>> =
+	): HttpResponse<PaginatedList<EncryptedPatient>> =
 		get {
 			url {
 				takeFrom(apiUrl)
@@ -184,7 +183,7 @@ class RawPatientApi(
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		sortDirection: SortDirection = SortDirection.Asc,
-	): HttpResponse<PaginatedList<EncryptedPatient, JsonString>> =
+	): HttpResponse<PaginatedList<EncryptedPatient>> =
 		get {
 			url {
 				takeFrom(apiUrl)
@@ -205,7 +204,7 @@ class RawPatientApi(
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<String, JsonString>> =
+	): HttpResponse<PaginatedList<String>> =
 		get {
 			url {
 				takeFrom(apiUrl)
@@ -236,7 +235,7 @@ class RawPatientApi(
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedPatient, Long>> =
+	): HttpResponse<PaginatedList<EncryptedPatient>> =
 		get {
 			url {
 				takeFrom(apiUrl)
@@ -259,7 +258,7 @@ class RawPatientApi(
 		sort: String? = null,
 		desc: Boolean? = null,
 		filterChain: FilterChain<EncryptedPatient>,
-	): HttpResponse<PaginatedList<EncryptedPatient, *>> =
+	): HttpResponse<PaginatedList<EncryptedPatient>> =
 		post {
 			url {
 				takeFrom(apiUrl)
@@ -342,7 +341,7 @@ class RawPatientApi(
 		startKey: Long? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedPatient, JsonString>> =
+	): HttpResponse<PaginatedList<EncryptedPatient>> =
 		get {
 			url {
 				takeFrom(apiUrl)
@@ -474,7 +473,7 @@ class RawPatientApi(
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedPatient, JsonString>> =
+	): HttpResponse<PaginatedList<EncryptedPatient>> =
 		post {
 			url {
 				takeFrom(apiUrl)
@@ -493,7 +492,7 @@ class RawPatientApi(
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedPatient, JsonString>> =
+	): HttpResponse<PaginatedList<EncryptedPatient>> =
 		post {
 			url {
 				takeFrom(apiUrl)
