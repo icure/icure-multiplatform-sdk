@@ -6,7 +6,7 @@ import io.ktor.client.engine.okhttp.OkHttp
 
 
 
-actual fun platformHttpClient(
+actual fun newPlatformHttpClient(
 	sharedConfig: HttpClientConfig<*>.() -> Unit
 ): HttpClient = HttpClient(OkHttp) {
 	sharedConfig()

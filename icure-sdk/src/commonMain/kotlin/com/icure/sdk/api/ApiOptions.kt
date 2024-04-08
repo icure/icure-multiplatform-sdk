@@ -1,8 +1,11 @@
 package com.icure.sdk.api
 
+import io.ktor.client.HttpClient
+
 data class ApiOptions(
 	val encryptedFields: EncryptedFields? = null,
-	val disableParentKeysInitialisation: Boolean = false
+	val disableParentKeysInitialisation: Boolean = false,
+	val httpClient: HttpClient? = null
 )
 
 data class EncryptedFields(

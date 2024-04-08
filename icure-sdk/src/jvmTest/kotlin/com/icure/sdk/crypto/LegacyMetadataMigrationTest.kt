@@ -5,6 +5,7 @@ package com.icure.sdk.crypto
 import com.icure.kryptom.crypto.RsaAlgorithm
 import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.kryptom.utils.hexToByteArray
+import com.icure.sdk.api.IcureApi
 import com.icure.sdk.api.raw.RawHealthcarePartyApi
 import com.icure.sdk.api.raw.RawPatientApi
 import com.icure.sdk.api.raw.RawUserApi
@@ -184,9 +185,9 @@ private suspend fun createTestDataAndApis(): TestData {
 		"encryptedSelf": "jgAFAlmd2QStXpOt3LnIhs4upJv2e10fp0u6/PburW7mq1r3vo/Q5/a4Yk7EWXG7oydMWb2i1UCCiNN80czGdA==" 
 	}
 	""")
-	val userApi = RawUserApi(baseUrl, testGroupAdminAuth)
-	val patientApi = RawPatientApi(baseUrl, testGroupAdminAuth, null)
-	val healthcarePartyApi = RawHealthcarePartyApi(baseUrl, testGroupAdminAuth)
+	val userApi = RawUserApi(baseUrl, testGroupAdminAuth, IcureApi.sharedHttpClient)
+	val patientApi = RawPatientApi(baseUrl, testGroupAdminAuth, null, IcureApi.sharedHttpClient)
+	val healthcarePartyApi = RawHealthcarePartyApi(baseUrl, testGroupAdminAuth, IcureApi.sharedHttpClient)
 	healthcarePartyApi.createHealthcareParty(pHcpBase)
 	healthcarePartyApi.createHealthcareParty(aHcpBase)
 	healthcarePartyApi.createHealthcareParty(bHcpBase)
