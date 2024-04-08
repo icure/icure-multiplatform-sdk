@@ -36,8 +36,8 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 			)
 		).shouldNotBeNull()
 		val he = delegatorApi.healthElement.createHealthcareElement(
-			delegatorApi.healthElement.initialiseEncryptionMetadata(
-				healthcareElement = DecryptedHealthElement(
+			delegatorApi.healthElement.withEncryptionMetadata(
+				base = DecryptedHealthElement(
 					id = UUID.randomUUID().toString(),
 					note = heNote,
 				),
@@ -73,8 +73,8 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 		).shouldNotBeNull()
 		val sfk = delegatorApi.patient.getSecretIdsOf(patient).also { it shouldHaveSize 1 }
 		val he = delegatorApi.healthElement.createHealthcareElement(
-			delegatorApi.healthElement.initialiseEncryptionMetadata(
-				healthcareElement = DecryptedHealthElement(
+			delegatorApi.healthElement.withEncryptionMetadata(
+				base = DecryptedHealthElement(
 					id = UUID.randomUUID().toString(),
 					note = heNote,
 				),

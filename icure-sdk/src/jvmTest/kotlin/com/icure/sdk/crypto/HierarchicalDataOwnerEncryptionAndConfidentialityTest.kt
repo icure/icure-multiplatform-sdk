@@ -70,7 +70,7 @@ class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec ({
 		allSecretIds shouldContain confidentialSecretIds.single()
 		val nonConfidentialNote = "Encrypted - non confidential he"
 		val nonConfidentialHe = hcpApi.healthElement.createHealthcareElement(
-			hcpApi.healthElement.initialiseEncryptionMetadata(
+			hcpApi.healthElement.withEncryptionMetadata(
 				DecryptedHealthElement(
 					id = UUID.randomUUID().toString(),
 					note = nonConfidentialNote
@@ -82,7 +82,7 @@ class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec ({
 		).shouldNotBeNull()
 		val confidentialNote = "Encrypted - confidential he"
 		val confidentialHe = hcpApi.healthElement.createHealthcareElement(
-			hcpApi.healthElement.initialiseEncryptionMetadata(
+			hcpApi.healthElement.withEncryptionMetadata(
 				DecryptedHealthElement(
 					id = UUID.randomUUID().toString(),
 					note = confidentialNote

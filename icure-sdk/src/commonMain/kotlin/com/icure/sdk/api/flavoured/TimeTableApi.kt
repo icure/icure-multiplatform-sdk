@@ -3,6 +3,7 @@ package com.icure.sdk.api.flavoured
 import com.icure.sdk.api.raw.RawTimeTableApi
 import com.icure.sdk.crypto.EntityEncryptionService
 import com.icure.sdk.crypto.EntityValidationService
+import com.icure.sdk.crypto.InternalCryptoApi
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
@@ -18,10 +19,13 @@ import com.icure.sdk.model.User
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.embed.DelegationTag
+import com.icure.sdk.model.extensions.autoDelegationsFor
+import com.icure.sdk.model.extensions.dataOwnerId
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
+import com.icure.sdk.utils.currentEpochMs
 import kotlinx.serialization.json.decodeFromJsonElement
 
 @OptIn(InternalIcureApi::class)
@@ -47,7 +51,7 @@ interface TimeTableBasicFlavouredApi<E : TimeTable> {
 interface TimeTableFlavouredApi<E : TimeTable> : TimeTableBasicFlavouredApi<E> {
 	suspend fun shareWith(
 		delegateId: String,
-		healthcareElement: E,
+		timeTable: E,
 		shareEncryptionKeys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
 		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
 		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
@@ -57,10 +61,10 @@ interface TimeTableFlavouredApi<E : TimeTable> : TimeTableBasicFlavouredApi<E> {
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
 interface TimeTableApi : TimeTableBasicFlavourlessApi, TimeTableFlavouredApi<DecryptedTimeTable> {
 	suspend fun createTimeTable(entity: DecryptedTimeTable): DecryptedTimeTable
-	suspend fun initialiseEncryptionMetadata(
-		healthcareElement: DecryptedTimeTable,
-		patient: Patient,
-		user: User,
+	suspend fun withEncryptionMetadata(
+		base: DecryptedTimeTable?,
+		patient: Patient?,
+		user: User?,
 		delegates: Map<String, AccessLevel> = emptyMap(),
 		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent,
 	): DecryptedTimeTable
@@ -96,13 +100,13 @@ private abstract class AbstractTimeTableFlavouredApi<E : TimeTable>(
 ) : AbstractTimeTableBasicFlavouredApi<E>(rawApi), TimeTableFlavouredApi<E> {
 	override suspend fun shareWith(
 		delegateId: String,
-		healthcareElement: E,
+		timeTable: E,
 		shareEncryptionKeys: ShareMetadataBehaviour,
 		shareOwningEntityIds: ShareMetadataBehaviour,
 		requestedPermission: RequestedPermission,
 	): SimpleShareResult<E> =
 		encryptionService.simpleShareOrUpdateEncryptedEntityMetadata(
-			healthcareElement.withTypeInfo(),
+			timeTable.withTypeInfo(),
 			true,
 			mapOf(
 				delegateId to SimpleDelegateShareOptions(
@@ -126,8 +130,10 @@ private class AbstractTimeTableBasicFlavourlessApi(val rawApi: RawTimeTableApi) 
 @InternalIcureApi
 internal class TimeTableApiImpl(
 	private val rawApi: RawTimeTableApi,
+	private val crypto: InternalCryptoApi,
 	private val encryptionService: EntityEncryptionService,
 	private val fieldsToEncrypt: EncryptedFieldsManifest = ENCRYPTED_FIELDS_MANIFEST,
+	private val autofillAuthor: Boolean,
 ) : TimeTableApi, TimeTableFlavouredApi<DecryptedTimeTable> by object :
 	AbstractTimeTableFlavouredApi<DecryptedTimeTable>(rawApi, encryptionService) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedTimeTable): EncryptedTimeTable =
@@ -178,7 +184,7 @@ internal class TimeTableApiImpl(
 		}
 
 	override suspend fun createTimeTable(entity: DecryptedTimeTable): DecryptedTimeTable {
-		require(entity.securityMetadata != null) { "Entity must have security metadata initialised. You can use the initialiseEncryptionMetadata for that very purpose." }
+		require(entity.securityMetadata != null) { "Entity must have security metadata initialised. You can use the withEncryptionMetadata for that very purpose." }
 		return rawApi.createTimeTable(
 			encrypt(entity),
 		).successBody().let {
@@ -186,24 +192,25 @@ internal class TimeTableApiImpl(
 		}
 	}
 
-	override suspend fun initialiseEncryptionMetadata(
-		healthcareElement: DecryptedTimeTable,
-		patient: Patient,
-		user: User,
+	override suspend fun withEncryptionMetadata(
+		base: DecryptedTimeTable?,
+		patient: Patient?,
+		user: User?,
 		delegates: Map<String, AccessLevel>,
 		secretId: SecretIdOption,
-		// Temporary, needs a lot more stuff to match typescript implementation
 	): DecryptedTimeTable =
 		encryptionService.entityWithInitialisedEncryptedMetadata(
-			healthcareElement.withTypeInfo(),
-			patient.id,
-			encryptionService.resolveSecretIdOption(patient.withTypeInfo(), secretId),
+			(base ?: DecryptedTimeTable(crypto.primitives.strongRandom.randomUUID())).copy(
+				created = base?.created ?: currentEpochMs(),
+				modified = base?.modified ?: currentEpochMs(),
+				responsible = base?.responsible ?: user?.takeIf { autofillAuthor }?.dataOwnerId,
+				author = base?.author ?: user?.id?.takeIf { autofillAuthor },
+			).withTypeInfo(),
+			patient?.id,
+			patient?.let { encryptionService.resolveSecretIdOption(it.withTypeInfo(), secretId) },
 			initialiseEncryptionKey = true,
 			initialiseSecretId = false,
-			autoDelegations = delegates + (
-				(user.autoDelegations[DelegationTag.MedicalInformation] ?: emptySet()) +
-					(user.autoDelegations[DelegationTag.All] ?: emptySet())
-				).associateWith { AccessLevel.Write },
+			autoDelegations = delegates  + user?.autoDelegationsFor(DelegationTag.AdministrativeData).orEmpty(),
 		).updatedEntity
 
 	private suspend fun encrypt(entity: DecryptedTimeTable) = encryptionService.encryptEntity(

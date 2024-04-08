@@ -3,6 +3,7 @@ package com.icure.sdk.api.flavoured
 import com.icure.sdk.api.raw.RawInvoiceApi
 import com.icure.sdk.crypto.EntityEncryptionService
 import com.icure.sdk.crypto.EntityValidationService
+import com.icure.sdk.crypto.InternalCryptoApi
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
@@ -24,11 +25,16 @@ import com.icure.sdk.model.embed.DelegationTag
 import com.icure.sdk.model.embed.EncryptedInvoicingCode
 import com.icure.sdk.model.embed.InvoiceType
 import com.icure.sdk.model.embed.MediumType
+import com.icure.sdk.model.extensions.autoDelegationsFor
+import com.icure.sdk.model.extensions.dataOwnerId
 import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
+import com.icure.sdk.utils.currentEpochMs
+import com.icure.sdk.utils.currentFuzzyDateTime
+import kotlinx.datetime.TimeZone
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.decodeFromJsonElement
 
@@ -116,7 +122,7 @@ interface InvoiceBasicFlavouredApi<E : Invoice> {
 interface InvoiceFlavouredApi<E : Invoice> : InvoiceBasicFlavouredApi<E> {
 	suspend fun shareWith(
 		delegateId: String,
-		healthcareElement: E,
+		invoice: E,
 		shareEncryptionKeys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
 		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
 		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
@@ -134,10 +140,10 @@ interface InvoiceFlavouredApi<E : Invoice> : InvoiceBasicFlavouredApi<E> {
 interface InvoiceApi : InvoiceBasicFlavourlessApi, InvoiceFlavouredApi<DecryptedInvoice> {
 	suspend fun createInvoice(entity: DecryptedInvoice): DecryptedInvoice
 	suspend fun createInvoices(entities: List<DecryptedInvoice>): List<DecryptedInvoice>
-	suspend fun initialiseEncryptionMetadata(
-		healthcareElement: DecryptedInvoice,
-		patient: Patient,
-		user: User,
+	suspend fun withEncryptionMetadata(
+		base: DecryptedInvoice?,
+		patient: Patient?,
+		user: User?,
 		delegates: Map<String, AccessLevel> = emptyMap(),
 		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent,
 	): DecryptedInvoice
@@ -290,13 +296,13 @@ private abstract class AbstractInvoiceFlavouredApi<E : Invoice>(
 ) : AbstractInvoiceBasicFlavouredApi<E>(rawApi), InvoiceFlavouredApi<E> {
 	override suspend fun shareWith(
 		delegateId: String,
-		healthcareElement: E,
+		invoice: E,
 		shareEncryptionKeys: ShareMetadataBehaviour,
 		shareOwningEntityIds: ShareMetadataBehaviour,
 		requestedPermission: RequestedPermission,
 	): SimpleShareResult<E> =
 		encryptionService.simpleShareOrUpdateEncryptedEntityMetadata(
-			healthcareElement.withTypeInfo(),
+			invoice.withTypeInfo(),
 			true,
 			mapOf(
 				delegateId to SimpleDelegateShareOptions(
@@ -340,9 +346,11 @@ private class AbstractInvoiceBasicFlavourlessApi(val rawApi: RawInvoiceApi) : In
 @InternalIcureApi
 internal class InvoiceApiImpl(
 	private val rawApi: RawInvoiceApi,
+	private val crypto: InternalCryptoApi,
 	private val encryptionService: EntityEncryptionService,
 	private val fieldsToEncrypt: EncryptedFieldsManifest = ENCRYPTED_FIELDS_MANIFEST,
-) : InvoiceApi, InvoiceFlavouredApi<DecryptedInvoice> by object :
+	private val autofillAuthor: Boolean,
+	) : InvoiceApi, InvoiceFlavouredApi<DecryptedInvoice> by object :
 	AbstractInvoiceFlavouredApi<DecryptedInvoice>(rawApi, encryptionService) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedInvoice): EncryptedInvoice =
 		encryptionService.encryptEntity(
@@ -392,7 +400,7 @@ internal class InvoiceApiImpl(
 		}
 
 	override suspend fun createInvoice(entity: DecryptedInvoice): DecryptedInvoice {
-		require(entity.securityMetadata != null) { "Entity must have security metadata initialised. You can use the initialiseEncryptionMetadata for that very purpose." }
+		require(entity.securityMetadata != null) { "Entity must have security metadata initialised. You can use the withEncryptionMetadata for that very purpose." }
 		return rawApi.createInvoice(
 			encrypt(entity),
 		).successBody().let {
@@ -401,7 +409,7 @@ internal class InvoiceApiImpl(
 	}
 
 	override suspend fun createInvoices(entities: List<DecryptedInvoice>): List<DecryptedInvoice> {
-		require(entities.all { it.securityMetadata != null }) { "All entities must have security metadata initialised. You can use the initialiseEncryptionMetadata for that very purpose." }
+		require(entities.all { it.securityMetadata != null }) { "All entities must have security metadata initialised. You can use the withEncryptionMetadata for that very purpose." }
 		return rawApi.createInvoices(
 			entities.map {
 				encrypt(it)
@@ -411,24 +419,28 @@ internal class InvoiceApiImpl(
 		}
 	}
 
-	override suspend fun initialiseEncryptionMetadata(
-		healthcareElement: DecryptedInvoice,
-		patient: Patient,
-		user: User,
+	override suspend fun withEncryptionMetadata(
+		base: DecryptedInvoice?,
+		patient: Patient?,
+		user: User?,
 		delegates: Map<String, AccessLevel>,
 		secretId: SecretIdOption,
 		// Temporary, needs a lot more stuff to match typescript implementation
 	): DecryptedInvoice =
 		encryptionService.entityWithInitialisedEncryptedMetadata(
-			healthcareElement.withTypeInfo(),
-			patient.id,
-			encryptionService.resolveSecretIdOption(patient.withTypeInfo(), secretId),
+			(base ?: DecryptedInvoice(crypto.primitives.strongRandom.randomUUID())).copy(
+				created = base?.created ?: currentEpochMs(),
+				modified = base?.modified ?: currentEpochMs(),
+				responsible = base?.responsible ?: user?.takeIf { autofillAuthor }?.dataOwnerId,
+				author = base?.author ?: user?.id?.takeIf { autofillAuthor },
+				groupId = base?.groupId ?: base?.id,
+				invoiceDate = base?.invoiceDate ?: currentFuzzyDateTime(TimeZone.currentSystemDefault()),
+			).withTypeInfo(),
+			patient?.id,
+			patient?.let { encryptionService.resolveSecretIdOption(it.withTypeInfo(), secretId) },
 			initialiseEncryptionKey = true,
 			initialiseSecretId = false,
-			autoDelegations = delegates + (
-				(user.autoDelegations[DelegationTag.MedicalInformation] ?: emptySet()) +
-					(user.autoDelegations[DelegationTag.All] ?: emptySet())
-				).associateWith { AccessLevel.Write },
+			autoDelegations = delegates + user?.autoDelegationsFor(DelegationTag.AdministrativeData).orEmpty(),
 		).updatedEntity
 
 	private suspend fun encrypt(entity: DecryptedInvoice) = encryptionService.encryptEntity(

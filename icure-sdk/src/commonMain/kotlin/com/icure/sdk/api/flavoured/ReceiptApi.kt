@@ -4,6 +4,7 @@ import com.icure.kryptom.crypto.CryptoService
 import com.icure.sdk.api.raw.RawReceiptApi
 import com.icure.sdk.crypto.EntityEncryptionService
 import com.icure.sdk.crypto.EntityValidationService
+import com.icure.sdk.crypto.InternalCryptoApi
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
@@ -19,10 +20,13 @@ import com.icure.sdk.model.User
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.embed.DelegationTag
+import com.icure.sdk.model.extensions.autoDelegationsFor
+import com.icure.sdk.model.extensions.dataOwnerId
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
+import com.icure.sdk.utils.currentEpochMs
 import kotlinx.serialization.json.decodeFromJsonElement
 
 @OptIn(InternalIcureApi::class)
@@ -48,7 +52,7 @@ interface ReceiptBasicFlavouredApi<E : Receipt> {
 interface ReceiptFlavouredApi<E : Receipt> : ReceiptBasicFlavouredApi<E> {
 	suspend fun shareWith(
 		delegateId: String,
-		healthcareElement: E,
+		receipt: E,
 		shareEncryptionKeys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
 		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
 		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
@@ -58,10 +62,10 @@ interface ReceiptFlavouredApi<E : Receipt> : ReceiptBasicFlavouredApi<E> {
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
 interface ReceiptApi : ReceiptBasicFlavourlessApi, ReceiptFlavouredApi<DecryptedReceipt> {
 	suspend fun createReceipt(entity: DecryptedReceipt): DecryptedReceipt
-	suspend fun initialiseEncryptionMetadata(
-		healthcareElement: DecryptedReceipt,
-		patient: Patient,
-		user: User,
+	suspend fun withEncryptionMetadata(
+		base: DecryptedReceipt?,
+		patient: Patient?,
+		user: User?,
 		delegates: Map<String, AccessLevel> = emptyMap(),
 		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent,
 	): DecryptedReceipt
@@ -96,13 +100,13 @@ private abstract class AbstractReceiptFlavouredApi<E : Receipt>(
 ) : AbstractReceiptBasicFlavouredApi<E>(rawApi), ReceiptFlavouredApi<E> {
 	override suspend fun shareWith(
 		delegateId: String,
-		healthcareElement: E,
+		receipt: E,
 		shareEncryptionKeys: ShareMetadataBehaviour,
 		shareOwningEntityIds: ShareMetadataBehaviour,
 		requestedPermission: RequestedPermission,
 	): SimpleShareResult<E> =
 		encryptionService.simpleShareOrUpdateEncryptedEntityMetadata(
-			healthcareElement.withTypeInfo(),
+			receipt.withTypeInfo(),
 			true,
 			mapOf(
 				delegateId to SimpleDelegateShareOptions(
@@ -131,10 +135,12 @@ private class AbstractReceiptBasicFlavourlessApi(val rawApi: RawReceiptApi) : Re
 @InternalIcureApi
 internal class ReceiptApiImpl(
 	private val rawApi: RawReceiptApi,
+	private val crypto: InternalCryptoApi,
 	private val encryptionService: EntityEncryptionService,
 	private val cryptoService: CryptoService,
-	private val fieldsToEncrypt: EncryptedFieldsManifest = ENCRYPTED_FIELDS_MANIFEST,
-) : ReceiptApi, ReceiptFlavouredApi<DecryptedReceipt> by object :
+	private val fieldsToEncrypt: EncryptedFieldsManifest,
+	private val autofillAuthor: Boolean,
+	) : ReceiptApi, ReceiptFlavouredApi<DecryptedReceipt> by object :
 	AbstractReceiptFlavouredApi<DecryptedReceipt>(rawApi, encryptionService) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedReceipt): EncryptedReceipt =
 		encryptionService.encryptEntity(
@@ -184,7 +190,7 @@ internal class ReceiptApiImpl(
 		}
 
 	override suspend fun createReceipt(entity: DecryptedReceipt): DecryptedReceipt {
-		require(entity.securityMetadata != null) { "Entity must have security metadata initialised. You can use the initialiseEncryptionMetadata for that very purpose." }
+		require(entity.securityMetadata != null) { "Entity must have security metadata initialised. You can use the withEncryptionMetadata for that very purpose." }
 		return rawApi.createReceipt(
 			encrypt(entity),
 		).successBody().let {
@@ -192,24 +198,26 @@ internal class ReceiptApiImpl(
 		}
 	}
 
-	override suspend fun initialiseEncryptionMetadata(
-		healthcareElement: DecryptedReceipt,
-		patient: Patient,
-		user: User,
+	override suspend fun withEncryptionMetadata(
+		base: DecryptedReceipt?,
+		patient: Patient?,
+		user: User?,
 		delegates: Map<String, AccessLevel>,
 		secretId: SecretIdOption,
 		// Temporary, needs a lot more stuff to match typescript implementation
 	): DecryptedReceipt =
 		encryptionService.entityWithInitialisedEncryptedMetadata(
-			healthcareElement.withTypeInfo(),
-			patient.id,
-			encryptionService.resolveSecretIdOption(patient.withTypeInfo(), secretId),
+			(base ?: DecryptedReceipt(crypto.primitives.strongRandom.randomUUID())).copy(
+				created = base?.created ?: currentEpochMs(),
+				modified = base?.modified ?: currentEpochMs(),
+				responsible = base?.responsible ?: user?.takeIf { autofillAuthor }?.dataOwnerId,
+				author = base?.author ?: user?.id?.takeIf { autofillAuthor },
+			).withTypeInfo(),
+			patient?.id,
+			patient?.let { encryptionService.resolveSecretIdOption(it.withTypeInfo(), secretId) },
 			initialiseEncryptionKey = true,
 			initialiseSecretId = false,
-			autoDelegations = delegates + (
-				(user.autoDelegations[DelegationTag.MedicalInformation] ?: emptySet()) +
-					(user.autoDelegations[DelegationTag.All] ?: emptySet())
-				).associateWith { AccessLevel.Write },
+			autoDelegations = delegates  + user?.autoDelegationsFor(DelegationTag.MedicalInformation).orEmpty(),
 		).updatedEntity
 
 	override suspend fun getAndDecryptReceiptAttachment(receipt: Receipt, attachmentId: String) =

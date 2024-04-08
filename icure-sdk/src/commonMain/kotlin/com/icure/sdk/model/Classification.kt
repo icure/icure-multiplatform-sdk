@@ -9,10 +9,6 @@ import com.icure.sdk.model.embed.Encryptable
 import com.icure.sdk.model.embed.SecurityMetadata
 import com.icure.sdk.model.specializations.Base64String
 import kotlinx.serialization.Serializable
-import kotlin.Long
-import kotlin.String
-import kotlin.collections.Map
-import kotlin.collections.Set
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
@@ -78,7 +74,7 @@ data class DecryptedClassification(
 	override val codes: Set<CodeStub> = emptySet(),
 	override val endOfLife: Long? = null,
 	override val deletionDate: Long? = null,
-	override val parentId: String?,
+	override val parentId: String? = null,
 	override val label: String = "",
 	override val templateId: String? = null,
 	override val secretForeignKeys: Set<String> = emptySet(),

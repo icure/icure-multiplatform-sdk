@@ -3,6 +3,7 @@ package com.icure.sdk.api.flavoured
 import com.icure.sdk.api.raw.RawHealthElementApi
 import com.icure.sdk.crypto.EntityEncryptionService
 import com.icure.sdk.crypto.EntityValidationService
+import com.icure.sdk.crypto.InternalCryptoApi
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
@@ -20,12 +21,15 @@ import com.icure.sdk.model.User
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.embed.DelegationTag
+import com.icure.sdk.model.extensions.autoDelegationsFor
+import com.icure.sdk.model.extensions.dataOwnerId
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
+import com.icure.sdk.utils.currentEpochMs
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.decodeFromJsonElement
 
@@ -81,10 +85,10 @@ interface HealthcareElementFlavouredApi<E : HealthElement> : HealthcareElementBa
 interface HealthcareElementApi : HealthcareElementBasicFlavourlessApi, HealthcareElementFlavouredApi<DecryptedHealthElement> {
 	suspend fun createHealthcareElement(entity: DecryptedHealthElement): DecryptedHealthElement
 	suspend fun createHealthcareElements(entities: List<DecryptedHealthElement>): List<DecryptedHealthElement>
-	suspend fun initialiseEncryptionMetadata(
-		healthcareElement: DecryptedHealthElement,
+	suspend fun withEncryptionMetadata(
+		base: DecryptedHealthElement?,
 		patient: Patient,
-		user: User,
+		user: User?,
 		delegates: Map<String, AccessLevel> = emptyMap(),
 		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent,
 	): DecryptedHealthElement
@@ -180,9 +184,11 @@ private class AbstractHealthcareElementBasicFlavourlessApi(val rawApi: RawHealth
 @InternalIcureApi
 internal class HealthcareElementApiImpl(
 	private val rawApi: RawHealthElementApi,
+	private val crypto: InternalCryptoApi,
 	private val encryptionService: EntityEncryptionService,
 	private val fieldsToEncrypt: EncryptedFieldsManifest = ENCRYPTED_FIELDS_MANIFEST,
-) : HealthcareElementApi, HealthcareElementFlavouredApi<DecryptedHealthElement> by object :
+	private val autofillAuthor: Boolean,
+	) : HealthcareElementApi, HealthcareElementFlavouredApi<DecryptedHealthElement> by object :
 	AbstractHealthcareElementFlavouredApi<DecryptedHealthElement>(rawApi, encryptionService) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedHealthElement): EncryptedHealthElement =
 		encryptionService.encryptEntity(
@@ -232,7 +238,7 @@ internal class HealthcareElementApiImpl(
 		}
 
 	override suspend fun createHealthcareElement(entity: DecryptedHealthElement): DecryptedHealthElement {
-		require(entity.securityMetadata != null) { "Entity must have security metadata initialised. You can use the initialiseEncryptionMetadata for that very purpose." }
+		require(entity.securityMetadata != null) { "Entity must have security metadata initialised. You can use the withEncryptionMetadata for that very purpose." }
 		return rawApi.createHealthElement(
 			encrypt(entity),
 		).successBody().let {
@@ -241,7 +247,7 @@ internal class HealthcareElementApiImpl(
 	}
 
 	override suspend fun createHealthcareElements(entities: List<DecryptedHealthElement>): List<DecryptedHealthElement> {
-		require(entities.all { it.securityMetadata != null }) { "All entities must have security metadata initialised. You can use the initialiseEncryptionMetadata for that very purpose." }
+		require(entities.all { it.securityMetadata != null }) { "All entities must have security metadata initialised. You can use the withEncryptionMetadata for that very purpose." }
 		return rawApi.createHealthElements(
 			entities.map {
 				encrypt(it)
@@ -251,24 +257,26 @@ internal class HealthcareElementApiImpl(
 		}
 	}
 
-	override suspend fun initialiseEncryptionMetadata(
-		healthcareElement: DecryptedHealthElement,
+	override suspend fun withEncryptionMetadata(
+		base: DecryptedHealthElement?,
 		patient: Patient,
-		user: User,
+		user: User?,
 		delegates: Map<String, AccessLevel>,
 		secretId: SecretIdOption,
 		// Temporary, needs a lot more stuff to match typescript implementation
 	): DecryptedHealthElement =
 		encryptionService.entityWithInitialisedEncryptedMetadata(
-			healthcareElement.withTypeInfo(),
+			(base ?: DecryptedHealthElement(crypto.primitives.strongRandom.randomUUID())).copy(
+				created = base?.created ?: currentEpochMs(),
+				modified = base?.modified ?: currentEpochMs(),
+				responsible = base?.responsible ?: user?.takeIf { autofillAuthor }?.dataOwnerId,
+				author = base?.author ?: user?.id?.takeIf { autofillAuthor },
+			).withTypeInfo(),
 			patient.id,
 			encryptionService.resolveSecretIdOption(patient.withTypeInfo(), secretId),
 			initialiseEncryptionKey = true,
 			initialiseSecretId = false,
-			autoDelegations = delegates + (
-				(user.autoDelegations[DelegationTag.MedicalInformation] ?: emptySet()) +
-					(user.autoDelegations[DelegationTag.All] ?: emptySet())
-				).associateWith { AccessLevel.Write },
+			autoDelegations = delegates  + user?.autoDelegationsFor(DelegationTag.MedicalInformation).orEmpty(),
 		).updatedEntity
 
 	private suspend fun encrypt(entity: DecryptedHealthElement) = encryptionService.encryptEntity(
