@@ -41,11 +41,11 @@ private val testGroupId = testGroupName
 private val testGroupAdmin = "admin-${UUID.randomUUID()}@icure.com"
 private val testGroupAdminPassword = "admin-${UUID.randomUUID()}"
 val testGroupAdminAuth = JwtAuthService(
-	RawAnonymousAuthApi(baseUrl),
+	RawAnonymousAuthApi(baseUrl, IcureApi.sharedHttpClient),
 	UsernamePassword(testGroupAdmin, testGroupAdminPassword),
 )
 private val superadminAuth = JwtAuthService(
-	RawAnonymousAuthApi(baseUrl),
+	RawAnonymousAuthApi(baseUrl, IcureApi.sharedHttpClient),
 	UsernamePassword("john", "LetMeIn"),
 )
 private val defaultRoles = mapOf(
@@ -79,7 +79,7 @@ suspend fun initialiseTestEnvironment() {
 		rootUserRoles = defaultRoles
 	)
 	println("Creating test group")
-	val groupApi = RawGroupApi(baseUrl, superadminAuth)
+	val groupApi = RawGroupApi(baseUrl, superadminAuth, IcureApi.sharedHttpClient)
 	if (groupApi.getGroup(testGroupId).status.value == 200) {
 		println("Group already exist")
 	} else  {
@@ -95,7 +95,7 @@ suspend fun initialiseTestEnvironment() {
 		)
 	}
 	println("Creating admin user - $testGroupAdmin:$testGroupAdminPassword")
-	RawUserApi(baseUrl, superadminAuth).createAdminUserInGroup(
+	RawUserApi(baseUrl, superadminAuth, IcureApi.sharedHttpClient).createAdminUserInGroup(
 		testGroupId,
 		User(
 			UUID.randomUUID().toString(),
@@ -202,8 +202,8 @@ data class DataOwnerDetails(
  * latter will be the grandparent of this data owner, and so on. If null the data owner will not have any parent.
  */
 suspend fun createHcpUser(parent: DataOwnerDetails? = null, useLegacyKey: Boolean = false): DataOwnerDetails {
-	val hcpRawApi = RawHealthcarePartyApi(baseUrl, testGroupAdminAuth)
-	val userRawApi = RawUserApi(baseUrl, testGroupAdminAuth)
+	val hcpRawApi = RawHealthcarePartyApi(baseUrl, testGroupAdminAuth, IcureApi.sharedHttpClient)
+	val userRawApi = RawUserApi(baseUrl, testGroupAdminAuth, IcureApi.sharedHttpClient)
 	val hcpId = UUID.randomUUID().toString()
 	val login = "hcp-${UUID.randomUUID()}"
 	val password = UUID.randomUUID().toString()
@@ -238,8 +238,8 @@ suspend fun createHcpUser(parent: DataOwnerDetails? = null, useLegacyKey: Boolea
 }
 
 suspend fun createPatientUser(): DataOwnerDetails {
-	val patientRawApi = RawPatientApi(baseUrl, testGroupAdminAuth, null)
-	val userRawApi = RawUserApi(baseUrl, testGroupAdminAuth)
+	val patientRawApi = RawPatientApi(baseUrl, testGroupAdminAuth, null, IcureApi.sharedHttpClient)
+	val userRawApi = RawUserApi(baseUrl, testGroupAdminAuth, IcureApi.sharedHttpClient)
 	val patientId = UUID.randomUUID().toString()
 	val login = "patient-${UUID.randomUUID()}"
 	val password = UUID.randomUUID().toString()
@@ -265,8 +265,8 @@ suspend fun createPatientUser(): DataOwnerDetails {
 }
 
 suspend fun createUserFromExistingPatient(patient: Patient): DataOwnerDetails {
-	val patientRawApi = RawPatientApi(baseUrl, testGroupAdminAuth, NoAccessControlKeysHeadersProvider)
-	val userRawApi = RawUserApi(baseUrl, testGroupAdminAuth)
+	val patientRawApi = RawPatientApi(baseUrl, testGroupAdminAuth, NoAccessControlKeysHeadersProvider, IcureApi.sharedHttpClient)
+	val userRawApi = RawUserApi(baseUrl, testGroupAdminAuth, IcureApi.sharedHttpClient)
 	val login = "patient-${UUID.randomUUID()}"
 	val password = UUID.randomUUID().toString()
 	val keypair = defaultCryptoService.rsa.generateKeyPair(RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256)

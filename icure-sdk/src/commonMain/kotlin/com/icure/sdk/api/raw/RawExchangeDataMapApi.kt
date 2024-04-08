@@ -6,6 +6,7 @@ import com.icure.sdk.model.ExchangeDataMap
 import com.icure.sdk.model.ExchangeDataMapCreationBatch
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.utils.InternalIcureApi
+import io.ktor.client.HttpClient
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
@@ -22,9 +23,10 @@ import kotlin.time.Duration
 class RawExchangeDataMapApi(
 	private val apiUrl: String,
 	private val authService: AuthService,
+	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
-) : BaseRawApi(additionalHeaders, timeout) {
+) : BaseRawApi(httpClient, additionalHeaders, timeout) {
 	// region common endpoints
 
 	suspend fun createOrUpdateExchangeDataMapBatch(batch: ExchangeDataMapCreationBatch): HttpResponse<String> =

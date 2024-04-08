@@ -3,6 +3,7 @@ package com.icure.sdk.api.raw
 import com.icure.sdk.auth.services.AuthService
 import com.icure.sdk.auth.services.setAuthorizationWith
 import com.icure.sdk.utils.InternalIcureApi
+import io.ktor.client.HttpClient
 import io.ktor.client.request.parameter
 import io.ktor.http.appendPathSegments
 import io.ktor.http.takeFrom
@@ -17,9 +18,10 @@ import kotlin.time.Duration
 class RawAuthApi(
 	private val apiUrl: String,
 	private val authService: AuthService,
+	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
-) : BaseRawApi(additionalHeaders, timeout) {
+) : BaseRawApi(httpClient, additionalHeaders, timeout) {
 	// region common endpoints
 
 	suspend fun token(

@@ -64,6 +64,11 @@ import com.icure.sdk.storage.StorageFacade
 import com.icure.sdk.storage.impl.DefaultStorageEntryKeysFactory
 import com.icure.sdk.storage.impl.JsonAndBase64KeyStorage
 import com.icure.sdk.utils.InternalIcureApi
+import com.icure.sdk.utils.Serialization
+import com.icure.sdk.utils.newPlatformHttpClient
+import io.ktor.client.plugins.HttpTimeout
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.serialization.kotlinx.json.json
 
 interface IcureApi {
 	val calendarItem: CalendarItemApi
@@ -77,6 +82,37 @@ interface IcureApi {
 	val maintenanceTask: MaintenanceTaskApi
 
 	companion object {
+		/**
+		 * A shared http client to use as the default across all instances of iCure.
+		 * Initialised only when needed.
+		 * Previous versions of the icure SDK (in different languages) did not need explicit disposal, but this is
+		 * necessary in the multiplatform sdk. The use of this shared client allows to minimise the resource leaking
+		 * when creating multiple instances of the iCure API without proper disposal of the client.
+		 */
+		internal val sharedHttpClient by lazy {
+			newPlatformHttpClient {
+				install(ContentNegotiation) {
+					json(json = Serialization.json)
+				}
+				install(HttpTimeout)
+			}
+		}
+
+		/**
+		 * Close the default http client used for api instances. You should call this method if you want to gracefully
+		 * shut down your application, and you have created at least one instance of the iCure API without providing
+		 * your own instance of http client.
+		 * Not closing the client will prevent the application from terminating (even if the main method terminated).
+		 *
+		 * Note: closing the client will cause any existing and future api instances that are using the default client
+		 * to become unusable, as there is a shared default client used across all instances of the Api. Call this
+		 * method only when you want to shut down the application.
+		 */
+		fun closeSharedClient() {
+			sharedHttpClient.close()
+		}
+
+
 		@OptIn(InternalIcureApi::class)
 		suspend fun initialise(
 			baseUrl: String,
@@ -85,24 +121,25 @@ interface IcureApi {
 			cryptoStrategies: CryptoStrategies,
 			options: ApiOptions = ApiOptions()
 		): IcureApi {
+			val client = options.httpClient ?: sharedHttpClient
 			val cryptoService = defaultCryptoService
 			val apiUrl = baseUrl
 			val keysStorage = JsonAndBase64KeyStorage(baseStorage)
 			val iCureStorage = IcureStorageFacade(keysStorage, baseStorage, DefaultStorageEntryKeysFactory, cryptoService, false)
-			val authApi = RawAnonymousAuthApi(apiUrl)
+			val authApi = RawAnonymousAuthApi(apiUrl, client)
 			val authService = JwtAuthService(authApi, usernamePassword)
-			val dataOwnerApi = DataOwnerApi(RawDataOwnerApi(apiUrl, authService))
+			val dataOwnerApi = DataOwnerApi(RawDataOwnerApi(apiUrl, authService, client))
 			val self = dataOwnerApi.getCurrentDataOwner()
 			val selfIsAnonymous = cryptoStrategies.dataOwnerRequiresAnonymousDelegation(self.toStub())
-			val rawPatientApiNoAccessKeys = RawPatientApi(apiUrl, authService, null)
-			val rawHealthcarePartyApi = RawHealthcarePartyApi(apiUrl, authService)
-			val rawDeviceApi = RawDeviceApi(apiUrl, authService)
+			val rawPatientApiNoAccessKeys = RawPatientApi(apiUrl, authService, null, client)
+			val rawHealthcarePartyApi = RawHealthcarePartyApi(apiUrl, authService, client)
+			val rawDeviceApi = RawDeviceApi(apiUrl, authService, client)
 			val exchangeDataMapManager = ExchangeDataMapManagerImpl(
-				RawExchangeDataMapApi(apiUrl, authService),
+				RawExchangeDataMapApi(apiUrl, authService, client),
 				cryptoService
 			)
 			val baseExchangeDataManager = BaseExchangeDataManagerImpl(
-				RawExchangeDataApi(apiUrl, authService),
+				RawExchangeDataApi(apiUrl, authService, client),
 				dataOwnerApi,
 				cryptoService,
 				selfIsAnonymous
@@ -207,7 +244,7 @@ interface IcureApi {
 				else
 					NoAccessControlKeysHeadersProvider
 			val patientApi = PatientApi(
-				RawPatientApi(apiUrl, authService, headersProvider),
+				RawPatientApi(apiUrl, authService, headersProvider, client),
 				entityEncryptionService,
 			)
 			ensureDelegationForSelf(dataOwnerApi, entityEncryptionService, patientApi.rawApi, cryptoService)
@@ -219,30 +256,30 @@ interface IcureApi {
 			)
 			val manifests = EntitiesEncryptedFieldsManifests.fromEncryptedFields(jsonEncryptionService, options.encryptedFields)
 			val maintenanceTaskApi = MaintenanceTaskApiImpl(
-				RawMaintenanceTaskApi(apiUrl, authService, headersProvider),
+				RawMaintenanceTaskApi(apiUrl, authService, headersProvider, client),
 				crypto,
 				manifests.maintenanceTask,
 				!selfIsAnonymous,
 			)
 			return IcureApiImpl(
 				calendarItem = CalendarItemApiImpl(
-					RawCalendarItemApi(apiUrl, authService, headersProvider),
+					RawCalendarItemApi(apiUrl, authService, headersProvider, client),
 					crypto,
 					manifests.calendarItem,
 					!selfIsAnonymous,
 				),
 				contact = ContactApiImpl(
-					RawContactApi(apiUrl, authService, headersProvider),
+					RawContactApi(apiUrl, authService, headersProvider, client),
 					entityEncryptionService,
 					jsonEncryptionService
 				),
 				patient = patientApi,
 				healthElement = HealthcareElementApiImpl(
-					RawHealthElementApi(apiUrl, authService, headersProvider),
+					RawHealthElementApi(apiUrl, authService, headersProvider, client),
 					entityEncryptionService,
 				),
 				dataOwner = dataOwnerApi,
-				user = UserApi(RawUserApi(apiUrl, authService)),
+				user = UserApi(RawUserApi(apiUrl, authService, client)),
 				crypto = CryptoApi(
 					ShamirKeysManagerImpl(
 						dataOwnerApi,
@@ -258,7 +295,7 @@ interface IcureApi {
 					baseExchangeKeysManager,
 					userEncryptionKeys,
 					maintenanceTaskApi,
-					RawExchangeDataApi(apiUrl, authService),
+					RawExchangeDataApi(apiUrl, authService, client),
 					dataOwnerApi,
 					cryptoService.strongRandom,
 				)
