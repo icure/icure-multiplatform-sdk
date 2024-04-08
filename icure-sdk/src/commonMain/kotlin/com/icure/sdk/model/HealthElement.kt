@@ -105,6 +105,10 @@ sealed interface HealthElement :
 	override val securityMetadata: SecurityMetadata?
 	// region HealthElement-HealthElement
 
+	companion object {
+		const val KRAKEN_QUALIFIED_NAME = "org.taktik.icure.entities.HealthElement"
+	}
+
 	// endregion
 }
 

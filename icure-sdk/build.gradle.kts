@@ -25,6 +25,7 @@ kotlin {
 					implementation(libs.ktorClientCore)
 					implementation(libs.ktorContentNegotiation)
 					implementation(libs.ktorSerializationJson)
+					implementation(libs.ktorClientWebsocket)
 					implementation(libs.kotlinSerialization)
 					implementation(libs.kotlinDateTime)
 					implementation(libs.kermit)

@@ -25,6 +25,7 @@ ktorClientEngineOkhttp = { group = "io.ktor", name = "ktor-client-okhttp", versi
 ktorClientEngineDarwin = { group = "io.ktor", name = "ktor-client-darwin", version.ref = "ktor" }
 ktorClientEngineJs = { group = "io.ktor", name = "ktor-client-js", version.ref = "ktor" }
 ktorClientEngineJava = { group = "io.ktor", name = "ktor-client-java", version.ref = "ktor" }
+ktorClientWebsocket = { group = "io.ktor", name = "ktor-client-websockets", version.ref = "ktor" }
 # TODO CIO engine only needed by the current test setup, remove later
 ktorClientEngineCio = { group = "io.ktor", name = "ktor-client-cio", version.ref = "ktor" }
 ktorContentNegotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }

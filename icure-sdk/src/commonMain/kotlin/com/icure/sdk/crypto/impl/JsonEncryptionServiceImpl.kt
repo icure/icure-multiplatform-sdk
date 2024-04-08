@@ -30,7 +30,7 @@ class JsonEncryptionServiceImpl(
 	companion object {
 		private val ENCRYPTED_SELF = Encryptable::encryptedSelf.name
 		private val ENCRYPTED_FIELD_MANIFEST_REGEX =
-			Regex("^([_a-zA-Z][_a-zA-Z0-9]*)(?:(\\.\\*\\.|\\[]\\.|\\.)(?:[_a-zA-Z].*|\\[.*]))?$")
+			Regex("^([_a-zA-Z][_a-zA-Z0-9]*)(?:(\\.\\*\\.|\\[\\]\\.|\\.)(?:[_a-zA-Z].*|\\[.*\\]))?$")
 	}
 
 	override suspend fun encrypt(
