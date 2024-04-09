@@ -1,7 +1,7 @@
 package com.icure.sdk.utils.pagination
 
 import com.icure.kryptom.crypto.defaultCryptoService
-import com.icure.sdk.model.Identifiable
+import com.icure.sdk.model.base.Identifiable
 import com.icure.sdk.model.PaginatedDocumentKeyIdPair
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.base.Versionable

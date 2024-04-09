@@ -13,8 +13,10 @@ import com.icure.sdk.model.embed.form.template.StructureElement
 import com.icure.sdk.model.embed.form.template.TextField
 import com.icure.sdk.model.embed.form.template.TimePicker
 import com.icure.sdk.model.filter.AbstractFilter
-import com.icure.sdk.model.filter.maintenancetask.MaintenanceTaskAfterDateFilter
+import com.icure.sdk.model.filter.AnyAbstractFilterSerializer
+import com.icure.sdk.model.filter.MaintenanceTaskAbstractFilterSerializer
 import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
@@ -38,8 +40,16 @@ object Serialization {
 				Group.serializer()
 			}
 		}
-		polymorphic(AbstractFilter::class) {
-			subclass(MaintenanceTaskAfterDateFilter::class)
+
+		contextual(AbstractFilter::class) {
+			when (val serialName = it.single().descriptor.serialName) {
+				"kotlinx.serialization.Polymorphic<MaintenanceTask>" -> MaintenanceTaskAbstractFilterSerializer.also { println("MT1") }
+				"AbstractFilter<MaintenanceTask>" -> MaintenanceTaskAbstractFilterSerializer.also { println("MT2") }
+				"kotlinx.serialization.Polymorphic<Identifiable>" -> AnyAbstractFilterSerializer.also { println("I1") }
+				"AbstractFilter<Identifiable>" -> MaintenanceTaskAbstractFilterSerializer.also { println("I2") }
+				"Code" -> TODO()
+				else -> throw SerializationException("Unknown serial name $serialName for generic parameter of AbstractFilter")
+			}
 		}
 	}
 
