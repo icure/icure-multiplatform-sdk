@@ -13,6 +13,7 @@ import com.icure.sdk.model.embed.form.template.StructureElement
 import com.icure.sdk.model.embed.form.template.TextField
 import com.icure.sdk.model.embed.form.template.TimePicker
 import com.icure.sdk.model.filter.AbstractFilter
+import com.icure.sdk.model.filter.healthelement.HealthElementByHcPartyFilter
 import com.icure.sdk.model.filter.maintenancetask.MaintenanceTaskAfterDateFilter
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
@@ -40,6 +41,7 @@ object Serialization {
 		}
 		polymorphic(AbstractFilter::class) {
 			subclass(MaintenanceTaskAfterDateFilter::class)
+			subclass(HealthElementByHcPartyFilter::class)
 		}
 	}
 

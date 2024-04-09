@@ -32,7 +32,7 @@ import kotlin.time.Duration
 @InternalIcureApi
 class RawHealthElementApi(
 	internal val apiUrl: String,
-	private val authService: AuthService,
+	internal val authService: AuthService,
 	private val accessControlKeysHeadersProvider: AccessControlKeysHeadersProvider?,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,

@@ -11,13 +11,25 @@ import kotlinx.coroutines.launch
 @InternalAPI
 class WebSocketWrapper(
     private var session: ClientWebSocketSession,
-    private val sessionProvider: suspend () -> ClientWebSocketSession
+	private val onOpenListeners: List<suspend (WebSocketWrapper) -> Unit>,
+    private val sessionProvider: suspend () -> ClientWebSocketSession,
 ) {
     private var state: WebSocketState = WebSocketState.CONNECTING
+	private var didConnectAlready = false
 
-    private val onOpenListeners = WebSocketEventListener<Unit>()
+    private val onReconnectedListeners = WebSocketEventListener<Unit>()
     private val onCloseListeners = WebSocketEventListener<Pair<Short?, String?>>()
     private val onErrorListeners = WebSocketEventListener<String?>()
+
+	companion object {
+		suspend fun initialize(
+			onOpenListeners: List<suspend (WebSocketWrapper) -> Unit>,
+			sessionProvider: suspend () -> ClientWebSocketSession
+		): WebSocketWrapper {
+			val session = sessionProvider()
+			return WebSocketWrapper(session, onOpenListeners, sessionProvider)
+		}
+	}
 
     @OptIn(InternalIcureApi::class)
     internal suspend fun send(data: String) {
@@ -76,7 +88,7 @@ class WebSocketWrapper(
      * Allows to listen to the open event
      */
     fun onOpen(callback: suspend (Unit) -> Unit) {
-        onOpenListeners.addListener(callback)
+        onReconnectedListeners.addListener(callback)
     }
 
     /**
@@ -98,8 +110,13 @@ class WebSocketWrapper(
     internal suspend fun onEvent(event: EmittedEvent) {
         when (event) {
             is EmittedEvent.Open -> {
-                state = WebSocketState.OPEN
-                onOpenListeners.onMessage(Unit)
+				state = WebSocketState.OPEN
+				if (didConnectAlready) {
+					onReconnectedListeners.onMessage(Unit)
+				} else {
+					didConnectAlready = true
+					onOpenListeners.forEach { it(this) }
+				}
             }
 
             is EmittedEvent.Close -> {

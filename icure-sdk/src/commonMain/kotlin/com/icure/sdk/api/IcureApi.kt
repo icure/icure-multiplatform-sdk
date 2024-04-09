@@ -64,6 +64,7 @@ import com.icure.sdk.storage.StorageFacade
 import com.icure.sdk.storage.impl.DefaultStorageEntryKeysFactory
 import com.icure.sdk.storage.impl.JsonAndBase64KeyStorage
 import com.icure.sdk.utils.InternalIcureApi
+import com.icure.sdk.websocket.WebSocketAuthProvider
 
 interface IcureApi {
 	val calendarItem: CalendarItemApi
@@ -91,6 +92,7 @@ interface IcureApi {
 			val iCureStorage = IcureStorageFacade(keysStorage, baseStorage, DefaultStorageEntryKeysFactory, cryptoService, false)
 			val authApi = RawAnonymousAuthApi(apiUrl)
 			val authService = JwtAuthService(authApi, usernamePassword)
+			val webSocketAuthProvider = WebSocketAuthProvider(authService)
 			val dataOwnerApi = DataOwnerApi(RawDataOwnerApi(apiUrl, authService))
 			val self = dataOwnerApi.getCurrentDataOwner()
 			val selfIsAnonymous = cryptoStrategies.dataOwnerRequiresAnonymousDelegation(self.toStub())
@@ -239,7 +241,8 @@ interface IcureApi {
 				patient = patientApi,
 				healthElement = HealthcareElementApiImpl(
 					RawHealthElementApi(apiUrl, authService, headersProvider),
-					entityEncryptionService,
+					encryptionService = entityEncryptionService,
+					webSocketAuthProvider = webSocketAuthProvider,
 				),
 				dataOwner = dataOwnerApi,
 				user = UserApi(RawUserApi(apiUrl, authService)),

@@ -8,6 +8,12 @@ class WebSocketEventListener<T> {
 	}
 
 	suspend fun onMessage(data: T) {
-		listeners.forEach { it(data) }
+		listeners.forEach {
+			runCatching {
+				it(data)
+			}.onFailure {
+				it.printStackTrace()
+			}
+		}
 	}
 }
