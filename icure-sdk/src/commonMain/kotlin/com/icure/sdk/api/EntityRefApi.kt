@@ -9,13 +9,12 @@ interface EntityReferenceApi {
 	suspend fun createEntityReference(entityReference: EntityReference): EntityReference
 }
 
-@OptIn(InternalIcureApi::class)
-class EntityReferenceApiImpl(
+@InternalIcureApi
+internal class EntityReferenceApiImpl(
 	private val rawApi: RawEntityReferenceApi,
 ) : EntityReferenceApi {
 	override suspend fun getLatest(prefix: String) = rawApi.getLatest(prefix).successBody()
 	override suspend fun createEntityReference(entityReference: EntityReference) =
 		rawApi.createEntityReference(entityReference).successBody()
-
 }
 

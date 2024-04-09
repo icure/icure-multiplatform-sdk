@@ -90,8 +90,8 @@ interface CodeApi {
 
 }
 
-@OptIn(InternalIcureApi::class)
-class CodeApiImpl(
+@InternalIcureApi
+internal class CodeApiImpl(
     private val rawApi: RawCodeApi,
 ) : CodeApi {
     override suspend fun findCodesByLabel(

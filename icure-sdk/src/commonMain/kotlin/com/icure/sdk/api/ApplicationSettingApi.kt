@@ -10,8 +10,8 @@ interface ApplicationSettingsApi {
 	suspend fun updateApplicationSettings(applicationSettings: ApplicationSettings): ApplicationSettings
 }
 
-@OptIn(InternalIcureApi::class)
-class ApplicationSettingsApiImpl(
+@InternalIcureApi
+internal class ApplicationSettingsApiImpl(
 	private val rawApi: RawApplicationSettingsApi,
 ) : ApplicationSettingsApi {
 	override suspend fun getApplicationSettings() = rawApi.getApplicationSettings().successBody()

@@ -3,7 +3,7 @@
 package com.icure.sdk.crypto
 
 import com.icure.kryptom.crypto.defaultCryptoService
-import com.icure.sdk.api.IcureApi
+import com.icure.sdk.api.IcureSdk
 import com.icure.sdk.crypto.impl.exportSpkiHex
 import com.icure.sdk.model.DecryptedPatient
 import com.icure.sdk.model.embed.AccessLevel
@@ -30,7 +30,7 @@ class KeyPairUpdateNotificationTest : StringSpec({
 	val note: String = "Some secret note"
 	val testStart = currentEpochMs()
 
-	suspend fun IcureApi.createDataAndShareWith(
+	suspend fun IcureSdk.createDataAndShareWith(
 		owner: DataOwnerDetails
 	): String =
 		patient.encryptAndCreate(
@@ -45,12 +45,12 @@ class KeyPairUpdateNotificationTest : StringSpec({
 			)
 		).shouldNotBeNull().id
 
-	suspend fun IcureApi.verifyDataAccessible(
+	suspend fun IcureSdk.verifyDataAccessible(
 		dataId: String
 	) =
 		patient.getAndDecrypt(dataId).shouldNotBeNull().note shouldBe note
 
-	suspend fun IcureApi.getMaintenanceTasks() =
+	suspend fun IcureSdk.getMaintenanceTasks() =
 		maintenanceTask.filterMaintenanceTasksBy(
 			null,
 			100,

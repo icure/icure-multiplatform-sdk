@@ -32,8 +32,8 @@ interface EntityTemplateApi {
 	suspend fun deleteEntityTemplate(entityTemplateIds: List<String>): List<DocIdentifier>
 }
 
-@OptIn(InternalIcureApi::class)
-class EntityTemplateApiImpl(
+@InternalIcureApi
+internal class EntityTemplateApiImpl(
 	private val rawApi: RawEntityTemplateApi,
 ) : EntityTemplateApi {
 	override suspend fun getEntityTemplate(documentTemplateId: String) = rawApi.getEntityTemplate(documentTemplateId).successBody()

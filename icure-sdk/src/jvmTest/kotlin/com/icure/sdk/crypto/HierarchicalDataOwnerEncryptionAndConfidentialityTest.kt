@@ -1,6 +1,6 @@
 package com.icure.sdk.crypto
 
-import com.icure.sdk.api.IcureApi
+import com.icure.sdk.api.IcureSdk
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.model.DecryptedHealthElement
 import com.icure.sdk.model.DecryptedPatient
@@ -95,7 +95,7 @@ class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec ({
 		).shouldNotBeNull()
 		suspend fun findHealthElementsFor(
 			hcpIds: List<String>,
-			api: IcureApi
+			api: IcureSdk
 		) = hcpIds.flatMap { hcpId ->
 			api.healthElement.findHealthcareElementsByHcPartyPatient(hcpId, patient, limit = 100)
 		}.distinctBy { it.id }

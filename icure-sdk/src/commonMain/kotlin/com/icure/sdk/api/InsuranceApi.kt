@@ -19,8 +19,8 @@ interface InsuranceApi {
 	suspend fun modifyInsurance(insurance: Insurance): Insurance
 }
 
-@OptIn(InternalIcureApi::class)
-class InsuranceApiImpl(
+@InternalIcureApi
+internal class InsuranceApiImpl(
 	private val rawApi: RawInsuranceApi,
 ) : InsuranceApi {
 	override suspend fun getInsurance(insuranceId: String) = rawApi.getInsurance(insuranceId).successBody()

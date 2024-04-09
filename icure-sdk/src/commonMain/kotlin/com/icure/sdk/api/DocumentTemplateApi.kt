@@ -27,8 +27,8 @@ interface DocumentTemplateApi {
 	suspend fun setDocumentTemplateAttachment(documentTemplateId: String, payload: ByteArray): DocumentTemplate
 }
 
-@OptIn(InternalIcureApi::class)
-class DocumentTemplateApiImpl(
+@InternalIcureApi
+internal class DocumentTemplateApiImpl(
 	private val rawApi: RawDocumentTemplateApi,
 ) : DocumentTemplateApi {
 	override suspend fun getDocumentTemplate(documentTemplateId: String) = rawApi.getDocumentTemplate(documentTemplateId).successBody()

@@ -95,8 +95,8 @@ interface GroupApi {
 	suspend fun listAllGroupsIds(): List<DocIdentifier>
 }
 
-@OptIn(InternalIcureApi::class)
-class GroupApiImpl(
+@InternalIcureApi
+internal class GroupApiImpl(
     private val rawApi: RawGroupApi,
 ) : GroupApi {
     override suspend fun listGroups(): List<Group> = rawApi.listGroups().successBody()

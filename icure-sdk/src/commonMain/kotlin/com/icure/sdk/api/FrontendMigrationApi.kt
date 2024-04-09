@@ -11,11 +11,11 @@ interface FrontEndMigrationApi {
 	suspend fun getFrontEndMigrations(): List<FrontEndMigration>
 	suspend fun deleteFrontEndMigration(frontEndMigrationId: String): DocIdentifier
 	suspend fun getFrontEndMigrationByName(frontEndMigrationName: String): List<FrontEndMigration>
-	suspend fun modifyFrontEndMigration(frontEndMigrationDto: FrontEndMigration): FrontEndMigration
+	suspend fun modifyFrontEndMigration(frontEndMigration: FrontEndMigration): FrontEndMigration
 }
 
-@OptIn(InternalIcureApi::class)
-class FrontEndMigrationApiImpl(
+@InternalIcureApi
+internal  class FrontEndMigrationApiImpl(
 	private val rawApi: RawFrontEndMigrationApi,
 ) : FrontEndMigrationApi {
 	override suspend fun getFrontEndMigration(frontEndMigrationId: String) = rawApi.getFrontEndMigration(frontEndMigrationId).successBody()
@@ -29,6 +29,6 @@ class FrontEndMigrationApiImpl(
 
 	override suspend fun getFrontEndMigrationByName(frontEndMigrationName: String) = rawApi.getFrontEndMigrationByName(frontEndMigrationName).successBody()
 
-	override suspend fun modifyFrontEndMigration(frontEndMigrationDto: FrontEndMigration) = rawApi.modifyFrontEndMigration(frontEndMigrationDto).successBody()
+	override suspend fun modifyFrontEndMigration(frontEndMigration: FrontEndMigration) = rawApi.modifyFrontEndMigration(frontEndMigration).successBody()
 }
 

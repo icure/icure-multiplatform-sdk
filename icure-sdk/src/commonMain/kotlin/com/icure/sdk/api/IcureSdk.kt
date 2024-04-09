@@ -70,7 +70,7 @@ import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.kotlinx.json.json
 
-interface IcureApi {
+interface IcureSdk {
 	val calendarItem: CalendarItemApi
 	val contact: ContactApi
 	val patient: PatientApi
@@ -120,7 +120,7 @@ interface IcureApi {
 			baseStorage: StorageFacade,
 			cryptoStrategies: CryptoStrategies,
 			options: ApiOptions = ApiOptions()
-		): IcureApi {
+		): IcureSdk {
 			val client = options.httpClient ?: sharedHttpClient
 			val cryptoService = defaultCryptoService
 			val apiUrl = baseUrl
@@ -266,20 +266,26 @@ interface IcureApi {
 					RawCalendarItemApi(apiUrl, authService, headersProvider, client),
 					crypto,
 					manifests.calendarItem,
-					!selfIsAnonymous,
+						!selfIsAnonymous,
 				),
 				contact = ContactApiImpl(
 					RawContactApi(apiUrl, authService, headersProvider, client),
+					crypto,
 					entityEncryptionService,
-					jsonEncryptionService
+					jsonEncryptionService,
+					manifests.contact,
+					!selfIsAnonymous,
 				),
 				patient = patientApi,
 				healthElement = HealthcareElementApiImpl(
 					RawHealthElementApi(apiUrl, authService, headersProvider, client),
+					crypto,
 					entityEncryptionService,
+					manifests.healthElement,
+					!selfIsAnonymous,
 				),
 				dataOwner = dataOwnerApi,
-				user = UserApi(RawUserApi(apiUrl, authService, client)),
+				user = UserApi(RawUserApi(apiUrl, authService, client), RawPatientApi(apiUrl, authService,  client)),
 				crypto = CryptoApi(
 					ShamirKeysManagerImpl(
 						dataOwnerApi,
@@ -314,7 +320,7 @@ private class IcureApiImpl(
 	override val crypto: CryptoApi,
 	override val icureMaintenanceTask: IcureMaintenanceTaskApi,
 	override val maintenanceTask : MaintenanceTaskApi
-): IcureApi
+): IcureSdk
 
 @InternalIcureApi
 private suspend fun ensureDelegationForSelf(

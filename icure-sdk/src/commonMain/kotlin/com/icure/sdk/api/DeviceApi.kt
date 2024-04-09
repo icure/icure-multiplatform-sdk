@@ -47,8 +47,8 @@ interface DeviceApi {
 	): List<DocIdentifier>
 }
 
-@OptIn(InternalIcureApi::class)
-class DeviceApiImpl(
+@InternalIcureApi
+internal class DeviceApiImpl(
 	private val rawApi: RawDeviceApi,
 ) : DeviceApi {
 	override suspend fun getDevice(deviceId: String) = rawApi.getDevice(deviceId).successBody()
