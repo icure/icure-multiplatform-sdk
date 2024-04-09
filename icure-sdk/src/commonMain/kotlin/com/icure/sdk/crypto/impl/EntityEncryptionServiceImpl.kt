@@ -105,11 +105,11 @@ class EntityEncryptionServiceImpl(
 		)
 	}
 
-	override suspend fun tryDecryptAttachmentOf(
+	override suspend fun decryptAttachmentOf(
 		entity: EntityWithTypeInfo<*>,
 		content: ByteArray,
 		validator: suspend (decryptedData: ByteArray) -> Boolean
-	): ByteArray? {
+	): ByteArray {
 		val triedKeys = mutableSetOf<HexString>()
 		return allDecryptors.decryptEncryptionKeysOf(entity, dataOwnersForDecryption(null).toSet()).mapNotNull { decryptedKeyInfo ->
 			if (triedKeys.add(decryptedKeyInfo.value)) {
@@ -122,7 +122,13 @@ class EntityEncryptionServiceImpl(
 			} else {
 				null
 			}
-		}.firstOrNull()
+		}.firstOrNull() ?: throw EntityEncryptionException(
+			if (triedKeys.isEmpty()) {
+				"Could not extract any encryption key from ${entity.type.id} ${entity.id}"
+			} else {
+				"Attachment can't be properly decrypted with any of the available keys (validator or decryption failed with available keys)"
+			}
+		)
 	}
 
 	override suspend fun <T : HasEncryptionMetadata> entityWithInitialisedEncryptedMetadata(
