@@ -8,7 +8,7 @@ import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
-import io.ktor.client.request.header
+import io.ktor.client.request.`header`
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
@@ -30,7 +30,7 @@ class RawSecureDelegationKeyMapApi(
 
 	public suspend fun createSecureDelegationKeyMap(
 		secureDelegationKeyMap: EncryptedSecureDelegationKeyMap,
-		accessControlKeysHeaderValues: List<String>
+		accessControlKeysHeaderValues: List<String>,
 	): HttpResponse<EncryptedSecureDelegationKeyMap> =
 		post {
 			url {
@@ -47,7 +47,7 @@ class RawSecureDelegationKeyMapApi(
 
 	suspend fun findByDelegationKeys(
 		delegationKeys: ListOfIds,
-		accessControlKeysHeaderValues: List<String>
+		accessControlKeysHeaderValues: List<String>,
 	): HttpResponse<List<EncryptedSecureDelegationKeyMap>> =
 		post {
 			url {
@@ -64,7 +64,7 @@ class RawSecureDelegationKeyMapApi(
 
 	suspend fun bulkShare(
 		request: BulkShareOrUpdateMetadataParams,
-		accessControlKeysHeaderValues: List<String>
+		accessControlKeysHeaderValues: List<String>,
 	): HttpResponse<List<EntityBulkShareResult<EncryptedSecureDelegationKeyMap>>> =
 		put {
 			url {
