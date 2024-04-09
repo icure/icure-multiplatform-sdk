@@ -1,6 +1,6 @@
 package com.icure.sdk.crypto
 
-import com.icure.sdk.api.IcureApi
+import com.icure.sdk.api.IcureSdk
 import com.icure.sdk.model.DecryptedHealthElement
 import com.icure.sdk.model.DecryptedPatient
 import com.icure.sdk.model.embed.AccessLevel
@@ -23,7 +23,7 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 	}
 
 	suspend fun testCreateSharedData(delegator: DataOwnerDetails, delegate: DataOwnerDetails) {
-		val delegatorApi: IcureApi = delegator.api()
+		val delegatorApi: IcureSdk = delegator.api()
 		val patient = delegatorApi.patient.encryptAndCreate(
 			delegatorApi.patient.initialiseEncryptionMetadata(
 				DecryptedPatient(
@@ -46,7 +46,7 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 				delegates = mapOf(delegate.dataOwnerId to AccessLevel.Write)
 			)
 		).shouldNotBeNull()
-		val delegateApi: IcureApi = delegate.api()
+		val delegateApi: IcureSdk = delegate.api()
 		delegateApi.patient.getAndDecrypt(patient.id).shouldNotBeNull().run {
 			note shouldBe patientNote
 		}
@@ -62,7 +62,7 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 	}
 
 	suspend fun testShareExistingData(delegator: DataOwnerDetails, delegate: DataOwnerDetails) {
-		val delegatorApi: IcureApi =  delegator.api()
+		val delegatorApi: IcureSdk =  delegator.api()
 		val patient = delegatorApi.patient.encryptAndCreate(
 			delegatorApi.patient.initialiseEncryptionMetadata(DecryptedPatient(
 				id = UUID.randomUUID().toString(),
@@ -91,7 +91,7 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 			delegate.dataOwnerId,
 			he
 		).shouldNotBeNull()
-		val delegateApi: IcureApi = delegate.api()
+		val delegateApi: IcureSdk = delegate.api()
 		delegateApi.patient.getAndDecrypt(patient.id).shouldNotBeNull().run {
 			note shouldBe patientNote
 		}

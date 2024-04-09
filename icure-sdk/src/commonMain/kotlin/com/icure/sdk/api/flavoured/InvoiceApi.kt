@@ -65,7 +65,7 @@ interface InvoiceBasicFlavouredApi<E : Invoice> {
 	): PaginatedList<E>
 	suspend fun findInvoicesByHcPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<E>
 	suspend fun reassignInvoice(invoice: E): E
-	suspend fun mergeTo(invoiceId: String, ids: ListOfIds): E
+	suspend fun mergeTo(invoiceId: String, ids: List<String>): E
 	suspend fun validate(invoiceId: String, scheme: String, forcedValue: String): E
 	suspend fun appendCodes(
 		userId: String,
@@ -115,7 +115,7 @@ interface InvoiceBasicFlavouredApi<E : Invoice> {
 	): List<E>
 
 	suspend fun listInvoicesByServiceIds(serviceIds: List<String>): List<E>
-	suspend fun listAllHcpsByStatus(status: String, from: Long? = null, to: Long? = null, hcpIds: ListOfIds): List<E>
+	suspend fun listAllHcpsByStatus(status: String, from: Long? = null, to: Long? = null, hcpIds: List<String>): List<E>
 }
 
 /* The extra API calls declared in this interface are the ones that can be used on encrypted or decrypted items but only when the user is a data owner */
@@ -187,8 +187,8 @@ private abstract class AbstractInvoiceBasicFlavouredApi<E : Invoice>(protected v
 
 	override suspend fun mergeTo(
 		invoiceId: String,
-		ids: ListOfIds,
-		) = rawApi.mergeTo(invoiceId, ids).successBody().let { maybeDecrypt(it) }
+		ids: List<String>,
+		) = rawApi.mergeTo(invoiceId, ListOfIds(ids)).successBody().let { maybeDecrypt(it) }
 
 	override suspend fun validate(
 		invoiceId: String,
@@ -280,9 +280,9 @@ private abstract class AbstractInvoiceBasicFlavouredApi<E : Invoice>(protected v
 		status: String,
 		from: Long?,
 		to: Long?,
-		hcpIds: ListOfIds,
+		hcpIds: List<String>,
 		): List<E> =
-		rawApi.listAllHcpsByStatus(status, from, to, hcpIds).successBody().map { maybeDecrypt(it) }
+		rawApi.listAllHcpsByStatus(status, from, to, ListOfIds(hcpIds)).successBody().map { maybeDecrypt(it) }
 
 
 	abstract suspend fun validateAndMaybeEncrypt(entity: E): EncryptedInvoice

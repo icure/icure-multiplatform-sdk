@@ -8,7 +8,7 @@ import com.icure.kryptom.crypto.RsaKeypair
 import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.kryptom.utils.toHexString
 import com.icure.sdk.api.ApiOptions
-import com.icure.sdk.api.IcureApi
+import com.icure.sdk.api.IcureSdk
 import com.icure.sdk.api.raw.RawAnonymousAuthApi
 import com.icure.sdk.api.raw.RawGroupApi
 import com.icure.sdk.api.raw.RawHealthcarePartyApi
@@ -42,11 +42,11 @@ private val testGroupId = testGroupName
 private val testGroupAdmin = "admin-${UUID.randomUUID()}@icure.com"
 private val testGroupAdminPassword = "admin-${UUID.randomUUID()}"
 val testGroupAdminAuth = JwtAuthService(
-	RawAnonymousAuthApi(baseUrl, IcureApi.sharedHttpClient),
+	RawAnonymousAuthApi(baseUrl, IcureSdk.sharedHttpClient),
 	UsernamePassword(testGroupAdmin, testGroupAdminPassword),
 )
 private val superadminAuth = JwtAuthService(
-	RawAnonymousAuthApi(baseUrl, IcureApi.sharedHttpClient),
+	RawAnonymousAuthApi(baseUrl, IcureSdk.sharedHttpClient),
 	UsernamePassword("john", "LetMeIn"),
 )
 private val defaultRoles = mapOf(
@@ -80,7 +80,7 @@ suspend fun initialiseTestEnvironment() {
 		rootUserRoles = defaultRoles
 	)
 	println("Creating test group")
-	val groupApi = RawGroupApi(baseUrl, superadminAuth, IcureApi.sharedHttpClient)
+	val groupApi = RawGroupApi(baseUrl, superadminAuth, IcureSdk.sharedHttpClient)
 	if (groupApi.getGroup(testGroupId).status.value == 200) {
 		println("Group already exist")
 	} else  {
@@ -96,7 +96,7 @@ suspend fun initialiseTestEnvironment() {
 		)
 	}
 	println("Creating admin user - $testGroupAdmin:$testGroupAdminPassword")
-	RawUserApi(baseUrl, superadminAuth, IcureApi.sharedHttpClient).createAdminUserInGroup(
+	RawUserApi(baseUrl, superadminAuth, IcureSdk.sharedHttpClient).createAdminUserInGroup(
 		testGroupId,
 		User(
 			UUID.randomUUID().toString(),
@@ -120,7 +120,7 @@ data class DataOwnerDetails(
 	/**
 	 * Creates a new api with access to the original key of the user and his parents.
 	 */
-	suspend fun api(): IcureApi =
+	suspend fun api(): IcureSdk =
 		initApi(BasicCryptoStrategies) { addInitialKeysToStorage(it) }
 
 	/**
@@ -129,7 +129,7 @@ data class DataOwnerDetails(
 	 */
 	suspend fun apiWithKeys(
 		vararg keys: RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>
-	): IcureApi =
+	): IcureSdk =
 		initApi(BasicCryptoStrategies) { storage ->
 			keys.forEach { key ->
 				storage.saveEncryptionKeypair(
@@ -144,7 +144,7 @@ data class DataOwnerDetails(
 	 * Creates an api simulating the loss of all keys for the user, prompting the creation of a new key.
 	 * @return the api and the new key
  	 */
-	suspend fun apiWithLostKeys(): Pair<IcureApi, RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>> {
+	suspend fun apiWithLostKeys(): Pair<IcureSdk, RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>> {
 		val newKey = defaultCryptoService.rsa.generateKeyPair(RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256)
 		return Pair(
 			initApi(
@@ -173,8 +173,8 @@ data class DataOwnerDetails(
 	private suspend fun initApi(
 		cryptoStrategies: CryptoStrategies,
 		fillStorage: suspend (storage: IcureStorageFacade) -> Unit
-	): IcureApi =
-		IcureApi.initialise(
+	): IcureSdk =
+		IcureSdk.initialise(
 			baseUrl,
 			UsernamePassword(username, password),
 			VolatileStorageFacade().also {
@@ -209,8 +209,8 @@ data class DataOwnerDetails(
  * latter will be the grandparent of this data owner, and so on. If null the data owner will not have any parent.
  */
 suspend fun createHcpUser(parent: DataOwnerDetails? = null, useLegacyKey: Boolean = false): DataOwnerDetails {
-	val hcpRawApi = RawHealthcarePartyApi(baseUrl, testGroupAdminAuth, IcureApi.sharedHttpClient)
-	val userRawApi = RawUserApi(baseUrl, testGroupAdminAuth, IcureApi.sharedHttpClient)
+	val hcpRawApi = RawHealthcarePartyApi(baseUrl, testGroupAdminAuth, IcureSdk.sharedHttpClient)
+	val userRawApi = RawUserApi(baseUrl, testGroupAdminAuth, IcureSdk.sharedHttpClient)
 	val hcpId = UUID.randomUUID().toString()
 	val login = "hcp-${UUID.randomUUID()}"
 	val password = UUID.randomUUID().toString()
@@ -246,8 +246,8 @@ suspend fun createHcpUser(parent: DataOwnerDetails? = null, useLegacyKey: Boolea
 }
 
 suspend fun createPatientUser(): DataOwnerDetails {
-	val patientRawApi = RawPatientApi(baseUrl, testGroupAdminAuth, null, IcureApi.sharedHttpClient)
-	val userRawApi = RawUserApi(baseUrl, testGroupAdminAuth, IcureApi.sharedHttpClient)
+	val patientRawApi = RawPatientApi(baseUrl, testGroupAdminAuth, null, IcureSdk.sharedHttpClient)
+	val userRawApi = RawUserApi(baseUrl, testGroupAdminAuth, IcureSdk.sharedHttpClient)
 	val patientId = UUID.randomUUID().toString()
 	val login = "patient-${UUID.randomUUID()}"
 	val password = UUID.randomUUID().toString()
@@ -273,8 +273,8 @@ suspend fun createPatientUser(): DataOwnerDetails {
 }
 
 suspend fun createUserFromExistingPatient(patient: Patient): DataOwnerDetails {
-	val patientRawApi = RawPatientApi(baseUrl, testGroupAdminAuth, NoAccessControlKeysHeadersProvider, IcureApi.sharedHttpClient)
-	val userRawApi = RawUserApi(baseUrl, testGroupAdminAuth, IcureApi.sharedHttpClient)
+	val patientRawApi = RawPatientApi(baseUrl, testGroupAdminAuth, NoAccessControlKeysHeadersProvider, IcureSdk.sharedHttpClient)
+	val userRawApi = RawUserApi(baseUrl, testGroupAdminAuth, IcureSdk.sharedHttpClient)
 	val login = "patient-${UUID.randomUUID()}"
 	val password = UUID.randomUUID().toString()
 	val keypair = defaultCryptoService.rsa.generateKeyPair(RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256)
