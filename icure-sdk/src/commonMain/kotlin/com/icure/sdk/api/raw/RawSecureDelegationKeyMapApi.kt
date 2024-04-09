@@ -8,6 +8,7 @@ import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
+import io.ktor.client.request.`header`
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
@@ -32,6 +33,7 @@ class RawSecureDelegationKeyMapApi(
 
 	public suspend fun createSecureDelegationKeyMap(
 		secureDelegationKeyMap: EncryptedSecureDelegationKeyMap,
+		accessControlKeysHeaderValues: List<String>,
 	): HttpResponse<EncryptedSecureDelegationKeyMap> =
 		post {
 			url {
@@ -41,9 +43,15 @@ class RawSecureDelegationKeyMapApi(
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(secureDelegationKeyMap)
+			accessControlKeysHeaderValues.forEach {
+				header(ACCESS_CONTROL_KEYS_HEADER, it)
+			}
 		}.wrap()
 
-	suspend fun findByDelegationKeys(delegationKeys: ListOfIds): HttpResponse<List<EncryptedSecureDelegationKeyMap>> =
+	suspend fun findByDelegationKeys(
+		delegationKeys: ListOfIds,
+		accessControlKeysHeaderValues: List<String>,
+	): HttpResponse<List<EncryptedSecureDelegationKeyMap>> =
 		post {
 			url {
 				takeFrom(apiUrl)
@@ -52,10 +60,14 @@ class RawSecureDelegationKeyMapApi(
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(delegationKeys)
+			accessControlKeysHeaderValues.forEach {
+				header(ACCESS_CONTROL_KEYS_HEADER, it)
+			}
 		}.wrap()
 
 	suspend fun bulkShare(
 		request: BulkShareOrUpdateMetadataParams,
+		accessControlKeysHeaderValues: List<String>,
 	): HttpResponse<List<EntityBulkShareResult<EncryptedSecureDelegationKeyMap>>> =
 		put {
 			url {
@@ -65,6 +77,9 @@ class RawSecureDelegationKeyMapApi(
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(request)
+			accessControlKeysHeaderValues.forEach {
+				header(ACCESS_CONTROL_KEYS_HEADER, it)
+			}
 		}.wrap()
 
 	// endregion
