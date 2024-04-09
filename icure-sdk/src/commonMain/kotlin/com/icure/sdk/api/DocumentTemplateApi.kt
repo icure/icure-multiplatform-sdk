@@ -11,7 +11,7 @@ interface DocumentTemplateApi {
 	suspend fun getDocumentTemplate(documentTemplateId: String): DocumentTemplate
 	suspend fun createDocumentTemplate(documentTemplate: DocumentTemplate): DocumentTemplate
 	suspend fun modifyDocumentTemplate(documentTemplate: DocumentTemplate): DocumentTemplate
-	suspend fun deleteDocumentTemplates(documentTemplateIds: ListOfIds): List<DocIdentifier>
+	suspend fun deleteDocumentTemplates(documentTemplateIds: List<String>): List<DocIdentifier>
 	suspend fun listDocumentTemplatesBySpeciality(specialityCode: String): List<DocumentTemplate>
 	suspend fun listDocumentTemplatesByDocumentType(documentTypeCode: String): List<DocumentTemplate>
 	suspend fun listDocumentTemplatesByDocumentTypeForCurrentUser(documentTypeCode: String): List<DocumentTemplate>
@@ -39,7 +39,8 @@ class DocumentTemplateApiImpl(
 	override suspend fun modifyDocumentTemplate(documentTemplate: DocumentTemplate) =
 		rawApi.modifyDocumentTemplate(documentTemplate.id, documentTemplate).successBody()
 
-	override suspend fun deleteDocumentTemplates(documentTemplateIds: ListOfIds) = rawApi.deleteDocumentTemplates(documentTemplateIds).successBody()
+	override suspend fun deleteDocumentTemplates(documentTemplateIds: List<String>) = rawApi.deleteDocumentTemplates(
+		ListOfIds(documentTemplateIds)).successBody()
 	override suspend fun listDocumentTemplatesBySpeciality(specialityCode: String) = rawApi.listDocumentTemplatesBySpeciality(specialityCode).successBody()
 	override suspend fun listDocumentTemplatesByDocumentType(documentTypeCode: String) = rawApi.listDocumentTemplatesByDocumentType(documentTypeCode).successBody()
 	override suspend fun listDocumentTemplatesByDocumentTypeForCurrentUser(documentTypeCode: String) = rawApi.listDocumentTemplatesByDocumentTypeForCurrentUser(documentTypeCode).successBody()

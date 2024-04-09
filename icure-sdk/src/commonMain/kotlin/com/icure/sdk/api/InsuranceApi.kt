@@ -9,7 +9,7 @@ import com.icure.sdk.utils.InternalIcureApi
 
 interface InsuranceApi {
 	suspend fun getInsurance(insuranceId: String): Insurance
-	suspend fun getInsurances(insuranceIds: ListOfIds): List<Insurance>
+	suspend fun getInsurances(insuranceIds: List<String>): List<Insurance>
 	suspend fun createInsurance(insurance: Insurance): Insurance
 	suspend fun deleteInsurance(insuranceId: String): DocIdentifier
 
@@ -25,7 +25,8 @@ class InsuranceApiImpl(
 ) : InsuranceApi {
 	override suspend fun getInsurance(insuranceId: String) = rawApi.getInsurance(insuranceId).successBody()
 
-	override suspend fun getInsurances(insuranceIds: ListOfIds) = rawApi.getInsurances(insuranceIds).successBody()
+	override suspend fun getInsurances(insuranceIds: List<String>) = rawApi.getInsurances(
+		ListOfIds(insuranceIds)).successBody()
 
 	override suspend fun createInsurance(insurance: Insurance) = rawApi.createInsurance(insurance).successBody()
 

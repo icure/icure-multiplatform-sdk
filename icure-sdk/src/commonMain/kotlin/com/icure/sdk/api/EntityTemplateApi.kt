@@ -26,10 +26,10 @@ interface EntityTemplateApi {
     ): List<EntityTemplate>
 
 	suspend fun findAllEntityTemplatesByKeyword(type: String, keyword: String, includeEntities: Boolean? = null): List<EntityTemplate>
-	suspend fun getEntityTemplates(entityTemplateIds: ListOfIds): List<EntityTemplate>
+	suspend fun getEntityTemplates(entityTemplateIds: List<String>): List<EntityTemplate>
 	suspend fun modifyEntityTemplates(entityTemplates: List<EntityTemplate>): List<EntityTemplate>
 	suspend fun createEntityTemplates(entityTemplates: List<EntityTemplate>): List<EntityTemplate>
-	suspend fun deleteEntityTemplate(entityTemplateIds: ListOfIds): List<DocIdentifier>
+	suspend fun deleteEntityTemplate(entityTemplateIds: List<String>): List<DocIdentifier>
 }
 
 @OptIn(InternalIcureApi::class)
@@ -70,13 +70,14 @@ class EntityTemplateApiImpl(
 		includeEntities: Boolean?,
 	) = rawApi.findAllEntityTemplatesByKeyword(type, keyword, includeEntities).successBody()
 
-	override suspend fun getEntityTemplates(entityTemplateIds: ListOfIds) = rawApi.getEntityTemplates(entityTemplateIds).successBody()
+	override suspend fun getEntityTemplates(entityTemplateIds: List<String>) = rawApi.getEntityTemplates(
+		ListOfIds(entityTemplateIds)).successBody()
 	override suspend fun modifyEntityTemplates(entityTemplates: List<EntityTemplate>) =
 		rawApi.modifyEntityTemplates(entityTemplates).successBody()
 
 	override suspend fun createEntityTemplates(entityTemplates: List<EntityTemplate>) =
 		rawApi.createEntityTemplates(entityTemplates).successBody()
 
-	override suspend fun deleteEntityTemplate(entityTemplateIds: ListOfIds) = rawApi.deleteEntityTemplate(entityTemplateIds).successBody()
+	override suspend fun deleteEntityTemplate(entityTemplateIds: List<String>) = rawApi.deleteEntityTemplate(ListOfIds(entityTemplateIds)).successBody()
 }
 

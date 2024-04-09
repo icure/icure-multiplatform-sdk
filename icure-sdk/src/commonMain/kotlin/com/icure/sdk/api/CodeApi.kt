@@ -65,7 +65,7 @@ interface CodeApi {
 		languages: String?,
 	): Code
 
-	suspend fun getCodes(codeIds: ListOfIds): List<Code>
+	suspend fun getCodes(codeIds: List<String>): List<Code>
 	suspend fun getCode(codeId: String): Code
 	suspend fun getCodeWithParts(
 		type: String,
@@ -151,7 +151,8 @@ class CodeApiImpl(
         languages: String?,
     ): Code = rawApi.getCodeByRegionLanguageTypeLabel(region, label, type, languages).successBody()
 
-    override suspend fun getCodes(codeIds: ListOfIds): List<Code> = rawApi.getCodes(codeIds).successBody()
+    override suspend fun getCodes(codeIds: List<String>): List<Code> = rawApi.getCodes(
+		ListOfIds(codeIds)).successBody()
 
     override suspend fun getCode(codeId: String): Code = rawApi.getCode(codeId).successBody()
 

@@ -12,7 +12,7 @@ import com.icure.sdk.utils.InternalIcureApi
 
 interface DeviceApi {
 	suspend fun getDevice(deviceId: String): Device
-	suspend fun getDevices(deviceIds: ListOfIds): List<Device>
+	suspend fun getDevices(deviceIds: List<String>): List<Device>
 	suspend fun createDevice(p: Device): Device
 	suspend fun updateDevice(device: Device): Device
 	suspend fun createDevices(devices: List<Device>): List<IdWithRev>
@@ -25,10 +25,10 @@ interface DeviceApi {
 
 	suspend fun matchDevicesBy(filter: AbstractFilter<Device>): List<String>
 	suspend fun deleteDevice(deviceId: String): DocIdentifier
-	suspend fun deleteDevices(deviceIds: ListOfIds): List<DocIdentifier>
+	suspend fun deleteDevices(deviceIds: List<String>): List<DocIdentifier>
 	suspend fun getDevicesInGroup(
 		groupId: String,
-		deviceIds: ListOfIds? = null,
+		deviceIds: List<String>? = null,
 	): List<Device>
 
 	suspend fun modifyDeviceInGroup(
@@ -53,7 +53,7 @@ class DeviceApiImpl(
 ) : DeviceApi {
 	override suspend fun getDevice(deviceId: String) = rawApi.getDevice(deviceId).successBody()
 
-	override suspend fun getDevices(deviceIds: ListOfIds) = rawApi.getDevices(deviceIds).successBody()
+	override suspend fun getDevices(deviceIds: List<String>) = rawApi.getDevices(ListOfIds(deviceIds)).successBody()
 
 	override suspend fun createDevice(p: Device) = rawApi.createDevice(p).successBody()
 
@@ -70,10 +70,11 @@ class DeviceApiImpl(
 
 	override suspend fun deleteDevice(deviceId: String) = rawApi.deleteDevice(deviceId).successBody()
 
-	override suspend fun deleteDevices(deviceIds: ListOfIds) = rawApi.deleteDevices(deviceIds).successBody()
+	override suspend fun deleteDevices(deviceIds: List<String>) = rawApi.deleteDevices(
+		ListOfIds(deviceIds)).successBody()
 
-	override suspend fun getDevicesInGroup(groupId: String, deviceIds: ListOfIds?) =
-		rawApi.getDevicesInGroup(groupId, deviceIds).successBody()
+	override suspend fun getDevicesInGroup(groupId: String, deviceIds: List<String>?) =
+		rawApi.getDevicesInGroup(groupId, deviceIds?.let { ListOfIds(it) }).successBody()
 
 	override suspend fun modifyDeviceInGroup(groupId: String, device: Device) =
 		rawApi.modifyDeviceInGroup(groupId, device).successBody()
