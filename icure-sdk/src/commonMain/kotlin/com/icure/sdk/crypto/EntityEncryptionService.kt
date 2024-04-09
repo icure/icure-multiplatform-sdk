@@ -224,15 +224,15 @@ interface EntityEncryptionService : EntityValidationService {
 	 * @param content data of the entity which you want to decrypt.
 	 * @param validator a function which verifies the correctness of decrypted content: helps to identify decryption with the wrong key without relying
 	 * solely on padding.
-	 * @return the decrypted data, if it could be decrypted, null otherwise.
-	 * @throws if the provided data owner can't access any encryption keys for the entity, or if no key could be found which provided valid decrypted
-	 * content according to the validator.
+	 * @return the decrypted data.
+	 * @throws EntityEncryptionException if the provided data owner can't access any encryption keys for the entity, or if no key could be found which
+	 * provided valid decrypted content according to the validator.
 	 */
-	suspend fun tryDecryptAttachmentOf(
+	suspend fun decryptAttachmentOf(
 		entity: EntityWithTypeInfo<*>,
 		content: ByteArray,
 		validator: suspend (decryptedData: ByteArray) -> Boolean
-	): ByteArray?
+	): ByteArray
 
 	/**
 	 * Decrypts an encrypted entity, returns null if the entity could not be decrypted.

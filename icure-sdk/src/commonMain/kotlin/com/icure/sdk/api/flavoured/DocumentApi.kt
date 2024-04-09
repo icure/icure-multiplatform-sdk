@@ -28,7 +28,6 @@ import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.currentEpochMs
-import com.icure.sdk.utils.ensureEncryption
 import kotlinx.serialization.json.decodeFromJsonElement
 
 @OptIn(InternalIcureApi::class)
@@ -111,10 +110,10 @@ interface DocumentApi : DocumentBasicFlavourlessApi, DocumentFlavouredApi<Decryp
 		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent,
 	): DecryptedDocument
 
-	suspend fun getAndDecryptMainAttachment(document: Document, attachmentId: String, decryptedDocumentValidator: (document: ByteArray) -> Boolean = { true }): ByteArray
+	suspend fun getAndDecryptMainAttachment(document: Document, attachmentId: String, decryptedDocumentValidator: suspend (document: ByteArray) -> Boolean = { true }): ByteArray
 	suspend fun encryptAndSetMainAttachment(document: Document, utis: List<String>, attachment: ByteArray): EncryptedDocument
 
-	suspend fun getAndDecryptSecondaryAttachment(document: Document, key: String, attachmentId: String, decryptedDocumentValidator: (document: ByteArray) -> Boolean = { true }): ByteArray
+	suspend fun getAndDecryptSecondaryAttachment(document: Document, key: String, attachmentId: String, decryptedDocumentValidator: suspend (document: ByteArray) -> Boolean = { true }): ByteArray
 	suspend fun encryptAndSetSecondaryAttachment(
 		document: Document,
 		key: String,
@@ -334,13 +333,11 @@ internal class DocumentApiImpl(
 	override suspend fun getAndDecryptMainAttachment(
 		document: Document,
 		attachmentId: String,
-		decryptedDocumentValidator: (document: ByteArray) -> Boolean
+		decryptedDocumentValidator: suspend (document: ByteArray) -> Boolean
 	) =
 		rawApi.getMainAttachment(document.id, attachmentId).successBody().let {
-			val aesKey = encryptionService.tryDecryptAndImportAnyEncryptionKey(document.withTypeInfo())?.key
-				?: throw EntityEncryptionException("Cannot extract decryption key from document")
-			cryptoService.aes.decrypt(it, aesKey)
-		}.also { ensureEncryption(decryptedDocumentValidator(it)) { "Decrypted document failed validation" } }
+			encryptionService.decryptAttachmentOf(document.withTypeInfo(), it, decryptedDocumentValidator)
+		}
 
 	override suspend fun encryptAndSetMainAttachment(document: Document, utis: List<String>, attachment: ByteArray): EncryptedDocument {
 		val aesKey = encryptionService.tryDecryptAndImportAnyEncryptionKey(document.withTypeInfo())?.key
@@ -360,14 +357,11 @@ internal class DocumentApiImpl(
 		document: Document,
 		key: String,
 		attachmentId: String,
-		decryptedDocumentValidator: (document: ByteArray) -> Boolean
+		decryptedDocumentValidator: suspend (document: ByteArray) -> Boolean
 	) =
 		rawApi.getSecondaryAttachment(document.id, key, attachmentId).successBody().let {
-			val aesKey = encryptionService.tryDecryptAndImportAnyEncryptionKey(document.withTypeInfo())?.key
-				?: throw EntityEncryptionException("Cannot extract decryption key from document")
-			cryptoService.aes.decrypt(it, aesKey)
-		}.also { ensureEncryption(decryptedDocumentValidator(it)) { "Decrypted document failed validation" } }
-
+			encryptionService.decryptAttachmentOf(document.withTypeInfo(), it, decryptedDocumentValidator)
+		}
 
 	override suspend fun encryptAndSetSecondaryAttachment(
 		document: Document,
