@@ -21,7 +21,7 @@ abstract class BaseRawApi(
 	}
 
 	companion object {
-		private const val ACCESS_CONTROL_KEYS_HEADER = "Icure-Access-Control-Keys"
+		internal const val ACCESS_CONTROL_KEYS_HEADER = "Icure-Access-Control-Keys"
 	}
 
 	protected open suspend fun getAccessControlKeysHeaderValues(): List<String>? = null

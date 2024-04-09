@@ -25,6 +25,7 @@ import com.icure.sdk.model.EncryptedPatient
 import com.icure.sdk.model.HealthcareParty
 import com.icure.sdk.model.Patient
 import com.icure.sdk.model.User
+import com.icure.sdk.model.embed.DelegationTag
 import com.icure.sdk.model.specializations.SpkiHexString
 import com.icure.sdk.storage.IcureStorageFacade
 import com.icure.sdk.storage.impl.DefaultStorageEntryKeysFactory
@@ -165,6 +166,10 @@ data class DataOwnerDetails(
 		)
 	}
 
+	fun authService() =
+		JwtAuthService(RawAnonymousAuthApi(baseUrl, IcureApi.sharedHttpClient), UsernamePassword(username, password))
+
+	@OptIn(InternalIcureApi::class)
 	private suspend fun initApi(
 		cryptoStrategies: CryptoStrategies,
 		fillStorage: suspend (storage: IcureStorageFacade) -> Unit
@@ -195,6 +200,8 @@ data class DataOwnerDetails(
 		)
 		parent?.addInitialKeysToStorage(storage)
 	}
+
+	fun hierarchy(): List<String> = parent?.hierarchy().orEmpty() + dataOwnerId
 }
 
 /**
@@ -231,7 +238,8 @@ suspend fun createHcpUser(parent: DataOwnerDetails? = null, useLegacyKey: Boolea
 			login = login,
 			email = login,
 			passwordHash = password,
-			healthcarePartyId = hcp.id
+			healthcarePartyId = hcp.id,
+			autoDelegations = mapOf(DelegationTag.All to parent?.hierarchy()?.toSet().orEmpty())
 		)
 	).successBody()
 	return DataOwnerDetails(hcpId, login, password, keypair, parent).also { println("Created hcp $it") }

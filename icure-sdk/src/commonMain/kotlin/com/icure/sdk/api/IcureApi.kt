@@ -24,6 +24,7 @@ import com.icure.sdk.api.raw.RawHealthElementApi
 import com.icure.sdk.api.raw.RawHealthcarePartyApi
 import com.icure.sdk.api.raw.RawMaintenanceTaskApi
 import com.icure.sdk.api.raw.RawPatientApi
+import com.icure.sdk.api.raw.RawSecureDelegationKeyMapApi
 import com.icure.sdk.api.raw.RawUserApi
 import com.icure.sdk.auth.UsernamePassword
 import com.icure.sdk.auth.services.JwtAuthService
@@ -39,6 +40,7 @@ import com.icure.sdk.crypto.impl.AccessControlKeysHeadersProviderImpl
 import com.icure.sdk.crypto.impl.BaseExchangeDataManagerImpl
 import com.icure.sdk.crypto.impl.BaseExchangeKeysManagerImpl
 import com.icure.sdk.crypto.impl.CachedLruExchangeDataManager
+import com.icure.sdk.crypto.impl.DelegationsDeAnonymizationImpl
 import com.icure.sdk.crypto.impl.EntityEncryptionServiceImpl
 import com.icure.sdk.crypto.impl.ExchangeDataMapManagerImpl
 import com.icure.sdk.crypto.impl.ExchangeKeysManagerImpl
@@ -243,17 +245,27 @@ interface IcureApi {
 					AccessControlKeysHeadersProviderImpl(exchangeDataManager)
 				else
 					NoAccessControlKeysHeadersProvider
-			val patientApi = PatientApi(
-				RawPatientApi(apiUrl, authService, headersProvider, client),
-				entityEncryptionService,
-			)
-			ensureDelegationForSelf(dataOwnerApi, entityEncryptionService, patientApi.rawApi, cryptoService)
 			val crypto = InternalCryptoApiImpl(
 				entityEncryptionService,
 				cryptoService,
 				exchangeDataManager,
-				jsonEncryptionService
+				jsonEncryptionService,
+				DelegationsDeAnonymizationImpl(
+					secureDelegationsDecryptor,
+					RawSecureDelegationKeyMapApi(apiUrl, authService, client),
+					headersProvider,
+					entityEncryptionService,
+					dataOwnerApi,
+					cryptoService
+				),
+				userEncryptionKeys,
+				dataOwnerApi
 			)
+			val patientApi = PatientApi(
+				RawPatientApi(apiUrl, authService, headersProvider, client),
+				crypto,
+			)
+			ensureDelegationForSelf(dataOwnerApi, entityEncryptionService, patientApi.rawApi, cryptoService)
 			val manifests = EntitiesEncryptedFieldsManifests.fromEncryptedFields(jsonEncryptionService, options.encryptedFields)
 			val maintenanceTaskApi = MaintenanceTaskApiImpl(
 				RawMaintenanceTaskApi(apiUrl, authService, headersProvider, client),
@@ -287,7 +299,8 @@ interface IcureApi {
 						exchangeDataManager,
 						cryptoService,
 						shamirService
-					)
+					),
+					crypto
 				),
 				maintenanceTask = maintenanceTaskApi,
 				icureMaintenanceTask = IcureMaintenanceTaskApi(
@@ -385,14 +398,14 @@ private class EntitiesEncryptedFieldsManifests private constructor(
 		}
 
 		fun fromEncryptedFields(jsonEncryptionService: JsonEncryptionService, encryptedFields: EncryptedFields?): EntitiesEncryptedFieldsManifests {
-			val contactManifest = jsonEncryptionService.parseEncryptedFields(
+			val contactManifest = JsonEncryptionService.parseEncryptedFields(
 				encryptedFields?.contact ?: Default.contact,
 				"Contact."
 			)
 			require("services" !in contactManifest.allKeys) {
 				"You can't customise encryption of the `services` field of Contact. Use the serviceEncryptedKeys parameter instead."
 			}
-			val serviceManifest = jsonEncryptionService.parseEncryptedFields(
+			val serviceManifest = JsonEncryptionService.parseEncryptedFields(
 				encryptedFields?.service ?: Default.service,
 				"Service."
 			)
@@ -402,31 +415,31 @@ private class EntitiesEncryptedFieldsManifests private constructor(
 			return EntitiesEncryptedFieldsManifests(
 				contact = contactManifest,
 				service = serviceManifest,
-				accessLog = jsonEncryptionService.parseEncryptedFields(
+				accessLog = JsonEncryptionService.parseEncryptedFields(
 					encryptedFields?.accessLog ?: Default.accessLog,
 					"AccessLog."
 				),
-				calendarItem = jsonEncryptionService.parseEncryptedFields(
+				calendarItem = JsonEncryptionService.parseEncryptedFields(
 					encryptedFields?.calendarItem ?: Default.calendarItem,
 					"CalendarItem."
 				),
-				healthElement = jsonEncryptionService.parseEncryptedFields(
+				healthElement = JsonEncryptionService.parseEncryptedFields(
 					encryptedFields?.healthElement ?: Default.healthElement,
 					"HealthElement."
 				),
-				maintenanceTask = jsonEncryptionService.parseEncryptedFields(
+				maintenanceTask = JsonEncryptionService.parseEncryptedFields(
 					encryptedFields?.maintenanceTask ?: Default.maintenanceTask,
 					"MaintenanceTask."
 				),
-				patient = jsonEncryptionService.parseEncryptedFields(
+				patient = JsonEncryptionService.parseEncryptedFields(
 					encryptedFields?.patient ?: Default.patient,
 					"Patient."
 				),
-				message = jsonEncryptionService.parseEncryptedFields(
+				message = JsonEncryptionService.parseEncryptedFields(
 					encryptedFields?.message ?: Default.message,
 					"Message."
 				),
-				topic = jsonEncryptionService.parseEncryptedFields(
+				topic = JsonEncryptionService.parseEncryptedFields(
 					encryptedFields?.topic ?: Default.topic,
 					"Topic."
 				)
