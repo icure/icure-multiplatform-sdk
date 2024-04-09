@@ -48,7 +48,7 @@ class JsonEncryptionServiceTest : StringSpec({
 			"mapField.*.field13",
 			"mapField.*.field14",
 		)
-		val parsedFields = jsonEncryptionService.parseEncryptedFields(fields, "Test.")
+		val parsedFields = JsonEncryptionService.parseEncryptedFields(fields, "Test.")
 		fun checkParsedFields(
 			manifest: EncryptedFieldsManifest,
 			expectedPath: String,
@@ -160,7 +160,7 @@ class JsonEncryptionServiceTest : StringSpec({
 		)
 		for ((field, expectedErrorMessageInfo) in invalidFields) {
 			shouldThrow<IllegalArgumentException> {
-				jsonEncryptionService.parseEncryptedFields(sampleValidFields + field, "Test.")
+				JsonEncryptionService.parseEncryptedFields(sampleValidFields + field, "Test.")
 			}.message shouldContain "Test." + (expectedErrorMessageInfo ?: field)
 		}
 	}
@@ -385,7 +385,7 @@ class JsonEncryptionServiceTest : StringSpec({
 		))
 		val encryptedObj = jsonEncryptionService.encrypt(
 			sampleObj,
-			jsonEncryptionService.parseEncryptedFields(sampleObjEncryptionKeys, "Test."),
+			JsonEncryptionService.parseEncryptedFields(sampleObjEncryptionKeys, "Test."),
 			{ "Test".toByteArray(Charsets.UTF_8) },
 			{ "Test".toByteArray(Charsets.UTF_8) },
 		)
@@ -397,7 +397,7 @@ class JsonEncryptionServiceTest : StringSpec({
 		val encryptedObj = jsonEncryptionService.encrypt(
 			key,
 			sampleObj,
-			jsonEncryptionService.parseEncryptedFields(sampleObjEncryptionKeys, "Test."),
+			JsonEncryptionService.parseEncryptedFields(sampleObjEncryptionKeys, "Test."),
 		)
 		val decryptedObj = jsonEncryptionService.decrypt(key, encryptedObj)
 		stripEncryptedSelf(decryptedObj) shouldBe sampleObj
@@ -406,42 +406,42 @@ class JsonEncryptionServiceTest : StringSpec({
 	"Encrypt should fail if the fields type does not match the expected type from manifest" {
 		val cases: List<Triple<EncryptedFieldsManifest, JsonObject, String>> = listOf(
 			Triple(
-				jsonEncryptionService.parseEncryptedFields(setOf("shouldBeObject.nestedShouldBeObject.field1"), "Test."),
+				JsonEncryptionService.parseEncryptedFields(setOf("shouldBeObject.nestedShouldBeObject.field1"), "Test."),
 				JsonObject(mapOf("shouldBeObject" to JsonObject(mapOf("nestedShouldBeObject" to JsonPrimitive("not an object"))))),
 				"shouldBeObject.nestedShouldBeObject",
 			),
 			Triple(
-				jsonEncryptionService.parseEncryptedFields(setOf("shouldBeObject.nestedShouldBeObject.field1"), "Test."),
+				JsonEncryptionService.parseEncryptedFields(setOf("shouldBeObject.nestedShouldBeObject.field1"), "Test."),
 				JsonObject(mapOf("shouldBeObject" to JsonPrimitive("not an object"))),
 				"shouldBeObject",
 			),
 			Triple(
-				jsonEncryptionService.parseEncryptedFields(setOf("shouldBeObject.nestedShouldBeObject.field1"), "Test."),
+				JsonEncryptionService.parseEncryptedFields(setOf("shouldBeObject.nestedShouldBeObject.field1"), "Test."),
 				JsonObject(mapOf("shouldBeObject" to JsonArray(listOf(JsonPrimitive("Something"))))),
 				"shouldBeObject"
 			),
 			Triple(
-				jsonEncryptionService.parseEncryptedFields(setOf("shouldBeMap.*.field1"), "Test."),
+				JsonEncryptionService.parseEncryptedFields(setOf("shouldBeMap.*.field1"), "Test."),
 				JsonObject(mapOf("shouldBeMap" to JsonObject(mapOf("key1" to JsonObject(mapOf("field1" to JsonPrimitive("something"))), "key2" to JsonPrimitive("not an object"))))),
 				"shouldBeMap.key2"
 			),
 			Triple(
-				jsonEncryptionService.parseEncryptedFields(setOf("shouldBeMap.*.field1"), "Test."),
+				JsonEncryptionService.parseEncryptedFields(setOf("shouldBeMap.*.field1"), "Test."),
 				JsonObject(mapOf("shouldBeMap" to JsonArray(emptyList()))),
 				"shouldBeMap"
 			),
 			Triple(
-				jsonEncryptionService.parseEncryptedFields(setOf("shouldBeMap.*.field1"), "Test."),
+				JsonEncryptionService.parseEncryptedFields(setOf("shouldBeMap.*.field1"), "Test."),
 				JsonObject(mapOf("shouldBeMap" to JsonPrimitive("not a map"))),
 				"shouldBeMap"
 			),
 			Triple(
-				jsonEncryptionService.parseEncryptedFields(setOf("shouldBeArray[].field1"), "Test."),
+				JsonEncryptionService.parseEncryptedFields(setOf("shouldBeArray[].field1"), "Test."),
 				JsonObject(mapOf("shouldBeArray" to JsonObject(mapOf("0" to JsonObject(mapOf("field1" to JsonPrimitive("fake array"))), "1" to JsonObject(mapOf("field1" to JsonPrimitive("wow"))))))),
 				"shouldBeArray"
 			),
 			Triple(
-				jsonEncryptionService.parseEncryptedFields(setOf("shouldBeArray[].field1"), "Test."),
+				JsonEncryptionService.parseEncryptedFields(setOf("shouldBeArray[].field1"), "Test."),
 				JsonObject(mapOf("shouldBeArray" to JsonArray(listOf(JsonObject(mapOf("field1" to JsonPrimitive("this is ok"))), JsonPrimitive("this is not ok"))))),
 				"shouldBeArray[1]"
 			),
@@ -460,7 +460,7 @@ class JsonEncryptionServiceTest : StringSpec({
 
 	"If the content of encrypted self in an object is the same as the updated content it should be reused" {
 		val key = defaultCryptoService.aes.generateKey()
-		val manifest = jsonEncryptionService.parseEncryptedFields(setOf("encryptThis"), "Test.")
+		val manifest = JsonEncryptionService.parseEncryptedFields(setOf("encryptThis"), "Test.")
 		val obj = JsonObject(mapOf(
 			"encryptThis" to JsonPrimitive("encryptThisValue"),
 			"leaveThis" to JsonPrimitive("leaveThisValue"),

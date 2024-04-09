@@ -1,7 +1,7 @@
 package com.icure.sdk.crypto
 
 import com.icure.sdk.crypto.entities.EntityAccessInformation
-import com.icure.sdk.model.base.HasEncryptionMetadata
+import com.icure.sdk.crypto.entities.EntityWithTypeInfo
 import com.icure.sdk.utils.InternalIcureApi
 
 /**
@@ -15,11 +15,11 @@ interface DelegationsDeAnonymization {
 	 * delegations contained within [entity].
 	 * Note that the delegation de-anonymization information may be used also with other entities of the same type.
 	 */
-	suspend fun createOrUpdateDeAnonymizationInfo(entity: HasEncryptionMetadata, shareWithDataOwners: List<String>)
+	suspend fun createOrUpdateDeAnonymizationInfo(entity: EntityWithTypeInfo<*>, shareWithDataOwners: Set<String>)
 
 	/**
 	 * Get the data owners which can access the entity. See {@link EncryptedEntityXApi.getDataOwnersWithAccessTo} for more details.
 	 * @param entityWithType an entity.
 	 */
-	suspend fun getDataOwnersWithAccessTo(entityWithType: HasEncryptionMetadata): EntityAccessInformation
+	suspend fun getDataOwnersWithAccessTo(entityWithType: EntityWithTypeInfo<*>): EntityAccessInformation
 }

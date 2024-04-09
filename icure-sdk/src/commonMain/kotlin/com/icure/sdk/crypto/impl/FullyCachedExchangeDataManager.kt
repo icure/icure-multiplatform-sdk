@@ -6,19 +6,17 @@ import com.icure.sdk.crypto.BaseExchangeDataManager
 import com.icure.sdk.crypto.CryptoStrategies
 import com.icure.sdk.crypto.UserEncryptionKeysManager
 import com.icure.sdk.crypto.UserSignatureKeysManager
+import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.crypto.entities.ExchangeDataWithPotentiallyDecryptedContent
 import com.icure.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
 import com.icure.sdk.crypto.entities.UnencryptedExchangeDataContent
-import com.icure.sdk.model.specializations.AccessControlKeyHexString
 import com.icure.sdk.model.specializations.AccessControlSecret
 import com.icure.sdk.model.specializations.Base64String
-import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.model.specializations.SecureDelegationKeyString
+import com.icure.sdk.model.specializations.encodeAsAccessControlHeaders
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.InternalIcureException
 import com.icure.sdk.utils.SingleValueAsyncCache
-import com.icure.sdk.utils.base64Encode
-import com.icure.sdk.utils.concat
 import com.icure.sdk.utils.ensure
 import com.icure.sdk.utils.ensureNonNull
 
@@ -40,12 +38,6 @@ class FullyCachedExchangeDataManager(
 	cryptoService,
 	useParentKeys
 ) {
-	companion object {
-		// Conservative value obtained by assuming a maximum allowed size for headers of 8kb (popular choice amongst
-		// various clients and servers)
-		// Multiple of 3 to avoid any padding in base64 encoding
-		const val MAX_ACCESS_CONTROL_KEYS_PER_HEADER = 360
-	}
 	private data class CachedKeys(
 		val dataById: Map<String, CachedExchangeDataDetails>,
 		val dataByDelegationKey: Map<SecureDelegationKeyString, CachedExchangeDataDetails>,
@@ -88,7 +80,7 @@ class FullyCachedExchangeDataManager(
 						verifiedDataByDelegateId = existingCache.verifiedDataByDelegateId + (delegateId to cachedDetails),
 						dataByDelegationKey = existingCache.dataByDelegationKey + secureDelegationKeysToExchangeDataId,
 						entityTypeToAccessControlKeysValue = EntityWithEncryptionMetadataTypeName.entries.associateWith {
-							encodeAccessControlKeys(allAccessControlSecrets.map { s -> s.toAccessControlKeyStringFor(it, cryptoService) }) to
+							allAccessControlSecrets.map { s -> s.toAccessControlKeyStringFor(it, cryptoService) }.encodeAsAccessControlHeaders() to
 								allAccessControlSecrets.map { s -> s.toSecureDelegationKeyFor(it, cryptoService) }
 						}
 					)
@@ -207,7 +199,7 @@ class FullyCachedExchangeDataManager(
 			}
 		}
 		val encodedAccessControlKeysCache = EntityWithEncryptionMetadataTypeName.entries.associateWith {
-			encodeAccessControlKeys(allAccessControlSecrets.map { s -> s.toAccessControlKeyStringFor(it, cryptoService) }) to
+			allAccessControlSecrets.map { s -> s.toAccessControlKeyStringFor(it, cryptoService) }.encodeAsAccessControlHeaders() to
 				allAccessControlSecrets.map { s -> s.toSecureDelegationKeyFor(it, cryptoService) }
 		}
 		return CachedKeys(
@@ -221,9 +213,4 @@ class FullyCachedExchangeDataManager(
 	private suspend fun cached(): CachedKeys = cache.getCachedOrRetrieve {
 		throw InternalIcureException("Fully cached exchange data manager has no value")
 	}.first
-
-	private fun encodeAccessControlKeys(accessControlKeys: List<AccessControlKeyHexString>): List<Base64String> =
-		accessControlKeys.chunked(MAX_ACCESS_CONTROL_KEYS_PER_HEADER).map { chunk ->
-			chunk.map { it.bytes() }.concat().base64Encode()
-		}
 }

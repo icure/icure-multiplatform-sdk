@@ -4,6 +4,8 @@ import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.utils.hexToByteArray
 import com.icure.kryptom.utils.toHexString
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
+import com.icure.sdk.utils.base64Encode
+import com.icure.sdk.utils.concat
 import io.ktor.utils.io.charsets.Charsets
 import io.ktor.utils.io.core.toByteArray
 import kotlinx.serialization.Serializable
@@ -80,6 +82,14 @@ value class AccessControlKeyHexString(val s: String) {
 		require(s.length == HEX_LENGTH) { "An access control key should be exactly $BYTES_LENGTH bytes (before encoding); got $s" }
 	}
 }
+// Conservative value obtained by assuming a maximum allowed size for headers of 8kb (popular choice amongst
+// various clients and servers)
+// Multiple of 3 to avoid any padding in base64 encoding
+const val MAX_ACCESS_CONTROL_KEYS_PER_HEADER = 360
+fun Iterable<AccessControlKeyHexString>.encodeAsAccessControlHeaders(): List<Base64String> =
+	chunked(MAX_ACCESS_CONTROL_KEYS_PER_HEADER).map { chunk ->
+		chunk.map { it.bytes() }.concat().base64Encode()
+	}
 
 @JvmInline
 @Serializable
