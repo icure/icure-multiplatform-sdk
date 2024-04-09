@@ -84,7 +84,7 @@ interface DocumentBasicFlavouredApi<E : Document> {
 		encrypted: Boolean,
 	): EncryptedDocument
 
-	suspend fun deleteAttachment(entityId: String, rev: String): E
+	suspend fun deleteMainAttachment(entityId: String, rev: String): E
 	suspend fun deleteSecondaryAttachment(documentId: String, key: String, attachmentId: String): E
 }
 
@@ -156,7 +156,7 @@ private abstract class AbstractDocumentBasicFlavouredApi<E : Document>(protected
 	) =
 		rawApi.setSecondaryAttachment(documentId, key, rev, utis, attachment, attachment.size.toLong(), encrypted).successBody()
 
-	override suspend fun deleteAttachment(entityId: String, rev: String) =
+	override suspend fun deleteMainAttachment(entityId: String, rev: String) =
 		rawApi.deleteAttachment(entityId, rev).successBody().let { maybeDecrypt(it) }
 
 	override suspend fun deleteSecondaryAttachment(documentId: String, key: String, attachmentId: String) =
