@@ -30,6 +30,9 @@ ktorClientWebsocket = { group = "io.ktor", name = "ktor-client-websockets", vers
 ktorClientEngineCio = { group = "io.ktor", name = "ktor-client-cio", version.ref = "ktor" }
 ktorContentNegotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
 ktorSerializationJson = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
+ktorServerCore = { group = "io.ktor", name = "ktor-server-core", version.ref = "ktor" }
+ktorServerNetty = { group = "io.ktor", name = "ktor-server-netty", version.ref = "ktor" }
+ktorServerWebsockets = { group = "io.ktor", name = "ktor-server-websockets", version.ref = "ktor" }
 
 # Kotlinx
 coroutinesCore = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
@@ -43,8 +46,14 @@ kotestEngine = { group = "io.kotest", name = "kotest-framework-engine", version.
 kotestDatatest = { group = "io.kotest", name = "kotest-framework-datatest", version.ref = "kotest" }
 kotestRunnerJunit = { group = "io.kotest", name = "kotest-runner-junit5", version.ref = "kotest" }
 
+# Mockk
+mockk = { group = "io.mockk", name = "mockk", version = "1.13.10" }
+
 # Cryptography providers
 bouncyCastle = { group = "org.bouncycastle", name = "bcprov-jdk15on", version.ref = "bouncyCastle" }
 
 # Logging
 kermit = { group = "co.touchlab", name = "kermit", version.ref = "kermit" }
+
+[bundles]
+ktorServer = ["ktorServerCore", "ktorServerNetty", "ktorServerWebsockets"]

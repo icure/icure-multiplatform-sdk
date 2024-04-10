@@ -15,14 +15,10 @@ import io.ktor.serialization.kotlinx.KotlinxWebsocketSerializationConverter
 import io.ktor.util.InternalAPI
 import io.ktor.util.PlatformUtils
 import io.ktor.websocket.CloseReason
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.channels.ReceiveChannel
-import kotlinx.coroutines.isActive
-import kotlinx.coroutines.launch
 import kotlinx.serialization.KSerializer
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 interface Connection {
 
@@ -44,6 +40,8 @@ interface Connection {
 	 * Subscribe to connection state changes
 	 *
 	 * @param callback The callback to be called when the connection is disconnected, either by the server or by the client. It can be called multiple times due to retries
+	 * - `code` The close code
+	 * - `reason` The close reason
 	 */
 	suspend fun onDisconnected(callback: (code: Short?, reason: String?) -> Unit)
 
@@ -51,14 +49,15 @@ interface Connection {
 	 * Subscribe to connection state changes
 	 *
 	 * @param callback The callback to be called when an error occurs
+	 * - `errorMessage` The error message
+	 * - `fatal` Whether the error is fatal or not, if `fatal` is `true`, the connection will be closed and have to be re-established by the client
 	 */
-	suspend fun onError(callback: (errorMessage: String?) -> Unit)
+	suspend fun onError(callback: (errorMessage: String?, fatal: Boolean) -> Unit)
 }
 
-@OptIn(InternalAPI::class)
+@InternalAPI
 class ConnectionImpl private constructor(
 	private val webSocketWrapper: WebSocketWrapper,
-	private val scope: CoroutineScope
 ) : Connection {
 
 	companion object {
@@ -92,14 +91,15 @@ class ConnectionImpl private constructor(
 		 * @param events The events type to subscribe to
 		 * @param filter The filter to apply to the subscription
 		 * @param qualifiedName The Kraken's qualified name of the entity
-		 * @param subscriptionSerializer The serializer to use to serialize the subscription		 *
+		 * @param subscriptionSerializer The serializer to use to serialize the subscription
+		 *
 		 */
 		private suspend fun <BaseType : Identifiable<String>> subscriptionEvent(
 			wsw: WebSocketWrapper,
 			events: Set<SubscriptionEventType>,
 			filter: AbstractFilter<BaseType>,
 			qualifiedName: String,
-			subscriptionSerializer: (Subscription<BaseType>) -> String
+			subscriptionSerializer: (Subscription<BaseType>) -> String,
 		) {
 			wsw.send(
 				subscriptionSerializer(
@@ -110,7 +110,7 @@ class ConnectionImpl private constructor(
 						),
 						entityClass = qualifiedName,
 						accessControlKeys = null,
-					)
+					),
 				),
 			)
 		}
@@ -133,7 +133,7 @@ class ConnectionImpl private constructor(
 
 			return listOf(
 				onConnectedMapped,
-				subscriptionEvent
+				subscriptionEvent,
 			)
 		}
 
@@ -147,27 +147,27 @@ class ConnectionImpl private constructor(
 			serializer: KSerializer<EncryptedType>,
 			webSocketAuthProvider: WebSocketAuthProvider,
 			onOpenListener: suspend () -> Unit,
+			retryDelay: Duration,
+			retryDelayExponentFactor: Double,
+			maxRetries: Int,
+			durationBetweenPings: Duration = 20.seconds,
 			channelCapacity: Int = Channel.BUFFERED,
-			channelCallback: suspend (ReceiveChannel<EncryptedType>) -> Unit,
+			eventCallback: suspend (EncryptedType) -> Unit,
 		): ConnectionImpl {
-			val queue = Channel<EncryptedType>(
-				capacity = channelCapacity
-			)
-
 			val subscriptionEvent: suspend (WebSocketWrapper) -> Unit = { wsw ->
 				subscriptionEvent(
 					wsw,
 					events,
 					filter,
 					qualifiedName,
-					subscriptionSerializer
+					subscriptionSerializer,
 				)
 			}
 
-			val webSocketWrapper = WebSocketWrapper.initialize(
+			val webSocketWrapper = WebSocketWrapper(
 				onOpenListeners = onConnectedListeners(
 					onConnectedListener = onOpenListener,
-					subscriptionEvent = subscriptionEvent
+					subscriptionEvent = subscriptionEvent,
 				),
 				sessionProvider = {
 					createWebSocketSession(
@@ -175,30 +175,23 @@ class ConnectionImpl private constructor(
 						path = path,
 						webSocketAuthProvider = webSocketAuthProvider,
 					)
-				}
+				},
+				retryDelay = retryDelay,
+				retryDelayExponentFactor = retryDelayExponentFactor,
+				maxRetries = maxRetries,
+				durationBetweenPings = durationBetweenPings,
+				queueSize = channelCapacity,
+				queueCallback = { message ->
+					eventCallback(
+						Serialization.json.decodeFromString(serializer, message),
+					)
+				},
 			)
 
-			val connectionScope = CoroutineScope(Dispatchers.Default)
-
-			connectionScope.launch {
-				while (isActive) {
-					try {
-						channelCallback(queue)
-					} catch (e: Exception) {
-						webSocketWrapper.onEvent(EmittedEvent.Error(e.message))
-					}
-				}
-			}
-
-			webSocketWrapper.startConnection { message ->
-				queue.send(
-					Serialization.json.decodeFromString(serializer, message),
-				)
-			}
+			webSocketWrapper.startConnection()
 
 			return ConnectionImpl(
 				webSocketWrapper = webSocketWrapper,
-				scope = connectionScope,
 			).also {
 				it.onReconnected {
 					subscriptionEvent(webSocketWrapper)
@@ -212,18 +205,17 @@ class ConnectionImpl private constructor(
 			code = CloseReason.Codes.NORMAL.code,
 			reason = "Connection closed by client",
 		)
-		scope.cancel()
 	}
 
 	override suspend fun onReconnected(callback: suspend (Unit) -> Unit) {
-		webSocketWrapper.onOpen(callback)
+		webSocketWrapper.onReconnect(callback)
 	}
 
 	override suspend fun onDisconnected(callback: (code: Short?, reason: String?) -> Unit) {
 		webSocketWrapper.onClose(callback)
 	}
 
-	override suspend fun onError(callback: (errorMessage: String?) -> Unit) {
+	override suspend fun onError(callback: (errorMessage: String?, fatal: Boolean) -> Unit) {
 		webSocketWrapper.onError(callback)
 	}
 }

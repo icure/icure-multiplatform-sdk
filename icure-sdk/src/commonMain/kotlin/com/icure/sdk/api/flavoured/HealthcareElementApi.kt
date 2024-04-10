@@ -32,9 +32,11 @@ import com.icure.sdk.websocket.Connection
 import com.icure.sdk.websocket.ConnectionImpl
 import com.icure.sdk.websocket.Subscribable
 import com.icure.sdk.websocket.WebSocketAuthProvider
+import io.ktor.util.InternalAPI
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.decodeFromJsonElement
+import kotlin.time.Duration
 
 @OptIn(InternalIcureApi::class)
 private val ENCRYPTED_FIELDS_MANIFEST =
@@ -149,11 +151,15 @@ private abstract class AbstractHealthcareElementBasicFlavouredApi<E : HealthElem
 	abstract suspend fun maybeDecrypt(entity: EncryptedHealthElement): E
 	abstract suspend fun tryMaybeDecrypt(entity: EncryptedHealthElement): E?
 
+	@OptIn(InternalAPI::class)
 	override suspend fun subscribeToEvents(
 		events: Set<SubscriptionEventType>,
 		filter: AbstractFilter<HealthElement>,
 		onConnected: suspend () -> Unit,
 		channelCapacity: Int,
+		retryDelay: Duration,
+		retryDelayExponentFactor: Double,
+		maxRetries: Int,
 		eventFired: suspend (E) -> Unit,
 	): Connection {
 		return ConnectionImpl.initialize(
@@ -166,10 +172,11 @@ private abstract class AbstractHealthcareElementBasicFlavouredApi<E : HealthElem
 			subscriptionSerializer = { Serialization.json.encodeToString(it) },
 			webSocketAuthProvider = webSocketAuthProvider,
 			onOpenListener = onConnected,
-			channelCallback = { queue ->
-				for (x in queue) {
-					eventFired(maybeDecrypt(x))
-				}
+			retryDelay = retryDelay,
+			retryDelayExponentFactor = retryDelayExponentFactor,
+			maxRetries = maxRetries,
+			eventCallback = { event ->
+				eventFired(maybeDecrypt(event))
 			}
 		)
 	}
