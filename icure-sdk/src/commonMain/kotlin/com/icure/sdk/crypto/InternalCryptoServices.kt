@@ -5,7 +5,7 @@ import com.icure.sdk.api.extended.DataOwnerApi
 import com.icure.sdk.utils.InternalIcureApi
 
 @InternalIcureApi
-interface InternalCryptoServices : BasicCryptoApi{
+interface InternalCryptoServices : BasicInternalCryptoApi{
 	suspend fun forceReload()
 
 	val entity: EntityEncryptionService
@@ -18,10 +18,14 @@ interface InternalCryptoServices : BasicCryptoApi{
 
 	override val validationService: EntityValidationService
 		get() = entity
+
+	override val entityAccessInformationProvider: EntityAccessInformationProvider
+		get() = delegationsDeAnonymization
 }
 
 @InternalIcureApi
-interface BasicCryptoApi {
+interface BasicInternalCryptoApi {
 	val jsonEncryption: JsonEncryptionService
 	val validationService: EntityValidationService
+	val entityAccessInformationProvider: EntityAccessInformationProvider
 }

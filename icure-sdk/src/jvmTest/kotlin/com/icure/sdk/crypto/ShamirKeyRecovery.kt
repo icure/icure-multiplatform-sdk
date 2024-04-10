@@ -7,9 +7,10 @@ import com.icure.sdk.model.sdk.KeyPairUpdateNotification
 import com.icure.sdk.test.DataOwnerDetails
 import com.icure.sdk.test.createHcpUser
 import com.icure.sdk.test.initialiseTestEnvironment
+import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
-import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 
@@ -24,8 +25,8 @@ class ShamirKeyRecovery : StringSpec({
 	) {
 		val api = userDetails.api()
 		val note = "Secret note"
-		val createdPatient = api.patient.encryptAndCreate(
-			api.patient.initialiseEncryptionMetadata(
+		val createdPatient = api.patient.createPatient(
+			api.patient.withEncryptionMetadata(
 				DecryptedPatient(
 					id = defaultCryptoService.strongRandom.randomUUID(),
 					firstName = "John",
@@ -42,7 +43,7 @@ class ShamirKeyRecovery : StringSpec({
 			emptySet()
 		)
 		val (lostKeyApi, newKey) = userDetails.apiWithLostKeys()
-		lostKeyApi.patient.getAndDecrypt(patientId = createdPatient!!.id).shouldBeNull() // TODO Should not be able to decrypt note, will throw exception in actual implementation
+		shouldThrow<EntityEncryptionException> { lostKeyApi.patient.getPatient(createdPatient.id) }
 		askAccessBackTo.forEach { giveAccessBackDataOwner ->
 			giveAccessBackDataOwner.api().icureMaintenanceTask.applyKeyPairUpdate(
 				KeyPairUpdateNotification(
@@ -52,7 +53,7 @@ class ShamirKeyRecovery : StringSpec({
 			)
 		}
 		val recoveredThroughShamirApi = userDetails.apiWithKeys(newKey)
-		recoveredThroughShamirApi.patient.getAndDecrypt(patientId = createdPatient.id).shouldNotBeNull().note shouldBe note
+		recoveredThroughShamirApi.patient.getPatient(createdPatient.id).shouldNotBeNull().note shouldBe note
 	}
 
 	"Api should automatically load keys recoverable through shamir split on startup (true secret share)" {

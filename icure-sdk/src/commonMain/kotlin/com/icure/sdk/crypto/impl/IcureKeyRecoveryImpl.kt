@@ -10,6 +10,7 @@ import com.icure.sdk.crypto.BaseExchangeKeysManager
 import com.icure.sdk.crypto.IcureKeyRecovery
 import com.icure.sdk.crypto.entities.IcureKeyInfo
 import com.icure.sdk.crypto.entities.RsaDecryptionKeysSet
+import com.icure.sdk.crypto.entities.ShamirSecretShare
 import com.icure.sdk.model.DataOwnerWithType
 import com.icure.sdk.model.extensions.algorithmOfEncryptionKey
 import com.icure.sdk.model.extensions.publicKeysSpki

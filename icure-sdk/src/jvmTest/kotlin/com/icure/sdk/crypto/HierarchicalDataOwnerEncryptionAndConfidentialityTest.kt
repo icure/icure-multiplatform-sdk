@@ -29,21 +29,21 @@ class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec ({
 		val sibling = createHcpUser(parent)
 		val hcpApi = hcp.api()
 		val note = "This will be encrypted"
-		val patient = hcpApi.patient.encryptAndCreate(
-			hcpApi.patient.initialiseEncryptionMetadata(
+		val patient = hcpApi.patient.createPatient(
+			hcpApi.patient.withEncryptionMetadata(
 				DecryptedPatient(
 					id = UUID.randomUUID().toString(),
 					firstName = "John",
 					lastName = "Doe",
 					note = note
 				),
-				mapOf(parent.dataOwnerId to AccessLevel.Write)
+				delegates = mapOf(parent.dataOwnerId to AccessLevel.Write)
 			)
 		).shouldNotBeNull()
-		parent.api().patient.getAndDecrypt(patient.id).shouldNotBeNull().note shouldBe note
-		sibling.api().patient.getAndDecrypt(patient.id).shouldNotBeNull().note shouldBe note
+		parent.api().patient.getPatient(patient.id).note shouldBe note
+		sibling.api().patient.getPatient(patient.id).note shouldBe note
 		shouldThrow<RequestStatusException> {
-			grandparent.api().patient.getAndDecrypt(patient.id)
+			grandparent.api().patient.getPatient(patient.id)
 		}.statusCode shouldBe 403
 	}
 
@@ -52,15 +52,15 @@ class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec ({
 		val hcp = createHcpUser(parent)
 		val sibling = createHcpUser(parent)
 		val hcpApi = hcp.api()
-		val patient = hcpApi.patient.encryptAndCreate(
-			hcpApi.patient.initialiseEncryptionMetadata(
+		val patient = hcpApi.patient.createPatient(
+			hcpApi.patient.withEncryptionMetadata(
 				DecryptedPatient(
 					id = UUID.randomUUID().toString(),
 					firstName = "John",
 					lastName = "Doe",
 					note = "This will be encrypted"
 				),
-				mapOf(parent.dataOwnerId to AccessLevel.Write)
+				delegates = mapOf(parent.dataOwnerId to AccessLevel.Write)
 			)
 		).shouldNotBeNull().let { hcpApi.patient.initialiseConfidentialSecretId(it) }
 		val confidentialSecretIds = hcpApi.patient.getConfidentialSecretIdsOf(patient)

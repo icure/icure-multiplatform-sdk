@@ -1,7 +1,7 @@
 package com.icure.sdk.api.flavoured
 
 import com.icure.sdk.api.raw.RawAccessLogApi
-import com.icure.sdk.crypto.BasicCryptoApi
+import com.icure.sdk.crypto.BasicInternalCryptoApi
 import com.icure.sdk.crypto.InternalCryptoServices
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
@@ -367,7 +367,7 @@ internal class AccessLogApiImpl(
 @InternalIcureApi
 internal class AccessLogBasicApiImpl(
 	rawApi: RawAccessLogApi,
-	private val crypto: BasicCryptoApi,
+	private val crypto: BasicInternalCryptoApi,
 	private val fieldsToEncrypt: EncryptedFieldsManifest,
 ) : AccessLogBasicApi, AccessLogBasicFlavouredApi<EncryptedAccessLog> by object :
 	AbstractAccessLogBasicFlavouredApi<EncryptedAccessLog>(rawApi) {

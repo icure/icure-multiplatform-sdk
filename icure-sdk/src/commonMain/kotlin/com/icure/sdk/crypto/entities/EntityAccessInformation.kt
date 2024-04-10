@@ -16,6 +16,15 @@ data class EntityAccessInformation(
 	 */
 	val hasUnknownAnonymousDataOwners: Boolean
 ) {
+	companion object {
+		internal fun buildPermissionsMap(
+			permissionsList: List<Pair<String, AccessLevel>>
+		) =
+			permissionsList.groupBy { it.first }.mapValues { (_, permissions) ->
+				if (permissions.any { it.second == AccessLevel.Write }) AccessLevel.Write else AccessLevel.Read
+			}
+	}
+
 	/**
 	 * Merges two access information. Keeps the highest permission level for each data owner, for example:
 	 * - If data owner x has read permission in this and write in [other] (or vice versa), in the merged information data

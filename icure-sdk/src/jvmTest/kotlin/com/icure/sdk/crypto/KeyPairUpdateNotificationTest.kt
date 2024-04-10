@@ -33,22 +33,22 @@ class KeyPairUpdateNotificationTest : StringSpec({
 	suspend fun IcureSdk.createDataAndShareWith(
 		owner: DataOwnerDetails
 	): String =
-		patient.encryptAndCreate(
-			patient.initialiseEncryptionMetadata(
+		patient.createPatient(
+			patient.withEncryptionMetadata(
 				DecryptedPatient(
 					id = defaultCryptoService.strongRandom.randomUUID(),
 					note = note,
 					firstName = "John",
 					lastName = "Doe",
 				),
-				mapOf(owner.dataOwnerId to AccessLevel.Write)
+				delegates = mapOf(owner.dataOwnerId to AccessLevel.Write)
 			)
 		).shouldNotBeNull().id
 
 	suspend fun IcureSdk.verifyDataAccessible(
 		dataId: String
 	) =
-		patient.getAndDecrypt(dataId).shouldNotBeNull().note shouldBe note
+		patient.getPatient(dataId).note shouldBe note
 
 	suspend fun IcureSdk.getMaintenanceTasks() =
 		maintenanceTask.filterMaintenanceTasksBy(

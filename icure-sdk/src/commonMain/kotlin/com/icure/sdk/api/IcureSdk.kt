@@ -25,6 +25,8 @@ import com.icure.sdk.api.flavoured.MaintenanceTaskApi
 import com.icure.sdk.api.flavoured.MaintenanceTaskApiImpl
 import com.icure.sdk.api.flavoured.MessageApi
 import com.icure.sdk.api.flavoured.MessageApiImpl
+import com.icure.sdk.api.flavoured.PatientApi
+import com.icure.sdk.api.flavoured.PatientApiImpl
 import com.icure.sdk.api.flavoured.ReceiptApi
 import com.icure.sdk.api.flavoured.ReceiptApiImpl
 import com.icure.sdk.api.flavoured.TimeTableApi
@@ -301,11 +303,7 @@ interface IcureSdk {
 				dataOwnerApi,
 				userEncryptionKeys
 			)
-			val patientApi = PatientApi(
-				RawPatientApi(apiUrl, authService, headersProvider, client),
-				crypto,
-			)
-			ensureDelegationForSelf(dataOwnerApi, entityEncryptionService, patientApi.rawApi, cryptoService)
+			ensureDelegationForSelf(dataOwnerApi, entityEncryptionService, rawPatientApiNoAccessKeys, cryptoService)
 			val manifests = EntitiesEncryptedFieldsManifests.fromEncryptedFields(options.encryptedFields)
 			return IcureApiImpl(
 				crypto,
@@ -355,9 +353,11 @@ private class IcureApiImpl(
 	private val rawPatientApi by lazy { RawPatientApi(apiUrl, authService, headersProvider, client) }
 
 	override val patient: PatientApi by lazy {
-		PatientApi(
+		PatientApiImpl(
 			rawPatientApi,
 			internalCrypto,
+			encryptedFieldsManifests.patient,
+			autofillAuthor
 		)
 	}
 

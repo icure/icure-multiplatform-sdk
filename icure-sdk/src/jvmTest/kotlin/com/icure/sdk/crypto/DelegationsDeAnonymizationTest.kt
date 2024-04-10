@@ -19,15 +19,14 @@ import io.kotest.matchers.collections.shouldNotBeEmpty
 import io.kotest.matchers.maps.shouldHaveSize
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
-import io.kotest.matchers.shouldHave
 
 @OptIn(InternalIcureApi::class)
 class DelegationsDeAnonymizationTest : StringSpec({
 	beforeAny { initialiseTestEnvironment() }
 
 	suspend fun IcureSdk.createSamplePatient() =
-		patient.encryptAndCreate(
-			patient.initialiseEncryptionMetadata(
+		patient.createPatient(
+			patient.withEncryptionMetadata(
 				DecryptedPatient(
 					id = defaultCryptoService.strongRandom.randomUUID(),
 					firstName = "John",

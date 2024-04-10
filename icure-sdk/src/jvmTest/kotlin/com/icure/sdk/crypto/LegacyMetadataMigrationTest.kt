@@ -257,7 +257,7 @@ class LegacyMetadataMigrationTest : StringSpec({
 		val apiP = testData.p.api()
 		val x = createHcpUser()
 		val apiX = x.api()
-		val patient = apiP.patient.getAndDecrypt(testData.patientId).shouldNotBeNull()
+		val patient = apiP.patient.getPatient(testData.patientId)
 		val secretIdsKnownByA = apiA.patient.getSecretIdsOf(patient)
 		val secretIdsKnownByB = apiB.patient.getSecretIdsOf(patient)
 		secretIdsKnownByB shouldHaveSize 1
@@ -274,7 +274,7 @@ class LegacyMetadataMigrationTest : StringSpec({
 		apiA.patient.getEncryptionKeysOf(sharedPatientWithoutLegacyDetails) shouldHaveSize 1
 		apiA.patient.getSecretIdsOf(sharedPatientWithoutLegacyDetails) shouldContainExactlyInAnyOrder secretIdsKnownByB
 		secureDelegations.find { it.delegator == testData.b.dataOwnerId && it.delegate == x.dataOwnerId }.shouldNotBeNull()
-		apiX.patient.getAndDecrypt(testData.patientId).shouldNotBeNull().note shouldBe testData.patientNote
+		apiX.patient.getPatient(testData.patientId).shouldNotBeNull().note shouldBe testData.patientNote
 		// TODO test X does not have write access
 		apiX.patient.getSecretIdsOf(sharedPatient) shouldContainExactlyInAnyOrder secretIdsKnownByB
 		val x2 = createHcpUser()
@@ -305,7 +305,7 @@ class LegacyMetadataMigrationTest : StringSpec({
 		val apiP = testData.p.api()
 		val x = createHcpUser()
 		val apiX = x.api()
-		val patient = apiP.patient.getAndDecrypt(testData.patientId).shouldNotBeNull()
+		val patient = apiP.patient.getPatient(testData.patientId).shouldNotBeNull()
 		val secretIdsKnownByA = apiA.patient.getSecretIdsOf(patient)
 		val secretIdsKnownByB = apiB.patient.getSecretIdsOf(patient)
 		val sharedPatient = apiA.patient.shareWith(x.dataOwnerId, patient, secretIdsKnownByB, requestedPermission = RequestedPermission.FullRead).shouldNotBeNull().updatedEntityOrThrow()

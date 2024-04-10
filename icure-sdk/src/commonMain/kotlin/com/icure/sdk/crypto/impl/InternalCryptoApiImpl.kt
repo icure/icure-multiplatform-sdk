@@ -2,8 +2,9 @@ package com.icure.sdk.crypto.impl
 
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.sdk.api.extended.DataOwnerApi
-import com.icure.sdk.crypto.BasicCryptoApi
+import com.icure.sdk.crypto.BasicInternalCryptoApi
 import com.icure.sdk.crypto.DelegationsDeAnonymization
+import com.icure.sdk.crypto.EntityAccessInformationProvider
 import com.icure.sdk.crypto.EntityEncryptionService
 import com.icure.sdk.crypto.ExchangeDataManager
 import com.icure.sdk.crypto.ExchangeKeysManager
@@ -38,7 +39,10 @@ class InternalCryptoApiImpl(
 }
 
 @InternalIcureApi
-class BasicCryptoApiImpl(
+class BasicInternalCryptoApiImpl(
 	override val jsonEncryption: JsonEncryptionService,
-	override val validationService: EntityEncryptionService
-) : BasicCryptoApi
+	override val validationService: EntityEncryptionService,
+) : BasicInternalCryptoApi {
+	override val entityAccessInformationProvider: EntityAccessInformationProvider get() =
+		BasicEntityAccessInformationProvider
+}

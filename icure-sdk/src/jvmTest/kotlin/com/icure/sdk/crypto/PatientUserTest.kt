@@ -20,8 +20,8 @@ class PatientUserTest : StringSpec({
 	"A new user created from an existing patient should be able to create data for himself" {
 		val hcpApi = createHcpUser().api()
 		val patientDetails = createUserFromExistingPatient(
-			hcpApi.patient.encryptAndCreate(
-				hcpApi.patient.initialiseEncryptionMetadata(
+			hcpApi.patient.createPatient(
+				hcpApi.patient.withEncryptionMetadata(
 					DecryptedPatient(
 						id = UUID.randomUUID().toString(),
 						firstName = "John",

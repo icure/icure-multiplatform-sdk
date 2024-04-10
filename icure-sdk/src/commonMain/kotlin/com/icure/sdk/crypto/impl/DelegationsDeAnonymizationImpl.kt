@@ -91,29 +91,24 @@ class DelegationsDeAnonymizationImpl(
 			secureDelegationWithUnknownMembers.keys.mapTo(mutableSetOf()) { it.s },
 			entityWithType.type
 		).associateBy { it.delegationKey }
-		val permissionsByDataOwnerId = mutableMapOf<String, AccessLevel>()
-		var hasUnknownAnonymousDataOwners = false
-		fun addAccess(dataOwnerId: String, level: AccessLevel) {
-			if (permissionsByDataOwnerId[dataOwnerId] != AccessLevel.Write) {
-				permissionsByDataOwnerId[dataOwnerId] = level
+		val permissionsByDataOwnerId = EntityAccessInformation.buildPermissionsMap(
+			secureDelegationDetails.values.flatMap { d ->
+				listOfNotNull(
+					d.delegate?.let { it to d.accessLevel },
+					d.delegator?.let { it to d.accessLevel }
+				)
+			} + secureDelegationWithUnknownMembers.flatMap { (k, v) ->
+				val keyMap = secureDelegationKeyMapsByDelegationKey[k.s]
+				listOfNotNull(
+					keyMap?.delegate?.let { it to v.accessLevel },
+					keyMap?.delegator?.let { it to v.accessLevel }
+				)
 			}
-		}
-		for (delegation in secureDelegationDetails.values) {
-			if (delegation.delegate != null) addAccess(delegation.delegate, delegation.accessLevel)
-			if (delegation.delegator != null) addAccess(delegation.delegator, delegation.accessLevel)
-		}
-		for ((key, delegation) in secureDelegationWithUnknownMembers) {
-			val keyMap = secureDelegationKeyMapsByDelegationKey[key.s]
-			if (keyMap != null) {
-				keyMap.delegate?.let { addAccess(it, delegation.accessLevel) }
-				keyMap.delegator?.let { addAccess(it, delegation.accessLevel) }
-				if (keyMap.delegate == null || keyMap.delegator == null) {
-					log.w { "Invalid decrypted key map: delegator and/or delegate is null. $keyMap" }
-					hasUnknownAnonymousDataOwners = true
-				}
-			} else {
-				hasUnknownAnonymousDataOwners = true
-			}
+		)
+		val hasUnknownAnonymousDataOwners = secureDelegationWithUnknownMembers.keys.any { k ->
+			secureDelegationKeyMapsByDelegationKey[k.s]?.takeIf {
+				it.delegator != null && it.delegate != null
+			} == null
 		}
 		return EntityAccessInformation(permissionsByDataOwnerId, hasUnknownAnonymousDataOwners)
 	}

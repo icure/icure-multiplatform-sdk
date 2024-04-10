@@ -1,7 +1,7 @@
 package com.icure.sdk.crypto
 
 import com.icure.kryptom.crypto.defaultCryptoService
-import com.icure.sdk.crypto.impl.ShamirSecretShare
+import com.icure.sdk.crypto.entities.ShamirSecretShare
 import com.icure.sdk.crypto.impl.ShamirSecretSharingService
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe

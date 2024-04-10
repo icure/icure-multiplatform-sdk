@@ -1,7 +1,7 @@
 package com.icure.sdk.api.flavoured
 
 import com.icure.sdk.api.raw.RawMaintenanceTaskApi
-import com.icure.sdk.crypto.BasicCryptoApi
+import com.icure.sdk.crypto.BasicInternalCryptoApi
 import com.icure.sdk.crypto.InternalCryptoServices
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
@@ -235,7 +235,7 @@ internal class MaintenanceTaskApiImpl(
 @InternalIcureApi
 internal class MaintenanceTaskBasicApiImpl(
 	rawApi: RawMaintenanceTaskApi,
-	private val crypto: BasicCryptoApi,
+	private val crypto: BasicInternalCryptoApi,
 	private val fieldsToEncrypt: EncryptedFieldsManifest,
 ) : MaintenanceTaskBasicApi, MaintenanceTaskBasicFlavouredApi<EncryptedMaintenanceTask> by object :
 	AbstractMaintenanceTaskBasicFlavouredApi<EncryptedMaintenanceTask>(rawApi) {

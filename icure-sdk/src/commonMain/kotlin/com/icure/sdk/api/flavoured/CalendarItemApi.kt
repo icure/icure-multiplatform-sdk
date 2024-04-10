@@ -1,7 +1,7 @@
 package com.icure.sdk.api.flavoured
 
 import com.icure.sdk.api.raw.RawCalendarItemApi
-import com.icure.sdk.crypto.BasicCryptoApi
+import com.icure.sdk.crypto.BasicInternalCryptoApi
 import com.icure.sdk.crypto.InternalCryptoServices
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
@@ -316,7 +316,7 @@ internal class CalendarItemApiImpl(
 @InternalIcureApi
 internal class CalendarItemBasicApiImpl(
 	rawApi: RawCalendarItemApi,
-	private val crypto: BasicCryptoApi,
+	private val crypto: BasicInternalCryptoApi,
 	private val fieldsToEncrypt: EncryptedFieldsManifest
 ) : CalendarItemBasicApi, CalendarItemBasicFlavouredApi<EncryptedCalendarItem> by object :
 	AbstractCalendarItemBasicFlavouredApi<EncryptedCalendarItem>(rawApi) {
