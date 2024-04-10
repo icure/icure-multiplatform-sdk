@@ -3,7 +3,6 @@ package com.icure.sdk.api.raw
 import com.icure.sdk.model.LoginCredentials
 import com.icure.sdk.model.security.jwt.JwtResponse
 import com.icure.sdk.utils.InternalIcureApi
-import io.ktor.client.HttpClient
 import io.ktor.client.request.`header`
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
@@ -22,10 +21,9 @@ import kotlin.time.Duration
 @InternalIcureApi
 class RawAnonymousAuthApi(
 	private val apiUrl: String,
-	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
-) : BaseRawApi(httpClient, additionalHeaders, timeout) {
+) : BaseRawApi(additionalHeaders, timeout) {
 	// region common endpoints
 
 	suspend fun login(

@@ -21,7 +21,6 @@ import com.icure.sdk.model.embed.UserType
 import com.icure.sdk.model.security.Operation
 import com.icure.sdk.model.security.PermissionType
 import com.icure.sdk.utils.InternalIcureApi
-import io.ktor.client.HttpClient
 import io.ktor.client.request.`header`
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
@@ -45,10 +44,9 @@ import kotlin.time.Duration
 class RawGroupApi(
 	private val apiUrl: String,
 	private val authService: AuthService,
-	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
-) : BaseRawApi(httpClient, additionalHeaders, timeout) {
+) : BaseRawApi(additionalHeaders, timeout) {
 	// region cloud endpoints
 
 	suspend fun createGroup(

@@ -12,7 +12,6 @@ import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.specializations.AesExchangeKeyEncryptionKeypairIdentifier
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.utils.InternalIcureApi
-import io.ktor.client.HttpClient
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
@@ -32,10 +31,9 @@ import kotlin.time.Duration
 class RawDeviceApi(
 	private val apiUrl: String,
 	private val authService: AuthService,
-	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
-) : BaseRawApi(httpClient, additionalHeaders, timeout) {
+) : BaseRawApi(additionalHeaders, timeout) {
 	// region common endpoints
 
 	suspend fun getDevice(deviceId: String): HttpResponse<Device> =
