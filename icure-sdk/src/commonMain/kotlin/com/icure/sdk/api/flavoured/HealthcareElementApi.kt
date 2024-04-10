@@ -1,9 +1,8 @@
 package com.icure.sdk.api.flavoured
 
 import com.icure.sdk.api.raw.RawHealthElementApi
-import com.icure.sdk.crypto.EntityEncryptionService
 import com.icure.sdk.crypto.EntityValidationService
-import com.icure.sdk.crypto.InternalCryptoApi
+import com.icure.sdk.crypto.InternalCryptoServices
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
@@ -134,7 +133,7 @@ private abstract class AbstractHealthcareElementBasicFlavouredApi<E : HealthElem
 @InternalIcureApi
 private abstract class AbstractHealthcareElementFlavouredApi<E : HealthElement>(
 	rawApi: RawHealthElementApi,
-	private val encryptionService: EntityEncryptionService,
+	private val crypto: InternalCryptoServices,
 ) : AbstractHealthcareElementBasicFlavouredApi<E>(rawApi), HealthcareElementFlavouredApi<E> {
 	override suspend fun shareWith(
 		delegateId: String,
@@ -143,7 +142,7 @@ private abstract class AbstractHealthcareElementFlavouredApi<E : HealthElement>(
 		shareOwningEntityIds: ShareMetadataBehaviour,
 		requestedPermission: RequestedPermission,
 	): SimpleShareResult<E> =
-		encryptionService.simpleShareOrUpdateEncryptedEntityMetadata(
+		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			healthcareElement.withTypeInfo(),
 			true,
 			mapOf(
@@ -165,7 +164,7 @@ private abstract class AbstractHealthcareElementFlavouredApi<E : HealthElement>(
 		limit: Int?,
 	): List<E> = rawApi.findHealthElementsByHCPartyPatientForeignKeys(
 		hcPartyId,
-		encryptionService.secretIdsOf(patient.withTypeInfo(), null).toList()
+		crypto.entity.secretIdsOf(patient.withTypeInfo(), null).toList()
 	).successBody().map { maybeDecrypt(it) }
 
 }
@@ -184,21 +183,20 @@ private class AbstractHealthcareElementBasicFlavourlessApi(val rawApi: RawHealth
 @InternalIcureApi
 internal class HealthcareElementApiImpl(
 	private val rawApi: RawHealthElementApi,
-	private val crypto: InternalCryptoApi,
-	private val encryptionService: EntityEncryptionService,
+	private val crypto: InternalCryptoServices,
 	private val fieldsToEncrypt: EncryptedFieldsManifest = ENCRYPTED_FIELDS_MANIFEST,
 	private val autofillAuthor: Boolean,
 	) : HealthcareElementApi, HealthcareElementFlavouredApi<DecryptedHealthElement> by object :
-	AbstractHealthcareElementFlavouredApi<DecryptedHealthElement>(rawApi, encryptionService) {
+	AbstractHealthcareElementFlavouredApi<DecryptedHealthElement>(rawApi, crypto) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedHealthElement): EncryptedHealthElement =
-		encryptionService.encryptEntity(
+		crypto.entity.encryptEntity(
 			entity.withTypeInfo(),
 			DecryptedHealthElement.serializer(),
 			fieldsToEncrypt,
 		) { Serialization.json.decodeFromJsonElement<EncryptedHealthElement>(it) }
 
 	override suspend fun maybeDecrypt(entity: EncryptedHealthElement): DecryptedHealthElement {
-		return encryptionService.tryDecryptEntity(
+		return crypto.entity.tryDecryptEntity(
 			entity.withTypeInfo(),
 			EncryptedHealthElement.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedHealthElement>(it) }
@@ -206,30 +204,30 @@ internal class HealthcareElementApiImpl(
 	}
 }, HealthcareElementBasicFlavourlessApi by AbstractHealthcareElementBasicFlavourlessApi(rawApi) {
 	override val encrypted: HealthcareElementFlavouredApi<EncryptedHealthElement> =
-		object : AbstractHealthcareElementFlavouredApi<EncryptedHealthElement>(rawApi, encryptionService) {
+		object : AbstractHealthcareElementFlavouredApi<EncryptedHealthElement>(rawApi, crypto) {
 			override suspend fun validateAndMaybeEncrypt(entity: EncryptedHealthElement): EncryptedHealthElement =
-				encryptionService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedHealthElement.serializer(), fieldsToEncrypt)
+				crypto.entity.validateEncryptedEntity(entity.withTypeInfo(), EncryptedHealthElement.serializer(), fieldsToEncrypt)
 
 			override suspend fun maybeDecrypt(entity: EncryptedHealthElement): EncryptedHealthElement = entity
 		}
 
 	override val tryAndRecover: HealthcareElementFlavouredApi<HealthElement> =
-		object : AbstractHealthcareElementFlavouredApi<HealthElement>(rawApi, encryptionService) {
+		object : AbstractHealthcareElementFlavouredApi<HealthElement>(rawApi, crypto) {
 			override suspend fun maybeDecrypt(entity: EncryptedHealthElement): HealthElement =
-				encryptionService.tryDecryptEntity(
+				crypto.entity.tryDecryptEntity(
 					entity.withTypeInfo(),
 					EncryptedHealthElement.serializer(),
 				) { Serialization.json.decodeFromJsonElement<DecryptedHealthElement>(it) }
 					?: entity
 
 			override suspend fun validateAndMaybeEncrypt(entity: HealthElement): EncryptedHealthElement = when (entity) {
-				is EncryptedHealthElement -> encryptionService.validateEncryptedEntity(
+				is EncryptedHealthElement -> crypto.entity.validateEncryptedEntity(
 					entity.withTypeInfo(),
 					EncryptedHealthElement.serializer(),
 					fieldsToEncrypt,
 				)
 
-				is DecryptedHealthElement -> encryptionService.encryptEntity(
+				is DecryptedHealthElement -> crypto.entity.encryptEntity(
 					entity.withTypeInfo(),
 					DecryptedHealthElement.serializer(),
 					fieldsToEncrypt,
@@ -265,7 +263,7 @@ internal class HealthcareElementApiImpl(
 		secretId: SecretIdOption,
 		// Temporary, needs a lot more stuff to match typescript implementation
 	): DecryptedHealthElement =
-		encryptionService.entityWithInitialisedEncryptedMetadata(
+		crypto.entity.entityWithInitialisedEncryptedMetadata(
 			(base ?: DecryptedHealthElement(crypto.primitives.strongRandom.randomUUID())).copy(
 				created = base?.created ?: currentEpochMs(),
 				modified = base?.modified ?: currentEpochMs(),
@@ -273,19 +271,19 @@ internal class HealthcareElementApiImpl(
 				author = base?.author ?: user?.id?.takeIf { autofillAuthor },
 			).withTypeInfo(),
 			patient.id,
-			encryptionService.resolveSecretIdOption(patient.withTypeInfo(), secretId),
+			crypto.entity.resolveSecretIdOption(patient.withTypeInfo(), secretId),
 			initialiseEncryptionKey = true,
 			initialiseSecretId = false,
 			autoDelegations = delegates  + user?.autoDelegationsFor(DelegationTag.MedicalInformation).orEmpty(),
 		).updatedEntity
 
-	private suspend fun encrypt(entity: DecryptedHealthElement) = encryptionService.encryptEntity(
+	private suspend fun encrypt(entity: DecryptedHealthElement) = crypto.entity.encryptEntity(
 		entity.withTypeInfo(),
 		DecryptedHealthElement.serializer(),
 		fieldsToEncrypt,
 	) { Serialization.json.decodeFromJsonElement<EncryptedHealthElement>(it) }
 
-	suspend fun decrypt(entity: EncryptedHealthElement, errorMessage: () -> String): DecryptedHealthElement = encryptionService.tryDecryptEntity(
+	suspend fun decrypt(entity: EncryptedHealthElement, errorMessage: () -> String): DecryptedHealthElement = crypto.entity.tryDecryptEntity(
 		entity.withTypeInfo(),
 		EncryptedHealthElement.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedHealthElement>(it) }

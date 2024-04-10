@@ -69,8 +69,8 @@ class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec ({
 		confidentialSecretIds shouldHaveSize 1
 		allSecretIds shouldContain confidentialSecretIds.single()
 		val nonConfidentialNote = "Encrypted - non confidential he"
-		val nonConfidentialHe = hcpApi.healthElement.createHealthcareElement(
-			hcpApi.healthElement.withEncryptionMetadata(
+		val nonConfidentialHe = hcpApi.healthcareElement.createHealthcareElement(
+			hcpApi.healthcareElement.withEncryptionMetadata(
 				DecryptedHealthElement(
 					id = UUID.randomUUID().toString(),
 					note = nonConfidentialNote
@@ -81,8 +81,8 @@ class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec ({
 			)
 		).shouldNotBeNull()
 		val confidentialNote = "Encrypted - confidential he"
-		val confidentialHe = hcpApi.healthElement.createHealthcareElement(
-			hcpApi.healthElement.withEncryptionMetadata(
+		val confidentialHe = hcpApi.healthcareElement.createHealthcareElement(
+			hcpApi.healthcareElement.withEncryptionMetadata(
 				DecryptedHealthElement(
 					id = UUID.randomUUID().toString(),
 					note = confidentialNote
@@ -97,7 +97,7 @@ class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec ({
 			hcpIds: List<String>,
 			api: IcureSdk
 		) = hcpIds.flatMap { hcpId ->
-			api.healthElement.findHealthcareElementsByHcPartyPatient(hcpId, patient, limit = 100)
+			api.healthcareElement.findHealthcareElementsByHcPartyPatient(hcpId, patient, limit = 100)
 		}.distinctBy { it.id }
 		findHealthElementsFor(listOf(hcp.dataOwnerId, parent.dataOwnerId), hcpApi).also { retrievedHes ->
 			retrievedHes shouldHaveSize 2
@@ -116,7 +116,7 @@ class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec ({
 				retrievedHes.single().note shouldBe nonConfidentialNote
 			}
 			// Entity was still shared, so it can still be retrieved by id (not a real use case, would not make sense to share an entity that is confidential)
-			relativeApi.healthElement.getHealthcareElement(confidentialHe.id).shouldNotBeNull().note shouldBe confidentialNote
+			relativeApi.healthcareElement.getHealthcareElement(confidentialHe.id).shouldNotBeNull().note shouldBe confidentialNote
 		}
 	}
 })

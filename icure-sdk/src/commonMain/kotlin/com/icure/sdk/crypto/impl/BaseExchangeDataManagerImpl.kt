@@ -8,24 +8,24 @@ import com.icure.kryptom.utils.toHexString
 import com.icure.sdk.api.extended.DataOwnerApi
 import com.icure.sdk.api.raw.RawExchangeDataApi
 import com.icure.sdk.crypto.BaseExchangeDataManager
+import com.icure.sdk.crypto.RsaVerificationKeyProvider
 import com.icure.sdk.crypto.entities.DecryptionResult
 import com.icure.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
 import com.icure.sdk.crypto.entities.RawDecryptedExchangeData
 import com.icure.sdk.crypto.entities.RsaDecryptionKeysSet
 import com.icure.sdk.crypto.entities.RsaSignatureKeysSet
-import com.icure.sdk.crypto.RsaVerificationKeyProvider
 import com.icure.sdk.crypto.entities.UnencryptedExchangeDataContent
 import com.icure.sdk.crypto.entities.VerifiedRsaEncryptionKeysSet
+import com.icure.sdk.model.ExchangeData
 import com.icure.sdk.model.specializations.AccessControlSecret
 import com.icure.sdk.model.specializations.Base64String
-import com.icure.sdk.model.ExchangeData
 import com.icure.sdk.model.specializations.KeypairFingerprintV2String
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.base64Encode
 import com.icure.sdk.utils.decode
 import com.icure.sdk.utils.ensure
-import com.icure.sdk.utils.pagination.exhaustPaginatedRequest
 import com.icure.sdk.utils.getLogger
+import com.icure.sdk.utils.pagination.exhaustPaginatedRequest
 import com.icure.sdk.utils.validateResponseContent
 import io.ktor.utils.io.charsets.Charsets
 import io.ktor.utils.io.core.toByteArray
@@ -35,7 +35,7 @@ import kotlin.reflect.KProperty1
 
 @InternalIcureApi
 class BaseExchangeDataManagerImpl(
-	private val rawApi: RawExchangeDataApi,
+	override val raw: RawExchangeDataApi,
 	private val dataOwnerApi: DataOwnerApi,
 	private val cryptoService: CryptoService,
 	private val selfIsAnonymousDataOwner: Boolean
@@ -51,7 +51,7 @@ class BaseExchangeDataManagerImpl(
 			validateResponseContent(next == null || (next.startKey as? JsonPrimitive)?.takeIf { it.isString }?.content == selfId) {
 				"Received next key should be the current data owner id"
 			}
-			rawApi.getExchangeDataByParticipant(selfId, startDocumentId = next?.startKeyDocId).successBody()
+			raw.getExchangeDataByParticipant(selfId, startDocumentId = next?.startKeyDocId).successBody()
 		}.toList()
 	}
 
@@ -59,10 +59,10 @@ class BaseExchangeDataManagerImpl(
 		delegatorId: String,
 		delegateId: String
 	): List<ExchangeData> =
-		rawApi.getExchangeDataByDelegatorDelegate(delegatorId, delegateId).successBody()
+		raw.getExchangeDataByDelegatorDelegate(delegatorId, delegateId).successBody()
 
 	override suspend fun getExchangeDataById(exchangeDataId: String): ExchangeData? =
-		rawApi.getExchangeDataById(exchangeDataId).successBodyOrNull404()
+		raw.getExchangeDataById(exchangeDataId).successBodyOrNull404()
 
 	override suspend fun verifyExchangeData(
 		data: ExchangeDataWithUnencryptedContent,
@@ -168,7 +168,7 @@ class BaseExchangeDataManagerImpl(
 			delegatorSignature = delegatorSignature
 		)
 		return ExchangeDataWithUnencryptedContent(
-			exchangeData = rawApi.createExchangeData(exchangeData).successBody(),
+			exchangeData = raw.createExchangeData(exchangeData).successBody(),
 			unencryptedContent = UnencryptedExchangeDataContent(
 				exchangeKey = exchangeKey,
 				accessControlSecret = accessControlSecret,
@@ -270,7 +270,7 @@ class BaseExchangeDataManagerImpl(
 		}
 
 		return ExchangeDataWithUnencryptedContent(
-			exchangeData = rawApi.modifyExchangeData(updatedExchangeData).successBody(),
+			exchangeData = raw.modifyExchangeData(updatedExchangeData).successBody(),
 			unencryptedContent = UnencryptedExchangeDataContent(
 				exchangeKey = exchangeKey,
 				accessControlSecret = accessControlSecret,

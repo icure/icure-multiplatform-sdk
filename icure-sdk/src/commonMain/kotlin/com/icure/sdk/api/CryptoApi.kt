@@ -1,6 +1,6 @@
 package com.icure.sdk.api
 
-import com.icure.sdk.crypto.InternalCryptoApi
+import com.icure.sdk.crypto.InternalCryptoServices
 import com.icure.sdk.crypto.ShamirKeysManager
 import com.icure.sdk.utils.InternalIcureApi
 
@@ -10,7 +10,7 @@ import com.icure.sdk.utils.InternalIcureApi
 @OptIn(InternalIcureApi::class)
 class CryptoApi(
 	val shamirKeysManager: ShamirKeysManager,
-	private val internalCryptoApi: InternalCryptoApi
+	private val internalCryptoApi: InternalCryptoServices
 ) {
 	/**
 	 * Clears the cache of the api and reloads the user keys and exchange keys.

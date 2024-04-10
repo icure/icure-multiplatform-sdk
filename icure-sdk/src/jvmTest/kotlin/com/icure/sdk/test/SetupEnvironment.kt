@@ -167,7 +167,7 @@ data class DataOwnerDetails(
 	}
 
 	fun authService() =
-		JwtAuthService(RawAnonymousAuthApi(baseUrl, IcureApi.sharedHttpClient), UsernamePassword(username, password))
+		JwtAuthService(RawAnonymousAuthApi(baseUrl, IcureSdk.sharedHttpClient), UsernamePassword(username, password))
 
 	@OptIn(InternalIcureApi::class)
 	private suspend fun initApi(

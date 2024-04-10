@@ -5,28 +5,57 @@ import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.kryptom.utils.toHexString
 import com.icure.sdk.api.extended.DataOwnerApi
 import com.icure.sdk.api.extended.IcureMaintenanceTaskApi
+import com.icure.sdk.api.flavoured.AccessLogApi
+import com.icure.sdk.api.flavoured.AccessLogApiImpl
 import com.icure.sdk.api.flavoured.CalendarItemApi
 import com.icure.sdk.api.flavoured.CalendarItemApiImpl
+import com.icure.sdk.api.flavoured.ClassificationApi
+import com.icure.sdk.api.flavoured.ClassificationApiImpl
 import com.icure.sdk.api.flavoured.ContactApi
 import com.icure.sdk.api.flavoured.ContactApiImpl
+import com.icure.sdk.api.flavoured.DocumentApi
+import com.icure.sdk.api.flavoured.DocumentApiImpl
+import com.icure.sdk.api.flavoured.FormApi
+import com.icure.sdk.api.flavoured.FormApiImpl
 import com.icure.sdk.api.flavoured.HealthcareElementApi
 import com.icure.sdk.api.flavoured.HealthcareElementApiImpl
+import com.icure.sdk.api.flavoured.InvoiceApi
+import com.icure.sdk.api.flavoured.InvoiceApiImpl
 import com.icure.sdk.api.flavoured.MaintenanceTaskApi
 import com.icure.sdk.api.flavoured.MaintenanceTaskApiImpl
+import com.icure.sdk.api.flavoured.MessageApi
+import com.icure.sdk.api.flavoured.MessageApiImpl
+import com.icure.sdk.api.flavoured.ReceiptApi
+import com.icure.sdk.api.flavoured.ReceiptApiImpl
+import com.icure.sdk.api.flavoured.TimeTableApi
+import com.icure.sdk.api.flavoured.TimeTableApiImpl
+import com.icure.sdk.api.flavoured.TopicApi
+import com.icure.sdk.api.flavoured.TopicApiImpl
+import com.icure.sdk.api.raw.RawAccessLogApi
 import com.icure.sdk.api.raw.RawAnonymousAuthApi
 import com.icure.sdk.api.raw.RawCalendarItemApi
+import com.icure.sdk.api.raw.RawClassificationApi
 import com.icure.sdk.api.raw.RawContactApi
 import com.icure.sdk.api.raw.RawDataOwnerApi
 import com.icure.sdk.api.raw.RawDeviceApi
+import com.icure.sdk.api.raw.RawDocumentApi
 import com.icure.sdk.api.raw.RawExchangeDataApi
 import com.icure.sdk.api.raw.RawExchangeDataMapApi
+import com.icure.sdk.api.raw.RawFormApi
 import com.icure.sdk.api.raw.RawHealthElementApi
 import com.icure.sdk.api.raw.RawHealthcarePartyApi
+import com.icure.sdk.api.raw.RawInvoiceApi
 import com.icure.sdk.api.raw.RawMaintenanceTaskApi
+import com.icure.sdk.api.raw.RawMessageApi
 import com.icure.sdk.api.raw.RawPatientApi
+import com.icure.sdk.api.raw.RawPermissionApi
+import com.icure.sdk.api.raw.RawReceiptApi
 import com.icure.sdk.api.raw.RawSecureDelegationKeyMapApi
+import com.icure.sdk.api.raw.RawTimeTableApi
+import com.icure.sdk.api.raw.RawTopicApi
 import com.icure.sdk.api.raw.RawUserApi
 import com.icure.sdk.auth.UsernamePassword
+import com.icure.sdk.auth.services.AuthService
 import com.icure.sdk.auth.services.JwtAuthService
 import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.crypto.CryptoStrategies
@@ -68,20 +97,30 @@ import com.icure.sdk.storage.impl.JsonAndBase64KeyStorage
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.newPlatformHttpClient
+import io.ktor.client.HttpClient
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.kotlinx.json.json
 
 interface IcureSdk {
+	val accessLog: AccessLogApi
 	val calendarItem: CalendarItemApi
+	val classification: ClassificationApi
 	val contact: ContactApi
+	val document: DocumentApi
+	val form: FormApi
+	val healthcareElement: HealthcareElementApi
+	val invoice: InvoiceApi
+	val maintenanceTask: MaintenanceTaskApi
+	val message: MessageApi
 	val patient: PatientApi
-	val healthElement: HealthcareElementApi
+	val receipt: ReceiptApi
+	val timeTable: TimeTableApi
+	val topic: TopicApi
+	val crypto: CryptoApi
 	val dataOwner: DataOwnerApi
 	val user: UserApi
-	val crypto: CryptoApi
 	val icureMaintenanceTask: IcureMaintenanceTaskApi
-	val maintenanceTask: MaintenanceTaskApi
 
 	companion object {
 		/**
@@ -249,6 +288,7 @@ interface IcureSdk {
 				entityEncryptionService,
 				cryptoService,
 				exchangeDataManager,
+				exchangeKeysManager,
 				jsonEncryptionService,
 				DelegationsDeAnonymizationImpl(
 					secureDelegationsDecryptor,
@@ -258,82 +298,222 @@ interface IcureSdk {
 					dataOwnerApi,
 					cryptoService
 				),
-				userEncryptionKeys,
-				dataOwnerApi
+				dataOwnerApi,
+				userEncryptionKeys
 			)
 			val patientApi = PatientApi(
 				RawPatientApi(apiUrl, authService, headersProvider, client),
 				crypto,
 			)
 			ensureDelegationForSelf(dataOwnerApi, entityEncryptionService, patientApi.rawApi, cryptoService)
-			val manifests = EntitiesEncryptedFieldsManifests.fromEncryptedFields(jsonEncryptionService, options.encryptedFields)
-			val maintenanceTaskApi = MaintenanceTaskApiImpl(
-				RawMaintenanceTaskApi(apiUrl, authService, headersProvider, client),
-				crypto,
-				manifests.maintenanceTask,
-				!selfIsAnonymous,
-			)
+			val manifests = EntitiesEncryptedFieldsManifests.fromEncryptedFields(options.encryptedFields)
 			return IcureApiImpl(
-				calendarItem = CalendarItemApiImpl(
-					RawCalendarItemApi(apiUrl, authService, headersProvider, client),
-					crypto,
-					manifests.calendarItem,
-						!selfIsAnonymous,
-				),
-				contact = ContactApiImpl(
-					RawContactApi(apiUrl, authService, headersProvider, client),
-					crypto,
-					entityEncryptionService,
-					jsonEncryptionService,
-					manifests.contact,
-					!selfIsAnonymous,
-				),
-				patient = patientApi,
-				healthElement = HealthcareElementApiImpl(
-					RawHealthElementApi(apiUrl, authService, headersProvider, client),
-					crypto,
-					entityEncryptionService,
-					manifests.healthElement,
-					!selfIsAnonymous,
-				),
-				dataOwner = dataOwnerApi,
-				user = UserApi(RawUserApi(apiUrl, authService, client), RawPatientApi(apiUrl, authService,  client)),
-				crypto = CryptoApi(
-					ShamirKeysManagerImpl(
-						dataOwnerApi,
-						userEncryptionKeys,
-						exchangeDataManager,
-						cryptoService,
-						shamirService
-					),
-					crypto
-				),
-				maintenanceTask = maintenanceTaskApi,
-				icureMaintenanceTask = IcureMaintenanceTaskApi(
-					exchangeDataManager,
-					baseExchangeKeysManager,
-					userEncryptionKeys,
-					maintenanceTaskApi,
-					RawExchangeDataApi(apiUrl, authService, client),
-					dataOwnerApi,
-					cryptoService.strongRandom,
-				)
+				crypto,
+				apiUrl,
+				authService,
+				headersProvider,
+				client,
+				manifests,
+				!selfIsAnonymous
 			)
 		}
 	}
 }
 
+@OptIn(InternalIcureApi::class)
 private class IcureApiImpl(
-	override val calendarItem: CalendarItemApi,
-	override val contact: ContactApi,
-	override val patient: PatientApi,
-	override val healthElement: HealthcareElementApi,
-	override val dataOwner: DataOwnerApi,
-	override val user: UserApi,
-	override val crypto: CryptoApi,
-	override val icureMaintenanceTask: IcureMaintenanceTaskApi,
-	override val maintenanceTask : MaintenanceTaskApi
-): IcureSdk
+	private val internalCrypto: InternalCryptoApiImpl,
+	private val apiUrl: String,
+	private val authService: AuthService,
+	private val headersProvider: AccessControlKeysHeadersProvider,
+	private val client: HttpClient,
+	private val encryptedFieldsManifests: EntitiesEncryptedFieldsManifests,
+	private val autofillAuthor: Boolean
+): IcureSdk {
+	private val rawCalendarItemApi by lazy { RawCalendarItemApi(apiUrl, authService, headersProvider, client) }
+
+	override val calendarItem: CalendarItemApi by lazy {
+		CalendarItemApiImpl(
+			rawCalendarItemApi,
+			internalCrypto,
+			encryptedFieldsManifests.calendarItem,
+			autofillAuthor
+		)
+	}
+
+	private val rawContactApi by lazy { RawContactApi(apiUrl, authService, headersProvider, client) }
+
+	override val contact: ContactApi by lazy {
+		ContactApiImpl(
+			rawContactApi,
+			internalCrypto,
+			encryptedFieldsManifests.contact,
+			autofillAuthor
+		)
+	}
+
+	private val rawPatientApi by lazy { RawPatientApi(apiUrl, authService, headersProvider, client) }
+
+	override val patient: PatientApi by lazy {
+		PatientApi(
+			rawPatientApi,
+			internalCrypto,
+		)
+	}
+
+	private val rawHealthcareElementApi by lazy { RawHealthElementApi(apiUrl, authService, headersProvider, client) }
+
+	override val healthcareElement: HealthcareElementApi by lazy {
+		HealthcareElementApiImpl(
+			rawHealthcareElementApi,
+			internalCrypto,
+			encryptedFieldsManifests.healthElement,
+			autofillAuthor
+		)
+	}
+
+	override val dataOwner: DataOwnerApi get() = internalCrypto.dataOwnerApi
+
+	override val user: UserApi by lazy {
+		UserApiImpl(
+			RawUserApi(apiUrl, authService, client),
+			RawPermissionApi(apiUrl, authService, client)
+		)
+	}
+	override val crypto: CryptoApi by lazy {
+		CryptoApi(
+			ShamirKeysManagerImpl(
+				internalCrypto.dataOwnerApi,
+				internalCrypto.userEncryptionKeysManager,
+				internalCrypto.exchangeDataManager,
+				internalCrypto.primitives,
+				ShamirSecretSharingService(internalCrypto.primitives.strongRandom)
+			),
+			internalCrypto
+		)
+	}
+
+	private val rawMaintenanceTaskApi by lazy { RawMaintenanceTaskApi(apiUrl, authService, headersProvider, client) }
+
+	override val maintenanceTask: MaintenanceTaskApi by lazy {
+		MaintenanceTaskApiImpl(
+			rawMaintenanceTaskApi,
+			internalCrypto,
+			encryptedFieldsManifests.maintenanceTask,
+			autofillAuthor
+		)
+	}
+
+	override val icureMaintenanceTask: IcureMaintenanceTaskApi by lazy {
+		IcureMaintenanceTaskApi(
+			internalCrypto.exchangeDataManager,
+			internalCrypto.exchangeKeysManager.base,
+			internalCrypto.userEncryptionKeysManager,
+			maintenanceTask,
+			internalCrypto.dataOwnerApi,
+			internalCrypto.primitives.strongRandom,
+		)
+	}
+
+	private val rawAccessLogApi by lazy { RawAccessLogApi(apiUrl, authService, headersProvider, client) }
+
+	override val accessLog: AccessLogApi by lazy {
+		AccessLogApiImpl(
+			rawAccessLogApi,
+			internalCrypto,
+			encryptedFieldsManifests.accessLog,
+			autofillAuthor
+		)
+	}
+
+	private val rawMessageApi by lazy { RawMessageApi(apiUrl, authService, headersProvider, client) }
+
+	override val message: MessageApi by lazy {
+		MessageApiImpl(
+			rawMessageApi,
+			internalCrypto,
+			encryptedFieldsManifests.message,
+			autofillAuthor
+		)
+	}
+
+	private val rawTopicApi by lazy { RawTopicApi(apiUrl, authService, headersProvider, client) }
+
+	override val topic: TopicApi by lazy {
+		TopicApiImpl(
+			rawTopicApi,
+			internalCrypto,
+			encryptedFieldsManifests.topic,
+			autofillAuthor
+		)
+	}
+
+	private val rawDocumentApi by lazy { RawDocumentApi(apiUrl, authService, headersProvider, client) }
+
+	override val document: DocumentApi by lazy {
+		DocumentApiImpl(
+			rawDocumentApi,
+			internalCrypto,
+			encryptedFieldsManifests.document,
+			autofillAuthor
+		)
+	}
+
+	private val rawTimeTableApi by lazy { RawTimeTableApi(apiUrl, authService, headersProvider, client) }
+
+	override val timeTable: TimeTableApi by lazy {
+		TimeTableApiImpl(
+			rawTimeTableApi,
+			internalCrypto,
+			encryptedFieldsManifests.timeTable,
+			autofillAuthor
+		)
+	}
+
+	private val rawClassificationApi by lazy { RawClassificationApi(apiUrl, authService, headersProvider, client) }
+
+	override val classification: ClassificationApi by lazy {
+		ClassificationApiImpl(
+			rawClassificationApi,
+			internalCrypto,
+			encryptedFieldsManifests.classification,
+			autofillAuthor
+		)
+	}
+
+	private val rawFormApi by lazy { RawFormApi(apiUrl, authService, headersProvider, client) }
+
+	override val form: FormApi by lazy {
+		FormApiImpl(
+			rawFormApi,
+			internalCrypto,
+			encryptedFieldsManifests.form,
+			autofillAuthor
+		)
+	}
+
+	private val rawInvoiceApi by lazy { RawInvoiceApi(apiUrl, authService, headersProvider, client) }
+
+	override val invoice: InvoiceApi by lazy {
+		InvoiceApiImpl(
+			rawInvoiceApi,
+			internalCrypto,
+			encryptedFieldsManifests.invoice,
+			autofillAuthor
+		)
+	}
+
+	private val rawReceiptApi by lazy { RawReceiptApi(apiUrl, authService, headersProvider, client) }
+
+	override val receipt: ReceiptApi by lazy {
+		ReceiptApiImpl(
+			rawReceiptApi,
+			internalCrypto,
+			encryptedFieldsManifests.receipt,
+			autofillAuthor
+		)
+	}
+}
 
 @InternalIcureApi
 private suspend fun ensureDelegationForSelf(
@@ -389,6 +569,12 @@ private class EntitiesEncryptedFieldsManifests private constructor(
 	val patient: EncryptedFieldsManifest,
 	val message: EncryptedFieldsManifest,
 	val topic: EncryptedFieldsManifest,
+	val document: EncryptedFieldsManifest,
+	val timeTable: EncryptedFieldsManifest,
+	val classification: EncryptedFieldsManifest,
+	val form: EncryptedFieldsManifest,
+	val invoice: EncryptedFieldsManifest,
+	val receipt: EncryptedFieldsManifest
 ) {
 	companion object {
 		private object Default {
@@ -401,9 +587,10 @@ private class EntitiesEncryptedFieldsManifests private constructor(
 			val patient = setOf("note", "notes[].markdown")
 			val message = setOf<String>()
 			val topic = setOf("description", "linkedServices", "linkedHealthElements")
+			val document = setOf<String>()
 		}
 
-		fun fromEncryptedFields(jsonEncryptionService: JsonEncryptionService, encryptedFields: EncryptedFields?): EntitiesEncryptedFieldsManifests {
+		fun fromEncryptedFields(encryptedFields: EncryptedFields?): EntitiesEncryptedFieldsManifests {
 			val contactManifest = JsonEncryptionService.parseEncryptedFields(
 				encryptedFields?.contact ?: Default.contact,
 				"Contact."
@@ -448,6 +635,30 @@ private class EntitiesEncryptedFieldsManifests private constructor(
 				topic = JsonEncryptionService.parseEncryptedFields(
 					encryptedFields?.topic ?: Default.topic,
 					"Topic."
+				),
+				document = JsonEncryptionService.parseEncryptedFields(
+					encryptedFields?.document ?: Default.document,
+					"Document."
+				),
+				timeTable = JsonEncryptionService.parseEncryptedFields(
+					encryptedFields?.timeTable ?: emptySet(),
+					"TimeTable."
+				),
+				classification = JsonEncryptionService.parseEncryptedFields(
+					encryptedFields?.classification ?: emptySet(),
+					"Classification."
+				),
+				form = JsonEncryptionService.parseEncryptedFields(
+					encryptedFields?.form ?: emptySet(),
+					"Form."
+				),
+				invoice = JsonEncryptionService.parseEncryptedFields(
+					encryptedFields?.invoice ?: emptySet(),
+					"Invoice."
+				),
+				receipt = JsonEncryptionService.parseEncryptedFields(
+					encryptedFields?.receipt ?: emptySet(),
+					"Receipt."
 				)
 			)
 		}

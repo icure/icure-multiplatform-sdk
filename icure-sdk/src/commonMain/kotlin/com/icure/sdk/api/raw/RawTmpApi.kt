@@ -161,7 +161,7 @@ class RawTmpApi(
 		get {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "tmp", "healthElement", "byId", id)
+				appendPathSegments("rest", "v2", "tmp", "healthcareElement", "byId", id)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
@@ -171,7 +171,7 @@ class RawTmpApi(
 		post {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "tmp", "healthElement")
+				appendPathSegments("rest", "v2", "tmp", "healthcareElement")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
@@ -182,7 +182,7 @@ class RawTmpApi(
 		put {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "tmp", "healthElement")
+				appendPathSegments("rest", "v2", "tmp", "healthcareElement")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
@@ -193,7 +193,7 @@ class RawTmpApi(
 		post {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "tmp", "healthElement", "get")
+				appendPathSegments("rest", "v2", "tmp", "healthcareElement", "get")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
@@ -204,7 +204,7 @@ class RawTmpApi(
 		put {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "tmp", "healthElement", "batch")
+				appendPathSegments("rest", "v2", "tmp", "healthcareElement", "batch")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
@@ -215,7 +215,7 @@ class RawTmpApi(
 		post {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "tmp", "healthElement", "batch")
+				appendPathSegments("rest", "v2", "tmp", "healthcareElement", "batch")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
@@ -230,7 +230,7 @@ class RawTmpApi(
 		get {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "tmp", "healthElement", "list")
+				appendPathSegments("rest", "v2", "tmp", "healthcareElement", "list")
 				parameter("firstHealthElementId", firstHealthElementId)
 				parameter("pageSize", pageSize)
 				parameter("ts", GMTDate().timestamp)

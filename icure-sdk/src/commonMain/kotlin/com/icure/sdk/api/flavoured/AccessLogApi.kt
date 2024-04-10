@@ -2,7 +2,7 @@ package com.icure.sdk.api.flavoured
 
 import com.icure.sdk.api.raw.RawAccessLogApi
 import com.icure.sdk.crypto.BasicCryptoApi
-import com.icure.sdk.crypto.InternalCryptoApi
+import com.icure.sdk.crypto.InternalCryptoServices
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.crypto.entities.SecretIdOption
@@ -199,7 +199,7 @@ private abstract class AbstractAccessLogBasicFlavouredApi<E : AccessLog>(
 @InternalIcureApi
 private abstract class AbstractAccessLogFlavouredApi<E : AccessLog>(
 	rawApi: RawAccessLogApi,
-	private val crypto: InternalCryptoApi
+	private val crypto: InternalCryptoServices
 ) : AbstractAccessLogBasicFlavouredApi<E>(rawApi), AccessLogFlavouredApi<E> {
 	override suspend fun getSecureDelegationKeys(): List<String> =
 		crypto.exchangeDataManager.getAccessControlKeysValue(EntityWithEncryptionMetadataTypeName.AccessLog)?.map { it.s } ?: emptyList()
@@ -266,9 +266,9 @@ private class AbstractAccessLogBasicFlavourlessApi(val rawApi: RawAccessLogApi) 
 @InternalIcureApi
 internal class AccessLogApiImpl(
 	private val rawApi: RawAccessLogApi,
-	private val autofillAuthor: Boolean,
-	private val crypto: InternalCryptoApi,
+	private val crypto: InternalCryptoServices,
 	private val fieldsToEncrypt: EncryptedFieldsManifest,
+	private val autofillAuthor: Boolean,
 ) : AccessLogApi, AccessLogFlavouredApi<DecryptedAccessLog> by object :
 	AbstractAccessLogFlavouredApi<DecryptedAccessLog>(rawApi, crypto) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedAccessLog): EncryptedAccessLog =

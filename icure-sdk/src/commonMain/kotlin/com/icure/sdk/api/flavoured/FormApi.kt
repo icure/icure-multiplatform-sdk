@@ -1,9 +1,8 @@
 package com.icure.sdk.api.flavoured
 
 import com.icure.sdk.api.raw.RawFormApi
-import com.icure.sdk.crypto.EntityEncryptionService
 import com.icure.sdk.crypto.EntityValidationService
-import com.icure.sdk.crypto.InternalCryptoApi
+import com.icure.sdk.crypto.InternalCryptoServices
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
@@ -161,7 +160,7 @@ private abstract class AbstractFormBasicFlavouredApi<E : Form>(protected val raw
 @InternalIcureApi
 private abstract class AbstractFormFlavouredApi<E : Form>(
 	rawApi: RawFormApi,
-	private val encryptionService: EntityEncryptionService,
+	private val crypto: InternalCryptoServices,
 ) : AbstractFormBasicFlavouredApi<E>(rawApi), FormFlavouredApi<E> {
 	override suspend fun shareWith(
 		delegateId: String,
@@ -170,7 +169,7 @@ private abstract class AbstractFormFlavouredApi<E : Form>(
 		shareOwningEntityIds: ShareMetadataBehaviour,
 		requestedPermission: RequestedPermission,
 	): SimpleShareResult<E> =
-		encryptionService.simpleShareOrUpdateEncryptedEntityMetadata(
+		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			form.withTypeInfo(),
 			true,
 			mapOf(
@@ -242,21 +241,20 @@ private class AbstractFormBasicFlavourlessApi(val rawApi: RawFormApi) : FormBasi
 @InternalIcureApi
 internal class FormApiImpl(
 	private val rawApi: RawFormApi,
-	private val crypto: InternalCryptoApi,
-	private val encryptionService: EntityEncryptionService,
+	private val crypto: InternalCryptoServices,
 	private val fieldsToEncrypt: EncryptedFieldsManifest = ENCRYPTED_FIELDS_MANIFEST,
 	private val autofillAuthor: Boolean,
 ) : FormApi, FormFlavouredApi<DecryptedForm> by object :
-	AbstractFormFlavouredApi<DecryptedForm>(rawApi, encryptionService) {
+	AbstractFormFlavouredApi<DecryptedForm>(rawApi, crypto) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedForm): EncryptedForm =
-		encryptionService.encryptEntity(
+		crypto.entity.encryptEntity(
 			entity.withTypeInfo(),
 			DecryptedForm.serializer(),
 			fieldsToEncrypt,
 		) { Serialization.json.decodeFromJsonElement<EncryptedForm>(it) }
 
 	override suspend fun maybeDecrypt(entity: EncryptedForm): DecryptedForm {
-		return encryptionService.tryDecryptEntity(
+		return crypto.entity.tryDecryptEntity(
 			entity.withTypeInfo(),
 			EncryptedForm.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedForm>(it) }
@@ -264,30 +262,30 @@ internal class FormApiImpl(
 	}
 }, FormBasicFlavourlessApi by AbstractFormBasicFlavourlessApi(rawApi) {
 	override val encrypted: FormFlavouredApi<EncryptedForm> =
-		object : AbstractFormFlavouredApi<EncryptedForm>(rawApi, encryptionService) {
+		object : AbstractFormFlavouredApi<EncryptedForm>(rawApi, crypto) {
 			override suspend fun validateAndMaybeEncrypt(entity: EncryptedForm): EncryptedForm =
-				encryptionService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedForm.serializer(), fieldsToEncrypt)
+				crypto.entity.validateEncryptedEntity(entity.withTypeInfo(), EncryptedForm.serializer(), fieldsToEncrypt)
 
 			override suspend fun maybeDecrypt(entity: EncryptedForm): EncryptedForm = entity
 		}
 
 	override val tryAndRecover: FormFlavouredApi<Form> =
-		object : AbstractFormFlavouredApi<Form>(rawApi, encryptionService) {
+		object : AbstractFormFlavouredApi<Form>(rawApi, crypto) {
 			override suspend fun maybeDecrypt(entity: EncryptedForm): Form =
-				encryptionService.tryDecryptEntity(
+				crypto.entity.tryDecryptEntity(
 					entity.withTypeInfo(),
 					EncryptedForm.serializer(),
 				) { Serialization.json.decodeFromJsonElement<DecryptedForm>(it) }
 					?: entity
 
 			override suspend fun validateAndMaybeEncrypt(entity: Form): EncryptedForm = when (entity) {
-				is EncryptedForm -> encryptionService.validateEncryptedEntity(
+				is EncryptedForm -> crypto.entity.validateEncryptedEntity(
 					entity.withTypeInfo(),
 					EncryptedForm.serializer(),
 					fieldsToEncrypt,
 				)
 
-				is DecryptedForm -> encryptionService.encryptEntity(
+				is DecryptedForm -> crypto.entity.encryptEntity(
 					entity.withTypeInfo(),
 					DecryptedForm.serializer(),
 					fieldsToEncrypt,
@@ -322,7 +320,7 @@ internal class FormApiImpl(
 		delegates: Map<String, AccessLevel>,
 		secretId: SecretIdOption,
 	): DecryptedForm =
-		encryptionService.entityWithInitialisedEncryptedMetadata(
+		crypto.entity.entityWithInitialisedEncryptedMetadata(
 			(base ?: DecryptedForm(crypto.primitives.strongRandom.randomUUID())).copy(
 				created = base?.created ?: currentEpochMs(),
 				modified = base?.modified ?: currentEpochMs(),
@@ -330,19 +328,19 @@ internal class FormApiImpl(
 				author = base?.author ?: user?.id?.takeIf { autofillAuthor },
 			).withTypeInfo(),
 			patient.id,
-			encryptionService.resolveSecretIdOption(patient.withTypeInfo(), secretId),
+			crypto.entity.resolveSecretIdOption(patient.withTypeInfo(), secretId),
 			initialiseEncryptionKey = true,
 			initialiseSecretId = false,
 			autoDelegations = delegates  + user?.autoDelegationsFor(DelegationTag.MedicalInformation).orEmpty(),
 		).updatedEntity
 
-	private suspend fun encrypt(entity: DecryptedForm) = encryptionService.encryptEntity(
+	private suspend fun encrypt(entity: DecryptedForm) = crypto.entity.encryptEntity(
 		entity.withTypeInfo(),
 		DecryptedForm.serializer(),
 		fieldsToEncrypt,
 	) { Serialization.json.decodeFromJsonElement<EncryptedForm>(it) }
 
-	suspend fun decrypt(entity: EncryptedForm, errorMessage: () -> String): DecryptedForm = encryptionService.tryDecryptEntity(
+	suspend fun decrypt(entity: EncryptedForm, errorMessage: () -> String): DecryptedForm = crypto.entity.tryDecryptEntity(
 		entity.withTypeInfo(),
 		EncryptedForm.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedForm>(it) }

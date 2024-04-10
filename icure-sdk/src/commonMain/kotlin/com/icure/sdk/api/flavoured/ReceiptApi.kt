@@ -1,10 +1,8 @@
 package com.icure.sdk.api.flavoured
 
-import com.icure.kryptom.crypto.CryptoService
 import com.icure.sdk.api.raw.RawReceiptApi
-import com.icure.sdk.crypto.EntityEncryptionService
 import com.icure.sdk.crypto.EntityValidationService
-import com.icure.sdk.crypto.InternalCryptoApi
+import com.icure.sdk.crypto.InternalCryptoServices
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
@@ -96,7 +94,7 @@ private abstract class AbstractReceiptBasicFlavouredApi<E : Receipt>(protected v
 @InternalIcureApi
 private abstract class AbstractReceiptFlavouredApi<E : Receipt>(
 	rawApi: RawReceiptApi,
-	private val encryptionService: EntityEncryptionService,
+	private val crypto: InternalCryptoServices,
 ) : AbstractReceiptBasicFlavouredApi<E>(rawApi), ReceiptFlavouredApi<E> {
 	override suspend fun shareWith(
 		delegateId: String,
@@ -105,7 +103,7 @@ private abstract class AbstractReceiptFlavouredApi<E : Receipt>(
 		shareOwningEntityIds: ShareMetadataBehaviour,
 		requestedPermission: RequestedPermission,
 	): SimpleShareResult<E> =
-		encryptionService.simpleShareOrUpdateEncryptedEntityMetadata(
+		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			receipt.withTypeInfo(),
 			true,
 			mapOf(
@@ -135,22 +133,20 @@ private class AbstractReceiptBasicFlavourlessApi(val rawApi: RawReceiptApi) : Re
 @InternalIcureApi
 internal class ReceiptApiImpl(
 	private val rawApi: RawReceiptApi,
-	private val crypto: InternalCryptoApi,
-	private val encryptionService: EntityEncryptionService,
-	private val cryptoService: CryptoService,
+	private val crypto: InternalCryptoServices,
 	private val fieldsToEncrypt: EncryptedFieldsManifest,
 	private val autofillAuthor: Boolean,
 	) : ReceiptApi, ReceiptFlavouredApi<DecryptedReceipt> by object :
-	AbstractReceiptFlavouredApi<DecryptedReceipt>(rawApi, encryptionService) {
+	AbstractReceiptFlavouredApi<DecryptedReceipt>(rawApi, crypto) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedReceipt): EncryptedReceipt =
-		encryptionService.encryptEntity(
+		crypto.entity.encryptEntity(
 			entity.withTypeInfo(),
 			DecryptedReceipt.serializer(),
 			fieldsToEncrypt,
 		) { Serialization.json.decodeFromJsonElement<EncryptedReceipt>(it) }
 
 	override suspend fun maybeDecrypt(entity: EncryptedReceipt): DecryptedReceipt {
-		return encryptionService.tryDecryptEntity(
+		return crypto.entity.tryDecryptEntity(
 			entity.withTypeInfo(),
 			EncryptedReceipt.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedReceipt>(it) }
@@ -158,30 +154,30 @@ internal class ReceiptApiImpl(
 	}
 }, ReceiptBasicFlavourlessApi by AbstractReceiptBasicFlavourlessApi(rawApi) {
 	override val encrypted: ReceiptFlavouredApi<EncryptedReceipt> =
-		object : AbstractReceiptFlavouredApi<EncryptedReceipt>(rawApi, encryptionService) {
+		object : AbstractReceiptFlavouredApi<EncryptedReceipt>(rawApi, crypto) {
 			override suspend fun validateAndMaybeEncrypt(entity: EncryptedReceipt): EncryptedReceipt =
-				encryptionService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedReceipt.serializer(), fieldsToEncrypt)
+				crypto.entity.validateEncryptedEntity(entity.withTypeInfo(), EncryptedReceipt.serializer(), fieldsToEncrypt)
 
 			override suspend fun maybeDecrypt(entity: EncryptedReceipt): EncryptedReceipt = entity
 		}
 
 	override val tryAndRecover: ReceiptFlavouredApi<Receipt> =
-		object : AbstractReceiptFlavouredApi<Receipt>(rawApi, encryptionService) {
+		object : AbstractReceiptFlavouredApi<Receipt>(rawApi, crypto) {
 			override suspend fun maybeDecrypt(entity: EncryptedReceipt): Receipt =
-				encryptionService.tryDecryptEntity(
+				crypto.entity.tryDecryptEntity(
 					entity.withTypeInfo(),
 					EncryptedReceipt.serializer(),
 				) { Serialization.json.decodeFromJsonElement<DecryptedReceipt>(it) }
 					?: entity
 
 			override suspend fun validateAndMaybeEncrypt(entity: Receipt): EncryptedReceipt = when (entity) {
-				is EncryptedReceipt -> encryptionService.validateEncryptedEntity(
+				is EncryptedReceipt -> crypto.entity.validateEncryptedEntity(
 					entity.withTypeInfo(),
 					EncryptedReceipt.serializer(),
 					fieldsToEncrypt,
 				)
 
-				is DecryptedReceipt -> encryptionService.encryptEntity(
+				is DecryptedReceipt -> crypto.entity.encryptEntity(
 					entity.withTypeInfo(),
 					DecryptedReceipt.serializer(),
 					fieldsToEncrypt,
@@ -206,7 +202,7 @@ internal class ReceiptApiImpl(
 		secretId: SecretIdOption,
 		// Temporary, needs a lot more stuff to match typescript implementation
 	): DecryptedReceipt =
-		encryptionService.entityWithInitialisedEncryptedMetadata(
+		crypto.entity.entityWithInitialisedEncryptedMetadata(
 			(base ?: DecryptedReceipt(crypto.primitives.strongRandom.randomUUID())).copy(
 				created = base?.created ?: currentEpochMs(),
 				modified = base?.modified ?: currentEpochMs(),
@@ -214,7 +210,7 @@ internal class ReceiptApiImpl(
 				author = base?.author ?: user?.id?.takeIf { autofillAuthor },
 			).withTypeInfo(),
 			patient?.id,
-			patient?.let { encryptionService.resolveSecretIdOption(it.withTypeInfo(), secretId) },
+			patient?.let { crypto.entity.resolveSecretIdOption(it.withTypeInfo(), secretId) },
 			initialiseEncryptionKey = true,
 			initialiseSecretId = false,
 			autoDelegations = delegates  + user?.autoDelegationsFor(DelegationTag.MedicalInformation).orEmpty(),
@@ -222,15 +218,15 @@ internal class ReceiptApiImpl(
 
 	override suspend fun getAndDecryptReceiptAttachment(receipt: Receipt, attachmentId: String) =
 		rawApi.getReceiptAttachment(receipt.id, attachmentId).successBody().let {
-			val aesKey = encryptionService.tryDecryptAndImportAnyEncryptionKey(receipt.withTypeInfo())?.key
+			val aesKey = crypto.entity.tryDecryptAndImportAnyEncryptionKey(receipt.withTypeInfo())?.key
 				?: throw EntityEncryptionException("Cannot extract decryption key from receipt")
-			cryptoService.aes.decrypt(it, aesKey)
+			crypto.primitives.aes.decrypt(it, aesKey)
 		}
 
 	override suspend fun encryptAndSetReceiptAttachment(receipt: Receipt, blobType: String, attachment: ByteArray): EncryptedReceipt {
-		val aesKey = encryptionService.tryDecryptAndImportAnyEncryptionKey(receipt.withTypeInfo())?.key
+		val aesKey = crypto.entity.tryDecryptAndImportAnyEncryptionKey(receipt.withTypeInfo())?.key
 			?: throw EntityEncryptionException("Cannot extract encryption key from receipt")
-		val payload = cryptoService.aes.encrypt(attachment, aesKey)
+		val payload = crypto.primitives.aes.encrypt(attachment, aesKey)
 		return rawApi.setReceiptAttachment(
 			receipt.id,
 			receipt.rev ?: throw IllegalArgumentException("Receipt must have a revision set before setting the attachment"),
@@ -239,13 +235,13 @@ internal class ReceiptApiImpl(
 		).successBody()
 	}
 
-	private suspend fun encrypt(entity: DecryptedReceipt) = encryptionService.encryptEntity(
+	private suspend fun encrypt(entity: DecryptedReceipt) = crypto.entity.encryptEntity(
 		entity.withTypeInfo(),
 		DecryptedReceipt.serializer(),
 		fieldsToEncrypt,
 	) { Serialization.json.decodeFromJsonElement<EncryptedReceipt>(it) }
 
-	suspend fun decrypt(entity: EncryptedReceipt, errorMessage: () -> String): DecryptedReceipt = encryptionService.tryDecryptEntity(
+	suspend fun decrypt(entity: EncryptedReceipt, errorMessage: () -> String): DecryptedReceipt = crypto.entity.tryDecryptEntity(
 		entity.withTypeInfo(),
 		EncryptedReceipt.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedReceipt>(it) }

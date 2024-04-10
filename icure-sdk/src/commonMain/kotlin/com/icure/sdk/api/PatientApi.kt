@@ -1,7 +1,7 @@
 package com.icure.sdk.api
 
 import com.icure.sdk.api.raw.RawPatientApi
-import com.icure.sdk.crypto.InternalCryptoApi
+import com.icure.sdk.crypto.InternalCryptoServices
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.EntityAccessInformation
 import com.icure.sdk.crypto.entities.EntityWithTypeInfo
@@ -27,7 +27,7 @@ import kotlinx.serialization.json.decodeFromJsonElement
 @OptIn(InternalIcureApi::class)
 class PatientApi(
 	internal val rawApi: RawPatientApi,
-	private val crypto: InternalCryptoApi
+	private val crypto: InternalCryptoServices
 ) {
 	private val manifest = EncryptedFieldsManifest("Patient.", setOf("note"), emptyMap(), emptyMap(), emptyMap())
 

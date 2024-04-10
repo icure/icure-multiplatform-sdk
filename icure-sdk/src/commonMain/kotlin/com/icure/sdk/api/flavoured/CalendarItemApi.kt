@@ -2,7 +2,7 @@ package com.icure.sdk.api.flavoured
 
 import com.icure.sdk.api.raw.RawCalendarItemApi
 import com.icure.sdk.crypto.BasicCryptoApi
-import com.icure.sdk.crypto.InternalCryptoApi
+import com.icure.sdk.crypto.InternalCryptoServices
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.crypto.entities.SecretIdOption
@@ -156,7 +156,7 @@ private abstract class AbstractCalendarItemBasicFlavouredApi<E : CalendarItem>(
 @InternalIcureApi
 private abstract class AbstractCalendarItemFlavouredApi<E : CalendarItem>(
 	rawApi: RawCalendarItemApi,
-	private val crypto: InternalCryptoApi
+	private val crypto: InternalCryptoServices
 ) : AbstractCalendarItemBasicFlavouredApi<E>(rawApi), CalendarItemFlavouredApi<E> {
 	override suspend fun getSecureDelegationKeys(): List<String> =
 		crypto.exchangeDataManager
@@ -217,7 +217,7 @@ private class AbstractCalendarItemBasicFlavourlessApi(val rawApi: RawCalendarIte
 @InternalIcureApi
 internal class CalendarItemApiImpl(
 	private val rawApi: RawCalendarItemApi,
-	private val crypto: InternalCryptoApi,
+	private val crypto: InternalCryptoServices,
 	private val fieldsToEncrypt: EncryptedFieldsManifest,
 	private val autofillAuthor: Boolean,
 ) : CalendarItemApi, CalendarItemFlavouredApi<DecryptedCalendarItem> by object :

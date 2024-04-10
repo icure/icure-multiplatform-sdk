@@ -6,22 +6,30 @@ import com.icure.sdk.crypto.BasicCryptoApi
 import com.icure.sdk.crypto.DelegationsDeAnonymization
 import com.icure.sdk.crypto.EntityEncryptionService
 import com.icure.sdk.crypto.ExchangeDataManager
-import com.icure.sdk.crypto.InternalCryptoApi
+import com.icure.sdk.crypto.ExchangeKeysManager
+import com.icure.sdk.crypto.InternalCryptoServices
 import com.icure.sdk.crypto.JsonEncryptionService
 import com.icure.sdk.crypto.UserEncryptionKeysManager
 import com.icure.sdk.utils.InternalIcureApi
 
 
+/**
+ * Groups all the internal crypto services.
+ */
 @InternalIcureApi
 class InternalCryptoApiImpl(
 	override val entity: EntityEncryptionService,
 	override val primitives: CryptoService,
 	override val exchangeDataManager: ExchangeDataManager,
+	override val exchangeKeysManager: ExchangeKeysManager,
 	override val jsonEncryption: JsonEncryptionService,
 	override val delegationsDeAnonymization: DelegationsDeAnonymization,
-	private val userEncryptionKeysManager: UserEncryptionKeysManager,
-	private val dataOwnerApi: DataOwnerApi
-) : InternalCryptoApi {
+	override val dataOwnerApi: DataOwnerApi,
+	override val userEncryptionKeysManager: UserEncryptionKeysManager
+) : InternalCryptoServices {
+	/**
+	 * Deletes all cached data in crypto services and reloads as needed.
+	 */
 	override suspend fun forceReload() {
 		dataOwnerApi.clearCurrentDataOwnerIdsCache()
 		userEncryptionKeysManager.reloadKeys()

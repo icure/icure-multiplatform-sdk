@@ -1,9 +1,8 @@
 package com.icure.sdk.api.flavoured
 
 import com.icure.sdk.api.raw.RawTimeTableApi
-import com.icure.sdk.crypto.EntityEncryptionService
 import com.icure.sdk.crypto.EntityValidationService
-import com.icure.sdk.crypto.InternalCryptoApi
+import com.icure.sdk.crypto.InternalCryptoServices
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
@@ -96,7 +95,7 @@ private abstract class AbstractTimeTableBasicFlavouredApi<E : TimeTable>(protect
 @InternalIcureApi
 private abstract class AbstractTimeTableFlavouredApi<E : TimeTable>(
 	rawApi: RawTimeTableApi,
-	private val encryptionService: EntityEncryptionService,
+	private val crypto: InternalCryptoServices,
 ) : AbstractTimeTableBasicFlavouredApi<E>(rawApi), TimeTableFlavouredApi<E> {
 	override suspend fun shareWith(
 		delegateId: String,
@@ -105,7 +104,7 @@ private abstract class AbstractTimeTableFlavouredApi<E : TimeTable>(
 		shareOwningEntityIds: ShareMetadataBehaviour,
 		requestedPermission: RequestedPermission,
 	): SimpleShareResult<E> =
-		encryptionService.simpleShareOrUpdateEncryptedEntityMetadata(
+		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			timeTable.withTypeInfo(),
 			true,
 			mapOf(
@@ -130,21 +129,20 @@ private class AbstractTimeTableBasicFlavourlessApi(val rawApi: RawTimeTableApi) 
 @InternalIcureApi
 internal class TimeTableApiImpl(
 	private val rawApi: RawTimeTableApi,
-	private val crypto: InternalCryptoApi,
-	private val encryptionService: EntityEncryptionService,
+	private val crypto: InternalCryptoServices,
 	private val fieldsToEncrypt: EncryptedFieldsManifest = ENCRYPTED_FIELDS_MANIFEST,
 	private val autofillAuthor: Boolean,
 ) : TimeTableApi, TimeTableFlavouredApi<DecryptedTimeTable> by object :
-	AbstractTimeTableFlavouredApi<DecryptedTimeTable>(rawApi, encryptionService) {
+	AbstractTimeTableFlavouredApi<DecryptedTimeTable>(rawApi, crypto) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedTimeTable): EncryptedTimeTable =
-		encryptionService.encryptEntity(
+		crypto.entity.encryptEntity(
 			entity.withTypeInfo(),
 			DecryptedTimeTable.serializer(),
 			fieldsToEncrypt,
 		) { Serialization.json.decodeFromJsonElement<EncryptedTimeTable>(it) }
 
 	override suspend fun maybeDecrypt(entity: EncryptedTimeTable): DecryptedTimeTable {
-		return encryptionService.tryDecryptEntity(
+		return crypto.entity.tryDecryptEntity(
 			entity.withTypeInfo(),
 			EncryptedTimeTable.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedTimeTable>(it) }
@@ -152,30 +150,30 @@ internal class TimeTableApiImpl(
 	}
 }, TimeTableBasicFlavourlessApi by AbstractTimeTableBasicFlavourlessApi(rawApi) {
 	override val encrypted: TimeTableFlavouredApi<EncryptedTimeTable> =
-		object : AbstractTimeTableFlavouredApi<EncryptedTimeTable>(rawApi, encryptionService) {
+		object : AbstractTimeTableFlavouredApi<EncryptedTimeTable>(rawApi, crypto) {
 			override suspend fun validateAndMaybeEncrypt(entity: EncryptedTimeTable): EncryptedTimeTable =
-				encryptionService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedTimeTable.serializer(), fieldsToEncrypt)
+				crypto.entity.validateEncryptedEntity(entity.withTypeInfo(), EncryptedTimeTable.serializer(), fieldsToEncrypt)
 
 			override suspend fun maybeDecrypt(entity: EncryptedTimeTable): EncryptedTimeTable = entity
 		}
 
 	override val tryAndRecover: TimeTableFlavouredApi<TimeTable> =
-		object : AbstractTimeTableFlavouredApi<TimeTable>(rawApi, encryptionService) {
+		object : AbstractTimeTableFlavouredApi<TimeTable>(rawApi, crypto) {
 			override suspend fun maybeDecrypt(entity: EncryptedTimeTable): TimeTable =
-				encryptionService.tryDecryptEntity(
+				crypto.entity.tryDecryptEntity(
 					entity.withTypeInfo(),
 					EncryptedTimeTable.serializer(),
 				) { Serialization.json.decodeFromJsonElement<DecryptedTimeTable>(it) }
 					?: entity
 
 			override suspend fun validateAndMaybeEncrypt(entity: TimeTable): EncryptedTimeTable = when (entity) {
-				is EncryptedTimeTable -> encryptionService.validateEncryptedEntity(
+				is EncryptedTimeTable -> crypto.entity.validateEncryptedEntity(
 					entity.withTypeInfo(),
 					EncryptedTimeTable.serializer(),
 					fieldsToEncrypt,
 				)
 
-				is DecryptedTimeTable -> encryptionService.encryptEntity(
+				is DecryptedTimeTable -> crypto.entity.encryptEntity(
 					entity.withTypeInfo(),
 					DecryptedTimeTable.serializer(),
 					fieldsToEncrypt,
@@ -199,7 +197,7 @@ internal class TimeTableApiImpl(
 		delegates: Map<String, AccessLevel>,
 		secretId: SecretIdOption,
 	): DecryptedTimeTable =
-		encryptionService.entityWithInitialisedEncryptedMetadata(
+		crypto.entity.entityWithInitialisedEncryptedMetadata(
 			(base ?: DecryptedTimeTable(crypto.primitives.strongRandom.randomUUID())).copy(
 				created = base?.created ?: currentEpochMs(),
 				modified = base?.modified ?: currentEpochMs(),
@@ -207,19 +205,19 @@ internal class TimeTableApiImpl(
 				author = base?.author ?: user?.id?.takeIf { autofillAuthor },
 			).withTypeInfo(),
 			patient?.id,
-			patient?.let { encryptionService.resolveSecretIdOption(it.withTypeInfo(), secretId) },
+			patient?.let { crypto.entity.resolveSecretIdOption(it.withTypeInfo(), secretId) },
 			initialiseEncryptionKey = true,
 			initialiseSecretId = false,
 			autoDelegations = delegates  + user?.autoDelegationsFor(DelegationTag.AdministrativeData).orEmpty(),
 		).updatedEntity
 
-	private suspend fun encrypt(entity: DecryptedTimeTable) = encryptionService.encryptEntity(
+	private suspend fun encrypt(entity: DecryptedTimeTable) = crypto.entity.encryptEntity(
 		entity.withTypeInfo(),
 		DecryptedTimeTable.serializer(),
 		fieldsToEncrypt,
 	) { Serialization.json.decodeFromJsonElement<EncryptedTimeTable>(it) }
 
-	suspend fun decrypt(entity: EncryptedTimeTable, errorMessage: () -> String): DecryptedTimeTable = encryptionService.tryDecryptEntity(
+	suspend fun decrypt(entity: EncryptedTimeTable, errorMessage: () -> String): DecryptedTimeTable = crypto.entity.tryDecryptEntity(
 		entity.withTypeInfo(),
 		EncryptedTimeTable.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedTimeTable>(it) }

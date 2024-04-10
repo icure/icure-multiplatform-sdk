@@ -35,8 +35,8 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 				mapOf(delegate.dataOwnerId to AccessLevel.Write)
 			)
 		).shouldNotBeNull()
-		val he = delegatorApi.healthElement.createHealthcareElement(
-			delegatorApi.healthElement.withEncryptionMetadata(
+		val he = delegatorApi.healthcareElement.createHealthcareElement(
+			delegatorApi.healthcareElement.withEncryptionMetadata(
 				base = DecryptedHealthElement(
 					id = UUID.randomUUID().toString(),
 					note = heNote,
@@ -50,13 +50,13 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 		delegateApi.patient.getAndDecrypt(patient.id).shouldNotBeNull().run {
 			note shouldBe patientNote
 		}
-		delegateApi.healthElement.getHealthcareElement(he.id).shouldNotBeNull().run {
+		delegateApi.healthcareElement.getHealthcareElement(he.id).shouldNotBeNull().run {
 			note shouldBe heNote
 		}
 		delegatorApi.patient.getAndDecrypt(patient.id).shouldNotBeNull().run {
 			note shouldBe patientNote
 		}
-		delegatorApi.healthElement.getHealthcareElement(he.id).shouldNotBeNull().run {
+		delegatorApi.healthcareElement.getHealthcareElement(he.id).shouldNotBeNull().run {
 			note shouldBe heNote
 		}
 	}
@@ -72,8 +72,8 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 			))
 		).shouldNotBeNull()
 		val sfk = delegatorApi.patient.getSecretIdsOf(patient).also { it shouldHaveSize 1 }
-		val he = delegatorApi.healthElement.createHealthcareElement(
-			delegatorApi.healthElement.withEncryptionMetadata(
+		val he = delegatorApi.healthcareElement.createHealthcareElement(
+			delegatorApi.healthcareElement.withEncryptionMetadata(
 				base = DecryptedHealthElement(
 					id = UUID.randomUUID().toString(),
 					note = heNote,
@@ -87,7 +87,7 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 			patient,
 			sfk
 		).shouldNotBeNull()
-		delegatorApi.healthElement.shareWith(
+		delegatorApi.healthcareElement.shareWith(
 			delegate.dataOwnerId,
 			he
 		).shouldNotBeNull()
@@ -95,13 +95,13 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 		delegateApi.patient.getAndDecrypt(patient.id).shouldNotBeNull().run {
 			note shouldBe patientNote
 		}
-		delegateApi.healthElement.getHealthcareElement(he.id).shouldNotBeNull().run {
+		delegateApi.healthcareElement.getHealthcareElement(he.id).shouldNotBeNull().run {
 			note shouldBe heNote
 		}
 		delegatorApi.patient.getAndDecrypt(patient.id).shouldNotBeNull().run {
 			note shouldBe patientNote
 		}
-		delegatorApi.healthElement.getHealthcareElement(he.id).shouldNotBeNull().run {
+		delegatorApi.healthcareElement.getHealthcareElement(he.id).shouldNotBeNull().run {
 			note shouldBe heNote
 		}
 	}

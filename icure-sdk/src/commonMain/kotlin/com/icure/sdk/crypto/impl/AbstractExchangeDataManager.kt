@@ -8,24 +8,24 @@ import com.icure.sdk.api.extended.DataOwnerApi
 import com.icure.sdk.crypto.BaseExchangeDataManager
 import com.icure.sdk.crypto.CryptoStrategies
 import com.icure.sdk.crypto.ExchangeDataManager
+import com.icure.sdk.crypto.UserEncryptionKeysManager
+import com.icure.sdk.crypto.UserSignatureKeysManager
 import com.icure.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
 import com.icure.sdk.crypto.entities.IcureKeyInfo
 import com.icure.sdk.crypto.entities.RsaSignatureKeysSet
 import com.icure.sdk.crypto.entities.UnencryptedExchangeDataContent
-import com.icure.sdk.crypto.UserEncryptionKeysManager
-import com.icure.sdk.crypto.UserSignatureKeysManager
 import com.icure.sdk.crypto.entities.VerifiedRsaEncryptionKeysSet
 import com.icure.sdk.crypto.entities.toPrivateKeyInfo
 import com.icure.sdk.crypto.entities.toPublicKeyInfo
-import com.icure.sdk.model.specializations.AccessControlSecret
 import com.icure.sdk.model.ExchangeData
-import com.icure.sdk.model.specializations.SpkiHexString
 import com.icure.sdk.model.extensions.algorithmOfEncryptionKey
+import com.icure.sdk.model.specializations.AccessControlSecret
+import com.icure.sdk.model.specializations.SpkiHexString
 import com.icure.sdk.utils.InternalIcureApi
 
 @InternalIcureApi
 abstract class AbstractExchangeDataManager(
-	protected val base: BaseExchangeDataManager,
+	override val base: BaseExchangeDataManager,
 	private val userEncryptionKeys: UserEncryptionKeysManager,
 	private val signatureKeys: UserSignatureKeysManager,
 	private val cryptoStrategies: CryptoStrategies,

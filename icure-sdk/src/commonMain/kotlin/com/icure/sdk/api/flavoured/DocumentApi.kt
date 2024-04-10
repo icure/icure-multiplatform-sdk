@@ -1,10 +1,8 @@
 package com.icure.sdk.api.flavoured
 
-import com.icure.kryptom.crypto.CryptoService
 import com.icure.sdk.api.raw.RawDocumentApi
-import com.icure.sdk.crypto.EntityEncryptionService
 import com.icure.sdk.crypto.EntityValidationService
-import com.icure.sdk.crypto.InternalCryptoApi
+import com.icure.sdk.crypto.InternalCryptoServices
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
@@ -204,7 +202,7 @@ private abstract class AbstractDocumentBasicFlavouredApi<E : Document>(protected
 @InternalIcureApi
 private abstract class AbstractDocumentFlavouredApi<E : Document>(
 	rawApi: RawDocumentApi,
-	private val encryptionService: EntityEncryptionService,
+	private val crypto: InternalCryptoServices,
 ) : AbstractDocumentBasicFlavouredApi<E>(rawApi), DocumentFlavouredApi<E> {
 	override suspend fun shareWith(
 		delegateId: String,
@@ -213,7 +211,7 @@ private abstract class AbstractDocumentFlavouredApi<E : Document>(
 		shareOwningEntityIds: ShareMetadataBehaviour,
 		requestedPermission: RequestedPermission,
 	): SimpleShareResult<E> =
-		encryptionService.simpleShareOrUpdateEncryptedEntityMetadata(
+		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			document.withTypeInfo(),
 			true,
 			mapOf(
@@ -245,22 +243,20 @@ private class AbstractDocumentBasicFlavourlessApi(val rawApi: RawDocumentApi) : 
 @InternalIcureApi
 internal class DocumentApiImpl(
 	private val rawApi: RawDocumentApi,
-	private val crypto: InternalCryptoApi,
-	private val encryptionService: EntityEncryptionService,
-	private val cryptoService: CryptoService,
+	private val crypto: InternalCryptoServices,
 	private val fieldsToEncrypt: EncryptedFieldsManifest,
 	private val autofillAuthor: Boolean,
 ) : DocumentApi, DocumentFlavouredApi<DecryptedDocument> by object :
-	AbstractDocumentFlavouredApi<DecryptedDocument>(rawApi, encryptionService) {
+	AbstractDocumentFlavouredApi<DecryptedDocument>(rawApi, crypto) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedDocument): EncryptedDocument =
-		encryptionService.encryptEntity(
+		crypto.entity.encryptEntity(
 			entity.withTypeInfo(),
 			DecryptedDocument.serializer(),
 			fieldsToEncrypt,
 		) { Serialization.json.decodeFromJsonElement<EncryptedDocument>(it) }
 
 	override suspend fun maybeDecrypt(entity: EncryptedDocument): DecryptedDocument {
-		return encryptionService.tryDecryptEntity(
+		return crypto.entity.tryDecryptEntity(
 			entity.withTypeInfo(),
 			EncryptedDocument.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedDocument>(it) }
@@ -268,30 +264,30 @@ internal class DocumentApiImpl(
 	}
 }, DocumentBasicFlavourlessApi by AbstractDocumentBasicFlavourlessApi(rawApi) {
 	override val encrypted: DocumentFlavouredApi<EncryptedDocument> =
-		object : AbstractDocumentFlavouredApi<EncryptedDocument>(rawApi, encryptionService) {
+		object : AbstractDocumentFlavouredApi<EncryptedDocument>(rawApi, crypto) {
 			override suspend fun validateAndMaybeEncrypt(entity: EncryptedDocument): EncryptedDocument =
-				encryptionService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedDocument.serializer(), fieldsToEncrypt)
+				crypto.entity.validateEncryptedEntity(entity.withTypeInfo(), EncryptedDocument.serializer(), fieldsToEncrypt)
 
 			override suspend fun maybeDecrypt(entity: EncryptedDocument): EncryptedDocument = entity
 		}
 
 	override val tryAndRecover: DocumentFlavouredApi<Document> =
-		object : AbstractDocumentFlavouredApi<Document>(rawApi, encryptionService) {
+		object : AbstractDocumentFlavouredApi<Document>(rawApi, crypto) {
 			override suspend fun maybeDecrypt(entity: EncryptedDocument): Document =
-				encryptionService.tryDecryptEntity(
+				crypto.entity.tryDecryptEntity(
 					entity.withTypeInfo(),
 					EncryptedDocument.serializer(),
 				) { Serialization.json.decodeFromJsonElement<DecryptedDocument>(it) }
 					?: entity
 
 			override suspend fun validateAndMaybeEncrypt(entity: Document): EncryptedDocument = when (entity) {
-				is EncryptedDocument -> encryptionService.validateEncryptedEntity(
+				is EncryptedDocument -> crypto.entity.validateEncryptedEntity(
 					entity.withTypeInfo(),
 					EncryptedDocument.serializer(),
 					fieldsToEncrypt,
 				)
 
-				is DecryptedDocument -> encryptionService.encryptEntity(
+				is DecryptedDocument -> crypto.entity.encryptEntity(
 					entity.withTypeInfo(),
 					DecryptedDocument.serializer(),
 					fieldsToEncrypt,
@@ -316,7 +312,7 @@ internal class DocumentApiImpl(
 		secretId: SecretIdOption,
 		// Temporary, needs a lot more stuff to match typescript implementation
 	): DecryptedDocument =
-		encryptionService.entityWithInitialisedEncryptedMetadata(
+		crypto.entity.entityWithInitialisedEncryptedMetadata(
 			(base ?: DecryptedDocument(crypto.primitives.strongRandom.randomUUID())).copy(
 				created = base?.created ?: currentEpochMs(),
 				modified = base?.modified ?: currentEpochMs(),
@@ -324,7 +320,7 @@ internal class DocumentApiImpl(
 				author = base?.author ?: user?.id?.takeIf { autofillAuthor },
 			).withTypeInfo(),
 			message?.id,
-			message?.let { encryptionService.resolveSecretIdOption(it.withTypeInfo(), secretId) },
+			message?.let { crypto.entity.resolveSecretIdOption(it.withTypeInfo(), secretId) },
 			initialiseEncryptionKey = true,
 			initialiseSecretId = false,
 			autoDelegations = delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation).orEmpty(),
@@ -336,13 +332,13 @@ internal class DocumentApiImpl(
 		decryptedDocumentValidator: suspend (document: ByteArray) -> Boolean
 	) =
 		rawApi.getMainAttachment(document.id, attachmentId).successBody().let {
-			encryptionService.decryptAttachmentOf(document.withTypeInfo(), it, decryptedDocumentValidator)
+			crypto.entity.decryptAttachmentOf(document.withTypeInfo(), it, decryptedDocumentValidator)
 		}
 
 	override suspend fun encryptAndSetMainAttachment(document: Document, utis: List<String>, attachment: ByteArray): EncryptedDocument {
-		val aesKey = encryptionService.tryDecryptAndImportAnyEncryptionKey(document.withTypeInfo())?.key
+		val aesKey = crypto.entity.tryDecryptAndImportAnyEncryptionKey(document.withTypeInfo())?.key
 			?: throw EntityEncryptionException("Cannot extract encryption key from document")
-		val payload = cryptoService.aes.encrypt(attachment, aesKey)
+		val payload = crypto.primitives.aes.encrypt(attachment, aesKey)
 		return rawApi.setDocumentAttachment(
 			document.id,
 			document.rev ?: throw IllegalArgumentException("Document must have a revision set before setting the attachment"),
@@ -360,7 +356,7 @@ internal class DocumentApiImpl(
 		decryptedDocumentValidator: suspend (document: ByteArray) -> Boolean
 	) =
 		rawApi.getSecondaryAttachment(document.id, key, attachmentId).successBody().let {
-			encryptionService.decryptAttachmentOf(document.withTypeInfo(), it, decryptedDocumentValidator)
+			crypto.entity.decryptAttachmentOf(document.withTypeInfo(), it, decryptedDocumentValidator)
 		}
 
 	override suspend fun encryptAndSetSecondaryAttachment(
@@ -369,9 +365,9 @@ internal class DocumentApiImpl(
 		utis: List<String>,
 		attachment: ByteArray,
 	): EncryptedDocument {
-		val aesKey = encryptionService.tryDecryptAndImportAnyEncryptionKey(document.withTypeInfo())?.key
+		val aesKey = crypto.entity.tryDecryptAndImportAnyEncryptionKey(document.withTypeInfo())?.key
 			?: throw EntityEncryptionException("Cannot extract encryption key from document")
-		val payload = cryptoService.aes.encrypt(attachment, aesKey)
+		val payload = crypto.primitives.aes.encrypt(attachment, aesKey)
 		return rawApi.setSecondaryAttachment(
 			document.id,
 			key,
@@ -383,13 +379,13 @@ internal class DocumentApiImpl(
 		).successBody()
 	}
 
-	private suspend fun encrypt(entity: DecryptedDocument) = encryptionService.encryptEntity(
+	private suspend fun encrypt(entity: DecryptedDocument) = crypto.entity.encryptEntity(
 		entity.withTypeInfo(),
 		DecryptedDocument.serializer(),
 		fieldsToEncrypt,
 	) { Serialization.json.decodeFromJsonElement<EncryptedDocument>(it) }
 
-	suspend fun decrypt(entity: EncryptedDocument, errorMessage: () -> String): DecryptedDocument = encryptionService.tryDecryptEntity(
+	suspend fun decrypt(entity: EncryptedDocument, errorMessage: () -> String): DecryptedDocument = crypto.entity.tryDecryptEntity(
 		entity.withTypeInfo(),
 		EncryptedDocument.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedDocument>(it) }

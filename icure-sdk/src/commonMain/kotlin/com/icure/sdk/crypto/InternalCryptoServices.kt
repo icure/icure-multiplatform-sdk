@@ -1,16 +1,20 @@
 package com.icure.sdk.crypto
 
 import com.icure.kryptom.crypto.CryptoService
+import com.icure.sdk.api.extended.DataOwnerApi
 import com.icure.sdk.utils.InternalIcureApi
 
 @InternalIcureApi
-interface InternalCryptoApi : BasicCryptoApi{
+interface InternalCryptoServices : BasicCryptoApi{
 	suspend fun forceReload()
 
 	val entity: EntityEncryptionService
 	val primitives: CryptoService
 	val exchangeDataManager: ExchangeDataManager
+	val exchangeKeysManager: ExchangeKeysManager
 	val delegationsDeAnonymization: DelegationsDeAnonymization
+	val dataOwnerApi: DataOwnerApi
+	val userEncryptionKeysManager: UserEncryptionKeysManager
 
 	override val validationService: EntityValidationService
 		get() = entity

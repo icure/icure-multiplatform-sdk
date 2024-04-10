@@ -34,8 +34,8 @@ class PatientUserTest : StringSpec({
 		val patientApi = patientDetails.api()
 		// Data owner api does not decrypt, so we can use that since the current patient can't decrypt his own info
 		val encryptedPatient = patientApi.dataOwner.getCurrentDataOwner().shouldBeInstanceOf<DataOwnerWithType.PatientDataOwner>().dataOwner
-		val createdData = patientApi.healthElement.createHealthcareElement(
-			patientApi.healthElement.withEncryptionMetadata(
+		val createdData = patientApi.healthcareElement.createHealthcareElement(
+			patientApi.healthcareElement.withEncryptionMetadata(
 				DecryptedHealthElement(
 					id = UUID.randomUUID().toString(),
 					note = "Some note"
@@ -44,7 +44,7 @@ class PatientUserTest : StringSpec({
 				patientApi.user.getCurrentUser(),
 			)
 		).shouldNotBeNull()
-		val retrievedData = patientApi.healthElement.findHealthcareElementsByHcPartyPatient(
+		val retrievedData = patientApi.healthcareElement.findHealthcareElementsByHcPartyPatient(
 			encryptedPatient.id,
 			encryptedPatient,
 			limit = 100

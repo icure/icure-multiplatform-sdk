@@ -1,9 +1,8 @@
 package com.icure.sdk.api.flavoured
 
 import com.icure.sdk.api.raw.RawMessageApi
-import com.icure.sdk.crypto.EntityEncryptionService
 import com.icure.sdk.crypto.EntityValidationService
-import com.icure.sdk.crypto.InternalCryptoApi
+import com.icure.sdk.crypto.InternalCryptoServices
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
@@ -210,7 +209,7 @@ private abstract class AbstractMessageBasicFlavouredApi<E : Message>(protected v
 @InternalIcureApi
 private abstract class AbstractMessageFlavouredApi<E : Message>(
 	rawApi: RawMessageApi,
-	private val encryptionService: EntityEncryptionService,
+	private val crypto: InternalCryptoServices,
 ) : AbstractMessageBasicFlavouredApi<E>(rawApi), MessageFlavouredApi<E> {
 	override suspend fun shareWith(
 		delegateId: String,
@@ -220,7 +219,7 @@ private abstract class AbstractMessageFlavouredApi<E : Message>(
 		shareOwningEntityIds: ShareMetadataBehaviour,
 		requestedPermission: RequestedPermission,
 	): SimpleShareResult<E> =
-		encryptionService.simpleShareOrUpdateEncryptedEntityMetadata(
+		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			message.withTypeInfo(),
 			false,
 			mapOf(
@@ -246,21 +245,20 @@ private class AbstractMessageBasicFlavourlessApi(val rawApi: RawMessageApi) : Me
 @InternalIcureApi
 internal class MessageApiImpl(
 	private val rawApi: RawMessageApi,
-	private val crypto: InternalCryptoApi,
-	private val encryptionService: EntityEncryptionService,
+	private val crypto: InternalCryptoServices,
 	private val fieldsToEncrypt: EncryptedFieldsManifest = ENCRYPTED_FIELDS_MANIFEST,
 	private val autofillAuthor: Boolean,
 	) : MessageApi, MessageFlavouredApi<DecryptedMessage> by object :
-	AbstractMessageFlavouredApi<DecryptedMessage>(rawApi, encryptionService) {
+	AbstractMessageFlavouredApi<DecryptedMessage>(rawApi, crypto) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedMessage): EncryptedMessage =
-		encryptionService.encryptEntity(
+		crypto.entity.encryptEntity(
 			entity.withTypeInfo(),
 			DecryptedMessage.serializer(),
 			fieldsToEncrypt,
 		) { Serialization.json.decodeFromJsonElement<EncryptedMessage>(it) }
 
 	override suspend fun maybeDecrypt(entity: EncryptedMessage): DecryptedMessage {
-		return encryptionService.tryDecryptEntity(
+		return crypto.entity.tryDecryptEntity(
 			entity.withTypeInfo(),
 			EncryptedMessage.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedMessage>(it) }
@@ -268,30 +266,30 @@ internal class MessageApiImpl(
 	}
 }, MessageBasicFlavourlessApi by AbstractMessageBasicFlavourlessApi(rawApi) {
 	override val encrypted: MessageFlavouredApi<EncryptedMessage> =
-		object : AbstractMessageFlavouredApi<EncryptedMessage>(rawApi, encryptionService) {
+		object : AbstractMessageFlavouredApi<EncryptedMessage>(rawApi, crypto) {
 			override suspend fun validateAndMaybeEncrypt(entity: EncryptedMessage): EncryptedMessage =
-				encryptionService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedMessage.serializer(), fieldsToEncrypt)
+				crypto.entity.validateEncryptedEntity(entity.withTypeInfo(), EncryptedMessage.serializer(), fieldsToEncrypt)
 
 			override suspend fun maybeDecrypt(entity: EncryptedMessage): EncryptedMessage = entity
 		}
 
 	override val tryAndRecover: MessageFlavouredApi<Message> =
-		object : AbstractMessageFlavouredApi<Message>(rawApi, encryptionService) {
+		object : AbstractMessageFlavouredApi<Message>(rawApi, crypto) {
 			override suspend fun maybeDecrypt(entity: EncryptedMessage): Message =
-				encryptionService.tryDecryptEntity(
+				crypto.entity.tryDecryptEntity(
 					entity.withTypeInfo(),
 					EncryptedMessage.serializer(),
 				) { Serialization.json.decodeFromJsonElement<DecryptedMessage>(it) }
 					?: entity
 
 			override suspend fun validateAndMaybeEncrypt(entity: Message): EncryptedMessage = when (entity) {
-				is EncryptedMessage -> encryptionService.validateEncryptedEntity(
+				is EncryptedMessage -> crypto.entity.validateEncryptedEntity(
 					entity.withTypeInfo(),
 					EncryptedMessage.serializer(),
 					fieldsToEncrypt,
 				)
 
-				is DecryptedMessage -> encryptionService.encryptEntity(
+				is DecryptedMessage -> crypto.entity.encryptEntity(
 					entity.withTypeInfo(),
 					DecryptedMessage.serializer(),
 					fieldsToEncrypt,
@@ -319,7 +317,7 @@ internal class MessageApiImpl(
 		secretId: SecretIdOption,
 		// Temporary, needs a lot more stuff to match typescript implementation
 	): DecryptedMessage =
-		encryptionService.entityWithInitialisedEncryptedMetadata(
+		crypto.entity.entityWithInitialisedEncryptedMetadata(
 			(base ?: DecryptedMessage(crypto.primitives.strongRandom.randomUUID())).copy(
 				created = base?.created ?: currentEpochMs(),
 				modified = base?.modified ?: currentEpochMs(),
@@ -327,19 +325,19 @@ internal class MessageApiImpl(
 				author = base?.author ?: user?.id?.takeIf { autofillAuthor },
 			).withTypeInfo(),
 			patient?.id,
-			patient?.let { encryptionService.resolveSecretIdOption(it.withTypeInfo(), secretId) },
+			patient?.let { crypto.entity.resolveSecretIdOption(it.withTypeInfo(), secretId) },
 			initialiseEncryptionKey = true,
 			initialiseSecretId = true,
 			autoDelegations = delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation).orEmpty(),
 		).updatedEntity
 
-	private suspend fun encrypt(entity: DecryptedMessage) = encryptionService.encryptEntity(
+	private suspend fun encrypt(entity: DecryptedMessage) = crypto.entity.encryptEntity(
 		entity.withTypeInfo(),
 		DecryptedMessage.serializer(),
 		fieldsToEncrypt,
 	) { Serialization.json.decodeFromJsonElement<EncryptedMessage>(it) }
 
-	suspend fun decrypt(entity: EncryptedMessage, errorMessage: () -> String): DecryptedMessage = encryptionService.tryDecryptEntity(
+	suspend fun decrypt(entity: EncryptedMessage, errorMessage: () -> String): DecryptedMessage = crypto.entity.tryDecryptEntity(
 		entity.withTypeInfo(),
 		EncryptedMessage.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedMessage>(it) }

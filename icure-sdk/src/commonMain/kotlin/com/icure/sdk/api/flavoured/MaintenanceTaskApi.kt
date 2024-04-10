@@ -2,7 +2,7 @@ package com.icure.sdk.api.flavoured
 
 import com.icure.sdk.api.raw.RawMaintenanceTaskApi
 import com.icure.sdk.crypto.BasicCryptoApi
-import com.icure.sdk.crypto.InternalCryptoApi
+import com.icure.sdk.crypto.InternalCryptoServices
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleDelegateShareOptions
@@ -104,7 +104,7 @@ private abstract class AbstractMaintenanceTaskBasicFlavouredApi<E : MaintenanceT
 @InternalIcureApi
 private abstract class AbstractMaintenanceTaskFlavouredApi<E : MaintenanceTask>(
 	rawApi: RawMaintenanceTaskApi,
-	private val crypto: InternalCryptoApi
+	private val crypto: InternalCryptoServices
 ) : AbstractMaintenanceTaskBasicFlavouredApi<E>(rawApi), MaintenanceTaskFlavouredApi<E> {
 	override suspend fun shareWith(
 		delegateId: String,
@@ -138,7 +138,7 @@ private class AbstractMaintenanceTaskBasicFlavourlessApi(val rawApi: RawMaintena
 @InternalIcureApi
 internal class MaintenanceTaskApiImpl(
 	private val rawApi: RawMaintenanceTaskApi,
-	private val crypto: InternalCryptoApi,
+	private val crypto: InternalCryptoServices,
 	private val fieldsToEncrypt: EncryptedFieldsManifest,
 	private val autofillAuthor: Boolean,
 ) : MaintenanceTaskApi, MaintenanceTaskFlavouredApi<DecryptedMaintenanceTask> by object :
