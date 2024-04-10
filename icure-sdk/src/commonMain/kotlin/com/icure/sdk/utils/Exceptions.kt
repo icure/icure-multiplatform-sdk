@@ -57,6 +57,21 @@ inline fun ensure(value: Boolean, lazyMessage: () -> String) {
 	}
 }
 
+/**
+ * Checks an invariant at runtime. If value is not true there is an implementation error on iCure's side.
+ */
+@OptIn(ExperimentalContracts::class)
+@InternalIcureApi
+inline fun ensureEncryption(value: Boolean, lazyMessage: () -> String) {
+	contract {
+		returns() implies value
+	}
+	if (!value) {
+		throw EntityEncryptionException(lazyMessage())
+	}
+}
+
+
 @OptIn(ExperimentalContracts::class)
 @InternalIcureApi
 inline fun <T> ensureNonNull(value: T?, lazyMessage: () -> String): T {

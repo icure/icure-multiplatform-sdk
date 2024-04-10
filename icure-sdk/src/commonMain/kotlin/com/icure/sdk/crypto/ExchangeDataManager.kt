@@ -1,9 +1,9 @@
 package com.icure.sdk.crypto
 
+import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.crypto.entities.ExchangeDataWithPotentiallyDecryptedContent
 import com.icure.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
 import com.icure.sdk.model.specializations.Base64String
-import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.model.specializations.SecureDelegationKeyString
 import com.icure.sdk.model.specializations.SpkiHexString
 import com.icure.sdk.utils.InternalIcureApi
@@ -14,6 +14,8 @@ import com.icure.sdk.utils.ResourceNotFoundException
  */
 @InternalIcureApi
 interface ExchangeDataManager {
+	val base: BaseExchangeDataManager
+
 	/**
 	 * Updates all exchange data between the current data owner and another data owner to allow the other data owner to access existing exchange data
 	 * using a new public key.

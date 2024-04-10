@@ -14,6 +14,7 @@ import com.icure.sdk.model.requests.EntityBulkShareResult
 import com.icure.sdk.model.requests.topic.AddParticipant
 import com.icure.sdk.model.requests.topic.RemoveParticipant
 import com.icure.sdk.utils.InternalIcureApi
+import io.ktor.client.HttpClient
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
@@ -34,9 +35,10 @@ class RawTopicApi(
 	private val apiUrl: String,
 	private val authService: AuthService,
 	private val accessControlKeysHeadersProvider: AccessControlKeysHeadersProvider?,
+	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
-) : BaseRawApi(additionalHeaders, timeout) {
+) : BaseRawApi(httpClient, additionalHeaders, timeout) {
 	// region cloud endpoints
 
 	suspend fun getTopic(topicId: String): HttpResponse<EncryptedTopic> =
@@ -117,7 +119,7 @@ class RawTopicApi(
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		filterChain: FilterChain<EncryptedTopic>,
-	): HttpResponse<PaginatedList<EncryptedTopic, *>> =
+	): HttpResponse<PaginatedList<EncryptedTopic>> =
 		post {
 			url {
 				takeFrom(apiUrl)

@@ -10,8 +10,8 @@ import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
-import com.icure.sdk.model.specializations.JsonString
 import com.icure.sdk.utils.InternalIcureApi
+import io.ktor.client.HttpClient
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
@@ -32,9 +32,10 @@ class RawArticleApi(
 	private val apiUrl: String,
 	private val authService: AuthService,
 	private val accessControlKeysHeadersProvider: AccessControlKeysHeadersProvider?,
+	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
-) : BaseRawApi(additionalHeaders, timeout) {
+) : BaseRawApi(httpClient, additionalHeaders, timeout) {
 	override suspend fun getAccessControlKeysHeaderValues(): List<String>? =
 		accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithEncryptionMetadataTypeName.Article)
 
@@ -95,7 +96,7 @@ class RawArticleApi(
 	suspend fun getArticles(
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedArticle, JsonString>> =
+	): HttpResponse<PaginatedList<EncryptedArticle>> =
 		get {
 			url {
 				takeFrom(apiUrl)

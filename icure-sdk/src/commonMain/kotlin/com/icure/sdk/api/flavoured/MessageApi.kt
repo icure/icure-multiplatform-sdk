@@ -1,8 +1,8 @@
 package com.icure.sdk.api.flavoured
 
 import com.icure.sdk.api.raw.RawMessageApi
-import com.icure.sdk.crypto.EntityEncryptionService
 import com.icure.sdk.crypto.EntityValidationService
+import com.icure.sdk.crypto.InternalCryptoServices
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
@@ -20,12 +20,16 @@ import com.icure.sdk.model.User
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.embed.DelegationTag
+import com.icure.sdk.model.extensions.autoDelegationsFor
+import com.icure.sdk.model.extensions.dataOwnerId
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
+import com.icure.sdk.utils.currentEpochMs
+import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.decodeFromJsonElement
 
 @OptIn(InternalIcureApi::class)
@@ -43,38 +47,38 @@ interface MessageBasicFlavourlessApi {
 interface MessageBasicFlavouredApi<E : Message> {
 	suspend fun modifyMessage(entity: E): E
 	suspend fun getMessage(entityId: String): E
-	suspend fun filterMessagesBy(filterChain: FilterChain<EncryptedMessage>, startDocumentId: String?, limit: Int?): PaginatedList<E, *>
+	suspend fun filterMessagesBy(filterChain: FilterChain<EncryptedMessage>, startDocumentId: String?, limit: Int?): PaginatedList<E>
 	suspend fun findMessagesByHcPartyPatientForeignKey(
 		secretPatientKey: String,
-		startKey: String?,
+		startKey: JsonElement?,
 		startDocumentId: String?,
 		limit: Int?,
-	): PaginatedList<E, *>
+	): PaginatedList<E>
 
 	suspend fun listMessagesByTransportGuids(hcPartyId: String, transportGuids: List<String>): List<E>
 	suspend fun findMessagesByHCPartyPatientForeignKeys(secretPatientKeys: List<String>): List<E>
-	suspend fun findMessages(startKey: String?, startDocumentId: String?, limit: Int?): PaginatedList<E, *>
+	suspend fun findMessages(startKey: JsonElement?, startDocumentId: String?, limit: Int?): PaginatedList<E>
 	suspend fun getChildrenMessages(messageId: String): List<E>
 	suspend fun getMessagesChildren(messageIds: List<String>): List<E>
 	suspend fun listMessagesByInvoices(invoiceIds: List<String>): List<E>
-	suspend fun findMessagesByTransportGuid(transportGuid: String): PaginatedList<E, *>
+	suspend fun findMessagesByTransportGuid(transportGuid: String): PaginatedList<E>
 	suspend fun findMessagesByTransportGuidSentDate(
 		transportGuid: String,
 		from: Long,
 		to: Long,
-		startKey: String? = null,
+		startKey: JsonElement? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		hcpId: String? = null,
-	): PaginatedList<E, *>
+	): PaginatedList<E>
 
-	suspend fun findMessagesByToAddress(toAddress: String, startKey: String?, startDocumentId: String?, limit: Int?): PaginatedList<E, *>
+	suspend fun findMessagesByToAddress(toAddress: String, startKey: JsonElement?, startDocumentId: String?, limit: Int?): PaginatedList<E>
 	suspend fun findMessagesByFromAddress(
 		fromAddress: String,
-		startKey: String?,
+		startKey: JsonElement?,
 		startDocumentId: String?,
 		limit: Int?,
-    ): PaginatedList<E, *>
+    ): PaginatedList<E>
 
 	suspend fun setMessagesStatusBits(entityIds: List<String>, statusBits: Int): List<E>
 	suspend fun setMessagesReadStatus(entityIds: List<String>, time: Long?, readStatus: Boolean, userId: String): List<E>
@@ -84,7 +88,8 @@ interface MessageBasicFlavouredApi<E : Message> {
 interface MessageFlavouredApi<E : Message> : MessageBasicFlavouredApi<E> {
 	suspend fun shareWith(
 		delegateId: String,
-		healthcareElement: E,
+		message: E,
+		shareSecretIds: Set<String>,
 		shareEncryptionKeys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
 		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
 		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
@@ -94,10 +99,10 @@ interface MessageFlavouredApi<E : Message> : MessageBasicFlavouredApi<E> {
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
 interface MessageApi : MessageBasicFlavourlessApi, MessageFlavouredApi<DecryptedMessage> {
 	suspend fun createMessage(entity: DecryptedMessage): DecryptedMessage
-	suspend fun initialiseEncryptionMetadata(
-		healthcareElement: DecryptedMessage,
-		patient: Patient,
-		user: User,
+	suspend fun withEncryptionMetadata(
+		base: DecryptedMessage?,
+		patient: Patient?,
+		user: User?,
 		delegates: Map<String, AccessLevel> = emptyMap(),
 		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent,
 	): DecryptedMessage
@@ -122,16 +127,16 @@ private abstract class AbstractMessageBasicFlavouredApi<E : Message>(protected v
 		filterChain: FilterChain<EncryptedMessage>,
 		startDocumentId: String?,
 		limit: Int?,
-	): PaginatedList<E, *> =
+	): PaginatedList<E> =
 		rawApi.filterMessagesBy(startDocumentId, limit, filterChain).successBody().map { maybeDecrypt(it) }
 
 	override suspend fun findMessagesByHcPartyPatientForeignKey(
 		secretPatientKey: String,
-		startKey: String?,
+		startKey: JsonElement?,
 		startDocumentId: String?,
 		limit: Int?,
-	): PaginatedList<E, *> =
-		rawApi.findMessagesByHCPartyPatientForeignKey(secretPatientKey, startKey, startDocumentId, limit).successBody()
+	): PaginatedList<E> =
+		rawApi.findMessagesByHCPartyPatientForeignKey(secretPatientKey, startKey.encodeStartKey(), startDocumentId, limit).successBody()
 			.map { maybeDecrypt(it) }
 
 	override suspend fun listMessagesByTransportGuids(hcPartyId: String, transportGuids: List<String>) =
@@ -142,10 +147,10 @@ private abstract class AbstractMessageBasicFlavouredApi<E : Message>(protected v
 	) = rawApi.findMessagesByHCPartyPatientForeignKeys(secretPatientKeys).successBody().map { maybeDecrypt(it) }
 
 	override suspend fun findMessages(
-		startKey: String?,
+		startKey: JsonElement?,
 		startDocumentId: String?,
 		limit: Int?,
-	) = rawApi.findMessages(startKey, startDocumentId, limit).successBody().map { maybeDecrypt(it) }
+	) = rawApi.findMessages(startKey.encodeStartKey(), startDocumentId, limit).successBody().map { maybeDecrypt(it) }
 
 	override suspend fun getChildrenMessages(
 		messageId: String,
@@ -164,26 +169,26 @@ private abstract class AbstractMessageBasicFlavouredApi<E : Message>(protected v
 		transportGuid: String,
 		from: Long,
 		to: Long,
-		startKey: String?,
+		startKey: JsonElement?,
 		startDocumentId: String?,
 		limit: Int?,
 		hcpId: String?,
-	) = rawApi.findMessagesByTransportGuidSentDate(transportGuid, from, to, startKey, startDocumentId, limit, hcpId).successBody()
+	) = rawApi.findMessagesByTransportGuidSentDate(transportGuid, from, to, startKey.encodeStartKey(), startDocumentId, limit, hcpId).successBody()
 		.map { maybeDecrypt(it) }
 
 	override suspend fun findMessagesByToAddress(
 		toAddress: String,
-		startKey: String?,
+		startKey: JsonElement?,
 		startDocumentId: String?,
 		limit: Int?,
-	) = rawApi.findMessagesByToAddress(toAddress, startKey, startDocumentId, limit).successBody().map { maybeDecrypt(it) }
+	) = rawApi.findMessagesByToAddress(toAddress, startKey.encodeStartKey(), startDocumentId, limit).successBody().map { maybeDecrypt(it) }
 
 	override suspend fun findMessagesByFromAddress(
 		fromAddress: String,
-		startKey: String?,
+		startKey: JsonElement?,
 		startDocumentId: String?,
 		limit: Int?,
-	) = rawApi.findMessagesByFromAddress(fromAddress, startKey, startDocumentId, limit).successBody().map { maybeDecrypt(it) }
+	) = rawApi.findMessagesByFromAddress(fromAddress, startKey.encodeStartKey(), startDocumentId, limit).successBody().map { maybeDecrypt(it) }
 
 	override suspend fun setMessagesStatusBits(
 		entityIds: List<String>,
@@ -204,21 +209,22 @@ private abstract class AbstractMessageBasicFlavouredApi<E : Message>(protected v
 @InternalIcureApi
 private abstract class AbstractMessageFlavouredApi<E : Message>(
 	rawApi: RawMessageApi,
-	private val encryptionService: EntityEncryptionService,
+	private val crypto: InternalCryptoServices,
 ) : AbstractMessageBasicFlavouredApi<E>(rawApi), MessageFlavouredApi<E> {
 	override suspend fun shareWith(
 		delegateId: String,
-		healthcareElement: E,
+		message: E,
+		shareSecretIds: Set<String>,
 		shareEncryptionKeys: ShareMetadataBehaviour,
 		shareOwningEntityIds: ShareMetadataBehaviour,
 		requestedPermission: RequestedPermission,
 	): SimpleShareResult<E> =
-		encryptionService.simpleShareOrUpdateEncryptedEntityMetadata(
-			healthcareElement.withTypeInfo(),
-			true,
+		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
+			message.withTypeInfo(),
+			false,
 			mapOf(
 				delegateId to SimpleDelegateShareOptions(
-					shareSecretIds = null,
+					shareSecretIds = shareSecretIds,
 					shareEncryptionKeys = shareEncryptionKeys,
 					shareOwningEntityIds = shareOwningEntityIds,
 					requestedPermissions = requestedPermission,
@@ -239,19 +245,20 @@ private class AbstractMessageBasicFlavourlessApi(val rawApi: RawMessageApi) : Me
 @InternalIcureApi
 internal class MessageApiImpl(
 	private val rawApi: RawMessageApi,
-	private val encryptionService: EntityEncryptionService,
+	private val crypto: InternalCryptoServices,
 	private val fieldsToEncrypt: EncryptedFieldsManifest = ENCRYPTED_FIELDS_MANIFEST,
-) : MessageApi, MessageFlavouredApi<DecryptedMessage> by object :
-	AbstractMessageFlavouredApi<DecryptedMessage>(rawApi, encryptionService) {
+	private val autofillAuthor: Boolean,
+	) : MessageApi, MessageFlavouredApi<DecryptedMessage> by object :
+	AbstractMessageFlavouredApi<DecryptedMessage>(rawApi, crypto) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedMessage): EncryptedMessage =
-		encryptionService.encryptEntity(
+		crypto.entity.encryptEntity(
 			entity.withTypeInfo(),
 			DecryptedMessage.serializer(),
 			fieldsToEncrypt,
 		) { Serialization.json.decodeFromJsonElement<EncryptedMessage>(it) }
 
 	override suspend fun maybeDecrypt(entity: EncryptedMessage): DecryptedMessage {
-		return encryptionService.tryDecryptEntity(
+		return crypto.entity.tryDecryptEntity(
 			entity.withTypeInfo(),
 			EncryptedMessage.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedMessage>(it) }
@@ -259,30 +266,30 @@ internal class MessageApiImpl(
 	}
 }, MessageBasicFlavourlessApi by AbstractMessageBasicFlavourlessApi(rawApi) {
 	override val encrypted: MessageFlavouredApi<EncryptedMessage> =
-		object : AbstractMessageFlavouredApi<EncryptedMessage>(rawApi, encryptionService) {
+		object : AbstractMessageFlavouredApi<EncryptedMessage>(rawApi, crypto) {
 			override suspend fun validateAndMaybeEncrypt(entity: EncryptedMessage): EncryptedMessage =
-				encryptionService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedMessage.serializer(), fieldsToEncrypt)
+				crypto.entity.validateEncryptedEntity(entity.withTypeInfo(), EncryptedMessage.serializer(), fieldsToEncrypt)
 
 			override suspend fun maybeDecrypt(entity: EncryptedMessage): EncryptedMessage = entity
 		}
 
 	override val tryAndRecover: MessageFlavouredApi<Message> =
-		object : AbstractMessageFlavouredApi<Message>(rawApi, encryptionService) {
+		object : AbstractMessageFlavouredApi<Message>(rawApi, crypto) {
 			override suspend fun maybeDecrypt(entity: EncryptedMessage): Message =
-				encryptionService.tryDecryptEntity(
+				crypto.entity.tryDecryptEntity(
 					entity.withTypeInfo(),
 					EncryptedMessage.serializer(),
 				) { Serialization.json.decodeFromJsonElement<DecryptedMessage>(it) }
 					?: entity
 
 			override suspend fun validateAndMaybeEncrypt(entity: Message): EncryptedMessage = when (entity) {
-				is EncryptedMessage -> encryptionService.validateEncryptedEntity(
+				is EncryptedMessage -> crypto.entity.validateEncryptedEntity(
 					entity.withTypeInfo(),
 					EncryptedMessage.serializer(),
 					fieldsToEncrypt,
 				)
 
-				is DecryptedMessage -> encryptionService.encryptEntity(
+				is DecryptedMessage -> crypto.entity.encryptEntity(
 					entity.withTypeInfo(),
 					DecryptedMessage.serializer(),
 					fieldsToEncrypt,
@@ -291,7 +298,7 @@ internal class MessageApiImpl(
 		}
 
 	override suspend fun createMessage(entity: DecryptedMessage): DecryptedMessage {
-		require(entity.securityMetadata != null) { "Entity must have security metadata initialised. You can use the initialiseEncryptionMetadata for that very purpose." }
+		require(entity.securityMetadata != null) { "Entity must have security metadata initialised. You can use the withEncryptionMetadata for that very purpose." }
 		return rawApi.createMessage(
 			encrypt(entity),
 		).successBody().let {
@@ -302,33 +309,35 @@ internal class MessageApiImpl(
 	override suspend fun createMessageInTopic(entity: DecryptedMessage): DecryptedMessage =
 		rawApi.createMessageInTopic(encrypt(entity)).successBody().let { decrypt(it) { "Created entity cannot be decrypted" } }
 
-	override suspend fun initialiseEncryptionMetadata(
-		healthcareElement: DecryptedMessage,
-		patient: Patient,
-		user: User,
+	override suspend fun withEncryptionMetadata(
+		base: DecryptedMessage?,
+		patient: Patient?,
+		user: User?,
 		delegates: Map<String, AccessLevel>,
 		secretId: SecretIdOption,
 		// Temporary, needs a lot more stuff to match typescript implementation
 	): DecryptedMessage =
-		encryptionService.entityWithInitialisedEncryptedMetadata(
-			healthcareElement.withTypeInfo(),
-			patient.id,
-			encryptionService.resolveSecretIdOption(patient.withTypeInfo(), secretId),
+		crypto.entity.entityWithInitialisedEncryptedMetadata(
+			(base ?: DecryptedMessage(crypto.primitives.strongRandom.randomUUID())).copy(
+				created = base?.created ?: currentEpochMs(),
+				modified = base?.modified ?: currentEpochMs(),
+				responsible = base?.responsible ?: user?.takeIf { autofillAuthor }?.dataOwnerId,
+				author = base?.author ?: user?.id?.takeIf { autofillAuthor },
+			).withTypeInfo(),
+			patient?.id,
+			patient?.let { crypto.entity.resolveSecretIdOption(it.withTypeInfo(), secretId) },
 			initialiseEncryptionKey = true,
-			initialiseSecretId = false,
-			autoDelegations = delegates + (
-				(user.autoDelegations[DelegationTag.MedicalInformation] ?: emptySet()) +
-					(user.autoDelegations[DelegationTag.All] ?: emptySet())
-				).associateWith { AccessLevel.Write },
+			initialiseSecretId = true,
+			autoDelegations = delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation).orEmpty(),
 		).updatedEntity
 
-	private suspend fun encrypt(entity: DecryptedMessage) = encryptionService.encryptEntity(
+	private suspend fun encrypt(entity: DecryptedMessage) = crypto.entity.encryptEntity(
 		entity.withTypeInfo(),
 		DecryptedMessage.serializer(),
 		fieldsToEncrypt,
 	) { Serialization.json.decodeFromJsonElement<EncryptedMessage>(it) }
 
-	suspend fun decrypt(entity: EncryptedMessage, errorMessage: () -> String): DecryptedMessage = encryptionService.tryDecryptEntity(
+	suspend fun decrypt(entity: EncryptedMessage, errorMessage: () -> String): DecryptedMessage = crypto.entity.tryDecryptEntity(
 		entity.withTypeInfo(),
 		EncryptedMessage.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedMessage>(it) }

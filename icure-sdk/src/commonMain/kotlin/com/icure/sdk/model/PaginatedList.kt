@@ -7,12 +7,12 @@ import kotlin.collections.List
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 
 @Serializable
-data class PaginatedList<T, O>(
+data class PaginatedList<T>(
 	public val rows: List<T> = emptyList(),
-	public val nextKeyPair: PaginatedDocumentKeyIdPair<O>? = null,
+	public val nextKeyPair: PaginatedDocumentKeyIdPair? = null,
 ) {
 	// region PaginatedList-PaginatedList
-inline fun <Q> map(mapper: (T) -> Q): PaginatedList<Q, O> = PaginatedList(
+inline fun <Q> map(mapper: (T) -> Q): PaginatedList<Q> = PaginatedList(
 		rows = rows.map { mapper(it) },
 		nextKeyPair = nextKeyPair
 	)

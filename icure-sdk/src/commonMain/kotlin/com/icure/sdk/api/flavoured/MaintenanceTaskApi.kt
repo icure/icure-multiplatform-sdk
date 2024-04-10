@@ -1,8 +1,8 @@
 package com.icure.sdk.api.flavoured
 
 import com.icure.sdk.api.raw.RawMaintenanceTaskApi
-import com.icure.sdk.crypto.BasicCryptoApi
-import com.icure.sdk.crypto.InternalCryptoApi
+import com.icure.sdk.crypto.BasicInternalCryptoApi
+import com.icure.sdk.crypto.InternalCryptoServices
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleDelegateShareOptions
@@ -41,14 +41,14 @@ interface MaintenanceTaskBasicFlavouredApi<E : MaintenanceTask> {
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		filterChain: FilterChain<MaintenanceTask>
-	): PaginatedList<E, *>
+	): PaginatedList<E>
 }
 
 /* The extra API calls declared in this interface are the ones that can be used on encrypted or decrypted items but only when the user is a data owner */
 interface MaintenanceTaskFlavouredApi<E : MaintenanceTask> : MaintenanceTaskBasicFlavouredApi<E> {
 	suspend fun shareWith(
 		delegateId: String,
-		healthcareElement: E,
+		maintenanceTask: E,
 		shareEncryptionKeys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
 		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
 		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
@@ -93,7 +93,7 @@ private abstract class AbstractMaintenanceTaskBasicFlavouredApi<E : MaintenanceT
 		startDocumentId: String?,
 		limit: Int?,
 		filterChain: FilterChain<MaintenanceTask>,
-	): PaginatedList<E, *> =
+	): PaginatedList<E> =
 		// TODO fix filter typing
 		rawApi.filterMaintenanceTasksBy(startDocumentId, limit, filterChain as FilterChain<EncryptedMaintenanceTask>).successBody().map { maybeDecrypt(it) }
 
@@ -104,17 +104,17 @@ private abstract class AbstractMaintenanceTaskBasicFlavouredApi<E : MaintenanceT
 @InternalIcureApi
 private abstract class AbstractMaintenanceTaskFlavouredApi<E : MaintenanceTask>(
 	rawApi: RawMaintenanceTaskApi,
-	private val crypto: InternalCryptoApi
+	private val crypto: InternalCryptoServices
 ) : AbstractMaintenanceTaskBasicFlavouredApi<E>(rawApi), MaintenanceTaskFlavouredApi<E> {
 	override suspend fun shareWith(
 		delegateId: String,
-		healthcareElement: E,
+		maintenanceTask: E,
 		shareEncryptionKeys: ShareMetadataBehaviour,
 		shareOwningEntityIds: ShareMetadataBehaviour,
 		requestedPermission: RequestedPermission,
 	): SimpleShareResult<E> =
 		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
-			healthcareElement.withTypeInfo(),
+			maintenanceTask.withTypeInfo(),
 			true,
 			mapOf(
 				delegateId to SimpleDelegateShareOptions(
@@ -138,7 +138,7 @@ private class AbstractMaintenanceTaskBasicFlavourlessApi(val rawApi: RawMaintena
 @InternalIcureApi
 internal class MaintenanceTaskApiImpl(
 	private val rawApi: RawMaintenanceTaskApi,
-	private val crypto: InternalCryptoApi,
+	private val crypto: InternalCryptoServices,
 	private val fieldsToEncrypt: EncryptedFieldsManifest,
 	private val autofillAuthor: Boolean,
 ) : MaintenanceTaskApi, MaintenanceTaskFlavouredApi<DecryptedMaintenanceTask> by object :
@@ -191,7 +191,7 @@ internal class MaintenanceTaskApiImpl(
 		}
 
 	override suspend fun createMaintenanceTask(entity: DecryptedMaintenanceTask): DecryptedMaintenanceTask {
-		require(entity.securityMetadata != null) { "Entity must have security metadata initialised. You can use the initialiseEncryptionMetadata for that very purpose." }
+		require(entity.securityMetadata != null) { "Entity must have security metadata initialised. You can use the withEncryptionMetadata for that very purpose." }
 		return rawApi.createMaintenanceTask(
 			encrypt(entity),
 		).successBody().let {
@@ -235,7 +235,7 @@ internal class MaintenanceTaskApiImpl(
 @InternalIcureApi
 internal class MaintenanceTaskBasicApiImpl(
 	rawApi: RawMaintenanceTaskApi,
-	private val crypto: BasicCryptoApi,
+	private val crypto: BasicInternalCryptoApi,
 	private val fieldsToEncrypt: EncryptedFieldsManifest,
 ) : MaintenanceTaskBasicApi, MaintenanceTaskBasicFlavouredApi<EncryptedMaintenanceTask> by object :
 	AbstractMaintenanceTaskBasicFlavouredApi<EncryptedMaintenanceTask>(rawApi) {

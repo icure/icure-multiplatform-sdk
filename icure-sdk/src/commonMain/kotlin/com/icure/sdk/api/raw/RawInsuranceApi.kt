@@ -6,8 +6,8 @@ import com.icure.sdk.model.Insurance
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
-import com.icure.sdk.model.specializations.JsonString
 import com.icure.sdk.utils.InternalIcureApi
+import io.ktor.client.HttpClient
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
@@ -27,15 +27,16 @@ import kotlin.time.Duration
 class RawInsuranceApi(
 	private val apiUrl: String,
 	private val authService: AuthService,
+	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
-) : BaseRawApi(additionalHeaders, timeout) {
+) : BaseRawApi(httpClient, additionalHeaders, timeout) {
 	// region common endpoints
 
 	suspend fun getAllInsurances(
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<Insurance, JsonString>> =
+	): HttpResponse<PaginatedList<Insurance>> =
 		get {
 			url {
 				takeFrom(apiUrl)

@@ -15,6 +15,7 @@ import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.couchdb.ReplicatorDocument
 import com.icure.sdk.utils.InternalIcureApi
+import io.ktor.client.HttpClient
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
@@ -37,9 +38,10 @@ import kotlin.time.Duration
 class RawTmpApi(
 	private val apiUrl: String,
 	private val authService: AuthService,
+	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
-) : BaseRawApi(additionalHeaders, timeout) {
+) : BaseRawApi(httpClient, additionalHeaders, timeout) {
 	// region cloud endpoints
 
 	suspend fun createTmpDatabase(): HttpResponse<Unit> =
@@ -143,7 +145,7 @@ class RawTmpApi(
 	suspend fun listTmpPatients(
 		firstPatientId: String? = null,
 		pageSize: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedPatient, *>> =
+	): HttpResponse<PaginatedList<EncryptedPatient>> =
 		get {
 			url {
 				takeFrom(apiUrl)
@@ -159,7 +161,7 @@ class RawTmpApi(
 		get {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "tmp", "healthElement", "byId", id)
+				appendPathSegments("rest", "v2", "tmp", "healthcareElement", "byId", id)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
@@ -169,7 +171,7 @@ class RawTmpApi(
 		post {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "tmp", "healthElement")
+				appendPathSegments("rest", "v2", "tmp", "healthcareElement")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
@@ -180,7 +182,7 @@ class RawTmpApi(
 		put {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "tmp", "healthElement")
+				appendPathSegments("rest", "v2", "tmp", "healthcareElement")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
@@ -191,7 +193,7 @@ class RawTmpApi(
 		post {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "tmp", "healthElement", "get")
+				appendPathSegments("rest", "v2", "tmp", "healthcareElement", "get")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
@@ -202,7 +204,7 @@ class RawTmpApi(
 		put {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "tmp", "healthElement", "batch")
+				appendPathSegments("rest", "v2", "tmp", "healthcareElement", "batch")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
@@ -213,7 +215,7 @@ class RawTmpApi(
 		post {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "tmp", "healthElement", "batch")
+				appendPathSegments("rest", "v2", "tmp", "healthcareElement", "batch")
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
@@ -224,11 +226,11 @@ class RawTmpApi(
 		firstHealthElementId: String? = null,
 		pageSize: Int? =
 			null,
-	): HttpResponse<PaginatedList<EncryptedHealthElement, *>> =
+	): HttpResponse<PaginatedList<EncryptedHealthElement>> =
 		get {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "tmp", "healthElement", "list")
+				appendPathSegments("rest", "v2", "tmp", "healthcareElement", "list")
 				parameter("firstHealthElementId", firstHealthElementId)
 				parameter("pageSize", pageSize)
 				parameter("ts", GMTDate().timestamp)
@@ -304,7 +306,7 @@ class RawTmpApi(
 	suspend fun listTmpForms(
 		firstFormId: String? = null,
 		pageSize: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedForm, *>> =
+	): HttpResponse<PaginatedList<EncryptedForm>> =
 		get {
 			url {
 				takeFrom(apiUrl)
@@ -384,7 +386,7 @@ class RawTmpApi(
 	suspend fun listTmpContacts(
 		firstContactId: String? = null,
 		pageSize: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedInvoice, *>> =
+	): HttpResponse<PaginatedList<EncryptedInvoice>> =
 		get {
 			url {
 				takeFrom(apiUrl)
@@ -464,7 +466,7 @@ class RawTmpApi(
 	suspend fun listTmpMessages(
 		firstMessageId: String? = null,
 		pageSize: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedInvoice, *>> =
+	): HttpResponse<PaginatedList<EncryptedInvoice>> =
 		get {
 			url {
 				takeFrom(apiUrl)
@@ -544,7 +546,7 @@ class RawTmpApi(
 	suspend fun listTmpInvoices(
 		firstInvoiceId: String? = null,
 		pageSize: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedInvoice, *>> =
+	): HttpResponse<PaginatedList<EncryptedInvoice>> =
 		get {
 			url {
 				takeFrom(apiUrl)
@@ -666,7 +668,7 @@ class RawTmpApi(
 	suspend fun listTmpDocuments(
 		firstDocumentId: String? = null,
 		pageSize: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedDocument, *>> =
+	): HttpResponse<PaginatedList<EncryptedDocument>> =
 		get {
 			url {
 				takeFrom(apiUrl)
@@ -747,7 +749,7 @@ class RawTmpApi(
 		firstClassificationId: String? = null,
 		pageSize: Int? =
 			null,
-	): HttpResponse<PaginatedList<EncryptedClassification, *>> =
+	): HttpResponse<PaginatedList<EncryptedClassification>> =
 		get {
 			url {
 				takeFrom(apiUrl)
@@ -828,7 +830,7 @@ class RawTmpApi(
 		firstEntityTemplateId: String? = null,
 		pageSize: Int? =
 			null,
-	): HttpResponse<PaginatedList<EntityTemplate, *>> =
+	): HttpResponse<PaginatedList<EntityTemplate>> =
 		get {
 			url {
 				takeFrom(apiUrl)

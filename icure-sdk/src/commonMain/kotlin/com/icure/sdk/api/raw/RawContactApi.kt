@@ -16,8 +16,8 @@ import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
-import com.icure.sdk.model.specializations.JsonString
 import com.icure.sdk.utils.InternalIcureApi
+import io.ktor.client.HttpClient
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
@@ -28,7 +28,6 @@ import io.ktor.util.date.GMTDate
 import kotlin.Boolean
 import kotlin.Int
 import kotlin.Long
-import kotlin.Nothing
 import kotlin.String
 import kotlin.collections.List
 import kotlin.collections.Map
@@ -41,9 +40,10 @@ class RawContactApi(
 	private val apiUrl: String,
 	private val authService: AuthService,
 	private val accessControlKeysHeadersProvider: AccessControlKeysHeadersProvider?,
+	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
-) : BaseRawApi(additionalHeaders, timeout) {
+) : BaseRawApi(httpClient, additionalHeaders, timeout) {
 	override suspend fun getAccessControlKeysHeaderValues(): List<String>? =
 		accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithEncryptionMetadataTypeName.Contact)
 
@@ -181,7 +181,7 @@ class RawContactApi(
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedContact, JsonString>> =
+	): HttpResponse<PaginatedList<EncryptedContact>> =
 		get {
 			url {
 				takeFrom(apiUrl)
@@ -336,7 +336,7 @@ class RawContactApi(
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		filterChain: FilterChain<EncryptedContact>,
-	): HttpResponse<PaginatedList<EncryptedContact, *>> =
+	): HttpResponse<PaginatedList<EncryptedContact>> =
 		post {
 			url {
 				takeFrom(apiUrl)
@@ -374,7 +374,7 @@ class RawContactApi(
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		filterChain: FilterChain<EncryptedService>,
-	): HttpResponse<PaginatedList<EncryptedService, Nothing>> =
+	): HttpResponse<PaginatedList<EncryptedService>> =
 		post {
 			url {
 				takeFrom(apiUrl)
@@ -456,7 +456,7 @@ class RawContactApi(
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedContact, JsonString>> =
+	): HttpResponse<PaginatedList<EncryptedContact>> =
 		get {
 			url {
 				takeFrom(apiUrl)

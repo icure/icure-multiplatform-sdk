@@ -3,7 +3,7 @@ package com.icure.sdk.crypto.impl
 import com.icure.kryptom.crypto.StrongRandom
 import com.icure.kryptom.utils.hexToByteArray
 import com.icure.kryptom.utils.toHexString
-import kotlin.jvm.JvmInline
+import com.icure.sdk.crypto.entities.ShamirSecretShare
 
 class ShamirSecretSharingService(
 	private val random: StrongRandom
@@ -312,6 +312,3 @@ class ShamirSecretSharingService(
 		return sum
 	}
 }
-
-@JvmInline
-value class ShamirSecretShare(val v: String)

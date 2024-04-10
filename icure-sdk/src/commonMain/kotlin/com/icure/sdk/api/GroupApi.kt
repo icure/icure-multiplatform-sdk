@@ -1,5 +1,6 @@
 package com.icure.sdk.api
 
+import com.icure.sdk.api.flavoured.encodeStartKey
 import com.icure.sdk.api.raw.RawGroupApi
 import com.icure.sdk.model.DatabaseInitialisation
 import com.icure.sdk.model.Group
@@ -20,23 +21,96 @@ import com.icure.sdk.model.embed.UserType
 import com.icure.sdk.model.security.Operation
 import com.icure.sdk.model.security.PermissionType
 import com.icure.sdk.utils.InternalIcureApi
+import kotlinx.serialization.json.JsonElement
 
-@OptIn(InternalIcureApi::class)
-class GroupApi(
+interface GroupApi {
+	suspend fun listGroups(): List<Group>
+	suspend fun getGroup(id: String): Group
+	suspend fun createGroup(
+		id: String,
+		name: String,
+		type: GroupType? = null,
+		password: String,
+		server: String? = null,
+		q: Int? = null,
+		n: Int? = null,
+		superGroup: String? = null,
+		initialisationData: DatabaseInitialisation,
+	): Group
+
+	suspend fun registerNewGroupAdministrator(
+		type: GroupType? = null,
+		role: PermissionType? = null,
+		registrationInformation: RegistrationInformation,
+	): RegistrationSuccess
+
+	suspend fun listApps(): List<Group>
+	suspend fun findGroups(
+		id: String,
+		startDocumentId: String? = null,
+		limit: Int? = null,
+	): PaginatedList<Group>
+
+	suspend fun findGroupsWithContent(
+		id: String,
+		searchString: String,
+		startKey: JsonElement? = null,
+		startDocumentId: String? = null,
+		limit: Int? = null,
+	): PaginatedList<Group>
+
+	suspend fun getNameOfGroupParent(id: String): String
+	suspend fun modifyGroupName(id: String, name: String): Group
+	suspend fun getOperationToken(
+		operation: Operation,
+		duration: Long?,
+		description: String? = null,
+	): String
+
+	suspend fun deleteOperationToken(tokenId: String): Unit
+	suspend fun setDefaultRoles(
+		groupId: String,
+		userType: String,
+		roleIds: List<String>,
+	): Group
+
+	suspend fun getDefaultRoles(groupId: String): Map<UserType, List<RoleConfiguration>>
+	suspend fun deleteGroup(id: String): Group
+	suspend fun changeSuperGroup(childGroupId: String, operationToken: String): Group
+	suspend fun hardDeleteGroup(id: String): List<GroupDeletionReport>
+	suspend fun modifyGroupProperties(id: String, properties: ListOfProperties): Group
+	suspend fun setGroupPassword(id: String, password: String): Group
+	suspend fun initDesignDocs(
+		id: String,
+		clazz: String? = null,
+		warmup: Boolean?,
+		dryRun: Boolean?
+	): List<DesignDocument>
+
+	suspend fun solveConflicts(id: String, limit: Int?, warmup: Boolean?): List<IdWithRev>
+	suspend fun resetStorage(id: String, q: Int? = null, n: Int? = null, databases: List<String>): Unit
+	suspend fun getGroupsStorageInfos(groups: List<String>): List<GroupDatabasesInfo>
+	suspend fun getReplicationInfo(id: String): ReplicationInfo
+	suspend fun getHierarchy(id: String): List<String>
+	suspend fun listAllGroupsIds(): List<DocIdentifier>
+}
+
+@InternalIcureApi
+internal class GroupApiImpl(
     private val rawApi: RawGroupApi,
-) {
-    suspend fun listGroups(): List<Group> = rawApi.listGroups().successBody()
-    suspend fun getGroup(id: String): Group = rawApi.getGroup(id).successBody()
-    suspend fun createGroup(
-        id: String,
-        name: String,
-        type: GroupType? = null,
-        password: String,
-        server: String? = null,
-        q: Int? = null,
-        n: Int? = null,
-        superGroup: String? = null,
-        initialisationData: DatabaseInitialisation,
+) : GroupApi {
+    override suspend fun listGroups(): List<Group> = rawApi.listGroups().successBody()
+    override suspend fun getGroup(id: String): Group = rawApi.getGroup(id).successBody()
+    override suspend fun createGroup(
+		id: String,
+		name: String,
+		type: GroupType?,
+		password: String,
+		server: String?,
+		q: Int?,
+		n: Int?,
+		superGroup: String?,
+		initialisationData: DatabaseInitialisation,
     ): Group = rawApi.createGroup(
         id,
         name,
@@ -49,78 +123,78 @@ class GroupApi(
         initialisationData,
     ).successBody()
 
-    suspend fun registerNewGroupAdministrator(
-        type: GroupType? = null,
-        role: PermissionType? = null,
-        registrationInformation: RegistrationInformation,
+    override suspend fun registerNewGroupAdministrator(
+		type: GroupType?,
+		role: PermissionType?,
+		registrationInformation: RegistrationInformation,
     ): RegistrationSuccess = rawApi.registerNewGroupAdministrator(type, role, registrationInformation).successBody()
 
-    suspend fun listApps(): List<Group> = rawApi.listApps().successBody()
+    override suspend fun listApps(): List<Group> = rawApi.listApps().successBody()
 
-    suspend fun findGroups(
-        id: String,
-        startDocumentId: String? = null,
-        limit: Int? = null,
-    ): PaginatedList<Group, String> = rawApi.findGroups(id, startDocumentId, limit).successBody()
+    override suspend fun findGroups(
+		id: String,
+		startDocumentId: String?,
+		limit: Int?,
+    ): PaginatedList<Group> = rawApi.findGroups(id, startDocumentId, limit).successBody()
 
-    suspend fun findGroupsWithContent(
-        id: String,
-        searchString: String,
-        startKey: String? = null,
-        startDocumentId: String? = null,
-        limit: Int? = null,
-    ): PaginatedList<Group, String> =
-        rawApi.findGroupsWithContent(id, searchString, startKey, startDocumentId, limit).successBody()
+    override suspend fun findGroupsWithContent(
+		id: String,
+		searchString: String,
+		startKey: JsonElement?,
+		startDocumentId: String?,
+		limit: Int?,
+    ): PaginatedList<Group> =
+        rawApi.findGroupsWithContent(id, searchString, startKey.encodeStartKey(), startDocumentId, limit).successBody()
 
-    suspend fun getNameOfGroupParent(id: String): String = rawApi.getNameOfGroupParent(id).successBody()
+    override suspend fun getNameOfGroupParent(id: String): String = rawApi.getNameOfGroupParent(id).successBody()
 
-    suspend fun modifyGroupName(id: String, name: String): Group = rawApi.modifyGroupName(id, name).successBody()
+    override suspend fun modifyGroupName(id: String, name: String): Group = rawApi.modifyGroupName(id, name).successBody()
 
-    suspend fun getOperationToken(
-        operation: Operation,
-        duration: Long?,
-        description: String? = null,
+    override suspend fun getOperationToken(
+		operation: Operation,
+		duration: Long?,
+		description: String?,
     ): String = rawApi.getOperationToken(operation, duration, description).successBody()
 
-    suspend fun deleteOperationToken(tokenId: String): Unit = rawApi.deleteOperationToken(tokenId).successBody()
+    override suspend fun deleteOperationToken(tokenId: String): Unit = rawApi.deleteOperationToken(tokenId).successBody()
 
-    suspend fun setDefaultRoles(
+    override suspend fun setDefaultRoles(
         groupId: String,
         userType: String,
-        roleIds: ListOfIds,
-    ): Group = rawApi.setDefaultRoles(groupId, userType, roleIds).successBody()
+        roleIds: List<String>,
+    ): Group = rawApi.setDefaultRoles(groupId, userType, ListOfIds(roleIds)).successBody()
 
-    suspend fun getDefaultRoles(groupId: String): Map<UserType, List<RoleConfiguration>> =
+    override suspend fun getDefaultRoles(groupId: String): Map<UserType, List<RoleConfiguration>> =
         rawApi.getDefaultRoles(groupId).successBody()
 
-    suspend fun deleteGroup(id: String): Group = rawApi.deleteGroup(id).successBody()
-    suspend fun changeSuperGroup(childGroupId: String, operationToken: String): Group =
+    override suspend fun deleteGroup(id: String): Group = rawApi.deleteGroup(id).successBody()
+    override suspend fun changeSuperGroup(childGroupId: String, operationToken: String): Group =
         rawApi.changeSuperGroup(childGroupId, operationToken).successBody()
 
-    suspend fun hardDeleteGroup(id: String): List<GroupDeletionReport> = rawApi.hardDeleteGroup(id).successBody()
-    suspend fun modifyGroupProperties(id: String, properties: ListOfProperties): Group =
+    override suspend fun hardDeleteGroup(id: String): List<GroupDeletionReport> = rawApi.hardDeleteGroup(id).successBody()
+    override suspend fun modifyGroupProperties(id: String, properties: ListOfProperties): Group =
         rawApi.modifyGroupProperties(id, properties).successBody()
 
-    suspend fun setGroupPassword(id: String, password: String): Group =
+    override suspend fun setGroupPassword(id: String, password: String): Group =
         rawApi.setGroupPassword(id, password).successBody()
 
-    suspend fun initDesignDocs(
-        id: String,
-        clazz: String? = null,
-        warmup: Boolean?,
-        dryRun: Boolean?
+    override suspend fun initDesignDocs(
+		id: String,
+		clazz: String?,
+		warmup: Boolean?,
+		dryRun: Boolean?
     ): List<DesignDocument> = rawApi.initDesignDocs(id, clazz, warmup, dryRun).successBody()
 
-    suspend fun solveConflicts(id: String, limit: Int?, warmup: Boolean?): List<IdWithRev> =
+    override suspend fun solveConflicts(id: String, limit: Int?, warmup: Boolean?): List<IdWithRev> =
         rawApi.solveConflicts(id, limit, warmup).successBody()
 
-    suspend fun resetStorage(id: String, q: Int? = null, n: Int? = null, databases: ListOfIds): Unit =
-        rawApi.resetStorage(id, q, n, databases).successBody()
+    override suspend fun resetStorage(id: String, q: Int?, n: Int?, databases: List<String>): Unit =
+        rawApi.resetStorage(id, q, n, ListOfIds(databases)).successBody()
 
-    suspend fun getGroupsStorageInfos(groups: ListOfIds): List<GroupDatabasesInfo> =
-        rawApi.getGroupsStorageInfos(groups).successBody()
+    override suspend fun getGroupsStorageInfos(groups: List<String>): List<GroupDatabasesInfo> =
+        rawApi.getGroupsStorageInfos(ListOfIds(groups)).successBody()
 
-    suspend fun getReplicationInfo(id: String): ReplicationInfo = rawApi.getReplicationInfo(id).successBody()
-    suspend fun getHierarchy(id: String): List<String> = rawApi.getHierarchy(id).successBody()
-    suspend fun listAllGroupsIds(): List<DocIdentifier> = rawApi.listAllGroupsIds().successBody()
+    override suspend fun getReplicationInfo(id: String): ReplicationInfo = rawApi.getReplicationInfo(id).successBody()
+    override suspend fun getHierarchy(id: String): List<String> = rawApi.getHierarchy(id).successBody()
+    override suspend fun listAllGroupsIds(): List<DocIdentifier> = rawApi.listAllGroupsIds().successBody()
 }

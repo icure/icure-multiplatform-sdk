@@ -4,8 +4,8 @@ import com.icure.sdk.auth.services.AuthService
 import com.icure.sdk.auth.services.setAuthorizationWith
 import com.icure.sdk.model.ExchangeData
 import com.icure.sdk.model.PaginatedList
-import com.icure.sdk.model.specializations.JsonString
 import com.icure.sdk.utils.InternalIcureApi
+import io.ktor.client.HttpClient
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
@@ -13,6 +13,10 @@ import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
+import kotlin.Int
+import kotlin.String
+import kotlin.collections.List
+import kotlin.collections.Map
 import kotlin.time.Duration
 
 // WARNING: This class is auto-generated. If you change it manually, your changes will be lost.
@@ -21,9 +25,10 @@ import kotlin.time.Duration
 class RawExchangeDataApi(
 	private val apiUrl: String,
 	private val authService: AuthService,
+	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
-) : BaseRawApi(additionalHeaders, timeout) {
+) : BaseRawApi(httpClient, additionalHeaders, timeout) {
 	// region common endpoints
 
 	suspend fun createExchangeData(exchangeData: ExchangeData): HttpResponse<ExchangeData> =
@@ -62,7 +67,7 @@ class RawExchangeDataApi(
 		dataOwnerId: String,
 		startDocumentId: String? = null,
 		limit: Int? = null,
-	): HttpResponse<PaginatedList<ExchangeData, JsonString>> =
+	): HttpResponse<PaginatedList<ExchangeData>> =
 		get {
 			url {
 				takeFrom(apiUrl)

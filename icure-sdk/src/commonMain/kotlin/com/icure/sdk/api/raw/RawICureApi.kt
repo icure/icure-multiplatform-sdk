@@ -7,6 +7,7 @@ import com.icure.sdk.model.IndexingInfo
 import com.icure.sdk.model.ReplicationInfo
 import com.icure.sdk.model.couchdb.ReplicatorDocument
 import com.icure.sdk.utils.InternalIcureApi
+import io.ktor.client.HttpClient
 import io.ktor.client.request.parameter
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
@@ -26,9 +27,10 @@ import kotlin.time.Duration
 class RawICureApi(
 	private val apiUrl: String,
 	private val authService: AuthService,
+	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
-) : BaseRawApi(additionalHeaders, timeout) {
+) : BaseRawApi(httpClient, additionalHeaders, timeout) {
 	// region common endpoints
 
 	suspend fun getVersion(): HttpResponse<String> =

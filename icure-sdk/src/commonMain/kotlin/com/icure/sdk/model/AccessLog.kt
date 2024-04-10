@@ -11,6 +11,10 @@ import com.icure.sdk.model.specializations.Base64String
 import com.icure.sdk.serialization.InstantSerializer
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
+import kotlin.Long
+import kotlin.String
+import kotlin.collections.Map
+import kotlin.collections.Set
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
@@ -113,7 +117,7 @@ data class EncryptedAccessLog(
 	override val medicalLocationId: String? = null,
 	override val tags: Set<CodeStub> = emptySet(),
 	override val codes: Set<CodeStub> = emptySet(),
-	override val endOfLife: Long?,
+	override val endOfLife: Long? = null,
 	override val deletionDate: Long? = null,
 	override val objectId: String? = null,
 	override val accessType: String? = null,

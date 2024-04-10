@@ -4,18 +4,15 @@ import com.icure.kryptom.crypto.AesKey
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.utils.base64Decode
 import com.icure.kryptom.utils.base64Encode
-import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.JsonEncryptionService
+import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.model.embed.Encryptable
 import com.icure.sdk.utils.IllegalEntityException
 import com.icure.sdk.utils.InternalIcureApi
-import com.icure.sdk.utils.InternalIcureException
 import com.icure.sdk.utils.Serialization
 import io.ktor.utils.io.charsets.Charsets
 import io.ktor.utils.io.core.toByteArray
-import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
-import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
@@ -29,9 +26,6 @@ class JsonEncryptionServiceImpl(
 ) : JsonEncryptionService {
 	companion object {
 		private val ENCRYPTED_SELF = Encryptable::encryptedSelf.name
-		@Suppress("RegExpRedundantEscape") // Suppressed because in node is not redundant
-		private val ENCRYPTED_FIELD_MANIFEST_REGEX =
-			Regex("^([_a-zA-Z][_a-zA-Z0-9]*)(?:(\\.\\*\\.|\\[\\]\\.|\\.)(?:[_a-zA-Z].*|\\[.*\\]))?$")
 	}
 
 	override suspend fun encrypt(
@@ -141,92 +135,5 @@ class JsonEncryptionServiceImpl(
 			Serialization.json.parseToJsonElement(decryptedBytes.decodeToString()).jsonObject
 		}
 		return decryptedSelf?.let { JsonObject(recursivelyDecrypted + it) } ?: JsonObject(recursivelyDecrypted)
-	}
-
-	override fun parseEncryptedFields(encryptedFields: Set<String>, path: String): EncryptedFieldsManifest {
-		val topLevelFields = mutableSetOf<String>()
-		val nestedObjectsKeys = mutableMapOf<String, MutableSet<String>>()
-		val mapsValuesKeys = mutableMapOf<String, MutableSet<String>>()
-		val arraysValuesKeys = mutableMapOf<String, MutableSet<String>>()
-		fun addSubkeyToGroupedData(
-			currFieldName: String,
-			currFieldSeparator: String,
-			currEncryptedField: String,
-			groupedData: MutableMap<String, MutableSet<String>>
-		) {
-			val existingOrNew = groupedData.getOrPut(currFieldName) { mutableSetOf() }
-			val subKey = currEncryptedField.drop(currFieldName.length + currFieldSeparator.length)
-			if (subKey.startsWith('[')) {
-				val parsedJson: JsonElement = try {
-					Json.parseToJsonElement(subKey)
-				} catch (e: Exception) {
-					throw IllegalArgumentException(
-						"Invalid encrypted field ${path}${currEncryptedField} (not a valid JSON subkey)",
-						e
-					)
-				}
-				if (parsedJson is JsonArray && parsedJson.all { it is JsonPrimitive && it.isString }) {
-					existingOrNew += parsedJson.map { it.jsonPrimitive.content }
-				} else throw IllegalArgumentException("Invalid encrypted field ${path}${currEncryptedField} (not an array of strings)")
-			} else {
-				existingOrNew += subKey
-			}
-		}
-		encryptedFields.forEach { currEncryptedField ->
-			val (currFieldName, currFieldSeparator) = requireNotNull(
-				ENCRYPTED_FIELD_MANIFEST_REGEX.find(
-					currEncryptedField
-				)
-			) {
-				"Invalid encrypted field $path$currEncryptedField"
-			}.groupValues.let { groups ->
-				groups[1] to groups[2].takeIf { it.isNotEmpty() }
-			}
-			when (currFieldSeparator) {
-				null -> {
-					if (currFieldName in topLevelFields) throw IllegalArgumentException("Duplicate encrypted field $path$currFieldName")
-					if (currFieldName in nestedObjectsKeys || currFieldName in mapsValuesKeys || currFieldName in arraysValuesKeys) {
-						throw IllegalArgumentException("Encrypted field appears multiple times as different nested types and or top-level-field: $path$currFieldName")
-					}
-					topLevelFields += currFieldName
-				}
-
-				"." -> {
-					if (currFieldName in topLevelFields || currFieldName in mapsValuesKeys || currFieldName in arraysValuesKeys) {
-						throw IllegalArgumentException("Encrypted field appears multiple times as different nested types and or top-level-field: $path$currFieldName")
-					}
-					addSubkeyToGroupedData(currFieldName, currFieldSeparator, currEncryptedField, nestedObjectsKeys)
-				}
-
-				".*." -> {
-					if (currFieldName in topLevelFields || currFieldName in nestedObjectsKeys || currFieldName in arraysValuesKeys) {
-						throw IllegalArgumentException("Encrypted field appears multiple times as different nested types and or top-level-field: $path$currFieldName")
-					}
-					addSubkeyToGroupedData(currFieldName, currFieldSeparator, currEncryptedField, mapsValuesKeys)
-				}
-
-				"[]." -> {
-					if (currFieldName in topLevelFields || currFieldName in nestedObjectsKeys || currFieldName in mapsValuesKeys) {
-						throw IllegalArgumentException("Encrypted field appears multiple times as different nested types and or top-level-field: $path$currFieldName")
-					}
-					addSubkeyToGroupedData(currFieldName, currFieldSeparator, currEncryptedField, arraysValuesKeys)
-				}
-
-				else -> throw InternalIcureException("Unknown separator $currFieldSeparator passed regex validation in $path$currEncryptedField")
-			}
-		}
-		return EncryptedFieldsManifest(
-			path = path,
-			topLevelFields = topLevelFields,
-			nestedObjectsKeys = nestedObjectsKeys.mapValues { (fieldName, fieldNames) ->
-				parseEncryptedFields(fieldNames, "$path$fieldName.")
-			},
-			mapsValuesKeys = mapsValuesKeys.mapValues { (fieldName, fieldNames) ->
-				parseEncryptedFields(fieldNames, "$path$fieldName.*.")
-			},
-			arraysValuesKeys = arraysValuesKeys.mapValues { (fieldName, fieldNames) ->
-				parseEncryptedFields(fieldNames, "$path$fieldName[].")
-			}
-		)
 	}
 }
