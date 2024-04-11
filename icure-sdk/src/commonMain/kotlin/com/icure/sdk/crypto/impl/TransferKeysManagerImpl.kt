@@ -1,14 +1,21 @@
 package com.icure.sdk.crypto.impl
 
+import com.icure.kryptom.crypto.AesKey
+import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.crypto.RsaAlgorithm
 import com.icure.kryptom.crypto.RsaKeypair
+import com.icure.kryptom.utils.toHexString
+import com.icure.sdk.api.extended.DataOwnerApi
+import com.icure.sdk.crypto.ExchangeDataManager
 import com.icure.sdk.crypto.TransferKeysManager
 import com.icure.sdk.crypto.UserEncryptionKeysManager
 import com.icure.sdk.crypto.entities.CandidateTransferKey
 import com.icure.sdk.crypto.entities.IcureKeyInfo
+import com.icure.sdk.crypto.entities.VerifiedRsaEncryptionKeysSet
 import com.icure.sdk.model.CryptoActorStubWithType
 import com.icure.sdk.model.base.CryptoActor
 import com.icure.sdk.model.extensions.publicKeysSpki
+import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.model.specializations.KeypairFingerprintV1String
 import com.icure.sdk.storage.IcureStorageFacade
 import com.icure.sdk.utils.InternalIcureApi
@@ -20,53 +27,53 @@ import com.icure.sdk.utils.ensureNonNull
 @InternalIcureApi
 internal class TransferKeysManagerImpl(
 	private val encryptionKeysManager: UserEncryptionKeysManager,
-	private val icureStorage: IcureStorageFacade
+	private val icureStorage: IcureStorageFacade,
+	private val cryptoService: CryptoService,
+	private val exchangeDataManager: ExchangeDataManager,
+	private val dataOwnerApi: DataOwnerApi,
 ) : TransferKeysManager {
 	override suspend fun updateTransferKeys(self: CryptoActorStubWithType) {
 		val newEdgesByTarget = getSuggestedTransferKeys(self.stub)
-		// const newEdgesByTarget = await this.getNewVerifiedTransferKeysEdges(self)
-		//    if (!newEdgesByTarget.length) return
-		//    const selfId = self.stub.id!
-		//    const fpToPublicKey = fingerprintToPublicKeysMapOf(self.stub, ShaVersion.Sha1)
-		//    const fpToPublicKeyWithSha256 = fingerprintToPublicKeysMapOf(self.stub, ShaVersion.Sha256)
-		//    const signatureKeyPair = await this.userSignatureKeysManager.getOrCreateSignatureKeyPair()
-		//    const verifiedFps = new Set(this.encryptionKeysManager.getSelfVerifiedKeys().map((x) => x.fingerprint))
-		//    const allVerifiedSourcesAndTarget = Array.from(
-		//      new Set(
-		//        newEdgesByTarget.flatMap((x) =>
-		//          // Sources are guaranteed to be verified, but target may not be
-		//          verifiedFps.has(x.targetFp) ? [x.targetFp, ...x.sources] : x.sources
-		//        )
-		//      )
-		//    )
-		//    const newExchangeKeyPublicKeys = allVerifiedSourcesAndTarget.map((fp) => fpToPublicKey[fp]).filter((key) => !!key)
-		//    const newExchangeKeyPublicKeysWithSha256 = allVerifiedSourcesAndTarget.map((fp) => fpToPublicKeyWithSha256[fp]).filter((key) => !!key)
-		//    const createdExchangeData = await this.baseExchangeDataManager.createExchangeData(
-		//      selfId,
-		//      { [signatureKeyPair.fingerprint]: signatureKeyPair.keyPair.privateKey },
-		//      {
-		//        ...(await loadPublicKeys(this.primitives.RSA, newExchangeKeyPublicKeys, ShaVersion.Sha1)),
-		//        ...(await loadPublicKeys(this.primitives.RSA, newExchangeKeyPublicKeysWithSha256, ShaVersion.Sha256)),
-		//      }
-		//    )
-		//    let updatedTransferKeys = self.stub.transferKeys ?? {}
-		//    for (const newEdges of newEdgesByTarget) {
-		//      const encryptedTransferKey = await this.encryptTransferKey(newEdges.target, createdExchangeData.exchangeKey)
-		//      updatedTransferKeys = newEdges.sources.reduce((acc, candidateFp) => {
-		//        const existingKeys = { ...(acc[candidateFp] ?? {}) }
-		//        existingKeys[newEdges.targetFp] = encryptedTransferKey
-		//        acc[candidateFp] = existingKeys
-		//        return acc
-		//      }, updatedTransferKeys)
-		//    }
-		//    await this.dataOwnerApi.modifyCryptoActorStub({
-		//      stub: {
-		//        ...self.stub,
-		//        transferKeys: updatedTransferKeys,
-		//      },
-		//      type: self.type,
-		//    })
+		if (newEdgesByTarget.isEmpty()) return
+		val selfId = self.stub.id
+		val verifiedFps = encryptionKeysManager.getSelfVerifiedKeys().map { it.pubSpkiHexString.fingerprintV1() }.toSet()
+		val allVerifiedSourcesAndTarget = newEdgesByTarget.flatMap { x ->
+			if (verifiedFps.contains(x.target.pubSpkiHexString.fingerprintV1())) {
+				listOf(x.target.pubSpkiHexString) + x.sources
+			} else {
+				x.sources
+			}
+		}.toSet()
+		val keysToUse = VerifiedRsaEncryptionKeysSet(cryptoService.loadEncryptionKeysForDataOwner(self.stub, allVerifiedSourcesAndTarget))
+		val exchangeData = exchangeDataManager.getOrCreateEncryptionDataTo(selfId, false)
+		// If the exchange data already existed ensure that it has all the necessary keys
+		exchangeDataManager.base.updateExchangeDataWithDecryptedContent(
+			exchangeData.exchangeData,
+			keysToUse,
+			exchangeData.unencryptedContent
+		)
+		val updatedTransferKeys = self.stub.transferKeys.toList().associate { (identifier, transferKeys) ->
+			identifier.sliceIfNeeded() to transferKeys.toList().associate { (targetIdentifier, key) ->
+				targetIdentifier.sliceIfNeeded() to key
+			}.toMutableMap()
+		}.toMutableMap()
+		for (newEdges in newEdgesByTarget) {
+			val encryptedTransferKey = encryptTransferKey(newEdges.target.key, exchangeData.unencryptedContent.exchangeKey)
+			for (source in newEdges.sources) {
+				val sourceTransferKeys = updatedTransferKeys.getOrPut(source.fingerprintV1().asAmbiguousIdentifier()) { mutableMapOf() }
+				sourceTransferKeys[newEdges.target.pubSpkiHexString.fingerprintV1().asAmbiguousIdentifier()] = encryptedTransferKey
+			}
+		}
+		dataOwnerApi.modifyDataOwnerStub(self.copy(stub = self.stub.copy(transferKeys = updatedTransferKeys)))
+	}
 
+	// encrypts a transfer key in pkcs8 format using an exchange key, returns the hex representation
+	private suspend fun encryptTransferKey(
+		transferKey: RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>,
+		exchangeKey: AesKey
+	): HexString {
+		val exportedKey = cryptoService.rsa.exportPrivateKeyPkcs8(transferKey.private)
+		return HexString(cryptoService.aes.encrypt(exportedKey, exchangeKey).toHexString())
 	}
 
 	/**

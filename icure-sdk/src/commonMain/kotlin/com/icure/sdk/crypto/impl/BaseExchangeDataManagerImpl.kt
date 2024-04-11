@@ -4,6 +4,7 @@ import com.icure.kryptom.crypto.AesKey
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.crypto.HmacAlgorithm
 import com.icure.kryptom.crypto.HmacKey
+import com.icure.kryptom.utils.hexToByteArray
 import com.icure.kryptom.utils.toHexString
 import com.icure.sdk.api.extended.DataOwnerApi
 import com.icure.sdk.api.raw.RawExchangeDataApi
@@ -215,7 +216,22 @@ class BaseExchangeDataManagerImpl(
 		val exchangeKey = importExchangeKey(rawExchangeKey)
 		val accessControlSecret = importAccessControlSecret(rawAccessControlSecret)
 		val sharedSignatureKey = importSharedSignatureKey(rawSharedSignatureKey)
+		return ExchangeDataWithUnencryptedContent(
+			exchangeData = exchangeData,
+			unencryptedContent = UnencryptedExchangeDataContent(
+				exchangeKey = exchangeKey,
+				accessControlSecret = accessControlSecret,
+				sharedSignatureKey = sharedSignatureKey
+			)
+		)
+	}
 
+
+	override suspend fun updateExchangeDataWithDecryptedContent(
+		exchangeData: ExchangeData,
+		newEncryptionKeys: VerifiedRsaEncryptionKeysSet,
+		unencryptedExchangeDataContent: UnencryptedExchangeDataContent
+	): ExchangeDataWithUnencryptedContent {
 		val existingExchangeKeyEntries = exchangeData.exchangeKey.keys.toSet()
 		val existingAcsEntries = exchangeData.accessControlSecret.keys.toSet()
 		val existingSharedSignatureKeyEntries = exchangeData.sharedSignatureKey.keys.toSet()
@@ -230,26 +246,38 @@ class BaseExchangeDataManagerImpl(
 			return ExchangeDataWithUnencryptedContent(
 				exchangeData = exchangeData,
 				unencryptedContent = UnencryptedExchangeDataContent(
-					exchangeKey = exchangeKey,
-					accessControlSecret = accessControlSecret,
-					sharedSignatureKey = sharedSignatureKey
+					exchangeKey = unencryptedExchangeDataContent.exchangeKey,
+					accessControlSecret = unencryptedExchangeDataContent.accessControlSecret,
+					sharedSignatureKey = unencryptedExchangeDataContent.sharedSignatureKey
 				)
 			)
 		}
 
 		val encryptionKeysForMissingEntries = VerifiedRsaEncryptionKeysSet(missingEntries)
 		val updatedExchangeData = exchangeData.copy(
-			exchangeKey = exchangeData.exchangeKey + cryptoService.encryptDataWithKeys(rawExchangeKey, encryptionKeysForMissingEntries, KeyIdentifierFormat.FingerprintV2),
-			accessControlSecret = exchangeData.accessControlSecret + cryptoService.encryptDataWithKeys(rawAccessControlSecret, encryptionKeysForMissingEntries, KeyIdentifierFormat.FingerprintV2),
-			sharedSignatureKey = exchangeData.sharedSignatureKey + cryptoService.encryptDataWithKeys(rawSharedSignatureKey, encryptionKeysForMissingEntries, KeyIdentifierFormat.FingerprintV2)
+			exchangeKey = exchangeData.exchangeKey + cryptoService.encryptDataWithKeys(
+				exportExchangeKey(unencryptedExchangeDataContent.exchangeKey),
+				encryptionKeysForMissingEntries,
+				KeyIdentifierFormat.FingerprintV2
+			),
+			accessControlSecret = exchangeData.accessControlSecret + cryptoService.encryptDataWithKeys(
+				exportAccessControlSecret(unencryptedExchangeDataContent.accessControlSecret),
+				encryptionKeysForMissingEntries,
+				KeyIdentifierFormat.FingerprintV2
+			),
+			sharedSignatureKey = exchangeData.sharedSignatureKey + cryptoService.encryptDataWithKeys(
+				exportSharedSignatureKey(unencryptedExchangeDataContent.sharedSignatureKey),
+				encryptionKeysForMissingEntries,
+				KeyIdentifierFormat.FingerprintV2
+			)
 		).let {
 			val isVerified = verifyExchangeData(
 				data = ExchangeDataWithUnencryptedContent(
 					exchangeData = exchangeData,
 					unencryptedContent = UnencryptedExchangeDataContent(
-						exchangeKey = exchangeKey,
-						accessControlSecret = accessControlSecret,
-						sharedSignatureKey = sharedSignatureKey
+						exchangeKey = unencryptedExchangeDataContent.exchangeKey,
+						accessControlSecret = unencryptedExchangeDataContent.accessControlSecret,
+						sharedSignatureKey = unencryptedExchangeDataContent.sharedSignatureKey
 					)
 				),
 				rsaVerificationKeyProvider = { null },
@@ -260,11 +288,11 @@ class BaseExchangeDataManagerImpl(
 					bytesToSignForSharedSignature(
 						delegator = it.delegator,
 						delegate = it.delegate,
-						decryptedAccessControlSecret = accessControlSecret,
-						decryptedExchangeKey = exchangeKey,
+						decryptedAccessControlSecret = unencryptedExchangeDataContent.accessControlSecret,
+						decryptedExchangeKey = unencryptedExchangeDataContent.exchangeKey,
 						publicKeysFingerprints = it.exchangeKey.keys
 					),
-					sharedSignatureKey
+					unencryptedExchangeDataContent.sharedSignatureKey
 				).base64Encode()
 			) else it
 		}
@@ -272,9 +300,9 @@ class BaseExchangeDataManagerImpl(
 		return ExchangeDataWithUnencryptedContent(
 			exchangeData = raw.modifyExchangeData(updatedExchangeData).successBody(),
 			unencryptedContent = UnencryptedExchangeDataContent(
-				exchangeKey = exchangeKey,
-				accessControlSecret = accessControlSecret,
-				sharedSignatureKey = sharedSignatureKey
+				exchangeKey = unencryptedExchangeDataContent.exchangeKey,
+				accessControlSecret = unencryptedExchangeDataContent.accessControlSecret,
+				sharedSignatureKey = unencryptedExchangeDataContent.sharedSignatureKey
 			)
 		)
 	}
@@ -359,11 +387,17 @@ class BaseExchangeDataManagerImpl(
 	private suspend fun importExchangeKey(decryptedBytes: ByteArray): AesKey =
 		cryptoService.aes.loadKey(decryptedBytes)
 
+	private suspend fun exportExchangeKey(decryptedExchangeKey: AesKey): ByteArray =
+		cryptoService.aes.exportKey(decryptedExchangeKey)
+
 	private suspend fun generateSharedSignatureKey(): Pair<HmacKey<HmacAlgorithm.HmacSha512>, ByteArray> =
 		cryptoService.hmac.generateKey(HmacAlgorithm.HmacSha512).let { it to cryptoService.hmac.exportKey(it) }
 
 	private suspend fun importSharedSignatureKey(decryptedBytes: ByteArray): HmacKey<HmacAlgorithm.HmacSha512> =
 		cryptoService.hmac.loadKey(HmacAlgorithm.HmacSha512, decryptedBytes)
+
+	private suspend fun exportSharedSignatureKey(decryptedSharedSignatureKey: HmacKey<HmacAlgorithm>): ByteArray =
+		cryptoService.hmac.exportKey(decryptedSharedSignatureKey)
 
 	// Generates a new access control secret
 	private fun generateAccessControlSecret(): Pair<AccessControlSecret, ByteArray> =
@@ -371,4 +405,7 @@ class BaseExchangeDataManagerImpl(
 
 	private fun importAccessControlSecret(decryptedBytes: ByteArray): AccessControlSecret =
 		AccessControlSecret(decryptedBytes.toHexString())
+
+	private fun exportAccessControlSecret(decryptedAccessControlSecret: AccessControlSecret): ByteArray =
+		hexToByteArray(decryptedAccessControlSecret.s)
 }

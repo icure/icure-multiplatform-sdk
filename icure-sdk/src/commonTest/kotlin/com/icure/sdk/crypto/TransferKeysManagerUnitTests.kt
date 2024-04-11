@@ -6,6 +6,8 @@ import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.sdk.crypto.entities.CandidateTransferKey
 import com.icure.sdk.crypto.entities.IcureKeyInfo
 import com.icure.sdk.crypto.fake.FakeUserEncryptionKeysManager
+import com.icure.sdk.crypto.fake.NoDataOwnerApi
+import com.icure.sdk.crypto.fake.NoExchangeDataManager
 import com.icure.sdk.crypto.impl.TransferKeysManagerImpl
 import com.icure.sdk.crypto.impl.exportSpkiHex
 import com.icure.sdk.model.HealthcareParty
@@ -64,7 +66,13 @@ class TransferKeysManagerUnitTests : StringSpec({
 			false
 		)
 		encryptionKeysManage = FakeUserEncryptionKeysManager()
-		transferKeysManager = TransferKeysManagerImpl(encryptionKeysManage, storage)
+		transferKeysManager = TransferKeysManagerImpl(
+			encryptionKeysManage,
+			storage,
+			defaultCryptoService,
+			NoExchangeDataManager,
+			NoDataOwnerApi
+		)
 		self = HealthcareParty(defaultCryptoService.strongRandom.randomUUID())
 	}
 

@@ -4,6 +4,7 @@ import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.kryptom.utils.toHexString
 import com.icure.sdk.api.extended.DataOwnerApi
+import com.icure.sdk.api.extended.DataOwnerApiImpl
 import com.icure.sdk.api.extended.IcureMaintenanceTaskApi
 import com.icure.sdk.api.flavoured.AccessLogApi
 import com.icure.sdk.api.flavoured.AccessLogApiImpl
@@ -171,7 +172,7 @@ interface IcureSdk {
 			val iCureStorage = IcureStorageFacade(keysStorage, baseStorage, DefaultStorageEntryKeysFactory, cryptoService, false)
 			val authApi = RawAnonymousAuthApi(apiUrl, client)
 			val authService = JwtAuthService(authApi, usernamePassword)
-			val dataOwnerApi = DataOwnerApi(RawDataOwnerApi(apiUrl, authService, client))
+			val dataOwnerApi = DataOwnerApiImpl(RawDataOwnerApi(apiUrl, authService, client))
 			val self = dataOwnerApi.getCurrentDataOwner()
 			val selfIsAnonymous = cryptoStrategies.dataOwnerRequiresAnonymousDelegation(self.toStub())
 			val rawPatientApiNoAccessKeys = RawPatientApi(apiUrl, authService, null, client)

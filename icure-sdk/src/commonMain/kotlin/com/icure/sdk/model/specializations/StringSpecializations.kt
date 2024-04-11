@@ -22,6 +22,9 @@ import kotlin.jvm.JvmInline
 value class AesExchangeKeyEncryptionKeypairIdentifier(val s: String) {
 	fun toFingerprintV1OrNull(): KeypairFingerprintV1String? =
 		if (s.length >= 32) KeypairFingerprintV1String(s.takeLast(32)) else null
+
+	fun sliceIfNeeded() =
+		if (s.length > 32) AesExchangeKeyEncryptionKeypairIdentifier(s.take(32)) else this
 }
 
 @JvmInline
@@ -150,6 +153,10 @@ value class KeypairFingerprintV1String(
 
 	fun toV2(): KeypairFingerprintV2String {
 		return KeypairFingerprintV2String.fromV1(this)
+	}
+
+	fun asAmbiguousIdentifier(): AesExchangeKeyEncryptionKeypairIdentifier {
+		return AesExchangeKeyEncryptionKeypairIdentifier(s)
 	}
 }
 
