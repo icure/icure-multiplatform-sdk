@@ -81,7 +81,7 @@ class DirectedGraphTest : StringSpec({
 		val E = graph.originalLabelToAcyclicLabel.getValue('E')
 		val H = 'H'
 		val I = graph.originalLabelToAcyclicLabel.getValue('I')
-		graph.reachSets() shouldBe mapOf(
+		graph.reachSets shouldBe mapOf(
 			A to setOf(B, C, D, E, H, I),
 			B to setOf(D, E, H, I),
 			C to emptySet(),

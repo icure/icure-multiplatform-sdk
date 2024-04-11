@@ -13,9 +13,9 @@ internal value class DirectedGraph<T>(val nodesToEdges: Map<T, Set<T>>) {
 		 */
 		fun <T> fromEdges(
 			vararg edges: Pair<T, T>,
-			additionalNodes: Set<T> = emptySet(),
+			additionalNodes: Collection<T> = emptySet(),
 		): DirectedGraph<T> {
-			val allNodes = additionalNodes + edges.flatMap { (from, to) -> listOf(from, to) }
+			val allNodes = edges.flatMapTo(additionalNodes.toMutableSet()) { (from, to) -> listOf(from, to) }
 			val groupedEdges = edges.groupBy { it.first }.mapValues { (_, v) -> v.mapTo(mutableSetOf()) { it.second } }
 			return DirectedGraph(allNodes.associateWith { groupedEdges[it] ?: emptySet() })
 		}
@@ -98,7 +98,7 @@ internal data class StronglyConnectedGraph<T>(
 	 * Get the nodes reachable from each node in an acyclic graph. Exclude the node itself.
 	 * @return all nodes reachable from each node in the graph with 1 or more steps.
 	 */
-	fun reachSets(): Map<T, Set<T>> {
+	val reachSets: Map<T, Set<T>> by lazy {
 		val res = mutableMapOf<T, Set<T>>()
 		fun calculateAndCacheReachSetRecursive(node: T): Set<T> =
 			res.getOrPut(node) {
@@ -107,6 +107,6 @@ internal data class StronglyConnectedGraph<T>(
 				}.toSet()
 			}
 		acyclicGraph.nodesToEdges.keys.forEach { calculateAndCacheReachSetRecursive(it) }
-		return res
+		res
 	}
 }

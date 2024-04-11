@@ -147,6 +147,10 @@ value class KeypairFingerprintV1String(
 	init {
 		require(pattern.matches(s)) { "Invalid fingerprint v1 string: $s" }
 	}
+
+	fun toV2(): KeypairFingerprintV2String {
+		return KeypairFingerprintV2String.fromV1(this)
+	}
 }
 
 @JvmInline

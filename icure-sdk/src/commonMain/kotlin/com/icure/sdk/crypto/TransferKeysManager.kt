@@ -4,7 +4,7 @@ import com.icure.sdk.model.CryptoActorStubWithType
 import com.icure.sdk.utils.InternalIcureApi
 
 @InternalIcureApi
-interface TransferKeysManager {
+internal interface TransferKeysManager {
 	/**
 	 * Analyses the transfer keys graph and creates new transfer keys which allow to improve data accessibility from other devices.
 	 * For security reasons transfer keys will only be created between keys verified by the user, but this will be done ignoring any existing edges from
