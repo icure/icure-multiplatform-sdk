@@ -6,7 +6,7 @@ import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.notification.Subscription
 import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.utils.Serialization
-import com.icure.sdk.utils.platformHttpClient
+import io.ktor.client.HttpClient
 import io.ktor.client.plugins.websocket.DefaultClientWebSocketSession
 import io.ktor.client.plugins.websocket.WebSockets
 import io.ktor.client.plugins.websocket.webSocketSession
@@ -61,16 +61,11 @@ class ConnectionImpl private constructor(
 ) : Connection {
 
 	companion object {
-		private val client = platformHttpClient {
-			install(WebSockets) {
-				contentConverter = KotlinxWebsocketSerializationConverter(Serialization.json)
-			}
-		}
-
 		private suspend fun createWebSocketSession(
 			hostname: String,
 			path: String,
 			webSocketAuthProvider: WebSocketAuthProvider,
+			client: HttpClient
 		): DefaultClientWebSocketSession {
 			val jwtToken = webSocketAuthProvider.getBearerToken()
 			return client.webSocketSession(
@@ -138,6 +133,7 @@ class ConnectionImpl private constructor(
 		}
 
 		suspend fun <EncryptedType : BaseType, BaseType : Identifiable<String>> initialize(
+			client: HttpClient,
 			hostname: String,
 			path: String,
 			events: Set<SubscriptionEventType>,
@@ -174,6 +170,7 @@ class ConnectionImpl private constructor(
 						hostname = hostname,
 						path = path,
 						webSocketAuthProvider = webSocketAuthProvider,
+						client = client
 					)
 				},
 				retryDelay = retryDelay,

@@ -106,9 +106,11 @@ import com.icure.sdk.storage.impl.JsonAndBase64KeyStorage
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.newPlatformHttpClient
+import com.icure.sdk.websocket.WebSocketAuthProvider
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.websocket.WebSockets
 import io.ktor.serialization.kotlinx.json.json
 
 interface IcureSdk {
@@ -145,6 +147,7 @@ interface IcureSdk {
 					json(json = Serialization.json)
 				}
 				install(HttpTimeout)
+				install(WebSockets)
 			}
 		}
 
@@ -322,6 +325,9 @@ interface IcureSdk {
 					dataOwnerApi
 				).updateTransferKeys(updatedSelf.toStub())
 			}
+
+			val webSocketAuthProvider = WebSocketAuthProvider(authService)
+
 			val manifests = EntitiesEncryptedFieldsManifests.fromEncryptedFields(options.encryptedFields)
 			return IcureApiImpl(
 				crypto,
@@ -330,7 +336,8 @@ interface IcureSdk {
 				headersProvider,
 				client,
 				manifests,
-				!selfIsAnonymous
+				!selfIsAnonymous,
+				webSocketAuthProvider
 			)
 		}
 	}
@@ -344,7 +351,8 @@ private class IcureApiImpl(
 	private val headersProvider: AccessControlKeysHeadersProvider,
 	private val client: HttpClient,
 	private val encryptedFieldsManifests: EntitiesEncryptedFieldsManifests,
-	private val autofillAuthor: Boolean
+	private val autofillAuthor: Boolean,
+	private val webSocketAuthProvider: WebSocketAuthProvider
 ): IcureSdk {
 	private val rawCalendarItemApi by lazy { RawCalendarItemApi(apiUrl, authService, headersProvider, client) }
 
@@ -387,7 +395,8 @@ private class IcureApiImpl(
 			rawHealthcareElementApi,
 			internalCrypto,
 			encryptedFieldsManifests.healthElement,
-			autofillAuthor
+			autofillAuthor,
+			webSocketAuthProvider
 		)
 	}
 

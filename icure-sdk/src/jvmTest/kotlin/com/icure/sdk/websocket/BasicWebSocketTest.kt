@@ -3,9 +3,14 @@ package com.icure.sdk.websocket
 import com.icure.sdk.model.DecryptedHealthElement
 import com.icure.sdk.model.filter.healthelement.HealthElementByHcPartyFilter
 import com.icure.sdk.model.notification.SubscriptionEventType
+import com.icure.sdk.utils.Serialization
+import com.icure.sdk.utils.newPlatformHttpClient
 import io.kotest.assertions.fail
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
+import io.ktor.client.plugins.HttpTimeout
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.install
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
@@ -29,6 +34,14 @@ import kotlin.time.Duration.Companion.seconds
 
 @OptIn(InternalAPI::class)
 class BasicWebSocketTest : StringSpec({
+
+	val client = newPlatformHttpClient {
+		install(ContentNegotiation) {
+			json(json = Serialization.json)
+		}
+		install(HttpTimeout)
+		install(io.ktor.client.plugins.websocket.WebSockets)
+	}
 
 	val fakeWebsocketServer = embeddedServer(Netty, port = 25565) {
 		install(WebSockets)
@@ -69,6 +82,7 @@ class BasicWebSocketTest : StringSpec({
 	}.start(wait = false)
 
 	afterSpec {
+		client.close()
 		fakeWebsocketServer.stop(0, 0)
 	}
 
@@ -84,6 +98,7 @@ class BasicWebSocketTest : StringSpec({
 		}
 
 		val connection = ConnectionImpl.initialize(
+			client = client,
 			hostname = "localhost:25565",
 			path = "/",
 			events = setOf(SubscriptionEventType.Create),
@@ -130,6 +145,7 @@ class BasicWebSocketTest : StringSpec({
 		}
 
 		val connection = ConnectionImpl.initialize(
+			client = client,
 			hostname = "localhost:25565",
 			path = "/load",
 			events = setOf(SubscriptionEventType.Create),

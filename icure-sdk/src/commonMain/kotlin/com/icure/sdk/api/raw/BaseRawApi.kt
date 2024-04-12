@@ -10,7 +10,7 @@ import io.ktor.http.headers
 import kotlin.time.Duration
 
 abstract class BaseRawApi(
-	private val httpClient: HttpClient,
+	internal val httpClient: HttpClient,
 	private val additionalHeaders: Map<String, String>,
 	private val requestTimeout : Duration?
 ) {

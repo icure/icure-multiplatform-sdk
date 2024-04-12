@@ -165,6 +165,7 @@ private abstract class AbstractHealthcareElementBasicFlavouredApi<E : HealthElem
 		eventFired: suspend (E) -> Unit,
 	): Connection {
 		return ConnectionImpl.initialize(
+			client = rawApi.httpClient,
 			hostname = this.rawApi.apiUrl.replace("https://", "").replace("http://", ""),
 			path = "/ws/v2/notification/subscribe",
 			serializer = EncryptedHealthElement.serializer(),
