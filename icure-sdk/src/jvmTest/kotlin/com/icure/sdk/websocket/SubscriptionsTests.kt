@@ -5,6 +5,7 @@ import com.icure.sdk.model.DecryptedPatient
 import com.icure.sdk.model.base.Identifiable
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.healthelement.HealthElementByHcPartyFilter
+import com.icure.sdk.model.filter.patient.PatientByHcPartyFilter
 import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.test.DataOwnerDetails
 import com.icure.sdk.test.createHcpUser
@@ -113,6 +114,23 @@ class SubscriptionsTests : StringSpec(
 									.healthcareElement
 									.createHealthcareElement(it)
 								println("Created HealthElement")
+							}
+					}
+				),
+			)
+			include(
+				subscribableTests(
+					name = "Patient",
+					subscribableApi = hcpUser.api().patient.encrypted,
+					filter = PatientByHcPartyFilter(healthcarePartyId = hcpUser.dataOwnerId),
+					createEntity =  {
+						hcpUser
+							.api()
+							.patient
+							.withEncryptionMetadata(
+								DecryptedPatient(id = UUID.randomUUID().toString())
+							).let {
+								hcpUser.api().patient.createPatient(it)
 							}
 					}
 				),

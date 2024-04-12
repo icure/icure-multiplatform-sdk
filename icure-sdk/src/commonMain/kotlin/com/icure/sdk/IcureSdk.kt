@@ -384,7 +384,8 @@ private class IcureApiImpl(
 			rawPatientApi,
 			internalCrypto,
 			encryptedFieldsManifests.patient,
-			autofillAuthor
+			autofillAuthor,
+			webSocketAuthProvider
 		)
 	}
 
