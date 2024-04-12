@@ -2,9 +2,20 @@ package com.icure.sdk.crypto.entities
 
 
 sealed interface RecoveryResult<out T> {
-	data class Success<T>(val data: T) : RecoveryResult<T>
+	val isSuccess: Boolean
 
-	data class Failure(val reason: RecoveryDataUseFailureReason) : RecoveryResult<Nothing>
+	data class Success<T>(val data: T) : RecoveryResult<T> {
+		override val isSuccess: Boolean get() = true
+	}
+
+	data class Failure(val reason: RecoveryDataUseFailureReason) : RecoveryResult<Nothing> {
+		override val isSuccess: Boolean get() = false
+	}
+}
+
+inline fun <T, R> RecoveryResult<T>.map(transform: (T) -> R): RecoveryResult<R> = when (this) {
+	is RecoveryResult.Success -> RecoveryResult.Success(transform(this.data))
+	is RecoveryResult.Failure -> this
 }
 
 enum class RecoveryDataUseFailureReason {

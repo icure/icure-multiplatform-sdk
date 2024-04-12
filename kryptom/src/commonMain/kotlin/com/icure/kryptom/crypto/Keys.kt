@@ -51,6 +51,8 @@ data class RsaKeypair<out A : RsaAlgorithm>(val private: PrivateRsaKey<A>, val p
 	init {
 		require(private.algorithm == public.algorithm) { "Private and public keys must have the same algorithm" }
 	}
+
+	val algorithm: A get() = private.algorithm
 }
 
 /**

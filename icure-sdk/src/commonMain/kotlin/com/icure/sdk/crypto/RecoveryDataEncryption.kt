@@ -2,7 +2,9 @@ package com.icure.sdk.crypto
 
 import com.icure.kryptom.crypto.RsaAlgorithm
 import com.icure.kryptom.crypto.RsaKeypair
+import com.icure.sdk.api.raw.RawRecoveryDataApi
 import com.icure.sdk.crypto.entities.ExchangeDataRecoveryDetails
+import com.icure.sdk.crypto.entities.RecoveryDataKey
 import com.icure.sdk.crypto.entities.RecoveryResult
 import com.icure.sdk.model.specializations.SpkiHexString
 import com.icure.sdk.utils.InternalIcureApi
@@ -10,10 +12,12 @@ import com.icure.sdk.utils.InternalIcureApi
 
 @InternalIcureApi
 interface RecoveryDataEncryption {
+	val raw: RawRecoveryDataApi
+
 	/**
 	 * Gets the id corresponding to a recovery key
 	 */
-	suspend fun recoveryKeyToId(recoveryKey: String): String
+	suspend fun recoveryKeyToId(recoveryKey: RecoveryDataKey): String
 
 	/**
 	 * Creates recovery data with the provided key pairs.
@@ -24,15 +28,15 @@ interface RecoveryDataEncryption {
 	 */
 	suspend fun createAndSaveKeyPairsRecoveryDataFor(
 		recipient: String,
-		keyPairs: Map<String, RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>,
-		lifetimeSeconds: Long?
-	): String
+		keyPairs: Map<String, List<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>>,
+		lifetimeSeconds: Int?
+	): RecoveryDataKey
 
 	/**
 	 * Gets the content of the key recovery data corresponding to the provided recovery key.
 	 */
 	suspend fun getAndDecryptKeyPairsRecoveryData(
-		recoveryKey: String,
+		recoveryKey: RecoveryDataKey,
 		autoDelete: Boolean
 	): RecoveryResult<Map<String, Map<SpkiHexString, RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>>>
 
@@ -45,13 +49,13 @@ interface RecoveryDataEncryption {
 	suspend fun createAndSaveExchangeDataRecoveryData(
 		recipient: String,
 		exchangeDataInfo: List<ExchangeDataRecoveryDetails>,
-		lifetimeSeconds: Long?
-	): String
+		lifetimeSeconds: Int?
+	): RecoveryDataKey
 
 	/**
 	 * Gets the content of the exchange data recovery data corresponding to the provided recovery key.
 	 */
 	suspend fun getAndDecryptExchangeDataRecoveryData(
-		recoveryKey: String
+		recoveryKey: RecoveryDataKey
 	): RecoveryResult<List<ExchangeDataRecoveryDetails>>
 }

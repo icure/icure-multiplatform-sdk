@@ -58,6 +58,7 @@ import com.icure.sdk.api.raw.RawMessageApi
 import com.icure.sdk.api.raw.RawPatientApi
 import com.icure.sdk.api.raw.RawPermissionApi
 import com.icure.sdk.api.raw.RawReceiptApi
+import com.icure.sdk.api.raw.RawRecoveryDataApi
 import com.icure.sdk.api.raw.RawSecureDelegationKeyMapApi
 import com.icure.sdk.api.raw.RawTimeTableApi
 import com.icure.sdk.api.raw.RawTopicApi
@@ -85,9 +86,10 @@ import com.icure.sdk.crypto.impl.FullyCachedExchangeDataManager
 import com.icure.sdk.crypto.impl.IcureKeyRecoveryImpl
 import com.icure.sdk.crypto.impl.InternalCryptoApiImpl
 import com.icure.sdk.crypto.impl.JsonEncryptionServiceImpl
+import com.icure.sdk.crypto.impl.KeyPairRecovererImpl
 import com.icure.sdk.crypto.impl.LegacyDelegationsDecryptor
 import com.icure.sdk.crypto.impl.NoAccessControlKeysHeadersProvider
-import com.icure.sdk.crypto.impl.NoopKeyRecoverer
+import com.icure.sdk.crypto.impl.RecoveryDataEncryptionImpl
 import com.icure.sdk.crypto.impl.SecureDelegationsDecryptorImpl
 import com.icure.sdk.crypto.impl.SecureDelegationsEncryptionImpl
 import com.icure.sdk.crypto.impl.SecureDelegationsManagerImpl
@@ -209,13 +211,17 @@ interface IcureSdk {
 				cryptoService,
 				shamirService
 			)
+			val recoveryDataEncryption = RecoveryDataEncryptionImpl(
+				cryptoService,
+				RawRecoveryDataApi(apiUrl, authService, client)
+			)
 			val userEncryptionKeys = UserEncryptionKeysManagerImpl.Factory(
 				cryptoService,
 				cryptoStrategies,
 				dataOwnerApi,
 				iCureStorage,
 				icureKeyRecovery,
-				NoopKeyRecoverer,
+				KeyPairRecovererImpl(recoveryDataEncryption),
 				!options.disableParentKeysInitialisation,
 			).initialise().also { initInfo ->
 				initInfo.newKey?.let {
@@ -309,7 +315,8 @@ interface IcureSdk {
 					cryptoService
 				),
 				dataOwnerApi,
-				userEncryptionKeys
+				userEncryptionKeys,
+				recoveryDataEncryption
 			)
 			val updatedSelf =
 				ensureDelegationForSelf(dataOwnerApi, entityEncryptionService, rawPatientApiNoAccessKeys, cryptoService)
