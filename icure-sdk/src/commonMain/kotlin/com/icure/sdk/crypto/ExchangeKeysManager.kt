@@ -12,6 +12,8 @@ import com.icure.sdk.utils.InternalIcureApi
  */
 @InternalIcureApi
 interface ExchangeKeysManager {
+	val base: BaseExchangeKeysManager
+
 	/**
 	 * Get all keys currently available for a delegator-delegate pair. At least one of the two data owners must be part of the hierarchy for the current
 	 * data owner.

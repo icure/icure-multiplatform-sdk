@@ -11,6 +11,7 @@ import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
 import com.icure.sdk.utils.InternalIcureApi
+import io.ktor.client.HttpClient
 import io.ktor.client.request.`header`
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
@@ -36,9 +37,10 @@ class RawDocumentApi(
 	private val apiUrl: String,
 	private val authService: AuthService,
 	private val accessControlKeysHeadersProvider: AccessControlKeysHeadersProvider?,
+	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
-) : BaseRawApi(additionalHeaders, timeout) {
+) : BaseRawApi(httpClient, additionalHeaders, timeout) {
 	override suspend fun getAccessControlKeysHeaderValues(): List<String>? =
 		accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithEncryptionMetadataTypeName.Document)
 
@@ -191,23 +193,9 @@ class RawDocumentApi(
 			setBody(documentDtos)
 		}.wrap()
 
-	suspend fun listDocumentsByHCPartyAndPatientForeignKeys(
+	suspend fun listDocumentsByHcPartyMessageForeignKeys(
 		hcPartyId: String,
-		secretFKeys: String,
-	): HttpResponse<List<EncryptedDocument>> =
-		get {
-			url {
-				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "document", "byHcPartySecretForeignKeys")
-				parameter("hcPartyId", hcPartyId)
-				parameter("secretFKeys", secretFKeys)
-				parameter("ts", GMTDate().timestamp)
-			}
-			setAuthorizationWith(authService)
-		}.wrap()
-
-	suspend fun findDocumentsByHCPartyPatientForeignKeys(
-		hcPartyId: String,
+		documentTypeCode: String? = null,
 		secretMessageKeys: List<String>,
 	): HttpResponse<List<EncryptedDocument>> =
 		post {
@@ -215,15 +203,16 @@ class RawDocumentApi(
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "document", "byHcPartySecretForeignKeys")
 				parameter("hcPartyId", hcPartyId)
+				parameter("documentTypeCode", documentTypeCode)
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(secretMessageKeys)
 		}.wrap()
 
-	suspend fun findDocumentsByHCPartyPatientForeignKey(
+	suspend fun findDocumentsByHCPartyMessageForeignKey(
 		hcPartyId: String,
-		secretFKey: String,
+		secretMessageKeys: String,
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
@@ -233,27 +222,10 @@ class RawDocumentApi(
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "document", "byHcPartySecretForeignKey")
 				parameter("hcPartyId", hcPartyId)
-				parameter("secretFKey", secretFKey)
+				parameter("secretMessageKeys", secretMessageKeys)
 				parameter("startKey", startKey)
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
-				parameter("ts", GMTDate().timestamp)
-			}
-			setAuthorizationWith(authService)
-		}.wrap()
-
-	suspend fun listDocumentByTypeHCPartyMessageSecretFKeys(
-		documentTypeCode: String,
-		hcPartyId: String,
-		secretFKeys: String,
-	): HttpResponse<List<EncryptedDocument>> =
-		get {
-			url {
-				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "document", "byTypeHcPartySecretForeignKeys")
-				parameter("documentTypeCode", documentTypeCode)
-				parameter("hcPartyId", hcPartyId)
-				parameter("secretFKeys", secretFKeys)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)

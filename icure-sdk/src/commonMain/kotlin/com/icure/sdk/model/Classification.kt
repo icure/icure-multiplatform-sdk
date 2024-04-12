@@ -78,7 +78,7 @@ data class DecryptedClassification(
 	override val codes: Set<CodeStub> = emptySet(),
 	override val endOfLife: Long? = null,
 	override val deletionDate: Long? = null,
-	override val parentId: String?,
+	override val parentId: String? = null,
 	override val label: String = "",
 	override val templateId: String? = null,
 	override val secretForeignKeys: Set<String> = emptySet(),

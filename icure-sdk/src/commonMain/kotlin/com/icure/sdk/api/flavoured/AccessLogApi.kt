@@ -1,8 +1,8 @@
 package com.icure.sdk.api.flavoured
 
 import com.icure.sdk.api.raw.RawAccessLogApi
-import com.icure.sdk.crypto.BasicCryptoApi
-import com.icure.sdk.crypto.InternalCryptoApi
+import com.icure.sdk.crypto.BasicInternalCryptoApi
+import com.icure.sdk.crypto.InternalCryptoServices
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.crypto.entities.SecretIdOption
@@ -85,7 +85,7 @@ interface AccessLogBasicFlavouredApi<E : AccessLog> {
 interface AccessLogFlavouredApi<E : AccessLog> : AccessLogBasicFlavouredApi<E> {
 	suspend fun shareWith(
 		delegateId: String,
-		healthcareElement: E,
+		accessLog: E,
 		shareEncryptionKeys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
 		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
 		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
@@ -199,20 +199,20 @@ private abstract class AbstractAccessLogBasicFlavouredApi<E : AccessLog>(
 @InternalIcureApi
 private abstract class AbstractAccessLogFlavouredApi<E : AccessLog>(
 	rawApi: RawAccessLogApi,
-	private val crypto: InternalCryptoApi
+	private val crypto: InternalCryptoServices
 ) : AbstractAccessLogBasicFlavouredApi<E>(rawApi), AccessLogFlavouredApi<E> {
 	override suspend fun getSecureDelegationKeys(): List<String> =
 		crypto.exchangeDataManager.getAccessControlKeysValue(EntityWithEncryptionMetadataTypeName.AccessLog)?.map { it.s } ?: emptyList()
 
 	override suspend fun shareWith(
 		delegateId: String,
-		healthcareElement: E,
+		accessLog: E,
 		shareEncryptionKeys: ShareMetadataBehaviour,
 		shareOwningEntityIds: ShareMetadataBehaviour,
 		requestedPermission: RequestedPermission,
 	): SimpleShareResult<E> =
 		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
-			healthcareElement.withTypeInfo(),
+			accessLog.withTypeInfo(),
 			true,
 			mapOf(
 				delegateId to SimpleDelegateShareOptions(
@@ -266,9 +266,9 @@ private class AbstractAccessLogBasicFlavourlessApi(val rawApi: RawAccessLogApi) 
 @InternalIcureApi
 internal class AccessLogApiImpl(
 	private val rawApi: RawAccessLogApi,
-	private val autofillAuthor: Boolean,
-	private val crypto: InternalCryptoApi,
+	private val crypto: InternalCryptoServices,
 	private val fieldsToEncrypt: EncryptedFieldsManifest,
+	private val autofillAuthor: Boolean,
 ) : AccessLogApi, AccessLogFlavouredApi<DecryptedAccessLog> by object :
 	AbstractAccessLogFlavouredApi<DecryptedAccessLog>(rawApi, crypto) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedAccessLog): EncryptedAccessLog =
@@ -320,7 +320,7 @@ internal class AccessLogApiImpl(
 		}
 
 	override suspend fun createAccessLog(entity: DecryptedAccessLog): DecryptedAccessLog {
-		require(entity.securityMetadata != null) { "Entity must have security metadata initialised. You can use the initialiseEncryptionMetadata for that very purpose." }
+		require(entity.securityMetadata != null) { "Entity must have security metadata initialised. You can use the withEncryptionMetadata for that very purpose." }
 		return rawApi.createAccessLog(
 			encrypt(entity),
 		).successBody().let {
@@ -329,22 +329,19 @@ internal class AccessLogApiImpl(
 	}
 
 	override suspend fun withEncryptionMetadata(
-		accessLog: DecryptedAccessLog?,
+		base: DecryptedAccessLog?,
 		patient: Patient,
 		user: User?,
 		delegates: Map<String, AccessLevel>,
 		secretId: SecretIdOption,
-		// Temporary, needs a lot more stuff to match typescript implementation
 	): DecryptedAccessLog =
 		crypto.entity.entityWithInitialisedEncryptedMetadata(
-			(accessLog ?: DecryptedAccessLog(crypto.primitives.strongRandom.randomUUID())).copy(
-				created = accessLog?.created ?: currentEpochMs(),
-				modified = accessLog?.modified ?: currentEpochMs(),
-				date = accessLog?.date ?: currentEpochInstant(),
-				responsible = accessLog?.responsible ?: user?.takeIf { autofillAuthor }?.dataOwnerId,
-				author = accessLog?.author ?: user?.id?.takeIf { autofillAuthor },
-				patientId = accessLog?.patientId ?: patient.id,
-				accessType = accessLog?.accessType ?: "USER_ACCESS",
+			(base ?: DecryptedAccessLog(crypto.primitives.strongRandom.randomUUID())).copy(
+				created = base?.created ?: currentEpochMs(),
+				modified = base?.modified ?: currentEpochMs(),
+				date = base?.date ?: currentEpochInstant(),
+				responsible = base?.responsible ?: user?.takeIf { autofillAuthor }?.dataOwnerId,
+				author = base?.author ?: user?.id?.takeIf { autofillAuthor },
 			).withTypeInfo(),
 			patient.id,
 			crypto.entity.resolveSecretIdOption(patient.withTypeInfo(), secretId),
@@ -370,7 +367,7 @@ internal class AccessLogApiImpl(
 @InternalIcureApi
 internal class AccessLogBasicApiImpl(
 	rawApi: RawAccessLogApi,
-	private val crypto: BasicCryptoApi,
+	private val crypto: BasicInternalCryptoApi,
 	private val fieldsToEncrypt: EncryptedFieldsManifest,
 ) : AccessLogBasicApi, AccessLogBasicFlavouredApi<EncryptedAccessLog> by object :
 	AbstractAccessLogBasicFlavouredApi<EncryptedAccessLog>(rawApi) {

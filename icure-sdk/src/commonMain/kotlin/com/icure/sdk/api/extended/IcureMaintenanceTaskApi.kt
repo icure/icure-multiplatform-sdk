@@ -2,7 +2,6 @@ package com.icure.sdk.api.extended
 
 import com.icure.kryptom.crypto.StrongRandom
 import com.icure.sdk.api.flavoured.MaintenanceTaskApi
-import com.icure.sdk.api.raw.RawExchangeDataApi
 import com.icure.sdk.crypto.BaseExchangeKeysManager
 import com.icure.sdk.crypto.ExchangeDataManager
 import com.icure.sdk.crypto.UserEncryptionKeysManager
@@ -28,7 +27,6 @@ class IcureMaintenanceTaskApi(
 	private val baseExchangeKeysManager: BaseExchangeKeysManager,
 	private val userKeysManager: UserEncryptionKeysManager,
 	private val maintenanceTaskApi: MaintenanceTaskApi,
-	private val exchangeDataApi: RawExchangeDataApi,
 	private val dataOwnerApi: DataOwnerApi,
 	private val strongRandom: StrongRandom
 ) {
@@ -143,7 +141,7 @@ class IcureMaintenanceTaskApi(
 		requestToOwnerTypes: Set<DataOwnerType>
 	): Set<String> {
 		val self = dataOwnerApi.getCurrentDataOwnerId()
-		val candidatesForExchangeData = exchangeDataApi.getParticipantCounterparts(
+		val candidatesForExchangeData = exchangeDataManager.base.raw.getParticipantCounterparts(
 			self,
 			requestToOwnerTypes.joinToString(","),
 			key.fingerprintV2().s

@@ -1,8 +1,8 @@
 package com.icure.sdk.api.flavoured
 
 import com.icure.sdk.api.raw.RawCalendarItemApi
-import com.icure.sdk.crypto.BasicCryptoApi
-import com.icure.sdk.crypto.InternalCryptoApi
+import com.icure.sdk.crypto.BasicInternalCryptoApi
+import com.icure.sdk.crypto.InternalCryptoServices
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.crypto.entities.SecretIdOption
@@ -59,7 +59,7 @@ interface CalendarItemBasicFlavouredApi<E : CalendarItem> {
 interface CalendarItemFlavouredApi<E : CalendarItem> : CalendarItemBasicFlavouredApi<E> {
 	suspend fun shareWith(
 		delegateId: String,
-		healthcareElement: E,
+		calendarItem: E,
 		shareEncryptionKeys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
 		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
 		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
@@ -80,16 +80,11 @@ interface CalendarItemApi : CalendarItemBasicFlavourlessApi, CalendarItemFlavour
 	suspend fun createCalendarItem(entity: DecryptedCalendarItem): DecryptedCalendarItem
 	suspend fun withEncryptionMetadata(
 		base: DecryptedCalendarItem?,
-		user: User?,
-		delegates: Map<String, AccessLevel> = emptyMap(),
-	): DecryptedCalendarItem
-	suspend fun withEncryptionMetadataWithPatient(
-		base: DecryptedCalendarItem?,
 		patient: Patient,
 		user: User?,
-		delegates: Map<String, AccessLevel> = emptyMap(),
+		delegates: Map<String, AccessLevel>,
 		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent,
-	): DecryptedCalendarItem
+		): DecryptedCalendarItem
 
 	val encrypted: CalendarItemFlavouredApi<EncryptedCalendarItem>
 	val tryAndRecover: CalendarItemFlavouredApi<CalendarItem>
@@ -161,7 +156,7 @@ private abstract class AbstractCalendarItemBasicFlavouredApi<E : CalendarItem>(
 @InternalIcureApi
 private abstract class AbstractCalendarItemFlavouredApi<E : CalendarItem>(
 	rawApi: RawCalendarItemApi,
-	private val crypto: InternalCryptoApi
+	private val crypto: InternalCryptoServices
 ) : AbstractCalendarItemBasicFlavouredApi<E>(rawApi), CalendarItemFlavouredApi<E> {
 	override suspend fun getSecureDelegationKeys(): List<String> =
 		crypto.exchangeDataManager
@@ -169,13 +164,13 @@ private abstract class AbstractCalendarItemFlavouredApi<E : CalendarItem>(
 
 	override suspend fun shareWith(
 		delegateId: String,
-		healthcareElement: E,
+		calendarItem: E,
 		shareEncryptionKeys: ShareMetadataBehaviour,
 		shareOwningEntityIds: ShareMetadataBehaviour,
 		requestedPermission: RequestedPermission,
 	): SimpleShareResult<E> =
 		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
-			healthcareElement.withTypeInfo(),
+			calendarItem.withTypeInfo(),
 			true,
 			mapOf(
 				delegateId to SimpleDelegateShareOptions(
@@ -222,7 +217,7 @@ private class AbstractCalendarItemBasicFlavourlessApi(val rawApi: RawCalendarIte
 @InternalIcureApi
 internal class CalendarItemApiImpl(
 	private val rawApi: RawCalendarItemApi,
-	private val crypto: InternalCryptoApi,
+	private val crypto: InternalCryptoServices,
 	private val fieldsToEncrypt: EncryptedFieldsManifest,
 	private val autofillAuthor: Boolean,
 ) : CalendarItemApi, CalendarItemFlavouredApi<DecryptedCalendarItem> by object :
@@ -275,7 +270,7 @@ internal class CalendarItemApiImpl(
 		}
 
 	override suspend fun createCalendarItem(entity: DecryptedCalendarItem): DecryptedCalendarItem {
-		require(entity.securityMetadata != null) { "Entity must have security metadata initialised. You can use the initialiseEncryptionMetadata for that very purpose." }
+		require(entity.securityMetadata != null) { "Entity must have security metadata initialised. You can use the withEncryptionMetadata for that very purpose." }
 		return rawApi.createCalendarItem(
 			encrypt(entity),
 		).successBody().let {
@@ -285,49 +280,20 @@ internal class CalendarItemApiImpl(
 
 	override suspend fun withEncryptionMetadata(
 		base: DecryptedCalendarItem?,
-		user: User?,
-		delegates: Map<String, AccessLevel>
-	): DecryptedCalendarItem =
-		initialiseEncryptionMetadataWithPatientDetails(
-			calendarItem = base,
-			patientId = null,
-			user = user,
-			delegates = delegates,
-			patientSecretId = null,
-		)
-
-	override suspend fun withEncryptionMetadataWithPatient(
-		base: DecryptedCalendarItem?,
 		patient: Patient,
 		user: User?,
 		delegates: Map<String, AccessLevel>,
 		secretId: SecretIdOption,
-		// Temporary, needs a lot more stuff to match typescript implementation
-	): DecryptedCalendarItem =
-		initialiseEncryptionMetadataWithPatientDetails(
-			calendarItem = base,
-			patientId = patient.id,
-			user = user,
-			delegates = delegates,
-			patientSecretId = crypto.entity.resolveSecretIdOption(patient.withTypeInfo(), secretId),
-		)
-
-	private suspend fun initialiseEncryptionMetadataWithPatientDetails(
-		calendarItem: DecryptedCalendarItem?,
-		patientId: String?,
-		user: User?,
-		delegates: Map<String, AccessLevel>,
-		patientSecretId: Set<String>?,
 	) =
 		crypto.entity.entityWithInitialisedEncryptedMetadata(
-			(calendarItem ?: DecryptedCalendarItem(crypto.primitives.strongRandom.randomUUID())).copy(
-				created = calendarItem?.created ?: currentEpochMs(),
-				modified = calendarItem?.modified ?: currentEpochMs(),
-				responsible = calendarItem?.responsible ?: user?.takeIf { autofillAuthor }?.dataOwnerId,
-				author = calendarItem?.author ?: user?.id?.takeIf { autofillAuthor },
+			(base ?: DecryptedCalendarItem(crypto.primitives.strongRandom.randomUUID())).copy(
+				created = base?.created ?: currentEpochMs(),
+				modified = base?.modified ?: currentEpochMs(),
+				responsible = base?.responsible ?: user?.takeIf { autofillAuthor }?.dataOwnerId,
+				author = base?.author ?: user?.id?.takeIf { autofillAuthor },
 			).withTypeInfo(),
-			patientId,
-			patientSecretId,
+			patient.id,
+			crypto.entity.resolveSecretIdOption(patient.withTypeInfo(), secretId),
 			initialiseEncryptionKey = true,
 			initialiseSecretId = false,
 			autoDelegations = delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation).orEmpty(),
@@ -350,7 +316,7 @@ internal class CalendarItemApiImpl(
 @InternalIcureApi
 internal class CalendarItemBasicApiImpl(
 	rawApi: RawCalendarItemApi,
-	private val crypto: BasicCryptoApi,
+	private val crypto: BasicInternalCryptoApi,
 	private val fieldsToEncrypt: EncryptedFieldsManifest
 ) : CalendarItemBasicApi, CalendarItemBasicFlavouredApi<EncryptedCalendarItem> by object :
 	AbstractCalendarItemBasicFlavouredApi<EncryptedCalendarItem>(rawApi) {

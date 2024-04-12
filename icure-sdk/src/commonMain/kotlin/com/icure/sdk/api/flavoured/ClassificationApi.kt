@@ -1,8 +1,8 @@
 package com.icure.sdk.api.flavoured
 
 import com.icure.sdk.api.raw.RawClassificationApi
-import com.icure.sdk.crypto.EntityEncryptionService
 import com.icure.sdk.crypto.EntityValidationService
+import com.icure.sdk.crypto.InternalCryptoServices
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
@@ -18,10 +18,13 @@ import com.icure.sdk.model.User
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.embed.DelegationTag
+import com.icure.sdk.model.extensions.autoDelegationsFor
+import com.icure.sdk.model.extensions.dataOwnerId
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
+import com.icure.sdk.utils.currentEpochMs
 import kotlinx.serialization.json.decodeFromJsonElement
 
 @OptIn(InternalIcureApi::class)
@@ -46,7 +49,7 @@ interface ClassificationBasicFlavouredApi<E : Classification> {
 interface ClassificationFlavouredApi<E : Classification> : ClassificationBasicFlavouredApi<E> {
 	suspend fun shareWith(
 		delegateId: String,
-		healthcareElement: E,
+		classification: E,
 		shareEncryptionKeys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
 		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
 		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
@@ -65,10 +68,10 @@ interface ClassificationFlavouredApi<E : Classification> : ClassificationBasicFl
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
 interface ClassificationApi : ClassificationBasicFlavourlessApi, ClassificationFlavouredApi<DecryptedClassification> {
 	suspend fun createClassification(entity: DecryptedClassification): DecryptedClassification
-	suspend fun initialiseEncryptionMetadata(
-		healthcareElement: DecryptedClassification,
+	suspend fun withEncryptionMetadata(
+		base: DecryptedClassification?,
 		patient: Patient,
-		user: User,
+		user: User?,
 		delegates: Map<String, AccessLevel> = emptyMap(),
 		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent,
 	): DecryptedClassification
@@ -93,7 +96,8 @@ private abstract class AbstractClassificationBasicFlavouredApi<E : Classificatio
 		rawApi.getClassificationByHcPartyId(ids).successBody().map { maybeDecrypt(it) }
 
 	override suspend fun findClassificationsByHcPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<E> =
-		rawApi.findClassificationsByHCPartyPatientForeignKeys(hcPartyId, secretPatientKeys.joinToString(",")).successBody().map { maybeDecrypt(it) }
+		rawApi.findClassificationsByHCPartyPatientForeignKeys(hcPartyId, secretPatientKeys.joinToString(",")).successBody()
+			.map { maybeDecrypt(it) }
 
 
 	abstract suspend fun validateAndMaybeEncrypt(entity: E): EncryptedClassification
@@ -103,17 +107,17 @@ private abstract class AbstractClassificationBasicFlavouredApi<E : Classificatio
 @InternalIcureApi
 private abstract class AbstractClassificationFlavouredApi<E : Classification>(
 	rawApi: RawClassificationApi,
-	private val encryptionService: EntityEncryptionService,
+	private val crypto: InternalCryptoServices,
 ) : AbstractClassificationBasicFlavouredApi<E>(rawApi), ClassificationFlavouredApi<E> {
 	override suspend fun shareWith(
 		delegateId: String,
-		healthcareElement: E,
+		classification: E,
 		shareEncryptionKeys: ShareMetadataBehaviour,
 		shareOwningEntityIds: ShareMetadataBehaviour,
 		requestedPermission: RequestedPermission,
 	): SimpleShareResult<E> =
-		encryptionService.simpleShareOrUpdateEncryptedEntityMetadata(
-			healthcareElement.withTypeInfo(),
+		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
+			classification.withTypeInfo(),
 			true,
 			mapOf(
 				delegateId to SimpleDelegateShareOptions(
@@ -135,7 +139,7 @@ private abstract class AbstractClassificationFlavouredApi<E : Classification>(
 		limit: Int?,
 	): List<E> = rawApi.findClassificationsByHCPartyPatientForeignKeys(
 		hcPartyId,
-		encryptionService.secretIdsOf(patient.withTypeInfo(), null).toList().joinToString(","),
+		crypto.entity.secretIdsOf(patient.withTypeInfo(), null).toList().joinToString(","),
 	).successBody().map { maybeDecrypt(it) }
 
 
@@ -150,19 +154,20 @@ private class AbstractClassificationBasicFlavourlessApi(val rawApi: RawClassific
 @InternalIcureApi
 internal class ClassificationApiImpl(
 	private val rawApi: RawClassificationApi,
-	private val encryptionService: EntityEncryptionService,
-	private val fieldsToEncrypt: EncryptedFieldsManifest = ENCRYPTED_FIELDS_MANIFEST,
+	private val crypto: InternalCryptoServices,
+	private val fieldsToEncrypt: EncryptedFieldsManifest,
+	private val autofillAuthor: Boolean,
 ) : ClassificationApi, ClassificationFlavouredApi<DecryptedClassification> by object :
-	AbstractClassificationFlavouredApi<DecryptedClassification>(rawApi, encryptionService) {
+	AbstractClassificationFlavouredApi<DecryptedClassification>(rawApi, crypto) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedClassification): EncryptedClassification =
-		encryptionService.encryptEntity(
+		crypto.entity.encryptEntity(
 			entity.withTypeInfo(),
 			DecryptedClassification.serializer(),
 			fieldsToEncrypt,
 		) { Serialization.json.decodeFromJsonElement<EncryptedClassification>(it) }
 
 	override suspend fun maybeDecrypt(entity: EncryptedClassification): DecryptedClassification {
-		return encryptionService.tryDecryptEntity(
+		return crypto.entity.tryDecryptEntity(
 			entity.withTypeInfo(),
 			EncryptedClassification.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedClassification>(it) }
@@ -170,30 +175,30 @@ internal class ClassificationApiImpl(
 	}
 }, ClassificationBasicFlavourlessApi by AbstractClassificationBasicFlavourlessApi(rawApi) {
 	override val encrypted: ClassificationFlavouredApi<EncryptedClassification> =
-		object : AbstractClassificationFlavouredApi<EncryptedClassification>(rawApi, encryptionService) {
+		object : AbstractClassificationFlavouredApi<EncryptedClassification>(rawApi, crypto) {
 			override suspend fun validateAndMaybeEncrypt(entity: EncryptedClassification): EncryptedClassification =
-				encryptionService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedClassification.serializer(), fieldsToEncrypt)
+				crypto.entity.validateEncryptedEntity(entity.withTypeInfo(), EncryptedClassification.serializer(), fieldsToEncrypt)
 
 			override suspend fun maybeDecrypt(entity: EncryptedClassification): EncryptedClassification = entity
 		}
 
 	override val tryAndRecover: ClassificationFlavouredApi<Classification> =
-		object : AbstractClassificationFlavouredApi<Classification>(rawApi, encryptionService) {
+		object : AbstractClassificationFlavouredApi<Classification>(rawApi, crypto) {
 			override suspend fun maybeDecrypt(entity: EncryptedClassification): Classification =
-				encryptionService.tryDecryptEntity(
+				crypto.entity.tryDecryptEntity(
 					entity.withTypeInfo(),
 					EncryptedClassification.serializer(),
 				) { Serialization.json.decodeFromJsonElement<DecryptedClassification>(it) }
 					?: entity
 
 			override suspend fun validateAndMaybeEncrypt(entity: Classification): EncryptedClassification = when (entity) {
-				is EncryptedClassification -> encryptionService.validateEncryptedEntity(
+				is EncryptedClassification -> crypto.entity.validateEncryptedEntity(
 					entity.withTypeInfo(),
 					EncryptedClassification.serializer(),
 					fieldsToEncrypt,
 				)
 
-				is DecryptedClassification -> encryptionService.encryptEntity(
+				is DecryptedClassification -> crypto.entity.encryptEntity(
 					entity.withTypeInfo(),
 					DecryptedClassification.serializer(),
 					fieldsToEncrypt,
@@ -202,7 +207,7 @@ internal class ClassificationApiImpl(
 		}
 
 	override suspend fun createClassification(entity: DecryptedClassification): DecryptedClassification {
-		require(entity.securityMetadata != null) { "Entity must have security metadata initialised. You can use the initialiseEncryptionMetadata for that very purpose." }
+		require(entity.securityMetadata != null) { "Entity must have security metadata initialised. You can use the withEncryptionMetadata for that very purpose." }
 		return rawApi.createClassification(
 			encrypt(entity),
 		).successBody().let {
@@ -210,37 +215,39 @@ internal class ClassificationApiImpl(
 		}
 	}
 
-	override suspend fun initialiseEncryptionMetadata(
-		healthcareElement: DecryptedClassification,
+	override suspend fun withEncryptionMetadata(
+		base: DecryptedClassification?,
 		patient: Patient,
-		user: User,
+		user: User?,
 		delegates: Map<String, AccessLevel>,
 		secretId: SecretIdOption,
-		// Temporary, needs a lot more stuff to match typescript implementation
 	): DecryptedClassification =
-		encryptionService.entityWithInitialisedEncryptedMetadata(
-			healthcareElement.withTypeInfo(),
+		crypto.entity.entityWithInitialisedEncryptedMetadata(
+			(base ?: DecryptedClassification(crypto.primitives.strongRandom.randomUUID())).copy(
+				created = base?.created ?: currentEpochMs(),
+				modified = base?.modified ?: currentEpochMs(),
+				responsible = base?.responsible ?: user?.takeIf { autofillAuthor }?.dataOwnerId,
+				author = base?.author ?: user?.id?.takeIf { autofillAuthor },
+			).withTypeInfo(),
 			patient.id,
-			encryptionService.resolveSecretIdOption(patient.withTypeInfo(), secretId),
+			crypto.entity.resolveSecretIdOption(patient.withTypeInfo(), secretId),
 			initialiseEncryptionKey = true,
 			initialiseSecretId = false,
-			autoDelegations = delegates + (
-				(user.autoDelegations[DelegationTag.MedicalInformation] ?: emptySet()) +
-					(user.autoDelegations[DelegationTag.All] ?: emptySet())
-				).associateWith { AccessLevel.Write },
+			autoDelegations = delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation).orEmpty(),
 		).updatedEntity
 
-	private suspend fun encrypt(entity: DecryptedClassification) = encryptionService.encryptEntity(
+	private suspend fun encrypt(entity: DecryptedClassification) = crypto.entity.encryptEntity(
 		entity.withTypeInfo(),
 		DecryptedClassification.serializer(),
 		fieldsToEncrypt,
 	) { Serialization.json.decodeFromJsonElement<EncryptedClassification>(it) }
 
-	suspend fun decrypt(entity: EncryptedClassification, errorMessage: () -> String): DecryptedClassification = encryptionService.tryDecryptEntity(
-		entity.withTypeInfo(),
-		EncryptedClassification.serializer(),
-	) { Serialization.json.decodeFromJsonElement<DecryptedClassification>(it) }
-		?: throw EntityEncryptionException(errorMessage())
+	suspend fun decrypt(entity: EncryptedClassification, errorMessage: () -> String): DecryptedClassification =
+		crypto.entity.tryDecryptEntity(
+			entity.withTypeInfo(),
+			EncryptedClassification.serializer(),
+		) { Serialization.json.decodeFromJsonElement<DecryptedClassification>(it) }
+			?: throw EntityEncryptionException(errorMessage())
 
 }
 

@@ -8,12 +8,11 @@ import com.icure.sdk.crypto.UserEncryptionKeysManager
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.InternalIcureException
 import com.icure.sdk.utils.LruCacheWithAsyncRetrieve
-import com.icure.sdk.utils.currentEpochMs
 
 @InternalIcureApi
 class ExchangeKeysManagerImpl(
 	private val dataOwnerApi: DataOwnerApi,
-	private val baseExchangeKeysManager: BaseExchangeKeysManager,
+	override val base: BaseExchangeKeysManager,
 	private val userKeysManager: UserEncryptionKeysManager
 ) : ExchangeKeysManager {
 	companion object {
@@ -26,8 +25,8 @@ class ExchangeKeysManagerImpl(
 	override suspend fun getDecryptionExchangeKeysFor(delegatorId: String, delegateId: String): List<AesKey> {
 		if (delegatorId == dataOwnerApi.getCurrentDataOwnerId() || delegateId in dataOwnerApi.getCurrentDataOwnerHierarchyIds()) {
 			return cache.getCachedOrRetrieve(delegatorId to delegateId) {
-				val encryptedKeys = baseExchangeKeysManager.getEncryptedExchangeKeysFor(delegatorId, delegateId)
-				baseExchangeKeysManager.tryDecryptExchangeKeys(encryptedKeys, userKeysManager.getDecryptionKeys()).successfulDecryptions
+				val encryptedKeys = base.getEncryptedExchangeKeysFor(delegatorId, delegateId)
+				base.tryDecryptExchangeKeys(encryptedKeys, userKeysManager.getDecryptionKeys()).successfulDecryptions
 			}
 		} else throw InternalIcureException(
 			"Delegator $delegatorId is not the current data owner and delegate $delegateId is not part of the current data owner hierarchy: can't get exchange key"

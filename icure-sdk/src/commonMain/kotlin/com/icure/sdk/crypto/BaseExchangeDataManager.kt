@@ -3,14 +3,16 @@ package com.icure.sdk.crypto
 import com.icure.kryptom.crypto.AesKey
 import com.icure.kryptom.crypto.HmacAlgorithm
 import com.icure.kryptom.crypto.HmacKey
+import com.icure.sdk.api.raw.RawExchangeDataApi
 import com.icure.sdk.crypto.entities.DecryptionResult
 import com.icure.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
 import com.icure.sdk.crypto.entities.RawDecryptedExchangeData
 import com.icure.sdk.crypto.entities.RsaDecryptionKeysSet
 import com.icure.sdk.crypto.entities.RsaSignatureKeysSet
+import com.icure.sdk.crypto.entities.UnencryptedExchangeDataContent
 import com.icure.sdk.crypto.entities.VerifiedRsaEncryptionKeysSet
-import com.icure.sdk.model.specializations.AccessControlSecret
 import com.icure.sdk.model.ExchangeData
+import com.icure.sdk.model.specializations.AccessControlSecret
 import com.icure.sdk.utils.InternalIcureApi
 
 /**
@@ -19,6 +21,8 @@ import com.icure.sdk.utils.InternalIcureApi
  */
 @InternalIcureApi
 interface BaseExchangeDataManager {
+	val raw: RawExchangeDataApi
+
 	/**
 	 * Get all the exchange data where the current data owner is the delegator or the delegate if the implementation
 	 * allows it.
@@ -151,6 +155,15 @@ interface BaseExchangeDataManager {
 
 	/**
 	 * Same as [tryUpdateExchangeData] but the decrypted content is already provided.
+	 */
+	suspend fun updateExchangeDataWithDecryptedContent(
+		exchangeData: ExchangeData,
+		newEncryptionKeys: VerifiedRsaEncryptionKeysSet,
+		unencryptedExchangeDataContent: UnencryptedExchangeDataContent
+	): ExchangeDataWithUnencryptedContent
+
+	/**
+	 * Same as [tryUpdateExchangeData] but the RAW decrypted content is already provided.
 	 */
 	suspend fun updateExchangeDataWithRawDecryptedContent(
 		exchangeData: ExchangeData,
