@@ -57,7 +57,7 @@ fun <BaseType : Identifiable<String>, MaybeDecryptedType : BaseType> subscribabl
 					setOf(SubscriptionEventType.Create),
 					filter,
 				) {
-					println("Received HealthElement creation event for ${it.id}")
+					println("Received $name creation event for ${it.id}")
 					completable.complete(Unit)
 				}.also { connection ->
 					connection.onReconnected {
