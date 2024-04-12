@@ -15,6 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.onFailure
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -30,14 +31,16 @@ import kotlin.time.Duration.Companion.minutes
  *
  * Message received by the WebSocket connection are stored in a queue and processed by a callback, this allows to handle the messages in a non-blocking way and to avoid blocking the WebSocket connection (which could lead to disconnections due to Ping/Pong timeouts)
  *
+ * If the queue is full, the connection will be closed and a fatal error will be emitted
+ *
  * @param onOpenListeners List of listeners to be called when the WebSocket connection is opened (on the first connection)
  * @param sessionProvider Provider for the WebSocket session
  * @param retryDelay The base delay for the exponential backoff retry mechanism
  * @param retryDelayExponentFactor The factor to be used in the exponential backoff retry mechanism
  * @param maxRetries The maximum number of retries before giving up
  * @param durationBetweenPings The duration between pings to be sent to the server
- * @param queueSize The size of the queue to store messages that are sent while processing them
- * @param queueCallback The callback to be called when a message is sent
+ * @param channelSize The size of the queue to store messages that are sent while processing them
+ * @param channelMessageCallback The callback to be called when a message is sent
  * */
 @InternalAPI
 class WebSocketWrapper(
@@ -47,11 +50,13 @@ class WebSocketWrapper(
 	private val retryDelayExponentFactor: Double,
 	private val maxRetries: Int,
 	private val durationBetweenPings: Duration,
-	queueSize: Int,
-	private val queueCallback: suspend (String) -> Unit,
+	channelSize: Int,
+	private val channelMessageCallback: suspend (String) -> Unit,
 ) {
 	private val wrapperScope = CoroutineScope(Dispatchers.Default)
-	private val queue = Channel<String>(queueSize)
+	private val queue = Channel<String>(
+		capacity = channelSize,
+	)
 
 	private lateinit var session: DefaultWebSocketSession
 	private var state: WebSocketState = WebSocketState.CONNECTING
@@ -100,13 +105,13 @@ class WebSocketWrapper(
 		delay(durationBetweenPings)
 		if (isActive) {
 			onEvent(EmittedEvent.Error("Ping timeout: no ping received in the last ${durationBetweenPings.inWholeMilliseconds} ms", false))
-			session.incoming.cancel()
 			session.close(
 				reason = CloseReason(
 					code = CloseReason.Codes.NORMAL.code,
 					message = "Ping timeout",
 				),
 			)
+			session.incoming.cancel()
 		}
 	}
 
@@ -148,7 +153,7 @@ class WebSocketWrapper(
 	private fun launchQueueConsumer() {
 		wrapperScope.launch {
 			for (message in queue) {
-				queueCallback(message)
+				channelMessageCallback(message)
 			}
 		}
 	}
@@ -241,6 +246,13 @@ class WebSocketWrapper(
 		}
 	}
 
+
+	/**
+	 * Emit an event to the listeners
+	 *
+	 * @param event The event to be emitted
+	 *
+	 */
 	private suspend fun onEvent(event: EmittedEvent) {
 		when (event) {
 			is EmittedEvent.Connect -> {
@@ -260,8 +272,12 @@ class WebSocketWrapper(
 
 			is EmittedEvent.Error -> onErrorListeners.onEvent(event.data to event.fatal)
 			is EmittedEvent.Message -> {
-				queue.send(event.message)
-				//TODO: Close everything if queue is full and fuck you if you're slow
+				queue.trySend(event.message).onFailure {
+					onEvent(EmittedEvent.Error(it?.message, true))
+					close(CloseReason.Codes.INTERNAL_ERROR.code, "Queue is full")
+				}
+
+				retriesAttempt = 0
 			}
 		}
 	}

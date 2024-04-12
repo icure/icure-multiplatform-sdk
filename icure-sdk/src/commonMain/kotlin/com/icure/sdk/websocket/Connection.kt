@@ -180,8 +180,8 @@ class ConnectionImpl private constructor(
 				retryDelayExponentFactor = retryDelayExponentFactor,
 				maxRetries = maxRetries,
 				durationBetweenPings = durationBetweenPings,
-				queueSize = channelCapacity,
-				queueCallback = { message ->
+				channelSize = channelCapacity,
+				channelMessageCallback = { message ->
 					eventCallback(
 						Serialization.json.decodeFromString(serializer, message),
 					)
