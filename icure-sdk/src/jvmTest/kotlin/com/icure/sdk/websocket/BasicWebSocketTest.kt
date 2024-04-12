@@ -116,8 +116,8 @@ class BasicWebSocketTest : StringSpec({
 			retryDelayExponentFactor = 2.0,
 			maxRetries = 5,
 			durationBetweenPings = 1.seconds,
-			eventCallback = { element ->
-				println("CLIENT: Received HealthElement event for ${element.id}")
+			eventCallback = { entity, _ ->
+				println("CLIENT: Received HealthElement event for ${entity.id}")
 			},
 		)
 
@@ -163,8 +163,8 @@ class BasicWebSocketTest : StringSpec({
 			retryDelayExponentFactor = 2.0,
 			maxRetries = 5,
 			durationBetweenPings = 5.seconds,
-			eventCallback = { element ->
-				println("CLIENT: Received HealthElement event for ${element.id}")
+			eventCallback = { entity, _ ->
+				println("CLIENT: Received HealthElement event for ${entity.id}")
 				delay(1.seconds) // Simulate processing time
 			},
 		)

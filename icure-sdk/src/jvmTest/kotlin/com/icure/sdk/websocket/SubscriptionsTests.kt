@@ -1,11 +1,15 @@
 package com.icure.sdk.websocket
 
+import com.icure.sdk.model.DecryptedContact
 import com.icure.sdk.model.DecryptedHealthElement
 import com.icure.sdk.model.DecryptedPatient
 import com.icure.sdk.model.base.Identifiable
+import com.icure.sdk.model.embed.DecryptedService
 import com.icure.sdk.model.filter.AbstractFilter
+import com.icure.sdk.model.filter.contact.ContactByHcPartyFilter
 import com.icure.sdk.model.filter.healthelement.HealthElementByHcPartyFilter
 import com.icure.sdk.model.filter.patient.PatientByHcPartyFilter
+import com.icure.sdk.model.filter.service.ServiceByHcPartyFilter
 import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.test.DataOwnerDetails
 import com.icure.sdk.test.createHcpUser
@@ -77,12 +81,9 @@ fun <BaseType : Identifiable<String>, MaybeDecryptedType : BaseType> subscribabl
 
 class SubscriptionsTests : StringSpec(
 	{
-
-		lateinit var hcpUser: DataOwnerDetails
-
 		runBlocking {
 			initialiseTestEnvironment()
-			hcpUser = createHcpUser()
+			val hcpUser = createHcpUser()
 
 			include(
 				subscribableTests(
@@ -113,7 +114,6 @@ class SubscriptionsTests : StringSpec(
 									.api()
 									.healthcareElement
 									.createHealthcareElement(it)
-								println("Created HealthElement")
 							}
 					}
 				),
@@ -131,6 +131,37 @@ class SubscriptionsTests : StringSpec(
 								DecryptedPatient(id = UUID.randomUUID().toString())
 							).let {
 								hcpUser.api().patient.createPatient(it)
+							}
+					}
+				),
+			)
+			include(
+				subscribableTests(
+					name = "Contact",
+					subscribableApi = hcpUser.api().contact.encrypted,
+					filter = ContactByHcPartyFilter(hcpId = hcpUser.dataOwnerId),
+					createEntity =  {
+						val patient = hcpUser
+							.api()
+							.patient
+							.withEncryptionMetadata(
+								DecryptedPatient(id = UUID.randomUUID().toString())
+							).let {
+								hcpUser.api().patient.createPatient(it)
+							}
+
+						val currentUser = hcpUser.api().user.getCurrentUser()
+
+						hcpUser
+							.api()
+							.contact
+							.withEncryptionMetadata(
+								DecryptedContact(id = UUID.randomUUID().toString()),
+								patient,
+								currentUser
+
+							).let {
+								hcpUser.api().contact.createContact(it)
 							}
 					}
 				),

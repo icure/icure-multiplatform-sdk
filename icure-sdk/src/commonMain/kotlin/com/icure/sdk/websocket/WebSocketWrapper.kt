@@ -51,7 +51,7 @@ class WebSocketWrapper(
 	private val maxRetries: Int,
 	private val durationBetweenPings: Duration,
 	channelSize: Int,
-	private val channelMessageCallback: suspend (String) -> Unit,
+	private val channelMessageCallback: suspend (message: String, onEvent: suspend (EmittedEvent) -> Unit) -> Unit,
 ) {
 	private val wrapperScope = CoroutineScope(Dispatchers.Default)
 	private val queue = Channel<String>(
@@ -151,9 +151,10 @@ class WebSocketWrapper(
 	 * Launch the queue consumer that will consume the messages from the queue and call the callback
 	 */
 	private fun launchQueueConsumer() {
+		val onEventCallback: suspend (EmittedEvent) -> Unit = { event: EmittedEvent -> onEvent(event) }
 		wrapperScope.launch {
 			for (message in queue) {
-				channelMessageCallback(message)
+				channelMessageCallback(message, onEventCallback)
 			}
 		}
 	}

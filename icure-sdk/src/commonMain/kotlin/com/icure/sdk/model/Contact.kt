@@ -90,7 +90,9 @@ sealed interface Contact :
 
 	public val notes: List<Annotation>
 	// region Contact-Contact
-
+	companion object {
+		const val KRAKEN_QUALIFIED_NAME = "org.taktik.icure.entities.Contact"
+	}
 	// endregion
 }
 

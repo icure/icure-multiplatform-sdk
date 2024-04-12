@@ -373,7 +373,8 @@ private class IcureApiImpl(
 			internalCrypto,
 			encryptedFieldsManifests.contact,
 			encryptedFieldsManifests.service,
-			autofillAuthor
+			autofillAuthor,
+			webSocketAuthProvider
 		)
 	}
 

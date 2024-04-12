@@ -8,10 +8,8 @@ import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.utils.Serialization
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.websocket.DefaultClientWebSocketSession
-import io.ktor.client.plugins.websocket.WebSockets
 import io.ktor.client.plugins.websocket.webSocketSession
 import io.ktor.http.HttpMethod
-import io.ktor.serialization.kotlinx.KotlinxWebsocketSerializationConverter
 import io.ktor.util.InternalAPI
 import io.ktor.util.PlatformUtils
 import io.ktor.websocket.CloseReason
@@ -148,7 +146,7 @@ class ConnectionImpl private constructor(
 			maxRetries: Int,
 			durationBetweenPings: Duration = 20.seconds,
 			channelCapacity: Int = Channel.BUFFERED,
-			eventCallback: suspend (EncryptedType) -> Unit,
+			eventCallback: suspend (entity: EncryptedType, onEvent: suspend (EmittedEvent) -> Unit) -> Unit,
 		): ConnectionImpl {
 			val subscriptionEvent: suspend (WebSocketWrapper) -> Unit = { wsw ->
 				subscriptionEvent(
@@ -178,9 +176,10 @@ class ConnectionImpl private constructor(
 				maxRetries = maxRetries,
 				durationBetweenPings = durationBetweenPings,
 				channelSize = channelCapacity,
-				channelMessageCallback = { message ->
+				channelMessageCallback = { message, onEvent ->
 					eventCallback(
 						Serialization.json.decodeFromString(serializer, message),
+						onEvent,
 					)
 				},
 			)

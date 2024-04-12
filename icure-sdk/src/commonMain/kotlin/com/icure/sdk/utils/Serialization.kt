@@ -13,6 +13,7 @@ import com.icure.sdk.model.embed.form.template.StructureElement
 import com.icure.sdk.model.embed.form.template.TextField
 import com.icure.sdk.model.embed.form.template.TimePicker
 import com.icure.sdk.model.filter.AbstractFilter
+import com.icure.sdk.model.filter.contact.ContactByHcPartyFilter
 import com.icure.sdk.model.filter.healthelement.HealthElementByHcPartyFilter
 import com.icure.sdk.model.filter.maintenancetask.MaintenanceTaskAfterDateFilter
 import com.icure.sdk.model.filter.patient.PatientByHcPartyFilter
@@ -44,6 +45,7 @@ object Serialization {
 			subclass(MaintenanceTaskAfterDateFilter::class)
 			subclass(HealthElementByHcPartyFilter::class)
 			subclass(PatientByHcPartyFilter::class)
+			subclass(ContactByHcPartyFilter::class)
 		}
 	}
 
