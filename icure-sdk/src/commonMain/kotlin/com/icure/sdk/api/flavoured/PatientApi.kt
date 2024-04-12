@@ -470,7 +470,7 @@ internal class PatientApiImpl(
 			entity.withTypeInfo(),
 			EncryptedPatient.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedPatient>(it) }
-			?: throw EntityEncryptionException("Entity ${entity.id} cannot be created")
+			?: throw EntityEncryptionException("Entity ${entity.id} cannot be decrypted")
 	}
 }, PatientBasicFlavourlessApi by AbstractPatientBasicFlavourlessApi(rawApi, crypto) {
 	override val encrypted: PatientFlavouredApi<EncryptedPatient> =

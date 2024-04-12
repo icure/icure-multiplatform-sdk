@@ -29,7 +29,7 @@ interface CryptoStrategies {
 		/**
 		 * All public keys (in hex-encoded spki format) of `dataOwner` for which the authenticity status (verified or unverified) is
 		 * unknown (no result was cached from a previous api instantiation and the key was not generated on the current device).
-		 * This could include keys that were recovered automatically by the sdk.
+		 * This could include keys that were recovered automatically by the sdk and may have overlap with `unavailableKeys`.
 		 */
 		val unknownKeys: List<SpkiHexString>,
 		/**

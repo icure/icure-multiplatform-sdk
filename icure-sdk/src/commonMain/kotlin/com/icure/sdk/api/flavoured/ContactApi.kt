@@ -50,25 +50,6 @@ import kotlinx.serialization.json.encodeToJsonElement
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 
-@OptIn(InternalIcureApi::class)
-val serviceEncryptedFieldsManifest = EncryptedFieldsManifest(
-	path = "Service.",
-	topLevelFields = setOf("content"),
-	nestedObjectsKeys = emptyMap(),
-	mapsValuesKeys = emptyMap(),
-	arraysValuesKeys = emptyMap(),
-)
-
-@OptIn(InternalIcureApi::class)
-private val ENCRYPTED_FIELDS_MANIFEST =
-	EncryptedFieldsManifest(
-		path = "Contact.",
-		topLevelFields = setOf("descr"),
-		nestedObjectsKeys = emptyMap(),
-		mapsValuesKeys = emptyMap(),
-		arraysValuesKeys = mapOf("services" to serviceEncryptedFieldsManifest),
-	)
-
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface ContactBasicFlavourlessApi {
 	suspend fun matchContactsBy(filter: AbstractFilter<EncryptedContact>): List<String>
@@ -323,7 +304,7 @@ suspend fun JsonObject.walkCompounds(transform: suspend (JsonObject) -> JsonObje
 	) else transform(this)
 
 @OptIn(InternalIcureApi::class)
-internal suspend fun DecryptedService.encrypt(jsonEncryptionService: JsonEncryptionService, contactKey: AesKey): EncryptedService =
+internal suspend fun DecryptedService.encrypt(jsonEncryptionService: JsonEncryptionService, contactKey: AesKey, serviceEncryptedFieldsManifest: EncryptedFieldsManifest): EncryptedService =
 	Serialization.json.encodeToJsonElement<DecryptedService>(this).jsonObject
 		.walkCompounds { jsonEncryptionService.encrypt(contactKey, it, serviceEncryptedFieldsManifest) }
 		.let {
@@ -332,7 +313,7 @@ internal suspend fun DecryptedService.encrypt(jsonEncryptionService: JsonEncrypt
 
 
 @OptIn(InternalIcureApi::class)
-internal suspend fun EncryptedService.validate(jsonEncryptionService: JsonEncryptionService): EncryptedService {
+internal suspend fun EncryptedService.validate(jsonEncryptionService: JsonEncryptionService, serviceEncryptedFieldsManifest: EncryptedFieldsManifest): EncryptedService {
 	return this.also { encryptedService ->
 		Serialization.json.encodeToJsonElement<EncryptedService>(encryptedService).jsonObject
 			.walkCompounds {
@@ -389,6 +370,7 @@ internal class ContactApiImpl(
 	private val rawApi: RawContactApi,
 	private val crypto: InternalCryptoServices,
 	private val fieldsToEncrypt: EncryptedFieldsManifest,
+	private val serviceFieldsToEncrypt: EncryptedFieldsManifest,
 	private val autofillAuthor: Boolean,
 ) : ContactApi, ContactFlavouredApi<DecryptedContact, DecryptedService> by object :
 	AbstractContactFlavouredApi<DecryptedContact, DecryptedService>(rawApi, crypto) {
@@ -403,6 +385,7 @@ internal class ContactApiImpl(
 					crypto.jsonEncryption,
 					crypto.entity.tryDecryptAndImportAnyEncryptionKey(entity.withTypeInfo())?.key
 						?: throw EntityEncryptionException("Cannot obtain key from contact"),
+					serviceFieldsToEncrypt
 				)
 			}.toSet(),
 		)
@@ -434,7 +417,7 @@ internal class ContactApiImpl(
 			override suspend fun validateAndMaybeEncrypt(entity: EncryptedContact): EncryptedContact =
 				crypto.entity.validateEncryptedEntity(entity.withTypeInfo(), EncryptedContact.serializer(), fieldsToEncrypt).copy(
 					services = entity.services.map {
-						it.validate(crypto.jsonEncryption)
+						it.validate(crypto.jsonEncryption, serviceFieldsToEncrypt)
 					}.toSet(),
 				)
 
@@ -470,7 +453,7 @@ internal class ContactApiImpl(
 					fieldsToEncrypt,
 				).copy(
 					services = entity.services.map {
-						it.validate(crypto.jsonEncryption)
+						it.validate(crypto.jsonEncryption, serviceFieldsToEncrypt)
 					}.toSet(),
 				)
 
@@ -484,6 +467,7 @@ internal class ContactApiImpl(
 							crypto.jsonEncryption,
 							crypto.entity.tryDecryptAndImportAnyEncryptionKey(entity.withTypeInfo())?.key
 								?: throw EntityEncryptionException("Cannot obtain key from contact"),
+							serviceFieldsToEncrypt
 						)
 					}.toSet(),
 				)
@@ -544,6 +528,7 @@ internal class ContactApiImpl(
 				crypto.jsonEncryption,
 				crypto.entity.tryDecryptAndImportAnyEncryptionKey(entity.withTypeInfo())?.key
 					?: throw EntityEncryptionException("Cannot obtain key from contact"),
+				serviceFieldsToEncrypt
 			)
 		}.toSet(),
 	)
@@ -560,13 +545,14 @@ internal class ContactBasicApiImpl(
 	rawApi: RawContactApi,
 	private val validationService: EntityValidationService,
 	private val jsonEncryptionService: JsonEncryptionService,
-	private val fieldsToEncrypt: EncryptedFieldsManifest = ENCRYPTED_FIELDS_MANIFEST,
+	private val fieldsToEncrypt: EncryptedFieldsManifest,
+	private val serviceFieldsToEncrypt: EncryptedFieldsManifest,
 ) : ContactBasicApi, ContactBasicFlavouredApi<EncryptedContact, EncryptedService> by object :
 	AbstractContactBasicFlavouredApi<EncryptedContact, EncryptedService>(rawApi) {
 	override suspend fun validateAndMaybeEncrypt(entity: EncryptedContact): EncryptedContact =
 		validationService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedContact.serializer(), fieldsToEncrypt).copy(
 			services = entity.services.map {
-				it.validate(jsonEncryptionService)
+				it.validate(jsonEncryptionService, serviceFieldsToEncrypt)
 			}.toSet(),
 		)
 

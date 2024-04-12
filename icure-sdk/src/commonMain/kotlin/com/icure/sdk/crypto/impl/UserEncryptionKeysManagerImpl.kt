@@ -6,22 +6,22 @@ import com.icure.kryptom.crypto.RsaKeypair
 import com.icure.kryptom.crypto.RsaService
 import com.icure.sdk.api.extended.DataOwnerApi
 import com.icure.sdk.crypto.CryptoStrategies
-import com.icure.sdk.crypto.entities.DataOwnerKeyInfo
-import com.icure.sdk.crypto.entities.CachedKeypairDetails
-import com.icure.sdk.crypto.entities.IcureKeyInfo
 import com.icure.sdk.crypto.IcureKeyRecovery
 import com.icure.sdk.crypto.KeyPairRecoverer
-import com.icure.sdk.crypto.entities.RsaDecryptionKeysSet
 import com.icure.sdk.crypto.UserEncryptionKeysManager
+import com.icure.sdk.crypto.entities.CachedKeypairDetails
+import com.icure.sdk.crypto.entities.DataOwnerKeyInfo
+import com.icure.sdk.crypto.entities.IcureKeyInfo
+import com.icure.sdk.crypto.entities.RsaDecryptionKeysSet
 import com.icure.sdk.crypto.entities.UserKeyPairInformation
 import com.icure.sdk.crypto.entities.toPrivateKeyInfo
 import com.icure.sdk.model.CryptoActorStub
 import com.icure.sdk.model.DataOwnerWithType
-import com.icure.sdk.model.specializations.KeypairFingerprintV2String
-import com.icure.sdk.model.specializations.SpkiHexString
 import com.icure.sdk.model.extensions.publicKeysWithSha1Spki
 import com.icure.sdk.model.extensions.publicKeysWithSha256Spki
 import com.icure.sdk.model.extensions.toStub
+import com.icure.sdk.model.specializations.KeypairFingerprintV2String
+import com.icure.sdk.model.specializations.SpkiHexString
 import com.icure.sdk.storage.IcureStorageFacade
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.ensure
@@ -180,10 +180,13 @@ private class KeyLoader(
 		val loadedKeyInfo = hierarchy.map { it to loadAndIcureRecoverKeysFor(it) }
 		val recoveryRequest = loadedKeyInfo.map { (dataOwnerInfo, loaded) ->
 			val (found, missing) = loaded
+			val keysWithVerificationInfo = icureStorage.loadSelfVerifiedKeys(dataOwnerInfo.dataOwner.id).keys
 			CryptoStrategies.KeyDataRecoveryRequest(
 				dataOwnerInfo,
 				// Note: differently from the og typescript SDK I don't include unavailable keys in unknown.
-				unknownKeys = found.filter { !it.isVerified && !it.isDevice }.map { it.publicKeyString },
+				unknownKeys = (found.filter { !it.isDevice } + missing).mapNotNull {
+					if (it.publicKeyString.fingerprintV1() !in keysWithVerificationInfo) it.publicKeyString else null
+				},
 				unavailableKeys = missing.map { it.publicKeyString }
 			)
 		}
@@ -279,15 +282,17 @@ private class KeyLoader(
 	}
 
 	private sealed interface DataOwnerKeyInfo {
+		val publicKeyString: SpkiHexString
+
 		data class Found(
-			val publicKeyString: SpkiHexString,
+			override val publicKeyString: SpkiHexString,
 			val pair: RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>,
 			val isVerified: Boolean,
 			val isDevice: Boolean
 		): DataOwnerKeyInfo
 
 		data class Missing(
-			val publicKeyString: SpkiHexString,
+			override val publicKeyString: SpkiHexString,
 			val algorithm: RsaAlgorithm.RsaEncryptionAlgorithm
 		): DataOwnerKeyInfo
 	}
