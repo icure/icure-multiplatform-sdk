@@ -14,13 +14,16 @@ import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
+import kotlin.String
+import kotlin.collections.List
+import kotlin.collections.Map
 import kotlin.time.Duration
 
 // WARNING: This class is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 @InternalIcureApi
 class RawSecureDelegationKeyMapApi(
-	private val apiUrl: String,
+	internal val apiUrl: String,
 	private val authService: AuthService,
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
