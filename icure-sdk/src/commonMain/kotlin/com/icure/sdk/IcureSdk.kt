@@ -1,8 +1,13 @@
-package com.icure.sdk.api
+package com.icure.sdk
 
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.kryptom.utils.toHexString
+import com.icure.sdk.api.ApiOptions
+import com.icure.sdk.api.CryptoApi
+import com.icure.sdk.api.EncryptedFields
+import com.icure.sdk.api.UserApi
+import com.icure.sdk.api.UserApiImpl
 import com.icure.sdk.api.extended.DataOwnerApi
 import com.icure.sdk.api.extended.DataOwnerApiImpl
 import com.icure.sdk.api.extended.IcureMaintenanceTaskApi
@@ -170,7 +175,8 @@ interface IcureSdk {
 			val cryptoService = defaultCryptoService
 			val apiUrl = baseUrl
 			val keysStorage = JsonAndBase64KeyStorage(baseStorage)
-			val iCureStorage = IcureStorageFacade(keysStorage, baseStorage, DefaultStorageEntryKeysFactory, cryptoService, false)
+			val iCureStorage =
+				IcureStorageFacade(keysStorage, baseStorage, DefaultStorageEntryKeysFactory, cryptoService, false)
 			val authApi = RawAnonymousAuthApi(apiUrl, client)
 			val authService = JwtAuthService(authApi, usernamePassword)
 			val dataOwnerApi = DataOwnerApiImpl(RawDataOwnerApi(apiUrl, authService, client))
@@ -305,7 +311,8 @@ interface IcureSdk {
 				dataOwnerApi,
 				userEncryptionKeys
 			)
-			val updatedSelf = ensureDelegationForSelf(dataOwnerApi, entityEncryptionService, rawPatientApiNoAccessKeys, cryptoService)
+			val updatedSelf =
+				ensureDelegationForSelf(dataOwnerApi, entityEncryptionService, rawPatientApiNoAccessKeys, cryptoService)
 			if (options.createTransferKeys) {
 				TransferKeysManagerImpl(
 					userEncryptionKeys,

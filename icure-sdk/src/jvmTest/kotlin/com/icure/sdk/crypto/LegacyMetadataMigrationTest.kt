@@ -5,7 +5,7 @@ package com.icure.sdk.crypto
 import com.icure.kryptom.crypto.RsaAlgorithm
 import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.kryptom.utils.hexToByteArray
-import com.icure.sdk.api.IcureSdk
+import com.icure.sdk.IcureSdk
 import com.icure.sdk.api.raw.RawHealthcarePartyApi
 import com.icure.sdk.api.raw.RawPatientApi
 import com.icure.sdk.api.raw.RawUserApi

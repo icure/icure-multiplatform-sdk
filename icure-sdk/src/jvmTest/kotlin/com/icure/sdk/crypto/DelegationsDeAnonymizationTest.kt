@@ -1,7 +1,7 @@
 package com.icure.sdk.crypto
 
 import com.icure.kryptom.crypto.defaultCryptoService
-import com.icure.sdk.api.IcureSdk
+import com.icure.sdk.IcureSdk
 import com.icure.sdk.api.raw.RawSecureDelegationKeyMapApi
 import com.icure.sdk.crypto.entities.EntityAccessInformation
 import com.icure.sdk.model.DecryptedPatient

@@ -7,8 +7,8 @@ import com.icure.kryptom.crypto.RsaAlgorithm
 import com.icure.kryptom.crypto.RsaKeypair
 import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.kryptom.utils.toHexString
+import com.icure.sdk.IcureSdk
 import com.icure.sdk.api.ApiOptions
-import com.icure.sdk.api.IcureSdk
 import com.icure.sdk.api.raw.RawAnonymousAuthApi
 import com.icure.sdk.api.raw.RawGroupApi
 import com.icure.sdk.api.raw.RawHealthcarePartyApi

@@ -3,7 +3,7 @@
 package com.icure.sdk.crypto
 
 import com.icure.kryptom.crypto.defaultCryptoService
-import com.icure.sdk.api.IcureSdk
+import com.icure.sdk.IcureSdk
 import com.icure.sdk.crypto.impl.exportSpkiHex
 import com.icure.sdk.model.DecryptedPatient
 import com.icure.sdk.model.embed.AccessLevel
