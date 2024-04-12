@@ -216,16 +216,16 @@ class BaseExchangeDataManagerImpl(
 		val exchangeKey = importExchangeKey(rawExchangeKey)
 		val accessControlSecret = importAccessControlSecret(rawAccessControlSecret)
 		val sharedSignatureKey = importSharedSignatureKey(rawSharedSignatureKey)
-		return ExchangeDataWithUnencryptedContent(
+		return updateExchangeDataWithDecryptedContent(
 			exchangeData = exchangeData,
-			unencryptedContent = UnencryptedExchangeDataContent(
+			newEncryptionKeys = newEncryptionKeys,
+			unencryptedExchangeDataContent = UnencryptedExchangeDataContent(
 				exchangeKey = exchangeKey,
 				accessControlSecret = accessControlSecret,
 				sharedSignatureKey = sharedSignatureKey
 			)
 		)
 	}
-
 
 	override suspend fun updateExchangeDataWithDecryptedContent(
 		exchangeData: ExchangeData,
