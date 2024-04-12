@@ -120,17 +120,18 @@ data class DataOwnerDetails(
 	/**
 	 * Creates a new api with access to the original key of the user and his parents.
 	 */
-	suspend fun api(): IcureSdk =
-		initApi(BasicCryptoStrategies) { addInitialKeysToStorage(it) }
+	suspend fun api(cryptoStrategies: CryptoStrategies = BasicCryptoStrategies): IcureSdk =
+		initApi(cryptoStrategies) { addInitialKeysToStorage(it) }
 
 	/**
 	 * Creates a new api with access to the provided keys.
 	 * All the keys must be keys of the data owner and not of parents.
 	 */
 	suspend fun apiWithKeys(
-		vararg keys: RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>
+		vararg keys: RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>,
+		cryptoStrategies: CryptoStrategies = BasicCryptoStrategies
 	): IcureSdk =
-		initApi(BasicCryptoStrategies) { storage ->
+		initApi(cryptoStrategies) { storage ->
 			keys.forEach { key ->
 				storage.saveEncryptionKeypair(
 					dataOwnerId,
@@ -144,16 +145,27 @@ data class DataOwnerDetails(
 	 * Creates an api simulating the loss of all keys for the user, prompting the creation of a new key.
 	 * @return the api and the new key
  	 */
-	suspend fun apiWithLostKeys(): Pair<IcureSdk, RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>> {
+	suspend fun apiWithLostKeys(cryptoStrategies: CryptoStrategies = BasicCryptoStrategies): Pair<IcureSdk, RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>> {
 		val newKey = defaultCryptoService.rsa.generateKeyPair(RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256)
 		return Pair(
 			initApi(
-				object : CryptoStrategies by BasicCryptoStrategies {
+				object : CryptoStrategies by cryptoStrategies {
 					override suspend fun generateNewKeyForDataOwner(
 						self: DataOwnerWithType,
 						cryptoPrimitives: CryptoService,
-					): CryptoStrategies.KeyGenerationRequestResult =
-						CryptoStrategies.KeyGenerationRequestResult.Use(newKey)
+					): CryptoStrategies.KeyGenerationRequestResult {
+						val customResult = kotlin.runCatching {
+							cryptoStrategies.generateNewKeyForDataOwner(self, cryptoPrimitives)
+						}
+						require(
+							customResult.isSuccess
+								&& customResult.getOrThrow() !is CryptoStrategies.KeyGenerationRequestResult.Use
+						) {
+							"`apiWithLostKeys` overrides the key generation strategy, so it should not provide a custom key or throw an exception."
+						}
+						return CryptoStrategies.KeyGenerationRequestResult.Use(newKey)
+					}
+
 				}
 			) { storage ->
 				storage.saveEncryptionKeypair(

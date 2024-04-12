@@ -4,6 +4,7 @@ import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.kryptom.utils.toHexString
 import com.icure.sdk.api.extended.DataOwnerApi
+import com.icure.sdk.api.extended.DataOwnerApiImpl
 import com.icure.sdk.api.extended.IcureMaintenanceTaskApi
 import com.icure.sdk.api.flavoured.AccessLogApi
 import com.icure.sdk.api.flavoured.AccessLogApiImpl
@@ -87,6 +88,7 @@ import com.icure.sdk.crypto.impl.SecureDelegationsEncryptionImpl
 import com.icure.sdk.crypto.impl.SecureDelegationsManagerImpl
 import com.icure.sdk.crypto.impl.ShamirKeysManagerImpl
 import com.icure.sdk.crypto.impl.ShamirSecretSharingService
+import com.icure.sdk.crypto.impl.TransferKeysManagerImpl
 import com.icure.sdk.crypto.impl.UserEncryptionKeysManagerImpl
 import com.icure.sdk.crypto.impl.UserSignatureKeysManagerImpl
 import com.icure.sdk.model.DataOwnerWithType
@@ -171,7 +173,7 @@ interface IcureSdk {
 			val iCureStorage = IcureStorageFacade(keysStorage, baseStorage, DefaultStorageEntryKeysFactory, cryptoService, false)
 			val authApi = RawAnonymousAuthApi(apiUrl, client)
 			val authService = JwtAuthService(authApi, usernamePassword)
-			val dataOwnerApi = DataOwnerApi(RawDataOwnerApi(apiUrl, authService, client))
+			val dataOwnerApi = DataOwnerApiImpl(RawDataOwnerApi(apiUrl, authService, client))
 			val self = dataOwnerApi.getCurrentDataOwner()
 			val selfIsAnonymous = cryptoStrategies.dataOwnerRequiresAnonymousDelegation(self.toStub())
 			val rawPatientApiNoAccessKeys = RawPatientApi(apiUrl, authService, null, client)
@@ -303,7 +305,16 @@ interface IcureSdk {
 				dataOwnerApi,
 				userEncryptionKeys
 			)
-			ensureDelegationForSelf(dataOwnerApi, entityEncryptionService, rawPatientApiNoAccessKeys, cryptoService)
+			val updatedSelf = ensureDelegationForSelf(dataOwnerApi, entityEncryptionService, rawPatientApiNoAccessKeys, cryptoService)
+			if (options.createTransferKeys) {
+				TransferKeysManagerImpl(
+					userEncryptionKeys,
+					iCureStorage,
+					cryptoService,
+					exchangeDataManager,
+					dataOwnerApi
+				).updateTransferKeys(updatedSelf.toStub())
+			}
 			val manifests = EntitiesEncryptedFieldsManifests.fromEncryptedFields(options.encryptedFields)
 			return IcureApiImpl(
 				crypto,
@@ -346,6 +357,7 @@ private class IcureApiImpl(
 			rawContactApi,
 			internalCrypto,
 			encryptedFieldsManifests.contact,
+			encryptedFieldsManifests.service,
 			autofillAuthor
 		)
 	}
@@ -521,9 +533,9 @@ private suspend fun ensureDelegationForSelf(
 	encryptionService: EntityEncryptionService,
 	patientApi: RawPatientApi,
 	cryptoService: CryptoService
-) {
+): DataOwnerWithType {
 	val self = dataOwnerApi.getCurrentDataOwner()
-	if (self is DataOwnerWithType.PatientDataOwner) {
+	return if (self is DataOwnerWithType.PatientDataOwner) {
 		val availableSecretIds = encryptionService.secretIdsOf(self.dataOwner.withTypeInfo(), null)
 		if (availableSecretIds.isEmpty()) {
 			val patientSelf = self.dataOwner.withTypeInfo()
@@ -536,7 +548,7 @@ private suspend fun ensureDelegationForSelf(
 					initialiseSecretId = true,
 					autoDelegations = emptyMap()
 				).updatedEntity
-				patientApi.modifyPatient(updatedPatient)
+				return DataOwnerWithType.PatientDataOwner(patientApi.modifyPatient(updatedPatient).successBody())
 			} else {
 				encryptionService.simpleShareOrUpdateEncryptedEntityMetadata(
 					patientSelf,
@@ -549,10 +561,12 @@ private suspend fun ensureDelegationForSelf(
 							requestedPermissions = RequestedPermission.Root
 						)
 					),
-				) { patientApi.bulkShare(it).successBody() }.updatedEntityOrThrow()
+				) { patientApi.bulkShare(it).successBody() }.updatedEntityOrThrow().let { updatedPatient ->
+					DataOwnerWithType.PatientDataOwner(updatedPatient)
+				}
 			}
-		}
-	}
+		} else self
+	} else self
 }
 
 /**
@@ -577,29 +591,16 @@ private class EntitiesEncryptedFieldsManifests private constructor(
 	val receipt: EncryptedFieldsManifest
 ) {
 	companion object {
-		private object Default {
-			val accessLog = setOf("detail", "objectId")
-			val calendarItem = setOf("details", "title", "patientId")
-			val contact = setOf("descr", "notes[].markdown")
-			val service = setOf("notes[].markdown")
-			val healthElement = setOf("descr", "note", "notes[].markdown")
-			val maintenanceTask = setOf("properties")
-			val patient = setOf("note", "notes[].markdown")
-			val message = setOf<String>()
-			val topic = setOf("description", "linkedServices", "linkedHealthElements")
-			val document = setOf<String>()
-		}
-
-		fun fromEncryptedFields(encryptedFields: EncryptedFields?): EntitiesEncryptedFieldsManifests {
+		fun fromEncryptedFields(encryptedFields: EncryptedFields): EntitiesEncryptedFieldsManifests {
 			val contactManifest = JsonEncryptionService.parseEncryptedFields(
-				encryptedFields?.contact ?: Default.contact,
+				encryptedFields.contact,
 				"Contact."
 			)
 			require("services" !in contactManifest.allKeys) {
 				"You can't customise encryption of the `services` field of Contact. Use the serviceEncryptedKeys parameter instead."
 			}
 			val serviceManifest = JsonEncryptionService.parseEncryptedFields(
-				encryptedFields?.service ?: Default.service,
+				encryptedFields.service,
 				"Service."
 			)
 			require("content" !in serviceManifest.allKeys) {
@@ -609,55 +610,55 @@ private class EntitiesEncryptedFieldsManifests private constructor(
 				contact = contactManifest,
 				service = serviceManifest,
 				accessLog = JsonEncryptionService.parseEncryptedFields(
-					encryptedFields?.accessLog ?: Default.accessLog,
+					encryptedFields.accessLog,
 					"AccessLog."
 				),
 				calendarItem = JsonEncryptionService.parseEncryptedFields(
-					encryptedFields?.calendarItem ?: Default.calendarItem,
+					encryptedFields.calendarItem,
 					"CalendarItem."
 				),
 				healthElement = JsonEncryptionService.parseEncryptedFields(
-					encryptedFields?.healthElement ?: Default.healthElement,
+					encryptedFields.healthElement,
 					"HealthElement."
 				),
 				maintenanceTask = JsonEncryptionService.parseEncryptedFields(
-					encryptedFields?.maintenanceTask ?: Default.maintenanceTask,
+					encryptedFields.maintenanceTask,
 					"MaintenanceTask."
 				),
 				patient = JsonEncryptionService.parseEncryptedFields(
-					encryptedFields?.patient ?: Default.patient,
+					encryptedFields.patient,
 					"Patient."
 				),
 				message = JsonEncryptionService.parseEncryptedFields(
-					encryptedFields?.message ?: Default.message,
+					encryptedFields.message,
 					"Message."
 				),
 				topic = JsonEncryptionService.parseEncryptedFields(
-					encryptedFields?.topic ?: Default.topic,
+					encryptedFields.topic,
 					"Topic."
 				),
 				document = JsonEncryptionService.parseEncryptedFields(
-					encryptedFields?.document ?: Default.document,
+					encryptedFields.document,
 					"Document."
 				),
 				timeTable = JsonEncryptionService.parseEncryptedFields(
-					encryptedFields?.timeTable ?: emptySet(),
+					encryptedFields.timeTable,
 					"TimeTable."
 				),
 				classification = JsonEncryptionService.parseEncryptedFields(
-					encryptedFields?.classification ?: emptySet(),
+					encryptedFields.classification,
 					"Classification."
 				),
 				form = JsonEncryptionService.parseEncryptedFields(
-					encryptedFields?.form ?: emptySet(),
+					encryptedFields.form,
 					"Form."
 				),
 				invoice = JsonEncryptionService.parseEncryptedFields(
-					encryptedFields?.invoice ?: emptySet(),
+					encryptedFields.invoice,
 					"Invoice."
 				),
 				receipt = JsonEncryptionService.parseEncryptedFields(
-					encryptedFields?.receipt ?: emptySet(),
+					encryptedFields.receipt ,
 					"Receipt."
 				)
 			)

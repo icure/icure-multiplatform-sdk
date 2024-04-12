@@ -13,27 +13,84 @@ import com.icure.sdk.utils.IllegalEntityException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.SingleValueAsyncCache
 
+
+interface DataOwnerApi {
+	suspend fun getCurrentDataOwner(): DataOwnerWithType
+
+	suspend fun getCurrentDataOwnerStub(): CryptoActorStubWithType
+
+	/**
+	 * If the logged user is a data owner get the current data owner id. This information is cached without expiration,
+	 * and will only be updated in case of forced refresh.
+	 */
+	suspend fun getCurrentDataOwnerId(): String
+
+	/**
+	 * If the logged user is a data owner get its parent hierarchy. This information is cached without expiration, and will only be updated in case
+	 * of forced refresh.
+	 * The resulting array starts with the topmost parent (the only ancestor without a parent) and ends with the data owner itself.
+	 */
+	suspend fun getCurrentDataOwnerHierarchyIds(): List<String>
+
+	suspend fun getDataOwner(ownerId: String): DataOwnerWithType
+
+	suspend fun getDataOwnerStub(ownerId: String): CryptoActorStubWithType
+
+	/**
+	 * Get the hierarchy for the current data owner starting from the specified parent.
+	 * @return an array starting at the topmost parent and ending at the provided parent id.
+	 * @throws IllegalArgumentException If the provided id is not part of the hierarchy
+	 */
+	suspend fun getCurrentDataOwnerHierarchyIdsFrom(parentId: String): List<String>
+
+	/**
+	 * If the logged user is a data owner get the current data owner and all of his parents.
+	 * @return the current data owner hierarchy, starting from the topmost parent to the current data owner.
+	 */
+	suspend fun getCurrentDataOwnerHierarchy(): List<DataOwnerWithType>
+
+	suspend fun modifyDataOwnerStub(cryptoActorStubWithTypeDto: CryptoActorStubWithType): CryptoActorStubWithType
+
+	/**
+	 * If the logged user is a data owner get the type of the current data owner. This information is cached.
+	 */
+	suspend fun getCurrentDataOwnerType(): DataOwnerType
+
+	/**
+	 * Get a crypto actor stub for a data owner.
+	 * @param ownerId id of the data owner for which you want to retrieve the stub (patient, medical device, hcp, ...)
+	 * @return the crypto actor stub of the data owner with the provided id
+	 */
+	suspend fun getCryptoActorStub(ownerId: String): CryptoActorStubWithType
+
+	/**
+	 * Clears the cache of current data owner id and parent hierarchy ids. The hierarchy of a data owner should not
+	 * normally change over time, so this method should be rarely needed.
+	 */
+	fun clearCurrentDataOwnerIdsCache()
+}
+
 @OptIn(InternalIcureApi::class)
-class DataOwnerApi(
+class DataOwnerApiImpl(
 	private val rawApi: RawDataOwnerApi,
-) {
+) : DataOwnerApi {
 	private data class DataOwnerInfo(
 		val hierarchy: List<String>,
 		val type: DataOwnerType,
 	)
 	private val dataOwnerInfoCache: SingleValueAsyncCache<DataOwnerInfo, List<DataOwnerWithType>> = SingleValueAsyncCache()
 
-	suspend fun getCurrentDataOwner(): DataOwnerWithType =
+	override suspend fun getCurrentDataOwner(): DataOwnerWithType =
 		rawApi.getCurrentDataOwner().successBody()
 
-	suspend fun getCurrentDataOwnerStub(): CryptoActorStubWithType =
+	override suspend fun getCurrentDataOwnerStub(): CryptoActorStubWithType =
 		getCurrentDataOwner().toStub()
 
 	/**
 	 * If the logged user is a data owner get the current data owner id. This information is cached without expiration,
 	 * and will only be updated in case of forced refresh.
 	 */
-	suspend fun getCurrentDataOwnerId(): String =
+	override suspend fun getCurrentDataOwnerId(): String =
 		getOrCacheInfo().first.hierarchy.last()
 
 	/**
@@ -41,13 +98,13 @@ class DataOwnerApi(
 	 * of forced refresh.
 	 * The resulting array starts with the topmost parent (the only ancestor without a parent) and ends with the data owner itself.
 	 */
-	suspend fun getCurrentDataOwnerHierarchyIds(): List<String> =
+	override suspend fun getCurrentDataOwnerHierarchyIds(): List<String> =
 		getOrCacheInfo().first.hierarchy
 
-	suspend fun getDataOwner(ownerId: String): DataOwnerWithType =
+	override suspend fun getDataOwner(ownerId: String): DataOwnerWithType =
 		rawApi.getDataOwner(ownerId).successBody()
 
-	suspend fun getDataOwnerStub(ownerId: String): CryptoActorStubWithType =
+	override suspend fun getDataOwnerStub(ownerId: String): CryptoActorStubWithType =
 		rawApi.getDataOwnerStub(ownerId).successBody()
 
 	/**
@@ -55,7 +112,7 @@ class DataOwnerApi(
 	 * @return an array starting at the topmost parent and ending at the provided parent id.
 	 * @throws IllegalArgumentException If the provided id is not part of the hierarchy
 	 */
-	suspend fun getCurrentDataOwnerHierarchyIdsFrom(parentId: String): List<String> {
+	override suspend fun getCurrentDataOwnerHierarchyIdsFrom(parentId: String): List<String> {
 		getCurrentDataOwnerHierarchyIds()
 			.indexOfFirst { it == parentId }
 			.takeIf { it >= 0 }
@@ -67,19 +124,19 @@ class DataOwnerApi(
 	 * If the logged user is a data owner get the current data owner and all of his parents.
 	 * @return the current data owner hierarchy, starting from the topmost parent to the current data owner.
 	 */
-	suspend fun getCurrentDataOwnerHierarchy(): List<DataOwnerWithType> =
+	override suspend fun getCurrentDataOwnerHierarchy(): List<DataOwnerWithType> =
 		getOrCacheInfo().let { (cachedInfo, retrievedHierarchy) ->
 			// TODO bulk get hierarchy
 			retrievedHierarchy ?: cachedInfo.hierarchy.map { getDataOwner(it) }
 		}
 
-	suspend fun modifyDataOwnerStub(cryptoActorStubWithTypeDto: CryptoActorStubWithType): CryptoActorStubWithType =
+	override suspend fun modifyDataOwnerStub(cryptoActorStubWithTypeDto: CryptoActorStubWithType): CryptoActorStubWithType =
 		rawApi.modifyDataOwnerStub(cryptoActorStubWithTypeDto).successBody()
 
 	/**
 	 * If the logged user is a data owner get the type of the current data owner. This information is cached.
 	 */
-	suspend fun getCurrentDataOwnerType(): DataOwnerType =
+	override suspend fun getCurrentDataOwnerType(): DataOwnerType =
 		getOrCacheInfo().first.type
 
 	/**
@@ -87,14 +144,14 @@ class DataOwnerApi(
 	 * @param ownerId id of the data owner for which you want to retrieve the stub (patient, medical device, hcp, ...)
 	 * @return the crypto actor stub of the data owner with the provided id
 	 */
-	suspend fun getCryptoActorStub(ownerId: String): CryptoActorStubWithType =
+	override suspend fun getCryptoActorStub(ownerId: String): CryptoActorStubWithType =
 		rawApi.getDataOwnerStub(ownerId).successBody()
 
 	/**
 	 * Clears the cache of current data owner id and parent hierarchy ids. The hierarchy of a data owner should not
 	 * normally change over time, so this method should be rarely needed.
 	 */
-	fun clearCurrentDataOwnerIdsCache() {
+	override fun clearCurrentDataOwnerIdsCache() {
 		dataOwnerInfoCache.deleteCache()
 	}
 

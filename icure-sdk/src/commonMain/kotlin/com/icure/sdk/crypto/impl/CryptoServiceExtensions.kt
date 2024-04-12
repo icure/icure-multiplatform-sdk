@@ -10,14 +10,14 @@ import com.icure.sdk.crypto.entities.IcureKeyInfo
 import com.icure.sdk.crypto.entities.RsaDecryptionKeysSet
 import com.icure.sdk.crypto.entities.RsaSignatureKeysSet
 import com.icure.sdk.crypto.entities.VerifiedRsaEncryptionKeysSet
-import com.icure.sdk.model.specializations.Base64String
 import com.icure.sdk.model.base.CryptoActor
+import com.icure.sdk.model.extensions.publicKeysWithSha1Spki
+import com.icure.sdk.model.extensions.publicKeysWithSha256Spki
+import com.icure.sdk.model.specializations.Base64String
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.model.specializations.KeypairFingerprintV1String
 import com.icure.sdk.model.specializations.KeypairFingerprintV2String
 import com.icure.sdk.model.specializations.SpkiHexString
-import com.icure.sdk.model.extensions.publicKeysWithSha1Spki
-import com.icure.sdk.model.extensions.publicKeysWithSha256Spki
 import com.icure.sdk.utils.IllegalEntityException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.base64Encode
@@ -97,19 +97,22 @@ suspend fun <KeyIdentifier, EncodedData> CryptoService.decryptDataWithKeys(
 
 @InternalIcureApi
 suspend fun CryptoService.loadEncryptionKeysForDataOwner(
-	cryptoActor: CryptoActor
+	cryptoActor: CryptoActor,
+	subset: Set<SpkiHexString>? = null
 ): List<IcureKeyInfo<PublicRsaKey<RsaAlgorithm.RsaEncryptionAlgorithm>>> {
 	val sha1Keys = cryptoActor.publicKeysWithSha1Spki
 	val sha256Keys = cryptoActor.publicKeysWithSha256Spki
 	if ((sha1Keys + sha256Keys).size != sha1Keys.size + sha256Keys.size) throw IllegalEntityException(
 		"Crypto actor ${cryptoActor.id} has some ambiguous keys (for both OAEP with SHA1 and OAEP with SHA256 usages)."
 	)
-	return sha256Keys.map {
+	val sha256ToLoad = subset?.intersect(sha256Keys) ?: sha256Keys
+	val sha1ToLoad = subset?.intersect(sha1Keys) ?: sha1Keys
+	return sha256ToLoad.map {
 		IcureKeyInfo(
 			pubSpkiHexString = it,
 			key = rsa.loadPublicKeySpki(RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256, it.bytes())
 		)
-	} + sha1Keys.map {
+	} + sha1ToLoad.map {
 		IcureKeyInfo(
 			pubSpkiHexString = it,
 			key = rsa.loadPublicKeySpki(RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha1, it.bytes())

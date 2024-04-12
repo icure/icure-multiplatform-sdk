@@ -9,6 +9,7 @@ import com.icure.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
 import com.icure.sdk.crypto.entities.RawDecryptedExchangeData
 import com.icure.sdk.crypto.entities.RsaDecryptionKeysSet
 import com.icure.sdk.crypto.entities.RsaSignatureKeysSet
+import com.icure.sdk.crypto.entities.UnencryptedExchangeDataContent
 import com.icure.sdk.crypto.entities.VerifiedRsaEncryptionKeysSet
 import com.icure.sdk.model.ExchangeData
 import com.icure.sdk.model.specializations.AccessControlSecret
@@ -154,6 +155,15 @@ interface BaseExchangeDataManager {
 
 	/**
 	 * Same as [tryUpdateExchangeData] but the decrypted content is already provided.
+	 */
+	suspend fun updateExchangeDataWithDecryptedContent(
+		exchangeData: ExchangeData,
+		newEncryptionKeys: VerifiedRsaEncryptionKeysSet,
+		unencryptedExchangeDataContent: UnencryptedExchangeDataContent
+	): ExchangeDataWithUnencryptedContent
+
+	/**
+	 * Same as [tryUpdateExchangeData] but the RAW decrypted content is already provided.
 	 */
 	suspend fun updateExchangeDataWithRawDecryptedContent(
 		exchangeData: ExchangeData,
