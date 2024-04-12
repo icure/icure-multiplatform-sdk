@@ -16,6 +16,8 @@ import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.contact.ContactByHcPartyFilter
 import com.icure.sdk.model.filter.healthelement.HealthElementByHcPartyFilter
 import com.icure.sdk.model.filter.maintenancetask.MaintenanceTaskAfterDateFilter
+import com.icure.sdk.model.filter.maintenancetask.MaintenanceTaskByHcPartyAndIdentifiersFilter
+import com.icure.sdk.model.filter.maintenancetask.MaintenanceTaskByHcPartyAndTypeFilter
 import com.icure.sdk.model.filter.patient.PatientByHcPartyFilter
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
@@ -46,6 +48,7 @@ object Serialization {
 			subclass(HealthElementByHcPartyFilter::class)
 			subclass(PatientByHcPartyFilter::class)
 			subclass(ContactByHcPartyFilter::class)
+			subclass(MaintenanceTaskByHcPartyAndIdentifiersFilter::class)
 		}
 	}
 

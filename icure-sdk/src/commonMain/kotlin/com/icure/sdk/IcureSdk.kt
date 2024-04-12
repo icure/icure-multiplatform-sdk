@@ -430,7 +430,8 @@ private class IcureApiImpl(
 			rawMaintenanceTaskApi,
 			internalCrypto,
 			encryptedFieldsManifests.maintenanceTask,
-			autofillAuthor
+			autofillAuthor,
+			webSocketAuthProvider
 		)
 	}
 

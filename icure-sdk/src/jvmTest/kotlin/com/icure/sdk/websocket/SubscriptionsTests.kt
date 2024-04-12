@@ -2,12 +2,16 @@ package com.icure.sdk.websocket
 
 import com.icure.sdk.model.DecryptedContact
 import com.icure.sdk.model.DecryptedHealthElement
+import com.icure.sdk.model.DecryptedMaintenanceTask
 import com.icure.sdk.model.DecryptedPatient
 import com.icure.sdk.model.base.Identifiable
+import com.icure.sdk.model.base.Identifier
 import com.icure.sdk.model.embed.DecryptedService
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.contact.ContactByHcPartyFilter
 import com.icure.sdk.model.filter.healthelement.HealthElementByHcPartyFilter
+import com.icure.sdk.model.filter.maintenancetask.MaintenanceTaskByHcPartyAndIdentifiersFilter
+import com.icure.sdk.model.filter.maintenancetask.MaintenanceTaskByHcPartyAndTypeFilter
 import com.icure.sdk.model.filter.patient.PatientByHcPartyFilter
 import com.icure.sdk.model.filter.service.ServiceByHcPartyFilter
 import com.icure.sdk.model.notification.SubscriptionEventType
@@ -162,6 +166,29 @@ class SubscriptionsTests : StringSpec(
 
 							).let {
 								hcpUser.api().contact.createContact(it)
+							}
+					}
+				),
+			)
+
+			val identifier = Identifier(UUID.randomUUID().toString())
+
+			include(
+				subscribableTests(
+					name = "MaintenanceTask",
+					subscribableApi = hcpUser.api().maintenanceTask.encrypted,
+					filter = MaintenanceTaskByHcPartyAndIdentifiersFilter(healthcarePartyId = hcpUser.dataOwnerId, identifiers = listOf(identifier)),
+					createEntity =  {
+						val currentUser = hcpUser.api().user.getCurrentUser()
+
+						hcpUser
+							.api()
+							.maintenanceTask
+							.withEncryptionMetadata(
+								DecryptedMaintenanceTask(id = UUID.randomUUID().toString(), identifier = listOf(identifier)),
+								currentUser
+							).let {
+								hcpUser.api().maintenanceTask.createMaintenanceTask(it)
 							}
 					}
 				),
