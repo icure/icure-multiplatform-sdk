@@ -41,14 +41,7 @@ object JsRsaService : RsaService {
 	}
 
 	override suspend fun <A : RsaAlgorithm> loadKeyPairPkcs8(algorithm: A, privateKeyPkcs8: ByteArray): RsaKeypair<A> {
-		val params = importAlgorithmParams(algorithm)
-		val rawPrivateKey = jsCrypto.subtle.importKey(
-			"pkcs8",
-			privateKeyPkcs8.toArrayBuffer(),
-			params,
-			true,
-			privateKeyUses(algorithm)
-		).await()
+		val rawPrivateKey = importRawPrivateKeyPkcs8(algorithm, privateKeyPkcs8)
 		// https://stackoverflow.com/questions/56807959/generate-public-key-from-private-key-using-webcrypto-api
 		val jwkPrivateKey = jsCrypto.subtle.exportKey("jwk", rawPrivateKey).await()
 		jwkPrivateKey.d = undefined
@@ -60,7 +53,7 @@ object JsRsaService : RsaService {
 		val rawPublicKey = jsCrypto.subtle.importKey(
 			"jwk",
 			jwkPrivateKey,
-			params,
+			importAlgorithmParams(algorithm),
 			true,
 			publicKeyUses(algorithm)
 		).await()
@@ -68,6 +61,29 @@ object JsRsaService : RsaService {
 			PrivateRsaKey(rawPrivateKey, algorithm),
 			PublicRsaKey(rawPublicKey, algorithm)
 		)
+	}
+
+	override suspend fun <A : RsaAlgorithm> loadPrivateKeyPkcs8(
+		algorithm: A,
+		privateKeyPkcs8: ByteArray
+	): PrivateRsaKey<A> =
+		PrivateRsaKey(
+			importRawPrivateKeyPkcs8(algorithm, privateKeyPkcs8),
+			algorithm
+		)
+
+	private suspend fun importRawPrivateKeyPkcs8(
+		algorithm: RsaAlgorithm,
+		privateKeyPkcs8: ByteArray
+	): dynamic {
+		val params = importAlgorithmParams(algorithm)
+		return jsCrypto.subtle.importKey(
+			"pkcs8",
+			privateKeyPkcs8.toArrayBuffer(),
+			params,
+			true,
+			privateKeyUses(algorithm)
+		).await()
 	}
 
 	override suspend fun <A : RsaAlgorithm> loadPublicKeySpki(algorithm: A, publicKeySpki: ByteArray): PublicRsaKey<A> {

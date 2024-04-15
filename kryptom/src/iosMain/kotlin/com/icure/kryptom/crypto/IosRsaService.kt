@@ -131,6 +131,12 @@ object IosRsaService : RsaService {
 		}
 	}
 
+	override suspend fun <A : RsaAlgorithm> loadPrivateKeyPkcs8(
+		algorithm: A,
+		privateKeyPkcs8: ByteArray
+	): PrivateRsaKey<A> =
+		PrivateRsaKey(pkcs8ToPcks1(privateKeyPkcs8), algorithm)
+
 	override suspend fun <A : RsaAlgorithm> loadPublicKeySpki(algorithm: A, publicKeySpki: ByteArray): PublicRsaKey<A> =
 		PublicRsaKey(spkiToPcks1(publicKeySpki), algorithm)
 

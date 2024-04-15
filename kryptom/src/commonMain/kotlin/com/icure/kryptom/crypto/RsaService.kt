@@ -90,6 +90,12 @@ interface RsaService {
 	 */
 	suspend fun <A : RsaAlgorithm> loadKeyPairPkcs8(algorithm: A, privateKeyPkcs8: ByteArray): RsaKeypair<A>
 
+	/**
+	 * Loads the rsa private key given the pkcs8 representation of the private key. Note that there is no way to guarantee
+	 * that the provided algorithm matches the algorithm chosen on key generation.
+	 */
+	suspend fun <A : RsaAlgorithm> loadPrivateKeyPkcs8(algorithm: A, privateKeyPkcs8: ByteArray): PrivateRsaKey<A>
+
 
 	/**
 	 * Loads the rsa public key given the spki representation (java X.509) of the public key. Note that there is no way

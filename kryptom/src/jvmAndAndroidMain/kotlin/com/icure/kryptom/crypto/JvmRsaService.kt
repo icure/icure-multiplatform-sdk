@@ -62,6 +62,15 @@ object JvmRsaService : RsaService {
 		return RsaKeypair(privateKey, publicKey)
 	}
 
+	override suspend fun <A : RsaAlgorithm> loadPrivateKeyPkcs8(
+		algorithm: A,
+		privateKeyPkcs8: ByteArray
+	): PrivateRsaKey<A> {
+		val keyFactory = KeyFactory.getInstance("RSA")
+		val privateKeySpec = PKCS8EncodedKeySpec(privateKeyPkcs8)
+		return PrivateRsaKey(keyFactory.generatePrivate(privateKeySpec), algorithm)
+	}
+
 	override suspend fun <A : RsaAlgorithm> loadPublicKeySpki(algorithm: A, publicKeySpki: ByteArray): PublicRsaKey<A> {
 		val keyFactory = KeyFactory.getInstance("RSA")
 		val publicKeySpec = X509EncodedKeySpec(publicKeySpki)
