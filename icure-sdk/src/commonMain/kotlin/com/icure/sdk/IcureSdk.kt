@@ -464,7 +464,8 @@ private class IcureApiImpl(
 			rawMessageApi,
 			internalCrypto,
 			encryptedFieldsManifests.message,
-			autofillAuthor
+			autofillAuthor,
+			webSocketAuthProvider
 		)
 	}
 
@@ -475,7 +476,8 @@ private class IcureApiImpl(
 			rawTopicApi,
 			internalCrypto,
 			encryptedFieldsManifests.topic,
-			autofillAuthor
+			autofillAuthor,
+			webSocketAuthProvider
 		)
 	}
 

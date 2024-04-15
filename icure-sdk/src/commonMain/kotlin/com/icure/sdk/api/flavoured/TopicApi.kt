@@ -10,8 +10,10 @@ import com.icure.sdk.crypto.entities.SimpleDelegateShareOptions
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.withTypeInfo
 import com.icure.sdk.model.DecryptedTopic
+import com.icure.sdk.model.EncryptedMessage
 import com.icure.sdk.model.EncryptedTopic
 import com.icure.sdk.model.ListOfIds
+import com.icure.sdk.model.Message
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.Patient
 import com.icure.sdk.model.Topic
@@ -24,6 +26,7 @@ import com.icure.sdk.model.extensions.autoDelegationsFor
 import com.icure.sdk.model.extensions.dataOwnerId
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
+import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.requests.topic.AddParticipant
 import com.icure.sdk.model.requests.topic.RemoveParticipant
@@ -31,7 +34,15 @@ import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.currentEpochMs
+import com.icure.sdk.websocket.Connection
+import com.icure.sdk.websocket.ConnectionImpl
+import com.icure.sdk.websocket.EmittedEvent
+import com.icure.sdk.websocket.Subscribable
+import com.icure.sdk.websocket.WebSocketAuthProvider
+import io.ktor.util.InternalAPI
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.decodeFromJsonElement
+import kotlin.time.Duration
 
 @OptIn(InternalIcureApi::class)
 private val ENCRYPTED_FIELDS_MANIFEST =
@@ -45,7 +56,7 @@ interface TopicBasicFlavourlessApi {
 }
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
-interface TopicBasicFlavouredApi<E : Topic> {
+interface TopicBasicFlavouredApi<E : Topic>: Subscribable<Topic, E> {
 	suspend fun modifyTopic(entity: E): E
 	suspend fun getTopic(entityId: String): E
 	suspend fun getTopics(entityIds: List<String>): List<E>
@@ -88,7 +99,10 @@ interface TopicApi : TopicBasicFlavourlessApi, TopicFlavouredApi<DecryptedTopic>
 interface TopicBasicApi : TopicBasicFlavourlessApi, TopicBasicFlavouredApi<EncryptedTopic>
 
 @InternalIcureApi
-private abstract class AbstractTopicBasicFlavouredApi<E : Topic>(protected val rawApi: RawTopicApi) :
+private abstract class AbstractTopicBasicFlavouredApi<E : Topic>(
+	protected val rawApi: RawTopicApi,
+	private val webSocketAuthProvider: WebSocketAuthProvider,
+) :
 	TopicBasicFlavouredApi<E> {
 	override suspend fun modifyTopic(entity: E): E =
 		rawApi.modifyTopic(validateAndMaybeEncrypt(entity)).successBody().let { maybeDecrypt(it) }
@@ -107,6 +121,41 @@ private abstract class AbstractTopicBasicFlavouredApi<E : Topic>(protected val r
 	override suspend fun removeParticipant(entityId: String, dataOwnerId: String) =
 		rawApi.removeParticipant(entityId, RemoveParticipant(dataOwnerId)).successBody().let { maybeDecrypt(it) }
 
+	@OptIn(InternalAPI::class)
+	override suspend fun subscribeToEvents(
+		events: Set<SubscriptionEventType>,
+		filter: AbstractFilter<Topic>,
+		onConnected: suspend () -> Unit,
+		channelCapacity: Int,
+		retryDelay: Duration,
+		retryDelayExponentFactor: Double,
+		maxRetries: Int,
+		eventFired: suspend (E) -> Unit
+	): Connection {
+		return ConnectionImpl.initialize(
+			client = rawApi.httpClient,
+			hostname = this.rawApi.apiUrl.replace("https://", "").replace("http://", ""),
+			path = "/ws/v2/notification/subscribe",
+			serializer = EncryptedTopic.serializer(),
+			events = events,
+			filter = filter,
+			qualifiedName = Topic.KRAKEN_QUALIFIED_NAME,
+			subscriptionSerializer = { Serialization.json.encodeToString(it) },
+			webSocketAuthProvider = webSocketAuthProvider,
+			onOpenListener = onConnected,
+			retryDelay = retryDelay,
+			retryDelayExponentFactor = retryDelayExponentFactor,
+			maxRetries = maxRetries,
+			eventCallback = { entity, onEvent ->
+				try {
+					eventFired(maybeDecrypt(entity))
+				} catch (e: EntityEncryptionException) {
+					onEvent(EmittedEvent.Error(e.message, false))
+				}
+			}
+		)
+	}
+
 
 	abstract suspend fun validateAndMaybeEncrypt(entity: E): EncryptedTopic
 	abstract suspend fun maybeDecrypt(entity: EncryptedTopic): E
@@ -116,7 +165,8 @@ private abstract class AbstractTopicBasicFlavouredApi<E : Topic>(protected val r
 private abstract class AbstractTopicFlavouredApi<E : Topic>(
 	rawApi: RawTopicApi,
 	private val crypto: InternalCryptoServices,
-) : AbstractTopicBasicFlavouredApi<E>(rawApi), TopicFlavouredApi<E> {
+	webSocketAuthProvider: WebSocketAuthProvider
+) : AbstractTopicBasicFlavouredApi<E>(rawApi, webSocketAuthProvider), TopicFlavouredApi<E> {
 	override suspend fun shareWith(
 		delegateId: String,
 		topic: E,
@@ -153,8 +203,9 @@ internal class TopicApiImpl(
 	private val crypto: InternalCryptoServices,
 	private val fieldsToEncrypt: EncryptedFieldsManifest = ENCRYPTED_FIELDS_MANIFEST,
 	private val autofillAuthor: Boolean,
+	webSocketAuthProvider: WebSocketAuthProvider
 ) : TopicApi, TopicFlavouredApi<DecryptedTopic> by object :
-	AbstractTopicFlavouredApi<DecryptedTopic>(rawApi, crypto) {
+	AbstractTopicFlavouredApi<DecryptedTopic>(rawApi, crypto, webSocketAuthProvider) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedTopic): EncryptedTopic =
 		crypto.entity.encryptEntity(
 			entity.withTypeInfo(),
@@ -171,7 +222,7 @@ internal class TopicApiImpl(
 	}
 }, TopicBasicFlavourlessApi by AbstractTopicBasicFlavourlessApi(rawApi) {
 	override val encrypted: TopicFlavouredApi<EncryptedTopic> =
-		object : AbstractTopicFlavouredApi<EncryptedTopic>(rawApi, crypto) {
+		object : AbstractTopicFlavouredApi<EncryptedTopic>(rawApi, crypto, webSocketAuthProvider) {
 			override suspend fun validateAndMaybeEncrypt(entity: EncryptedTopic): EncryptedTopic =
 				crypto.entity.validateEncryptedEntity(entity.withTypeInfo(), EncryptedTopic.serializer(), fieldsToEncrypt)
 
@@ -179,7 +230,7 @@ internal class TopicApiImpl(
 		}
 
 	override val tryAndRecover: TopicFlavouredApi<Topic> =
-		object : AbstractTopicFlavouredApi<Topic>(rawApi, crypto) {
+		object : AbstractTopicFlavouredApi<Topic>(rawApi, crypto, webSocketAuthProvider) {
 			override suspend fun maybeDecrypt(entity: EncryptedTopic): Topic =
 				crypto.entity.tryDecryptEntity(
 					entity.withTypeInfo(),
@@ -252,8 +303,9 @@ internal class TopicBasicApiImpl(
 	rawApi: RawTopicApi,
 	private val validationService: EntityValidationService,
 	private val fieldsToEncrypt: EncryptedFieldsManifest = ENCRYPTED_FIELDS_MANIFEST,
+	webSocketAuthProvider: WebSocketAuthProvider
 ) : TopicBasicApi, TopicBasicFlavouredApi<EncryptedTopic> by object :
-	AbstractTopicBasicFlavouredApi<EncryptedTopic>(rawApi) {
+	AbstractTopicBasicFlavouredApi<EncryptedTopic>(rawApi, webSocketAuthProvider) {
 	override suspend fun validateAndMaybeEncrypt(entity: EncryptedTopic): EncryptedTopic =
 		validationService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedTopic.serializer(), fieldsToEncrypt)
 
