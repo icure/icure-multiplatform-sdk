@@ -1,10 +1,7 @@
+
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.all
-import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.get
-import org.gradle.kotlin.dsl.jvm
-import org.gradle.kotlin.dsl.kotlin
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
@@ -32,7 +29,8 @@ fun Project.configureMultiplatform(
 			}
 		}
 		nodejs { }
-		binaries.executable()
+		binaries.library()
+		generateTypeScriptDefinitions()
 	}
 	androidTarget {
 		compilations.all {

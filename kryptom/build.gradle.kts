@@ -50,6 +50,9 @@ kotlin {
 			}
 		}
 		val jsMain by getting {
+			languageSettings {
+				optIn("kotlin.js.ExperimentalJsExport")
+			}
 			dependencies {
 			}
 		}
