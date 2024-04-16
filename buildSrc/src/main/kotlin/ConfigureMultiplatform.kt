@@ -1,6 +1,7 @@
 
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
+import org.gradle.configurationcache.extensions.capitalized
 import org.gradle.kotlin.dsl.get
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
@@ -46,7 +47,7 @@ fun Project.configureMultiplatform(
 	val iosAll = iosSimulators + iosArm64()
 	iosAll.forEach { target ->
 		target.binaries.framework {
-			baseName = project.name
+			baseName = project.name.replaceFirstChar { it.uppercase() }
 			xcf.add(this)
 		}
 	}
