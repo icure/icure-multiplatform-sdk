@@ -51,7 +51,9 @@ fun Project.configureMultiplatform(
 		}
 	}
 	val localProperties = Properties().apply {
-		load(rootProject.file("local.properties").reader())
+		kotlin.runCatching {
+			load(rootProject.file("local.properties").reader())
+		}
 	}
 	iosSimulators.forEach { target ->
 		target.testRuns.forEach { testRun ->
