@@ -39,6 +39,11 @@ external interface XRsaService {
 	 */
 	fun loadKeyPairPkcs8(algorithm: String, privateKeyPkcs8: ByteArray): Promise<XRsaKeypair>
 
+	/**
+	 * Loads the rsa private key given the pkcs8 representation of the private key. Note that there is no way to guarantee
+	 * that the provided algorithm matches the algorithm chosen on key generation.
+	 */
+	fun loadPrivateKeyPkcs8(algorithm: String, privateKeyPkcs8: ByteArray): Promise<XPrivateRsaKey>
 
 	/**
 	 * Loads the rsa public key given the spki representation (java X.509) of the public key. Note that there is no way

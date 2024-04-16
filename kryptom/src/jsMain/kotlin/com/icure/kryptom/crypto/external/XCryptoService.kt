@@ -92,6 +92,12 @@ private class RsaServiceAdapter(
 	override suspend fun exportPrivateKeyPkcs8(key: PrivateRsaKey<*>): ByteArray =
 		service.exportPrivateKeyPkcs8(key.toExternal()).await()
 
+	override suspend fun <A : RsaAlgorithm> loadPrivateKeyPkcs8(
+		algorithm: A,
+		privateKeyPkcs8: ByteArray
+	): PrivateRsaKey<A> =
+		service.loadPrivateKeyPkcs8(algorithm.identifier, privateKeyPkcs8).await().toKryptom(algorithm)
+
 	override suspend fun exportPublicKeySpki(key: PublicRsaKey<*>): ByteArray =
 		service.exportPublicKeySpki(key.toExternal()).await()
 
