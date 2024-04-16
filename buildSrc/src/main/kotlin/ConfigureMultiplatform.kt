@@ -46,7 +46,7 @@ fun Project.configureMultiplatform(
 	val iosAll = iosSimulators + iosArm64()
 	iosAll.forEach { target ->
 		target.binaries.framework {
-			baseName = "icure-sdk"
+			baseName = project.name
 			xcf.add(this)
 		}
 	}
