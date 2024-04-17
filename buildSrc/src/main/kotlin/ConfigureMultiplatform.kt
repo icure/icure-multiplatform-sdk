@@ -14,7 +14,8 @@ import java.util.Properties
 fun Project.configureMultiplatform(
 	kotlinMultiplatformExtension: KotlinMultiplatformExtension
 ) = with(kotlinMultiplatformExtension) {
-	val xcf = XCFramework()
+	val frameworkName = project.name.replaceFirstChar { it.uppercase() }
+	val xcf = XCFramework(frameworkName)
 	jvm {
 		compilations.all {
 			kotlinOptions.jvmTarget = "1.8"
@@ -47,7 +48,7 @@ fun Project.configureMultiplatform(
 	val iosAll = iosSimulators + iosArm64()
 	iosAll.forEach { target ->
 		target.binaries.framework {
-			baseName = project.name.replaceFirstChar { it.uppercase() }
+			baseName = frameworkName
 			xcf.add(this)
 		}
 	}
