@@ -6,7 +6,6 @@ import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.model.EncryptedClassification
 import com.icure.sdk.model.ListOfIds
-import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
@@ -19,7 +18,8 @@ import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
-import kotlin.Int
+import kotlin.Boolean
+import kotlin.Long
 import kotlin.String
 import kotlin.collections.List
 import kotlin.collections.Map
@@ -87,25 +87,25 @@ class RawClassificationApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-	suspend fun findClassificationsByHCPartyPatientForeignKey(
-		hcPartyId: String,
-		secretFKey: String,
-		startKey: String? = null,
-		startDocumentId: String? = null,
-		limit: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedClassification>> =
-		get {
+	suspend fun listClassificationIdsByDataOwnerPatientCreated(
+		dataOwnerId: String,
+		startDate: Long? = null,
+		endDate: Long? = null,
+		descending: Boolean? = null,
+		secretPatientKeys: ListOfIds,
+	): HttpResponse<List<String>> =
+		post {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "classification", "byHcPartySecretForeignKey")
-				parameter("hcPartyId", hcPartyId)
-				parameter("secretFKey", secretFKey)
-				parameter("startKey", startKey)
-				parameter("startDocumentId", startDocumentId)
-				parameter("limit", limit)
-				parameter("ts", GMTDate().timestamp)
+				appendPathSegments("rest", "v2", "classification", "byDataOwnerPatientCreated")
+				parameter("dataOwnerId", dataOwnerId)
+				parameter("startDate", startDate)
+				parameter("endDate", endDate)
+				parameter("descending", descending)
 			}
 			setAuthorizationWith(authService)
+			contentType(ContentType.Application.Json)
+			setBody(secretPatientKeys)
 		}.wrap()
 
 	suspend fun deleteClassifications(classificationIds: ListOfIds): HttpResponse<List<DocIdentifier>> =

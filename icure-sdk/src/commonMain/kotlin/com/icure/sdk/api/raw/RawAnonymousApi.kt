@@ -40,6 +40,27 @@ class RawAnonymousApi(
 
 	// endregion
 
+	// region anonymous medicallocation endpoints
+
+	suspend fun getPublicMedicalLocationsByGroupId(
+		groupId: String,
+		startKey: String? = null,
+		startDocumentId: String? = null,
+		limit: Int? = null,
+	): HttpResponse<PaginatedList<AnonymousMedicalLocation>> =
+		get {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "aa", "medicallocation", "byGroup", groupId)
+				parameter("startKey", startKey)
+				parameter("startDocumentId", startDocumentId)
+				parameter("limit", limit)
+				parameter("ts", GMTDate().timestamp)
+			}
+		}.wrap()
+
+	// endregion
+
 	// region anonymous calendaritem endpoints
 
 	suspend fun listAppointmentTypesForUser(
@@ -78,27 +99,6 @@ class RawAnonymousApi(
 				parameter("endDate", endDate)
 				parameter("hcpId", hcpId)
 				parameter("placeId", placeId)
-				parameter("limit", limit)
-				parameter("ts", GMTDate().timestamp)
-			}
-		}.wrap()
-
-	// endregion
-
-	// region anonymous medicallocation endpoints
-
-	suspend fun getPublicMedicalLocationsByGroupId(
-		groupId: String,
-		startKey: String? = null,
-		startDocumentId: String? = null,
-		limit: Int? = null,
-	): HttpResponse<PaginatedList<AnonymousMedicalLocation>> =
-		get {
-			url {
-				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "aa", "medicallocation", "byGroup", groupId)
-				parameter("startKey", startKey)
-				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
 				parameter("ts", GMTDate().timestamp)
 			}

@@ -124,23 +124,25 @@ class RawMessageApi(
 			setBody(secretPatientKeys)
 		}.wrap()
 
-	suspend fun findMessagesByHCPartyPatientForeignKey(
-		secretFKey: String,
-		startKey: String? = null,
-		startDocumentId: String? = null,
-		limit: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedMessage>> =
-		get {
+	suspend fun listMessageIdsByDataOwnerPatientSentDate(
+		dataOwnerId: String,
+		startDate: Long? = null,
+		endDate: Long? = null,
+		descending: Boolean? = null,
+		secretPatientKeys: ListOfIds,
+	): HttpResponse<List<String>> =
+		post {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "message", "byHcPartySecretForeignKey")
-				parameter("secretFKey", secretFKey)
-				parameter("startKey", startKey)
-				parameter("startDocumentId", startDocumentId)
-				parameter("limit", limit)
-				parameter("ts", GMTDate().timestamp)
+				appendPathSegments("rest", "v2", "message", "byDataOwnerPatientSentDate")
+				parameter("dataOwnerId", dataOwnerId)
+				parameter("startDate", startDate)
+				parameter("endDate", endDate)
+				parameter("descending", descending)
 			}
 			setAuthorizationWith(authService)
+			contentType(ContentType.Application.Json)
+			setBody(secretPatientKeys)
 		}.wrap()
 
 	suspend fun findMessages(
