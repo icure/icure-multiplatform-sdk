@@ -23,6 +23,7 @@
  * questions.
  */
 // From https://gist.github.com/MarkusKramer/4db02c9983c76efc6aa56cf0bdc75a5b
+// Modified to allow use of the base64Url alphabet as well
 
 package com.icure.kryptom.utils
 
@@ -134,29 +135,28 @@ internal object JavaBase64 {
 		 * @return  A newly-allocated byte array containing the resulting
 		 * encoded bytes.
 		 */
-		fun encode(src: ByteArray): ByteArray {
+		fun encode(src: ByteArray, useUrlSafeAlphabet: Boolean): ByteArray {
 			val len = outLength(src.size) // dst array size
 			val dst = ByteArray(len)
-			val ret = encode0(src, 0, src.size, dst)
+			val ret = encode0(src, 0, src.size, dst, if (useUrlSafeAlphabet) toBase64Url else toBase64)
 			return if (ret != dst.size) dst.copyOf(ret) else dst
 		}
 
-		private fun encodeBlock(src: ByteArray, sp: Int, sl: Int, dst: ByteArray, dp: Int) {
+		private fun encodeBlock(src: ByteArray, sp: Int, sl: Int, dst: ByteArray, dp: Int, base64: CharArray) {
 			var sp0 = sp
 			var dp0 = dp
 			while (sp0 < sl) {
 				val bits: Int = src[sp0++].toInt() and 0xff shl 16 or (
 					src[sp0++].toInt() and 0xff shl 8) or
 					(src[sp0++].toInt() and 0xff)
-				dst[dp0++] = toBase64[bits ushr 18 and 0x3f].code.toByte()
-				dst[dp0++] = toBase64[bits ushr 12 and 0x3f].code.toByte()
-				dst[dp0++] = toBase64[bits ushr 6 and 0x3f].code.toByte()
-				dst[dp0++] = toBase64[bits and 0x3f].code.toByte()
+				dst[dp0++] = base64[bits ushr 18 and 0x3f].code.toByte()
+				dst[dp0++] = base64[bits ushr 12 and 0x3f].code.toByte()
+				dst[dp0++] = base64[bits ushr 6 and 0x3f].code.toByte()
+				dst[dp0++] = base64[bits and 0x3f].code.toByte()
 			}
 		}
 
-		private fun encode0(src: ByteArray, off: Int, end: Int, dst: ByteArray): Int {
-			val base64 = toBase64
+		private fun encode0(src: ByteArray, off: Int, end: Int, dst: ByteArray, base64: CharArray): Int {
 			var sp = off
 			var slen = (end - off) / 3 * 3
 			val sl = off + slen
@@ -164,7 +164,7 @@ internal object JavaBase64 {
 			var dp = 0
 			while (sp < sl) {
 				val sl0: Int = min(sp + slen, sl)
-				encodeBlock(src, sp, sl0, dst, dp)
+				encodeBlock(src, sp, sl0, dst, dp, base64)
 				val dlen = (sl0 - sp) / 3 * 4
 				dp += dlen
 				sp = sl0
@@ -207,6 +207,13 @@ internal object JavaBase64 {
 				'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
 				'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
 				'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '/'
+			)
+			val toBase64Url = charArrayOf(
+				'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+				'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+				'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
+				'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+				'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', '_'
 			)
 		}
 	}
@@ -253,10 +260,17 @@ internal object JavaBase64 {
 			 */
 			internal val fromBase64 = IntArray(256)
 
+			internal val fromBase64Url = IntArray(256)
+
 			init {
 				fromBase64.fill(-1)
-				for (i in Encoder.toBase64.indices) fromBase64[Encoder.toBase64[i].code] = i
+				fromBase64Url.fill(-1)
+				for (i in Encoder.toBase64.indices) {
+					fromBase64[Encoder.toBase64[i].code] = i
+					fromBase64Url[Encoder.toBase64Url[i].code] = i
+				}
 				fromBase64['='.code] = -2
+				fromBase64Url['='.code] = -2
 			}
 		}
 
@@ -274,9 +288,9 @@ internal object JavaBase64 {
 		 * @throws  IllegalArgumentException
 		 * if `src` is not in valid Base64 scheme
 		 */
-		fun decode(src: ByteArray): ByteArray {
+		fun decode(src: ByteArray, useUrlSafeAlphabet: Boolean): ByteArray {
 			var dst = ByteArray(outLength(src, 0, src.size))
-			val ret = decode0(src, 0, src.size, dst)
+			val ret = decode0(src, 0, src.size, dst, if (useUrlSafeAlphabet) fromBase64Url else fromBase64)
 			if (ret != dst.size) {
 				dst = dst.copyOf(ret)
 			}
@@ -301,9 +315,8 @@ internal object JavaBase64 {
 			return 3 * ((len + 3) / 4) - paddings
 		}
 
-		private fun decode0(src: ByteArray, sp: Int, sl: Int, dst: ByteArray): Int {
+		private fun decode0(src: ByteArray, sp: Int, sl: Int, dst: ByteArray, base64: IntArray): Int {
 			var sp2 = sp
-			val base64 = fromBase64
 			var dp = 0
 			var bits = 0
 			var shiftto = 18 // pos of first byte of 4-byte atom

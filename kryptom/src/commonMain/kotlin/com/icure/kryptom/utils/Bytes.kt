@@ -37,7 +37,13 @@ fun hexToByteArray(hexString: String): ByteArray =
  * @return the base64 representation of the bytes.
  */
 fun base64Encode(bytes: ByteArray): String =
-	String(JavaBase64.encoder.encode(bytes), charset = Charsets.UTF_8)
+	String(JavaBase64.encoder.encode(bytes, useUrlSafeAlphabet = false), charset = Charsets.UTF_8)
+
+/**
+ * Same as [base64UrlEncode] but uses the URL and filename safe alphabet (RFC 4648 table 2).
+ */
+fun base64UrlEncode(bytes: ByteArray): String =
+	String(JavaBase64.encoder.encode(bytes, useUrlSafeAlphabet = true), charset = Charsets.UTF_8)
 
 /**
  * Decodes a base 64 string.
@@ -50,4 +56,10 @@ fun base64Encode(bytes: ByteArray): String =
  * @throws IllegalArgumentException if the input string is not a valid base64 string.
  */
 fun base64Decode(base64String: String): ByteArray =
-	JavaBase64.decoder.decode(base64String.toByteArray(Charsets.UTF_8))
+	JavaBase64.decoder.decode(base64String.toByteArray(Charsets.UTF_8), useUrlSafeAlphabet = false)
+
+/**
+ * Same as [base64Decode] but uses the URL and filename safe alphabet (RFC 4648 table 2).
+ */
+fun base64UrlDecode(base64String: String): ByteArray =
+	JavaBase64.decoder.decode(base64String.toByteArray(Charsets.UTF_8), useUrlSafeAlphabet = true)
