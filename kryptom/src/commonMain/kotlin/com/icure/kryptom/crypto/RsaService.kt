@@ -45,7 +45,7 @@ interface RsaService {
 	 * @param bitSize Size in bits.
 	 */
 	enum class KeySize(val bitSize: Int) {
-		RSA_2048(2048), RSA_4096(4096);
+		Rsa2048(2048), Rsa4096(4096);
 
 		/**
 		 * Size in bytes.
@@ -70,7 +70,7 @@ interface RsaService {
 	 * attempting to use the key for other purposes.
 	 * For more info see https://crypto.stackexchange.com/questions/81819/same-private-key-for-signing-and-decryption
 	 */
-	suspend fun <A : RsaAlgorithm> generateKeyPair(algorithm: A, keySize: KeySize = KeySize.RSA_2048): RsaKeypair<A>
+	suspend fun <A : RsaAlgorithm> generateKeyPair(algorithm: A, keySize: KeySize = KeySize.Rsa2048): RsaKeypair<A>
 
 	/**
 	 * Exports the private key in pkcs8 format.

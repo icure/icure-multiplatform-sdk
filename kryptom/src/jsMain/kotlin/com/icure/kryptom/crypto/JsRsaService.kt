@@ -1,6 +1,7 @@
 package com.icure.kryptom.crypto
 
 import com.icure.kryptom.js.jsCrypto
+import com.icure.kryptom.js.parsingDynamic
 import com.icure.kryptom.js.toArrayBuffer
 import com.icure.kryptom.js.toByteArray
 import com.icure.kryptom.utils.PlatformMethodException
@@ -202,5 +203,99 @@ object JsRsaService : RsaService {
 
 		is RsaAlgorithm.RsaSignatureAlgorithm ->
 			arrayOf("verify")
+	}
+
+	override suspend fun exportPrivateKeyJwk(key: PrivateRsaKey<*>): PrivateRsaKeyJwk =
+		parsingDynamic(jsCrypto.subtle.exportKey("jwk", key.key).await()) {
+			PrivateRsaKeyJwk(
+				alg = expect<String>("alg"),
+				d = expect<String>("d"),
+				dp = expect<String>("dp"),
+				dq = expect<String>("dq"),
+				e = expect<String>("e"),
+				n = expect<String>("n"),
+				p = expect<String>("p"),
+				q = expect<String>("q"),
+				qi = expect<String>("qi"),
+				key_ops = expectArray<String>("key_ops").toSet(),
+				ext = expect<Boolean>("ext")
+			).also {
+				if (expect<String>("kty") != "RSA") {
+					throw PlatformMethodException("Key type should be RSA")
+				}
+			}
+		}
+
+	override suspend fun exportPublicKeyJwk(key: PublicRsaKey<*>): PublicRsaKeyJwk =
+		parsingDynamic(jsCrypto.subtle.exportKey("jwk", key.key).await()) {
+			PublicRsaKeyJwk(
+				alg = expect<String>("alg"),
+				e = expect<String>("e"),
+				n = expect<String>("n"),
+				key_ops = expectArray<String>("key_ops").toSet(),
+				ext = expect<Boolean>("ext")
+			).also {
+				if (expect<String>("kty") != "RSA") {
+					throw PlatformMethodException("Key type should be RSA")
+				}
+			}
+		}
+
+	override suspend fun <A : RsaAlgorithm> loadPrivateKeyJwk(
+		algorithm: A,
+		privateKeyJwk: PrivateRsaKeyJwk
+	): PrivateRsaKey<A> {
+		require(algorithm.jwkIdentifier == privateKeyJwk.alg) {
+			"Algorithm of JWK does not match provided algorithm - ${privateKeyJwk.alg} != ${algorithm.jwkIdentifier}"
+		}
+		return PrivateRsaKey(
+			jsCrypto.subtle.importKey(
+				"jwk",
+				json(
+					"alg" to privateKeyJwk.alg,
+					"d" to privateKeyJwk.d,
+					"dp" to privateKeyJwk.dp,
+					"dq" to privateKeyJwk.dq,
+					"e" to privateKeyJwk.e,
+					"ext" to privateKeyJwk.ext,
+					"key_ops" to privateKeyJwk.key_ops.toTypedArray(),
+					"kty" to privateKeyJwk.kty,
+					"n" to privateKeyJwk.n,
+					"p" to privateKeyJwk.p,
+					"q" to privateKeyJwk.q,
+					"qi" to privateKeyJwk.qi
+				),
+				importAlgorithmParams(algorithm),
+				true,
+				privateKeyUses(algorithm)
+			).await(),
+			algorithm
+		)
+	}
+
+	override suspend fun <A : RsaAlgorithm> loadPublicKeyJwk(
+		algorithm: A,
+		publicKeyJwk: PublicRsaKeyJwk
+	): PublicRsaKey<A> {
+		require(algorithm.jwkIdentifier == publicKeyJwk.alg) {
+			"Algorithm of JWK does not match provided algorithm - ${publicKeyJwk.alg} != ${algorithm.jwkIdentifier}"
+		}
+		return PublicRsaKey(
+			jsCrypto.subtle.importKey(
+				"jwk",
+				json(
+					"alg" to publicKeyJwk.alg,
+					"e" to publicKeyJwk.e,
+					"ext" to publicKeyJwk.ext,
+					"key_ops" to publicKeyJwk.key_ops.toTypedArray(),
+					"kty" to publicKeyJwk.kty,
+					"n" to publicKeyJwk.n
+				),
+				importAlgorithmParams(algorithm),
+				true,
+				publicKeyUses(algorithm)
+			).await(),
+			algorithm
+		)
 	}
 }

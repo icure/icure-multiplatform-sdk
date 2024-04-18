@@ -31,7 +31,7 @@ interface AesService {
 	 */
 	enum class KeySize(val bitSize: Int) {
 		// Currently not all platforms support AES-192
-		AES_128(128), /* AES_192(192), */ AES_256(256);
+		Aes128(128), /* AES_192(192), */ Aes256(256);
 
 		/**
 		 * Size in bytes.
@@ -44,7 +44,7 @@ interface AesService {
 	 * @param size size of the key.
 	 * @return the generated key.
 	 */
-	suspend fun generateKey(size: KeySize = KeySize.AES_256): AesKey
+	suspend fun generateKey(size: KeySize = KeySize.Aes256): AesKey
 
 	/**
 	 * Converts an aes key into a byte array. The output can be used with [loadKey]

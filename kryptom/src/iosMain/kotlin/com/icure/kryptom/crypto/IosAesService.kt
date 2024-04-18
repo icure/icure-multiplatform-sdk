@@ -103,9 +103,9 @@ object IosAesService : AesService {
 	}
 
 	private fun validateAndGetKeySize(key: AesKey): ULong = when (key.size) {
-		AesService.KeySize.AES_128.byteSize -> kCCKeySizeAES128.toULong()
+		AesService.KeySize.Aes128.byteSize -> kCCKeySizeAES128.toULong()
 		// AesCryptoService.KeySize.AES_192.byteSize.toULong() -> kCCKeySizeAES192.toULong()
-		AesService.KeySize.AES_256.byteSize -> kCCKeySizeAES256.toULong()
+		AesService.KeySize.Aes256.byteSize -> kCCKeySizeAES256.toULong()
 		else -> throw IllegalArgumentException("Invalid size for key: ${key.size}")
 	}
 }

@@ -244,7 +244,7 @@ private class KeyLoader(
 				CryptoStrategies.KeyGenerationRequestResult.Allow ->
 					cryptoService.rsa.generateKeyPair(
 						RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256,
-						RsaService.KeySize.RSA_2048
+						RsaService.KeySize.Rsa2048
 					)
 
 				is CryptoStrategies.KeyGenerationRequestResult.Use ->
