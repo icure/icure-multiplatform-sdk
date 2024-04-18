@@ -10,6 +10,11 @@ sealed interface RsaAlgorithm {
 	val identifier: String
 
 	/**
+	 * Identifier for the algorithm in JWK format
+	 */
+	val jwkIdentifier: String
+
+	/**
 	 * Represents an RSA encryption algorithm.
 	 */
 	sealed interface RsaEncryptionAlgorithm : RsaAlgorithm {
@@ -18,9 +23,11 @@ sealed interface RsaAlgorithm {
 		 */
 		data object OaepWithSha1 : RsaEncryptionAlgorithm {
 			override val identifier: String = Identifiers.Encryption.RSA_OAEP_SHA1
+			override val jwkIdentifier: String = Identifiers.Jwk.Encryption.RSA_OAEP_SHA1
 		}
 		data object OaepWithSha256 : RsaEncryptionAlgorithm {
 			override val identifier: String = Identifiers.Encryption.RSA_OAEP_SHA256
+			override val jwkIdentifier: String = Identifiers.Jwk.Encryption.RSA_OAEP_SHA256
 		}
 	}
 
@@ -30,6 +37,7 @@ sealed interface RsaAlgorithm {
 	sealed interface RsaSignatureAlgorithm : RsaAlgorithm {
 		data object PssWithSha256 : RsaSignatureAlgorithm {
 			override val identifier: String = Identifiers.Signature.RSA_PSS_SHA256
+			override val jwkIdentifier: String = Identifiers.Jwk.Decryption.RSA_PSS_SHA256
 		}
 	}
 
@@ -41,6 +49,15 @@ sealed interface RsaAlgorithm {
 			}
 			object Signature {
 				const val RSA_PSS_SHA256 = "PssWithSha256"
+			}
+			object Jwk {
+				object Encryption {
+					const val RSA_OAEP_SHA1 = "RSA-OAEP"
+					const val RSA_OAEP_SHA256 = "RSA-OAEP-256"
+				}
+				object Decryption {
+					const val RSA_PSS_SHA256 = "PS256"
+				}
 			}
 		}
 
@@ -54,7 +71,20 @@ sealed interface RsaAlgorithm {
 			Identifiers.Encryption.RSA_OAEP_SHA1 -> RsaEncryptionAlgorithm.OaepWithSha1
 			Identifiers.Encryption.RSA_OAEP_SHA256 -> RsaEncryptionAlgorithm.OaepWithSha256
 			Identifiers.Signature.RSA_PSS_SHA256 -> RsaSignatureAlgorithm.PssWithSha256
-			else -> throw IllegalArgumentException("Unknown hmac algorithm $identifier")
+			else -> throw IllegalArgumentException("Unknown rsa algorithm $identifier")
+		}
+
+		/**
+		 * Get an algorithm from its JWK identifier.
+		 * @param jwkIdentifier the JWK identifier of the algorithm (from [PublicRsaKeyJwk.alg] or
+		 * [PrivateRsaKeyJwk.alg]).
+		 * @return the algorithm.
+		 */
+		fun fromJwkIdentifier(jwkIdentifier: String): RsaAlgorithm = when (jwkIdentifier) {
+			Identifiers.Jwk.Encryption.RSA_OAEP_SHA1 -> RsaEncryptionAlgorithm.OaepWithSha1
+			Identifiers.Jwk.Encryption.RSA_OAEP_SHA256 -> RsaEncryptionAlgorithm.OaepWithSha256
+			Identifiers.Jwk.Decryption.RSA_PSS_SHA256 -> RsaSignatureAlgorithm.PssWithSha256
+			else -> throw IllegalArgumentException("Unknown/unsupported rsa jwk algorithm $jwkIdentifier")
 		}
 	}
 }
