@@ -27,3 +27,10 @@ actual class PublicRsaKey<out A : RsaAlgorithm>(internal val rawKey: ByteArray, 
 actual typealias AesKey = ByteArray
 
 actual class HmacKey<out A : HmacAlgorithm>(internal val rawKey: ByteArray, actual val algorithm: A)
+
+/**
+ * Methods to help with weird typing issues from swift.
+ */
+fun <A : RsaAlgorithm> PrivateRsaKey<A>.dropTypeInfo(): PrivateRsaKey<*> = this
+fun <A : RsaAlgorithm> PublicRsaKey<A>.dropTypeInfo(): PublicRsaKey<*> = this
+fun <A : HmacAlgorithm> HmacKey<A>.dropTypeInfo(): HmacKey<*> = this
