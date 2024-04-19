@@ -6,6 +6,8 @@ import com.icure.kryptom.utils.toHexString
 import com.icure.sdk.api.ApiOptions
 import com.icure.sdk.api.CryptoApi
 import com.icure.sdk.api.EncryptedFields
+import com.icure.sdk.api.RecoveryApi
+import com.icure.sdk.api.RecoveryApiImpl
 import com.icure.sdk.api.UserApi
 import com.icure.sdk.api.UserApiImpl
 import com.icure.sdk.api.extended.DataOwnerApi
@@ -132,6 +134,7 @@ interface IcureSdk {
 	val dataOwner: DataOwnerApi
 	val user: UserApi
 	val icureMaintenanceTask: IcureMaintenanceTaskApi
+	val recovery: RecoveryApi
 
 	companion object {
 		/**
@@ -538,6 +541,10 @@ private class IcureApiImpl(
 			encryptedFieldsManifests.receipt,
 			autofillAuthor
 		)
+	}
+
+	override val recovery: RecoveryApi by lazy {
+		RecoveryApiImpl(internalCrypto)
 	}
 }
 
