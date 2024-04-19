@@ -9,6 +9,22 @@ sdk.dir=/path/to/android/sdk
 ios.simulator=iPhone name
 ```
 
+## Testing
+
+Unit tests can run on all target platforms (jvm, js browser, js node, ios, android) using the various gradle `[platform]Test` tasks, or using the `allTests` task.
+
+E2e tests are currently only available on the jvm platform, as the test setup library is not yet available for the other platforms.
+
+### Browser tests
+
+Currently the project is configured to do browser tests on Chrome and Firefox. You will need to have the browsers installed on your machine.
+
+You may also need to specify the location of their executables through environment variables, such as:
+
+```
+FIREFOX_BIN=/Applications/Firefox.app/Contents/MacOS/firefox
+```
+
 ## Multiplatform sdk modules
 
 ### Kryptom - kotlin crypto multiplatform
