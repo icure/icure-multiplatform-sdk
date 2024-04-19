@@ -26,7 +26,7 @@ sealed interface RsaAlgorithm {
 			 * @return the algorithm.
 			 * @throws IllegalArgumentException if the identifier is unknown.
 			 */
-			fun fromIdentifier(identifier: String): RsaAlgorithm = when (identifier) {
+			fun fromIdentifier(identifier: String): RsaEncryptionAlgorithm = when (identifier) {
 				Identifiers.Encryption.RSA_OAEP_SHA1 -> OaepWithSha1
 				Identifiers.Encryption.RSA_OAEP_SHA256 -> OaepWithSha256
 				else -> throw IllegalArgumentException("Unknown rsa encryption algorithm $identifier")
@@ -57,7 +57,7 @@ sealed interface RsaAlgorithm {
 			 * @return the algorithm.
 			 * @throws IllegalArgumentException if the identifier is unknown.
 			 */
-			fun fromIdentifier(identifier: String): RsaAlgorithm = when (identifier) {
+			fun fromIdentifier(identifier: String): RsaSignatureAlgorithm = when (identifier) {
 				Identifiers.Signature.RSA_PSS_SHA256 -> PssWithSha256
 				else -> throw IllegalArgumentException("Unknown rsa signature algorithm $identifier")
 			}
