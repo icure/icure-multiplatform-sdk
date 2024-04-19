@@ -18,6 +18,21 @@ sealed interface RsaAlgorithm {
 	 * Represents an RSA encryption algorithm.
 	 */
 	sealed interface RsaEncryptionAlgorithm : RsaAlgorithm {
+
+		companion object {
+			/**
+			 * Get an encryption algorithm from its identifier.
+			 * @param identifier the identifier of the algorithm.
+			 * @return the algorithm.
+			 * @throws IllegalArgumentException if the identifier is unknown.
+			 */
+			fun fromIdentifier(identifier: String): RsaAlgorithm = when (identifier) {
+				Identifiers.Encryption.RSA_OAEP_SHA1 -> OaepWithSha1
+				Identifiers.Encryption.RSA_OAEP_SHA256 -> OaepWithSha256
+				else -> throw IllegalArgumentException("Unknown rsa encryption algorithm $identifier")
+			}
+		}
+
 		/**
 		 * RSA-OAEP public-key as specified in RFC 3447, using sha-1 for the padding
 		 */
@@ -35,6 +50,18 @@ sealed interface RsaAlgorithm {
 	 * Represents an RSA signature algorithm.
 	 */
 	sealed interface RsaSignatureAlgorithm : RsaAlgorithm {
+		companion object {
+			/**
+			 * Get a signature algorithm from its identifier.
+			 * @param identifier the identifier of the algorithm.
+			 * @return the algorithm.
+			 * @throws IllegalArgumentException if the identifier is unknown.
+			 */
+			fun fromIdentifier(identifier: String): RsaAlgorithm = when (identifier) {
+				Identifiers.Signature.RSA_PSS_SHA256 -> PssWithSha256
+				else -> throw IllegalArgumentException("Unknown rsa signature algorithm $identifier")
+			}
+		}
 		data object PssWithSha256 : RsaSignatureAlgorithm {
 			override val identifier: String = Identifiers.Signature.RSA_PSS_SHA256
 			override val jwkIdentifier: String = Identifiers.Jwk.Decryption.RSA_PSS_SHA256
