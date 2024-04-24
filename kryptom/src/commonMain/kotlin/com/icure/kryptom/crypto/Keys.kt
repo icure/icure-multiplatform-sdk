@@ -26,6 +26,7 @@ sealed interface RsaAlgorithm {
 			 * @return the algorithm.
 			 * @throws IllegalArgumentException if the identifier is unknown.
 			 */
+			@Throws(IllegalArgumentException::class)
 			fun fromIdentifier(identifier: String): RsaEncryptionAlgorithm = when (identifier) {
 				Identifiers.Encryption.RSA_OAEP_SHA1 -> OaepWithSha1
 				Identifiers.Encryption.RSA_OAEP_SHA256 -> OaepWithSha256
@@ -57,6 +58,7 @@ sealed interface RsaAlgorithm {
 			 * @return the algorithm.
 			 * @throws IllegalArgumentException if the identifier is unknown.
 			 */
+			@Throws(IllegalArgumentException::class)
 			fun fromIdentifier(identifier: String): RsaSignatureAlgorithm = when (identifier) {
 				Identifiers.Signature.RSA_PSS_SHA256 -> PssWithSha256
 				else -> throw IllegalArgumentException("Unknown rsa signature algorithm $identifier")
@@ -94,6 +96,7 @@ sealed interface RsaAlgorithm {
 		 * @return the algorithm.
 		 * @throws IllegalArgumentException if the identifier is unknown.
 		 */
+		@Throws(IllegalArgumentException::class)
 		fun fromIdentifier(identifier: String): RsaAlgorithm = when (identifier) {
 			Identifiers.Encryption.RSA_OAEP_SHA1 -> RsaEncryptionAlgorithm.OaepWithSha1
 			Identifiers.Encryption.RSA_OAEP_SHA256 -> RsaEncryptionAlgorithm.OaepWithSha256
@@ -107,6 +110,7 @@ sealed interface RsaAlgorithm {
 		 * [PrivateRsaKeyJwk.alg]).
 		 * @return the algorithm.
 		 */
+		@Throws(IllegalArgumentException::class)
 		fun fromJwkIdentifier(jwkIdentifier: String): RsaAlgorithm = when (jwkIdentifier) {
 			Identifiers.Jwk.Encryption.RSA_OAEP_SHA1 -> RsaEncryptionAlgorithm.OaepWithSha1
 			Identifiers.Jwk.Encryption.RSA_OAEP_SHA256 -> RsaEncryptionAlgorithm.OaepWithSha256
@@ -190,6 +194,7 @@ sealed interface HmacAlgorithm {
 		 * @return the algorithm.
 		 * @throws IllegalArgumentException if the identifier is unknown.
 		 */
+		@Throws(IllegalArgumentException::class)
 		fun fromIdentifier(identifier: String): HmacAlgorithm = when (identifier) {
 			Identifiers.HMAC_SHA_256 -> HmacSha512
 			else -> throw IllegalArgumentException("Unknown hmac algorithm $identifier")
