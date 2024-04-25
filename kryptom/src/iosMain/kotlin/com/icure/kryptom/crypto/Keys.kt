@@ -24,7 +24,10 @@ actual class PublicRsaKey<out A : RsaAlgorithm>(val rawKey: ByteArray, actual va
  * Represents an aes key.
  * On CommonCrypto there is no specific class to represent an AesKey, any form of byte array is fine.
  */
-actual typealias AesKey = ByteArray
+actual class AesKey<out A : AesAlgorithm>(
+	val rawKey: ByteArray,
+	actual val algorithm: A
+)
 
 actual class HmacKey<out A : HmacAlgorithm>(val rawKey: ByteArray, actual val algorithm: A)
 

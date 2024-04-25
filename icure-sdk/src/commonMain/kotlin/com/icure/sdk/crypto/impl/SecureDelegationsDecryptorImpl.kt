@@ -1,21 +1,22 @@
 package com.icure.sdk.crypto.impl
 
+import com.icure.kryptom.crypto.AesAlgorithm
 import com.icure.kryptom.crypto.AesKey
 import com.icure.sdk.api.extended.DataOwnerApi
-import com.icure.sdk.crypto.entities.DecryptedMetadataDetails
 import com.icure.sdk.crypto.ExchangeDataManager
 import com.icure.sdk.crypto.ExchangeDataMapManager
-import com.icure.sdk.crypto.entities.SecureDelegationMembersDetails
 import com.icure.sdk.crypto.SecureDelegationsDecryptor
 import com.icure.sdk.crypto.SecureDelegationsEncryption
+import com.icure.sdk.crypto.entities.DecryptedMetadataDetails
 import com.icure.sdk.crypto.entities.EntityWithTypeInfo
+import com.icure.sdk.crypto.entities.SecureDelegationMembersDetails
 import com.icure.sdk.crypto.entities.UnencryptedExchangeDataContent
-import com.icure.sdk.model.embed.AccessLevel
-import com.icure.sdk.model.specializations.Base64String
-import com.icure.sdk.model.base.HasEncryptionMetadata
 import com.icure.sdk.model.ExchangeData
-import com.icure.sdk.model.specializations.HexString
+import com.icure.sdk.model.base.HasEncryptionMetadata
+import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.embed.SecureDelegation
+import com.icure.sdk.model.specializations.Base64String
+import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.model.specializations.SecureDelegationKeyString
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.ensure
@@ -100,7 +101,7 @@ class SecureDelegationsDecryptorImpl(
 		typedEntity: EntityWithTypeInfo<*>,
 		dataOwnersHierarchySubset: Set<String>,
 		getDataToDecrypt: (delegation: SecureDelegation) -> Set<Base64String>,
-		decryptDataWithKey: suspend (encryptedData: Base64String, key: AesKey) -> T
+		decryptDataWithKey: suspend (encryptedData: Base64String, key: AesKey<AesAlgorithm.CbcWithPkcs7Padding>) -> T
 	): Flow<DecryptedMetadataDetails<T>> {
 		ensure(dataOwnersHierarchySubset.isNotEmpty()) { "`dataOwnersHierarchySubset` should not be empty" }
 		return decryptSecureDelegations(

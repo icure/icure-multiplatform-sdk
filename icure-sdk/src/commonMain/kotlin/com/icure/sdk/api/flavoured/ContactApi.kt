@@ -1,5 +1,6 @@
 package com.icure.sdk.api.flavoured
 
+import com.icure.kryptom.crypto.AesAlgorithm
 import com.icure.kryptom.crypto.AesKey
 import com.icure.sdk.api.raw.RawContactApi
 import com.icure.sdk.crypto.EntityValidationService
@@ -304,7 +305,7 @@ suspend fun JsonObject.walkCompounds(transform: suspend (JsonObject) -> JsonObje
 	) else transform(this)
 
 @OptIn(InternalIcureApi::class)
-internal suspend fun DecryptedService.encrypt(jsonEncryptionService: JsonEncryptionService, contactKey: AesKey, serviceEncryptedFieldsManifest: EncryptedFieldsManifest): EncryptedService =
+internal suspend fun DecryptedService.encrypt(jsonEncryptionService: JsonEncryptionService, contactKey: AesKey<AesAlgorithm.CbcWithPkcs7Padding>, serviceEncryptedFieldsManifest: EncryptedFieldsManifest): EncryptedService =
 	Serialization.json.encodeToJsonElement<DecryptedService>(this).jsonObject
 		.walkCompounds { jsonEncryptionService.encrypt(contactKey, it, serviceEncryptedFieldsManifest) }
 		.let {

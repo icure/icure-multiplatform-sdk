@@ -1,5 +1,6 @@
 package com.icure.sdk.crypto.impl
 
+import com.icure.kryptom.crypto.AesAlgorithm
 import com.icure.kryptom.crypto.AesKey
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.utils.base64Decode
@@ -29,7 +30,7 @@ class JsonEncryptionServiceImpl(
 	}
 
 	override suspend fun encrypt(
-		encryptionKey: AesKey,
+		encryptionKey: AesKey<AesAlgorithm.CbcWithPkcs7Padding>,
 		plainJson: JsonObject,
 		manifest: EncryptedFieldsManifest
 	): JsonObject =
@@ -115,7 +116,7 @@ class JsonEncryptionServiceImpl(
 		}
 
 
-	override suspend fun decrypt(encryptionKey: AesKey, encryptedJson: JsonObject): JsonObject =
+	override suspend fun decrypt(encryptionKey: AesKey<AesAlgorithm.CbcWithPkcs7Padding>, encryptedJson: JsonObject): JsonObject =
 		decrypt(encryptedJson) { cryptoService.aes.decrypt(it, encryptionKey) }
 	override suspend fun decrypt(encryptedJson: JsonObject, doDecrypt: suspend (ByteArray) -> ByteArray): JsonObject {
 		// First decrypt recursively, since values decrypted from encryptedSelf can't contain more encryptedSelf.

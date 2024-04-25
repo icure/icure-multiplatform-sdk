@@ -1,5 +1,7 @@
 package com.icure.kryptom.crypto.external
 
+import com.icure.kryptom.crypto.AesAlgorithm
+import com.icure.kryptom.crypto.AesKey
 import com.icure.kryptom.crypto.AesService
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.crypto.DigestService
@@ -41,20 +43,20 @@ private class ServiceAdapter(service: XCryptoService) : CryptoService {
 private class AesServiceAdapter(
 	private val service: XAesService
 ) : AesService {
-	override suspend fun generateKey(size: AesService.KeySize): Any =
-		service.generateKey(size.bitSize).await()
+	override suspend fun <A : AesAlgorithm> generateKey(algorithm: A, size: AesService.KeySize): AesKey<A> =
+		service.generateKey(algorithm.identifier, size.bitSize).await().toKryptom(algorithm)
 
-	override suspend fun exportKey(key: Any): ByteArray =
-		service.exportKey(key).await()
+	override suspend fun exportKey(key: AesKey<*>): ByteArray =
+		service.exportKey(key.toExternal()).await()
 
-	override suspend fun loadKey(bytes: ByteArray): Any =
-		service.loadKey(bytes).await()
+	override suspend fun <A : AesAlgorithm> loadKey(algorithm: A, bytes: ByteArray): AesKey<A> =
+		service.loadKey(algorithm.identifier, bytes).await().toKryptom(algorithm)
 
-	override suspend fun encrypt(data: ByteArray, key: Any, iv: ByteArray?): ByteArray =
-		service.encrypt(data, key, iv).await()
+	override suspend fun encrypt(data: ByteArray, key: AesKey<*>, iv: ByteArray?): ByteArray =
+		service.encrypt(data, key.toExternal(), iv).await()
 
-	override suspend fun decrypt(ivAndEncryptedData: ByteArray, key: Any): ByteArray =
-		service.decrypt(ivAndEncryptedData, key).await()
+	override suspend fun decrypt(ivAndEncryptedData: ByteArray, key: AesKey<*>): ByteArray =
+		service.decrypt(ivAndEncryptedData, key.toExternal()).await()
 }
 
 private class DigestServiceAdapter(
@@ -107,28 +109,28 @@ private class RsaServiceAdapter(
 	override suspend fun <A : RsaAlgorithm> loadPublicKeySpki(algorithm: A, publicKeySpki: ByteArray): PublicRsaKey<A> =
 		service.loadPublicKeySpki(algorithm.identifier, publicKeySpki).await().toKryptom(algorithm)
 
-	override suspend fun <A : RsaAlgorithm.RsaEncryptionAlgorithm> encrypt(
+	override suspend fun encrypt(
 		data: ByteArray,
-		publicKey: PublicRsaKey<A>
+		publicKey: PublicRsaKey<RsaAlgorithm.RsaEncryptionAlgorithm>
 	): ByteArray =
 		service.encrypt(data, publicKey.toExternal()).await()
 
-	override suspend fun <A : RsaAlgorithm.RsaEncryptionAlgorithm> decrypt(
+	override suspend fun decrypt(
 		data: ByteArray,
-		privateKey: PrivateRsaKey<A>
+		privateKey: PrivateRsaKey<RsaAlgorithm.RsaEncryptionAlgorithm>
 	): ByteArray =
 		service.decrypt(data, privateKey.toExternal()).await()
 
-	override suspend fun <A : RsaAlgorithm.RsaSignatureAlgorithm> sign(
+	override suspend fun sign(
 		data: ByteArray,
-		privateKey: PrivateRsaKey<A>
+		privateKey: PrivateRsaKey<RsaAlgorithm.RsaSignatureAlgorithm>
 	): ByteArray =
 		service.sign(data, privateKey.toExternal()).await()
 
-	override suspend fun <A : RsaAlgorithm.RsaSignatureAlgorithm> verifySignature(
+	override suspend fun verifySignature(
 		signature: ByteArray,
 		data: ByteArray,
-		publicKey: PublicRsaKey<A>
+		publicKey: PublicRsaKey<RsaAlgorithm.RsaSignatureAlgorithm>
 	): Boolean =
 		service.verifySignature(signature, data, publicKey.toExternal()).await()
 }

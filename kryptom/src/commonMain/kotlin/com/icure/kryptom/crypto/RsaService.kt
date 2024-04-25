@@ -146,33 +146,33 @@ interface RsaService {
 	 * Encrypts data using the provided key and algorithm. There are limits to the size of data which can be encrypted
 	 * depending on the chosen algorithm and key size.
 	 */
-	suspend fun <A : RsaAlgorithm.RsaEncryptionAlgorithm> encrypt(
+	suspend fun encrypt(
 		data: ByteArray,
-		publicKey: PublicRsaKey<A>
+		publicKey: PublicRsaKey<RsaAlgorithm.RsaEncryptionAlgorithm>
 	): ByteArray
 
 	/**
 	 * Decrypts data using the provided key and algorithm.
 	 */
-	suspend fun <A : RsaAlgorithm.RsaEncryptionAlgorithm> decrypt(
+	suspend fun decrypt(
 		data: ByteArray,
-		privateKey: PrivateRsaKey<A>
+		privateKey: PrivateRsaKey<RsaAlgorithm.RsaEncryptionAlgorithm>
 	): ByteArray
 
 	/**
 	 * Generates a signature for some data using the provided key and algorithm.
 	 */
-	suspend fun <A : RsaAlgorithm.RsaSignatureAlgorithm> sign(
+	suspend fun sign(
 		data: ByteArray,
-		privateKey: PrivateRsaKey<A>
+		privateKey: PrivateRsaKey<RsaAlgorithm.RsaSignatureAlgorithm>
 	): ByteArray
 
 	/**
 	 * Verifies that a signature matches the provided data, using the provided key and algorithm.
 	 */
-	suspend fun <A : RsaAlgorithm.RsaSignatureAlgorithm> verifySignature(
+	suspend fun verifySignature(
 		signature: ByteArray,
 		data: ByteArray,
-		publicKey: PublicRsaKey<A>
+		publicKey: PublicRsaKey<RsaAlgorithm.RsaSignatureAlgorithm>
 	): Boolean
 }

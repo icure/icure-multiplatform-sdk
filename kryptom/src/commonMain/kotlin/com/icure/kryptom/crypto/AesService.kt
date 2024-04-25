@@ -44,21 +44,21 @@ interface AesService {
 	 * @param size size of the key.
 	 * @return the generated key.
 	 */
-	suspend fun generateKey(size: KeySize = KeySize.Aes256): AesKey
+	suspend fun <A : AesAlgorithm> generateKey(algorithm: A, size: KeySize = KeySize.Aes256): AesKey<A>
 
 	/**
 	 * Converts an aes key into a byte array. The output can be used with [loadKey]
 	 * @param key the key to convert
 	 * @return a representation of the key as a byte array.
 	 */
-	suspend fun exportKey(key: AesKey): ByteArray
+	suspend fun exportKey(key: AesKey<*>): ByteArray
 
 	/**
 	 * Loads an aes keys from a byte array. The byte array must have a size compatible with valid aes keys size.
 	 * @param bytes the byte representation of the aes key.
 	 * @return the loaded key.
 	 */
-	suspend fun loadKey(bytes: ByteArray): AesKey
+	suspend fun <A : AesAlgorithm> loadKey(algorithm: A, bytes: ByteArray): AesKey<A>
 
 	/**
 	 * Encrypts data using the provided key. The encryption algorithm is AES cbc with PKCS7 padding.
@@ -69,7 +69,7 @@ interface AesService {
 	 * @throws IllegalArgumentException if the key is invalid (for example if the size is not good for an aes key) or if
 	 * the initialization vector is not null and has a length different from [IV_BYTE_LENGTH]
 	 */
-	suspend fun encrypt(data: ByteArray, key: AesKey, iv: ByteArray? = null): ByteArray
+	suspend fun encrypt(data: ByteArray, key: AesKey<*>, iv: ByteArray? = null): ByteArray
 
 	/**
 	 * Decrypts data which was encrypted with AES cbc with PKCS7 padding.
@@ -92,5 +92,5 @@ interface AesService {
 	 * @return the decrypted data.
 	 * @throws IllegalArgumentException if the key is invalid (for example if the size is not good for an aes key).
 	 */
-	suspend fun decrypt(ivAndEncryptedData: ByteArray, key: AesKey): ByteArray
+	suspend fun decrypt(ivAndEncryptedData: ByteArray, key: AesKey<*>): ByteArray
 }

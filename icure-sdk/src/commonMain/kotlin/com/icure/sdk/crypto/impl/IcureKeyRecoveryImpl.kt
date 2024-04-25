@@ -1,5 +1,6 @@
 package com.icure.sdk.crypto.impl
 
+import com.icure.kryptom.crypto.AesAlgorithm
 import com.icure.kryptom.crypto.AesKey
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.crypto.RsaAlgorithm
@@ -89,7 +90,7 @@ class IcureKeyRecoveryImpl(
 
 	private suspend fun recoverWithSplits(
 		splits: Map<Pair<SpkiHexString, RsaAlgorithm.RsaEncryptionAlgorithm>, Map<String, HexString>>,
-		exchangeKeysByDelegateId: Map<String, List<AesKey>>
+		exchangeKeysByDelegateId: Map<String, List<AesKey<AesAlgorithm.CbcWithPkcs7Padding>>>
 	): Set<IcureKeyInfo<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>> =
 		splits.mapNotNullTo(mutableSetOf()) { (pub, splits) ->
 			if (splits.size == 1) {
@@ -120,7 +121,7 @@ class IcureKeyRecoveryImpl(
 
 	private suspend fun tryDecryptSplitPiece(
 		split: ByteArray,
-		potentialKeys: Collection<AesKey>?,
+		potentialKeys: Collection<AesKey<AesAlgorithm.CbcWithPkcs7Padding>>?,
 		splitsCount: Int
 	  ): ByteArray? =
 		potentialKeys?.firstNotNullOfOrNull { exchangeKey ->
@@ -182,7 +183,7 @@ class IcureKeyRecoveryImpl(
 	private suspend fun tryDecryptTransferData(
 		publicKey: SpkiHexString,
 		encryptedPrivateKeys: Collection<HexString>,
-		availableExchangeKeys: Collection<AesKey>,
+		availableExchangeKeys: Collection<AesKey<AesAlgorithm.CbcWithPkcs7Padding>>,
 		algorithm: RsaAlgorithm.RsaEncryptionAlgorithm
 	): IcureKeyInfo<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>? =
 		encryptedPrivateKeys.firstNotNullOfOrNull { key ->
@@ -214,7 +215,7 @@ class IcureKeyRecoveryImpl(
 		from: String,
 		to: String,
 		availableDecryptionKeys: RsaDecryptionKeysSet
-	): List<AesKey> {
+	): List<AesKey<AesAlgorithm.CbcWithPkcs7Padding>> {
 		val aesExchangeKeys = baseExchangeKeysManager.tryDecryptExchangeKeys(
 			baseExchangeKeysManager.getEncryptedExchangeKeysFor(delegatorId = from, delegateId = to),
 			availableDecryptionKeys

@@ -1,5 +1,7 @@
 package com.icure.kryptom.crypto.external
 
+import com.icure.kryptom.crypto.AesAlgorithm
+import com.icure.kryptom.crypto.AesKey
 import com.icure.kryptom.crypto.AesService.Companion.IV_BYTE_LENGTH
 import kotlin.js.Promise
 
@@ -10,21 +12,21 @@ external interface XAesService {
 	 * @param size size of the key in bits.
 	 * @return the generated key.
 	 */
-	fun generateKey(size: Int): Promise<Any>
+	fun generateKey(algorithm: String, size: Int): Promise<XAesKey>
 
 	/**
 	 * Converts an aes key into a byte array. The output can be used with [loadKey]
 	 * @param key the key to convert
 	 * @return a representation of the key as a byte array.
 	 */
-	fun exportKey(key: Any): Promise<ByteArray>
+	fun exportKey(key: XAesKey): Promise<ByteArray>
 
 	/**
 	 * Loads an aes keys from a byte array. The byte array must have a size compatible with valid aes keys size.
 	 * @param bytes the byte representation of the aes key.
 	 * @return the loaded key.
 	 */
-	fun loadKey(bytes: ByteArray): Promise<Any>
+	fun loadKey(algorithm: String, bytes: ByteArray): Promise<XAesKey>
 
 	/**
 	 * Encrypts data using the provided key. The encryption algorithm is AES cbc with PKCS7 padding.
@@ -35,7 +37,7 @@ external interface XAesService {
 	 * @throws IllegalArgumentException if the key is invalid (for example if the size is not good for an aes key) or if
 	 * the initialization vector is not null and has a length different from [IV_BYTE_LENGTH]
 	 */
-	fun encrypt(data: ByteArray, key: Any, iv: ByteArray?): Promise<ByteArray>
+	fun encrypt(data: ByteArray, key: XAesKey, iv: ByteArray?): Promise<ByteArray>
 
 	/**
 	 * Decrypts data which was encrypted with AES cbc with PKCS7 padding.
@@ -58,5 +60,20 @@ external interface XAesService {
 	 * @return the decrypted data.
 	 * @throws IllegalArgumentException if the key is invalid (for example if the size is not good for an aes key).
 	 */
-	fun decrypt(ivAndEncryptedData: ByteArray, key: Any): Promise<ByteArray>
+	fun decrypt(ivAndEncryptedData: ByteArray, key: XAesKey): Promise<ByteArray>
 }
+
+@JsExport
+data class XAesKey(
+	val key: dynamic,
+	val algorithm: String
+)
+
+internal fun <A : AesAlgorithm> XAesKey.toKryptom(algorithm: A): AesKey<A> {
+	if (this.algorithm != algorithm.identifier) {
+		throw AssertionError("Algorithm mismatch: ${this.algorithm} != ${algorithm.identifier}")
+	}
+	return AesKey(key, algorithm)
+}
+
+internal fun AesKey<*>.toExternal(): XAesKey = XAesKey(cryptoKey, algorithm.identifier)

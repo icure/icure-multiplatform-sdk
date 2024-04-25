@@ -153,9 +153,43 @@ data class RsaKeypair<out A : RsaAlgorithm>(val private: PrivateRsaKey<A>, val p
 }
 
 /**
+ * Represents an aes algorithm.
+ */
+sealed interface AesAlgorithm {
+	val identifier: String
+
+	/**
+	 * Aes cbc encryption algorithm with pkcs7 padding.
+	 */
+	data object CbcWithPkcs7Padding : AesAlgorithm {
+		override val identifier: String = Identifiers.CBC_PKCS7
+	}
+
+	companion object {
+		private object Identifiers {
+			const val CBC_PKCS7 = "AesCbcPkcs7"
+		}
+
+		/**
+		 * Get an algorithm from its identifier.
+		 * @param identifier the identifier of the algorithm.
+		 * @return the algorithm.
+		 * @throws IllegalArgumentException if the identifier is unknown.
+		 */
+		@Throws(IllegalArgumentException::class)
+		fun fromIdentifier(identifier: String): AesAlgorithm = when (identifier) {
+			Identifiers.CBC_PKCS7 -> CbcWithPkcs7Padding
+			else -> throw IllegalArgumentException("Unknown aes algorithm $identifier")
+		}
+	}
+}
+
+/**
  * Represents an aes key.
  */
-expect class AesKey
+expect class AesKey<out A : AesAlgorithm> {
+	val algorithm: A
+}
 
 sealed interface HmacAlgorithm {
 	/**

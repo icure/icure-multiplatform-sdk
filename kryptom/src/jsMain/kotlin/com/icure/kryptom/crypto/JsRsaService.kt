@@ -98,9 +98,9 @@ object JsRsaService : RsaService {
 		return PublicRsaKey(rawPublicKey, algorithm)
 	}
 
-	override suspend fun <A : RsaAlgorithm.RsaEncryptionAlgorithm> encrypt(
+	override suspend fun encrypt(
 		data: ByteArray,
-		publicKey: PublicRsaKey<A>
+		publicKey: PublicRsaKey<RsaAlgorithm.RsaEncryptionAlgorithm>
 	): ByteArray =
 		jsCrypto.subtle.encrypt(
 			encryptionAlgorithmParams(publicKey.algorithm),
@@ -108,9 +108,9 @@ object JsRsaService : RsaService {
 			data.toArrayBuffer()
 		).await().toByteArray()
 
-	override suspend fun <A : RsaAlgorithm.RsaEncryptionAlgorithm> decrypt(
+	override suspend fun decrypt(
 		data: ByteArray,
-		privateKey: PrivateRsaKey<A>
+		privateKey: PrivateRsaKey<RsaAlgorithm.RsaEncryptionAlgorithm>
 	): ByteArray =
 		jsCrypto.subtle.decrypt(
 			encryptionAlgorithmParams(privateKey.algorithm),
@@ -118,9 +118,9 @@ object JsRsaService : RsaService {
 			data.toArrayBuffer()
 		).await().toByteArray()
 
-	override suspend fun <A : RsaAlgorithm.RsaSignatureAlgorithm> sign(
+	override suspend fun sign(
 		data: ByteArray,
-		privateKey: PrivateRsaKey<A>
+		privateKey: PrivateRsaKey<RsaAlgorithm.RsaSignatureAlgorithm>
 	): ByteArray =
 		jsCrypto.subtle.sign(
 			signatureAlgorithmParams(privateKey.algorithm),
@@ -128,10 +128,10 @@ object JsRsaService : RsaService {
 			data.toArrayBuffer()
 		).await().toByteArray()
 
-	override suspend fun <A : RsaAlgorithm.RsaSignatureAlgorithm> verifySignature(
+	override suspend fun verifySignature(
 		signature: ByteArray,
 		data: ByteArray,
-		publicKey: PublicRsaKey<A>
+		publicKey: PublicRsaKey<RsaAlgorithm.RsaSignatureAlgorithm>
 	): Boolean =
 		jsCrypto.subtle.verify(
 			signatureAlgorithmParams(publicKey.algorithm),
