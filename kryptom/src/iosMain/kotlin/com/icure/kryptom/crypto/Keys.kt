@@ -37,3 +37,4 @@ actual class HmacKey<out A : HmacAlgorithm>(val rawKey: ByteArray, actual val al
 fun <A : RsaAlgorithm> PrivateRsaKey<A>.dropTypeInfo(): PrivateRsaKey<*> = this
 fun <A : RsaAlgorithm> PublicRsaKey<A>.dropTypeInfo(): PublicRsaKey<*> = this
 fun <A : HmacAlgorithm> HmacKey<A>.dropTypeInfo(): HmacKey<*> = this
+fun <A : AesAlgorithm> AesKey<A>.dropTypeInfo(): AesKey<*> = this
