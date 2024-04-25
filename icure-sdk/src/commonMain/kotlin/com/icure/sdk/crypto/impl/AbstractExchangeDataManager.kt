@@ -89,8 +89,8 @@ abstract class AbstractExchangeDataManager(
 
 	protected suspend fun createNewExchangeData(
 		delegateId: String,
-		newDataId: String? = null,
-		allowNoDelegateKeys: Boolean = false
+		newDataId: String?,
+		allowNoDelegateKeys: Boolean
 	): ExchangeDataWithUnencryptedContent {
 		val selfEncryptionKeys = userEncryptionKeys.getSelfVerifiedKeys().map { it.toPublicKeyInfo() }
 		val verifiedDelegateKeys = if (delegateId != dataOwnerApi.getCurrentDataOwnerId()) {

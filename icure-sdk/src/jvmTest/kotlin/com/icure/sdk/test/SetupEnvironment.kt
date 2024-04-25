@@ -257,21 +257,25 @@ suspend fun createHcpUser(parent: DataOwnerDetails? = null, useLegacyKey: Boolea
 	return DataOwnerDetails(hcpId, login, password, keypair, parent).also { println("Created hcp $it") }
 }
 
-suspend fun createPatientUser(): DataOwnerDetails {
+suspend fun createPatientUser(existingPatientId: String? = null): DataOwnerDetails {
 	val patientRawApi = RawPatientApi(baseUrl, testGroupAdminAuth, null, IcureSdk.sharedHttpClient)
 	val userRawApi = RawUserApi(baseUrl, testGroupAdminAuth, IcureSdk.sharedHttpClient)
-	val patientId = UUID.randomUUID().toString()
+	val patientId = existingPatientId ?: UUID.randomUUID().toString()
 	val login = "patient-${UUID.randomUUID()}"
 	val password = UUID.randomUUID().toString()
 	val keypair = defaultCryptoService.rsa.generateKeyPair(RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256)
-	val patient = patientRawApi.createPatient(
-		EncryptedPatient(
-			patientId,
-			firstName = "Patient-$patientId",
-			lastName = "Patient-$patientId",
-			publicKeysForOaepWithSha256 = setOf(defaultCryptoService.rsa.exportPublicKeySpki(keypair.public).toHexString().let { SpkiHexString(it) })
-		)
-	).successBody()
+	val patientToCreateOrModify = (existingPatientId?.let { patientRawApi.getPatient(it).successBody() } ?: EncryptedPatient(
+		patientId,
+		firstName = "Patient-$patientId",
+		lastName = "Patient-$patientId",
+	)).copy(
+		publicKeysForOaepWithSha256 = setOf(defaultCryptoService.rsa.exportPublicKeySpki(keypair.public).toHexString().let { SpkiHexString(it) })
+	)
+	val patient = if (patientToCreateOrModify.rev != null) {
+		patientRawApi.modifyPatient(patientToCreateOrModify).successBody()
+	} else {
+		patientRawApi.createPatient(patientToCreateOrModify).successBody()
+	}
 	userRawApi.createUser(
 		User(
 			UUID.randomUUID().toString(),

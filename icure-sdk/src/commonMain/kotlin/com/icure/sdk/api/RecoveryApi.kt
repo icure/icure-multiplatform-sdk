@@ -155,7 +155,7 @@ internal class RecoveryApiImpl(
 		}
 		val keyPairsToSave = dataOwnersToInclude.associate { dataOwnerKeyInfo ->
 			dataOwnerKeyInfo.dataOwnerId to dataOwnerKeyInfo.keys.mapNotNull {
-				if (it.isVerified) {
+				if (it.isVerified || it.isDevice) {
 					it.keyPair.key
 				} else null
 			}

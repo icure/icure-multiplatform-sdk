@@ -3,13 +3,16 @@ package com.icure.sdk.crypto.entities
 
 sealed interface RecoveryResult<out T> {
 	val isSuccess: Boolean
+	val value: T
 
 	data class Success<T>(val data: T) : RecoveryResult<T> {
 		override val isSuccess: Boolean get() = true
+		override val value: T get() = data
 	}
 
 	data class Failure(val reason: RecoveryDataUseFailureReason) : RecoveryResult<Nothing> {
 		override val isSuccess: Boolean get() = false
+		override val value: Nothing get() = throw IllegalStateException("No value for failure result")
 	}
 }
 

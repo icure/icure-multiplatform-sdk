@@ -57,4 +57,11 @@ class Base64Test : StringSpec({
 	"Base 64 strings with invalid characters should not be decoded" {
 		invalidBase64.forEach { shouldThrow<IllegalArgumentException> { base64Decode(it) } }
 	}
+
+	"Base 64 with URL safe alphabet should work" {
+		val data = ">?>?>?".toByteArray(Charsets.UTF_8)
+		val expectedEncoded = "Pj8-Pz4_"
+		base64UrlEncode(data) shouldBe expectedEncoded
+		base64UrlDecode(expectedEncoded).toList() shouldBe data.toList()
+	}
 })
