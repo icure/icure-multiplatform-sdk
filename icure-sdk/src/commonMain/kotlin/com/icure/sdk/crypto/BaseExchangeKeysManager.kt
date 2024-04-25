@@ -1,5 +1,6 @@
 package com.icure.sdk.crypto
 
+import com.icure.kryptom.crypto.AesAlgorithm
 import com.icure.kryptom.crypto.AesKey
 import com.icure.sdk.crypto.entities.DataOwnerExchangeKeys
 import com.icure.sdk.crypto.entities.DecryptionResult
@@ -57,5 +58,5 @@ interface BaseExchangeKeysManager {
 	suspend fun tryDecryptExchangeKeys(
 		encryptedExchangeKeys: List<Map<KeypairFingerprintV1String?, HexString>>,
 		keyPairsByFingerprint: RsaDecryptionKeysSet
-	): DecryptionResult<Map<KeypairFingerprintV1String?, HexString>, AesKey>
+	): DecryptionResult<Map<KeypairFingerprintV1String?, HexString>, AesKey<AesAlgorithm.CbcWithPkcs7Padding>>
 }

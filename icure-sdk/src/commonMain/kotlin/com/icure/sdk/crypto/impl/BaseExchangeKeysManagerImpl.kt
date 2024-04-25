@@ -1,5 +1,6 @@
 package com.icure.sdk.crypto.impl
 
+import com.icure.kryptom.crypto.AesAlgorithm
 import com.icure.kryptom.crypto.AesKey
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.crypto.PrivateRsaKey
@@ -16,11 +17,11 @@ import com.icure.sdk.crypto.entities.DecryptionResult
 import com.icure.sdk.crypto.entities.RsaDecryptionKeysSet
 import com.icure.sdk.model.CryptoActorStubWithType
 import com.icure.sdk.model.DataOwnerType
+import com.icure.sdk.model.extensions.toStub
+import com.icure.sdk.model.specializations.AesExchangeKeyEncryptionKeypairIdentifier
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.model.specializations.KeypairFingerprintV1String
-import com.icure.sdk.model.specializations.AesExchangeKeyEncryptionKeypairIdentifier
 import com.icure.sdk.model.specializations.SpkiHexString
-import com.icure.sdk.model.extensions.toStub
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.getLogger
 import kotlinx.coroutines.sync.Mutex
@@ -112,9 +113,9 @@ class BaseExchangeKeysManagerImpl(
 	override suspend fun tryDecryptExchangeKeys(
 		encryptedExchangeKeys: List<Map<KeypairFingerprintV1String?, HexString>>,
 		keyPairsByFingerprint: RsaDecryptionKeysSet
-	): DecryptionResult<Map<KeypairFingerprintV1String?, HexString>, AesKey> {
+	): DecryptionResult<Map<KeypairFingerprintV1String?, HexString>, AesKey<AesAlgorithm.CbcWithPkcs7Padding>> {
 		val failed = mutableListOf<Map<KeypairFingerprintV1String?, HexString>>()
-		val successful = mutableListOf<AesKey>()
+		val successful = mutableListOf<AesKey<AesAlgorithm.CbcWithPkcs7Padding>>()
 		val foundRawKeysHex = mutableSetOf<String>()
 		encryptedExchangeKeys.forEach {
 			tryDecryptExchangeKey(it, keyPairsByFingerprint)?.also { decryptedKey ->
@@ -131,7 +132,7 @@ class BaseExchangeKeysManagerImpl(
 	private suspend fun tryDecryptExchangeKey(
 		encryptedExchangeKey: Map<KeypairFingerprintV1String?, HexString>,
 		keyPairsByFingerprint: RsaDecryptionKeysSet
-	): AesKey? =
+	): AesKey<AesAlgorithm.CbcWithPkcs7Padding>? =
 		encryptedExchangeKey.firstNotNullOfOrNull { (fp, encryptedKey) ->
 			if (fp != null)
 				keyPairsByFingerprint.getByFingerprintV1(fp)?.let { privateKey ->
@@ -147,10 +148,10 @@ class BaseExchangeKeysManagerImpl(
 		encryptedValue: HexString,
 		privateKey: PrivateRsaKey<RsaAlgorithm.RsaEncryptionAlgorithm>,
 		fp: KeypairFingerprintV1String?
-	): AesKey? =
+	): AesKey<AesAlgorithm.CbcWithPkcs7Padding>? =
 		try {
 			val decrypted = cryptoService.rsa.decrypt(encryptedValue.decodedBytes(), privateKey)
-			this.cryptoService.aes.loadKey(decrypted)
+			this.cryptoService.aes.loadKey(AesAlgorithm.CbcWithPkcs7Padding, decrypted)
 		} catch (e: Exception) {
 			if (fp != null) log.w(e) {
 				"Failed to decrypt exchange key for fingerprint $fp."
@@ -220,7 +221,7 @@ class BaseExchangeKeysManagerImpl(
 		} ?: delegator.stub.aesExchangeKeys
 
 	private suspend fun encryptExchangeKey(
-		exchangeKey: AesKey,
+		exchangeKey: AesKey<AesAlgorithm.CbcWithPkcs7Padding>,
 		publicKey: PublicRsaKey<RsaAlgorithm.RsaEncryptionAlgorithm>
 	): HexString =
 		HexString(cryptoService.rsa.encrypt(cryptoService.aes.exportKey(exchangeKey), publicKey).toHexString())

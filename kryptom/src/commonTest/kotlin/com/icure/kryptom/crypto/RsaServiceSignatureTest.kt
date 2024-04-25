@@ -1,7 +1,7 @@
 package com.icure.kryptom.crypto
 
-import com.icure.kryptom.utils.base64Decode
 import com.icure.kryptom.crypto.RsaAlgorithm.RsaSignatureAlgorithm.PssWithSha256
+import com.icure.kryptom.utils.base64Decode
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import io.ktor.utils.io.charsets.Charsets
@@ -118,6 +118,28 @@ class RsaServiceSignatureTest : StringSpec({
 					data[dataAndKeyIndices.first].toByteArray(Charsets.UTF_8),
 					keyPair.public
 				) shouldBe true
+			}
+		}
+
+		"$signatureAlgorithm - import/export of keys in jwk should work as expected" {
+			sampleRsaKeys.zip(sampleRsaKeysJwk(signatureAlgorithm)).forEach { testData ->
+				val privateKeyPkcs8 = base64Decode(testData.first.second)
+				val privateKeyJwk = testData.second.second
+				val publicKeyJwk = testData.second.second.extractPublic()
+				val loadedPairFromPkcs8 = defaultCryptoService.rsa.loadKeyPairPkcs8(signatureAlgorithm, privateKeyPkcs8)
+				defaultCryptoService.rsa.exportPrivateKeyJwk(loadedPairFromPkcs8.private) shouldBe privateKeyJwk
+				defaultCryptoService.rsa.exportPublicKeyJwk(loadedPairFromPkcs8.public) shouldBe publicKeyJwk
+				val loadedPairFromJwk = RsaKeypair(
+					defaultCryptoService.rsa.loadPrivateKeyJwk(signatureAlgorithm, privateKeyJwk),
+					defaultCryptoService.rsa.loadPublicKeyJwk(signatureAlgorithm, privateKeyJwk.extractPublic())
+				)
+				val data = "Hello, World!".toByteArray()
+				defaultCryptoService.rsa.sign(data, loadedPairFromPkcs8.private).let {
+					defaultCryptoService.rsa.verifySignature(it, data, loadedPairFromJwk.public) shouldBe true
+				}
+				defaultCryptoService.rsa.sign(data, loadedPairFromJwk.private).let {
+					defaultCryptoService.rsa.verifySignature(it, data, loadedPairFromPkcs8.public) shouldBe true
+				}
 			}
 		}
 	}

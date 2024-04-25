@@ -1,5 +1,6 @@
 package com.icure.sdk.crypto.impl
 
+import com.icure.kryptom.crypto.AesAlgorithm
 import com.icure.kryptom.crypto.AesKey
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.crypto.HmacAlgorithm
@@ -108,7 +109,7 @@ class BaseExchangeDataManagerImpl(
 	override suspend fun tryDecryptExchangeKeys(
 		exchangeData: List<ExchangeData>,
 		decryptionKeys: RsaDecryptionKeysSet
-	): DecryptionResult<ExchangeData, AesKey> =
+	): DecryptionResult<ExchangeData, AesKey<AesAlgorithm.CbcWithPkcs7Padding>> =
 		tryDecryptExchangeData(
 			exchangeData,
 			decryptionKeys,
@@ -355,7 +356,7 @@ class BaseExchangeDataManagerImpl(
 		delegator: String,
 		delegate: String,
 		decryptedAccessControlSecret: AccessControlSecret,
-		decryptedExchangeKey: AesKey,
+		decryptedExchangeKey: AesKey<AesAlgorithm.CbcWithPkcs7Padding>,
 		publicKeysFingerprints: Set<KeypairFingerprintV2String>
 	): ByteArray =
 		buildString {
@@ -381,13 +382,13 @@ class BaseExchangeDataManagerImpl(
 	): ByteArray =
 		cryptoService.digest.sha256(cryptoService.hmac.exportKey(sharedSignatureKey))
 
-	private suspend fun generateExchangeKey(): Pair<AesKey, ByteArray> =
-		cryptoService.aes.generateKey().let { it to cryptoService.aes.exportKey(it) }
+	private suspend fun generateExchangeKey(): Pair<AesKey<AesAlgorithm.CbcWithPkcs7Padding>, ByteArray> =
+		cryptoService.aes.generateKey(AesAlgorithm.CbcWithPkcs7Padding).let { it to cryptoService.aes.exportKey(it) }
 
-	private suspend fun importExchangeKey(decryptedBytes: ByteArray): AesKey =
-		cryptoService.aes.loadKey(decryptedBytes)
+	private suspend fun importExchangeKey(decryptedBytes: ByteArray): AesKey<AesAlgorithm.CbcWithPkcs7Padding> =
+		cryptoService.aes.loadKey(AesAlgorithm.CbcWithPkcs7Padding, decryptedBytes)
 
-	private suspend fun exportExchangeKey(decryptedExchangeKey: AesKey): ByteArray =
+	private suspend fun exportExchangeKey(decryptedExchangeKey: AesKey<AesAlgorithm.CbcWithPkcs7Padding>): ByteArray =
 		cryptoService.aes.exportKey(decryptedExchangeKey)
 
 	private suspend fun generateSharedSignatureKey(): Pair<HmacKey<HmacAlgorithm.HmacSha512>, ByteArray> =

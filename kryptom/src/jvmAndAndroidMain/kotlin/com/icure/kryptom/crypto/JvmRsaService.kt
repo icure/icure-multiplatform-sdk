@@ -77,23 +77,23 @@ object JvmRsaService : RsaService {
 		return PublicRsaKey(keyFactory.generatePublic(publicKeySpec), algorithm)
 	}
 
-	override suspend fun <A : RsaAlgorithm.RsaEncryptionAlgorithm> encrypt(
+	override suspend fun encrypt(
 		data: ByteArray,
-		publicKey: PublicRsaKey<A>
+		publicKey: PublicRsaKey<RsaAlgorithm.RsaEncryptionAlgorithm>
 	): ByteArray {
 		return getCipher(publicKey.algorithm).apply { init(Cipher.ENCRYPT_MODE, publicKey.key) }.doFinal(data)
 	}
 
-	override suspend fun <A : RsaAlgorithm.RsaEncryptionAlgorithm> decrypt(
+	override suspend fun decrypt(
 		data: ByteArray,
-		privateKey: PrivateRsaKey<A>
+		privateKey: PrivateRsaKey<RsaAlgorithm.RsaEncryptionAlgorithm>
 	): ByteArray {
 		return getCipher(privateKey.algorithm).apply { init(Cipher.DECRYPT_MODE, privateKey.key) }.doFinal(data)
 	}
 
-	override suspend fun <A : RsaAlgorithm.RsaSignatureAlgorithm> sign(
+	override suspend fun sign(
 		data: ByteArray,
-		privateKey: PrivateRsaKey<A>
+		privateKey: PrivateRsaKey<RsaAlgorithm.RsaSignatureAlgorithm>
 	): ByteArray {
 		return getSignature(privateKey.algorithm).apply {
 			initSign(privateKey.key)
@@ -101,10 +101,10 @@ object JvmRsaService : RsaService {
 		}.sign()
 	}
 
-	override suspend fun <A : RsaAlgorithm.RsaSignatureAlgorithm> verifySignature(
+	override suspend fun verifySignature(
 		signature: ByteArray,
 		data: ByteArray,
-		publicKey: PublicRsaKey<A>
+		publicKey: PublicRsaKey<RsaAlgorithm.RsaSignatureAlgorithm>
 	): Boolean {
 		return getSignature(publicKey.algorithm).apply {
 			initVerify(publicKey.key)

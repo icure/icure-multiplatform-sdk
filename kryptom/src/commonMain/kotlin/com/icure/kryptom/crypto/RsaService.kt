@@ -1,5 +1,7 @@
 package com.icure.kryptom.crypto
 
+import com.icure.kryptom.crypto.asn.AsnToJwkConverter
+
 /**
  * Provides access to RSA functions.
  */
@@ -43,7 +45,7 @@ interface RsaService {
 	 * @param bitSize Size in bits.
 	 */
 	enum class KeySize(val bitSize: Int) {
-		RSA_2048(2048), RSA_4096(4096);
+		Rsa2048(2048), Rsa4096(4096);
 
 		/**
 		 * Size in bytes.
@@ -68,7 +70,7 @@ interface RsaService {
 	 * attempting to use the key for other purposes.
 	 * For more info see https://crypto.stackexchange.com/questions/81819/same-private-key-for-signing-and-decryption
 	 */
-	suspend fun <A : RsaAlgorithm> generateKeyPair(algorithm: A, keySize: KeySize = KeySize.RSA_2048): RsaKeypair<A>
+	suspend fun <A : RsaAlgorithm> generateKeyPair(algorithm: A, keySize: KeySize = KeySize.Rsa2048): RsaKeypair<A>
 
 	/**
 	 * Exports the private key in pkcs8 format.
@@ -78,11 +80,27 @@ interface RsaService {
 	suspend fun exportPrivateKeyPkcs8(key: PrivateRsaKey<*>): ByteArray
 
 	/**
+	 * Exports the private key in jwk format.
+	 * @param key the key to export.
+	 * @return representation of the key in jwk format.
+	 */
+	suspend fun exportPrivateKeyJwk(key: PrivateRsaKey<*>): PrivateRsaKeyJwk =
+		AsnToJwkConverter.pkcs8ToJwk(key.algorithm, exportPrivateKeyPkcs8(key))
+
+	/**
 	 * Exports the public key in pkcs8 format.
 	 * @param key the key to export.
 	 * @return representation of the key in spki format (java X.509).
 	 */
 	suspend fun exportPublicKeySpki(key: PublicRsaKey<*>): ByteArray
+
+	/**
+	 * Exports the public key in jwk format.
+	 * @param key the key to export.
+	 * @return representation of the key in jwk format.
+	 */
+	suspend fun exportPublicKeyJwk(key: PublicRsaKey<*>): PublicRsaKeyJwk =
+		AsnToJwkConverter.spkiToJwk(key.algorithm, exportPublicKeySpki(key))
 
 	/**
 	 * Loads the rsa keypair given the PKCS8 representation of the private key. Note that there is no way to guarantee
@@ -96,6 +114,16 @@ interface RsaService {
 	 */
 	suspend fun <A : RsaAlgorithm> loadPrivateKeyPkcs8(algorithm: A, privateKeyPkcs8: ByteArray): PrivateRsaKey<A>
 
+	/**
+	 * Loads the rsa private key given the jwk representation of the private key, ensuring that the key's declared algorithm
+	 * matches the provided algorithm.
+	 */
+	suspend fun <A : RsaAlgorithm> loadPrivateKeyJwk(algorithm: A, privateKeyJwk: PrivateRsaKeyJwk): PrivateRsaKey<A> {
+		require(privateKeyJwk.alg == algorithm.jwkIdentifier) {
+			"Algorithm of JWK does not match provided algorithm - ${privateKeyJwk.alg} != ${algorithm.jwkIdentifier}"
+		}
+		return loadPrivateKeyPkcs8(algorithm, AsnToJwkConverter.jwkToPkcs8(privateKeyJwk))
+	}
 
 	/**
 	 * Loads the rsa public key given the spki representation (java X.509) of the public key. Note that there is no way
@@ -104,36 +132,47 @@ interface RsaService {
 	suspend fun <A : RsaAlgorithm> loadPublicKeySpki(algorithm: A, publicKeySpki: ByteArray): PublicRsaKey<A>
 
 	/**
+	 * Loads the rsa public key given the jwk representation of the public key, ensuring that the key's declared algorithm
+	 * matches the provided algorithm.
+	 */
+	suspend fun <A : RsaAlgorithm> loadPublicKeyJwk(algorithm: A, publicKeyJwk: PublicRsaKeyJwk): PublicRsaKey<A> {
+		require(publicKeyJwk.alg == algorithm.jwkIdentifier) {
+			"Algorithm of JWK does not match provided algorithm - ${publicKeyJwk.alg} != ${algorithm.jwkIdentifier}"
+		}
+		return loadPublicKeySpki(algorithm, AsnToJwkConverter.jwkToSpki(publicKeyJwk))
+	}
+
+	/**
 	 * Encrypts data using the provided key and algorithm. There are limits to the size of data which can be encrypted
 	 * depending on the chosen algorithm and key size.
 	 */
-	suspend fun <A : RsaAlgorithm.RsaEncryptionAlgorithm> encrypt(
+	suspend fun encrypt(
 		data: ByteArray,
-		publicKey: PublicRsaKey<A>
+		publicKey: PublicRsaKey<RsaAlgorithm.RsaEncryptionAlgorithm>
 	): ByteArray
 
 	/**
 	 * Decrypts data using the provided key and algorithm.
 	 */
-	suspend fun <A : RsaAlgorithm.RsaEncryptionAlgorithm> decrypt(
+	suspend fun decrypt(
 		data: ByteArray,
-		privateKey: PrivateRsaKey<A>
+		privateKey: PrivateRsaKey<RsaAlgorithm.RsaEncryptionAlgorithm>
 	): ByteArray
 
 	/**
 	 * Generates a signature for some data using the provided key and algorithm.
 	 */
-	suspend fun <A : RsaAlgorithm.RsaSignatureAlgorithm> sign(
+	suspend fun sign(
 		data: ByteArray,
-		privateKey: PrivateRsaKey<A>
+		privateKey: PrivateRsaKey<RsaAlgorithm.RsaSignatureAlgorithm>
 	): ByteArray
 
 	/**
 	 * Verifies that a signature matches the provided data, using the provided key and algorithm.
 	 */
-	suspend fun <A : RsaAlgorithm.RsaSignatureAlgorithm> verifySignature(
+	suspend fun verifySignature(
 		signature: ByteArray,
 		data: ByteArray,
-		publicKey: PublicRsaKey<A>
+		publicKey: PublicRsaKey<RsaAlgorithm.RsaSignatureAlgorithm>
 	): Boolean
 }

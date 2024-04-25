@@ -1,5 +1,6 @@
 package com.icure.sdk.crypto.impl
 
+import com.icure.kryptom.crypto.AesAlgorithm
 import com.icure.kryptom.crypto.AesKey
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.crypto.RsaAlgorithm
@@ -70,7 +71,7 @@ internal class TransferKeysManagerImpl(
 	// encrypts a transfer key in pkcs8 format using an exchange key, returns the hex representation
 	private suspend fun encryptTransferKey(
 		transferKey: RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>,
-		exchangeKey: AesKey
+		exchangeKey: AesKey<AesAlgorithm.CbcWithPkcs7Padding>
 	): HexString {
 		val exportedKey = cryptoService.rsa.exportPrivateKeyPkcs8(transferKey.private)
 		return HexString(cryptoService.aes.encrypt(exportedKey, exchangeKey).toHexString())

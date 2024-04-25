@@ -68,7 +68,7 @@ sealed interface Asn1Object {
 		is Asn1BitString -> 0x03
 	}
 
-
+	// Note: does not automatically prepend 0 byte if the first bit is 1
 	data class Asn1Integer(val value: ByteArray) : Asn1Object {
 		override fun pack() = value.prependTagAndLength(getTag())
 	}

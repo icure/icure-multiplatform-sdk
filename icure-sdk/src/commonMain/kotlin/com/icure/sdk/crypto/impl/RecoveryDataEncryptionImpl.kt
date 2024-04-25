@@ -1,5 +1,6 @@
 package com.icure.sdk.crypto.impl
 
+import com.icure.kryptom.crypto.AesAlgorithm
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.crypto.RsaAlgorithm
 import com.icure.kryptom.crypto.RsaKeypair
@@ -130,7 +131,7 @@ class RecoveryDataEncryptionImpl(
 		lifetimeSeconds: Int?,
 		content: JsonElement
 	): RecoveryDataKey {
-		val recoveryKeyAes = primitives.aes.generateKey()
+		val recoveryKeyAes = primitives.aes.generateKey(AesAlgorithm.CbcWithPkcs7Padding)
 		val recoveryKey = RecoveryDataKey(HexString(primitives.aes.exportKey(recoveryKeyAes).toHexString()))
 		val id = recoveryKeyToId(recoveryKey)
 		val encryptedSelf =

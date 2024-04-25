@@ -1,5 +1,6 @@
 package com.icure.sdk.crypto
 
+import com.icure.kryptom.crypto.AesAlgorithm
 import com.icure.kryptom.crypto.AesService
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.crypto.RsaAlgorithm
@@ -155,7 +156,7 @@ class RecoveryDataEncryptionTest : StringSpec({
 		"}"
 		val hcp = createHcpUser()
 		val api = hcp.api()
-		val newKey = defaultCryptoService.aes.generateKey(AesService.KeySize.AES_256)
+		val newKey = defaultCryptoService.aes.generateKey(AesAlgorithm.CbcWithPkcs7Padding, AesService.KeySize.Aes256)
 		val newRecoveryKey = RecoveryDataKey(HexString(defaultCryptoService.aes.exportKey(newKey).toHexString()))
 		api.crypto.internal.recoveryDataEncryption.raw.createRecoveryData(
 			RecoveryData(
@@ -189,7 +190,7 @@ class RecoveryDataEncryptionTest : StringSpec({
 	}
 
 	"Existing exchange data recovery info should be decrypted correctly" {
-		val key = defaultCryptoService.aes.generateKey(AesService.KeySize.AES_256)
+		val key = defaultCryptoService.aes.generateKey(AesAlgorithm.CbcWithPkcs7Padding, AesService.KeySize.Aes256)
 		val recoveryKey = RecoveryDataKey(HexString(defaultCryptoService.aes.exportKey(key).toHexString()))
 		val exchangeDataId = defaultCryptoService.strongRandom.randomUUID()
 		val rawAccessControlSecret = "EisFflVfFfAXj3sWoGuhhg=="

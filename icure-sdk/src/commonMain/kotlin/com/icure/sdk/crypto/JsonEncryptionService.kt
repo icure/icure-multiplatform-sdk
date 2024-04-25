@@ -1,5 +1,6 @@
 package com.icure.sdk.crypto
 
+import com.icure.kryptom.crypto.AesAlgorithm
 import com.icure.kryptom.crypto.AesKey
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.utils.InternalIcureApi
@@ -16,7 +17,7 @@ interface JsonEncryptionService {
 	/**
 	 * Encrypts the fields of the given [plainJson] according to the [manifest] and returns the encrypted JSON.
 	 */
-	suspend fun encrypt(encryptionKey: AesKey, plainJson: JsonObject, manifest: EncryptedFieldsManifest): JsonObject
+	suspend fun encrypt(encryptionKey: AesKey<AesAlgorithm.CbcWithPkcs7Padding>, plainJson: JsonObject, manifest: EncryptedFieldsManifest): JsonObject
 	suspend fun encrypt(plainJson: JsonObject, manifest: EncryptedFieldsManifest, doEncrypt: suspend (ByteArray) -> ByteArray, doDecrypt: suspend (ByteArray) -> ByteArray  ): JsonObject
 
 	/**
@@ -31,7 +32,7 @@ interface JsonEncryptionService {
 	 * If for some reason the encrypted content of the object is recursively encrypted only the first level of
 	 * encryption is done.
 	 */
-	suspend fun decrypt(encryptionKey: AesKey, encryptedJson: JsonObject): JsonObject
+	suspend fun decrypt(encryptionKey: AesKey<AesAlgorithm.CbcWithPkcs7Padding>, encryptedJson: JsonObject): JsonObject
 	suspend fun decrypt(encryptedJson: JsonObject, doDecrypt: suspend (ByteArray) -> ByteArray): JsonObject
 
 	companion object {

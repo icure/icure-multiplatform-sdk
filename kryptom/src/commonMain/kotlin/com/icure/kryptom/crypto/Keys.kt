@@ -10,17 +10,40 @@ sealed interface RsaAlgorithm {
 	val identifier: String
 
 	/**
+	 * Identifier for the algorithm in JWK format
+	 */
+	val jwkIdentifier: String
+
+	/**
 	 * Represents an RSA encryption algorithm.
 	 */
 	sealed interface RsaEncryptionAlgorithm : RsaAlgorithm {
+
+		companion object {
+			/**
+			 * Get an encryption algorithm from its identifier.
+			 * @param identifier the identifier of the algorithm.
+			 * @return the algorithm.
+			 * @throws IllegalArgumentException if the identifier is unknown.
+			 */
+			@Throws(IllegalArgumentException::class)
+			fun fromIdentifier(identifier: String): RsaEncryptionAlgorithm = when (identifier) {
+				Identifiers.Encryption.RSA_OAEP_SHA1 -> OaepWithSha1
+				Identifiers.Encryption.RSA_OAEP_SHA256 -> OaepWithSha256
+				else -> throw IllegalArgumentException("Unknown rsa encryption algorithm $identifier")
+			}
+		}
+
 		/**
 		 * RSA-OAEP public-key as specified in RFC 3447, using sha-1 for the padding
 		 */
 		data object OaepWithSha1 : RsaEncryptionAlgorithm {
 			override val identifier: String = Identifiers.Encryption.RSA_OAEP_SHA1
+			override val jwkIdentifier: String = Identifiers.Jwk.Encryption.RSA_OAEP_SHA1
 		}
 		data object OaepWithSha256 : RsaEncryptionAlgorithm {
 			override val identifier: String = Identifiers.Encryption.RSA_OAEP_SHA256
+			override val jwkIdentifier: String = Identifiers.Jwk.Encryption.RSA_OAEP_SHA256
 		}
 	}
 
@@ -28,8 +51,22 @@ sealed interface RsaAlgorithm {
 	 * Represents an RSA signature algorithm.
 	 */
 	sealed interface RsaSignatureAlgorithm : RsaAlgorithm {
+		companion object {
+			/**
+			 * Get a signature algorithm from its identifier.
+			 * @param identifier the identifier of the algorithm.
+			 * @return the algorithm.
+			 * @throws IllegalArgumentException if the identifier is unknown.
+			 */
+			@Throws(IllegalArgumentException::class)
+			fun fromIdentifier(identifier: String): RsaSignatureAlgorithm = when (identifier) {
+				Identifiers.Signature.RSA_PSS_SHA256 -> PssWithSha256
+				else -> throw IllegalArgumentException("Unknown rsa signature algorithm $identifier")
+			}
+		}
 		data object PssWithSha256 : RsaSignatureAlgorithm {
 			override val identifier: String = Identifiers.Signature.RSA_PSS_SHA256
+			override val jwkIdentifier: String = Identifiers.Jwk.Decryption.RSA_PSS_SHA256
 		}
 	}
 
@@ -42,6 +79,15 @@ sealed interface RsaAlgorithm {
 			object Signature {
 				const val RSA_PSS_SHA256 = "PssWithSha256"
 			}
+			object Jwk {
+				object Encryption {
+					const val RSA_OAEP_SHA1 = "RSA-OAEP"
+					const val RSA_OAEP_SHA256 = "RSA-OAEP-256"
+				}
+				object Decryption {
+					const val RSA_PSS_SHA256 = "PS256"
+				}
+			}
 		}
 
 		/**
@@ -50,11 +96,26 @@ sealed interface RsaAlgorithm {
 		 * @return the algorithm.
 		 * @throws IllegalArgumentException if the identifier is unknown.
 		 */
+		@Throws(IllegalArgumentException::class)
 		fun fromIdentifier(identifier: String): RsaAlgorithm = when (identifier) {
 			Identifiers.Encryption.RSA_OAEP_SHA1 -> RsaEncryptionAlgorithm.OaepWithSha1
 			Identifiers.Encryption.RSA_OAEP_SHA256 -> RsaEncryptionAlgorithm.OaepWithSha256
 			Identifiers.Signature.RSA_PSS_SHA256 -> RsaSignatureAlgorithm.PssWithSha256
-			else -> throw IllegalArgumentException("Unknown hmac algorithm $identifier")
+			else -> throw IllegalArgumentException("Unknown rsa algorithm $identifier")
+		}
+
+		/**
+		 * Get an algorithm from its JWK identifier.
+		 * @param jwkIdentifier the JWK identifier of the algorithm (from [PublicRsaKeyJwk.alg] or
+		 * [PrivateRsaKeyJwk.alg]).
+		 * @return the algorithm.
+		 */
+		@Throws(IllegalArgumentException::class)
+		fun fromJwkIdentifier(jwkIdentifier: String): RsaAlgorithm = when (jwkIdentifier) {
+			Identifiers.Jwk.Encryption.RSA_OAEP_SHA1 -> RsaEncryptionAlgorithm.OaepWithSha1
+			Identifiers.Jwk.Encryption.RSA_OAEP_SHA256 -> RsaEncryptionAlgorithm.OaepWithSha256
+			Identifiers.Jwk.Decryption.RSA_PSS_SHA256 -> RsaSignatureAlgorithm.PssWithSha256
+			else -> throw IllegalArgumentException("Unknown/unsupported rsa jwk algorithm $jwkIdentifier")
 		}
 	}
 }
@@ -92,9 +153,43 @@ data class RsaKeypair<out A : RsaAlgorithm>(val private: PrivateRsaKey<A>, val p
 }
 
 /**
+ * Represents an aes algorithm.
+ */
+sealed interface AesAlgorithm {
+	val identifier: String
+
+	/**
+	 * Aes cbc encryption algorithm with pkcs7 padding.
+	 */
+	data object CbcWithPkcs7Padding : AesAlgorithm {
+		override val identifier: String = Identifiers.CBC_PKCS7
+	}
+
+	companion object {
+		private object Identifiers {
+			const val CBC_PKCS7 = "AesCbcPkcs7"
+		}
+
+		/**
+		 * Get an algorithm from its identifier.
+		 * @param identifier the identifier of the algorithm.
+		 * @return the algorithm.
+		 * @throws IllegalArgumentException if the identifier is unknown.
+		 */
+		@Throws(IllegalArgumentException::class)
+		fun fromIdentifier(identifier: String): AesAlgorithm = when (identifier) {
+			Identifiers.CBC_PKCS7 -> CbcWithPkcs7Padding
+			else -> throw IllegalArgumentException("Unknown aes algorithm $identifier")
+		}
+	}
+}
+
+/**
  * Represents an aes key.
  */
-expect class AesKey
+expect class AesKey<out A : AesAlgorithm> {
+	val algorithm: A
+}
 
 sealed interface HmacAlgorithm {
 	/**
@@ -133,6 +228,7 @@ sealed interface HmacAlgorithm {
 		 * @return the algorithm.
 		 * @throws IllegalArgumentException if the identifier is unknown.
 		 */
+		@Throws(IllegalArgumentException::class)
 		fun fromIdentifier(identifier: String): HmacAlgorithm = when (identifier) {
 			Identifiers.HMAC_SHA_256 -> HmacSha512
 			else -> throw IllegalArgumentException("Unknown hmac algorithm $identifier")
