@@ -19,6 +19,7 @@ import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
+import kotlin.Boolean
 import kotlin.Int
 import kotlin.Long
 import kotlin.String
@@ -228,6 +229,27 @@ class RawCalendarItemApi(
 				parameter("hcPartyId", hcPartyId)
 				parameter("startKey", startKey)
 				parameter("startDocumentId", startDocumentId)
+			}
+			setAuthorizationWith(authService)
+			contentType(ContentType.Application.Json)
+			setBody(secretPatientKeys)
+		}.wrap()
+
+	suspend fun findCalendarItemIdsByDataOwnerPatientStartTime(
+		dataOwnerId: String,
+		startDate: Long? = null,
+		endDate: Long? = null,
+		descending: Boolean? = null,
+		secretPatientKeys: ListOfIds,
+	): HttpResponse<List<String>> =
+		post {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "calendarItem", "byDataOwnerPatientStartTime")
+				parameter("dataOwnerId", dataOwnerId)
+				parameter("startDate", startDate)
+				parameter("endDate", endDate)
+				parameter("descending", descending)
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)

@@ -8,7 +8,6 @@ import com.icure.sdk.model.EncryptedForm
 import com.icure.sdk.model.FormTemplate
 import com.icure.sdk.model.IcureStub
 import com.icure.sdk.model.ListOfIds
-import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
@@ -24,7 +23,7 @@ import io.ktor.util.date.GMTDate
 import io.ktor.utils.io.ByteReadChannel
 import kotlin.Boolean
 import kotlin.ByteArray
-import kotlin.Int
+import kotlin.Long
 import kotlin.String
 import kotlin.collections.List
 import kotlin.collections.Map
@@ -226,25 +225,25 @@ class RawFormApi(
 			setBody(secretPatientKeys)
 		}.wrap()
 
-	suspend fun findFormsByHCPartyPatientForeignKey(
-		hcPartyId: String,
-		secretPatientKey: String,
-		startKey: String? = null,
-		startDocumentId: String? = null,
-		limit: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedForm>> =
-		get {
+	suspend fun listFormIdsByDataOwnerPatientOpeningDate(
+		dataOwnerId: String,
+		startDate: Long? = null,
+		endDate: Long? = null,
+		descending: Boolean? = null,
+		secretPatientKeys: ListOfIds,
+	): HttpResponse<List<String>> =
+		post {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "form", "byHcPartySecretForeignKey")
-				parameter("hcPartyId", hcPartyId)
-				parameter("secretPatientKey", secretPatientKey)
-				parameter("startKey", startKey)
-				parameter("startDocumentId", startDocumentId)
-				parameter("limit", limit)
-				parameter("ts", GMTDate().timestamp)
+				appendPathSegments("rest", "v2", "form", "byDataOwnerPatientOpeningDate")
+				parameter("dataOwnerId", dataOwnerId)
+				parameter("startDate", startDate)
+				parameter("endDate", endDate)
+				parameter("descending", descending)
 			}
 			setAuthorizationWith(authService)
+			contentType(ContentType.Application.Json)
+			setBody(secretPatientKeys)
 		}.wrap()
 
 	suspend fun listFormsDelegationsStubsByHCPartyAndPatientForeignKeys(

@@ -175,25 +175,25 @@ class RawContactApi(
 			setBody(patientForeignKeys)
 		}.wrap()
 
-	suspend fun findContactsByHCPartyPatientForeignKey(
-		hcPartyId: String,
-		patientForeignKey: String,
-		startKey: String? = null,
-		startDocumentId: String? = null,
-		limit: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedContact>> =
-		get {
+	suspend fun listContactIdsByDataOwnerPatientOpeningDate(
+		dataOwnerId: String,
+		startDate: Long? = null,
+		endDate: Long? = null,
+		descending: Boolean? = null,
+		secretPatientKeys: ListOfIds,
+	): HttpResponse<List<String>> =
+		post {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "contact", "byHcPartyPatientForeignKey")
-				parameter("hcPartyId", hcPartyId)
-				parameter("patientForeignKey", patientForeignKey)
-				parameter("startKey", startKey)
-				parameter("startDocumentId", startDocumentId)
-				parameter("limit", limit)
-				parameter("ts", GMTDate().timestamp)
+				appendPathSegments("rest", "v2", "contact", "byDataOwnerPatientOpeningDate")
+				parameter("dataOwnerId", dataOwnerId)
+				parameter("startDate", startDate)
+				parameter("endDate", endDate)
+				parameter("descending", descending)
 			}
 			setAuthorizationWith(authService)
+			contentType(ContentType.Application.Json)
+			setBody(secretPatientKeys)
 		}.wrap()
 
 	suspend fun listContactsByHCPartyAndPatientSecretFKeys(

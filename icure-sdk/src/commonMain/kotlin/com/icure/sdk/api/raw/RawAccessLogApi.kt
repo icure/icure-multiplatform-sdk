@@ -147,25 +147,25 @@ class RawAccessLogApi(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-	suspend fun findAccessLogsByHCPartyPatientForeignKey(
-		hcPartyId: String,
-		secretFKey: String,
-		startKey: String? = null,
-		startDocumentId: String? = null,
-		limit: Int? = null,
-	): HttpResponse<PaginatedList<EncryptedAccessLog>> =
-		get {
+	suspend fun listAccessLogIdsByDataOwnerPatientDate(
+		dataOwnerId: String,
+		startDate: Long? = null,
+		endDate: Long? = null,
+		descending: Boolean? = null,
+		secretPatientKeys: ListOfIds,
+	): HttpResponse<List<String>> =
+		post {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "accesslog", "byHcPartySecretForeignKey")
-				parameter("hcPartyId", hcPartyId)
-				parameter("secretFKey", secretFKey)
-				parameter("startKey", startKey)
-				parameter("startDocumentId", startDocumentId)
-				parameter("limit", limit)
-				parameter("ts", GMTDate().timestamp)
+				appendPathSegments("rest", "v2", "accesslog", "byDataOwnerPatientDate")
+				parameter("dataOwnerId", dataOwnerId)
+				parameter("startDate", startDate)
+				parameter("endDate", endDate)
+				parameter("descending", descending)
 			}
 			setAuthorizationWith(authService)
+			contentType(ContentType.Application.Json)
+			setBody(secretPatientKeys)
 		}.wrap()
 
 	suspend fun findAccessLogsByHCPartyPatientForeignKeys(
