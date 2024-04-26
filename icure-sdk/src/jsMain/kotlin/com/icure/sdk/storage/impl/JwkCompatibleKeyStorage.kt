@@ -1,5 +1,6 @@
 package com.icure.sdk.storage.impl
 
+import com.icure.kryptom.crypto.asn.AsnToJwkConverter
 import com.icure.kryptom.utils.base64Decode
 import com.icure.kryptom.utils.base64Encode
 import com.icure.sdk.storage.KeyStorageFacade
@@ -8,9 +9,11 @@ import com.icure.sdk.utils.IllegalEntityException
 import com.icure.sdk.utils.Serialization
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.decodeFromJsonElement
 
 /**
  * A KeyStorageFacade that can read stored keys even if they were stored in the JWK format. Provides compatibility
@@ -59,13 +62,13 @@ class JwkCompatibleKeyStorage(
 	) {
 		val publicKeySpki get() = publicKey?.let { pub ->
 			(pub as? JsonPrimitive)?.takeIf { it.isString }?.content?.let { base64Decode(it) }
-				?: (pub as? JsonObject)?.let { jwkToSpki(it) }
+				?: (pub as? JsonObject)?.let { AsnToJwkConverter.jwkToSpki(Json.decodeFromJsonElement(it)) }
 				?: throw IllegalEntityException("Public key is neither a string nor a JWK")
 		}
 
 		val privateKeyPkcs8 get() = privateKey?.let { priv ->
 			(priv as? JsonPrimitive)?.takeIf { it.isString }?.content?.let { base64Decode(it) }
-				?: (priv as? JsonObject)?.let { jwkToPkcs8(it) }
+				?: (priv as? JsonObject)?.let { AsnToJwkConverter.jwkToPkcs8(Json.decodeFromJsonElement(it)) }
 				?: throw IllegalEntityException("Private key is neither a string nor a JWK")
 		}
 	}
@@ -85,17 +88,4 @@ class JwkCompatibleKeyStorage(
 			)
 		}
 	}
-}
-
-private fun jwkToSpki(json: JsonObject): ByteArray {
-	// This method should probably be part of the kryptom library
-	// Once implemented we should test this method + the jwk compatible key storage
-	// For testing the storage we can use a volatile storage facade with data taken from SDK v7/v8
-	// For testing the jwk to spki method we can generate test data using subtle export to jwk and spki of the same key
-	TODO()
-}
-
-private fun jwkToPkcs8(json: JsonObject): ByteArray {
-	// Read notes from jwkToSpki
-	TODO()
 }
