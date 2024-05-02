@@ -25,7 +25,7 @@ import kotlin.time.Duration
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 @InternalIcureApi
 class RawAnonymousAuthApiImpl(
-	private val apiUrl: String,
+	internal val apiUrl: String,
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
