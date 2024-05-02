@@ -51,13 +51,6 @@ interface HealthcareElementBasicFlavouredApi<E : HealthElement> {
 	suspend fun getHealthcareElement(entityId: String): E
 	suspend fun getHealthcareElements(entityIds: List<String>): List<E>
 	suspend fun filterHealthcareElementsBy(filterChain: FilterChain<EncryptedHealthElement>, startDocumentId: String?, limit: Int?): PaginatedList<E>
-	suspend fun findHealthcareElementsByHcPartyPatientForeignKey(
-		hcPartyId: String,
-		secretPatientKey: String,
-		startKey: JsonElement? = null,
-		startDocumentId: String? = null,
-		limit: Int? = null,
-	): PaginatedList<E>
 	suspend fun findHealthcareElementsByHcPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<E>
 }
 
@@ -113,15 +106,6 @@ private abstract class AbstractHealthcareElementBasicFlavouredApi<E : HealthElem
 
 	override suspend fun filterHealthcareElementsBy(filterChain: FilterChain<EncryptedHealthElement>, startDocumentId: String?, limit: Int?): PaginatedList<E> =
 		rawApi.filterHealthElementsBy(startDocumentId, limit, filterChain).successBody().map { maybeDecrypt(it) }
-
-	override suspend fun findHealthcareElementsByHcPartyPatientForeignKey(
-		hcPartyId: String,
-		secretPatientKey: String,
-		startKey: JsonElement?,
-		startDocumentId: String?,
-		limit: Int?,
-	): PaginatedList<E> =
-		rawApi.findHealthElementsByHCPartyPatientForeignKey(hcPartyId, secretPatientKey, startKey.encodeStartKey(), startDocumentId, limit).successBody().map { maybeDecrypt(it) }
 
 	override suspend fun findHealthcareElementsByHcPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<E> =
 		rawApi.findHealthElementsByHCPartyPatientForeignKeys(hcPartyId, secretPatientKeys).successBody().map { maybeDecrypt(it) }

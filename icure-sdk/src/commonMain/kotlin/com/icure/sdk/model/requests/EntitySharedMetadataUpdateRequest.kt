@@ -17,7 +17,7 @@ data class EntitySharedMetadataUpdateRequest(
 	public val owningEntityIds: Map<Base64String, EntryUpdateType> = emptyMap(),
 ) {
 	// region EntitySharedMetadataUpdateRequest-EntitySharedMetadataUpdateRequest
-@InternalIcureApi
+	@InternalIcureApi
 	fun wrap() = EntityShareOrMetadataUpdateRequest(update = this)
 	// endregion
 }

@@ -54,14 +54,6 @@ interface DocumentBasicFlavouredApi<E : Document> {
 		secretMessageKeys: List<String>,
 	): List<E>
 
-	suspend fun findDocumentsByHCPartyMessageForeignKey(
-		hcPartyId: String,
-		secretMessageKeys: List<String>,
-		startKey: String?,
-		startDocumentId: String?,
-		limit: Int?,
-	): PaginatedList<E>
-
 	suspend fun findWithoutDelegation(limit: Int?): List<E>
 	suspend fun setRawMainAttachment(
 		documentId: String,
@@ -179,16 +171,6 @@ private abstract class AbstractDocumentBasicFlavouredApi<E : Document>(protected
 	) =
 		rawApi.listDocumentsByHcPartyMessageForeignKeys(hcPartyId, documentTypeCode, secretMessageKeys).successBody()
 			.map { maybeDecrypt(it) }
-
-	override suspend fun findDocumentsByHCPartyMessageForeignKey(
-		hcPartyId: String,
-		secretMessageKeys: List<String>,
-		startKey: String?,
-		startDocumentId: String?,
-		limit: Int?,
-	) =
-		rawApi.findDocumentsByHCPartyMessageForeignKey(hcPartyId, secretMessageKeys.joinToString(","), startKey, startDocumentId, limit)
-			.successBody().map { maybeDecrypt(it) }
 
 	override suspend fun findWithoutDelegation(
 		limit: Int?,

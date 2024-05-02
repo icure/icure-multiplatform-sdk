@@ -71,13 +71,6 @@ interface ContactBasicFlavouredApi<E : Contact, S : Service> {
 	suspend fun getContact(entityId: String): E
 	suspend fun getContacts(entityIds: List<String>): List<E>
 	suspend fun filterContactsBy(filterChain: FilterChain<EncryptedContact>, startDocumentId: String?, limit: Int?): PaginatedList<E>
-	suspend fun findContactsByHcPartyPatientForeignKey(
-		hcPartyId: String,
-		secretPatientKey: String,
-		startKey: JsonElement? = null,
-		startDocumentId: String? = null,
-		limit: Int? = null,
-	): PaginatedList<E>
 
 	suspend fun listContactByHCPartyServiceId(hcPartyId: String, serviceId: String): List<E>
 	suspend fun listContactsByExternalId(externalId: String): List<E>
@@ -166,16 +159,6 @@ private abstract class AbstractContactBasicFlavouredApi<E : Contact, S : Service
 		limit: Int?,
 	): PaginatedList<E> =
 		rawApi.filterContactsBy(startDocumentId, limit, filterChain).successBody().map { maybeDecrypt(it) }
-
-	override suspend fun findContactsByHcPartyPatientForeignKey(
-		hcPartyId: String,
-		secretPatientKey: String,
-		startKey: JsonElement?,
-		startDocumentId: String?,
-		limit: Int?,
-	): PaginatedList<E> =
-		rawApi.findContactsByHCPartyPatientForeignKey(hcPartyId, secretPatientKey, startKey.encodeStartKey(), startDocumentId, limit).successBody()
-			.map { maybeDecrypt(it) }
 
 	override suspend fun listContactByHCPartyServiceId(hcPartyId: String, serviceId: String): List<E> =
 		rawApi.listContactByHCPartyServiceId(hcPartyId, serviceId).successBody().map { maybeDecrypt(it) }

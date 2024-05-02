@@ -9,6 +9,9 @@ import com.icure.sdk.IcureSdk
 import com.icure.sdk.api.raw.RawHealthcarePartyApi
 import com.icure.sdk.api.raw.RawPatientApi
 import com.icure.sdk.api.raw.RawUserApi
+import com.icure.sdk.api.raw.impl.RawHealthcarePartyApiImpl
+import com.icure.sdk.api.raw.impl.RawPatientApiImpl
+import com.icure.sdk.api.raw.impl.RawUserApiImpl
 import com.icure.sdk.model.EncryptedPatient
 import com.icure.sdk.model.HealthcareParty
 import com.icure.sdk.model.User
@@ -185,9 +188,9 @@ private suspend fun createTestDataAndApis(): TestData {
 		"encryptedSelf": "jgAFAlmd2QStXpOt3LnIhs4upJv2e10fp0u6/PburW7mq1r3vo/Q5/a4Yk7EWXG7oydMWb2i1UCCiNN80czGdA==" 
 	}
 	""")
-	val userApi = RawUserApi(baseUrl, testGroupAdminAuth, IcureSdk.sharedHttpClient)
-	val patientApi = RawPatientApi(baseUrl, testGroupAdminAuth, null, IcureSdk.sharedHttpClient)
-	val healthcarePartyApi = RawHealthcarePartyApi(baseUrl, testGroupAdminAuth, IcureSdk.sharedHttpClient)
+	val userApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, IcureSdk.sharedHttpClient)
+	val patientApi = RawPatientApiImpl(baseUrl, testGroupAdminAuth, null, IcureSdk.sharedHttpClient)
+	val healthcarePartyApi = RawHealthcarePartyApiImpl(baseUrl, testGroupAdminAuth, IcureSdk.sharedHttpClient)
 	healthcarePartyApi.createHealthcareParty(pHcpBase)
 	healthcarePartyApi.createHealthcareParty(aHcpBase)
 	healthcarePartyApi.createHealthcareParty(bHcpBase)
