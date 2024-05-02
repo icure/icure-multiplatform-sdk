@@ -14,7 +14,6 @@ import kotlin.String
 data class CodeByRegionTypeLabelLanguageFilter(
 	override val desc: String? = null,
 	public val region: String? = null,
-	@SerialName("filterType")
 	public val type: String,
 	public val language: String,
 	public val label: String? = null,

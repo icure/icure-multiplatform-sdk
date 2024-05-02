@@ -1,6 +1,7 @@
 package com.icure.sdk.model
 
 import com.icure.sdk.model.base.StoredDocument
+import com.icure.sdk.model.specializations.Base64String
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlin.Long
@@ -14,7 +15,7 @@ data class RecoveryData(
 	override val id: String,
 	override val rev: String? = null,
 	public val recipient: String,
-	public val encryptedSelf: String,
+	public val encryptedSelf: Base64String,
 	public val type: Type,
 	public val expirationInstant: Long? = null,
 	override val deletionDate: Long? = null,

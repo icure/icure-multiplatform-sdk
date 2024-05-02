@@ -2,6 +2,7 @@ package com.icure.sdk.model.requests
 
 import com.icure.sdk.model.specializations.Base64String
 import com.icure.sdk.model.specializations.SecureDelegationKeyString
+import com.icure.sdk.utils.InternalIcureApi
 import kotlinx.serialization.Serializable
 import kotlin.collections.Map
 
@@ -16,7 +17,7 @@ data class EntitySharedMetadataUpdateRequest(
 	public val owningEntityIds: Map<Base64String, EntryUpdateType> = emptyMap(),
 ) {
 	// region EntitySharedMetadataUpdateRequest-EntitySharedMetadataUpdateRequest
-@InternalIcureApi
+	@InternalIcureApi
 	fun wrap() = EntityShareOrMetadataUpdateRequest(update = this)
 	// endregion
 }

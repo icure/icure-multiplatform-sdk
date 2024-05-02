@@ -13,7 +13,6 @@ import kotlin.String
 @Serializable
 data class MaintenanceTaskByHcPartyAndTypeFilter(
 	override val desc: String? = null,
-	@SerialName("filterType")
 	public val type: String,
 	public val healthcarePartyId: String? = null,
 ) : AbstractFilter<MaintenanceTask> {
