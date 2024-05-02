@@ -2,7 +2,7 @@ package com.icure.sdk.api.raw.`impl`
 
 import com.icure.sdk.api.raw.BaseRawApi
 import com.icure.sdk.api.raw.HttpResponse
-import com.icure.sdk.api.raw.RawAnonymousApi
+import com.icure.sdk.api.raw.RawAnonymousMedicalLocationApi
 import com.icure.sdk.api.raw.wrap
 import com.icure.sdk.model.AnonymousMedicalLocation
 import com.icure.sdk.model.AppointmentTypeAndPlace
@@ -26,11 +26,11 @@ import kotlin.time.Duration
 // If you want to change the way this class is generated, see [this repo](TODO: URL HERE).
 @InternalIcureApi
 class RawAnonymousApiImpl(
-	private val apiUrl: String,
+	internal val apiUrl: String,
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
-) : BaseRawApi(httpClient, additionalHeaders, timeout), RawAnonymousApi {
+) : BaseRawApi(httpClient, additionalHeaders, timeout), RawAnonymousMedicalLocationApi {
 	// region anonymous medicallocation endpoints
 
 	override suspend fun getPublicMedicalLocationsByGroupId(
