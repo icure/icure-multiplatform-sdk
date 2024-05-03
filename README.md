@@ -219,9 +219,93 @@ Primitives and standard library types:
 - `Set<T>` -> `Array<T>` -> `T[]` ; include checks for duplicates
 - `List<T>` -> `Array<T>` -> `T[]`
 - `Map<K, V>` -> `dynamic` -> `{ [key: string]: V }` ; if K is not a string it needs to be convertible
+- `ZonedDateTime` -> `String` -> `string` ; convert using the json serializers
+- `JsonElement` -> `dynamic` -> `any`
 
 To generate case by case:
 - `enum class` -> `String` -> `string` ; include checks for valid values
+
+#### Nested types
+In typescript we can implement nested types using namespaces. For example if we had a declaration like this in kotlin:
+
+```kotlin
+data class SomethingDto(
+	val a: String
+) {
+	data class Nested1Dto(
+		val b: Int
+	) {
+		data class DeeplyNestedDto(
+			val c: Boolean
+		)
+	}
+	data class Nested2Dto(
+		val d: String
+	)
+}
+```
+
+we could achieve a similar structure in typescript like this:
+
+```typescript
+export interface Something {
+  a: string
+}
+export namespace Something {
+  export interface Nested1 {
+    b: number
+  }
+  export namespace Nested1 {
+    export interface DeeplyNested {
+      c: boolean
+    }
+  }
+  export interface Nested2 {
+    d: string
+  }
+}
+
+// Usage
+const deeplyNested: Something.Nested.DeeplyNested = { c: true }
+```
+
+To represent these external declarations in kotlin we need to ues the `@JsModule` annotation, which unfortunately can be 
+applied only to a whole file, and not only to a single declaration. The resulting files would look like this:
+
+src/com/icure/sdk/model/js/Something.kt
+```kotlin
+package com.icure.sdk.model.js
+
+@JsName("Something")
+external interface SomethingJs {
+    val a: String
+}
+```
+src/com/icure/sdk/model/js/Something_Nested.kt
+```kotlin
+@file:JsModule("Something")
+package com.icure.sdk.model.js
+
+@JsName("Nested1")
+external interface Something_Nested1Js {
+    val b: Int
+}
+
+@JsName("Nested2")
+external interface Something_Nested2Js {
+    val d: String
+}
+```
+src/com/icure/sdk/model/js/Something_Nested1_Nested.kt
+```kotlin
+@file:JsModule("Something.Nested1")
+package com.icure.sdk.model.js
+
+@JsName("DeeplyNested")
+external interface Something_Nested1_DeeplyNestedJs {
+    val c: Boolean
+}
+```
 
 ### API
 
