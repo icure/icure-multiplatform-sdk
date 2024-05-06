@@ -29,7 +29,7 @@ data class Agenda(
 	public val name: String? = null,
 	public val userId: String? = null,
 	public val rights: List<Right> = emptyList(),
-) : StoredDocument, ICureDocument<String> {
+) : StoredDocument, ICureDocument<T> {
 	// region Agenda-Agenda
 
 	// endregion

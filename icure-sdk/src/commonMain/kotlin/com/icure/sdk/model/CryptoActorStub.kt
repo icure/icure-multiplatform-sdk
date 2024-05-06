@@ -29,7 +29,7 @@ data class CryptoActorStub(
 	override val publicKey: SpkiHexString? = null,
 	override val publicKeysForOaepWithSha256: Set<SpkiHexString>,
 	override val tags: Set<CodeStub> = emptySet(),
-) : Versionable<String>, CryptoActor, HasTags {
+) : Versionable<T>, CryptoActor, HasTags {
 	// region CryptoActorStub-CryptoActorStub
 
 	// endregion

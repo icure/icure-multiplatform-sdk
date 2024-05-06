@@ -18,7 +18,7 @@ import kotlin.collections.Set
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 sealed interface Classification :
 	StoredDocument,
-	ICureDocument<String>,
+	ICureDocument<T>,
 	HasEncryptionMetadata,
 	Encryptable {
 	override val id: String
@@ -107,7 +107,7 @@ data class EncryptedClassification(
 	override val codes: Set<CodeStub> = emptySet(),
 	override val endOfLife: Long? = null,
 	override val deletionDate: Long? = null,
-	override val parentId: String?,
+	override val parentId: String? = null,
 	override val label: String = "",
 	override val templateId: String? = null,
 	override val secretForeignKeys: Set<String> = emptySet(),

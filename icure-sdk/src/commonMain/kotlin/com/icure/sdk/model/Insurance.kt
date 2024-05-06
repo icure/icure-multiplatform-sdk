@@ -1,12 +1,13 @@
 package com.icure.sdk.model
 
 import com.icure.sdk.model.base.StoredDocument
-import com.icure.sdk.model.embed.Address
+import com.icure.sdk.model.embed.DecryptedAddress
 import kotlinx.serialization.Serializable
 import kotlin.Boolean
 import kotlin.Long
 import kotlin.String
 import kotlin.collections.Map
+import com.icure.sdk.model.embed.Address
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
@@ -23,7 +24,7 @@ data class Insurance(
 	public val code: String? = null,
 	public val agreementNumber: String? = null,
 	public val parent: String? = null,
-	public val address: Address,
+	public val address: DecryptedAddress,
 ) : StoredDocument {
 	// region Insurance-Insurance
 

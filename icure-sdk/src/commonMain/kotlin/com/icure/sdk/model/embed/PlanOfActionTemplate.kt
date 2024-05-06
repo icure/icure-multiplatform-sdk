@@ -31,7 +31,7 @@ data class PlanOfActionTemplate(
 	public val relevant: Boolean,
 	public val status: Int = 0,
 	public val forms: List<FormSkeleton> = emptyList(),
-) : ICureDocument<String>, Named {
+) : ICureDocument<T>, Named {
 	// region PlanOfActionTemplate-PlanOfActionTemplate
 
 	// endregion

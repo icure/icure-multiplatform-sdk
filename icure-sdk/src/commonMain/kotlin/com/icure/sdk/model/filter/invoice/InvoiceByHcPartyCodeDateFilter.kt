@@ -1,11 +1,11 @@
 package com.icure.sdk.model.filter.invoice
 
-import com.icure.sdk.model.Invoice
 import com.icure.sdk.model.filter.AbstractFilter
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlin.Long
 import kotlin.String
+import com.icure.sdk.model.Invoice
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
@@ -18,7 +18,7 @@ data class InvoiceByHcPartyCodeDateFilter(
 	public val code: String,
 	public val startInvoiceDate: Long? = null,
 	public val endInvoiceDate: Long? = null,
-) : AbstractFilter<Invoice> {
+) : AbstractFilter<O> {
 	// region InvoiceByHcPartyCodeDateFilter-InvoiceByHcPartyCodeDateFilter
 
 	// endregion

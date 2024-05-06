@@ -27,7 +27,7 @@ data class Group(
 	public val password: String? = null,
 	public val servers: List<String>? = null,
 	public val superAdmin: Boolean,
-	public val properties: Set<PropertyStub> = emptySet(),
+	public val properties: Set<DecryptedPropertyStub> = emptySet(),
 	public val defaultUserRoles: Map<UserType, Set<String>> = emptyMap(),
 	public val operationTokens: Map<String, OperationToken> = emptyMap(),
 	public val sharedEntities: Map<String, String> = emptyMap(),

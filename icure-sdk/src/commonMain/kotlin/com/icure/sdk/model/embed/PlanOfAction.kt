@@ -14,7 +14,7 @@ import kotlin.collections.Set
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-sealed interface PlanOfAction : Encryptable, ICureDocument<String>, Named {
+sealed interface PlanOfAction : Encryptable, ICureDocument<T>, Named {
 	override val id: String
 
 	override val created: Long?

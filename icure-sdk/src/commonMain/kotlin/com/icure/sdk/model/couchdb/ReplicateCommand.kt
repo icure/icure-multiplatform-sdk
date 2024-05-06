@@ -21,7 +21,7 @@ data class ReplicateCommand(
 	public val selector: String? = null,
 	public val source: Remote,
 	public val target: Remote,
-) : Versionable<String> {
+) : Versionable<T> {
 	// region ReplicateCommand-ReplicateCommand
 
 	// endregion

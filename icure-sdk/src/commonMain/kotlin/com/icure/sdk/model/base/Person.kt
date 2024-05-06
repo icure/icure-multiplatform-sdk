@@ -8,7 +8,7 @@ import kotlin.collections.List
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-interface Person : Identifiable<String> {
+interface Person : Identifiable<T> {
 	public val civility: String?
 
 	public val gender: Gender?

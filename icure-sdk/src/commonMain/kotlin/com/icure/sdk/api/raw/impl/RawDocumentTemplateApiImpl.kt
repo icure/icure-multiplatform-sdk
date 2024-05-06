@@ -31,7 +31,7 @@ import kotlin.time.Duration
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 @InternalIcureApi
 class RawDocumentTemplateApiImpl(
-	private val apiUrl: String,
+	internal val apiUrl: String,
 	private val authService: AuthService,
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),

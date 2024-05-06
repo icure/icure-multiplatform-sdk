@@ -5,9 +5,9 @@ import com.icure.sdk.model.base.CodeFlag
 import com.icure.sdk.model.base.CodeIdentification
 import com.icure.sdk.model.base.LinkQualification
 import com.icure.sdk.model.base.StoredDocument
+import com.icure.sdk.model.embed.DecryptedValorisation
 import com.icure.sdk.model.embed.LetterValue
 import com.icure.sdk.model.embed.Periodicity
-import com.icure.sdk.model.embed.Valorisation
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlin.Boolean
@@ -17,6 +17,7 @@ import kotlin.String
 import kotlin.collections.List
 import kotlin.collections.Map
 import kotlin.collections.Set
+import com.icure.sdk.model.embed.Valorisation
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
@@ -42,7 +43,7 @@ data class Tarification(
 	public val `data`: String? = null,
 	public val appendices: Map<AppendixType, String> = emptyMap(),
 	public val disabled: Boolean,
-	public val valorisations: Set<Valorisation> = emptySet(),
+	public val valorisations: Set<DecryptedValorisation> = emptySet(),
 	public val category: Map<String, String> = emptyMap(),
 	public val consultationCode: Boolean? = null,
 	public val hasRelatedCode: Boolean? = null,
@@ -51,7 +52,7 @@ data class Tarification(
 	@SerialName("nGroup")
 	public val ngroup: String? = null,
 	public val letterValues: List<LetterValue> = emptyList(),
-) : StoredDocument, CodeIdentification<String> {
+) : StoredDocument, CodeIdentification<K> {
 	// region Tarification-Tarification
 
 	// endregion

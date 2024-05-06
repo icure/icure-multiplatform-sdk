@@ -10,7 +10,7 @@ import kotlin.collections.Set
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-interface CryptoActor : Versionable<String>, HasTags {
+interface CryptoActor : Versionable<T>, HasTags {
 	public val hcPartyKeys: Map<String, List<HexString>>
 
 	public val aesExchangeKeys:

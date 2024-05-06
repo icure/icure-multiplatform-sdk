@@ -33,7 +33,7 @@ data class HealthElementTemplate(
 	public val status: Int = 0,
 	public val relevant: Boolean,
 	public val plansOfAction: List<PlanOfActionTemplate> = emptyList(),
-) : StoredDocument, ICureDocument<String> {
+) : StoredDocument, ICureDocument<T> {
 	// region HealthElementTemplate-HealthElementTemplate
 
 	// endregion

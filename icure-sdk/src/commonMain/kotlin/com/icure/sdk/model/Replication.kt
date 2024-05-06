@@ -20,7 +20,7 @@ data class Replication(
 	override val name: String? = null,
 	public val context: String? = null,
 	public val databaseSynchronizations: List<DatabaseSynchronization> = emptyList(),
-) : StoredDocument, Identifiable<String>, Named {
+) : StoredDocument, Identifiable<T>, Named {
 	// region Replication-Replication
 
 	// endregion

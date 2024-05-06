@@ -30,7 +30,7 @@ data class ReplicatorDocument(
 	public val errorCount: Int? = null,
 	public val revsInfo: List<Map<String, String>>? = null,
 	public val revHistory: Map<String, String>? = null,
-) : Versionable<String> {
+) : Versionable<T> {
 	// region ReplicatorDocument-ReplicatorDocument
 
 	// endregion

@@ -28,7 +28,7 @@ data class Keyword(
 	public val `value`: String? = null,
 	public val subWords: Set<KeywordSubword> = emptySet(),
 	public val userId: String? = null,
-) : StoredDocument, ICureDocument<String> {
+) : StoredDocument, ICureDocument<T> {
 	// region Keyword-Keyword
 
 	// endregion

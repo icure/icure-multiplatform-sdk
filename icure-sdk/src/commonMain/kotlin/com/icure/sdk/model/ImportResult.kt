@@ -11,14 +11,14 @@ import kotlin.collections.Map
 
 @Serializable
 data class ImportResult(
-	public val patient: Patient? = null,
-	public val hes: List<HealthElement> = emptyList(),
-	public val ctcs: List<Contact> = emptyList(),
+	public val patient: DecryptedPatient? = null,
+	public val hes: List<DecryptedHealthElement> = emptyList(),
+	public val ctcs: List<DecryptedContact> = emptyList(),
 	public val warnings: List<String> = emptyList(),
 	public val errors: List<String> = emptyList(),
-	public val forms: List<Form> = emptyList(),
+	public val forms: List<DecryptedForm> = emptyList(),
 	public val hcps: List<HealthcareParty> = emptyList(),
-	public val documents: List<Document> = emptyList(),
+	public val documents: List<DecryptedDocument> = emptyList(),
 	public val attachments: Map<String, MimeAttachment> = emptyMap(),
 ) {
 	// region ImportResult-ImportResult

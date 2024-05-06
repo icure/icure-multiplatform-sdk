@@ -15,7 +15,7 @@ import kotlin.collections.Set
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-sealed interface Service : Encryptable, ICureDocument<String> {
+sealed interface Service : Encryptable, ICureDocument<T> {
 	override val id: String
 
 	public val transactionId: String?

@@ -24,7 +24,7 @@ data class Annotation(
 	public val confidential: Boolean? = null,
 	public val tags: Set<CodeStub> = emptySet(),
 	public val encryptedSelf: String? = null,
-) : Identifiable<String> {
+) : Identifiable<T> {
 	// region Annotation-Annotation
 
 	// endregion

@@ -26,7 +26,7 @@ data class ClassificationTemplate(
 	override val deletionDate: Long? = null,
 	public val parentId: String?,
 	public val label: String,
-) : StoredDocument, ICureDocument<String> {
+) : StoredDocument, ICureDocument<T> {
 	// region ClassificationTemplate-ClassificationTemplate
 
 	// endregion

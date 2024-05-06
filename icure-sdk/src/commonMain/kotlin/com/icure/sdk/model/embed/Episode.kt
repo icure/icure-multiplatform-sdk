@@ -9,7 +9,7 @@ import kotlin.String
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-sealed interface Episode : Encryptable, Identifiable<String>, Named {
+sealed interface Episode : Encryptable, Identifiable<T>, Named {
 	override val id: String
 
 	override val name: String?

@@ -22,7 +22,7 @@ import kotlin.collections.Set
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 sealed interface Message :
 	StoredDocument,
-	ICureDocument<String>,
+	ICureDocument<T>,
 	HasEncryptionMetadata,
 	Encryptable {
 	override val id: String

@@ -8,7 +8,7 @@ import kotlin.collections.Set
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-interface HasEncryptionMetadata : Versionable<String> {
+interface HasEncryptionMetadata : Versionable<T> {
 	public val secretForeignKeys: Set<String>
 
 	public val cryptedForeignKeys: Map<String, Set<Delegation>>

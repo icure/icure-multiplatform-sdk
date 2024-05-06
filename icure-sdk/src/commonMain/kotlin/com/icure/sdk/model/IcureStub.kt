@@ -32,7 +32,7 @@ data class IcureStub(
 	override val delegations: Map<String, Set<Delegation>> = emptyMap(),
 	override val encryptionKeys: Map<String, Set<Delegation>> = emptyMap(),
 	override val securityMetadata: SecurityMetadata? = null,
-) : ICureDocument<String>, Versionable<String>, HasEncryptionMetadata {
+) : ICureDocument<T>, Versionable<T>, HasEncryptionMetadata {
 	// region IcureStub-IcureStub
 override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): IcureStub =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)

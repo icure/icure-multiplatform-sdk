@@ -41,7 +41,7 @@ data class DocumentTemplate(
 	public val descr: String? = null,
 	public val disabled: String? = null,
 	public val specialty: CodeStub? = null,
-) : StoredDocument, ICureDocument<String> {
+) : StoredDocument, ICureDocument<T> {
 	// region DocumentTemplate-DocumentTemplate
 
 	// endregion

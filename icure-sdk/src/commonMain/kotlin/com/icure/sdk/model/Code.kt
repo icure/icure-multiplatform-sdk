@@ -38,7 +38,7 @@ data class Code(
 	public val `data`: String? = null,
 	public val appendices: Map<AppendixType, String> = emptyMap(),
 	public val disabled: Boolean = false,
-) : StoredDocument, CodeIdentification<String> {
+) : StoredDocument, CodeIdentification<K> {
 	// region Code-Code
 
 	// endregion

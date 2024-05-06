@@ -8,7 +8,7 @@ import kotlin.String
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-sealed interface CareTeamMember : Encryptable, Identifiable<String> {
+sealed interface CareTeamMember : Encryptable, Identifiable<T> {
 	override val id: String
 
 	public val careTeamMemberType: CareTeamMemberType?

@@ -26,7 +26,7 @@ data class ApplicationSettings(
 	override val endOfLife: Long? = null,
 	override val deletionDate: Long? = null,
 	public val settings: Map<String, String> = emptyMap(),
-) : StoredDocument, ICureDocument<String> {
+) : StoredDocument, ICureDocument<T> {
 	// region ApplicationSettings-ApplicationSettings
 
 	// endregion

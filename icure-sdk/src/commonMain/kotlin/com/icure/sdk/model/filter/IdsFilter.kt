@@ -14,7 +14,7 @@ import kotlin.collections.Set
 data class IdsFilter<O : Identifiable<String>>(
 	override val desc: String? = null,
 	override val ids: Set<String>,
-) : AbstractFilter<O>, Filter.IdsFilter<String, O> {
+) : AbstractFilter<O>, Filter.IdsFilter<T, O> {
 	// region IdsFilter-IdsFilter
 
 	// endregion
