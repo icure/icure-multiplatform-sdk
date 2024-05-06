@@ -307,6 +307,60 @@ external interface Something_Nested1_DeeplyNestedJs {
 }
 ```
 
+#### Sealed interfaces
+
+We can implement sealed interfaces in typescript in the following way.
+
+```typescript
+type SealedInterface = ImplementationA | ImplementationB
+namespace SealedInterface {
+  export enum Type {
+    ImplementationA = "com.icure.sdk.model.ImplementationA",
+    ImplementationB = "com.icure.sdk.model.ImplementationB",
+  }
+}
+
+class ImplementationA {
+  $ktClass: SealedInterface.Type.ImplementationA = SealedInterface.Type.ImplementationA
+  propertyOfInterface: string
+  propertyOfOnlyA: string
+
+  constructor(propertyOfInterface: string, propertyOfOnlyA: string) {
+    this.propertyOfInterface = propertyOfInterface
+    this.propertyOfOnlyA = propertyOfOnlyA
+  }
+}
+
+class ImplementationB {
+  $ktClass: SealedInterface.Type.ImplementationB = SealedInterface.Type.ImplementationB
+  propertyOfInterface: string
+  propertyOfOnlyB: string
+
+  constructor(propertyOfInterface: string, propertyOfOnlyB: string) {
+    this.propertyOfInterface = propertyOfInterface
+    this.propertyOfOnlyB = propertyOfOnlyB
+  }
+}
+
+function useSealed(sealed: SealedInterface) {
+  console.log(sealed.propertyOfInterface) // Part of the intersection, usable without any (smart) cast
+  const x = sealed.$ktClass // This is a SealedInterface.Type
+  if (sealed instanceof ImplementationA) { // More natural but only works if the class was created with new
+    console.log(sealed.propertyOfOnlyA) // Ok, smart cast
+  } else {
+    console.log(sealed.propertyOfOnlyB) // Ok, smart cast
+  }
+  if (sealed.$ktClass === SealedInterface.Type.ImplementationA) { // A bit weird, but works even if class was not initialized with new
+    console.log(sealed.propertyOfOnlyA) // Ok, smart cast
+  } else {
+    console.log(sealed.propertyOfOnlyB) // Ok, smart cast
+  }
+}
+
+useSealed({ $ktClass: SealedInterface.Type.ImplementationA, propertyOfInterface: "fake without new - will not pass instanceof -> prints undefined next (tries to get propertyOfOnlyB)", propertyOfOnlyA: "fakeA" })
+useSealed(new ImplementationA("real with new", "realA"))
+```
+
 ### API
 
 The purpose of the js api is just to convert the suspend functions to promises and to convert the input/output to the 
