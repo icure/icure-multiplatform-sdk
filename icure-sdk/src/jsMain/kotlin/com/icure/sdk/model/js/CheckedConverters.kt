@@ -2,6 +2,13 @@ package com.icure.sdk.model.js
 
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.ensure
+import com.icure.sdk.utils.time.ZonedDateTime
+import kotlinx.datetime.Instant
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.decodeFromDynamic
+import kotlinx.serialization.json.encodeToDynamic
 import kotlin.math.floor
 
 /**
@@ -54,6 +61,14 @@ object CheckedConverters {
 
 	fun intToNumber(int: Int): Int {
 		return int
+	}
+
+	fun numberToInstant(number: Double, description: String): Instant {
+		return Instant.fromEpochMilliseconds(numberToLong(number, description))
+	}
+
+	fun instantToNumber(instant: Instant): Double {
+		return longToNumber(instant.toEpochMilliseconds())
 	}
 
 	fun <K, V> mapToObject(
@@ -113,4 +128,24 @@ object CheckedConverters {
 	): Array<dynamic> {
 		return set.map { convertValue(it) }.toTypedArray()
 	}
+
+	fun zonedDateTimeToString(
+		zonedDateTime: ZonedDateTime,
+	): String {
+		return zonedDateTime.toIso8601String()
+	}
+
+	fun stringToZonedDateTime(
+		string: String,
+	): ZonedDateTime {
+		return ZonedDateTime.fromIso8601String(string)
+	}
+
+	@OptIn(ExperimentalSerializationApi::class)
+	fun toKotlinJson(obj: dynamic): JsonElement =
+		Json.decodeFromDynamic<JsonElement>(obj)
+
+	@OptIn(ExperimentalSerializationApi::class)
+	fun fromKotlinJson(obj: JsonElement): dynamic =
+		Json.encodeToDynamic<JsonElement>(obj)
 }
