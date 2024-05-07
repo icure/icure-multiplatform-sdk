@@ -361,6 +361,31 @@ useSealed({ $ktClass: SealedInterface.Type.ImplementationA, propertyOfInterface:
 useSealed(new ImplementationA("real with new", "realA"))
 ```
 
+#### Prepare distribution package - combine typescript and kotlin
+
+How to build the distribution package for the js wrapper. Tested on node and on browser (using webpack).
+
+1. Compile the kotlin js using the `jsNodeProductionLibraryDistribution` gradle task. This will generate the package in the 
+   `build/dist/js/productionLibrary` directory.
+2. Make all typescript declarations available from a single file, e.g. by exporting each of them from a `model.ts` file.
+3. Compile the generated typescript code using `tsc -d -m es6 file`. This way we get the declaration files for the 
+   typescript code and the output javascript uses the ESM system (for modules).
+4. Add the compiled `*.d.ts` and `*.js` files to the `build/dist/js/productionLibrary` directory.
+5. Rename all `*.js` files to `*.mjs`.
+6. Add the import and export of the model types to the main kotlin outputs, e.g. in the `icure-multiplatform-sdk-icure-sdk.d.ts` file:
+   ```typescript
+   import * as model from './model';
+   export { model }
+   ```
+   and in the `icure-multiplatform-sdk-icure-sdk.mjs` file:
+   ```javascript
+   import * as model from './model.mjs';
+   export { model }
+   ```
+
+Note: with this solution the users can `import { model } from 'icure-multiplatform-sdk-icure-sdk'` and use it like
+`model.DecryptedPatient`.
+
 ### API
 
 The purpose of the js api is just to convert the suspend functions to promises and to convert the input/output to the 

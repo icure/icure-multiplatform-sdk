@@ -32,6 +32,7 @@ fun Project.configureMultiplatform(
 		nodejs { }
 		binaries.library()
 		generateTypeScriptDefinitions()
+		useEsModules()
 	}
 	androidTarget {
 		compilations.all {
