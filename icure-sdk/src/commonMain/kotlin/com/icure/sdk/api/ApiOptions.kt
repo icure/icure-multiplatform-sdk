@@ -1,12 +1,21 @@
 package com.icure.sdk.api
 
+import com.icure.kryptom.crypto.CryptoService
+import com.icure.kryptom.crypto.defaultCryptoService
 import io.ktor.client.HttpClient
 
 data class ApiOptions(
 	val encryptedFields: EncryptedFields = EncryptedFields(),
 	val disableParentKeysInitialisation: Boolean = false,
 	val httpClient: HttpClient? = null,
-	val createTransferKeys: Boolean = true
+	val createTransferKeys: Boolean = true,
+	val cryptoService: CryptoService = defaultCryptoService,
+)
+
+data class BasicApiOptions(
+	val encryptedFields: EncryptedFields = EncryptedFields(),
+	val httpClient: HttpClient? = null,
+	val cryptoService: CryptoService = defaultCryptoService,
 )
 
 data class EncryptedFields(

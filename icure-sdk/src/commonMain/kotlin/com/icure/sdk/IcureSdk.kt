@@ -104,6 +104,7 @@ import com.icure.sdk.crypto.impl.UserSignatureKeysManagerImpl
 import com.icure.sdk.model.DataOwnerWithType
 import com.icure.sdk.model.extensions.toStub
 import com.icure.sdk.model.requests.RequestedPermission
+import com.icure.sdk.options.EntitiesEncryptedFieldsManifests
 import com.icure.sdk.storage.IcureStorageFacade
 import com.icure.sdk.storage.StorageFacade
 import com.icure.sdk.storage.impl.DefaultStorageEntryKeysFactory
@@ -178,7 +179,7 @@ interface IcureSdk {
 			options: ApiOptions = ApiOptions()
 		): IcureSdk {
 			val client = options.httpClient ?: sharedHttpClient
-			val cryptoService = defaultCryptoService
+			val cryptoService = options.cryptoService
 			val apiUrl = baseUrl
 			val keysStorage = JsonAndBase64KeyStorage(baseStorage)
 			val iCureStorage =
@@ -591,99 +592,3 @@ private suspend fun ensureDelegationForSelf(
 	} else self
 }
 
-/**
- * Parse the fields on api initialization to avoid late throw of errors
- */
-@InternalIcureApi
-private class EntitiesEncryptedFieldsManifests private constructor(
-	val accessLog: EncryptedFieldsManifest,
-	val calendarItem: EncryptedFieldsManifest,
-	val contact: EncryptedFieldsManifest,
-	val service: EncryptedFieldsManifest,
-	val healthElement: EncryptedFieldsManifest,
-	val maintenanceTask: EncryptedFieldsManifest,
-	val patient: EncryptedFieldsManifest,
-	val message: EncryptedFieldsManifest,
-	val topic: EncryptedFieldsManifest,
-	val document: EncryptedFieldsManifest,
-	val timeTable: EncryptedFieldsManifest,
-	val classification: EncryptedFieldsManifest,
-	val form: EncryptedFieldsManifest,
-	val invoice: EncryptedFieldsManifest,
-	val receipt: EncryptedFieldsManifest
-) {
-	companion object {
-		fun fromEncryptedFields(encryptedFields: EncryptedFields): EntitiesEncryptedFieldsManifests {
-			val contactManifest = JsonEncryptionService.parseEncryptedFields(
-				encryptedFields.contact,
-				"Contact."
-			)
-			require("services" !in contactManifest.allKeys) {
-				"You can't customise encryption of the `services` field of Contact. Use the serviceEncryptedKeys parameter instead."
-			}
-			val serviceManifest = JsonEncryptionService.parseEncryptedFields(
-				encryptedFields.service,
-				"Service."
-			)
-			require("content" !in serviceManifest.allKeys) {
-				"You can't customise encryption of the `content` of a Service. The content values for services is automatically encrypted."
-			}
-			return EntitiesEncryptedFieldsManifests(
-				contact = contactManifest,
-				service = serviceManifest,
-				accessLog = JsonEncryptionService.parseEncryptedFields(
-					encryptedFields.accessLog,
-					"AccessLog."
-				),
-				calendarItem = JsonEncryptionService.parseEncryptedFields(
-					encryptedFields.calendarItem,
-					"CalendarItem."
-				),
-				healthElement = JsonEncryptionService.parseEncryptedFields(
-					encryptedFields.healthElement,
-					"HealthElement."
-				),
-				maintenanceTask = JsonEncryptionService.parseEncryptedFields(
-					encryptedFields.maintenanceTask,
-					"MaintenanceTask."
-				),
-				patient = JsonEncryptionService.parseEncryptedFields(
-					encryptedFields.patient,
-					"Patient."
-				),
-				message = JsonEncryptionService.parseEncryptedFields(
-					encryptedFields.message,
-					"Message."
-				),
-				topic = JsonEncryptionService.parseEncryptedFields(
-					encryptedFields.topic,
-					"Topic."
-				),
-				document = JsonEncryptionService.parseEncryptedFields(
-					encryptedFields.document,
-					"Document."
-				),
-				timeTable = JsonEncryptionService.parseEncryptedFields(
-					encryptedFields.timeTable,
-					"TimeTable."
-				),
-				classification = JsonEncryptionService.parseEncryptedFields(
-					encryptedFields.classification,
-					"Classification."
-				),
-				form = JsonEncryptionService.parseEncryptedFields(
-					encryptedFields.form,
-					"Form."
-				),
-				invoice = JsonEncryptionService.parseEncryptedFields(
-					encryptedFields.invoice,
-					"Invoice."
-				),
-				receipt = JsonEncryptionService.parseEncryptedFields(
-					encryptedFields.receipt ,
-					"Receipt."
-				)
-			)
-		}
-	}
-}
