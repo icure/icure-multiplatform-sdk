@@ -43,7 +43,7 @@ data class Device(
 	public val serialNumber: String? = null,
 	public val parentId: String? = null,
 	public val picture: ByteArray? = null,
-	override val properties: Set<PropertyStub> = emptySet(),
+	override val properties: Set<DecryptedPropertyStub> = emptySet(),
 	override val hcPartyKeys: Map<String, List<HexString>> = emptyMap(),
 	override val aesExchangeKeys: Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> =
 		emptyMap(),
