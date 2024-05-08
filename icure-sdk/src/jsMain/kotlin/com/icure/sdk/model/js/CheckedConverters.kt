@@ -38,12 +38,16 @@ object CheckedConverters {
 		return number.toLong()
 	}
 
+	fun numberToLong(number: Double?, description: String): Long? = number?.let { numberToLong(it, description) }
+
 	fun longToNumber(long: Long): Double {
 		ensure(long in MIN_SAFE_INTEGER..MAX_SAFE_INTEGER) {
 			"Number is not in safe integer range: $long"
 		}
 		return long.toDouble()
 	}
+
+	fun longToNumber(long: Long?): Double? = long?.let { longToNumber(it) }
 
 	fun numberToInt(number: Double, description: String): Int {
 		require(
@@ -59,17 +63,25 @@ object CheckedConverters {
 		return number.toInt()
 	}
 
+	fun numberToInt(number: Double?, description: String): Int? = number?.let { numberToInt(it, description) }
+
 	fun intToNumber(int: Int): Int {
 		return int
 	}
+
+	fun intToNumber(int: Int?): Int? = int
 
 	fun numberToInstant(number: Double, description: String): Instant {
 		return Instant.fromEpochMilliseconds(numberToLong(number, description))
 	}
 
+	fun numberToInstant(number: Double?, description: String): Instant? = number?.let { numberToInstant(it, description) }
+
 	fun instantToNumber(instant: Instant): Double {
 		return longToNumber(instant.toEpochMilliseconds())
 	}
+
+	fun instantToNumber(instant: Instant?): Double? = instant?.let { instantToNumber(it) }
 
 	fun <K, V> mapToObject(
 		map: Map<K, V>,
@@ -135,17 +147,39 @@ object CheckedConverters {
 		return zonedDateTime.toIso8601String()
 	}
 
+	fun zonedDateTimeToString(
+		zonedDateTime: ZonedDateTime?,
+	): String? = zonedDateTime?.let { zonedDateTimeToString(it) }
+
 	fun stringToZonedDateTime(
 		string: String,
+		description: String
 	): ZonedDateTime {
-		return ZonedDateTime.fromIso8601String(string)
+		return try {
+			ZonedDateTime.fromIso8601String(string)
+		} catch (e: Exception) {
+			throw IllegalArgumentException("Invalid zoned date time $string @ $description", e)
+		}
 	}
 
-	@OptIn(ExperimentalSerializationApi::class)
-	fun toKotlinJson(obj: dynamic): JsonElement =
-		Json.decodeFromDynamic<JsonElement>(obj)
+	fun stringToZonedDateTime(
+		string: String?,
+		description: String
+	): ZonedDateTime? = string?.let { stringToZonedDateTime(it, description) }
 
 	@OptIn(ExperimentalSerializationApi::class)
-	fun fromKotlinJson(obj: JsonElement): dynamic =
+	fun dynamicToJson(obj: dynamic, description: String): JsonElement =
+		try {
+			Json.decodeFromDynamic<JsonElement>(obj)
+		} catch (e: Exception) {
+			throw IllegalArgumentException("Invalid JSON object @ $description", e)
+		}
+
+	fun dynamicToJsonNullsafe(obj: dynamic, description: String): JsonElement? =
+		// Note: can't use let on dynamic
+		if (obj != null) dynamicToJson(obj, description) else null
+
+	@OptIn(ExperimentalSerializationApi::class)
+	fun jsonToDynamic(obj: JsonElement): dynamic =
 		Json.encodeToDynamic<JsonElement>(obj)
 }
