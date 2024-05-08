@@ -1,18 +1,21 @@
 rootProject.name = "icure-multiplatform-sdk"
 
-include("core")
+include("kryptom")
+include("icure-sdk")
 
 pluginManagement {
-    repositories {
-        google()
-        gradlePluginPortal()
-        mavenCentral()
-    }
+	repositories {
+		google()
+		gradlePluginPortal()
+		mavenCentral()
+		maven { url = uri("https://maven.taktik.be/content/groups/public") }
+	}
 }
 
 dependencyResolutionManagement {
-    repositories {
-        google()
-        mavenCentral()
-    }
+	repositories {
+		google()
+		mavenCentral()
+		maven { url = uri("https://maven.taktik.be/content/groups/public") }
+	}
 }

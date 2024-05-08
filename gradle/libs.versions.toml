@@ -1,0 +1,49 @@
+[versions]
+kotlin = "1.9.23"
+ktor = "2.3.8"
+coroutines = "1.8.0"
+kotlinSerialization = "1.6.1"
+kotlinDateTime = "0.6.0-RC.2"
+kotest = "5.8.0"
+androidLibrary = "8.2.2"
+bouncyCastle = "1.70"
+kermit = "2.0.3"
+
+[libraries]
+
+# Gradle plugins
+kotlinMultiplatformPlugin = { group = "org.jetbrains.kotlin.multiplatform", name = "org.jetbrains.kotlin.multiplatform.gradle.plugin", version.ref = "kotlin" }
+kotlinSerializationPlugin = { group = "org.jetbrains.kotlin.plugin.serialization", name = "org.jetbrains.kotlin.plugin.serialization.gradle.plugin", version.ref = "kotlin" }
+kotestMultiplatformPlugin = { group = "io.kotest.multiplatform", name = "io.kotest.multiplatform.gradle.plugin", version.ref = "kotest" }
+androidLibraryPlugin = { group = "com.android.library", name = "com.android.library.gradle.plugin", version.ref = "androidLibrary" }
+
+# Ktor
+ktorUtils = { group = "io.ktor", name = "ktor-utils", version.ref = "ktor" }
+ktorClientCore = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
+ktorClientLogging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor" }
+ktorClientEngineOkhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor" }
+ktorClientEngineDarwin = { group = "io.ktor", name = "ktor-client-darwin", version.ref = "ktor" }
+ktorClientEngineJs = { group = "io.ktor", name = "ktor-client-js", version.ref = "ktor" }
+ktorClientEngineJava = { group = "io.ktor", name = "ktor-client-java", version.ref = "ktor" }
+# TODO CIO engine only needed by the current test setup, remove later
+ktorClientEngineCio = { group = "io.ktor", name = "ktor-client-cio", version.ref = "ktor" }
+ktorContentNegotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
+ktorSerializationJson = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
+
+# Kotlinx
+coroutinesCore = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
+coroutinesSlf4j = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-slf4j", version.ref = "coroutines" }
+kotlinSerialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinSerialization" }
+kotlinDateTime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinDateTime" }
+
+# Kotest
+kotestAssertions = { group = "io.kotest", name = "kotest-assertions-core", version.ref = "kotest" }
+kotestEngine = { group = "io.kotest", name = "kotest-framework-engine", version.ref = "kotest" }
+kotestDatatest = { group = "io.kotest", name = "kotest-framework-datatest", version.ref = "kotest" }
+kotestRunnerJunit = { group = "io.kotest", name = "kotest-runner-junit5", version.ref = "kotest" }
+
+# Cryptography providers
+bouncyCastle = { group = "org.bouncycastle", name = "bcprov-jdk15on", version.ref = "bouncyCastle" }
+
+# Logging
+kermit = { group = "co.touchlab", name = "kermit", version.ref = "kermit" }
