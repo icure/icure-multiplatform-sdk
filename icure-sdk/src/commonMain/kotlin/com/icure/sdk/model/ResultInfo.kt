@@ -1,13 +1,14 @@
 package com.icure.sdk.model
 
 import com.icure.sdk.model.base.CodeStub
-import com.icure.sdk.model.embed.Service
+import com.icure.sdk.model.embed.DecryptedService
 import kotlinx.serialization.Serializable
 import kotlin.Boolean
 import kotlin.Long
 import kotlin.String
 import kotlin.collections.List
 import kotlin.collections.Set
+import com.icure.sdk.model.embed.Service
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
@@ -26,7 +27,7 @@ class ResultInfo(
 	public val labo: String? = null,
 	public val engine: String? = null,
 	public val codes: Set<CodeStub> = emptySet(),
-	public val services: List<Service>? = null,
+	public val services: List<DecryptedService>? = null,
 ) {
 	// region ResultInfo-ResultInfo
 

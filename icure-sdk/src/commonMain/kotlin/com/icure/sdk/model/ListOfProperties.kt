@@ -8,7 +8,7 @@ import kotlin.collections.Set
 
 @Serializable
 data class ListOfProperties(
-	public val properties: Set<PropertyStub> = emptySet(),
+	public val properties: Set<DecryptedPropertyStub> = emptySet(),
 ) {
 	// region ListOfProperties-ListOfProperties
 

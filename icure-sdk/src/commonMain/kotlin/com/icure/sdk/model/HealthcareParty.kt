@@ -9,9 +9,9 @@ import com.icure.sdk.model.base.Identifier
 import com.icure.sdk.model.base.Named
 import com.icure.sdk.model.base.Person
 import com.icure.sdk.model.base.StoredDocument
-import com.icure.sdk.model.embed.Address
-import com.icure.sdk.model.embed.FinancialInstitutionInformation
-import com.icure.sdk.model.embed.FlatRateTarification
+import com.icure.sdk.model.embed.DecryptedAddress
+import com.icure.sdk.model.embed.DecryptedFinancialInstitutionInformation
+import com.icure.sdk.model.embed.DecryptedFlatRateTarification
 import com.icure.sdk.model.embed.Gender
 import com.icure.sdk.model.embed.HealthcarePartyHistoryStatus
 import com.icure.sdk.model.embed.HealthcarePartyStatus
@@ -28,6 +28,9 @@ import kotlin.String
 import kotlin.collections.List
 import kotlin.collections.Map
 import kotlin.collections.Set
+import com.icure.sdk.model.embed.Address
+import com.icure.sdk.model.embed.FinancialInstitutionInformation
+import com.icure.sdk.model.embed.FlatRateTarification
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
@@ -63,7 +66,7 @@ data class HealthcareParty(
 	public val nihii: String? = null,
 	public val nihiiSpecCode: String? = null,
 	public val ssin: String? = null,
-	override val addresses: List<Address> = emptyList(),
+	override val addresses: List<DecryptedAddress> = emptyList(),
 	override val languages: List<String> = emptyList(),
 	public val picture: ByteArray? = null,
 	public val statuses: Set<HealthcarePartyStatus> = emptySet(),
@@ -71,17 +74,18 @@ data class HealthcareParty(
 	public val specialityCodes: Set<CodeStub> = emptySet(),
 	public val sendFormats: Map<TelecomType, String> = emptyMap(),
 	public val notes: String? = null,
-	public val financialInstitutionInformation: List<FinancialInstitutionInformation> = emptyList(),
+	public val financialInstitutionInformation: List<DecryptedFinancialInstitutionInformation> =
+		emptyList(),
 	public val descr: Map<String, String>? = null,
 	public val billingType: String? = null,
 	public val type: String? = null,
 	public val contactPerson: String? = null,
 	public val contactPersonHcpId: String? = null,
 	public val supervisorId: String? = null,
-	public val flatRateTarifications: List<FlatRateTarification> = emptyList(),
+	public val flatRateTarifications: List<DecryptedFlatRateTarification> = emptyList(),
 	public val importedData: Map<String, String> = emptyMap(),
 	public val options: Map<String, String> = emptyMap(),
-	override val properties: Set<PropertyStub> = emptySet(),
+	override val properties: Set<DecryptedPropertyStub> = emptySet(),
 	override val hcPartyKeys: Map<String, List<HexString>> = emptyMap(),
 	override val aesExchangeKeys: Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> =
 		emptyMap(),

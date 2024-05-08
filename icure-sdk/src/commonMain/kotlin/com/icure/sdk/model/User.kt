@@ -29,7 +29,7 @@ data class User(
 	public val created: Long? = null,
 	public val identifier: List<Identifier> = emptyList(),
 	override val name: String? = null,
-	override val properties: Set<PropertyStub> = emptySet(),
+	override val properties: Set<DecryptedPropertyStub> = emptySet(),
 	public val permissions: Set<Permission> = emptySet(),
 	public val roles: Set<String> = emptySet(),
 	public val type: UsersType? = null,

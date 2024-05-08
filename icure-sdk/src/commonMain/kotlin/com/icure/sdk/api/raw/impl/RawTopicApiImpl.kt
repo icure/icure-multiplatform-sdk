@@ -36,7 +36,7 @@ import kotlin.time.Duration
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 @InternalIcureApi
 class RawTopicApiImpl(
-	private val apiUrl: String,
+	internal val apiUrl: String,
 	private val authService: AuthService,
 	private val accessControlKeysHeadersProvider: AccessControlKeysHeadersProvider?,
 	httpClient: HttpClient,
