@@ -3,6 +3,8 @@ package com.icure.sdk
 import com.icure.sdk.IcureSdk.Companion.sharedHttpClient
 import com.icure.sdk.api.ApiOptions
 import com.icure.sdk.api.BasicApiOptions
+import com.icure.sdk.api.CodeApi
+import com.icure.sdk.api.CodeApiImpl
 import com.icure.sdk.api.GroupApi
 import com.icure.sdk.api.GroupApiImpl
 import com.icure.sdk.api.UserApi
@@ -39,6 +41,7 @@ import com.icure.sdk.api.raw.impl.RawAccessLogApiImpl
 import com.icure.sdk.api.raw.impl.RawAnonymousAuthApiImpl
 import com.icure.sdk.api.raw.impl.RawCalendarItemApiImpl
 import com.icure.sdk.api.raw.impl.RawClassificationApiImpl
+import com.icure.sdk.api.raw.impl.RawCodeApiImpl
 import com.icure.sdk.api.raw.impl.RawContactApiImpl
 import com.icure.sdk.api.raw.impl.RawDocumentApiImpl
 import com.icure.sdk.api.raw.impl.RawFormApiImpl
@@ -70,6 +73,7 @@ interface IcureBaseSdk {
 	val accessLog: AccessLogBasicApi
 	val calendarItem: CalendarItemBasicApi
 	val classification: ClassificationBasicApi
+	val code: CodeApi
 	val contact: ContactBasicApi
 	val document: DocumentBasicApi
 	val form: FormBasicApi
@@ -123,6 +127,7 @@ private class IcureBaseApiImpl(
 	override val accessLog by lazy { AccessLogBasicApiImpl(RawAccessLogApiImpl(apiUrl, authService, headersProvider, client), crypto, encryptedFieldsManifests.accessLog) }
 	override val calendarItem by lazy { CalendarItemBasicApiImpl(RawCalendarItemApiImpl(apiUrl, authService, headersProvider, client), crypto, encryptedFieldsManifests.calendarItem) }
 	override val classification by lazy { ClassificationBasicApiImpl(RawClassificationApiImpl(apiUrl, authService, headersProvider, client), crypto.validationService, encryptedFieldsManifests.classification) }
+	override val code by lazy { CodeApiImpl(RawCodeApiImpl(apiUrl, authService, client)) }
 	override val contact by lazy { ContactBasicApiImpl(RawContactApiImpl(apiUrl, authService, headersProvider, client), crypto.validationService, crypto.jsonEncryption, encryptedFieldsManifests.contact, encryptedFieldsManifests.service) }
 	override val document by lazy { DocumentBasicApiImpl(RawDocumentApiImpl(apiUrl, authService, headersProvider, client), crypto.validationService, encryptedFieldsManifests.document) }
 	override val form by lazy { FormBasicApiImpl(RawFormApiImpl(apiUrl, authService, headersProvider, client), crypto.validationService, encryptedFieldsManifests.form) }
