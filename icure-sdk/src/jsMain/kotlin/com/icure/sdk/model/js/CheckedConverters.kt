@@ -97,6 +97,7 @@ object CheckedConverters {
 
 	fun <K, V> objectToMap(
 		obj: dynamic,
+		description: String,
 		convertKey: (value: String) -> K,
 		convertValue: (value: dynamic) -> V,
 	): Map<K, V> {
@@ -110,6 +111,7 @@ object CheckedConverters {
 
 	fun <V> arrayToList(
 		array: Array<dynamic>,
+		description: String,
 		convertValue: (value: dynamic) -> V,
 	): List<V> {
 		return array.map { convertValue(it) }
