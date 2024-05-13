@@ -18,7 +18,7 @@ data class Role(
 	override val name: String? = null,
 	public val permissions: Set<String> = emptySet(),
 ) : StoredDocument, Principal {
-	override val properties: Set<PropertyStub> = emptySet()
+	override val properties: Set<DecryptedPropertyStub> = emptySet()
 	// region Role-Role
 
 	// endregion

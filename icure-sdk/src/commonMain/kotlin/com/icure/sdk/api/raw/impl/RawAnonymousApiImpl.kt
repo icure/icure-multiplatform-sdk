@@ -23,10 +23,10 @@ import kotlin.collections.Map
 import kotlin.time.Duration
 
 // WARNING: This class is auto-generated. If you change it manually, you changes will be lost.
-// If you want to change the way this class is generated, see [this repo](TODO: URL HERE).
+// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 @InternalIcureApi
 class RawAnonymousApiImpl(
-	private val apiUrl: String,
+	internal val apiUrl: String,
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
