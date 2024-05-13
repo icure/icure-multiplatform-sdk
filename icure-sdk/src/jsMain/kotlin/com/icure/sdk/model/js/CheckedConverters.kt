@@ -105,6 +105,12 @@ object CheckedConverters {
 		return obj
 	}
 
+	fun <K, V> mapToObject(
+		map: Map<K, V>?,
+		convertKey: (key: K) -> String,
+		convertValue: (value: V) -> dynamic,
+	): dynamic = map?.let { mapToObject(it, convertKey, convertValue) }
+
 	fun <K, V> objectToMap(
 		obj: dynamic,
 		description: String,
@@ -119,26 +125,44 @@ object CheckedConverters {
 		return map
 	}
 
-	fun <V> arrayToList(
-		array: Array<dynamic>,
+	fun <K, V> objectToMapNullsafe(
+		obj: dynamic,
 		description: String,
+		convertKey: (value: String) -> K,
 		convertValue: (value: dynamic) -> V,
-	): List<V> {
+	): Map<K, V>? = if (obj == null) null else objectToMap(obj, description, convertKey, convertValue) // Can't use let on dynamic
+
+	fun <KT, JS> arrayToList(
+		array: Array<JS>,
+		description: String,
+		convertValue: (value: JS) -> KT,
+	): List<KT> {
 		return array.map { convertValue(it) }
 	}
 
-	fun <V> listToArray(
-		list: List<V>,
-		convertValue: (value: V) -> dynamic,
-	): Array<dynamic> {
+	fun <KT, JS> arrayToList(
+		array: Array<JS>?,
+		description: String,
+		convertValue: (value: JS) -> KT,
+	): List<KT>? = array?.let { arrayToList(it, description, convertValue) }
+
+	fun <KT, JS> listToArray(
+		list: List<KT>,
+		convertValue: (value: KT) -> JS,
+	): Array<JS> {
 		return list.map { convertValue(it) }.toTypedArray()
 	}
 
-	fun <V> arrayToSet(
-		array: Array<dynamic>,
+	fun <KT, JS> listToArray(
+		list: List<KT>?,
+		convertValue: (value: KT) -> JS,
+	): Array<JS>? = list?.let { listToArray(it, convertValue) }
+
+	fun <KT, JS> arrayToSet(
+		array: Array<JS>,
 		description: String,
-		convertValue: (value: dynamic) -> V,
-	): Set<V> {
+		convertValue: (value: JS) -> KT,
+	): Set<KT> {
 		return array.mapTo(mutableSetOf()) { convertValue(it) }.also {
 			require(it.size == array.size) {
 				"$description will be converted to a set but contains duplicate values"
@@ -146,12 +170,23 @@ object CheckedConverters {
 		}
 	}
 
-	fun <V> setToArray(
-		set: Set<V>,
-		convertValue: (value: V) -> dynamic,
-	): Array<dynamic> {
+	fun <KT, JS> arrayToSet(
+		array: Array<JS>?,
+		description: String,
+		convertValue: (value: JS) -> KT,
+	): Set<KT>? = array?.let { arrayToSet(it, description, convertValue) }
+
+	fun <KT, JS> setToArray(
+		set: Set<KT>,
+		convertValue: (value: KT) -> JS,
+	): Array<JS> {
 		return set.map { convertValue(it) }.toTypedArray()
 	}
+
+	fun <KT, JS> setToArray(
+		set: Set<KT>?,
+		convertValue: (value: KT) -> JS,
+	): Array<JS>? = set?.let { setToArray(it, convertValue) }
 
 	fun zonedDateTimeToString(
 		zonedDateTime: ZonedDateTime,
