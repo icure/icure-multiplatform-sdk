@@ -38,6 +38,16 @@ object CheckedConverters {
 		return number.toLong()
 	}
 
+	fun tryNumberToLong(number: Double): Long? {
+		if (number.isNaN() || !number.isFinite() || floor(number) != number) {
+			return null
+		}
+		if (number in MIN_SAFE_INTEGER_D..MAX_SAFE_INTEGER_D) {
+			return number.toLong()
+		}
+		return null
+	}
+
 	fun numberToLong(number: Double?, description: String): Long? = number?.let { numberToLong(it, description) }
 
 	fun longToNumber(long: Long): Double {
