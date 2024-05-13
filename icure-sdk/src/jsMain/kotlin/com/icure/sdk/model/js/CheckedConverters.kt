@@ -229,4 +229,7 @@ object CheckedConverters {
 	@OptIn(ExperimentalSerializationApi::class)
 	fun jsonToDynamic(obj: JsonElement): dynamic =
 		Json.encodeToDynamic<JsonElement>(obj)
+
+	fun jsonToDynamic(obj: JsonElement?): dynamic =
+		obj?.let { jsonToDynamic(it) }
 }
