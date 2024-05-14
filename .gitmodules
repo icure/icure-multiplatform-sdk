@@ -1,0 +1,3 @@
+[submodule "sdk-codegen"]
+	path = sdk-codegen
+	url = git@github.com:icure/sdk-codegen.git
