@@ -1,6 +1,6 @@
-package com.icure.sdk.model.js.specializations
+package com.icure.sdk.js.model.specializations
 
-import com.icure.sdk.model.js.CheckedConverters
+import com.icure.sdk.js.model.CheckedConverters
 import com.icure.sdk.model.specializations.AnyPrimitive
 import com.icure.sdk.utils.InternalIcureException
 

@@ -1,4 +1,4 @@
-package com.icure.sdk.model.js.specializations
+package com.icure.sdk.js.model.specializations
 
 import com.icure.sdk.model.specializations.AccessControlKeyHexString
 import com.icure.sdk.model.specializations.AccessControlSecret

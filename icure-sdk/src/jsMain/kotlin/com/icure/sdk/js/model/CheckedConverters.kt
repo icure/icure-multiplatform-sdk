@@ -1,4 +1,4 @@
-package com.icure.sdk.model.js
+package com.icure.sdk.js.model
 
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.ensure
