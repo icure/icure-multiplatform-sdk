@@ -4,6 +4,7 @@ import com.icure.sdk.model.base.CodeStub
 import com.icure.sdk.model.base.ICureDocument
 import com.icure.sdk.model.base.StoredDocument
 import com.icure.sdk.model.embed.PlanOfActionTemplate
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.Boolean
 import kotlin.Int
@@ -30,6 +31,7 @@ data class HealthElementTemplate(
 	override val deletionDate: Long? = null,
 	public val descr: String? = null,
 	public val note: String? = null,
+	@DefaultValue("0")
 	public val status: Int = 0,
 	public val relevant: Boolean,
 	public val plansOfAction: List<PlanOfActionTemplate> = emptyList(),

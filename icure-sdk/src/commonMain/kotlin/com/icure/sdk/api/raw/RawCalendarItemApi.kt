@@ -48,7 +48,7 @@ public interface RawCalendarItemApi {
 		agendaId: String,
 	): HttpResponse<List<EncryptedCalendarItem>>
 
-	suspend fun getCalendarItemsWithIds(calendarItemIds: ListOfIds?): HttpResponse<List<EncryptedCalendarItem>>
+	suspend fun getCalendarItemsWithIds(calendarItemIds: ListOfIds): HttpResponse<List<EncryptedCalendarItem>>
 
 	suspend fun listCalendarItemsByHCPartyPatientForeignKeys(
 		hcPartyId: String,

@@ -37,6 +37,7 @@ import com.icure.sdk.model.specializations.AesExchangeKeyEncryptionKeypairIdenti
 import com.icure.sdk.model.specializations.Base64String
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.model.specializations.SpkiHexString
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.Boolean
 import kotlin.ByteArray
@@ -247,7 +248,9 @@ data class DecryptedPatient(
 	override val mergeToPatientId: String? = null,
 	override val mergedIds: Set<String> = emptySet(),
 	override val alias: String? = null,
+	@DefaultValue("true")
 	override val active: Boolean = true,
+	@DefaultValue("com.icure.sdk.model.embed.DeactivationReason.None")
 	override val deactivationReason: DeactivationReason = DeactivationReason.None,
 	override val deactivationDate: Int? = null,
 	override val ssin: String? = null,
@@ -339,7 +342,9 @@ data class EncryptedPatient(
 	override val mergeToPatientId: String? = null,
 	override val mergedIds: Set<String> = emptySet(),
 	override val alias: String? = null,
+	@DefaultValue("true")
 	override val active: Boolean = true,
+	@DefaultValue("com.icure.sdk.model.embed.DeactivationReason.None")
 	override val deactivationReason: DeactivationReason = DeactivationReason.None,
 	override val deactivationDate: Int? = null,
 	override val ssin: String? = null,

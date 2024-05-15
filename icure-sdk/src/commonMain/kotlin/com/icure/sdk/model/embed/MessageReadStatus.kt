@@ -1,5 +1,6 @@
 package com.icure.sdk.model.embed
 
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.Boolean
 import kotlin.Long
@@ -10,6 +11,7 @@ import kotlin.Long
 @Serializable
 data class MessageReadStatus(
 	public val time: Long? = null,
+	@DefaultValue("false")
 	public val read: Boolean = false,
 ) {
 	// region MessageReadStatus-MessageReadStatus
