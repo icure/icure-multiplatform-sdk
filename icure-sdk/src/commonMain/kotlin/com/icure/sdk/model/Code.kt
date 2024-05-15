@@ -5,6 +5,7 @@ import com.icure.sdk.model.base.CodeFlag
 import com.icure.sdk.model.base.CodeIdentification
 import com.icure.sdk.model.base.StoredDocument
 import com.icure.sdk.model.embed.Periodicity
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.Boolean
 import kotlin.Int
@@ -37,6 +38,7 @@ data class Code(
 	public val searchTerms: Map<String, Set<String>> = emptyMap(),
 	public val `data`: String? = null,
 	public val appendices: Map<AppendixType, String> = emptyMap(),
+	@DefaultValue("false")
 	public val disabled: Boolean = false,
 ) : StoredDocument, CodeIdentification<String> {
 	// region Code-Code

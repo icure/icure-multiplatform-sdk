@@ -59,6 +59,8 @@ public interface RawAccessLogApi {
 		secretPatientKeys: ListOfIds,
 	): HttpResponse<List<String>>
 
+	suspend fun getAccessLogByIds(accessLogIds: ListOfIds): HttpResponse<List<EncryptedAccessLog>>
+
 	suspend fun findAccessLogsByHCPartyPatientForeignKeys(
 		hcPartyId: String,
 		secretPatientKeys: List<String>,

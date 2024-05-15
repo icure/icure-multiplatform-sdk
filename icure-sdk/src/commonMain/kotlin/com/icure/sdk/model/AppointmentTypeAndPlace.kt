@@ -1,6 +1,7 @@
 package com.icure.sdk.model
 
 import com.icure.sdk.model.embed.DecryptedAddress
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.Boolean
 import kotlin.Int
@@ -16,6 +17,7 @@ data class AppointmentTypeAndPlace(
 	public val calendarItemTypeId: String,
 	public val name: String? = null,
 	public val color: String? = null,
+	@DefaultValue("0")
 	public val duration: Int = 0,
 	public val subjectByLanguage: Map<String, String>? = null,
 	public val placeId: String?,

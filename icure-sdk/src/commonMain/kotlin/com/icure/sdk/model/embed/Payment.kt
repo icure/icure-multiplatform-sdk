@@ -1,5 +1,6 @@
 package com.icure.sdk.model.embed
 
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.Double
 import kotlin.Long
@@ -9,6 +10,7 @@ import kotlin.Long
 
 @Serializable
 data class Payment(
+	@DefaultValue("0")
 	public val paymentDate: Long = 0,
 	public val paymentType: PaymentType? = null,
 	public val paid: Double? = null,

@@ -1,5 +1,6 @@
 package com.icure.sdk.model.embed
 
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.Int
 import kotlin.Long
@@ -13,8 +14,11 @@ data class IdentityDocumentReader(
 	public val justificatifDocumentNumber: String? = null,
 	public val supportSerialNumber: String? = null,
 	public val timeReadingEIdDocument: Long? = null,
+	@DefaultValue("0")
 	public val eidDocumentSupportType: Int = 0,
+	@DefaultValue("0")
 	public val reasonManualEncoding: Int = 0,
+	@DefaultValue("0")
 	public val reasonUsingVignette: Int = 0,
 ) {
 	// region IdentityDocumentReader-IdentityDocumentReader

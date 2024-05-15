@@ -8,6 +8,7 @@ import com.icure.sdk.model.embed.Delegation
 import com.icure.sdk.model.embed.Encryptable
 import com.icure.sdk.model.embed.SecurityMetadata
 import com.icure.sdk.model.specializations.Base64String
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.Long
 import kotlin.String
@@ -79,6 +80,7 @@ data class DecryptedClassification(
 	override val endOfLife: Long? = null,
 	override val deletionDate: Long? = null,
 	override val parentId: String? = null,
+	@DefaultValue("\"\"")
 	override val label: String = "",
 	override val templateId: String? = null,
 	override val secretForeignKeys: Set<String> = emptySet(),
@@ -108,6 +110,7 @@ data class EncryptedClassification(
 	override val endOfLife: Long? = null,
 	override val deletionDate: Long? = null,
 	override val parentId: String? = null,
+	@DefaultValue("\"\"")
 	override val label: String = "",
 	override val templateId: String? = null,
 	override val secretForeignKeys: Set<String> = emptySet(),

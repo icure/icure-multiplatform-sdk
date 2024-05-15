@@ -91,6 +91,17 @@ class RawMessageApiImpl(
 			setAuthorizationWith(authService)
 		}.wrap()
 
+	override suspend fun getMessages(messageIds: ListOfIds): HttpResponse<List<EncryptedMessage>> =
+		post {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "message", "byIds")
+			}
+			setAuthorizationWith(authService)
+			contentType(ContentType.Application.Json)
+			setBody(messageIds)
+		}.wrap()
+
 	override suspend fun listMessagesByTransportGuids(
 		hcpId: String,
 		transportGuids: ListOfIds,

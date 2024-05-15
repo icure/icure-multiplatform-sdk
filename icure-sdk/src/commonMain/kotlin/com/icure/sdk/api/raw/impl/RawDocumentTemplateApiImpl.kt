@@ -20,6 +20,7 @@ import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import io.ktor.utils.io.ByteReadChannel
+import kotlin.Boolean
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.String
@@ -60,41 +61,54 @@ class RawDocumentTemplateApiImpl(
 			setBody(documentTemplateIds)
 		}.wrap()
 
-	override suspend fun listDocumentTemplatesBySpeciality(specialityCode: String): HttpResponse<List<DocumentTemplate>> =
+	override suspend fun findDocumentTemplatesBySpeciality(
+		specialityCode: String,
+		loadLayout: Boolean?,
+	): HttpResponse<List<DocumentTemplate>> =
 		get {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "doctemplate", "bySpecialty", specialityCode)
+				parameter("loadLayout", loadLayout)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-	override suspend fun listDocumentTemplatesByDocumentType(documentTypeCode: String): HttpResponse<List<DocumentTemplate>> =
+	override suspend fun listDocumentTemplatesByDocumentType(
+		documentTypeCode: String,
+		loadLayout: Boolean?,
+	): HttpResponse<List<DocumentTemplate>> =
 		get {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "doctemplate", "byDocumentType", documentTypeCode)
+				parameter("loadLayout", loadLayout)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-	override suspend fun listDocumentTemplatesByDocumentTypeForCurrentUser(documentTypeCode: String): HttpResponse<List<DocumentTemplate>> =
+	override suspend fun listDocumentTemplatesByDocumentTypeForCurrentUser(
+		documentTypeCode: String,
+		loadLayout: Boolean?,
+	): HttpResponse<List<DocumentTemplate>> =
 		get {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "doctemplate", "byDocumentTypeForCurrentUser", documentTypeCode)
+				parameter("loadLayout", loadLayout)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-	override suspend fun listDocumentTemplates(): HttpResponse<List<DocumentTemplate>> =
+	override suspend fun listDocumentTemplates(loadLayout: Boolean?): HttpResponse<List<DocumentTemplate>> =
 		get {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "doctemplate")
+				parameter("loadLayout", loadLayout)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
