@@ -21,7 +21,7 @@ public interface RawClassificationApi {
 
 	suspend fun getClassification(classificationId: String): HttpResponse<EncryptedClassification>
 
-	suspend fun getClassificationByHcPartyId(ids: String): HttpResponse<List<EncryptedClassification>>
+	suspend fun getClassifications(classificationIds: ListOfIds): HttpResponse<List<EncryptedClassification>>
 
 	suspend fun findClassificationsByHCPartyPatientForeignKeys(
 		hcPartyId: String,

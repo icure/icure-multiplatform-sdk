@@ -5,6 +5,7 @@ import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.utils.InternalIcureApi
+import kotlin.Boolean
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.String
@@ -20,13 +21,23 @@ public interface RawDocumentTemplateApi {
 
 	suspend fun deleteDocumentTemplates(documentTemplateIds: ListOfIds): HttpResponse<List<DocIdentifier>>
 
-	suspend fun listDocumentTemplatesBySpeciality(specialityCode: String): HttpResponse<List<DocumentTemplate>>
+	suspend fun findDocumentTemplatesBySpeciality(
+		specialityCode: String,
+		loadLayout: Boolean? =
+			null,
+	): HttpResponse<List<DocumentTemplate>>
 
-	suspend fun listDocumentTemplatesByDocumentType(documentTypeCode: String): HttpResponse<List<DocumentTemplate>>
+	suspend fun listDocumentTemplatesByDocumentType(
+		documentTypeCode: String,
+		loadLayout: Boolean? = null,
+	): HttpResponse<List<DocumentTemplate>>
 
-	suspend fun listDocumentTemplatesByDocumentTypeForCurrentUser(documentTypeCode: String): HttpResponse<List<DocumentTemplate>>
+	suspend fun listDocumentTemplatesByDocumentTypeForCurrentUser(
+		documentTypeCode: String,
+		loadLayout: Boolean? = null,
+	): HttpResponse<List<DocumentTemplate>>
 
-	suspend fun listDocumentTemplates(): HttpResponse<List<DocumentTemplate>>
+	suspend fun listDocumentTemplates(loadLayout: Boolean? = null): HttpResponse<List<DocumentTemplate>>
 
 	suspend fun findAllDocumentTemplates(
 		startKey: String? = null,
