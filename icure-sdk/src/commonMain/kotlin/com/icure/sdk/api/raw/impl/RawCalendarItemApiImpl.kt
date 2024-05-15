@@ -158,7 +158,7 @@ class RawCalendarItemApiImpl(
 			contentType(ContentType.Application.Json)
 		}.wrap()
 
-	override suspend fun getCalendarItemsWithIds(calendarItemIds: ListOfIds?): HttpResponse<List<EncryptedCalendarItem>> =
+	override suspend fun getCalendarItemsWithIds(calendarItemIds: ListOfIds): HttpResponse<List<EncryptedCalendarItem>> =
 		post {
 			url {
 				takeFrom(apiUrl)

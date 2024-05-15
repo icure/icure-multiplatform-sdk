@@ -66,14 +66,15 @@ class RawClassificationApiImpl(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-	override suspend fun getClassificationByHcPartyId(ids: String): HttpResponse<List<EncryptedClassification>> =
-		get {
+	override suspend fun getClassifications(classificationIds: ListOfIds): HttpResponse<List<EncryptedClassification>> =
+		post {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "classification", "byIds", ids)
-				parameter("ts", GMTDate().timestamp)
+				appendPathSegments("rest", "v2", "classification", "byIds")
 			}
 			setAuthorizationWith(authService)
+			contentType(ContentType.Application.Json)
+			setBody(classificationIds)
 		}.wrap()
 
 	override suspend fun findClassificationsByHCPartyPatientForeignKeys(

@@ -10,6 +10,7 @@ import com.icure.sdk.model.embed.Encryptable
 import com.icure.sdk.model.embed.SecurityMetadata
 import com.icure.sdk.model.embed.TaskStatus
 import com.icure.sdk.model.specializations.Base64String
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.Long
 import kotlin.String
@@ -86,6 +87,7 @@ data class DecryptedMaintenanceTask(
 	override val deletionDate: Long? = null,
 	override val taskType: String? = null,
 	override val properties: Set<DecryptedPropertyStub> = emptySet(),
+	@DefaultValue("com.icure.sdk.model.embed.TaskStatus.Pending")
 	override val status: TaskStatus = TaskStatus.Pending,
 	override val secretForeignKeys: Set<String> = emptySet(),
 	override val cryptedForeignKeys: Map<String, Set<Delegation>> = emptyMap(),
@@ -116,6 +118,7 @@ data class EncryptedMaintenanceTask(
 	override val deletionDate: Long? = null,
 	override val taskType: String? = null,
 	override val properties: Set<EncryptedPropertyStub> = emptySet(),
+	@DefaultValue("com.icure.sdk.model.embed.TaskStatus.Pending")
 	override val status: TaskStatus = TaskStatus.Pending,
 	override val secretForeignKeys: Set<String> = emptySet(),
 	override val cryptedForeignKeys: Map<String, Set<Delegation>> = emptyMap(),

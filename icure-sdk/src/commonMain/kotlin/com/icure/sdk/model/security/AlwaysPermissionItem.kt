@@ -1,6 +1,7 @@
 package com.icure.sdk.model.security
 
 import com.icure.sdk.model.filter.predicate.AlwaysPredicate
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -12,6 +13,7 @@ import kotlinx.serialization.Serializable
 data class AlwaysPermissionItem(
 	override val type: PermissionType,
 ) : PermissionItem {
+	@DefaultValue("AlwaysPredicate()")
 	override val predicate: AlwaysPredicate = AlwaysPredicate()
 	// region AlwaysPermissionItem-AlwaysPermissionItem
 

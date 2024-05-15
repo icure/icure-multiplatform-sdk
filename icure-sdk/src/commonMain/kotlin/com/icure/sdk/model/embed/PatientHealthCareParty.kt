@@ -1,6 +1,7 @@
 package com.icure.sdk.model.embed
 
 import com.icure.sdk.model.specializations.Base64String
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.Boolean
 import kotlin.String
@@ -32,6 +33,7 @@ data class DecryptedPatientHealthCareParty(
 	override val healthcarePartyId: String? = null,
 	override val sendFormats: Map<TelecomType, String> = emptyMap(),
 	override val referralPeriods: List<ReferralPeriod> = emptyList(),
+	@DefaultValue("false")
 	override val referral: Boolean = false,
 	override val encryptedSelf: Base64String? = null,
 ) : PatientHealthCareParty {
@@ -46,6 +48,7 @@ data class EncryptedPatientHealthCareParty(
 	override val healthcarePartyId: String? = null,
 	override val sendFormats: Map<TelecomType, String> = emptyMap(),
 	override val referralPeriods: List<ReferralPeriod> = emptyList(),
+	@DefaultValue("false")
 	override val referral: Boolean = false,
 	override val encryptedSelf: Base64String? = null,
 ) : PatientHealthCareParty {

@@ -172,6 +172,17 @@ class RawAccessLogApiImpl(
 			setBody(secretPatientKeys)
 		}.wrap()
 
+	override suspend fun getAccessLogByIds(accessLogIds: ListOfIds): HttpResponse<List<EncryptedAccessLog>> =
+		post {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "accesslog", "byIds")
+			}
+			setAuthorizationWith(authService)
+			contentType(ContentType.Application.Json)
+			setBody(accessLogIds)
+		}.wrap()
+
 	override suspend fun findAccessLogsByHCPartyPatientForeignKeys(
 		hcPartyId: String,
 		secretPatientKeys: List<String>,
