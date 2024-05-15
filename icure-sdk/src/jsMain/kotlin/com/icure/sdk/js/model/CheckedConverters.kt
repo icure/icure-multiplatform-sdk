@@ -2,6 +2,7 @@ package com.icure.sdk.js.model
 
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.ensure
+import com.icure.sdk.utils.isJsSafe
 import com.icure.sdk.utils.time.ZonedDateTime
 import kotlinx.datetime.Instant
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -19,8 +20,6 @@ import kotlin.math.floor
 object CheckedConverters {
 	private const val MAX_SAFE_INTEGER_D = 9007199254740991.0
 	private const val MIN_SAFE_INTEGER_D = -9007199254740991.0
-	private const val MAX_SAFE_INTEGER = 9007199254740991
-	private const val MIN_SAFE_INTEGER = -9007199254740991
 	private const val MIN_INT_32_D = Int.MIN_VALUE.toDouble()
 	private const val MAX_INT_32_D = Int.MAX_VALUE.toDouble()
 
@@ -51,7 +50,7 @@ object CheckedConverters {
 	fun numberToLong(number: Double?, description: String): Long? = number?.let { numberToLong(it, description) }
 
 	fun longToNumber(long: Long): Double {
-		ensure(long in MIN_SAFE_INTEGER..MAX_SAFE_INTEGER) {
+		ensure(long.isJsSafe()) {
 			"Number is not in safe integer range: $long"
 		}
 		return long.toDouble()
