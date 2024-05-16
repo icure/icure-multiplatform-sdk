@@ -75,7 +75,9 @@ data class DecryptedClassification(
 	override val author: String? = null,
 	override val responsible: String? = null,
 	override val medicalLocationId: String? = null,
+	@DefaultValue("emptySet()")
 	override val tags: Set<CodeStub> = emptySet(),
+	@DefaultValue("emptySet()")
 	override val codes: Set<CodeStub> = emptySet(),
 	override val endOfLife: Long? = null,
 	override val deletionDate: Long? = null,
@@ -83,9 +85,13 @@ data class DecryptedClassification(
 	@DefaultValue("\"\"")
 	override val label: String = "",
 	override val templateId: String? = null,
+	@DefaultValue("emptySet()")
 	override val secretForeignKeys: Set<String> = emptySet(),
+	@DefaultValue("emptyMap()")
 	override val cryptedForeignKeys: Map<String, Set<Delegation>> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val delegations: Map<String, Set<Delegation>> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val encryptionKeys: Map<String, Set<Delegation>> = emptyMap(),
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,
@@ -105,7 +111,9 @@ data class EncryptedClassification(
 	override val author: String? = null,
 	override val responsible: String? = null,
 	override val medicalLocationId: String? = null,
+	@DefaultValue("emptySet()")
 	override val tags: Set<CodeStub> = emptySet(),
+	@DefaultValue("emptySet()")
 	override val codes: Set<CodeStub> = emptySet(),
 	override val endOfLife: Long? = null,
 	override val deletionDate: Long? = null,
@@ -113,9 +121,13 @@ data class EncryptedClassification(
 	@DefaultValue("\"\"")
 	override val label: String = "",
 	override val templateId: String? = null,
+	@DefaultValue("emptySet()")
 	override val secretForeignKeys: Set<String> = emptySet(),
+	@DefaultValue("emptyMap()")
 	override val cryptedForeignKeys: Map<String, Set<Delegation>> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val delegations: Map<String, Set<Delegation>> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val encryptionKeys: Map<String, Set<Delegation>> = emptyMap(),
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,

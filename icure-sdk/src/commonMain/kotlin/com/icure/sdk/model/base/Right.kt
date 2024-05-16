@@ -1,5 +1,6 @@
 package com.icure.sdk.model.base
 
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.String
 import kotlin.collections.Set
@@ -9,7 +10,9 @@ import kotlin.collections.Set
 
 @Serializable
 data class Right(
+	@DefaultValue("emptySet()")
 	public val names: Set<String> = emptySet(),
+	@DefaultValue("emptySet()")
 	public val roles: Set<String> = emptySet(),
 ) {
 	// region Right-Right

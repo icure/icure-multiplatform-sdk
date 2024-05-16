@@ -2,6 +2,7 @@ package com.icure.sdk.model
 
 import com.icure.sdk.model.base.StoredDocument
 import com.icure.sdk.model.embed.DecryptedAddress
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.Boolean
 import kotlin.Long
@@ -17,10 +18,14 @@ data class Insurance(
 	override val id: String,
 	override val rev: String? = null,
 	override val deletionDate: Long? = null,
+	@DefaultValue("emptyMap()")
 	public val name: Map<String, String> = emptyMap(),
-	public val privateInsurance: Boolean,
-	public val hospitalisationInsurance: Boolean,
-	public val ambulatoryInsurance: Boolean,
+	@DefaultValue("false")
+	public val privateInsurance: Boolean = false,
+	@DefaultValue("false")
+	public val hospitalisationInsurance: Boolean = false,
+	@DefaultValue("false")
+	public val ambulatoryInsurance: Boolean = false,
 	public val code: String? = null,
 	public val agreementNumber: String? = null,
 	public val parent: String? = null,

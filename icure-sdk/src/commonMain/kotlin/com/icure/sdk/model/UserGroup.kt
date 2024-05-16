@@ -1,5 +1,6 @@
 package com.icure.sdk.model
 
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.String
 import kotlin.collections.List
@@ -11,6 +12,7 @@ import kotlin.collections.List
 data class UserGroup(
 	public val groupId: String? = null,
 	public val groupName: String? = null,
+	@DefaultValue("emptyList()")
 	public val groupsHierarchy: List<Group> = emptyList(),
 	public val userId: String? = null,
 	public val login: String? = null,

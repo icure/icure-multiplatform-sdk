@@ -25,7 +25,9 @@ data class HealthElementTemplate(
 	override val author: String? = null,
 	override val responsible: String? = null,
 	override val medicalLocationId: String? = null,
+	@DefaultValue("emptySet()")
 	override val tags: Set<CodeStub> = emptySet(),
+	@DefaultValue("emptySet()")
 	override val codes: Set<CodeStub> = emptySet(),
 	override val endOfLife: Long? = null,
 	override val deletionDate: Long? = null,
@@ -33,7 +35,9 @@ data class HealthElementTemplate(
 	public val note: String? = null,
 	@DefaultValue("0")
 	public val status: Int = 0,
-	public val relevant: Boolean,
+	@DefaultValue("true")
+	public val relevant: Boolean = true,
+	@DefaultValue("emptyList()")
 	public val plansOfAction: List<PlanOfActionTemplate> = emptyList(),
 ) : StoredDocument, ICureDocument<String> {
 	// region HealthElementTemplate-HealthElementTemplate

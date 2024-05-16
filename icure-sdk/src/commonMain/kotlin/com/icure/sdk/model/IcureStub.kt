@@ -6,6 +6,7 @@ import com.icure.sdk.model.base.ICureDocument
 import com.icure.sdk.model.base.Versionable
 import com.icure.sdk.model.embed.Delegation
 import com.icure.sdk.model.embed.SecurityMetadata
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.Long
 import kotlin.String
@@ -24,12 +25,18 @@ data class IcureStub(
 	override val author: String? = null,
 	override val responsible: String? = null,
 	override val medicalLocationId: String? = null,
+	@DefaultValue("emptySet()")
 	override val tags: Set<CodeStub> = emptySet(),
+	@DefaultValue("emptySet()")
 	override val codes: Set<CodeStub> = emptySet(),
 	override val endOfLife: Long? = null,
+	@DefaultValue("emptySet()")
 	override val secretForeignKeys: Set<String> = emptySet(),
+	@DefaultValue("emptyMap()")
 	override val cryptedForeignKeys: Map<String, Set<Delegation>> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val delegations: Map<String, Set<Delegation>> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val encryptionKeys: Map<String, Set<Delegation>> = emptyMap(),
 	override val securityMetadata: SecurityMetadata? = null,
 ) : ICureDocument<String>, Versionable<String>, HasEncryptionMetadata {

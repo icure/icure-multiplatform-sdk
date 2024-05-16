@@ -78,7 +78,9 @@ data class DecryptedPlanOfAction(
 	override val author: String? = null,
 	override val responsible: String? = null,
 	override val medicalLocationId: String? = null,
+	@DefaultValue("emptySet()")
 	override val tags: Set<CodeStub> = emptySet(),
+	@DefaultValue("emptySet()")
 	override val codes: Set<CodeStub> = emptySet(),
 	override val endOfLife: Long? = null,
 	override val prescriberId: String? = null,
@@ -93,8 +95,10 @@ data class DecryptedPlanOfAction(
 	override val idClosingContact: String? = null,
 	@DefaultValue("0")
 	override val status: Int = 0,
+	@DefaultValue("emptySet()")
 	override val documentIds: Set<String> = emptySet(),
 	override val numberOfCares: Int? = null,
+	@DefaultValue("emptyList()")
 	override val careTeamMemberships: List<DecryptedCareTeamMembership?> = emptyList(),
 	@DefaultValue("true")
 	override val relevant: Boolean = true,
@@ -113,7 +117,9 @@ data class EncryptedPlanOfAction(
 	override val author: String? = null,
 	override val responsible: String? = null,
 	override val medicalLocationId: String? = null,
+	@DefaultValue("emptySet()")
 	override val tags: Set<CodeStub> = emptySet(),
+	@DefaultValue("emptySet()")
 	override val codes: Set<CodeStub> = emptySet(),
 	override val endOfLife: Long? = null,
 	override val prescriberId: String? = null,
@@ -128,8 +134,10 @@ data class EncryptedPlanOfAction(
 	override val idClosingContact: String? = null,
 	@DefaultValue("0")
 	override val status: Int = 0,
+	@DefaultValue("emptySet()")
 	override val documentIds: Set<String> = emptySet(),
 	override val numberOfCares: Int? = null,
+	@DefaultValue("emptyList()")
 	override val careTeamMemberships: List<EncryptedCareTeamMembership?> = emptyList(),
 	@DefaultValue("true")
 	override val relevant: Boolean = true,

@@ -1,5 +1,6 @@
 package com.icure.sdk.model
 
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.String
 import kotlin.collections.List
@@ -10,6 +11,7 @@ import kotlin.collections.Map
 
 @Serializable
 data class MapOfIds(
+	@DefaultValue("emptyMap()")
 	public val mapOfIds: Map<String, List<String>> = emptyMap(),
 ) {
 	// region MapOfIds-MapOfIds

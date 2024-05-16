@@ -1,5 +1,6 @@
 package com.icure.sdk.model.filter.predicate
 
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.collections.List
 
@@ -8,6 +9,7 @@ import kotlin.collections.List
 
 @Serializable
 data class OrPredicate(
+	@DefaultValue("emptyList()")
 	public val predicates: List<Predicate> = emptyList(),
 ) : Predicate {
 	// region OrPredicate-OrPredicate

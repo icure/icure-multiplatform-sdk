@@ -1,6 +1,7 @@
 package com.icure.sdk.model.embed
 
 import com.icure.sdk.model.specializations.HexString
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.String
 import kotlin.collections.List
@@ -13,6 +14,7 @@ data class Delegation(
 	public val owner: String? = null,
 	public val delegatedTo: String? = null,
 	public val key: HexString? = null,
+	@DefaultValue("emptyList()")
 	public val tags: List<String> = emptyList(),
 ) {
   // region Delegation-Delegation

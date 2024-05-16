@@ -2,6 +2,7 @@ package com.icure.sdk.model.embed
 
 import com.icure.sdk.model.specializations.SecureDelegationKeyString
 import com.icure.sdk.model.specializations.Sha256HexString
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.collections.Map
 
@@ -11,6 +12,7 @@ import kotlin.collections.Map
 @Serializable
 data class SecurityMetadata(
 	public val secureDelegations: Map<SecureDelegationKeyString, SecureDelegation>,
+	@DefaultValue("emptyMap()")
 	public val keysEquivalences: Map<Sha256HexString, Sha256HexString> = emptyMap(),
 ) {
 	// region SecurityMetadata-SecurityMetadata

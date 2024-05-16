@@ -9,6 +9,7 @@ import com.icure.sdk.model.embed.Encryptable
 import com.icure.sdk.model.embed.ReceiptBlobType
 import com.icure.sdk.model.embed.SecurityMetadata
 import com.icure.sdk.model.specializations.Base64String
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.Long
 import kotlin.String
@@ -80,18 +81,26 @@ data class DecryptedReceipt(
 	override val author: String? = null,
 	override val responsible: String? = null,
 	override val medicalLocationId: String? = null,
+	@DefaultValue("emptySet()")
 	override val tags: Set<CodeStub> = emptySet(),
+	@DefaultValue("emptySet()")
 	override val codes: Set<CodeStub> = emptySet(),
 	override val endOfLife: Long? = null,
 	override val deletionDate: Long? = null,
+	@DefaultValue("emptyMap()")
 	override val attachmentIds: Map<ReceiptBlobType, String> = emptyMap(),
+	@DefaultValue("emptyList()")
 	override val references: List<String> = emptyList(),
 	override val documentId: String? = null,
 	override val category: String? = null,
 	override val subCategory: String? = null,
+	@DefaultValue("emptySet()")
 	override val secretForeignKeys: Set<String> = emptySet(),
+	@DefaultValue("emptyMap()")
 	override val cryptedForeignKeys: Map<String, Set<Delegation>> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val delegations: Map<String, Set<Delegation>> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val encryptionKeys: Map<String, Set<Delegation>> = emptyMap(),
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,
@@ -111,18 +120,26 @@ data class EncryptedReceipt(
 	override val author: String? = null,
 	override val responsible: String? = null,
 	override val medicalLocationId: String? = null,
+	@DefaultValue("emptySet()")
 	override val tags: Set<CodeStub> = emptySet(),
+	@DefaultValue("emptySet()")
 	override val codes: Set<CodeStub> = emptySet(),
 	override val endOfLife: Long? = null,
 	override val deletionDate: Long? = null,
+	@DefaultValue("emptyMap()")
 	override val attachmentIds: Map<ReceiptBlobType, String> = emptyMap(),
+	@DefaultValue("emptyList()")
 	override val references: List<String> = emptyList(),
 	override val documentId: String? = null,
 	override val category: String? = null,
 	override val subCategory: String? = null,
+	@DefaultValue("emptySet()")
 	override val secretForeignKeys: Set<String> = emptySet(),
+	@DefaultValue("emptyMap()")
 	override val cryptedForeignKeys: Map<String, Set<Delegation>> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val delegations: Map<String, Set<Delegation>> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val encryptionKeys: Map<String, Set<Delegation>> = emptyMap(),
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,

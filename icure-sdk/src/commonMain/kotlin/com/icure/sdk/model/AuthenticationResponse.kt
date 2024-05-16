@@ -1,5 +1,6 @@
 package com.icure.sdk.model
 
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.Boolean
 import kotlin.String
@@ -11,7 +12,8 @@ import kotlin.String
 class AuthenticationResponse(
 	public val healthcarePartyId: String? = null,
 	public val reason: String? = null,
-	public val successful: Boolean,
+	@DefaultValue("false")
+	public val successful: Boolean = false,
 	public val username: String? = null,
 ) {
 	// region AuthenticationResponse-AuthenticationResponse

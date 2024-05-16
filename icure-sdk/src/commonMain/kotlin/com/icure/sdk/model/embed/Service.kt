@@ -5,6 +5,7 @@ import com.icure.sdk.model.base.ICureDocument
 import com.icure.sdk.model.base.Identifier
 import com.icure.sdk.model.base.LinkQualification
 import com.icure.sdk.model.specializations.Base64String
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.Int
 import kotlin.Long
@@ -96,20 +97,27 @@ sealed interface Service : Encryptable, ICureDocument<String> {
 data class DecryptedService(
 	override val id: String,
 	override val transactionId: String? = null,
+	@DefaultValue("emptyList()")
 	override val identifier: List<Identifier> = emptyList(),
 	override val contactId: String? = null,
 	override val subContactIds: Set<String>? = null,
 	override val plansOfActionIds: Set<String>? = null,
 	override val healthElementsIds: Set<String>? = null,
 	override val formIds: Set<String>? = null,
-	override val secretForeignKeys: Set<String>? = null,
+	@DefaultValue("emptySet()")
+	override val secretForeignKeys: Set<String>? = emptySet(),
+	@DefaultValue("emptyMap()")
 	override val cryptedForeignKeys: Map<String, Set<Delegation>> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val delegations: Map<String, Set<Delegation>> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val encryptionKeys: Map<String, Set<Delegation>> = emptyMap(),
 	override val label: String? = null,
 	override val index: Long? = null,
+	@DefaultValue("emptyMap()")
 	override val content: Map<String, DecryptedContent> = emptyMap(),
 	override val encryptedContent: String? = null,
+	@DefaultValue("emptyMap()")
 	override val textIndexes: Map<String, String> = emptyMap(),
 	override val valueDate: Long? = null,
 	override val openingDate: Long? = null,
@@ -123,10 +131,15 @@ data class DecryptedService(
 	override val medicalLocationId: String? = null,
 	override val comment: String? = null,
 	override val status: Int? = null,
+	@DefaultValue("emptySet()")
 	override val invoicingCodes: Set<String> = emptySet(),
+	@DefaultValue("emptyList()")
 	override val notes: List<Annotation> = emptyList(),
+	@DefaultValue("emptyMap()")
 	override val qualifiedLinks: Map<LinkQualification, Map<String, String>> = emptyMap(),
+	@DefaultValue("emptySet()")
 	override val codes: Set<CodeStub> = emptySet(),
+	@DefaultValue("emptySet()")
 	override val tags: Set<CodeStub> = emptySet(),
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,
@@ -140,20 +153,27 @@ data class DecryptedService(
 data class EncryptedService(
 	override val id: String,
 	override val transactionId: String? = null,
+	@DefaultValue("emptyList()")
 	override val identifier: List<Identifier> = emptyList(),
 	override val contactId: String? = null,
 	override val subContactIds: Set<String>? = null,
 	override val plansOfActionIds: Set<String>? = null,
 	override val healthElementsIds: Set<String>? = null,
 	override val formIds: Set<String>? = null,
-	override val secretForeignKeys: Set<String>? = null,
+	@DefaultValue("emptySet()")
+	override val secretForeignKeys: Set<String>? = emptySet(),
+	@DefaultValue("emptyMap()")
 	override val cryptedForeignKeys: Map<String, Set<Delegation>> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val delegations: Map<String, Set<Delegation>> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val encryptionKeys: Map<String, Set<Delegation>> = emptyMap(),
 	override val label: String? = null,
 	override val index: Long? = null,
+	@DefaultValue("emptyMap()")
 	override val content: Map<String, EncryptedContent> = emptyMap(),
 	override val encryptedContent: String? = null,
+	@DefaultValue("emptyMap()")
 	override val textIndexes: Map<String, String> = emptyMap(),
 	override val valueDate: Long? = null,
 	override val openingDate: Long? = null,
@@ -167,10 +187,15 @@ data class EncryptedService(
 	override val medicalLocationId: String? = null,
 	override val comment: String? = null,
 	override val status: Int? = null,
+	@DefaultValue("emptySet()")
 	override val invoicingCodes: Set<String> = emptySet(),
+	@DefaultValue("emptyList()")
 	override val notes: List<Annotation> = emptyList(),
+	@DefaultValue("emptyMap()")
 	override val qualifiedLinks: Map<LinkQualification, Map<String, String>> = emptyMap(),
+	@DefaultValue("emptySet()")
 	override val codes: Set<CodeStub> = emptySet(),
+	@DefaultValue("emptySet()")
 	override val tags: Set<CodeStub> = emptySet(),
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,

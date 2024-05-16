@@ -10,6 +10,7 @@ import com.icure.sdk.model.base.StoredDocument
 import com.icure.sdk.model.specializations.AesExchangeKeyEncryptionKeypairIdentifier
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.model.specializations.SpkiHexString
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.ByteArray
 import kotlin.Long
@@ -26,12 +27,15 @@ data class Device(
 	override val id: String,
 	override val rev: String? = null,
 	override val deletionDate: Long? = null,
+	@DefaultValue("emptyList()")
 	public val identifiers: List<Identifier> = emptyList(),
 	override val created: Long? = null,
 	override val modified: Long? = null,
 	override val author: String? = null,
 	override val responsible: String? = null,
+	@DefaultValue("emptySet()")
 	override val tags: Set<CodeStub> = emptySet(),
+	@DefaultValue("emptySet()")
 	override val codes: Set<CodeStub> = emptySet(),
 	override val endOfLife: Long? = null,
 	override val medicalLocationId: String? = null,
@@ -43,14 +47,20 @@ data class Device(
 	public val serialNumber: String? = null,
 	public val parentId: String? = null,
 	public val picture: ByteArray? = null,
+	@DefaultValue("emptySet()")
 	override val properties: Set<DecryptedPropertyStub> = emptySet(),
+	@DefaultValue("emptyMap()")
 	override val hcPartyKeys: Map<String, List<HexString>> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val aesExchangeKeys: Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> =
 		emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val transferKeys: Map<AesExchangeKeyEncryptionKeypairIdentifier, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>> =
 		emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val privateKeyShamirPartitions: Map<String, HexString> = emptyMap(),
 	override val publicKey: SpkiHexString? = null,
+	@DefaultValue("emptySet()")
 	override val publicKeysForOaepWithSha256: Set<SpkiHexString> = emptySet(),
 ) : StoredDocument, ICureDocument<String>, Named, CryptoActor, DataOwner {
 	// region Device-Device

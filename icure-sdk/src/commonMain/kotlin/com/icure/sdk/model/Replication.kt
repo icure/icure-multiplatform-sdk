@@ -4,6 +4,7 @@ import com.icure.sdk.model.base.Identifiable
 import com.icure.sdk.model.base.Named
 import com.icure.sdk.model.base.StoredDocument
 import com.icure.sdk.model.embed.DatabaseSynchronization
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.Long
 import kotlin.String
@@ -19,6 +20,7 @@ data class Replication(
 	override val deletionDate: Long? = null,
 	override val name: String? = null,
 	public val context: String? = null,
+	@DefaultValue("emptyList()")
 	public val databaseSynchronizations: List<DatabaseSynchronization> = emptyList(),
 ) : StoredDocument, Identifiable<String>, Named {
 	// region Replication-Replication

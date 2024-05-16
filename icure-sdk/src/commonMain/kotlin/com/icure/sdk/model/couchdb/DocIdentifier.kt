@@ -8,8 +8,8 @@ import kotlin.String
 
 @Serializable
 data class DocIdentifier(
-	public val id: String?,
-	public val rev: String?,
+	public val id: String? = null,
+	public val rev: String? = null,
 ) {
 	// region DocIdentifier-DocIdentifier
 

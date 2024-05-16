@@ -2,6 +2,7 @@ package com.icure.sdk.model.requests
 
 import com.icure.sdk.model.specializations.Base64String
 import com.icure.sdk.model.specializations.SecureDelegationKeyString
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.collections.Map
 import com.icure.sdk.utils.InternalIcureApi
@@ -12,8 +13,11 @@ import com.icure.sdk.utils.InternalIcureApi
 @Serializable
 data class EntitySharedMetadataUpdateRequest(
 	public val metadataAccessControlHash: SecureDelegationKeyString,
+	@DefaultValue("emptyMap()")
 	public val secretIds: Map<Base64String, EntryUpdateType> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	public val encryptionKeys: Map<Base64String, EntryUpdateType> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	public val owningEntityIds: Map<Base64String, EntryUpdateType> = emptyMap(),
 ) {
 	// region EntitySharedMetadataUpdateRequest-EntitySharedMetadataUpdateRequest
