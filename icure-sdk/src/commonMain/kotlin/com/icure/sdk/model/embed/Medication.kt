@@ -19,6 +19,7 @@ data class Medication(
 	public val medicinalProduct: Medicinalproduct? = null,
 	public val numberOfPackages: Int? = null,
 	public val batch: String? = null,
+	public val expirationDate: Long? = null,
 	public val instructionForPatient: String? = null,
 	public val instructionForReimbursement: String? = null,
 	public val commentForDelivery: String? = null,
