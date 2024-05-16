@@ -3,6 +3,7 @@ package com.icure.sdk.model
 import com.icure.sdk.model.base.Named
 import com.icure.sdk.model.base.StoredDocument
 import com.icure.sdk.model.embed.DecryptedAddress
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.Boolean
 import kotlin.Long
@@ -29,8 +30,11 @@ data class MedicalLocation(
 	public val nihii: String? = null,
 	public val ssin: String? = null,
 	public val address: DecryptedAddress? = null,
+	@DefaultValue("emptySet()")
 	public val agendaIds: Set<String> = emptySet(),
+	@DefaultValue("emptyMap()")
 	public val options: Map<String, String> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	public val publicInformations: Map<String, String> = emptyMap(),
 ) : StoredDocument, Named {
 	// region MedicalLocation-MedicalLocation

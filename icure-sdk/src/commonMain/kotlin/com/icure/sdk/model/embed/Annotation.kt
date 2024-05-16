@@ -2,6 +2,7 @@ package com.icure.sdk.model.embed
 
 import com.icure.sdk.model.base.CodeStub
 import com.icure.sdk.model.base.Identifiable
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.Boolean
 import kotlin.Long
@@ -19,9 +20,11 @@ data class Annotation(
 	public val created: Long? = null,
 	public val modified: Long? = null,
 	public val text: String? = null,
+	@DefaultValue("emptyMap()")
 	public val markdown: Map<String, String> = emptyMap(),
 	public val location: String? = null,
 	public val confidential: Boolean? = null,
+	@DefaultValue("emptySet()")
 	public val tags: Set<CodeStub> = emptySet(),
 	public val encryptedSelf: String? = null,
 ) : Identifiable<String> {

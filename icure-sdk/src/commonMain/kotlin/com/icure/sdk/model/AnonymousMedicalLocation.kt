@@ -1,5 +1,6 @@
 package com.icure.sdk.model
 
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.String
 import kotlin.collections.Map
@@ -10,6 +11,7 @@ import kotlin.collections.Map
 @Serializable
 data class AnonymousMedicalLocation(
 	public val id: String,
+	@DefaultValue("emptyMap()")
 	public val publicInformations: Map<String, String> = emptyMap(),
 ) {
 	// region AnonymousMedicalLocation-AnonymousMedicalLocation

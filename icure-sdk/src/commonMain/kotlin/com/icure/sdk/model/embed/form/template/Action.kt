@@ -1,5 +1,6 @@
 package com.icure.sdk.model.embed.form.template
 
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.String
 import kotlin.collections.List
@@ -9,9 +10,11 @@ import kotlin.collections.List
 
 @Serializable
 data class Action(
-	public val launchers: List<Launcher>? = null,
+	@DefaultValue("emptyList()")
+	public val launchers: List<Launcher>? = emptyList(),
 	public val expression: String? = null,
-	public val states: List<State>? = null,
+	@DefaultValue("emptyList()")
+	public val states: List<State>? = emptyList(),
 ) {
 	// region Action-Action
 

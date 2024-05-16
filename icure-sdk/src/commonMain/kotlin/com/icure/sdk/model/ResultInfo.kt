@@ -2,6 +2,7 @@ package com.icure.sdk.model
 
 import com.icure.sdk.model.base.CodeStub
 import com.icure.sdk.model.embed.DecryptedService
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.Boolean
 import kotlin.Long
@@ -26,6 +27,7 @@ class ResultInfo(
 	public val demandDate: Long? = null,
 	public val labo: String? = null,
 	public val engine: String? = null,
+	@DefaultValue("emptySet()")
 	public val codes: Set<CodeStub> = emptySet(),
 	public val services: List<DecryptedService>? = null,
 ) {

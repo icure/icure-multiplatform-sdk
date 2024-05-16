@@ -1,6 +1,7 @@
 package com.icure.sdk.model.embed
 
 import com.icure.sdk.model.specializations.Base64String
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.String
 import kotlin.collections.List
@@ -28,6 +29,7 @@ data class DecryptedFlatRateTarification(
 	override val code: String? = null,
 	override val flatRateType: FlatRateType? = null,
 	override val label: Map<String, String>? = null,
+	@DefaultValue("emptyList()")
 	override val valorisations: List<DecryptedValorisation> = emptyList(),
 	override val encryptedSelf: Base64String? = null,
 ) : FlatRateTarification {
@@ -41,6 +43,7 @@ data class EncryptedFlatRateTarification(
 	override val code: String? = null,
 	override val flatRateType: FlatRateType? = null,
 	override val label: Map<String, String>? = null,
+	@DefaultValue("emptyList()")
 	override val valorisations: List<EncryptedValorisation> = emptyList(),
 	override val encryptedSelf: Base64String? = null,
 ) : FlatRateTarification {

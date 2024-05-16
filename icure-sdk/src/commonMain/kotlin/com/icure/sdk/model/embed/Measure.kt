@@ -1,6 +1,7 @@
 package com.icure.sdk.model.embed
 
 import com.icure.sdk.model.base.CodeStub
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.Double
 import kotlin.Int
@@ -23,6 +24,7 @@ data class Measure(
 	public val comment: String? = null,
 	public val comparator: String? = null,
 	public val sign: String? = null,
+	@DefaultValue("emptyList()")
 	public val referenceRanges: List<ReferenceRange> = emptyList(),
 ) {
 	// region Measure-Measure

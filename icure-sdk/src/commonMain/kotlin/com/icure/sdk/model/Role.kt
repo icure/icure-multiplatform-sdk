@@ -2,6 +2,7 @@ package com.icure.sdk.model
 
 import com.icure.sdk.model.base.Principal
 import com.icure.sdk.model.base.StoredDocument
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.Long
 import kotlin.String
@@ -16,9 +17,10 @@ data class Role(
 	override val rev: String? = null,
 	override val deletionDate: Long? = null,
 	override val name: String? = null,
+	@DefaultValue("emptySet()")
 	public val permissions: Set<String> = emptySet(),
 ) : StoredDocument, Principal {
-	override val properties: Set<DecryptedPropertyStub> = emptySet()
+	override val properties: Set<DecryptedPropertyStub>
 	// region Role-Role
 
 	// endregion

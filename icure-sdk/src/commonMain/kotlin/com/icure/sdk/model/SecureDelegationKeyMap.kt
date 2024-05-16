@@ -6,6 +6,7 @@ import com.icure.sdk.model.embed.Delegation
 import com.icure.sdk.model.embed.Encryptable
 import com.icure.sdk.model.embed.SecurityMetadata
 import com.icure.sdk.model.specializations.Base64String
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.Long
 import kotlin.String
@@ -48,11 +49,15 @@ data class DecryptedSecureDelegationKeyMap(
 	override val id: String,
 	override val rev: String? = null,
 	override val delegationKey: String,
-	override val delegator: String?,
-	override val `delegate`: String?,
+	override val delegator: String? = null,
+	override val `delegate`: String? = null,
+	@DefaultValue("emptySet()")
 	override val secretForeignKeys: Set<String> = emptySet(),
+	@DefaultValue("emptyMap()")
 	override val cryptedForeignKeys: Map<String, Set<Delegation>> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val delegations: Map<String, Set<Delegation>> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val encryptionKeys: Map<String, Set<Delegation>> = emptyMap(),
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,
@@ -69,11 +74,15 @@ data class EncryptedSecureDelegationKeyMap(
 	override val id: String,
 	override val rev: String? = null,
 	override val delegationKey: String,
-	override val delegator: String?,
-	override val `delegate`: String?,
+	override val delegator: String? = null,
+	override val `delegate`: String? = null,
+	@DefaultValue("emptySet()")
 	override val secretForeignKeys: Set<String> = emptySet(),
+	@DefaultValue("emptyMap()")
 	override val cryptedForeignKeys: Map<String, Set<Delegation>> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val delegations: Map<String, Set<Delegation>> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val encryptionKeys: Map<String, Set<Delegation>> = emptyMap(),
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,
