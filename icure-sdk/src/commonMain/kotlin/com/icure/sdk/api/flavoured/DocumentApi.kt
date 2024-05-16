@@ -14,7 +14,7 @@ import com.icure.sdk.model.Document
 import com.icure.sdk.model.EncryptedDocument
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.Message
-import com.icure.sdk.model.PaginatedList
+import com.icure.sdk.model.Patient
 import com.icure.sdk.model.User
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.embed.AccessLevel
@@ -26,6 +26,8 @@ import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.currentEpochMs
+import com.icure.sdk.utils.pagination.IdsPageIterator
+import com.icure.sdk.utils.pagination.PaginatedListIterator
 import kotlinx.serialization.json.decodeFromJsonElement
 
 @OptIn(InternalIcureApi::class)
@@ -87,6 +89,14 @@ interface DocumentFlavouredApi<E : Document> : DocumentBasicFlavouredApi<E> {
 		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
 		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
 	): SimpleShareResult<E>
+
+	suspend fun findDocumentsByHcPartyPatient(
+		hcPartyId: String,
+		patient: Patient,
+		startDate: Long? = null,
+		endDate: Long? = null,
+		descending: Boolean? = null,
+	): PaginatedListIterator<E>
 }
 
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
@@ -207,6 +217,24 @@ private abstract class AbstractDocumentFlavouredApi<E : Document>(
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
 		}
+
+	override suspend fun findDocumentsByHcPartyPatient(
+		hcPartyId: String,
+		patient: Patient,
+		startDate: Long?,
+		endDate: Long?,
+		descending: Boolean?
+	): PaginatedListIterator<E> = IdsPageIterator(
+		rawApi.listDocumentIdsByDataOwnerPatientCreated(
+			dataOwnerId = hcPartyId,
+			startDate = startDate,
+			endDate = endDate,
+			descending = descending,
+			secretPatientKeys = ListOfIds(crypto.entity.secretIdsOf(patient.withTypeInfo(), null).toList())
+		).successBody()
+	) { ids ->
+		rawApi.getDocuments(ListOfIds(ids)).successBody().map { maybeDecrypt(it) }
+	}
 }
 
 @InternalIcureApi
