@@ -3,6 +3,7 @@ package com.icure.sdk.model
 import com.icure.sdk.model.base.StoredDocument
 import com.icure.sdk.model.constants.PropertyTypeScope
 import com.icure.sdk.model.embed.TypedValuesType
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.Boolean
 import kotlin.Long
@@ -19,9 +20,11 @@ data class PropertyType(
 	public val identifier: String,
 	public val type: TypedValuesType? = null,
 	public val scope: PropertyTypeScope? = null,
-	public val unique: Boolean,
+	@DefaultValue("false")
+	public val unique: Boolean = false,
 	public val editor: String? = null,
-	public val localized: Boolean,
+	@DefaultValue("false")
+	public val localized: Boolean = false,
 ) : StoredDocument {
 	// region PropertyType-PropertyType
 

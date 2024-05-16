@@ -19,10 +19,12 @@ data class AppointmentTypeAndPlace(
 	public val color: String? = null,
 	@DefaultValue("0")
 	public val duration: Int = 0,
-	public val subjectByLanguage: Map<String, String>? = null,
-	public val placeId: String?,
-	public val address: DecryptedAddress?,
-	public val acceptsNewPatients: Boolean,
+	@DefaultValue("emptyMap()")
+	public val subjectByLanguage: Map<String, String>? = emptyMap(),
+	public val placeId: String? = null,
+	public val address: DecryptedAddress? = null,
+	@DefaultValue("true")
+	public val acceptsNewPatients: Boolean = true,
 ) {
 	// region AppointmentTypeAndPlace-AppointmentTypeAndPlace
 

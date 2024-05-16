@@ -23,8 +23,11 @@ data class CalendarItemType(
 	public val duration: Int = 0,
 	public val externalRef: String? = null,
 	public val mikronoId: String? = null,
+	@DefaultValue("emptySet()")
 	public val docIds: Set<String> = emptySet(),
+	@DefaultValue("emptyMap()")
 	public val otherInfos: Map<String, String> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	public val subjectByLanguage: Map<String, String> = emptyMap(),
 ) : StoredDocument {
 	// region CalendarItemType-CalendarItemType

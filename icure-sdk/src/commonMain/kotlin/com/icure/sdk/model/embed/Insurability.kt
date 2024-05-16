@@ -1,6 +1,7 @@
 package com.icure.sdk.model.embed
 
 import com.icure.sdk.model.specializations.Base64String
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.Boolean
 import kotlin.Long
@@ -36,6 +37,7 @@ sealed interface Insurability : Encryptable {
 
 @Serializable
 data class DecryptedInsurability(
+	@DefaultValue("emptyMap()")
 	override val parameters: Map<String, String> = emptyMap(),
 	override val hospitalisation: Boolean? = null,
 	override val ambulatory: Boolean? = null,
@@ -54,6 +56,7 @@ data class DecryptedInsurability(
 
 @Serializable
 data class EncryptedInsurability(
+	@DefaultValue("emptyMap()")
 	override val parameters: Map<String, String> = emptyMap(),
 	override val hospitalisation: Boolean? = null,
 	override val ambulatory: Boolean? = null,

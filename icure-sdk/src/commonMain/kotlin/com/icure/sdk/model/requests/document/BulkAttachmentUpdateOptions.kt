@@ -1,5 +1,6 @@
 package com.icure.sdk.model.requests.document
 
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.Boolean
 import kotlin.String
@@ -12,11 +13,14 @@ import kotlin.collections.Set
 
 @Serializable
 data class BulkAttachmentUpdateOptions(
+	@DefaultValue("emptyMap()")
 	public val updateAttachmentsMetadata: Map<String, AttachmentMetadata> = emptyMap(),
+	@DefaultValue("emptySet()")
 	public val deleteAttachments: Set<String> = emptySet(),
 ) {
 	@Serializable
 	public data class AttachmentMetadata(
+		@DefaultValue("emptyList()")
 		public val utis: List<String> = emptyList(),
 		public val dataIsEncrypted: Boolean? = null,
 	)

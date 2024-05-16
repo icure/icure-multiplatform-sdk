@@ -2,6 +2,7 @@ package com.icure.sdk.model.filter.patient
 
 import com.icure.sdk.model.Patient
 import com.icure.sdk.model.filter.AbstractFilter
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlin.Boolean
@@ -14,7 +15,8 @@ import kotlin.String
 @Serializable
 data class PatientByHcPartyAndActiveFilter(
 	override val desc: String? = null,
-	public val active: Boolean,
+	@DefaultValue("false")
+	public val active: Boolean = false,
 	public val healthcarePartyId: String? = null,
 ) : AbstractFilter<Patient> {
 	// region PatientByHcPartyAndActiveFilter-PatientByHcPartyAndActiveFilter

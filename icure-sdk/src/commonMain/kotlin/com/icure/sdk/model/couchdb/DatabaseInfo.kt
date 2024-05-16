@@ -11,15 +11,15 @@ import kotlin.String
 @Serializable
 data class DatabaseInfo(
 	public val id: String,
-	public val updateSeq: String?,
-	public val fileSize: Long?,
-	public val externalSize: Long?,
-	public val activeSize: Long?,
-	public val docs: Long?,
-	public val q: Int?,
-	public val n: Int?,
-	public val w: Int?,
-	public val r: Int?,
+	public val updateSeq: String? = null,
+	public val fileSize: Long? = null,
+	public val externalSize: Long? = null,
+	public val activeSize: Long? = null,
+	public val docs: Long? = null,
+	public val q: Int? = null,
+	public val n: Int? = null,
+	public val w: Int? = null,
+	public val r: Int? = null,
 ) {
 	// region DatabaseInfo-DatabaseInfo
 

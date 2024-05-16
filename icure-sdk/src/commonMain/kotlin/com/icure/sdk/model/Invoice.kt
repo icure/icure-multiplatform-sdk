@@ -17,6 +17,7 @@ import com.icure.sdk.model.embed.Payment
 import com.icure.sdk.model.embed.PaymentType
 import com.icure.sdk.model.embed.SecurityMetadata
 import com.icure.sdk.model.specializations.Base64String
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.Boolean
 import kotlin.Double
@@ -189,14 +190,18 @@ data class DecryptedInvoice(
 	override val author: String? = null,
 	override val responsible: String? = null,
 	override val medicalLocationId: String? = null,
+	@DefaultValue("emptySet()")
 	override val tags: Set<CodeStub> = emptySet(),
+	@DefaultValue("emptySet()")
 	override val codes: Set<CodeStub> = emptySet(),
 	override val endOfLife: Long? = null,
 	override val deletionDate: Long? = null,
 	override val invoiceDate: Long? = null,
 	override val sentDate: Long? = null,
 	override val printedDate: Long? = null,
+	@DefaultValue("emptyList()")
 	override val invoicingCodes: List<DecryptedInvoicingCode> = emptyList(),
+	@DefaultValue("emptyMap()")
 	override val receipts: Map<String, String> = emptyMap(),
 	override val recipientType: String? = null,
 	override val recipientId: String? = null,
@@ -246,10 +251,15 @@ data class DecryptedInvoice(
 	override val locationService: Int? = null,
 	override val cancelReason: String? = null,
 	override val cancelDate: Long? = null,
+	@DefaultValue("emptyMap()")
 	override val options: Map<String, String> = emptyMap(),
+	@DefaultValue("emptySet()")
 	override val secretForeignKeys: Set<String> = emptySet(),
+	@DefaultValue("emptyMap()")
 	override val cryptedForeignKeys: Map<String, Set<Delegation>> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val delegations: Map<String, Set<Delegation>> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val encryptionKeys: Map<String, Set<Delegation>> = emptyMap(),
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,
@@ -269,14 +279,18 @@ data class EncryptedInvoice(
 	override val author: String? = null,
 	override val responsible: String? = null,
 	override val medicalLocationId: String? = null,
+	@DefaultValue("emptySet()")
 	override val tags: Set<CodeStub> = emptySet(),
+	@DefaultValue("emptySet()")
 	override val codes: Set<CodeStub> = emptySet(),
 	override val endOfLife: Long? = null,
 	override val deletionDate: Long? = null,
 	override val invoiceDate: Long? = null,
 	override val sentDate: Long? = null,
 	override val printedDate: Long? = null,
+	@DefaultValue("emptyList()")
 	override val invoicingCodes: List<EncryptedInvoicingCode> = emptyList(),
+	@DefaultValue("emptyMap()")
 	override val receipts: Map<String, String> = emptyMap(),
 	override val recipientType: String? = null,
 	override val recipientId: String? = null,
@@ -326,10 +340,15 @@ data class EncryptedInvoice(
 	override val locationService: Int? = null,
 	override val cancelReason: String? = null,
 	override val cancelDate: Long? = null,
+	@DefaultValue("emptyMap()")
 	override val options: Map<String, String> = emptyMap(),
+	@DefaultValue("emptySet()")
 	override val secretForeignKeys: Set<String> = emptySet(),
+	@DefaultValue("emptyMap()")
 	override val cryptedForeignKeys: Map<String, Set<Delegation>> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val delegations: Map<String, Set<Delegation>> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val encryptionKeys: Map<String, Set<Delegation>> = emptyMap(),
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,

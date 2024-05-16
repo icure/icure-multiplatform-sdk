@@ -75,23 +75,31 @@ sealed interface MaintenanceTask :
 data class DecryptedMaintenanceTask(
 	override val id: String,
 	override val rev: String? = null,
+	@DefaultValue("emptyList()")
 	override val identifier: List<Identifier> = emptyList(),
 	override val created: Long? = null,
 	override val modified: Long? = null,
 	override val author: String? = null,
 	override val responsible: String? = null,
 	override val medicalLocationId: String? = null,
+	@DefaultValue("emptySet()")
 	override val tags: Set<CodeStub> = emptySet(),
+	@DefaultValue("emptySet()")
 	override val codes: Set<CodeStub> = emptySet(),
 	override val endOfLife: Long? = null,
 	override val deletionDate: Long? = null,
 	override val taskType: String? = null,
+	@DefaultValue("emptySet()")
 	override val properties: Set<DecryptedPropertyStub> = emptySet(),
 	@DefaultValue("com.icure.sdk.model.embed.TaskStatus.Pending")
 	override val status: TaskStatus = TaskStatus.Pending,
+	@DefaultValue("emptySet()")
 	override val secretForeignKeys: Set<String> = emptySet(),
+	@DefaultValue("emptyMap()")
 	override val cryptedForeignKeys: Map<String, Set<Delegation>> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val delegations: Map<String, Set<Delegation>> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val encryptionKeys: Map<String, Set<Delegation>> = emptyMap(),
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,
@@ -106,23 +114,31 @@ override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secret
 data class EncryptedMaintenanceTask(
 	override val id: String,
 	override val rev: String? = null,
+	@DefaultValue("emptyList()")
 	override val identifier: List<Identifier> = emptyList(),
 	override val created: Long? = null,
 	override val modified: Long? = null,
 	override val author: String? = null,
 	override val responsible: String? = null,
 	override val medicalLocationId: String? = null,
+	@DefaultValue("emptySet()")
 	override val tags: Set<CodeStub> = emptySet(),
+	@DefaultValue("emptySet()")
 	override val codes: Set<CodeStub> = emptySet(),
 	override val endOfLife: Long? = null,
 	override val deletionDate: Long? = null,
 	override val taskType: String? = null,
+	@DefaultValue("emptySet()")
 	override val properties: Set<EncryptedPropertyStub> = emptySet(),
 	@DefaultValue("com.icure.sdk.model.embed.TaskStatus.Pending")
 	override val status: TaskStatus = TaskStatus.Pending,
+	@DefaultValue("emptySet()")
 	override val secretForeignKeys: Set<String> = emptySet(),
+	@DefaultValue("emptyMap()")
 	override val cryptedForeignKeys: Map<String, Set<Delegation>> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val delegations: Map<String, Set<Delegation>> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val encryptionKeys: Map<String, Set<Delegation>> = emptyMap(),
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,

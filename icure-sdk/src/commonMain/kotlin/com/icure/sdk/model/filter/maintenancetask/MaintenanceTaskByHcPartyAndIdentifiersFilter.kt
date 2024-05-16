@@ -3,6 +3,7 @@ package com.icure.sdk.model.filter.maintenancetask
 import com.icure.sdk.model.MaintenanceTask
 import com.icure.sdk.model.base.Identifier
 import com.icure.sdk.model.filter.AbstractFilter
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlin.String
@@ -15,6 +16,7 @@ import kotlin.collections.List
 @Serializable
 data class MaintenanceTaskByHcPartyAndIdentifiersFilter(
 	public val healthcarePartyId: String? = null,
+	@DefaultValue("emptyList()")
 	public val identifiers: List<Identifier> = emptyList(),
 	override val desc: String? = null,
 ) : AbstractFilter<MaintenanceTask> {

@@ -1,6 +1,7 @@
 package com.icure.sdk.model
 
 import com.icure.sdk.model.base.StoredDocument
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
 import kotlin.Boolean
@@ -23,6 +24,7 @@ data class EntityTemplate(
 	public val entityType: String? = null,
 	public val subType: String? = null,
 	public val defaultTemplate: Boolean? = null,
+	@DefaultValue("emptyList()")
 	public val entity: List<JsonElement> = emptyList(),
 ) : StoredDocument {
 	// region EntityTemplate-EntityTemplate

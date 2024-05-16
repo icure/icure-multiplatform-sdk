@@ -2,6 +2,7 @@ package com.icure.sdk.model.filter.service
 
 import com.icure.sdk.model.embed.Service
 import com.icure.sdk.model.filter.AbstractFilter
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlin.Boolean
@@ -23,7 +24,8 @@ data class ServiceByHcPartyTagCodeDateFilter(
 	public val codeCode: String? = null,
 	public val startValueDate: Long? = null,
 	public val endValueDate: Long? = null,
-	public val descending: Boolean,
+	@DefaultValue("false")
+	public val descending: Boolean = false,
 ) : AbstractFilter<Service> {
 	// region ServiceByHcPartyTagCodeDateFilter-ServiceByHcPartyTagCodeDateFilter
 

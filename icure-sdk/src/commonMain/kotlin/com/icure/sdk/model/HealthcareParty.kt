@@ -20,6 +20,7 @@ import com.icure.sdk.model.embed.TelecomType
 import com.icure.sdk.model.specializations.AesExchangeKeyEncryptionKeypairIdentifier
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.model.specializations.SpkiHexString
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.ByteArray
 import kotlin.Int
@@ -42,12 +43,16 @@ data class HealthcareParty(
 	public val created: Long? = null,
 	public val modified: Long? = null,
 	override val deletionDate: Long? = null,
+	@DefaultValue("emptyList()")
 	public val identifier: List<Identifier> = emptyList(),
+	@DefaultValue("emptySet()")
 	override val tags: Set<CodeStub> = emptySet(),
+	@DefaultValue("emptySet()")
 	override val codes: Set<CodeStub> = emptySet(),
 	override val name: String? = null,
 	override val lastName: String? = null,
 	override val firstName: String? = null,
+	@DefaultValue("emptyList()")
 	override val names: List<PersonName> = emptyList(),
 	override val gender: Gender? = null,
 	override val civility: String? = null,
@@ -66,33 +71,50 @@ data class HealthcareParty(
 	public val nihii: String? = null,
 	public val nihiiSpecCode: String? = null,
 	public val ssin: String? = null,
+	@DefaultValue("emptyList()")
 	override val addresses: List<DecryptedAddress> = emptyList(),
+	@DefaultValue("emptyList()")
 	override val languages: List<String> = emptyList(),
 	public val picture: ByteArray? = null,
+	@DefaultValue("emptySet()")
 	public val statuses: Set<HealthcarePartyStatus> = emptySet(),
+	@DefaultValue("emptyList()")
 	public val statusHistory: List<HealthcarePartyHistoryStatus> = emptyList(),
+	@DefaultValue("emptySet()")
 	public val specialityCodes: Set<CodeStub> = emptySet(),
+	@DefaultValue("emptyMap()")
 	public val sendFormats: Map<TelecomType, String> = emptyMap(),
 	public val notes: String? = null,
+	@DefaultValue("emptyList()")
 	public val financialInstitutionInformation: List<DecryptedFinancialInstitutionInformation> =
 		emptyList(),
-	public val descr: Map<String, String>? = null,
+	@DefaultValue("emptyMap()")
+	public val descr: Map<String, String>? = emptyMap(),
 	public val billingType: String? = null,
 	public val type: String? = null,
 	public val contactPerson: String? = null,
 	public val contactPersonHcpId: String? = null,
 	public val supervisorId: String? = null,
+	@DefaultValue("emptyList()")
 	public val flatRateTarifications: List<DecryptedFlatRateTarification> = emptyList(),
+	@DefaultValue("emptyMap()")
 	public val importedData: Map<String, String> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	public val options: Map<String, String> = emptyMap(),
+	@DefaultValue("emptySet()")
 	override val properties: Set<DecryptedPropertyStub> = emptySet(),
+	@DefaultValue("emptyMap()")
 	override val hcPartyKeys: Map<String, List<HexString>> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val aesExchangeKeys: Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> =
 		emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val transferKeys: Map<AesExchangeKeyEncryptionKeypairIdentifier, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>> =
 		emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val privateKeyShamirPartitions: Map<String, HexString> = emptyMap(),
 	override val publicKey: SpkiHexString? = null,
+	@DefaultValue("emptySet()")
 	override val publicKeysForOaepWithSha256: Set<SpkiHexString> = emptySet(),
 ) : StoredDocument, Named, Person, CryptoActor, DataOwner, HasCodes, HasTags {
 	// region HealthcareParty-HealthcareParty

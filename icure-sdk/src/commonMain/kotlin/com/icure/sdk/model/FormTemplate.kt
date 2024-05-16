@@ -4,6 +4,7 @@ import com.icure.sdk.model.base.CodeStub
 import com.icure.sdk.model.base.StoredDocument
 import com.icure.sdk.model.embed.DocumentGroup
 import com.icure.sdk.model.embed.form.template.FormTemplateLayout
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.ByteArray
 import kotlin.Long
@@ -32,7 +33,9 @@ data class FormTemplate(
 	public val shortReport: String? = null,
 	public val mediumReport: String? = null,
 	public val longReport: String? = null,
+	@DefaultValue("emptySet()")
 	public val reports: Set<String> = emptySet(),
+	@DefaultValue("emptySet()")
 	public val tags: Set<CodeStub> = emptySet(),
 	public val layoutAttachmentId: String? = null,
 	public val templateLayoutAttachmentId: String? = null,

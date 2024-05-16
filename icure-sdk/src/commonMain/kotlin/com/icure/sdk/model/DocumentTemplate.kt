@@ -6,6 +6,7 @@ import com.icure.sdk.model.base.ReportVersion
 import com.icure.sdk.model.base.StoredDocument
 import com.icure.sdk.model.embed.DocumentGroup
 import com.icure.sdk.model.embed.DocumentType
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.ByteArray
 import kotlin.Long
@@ -24,7 +25,9 @@ data class DocumentTemplate(
 	override val author: String? = null,
 	override val responsible: String? = null,
 	override val medicalLocationId: String? = null,
+	@DefaultValue("emptySet()")
 	override val tags: Set<CodeStub> = emptySet(),
+	@DefaultValue("emptySet()")
 	override val codes: Set<CodeStub> = emptySet(),
 	override val endOfLife: Long? = null,
 	override val deletionDate: Long? = null,
@@ -32,6 +35,7 @@ data class DocumentTemplate(
 	public val documentType: DocumentType? = null,
 	public val mainUti: String? = null,
 	public val name: String? = null,
+	@DefaultValue("emptySet()")
 	public val otherUtis: Set<String> = emptySet(),
 	public val attachmentId: String? = null,
 	public val version: ReportVersion? = null,

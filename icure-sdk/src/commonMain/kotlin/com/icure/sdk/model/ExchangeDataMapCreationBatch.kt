@@ -3,6 +3,7 @@ package com.icure.sdk.model
 import com.icure.sdk.model.specializations.AccessControlKeyHexString
 import com.icure.sdk.model.specializations.Base64String
 import com.icure.sdk.model.specializations.KeypairFingerprintV2String
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.collections.Map
 
@@ -11,6 +12,7 @@ import kotlin.collections.Map
 
 @Serializable
 data class ExchangeDataMapCreationBatch(
+	@DefaultValue("emptyMap()")
 	public val batch: Map<AccessControlKeyHexString, Map<KeypairFingerprintV2String, Base64String>> =
 		emptyMap(),
 ) {

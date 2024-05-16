@@ -1,5 +1,6 @@
 package com.icure.sdk.model
 
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.String
 import kotlin.collections.List
@@ -9,6 +10,7 @@ import kotlin.collections.List
 
 @Serializable
 data class ListOfIds(
+	@DefaultValue("emptyList()")
 	public val ids: List<String> = emptyList(),
 ) {
 	// region ListOfIds-ListOfIds

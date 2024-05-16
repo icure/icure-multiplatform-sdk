@@ -122,7 +122,9 @@ data class DecryptedMedicalHouseContract(
 	override val forcedSuspension: Boolean = false,
 	override val signatureType: MhcSignatureType? = null,
 	override val status: Int? = null,
+	@DefaultValue("emptyMap()")
 	override val options: Map<String, String> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val receipts: Map<String, String> = emptyMap(),
 	override val encryptedSelf: Base64String? = null,
 ) : MedicalHouseContract {
@@ -171,7 +173,9 @@ data class EncryptedMedicalHouseContract(
 	override val forcedSuspension: Boolean = false,
 	override val signatureType: MhcSignatureType? = null,
 	override val status: Int? = null,
+	@DefaultValue("emptyMap()")
 	override val options: Map<String, String> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val receipts: Map<String, String> = emptyMap(),
 	override val encryptedSelf: Base64String? = null,
 ) : MedicalHouseContract {

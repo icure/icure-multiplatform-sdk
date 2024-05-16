@@ -1,6 +1,7 @@
 package com.icure.sdk.model.embed
 
 import com.icure.sdk.model.base.CodeStub
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.String
 import kotlin.collections.List
@@ -10,7 +11,9 @@ import kotlin.collections.List
 
 @Serializable
 data class Substanceproduct(
+	@DefaultValue("emptyList()")
 	public val intendedcds: List<CodeStub> = emptyList(),
+	@DefaultValue("emptyList()")
 	public val deliveredcds: List<CodeStub> = emptyList(),
 	public val intendedname: String? = null,
 	public val deliveredname: String? = null,
