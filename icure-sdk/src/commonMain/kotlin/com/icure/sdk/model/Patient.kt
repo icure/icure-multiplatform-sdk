@@ -39,14 +39,6 @@ import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.model.specializations.SpkiHexString
 import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
-import kotlin.Boolean
-import kotlin.ByteArray
-import kotlin.Int
-import kotlin.Long
-import kotlin.String
-import kotlin.collections.List
-import kotlin.collections.Map
-import kotlin.collections.Set
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
@@ -249,10 +241,10 @@ data class DecryptedPatient(
 	@DefaultValue("emptyList()")
 	override val addresses: List<DecryptedAddress> = emptyList(),
 	override val civility: String? = null,
-	@DefaultValue("com.icure.sdk.model.embed.Gender?.Unknown")
-	override val gender: Gender? = Gender?.Unknown,
-	@DefaultValue("com.icure.sdk.model.embed.Gender?.Unknown")
-	override val birthSex: Gender? = Gender?.Unknown,
+	@DefaultValue("com.icure.sdk.model.embed.Gender.Unknown")
+	override val gender: Gender? = Gender.Unknown,
+	@DefaultValue("com.icure.sdk.model.embed.Gender.Unknown")
+	override val birthSex: Gender? = Gender.Unknown,
 	override val mergeToPatientId: String? = null,
 	@DefaultValue("emptySet()")
 	override val mergedIds: Set<String> = emptySet(),
@@ -266,8 +258,8 @@ data class DecryptedPatient(
 	override val maidenName: String? = null,
 	override val spouseName: String? = null,
 	override val partnerName: String? = null,
-	@DefaultValue("com.icure.sdk.model.embed.PersonalStatus?.Unknown")
-	override val personalStatus: PersonalStatus? = PersonalStatus?.Unknown,
+	@DefaultValue("com.icure.sdk.model.embed.PersonalStatus.Unknown")
+	override val personalStatus: PersonalStatus? = PersonalStatus.Unknown,
 	override val dateOfBirth: Int? = null,
 	override val dateOfDeath: Int? = null,
 	override val timestampOfLatestEidReading: Long? = null,
@@ -375,10 +367,10 @@ data class EncryptedPatient(
 	@DefaultValue("emptyList()")
 	override val addresses: List<EncryptedAddress> = emptyList(),
 	override val civility: String? = null,
-	@DefaultValue("com.icure.sdk.model.embed.Gender?.Unknown")
-	override val gender: Gender? = Gender?.Unknown,
-	@DefaultValue("com.icure.sdk.model.embed.Gender?.Unknown")
-	override val birthSex: Gender? = Gender?.Unknown,
+	@DefaultValue("com.icure.sdk.model.embed.Gender.Unknown")
+	override val gender: Gender? = Gender.Unknown,
+	@DefaultValue("com.icure.sdk.model.embed.Gender.Unknown")
+	override val birthSex: Gender? = Gender.Unknown,
 	override val mergeToPatientId: String? = null,
 	@DefaultValue("emptySet()")
 	override val mergedIds: Set<String> = emptySet(),
@@ -392,8 +384,8 @@ data class EncryptedPatient(
 	override val maidenName: String? = null,
 	override val spouseName: String? = null,
 	override val partnerName: String? = null,
-	@DefaultValue("com.icure.sdk.model.embed.PersonalStatus?.Unknown")
-	override val personalStatus: PersonalStatus? = PersonalStatus?.Unknown,
+	@DefaultValue("com.icure.sdk.model.embed.PersonalStatus.Unknown")
+	override val personalStatus: PersonalStatus? = PersonalStatus.Unknown,
 	override val dateOfBirth: Int? = null,
 	override val dateOfDeath: Int? = null,
 	override val timestampOfLatestEidReading: Long? = null,

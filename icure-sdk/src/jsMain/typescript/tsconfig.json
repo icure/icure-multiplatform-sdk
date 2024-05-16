@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "noImplicitThis": true,
+    "allowSyntheticDefaultImports": true,
+    "preserveConstEnums": true,
+    "lib": [
+      "es2017",
+      "es6",
+      "es5",
+      "dom"
+    ],
+    "sourceMap": true,
+    "inlineSources": true,
+    "declaration": true,
+    "outDir": "./dist",
+    "baseUrl": "./"
+  },
+  "include": [
+    "model/**/*.ts"
+  ]
+}
