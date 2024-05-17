@@ -20,7 +20,6 @@ data class Role(
 	@DefaultValue("emptySet()")
 	public val permissions: Set<String> = emptySet(),
 ) : StoredDocument, Principal {
-	override val properties: Set<DecryptedPropertyStub>
 	// region Role-Role
 
 	// endregion
