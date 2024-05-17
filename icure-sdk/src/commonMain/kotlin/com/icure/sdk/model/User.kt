@@ -1,7 +1,6 @@
 package com.icure.sdk.model
 
 import com.icure.sdk.model.base.Identifier
-import com.icure.sdk.model.base.Principal
 import com.icure.sdk.model.base.StoredDocument
 import com.icure.sdk.model.embed.DelegationTag
 import com.icure.sdk.model.enums.UsersStatus
@@ -18,6 +17,7 @@ import kotlin.String
 import kotlin.collections.List
 import kotlin.collections.Map
 import kotlin.collections.Set
+import com.icure.sdk.model.base.Principal
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
@@ -32,7 +32,7 @@ data class User(
 	public val identifier: List<Identifier> = emptyList(),
 	override val name: String? = null,
 	@DefaultValue("emptySet()")
-	override val properties: Set<DecryptedPropertyStub> = emptySet(),
+	public val properties: Set<DecryptedPropertyStub> = emptySet(),
 	@DefaultValue("emptySet()")
 	public val permissions: Set<Permission> = emptySet(),
 	@DefaultValue("emptySet()")
@@ -58,7 +58,7 @@ data class User(
 	@DefaultValue("emptyMap()")
 	public val authenticationTokens: Map<String, AuthenticationToken> = emptyMap(),
 	public val systemMetadata: SystemMetadata? = null,
-) : StoredDocument, Principal {
+) : StoredDocument {
 	@Serializable
 	public data class SystemMetadata(
 		public val roles: Set<String>,
