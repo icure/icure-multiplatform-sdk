@@ -63,13 +63,13 @@ class RawDocumentTemplateApiImpl(
 
 	override suspend fun findDocumentTemplatesBySpeciality(
 		specialityCode: String,
-		loadLayout: Boolean?,
+		loadAttachment: Boolean?,
 	): HttpResponse<List<DocumentTemplate>> =
 		get {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "doctemplate", "bySpecialty", specialityCode)
-				parameter("loadLayout", loadLayout)
+				parameter("loadAttachment", loadAttachment)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
@@ -77,13 +77,13 @@ class RawDocumentTemplateApiImpl(
 
 	override suspend fun listDocumentTemplatesByDocumentType(
 		documentTypeCode: String,
-		loadLayout: Boolean?,
+		loadAttachment: Boolean?,
 	): HttpResponse<List<DocumentTemplate>> =
 		get {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "doctemplate", "byDocumentType", documentTypeCode)
-				parameter("loadLayout", loadLayout)
+				parameter("loadAttachment", loadAttachment)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
@@ -91,24 +91,24 @@ class RawDocumentTemplateApiImpl(
 
 	override suspend fun listDocumentTemplatesByDocumentTypeForCurrentUser(
 		documentTypeCode: String,
-		loadLayout: Boolean?,
+		loadAttachment: Boolean?,
 	): HttpResponse<List<DocumentTemplate>> =
 		get {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "doctemplate", "byDocumentTypeForCurrentUser", documentTypeCode)
-				parameter("loadLayout", loadLayout)
+				parameter("loadAttachment", loadAttachment)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-	override suspend fun listDocumentTemplates(loadLayout: Boolean?): HttpResponse<List<DocumentTemplate>> =
+	override suspend fun listDocumentTemplates(loadAttachment: Boolean?): HttpResponse<List<DocumentTemplate>> =
 		get {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "doctemplate")
-				parameter("loadLayout", loadLayout)
+				parameter("loadAttachment", loadAttachment)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
