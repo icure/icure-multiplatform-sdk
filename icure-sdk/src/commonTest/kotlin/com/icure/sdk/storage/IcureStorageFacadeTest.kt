@@ -38,7 +38,7 @@ class IcureStorageFacadeTest : StringSpec({
 		suspend fun testWithIsDevice(isDevice: Boolean) {
 			val keypair = defaultCryptoService.rsa.generateKeyPair(
 				RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256,
-				RsaService.KeySize.RSA_2048
+				RsaService.KeySize.Rsa2048
 			)
 			val pubSpki = defaultCryptoService.rsa.exportSpkiHex(keypair.public)
 			storage.loadEncryptionKeypair(
@@ -75,13 +75,13 @@ class IcureStorageFacadeTest : StringSpec({
 		val pub1Spki = defaultCryptoService.rsa.exportSpkiHex(
 			defaultCryptoService.rsa.generateKeyPair(
 				RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256,
-				RsaService.KeySize.RSA_2048
+				RsaService.KeySize.Rsa2048
 			).public
 		)
 		val pub2Spki = defaultCryptoService.rsa.exportSpkiHex(
 			defaultCryptoService.rsa.generateKeyPair(
 				RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256,
-				RsaService.KeySize.RSA_2048
+				RsaService.KeySize.Rsa2048
 			).public
 		)
 		val value1 = mapOf(pub1Spki.fingerprintV1() to true, pub2Spki.fingerprintV1() to false)
@@ -94,7 +94,7 @@ class IcureStorageFacadeTest : StringSpec({
 	"Should be capable of storing and retrieving signature keys" {
 		val keypair = defaultCryptoService.rsa.generateKeyPair(
 			RsaAlgorithm.RsaSignatureAlgorithm.PssWithSha256,
-			RsaService.KeySize.RSA_2048
+			RsaService.KeySize.Rsa2048
 		)
 		val pubSpki = defaultCryptoService.rsa.exportSpkiHex(keypair.public)
 		storage.loadSignatureKey(dataOwner).shouldBeNull()
@@ -122,12 +122,12 @@ class IcureStorageFacadeTest : StringSpec({
 	"Should be capable of retrieving keys in legacy locations" {
 		val key1 = defaultCryptoService.rsa.generateKeyPair(
 			RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha1,
-			RsaService.KeySize.RSA_2048
+			RsaService.KeySize.Rsa2048
 		)
 		val key1Spki = defaultCryptoService.rsa.exportSpkiHex(key1.public)
 		val key2 = defaultCryptoService.rsa.generateKeyPair(
 			RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha1,
-			RsaService.KeySize.RSA_2048
+			RsaService.KeySize.Rsa2048
 		)
 		val key2Spki = defaultCryptoService.rsa.exportSpkiHex(key2.public)
 		storage.loadEncryptionKeypair(

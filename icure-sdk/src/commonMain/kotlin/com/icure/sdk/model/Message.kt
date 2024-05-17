@@ -10,6 +10,7 @@ import com.icure.sdk.model.embed.MessageAttachment
 import com.icure.sdk.model.embed.MessageReadStatus
 import com.icure.sdk.model.embed.SecurityMetadata
 import com.icure.sdk.model.specializations.Base64String
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.Int
 import kotlin.Long
@@ -118,7 +119,9 @@ data class DecryptedMessage(
 	override val author: String? = null,
 	override val responsible: String? = null,
 	override val medicalLocationId: String? = null,
+	@DefaultValue("emptySet()")
 	override val tags: Set<CodeStub> = emptySet(),
+	@DefaultValue("emptySet()")
 	override val codes: Set<CodeStub> = emptySet(),
 	override val endOfLife: Long? = null,
 	override val deletionDate: Long? = null,
@@ -127,26 +130,39 @@ data class DecryptedMessage(
 	override val formId: String? = null,
 	override val status: Int? = null,
 	override val recipientsType: String? = null,
+	@DefaultValue("emptySet()")
 	override val recipients: Set<String> = emptySet(),
+	@DefaultValue("emptySet()")
 	override val toAddresses: Set<String> = emptySet(),
 	override val received: Long? = null,
 	override val sent: Long? = null,
+	@DefaultValue("emptyMap()")
 	override val metas: Map<String, String> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val readStatus: Map<String, MessageReadStatus> = emptyMap(),
+	@DefaultValue("emptyList()")
 	override val messageAttachments: List<MessageAttachment> = emptyList(),
 	override val transportGuid: String? = null,
 	override val remark: String? = null,
 	override val conversationGuid: String? = null,
 	override val subject: String? = null,
+	@DefaultValue("emptySet()")
 	override val invoiceIds: Set<String> = emptySet(),
 	override val parentId: String? = null,
 	override val externalRef: String? = null,
+	@DefaultValue("emptySet()")
 	override val unassignedResults: Set<String> = emptySet(),
+	@DefaultValue("emptyMap()")
 	override val assignedResults: Map<String, String> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val senderReferences: Map<String, String> = emptyMap(),
+	@DefaultValue("emptySet()")
 	override val secretForeignKeys: Set<String> = emptySet(),
+	@DefaultValue("emptyMap()")
 	override val cryptedForeignKeys: Map<String, Set<Delegation>> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val delegations: Map<String, Set<Delegation>> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val encryptionKeys: Map<String, Set<Delegation>> = emptyMap(),
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,
@@ -166,7 +182,9 @@ data class EncryptedMessage(
 	override val author: String? = null,
 	override val responsible: String? = null,
 	override val medicalLocationId: String? = null,
+	@DefaultValue("emptySet()")
 	override val tags: Set<CodeStub> = emptySet(),
+	@DefaultValue("emptySet()")
 	override val codes: Set<CodeStub> = emptySet(),
 	override val endOfLife: Long? = null,
 	override val deletionDate: Long? = null,
@@ -175,26 +193,39 @@ data class EncryptedMessage(
 	override val formId: String? = null,
 	override val status: Int? = null,
 	override val recipientsType: String? = null,
+	@DefaultValue("emptySet()")
 	override val recipients: Set<String> = emptySet(),
+	@DefaultValue("emptySet()")
 	override val toAddresses: Set<String> = emptySet(),
 	override val received: Long? = null,
 	override val sent: Long? = null,
+	@DefaultValue("emptyMap()")
 	override val metas: Map<String, String> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val readStatus: Map<String, MessageReadStatus> = emptyMap(),
+	@DefaultValue("emptyList()")
 	override val messageAttachments: List<MessageAttachment> = emptyList(),
 	override val transportGuid: String? = null,
 	override val remark: String? = null,
 	override val conversationGuid: String? = null,
 	override val subject: String? = null,
+	@DefaultValue("emptySet()")
 	override val invoiceIds: Set<String> = emptySet(),
 	override val parentId: String? = null,
 	override val externalRef: String? = null,
+	@DefaultValue("emptySet()")
 	override val unassignedResults: Set<String> = emptySet(),
+	@DefaultValue("emptyMap()")
 	override val assignedResults: Map<String, String> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val senderReferences: Map<String, String> = emptyMap(),
+	@DefaultValue("emptySet()")
 	override val secretForeignKeys: Set<String> = emptySet(),
+	@DefaultValue("emptyMap()")
 	override val cryptedForeignKeys: Map<String, Set<Delegation>> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val delegations: Map<String, Set<Delegation>> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val encryptionKeys: Map<String, Set<Delegation>> = emptyMap(),
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,

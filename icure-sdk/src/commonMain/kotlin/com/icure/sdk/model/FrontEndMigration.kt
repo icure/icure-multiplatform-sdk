@@ -2,6 +2,7 @@ package com.icure.sdk.model
 
 import com.icure.sdk.model.base.StoredDocument
 import com.icure.sdk.model.embed.FrontEndMigrationStatus
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.Long
 import kotlin.String
@@ -24,7 +25,8 @@ data class FrontEndMigration(
 	public val startKey: String? = null,
 	public val startKeyDocId: String? = null,
 	public val processCount: Long? = null,
-	public val properties: Set<PropertyStub> = emptySet(),
+	@DefaultValue("emptySet()")
+	public val properties: Set<DecryptedPropertyStub> = emptySet(),
 ) : StoredDocument {
 	// region FrontEndMigration-FrontEndMigration
 

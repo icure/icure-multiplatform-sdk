@@ -2,6 +2,7 @@ package com.icure.sdk.crypto
 
 import com.icure.kryptom.crypto.RsaAlgorithm
 import com.icure.kryptom.crypto.RsaKeypair
+import com.icure.sdk.crypto.entities.RecoveryDataKey
 import com.icure.sdk.crypto.entities.RecoveryResult
 import com.icure.sdk.model.specializations.SpkiHexString
 
@@ -24,7 +25,7 @@ interface KeyPairRecoverer {
 	 * - The `keyPair` is the imported privateKey + publicKey.
 	 */
 	suspend fun recoverWithRecoveryKey(
-		recoveryKey: String,
+		recoveryKey: RecoveryDataKey,
 		autoDelete: Boolean
 	): RecoveryResult<Map<String, Map<SpkiHexString, RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>>>
 }

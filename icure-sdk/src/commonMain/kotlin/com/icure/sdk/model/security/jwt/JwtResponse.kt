@@ -1,5 +1,6 @@
 package com.icure.sdk.model.security.jwt
 
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.Boolean
 import kotlin.String
@@ -11,7 +12,8 @@ import kotlin.String
 data class JwtResponse(
 	public val token: String? = null,
 	public val refreshToken: String? = null,
-	public val successful: Boolean,
+	@DefaultValue("false")
+	public val successful: Boolean = false,
 ) {
 	// region JwtResponse-JwtResponse
 

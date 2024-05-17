@@ -1,5 +1,6 @@
 package com.icure.sdk.model.base
 
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
@@ -7,7 +8,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Security(
+	@DefaultValue("Right()")
 	public val admins: Right = Right(),
+	@DefaultValue("Right()")
 	public val members: Right = Right(),
 ) {
 	// region Security-Security

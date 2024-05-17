@@ -6,15 +6,16 @@ plugins {
 	kotestMultiplatform()
 	androidLibrary()
 	id("maven-publish")
-	id("com.taktik.gradle.git-version") version "2.0.8-gb47b2d0e35"
+//	id("com.taktik.gradle.git-version") version "2.0.8-gb47b2d0e35"
 }
 
 val repoUsername: String by project
 val repoPassword: String by project
 val mavenReleasesRepository: String by project
 
-val gitVersion: String? by project
-project.version = gitVersion ?: "0.0.1"
+//val gitVersion: String? by project
+
+project.version = "0.2.0"
 
 @OptIn(ExperimentalKotlinGradlePluginApi::class)
 kotlin {
@@ -50,6 +51,9 @@ kotlin {
 			}
 		}
 		val jsMain by getting {
+			languageSettings {
+				optIn("kotlin.js.ExperimentalJsExport")
+			}
 			dependencies {
 			}
 		}
@@ -83,6 +87,14 @@ publishing {
 			credentials {
 				username = repoUsername
 				password = repoPassword
+			}
+		}
+
+		mavenCentral {
+			name = "MavenCentral"
+			credentials {
+				username = properties["mavenCentralUsername"]?.let { it as String } ?: ""
+				password = properties["mavenCentralPassword"]?.let { it as String } ?: ""
 			}
 		}
 	}

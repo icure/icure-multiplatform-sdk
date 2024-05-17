@@ -1,5 +1,6 @@
 package com.icure.sdk.model.embed.form.template
 
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.Boolean
 import kotlin.String
@@ -11,7 +12,8 @@ import kotlin.String
 class Launcher(
 	public val name: String,
 	public val triggerer: Trigger,
-	public val shouldPassValue: Boolean,
+	@DefaultValue("false")
+	public val shouldPassValue: Boolean = false,
 ) {
 	// region Launcher-Launcher
 

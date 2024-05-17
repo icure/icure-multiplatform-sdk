@@ -1,5 +1,6 @@
 package com.icure.sdk.model.embed
 
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.String
 import kotlin.collections.List
@@ -11,6 +12,7 @@ import kotlin.collections.List
 data class DataAttachment(
 	public val couchDbAttachmentId: String? = null,
 	public val objectStoreAttachmentId: String? = null,
+	@DefaultValue("emptyList()")
 	public val utis: List<String> = emptyList(),
 ) {
 	// region DataAttachment-DataAttachment

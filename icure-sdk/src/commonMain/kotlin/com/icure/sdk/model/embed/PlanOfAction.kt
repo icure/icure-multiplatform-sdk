@@ -4,6 +4,7 @@ import com.icure.sdk.model.base.CodeStub
 import com.icure.sdk.model.base.ICureDocument
 import com.icure.sdk.model.base.Named
 import com.icure.sdk.model.specializations.Base64String
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.Boolean
 import kotlin.Int
@@ -77,7 +78,9 @@ data class DecryptedPlanOfAction(
 	override val author: String? = null,
 	override val responsible: String? = null,
 	override val medicalLocationId: String? = null,
+	@DefaultValue("emptySet()")
 	override val tags: Set<CodeStub> = emptySet(),
+	@DefaultValue("emptySet()")
 	override val codes: Set<CodeStub> = emptySet(),
 	override val endOfLife: Long? = null,
 	override val prescriberId: String? = null,
@@ -90,10 +93,14 @@ data class DecryptedPlanOfAction(
 	override val note: String? = null,
 	override val idOpeningContact: String? = null,
 	override val idClosingContact: String? = null,
+	@DefaultValue("0")
 	override val status: Int = 0,
+	@DefaultValue("emptySet()")
 	override val documentIds: Set<String> = emptySet(),
 	override val numberOfCares: Int? = null,
+	@DefaultValue("emptyList()")
 	override val careTeamMemberships: List<DecryptedCareTeamMembership?> = emptyList(),
+	@DefaultValue("true")
 	override val relevant: Boolean = true,
 	override val encryptedSelf: Base64String? = null,
 ) : PlanOfAction {
@@ -110,7 +117,9 @@ data class EncryptedPlanOfAction(
 	override val author: String? = null,
 	override val responsible: String? = null,
 	override val medicalLocationId: String? = null,
+	@DefaultValue("emptySet()")
 	override val tags: Set<CodeStub> = emptySet(),
+	@DefaultValue("emptySet()")
 	override val codes: Set<CodeStub> = emptySet(),
 	override val endOfLife: Long? = null,
 	override val prescriberId: String? = null,
@@ -123,10 +132,14 @@ data class EncryptedPlanOfAction(
 	override val note: String? = null,
 	override val idOpeningContact: String? = null,
 	override val idClosingContact: String? = null,
+	@DefaultValue("0")
 	override val status: Int = 0,
+	@DefaultValue("emptySet()")
 	override val documentIds: Set<String> = emptySet(),
 	override val numberOfCares: Int? = null,
+	@DefaultValue("emptyList()")
 	override val careTeamMemberships: List<EncryptedCareTeamMembership?> = emptyList(),
+	@DefaultValue("true")
 	override val relevant: Boolean = true,
 	override val encryptedSelf: Base64String? = null,
 ) : PlanOfAction {

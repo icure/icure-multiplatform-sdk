@@ -37,6 +37,7 @@ import com.icure.sdk.model.specializations.AesExchangeKeyEncryptionKeypairIdenti
 import com.icure.sdk.model.specializations.Base64String
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.model.specializations.SpkiHexString
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.Boolean
 import kotlin.ByteArray
@@ -227,36 +228,48 @@ sealed interface Patient :
 @Serializable
 data class DecryptedPatient(
 	override val id: String,
+	@DefaultValue("emptyList()")
 	override val identifier: List<Identifier> = emptyList(),
 	override val rev: String? = null,
 	override val created: Long? = null,
 	override val modified: Long? = null,
 	override val author: String? = null,
 	override val responsible: String? = null,
+	@DefaultValue("emptySet()")
 	override val tags: Set<CodeStub> = emptySet(),
+	@DefaultValue("emptySet()")
 	override val codes: Set<CodeStub> = emptySet(),
 	override val endOfLife: Long? = null,
 	override val deletionDate: Long? = null,
 	override val firstName: String? = null,
 	override val lastName: String? = null,
+	@DefaultValue("emptyList()")
 	override val names: List<PersonName> = emptyList(),
 	override val companyName: String? = null,
+	@DefaultValue("emptyList()")
 	override val languages: List<String> = emptyList(),
+	@DefaultValue("emptyList()")
 	override val addresses: List<DecryptedAddress> = emptyList(),
 	override val civility: String? = null,
-	override val gender: Gender? = null,
-	override val birthSex: Gender? = null,
+	@DefaultValue("com.icure.sdk.model.embed.Gender.Unknown")
+	override val gender: Gender? = Gender.Unknown,
+	@DefaultValue("com.icure.sdk.model.embed.Gender.Unknown")
+	override val birthSex: Gender? = Gender.Unknown,
 	override val mergeToPatientId: String? = null,
+	@DefaultValue("emptySet()")
 	override val mergedIds: Set<String> = emptySet(),
 	override val alias: String? = null,
+	@DefaultValue("true")
 	override val active: Boolean = true,
+	@DefaultValue("com.icure.sdk.model.embed.DeactivationReason.None")
 	override val deactivationReason: DeactivationReason = DeactivationReason.None,
 	override val deactivationDate: Int? = null,
 	override val ssin: String? = null,
 	override val maidenName: String? = null,
 	override val spouseName: String? = null,
 	override val partnerName: String? = null,
-	override val personalStatus: PersonalStatus? = null,
+	@DefaultValue("com.icure.sdk.model.embed.PersonalStatus.Unknown")
+	override val personalStatus: PersonalStatus? = PersonalStatus.Unknown,
 	override val dateOfBirth: Int? = null,
 	override val dateOfDeath: Int? = null,
 	override val timestampOfLatestEidReading: Long? = null,
@@ -265,6 +278,7 @@ data class DecryptedPatient(
 	override val deceased: Boolean? = null,
 	override val education: String? = null,
 	override val profession: String? = null,
+	@DefaultValue("emptyList()")
 	override val notes: List<Annotation> = emptyList(),
 	override val note: String? = null,
 	override val administrativeNote: String? = null,
@@ -274,31 +288,50 @@ data class DecryptedPatient(
 	override val preferredUserId: String? = null,
 	override val picture: ByteArray? = null,
 	override val externalId: String? = null,
+	@DefaultValue("emptyList()")
 	override val insurabilities: List<DecryptedInsurability> = emptyList(),
+	@DefaultValue("emptyList()")
 	override val partnerships: List<Partnership> = emptyList(),
+	@DefaultValue("emptyList()")
 	override val patientHealthCareParties: List<DecryptedPatientHealthCareParty> = emptyList(),
+	@DefaultValue("emptyList()")
 	override val financialInstitutionInformation: List<DecryptedFinancialInstitutionInformation> =
 		emptyList(),
+	@DefaultValue("emptyList()")
 	override val medicalHouseContracts: List<DecryptedMedicalHouseContract> = emptyList(),
+	@DefaultValue("emptyList()")
 	override val patientProfessions: List<CodeStub> = emptyList(),
+	@DefaultValue("emptyMap()")
 	override val parameters: Map<String, List<String>> = emptyMap(),
+	@DefaultValue("emptySet()")
 	override val properties: Set<DecryptedPropertyStub> = emptySet(),
+	@DefaultValue("emptyMap()")
 	override val hcPartyKeys: Map<String, List<HexString>> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val aesExchangeKeys: Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> =
 		emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val transferKeys: Map<AesExchangeKeyEncryptionKeypairIdentifier, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>> =
 		emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val privateKeyShamirPartitions: Map<String, HexString> = emptyMap(),
 	override val publicKey: SpkiHexString? = null,
+	@DefaultValue("emptySet()")
 	override val publicKeysForOaepWithSha256: Set<SpkiHexString> = emptySet(),
+	@DefaultValue("emptySet()")
 	override val secretForeignKeys: Set<String> = emptySet(),
+	@DefaultValue("emptyMap()")
 	override val cryptedForeignKeys: Map<String, Set<Delegation>> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val delegations: Map<String, Set<Delegation>> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val encryptionKeys: Map<String, Set<Delegation>> = emptyMap(),
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,
 	override val medicalLocationId: String? = null,
+	@DefaultValue("emptySet()")
 	override val nonDuplicateIds: Set<String> = emptySet(),
+	@DefaultValue("emptySet()")
 	override val encryptedAdministrativesDocuments: Set<String> = emptySet(),
 	override val comment: String? = null,
 	override val warning: String? = null,
@@ -307,7 +340,9 @@ data class DecryptedPatient(
 	override val nativeCountry: CodeStub? = null,
 	override val socialStatus: CodeStub? = null,
 	override val mainSourceOfIncome: CodeStub? = null,
+	@DefaultValue("emptyList()")
 	override val schoolingInfos: List<SchoolingInfo> = emptyList(),
+	@DefaultValue("emptyList()")
 	override val employementInfos: List<EmploymentInfo> = emptyList(),
 ) : Patient {
 	// region Patient-DecryptedPatient
@@ -319,36 +354,48 @@ override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secret
 @Serializable
 data class EncryptedPatient(
 	override val id: String,
+	@DefaultValue("emptyList()")
 	override val identifier: List<Identifier> = emptyList(),
 	override val rev: String? = null,
 	override val created: Long? = null,
 	override val modified: Long? = null,
 	override val author: String? = null,
 	override val responsible: String? = null,
+	@DefaultValue("emptySet()")
 	override val tags: Set<CodeStub> = emptySet(),
+	@DefaultValue("emptySet()")
 	override val codes: Set<CodeStub> = emptySet(),
 	override val endOfLife: Long? = null,
 	override val deletionDate: Long? = null,
 	override val firstName: String? = null,
 	override val lastName: String? = null,
+	@DefaultValue("emptyList()")
 	override val names: List<PersonName> = emptyList(),
 	override val companyName: String? = null,
+	@DefaultValue("emptyList()")
 	override val languages: List<String> = emptyList(),
+	@DefaultValue("emptyList()")
 	override val addresses: List<EncryptedAddress> = emptyList(),
 	override val civility: String? = null,
-	override val gender: Gender? = null,
-	override val birthSex: Gender? = null,
+	@DefaultValue("com.icure.sdk.model.embed.Gender.Unknown")
+	override val gender: Gender? = Gender.Unknown,
+	@DefaultValue("com.icure.sdk.model.embed.Gender.Unknown")
+	override val birthSex: Gender? = Gender.Unknown,
 	override val mergeToPatientId: String? = null,
+	@DefaultValue("emptySet()")
 	override val mergedIds: Set<String> = emptySet(),
 	override val alias: String? = null,
+	@DefaultValue("true")
 	override val active: Boolean = true,
+	@DefaultValue("com.icure.sdk.model.embed.DeactivationReason.None")
 	override val deactivationReason: DeactivationReason = DeactivationReason.None,
 	override val deactivationDate: Int? = null,
 	override val ssin: String? = null,
 	override val maidenName: String? = null,
 	override val spouseName: String? = null,
 	override val partnerName: String? = null,
-	override val personalStatus: PersonalStatus? = null,
+	@DefaultValue("com.icure.sdk.model.embed.PersonalStatus.Unknown")
+	override val personalStatus: PersonalStatus? = PersonalStatus.Unknown,
 	override val dateOfBirth: Int? = null,
 	override val dateOfDeath: Int? = null,
 	override val timestampOfLatestEidReading: Long? = null,
@@ -357,6 +404,7 @@ data class EncryptedPatient(
 	override val deceased: Boolean? = null,
 	override val education: String? = null,
 	override val profession: String? = null,
+	@DefaultValue("emptyList()")
 	override val notes: List<Annotation> = emptyList(),
 	override val note: String? = null,
 	override val administrativeNote: String? = null,
@@ -366,31 +414,50 @@ data class EncryptedPatient(
 	override val preferredUserId: String? = null,
 	override val picture: ByteArray? = null,
 	override val externalId: String? = null,
+	@DefaultValue("emptyList()")
 	override val insurabilities: List<EncryptedInsurability> = emptyList(),
+	@DefaultValue("emptyList()")
 	override val partnerships: List<Partnership> = emptyList(),
+	@DefaultValue("emptyList()")
 	override val patientHealthCareParties: List<EncryptedPatientHealthCareParty> = emptyList(),
+	@DefaultValue("emptyList()")
 	override val financialInstitutionInformation: List<EncryptedFinancialInstitutionInformation> =
 		emptyList(),
+	@DefaultValue("emptyList()")
 	override val medicalHouseContracts: List<EncryptedMedicalHouseContract> = emptyList(),
+	@DefaultValue("emptyList()")
 	override val patientProfessions: List<CodeStub> = emptyList(),
+	@DefaultValue("emptyMap()")
 	override val parameters: Map<String, List<String>> = emptyMap(),
+	@DefaultValue("emptySet()")
 	override val properties: Set<EncryptedPropertyStub> = emptySet(),
+	@DefaultValue("emptyMap()")
 	override val hcPartyKeys: Map<String, List<HexString>> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val aesExchangeKeys: Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> =
 		emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val transferKeys: Map<AesExchangeKeyEncryptionKeypairIdentifier, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>> =
 		emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val privateKeyShamirPartitions: Map<String, HexString> = emptyMap(),
 	override val publicKey: SpkiHexString? = null,
+	@DefaultValue("emptySet()")
 	override val publicKeysForOaepWithSha256: Set<SpkiHexString> = emptySet(),
+	@DefaultValue("emptySet()")
 	override val secretForeignKeys: Set<String> = emptySet(),
+	@DefaultValue("emptyMap()")
 	override val cryptedForeignKeys: Map<String, Set<Delegation>> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val delegations: Map<String, Set<Delegation>> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val encryptionKeys: Map<String, Set<Delegation>> = emptyMap(),
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,
 	override val medicalLocationId: String? = null,
+	@DefaultValue("emptySet()")
 	override val nonDuplicateIds: Set<String> = emptySet(),
+	@DefaultValue("emptySet()")
 	override val encryptedAdministrativesDocuments: Set<String> = emptySet(),
 	override val comment: String? = null,
 	override val warning: String? = null,
@@ -399,7 +466,9 @@ data class EncryptedPatient(
 	override val nativeCountry: CodeStub? = null,
 	override val socialStatus: CodeStub? = null,
 	override val mainSourceOfIncome: CodeStub? = null,
+	@DefaultValue("emptyList()")
 	override val schoolingInfos: List<SchoolingInfo> = emptyList(),
+	@DefaultValue("emptyList()")
 	override val employementInfos: List<EmploymentInfo> = emptyList(),
 ) : Patient {
 	// region Patient-EncryptedPatient

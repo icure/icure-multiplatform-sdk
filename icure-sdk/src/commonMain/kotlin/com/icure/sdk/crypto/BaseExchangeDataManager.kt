@@ -1,5 +1,6 @@
 package com.icure.sdk.crypto
 
+import com.icure.kryptom.crypto.AesAlgorithm
 import com.icure.kryptom.crypto.AesKey
 import com.icure.kryptom.crypto.HmacAlgorithm
 import com.icure.kryptom.crypto.HmacKey
@@ -92,7 +93,7 @@ interface BaseExchangeDataManager {
 	suspend fun tryDecryptExchangeKeys(
 		exchangeData: List<ExchangeData>,
 		decryptionKeys: RsaDecryptionKeysSet
-	): DecryptionResult<ExchangeData, AesKey>
+	): DecryptionResult<ExchangeData, AesKey<AesAlgorithm.CbcWithPkcs7Padding>>
 
 	/**
 	 * Extract and decrypts the shared signature key from the provided exchange data.

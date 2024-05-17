@@ -1,5 +1,6 @@
 package com.icure.sdk.api.flavoured
 
+import com.icure.kryptom.crypto.AesAlgorithm
 import com.icure.kryptom.crypto.AesKey
 import com.icure.sdk.api.raw.RawContactApi
 import com.icure.sdk.crypto.EntityValidationService
@@ -50,6 +51,8 @@ import com.icure.sdk.websocket.Subscribable
 import com.icure.sdk.websocket.WebSocketAuthProvider
 import io.ktor.util.InternalAPI
 import kotlinx.coroutines.channels.Channel
+import com.icure.sdk.utils.pagination.IdsPageIterator
+import com.icure.sdk.utils.pagination.PaginatedListIterator
 import kotlinx.datetime.TimeZone
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.JsonArray
@@ -83,19 +86,11 @@ interface ContactBasicFlavouredApi<E : Contact, S : Service> : Subscribable<Cont
 	suspend fun getContact(entityId: String): E
 	suspend fun getContacts(entityIds: List<String>): List<E>
 	suspend fun filterContactsBy(filterChain: FilterChain<EncryptedContact>, startDocumentId: String?, limit: Int?): PaginatedList<E>
-	suspend fun findContactsByHcPartyPatientForeignKey(
-		hcPartyId: String,
-		secretPatientKey: String,
-		startKey: JsonElement? = null,
-		startDocumentId: String? = null,
-		limit: Int? = null,
-	): PaginatedList<E>
 
 	suspend fun listContactByHCPartyServiceId(hcPartyId: String, serviceId: String): List<E>
 	suspend fun listContactsByExternalId(externalId: String): List<E>
 	suspend fun listContactsByHCPartyAndFormId(hcPartyId: String, formId: String): List<E>
 	suspend fun listContactsByHCPartyAndFormIds(hcPartyId: String, formIds: List<String>): List<E>
-	suspend fun listContactsByHCPartyAndPatientForeignKeys(hcPartyId: String, patientIds: List<String>): List<E>
 	suspend fun listContactsByHCPartyAndPatientSecretFKeys(
 		hcPartyId: String,
 		secretPatientKeys: List<String>,
@@ -144,10 +139,10 @@ interface ContactFlavouredApi<E : Contact, S : Service> : ContactBasicFlavouredA
 	suspend fun findContactsByHcPartyPatient(
 		hcPartyId: String,
 		patient: Patient,
-		startKey: String? = null,
-		startDocumentId: String? = null,
-		limit: Int? = null,
-	): List<DecryptedContact>
+		startDate: Long? = null,
+		endDate: Long? = null,
+		descending: Boolean? = null,
+	): PaginatedListIterator<E>
 
 }
 
@@ -192,16 +187,6 @@ private abstract class AbstractContactBasicFlavouredApi<E : Contact, S : Service
 	): PaginatedList<E> =
 		rawApi.filterContactsBy(startDocumentId, limit, filterChain).successBody().map { maybeDecrypt(it) }
 
-	override suspend fun findContactsByHcPartyPatientForeignKey(
-		hcPartyId: String,
-		secretPatientKey: String,
-		startKey: JsonElement?,
-		startDocumentId: String?,
-		limit: Int?,
-	): PaginatedList<E> =
-		rawApi.findContactsByHCPartyPatientForeignKey(hcPartyId, secretPatientKey, startKey.encodeStartKey(), startDocumentId, limit).successBody()
-			.map { maybeDecrypt(it) }
-
 	override suspend fun listContactByHCPartyServiceId(hcPartyId: String, serviceId: String): List<E> =
 		rawApi.listContactByHCPartyServiceId(hcPartyId, serviceId).successBody().map { maybeDecrypt(it) }
 
@@ -213,11 +198,6 @@ private abstract class AbstractContactBasicFlavouredApi<E : Contact, S : Service
 
 	override suspend fun listContactsByHCPartyAndFormIds(hcPartyId: String, formIds: List<String>): List<E> =
 		rawApi.listContactsByHCPartyAndFormIds(hcPartyId, ListOfIds(formIds)).successBody().map { maybeDecrypt(it) }
-
-	override suspend fun listContactsByHCPartyAndPatientForeignKeys(
-		hcPartyId: String,
-		patientIds: List<String>,
-	): List<E> = rawApi.listContactsByHCPartyAndPatientForeignKeys(hcPartyId, ListOfIds(patientIds)).successBody().map { maybeDecrypt(it) }
 
 	override suspend fun listContactsByHCPartyAndPatientSecretFKeys(
 		hcPartyId: String,
@@ -367,11 +347,19 @@ private abstract class AbstractContactFlavouredApi<E : Contact, S : Service>(
 	override suspend fun findContactsByHcPartyPatient(
 		hcPartyId: String,
 		patient: Patient,
-		startKey: String?,
-		startDocumentId: String?,
-		limit: Int?,
-	): List<DecryptedContact> {
-		TODO("@vcp")
+		startDate: Long?,
+		endDate: Long?,
+		descending: Boolean?,
+	): PaginatedListIterator<E> = IdsPageIterator(
+		rawApi.listContactIdsByDataOwnerPatientOpeningDate(
+			dataOwnerId = hcPartyId,
+			startDate = startDate,
+			endDate = endDate,
+			descending = descending,
+			secretPatientKeys = ListOfIds(crypto.entity.secretIdsOf(patient.withTypeInfo(), null).toList())
+		).successBody()
+	) { ids ->
+		rawApi.getContacts(ListOfIds(ids)).successBody().map { maybeDecrypt(it) }
 	}
 }
 
@@ -399,7 +387,7 @@ suspend fun JsonObject.walkCompounds(transform: suspend (JsonObject) -> JsonObje
 	) else transform(this)
 
 @OptIn(InternalIcureApi::class)
-internal suspend fun DecryptedService.encrypt(jsonEncryptionService: JsonEncryptionService, contactKey: AesKey, serviceEncryptedFieldsManifest: EncryptedFieldsManifest): EncryptedService =
+internal suspend fun DecryptedService.encrypt(jsonEncryptionService: JsonEncryptionService, contactKey: AesKey<AesAlgorithm.CbcWithPkcs7Padding>, serviceEncryptedFieldsManifest: EncryptedFieldsManifest): EncryptedService =
 	Serialization.json.encodeToJsonElement<DecryptedService>(this).jsonObject
 		.walkCompounds { jsonEncryptionService.encrypt(contactKey, it, serviceEncryptedFieldsManifest) }
 		.let {

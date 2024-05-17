@@ -1,5 +1,6 @@
 package com.icure.sdk.crypto.impl
 
+import com.icure.kryptom.crypto.AesAlgorithm
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.utils.toHexString
 import com.icure.sdk.api.extended.DataOwnerApi
@@ -116,7 +117,7 @@ class EntityEncryptionServiceImpl(
 				kotlin.runCatching {
 					cryptoService.aes.decrypt(
 						content,
-						cryptoService.aes.loadKey(decryptedKeyInfo.value.decodedBytes())
+						cryptoService.aes.loadKey(AesAlgorithm.CbcWithPkcs7Padding, decryptedKeyInfo.value.decodedBytes())
 					).takeIf { validator(it) }
 				}.getOrNull()
 			} else {
@@ -141,7 +142,7 @@ class EntityEncryptionServiceImpl(
 	): EntityEncryptionMetadataInitialisationResult<T> {
 		hasEmptyEncryptionMetadata(entity, throwIfNonEmpty = true)
 		val newRawKey = if (initialiseEncryptionKey)
-			HexString(cryptoService.aes.exportKey(cryptoService.aes.generateKey()).toHexString())
+			HexString(cryptoService.aes.exportKey(cryptoService.aes.generateKey(AesAlgorithm.CbcWithPkcs7Padding)).toHexString())
 		else
 			null
 		val newSecretId = if (initialiseSecretId)
@@ -172,7 +173,7 @@ class EntityEncryptionServiceImpl(
 	private suspend fun decryptAndImportDecryptionKeysFlow(entity: EntityWithTypeInfo<*>): Flow<EntityEncryptionKeyDetails> =
 		allDecryptors.decryptEncryptionKeysOf(entity, dataOwnersForDecryption(null).toSet()).mapNotNull {
 			kotlin.runCatching {
-				EntityEncryptionKeyDetails(cryptoService.aes.loadKey(it.value.decodedBytes()), it.value)
+				EntityEncryptionKeyDetails(cryptoService.aes.loadKey(AesAlgorithm.CbcWithPkcs7Padding, it.value.decodedBytes()), it.value)
 			}.getOrNull()
 		}
 
@@ -522,7 +523,7 @@ class EntityEncryptionServiceImpl(
 			 * owners. This however should not be a problem as this form of legacy entities should not exist anymore, and it should be present only in the
 			 * databases of hcps without collaborators.
 			 */
-			val newKey = cryptoService.aes.generateKey()
+			val newKey = cryptoService.aes.generateKey(AesAlgorithm.CbcWithPkcs7Padding)
 			return secureDelegationsManager.entityWithInitialisedEncryptedMetadata(
 				entity = entity,
 				secretIds = emptySet(), // Will still be available through legacy delegations

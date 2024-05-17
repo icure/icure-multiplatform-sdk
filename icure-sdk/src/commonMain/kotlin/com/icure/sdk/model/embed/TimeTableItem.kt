@@ -1,5 +1,6 @@
 package com.icure.sdk.model.embed
 
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.Boolean
 import kotlin.Int
@@ -17,15 +18,22 @@ data class TimeTableItem(
 	public val notBeforeInMinutes: Int? = null,
 	public val notAfterInMinutes: Int? = null,
 	public val zoneId: String? = null,
+	@DefaultValue("emptyList()")
 	public val days: List<String> = emptyList(),
+	@DefaultValue("emptyList()")
 	public val recurrenceTypes: List<String> = emptyList(),
+	@DefaultValue("emptyList()")
 	public val hours: List<TimeTableHour> = emptyList(),
 	public val calendarItemTypeId: String? = null,
-	public val homeVisit: Boolean,
+	@DefaultValue("false")
+	public val homeVisit: Boolean = false,
 	public val placeId: String? = null,
-	public val publicTimeTableItem: Boolean,
-	public val acceptsNewPatient: Boolean,
-	public val unavailable: Boolean,
+	@DefaultValue("false")
+	public val publicTimeTableItem: Boolean = false,
+	@DefaultValue("true")
+	public val acceptsNewPatient: Boolean = true,
+	@DefaultValue("false")
+	public val unavailable: Boolean = false,
 ) {
 	// region TimeTableItem-TimeTableItem
 

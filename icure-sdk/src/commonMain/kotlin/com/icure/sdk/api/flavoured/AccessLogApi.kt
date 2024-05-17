@@ -28,10 +28,8 @@ import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.currentEpochInstant
 import com.icure.sdk.utils.currentEpochMs
-import com.icure.sdk.utils.pagination.MultipleSourcePageIterator
+import com.icure.sdk.utils.pagination.IdsPageIterator
 import com.icure.sdk.utils.pagination.PaginatedListIterator
-import com.icure.sdk.utils.vectorProduct
-import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.decodeFromJsonElement
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
@@ -44,15 +42,8 @@ interface AccessLogBasicFlavourlessApi {
 interface AccessLogBasicFlavouredApi<E : AccessLog> {
 	suspend fun modifyAccessLog(entity: E): E
 	suspend fun getAccessLog(entityId: String): E
-	suspend fun findAccessLogsByHcPartyPatientForeignKey(
-		hcPartyId: String,
-		secretPatientKey: String,
-		startKey: JsonElement? = null,
-		startDocumentId: String? = null,
-		limit: Int? = null,
-	): PaginatedList<E>
+	suspend fun getAccessLogs(entityIds: List<String>): List<E>
 
-	suspend fun findAccessLogsByHcPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): PaginatedListIterator<E>
 	suspend fun findAccessLogsBy(
 		fromEpoch: Long?,
 		toEpoch: Long?,
@@ -94,15 +85,11 @@ interface AccessLogFlavouredApi<E : AccessLog> : AccessLogBasicFlavouredApi<E> {
 	suspend fun findAccessLogsByHcPartyPatient(
 		hcPartyId: String,
 		patient: Patient,
-		startKey: String? = null,
-		startDocumentId: String? = null,
-		limit: Int? = null,
-	): List<E>
-
-	suspend fun findAccessLogsByHcPartyPatient(
-		hcPartyId: String,
-		patient: Patient,
+		startDate: Long? = null,
+		endDate: Long? = null,
+		descending: Boolean? = null,
 	): PaginatedListIterator<E>
+
 }
 
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
@@ -133,33 +120,8 @@ private abstract class AbstractAccessLogBasicFlavouredApi<E : AccessLog>(
 
 	override suspend fun getAccessLog(entityId: String): E = rawApi.getAccessLog(entityId).successBody().let { maybeDecrypt(it) }
 
-	override suspend fun findAccessLogsByHcPartyPatientForeignKey(
-		hcPartyId: String,
-		secretPatientKey: String,
-		startKey: JsonElement?,
-		startDocumentId: String?,
-		limit: Int?,
-	): PaginatedList<E> =
-		rawApi.findAccessLogsByHCPartyPatientForeignKey(hcPartyId, secretPatientKey, startKey.encodeStartKey(), startDocumentId, limit).successBody()
-			.map { maybeDecrypt(it) }
-
-	override suspend fun findAccessLogsByHcPartyPatientForeignKeys(
-		hcPartyId: String,
-		secretPatientKeys: List<String>
-	): PaginatedListIterator<E> {
-		val accessKeys = getSecureDelegationKeys() + hcPartyId
-		return MultipleSourcePageIterator(
-			requestParameters = accessKeys vectorProduct secretPatientKeys
-		) { params, nextKey ->
-			rawApi.findAccessLogsByHCPartyPatientForeignKey(
-				hcPartyId = params.first,
-				secretFKey = params.second,
-				startKey = nextKey?.startKey.encodeStartKey(),
-				startDocumentId = nextKey?.startKeyDocId,
-				limit = 1000
-			).successBody().map { maybeDecrypt(it) }
-		}
-	}
+	override suspend fun getAccessLogs(entityIds: List<String>): List<E> =
+		rawApi.getAccessLogByIds(ListOfIds(entityIds)).successBody().map { maybeDecrypt(it) }
 
 	override suspend fun findAccessLogsBy(
 		fromEpoch: Long?,
@@ -229,31 +191,19 @@ private abstract class AbstractAccessLogFlavouredApi<E : AccessLog>(
 	override suspend fun findAccessLogsByHcPartyPatient(
 		hcPartyId: String,
 		patient: Patient,
-		startKey: String?,
-		startDocumentId: String?,
-		limit: Int?,
-	): List<E> = rawApi.findAccessLogsByHCPartyPatientForeignKeys(
-		hcPartyId,
-		crypto.entity.secretIdsOf(patient.withTypeInfo(), null).toList(),
-	).successBody().map { maybeDecrypt(it) }
-
-	override suspend fun findAccessLogsByHcPartyPatient(
-		hcPartyId: String,
-		patient: Patient
-	): PaginatedListIterator<E> {
-		val accessKeys = getSecureDelegationKeys() + hcPartyId
-		return MultipleSourcePageIterator(
-			requestParameters = accessKeys vectorProduct crypto.entity.secretIdsOf(patient.withTypeInfo(), null).toList()
-		) { params, nextKey ->
-			rawApi.findAccessLogsByHCPartyPatientForeignKey(
-				hcPartyId = params.first,
-				secretFKey = params.second,
-				startKey = nextKey?.startKey.encodeStartKey(),
-				startDocumentId = nextKey?.startKeyDocId,
-				limit = 1000
-			).successBody().map { maybeDecrypt(it) }
+		startDate: Long?,
+		endDate: Long?,
+		descending: Boolean?,
+	): PaginatedListIterator<E> = IdsPageIterator(
+		rawApi.listAccessLogIdsByDataOwnerPatientDate(
+			dataOwnerId = hcPartyId,
+			startDate = startDate,
+			endDate = endDate,
+			descending = descending,
+			secretPatientKeys = ListOfIds(crypto.entity.secretIdsOf(patient.withTypeInfo(), null).toList())).successBody()
+		) { ids ->
+			rawApi.getAccessLogByIds(ListOfIds(ids)).successBody().map { maybeDecrypt(it) }
 		}
-	}
 
 }
 
@@ -293,6 +243,7 @@ internal class AccessLogApiImpl(
 				crypto.entity.validateEncryptedEntity(entity.withTypeInfo(), EncryptedAccessLog.serializer(), fieldsToEncrypt)
 
 			override suspend fun maybeDecrypt(entity: EncryptedAccessLog): EncryptedAccessLog = entity
+
 		}
 
 	override val tryAndRecover: AccessLogFlavouredApi<AccessLog> =

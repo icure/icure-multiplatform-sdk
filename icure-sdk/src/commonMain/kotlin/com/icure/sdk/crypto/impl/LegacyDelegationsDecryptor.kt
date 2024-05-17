@@ -1,14 +1,15 @@
 package com.icure.sdk.crypto.impl
 
+import com.icure.kryptom.crypto.AesAlgorithm
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.utils.hexToByteArray
 import com.icure.sdk.crypto.ExchangeKeysManager
 import com.icure.sdk.crypto.SecurityMetadataDecryptor
 import com.icure.sdk.crypto.entities.DecryptedMetadataDetails
 import com.icure.sdk.crypto.entities.EntityWithTypeInfo
+import com.icure.sdk.model.base.HasEncryptionMetadata
 import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.embed.Delegation
-import com.icure.sdk.model.base.HasEncryptionMetadata
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.ensure
@@ -34,7 +35,7 @@ class LegacyDelegationsDecryptor(
 	) {
 		val fixedKey = it.replace("-", "")
 		kotlin.runCatching {
-			cryptoService.aes.loadKey(hexToByteArray(fixedKey))
+			cryptoService.aes.loadKey(AesAlgorithm.CbcWithPkcs7Padding, hexToByteArray(fixedKey))
 		}.getOrNull()?.let {
 			// Fixed key can be imported properly -> decryption is likely valid
 			HexString(fixedKey)

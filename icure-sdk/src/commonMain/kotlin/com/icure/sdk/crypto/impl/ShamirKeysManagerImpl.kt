@@ -1,5 +1,6 @@
 package com.icure.sdk.crypto.impl
 
+import com.icure.kryptom.crypto.AesAlgorithm
 import com.icure.kryptom.crypto.AesKey
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.crypto.PrivateRsaKey
@@ -70,7 +71,7 @@ class ShamirKeysManagerImpl(
 		dataOwner: CryptoActorStubWithType,
 		keyFp: KeypairFingerprintV1String,
 		request: ShamirKeysManager.ShamirUpdateRequest,
-		exchangeDataByDelegate: Map<String, AesKey>,
+		exchangeDataByDelegate: Map<String, AesKey<AesAlgorithm.CbcWithPkcs7Padding>>,
 		allKeys: RsaDecryptionKeysSet
 	): CryptoActorStubWithType {
 		require (dataOwner.stub.publicKey?.fingerprintV1() == keyFp) {
@@ -93,7 +94,7 @@ class ShamirKeysManagerImpl(
 	private suspend fun createPartitionsFor(
 		key: PrivateRsaKey<RsaAlgorithm.RsaEncryptionAlgorithm>,
 		request: ShamirKeysManager.ShamirUpdateRequest,
-		exchangeDataByDelegate: Map<String, AesKey>,
+		exchangeDataByDelegate: Map<String, AesKey<AesAlgorithm.CbcWithPkcs7Padding>>,
 	): Map<String, HexString>{
 		val keyPkcs8 = cryptoService.rsa.exportPrivateKeyPkcs8(key)
 		return if (request.notariesIds.size == 1) {
@@ -120,7 +121,7 @@ class ShamirKeysManagerImpl(
 	private suspend fun encryptShares(
 		shares: List<ByteArray>,
 		delegateIds: Set<String>,
-		exchangeDataByDelegate: Map<String, AesKey>
+		exchangeDataByDelegate: Map<String, AesKey<AesAlgorithm.CbcWithPkcs7Padding>>
 	): Map<String, HexString> {
 		ensure(shares.size == delegateIds.size) {
 			"Unexpected number of shares and delegates"

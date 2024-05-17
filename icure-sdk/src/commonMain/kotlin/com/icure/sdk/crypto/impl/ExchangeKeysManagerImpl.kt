@@ -1,5 +1,6 @@
 package com.icure.sdk.crypto.impl
 
+import com.icure.kryptom.crypto.AesAlgorithm
 import com.icure.kryptom.crypto.AesKey
 import com.icure.sdk.api.extended.DataOwnerApi
 import com.icure.sdk.crypto.BaseExchangeKeysManager
@@ -20,9 +21,9 @@ class ExchangeKeysManagerImpl(
 	}
 
 	// (delegator, delegate) -> (retrievialTime, keys)
-	private val cache = LruCacheWithAsyncRetrieve<Pair<String, String>, List<AesKey>>(DEFAULT_CACHE_SIZE)
+	private val cache = LruCacheWithAsyncRetrieve<Pair<String, String>, List<AesKey<AesAlgorithm.CbcWithPkcs7Padding>>>(DEFAULT_CACHE_SIZE)
 
-	override suspend fun getDecryptionExchangeKeysFor(delegatorId: String, delegateId: String): List<AesKey> {
+	override suspend fun getDecryptionExchangeKeysFor(delegatorId: String, delegateId: String): List<AesKey<AesAlgorithm.CbcWithPkcs7Padding>> {
 		if (delegatorId == dataOwnerApi.getCurrentDataOwnerId() || delegateId in dataOwnerApi.getCurrentDataOwnerHierarchyIds()) {
 			return cache.getCachedOrRetrieve(delegatorId to delegateId) {
 				val encryptedKeys = base.getEncryptedExchangeKeysFor(delegatorId, delegateId)

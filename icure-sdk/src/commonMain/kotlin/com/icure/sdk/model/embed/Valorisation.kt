@@ -1,6 +1,7 @@
 package com.icure.sdk.model.embed
 
 import com.icure.sdk.model.specializations.Base64String
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.Double
 import kotlin.Int
@@ -49,7 +50,8 @@ data class DecryptedValorisation(
 	override val patientIntervention: Double? = null,
 	override val doctorSupplement: Double? = null,
 	override val vat: Double? = null,
-	override val label: Map<String, String>? = null,
+	@DefaultValue("emptyMap()")
+	override val label: Map<String, String>? = emptyMap(),
 	override val encryptedSelf: Base64String? = null,
 ) : Valorisation {
 	// region Valorisation-DecryptedValorisation
@@ -68,7 +70,8 @@ data class EncryptedValorisation(
 	override val patientIntervention: Double? = null,
 	override val doctorSupplement: Double? = null,
 	override val vat: Double? = null,
-	override val label: Map<String, String>? = null,
+	@DefaultValue("emptyMap()")
+	override val label: Map<String, String>? = emptyMap(),
 	override val encryptedSelf: Base64String? = null,
 ) : Valorisation {
 	// region Valorisation-EncryptedValorisation

@@ -1,5 +1,6 @@
 package com.icure.sdk.model.embed.form.template
 
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.Boolean
 import kotlin.String
@@ -11,7 +12,8 @@ import kotlin.String
 class State(
 	public val name: String,
 	public val stateToUpdate: StateToUpdate,
-	public val canLaunchLauncher: Boolean,
+	@DefaultValue("false")
+	public val canLaunchLauncher: Boolean = false,
 ) {
 	// region State-State
 

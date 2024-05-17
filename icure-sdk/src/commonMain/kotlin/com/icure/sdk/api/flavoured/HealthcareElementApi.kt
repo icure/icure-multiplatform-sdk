@@ -37,7 +37,8 @@ import com.icure.sdk.websocket.Subscribable
 import com.icure.sdk.websocket.WebSocketAuthProvider
 import io.ktor.util.InternalAPI
 import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.JsonElement
+import com.icure.sdk.utils.pagination.IdsPageIterator
+import com.icure.sdk.utils.pagination.PaginatedListIterator
 import kotlinx.serialization.json.decodeFromJsonElement
 import kotlin.time.Duration
 
@@ -67,13 +68,6 @@ interface HealthcareElementBasicFlavouredApi<E : HealthElement> : Subscribable<H
 		startDocumentId: String?,
 		limit: Int?,
 	): PaginatedList<E>
-	suspend fun findHealthcareElementsByHcPartyPatientForeignKey(
-		hcPartyId: String,
-		secretPatientKey: String,
-		startKey: JsonElement? = null,
-		startDocumentId: String? = null,
-		limit: Int? = null,
-	): PaginatedList<E>
 	suspend fun findHealthcareElementsByHcPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<E>
 }
 
@@ -89,10 +83,10 @@ interface HealthcareElementFlavouredApi<E : HealthElement> : HealthcareElementBa
 	suspend fun findHealthcareElementsByHcPartyPatient(
 		hcPartyId: String,
 		patient: Patient,
-		startKey: JsonElement? = null,
-		startDocumentId: String? = null,
-		limit: Int? = null,
-	): List<E>
+		startDate: Long? = null,
+		endDate: Long? = null,
+		descending: Boolean? = null,
+	): PaginatedListIterator<E>
 
 }
 
@@ -136,16 +130,6 @@ private abstract class AbstractHealthcareElementBasicFlavouredApi<E : HealthElem
 		limit: Int?,
 	): PaginatedList<E> =
 		rawApi.filterHealthElementsBy(startDocumentId, limit, filterChain).successBody().map { maybeDecrypt(it) }
-
-	override suspend fun findHealthcareElementsByHcPartyPatientForeignKey(
-		hcPartyId: String,
-		secretPatientKey: String,
-		startKey: JsonElement?,
-		startDocumentId: String?,
-		limit: Int?,
-	): PaginatedList<E> =
-		rawApi.findHealthElementsByHCPartyPatientForeignKey(hcPartyId, secretPatientKey, startKey.encodeStartKey(), startDocumentId, limit).successBody()
-			.map { maybeDecrypt(it) }
 
 	override suspend fun findHealthcareElementsByHcPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<E> =
 		rawApi.findHealthElementsByHCPartyPatientForeignKeys(hcPartyId, secretPatientKeys).successBody().map { maybeDecrypt(it) }
@@ -219,13 +203,20 @@ private abstract class AbstractHealthcareElementFlavouredApi<E : HealthElement>(
 	override suspend fun findHealthcareElementsByHcPartyPatient(
 		hcPartyId: String,
 		patient: Patient,
-		startKey: JsonElement?,
-		startDocumentId: String?,
-		limit: Int?,
-	): List<E> = rawApi.findHealthElementsByHCPartyPatientForeignKeys(
-		hcPartyId,
-		crypto.entity.secretIdsOf(patient.withTypeInfo(), null).toList()
-	).successBody().map { maybeDecrypt(it) }
+		startDate: Long?,
+		endDate: Long?,
+		descending: Boolean?
+	): PaginatedListIterator<E> = IdsPageIterator(
+		rawApi.listHealthElementIdsByDataOwnerPatientOpeningDate(
+			dataOwnerId = hcPartyId,
+			startDate = startDate,
+			endDate = endDate,
+			descending = descending,
+			secretPatientKeys = ListOfIds(crypto.entity.secretIdsOf(patient.withTypeInfo(), null).toList())
+		).successBody()
+	) { ids ->
+		rawApi.getHealthElements(ListOfIds(ids)).successBody().map { maybeDecrypt(it) }
+	}
 
 }
 

@@ -15,6 +15,7 @@ interface InternalCryptoServices : BasicInternalCryptoApi{
 	val delegationsDeAnonymization: DelegationsDeAnonymization
 	val dataOwnerApi: DataOwnerApi
 	val userEncryptionKeysManager: UserEncryptionKeysManager
+	val recoveryDataEncryption: RecoveryDataEncryption
 
 	override val validationService: EntityValidationService
 		get() = entity

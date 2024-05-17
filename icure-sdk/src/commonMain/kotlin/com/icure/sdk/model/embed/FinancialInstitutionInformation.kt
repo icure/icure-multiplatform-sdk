@@ -1,6 +1,7 @@
 package com.icure.sdk.model.embed
 
 import com.icure.sdk.model.specializations.Base64String
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.String
 import kotlin.collections.Set
@@ -36,6 +37,7 @@ data class DecryptedFinancialInstitutionInformation(
 	override val bic: String? = null,
 	override val proxyBankAccount: String? = null,
 	override val proxyBic: String? = null,
+	@DefaultValue("emptySet()")
 	override val preferredFiiForPartners: Set<String> = emptySet(),
 	override val encryptedSelf: Base64String? = null,
 ) : FinancialInstitutionInformation {
@@ -52,6 +54,7 @@ data class EncryptedFinancialInstitutionInformation(
 	override val bic: String? = null,
 	override val proxyBankAccount: String? = null,
 	override val proxyBic: String? = null,
+	@DefaultValue("emptySet()")
 	override val preferredFiiForPartners: Set<String> = emptySet(),
 	override val encryptedSelf: Base64String? = null,
 ) : FinancialInstitutionInformation {

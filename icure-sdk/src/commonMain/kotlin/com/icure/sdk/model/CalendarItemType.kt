@@ -1,6 +1,7 @@
 package com.icure.sdk.model
 
 import com.icure.sdk.model.base.StoredDocument
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.Int
 import kotlin.Long
@@ -18,11 +19,15 @@ data class CalendarItemType(
 	override val deletionDate: Long? = null,
 	public val name: String? = null,
 	public val color: String? = null,
+	@DefaultValue("0")
 	public val duration: Int = 0,
 	public val externalRef: String? = null,
 	public val mikronoId: String? = null,
+	@DefaultValue("emptySet()")
 	public val docIds: Set<String> = emptySet(),
+	@DefaultValue("emptyMap()")
 	public val otherInfos: Map<String, String> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	public val subjectByLanguage: Map<String, String> = emptyMap(),
 ) : StoredDocument {
 	// region CalendarItemType-CalendarItemType

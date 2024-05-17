@@ -16,6 +16,7 @@ import com.icure.sdk.model.embed.SecurityMetadata
 import com.icure.sdk.model.embed.Service
 import com.icure.sdk.model.embed.SubContact
 import com.icure.sdk.model.specializations.Base64String
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.Long
 import kotlin.String
@@ -105,8 +106,11 @@ data class DecryptedContact(
 	override val author: String? = null,
 	override val responsible: String? = null,
 	override val medicalLocationId: String? = null,
+	@DefaultValue("emptySet()")
 	override val tags: Set<CodeStub> = emptySet(),
+	@DefaultValue("emptySet()")
 	override val codes: Set<CodeStub> = emptySet(),
+	@DefaultValue("emptyList()")
 	override val identifier: List<Identifier> = emptyList(),
 	override val endOfLife: Long? = null,
 	override val deletionDate: Long? = null,
@@ -117,16 +121,23 @@ data class DecryptedContact(
 	override val location: String? = null,
 	override val externalId: String? = null,
 	override val encounterType: CodeStub? = null,
+	@DefaultValue("emptySet()")
 	override val subContacts: Set<DecryptedSubContact> = emptySet(),
+	@DefaultValue("emptySet()")
 	override val services: Set<DecryptedService> = emptySet(),
 	override val healthcarePartyId: String? = null,
 	override val modifiedContactId: String? = null,
+	@DefaultValue("emptySet()")
 	override val secretForeignKeys: Set<String> = emptySet(),
+	@DefaultValue("emptyMap()")
 	override val cryptedForeignKeys: Map<String, Set<Delegation>> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val delegations: Map<String, Set<Delegation>> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val encryptionKeys: Map<String, Set<Delegation>> = emptyMap(),
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,
+	@DefaultValue("emptyList()")
 	override val notes: List<Annotation> = emptyList(),
 ) : Contact {
 	// region Contact-DecryptedContact
@@ -144,8 +155,11 @@ data class EncryptedContact(
 	override val author: String? = null,
 	override val responsible: String? = null,
 	override val medicalLocationId: String? = null,
+	@DefaultValue("emptySet()")
 	override val tags: Set<CodeStub> = emptySet(),
+	@DefaultValue("emptySet()")
 	override val codes: Set<CodeStub> = emptySet(),
+	@DefaultValue("emptyList()")
 	override val identifier: List<Identifier> = emptyList(),
 	override val endOfLife: Long? = null,
 	override val deletionDate: Long? = null,
@@ -156,16 +170,23 @@ data class EncryptedContact(
 	override val location: String? = null,
 	override val externalId: String? = null,
 	override val encounterType: CodeStub? = null,
+	@DefaultValue("emptySet()")
 	override val subContacts: Set<EncryptedSubContact> = emptySet(),
+	@DefaultValue("emptySet()")
 	override val services: Set<EncryptedService> = emptySet(),
 	override val healthcarePartyId: String? = null,
 	override val modifiedContactId: String? = null,
+	@DefaultValue("emptySet()")
 	override val secretForeignKeys: Set<String> = emptySet(),
+	@DefaultValue("emptyMap()")
 	override val cryptedForeignKeys: Map<String, Set<Delegation>> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val delegations: Map<String, Set<Delegation>> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val encryptionKeys: Map<String, Set<Delegation>> = emptyMap(),
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,
+	@DefaultValue("emptyList()")
 	override val notes: List<Annotation> = emptyList(),
 ) : Contact {
 	// region Contact-EncryptedContact

@@ -1,5 +1,6 @@
 package com.icure.sdk.model.embed
 
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.String
 import kotlin.collections.Map
@@ -10,6 +11,7 @@ import kotlin.collections.Map
 @Serializable
 data class PostalCode(
 	public val code: String? = null,
+	@DefaultValue("emptyMap()")
 	public val label: Map<String, String> = emptyMap(),
 ) {
 	// region PostalCode-PostalCode

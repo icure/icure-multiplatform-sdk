@@ -1,11 +1,13 @@
 package com.icure.sdk.model
 
-import com.icure.sdk.model.embed.Address
+import com.icure.sdk.model.embed.DecryptedAddress
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.Boolean
 import kotlin.Int
 import kotlin.String
 import kotlin.collections.Map
+import com.icure.sdk.model.embed.Address
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
@@ -15,11 +17,14 @@ data class AppointmentTypeAndPlace(
 	public val calendarItemTypeId: String,
 	public val name: String? = null,
 	public val color: String? = null,
+	@DefaultValue("0")
 	public val duration: Int = 0,
-	public val subjectByLanguage: Map<String, String>? = null,
-	public val placeId: String?,
-	public val address: Address?,
-	public val acceptsNewPatients: Boolean,
+	@DefaultValue("emptyMap()")
+	public val subjectByLanguage: Map<String, String>? = emptyMap(),
+	public val placeId: String? = null,
+	public val address: DecryptedAddress? = null,
+	@DefaultValue("true")
+	public val acceptsNewPatients: Boolean = true,
 ) {
 	// region AppointmentTypeAndPlace-AppointmentTypeAndPlace
 
