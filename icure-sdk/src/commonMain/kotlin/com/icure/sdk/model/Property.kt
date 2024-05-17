@@ -13,17 +13,17 @@ import kotlin.String
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 sealed interface Property : StoredDocument, Encryptable {
-	override val id: String
+	public val id: String
 
-	override val rev: String?
+	public val rev: String?
 
-	override val deletionDate: Long?
+	public val deletionDate: Long?
 
 	public val type: PropertyType?
 
 	public val typedValue: TypedValue?
 
-	override val encryptedSelf: Base64String?
+	public val encryptedSelf: Base64String?
 	// region Property-Property
 
 	// endregion

@@ -113,7 +113,7 @@ sealed interface InvoicingCode : Encryptable {
 
 	public val status: Long?
 
-	override val encryptedSelf: Base64String?
+	public val encryptedSelf: Base64String?
 	// region InvoicingCode-InvoicingCode
 
 	// endregion

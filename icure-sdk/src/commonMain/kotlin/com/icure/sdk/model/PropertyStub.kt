@@ -20,7 +20,7 @@ sealed interface PropertyStub : Encryptable {
 
 	public val deletionDate: Long?
 
-	override val encryptedSelf: Base64String?
+	public val encryptedSelf: Base64String?
 	// region PropertyStub-PropertyStub
 
 	// endregion

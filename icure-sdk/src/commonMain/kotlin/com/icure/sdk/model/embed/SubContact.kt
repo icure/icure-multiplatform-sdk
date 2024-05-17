@@ -14,23 +14,23 @@ import kotlin.collections.Set
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 sealed interface SubContact : Encryptable, ICureDocument<String?> {
-	override val id: String?
+	public val id: String?
 
-	override val created: Long?
+	public val created: Long?
 
-	override val modified: Long?
+	public val modified: Long?
 
-	override val author: String?
+	public val author: String?
 
-	override val responsible: String?
+	public val responsible: String?
 
-	override val medicalLocationId: String?
+	public val medicalLocationId: String?
 
-	override val tags: Set<CodeStub>
+	public val tags: Set<CodeStub>
 
-	override val codes: Set<CodeStub>
+	public val codes: Set<CodeStub>
 
-	override val endOfLife: Long?
+	public val endOfLife: Long?
 
 	public val descr: String?
 
@@ -48,7 +48,7 @@ sealed interface SubContact : Encryptable, ICureDocument<String?> {
 
 	public val services: List<ServiceLink>
 
-	override val encryptedSelf: Base64String?
+	public val encryptedSelf: Base64String?
 	// region SubContact-SubContact
 
 	// endregion

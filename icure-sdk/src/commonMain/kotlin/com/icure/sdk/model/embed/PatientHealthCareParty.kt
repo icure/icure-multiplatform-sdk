@@ -21,7 +21,7 @@ sealed interface PatientHealthCareParty : Encryptable {
 
 	public val referral: Boolean
 
-	override val encryptedSelf: Base64String?
+	public val encryptedSelf: Base64String?
 	// region PatientHealthCareParty-PatientHealthCareParty
 
 	// endregion

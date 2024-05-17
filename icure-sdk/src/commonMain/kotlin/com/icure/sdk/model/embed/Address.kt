@@ -33,7 +33,7 @@ sealed interface Address : Encryptable {
 
 	public val telecoms: List<Telecom>
 
-	override val encryptedSelf: Base64String?
+	public val encryptedSelf: Base64String?
   // region Address-Address
 
   // endregion

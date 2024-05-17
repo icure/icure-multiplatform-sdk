@@ -22,43 +22,43 @@ sealed interface Article :
 	ICureDocument<String>,
 	HasEncryptionMetadata,
 	Encryptable {
-	override val id: String
+	public val id: String
 
-	override val rev: String?
+	public val rev: String?
 
-	override val created: Long?
+	public val created: Long?
 
-	override val modified: Long?
+	public val modified: Long?
 
-	override val author: String?
+	public val author: String?
 
-	override val responsible: String?
+	public val responsible: String?
 
-	override val medicalLocationId: String?
+	public val medicalLocationId: String?
 
-	override val tags: Set<CodeStub>
+	public val tags: Set<CodeStub>
 
-	override val codes: Set<CodeStub>
+	public val codes: Set<CodeStub>
 
-	override val endOfLife: Long?
+	public val endOfLife: Long?
 
-	override val deletionDate: Long?
+	public val deletionDate: Long?
 
 	public val name: String?
 
 	public val classification: String?
 
-	override val secretForeignKeys: Set<String>
+	public val secretForeignKeys: Set<String>
 
-	override val cryptedForeignKeys: Map<String, Set<Delegation>>
+	public val cryptedForeignKeys: Map<String, Set<Delegation>>
 
-	override val delegations: Map<String, Set<Delegation>>
+	public val delegations: Map<String, Set<Delegation>>
 
-	override val encryptionKeys: Map<String, Set<Delegation>>
+	public val encryptionKeys: Map<String, Set<Delegation>>
 
-	override val encryptedSelf: Base64String?
+	public val encryptedSelf: Base64String?
 
-	override val securityMetadata: SecurityMetadata?
+	public val securityMetadata: SecurityMetadata?
 	// region Article-Article
 
 	// endregion

@@ -18,7 +18,7 @@ sealed interface FlatRateTarification : Encryptable {
 
 	public val valorisations: List<Valorisation>
 
-	override val encryptedSelf: Base64String?
+	public val encryptedSelf: Base64String?
 	// region FlatRateTarification-FlatRateTarification
 
 	// endregion

@@ -57,43 +57,43 @@ sealed interface Patient :
 	HasEncryptionMetadata,
 	Encryptable,
 	CryptoActor {
-	override val id: String
+	public val id: String
 
 	public val identifier: List<Identifier>
 
-	override val rev: String?
+	public val rev: String?
 
-	override val created: Long?
+	public val created: Long?
 
-	override val modified: Long?
+	public val modified: Long?
 
-	override val author: String?
+	public val author: String?
 
-	override val responsible: String?
+	public val responsible: String?
 
-	override val tags: Set<CodeStub>
+	public val tags: Set<CodeStub>
 
-	override val codes: Set<CodeStub>
+	public val codes: Set<CodeStub>
 
-	override val endOfLife: Long?
+	public val endOfLife: Long?
 
-	override val deletionDate: Long?
+	public val deletionDate: Long?
 
-	override val firstName: String?
+	public val firstName: String?
 
-	override val lastName: String?
+	public val lastName: String?
 
-	override val names: List<PersonName>
+	public val names: List<PersonName>
 
-	override val companyName: String?
+	public val companyName: String?
 
-	override val languages: List<String>
+	public val languages: List<String>
 
-	override val addresses: List<Address>
+	public val addresses: List<Address>
 
-	override val civility: String?
+	public val civility: String?
 
-	override val gender: Gender?
+	public val gender: Gender?
 
 	public val birthSex: Gender?
 
@@ -169,33 +169,33 @@ sealed interface Patient :
 
 	public val properties: Set<PropertyStub>
 
-	override val hcPartyKeys: Map<String, List<HexString>>
+	public val hcPartyKeys: Map<String, List<HexString>>
 
-	override val aesExchangeKeys:
+	public val aesExchangeKeys:
 		Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>>
 
-	override val transferKeys:
+	public val transferKeys:
 		Map<AesExchangeKeyEncryptionKeypairIdentifier, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>
 
-	override val privateKeyShamirPartitions: Map<String, HexString>
+	public val privateKeyShamirPartitions: Map<String, HexString>
 
-	override val publicKey: SpkiHexString?
+	public val publicKey: SpkiHexString?
 
-	override val publicKeysForOaepWithSha256: Set<SpkiHexString>
+	public val publicKeysForOaepWithSha256: Set<SpkiHexString>
 
-	override val secretForeignKeys: Set<String>
+	public val secretForeignKeys: Set<String>
 
-	override val cryptedForeignKeys: Map<String, Set<Delegation>>
+	public val cryptedForeignKeys: Map<String, Set<Delegation>>
 
-	override val delegations: Map<String, Set<Delegation>>
+	public val delegations: Map<String, Set<Delegation>>
 
-	override val encryptionKeys: Map<String, Set<Delegation>>
+	public val encryptionKeys: Map<String, Set<Delegation>>
 
-	override val encryptedSelf: Base64String?
+	public val encryptedSelf: Base64String?
 
-	override val securityMetadata: SecurityMetadata?
+	public val securityMetadata: SecurityMetadata?
 
-	override val medicalLocationId: String?
+	public val medicalLocationId: String?
 
 	public val nonDuplicateIds: Set<String>
 

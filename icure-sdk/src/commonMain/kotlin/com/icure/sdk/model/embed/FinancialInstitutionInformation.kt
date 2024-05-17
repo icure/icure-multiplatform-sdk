@@ -23,7 +23,7 @@ sealed interface FinancialInstitutionInformation : Encryptable {
 
 	public val preferredFiiForPartners: Set<String>
 
-	override val encryptedSelf: Base64String?
+	public val encryptedSelf: Base64String?
 	// region FinancialInstitutionInformation-FinancialInstitutionInformation
 
 	// endregion

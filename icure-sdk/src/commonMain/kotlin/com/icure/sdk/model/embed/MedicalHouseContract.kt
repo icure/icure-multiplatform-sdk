@@ -76,7 +76,7 @@ sealed interface MedicalHouseContract : Encryptable {
 
 	public val receipts: Map<String, String>
 
-	override val encryptedSelf: Base64String?
+	public val encryptedSelf: Base64String?
 	// region MedicalHouseContract-MedicalHouseContract
 
 	// endregion

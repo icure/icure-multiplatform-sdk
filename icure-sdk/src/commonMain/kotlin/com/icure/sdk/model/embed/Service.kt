@@ -17,7 +17,7 @@ import kotlin.collections.Set
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 sealed interface Service : Encryptable, ICureDocument<String> {
-	override val id: String
+	public val id: String
 
 	public val transactionId: String?
 
@@ -59,17 +59,17 @@ sealed interface Service : Encryptable, ICureDocument<String> {
 
 	public val formId: String?
 
-	override val created: Long?
+	public val created: Long?
 
-	override val modified: Long?
+	public val modified: Long?
 
-	override val endOfLife: Long?
+	public val endOfLife: Long?
 
-	override val author: String?
+	public val author: String?
 
-	override val responsible: String?
+	public val responsible: String?
 
-	override val medicalLocationId: String?
+	public val medicalLocationId: String?
 
 	public val comment: String?
 
@@ -81,11 +81,11 @@ sealed interface Service : Encryptable, ICureDocument<String> {
 
 	public val qualifiedLinks: Map<LinkQualification, Map<String, String>>
 
-	override val codes: Set<CodeStub>
+	public val codes: Set<CodeStub>
 
-	override val tags: Set<CodeStub>
+	public val tags: Set<CodeStub>
 
-	override val encryptedSelf: Base64String?
+	public val encryptedSelf: Base64String?
 
 	public val securityMetadata: SecurityMetadata?
 	// region Service-Service

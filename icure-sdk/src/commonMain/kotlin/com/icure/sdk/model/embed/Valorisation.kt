@@ -33,7 +33,7 @@ sealed interface Valorisation : Encryptable {
 
 	public val label: Map<String, String>?
 
-	override val encryptedSelf: Base64String?
+	public val encryptedSelf: Base64String?
 	// region Valorisation-Valorisation
 
 	// endregion

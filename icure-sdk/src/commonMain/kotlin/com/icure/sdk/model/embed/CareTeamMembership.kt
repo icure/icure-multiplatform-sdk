@@ -16,7 +16,7 @@ sealed interface CareTeamMembership : Encryptable {
 
 	public val membershipType: MembershipType?
 
-	override val encryptedSelf: Base64String?
+	public val encryptedSelf: Base64String?
 	// region CareTeamMembership-CareTeamMembership
 
 	// endregion

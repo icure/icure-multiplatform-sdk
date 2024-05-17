@@ -10,9 +10,9 @@ import kotlin.String
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 sealed interface Episode : Encryptable, Identifiable<String>, Named {
-	override val id: String
+	public val id: String
 
-	override val name: String?
+	public val name: String?
 
 	public val comment: String?
 
@@ -20,7 +20,7 @@ sealed interface Episode : Encryptable, Identifiable<String>, Named {
 
 	public val endDate: Long?
 
-	override val encryptedSelf: Base64String?
+	public val encryptedSelf: Base64String?
 	// region Episode-Episode
 
 	// endregion

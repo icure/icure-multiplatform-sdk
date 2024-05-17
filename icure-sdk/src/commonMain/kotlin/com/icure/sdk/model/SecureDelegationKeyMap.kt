@@ -16,9 +16,9 @@ import kotlin.collections.Set
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 sealed interface SecureDelegationKeyMap : StoredDocument, HasEncryptionMetadata, Encryptable {
-	override val id: String
+	public val id: String
 
-	override val rev: String?
+	public val rev: String?
 
 	public val delegationKey: String
 
@@ -26,19 +26,19 @@ sealed interface SecureDelegationKeyMap : StoredDocument, HasEncryptionMetadata,
 
 	public val `delegate`: String?
 
-	override val secretForeignKeys: Set<String>
+	public val secretForeignKeys: Set<String>
 
-	override val cryptedForeignKeys: Map<String, Set<Delegation>>
+	public val cryptedForeignKeys: Map<String, Set<Delegation>>
 
-	override val delegations: Map<String, Set<Delegation>>
+	public val delegations: Map<String, Set<Delegation>>
 
-	override val encryptionKeys: Map<String, Set<Delegation>>
+	public val encryptionKeys: Map<String, Set<Delegation>>
 
-	override val encryptedSelf: Base64String?
+	public val encryptedSelf: Base64String?
 
-	override val securityMetadata: SecurityMetadata?
+	public val securityMetadata: SecurityMetadata?
 
-	override val deletionDate: Long?
+	public val deletionDate: Long?
 	// region SecureDelegationKeyMap-SecureDelegationKeyMap
 
 	// endregion

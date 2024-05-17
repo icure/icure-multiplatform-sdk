@@ -9,7 +9,7 @@ import kotlin.String
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 sealed interface CareTeamMember : Encryptable, Identifiable<String> {
-	override val id: String
+	public val id: String
 
 	public val careTeamMemberType: CareTeamMemberType?
 
@@ -17,7 +17,7 @@ sealed interface CareTeamMember : Encryptable, Identifiable<String> {
 
 	public val quality: CodeStub?
 
-	override val encryptedSelf: Base64String?
+	public val encryptedSelf: Base64String?
 	// region CareTeamMember-CareTeamMember
 
 	// endregion

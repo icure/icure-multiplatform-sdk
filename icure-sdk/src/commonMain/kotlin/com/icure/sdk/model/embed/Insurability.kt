@@ -29,7 +29,7 @@ sealed interface Insurability : Encryptable {
 
 	public val titularyId: String?
 
-	override val encryptedSelf: Base64String?
+	public val encryptedSelf: Base64String?
 	// region Insurability-Insurability
 
 	// endregion

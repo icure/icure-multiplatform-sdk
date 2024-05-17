@@ -13,7 +13,7 @@ sealed interface Telecom : Encryptable {
 
 	public val telecomDescription: String?
 
-	override val encryptedSelf: Base64String?
+	public val encryptedSelf: Base64String?
 	// region Telecom-Telecom
 
 	// endregion

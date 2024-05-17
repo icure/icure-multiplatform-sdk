@@ -24,7 +24,7 @@ sealed interface TypedValue : Encryptable {
 
 	public val dateValue: Instant?
 
-	override val encryptedSelf: Base64String?
+	public val encryptedSelf: Base64String?
 	// region TypedValue-TypedValue
 
 	// endregion
