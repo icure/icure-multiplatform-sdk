@@ -1,0 +1,54 @@
+name: Docker Image CI
+
+on:
+    push:
+        pull_request:
+            types:
+                - closed
+    workflow_dispatch:
+
+jobs:
+    if_merged:
+        if: github.event.pull_request.merged == true
+        runs-on: hidden-mini
+        steps:
+            -   name: Checkout code
+                uses: actions/checkout@v4
+                with:
+                    submodules: 'recursive'
+                    token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+
+            -   name: Get Previous tag
+                id: previoustag
+                uses: 'WyriHaximus/github-action-get-previous-tag@v1'
+
+            -   name: Get next versions
+                id: semvers
+                uses: 'WyriHaximus/github-action-next-semvers@v1'
+                with:
+                    version: ${{ steps.previoustag.outputs.tag }}
+
+            -   name: Default new version
+                run: echo "NEW_VERSION=${{ steps.semvers.outputs.minor }}" >> $GITHUB_ENV
+
+            -   name: Update major version
+                if: ${{ contains(github.event.pull_request.labels.*.name, 'SemVer.major') }}
+                run: echo "NEW_VERSION=${{ steps.semvers.outputs.major }}" >> $GITHUB_ENV
+
+            -   name: Update minor version
+                if: ${{ contains(github.event.pull_request.labels.*.name, 'SemVer.minor') }}
+                run: echo "NEW_VERSION=${{ steps.semvers.outputs.minor }}" >> $GITHUB_ENV
+
+            -   name: Update patch version
+                if: ${{ contains(github.event.pull_request.labels.*.name, 'SemVer.patch') }}
+                run: echo "NEW_VERSION=${{ steps.semvers.outputs.patch }}" >> $GITHUB_ENV
+
+            -   name: Build and push
+                run: |
+                    docker build --progress=plain -f build.Dockerfile --build-arg "repoUsername=${{secrets.REPO_USERNAME}}" --build-arg "repoPassword=${{secrets.REPO_PASSWORD}}" --build-arg "version=${{env.NEW_VERSION}}" .
+
+            -   name: Upload Release
+                uses: ncipollo/release-action@v1
+                with:
+                    tag: ${{ env.NEW_VERSION }}
+                    token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
