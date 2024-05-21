@@ -1,0 +1,26 @@
+steps:
+    -   name: 'gcr.io/cloud-builders/git'
+        entrypoint: 'bash'
+        args: [ '-c', 'git fetch --unshallow --tags && git checkout ${BRANCH_NAME} && git submodule init && git submodule update' ]
+
+    -   name: 'taktik/git-version:2.0.8-gb47b2d0e35'
+        args: [ '-f', 'git.version' ]
+
+    -   name: 'docker:24-git'
+        entrypoint: 'sh'
+        args: [ '-c', 'echo $$REPO_PASSWORD | docker login docker.taktik.be --username=$$REPO_USERNAME --password-stdin' ]
+        secretEnv: [ 'REPO_USERNAME', 'REPO_PASSWORD' ]
+
+    -   name: 'docker:24-git'
+        entrypoint: 'sh'
+        args: [ '-c', 'docker build --progress=plain -f build.Dockerfile --build-arg "repoUsername=$$REPO_USERNAME" --build-arg "repoPassword=$$REPO_PASSWORD" .' ]
+        secretEnv: [ 'REPO_USERNAME', 'REPO_PASSWORD' ]
+
+availableSecrets:
+    secretManager:
+        -   versionName: projects/taktik-dev/secrets/ci-repo-username/versions/1
+            env: 'REPO_USERNAME'
+        -   versionName: projects/taktik-dev/secrets/ci-repo-password/versions/1
+            env: 'REPO_PASSWORD'
+
+timeout: 2700s
