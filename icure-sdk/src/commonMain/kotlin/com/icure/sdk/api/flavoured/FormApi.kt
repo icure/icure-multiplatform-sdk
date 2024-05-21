@@ -54,13 +54,6 @@ interface FormBasicFlavouredApi<E : Form> {
 	suspend fun modifyForms(entities: List<E>): List<E>
 	suspend fun getForm(entityId: String): E
 	suspend fun getForms(entityIds: List<String>): List<E>
-	suspend fun findFormsByHcPartyPatientForeignKey(
-		hcPartyId: String,
-		secretPatientKey: String,
-		startKey: JsonElement? = null,
-		startDocumentId: String? = null,
-		limit: Int? = null,
-	): PaginatedList<E>
 
 	suspend fun getFormByLogicalUuid(logicalUuid: String): E
 	suspend fun getFormsByLogicalUuid(logicalUuid: String): List<E>
@@ -124,16 +117,6 @@ private abstract class AbstractFormBasicFlavouredApi<E : Form>(protected val raw
 	override suspend fun getForm(entityId: String): E = rawApi.getForm(entityId).successBody().let { maybeDecrypt(it) }
 	override suspend fun getForms(entityIds: List<String>): List<E> =
 		rawApi.getForms(ListOfIds(entityIds)).successBody().map { maybeDecrypt(it) }
-
-	override suspend fun findFormsByHcPartyPatientForeignKey(
-		hcPartyId: String,
-		secretPatientKey: String,
-		startKey: JsonElement?,
-		startDocumentId: String?,
-		limit: Int?,
-	): PaginatedList<E> =
-		rawApi.findFormsByHCPartyPatientForeignKey(hcPartyId, secretPatientKey, startKey.encodeStartKey(), startDocumentId, limit).successBody()
-			.map { maybeDecrypt(it) }
 
 	override suspend fun getFormByLogicalUuid(logicalUuid: String) = rawApi.getFormByLogicalUuid(logicalUuid).successBody().let { maybeDecrypt(it) }
 

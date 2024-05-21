@@ -1,5 +1,6 @@
 package com.icure.sdk.crypto.impl
 
+import com.icure.kryptom.crypto.AesAlgorithm
 import com.icure.kryptom.crypto.AesKey
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.crypto.HmacAlgorithm
@@ -43,7 +44,7 @@ abstract class AbstractExchangeDataManager(
 		val decryptedContentAndVerificationStatus: Pair<UnencryptedExchangeDataContent, Boolean>?
 	)
 	protected data class DecryptedExchangeDataContent(
-		val exchangeKey: AesKey,
+		val exchangeKey: AesKey<AesAlgorithm.CbcWithPkcs7Padding>,
 		val accessControlSecret: AccessControlSecret,
 		val sharedSignatureKey: HmacKey<HmacAlgorithm.HmacSha512>,
 		val verified: Boolean
@@ -89,8 +90,8 @@ abstract class AbstractExchangeDataManager(
 
 	protected suspend fun createNewExchangeData(
 		delegateId: String,
-		newDataId: String? = null,
-		allowNoDelegateKeys: Boolean = false
+		newDataId: String?,
+		allowNoDelegateKeys: Boolean
 	): ExchangeDataWithUnencryptedContent {
 		val selfEncryptionKeys = userEncryptionKeys.getSelfVerifiedKeys().map { it.toPublicKeyInfo() }
 		val verifiedDelegateKeys = if (delegateId != dataOwnerApi.getCurrentDataOwnerId()) {

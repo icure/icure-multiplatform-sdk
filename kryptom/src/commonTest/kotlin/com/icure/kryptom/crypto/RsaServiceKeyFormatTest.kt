@@ -3,7 +3,6 @@ package com.icure.kryptom.crypto
 import com.icure.kryptom.utils.base64Decode
 import com.icure.kryptom.utils.toHexString
 import io.kotest.core.spec.style.StringSpec
-import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldMatch
 
@@ -21,7 +20,7 @@ class RsaServiceKeyFormatTest : StringSpec({
 	// Tests both the export and the generation parameters
 	"Generated 2048 keys should follow expected format" {
 		algorithms.forEach {
-			val keypair = defaultCryptoService.rsa.generateKeyPair(it, RsaService.KeySize.RSA_2048)
+			val keypair = defaultCryptoService.rsa.generateKeyPair(it, RsaService.KeySize.Rsa2048)
 			defaultCryptoService.rsa.exportPrivateKeyPkcs8(keypair.private).toHexString() shouldMatch private2048Format
 			defaultCryptoService.rsa.exportPublicKeySpki(keypair.public).toHexString() shouldMatch public2048Format
 		}
@@ -29,7 +28,7 @@ class RsaServiceKeyFormatTest : StringSpec({
 
 	"Generated 4096 keys should follow expected format" {
 		algorithms.forEach {
-			val keypair = defaultCryptoService.rsa.generateKeyPair(it, RsaService.KeySize.RSA_4096)
+			val keypair = defaultCryptoService.rsa.generateKeyPair(it, RsaService.KeySize.Rsa4096)
 			defaultCryptoService.rsa.exportPrivateKeyPkcs8(keypair.private).toHexString() shouldMatch private4096Format
 			defaultCryptoService.rsa.exportPublicKeySpki(keypair.public).toHexString() shouldMatch public4096Format
 		}

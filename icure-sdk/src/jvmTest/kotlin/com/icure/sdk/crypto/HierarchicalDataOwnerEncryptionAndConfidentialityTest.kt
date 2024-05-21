@@ -1,6 +1,6 @@
 package com.icure.sdk.crypto
 
-import com.icure.sdk.api.IcureSdk
+import com.icure.sdk.IcureSdk
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.model.DecryptedHealthElement
 import com.icure.sdk.model.DecryptedPatient

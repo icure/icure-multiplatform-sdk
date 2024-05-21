@@ -1,28 +1,37 @@
 package com.icure.sdk.api
 
+import com.icure.kryptom.crypto.CryptoService
+import com.icure.kryptom.crypto.defaultCryptoService
 import io.ktor.client.HttpClient
 
 data class ApiOptions(
-	val encryptedFields: EncryptedFields? = null,
+	val encryptedFields: EncryptedFields = EncryptedFields(),
 	val disableParentKeysInitialisation: Boolean = false,
-	val httpClient: HttpClient? = null
+	val httpClient: HttpClient? = null,
+	val createTransferKeys: Boolean = true,
+	val cryptoService: CryptoService = defaultCryptoService,
+)
+
+data class BasicApiOptions(
+	val encryptedFields: EncryptedFields = EncryptedFields(),
+	val httpClient: HttpClient? = null,
+	val cryptoService: CryptoService = defaultCryptoService,
 )
 
 data class EncryptedFields(
-	val default: Set<String>? = null,
-	val accessLog: Set<String>? = null,
-	val calendarItem: Set<String>? = null,
-	val contact: Set<String>? = null,
-	val service: Set<String>? = null,
-	val healthElement: Set<String>? = null,
-	val maintenanceTask: Set<String>? = null,
-	val patient: Set<String>? = null,
-	val message: Set<String>? = null,
-	val topic: Set<String>? = null,
-	val document: Set<String>? = null,
-	val form: Set<String>? = null,
-	val receipt: Set<String>? = null,
-	val classification: Set<String>? = null,
-	val timeTable: Set<String>? = null,
-	val invoice: Set<String>? = null,
+	val accessLog: Set<String> = setOf("detail", "objectId"),
+	val calendarItem: Set<String> = setOf("details", "title", "patientId"),
+	val contact: Set<String> = setOf("descr", "notes[].markdown"),
+	val service: Set<String> = setOf("notes[].markdown"),
+	val healthElement: Set<String> = setOf("descr", "note", "notes[].markdown"),
+	val maintenanceTask: Set<String> = setOf("properties"),
+	val patient: Set<String> = setOf("note", "notes[].markdown"),
+	val message: Set<String> = emptySet(),
+	val topic: Set<String> = setOf("description", "linkedServices", "linkedHealthElements"),
+	val document: Set<String> = emptySet(),
+	val form: Set<String> = emptySet(),
+	val receipt: Set<String> = emptySet(),
+	val classification: Set<String> = emptySet(),
+	val timeTable: Set<String> = emptySet(),
+	val invoice: Set<String> = emptySet(),
 )

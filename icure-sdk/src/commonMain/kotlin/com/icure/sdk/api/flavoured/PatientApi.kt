@@ -24,6 +24,7 @@ import com.icure.sdk.model.embed.DelegationTag
 import com.icure.sdk.model.embed.EncryptedContent
 import com.icure.sdk.model.extensions.autoDelegationsFor
 import com.icure.sdk.model.extensions.dataOwnerId
+import com.icure.sdk.model.extensions.publicKeysSpki
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.requests.RequestedPermission
@@ -221,10 +222,24 @@ interface PatientApi : PatientBasicFlavourlessApi, PatientFlavouredApi<Decrypted
 
 	suspend fun getConfidentialSecretIdsOf(patient: Patient): Set<String>
 
-	//	suspend fun getConfidentialSecretIdsOf(patient: Patient): Set<String> = crypto.entity.getConfidentialSecretIdsOf(patient.withTypeInfo(), null)
-	//
-
-	//	}
+	/**
+	 * Initializes the exchange data towards a newly invited patient. This allows the doctor to share data with the
+	 * patient even if the patient has not yet initialized a keypair for himself.
+	 *
+	 * This method should be used only if the patient has not yet initialized a keypair for himself. If the patient has
+	 * already initialized a keypair this method does nothing and returns false. In this case the exchange data will be
+	 * automatically created the first time you share data with the patient, and your implementation of the crypto
+	 * strategies will be used to validate the public keys of the patient.
+	 *
+	 * Once exchange data is initialized you can use the {@link IccRecoveryXApi.createExchangeDataRecoveryInfo} to
+	 * generate a key that the patient will be able to use on his first login to immediately gain access to the exchange
+	 * data (through the {@link IccRecoveryXApi.recoverExchangeData} method).
+	 *
+	 * @param patientId the id of the newly invited patient.
+	 * @return true if exchange data was initialized, false if the patient already has a key pair and the exchange data
+	 * will be initialized in the standard way (automatically on the first time data is shared with the user).
+	 */
+	suspend fun forceInitialiseExchangeDataToNewlyInvitedPatient(patientId: String): Boolean
 }
 
 interface PatientBasicApi : PatientBasicFlavourlessApi, PatientBasicFlavouredApi<EncryptedPatient>
@@ -470,7 +485,7 @@ internal class PatientApiImpl(
 			entity.withTypeInfo(),
 			EncryptedPatient.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedPatient>(it) }
-			?: throw EntityEncryptionException("Entity ${entity.id} cannot be created")
+			?: throw EntityEncryptionException("Entity ${entity.id} cannot be decrypted")
 	}
 }, PatientBasicFlavourlessApi by AbstractPatientBasicFlavourlessApi(rawApi, crypto) {
 	override val encrypted: PatientFlavouredApi<EncryptedPatient> =
@@ -577,6 +592,12 @@ internal class PatientApiImpl(
 	) { Serialization.json.decodeFromJsonElement<DecryptedPatient>(it) }
 		?: throw EntityEncryptionException(errorPatient())
 
+	override suspend fun forceInitialiseExchangeDataToNewlyInvitedPatient(patientId: String): Boolean {
+		val patient = encrypted.getPatient(patientId)
+		if (patient.publicKeysSpki.isNotEmpty()) return false
+		crypto.exchangeDataManager.getOrCreateEncryptionDataTo(patientId, true)
+		return true
+	}
 }
 
 @InternalIcureApi

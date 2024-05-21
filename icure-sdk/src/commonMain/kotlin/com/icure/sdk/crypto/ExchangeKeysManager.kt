@@ -1,5 +1,6 @@
 package com.icure.sdk.crypto
 
+import com.icure.kryptom.crypto.AesAlgorithm
 import com.icure.kryptom.crypto.AesKey
 import com.icure.sdk.utils.InternalIcureApi
 
@@ -22,7 +23,7 @@ interface ExchangeKeysManager {
 	 * @throws IllegalArgumentException if neither the delegator nor the delegate is part of the hierarchy of the current data owner.
 	 * @return all available exchange keys from the delegator-delegate pair.
 	 */
-	suspend fun getDecryptionExchangeKeysFor(delegatorId: String, delegateId: String): List<AesKey>
+	suspend fun getDecryptionExchangeKeysFor(delegatorId: String, delegateId: String): List<AesKey<AesAlgorithm.CbcWithPkcs7Padding>>
 
 	/**
 	 * Empties the exchange keys cache.

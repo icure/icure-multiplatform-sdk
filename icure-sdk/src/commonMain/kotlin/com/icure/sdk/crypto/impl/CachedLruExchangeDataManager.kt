@@ -4,19 +4,19 @@ import com.icure.kryptom.crypto.CryptoService
 import com.icure.sdk.api.extended.DataOwnerApi
 import com.icure.sdk.crypto.BaseExchangeDataManager
 import com.icure.sdk.crypto.CryptoStrategies
+import com.icure.sdk.crypto.UserEncryptionKeysManager
+import com.icure.sdk.crypto.UserSignatureKeysManager
+import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.crypto.entities.ExchangeDataWithPotentiallyDecryptedContent
 import com.icure.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
 import com.icure.sdk.crypto.entities.UnencryptedExchangeDataContent
-import com.icure.sdk.crypto.UserEncryptionKeysManager
-import com.icure.sdk.crypto.UserSignatureKeysManager
-import com.icure.sdk.model.specializations.Base64String
-import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.model.ExchangeData
+import com.icure.sdk.model.specializations.Base64String
 import com.icure.sdk.model.specializations.SecureDelegationKeyString
-import com.icure.sdk.utils.SynchronisedLruCache
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.LruCacheWithAsyncRetrieve
 import com.icure.sdk.utils.ResourceNotFoundException
+import com.icure.sdk.utils.SynchronisedLruCache
 
 @InternalIcureApi
 class CachedLruExchangeDataManager(
@@ -57,7 +57,7 @@ class CachedLruExchangeDataManager(
 				delegateId
 			).firstOrNull {
 				getOrRetrieveExchangeDataWithId(it.id).decryptedContentAndVerificationStatus?.second == true
-			}?.id ?: createAndCacheNewExchangeData(delegateId).exchangeData.id
+			}?.id ?: createAndCacheNewExchangeData(delegateId, allowCreationWithoutDelegateKey).exchangeData.id
 		}
 		val cachedDetails = getOrRetrieveExchangeDataWithId(verifiedExchangeDataId)
 		return cachedDetails.decryptedContentAndVerificationStatus?.takeIf { it.second }?.let {
@@ -134,11 +134,11 @@ class CachedLruExchangeDataManager(
 		)
 	}
 
-	private suspend fun createAndCacheNewExchangeData(delegateId: String): CachedExchangeDataDetails =
-		createNewExchangeData(delegateId).let {
+	private suspend fun createAndCacheNewExchangeData(delegateId: String, allowCreationWithoutDelegateKey: Boolean): CachedExchangeDataDetails =
+		createNewExchangeData(delegateId, null, allowCreationWithoutDelegateKey).let {
 			CachedExchangeDataDetails(
 				it.exchangeData,
-				it.unencryptedContent to true
+				it.unencryptedContent to true,
 			)
 		}.also {
 			exchangeDataByIdCache.set(it.exchangeData.id, it)

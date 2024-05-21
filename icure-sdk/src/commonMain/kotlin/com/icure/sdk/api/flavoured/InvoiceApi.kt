@@ -55,13 +55,6 @@ interface InvoiceBasicFlavouredApi<E : Invoice> {
 	suspend fun getInvoice(entityId: String): E
 	suspend fun getInvoices(entityIds: List<String>): List<E>
 	suspend fun filterInvoicesBy(filterChain: FilterChain<EncryptedInvoice>): List<E>
-	suspend fun findInvoicesByHcPartyPatientForeignKey(
-		hcPartyId: String,
-		secretPatientKey: String,
-		startKey: JsonElement? = null,
-		startDocumentId: String? = null,
-		limit: Int? = null,
-	): PaginatedList<E>
 	suspend fun findInvoicesByHcPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<E>
 	suspend fun reassignInvoice(invoice: E): E
 	suspend fun mergeTo(invoiceId: String, ids: List<String>): E
@@ -168,15 +161,6 @@ private abstract class AbstractInvoiceBasicFlavouredApi<E : Invoice>(protected v
 
 	override suspend fun filterInvoicesBy(filterChain: FilterChain<EncryptedInvoice>): List<E> =
 		rawApi.filterInvoicesBy(filterChain).successBody().map { maybeDecrypt(it) }
-
-	override suspend fun findInvoicesByHcPartyPatientForeignKey(
-		hcPartyId: String,
-		secretPatientKey: String,
-		startKey: JsonElement?,
-		startDocumentId: String?,
-		limit: Int?,
-	): PaginatedList<E> =
-		rawApi.findInvoicesByHCPartyPatientForeignKey(hcPartyId, secretPatientKey, startKey.encodeStartKey(), startDocumentId, limit).successBody().map { maybeDecrypt(it) }
 
 	override suspend fun findInvoicesByHcPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<E> =
 		rawApi.findInvoicesByHCPartyPatientForeignKeys(hcPartyId, secretPatientKeys).successBody().map { maybeDecrypt(it) }

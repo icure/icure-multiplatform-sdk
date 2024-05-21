@@ -131,12 +131,18 @@ object IosRsaService : RsaService {
 		}
 	}
 
+	override suspend fun <A : RsaAlgorithm> loadPrivateKeyPkcs8(
+		algorithm: A,
+		privateKeyPkcs8: ByteArray
+	): PrivateRsaKey<A> =
+		PrivateRsaKey(pkcs8ToPcks1(privateKeyPkcs8), algorithm)
+
 	override suspend fun <A : RsaAlgorithm> loadPublicKeySpki(algorithm: A, publicKeySpki: ByteArray): PublicRsaKey<A> =
 		PublicRsaKey(spkiToPcks1(publicKeySpki), algorithm)
 
-	override suspend fun <A : RsaAlgorithm.RsaEncryptionAlgorithm> encrypt(
+	override suspend fun encrypt(
 		data: ByteArray,
-		publicKey: PublicRsaKey<A>
+		publicKey: PublicRsaKey<RsaAlgorithm.RsaEncryptionAlgorithm>
 	): ByteArray {
 		val secKey = publicKey.toSecKey()
 		val cfData = data.toCFData()
@@ -169,9 +175,9 @@ object IosRsaService : RsaService {
 		}
 	}
 
-	override suspend fun <A : RsaAlgorithm.RsaEncryptionAlgorithm> decrypt(
+	override suspend fun decrypt(
 		data: ByteArray,
-		privateKey: PrivateRsaKey<A>
+		privateKey: PrivateRsaKey<RsaAlgorithm.RsaEncryptionAlgorithm>
 	): ByteArray {
 		val secKey = privateKey.toSecKey()
 		val cfData = data.toCFData()
@@ -204,9 +210,9 @@ object IosRsaService : RsaService {
 		}
 	}
 
-	override suspend fun <A : RsaAlgorithm.RsaSignatureAlgorithm> sign(
+	override suspend fun sign(
 		data: ByteArray,
-		privateKey: PrivateRsaKey<A>
+		privateKey: PrivateRsaKey<RsaAlgorithm.RsaSignatureAlgorithm>
 	): ByteArray {
 		val secKey = privateKey.toSecKey()
 		val cfData = data.toCFData()
@@ -239,10 +245,10 @@ object IosRsaService : RsaService {
 		}
 	}
 
-	override suspend fun <A : RsaAlgorithm.RsaSignatureAlgorithm> verifySignature(
+	override suspend fun verifySignature(
 		signature: ByteArray,
 		data: ByteArray,
-		publicKey: PublicRsaKey<A>
+		publicKey: PublicRsaKey<RsaAlgorithm.RsaSignatureAlgorithm>
 	): Boolean {
 		val secKey = publicKey.toSecKey()
 		val cfData = data.toCFData()

@@ -23,7 +23,10 @@ actual class PublicRsaKey<out A : RsaAlgorithm>(
  * way of connecting to the external class in node. Since all use of the crypto key is done through the external
  * `SubtleCrypto` anyway there is no arm in just treating it as `Any`.
  */
-actual typealias AesKey = Any
+actual class AesKey<out A : AesAlgorithm>(
+	internal val cryptoKey: dynamic,
+	actual val algorithm: A
+)
 
 /**
  * Key should ony be used with subtle crypto.

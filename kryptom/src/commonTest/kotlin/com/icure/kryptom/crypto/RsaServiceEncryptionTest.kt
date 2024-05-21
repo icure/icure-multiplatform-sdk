@@ -234,6 +234,28 @@ class RsaServiceEncryptionTest : StringSpec({
 				String(decrypted, charset = Charsets.UTF_8) shouldBe expectedData
 			}
 		}
+
+		"$encryptionAlgorithm - import/export of keys in jwk should work as expected" {
+			sampleRsaKeys.zip(sampleRsaKeysJwk(encryptionAlgorithm)).forEach { testData ->
+				val privateKeyPkcs8 = base64Decode(testData.first.second)
+				val privateKeyJwk = testData.second.second
+				val publicKeyJwk = testData.second.second.extractPublic()
+				val loadedPairFromPkcs8 = defaultCryptoService.rsa.loadKeyPairPkcs8(encryptionAlgorithm, privateKeyPkcs8)
+				defaultCryptoService.rsa.exportPrivateKeyJwk(loadedPairFromPkcs8.private) shouldBe privateKeyJwk
+				defaultCryptoService.rsa.exportPublicKeyJwk(loadedPairFromPkcs8.public) shouldBe publicKeyJwk
+				val loadedPairFromJwk = RsaKeypair(
+					defaultCryptoService.rsa.loadPrivateKeyJwk(encryptionAlgorithm, privateKeyJwk),
+					defaultCryptoService.rsa.loadPublicKeyJwk(encryptionAlgorithm, privateKeyJwk.extractPublic())
+				)
+				val data = "Hello, World!".toByteArray()
+				defaultCryptoService.rsa.encrypt(data, loadedPairFromPkcs8.public).let {
+					defaultCryptoService.rsa.decrypt(it, loadedPairFromJwk.private).toList() shouldBe data.toList()
+				}
+				defaultCryptoService.rsa.encrypt(data, loadedPairFromJwk.public).let {
+					defaultCryptoService.rsa.decrypt(it, loadedPairFromPkcs8.private).toList() shouldBe data.toList()
+				}
+			}
+		}
 	}
 
 	doEncryptionTestsByAlgorithm(OaepWithSha1)

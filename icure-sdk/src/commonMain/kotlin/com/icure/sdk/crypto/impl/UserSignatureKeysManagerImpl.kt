@@ -33,7 +33,7 @@ class UserSignatureKeysManagerImpl(
 			(
 				iCureStorage.loadSignatureKey(dataOwnerApi.getCurrentDataOwnerId()) ?: cryptoService.rsa.generateKeyPair(
 					RsaAlgorithm.RsaSignatureAlgorithm.PssWithSha256,
-					RsaService.KeySize.RSA_2048
+					RsaService.KeySize.Rsa2048
 				)
 			).let {
 				IcureKeyInfo(cryptoService.rsa.exportSpkiHex(it.public), it) to Unit

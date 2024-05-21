@@ -9,6 +9,7 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 @InternalIcureApi
+// Keep name of parameters for compatibility with typescript SDK
 data class ExchangeDataRecoveryDetails(
 	val exchangeDataId: String,
 	val rawAccessControlSecret: Base64String,

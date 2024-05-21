@@ -1,5 +1,6 @@
 package com.icure.sdk.crypto
 
+import com.icure.kryptom.crypto.AesAlgorithm
 import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.impl.JsonEncryptionServiceImpl
@@ -393,7 +394,7 @@ class JsonEncryptionServiceTest : StringSpec({
 	}
 
 	"Encrypted then decrypted object should equal the original (excluding for the addition of encrypted self" {
-		val key = defaultCryptoService.aes.generateKey()
+		val key = defaultCryptoService.aes.generateKey(AesAlgorithm.CbcWithPkcs7Padding)
 		val encryptedObj = jsonEncryptionService.encrypt(
 			key,
 			sampleObj,
@@ -450,7 +451,7 @@ class JsonEncryptionServiceTest : StringSpec({
 			println("X - $brokenField")
 			shouldThrow<IllegalArgumentException> {
 				jsonEncryptionService.encrypt(
-					defaultCryptoService.aes.generateKey(),
+					defaultCryptoService.aes.generateKey(AesAlgorithm.CbcWithPkcs7Padding),
 					obj,
 					manifest,
 				)
@@ -459,7 +460,7 @@ class JsonEncryptionServiceTest : StringSpec({
 	}
 
 	"If the content of encrypted self in an object is the same as the updated content it should be reused" {
-		val key = defaultCryptoService.aes.generateKey()
+		val key = defaultCryptoService.aes.generateKey(AesAlgorithm.CbcWithPkcs7Padding)
 		val manifest = JsonEncryptionService.parseEncryptedFields(setOf("encryptThis"), "Test.")
 		val obj = JsonObject(mapOf(
 			"encryptThis" to JsonPrimitive("encryptThisValue"),
