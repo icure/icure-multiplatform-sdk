@@ -4,6 +4,7 @@ import com.icure.sdk.IcureSdk
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.model.DecryptedHealthElement
 import com.icure.sdk.model.DecryptedPatient
+import com.icure.sdk.model.HealthElement
 import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.test.createHcpUser
 import com.icure.sdk.test.initialiseTestEnvironment
@@ -93,12 +94,28 @@ class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec ({
 				SecretIdOption.UseAnyConfidential
 			)
 		).shouldNotBeNull()
+
 		suspend fun findHealthElementsFor(
 			hcpIds: List<String>,
 			api: IcureSdk
-		) = hcpIds.flatMap { hcpId ->
-			api.healthcareElement.findHealthcareElementsByHcPartyPatient(hcpId, patient, limit = 100)
-		}.distinctBy { it.id }
+		): List<DecryptedHealthElement> {
+			val hes = mutableListOf<DecryptedHealthElement>()
+
+			hcpIds.forEach { hcpId ->
+				val iterator = api.healthcareElement.findHealthcareElementsByHcPartyPatient(hcpId, patient)
+				while (iterator.hasNext()) {
+					val element = iterator.next()
+					if (hes.all { it.id != element.id }) {
+						hes.add(element)
+					}
+				}
+			}
+
+			return hes
+		}
+
+
+
 		findHealthElementsFor(listOf(hcp.dataOwnerId, parent.dataOwnerId), hcpApi).also { retrievedHes ->
 			retrievedHes shouldHaveSize 2
 			retrievedHes.map { it.id } shouldContainExactlyInAnyOrder listOf(nonConfidentialHe.id, confidentialHe.id)
