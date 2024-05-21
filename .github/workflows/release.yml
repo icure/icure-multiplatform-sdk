@@ -12,7 +12,7 @@ on:
 jobs:
     release:
 #        if: github.event.pull_request.merged == true
-        runs-on: hidden-mini
+        runs-on: self-hosted
         steps:
             -   name: Checkout code
                 uses: actions/checkout@v4
