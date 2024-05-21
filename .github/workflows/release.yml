@@ -9,7 +9,7 @@ on:
             - closed
 jobs:
     release:
-#        if: github.event.pull_request.merged == true
+        #        if: github.event.pull_request.merged == true
         runs-on: self-hosted
         steps:
             -   name: Checkout code
@@ -20,13 +20,27 @@ jobs:
 
             -   name: Get Previous tag
                 id: previoustag
-                uses: 'WyriHaximus/github-action-get-previous-tag@v1'
+                run: |
+                    if [[ $GITHUB_REF == refs/tags/* ]]; then
+                        echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
+                    else
+                        echo ::set-output name=VERSION::latest
+                    fi
 
             -   name: Get next versions
                 id: semvers
-                uses: 'WyriHaximus/github-action-next-semvers@v1'
-                with:
-                    version: ${{ steps.previoustag.outputs.tag }}
+                run: |
+                    VERSION=${{ steps.previoustag.outputs.VERSION }}
+                    if [[ "$VERSION" == "latest" ]]; then
+                        VERSION="0.0.0"
+                    fi
+                    IFS='.' read -r -a version_parts <<< "$VERSION"
+                    MAJOR=${version_parts[0]}
+                    MINOR=${version_parts[1]}
+                    PATCH=${version_parts[2]}
+                    echo "::set-output name=major::$((MAJOR + 1)).0.0"
+                    echo "::set-output name=minor::$MAJOR.$((MINOR + 1)).0"
+                    echo "::set-output name=patch::$MAJOR.$MINOR.$((PATCH + 1))"
 
             -   name: Default new version
                 run: echo "NEW_VERSION=${{ steps.semvers.outputs.minor }}" >> $GITHUB_ENV
