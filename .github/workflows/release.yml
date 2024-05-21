@@ -1,15 +1,14 @@
 name: Docker Image CI
 
 on:
-    push:
-        pull_request:
-            types:
-                - closed
+    pull_request:
+        types:
+            - closed
     workflow_dispatch:
 
 jobs:
-    if_merged:
-        if: github.event.pull_request.merged == true
+    release:
+#        if: github.event.pull_request.merged == true
         runs-on: hidden-mini
         steps:
             -   name: Checkout code
