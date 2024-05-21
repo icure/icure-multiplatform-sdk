@@ -61,6 +61,7 @@ jobs:
                 run: |
                     docker build --progress=plain -f build.Dockerfile --build-arg "repoUsername=${{secrets.REPO_USERNAME}}" --build-arg "repoPassword=${{secrets.REPO_PASSWORD}}" --build-arg "version=${{env.NEW_VERSION}}" .
 
+
             -   name: Upload Release
                 uses: ncipollo/release-action@v1
                 with:
