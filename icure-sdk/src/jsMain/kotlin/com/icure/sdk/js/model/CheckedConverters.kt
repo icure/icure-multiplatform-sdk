@@ -74,8 +74,8 @@ object CheckedConverters {
 
 	fun numberToInt(number: Double?, description: String): Int? = number?.let { numberToInt(it, description) }
 
-	fun intToNumber(int: Int): Int {
-		return int
+	fun intToNumber(int: Int): Double {
+		return int.toDouble()
 	}
 
 	fun intToNumber(int: Int?): Int? = int
