@@ -67,6 +67,12 @@ jobs:
             #     if: ${{ contains(github.event.pull_request.labels.*.name, 'SemVer.patch') }}
             #     run: echo "NEW_VERSION=${{ steps.semvers.outputs.patch }}" >> $GITHUB_ENV
 
+            -   name: Setup Android SDK
+                uses: amyu/setup-android@v4
+                with:
+                    sdk-version: 34
+                    ndk-version: 23.1.7779620
+
             -   name: Build and push
                 run: |
                     ./gradlew -x test :icure-sdk:publishAllPublicationsToTaktikRepository
@@ -76,6 +82,7 @@ jobs:
                     ORG_GRADLE_PROJECT_mavenReleasesRepository: ${{ secrets.MAVEN_RELEASES_REPOSITORY }}
                     ORG_GRADLE_PROJECT_mavenSnapshotsRepository: ${{ secrets.MAVEN_SNAPSHOT_REPOSITORY }}
                     ORG_GRADLE_PROJECT_mavenRepository: ${{ secrets.MAVEN_REPOSITORY }}
+                    ANDROID_HOME: ~/android/sdk
 
             -   name: Upload Release
                 uses: ncipollo/release-action@v1
