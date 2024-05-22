@@ -4,14 +4,15 @@ plugins {
 	kotestMultiplatform()
 	androidLibrary()
 	id("maven-publish")
+	id("com.taktik.gradle.git-version") version "2.0.8-gb47b2d0e35"
 }
 
 val repoUsername: String by project
 val repoPassword: String by project
 val mavenReleasesRepository: String by project
-val version: String? by project
 
-project.version = version ?: "0.0.1"
+val gitVersion: String? by project
+project.version = gitVersion ?: "0.0.1"
 
 kotlin {
 	configureMultiplatform(this)
