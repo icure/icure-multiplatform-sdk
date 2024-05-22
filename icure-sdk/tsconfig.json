@@ -19,10 +19,10 @@
     "sourceMap": true,
     "inlineSources": true,
     "declaration": true,
-    "outDir": "./dist",
+    "outDir": "./build/tsc/dist",
     "baseUrl": "./"
   },
   "include": [
-    "model/**/*.ts"
+    "src/jsMain/typescript/**/*.ts"
   ]
 }

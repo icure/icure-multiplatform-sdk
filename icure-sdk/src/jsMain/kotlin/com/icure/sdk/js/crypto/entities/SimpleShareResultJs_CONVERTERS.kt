@@ -17,8 +17,6 @@ public fun <T : HasEncryptionMetadata, T_JS : HasEncryptionMetadataJs>
 		},
 	) as SimpleShareResultJs<T_JS>
 	is SimpleShareResult.Failure -> simpleShareResult_Failure_toJs(obj) as SimpleShareResultJs<T_JS>
-	else -> throw
-			IllegalArgumentException("""Unknown concrete implementation for com.icure.sdk.crypto.entities.SimpleShareResult: $obj""")
 }
 
 public fun <T : HasEncryptionMetadataJs, T_KT : HasEncryptionMetadata>

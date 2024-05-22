@@ -3,6 +3,7 @@ package com.icure.sdk.js.utils.pagination
 import kotlin.js.Promise
 
 @JsExport
+@JsName("PaginatedListIterator")
 interface PaginatedListIteratorJs<T : Any> {
 
 	/**
