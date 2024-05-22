@@ -1,5 +1,4 @@
 import com.icure.task.CompileTypescriptTask
-import java.io.ByteArrayOutputStream
 
 plugins {
 	kotlinMultiplatform()
@@ -8,7 +7,7 @@ plugins {
 	androidLibrary()
 	id("maven-publish")
 	id("com.taktik.gradle.git-version") version "2.0.8-gb47b2d0e35"
-	id("com.google.devtools.ksp") version "1.9.23-1.0.20"
+	id("com.google.devtools.ksp") version "1.9.24-1.0.20"
 }
 
 val repoUsername: String by project

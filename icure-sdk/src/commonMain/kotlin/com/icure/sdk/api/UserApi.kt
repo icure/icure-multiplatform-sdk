@@ -14,6 +14,7 @@ import com.icure.sdk.model.security.Enable2faRequest
 import com.icure.sdk.model.security.Permission
 import com.icure.sdk.model.security.TokenWithGroup
 import com.icure.sdk.utils.InternalIcureApi
+import kotlin.js.JsName
 
 interface UserApi {
 	suspend fun getCurrentUser(): User
@@ -114,6 +115,7 @@ interface UserApi {
 		filterChain: FilterChain<User>,
 	): PaginatedList<User>
 
+	@JsName("enable2faForUserWithGroup")
 	suspend fun enable2faForUser(
 		userId: String,
 		groupId: String,
@@ -125,6 +127,7 @@ interface UserApi {
 		request: Enable2faRequest,
 	)
 
+	@JsName("disable2faForUserWithGroup")
 	suspend fun disable2faForUser(
 		userId: String,
 		groupId: String,

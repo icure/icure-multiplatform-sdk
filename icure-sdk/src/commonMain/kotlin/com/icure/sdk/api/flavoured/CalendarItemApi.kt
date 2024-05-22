@@ -42,7 +42,6 @@ interface CalendarItemBasicFlavouredApi<E : CalendarItem> {
 	suspend fun modifyCalendarItem(entity: E): E
 	suspend fun getCalendarItem(entityId: String): E
 	suspend fun getCalendarItems(entityIds: List<String>): List<E>
-	suspend fun deleteCalendarItems(entityIds: String): List<DocIdentifier>
 	suspend fun getCalendarItemsByPeriodAndHcPartyId(startDate: Long, endDate: Long, hcPartyId: String): List<E>
 	suspend fun getCalendarsByPeriodAndAgendaId(startDate: Long, endDate: Long, agendaId: String): List<E>
 	suspend fun getCalendarItemsWithIds(entityIds: List<String>): List<E>
@@ -105,9 +104,6 @@ private abstract class AbstractCalendarItemBasicFlavouredApi<E : CalendarItem>(
 
 	override suspend fun getCalendarItems(entityIds: List<String>): List<E> =
 		rawApi.getCalendarItemsWithIds(ListOfIds(entityIds)).successBody().map { maybeDecrypt(it) }
-
-	override suspend fun deleteCalendarItems(entityIds: String): List<DocIdentifier> =
-		rawApi.deleteCalendarItemsWithPost(entityIds).successBody()
 
 	override suspend fun getCalendarItemsByPeriodAndHcPartyId(
 		startDate: Long,
