@@ -69,11 +69,13 @@ jobs:
 
             -   name: Build and push
                 run: |
-                    # docker build --progress=plain -f build.Dockerfile --build-arg "repoUsername=${{secrets.REPO_USERNAME}}" --build-arg "repoPassword=${{secrets.REPO_PASSWORD}}" --build-arg "version=${{env.NEW_VERSION}}" .
                     ./gradlew -x test :icure-sdk:publishAllPublicationsToTaktikRepository
                 env:
-                    REPO_USERNAME: ${{ secrets.REPO_USERNAME }}
-                    REPO_PASSWORD: ${{ secrets.REPO_PASSWORD }}
+                    ORG_GRADLE_PROJECT_repoUsername: ${{ secrets.REPO_USERNAME }}
+                    ORG_GRADLE_PROJECT_repoPassword: ${{ secrets.REPO_PASSWORD }}
+                    ORG_GRADLE_PROJECT_mavenReleasesRepository: ${{ secrets.MAVEN_RELEASES_REPOSITORY }}
+                    ORG_GRADLE_PROJECT_mavenSnapshotsRepository: ${{ secrets.MAVEN_SNAPSHOT_REPOSITORY }}
+                    ORG_GRADLE_PROJECT_mavenRepository: ${{ secrets.MAVEN_REPOSITORY }}
 
             -   name: Upload Release
                 uses: ncipollo/release-action@v1
