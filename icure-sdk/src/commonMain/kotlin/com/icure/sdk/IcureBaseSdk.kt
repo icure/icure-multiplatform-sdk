@@ -1,7 +1,6 @@
 package com.icure.sdk
 
 import com.icure.sdk.IcureSdk.Companion.sharedHttpClient
-import com.icure.sdk.api.ApiOptions
 import com.icure.sdk.api.BasicApiOptions
 import com.icure.sdk.api.BasicAuthenticationMethod
 import com.icure.sdk.api.CodeApi
@@ -57,7 +56,6 @@ import com.icure.sdk.api.raw.impl.RawReceiptApiImpl
 import com.icure.sdk.api.raw.impl.RawTimeTableApiImpl
 import com.icure.sdk.api.raw.impl.RawTopicApiImpl
 import com.icure.sdk.api.raw.impl.RawUserApiImpl
-import com.icure.sdk.auth.UsernamePassword
 import com.icure.sdk.auth.services.AuthService
 import com.icure.sdk.auth.services.JwtAuthService
 import com.icure.sdk.crypto.AccessControlKeysHeadersProvider

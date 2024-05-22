@@ -2,8 +2,6 @@ package com.icure.sdk.api
 
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.crypto.defaultCryptoService
-import com.icure.sdk.auth.UsernamePassword
-import com.icure.sdk.auth.services.AuthService
 import io.ktor.client.HttpClient
 
 data class ApiOptions(
@@ -19,11 +17,6 @@ data class BasicApiOptions(
 	val httpClient: HttpClient? = null,
 	val cryptoService: CryptoService = defaultCryptoService,
 )
-
-sealed interface BasicAuthenticationMethod {
-	data class UsingCredentials(val usernamePassword: UsernamePassword) : BasicAuthenticationMethod
-	data class UsingService(val authService: AuthService) : BasicAuthenticationMethod
-}
 
 data class EncryptedFields(
 	val accessLog: Set<String> = setOf("detail", "objectId"),
