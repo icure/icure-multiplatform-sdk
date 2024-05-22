@@ -14,7 +14,6 @@ import com.icure.sdk.model.EncryptedForm
 import com.icure.sdk.model.Form
 import com.icure.sdk.model.FormTemplate
 import com.icure.sdk.model.ListOfIds
-import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.Patient
 import com.icure.sdk.model.User
 import com.icure.sdk.model.couchdb.DocIdentifier
@@ -27,7 +26,8 @@ import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.currentEpochMs
-import kotlinx.serialization.json.JsonElement
+import com.icure.sdk.utils.pagination.IdsPageIterator
+import com.icure.sdk.utils.pagination.PaginatedListIterator
 import kotlinx.serialization.json.decodeFromJsonElement
 
 @OptIn(InternalIcureApi::class)
@@ -81,10 +81,10 @@ interface FormFlavouredApi<E : Form> : FormBasicFlavouredApi<E> {
 	suspend fun findFormsByHcPartyPatient(
 		hcPartyId: String,
 		patient: Patient,
-		startKey: JsonElement? = null,
-		startDocumentId: String? = null,
-		limit: Int? = null,
-	): List<DecryptedForm>
+		startDate: Long? = null,
+		endDate: Long? = null,
+		descending: Boolean? = null,
+	): PaginatedListIterator<E>
 }
 
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
@@ -170,11 +170,19 @@ private abstract class AbstractFormFlavouredApi<E : Form>(
 	override suspend fun findFormsByHcPartyPatient(
 		hcPartyId: String,
 		patient: Patient,
-		startKey: JsonElement?,
-		startDocumentId: String?,
-		limit: Int?,
-	): List<DecryptedForm> {
-		TODO("@vcp")
+		startDate: Long?,
+		endDate: Long?,
+		descending: Boolean?
+	): PaginatedListIterator<E> = IdsPageIterator(
+		rawApi.listFormIdsByDataOwnerPatientOpeningDate(
+			dataOwnerId = hcPartyId,
+			startDate = startDate,
+			endDate = endDate,
+			descending = descending,
+			secretPatientKeys = ListOfIds(crypto.entity.secretIdsOf(patient.withTypeInfo(), null).toList())
+		).successBody()
+	) { ids ->
+		rawApi.getForms(ListOfIds(ids)).successBody().map { maybeDecrypt(it) }
 	}
 }
 

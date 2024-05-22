@@ -23,21 +23,20 @@ public interface RawDocumentTemplateApi {
 
 	suspend fun findDocumentTemplatesBySpeciality(
 		specialityCode: String,
-		loadLayout: Boolean? =
-			null,
+		loadAttachment: Boolean? = null,
 	): HttpResponse<List<DocumentTemplate>>
 
 	suspend fun listDocumentTemplatesByDocumentType(
 		documentTypeCode: String,
-		loadLayout: Boolean? = null,
+		loadAttachment: Boolean? = null,
 	): HttpResponse<List<DocumentTemplate>>
 
 	suspend fun listDocumentTemplatesByDocumentTypeForCurrentUser(
 		documentTypeCode: String,
-		loadLayout: Boolean? = null,
+		loadAttachment: Boolean? = null,
 	): HttpResponse<List<DocumentTemplate>>
 
-	suspend fun listDocumentTemplates(loadLayout: Boolean? = null): HttpResponse<List<DocumentTemplate>>
+	suspend fun listDocumentTemplates(loadAttachment: Boolean? = null): HttpResponse<List<DocumentTemplate>>
 
 	suspend fun findAllDocumentTemplates(
 		startKey: String? = null,

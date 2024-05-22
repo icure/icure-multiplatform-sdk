@@ -9,7 +9,6 @@ import kotlin.String
 @Serializable
 data class ServiceLink(
 	public val serviceId: String? = null,
-	public val service: DecryptedService? = null,
 ) {
 	// region ServiceLink-ServiceLink
 
