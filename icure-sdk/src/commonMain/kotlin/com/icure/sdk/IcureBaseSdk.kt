@@ -3,6 +3,7 @@ package com.icure.sdk
 import com.icure.sdk.IcureSdk.Companion.sharedHttpClient
 import com.icure.sdk.api.ApiOptions
 import com.icure.sdk.api.BasicApiOptions
+import com.icure.sdk.api.BasicAuthenticationMethod
 import com.icure.sdk.api.CodeApi
 import com.icure.sdk.api.CodeApiImpl
 import com.icure.sdk.api.GroupApi
@@ -92,13 +93,16 @@ interface IcureBaseSdk {
 		@OptIn(InternalIcureApi::class)
 		suspend fun initialise(
 			baseUrl: String,
-			usernamePassword: UsernamePassword,
+			authenticationMethod: BasicAuthenticationMethod,
 			options: BasicApiOptions = BasicApiOptions()
 		): IcureBaseSdk {
 			val client = options.httpClient ?: sharedHttpClient
 			val apiUrl = baseUrl
 			val authApi = RawAnonymousAuthApiImpl(apiUrl, client)
-			val authService = JwtAuthService(authApi, usernamePassword)
+			val authService = when(authenticationMethod) {
+				is BasicAuthenticationMethod.UsingCredentials -> JwtAuthService(authApi, authenticationMethod.usernamePassword)
+				is BasicAuthenticationMethod.UsingService -> authenticationMethod.authService
+			}
 
 			val manifests = EntitiesEncryptedFieldsManifests.fromEncryptedFields(options.encryptedFields)
 
