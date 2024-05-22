@@ -48,9 +48,9 @@ jobs:
                     MAJOR=${version_parts[0]}
                     MINOR=${version_parts[1]}
                     PATCH=${version_parts[2]}
-                    echo "major=$((MAJOR + 1)).0.0" >> $GITHUB_OUTPUT"
-                    echo "minor=$MAJOR.$((MINOR + 1)).0" >> $GITHUB_OUTPUT"
-                    echo "patch=$MAJOR.$MINOR.$((PATCH + 1))" >> $GITHUB_OUTPUT"
+                    echo "major=$((MAJOR + 1)).0.0" >> $GITHUB_OUTPUT
+                    echo "minor=$MAJOR.$((MINOR + 1)).0" >> $GITHUB_OUTPUT
+                    echo "patch=$MAJOR.$MINOR.$((PATCH + 1))" >> $GITHUB_OUTPUT
 
             -   name: Default new version
                 run: echo "NEW_VERSION=${{ steps.semvers.outputs.patch }}" >> $GITHUB_ENV
