@@ -28,44 +28,44 @@ jobs:
             -   name: Grant execute permission for gradlew
                 run: chmod +x ./gradlew
 
-            # -   name: Get Previous tag
-            #     id: previoustag
-            #     run: |
-            #         if [[ $GITHUB_REF == refs/tags/* ]]; then
-            #             echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
-            #         else
-            #             echo ::set-output name=VERSION::latest
-            #         fi
-            #
-            # -   name: Get next versions
-            #     id: semvers
-            #     run: |
-            #         VERSION=${{ steps.previoustag.outputs.VERSION }}
-            #         if [[ "$VERSION" == "latest" ]]; then
-            #             VERSION="0.0.0"
-            #         fi
-            #         IFS='.' read -r -a version_parts <<< "$VERSION"
-            #         MAJOR=${version_parts[0]}
-            #         MINOR=${version_parts[1]}
-            #         PATCH=${version_parts[2]}
-            #         echo "::set-output name=major::$((MAJOR + 1)).0.0"
-            #         echo "::set-output name=minor::$MAJOR.$((MINOR + 1)).0"
-            #         echo "::set-output name=patch::$MAJOR.$MINOR.$((PATCH + 1))"
-            #
-            # -   name: Default new version
-            #     run: echo "NEW_VERSION=${{ steps.semvers.outputs.minor }}" >> $GITHUB_ENV
-            #
-            # -   name: Update major version
-            #     if: ${{ contains(github.event.pull_request.labels.*.name, 'SemVer.major') }}
-            #     run: echo "NEW_VERSION=${{ steps.semvers.outputs.major }}" >> $GITHUB_ENV
-            #
-            # -   name: Update minor version
-            #     if: ${{ contains(github.event.pull_request.labels.*.name, 'SemVer.minor') }}
-            #     run: echo "NEW_VERSION=${{ steps.semvers.outputs.minor }}" >> $GITHUB_ENV
-            #
-            # -   name: Update patch version
-            #     if: ${{ contains(github.event.pull_request.labels.*.name, 'SemVer.patch') }}
-            #     run: echo "NEW_VERSION=${{ steps.semvers.outputs.patch }}" >> $GITHUB_ENV
+            -   name: Get Previous tag
+                id: previoustag
+                run: |
+                    if [[ $GITHUB_REF == refs/tags/* ]]; then
+                        echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
+                    else
+                        echo ::set-output name=VERSION::latest
+                    fi
+
+            -   name: Get next versions
+                id: semvers
+                run: |
+                    VERSION=${{ steps.previoustag.outputs.VERSION }}
+                    if [[ "$VERSION" == "latest" ]]; then
+                        VERSION="0.0.0"
+                    fi
+                    IFS='.' read -r -a version_parts <<< "$VERSION"
+                    MAJOR=${version_parts[0]}
+                    MINOR=${version_parts[1]}
+                    PATCH=${version_parts[2]}
+                    echo "::set-output name=major::$((MAJOR + 1)).0.0"
+                    echo "::set-output name=minor::$MAJOR.$((MINOR + 1)).0"
+                    echo "::set-output name=patch::$MAJOR.$MINOR.$((PATCH + 1))"
+
+            -   name: Default new version
+                run: echo "NEW_VERSION=${{ steps.semvers.outputs.minor }}" >> $GITHUB_ENV
+
+            -   name: Update major version
+                if: ${{ contains(github.event.pull_request.labels.*.name, 'SemVer.major') }}
+                run: echo "NEW_VERSION=${{ steps.semvers.outputs.major }}" >> $GITHUB_ENV
+
+            -   name: Update minor version
+                if: ${{ contains(github.event.pull_request.labels.*.name, 'SemVer.minor') }}
+                run: echo "NEW_VERSION=${{ steps.semvers.outputs.minor }}" >> $GITHUB_ENV
+
+            -   name: Update patch version
+                if: ${{ contains(github.event.pull_request.labels.*.name, 'SemVer.patch') }}
+                run: echo "NEW_VERSION=${{ steps.semvers.outputs.patch }}" >> $GITHUB_ENV
 
             -   name: Setup Android SDK
                 uses: amyu/setup-android@v4
@@ -82,7 +82,8 @@ jobs:
                     ORG_GRADLE_PROJECT_mavenReleasesRepository: ${{ secrets.MAVEN_RELEASES_REPOSITORY }}
                     ORG_GRADLE_PROJECT_mavenSnapshotsRepository: ${{ secrets.MAVEN_SNAPSHOT_REPOSITORY }}
                     ORG_GRADLE_PROJECT_mavenRepository: ${{ secrets.MAVEN_REPOSITORY }}
-                    ANDROID_HOME: ~/android/sdk
+                    ORG_GRADLE_PROJECT_version: ${{ env.NEW_VERSION }}
+                    ANDROID_HOME: ~/android/sdk # The Android SDK is installed here from the setup-android action
 
             -   name: Upload Release
                 uses: ncipollo/release-action@v1
