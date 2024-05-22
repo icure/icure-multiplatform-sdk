@@ -10,7 +10,7 @@ import kotlin.String
 @Serializable
 data class Employer(
 	override val name: String? = null,
-	public val addresse: Address? = null,
+	public val addresse: DecryptedAddress? = null,
 ) : Named {
 	// region Employer-Employer
 

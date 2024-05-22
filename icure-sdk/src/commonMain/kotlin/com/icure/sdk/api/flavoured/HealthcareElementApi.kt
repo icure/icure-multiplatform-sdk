@@ -29,7 +29,8 @@ import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.currentEpochMs
-import kotlinx.serialization.json.JsonElement
+import com.icure.sdk.utils.pagination.IdsPageIterator
+import com.icure.sdk.utils.pagination.PaginatedListIterator
 import kotlinx.serialization.json.decodeFromJsonElement
 
 @OptIn(InternalIcureApi::class)
@@ -66,10 +67,10 @@ interface HealthcareElementFlavouredApi<E : HealthElement> : HealthcareElementBa
 	suspend fun findHealthcareElementsByHcPartyPatient(
 		hcPartyId: String,
 		patient: Patient,
-		startKey: JsonElement? = null,
-		startDocumentId: String? = null,
-		limit: Int? = null,
-	): List<E>
+		startDate: Long? = null,
+		endDate: Long? = null,
+		descending: Boolean? = null,
+	): PaginatedListIterator<E>
 
 }
 
@@ -143,13 +144,20 @@ private abstract class AbstractHealthcareElementFlavouredApi<E : HealthElement>(
 	override suspend fun findHealthcareElementsByHcPartyPatient(
 		hcPartyId: String,
 		patient: Patient,
-		startKey: JsonElement?,
-		startDocumentId: String?,
-		limit: Int?,
-	): List<E> = rawApi.findHealthElementsByHCPartyPatientForeignKeys(
-		hcPartyId,
-		crypto.entity.secretIdsOf(patient.withTypeInfo(), null).toList()
-	).successBody().map { maybeDecrypt(it) }
+		startDate: Long?,
+		endDate: Long?,
+		descending: Boolean?
+	): PaginatedListIterator<E> = IdsPageIterator(
+		rawApi.listHealthElementIdsByDataOwnerPatientOpeningDate(
+			dataOwnerId = hcPartyId,
+			startDate = startDate,
+			endDate = endDate,
+			descending = descending,
+			secretPatientKeys = ListOfIds(crypto.entity.secretIdsOf(patient.withTypeInfo(), null).toList())
+		).successBody()
+	) { ids ->
+		rawApi.getHealthElements(ListOfIds(ids)).successBody().map { maybeDecrypt(it) }
+	}
 
 }
 

@@ -1,5 +1,6 @@
 package com.icure.sdk.model
 
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.Boolean
 import kotlin.Int
@@ -9,8 +10,10 @@ import kotlin.Int
 
 @Serializable
 data class ReplicationInfo(
-	public val active: Boolean,
-	public val running: Boolean,
+	@DefaultValue("false")
+	public val active: Boolean = false,
+	@DefaultValue("false")
+	public val running: Boolean = false,
 	public val pendingFrom: Int? = null,
 	public val pendingTo: Int? = null,
 ) {

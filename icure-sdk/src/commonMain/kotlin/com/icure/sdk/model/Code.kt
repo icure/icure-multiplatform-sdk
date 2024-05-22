@@ -5,6 +5,7 @@ import com.icure.sdk.model.base.CodeFlag
 import com.icure.sdk.model.base.CodeIdentification
 import com.icure.sdk.model.base.StoredDocument
 import com.icure.sdk.model.embed.Periodicity
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.Boolean
 import kotlin.Int
@@ -28,15 +29,23 @@ data class Code(
 	override val version: String? = null,
 	override val label: Map<String, String>? = null,
 	public val author: String? = null,
+	@DefaultValue("emptySet()")
 	public val regions: Set<String> = emptySet(),
+	@DefaultValue("emptySet()")
 	public val periodicity: Set<Periodicity> = emptySet(),
 	public val level: Int? = null,
+	@DefaultValue("emptySet()")
 	public val links: Set<String> = emptySet(),
+	@DefaultValue("emptyMap()")
 	public val qualifiedLinks: Map<String, List<String>> = emptyMap(),
+	@DefaultValue("emptySet()")
 	public val flags: Set<CodeFlag> = emptySet(),
+	@DefaultValue("emptyMap()")
 	public val searchTerms: Map<String, Set<String>> = emptyMap(),
 	public val `data`: String? = null,
+	@DefaultValue("emptyMap()")
 	public val appendices: Map<AppendixType, String> = emptyMap(),
+	@DefaultValue("false")
 	public val disabled: Boolean = false,
 ) : StoredDocument, CodeIdentification<String> {
 	// region Code-Code

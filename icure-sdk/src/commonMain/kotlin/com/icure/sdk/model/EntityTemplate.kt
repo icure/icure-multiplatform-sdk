@@ -1,20 +1,14 @@
 package com.icure.sdk.model
 
 import com.icure.sdk.model.base.StoredDocument
-import com.icure.sdk.serialization.EntityTemplateSerializer
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
-import kotlin.Any
-import kotlin.Boolean
-import kotlin.Long
-import kotlin.String
-import kotlin.collections.List
-import kotlin.collections.Map
-import kotlin.collections.Set
+import kotlinx.serialization.json.JsonElement
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 
-@Serializable(with = EntityTemplateSerializer::class)
+@Serializable
 data class EntityTemplate(
 	override val id: String,
 	override val rev: String? = null,
@@ -25,7 +19,8 @@ data class EntityTemplate(
 	public val entityType: String? = null,
 	public val subType: String? = null,
 	public val defaultTemplate: Boolean? = null,
-	public val entity: List<Map<String, Any>> = emptyList(),
+	@DefaultValue("emptyList()")
+	public val entity: List<JsonElement> = emptyList(),
 ) : StoredDocument {
 	// region EntityTemplate-EntityTemplate
 

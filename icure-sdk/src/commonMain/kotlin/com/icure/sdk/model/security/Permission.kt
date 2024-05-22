@@ -1,5 +1,6 @@
 package com.icure.sdk.model.security
 
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.collections.Set
 
@@ -8,7 +9,9 @@ import kotlin.collections.Set
 
 @Serializable
 data class Permission(
+	@DefaultValue("emptySet()")
 	public val grants: Set<PermissionItem> = emptySet(),
+	@DefaultValue("emptySet()")
 	public val revokes: Set<PermissionItem> = emptySet(),
 ) {
 	// region Permission-Permission

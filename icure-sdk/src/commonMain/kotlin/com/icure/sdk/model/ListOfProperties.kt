@@ -1,5 +1,6 @@
 package com.icure.sdk.model
 
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.collections.Set
 
@@ -8,7 +9,8 @@ import kotlin.collections.Set
 
 @Serializable
 data class ListOfProperties(
-	public val properties: Set<PropertyStub> = emptySet(),
+	@DefaultValue("emptySet()")
+	public val properties: Set<DecryptedPropertyStub> = emptySet(),
 ) {
 	// region ListOfProperties-ListOfProperties
 

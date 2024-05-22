@@ -20,6 +20,7 @@ import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import io.ktor.utils.io.ByteReadChannel
+import kotlin.Boolean
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.String
@@ -31,7 +32,7 @@ import kotlin.time.Duration
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 @InternalIcureApi
 class RawDocumentTemplateApiImpl(
-	private val apiUrl: String,
+	internal val apiUrl: String,
 	private val authService: AuthService,
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
@@ -60,41 +61,54 @@ class RawDocumentTemplateApiImpl(
 			setBody(documentTemplateIds)
 		}.wrap()
 
-	override suspend fun listDocumentTemplatesBySpeciality(specialityCode: String): HttpResponse<List<DocumentTemplate>> =
+	override suspend fun findDocumentTemplatesBySpeciality(
+		specialityCode: String,
+		loadAttachment: Boolean?,
+	): HttpResponse<List<DocumentTemplate>> =
 		get {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "doctemplate", "bySpecialty", specialityCode)
+				parameter("loadAttachment", loadAttachment)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-	override suspend fun listDocumentTemplatesByDocumentType(documentTypeCode: String): HttpResponse<List<DocumentTemplate>> =
+	override suspend fun listDocumentTemplatesByDocumentType(
+		documentTypeCode: String,
+		loadAttachment: Boolean?,
+	): HttpResponse<List<DocumentTemplate>> =
 		get {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "doctemplate", "byDocumentType", documentTypeCode)
+				parameter("loadAttachment", loadAttachment)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-	override suspend fun listDocumentTemplatesByDocumentTypeForCurrentUser(documentTypeCode: String): HttpResponse<List<DocumentTemplate>> =
+	override suspend fun listDocumentTemplatesByDocumentTypeForCurrentUser(
+		documentTypeCode: String,
+		loadAttachment: Boolean?,
+	): HttpResponse<List<DocumentTemplate>> =
 		get {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "doctemplate", "byDocumentTypeForCurrentUser", documentTypeCode)
+				parameter("loadAttachment", loadAttachment)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
 		}.wrap()
 
-	override suspend fun listDocumentTemplates(): HttpResponse<List<DocumentTemplate>> =
+	override suspend fun listDocumentTemplates(loadAttachment: Boolean?): HttpResponse<List<DocumentTemplate>> =
 		get {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "doctemplate")
+				parameter("loadAttachment", loadAttachment)
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)

@@ -1,5 +1,6 @@
 package com.icure.sdk.model
 
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.String
 import kotlin.collections.Set
@@ -13,6 +14,7 @@ data class RegistrationInformation(
 	public val lastName: String,
 	public val emailAddress: String,
 	public val userOptions: String? = null,
+	@DefaultValue("emptySet()")
 	public val userRoles: Set<String> = emptySet(),
 	public val minimumKrakenVersion: String? = null,
 ) {

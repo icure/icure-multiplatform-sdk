@@ -1,6 +1,7 @@
 package com.icure.sdk.model.embed
 
 import com.icure.sdk.model.specializations.Base64String
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.String
 import kotlin.collections.List
@@ -50,7 +51,9 @@ data class DecryptedAddress(
 	override val state: String? = null,
 	override val country: String? = null,
 	override val note: String? = null,
+	@DefaultValue("emptyList()")
 	override val notes: List<Annotation> = emptyList(),
+	@DefaultValue("emptyList()")
 	override val telecoms: List<DecryptedTelecom> = emptyList(),
 	override val encryptedSelf: Base64String? = null,
 ) : Address {
@@ -71,7 +74,9 @@ data class EncryptedAddress(
 	override val state: String? = null,
 	override val country: String? = null,
 	override val note: String? = null,
+	@DefaultValue("emptyList()")
 	override val notes: List<Annotation> = emptyList(),
+	@DefaultValue("emptyList()")
 	override val telecoms: List<EncryptedTelecom> = emptyList(),
 	override val encryptedSelf: Base64String? = null,
 ) : Address {

@@ -1,6 +1,7 @@
 package com.icure.sdk.model.embed
 
 import com.icure.sdk.model.specializations.Base64String
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.Boolean
 import kotlin.Int
@@ -95,12 +96,19 @@ data class DecryptedMedicalHouseContract(
 	override val startOfCoverage: Long? = null,
 	override val endOfContract: Long? = null,
 	override val endOfCoverage: Long? = null,
+	@DefaultValue("false")
 	override val kine: Boolean = false,
+	@DefaultValue("false")
 	override val gp: Boolean = false,
+	@DefaultValue("false")
 	override val ptd: Boolean = false,
+	@DefaultValue("false")
 	override val nurse: Boolean = false,
+	@DefaultValue("false")
 	override val noKine: Boolean = false,
+	@DefaultValue("false")
 	override val noGp: Boolean = false,
+	@DefaultValue("false")
 	override val noNurse: Boolean = false,
 	override val unsubscriptionReasonId: Int? = null,
 	override val ptdStart: Long? = null,
@@ -110,10 +118,13 @@ data class DecryptedMedicalHouseContract(
 	override val endOfSuspension: Long? = null,
 	override val suspensionReason: SuspensionReason? = null,
 	override val suspensionSource: String? = null,
+	@DefaultValue("false")
 	override val forcedSuspension: Boolean = false,
 	override val signatureType: MhcSignatureType? = null,
 	override val status: Int? = null,
+	@DefaultValue("emptyMap()")
 	override val options: Map<String, String> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val receipts: Map<String, String> = emptyMap(),
 	override val encryptedSelf: Base64String? = null,
 ) : MedicalHouseContract {
@@ -136,12 +147,19 @@ data class EncryptedMedicalHouseContract(
 	override val startOfCoverage: Long? = null,
 	override val endOfContract: Long? = null,
 	override val endOfCoverage: Long? = null,
+	@DefaultValue("false")
 	override val kine: Boolean = false,
+	@DefaultValue("false")
 	override val gp: Boolean = false,
+	@DefaultValue("false")
 	override val ptd: Boolean = false,
+	@DefaultValue("false")
 	override val nurse: Boolean = false,
+	@DefaultValue("false")
 	override val noKine: Boolean = false,
+	@DefaultValue("false")
 	override val noGp: Boolean = false,
+	@DefaultValue("false")
 	override val noNurse: Boolean = false,
 	override val unsubscriptionReasonId: Int? = null,
 	override val ptdStart: Long? = null,
@@ -151,10 +169,13 @@ data class EncryptedMedicalHouseContract(
 	override val endOfSuspension: Long? = null,
 	override val suspensionReason: SuspensionReason? = null,
 	override val suspensionSource: String? = null,
+	@DefaultValue("false")
 	override val forcedSuspension: Boolean = false,
 	override val signatureType: MhcSignatureType? = null,
 	override val status: Int? = null,
+	@DefaultValue("emptyMap()")
 	override val options: Map<String, String> = emptyMap(),
+	@DefaultValue("emptyMap()")
 	override val receipts: Map<String, String> = emptyMap(),
 	override val encryptedSelf: Base64String? = null,
 ) : MedicalHouseContract {

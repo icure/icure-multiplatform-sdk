@@ -41,7 +41,7 @@ internal class DocumentTemplateApiImpl(
 
 	override suspend fun deleteDocumentTemplates(documentTemplateIds: List<String>) = rawApi.deleteDocumentTemplates(
 		ListOfIds(documentTemplateIds)).successBody()
-	override suspend fun listDocumentTemplatesBySpeciality(specialityCode: String) = rawApi.listDocumentTemplatesBySpeciality(specialityCode).successBody()
+	override suspend fun listDocumentTemplatesBySpeciality(specialityCode: String) = rawApi.findDocumentTemplatesBySpeciality(specialityCode).successBody()
 	override suspend fun listDocumentTemplatesByDocumentType(documentTypeCode: String) = rawApi.listDocumentTemplatesByDocumentType(documentTypeCode).successBody()
 	override suspend fun listDocumentTemplatesByDocumentTypeForCurrentUser(documentTypeCode: String) = rawApi.listDocumentTemplatesByDocumentTypeForCurrentUser(documentTypeCode).successBody()
 	override suspend fun listDocumentTemplates() = rawApi.listDocumentTemplates().successBody()

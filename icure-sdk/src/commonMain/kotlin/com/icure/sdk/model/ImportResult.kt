@@ -1,6 +1,7 @@
 package com.icure.sdk.model
 
 import com.icure.sdk.model.base.MimeAttachment
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.String
 import kotlin.collections.List
@@ -11,14 +12,22 @@ import kotlin.collections.Map
 
 @Serializable
 data class ImportResult(
-	public val patient: Patient? = null,
-	public val hes: List<HealthElement> = emptyList(),
-	public val ctcs: List<Contact> = emptyList(),
+	public val patient: DecryptedPatient? = null,
+	@DefaultValue("emptyList()")
+	public val hes: List<DecryptedHealthElement> = emptyList(),
+	@DefaultValue("emptyList()")
+	public val ctcs: List<DecryptedContact> = emptyList(),
+	@DefaultValue("emptyList()")
 	public val warnings: List<String> = emptyList(),
+	@DefaultValue("emptyList()")
 	public val errors: List<String> = emptyList(),
-	public val forms: List<Form> = emptyList(),
+	@DefaultValue("emptyList()")
+	public val forms: List<DecryptedForm> = emptyList(),
+	@DefaultValue("emptyList()")
 	public val hcps: List<HealthcareParty> = emptyList(),
-	public val documents: List<Document> = emptyList(),
+	@DefaultValue("emptyList()")
+	public val documents: List<DecryptedDocument> = emptyList(),
+	@DefaultValue("emptyMap()")
 	public val attachments: Map<String, MimeAttachment> = emptyMap(),
 ) {
 	// region ImportResult-ImportResult

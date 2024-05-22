@@ -16,7 +16,7 @@ import kotlin.collections.Map
 @Serializable
 data class ReplicatorDocument(
 	override val id: String,
-	override val rev: String?,
+	override val rev: String? = null,
 	public val source: Remote? = null,
 	public val target: Remote? = null,
 	public val owner: String? = null,

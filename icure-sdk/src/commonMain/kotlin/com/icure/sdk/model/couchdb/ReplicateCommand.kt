@@ -1,6 +1,7 @@
 package com.icure.sdk.model.couchdb
 
 import com.icure.sdk.model.base.Versionable
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.Boolean
 import kotlin.String
@@ -12,9 +13,11 @@ import kotlin.collections.List
 @Serializable
 data class ReplicateCommand(
 	override val id: String,
-	override val rev: String?,
-	public val continuous: Boolean,
-	public val createTarget: Boolean,
+	override val rev: String? = null,
+	@DefaultValue("false")
+	public val continuous: Boolean = false,
+	@DefaultValue("false")
+	public val createTarget: Boolean = false,
 	public val docIds: List<String>? = null,
 	public val cancel: Boolean? = null,
 	public val filter: String? = null,

@@ -30,6 +30,8 @@ public interface RawMessageApi {
 
 	suspend fun getMessage(messageId: String): HttpResponse<EncryptedMessage>
 
+	suspend fun getMessages(messageIds: ListOfIds): HttpResponse<List<EncryptedMessage>>
+
 	suspend fun listMessagesByTransportGuids(
 		hcpId: String,
 		transportGuids: ListOfIds,

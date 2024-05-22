@@ -33,6 +33,8 @@ import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.currentEpochMs
 import com.icure.sdk.utils.currentFuzzyDateTime
+import com.icure.sdk.utils.pagination.IdsPageIterator
+import com.icure.sdk.utils.pagination.PaginatedListIterator
 import kotlinx.datetime.TimeZone
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.decodeFromJsonElement
@@ -93,9 +95,9 @@ interface InvoiceBasicFlavouredApi<E : Invoice> {
 
 	suspend fun listInvoicesByContactIds(contactIds: List<String>): List<E>
 	suspend fun listInvoicesByRecipientsIds(recipientsIds: List<String>): List<E>
-	suspend fun listToInsurances(userIds: String): List<E>
-	suspend fun listToInsurancesUnsent(userIds: String): List<E>
-	suspend fun listToPatients(userIds: String): List<E>
+	suspend fun listToInsurances(userIds: List<String>): List<E>
+	suspend fun listToInsurancesUnsent(userIds: List<String>): List<E>
+	suspend fun listToPatients(hcPartyId: String): List<E>
 	suspend fun listToPatientsUnsent(hcPartyId: String?): List<E>
 	suspend fun listInvoicesByIds(ids: List<String>): List<E>
 	suspend fun listInvoicesByHcpartySendingModeStatusDate(
@@ -122,10 +124,10 @@ interface InvoiceFlavouredApi<E : Invoice> : InvoiceBasicFlavouredApi<E> {
 	suspend fun findInvoicesByHcPartyPatient(
 		hcPartyId: String,
 		patient: Patient,
-		startKey: JsonElement? = null,
-		startDocumentId: String? = null,
-		limit: Int? = null,
-	): List<E>
+		startDate: Long? = null,
+		endDate: Long? = null,
+		descending: Boolean? = null,
+	): PaginatedListIterator<E>
 }
 
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
@@ -230,17 +232,14 @@ private abstract class AbstractInvoiceBasicFlavouredApi<E : Invoice>(protected v
 	override suspend fun listInvoicesByRecipientsIds(recipientsIds: List<String>): List<E> =
 		rawApi.listInvoicesByRecipientsIds(recipientsIds.joinToString(",")).successBody().map { maybeDecrypt(it) }
 
-	//TODO: check if we should have a list as an argument
-	override suspend fun listToInsurances(userIds: String): List<E> =
-		rawApi.listToInsurances(userIds).successBody().map { maybeDecrypt(it) }
+	override suspend fun listToInsurances(userIds: List<String>): List<E> =
+		rawApi.listToInsurances(userIds.joinToString(",")).successBody().map { maybeDecrypt(it) }
 
-	//TODO: check if we should have a list as an argument
-	override suspend fun listToInsurancesUnsent(userIds: String): List<E> =
-		rawApi.listToInsurancesUnsent(userIds).successBody().map { maybeDecrypt(it) }
+	override suspend fun listToInsurancesUnsent(userIds: List<String>): List<E> =
+		rawApi.listToInsurancesUnsent(userIds.joinToString(",")).successBody().map { maybeDecrypt(it) }
 
-	//TODO: check if we should have a list as an argument
-	override suspend fun listToPatients(userIds: String): List<E> =
-		rawApi.listToPatients(userIds).successBody().map { maybeDecrypt(it) }
+	override suspend fun listToPatients(hcPartyId: String): List<E> =
+		rawApi.listToPatients(hcPartyId).successBody().map { maybeDecrypt(it) }
 
 	override suspend fun listToPatientsUnsent(hcPartyId: String?): List<E> =
 		rawApi.listToPatientsUnsent(hcPartyId).successBody().map { maybeDecrypt(it) }
@@ -298,17 +297,24 @@ private abstract class AbstractInvoiceFlavouredApi<E : Invoice>(
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
 		}
+
 	override suspend fun findInvoicesByHcPartyPatient(
 		hcPartyId: String,
 		patient: Patient,
-		startKey: JsonElement?,
-		startDocumentId: String?,
-		limit: Int?,
-	): List<E> = rawApi.findInvoicesByHCPartyPatientForeignKeys(
-		hcPartyId,
-		crypto.entity.secretIdsOf(patient.withTypeInfo(), null).toList()
-	).successBody().map { maybeDecrypt(it) }
-
+		startDate: Long?,
+		endDate: Long?,
+		descending: Boolean?
+	): PaginatedListIterator<E> = IdsPageIterator(
+		rawApi.listInvoiceIdsByDataOwnerPatientInvoiceDate(
+			dataOwnerId = hcPartyId,
+			startDate = startDate,
+			endDate = endDate,
+			descending = descending,
+			secretPatientKeys = ListOfIds(crypto.entity.secretIdsOf(patient.withTypeInfo(), null).toList())
+		).successBody()
+	) { ids ->
+		rawApi.getInvoices(ListOfIds(ids)).successBody().map { maybeDecrypt(it) }
+	}
 
 }
 

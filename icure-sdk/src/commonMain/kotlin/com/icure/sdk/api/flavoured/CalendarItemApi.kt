@@ -27,9 +27,8 @@ import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.currentEpochMs
-import com.icure.sdk.utils.pagination.MultipleSourcePageIterator
+import com.icure.sdk.utils.pagination.IdsPageIterator
 import com.icure.sdk.utils.pagination.PaginatedListIterator
-import com.icure.sdk.utils.vectorProduct
 import kotlinx.serialization.json.decodeFromJsonElement
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
@@ -42,11 +41,11 @@ interface CalendarItemBasicFlavourlessApi {
 interface CalendarItemBasicFlavouredApi<E : CalendarItem> {
 	suspend fun modifyCalendarItem(entity: E): E
 	suspend fun getCalendarItem(entityId: String): E
+	suspend fun getCalendarItems(entityIds: List<String>): List<E>
 	suspend fun deleteCalendarItems(entityIds: String): List<DocIdentifier>
 	suspend fun getCalendarItemsByPeriodAndHcPartyId(startDate: Long, endDate: Long, hcPartyId: String): List<E>
 	suspend fun getCalendarsByPeriodAndAgendaId(startDate: Long, endDate: Long, agendaId: String): List<E>
 	suspend fun getCalendarItemsWithIds(entityIds: List<String>): List<E>
-	suspend fun listCalendarItemsByHCPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): PaginatedListIterator<E>
 	suspend fun findCalendarItemsByRecurrenceId(
 		recurrenceId: String,
 		startKey: String?,
@@ -64,14 +63,13 @@ interface CalendarItemFlavouredApi<E : CalendarItem> : CalendarItemBasicFlavoure
 		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
 		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
 	): SimpleShareResult<E>
-	suspend fun listCalendarItemsByHcPartyPatient(hcPartyId: String, patient: Patient): List<E>
 	suspend fun findCalendarItemsByHcPartyPatient(
 		hcPartyId: String,
 		patient: Patient,
-		startKey: String?,
-		startDocumentId: String?,
-		limit: Int
-	): PaginatedList<E>
+		startDate: Long? = null,
+		endDate: Long? = null,
+		descending: Boolean? = null,
+	): PaginatedListIterator<E>
 
 }
 
@@ -105,6 +103,9 @@ private abstract class AbstractCalendarItemBasicFlavouredApi<E : CalendarItem>(
 
 	override suspend fun getCalendarItem(entityId: String): E = rawApi.getCalendarItem(entityId).successBody().let { maybeDecrypt(it) }
 
+	override suspend fun getCalendarItems(entityIds: List<String>): List<E> =
+		rawApi.getCalendarItemsWithIds(ListOfIds(entityIds)).successBody().map { maybeDecrypt(it) }
+
 	override suspend fun deleteCalendarItems(entityIds: String): List<DocIdentifier> =
 		rawApi.deleteCalendarItemsWithPost(entityIds).successBody()
 
@@ -122,24 +123,6 @@ private abstract class AbstractCalendarItemBasicFlavouredApi<E : CalendarItem>(
 
 	override suspend fun getCalendarItemsWithIds(entityIds: List<String>): List<E> =
 		rawApi.getCalendarItemsWithIds(ListOfIds(entityIds)).successBody().map { maybeDecrypt(it) }
-
-	override suspend fun listCalendarItemsByHCPartyPatientForeignKeys(
-		hcPartyId: String,
-		secretPatientKeys: List<String>,
-	): PaginatedListIterator<E> {
-		val accessKeys = getSecureDelegationKeys() + hcPartyId
-		return MultipleSourcePageIterator(
-			requestParameters = accessKeys vectorProduct secretPatientKeys
-		) { params, nextKey ->
-			rawApi.findCalendarItemsByHCPartyPatientForeignKeys(
-				hcPartyId = params.first,
-				secretFKeys = params.second,
-				startKey = nextKey?.startKey.encodeStartKey(),
-				startDocumentId = nextKey?.startKeyDocId,
-				limit = 1000
-			).successBody().map { maybeDecrypt(it) }
-		}
-	}
 
 	override suspend fun findCalendarItemsByRecurrenceId(
 		recurrenceId: String,
@@ -184,27 +167,23 @@ private abstract class AbstractCalendarItemFlavouredApi<E : CalendarItem>(
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
 		}
 
-	override suspend fun listCalendarItemsByHcPartyPatient(
-		hcPartyId: String,
-		patient: Patient,
-	): List<E> =
-		rawApi.listCalendarItemsByHCPartyPatientForeignKeys(
-			hcPartyId,
-			crypto.entity.secretIdsOf(patient.withTypeInfo(), null).toList(),
-		).successBody().map { maybeDecrypt(it) }
-
 	override suspend fun findCalendarItemsByHcPartyPatient(
 		hcPartyId: String,
 		patient: Patient,
-		startKey: String?,
-		startDocumentId: String?,
-		limit: Int,
-	): PaginatedList<E> = rawApi.findCalendarItemsByHCPartyPatientForeignKeys(
-		hcPartyId,
-		crypto.entity.secretIdsOf(patient.withTypeInfo(), null).toList(),
-		startKey, startDocumentId, limit
-	).successBody().map { maybeDecrypt(it) }
-
+		startDate: Long?,
+		endDate: Long?,
+		descending: Boolean?,
+	): PaginatedListIterator<E> = IdsPageIterator(
+		rawApi.findCalendarItemIdsByDataOwnerPatientStartTime(
+			dataOwnerId = hcPartyId,
+			startDate = startDate,
+			endDate = endDate,
+			descending = descending,
+			secretPatientKeys = ListOfIds(crypto.entity.secretIdsOf(patient.withTypeInfo(), null).toList())
+		).successBody()
+	) { ids ->
+		rawApi.getCalendarItemsWithIds(ListOfIds(ids)).successBody().map { maybeDecrypt(it) }
+	}
 
 }
 

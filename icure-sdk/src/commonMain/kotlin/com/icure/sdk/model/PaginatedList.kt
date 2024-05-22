@@ -1,5 +1,6 @@
 package com.icure.sdk.model
 
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.collections.List
 
@@ -8,6 +9,7 @@ import kotlin.collections.List
 
 @Serializable
 data class PaginatedList<T>(
+	@DefaultValue("emptyList()")
 	public val rows: List<T> = emptyList(),
 	public val nextKeyPair: PaginatedDocumentKeyIdPair? = null,
 ) {

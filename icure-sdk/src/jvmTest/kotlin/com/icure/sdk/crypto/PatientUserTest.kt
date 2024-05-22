@@ -47,8 +47,7 @@ class PatientUserTest : StringSpec({
 		val retrievedData = patientApi.healthcareElement.findHealthcareElementsByHcPartyPatient(
 			encryptedPatient.id,
 			encryptedPatient,
-			limit = 100
-		).single()
+		).next()
 		retrievedData.note.shouldNotBeNull() shouldBe createdData.note
 	}
 })

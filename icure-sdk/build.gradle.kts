@@ -28,8 +28,8 @@ kotlin {
 					implementation(libs.kotlinSerialization)
 					implementation(libs.kotlinDateTime)
 					implementation(libs.kermit)
+					implementation(libs.kryptom)
 					implementation(libs.coroutinesCore)
-					implementation(project(":kryptom"))
 					implementation(kotlin("reflect"))
 				}
 			}

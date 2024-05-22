@@ -29,6 +29,8 @@ import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.currentEpochMs
+import com.icure.sdk.utils.pagination.IdsPageIterator
+import com.icure.sdk.utils.pagination.PaginatedListIterator
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.decodeFromJsonElement
 
@@ -47,6 +49,7 @@ interface MessageBasicFlavourlessApi {
 interface MessageBasicFlavouredApi<E : Message> {
 	suspend fun modifyMessage(entity: E): E
 	suspend fun getMessage(entityId: String): E
+	suspend fun getMessages(entityIds: List<String>): List<E>
 	suspend fun filterMessagesBy(filterChain: FilterChain<EncryptedMessage>, startDocumentId: String?, limit: Int?): PaginatedList<E>
 
 	suspend fun listMessagesByTransportGuids(hcPartyId: String, transportGuids: List<String>): List<E>
@@ -88,6 +91,13 @@ interface MessageFlavouredApi<E : Message> : MessageBasicFlavouredApi<E> {
 		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
 		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
 	): SimpleShareResult<E>
+	suspend fun findMessagesByHcPartyPatient(
+		hcPartyId: String,
+		patient: Patient,
+		startDate: Long? = null,
+		endDate: Long? = null,
+		descending: Boolean? = null,
+	): PaginatedListIterator<E>
 }
 
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
@@ -114,8 +124,10 @@ private abstract class AbstractMessageBasicFlavouredApi<E : Message>(protected v
 	override suspend fun modifyMessage(entity: E): E =
 		rawApi.modifyMessage(validateAndMaybeEncrypt(entity)).successBody().let { maybeDecrypt(it) }
 
-
 	override suspend fun getMessage(entityId: String): E = rawApi.getMessage(entityId).successBody().let { maybeDecrypt(it) }
+
+	override suspend fun getMessages(entityIds: List<String>): List<E> =
+		rawApi.getMessages(ListOfIds(entityIds)).successBody().map { maybeDecrypt(it) }
 
 	override suspend fun filterMessagesBy(
 		filterChain: FilterChain<EncryptedMessage>,
@@ -218,6 +230,24 @@ private abstract class AbstractMessageFlavouredApi<E : Message>(
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
 		}
+
+	override suspend fun findMessagesByHcPartyPatient(
+		hcPartyId: String,
+		patient: Patient,
+		startDate: Long?,
+		endDate: Long?,
+		descending: Boolean?
+	): PaginatedListIterator<E> = IdsPageIterator(
+		rawApi.listMessageIdsByDataOwnerPatientSentDate(
+			dataOwnerId = hcPartyId,
+			startDate = startDate,
+			endDate = endDate,
+			descending = descending,
+			secretPatientKeys = ListOfIds(crypto.entity.secretIdsOf(patient.withTypeInfo(), null).toList())
+		).successBody()
+	) { ids ->
+		rawApi.getMessages(ListOfIds(ids)).successBody().map { maybeDecrypt(it) }
+	}
 }
 
 @InternalIcureApi

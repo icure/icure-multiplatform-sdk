@@ -38,7 +38,7 @@ import kotlin.time.Duration
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 @InternalIcureApi
 class RawMessageApiImpl(
-	private val apiUrl: String,
+	internal val apiUrl: String,
 	private val authService: AuthService,
 	private val accessControlKeysHeadersProvider: AccessControlKeysHeadersProvider?,
 	httpClient: HttpClient,
@@ -89,6 +89,17 @@ class RawMessageApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+		}.wrap()
+
+	override suspend fun getMessages(messageIds: ListOfIds): HttpResponse<List<EncryptedMessage>> =
+		post {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "message", "byIds")
+			}
+			setAuthorizationWith(authService)
+			contentType(ContentType.Application.Json)
+			setBody(messageIds)
 		}.wrap()
 
 	override suspend fun listMessagesByTransportGuids(

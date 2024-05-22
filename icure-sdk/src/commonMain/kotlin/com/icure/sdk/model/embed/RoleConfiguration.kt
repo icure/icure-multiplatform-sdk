@@ -1,5 +1,6 @@
 package com.icure.sdk.model.embed
 
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlin.String
@@ -11,6 +12,7 @@ import kotlin.collections.Set
 @Serializable
 data class RoleConfiguration(
 	public val source: Source,
+	@DefaultValue("emptySet()")
 	public val roles: Set<String> = emptySet(),
 ) {
 	@Serializable

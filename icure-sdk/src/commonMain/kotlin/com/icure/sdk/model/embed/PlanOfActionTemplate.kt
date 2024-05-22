@@ -3,6 +3,7 @@ package com.icure.sdk.model.embed
 import com.icure.sdk.model.base.CodeStub
 import com.icure.sdk.model.base.ICureDocument
 import com.icure.sdk.model.base.Named
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.Boolean
 import kotlin.Int
@@ -22,14 +23,19 @@ data class PlanOfActionTemplate(
 	override val author: String? = null,
 	override val responsible: String? = null,
 	override val medicalLocationId: String? = null,
+	@DefaultValue("emptySet()")
 	override val tags: Set<CodeStub> = emptySet(),
+	@DefaultValue("emptySet()")
 	override val codes: Set<CodeStub> = emptySet(),
 	override val endOfLife: Long? = null,
 	override val name: String? = null,
 	public val descr: String? = null,
 	public val note: String? = null,
-	public val relevant: Boolean,
+	@DefaultValue("true")
+	public val relevant: Boolean = true,
+	@DefaultValue("0")
 	public val status: Int = 0,
+	@DefaultValue("emptyList()")
 	public val forms: List<FormSkeleton> = emptyList(),
 ) : ICureDocument<String>, Named {
 	// region PlanOfActionTemplate-PlanOfActionTemplate

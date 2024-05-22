@@ -25,6 +25,8 @@ import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.currentEpochMs
+import com.icure.sdk.utils.pagination.IdsPageIterator
+import com.icure.sdk.utils.pagination.PaginatedListIterator
 import kotlinx.serialization.json.decodeFromJsonElement
 
 @OptIn(InternalIcureApi::class)
@@ -41,8 +43,7 @@ interface ClassificationBasicFlavourlessApi {
 interface ClassificationBasicFlavouredApi<E : Classification> {
 	suspend fun modifyClassification(entity: E): E
 	suspend fun getClassification(entityId: String): E
-	suspend fun findClassificationsByHcPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<E>
-	suspend fun getClassificationByHcPartyId(ids: String): List<E>
+	suspend fun getClassifications(entityIds: List<String>): List<E>
 }
 
 /* The extra API calls declared in this interface are the ones that can be used on encrypted or decrypted items but only when the user is a data owner */
@@ -58,10 +59,10 @@ interface ClassificationFlavouredApi<E : Classification> : ClassificationBasicFl
 	suspend fun findClassificationsByHcPartyPatient(
 		hcPartyId: String,
 		patient: Patient,
-		startKey: String? = null,
-		startDocumentId: String? = null,
-		limit: Int? = null,
-	): List<E>
+		startDate: Long? = null,
+		endDate: Long? = null,
+		descending: Boolean? = null,
+	): PaginatedListIterator<E>
 
 }
 
@@ -91,14 +92,8 @@ private abstract class AbstractClassificationBasicFlavouredApi<E : Classificatio
 
 	override suspend fun getClassification(entityId: String): E = rawApi.getClassification(entityId).successBody().let { maybeDecrypt(it) }
 
-	//TODO: Check method name
-	override suspend fun getClassificationByHcPartyId(ids: String): List<E> =
-		rawApi.getClassificationByHcPartyId(ids).successBody().map { maybeDecrypt(it) }
-
-	override suspend fun findClassificationsByHcPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<E> =
-		rawApi.findClassificationsByHCPartyPatientForeignKeys(hcPartyId, secretPatientKeys.joinToString(",")).successBody()
-			.map { maybeDecrypt(it) }
-
+	override suspend fun getClassifications(entityIds: List<String>): List<E> =
+		rawApi.getClassifications(ListOfIds(entityIds)).successBody().map { maybeDecrypt(it) }
 
 	abstract suspend fun validateAndMaybeEncrypt(entity: E): EncryptedClassification
 	abstract suspend fun maybeDecrypt(entity: EncryptedClassification): E
@@ -134,14 +129,20 @@ private abstract class AbstractClassificationFlavouredApi<E : Classification>(
 	override suspend fun findClassificationsByHcPartyPatient(
 		hcPartyId: String,
 		patient: Patient,
-		startKey: String?,
-		startDocumentId: String?,
-		limit: Int?,
-	): List<E> = rawApi.findClassificationsByHCPartyPatientForeignKeys(
-		hcPartyId,
-		crypto.entity.secretIdsOf(patient.withTypeInfo(), null).toList().joinToString(","),
-	).successBody().map { maybeDecrypt(it) }
-
+		startDate: Long?,
+		endDate: Long?,
+		descending: Boolean?,
+	): PaginatedListIterator<E> = IdsPageIterator(
+		rawApi.listClassificationIdsByDataOwnerPatientCreated(
+			dataOwnerId = hcPartyId,
+			startDate = startDate,
+			endDate = endDate,
+			descending = descending,
+			secretPatientKeys = ListOfIds(crypto.entity.secretIdsOf(patient.withTypeInfo(), null).toList())
+		).successBody()
+	) { ids ->
+		rawApi.getClassifications(ListOfIds(ids)).successBody().map { maybeDecrypt(it) }
+	}
 
 }
 

@@ -3,6 +3,7 @@ package com.icure.sdk.model.embed
 import com.icure.sdk.model.base.CodeStub
 import com.icure.sdk.model.base.ICureDocument
 import com.icure.sdk.model.specializations.Base64String
+import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.Int
 import kotlin.Long
@@ -61,7 +62,9 @@ data class DecryptedSubContact(
 	override val author: String? = null,
 	override val responsible: String? = null,
 	override val medicalLocationId: String? = null,
+	@DefaultValue("emptySet()")
 	override val tags: Set<CodeStub> = emptySet(),
+	@DefaultValue("emptySet()")
 	override val codes: Set<CodeStub> = emptySet(),
 	override val endOfLife: Long? = null,
 	override val descr: String? = null,
@@ -71,6 +74,7 @@ data class DecryptedSubContact(
 	override val planOfActionId: String? = null,
 	override val healthElementId: String? = null,
 	override val classificationId: String? = null,
+	@DefaultValue("emptyList()")
 	override val services: List<ServiceLink> = emptyList(),
 	override val encryptedSelf: Base64String? = null,
 ) : SubContact {
@@ -87,7 +91,9 @@ data class EncryptedSubContact(
 	override val author: String? = null,
 	override val responsible: String? = null,
 	override val medicalLocationId: String? = null,
+	@DefaultValue("emptySet()")
 	override val tags: Set<CodeStub> = emptySet(),
+	@DefaultValue("emptySet()")
 	override val codes: Set<CodeStub> = emptySet(),
 	override val endOfLife: Long? = null,
 	override val descr: String? = null,
@@ -97,6 +103,7 @@ data class EncryptedSubContact(
 	override val planOfActionId: String? = null,
 	override val healthElementId: String? = null,
 	override val classificationId: String? = null,
+	@DefaultValue("emptyList()")
 	override val services: List<ServiceLink> = emptyList(),
 	override val encryptedSelf: Base64String? = null,
 ) : SubContact {
