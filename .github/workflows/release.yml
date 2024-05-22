@@ -16,7 +16,7 @@ jobs:
             -   name: Checkout code
                 uses: actions/checkout@v4
                 with:
-                    fetch-tags: true
+                    fetch-depth: 0
                     submodules: 'recursive'
                     token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
 
