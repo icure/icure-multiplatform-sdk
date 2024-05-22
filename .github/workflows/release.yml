@@ -32,9 +32,9 @@ jobs:
                 id: previoustag
                 run: |
                     if [[ $GITHUB_REF == refs/tags/* ]]; then
-                        echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
+                        echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
                     else
-                        echo ::set-output name=VERSION::latest
+                        echo "VERSION=latest" >> $GITHUB_OUTPUT
                     fi
 
             -   name: Get next versions
@@ -48,12 +48,12 @@ jobs:
                     MAJOR=${version_parts[0]}
                     MINOR=${version_parts[1]}
                     PATCH=${version_parts[2]}
-                    echo "::set-output name=major::$((MAJOR + 1)).0.0"
-                    echo "::set-output name=minor::$MAJOR.$((MINOR + 1)).0"
-                    echo "::set-output name=patch::$MAJOR.$MINOR.$((PATCH + 1))"
+                    echo "major=$((MAJOR + 1)).0.0" >> $GITHUB_OUTPUT"
+                    echo "minor=$MAJOR.$((MINOR + 1)).0" >> $GITHUB_OUTPUT"
+                    echo "patch=$MAJOR.$MINOR.$((PATCH + 1))" >> $GITHUB_OUTPUT"
 
             -   name: Default new version
-                run: echo "NEW_VERSION=${{ steps.semvers.outputs.minor }}" >> $GITHUB_ENV
+                run: echo "NEW_VERSION=${{ steps.semvers.outputs.patch }}" >> $GITHUB_ENV
 
             -   name: Update major version
                 if: ${{ contains(github.event.pull_request.labels.*.name, 'SemVer.major') }}
