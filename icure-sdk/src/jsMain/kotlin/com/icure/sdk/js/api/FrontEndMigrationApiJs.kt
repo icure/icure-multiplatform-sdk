@@ -1,6 +1,4 @@
 // auto-generated file
-@file:JsQualifier("api")
-
 package com.icure.sdk.js.api
 
 import com.icure.sdk.js.model.FrontEndMigrationJs
@@ -8,7 +6,6 @@ import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import kotlin.Array
 import kotlin.String
 import kotlin.js.JsName
-import kotlin.js.JsQualifier
 import kotlin.js.Promise
 
 @JsName("FrontEndMigrationApi")

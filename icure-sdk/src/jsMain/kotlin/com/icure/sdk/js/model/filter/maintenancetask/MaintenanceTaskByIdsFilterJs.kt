@@ -1,6 +1,4 @@
 // auto-generated file
-@file:JsQualifier("model")
-
 package com.icure.sdk.js.model.filter.maintenancetask
 
 import com.icure.sdk.js.model.MaintenanceTaskJs
@@ -9,7 +7,6 @@ import com.icure.sdk.js.model.filter.FilterJs_IdsFilterJs
 import kotlin.Array
 import kotlin.String
 import kotlin.js.JsName
-import kotlin.js.JsQualifier
 
 @JsName("MaintenanceTaskByIdsFilter")
 public external class MaintenanceTaskByIdsFilterJs(

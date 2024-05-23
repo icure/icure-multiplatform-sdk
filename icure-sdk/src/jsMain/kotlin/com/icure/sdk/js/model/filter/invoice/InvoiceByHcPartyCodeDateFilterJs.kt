@@ -1,6 +1,4 @@
 // auto-generated file
-@file:JsQualifier("model")
-
 package com.icure.sdk.js.model.filter.invoice
 
 import com.icure.sdk.js.model.InvoiceJs
@@ -8,7 +6,6 @@ import com.icure.sdk.js.model.filter.AbstractFilterJs
 import kotlin.Double
 import kotlin.String
 import kotlin.js.JsName
-import kotlin.js.JsQualifier
 
 @JsName("InvoiceByHcPartyCodeDateFilter")
 public external class InvoiceByHcPartyCodeDateFilterJs(

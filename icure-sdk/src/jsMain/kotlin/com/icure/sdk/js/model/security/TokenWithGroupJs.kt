@@ -1,11 +1,8 @@
 // auto-generated file
-@file:JsQualifier("model")
-
 package com.icure.sdk.js.model.security
 
 import kotlin.String
 import kotlin.js.JsName
-import kotlin.js.JsQualifier
 
 @JsName("TokenWithGroup")
 public external class TokenWithGroupJs(

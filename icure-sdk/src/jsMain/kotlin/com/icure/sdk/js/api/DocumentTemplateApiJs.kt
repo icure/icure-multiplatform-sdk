@@ -1,6 +1,4 @@
 // auto-generated file
-@file:JsQualifier("api")
-
 package com.icure.sdk.js.api
 
 import com.icure.sdk.js.model.DocumentTemplateJs
@@ -11,7 +9,6 @@ import kotlin.ByteArray
 import kotlin.Double
 import kotlin.String
 import kotlin.js.JsName
-import kotlin.js.JsQualifier
 import kotlin.js.Promise
 
 @JsName("DocumentTemplateApi")

@@ -1,6 +1,4 @@
 // auto-generated file
-@file:JsQualifier("model")
-
 package com.icure.sdk.js.model
 
 import com.icure.sdk.js.model.embed.DecryptedTypedValueJs
@@ -11,7 +9,6 @@ import kotlin.Boolean
 import kotlin.Double
 import kotlin.String
 import kotlin.js.JsName
-import kotlin.js.JsQualifier
 
 @JsName("PropertyStub")
 public sealed external interface PropertyStubJs : EncryptableJs {

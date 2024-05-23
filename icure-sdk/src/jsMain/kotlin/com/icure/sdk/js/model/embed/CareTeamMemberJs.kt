@@ -1,6 +1,4 @@
 // auto-generated file
-@file:JsQualifier("model")
-
 package com.icure.sdk.js.model.embed
 
 import com.icure.sdk.js.model.base.CodeStubJs
@@ -8,7 +6,6 @@ import com.icure.sdk.js.model.base.IdentifiableJs
 import kotlin.Boolean
 import kotlin.String
 import kotlin.js.JsName
-import kotlin.js.JsQualifier
 
 @JsName("CareTeamMember")
 public sealed external interface CareTeamMemberJs : EncryptableJs, IdentifiableJs<String> {

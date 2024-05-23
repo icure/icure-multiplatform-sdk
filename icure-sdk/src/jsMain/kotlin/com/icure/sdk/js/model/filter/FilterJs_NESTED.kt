@@ -1,5 +1,5 @@
 // auto-generated file
-@file:JsQualifier("model.Filter")
+@file:JsQualifier("Filter")
 
 package com.icure.sdk.js.model.filter
 

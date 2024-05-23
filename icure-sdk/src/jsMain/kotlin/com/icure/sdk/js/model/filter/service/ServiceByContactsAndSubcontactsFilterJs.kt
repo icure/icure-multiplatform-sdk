@@ -1,6 +1,4 @@
 // auto-generated file
-@file:JsQualifier("model")
-
 package com.icure.sdk.js.model.filter.service
 
 import com.icure.sdk.js.model.embed.ServiceJs
@@ -9,7 +7,6 @@ import kotlin.Array
 import kotlin.Double
 import kotlin.String
 import kotlin.js.JsName
-import kotlin.js.JsQualifier
 
 @JsName("ServiceByContactsAndSubcontactsFilter")
 public external class ServiceByContactsAndSubcontactsFilterJs(

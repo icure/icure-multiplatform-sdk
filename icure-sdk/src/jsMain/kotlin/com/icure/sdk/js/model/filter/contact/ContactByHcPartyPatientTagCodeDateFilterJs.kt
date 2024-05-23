@@ -1,6 +1,4 @@
 // auto-generated file
-@file:JsQualifier("model")
-
 package com.icure.sdk.js.model.filter.contact
 
 import com.icure.sdk.js.model.ContactJs
@@ -9,7 +7,6 @@ import kotlin.Array
 import kotlin.Double
 import kotlin.String
 import kotlin.js.JsName
-import kotlin.js.JsQualifier
 
 @JsName("ContactByHcPartyPatientTagCodeDateFilter")
 public external class ContactByHcPartyPatientTagCodeDateFilterJs(

@@ -1,6 +1,4 @@
 // auto-generated file
-@file:JsQualifier("model")
-
 package com.icure.sdk.js.model
 
 import com.icure.sdk.js.model.base.CodeStubJs
@@ -22,7 +20,6 @@ import kotlin.Boolean
 import kotlin.Double
 import kotlin.String
 import kotlin.js.JsName
-import kotlin.js.JsQualifier
 
 @JsName("Contact")
 public sealed external interface ContactJs : StoredDocumentJs, ICureDocumentJs<String>,

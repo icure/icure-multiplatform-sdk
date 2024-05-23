@@ -1,5 +1,5 @@
 // auto-generated file
-@file:JsQualifier("model.SecretIdOption")
+@file:JsQualifier("SecretIdOption")
 
 package com.icure.sdk.js.crypto.entities
 

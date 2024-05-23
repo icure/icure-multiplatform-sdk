@@ -1,12 +1,9 @@
 // auto-generated file
-@file:JsQualifier("model")
-
 package com.icure.sdk.js.model.security
 
 import kotlin.Double
 import kotlin.String
 import kotlin.js.JsName
-import kotlin.js.JsQualifier
 
 @JsName("AuthenticationToken")
 public external class AuthenticationTokenJs(

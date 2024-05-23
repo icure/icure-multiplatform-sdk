@@ -1,12 +1,9 @@
 // auto-generated file
-@file:JsQualifier("model")
-
 package com.icure.sdk.js.model.embed
 
 import kotlin.Boolean
 import kotlin.String
 import kotlin.js.JsName
-import kotlin.js.JsQualifier
 
 @JsName("Telecom")
 public sealed external interface TelecomJs : EncryptableJs {

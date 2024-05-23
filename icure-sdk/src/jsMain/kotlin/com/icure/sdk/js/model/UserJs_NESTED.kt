@@ -1,5 +1,5 @@
 // auto-generated file
-@file:JsQualifier("model.User")
+@file:JsQualifier("User")
 
 package com.icure.sdk.js.model
 

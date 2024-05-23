@@ -1,5 +1,5 @@
 // auto-generated file
-@file:JsQualifier("model.DataOwnerWithType")
+@file:JsQualifier("DataOwnerWithType")
 
 package com.icure.sdk.js.model
 

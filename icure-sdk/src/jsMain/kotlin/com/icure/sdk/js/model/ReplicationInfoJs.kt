@@ -1,12 +1,9 @@
 // auto-generated file
-@file:JsQualifier("model")
-
 package com.icure.sdk.js.model
 
 import kotlin.Boolean
 import kotlin.Double
 import kotlin.js.JsName
-import kotlin.js.JsQualifier
 
 @JsName("ReplicationInfo")
 public external class ReplicationInfoJs(

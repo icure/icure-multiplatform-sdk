@@ -1,5 +1,5 @@
 // auto-generated file
-@file:JsQualifier("model.RecoveryResult")
+@file:JsQualifier("RecoveryResult")
 
 package com.icure.sdk.js.crypto.entities
 

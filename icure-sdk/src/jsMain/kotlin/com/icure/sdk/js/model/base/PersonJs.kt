@@ -1,6 +1,4 @@
 // auto-generated file
-@file:JsQualifier("model")
-
 package com.icure.sdk.js.model.base
 
 import com.icure.sdk.js.model.embed.AddressJs
@@ -8,7 +6,6 @@ import com.icure.sdk.js.model.embed.PersonNameJs
 import kotlin.Array
 import kotlin.String
 import kotlin.js.JsName
-import kotlin.js.JsQualifier
 
 @JsName("Person")
 public external interface PersonJs : IdentifiableJs<String> {
