@@ -42,11 +42,8 @@ kotestEngine = { group = "io.kotest", name = "kotest-framework-engine", version.
 kotestDatatest = { group = "io.kotest", name = "kotest-framework-datatest", version.ref = "kotest" }
 kotestRunnerJunit = { group = "io.kotest", name = "kotest-runner-junit5", version.ref = "kotest" }
 
-# Cryptography providers
-bouncyCastle = { group = "org.bouncycastle", name = "bcprov-jdk15on", version.ref = "bouncyCastle" }
-
 # Logging
 kermit = { group = "co.touchlab", name = "kermit", version.ref = "kermit" }
 
 # Kryptom
-kryptom = { group = "com.icure.kryptom", name = "kryptom", version = "1.0.0" }
+kryptom = { group = "com.icure.kryptom", name = "kryptom", version = "1.0.1" }
