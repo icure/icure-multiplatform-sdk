@@ -1,4 +1,6 @@
 // auto-generated file
+@file:JsQualifier("model")
+
 package com.icure.sdk.js.model.embed
 
 import kotlin.Array
@@ -7,6 +9,7 @@ import kotlin.ByteArray
 import kotlin.Double
 import kotlin.String
 import kotlin.js.JsName
+import kotlin.js.JsQualifier
 
 @JsName("Content")
 public sealed external interface ContentJs {

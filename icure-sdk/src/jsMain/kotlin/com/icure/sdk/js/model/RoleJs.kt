@@ -1,4 +1,6 @@
 // auto-generated file
+@file:JsQualifier("model")
+
 package com.icure.sdk.js.model
 
 import com.icure.sdk.js.model.base.StoredDocumentJs
@@ -6,6 +8,7 @@ import kotlin.Array
 import kotlin.Double
 import kotlin.String
 import kotlin.js.JsName
+import kotlin.js.JsQualifier
 
 @JsName("Role")
 public external class RoleJs(

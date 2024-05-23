@@ -1,4 +1,6 @@
 // auto-generated file
+@file:JsQualifier("api")
+
 package com.icure.sdk.js.api.flavoured
 
 import com.icure.sdk.js.model.EncryptedReceiptJs
@@ -7,6 +9,7 @@ import kotlin.Array
 import kotlin.ByteArray
 import kotlin.String
 import kotlin.js.JsName
+import kotlin.js.JsQualifier
 import kotlin.js.Promise
 
 @JsName("ReceiptBasicApi")

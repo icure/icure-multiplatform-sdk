@@ -1,10 +1,13 @@
 // auto-generated file
+@file:JsQualifier("model")
+
 package com.icure.sdk.js.model.base
 
 import com.icure.sdk.js.model.embed.SecurityMetadataJs
 import kotlin.Array
 import kotlin.String
 import kotlin.js.JsName
+import kotlin.js.JsQualifier
 
 @JsName("HasEncryptionMetadata")
 public external interface HasEncryptionMetadataJs : VersionableJs<String> {

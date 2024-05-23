@@ -1,9 +1,12 @@
 // auto-generated file
+@file:JsQualifier("model")
+
 package com.icure.sdk.js.model.base
 
 import kotlin.Array
 import kotlin.String
 import kotlin.js.JsName
+import kotlin.js.JsQualifier
 
 @JsName("CryptoActor")
 public external interface CryptoActorJs : VersionableJs<String>, HasTagsJs {

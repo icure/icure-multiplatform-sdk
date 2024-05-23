@@ -1,8 +1,11 @@
 // auto-generated file
+@file:JsQualifier("model")
+
 package com.icure.sdk.js.model.security
 
 import kotlin.Array
 import kotlin.js.JsName
+import kotlin.js.JsQualifier
 
 @JsName("Permission")
 public external class PermissionJs(

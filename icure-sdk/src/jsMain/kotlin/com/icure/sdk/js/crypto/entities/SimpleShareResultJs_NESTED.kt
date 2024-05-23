@@ -1,5 +1,5 @@
 // auto-generated file
-@file:JsQualifier("SimpleShareResult")
+@file:JsQualifier("crypto.SimpleShareResult")
 
 package com.icure.sdk.js.crypto.entities
 

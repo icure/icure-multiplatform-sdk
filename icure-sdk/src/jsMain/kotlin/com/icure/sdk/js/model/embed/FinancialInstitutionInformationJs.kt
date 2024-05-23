@@ -1,10 +1,13 @@
 // auto-generated file
+@file:JsQualifier("model")
+
 package com.icure.sdk.js.model.embed
 
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.String
 import kotlin.js.JsName
+import kotlin.js.JsQualifier
 
 @JsName("FinancialInstitutionInformation")
 public sealed external interface FinancialInstitutionInformationJs : EncryptableJs {

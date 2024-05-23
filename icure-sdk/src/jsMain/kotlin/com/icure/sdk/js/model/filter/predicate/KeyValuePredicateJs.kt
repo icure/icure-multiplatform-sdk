@@ -1,9 +1,12 @@
 // auto-generated file
+@file:JsQualifier("model")
+
 package com.icure.sdk.js.model.filter.predicate
 
 import kotlin.Any
 import kotlin.String
 import kotlin.js.JsName
+import kotlin.js.JsQualifier
 
 @JsName("KeyValuePredicate")
 public external class KeyValuePredicateJs(

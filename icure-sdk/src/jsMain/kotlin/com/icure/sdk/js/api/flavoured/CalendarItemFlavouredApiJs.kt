@@ -1,4 +1,6 @@
 // auto-generated file
+@file:JsQualifier("api")
+
 package com.icure.sdk.js.api.flavoured
 
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
@@ -11,6 +13,7 @@ import kotlin.Boolean
 import kotlin.Double
 import kotlin.String
 import kotlin.js.JsName
+import kotlin.js.JsQualifier
 import kotlin.js.Promise
 
 @JsName("CalendarItemFlavouredApi")

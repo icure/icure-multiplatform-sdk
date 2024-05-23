@@ -1,4 +1,6 @@
 // auto-generated file
+@file:JsQualifier("model")
+
 package com.icure.sdk.js.model.filter.message
 
 import com.icure.sdk.js.model.MessageJs
@@ -6,6 +8,7 @@ import com.icure.sdk.js.model.filter.AbstractFilterJs
 import com.icure.sdk.js.model.filter.FilterJs_ByHcpartyFilterJs
 import kotlin.String
 import kotlin.js.JsName
+import kotlin.js.JsQualifier
 
 @JsName("MessageByHcPartyFilter")
 public external class MessageByHcPartyFilterJs(
