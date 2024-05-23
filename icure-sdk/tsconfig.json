@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "module": "commonjs",
+    "module": "es6",
     "moduleResolution": "node",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
@@ -19,10 +19,11 @@
     "sourceMap": true,
     "inlineSources": true,
     "declaration": true,
-    "outDir": "./build/tsc/dist",
+    "outDir": "./build/tsCompiledSources",
     "baseUrl": "./"
   },
   "include": [
-    "src/jsMain/typescript/**/*.ts"
+    "build/tsSourcesProject/**/*.mts",
+    "build/tsSourcesProject/**/*.ts"
   ]
 }

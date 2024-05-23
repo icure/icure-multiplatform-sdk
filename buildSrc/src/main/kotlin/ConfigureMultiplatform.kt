@@ -21,6 +21,7 @@ fun Project.configureMultiplatform(
 		}
 	}
 	js(IR) {
+		moduleName = project.name
 		browser {
 			testTask {
 				useKarma {

@@ -4,7 +4,7 @@ import com.icure.sdk.model.embed.form.template.CheckBox
 import com.icure.sdk.model.embed.form.template.DatePicker
 import com.icure.sdk.model.embed.form.template.DateTimePicker
 import com.icure.sdk.model.embed.form.template.DropdownField
-import com.icure.sdk.model.embed.form.template.Group
+import com.icure.sdk.model.embed.form.template.FieldsGroup
 import com.icure.sdk.model.embed.form.template.MeasureField
 import com.icure.sdk.model.embed.form.template.MultipleChoice
 import com.icure.sdk.model.embed.form.template.NumberField
@@ -35,7 +35,7 @@ object Serialization {
 			subclass(DatePicker::class)
 			subclass(CheckBox::class)
 			defaultDeserializer {
-				Group.serializer()
+				FieldsGroup.serializer()
 			}
 		}
 		polymorphic(AbstractFilter::class) {
