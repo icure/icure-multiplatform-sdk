@@ -92,10 +92,10 @@ object CheckedConverters {
 
 	fun instantToNumber(instant: Instant?): Double? = instant?.let { instantToNumber(it) }
 
-	fun <K, V> mapToObject(
+	fun <K, V, V_JS> mapToObject(
 		map: Map<K, V>,
 		convertKey: (key: K) -> String,
-		convertValue: (value: V) -> dynamic,
+		convertValue: (value: V) -> V_JS,
 	): dynamic {
 		val obj = js("{}")
 		for ((key, value) in map) {
@@ -104,10 +104,10 @@ object CheckedConverters {
 		return obj
 	}
 
-	fun <K, V> mapToObject(
+	fun <K, V, V_JS> mapToObject(
 		map: Map<K, V>?,
 		convertKey: (key: K) -> String,
-		convertValue: (value: V) -> dynamic,
+		convertValue: (value: V) -> V_JS,
 	): dynamic = map?.let { mapToObject(it, convertKey, convertValue) }
 
 	fun <K, V> objectToMap(
