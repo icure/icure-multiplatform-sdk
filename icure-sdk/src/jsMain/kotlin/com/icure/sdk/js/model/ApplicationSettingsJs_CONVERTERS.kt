@@ -35,7 +35,7 @@ public fun applicationSettings_toJs(obj: ApplicationSettings): ApplicationSettin
 	)
 	val endOfLife = longToNumber(obj.endOfLife)
 	val deletionDate = longToNumber(obj.deletionDate)
-	val settings = mapToObject(
+	val settings = mapToObject<_, _, String>(
 		obj.settings,
 		{ x1: String ->
 			x1

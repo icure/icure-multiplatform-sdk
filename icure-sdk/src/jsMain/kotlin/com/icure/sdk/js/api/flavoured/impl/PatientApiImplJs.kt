@@ -204,7 +204,7 @@ public class PatientApiImplJs private constructor(
 
 		override fun getPatientHcPartyKeysForDelegate(patientId: String): Promise<dynamic> =
 				GlobalScope.promise {
-			mapToObject(
+			mapToObject<_, _, String>(
 				patientApi.encrypted.getPatientHcPartyKeysForDelegate(patientId),
 				{ x1: String ->
 					x1
@@ -549,7 +549,7 @@ public class PatientApiImplJs private constructor(
 
 		override fun getPatientHcPartyKeysForDelegate(patientId: String): Promise<dynamic> =
 				GlobalScope.promise {
-			mapToObject(
+			mapToObject<_, _, String>(
 				patientApi.tryAndRecover.getPatientHcPartyKeysForDelegate(patientId),
 				{ x1: String ->
 					x1

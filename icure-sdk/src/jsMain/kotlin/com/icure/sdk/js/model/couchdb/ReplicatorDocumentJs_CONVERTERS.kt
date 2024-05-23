@@ -40,7 +40,7 @@ public fun replicatorDocument_toJs(obj: ReplicatorDocument): ReplicatorDocumentJ
 	val revsInfo = listToArray(
 		obj.revsInfo,
 		{ x1: Map<String, String> ->
-			mapToObject(
+			mapToObject<_, _, String>(
 				x1,
 				{ x2: String ->
 					x2
@@ -51,7 +51,7 @@ public fun replicatorDocument_toJs(obj: ReplicatorDocument): ReplicatorDocumentJ
 			)
 		},
 	)
-	val revHistory = mapToObject(
+	val revHistory = mapToObject<_, _, String>(
 		obj.revHistory,
 		{ x1: String ->
 			x1

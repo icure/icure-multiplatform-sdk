@@ -9,7 +9,7 @@ import com.icure.sdk.model.embed.AccessLevel
 import kotlin.String
 
 public fun entityAccessInformation_toJs(obj: EntityAccessInformation): EntityAccessInformationJs {
-	val permissionsByDataOwnerId = mapToObject(
+	val permissionsByDataOwnerId = mapToObject<_, _, String>(
 		obj.permissionsByDataOwnerId,
 		{ x1: String ->
 			x1

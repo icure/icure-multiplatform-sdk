@@ -94,7 +94,7 @@ public fun calendarItem_toJs(obj: DecryptedCalendarItem): DecryptedCalendarItemJ
 			x1
 		},
 	)
-	val cryptedForeignKeys = mapToObject(
+	val cryptedForeignKeys = mapToObject<_, _, Array<DelegationJs>>(
 		obj.cryptedForeignKeys,
 		{ x1: String ->
 			x1
@@ -108,7 +108,7 @@ public fun calendarItem_toJs(obj: DecryptedCalendarItem): DecryptedCalendarItemJ
 			)
 		},
 	)
-	val delegations = mapToObject(
+	val delegations = mapToObject<_, _, Array<DelegationJs>>(
 		obj.delegations,
 		{ x1: String ->
 			x1
@@ -122,7 +122,7 @@ public fun calendarItem_toJs(obj: DecryptedCalendarItem): DecryptedCalendarItemJ
 			)
 		},
 	)
-	val encryptionKeys = mapToObject(
+	val encryptionKeys = mapToObject<_, _, Array<DelegationJs>>(
 		obj.encryptionKeys,
 		{ x1: String ->
 			x1
@@ -412,7 +412,7 @@ public fun calendarItem_toJs(obj: EncryptedCalendarItem): EncryptedCalendarItemJ
 			x1
 		},
 	)
-	val cryptedForeignKeys = mapToObject(
+	val cryptedForeignKeys = mapToObject<_, _, Array<DelegationJs>>(
 		obj.cryptedForeignKeys,
 		{ x1: String ->
 			x1
@@ -426,7 +426,7 @@ public fun calendarItem_toJs(obj: EncryptedCalendarItem): EncryptedCalendarItemJ
 			)
 		},
 	)
-	val delegations = mapToObject(
+	val delegations = mapToObject<_, _, Array<DelegationJs>>(
 		obj.delegations,
 		{ x1: String ->
 			x1
@@ -440,7 +440,7 @@ public fun calendarItem_toJs(obj: EncryptedCalendarItem): EncryptedCalendarItemJ
 			)
 		},
 	)
-	val encryptionKeys = mapToObject(
+	val encryptionKeys = mapToObject<_, _, Array<DelegationJs>>(
 		obj.encryptionKeys,
 		{ x1: String ->
 			x1

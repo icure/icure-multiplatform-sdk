@@ -3,6 +3,8 @@ package com.icure.sdk.js.api.`impl`
 
 import com.icure.kryptom.crypto.RsaAlgorithm
 import com.icure.kryptom.crypto.RsaKeypair
+import com.icure.kryptom.crypto.`external`.XRsaKeypair
+import com.icure.kryptom.crypto.`external`.toExternal
 import com.icure.sdk.api.RecoveryApi
 import com.icure.sdk.js.api.RecoveryApiJs
 import com.icure.sdk.js.crypto.entities.RecoveryResultJs
@@ -41,19 +43,19 @@ public class RecoveryApiImplJs private constructor(
 			recoveryApi.recoverKeyPairs(com.icure.sdk.js.crypto.entities.recoveryDataKey_fromJs(recoveryKey),
 					autoDelete),
 			{ x1: Map<String, Map<SpkiHexString, RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>> ->
-				mapToObject(
+				mapToObject<_, _, dynamic>(
 					x1,
 					{ x2: String ->
 						x2
 					},
 					{ x2: Map<SpkiHexString, RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>> ->
-						mapToObject(
+						mapToObject<_, _, XRsaKeypair>(
 							x2,
 							{ x3: SpkiHexString ->
 								spkiHexString_toJs(x3)
 							},
 							{ x3: RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm> ->
-								x3
+								x3.toExternal()
 							},
 						)
 					},

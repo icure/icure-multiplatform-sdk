@@ -19,7 +19,7 @@ public fun annotation_toJs(obj: Annotation): AnnotationJs {
 	val created = longToNumber(obj.created)
 	val modified = longToNumber(obj.modified)
 	val text = obj.text
-	val markdown = mapToObject(
+	val markdown = mapToObject<_, _, String>(
 		obj.markdown,
 		{ x1: String ->
 			x1

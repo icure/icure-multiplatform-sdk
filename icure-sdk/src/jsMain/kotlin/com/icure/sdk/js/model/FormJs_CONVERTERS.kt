@@ -66,7 +66,7 @@ public fun form_toJs(obj: DecryptedForm): DecryptedFormJs {
 			x1
 		},
 	)
-	val cryptedForeignKeys = mapToObject(
+	val cryptedForeignKeys = mapToObject<_, _, Array<DelegationJs>>(
 		obj.cryptedForeignKeys,
 		{ x1: String ->
 			x1
@@ -80,7 +80,7 @@ public fun form_toJs(obj: DecryptedForm): DecryptedFormJs {
 			)
 		},
 	)
-	val delegations = mapToObject(
+	val delegations = mapToObject<_, _, Array<DelegationJs>>(
 		obj.delegations,
 		{ x1: String ->
 			x1
@@ -94,7 +94,7 @@ public fun form_toJs(obj: DecryptedForm): DecryptedFormJs {
 			)
 		},
 	)
-	val encryptionKeys = mapToObject(
+	val encryptionKeys = mapToObject<_, _, Array<DelegationJs>>(
 		obj.encryptionKeys,
 		{ x1: String ->
 			x1
@@ -313,7 +313,7 @@ public fun form_toJs(obj: EncryptedForm): EncryptedFormJs {
 			x1
 		},
 	)
-	val cryptedForeignKeys = mapToObject(
+	val cryptedForeignKeys = mapToObject<_, _, Array<DelegationJs>>(
 		obj.cryptedForeignKeys,
 		{ x1: String ->
 			x1
@@ -327,7 +327,7 @@ public fun form_toJs(obj: EncryptedForm): EncryptedFormJs {
 			)
 		},
 	)
-	val delegations = mapToObject(
+	val delegations = mapToObject<_, _, Array<DelegationJs>>(
 		obj.delegations,
 		{ x1: String ->
 			x1
@@ -341,7 +341,7 @@ public fun form_toJs(obj: EncryptedForm): EncryptedFormJs {
 			)
 		},
 	)
-	val encryptionKeys = mapToObject(
+	val encryptionKeys = mapToObject<_, _, Array<DelegationJs>>(
 		obj.encryptionKeys,
 		{ x1: String ->
 			x1

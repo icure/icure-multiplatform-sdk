@@ -69,7 +69,7 @@ public fun timeTable_toJs(obj: DecryptedTimeTable): DecryptedTimeTableJs {
 			x1
 		},
 	)
-	val cryptedForeignKeys = mapToObject(
+	val cryptedForeignKeys = mapToObject<_, _, Array<DelegationJs>>(
 		obj.cryptedForeignKeys,
 		{ x1: String ->
 			x1
@@ -83,7 +83,7 @@ public fun timeTable_toJs(obj: DecryptedTimeTable): DecryptedTimeTableJs {
 			)
 		},
 	)
-	val delegations = mapToObject(
+	val delegations = mapToObject<_, _, Array<DelegationJs>>(
 		obj.delegations,
 		{ x1: String ->
 			x1
@@ -97,7 +97,7 @@ public fun timeTable_toJs(obj: DecryptedTimeTable): DecryptedTimeTableJs {
 			)
 		},
 	)
-	val encryptionKeys = mapToObject(
+	val encryptionKeys = mapToObject<_, _, Array<DelegationJs>>(
 		obj.encryptionKeys,
 		{ x1: String ->
 			x1
@@ -303,7 +303,7 @@ public fun timeTable_toJs(obj: EncryptedTimeTable): EncryptedTimeTableJs {
 			x1
 		},
 	)
-	val cryptedForeignKeys = mapToObject(
+	val cryptedForeignKeys = mapToObject<_, _, Array<DelegationJs>>(
 		obj.cryptedForeignKeys,
 		{ x1: String ->
 			x1
@@ -317,7 +317,7 @@ public fun timeTable_toJs(obj: EncryptedTimeTable): EncryptedTimeTableJs {
 			)
 		},
 	)
-	val delegations = mapToObject(
+	val delegations = mapToObject<_, _, Array<DelegationJs>>(
 		obj.delegations,
 		{ x1: String ->
 			x1
@@ -331,7 +331,7 @@ public fun timeTable_toJs(obj: EncryptedTimeTable): EncryptedTimeTableJs {
 			)
 		},
 	)
-	val encryptionKeys = mapToObject(
+	val encryptionKeys = mapToObject<_, _, Array<DelegationJs>>(
 		obj.encryptionKeys,
 		{ x1: String ->
 			x1

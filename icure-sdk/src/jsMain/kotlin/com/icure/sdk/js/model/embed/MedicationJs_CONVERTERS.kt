@@ -57,7 +57,7 @@ public fun medication_toJs(obj: Medication): MedicationJs {
 		},
 	)
 	val posology = obj.posology
-	val agreements = mapToObject(
+	val agreements = mapToObject<_, _, ParagraphAgreementJs>(
 		obj.agreements,
 		{ x1: String ->
 			x1

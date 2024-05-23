@@ -51,7 +51,7 @@ public fun topic_toJs(obj: DecryptedTopic): DecryptedTopicJs {
 	val medicalLocationId = obj.medicalLocationId
 	val endOfLife = longToNumber(obj.endOfLife)
 	val deletionDate = longToNumber(obj.deletionDate)
-	val activeParticipants = mapToObject(
+	val activeParticipants = mapToObject<_, _, String>(
 		obj.activeParticipants,
 		{ x1: String ->
 			x1
@@ -69,7 +69,7 @@ public fun topic_toJs(obj: DecryptedTopic): DecryptedTopicJs {
 			x1
 		},
 	)
-	val cryptedForeignKeys = mapToObject(
+	val cryptedForeignKeys = mapToObject<_, _, Array<DelegationJs>>(
 		obj.cryptedForeignKeys,
 		{ x1: String ->
 			x1
@@ -83,7 +83,7 @@ public fun topic_toJs(obj: DecryptedTopic): DecryptedTopicJs {
 			)
 		},
 	)
-	val delegations = mapToObject(
+	val delegations = mapToObject<_, _, Array<DelegationJs>>(
 		obj.delegations,
 		{ x1: String ->
 			x1
@@ -97,7 +97,7 @@ public fun topic_toJs(obj: DecryptedTopic): DecryptedTopicJs {
 			)
 		},
 	)
-	val encryptionKeys = mapToObject(
+	val encryptionKeys = mapToObject<_, _, Array<DelegationJs>>(
 		obj.encryptionKeys,
 		{ x1: String ->
 			x1
@@ -317,7 +317,7 @@ public fun topic_toJs(obj: EncryptedTopic): EncryptedTopicJs {
 	val medicalLocationId = obj.medicalLocationId
 	val endOfLife = longToNumber(obj.endOfLife)
 	val deletionDate = longToNumber(obj.deletionDate)
-	val activeParticipants = mapToObject(
+	val activeParticipants = mapToObject<_, _, String>(
 		obj.activeParticipants,
 		{ x1: String ->
 			x1
@@ -335,7 +335,7 @@ public fun topic_toJs(obj: EncryptedTopic): EncryptedTopicJs {
 			x1
 		},
 	)
-	val cryptedForeignKeys = mapToObject(
+	val cryptedForeignKeys = mapToObject<_, _, Array<DelegationJs>>(
 		obj.cryptedForeignKeys,
 		{ x1: String ->
 			x1
@@ -349,7 +349,7 @@ public fun topic_toJs(obj: EncryptedTopic): EncryptedTopicJs {
 			)
 		},
 	)
-	val delegations = mapToObject(
+	val delegations = mapToObject<_, _, Array<DelegationJs>>(
 		obj.delegations,
 		{ x1: String ->
 			x1
@@ -363,7 +363,7 @@ public fun topic_toJs(obj: EncryptedTopic): EncryptedTopicJs {
 			)
 		},
 	)
-	val encryptionKeys = mapToObject(
+	val encryptionKeys = mapToObject<_, _, Array<DelegationJs>>(
 		obj.encryptionKeys,
 		{ x1: String ->
 			x1

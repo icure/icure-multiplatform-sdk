@@ -12,7 +12,7 @@ import com.icure.sdk.model.embed.Insurability
 import kotlin.String
 
 public fun insurability_toJs(obj: DecryptedInsurability): DecryptedInsurabilityJs {
-	val parameters = mapToObject(
+	val parameters = mapToObject<_, _, String>(
 		obj.parameters,
 		{ x1: String ->
 			x1
@@ -83,7 +83,7 @@ public fun insurability_fromJs(obj: DecryptedInsurabilityJs): DecryptedInsurabil
 }
 
 public fun insurability_toJs(obj: EncryptedInsurability): EncryptedInsurabilityJs {
-	val parameters = mapToObject(
+	val parameters = mapToObject<_, _, String>(
 		obj.parameters,
 		{ x1: String ->
 			x1

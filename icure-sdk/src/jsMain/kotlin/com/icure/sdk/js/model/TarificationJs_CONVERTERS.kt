@@ -42,7 +42,7 @@ public fun tarification_toJs(obj: Tarification): TarificationJs {
 	val id = obj.id
 	val rev = obj.rev
 	val deletionDate = longToNumber(obj.deletionDate)
-	val label = mapToObject(
+	val label = mapToObject<_, _, String>(
 		obj.label,
 		{ x1: String ->
 			x1
@@ -75,7 +75,7 @@ public fun tarification_toJs(obj: Tarification): TarificationJs {
 			x1
 		},
 	)
-	val qualifiedLinks = mapToObject(
+	val qualifiedLinks = mapToObject<_, _, Array<String>>(
 		obj.qualifiedLinks,
 		{ x1: LinkQualification ->
 			linkQualification_toJs(x1)
@@ -95,7 +95,7 @@ public fun tarification_toJs(obj: Tarification): TarificationJs {
 			codeFlag_toJs(x1)
 		},
 	)
-	val searchTerms = mapToObject(
+	val searchTerms = mapToObject<_, _, Array<String>>(
 		obj.searchTerms,
 		{ x1: String ->
 			x1
@@ -110,7 +110,7 @@ public fun tarification_toJs(obj: Tarification): TarificationJs {
 		},
 	)
 	val data = obj.data
-	val appendices = mapToObject(
+	val appendices = mapToObject<_, _, String>(
 		obj.appendices,
 		{ x1: AppendixType ->
 			appendixType_toJs(x1)
@@ -126,7 +126,7 @@ public fun tarification_toJs(obj: Tarification): TarificationJs {
 			valorisation_toJs(x1)
 		},
 	)
-	val category = mapToObject(
+	val category = mapToObject<_, _, String>(
 		obj.category,
 		{ x1: String ->
 			x1

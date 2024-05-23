@@ -233,7 +233,7 @@ public fun patient_toJs(obj: DecryptedPatient): DecryptedPatientJs {
 			codeStub_toJs(x1)
 		},
 	)
-	val parameters = mapToObject(
+	val parameters = mapToObject<_, _, Array<String>>(
 		obj.parameters,
 		{ x1: String ->
 			x1
@@ -253,7 +253,7 @@ public fun patient_toJs(obj: DecryptedPatient): DecryptedPatientJs {
 			propertyStub_toJs(x1)
 		},
 	)
-	val hcPartyKeys = mapToObject(
+	val hcPartyKeys = mapToObject<_, _, Array<String>>(
 		obj.hcPartyKeys,
 		{ x1: String ->
 			x1
@@ -267,19 +267,19 @@ public fun patient_toJs(obj: DecryptedPatient): DecryptedPatientJs {
 			)
 		},
 	)
-	val aesExchangeKeys = mapToObject(
+	val aesExchangeKeys = mapToObject<_, _, dynamic>(
 		obj.aesExchangeKeys,
 		{ x1: SpkiHexString ->
 			spkiHexString_toJs(x1)
 		},
 		{ x1: Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>> ->
-			mapToObject(
+			mapToObject<_, _, dynamic>(
 				x1,
 				{ x2: String ->
 					x2
 				},
 				{ x2: Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString> ->
-					mapToObject(
+					mapToObject<_, _, String>(
 						x2,
 						{ x3: AesExchangeKeyEncryptionKeypairIdentifier ->
 							aesExchangeKeyEncryptionKeypairIdentifier_toJs(x3)
@@ -292,13 +292,13 @@ public fun patient_toJs(obj: DecryptedPatient): DecryptedPatientJs {
 			)
 		},
 	)
-	val transferKeys = mapToObject(
+	val transferKeys = mapToObject<_, _, dynamic>(
 		obj.transferKeys,
 		{ x1: AesExchangeKeyEncryptionKeypairIdentifier ->
 			aesExchangeKeyEncryptionKeypairIdentifier_toJs(x1)
 		},
 		{ x1: Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString> ->
-			mapToObject(
+			mapToObject<_, _, String>(
 				x1,
 				{ x2: AesExchangeKeyEncryptionKeypairIdentifier ->
 					aesExchangeKeyEncryptionKeypairIdentifier_toJs(x2)
@@ -309,7 +309,7 @@ public fun patient_toJs(obj: DecryptedPatient): DecryptedPatientJs {
 			)
 		},
 	)
-	val privateKeyShamirPartitions = mapToObject(
+	val privateKeyShamirPartitions = mapToObject<_, _, String>(
 		obj.privateKeyShamirPartitions,
 		{ x1: String ->
 			x1
@@ -333,7 +333,7 @@ public fun patient_toJs(obj: DecryptedPatient): DecryptedPatientJs {
 			x1
 		},
 	)
-	val cryptedForeignKeys = mapToObject(
+	val cryptedForeignKeys = mapToObject<_, _, Array<DelegationJs>>(
 		obj.cryptedForeignKeys,
 		{ x1: String ->
 			x1
@@ -347,7 +347,7 @@ public fun patient_toJs(obj: DecryptedPatient): DecryptedPatientJs {
 			)
 		},
 	)
-	val delegations = mapToObject(
+	val delegations = mapToObject<_, _, Array<DelegationJs>>(
 		obj.delegations,
 		{ x1: String ->
 			x1
@@ -361,7 +361,7 @@ public fun patient_toJs(obj: DecryptedPatient): DecryptedPatientJs {
 			)
 		},
 	)
-	val encryptionKeys = mapToObject(
+	val encryptionKeys = mapToObject<_, _, Array<DelegationJs>>(
 		obj.encryptionKeys,
 		{ x1: String ->
 			x1
@@ -1081,7 +1081,7 @@ public fun patient_toJs(obj: EncryptedPatient): EncryptedPatientJs {
 			codeStub_toJs(x1)
 		},
 	)
-	val parameters = mapToObject(
+	val parameters = mapToObject<_, _, Array<String>>(
 		obj.parameters,
 		{ x1: String ->
 			x1
@@ -1101,7 +1101,7 @@ public fun patient_toJs(obj: EncryptedPatient): EncryptedPatientJs {
 			propertyStub_toJs(x1)
 		},
 	)
-	val hcPartyKeys = mapToObject(
+	val hcPartyKeys = mapToObject<_, _, Array<String>>(
 		obj.hcPartyKeys,
 		{ x1: String ->
 			x1
@@ -1115,19 +1115,19 @@ public fun patient_toJs(obj: EncryptedPatient): EncryptedPatientJs {
 			)
 		},
 	)
-	val aesExchangeKeys = mapToObject(
+	val aesExchangeKeys = mapToObject<_, _, dynamic>(
 		obj.aesExchangeKeys,
 		{ x1: SpkiHexString ->
 			spkiHexString_toJs(x1)
 		},
 		{ x1: Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>> ->
-			mapToObject(
+			mapToObject<_, _, dynamic>(
 				x1,
 				{ x2: String ->
 					x2
 				},
 				{ x2: Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString> ->
-					mapToObject(
+					mapToObject<_, _, String>(
 						x2,
 						{ x3: AesExchangeKeyEncryptionKeypairIdentifier ->
 							aesExchangeKeyEncryptionKeypairIdentifier_toJs(x3)
@@ -1140,13 +1140,13 @@ public fun patient_toJs(obj: EncryptedPatient): EncryptedPatientJs {
 			)
 		},
 	)
-	val transferKeys = mapToObject(
+	val transferKeys = mapToObject<_, _, dynamic>(
 		obj.transferKeys,
 		{ x1: AesExchangeKeyEncryptionKeypairIdentifier ->
 			aesExchangeKeyEncryptionKeypairIdentifier_toJs(x1)
 		},
 		{ x1: Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString> ->
-			mapToObject(
+			mapToObject<_, _, String>(
 				x1,
 				{ x2: AesExchangeKeyEncryptionKeypairIdentifier ->
 					aesExchangeKeyEncryptionKeypairIdentifier_toJs(x2)
@@ -1157,7 +1157,7 @@ public fun patient_toJs(obj: EncryptedPatient): EncryptedPatientJs {
 			)
 		},
 	)
-	val privateKeyShamirPartitions = mapToObject(
+	val privateKeyShamirPartitions = mapToObject<_, _, String>(
 		obj.privateKeyShamirPartitions,
 		{ x1: String ->
 			x1
@@ -1181,7 +1181,7 @@ public fun patient_toJs(obj: EncryptedPatient): EncryptedPatientJs {
 			x1
 		},
 	)
-	val cryptedForeignKeys = mapToObject(
+	val cryptedForeignKeys = mapToObject<_, _, Array<DelegationJs>>(
 		obj.cryptedForeignKeys,
 		{ x1: String ->
 			x1
@@ -1195,7 +1195,7 @@ public fun patient_toJs(obj: EncryptedPatient): EncryptedPatientJs {
 			)
 		},
 	)
-	val delegations = mapToObject(
+	val delegations = mapToObject<_, _, Array<DelegationJs>>(
 		obj.delegations,
 		{ x1: String ->
 			x1
@@ -1209,7 +1209,7 @@ public fun patient_toJs(obj: EncryptedPatient): EncryptedPatientJs {
 			)
 		},
 	)
-	val encryptionKeys = mapToObject(
+	val encryptionKeys = mapToObject<_, _, Array<DelegationJs>>(
 		obj.encryptionKeys,
 		{ x1: String ->
 			x1

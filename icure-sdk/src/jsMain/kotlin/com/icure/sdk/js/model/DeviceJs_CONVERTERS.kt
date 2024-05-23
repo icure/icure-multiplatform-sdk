@@ -74,7 +74,7 @@ public fun device_toJs(obj: Device): DeviceJs {
 			propertyStub_toJs(x1)
 		},
 	)
-	val hcPartyKeys = mapToObject(
+	val hcPartyKeys = mapToObject<_, _, Array<String>>(
 		obj.hcPartyKeys,
 		{ x1: String ->
 			x1
@@ -88,19 +88,19 @@ public fun device_toJs(obj: Device): DeviceJs {
 			)
 		},
 	)
-	val aesExchangeKeys = mapToObject(
+	val aesExchangeKeys = mapToObject<_, _, dynamic>(
 		obj.aesExchangeKeys,
 		{ x1: SpkiHexString ->
 			spkiHexString_toJs(x1)
 		},
 		{ x1: Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>> ->
-			mapToObject(
+			mapToObject<_, _, dynamic>(
 				x1,
 				{ x2: String ->
 					x2
 				},
 				{ x2: Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString> ->
-					mapToObject(
+					mapToObject<_, _, String>(
 						x2,
 						{ x3: AesExchangeKeyEncryptionKeypairIdentifier ->
 							aesExchangeKeyEncryptionKeypairIdentifier_toJs(x3)
@@ -113,13 +113,13 @@ public fun device_toJs(obj: Device): DeviceJs {
 			)
 		},
 	)
-	val transferKeys = mapToObject(
+	val transferKeys = mapToObject<_, _, dynamic>(
 		obj.transferKeys,
 		{ x1: AesExchangeKeyEncryptionKeypairIdentifier ->
 			aesExchangeKeyEncryptionKeypairIdentifier_toJs(x1)
 		},
 		{ x1: Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString> ->
-			mapToObject(
+			mapToObject<_, _, String>(
 				x1,
 				{ x2: AesExchangeKeyEncryptionKeypairIdentifier ->
 					aesExchangeKeyEncryptionKeypairIdentifier_toJs(x2)
@@ -130,7 +130,7 @@ public fun device_toJs(obj: Device): DeviceJs {
 			)
 		},
 	)
-	val privateKeyShamirPartitions = mapToObject(
+	val privateKeyShamirPartitions = mapToObject<_, _, String>(
 		obj.privateKeyShamirPartitions,
 		{ x1: String ->
 			x1

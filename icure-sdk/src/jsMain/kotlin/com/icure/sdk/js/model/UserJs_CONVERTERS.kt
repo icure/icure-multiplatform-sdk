@@ -77,7 +77,7 @@ public fun user_toJs(obj: User): UserJs {
 	val healthcarePartyId = obj.healthcarePartyId
 	val patientId = obj.patientId
 	val deviceId = obj.deviceId
-	val autoDelegations = mapToObject(
+	val autoDelegations = mapToObject<_, _, Array<String>>(
 		obj.autoDelegations,
 		{ x1: DelegationTag ->
 			delegationTag_toJs(x1)
@@ -95,7 +95,7 @@ public fun user_toJs(obj: User): UserJs {
 	val termsOfUseDate = instantToNumber(obj.termsOfUseDate)
 	val email = obj.email
 	val mobilePhone = obj.mobilePhone
-	val applicationTokens = mapToObject(
+	val applicationTokens = mapToObject<_, _, String>(
 		obj.applicationTokens,
 		{ x1: String ->
 			x1
@@ -104,7 +104,7 @@ public fun user_toJs(obj: User): UserJs {
 			x1
 		},
 	)
-	val authenticationTokens = mapToObject(
+	val authenticationTokens = mapToObject<_, _, AuthenticationTokenJs>(
 		obj.authenticationTokens,
 		{ x1: String ->
 			x1

@@ -78,7 +78,7 @@ public fun message_toJs(obj: DecryptedMessage): DecryptedMessageJs {
 	)
 	val received = longToNumber(obj.received)
 	val sent = longToNumber(obj.sent)
-	val metas = mapToObject(
+	val metas = mapToObject<_, _, String>(
 		obj.metas,
 		{ x1: String ->
 			x1
@@ -87,7 +87,7 @@ public fun message_toJs(obj: DecryptedMessage): DecryptedMessageJs {
 			x1
 		},
 	)
-	val readStatus = mapToObject(
+	val readStatus = mapToObject<_, _, MessageReadStatusJs>(
 		obj.readStatus,
 		{ x1: String ->
 			x1
@@ -120,7 +120,7 @@ public fun message_toJs(obj: DecryptedMessage): DecryptedMessageJs {
 			x1
 		},
 	)
-	val assignedResults = mapToObject(
+	val assignedResults = mapToObject<_, _, String>(
 		obj.assignedResults,
 		{ x1: String ->
 			x1
@@ -129,7 +129,7 @@ public fun message_toJs(obj: DecryptedMessage): DecryptedMessageJs {
 			x1
 		},
 	)
-	val senderReferences = mapToObject(
+	val senderReferences = mapToObject<_, _, String>(
 		obj.senderReferences,
 		{ x1: String ->
 			x1
@@ -144,7 +144,7 @@ public fun message_toJs(obj: DecryptedMessage): DecryptedMessageJs {
 			x1
 		},
 	)
-	val cryptedForeignKeys = mapToObject(
+	val cryptedForeignKeys = mapToObject<_, _, Array<DelegationJs>>(
 		obj.cryptedForeignKeys,
 		{ x1: String ->
 			x1
@@ -158,7 +158,7 @@ public fun message_toJs(obj: DecryptedMessage): DecryptedMessageJs {
 			)
 		},
 	)
-	val delegations = mapToObject(
+	val delegations = mapToObject<_, _, Array<DelegationJs>>(
 		obj.delegations,
 		{ x1: String ->
 			x1
@@ -172,7 +172,7 @@ public fun message_toJs(obj: DecryptedMessage): DecryptedMessageJs {
 			)
 		},
 	)
-	val encryptionKeys = mapToObject(
+	val encryptionKeys = mapToObject<_, _, Array<DelegationJs>>(
 		obj.encryptionKeys,
 		{ x1: String ->
 			x1
@@ -492,7 +492,7 @@ public fun message_toJs(obj: EncryptedMessage): EncryptedMessageJs {
 	)
 	val received = longToNumber(obj.received)
 	val sent = longToNumber(obj.sent)
-	val metas = mapToObject(
+	val metas = mapToObject<_, _, String>(
 		obj.metas,
 		{ x1: String ->
 			x1
@@ -501,7 +501,7 @@ public fun message_toJs(obj: EncryptedMessage): EncryptedMessageJs {
 			x1
 		},
 	)
-	val readStatus = mapToObject(
+	val readStatus = mapToObject<_, _, MessageReadStatusJs>(
 		obj.readStatus,
 		{ x1: String ->
 			x1
@@ -534,7 +534,7 @@ public fun message_toJs(obj: EncryptedMessage): EncryptedMessageJs {
 			x1
 		},
 	)
-	val assignedResults = mapToObject(
+	val assignedResults = mapToObject<_, _, String>(
 		obj.assignedResults,
 		{ x1: String ->
 			x1
@@ -543,7 +543,7 @@ public fun message_toJs(obj: EncryptedMessage): EncryptedMessageJs {
 			x1
 		},
 	)
-	val senderReferences = mapToObject(
+	val senderReferences = mapToObject<_, _, String>(
 		obj.senderReferences,
 		{ x1: String ->
 			x1
@@ -558,7 +558,7 @@ public fun message_toJs(obj: EncryptedMessage): EncryptedMessageJs {
 			x1
 		},
 	)
-	val cryptedForeignKeys = mapToObject(
+	val cryptedForeignKeys = mapToObject<_, _, Array<DelegationJs>>(
 		obj.cryptedForeignKeys,
 		{ x1: String ->
 			x1
@@ -572,7 +572,7 @@ public fun message_toJs(obj: EncryptedMessage): EncryptedMessageJs {
 			)
 		},
 	)
-	val delegations = mapToObject(
+	val delegations = mapToObject<_, _, Array<DelegationJs>>(
 		obj.delegations,
 		{ x1: String ->
 			x1
@@ -586,7 +586,7 @@ public fun message_toJs(obj: EncryptedMessage): EncryptedMessageJs {
 			)
 		},
 	)
-	val encryptionKeys = mapToObject(
+	val encryptionKeys = mapToObject<_, _, Array<DelegationJs>>(
 		obj.encryptionKeys,
 		{ x1: String ->
 			x1

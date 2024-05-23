@@ -61,7 +61,7 @@ public fun accessLog_toJs(obj: DecryptedAccessLog): DecryptedAccessLogJs {
 			x1
 		},
 	)
-	val cryptedForeignKeys = mapToObject(
+	val cryptedForeignKeys = mapToObject<_, _, Array<DelegationJs>>(
 		obj.cryptedForeignKeys,
 		{ x1: String ->
 			x1
@@ -75,7 +75,7 @@ public fun accessLog_toJs(obj: DecryptedAccessLog): DecryptedAccessLogJs {
 			)
 		},
 	)
-	val delegations = mapToObject(
+	val delegations = mapToObject<_, _, Array<DelegationJs>>(
 		obj.delegations,
 		{ x1: String ->
 			x1
@@ -89,7 +89,7 @@ public fun accessLog_toJs(obj: DecryptedAccessLog): DecryptedAccessLogJs {
 			)
 		},
 	)
-	val encryptionKeys = mapToObject(
+	val encryptionKeys = mapToObject<_, _, Array<DelegationJs>>(
 		obj.encryptionKeys,
 		{ x1: String ->
 			x1
@@ -288,7 +288,7 @@ public fun accessLog_toJs(obj: EncryptedAccessLog): EncryptedAccessLogJs {
 			x1
 		},
 	)
-	val cryptedForeignKeys = mapToObject(
+	val cryptedForeignKeys = mapToObject<_, _, Array<DelegationJs>>(
 		obj.cryptedForeignKeys,
 		{ x1: String ->
 			x1
@@ -302,7 +302,7 @@ public fun accessLog_toJs(obj: EncryptedAccessLog): EncryptedAccessLogJs {
 			)
 		},
 	)
-	val delegations = mapToObject(
+	val delegations = mapToObject<_, _, Array<DelegationJs>>(
 		obj.delegations,
 		{ x1: String ->
 			x1
@@ -316,7 +316,7 @@ public fun accessLog_toJs(obj: EncryptedAccessLog): EncryptedAccessLogJs {
 			)
 		},
 	)
-	val encryptionKeys = mapToObject(
+	val encryptionKeys = mapToObject<_, _, Array<DelegationJs>>(
 		obj.encryptionKeys,
 		{ x1: String ->
 			x1

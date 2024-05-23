@@ -14,10 +14,14 @@ import com.icure.sdk.js.model.couchdb.docIdentifier_toJs
 import com.icure.sdk.js.model.paginatedList_toJs
 import com.icure.sdk.model.EncryptedCalendarItem
 import com.icure.sdk.model.couchdb.DocIdentifier
+import kotlin.Array
+import kotlin.Double
+import kotlin.OptIn
+import kotlin.String
+import kotlin.js.Promise
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
-import kotlin.js.Promise
 
 @OptIn(DelicateCoroutinesApi::class)
 public class CalendarItemBasicApiImplJs private constructor(

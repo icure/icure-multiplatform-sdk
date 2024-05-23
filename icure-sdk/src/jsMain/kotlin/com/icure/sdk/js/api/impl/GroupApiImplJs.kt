@@ -23,6 +23,7 @@ import com.icure.sdk.js.model.couchdb.GroupDatabasesInfoJs
 import com.icure.sdk.js.model.couchdb.designDocument_toJs
 import com.icure.sdk.js.model.couchdb.docIdentifier_toJs
 import com.icure.sdk.js.model.couchdb.groupDatabasesInfo_toJs
+import com.icure.sdk.js.model.embed.RoleConfigurationJs
 import com.icure.sdk.js.model.embed.roleConfiguration_toJs
 import com.icure.sdk.js.model.embed.userType_toJs
 import com.icure.sdk.js.model.groupDeletionReport_toJs
@@ -176,7 +177,7 @@ public class GroupApiImplJs private constructor(
 
 
 	override fun getDefaultRoles(groupId: String): Promise<dynamic> = GlobalScope.promise {
-		mapToObject(
+		mapToObject<_, _, Array<RoleConfigurationJs>>(
 			groupApi.getDefaultRoles(groupId),
 			{ x1: UserType ->
 				userType_toJs(x1)

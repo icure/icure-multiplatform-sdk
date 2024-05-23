@@ -19,7 +19,7 @@ public fun flatRateTarification_toJs(obj: DecryptedFlatRateTarification):
 	val flatRateType = obj.flatRateType?.let { nonNull1 ->
 		flatRateType_toJs(nonNull1)
 	}
-	val label = mapToObject(
+	val label = mapToObject<_, _, String>(
 		obj.label,
 		{ x1: String ->
 			x1
@@ -87,7 +87,7 @@ public fun flatRateTarification_toJs(obj: EncryptedFlatRateTarification):
 	val flatRateType = obj.flatRateType?.let { nonNull1 ->
 		flatRateType_toJs(nonNull1)
 	}
-	val label = mapToObject(
+	val label = mapToObject<_, _, String>(
 		obj.label,
 		{ x1: String ->
 			x1

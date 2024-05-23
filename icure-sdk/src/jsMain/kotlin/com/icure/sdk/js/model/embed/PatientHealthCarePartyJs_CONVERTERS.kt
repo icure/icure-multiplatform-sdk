@@ -19,7 +19,7 @@ public fun patientHealthCareParty_toJs(obj: DecryptedPatientHealthCareParty):
 		patientHealthCarePartyType_toJs(nonNull1)
 	}
 	val healthcarePartyId = obj.healthcarePartyId
-	val sendFormats = mapToObject(
+	val sendFormats = mapToObject<_, _, String>(
 		obj.sendFormats,
 		{ x1: TelecomType ->
 			telecomType_toJs(x1)
@@ -91,7 +91,7 @@ public fun patientHealthCareParty_toJs(obj: EncryptedPatientHealthCareParty):
 		patientHealthCarePartyType_toJs(nonNull1)
 	}
 	val healthcarePartyId = obj.healthcarePartyId
-	val sendFormats = mapToObject(
+	val sendFormats = mapToObject<_, _, String>(
 		obj.sendFormats,
 		{ x1: TelecomType ->
 			telecomType_toJs(x1)

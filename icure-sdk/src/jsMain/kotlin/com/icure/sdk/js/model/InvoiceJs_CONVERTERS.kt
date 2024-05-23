@@ -80,7 +80,7 @@ public fun invoice_toJs(obj: DecryptedInvoice): DecryptedInvoiceJs {
 			invoicingCode_toJs(x1)
 		},
 	)
-	val receipts = mapToObject(
+	val receipts = mapToObject<_, _, String>(
 		obj.receipts,
 		{ x1: String ->
 			x1
@@ -152,7 +152,7 @@ public fun invoice_toJs(obj: DecryptedInvoice): DecryptedInvoiceJs {
 	val locationService = intToNumber(obj.locationService)
 	val cancelReason = obj.cancelReason
 	val cancelDate = longToNumber(obj.cancelDate)
-	val options = mapToObject(
+	val options = mapToObject<_, _, String>(
 		obj.options,
 		{ x1: String ->
 			x1
@@ -167,7 +167,7 @@ public fun invoice_toJs(obj: DecryptedInvoice): DecryptedInvoiceJs {
 			x1
 		},
 	)
-	val cryptedForeignKeys = mapToObject(
+	val cryptedForeignKeys = mapToObject<_, _, Array<DelegationJs>>(
 		obj.cryptedForeignKeys,
 		{ x1: String ->
 			x1
@@ -181,7 +181,7 @@ public fun invoice_toJs(obj: DecryptedInvoice): DecryptedInvoiceJs {
 			)
 		},
 	)
-	val delegations = mapToObject(
+	val delegations = mapToObject<_, _, Array<DelegationJs>>(
 		obj.delegations,
 		{ x1: String ->
 			x1
@@ -195,7 +195,7 @@ public fun invoice_toJs(obj: DecryptedInvoice): DecryptedInvoiceJs {
 			)
 		},
 	)
-	val encryptionKeys = mapToObject(
+	val encryptionKeys = mapToObject<_, _, Array<DelegationJs>>(
 		obj.encryptionKeys,
 		{ x1: String ->
 			x1
@@ -575,7 +575,7 @@ public fun invoice_toJs(obj: EncryptedInvoice): EncryptedInvoiceJs {
 			invoicingCode_toJs(x1)
 		},
 	)
-	val receipts = mapToObject(
+	val receipts = mapToObject<_, _, String>(
 		obj.receipts,
 		{ x1: String ->
 			x1
@@ -647,7 +647,7 @@ public fun invoice_toJs(obj: EncryptedInvoice): EncryptedInvoiceJs {
 	val locationService = intToNumber(obj.locationService)
 	val cancelReason = obj.cancelReason
 	val cancelDate = longToNumber(obj.cancelDate)
-	val options = mapToObject(
+	val options = mapToObject<_, _, String>(
 		obj.options,
 		{ x1: String ->
 			x1
@@ -662,7 +662,7 @@ public fun invoice_toJs(obj: EncryptedInvoice): EncryptedInvoiceJs {
 			x1
 		},
 	)
-	val cryptedForeignKeys = mapToObject(
+	val cryptedForeignKeys = mapToObject<_, _, Array<DelegationJs>>(
 		obj.cryptedForeignKeys,
 		{ x1: String ->
 			x1
@@ -676,7 +676,7 @@ public fun invoice_toJs(obj: EncryptedInvoice): EncryptedInvoiceJs {
 			)
 		},
 	)
-	val delegations = mapToObject(
+	val delegations = mapToObject<_, _, Array<DelegationJs>>(
 		obj.delegations,
 		{ x1: String ->
 			x1
@@ -690,7 +690,7 @@ public fun invoice_toJs(obj: EncryptedInvoice): EncryptedInvoiceJs {
 			)
 		},
 	)
-	val encryptionKeys = mapToObject(
+	val encryptionKeys = mapToObject<_, _, Array<DelegationJs>>(
 		obj.encryptionKeys,
 		{ x1: String ->
 			x1

@@ -89,7 +89,7 @@ public fun document_toJs(obj: DecryptedDocument): DecryptedDocumentJs {
 			x1
 		},
 	)
-	val secondaryAttachments = mapToObject(
+	val secondaryAttachments = mapToObject<_, _, DataAttachmentJs>(
 		obj.secondaryAttachments,
 		{ x1: String ->
 			x1
@@ -112,7 +112,7 @@ public fun document_toJs(obj: DecryptedDocument): DecryptedDocumentJs {
 			x1
 		},
 	)
-	val cryptedForeignKeys = mapToObject(
+	val cryptedForeignKeys = mapToObject<_, _, Array<DelegationJs>>(
 		obj.cryptedForeignKeys,
 		{ x1: String ->
 			x1
@@ -126,7 +126,7 @@ public fun document_toJs(obj: DecryptedDocument): DecryptedDocumentJs {
 			)
 		},
 	)
-	val delegations = mapToObject(
+	val delegations = mapToObject<_, _, Array<DelegationJs>>(
 		obj.delegations,
 		{ x1: String ->
 			x1
@@ -140,7 +140,7 @@ public fun document_toJs(obj: DecryptedDocument): DecryptedDocumentJs {
 			)
 		},
 	)
-	val encryptionKeys = mapToObject(
+	val encryptionKeys = mapToObject<_, _, Array<DelegationJs>>(
 		obj.encryptionKeys,
 		{ x1: String ->
 			x1
@@ -419,7 +419,7 @@ public fun document_toJs(obj: EncryptedDocument): EncryptedDocumentJs {
 			x1
 		},
 	)
-	val secondaryAttachments = mapToObject(
+	val secondaryAttachments = mapToObject<_, _, DataAttachmentJs>(
 		obj.secondaryAttachments,
 		{ x1: String ->
 			x1
@@ -442,7 +442,7 @@ public fun document_toJs(obj: EncryptedDocument): EncryptedDocumentJs {
 			x1
 		},
 	)
-	val cryptedForeignKeys = mapToObject(
+	val cryptedForeignKeys = mapToObject<_, _, Array<DelegationJs>>(
 		obj.cryptedForeignKeys,
 		{ x1: String ->
 			x1
@@ -456,7 +456,7 @@ public fun document_toJs(obj: EncryptedDocument): EncryptedDocumentJs {
 			)
 		},
 	)
-	val delegations = mapToObject(
+	val delegations = mapToObject<_, _, Array<DelegationJs>>(
 		obj.delegations,
 		{ x1: String ->
 			x1
@@ -470,7 +470,7 @@ public fun document_toJs(obj: EncryptedDocument): EncryptedDocumentJs {
 			)
 		},
 	)
-	val encryptionKeys = mapToObject(
+	val encryptionKeys = mapToObject<_, _, Array<DelegationJs>>(
 		obj.encryptionKeys,
 		{ x1: String ->
 			x1

@@ -29,7 +29,7 @@ public fun datePicker_toJs(obj: DatePicker): DatePickerJs {
 			x1
 		},
 	)
-	val options = mapToObject(
+	val options = mapToObject<_, _, String>(
 		obj.options,
 		{ x1: String ->
 			x1
@@ -38,7 +38,7 @@ public fun datePicker_toJs(obj: DatePicker): DatePickerJs {
 			x1
 		},
 	)
-	val labels = mapToObject(
+	val labels = mapToObject<_, _, String>(
 		obj.labels,
 		{ x1: String ->
 			x1

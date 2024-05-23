@@ -56,7 +56,7 @@ public fun classification_toJs(obj: DecryptedClassification): DecryptedClassific
 			x1
 		},
 	)
-	val cryptedForeignKeys = mapToObject(
+	val cryptedForeignKeys = mapToObject<_, _, Array<DelegationJs>>(
 		obj.cryptedForeignKeys,
 		{ x1: String ->
 			x1
@@ -70,7 +70,7 @@ public fun classification_toJs(obj: DecryptedClassification): DecryptedClassific
 			)
 		},
 	)
-	val delegations = mapToObject(
+	val delegations = mapToObject<_, _, Array<DelegationJs>>(
 		obj.delegations,
 		{ x1: String ->
 			x1
@@ -84,7 +84,7 @@ public fun classification_toJs(obj: DecryptedClassification): DecryptedClassific
 			)
 		},
 	)
-	val encryptionKeys = mapToObject(
+	val encryptionKeys = mapToObject<_, _, Array<DelegationJs>>(
 		obj.encryptionKeys,
 		{ x1: String ->
 			x1
@@ -271,7 +271,7 @@ public fun classification_toJs(obj: EncryptedClassification): EncryptedClassific
 			x1
 		},
 	)
-	val cryptedForeignKeys = mapToObject(
+	val cryptedForeignKeys = mapToObject<_, _, Array<DelegationJs>>(
 		obj.cryptedForeignKeys,
 		{ x1: String ->
 			x1
@@ -285,7 +285,7 @@ public fun classification_toJs(obj: EncryptedClassification): EncryptedClassific
 			)
 		},
 	)
-	val delegations = mapToObject(
+	val delegations = mapToObject<_, _, Array<DelegationJs>>(
 		obj.delegations,
 		{ x1: String ->
 			x1
@@ -299,7 +299,7 @@ public fun classification_toJs(obj: EncryptedClassification): EncryptedClassific
 			)
 		},
 	)
-	val encryptionKeys = mapToObject(
+	val encryptionKeys = mapToObject<_, _, Array<DelegationJs>>(
 		obj.encryptionKeys,
 		{ x1: String ->
 			x1

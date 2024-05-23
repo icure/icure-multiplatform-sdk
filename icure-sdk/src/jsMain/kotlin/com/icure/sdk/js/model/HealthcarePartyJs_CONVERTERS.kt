@@ -146,7 +146,7 @@ public fun healthcareParty_toJs(obj: HealthcareParty): HealthcarePartyJs {
 			codeStub_toJs(x1)
 		},
 	)
-	val sendFormats = mapToObject(
+	val sendFormats = mapToObject<_, _, String>(
 		obj.sendFormats,
 		{ x1: TelecomType ->
 			telecomType_toJs(x1)
@@ -162,7 +162,7 @@ public fun healthcareParty_toJs(obj: HealthcareParty): HealthcarePartyJs {
 			financialInstitutionInformation_toJs(x1)
 		},
 	)
-	val descr = mapToObject(
+	val descr = mapToObject<_, _, String>(
 		obj.descr,
 		{ x1: String ->
 			x1
@@ -182,7 +182,7 @@ public fun healthcareParty_toJs(obj: HealthcareParty): HealthcarePartyJs {
 			flatRateTarification_toJs(x1)
 		},
 	)
-	val importedData = mapToObject(
+	val importedData = mapToObject<_, _, String>(
 		obj.importedData,
 		{ x1: String ->
 			x1
@@ -191,7 +191,7 @@ public fun healthcareParty_toJs(obj: HealthcareParty): HealthcarePartyJs {
 			x1
 		},
 	)
-	val options = mapToObject(
+	val options = mapToObject<_, _, String>(
 		obj.options,
 		{ x1: String ->
 			x1
@@ -206,7 +206,7 @@ public fun healthcareParty_toJs(obj: HealthcareParty): HealthcarePartyJs {
 			propertyStub_toJs(x1)
 		},
 	)
-	val hcPartyKeys = mapToObject(
+	val hcPartyKeys = mapToObject<_, _, Array<String>>(
 		obj.hcPartyKeys,
 		{ x1: String ->
 			x1
@@ -220,19 +220,19 @@ public fun healthcareParty_toJs(obj: HealthcareParty): HealthcarePartyJs {
 			)
 		},
 	)
-	val aesExchangeKeys = mapToObject(
+	val aesExchangeKeys = mapToObject<_, _, dynamic>(
 		obj.aesExchangeKeys,
 		{ x1: SpkiHexString ->
 			spkiHexString_toJs(x1)
 		},
 		{ x1: Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>> ->
-			mapToObject(
+			mapToObject<_, _, dynamic>(
 				x1,
 				{ x2: String ->
 					x2
 				},
 				{ x2: Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString> ->
-					mapToObject(
+					mapToObject<_, _, String>(
 						x2,
 						{ x3: AesExchangeKeyEncryptionKeypairIdentifier ->
 							aesExchangeKeyEncryptionKeypairIdentifier_toJs(x3)
@@ -245,13 +245,13 @@ public fun healthcareParty_toJs(obj: HealthcareParty): HealthcarePartyJs {
 			)
 		},
 	)
-	val transferKeys = mapToObject(
+	val transferKeys = mapToObject<_, _, dynamic>(
 		obj.transferKeys,
 		{ x1: AesExchangeKeyEncryptionKeypairIdentifier ->
 			aesExchangeKeyEncryptionKeypairIdentifier_toJs(x1)
 		},
 		{ x1: Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString> ->
-			mapToObject(
+			mapToObject<_, _, String>(
 				x1,
 				{ x2: AesExchangeKeyEncryptionKeypairIdentifier ->
 					aesExchangeKeyEncryptionKeypairIdentifier_toJs(x2)
@@ -262,7 +262,7 @@ public fun healthcareParty_toJs(obj: HealthcareParty): HealthcarePartyJs {
 			)
 		},
 	)
-	val privateKeyShamirPartitions = mapToObject(
+	val privateKeyShamirPartitions = mapToObject<_, _, String>(
 		obj.privateKeyShamirPartitions,
 		{ x1: String ->
 			x1

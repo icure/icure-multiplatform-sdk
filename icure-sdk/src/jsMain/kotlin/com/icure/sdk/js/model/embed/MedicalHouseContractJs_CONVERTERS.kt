@@ -51,7 +51,7 @@ public fun medicalHouseContract_toJs(obj: DecryptedMedicalHouseContract):
 		mhcSignatureType_toJs(nonNull1)
 	}
 	val status = intToNumber(obj.status)
-	val options = mapToObject(
+	val options = mapToObject<_, _, String>(
 		obj.options,
 		{ x1: String ->
 			x1
@@ -60,7 +60,7 @@ public fun medicalHouseContract_toJs(obj: DecryptedMedicalHouseContract):
 			x1
 		},
 	)
-	val receipts = mapToObject(
+	val receipts = mapToObject<_, _, String>(
 		obj.receipts,
 		{ x1: String ->
 			x1
@@ -245,7 +245,7 @@ public fun medicalHouseContract_toJs(obj: EncryptedMedicalHouseContract):
 		mhcSignatureType_toJs(nonNull1)
 	}
 	val status = intToNumber(obj.status)
-	val options = mapToObject(
+	val options = mapToObject<_, _, String>(
 		obj.options,
 		{ x1: String ->
 			x1
@@ -254,7 +254,7 @@ public fun medicalHouseContract_toJs(obj: EncryptedMedicalHouseContract):
 			x1
 		},
 	)
-	val receipts = mapToObject(
+	val receipts = mapToObject<_, _, String>(
 		obj.receipts,
 		{ x1: String ->
 			x1

@@ -75,7 +75,7 @@ public fun service_toJs(obj: DecryptedService): DecryptedServiceJs {
 			x1
 		},
 	)
-	val cryptedForeignKeys = mapToObject(
+	val cryptedForeignKeys = mapToObject<_, _, Array<DelegationJs>>(
 		obj.cryptedForeignKeys,
 		{ x1: String ->
 			x1
@@ -89,7 +89,7 @@ public fun service_toJs(obj: DecryptedService): DecryptedServiceJs {
 			)
 		},
 	)
-	val delegations = mapToObject(
+	val delegations = mapToObject<_, _, Array<DelegationJs>>(
 		obj.delegations,
 		{ x1: String ->
 			x1
@@ -103,7 +103,7 @@ public fun service_toJs(obj: DecryptedService): DecryptedServiceJs {
 			)
 		},
 	)
-	val encryptionKeys = mapToObject(
+	val encryptionKeys = mapToObject<_, _, Array<DelegationJs>>(
 		obj.encryptionKeys,
 		{ x1: String ->
 			x1
@@ -119,7 +119,7 @@ public fun service_toJs(obj: DecryptedService): DecryptedServiceJs {
 	)
 	val label = obj.label
 	val index = longToNumber(obj.index)
-	val content = mapToObject(
+	val content = mapToObject<_, _, DecryptedContentJs>(
 		obj.content,
 		{ x1: String ->
 			x1
@@ -129,7 +129,7 @@ public fun service_toJs(obj: DecryptedService): DecryptedServiceJs {
 		},
 	)
 	val encryptedContent = obj.encryptedContent
-	val textIndexes = mapToObject(
+	val textIndexes = mapToObject<_, _, String>(
 		obj.textIndexes,
 		{ x1: String ->
 			x1
@@ -162,13 +162,13 @@ public fun service_toJs(obj: DecryptedService): DecryptedServiceJs {
 			annotation_toJs(x1)
 		},
 	)
-	val qualifiedLinks = mapToObject(
+	val qualifiedLinks = mapToObject<_, _, dynamic>(
 		obj.qualifiedLinks,
 		{ x1: LinkQualification ->
 			linkQualification_toJs(x1)
 		},
 		{ x1: Map<String, String> ->
-			mapToObject(
+			mapToObject<_, _, String>(
 				x1,
 				{ x2: String ->
 					x2
@@ -499,7 +499,7 @@ public fun service_toJs(obj: EncryptedService): EncryptedServiceJs {
 			x1
 		},
 	)
-	val cryptedForeignKeys = mapToObject(
+	val cryptedForeignKeys = mapToObject<_, _, Array<DelegationJs>>(
 		obj.cryptedForeignKeys,
 		{ x1: String ->
 			x1
@@ -513,7 +513,7 @@ public fun service_toJs(obj: EncryptedService): EncryptedServiceJs {
 			)
 		},
 	)
-	val delegations = mapToObject(
+	val delegations = mapToObject<_, _, Array<DelegationJs>>(
 		obj.delegations,
 		{ x1: String ->
 			x1
@@ -527,7 +527,7 @@ public fun service_toJs(obj: EncryptedService): EncryptedServiceJs {
 			)
 		},
 	)
-	val encryptionKeys = mapToObject(
+	val encryptionKeys = mapToObject<_, _, Array<DelegationJs>>(
 		obj.encryptionKeys,
 		{ x1: String ->
 			x1
@@ -543,7 +543,7 @@ public fun service_toJs(obj: EncryptedService): EncryptedServiceJs {
 	)
 	val label = obj.label
 	val index = longToNumber(obj.index)
-	val content = mapToObject(
+	val content = mapToObject<_, _, EncryptedContentJs>(
 		obj.content,
 		{ x1: String ->
 			x1
@@ -553,7 +553,7 @@ public fun service_toJs(obj: EncryptedService): EncryptedServiceJs {
 		},
 	)
 	val encryptedContent = obj.encryptedContent
-	val textIndexes = mapToObject(
+	val textIndexes = mapToObject<_, _, String>(
 		obj.textIndexes,
 		{ x1: String ->
 			x1
@@ -586,13 +586,13 @@ public fun service_toJs(obj: EncryptedService): EncryptedServiceJs {
 			annotation_toJs(x1)
 		},
 	)
-	val qualifiedLinks = mapToObject(
+	val qualifiedLinks = mapToObject<_, _, dynamic>(
 		obj.qualifiedLinks,
 		{ x1: LinkQualification ->
 			linkQualification_toJs(x1)
 		},
 		{ x1: Map<String, String> ->
-			mapToObject(
+			mapToObject<_, _, String>(
 				x1,
 				{ x2: String ->
 					x2
