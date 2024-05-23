@@ -2,10 +2,10 @@ package com.icure.sdk.js.model.embed.form.template
 
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.listToArray
-import com.icure.sdk.model.embed.form.template.Group
+import com.icure.sdk.model.embed.form.template.FieldsGroup
 import com.icure.sdk.model.embed.form.template.StructureElement
 
-public fun group_toJs(obj: Group): GroupJs {
+public fun fieldsGroup_toJs(obj: FieldsGroup): FieldsGroupJs {
 	val group = obj.group
 	val fields = listToArray(
 		obj.fields,
@@ -13,13 +13,13 @@ public fun group_toJs(obj: Group): GroupJs {
 			structureElement_toJs(x1)
 		},
 	)
-	return GroupJs(js("{" +
+	return FieldsGroupJs(js("{" +
 		"group:group," +
 		"fields:fields" +
 	"}"))
 }
 
-public fun group_fromJs(obj: GroupJs): Group {
+public fun fieldsGroup_fromJs(obj: FieldsGroupJs): FieldsGroup {
 	val group = obj.group
 	val fields = arrayToList(
 		obj.fields,
@@ -28,7 +28,7 @@ public fun group_fromJs(obj: GroupJs): Group {
 			structureElement_fromJs(x1)
 		},
 	)
-	return Group(
+	return FieldsGroup(
 		group = group,
 		fields = fields,
 	)

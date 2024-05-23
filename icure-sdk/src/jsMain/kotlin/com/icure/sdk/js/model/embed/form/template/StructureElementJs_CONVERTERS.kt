@@ -4,7 +4,7 @@ import com.icure.sdk.model.embed.form.template.CheckBox
 import com.icure.sdk.model.embed.form.template.DatePicker
 import com.icure.sdk.model.embed.form.template.DateTimePicker
 import com.icure.sdk.model.embed.form.template.DropdownField
-import com.icure.sdk.model.embed.form.template.Group
+import com.icure.sdk.model.embed.form.template.FieldsGroup
 import com.icure.sdk.model.embed.form.template.MeasureField
 import com.icure.sdk.model.embed.form.template.MultipleChoice
 import com.icure.sdk.model.embed.form.template.NumberField
@@ -24,7 +24,7 @@ public fun structureElement_toJs(obj: StructureElement): StructureElementJs = wh
 	is CheckBox -> checkBox_toJs(obj)
 	is MultipleChoice -> multipleChoice_toJs(obj)
 	is MeasureField -> measureField_toJs(obj)
-	is Group -> group_toJs(obj)
+	is FieldsGroup -> fieldsGroup_toJs(obj)
 }
 
 public fun structureElement_fromJs(obj: StructureElementJs): StructureElement = when {
@@ -58,8 +58,9 @@ public fun structureElement_fromJs(obj: StructureElementJs): StructureElement = 
 	obj is MeasureFieldJs || obj.ktClass ==
 			"com.icure.sdk.model.embed.form.template.MeasureField" ->measureField_fromJs(obj as
 			com.icure.sdk.js.model.embed.form.template.MeasureFieldJs)
-	obj is GroupJs || obj.ktClass == "com.icure.sdk.model.embed.form.template.Group" ->group_fromJs(obj
-			as com.icure.sdk.js.model.embed.form.template.GroupJs)
+	obj is FieldsGroupJs || obj.ktClass ==
+			"com.icure.sdk.model.embed.form.template.FieldsGroup" ->fieldsGroup_fromJs(obj as
+			com.icure.sdk.js.model.embed.form.template.FieldsGroupJs)
 	else -> throw
 			IllegalArgumentException("""Unknown concrete implementation for com.icure.sdk.model.embed.form.template.StructureElement: $obj""")
 }

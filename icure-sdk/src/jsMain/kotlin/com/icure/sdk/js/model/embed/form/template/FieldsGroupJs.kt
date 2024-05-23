@@ -5,8 +5,8 @@ import kotlin.Array
 import kotlin.String
 import kotlin.js.JsName
 
-@JsName("Group")
-public external class GroupJs(
+@JsName("FieldsGroup")
+public external class FieldsGroupJs(
 	partial: dynamic,
 ) : StructureElementJs {
 	public val group: String
