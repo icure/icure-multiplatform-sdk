@@ -24,6 +24,7 @@ import com.icure.sdk.crypto.entities.MinimalBulkShareResult
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleDelegateShareOptions
+import com.icure.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.model.base.HasEncryptionMetadata
 import com.icure.sdk.model.embed.AccessLevel
@@ -548,9 +549,9 @@ class EntityEncryptionServiceImpl(
 		return simpleShareOrUpdateEncryptedEntityMetadata(
 			entity,
 			false,
-			mapOf(dataOwnerApi.getCurrentDataOwnerId() to SimpleDelegateShareOptions(
+			mapOf(dataOwnerApi.getCurrentDataOwnerId() to SimpleDelegateShareOptionsImpl(
 				shareSecretIds = setOf(cryptoService.strongRandom.randomUUID()),
-				shareEncryptionKeys = ShareMetadataBehaviour.Never,
+				shareEncryptionKey = ShareMetadataBehaviour.Never,
 				shareOwningEntityIds = ShareMetadataBehaviour.Never,
 				requestedPermissions = RequestedPermission.MaxWrite
 			)),
@@ -596,6 +597,6 @@ class EntityEncryptionServiceImpl(
 			listOf(self)
 		}
 
-	private suspend inline fun <T : Any> Iterable<DecryptedMetadataDetails<T>>.valuesAvailableToDataOwners(dataOwners: Set<String>): Set<T> =
+	private inline fun <T : Any> Iterable<DecryptedMetadataDetails<T>>.valuesAvailableToDataOwners(dataOwners: Set<String>): Set<T> =
 		mapNotNullTo(mutableSetOf()) { decryptedDataDetails -> if (dataOwners.any { it in decryptedDataDetails.dataOwnersWithAccess }) decryptedDataDetails.value else null }
 }

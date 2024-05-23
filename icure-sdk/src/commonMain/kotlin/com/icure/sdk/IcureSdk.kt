@@ -1,11 +1,9 @@
 package com.icure.sdk
 
 import com.icure.kryptom.crypto.CryptoService
-import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.kryptom.utils.toHexString
 import com.icure.sdk.api.ApiOptions
 import com.icure.sdk.api.CryptoApi
-import com.icure.sdk.api.EncryptedFields
 import com.icure.sdk.api.RecoveryApi
 import com.icure.sdk.api.RecoveryApiImpl
 import com.icure.sdk.api.UserApi
@@ -72,10 +70,8 @@ import com.icure.sdk.auth.services.JwtAuthService
 import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.crypto.CryptoStrategies
 import com.icure.sdk.crypto.EntityEncryptionService
-import com.icure.sdk.crypto.JsonEncryptionService
-import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
-import com.icure.sdk.crypto.entities.SimpleDelegateShareOptions
+import com.icure.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
 import com.icure.sdk.crypto.entities.withTypeInfo
 import com.icure.sdk.crypto.impl.AccessControlKeysHeadersProviderImpl
 import com.icure.sdk.crypto.impl.BaseExchangeDataManagerImpl
@@ -577,8 +573,8 @@ private suspend fun ensureDelegationForSelf(
 					patientSelf,
 					false,
 					mapOf(
-						self.dataOwner.id to SimpleDelegateShareOptions(
-							shareEncryptionKeys = ShareMetadataBehaviour.IfAvailable,
+						self.dataOwner.id to SimpleDelegateShareOptionsImpl(
+							shareEncryptionKey = ShareMetadataBehaviour.IfAvailable,
 							shareOwningEntityIds = ShareMetadataBehaviour.Never,
 							shareSecretIds = setOf(cryptoService.strongRandom.randomUUID()),
 							requestedPermissions = RequestedPermission.Root
