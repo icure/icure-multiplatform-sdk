@@ -3,15 +3,16 @@ package com.icure.sdk.api.flavoured
 import com.icure.sdk.api.raw.RawMaintenanceTaskApi
 import com.icure.sdk.crypto.BasicInternalCryptoApi
 import com.icure.sdk.crypto.InternalCryptoServices
+import com.icure.sdk.crypto.entities.MaintenanceTaskShareOptions
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
-import com.icure.sdk.crypto.entities.SimpleDelegateShareOptions
+import com.icure.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.withTypeInfo
+import com.icure.sdk.model.MaintenanceTask
 import com.icure.sdk.model.DecryptedMaintenanceTask
 import com.icure.sdk.model.EncryptedMaintenanceTask
 import com.icure.sdk.model.ListOfIds
-import com.icure.sdk.model.MaintenanceTask
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.User
 import com.icure.sdk.model.couchdb.DocIdentifier
@@ -21,6 +22,7 @@ import com.icure.sdk.model.extensions.autoDelegationsFor
 import com.icure.sdk.model.extensions.dataOwnerId
 import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.requests.RequestedPermission
+import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
@@ -53,6 +55,45 @@ interface MaintenanceTaskFlavouredApi<E : MaintenanceTask> : MaintenanceTaskBasi
 		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
 		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
 	): SimpleShareResult<E>
+
+
+	/**
+	 * Shares an existing access log with other data owners, allowing them to access the non-encrypted data of the access log and optionally also the
+	 * encrypted content, with read-only or read-write permissions.
+	 * @param maintenanceTask the [MaintenanceTask] to share.
+	 * @param delegates associates the id of data owners which will be granted access to the entity, to the following sharing options:
+	 * - shareEncryptionKey: specifies if the encryption key of the access log should be shared with the delegate, giving access to all encrypted
+	 * content of the entity, excluding other encrypted metadata (defaults to [ShareMetadataBehaviour.IfAvailable]).
+	 * - sharePatientId: specifies if the id of the patient that this access log refers to should be shared with the delegate. Normally this would
+	 * be the same as objectId, but it is encrypted separately from it allowing you to give access to the patient id without giving access to the other
+	 * encrypted data of the access log (defaults to [ShareMetadataBehaviour.IfAvailable]).
+	 * - requestedPermissions: the requested permissions for the delegate, defaults to [ShareMetadataBehaviour.IfAvailable].
+	 * @return the [SimpleShareResult] of the operation: the updated entity if the operation was successful or details of the error if
+	 * the operation failed.
+	 */
+	suspend fun tryShareWithMany(
+		maintenanceTask: E,
+		delegates: Map<String, MaintenanceTaskShareOptions>
+	): SimpleShareResult<E>
+
+	/**
+	 * Shares an existing access log with other data owners, allowing them to access the non-encrypted data of the access log and optionally also the
+	 * encrypted content, with read-only or read-write permissions.
+	 * @param maintenanceTask the [MaintenanceTask] to share.
+	 * @param delegates associates the id of data owners which will be granted access to the entity, to the following sharing options:
+	 * - shareEncryptionKey: specifies if the encryption key of the access log should be shared with the delegate, giving access to all encrypted
+	 * content of the entity, excluding other encrypted metadata (defaults to [ShareMetadataBehaviour.IfAvailable]).
+	 * - sharePatientId: specifies if the id of the patient that this access log refers to should be shared with the delegate. Normally this would
+	 * be the same as objectId, but it is encrypted separately from it allowing you to give access to the patient id without giving access to the other
+	 * encrypted data of the access log (defaults to [ShareMetadataBehaviour.IfAvailable]).
+	 * - requestedPermissions: the requested permissions for the delegate, defaults to [ShareMetadataBehaviour.IfAvailable].
+	 * @return the updated entity.
+	 * @throws IllegalStateException if the operation was not successful.
+	 */
+	suspend fun shareWithMany(
+		maintenanceTask: E,
+		delegates: Map<String, MaintenanceTaskShareOptions>
+	): E
 }
 
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
@@ -73,6 +114,9 @@ interface MaintenanceTaskApi : MaintenanceTaskBasicFlavourlessApi, MaintenanceTa
 		user: User?,
 		delegates: Map<String, AccessLevel> = emptyMap(),
 	): DecryptedMaintenanceTask
+	suspend fun getEncryptionKeysOf(maintenanceTask: MaintenanceTask): Set<HexString>
+	suspend fun hasWriteAccess(maintenanceTask: MaintenanceTask): Boolean
+	suspend fun decryptPatientIdOf(maintenanceTask: MaintenanceTask): Set<String>
 
 	val encrypted: MaintenanceTaskFlavouredApi<EncryptedMaintenanceTask>
 	val tryAndRecover: MaintenanceTaskFlavouredApi<MaintenanceTask>
@@ -117,9 +161,9 @@ private abstract class AbstractMaintenanceTaskFlavouredApi<E : MaintenanceTask>(
 			maintenanceTask.withTypeInfo(),
 			true,
 			mapOf(
-				delegateId to SimpleDelegateShareOptions(
+				delegateId to SimpleDelegateShareOptionsImpl(
 					shareSecretIds = null,
-					shareEncryptionKeys = shareEncryptionKeys,
+					shareEncryptionKey = shareEncryptionKeys,
 					shareOwningEntityIds = shareOwningEntityIds,
 					requestedPermissions = requestedPermission,
 				),
@@ -127,6 +171,18 @@ private abstract class AbstractMaintenanceTaskFlavouredApi<E : MaintenanceTask>(
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
 		}
+
+	override suspend fun tryShareWithMany(maintenanceTask: E, delegates: Map<String, MaintenanceTaskShareOptions>): SimpleShareResult<E> =
+		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
+			maintenanceTask.withTypeInfo(),
+			true,
+			delegates
+		) {
+			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
+		}
+
+	override suspend fun shareWithMany(maintenanceTask: E, delegates: Map<String, MaintenanceTaskShareOptions>): E =
+		tryShareWithMany(maintenanceTask, delegates).updatedEntityOrThrow()
 }
 
 @InternalIcureApi
@@ -198,6 +254,12 @@ internal class MaintenanceTaskApiImpl(
 			decrypt(it) { "Created entity cannot be decrypted" }
 		}
 	}
+
+	override suspend fun getEncryptionKeysOf(maintenanceTask: MaintenanceTask): Set<HexString> = crypto.entity.encryptionKeysOf(maintenanceTask.withTypeInfo(), null)
+
+	override suspend fun hasWriteAccess(maintenanceTask: MaintenanceTask): Boolean = crypto.entity.hasWriteAccess(maintenanceTask.withTypeInfo())
+
+	override suspend fun decryptPatientIdOf(maintenanceTask: MaintenanceTask): Set<String> = crypto.entity.owningEntityIdsOf(maintenanceTask.withTypeInfo(), null)
 
 	override suspend fun withEncryptionMetadata(
 		maintenanceTask: DecryptedMaintenanceTask?,

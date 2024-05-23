@@ -3,17 +3,18 @@ package com.icure.sdk.api.flavoured
 import com.icure.sdk.api.raw.RawReceiptApi
 import com.icure.sdk.crypto.EntityValidationService
 import com.icure.sdk.crypto.InternalCryptoServices
+import com.icure.sdk.crypto.entities.ReceiptShareOptions
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
-import com.icure.sdk.crypto.entities.SimpleDelegateShareOptions
+import com.icure.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.withTypeInfo
+import com.icure.sdk.model.Receipt
 import com.icure.sdk.model.DecryptedReceipt
 import com.icure.sdk.model.EncryptedReceipt
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.Patient
-import com.icure.sdk.model.Receipt
 import com.icure.sdk.model.User
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.embed.AccessLevel
@@ -21,6 +22,7 @@ import com.icure.sdk.model.embed.DelegationTag
 import com.icure.sdk.model.extensions.autoDelegationsFor
 import com.icure.sdk.model.extensions.dataOwnerId
 import com.icure.sdk.model.requests.RequestedPermission
+import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
@@ -55,6 +57,44 @@ interface ReceiptFlavouredApi<E : Receipt> : ReceiptBasicFlavouredApi<E> {
 		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
 		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
 	): SimpleShareResult<E>
+
+	/**
+	 * Shares an existing access log with other data owners, allowing them to access the non-encrypted data of the access log and optionally also the
+	 * encrypted content, with read-only or read-write permissions.
+	 * @param receipt the [Receipt] to share.
+	 * @param delegates associates the id of data owners which will be granted access to the entity, to the following sharing options:
+	 * - shareEncryptionKey: specifies if the encryption key of the access log should be shared with the delegate, giving access to all encrypted
+	 * content of the entity, excluding other encrypted metadata (defaults to [ShareMetadataBehaviour.IfAvailable]).
+	 * - sharePatientId: specifies if the id of the patient that this access log refers to should be shared with the delegate. Normally this would
+	 * be the same as objectId, but it is encrypted separately from it allowing you to give access to the patient id without giving access to the other
+	 * encrypted data of the access log (defaults to [ShareMetadataBehaviour.IfAvailable]).
+	 * - requestedPermissions: the requested permissions for the delegate, defaults to [ShareMetadataBehaviour.IfAvailable].
+	 * @return the [SimpleShareResult] of the operation: the updated entity if the operation was successful or details of the error if
+	 * the operation failed.
+	 */
+	suspend fun tryShareWithMany(
+		receipt: E,
+		delegates: Map<String, ReceiptShareOptions>
+	): SimpleShareResult<E>
+
+	/**
+	 * Shares an existing access log with other data owners, allowing them to access the non-encrypted data of the access log and optionally also the
+	 * encrypted content, with read-only or read-write permissions.
+	 * @param receipt the [Receipt] to share.
+	 * @param delegates associates the id of data owners which will be granted access to the entity, to the following sharing options:
+	 * - shareEncryptionKey: specifies if the encryption key of the access log should be shared with the delegate, giving access to all encrypted
+	 * content of the entity, excluding other encrypted metadata (defaults to [ShareMetadataBehaviour.IfAvailable]).
+	 * - sharePatientId: specifies if the id of the patient that this access log refers to should be shared with the delegate. Normally this would
+	 * be the same as objectId, but it is encrypted separately from it allowing you to give access to the patient id without giving access to the other
+	 * encrypted data of the access log (defaults to [ShareMetadataBehaviour.IfAvailable]).
+	 * - requestedPermissions: the requested permissions for the delegate, defaults to [ShareMetadataBehaviour.IfAvailable].
+	 * @return the updated entity.
+	 * @throws IllegalStateException if the operation was not successful.
+	 */
+	suspend fun shareWithMany(
+		receipt: E,
+		delegates: Map<String, ReceiptShareOptions>
+	): E
 }
 
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
@@ -69,7 +109,9 @@ interface ReceiptApi : ReceiptBasicFlavourlessApi, ReceiptFlavouredApi<Decrypted
 	): DecryptedReceipt
 	suspend fun getAndDecryptReceiptAttachment(receipt: Receipt, attachmentId: String): ByteArray
 	suspend fun encryptAndSetReceiptAttachment(receipt: Receipt, blobType: String, attachment: ByteArray): EncryptedReceipt
-
+	suspend fun getEncryptionKeysOf(receipt: Receipt): Set<HexString>
+	suspend fun hasWriteAccess(receipt: Receipt): Boolean
+	suspend fun decryptPatientIdOf(receipt: Receipt): Set<String>
 
 	val encrypted: ReceiptFlavouredApi<EncryptedReceipt>
 	val tryAndRecover: ReceiptFlavouredApi<Receipt>
@@ -107,9 +149,9 @@ private abstract class AbstractReceiptFlavouredApi<E : Receipt>(
 			receipt.withTypeInfo(),
 			true,
 			mapOf(
-				delegateId to SimpleDelegateShareOptions(
+				delegateId to SimpleDelegateShareOptionsImpl(
 					shareSecretIds = null,
-					shareEncryptionKeys = shareEncryptionKeys,
+					shareEncryptionKey = shareEncryptionKeys,
 					shareOwningEntityIds = shareOwningEntityIds,
 					requestedPermissions = requestedPermission,
 				),
@@ -117,6 +159,18 @@ private abstract class AbstractReceiptFlavouredApi<E : Receipt>(
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
 		}
+
+	override suspend fun tryShareWithMany(receipt: E, delegates: Map<String, ReceiptShareOptions>): SimpleShareResult<E> =
+		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
+			receipt.withTypeInfo(),
+			true,
+			delegates
+		) {
+			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
+		}
+
+	override suspend fun shareWithMany(receipt: E, delegates: Map<String, ReceiptShareOptions>): E =
+		tryShareWithMany(receipt, delegates).updatedEntityOrThrow()
 }
 
 @InternalIcureApi
@@ -222,6 +276,12 @@ internal class ReceiptApiImpl(
 				?: throw EntityEncryptionException("Cannot extract decryption key from receipt")
 			crypto.primitives.aes.decrypt(it, aesKey)
 		}
+
+	override suspend fun getEncryptionKeysOf(receipt: Receipt): Set<HexString> = crypto.entity.encryptionKeysOf(receipt.withTypeInfo(), null)
+
+	override suspend fun hasWriteAccess(receipt: Receipt): Boolean = crypto.entity.hasWriteAccess(receipt.withTypeInfo())
+
+	override suspend fun decryptPatientIdOf(receipt: Receipt): Set<String> = crypto.entity.owningEntityIdsOf(receipt.withTypeInfo(), null)
 
 	override suspend fun encryptAndSetReceiptAttachment(receipt: Receipt, blobType: String, attachment: ByteArray): EncryptedReceipt {
 		val aesKey = crypto.entity.tryDecryptAndImportAnyEncryptionKey(receipt.withTypeInfo())?.key

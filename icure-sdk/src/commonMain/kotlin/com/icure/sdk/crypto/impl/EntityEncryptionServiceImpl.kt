@@ -472,7 +472,7 @@ class EntityEncryptionServiceImpl(
 		val availableOwningEntityIds = owningEntityIdsOf(entity, null)
 		val availableSecretIds = if (unusedSecretIds) secretIdsOf(entity, null) else null
 		val extendedDelegateOptions = delegates.mapValues { (_, simpleShareOptions) ->
-			if (availableEncryptionKeys.isEmpty() && simpleShareOptions.shareEncryptionKeys == ShareMetadataBehaviour.Required) {
+			if (availableEncryptionKeys.isEmpty() && simpleShareOptions.shareEncryptionKey == ShareMetadataBehaviour.Required) {
 				throw IllegalArgumentException("The current data owner can't access any encryption key in ${entity.type.id} ${entity.id}, but sharing is required.")
 			}
 			if (availableOwningEntityIds.isEmpty() && simpleShareOptions.shareOwningEntityIds == ShareMetadataBehaviour.Required) {
@@ -485,7 +485,7 @@ class EntityEncryptionServiceImpl(
 			}
 			DelegateShareOptions(
 				shareSecretIds = simpleShareOptions.shareSecretIds ?: availableSecretIds ?: emptySet(),
-				shareEncryptionKeys = if (simpleShareOptions.shareEncryptionKeys == ShareMetadataBehaviour.Never) emptySet() else availableEncryptionKeys,
+				shareEncryptionKeys = if (simpleShareOptions.shareEncryptionKey == ShareMetadataBehaviour.Never) emptySet() else availableEncryptionKeys,
 				shareOwningEntityIds = if (simpleShareOptions.shareOwningEntityIds == ShareMetadataBehaviour.Never) emptySet() else availableOwningEntityIds,
 				requestedPermissions = simpleShareOptions.requestedPermissions
 			)
