@@ -9,6 +9,7 @@ import com.icure.sdk.auth.services.setAuthorizationWith
 import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.model.EncryptedClassification
+import com.icure.sdk.model.IcureStub
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
@@ -142,6 +143,21 @@ class RawClassificationApiImpl(
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
 			setBody(classificationDto)
+		}.wrap()
+
+	override suspend fun findClassificationsDelegationsStubsByHCPartyPatientForeignKeys(
+		hcPartyId: String,
+		secretPatientKeys: List<String>,
+	): HttpResponse<List<IcureStub>> =
+		post {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "classification", "byHcPartySecretForeignKeys", "delegations")
+				parameter("hcPartyId", hcPartyId)
+			}
+			setAuthorizationWith(authService)
+			contentType(ContentType.Application.Json)
+			setBody(secretPatientKeys)
 		}.wrap()
 
 	override suspend fun bulkShare(

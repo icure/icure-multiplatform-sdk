@@ -250,7 +250,7 @@ class RawFormApiImpl(
 			setBody(secretPatientKeys)
 		}.wrap()
 
-	override suspend fun listFormsDelegationsStubsByHCPartyAndPatientForeignKeys(
+	override suspend fun findFormsDelegationsStubsByHCPartyAndPatientForeignKeys(
 		hcPartyId: String,
 		secretFKeys: String,
 	): HttpResponse<List<IcureStub>> =
@@ -265,7 +265,7 @@ class RawFormApiImpl(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-	override suspend fun listFormsDelegationsStubsByHCPartyAndPatientForeignKeys(
+	override suspend fun findFormsDelegationsStubsByHCPartyAndPatientForeignKeys(
 		hcPartyId: String,
 		secretPatientKeys: List<String>,
 	): HttpResponse<List<IcureStub>> =
