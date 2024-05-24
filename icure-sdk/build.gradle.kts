@@ -103,25 +103,30 @@ publishing {
 	}
 }
 
+val ktJsCompiledPackage = projectDir.resolve("build/dist/js/productionLibrary")
+val tsSources = projectDir.resolve("src/jsMain/typescript")
 val tsSourcesProject = projectDir.resolve("build/tsSourcesProject")
 val tsCompiledSources = projectDir.resolve("build/tsCompiledSources")
+val tsPackage = projectDir.resolve("build/tsPackage")
+
+fun copyAddingDependenciesToTsPackages(
+	from: File,
+	into: File
+) {
+	FileWriter(into).use { fw ->
+		tsSources.listFiles()!!.filter { it.isDirectory }.forEach {
+			fw.write("import * as ${it.name} from './${it.name}'\n")
+		}
+		from.readText().let {
+			fw.write(it)
+		}
+	}
+}
 
 val prepareTypescriptSourceCompilation = tasks.register("prepareTypescriptSourceCompilation") {
 	dependsOn("jsNodeProductionLibraryDistribution")
-	inputs.dir(projectDir.resolve("src/jsMain/typescript"))
+	inputs.dir(tsSources)
 	outputs.dir(tsSourcesProject)
-	delete(tsSourcesProject)
-	copy {
-		from("build/dist/js/productionLibrary/icure-sdk.d.ts")
-		into(tsSourcesProject)
-		rename {
-			it.removeSuffix("ts") + "mts"
-		}
-	}
-	copy {
-		from("src/jsMain/typescript")
-		into(tsSourcesProject)
-	}
 	fun generateIndexForDirAndSubdirs(currFile: File) {
 		val (directories, files) = currFile.listFiles()!!.partition { it.isDirectory }
 		FileWriter(currFile.resolve("index.ts")).use { fw ->
@@ -136,19 +141,55 @@ val prepareTypescriptSourceCompilation = tasks.register("prepareTypescriptSource
 		directories.forEach { generateIndexForDirAndSubdirs(it) }
 	}
 	doLast {
+		delete(tsSourcesProject)
+		copy {
+			from(tsSources)
+			into(tsSourcesProject)
+		}
+		copyAddingDependenciesToTsPackages(
+			from = ktJsCompiledPackage.resolve("icure-sdk.d.ts"),
+			into = tsSourcesProject.resolve("icure-sdk.d.mts")
+		)
 		generateIndexForDirAndSubdirs(tsSourcesProject)
 	}
 }
 
-tasks.register("compileTypescriptSources") {
+val compileTypescriptSources = tasks.register("compileTypescriptSources") {
 	// Note: requires tsc in path
 	// Typescript configuration from tsconfig
 	dependsOn(prepareTypescriptSourceCompilation)
 	inputs.dir(projectDir.resolve(tsSourcesProject))
 	inputs.file(projectDir.resolve("tsconfig.json"))
 	outputs.dir(projectDir.resolve(projectDir.resolve(tsCompiledSources)))
-	delete(tsCompiledSources)
-	exec {
-		commandLine("tsc", "--project", projectDir.path)
+	doLast {
+		delete(tsCompiledSources)
+		exec {
+			commandLine("tsc", "--project", projectDir.path)
+		}
+	}
+}
+
+tasks.register("prepareDistributionPackage") {
+	dependsOn(compileTypescriptSources)
+	doLast {
+		copy {
+			from(tsCompiledSources)
+			into(tsPackage)
+		}
+		copy {
+			from(ktJsCompiledPackage)
+			into(tsPackage)
+			exclude {
+				it.name == "icure-sdk.d.ts" || it.name == "icure-sdk.mjs"
+			}
+		}
+		copyAddingDependenciesToTsPackages(
+			from = ktJsCompiledPackage.resolve("icure-sdk.d.ts"),
+			into = tsPackage.resolve("icure-sdk.d.mts")
+		)
+		copyAddingDependenciesToTsPackages(
+			from = ktJsCompiledPackage.resolve("icure-sdk.mjs"),
+			into = tsPackage.resolve("icure-sdk.mjs")
+		)
 	}
 }
