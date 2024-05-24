@@ -7,6 +7,8 @@ import com.icure.sdk.api.CodeApi
 import com.icure.sdk.api.CodeApiImpl
 import com.icure.sdk.api.GroupApi
 import com.icure.sdk.api.GroupApiImpl
+import com.icure.sdk.api.HealthcarePartyApi
+import com.icure.sdk.api.HealthcarePartyApiImpl
 import com.icure.sdk.api.UserApi
 import com.icure.sdk.api.UserApiImpl
 import com.icure.sdk.api.flavoured.AccessLogBasicApi
@@ -47,6 +49,7 @@ import com.icure.sdk.api.raw.impl.RawDocumentApiImpl
 import com.icure.sdk.api.raw.impl.RawFormApiImpl
 import com.icure.sdk.api.raw.impl.RawGroupApiImpl
 import com.icure.sdk.api.raw.impl.RawHealthElementApiImpl
+import com.icure.sdk.api.raw.impl.RawHealthcarePartyApiImpl
 import com.icure.sdk.api.raw.impl.RawInvoiceApiImpl
 import com.icure.sdk.api.raw.impl.RawMaintenanceTaskApiImpl
 import com.icure.sdk.api.raw.impl.RawMessageApiImpl
@@ -78,6 +81,7 @@ interface IcureBaseSdk {
 	val form: FormBasicApi
 	val group: GroupApi
 	val healthcareElement: HealthcareElementBasicApi
+	val healthcareParty: HealthcarePartyApi
 	val invoice: InvoiceBasicApi
 	val maintenanceTask: MaintenanceTaskBasicApi
 	val message: MessageBasicApi
@@ -135,6 +139,7 @@ private class IcureBaseApiImpl(
 	override val form by lazy { FormBasicApiImpl(RawFormApiImpl(apiUrl, authService, headersProvider, client), crypto.validationService, encryptedFieldsManifests.form) }
 	override val group: GroupApi by lazy { GroupApiImpl(RawGroupApiImpl(apiUrl, authService, client)) }
 	override val healthcareElement by lazy { HealthcareElementBasicApiImpl(RawHealthElementApiImpl(apiUrl, authService, headersProvider, client), crypto.validationService, encryptedFieldsManifests.healthElement) }
+	override val healthcareParty by lazy { HealthcarePartyApiImpl(RawHealthcarePartyApiImpl(apiUrl, authService, client)) }
 	override val invoice by lazy { InvoiceBasicApiImpl(RawInvoiceApiImpl(apiUrl, authService, headersProvider, client), crypto.validationService, encryptedFieldsManifests.invoice) }
 	override val maintenanceTask by lazy { MaintenanceTaskBasicApiImpl(RawMaintenanceTaskApiImpl(apiUrl, authService, headersProvider, client), crypto, encryptedFieldsManifests.maintenanceTask) }
 	override val message by lazy { MessageBasicApiImpl(RawMessageApiImpl(apiUrl, authService, headersProvider, client), crypto.validationService, encryptedFieldsManifests.message) }
