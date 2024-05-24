@@ -22,9 +22,3 @@ data class MinimalEntityBulkShareResult(
 	 */
 	val rejectedRequests: Map<String, EntityBulkShareResult.RejectedShareOrMetadataUpdateRequest> = emptyMap()
 )
-
-fun EntityBulkShareResult<*>.toMinimalBulkShareResult() = MinimalEntityBulkShareResult(
-	entityId = entityId,
-	entityRev = entityRev,
-	rejectedRequests = rejectedRequests
-)
