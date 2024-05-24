@@ -119,7 +119,7 @@ object CheckedConverters {
 		val map = mutableMapOf<K, V>()
 		val entries = js("Object.entries(obj)") as Array<Array<dynamic>>
 		for (keyValue in entries) {
-			map[convertKey(keyValue[0] as String)] = convertValue(obj[keyValue[1]])
+			map[convertKey(keyValue[0] as String)] = convertValue(keyValue[1])
 		}
 		return map
 	}
