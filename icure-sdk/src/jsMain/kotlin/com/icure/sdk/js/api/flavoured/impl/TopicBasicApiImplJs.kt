@@ -27,7 +27,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
-public class TopicBasicApiImplJs private constructor(
+internal class TopicBasicApiImplJs(
 	private val topicBasicApi: TopicBasicApi,
 ) : TopicBasicApiJs {
 	override fun deleteTopic(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {

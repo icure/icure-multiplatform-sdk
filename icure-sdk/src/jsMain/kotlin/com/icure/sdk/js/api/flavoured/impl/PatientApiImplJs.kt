@@ -55,7 +55,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
-public class PatientApiImplJs private constructor(
+internal class PatientApiImplJs(
 	private val patientApi: PatientApi,
 ) : PatientApiJs {
 	override val encrypted: PatientFlavouredApiJs<EncryptedPatientJs> = object :

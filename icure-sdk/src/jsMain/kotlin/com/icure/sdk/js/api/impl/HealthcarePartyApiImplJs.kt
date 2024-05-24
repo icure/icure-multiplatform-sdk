@@ -32,7 +32,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
-public class HealthcarePartyApiImplJs private constructor(
+internal class HealthcarePartyApiImplJs(
 	private val healthcarePartyApi: HealthcarePartyApi,
 ) : HealthcarePartyApiJs {
 	override fun getHealthcareParty(deviceId: String): Promise<HealthcarePartyJs> =

@@ -28,7 +28,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
-public class RecoveryApiImplJs private constructor(
+internal class RecoveryApiImplJs(
 	private val recoveryApi: RecoveryApi,
 ) : RecoveryApiJs {
 	override fun createRecoveryInfoForAvailableKeyPairs(includeParentsKeys: Boolean,

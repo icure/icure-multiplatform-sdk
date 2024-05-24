@@ -15,7 +15,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
-public class RoleApiImplJs private constructor(
+internal class RoleApiImplJs(
 	private val roleApi: RoleApi,
 ) : RoleApiJs {
 	override fun getAllRoles(): Promise<Array<RoleJs>> = GlobalScope.promise {

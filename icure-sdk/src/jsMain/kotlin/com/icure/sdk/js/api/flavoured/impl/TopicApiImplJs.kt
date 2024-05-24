@@ -37,7 +37,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
-public class TopicApiImplJs private constructor(
+internal class TopicApiImplJs(
 	private val topicApi: TopicApi,
 ) : TopicApiJs {
 	override val encrypted: TopicFlavouredApiJs<EncryptedTopicJs> = object :

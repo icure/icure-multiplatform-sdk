@@ -32,7 +32,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
-public class TimeTableApiImplJs private constructor(
+internal class TimeTableApiImplJs(
 	private val timeTableApi: TimeTableApi,
 ) : TimeTableApiJs {
 	override val encrypted: TimeTableFlavouredApiJs<EncryptedTimeTableJs> = object :

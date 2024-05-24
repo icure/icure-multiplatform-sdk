@@ -38,7 +38,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
-public class UserApiImplJs private constructor(
+internal class UserApiImplJs(
 	private val userApi: UserApi,
 ) : UserApiJs {
 	override fun getCurrentUser(): Promise<UserJs> = GlobalScope.promise {

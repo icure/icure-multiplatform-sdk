@@ -13,7 +13,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
-public class EntityReferenceApiImplJs private constructor(
+internal class EntityReferenceApiImplJs(
 	private val entityReferenceApi: EntityReferenceApi,
 ) : EntityReferenceApiJs {
 	override fun getLatest(prefix: String): Promise<EntityReferenceJs> = GlobalScope.promise {

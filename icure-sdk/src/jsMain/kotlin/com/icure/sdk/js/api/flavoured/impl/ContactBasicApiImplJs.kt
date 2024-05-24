@@ -38,7 +38,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
-public class ContactBasicApiImplJs private constructor(
+internal class ContactBasicApiImplJs(
 	private val contactBasicApi: ContactBasicApi,
 ) : ContactBasicApiJs {
 	override fun matchContactsBy(filter: AbstractFilterJs<EncryptedContactJs>): Promise<Array<String>>

@@ -30,7 +30,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
-public class DeviceApiImplJs private constructor(
+internal class DeviceApiImplJs(
 	private val deviceApi: DeviceApi,
 ) : DeviceApiJs {
 	override fun getDevice(deviceId: String): Promise<DeviceJs> = GlobalScope.promise {

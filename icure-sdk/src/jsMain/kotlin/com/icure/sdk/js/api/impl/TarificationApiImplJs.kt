@@ -20,7 +20,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
-public class TarificationApiImplJs private constructor(
+internal class TarificationApiImplJs(
 	private val tarificationApi: TarificationApi,
 ) : TarificationApiJs {
 	override fun getTarification(tarificationId: String): Promise<TarificationJs> =

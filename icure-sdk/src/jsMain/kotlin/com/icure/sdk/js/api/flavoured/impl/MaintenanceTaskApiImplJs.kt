@@ -32,7 +32,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
-public class MaintenanceTaskApiImplJs private constructor(
+internal class MaintenanceTaskApiImplJs(
 	private val maintenanceTaskApi: MaintenanceTaskApi,
 ) : MaintenanceTaskApiJs {
 	override val encrypted: MaintenanceTaskFlavouredApiJs<EncryptedMaintenanceTaskJs> = object :

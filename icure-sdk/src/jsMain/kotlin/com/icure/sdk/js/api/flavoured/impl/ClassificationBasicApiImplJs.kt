@@ -20,7 +20,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
-public class ClassificationBasicApiImplJs private constructor(
+internal class ClassificationBasicApiImplJs(
 	private val classificationBasicApi: ClassificationBasicApi,
 ) : ClassificationBasicApiJs {
 	override fun deleteClassification(entityId: String): Promise<DocIdentifierJs> =

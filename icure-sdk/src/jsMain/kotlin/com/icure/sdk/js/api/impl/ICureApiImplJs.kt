@@ -25,7 +25,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
-public class ICureApiImplJs private constructor(
+internal class ICureApiImplJs(
 	private val iCureApi: ICureApi,
 ) : ICureApiJs {
 	override fun getVersion(): Promise<String> = GlobalScope.promise {

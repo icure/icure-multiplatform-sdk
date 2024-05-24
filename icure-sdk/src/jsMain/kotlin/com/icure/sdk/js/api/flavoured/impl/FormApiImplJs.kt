@@ -39,7 +39,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
-public class FormApiImplJs private constructor(
+internal class FormApiImplJs(
 	private val formApi: FormApi,
 ) : FormApiJs {
 	override val encrypted: FormFlavouredApiJs<EncryptedFormJs> = object :

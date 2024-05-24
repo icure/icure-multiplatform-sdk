@@ -50,7 +50,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
-public class InvoiceApiImplJs private constructor(
+internal class InvoiceApiImplJs(
 	private val invoiceApi: InvoiceApi,
 ) : InvoiceApiJs {
 	override val encrypted: InvoiceFlavouredApiJs<EncryptedInvoiceJs> = object :

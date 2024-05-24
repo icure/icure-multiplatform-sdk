@@ -28,7 +28,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
-public class CodeApiImplJs private constructor(
+internal class CodeApiImplJs(
 	private val codeApi: CodeApi,
 ) : CodeApiJs {
 	override fun findCodesByLabel(

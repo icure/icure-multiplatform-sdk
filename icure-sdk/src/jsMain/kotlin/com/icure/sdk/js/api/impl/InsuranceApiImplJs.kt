@@ -22,7 +22,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
-public class InsuranceApiImplJs private constructor(
+internal class InsuranceApiImplJs(
 	private val insuranceApi: InsuranceApi,
 ) : InsuranceApiJs {
 	override fun getInsurance(insuranceId: String): Promise<InsuranceJs> = GlobalScope.promise {

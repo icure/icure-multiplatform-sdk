@@ -25,7 +25,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
-public class DocumentBasicApiImplJs private constructor(
+internal class DocumentBasicApiImplJs(
 	private val documentBasicApi: DocumentBasicApi,
 ) : DocumentBasicApiJs {
 	override fun deleteDocument(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {

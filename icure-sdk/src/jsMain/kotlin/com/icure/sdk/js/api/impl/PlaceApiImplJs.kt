@@ -23,7 +23,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
-public class PlaceApiImplJs private constructor(
+internal class PlaceApiImplJs(
 	private val placeApi: PlaceApi,
 ) : PlaceApiJs {
 	override fun getPlace(placeId: String): Promise<PlaceJs> = GlobalScope.promise {

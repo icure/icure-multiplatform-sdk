@@ -20,7 +20,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
-public class DataOwnerApiImplJs private constructor(
+internal class DataOwnerApiImplJs(
 	private val dataOwnerApi: DataOwnerApi,
 ) : DataOwnerApiJs {
 	override fun getCurrentDataOwner(): Promise<DataOwnerWithTypeJs> = GlobalScope.promise {

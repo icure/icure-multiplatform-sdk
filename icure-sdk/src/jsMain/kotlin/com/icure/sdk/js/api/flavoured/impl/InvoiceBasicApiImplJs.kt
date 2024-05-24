@@ -38,7 +38,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
-public class InvoiceBasicApiImplJs private constructor(
+internal class InvoiceBasicApiImplJs(
 	private val invoiceBasicApi: InvoiceBasicApi,
 ) : InvoiceBasicApiJs {
 	override fun deleteInvoice(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {

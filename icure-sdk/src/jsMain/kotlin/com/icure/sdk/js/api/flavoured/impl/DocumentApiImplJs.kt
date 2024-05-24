@@ -39,7 +39,7 @@ import kotlinx.coroutines.await
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
-public class DocumentApiImplJs private constructor(
+internal class DocumentApiImplJs(
 	private val documentApi: DocumentApi,
 ) : DocumentApiJs {
 	override val encrypted: DocumentFlavouredApiJs<EncryptedDocumentJs> = object :

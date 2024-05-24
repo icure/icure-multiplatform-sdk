@@ -37,7 +37,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
-public class CalendarItemApiImplJs private constructor(
+internal class CalendarItemApiImplJs(
 	private val calendarItemApi: CalendarItemApi,
 ) : CalendarItemApiJs {
 	override val encrypted: CalendarItemFlavouredApiJs<EncryptedCalendarItemJs> = object :

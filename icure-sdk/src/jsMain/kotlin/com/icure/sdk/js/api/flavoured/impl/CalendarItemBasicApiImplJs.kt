@@ -24,7 +24,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
-public class CalendarItemBasicApiImplJs private constructor(
+internal class CalendarItemBasicApiImplJs(
 	private val calendarItemBasicApi: CalendarItemBasicApi,
 ) : CalendarItemBasicApiJs {
 	override fun deleteCalendarItem(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {

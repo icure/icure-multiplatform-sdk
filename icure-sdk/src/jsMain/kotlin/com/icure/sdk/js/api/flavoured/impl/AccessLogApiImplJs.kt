@@ -36,7 +36,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
-public class AccessLogApiImplJs private constructor(
+internal class AccessLogApiImplJs(
 	private val accessLogApi: AccessLogApi,
 ) : AccessLogApiJs {
 	override val encrypted: AccessLogFlavouredApiJs<EncryptedAccessLogJs> = object :

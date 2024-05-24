@@ -22,7 +22,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
-public class TimeTableBasicApiImplJs private constructor(
+internal class TimeTableBasicApiImplJs(
 	private val timeTableBasicApi: TimeTableBasicApi,
 ) : TimeTableBasicApiJs {
 	override fun deleteTimeTable(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {

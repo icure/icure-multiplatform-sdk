@@ -26,7 +26,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
-public class FormBasicApiImplJs private constructor(
+internal class FormBasicApiImplJs(
 	private val formBasicApi: FormBasicApi,
 ) : FormBasicApiJs {
 	override fun deleteForm(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {

@@ -24,7 +24,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
-public class AccessLogBasicApiImplJs private constructor(
+internal class AccessLogBasicApiImplJs(
 	private val accessLogBasicApi: AccessLogBasicApi,
 ) : AccessLogBasicApiJs {
 	override fun deleteAccessLog(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {

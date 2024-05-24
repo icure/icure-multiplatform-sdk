@@ -18,7 +18,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
-public class FrontEndMigrationApiImplJs private constructor(
+internal class FrontEndMigrationApiImplJs(
 	private val frontEndMigrationApi: FrontEndMigrationApi,
 ) : FrontEndMigrationApiJs {
 	override fun getFrontEndMigration(frontEndMigrationId: String): Promise<FrontEndMigrationJs> =

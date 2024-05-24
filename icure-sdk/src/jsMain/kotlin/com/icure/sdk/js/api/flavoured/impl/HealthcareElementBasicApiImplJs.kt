@@ -30,7 +30,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
-public class HealthcareElementBasicApiImplJs private constructor(
+internal class HealthcareElementBasicApiImplJs(
 	private val healthcareElementBasicApi: HealthcareElementBasicApi,
 ) : HealthcareElementBasicApiJs {
 	override fun matchHealthcareElementsBy(filter: AbstractFilterJs<EncryptedHealthElementJs>):

@@ -30,7 +30,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
-public class MessageBasicApiImplJs private constructor(
+internal class MessageBasicApiImplJs(
 	private val messageBasicApi: MessageBasicApi,
 ) : MessageBasicApiJs {
 	override fun matchMessagesBy(filter: AbstractFilterJs<EncryptedMessageJs>): Promise<Array<String>>

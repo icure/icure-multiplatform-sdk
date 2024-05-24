@@ -54,7 +54,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
-public class GroupApiImplJs private constructor(
+internal class GroupApiImplJs(
 	private val groupApi: GroupApi,
 ) : GroupApiJs {
 	override fun listGroups(): Promise<Array<GroupJs>> = GlobalScope.promise {

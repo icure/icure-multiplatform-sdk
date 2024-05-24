@@ -41,7 +41,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
-public class PatientBasicApiImplJs private constructor(
+internal class PatientBasicApiImplJs(
 	private val patientBasicApi: PatientBasicApi,
 ) : PatientBasicApiJs {
 	override fun matchPatientsBy(filter: AbstractFilterJs<EncryptedPatientJs>): Promise<Array<String>>

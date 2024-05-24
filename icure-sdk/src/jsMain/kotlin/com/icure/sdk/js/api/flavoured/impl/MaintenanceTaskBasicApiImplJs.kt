@@ -25,7 +25,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
-public class MaintenanceTaskBasicApiImplJs private constructor(
+internal class MaintenanceTaskBasicApiImplJs(
 	private val maintenanceTaskBasicApi: MaintenanceTaskBasicApi,
 ) : MaintenanceTaskBasicApiJs {
 	override fun deleteMaintenanceTask(entityId: String): Promise<DocIdentifierJs> =

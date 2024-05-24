@@ -15,7 +15,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
-public class ApplicationSettingsApiImplJs private constructor(
+internal class ApplicationSettingsApiImplJs(
 	private val applicationSettingsApi: ApplicationSettingsApi,
 ) : ApplicationSettingsApiJs {
 	override fun getApplicationSettings(): Promise<Array<ApplicationSettingsJs>> =

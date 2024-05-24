@@ -24,7 +24,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
-public class DocumentTemplateApiImplJs private constructor(
+internal class DocumentTemplateApiImplJs(
 	private val documentTemplateApi: DocumentTemplateApi,
 ) : DocumentTemplateApiJs {
 	override fun getDocumentTemplate(documentTemplateId: String): Promise<DocumentTemplateJs> =

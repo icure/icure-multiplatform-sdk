@@ -32,7 +32,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
-public class ReceiptApiImplJs private constructor(
+internal class ReceiptApiImplJs(
 	private val receiptApi: ReceiptApi,
 ) : ReceiptApiJs {
 	override val encrypted: ReceiptFlavouredApiJs<EncryptedReceiptJs> = object :

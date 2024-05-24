@@ -34,7 +34,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
-public class ClassificationApiImplJs private constructor(
+internal class ClassificationApiImplJs(
 	private val classificationApi: ClassificationApi,
 ) : ClassificationApiJs {
 	override val encrypted: ClassificationFlavouredApiJs<EncryptedClassificationJs> = object :

@@ -23,7 +23,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
-public class KeywordApiImplJs private constructor(
+internal class KeywordApiImplJs(
 	private val keywordApi: KeywordApi,
 ) : KeywordApiJs {
 	override fun getKeyword(frontEndMigrationId: String): Promise<KeywordJs> = GlobalScope.promise {

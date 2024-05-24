@@ -42,7 +42,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
-public class MessageApiImplJs private constructor(
+internal class MessageApiImplJs(
 	private val messageApi: MessageApi,
 ) : MessageApiJs {
 	override val encrypted: MessageFlavouredApiJs<EncryptedMessageJs> = object :

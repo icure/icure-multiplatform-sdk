@@ -22,7 +22,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
-public class EntityTemplateApiImplJs private constructor(
+internal class EntityTemplateApiImplJs(
 	private val entityTemplateApi: EntityTemplateApi,
 ) : EntityTemplateApiJs {
 	override fun getEntityTemplate(documentTemplateId: String): Promise<EntityTemplateJs> =
