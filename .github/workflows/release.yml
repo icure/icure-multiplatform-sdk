@@ -8,7 +8,7 @@ on:
         types:
             - closed
         branches:
-            - 'develop'
+            - develop
 jobs:
     release:
         # if: github.event.pull_request.merged == true
