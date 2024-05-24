@@ -13,5 +13,6 @@ data class FieldsGroup(
 	public val fields: List<StructureElement>? = null,
 ) : StructureElement {
 	// region FieldsGroup-FieldsGroup
+
 	// endregion
 }

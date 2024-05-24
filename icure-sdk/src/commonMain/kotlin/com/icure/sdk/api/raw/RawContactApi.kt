@@ -16,6 +16,7 @@ import com.icure.sdk.utils.InternalIcureApi
 import kotlin.Boolean
 import kotlin.Int
 import kotlin.Long
+import kotlin.Nothing
 import kotlin.String
 import kotlin.collections.List
 
@@ -150,6 +151,6 @@ public interface RawContactApi {
 
 	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<EncryptedContact>>>
 
-	suspend fun bulkShareMinimal(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<EncryptedContact>>>
+	suspend fun bulkShareMinimal(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<Nothing>>>
 	// endregion
 }
