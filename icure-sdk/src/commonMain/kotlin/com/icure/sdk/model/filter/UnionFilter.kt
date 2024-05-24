@@ -16,7 +16,7 @@ import kotlinx.serialization.Contextual
 data class UnionFilter<O : Identifiable<String>>(
 	override val desc: String? = null,
 	@DefaultValue("emptyList()")
-	override val filters: List<@Contextual AbstractFilter<O>> = emptyList(),
+	override val filters: List<AbstractFilter<O>> = emptyList(),
 ) : AbstractFilter<O>, Filter.UnionFilter<O> {
 	// region UnionFilter-UnionFilter
 

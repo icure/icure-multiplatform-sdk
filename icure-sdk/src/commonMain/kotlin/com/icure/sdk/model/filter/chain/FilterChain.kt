@@ -12,7 +12,7 @@ import kotlinx.serialization.Contextual
 
 @Serializable
 data class FilterChain<O : Identifiable<String>>(
-	@Contextual public val filter: AbstractFilter<O>,
+	public val filter: AbstractFilter<O>,
 	public val predicate: Predicate? = null,
 ) {
 	// region FilterChain-FilterChain
