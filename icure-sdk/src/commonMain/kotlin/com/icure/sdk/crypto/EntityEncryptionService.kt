@@ -164,7 +164,7 @@ interface EntityEncryptionService : EntityValidationService {
 
 	suspend fun bulkShareOrUpdateEncryptedEntityMetadataNoEntities(
 		entitiesUpdates: List<Pair<EntityWithTypeInfo<*>, Map<String, DelegateShareOptions>>>,
-		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<MinimalEntityBulkShareResult>
+		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<Nothing>>
 	): MinimalBulkShareResult
 
 	/**

@@ -32,7 +32,6 @@ import com.icure.sdk.model.embed.Encryptable
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
 import com.icure.sdk.model.requests.EntityShareOrMetadataUpdateRequest
-import com.icure.sdk.model.requests.MinimalEntityBulkShareResult
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.model.specializations.SecureDelegationKeyString
@@ -272,7 +271,7 @@ class EntityEncryptionServiceImpl(
 
 	override suspend fun bulkShareOrUpdateEncryptedEntityMetadataNoEntities(
 		entitiesUpdates: List<Pair<EntityWithTypeInfo<*>, Map<String, DelegateShareOptions>>>,
-		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<MinimalEntityBulkShareResult>
+		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<Nothing>>
 	): MinimalBulkShareResult {
 		val requestDetails = prepareBulkShareRequests(entitiesUpdates)
 		val shareResult = doRequestBulkShareOrUpdate(

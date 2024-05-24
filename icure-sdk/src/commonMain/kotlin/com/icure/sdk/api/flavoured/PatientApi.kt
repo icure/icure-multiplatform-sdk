@@ -14,7 +14,9 @@ import com.icure.sdk.crypto.entities.DelegateShareOptions
 import com.icure.sdk.crypto.entities.PatientShareOptions
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.EntityAccessInformation
+import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.crypto.entities.EntityWithTypeInfo
+import com.icure.sdk.crypto.entities.MinimalBulkShareResult
 import com.icure.sdk.crypto.entities.ShareAllPatientDataOptions
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleDelegateShareOptions
@@ -24,6 +26,8 @@ import com.icure.sdk.crypto.entities.withTypeInfo
 import com.icure.sdk.model.DataOwnerRegistrationSuccess
 import com.icure.sdk.model.DecryptedPatient
 import com.icure.sdk.model.EncryptedPatient
+import com.icure.sdk.model.Form
+import com.icure.sdk.model.HealthElement
 import com.icure.sdk.model.HealthcareParty
 import com.icure.sdk.model.IcureStub
 import com.icure.sdk.model.IdWithRev
@@ -623,13 +627,7 @@ internal class PatientApiImpl(
 	): ShareAllPatientDataOptions.Result {
 
 		val allTags = delegatesWithShareType.values.flatMap { it.toList() }.toSet()
-		val status = ShareAllPatientDataOptions.ShareableEntity.entries.associateWith { entity ->
-			ShareAllPatientDataOptions.EntityResult(
-				success = false.takeIf { allTags.contains(entity.type) || allTags.contains(ShareAllPatientDataOptions.Tag.All) },
-				error = null,
-				modified = 0
-			)
-		}.toMutableMap()
+
 		val hcp = rawHealthcarePartyApi.getHealthcareParty(dataOwnerId).successBody() // Shall we do it for any data owner?
 		val parentId = hcp.parentId
 		val patient = encrypted.getPatient(patientId).let { patient ->
@@ -641,7 +639,7 @@ internal class PatientApiImpl(
 		val delegationSecretKeys = getSecretIdsOf(patient)
 		val patientEncryptionKeys = getEncryptionKeysOf(patient)
 
-		if(delegationSecretKeys.isNotEmpty()) {
+		val shareStatus = if(delegationSecretKeys.isNotEmpty()) {
 
 			suspend fun findDelegationStubsForHcPartyAndParent(
 				stubGetter: suspend (String, List<String>) -> List<IcureStub>
@@ -651,23 +649,8 @@ internal class PatientApiImpl(
 				return stubs.distinctBy { it.id }
 			}
 
-			val retrievedHealthElements = findDelegationStubsForHcPartyAndParent { doId, delSecKeys ->
-				rawHealthElementApi.findHealthElementsDelegationsStubsByHCPartyPatientForeignKeys(doId, delSecKeys).successBody()
-			}
-			val retrievedForms = findDelegationStubsForHcPartyAndParent { doId, delSecKeys ->
-				rawFormApi.listFormsDelegationsStubsByHCPartyAndPatientForeignKeys(doId, delSecKeys).successBody()
-			}
-			val retrievedContacts = findDelegationStubsForHcPartyAndParent { doId, delSecKeys ->
-				rawContactApi.findContactsDelegationsStubsByHCPartyPatientForeignKeys(doId, delSecKeys).successBody()
-			}
-			val retrievedInvoices = findDelegationStubsForHcPartyAndParent { doId, delSecKeys ->
-				rawInvoiceApi.findInvoicesDelegationsStubsByHCPartyPatientForeignKeys(doId, delSecKeys).successBody()
-			}
-			// TODO: Calendar Items and Classifications
-
 			suspend fun <T : HasEncryptionMetadata> doShareEntitiesAndUpdateStatus(
 				entities: List<EntityWithTypeInfo<T>>,
-				initialStatus: ShareAllPatientDataOptions.EntityResult,
 				tagsCondition: (tags: Set<ShareAllPatientDataOptions.Tag>) -> Boolean,
 				doShareMinimal: suspend (request: BulkShareOrUpdateMetadataParams) -> List<MinimalEntityBulkShareResult>
 			): ShareAllPatientDataOptions.EntityResult {
@@ -706,6 +689,118 @@ internal class PatientApiImpl(
 				} else {
 					ShareAllPatientDataOptions.EntityResult(success = true)
 				}
+			}
+
+			val retrievedHealthElements = findDelegationStubsForHcPartyAndParent { doId, delSecKeys ->
+				rawHealthElementApi.findHealthElementsDelegationsStubsByHCPartyPatientForeignKeys(doId, delSecKeys).successBody()
+			}
+			val shareHealthElementsResult = doShareEntitiesAndUpdateStatus(
+				entities = retrievedHealthElements.map { EntityWithTypeInfo(it, EntityWithEncryptionMetadataTypeName.HealthElement) },
+				tagsCondition = { it.contains(ShareAllPatientDataOptions.Tag.All) || it.contains(ShareAllPatientDataOptions.Tag.MedicalInformation) },
+			) { params ->
+				rawHealthElementApi.bulkShareMinimal(params).successBody().map {
+					MinimalEntityBulkShareResult(
+						entityId = it.entityId,
+						entityRev = it.entityRev,
+						rejectedRequests = it.rejectedRequests
+					)
+				}
+			}
+
+			val retrievedForms = findDelegationStubsForHcPartyAndParent { doId, delSecKeys ->
+				rawFormApi.findFormsDelegationsStubsByHCPartyAndPatientForeignKeys(doId, delSecKeys).successBody()
+			}
+			val shareFormsResult = doShareEntitiesAndUpdateStatus(
+				entities = retrievedForms.map { EntityWithTypeInfo(it, EntityWithEncryptionMetadataTypeName.Form) },
+				tagsCondition = { it.contains(ShareAllPatientDataOptions.Tag.All) || it.contains(ShareAllPatientDataOptions.Tag.MedicalInformation) },
+			) { params ->
+				rawFormApi.bulkShareMinimal(params).successBody().map {
+					MinimalEntityBulkShareResult(
+						entityId = it.entityId,
+						entityRev = it.entityRev,
+						rejectedRequests = it.rejectedRequests
+					)
+				}
+			}
+
+			val retrievedContacts = findDelegationStubsForHcPartyAndParent { doId, delSecKeys ->
+				rawContactApi.findContactsDelegationsStubsByHCPartyPatientForeignKeys(doId, delSecKeys).successBody()
+			}
+			val shareContactsResult = doShareEntitiesAndUpdateStatus(
+				entities = retrievedContacts.map { EntityWithTypeInfo(it, EntityWithEncryptionMetadataTypeName.Contact) },
+				tagsCondition = { it.contains(ShareAllPatientDataOptions.Tag.All) || it.contains(ShareAllPatientDataOptions.Tag.MedicalInformation) },
+			) { params ->
+				rawContactApi.bulkShareMinimal(params).successBody().map {
+					MinimalEntityBulkShareResult(
+						entityId = it.entityId,
+						entityRev = it.entityRev,
+						rejectedRequests = it.rejectedRequests
+					)
+				}
+			}
+
+			val retrievedInvoices = findDelegationStubsForHcPartyAndParent { doId, delSecKeys ->
+				rawInvoiceApi.findInvoicesDelegationsStubsByHCPartyPatientForeignKeys(doId, delSecKeys).successBody()
+			}
+			val shareInvoicesResult = doShareEntitiesAndUpdateStatus(
+				entities = retrievedInvoices.map { EntityWithTypeInfo(it, EntityWithEncryptionMetadataTypeName.Invoice) },
+				tagsCondition = { it.contains(ShareAllPatientDataOptions.Tag.All) || it.contains(ShareAllPatientDataOptions.Tag.FinancialInformation) },
+			) { params ->
+				rawInvoiceApi.bulkShareMinimal(params).successBody().map {
+					MinimalEntityBulkShareResult(
+						entityId = it.entityId,
+						entityRev = it.entityRev,
+						rejectedRequests = it.rejectedRequests
+					)
+				}
+			}
+
+			val retrievedCalendarItems = findDelegationStubsForHcPartyAndParent { doId, delSecKeys ->
+				rawCalendarItemApi.findCalendarItemsDelegationsStubsByHCPartyPatientForeignKeys(doId, delSecKeys).successBody()
+			}
+			val shareCalendarItemsResult = doShareEntitiesAndUpdateStatus(
+				entities = retrievedCalendarItems.map { EntityWithTypeInfo(it, EntityWithEncryptionMetadataTypeName.CalendarItem) },
+				tagsCondition = { it.contains(ShareAllPatientDataOptions.Tag.All) || it.contains(ShareAllPatientDataOptions.Tag.MedicalInformation) },
+			) { params ->
+				rawCalendarItemApi.bulkShareMinimal(params).successBody().map {
+					MinimalEntityBulkShareResult(
+						entityId = it.entityId,
+						entityRev = it.entityRev,
+						rejectedRequests = it.rejectedRequests
+					)
+				}
+			}
+
+			val retrievedClassifications = findDelegationStubsForHcPartyAndParent { doId, delSecKeys ->
+				rawClassificationApi.findClassificationsDelegationsStubsByHCPartyPatientForeignKeys(doId, delSecKeys).successBody()
+			}
+			val shareClassificationResult = doShareEntitiesAndUpdateStatus(
+				entities = retrievedClassifications.map { EntityWithTypeInfo(it, EntityWithEncryptionMetadataTypeName.Classification) },
+				tagsCondition = { it.contains(ShareAllPatientDataOptions.Tag.All) || it.contains(ShareAllPatientDataOptions.Tag.MedicalInformation) },
+			) { params ->
+				rawClassificationApi.bulkShareMinimal(params).successBody().map {
+					MinimalEntityBulkShareResult(
+						entityId = it.entityId,
+						entityRev = it.entityRev,
+						rejectedRequests = it.rejectedRequests
+					)
+				}
+			}
+			mapOf(
+				ShareAllPatientDataOptions.ShareableEntity.HealthElement to shareHealthElementsResult,
+				ShareAllPatientDataOptions.ShareableEntity.Form to shareFormsResult,
+				ShareAllPatientDataOptions.ShareableEntity.Contact to shareContactsResult,
+				ShareAllPatientDataOptions.ShareableEntity.Invoice to shareInvoicesResult,
+				ShareAllPatientDataOptions.ShareableEntity.CalendarItem to shareCalendarItemsResult,
+				ShareAllPatientDataOptions.ShareableEntity.Classification to shareClassificationResult,
+			)
+		} else {
+			ShareAllPatientDataOptions.ShareableEntity.entries.associateWith { entity ->
+				ShareAllPatientDataOptions.EntityResult(
+					success = false.takeIf { allTags.contains(entity.type) || allTags.contains(ShareAllPatientDataOptions.Tag.All) },
+					error = null,
+					modified = 0
+				)
 			}
 		}
 
