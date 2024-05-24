@@ -1,6 +1,7 @@
 package com.icure.sdk.api.raw
 
 import com.icure.sdk.model.EncryptedClassification
+import com.icure.sdk.model.IcureStub
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
@@ -41,6 +42,11 @@ public interface RawClassificationApi {
 	suspend fun deleteClassification(classificationId: String): HttpResponse<DocIdentifier>
 
 	suspend fun modifyClassification(classificationDto: EncryptedClassification): HttpResponse<EncryptedClassification>
+
+	public suspend fun findClassificationsDelegationsStubsByHCPartyPatientForeignKeys(
+		hcPartyId: String,
+		secretPatientKeys: List<String>,
+	): HttpResponse<List<IcureStub>>
 
 	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<EncryptedClassification>>>
 

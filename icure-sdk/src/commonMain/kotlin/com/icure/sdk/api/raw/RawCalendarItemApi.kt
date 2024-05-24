@@ -1,6 +1,7 @@
 package com.icure.sdk.api.raw
 
 import com.icure.sdk.model.EncryptedCalendarItem
+import com.icure.sdk.model.IcureStub
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
@@ -83,6 +84,11 @@ public interface RawCalendarItemApi {
 		descending: Boolean? = null,
 		secretPatientKeys: ListOfIds,
 	): HttpResponse<List<String>>
+
+	suspend fun findCalendarItemsDelegationsStubsByHCPartyPatientForeignKeys(
+		hcPartyId: String,
+		secretPatientKeys: List<String>,
+	): HttpResponse<List<IcureStub>>
 
 	suspend fun findCalendarItemsByRecurrenceId(
 		recurrenceId: String,
