@@ -73,12 +73,12 @@ public interface RawFormApi {
 		secretPatientKeys: ListOfIds,
 	): HttpResponse<List<String>>
 
-	suspend fun listFormsDelegationsStubsByHCPartyAndPatientForeignKeys(
+	suspend fun findFormsDelegationsStubsByHCPartyAndPatientForeignKeys(
 		hcPartyId: String,
 		secretFKeys: String,
 	): HttpResponse<List<IcureStub>>
 
-	suspend fun listFormsDelegationsStubsByHCPartyAndPatientForeignKeys(
+	suspend fun findFormsDelegationsStubsByHCPartyAndPatientForeignKeys(
 		hcPartyId: String,
 		secretPatientKeys: List<String>,
 	): HttpResponse<List<IcureStub>>
