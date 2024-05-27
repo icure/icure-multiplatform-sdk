@@ -120,6 +120,7 @@ interface ClassificationApi : ClassificationBasicFlavourlessApi, ClassificationF
 	suspend fun getEncryptionKeysOf(classification: Classification): Set<HexString>
 	suspend fun hasWriteAccess(classification: Classification): Boolean
 	suspend fun decryptPatientIdOf(classification: Classification): Set<String>
+	suspend fun createDelegationDeAnonymizationMetadata(entity: Classification, delegates: Set<String>)
 
 	val encrypted: ClassificationFlavouredApi<EncryptedClassification>
 	val tryAndRecover: ClassificationFlavouredApi<Classification>
@@ -298,6 +299,10 @@ internal class ClassificationApiImpl(
 	override suspend fun hasWriteAccess(classification: Classification): Boolean = crypto.entity.hasWriteAccess(classification.withTypeInfo())
 
 	override suspend fun decryptPatientIdOf(classification: Classification): Set<String> = crypto.entity.owningEntityIdsOf(classification.withTypeInfo(), null)
+
+	override suspend fun createDelegationDeAnonymizationMetadata(entity: Classification, delegates: Set<String>) {
+		crypto.delegationsDeAnonymization.createOrUpdateDeAnonymizationInfo(entity.withTypeInfo(), delegates)
+	}
 
 	private suspend fun encrypt(entity: DecryptedClassification) = crypto.entity.encryptEntity(
 		entity.withTypeInfo(),

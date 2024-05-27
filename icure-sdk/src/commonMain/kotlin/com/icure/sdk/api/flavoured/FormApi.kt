@@ -142,6 +142,7 @@ interface FormApi : FormBasicFlavourlessApi, FormFlavouredApi<DecryptedForm> {
 	suspend fun getEncryptionKeysOf(form: Form): Set<HexString>
 	suspend fun hasWriteAccess(form: Form): Boolean
 	suspend fun decryptPatientIdOf(form: Form): Set<String>
+	suspend fun createDelegationDeAnonymizationMetadata(entity: Form, delegates: Set<String>)
 
 	val encrypted: FormFlavouredApi<EncryptedForm>
 	val tryAndRecover: FormFlavouredApi<Form>
@@ -386,6 +387,10 @@ internal class FormApiImpl(
 	override suspend fun hasWriteAccess(form: Form): Boolean = crypto.entity.hasWriteAccess(form.withTypeInfo())
 
 	override suspend fun decryptPatientIdOf(form: Form): Set<String> = crypto.entity.owningEntityIdsOf(form.withTypeInfo(), null)
+
+	override suspend fun createDelegationDeAnonymizationMetadata(entity: Form, delegates: Set<String>) {
+		crypto.delegationsDeAnonymization.createOrUpdateDeAnonymizationInfo(entity.withTypeInfo(), delegates)
+	}
 
 	private suspend fun encrypt(entity: DecryptedForm) = crypto.entity.encryptEntity(
 		entity.withTypeInfo(),

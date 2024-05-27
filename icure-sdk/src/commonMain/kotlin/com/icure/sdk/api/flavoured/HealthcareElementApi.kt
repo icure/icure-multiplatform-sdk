@@ -129,6 +129,7 @@ interface HealthcareElementApi : HealthcareElementBasicFlavourlessApi, Healthcar
 	suspend fun getEncryptionKeysOf(healthElement: HealthElement): Set<HexString>
 	suspend fun hasWriteAccess(healthElement: HealthElement): Boolean
 	suspend fun decryptPatientIdOf(healthElement: HealthElement): Set<String>
+	suspend fun createDelegationDeAnonymizationMetadata(entity: HealthElement, delegates: Set<String>)
 
 	val encrypted: HealthcareElementFlavouredApi<EncryptedHealthElement>
 	val tryAndRecover: HealthcareElementFlavouredApi<HealthElement>
@@ -331,6 +332,10 @@ internal class HealthcareElementApiImpl(
 	override suspend fun hasWriteAccess(healthElement: HealthElement): Boolean = crypto.entity.hasWriteAccess(healthElement.withTypeInfo())
 
 	override suspend fun decryptPatientIdOf(healthElement: HealthElement): Set<String> = crypto.entity.owningEntityIdsOf(healthElement.withTypeInfo(), null)
+
+	override suspend fun createDelegationDeAnonymizationMetadata(entity: HealthElement, delegates: Set<String>) {
+		crypto.delegationsDeAnonymization.createOrUpdateDeAnonymizationInfo(entity.withTypeInfo(), delegates)
+	}
 
 	private suspend fun encrypt(entity: DecryptedHealthElement) = crypto.entity.encryptEntity(
 		entity.withTypeInfo(),

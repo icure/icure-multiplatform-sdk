@@ -178,6 +178,7 @@ interface ContactApi : ContactBasicFlavourlessApi, ContactFlavouredApi<Decrypted
 	suspend fun getEncryptionKeysOf(contact: Contact): Set<HexString>
 	suspend fun hasWriteAccess(contact: Contact): Boolean
 	suspend fun decryptPatientIdOf(contact: Contact): Set<String>
+	suspend fun createDelegationDeAnonymizationMetadata(entity: Contact, delegates: Set<String>)
 
 	val encrypted: ContactFlavouredApi<EncryptedContact, EncryptedService>
 	val tryAndRecover: ContactFlavouredApi<Contact, Service>
@@ -567,6 +568,10 @@ internal class ContactApiImpl(
 	override suspend fun hasWriteAccess(contact: Contact): Boolean = crypto.entity.hasWriteAccess(contact.withTypeInfo())
 
 	override suspend fun decryptPatientIdOf(contact: Contact): Set<String> = crypto.entity.owningEntityIdsOf(contact.withTypeInfo(), null)
+
+	override suspend fun createDelegationDeAnonymizationMetadata(entity: Contact, delegates: Set<String>) {
+		crypto.delegationsDeAnonymization.createOrUpdateDeAnonymizationInfo(entity.withTypeInfo(), delegates)
+	}
 
 	private suspend fun encrypt(entity: DecryptedContact) = crypto.entity.encryptEntity(
 		entity.withTypeInfo(),

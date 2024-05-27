@@ -127,6 +127,7 @@ interface CalendarItemApi : CalendarItemBasicFlavourlessApi, CalendarItemFlavour
 	suspend fun getEncryptionKeysOf(calendarItem: CalendarItem): Set<HexString>
 	suspend fun hasWriteAccess(calendarItem: CalendarItem): Boolean
 	suspend fun decryptPatientIdOf(calendarItem: CalendarItem): Set<String>
+	suspend fun createDelegationDeAnonymizationMetadata(entity: CalendarItem, delegates: Set<String>)
 
 	val encrypted: CalendarItemFlavouredApi<EncryptedCalendarItem>
 	val tryAndRecover: CalendarItemFlavouredApi<CalendarItem>
@@ -350,6 +351,10 @@ internal class CalendarItemApiImpl(
 		EncryptedCalendarItem.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedCalendarItem>(it) }
 		?: throw EntityEncryptionException(errorMessage())
+
+	override suspend fun createDelegationDeAnonymizationMetadata(entity: CalendarItem, delegates: Set<String>) {
+		crypto.delegationsDeAnonymization.createOrUpdateDeAnonymizationInfo(entity.withTypeInfo(), delegates)
+	}
 
 }
 

@@ -154,6 +154,7 @@ interface MessageApi : MessageBasicFlavourlessApi, MessageFlavouredApi<Decrypted
 	suspend fun getEncryptionKeysOf(message: Message): Set<HexString>
 	suspend fun hasWriteAccess(message: Message): Boolean
 	suspend fun decryptPatientIdOf(message: Message): Set<String>
+	suspend fun createDelegationDeAnonymizationMetadata(entity: Message, delegates: Set<String>)
 
 	val encrypted: MessageFlavouredApi<EncryptedMessage>
 	val tryAndRecover: MessageFlavouredApi<Message>
@@ -407,6 +408,10 @@ internal class MessageApiImpl(
 	override suspend fun hasWriteAccess(message: Message): Boolean = crypto.entity.hasWriteAccess(message.withTypeInfo())
 
 	override suspend fun decryptPatientIdOf(message: Message): Set<String> = crypto.entity.owningEntityIdsOf(message.withTypeInfo(), null)
+
+	override suspend fun createDelegationDeAnonymizationMetadata(entity: Message, delegates: Set<String>) {
+		crypto.delegationsDeAnonymization.createOrUpdateDeAnonymizationInfo(entity.withTypeInfo(), delegates)
+	}
 
 	private suspend fun encrypt(entity: DecryptedMessage) = crypto.entity.encryptEntity(
 		entity.withTypeInfo(),

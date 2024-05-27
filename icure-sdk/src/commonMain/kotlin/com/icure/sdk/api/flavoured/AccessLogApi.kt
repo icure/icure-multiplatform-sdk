@@ -145,6 +145,8 @@ interface AccessLogApi : AccessLogBasicFlavourlessApi, AccessLogFlavouredApi<Dec
 	suspend fun getEncryptionKeysOf(accessLog: AccessLog): Set<HexString>
 	suspend fun hasWriteAccess(accessLog: AccessLog): Boolean
 	suspend fun decryptPatientIdOf(accessLog: AccessLog): Set<String>
+	suspend fun createDelegationDeAnonymizationMetadata(entity: AccessLog, delegates: Set<String>)
+
 
 	val encrypted: AccessLogFlavouredApi<EncryptedAccessLog>
 	val tryAndRecover: AccessLogFlavouredApi<AccessLog>
@@ -330,6 +332,10 @@ internal class AccessLogApiImpl(
 	override suspend fun hasWriteAccess(accessLog: AccessLog): Boolean = crypto.entity.hasWriteAccess(accessLog.withTypeInfo())
 
 	override suspend fun decryptPatientIdOf(accessLog: AccessLog): Set<String> = crypto.entity.owningEntityIdsOf(accessLog.withTypeInfo(), null)
+
+	override suspend fun createDelegationDeAnonymizationMetadata(entity: AccessLog, delegates: Set<String>) {
+		crypto.delegationsDeAnonymization.createOrUpdateDeAnonymizationInfo(entity.withTypeInfo(), delegates)
+	}
 
 	override suspend fun createAccessLog(entity: DecryptedAccessLog): DecryptedAccessLog {
 		require(entity.securityMetadata != null) { "Entity must have security metadata initialised. You can use the withEncryptionMetadata for that very purpose." }

@@ -163,6 +163,7 @@ interface DocumentApi : DocumentBasicFlavourlessApi, DocumentFlavouredApi<Decryp
 	suspend fun getEncryptionKeysOf(document: Document): Set<HexString>
 	suspend fun hasWriteAccess(document: Document): Boolean
 	suspend fun decryptPatientIdOf(document: Document): Set<String>
+	suspend fun createDelegationDeAnonymizationMetadata(entity: Document, delegates: Set<String>)
 
 	val encrypted: DocumentFlavouredApi<EncryptedDocument>
 	val tryAndRecover: DocumentFlavouredApi<Document>
@@ -449,6 +450,10 @@ internal class DocumentApiImpl(
 	override suspend fun hasWriteAccess(document: Document): Boolean = crypto.entity.hasWriteAccess(document.withTypeInfo())
 
 	override suspend fun decryptPatientIdOf(document: Document): Set<String> = crypto.entity.owningEntityIdsOf(document.withTypeInfo(), null)
+
+	override suspend fun createDelegationDeAnonymizationMetadata(entity: Document, delegates: Set<String>) {
+		crypto.delegationsDeAnonymization.createOrUpdateDeAnonymizationInfo(entity.withTypeInfo(), delegates)
+	}
 
 	private suspend fun encrypt(entity: DecryptedDocument) = crypto.entity.encryptEntity(
 		entity.withTypeInfo(),

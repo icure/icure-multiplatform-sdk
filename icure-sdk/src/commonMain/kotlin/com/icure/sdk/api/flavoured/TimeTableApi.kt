@@ -110,6 +110,7 @@ interface TimeTableApi : TimeTableBasicFlavourlessApi, TimeTableFlavouredApi<Dec
 	suspend fun getEncryptionKeysOf(timeTable: TimeTable): Set<HexString>
 	suspend fun hasWriteAccess(timeTable: TimeTable): Boolean
 	suspend fun decryptPatientIdOf(timeTable: TimeTable): Set<String>
+	suspend fun createDelegationDeAnonymizationMetadata(entity: TimeTable, delegates: Set<String>)
 
 	val encrypted: TimeTableFlavouredApi<EncryptedTimeTable>
 	val tryAndRecover: TimeTableFlavouredApi<TimeTable>
@@ -251,6 +252,10 @@ internal class TimeTableApiImpl(
 	override suspend fun hasWriteAccess(timeTable: TimeTable): Boolean = crypto.entity.hasWriteAccess(timeTable.withTypeInfo())
 
 	override suspend fun decryptPatientIdOf(timeTable: TimeTable): Set<String> = crypto.entity.owningEntityIdsOf(timeTable.withTypeInfo(), null)
+
+	override suspend fun createDelegationDeAnonymizationMetadata(entity: TimeTable, delegates: Set<String>) {
+		crypto.delegationsDeAnonymization.createOrUpdateDeAnonymizationInfo(entity.withTypeInfo(), delegates)
+	}
 
 	override suspend fun withEncryptionMetadata(
 		base: DecryptedTimeTable?,

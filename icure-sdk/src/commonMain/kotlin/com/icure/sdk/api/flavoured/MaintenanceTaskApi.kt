@@ -117,6 +117,7 @@ interface MaintenanceTaskApi : MaintenanceTaskBasicFlavourlessApi, MaintenanceTa
 	suspend fun getEncryptionKeysOf(maintenanceTask: MaintenanceTask): Set<HexString>
 	suspend fun hasWriteAccess(maintenanceTask: MaintenanceTask): Boolean
 	suspend fun decryptPatientIdOf(maintenanceTask: MaintenanceTask): Set<String>
+	suspend fun createDelegationDeAnonymizationMetadata(entity: MaintenanceTask, delegates: Set<String>)
 
 	val encrypted: MaintenanceTaskFlavouredApi<EncryptedMaintenanceTask>
 	val tryAndRecover: MaintenanceTaskFlavouredApi<MaintenanceTask>
@@ -260,6 +261,11 @@ internal class MaintenanceTaskApiImpl(
 	override suspend fun hasWriteAccess(maintenanceTask: MaintenanceTask): Boolean = crypto.entity.hasWriteAccess(maintenanceTask.withTypeInfo())
 
 	override suspend fun decryptPatientIdOf(maintenanceTask: MaintenanceTask): Set<String> = crypto.entity.owningEntityIdsOf(maintenanceTask.withTypeInfo(), null)
+
+	override suspend fun createDelegationDeAnonymizationMetadata(entity: MaintenanceTask, delegates: Set<String>) {
+		crypto.delegationsDeAnonymization.createOrUpdateDeAnonymizationInfo(entity.withTypeInfo(), delegates)
+	}
+
 
 	override suspend fun withEncryptionMetadata(
 		maintenanceTask: DecryptedMaintenanceTask?,

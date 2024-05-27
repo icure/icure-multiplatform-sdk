@@ -112,6 +112,7 @@ interface ReceiptApi : ReceiptBasicFlavourlessApi, ReceiptFlavouredApi<Decrypted
 	suspend fun getEncryptionKeysOf(receipt: Receipt): Set<HexString>
 	suspend fun hasWriteAccess(receipt: Receipt): Boolean
 	suspend fun decryptPatientIdOf(receipt: Receipt): Set<String>
+	suspend fun createDelegationDeAnonymizationMetadata(entity: Receipt, delegates: Set<String>)
 
 	val encrypted: ReceiptFlavouredApi<EncryptedReceipt>
 	val tryAndRecover: ReceiptFlavouredApi<Receipt>
@@ -282,6 +283,10 @@ internal class ReceiptApiImpl(
 	override suspend fun hasWriteAccess(receipt: Receipt): Boolean = crypto.entity.hasWriteAccess(receipt.withTypeInfo())
 
 	override suspend fun decryptPatientIdOf(receipt: Receipt): Set<String> = crypto.entity.owningEntityIdsOf(receipt.withTypeInfo(), null)
+
+	override suspend fun createDelegationDeAnonymizationMetadata(entity: Receipt, delegates: Set<String>) {
+		crypto.delegationsDeAnonymization.createOrUpdateDeAnonymizationInfo(entity.withTypeInfo(), delegates)
+	}
 
 	override suspend fun encryptAndSetReceiptAttachment(receipt: Receipt, blobType: String, attachment: ByteArray): EncryptedReceipt {
 		val aesKey = crypto.entity.tryDecryptAndImportAnyEncryptionKey(receipt.withTypeInfo())?.key

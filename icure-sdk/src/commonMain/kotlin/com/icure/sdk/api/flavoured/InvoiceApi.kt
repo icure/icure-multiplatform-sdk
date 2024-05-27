@@ -185,6 +185,7 @@ interface InvoiceApi : InvoiceBasicFlavourlessApi, InvoiceFlavouredApi<Decrypted
 	suspend fun getEncryptionKeysOf(invoice: Invoice): Set<HexString>
 	suspend fun hasWriteAccess(invoice: Invoice): Boolean
 	suspend fun decryptPatientIdOf(invoice: Invoice): Set<String>
+	suspend fun createDelegationDeAnonymizationMetadata(entity: Invoice, delegates: Set<String>)
 
 	val encrypted: InvoiceFlavouredApi<EncryptedInvoice>
 	val tryAndRecover: InvoiceFlavouredApi<Invoice>
@@ -468,6 +469,10 @@ internal class InvoiceApiImpl(
 	override suspend fun hasWriteAccess(invoice: Invoice): Boolean = crypto.entity.hasWriteAccess(invoice.withTypeInfo())
 
 	override suspend fun decryptPatientIdOf(invoice: Invoice): Set<String> = crypto.entity.owningEntityIdsOf(invoice.withTypeInfo(), null)
+
+	override suspend fun createDelegationDeAnonymizationMetadata(entity: Invoice, delegates: Set<String>) {
+		crypto.delegationsDeAnonymization.createOrUpdateDeAnonymizationInfo(entity.withTypeInfo(), delegates)
+	}
 
 	override suspend fun withEncryptionMetadata(
 		base: DecryptedInvoice?,

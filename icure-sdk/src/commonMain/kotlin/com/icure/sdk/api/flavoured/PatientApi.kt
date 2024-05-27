@@ -16,20 +16,15 @@ import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.EntityAccessInformation
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.crypto.entities.EntityWithTypeInfo
-import com.icure.sdk.crypto.entities.MinimalBulkShareResult
 import com.icure.sdk.crypto.entities.ShareAllPatientDataOptions
 import com.icure.sdk.crypto.entities.ShareAllPatientDataOptions.BulkShareErrorsException
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
-import com.icure.sdk.crypto.entities.SimpleDelegateShareOptions
 import com.icure.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.withTypeInfo
 import com.icure.sdk.model.DataOwnerRegistrationSuccess
 import com.icure.sdk.model.DecryptedPatient
 import com.icure.sdk.model.EncryptedPatient
-import com.icure.sdk.model.Form
-import com.icure.sdk.model.HealthElement
-import com.icure.sdk.model.HealthcareParty
 import com.icure.sdk.model.IcureStub
 import com.icure.sdk.model.IdWithRev
 import com.icure.sdk.model.ListOfIds
@@ -49,7 +44,6 @@ import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
-import com.icure.sdk.model.requests.MinimalEntityBulkShareResult
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.utils.EntityEncryptionException
@@ -262,6 +256,7 @@ interface PatientApi : PatientBasicFlavourlessApi, PatientFlavouredApi<Decrypted
 	suspend fun createDelegationsDeAnonymizationMetadata(patient: Patient, dataOwnerIds: Set<String>)
 	suspend fun hasWriteAccess(patient: Patient): Boolean
 	suspend fun decryptPatientIdOf(patient: Patient): Set<String>
+	suspend fun createDelegationDeAnonymizationMetadata(entity: Patient, delegates: Set<String>)
 
 	val encrypted: PatientFlavouredApi<EncryptedPatient>
 	val tryAndRecover: PatientFlavouredApi<Patient>
@@ -813,6 +808,10 @@ internal class PatientApiImpl(
 	override suspend fun hasWriteAccess(patient: Patient): Boolean = crypto.entity.hasWriteAccess(patient.withTypeInfo())
 
 	override suspend fun decryptPatientIdOf(patient: Patient): Set<String> = crypto.entity.owningEntityIdsOf(patient.withTypeInfo(), null)
+
+	override suspend fun createDelegationDeAnonymizationMetadata(entity: Patient, delegates: Set<String>) {
+		crypto.delegationsDeAnonymization.createOrUpdateDeAnonymizationInfo(entity.withTypeInfo(), delegates)
+	}
 
 	override suspend fun getSecretIdsOf(patient: Patient): Set<String> =
 		crypto.entity.secretIdsOf(patient.withTypeInfo(), null)

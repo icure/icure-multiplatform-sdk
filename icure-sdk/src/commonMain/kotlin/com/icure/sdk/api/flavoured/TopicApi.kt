@@ -123,6 +123,7 @@ interface TopicApi : TopicBasicFlavourlessApi, TopicFlavouredApi<DecryptedTopic>
 	suspend fun getEncryptionKeysOf(topic: Topic): Set<HexString>
 	suspend fun hasWriteAccess(topic: Topic): Boolean
 	suspend fun decryptPatientIdOf(topic: Topic): Set<String>
+	suspend fun createDelegationDeAnonymizationMetadata(entity: Topic, delegates: Set<String>)
 
 	val encrypted: TopicFlavouredApi<EncryptedTopic>
 	val tryAndRecover: TopicFlavouredApi<Topic>
@@ -293,6 +294,10 @@ internal class TopicApiImpl(
 	override suspend fun hasWriteAccess(topic: Topic): Boolean = crypto.entity.hasWriteAccess(topic.withTypeInfo())
 
 	override suspend fun decryptPatientIdOf(topic: Topic): Set<String> = crypto.entity.owningEntityIdsOf(topic.withTypeInfo(), null)
+
+	override suspend fun createDelegationDeAnonymizationMetadata(entity: Topic, delegates: Set<String>) {
+		crypto.delegationsDeAnonymization.createOrUpdateDeAnonymizationInfo(entity.withTypeInfo(), delegates)
+	}
 
 	private suspend fun encrypt(entity: DecryptedTopic) = crypto.entity.encryptEntity(
 		entity.withTypeInfo(),
