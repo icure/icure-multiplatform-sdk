@@ -1,9 +1,6 @@
 name: Release packages
 
 on:
-    push:
-        branches:
-            - develop
     pull_request:
         types:
             - closed
