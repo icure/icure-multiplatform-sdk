@@ -4,6 +4,10 @@ import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.utils.toHexString
 import com.icure.sdk.api.ApiOptions
 import com.icure.sdk.api.CryptoApi
+import com.icure.sdk.api.DeviceApi
+import com.icure.sdk.api.DeviceApiImpl
+import com.icure.sdk.api.PermissionApi
+import com.icure.sdk.api.PermissionApiImpl
 import com.icure.sdk.api.RecoveryApi
 import com.icure.sdk.api.RecoveryApiImpl
 import com.icure.sdk.api.UserApi
@@ -119,6 +123,7 @@ interface IcureSdk {
 	val calendarItem: CalendarItemApi
 	val classification: ClassificationApi
 	val contact: ContactApi
+	val device: DeviceApi
 	val document: DocumentApi
 	val form: FormApi
 	val healthcareElement: HealthcareElementApi
@@ -126,6 +131,7 @@ interface IcureSdk {
 	val maintenanceTask: MaintenanceTaskApi
 	val message: MessageApi
 	val patient: PatientApi
+	val permission: PermissionApi
 	val receipt: ReceiptApi
 	val timeTable: TimeTableApi
 	val topic: TopicApi
@@ -556,6 +562,14 @@ private class IcureApiImpl(
 
 	override val recovery: RecoveryApi by lazy {
 		RecoveryApiImpl(internalCrypto)
+	}
+
+	override val device: DeviceApi by lazy {
+		DeviceApiImpl(RawDeviceApiImpl(apiUrl, authService, client))
+	}
+
+	override val permission: PermissionApi by lazy {
+		PermissionApiImpl(RawPermissionApiImpl(apiUrl, authService, client))
 	}
 }
 
