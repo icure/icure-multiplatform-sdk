@@ -1,18 +1,20 @@
 package com.icure.sdk.api.flavoured
 
+import com.icure.sdk.api.raw.RawEntityReferenceApi
 import com.icure.sdk.api.raw.RawInvoiceApi
 import com.icure.sdk.crypto.EntityValidationService
 import com.icure.sdk.crypto.InternalCryptoServices
+import com.icure.sdk.crypto.entities.InvoiceShareOptions
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
-import com.icure.sdk.crypto.entities.SimpleDelegateShareOptions
+import com.icure.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.withTypeInfo
+import com.icure.sdk.model.Invoice
 import com.icure.sdk.model.DecryptedInvoice
 import com.icure.sdk.model.EncryptedInvoice
 import com.icure.sdk.model.IcureStub
-import com.icure.sdk.model.Invoice
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.Patient
@@ -28,6 +30,7 @@ import com.icure.sdk.model.extensions.autoDelegationsFor
 import com.icure.sdk.model.extensions.dataOwnerId
 import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.requests.RequestedPermission
+import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
@@ -48,6 +51,7 @@ interface InvoiceBasicFlavourlessApi {
 	suspend fun deleteInvoice(entityId: String): DocIdentifier
 	suspend fun findInvoicesDelegationsStubsByHcPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<IcureStub>
 	suspend fun getTarificationsCodesOccurrences(minOccurrence: Int): List<LabelledOccurence>
+	suspend fun getNextInvoiceReference(prefix: String): Int
 }
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
@@ -121,6 +125,45 @@ interface InvoiceFlavouredApi<E : Invoice> : InvoiceBasicFlavouredApi<E> {
 		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
 		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
 	): SimpleShareResult<E>
+
+	/**
+	 * Shares an existing access log with other data owners, allowing them to access the non-encrypted data of the access log and optionally also the
+	 * encrypted content, with read-only or read-write permissions.
+	 * @param invoice the [Invoice] to share.
+	 * @param delegates associates the id of data owners which will be granted access to the entity, to the following sharing options:
+	 * - shareEncryptionKey: specifies if the encryption key of the access log should be shared with the delegate, giving access to all encrypted
+	 * content of the entity, excluding other encrypted metadata (defaults to [ShareMetadataBehaviour.IfAvailable]).
+	 * - sharePatientId: specifies if the id of the patient that this access log refers to should be shared with the delegate. Normally this would
+	 * be the same as objectId, but it is encrypted separately from it allowing you to give access to the patient id without giving access to the other
+	 * encrypted data of the access log (defaults to [ShareMetadataBehaviour.IfAvailable]).
+	 * - requestedPermissions: the requested permissions for the delegate, defaults to [ShareMetadataBehaviour.IfAvailable].
+	 * @return the [SimpleShareResult] of the operation: the updated entity if the operation was successful or details of the error if
+	 * the operation failed.
+	 */
+	suspend fun tryShareWithMany(
+		invoice: E,
+		delegates: Map<String, InvoiceShareOptions>
+	): SimpleShareResult<E>
+
+	/**
+	 * Shares an existing access log with other data owners, allowing them to access the non-encrypted data of the access log and optionally also the
+	 * encrypted content, with read-only or read-write permissions.
+	 * @param invoice the [Invoice] to share.
+	 * @param delegates associates the id of data owners which will be granted access to the entity, to the following sharing options:
+	 * - shareEncryptionKey: specifies if the encryption key of the access log should be shared with the delegate, giving access to all encrypted
+	 * content of the entity, excluding other encrypted metadata (defaults to [ShareMetadataBehaviour.IfAvailable]).
+	 * - sharePatientId: specifies if the id of the patient that this access log refers to should be shared with the delegate. Normally this would
+	 * be the same as objectId, but it is encrypted separately from it allowing you to give access to the patient id without giving access to the other
+	 * encrypted data of the access log (defaults to [ShareMetadataBehaviour.IfAvailable]).
+	 * - requestedPermissions: the requested permissions for the delegate, defaults to [ShareMetadataBehaviour.IfAvailable].
+	 * @return the updated entity.
+	 * @throws IllegalStateException if the operation was not successful.
+	 */
+	suspend fun shareWithMany(
+		invoice: E,
+		delegates: Map<String, InvoiceShareOptions>
+	): E
+
 	suspend fun findInvoicesByHcPartyPatient(
 		hcPartyId: String,
 		patient: Patient,
@@ -141,6 +184,10 @@ interface InvoiceApi : InvoiceBasicFlavourlessApi, InvoiceFlavouredApi<Decrypted
 		delegates: Map<String, AccessLevel> = emptyMap(),
 		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent,
 	): DecryptedInvoice
+	suspend fun getEncryptionKeysOf(invoice: Invoice): Set<HexString>
+	suspend fun hasWriteAccess(invoice: Invoice): Boolean
+	suspend fun decryptPatientIdOf(invoice: Invoice): Set<String>
+	suspend fun createDelegationDeAnonymizationMetadata(entity: Invoice, delegates: Set<String>)
 
 	val encrypted: InvoiceFlavouredApi<EncryptedInvoice>
 	val tryAndRecover: InvoiceFlavouredApi<Invoice>
@@ -287,9 +334,9 @@ private abstract class AbstractInvoiceFlavouredApi<E : Invoice>(
 			invoice.withTypeInfo(),
 			true,
 			mapOf(
-				delegateId to SimpleDelegateShareOptions(
+				delegateId to SimpleDelegateShareOptionsImpl(
 					shareSecretIds = null,
-					shareEncryptionKeys = shareEncryptionKeys,
+					shareEncryptionKey = shareEncryptionKeys,
 					shareOwningEntityIds = shareOwningEntityIds,
 					requestedPermissions = requestedPermission,
 				),
@@ -297,6 +344,18 @@ private abstract class AbstractInvoiceFlavouredApi<E : Invoice>(
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
 		}
+
+	override suspend fun tryShareWithMany(invoice: E, delegates: Map<String, InvoiceShareOptions>): SimpleShareResult<E> =
+		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
+			invoice.withTypeInfo(),
+			true,
+			delegates
+		) {
+			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
+		}
+
+	override suspend fun shareWithMany(invoice: E, delegates: Map<String, InvoiceShareOptions>): E =
+		tryShareWithMany(invoice, delegates).updatedEntityOrThrow()
 
 	override suspend fun findInvoicesByHcPartyPatient(
 		hcPartyId: String,
@@ -319,7 +378,10 @@ private abstract class AbstractInvoiceFlavouredApi<E : Invoice>(
 }
 
 @InternalIcureApi
-private class AbstractInvoiceBasicFlavourlessApi(val rawApi: RawInvoiceApi) : InvoiceBasicFlavourlessApi {
+private class AbstractInvoiceBasicFlavourlessApi(
+	val rawApi: RawInvoiceApi,
+	val rawEntityReferenceApi: RawEntityReferenceApi
+) : InvoiceBasicFlavourlessApi {
 	override suspend fun deleteInvoice(entityId: String) = rawApi.deleteInvoice(entityId).successBody()
 	override suspend fun findInvoicesDelegationsStubsByHcPartyPatientForeignKeys(
 		hcPartyId: String,
@@ -330,6 +392,13 @@ private class AbstractInvoiceBasicFlavourlessApi(val rawApi: RawInvoiceApi) : In
 		minOccurrence: Int,
 	) = rawApi.getTarificationsCodesOccurrences(minOccurrence.toLong()).successBody()
 
+	override suspend fun getNextInvoiceReference(prefix: String): Int =
+		rawEntityReferenceApi.getLatest(prefix).successBodyOrNull()
+			?.takeIf { it.id.startsWith(prefix) }
+			?.id?.split(":")?.last()
+			?.toIntOrNull()
+			?: 1
+
 }
 
 @InternalIcureApi
@@ -338,7 +407,8 @@ internal class InvoiceApiImpl(
 	private val crypto: InternalCryptoServices,
 	private val fieldsToEncrypt: EncryptedFieldsManifest = ENCRYPTED_FIELDS_MANIFEST,
 	private val autofillAuthor: Boolean,
-	) : InvoiceApi, InvoiceFlavouredApi<DecryptedInvoice> by object :
+	rawEntityReferenceApi: RawEntityReferenceApi
+) : InvoiceApi, InvoiceFlavouredApi<DecryptedInvoice> by object :
 	AbstractInvoiceFlavouredApi<DecryptedInvoice>(rawApi, crypto) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedInvoice): EncryptedInvoice =
 		crypto.entity.encryptEntity(
@@ -354,7 +424,7 @@ internal class InvoiceApiImpl(
 		) { Serialization.json.decodeFromJsonElement<DecryptedInvoice>(it) }
 			?: throw EntityEncryptionException("Entity ${entity.id} cannot be created")
 	}
-}, InvoiceBasicFlavourlessApi by AbstractInvoiceBasicFlavourlessApi(rawApi) {
+}, InvoiceBasicFlavourlessApi by AbstractInvoiceBasicFlavourlessApi(rawApi, rawEntityReferenceApi) {
 	override val encrypted: InvoiceFlavouredApi<EncryptedInvoice> =
 		object : AbstractInvoiceFlavouredApi<EncryptedInvoice>(rawApi, crypto) {
 			override suspend fun validateAndMaybeEncrypt(entity: EncryptedInvoice): EncryptedInvoice =
@@ -407,6 +477,16 @@ internal class InvoiceApiImpl(
 		}
 	}
 
+	override suspend fun getEncryptionKeysOf(invoice: Invoice): Set<HexString> = crypto.entity.encryptionKeysOf(invoice.withTypeInfo(), null)
+
+	override suspend fun hasWriteAccess(invoice: Invoice): Boolean = crypto.entity.hasWriteAccess(invoice.withTypeInfo())
+
+	override suspend fun decryptPatientIdOf(invoice: Invoice): Set<String> = crypto.entity.owningEntityIdsOf(invoice.withTypeInfo(), null)
+
+	override suspend fun createDelegationDeAnonymizationMetadata(entity: Invoice, delegates: Set<String>) {
+		crypto.delegationsDeAnonymization.createOrUpdateDeAnonymizationInfo(entity.withTypeInfo(), delegates)
+	}
+
 	override suspend fun withEncryptionMetadata(
 		base: DecryptedInvoice?,
 		patient: Patient?,
@@ -448,6 +528,7 @@ internal class InvoiceApiImpl(
 @InternalIcureApi
 internal class InvoiceBasicApiImpl(
 	rawApi: RawInvoiceApi,
+	rawEntityReferenceApi: RawEntityReferenceApi,
 	private val validationService: EntityValidationService,
 	private val fieldsToEncrypt: EncryptedFieldsManifest = ENCRYPTED_FIELDS_MANIFEST,
 ) : InvoiceBasicApi, InvoiceBasicFlavouredApi<EncryptedInvoice> by object :
@@ -456,4 +537,4 @@ internal class InvoiceBasicApiImpl(
 		validationService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedInvoice.serializer(), fieldsToEncrypt)
 
 	override suspend fun maybeDecrypt(entity: EncryptedInvoice): EncryptedInvoice = entity
-}, InvoiceBasicFlavourlessApi by AbstractInvoiceBasicFlavourlessApi(rawApi)
+}, InvoiceBasicFlavourlessApi by AbstractInvoiceBasicFlavourlessApi(rawApi, rawEntityReferenceApi)
