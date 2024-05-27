@@ -3,6 +3,7 @@ package com.icure.sdk.api.raw
 import com.icure.sdk.model.EncryptedTopic
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
+import com.icure.sdk.model.Topic
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
@@ -38,10 +39,10 @@ public interface RawTopicApi {
 	suspend fun filterTopicsBy(
 		startDocumentId: String? = null,
 		limit: Int? = null,
-		filterChain: FilterChain<EncryptedTopic>,
+		filterChain: FilterChain<Topic>,
 	): HttpResponse<PaginatedList<EncryptedTopic>>
 
-	suspend fun matchTopicsBy(filter: AbstractFilter<EncryptedTopic>): HttpResponse<List<String>>
+	suspend fun matchTopicsBy(filter: AbstractFilter<Topic>): HttpResponse<List<String>>
 
 	suspend fun addParticipant(
 		topicId: String,

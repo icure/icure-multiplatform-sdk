@@ -10,6 +10,7 @@ import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.model.EncryptedMessage
 import com.icure.sdk.model.ListOfIds
+import com.icure.sdk.model.Message
 import com.icure.sdk.model.MessagesReadStatusUpdate
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
@@ -351,7 +352,7 @@ class RawMessageApiImpl(
 	override suspend fun filterMessagesBy(
 		startDocumentId: String?,
 		limit: Int?,
-		filterChain: FilterChain<EncryptedMessage>,
+		filterChain: FilterChain<Message>,
 	): HttpResponse<PaginatedList<EncryptedMessage>> =
 		post {
 			url {
@@ -365,7 +366,7 @@ class RawMessageApiImpl(
 			setBody(filterChain)
 		}.wrap()
 
-	override suspend fun matchMessagesBy(filter: AbstractFilter<EncryptedMessage>): HttpResponse<List<String>> =
+	override suspend fun matchMessagesBy(filter: AbstractFilter<Message>): HttpResponse<List<String>> =
 		post {
 			url {
 				takeFrom(apiUrl)
