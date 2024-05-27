@@ -58,7 +58,7 @@ interface InvoiceBasicFlavouredApi<E : Invoice> {
 	suspend fun modifyInvoices(entities: List<E>): List<E>
 	suspend fun getInvoice(entityId: String): E
 	suspend fun getInvoices(entityIds: List<String>): List<E>
-	suspend fun filterInvoicesBy(filterChain: FilterChain<EncryptedInvoice>): List<E>
+	suspend fun filterInvoicesBy(filterChain: FilterChain<Invoice>): List<E>
 	suspend fun findInvoicesByHcPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<E>
 	suspend fun reassignInvoice(invoice: E): E
 	suspend fun mergeTo(invoiceId: String, ids: List<String>): E
@@ -206,7 +206,7 @@ private abstract class AbstractInvoiceBasicFlavouredApi<E : Invoice>(protected v
 	override suspend fun getInvoices(entityIds: List<String>): List<E> =
 		rawApi.getInvoices(ListOfIds(entityIds)).successBody().map { maybeDecrypt(it) }
 
-	override suspend fun filterInvoicesBy(filterChain: FilterChain<EncryptedInvoice>): List<E> =
+	override suspend fun filterInvoicesBy(filterChain: FilterChain<Invoice>): List<E> =
 		rawApi.filterInvoicesBy(filterChain).successBody().map { maybeDecrypt(it) }
 
 	override suspend fun findInvoicesByHcPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<E> =

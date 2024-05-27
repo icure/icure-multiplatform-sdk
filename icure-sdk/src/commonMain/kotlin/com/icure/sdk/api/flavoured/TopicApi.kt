@@ -43,7 +43,7 @@ private val ENCRYPTED_FIELDS_MANIFEST =
 interface TopicBasicFlavourlessApi {
 	suspend fun deleteTopic(entityId: String): DocIdentifier
 	suspend fun deleteTopics(entityIds: List<String>): List<DocIdentifier>
-	suspend fun matchTopicsBy(filter: AbstractFilter<EncryptedTopic>): List<String>
+	suspend fun matchTopicsBy(filter: AbstractFilter<Topic>): List<String>
 }
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
@@ -54,7 +54,7 @@ interface TopicBasicFlavouredApi<E : Topic> {
 	suspend fun filterTopicsBy(
 		startDocumentId: String? = null,
 		limit: Int? = null,
-		filterChain: FilterChain<EncryptedTopic>
+		filterChain: FilterChain<Topic>
 	): PaginatedList<E>
 
 	suspend fun addParticipant(entityId: String, dataOwnerId: String, topicRole: TopicRole): E
@@ -144,7 +144,7 @@ private abstract class AbstractTopicBasicFlavouredApi<E : Topic>(protected val r
 	override suspend fun filterTopicsBy(
 		startDocumentId: String?,
 		limit: Int?,
-		filterChain: FilterChain<EncryptedTopic>,
+		filterChain: FilterChain<Topic>,
 		) = rawApi.filterTopicsBy(startDocumentId, limit, filterChain).successBody().map { maybeDecrypt(it) }
 	override suspend fun addParticipant(entityId: String, dataOwnerId: String, topicRole: TopicRole) =
 		rawApi.addParticipant(entityId, AddParticipant(dataOwnerId, topicRole)).successBody().let { maybeDecrypt(it) }
@@ -200,7 +200,7 @@ private abstract class AbstractTopicFlavouredApi<E : Topic>(
 private class AbstractTopicBasicFlavourlessApi(val rawApi: RawTopicApi) : TopicBasicFlavourlessApi {
 	override suspend fun deleteTopic(entityId: String) = rawApi.deleteTopic(entityId).successBody()
 	override suspend fun deleteTopics(entityIds: List<String>) = rawApi.deleteTopics(ListOfIds(entityIds)).successBody()
-	override suspend fun matchTopicsBy(filter: AbstractFilter<EncryptedTopic>) = rawApi.matchTopicsBy(filter).successBody()
+	override suspend fun matchTopicsBy(filter: AbstractFilter<Topic>) = rawApi.matchTopicsBy(filter).successBody()
 }
 
 @InternalIcureApi
