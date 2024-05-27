@@ -27,7 +27,7 @@ kotlin {
 					implementation(libs.kotlinSerialization)
 					api(libs.kotlinDateTime)
 					implementation(libs.kermit)
-					implementation(libs.kryptom)
+					api(libs.kryptom)
 					implementation(libs.coroutinesCore)
 					implementation(kotlin("reflect"))
 				}
