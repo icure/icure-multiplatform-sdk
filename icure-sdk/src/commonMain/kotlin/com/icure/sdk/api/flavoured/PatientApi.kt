@@ -41,7 +41,7 @@ private val ENCRYPTED_FIELDS_MANIFEST =
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface PatientBasicFlavourlessApi {
-	suspend fun matchPatientsBy(filter: AbstractFilter<EncryptedPatient>): List<String>
+	suspend fun matchPatientsBy(filter: AbstractFilter<Patient>): List<String>
 	suspend fun deletePatient(entityId: String): DocIdentifier
 	suspend fun deletePatients(entityIds: List<String>): List<DocIdentifier>
 	suspend fun undeletePatient(patientIds: String): List<DocIdentifier>
@@ -53,7 +53,7 @@ interface PatientBasicFlavouredApi<E : Patient> {
 	suspend fun modifyPatient(entity: E): E
 	suspend fun getPatient(entityId: String): E
 	suspend fun filterPatientsBy(
-		filterChain: FilterChain<EncryptedPatient>,
+		filterChain: FilterChain<Patient>,
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
@@ -254,7 +254,7 @@ private abstract class AbstractPatientBasicFlavouredApi<E : Patient>(protected v
 	override suspend fun getPatient(entityId: String): E = rawApi.getPatient(entityId).successBody().let { maybeDecrypt(it) }
 
 	override suspend fun filterPatientsBy(
-		filterChain: FilterChain<EncryptedPatient>,
+		filterChain: FilterChain<Patient>,
 		startKey: String?,
 		startDocumentId: String?,
 		limit: Int?,
@@ -457,7 +457,7 @@ private abstract class AbstractPatientFlavouredApi<E : Patient>(
 
 @InternalIcureApi
 private class AbstractPatientBasicFlavourlessApi(val rawApi: RawPatientApi, val crypto: BasicInternalCryptoApi) : PatientBasicFlavourlessApi {
-	override suspend fun matchPatientsBy(filter: AbstractFilter<EncryptedPatient>) = rawApi.matchPatientsBy(filter).successBody()
+	override suspend fun matchPatientsBy(filter: AbstractFilter<Patient>) = rawApi.matchPatientsBy(filter).successBody()
 	override suspend fun deletePatient(entityId: String) = rawApi.deletePatient(entityId).successBody()
 	override suspend fun deletePatients(entityIds: List<String>) = rawApi.deletePatients(ListOfIds(entityIds)).successBody()
 	override suspend fun undeletePatient(patientIds: String) = rawApi.undeletePatient(patientIds).successBody()

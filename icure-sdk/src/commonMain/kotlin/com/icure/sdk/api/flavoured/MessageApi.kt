@@ -40,7 +40,7 @@ private val ENCRYPTED_FIELDS_MANIFEST =
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface MessageBasicFlavourlessApi {
-	suspend fun matchMessagesBy(filter: AbstractFilter<EncryptedMessage>): List<String>
+	suspend fun matchMessagesBy(filter: AbstractFilter<Message>): List<String>
 	suspend fun deleteMessage(entityId: String): DocIdentifier
 	suspend fun deleteMessages(entityIds: List<String>): List<DocIdentifier>
 }
@@ -50,7 +50,7 @@ interface MessageBasicFlavouredApi<E : Message> {
 	suspend fun modifyMessage(entity: E): E
 	suspend fun getMessage(entityId: String): E
 	suspend fun getMessages(entityIds: List<String>): List<E>
-	suspend fun filterMessagesBy(filterChain: FilterChain<EncryptedMessage>, startDocumentId: String?, limit: Int?): PaginatedList<E>
+	suspend fun filterMessagesBy(filterChain: FilterChain<Message>, startDocumentId: String?, limit: Int?): PaginatedList<E>
 
 	suspend fun listMessagesByTransportGuids(hcPartyId: String, transportGuids: List<String>): List<E>
 	suspend fun findMessagesByHCPartyPatientForeignKeys(secretPatientKeys: List<String>): List<E>
@@ -130,7 +130,7 @@ private abstract class AbstractMessageBasicFlavouredApi<E : Message>(protected v
 		rawApi.getMessages(ListOfIds(entityIds)).successBody().map { maybeDecrypt(it) }
 
 	override suspend fun filterMessagesBy(
-		filterChain: FilterChain<EncryptedMessage>,
+		filterChain: FilterChain<Message>,
 		startDocumentId: String?,
 		limit: Int?,
 	): PaginatedList<E> =
@@ -252,7 +252,7 @@ private abstract class AbstractMessageFlavouredApi<E : Message>(
 
 @InternalIcureApi
 private class AbstractMessageBasicFlavourlessApi(val rawApi: RawMessageApi) : MessageBasicFlavourlessApi {
-	override suspend fun matchMessagesBy(filter: AbstractFilter<EncryptedMessage>) = rawApi.matchMessagesBy(filter).successBody()
+	override suspend fun matchMessagesBy(filter: AbstractFilter<Message>) = rawApi.matchMessagesBy(filter).successBody()
 	override suspend fun deleteMessage(entityId: String) = rawApi.deleteMessage(entityId).successBody()
 	override suspend fun deleteMessages(entityIds: List<String>) = rawApi.deleteMessages(ListOfIds(entityIds)).successBody()
 }
