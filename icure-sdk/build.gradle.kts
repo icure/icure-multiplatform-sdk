@@ -105,7 +105,7 @@ publishing {
 
 val ktJsCompiledPackage = projectDir.resolve("build/dist/js/productionLibrary")
 val tsSources = projectDir.resolve("src/jsMain/typescript")
-val tsSourcesProject = projectDir.resolve("build/tsSourcesProject")
+val mergedTsProject = projectDir.resolve("build/tsSourcesProject")
 val tsCompiledSources = projectDir.resolve("build/tsCompiledSources")
 val tsPackage = projectDir.resolve("build/tsPackage")
 
@@ -115,7 +115,7 @@ fun copyAddingDependenciesToTsPackages(
 ) {
 	FileWriter(into).use { fw ->
 		tsSources.listFiles()!!.filter { it.isDirectory }.forEach {
-			fw.write("import * as ${it.name} from './${it.name}'\n")
+			fw.write("import * as ${it.name} from './${it.name}.mjs'\n")
 		}
 		from.readText().let {
 			fw.write(it)
@@ -126,7 +126,7 @@ fun copyAddingDependenciesToTsPackages(
 val prepareTypescriptSourceCompilation = tasks.register("prepareTypescriptSourceCompilation") {
 	dependsOn("jsNodeProductionLibraryDistribution")
 	inputs.dir(tsSources)
-	outputs.dir(tsSourcesProject)
+	outputs.dir(mergedTsProject)
 	fun generateIndexForDirAndSubdirs(currFile: File) {
 		val (directories, files) = currFile.listFiles()!!.partition { it.isDirectory }
 		FileWriter(currFile.resolve("index.ts")).use { fw ->
@@ -141,16 +141,33 @@ val prepareTypescriptSourceCompilation = tasks.register("prepareTypescriptSource
 		directories.forEach { generateIndexForDirAndSubdirs(it) }
 	}
 	doLast {
-		delete(tsSourcesProject)
+		delete(mergedTsProject)
 		copy {
 			from(tsSources)
-			into(tsSourcesProject)
+			into(mergedTsProject)
 		}
 		copyAddingDependenciesToTsPackages(
 			from = ktJsCompiledPackage.resolve("icure-sdk.d.ts"),
-			into = tsSourcesProject.resolve("icure-sdk.d.mts")
+			into = mergedTsProject.resolve("icure-sdk.d.mts")
 		)
-		generateIndexForDirAndSubdirs(tsSourcesProject)
+		// Generate index files for main packages and for export
+		val tsPackages = tsSources.listFiles()!!.filter { it.isDirectory }
+		tsPackages.forEach { tsPackage ->
+			FileWriter(mergedTsProject.resolve("${tsPackage.name}.mts")).use { fw ->
+				tsPackage.walkTopDown().filter {
+					!it.isDirectory && it.name.endsWith(".mts")
+				}.forEach { currFile ->
+					val currFilePath = currFile.relativeTo(tsSources).path.removeSuffix(".mts")
+					fw.write("export * from './$currFilePath.mjs'\n")
+				}
+			}
+		}
+		FileWriter(mergedTsProject.resolve("index.mts")).use { fw ->
+			tsPackages.forEach { tsPackage ->
+				fw.write("export * from './${tsPackage.name}.mjs'\n")
+			}
+			fw.write("export * from './icure-sdk.mjs'\n")
+		}
 	}
 }
 
@@ -158,7 +175,7 @@ val compileTypescriptSources = tasks.register("compileTypescriptSources") {
 	// Note: requires tsc in path
 	// Typescript configuration from tsconfig
 	dependsOn(prepareTypescriptSourceCompilation)
-	inputs.dir(projectDir.resolve(tsSourcesProject))
+	inputs.dir(projectDir.resolve(mergedTsProject))
 	inputs.file(projectDir.resolve("tsconfig.json"))
 	outputs.dir(projectDir.resolve(projectDir.resolve(tsCompiledSources)))
 	doLast {
