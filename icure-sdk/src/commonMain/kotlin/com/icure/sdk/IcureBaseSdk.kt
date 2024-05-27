@@ -5,6 +5,8 @@ import com.icure.sdk.api.BasicApiOptions
 import com.icure.sdk.api.BasicAuthenticationMethod
 import com.icure.sdk.api.CodeApi
 import com.icure.sdk.api.CodeApiImpl
+import com.icure.sdk.api.DeviceApi
+import com.icure.sdk.api.DeviceApiImpl
 import com.icure.sdk.api.GroupApi
 import com.icure.sdk.api.GroupApiImpl
 import com.icure.sdk.api.HealthcarePartyApi
@@ -45,6 +47,7 @@ import com.icure.sdk.api.raw.impl.RawCalendarItemApiImpl
 import com.icure.sdk.api.raw.impl.RawClassificationApiImpl
 import com.icure.sdk.api.raw.impl.RawCodeApiImpl
 import com.icure.sdk.api.raw.impl.RawContactApiImpl
+import com.icure.sdk.api.raw.impl.RawDeviceApiImpl
 import com.icure.sdk.api.raw.impl.RawDocumentApiImpl
 import com.icure.sdk.api.raw.impl.RawEntityReferenceApiImpl
 import com.icure.sdk.api.raw.impl.RawFormApiImpl
@@ -78,6 +81,7 @@ interface IcureBaseSdk {
 	val classification: ClassificationBasicApi
 	val code: CodeApi
 	val contact: ContactBasicApi
+	val device: DeviceApi
 	val document: DocumentBasicApi
 	val form: FormBasicApi
 	val group: GroupApi
@@ -136,6 +140,7 @@ private class IcureBaseApiImpl(
 	override val classification by lazy { ClassificationBasicApiImpl(RawClassificationApiImpl(apiUrl, authService, headersProvider, client), crypto.validationService, encryptedFieldsManifests.classification) }
 	override val code by lazy { CodeApiImpl(RawCodeApiImpl(apiUrl, authService, client)) }
 	override val contact by lazy { ContactBasicApiImpl(RawContactApiImpl(apiUrl, authService, headersProvider, client), crypto.validationService, crypto.jsonEncryption, encryptedFieldsManifests.contact, encryptedFieldsManifests.service) }
+	override val device by lazy { DeviceApiImpl(RawDeviceApiImpl(apiUrl, authService, client)) }
 	override val document by lazy { DocumentBasicApiImpl(RawDocumentApiImpl(apiUrl, authService, headersProvider, client), crypto.validationService, encryptedFieldsManifests.document) }
 	override val form by lazy { FormBasicApiImpl(RawFormApiImpl(apiUrl, authService, headersProvider, client), crypto.validationService, encryptedFieldsManifests.form) }
 	override val group: GroupApi by lazy { GroupApiImpl(RawGroupApiImpl(apiUrl, authService, client)) }
