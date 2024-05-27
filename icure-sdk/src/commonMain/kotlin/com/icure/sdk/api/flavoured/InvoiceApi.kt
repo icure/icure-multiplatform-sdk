@@ -14,6 +14,7 @@ import com.icure.sdk.crypto.entities.withTypeInfo
 import com.icure.sdk.model.Invoice
 import com.icure.sdk.model.DecryptedInvoice
 import com.icure.sdk.model.EncryptedInvoice
+import com.icure.sdk.model.EntityReference
 import com.icure.sdk.model.IcureStub
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
@@ -52,6 +53,7 @@ interface InvoiceBasicFlavourlessApi {
 	suspend fun findInvoicesDelegationsStubsByHcPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<IcureStub>
 	suspend fun getTarificationsCodesOccurrences(minOccurrence: Int): List<LabelledOccurence>
 	suspend fun getNextInvoiceReference(prefix: String): Int
+	suspend fun createInvoiceReference(nextReference: Int, invoiceId: String, prefix: String): EntityReference
 }
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
@@ -379,8 +381,8 @@ private abstract class AbstractInvoiceFlavouredApi<E : Invoice>(
 
 @InternalIcureApi
 private class AbstractInvoiceBasicFlavourlessApi(
-	val rawApi: RawInvoiceApi,
-	val rawEntityReferenceApi: RawEntityReferenceApi
+	private val rawApi: RawInvoiceApi,
+	private val rawEntityReferenceApi: RawEntityReferenceApi
 ) : InvoiceBasicFlavourlessApi {
 	override suspend fun deleteInvoice(entityId: String) = rawApi.deleteInvoice(entityId).successBody()
 	override suspend fun findInvoicesDelegationsStubsByHcPartyPatientForeignKeys(
@@ -399,6 +401,12 @@ private class AbstractInvoiceBasicFlavourlessApi(
 			?.toIntOrNull()
 			?: 1
 
+	override suspend fun createInvoiceReference(nextReference: Int, invoiceId: String, prefix: String): EntityReference = rawEntityReferenceApi.createEntityReference(
+		EntityReference(
+			id = "${prefix}${":".takeIf { !prefix.endsWith(":") } ?: ""}",
+			docId = invoiceId
+		)
+	).successBody()
 }
 
 @InternalIcureApi

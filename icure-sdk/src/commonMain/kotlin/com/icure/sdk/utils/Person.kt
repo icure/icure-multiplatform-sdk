@@ -27,6 +27,6 @@ fun Person.garnishWithName(
 		is DecryptedPatient -> this.copy(names = names + personName)
 		is HealthcareParty -> this.copy(names = names + personName)
 		is EncryptedPatient -> this.copy(names = names + personName)
-		else -> throw IllegalStateException("Unsupported Person class: ${this::class.qualifiedName}")
+		else -> throw IllegalStateException("Unsupported Person implementation")
 	}
 }
