@@ -10,6 +10,7 @@ import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.model.EncryptedInvoice
 import com.icure.sdk.model.IcureStub
+import com.icure.sdk.model.Invoice
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
@@ -468,7 +469,7 @@ class RawInvoiceApiImpl(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-	override suspend fun filterInvoicesBy(filterChain: FilterChain<EncryptedInvoice>): HttpResponse<List<EncryptedInvoice>> =
+	override suspend fun filterInvoicesBy(filterChain: FilterChain<Invoice>): HttpResponse<List<EncryptedInvoice>> =
 		post {
 			url {
 				takeFrom(apiUrl)

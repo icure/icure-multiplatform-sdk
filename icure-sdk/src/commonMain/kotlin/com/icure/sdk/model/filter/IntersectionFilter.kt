@@ -16,7 +16,7 @@ import kotlinx.serialization.Contextual
 data class IntersectionFilter<O : Identifiable<String>>(
 	override val desc: String? = null,
 	@DefaultValue("emptyList()")
-	override val filters: List<@Contextual AbstractFilter<O>> = emptyList(),
+	override val filters: List<AbstractFilter<O>> = emptyList(),
 ) : AbstractFilter<O>, Filter.IntersectionFilter<O> {
 	// region IntersectionFilter-IntersectionFilter
 

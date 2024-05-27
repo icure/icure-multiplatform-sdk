@@ -10,6 +10,7 @@ import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.model.EncryptedMaintenanceTask
 import com.icure.sdk.model.ListOfIds
+import com.icure.sdk.model.MaintenanceTask
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.filter.chain.FilterChain
@@ -101,7 +102,7 @@ class RawMaintenanceTaskApiImpl(
 	override suspend fun filterMaintenanceTasksBy(
 		startDocumentId: String?,
 		limit: Int?,
-		filterChain: FilterChain<EncryptedMaintenanceTask>,
+		filterChain: FilterChain<MaintenanceTask>,
 	): HttpResponse<PaginatedList<EncryptedMaintenanceTask>> =
 		post {
 			url {

@@ -1,5 +1,6 @@
 package com.icure.sdk.api.raw
 
+import com.icure.sdk.model.Contact
 import com.icure.sdk.model.EncryptedContact
 import com.icure.sdk.model.IcureStub
 import com.icure.sdk.model.ListOfIds
@@ -8,6 +9,7 @@ import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.`data`.LabelledOccurence
 import com.icure.sdk.model.embed.EncryptedContent
 import com.icure.sdk.model.embed.EncryptedService
+import com.icure.sdk.model.embed.Service
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
@@ -111,20 +113,20 @@ public interface RawContactApi {
 	suspend fun filterContactsBy(
 		startDocumentId: String? = null,
 		limit: Int? = null,
-		filterChain: FilterChain<EncryptedContact>,
+		filterChain: FilterChain<Contact>,
 	): HttpResponse<PaginatedList<EncryptedContact>>
 
-	suspend fun matchContactsBy(filter: AbstractFilter<EncryptedContact>): HttpResponse<List<String>>
+	suspend fun matchContactsBy(filter: AbstractFilter<Contact>): HttpResponse<List<String>>
 
 	suspend fun getService(serviceId: String): HttpResponse<EncryptedService>
 
 	suspend fun filterServicesBy(
 		startDocumentId: String? = null,
 		limit: Int? = null,
-		filterChain: FilterChain<EncryptedService>,
+		filterChain: FilterChain<Service>,
 	): HttpResponse<PaginatedList<EncryptedService>>
 
-	suspend fun matchServicesBy(filter: AbstractFilter<EncryptedService>): HttpResponse<List<String>>
+	suspend fun matchServicesBy(filter: AbstractFilter<Service>): HttpResponse<List<String>>
 
 	suspend fun getServices(ids: ListOfIds): HttpResponse<List<EncryptedService>>
 

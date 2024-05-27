@@ -2,6 +2,7 @@ package com.icure.sdk.api.raw
 
 import com.icure.sdk.model.EncryptedInvoice
 import com.icure.sdk.model.IcureStub
+import com.icure.sdk.model.Invoice
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
@@ -151,7 +152,7 @@ public interface RawInvoiceApi {
 
 	suspend fun getTarificationsCodesOccurrences(minOccurrences: Long): HttpResponse<List<LabelledOccurence>>
 
-	suspend fun filterInvoicesBy(filterChain: FilterChain<EncryptedInvoice>): HttpResponse<List<EncryptedInvoice>>
+	suspend fun filterInvoicesBy(filterChain: FilterChain<Invoice>): HttpResponse<List<EncryptedInvoice>>
 
 	suspend fun modifyInvoices(invoiceDtos: List<EncryptedInvoice>): HttpResponse<List<EncryptedInvoice>>
 
