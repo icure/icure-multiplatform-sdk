@@ -94,8 +94,7 @@ private abstract class AbstractMaintenanceTaskBasicFlavouredApi<E : MaintenanceT
 		limit: Int?,
 		filterChain: FilterChain<MaintenanceTask>,
 	): PaginatedList<E> =
-		// TODO fix filter typing
-		rawApi.filterMaintenanceTasksBy(startDocumentId, limit, filterChain as FilterChain<EncryptedMaintenanceTask>).successBody().map { maybeDecrypt(it) }
+		rawApi.filterMaintenanceTasksBy(startDocumentId, limit, filterChain).successBody().map { maybeDecrypt(it) }
 
 	abstract suspend fun validateAndMaybeEncrypt(entity: E): EncryptedMaintenanceTask
 	abstract suspend fun maybeDecrypt(entity: EncryptedMaintenanceTask): E

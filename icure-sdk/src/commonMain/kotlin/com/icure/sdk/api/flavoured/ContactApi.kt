@@ -55,7 +55,7 @@ import kotlinx.serialization.json.jsonObject
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface ContactBasicFlavourlessApi {
-	suspend fun matchContactsBy(filter: AbstractFilter<EncryptedContact>): List<String>
+	suspend fun matchContactsBy(filter: AbstractFilter<Contact>): List<String>
 	suspend fun deleteContact(entityId: String): DocIdentifier
 	suspend fun deleteContacts(entityIds: List<String>): List<DocIdentifier>
 	suspend fun findContactsDelegationsStubsByHcPartyPatientForeignKeys(
@@ -72,7 +72,7 @@ interface ContactBasicFlavouredApi<E : Contact, S : Service> {
 	suspend fun modifyContacts(entities: List<E>): List<E>
 	suspend fun getContact(entityId: String): E
 	suspend fun getContacts(entityIds: List<String>): List<E>
-	suspend fun filterContactsBy(filterChain: FilterChain<EncryptedContact>, startDocumentId: String?, limit: Int?): PaginatedList<E>
+	suspend fun filterContactsBy(filterChain: FilterChain<Contact>, startDocumentId: String?, limit: Int?): PaginatedList<E>
 
 	suspend fun listContactByHCPartyServiceId(hcPartyId: String, serviceId: String): List<E>
 	suspend fun listContactsByExternalId(externalId: String): List<E>
@@ -100,7 +100,7 @@ interface ContactBasicFlavouredApi<E : Contact, S : Service> {
 		limit: Int? = null,
 	): PaginatedList<E>
 
-	suspend fun filterServicesBy(filterChain: FilterChain<EncryptedService>, startDocumentId: String?, limit: Int?): PaginatedList<S>
+	suspend fun filterServicesBy(filterChain: FilterChain<Service>, startDocumentId: String?, limit: Int?): PaginatedList<S>
 }
 
 /* The extra API calls declared in this interface are the ones that can be used on encrypted or decrypted items but only when the user is a data owner */
@@ -155,7 +155,7 @@ private abstract class AbstractContactBasicFlavouredApi<E : Contact, S : Service
 		rawApi.getContacts(ListOfIds(entityIds)).successBody().map { maybeDecrypt(it) }
 
 	override suspend fun filterContactsBy(
-		filterChain: FilterChain<EncryptedContact>,
+		filterChain: FilterChain<Contact>,
 		startDocumentId: String?,
 		limit: Int?,
 	): PaginatedList<E> =
@@ -187,7 +187,7 @@ private abstract class AbstractContactBasicFlavouredApi<E : Contact, S : Service
 
 	override suspend fun getService(serviceId: String): S = rawApi.getService(serviceId).successBody().let { maybeDecryptService(it) }
 	override suspend fun filterServicesBy(
-		filterChain: FilterChain<EncryptedService>,
+		filterChain: FilterChain<Service>,
 		startDocumentId: String?,
 		limit: Int?,
 	): PaginatedList<S> =
@@ -341,7 +341,7 @@ internal fun Service.asIcureStubWithTypeInfo(): EntityWithTypeInfo<IcureStub> {
 
 @InternalIcureApi
 private class AbstractContactBasicFlavourlessApi(val rawApi: RawContactApi) : ContactBasicFlavourlessApi {
-	override suspend fun matchContactsBy(filter: AbstractFilter<EncryptedContact>) = rawApi.matchContactsBy(filter).successBody()
+	override suspend fun matchContactsBy(filter: AbstractFilter<Contact>) = rawApi.matchContactsBy(filter).successBody()
 	override suspend fun deleteContact(entityId: String) = rawApi.deleteContact(entityId).successBody()
 	override suspend fun deleteContacts(entityIds: List<String>) = rawApi.deleteContacts(ListOfIds(entityIds)).successBody()
 	override suspend fun findContactsDelegationsStubsByHcPartyPatientForeignKeys(
