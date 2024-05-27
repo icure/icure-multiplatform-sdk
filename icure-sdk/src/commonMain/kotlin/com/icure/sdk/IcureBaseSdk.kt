@@ -11,6 +11,8 @@ import com.icure.sdk.api.GroupApi
 import com.icure.sdk.api.GroupApiImpl
 import com.icure.sdk.api.HealthcarePartyApi
 import com.icure.sdk.api.HealthcarePartyApiImpl
+import com.icure.sdk.api.PermissionApi
+import com.icure.sdk.api.PermissionApiImpl
 import com.icure.sdk.api.UserApi
 import com.icure.sdk.api.UserApiImpl
 import com.icure.sdk.api.flavoured.AccessLogBasicApi
@@ -91,6 +93,7 @@ interface IcureBaseSdk {
 	val maintenanceTask: MaintenanceTaskBasicApi
 	val message: MessageBasicApi
 	val patient: PatientBasicApi
+	val permission: PermissionApi
 	val receipt: ReceiptBasicApi
 	val timeTable: TimeTableBasicApi
 	val topic: TopicBasicApi
@@ -150,6 +153,7 @@ private class IcureBaseApiImpl(
 	override val maintenanceTask by lazy { MaintenanceTaskBasicApiImpl(RawMaintenanceTaskApiImpl(apiUrl, authService, headersProvider, client), crypto, encryptedFieldsManifests.maintenanceTask) }
 	override val message by lazy { MessageBasicApiImpl(RawMessageApiImpl(apiUrl, authService, headersProvider, client), crypto.validationService, encryptedFieldsManifests.message) }
 	override val patient by lazy { PatientBasicApiImpl(RawPatientApiImpl(apiUrl, authService, headersProvider, client), crypto, encryptedFieldsManifests.patient) }
+	override val permission by lazy { PermissionApiImpl(RawPermissionApiImpl(apiUrl, authService, client)) }
 	override val receipt by lazy { ReceiptBasicApiImpl(RawReceiptApiImpl(apiUrl, authService, headersProvider, client), crypto.validationService, encryptedFieldsManifests.receipt) }
 	override val timeTable by lazy { TimeTableBasicApiImpl(RawTimeTableApiImpl(apiUrl, authService, headersProvider, client), crypto.validationService, encryptedFieldsManifests.timeTable) }
 	override val topic by lazy { TopicBasicApiImpl(RawTopicApiImpl(apiUrl, authService, headersProvider, client), crypto.validationService, encryptedFieldsManifests.topic) }
