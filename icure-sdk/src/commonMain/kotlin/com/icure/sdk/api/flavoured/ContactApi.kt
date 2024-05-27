@@ -56,6 +56,7 @@ import kotlinx.serialization.json.jsonObject
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface ContactBasicFlavourlessApi {
 	suspend fun matchContactsBy(filter: AbstractFilter<Contact>): List<String>
+	suspend fun matchServicesBy(filter: AbstractFilter<Service>): List<String>
 	suspend fun deleteContact(entityId: String): DocIdentifier
 	suspend fun deleteContacts(entityIds: List<String>): List<DocIdentifier>
 	suspend fun findContactsDelegationsStubsByHcPartyPatientForeignKeys(
@@ -342,6 +343,7 @@ internal fun Service.asIcureStubWithTypeInfo(): EntityWithTypeInfo<IcureStub> {
 @InternalIcureApi
 private class AbstractContactBasicFlavourlessApi(val rawApi: RawContactApi) : ContactBasicFlavourlessApi {
 	override suspend fun matchContactsBy(filter: AbstractFilter<Contact>) = rawApi.matchContactsBy(filter).successBody()
+	override suspend fun matchServicesBy(filter: AbstractFilter<Service>): List<String> = rawApi.matchServicesBy(filter).successBody()
 	override suspend fun deleteContact(entityId: String) = rawApi.deleteContact(entityId).successBody()
 	override suspend fun deleteContacts(entityIds: List<String>) = rawApi.deleteContacts(ListOfIds(entityIds)).successBody()
 	override suspend fun findContactsDelegationsStubsByHcPartyPatientForeignKeys(
