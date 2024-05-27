@@ -2,6 +2,7 @@ package com.icure.sdk.api.raw
 
 import com.icure.sdk.model.EncryptedMessage
 import com.icure.sdk.model.ListOfIds
+import com.icure.sdk.model.Message
 import com.icure.sdk.model.MessagesReadStatusUpdate
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
@@ -111,10 +112,10 @@ public interface RawMessageApi {
 	suspend fun filterMessagesBy(
 		startDocumentId: String? = null,
 		limit: Int? = null,
-		filterChain: FilterChain<EncryptedMessage>,
+		filterChain: FilterChain<Message>,
 	): HttpResponse<PaginatedList<EncryptedMessage>>
 
-	suspend fun matchMessagesBy(filter: AbstractFilter<EncryptedMessage>): HttpResponse<List<String>>
+	suspend fun matchMessagesBy(filter: AbstractFilter<Message>): HttpResponse<List<String>>
 	// endregion
 
 	// region cloud endpoints

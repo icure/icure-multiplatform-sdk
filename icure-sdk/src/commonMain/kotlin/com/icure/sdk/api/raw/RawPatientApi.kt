@@ -5,6 +5,7 @@ import com.icure.sdk.model.EncryptedPatient
 import com.icure.sdk.model.IdWithRev
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
+import com.icure.sdk.model.Patient
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.couchdb.SortDirection
 import com.icure.sdk.model.embed.EncryptedContent
@@ -107,10 +108,10 @@ public interface RawPatientApi {
 		skip: Int? = null,
 		sort: String? = null,
 		desc: Boolean? = null,
-		filterChain: FilterChain<EncryptedPatient>,
+		filterChain: FilterChain<Patient>,
 	): HttpResponse<PaginatedList<EncryptedPatient>>
 
-	suspend fun matchPatientsBy(filter: AbstractFilter<EncryptedPatient>): HttpResponse<List<String>>
+	suspend fun matchPatientsBy(filter: AbstractFilter<Patient>): HttpResponse<List<String>>
 
 	suspend fun fuzzySearch(
 		firstName: String,
