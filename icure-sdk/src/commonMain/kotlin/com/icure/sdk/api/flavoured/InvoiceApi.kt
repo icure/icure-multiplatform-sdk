@@ -1,5 +1,6 @@
 package com.icure.sdk.api.flavoured
 
+import com.icure.sdk.api.raw.RawEntityReferenceApi
 import com.icure.sdk.api.raw.RawInvoiceApi
 import com.icure.sdk.crypto.EntityValidationService
 import com.icure.sdk.crypto.InternalCryptoServices
@@ -50,6 +51,7 @@ interface InvoiceBasicFlavourlessApi {
 	suspend fun deleteInvoice(entityId: String): DocIdentifier
 	suspend fun findInvoicesDelegationsStubsByHcPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<IcureStub>
 	suspend fun getTarificationsCodesOccurrences(minOccurrence: Int): List<LabelledOccurence>
+	suspend fun getNextInvoiceReference(prefix: String): Int
 }
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
@@ -376,7 +378,10 @@ private abstract class AbstractInvoiceFlavouredApi<E : Invoice>(
 }
 
 @InternalIcureApi
-private class AbstractInvoiceBasicFlavourlessApi(val rawApi: RawInvoiceApi) : InvoiceBasicFlavourlessApi {
+private class AbstractInvoiceBasicFlavourlessApi(
+	val rawApi: RawInvoiceApi,
+	val rawEntityReferenceApi: RawEntityReferenceApi
+) : InvoiceBasicFlavourlessApi {
 	override suspend fun deleteInvoice(entityId: String) = rawApi.deleteInvoice(entityId).successBody()
 	override suspend fun findInvoicesDelegationsStubsByHcPartyPatientForeignKeys(
 		hcPartyId: String,
@@ -387,6 +392,13 @@ private class AbstractInvoiceBasicFlavourlessApi(val rawApi: RawInvoiceApi) : In
 		minOccurrence: Int,
 	) = rawApi.getTarificationsCodesOccurrences(minOccurrence.toLong()).successBody()
 
+	override suspend fun getNextInvoiceReference(prefix: String): Int =
+		rawEntityReferenceApi.getLatest(prefix).successBodyOrNull()
+			?.takeIf { it.id.startsWith(prefix) }
+			?.id?.split(":")?.last()
+			?.toIntOrNull()
+			?: 1
+
 }
 
 @InternalIcureApi
@@ -395,7 +407,8 @@ internal class InvoiceApiImpl(
 	private val crypto: InternalCryptoServices,
 	private val fieldsToEncrypt: EncryptedFieldsManifest = ENCRYPTED_FIELDS_MANIFEST,
 	private val autofillAuthor: Boolean,
-	) : InvoiceApi, InvoiceFlavouredApi<DecryptedInvoice> by object :
+	rawEntityReferenceApi: RawEntityReferenceApi
+) : InvoiceApi, InvoiceFlavouredApi<DecryptedInvoice> by object :
 	AbstractInvoiceFlavouredApi<DecryptedInvoice>(rawApi, crypto) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedInvoice): EncryptedInvoice =
 		crypto.entity.encryptEntity(
@@ -411,7 +424,7 @@ internal class InvoiceApiImpl(
 		) { Serialization.json.decodeFromJsonElement<DecryptedInvoice>(it) }
 			?: throw EntityEncryptionException("Entity ${entity.id} cannot be created")
 	}
-}, InvoiceBasicFlavourlessApi by AbstractInvoiceBasicFlavourlessApi(rawApi) {
+}, InvoiceBasicFlavourlessApi by AbstractInvoiceBasicFlavourlessApi(rawApi, rawEntityReferenceApi) {
 	override val encrypted: InvoiceFlavouredApi<EncryptedInvoice> =
 		object : AbstractInvoiceFlavouredApi<EncryptedInvoice>(rawApi, crypto) {
 			override suspend fun validateAndMaybeEncrypt(entity: EncryptedInvoice): EncryptedInvoice =
@@ -515,6 +528,7 @@ internal class InvoiceApiImpl(
 @InternalIcureApi
 internal class InvoiceBasicApiImpl(
 	rawApi: RawInvoiceApi,
+	rawEntityReferenceApi: RawEntityReferenceApi,
 	private val validationService: EntityValidationService,
 	private val fieldsToEncrypt: EncryptedFieldsManifest = ENCRYPTED_FIELDS_MANIFEST,
 ) : InvoiceBasicApi, InvoiceBasicFlavouredApi<EncryptedInvoice> by object :
@@ -523,4 +537,4 @@ internal class InvoiceBasicApiImpl(
 		validationService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedInvoice.serializer(), fieldsToEncrypt)
 
 	override suspend fun maybeDecrypt(entity: EncryptedInvoice): EncryptedInvoice = entity
-}, InvoiceBasicFlavourlessApi by AbstractInvoiceBasicFlavourlessApi(rawApi)
+}, InvoiceBasicFlavourlessApi by AbstractInvoiceBasicFlavourlessApi(rawApi, rawEntityReferenceApi)

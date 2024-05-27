@@ -30,6 +30,7 @@ import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.currentEpochMs
 import com.icure.sdk.utils.pagination.IdsPageIterator
 import com.icure.sdk.utils.pagination.PaginatedListIterator
+import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.decodeFromJsonElement
 
 @OptIn(InternalIcureApi::class)
@@ -41,6 +42,8 @@ interface DocumentBasicFlavourlessApi {
 	suspend fun deleteDocument(entityId: String): DocIdentifier
 	suspend fun deleteDocuments(entityIds: List<String>): List<DocIdentifier>
 	suspend fun getRawMainAttachment(documentId: String, attachmentId: String): ByteArray
+	suspend fun getMainAttachmentAsPlainText(documentId: String, attachmentId: String): String
+	suspend fun getMainAttachmentAsJson(documentId: String, attachmentId: String): JsonElement
 	suspend fun getRawSecondaryAttachment(documentId: String, key: String, attachmentId: String): ByteArray
 }
 
@@ -149,6 +152,10 @@ interface DocumentApi : DocumentBasicFlavourlessApi, DocumentFlavouredApi<Decryp
 		delegates: Map<String, AccessLevel> = emptyMap(),
 		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent,
 	): DecryptedDocument
+
+	suspend fun getAndTryDecryptMainAttachment(document: Document, attachmentId: String, decryptedDocumentValidator: suspend (document: ByteArray) -> Boolean = { true }): ByteArray?
+	suspend fun getAndTryDecryptMainAttachmentAsPlainText(document: Document, attachmentId: String, decryptedDocumentValidator: suspend (document: ByteArray) -> Boolean = { true }): String?
+	suspend fun getAndTryDecryptMainAttachmentAsJson(document: Document, attachmentId: String, decryptedDocumentValidator: suspend (document: ByteArray) -> Boolean = { true }): JsonElement?
 
 	suspend fun getAndDecryptMainAttachment(document: Document, attachmentId: String, decryptedDocumentValidator: suspend (document: ByteArray) -> Boolean = { true }): ByteArray
 	suspend fun encryptAndSetMainAttachment(document: Document, utis: List<String>, attachment: ByteArray): EncryptedDocument
@@ -304,6 +311,12 @@ private class AbstractDocumentBasicFlavourlessApi(val rawApi: RawDocumentApi) : 
 	override suspend fun getRawSecondaryAttachment(documentId: String, key: String, attachmentId: String) =
 		rawApi.getSecondaryAttachment(documentId, key, attachmentId).successBody()
 
+	override suspend fun getMainAttachmentAsPlainText(documentId: String, attachmentId: String): String = getRawMainAttachment(documentId, attachmentId).decodeToString()
+
+	override suspend fun getMainAttachmentAsJson(documentId: String, attachmentId: String): JsonElement = getMainAttachmentAsPlainText(documentId, attachmentId).let {
+		Serialization.json.decodeFromString<JsonElement>(it)
+	}
+
 }
 
 @InternalIcureApi
@@ -391,6 +404,28 @@ internal class DocumentApiImpl(
 			initialiseSecretId = false,
 			autoDelegations = delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation).orEmpty(),
 		).updatedEntity
+
+	override suspend fun getAndTryDecryptMainAttachment(
+		document: Document,
+		attachmentId: String,
+		decryptedDocumentValidator: suspend (document: ByteArray) -> Boolean
+	): ByteArray? = getRawMainAttachment(document.id, attachmentId).let {
+			crypto.entity.tryDecryptAttachmentOf(document.withTypeInfo(), it, decryptedDocumentValidator)
+		}
+
+	override suspend fun getAndTryDecryptMainAttachmentAsPlainText(
+		document: Document,
+		attachmentId: String,
+		decryptedDocumentValidator: suspend (document: ByteArray) -> Boolean
+	): String? = getAndTryDecryptMainAttachment(document, attachmentId, decryptedDocumentValidator)?.decodeToString()
+
+	override suspend fun getAndTryDecryptMainAttachmentAsJson(
+		document: Document,
+		attachmentId: String,
+		decryptedDocumentValidator: suspend (document: ByteArray) -> Boolean
+	): JsonElement? = getAndTryDecryptMainAttachmentAsPlainText(document, attachmentId, decryptedDocumentValidator)?.let {
+		Serialization.json.decodeFromString<JsonElement>(it)
+	}
 
 	override suspend fun getAndDecryptMainAttachment(
 		document: Document,

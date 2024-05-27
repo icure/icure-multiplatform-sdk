@@ -25,10 +25,12 @@ interface DocumentTemplateApi {
 	suspend fun getDocumentTemplateAttachment(documentTemplateId: String, attachmentId: String): ByteArray
 	suspend fun getAttachmentText(documentTemplateId: String, attachmentId: String): ByteArray
 	suspend fun setDocumentTemplateAttachment(documentTemplateId: String, payload: ByteArray): DocumentTemplate
+	fun getAttachmentUrl(documentId: String, attachmentId: String): String
 }
 
 @InternalIcureApi
 internal class DocumentTemplateApiImpl(
+	private val apiUrlWithVersion: String,
 	private val rawApi: RawDocumentTemplateApi,
 ) : DocumentTemplateApi {
 	override suspend fun getDocumentTemplate(documentTemplateId: String) = rawApi.getDocumentTemplate(documentTemplateId).successBody()
@@ -62,5 +64,8 @@ internal class DocumentTemplateApiImpl(
 		documentTemplateId: String,
 		payload: ByteArray,
 	) = rawApi.setDocumentTemplateAttachment(documentTemplateId, payload).successBody()
+
+	override fun getAttachmentUrl(documentId: String, attachmentId: String): String =
+		"$apiUrlWithVersion/doctemplate/$documentId/attachment/$attachmentId"
 }
 

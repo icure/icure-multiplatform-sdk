@@ -48,6 +48,7 @@ import com.icure.sdk.api.raw.impl.RawContactApiImpl
 import com.icure.sdk.api.raw.impl.RawDataOwnerApiImpl
 import com.icure.sdk.api.raw.impl.RawDeviceApiImpl
 import com.icure.sdk.api.raw.impl.RawDocumentApiImpl
+import com.icure.sdk.api.raw.impl.RawEntityReferenceApiImpl
 import com.icure.sdk.api.raw.impl.RawExchangeDataApiImpl
 import com.icure.sdk.api.raw.impl.RawExchangeDataMapApiImpl
 import com.icure.sdk.api.raw.impl.RawFormApiImpl
@@ -354,6 +355,7 @@ private class IcureApiImpl(
 	private val encryptedFieldsManifests: EntitiesEncryptedFieldsManifests,
 	private val autofillAuthor: Boolean
 ): IcureSdk {
+	private val rawDataOwnerApi by lazy { RawDataOwnerApiImpl(apiUrl, authService, client) }
 	private val rawCalendarItemApi by lazy { RawCalendarItemApiImpl(apiUrl, authService, headersProvider, client) }
 
 	override val calendarItem: CalendarItemApi by lazy {
@@ -361,11 +363,13 @@ private class IcureApiImpl(
 			rawCalendarItemApi,
 			internalCrypto,
 			encryptedFieldsManifests.calendarItem,
-			autofillAuthor
+			autofillAuthor,
+			rawDataOwnerApi
 		)
 	}
 
 	private val rawContactApi by lazy { RawContactApiImpl(apiUrl, authService, headersProvider, client) }
+	private val rawHealthcarePartyApi by lazy { RawHealthcarePartyApiImpl(apiUrl, authService, client) }
 
 	override val contact: ContactApi by lazy {
 		ContactApiImpl(
@@ -382,6 +386,13 @@ private class IcureApiImpl(
 	override val patient: PatientApi by lazy {
 		PatientApiImpl(
 			rawPatientApi,
+			rawHealthcarePartyApi,
+			rawHealthcareElementApi,
+			rawFormApi,
+			rawContactApi,
+			rawInvoiceApi,
+			rawCalendarItemApi,
+			rawClassificationApi,
 			internalCrypto,
 			encryptedFieldsManifests.patient,
 			autofillAuthor
@@ -520,13 +531,15 @@ private class IcureApiImpl(
 	}
 
 	private val rawInvoiceApi by lazy { RawInvoiceApiImpl(apiUrl, authService, headersProvider, client) }
+	private val rawEntityReferenceApi by lazy { RawEntityReferenceApiImpl(apiUrl, authService, client) }
 
 	override val invoice: InvoiceApi by lazy {
 		InvoiceApiImpl(
 			rawInvoiceApi,
 			internalCrypto,
 			encryptedFieldsManifests.invoice,
-			autofillAuthor
+			autofillAuthor,
+			rawEntityReferenceApi
 		)
 	}
 

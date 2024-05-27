@@ -46,6 +46,7 @@ import com.icure.sdk.api.raw.impl.RawClassificationApiImpl
 import com.icure.sdk.api.raw.impl.RawCodeApiImpl
 import com.icure.sdk.api.raw.impl.RawContactApiImpl
 import com.icure.sdk.api.raw.impl.RawDocumentApiImpl
+import com.icure.sdk.api.raw.impl.RawEntityReferenceApiImpl
 import com.icure.sdk.api.raw.impl.RawFormApiImpl
 import com.icure.sdk.api.raw.impl.RawGroupApiImpl
 import com.icure.sdk.api.raw.impl.RawHealthElementApiImpl
@@ -140,7 +141,7 @@ private class IcureBaseApiImpl(
 	override val group: GroupApi by lazy { GroupApiImpl(RawGroupApiImpl(apiUrl, authService, client)) }
 	override val healthcareElement by lazy { HealthcareElementBasicApiImpl(RawHealthElementApiImpl(apiUrl, authService, headersProvider, client), crypto.validationService, encryptedFieldsManifests.healthElement) }
 	override val healthcareParty by lazy { HealthcarePartyApiImpl(RawHealthcarePartyApiImpl(apiUrl, authService, client)) }
-	override val invoice by lazy { InvoiceBasicApiImpl(RawInvoiceApiImpl(apiUrl, authService, headersProvider, client), crypto.validationService, encryptedFieldsManifests.invoice) }
+	override val invoice by lazy { InvoiceBasicApiImpl(RawInvoiceApiImpl(apiUrl, authService, headersProvider, client), RawEntityReferenceApiImpl(apiUrl, authService, client), crypto.validationService, encryptedFieldsManifests.invoice) }
 	override val maintenanceTask by lazy { MaintenanceTaskBasicApiImpl(RawMaintenanceTaskApiImpl(apiUrl, authService, headersProvider, client), crypto, encryptedFieldsManifests.maintenanceTask) }
 	override val message by lazy { MessageBasicApiImpl(RawMessageApiImpl(apiUrl, authService, headersProvider, client), crypto.validationService, encryptedFieldsManifests.message) }
 	override val patient by lazy { PatientBasicApiImpl(RawPatientApiImpl(apiUrl, authService, headersProvider, client), crypto, encryptedFieldsManifests.patient) }

@@ -106,6 +106,21 @@ class EntityEncryptionServiceImpl(
 		)
 	}
 
+	override suspend fun tryDecryptAttachmentOf(
+		entity: EntityWithTypeInfo<*>,
+		content: ByteArray,
+		validator: suspend (decryptedData: ByteArray) -> Boolean
+	): ByteArray? {
+		return allDecryptors.decryptEncryptionKeysOf(entity, dataOwnersForDecryption(null).toSet()).mapNotNull { decryptedKeyInfo ->
+			kotlin.runCatching {
+				cryptoService.aes.decrypt(
+					content,
+					cryptoService.aes.loadKey(AesAlgorithm.CbcWithPkcs7Padding, decryptedKeyInfo.value.decodedBytes())
+				).takeIf { validator(it) }
+			}.getOrNull()
+		}.firstOrNull()
+	}
+
 	override suspend fun decryptAttachmentOf(
 		entity: EntityWithTypeInfo<*>,
 		content: ByteArray,

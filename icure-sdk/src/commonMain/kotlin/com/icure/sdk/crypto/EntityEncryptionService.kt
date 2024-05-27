@@ -224,6 +224,25 @@ interface EntityEncryptionService : EntityValidationService {
 	 * @param content data of the entity which you want to decrypt.
 	 * @param validator a function which verifies the correctness of decrypted content: helps to identify decryption with the wrong key without relying
 	 * solely on padding.
+	 * @return the decrypted data or null if the provided data owner cannot access any encryption key for the entity or if no key could be found
+	 * which provided valid decrypted content according to the validator.
+	 */
+	suspend fun tryDecryptAttachmentOf(
+		entity: EntityWithTypeInfo<*>,
+		content: ByteArray,
+		validator: suspend (decryptedData: ByteArray) -> Boolean
+	): ByteArray?
+
+	/**
+	 * Decrypts data using a key of the entity that the provided data owner can access (current data owner by default). If the provided data owner can
+	 * access multiple encryption keys each of them will be tried for decryption until one of them gives a result that is valid according to the
+	 * provided validator.
+	 * Note: you should not use this method to decrypt the `encryptedSelf` of iCure entities, since that will be automatically handled by the extended
+	 * apis. You should use this method only to decrypt additional data, such as document attachments.
+	 * @param entity an entity.
+	 * @param content data of the entity which you want to decrypt.
+	 * @param validator a function which verifies the correctness of decrypted content: helps to identify decryption with the wrong key without relying
+	 * solely on padding.
 	 * @return the decrypted data.
 	 * @throws EntityEncryptionException if the provided data owner can't access any encryption keys for the entity, or if no key could be found which
 	 * provided valid decrypted content according to the validator.
