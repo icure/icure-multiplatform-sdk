@@ -1,6 +1,7 @@
 package com.icure.sdk.api.raw
 
 import com.icure.sdk.model.EncryptedHealthElement
+import com.icure.sdk.model.HealthElement
 import com.icure.sdk.model.IcureStub
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
@@ -70,12 +71,12 @@ public interface RawHealthElementApi {
 	suspend fun filterHealthElementsBy(
 		startDocumentId: String? = null,
 		limit: Int? = null,
-		filterChain: FilterChain<EncryptedHealthElement>,
+		filterChain: FilterChain<HealthElement>,
 	): HttpResponse<PaginatedList<EncryptedHealthElement>>
 
 	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<EncryptedHealthElement>>>
 
-	suspend fun matchHealthElementsBy(filter: AbstractFilter<EncryptedHealthElement>): HttpResponse<List<String>>
+	suspend fun matchHealthElementsBy(filter: AbstractFilter<HealthElement>): HttpResponse<List<String>>
 
 	suspend fun bulkShareMinimal(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<Nothing>>>
 	// endregion

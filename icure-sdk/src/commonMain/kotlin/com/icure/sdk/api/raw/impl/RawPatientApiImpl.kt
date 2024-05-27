@@ -13,6 +13,7 @@ import com.icure.sdk.model.EncryptedPatient
 import com.icure.sdk.model.IdWithRev
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
+import com.icure.sdk.model.Patient
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.couchdb.SortDirection
 import com.icure.sdk.model.embed.EncryptedContent
@@ -264,7 +265,7 @@ class RawPatientApiImpl(
 		skip: Int?,
 		sort: String?,
 		desc: Boolean?,
-		filterChain: FilterChain<EncryptedPatient>,
+		filterChain: FilterChain<Patient>,
 	): HttpResponse<PaginatedList<EncryptedPatient>> =
 		post {
 			url {
@@ -282,7 +283,7 @@ class RawPatientApiImpl(
 			setBody(filterChain)
 		}.wrap()
 
-	override suspend fun matchPatientsBy(filter: AbstractFilter<EncryptedPatient>): HttpResponse<List<String>> =
+	override suspend fun matchPatientsBy(filter: AbstractFilter<Patient>): HttpResponse<List<String>> =
 		post {
 			url {
 				takeFrom(apiUrl)

@@ -9,6 +9,7 @@ import com.icure.sdk.auth.services.setAuthorizationWith
 import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.model.EncryptedHealthElement
+import com.icure.sdk.model.HealthElement
 import com.icure.sdk.model.IcureStub
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
@@ -220,7 +221,7 @@ class RawHealthElementApiImpl(
 	override suspend fun filterHealthElementsBy(
 		startDocumentId: String?,
 		limit: Int?,
-		filterChain: FilterChain<EncryptedHealthElement>,
+		filterChain: FilterChain<HealthElement>,
 	): HttpResponse<PaginatedList<EncryptedHealthElement>> =
 		post {
 			url {
@@ -247,7 +248,7 @@ class RawHealthElementApiImpl(
 			setBody(request)
 		}.wrap()
 
-	override suspend fun matchHealthElementsBy(filter: AbstractFilter<EncryptedHealthElement>): HttpResponse<List<String>> =
+	override suspend fun matchHealthElementsBy(filter: AbstractFilter<HealthElement>): HttpResponse<List<String>> =
 		post {
 			url {
 				takeFrom(apiUrl)
