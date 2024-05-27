@@ -25,7 +25,7 @@ kotlin {
 					implementation(libs.ktorContentNegotiation)
 					implementation(libs.ktorSerializationJson)
 					implementation(libs.kotlinSerialization)
-					implementation(libs.kotlinDateTime)
+					api(libs.kotlinDateTime)
 					implementation(libs.kermit)
 					implementation(libs.kryptom)
 					implementation(libs.coroutinesCore)
