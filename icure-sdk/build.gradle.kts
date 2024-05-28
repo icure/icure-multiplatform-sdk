@@ -109,18 +109,53 @@ val mergedTsProject = projectDir.resolve("build/tsSourcesProject")
 val tsCompiledSources = projectDir.resolve("build/tsCompiledSources")
 val tsPackage = projectDir.resolve("build/tsPackage")
 
+sealed interface Import {
+	data class Default(
+		val importedName: String,
+		val from: String
+	) : Import
+	data class Module(
+		val importedName: String,
+		val from: String
+	) : Import
+}
+data class Replacement(
+	val of: String,
+	val with: String
+)
+fun copyJsPatching(
+	from: File,
+	into: File,
+	importing: List<Import> = emptyList(),
+	replacing: List<Replacement> = emptyList()
+) {
+	FileWriter(into).use { fw ->
+		importing.forEach {
+			when (it) {
+				is Import.Default -> fw.write("import ${it.importedName} from '${it.from}'\n")
+				is Import.Module -> fw.write("import * as ${it.importedName} from '${it.from}'\n")
+				else -> throw IllegalArgumentException("Unsupported import type: $it")
+			}
+		}
+		replacing.fold(from.readText()) { acc, replacement ->
+			acc.replace(replacement.of, replacement.with)
+		}.let {
+			fw.write(it)
+		}
+	}
+}
+
 fun copyAddingDependenciesToTsPackages(
 	from: File,
 	into: File
 ) {
-	FileWriter(into).use { fw ->
-		tsSources.listFiles()!!.filter { it.isDirectory }.forEach {
-			fw.write("import * as ${it.name} from './${it.name}.mjs'\n")
+	copyJsPatching(
+		from = from,
+		into = into,
+		importing = tsSources.listFiles()!!.filter { it.isDirectory }.map {
+			Import.Module(it.name, "./${it.name}.mjs")
 		}
-		from.readText().let {
-			fw.write(it)
-		}
-	}
+	)
 }
 
 val prepareTypescriptSourceCompilation = tasks.register("prepareTypescriptSourceCompilation") {
@@ -188,6 +223,12 @@ val compileTypescriptSources = tasks.register("compileTypescriptSources") {
 
 tasks.register("prepareDistributionPackage") {
 	dependsOn(compileTypescriptSources)
+	val filesNeedingPatch = setOf(
+		"icure-sdk.mjs",
+		"icure-sdk.d.mts",
+		"ktor-ktor-client-core.mjs",
+		"ktor-ktor-utils.mjs"
+	)
 	doLast {
 		copy {
 			from(tsCompiledSources)
@@ -197,7 +238,7 @@ tasks.register("prepareDistributionPackage") {
 			from(ktJsCompiledPackage)
 			into(tsPackage)
 			exclude {
-				it.name == "icure-sdk.d.ts" || it.name == "icure-sdk.mjs"
+				it.name in filesNeedingPatch
 			}
 		}
 		copyAddingDependenciesToTsPackages(
@@ -207,6 +248,26 @@ tasks.register("prepareDistributionPackage") {
 		copyAddingDependenciesToTsPackages(
 			from = ktJsCompiledPackage.resolve("icure-sdk.mjs"),
 			into = tsPackage.resolve("icure-sdk.mjs")
+		)
+		copyJsPatching(
+			from = ktJsCompiledPackage.resolve("ktor-ktor-client-core.mjs"),
+			into = tsPackage.resolve("ktor-ktor-client-core.mjs"),
+			importing = listOf(
+				Import.Default("nodeWs_imported", from = "ws"),
+				Import.Default("nodeFetch_imported", from = "node-fetch"),
+			),
+			replacing = listOf(
+				Replacement("eval('require')('ws')", with = "nodeWs_imported"),
+				Replacement("eval('require')('node-fetch')", with = "nodeFetch_imported"),
+				Replacement("eval('require')('abort-controller')", with = "AbortController")
+			)
+		)
+		copyJsPatching(
+			from = ktJsCompiledPackage.resolve("ktor-ktor-utils.mjs"),
+			into = tsPackage.resolve("ktor-ktor-utils.mjs"),
+			replacing = listOf(
+				Replacement("eval('require')('crypto')", with = "crypto")
+			)
 		)
 	}
 }
