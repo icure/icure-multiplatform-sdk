@@ -103,60 +103,74 @@ publishing {
 	}
 }
 
+// region jsDistribution
+
 val ktJsCompiledPackage = projectDir.resolve("build/dist/js/productionLibrary")
 val tsSources = projectDir.resolve("src/jsMain/typescript")
 val mergedTsProject = projectDir.resolve("build/tsSourcesProject")
 val tsCompiledSources = projectDir.resolve("build/tsCompiledSources")
 val tsPackage = projectDir.resolve("build/tsPackage")
 
-sealed interface Import {
+interface Import {
+	val entry: String
 	data class Default(
 		val importedName: String,
 		val from: String
-	) : Import
+	) : Import {
+		override val entry: String
+			get() = "import $importedName from '$from'"
+
+	}
 	data class Module(
 		val importedName: String,
 		val from: String
-	) : Import
+	) : Import  {
+		override val entry: String
+			get() = "import * as $importedName from '$from'"
+	}
 }
 data class Replacement(
 	val of: String,
 	val with: String
 )
+interface Export {
+	val entry: String
+	data class Module(
+		val from: String
+	) : Export {
+		override val entry: String
+			get() = "export * from '$from'"
+	}
+}
 fun copyJsPatching(
 	from: File,
 	into: File,
 	importing: List<Import> = emptyList(),
-	replacing: List<Replacement> = emptyList()
+	replacing: List<Replacement> = emptyList(),
+	exporting: List<Export> = emptyList()
 ) {
 	FileWriter(into).use { fw ->
 		importing.forEach {
-			when (it) {
-				is Import.Default -> fw.write("import ${it.importedName} from '${it.from}'\n")
-				is Import.Module -> fw.write("import * as ${it.importedName} from '${it.from}'\n")
-				else -> throw IllegalArgumentException("Unsupported import type: $it")
-			}
+			fw.write(it.entry + "\n")
 		}
 		replacing.fold(from.readText()) { acc, replacement ->
 			acc.replace(replacement.of, replacement.with)
-		}.let {
+		}.also {
 			fw.write(it)
+			if (!it.endsWith('\n')) fw.write("\n")
+		}
+		exporting.forEach {
+			fw.write(it.entry + "\n")
 		}
 	}
 }
 
-fun copyAddingDependenciesToTsPackages(
-	from: File,
-	into: File
-) {
-	copyJsPatching(
-		from = from,
-		into = into,
-		importing = tsSources.listFiles()!!.filter { it.isDirectory }.map {
-			Import.Module(it.name, "./${it.name}.mjs")
-		}
-	)
-}
+fun getTypescriptSourcePackages() = tsSources.listFiles()!!.filter { it.isDirectory }
+
+fun File.tsPackageAsImport() =
+	Import.Module(name, "./${name}.mjs")
+
+fun File.tsPackageAsExport() = Export.Module("./${name}.mjs")
 
 val prepareTypescriptSourceCompilation = tasks.register("prepareTypescriptSourceCompilation") {
 	dependsOn("jsNodeProductionLibraryDistribution")
@@ -181,11 +195,12 @@ val prepareTypescriptSourceCompilation = tasks.register("prepareTypescriptSource
 			from(tsSources)
 			into(mergedTsProject)
 		}
-		copyAddingDependenciesToTsPackages(
+		copyJsPatching(
 			from = ktJsCompiledPackage.resolve("icure-sdk.d.ts"),
-			into = mergedTsProject.resolve("icure-sdk.d.mts")
+			into = mergedTsProject.resolve("icure-sdk.d.mts"),
+			importing = getTypescriptSourcePackages().map { it.tsPackageAsImport() }
 		)
-		// Generate index files for main packages and for export
+		// Generate index files for each package
 		val tsPackages = tsSources.listFiles()!!.filter { it.isDirectory }
 		tsPackages.forEach { tsPackage ->
 			FileWriter(mergedTsProject.resolve("${tsPackage.name}.mts")).use { fw ->
@@ -196,12 +211,6 @@ val prepareTypescriptSourceCompilation = tasks.register("prepareTypescriptSource
 					fw.write("export * from './$currFilePath.mjs'\n")
 				}
 			}
-		}
-		FileWriter(mergedTsProject.resolve("index.mts")).use { fw ->
-			tsPackages.forEach { tsPackage ->
-				fw.write("export * from './${tsPackage.name}.mjs'\n")
-			}
-			fw.write("export * from './icure-sdk.mjs'\n")
 		}
 	}
 }
@@ -222,12 +231,14 @@ val compileTypescriptSources = tasks.register("compileTypescriptSources") {
 }
 
 tasks.register("prepareDistributionPackage") {
+	group = "publishing"
 	dependsOn(compileTypescriptSources)
 	val filesNeedingPatch = setOf(
 		"icure-sdk.mjs",
-		"icure-sdk.d.mts",
+		"icure-sdk.d.ts",
 		"ktor-ktor-client-core.mjs",
-		"ktor-ktor-utils.mjs"
+		"ktor-ktor-utils.mjs",
+		"package.json"
 	)
 	doLast {
 		copy {
@@ -241,13 +252,27 @@ tasks.register("prepareDistributionPackage") {
 				it.name in filesNeedingPatch
 			}
 		}
-		copyAddingDependenciesToTsPackages(
+		val tsSourcePackages = getTypescriptSourcePackages()
+		val tsSourcePackagesImport = tsSourcePackages.map { it.tsPackageAsImport() }
+		val tsSourcePackageExports = tsSourcePackages.map { it.tsPackageAsExport() }
+		copyJsPatching(
 			from = ktJsCompiledPackage.resolve("icure-sdk.d.ts"),
-			into = tsPackage.resolve("icure-sdk.d.mts")
+			into = tsPackage.resolve("icure-sdk.d.mts"),
+			importing = tsSourcePackagesImport,
+			exporting = tsSourcePackageExports
 		)
-		copyAddingDependenciesToTsPackages(
+		copyJsPatching(
 			from = ktJsCompiledPackage.resolve("icure-sdk.mjs"),
-			into = tsPackage.resolve("icure-sdk.mjs")
+			into = tsPackage.resolve("icure-sdk.mjs"),
+			importing = tsSourcePackagesImport,
+			exporting = tsSourcePackageExports
+		)
+		copyJsPatching(
+			from = ktJsCompiledPackage.resolve("package.json"),
+			into = tsPackage.resolve("package.json"),
+			replacing = listOf(
+				Replacement("icure-sdk.d.ts", with = "icure-sdk.d.mts")
+			)
 		)
 		copyJsPatching(
 			from = ktJsCompiledPackage.resolve("ktor-ktor-client-core.mjs"),
@@ -271,3 +296,5 @@ tasks.register("prepareDistributionPackage") {
 		)
 	}
 }
+
+// endregion
