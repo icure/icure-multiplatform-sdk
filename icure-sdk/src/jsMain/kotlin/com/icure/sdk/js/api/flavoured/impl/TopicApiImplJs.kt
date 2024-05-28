@@ -279,4 +279,63 @@ internal class TopicApiImplJs(
 			},
 		)}
 
+
+	override fun modifyTopic(entity: DecryptedTopicJs): Promise<DecryptedTopicJs> =
+			GlobalScope.promise {
+		topic_toJs(topicApi.modifyTopic(com.icure.sdk.js.model.topic_fromJs(entity)))}
+
+
+	override fun getTopic(entityId: String): Promise<DecryptedTopicJs> = GlobalScope.promise {
+		topic_toJs(topicApi.getTopic(entityId))}
+
+
+	override fun getTopics(entityIds: Array<String>): Promise<Array<DecryptedTopicJs>> =
+			GlobalScope.promise {
+		listToArray(
+			topicApi.getTopics(arrayToList(
+				entityIds,
+				"entityIds",
+				{ x1: String ->
+					x1
+				},
+			)),
+			{ x1: DecryptedTopic ->
+				topic_toJs(x1)
+			},
+		)}
+
+
+	override fun filterTopicsBy(
+		startDocumentId: String?,
+		limit: Double?,
+		filterChain: FilterChainJs<EncryptedTopicJs>,
+	): Promise<PaginatedListJs<DecryptedTopicJs>> = GlobalScope.promise {
+		paginatedList_toJs(
+			topicApi.filterTopicsBy(startDocumentId,
+					com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit"),
+					com.icure.sdk.js.model.filter.chain.filterChain_fromJs(
+			  filterChain,
+			  { x1: com.icure.sdk.js.model.EncryptedTopicJs ->
+			    com.icure.sdk.js.model.topic_fromJs(x1)
+			  },
+			)),
+			{ x1: DecryptedTopic ->
+				topic_toJs(x1)
+			},
+		)}
+
+
+	override fun addParticipant(
+		entityId: String,
+		dataOwnerId: String,
+		topicRole: String,
+	): Promise<DecryptedTopicJs> = GlobalScope.promise {
+		topic_toJs(topicApi.addParticipant(entityId, dataOwnerId,
+				com.icure.sdk.js.model.topicRole_fromJs(topicRole)))}
+
+
+	override fun removeParticipant(entityId: String, dataOwnerId: String): Promise<DecryptedTopicJs> =
+			GlobalScope.promise {
+		topic_toJs(topicApi.removeParticipant(entityId, dataOwnerId))}
+
 }

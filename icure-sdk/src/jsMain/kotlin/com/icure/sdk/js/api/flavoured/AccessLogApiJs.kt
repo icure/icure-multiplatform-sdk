@@ -8,6 +8,7 @@ import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.model.AccessLogJs
 import com.icure.sdk.js.model.DecryptedAccessLogJs
 import com.icure.sdk.js.model.EncryptedAccessLogJs
+import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.PatientJs
 import com.icure.sdk.js.model.UserJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
@@ -55,4 +56,37 @@ public external interface AccessLogApiJs {
 		endDate: Double?,
 		descending: Boolean?,
 	): Promise<PaginatedListIteratorJs<DecryptedAccessLogJs>>
+
+	public fun modifyAccessLog(entity: DecryptedAccessLogJs): Promise<DecryptedAccessLogJs>
+
+	public fun getAccessLog(entityId: String): Promise<DecryptedAccessLogJs>
+
+	public fun getAccessLogs(entityIds: Array<String>): Promise<Array<DecryptedAccessLogJs>>
+
+	public fun findAccessLogsBy(
+		fromEpoch: Double?,
+		toEpoch: Double?,
+		startKey: Double?,
+		startDocumentId: String?,
+		limit: Double?,
+	): Promise<PaginatedListJs<DecryptedAccessLogJs>>
+
+	public fun findAccessLogsByUserAfterDate(
+		userId: String,
+		accessType: String?,
+		startDate: Double?,
+		startKey: String?,
+		startDocumentId: String?,
+		limit: Double?,
+		descending: Boolean?,
+	): Promise<PaginatedListJs<DecryptedAccessLogJs>>
+
+	public fun findAccessLogsInGroup(
+		groupId: String,
+		fromEpoch: Double?,
+		toEpoch: Double?,
+		startKey: Double?,
+		startDocumentId: String?,
+		limit: Double?,
+	): Promise<PaginatedListJs<DecryptedAccessLogJs>>
 }

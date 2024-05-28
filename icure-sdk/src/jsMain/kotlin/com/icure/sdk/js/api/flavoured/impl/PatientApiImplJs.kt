@@ -929,4 +929,317 @@ internal class PatientApiImplJs(
 			Promise<DecryptedPatientJs> = GlobalScope.promise {
 		patient_toJs(patientApi.initialiseConfidentialSecretId(com.icure.sdk.js.model.patient_fromJs(patient)))}
 
+
+	override fun modifyPatient(entity: DecryptedPatientJs): Promise<DecryptedPatientJs> =
+			GlobalScope.promise {
+		patient_toJs(patientApi.modifyPatient(com.icure.sdk.js.model.patient_fromJs(entity)))}
+
+
+	override fun getPatient(entityId: String): Promise<DecryptedPatientJs> = GlobalScope.promise {
+		patient_toJs(patientApi.getPatient(entityId))}
+
+
+	override fun filterPatientsBy(
+		filterChain: FilterChainJs<EncryptedPatientJs>,
+		startKey: String?,
+		startDocumentId: String?,
+		limit: Double?,
+		skip: Double?,
+		sort: String?,
+		desc: Boolean?,
+	): Promise<PaginatedListJs<DecryptedPatientJs>> = GlobalScope.promise {
+		paginatedList_toJs(
+			patientApi.filterPatientsBy(com.icure.sdk.js.model.filter.chain.filterChain_fromJs(
+			  filterChain,
+			  { x1: com.icure.sdk.js.model.EncryptedPatientJs ->
+			    com.icure.sdk.js.model.patient_fromJs(x1)
+			  },
+			), startKey, startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit,
+					"limit"), com.icure.sdk.js.model.CheckedConverters.numberToInt(skip, "skip"), sort, desc),
+			{ x1: DecryptedPatient ->
+				patient_toJs(x1)
+			},
+		)}
+
+
+	override fun findPatientsByNameBirthSsinAuto(
+		healthcarePartyId: String?,
+		filterValue: String,
+		startKey: String?,
+		startDocumentId: String?,
+		limit: Double?,
+		sortDirection: String,
+	): Promise<PaginatedListJs<DecryptedPatientJs>> = GlobalScope.promise {
+		paginatedList_toJs(
+			patientApi.findPatientsByNameBirthSsinAuto(healthcarePartyId, filterValue, startKey,
+					startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit"),
+					com.icure.sdk.js.model.couchdb.sortDirection_fromJs(sortDirection)),
+			{ x1: DecryptedPatient ->
+				patient_toJs(x1)
+			},
+		)}
+
+
+	override fun listPatientsOfHcParty(
+		hcPartyId: String,
+		sortField: String,
+		startKey: String?,
+		startDocumentId: String?,
+		limit: Double?,
+		sortDirection: String,
+	): Promise<PaginatedListJs<DecryptedPatientJs>> = GlobalScope.promise {
+		paginatedList_toJs(
+			patientApi.listPatientsOfHcParty(hcPartyId, sortField, startKey, startDocumentId,
+					com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit"),
+					com.icure.sdk.js.model.couchdb.sortDirection_fromJs(sortDirection)),
+			{ x1: DecryptedPatient ->
+				patient_toJs(x1)
+			},
+		)}
+
+
+	override fun listOfMergesAfter(date: Double): Promise<Array<DecryptedPatientJs>> =
+			GlobalScope.promise {
+		listToArray(
+			patientApi.listOfMergesAfter(numberToLong(date, "date")),
+			{ x1: DecryptedPatient ->
+				patient_toJs(x1)
+			},
+		)}
+
+
+	override fun findPatientsModifiedAfter(
+		date: Double,
+		startKey: Double?,
+		startDocumentId: String?,
+		limit: Double?,
+	): Promise<PaginatedListJs<DecryptedPatientJs>> = GlobalScope.promise {
+		paginatedList_toJs(
+			patientApi.findPatientsModifiedAfter(com.icure.sdk.js.model.CheckedConverters.numberToLong(date,
+					"date"), com.icure.sdk.js.model.CheckedConverters.numberToLong(startKey, "startKey"),
+					startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
+			{ x1: DecryptedPatient ->
+				patient_toJs(x1)
+			},
+		)}
+
+
+	override fun listPatientsByHcParty(
+		hcPartyId: String,
+		sortField: String,
+		startKey: String?,
+		startDocumentId: String?,
+		limit: Double?,
+		sortDirection: String,
+	): Promise<PaginatedListJs<DecryptedPatientJs>> = GlobalScope.promise {
+		paginatedList_toJs(
+			patientApi.listPatientsByHcParty(hcPartyId, sortField, startKey, startDocumentId,
+					com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit"),
+					com.icure.sdk.js.model.couchdb.sortDirection_fromJs(sortDirection)),
+			{ x1: DecryptedPatient ->
+				patient_toJs(x1)
+			},
+		)}
+
+
+	override fun getPatientHcPartyKeysForDelegate(patientId: String): Promise<dynamic> =
+			GlobalScope.promise {
+		mapToObject<_, _, String>(
+			patientApi.getPatientHcPartyKeysForDelegate(patientId),
+			{ x1: String ->
+				x1
+			},
+			{ x1: String ->
+				x1
+			},
+		)}
+
+
+	override fun countOfPatients(hcPartyId: String): Promise<EncryptedContentJs> =
+			GlobalScope.promise {
+		content_toJs(patientApi.countOfPatients(hcPartyId))}
+
+
+	override fun findPatientsByHealthcareParty(
+		hcPartyId: String?,
+		sortField: String,
+		startKey: String?,
+		startDocumentId: String?,
+		limit: Double?,
+		sortDirection: String,
+	): Promise<PaginatedListJs<DecryptedPatientJs>> = GlobalScope.promise {
+		paginatedList_toJs(
+			patientApi.findPatientsByHealthcareParty(hcPartyId, sortField, startKey, startDocumentId,
+					com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit"),
+					com.icure.sdk.js.model.couchdb.sortDirection_fromJs(sortDirection)),
+			{ x1: DecryptedPatient ->
+				patient_toJs(x1)
+			},
+		)}
+
+
+	override fun findPatientsIdsByHealthcareParty(
+		hcPartyId: String,
+		startKey: String?,
+		startDocumentId: String?,
+		limit: Double?,
+	): Promise<PaginatedListJs<String>> = GlobalScope.promise {
+		paginatedList_toJs(
+			patientApi.findPatientsIdsByHealthcareParty(hcPartyId, startKey, startDocumentId,
+					com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
+			{ x1: String ->
+				x1
+			},
+		)}
+
+
+	override fun getPatientByExternalId(externalId: String): Promise<DecryptedPatientJs> =
+			GlobalScope.promise {
+		patient_toJs(patientApi.getPatientByExternalId(externalId))}
+
+
+	override fun findPatientsByAccessLogUserAfterDate(
+		userId: String,
+		accessType: String?,
+		startDate: Double?,
+		startKey: String?,
+		startDocumentId: String?,
+		limit: Double?,
+	): Promise<PaginatedListJs<DecryptedPatientJs>> = GlobalScope.promise {
+		paginatedList_toJs(
+			patientApi.findPatientsByAccessLogUserAfterDate(userId, accessType,
+					com.icure.sdk.js.model.CheckedConverters.numberToLong(startDate, "startDate"), startKey,
+					startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
+			{ x1: DecryptedPatient ->
+				patient_toJs(x1)
+			},
+		)}
+
+
+	override fun fuzzySearch(
+		firstName: String,
+		lastName: String,
+		dateOfBirth: Double?,
+	): Promise<Array<DecryptedPatientJs>> = GlobalScope.promise {
+		listToArray(
+			patientApi.fuzzySearch(firstName, lastName, numberToInt(dateOfBirth, "dateOfBirth")),
+			{ x1: DecryptedPatient ->
+				patient_toJs(x1)
+			},
+		)}
+
+
+	override fun findDeletedPatients(
+		startDate: Double,
+		endDate: Double?,
+		desc: Boolean?,
+		startKey: Double?,
+		startDocumentId: String?,
+		limit: Double?,
+	): Promise<PaginatedListJs<DecryptedPatientJs>> = GlobalScope.promise {
+		paginatedList_toJs(
+			patientApi.findDeletedPatients(com.icure.sdk.js.model.CheckedConverters.numberToLong(startDate,
+					"startDate"), com.icure.sdk.js.model.CheckedConverters.numberToLong(endDate, "endDate"), desc,
+					com.icure.sdk.js.model.CheckedConverters.numberToLong(startKey, "startKey"), startDocumentId,
+					com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
+			{ x1: DecryptedPatient ->
+				patient_toJs(x1)
+			},
+		)}
+
+
+	override fun listDeletedPatientsByName(firstName: String?, lastName: String?):
+			Promise<Array<DecryptedPatientJs>> = GlobalScope.promise {
+		listToArray(
+			patientApi.listDeletedPatientsByName(firstName, lastName),
+			{ x1: DecryptedPatient ->
+				patient_toJs(x1)
+			},
+		)}
+
+
+	override fun getPatients(patientIds: ListOfIdsJs): Promise<Array<DecryptedPatientJs>> =
+			GlobalScope.promise {
+		listToArray(
+			patientApi.getPatients(listOfIds_fromJs(patientIds)),
+			{ x1: DecryptedPatient ->
+				patient_toJs(x1)
+			},
+		)}
+
+
+	override fun getPatientByHealthcarePartyAndIdentifier(
+		hcPartyId: String,
+		id: String,
+		system: String?,
+	): Promise<DecryptedPatientJs> = GlobalScope.promise {
+		patient_toJs(patientApi.getPatientByHealthcarePartyAndIdentifier(hcPartyId, id, system))}
+
+
+	override fun modifyPatients(patientDtos: Array<EncryptedPatientJs>): Promise<Array<IdWithRevJs>> =
+			GlobalScope.promise {
+		listToArray(
+			patientApi.modifyPatients(arrayToList(
+				patientDtos,
+				"patientDtos",
+				{ x1: EncryptedPatientJs ->
+					patient_fromJs(x1)
+				},
+			)),
+			{ x1: IdWithRev ->
+				idWithRev_toJs(x1)
+			},
+		)}
+
+
+	override fun modifyPatientReferral(
+		patientId: String,
+		referralId: String,
+		start: Double?,
+		end: Double?,
+	): Promise<DecryptedPatientJs> = GlobalScope.promise {
+		patient_toJs(patientApi.modifyPatientReferral(patientId, referralId,
+				com.icure.sdk.js.model.CheckedConverters.numberToLong(start, "start"),
+				com.icure.sdk.js.model.CheckedConverters.numberToLong(end, "end")))}
+
+
+	override fun findDuplicatesBySsin(
+		hcPartyId: String,
+		startKey: String?,
+		startDocumentId: String?,
+		limit: Double?,
+	): Promise<PaginatedListJs<DecryptedPatientJs>> = GlobalScope.promise {
+		paginatedList_toJs(
+			patientApi.findDuplicatesBySsin(hcPartyId, startKey, startDocumentId,
+					com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
+			{ x1: DecryptedPatient ->
+				patient_toJs(x1)
+			},
+		)}
+
+
+	override fun findDuplicatesByName(
+		hcPartyId: String,
+		startKey: String?,
+		startDocumentId: String?,
+		limit: Double?,
+	): Promise<PaginatedListJs<DecryptedPatientJs>> = GlobalScope.promise {
+		paginatedList_toJs(
+			patientApi.findDuplicatesByName(hcPartyId, startKey, startDocumentId,
+					com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
+			{ x1: DecryptedPatient ->
+				patient_toJs(x1)
+			},
+		)}
+
+
+	override fun mergePatients(
+		intoId: String,
+		fromId: String,
+		expectedFromRev: String,
+		updatedInto: EncryptedPatientJs,
+	): Promise<DecryptedPatientJs> = GlobalScope.promise {
+		patient_toJs(patientApi.mergePatients(intoId, fromId, expectedFromRev,
+				com.icure.sdk.js.model.patient_fromJs(updatedInto)))}
+
 }

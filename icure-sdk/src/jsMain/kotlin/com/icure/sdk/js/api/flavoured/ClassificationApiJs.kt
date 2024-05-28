@@ -56,4 +56,11 @@ public external interface ClassificationApiJs {
 		endDate: Double?,
 		descending: Boolean?,
 	): Promise<PaginatedListIteratorJs<DecryptedClassificationJs>>
+
+	public fun modifyClassification(entity: DecryptedClassificationJs):
+			Promise<DecryptedClassificationJs>
+
+	public fun getClassification(entityId: String): Promise<DecryptedClassificationJs>
+
+	public fun getClassifications(entityIds: Array<String>): Promise<Array<DecryptedClassificationJs>>
 }

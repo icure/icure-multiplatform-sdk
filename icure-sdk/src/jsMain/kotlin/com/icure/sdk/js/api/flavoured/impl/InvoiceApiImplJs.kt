@@ -957,4 +957,362 @@ internal class InvoiceApiImplJs(
 			},
 		)}
 
+
+	override fun modifyInvoice(entity: DecryptedInvoiceJs): Promise<DecryptedInvoiceJs> =
+			GlobalScope.promise {
+		invoice_toJs(invoiceApi.modifyInvoice(com.icure.sdk.js.model.invoice_fromJs(entity)))}
+
+
+	override fun modifyInvoices(entities: Array<DecryptedInvoiceJs>):
+			Promise<Array<DecryptedInvoiceJs>> = GlobalScope.promise {
+		listToArray(
+			invoiceApi.modifyInvoices(arrayToList(
+				entities,
+				"entities",
+				{ x1: DecryptedInvoiceJs ->
+					invoice_fromJs(x1)
+				},
+			)),
+			{ x1: DecryptedInvoice ->
+				invoice_toJs(x1)
+			},
+		)}
+
+
+	override fun getInvoice(entityId: String): Promise<DecryptedInvoiceJs> = GlobalScope.promise {
+		invoice_toJs(invoiceApi.getInvoice(entityId))}
+
+
+	override fun getInvoices(entityIds: Array<String>): Promise<Array<DecryptedInvoiceJs>> =
+			GlobalScope.promise {
+		listToArray(
+			invoiceApi.getInvoices(arrayToList(
+				entityIds,
+				"entityIds",
+				{ x1: String ->
+					x1
+				},
+			)),
+			{ x1: DecryptedInvoice ->
+				invoice_toJs(x1)
+			},
+		)}
+
+
+	override fun filterInvoicesBy(filterChain: FilterChainJs<EncryptedInvoiceJs>):
+			Promise<Array<DecryptedInvoiceJs>> = GlobalScope.promise {
+		listToArray(
+			invoiceApi.filterInvoicesBy(filterChain_fromJs(
+				filterChain,
+				{ x1: EncryptedInvoiceJs ->
+					invoice_fromJs(x1)
+				},
+			)),
+			{ x1: DecryptedInvoice ->
+				invoice_toJs(x1)
+			},
+		)}
+
+
+	override fun findInvoicesByHcPartyPatientForeignKeys(hcPartyId: String,
+			secretPatientKeys: Array<String>): Promise<Array<DecryptedInvoiceJs>> = GlobalScope.promise {
+		listToArray(
+			invoiceApi.findInvoicesByHcPartyPatientForeignKeys(hcPartyId, arrayToList(
+				secretPatientKeys,
+				"secretPatientKeys",
+				{ x1: String ->
+					x1
+				},
+			)),
+			{ x1: DecryptedInvoice ->
+				invoice_toJs(x1)
+			},
+		)}
+
+
+	override fun reassignInvoice(invoice: DecryptedInvoiceJs): Promise<DecryptedInvoiceJs> =
+			GlobalScope.promise {
+		invoice_toJs(invoiceApi.reassignInvoice(com.icure.sdk.js.model.invoice_fromJs(invoice)))}
+
+
+	override fun mergeTo(invoiceId: String, ids: Array<String>): Promise<DecryptedInvoiceJs> =
+			GlobalScope.promise {
+		invoice_toJs(invoiceApi.mergeTo(invoiceId, com.icure.sdk.js.model.CheckedConverters.arrayToList(
+		  ids,
+		  "ids",
+		  { x1: kotlin.String ->
+		    x1
+		  },
+		)))}
+
+
+	override fun validate(
+		invoiceId: String,
+		scheme: String,
+		forcedValue: String,
+	): Promise<DecryptedInvoiceJs> = GlobalScope.promise {
+		invoice_toJs(invoiceApi.validate(invoiceId, scheme, forcedValue))}
+
+
+	override fun appendCodes(
+		userId: String,
+		type: String,
+		sentMediumType: String,
+		secretFKeys: String,
+		insuranceId: String?,
+		invoiceId: String?,
+		gracePeriod: Double?,
+		invoicingCodes: Array<EncryptedInvoicingCodeJs>,
+	): Promise<Array<DecryptedInvoiceJs>> = GlobalScope.promise {
+		listToArray(
+			invoiceApi.appendCodes(userId, type, sentMediumType, secretFKeys, insuranceId, invoiceId,
+					numberToInt(gracePeriod, "gracePeriod"), arrayToList(
+				invoicingCodes,
+				"invoicingCodes",
+				{ x1: EncryptedInvoicingCodeJs ->
+					invoicingCode_fromJs(x1)
+				},
+			)),
+			{ x1: DecryptedInvoice ->
+				invoice_toJs(x1)
+			},
+		)}
+
+
+	override fun removeCodes(
+		userId: String,
+		serviceId: String,
+		secretFKeys: String,
+		tarificationIds: Array<String>,
+	): Promise<Array<DecryptedInvoiceJs>> = GlobalScope.promise {
+		listToArray(
+			invoiceApi.removeCodes(userId, serviceId, secretFKeys, arrayToList(
+				tarificationIds,
+				"tarificationIds",
+				{ x1: String ->
+					x1
+				},
+			)),
+			{ x1: DecryptedInvoice ->
+				invoice_toJs(x1)
+			},
+		)}
+
+
+	override fun findInvoicesByAuthor(
+		hcPartyId: String,
+		fromDate: Double?,
+		toDate: Double?,
+		startKey: dynamic,
+		startDocumentId: String?,
+		limit: Double?,
+	): Promise<PaginatedListJs<DecryptedInvoiceJs>> = GlobalScope.promise {
+		paginatedList_toJs(
+			invoiceApi.findInvoicesByAuthor(hcPartyId,
+					com.icure.sdk.js.model.CheckedConverters.numberToLong(fromDate, "fromDate"),
+					com.icure.sdk.js.model.CheckedConverters.numberToLong(toDate, "toDate"),
+					com.icure.sdk.js.model.CheckedConverters.dynamicToJsonNullsafe(startKey, "startKey"),
+					startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
+			{ x1: DecryptedInvoice ->
+				invoice_toJs(x1)
+			},
+		)}
+
+
+	override fun listInvoicesByHCPartyAndPatientForeignKeys(hcPartyId: String,
+			secretPatientKeys: Array<String>): Promise<Array<DecryptedInvoiceJs>> = GlobalScope.promise {
+		listToArray(
+			invoiceApi.listInvoicesByHCPartyAndPatientForeignKeys(hcPartyId, arrayToList(
+				secretPatientKeys,
+				"secretPatientKeys",
+				{ x1: String ->
+					x1
+				},
+			)),
+			{ x1: DecryptedInvoice ->
+				invoice_toJs(x1)
+			},
+		)}
+
+
+	override fun listInvoicesByHcPartyAndGroupId(hcPartyId: String, groupId: String):
+			Promise<Array<DecryptedInvoiceJs>> = GlobalScope.promise {
+		listToArray(
+			invoiceApi.listInvoicesByHcPartyAndGroupId(hcPartyId, groupId),
+			{ x1: DecryptedInvoice ->
+				invoice_toJs(x1)
+			},
+		)}
+
+
+	override fun listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(
+		hcPartyId: String,
+		sentMediumType: String,
+		invoiceType: String,
+		sent: Boolean,
+		from: Double?,
+		to: Double?,
+	): Promise<Array<DecryptedInvoiceJs>> = GlobalScope.promise {
+		listToArray(
+			invoiceApi.listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(hcPartyId,
+					mediumType_fromJs(sentMediumType), invoiceType_fromJs(invoiceType), sent, numberToLong(from,
+					"from"), numberToLong(to, "to")),
+			{ x1: DecryptedInvoice ->
+				invoice_toJs(x1)
+			},
+		)}
+
+
+	override fun listInvoicesByContactIds(contactIds: Array<String>):
+			Promise<Array<DecryptedInvoiceJs>> = GlobalScope.promise {
+		listToArray(
+			invoiceApi.listInvoicesByContactIds(arrayToList(
+				contactIds,
+				"contactIds",
+				{ x1: String ->
+					x1
+				},
+			)),
+			{ x1: DecryptedInvoice ->
+				invoice_toJs(x1)
+			},
+		)}
+
+
+	override fun listInvoicesByRecipientsIds(recipientsIds: Array<String>):
+			Promise<Array<DecryptedInvoiceJs>> = GlobalScope.promise {
+		listToArray(
+			invoiceApi.listInvoicesByRecipientsIds(arrayToList(
+				recipientsIds,
+				"recipientsIds",
+				{ x1: String ->
+					x1
+				},
+			)),
+			{ x1: DecryptedInvoice ->
+				invoice_toJs(x1)
+			},
+		)}
+
+
+	override fun listToInsurances(userIds: Array<String>): Promise<Array<DecryptedInvoiceJs>> =
+			GlobalScope.promise {
+		listToArray(
+			invoiceApi.listToInsurances(arrayToList(
+				userIds,
+				"userIds",
+				{ x1: String ->
+					x1
+				},
+			)),
+			{ x1: DecryptedInvoice ->
+				invoice_toJs(x1)
+			},
+		)}
+
+
+	override fun listToInsurancesUnsent(userIds: Array<String>): Promise<Array<DecryptedInvoiceJs>> =
+			GlobalScope.promise {
+		listToArray(
+			invoiceApi.listToInsurancesUnsent(arrayToList(
+				userIds,
+				"userIds",
+				{ x1: String ->
+					x1
+				},
+			)),
+			{ x1: DecryptedInvoice ->
+				invoice_toJs(x1)
+			},
+		)}
+
+
+	override fun listToPatients(hcPartyId: String): Promise<Array<DecryptedInvoiceJs>> =
+			GlobalScope.promise {
+		listToArray(
+			invoiceApi.listToPatients(hcPartyId),
+			{ x1: DecryptedInvoice ->
+				invoice_toJs(x1)
+			},
+		)}
+
+
+	override fun listToPatientsUnsent(hcPartyId: String?): Promise<Array<DecryptedInvoiceJs>> =
+			GlobalScope.promise {
+		listToArray(
+			invoiceApi.listToPatientsUnsent(hcPartyId),
+			{ x1: DecryptedInvoice ->
+				invoice_toJs(x1)
+			},
+		)}
+
+
+	override fun listInvoicesByIds(ids: Array<String>): Promise<Array<DecryptedInvoiceJs>> =
+			GlobalScope.promise {
+		listToArray(
+			invoiceApi.listInvoicesByIds(arrayToList(
+				ids,
+				"ids",
+				{ x1: String ->
+					x1
+				},
+			)),
+			{ x1: DecryptedInvoice ->
+				invoice_toJs(x1)
+			},
+		)}
+
+
+	override fun listInvoicesByHcpartySendingModeStatusDate(
+		hcPartyId: String,
+		sendingMode: String,
+		status: String,
+		from: Double,
+		to: Double,
+	): Promise<Array<DecryptedInvoiceJs>> = GlobalScope.promise {
+		listToArray(
+			invoiceApi.listInvoicesByHcpartySendingModeStatusDate(hcPartyId, sendingMode, status,
+					numberToLong(from, "from"), numberToLong(to, "to")),
+			{ x1: DecryptedInvoice ->
+				invoice_toJs(x1)
+			},
+		)}
+
+
+	override fun listInvoicesByServiceIds(serviceIds: Array<String>):
+			Promise<Array<DecryptedInvoiceJs>> = GlobalScope.promise {
+		listToArray(
+			invoiceApi.listInvoicesByServiceIds(arrayToList(
+				serviceIds,
+				"serviceIds",
+				{ x1: String ->
+					x1
+				},
+			)),
+			{ x1: DecryptedInvoice ->
+				invoice_toJs(x1)
+			},
+		)}
+
+
+	override fun listAllHcpsByStatus(
+		status: String,
+		from: Double?,
+		to: Double?,
+		hcpIds: Array<String>,
+	): Promise<Array<DecryptedInvoiceJs>> = GlobalScope.promise {
+		listToArray(
+			invoiceApi.listAllHcpsByStatus(status, numberToLong(from, "from"), numberToLong(to, "to"),
+					arrayToList(
+				hcpIds,
+				"hcpIds",
+				{ x1: String ->
+					x1
+				},
+			)),
+			{ x1: DecryptedInvoice ->
+				invoice_toJs(x1)
+			},
+		)}
+
 }

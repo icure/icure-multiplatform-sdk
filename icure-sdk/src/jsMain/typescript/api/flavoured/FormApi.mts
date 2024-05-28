@@ -70,4 +70,30 @@ export interface FormApi {
 			descending: boolean | undefined
 	): Promise<PaginatedListIterator<DecryptedForm>>;
 
+	modifyForm(entity: DecryptedForm): Promise<DecryptedForm>;
+
+	modifyForms(entities: Array<DecryptedForm>): Promise<Array<DecryptedForm>>;
+
+	getForm(entityId: string): Promise<DecryptedForm>;
+
+	getForms(entityIds: Array<string>): Promise<Array<DecryptedForm>>;
+
+	getFormByLogicalUuid(logicalUuid: string): Promise<DecryptedForm>;
+
+	getFormsByLogicalUuid(logicalUuid: string): Promise<Array<DecryptedForm>>;
+
+	getFormsByUniqueId(uniqueId: string): Promise<Array<DecryptedForm>>;
+
+	getFormByUniqueId(uniqueId: string): Promise<DecryptedForm>;
+
+	getChildrenForms(hcPartyId: string, parentId: string): Promise<Array<DecryptedForm>>;
+
+	listFormsByHCPartyAndPatientForeignKeys(
+			hcPartyId: string,
+			secretFKeys: string,
+			healthElementId: string | undefined,
+			planOfActionId: string | undefined,
+			formTemplateId: string | undefined
+	): Promise<Array<DecryptedForm>>;
+
 }

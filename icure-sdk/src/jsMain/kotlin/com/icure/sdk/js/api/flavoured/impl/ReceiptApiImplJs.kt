@@ -208,4 +208,23 @@ internal class ReceiptApiImplJs(
 			},
 		)}
 
+
+	override fun modifyReceipt(entity: DecryptedReceiptJs): Promise<DecryptedReceiptJs> =
+			GlobalScope.promise {
+		receipt_toJs(receiptApi.modifyReceipt(com.icure.sdk.js.model.receipt_fromJs(entity)))}
+
+
+	override fun getReceipt(entityId: String): Promise<DecryptedReceiptJs> = GlobalScope.promise {
+		receipt_toJs(receiptApi.getReceipt(entityId))}
+
+
+	override fun listByReference(reference: String): Promise<Array<DecryptedReceiptJs>> =
+			GlobalScope.promise {
+		listToArray(
+			receiptApi.listByReference(reference),
+			{ x1: DecryptedReceipt ->
+				receipt_toJs(x1)
+			},
+		)}
+
 }

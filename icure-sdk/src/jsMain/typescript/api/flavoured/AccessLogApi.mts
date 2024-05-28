@@ -4,6 +4,7 @@ import {ShareMetadataBehaviour} from '../../crypto/entities/ShareMetadataBehavio
 import {SimpleShareResult} from '../../crypto/entities/SimpleShareResult.mjs';
 import {PaginatedListIterator} from '../../icure-sdk.mjs';
 import {AccessLog, DecryptedAccessLog, EncryptedAccessLog} from '../../model/AccessLog.mjs';
+import {PaginatedList} from '../../model/PaginatedList.mjs';
 import {Patient} from '../../model/Patient.mjs';
 import {User} from '../../model/User.mjs';
 import {DocIdentifier} from '../../model/couchdb/DocIdentifier.mjs';
@@ -47,5 +48,38 @@ export interface AccessLogApi {
 			endDate: number | undefined,
 			descending: boolean | undefined
 	): Promise<PaginatedListIterator<DecryptedAccessLog>>;
+
+	modifyAccessLog(entity: DecryptedAccessLog): Promise<DecryptedAccessLog>;
+
+	getAccessLog(entityId: string): Promise<DecryptedAccessLog>;
+
+	getAccessLogs(entityIds: Array<string>): Promise<Array<DecryptedAccessLog>>;
+
+	findAccessLogsBy(
+			fromEpoch: number | undefined,
+			toEpoch: number | undefined,
+			startKey: number | undefined,
+			startDocumentId: string | undefined,
+			limit: number | undefined
+	): Promise<PaginatedList<DecryptedAccessLog>>;
+
+	findAccessLogsByUserAfterDate(
+			userId: string,
+			accessType: string | undefined,
+			startDate: number | undefined,
+			startKey: string | undefined,
+			startDocumentId: string | undefined,
+			limit: number | undefined,
+			descending: boolean | undefined
+	): Promise<PaginatedList<DecryptedAccessLog>>;
+
+	findAccessLogsInGroup(
+			groupId: string,
+			fromEpoch: number | undefined,
+			toEpoch: number | undefined,
+			startKey: number | undefined,
+			startDocumentId: string | undefined,
+			limit: number | undefined
+	): Promise<PaginatedList<DecryptedAccessLog>>;
 
 }

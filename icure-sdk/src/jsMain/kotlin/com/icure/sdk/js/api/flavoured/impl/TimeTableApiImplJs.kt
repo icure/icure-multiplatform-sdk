@@ -210,4 +210,37 @@ internal class TimeTableApiImplJs(
 			},
 		)}
 
+
+	override fun modifyTimeTable(entity: DecryptedTimeTableJs): Promise<DecryptedTimeTableJs> =
+			GlobalScope.promise {
+		timeTable_toJs(timeTableApi.modifyTimeTable(com.icure.sdk.js.model.timeTable_fromJs(entity)))}
+
+
+	override fun getTimeTable(entityId: String): Promise<DecryptedTimeTableJs> = GlobalScope.promise {
+		timeTable_toJs(timeTableApi.getTimeTable(entityId))}
+
+
+	override fun getTimeTablesByPeriodAndAgendaId(
+		startDate: Double,
+		endDate: Double,
+		agendaId: String,
+	): Promise<Array<DecryptedTimeTableJs>> = GlobalScope.promise {
+		listToArray(
+			timeTableApi.getTimeTablesByPeriodAndAgendaId(numberToLong(startDate, "startDate"),
+					numberToLong(endDate, "endDate"), agendaId),
+			{ x1: DecryptedTimeTable ->
+				timeTable_toJs(x1)
+			},
+		)}
+
+
+	override fun getTimeTablesByAgendaId(agendaId: String): Promise<Array<DecryptedTimeTableJs>> =
+			GlobalScope.promise {
+		listToArray(
+			timeTableApi.getTimeTablesByAgendaId(agendaId),
+			{ x1: DecryptedTimeTable ->
+				timeTable_toJs(x1)
+			},
+		)}
+
 }

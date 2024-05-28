@@ -254,4 +254,30 @@ internal class ClassificationApiImplJs(
 			},
 		)}
 
+
+	override fun modifyClassification(entity: DecryptedClassificationJs):
+			Promise<DecryptedClassificationJs> = GlobalScope.promise {
+		classification_toJs(classificationApi.modifyClassification(com.icure.sdk.js.model.classification_fromJs(entity)))}
+
+
+	override fun getClassification(entityId: String): Promise<DecryptedClassificationJs> =
+			GlobalScope.promise {
+		classification_toJs(classificationApi.getClassification(entityId))}
+
+
+	override fun getClassifications(entityIds: Array<String>):
+			Promise<Array<DecryptedClassificationJs>> = GlobalScope.promise {
+		listToArray(
+			classificationApi.getClassifications(arrayToList(
+				entityIds,
+				"entityIds",
+				{ x1: String ->
+					x1
+				},
+			)),
+			{ x1: DecryptedClassification ->
+				classification_toJs(x1)
+			},
+		)}
+
 }

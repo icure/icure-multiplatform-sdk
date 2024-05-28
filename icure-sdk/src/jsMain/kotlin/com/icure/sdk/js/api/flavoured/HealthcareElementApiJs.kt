@@ -9,10 +9,12 @@ import com.icure.sdk.js.model.DecryptedHealthElementJs
 import com.icure.sdk.js.model.EncryptedHealthElementJs
 import com.icure.sdk.js.model.HealthElementJs
 import com.icure.sdk.js.model.IcureStubJs
+import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.PatientJs
 import com.icure.sdk.js.model.UserJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.filter.AbstractFilterJs
+import com.icure.sdk.js.model.filter.chain.FilterChainJs
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
 import kotlin.Boolean
@@ -67,4 +69,24 @@ public external interface HealthcareElementApiJs {
 		endDate: Double?,
 		descending: Boolean?,
 	): Promise<PaginatedListIteratorJs<DecryptedHealthElementJs>>
+
+	public fun modifyHealthcareElement(entity: DecryptedHealthElementJs):
+			Promise<DecryptedHealthElementJs>
+
+	public fun modifyHealthcareElements(entities: Array<DecryptedHealthElementJs>):
+			Promise<Array<DecryptedHealthElementJs>>
+
+	public fun getHealthcareElement(entityId: String): Promise<DecryptedHealthElementJs>
+
+	public fun getHealthcareElements(entityIds: Array<String>):
+			Promise<Array<DecryptedHealthElementJs>>
+
+	public fun filterHealthcareElementsBy(
+		filterChain: FilterChainJs<EncryptedHealthElementJs>,
+		startDocumentId: String?,
+		limit: Double?,
+	): Promise<PaginatedListJs<DecryptedHealthElementJs>>
+
+	public fun findHealthcareElementsByHcPartyPatientForeignKeys(hcPartyId: String,
+			secretPatientKeys: Array<String>): Promise<Array<DecryptedHealthElementJs>>
 }

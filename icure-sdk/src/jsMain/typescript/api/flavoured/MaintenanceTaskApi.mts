@@ -2,9 +2,11 @@
 import {ShareMetadataBehaviour} from '../../crypto/entities/ShareMetadataBehaviour.mjs';
 import {SimpleShareResult} from '../../crypto/entities/SimpleShareResult.mjs';
 import {DecryptedMaintenanceTask, EncryptedMaintenanceTask, MaintenanceTask} from '../../model/MaintenanceTask.mjs';
+import {PaginatedList} from '../../model/PaginatedList.mjs';
 import {User} from '../../model/User.mjs';
 import {DocIdentifier} from '../../model/couchdb/DocIdentifier.mjs';
 import {AccessLevel} from '../../model/embed/AccessLevel.mjs';
+import {FilterChain} from '../../model/filter/chain/FilterChain.mjs';
 import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs';
 import {MaintenanceTaskFlavouredApi} from './MaintenanceTaskFlavouredApi.mjs';
 
@@ -32,5 +34,12 @@ export interface MaintenanceTaskApi {
 			shareOwningEntityIds: ShareMetadataBehaviour,
 			requestedPermission: RequestedPermission
 	): Promise<SimpleShareResult<DecryptedMaintenanceTask>>;
+
+	modifyMaintenanceTask(entity: DecryptedMaintenanceTask): Promise<DecryptedMaintenanceTask>;
+
+	getMaintenanceTask(entityId: string): Promise<DecryptedMaintenanceTask>;
+
+	filterMaintenanceTasksBy(startDocumentId: string | undefined, limit: number | undefined,
+			filterChain: FilterChain<MaintenanceTask>): Promise<PaginatedList<DecryptedMaintenanceTask>>;
 
 }

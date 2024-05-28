@@ -549,4 +549,139 @@ internal class DocumentApiImplJs(
 			},
 		)}
 
+
+	override fun modifyDocument(entity: DecryptedDocumentJs): Promise<DecryptedDocumentJs> =
+			GlobalScope.promise {
+		document_toJs(documentApi.modifyDocument(com.icure.sdk.js.model.document_fromJs(entity)))}
+
+
+	override fun getDocument(entityId: String): Promise<DecryptedDocumentJs> = GlobalScope.promise {
+		document_toJs(documentApi.getDocument(entityId))}
+
+
+	override fun getDocumentByExternalUuid(externalUuid: String): Promise<DecryptedDocumentJs> =
+			GlobalScope.promise {
+		document_toJs(documentApi.getDocumentByExternalUuid(externalUuid))}
+
+
+	override fun getDocumentsByExternalUuid(externalUuid: String): Promise<Array<DecryptedDocumentJs>>
+			= GlobalScope.promise {
+		listToArray(
+			documentApi.getDocumentsByExternalUuid(externalUuid),
+			{ x1: DecryptedDocument ->
+				document_toJs(x1)
+			},
+		)}
+
+
+	override fun getDocuments(entityIds: Array<String>): Promise<Array<DecryptedDocumentJs>> =
+			GlobalScope.promise {
+		listToArray(
+			documentApi.getDocuments(arrayToList(
+				entityIds,
+				"entityIds",
+				{ x1: String ->
+					x1
+				},
+			)),
+			{ x1: DecryptedDocument ->
+				document_toJs(x1)
+			},
+		)}
+
+
+	override fun modifyDocuments(entities: Array<DecryptedDocumentJs>):
+			Promise<Array<DecryptedDocumentJs>> = GlobalScope.promise {
+		listToArray(
+			documentApi.modifyDocuments(arrayToList(
+				entities,
+				"entities",
+				{ x1: DecryptedDocumentJs ->
+					document_fromJs(x1)
+				},
+			)),
+			{ x1: DecryptedDocument ->
+				document_toJs(x1)
+			},
+		)}
+
+
+	override fun listDocumentsByHcPartyMessageForeignKeys(
+		hcPartyId: String,
+		documentTypeCode: String?,
+		secretMessageKeys: Array<String>,
+	): Promise<Array<DecryptedDocumentJs>> = GlobalScope.promise {
+		listToArray(
+			documentApi.listDocumentsByHcPartyMessageForeignKeys(hcPartyId, documentTypeCode, arrayToList(
+				secretMessageKeys,
+				"secretMessageKeys",
+				{ x1: String ->
+					x1
+				},
+			)),
+			{ x1: DecryptedDocument ->
+				document_toJs(x1)
+			},
+		)}
+
+
+	override fun findWithoutDelegation(limit: Double?): Promise<Array<DecryptedDocumentJs>> =
+			GlobalScope.promise {
+		listToArray(
+			documentApi.findWithoutDelegation(numberToInt(limit, "limit")),
+			{ x1: DecryptedDocument ->
+				document_toJs(x1)
+			},
+		)}
+
+
+	override fun setRawMainAttachment(
+		documentId: String,
+		rev: String,
+		utis: Array<String>,
+		blobType: String,
+		attachment: ByteArray,
+		encrypted: Boolean,
+	): Promise<EncryptedDocumentJs> = GlobalScope.promise {
+		document_toJs(documentApi.setRawMainAttachment(documentId, rev,
+				com.icure.sdk.js.model.CheckedConverters.arrayToList(
+		  utis,
+		  "utis",
+		  { x1: kotlin.String ->
+		    x1
+		  },
+		), blobType, attachment, encrypted))}
+
+
+	override fun setRawSecondaryAttachment(
+		documentId: String,
+		key: String,
+		rev: String,
+		utis: Array<String>,
+		blobType: String,
+		attachment: ByteArray,
+		encrypted: Boolean,
+	): Promise<EncryptedDocumentJs> = GlobalScope.promise {
+		document_toJs(documentApi.setRawSecondaryAttachment(documentId, key, rev,
+				com.icure.sdk.js.model.CheckedConverters.arrayToList(
+		  utis,
+		  "utis",
+		  { x1: kotlin.String ->
+		    x1
+		  },
+		), blobType, attachment, encrypted))}
+
+
+	override fun deleteMainAttachment(entityId: String, rev: String): Promise<DecryptedDocumentJs> =
+			GlobalScope.promise {
+		document_toJs(documentApi.deleteMainAttachment(entityId, rev))}
+
+
+	override fun deleteSecondaryAttachment(
+		documentId: String,
+		key: String,
+		attachmentId: String,
+	): Promise<DecryptedDocumentJs> = GlobalScope.promise {
+		document_toJs(documentApi.deleteSecondaryAttachment(documentId, key, attachmentId))}
+
 }

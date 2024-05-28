@@ -63,4 +63,10 @@ public external interface ReceiptApiJs {
 		shareOwningEntityIds: String,
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<DecryptedReceiptJs>>
+
+	public fun modifyReceipt(entity: DecryptedReceiptJs): Promise<DecryptedReceiptJs>
+
+	public fun getReceipt(entityId: String): Promise<DecryptedReceiptJs>
+
+	public fun listByReference(reference: String): Promise<Array<DecryptedReceiptJs>>
 }

@@ -7,12 +7,15 @@ import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.model.DecryptedTopicJs
 import com.icure.sdk.js.model.EncryptedTopicJs
+import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.PatientJs
 import com.icure.sdk.js.model.TopicJs
 import com.icure.sdk.js.model.UserJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.filter.AbstractFilterJs
+import com.icure.sdk.js.model.filter.chain.FilterChainJs
 import kotlin.Array
+import kotlin.Double
 import kotlin.String
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
@@ -47,4 +50,24 @@ public external interface TopicApiJs {
 		shareOwningEntityIds: String,
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<DecryptedTopicJs>>
+
+	public fun modifyTopic(entity: DecryptedTopicJs): Promise<DecryptedTopicJs>
+
+	public fun getTopic(entityId: String): Promise<DecryptedTopicJs>
+
+	public fun getTopics(entityIds: Array<String>): Promise<Array<DecryptedTopicJs>>
+
+	public fun filterTopicsBy(
+		startDocumentId: String?,
+		limit: Double?,
+		filterChain: FilterChainJs<EncryptedTopicJs>,
+	): Promise<PaginatedListJs<DecryptedTopicJs>>
+
+	public fun addParticipant(
+		entityId: String,
+		dataOwnerId: String,
+		topicRole: String,
+	): Promise<DecryptedTopicJs>
+
+	public fun removeParticipant(entityId: String, dataOwnerId: String): Promise<DecryptedTopicJs>
 }

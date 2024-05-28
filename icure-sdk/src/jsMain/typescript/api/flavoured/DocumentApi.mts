@@ -66,4 +66,45 @@ export interface DocumentApi {
 			descending: boolean | undefined
 	): Promise<PaginatedListIterator<DecryptedDocument>>;
 
+	modifyDocument(entity: DecryptedDocument): Promise<DecryptedDocument>;
+
+	getDocument(entityId: string): Promise<DecryptedDocument>;
+
+	getDocumentByExternalUuid(externalUuid: string): Promise<DecryptedDocument>;
+
+	getDocumentsByExternalUuid(externalUuid: string): Promise<Array<DecryptedDocument>>;
+
+	getDocuments(entityIds: Array<string>): Promise<Array<DecryptedDocument>>;
+
+	modifyDocuments(entities: Array<DecryptedDocument>): Promise<Array<DecryptedDocument>>;
+
+	listDocumentsByHcPartyMessageForeignKeys(hcPartyId: string, documentTypeCode: string | undefined,
+			secretMessageKeys: Array<string>): Promise<Array<DecryptedDocument>>;
+
+	findWithoutDelegation(limit: number | undefined): Promise<Array<DecryptedDocument>>;
+
+	setRawMainAttachment(
+			documentId: string,
+			rev: string,
+			utis: Array<string>,
+			blobType: string,
+			attachment: Int8Array,
+			encrypted: boolean
+	): Promise<EncryptedDocument>;
+
+	setRawSecondaryAttachment(
+			documentId: string,
+			key: string,
+			rev: string,
+			utis: Array<string>,
+			blobType: string,
+			attachment: Int8Array,
+			encrypted: boolean
+	): Promise<EncryptedDocument>;
+
+	deleteMainAttachment(entityId: string, rev: string): Promise<DecryptedDocument>;
+
+	deleteSecondaryAttachment(documentId: string, key: string,
+			attachmentId: string): Promise<DecryptedDocument>;
+
 }

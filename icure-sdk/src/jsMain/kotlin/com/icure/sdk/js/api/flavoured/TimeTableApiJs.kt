@@ -12,6 +12,7 @@ import com.icure.sdk.js.model.TimeTableJs
 import com.icure.sdk.js.model.UserJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import kotlin.Array
+import kotlin.Double
 import kotlin.String
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
@@ -44,4 +45,16 @@ public external interface TimeTableApiJs {
 		shareOwningEntityIds: String,
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<DecryptedTimeTableJs>>
+
+	public fun modifyTimeTable(entity: DecryptedTimeTableJs): Promise<DecryptedTimeTableJs>
+
+	public fun getTimeTable(entityId: String): Promise<DecryptedTimeTableJs>
+
+	public fun getTimeTablesByPeriodAndAgendaId(
+		startDate: Double,
+		endDate: Double,
+		agendaId: String,
+	): Promise<Array<DecryptedTimeTableJs>>
+
+	public fun getTimeTablesByAgendaId(agendaId: String): Promise<Array<DecryptedTimeTableJs>>
 }

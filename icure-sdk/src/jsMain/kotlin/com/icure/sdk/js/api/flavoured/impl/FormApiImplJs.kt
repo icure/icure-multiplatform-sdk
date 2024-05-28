@@ -460,4 +460,99 @@ internal class FormApiImplJs(
 			},
 		)}
 
+
+	override fun modifyForm(entity: DecryptedFormJs): Promise<DecryptedFormJs> = GlobalScope.promise {
+		form_toJs(formApi.modifyForm(com.icure.sdk.js.model.form_fromJs(entity)))}
+
+
+	override fun modifyForms(entities: Array<DecryptedFormJs>): Promise<Array<DecryptedFormJs>> =
+			GlobalScope.promise {
+		listToArray(
+			formApi.modifyForms(arrayToList(
+				entities,
+				"entities",
+				{ x1: DecryptedFormJs ->
+					form_fromJs(x1)
+				},
+			)),
+			{ x1: DecryptedForm ->
+				form_toJs(x1)
+			},
+		)}
+
+
+	override fun getForm(entityId: String): Promise<DecryptedFormJs> = GlobalScope.promise {
+		form_toJs(formApi.getForm(entityId))}
+
+
+	override fun getForms(entityIds: Array<String>): Promise<Array<DecryptedFormJs>> =
+			GlobalScope.promise {
+		listToArray(
+			formApi.getForms(arrayToList(
+				entityIds,
+				"entityIds",
+				{ x1: String ->
+					x1
+				},
+			)),
+			{ x1: DecryptedForm ->
+				form_toJs(x1)
+			},
+		)}
+
+
+	override fun getFormByLogicalUuid(logicalUuid: String): Promise<DecryptedFormJs> =
+			GlobalScope.promise {
+		form_toJs(formApi.getFormByLogicalUuid(logicalUuid))}
+
+
+	override fun getFormsByLogicalUuid(logicalUuid: String): Promise<Array<DecryptedFormJs>> =
+			GlobalScope.promise {
+		listToArray(
+			formApi.getFormsByLogicalUuid(logicalUuid),
+			{ x1: DecryptedForm ->
+				form_toJs(x1)
+			},
+		)}
+
+
+	override fun getFormsByUniqueId(uniqueId: String): Promise<Array<DecryptedFormJs>> =
+			GlobalScope.promise {
+		listToArray(
+			formApi.getFormsByUniqueId(uniqueId),
+			{ x1: DecryptedForm ->
+				form_toJs(x1)
+			},
+		)}
+
+
+	override fun getFormByUniqueId(uniqueId: String): Promise<DecryptedFormJs> = GlobalScope.promise {
+		form_toJs(formApi.getFormByUniqueId(uniqueId))}
+
+
+	override fun getChildrenForms(hcPartyId: String, parentId: String): Promise<Array<DecryptedFormJs>>
+			= GlobalScope.promise {
+		listToArray(
+			formApi.getChildrenForms(hcPartyId, parentId),
+			{ x1: DecryptedForm ->
+				form_toJs(x1)
+			},
+		)}
+
+
+	override fun listFormsByHCPartyAndPatientForeignKeys(
+		hcPartyId: String,
+		secretFKeys: String,
+		healthElementId: String?,
+		planOfActionId: String?,
+		formTemplateId: String?,
+	): Promise<Array<DecryptedFormJs>> = GlobalScope.promise {
+		listToArray(
+			formApi.listFormsByHCPartyAndPatientForeignKeys(hcPartyId, secretFKeys, healthElementId,
+					planOfActionId, formTemplateId),
+			{ x1: DecryptedForm ->
+				form_toJs(x1)
+			},
+		)}
+
 }

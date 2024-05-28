@@ -48,4 +48,10 @@ export interface ClassificationApi {
 			descending: boolean | undefined
 	): Promise<PaginatedListIterator<DecryptedClassification>>;
 
+	modifyClassification(entity: DecryptedClassification): Promise<DecryptedClassification>;
+
+	getClassification(entityId: string): Promise<DecryptedClassification>;
+
+	getClassifications(entityIds: Array<string>): Promise<Array<DecryptedClassification>>;
+
 }

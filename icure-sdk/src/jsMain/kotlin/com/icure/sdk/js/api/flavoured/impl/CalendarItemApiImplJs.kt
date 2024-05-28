@@ -372,4 +372,89 @@ internal class CalendarItemApiImplJs(
 			},
 		)}
 
+
+	override fun modifyCalendarItem(entity: DecryptedCalendarItemJs): Promise<DecryptedCalendarItemJs>
+			= GlobalScope.promise {
+		calendarItem_toJs(calendarItemApi.modifyCalendarItem(com.icure.sdk.js.model.calendarItem_fromJs(entity)))}
+
+
+	override fun getCalendarItem(entityId: String): Promise<DecryptedCalendarItemJs> =
+			GlobalScope.promise {
+		calendarItem_toJs(calendarItemApi.getCalendarItem(entityId))}
+
+
+	override fun getCalendarItems(entityIds: Array<String>): Promise<Array<DecryptedCalendarItemJs>> =
+			GlobalScope.promise {
+		listToArray(
+			calendarItemApi.getCalendarItems(arrayToList(
+				entityIds,
+				"entityIds",
+				{ x1: String ->
+					x1
+				},
+			)),
+			{ x1: DecryptedCalendarItem ->
+				calendarItem_toJs(x1)
+			},
+		)}
+
+
+	override fun getCalendarItemsByPeriodAndHcPartyId(
+		startDate: Double,
+		endDate: Double,
+		hcPartyId: String,
+	): Promise<Array<DecryptedCalendarItemJs>> = GlobalScope.promise {
+		listToArray(
+			calendarItemApi.getCalendarItemsByPeriodAndHcPartyId(numberToLong(startDate, "startDate"),
+					numberToLong(endDate, "endDate"), hcPartyId),
+			{ x1: DecryptedCalendarItem ->
+				calendarItem_toJs(x1)
+			},
+		)}
+
+
+	override fun getCalendarsByPeriodAndAgendaId(
+		startDate: Double,
+		endDate: Double,
+		agendaId: String,
+	): Promise<Array<DecryptedCalendarItemJs>> = GlobalScope.promise {
+		listToArray(
+			calendarItemApi.getCalendarsByPeriodAndAgendaId(numberToLong(startDate, "startDate"),
+					numberToLong(endDate, "endDate"), agendaId),
+			{ x1: DecryptedCalendarItem ->
+				calendarItem_toJs(x1)
+			},
+		)}
+
+
+	override fun getCalendarItemsWithIds(entityIds: Array<String>):
+			Promise<Array<DecryptedCalendarItemJs>> = GlobalScope.promise {
+		listToArray(
+			calendarItemApi.getCalendarItemsWithIds(arrayToList(
+				entityIds,
+				"entityIds",
+				{ x1: String ->
+					x1
+				},
+			)),
+			{ x1: DecryptedCalendarItem ->
+				calendarItem_toJs(x1)
+			},
+		)}
+
+
+	override fun findCalendarItemsByRecurrenceId(
+		recurrenceId: String,
+		startKey: String?,
+		startDocumentId: String?,
+		limit: Double,
+	): Promise<PaginatedListJs<DecryptedCalendarItemJs>> = GlobalScope.promise {
+		paginatedList_toJs(
+			calendarItemApi.findCalendarItemsByRecurrenceId(recurrenceId, startKey, startDocumentId,
+					com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
+			{ x1: DecryptedCalendarItem ->
+				calendarItem_toJs(x1)
+			},
+		)}
+
 }

@@ -91,4 +91,52 @@ public external interface DocumentApiJs {
 		endDate: Double?,
 		descending: Boolean?,
 	): Promise<PaginatedListIteratorJs<DecryptedDocumentJs>>
+
+	public fun modifyDocument(entity: DecryptedDocumentJs): Promise<DecryptedDocumentJs>
+
+	public fun getDocument(entityId: String): Promise<DecryptedDocumentJs>
+
+	public fun getDocumentByExternalUuid(externalUuid: String): Promise<DecryptedDocumentJs>
+
+	public fun getDocumentsByExternalUuid(externalUuid: String): Promise<Array<DecryptedDocumentJs>>
+
+	public fun getDocuments(entityIds: Array<String>): Promise<Array<DecryptedDocumentJs>>
+
+	public fun modifyDocuments(entities: Array<DecryptedDocumentJs>):
+			Promise<Array<DecryptedDocumentJs>>
+
+	public fun listDocumentsByHcPartyMessageForeignKeys(
+		hcPartyId: String,
+		documentTypeCode: String?,
+		secretMessageKeys: Array<String>,
+	): Promise<Array<DecryptedDocumentJs>>
+
+	public fun findWithoutDelegation(limit: Double?): Promise<Array<DecryptedDocumentJs>>
+
+	public fun setRawMainAttachment(
+		documentId: String,
+		rev: String,
+		utis: Array<String>,
+		blobType: String,
+		attachment: ByteArray,
+		encrypted: Boolean,
+	): Promise<EncryptedDocumentJs>
+
+	public fun setRawSecondaryAttachment(
+		documentId: String,
+		key: String,
+		rev: String,
+		utis: Array<String>,
+		blobType: String,
+		attachment: ByteArray,
+		encrypted: Boolean,
+	): Promise<EncryptedDocumentJs>
+
+	public fun deleteMainAttachment(entityId: String, rev: String): Promise<DecryptedDocumentJs>
+
+	public fun deleteSecondaryAttachment(
+		documentId: String,
+		key: String,
+		attachmentId: String,
+	): Promise<DecryptedDocumentJs>
 }

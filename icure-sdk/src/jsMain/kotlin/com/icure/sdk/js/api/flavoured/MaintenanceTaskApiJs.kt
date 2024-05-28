@@ -7,9 +7,12 @@ import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.model.DecryptedMaintenanceTaskJs
 import com.icure.sdk.js.model.EncryptedMaintenanceTaskJs
 import com.icure.sdk.js.model.MaintenanceTaskJs
+import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.UserJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
+import com.icure.sdk.js.model.filter.chain.FilterChainJs
 import kotlin.Array
+import kotlin.Double
 import kotlin.String
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
@@ -41,4 +44,15 @@ public external interface MaintenanceTaskApiJs {
 		shareOwningEntityIds: String,
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<DecryptedMaintenanceTaskJs>>
+
+	public fun modifyMaintenanceTask(entity: DecryptedMaintenanceTaskJs):
+			Promise<DecryptedMaintenanceTaskJs>
+
+	public fun getMaintenanceTask(entityId: String): Promise<DecryptedMaintenanceTaskJs>
+
+	public fun filterMaintenanceTasksBy(
+		startDocumentId: String?,
+		limit: Double?,
+		filterChain: FilterChainJs<MaintenanceTaskJs>,
+	): Promise<PaginatedListJs<DecryptedMaintenanceTaskJs>>
 }

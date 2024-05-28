@@ -204,4 +204,34 @@ internal class MaintenanceTaskApiImplJs(
 			},
 		)}
 
+
+	override fun modifyMaintenanceTask(entity: DecryptedMaintenanceTaskJs):
+			Promise<DecryptedMaintenanceTaskJs> = GlobalScope.promise {
+		maintenanceTask_toJs(maintenanceTaskApi.modifyMaintenanceTask(com.icure.sdk.js.model.maintenanceTask_fromJs(entity)))}
+
+
+	override fun getMaintenanceTask(entityId: String): Promise<DecryptedMaintenanceTaskJs> =
+			GlobalScope.promise {
+		maintenanceTask_toJs(maintenanceTaskApi.getMaintenanceTask(entityId))}
+
+
+	override fun filterMaintenanceTasksBy(
+		startDocumentId: String?,
+		limit: Double?,
+		filterChain: FilterChainJs<MaintenanceTaskJs>,
+	): Promise<PaginatedListJs<DecryptedMaintenanceTaskJs>> = GlobalScope.promise {
+		paginatedList_toJs(
+			maintenanceTaskApi.filterMaintenanceTasksBy(startDocumentId,
+					com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit"),
+					com.icure.sdk.js.model.filter.chain.filterChain_fromJs(
+			  filterChain,
+			  { x1: com.icure.sdk.js.model.MaintenanceTaskJs ->
+			    com.icure.sdk.js.model.maintenanceTask_fromJs(x1)
+			  },
+			)),
+			{ x1: DecryptedMaintenanceTask ->
+				maintenanceTask_toJs(x1)
+			},
+		)}
+
 }

@@ -49,4 +49,10 @@ export interface ReceiptApi {
 			requestedPermission: RequestedPermission
 	): Promise<SimpleShareResult<DecryptedReceipt>>;
 
+	modifyReceipt(entity: DecryptedReceipt): Promise<DecryptedReceipt>;
+
+	getReceipt(entityId: string): Promise<DecryptedReceipt>;
+
+	listByReference(reference: string): Promise<Array<DecryptedReceipt>>;
+
 }

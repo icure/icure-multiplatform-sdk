@@ -80,4 +80,30 @@ public external interface FormApiJs {
 		endDate: Double?,
 		descending: Boolean?,
 	): Promise<PaginatedListIteratorJs<DecryptedFormJs>>
+
+	public fun modifyForm(entity: DecryptedFormJs): Promise<DecryptedFormJs>
+
+	public fun modifyForms(entities: Array<DecryptedFormJs>): Promise<Array<DecryptedFormJs>>
+
+	public fun getForm(entityId: String): Promise<DecryptedFormJs>
+
+	public fun getForms(entityIds: Array<String>): Promise<Array<DecryptedFormJs>>
+
+	public fun getFormByLogicalUuid(logicalUuid: String): Promise<DecryptedFormJs>
+
+	public fun getFormsByLogicalUuid(logicalUuid: String): Promise<Array<DecryptedFormJs>>
+
+	public fun getFormsByUniqueId(uniqueId: String): Promise<Array<DecryptedFormJs>>
+
+	public fun getFormByUniqueId(uniqueId: String): Promise<DecryptedFormJs>
+
+	public fun getChildrenForms(hcPartyId: String, parentId: String): Promise<Array<DecryptedFormJs>>
+
+	public fun listFormsByHCPartyAndPatientForeignKeys(
+		hcPartyId: String,
+		secretFKeys: String,
+		healthElementId: String?,
+		planOfActionId: String?,
+		formTemplateId: String?,
+	): Promise<Array<DecryptedFormJs>>
 }

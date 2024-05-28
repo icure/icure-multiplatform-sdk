@@ -9,10 +9,13 @@ import com.icure.sdk.js.model.DecryptedInvoiceJs
 import com.icure.sdk.js.model.EncryptedInvoiceJs
 import com.icure.sdk.js.model.IcureStubJs
 import com.icure.sdk.js.model.InvoiceJs
+import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.PatientJs
 import com.icure.sdk.js.model.UserJs
 import com.icure.sdk.js.model.`data`.LabelledOccurenceJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
+import com.icure.sdk.js.model.embed.EncryptedInvoicingCodeJs
+import com.icure.sdk.js.model.filter.chain.FilterChainJs
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
 import kotlin.Boolean
@@ -63,4 +66,102 @@ public external interface InvoiceApiJs {
 		endDate: Double?,
 		descending: Boolean?,
 	): Promise<PaginatedListIteratorJs<DecryptedInvoiceJs>>
+
+	public fun modifyInvoice(entity: DecryptedInvoiceJs): Promise<DecryptedInvoiceJs>
+
+	public fun modifyInvoices(entities: Array<DecryptedInvoiceJs>): Promise<Array<DecryptedInvoiceJs>>
+
+	public fun getInvoice(entityId: String): Promise<DecryptedInvoiceJs>
+
+	public fun getInvoices(entityIds: Array<String>): Promise<Array<DecryptedInvoiceJs>>
+
+	public fun filterInvoicesBy(filterChain: FilterChainJs<EncryptedInvoiceJs>):
+			Promise<Array<DecryptedInvoiceJs>>
+
+	public fun findInvoicesByHcPartyPatientForeignKeys(hcPartyId: String,
+			secretPatientKeys: Array<String>): Promise<Array<DecryptedInvoiceJs>>
+
+	public fun reassignInvoice(invoice: DecryptedInvoiceJs): Promise<DecryptedInvoiceJs>
+
+	public fun mergeTo(invoiceId: String, ids: Array<String>): Promise<DecryptedInvoiceJs>
+
+	public fun validate(
+		invoiceId: String,
+		scheme: String,
+		forcedValue: String,
+	): Promise<DecryptedInvoiceJs>
+
+	public fun appendCodes(
+		userId: String,
+		type: String,
+		sentMediumType: String,
+		secretFKeys: String,
+		insuranceId: String?,
+		invoiceId: String?,
+		gracePeriod: Double?,
+		invoicingCodes: Array<EncryptedInvoicingCodeJs>,
+	): Promise<Array<DecryptedInvoiceJs>>
+
+	public fun removeCodes(
+		userId: String,
+		serviceId: String,
+		secretFKeys: String,
+		tarificationIds: Array<String>,
+	): Promise<Array<DecryptedInvoiceJs>>
+
+	public fun findInvoicesByAuthor(
+		hcPartyId: String,
+		fromDate: Double?,
+		toDate: Double?,
+		startKey: dynamic,
+		startDocumentId: String?,
+		limit: Double?,
+	): Promise<PaginatedListJs<DecryptedInvoiceJs>>
+
+	public fun listInvoicesByHCPartyAndPatientForeignKeys(hcPartyId: String,
+			secretPatientKeys: Array<String>): Promise<Array<DecryptedInvoiceJs>>
+
+	public fun listInvoicesByHcPartyAndGroupId(hcPartyId: String, groupId: String):
+			Promise<Array<DecryptedInvoiceJs>>
+
+	public fun listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(
+		hcPartyId: String,
+		sentMediumType: String,
+		invoiceType: String,
+		sent: Boolean,
+		from: Double?,
+		to: Double?,
+	): Promise<Array<DecryptedInvoiceJs>>
+
+	public fun listInvoicesByContactIds(contactIds: Array<String>): Promise<Array<DecryptedInvoiceJs>>
+
+	public fun listInvoicesByRecipientsIds(recipientsIds: Array<String>):
+			Promise<Array<DecryptedInvoiceJs>>
+
+	public fun listToInsurances(userIds: Array<String>): Promise<Array<DecryptedInvoiceJs>>
+
+	public fun listToInsurancesUnsent(userIds: Array<String>): Promise<Array<DecryptedInvoiceJs>>
+
+	public fun listToPatients(hcPartyId: String): Promise<Array<DecryptedInvoiceJs>>
+
+	public fun listToPatientsUnsent(hcPartyId: String?): Promise<Array<DecryptedInvoiceJs>>
+
+	public fun listInvoicesByIds(ids: Array<String>): Promise<Array<DecryptedInvoiceJs>>
+
+	public fun listInvoicesByHcpartySendingModeStatusDate(
+		hcPartyId: String,
+		sendingMode: String,
+		status: String,
+		from: Double,
+		to: Double,
+	): Promise<Array<DecryptedInvoiceJs>>
+
+	public fun listInvoicesByServiceIds(serviceIds: Array<String>): Promise<Array<DecryptedInvoiceJs>>
+
+	public fun listAllHcpsByStatus(
+		status: String,
+		from: Double?,
+		to: Double?,
+		hcpIds: Array<String>,
+	): Promise<Array<DecryptedInvoiceJs>>
 }

@@ -8,6 +8,7 @@ import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.model.CalendarItemJs
 import com.icure.sdk.js.model.DecryptedCalendarItemJs
 import com.icure.sdk.js.model.EncryptedCalendarItemJs
+import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.PatientJs
 import com.icure.sdk.js.model.UserJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
@@ -55,4 +56,32 @@ public external interface CalendarItemApiJs {
 		endDate: Double?,
 		descending: Boolean?,
 	): Promise<PaginatedListIteratorJs<DecryptedCalendarItemJs>>
+
+	public fun modifyCalendarItem(entity: DecryptedCalendarItemJs): Promise<DecryptedCalendarItemJs>
+
+	public fun getCalendarItem(entityId: String): Promise<DecryptedCalendarItemJs>
+
+	public fun getCalendarItems(entityIds: Array<String>): Promise<Array<DecryptedCalendarItemJs>>
+
+	public fun getCalendarItemsByPeriodAndHcPartyId(
+		startDate: Double,
+		endDate: Double,
+		hcPartyId: String,
+	): Promise<Array<DecryptedCalendarItemJs>>
+
+	public fun getCalendarsByPeriodAndAgendaId(
+		startDate: Double,
+		endDate: Double,
+		agendaId: String,
+	): Promise<Array<DecryptedCalendarItemJs>>
+
+	public fun getCalendarItemsWithIds(entityIds: Array<String>):
+			Promise<Array<DecryptedCalendarItemJs>>
+
+	public fun findCalendarItemsByRecurrenceId(
+		recurrenceId: String,
+		startKey: String?,
+		startDocumentId: String?,
+		limit: Double,
+	): Promise<PaginatedListJs<DecryptedCalendarItemJs>>
 }

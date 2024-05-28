@@ -366,4 +366,87 @@ internal class AccessLogApiImplJs(
 			},
 		)}
 
+
+	override fun modifyAccessLog(entity: DecryptedAccessLogJs): Promise<DecryptedAccessLogJs> =
+			GlobalScope.promise {
+		accessLog_toJs(accessLogApi.modifyAccessLog(com.icure.sdk.js.model.accessLog_fromJs(entity)))}
+
+
+	override fun getAccessLog(entityId: String): Promise<DecryptedAccessLogJs> = GlobalScope.promise {
+		accessLog_toJs(accessLogApi.getAccessLog(entityId))}
+
+
+	override fun getAccessLogs(entityIds: Array<String>): Promise<Array<DecryptedAccessLogJs>> =
+			GlobalScope.promise {
+		listToArray(
+			accessLogApi.getAccessLogs(arrayToList(
+				entityIds,
+				"entityIds",
+				{ x1: String ->
+					x1
+				},
+			)),
+			{ x1: DecryptedAccessLog ->
+				accessLog_toJs(x1)
+			},
+		)}
+
+
+	override fun findAccessLogsBy(
+		fromEpoch: Double?,
+		toEpoch: Double?,
+		startKey: Double?,
+		startDocumentId: String?,
+		limit: Double?,
+	): Promise<PaginatedListJs<DecryptedAccessLogJs>> = GlobalScope.promise {
+		paginatedList_toJs(
+			accessLogApi.findAccessLogsBy(com.icure.sdk.js.model.CheckedConverters.numberToLong(fromEpoch,
+					"fromEpoch"), com.icure.sdk.js.model.CheckedConverters.numberToLong(toEpoch, "toEpoch"),
+					com.icure.sdk.js.model.CheckedConverters.numberToLong(startKey, "startKey"), startDocumentId,
+					com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
+			{ x1: DecryptedAccessLog ->
+				accessLog_toJs(x1)
+			},
+		)}
+
+
+	override fun findAccessLogsByUserAfterDate(
+		userId: String,
+		accessType: String?,
+		startDate: Double?,
+		startKey: String?,
+		startDocumentId: String?,
+		limit: Double?,
+		descending: Boolean?,
+	): Promise<PaginatedListJs<DecryptedAccessLogJs>> = GlobalScope.promise {
+		paginatedList_toJs(
+			accessLogApi.findAccessLogsByUserAfterDate(userId, accessType,
+					com.icure.sdk.js.model.CheckedConverters.numberToLong(startDate, "startDate"), startKey,
+					startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit"),
+					descending),
+			{ x1: DecryptedAccessLog ->
+				accessLog_toJs(x1)
+			},
+		)}
+
+
+	override fun findAccessLogsInGroup(
+		groupId: String,
+		fromEpoch: Double?,
+		toEpoch: Double?,
+		startKey: Double?,
+		startDocumentId: String?,
+		limit: Double?,
+	): Promise<PaginatedListJs<DecryptedAccessLogJs>> = GlobalScope.promise {
+		paginatedList_toJs(
+			accessLogApi.findAccessLogsInGroup(groupId,
+					com.icure.sdk.js.model.CheckedConverters.numberToLong(fromEpoch, "fromEpoch"),
+					com.icure.sdk.js.model.CheckedConverters.numberToLong(toEpoch, "toEpoch"),
+					com.icure.sdk.js.model.CheckedConverters.numberToLong(startKey, "startKey"), startDocumentId,
+					com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
+			{ x1: DecryptedAccessLog ->
+				accessLog_toJs(x1)
+			},
+		)}
+
 }

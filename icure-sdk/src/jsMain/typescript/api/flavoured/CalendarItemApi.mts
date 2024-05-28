@@ -4,6 +4,7 @@ import {ShareMetadataBehaviour} from '../../crypto/entities/ShareMetadataBehavio
 import {SimpleShareResult} from '../../crypto/entities/SimpleShareResult.mjs';
 import {PaginatedListIterator} from '../../icure-sdk.mjs';
 import {CalendarItem, DecryptedCalendarItem, EncryptedCalendarItem} from '../../model/CalendarItem.mjs';
+import {PaginatedList} from '../../model/PaginatedList.mjs';
 import {Patient} from '../../model/Patient.mjs';
 import {User} from '../../model/User.mjs';
 import {DocIdentifier} from '../../model/couchdb/DocIdentifier.mjs';
@@ -47,5 +48,23 @@ export interface CalendarItemApi {
 			endDate: number | undefined,
 			descending: boolean | undefined
 	): Promise<PaginatedListIterator<DecryptedCalendarItem>>;
+
+	modifyCalendarItem(entity: DecryptedCalendarItem): Promise<DecryptedCalendarItem>;
+
+	getCalendarItem(entityId: string): Promise<DecryptedCalendarItem>;
+
+	getCalendarItems(entityIds: Array<string>): Promise<Array<DecryptedCalendarItem>>;
+
+	getCalendarItemsByPeriodAndHcPartyId(startDate: number, endDate: number,
+			hcPartyId: string): Promise<Array<DecryptedCalendarItem>>;
+
+	getCalendarsByPeriodAndAgendaId(startDate: number, endDate: number,
+			agendaId: string): Promise<Array<DecryptedCalendarItem>>;
+
+	getCalendarItemsWithIds(entityIds: Array<string>): Promise<Array<DecryptedCalendarItem>>;
+
+	findCalendarItemsByRecurrenceId(recurrenceId: string, startKey: string | undefined,
+			startDocumentId: string | undefined,
+			limit: number): Promise<PaginatedList<DecryptedCalendarItem>>;
 
 }

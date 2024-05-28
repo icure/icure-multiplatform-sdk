@@ -710,4 +710,235 @@ internal class MessageApiImplJs(
 			},
 		)}
 
+
+	override fun modifyMessage(entity: DecryptedMessageJs): Promise<DecryptedMessageJs> =
+			GlobalScope.promise {
+		message_toJs(messageApi.modifyMessage(com.icure.sdk.js.model.message_fromJs(entity)))}
+
+
+	override fun getMessage(entityId: String): Promise<DecryptedMessageJs> = GlobalScope.promise {
+		message_toJs(messageApi.getMessage(entityId))}
+
+
+	override fun getMessages(entityIds: Array<String>): Promise<Array<DecryptedMessageJs>> =
+			GlobalScope.promise {
+		listToArray(
+			messageApi.getMessages(arrayToList(
+				entityIds,
+				"entityIds",
+				{ x1: String ->
+					x1
+				},
+			)),
+			{ x1: DecryptedMessage ->
+				message_toJs(x1)
+			},
+		)}
+
+
+	override fun filterMessagesBy(
+		filterChain: FilterChainJs<EncryptedMessageJs>,
+		startDocumentId: String?,
+		limit: Double?,
+	): Promise<PaginatedListJs<DecryptedMessageJs>> = GlobalScope.promise {
+		paginatedList_toJs(
+			messageApi.filterMessagesBy(com.icure.sdk.js.model.filter.chain.filterChain_fromJs(
+			  filterChain,
+			  { x1: com.icure.sdk.js.model.EncryptedMessageJs ->
+			    com.icure.sdk.js.model.message_fromJs(x1)
+			  },
+			), startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
+			{ x1: DecryptedMessage ->
+				message_toJs(x1)
+			},
+		)}
+
+
+	override fun listMessagesByTransportGuids(hcPartyId: String, transportGuids: Array<String>):
+			Promise<Array<DecryptedMessageJs>> = GlobalScope.promise {
+		listToArray(
+			messageApi.listMessagesByTransportGuids(hcPartyId, arrayToList(
+				transportGuids,
+				"transportGuids",
+				{ x1: String ->
+					x1
+				},
+			)),
+			{ x1: DecryptedMessage ->
+				message_toJs(x1)
+			},
+		)}
+
+
+	override fun findMessagesByHCPartyPatientForeignKeys(secretPatientKeys: Array<String>):
+			Promise<Array<DecryptedMessageJs>> = GlobalScope.promise {
+		listToArray(
+			messageApi.findMessagesByHCPartyPatientForeignKeys(arrayToList(
+				secretPatientKeys,
+				"secretPatientKeys",
+				{ x1: String ->
+					x1
+				},
+			)),
+			{ x1: DecryptedMessage ->
+				message_toJs(x1)
+			},
+		)}
+
+
+	override fun findMessages(
+		startKey: dynamic,
+		startDocumentId: String?,
+		limit: Double?,
+	): Promise<PaginatedListJs<DecryptedMessageJs>> = GlobalScope.promise {
+		paginatedList_toJs(
+			messageApi.findMessages(com.icure.sdk.js.model.CheckedConverters.dynamicToJsonNullsafe(startKey,
+					"startKey"), startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit,
+					"limit")),
+			{ x1: DecryptedMessage ->
+				message_toJs(x1)
+			},
+		)}
+
+
+	override fun getChildrenMessages(messageId: String): Promise<Array<DecryptedMessageJs>> =
+			GlobalScope.promise {
+		listToArray(
+			messageApi.getChildrenMessages(messageId),
+			{ x1: DecryptedMessage ->
+				message_toJs(x1)
+			},
+		)}
+
+
+	override fun getMessagesChildren(messageIds: Array<String>): Promise<Array<DecryptedMessageJs>> =
+			GlobalScope.promise {
+		listToArray(
+			messageApi.getMessagesChildren(arrayToList(
+				messageIds,
+				"messageIds",
+				{ x1: String ->
+					x1
+				},
+			)),
+			{ x1: DecryptedMessage ->
+				message_toJs(x1)
+			},
+		)}
+
+
+	override fun listMessagesByInvoices(invoiceIds: Array<String>): Promise<Array<DecryptedMessageJs>>
+			= GlobalScope.promise {
+		listToArray(
+			messageApi.listMessagesByInvoices(arrayToList(
+				invoiceIds,
+				"invoiceIds",
+				{ x1: String ->
+					x1
+				},
+			)),
+			{ x1: DecryptedMessage ->
+				message_toJs(x1)
+			},
+		)}
+
+
+	override fun findMessagesByTransportGuid(transportGuid: String):
+			Promise<PaginatedListJs<DecryptedMessageJs>> = GlobalScope.promise {
+		paginatedList_toJs(
+			messageApi.findMessagesByTransportGuid(transportGuid),
+			{ x1: DecryptedMessage ->
+				message_toJs(x1)
+			},
+		)}
+
+
+	override fun findMessagesByTransportGuidSentDate(
+		transportGuid: String,
+		from: Double,
+		to: Double,
+		startKey: dynamic,
+		startDocumentId: String?,
+		limit: Double?,
+		hcpId: String?,
+	): Promise<PaginatedListJs<DecryptedMessageJs>> = GlobalScope.promise {
+		paginatedList_toJs(
+			messageApi.findMessagesByTransportGuidSentDate(transportGuid,
+					com.icure.sdk.js.model.CheckedConverters.numberToLong(from, "from"),
+					com.icure.sdk.js.model.CheckedConverters.numberToLong(to, "to"),
+					com.icure.sdk.js.model.CheckedConverters.dynamicToJsonNullsafe(startKey, "startKey"),
+					startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit"), hcpId),
+			{ x1: DecryptedMessage ->
+				message_toJs(x1)
+			},
+		)}
+
+
+	override fun findMessagesByToAddress(
+		toAddress: String,
+		startKey: dynamic,
+		startDocumentId: String?,
+		limit: Double?,
+	): Promise<PaginatedListJs<DecryptedMessageJs>> = GlobalScope.promise {
+		paginatedList_toJs(
+			messageApi.findMessagesByToAddress(toAddress,
+					com.icure.sdk.js.model.CheckedConverters.dynamicToJsonNullsafe(startKey, "startKey"),
+					startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
+			{ x1: DecryptedMessage ->
+				message_toJs(x1)
+			},
+		)}
+
+
+	override fun findMessagesByFromAddress(
+		fromAddress: String,
+		startKey: dynamic,
+		startDocumentId: String?,
+		limit: Double?,
+	): Promise<PaginatedListJs<DecryptedMessageJs>> = GlobalScope.promise {
+		paginatedList_toJs(
+			messageApi.findMessagesByFromAddress(fromAddress,
+					com.icure.sdk.js.model.CheckedConverters.dynamicToJsonNullsafe(startKey, "startKey"),
+					startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
+			{ x1: DecryptedMessage ->
+				message_toJs(x1)
+			},
+		)}
+
+
+	override fun setMessagesStatusBits(entityIds: Array<String>, statusBits: Double):
+			Promise<Array<DecryptedMessageJs>> = GlobalScope.promise {
+		listToArray(
+			messageApi.setMessagesStatusBits(arrayToList(
+				entityIds,
+				"entityIds",
+				{ x1: String ->
+					x1
+				},
+			), numberToInt(statusBits, "statusBits")),
+			{ x1: DecryptedMessage ->
+				message_toJs(x1)
+			},
+		)}
+
+
+	override fun setMessagesReadStatus(
+		entityIds: Array<String>,
+		time: Double?,
+		readStatus: Boolean,
+		userId: String,
+	): Promise<Array<DecryptedMessageJs>> = GlobalScope.promise {
+		listToArray(
+			messageApi.setMessagesReadStatus(arrayToList(
+				entityIds,
+				"entityIds",
+				{ x1: String ->
+					x1
+				},
+			), numberToLong(time, "time"), readStatus, userId),
+			{ x1: DecryptedMessage ->
+				message_toJs(x1)
+			},
+		)}
+
 }

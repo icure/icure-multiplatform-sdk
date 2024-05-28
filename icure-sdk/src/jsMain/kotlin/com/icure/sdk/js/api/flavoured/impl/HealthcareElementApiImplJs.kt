@@ -414,4 +414,81 @@ internal class HealthcareElementApiImplJs(
 			},
 		)}
 
+
+	override fun modifyHealthcareElement(entity: DecryptedHealthElementJs):
+			Promise<DecryptedHealthElementJs> = GlobalScope.promise {
+		healthElement_toJs(healthcareElementApi.modifyHealthcareElement(com.icure.sdk.js.model.healthElement_fromJs(entity)))}
+
+
+	override fun modifyHealthcareElements(entities: Array<DecryptedHealthElementJs>):
+			Promise<Array<DecryptedHealthElementJs>> = GlobalScope.promise {
+		listToArray(
+			healthcareElementApi.modifyHealthcareElements(arrayToList(
+				entities,
+				"entities",
+				{ x1: DecryptedHealthElementJs ->
+					healthElement_fromJs(x1)
+				},
+			)),
+			{ x1: DecryptedHealthElement ->
+				healthElement_toJs(x1)
+			},
+		)}
+
+
+	override fun getHealthcareElement(entityId: String): Promise<DecryptedHealthElementJs> =
+			GlobalScope.promise {
+		healthElement_toJs(healthcareElementApi.getHealthcareElement(entityId))}
+
+
+	override fun getHealthcareElements(entityIds: Array<String>):
+			Promise<Array<DecryptedHealthElementJs>> = GlobalScope.promise {
+		listToArray(
+			healthcareElementApi.getHealthcareElements(arrayToList(
+				entityIds,
+				"entityIds",
+				{ x1: String ->
+					x1
+				},
+			)),
+			{ x1: DecryptedHealthElement ->
+				healthElement_toJs(x1)
+			},
+		)}
+
+
+	override fun filterHealthcareElementsBy(
+		filterChain: FilterChainJs<EncryptedHealthElementJs>,
+		startDocumentId: String?,
+		limit: Double?,
+	): Promise<PaginatedListJs<DecryptedHealthElementJs>> = GlobalScope.promise {
+		paginatedList_toJs(
+			healthcareElementApi.filterHealthcareElementsBy(com.icure.sdk.js.model.filter.chain.filterChain_fromJs(
+			  filterChain,
+			  { x1: com.icure.sdk.js.model.EncryptedHealthElementJs ->
+			    com.icure.sdk.js.model.healthElement_fromJs(x1)
+			  },
+			), startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
+			{ x1: DecryptedHealthElement ->
+				healthElement_toJs(x1)
+			},
+		)}
+
+
+	override fun findHealthcareElementsByHcPartyPatientForeignKeys(hcPartyId: String,
+			secretPatientKeys: Array<String>): Promise<Array<DecryptedHealthElementJs>> =
+			GlobalScope.promise {
+		listToArray(
+			healthcareElementApi.findHealthcareElementsByHcPartyPatientForeignKeys(hcPartyId, arrayToList(
+				secretPatientKeys,
+				"secretPatientKeys",
+				{ x1: String ->
+					x1
+				},
+			)),
+			{ x1: DecryptedHealthElement ->
+				healthElement_toJs(x1)
+			},
+		)}
+
 }

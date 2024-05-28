@@ -39,4 +39,13 @@ export interface TimeTableApi {
 			requestedPermission: RequestedPermission
 	): Promise<SimpleShareResult<DecryptedTimeTable>>;
 
+	modifyTimeTable(entity: DecryptedTimeTable): Promise<DecryptedTimeTable>;
+
+	getTimeTable(entityId: string): Promise<DecryptedTimeTable>;
+
+	getTimeTablesByPeriodAndAgendaId(startDate: number, endDate: number,
+			agendaId: string): Promise<Array<DecryptedTimeTable>>;
+
+	getTimeTablesByAgendaId(agendaId: string): Promise<Array<DecryptedTimeTable>>;
+
 }
