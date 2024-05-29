@@ -37,6 +37,7 @@ import com.icure.sdk.model.specializations.AesExchangeKeyEncryptionKeypairIdenti
 import com.icure.sdk.model.specializations.Base64String
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.model.specializations.SpkiHexString
+import com.icure.sdk.serialization.ByteArraySerializer
 import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.Boolean
@@ -284,6 +285,7 @@ data class DecryptedPatient(
 	override val race: String? = null,
 	override val ethnicity: String? = null,
 	override val preferredUserId: String? = null,
+	@Serializable(with = ByteArraySerializer::class)
 	override val picture: ByteArray? = null,
 	override val externalId: String? = null,
 	@DefaultValue("emptyList()")
@@ -410,6 +412,7 @@ data class EncryptedPatient(
 	override val race: String? = null,
 	override val ethnicity: String? = null,
 	override val preferredUserId: String? = null,
+	@Serializable(with = ByteArraySerializer::class)
 	override val picture: ByteArray? = null,
 	override val externalId: String? = null,
 	@DefaultValue("emptyList()")
