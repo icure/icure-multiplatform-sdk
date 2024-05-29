@@ -13,7 +13,7 @@ public fun insurance_toJs(obj: Insurance): InsuranceJs {
 	val id = obj.id
 	val rev = obj.rev
 	val deletionDate = longToNumber(obj.deletionDate)
-	val name = mapToObject<_, _, String>(
+	val name = mapToObject(
 		obj.name,
 		{ x1: String ->
 			x1

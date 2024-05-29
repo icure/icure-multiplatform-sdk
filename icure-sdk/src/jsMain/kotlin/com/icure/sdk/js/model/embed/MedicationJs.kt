@@ -4,6 +4,7 @@
 package com.icure.sdk.js.model.embed
 
 import com.icure.sdk.js.model.base.CodeStubJs
+import com.icure.sdk.js.utils.Record
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
@@ -61,7 +62,7 @@ public external class MedicationJs(
 
 	public val posology: String?
 
-	public val agreements: dynamic
+	public val agreements: Record<String, ParagraphAgreementJs>?
 
 	public val medicationSchemeIdOnSafe: String?
 

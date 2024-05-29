@@ -3,6 +3,7 @@
 
 package com.icure.sdk.js.api.flavoured
 
+import com.icure.sdk.js.crypto.entities.PatientShareOptionsJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.model.EncryptedPatientJs
 import com.icure.sdk.js.model.IdWithRevJs
@@ -11,6 +12,7 @@ import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.PatientJs
 import com.icure.sdk.js.model.embed.EncryptedContentJs
 import com.icure.sdk.js.model.filter.chain.FilterChainJs
+import com.icure.sdk.js.utils.Record
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
@@ -30,9 +32,10 @@ public external interface PatientFlavouredApiJs<E : PatientJs> {
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<E>>
 
-	public fun tryShareWithMany(patient: E, delegates: dynamic): Promise<SimpleShareResultJs<E>>
+	public fun tryShareWithMany(patient: E, delegates: Record<String, PatientShareOptionsJs>):
+			Promise<SimpleShareResultJs<E>>
 
-	public fun shareWithMany(patient: E, delegates: dynamic): Promise<E>
+	public fun shareWithMany(patient: E, delegates: Record<String, PatientShareOptionsJs>): Promise<E>
 
 	public fun initialiseConfidentialSecretId(patient: E): Promise<E>
 
@@ -86,7 +89,7 @@ public external interface PatientFlavouredApiJs<E : PatientJs> {
 		sortDirection: String,
 	): Promise<PaginatedListJs<E>>
 
-	public fun getPatientHcPartyKeysForDelegate(patientId: String): Promise<dynamic>
+	public fun getPatientHcPartyKeysForDelegate(patientId: String): Promise<Record<String, String>>
 
 	public fun countOfPatients(hcPartyId: String): Promise<EncryptedContentJs>
 

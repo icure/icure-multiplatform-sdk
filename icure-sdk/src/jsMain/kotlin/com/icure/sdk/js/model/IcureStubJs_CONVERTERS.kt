@@ -48,7 +48,7 @@ public fun icureStub_toJs(obj: IcureStub): IcureStubJs {
 			x1
 		},
 	)
-	val cryptedForeignKeys = mapToObject<_, _, Array<DelegationJs>>(
+	val cryptedForeignKeys = mapToObject(
 		obj.cryptedForeignKeys,
 		{ x1: String ->
 			x1
@@ -62,7 +62,7 @@ public fun icureStub_toJs(obj: IcureStub): IcureStubJs {
 			)
 		},
 	)
-	val delegations = mapToObject<_, _, Array<DelegationJs>>(
+	val delegations = mapToObject(
 		obj.delegations,
 		{ x1: String ->
 			x1
@@ -76,7 +76,7 @@ public fun icureStub_toJs(obj: IcureStub): IcureStubJs {
 			)
 		},
 	)
-	val encryptionKeys = mapToObject<_, _, Array<DelegationJs>>(
+	val encryptionKeys = mapToObject(
 		obj.encryptionKeys,
 		{ x1: String ->
 			x1

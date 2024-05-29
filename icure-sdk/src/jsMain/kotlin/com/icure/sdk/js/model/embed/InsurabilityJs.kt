@@ -3,6 +3,7 @@
 
 package com.icure.sdk.js.model.embed
 
+import com.icure.sdk.js.utils.Record
 import kotlin.Boolean
 import kotlin.Double
 import kotlin.String
@@ -11,7 +12,7 @@ import kotlin.js.JsQualifier
 
 @JsName("Insurability")
 public sealed external interface InsurabilityJs : EncryptableJs {
-	public val parameters: dynamic
+	public val parameters: Record<String, out String>
 
 	public val hospitalisation: Boolean?
 
@@ -39,7 +40,7 @@ public sealed external interface InsurabilityJs : EncryptableJs {
 public external class DecryptedInsurabilityJs(
 	partial: dynamic,
 ) : InsurabilityJs {
-	override val parameters: dynamic
+	override val parameters: Record<String, String>
 
 	override val hospitalisation: Boolean?
 
@@ -68,7 +69,7 @@ public external class DecryptedInsurabilityJs(
 public external class EncryptedInsurabilityJs(
 	partial: dynamic,
 ) : InsurabilityJs {
-	override val parameters: dynamic
+	override val parameters: Record<String, String>
 
 	override val hospitalisation: Boolean?
 

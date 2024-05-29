@@ -3,6 +3,7 @@
 
 package com.icure.sdk.js.api.flavoured
 
+import com.icure.sdk.js.crypto.entities.MessageShareOptionsJs
 import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.model.DecryptedMessageJs
@@ -14,6 +15,7 @@ import com.icure.sdk.js.model.UserJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.filter.AbstractFilterJs
 import com.icure.sdk.js.model.filter.chain.FilterChainJs
+import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
 import kotlin.Boolean
@@ -36,7 +38,7 @@ public external interface MessageApiJs {
 		base: DecryptedMessageJs?,
 		patient: PatientJs?,
 		user: UserJs?,
-		delegates: dynamic,
+		delegates: Record<String, String>,
 		secretId: SecretIdOptionJs,
 	): Promise<DecryptedMessageJs>
 
@@ -66,11 +68,12 @@ public external interface MessageApiJs {
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<DecryptedMessageJs>>
 
-	public fun tryShareWithMany(message: DecryptedMessageJs, delegates: dynamic):
+	public fun tryShareWithMany(message: DecryptedMessageJs,
+			delegates: Record<String, MessageShareOptionsJs>):
 			Promise<SimpleShareResultJs<DecryptedMessageJs>>
 
-	public fun shareWithMany(message: DecryptedMessageJs, delegates: dynamic):
-			Promise<DecryptedMessageJs>
+	public fun shareWithMany(message: DecryptedMessageJs,
+			delegates: Record<String, MessageShareOptionsJs>): Promise<DecryptedMessageJs>
 
 	public fun findMessagesByHcPartyPatient(
 		hcPartyId: String,

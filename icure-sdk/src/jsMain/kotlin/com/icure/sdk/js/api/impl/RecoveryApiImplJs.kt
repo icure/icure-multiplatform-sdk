@@ -14,6 +14,7 @@ import com.icure.sdk.js.crypto.entities.recoveryResult_toJs
 import com.icure.sdk.js.model.CheckedConverters.intToNumber
 import com.icure.sdk.js.model.CheckedConverters.mapToObject
 import com.icure.sdk.js.model.specializations.spkiHexString_toJs
+import com.icure.sdk.js.utils.Record
 import com.icure.sdk.model.specializations.SpkiHexString
 import kotlin.Boolean
 import kotlin.Double
@@ -37,18 +38,18 @@ internal class RecoveryApiImplJs(
 
 
 	override fun recoverKeyPairs(recoveryKey: String, autoDelete: Boolean):
-			Promise<RecoveryResultJs<dynamic>> = GlobalScope.promise {
+			Promise<RecoveryResultJs<Record<String, Record<String, XRsaKeypair>>>> = GlobalScope.promise {
 		recoveryResult_toJs(
 			recoveryApi.recoverKeyPairs(com.icure.sdk.js.crypto.entities.recoveryDataKey_fromJs(recoveryKey),
 					autoDelete),
 			{ x1: Map<String, Map<SpkiHexString, RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>> ->
-				mapToObject<_, _, dynamic>(
+				mapToObject(
 					x1,
 					{ x2: String ->
 						x2
 					},
 					{ x2: Map<SpkiHexString, RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>> ->
-						mapToObject<_, _, XRsaKeypair>(
+						mapToObject(
 							x2,
 							{ x3: SpkiHexString ->
 								spkiHexString_toJs(x3)

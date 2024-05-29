@@ -3,6 +3,7 @@
 
 package com.icure.sdk.js.api.flavoured
 
+import com.icure.sdk.js.crypto.entities.ReceiptShareOptionsJs
 import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.model.DecryptedReceiptJs
@@ -11,6 +12,7 @@ import com.icure.sdk.js.model.PatientJs
 import com.icure.sdk.js.model.ReceiptJs
 import com.icure.sdk.js.model.UserJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
+import com.icure.sdk.js.utils.Record
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.ByteArray
@@ -32,7 +34,7 @@ public external interface ReceiptApiJs {
 		base: DecryptedReceiptJs?,
 		patient: PatientJs?,
 		user: UserJs?,
-		delegates: dynamic,
+		delegates: Record<String, String>,
 		secretId: SecretIdOptionJs,
 	): Promise<DecryptedReceiptJs>
 
@@ -83,11 +85,12 @@ public external interface ReceiptApiJs {
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<DecryptedReceiptJs>>
 
-	public fun tryShareWithMany(receipt: DecryptedReceiptJs, delegates: dynamic):
+	public fun tryShareWithMany(receipt: DecryptedReceiptJs,
+			delegates: Record<String, ReceiptShareOptionsJs>):
 			Promise<SimpleShareResultJs<DecryptedReceiptJs>>
 
-	public fun shareWithMany(receipt: DecryptedReceiptJs, delegates: dynamic):
-			Promise<DecryptedReceiptJs>
+	public fun shareWithMany(receipt: DecryptedReceiptJs,
+			delegates: Record<String, ReceiptShareOptionsJs>): Promise<DecryptedReceiptJs>
 
 	public fun modifyReceipt(entity: DecryptedReceiptJs): Promise<DecryptedReceiptJs>
 

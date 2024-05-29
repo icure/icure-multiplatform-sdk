@@ -3,6 +3,7 @@
 
 package com.icure.sdk.js.model.embed
 
+import com.icure.sdk.js.utils.Record
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.String
@@ -15,7 +16,7 @@ public sealed external interface FlatRateTarificationJs : EncryptableJs {
 
 	public val flatRateType: String?
 
-	public val label: dynamic
+	public val label: Record<String, out String>?
 
 	public val valorisations: Array<out ValorisationJs>
 
@@ -33,7 +34,7 @@ public external class DecryptedFlatRateTarificationJs(
 
 	override val flatRateType: String?
 
-	override val label: dynamic
+	override val label: Record<String, String>?
 
 	override val valorisations: Array<DecryptedValorisationJs>
 
@@ -52,7 +53,7 @@ public external class EncryptedFlatRateTarificationJs(
 
 	override val flatRateType: String?
 
-	override val label: dynamic
+	override val label: Record<String, String>?
 
 	override val valorisations: Array<EncryptedValorisationJs>
 

@@ -3,6 +3,7 @@
 
 package com.icure.sdk.js.model.embed
 
+import com.icure.sdk.js.utils.Record
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
@@ -42,7 +43,7 @@ public external class ParagraphAgreementJs(
 
 	public val responseType: String?
 
-	public val refusalJustification: dynamic
+	public val refusalJustification: Record<String, String>?
 
 	public val verses: Array<Double>?
 

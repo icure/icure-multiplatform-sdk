@@ -6,6 +6,7 @@ import com.icure.sdk.js.api.flavoured.PatientApiJs
 import com.icure.sdk.js.api.flavoured.PatientFlavouredApiJs
 import com.icure.sdk.js.crypto.entities.EntityAccessInformationJs
 import com.icure.sdk.js.crypto.entities.EntityWithTypeInfoJs
+import com.icure.sdk.js.crypto.entities.PatientShareOptionsJs
 import com.icure.sdk.js.crypto.entities.ShareAllPatientDataOptionsJs_ResultJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.crypto.entities.entityAccessInformation_toJs
@@ -41,6 +42,7 @@ import com.icure.sdk.js.model.paginatedList_toJs
 import com.icure.sdk.js.model.patient_fromJs
 import com.icure.sdk.js.model.patient_toJs
 import com.icure.sdk.js.model.specializations.hexString_toJs
+import com.icure.sdk.js.utils.Record
 import com.icure.sdk.model.DecryptedPatient
 import com.icure.sdk.model.EncryptedPatient
 import com.icure.sdk.model.IdWithRev
@@ -89,7 +91,8 @@ internal class PatientApiImplJs(
 			)}
 
 
-		override fun tryShareWithMany(patient: EncryptedPatientJs, delegates: dynamic):
+		override fun tryShareWithMany(patient: EncryptedPatientJs,
+				delegates: Record<String, PatientShareOptionsJs>):
 				Promise<SimpleShareResultJs<EncryptedPatientJs>> = GlobalScope.promise {
 			simpleShareResult_toJs(
 				patientApi.encrypted.tryShareWithMany(com.icure.sdk.js.model.patient_fromJs(patient),
@@ -109,8 +112,9 @@ internal class PatientApiImplJs(
 			)}
 
 
-		override fun shareWithMany(patient: EncryptedPatientJs, delegates: dynamic):
-				Promise<EncryptedPatientJs> = GlobalScope.promise {
+		override fun shareWithMany(patient: EncryptedPatientJs,
+				delegates: Record<String, PatientShareOptionsJs>): Promise<EncryptedPatientJs> =
+				GlobalScope.promise {
 			patient_toJs(patientApi.encrypted.shareWithMany(com.icure.sdk.js.model.patient_fromJs(patient),
 					com.icure.sdk.js.model.CheckedConverters.objectToMap(
 			  delegates,
@@ -241,9 +245,9 @@ internal class PatientApiImplJs(
 			)}
 
 
-		override fun getPatientHcPartyKeysForDelegate(patientId: String): Promise<dynamic> =
-				GlobalScope.promise {
-			mapToObject<_, _, String>(
+		override fun getPatientHcPartyKeysForDelegate(patientId: String): Promise<Record<String, String>>
+				= GlobalScope.promise {
+			mapToObject(
 				patientApi.encrypted.getPatientHcPartyKeysForDelegate(patientId),
 				{ x1: String ->
 					x1
@@ -453,8 +457,9 @@ internal class PatientApiImplJs(
 			)}
 
 
-		override fun tryShareWithMany(patient: PatientJs, delegates: dynamic):
-				Promise<SimpleShareResultJs<PatientJs>> = GlobalScope.promise {
+		override fun tryShareWithMany(patient: PatientJs,
+				delegates: Record<String, PatientShareOptionsJs>): Promise<SimpleShareResultJs<PatientJs>> =
+				GlobalScope.promise {
 			simpleShareResult_toJs(
 				patientApi.tryAndRecover.tryShareWithMany(com.icure.sdk.js.model.patient_fromJs(patient),
 						com.icure.sdk.js.model.CheckedConverters.objectToMap(
@@ -473,8 +478,8 @@ internal class PatientApiImplJs(
 			)}
 
 
-		override fun shareWithMany(patient: PatientJs, delegates: dynamic): Promise<PatientJs> =
-				GlobalScope.promise {
+		override fun shareWithMany(patient: PatientJs, delegates: Record<String, PatientShareOptionsJs>):
+				Promise<PatientJs> = GlobalScope.promise {
 			patient_toJs(patientApi.tryAndRecover.shareWithMany(com.icure.sdk.js.model.patient_fromJs(patient),
 					com.icure.sdk.js.model.CheckedConverters.objectToMap(
 			  delegates,
@@ -603,9 +608,9 @@ internal class PatientApiImplJs(
 			)}
 
 
-		override fun getPatientHcPartyKeysForDelegate(patientId: String): Promise<dynamic> =
-				GlobalScope.promise {
-			mapToObject<_, _, String>(
+		override fun getPatientHcPartyKeysForDelegate(patientId: String): Promise<Record<String, String>>
+				= GlobalScope.promise {
+			mapToObject(
 				patientApi.tryAndRecover.getPatientHcPartyKeysForDelegate(patientId),
 				{ x1: String ->
 					x1
@@ -816,7 +821,7 @@ internal class PatientApiImplJs(
 	override fun withEncryptionMetadata(
 		base: DecryptedPatientJs?,
 		user: UserJs?,
-		delegates: dynamic,
+		delegates: Record<String, String>,
 	): Promise<DecryptedPatientJs> = GlobalScope.promise {
 		patient_toJs(patientApi.withEncryptionMetadata(base?.let { nonNull1 ->
 		  com.icure.sdk.js.model.patient_fromJs(nonNull1)
@@ -901,7 +906,7 @@ internal class PatientApiImplJs(
 		user: UserJs,
 		patientId: String,
 		dataOwnerId: String,
-		delegatesWithShareType: dynamic,
+		delegatesWithShareType: Record<String, Array<String>>,
 	): Promise<ShareAllPatientDataOptionsJs_ResultJs> = GlobalScope.promise {
 		shareAllPatientDataOptions_Result_toJs(patientApi.shareAllDataOfPatient(com.icure.sdk.js.model.user_fromJs(user),
 				patientId, dataOwnerId, com.icure.sdk.js.model.CheckedConverters.objectToMap(
@@ -1018,7 +1023,8 @@ internal class PatientApiImplJs(
 		)}
 
 
-	override fun tryShareWithMany(patient: DecryptedPatientJs, delegates: dynamic):
+	override fun tryShareWithMany(patient: DecryptedPatientJs,
+			delegates: Record<String, PatientShareOptionsJs>):
 			Promise<SimpleShareResultJs<DecryptedPatientJs>> = GlobalScope.promise {
 		simpleShareResult_toJs(
 			patientApi.tryShareWithMany(com.icure.sdk.js.model.patient_fromJs(patient),
@@ -1038,8 +1044,9 @@ internal class PatientApiImplJs(
 		)}
 
 
-	override fun shareWithMany(patient: DecryptedPatientJs, delegates: dynamic):
-			Promise<DecryptedPatientJs> = GlobalScope.promise {
+	override fun shareWithMany(patient: DecryptedPatientJs,
+			delegates: Record<String, PatientShareOptionsJs>): Promise<DecryptedPatientJs> =
+			GlobalScope.promise {
 		patient_toJs(patientApi.shareWithMany(com.icure.sdk.js.model.patient_fromJs(patient),
 				com.icure.sdk.js.model.CheckedConverters.objectToMap(
 		  delegates,
@@ -1170,9 +1177,9 @@ internal class PatientApiImplJs(
 		)}
 
 
-	override fun getPatientHcPartyKeysForDelegate(patientId: String): Promise<dynamic> =
+	override fun getPatientHcPartyKeysForDelegate(patientId: String): Promise<Record<String, String>> =
 			GlobalScope.promise {
-		mapToObject<_, _, String>(
+		mapToObject(
 			patientApi.getPatientHcPartyKeysForDelegate(patientId),
 			{ x1: String ->
 				x1

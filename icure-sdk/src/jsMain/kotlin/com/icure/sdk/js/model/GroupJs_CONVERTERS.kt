@@ -49,7 +49,7 @@ public fun group_toJs(obj: Group): GroupJs {
 			propertyStub_toJs(x1)
 		},
 	)
-	val defaultUserRoles = mapToObject<_, _, Array<String>>(
+	val defaultUserRoles = mapToObject(
 		obj.defaultUserRoles,
 		{ x1: UserType ->
 			x1.name
@@ -63,7 +63,7 @@ public fun group_toJs(obj: Group): GroupJs {
 			)
 		},
 	)
-	val operationTokens = mapToObject<_, _, OperationTokenJs>(
+	val operationTokens = mapToObject(
 		obj.operationTokens,
 		{ x1: String ->
 			x1
@@ -72,7 +72,7 @@ public fun group_toJs(obj: Group): GroupJs {
 			operationToken_toJs(x1)
 		},
 	)
-	val sharedEntities = mapToObject<_, _, String>(
+	val sharedEntities = mapToObject(
 		obj.sharedEntities,
 		{ x1: String ->
 			x1

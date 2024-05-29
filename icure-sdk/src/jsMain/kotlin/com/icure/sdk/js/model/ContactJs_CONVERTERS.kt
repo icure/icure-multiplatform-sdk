@@ -104,7 +104,7 @@ public fun contact_toJs(obj: DecryptedContact): DecryptedContactJs {
 			x1
 		},
 	)
-	val cryptedForeignKeys = mapToObject<_, _, Array<DelegationJs>>(
+	val cryptedForeignKeys = mapToObject(
 		obj.cryptedForeignKeys,
 		{ x1: String ->
 			x1
@@ -118,7 +118,7 @@ public fun contact_toJs(obj: DecryptedContact): DecryptedContactJs {
 			)
 		},
 	)
-	val delegations = mapToObject<_, _, Array<DelegationJs>>(
+	val delegations = mapToObject(
 		obj.delegations,
 		{ x1: String ->
 			x1
@@ -132,7 +132,7 @@ public fun contact_toJs(obj: DecryptedContact): DecryptedContactJs {
 			)
 		},
 	)
-	val encryptionKeys = mapToObject<_, _, Array<DelegationJs>>(
+	val encryptionKeys = mapToObject(
 		obj.encryptionKeys,
 		{ x1: String ->
 			x1
@@ -407,7 +407,7 @@ public fun contact_toJs(obj: EncryptedContact): EncryptedContactJs {
 			x1
 		},
 	)
-	val cryptedForeignKeys = mapToObject<_, _, Array<DelegationJs>>(
+	val cryptedForeignKeys = mapToObject(
 		obj.cryptedForeignKeys,
 		{ x1: String ->
 			x1
@@ -421,7 +421,7 @@ public fun contact_toJs(obj: EncryptedContact): EncryptedContactJs {
 			)
 		},
 	)
-	val delegations = mapToObject<_, _, Array<DelegationJs>>(
+	val delegations = mapToObject(
 		obj.delegations,
 		{ x1: String ->
 			x1
@@ -435,7 +435,7 @@ public fun contact_toJs(obj: EncryptedContact): EncryptedContactJs {
 			)
 		},
 	)
-	val encryptionKeys = mapToObject<_, _, Array<DelegationJs>>(
+	val encryptionKeys = mapToObject(
 		obj.encryptionKeys,
 		{ x1: String ->
 			x1

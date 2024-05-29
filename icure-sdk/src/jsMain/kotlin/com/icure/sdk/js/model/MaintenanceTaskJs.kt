@@ -8,8 +8,10 @@ import com.icure.sdk.js.model.base.HasEncryptionMetadataJs
 import com.icure.sdk.js.model.base.ICureDocumentJs
 import com.icure.sdk.js.model.base.IdentifierJs
 import com.icure.sdk.js.model.base.StoredDocumentJs
+import com.icure.sdk.js.model.embed.DelegationJs
 import com.icure.sdk.js.model.embed.EncryptableJs
 import com.icure.sdk.js.model.embed.SecurityMetadataJs
+import com.icure.sdk.js.utils.Record
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
@@ -70,11 +72,11 @@ public external class DecryptedMaintenanceTaskJs(
 
 	override val secretForeignKeys: Array<String>
 
-	override val cryptedForeignKeys: dynamic
+	override val cryptedForeignKeys: Record<String, Array<DelegationJs>>
 
-	override val delegations: dynamic
+	override val delegations: Record<String, Array<DelegationJs>>
 
-	override val encryptionKeys: dynamic
+	override val encryptionKeys: Record<String, Array<DelegationJs>>
 
 	override val encryptedSelf: String?
 
@@ -121,11 +123,11 @@ public external class EncryptedMaintenanceTaskJs(
 
 	override val secretForeignKeys: Array<String>
 
-	override val cryptedForeignKeys: dynamic
+	override val cryptedForeignKeys: Record<String, Array<DelegationJs>>
 
-	override val delegations: dynamic
+	override val delegations: Record<String, Array<DelegationJs>>
 
-	override val encryptionKeys: dynamic
+	override val encryptionKeys: Record<String, Array<DelegationJs>>
 
 	override val encryptedSelf: String?
 

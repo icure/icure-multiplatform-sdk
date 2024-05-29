@@ -4,6 +4,7 @@ package com.icure.sdk.js.api.flavoured.`impl`
 import com.icure.sdk.api.flavoured.HealthcareElementApi
 import com.icure.sdk.js.api.flavoured.HealthcareElementApiJs
 import com.icure.sdk.js.api.flavoured.HealthcareElementFlavouredApiJs
+import com.icure.sdk.js.crypto.entities.HealthElementShareOptionsJs
 import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.crypto.entities.simpleShareResult_toJs
@@ -28,6 +29,7 @@ import com.icure.sdk.js.model.healthElement_toJs
 import com.icure.sdk.js.model.icureStub_toJs
 import com.icure.sdk.js.model.paginatedList_toJs
 import com.icure.sdk.js.model.specializations.hexString_toJs
+import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.sdk.model.DecryptedHealthElement
@@ -72,7 +74,8 @@ internal class HealthcareElementApiImplJs(
 			)}
 
 
-		override fun tryShareWithMany(healthElement: EncryptedHealthElementJs, delegates: dynamic):
+		override fun tryShareWithMany(healthElement: EncryptedHealthElementJs,
+				delegates: Record<String, HealthElementShareOptionsJs>):
 				Promise<SimpleShareResultJs<EncryptedHealthElementJs>> = GlobalScope.promise {
 			simpleShareResult_toJs(
 				healthcareElementApi.encrypted.tryShareWithMany(com.icure.sdk.js.model.healthElement_fromJs(healthElement),
@@ -92,8 +95,9 @@ internal class HealthcareElementApiImplJs(
 			)}
 
 
-		override fun shareWithMany(healthElement: EncryptedHealthElementJs, delegates: dynamic):
-				Promise<EncryptedHealthElementJs> = GlobalScope.promise {
+		override fun shareWithMany(healthElement: EncryptedHealthElementJs,
+				delegates: Record<String, HealthElementShareOptionsJs>): Promise<EncryptedHealthElementJs> =
+				GlobalScope.promise {
 			healthElement_toJs(healthcareElementApi.encrypted.shareWithMany(com.icure.sdk.js.model.healthElement_fromJs(healthElement),
 					com.icure.sdk.js.model.CheckedConverters.objectToMap(
 			  delegates,
@@ -225,7 +229,8 @@ internal class HealthcareElementApiImplJs(
 			)}
 
 
-		override fun tryShareWithMany(healthElement: HealthElementJs, delegates: dynamic):
+		override fun tryShareWithMany(healthElement: HealthElementJs,
+				delegates: Record<String, HealthElementShareOptionsJs>):
 				Promise<SimpleShareResultJs<HealthElementJs>> = GlobalScope.promise {
 			simpleShareResult_toJs(
 				healthcareElementApi.tryAndRecover.tryShareWithMany(com.icure.sdk.js.model.healthElement_fromJs(healthElement),
@@ -245,8 +250,9 @@ internal class HealthcareElementApiImplJs(
 			)}
 
 
-		override fun shareWithMany(healthElement: HealthElementJs, delegates: dynamic):
-				Promise<HealthElementJs> = GlobalScope.promise {
+		override fun shareWithMany(healthElement: HealthElementJs,
+				delegates: Record<String, HealthElementShareOptionsJs>): Promise<HealthElementJs> =
+				GlobalScope.promise {
 			healthElement_toJs(healthcareElementApi.tryAndRecover.shareWithMany(com.icure.sdk.js.model.healthElement_fromJs(healthElement),
 					com.icure.sdk.js.model.CheckedConverters.objectToMap(
 			  delegates,
@@ -381,7 +387,7 @@ internal class HealthcareElementApiImplJs(
 		base: DecryptedHealthElementJs?,
 		patient: PatientJs,
 		user: UserJs?,
-		delegates: dynamic,
+		delegates: Record<String, String>,
 		secretId: SecretIdOptionJs,
 	): Promise<DecryptedHealthElementJs> = GlobalScope.promise {
 		healthElement_toJs(healthcareElementApi.withEncryptionMetadata(base?.let { nonNull1 ->
@@ -509,7 +515,8 @@ internal class HealthcareElementApiImplJs(
 		)}
 
 
-	override fun tryShareWithMany(healthElement: DecryptedHealthElementJs, delegates: dynamic):
+	override fun tryShareWithMany(healthElement: DecryptedHealthElementJs,
+			delegates: Record<String, HealthElementShareOptionsJs>):
 			Promise<SimpleShareResultJs<DecryptedHealthElementJs>> = GlobalScope.promise {
 		simpleShareResult_toJs(
 			healthcareElementApi.tryShareWithMany(com.icure.sdk.js.model.healthElement_fromJs(healthElement),
@@ -529,8 +536,9 @@ internal class HealthcareElementApiImplJs(
 		)}
 
 
-	override fun shareWithMany(healthElement: DecryptedHealthElementJs, delegates: dynamic):
-			Promise<DecryptedHealthElementJs> = GlobalScope.promise {
+	override fun shareWithMany(healthElement: DecryptedHealthElementJs,
+			delegates: Record<String, HealthElementShareOptionsJs>): Promise<DecryptedHealthElementJs> =
+			GlobalScope.promise {
 		healthElement_toJs(healthcareElementApi.shareWithMany(com.icure.sdk.js.model.healthElement_fromJs(healthElement),
 				com.icure.sdk.js.model.CheckedConverters.objectToMap(
 		  delegates,

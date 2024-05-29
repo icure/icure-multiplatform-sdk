@@ -3,6 +3,7 @@
 
 package com.icure.sdk.js.model.embed
 
+import com.icure.sdk.js.utils.Record
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
@@ -30,7 +31,7 @@ public sealed external interface ValorisationJs : EncryptableJs {
 
 	public val vat: Double?
 
-	public val label: dynamic
+	public val label: Record<String, out String>?
 
 	public val isEncrypted: Boolean
 
@@ -60,7 +61,7 @@ public external class DecryptedValorisationJs(
 
 	override val vat: Double?
 
-	override val label: dynamic
+	override val label: Record<String, String>?
 
 	override val encryptedSelf: String?
 
@@ -91,7 +92,7 @@ public external class EncryptedValorisationJs(
 
 	override val vat: Double?
 
-	override val label: dynamic
+	override val label: Record<String, String>?
 
 	override val encryptedSelf: String?
 

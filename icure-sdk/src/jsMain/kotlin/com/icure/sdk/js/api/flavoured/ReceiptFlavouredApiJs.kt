@@ -3,8 +3,10 @@
 
 package com.icure.sdk.js.api.flavoured
 
+import com.icure.sdk.js.crypto.entities.ReceiptShareOptionsJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.model.ReceiptJs
+import com.icure.sdk.js.utils.Record
 import kotlin.Array
 import kotlin.String
 import kotlin.js.JsName
@@ -21,9 +23,10 @@ public external interface ReceiptFlavouredApiJs<E : ReceiptJs> {
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<E>>
 
-	public fun tryShareWithMany(receipt: E, delegates: dynamic): Promise<SimpleShareResultJs<E>>
+	public fun tryShareWithMany(receipt: E, delegates: Record<String, ReceiptShareOptionsJs>):
+			Promise<SimpleShareResultJs<E>>
 
-	public fun shareWithMany(receipt: E, delegates: dynamic): Promise<E>
+	public fun shareWithMany(receipt: E, delegates: Record<String, ReceiptShareOptionsJs>): Promise<E>
 
 	public fun modifyReceipt(entity: E): Promise<E>
 

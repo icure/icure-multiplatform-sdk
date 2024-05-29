@@ -7,9 +7,12 @@ import com.icure.sdk.js.model.base.CodeStubJs
 import com.icure.sdk.js.model.base.HasEncryptionMetadataJs
 import com.icure.sdk.js.model.base.ICureDocumentJs
 import com.icure.sdk.js.model.base.StoredDocumentJs
+import com.icure.sdk.js.model.embed.DelegationJs
 import com.icure.sdk.js.model.embed.EncryptableJs
 import com.icure.sdk.js.model.embed.MessageAttachmentJs
+import com.icure.sdk.js.model.embed.MessageReadStatusJs
 import com.icure.sdk.js.model.embed.SecurityMetadataJs
+import com.icure.sdk.js.utils.Record
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
@@ -38,9 +41,9 @@ public sealed external interface MessageJs : StoredDocumentJs, ICureDocumentJs<S
 
 	public val sent: Double?
 
-	public val metas: dynamic
+	public val metas: Record<String, out String>
 
-	public val readStatus: dynamic
+	public val readStatus: Record<String, out MessageReadStatusJs>
 
 	public val messageAttachments: Array<out MessageAttachmentJs>
 
@@ -60,9 +63,9 @@ public sealed external interface MessageJs : StoredDocumentJs, ICureDocumentJs<S
 
 	public val unassignedResults: Array<out String>
 
-	public val assignedResults: dynamic
+	public val assignedResults: Record<String, out String>
 
-	public val senderReferences: dynamic
+	public val senderReferences: Record<String, out String>
 
 	public val isEncrypted: Boolean
 
@@ -114,9 +117,9 @@ public external class DecryptedMessageJs(
 
 	override val sent: Double?
 
-	override val metas: dynamic
+	override val metas: Record<String, String>
 
-	override val readStatus: dynamic
+	override val readStatus: Record<String, MessageReadStatusJs>
 
 	override val messageAttachments: Array<MessageAttachmentJs>
 
@@ -136,17 +139,17 @@ public external class DecryptedMessageJs(
 
 	override val unassignedResults: Array<String>
 
-	override val assignedResults: dynamic
+	override val assignedResults: Record<String, String>
 
-	override val senderReferences: dynamic
+	override val senderReferences: Record<String, String>
 
 	override val secretForeignKeys: Array<String>
 
-	override val cryptedForeignKeys: dynamic
+	override val cryptedForeignKeys: Record<String, Array<DelegationJs>>
 
-	override val delegations: dynamic
+	override val delegations: Record<String, Array<DelegationJs>>
 
-	override val encryptionKeys: dynamic
+	override val encryptionKeys: Record<String, Array<DelegationJs>>
 
 	override val encryptedSelf: String?
 
@@ -201,9 +204,9 @@ public external class EncryptedMessageJs(
 
 	override val sent: Double?
 
-	override val metas: dynamic
+	override val metas: Record<String, String>
 
-	override val readStatus: dynamic
+	override val readStatus: Record<String, MessageReadStatusJs>
 
 	override val messageAttachments: Array<MessageAttachmentJs>
 
@@ -223,17 +226,17 @@ public external class EncryptedMessageJs(
 
 	override val unassignedResults: Array<String>
 
-	override val assignedResults: dynamic
+	override val assignedResults: Record<String, String>
 
-	override val senderReferences: dynamic
+	override val senderReferences: Record<String, String>
 
 	override val secretForeignKeys: Array<String>
 
-	override val cryptedForeignKeys: dynamic
+	override val cryptedForeignKeys: Record<String, Array<DelegationJs>>
 
-	override val delegations: dynamic
+	override val delegations: Record<String, Array<DelegationJs>>
 
-	override val encryptionKeys: dynamic
+	override val encryptionKeys: Record<String, Array<DelegationJs>>
 
 	override val encryptedSelf: String?
 

@@ -6,6 +6,7 @@ import com.icure.sdk.js.api.flavoured.TopicApiJs
 import com.icure.sdk.js.api.flavoured.TopicFlavouredApiJs
 import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
+import com.icure.sdk.js.crypto.entities.TopicShareOptionsJs
 import com.icure.sdk.js.crypto.entities.simpleShareResult_toJs
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.arrayToSet
@@ -26,6 +27,7 @@ import com.icure.sdk.js.model.paginatedList_toJs
 import com.icure.sdk.js.model.specializations.hexString_toJs
 import com.icure.sdk.js.model.topic_fromJs
 import com.icure.sdk.js.model.topic_toJs
+import com.icure.sdk.js.utils.Record
 import com.icure.sdk.model.DecryptedTopic
 import com.icure.sdk.model.EncryptedTopic
 import com.icure.sdk.model.Topic
@@ -66,8 +68,9 @@ internal class TopicApiImplJs(
 			)}
 
 
-		override fun tryShareWithMany(topic: EncryptedTopicJs, delegates: dynamic):
-				Promise<SimpleShareResultJs<EncryptedTopicJs>> = GlobalScope.promise {
+		override fun tryShareWithMany(topic: EncryptedTopicJs,
+				delegates: Record<String, TopicShareOptionsJs>): Promise<SimpleShareResultJs<EncryptedTopicJs>>
+				= GlobalScope.promise {
 			simpleShareResult_toJs(
 				topicApi.encrypted.tryShareWithMany(com.icure.sdk.js.model.topic_fromJs(topic),
 						com.icure.sdk.js.model.CheckedConverters.objectToMap(
@@ -86,8 +89,9 @@ internal class TopicApiImplJs(
 			)}
 
 
-		override fun shareWithMany(topic: EncryptedTopicJs, delegates: dynamic): Promise<EncryptedTopicJs>
-				= GlobalScope.promise {
+		override fun shareWithMany(topic: EncryptedTopicJs,
+				delegates: Record<String, TopicShareOptionsJs>): Promise<EncryptedTopicJs> =
+				GlobalScope.promise {
 			topic_toJs(topicApi.encrypted.shareWithMany(com.icure.sdk.js.model.topic_fromJs(topic),
 					com.icure.sdk.js.model.CheckedConverters.objectToMap(
 			  delegates,
@@ -180,7 +184,7 @@ internal class TopicApiImplJs(
 			)}
 
 
-		override fun tryShareWithMany(topic: TopicJs, delegates: dynamic):
+		override fun tryShareWithMany(topic: TopicJs, delegates: Record<String, TopicShareOptionsJs>):
 				Promise<SimpleShareResultJs<TopicJs>> = GlobalScope.promise {
 			simpleShareResult_toJs(
 				topicApi.tryAndRecover.tryShareWithMany(com.icure.sdk.js.model.topic_fromJs(topic),
@@ -200,8 +204,8 @@ internal class TopicApiImplJs(
 			)}
 
 
-		override fun shareWithMany(topic: TopicJs, delegates: dynamic): Promise<TopicJs> =
-				GlobalScope.promise {
+		override fun shareWithMany(topic: TopicJs, delegates: Record<String, TopicShareOptionsJs>):
+				Promise<TopicJs> = GlobalScope.promise {
 			topic_toJs(topicApi.tryAndRecover.shareWithMany(com.icure.sdk.js.model.topic_fromJs(topic),
 					com.icure.sdk.js.model.CheckedConverters.objectToMap(
 			  delegates,
@@ -282,7 +286,7 @@ internal class TopicApiImplJs(
 		base: DecryptedTopicJs?,
 		patient: PatientJs?,
 		user: UserJs?,
-		delegates: dynamic,
+		delegates: Record<String, String>,
 		secretId: SecretIdOptionJs,
 	): Promise<DecryptedTopicJs> = GlobalScope.promise {
 		topic_toJs(topicApi.withEncryptionMetadata(base?.let { nonNull1 ->
@@ -389,8 +393,9 @@ internal class TopicApiImplJs(
 		)}
 
 
-	override fun tryShareWithMany(topic: DecryptedTopicJs, delegates: dynamic):
-			Promise<SimpleShareResultJs<DecryptedTopicJs>> = GlobalScope.promise {
+	override fun tryShareWithMany(topic: DecryptedTopicJs,
+			delegates: Record<String, TopicShareOptionsJs>): Promise<SimpleShareResultJs<DecryptedTopicJs>> =
+			GlobalScope.promise {
 		simpleShareResult_toJs(
 			topicApi.tryShareWithMany(com.icure.sdk.js.model.topic_fromJs(topic),
 					com.icure.sdk.js.model.CheckedConverters.objectToMap(
@@ -409,8 +414,9 @@ internal class TopicApiImplJs(
 		)}
 
 
-	override fun shareWithMany(topic: DecryptedTopicJs, delegates: dynamic): Promise<DecryptedTopicJs>
-			= GlobalScope.promise {
+	override fun shareWithMany(topic: DecryptedTopicJs,
+			delegates: Record<String, TopicShareOptionsJs>): Promise<DecryptedTopicJs> =
+			GlobalScope.promise {
 		topic_toJs(topicApi.shareWithMany(com.icure.sdk.js.model.topic_fromJs(topic),
 				com.icure.sdk.js.model.CheckedConverters.objectToMap(
 		  delegates,

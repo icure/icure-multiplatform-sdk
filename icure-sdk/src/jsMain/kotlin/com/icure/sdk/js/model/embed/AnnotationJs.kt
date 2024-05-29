@@ -5,6 +5,7 @@ package com.icure.sdk.js.model.embed
 
 import com.icure.sdk.js.model.base.CodeStubJs
 import com.icure.sdk.js.model.base.IdentifiableJs
+import com.icure.sdk.js.utils.Record
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
@@ -26,7 +27,7 @@ public external class AnnotationJs(
 
 	public val text: String?
 
-	public val markdown: dynamic
+	public val markdown: Record<String, String>
 
 	public val location: String?
 

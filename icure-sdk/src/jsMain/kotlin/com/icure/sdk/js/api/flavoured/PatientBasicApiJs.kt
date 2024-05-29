@@ -13,6 +13,7 @@ import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.embed.EncryptedContentJs
 import com.icure.sdk.js.model.filter.AbstractFilterJs
 import com.icure.sdk.js.model.filter.chain.FilterChainJs
+import com.icure.sdk.js.utils.Record
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
@@ -83,7 +84,7 @@ public external interface PatientBasicApiJs {
 		sortDirection: String,
 	): Promise<PaginatedListJs<EncryptedPatientJs>>
 
-	public fun getPatientHcPartyKeysForDelegate(patientId: String): Promise<dynamic>
+	public fun getPatientHcPartyKeysForDelegate(patientId: String): Promise<Record<String, String>>
 
 	public fun countOfPatients(hcPartyId: String): Promise<EncryptedContentJs>
 

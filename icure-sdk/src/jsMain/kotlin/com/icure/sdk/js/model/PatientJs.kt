@@ -16,6 +16,7 @@ import com.icure.sdk.js.model.embed.DecryptedFinancialInstitutionInformationJs
 import com.icure.sdk.js.model.embed.DecryptedInsurabilityJs
 import com.icure.sdk.js.model.embed.DecryptedMedicalHouseContractJs
 import com.icure.sdk.js.model.embed.DecryptedPatientHealthCarePartyJs
+import com.icure.sdk.js.model.embed.DelegationJs
 import com.icure.sdk.js.model.embed.EmploymentInfoJs
 import com.icure.sdk.js.model.embed.EncryptableJs
 import com.icure.sdk.js.model.embed.EncryptedAddressJs
@@ -31,6 +32,7 @@ import com.icure.sdk.js.model.embed.PatientHealthCarePartyJs
 import com.icure.sdk.js.model.embed.PersonNameJs
 import com.icure.sdk.js.model.embed.SchoolingInfoJs
 import com.icure.sdk.js.model.embed.SecurityMetadataJs
+import com.icure.sdk.js.utils.Record
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.ByteArray
@@ -114,7 +116,7 @@ public sealed external interface PatientJs : StoredDocumentJs, ICureDocumentJs<S
 
 	public val patientProfessions: Array<out CodeStubJs>
 
-	public val parameters: dynamic
+	public val parameters: Record<String, out Array<out String>>
 
 	public val properties: Array<out PropertyStubJs>
 
@@ -255,17 +257,17 @@ public external class DecryptedPatientJs(
 
 	override val patientProfessions: Array<CodeStubJs>
 
-	override val parameters: dynamic
+	override val parameters: Record<String, Array<String>>
 
 	override val properties: Array<DecryptedPropertyStubJs>
 
-	override val hcPartyKeys: dynamic
+	override val hcPartyKeys: Record<String, Array<String>>
 
-	override val aesExchangeKeys: dynamic
+	override val aesExchangeKeys: Record<String, Record<String, Record<String, String>>>
 
-	override val transferKeys: dynamic
+	override val transferKeys: Record<String, Record<String, String>>
 
-	override val privateKeyShamirPartitions: dynamic
+	override val privateKeyShamirPartitions: Record<String, String>
 
 	override val publicKey: String?
 
@@ -273,11 +275,11 @@ public external class DecryptedPatientJs(
 
 	override val secretForeignKeys: Array<String>
 
-	override val cryptedForeignKeys: dynamic
+	override val cryptedForeignKeys: Record<String, Array<DelegationJs>>
 
-	override val delegations: dynamic
+	override val delegations: Record<String, Array<DelegationJs>>
 
-	override val encryptionKeys: dynamic
+	override val encryptionKeys: Record<String, Array<DelegationJs>>
 
 	override val encryptedSelf: String?
 
@@ -424,17 +426,17 @@ public external class EncryptedPatientJs(
 
 	override val patientProfessions: Array<CodeStubJs>
 
-	override val parameters: dynamic
+	override val parameters: Record<String, Array<String>>
 
 	override val properties: Array<EncryptedPropertyStubJs>
 
-	override val hcPartyKeys: dynamic
+	override val hcPartyKeys: Record<String, Array<String>>
 
-	override val aesExchangeKeys: dynamic
+	override val aesExchangeKeys: Record<String, Record<String, Record<String, String>>>
 
-	override val transferKeys: dynamic
+	override val transferKeys: Record<String, Record<String, String>>
 
-	override val privateKeyShamirPartitions: dynamic
+	override val privateKeyShamirPartitions: Record<String, String>
 
 	override val publicKey: String?
 
@@ -442,11 +444,11 @@ public external class EncryptedPatientJs(
 
 	override val secretForeignKeys: Array<String>
 
-	override val cryptedForeignKeys: dynamic
+	override val cryptedForeignKeys: Record<String, Array<DelegationJs>>
 
-	override val delegations: dynamic
+	override val delegations: Record<String, Array<DelegationJs>>
 
-	override val encryptionKeys: dynamic
+	override val encryptionKeys: Record<String, Array<DelegationJs>>
 
 	override val encryptedSelf: String?
 

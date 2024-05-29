@@ -3,6 +3,7 @@
 
 package com.icure.sdk.js.api.flavoured
 
+import com.icure.sdk.js.crypto.entities.ContactShareOptionsJs
 import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.model.ContactJs
@@ -19,6 +20,7 @@ import com.icure.sdk.js.model.embed.EncryptedServiceJs
 import com.icure.sdk.js.model.embed.ServiceJs
 import com.icure.sdk.js.model.filter.AbstractFilterJs
 import com.icure.sdk.js.model.filter.chain.FilterChainJs
+import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
 import kotlin.Boolean
@@ -43,7 +45,7 @@ public external interface ContactApiJs {
 		base: DecryptedContactJs?,
 		patient: PatientJs,
 		user: UserJs?,
-		delegates: dynamic,
+		delegates: Record<String, String>,
 		secretId: SecretIdOptionJs,
 	): Promise<DecryptedContactJs>
 
@@ -78,11 +80,12 @@ public external interface ContactApiJs {
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<DecryptedContactJs>>
 
-	public fun tryShareWithMany(contact: DecryptedContactJs, delegates: dynamic):
+	public fun tryShareWithMany(contact: DecryptedContactJs,
+			delegates: Record<String, ContactShareOptionsJs>):
 			Promise<SimpleShareResultJs<DecryptedContactJs>>
 
-	public fun shareWithMany(contact: DecryptedContactJs, delegates: dynamic):
-			Promise<DecryptedContactJs>
+	public fun shareWithMany(contact: DecryptedContactJs,
+			delegates: Record<String, ContactShareOptionsJs>): Promise<DecryptedContactJs>
 
 	public fun findContactsByHcPartyPatient(
 		hcPartyId: String,

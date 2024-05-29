@@ -5,12 +5,14 @@ package com.icure.sdk.js.api.flavoured
 
 import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
+import com.icure.sdk.js.crypto.entities.TimeTableShareOptionsJs
 import com.icure.sdk.js.model.DecryptedTimeTableJs
 import com.icure.sdk.js.model.EncryptedTimeTableJs
 import com.icure.sdk.js.model.PatientJs
 import com.icure.sdk.js.model.TimeTableJs
 import com.icure.sdk.js.model.UserJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
+import com.icure.sdk.js.utils.Record
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
@@ -32,7 +34,7 @@ public external interface TimeTableApiJs {
 		base: DecryptedTimeTableJs?,
 		patient: PatientJs?,
 		user: UserJs?,
-		delegates: dynamic,
+		delegates: Record<String, String>,
 		secretId: SecretIdOptionJs,
 	): Promise<DecryptedTimeTableJs>
 
@@ -57,11 +59,12 @@ public external interface TimeTableApiJs {
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<DecryptedTimeTableJs>>
 
-	public fun tryShareWithMany(timeTable: DecryptedTimeTableJs, delegates: dynamic):
+	public fun tryShareWithMany(timeTable: DecryptedTimeTableJs,
+			delegates: Record<String, TimeTableShareOptionsJs>):
 			Promise<SimpleShareResultJs<DecryptedTimeTableJs>>
 
-	public fun shareWithMany(timeTable: DecryptedTimeTableJs, delegates: dynamic):
-			Promise<DecryptedTimeTableJs>
+	public fun shareWithMany(timeTable: DecryptedTimeTableJs,
+			delegates: Record<String, TimeTableShareOptionsJs>): Promise<DecryptedTimeTableJs>
 
 	public fun modifyTimeTable(entity: DecryptedTimeTableJs): Promise<DecryptedTimeTableJs>
 

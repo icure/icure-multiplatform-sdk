@@ -3,12 +3,14 @@ package com.icure.sdk.js.api.crypto.`impl`
 
 import com.icure.sdk.api.crypto.ShamirKeysManagerApi
 import com.icure.sdk.js.api.crypto.ShamirKeysManagerApiJs
+import com.icure.sdk.js.crypto.entities.ShamirUpdateRequestJs
 import com.icure.sdk.js.model.CheckedConverters.mapToObject
 import com.icure.sdk.js.model.CheckedConverters.setToArray
 import com.icure.sdk.js.model.CryptoActorStubWithTypeJs
 import com.icure.sdk.js.model.base.CryptoActorJs
 import com.icure.sdk.js.model.cryptoActorStubWithType_toJs
 import com.icure.sdk.js.model.specializations.keypairFingerprintV1String_toJs
+import com.icure.sdk.js.utils.Record
 import com.icure.sdk.model.specializations.KeypairFingerprintV1String
 import kotlin.Array
 import kotlin.OptIn
@@ -23,8 +25,8 @@ import kotlinx.coroutines.promise
 internal class ShamirKeysManagerApiImplJs(
 	private val shamirKeysManagerApi: ShamirKeysManagerApi,
 ) : ShamirKeysManagerApiJs {
-	override fun getExistingSplitsInfo(dataOwner: CryptoActorJs): dynamic = mapToObject<_, _,
-			Array<String>>(
+	override fun getExistingSplitsInfo(dataOwner: CryptoActorJs): Record<String, Array<String>> =
+			mapToObject(
 		shamirKeysManagerApi.getExistingSplitsInfo(com.icure.sdk.js.model.base.cryptoActor_fromJs(dataOwner)),
 		{ x1: KeypairFingerprintV1String ->
 			keypairFingerprintV1String_toJs(x1)
@@ -39,8 +41,8 @@ internal class ShamirKeysManagerApiImplJs(
 		},
 	)
 
-	override fun updateSelfSplits(keySplitsToUpdate: dynamic, keySplitsToDelete: Array<String>):
-			Promise<CryptoActorStubWithTypeJs> = GlobalScope.promise {
+	override fun updateSelfSplits(keySplitsToUpdate: Record<String, ShamirUpdateRequestJs>,
+			keySplitsToDelete: Array<String>): Promise<CryptoActorStubWithTypeJs> = GlobalScope.promise {
 		cryptoActorStubWithType_toJs(shamirKeysManagerApi.updateSelfSplits(com.icure.sdk.js.model.CheckedConverters.objectToMap(
 		  keySplitsToUpdate,
 		  "keySplitsToUpdate",

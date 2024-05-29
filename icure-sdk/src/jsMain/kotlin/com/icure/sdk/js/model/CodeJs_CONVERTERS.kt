@@ -31,7 +31,7 @@ public fun code_toJs(obj: Code): CodeJs {
 	val type = obj.type
 	val code = obj.code
 	val version = obj.version
-	val label = mapToObject<_, _, String>(
+	val label = mapToObject(
 		obj.label,
 		{ x1: String ->
 			x1
@@ -60,7 +60,7 @@ public fun code_toJs(obj: Code): CodeJs {
 			x1
 		},
 	)
-	val qualifiedLinks = mapToObject<_, _, Array<String>>(
+	val qualifiedLinks = mapToObject(
 		obj.qualifiedLinks,
 		{ x1: String ->
 			x1
@@ -80,7 +80,7 @@ public fun code_toJs(obj: Code): CodeJs {
 			x1.name
 		},
 	)
-	val searchTerms = mapToObject<_, _, Array<String>>(
+	val searchTerms = mapToObject(
 		obj.searchTerms,
 		{ x1: String ->
 			x1
@@ -95,7 +95,7 @@ public fun code_toJs(obj: Code): CodeJs {
 		},
 	)
 	val data = obj.data
-	val appendices = mapToObject<_, _, String>(
+	val appendices = mapToObject(
 		obj.appendices,
 		{ x1: AppendixType ->
 			x1.name

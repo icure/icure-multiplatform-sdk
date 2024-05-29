@@ -29,7 +29,7 @@ public fun textField_toJs(obj: TextField): TextFieldJs {
 			x1
 		},
 	)
-	val options = mapToObject<_, _, String>(
+	val options = mapToObject(
 		obj.options,
 		{ x1: String ->
 			x1
@@ -38,7 +38,7 @@ public fun textField_toJs(obj: TextField): TextFieldJs {
 			x1
 		},
 	)
-	val labels = mapToObject<_, _, String>(
+	val labels = mapToObject(
 		obj.labels,
 		{ x1: String ->
 			x1

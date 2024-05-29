@@ -3,6 +3,7 @@
 
 package com.icure.sdk.js.api.flavoured
 
+import com.icure.sdk.js.crypto.entities.FormShareOptionsJs
 import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.model.DecryptedFormJs
@@ -12,6 +13,7 @@ import com.icure.sdk.js.model.FormTemplateJs
 import com.icure.sdk.js.model.PatientJs
 import com.icure.sdk.js.model.UserJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
+import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
 import kotlin.Boolean
@@ -37,7 +39,7 @@ public external interface FormApiJs {
 		base: DecryptedFormJs?,
 		patient: PatientJs,
 		user: UserJs?,
-		delegates: dynamic,
+		delegates: Record<String, String>,
 		secretId: SecretIdOptionJs,
 	): Promise<DecryptedFormJs>
 
@@ -83,10 +85,11 @@ public external interface FormApiJs {
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<DecryptedFormJs>>
 
-	public fun tryShareWithMany(form: DecryptedFormJs, delegates: dynamic):
+	public fun tryShareWithMany(form: DecryptedFormJs, delegates: Record<String, FormShareOptionsJs>):
 			Promise<SimpleShareResultJs<DecryptedFormJs>>
 
-	public fun shareWithMany(form: DecryptedFormJs, delegates: dynamic): Promise<DecryptedFormJs>
+	public fun shareWithMany(form: DecryptedFormJs, delegates: Record<String, FormShareOptionsJs>):
+			Promise<DecryptedFormJs>
 
 	public fun findFormsByHcPartyPatient(
 		hcPartyId: String,

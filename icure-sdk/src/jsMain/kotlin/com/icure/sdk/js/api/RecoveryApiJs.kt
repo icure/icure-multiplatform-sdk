@@ -3,7 +3,9 @@
 
 package com.icure.sdk.js.api
 
+import com.icure.kryptom.crypto.`external`.XRsaKeypair
 import com.icure.sdk.js.crypto.entities.RecoveryResultJs
+import com.icure.sdk.js.utils.Record
 import kotlin.Boolean
 import kotlin.Double
 import kotlin.String
@@ -18,7 +20,7 @@ public external interface RecoveryApiJs {
 			lifetimeSeconds: Double?): Promise<String>
 
 	public fun recoverKeyPairs(recoveryKey: String, autoDelete: Boolean):
-			Promise<RecoveryResultJs<dynamic>>
+			Promise<RecoveryResultJs<Record<String, Record<String, XRsaKeypair>>>>
 
 	public fun createExchangeDataRecoveryInfo(delegateId: String, lifetimeSeconds: Double?):
 			Promise<String>

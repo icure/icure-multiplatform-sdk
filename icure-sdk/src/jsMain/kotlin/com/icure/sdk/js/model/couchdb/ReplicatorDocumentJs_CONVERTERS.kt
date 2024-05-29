@@ -9,6 +9,7 @@ import com.icure.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.sdk.js.model.CheckedConverters.objectToMapNullsafe
 import com.icure.sdk.js.model.CheckedConverters.stringToZonedDateTime
 import com.icure.sdk.js.model.CheckedConverters.zonedDateTimeToString
+import com.icure.sdk.js.utils.Record
 import com.icure.sdk.model.couchdb.ReplicatorDocument
 import kotlin.String
 import kotlin.collections.Map
@@ -40,7 +41,7 @@ public fun replicatorDocument_toJs(obj: ReplicatorDocument): ReplicatorDocumentJ
 	val revsInfo = listToArray(
 		obj.revsInfo,
 		{ x1: Map<String, String> ->
-			mapToObject<_, _, String>(
+			mapToObject(
 				x1,
 				{ x2: String ->
 					x2
@@ -51,7 +52,7 @@ public fun replicatorDocument_toJs(obj: ReplicatorDocument): ReplicatorDocumentJ
 			)
 		},
 	)
-	val revHistory = mapToObject<_, _, String>(
+	val revHistory = mapToObject(
 		obj.revHistory,
 		{ x1: String ->
 			x1
@@ -107,7 +108,7 @@ public fun replicatorDocument_fromJs(obj: ReplicatorDocumentJs): ReplicatorDocum
 	val revsInfo = arrayToList(
 		obj.revsInfo,
 		"obj.revsInfo",
-		{ x1: dynamic ->
+		{ x1: Record<String, String> ->
 			objectToMap(
 				x1,
 				"x1",

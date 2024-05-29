@@ -6,6 +6,8 @@ package com.icure.sdk.js.model
 import com.icure.sdk.js.model.base.CodeStubJs
 import com.icure.sdk.js.model.base.HasTagsJs
 import com.icure.sdk.js.model.base.StoredDocumentJs
+import com.icure.sdk.js.model.security.OperationTokenJs
+import com.icure.sdk.js.utils.Record
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
@@ -35,11 +37,11 @@ public external class GroupJs(
 
 	public val properties: Array<DecryptedPropertyStubJs>
 
-	public val defaultUserRoles: dynamic
+	public val defaultUserRoles: Record<String, Array<String>>
 
-	public val operationTokens: dynamic
+	public val operationTokens: Record<String, OperationTokenJs>
 
-	public val sharedEntities: dynamic
+	public val sharedEntities: Record<String, String>
 
 	public val minimumKrakenVersion: String?
 

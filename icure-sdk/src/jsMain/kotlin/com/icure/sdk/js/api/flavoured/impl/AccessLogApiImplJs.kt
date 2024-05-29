@@ -4,6 +4,7 @@ package com.icure.sdk.js.api.flavoured.`impl`
 import com.icure.sdk.api.flavoured.AccessLogApi
 import com.icure.sdk.js.api.flavoured.AccessLogApiJs
 import com.icure.sdk.js.api.flavoured.AccessLogFlavouredApiJs
+import com.icure.sdk.js.crypto.entities.AccessLogShareOptionsJs
 import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.crypto.entities.simpleShareResult_toJs
@@ -23,6 +24,7 @@ import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.couchdb.docIdentifier_toJs
 import com.icure.sdk.js.model.paginatedList_toJs
 import com.icure.sdk.js.model.specializations.hexString_toJs
+import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.sdk.model.AccessLog
@@ -65,7 +67,8 @@ internal class AccessLogApiImplJs(
 			)}
 
 
-		override fun tryShareWithMany(accessLog: EncryptedAccessLogJs, delegates: dynamic):
+		override fun tryShareWithMany(accessLog: EncryptedAccessLogJs,
+				delegates: Record<String, AccessLogShareOptionsJs>):
 				Promise<SimpleShareResultJs<EncryptedAccessLogJs>> = GlobalScope.promise {
 			simpleShareResult_toJs(
 				accessLogApi.encrypted.tryShareWithMany(com.icure.sdk.js.model.accessLog_fromJs(accessLog),
@@ -85,8 +88,9 @@ internal class AccessLogApiImplJs(
 			)}
 
 
-		override fun shareWithMany(accessLog: EncryptedAccessLogJs, delegates: dynamic):
-				Promise<EncryptedAccessLogJs> = GlobalScope.promise {
+		override fun shareWithMany(accessLog: EncryptedAccessLogJs,
+				delegates: Record<String, AccessLogShareOptionsJs>): Promise<EncryptedAccessLogJs> =
+				GlobalScope.promise {
 			accessLog_toJs(accessLogApi.encrypted.shareWithMany(com.icure.sdk.js.model.accessLog_fromJs(accessLog),
 					com.icure.sdk.js.model.CheckedConverters.objectToMap(
 			  delegates,
@@ -223,8 +227,9 @@ internal class AccessLogApiImplJs(
 			)}
 
 
-		override fun tryShareWithMany(accessLog: AccessLogJs, delegates: dynamic):
-				Promise<SimpleShareResultJs<AccessLogJs>> = GlobalScope.promise {
+		override fun tryShareWithMany(accessLog: AccessLogJs,
+				delegates: Record<String, AccessLogShareOptionsJs>): Promise<SimpleShareResultJs<AccessLogJs>> =
+				GlobalScope.promise {
 			simpleShareResult_toJs(
 				accessLogApi.tryAndRecover.tryShareWithMany(com.icure.sdk.js.model.accessLog_fromJs(accessLog),
 						com.icure.sdk.js.model.CheckedConverters.objectToMap(
@@ -243,7 +248,8 @@ internal class AccessLogApiImplJs(
 			)}
 
 
-		override fun shareWithMany(accessLog: AccessLogJs, delegates: dynamic): Promise<AccessLogJs> =
+		override fun shareWithMany(accessLog: AccessLogJs,
+				delegates: Record<String, AccessLogShareOptionsJs>): Promise<AccessLogJs> =
 				GlobalScope.promise {
 			accessLog_toJs(accessLogApi.tryAndRecover.shareWithMany(com.icure.sdk.js.model.accessLog_fromJs(accessLog),
 					com.icure.sdk.js.model.CheckedConverters.objectToMap(
@@ -368,7 +374,7 @@ internal class AccessLogApiImplJs(
 		base: DecryptedAccessLogJs?,
 		patient: PatientJs,
 		user: UserJs?,
-		delegates: dynamic,
+		delegates: Record<String, String>,
 		secretId: SecretIdOptionJs,
 	): Promise<DecryptedAccessLogJs> = GlobalScope.promise {
 		accessLog_toJs(accessLogApi.withEncryptionMetadata(base?.let { nonNull1 ->
@@ -460,7 +466,8 @@ internal class AccessLogApiImplJs(
 		)}
 
 
-	override fun tryShareWithMany(accessLog: DecryptedAccessLogJs, delegates: dynamic):
+	override fun tryShareWithMany(accessLog: DecryptedAccessLogJs,
+			delegates: Record<String, AccessLogShareOptionsJs>):
 			Promise<SimpleShareResultJs<DecryptedAccessLogJs>> = GlobalScope.promise {
 		simpleShareResult_toJs(
 			accessLogApi.tryShareWithMany(com.icure.sdk.js.model.accessLog_fromJs(accessLog),
@@ -480,8 +487,9 @@ internal class AccessLogApiImplJs(
 		)}
 
 
-	override fun shareWithMany(accessLog: DecryptedAccessLogJs, delegates: dynamic):
-			Promise<DecryptedAccessLogJs> = GlobalScope.promise {
+	override fun shareWithMany(accessLog: DecryptedAccessLogJs,
+			delegates: Record<String, AccessLogShareOptionsJs>): Promise<DecryptedAccessLogJs> =
+			GlobalScope.promise {
 		accessLog_toJs(accessLogApi.shareWithMany(com.icure.sdk.js.model.accessLog_fromJs(accessLog),
 				com.icure.sdk.js.model.CheckedConverters.objectToMap(
 		  delegates,

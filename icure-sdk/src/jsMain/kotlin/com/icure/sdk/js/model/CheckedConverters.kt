@@ -7,6 +7,7 @@ import com.icure.sdk.js.crypto.entities.EntityWithTypeInfoJs
 import com.icure.sdk.js.model.embed.DelegationJs
 import com.icure.sdk.js.model.embed.delegation_fromJs
 import com.icure.sdk.js.model.embed.securityMetadata_fromJs
+import com.icure.sdk.js.utils.Record
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.ensure
 import com.icure.sdk.utils.isJsSafe
@@ -103,7 +104,7 @@ object CheckedConverters {
 		map: Map<K, V>,
 		convertKey: (key: K) -> String,
 		convertValue: (value: V) -> V_JS,
-	): dynamic {
+	): Record<String, V_JS> {
 		val obj = js("{}")
 		for ((key, value) in map) {
 			obj[convertKey(key)] = convertValue(value)
@@ -115,18 +116,21 @@ object CheckedConverters {
 		map: Map<K, V>?,
 		convertKey: (key: K) -> String,
 		convertValue: (value: V) -> V_JS,
-	): dynamic = map?.let { mapToObject(it, convertKey, convertValue) }
+	): Record<String, V_JS>? = map?.let { mapToObject(it, convertKey, convertValue) }
 
-	fun <K, V> objectToMap(
-		obj: dynamic,
+	fun <K, V, V_JS> objectToMap(
+		obj: Record<String, V_JS>,
 		description: String,
 		convertKey: (value: String) -> K,
-		convertValue: (value: dynamic) -> V,
+		convertValue: (value: V_JS) -> V,
 	): Map<K, V> {
 		val map = mutableMapOf<K, V>()
 		val entries = js("Object.entries(obj)") as Array<Array<dynamic>>
 		for (keyValue in entries) {
-			map[convertKey(keyValue[0] as String)] = convertValue(keyValue[1])
+			val value = keyValue[1]
+			if (value !== undefined) {
+				map[convertKey(keyValue[0] as String)] = convertValue(value)
+			}
 		}
 		return map
 	}

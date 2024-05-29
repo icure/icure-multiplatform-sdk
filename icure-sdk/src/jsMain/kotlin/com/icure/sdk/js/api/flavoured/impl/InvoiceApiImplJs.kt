@@ -4,6 +4,7 @@ package com.icure.sdk.js.api.flavoured.`impl`
 import com.icure.sdk.api.flavoured.InvoiceApi
 import com.icure.sdk.js.api.flavoured.InvoiceApiJs
 import com.icure.sdk.js.api.flavoured.InvoiceFlavouredApiJs
+import com.icure.sdk.js.crypto.entities.InvoiceShareOptionsJs
 import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.crypto.entities.simpleShareResult_toJs
@@ -33,6 +34,7 @@ import com.icure.sdk.js.model.invoice_fromJs
 import com.icure.sdk.js.model.invoice_toJs
 import com.icure.sdk.js.model.paginatedList_toJs
 import com.icure.sdk.js.model.specializations.hexString_toJs
+import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.sdk.model.DecryptedInvoice
@@ -78,7 +80,8 @@ internal class InvoiceApiImplJs(
 			)}
 
 
-		override fun tryShareWithMany(invoice: EncryptedInvoiceJs, delegates: dynamic):
+		override fun tryShareWithMany(invoice: EncryptedInvoiceJs,
+				delegates: Record<String, InvoiceShareOptionsJs>):
 				Promise<SimpleShareResultJs<EncryptedInvoiceJs>> = GlobalScope.promise {
 			simpleShareResult_toJs(
 				invoiceApi.encrypted.tryShareWithMany(com.icure.sdk.js.model.invoice_fromJs(invoice),
@@ -98,8 +101,9 @@ internal class InvoiceApiImplJs(
 			)}
 
 
-		override fun shareWithMany(invoice: EncryptedInvoiceJs, delegates: dynamic):
-				Promise<EncryptedInvoiceJs> = GlobalScope.promise {
+		override fun shareWithMany(invoice: EncryptedInvoiceJs,
+				delegates: Record<String, InvoiceShareOptionsJs>): Promise<EncryptedInvoiceJs> =
+				GlobalScope.promise {
 			invoice_toJs(invoiceApi.encrypted.shareWithMany(com.icure.sdk.js.model.invoice_fromJs(invoice),
 					com.icure.sdk.js.model.CheckedConverters.objectToMap(
 			  delegates,
@@ -511,8 +515,9 @@ internal class InvoiceApiImplJs(
 			)}
 
 
-		override fun tryShareWithMany(invoice: InvoiceJs, delegates: dynamic):
-				Promise<SimpleShareResultJs<InvoiceJs>> = GlobalScope.promise {
+		override fun tryShareWithMany(invoice: InvoiceJs,
+				delegates: Record<String, InvoiceShareOptionsJs>): Promise<SimpleShareResultJs<InvoiceJs>> =
+				GlobalScope.promise {
 			simpleShareResult_toJs(
 				invoiceApi.tryAndRecover.tryShareWithMany(com.icure.sdk.js.model.invoice_fromJs(invoice),
 						com.icure.sdk.js.model.CheckedConverters.objectToMap(
@@ -531,8 +536,8 @@ internal class InvoiceApiImplJs(
 			)}
 
 
-		override fun shareWithMany(invoice: InvoiceJs, delegates: dynamic): Promise<InvoiceJs> =
-				GlobalScope.promise {
+		override fun shareWithMany(invoice: InvoiceJs, delegates: Record<String, InvoiceShareOptionsJs>):
+				Promise<InvoiceJs> = GlobalScope.promise {
 			invoice_toJs(invoiceApi.tryAndRecover.shareWithMany(com.icure.sdk.js.model.invoice_fromJs(invoice),
 					com.icure.sdk.js.model.CheckedConverters.objectToMap(
 			  delegates,
@@ -946,7 +951,7 @@ internal class InvoiceApiImplJs(
 		base: DecryptedInvoiceJs?,
 		patient: PatientJs?,
 		user: UserJs?,
-		delegates: dynamic,
+		delegates: Record<String, String>,
 		secretId: SecretIdOptionJs,
 	): Promise<DecryptedInvoiceJs> = GlobalScope.promise {
 		invoice_toJs(invoiceApi.withEncryptionMetadata(base?.let { nonNull1 ->
@@ -1049,7 +1054,8 @@ internal class InvoiceApiImplJs(
 		)}
 
 
-	override fun tryShareWithMany(invoice: DecryptedInvoiceJs, delegates: dynamic):
+	override fun tryShareWithMany(invoice: DecryptedInvoiceJs,
+			delegates: Record<String, InvoiceShareOptionsJs>):
 			Promise<SimpleShareResultJs<DecryptedInvoiceJs>> = GlobalScope.promise {
 		simpleShareResult_toJs(
 			invoiceApi.tryShareWithMany(com.icure.sdk.js.model.invoice_fromJs(invoice),
@@ -1069,8 +1075,9 @@ internal class InvoiceApiImplJs(
 		)}
 
 
-	override fun shareWithMany(invoice: DecryptedInvoiceJs, delegates: dynamic):
-			Promise<DecryptedInvoiceJs> = GlobalScope.promise {
+	override fun shareWithMany(invoice: DecryptedInvoiceJs,
+			delegates: Record<String, InvoiceShareOptionsJs>): Promise<DecryptedInvoiceJs> =
+			GlobalScope.promise {
 		invoice_toJs(invoiceApi.shareWithMany(com.icure.sdk.js.model.invoice_fromJs(invoice),
 				com.icure.sdk.js.model.CheckedConverters.objectToMap(
 		  delegates,

@@ -3,6 +3,8 @@
 
 package com.icure.sdk.js.model.embed
 
+import com.icure.sdk.js.utils.Record
+import kotlin.String
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
 
@@ -10,7 +12,7 @@ import kotlin.js.JsQualifier
 public external class SecurityMetadataJs(
 	partial: dynamic,
 ) {
-	public val secureDelegations: dynamic
+	public val secureDelegations: Record<String, SecureDelegationJs>
 
-	public val keysEquivalences: dynamic
+	public val keysEquivalences: Record<String, String>
 }

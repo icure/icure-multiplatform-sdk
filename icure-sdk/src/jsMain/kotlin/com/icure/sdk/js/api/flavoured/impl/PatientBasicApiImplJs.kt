@@ -27,6 +27,7 @@ import com.icure.sdk.js.model.listOfIds_fromJs
 import com.icure.sdk.js.model.paginatedList_toJs
 import com.icure.sdk.js.model.patient_fromJs
 import com.icure.sdk.js.model.patient_toJs
+import com.icure.sdk.js.utils.Record
 import com.icure.sdk.model.EncryptedPatient
 import com.icure.sdk.model.IdWithRev
 import com.icure.sdk.model.couchdb.DocIdentifier
@@ -206,9 +207,9 @@ internal class PatientBasicApiImplJs(
 		)}
 
 
-	override fun getPatientHcPartyKeysForDelegate(patientId: String): Promise<dynamic> =
+	override fun getPatientHcPartyKeysForDelegate(patientId: String): Promise<Record<String, String>> =
 			GlobalScope.promise {
-		mapToObject<_, _, String>(
+		mapToObject(
 			patientBasicApi.getPatientHcPartyKeysForDelegate(patientId),
 			{ x1: String ->
 				x1

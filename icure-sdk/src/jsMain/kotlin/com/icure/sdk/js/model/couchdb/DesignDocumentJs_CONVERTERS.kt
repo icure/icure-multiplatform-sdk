@@ -10,7 +10,7 @@ import kotlin.String
 public fun designDocument_toJs(obj: DesignDocument): DesignDocumentJs {
 	val id = obj.id
 	val rev = obj.rev
-	val revHistory = mapToObject<_, _, String>(
+	val revHistory = mapToObject(
 		obj.revHistory,
 		{ x1: String ->
 			x1
@@ -20,7 +20,7 @@ public fun designDocument_toJs(obj: DesignDocument): DesignDocumentJs {
 		},
 	)
 	val language = obj.language
-	val views = mapToObject<_, _, ViewJs>(
+	val views = mapToObject(
 		obj.views,
 		{ x1: String ->
 			x1
@@ -29,7 +29,7 @@ public fun designDocument_toJs(obj: DesignDocument): DesignDocumentJs {
 			view_toJs(x1)
 		},
 	)
-	val lists = mapToObject<_, _, String>(
+	val lists = mapToObject(
 		obj.lists,
 		{ x1: String ->
 			x1
@@ -38,7 +38,7 @@ public fun designDocument_toJs(obj: DesignDocument): DesignDocumentJs {
 			x1
 		},
 	)
-	val shows = mapToObject<_, _, String>(
+	val shows = mapToObject(
 		obj.shows,
 		{ x1: String ->
 			x1
@@ -47,7 +47,7 @@ public fun designDocument_toJs(obj: DesignDocument): DesignDocumentJs {
 			x1
 		},
 	)
-	val updateHandlers = mapToObject<_, _, String>(
+	val updateHandlers = mapToObject(
 		obj.updateHandlers,
 		{ x1: String ->
 			x1
@@ -56,7 +56,7 @@ public fun designDocument_toJs(obj: DesignDocument): DesignDocumentJs {
 			x1
 		},
 	)
-	val filters = mapToObject<_, _, String>(
+	val filters = mapToObject(
 		obj.filters,
 		{ x1: String ->
 			x1

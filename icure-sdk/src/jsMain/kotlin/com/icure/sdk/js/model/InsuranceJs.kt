@@ -5,6 +5,7 @@ package com.icure.sdk.js.model
 
 import com.icure.sdk.js.model.base.StoredDocumentJs
 import com.icure.sdk.js.model.embed.DecryptedAddressJs
+import com.icure.sdk.js.utils.Record
 import kotlin.Boolean
 import kotlin.Double
 import kotlin.String
@@ -21,7 +22,7 @@ public external class InsuranceJs(
 
 	override val deletionDate: Double?
 
-	public val name: dynamic
+	public val name: Record<String, String>
 
 	public val privateInsurance: Boolean
 

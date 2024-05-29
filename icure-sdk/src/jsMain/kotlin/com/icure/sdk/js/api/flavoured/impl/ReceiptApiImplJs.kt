@@ -4,6 +4,7 @@ package com.icure.sdk.js.api.flavoured.`impl`
 import com.icure.sdk.api.flavoured.ReceiptApi
 import com.icure.sdk.js.api.flavoured.ReceiptApiJs
 import com.icure.sdk.js.api.flavoured.ReceiptFlavouredApiJs
+import com.icure.sdk.js.crypto.entities.ReceiptShareOptionsJs
 import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.crypto.entities.simpleShareResult_toJs
@@ -21,6 +22,7 @@ import com.icure.sdk.js.model.couchdb.docIdentifier_toJs
 import com.icure.sdk.js.model.receipt_fromJs
 import com.icure.sdk.js.model.receipt_toJs
 import com.icure.sdk.js.model.specializations.hexString_toJs
+import com.icure.sdk.js.utils.Record
 import com.icure.sdk.model.DecryptedReceipt
 import com.icure.sdk.model.EncryptedReceipt
 import com.icure.sdk.model.Receipt
@@ -61,7 +63,8 @@ internal class ReceiptApiImplJs(
 			)}
 
 
-		override fun tryShareWithMany(receipt: EncryptedReceiptJs, delegates: dynamic):
+		override fun tryShareWithMany(receipt: EncryptedReceiptJs,
+				delegates: Record<String, ReceiptShareOptionsJs>):
 				Promise<SimpleShareResultJs<EncryptedReceiptJs>> = GlobalScope.promise {
 			simpleShareResult_toJs(
 				receiptApi.encrypted.tryShareWithMany(com.icure.sdk.js.model.receipt_fromJs(receipt),
@@ -81,8 +84,9 @@ internal class ReceiptApiImplJs(
 			)}
 
 
-		override fun shareWithMany(receipt: EncryptedReceiptJs, delegates: dynamic):
-				Promise<EncryptedReceiptJs> = GlobalScope.promise {
+		override fun shareWithMany(receipt: EncryptedReceiptJs,
+				delegates: Record<String, ReceiptShareOptionsJs>): Promise<EncryptedReceiptJs> =
+				GlobalScope.promise {
 			receipt_toJs(receiptApi.encrypted.shareWithMany(com.icure.sdk.js.model.receipt_fromJs(receipt),
 					com.icure.sdk.js.model.CheckedConverters.objectToMap(
 			  delegates,
@@ -136,8 +140,9 @@ internal class ReceiptApiImplJs(
 			)}
 
 
-		override fun tryShareWithMany(receipt: ReceiptJs, delegates: dynamic):
-				Promise<SimpleShareResultJs<ReceiptJs>> = GlobalScope.promise {
+		override fun tryShareWithMany(receipt: ReceiptJs,
+				delegates: Record<String, ReceiptShareOptionsJs>): Promise<SimpleShareResultJs<ReceiptJs>> =
+				GlobalScope.promise {
 			simpleShareResult_toJs(
 				receiptApi.tryAndRecover.tryShareWithMany(com.icure.sdk.js.model.receipt_fromJs(receipt),
 						com.icure.sdk.js.model.CheckedConverters.objectToMap(
@@ -156,8 +161,8 @@ internal class ReceiptApiImplJs(
 			)}
 
 
-		override fun shareWithMany(receipt: ReceiptJs, delegates: dynamic): Promise<ReceiptJs> =
-				GlobalScope.promise {
+		override fun shareWithMany(receipt: ReceiptJs, delegates: Record<String, ReceiptShareOptionsJs>):
+				Promise<ReceiptJs> = GlobalScope.promise {
 			receipt_toJs(receiptApi.tryAndRecover.shareWithMany(com.icure.sdk.js.model.receipt_fromJs(receipt),
 					com.icure.sdk.js.model.CheckedConverters.objectToMap(
 			  delegates,
@@ -198,7 +203,7 @@ internal class ReceiptApiImplJs(
 		base: DecryptedReceiptJs?,
 		patient: PatientJs?,
 		user: UserJs?,
-		delegates: dynamic,
+		delegates: Record<String, String>,
 		secretId: SecretIdOptionJs,
 	): Promise<DecryptedReceiptJs> = GlobalScope.promise {
 		receipt_toJs(receiptApi.withEncryptionMetadata(base?.let { nonNull1 ->
@@ -336,7 +341,8 @@ internal class ReceiptApiImplJs(
 		)}
 
 
-	override fun tryShareWithMany(receipt: DecryptedReceiptJs, delegates: dynamic):
+	override fun tryShareWithMany(receipt: DecryptedReceiptJs,
+			delegates: Record<String, ReceiptShareOptionsJs>):
 			Promise<SimpleShareResultJs<DecryptedReceiptJs>> = GlobalScope.promise {
 		simpleShareResult_toJs(
 			receiptApi.tryShareWithMany(com.icure.sdk.js.model.receipt_fromJs(receipt),
@@ -356,8 +362,9 @@ internal class ReceiptApiImplJs(
 		)}
 
 
-	override fun shareWithMany(receipt: DecryptedReceiptJs, delegates: dynamic):
-			Promise<DecryptedReceiptJs> = GlobalScope.promise {
+	override fun shareWithMany(receipt: DecryptedReceiptJs,
+			delegates: Record<String, ReceiptShareOptionsJs>): Promise<DecryptedReceiptJs> =
+			GlobalScope.promise {
 		receipt_toJs(receiptApi.shareWithMany(com.icure.sdk.js.model.receipt_fromJs(receipt),
 				com.icure.sdk.js.model.CheckedConverters.objectToMap(
 		  delegates,

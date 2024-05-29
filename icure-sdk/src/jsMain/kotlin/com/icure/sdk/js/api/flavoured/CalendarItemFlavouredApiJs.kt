@@ -3,10 +3,12 @@
 
 package com.icure.sdk.js.api.flavoured
 
+import com.icure.sdk.js.crypto.entities.CalendarItemShareOptionsJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.model.CalendarItemJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.PatientJs
+import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
 import kotlin.Boolean
@@ -26,9 +28,11 @@ public external interface CalendarItemFlavouredApiJs<E : CalendarItemJs> {
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<E>>
 
-	public fun tryShareWithMany(calendarItem: E, delegates: dynamic): Promise<SimpleShareResultJs<E>>
+	public fun tryShareWithMany(calendarItem: E,
+			delegates: Record<String, CalendarItemShareOptionsJs>): Promise<SimpleShareResultJs<E>>
 
-	public fun shareWithMany(calendarItem: E, delegates: dynamic): Promise<E>
+	public fun shareWithMany(calendarItem: E, delegates: Record<String, CalendarItemShareOptionsJs>):
+			Promise<E>
 
 	public fun findCalendarItemsByHcPartyPatient(
 		hcPartyId: String,

@@ -6,6 +6,7 @@ package com.icure.sdk.js.model
 import com.icure.sdk.js.model.base.CodeIdentificationJs
 import com.icure.sdk.js.model.base.StoredDocumentJs
 import com.icure.sdk.js.model.embed.PeriodicityJs
+import com.icure.sdk.js.utils.Record
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
@@ -31,7 +32,7 @@ public external class CodeJs(
 
 	override val version: String?
 
-	override val label: dynamic
+	override val label: Record<String, String>?
 
 	public val author: String?
 
@@ -43,15 +44,15 @@ public external class CodeJs(
 
 	public val links: Array<String>
 
-	public val qualifiedLinks: dynamic
+	public val qualifiedLinks: Record<String, Array<String>>
 
 	public val flags: Array<String>
 
-	public val searchTerms: dynamic
+	public val searchTerms: Record<String, Array<String>>
 
 	public val `data`: String?
 
-	public val appendices: dynamic
+	public val appendices: Record<String, String>
 
 	public val disabled: Boolean
 }

@@ -4,7 +4,9 @@
 package com.icure.sdk.js.api.flavoured
 
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
+import com.icure.sdk.js.crypto.entities.TimeTableShareOptionsJs
 import com.icure.sdk.js.model.TimeTableJs
+import com.icure.sdk.js.utils.Record
 import kotlin.Array
 import kotlin.Double
 import kotlin.String
@@ -22,9 +24,11 @@ public external interface TimeTableFlavouredApiJs<E : TimeTableJs> {
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<E>>
 
-	public fun tryShareWithMany(timeTable: E, delegates: dynamic): Promise<SimpleShareResultJs<E>>
+	public fun tryShareWithMany(timeTable: E, delegates: Record<String, TimeTableShareOptionsJs>):
+			Promise<SimpleShareResultJs<E>>
 
-	public fun shareWithMany(timeTable: E, delegates: dynamic): Promise<E>
+	public fun shareWithMany(timeTable: E, delegates: Record<String, TimeTableShareOptionsJs>):
+			Promise<E>
 
 	public fun modifyTimeTable(entity: E): Promise<E>
 

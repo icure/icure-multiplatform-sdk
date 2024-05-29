@@ -50,7 +50,7 @@ public fun receipt_toJs(obj: DecryptedReceipt): DecryptedReceiptJs {
 	)
 	val endOfLife = longToNumber(obj.endOfLife)
 	val deletionDate = longToNumber(obj.deletionDate)
-	val attachmentIds = mapToObject<_, _, String>(
+	val attachmentIds = mapToObject(
 		obj.attachmentIds,
 		{ x1: ReceiptBlobType ->
 			x1.name
@@ -74,7 +74,7 @@ public fun receipt_toJs(obj: DecryptedReceipt): DecryptedReceiptJs {
 			x1
 		},
 	)
-	val cryptedForeignKeys = mapToObject<_, _, Array<DelegationJs>>(
+	val cryptedForeignKeys = mapToObject(
 		obj.cryptedForeignKeys,
 		{ x1: String ->
 			x1
@@ -88,7 +88,7 @@ public fun receipt_toJs(obj: DecryptedReceipt): DecryptedReceiptJs {
 			)
 		},
 	)
-	val delegations = mapToObject<_, _, Array<DelegationJs>>(
+	val delegations = mapToObject(
 		obj.delegations,
 		{ x1: String ->
 			x1
@@ -102,7 +102,7 @@ public fun receipt_toJs(obj: DecryptedReceipt): DecryptedReceiptJs {
 			)
 		},
 	)
-	val encryptionKeys = mapToObject<_, _, Array<DelegationJs>>(
+	val encryptionKeys = mapToObject(
 		obj.encryptionKeys,
 		{ x1: String ->
 			x1
@@ -301,7 +301,7 @@ public fun receipt_toJs(obj: EncryptedReceipt): EncryptedReceiptJs {
 	)
 	val endOfLife = longToNumber(obj.endOfLife)
 	val deletionDate = longToNumber(obj.deletionDate)
-	val attachmentIds = mapToObject<_, _, String>(
+	val attachmentIds = mapToObject(
 		obj.attachmentIds,
 		{ x1: ReceiptBlobType ->
 			x1.name
@@ -325,7 +325,7 @@ public fun receipt_toJs(obj: EncryptedReceipt): EncryptedReceiptJs {
 			x1
 		},
 	)
-	val cryptedForeignKeys = mapToObject<_, _, Array<DelegationJs>>(
+	val cryptedForeignKeys = mapToObject(
 		obj.cryptedForeignKeys,
 		{ x1: String ->
 			x1
@@ -339,7 +339,7 @@ public fun receipt_toJs(obj: EncryptedReceipt): EncryptedReceiptJs {
 			)
 		},
 	)
-	val delegations = mapToObject<_, _, Array<DelegationJs>>(
+	val delegations = mapToObject(
 		obj.delegations,
 		{ x1: String ->
 			x1
@@ -353,7 +353,7 @@ public fun receipt_toJs(obj: EncryptedReceipt): EncryptedReceiptJs {
 			)
 		},
 	)
-	val encryptionKeys = mapToObject<_, _, Array<DelegationJs>>(
+	val encryptionKeys = mapToObject(
 		obj.encryptionKeys,
 		{ x1: String ->
 			x1

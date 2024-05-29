@@ -6,6 +6,7 @@ package com.icure.sdk.js.model
 import com.icure.sdk.js.model.base.CodeStubJs
 import com.icure.sdk.js.model.base.ICureDocumentJs
 import com.icure.sdk.js.model.base.StoredDocumentJs
+import com.icure.sdk.js.utils.Record
 import kotlin.Array
 import kotlin.Double
 import kotlin.String
@@ -38,5 +39,5 @@ public external class ApplicationSettingsJs(
 
 	override val deletionDate: Double?
 
-	public val settings: dynamic
+	public val settings: Record<String, String>
 }

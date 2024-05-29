@@ -3,6 +3,7 @@
 
 package com.icure.sdk.js.api.flavoured
 
+import com.icure.sdk.js.crypto.entities.AccessLogShareOptionsJs
 import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.model.AccessLogJs
@@ -12,6 +13,7 @@ import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.PatientJs
 import com.icure.sdk.js.model.UserJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
+import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
 import kotlin.Boolean
@@ -34,7 +36,7 @@ public external interface AccessLogApiJs {
 		base: DecryptedAccessLogJs?,
 		patient: PatientJs,
 		user: UserJs?,
-		delegates: dynamic,
+		delegates: Record<String, String>,
 		secretId: SecretIdOptionJs,
 	): Promise<DecryptedAccessLogJs>
 
@@ -59,11 +61,12 @@ public external interface AccessLogApiJs {
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<DecryptedAccessLogJs>>
 
-	public fun tryShareWithMany(accessLog: DecryptedAccessLogJs, delegates: dynamic):
+	public fun tryShareWithMany(accessLog: DecryptedAccessLogJs,
+			delegates: Record<String, AccessLogShareOptionsJs>):
 			Promise<SimpleShareResultJs<DecryptedAccessLogJs>>
 
-	public fun shareWithMany(accessLog: DecryptedAccessLogJs, delegates: dynamic):
-			Promise<DecryptedAccessLogJs>
+	public fun shareWithMany(accessLog: DecryptedAccessLogJs,
+			delegates: Record<String, AccessLogShareOptionsJs>): Promise<DecryptedAccessLogJs>
 
 	public fun findAccessLogsByHcPartyPatient(
 		hcPartyId: String,

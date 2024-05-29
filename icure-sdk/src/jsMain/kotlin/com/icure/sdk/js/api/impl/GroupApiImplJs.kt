@@ -31,6 +31,7 @@ import com.icure.sdk.js.model.idWithRev_toJs
 import com.icure.sdk.js.model.paginatedList_toJs
 import com.icure.sdk.js.model.registrationSuccess_toJs
 import com.icure.sdk.js.model.replicationInfo_toJs
+import com.icure.sdk.js.utils.Record
 import com.icure.sdk.model.Group
 import com.icure.sdk.model.GroupDeletionReport
 import com.icure.sdk.model.IdWithRev
@@ -175,8 +176,9 @@ internal class GroupApiImplJs(
 		)))}
 
 
-	override fun getDefaultRoles(groupId: String): Promise<dynamic> = GlobalScope.promise {
-		mapToObject<_, _, Array<RoleConfigurationJs>>(
+	override fun getDefaultRoles(groupId: String): Promise<Record<String, Array<RoleConfigurationJs>>>
+			= GlobalScope.promise {
+		mapToObject(
 			groupApi.getDefaultRoles(groupId),
 			{ x1: UserType ->
 				x1.name

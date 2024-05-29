@@ -3,10 +3,12 @@
 
 package com.icure.sdk.js.api.flavoured
 
+import com.icure.sdk.js.crypto.entities.AccessLogShareOptionsJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.model.AccessLogJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.PatientJs
+import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
 import kotlin.Boolean
@@ -26,9 +28,11 @@ public external interface AccessLogFlavouredApiJs<E : AccessLogJs> {
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<E>>
 
-	public fun tryShareWithMany(accessLog: E, delegates: dynamic): Promise<SimpleShareResultJs<E>>
+	public fun tryShareWithMany(accessLog: E, delegates: Record<String, AccessLogShareOptionsJs>):
+			Promise<SimpleShareResultJs<E>>
 
-	public fun shareWithMany(accessLog: E, delegates: dynamic): Promise<E>
+	public fun shareWithMany(accessLog: E, delegates: Record<String, AccessLogShareOptionsJs>):
+			Promise<E>
 
 	public fun findAccessLogsByHcPartyPatient(
 		hcPartyId: String,

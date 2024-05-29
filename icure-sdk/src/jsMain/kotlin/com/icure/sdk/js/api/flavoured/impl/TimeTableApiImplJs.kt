@@ -6,6 +6,7 @@ import com.icure.sdk.js.api.flavoured.TimeTableApiJs
 import com.icure.sdk.js.api.flavoured.TimeTableFlavouredApiJs
 import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
+import com.icure.sdk.js.crypto.entities.TimeTableShareOptionsJs
 import com.icure.sdk.js.crypto.entities.simpleShareResult_toJs
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.arrayToSet
@@ -22,6 +23,7 @@ import com.icure.sdk.js.model.couchdb.docIdentifier_toJs
 import com.icure.sdk.js.model.specializations.hexString_toJs
 import com.icure.sdk.js.model.timeTable_fromJs
 import com.icure.sdk.js.model.timeTable_toJs
+import com.icure.sdk.js.utils.Record
 import com.icure.sdk.model.DecryptedTimeTable
 import com.icure.sdk.model.EncryptedTimeTable
 import com.icure.sdk.model.TimeTable
@@ -62,7 +64,8 @@ internal class TimeTableApiImplJs(
 			)}
 
 
-		override fun tryShareWithMany(timeTable: EncryptedTimeTableJs, delegates: dynamic):
+		override fun tryShareWithMany(timeTable: EncryptedTimeTableJs,
+				delegates: Record<String, TimeTableShareOptionsJs>):
 				Promise<SimpleShareResultJs<EncryptedTimeTableJs>> = GlobalScope.promise {
 			simpleShareResult_toJs(
 				timeTableApi.encrypted.tryShareWithMany(com.icure.sdk.js.model.timeTable_fromJs(timeTable),
@@ -82,8 +85,9 @@ internal class TimeTableApiImplJs(
 			)}
 
 
-		override fun shareWithMany(timeTable: EncryptedTimeTableJs, delegates: dynamic):
-				Promise<EncryptedTimeTableJs> = GlobalScope.promise {
+		override fun shareWithMany(timeTable: EncryptedTimeTableJs,
+				delegates: Record<String, TimeTableShareOptionsJs>): Promise<EncryptedTimeTableJs> =
+				GlobalScope.promise {
 			timeTable_toJs(timeTableApi.encrypted.shareWithMany(com.icure.sdk.js.model.timeTable_fromJs(timeTable),
 					com.icure.sdk.js.model.CheckedConverters.objectToMap(
 			  delegates,
@@ -152,8 +156,9 @@ internal class TimeTableApiImplJs(
 			)}
 
 
-		override fun tryShareWithMany(timeTable: TimeTableJs, delegates: dynamic):
-				Promise<SimpleShareResultJs<TimeTableJs>> = GlobalScope.promise {
+		override fun tryShareWithMany(timeTable: TimeTableJs,
+				delegates: Record<String, TimeTableShareOptionsJs>): Promise<SimpleShareResultJs<TimeTableJs>> =
+				GlobalScope.promise {
 			simpleShareResult_toJs(
 				timeTableApi.tryAndRecover.tryShareWithMany(com.icure.sdk.js.model.timeTable_fromJs(timeTable),
 						com.icure.sdk.js.model.CheckedConverters.objectToMap(
@@ -172,7 +177,8 @@ internal class TimeTableApiImplJs(
 			)}
 
 
-		override fun shareWithMany(timeTable: TimeTableJs, delegates: dynamic): Promise<TimeTableJs> =
+		override fun shareWithMany(timeTable: TimeTableJs,
+				delegates: Record<String, TimeTableShareOptionsJs>): Promise<TimeTableJs> =
 				GlobalScope.promise {
 			timeTable_toJs(timeTableApi.tryAndRecover.shareWithMany(com.icure.sdk.js.model.timeTable_fromJs(timeTable),
 					com.icure.sdk.js.model.CheckedConverters.objectToMap(
@@ -229,7 +235,7 @@ internal class TimeTableApiImplJs(
 		base: DecryptedTimeTableJs?,
 		patient: PatientJs?,
 		user: UserJs?,
-		delegates: dynamic,
+		delegates: Record<String, String>,
 		secretId: SecretIdOptionJs,
 	): Promise<DecryptedTimeTableJs> = GlobalScope.promise {
 		timeTable_toJs(timeTableApi.withEncryptionMetadata(base?.let { nonNull1 ->
@@ -323,7 +329,8 @@ internal class TimeTableApiImplJs(
 		)}
 
 
-	override fun tryShareWithMany(timeTable: DecryptedTimeTableJs, delegates: dynamic):
+	override fun tryShareWithMany(timeTable: DecryptedTimeTableJs,
+			delegates: Record<String, TimeTableShareOptionsJs>):
 			Promise<SimpleShareResultJs<DecryptedTimeTableJs>> = GlobalScope.promise {
 		simpleShareResult_toJs(
 			timeTableApi.tryShareWithMany(com.icure.sdk.js.model.timeTable_fromJs(timeTable),
@@ -343,8 +350,9 @@ internal class TimeTableApiImplJs(
 		)}
 
 
-	override fun shareWithMany(timeTable: DecryptedTimeTableJs, delegates: dynamic):
-			Promise<DecryptedTimeTableJs> = GlobalScope.promise {
+	override fun shareWithMany(timeTable: DecryptedTimeTableJs,
+			delegates: Record<String, TimeTableShareOptionsJs>): Promise<DecryptedTimeTableJs> =
+			GlobalScope.promise {
 		timeTable_toJs(timeTableApi.shareWithMany(com.icure.sdk.js.model.timeTable_fromJs(timeTable),
 				com.icure.sdk.js.model.CheckedConverters.objectToMap(
 		  delegates,

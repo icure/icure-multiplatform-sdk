@@ -3,6 +3,7 @@
 
 package com.icure.sdk.js.model.base
 
+import com.icure.sdk.js.utils.Record
 import kotlin.String
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
@@ -23,5 +24,5 @@ public external class CodeStubJs(
 
 	public val contextLabel: String?
 
-	override val label: dynamic
+	override val label: Record<String, String>?
 }

@@ -4,6 +4,7 @@ package com.icure.sdk.js.api.flavoured.`impl`
 import com.icure.sdk.api.flavoured.MaintenanceTaskApi
 import com.icure.sdk.js.api.flavoured.MaintenanceTaskApiJs
 import com.icure.sdk.js.api.flavoured.MaintenanceTaskFlavouredApiJs
+import com.icure.sdk.js.crypto.entities.MaintenanceTaskShareOptionsJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.crypto.entities.simpleShareResult_toJs
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
@@ -22,6 +23,7 @@ import com.icure.sdk.js.model.maintenanceTask_fromJs
 import com.icure.sdk.js.model.maintenanceTask_toJs
 import com.icure.sdk.js.model.paginatedList_toJs
 import com.icure.sdk.js.model.specializations.hexString_toJs
+import com.icure.sdk.js.utils.Record
 import com.icure.sdk.model.DecryptedMaintenanceTask
 import com.icure.sdk.model.EncryptedMaintenanceTask
 import com.icure.sdk.model.MaintenanceTask
@@ -63,7 +65,8 @@ internal class MaintenanceTaskApiImplJs(
 			)}
 
 
-		override fun tryShareWithMany(maintenanceTask: EncryptedMaintenanceTaskJs, delegates: dynamic):
+		override fun tryShareWithMany(maintenanceTask: EncryptedMaintenanceTaskJs,
+				delegates: Record<String, MaintenanceTaskShareOptionsJs>):
 				Promise<SimpleShareResultJs<EncryptedMaintenanceTaskJs>> = GlobalScope.promise {
 			simpleShareResult_toJs(
 				maintenanceTaskApi.encrypted.tryShareWithMany(com.icure.sdk.js.model.maintenanceTask_fromJs(maintenanceTask),
@@ -83,8 +86,9 @@ internal class MaintenanceTaskApiImplJs(
 			)}
 
 
-		override fun shareWithMany(maintenanceTask: EncryptedMaintenanceTaskJs, delegates: dynamic):
-				Promise<EncryptedMaintenanceTaskJs> = GlobalScope.promise {
+		override fun shareWithMany(maintenanceTask: EncryptedMaintenanceTaskJs,
+				delegates: Record<String, MaintenanceTaskShareOptionsJs>): Promise<EncryptedMaintenanceTaskJs> =
+				GlobalScope.promise {
 			maintenanceTask_toJs(maintenanceTaskApi.encrypted.shareWithMany(com.icure.sdk.js.model.maintenanceTask_fromJs(maintenanceTask),
 					com.icure.sdk.js.model.CheckedConverters.objectToMap(
 			  delegates,
@@ -150,7 +154,8 @@ internal class MaintenanceTaskApiImplJs(
 			)}
 
 
-		override fun tryShareWithMany(maintenanceTask: MaintenanceTaskJs, delegates: dynamic):
+		override fun tryShareWithMany(maintenanceTask: MaintenanceTaskJs,
+				delegates: Record<String, MaintenanceTaskShareOptionsJs>):
 				Promise<SimpleShareResultJs<MaintenanceTaskJs>> = GlobalScope.promise {
 			simpleShareResult_toJs(
 				maintenanceTaskApi.tryAndRecover.tryShareWithMany(com.icure.sdk.js.model.maintenanceTask_fromJs(maintenanceTask),
@@ -170,8 +175,9 @@ internal class MaintenanceTaskApiImplJs(
 			)}
 
 
-		override fun shareWithMany(maintenanceTask: MaintenanceTaskJs, delegates: dynamic):
-				Promise<MaintenanceTaskJs> = GlobalScope.promise {
+		override fun shareWithMany(maintenanceTask: MaintenanceTaskJs,
+				delegates: Record<String, MaintenanceTaskShareOptionsJs>): Promise<MaintenanceTaskJs> =
+				GlobalScope.promise {
 			maintenanceTask_toJs(maintenanceTaskApi.tryAndRecover.shareWithMany(com.icure.sdk.js.model.maintenanceTask_fromJs(maintenanceTask),
 					com.icure.sdk.js.model.CheckedConverters.objectToMap(
 			  delegates,
@@ -224,7 +230,7 @@ internal class MaintenanceTaskApiImplJs(
 	override fun withEncryptionMetadata(
 		maintenanceTask: DecryptedMaintenanceTaskJs?,
 		user: UserJs?,
-		delegates: dynamic,
+		delegates: Record<String, String>,
 	): Promise<DecryptedMaintenanceTaskJs> = GlobalScope.promise {
 		maintenanceTask_toJs(maintenanceTaskApi.withEncryptionMetadata(maintenanceTask?.let { nonNull1 ->
 		  com.icure.sdk.js.model.maintenanceTask_fromJs(nonNull1)
@@ -319,7 +325,8 @@ internal class MaintenanceTaskApiImplJs(
 		)}
 
 
-	override fun tryShareWithMany(maintenanceTask: DecryptedMaintenanceTaskJs, delegates: dynamic):
+	override fun tryShareWithMany(maintenanceTask: DecryptedMaintenanceTaskJs,
+			delegates: Record<String, MaintenanceTaskShareOptionsJs>):
 			Promise<SimpleShareResultJs<DecryptedMaintenanceTaskJs>> = GlobalScope.promise {
 		simpleShareResult_toJs(
 			maintenanceTaskApi.tryShareWithMany(com.icure.sdk.js.model.maintenanceTask_fromJs(maintenanceTask),
@@ -339,8 +346,9 @@ internal class MaintenanceTaskApiImplJs(
 		)}
 
 
-	override fun shareWithMany(maintenanceTask: DecryptedMaintenanceTaskJs, delegates: dynamic):
-			Promise<DecryptedMaintenanceTaskJs> = GlobalScope.promise {
+	override fun shareWithMany(maintenanceTask: DecryptedMaintenanceTaskJs,
+			delegates: Record<String, MaintenanceTaskShareOptionsJs>): Promise<DecryptedMaintenanceTaskJs> =
+			GlobalScope.promise {
 		maintenanceTask_toJs(maintenanceTaskApi.shareWithMany(com.icure.sdk.js.model.maintenanceTask_fromJs(maintenanceTask),
 				com.icure.sdk.js.model.CheckedConverters.objectToMap(
 		  delegates,

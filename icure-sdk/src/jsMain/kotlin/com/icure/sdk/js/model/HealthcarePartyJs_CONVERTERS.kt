@@ -38,6 +38,7 @@ import com.icure.sdk.js.model.specializations.hexString_fromJs
 import com.icure.sdk.js.model.specializations.hexString_toJs
 import com.icure.sdk.js.model.specializations.spkiHexString_fromJs
 import com.icure.sdk.js.model.specializations.spkiHexString_toJs
+import com.icure.sdk.js.utils.Record
 import com.icure.sdk.model.DecryptedPropertyStub
 import com.icure.sdk.model.HealthcareParty
 import com.icure.sdk.model.base.CodeStub
@@ -141,7 +142,7 @@ public fun healthcareParty_toJs(obj: HealthcareParty): HealthcarePartyJs {
 			codeStub_toJs(x1)
 		},
 	)
-	val sendFormats = mapToObject<_, _, String>(
+	val sendFormats = mapToObject(
 		obj.sendFormats,
 		{ x1: TelecomType ->
 			x1.name
@@ -157,7 +158,7 @@ public fun healthcareParty_toJs(obj: HealthcareParty): HealthcarePartyJs {
 			financialInstitutionInformation_toJs(x1)
 		},
 	)
-	val descr = mapToObject<_, _, String>(
+	val descr = mapToObject(
 		obj.descr,
 		{ x1: String ->
 			x1
@@ -177,7 +178,7 @@ public fun healthcareParty_toJs(obj: HealthcareParty): HealthcarePartyJs {
 			flatRateTarification_toJs(x1)
 		},
 	)
-	val importedData = mapToObject<_, _, String>(
+	val importedData = mapToObject(
 		obj.importedData,
 		{ x1: String ->
 			x1
@@ -186,7 +187,7 @@ public fun healthcareParty_toJs(obj: HealthcareParty): HealthcarePartyJs {
 			x1
 		},
 	)
-	val options = mapToObject<_, _, String>(
+	val options = mapToObject(
 		obj.options,
 		{ x1: String ->
 			x1
@@ -201,7 +202,7 @@ public fun healthcareParty_toJs(obj: HealthcareParty): HealthcarePartyJs {
 			propertyStub_toJs(x1)
 		},
 	)
-	val hcPartyKeys = mapToObject<_, _, Array<String>>(
+	val hcPartyKeys = mapToObject(
 		obj.hcPartyKeys,
 		{ x1: String ->
 			x1
@@ -215,19 +216,19 @@ public fun healthcareParty_toJs(obj: HealthcareParty): HealthcarePartyJs {
 			)
 		},
 	)
-	val aesExchangeKeys = mapToObject<_, _, dynamic>(
+	val aesExchangeKeys = mapToObject(
 		obj.aesExchangeKeys,
 		{ x1: SpkiHexString ->
 			spkiHexString_toJs(x1)
 		},
 		{ x1: Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>> ->
-			mapToObject<_, _, dynamic>(
+			mapToObject(
 				x1,
 				{ x2: String ->
 					x2
 				},
 				{ x2: Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString> ->
-					mapToObject<_, _, String>(
+					mapToObject(
 						x2,
 						{ x3: AesExchangeKeyEncryptionKeypairIdentifier ->
 							aesExchangeKeyEncryptionKeypairIdentifier_toJs(x3)
@@ -240,13 +241,13 @@ public fun healthcareParty_toJs(obj: HealthcareParty): HealthcarePartyJs {
 			)
 		},
 	)
-	val transferKeys = mapToObject<_, _, dynamic>(
+	val transferKeys = mapToObject(
 		obj.transferKeys,
 		{ x1: AesExchangeKeyEncryptionKeypairIdentifier ->
 			aesExchangeKeyEncryptionKeypairIdentifier_toJs(x1)
 		},
 		{ x1: Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString> ->
-			mapToObject<_, _, String>(
+			mapToObject(
 				x1,
 				{ x2: AesExchangeKeyEncryptionKeypairIdentifier ->
 					aesExchangeKeyEncryptionKeypairIdentifier_toJs(x2)
@@ -257,7 +258,7 @@ public fun healthcareParty_toJs(obj: HealthcareParty): HealthcarePartyJs {
 			)
 		},
 	)
-	val privateKeyShamirPartitions = mapToObject<_, _, String>(
+	val privateKeyShamirPartitions = mapToObject(
 		obj.privateKeyShamirPartitions,
 		{ x1: String ->
 			x1
@@ -514,14 +515,14 @@ public fun healthcareParty_fromJs(obj: HealthcarePartyJs): HealthcareParty {
 		{ x1: String ->
 			spkiHexString_fromJs(x1)
 		},
-		{ x1: dynamic ->
+		{ x1: Record<String, Record<String, String>> ->
 			objectToMap(
 				x1,
 				"x1",
 				{ x2: String ->
 					x2
 				},
-				{ x2: dynamic ->
+				{ x2: Record<String, String> ->
 					objectToMap(
 						x2,
 						"x2",
@@ -542,7 +543,7 @@ public fun healthcareParty_fromJs(obj: HealthcarePartyJs): HealthcareParty {
 		{ x1: String ->
 			aesExchangeKeyEncryptionKeypairIdentifier_fromJs(x1)
 		},
-		{ x1: dynamic ->
+		{ x1: Record<String, String> ->
 			objectToMap(
 				x1,
 				"x1",

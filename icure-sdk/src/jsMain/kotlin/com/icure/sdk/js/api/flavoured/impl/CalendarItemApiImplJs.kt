@@ -4,6 +4,7 @@ package com.icure.sdk.js.api.flavoured.`impl`
 import com.icure.sdk.api.flavoured.CalendarItemApi
 import com.icure.sdk.js.api.flavoured.CalendarItemApiJs
 import com.icure.sdk.js.api.flavoured.CalendarItemFlavouredApiJs
+import com.icure.sdk.js.crypto.entities.CalendarItemShareOptionsJs
 import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.crypto.entities.simpleShareResult_toJs
@@ -24,6 +25,7 @@ import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.couchdb.docIdentifier_toJs
 import com.icure.sdk.js.model.paginatedList_toJs
 import com.icure.sdk.js.model.specializations.hexString_toJs
+import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.sdk.model.CalendarItem
@@ -67,7 +69,8 @@ internal class CalendarItemApiImplJs(
 			)}
 
 
-		override fun tryShareWithMany(calendarItem: EncryptedCalendarItemJs, delegates: dynamic):
+		override fun tryShareWithMany(calendarItem: EncryptedCalendarItemJs,
+				delegates: Record<String, CalendarItemShareOptionsJs>):
 				Promise<SimpleShareResultJs<EncryptedCalendarItemJs>> = GlobalScope.promise {
 			simpleShareResult_toJs(
 				calendarItemApi.encrypted.tryShareWithMany(com.icure.sdk.js.model.calendarItem_fromJs(calendarItem),
@@ -87,8 +90,9 @@ internal class CalendarItemApiImplJs(
 			)}
 
 
-		override fun shareWithMany(calendarItem: EncryptedCalendarItemJs, delegates: dynamic):
-				Promise<EncryptedCalendarItemJs> = GlobalScope.promise {
+		override fun shareWithMany(calendarItem: EncryptedCalendarItemJs,
+				delegates: Record<String, CalendarItemShareOptionsJs>): Promise<EncryptedCalendarItemJs> =
+				GlobalScope.promise {
 			calendarItem_toJs(calendarItemApi.encrypted.shareWithMany(com.icure.sdk.js.model.calendarItem_fromJs(calendarItem),
 					com.icure.sdk.js.model.CheckedConverters.objectToMap(
 			  delegates,
@@ -243,7 +247,8 @@ internal class CalendarItemApiImplJs(
 			)}
 
 
-		override fun tryShareWithMany(calendarItem: CalendarItemJs, delegates: dynamic):
+		override fun tryShareWithMany(calendarItem: CalendarItemJs,
+				delegates: Record<String, CalendarItemShareOptionsJs>):
 				Promise<SimpleShareResultJs<CalendarItemJs>> = GlobalScope.promise {
 			simpleShareResult_toJs(
 				calendarItemApi.tryAndRecover.tryShareWithMany(com.icure.sdk.js.model.calendarItem_fromJs(calendarItem),
@@ -263,8 +268,9 @@ internal class CalendarItemApiImplJs(
 			)}
 
 
-		override fun shareWithMany(calendarItem: CalendarItemJs, delegates: dynamic):
-				Promise<CalendarItemJs> = GlobalScope.promise {
+		override fun shareWithMany(calendarItem: CalendarItemJs,
+				delegates: Record<String, CalendarItemShareOptionsJs>): Promise<CalendarItemJs> =
+				GlobalScope.promise {
 			calendarItem_toJs(calendarItemApi.tryAndRecover.shareWithMany(com.icure.sdk.js.model.calendarItem_fromJs(calendarItem),
 					com.icure.sdk.js.model.CheckedConverters.objectToMap(
 			  delegates,
@@ -406,7 +412,7 @@ internal class CalendarItemApiImplJs(
 		base: DecryptedCalendarItemJs?,
 		patient: PatientJs,
 		user: UserJs?,
-		delegates: dynamic,
+		delegates: Record<String, String>,
 		secretId: SecretIdOptionJs,
 	): Promise<DecryptedCalendarItemJs> = GlobalScope.promise {
 		calendarItem_toJs(calendarItemApi.withEncryptionMetadata(base?.let { nonNull1 ->
@@ -498,7 +504,8 @@ internal class CalendarItemApiImplJs(
 		)}
 
 
-	override fun tryShareWithMany(calendarItem: DecryptedCalendarItemJs, delegates: dynamic):
+	override fun tryShareWithMany(calendarItem: DecryptedCalendarItemJs,
+			delegates: Record<String, CalendarItemShareOptionsJs>):
 			Promise<SimpleShareResultJs<DecryptedCalendarItemJs>> = GlobalScope.promise {
 		simpleShareResult_toJs(
 			calendarItemApi.tryShareWithMany(com.icure.sdk.js.model.calendarItem_fromJs(calendarItem),
@@ -518,8 +525,9 @@ internal class CalendarItemApiImplJs(
 		)}
 
 
-	override fun shareWithMany(calendarItem: DecryptedCalendarItemJs, delegates: dynamic):
-			Promise<DecryptedCalendarItemJs> = GlobalScope.promise {
+	override fun shareWithMany(calendarItem: DecryptedCalendarItemJs,
+			delegates: Record<String, CalendarItemShareOptionsJs>): Promise<DecryptedCalendarItemJs> =
+			GlobalScope.promise {
 		calendarItem_toJs(calendarItemApi.shareWithMany(com.icure.sdk.js.model.calendarItem_fromJs(calendarItem),
 				com.icure.sdk.js.model.CheckedConverters.objectToMap(
 		  delegates,

@@ -29,7 +29,7 @@ public fun paragraphAgreement_toJs(obj: ParagraphAgreement): ParagraphAgreementJ
 	val quantityUnit = obj.quantityUnit
 	val ioRequestReference = obj.ioRequestReference
 	val responseType = obj.responseType
-	val refusalJustification = mapToObject<_, _, String>(
+	val refusalJustification = mapToObject(
 		obj.refusalJustification,
 		{ x1: String ->
 			x1

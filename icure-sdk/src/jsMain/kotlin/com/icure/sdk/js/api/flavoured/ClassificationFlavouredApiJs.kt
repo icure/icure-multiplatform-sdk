@@ -3,9 +3,11 @@
 
 package com.icure.sdk.js.api.flavoured
 
+import com.icure.sdk.js.crypto.entities.ClassificationShareOptionsJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.model.ClassificationJs
 import com.icure.sdk.js.model.PatientJs
+import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
 import kotlin.Boolean
@@ -25,9 +27,11 @@ public external interface ClassificationFlavouredApiJs<E : ClassificationJs> {
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<E>>
 
-	public fun tryShareWithMany(classification: E, delegates: dynamic): Promise<SimpleShareResultJs<E>>
+	public fun tryShareWithMany(classification: E,
+			delegates: Record<String, ClassificationShareOptionsJs>): Promise<SimpleShareResultJs<E>>
 
-	public fun shareWithMany(classification: E, delegates: dynamic): Promise<E>
+	public fun shareWithMany(classification: E,
+			delegates: Record<String, ClassificationShareOptionsJs>): Promise<E>
 
 	public fun findClassificationsByHcPartyPatient(
 		hcPartyId: String,

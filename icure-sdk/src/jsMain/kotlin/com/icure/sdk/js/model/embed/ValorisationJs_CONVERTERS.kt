@@ -32,7 +32,7 @@ public fun valorisation_toJs(obj: DecryptedValorisation): DecryptedValorisationJ
 	val patientIntervention = obj.patientIntervention
 	val doctorSupplement = obj.doctorSupplement
 	val vat = obj.vat
-	val label = mapToObject<_, _, String>(
+	val label = mapToObject(
 		obj.label,
 		{ x1: String ->
 			x1
@@ -118,7 +118,7 @@ public fun valorisation_toJs(obj: EncryptedValorisation): EncryptedValorisationJ
 	val patientIntervention = obj.patientIntervention
 	val doctorSupplement = obj.doctorSupplement
 	val vat = obj.vat
-	val label = mapToObject<_, _, String>(
+	val label = mapToObject(
 		obj.label,
 		{ x1: String ->
 			x1

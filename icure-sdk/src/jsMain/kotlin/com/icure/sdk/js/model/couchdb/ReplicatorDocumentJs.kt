@@ -4,6 +4,7 @@
 package com.icure.sdk.js.model.couchdb
 
 import com.icure.sdk.js.model.base.VersionableJs
+import com.icure.sdk.js.utils.Record
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
@@ -39,7 +40,7 @@ public external class ReplicatorDocumentJs(
 
 	public val errorCount: Double?
 
-	public val revsInfo: Array<dynamic>?
+	public val revsInfo: Array<Record<String, String>>?
 
-	public val revHistory: dynamic
+	public val revHistory: Record<String, String>?
 }

@@ -7,6 +7,7 @@ import com.icure.sdk.js.model.base.CodeStubJs
 import com.icure.sdk.js.model.base.CryptoActorJs
 import com.icure.sdk.js.model.base.HasTagsJs
 import com.icure.sdk.js.model.base.VersionableJs
+import com.icure.sdk.js.utils.Record
 import kotlin.Array
 import kotlin.String
 import kotlin.js.JsName
@@ -20,13 +21,13 @@ public external class CryptoActorStubJs(
 
 	override val rev: String
 
-	override val hcPartyKeys: dynamic
+	override val hcPartyKeys: Record<String, Array<String>>
 
-	override val aesExchangeKeys: dynamic
+	override val aesExchangeKeys: Record<String, Record<String, Record<String, String>>>
 
-	override val transferKeys: dynamic
+	override val transferKeys: Record<String, Record<String, String>>
 
-	override val privateKeyShamirPartitions: dynamic
+	override val privateKeyShamirPartitions: Record<String, String>
 
 	override val publicKey: String?
 

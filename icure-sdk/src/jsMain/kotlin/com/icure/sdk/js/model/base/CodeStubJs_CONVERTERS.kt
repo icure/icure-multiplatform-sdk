@@ -12,7 +12,7 @@ public fun codeStub_toJs(obj: CodeStub): CodeStubJs {
 	val code = obj.code
 	val version = obj.version
 	val contextLabel = obj.contextLabel
-	val label = mapToObject<_, _, String>(
+	val label = mapToObject(
 		obj.label,
 		{ x1: String ->
 			x1

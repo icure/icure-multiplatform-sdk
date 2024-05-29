@@ -3,6 +3,7 @@
 
 package com.icure.sdk.js.model.embed
 
+import com.icure.sdk.js.utils.Record
 import kotlin.Boolean
 import kotlin.Double
 import kotlin.String
@@ -71,9 +72,9 @@ public sealed external interface MedicalHouseContractJs : EncryptableJs {
 
 	public val status: Double?
 
-	public val options: dynamic
+	public val options: Record<String, out String>
 
-	public val receipts: dynamic
+	public val receipts: Record<String, out String>
 
 	public val isEncrypted: Boolean
 
@@ -145,9 +146,9 @@ public external class DecryptedMedicalHouseContractJs(
 
 	override val status: Double?
 
-	override val options: dynamic
+	override val options: Record<String, String>
 
-	override val receipts: dynamic
+	override val receipts: Record<String, String>
 
 	override val encryptedSelf: String?
 
@@ -220,9 +221,9 @@ public external class EncryptedMedicalHouseContractJs(
 
 	override val status: Double?
 
-	override val options: dynamic
+	override val options: Record<String, String>
 
-	override val receipts: dynamic
+	override val receipts: Record<String, String>
 
 	override val encryptedSelf: String?
 

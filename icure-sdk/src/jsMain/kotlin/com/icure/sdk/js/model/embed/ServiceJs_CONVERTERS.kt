@@ -18,6 +18,7 @@ import com.icure.sdk.js.model.base.identifier_fromJs
 import com.icure.sdk.js.model.base.identifier_toJs
 import com.icure.sdk.js.model.specializations.base64String_fromJs
 import com.icure.sdk.js.model.specializations.base64String_toJs
+import com.icure.sdk.js.utils.Record
 import com.icure.sdk.model.base.CodeStub
 import com.icure.sdk.model.base.Identifier
 import com.icure.sdk.model.base.LinkQualification
@@ -73,7 +74,7 @@ public fun service_toJs(obj: DecryptedService): DecryptedServiceJs {
 			x1
 		},
 	)
-	val cryptedForeignKeys = mapToObject<_, _, Array<DelegationJs>>(
+	val cryptedForeignKeys = mapToObject(
 		obj.cryptedForeignKeys,
 		{ x1: String ->
 			x1
@@ -87,7 +88,7 @@ public fun service_toJs(obj: DecryptedService): DecryptedServiceJs {
 			)
 		},
 	)
-	val delegations = mapToObject<_, _, Array<DelegationJs>>(
+	val delegations = mapToObject(
 		obj.delegations,
 		{ x1: String ->
 			x1
@@ -101,7 +102,7 @@ public fun service_toJs(obj: DecryptedService): DecryptedServiceJs {
 			)
 		},
 	)
-	val encryptionKeys = mapToObject<_, _, Array<DelegationJs>>(
+	val encryptionKeys = mapToObject(
 		obj.encryptionKeys,
 		{ x1: String ->
 			x1
@@ -117,7 +118,7 @@ public fun service_toJs(obj: DecryptedService): DecryptedServiceJs {
 	)
 	val label = obj.label
 	val index = longToNumber(obj.index)
-	val content = mapToObject<_, _, DecryptedContentJs>(
+	val content = mapToObject(
 		obj.content,
 		{ x1: String ->
 			x1
@@ -127,7 +128,7 @@ public fun service_toJs(obj: DecryptedService): DecryptedServiceJs {
 		},
 	)
 	val encryptedContent = obj.encryptedContent
-	val textIndexes = mapToObject<_, _, String>(
+	val textIndexes = mapToObject(
 		obj.textIndexes,
 		{ x1: String ->
 			x1
@@ -160,13 +161,13 @@ public fun service_toJs(obj: DecryptedService): DecryptedServiceJs {
 			annotation_toJs(x1)
 		},
 	)
-	val qualifiedLinks = mapToObject<_, _, dynamic>(
+	val qualifiedLinks = mapToObject(
 		obj.qualifiedLinks,
 		{ x1: LinkQualification ->
 			x1.name
 		},
 		{ x1: Map<String, String> ->
-			mapToObject<_, _, String>(
+			mapToObject(
 				x1,
 				{ x2: String ->
 					x2
@@ -384,7 +385,7 @@ public fun service_fromJs(obj: DecryptedServiceJs): DecryptedService {
 		{ x1: String ->
 			LinkQualification.valueOf(x1)
 		},
-		{ x1: dynamic ->
+		{ x1: Record<String, String> ->
 			objectToMap(
 				x1,
 				"x1",
@@ -497,7 +498,7 @@ public fun service_toJs(obj: EncryptedService): EncryptedServiceJs {
 			x1
 		},
 	)
-	val cryptedForeignKeys = mapToObject<_, _, Array<DelegationJs>>(
+	val cryptedForeignKeys = mapToObject(
 		obj.cryptedForeignKeys,
 		{ x1: String ->
 			x1
@@ -511,7 +512,7 @@ public fun service_toJs(obj: EncryptedService): EncryptedServiceJs {
 			)
 		},
 	)
-	val delegations = mapToObject<_, _, Array<DelegationJs>>(
+	val delegations = mapToObject(
 		obj.delegations,
 		{ x1: String ->
 			x1
@@ -525,7 +526,7 @@ public fun service_toJs(obj: EncryptedService): EncryptedServiceJs {
 			)
 		},
 	)
-	val encryptionKeys = mapToObject<_, _, Array<DelegationJs>>(
+	val encryptionKeys = mapToObject(
 		obj.encryptionKeys,
 		{ x1: String ->
 			x1
@@ -541,7 +542,7 @@ public fun service_toJs(obj: EncryptedService): EncryptedServiceJs {
 	)
 	val label = obj.label
 	val index = longToNumber(obj.index)
-	val content = mapToObject<_, _, EncryptedContentJs>(
+	val content = mapToObject(
 		obj.content,
 		{ x1: String ->
 			x1
@@ -551,7 +552,7 @@ public fun service_toJs(obj: EncryptedService): EncryptedServiceJs {
 		},
 	)
 	val encryptedContent = obj.encryptedContent
-	val textIndexes = mapToObject<_, _, String>(
+	val textIndexes = mapToObject(
 		obj.textIndexes,
 		{ x1: String ->
 			x1
@@ -584,13 +585,13 @@ public fun service_toJs(obj: EncryptedService): EncryptedServiceJs {
 			annotation_toJs(x1)
 		},
 	)
-	val qualifiedLinks = mapToObject<_, _, dynamic>(
+	val qualifiedLinks = mapToObject(
 		obj.qualifiedLinks,
 		{ x1: LinkQualification ->
 			x1.name
 		},
 		{ x1: Map<String, String> ->
-			mapToObject<_, _, String>(
+			mapToObject(
 				x1,
 				{ x2: String ->
 					x2
@@ -808,7 +809,7 @@ public fun service_fromJs(obj: EncryptedServiceJs): EncryptedService {
 		{ x1: String ->
 			LinkQualification.valueOf(x1)
 		},
-		{ x1: dynamic ->
+		{ x1: Record<String, String> ->
 			objectToMap(
 				x1,
 				"x1",

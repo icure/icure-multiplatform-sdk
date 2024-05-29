@@ -3,12 +3,14 @@
 
 package com.icure.sdk.js.api.flavoured
 
+import com.icure.sdk.js.crypto.entities.ContactShareOptionsJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.model.ContactJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.PatientJs
 import com.icure.sdk.js.model.embed.ServiceJs
 import com.icure.sdk.js.model.filter.chain.FilterChainJs
+import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
 import kotlin.Boolean
@@ -28,9 +30,10 @@ public external interface ContactFlavouredApiJs<E : ContactJs, S : ServiceJs> {
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<E>>
 
-	public fun tryShareWithMany(contact: E, delegates: dynamic): Promise<SimpleShareResultJs<E>>
+	public fun tryShareWithMany(contact: E, delegates: Record<String, ContactShareOptionsJs>):
+			Promise<SimpleShareResultJs<E>>
 
-	public fun shareWithMany(contact: E, delegates: dynamic): Promise<E>
+	public fun shareWithMany(contact: E, delegates: Record<String, ContactShareOptionsJs>): Promise<E>
 
 	public fun findContactsByHcPartyPatient(
 		hcPartyId: String,

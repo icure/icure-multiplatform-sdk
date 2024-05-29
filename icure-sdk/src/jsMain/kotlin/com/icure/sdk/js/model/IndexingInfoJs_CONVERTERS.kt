@@ -10,7 +10,7 @@ import kotlin.Int
 import kotlin.String
 
 public fun indexingInfo_toJs(obj: IndexingInfo): IndexingInfoJs {
-	val statuses = mapToObject<_, _, Double>(
+	val statuses = mapToObject(
 		obj.statuses,
 		{ x1: String ->
 			x1

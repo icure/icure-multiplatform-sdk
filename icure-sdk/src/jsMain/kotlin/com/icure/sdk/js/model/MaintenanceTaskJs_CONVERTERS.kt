@@ -76,7 +76,7 @@ public fun maintenanceTask_toJs(obj: DecryptedMaintenanceTask): DecryptedMainten
 			x1
 		},
 	)
-	val cryptedForeignKeys = mapToObject<_, _, Array<DelegationJs>>(
+	val cryptedForeignKeys = mapToObject(
 		obj.cryptedForeignKeys,
 		{ x1: String ->
 			x1
@@ -90,7 +90,7 @@ public fun maintenanceTask_toJs(obj: DecryptedMaintenanceTask): DecryptedMainten
 			)
 		},
 	)
-	val delegations = mapToObject<_, _, Array<DelegationJs>>(
+	val delegations = mapToObject(
 		obj.delegations,
 		{ x1: String ->
 			x1
@@ -104,7 +104,7 @@ public fun maintenanceTask_toJs(obj: DecryptedMaintenanceTask): DecryptedMainten
 			)
 		},
 	)
-	val encryptionKeys = mapToObject<_, _, Array<DelegationJs>>(
+	val encryptionKeys = mapToObject(
 		obj.encryptionKeys,
 		{ x1: String ->
 			x1
@@ -317,7 +317,7 @@ public fun maintenanceTask_toJs(obj: EncryptedMaintenanceTask): EncryptedMainten
 			x1
 		},
 	)
-	val cryptedForeignKeys = mapToObject<_, _, Array<DelegationJs>>(
+	val cryptedForeignKeys = mapToObject(
 		obj.cryptedForeignKeys,
 		{ x1: String ->
 			x1
@@ -331,7 +331,7 @@ public fun maintenanceTask_toJs(obj: EncryptedMaintenanceTask): EncryptedMainten
 			)
 		},
 	)
-	val delegations = mapToObject<_, _, Array<DelegationJs>>(
+	val delegations = mapToObject(
 		obj.delegations,
 		{ x1: String ->
 			x1
@@ -345,7 +345,7 @@ public fun maintenanceTask_toJs(obj: EncryptedMaintenanceTask): EncryptedMainten
 			)
 		},
 	)
-	val encryptionKeys = mapToObject<_, _, Array<DelegationJs>>(
+	val encryptionKeys = mapToObject(
 		obj.encryptionKeys,
 		{ x1: String ->
 			x1

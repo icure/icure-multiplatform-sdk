@@ -5,6 +5,7 @@ package com.icure.sdk.js.api.flavoured
 
 import com.icure.sdk.js.crypto.entities.EntityAccessInformationJs
 import com.icure.sdk.js.crypto.entities.EntityWithTypeInfoJs
+import com.icure.sdk.js.crypto.entities.PatientShareOptionsJs
 import com.icure.sdk.js.crypto.entities.ShareAllPatientDataOptionsJs_ResultJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.model.DataOwnerRegistrationSuccessJs
@@ -19,6 +20,7 @@ import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.embed.EncryptedContentJs
 import com.icure.sdk.js.model.filter.AbstractFilterJs
 import com.icure.sdk.js.model.filter.chain.FilterChainJs
+import com.icure.sdk.js.utils.Record
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
@@ -43,7 +45,7 @@ public external interface PatientApiJs {
 	public fun withEncryptionMetadata(
 		base: DecryptedPatientJs?,
 		user: UserJs?,
-		delegates: dynamic,
+		delegates: Record<String, String>,
 	): Promise<DecryptedPatientJs>
 
 	public fun createDelegationsDeAnonymizationMetadata(patient: PatientJs,
@@ -71,7 +73,7 @@ public external interface PatientApiJs {
 		user: UserJs,
 		patientId: String,
 		dataOwnerId: String,
-		delegatesWithShareType: dynamic,
+		delegatesWithShareType: Record<String, Array<String>>,
 	): Promise<ShareAllPatientDataOptionsJs_ResultJs>
 
 	public fun getPatientIdOfChildDocumentForHcpAndHcpParents(childDocument: EntityWithTypeInfoJs<*>,
@@ -100,11 +102,12 @@ public external interface PatientApiJs {
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<DecryptedPatientJs>>
 
-	public fun tryShareWithMany(patient: DecryptedPatientJs, delegates: dynamic):
+	public fun tryShareWithMany(patient: DecryptedPatientJs,
+			delegates: Record<String, PatientShareOptionsJs>):
 			Promise<SimpleShareResultJs<DecryptedPatientJs>>
 
-	public fun shareWithMany(patient: DecryptedPatientJs, delegates: dynamic):
-			Promise<DecryptedPatientJs>
+	public fun shareWithMany(patient: DecryptedPatientJs,
+			delegates: Record<String, PatientShareOptionsJs>): Promise<DecryptedPatientJs>
 
 	public fun initialiseConfidentialSecretId(patient: DecryptedPatientJs): Promise<DecryptedPatientJs>
 
@@ -158,7 +161,7 @@ public external interface PatientApiJs {
 		sortDirection: String,
 	): Promise<PaginatedListJs<DecryptedPatientJs>>
 
-	public fun getPatientHcPartyKeysForDelegate(patientId: String): Promise<dynamic>
+	public fun getPatientHcPartyKeysForDelegate(patientId: String): Promise<Record<String, String>>
 
 	public fun countOfPatients(hcPartyId: String): Promise<EncryptedContentJs>
 

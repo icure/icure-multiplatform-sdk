@@ -4,9 +4,11 @@
 package com.icure.sdk.js.api.flavoured
 
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
+import com.icure.sdk.js.crypto.entities.TopicShareOptionsJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.TopicJs
 import com.icure.sdk.js.model.filter.chain.FilterChainJs
+import com.icure.sdk.js.utils.Record
 import kotlin.Array
 import kotlin.Double
 import kotlin.String
@@ -24,9 +26,10 @@ public external interface TopicFlavouredApiJs<E : TopicJs> {
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<E>>
 
-	public fun tryShareWithMany(topic: E, delegates: dynamic): Promise<SimpleShareResultJs<E>>
+	public fun tryShareWithMany(topic: E, delegates: Record<String, TopicShareOptionsJs>):
+			Promise<SimpleShareResultJs<E>>
 
-	public fun shareWithMany(topic: E, delegates: dynamic): Promise<E>
+	public fun shareWithMany(topic: E, delegates: Record<String, TopicShareOptionsJs>): Promise<E>
 
 	public fun modifyTopic(entity: E): Promise<E>
 

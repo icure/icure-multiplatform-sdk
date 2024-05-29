@@ -6,6 +6,7 @@ package com.icure.sdk.js.model.embed
 import com.icure.sdk.js.model.base.CodeStubJs
 import com.icure.sdk.js.model.base.ICureDocumentJs
 import com.icure.sdk.js.model.base.IdentifierJs
+import com.icure.sdk.js.utils.Record
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
@@ -31,21 +32,21 @@ public sealed external interface ServiceJs : EncryptableJs, ICureDocumentJs<Stri
 
 	public val secretForeignKeys: Array<out String>?
 
-	public val cryptedForeignKeys: dynamic
+	public val cryptedForeignKeys: Record<String, out Array<out DelegationJs>>
 
-	public val delegations: dynamic
+	public val delegations: Record<String, out Array<out DelegationJs>>
 
-	public val encryptionKeys: dynamic
+	public val encryptionKeys: Record<String, out Array<out DelegationJs>>
 
 	public val label: String?
 
 	public val index: Double?
 
-	public val content: dynamic
+	public val content: Record<String, out ContentJs>
 
 	public val encryptedContent: String?
 
-	public val textIndexes: dynamic
+	public val textIndexes: Record<String, out String>
 
 	public val valueDate: Double?
 
@@ -63,7 +64,7 @@ public sealed external interface ServiceJs : EncryptableJs, ICureDocumentJs<Stri
 
 	public val notes: Array<out AnnotationJs>
 
-	public val qualifiedLinks: dynamic
+	public val qualifiedLinks: Record<String, out Record<String, out String>>
 
 	public val securityMetadata: SecurityMetadataJs?
 
@@ -95,21 +96,21 @@ public external class DecryptedServiceJs(
 
 	override val secretForeignKeys: Array<String>?
 
-	override val cryptedForeignKeys: dynamic
+	override val cryptedForeignKeys: Record<String, Array<DelegationJs>>
 
-	override val delegations: dynamic
+	override val delegations: Record<String, Array<DelegationJs>>
 
-	override val encryptionKeys: dynamic
+	override val encryptionKeys: Record<String, Array<DelegationJs>>
 
 	override val label: String?
 
 	override val index: Double?
 
-	override val content: dynamic
+	override val content: Record<String, DecryptedContentJs>
 
 	override val encryptedContent: String?
 
-	override val textIndexes: dynamic
+	override val textIndexes: Record<String, String>
 
 	override val valueDate: Double?
 
@@ -139,7 +140,7 @@ public external class DecryptedServiceJs(
 
 	override val notes: Array<AnnotationJs>
 
-	override val qualifiedLinks: dynamic
+	override val qualifiedLinks: Record<String, Record<String, String>>
 
 	override val codes: Array<CodeStubJs>
 
@@ -176,21 +177,21 @@ public external class EncryptedServiceJs(
 
 	override val secretForeignKeys: Array<String>?
 
-	override val cryptedForeignKeys: dynamic
+	override val cryptedForeignKeys: Record<String, Array<DelegationJs>>
 
-	override val delegations: dynamic
+	override val delegations: Record<String, Array<DelegationJs>>
 
-	override val encryptionKeys: dynamic
+	override val encryptionKeys: Record<String, Array<DelegationJs>>
 
 	override val label: String?
 
 	override val index: Double?
 
-	override val content: dynamic
+	override val content: Record<String, EncryptedContentJs>
 
 	override val encryptedContent: String?
 
-	override val textIndexes: dynamic
+	override val textIndexes: Record<String, String>
 
 	override val valueDate: Double?
 
@@ -220,7 +221,7 @@ public external class EncryptedServiceJs(
 
 	override val notes: Array<AnnotationJs>
 
-	override val qualifiedLinks: dynamic
+	override val qualifiedLinks: Record<String, Record<String, String>>
 
 	override val codes: Array<CodeStubJs>
 

@@ -15,6 +15,8 @@ import com.icure.sdk.js.model.ReplicationInfoJs
 import com.icure.sdk.js.model.couchdb.DesignDocumentJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.couchdb.GroupDatabasesInfoJs
+import com.icure.sdk.js.model.embed.RoleConfigurationJs
+import com.icure.sdk.js.utils.Record
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
@@ -82,7 +84,7 @@ public external interface GroupApiJs {
 		roleIds: Array<String>,
 	): Promise<GroupJs>
 
-	public fun getDefaultRoles(groupId: String): Promise<dynamic>
+	public fun getDefaultRoles(groupId: String): Promise<Record<String, Array<RoleConfigurationJs>>>
 
 	public fun deleteGroup(id: String): Promise<GroupJs>
 

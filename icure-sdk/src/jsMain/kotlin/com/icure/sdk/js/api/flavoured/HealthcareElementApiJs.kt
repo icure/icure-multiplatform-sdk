@@ -3,6 +3,7 @@
 
 package com.icure.sdk.js.api.flavoured
 
+import com.icure.sdk.js.crypto.entities.HealthElementShareOptionsJs
 import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.model.DecryptedHealthElementJs
@@ -15,6 +16,7 @@ import com.icure.sdk.js.model.UserJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.filter.AbstractFilterJs
 import com.icure.sdk.js.model.filter.chain.FilterChainJs
+import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
 import kotlin.Boolean
@@ -41,7 +43,7 @@ public external interface HealthcareElementApiJs {
 		base: DecryptedHealthElementJs?,
 		patient: PatientJs,
 		user: UserJs?,
-		delegates: dynamic,
+		delegates: Record<String, String>,
 		secretId: SecretIdOptionJs,
 	): Promise<DecryptedHealthElementJs>
 
@@ -72,11 +74,12 @@ public external interface HealthcareElementApiJs {
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<DecryptedHealthElementJs>>
 
-	public fun tryShareWithMany(healthElement: DecryptedHealthElementJs, delegates: dynamic):
+	public fun tryShareWithMany(healthElement: DecryptedHealthElementJs,
+			delegates: Record<String, HealthElementShareOptionsJs>):
 			Promise<SimpleShareResultJs<DecryptedHealthElementJs>>
 
-	public fun shareWithMany(healthElement: DecryptedHealthElementJs, delegates: dynamic):
-			Promise<DecryptedHealthElementJs>
+	public fun shareWithMany(healthElement: DecryptedHealthElementJs,
+			delegates: Record<String, HealthElementShareOptionsJs>): Promise<DecryptedHealthElementJs>
 
 	public fun findHealthcareElementsByHcPartyPatient(
 		hcPartyId: String,

@@ -17,6 +17,7 @@ import com.icure.sdk.js.model.embed.DecryptedFinancialInstitutionInformationJs
 import com.icure.sdk.js.model.embed.DecryptedFlatRateTarificationJs
 import com.icure.sdk.js.model.embed.HealthcarePartyHistoryStatusJs
 import com.icure.sdk.js.model.embed.PersonNameJs
+import com.icure.sdk.js.utils.Record
 import kotlin.Array
 import kotlin.ByteArray
 import kotlin.Double
@@ -98,13 +99,13 @@ public external class HealthcarePartyJs(
 
 	public val specialityCodes: Array<CodeStubJs>
 
-	public val sendFormats: dynamic
+	public val sendFormats: Record<String, String>
 
 	public val notes: String?
 
 	public val financialInstitutionInformation: Array<DecryptedFinancialInstitutionInformationJs>
 
-	public val descr: dynamic
+	public val descr: Record<String, String>?
 
 	public val billingType: String?
 
@@ -118,19 +119,19 @@ public external class HealthcarePartyJs(
 
 	public val flatRateTarifications: Array<DecryptedFlatRateTarificationJs>
 
-	public val importedData: dynamic
+	public val importedData: Record<String, String>
 
-	public val options: dynamic
+	public val options: Record<String, String>
 
 	override val properties: Array<DecryptedPropertyStubJs>
 
-	override val hcPartyKeys: dynamic
+	override val hcPartyKeys: Record<String, Array<String>>
 
-	override val aesExchangeKeys: dynamic
+	override val aesExchangeKeys: Record<String, Record<String, Record<String, String>>>
 
-	override val transferKeys: dynamic
+	override val transferKeys: Record<String, Record<String, String>>
 
-	override val privateKeyShamirPartitions: dynamic
+	override val privateKeyShamirPartitions: Record<String, String>
 
 	override val publicKey: String?
 

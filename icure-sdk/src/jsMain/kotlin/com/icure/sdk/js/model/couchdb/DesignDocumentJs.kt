@@ -3,6 +3,7 @@
 
 package com.icure.sdk.js.model.couchdb
 
+import com.icure.sdk.js.utils.Record
 import kotlin.String
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
@@ -15,17 +16,17 @@ public external class DesignDocumentJs(
 
 	public val rev: String?
 
-	public val revHistory: dynamic
+	public val revHistory: Record<String, String>
 
 	public val language: String?
 
-	public val views: dynamic
+	public val views: Record<String, ViewJs>
 
-	public val lists: dynamic
+	public val lists: Record<String, String>
 
-	public val shows: dynamic
+	public val shows: Record<String, String>
 
-	public val updateHandlers: dynamic
+	public val updateHandlers: Record<String, String>?
 
-	public val filters: dynamic
+	public val filters: Record<String, String>
 }

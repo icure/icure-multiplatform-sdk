@@ -3,6 +3,7 @@
 
 package com.icure.sdk.js.model.embed
 
+import com.icure.sdk.js.utils.Record
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.String
@@ -15,7 +16,7 @@ public sealed external interface PatientHealthCarePartyJs : EncryptableJs {
 
 	public val healthcarePartyId: String?
 
-	public val sendFormats: dynamic
+	public val sendFormats: Record<String, out String>
 
 	public val referralPeriods: Array<out ReferralPeriodJs>
 
@@ -35,7 +36,7 @@ public external class DecryptedPatientHealthCarePartyJs(
 
 	override val healthcarePartyId: String?
 
-	override val sendFormats: dynamic
+	override val sendFormats: Record<String, String>
 
 	override val referralPeriods: Array<ReferralPeriodJs>
 
@@ -56,7 +57,7 @@ public external class EncryptedPatientHealthCarePartyJs(
 
 	override val healthcarePartyId: String?
 
-	override val sendFormats: dynamic
+	override val sendFormats: Record<String, String>
 
 	override val referralPeriods: Array<ReferralPeriodJs>
 

@@ -13,7 +13,7 @@ import com.icure.sdk.model.specializations.Sha256HexString
 import kotlin.String
 
 public fun securityMetadata_toJs(obj: SecurityMetadata): SecurityMetadataJs {
-	val secureDelegations = mapToObject<_, _, SecureDelegationJs>(
+	val secureDelegations = mapToObject(
 		obj.secureDelegations,
 		{ x1: SecureDelegationKeyString ->
 			secureDelegationKeyString_toJs(x1)
@@ -22,7 +22,7 @@ public fun securityMetadata_toJs(obj: SecurityMetadata): SecurityMetadataJs {
 			secureDelegation_toJs(x1)
 		},
 	)
-	val keysEquivalences = mapToObject<_, _, String>(
+	val keysEquivalences = mapToObject(
 		obj.keysEquivalences,
 		{ x1: Sha256HexString ->
 			sha256HexString_toJs(x1)

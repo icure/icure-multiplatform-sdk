@@ -4,6 +4,7 @@ package com.icure.sdk.js.api.flavoured.`impl`
 import com.icure.sdk.api.flavoured.ClassificationApi
 import com.icure.sdk.js.api.flavoured.ClassificationApiJs
 import com.icure.sdk.js.api.flavoured.ClassificationFlavouredApiJs
+import com.icure.sdk.js.crypto.entities.ClassificationShareOptionsJs
 import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.crypto.entities.simpleShareResult_toJs
@@ -21,6 +22,7 @@ import com.icure.sdk.js.model.classification_toJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.couchdb.docIdentifier_toJs
 import com.icure.sdk.js.model.specializations.hexString_toJs
+import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.sdk.model.Classification
@@ -64,7 +66,8 @@ internal class ClassificationApiImplJs(
 			)}
 
 
-		override fun tryShareWithMany(classification: EncryptedClassificationJs, delegates: dynamic):
+		override fun tryShareWithMany(classification: EncryptedClassificationJs,
+				delegates: Record<String, ClassificationShareOptionsJs>):
 				Promise<SimpleShareResultJs<EncryptedClassificationJs>> = GlobalScope.promise {
 			simpleShareResult_toJs(
 				classificationApi.encrypted.tryShareWithMany(com.icure.sdk.js.model.classification_fromJs(classification),
@@ -84,8 +87,9 @@ internal class ClassificationApiImplJs(
 			)}
 
 
-		override fun shareWithMany(classification: EncryptedClassificationJs, delegates: dynamic):
-				Promise<EncryptedClassificationJs> = GlobalScope.promise {
+		override fun shareWithMany(classification: EncryptedClassificationJs,
+				delegates: Record<String, ClassificationShareOptionsJs>): Promise<EncryptedClassificationJs> =
+				GlobalScope.promise {
 			classification_toJs(classificationApi.encrypted.shareWithMany(com.icure.sdk.js.model.classification_fromJs(classification),
 					com.icure.sdk.js.model.CheckedConverters.objectToMap(
 			  delegates,
@@ -165,7 +169,8 @@ internal class ClassificationApiImplJs(
 			)}
 
 
-		override fun tryShareWithMany(classification: ClassificationJs, delegates: dynamic):
+		override fun tryShareWithMany(classification: ClassificationJs,
+				delegates: Record<String, ClassificationShareOptionsJs>):
 				Promise<SimpleShareResultJs<ClassificationJs>> = GlobalScope.promise {
 			simpleShareResult_toJs(
 				classificationApi.tryAndRecover.tryShareWithMany(com.icure.sdk.js.model.classification_fromJs(classification),
@@ -185,8 +190,9 @@ internal class ClassificationApiImplJs(
 			)}
 
 
-		override fun shareWithMany(classification: ClassificationJs, delegates: dynamic):
-				Promise<ClassificationJs> = GlobalScope.promise {
+		override fun shareWithMany(classification: ClassificationJs,
+				delegates: Record<String, ClassificationShareOptionsJs>): Promise<ClassificationJs> =
+				GlobalScope.promise {
 			classification_toJs(classificationApi.tryAndRecover.shareWithMany(com.icure.sdk.js.model.classification_fromJs(classification),
 					com.icure.sdk.js.model.CheckedConverters.objectToMap(
 			  delegates,
@@ -254,7 +260,7 @@ internal class ClassificationApiImplJs(
 		base: DecryptedClassificationJs?,
 		patient: PatientJs,
 		user: UserJs?,
-		delegates: dynamic,
+		delegates: Record<String, String>,
 		secretId: SecretIdOptionJs,
 	): Promise<DecryptedClassificationJs> = GlobalScope.promise {
 		classification_toJs(classificationApi.withEncryptionMetadata(base?.let { nonNull1 ->
@@ -350,7 +356,8 @@ internal class ClassificationApiImplJs(
 		)}
 
 
-	override fun tryShareWithMany(classification: DecryptedClassificationJs, delegates: dynamic):
+	override fun tryShareWithMany(classification: DecryptedClassificationJs,
+			delegates: Record<String, ClassificationShareOptionsJs>):
 			Promise<SimpleShareResultJs<DecryptedClassificationJs>> = GlobalScope.promise {
 		simpleShareResult_toJs(
 			classificationApi.tryShareWithMany(com.icure.sdk.js.model.classification_fromJs(classification),
@@ -370,8 +377,9 @@ internal class ClassificationApiImplJs(
 		)}
 
 
-	override fun shareWithMany(classification: DecryptedClassificationJs, delegates: dynamic):
-			Promise<DecryptedClassificationJs> = GlobalScope.promise {
+	override fun shareWithMany(classification: DecryptedClassificationJs,
+			delegates: Record<String, ClassificationShareOptionsJs>): Promise<DecryptedClassificationJs> =
+			GlobalScope.promise {
 		classification_toJs(classificationApi.shareWithMany(com.icure.sdk.js.model.classification_fromJs(classification),
 				com.icure.sdk.js.model.CheckedConverters.objectToMap(
 		  delegates,

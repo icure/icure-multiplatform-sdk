@@ -4,6 +4,7 @@ package com.icure.sdk.js.api.flavoured.`impl`
 import com.icure.sdk.api.flavoured.MessageApi
 import com.icure.sdk.js.api.flavoured.MessageApiJs
 import com.icure.sdk.js.api.flavoured.MessageFlavouredApiJs
+import com.icure.sdk.js.crypto.entities.MessageShareOptionsJs
 import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.crypto.entities.simpleShareResult_toJs
@@ -28,6 +29,7 @@ import com.icure.sdk.js.model.message_fromJs
 import com.icure.sdk.js.model.message_toJs
 import com.icure.sdk.js.model.paginatedList_toJs
 import com.icure.sdk.js.model.specializations.hexString_toJs
+import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.sdk.model.DecryptedMessage
@@ -77,7 +79,8 @@ internal class MessageApiImplJs(
 			)}
 
 
-		override fun tryShareWithMany(message: EncryptedMessageJs, delegates: dynamic):
+		override fun tryShareWithMany(message: EncryptedMessageJs,
+				delegates: Record<String, MessageShareOptionsJs>):
 				Promise<SimpleShareResultJs<EncryptedMessageJs>> = GlobalScope.promise {
 			simpleShareResult_toJs(
 				messageApi.encrypted.tryShareWithMany(com.icure.sdk.js.model.message_fromJs(message),
@@ -97,8 +100,9 @@ internal class MessageApiImplJs(
 			)}
 
 
-		override fun shareWithMany(message: EncryptedMessageJs, delegates: dynamic):
-				Promise<EncryptedMessageJs> = GlobalScope.promise {
+		override fun shareWithMany(message: EncryptedMessageJs,
+				delegates: Record<String, MessageShareOptionsJs>): Promise<EncryptedMessageJs> =
+				GlobalScope.promise {
 			message_toJs(messageApi.encrypted.shareWithMany(com.icure.sdk.js.model.message_fromJs(message),
 					com.icure.sdk.js.model.CheckedConverters.objectToMap(
 			  delegates,
@@ -389,8 +393,9 @@ internal class MessageApiImplJs(
 			)}
 
 
-		override fun tryShareWithMany(message: MessageJs, delegates: dynamic):
-				Promise<SimpleShareResultJs<MessageJs>> = GlobalScope.promise {
+		override fun tryShareWithMany(message: MessageJs,
+				delegates: Record<String, MessageShareOptionsJs>): Promise<SimpleShareResultJs<MessageJs>> =
+				GlobalScope.promise {
 			simpleShareResult_toJs(
 				messageApi.tryAndRecover.tryShareWithMany(com.icure.sdk.js.model.message_fromJs(message),
 						com.icure.sdk.js.model.CheckedConverters.objectToMap(
@@ -409,8 +414,8 @@ internal class MessageApiImplJs(
 			)}
 
 
-		override fun shareWithMany(message: MessageJs, delegates: dynamic): Promise<MessageJs> =
-				GlobalScope.promise {
+		override fun shareWithMany(message: MessageJs, delegates: Record<String, MessageShareOptionsJs>):
+				Promise<MessageJs> = GlobalScope.promise {
 			message_toJs(messageApi.tryAndRecover.shareWithMany(com.icure.sdk.js.model.message_fromJs(message),
 					com.icure.sdk.js.model.CheckedConverters.objectToMap(
 			  delegates,
@@ -682,7 +687,7 @@ internal class MessageApiImplJs(
 		base: DecryptedMessageJs?,
 		patient: PatientJs?,
 		user: UserJs?,
-		delegates: dynamic,
+		delegates: Record<String, String>,
 		secretId: SecretIdOptionJs,
 	): Promise<DecryptedMessageJs> = GlobalScope.promise {
 		message_toJs(messageApi.withEncryptionMetadata(base?.let { nonNull1 ->
@@ -802,7 +807,8 @@ internal class MessageApiImplJs(
 		)}
 
 
-	override fun tryShareWithMany(message: DecryptedMessageJs, delegates: dynamic):
+	override fun tryShareWithMany(message: DecryptedMessageJs,
+			delegates: Record<String, MessageShareOptionsJs>):
 			Promise<SimpleShareResultJs<DecryptedMessageJs>> = GlobalScope.promise {
 		simpleShareResult_toJs(
 			messageApi.tryShareWithMany(com.icure.sdk.js.model.message_fromJs(message),
@@ -822,8 +828,9 @@ internal class MessageApiImplJs(
 		)}
 
 
-	override fun shareWithMany(message: DecryptedMessageJs, delegates: dynamic):
-			Promise<DecryptedMessageJs> = GlobalScope.promise {
+	override fun shareWithMany(message: DecryptedMessageJs,
+			delegates: Record<String, MessageShareOptionsJs>): Promise<DecryptedMessageJs> =
+			GlobalScope.promise {
 		message_toJs(messageApi.shareWithMany(com.icure.sdk.js.model.message_fromJs(message),
 				com.icure.sdk.js.model.CheckedConverters.objectToMap(
 		  delegates,

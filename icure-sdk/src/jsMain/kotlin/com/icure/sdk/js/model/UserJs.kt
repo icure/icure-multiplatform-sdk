@@ -5,7 +5,9 @@ package com.icure.sdk.js.model
 
 import com.icure.sdk.js.model.base.IdentifierJs
 import com.icure.sdk.js.model.base.StoredDocumentJs
+import com.icure.sdk.js.model.security.AuthenticationTokenJs
 import com.icure.sdk.js.model.security.PermissionJs
+import com.icure.sdk.js.utils.Record
 import kotlin.Array
 import kotlin.Double
 import kotlin.String
@@ -50,7 +52,7 @@ public external class UserJs(
 
 	public val deviceId: String?
 
-	public val autoDelegations: dynamic
+	public val autoDelegations: Record<String, Array<String>>
 
 	public val createdDate: Double?
 
@@ -60,9 +62,9 @@ public external class UserJs(
 
 	public val mobilePhone: String?
 
-	public val applicationTokens: dynamic
+	public val applicationTokens: Record<String, String>
 
-	public val authenticationTokens: dynamic
+	public val authenticationTokens: Record<String, AuthenticationTokenJs>
 
 	public val systemMetadata: UserJs_SystemMetadataJs?
 }

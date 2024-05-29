@@ -8,6 +8,7 @@ import com.icure.sdk.js.model.base.StoredDocumentJs
 import com.icure.sdk.js.model.embed.DecryptedValorisationJs
 import com.icure.sdk.js.model.embed.LetterValueJs
 import com.icure.sdk.js.model.embed.PeriodicityJs
+import com.icure.sdk.js.utils.Record
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
@@ -25,7 +26,7 @@ public external class TarificationJs(
 
 	override val deletionDate: Double?
 
-	override val label: dynamic
+	override val label: Record<String, String>?
 
 	override val context: String?
 
@@ -45,21 +46,21 @@ public external class TarificationJs(
 
 	public val links: Array<String>
 
-	public val qualifiedLinks: dynamic
+	public val qualifiedLinks: Record<String, Array<String>>
 
 	public val flags: Array<String>
 
-	public val searchTerms: dynamic
+	public val searchTerms: Record<String, Array<String>>
 
 	public val `data`: String?
 
-	public val appendices: dynamic
+	public val appendices: Record<String, String>
 
 	public val disabled: Boolean
 
 	public val valorisations: Array<DecryptedValorisationJs>
 
-	public val category: dynamic
+	public val category: Record<String, String>
 
 	public val consultationCode: Boolean?
 

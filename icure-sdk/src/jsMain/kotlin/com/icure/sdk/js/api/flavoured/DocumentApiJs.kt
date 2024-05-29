@@ -3,6 +3,7 @@
 
 package com.icure.sdk.js.api.flavoured
 
+import com.icure.sdk.js.crypto.entities.DocumentShareOptionsJs
 import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.model.DecryptedDocumentJs
@@ -12,6 +13,7 @@ import com.icure.sdk.js.model.MessageJs
 import com.icure.sdk.js.model.PatientJs
 import com.icure.sdk.js.model.UserJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
+import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
 import kotlin.Boolean
@@ -35,7 +37,7 @@ public external interface DocumentApiJs {
 		base: DecryptedDocumentJs?,
 		message: MessageJs?,
 		user: UserJs?,
-		delegates: dynamic,
+		delegates: Record<String, String>,
 		secretId: SecretIdOptionJs,
 	): Promise<DecryptedDocumentJs>
 
@@ -116,11 +118,12 @@ public external interface DocumentApiJs {
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<DecryptedDocumentJs>>
 
-	public fun tryShareWithMany(document: DecryptedDocumentJs, delegates: dynamic):
+	public fun tryShareWithMany(document: DecryptedDocumentJs,
+			delegates: Record<String, DocumentShareOptionsJs>):
 			Promise<SimpleShareResultJs<DecryptedDocumentJs>>
 
-	public fun shareWithMany(document: DecryptedDocumentJs, delegates: dynamic):
-			Promise<DecryptedDocumentJs>
+	public fun shareWithMany(document: DecryptedDocumentJs,
+			delegates: Record<String, DocumentShareOptionsJs>): Promise<DecryptedDocumentJs>
 
 	public fun findDocumentsByHcPartyPatient(
 		hcPartyId: String,

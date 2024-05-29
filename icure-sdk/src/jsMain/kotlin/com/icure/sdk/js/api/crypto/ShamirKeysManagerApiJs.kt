@@ -3,8 +3,10 @@
 
 package com.icure.sdk.js.api.crypto
 
+import com.icure.sdk.js.crypto.entities.ShamirUpdateRequestJs
 import com.icure.sdk.js.model.CryptoActorStubWithTypeJs
 import com.icure.sdk.js.model.base.CryptoActorJs
+import com.icure.sdk.js.utils.Record
 import kotlin.Array
 import kotlin.String
 import kotlin.js.JsName
@@ -13,8 +15,8 @@ import kotlin.js.Promise
 
 @JsName("ShamirKeysManagerApi")
 public external interface ShamirKeysManagerApiJs {
-	public fun getExistingSplitsInfo(dataOwner: CryptoActorJs): dynamic
+	public fun getExistingSplitsInfo(dataOwner: CryptoActorJs): Record<String, Array<String>>
 
-	public fun updateSelfSplits(keySplitsToUpdate: dynamic, keySplitsToDelete: Array<String>):
-			Promise<CryptoActorStubWithTypeJs>
+	public fun updateSelfSplits(keySplitsToUpdate: Record<String, ShamirUpdateRequestJs>,
+			keySplitsToDelete: Array<String>): Promise<CryptoActorStubWithTypeJs>
 }

@@ -66,7 +66,7 @@ public
 public fun shareAllPatientDataOptions_Result_toJs(obj: ShareAllPatientDataOptions.Result):
 		ShareAllPatientDataOptionsJs_ResultJs {
 	val patient = patient_toJs(obj.patient)
-	val statuses = mapToObject<_, _, ShareAllPatientDataOptionsJs_EntityResultJs>(
+	val statuses = mapToObject(
 		obj.statuses,
 		{ x1: ShareAllPatientDataOptions.ShareableEntity ->
 			x1.name

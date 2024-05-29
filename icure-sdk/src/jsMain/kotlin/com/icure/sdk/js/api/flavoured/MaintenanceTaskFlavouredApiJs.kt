@@ -3,10 +3,12 @@
 
 package com.icure.sdk.js.api.flavoured
 
+import com.icure.sdk.js.crypto.entities.MaintenanceTaskShareOptionsJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.model.MaintenanceTaskJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.filter.chain.FilterChainJs
+import com.icure.sdk.js.utils.Record
 import kotlin.Double
 import kotlin.String
 import kotlin.js.JsName
@@ -23,10 +25,11 @@ public external interface MaintenanceTaskFlavouredApiJs<E : MaintenanceTaskJs> {
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<E>>
 
-	public fun tryShareWithMany(maintenanceTask: E, delegates: dynamic):
-			Promise<SimpleShareResultJs<E>>
+	public fun tryShareWithMany(maintenanceTask: E,
+			delegates: Record<String, MaintenanceTaskShareOptionsJs>): Promise<SimpleShareResultJs<E>>
 
-	public fun shareWithMany(maintenanceTask: E, delegates: dynamic): Promise<E>
+	public fun shareWithMany(maintenanceTask: E,
+			delegates: Record<String, MaintenanceTaskShareOptionsJs>): Promise<E>
 
 	public fun modifyMaintenanceTask(entity: E): Promise<E>
 

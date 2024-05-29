@@ -3,9 +3,11 @@
 
 package com.icure.sdk.js.api.flavoured
 
+import com.icure.sdk.js.crypto.entities.FormShareOptionsJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.model.FormJs
 import com.icure.sdk.js.model.PatientJs
+import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
 import kotlin.Boolean
@@ -25,9 +27,10 @@ public external interface FormFlavouredApiJs<E : FormJs> {
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<E>>
 
-	public fun tryShareWithMany(form: E, delegates: dynamic): Promise<SimpleShareResultJs<E>>
+	public fun tryShareWithMany(form: E, delegates: Record<String, FormShareOptionsJs>):
+			Promise<SimpleShareResultJs<E>>
 
-	public fun shareWithMany(form: E, delegates: dynamic): Promise<E>
+	public fun shareWithMany(form: E, delegates: Record<String, FormShareOptionsJs>): Promise<E>
 
 	public fun findFormsByHcPartyPatient(
 		hcPartyId: String,

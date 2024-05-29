@@ -3,6 +3,7 @@
 
 package com.icure.sdk.js.model.embed.form.template
 
+import com.icure.sdk.js.utils.Record
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
@@ -32,9 +33,9 @@ public external class MultipleChoiceJs(
 
 	override val codifications: Array<String>?
 
-	override val options: dynamic
+	override val options: Record<String, String>?
 
-	override val labels: dynamic
+	override val labels: Record<String, String>?
 
 	override val `value`: String?
 

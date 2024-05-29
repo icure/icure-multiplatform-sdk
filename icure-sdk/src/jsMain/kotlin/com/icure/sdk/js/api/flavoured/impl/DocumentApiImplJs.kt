@@ -4,6 +4,7 @@ package com.icure.sdk.js.api.flavoured.`impl`
 import com.icure.sdk.api.flavoured.DocumentApi
 import com.icure.sdk.js.api.flavoured.DocumentApiJs
 import com.icure.sdk.js.api.flavoured.DocumentFlavouredApiJs
+import com.icure.sdk.js.crypto.entities.DocumentShareOptionsJs
 import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.crypto.entities.simpleShareResult_toJs
@@ -24,6 +25,7 @@ import com.icure.sdk.js.model.couchdb.docIdentifier_toJs
 import com.icure.sdk.js.model.document_fromJs
 import com.icure.sdk.js.model.document_toJs
 import com.icure.sdk.js.model.specializations.hexString_toJs
+import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.sdk.model.DecryptedDocument
@@ -68,7 +70,8 @@ internal class DocumentApiImplJs(
 			)}
 
 
-		override fun tryShareWithMany(document: EncryptedDocumentJs, delegates: dynamic):
+		override fun tryShareWithMany(document: EncryptedDocumentJs,
+				delegates: Record<String, DocumentShareOptionsJs>):
 				Promise<SimpleShareResultJs<EncryptedDocumentJs>> = GlobalScope.promise {
 			simpleShareResult_toJs(
 				documentApi.encrypted.tryShareWithMany(com.icure.sdk.js.model.document_fromJs(document),
@@ -88,8 +91,9 @@ internal class DocumentApiImplJs(
 			)}
 
 
-		override fun shareWithMany(document: EncryptedDocumentJs, delegates: dynamic):
-				Promise<EncryptedDocumentJs> = GlobalScope.promise {
+		override fun shareWithMany(document: EncryptedDocumentJs,
+				delegates: Record<String, DocumentShareOptionsJs>): Promise<EncryptedDocumentJs> =
+				GlobalScope.promise {
 			document_toJs(documentApi.encrypted.shareWithMany(com.icure.sdk.js.model.document_fromJs(document),
 					com.icure.sdk.js.model.CheckedConverters.objectToMap(
 			  delegates,
@@ -279,8 +283,9 @@ internal class DocumentApiImplJs(
 			)}
 
 
-		override fun tryShareWithMany(document: DocumentJs, delegates: dynamic):
-				Promise<SimpleShareResultJs<DocumentJs>> = GlobalScope.promise {
+		override fun tryShareWithMany(document: DocumentJs,
+				delegates: Record<String, DocumentShareOptionsJs>): Promise<SimpleShareResultJs<DocumentJs>> =
+				GlobalScope.promise {
 			simpleShareResult_toJs(
 				documentApi.tryAndRecover.tryShareWithMany(com.icure.sdk.js.model.document_fromJs(document),
 						com.icure.sdk.js.model.CheckedConverters.objectToMap(
@@ -299,8 +304,8 @@ internal class DocumentApiImplJs(
 			)}
 
 
-		override fun shareWithMany(document: DocumentJs, delegates: dynamic): Promise<DocumentJs> =
-				GlobalScope.promise {
+		override fun shareWithMany(document: DocumentJs,
+				delegates: Record<String, DocumentShareOptionsJs>): Promise<DocumentJs> = GlobalScope.promise {
 			document_toJs(documentApi.tryAndRecover.shareWithMany(com.icure.sdk.js.model.document_fromJs(document),
 					com.icure.sdk.js.model.CheckedConverters.objectToMap(
 			  delegates,
@@ -478,7 +483,7 @@ internal class DocumentApiImplJs(
 		base: DecryptedDocumentJs?,
 		message: MessageJs?,
 		user: UserJs?,
-		delegates: dynamic,
+		delegates: Record<String, String>,
 		secretId: SecretIdOptionJs,
 	): Promise<DecryptedDocumentJs> = GlobalScope.promise {
 		document_toJs(documentApi.withEncryptionMetadata(base?.let { nonNull1 ->
@@ -692,7 +697,8 @@ internal class DocumentApiImplJs(
 		)}
 
 
-	override fun tryShareWithMany(document: DecryptedDocumentJs, delegates: dynamic):
+	override fun tryShareWithMany(document: DecryptedDocumentJs,
+			delegates: Record<String, DocumentShareOptionsJs>):
 			Promise<SimpleShareResultJs<DecryptedDocumentJs>> = GlobalScope.promise {
 		simpleShareResult_toJs(
 			documentApi.tryShareWithMany(com.icure.sdk.js.model.document_fromJs(document),
@@ -712,8 +718,9 @@ internal class DocumentApiImplJs(
 		)}
 
 
-	override fun shareWithMany(document: DecryptedDocumentJs, delegates: dynamic):
-			Promise<DecryptedDocumentJs> = GlobalScope.promise {
+	override fun shareWithMany(document: DecryptedDocumentJs,
+			delegates: Record<String, DocumentShareOptionsJs>): Promise<DecryptedDocumentJs> =
+			GlobalScope.promise {
 		document_toJs(documentApi.shareWithMany(com.icure.sdk.js.model.document_fromJs(document),
 				com.icure.sdk.js.model.CheckedConverters.objectToMap(
 		  delegates,

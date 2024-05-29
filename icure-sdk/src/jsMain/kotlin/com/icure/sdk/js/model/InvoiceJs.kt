@@ -8,12 +8,14 @@ import com.icure.sdk.js.model.base.HasEncryptionMetadataJs
 import com.icure.sdk.js.model.base.ICureDocumentJs
 import com.icure.sdk.js.model.base.StoredDocumentJs
 import com.icure.sdk.js.model.embed.DecryptedInvoicingCodeJs
+import com.icure.sdk.js.model.embed.DelegationJs
 import com.icure.sdk.js.model.embed.EncryptableJs
 import com.icure.sdk.js.model.embed.EncryptedInvoicingCodeJs
 import com.icure.sdk.js.model.embed.IdentityDocumentReaderJs
 import com.icure.sdk.js.model.embed.InvoicingCodeJs
 import com.icure.sdk.js.model.embed.PaymentJs
 import com.icure.sdk.js.model.embed.SecurityMetadataJs
+import com.icure.sdk.js.utils.Record
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
@@ -32,7 +34,7 @@ public sealed external interface InvoiceJs : StoredDocumentJs, ICureDocumentJs<S
 
 	public val invoicingCodes: Array<out InvoicingCodeJs>
 
-	public val receipts: dynamic
+	public val receipts: Record<String, out String>
 
 	public val recipientType: String?
 
@@ -130,7 +132,7 @@ public sealed external interface InvoiceJs : StoredDocumentJs, ICureDocumentJs<S
 
 	public val cancelDate: Double?
 
-	public val options: dynamic
+	public val options: Record<String, out String>
 
 	public val isEncrypted: Boolean
 
@@ -172,7 +174,7 @@ public external class DecryptedInvoiceJs(
 
 	override val invoicingCodes: Array<DecryptedInvoicingCodeJs>
 
-	override val receipts: dynamic
+	override val receipts: Record<String, String>
 
 	override val recipientType: String?
 
@@ -270,15 +272,15 @@ public external class DecryptedInvoiceJs(
 
 	override val cancelDate: Double?
 
-	override val options: dynamic
+	override val options: Record<String, String>
 
 	override val secretForeignKeys: Array<String>
 
-	override val cryptedForeignKeys: dynamic
+	override val cryptedForeignKeys: Record<String, Array<DelegationJs>>
 
-	override val delegations: dynamic
+	override val delegations: Record<String, Array<DelegationJs>>
 
-	override val encryptionKeys: dynamic
+	override val encryptionKeys: Record<String, Array<DelegationJs>>
 
 	override val encryptedSelf: String?
 
@@ -323,7 +325,7 @@ public external class EncryptedInvoiceJs(
 
 	override val invoicingCodes: Array<EncryptedInvoicingCodeJs>
 
-	override val receipts: dynamic
+	override val receipts: Record<String, String>
 
 	override val recipientType: String?
 
@@ -421,15 +423,15 @@ public external class EncryptedInvoiceJs(
 
 	override val cancelDate: Double?
 
-	override val options: dynamic
+	override val options: Record<String, String>
 
 	override val secretForeignKeys: Array<String>
 
-	override val cryptedForeignKeys: dynamic
+	override val cryptedForeignKeys: Record<String, Array<DelegationJs>>
 
-	override val delegations: dynamic
+	override val delegations: Record<String, Array<DelegationJs>>
 
-	override val encryptionKeys: dynamic
+	override val encryptionKeys: Record<String, Array<DelegationJs>>
 
 	override val encryptedSelf: String?
 

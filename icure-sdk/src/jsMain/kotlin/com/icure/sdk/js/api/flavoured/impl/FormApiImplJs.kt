@@ -4,6 +4,7 @@ package com.icure.sdk.js.api.flavoured.`impl`
 import com.icure.sdk.api.flavoured.FormApi
 import com.icure.sdk.js.api.flavoured.FormApiJs
 import com.icure.sdk.js.api.flavoured.FormFlavouredApiJs
+import com.icure.sdk.js.crypto.entities.FormShareOptionsJs
 import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.crypto.entities.simpleShareResult_toJs
@@ -23,6 +24,7 @@ import com.icure.sdk.js.model.formTemplate_toJs
 import com.icure.sdk.js.model.form_fromJs
 import com.icure.sdk.js.model.form_toJs
 import com.icure.sdk.js.model.specializations.hexString_toJs
+import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.sdk.model.DecryptedForm
@@ -67,8 +69,9 @@ internal class FormApiImplJs(
 			)}
 
 
-		override fun tryShareWithMany(form: EncryptedFormJs, delegates: dynamic):
-				Promise<SimpleShareResultJs<EncryptedFormJs>> = GlobalScope.promise {
+		override fun tryShareWithMany(form: EncryptedFormJs,
+				delegates: Record<String, FormShareOptionsJs>): Promise<SimpleShareResultJs<EncryptedFormJs>> =
+				GlobalScope.promise {
 			simpleShareResult_toJs(
 				formApi.encrypted.tryShareWithMany(com.icure.sdk.js.model.form_fromJs(form),
 						com.icure.sdk.js.model.CheckedConverters.objectToMap(
@@ -87,8 +90,8 @@ internal class FormApiImplJs(
 			)}
 
 
-		override fun shareWithMany(form: EncryptedFormJs, delegates: dynamic): Promise<EncryptedFormJs> =
-				GlobalScope.promise {
+		override fun shareWithMany(form: EncryptedFormJs, delegates: Record<String, FormShareOptionsJs>):
+				Promise<EncryptedFormJs> = GlobalScope.promise {
 			form_toJs(formApi.encrypted.shareWithMany(com.icure.sdk.js.model.form_fromJs(form),
 					com.icure.sdk.js.model.CheckedConverters.objectToMap(
 			  delegates,
@@ -235,7 +238,7 @@ internal class FormApiImplJs(
 			)}
 
 
-		override fun tryShareWithMany(form: FormJs, delegates: dynamic):
+		override fun tryShareWithMany(form: FormJs, delegates: Record<String, FormShareOptionsJs>):
 				Promise<SimpleShareResultJs<FormJs>> = GlobalScope.promise {
 			simpleShareResult_toJs(
 				formApi.tryAndRecover.tryShareWithMany(com.icure.sdk.js.model.form_fromJs(form),
@@ -255,8 +258,8 @@ internal class FormApiImplJs(
 			)}
 
 
-		override fun shareWithMany(form: FormJs, delegates: dynamic): Promise<FormJs> =
-				GlobalScope.promise {
+		override fun shareWithMany(form: FormJs, delegates: Record<String, FormShareOptionsJs>):
+				Promise<FormJs> = GlobalScope.promise {
 			form_toJs(formApi.tryAndRecover.shareWithMany(com.icure.sdk.js.model.form_fromJs(form),
 					com.icure.sdk.js.model.CheckedConverters.objectToMap(
 			  delegates,
@@ -404,7 +407,7 @@ internal class FormApiImplJs(
 		base: DecryptedFormJs?,
 		patient: PatientJs,
 		user: UserJs?,
-		delegates: dynamic,
+		delegates: Record<String, String>,
 		secretId: SecretIdOptionJs,
 	): Promise<DecryptedFormJs> = GlobalScope.promise {
 		form_toJs(formApi.withEncryptionMetadata(base?.let { nonNull1 ->
@@ -552,8 +555,9 @@ internal class FormApiImplJs(
 		)}
 
 
-	override fun tryShareWithMany(form: DecryptedFormJs, delegates: dynamic):
-			Promise<SimpleShareResultJs<DecryptedFormJs>> = GlobalScope.promise {
+	override fun tryShareWithMany(form: DecryptedFormJs,
+			delegates: Record<String, FormShareOptionsJs>): Promise<SimpleShareResultJs<DecryptedFormJs>> =
+			GlobalScope.promise {
 		simpleShareResult_toJs(
 			formApi.tryShareWithMany(com.icure.sdk.js.model.form_fromJs(form),
 					com.icure.sdk.js.model.CheckedConverters.objectToMap(
@@ -572,8 +576,8 @@ internal class FormApiImplJs(
 		)}
 
 
-	override fun shareWithMany(form: DecryptedFormJs, delegates: dynamic): Promise<DecryptedFormJs> =
-			GlobalScope.promise {
+	override fun shareWithMany(form: DecryptedFormJs, delegates: Record<String, FormShareOptionsJs>):
+			Promise<DecryptedFormJs> = GlobalScope.promise {
 		form_toJs(formApi.shareWithMany(com.icure.sdk.js.model.form_fromJs(form),
 				com.icure.sdk.js.model.CheckedConverters.objectToMap(
 		  delegates,

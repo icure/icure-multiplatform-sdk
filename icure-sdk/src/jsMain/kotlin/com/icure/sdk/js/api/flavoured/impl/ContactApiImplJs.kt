@@ -4,6 +4,7 @@ package com.icure.sdk.js.api.flavoured.`impl`
 import com.icure.sdk.api.flavoured.ContactApi
 import com.icure.sdk.js.api.flavoured.ContactApiJs
 import com.icure.sdk.js.api.flavoured.ContactFlavouredApiJs
+import com.icure.sdk.js.crypto.entities.ContactShareOptionsJs
 import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.crypto.entities.simpleShareResult_toJs
@@ -36,6 +37,7 @@ import com.icure.sdk.js.model.filter.chain.FilterChainJs
 import com.icure.sdk.js.model.icureStub_toJs
 import com.icure.sdk.js.model.paginatedList_toJs
 import com.icure.sdk.js.model.specializations.hexString_toJs
+import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.sdk.model.Contact
@@ -83,7 +85,8 @@ internal class ContactApiImplJs(
 			)}
 
 
-		override fun tryShareWithMany(contact: EncryptedContactJs, delegates: dynamic):
+		override fun tryShareWithMany(contact: EncryptedContactJs,
+				delegates: Record<String, ContactShareOptionsJs>):
 				Promise<SimpleShareResultJs<EncryptedContactJs>> = GlobalScope.promise {
 			simpleShareResult_toJs(
 				contactApi.encrypted.tryShareWithMany(com.icure.sdk.js.model.contact_fromJs(contact),
@@ -103,8 +106,9 @@ internal class ContactApiImplJs(
 			)}
 
 
-		override fun shareWithMany(contact: EncryptedContactJs, delegates: dynamic):
-				Promise<EncryptedContactJs> = GlobalScope.promise {
+		override fun shareWithMany(contact: EncryptedContactJs,
+				delegates: Record<String, ContactShareOptionsJs>): Promise<EncryptedContactJs> =
+				GlobalScope.promise {
 			contact_toJs(contactApi.encrypted.shareWithMany(com.icure.sdk.js.model.contact_fromJs(contact),
 					com.icure.sdk.js.model.CheckedConverters.objectToMap(
 			  delegates,
@@ -392,8 +396,9 @@ internal class ContactApiImplJs(
 			)}
 
 
-		override fun tryShareWithMany(contact: ContactJs, delegates: dynamic):
-				Promise<SimpleShareResultJs<ContactJs>> = GlobalScope.promise {
+		override fun tryShareWithMany(contact: ContactJs,
+				delegates: Record<String, ContactShareOptionsJs>): Promise<SimpleShareResultJs<ContactJs>> =
+				GlobalScope.promise {
 			simpleShareResult_toJs(
 				contactApi.tryAndRecover.tryShareWithMany(com.icure.sdk.js.model.contact_fromJs(contact),
 						com.icure.sdk.js.model.CheckedConverters.objectToMap(
@@ -412,8 +417,8 @@ internal class ContactApiImplJs(
 			)}
 
 
-		override fun shareWithMany(contact: ContactJs, delegates: dynamic): Promise<ContactJs> =
-				GlobalScope.promise {
+		override fun shareWithMany(contact: ContactJs, delegates: Record<String, ContactShareOptionsJs>):
+				Promise<ContactJs> = GlobalScope.promise {
 			contact_toJs(contactApi.tryAndRecover.shareWithMany(com.icure.sdk.js.model.contact_fromJs(contact),
 					com.icure.sdk.js.model.CheckedConverters.objectToMap(
 			  delegates,
@@ -705,7 +710,7 @@ internal class ContactApiImplJs(
 		base: DecryptedContactJs?,
 		patient: PatientJs,
 		user: UserJs?,
-		delegates: dynamic,
+		delegates: Record<String, String>,
 		secretId: SecretIdOptionJs,
 	): Promise<DecryptedContactJs> = GlobalScope.promise {
 		contact_toJs(contactApi.withEncryptionMetadata(base?.let { nonNull1 ->
@@ -852,7 +857,8 @@ internal class ContactApiImplJs(
 		)}
 
 
-	override fun tryShareWithMany(contact: DecryptedContactJs, delegates: dynamic):
+	override fun tryShareWithMany(contact: DecryptedContactJs,
+			delegates: Record<String, ContactShareOptionsJs>):
 			Promise<SimpleShareResultJs<DecryptedContactJs>> = GlobalScope.promise {
 		simpleShareResult_toJs(
 			contactApi.tryShareWithMany(com.icure.sdk.js.model.contact_fromJs(contact),
@@ -872,8 +878,9 @@ internal class ContactApiImplJs(
 		)}
 
 
-	override fun shareWithMany(contact: DecryptedContactJs, delegates: dynamic):
-			Promise<DecryptedContactJs> = GlobalScope.promise {
+	override fun shareWithMany(contact: DecryptedContactJs,
+			delegates: Record<String, ContactShareOptionsJs>): Promise<DecryptedContactJs> =
+			GlobalScope.promise {
 		contact_toJs(contactApi.shareWithMany(com.icure.sdk.js.model.contact_fromJs(contact),
 				com.icure.sdk.js.model.CheckedConverters.objectToMap(
 		  delegates,

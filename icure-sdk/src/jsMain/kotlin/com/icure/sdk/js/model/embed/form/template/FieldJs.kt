@@ -3,6 +3,7 @@
 
 package com.icure.sdk.js.model.embed.form.template
 
+import com.icure.sdk.js.utils.Record
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
@@ -28,7 +29,7 @@ public sealed external interface FieldJs : StructureElementJs {
 
 	public val codifications: Array<out String>?
 
-	public val options: dynamic
+	public val options: Record<String, out String>?
 
 	public val hideCondition: String?
 
@@ -38,7 +39,7 @@ public sealed external interface FieldJs : StructureElementJs {
 
 	public val `value`: String?
 
-	public val labels: dynamic
+	public val labels: Record<String, out String>?
 
 	public val unit: String?
 

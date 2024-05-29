@@ -3,10 +3,12 @@
 
 package com.icure.sdk.js.api.flavoured
 
+import com.icure.sdk.js.crypto.entities.DocumentShareOptionsJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.model.DocumentJs
 import com.icure.sdk.js.model.EncryptedDocumentJs
 import com.icure.sdk.js.model.PatientJs
+import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
 import kotlin.Boolean
@@ -27,9 +29,11 @@ public external interface DocumentFlavouredApiJs<E : DocumentJs> {
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<E>>
 
-	public fun tryShareWithMany(document: E, delegates: dynamic): Promise<SimpleShareResultJs<E>>
+	public fun tryShareWithMany(document: E, delegates: Record<String, DocumentShareOptionsJs>):
+			Promise<SimpleShareResultJs<E>>
 
-	public fun shareWithMany(document: E, delegates: dynamic): Promise<E>
+	public fun shareWithMany(document: E, delegates: Record<String, DocumentShareOptionsJs>):
+			Promise<E>
 
 	public fun findDocumentsByHcPartyPatient(
 		hcPartyId: String,

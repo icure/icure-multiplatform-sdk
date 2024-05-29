@@ -5,6 +5,7 @@ package com.icure.sdk.js.api.flavoured
 
 import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
+import com.icure.sdk.js.crypto.entities.TopicShareOptionsJs
 import com.icure.sdk.js.model.DecryptedTopicJs
 import com.icure.sdk.js.model.EncryptedTopicJs
 import com.icure.sdk.js.model.PaginatedListJs
@@ -14,6 +15,7 @@ import com.icure.sdk.js.model.UserJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.filter.AbstractFilterJs
 import com.icure.sdk.js.model.filter.chain.FilterChainJs
+import com.icure.sdk.js.utils.Record
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
@@ -35,7 +37,7 @@ public external interface TopicApiJs {
 		base: DecryptedTopicJs?,
 		patient: PatientJs?,
 		user: UserJs?,
-		delegates: dynamic,
+		delegates: Record<String, String>,
 		secretId: SecretIdOptionJs,
 	): Promise<DecryptedTopicJs>
 
@@ -62,10 +64,11 @@ public external interface TopicApiJs {
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<DecryptedTopicJs>>
 
-	public fun tryShareWithMany(topic: DecryptedTopicJs, delegates: dynamic):
-			Promise<SimpleShareResultJs<DecryptedTopicJs>>
+	public fun tryShareWithMany(topic: DecryptedTopicJs,
+			delegates: Record<String, TopicShareOptionsJs>): Promise<SimpleShareResultJs<DecryptedTopicJs>>
 
-	public fun shareWithMany(topic: DecryptedTopicJs, delegates: dynamic): Promise<DecryptedTopicJs>
+	public fun shareWithMany(topic: DecryptedTopicJs, delegates: Record<String, TopicShareOptionsJs>):
+			Promise<DecryptedTopicJs>
 
 	public fun modifyTopic(entity: DecryptedTopicJs): Promise<DecryptedTopicJs>
 

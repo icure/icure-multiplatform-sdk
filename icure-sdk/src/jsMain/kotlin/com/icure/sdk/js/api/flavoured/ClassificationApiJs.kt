@@ -3,6 +3,7 @@
 
 package com.icure.sdk.js.api.flavoured
 
+import com.icure.sdk.js.crypto.entities.ClassificationShareOptionsJs
 import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.model.ClassificationJs
@@ -11,6 +12,7 @@ import com.icure.sdk.js.model.EncryptedClassificationJs
 import com.icure.sdk.js.model.PatientJs
 import com.icure.sdk.js.model.UserJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
+import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
 import kotlin.Boolean
@@ -34,7 +36,7 @@ public external interface ClassificationApiJs {
 		base: DecryptedClassificationJs?,
 		patient: PatientJs,
 		user: UserJs?,
-		delegates: dynamic,
+		delegates: Record<String, String>,
 		secretId: SecretIdOptionJs,
 	): Promise<DecryptedClassificationJs>
 
@@ -59,11 +61,12 @@ public external interface ClassificationApiJs {
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<DecryptedClassificationJs>>
 
-	public fun tryShareWithMany(classification: DecryptedClassificationJs, delegates: dynamic):
+	public fun tryShareWithMany(classification: DecryptedClassificationJs,
+			delegates: Record<String, ClassificationShareOptionsJs>):
 			Promise<SimpleShareResultJs<DecryptedClassificationJs>>
 
-	public fun shareWithMany(classification: DecryptedClassificationJs, delegates: dynamic):
-			Promise<DecryptedClassificationJs>
+	public fun shareWithMany(classification: DecryptedClassificationJs,
+			delegates: Record<String, ClassificationShareOptionsJs>): Promise<DecryptedClassificationJs>
 
 	public fun findClassificationsByHcPartyPatient(
 		hcPartyId: String,

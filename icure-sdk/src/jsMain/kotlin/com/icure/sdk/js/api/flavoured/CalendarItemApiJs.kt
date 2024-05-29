@@ -3,6 +3,7 @@
 
 package com.icure.sdk.js.api.flavoured
 
+import com.icure.sdk.js.crypto.entities.CalendarItemShareOptionsJs
 import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.model.CalendarItemJs
@@ -12,6 +13,7 @@ import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.PatientJs
 import com.icure.sdk.js.model.UserJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
+import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
 import kotlin.Boolean
@@ -34,7 +36,7 @@ public external interface CalendarItemApiJs {
 		base: DecryptedCalendarItemJs?,
 		patient: PatientJs,
 		user: UserJs?,
-		delegates: dynamic,
+		delegates: Record<String, String>,
 		secretId: SecretIdOptionJs,
 	): Promise<DecryptedCalendarItemJs>
 
@@ -59,11 +61,12 @@ public external interface CalendarItemApiJs {
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<DecryptedCalendarItemJs>>
 
-	public fun tryShareWithMany(calendarItem: DecryptedCalendarItemJs, delegates: dynamic):
+	public fun tryShareWithMany(calendarItem: DecryptedCalendarItemJs,
+			delegates: Record<String, CalendarItemShareOptionsJs>):
 			Promise<SimpleShareResultJs<DecryptedCalendarItemJs>>
 
-	public fun shareWithMany(calendarItem: DecryptedCalendarItemJs, delegates: dynamic):
-			Promise<DecryptedCalendarItemJs>
+	public fun shareWithMany(calendarItem: DecryptedCalendarItemJs,
+			delegates: Record<String, CalendarItemShareOptionsJs>): Promise<DecryptedCalendarItemJs>
 
 	public fun findCalendarItemsByHcPartyPatient(
 		hcPartyId: String,

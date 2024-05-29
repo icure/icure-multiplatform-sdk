@@ -3,11 +3,13 @@
 
 package com.icure.sdk.js.api.flavoured
 
+import com.icure.sdk.js.crypto.entities.HealthElementShareOptionsJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.model.HealthElementJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.PatientJs
 import com.icure.sdk.js.model.filter.chain.FilterChainJs
+import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
 import kotlin.Boolean
@@ -27,9 +29,11 @@ public external interface HealthcareElementFlavouredApiJs<E : HealthElementJs> {
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<E>>
 
-	public fun tryShareWithMany(healthElement: E, delegates: dynamic): Promise<SimpleShareResultJs<E>>
+	public fun tryShareWithMany(healthElement: E,
+			delegates: Record<String, HealthElementShareOptionsJs>): Promise<SimpleShareResultJs<E>>
 
-	public fun shareWithMany(healthElement: E, delegates: dynamic): Promise<E>
+	public fun shareWithMany(healthElement: E, delegates: Record<String, HealthElementShareOptionsJs>):
+			Promise<E>
 
 	public fun findHealthcareElementsByHcPartyPatient(
 		hcPartyId: String,

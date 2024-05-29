@@ -3,6 +3,7 @@
 
 package com.icure.sdk.js.api.flavoured
 
+import com.icure.sdk.js.crypto.entities.InvoiceShareOptionsJs
 import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.model.DecryptedInvoiceJs
@@ -16,6 +17,7 @@ import com.icure.sdk.js.model.`data`.LabelledOccurenceJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.embed.EncryptedInvoicingCodeJs
 import com.icure.sdk.js.model.filter.chain.FilterChainJs
+import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
 import kotlin.Boolean
@@ -40,7 +42,7 @@ public external interface InvoiceApiJs {
 		base: DecryptedInvoiceJs?,
 		patient: PatientJs?,
 		user: UserJs?,
-		delegates: dynamic,
+		delegates: Record<String, String>,
 		secretId: SecretIdOptionJs,
 	): Promise<DecryptedInvoiceJs>
 
@@ -69,11 +71,12 @@ public external interface InvoiceApiJs {
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<DecryptedInvoiceJs>>
 
-	public fun tryShareWithMany(invoice: DecryptedInvoiceJs, delegates: dynamic):
+	public fun tryShareWithMany(invoice: DecryptedInvoiceJs,
+			delegates: Record<String, InvoiceShareOptionsJs>):
 			Promise<SimpleShareResultJs<DecryptedInvoiceJs>>
 
-	public fun shareWithMany(invoice: DecryptedInvoiceJs, delegates: dynamic):
-			Promise<DecryptedInvoiceJs>
+	public fun shareWithMany(invoice: DecryptedInvoiceJs,
+			delegates: Record<String, InvoiceShareOptionsJs>): Promise<DecryptedInvoiceJs>
 
 	public fun findInvoicesByHcPartyPatient(
 		hcPartyId: String,
