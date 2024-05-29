@@ -113,6 +113,7 @@ interface ReceiptApi : ReceiptBasicFlavourlessApi, ReceiptFlavouredApi<Decrypted
 	suspend fun hasWriteAccess(receipt: Receipt): Boolean
 	suspend fun decryptPatientIdOf(receipt: Receipt): Set<String>
 	suspend fun createDelegationDeAnonymizationMetadata(entity: Receipt, delegates: Set<String>)
+	suspend fun logReceipt(user: User, docId: String, refs: List<String>, blobType: String, blob: ByteArray): Receipt
 
 	val encrypted: ReceiptFlavouredApi<EncryptedReceipt>
 	val tryAndRecover: ReceiptFlavouredApi<Receipt>
@@ -286,6 +287,26 @@ internal class ReceiptApiImpl(
 
 	override suspend fun createDelegationDeAnonymizationMetadata(entity: Receipt, delegates: Set<String>) {
 		crypto.delegationsDeAnonymization.createOrUpdateDeAnonymizationInfo(entity.withTypeInfo(), delegates)
+	}
+
+	override suspend fun logReceipt(user: User, docId: String, refs: List<String>, blobType: String, blob: ByteArray): Receipt {
+		val newReceipt = withEncryptionMetadata(
+			base = DecryptedReceipt(
+				id = crypto.primitives.strongRandom.randomUUID(),
+				documentId = docId,
+				references = refs
+			),
+			user = user,
+			patient = null
+		).let { createReceipt(it) }
+		checkNotNull(newReceipt.rev) {
+			"Receipt creation failed"
+		}
+		return if(blob.isNotEmpty()) {
+			setRawReceiptAttachment(newReceipt.id, newReceipt.rev, blobType, blob)
+		} else {
+			newReceipt
+		}
 	}
 
 	override suspend fun encryptAndSetReceiptAttachment(receipt: Receipt, blobType: String, attachment: ByteArray): EncryptedReceipt {

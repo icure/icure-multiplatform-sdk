@@ -16,6 +16,7 @@ import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.EntityAccessInformation
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.crypto.entities.EntityWithTypeInfo
+import com.icure.sdk.crypto.entities.ExportDataOptions
 import com.icure.sdk.crypto.entities.ShareAllPatientDataOptions
 import com.icure.sdk.crypto.entities.ShareAllPatientDataOptions.BulkShareErrorsException
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
@@ -23,6 +24,7 @@ import com.icure.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.withTypeInfo
 import com.icure.sdk.model.DataOwnerRegistrationSuccess
+import com.icure.sdk.model.DecryptedContact
 import com.icure.sdk.model.DecryptedPatient
 import com.icure.sdk.model.EncryptedPatient
 import com.icure.sdk.model.IcureStub
@@ -50,7 +52,10 @@ import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.currentEpochMs
+import com.icure.sdk.utils.pagination.IdsPageIterator
+import com.icure.sdk.utils.pagination.forEach
 import kotlinx.serialization.json.decodeFromJsonElement
+import com.icure.sdk.api.RecoveryApi
 
 @OptIn(InternalIcureApi::class)
 private val ENCRYPTED_FIELDS_MANIFEST =
@@ -277,6 +282,11 @@ interface PatientApi : PatientBasicFlavourlessApi, PatientFlavouredApi<Decrypted
 		delegatesWithShareType: Map<String, Set<ShareAllPatientDataOptions.Tag>>
 	): ShareAllPatientDataOptions.Result
 
+	suspend fun export(user: User, patientId: String, dataOwnerId: String): ExportDataOptions.Result
+
+	suspend fun <T : HasEncryptionMetadata> getPatientIdOfChildDocumentForHcpAndHcpParents(childDocument: EntityWithTypeInfo<T>, healthcarePartyId: String): String
+
+
 	suspend fun getConfidentialSecretIdsOf(patient: Patient): Set<String>
 
 	/**
@@ -288,9 +298,9 @@ interface PatientApi : PatientBasicFlavourlessApi, PatientFlavouredApi<Decrypted
 	 * automatically created the first time you share data with the patient, and your implementation of the crypto
 	 * strategies will be used to validate the public keys of the patient.
 	 *
-	 * Once exchange data is initialized you can use the {@link IccRecoveryXApi.createExchangeDataRecoveryInfo} to
+	 * Once exchange data is initialized you can use the [RecoveryApi.createExchangeDataRecoveryInfo] to
 	 * generate a key that the patient will be able to use on his first login to immediately gain access to the exchange
-	 * data (through the {@link IccRecoveryXApi.recoverExchangeData} method).
+	 * data (through the [RecoveryApi.recoverExchangeData] method).
 	 *
 	 * @param patientId the id of the newly invited patient.
 	 * @return true if exchange data was initialized, false if the patient already has a key pair and the exchange data
@@ -534,6 +544,8 @@ internal class PatientApiImpl(
 	private val rawHealthElementApi: RawHealthElementApi,
 	private val rawFormApi: RawFormApi,
 	private val rawContactApi: RawContactApi,
+	private val contactApi: ContactApi,
+	private val documentApi: DocumentApi,
 	private val rawInvoiceApi: RawInvoiceApi,
 	private val rawCalendarItemApi: RawCalendarItemApi,
 	private val rawClassificationApi: RawClassificationApi,
@@ -616,6 +628,17 @@ internal class PatientApiImpl(
 		encrypt(patient),
 	).successBody()
 
+	private suspend fun findDelegationStubsForHcPartyAndParent(
+		delegationSecretKeys: List<String>,
+		hcpId: String,
+		parentId: String?,
+		stubGetter: suspend (String, List<String>) -> List<IcureStub>
+	): List<IcureStub> {
+		val stubs = stubGetter(hcpId, delegationSecretKeys) +
+			if(parentId != null) stubGetter(parentId, delegationSecretKeys) else emptyList()
+		return stubs.distinctBy { it.id }
+	}
+
 	override suspend fun shareAllDataOfPatient(
 		user: User,
 		patientId: String,
@@ -636,15 +659,6 @@ internal class PatientApiImpl(
 		val delegationSecretKeys = getSecretIdsOf(patient)
 
 		val shareStatus = if(delegationSecretKeys.isNotEmpty()) {
-
-			suspend fun findDelegationStubsForHcPartyAndParent(
-				stubGetter: suspend (String, List<String>) -> List<IcureStub>
-			): List<IcureStub> {
-				val stubs = stubGetter(hcp.id, delegationSecretKeys.toList()) +
-					if(parentId != null) stubGetter(parentId, delegationSecretKeys.toList()) else emptyList()
-				return stubs.distinctBy { it.id }
-			}
-
 			suspend fun <T : HasEncryptionMetadata> doShareEntitiesAndUpdateStatus(
 				entities: List<EntityWithTypeInfo<T>>,
 				tagsCondition: (tags: Set<ShareAllPatientDataOptions.Tag>) -> Boolean,
@@ -687,7 +701,7 @@ internal class PatientApiImpl(
 				}
 			}
 
-			val retrievedHealthElements = findDelegationStubsForHcPartyAndParent { doId, delSecKeys ->
+			val retrievedHealthElements = findDelegationStubsForHcPartyAndParent(delegationSecretKeys.toList(), hcp.id, parentId) { doId, delSecKeys ->
 				rawHealthElementApi.findHealthElementsDelegationsStubsByHCPartyPatientForeignKeys(doId, delSecKeys).successBody()
 			}
 			val shareHealthElementsResult = doShareEntitiesAndUpdateStatus(
@@ -695,7 +709,7 @@ internal class PatientApiImpl(
 				tagsCondition = { it.contains(ShareAllPatientDataOptions.Tag.All) || it.contains(ShareAllPatientDataOptions.Tag.MedicalInformation) },
 			) { params -> rawHealthElementApi.bulkShareMinimal(params).successBody() }
 
-			val retrievedForms = findDelegationStubsForHcPartyAndParent { doId, delSecKeys ->
+			val retrievedForms = findDelegationStubsForHcPartyAndParent(delegationSecretKeys.toList(), hcp.id, parentId) { doId, delSecKeys ->
 				rawFormApi.findFormsDelegationsStubsByHCPartyAndPatientForeignKeys(doId, delSecKeys).successBody()
 			}
 			val shareFormsResult = doShareEntitiesAndUpdateStatus(
@@ -703,7 +717,7 @@ internal class PatientApiImpl(
 				tagsCondition = { it.contains(ShareAllPatientDataOptions.Tag.All) || it.contains(ShareAllPatientDataOptions.Tag.MedicalInformation) },
 			) { params -> rawFormApi.bulkShareMinimal(params).successBody() }
 
-			val retrievedContacts = findDelegationStubsForHcPartyAndParent { doId, delSecKeys ->
+			val retrievedContacts = findDelegationStubsForHcPartyAndParent(delegationSecretKeys.toList(), hcp.id, parentId) { doId, delSecKeys ->
 				rawContactApi.findContactsDelegationsStubsByHCPartyPatientForeignKeys(doId, delSecKeys).successBody()
 			}
 			val shareContactsResult = doShareEntitiesAndUpdateStatus(
@@ -711,7 +725,7 @@ internal class PatientApiImpl(
 				tagsCondition = { it.contains(ShareAllPatientDataOptions.Tag.All) || it.contains(ShareAllPatientDataOptions.Tag.MedicalInformation) },
 			) { params -> rawContactApi.bulkShareMinimal(params).successBody() }
 
-			val retrievedInvoices = findDelegationStubsForHcPartyAndParent { doId, delSecKeys ->
+			val retrievedInvoices = findDelegationStubsForHcPartyAndParent(delegationSecretKeys.toList(), hcp.id, parentId) { doId, delSecKeys ->
 				rawInvoiceApi.findInvoicesDelegationsStubsByHCPartyPatientForeignKeys(doId, delSecKeys).successBody()
 			}
 			val shareInvoicesResult = doShareEntitiesAndUpdateStatus(
@@ -719,7 +733,7 @@ internal class PatientApiImpl(
 				tagsCondition = { it.contains(ShareAllPatientDataOptions.Tag.All) || it.contains(ShareAllPatientDataOptions.Tag.FinancialInformation) },
 			) { params -> rawInvoiceApi.bulkShareMinimal(params).successBody() }
 
-			val retrievedCalendarItems = findDelegationStubsForHcPartyAndParent { doId, delSecKeys ->
+			val retrievedCalendarItems = findDelegationStubsForHcPartyAndParent(delegationSecretKeys.toList(), hcp.id, parentId) { doId, delSecKeys ->
 				rawCalendarItemApi.findCalendarItemsDelegationsStubsByHCPartyPatientForeignKeys(doId, delSecKeys).successBody()
 			}
 			val shareCalendarItemsResult = doShareEntitiesAndUpdateStatus(
@@ -727,7 +741,7 @@ internal class PatientApiImpl(
 				tagsCondition = { it.contains(ShareAllPatientDataOptions.Tag.All) || it.contains(ShareAllPatientDataOptions.Tag.MedicalInformation) },
 			) { params -> rawCalendarItemApi.bulkShareMinimal(params).successBody() }
 
-			val retrievedClassifications = findDelegationStubsForHcPartyAndParent { doId, delSecKeys ->
+			val retrievedClassifications = findDelegationStubsForHcPartyAndParent(delegationSecretKeys.toList(), hcp.id, parentId) { doId, delSecKeys ->
 				rawClassificationApi.findClassificationsDelegationsStubsByHCPartyPatientForeignKeys(doId, delSecKeys).successBody()
 			}
 			val shareClassificationResult = doShareEntitiesAndUpdateStatus(
@@ -781,6 +795,95 @@ internal class PatientApiImpl(
 			statuses = shareStatus + (ShareAllPatientDataOptions.ShareableEntity.Patient to patientStatus)
 		)
 	}
+
+	override suspend fun export(
+		user: User,
+		patientId: String,
+		dataOwnerId: String
+	): ExportDataOptions.Result {
+		val hcp = rawHealthcarePartyApi.getHealthcareParty(dataOwnerId).successBody() // Should we do it also for other data owners?
+		val parentId = hcp.parentId
+		val patient = encrypted.getPatient(patientId).let { patient ->
+			crypto.entity.ensureEncryptionKeysInitialised(patient.withTypeInfo())?.let {
+				encrypted.modifyPatient(it)
+			} ?: patient
+		}
+		val delegationSecretKeys = crypto.entity.secretIdsOf(patient.withTypeInfo(), dataOwnerId).toList()
+		return if(delegationSecretKeys.isNotEmpty()) {
+			val retrievedHealthElements = findDelegationStubsForHcPartyAndParent(delegationSecretKeys, hcp.id, parentId) { doId, delSecKeys ->
+				rawHealthElementApi.findHealthElementsDelegationsStubsByHCPartyPatientForeignKeys(doId, delSecKeys).successBody()
+			}
+			val retrievedForms = findDelegationStubsForHcPartyAndParent(delegationSecretKeys, hcp.id, parentId) { doId, delSecKeys ->
+				rawFormApi.findFormsDelegationsStubsByHCPartyAndPatientForeignKeys(doId, delSecKeys).successBody()
+			}
+			val retrievedInvoices = findDelegationStubsForHcPartyAndParent(delegationSecretKeys, hcp.id, parentId) { doId, delSecKeys ->
+				rawInvoiceApi.findInvoicesDelegationsStubsByHCPartyPatientForeignKeys(doId, delSecKeys).successBody()
+			}
+			val retrievedCalendarItems = findDelegationStubsForHcPartyAndParent(delegationSecretKeys, hcp.id, parentId) { doId, delSecKeys ->
+				rawCalendarItemApi.findCalendarItemsDelegationsStubsByHCPartyPatientForeignKeys(doId, delSecKeys).successBody()
+			}
+			val retrievedClassifications = findDelegationStubsForHcPartyAndParent(delegationSecretKeys, hcp.id, parentId) { doId, delSecKeys ->
+				rawClassificationApi.findClassificationsDelegationsStubsByHCPartyPatientForeignKeys(doId, delSecKeys).successBody()
+			}
+			val retrievedContacts = findDelegationStubsForHcPartyAndParent(delegationSecretKeys.toList(), hcp.id, parentId) { doId, delSecKeys ->
+				rawContactApi.findContactsDelegationsStubsByHCPartyPatientForeignKeys(doId, delSecKeys).successBody()
+			}
+			val documentIds = mutableSetOf<String>()
+			val contacts = mutableListOf<DecryptedContact>()
+			val contactsIterator = IdsPageIterator(
+				ids = retrievedContacts.map { it.id }
+			) { contactApi.getContacts(it) }
+			contactsIterator.forEach { contact ->
+				contact.services.flatMap { it.content.values }.forEach { content ->
+					if(content.documentId != null) {
+						documentIds.add(content.documentId)
+					}
+				}
+				contacts.add(contact)
+			}
+			val retrievedDocuments = documentApi.getDocuments(documentIds.toList())
+			ExportDataOptions.Result(
+				id = patientId,
+				patient = patient,
+				contacts = contacts,
+				forms = retrievedForms,
+				healthElements = retrievedHealthElements,
+				invoices = retrievedInvoices,
+				classifications = retrievedClassifications,
+				calItems = retrievedCalendarItems,
+				documents = retrievedDocuments,
+			)
+		} else {
+			ExportDataOptions.Result(
+				id = patientId,
+				patient = patient
+			)
+		}
+	}
+
+	override suspend fun <T : HasEncryptionMetadata> getPatientIdOfChildDocumentForHcpAndHcpParents(
+		childDocument: EntityWithTypeInfo<T>,
+		healthcarePartyId: String
+	): String {
+		val parentIds = crypto.entity.owningEntityIdsOf(childDocument, healthcarePartyId)
+		check(parentIds.isNotEmpty()) {
+			"Parent id is empty in CFK of child document with id ${childDocument.id} for hcpId: $healthcarePartyId"
+		}
+		check(parentIds.size == 1) {
+			"Child document with id ${childDocument.id} contains multiple parent ids in its CFKs for hcpId: $healthcarePartyId"
+		}
+
+		tailrec suspend fun findLastMergedPatientInHierarchy(patient: DecryptedPatient, maxMergeLevel: Int): DecryptedPatient {
+			return if(patient.mergeToPatientId != null) {
+				require(maxMergeLevel > 0) {
+					"Too many merged levels for parent (Patient) of child document ${childDocument.id} ; hcpId: $healthcarePartyId"
+				}
+				findLastMergedPatientInHierarchy(getPatient(patient.mergeToPatientId), maxMergeLevel - 1)
+			} else patient
+		}
+
+		return findLastMergedPatientInHierarchy(getPatient(parentIds.first()), 10).id
+ 	}
 
 	override suspend fun withEncryptionMetadata(
 		base: DecryptedPatient?,

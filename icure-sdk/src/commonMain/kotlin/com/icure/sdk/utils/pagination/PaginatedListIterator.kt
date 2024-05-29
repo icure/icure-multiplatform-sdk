@@ -25,3 +25,9 @@ interface PaginatedListIterator<T : Any> {
 	 */
 	suspend fun tryNext(): T?
 }
+
+suspend fun <T : Any> PaginatedListIterator<T>.forEach(block: suspend (T) -> Unit) {
+	while (hasNext()) {
+		block(next())
+	}
+}
