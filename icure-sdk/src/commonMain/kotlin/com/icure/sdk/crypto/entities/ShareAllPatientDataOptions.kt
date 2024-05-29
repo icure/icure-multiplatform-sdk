@@ -41,17 +41,3 @@ object ShareAllPatientDataOptions {
 	class BulkShareErrorsException(val errors: List<FailedRequestDetails>, message: String) : Exception(message)
 
 }
-
-object ExportDataOptions {
-	data class Result(
-		val id: String,
-		val patient: EncryptedPatient,
-		val contacts: List<DecryptedContact> = emptyList(),
-		val forms: List<IcureStub> = emptyList(),
-		val healthElements: List<IcureStub> = emptyList(),
-		val invoices: List<IcureStub> = emptyList(),
-		val classifications: List<IcureStub> = emptyList(),
-		val calItems: List<IcureStub> = emptyList(),
-		val documents: List<DecryptedDocument> = emptyList(),
-	)
-}
