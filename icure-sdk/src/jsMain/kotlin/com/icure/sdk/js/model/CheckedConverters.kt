@@ -1,9 +1,9 @@
 package com.icure.sdk.js.model
 
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataStub
+import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.crypto.entities.EntityWithTypeInfo
 import com.icure.sdk.js.crypto.entities.EntityWithTypeInfoJs
-import com.icure.sdk.js.crypto.entities.entityWithEncryptionMetadataTypeName_fromJs
 import com.icure.sdk.js.model.embed.DelegationJs
 import com.icure.sdk.js.model.embed.delegation_fromJs
 import com.icure.sdk.js.model.embed.securityMetadata_fromJs
@@ -280,6 +280,6 @@ object CheckedConverters {
 				),
 				obj.entity.securityMetadata?.let { securityMetadata_fromJs(it) }
 			),
-			entityWithEncryptionMetadataTypeName_fromJs(obj.type)
+			EntityWithEncryptionMetadataTypeName.valueOf(obj.type)
 		)
 }

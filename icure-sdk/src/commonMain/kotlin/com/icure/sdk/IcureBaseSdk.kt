@@ -2,7 +2,7 @@ package com.icure.sdk
 
 import com.icure.sdk.IcureSdk.Companion.sharedHttpClient
 import com.icure.sdk.options.BasicApiOptions
-import com.icure.sdk.api.AuthenticationMethod
+import com.icure.sdk.options.AuthenticationMethod
 import com.icure.sdk.api.CodeApi
 import com.icure.sdk.api.CodeApiImpl
 import com.icure.sdk.api.DeviceApi
@@ -43,7 +43,7 @@ import com.icure.sdk.api.flavoured.TimeTableBasicApi
 import com.icure.sdk.api.flavoured.TimeTableBasicApiImpl
 import com.icure.sdk.api.flavoured.TopicBasicApi
 import com.icure.sdk.api.flavoured.TopicBasicApiImpl
-import com.icure.sdk.api.getAuthService
+import com.icure.sdk.options.getAuthService
 import com.icure.sdk.api.raw.impl.RawAccessLogApiImpl
 import com.icure.sdk.api.raw.impl.RawAnonymousAuthApiImpl
 import com.icure.sdk.api.raw.impl.RawCalendarItemApiImpl
@@ -66,7 +66,6 @@ import com.icure.sdk.api.raw.impl.RawTimeTableApiImpl
 import com.icure.sdk.api.raw.impl.RawTopicApiImpl
 import com.icure.sdk.api.raw.impl.RawUserApiImpl
 import com.icure.sdk.auth.services.AuthService
-import com.icure.sdk.auth.services.JwtAuthService
 import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.crypto.BasicInternalCryptoApi
 import com.icure.sdk.crypto.impl.BasicInternalCryptoApiImpl

@@ -19,6 +19,13 @@ import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.embed.EncryptedContentJs
 import com.icure.sdk.js.model.filter.AbstractFilterJs
 import com.icure.sdk.js.model.filter.chain.FilterChainJs
+import kotlin.Array
+import kotlin.Boolean
+import kotlin.Double
+import kotlin.String
+import kotlin.Unit
+import kotlin.js.JsName
+import kotlin.js.JsQualifier
 import kotlin.js.Promise
 
 @JsName("PatientApi")

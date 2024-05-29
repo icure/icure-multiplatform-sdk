@@ -10,6 +10,7 @@ import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.sdk.js.model.patient_fromJs
 import com.icure.sdk.js.model.patient_toJs
+import kotlin.String
 
 public
 		fun shareAllPatientDataOptions_SharePatientDataError_toJs(obj: ShareAllPatientDataOptions.SharePatientDataError):

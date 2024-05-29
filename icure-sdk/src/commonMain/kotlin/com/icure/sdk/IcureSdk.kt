@@ -2,7 +2,7 @@ package com.icure.sdk
 
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.utils.toHexString
-import com.icure.sdk.api.AuthenticationMethod
+import com.icure.sdk.options.AuthenticationMethod
 import com.icure.sdk.api.CryptoApi
 import com.icure.sdk.api.CryptoApiImpl
 import com.icure.sdk.api.DeviceApi
@@ -46,7 +46,7 @@ import com.icure.sdk.api.flavoured.TimeTableApi
 import com.icure.sdk.api.flavoured.TimeTableApiImpl
 import com.icure.sdk.api.flavoured.TopicApi
 import com.icure.sdk.api.flavoured.TopicApiImpl
-import com.icure.sdk.api.getAuthService
+import com.icure.sdk.options.getAuthService
 import com.icure.sdk.api.raw.RawPatientApi
 import com.icure.sdk.api.raw.impl.RawAccessLogApiImpl
 import com.icure.sdk.api.raw.impl.RawAnonymousAuthApiImpl

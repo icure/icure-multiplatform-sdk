@@ -1,7 +1,6 @@
-package com.icure.sdk.api
+package com.icure.sdk.options
 
 import com.icure.sdk.api.raw.RawAnonymousAuthApi
-import com.icure.sdk.api.raw.RawAuthApi
 import com.icure.sdk.auth.UsernamePassword
 import com.icure.sdk.auth.services.AuthService
 import com.icure.sdk.auth.services.JwtAuthService
