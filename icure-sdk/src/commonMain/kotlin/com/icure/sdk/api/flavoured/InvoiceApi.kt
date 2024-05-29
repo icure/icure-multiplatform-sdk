@@ -483,7 +483,7 @@ internal class InvoiceApiImpl(
 			entity.copy(invoiceReference = invoiceReference.id.split(":", limit = 2).last().replace("0", "1"))
 		} else {
 			entity.copy(invoiceReference = invoiceReference.id.split(":", limit = 2).last())
-		}.let { createInvoice(entity) }
+		}.let { createInvoice(it) }
 	} else {
 		createInvoice(entity)
 	}
