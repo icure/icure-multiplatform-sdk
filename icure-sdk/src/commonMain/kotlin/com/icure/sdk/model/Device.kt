@@ -10,6 +10,7 @@ import com.icure.sdk.model.base.StoredDocument
 import com.icure.sdk.model.specializations.AesExchangeKeyEncryptionKeypairIdentifier
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.model.specializations.SpkiHexString
+import com.icure.sdk.serialization.ByteArraySerializer
 import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.ByteArray
@@ -46,6 +47,7 @@ data class Device(
 	public val model: String? = null,
 	public val serialNumber: String? = null,
 	public val parentId: String? = null,
+	@Serializable(with = ByteArraySerializer::class)
 	public val picture: ByteArray? = null,
 	@DefaultValue("emptySet()")
 	override val properties: Set<DecryptedPropertyStub> = emptySet(),
