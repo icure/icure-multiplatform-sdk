@@ -4,6 +4,7 @@ import com.icure.sdk.model.base.CodeStub
 import com.icure.sdk.model.base.StoredDocument
 import com.icure.sdk.model.embed.DocumentGroup
 import com.icure.sdk.model.embed.form.template.FormTemplateLayout
+import com.icure.sdk.serialization.ByteArraySerializer
 import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.ByteArray
@@ -20,6 +21,7 @@ data class FormTemplate(
 	override val rev: String? = null,
 	override val deletionDate: Long? = null,
 	public val templateLayout: FormTemplateLayout? = null,
+	@Serializable(with = ByteArraySerializer::class)
 	public val rawTemplateLayout: ByteArray? = null,
 	public val name: String? = null,
 	public val guid: String? = null,

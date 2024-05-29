@@ -1,5 +1,6 @@
 package com.icure.sdk.model.embed
 
+import com.icure.sdk.serialization.ByteArraySerializer
 import com.icure.sdk.serialization.InstantSerializer
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
@@ -51,6 +52,7 @@ data class DecryptedContent(
 	@Serializable(with = InstantSerializer::class)
 	override val instantValue: Instant? = null,
 	override val fuzzyDateValue: Long? = null,
+	@Serializable(with = ByteArraySerializer::class)
 	override val binaryValue: ByteArray? = null,
 	override val documentId: String? = null,
 	override val measureValue: Measure? = null,
@@ -73,6 +75,7 @@ data class EncryptedContent(
 	@Serializable(with = InstantSerializer::class)
 	override val instantValue: Instant? = null,
 	override val fuzzyDateValue: Long? = null,
+	@Serializable(with = ByteArraySerializer::class)
 	override val binaryValue: ByteArray? = null,
 	override val documentId: String? = null,
 	override val measureValue: Measure? = null,

@@ -27,6 +27,11 @@ import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import kotlinx.serialization.json.Json
+import kotlin.Boolean
+import kotlin.Int
+import kotlin.String
+import kotlin.collections.List
+import kotlin.collections.Map
 import kotlin.time.Duration
 
 // WARNING: This class is auto-generated. If you change it manually, your changes will be lost.
@@ -38,7 +43,7 @@ class RawHealthcarePartyApiImpl(
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
-	json: Json
+	json: Json,
 ) : BaseRawApi(httpClient, additionalHeaders, timeout, json), RawHealthcarePartyApi {
 	// region common endpoints
 

@@ -1,5 +1,6 @@
 package com.icure.sdk.model.data
 
+import com.icure.sdk.serialization.ByteArraySerializer
 import kotlinx.serialization.Serializable
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
@@ -7,6 +8,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ByteArray(
+	@Serializable(with = ByteArraySerializer::class)
 	public val `data`: kotlin.ByteArray,
 ) {
 	// region ByteArray-ByteArray
