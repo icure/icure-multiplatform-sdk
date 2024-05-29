@@ -16,7 +16,9 @@ import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.specializations.AesExchangeKeyEncryptionKeypairIdentifier
 import com.icure.sdk.model.specializations.HexString
+import com.icure.sdk.serialization.HealthcarePartyAbstractFilterSerializer
 import com.icure.sdk.utils.InternalIcureApi
+import com.icure.sdk.utils.Serialization
 import io.ktor.client.HttpClient
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
@@ -25,6 +27,7 @@ import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
+import kotlinx.serialization.encodeToString
 import kotlin.Boolean
 import kotlin.Int
 import kotlin.String
@@ -248,7 +251,7 @@ class RawHealthcarePartyApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
-			setBody(filter)
+			setBody(Serialization.json.encodeToString(HealthcarePartyAbstractFilterSerializer, filter))
 		}.wrap()
 
 	override suspend fun filterHealthPartiesBy(

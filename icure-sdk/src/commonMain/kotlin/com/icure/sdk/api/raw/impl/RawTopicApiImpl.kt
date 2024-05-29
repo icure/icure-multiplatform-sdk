@@ -18,7 +18,9 @@ import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
 import com.icure.sdk.model.requests.topic.AddParticipant
 import com.icure.sdk.model.requests.topic.RemoveParticipant
+import com.icure.sdk.serialization.TopicAbstractFilterSerializer
 import com.icure.sdk.utils.InternalIcureApi
+import com.icure.sdk.utils.Serialization
 import io.ktor.client.HttpClient
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
@@ -27,6 +29,7 @@ import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
+import kotlinx.serialization.encodeToString
 import kotlin.Int
 import kotlin.String
 import kotlin.collections.List
@@ -145,7 +148,7 @@ class RawTopicApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
-			setBody(filter)
+			setBody(Serialization.json.encodeToString(TopicAbstractFilterSerializer, filter))
 		}.wrap()
 
 	override suspend fun addParticipant(
