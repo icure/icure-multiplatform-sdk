@@ -4,10 +4,9 @@ import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.longToNumber
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.js.model.CheckedConverters.setToArray
-import com.icure.sdk.js.model.embed.frontEndMigrationStatus_fromJs
-import com.icure.sdk.js.model.embed.frontEndMigrationStatus_toJs
 import com.icure.sdk.model.DecryptedPropertyStub
 import com.icure.sdk.model.FrontEndMigration
+import com.icure.sdk.model.embed.FrontEndMigrationStatus
 
 public fun frontEndMigration_toJs(obj: FrontEndMigration): FrontEndMigrationJs {
 	val id = obj.id
@@ -17,7 +16,7 @@ public fun frontEndMigration_toJs(obj: FrontEndMigration): FrontEndMigrationJs {
 	val startDate = longToNumber(obj.startDate)
 	val endDate = longToNumber(obj.endDate)
 	val status = obj.status?.let { nonNull1 ->
-		frontEndMigrationStatus_toJs(nonNull1)
+		obj.status?.name
 	}
 	val logs = obj.logs
 	val userId = obj.userId
@@ -55,7 +54,7 @@ public fun frontEndMigration_fromJs(obj: FrontEndMigrationJs): FrontEndMigration
 	val startDate = numberToLong(obj.startDate, "obj.startDate")
 	val endDate = numberToLong(obj.endDate, "obj.endDate")
 	val status = obj.status?.let { nonNull1 ->
-		frontEndMigrationStatus_fromJs(nonNull1)
+		FrontEndMigrationStatus.valueOf(nonNull1)
 	}
 	val logs = obj.logs
 	val userId = obj.userId

@@ -11,16 +11,13 @@ import com.icure.sdk.js.model.CheckedConverters.setToArray
 import com.icure.sdk.js.model.base.CodeStubJs
 import com.icure.sdk.js.model.base.codeStub_fromJs
 import com.icure.sdk.js.model.base.codeStub_toJs
-import com.icure.sdk.js.model.embed.authenticationClass_fromJs
-import com.icure.sdk.js.model.embed.authenticationClass_toJs
-import com.icure.sdk.js.model.embed.userType_fromJs
-import com.icure.sdk.js.model.embed.userType_toJs
 import com.icure.sdk.js.model.security.OperationTokenJs
 import com.icure.sdk.js.model.security.operationToken_fromJs
 import com.icure.sdk.js.model.security.operationToken_toJs
 import com.icure.sdk.model.DecryptedPropertyStub
 import com.icure.sdk.model.Group
 import com.icure.sdk.model.base.CodeStub
+import com.icure.sdk.model.embed.AuthenticationClass
 import com.icure.sdk.model.embed.UserType
 import com.icure.sdk.model.security.OperationToken
 import kotlin.Array
@@ -55,7 +52,7 @@ public fun group_toJs(obj: Group): GroupJs {
 	val defaultUserRoles = mapToObject<_, _, Array<String>>(
 		obj.defaultUserRoles,
 		{ x1: UserType ->
-			userType_toJs(x1)
+			x1.name
 		},
 		{ x1: Set<String> ->
 			setToArray(
@@ -86,7 +83,7 @@ public fun group_toJs(obj: Group): GroupJs {
 	)
 	val minimumKrakenVersion = obj.minimumKrakenVersion
 	val minimumAuthenticationClassForElevatedPrivileges =
-			authenticationClass_toJs(obj.minimumAuthenticationClassForElevatedPrivileges)
+			obj.minimumAuthenticationClassForElevatedPrivileges.name
 	val superGroup = obj.superGroup
 	return GroupJs(js("{" +
 		"id:id," +
@@ -139,7 +136,7 @@ public fun group_fromJs(obj: GroupJs): Group {
 		obj.defaultUserRoles,
 		"obj.defaultUserRoles",
 		{ x1: String ->
-			userType_fromJs(x1)
+			UserType.valueOf(x1)
 		},
 		{ x1: Array<String> ->
 			arrayToSet(
@@ -173,7 +170,7 @@ public fun group_fromJs(obj: GroupJs): Group {
 	)
 	val minimumKrakenVersion = obj.minimumKrakenVersion
 	val minimumAuthenticationClassForElevatedPrivileges =
-			authenticationClass_fromJs(obj.minimumAuthenticationClassForElevatedPrivileges)
+			AuthenticationClass.valueOf(obj.minimumAuthenticationClassForElevatedPrivileges)
 	val superGroup = obj.superGroup
 	return Group(
 		id = id,

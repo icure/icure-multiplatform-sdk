@@ -1,15 +1,15 @@
 package com.icure.sdk.js.crypto.entities
 
 import com.icure.sdk.crypto.entities.PatientShareOptions
+import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.setToArray
-import com.icure.sdk.js.model.requests.requestedPermission_fromJs
-import com.icure.sdk.js.model.requests.requestedPermission_toJs
+import com.icure.sdk.model.requests.RequestedPermission
 import kotlin.String
 
 public fun patientShareOptions_toJs(obj: PatientShareOptions): PatientShareOptionsJs {
-	val requestedPermissions = requestedPermission_toJs(obj.requestedPermissions)
-	val shareEncryptionKey = shareMetadataBehaviour_toJs(obj.shareEncryptionKey)
+	val requestedPermissions = obj.requestedPermissions.name
+	val shareEncryptionKey = obj.shareEncryptionKey.name
 	val shareSecretIds = setToArray(
 		obj.shareSecretIds,
 		{ x1: String ->
@@ -24,8 +24,8 @@ public fun patientShareOptions_toJs(obj: PatientShareOptions): PatientShareOptio
 }
 
 public fun patientShareOptions_fromJs(obj: PatientShareOptionsJs): PatientShareOptions {
-	val requestedPermissions = requestedPermission_fromJs(obj.requestedPermissions)
-	val shareEncryptionKey = shareMetadataBehaviour_fromJs(obj.shareEncryptionKey)
+	val requestedPermissions = RequestedPermission.valueOf(obj.requestedPermissions)
+	val shareEncryptionKey = ShareMetadataBehaviour.valueOf(obj.shareEncryptionKey)
 	val shareSecretIds = arrayToSet(
 		obj.shareSecretIds,
 		"obj.shareSecretIds",

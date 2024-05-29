@@ -3,10 +3,11 @@ package com.icure.sdk.js.model.embed
 import com.icure.sdk.js.model.CheckedConverters.longToNumber
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.model.embed.HealthcarePartyHistoryStatus
+import com.icure.sdk.model.embed.HealthcarePartyStatus
 
 public fun healthcarePartyHistoryStatus_toJs(obj: HealthcarePartyHistoryStatus):
 		HealthcarePartyHistoryStatusJs {
-	val status = healthcarePartyStatus_toJs(obj.status)
+	val status = obj.status.name
 	val specialisationCode = obj.specialisationCode
 	val startDate = longToNumber(obj.startDate)
 	val active = obj.active
@@ -20,7 +21,7 @@ public fun healthcarePartyHistoryStatus_toJs(obj: HealthcarePartyHistoryStatus):
 
 public fun healthcarePartyHistoryStatus_fromJs(obj: HealthcarePartyHistoryStatusJs):
 		HealthcarePartyHistoryStatus {
-	val status = healthcarePartyStatus_fromJs(obj.status)
+	val status = HealthcarePartyStatus.valueOf(obj.status)
 	val specialisationCode = obj.specialisationCode
 	val startDate = numberToLong(obj.startDate, "obj.startDate")
 	val active = obj.active

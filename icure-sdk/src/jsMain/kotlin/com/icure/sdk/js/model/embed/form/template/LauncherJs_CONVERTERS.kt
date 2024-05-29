@@ -1,10 +1,11 @@
 package com.icure.sdk.js.model.embed.form.template
 
 import com.icure.sdk.model.embed.form.template.Launcher
+import com.icure.sdk.model.embed.form.template.Trigger
 
 public fun launcher_toJs(obj: Launcher): LauncherJs {
 	val name = obj.name
-	val triggerer = trigger_toJs(obj.triggerer)
+	val triggerer = obj.triggerer.name
 	val shouldPassValue = obj.shouldPassValue
 	return LauncherJs(js("{" +
 		"name:name," +
@@ -15,7 +16,7 @@ public fun launcher_toJs(obj: Launcher): LauncherJs {
 
 public fun launcher_fromJs(obj: LauncherJs): Launcher {
 	val name = obj.name
-	val triggerer = trigger_fromJs(obj.triggerer)
+	val triggerer = Trigger.valueOf(obj.triggerer)
 	val shouldPassValue = obj.shouldPassValue
 	return Launcher(
 		name = name,

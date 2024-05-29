@@ -9,10 +9,11 @@ import com.icure.sdk.js.model.specializations.base64String_toJs
 import com.icure.sdk.model.embed.DecryptedTypedValue
 import com.icure.sdk.model.embed.EncryptedTypedValue
 import com.icure.sdk.model.embed.TypedValue
+import com.icure.sdk.model.embed.TypedValuesType
 
 public fun typedValue_toJs(obj: DecryptedTypedValue): DecryptedTypedValueJs {
 	val type = obj.type?.let { nonNull1 ->
-		typedValuesType_toJs(nonNull1)
+		obj.type?.name
 	}
 	val booleanValue = obj.booleanValue
 	val integerValue = longToNumber(obj.integerValue)
@@ -35,7 +36,7 @@ public fun typedValue_toJs(obj: DecryptedTypedValue): DecryptedTypedValueJs {
 
 public fun typedValue_fromJs(obj: DecryptedTypedValueJs): DecryptedTypedValue {
 	val type = obj.type?.let { nonNull1 ->
-		typedValuesType_fromJs(nonNull1)
+		TypedValuesType.valueOf(nonNull1)
 	}
 	val booleanValue = obj.booleanValue
 	val integerValue = numberToLong(obj.integerValue, "obj.integerValue")
@@ -58,7 +59,7 @@ public fun typedValue_fromJs(obj: DecryptedTypedValueJs): DecryptedTypedValue {
 
 public fun typedValue_toJs(obj: EncryptedTypedValue): EncryptedTypedValueJs {
 	val type = obj.type?.let { nonNull1 ->
-		typedValuesType_toJs(nonNull1)
+		obj.type?.name
 	}
 	val booleanValue = obj.booleanValue
 	val integerValue = longToNumber(obj.integerValue)
@@ -81,7 +82,7 @@ public fun typedValue_toJs(obj: EncryptedTypedValue): EncryptedTypedValueJs {
 
 public fun typedValue_fromJs(obj: EncryptedTypedValueJs): EncryptedTypedValue {
 	val type = obj.type?.let { nonNull1 ->
-		typedValuesType_fromJs(nonNull1)
+		TypedValuesType.valueOf(nonNull1)
 	}
 	val booleanValue = obj.booleanValue
 	val integerValue = numberToLong(obj.integerValue, "obj.integerValue")

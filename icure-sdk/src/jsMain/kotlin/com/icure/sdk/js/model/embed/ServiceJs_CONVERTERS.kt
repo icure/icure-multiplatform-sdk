@@ -16,8 +16,6 @@ import com.icure.sdk.js.model.base.codeStub_fromJs
 import com.icure.sdk.js.model.base.codeStub_toJs
 import com.icure.sdk.js.model.base.identifier_fromJs
 import com.icure.sdk.js.model.base.identifier_toJs
-import com.icure.sdk.js.model.base.linkQualification_fromJs
-import com.icure.sdk.js.model.base.linkQualification_toJs
 import com.icure.sdk.js.model.specializations.base64String_fromJs
 import com.icure.sdk.js.model.specializations.base64String_toJs
 import com.icure.sdk.model.base.CodeStub
@@ -165,7 +163,7 @@ public fun service_toJs(obj: DecryptedService): DecryptedServiceJs {
 	val qualifiedLinks = mapToObject<_, _, dynamic>(
 		obj.qualifiedLinks,
 		{ x1: LinkQualification ->
-			linkQualification_toJs(x1)
+			x1.name
 		},
 		{ x1: Map<String, String> ->
 			mapToObject<_, _, String>(
@@ -384,7 +382,7 @@ public fun service_fromJs(obj: DecryptedServiceJs): DecryptedService {
 		obj.qualifiedLinks,
 		"obj.qualifiedLinks",
 		{ x1: String ->
-			linkQualification_fromJs(x1)
+			LinkQualification.valueOf(x1)
 		},
 		{ x1: dynamic ->
 			objectToMap(
@@ -589,7 +587,7 @@ public fun service_toJs(obj: EncryptedService): EncryptedServiceJs {
 	val qualifiedLinks = mapToObject<_, _, dynamic>(
 		obj.qualifiedLinks,
 		{ x1: LinkQualification ->
-			linkQualification_toJs(x1)
+			x1.name
 		},
 		{ x1: Map<String, String> ->
 			mapToObject<_, _, String>(
@@ -808,7 +806,7 @@ public fun service_fromJs(obj: EncryptedServiceJs): EncryptedService {
 		obj.qualifiedLinks,
 		"obj.qualifiedLinks",
 		{ x1: String ->
-			linkQualification_fromJs(x1)
+			LinkQualification.valueOf(x1)
 		},
 		{ x1: dynamic ->
 			objectToMap(

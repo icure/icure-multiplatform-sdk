@@ -1,13 +1,13 @@
 package com.icure.sdk.js.crypto.entities
 
 import com.icure.sdk.crypto.entities.InvoiceShareOptions
-import com.icure.sdk.js.model.requests.requestedPermission_fromJs
-import com.icure.sdk.js.model.requests.requestedPermission_toJs
+import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
+import com.icure.sdk.model.requests.RequestedPermission
 
 public fun invoiceShareOptions_toJs(obj: InvoiceShareOptions): InvoiceShareOptionsJs {
-	val requestedPermissions = requestedPermission_toJs(obj.requestedPermissions)
-	val shareEncryptionKey = shareMetadataBehaviour_toJs(obj.shareEncryptionKey)
-	val sharePatientId = shareMetadataBehaviour_toJs(obj.sharePatientId)
+	val requestedPermissions = obj.requestedPermissions.name
+	val shareEncryptionKey = obj.shareEncryptionKey.name
+	val sharePatientId = obj.sharePatientId.name
 	return InvoiceShareOptionsJs(js("{" +
 		"requestedPermissions:requestedPermissions," +
 		"shareEncryptionKey:shareEncryptionKey," +
@@ -16,9 +16,9 @@ public fun invoiceShareOptions_toJs(obj: InvoiceShareOptions): InvoiceShareOptio
 }
 
 public fun invoiceShareOptions_fromJs(obj: InvoiceShareOptionsJs): InvoiceShareOptions {
-	val requestedPermissions = requestedPermission_fromJs(obj.requestedPermissions)
-	val shareEncryptionKey = shareMetadataBehaviour_fromJs(obj.shareEncryptionKey)
-	val sharePatientId = shareMetadataBehaviour_fromJs(obj.sharePatientId)
+	val requestedPermissions = RequestedPermission.valueOf(obj.requestedPermissions)
+	val shareEncryptionKey = ShareMetadataBehaviour.valueOf(obj.shareEncryptionKey)
+	val sharePatientId = ShareMetadataBehaviour.valueOf(obj.sharePatientId)
 	return InvoiceShareOptions(
 		requestedPermissions = requestedPermissions,
 		shareEncryptionKey = shareEncryptionKey,

@@ -14,8 +14,6 @@ import com.icure.sdk.js.model.base.codeStub_toJs
 import com.icure.sdk.js.model.embed.DelegationJs
 import com.icure.sdk.js.model.embed.delegation_fromJs
 import com.icure.sdk.js.model.embed.delegation_toJs
-import com.icure.sdk.js.model.embed.receiptBlobType_fromJs
-import com.icure.sdk.js.model.embed.receiptBlobType_toJs
 import com.icure.sdk.js.model.embed.securityMetadata_fromJs
 import com.icure.sdk.js.model.embed.securityMetadata_toJs
 import com.icure.sdk.js.model.specializations.base64String_fromJs
@@ -55,7 +53,7 @@ public fun receipt_toJs(obj: DecryptedReceipt): DecryptedReceiptJs {
 	val attachmentIds = mapToObject<_, _, String>(
 		obj.attachmentIds,
 		{ x1: ReceiptBlobType ->
-			receiptBlobType_toJs(x1)
+			x1.name
 		},
 		{ x1: String ->
 			x1
@@ -178,7 +176,7 @@ public fun receipt_fromJs(obj: DecryptedReceiptJs): DecryptedReceipt {
 		obj.attachmentIds,
 		"obj.attachmentIds",
 		{ x1: String ->
-			receiptBlobType_fromJs(x1)
+			ReceiptBlobType.valueOf(x1)
 		},
 		{ x1: String ->
 			x1
@@ -306,7 +304,7 @@ public fun receipt_toJs(obj: EncryptedReceipt): EncryptedReceiptJs {
 	val attachmentIds = mapToObject<_, _, String>(
 		obj.attachmentIds,
 		{ x1: ReceiptBlobType ->
-			receiptBlobType_toJs(x1)
+			x1.name
 		},
 		{ x1: String ->
 			x1
@@ -429,7 +427,7 @@ public fun receipt_fromJs(obj: EncryptedReceiptJs): EncryptedReceipt {
 		obj.attachmentIds,
 		"obj.attachmentIds",
 		{ x1: String ->
-			receiptBlobType_fromJs(x1)
+			ReceiptBlobType.valueOf(x1)
 		},
 		{ x1: String ->
 			x1

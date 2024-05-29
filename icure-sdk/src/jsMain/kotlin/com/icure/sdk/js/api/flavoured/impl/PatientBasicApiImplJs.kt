@@ -137,7 +137,7 @@ internal class PatientBasicApiImplJs(
 		paginatedList_toJs(
 			patientBasicApi.findPatientsByNameBirthSsinAuto(healthcarePartyId, filterValue, startKey,
 					startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit"),
-					com.icure.sdk.js.model.couchdb.sortDirection_fromJs(sortDirection)),
+					com.icure.sdk.model.couchdb.SortDirection.valueOf(sortDirection)),
 			{ x1: EncryptedPatient ->
 				patient_toJs(x1)
 			},
@@ -155,7 +155,7 @@ internal class PatientBasicApiImplJs(
 		paginatedList_toJs(
 			patientBasicApi.listPatientsOfHcParty(hcPartyId, sortField, startKey, startDocumentId,
 					com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit"),
-					com.icure.sdk.js.model.couchdb.sortDirection_fromJs(sortDirection)),
+					com.icure.sdk.model.couchdb.SortDirection.valueOf(sortDirection)),
 			{ x1: EncryptedPatient ->
 				patient_toJs(x1)
 			},
@@ -199,7 +199,7 @@ internal class PatientBasicApiImplJs(
 		paginatedList_toJs(
 			patientBasicApi.listPatientsByHcParty(hcPartyId, sortField, startKey, startDocumentId,
 					com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit"),
-					com.icure.sdk.js.model.couchdb.sortDirection_fromJs(sortDirection)),
+					com.icure.sdk.model.couchdb.SortDirection.valueOf(sortDirection)),
 			{ x1: EncryptedPatient ->
 				patient_toJs(x1)
 			},
@@ -235,7 +235,7 @@ internal class PatientBasicApiImplJs(
 		paginatedList_toJs(
 			patientBasicApi.findPatientsByHealthcareParty(hcPartyId, sortField, startKey, startDocumentId,
 					com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit"),
-					com.icure.sdk.js.model.couchdb.sortDirection_fromJs(sortDirection)),
+					com.icure.sdk.model.couchdb.SortDirection.valueOf(sortDirection)),
 			{ x1: EncryptedPatient ->
 				patient_toJs(x1)
 			},

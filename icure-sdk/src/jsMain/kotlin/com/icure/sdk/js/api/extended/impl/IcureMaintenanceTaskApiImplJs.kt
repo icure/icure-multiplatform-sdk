@@ -4,10 +4,10 @@ package com.icure.sdk.js.api.extended.`impl`
 import com.icure.sdk.api.extended.IcureMaintenanceTaskApi
 import com.icure.sdk.js.api.extended.IcureMaintenanceTaskApiJs
 import com.icure.sdk.js.model.CheckedConverters.arrayToSet
-import com.icure.sdk.js.model.dataOwnerType_fromJs
 import com.icure.sdk.js.model.sdk.KeyPairUpdateNotificationJs
 import com.icure.sdk.js.model.sdk.keyPairUpdateNotification_fromJs
 import com.icure.sdk.js.model.specializations.spkiHexString_fromJs
+import com.icure.sdk.model.DataOwnerType
 import kotlin.Array
 import kotlin.OptIn
 import kotlin.String
@@ -33,7 +33,7 @@ internal class IcureMaintenanceTaskApiImplJs(
 			requestToOwnerTypes,
 			"requestToOwnerTypes",
 			{ x1: String ->
-				dataOwnerType_fromJs(x1)
+				DataOwnerType.valueOf(x1)
 			},
 		))}
 

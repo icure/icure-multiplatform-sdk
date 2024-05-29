@@ -20,12 +20,6 @@ import com.icure.sdk.js.model.embed.delegation_fromJs
 import com.icure.sdk.js.model.embed.delegation_toJs
 import com.icure.sdk.js.model.embed.deletedAttachment_fromJs
 import com.icure.sdk.js.model.embed.deletedAttachment_toJs
-import com.icure.sdk.js.model.embed.documentLocation_fromJs
-import com.icure.sdk.js.model.embed.documentLocation_toJs
-import com.icure.sdk.js.model.embed.documentStatus_fromJs
-import com.icure.sdk.js.model.embed.documentStatus_toJs
-import com.icure.sdk.js.model.embed.documentType_fromJs
-import com.icure.sdk.js.model.embed.documentType_toJs
 import com.icure.sdk.js.model.embed.securityMetadata_fromJs
 import com.icure.sdk.js.model.embed.securityMetadata_toJs
 import com.icure.sdk.js.model.specializations.base64String_fromJs
@@ -37,6 +31,9 @@ import com.icure.sdk.model.base.CodeStub
 import com.icure.sdk.model.embed.DataAttachment
 import com.icure.sdk.model.embed.Delegation
 import com.icure.sdk.model.embed.DeletedAttachment
+import com.icure.sdk.model.embed.DocumentLocation
+import com.icure.sdk.model.embed.DocumentStatus
+import com.icure.sdk.model.embed.DocumentType
 import kotlin.Array
 import kotlin.String
 import kotlin.collections.Set
@@ -64,13 +61,13 @@ public fun document_toJs(obj: DecryptedDocument): DecryptedDocumentJs {
 	val endOfLife = longToNumber(obj.endOfLife)
 	val deletionDate = longToNumber(obj.deletionDate)
 	val documentLocation = obj.documentLocation?.let { nonNull1 ->
-		documentLocation_toJs(nonNull1)
+		obj.documentLocation?.name
 	}
 	val documentType = obj.documentType?.let { nonNull1 ->
-		documentType_toJs(nonNull1)
+		obj.documentType?.name
 	}
 	val documentStatus = obj.documentStatus?.let { nonNull1 ->
-		documentStatus_toJs(nonNull1)
+		obj.documentStatus?.name
 	}
 	val externalUri = obj.externalUri
 	val name = obj.name
@@ -225,13 +222,13 @@ public fun document_fromJs(obj: DecryptedDocumentJs): DecryptedDocument {
 	val endOfLife = numberToLong(obj.endOfLife, "obj.endOfLife")
 	val deletionDate = numberToLong(obj.deletionDate, "obj.deletionDate")
 	val documentLocation = obj.documentLocation?.let { nonNull1 ->
-		documentLocation_fromJs(nonNull1)
+		DocumentLocation.valueOf(nonNull1)
 	}
 	val documentType = obj.documentType?.let { nonNull1 ->
-		documentType_fromJs(nonNull1)
+		DocumentType.valueOf(nonNull1)
 	}
 	val documentStatus = obj.documentStatus?.let { nonNull1 ->
-		documentStatus_fromJs(nonNull1)
+		DocumentStatus.valueOf(nonNull1)
 	}
 	val externalUri = obj.externalUri
 	val name = obj.name
@@ -394,13 +391,13 @@ public fun document_toJs(obj: EncryptedDocument): EncryptedDocumentJs {
 	val endOfLife = longToNumber(obj.endOfLife)
 	val deletionDate = longToNumber(obj.deletionDate)
 	val documentLocation = obj.documentLocation?.let { nonNull1 ->
-		documentLocation_toJs(nonNull1)
+		obj.documentLocation?.name
 	}
 	val documentType = obj.documentType?.let { nonNull1 ->
-		documentType_toJs(nonNull1)
+		obj.documentType?.name
 	}
 	val documentStatus = obj.documentStatus?.let { nonNull1 ->
-		documentStatus_toJs(nonNull1)
+		obj.documentStatus?.name
 	}
 	val externalUri = obj.externalUri
 	val name = obj.name
@@ -555,13 +552,13 @@ public fun document_fromJs(obj: EncryptedDocumentJs): EncryptedDocument {
 	val endOfLife = numberToLong(obj.endOfLife, "obj.endOfLife")
 	val deletionDate = numberToLong(obj.deletionDate, "obj.deletionDate")
 	val documentLocation = obj.documentLocation?.let { nonNull1 ->
-		documentLocation_fromJs(nonNull1)
+		DocumentLocation.valueOf(nonNull1)
 	}
 	val documentType = obj.documentType?.let { nonNull1 ->
-		documentType_fromJs(nonNull1)
+		DocumentType.valueOf(nonNull1)
 	}
 	val documentStatus = obj.documentStatus?.let { nonNull1 ->
-		documentStatus_fromJs(nonNull1)
+		DocumentStatus.valueOf(nonNull1)
 	}
 	val externalUri = obj.externalUri
 	val name = obj.name

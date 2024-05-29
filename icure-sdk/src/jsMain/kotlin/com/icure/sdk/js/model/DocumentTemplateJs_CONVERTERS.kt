@@ -7,14 +7,12 @@ import com.icure.sdk.js.model.CheckedConverters.setToArray
 import com.icure.sdk.js.model.base.CodeStubJs
 import com.icure.sdk.js.model.base.codeStub_fromJs
 import com.icure.sdk.js.model.base.codeStub_toJs
-import com.icure.sdk.js.model.base.reportVersion_fromJs
-import com.icure.sdk.js.model.base.reportVersion_toJs
 import com.icure.sdk.js.model.embed.documentGroup_fromJs
 import com.icure.sdk.js.model.embed.documentGroup_toJs
-import com.icure.sdk.js.model.embed.documentType_fromJs
-import com.icure.sdk.js.model.embed.documentType_toJs
 import com.icure.sdk.model.DocumentTemplate
 import com.icure.sdk.model.base.CodeStub
+import com.icure.sdk.model.base.ReportVersion
+import com.icure.sdk.model.embed.DocumentType
 import kotlin.String
 
 public fun documentTemplate_toJs(obj: DocumentTemplate): DocumentTemplateJs {
@@ -41,7 +39,7 @@ public fun documentTemplate_toJs(obj: DocumentTemplate): DocumentTemplateJs {
 	val deletionDate = longToNumber(obj.deletionDate)
 	val attachment = obj.attachment
 	val documentType = obj.documentType?.let { nonNull1 ->
-		documentType_toJs(nonNull1)
+		obj.documentType?.name
 	}
 	val mainUti = obj.mainUti
 	val name = obj.name
@@ -53,7 +51,7 @@ public fun documentTemplate_toJs(obj: DocumentTemplate): DocumentTemplateJs {
 	)
 	val attachmentId = obj.attachmentId
 	val version = obj.version?.let { nonNull1 ->
-		reportVersion_toJs(nonNull1)
+		obj.version?.name
 	}
 	val owner = obj.owner
 	val guid = obj.guid
@@ -119,7 +117,7 @@ public fun documentTemplate_fromJs(obj: DocumentTemplateJs): DocumentTemplate {
 	val deletionDate = numberToLong(obj.deletionDate, "obj.deletionDate")
 	val attachment = obj.attachment
 	val documentType = obj.documentType?.let { nonNull1 ->
-		documentType_fromJs(nonNull1)
+		DocumentType.valueOf(nonNull1)
 	}
 	val mainUti = obj.mainUti
 	val name = obj.name
@@ -132,7 +130,7 @@ public fun documentTemplate_fromJs(obj: DocumentTemplateJs): DocumentTemplate {
 	)
 	val attachmentId = obj.attachmentId
 	val version = obj.version?.let { nonNull1 ->
-		reportVersion_fromJs(nonNull1)
+		ReportVersion.valueOf(nonNull1)
 	}
 	val owner = obj.owner
 	val guid = obj.guid

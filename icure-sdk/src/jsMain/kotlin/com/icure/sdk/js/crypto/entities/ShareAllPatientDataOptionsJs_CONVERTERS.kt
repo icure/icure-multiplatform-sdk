@@ -33,36 +33,6 @@ public
 			IllegalArgumentException("""Unknown concrete implementation for com.icure.sdk.crypto.entities.ShareAllPatientDataOptions.SharePatientDataError: $obj""")
 }
 
-public fun shareAllPatientDataOptions_Tag_toJs(obj: ShareAllPatientDataOptions.Tag): String =
-		obj.name
-
-public fun shareAllPatientDataOptions_Tag_fromJs(obj: String): ShareAllPatientDataOptions.Tag = when
-		(obj) {
-	"All" -> ShareAllPatientDataOptions.Tag.All
-	"MedicalInformation" -> ShareAllPatientDataOptions.Tag.MedicalInformation
-	"FinancialInformation" -> ShareAllPatientDataOptions.Tag.FinancialInformation
-	else -> throw
-			IllegalArgumentException("""Unknown enum value for com.icure.sdk.crypto.entities.ShareAllPatientDataOptions.Tag: $obj""")
-}
-
-public
-		fun shareAllPatientDataOptions_ShareableEntity_toJs(obj: ShareAllPatientDataOptions.ShareableEntity):
-		String = obj.name
-
-public fun shareAllPatientDataOptions_ShareableEntity_fromJs(obj: String):
-		ShareAllPatientDataOptions.ShareableEntity = when (obj) {
-	"CalendarItem" -> ShareAllPatientDataOptions.ShareableEntity.CalendarItem
-	"Contact" -> ShareAllPatientDataOptions.ShareableEntity.Contact
-	"Classification" -> ShareAllPatientDataOptions.ShareableEntity.Classification
-	"Document" -> ShareAllPatientDataOptions.ShareableEntity.Document
-	"Form" -> ShareAllPatientDataOptions.ShareableEntity.Form
-	"HealthElement" -> ShareAllPatientDataOptions.ShareableEntity.HealthElement
-	"Invoice" -> ShareAllPatientDataOptions.ShareableEntity.Invoice
-	"Patient" -> ShareAllPatientDataOptions.ShareableEntity.Patient
-	else -> throw
-			IllegalArgumentException("""Unknown enum value for com.icure.sdk.crypto.entities.ShareAllPatientDataOptions.ShareableEntity: $obj""")
-}
-
 public
 		fun shareAllPatientDataOptions_EntityResult_toJs(obj: ShareAllPatientDataOptions.EntityResult):
 		ShareAllPatientDataOptionsJs_EntityResultJs {
@@ -99,7 +69,7 @@ public fun shareAllPatientDataOptions_Result_toJs(obj: ShareAllPatientDataOption
 	val statuses = mapToObject<_, _, ShareAllPatientDataOptionsJs_EntityResultJs>(
 		obj.statuses,
 		{ x1: ShareAllPatientDataOptions.ShareableEntity ->
-			shareAllPatientDataOptions_ShareableEntity_toJs(x1)
+			x1.name
 		},
 		{ x1: ShareAllPatientDataOptions.EntityResult ->
 			shareAllPatientDataOptions_EntityResult_toJs(x1)
@@ -118,7 +88,7 @@ public fun shareAllPatientDataOptions_Result_fromJs(obj: ShareAllPatientDataOpti
 		obj.statuses,
 		"obj.statuses",
 		{ x1: String ->
-			shareAllPatientDataOptions_ShareableEntity_fromJs(x1)
+			ShareAllPatientDataOptions.ShareableEntity.valueOf(x1)
 		},
 		{ x1: ShareAllPatientDataOptionsJs_EntityResultJs ->
 			shareAllPatientDataOptions_EntityResult_fromJs(x1)

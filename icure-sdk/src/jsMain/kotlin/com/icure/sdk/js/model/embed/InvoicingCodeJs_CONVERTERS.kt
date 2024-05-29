@@ -9,6 +9,7 @@ import com.icure.sdk.js.model.specializations.base64String_toJs
 import com.icure.sdk.model.embed.DecryptedInvoicingCode
 import com.icure.sdk.model.embed.EncryptedInvoicingCode
 import com.icure.sdk.model.embed.InvoicingCode
+import com.icure.sdk.model.embed.PaymentType
 
 public fun invoicingCode_toJs(obj: DecryptedInvoicingCode): DecryptedInvoicingCodeJs {
 	val id = obj.id
@@ -21,7 +22,7 @@ public fun invoicingCode_toJs(obj: DecryptedInvoicingCode): DecryptedInvoicingCo
 	val tarificationId = obj.tarificationId
 	val code = obj.code
 	val paymentType = obj.paymentType?.let { nonNull1 ->
-		paymentType_toJs(nonNull1)
+		obj.paymentType?.name
 	}
 	val paid = obj.paid
 	val totalAmount = obj.totalAmount
@@ -134,7 +135,7 @@ public fun invoicingCode_fromJs(obj: DecryptedInvoicingCodeJs): DecryptedInvoici
 	val tarificationId = obj.tarificationId
 	val code = obj.code
 	val paymentType = obj.paymentType?.let { nonNull1 ->
-		paymentType_fromJs(nonNull1)
+		PaymentType.valueOf(nonNull1)
 	}
 	val paid = obj.paid
 	val totalAmount = obj.totalAmount
@@ -248,7 +249,7 @@ public fun invoicingCode_toJs(obj: EncryptedInvoicingCode): EncryptedInvoicingCo
 	val tarificationId = obj.tarificationId
 	val code = obj.code
 	val paymentType = obj.paymentType?.let { nonNull1 ->
-		paymentType_toJs(nonNull1)
+		obj.paymentType?.name
 	}
 	val paid = obj.paid
 	val totalAmount = obj.totalAmount
@@ -361,7 +362,7 @@ public fun invoicingCode_fromJs(obj: EncryptedInvoicingCodeJs): EncryptedInvoici
 	val tarificationId = obj.tarificationId
 	val code = obj.code
 	val paymentType = obj.paymentType?.let { nonNull1 ->
-		paymentType_fromJs(nonNull1)
+		PaymentType.valueOf(nonNull1)
 	}
 	val paid = obj.paid
 	val totalAmount = obj.totalAmount

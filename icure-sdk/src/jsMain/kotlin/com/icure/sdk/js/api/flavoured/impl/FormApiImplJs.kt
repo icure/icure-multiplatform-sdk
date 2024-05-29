@@ -58,9 +58,9 @@ internal class FormApiImplJs(
 		): Promise<SimpleShareResultJs<EncryptedFormJs>> = GlobalScope.promise {
 			simpleShareResult_toJs(
 				formApi.encrypted.shareWith(delegateId, com.icure.sdk.js.model.form_fromJs(form),
-						com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareEncryptionKeys),
-						com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareOwningEntityIds),
-						com.icure.sdk.js.model.requests.requestedPermission_fromJs(requestedPermission)),
+						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareEncryptionKeys),
+						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareOwningEntityIds),
+						com.icure.sdk.model.requests.RequestedPermission.valueOf(requestedPermission)),
 				{ x1: EncryptedForm ->
 					form_toJs(x1)
 				},
@@ -226,9 +226,9 @@ internal class FormApiImplJs(
 		): Promise<SimpleShareResultJs<FormJs>> = GlobalScope.promise {
 			simpleShareResult_toJs(
 				formApi.tryAndRecover.shareWith(delegateId, com.icure.sdk.js.model.form_fromJs(form),
-						com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareEncryptionKeys),
-						com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareOwningEntityIds),
-						com.icure.sdk.js.model.requests.requestedPermission_fromJs(requestedPermission)),
+						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareEncryptionKeys),
+						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareOwningEntityIds),
+						com.icure.sdk.model.requests.RequestedPermission.valueOf(requestedPermission)),
 				{ x1: Form ->
 					form_toJs(x1)
 				},
@@ -418,7 +418,7 @@ internal class FormApiImplJs(
 		    x1
 		  },
 		  { x1: kotlin.String ->
-		    com.icure.sdk.js.model.embed.accessLevel_fromJs(x1)
+		    com.icure.sdk.model.embed.AccessLevel.valueOf(x1)
 		  },
 		), com.icure.sdk.js.crypto.entities.secretIdOption_fromJs(secretId)))}
 
@@ -543,9 +543,9 @@ internal class FormApiImplJs(
 	): Promise<SimpleShareResultJs<DecryptedFormJs>> = GlobalScope.promise {
 		simpleShareResult_toJs(
 			formApi.shareWith(delegateId, com.icure.sdk.js.model.form_fromJs(form),
-					com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareEncryptionKeys),
-					com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareOwningEntityIds),
-					com.icure.sdk.js.model.requests.requestedPermission_fromJs(requestedPermission)),
+					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareEncryptionKeys),
+					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareOwningEntityIds),
+					com.icure.sdk.model.requests.RequestedPermission.valueOf(requestedPermission)),
 			{ x1: DecryptedForm ->
 				form_toJs(x1)
 			},

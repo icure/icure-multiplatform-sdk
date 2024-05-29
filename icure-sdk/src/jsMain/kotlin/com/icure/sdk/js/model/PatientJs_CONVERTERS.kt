@@ -36,16 +36,12 @@ import com.icure.sdk.js.model.embed.address_fromJs
 import com.icure.sdk.js.model.embed.address_toJs
 import com.icure.sdk.js.model.embed.annotation_fromJs
 import com.icure.sdk.js.model.embed.annotation_toJs
-import com.icure.sdk.js.model.embed.deactivationReason_fromJs
-import com.icure.sdk.js.model.embed.deactivationReason_toJs
 import com.icure.sdk.js.model.embed.delegation_fromJs
 import com.icure.sdk.js.model.embed.delegation_toJs
 import com.icure.sdk.js.model.embed.employmentInfo_fromJs
 import com.icure.sdk.js.model.embed.employmentInfo_toJs
 import com.icure.sdk.js.model.embed.financialInstitutionInformation_fromJs
 import com.icure.sdk.js.model.embed.financialInstitutionInformation_toJs
-import com.icure.sdk.js.model.embed.gender_fromJs
-import com.icure.sdk.js.model.embed.gender_toJs
 import com.icure.sdk.js.model.embed.insurability_fromJs
 import com.icure.sdk.js.model.embed.insurability_toJs
 import com.icure.sdk.js.model.embed.medicalHouseContract_fromJs
@@ -56,8 +52,6 @@ import com.icure.sdk.js.model.embed.patientHealthCareParty_fromJs
 import com.icure.sdk.js.model.embed.patientHealthCareParty_toJs
 import com.icure.sdk.js.model.embed.personName_fromJs
 import com.icure.sdk.js.model.embed.personName_toJs
-import com.icure.sdk.js.model.embed.personalStatus_fromJs
-import com.icure.sdk.js.model.embed.personalStatus_toJs
 import com.icure.sdk.js.model.embed.schoolingInfo_fromJs
 import com.icure.sdk.js.model.embed.schoolingInfo_toJs
 import com.icure.sdk.js.model.embed.securityMetadata_fromJs
@@ -78,6 +72,7 @@ import com.icure.sdk.model.Patient
 import com.icure.sdk.model.base.CodeStub
 import com.icure.sdk.model.base.Identifier
 import com.icure.sdk.model.embed.Annotation
+import com.icure.sdk.model.embed.DeactivationReason
 import com.icure.sdk.model.embed.DecryptedAddress
 import com.icure.sdk.model.embed.DecryptedFinancialInstitutionInformation
 import com.icure.sdk.model.embed.DecryptedInsurability
@@ -90,8 +85,10 @@ import com.icure.sdk.model.embed.EncryptedFinancialInstitutionInformation
 import com.icure.sdk.model.embed.EncryptedInsurability
 import com.icure.sdk.model.embed.EncryptedMedicalHouseContract
 import com.icure.sdk.model.embed.EncryptedPatientHealthCareParty
+import com.icure.sdk.model.embed.Gender
 import com.icure.sdk.model.embed.Partnership
 import com.icure.sdk.model.embed.PersonName
+import com.icure.sdk.model.embed.PersonalStatus
 import com.icure.sdk.model.embed.SchoolingInfo
 import com.icure.sdk.model.specializations.AesExchangeKeyEncryptionKeypairIdentifier
 import com.icure.sdk.model.specializations.HexString
@@ -152,10 +149,10 @@ public fun patient_toJs(obj: DecryptedPatient): DecryptedPatientJs {
 	)
 	val civility = obj.civility
 	val gender = obj.gender?.let { nonNull1 ->
-		gender_toJs(nonNull1)
+		obj.gender?.name
 	}
 	val birthSex = obj.birthSex?.let { nonNull1 ->
-		gender_toJs(nonNull1)
+		obj.birthSex?.name
 	}
 	val mergeToPatientId = obj.mergeToPatientId
 	val mergedIds = setToArray(
@@ -166,14 +163,14 @@ public fun patient_toJs(obj: DecryptedPatient): DecryptedPatientJs {
 	)
 	val alias = obj.alias
 	val active = obj.active
-	val deactivationReason = deactivationReason_toJs(obj.deactivationReason)
+	val deactivationReason = obj.deactivationReason.name
 	val deactivationDate = intToNumber(obj.deactivationDate)
 	val ssin = obj.ssin
 	val maidenName = obj.maidenName
 	val spouseName = obj.spouseName
 	val partnerName = obj.partnerName
 	val personalStatus = obj.personalStatus?.let { nonNull1 ->
-		personalStatus_toJs(nonNull1)
+		obj.personalStatus?.name
 	}
 	val dateOfBirth = intToNumber(obj.dateOfBirth)
 	val dateOfDeath = intToNumber(obj.dateOfDeath)
@@ -563,10 +560,10 @@ public fun patient_fromJs(obj: DecryptedPatientJs): DecryptedPatient {
 	)
 	val civility = obj.civility
 	val gender = obj.gender?.let { nonNull1 ->
-		gender_fromJs(nonNull1)
+		Gender.valueOf(nonNull1)
 	}
 	val birthSex = obj.birthSex?.let { nonNull1 ->
-		gender_fromJs(nonNull1)
+		Gender.valueOf(nonNull1)
 	}
 	val mergeToPatientId = obj.mergeToPatientId
 	val mergedIds = arrayToSet(
@@ -578,14 +575,14 @@ public fun patient_fromJs(obj: DecryptedPatientJs): DecryptedPatient {
 	)
 	val alias = obj.alias
 	val active = obj.active
-	val deactivationReason = deactivationReason_fromJs(obj.deactivationReason)
+	val deactivationReason = DeactivationReason.valueOf(obj.deactivationReason)
 	val deactivationDate = numberToInt(obj.deactivationDate, "obj.deactivationDate")
 	val ssin = obj.ssin
 	val maidenName = obj.maidenName
 	val spouseName = obj.spouseName
 	val partnerName = obj.partnerName
 	val personalStatus = obj.personalStatus?.let { nonNull1 ->
-		personalStatus_fromJs(nonNull1)
+		PersonalStatus.valueOf(nonNull1)
 	}
 	val dateOfBirth = numberToInt(obj.dateOfBirth, "obj.dateOfBirth")
 	val dateOfDeath = numberToInt(obj.dateOfDeath, "obj.dateOfDeath")
@@ -1000,10 +997,10 @@ public fun patient_toJs(obj: EncryptedPatient): EncryptedPatientJs {
 	)
 	val civility = obj.civility
 	val gender = obj.gender?.let { nonNull1 ->
-		gender_toJs(nonNull1)
+		obj.gender?.name
 	}
 	val birthSex = obj.birthSex?.let { nonNull1 ->
-		gender_toJs(nonNull1)
+		obj.birthSex?.name
 	}
 	val mergeToPatientId = obj.mergeToPatientId
 	val mergedIds = setToArray(
@@ -1014,14 +1011,14 @@ public fun patient_toJs(obj: EncryptedPatient): EncryptedPatientJs {
 	)
 	val alias = obj.alias
 	val active = obj.active
-	val deactivationReason = deactivationReason_toJs(obj.deactivationReason)
+	val deactivationReason = obj.deactivationReason.name
 	val deactivationDate = intToNumber(obj.deactivationDate)
 	val ssin = obj.ssin
 	val maidenName = obj.maidenName
 	val spouseName = obj.spouseName
 	val partnerName = obj.partnerName
 	val personalStatus = obj.personalStatus?.let { nonNull1 ->
-		personalStatus_toJs(nonNull1)
+		obj.personalStatus?.name
 	}
 	val dateOfBirth = intToNumber(obj.dateOfBirth)
 	val dateOfDeath = intToNumber(obj.dateOfDeath)
@@ -1411,10 +1408,10 @@ public fun patient_fromJs(obj: EncryptedPatientJs): EncryptedPatient {
 	)
 	val civility = obj.civility
 	val gender = obj.gender?.let { nonNull1 ->
-		gender_fromJs(nonNull1)
+		Gender.valueOf(nonNull1)
 	}
 	val birthSex = obj.birthSex?.let { nonNull1 ->
-		gender_fromJs(nonNull1)
+		Gender.valueOf(nonNull1)
 	}
 	val mergeToPatientId = obj.mergeToPatientId
 	val mergedIds = arrayToSet(
@@ -1426,14 +1423,14 @@ public fun patient_fromJs(obj: EncryptedPatientJs): EncryptedPatient {
 	)
 	val alias = obj.alias
 	val active = obj.active
-	val deactivationReason = deactivationReason_fromJs(obj.deactivationReason)
+	val deactivationReason = DeactivationReason.valueOf(obj.deactivationReason)
 	val deactivationDate = numberToInt(obj.deactivationDate, "obj.deactivationDate")
 	val ssin = obj.ssin
 	val maidenName = obj.maidenName
 	val spouseName = obj.spouseName
 	val partnerName = obj.partnerName
 	val personalStatus = obj.personalStatus?.let { nonNull1 ->
-		personalStatus_fromJs(nonNull1)
+		PersonalStatus.valueOf(nonNull1)
 	}
 	val dateOfBirth = numberToInt(obj.dateOfBirth, "obj.dateOfBirth")
 	val dateOfDeath = numberToInt(obj.dateOfDeath, "obj.dateOfDeath")

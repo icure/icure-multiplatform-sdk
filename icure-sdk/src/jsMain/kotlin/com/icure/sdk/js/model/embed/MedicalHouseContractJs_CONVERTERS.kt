@@ -8,9 +8,12 @@ import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.sdk.js.model.specializations.base64String_fromJs
 import com.icure.sdk.js.model.specializations.base64String_toJs
+import com.icure.sdk.model.embed.ContractChangeType
 import com.icure.sdk.model.embed.DecryptedMedicalHouseContract
 import com.icure.sdk.model.embed.EncryptedMedicalHouseContract
 import com.icure.sdk.model.embed.MedicalHouseContract
+import com.icure.sdk.model.embed.MhcSignatureType
+import com.icure.sdk.model.embed.SuspensionReason
 import kotlin.String
 
 public fun medicalHouseContract_toJs(obj: DecryptedMedicalHouseContract):
@@ -21,7 +24,7 @@ public fun medicalHouseContract_toJs(obj: DecryptedMedicalHouseContract):
 	val mmNihii = obj.mmNihii
 	val hcpId = obj.hcpId
 	val changeType = obj.changeType?.let { nonNull1 ->
-		contractChangeType_toJs(nonNull1)
+		obj.changeType?.name
 	}
 	val parentContractId = obj.parentContractId
 	val changedBy = obj.changedBy
@@ -43,12 +46,12 @@ public fun medicalHouseContract_toJs(obj: DecryptedMedicalHouseContract):
 	val startOfSuspension = longToNumber(obj.startOfSuspension)
 	val endOfSuspension = longToNumber(obj.endOfSuspension)
 	val suspensionReason = obj.suspensionReason?.let { nonNull1 ->
-		suspensionReason_toJs(nonNull1)
+		obj.suspensionReason?.name
 	}
 	val suspensionSource = obj.suspensionSource
 	val forcedSuspension = obj.forcedSuspension
 	val signatureType = obj.signatureType?.let { nonNull1 ->
-		mhcSignatureType_toJs(nonNull1)
+		obj.signatureType?.name
 	}
 	val status = intToNumber(obj.status)
 	val options = mapToObject<_, _, String>(
@@ -117,7 +120,7 @@ public fun medicalHouseContract_fromJs(obj: DecryptedMedicalHouseContractJs):
 	val mmNihii = obj.mmNihii
 	val hcpId = obj.hcpId
 	val changeType = obj.changeType?.let { nonNull1 ->
-		contractChangeType_fromJs(nonNull1)
+		ContractChangeType.valueOf(nonNull1)
 	}
 	val parentContractId = obj.parentContractId
 	val changedBy = obj.changedBy
@@ -139,12 +142,12 @@ public fun medicalHouseContract_fromJs(obj: DecryptedMedicalHouseContractJs):
 	val startOfSuspension = numberToLong(obj.startOfSuspension, "obj.startOfSuspension")
 	val endOfSuspension = numberToLong(obj.endOfSuspension, "obj.endOfSuspension")
 	val suspensionReason = obj.suspensionReason?.let { nonNull1 ->
-		suspensionReason_fromJs(nonNull1)
+		SuspensionReason.valueOf(nonNull1)
 	}
 	val suspensionSource = obj.suspensionSource
 	val forcedSuspension = obj.forcedSuspension
 	val signatureType = obj.signatureType?.let { nonNull1 ->
-		mhcSignatureType_fromJs(nonNull1)
+		MhcSignatureType.valueOf(nonNull1)
 	}
 	val status = numberToInt(obj.status, "obj.status")
 	val options = objectToMap(
@@ -215,7 +218,7 @@ public fun medicalHouseContract_toJs(obj: EncryptedMedicalHouseContract):
 	val mmNihii = obj.mmNihii
 	val hcpId = obj.hcpId
 	val changeType = obj.changeType?.let { nonNull1 ->
-		contractChangeType_toJs(nonNull1)
+		obj.changeType?.name
 	}
 	val parentContractId = obj.parentContractId
 	val changedBy = obj.changedBy
@@ -237,12 +240,12 @@ public fun medicalHouseContract_toJs(obj: EncryptedMedicalHouseContract):
 	val startOfSuspension = longToNumber(obj.startOfSuspension)
 	val endOfSuspension = longToNumber(obj.endOfSuspension)
 	val suspensionReason = obj.suspensionReason?.let { nonNull1 ->
-		suspensionReason_toJs(nonNull1)
+		obj.suspensionReason?.name
 	}
 	val suspensionSource = obj.suspensionSource
 	val forcedSuspension = obj.forcedSuspension
 	val signatureType = obj.signatureType?.let { nonNull1 ->
-		mhcSignatureType_toJs(nonNull1)
+		obj.signatureType?.name
 	}
 	val status = intToNumber(obj.status)
 	val options = mapToObject<_, _, String>(
@@ -311,7 +314,7 @@ public fun medicalHouseContract_fromJs(obj: EncryptedMedicalHouseContractJs):
 	val mmNihii = obj.mmNihii
 	val hcpId = obj.hcpId
 	val changeType = obj.changeType?.let { nonNull1 ->
-		contractChangeType_fromJs(nonNull1)
+		ContractChangeType.valueOf(nonNull1)
 	}
 	val parentContractId = obj.parentContractId
 	val changedBy = obj.changedBy
@@ -333,12 +336,12 @@ public fun medicalHouseContract_fromJs(obj: EncryptedMedicalHouseContractJs):
 	val startOfSuspension = numberToLong(obj.startOfSuspension, "obj.startOfSuspension")
 	val endOfSuspension = numberToLong(obj.endOfSuspension, "obj.endOfSuspension")
 	val suspensionReason = obj.suspensionReason?.let { nonNull1 ->
-		suspensionReason_fromJs(nonNull1)
+		SuspensionReason.valueOf(nonNull1)
 	}
 	val suspensionSource = obj.suspensionSource
 	val forcedSuspension = obj.forcedSuspension
 	val signatureType = obj.signatureType?.let { nonNull1 ->
-		mhcSignatureType_fromJs(nonNull1)
+		MhcSignatureType.valueOf(nonNull1)
 	}
 	val status = numberToInt(obj.status, "obj.status")
 	val options = objectToMap(

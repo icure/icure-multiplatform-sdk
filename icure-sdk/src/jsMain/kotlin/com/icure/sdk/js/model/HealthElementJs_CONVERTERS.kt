@@ -32,8 +32,6 @@ import com.icure.sdk.js.model.embed.delegation_fromJs
 import com.icure.sdk.js.model.embed.delegation_toJs
 import com.icure.sdk.js.model.embed.episode_fromJs
 import com.icure.sdk.js.model.embed.episode_toJs
-import com.icure.sdk.js.model.embed.laterality_fromJs
-import com.icure.sdk.js.model.embed.laterality_toJs
 import com.icure.sdk.js.model.embed.planOfAction_fromJs
 import com.icure.sdk.js.model.embed.planOfAction_toJs
 import com.icure.sdk.js.model.embed.securityMetadata_fromJs
@@ -53,6 +51,7 @@ import com.icure.sdk.model.embed.Delegation
 import com.icure.sdk.model.embed.EncryptedCareTeamMember
 import com.icure.sdk.model.embed.EncryptedEpisode
 import com.icure.sdk.model.embed.EncryptedPlanOfAction
+import com.icure.sdk.model.embed.Laterality
 import kotlin.Array
 import kotlin.String
 import kotlin.collections.Set
@@ -103,7 +102,7 @@ public fun healthElement_toJs(obj: DecryptedHealthElement): DecryptedHealthEleme
 	val idService = obj.idService
 	val status = intToNumber(obj.status)
 	val laterality = obj.laterality?.let { nonNull1 ->
-		laterality_toJs(nonNull1)
+		obj.laterality?.name
 	}
 	val plansOfAction = listToArray(
 		obj.plansOfAction,
@@ -265,7 +264,7 @@ public fun healthElement_fromJs(obj: DecryptedHealthElementJs): DecryptedHealthE
 	val idService = obj.idService
 	val status = numberToInt(obj.status, "obj.status")
 	val laterality = obj.laterality?.let { nonNull1 ->
-		laterality_fromJs(nonNull1)
+		Laterality.valueOf(nonNull1)
 	}
 	val plansOfAction = arrayToList(
 		obj.plansOfAction,
@@ -433,7 +432,7 @@ public fun healthElement_toJs(obj: EncryptedHealthElement): EncryptedHealthEleme
 	val idService = obj.idService
 	val status = intToNumber(obj.status)
 	val laterality = obj.laterality?.let { nonNull1 ->
-		laterality_toJs(nonNull1)
+		obj.laterality?.name
 	}
 	val plansOfAction = listToArray(
 		obj.plansOfAction,
@@ -595,7 +594,7 @@ public fun healthElement_fromJs(obj: EncryptedHealthElementJs): EncryptedHealthE
 	val idService = obj.idService
 	val status = numberToInt(obj.status, "obj.status")
 	val laterality = obj.laterality?.let { nonNull1 ->
-		laterality_fromJs(nonNull1)
+		Laterality.valueOf(nonNull1)
 	}
 	val plansOfAction = arrayToList(
 		obj.plansOfAction,

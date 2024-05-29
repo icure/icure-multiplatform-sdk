@@ -3,10 +3,9 @@ package com.icure.sdk.js.crypto.entities
 import com.icure.sdk.crypto.entities.DelegateShareOptions
 import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.setToArray
-import com.icure.sdk.js.model.requests.requestedPermission_fromJs
-import com.icure.sdk.js.model.requests.requestedPermission_toJs
 import com.icure.sdk.js.model.specializations.hexString_fromJs
 import com.icure.sdk.js.model.specializations.hexString_toJs
+import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import kotlin.String
 
@@ -29,7 +28,7 @@ public fun delegateShareOptions_toJs(obj: DelegateShareOptions): DelegateShareOp
 			x1
 		},
 	)
-	val requestedPermissions = requestedPermission_toJs(obj.requestedPermissions)
+	val requestedPermissions = obj.requestedPermissions.name
 	return DelegateShareOptionsJs(js("{" +
 		"shareSecretIds:shareSecretIds," +
 		"shareEncryptionKeys:shareEncryptionKeys," +
@@ -60,7 +59,7 @@ public fun delegateShareOptions_fromJs(obj: DelegateShareOptionsJs): DelegateSha
 			x1
 		},
 	)
-	val requestedPermissions = requestedPermission_fromJs(obj.requestedPermissions)
+	val requestedPermissions = RequestedPermission.valueOf(obj.requestedPermissions)
 	return DelegateShareOptions(
 		shareSecretIds = shareSecretIds,
 		shareEncryptionKeys = shareEncryptionKeys,

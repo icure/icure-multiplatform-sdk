@@ -58,9 +58,9 @@ internal class CalendarItemApiImplJs(
 			simpleShareResult_toJs(
 				calendarItemApi.encrypted.shareWith(delegateId,
 						com.icure.sdk.js.model.calendarItem_fromJs(calendarItem),
-						com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareEncryptionKeys),
-						com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareOwningEntityIds),
-						com.icure.sdk.js.model.requests.requestedPermission_fromJs(requestedPermission)),
+						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareEncryptionKeys),
+						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareOwningEntityIds),
+						com.icure.sdk.model.requests.RequestedPermission.valueOf(requestedPermission)),
 				{ x1: EncryptedCalendarItem ->
 					calendarItem_toJs(x1)
 				},
@@ -234,9 +234,9 @@ internal class CalendarItemApiImplJs(
 			simpleShareResult_toJs(
 				calendarItemApi.tryAndRecover.shareWith(delegateId,
 						com.icure.sdk.js.model.calendarItem_fromJs(calendarItem),
-						com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareEncryptionKeys),
-						com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareOwningEntityIds),
-						com.icure.sdk.js.model.requests.requestedPermission_fromJs(requestedPermission)),
+						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareEncryptionKeys),
+						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareOwningEntityIds),
+						com.icure.sdk.model.requests.RequestedPermission.valueOf(requestedPermission)),
 				{ x1: CalendarItem ->
 					calendarItem_toJs(x1)
 				},
@@ -420,7 +420,7 @@ internal class CalendarItemApiImplJs(
 		    x1
 		  },
 		  { x1: kotlin.String ->
-		    com.icure.sdk.js.model.embed.accessLevel_fromJs(x1)
+		    com.icure.sdk.model.embed.AccessLevel.valueOf(x1)
 		  },
 		), com.icure.sdk.js.crypto.entities.secretIdOption_fromJs(secretId)))}
 
@@ -489,9 +489,9 @@ internal class CalendarItemApiImplJs(
 	): Promise<SimpleShareResultJs<DecryptedCalendarItemJs>> = GlobalScope.promise {
 		simpleShareResult_toJs(
 			calendarItemApi.shareWith(delegateId, com.icure.sdk.js.model.calendarItem_fromJs(calendarItem),
-					com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareEncryptionKeys),
-					com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareOwningEntityIds),
-					com.icure.sdk.js.model.requests.requestedPermission_fromJs(requestedPermission)),
+					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareEncryptionKeys),
+					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareOwningEntityIds),
+					com.icure.sdk.model.requests.RequestedPermission.valueOf(requestedPermission)),
 			{ x1: DecryptedCalendarItem ->
 				calendarItem_toJs(x1)
 			},

@@ -5,6 +5,7 @@ import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.specializations.base64String_fromJs
 import com.icure.sdk.js.model.specializations.base64String_toJs
 import com.icure.sdk.model.embed.Address
+import com.icure.sdk.model.embed.AddressType
 import com.icure.sdk.model.embed.Annotation
 import com.icure.sdk.model.embed.DecryptedAddress
 import com.icure.sdk.model.embed.DecryptedTelecom
@@ -13,7 +14,7 @@ import com.icure.sdk.model.embed.EncryptedTelecom
 
 public fun address_toJs(obj: DecryptedAddress): DecryptedAddressJs {
 	val addressType = obj.addressType?.let { nonNull1 ->
-		addressType_toJs(nonNull1)
+		obj.addressType?.name
 	}
 	val descr = obj.descr
 	val street = obj.street
@@ -58,7 +59,7 @@ public fun address_toJs(obj: DecryptedAddress): DecryptedAddressJs {
 
 public fun address_fromJs(obj: DecryptedAddressJs): DecryptedAddress {
 	val addressType = obj.addressType?.let { nonNull1 ->
-		addressType_fromJs(nonNull1)
+		AddressType.valueOf(nonNull1)
 	}
 	val descr = obj.descr
 	val street = obj.street
@@ -105,7 +106,7 @@ public fun address_fromJs(obj: DecryptedAddressJs): DecryptedAddress {
 
 public fun address_toJs(obj: EncryptedAddress): EncryptedAddressJs {
 	val addressType = obj.addressType?.let { nonNull1 ->
-		addressType_toJs(nonNull1)
+		obj.addressType?.name
 	}
 	val descr = obj.descr
 	val street = obj.street
@@ -150,7 +151,7 @@ public fun address_toJs(obj: EncryptedAddress): EncryptedAddressJs {
 
 public fun address_fromJs(obj: EncryptedAddressJs): EncryptedAddress {
 	val addressType = obj.addressType?.let { nonNull1 ->
-		addressType_fromJs(nonNull1)
+		AddressType.valueOf(nonNull1)
 	}
 	val descr = obj.descr
 	val street = obj.street

@@ -7,6 +7,7 @@ import com.icure.sdk.js.model.specializations.base64String_toJs
 import com.icure.sdk.model.embed.CareTeamMembership
 import com.icure.sdk.model.embed.DecryptedCareTeamMembership
 import com.icure.sdk.model.embed.EncryptedCareTeamMembership
+import com.icure.sdk.model.embed.MembershipType
 
 public fun careTeamMembership_toJs(obj: DecryptedCareTeamMembership):
 		DecryptedCareTeamMembershipJs {
@@ -14,7 +15,7 @@ public fun careTeamMembership_toJs(obj: DecryptedCareTeamMembership):
 	val endDate = longToNumber(obj.endDate)
 	val careTeamMemberId = obj.careTeamMemberId
 	val membershipType = obj.membershipType?.let { nonNull1 ->
-		membershipType_toJs(nonNull1)
+		obj.membershipType?.name
 	}
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
@@ -34,7 +35,7 @@ public fun careTeamMembership_fromJs(obj: DecryptedCareTeamMembershipJs):
 	val endDate = numberToLong(obj.endDate, "obj.endDate")
 	val careTeamMemberId = obj.careTeamMemberId
 	val membershipType = obj.membershipType?.let { nonNull1 ->
-		membershipType_fromJs(nonNull1)
+		MembershipType.valueOf(nonNull1)
 	}
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_fromJs(nonNull1)
@@ -54,7 +55,7 @@ public fun careTeamMembership_toJs(obj: EncryptedCareTeamMembership):
 	val endDate = longToNumber(obj.endDate)
 	val careTeamMemberId = obj.careTeamMemberId
 	val membershipType = obj.membershipType?.let { nonNull1 ->
-		membershipType_toJs(nonNull1)
+		obj.membershipType?.name
 	}
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
@@ -74,7 +75,7 @@ public fun careTeamMembership_fromJs(obj: EncryptedCareTeamMembershipJs):
 	val endDate = numberToLong(obj.endDate, "obj.endDate")
 	val careTeamMemberId = obj.careTeamMemberId
 	val membershipType = obj.membershipType?.let { nonNull1 ->
-		membershipType_fromJs(nonNull1)
+		MembershipType.valueOf(nonNull1)
 	}
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_fromJs(nonNull1)

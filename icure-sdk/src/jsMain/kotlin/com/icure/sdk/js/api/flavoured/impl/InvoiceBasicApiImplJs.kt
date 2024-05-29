@@ -16,9 +16,7 @@ import com.icure.sdk.js.model.`data`.labelledOccurence_toJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.couchdb.docIdentifier_toJs
 import com.icure.sdk.js.model.embed.EncryptedInvoicingCodeJs
-import com.icure.sdk.js.model.embed.invoiceType_fromJs
 import com.icure.sdk.js.model.embed.invoicingCode_fromJs
-import com.icure.sdk.js.model.embed.mediumType_fromJs
 import com.icure.sdk.js.model.filter.chain.FilterChainJs
 import com.icure.sdk.js.model.filter.chain.filterChain_fromJs
 import com.icure.sdk.js.model.icureStub_toJs
@@ -28,6 +26,8 @@ import com.icure.sdk.js.model.paginatedList_toJs
 import com.icure.sdk.model.EncryptedInvoice
 import com.icure.sdk.model.IcureStub
 import com.icure.sdk.model.`data`.LabelledOccurence
+import com.icure.sdk.model.embed.InvoiceType
+import com.icure.sdk.model.embed.MediumType
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
@@ -270,7 +270,7 @@ internal class InvoiceBasicApiImplJs(
 	): Promise<Array<EncryptedInvoiceJs>> = GlobalScope.promise {
 		listToArray(
 			invoiceBasicApi.listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(hcPartyId,
-					mediumType_fromJs(sentMediumType), invoiceType_fromJs(invoiceType), sent, numberToLong(from,
+					MediumType.valueOf(sentMediumType), InvoiceType.valueOf(invoiceType), sent, numberToLong(from,
 					"from"), numberToLong(to, "to")),
 			{ x1: EncryptedInvoice ->
 				invoice_toJs(x1)

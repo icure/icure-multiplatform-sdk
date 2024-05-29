@@ -3,8 +3,6 @@ package com.icure.sdk.js.crypto.entities
 import com.icure.sdk.crypto.entities.EntityAccessInformation
 import com.icure.sdk.js.model.CheckedConverters.mapToObject
 import com.icure.sdk.js.model.CheckedConverters.objectToMap
-import com.icure.sdk.js.model.embed.accessLevel_fromJs
-import com.icure.sdk.js.model.embed.accessLevel_toJs
 import com.icure.sdk.model.embed.AccessLevel
 import kotlin.String
 
@@ -15,7 +13,7 @@ public fun entityAccessInformation_toJs(obj: EntityAccessInformation): EntityAcc
 			x1
 		},
 		{ x1: AccessLevel ->
-			accessLevel_toJs(x1)
+			x1.name
 		},
 	)
 	val hasUnknownAnonymousDataOwners = obj.hasUnknownAnonymousDataOwners
@@ -33,7 +31,7 @@ public fun entityAccessInformation_fromJs(obj: EntityAccessInformationJs): Entit
 			x1
 		},
 		{ x1: String ->
-			accessLevel_fromJs(x1)
+			AccessLevel.valueOf(x1)
 		},
 	)
 	val hasUnknownAnonymousDataOwners = obj.hasUnknownAnonymousDataOwners

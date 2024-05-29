@@ -7,7 +7,6 @@ import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CryptoActorStubWithTypeJs
 import com.icure.sdk.js.model.DataOwnerWithTypeJs
 import com.icure.sdk.js.model.cryptoActorStubWithType_toJs
-import com.icure.sdk.js.model.dataOwnerType_toJs
 import com.icure.sdk.js.model.dataOwnerWithType_toJs
 import com.icure.sdk.model.DataOwnerWithType
 import kotlin.Array
@@ -79,7 +78,7 @@ internal class DataOwnerApiImplJs(
 
 
 	override fun getCurrentDataOwnerType(): Promise<String> = GlobalScope.promise {
-		dataOwnerType_toJs(dataOwnerApi.getCurrentDataOwnerType())}
+		dataOwnerApi.getCurrentDataOwnerType().name}
 
 
 	override fun getCryptoActorStub(ownerId: String): Promise<CryptoActorStubWithTypeJs> =

@@ -117,7 +117,7 @@ internal class TopicBasicApiImplJs(
 		topicRole: String,
 	): Promise<EncryptedTopicJs> = GlobalScope.promise {
 		topic_toJs(topicBasicApi.addParticipant(entityId, dataOwnerId,
-				com.icure.sdk.js.model.topicRole_fromJs(topicRole)))}
+				com.icure.sdk.model.TopicRole.valueOf(topicRole)))}
 
 
 	override fun removeParticipant(entityId: String, dataOwnerId: String): Promise<EncryptedTopicJs> =

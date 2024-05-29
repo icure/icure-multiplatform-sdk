@@ -28,16 +28,10 @@ import com.icure.sdk.js.model.embed.financialInstitutionInformation_fromJs
 import com.icure.sdk.js.model.embed.financialInstitutionInformation_toJs
 import com.icure.sdk.js.model.embed.flatRateTarification_fromJs
 import com.icure.sdk.js.model.embed.flatRateTarification_toJs
-import com.icure.sdk.js.model.embed.gender_fromJs
-import com.icure.sdk.js.model.embed.gender_toJs
 import com.icure.sdk.js.model.embed.healthcarePartyHistoryStatus_fromJs
 import com.icure.sdk.js.model.embed.healthcarePartyHistoryStatus_toJs
-import com.icure.sdk.js.model.embed.healthcarePartyStatus_fromJs
-import com.icure.sdk.js.model.embed.healthcarePartyStatus_toJs
 import com.icure.sdk.js.model.embed.personName_fromJs
 import com.icure.sdk.js.model.embed.personName_toJs
-import com.icure.sdk.js.model.embed.telecomType_fromJs
-import com.icure.sdk.js.model.embed.telecomType_toJs
 import com.icure.sdk.js.model.specializations.aesExchangeKeyEncryptionKeypairIdentifier_fromJs
 import com.icure.sdk.js.model.specializations.aesExchangeKeyEncryptionKeypairIdentifier_toJs
 import com.icure.sdk.js.model.specializations.hexString_fromJs
@@ -51,6 +45,7 @@ import com.icure.sdk.model.base.Identifier
 import com.icure.sdk.model.embed.DecryptedAddress
 import com.icure.sdk.model.embed.DecryptedFinancialInstitutionInformation
 import com.icure.sdk.model.embed.DecryptedFlatRateTarification
+import com.icure.sdk.model.embed.Gender
 import com.icure.sdk.model.embed.HealthcarePartyHistoryStatus
 import com.icure.sdk.model.embed.HealthcarePartyStatus
 import com.icure.sdk.model.embed.PersonName
@@ -97,7 +92,7 @@ public fun healthcareParty_toJs(obj: HealthcareParty): HealthcarePartyJs {
 		},
 	)
 	val gender = obj.gender?.let { nonNull1 ->
-		gender_toJs(nonNull1)
+		obj.gender?.name
 	}
 	val civility = obj.civility
 	val companyName = obj.companyName
@@ -131,7 +126,7 @@ public fun healthcareParty_toJs(obj: HealthcareParty): HealthcarePartyJs {
 	val statuses = setToArray(
 		obj.statuses,
 		{ x1: HealthcarePartyStatus ->
-			healthcarePartyStatus_toJs(x1)
+			x1.name
 		},
 	)
 	val statusHistory = listToArray(
@@ -149,7 +144,7 @@ public fun healthcareParty_toJs(obj: HealthcareParty): HealthcarePartyJs {
 	val sendFormats = mapToObject<_, _, String>(
 		obj.sendFormats,
 		{ x1: TelecomType ->
-			telecomType_toJs(x1)
+			x1.name
 		},
 		{ x1: String ->
 			x1
@@ -376,7 +371,7 @@ public fun healthcareParty_fromJs(obj: HealthcarePartyJs): HealthcareParty {
 		},
 	)
 	val gender = obj.gender?.let { nonNull1 ->
-		gender_fromJs(nonNull1)
+		Gender.valueOf(nonNull1)
 	}
 	val civility = obj.civility
 	val companyName = obj.companyName
@@ -413,7 +408,7 @@ public fun healthcareParty_fromJs(obj: HealthcarePartyJs): HealthcareParty {
 		obj.statuses,
 		"obj.statuses",
 		{ x1: String ->
-			healthcarePartyStatus_fromJs(x1)
+			HealthcarePartyStatus.valueOf(x1)
 		},
 	)
 	val statusHistory = arrayToList(
@@ -434,7 +429,7 @@ public fun healthcareParty_fromJs(obj: HealthcarePartyJs): HealthcareParty {
 		obj.sendFormats,
 		"obj.sendFormats",
 		{ x1: String ->
-			telecomType_fromJs(x1)
+			TelecomType.valueOf(x1)
 		},
 		{ x1: String ->
 			x1

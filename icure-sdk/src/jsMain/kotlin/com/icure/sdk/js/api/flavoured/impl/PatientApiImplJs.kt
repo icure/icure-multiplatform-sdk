@@ -80,9 +80,9 @@ internal class PatientApiImplJs(
 				  { x1: kotlin.String ->
 				    x1
 				  },
-				), com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareEncryptionKeys),
-						com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareOwningEntityIds),
-						com.icure.sdk.js.model.requests.requestedPermission_fromJs(requestedPermission)),
+				), com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareEncryptionKeys),
+						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareOwningEntityIds),
+						com.icure.sdk.model.requests.RequestedPermission.valueOf(requestedPermission)),
 				{ x1: EncryptedPatient ->
 					patient_toJs(x1)
 				},
@@ -172,7 +172,7 @@ internal class PatientApiImplJs(
 			paginatedList_toJs(
 				patientApi.encrypted.findPatientsByNameBirthSsinAuto(healthcarePartyId, filterValue, startKey,
 						startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit"),
-						com.icure.sdk.js.model.couchdb.sortDirection_fromJs(sortDirection)),
+						com.icure.sdk.model.couchdb.SortDirection.valueOf(sortDirection)),
 				{ x1: EncryptedPatient ->
 					patient_toJs(x1)
 				},
@@ -190,7 +190,7 @@ internal class PatientApiImplJs(
 			paginatedList_toJs(
 				patientApi.encrypted.listPatientsOfHcParty(hcPartyId, sortField, startKey, startDocumentId,
 						com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit"),
-						com.icure.sdk.js.model.couchdb.sortDirection_fromJs(sortDirection)),
+						com.icure.sdk.model.couchdb.SortDirection.valueOf(sortDirection)),
 				{ x1: EncryptedPatient ->
 					patient_toJs(x1)
 				},
@@ -234,7 +234,7 @@ internal class PatientApiImplJs(
 			paginatedList_toJs(
 				patientApi.encrypted.listPatientsByHcParty(hcPartyId, sortField, startKey, startDocumentId,
 						com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit"),
-						com.icure.sdk.js.model.couchdb.sortDirection_fromJs(sortDirection)),
+						com.icure.sdk.model.couchdb.SortDirection.valueOf(sortDirection)),
 				{ x1: EncryptedPatient ->
 					patient_toJs(x1)
 				},
@@ -270,7 +270,7 @@ internal class PatientApiImplJs(
 			paginatedList_toJs(
 				patientApi.encrypted.findPatientsByHealthcareParty(hcPartyId, sortField, startKey,
 						startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit"),
-						com.icure.sdk.js.model.couchdb.sortDirection_fromJs(sortDirection)),
+						com.icure.sdk.model.couchdb.SortDirection.valueOf(sortDirection)),
 				{ x1: EncryptedPatient ->
 					patient_toJs(x1)
 				},
@@ -444,9 +444,9 @@ internal class PatientApiImplJs(
 				  { x1: kotlin.String ->
 				    x1
 				  },
-				), com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareEncryptionKeys),
-						com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareOwningEntityIds),
-						com.icure.sdk.js.model.requests.requestedPermission_fromJs(requestedPermission)),
+				), com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareEncryptionKeys),
+						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareOwningEntityIds),
+						com.icure.sdk.model.requests.RequestedPermission.valueOf(requestedPermission)),
 				{ x1: Patient ->
 					patient_toJs(x1)
 				},
@@ -535,7 +535,7 @@ internal class PatientApiImplJs(
 			paginatedList_toJs(
 				patientApi.tryAndRecover.findPatientsByNameBirthSsinAuto(healthcarePartyId, filterValue,
 						startKey, startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit,
-						"limit"), com.icure.sdk.js.model.couchdb.sortDirection_fromJs(sortDirection)),
+						"limit"), com.icure.sdk.model.couchdb.SortDirection.valueOf(sortDirection)),
 				{ x1: Patient ->
 					patient_toJs(x1)
 				},
@@ -553,7 +553,7 @@ internal class PatientApiImplJs(
 			paginatedList_toJs(
 				patientApi.tryAndRecover.listPatientsOfHcParty(hcPartyId, sortField, startKey, startDocumentId,
 						com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit"),
-						com.icure.sdk.js.model.couchdb.sortDirection_fromJs(sortDirection)),
+						com.icure.sdk.model.couchdb.SortDirection.valueOf(sortDirection)),
 				{ x1: Patient ->
 					patient_toJs(x1)
 				},
@@ -596,7 +596,7 @@ internal class PatientApiImplJs(
 			paginatedList_toJs(
 				patientApi.tryAndRecover.listPatientsByHcParty(hcPartyId, sortField, startKey, startDocumentId,
 						com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit"),
-						com.icure.sdk.js.model.couchdb.sortDirection_fromJs(sortDirection)),
+						com.icure.sdk.model.couchdb.SortDirection.valueOf(sortDirection)),
 				{ x1: Patient ->
 					patient_toJs(x1)
 				},
@@ -632,7 +632,7 @@ internal class PatientApiImplJs(
 			paginatedList_toJs(
 				patientApi.tryAndRecover.findPatientsByHealthcareParty(hcPartyId, sortField, startKey,
 						startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit"),
-						com.icure.sdk.js.model.couchdb.sortDirection_fromJs(sortDirection)),
+						com.icure.sdk.model.couchdb.SortDirection.valueOf(sortDirection)),
 				{ x1: Patient ->
 					patient_toJs(x1)
 				},
@@ -829,7 +829,7 @@ internal class PatientApiImplJs(
 		    x1
 		  },
 		  { x1: kotlin.String ->
-		    com.icure.sdk.js.model.embed.accessLevel_fromJs(x1)
+		    com.icure.sdk.model.embed.AccessLevel.valueOf(x1)
 		  },
 		)))}
 
@@ -915,7 +915,7 @@ internal class PatientApiImplJs(
 		      x1,
 		      "x1",
 		      { x2: kotlin.String ->
-		        com.icure.sdk.js.crypto.entities.shareAllPatientDataOptions_Tag_fromJs(x2)
+		        com.icure.sdk.crypto.entities.ShareAllPatientDataOptions.Tag.valueOf(x2)
 		      },
 		    )
 		  },
@@ -1009,9 +1009,9 @@ internal class PatientApiImplJs(
 			  { x1: kotlin.String ->
 			    x1
 			  },
-			), com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareEncryptionKeys),
-					com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareOwningEntityIds),
-					com.icure.sdk.js.model.requests.requestedPermission_fromJs(requestedPermission)),
+			), com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareEncryptionKeys),
+					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareOwningEntityIds),
+					com.icure.sdk.model.requests.RequestedPermission.valueOf(requestedPermission)),
 			{ x1: DecryptedPatient ->
 				patient_toJs(x1)
 			},
@@ -1101,7 +1101,7 @@ internal class PatientApiImplJs(
 		paginatedList_toJs(
 			patientApi.findPatientsByNameBirthSsinAuto(healthcarePartyId, filterValue, startKey,
 					startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit"),
-					com.icure.sdk.js.model.couchdb.sortDirection_fromJs(sortDirection)),
+					com.icure.sdk.model.couchdb.SortDirection.valueOf(sortDirection)),
 			{ x1: DecryptedPatient ->
 				patient_toJs(x1)
 			},
@@ -1119,7 +1119,7 @@ internal class PatientApiImplJs(
 		paginatedList_toJs(
 			patientApi.listPatientsOfHcParty(hcPartyId, sortField, startKey, startDocumentId,
 					com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit"),
-					com.icure.sdk.js.model.couchdb.sortDirection_fromJs(sortDirection)),
+					com.icure.sdk.model.couchdb.SortDirection.valueOf(sortDirection)),
 			{ x1: DecryptedPatient ->
 				patient_toJs(x1)
 			},
@@ -1163,7 +1163,7 @@ internal class PatientApiImplJs(
 		paginatedList_toJs(
 			patientApi.listPatientsByHcParty(hcPartyId, sortField, startKey, startDocumentId,
 					com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit"),
-					com.icure.sdk.js.model.couchdb.sortDirection_fromJs(sortDirection)),
+					com.icure.sdk.model.couchdb.SortDirection.valueOf(sortDirection)),
 			{ x1: DecryptedPatient ->
 				patient_toJs(x1)
 			},
@@ -1199,7 +1199,7 @@ internal class PatientApiImplJs(
 		paginatedList_toJs(
 			patientApi.findPatientsByHealthcareParty(hcPartyId, sortField, startKey, startDocumentId,
 					com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit"),
-					com.icure.sdk.js.model.couchdb.sortDirection_fromJs(sortDirection)),
+					com.icure.sdk.model.couchdb.SortDirection.valueOf(sortDirection)),
 			{ x1: DecryptedPatient ->
 				patient_toJs(x1)
 			},

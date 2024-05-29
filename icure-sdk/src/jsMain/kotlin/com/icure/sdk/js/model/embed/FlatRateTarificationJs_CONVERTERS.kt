@@ -11,13 +11,14 @@ import com.icure.sdk.model.embed.DecryptedValorisation
 import com.icure.sdk.model.embed.EncryptedFlatRateTarification
 import com.icure.sdk.model.embed.EncryptedValorisation
 import com.icure.sdk.model.embed.FlatRateTarification
+import com.icure.sdk.model.embed.FlatRateType
 import kotlin.String
 
 public fun flatRateTarification_toJs(obj: DecryptedFlatRateTarification):
 		DecryptedFlatRateTarificationJs {
 	val code = obj.code
 	val flatRateType = obj.flatRateType?.let { nonNull1 ->
-		flatRateType_toJs(nonNull1)
+		obj.flatRateType?.name
 	}
 	val label = mapToObject<_, _, String>(
 		obj.label,
@@ -50,7 +51,7 @@ public fun flatRateTarification_fromJs(obj: DecryptedFlatRateTarificationJs):
 		DecryptedFlatRateTarification {
 	val code = obj.code
 	val flatRateType = obj.flatRateType?.let { nonNull1 ->
-		flatRateType_fromJs(nonNull1)
+		FlatRateType.valueOf(nonNull1)
 	}
 	val label = objectToMapNullsafe(
 		obj.label,
@@ -85,7 +86,7 @@ public fun flatRateTarification_toJs(obj: EncryptedFlatRateTarification):
 		EncryptedFlatRateTarificationJs {
 	val code = obj.code
 	val flatRateType = obj.flatRateType?.let { nonNull1 ->
-		flatRateType_toJs(nonNull1)
+		obj.flatRateType?.name
 	}
 	val label = mapToObject<_, _, String>(
 		obj.label,
@@ -118,7 +119,7 @@ public fun flatRateTarification_fromJs(obj: EncryptedFlatRateTarificationJs):
 		EncryptedFlatRateTarification {
 	val code = obj.code
 	val flatRateType = obj.flatRateType?.let { nonNull1 ->
-		flatRateType_fromJs(nonNull1)
+		FlatRateType.valueOf(nonNull1)
 	}
 	val label = objectToMapNullsafe(
 		obj.label,

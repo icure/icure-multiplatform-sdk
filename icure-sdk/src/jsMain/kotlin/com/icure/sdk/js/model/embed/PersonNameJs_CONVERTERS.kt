@@ -5,6 +5,7 @@ import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.longToNumber
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.model.embed.PersonName
+import com.icure.sdk.model.embed.PersonNameUse
 import kotlin.String
 
 public fun personName_toJs(obj: PersonName): PersonNameJs {
@@ -31,7 +32,7 @@ public fun personName_toJs(obj: PersonName): PersonNameJs {
 	)
 	val text = obj.text
 	val use = obj.use?.let { nonNull1 ->
-		personNameUse_toJs(nonNull1)
+		obj.use?.name
 	}
 	return PersonNameJs(js("{" +
 		"lastName:lastName," +
@@ -72,7 +73,7 @@ public fun personName_fromJs(obj: PersonNameJs): PersonName {
 	)
 	val text = obj.text
 	val use = obj.use?.let { nonNull1 ->
-		personNameUse_fromJs(nonNull1)
+		PersonNameUse.valueOf(nonNull1)
 	}
 	return PersonName(
 		lastName = lastName,

@@ -59,9 +59,9 @@ internal class DocumentApiImplJs(
 		): Promise<SimpleShareResultJs<EncryptedDocumentJs>> = GlobalScope.promise {
 			simpleShareResult_toJs(
 				documentApi.encrypted.shareWith(delegateId, com.icure.sdk.js.model.document_fromJs(document),
-						com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareEncryptionKeys),
-						com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareOwningEntityIds),
-						com.icure.sdk.js.model.requests.requestedPermission_fromJs(requestedPermission)),
+						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareEncryptionKeys),
+						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareOwningEntityIds),
+						com.icure.sdk.model.requests.RequestedPermission.valueOf(requestedPermission)),
 				{ x1: EncryptedDocument ->
 					document_toJs(x1)
 				},
@@ -270,9 +270,9 @@ internal class DocumentApiImplJs(
 			simpleShareResult_toJs(
 				documentApi.tryAndRecover.shareWith(delegateId,
 						com.icure.sdk.js.model.document_fromJs(document),
-						com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareEncryptionKeys),
-						com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareOwningEntityIds),
-						com.icure.sdk.js.model.requests.requestedPermission_fromJs(requestedPermission)),
+						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareEncryptionKeys),
+						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareOwningEntityIds),
+						com.icure.sdk.model.requests.RequestedPermission.valueOf(requestedPermission)),
 				{ x1: Document ->
 					document_toJs(x1)
 				},
@@ -494,7 +494,7 @@ internal class DocumentApiImplJs(
 		    x1
 		  },
 		  { x1: kotlin.String ->
-		    com.icure.sdk.js.model.embed.accessLevel_fromJs(x1)
+		    com.icure.sdk.model.embed.AccessLevel.valueOf(x1)
 		  },
 		), com.icure.sdk.js.crypto.entities.secretIdOption_fromJs(secretId)))}
 
@@ -683,9 +683,9 @@ internal class DocumentApiImplJs(
 	): Promise<SimpleShareResultJs<DecryptedDocumentJs>> = GlobalScope.promise {
 		simpleShareResult_toJs(
 			documentApi.shareWith(delegateId, com.icure.sdk.js.model.document_fromJs(document),
-					com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareEncryptionKeys),
-					com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareOwningEntityIds),
-					com.icure.sdk.js.model.requests.requestedPermission_fromJs(requestedPermission)),
+					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareEncryptionKeys),
+					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareOwningEntityIds),
+					com.icure.sdk.model.requests.RequestedPermission.valueOf(requestedPermission)),
 			{ x1: DecryptedDocument ->
 				document_toJs(x1)
 			},

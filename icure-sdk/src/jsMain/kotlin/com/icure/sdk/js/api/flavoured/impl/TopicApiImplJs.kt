@@ -57,9 +57,9 @@ internal class TopicApiImplJs(
 		): Promise<SimpleShareResultJs<EncryptedTopicJs>> = GlobalScope.promise {
 			simpleShareResult_toJs(
 				topicApi.encrypted.shareWith(delegateId, com.icure.sdk.js.model.topic_fromJs(topic),
-						com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareEncryptionKeys),
-						com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareOwningEntityIds),
-						com.icure.sdk.js.model.requests.requestedPermission_fromJs(requestedPermission)),
+						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareEncryptionKeys),
+						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareOwningEntityIds),
+						com.icure.sdk.model.requests.RequestedPermission.valueOf(requestedPermission)),
 				{ x1: EncryptedTopic ->
 					topic_toJs(x1)
 				},
@@ -152,7 +152,7 @@ internal class TopicApiImplJs(
 			topicRole: String,
 		): Promise<EncryptedTopicJs> = GlobalScope.promise {
 			topic_toJs(topicApi.encrypted.addParticipant(entityId, dataOwnerId,
-					com.icure.sdk.js.model.topicRole_fromJs(topicRole)))}
+					com.icure.sdk.model.TopicRole.valueOf(topicRole)))}
 
 
 		override fun removeParticipant(entityId: String, dataOwnerId: String): Promise<EncryptedTopicJs> =
@@ -171,9 +171,9 @@ internal class TopicApiImplJs(
 		): Promise<SimpleShareResultJs<TopicJs>> = GlobalScope.promise {
 			simpleShareResult_toJs(
 				topicApi.tryAndRecover.shareWith(delegateId, com.icure.sdk.js.model.topic_fromJs(topic),
-						com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareEncryptionKeys),
-						com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareOwningEntityIds),
-						com.icure.sdk.js.model.requests.requestedPermission_fromJs(requestedPermission)),
+						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareEncryptionKeys),
+						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareOwningEntityIds),
+						com.icure.sdk.model.requests.RequestedPermission.valueOf(requestedPermission)),
 				{ x1: Topic ->
 					topic_toJs(x1)
 				},
@@ -264,7 +264,7 @@ internal class TopicApiImplJs(
 			topicRole: String,
 		): Promise<TopicJs> = GlobalScope.promise {
 			topic_toJs(topicApi.tryAndRecover.addParticipant(entityId, dataOwnerId,
-					com.icure.sdk.js.model.topicRole_fromJs(topicRole)))}
+					com.icure.sdk.model.TopicRole.valueOf(topicRole)))}
 
 
 		override fun removeParticipant(entityId: String, dataOwnerId: String): Promise<TopicJs> =
@@ -298,7 +298,7 @@ internal class TopicApiImplJs(
 		    x1
 		  },
 		  { x1: kotlin.String ->
-		    com.icure.sdk.js.model.embed.accessLevel_fromJs(x1)
+		    com.icure.sdk.model.embed.AccessLevel.valueOf(x1)
 		  },
 		), com.icure.sdk.js.crypto.entities.secretIdOption_fromJs(secretId)))}
 
@@ -380,9 +380,9 @@ internal class TopicApiImplJs(
 	): Promise<SimpleShareResultJs<DecryptedTopicJs>> = GlobalScope.promise {
 		simpleShareResult_toJs(
 			topicApi.shareWith(delegateId, com.icure.sdk.js.model.topic_fromJs(topic),
-					com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareEncryptionKeys),
-					com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareOwningEntityIds),
-					com.icure.sdk.js.model.requests.requestedPermission_fromJs(requestedPermission)),
+					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareEncryptionKeys),
+					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareOwningEntityIds),
+					com.icure.sdk.model.requests.RequestedPermission.valueOf(requestedPermission)),
 			{ x1: DecryptedTopic ->
 				topic_toJs(x1)
 			},
@@ -475,7 +475,7 @@ internal class TopicApiImplJs(
 		topicRole: String,
 	): Promise<DecryptedTopicJs> = GlobalScope.promise {
 		topic_toJs(topicApi.addParticipant(entityId, dataOwnerId,
-				com.icure.sdk.js.model.topicRole_fromJs(topicRole)))}
+				com.icure.sdk.model.TopicRole.valueOf(topicRole)))}
 
 
 	override fun removeParticipant(entityId: String, dataOwnerId: String): Promise<DecryptedTopicJs> =

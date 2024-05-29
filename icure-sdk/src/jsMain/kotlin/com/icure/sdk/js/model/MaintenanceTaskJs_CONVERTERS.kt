@@ -19,8 +19,6 @@ import com.icure.sdk.js.model.embed.delegation_fromJs
 import com.icure.sdk.js.model.embed.delegation_toJs
 import com.icure.sdk.js.model.embed.securityMetadata_fromJs
 import com.icure.sdk.js.model.embed.securityMetadata_toJs
-import com.icure.sdk.js.model.embed.taskStatus_fromJs
-import com.icure.sdk.js.model.embed.taskStatus_toJs
 import com.icure.sdk.js.model.specializations.base64String_fromJs
 import com.icure.sdk.js.model.specializations.base64String_toJs
 import com.icure.sdk.model.DecryptedMaintenanceTask
@@ -31,6 +29,7 @@ import com.icure.sdk.model.MaintenanceTask
 import com.icure.sdk.model.base.CodeStub
 import com.icure.sdk.model.base.Identifier
 import com.icure.sdk.model.embed.Delegation
+import com.icure.sdk.model.embed.TaskStatus
 import kotlin.Array
 import kotlin.String
 import kotlin.collections.Set
@@ -70,7 +69,7 @@ public fun maintenanceTask_toJs(obj: DecryptedMaintenanceTask): DecryptedMainten
 			propertyStub_toJs(x1)
 		},
 	)
-	val status = taskStatus_toJs(obj.status)
+	val status = obj.status.name
 	val secretForeignKeys = setToArray(
 		obj.secretForeignKeys,
 		{ x1: String ->
@@ -189,7 +188,7 @@ public fun maintenanceTask_fromJs(obj: DecryptedMaintenanceTaskJs): DecryptedMai
 			propertyStub_fromJs(x1)
 		},
 	)
-	val status = taskStatus_fromJs(obj.status)
+	val status = TaskStatus.valueOf(obj.status)
 	val secretForeignKeys = arrayToSet(
 		obj.secretForeignKeys,
 		"obj.secretForeignKeys",
@@ -311,7 +310,7 @@ public fun maintenanceTask_toJs(obj: EncryptedMaintenanceTask): EncryptedMainten
 			propertyStub_toJs(x1)
 		},
 	)
-	val status = taskStatus_toJs(obj.status)
+	val status = obj.status.name
 	val secretForeignKeys = setToArray(
 		obj.secretForeignKeys,
 		{ x1: String ->
@@ -430,7 +429,7 @@ public fun maintenanceTask_fromJs(obj: EncryptedMaintenanceTaskJs): EncryptedMai
 			propertyStub_fromJs(x1)
 		},
 	)
-	val status = taskStatus_fromJs(obj.status)
+	val status = TaskStatus.valueOf(obj.status)
 	val secretForeignKeys = arrayToSet(
 		obj.secretForeignKeys,
 		"obj.secretForeignKeys",

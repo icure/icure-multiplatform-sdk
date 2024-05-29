@@ -1,7 +1,6 @@
 package com.icure.sdk.js.model.filter.patient
 
-import com.icure.sdk.js.model.embed.gender_fromJs
-import com.icure.sdk.js.model.embed.gender_toJs
+import com.icure.sdk.model.embed.Gender
 import com.icure.sdk.model.filter.patient.PatientByHcPartyGenderEducationProfession
 
 public
@@ -10,7 +9,7 @@ public
 	val desc = obj.desc
 	val healthcarePartyId = obj.healthcarePartyId
 	val gender = obj.gender?.let { nonNull1 ->
-		gender_toJs(nonNull1)
+		obj.gender?.name
 	}
 	val education = obj.education
 	val profession = obj.profession
@@ -29,7 +28,7 @@ public
 	val desc = obj.desc
 	val healthcarePartyId = obj.healthcarePartyId
 	val gender = obj.gender?.let { nonNull1 ->
-		gender_fromJs(nonNull1)
+		Gender.valueOf(nonNull1)
 	}
 	val education = obj.education
 	val profession = obj.profession

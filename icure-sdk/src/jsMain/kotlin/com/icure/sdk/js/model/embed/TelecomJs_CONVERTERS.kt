@@ -5,10 +5,11 @@ import com.icure.sdk.js.model.specializations.base64String_toJs
 import com.icure.sdk.model.embed.DecryptedTelecom
 import com.icure.sdk.model.embed.EncryptedTelecom
 import com.icure.sdk.model.embed.Telecom
+import com.icure.sdk.model.embed.TelecomType
 
 public fun telecom_toJs(obj: DecryptedTelecom): DecryptedTelecomJs {
 	val telecomType = obj.telecomType?.let { nonNull1 ->
-		telecomType_toJs(nonNull1)
+		obj.telecomType?.name
 	}
 	val telecomNumber = obj.telecomNumber
 	val telecomDescription = obj.telecomDescription
@@ -25,7 +26,7 @@ public fun telecom_toJs(obj: DecryptedTelecom): DecryptedTelecomJs {
 
 public fun telecom_fromJs(obj: DecryptedTelecomJs): DecryptedTelecom {
 	val telecomType = obj.telecomType?.let { nonNull1 ->
-		telecomType_fromJs(nonNull1)
+		TelecomType.valueOf(nonNull1)
 	}
 	val telecomNumber = obj.telecomNumber
 	val telecomDescription = obj.telecomDescription
@@ -42,7 +43,7 @@ public fun telecom_fromJs(obj: DecryptedTelecomJs): DecryptedTelecom {
 
 public fun telecom_toJs(obj: EncryptedTelecom): EncryptedTelecomJs {
 	val telecomType = obj.telecomType?.let { nonNull1 ->
-		telecomType_toJs(nonNull1)
+		obj.telecomType?.name
 	}
 	val telecomNumber = obj.telecomNumber
 	val telecomDescription = obj.telecomDescription
@@ -59,7 +60,7 @@ public fun telecom_toJs(obj: EncryptedTelecom): EncryptedTelecomJs {
 
 public fun telecom_fromJs(obj: EncryptedTelecomJs): EncryptedTelecom {
 	val telecomType = obj.telecomType?.let { nonNull1 ->
-		telecomType_fromJs(nonNull1)
+		TelecomType.valueOf(nonNull1)
 	}
 	val telecomNumber = obj.telecomNumber
 	val telecomDescription = obj.telecomDescription

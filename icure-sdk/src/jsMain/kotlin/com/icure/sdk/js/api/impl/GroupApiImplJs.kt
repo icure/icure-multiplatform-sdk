@@ -25,14 +25,12 @@ import com.icure.sdk.js.model.couchdb.docIdentifier_toJs
 import com.icure.sdk.js.model.couchdb.groupDatabasesInfo_toJs
 import com.icure.sdk.js.model.embed.RoleConfigurationJs
 import com.icure.sdk.js.model.embed.roleConfiguration_toJs
-import com.icure.sdk.js.model.embed.userType_toJs
 import com.icure.sdk.js.model.groupDeletionReport_toJs
 import com.icure.sdk.js.model.group_toJs
 import com.icure.sdk.js.model.idWithRev_toJs
 import com.icure.sdk.js.model.paginatedList_toJs
 import com.icure.sdk.js.model.registrationSuccess_toJs
 import com.icure.sdk.js.model.replicationInfo_toJs
-import com.icure.sdk.js.model.security.operation_fromJs
 import com.icure.sdk.model.Group
 import com.icure.sdk.model.GroupDeletionReport
 import com.icure.sdk.model.IdWithRev
@@ -41,6 +39,7 @@ import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.couchdb.GroupDatabasesInfo
 import com.icure.sdk.model.embed.RoleConfiguration
 import com.icure.sdk.model.embed.UserType
+import com.icure.sdk.model.security.Operation
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
@@ -82,7 +81,7 @@ internal class GroupApiImplJs(
 		initialisationData: DatabaseInitialisationJs,
 	): Promise<GroupJs> = GlobalScope.promise {
 		group_toJs(groupApi.createGroup(id, name, type?.let { nonNull1 ->
-		  com.icure.sdk.js.model.embed.groupType_fromJs(nonNull1)
+		  com.icure.sdk.model.embed.GroupType.valueOf(nonNull1)
 		}, password, server, com.icure.sdk.js.model.CheckedConverters.numberToInt(q, "q"),
 				com.icure.sdk.js.model.CheckedConverters.numberToInt(n, "n"), superGroup,
 				com.icure.sdk.js.model.databaseInitialisation_fromJs(initialisationData)))}
@@ -94,9 +93,9 @@ internal class GroupApiImplJs(
 		registrationInformation: RegistrationInformationJs,
 	): Promise<RegistrationSuccessJs> = GlobalScope.promise {
 		registrationSuccess_toJs(groupApi.registerNewGroupAdministrator(type?.let { nonNull1 ->
-		  com.icure.sdk.js.model.embed.groupType_fromJs(nonNull1)
+		  com.icure.sdk.model.embed.GroupType.valueOf(nonNull1)
 		}, role?.let { nonNull1 ->
-		  com.icure.sdk.js.model.security.permissionType_fromJs(nonNull1)
+		  com.icure.sdk.model.security.PermissionType.valueOf(nonNull1)
 		}, com.icure.sdk.js.model.registrationInformation_fromJs(registrationInformation)))}
 
 
@@ -153,7 +152,7 @@ internal class GroupApiImplJs(
 		duration: Double?,
 		description: String?,
 	): Promise<String> = GlobalScope.promise {
-		groupApi.getOperationToken(operation_fromJs(operation), numberToLong(duration, "duration"),
+		groupApi.getOperationToken(Operation.valueOf(operation), numberToLong(duration, "duration"),
 				description)}
 
 
@@ -180,7 +179,7 @@ internal class GroupApiImplJs(
 		mapToObject<_, _, Array<RoleConfigurationJs>>(
 			groupApi.getDefaultRoles(groupId),
 			{ x1: UserType ->
-				userType_toJs(x1)
+				x1.name
 			},
 			{ x1: List<RoleConfiguration> ->
 				listToArray(

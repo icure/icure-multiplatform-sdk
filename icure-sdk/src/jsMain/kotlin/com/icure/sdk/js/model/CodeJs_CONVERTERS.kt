@@ -11,10 +11,6 @@ import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.sdk.js.model.CheckedConverters.objectToMapNullsafe
 import com.icure.sdk.js.model.CheckedConverters.setToArray
-import com.icure.sdk.js.model.base.appendixType_fromJs
-import com.icure.sdk.js.model.base.appendixType_toJs
-import com.icure.sdk.js.model.base.codeFlag_fromJs
-import com.icure.sdk.js.model.base.codeFlag_toJs
 import com.icure.sdk.js.model.embed.PeriodicityJs
 import com.icure.sdk.js.model.embed.periodicity_fromJs
 import com.icure.sdk.js.model.embed.periodicity_toJs
@@ -81,7 +77,7 @@ public fun code_toJs(obj: Code): CodeJs {
 	val flags = setToArray(
 		obj.flags,
 		{ x1: CodeFlag ->
-			codeFlag_toJs(x1)
+			x1.name
 		},
 	)
 	val searchTerms = mapToObject<_, _, Array<String>>(
@@ -102,7 +98,7 @@ public fun code_toJs(obj: Code): CodeJs {
 	val appendices = mapToObject<_, _, String>(
 		obj.appendices,
 		{ x1: AppendixType ->
-			appendixType_toJs(x1)
+			x1.name
 		},
 		{ x1: String ->
 			x1
@@ -193,7 +189,7 @@ public fun code_fromJs(obj: CodeJs): Code {
 		obj.flags,
 		"obj.flags",
 		{ x1: String ->
-			codeFlag_fromJs(x1)
+			CodeFlag.valueOf(x1)
 		},
 	)
 	val searchTerms = objectToMap(
@@ -217,7 +213,7 @@ public fun code_fromJs(obj: CodeJs): Code {
 		obj.appendices,
 		"obj.appendices",
 		{ x1: String ->
-			appendixType_fromJs(x1)
+			AppendixType.valueOf(x1)
 		},
 		{ x1: String ->
 			x1

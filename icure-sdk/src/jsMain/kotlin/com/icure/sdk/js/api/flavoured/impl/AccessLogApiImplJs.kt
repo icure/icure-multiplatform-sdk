@@ -56,9 +56,9 @@ internal class AccessLogApiImplJs(
 		): Promise<SimpleShareResultJs<EncryptedAccessLogJs>> = GlobalScope.promise {
 			simpleShareResult_toJs(
 				accessLogApi.encrypted.shareWith(delegateId, com.icure.sdk.js.model.accessLog_fromJs(accessLog),
-						com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareEncryptionKeys),
-						com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareOwningEntityIds),
-						com.icure.sdk.js.model.requests.requestedPermission_fromJs(requestedPermission)),
+						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareEncryptionKeys),
+						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareOwningEntityIds),
+						com.icure.sdk.model.requests.RequestedPermission.valueOf(requestedPermission)),
 				{ x1: EncryptedAccessLog ->
 					accessLog_toJs(x1)
 				},
@@ -214,9 +214,9 @@ internal class AccessLogApiImplJs(
 			simpleShareResult_toJs(
 				accessLogApi.tryAndRecover.shareWith(delegateId,
 						com.icure.sdk.js.model.accessLog_fromJs(accessLog),
-						com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareEncryptionKeys),
-						com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareOwningEntityIds),
-						com.icure.sdk.js.model.requests.requestedPermission_fromJs(requestedPermission)),
+						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareEncryptionKeys),
+						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareOwningEntityIds),
+						com.icure.sdk.model.requests.RequestedPermission.valueOf(requestedPermission)),
 				{ x1: AccessLog ->
 					accessLog_toJs(x1)
 				},
@@ -382,7 +382,7 @@ internal class AccessLogApiImplJs(
 		    x1
 		  },
 		  { x1: kotlin.String ->
-		    com.icure.sdk.js.model.embed.accessLevel_fromJs(x1)
+		    com.icure.sdk.model.embed.AccessLevel.valueOf(x1)
 		  },
 		), com.icure.sdk.js.crypto.entities.secretIdOption_fromJs(secretId)))}
 
@@ -451,9 +451,9 @@ internal class AccessLogApiImplJs(
 	): Promise<SimpleShareResultJs<DecryptedAccessLogJs>> = GlobalScope.promise {
 		simpleShareResult_toJs(
 			accessLogApi.shareWith(delegateId, com.icure.sdk.js.model.accessLog_fromJs(accessLog),
-					com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareEncryptionKeys),
-					com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareOwningEntityIds),
-					com.icure.sdk.js.model.requests.requestedPermission_fromJs(requestedPermission)),
+					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareEncryptionKeys),
+					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareOwningEntityIds),
+					com.icure.sdk.model.requests.RequestedPermission.valueOf(requestedPermission)),
 			{ x1: DecryptedAccessLog ->
 				accessLog_toJs(x1)
 			},

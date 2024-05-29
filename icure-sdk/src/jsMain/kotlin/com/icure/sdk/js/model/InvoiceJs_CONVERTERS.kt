@@ -21,16 +21,8 @@ import com.icure.sdk.js.model.embed.delegation_fromJs
 import com.icure.sdk.js.model.embed.delegation_toJs
 import com.icure.sdk.js.model.embed.identityDocumentReader_fromJs
 import com.icure.sdk.js.model.embed.identityDocumentReader_toJs
-import com.icure.sdk.js.model.embed.invoiceInterventionType_fromJs
-import com.icure.sdk.js.model.embed.invoiceInterventionType_toJs
-import com.icure.sdk.js.model.embed.invoiceType_fromJs
-import com.icure.sdk.js.model.embed.invoiceType_toJs
 import com.icure.sdk.js.model.embed.invoicingCode_fromJs
 import com.icure.sdk.js.model.embed.invoicingCode_toJs
-import com.icure.sdk.js.model.embed.mediumType_fromJs
-import com.icure.sdk.js.model.embed.mediumType_toJs
-import com.icure.sdk.js.model.embed.paymentType_fromJs
-import com.icure.sdk.js.model.embed.paymentType_toJs
 import com.icure.sdk.js.model.embed.payment_fromJs
 import com.icure.sdk.js.model.embed.payment_toJs
 import com.icure.sdk.js.model.embed.securityMetadata_fromJs
@@ -44,7 +36,11 @@ import com.icure.sdk.model.base.CodeStub
 import com.icure.sdk.model.embed.DecryptedInvoicingCode
 import com.icure.sdk.model.embed.Delegation
 import com.icure.sdk.model.embed.EncryptedInvoicingCode
+import com.icure.sdk.model.embed.InvoiceInterventionType
+import com.icure.sdk.model.embed.InvoiceType
+import com.icure.sdk.model.embed.MediumType
 import com.icure.sdk.model.embed.Payment
+import com.icure.sdk.model.embed.PaymentType
 import kotlin.Array
 import kotlin.String
 import kotlin.collections.Set
@@ -97,17 +93,17 @@ public fun invoice_toJs(obj: DecryptedInvoice): DecryptedInvoiceJs {
 	val thirdPartyPaymentReason = obj.thirdPartyPaymentReason
 	val reason = obj.reason
 	val invoiceType = obj.invoiceType?.let { nonNull1 ->
-		invoiceType_toJs(nonNull1)
+		obj.invoiceType?.name
 	}
 	val sentMediumType = obj.sentMediumType?.let { nonNull1 ->
-		mediumType_toJs(nonNull1)
+		obj.sentMediumType?.name
 	}
 	val interventionType = obj.interventionType?.let { nonNull1 ->
-		invoiceInterventionType_toJs(nonNull1)
+		obj.interventionType?.name
 	}
 	val groupId = obj.groupId
 	val paymentType = obj.paymentType?.let { nonNull1 ->
-		paymentType_toJs(nonNull1)
+		obj.paymentType?.name
 	}
 	val paid = obj.paid
 	val payments = listToArray(
@@ -342,17 +338,17 @@ public fun invoice_fromJs(obj: DecryptedInvoiceJs): DecryptedInvoice {
 	val thirdPartyPaymentReason = obj.thirdPartyPaymentReason
 	val reason = obj.reason
 	val invoiceType = obj.invoiceType?.let { nonNull1 ->
-		invoiceType_fromJs(nonNull1)
+		InvoiceType.valueOf(nonNull1)
 	}
 	val sentMediumType = obj.sentMediumType?.let { nonNull1 ->
-		mediumType_fromJs(nonNull1)
+		MediumType.valueOf(nonNull1)
 	}
 	val interventionType = obj.interventionType?.let { nonNull1 ->
-		invoiceInterventionType_fromJs(nonNull1)
+		InvoiceInterventionType.valueOf(nonNull1)
 	}
 	val groupId = obj.groupId
 	val paymentType = obj.paymentType?.let { nonNull1 ->
-		paymentType_fromJs(nonNull1)
+		PaymentType.valueOf(nonNull1)
 	}
 	val paid = obj.paid
 	val payments = arrayToList(
@@ -592,17 +588,17 @@ public fun invoice_toJs(obj: EncryptedInvoice): EncryptedInvoiceJs {
 	val thirdPartyPaymentReason = obj.thirdPartyPaymentReason
 	val reason = obj.reason
 	val invoiceType = obj.invoiceType?.let { nonNull1 ->
-		invoiceType_toJs(nonNull1)
+		obj.invoiceType?.name
 	}
 	val sentMediumType = obj.sentMediumType?.let { nonNull1 ->
-		mediumType_toJs(nonNull1)
+		obj.sentMediumType?.name
 	}
 	val interventionType = obj.interventionType?.let { nonNull1 ->
-		invoiceInterventionType_toJs(nonNull1)
+		obj.interventionType?.name
 	}
 	val groupId = obj.groupId
 	val paymentType = obj.paymentType?.let { nonNull1 ->
-		paymentType_toJs(nonNull1)
+		obj.paymentType?.name
 	}
 	val paid = obj.paid
 	val payments = listToArray(
@@ -837,17 +833,17 @@ public fun invoice_fromJs(obj: EncryptedInvoiceJs): EncryptedInvoice {
 	val thirdPartyPaymentReason = obj.thirdPartyPaymentReason
 	val reason = obj.reason
 	val invoiceType = obj.invoiceType?.let { nonNull1 ->
-		invoiceType_fromJs(nonNull1)
+		InvoiceType.valueOf(nonNull1)
 	}
 	val sentMediumType = obj.sentMediumType?.let { nonNull1 ->
-		mediumType_fromJs(nonNull1)
+		MediumType.valueOf(nonNull1)
 	}
 	val interventionType = obj.interventionType?.let { nonNull1 ->
-		invoiceInterventionType_fromJs(nonNull1)
+		InvoiceInterventionType.valueOf(nonNull1)
 	}
 	val groupId = obj.groupId
 	val paymentType = obj.paymentType?.let { nonNull1 ->
-		paymentType_fromJs(nonNull1)
+		PaymentType.valueOf(nonNull1)
 	}
 	val paid = obj.paid
 	val payments = arrayToList(

@@ -74,9 +74,9 @@ internal class ContactApiImplJs(
 		): Promise<SimpleShareResultJs<EncryptedContactJs>> = GlobalScope.promise {
 			simpleShareResult_toJs(
 				contactApi.encrypted.shareWith(delegateId, com.icure.sdk.js.model.contact_fromJs(contact),
-						com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareEncryptionKeys),
-						com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareOwningEntityIds),
-						com.icure.sdk.js.model.requests.requestedPermission_fromJs(requestedPermission)),
+						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareEncryptionKeys),
+						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareOwningEntityIds),
+						com.icure.sdk.model.requests.RequestedPermission.valueOf(requestedPermission)),
 				{ x1: EncryptedContact ->
 					contact_toJs(x1)
 				},
@@ -383,9 +383,9 @@ internal class ContactApiImplJs(
 		): Promise<SimpleShareResultJs<ContactJs>> = GlobalScope.promise {
 			simpleShareResult_toJs(
 				contactApi.tryAndRecover.shareWith(delegateId, com.icure.sdk.js.model.contact_fromJs(contact),
-						com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareEncryptionKeys),
-						com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareOwningEntityIds),
-						com.icure.sdk.js.model.requests.requestedPermission_fromJs(requestedPermission)),
+						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareEncryptionKeys),
+						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareOwningEntityIds),
+						com.icure.sdk.model.requests.RequestedPermission.valueOf(requestedPermission)),
 				{ x1: Contact ->
 					contact_toJs(x1)
 				},
@@ -719,7 +719,7 @@ internal class ContactApiImplJs(
 		    x1
 		  },
 		  { x1: kotlin.String ->
-		    com.icure.sdk.js.model.embed.accessLevel_fromJs(x1)
+		    com.icure.sdk.model.embed.AccessLevel.valueOf(x1)
 		  },
 		), com.icure.sdk.js.crypto.entities.secretIdOption_fromJs(secretId)))}
 
@@ -843,9 +843,9 @@ internal class ContactApiImplJs(
 	): Promise<SimpleShareResultJs<DecryptedContactJs>> = GlobalScope.promise {
 		simpleShareResult_toJs(
 			contactApi.shareWith(delegateId, com.icure.sdk.js.model.contact_fromJs(contact),
-					com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareEncryptionKeys),
-					com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareOwningEntityIds),
-					com.icure.sdk.js.model.requests.requestedPermission_fromJs(requestedPermission)),
+					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareEncryptionKeys),
+					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareOwningEntityIds),
+					com.icure.sdk.model.requests.RequestedPermission.valueOf(requestedPermission)),
 			{ x1: DecryptedContact ->
 				contact_toJs(x1)
 			},

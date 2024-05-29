@@ -57,7 +57,7 @@ public fun topic_toJs(obj: DecryptedTopic): DecryptedTopicJs {
 			x1
 		},
 		{ x1: TopicRole ->
-			topicRole_toJs(x1)
+			x1.name
 		},
 	)
 	val securityMetadata = obj.securityMetadata?.let { nonNull1 ->
@@ -187,7 +187,7 @@ public fun topic_fromJs(obj: DecryptedTopicJs): DecryptedTopic {
 			x1
 		},
 		{ x1: String ->
-			topicRole_fromJs(x1)
+			TopicRole.valueOf(x1)
 		},
 	)
 	val securityMetadata = obj.securityMetadata?.let { nonNull1 ->
@@ -323,7 +323,7 @@ public fun topic_toJs(obj: EncryptedTopic): EncryptedTopicJs {
 			x1
 		},
 		{ x1: TopicRole ->
-			topicRole_toJs(x1)
+			x1.name
 		},
 	)
 	val securityMetadata = obj.securityMetadata?.let { nonNull1 ->
@@ -453,7 +453,7 @@ public fun topic_fromJs(obj: EncryptedTopicJs): EncryptedTopic {
 			x1
 		},
 		{ x1: String ->
-			topicRole_fromJs(x1)
+			TopicRole.valueOf(x1)
 		},
 	)
 	val securityMetadata = obj.securityMetadata?.let { nonNull1 ->

@@ -10,7 +10,6 @@ import com.icure.sdk.js.api.RecoveryApiJs
 import com.icure.sdk.js.crypto.entities.RecoveryResultJs
 import com.icure.sdk.js.crypto.entities.recoveryDataKey_fromJs
 import com.icure.sdk.js.crypto.entities.recoveryDataKey_toJs
-import com.icure.sdk.js.crypto.entities.recoveryDataUseFailureReason_toJs
 import com.icure.sdk.js.crypto.entities.recoveryResult_toJs
 import com.icure.sdk.js.model.CheckedConverters.intToNumber
 import com.icure.sdk.js.model.CheckedConverters.mapToObject
@@ -73,7 +72,7 @@ internal class RecoveryApiImplJs(
 	override fun recoverExchangeData(recoveryKey: String): Promise<String?> = GlobalScope.promise {
 		recoveryApi.recoverExchangeData(com.icure.sdk.js.crypto.entities.recoveryDataKey_fromJs(recoveryKey))?.let {
 				nonNull1 ->
-			recoveryDataUseFailureReason_toJs(nonNull1)
+			recoveryApi.recoverExchangeData(recoveryDataKey_fromJs(recoveryKey))?.name
 		}}
 
 

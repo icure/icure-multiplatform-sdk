@@ -13,12 +13,6 @@ import com.icure.sdk.js.model.CheckedConverters.setToArray
 import com.icure.sdk.js.model.base.IdentifierJs
 import com.icure.sdk.js.model.base.identifier_fromJs
 import com.icure.sdk.js.model.base.identifier_toJs
-import com.icure.sdk.js.model.embed.delegationTag_fromJs
-import com.icure.sdk.js.model.embed.delegationTag_toJs
-import com.icure.sdk.js.model.enums.usersStatus_fromJs
-import com.icure.sdk.js.model.enums.usersStatus_toJs
-import com.icure.sdk.js.model.enums.usersType_fromJs
-import com.icure.sdk.js.model.enums.usersType_toJs
 import com.icure.sdk.js.model.security.AuthenticationTokenJs
 import com.icure.sdk.js.model.security.PermissionJs
 import com.icure.sdk.js.model.security.authenticationToken_fromJs
@@ -29,6 +23,8 @@ import com.icure.sdk.model.DecryptedPropertyStub
 import com.icure.sdk.model.User
 import com.icure.sdk.model.base.Identifier
 import com.icure.sdk.model.embed.DelegationTag
+import com.icure.sdk.model.enums.UsersStatus
+import com.icure.sdk.model.enums.UsersType
 import com.icure.sdk.model.security.AuthenticationToken
 import com.icure.sdk.model.security.Permission
 import kotlin.Array
@@ -66,10 +62,10 @@ public fun user_toJs(obj: User): UserJs {
 		},
 	)
 	val type = obj.type?.let { nonNull1 ->
-		usersType_toJs(nonNull1)
+		obj.type?.name
 	}
 	val status = obj.status?.let { nonNull1 ->
-		usersStatus_toJs(nonNull1)
+		obj.status?.name
 	}
 	val login = obj.login
 	val passwordHash = obj.passwordHash
@@ -80,7 +76,7 @@ public fun user_toJs(obj: User): UserJs {
 	val autoDelegations = mapToObject<_, _, Array<String>>(
 		obj.autoDelegations,
 		{ x1: DelegationTag ->
-			delegationTag_toJs(x1)
+			x1.name
 		},
 		{ x1: Set<String> ->
 			setToArray(
@@ -180,10 +176,10 @@ public fun user_fromJs(obj: UserJs): User {
 		},
 	)
 	val type = obj.type?.let { nonNull1 ->
-		usersType_fromJs(nonNull1)
+		UsersType.valueOf(nonNull1)
 	}
 	val status = obj.status?.let { nonNull1 ->
-		usersStatus_fromJs(nonNull1)
+		UsersStatus.valueOf(nonNull1)
 	}
 	val login = obj.login
 	val passwordHash = obj.passwordHash
@@ -195,7 +191,7 @@ public fun user_fromJs(obj: UserJs): User {
 		obj.autoDelegations,
 		"obj.autoDelegations",
 		{ x1: String ->
-			delegationTag_fromJs(x1)
+			DelegationTag.valueOf(x1)
 		},
 		{ x1: Array<String> ->
 			arrayToSet(

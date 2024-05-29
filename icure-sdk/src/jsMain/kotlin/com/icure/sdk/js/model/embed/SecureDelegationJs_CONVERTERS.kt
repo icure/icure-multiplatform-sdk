@@ -6,6 +6,7 @@ import com.icure.sdk.js.model.specializations.base64String_fromJs
 import com.icure.sdk.js.model.specializations.base64String_toJs
 import com.icure.sdk.js.model.specializations.secureDelegationKeyString_fromJs
 import com.icure.sdk.js.model.specializations.secureDelegationKeyString_toJs
+import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.embed.SecureDelegation
 import com.icure.sdk.model.specializations.Base64String
 import com.icure.sdk.model.specializations.SecureDelegationKeyString
@@ -39,7 +40,7 @@ public fun secureDelegation_toJs(obj: SecureDelegation): SecureDelegationJs {
 		},
 	)
 	val exchangeDataId = obj.exchangeDataId
-	val permissions = accessLevel_toJs(obj.permissions)
+	val permissions = obj.permissions.name
 	return SecureDelegationJs(js("{" +
 		"delegator:delegator," +
 		"delegate:delegate," +
@@ -84,7 +85,7 @@ public fun secureDelegation_fromJs(obj: SecureDelegationJs): SecureDelegation {
 		},
 	)
 	val exchangeDataId = obj.exchangeDataId
-	val permissions = accessLevel_fromJs(obj.permissions)
+	val permissions = AccessLevel.valueOf(obj.permissions)
 	return SecureDelegation(
 		delegator = delegator,
 		delegate = delegate,

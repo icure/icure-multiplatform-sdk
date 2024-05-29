@@ -9,6 +9,7 @@ import com.icure.sdk.js.model.specializations.base64String_toJs
 import com.icure.sdk.model.embed.DecryptedPatientHealthCareParty
 import com.icure.sdk.model.embed.EncryptedPatientHealthCareParty
 import com.icure.sdk.model.embed.PatientHealthCareParty
+import com.icure.sdk.model.embed.PatientHealthCarePartyType
 import com.icure.sdk.model.embed.ReferralPeriod
 import com.icure.sdk.model.embed.TelecomType
 import kotlin.String
@@ -16,13 +17,13 @@ import kotlin.String
 public fun patientHealthCareParty_toJs(obj: DecryptedPatientHealthCareParty):
 		DecryptedPatientHealthCarePartyJs {
 	val type = obj.type?.let { nonNull1 ->
-		patientHealthCarePartyType_toJs(nonNull1)
+		obj.type?.name
 	}
 	val healthcarePartyId = obj.healthcarePartyId
 	val sendFormats = mapToObject<_, _, String>(
 		obj.sendFormats,
 		{ x1: TelecomType ->
-			telecomType_toJs(x1)
+			x1.name
 		},
 		{ x1: String ->
 			x1
@@ -51,14 +52,14 @@ public fun patientHealthCareParty_toJs(obj: DecryptedPatientHealthCareParty):
 public fun patientHealthCareParty_fromJs(obj: DecryptedPatientHealthCarePartyJs):
 		DecryptedPatientHealthCareParty {
 	val type = obj.type?.let { nonNull1 ->
-		patientHealthCarePartyType_fromJs(nonNull1)
+		PatientHealthCarePartyType.valueOf(nonNull1)
 	}
 	val healthcarePartyId = obj.healthcarePartyId
 	val sendFormats = objectToMap(
 		obj.sendFormats,
 		"obj.sendFormats",
 		{ x1: String ->
-			telecomType_fromJs(x1)
+			TelecomType.valueOf(x1)
 		},
 		{ x1: String ->
 			x1
@@ -88,13 +89,13 @@ public fun patientHealthCareParty_fromJs(obj: DecryptedPatientHealthCarePartyJs)
 public fun patientHealthCareParty_toJs(obj: EncryptedPatientHealthCareParty):
 		EncryptedPatientHealthCarePartyJs {
 	val type = obj.type?.let { nonNull1 ->
-		patientHealthCarePartyType_toJs(nonNull1)
+		obj.type?.name
 	}
 	val healthcarePartyId = obj.healthcarePartyId
 	val sendFormats = mapToObject<_, _, String>(
 		obj.sendFormats,
 		{ x1: TelecomType ->
-			telecomType_toJs(x1)
+			x1.name
 		},
 		{ x1: String ->
 			x1
@@ -123,14 +124,14 @@ public fun patientHealthCareParty_toJs(obj: EncryptedPatientHealthCareParty):
 public fun patientHealthCareParty_fromJs(obj: EncryptedPatientHealthCarePartyJs):
 		EncryptedPatientHealthCareParty {
 	val type = obj.type?.let { nonNull1 ->
-		patientHealthCarePartyType_fromJs(nonNull1)
+		PatientHealthCarePartyType.valueOf(nonNull1)
 	}
 	val healthcarePartyId = obj.healthcarePartyId
 	val sendFormats = objectToMap(
 		obj.sendFormats,
 		"obj.sendFormats",
 		{ x1: String ->
-			telecomType_fromJs(x1)
+			TelecomType.valueOf(x1)
 		},
 		{ x1: String ->
 			x1

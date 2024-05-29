@@ -25,9 +25,7 @@ import com.icure.sdk.js.model.`data`.labelledOccurence_toJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.couchdb.docIdentifier_toJs
 import com.icure.sdk.js.model.embed.EncryptedInvoicingCodeJs
-import com.icure.sdk.js.model.embed.invoiceType_fromJs
 import com.icure.sdk.js.model.embed.invoicingCode_fromJs
-import com.icure.sdk.js.model.embed.mediumType_fromJs
 import com.icure.sdk.js.model.filter.chain.FilterChainJs
 import com.icure.sdk.js.model.filter.chain.filterChain_fromJs
 import com.icure.sdk.js.model.icureStub_toJs
@@ -42,6 +40,8 @@ import com.icure.sdk.model.EncryptedInvoice
 import com.icure.sdk.model.IcureStub
 import com.icure.sdk.model.Invoice
 import com.icure.sdk.model.`data`.LabelledOccurence
+import com.icure.sdk.model.embed.InvoiceType
+import com.icure.sdk.model.embed.MediumType
 import com.icure.sdk.model.specializations.HexString
 import kotlin.Array
 import kotlin.Boolean
@@ -69,9 +69,9 @@ internal class InvoiceApiImplJs(
 		): Promise<SimpleShareResultJs<EncryptedInvoiceJs>> = GlobalScope.promise {
 			simpleShareResult_toJs(
 				invoiceApi.encrypted.shareWith(delegateId, com.icure.sdk.js.model.invoice_fromJs(invoice),
-						com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareEncryptionKeys),
-						com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareOwningEntityIds),
-						com.icure.sdk.js.model.requests.requestedPermission_fromJs(requestedPermission)),
+						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareEncryptionKeys),
+						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareOwningEntityIds),
+						com.icure.sdk.model.requests.RequestedPermission.valueOf(requestedPermission)),
 				{ x1: EncryptedInvoice ->
 					invoice_toJs(x1)
 				},
@@ -329,7 +329,7 @@ internal class InvoiceApiImplJs(
 		): Promise<Array<EncryptedInvoiceJs>> = GlobalScope.promise {
 			listToArray(
 				invoiceApi.encrypted.listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(hcPartyId,
-						mediumType_fromJs(sentMediumType), invoiceType_fromJs(invoiceType), sent, numberToLong(from,
+						MediumType.valueOf(sentMediumType), InvoiceType.valueOf(invoiceType), sent, numberToLong(from,
 						"from"), numberToLong(to, "to")),
 				{ x1: EncryptedInvoice ->
 					invoice_toJs(x1)
@@ -502,9 +502,9 @@ internal class InvoiceApiImplJs(
 		): Promise<SimpleShareResultJs<InvoiceJs>> = GlobalScope.promise {
 			simpleShareResult_toJs(
 				invoiceApi.tryAndRecover.shareWith(delegateId, com.icure.sdk.js.model.invoice_fromJs(invoice),
-						com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareEncryptionKeys),
-						com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareOwningEntityIds),
-						com.icure.sdk.js.model.requests.requestedPermission_fromJs(requestedPermission)),
+						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareEncryptionKeys),
+						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareOwningEntityIds),
+						com.icure.sdk.model.requests.RequestedPermission.valueOf(requestedPermission)),
 				{ x1: Invoice ->
 					invoice_toJs(x1)
 				},
@@ -760,7 +760,7 @@ internal class InvoiceApiImplJs(
 		): Promise<Array<InvoiceJs>> = GlobalScope.promise {
 			listToArray(
 				invoiceApi.tryAndRecover.listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(hcPartyId,
-						mediumType_fromJs(sentMediumType), invoiceType_fromJs(invoiceType), sent, numberToLong(from,
+						MediumType.valueOf(sentMediumType), InvoiceType.valueOf(invoiceType), sent, numberToLong(from,
 						"from"), numberToLong(to, "to")),
 				{ x1: Invoice ->
 					invoice_toJs(x1)
@@ -962,7 +962,7 @@ internal class InvoiceApiImplJs(
 		    x1
 		  },
 		  { x1: kotlin.String ->
-		    com.icure.sdk.js.model.embed.accessLevel_fromJs(x1)
+		    com.icure.sdk.model.embed.AccessLevel.valueOf(x1)
 		  },
 		), com.icure.sdk.js.crypto.entities.secretIdOption_fromJs(secretId)))}
 
@@ -1040,9 +1040,9 @@ internal class InvoiceApiImplJs(
 	): Promise<SimpleShareResultJs<DecryptedInvoiceJs>> = GlobalScope.promise {
 		simpleShareResult_toJs(
 			invoiceApi.shareWith(delegateId, com.icure.sdk.js.model.invoice_fromJs(invoice),
-					com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareEncryptionKeys),
-					com.icure.sdk.js.crypto.entities.shareMetadataBehaviour_fromJs(shareOwningEntityIds),
-					com.icure.sdk.js.model.requests.requestedPermission_fromJs(requestedPermission)),
+					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareEncryptionKeys),
+					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareOwningEntityIds),
+					com.icure.sdk.model.requests.RequestedPermission.valueOf(requestedPermission)),
 			{ x1: DecryptedInvoice ->
 				invoice_toJs(x1)
 			},
@@ -1299,7 +1299,7 @@ internal class InvoiceApiImplJs(
 	): Promise<Array<DecryptedInvoiceJs>> = GlobalScope.promise {
 		listToArray(
 			invoiceApi.listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(hcPartyId,
-					mediumType_fromJs(sentMediumType), invoiceType_fromJs(invoiceType), sent, numberToLong(from,
+					MediumType.valueOf(sentMediumType), InvoiceType.valueOf(invoiceType), sent, numberToLong(from,
 					"from"), numberToLong(to, "to")),
 			{ x1: DecryptedInvoice ->
 				invoice_toJs(x1)

@@ -1,5 +1,6 @@
 package com.icure.sdk.js.crypto.entities
 
+import com.icure.sdk.crypto.entities.RecoveryDataUseFailureReason
 import com.icure.sdk.crypto.entities.RecoveryResult
 
 public fun <T, T_JS> recoveryResult_toJs(obj: RecoveryResult<T>, convertT: (T) -> T_JS):
@@ -46,14 +47,14 @@ public fun <T, T_KT> recoveryResult_Success_fromJs(obj: RecoveryResultJs_Success
 }
 
 public fun recoveryResult_Failure_toJs(obj: RecoveryResult.Failure): RecoveryResultJs_FailureJs {
-	val reason = recoveryDataUseFailureReason_toJs(obj.reason)
+	val reason = obj.reason.name
 	return RecoveryResultJs_FailureJs(js("{" +
 		"reason:reason," +
 	"}"))
 }
 
 public fun recoveryResult_Failure_fromJs(obj: RecoveryResultJs_FailureJs): RecoveryResult.Failure {
-	val reason = recoveryDataUseFailureReason_fromJs(obj.reason)
+	val reason = RecoveryDataUseFailureReason.valueOf(obj.reason)
 	return RecoveryResult.Failure(
 		reason = reason,
 	)
