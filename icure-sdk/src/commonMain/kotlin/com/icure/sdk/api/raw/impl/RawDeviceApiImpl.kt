@@ -15,6 +15,7 @@ import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.specializations.AesExchangeKeyEncryptionKeypairIdentifier
 import com.icure.sdk.model.specializations.HexString
+import com.icure.sdk.serialization.DeviceAbstractFilterSerializer
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
 import io.ktor.client.request.parameter
@@ -24,6 +25,7 @@ import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
+import kotlinx.serialization.json.Json.Json
 import kotlin.Int
 import kotlin.String
 import kotlin.collections.List
@@ -39,7 +41,8 @@ class RawDeviceApiImpl(
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
-) : BaseRawApi(httpClient, additionalHeaders, timeout), RawDeviceApi {
+	json: Json,
+) : BaseRawApi(httpClient, additionalHeaders, timeout, json), RawDeviceApi {
 	// region common endpoints
 
 	override suspend fun getDevice(deviceId: String): HttpResponse<Device> =
@@ -144,7 +147,7 @@ class RawDeviceApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
-			setBody(filter)
+			setBodyWithSerializer(DeviceAbstractFilterSerializer, filter)
 		}.wrap()
 
 	override suspend fun deleteDevice(deviceId: String): HttpResponse<DocIdentifier> =

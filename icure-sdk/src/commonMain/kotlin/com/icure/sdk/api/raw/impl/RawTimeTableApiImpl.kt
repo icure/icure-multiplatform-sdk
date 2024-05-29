@@ -22,6 +22,7 @@ import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
+import kotlinx.serialization.json.Json.Json
 import kotlin.Long
 import kotlin.String
 import kotlin.collections.List
@@ -38,7 +39,8 @@ class RawTimeTableApiImpl(
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
-) : BaseRawApi(httpClient, additionalHeaders, timeout), RawTimeTableApi {
+	json: Json,
+) : BaseRawApi(httpClient, additionalHeaders, timeout, json), RawTimeTableApi {
 	override suspend fun getAccessControlKeysHeaderValues(): List<String>? =
 		accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithEncryptionMetadataTypeName.TimeTable)
 

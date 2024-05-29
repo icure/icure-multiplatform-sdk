@@ -16,6 +16,7 @@ import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
+import kotlinx.serialization.json.Json.Json
 import kotlin.String
 import kotlin.collections.List
 import kotlin.collections.Map
@@ -30,7 +31,8 @@ class RawExchangeDataMapApiImpl(
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
-) : BaseRawApi(httpClient, additionalHeaders, timeout), RawExchangeDataMapApi {
+	json: Json,
+) : BaseRawApi(httpClient, additionalHeaders, timeout, json), RawExchangeDataMapApi {
 	// region common endpoints
 
 	override suspend fun createOrUpdateExchangeDataMapBatch(batch: ExchangeDataMapCreationBatch): HttpResponse<String> =

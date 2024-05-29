@@ -15,6 +15,7 @@ import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
+import kotlinx.serialization.json.Json.Json
 import kotlin.Long
 import kotlin.String
 import kotlin.Unit
@@ -29,7 +30,8 @@ class RawAnonymousAuthApiImpl(
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
-) : BaseRawApi(httpClient, additionalHeaders, timeout), RawAnonymousAuthApi {
+	json: Json,
+) : BaseRawApi(httpClient, additionalHeaders, timeout, json), RawAnonymousAuthApi {
 	// region common endpoints
 
 	override suspend fun login(

@@ -12,6 +12,7 @@ import io.ktor.client.request.parameter
 import io.ktor.http.appendPathSegments
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
+import kotlinx.serialization.json.Json.Json
 import kotlin.String
 import kotlin.collections.Map
 import kotlin.time.Duration
@@ -25,7 +26,8 @@ class RawAuthApiImpl(
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
-) : BaseRawApi(httpClient, additionalHeaders, timeout), RawAuthApi {
+	json: Json,
+) : BaseRawApi(httpClient, additionalHeaders, timeout, json), RawAuthApi {
 	// region common endpoints
 
 	override suspend fun token(

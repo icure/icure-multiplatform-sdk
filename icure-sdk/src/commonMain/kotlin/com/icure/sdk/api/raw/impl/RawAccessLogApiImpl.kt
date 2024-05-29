@@ -23,6 +23,7 @@ import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
+import kotlinx.serialization.json.Json.Json
 import kotlin.Boolean
 import kotlin.Int
 import kotlin.Long
@@ -41,7 +42,8 @@ class RawAccessLogApiImpl(
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
-) : BaseRawApi(httpClient, additionalHeaders, timeout), RawAccessLogApi {
+	json: Json,
+) : BaseRawApi(httpClient, additionalHeaders, timeout, json), RawAccessLogApi {
 	override suspend fun getAccessControlKeysHeaderValues(): List<String>? =
 		accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithEncryptionMetadataTypeName.AccessLog)
 
