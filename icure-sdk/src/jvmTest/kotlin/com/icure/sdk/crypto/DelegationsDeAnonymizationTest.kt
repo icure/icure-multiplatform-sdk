@@ -13,6 +13,7 @@ import com.icure.sdk.test.createHcpUser
 import com.icure.sdk.test.createPatientUser
 import com.icure.sdk.test.initialiseTestEnvironment
 import com.icure.sdk.utils.InternalIcureApi
+import com.icure.sdk.utils.Serialization
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.collections.shouldNotBeEmpty
@@ -344,7 +345,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 		entity = apiA.patient.shareWith(userInfoB.dataOwnerId, entity, emptySet(), requestedPermission = RequestedPermission.FullWrite).updatedEntityOrThrow()
 		entity = apiA.patient.shareWith(userInfoP.dataOwnerId, entity, emptySet(), requestedPermission = RequestedPermission.FullWrite).updatedEntityOrThrow()
 		apiA.patient.createDelegationsDeAnonymizationMetadata(entity, setOf(userInfoB.dataOwnerId, userInfoP.dataOwnerId))
-		val secureDelegationKeyMapApi = RawSecureDelegationKeyMapApiImpl(baseUrl, userInfoA.authService(), IcureSdk.sharedHttpClient)
+		val secureDelegationKeyMapApi = RawSecureDelegationKeyMapApiImpl(baseUrl, userInfoA.authService(), IcureSdk.sharedHttpClient, json = Serialization.json)
 		val secureDelegationKeyMaps = secureDelegationKeyMapApi.findByDelegationKeys(
 			ListOfIds(entity.securityMetadata?.secureDelegations?.keys?.map { it.s }.shouldNotBeNull().also { it.shouldNotBeEmpty() }),
 			emptyList()
@@ -391,7 +392,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 		val (userInfoA, apiA) = createHcpUser().let { it to it.api() }
 		val (userInfoP1, apiP1) = createPatientUser().let { it to it.api() }
 		val (userInfoP2, apiP2) = createPatientUser().let { it to it.api() }
-		val delegationMapApi = RawSecureDelegationKeyMapApiImpl(baseUrl, userInfoA.authService(), IcureSdk.sharedHttpClient) // Use raw api from A as it does not require access control keys
+		val delegationMapApi = RawSecureDelegationKeyMapApiImpl(baseUrl, userInfoA.authService(), IcureSdk.sharedHttpClient, json = Serialization.json) // Use raw api from A as it does not require access control keys
 		var entity = apiP1.createSamplePatient()
 		entity = apiP1.patient.shareWith(userInfoA.dataOwnerId, entity, emptySet(), requestedPermission = RequestedPermission.FullWrite).updatedEntityOrThrow()
 		entity = apiP1.patient.shareWith(userInfoP2.dataOwnerId, entity, emptySet(), requestedPermission = RequestedPermission.FullWrite).updatedEntityOrThrow()
@@ -485,7 +486,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 		apiB.patient.getDataOwnersWithAccessTo(entity) shouldBe expectedAccess
 		apiC.patient.getDataOwnersWithAccessTo(entity) shouldBe expectedAccess
 		apiP.patient.getDataOwnersWithAccessTo(entity) shouldBe expectedAccess
-		val delegationKeyMapApi = RawSecureDelegationKeyMapApiImpl(baseUrl, userInfoA.authService(), IcureSdk.sharedHttpClient)
+		val delegationKeyMapApi = RawSecureDelegationKeyMapApiImpl(baseUrl, userInfoA.authService(), IcureSdk.sharedHttpClient, json = Serialization.json)
 		val delegationKeyToP = entity.securityMetadata?.secureDelegations?.filter { it.value.delegate == null }?.keys?.map { it.s }.shouldNotBeNull().single()
 		delegationKeyMapApi.findByDelegationKeys(
 			ListOfIds(listOf(delegationKeyToP)),
