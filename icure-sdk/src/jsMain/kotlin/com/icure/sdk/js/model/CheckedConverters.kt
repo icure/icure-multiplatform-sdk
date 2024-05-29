@@ -1,7 +1,12 @@
 package com.icure.sdk.js.model
 
+import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataStub
 import com.icure.sdk.crypto.entities.EntityWithTypeInfo
 import com.icure.sdk.js.crypto.entities.EntityWithTypeInfoJs
+import com.icure.sdk.js.crypto.entities.entityWithEncryptionMetadataTypeName_fromJs
+import com.icure.sdk.js.model.embed.DelegationJs
+import com.icure.sdk.js.model.embed.delegation_fromJs
+import com.icure.sdk.js.model.embed.securityMetadata_fromJs
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.ensure
 import com.icure.sdk.utils.isJsSafe
@@ -234,5 +239,47 @@ object CheckedConverters {
 	fun jsonToDynamic(obj: JsonElement?): dynamic =
 		obj?.let { jsonToDynamic(it) }
 
-	fun anyEntityWithTypeInfoToKt(obj: EntityWithTypeInfoJs<*>): EntityWithTypeInfo<*> = TODO()
+	fun anyEntityWithTypeInfoToKt(obj: EntityWithTypeInfoJs<*>): EntityWithTypeInfo<*> =
+		EntityWithTypeInfo(
+			EntityWithEncryptionMetadataStub(
+				obj.entity.id,
+				obj.entity.rev,
+				arrayToSet(
+					obj.entity.secretForeignKeys,
+					"entity.secretForeignKeys"
+				) { it },
+				objectToMap(
+					obj.entity.cryptedForeignKeys,
+					"entity.cryptedForeignKeys",
+					{ it },
+					{
+						arrayToSet(it, "entity.cryptedForeignKeys value") { d: DelegationJs ->
+							delegation_fromJs(d)
+						}
+					}
+				),
+				objectToMap(
+					obj.entity.delegations,
+					"entity.delegations",
+					{ it },
+					{
+						arrayToSet(it, "entity.delegations value") { d: DelegationJs ->
+							delegation_fromJs(d)
+						}
+					}
+				),
+				objectToMap(
+					obj.entity.encryptionKeys,
+					"entity.encryptionKeys",
+					{ it },
+					{
+						arrayToSet(it, "entity.encryptionKeys value") { d: DelegationJs ->
+							delegation_fromJs(d)
+						}
+					}
+				),
+				obj.entity.securityMetadata?.let { securityMetadata_fromJs(it) }
+			),
+			entityWithEncryptionMetadataTypeName_fromJs(obj.type)
+		)
 }
