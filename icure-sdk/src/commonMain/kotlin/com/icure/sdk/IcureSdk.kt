@@ -2,7 +2,7 @@ package com.icure.sdk
 
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.utils.toHexString
-import com.icure.sdk.api.ApiOptions
+import com.icure.sdk.api.AuthenticationMethod
 import com.icure.sdk.api.CryptoApi
 import com.icure.sdk.api.DeviceApi
 import com.icure.sdk.api.DeviceApiImpl
@@ -43,6 +43,7 @@ import com.icure.sdk.api.flavoured.TimeTableApi
 import com.icure.sdk.api.flavoured.TimeTableApiImpl
 import com.icure.sdk.api.flavoured.TopicApi
 import com.icure.sdk.api.flavoured.TopicApiImpl
+import com.icure.sdk.api.getAuthService
 import com.icure.sdk.api.raw.RawPatientApi
 import com.icure.sdk.api.raw.impl.RawAccessLogApiImpl
 import com.icure.sdk.api.raw.impl.RawAnonymousAuthApiImpl
@@ -69,9 +70,7 @@ import com.icure.sdk.api.raw.impl.RawSecureDelegationKeyMapApiImpl
 import com.icure.sdk.api.raw.impl.RawTimeTableApiImpl
 import com.icure.sdk.api.raw.impl.RawTopicApiImpl
 import com.icure.sdk.api.raw.impl.RawUserApiImpl
-import com.icure.sdk.auth.UsernamePassword
 import com.icure.sdk.auth.services.AuthService
-import com.icure.sdk.auth.services.JwtAuthService
 import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.crypto.CryptoStrategies
 import com.icure.sdk.crypto.EntityEncryptionService
@@ -105,6 +104,7 @@ import com.icure.sdk.crypto.impl.UserSignatureKeysManagerImpl
 import com.icure.sdk.model.DataOwnerWithType
 import com.icure.sdk.model.extensions.toStub
 import com.icure.sdk.model.requests.RequestedPermission
+import com.icure.sdk.options.ApiOptions
 import com.icure.sdk.options.EntitiesEncryptedFieldsManifests
 import com.icure.sdk.storage.IcureStorageFacade
 import com.icure.sdk.storage.StorageFacade
@@ -117,6 +117,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.kotlinx.json.json
+import kotlinx.serialization.json.Json
 
 interface IcureSdk {
 	val accessLog: AccessLogApi
@@ -172,35 +173,35 @@ interface IcureSdk {
 			sharedHttpClient.close()
 		}
 
-
 		@OptIn(InternalIcureApi::class)
 		suspend fun initialise(
 			baseUrl: String,
-			usernamePassword: UsernamePassword,
+			authenticationMethod: AuthenticationMethod,
 			baseStorage: StorageFacade,
 			cryptoStrategies: CryptoStrategies,
 			options: ApiOptions = ApiOptions()
 		): IcureSdk {
 			val client = options.httpClient ?: sharedHttpClient
+			val json = options.httpClientJson ?: Serialization.json
 			val cryptoService = options.cryptoService
 			val apiUrl = baseUrl
 			val keysStorage = JsonAndBase64KeyStorage(baseStorage)
 			val iCureStorage =
 				IcureStorageFacade(keysStorage, baseStorage, DefaultStorageEntryKeysFactory, cryptoService, false)
-			val authApi = RawAnonymousAuthApiImpl(apiUrl, client)
-			val authService = JwtAuthService(authApi, usernamePassword)
-			val dataOwnerApi = DataOwnerApiImpl(RawDataOwnerApiImpl(apiUrl, authService, client))
+			val authApi = RawAnonymousAuthApiImpl(apiUrl, client, json = json)
+			val authService = authenticationMethod.getAuthService(authApi)
+			val dataOwnerApi = DataOwnerApiImpl(RawDataOwnerApiImpl(apiUrl, authService, client, json = json))
 			val self = dataOwnerApi.getCurrentDataOwner()
 			val selfIsAnonymous = cryptoStrategies.dataOwnerRequiresAnonymousDelegation(self.toStub())
-			val rawPatientApiNoAccessKeys = RawPatientApiImpl(apiUrl, authService, null, client)
-			val rawHealthcarePartyApi = RawHealthcarePartyApiImpl(apiUrl, authService, client)
-			val rawDeviceApi = RawDeviceApiImpl(apiUrl, authService, client)
+			val rawPatientApiNoAccessKeys = RawPatientApiImpl(apiUrl, authService, null, client, json = json)
+			val rawHealthcarePartyApi = RawHealthcarePartyApiImpl(apiUrl, authService, client, json = json)
+			val rawDeviceApi = RawDeviceApiImpl(apiUrl, authService, client, json = json)
 			val exchangeDataMapManager = ExchangeDataMapManagerImpl(
-				RawExchangeDataMapApiImpl(apiUrl, authService, client),
+				RawExchangeDataMapApiImpl(apiUrl, authService, client, json = json),
 				cryptoService
 			)
 			val baseExchangeDataManager = BaseExchangeDataManagerImpl(
-				RawExchangeDataApiImpl(apiUrl, authService, client),
+				RawExchangeDataApiImpl(apiUrl, authService, client, json = json),
 				dataOwnerApi,
 				cryptoService,
 				selfIsAnonymous
@@ -221,7 +222,7 @@ interface IcureSdk {
 			)
 			val recoveryDataEncryption = RecoveryDataEncryptionImpl(
 				cryptoService,
-				RawRecoveryDataApiImpl(apiUrl, authService, client)
+				RawRecoveryDataApiImpl(apiUrl, authService, client, json = json)
 			)
 			val userEncryptionKeys = UserEncryptionKeysManagerImpl.Factory(
 				cryptoService,
@@ -316,7 +317,7 @@ interface IcureSdk {
 				jsonEncryptionService,
 				DelegationsDeAnonymizationImpl(
 					secureDelegationsDecryptor,
-					RawSecureDelegationKeyMapApiImpl(apiUrl, authService, client),
+					RawSecureDelegationKeyMapApiImpl(apiUrl, authService, client, json = json),
 					headersProvider,
 					entityEncryptionService,
 					dataOwnerApi,
@@ -345,7 +346,8 @@ interface IcureSdk {
 				headersProvider,
 				client,
 				manifests,
-				!selfIsAnonymous
+				!selfIsAnonymous,
+				json
 			)
 		}
 	}
@@ -359,10 +361,11 @@ private class IcureApiImpl(
 	private val headersProvider: AccessControlKeysHeadersProvider,
 	private val client: HttpClient,
 	private val encryptedFieldsManifests: EntitiesEncryptedFieldsManifests,
-	private val autofillAuthor: Boolean
+	private val autofillAuthor: Boolean,
+	private val json: Json
 ): IcureSdk {
-	private val rawDataOwnerApi by lazy { RawDataOwnerApiImpl(apiUrl, authService, client) }
-	private val rawCalendarItemApi by lazy { RawCalendarItemApiImpl(apiUrl, authService, headersProvider, client) }
+	private val rawDataOwnerApi by lazy { RawDataOwnerApiImpl(apiUrl, authService, client, json = json) }
+	private val rawCalendarItemApi by lazy { RawCalendarItemApiImpl(apiUrl, authService, headersProvider, client, json = json) }
 
 	override val calendarItem: CalendarItemApi by lazy {
 		CalendarItemApiImpl(
@@ -374,8 +377,8 @@ private class IcureApiImpl(
 		)
 	}
 
-	private val rawContactApi by lazy { RawContactApiImpl(apiUrl, authService, headersProvider, client) }
-	private val rawHealthcarePartyApi by lazy { RawHealthcarePartyApiImpl(apiUrl, authService, client) }
+	private val rawContactApi by lazy { RawContactApiImpl(apiUrl, authService, headersProvider, client, json = json) }
+	private val rawHealthcarePartyApi by lazy { RawHealthcarePartyApiImpl(apiUrl, authService, client, json = json) }
 
 	override val contact: ContactApi by lazy {
 		ContactApiImpl(
@@ -387,7 +390,7 @@ private class IcureApiImpl(
 		)
 	}
 
-	private val rawPatientApi by lazy { RawPatientApiImpl(apiUrl, authService, headersProvider, client) }
+	private val rawPatientApi by lazy { RawPatientApiImpl(apiUrl, authService, headersProvider, client, json = json) }
 
 	override val patient: PatientApi by lazy {
 		PatientApiImpl(
@@ -405,7 +408,7 @@ private class IcureApiImpl(
 		)
 	}
 
-	private val rawHealthcareElementApi by lazy { RawHealthElementApiImpl(apiUrl, authService, headersProvider, client) }
+	private val rawHealthcareElementApi by lazy { RawHealthElementApiImpl(apiUrl, authService, headersProvider, client, json = json) }
 
 	override val healthcareElement: HealthcareElementApi by lazy {
 		HealthcareElementApiImpl(
@@ -420,8 +423,8 @@ private class IcureApiImpl(
 
 	override val user: UserApi by lazy {
 		UserApiImpl(
-			RawUserApiImpl(apiUrl, authService, client),
-			RawPermissionApiImpl(apiUrl, authService, client)
+			RawUserApiImpl(apiUrl, authService, client, json = json),
+			RawPermissionApiImpl(apiUrl, authService, client, json = json)
 		)
 	}
 	override val crypto: CryptoApi by lazy {
@@ -437,7 +440,7 @@ private class IcureApiImpl(
 		)
 	}
 
-	private val rawMaintenanceTaskApi by lazy { RawMaintenanceTaskApiImpl(apiUrl, authService, headersProvider, client) }
+	private val rawMaintenanceTaskApi by lazy { RawMaintenanceTaskApiImpl(apiUrl, authService, headersProvider, client, json = json) }
 
 	override val maintenanceTask: MaintenanceTaskApi by lazy {
 		MaintenanceTaskApiImpl(
@@ -459,7 +462,7 @@ private class IcureApiImpl(
 		)
 	}
 
-	private val rawAccessLogApi by lazy { RawAccessLogApiImpl(apiUrl, authService, headersProvider, client) }
+	private val rawAccessLogApi by lazy { RawAccessLogApiImpl(apiUrl, authService, headersProvider, client, json = json) }
 
 	override val accessLog: AccessLogApi by lazy {
 		AccessLogApiImpl(
@@ -470,7 +473,7 @@ private class IcureApiImpl(
 		)
 	}
 
-	private val rawMessageApi by lazy { RawMessageApiImpl(apiUrl, authService, headersProvider, client) }
+	private val rawMessageApi by lazy { RawMessageApiImpl(apiUrl, authService, headersProvider, client, json = json) }
 
 	override val message: MessageApi by lazy {
 		MessageApiImpl(
@@ -481,7 +484,7 @@ private class IcureApiImpl(
 		)
 	}
 
-	private val rawTopicApi by lazy { RawTopicApiImpl(apiUrl, authService, headersProvider, client) }
+	private val rawTopicApi by lazy { RawTopicApiImpl(apiUrl, authService, headersProvider, client, json = json) }
 
 	override val topic: TopicApi by lazy {
 		TopicApiImpl(
@@ -492,7 +495,7 @@ private class IcureApiImpl(
 		)
 	}
 
-	private val rawDocumentApi by lazy { RawDocumentApiImpl(apiUrl, authService, headersProvider, client) }
+	private val rawDocumentApi by lazy { RawDocumentApiImpl(apiUrl, authService, headersProvider, client, json = json) }
 
 	override val document: DocumentApi by lazy {
 		DocumentApiImpl(
@@ -503,7 +506,7 @@ private class IcureApiImpl(
 		)
 	}
 
-	private val rawTimeTableApi by lazy { RawTimeTableApiImpl(apiUrl, authService, headersProvider, client) }
+	private val rawTimeTableApi by lazy { RawTimeTableApiImpl(apiUrl, authService, headersProvider, client, json = json) }
 
 	override val timeTable: TimeTableApi by lazy {
 		TimeTableApiImpl(
@@ -514,7 +517,7 @@ private class IcureApiImpl(
 		)
 	}
 
-	private val rawClassificationApi by lazy { RawClassificationApiImpl(apiUrl, authService, headersProvider, client) }
+	private val rawClassificationApi by lazy { RawClassificationApiImpl(apiUrl, authService, headersProvider, client, json = json) }
 
 	override val classification: ClassificationApi by lazy {
 		ClassificationApiImpl(
@@ -525,7 +528,7 @@ private class IcureApiImpl(
 		)
 	}
 
-	private val rawFormApi by lazy { RawFormApiImpl(apiUrl, authService, headersProvider, client) }
+	private val rawFormApi by lazy { RawFormApiImpl(apiUrl, authService, headersProvider, client, json = json) }
 
 	override val form: FormApi by lazy {
 		FormApiImpl(
@@ -536,8 +539,8 @@ private class IcureApiImpl(
 		)
 	}
 
-	private val rawInvoiceApi by lazy { RawInvoiceApiImpl(apiUrl, authService, headersProvider, client) }
-	private val rawEntityReferenceApi by lazy { RawEntityReferenceApiImpl(apiUrl, authService, client) }
+	private val rawInvoiceApi by lazy { RawInvoiceApiImpl(apiUrl, authService, headersProvider, client, json = json) }
+	private val rawEntityReferenceApi by lazy { RawEntityReferenceApiImpl(apiUrl, authService, client, json = json) }
 
 	override val invoice: InvoiceApi by lazy {
 		InvoiceApiImpl(
@@ -549,7 +552,7 @@ private class IcureApiImpl(
 		)
 	}
 
-	private val rawReceiptApi by lazy { RawReceiptApiImpl(apiUrl, authService, headersProvider, client) }
+	private val rawReceiptApi by lazy { RawReceiptApiImpl(apiUrl, authService, headersProvider, client, json = json) }
 
 	override val receipt: ReceiptApi by lazy {
 		ReceiptApiImpl(
@@ -565,11 +568,11 @@ private class IcureApiImpl(
 	}
 
 	override val device: DeviceApi by lazy {
-		DeviceApiImpl(RawDeviceApiImpl(apiUrl, authService, client))
+		DeviceApiImpl(RawDeviceApiImpl(apiUrl, authService, client, json = json))
 	}
 
 	override val permission: PermissionApi by lazy {
-		PermissionApiImpl(RawPermissionApiImpl(apiUrl, authService, client))
+		PermissionApiImpl(RawPermissionApiImpl(apiUrl, authService, client, json = json))
 	}
 }
 

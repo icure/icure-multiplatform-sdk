@@ -1,6 +1,5 @@
 package com.icure.sdk.options
 
-import com.icure.sdk.api.EncryptedFields
 import com.icure.sdk.crypto.JsonEncryptionService
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.utils.InternalIcureApi
@@ -27,7 +26,7 @@ internal class EntitiesEncryptedFieldsManifests private constructor(
 	val receipt: EncryptedFieldsManifest
 ) {
 	companion object {
-		fun fromEncryptedFields(encryptedFields: EncryptedFields): EntitiesEncryptedFieldsManifests {
+		fun fromEncryptedFields(encryptedFields: EncryptedFieldsConfiguration): EntitiesEncryptedFieldsManifests {
 			val contactManifest = JsonEncryptionService.parseEncryptedFields(
 				encryptedFields.contact,
 				"Contact."

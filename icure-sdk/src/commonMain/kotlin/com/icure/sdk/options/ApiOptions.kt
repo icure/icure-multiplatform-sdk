@@ -1,24 +1,34 @@
-package com.icure.sdk.api
+package com.icure.sdk.options
 
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.crypto.defaultCryptoService
-import io.ktor.client.HttpClient
+import io.ktor.client.*
+import kotlinx.serialization.json.Json
+
+interface CommonOptions {
+	val encryptedFields: EncryptedFieldsConfiguration
+	val httpClient: HttpClient?
+	val httpClientJson: Json?
+	val cryptoService: CryptoService
+}
 
 data class ApiOptions(
-	val encryptedFields: EncryptedFields = EncryptedFields(),
+	override val encryptedFields: EncryptedFieldsConfiguration = EncryptedFieldsConfiguration(),
 	val disableParentKeysInitialisation: Boolean = false,
-	val httpClient: HttpClient? = null,
+	override val httpClient: HttpClient? = null,
+	override val httpClientJson: Json? = null,
 	val createTransferKeys: Boolean = true,
-	val cryptoService: CryptoService = defaultCryptoService,
-)
+	override val cryptoService: CryptoService = defaultCryptoService,
+): CommonOptions
 
 data class BasicApiOptions(
-	val encryptedFields: EncryptedFields = EncryptedFields(),
-	val httpClient: HttpClient? = null,
-	val cryptoService: CryptoService = defaultCryptoService,
-)
+	override val encryptedFields: EncryptedFieldsConfiguration = EncryptedFieldsConfiguration(),
+	override val httpClient: HttpClient? = null,
+	override val httpClientJson: Json? = null,
+	override val cryptoService: CryptoService = defaultCryptoService,
+): CommonOptions
 
-data class EncryptedFields(
+data class EncryptedFieldsConfiguration(
 	val accessLog: Set<String> = setOf("detail", "objectId"),
 	val calendarItem: Set<String> = setOf("details", "title", "patientId"),
 	val contact: Set<String> = setOf("descr", "notes[].markdown"),
