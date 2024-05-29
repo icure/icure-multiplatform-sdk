@@ -49,4 +49,4 @@ bouncyCastle = { group = "org.bouncycastle", name = "bcprov-jdk15on", version.re
 kermit = { group = "co.touchlab", name = "kermit", version.ref = "kermit" }
 
 # Kryptom
-kryptom = { group = "com.icure.kryptom", name = "kryptom", version = "1.0.0" }
+kryptom = { group = "com.icure.kryptom", name = "kryptom", version = "1.0.3" }
