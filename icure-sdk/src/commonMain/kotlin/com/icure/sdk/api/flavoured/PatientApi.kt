@@ -1,5 +1,6 @@
 package com.icure.sdk.api.flavoured
 
+import com.icure.sdk.api.RecoveryApi
 import com.icure.sdk.api.raw.RawCalendarItemApi
 import com.icure.sdk.api.raw.RawClassificationApi
 import com.icure.sdk.api.raw.RawContactApi
@@ -11,13 +12,14 @@ import com.icure.sdk.api.raw.RawPatientApi
 import com.icure.sdk.crypto.BasicInternalCryptoApi
 import com.icure.sdk.crypto.InternalCryptoServices
 import com.icure.sdk.crypto.entities.DelegateShareOptions
-import com.icure.sdk.crypto.entities.PatientShareOptions
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.EntityAccessInformation
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.crypto.entities.EntityWithTypeInfo
+import com.icure.sdk.crypto.entities.PatientShareOptions
 import com.icure.sdk.crypto.entities.ShareAllPatientDataOptions
-import com.icure.sdk.crypto.entities.ShareAllPatientDataOptions.BulkShareErrorsException
+import com.icure.sdk.crypto.entities.ShareAllPatientDataOptions.BulkShareFailure
+import com.icure.sdk.crypto.entities.ShareAllPatientDataOptions.FailedRequest
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
 import com.icure.sdk.crypto.entities.SimpleShareResult
@@ -51,7 +53,6 @@ import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.currentEpochMs
 import kotlinx.serialization.json.decodeFromJsonElement
-import com.icure.sdk.api.RecoveryApi
 
 @OptIn(InternalIcureApi::class)
 private val ENCRYPTED_FIELDS_MANIFEST =
@@ -278,7 +279,7 @@ interface PatientApi : PatientBasicFlavourlessApi, PatientFlavouredApi<Decrypted
 		delegatesWithShareType: Map<String, Set<ShareAllPatientDataOptions.Tag>>
 	): ShareAllPatientDataOptions.Result
 
-	suspend fun <T : HasEncryptionMetadata> getPatientIdOfChildDocumentForHcpAndHcpParents(childDocument: EntityWithTypeInfo<T>, healthcarePartyId: String): String
+	suspend fun getPatientIdOfChildDocumentForHcpAndHcpParents(childDocument: EntityWithTypeInfo<*>, healthcarePartyId: String): String
 
 
 	suspend fun getConfidentialSecretIdsOf(patient: Patient): Set<String>
@@ -679,14 +680,15 @@ internal class PatientApiImpl(
 						val result = crypto.entity.bulkShareOrUpdateEncryptedEntityMetadataNoEntities(updates, doShareMinimal)
 						ShareAllPatientDataOptions.EntityResult(
 							success = result.updateErrors.isEmpty(),
-							error = BulkShareErrorsException(
+							error = BulkShareFailure(
 								result.updateErrors,
 								"Error while sharing (some) entities of type ${entities.firstOrNull()?.type} for patient ${patient.id}"
 							).takeIf { result.updateErrors.isNotEmpty() },
 							modified = result.successfulUpdates.map { it.entityId }.toSet().size
 						)
 					} catch (e: Exception) {
-						ShareAllPatientDataOptions.EntityResult(success = false, error = e)
+						ShareAllPatientDataOptions.EntityResult(success = false, error = FailedRequest(e)
+						)
 					}
 				} else {
 					ShareAllPatientDataOptions.EntityResult(success = true)
@@ -772,14 +774,14 @@ internal class PatientApiImpl(
 			)) { params -> rawApi.bulkShareMinimal(params).successBody() }
 			ShareAllPatientDataOptions.EntityResult(
 				success = result.updateErrors.isEmpty(),
-				error = BulkShareErrorsException(
+				error = BulkShareFailure(
 					errors = result.updateErrors,
 					"Error while sharing patient ${patient.id}"
 				).takeIf { result.updateErrors.isNotEmpty() },
 				modified = result.successfulUpdates.map { it.entityId }.toSet().size
 			)
 		} catch (e: Exception) {
-			ShareAllPatientDataOptions.EntityResult(success = false, error = e)
+			ShareAllPatientDataOptions.EntityResult(success = false, error = FailedRequest(e))
 		}
 
 		return ShareAllPatientDataOptions.Result(
@@ -788,8 +790,8 @@ internal class PatientApiImpl(
 		)
 	}
 
-	override suspend fun <T : HasEncryptionMetadata> getPatientIdOfChildDocumentForHcpAndHcpParents(
-		childDocument: EntityWithTypeInfo<T>,
+	override suspend fun getPatientIdOfChildDocumentForHcpAndHcpParents(
+		childDocument: EntityWithTypeInfo<*>,
 		healthcarePartyId: String
 	): String {
 		val parentIds = crypto.entity.owningEntityIdsOf(childDocument, healthcarePartyId)

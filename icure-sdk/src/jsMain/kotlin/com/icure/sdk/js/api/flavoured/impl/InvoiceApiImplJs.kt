@@ -18,10 +18,10 @@ import com.icure.sdk.js.model.InvoiceJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.PatientJs
 import com.icure.sdk.js.model.UserJs
-import com.icure.sdk.js.model.`data`.LabelledOccurenceJs
-import com.icure.sdk.js.model.`data`.labelledOccurence_toJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.couchdb.docIdentifier_toJs
+import com.icure.sdk.js.model.data.LabelledOccurenceJs
+import com.icure.sdk.js.model.data.labelledOccurence_toJs
 import com.icure.sdk.js.model.embed.EncryptedInvoicingCodeJs
 import com.icure.sdk.js.model.embed.invoiceType_fromJs
 import com.icure.sdk.js.model.embed.invoicingCode_fromJs
@@ -38,16 +38,11 @@ import com.icure.sdk.model.DecryptedInvoice
 import com.icure.sdk.model.EncryptedInvoice
 import com.icure.sdk.model.IcureStub
 import com.icure.sdk.model.Invoice
-import com.icure.sdk.model.`data`.LabelledOccurence
-import kotlin.Array
-import kotlin.Boolean
-import kotlin.Double
-import kotlin.OptIn
-import kotlin.String
-import kotlin.js.Promise
+import com.icure.sdk.model.data.LabelledOccurence
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
+import kotlin.js.Promise
 
 @OptIn(DelicateCoroutinesApi::class)
 internal class InvoiceApiImplJs(
@@ -848,7 +843,7 @@ internal class InvoiceApiImplJs(
 
 	override fun createInvoice(entity: DecryptedInvoiceJs): Promise<DecryptedInvoiceJs> =
 			GlobalScope.promise {
-		invoice_toJs(invoiceApi.createInvoice(com.icure.sdk.js.model.invoice_fromJs(entity)))}
+		invoice_toJs(invoiceApi.createInvoice(com.icure.sdk.js.model.invoice_fromJs(entity), TODO()))}
 
 
 	override fun createInvoices(entities: Array<DecryptedInvoiceJs>):

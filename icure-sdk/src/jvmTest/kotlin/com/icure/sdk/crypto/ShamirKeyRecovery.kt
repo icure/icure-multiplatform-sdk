@@ -1,6 +1,8 @@
 package com.icure.sdk.crypto
 
 import com.icure.kryptom.crypto.defaultCryptoService
+import com.icure.sdk.api.crypto.ShamirKeysManagerApi
+import com.icure.sdk.crypto.entities.ShamirUpdateRequest
 import com.icure.sdk.crypto.impl.exportSpkiHex
 import com.icure.sdk.model.DecryptedPatient
 import com.icure.sdk.model.sdk.KeyPairUpdateNotification
@@ -36,7 +38,7 @@ class ShamirKeyRecovery : StringSpec({
 			)
 		)
 		api.crypto.shamirKeysManager.updateSelfSplits(
-			mapOf(userDetails.publicKeySpki.fingerprintV1() to ShamirKeysManager.ShamirUpdateRequest(
+			mapOf(userDetails.publicKeySpki.fingerprintV1() to ShamirUpdateRequest(
 				notariesIds = shareWith.mapTo(mutableSetOf()) { it.dataOwnerId },
 				minShares = askAccessBackTo.size
 			)),
