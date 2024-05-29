@@ -28,6 +28,7 @@ import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import io.ktor.utils.io.ByteReadChannel
+import kotlinx.serialization.json.Json
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.String
@@ -45,7 +46,8 @@ class RawTmpApiImpl(
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
-) : BaseRawApi(httpClient, additionalHeaders, timeout), RawTmpApi {
+	json: Json,
+) : BaseRawApi(httpClient, additionalHeaders, timeout, json), RawTmpApi {
 	// region cloud endpoints
 
 	override suspend fun createTmpDatabase(): HttpResponse<Unit> =

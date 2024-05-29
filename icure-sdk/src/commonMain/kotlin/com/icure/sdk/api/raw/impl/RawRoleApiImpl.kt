@@ -13,6 +13,7 @@ import io.ktor.client.request.parameter
 import io.ktor.http.appendPathSegments
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
+import kotlinx.serialization.json.Json
 import kotlin.String
 import kotlin.collections.List
 import kotlin.collections.Map
@@ -27,7 +28,8 @@ class RawRoleApiImpl(
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
-) : BaseRawApi(httpClient, additionalHeaders, timeout), RawRoleApi {
+	json: Json,
+) : BaseRawApi(httpClient, additionalHeaders, timeout, json), RawRoleApi {
 	// region cloud endpoints
 
 	override suspend fun getAllRoles(): HttpResponse<List<Role>> =
