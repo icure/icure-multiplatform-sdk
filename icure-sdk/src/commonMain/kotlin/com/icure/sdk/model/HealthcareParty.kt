@@ -20,6 +20,7 @@ import com.icure.sdk.model.embed.TelecomType
 import com.icure.sdk.model.specializations.AesExchangeKeyEncryptionKeypairIdentifier
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.model.specializations.SpkiHexString
+import com.icure.sdk.serialization.ByteArraySerializer
 import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.ByteArray
@@ -75,6 +76,7 @@ data class HealthcareParty(
 	override val addresses: List<DecryptedAddress> = emptyList(),
 	@DefaultValue("emptyList()")
 	override val languages: List<String> = emptyList(),
+	@Serializable(with = ByteArraySerializer::class)
 	public val picture: ByteArray? = null,
 	@DefaultValue("emptySet()")
 	public val statuses: Set<HealthcarePartyStatus> = emptySet(),

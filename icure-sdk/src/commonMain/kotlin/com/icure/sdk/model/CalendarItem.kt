@@ -182,7 +182,6 @@ override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secret
 		cryptedForeignKeys = emptyMap(),
 		secretForeignKeys = emptySet()
 	)
-
 	// endregion
 }
 

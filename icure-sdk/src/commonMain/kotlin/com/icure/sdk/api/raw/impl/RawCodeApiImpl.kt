@@ -12,6 +12,7 @@ import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
+import com.icure.sdk.serialization.CodeAbstractFilterSerializer
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
 import io.ktor.client.request.parameter
@@ -21,6 +22,7 @@ import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
+import kotlinx.serialization.json.Json
 import kotlin.Boolean
 import kotlin.Int
 import kotlin.String
@@ -38,7 +40,8 @@ class RawCodeApiImpl(
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
-) : BaseRawApi(httpClient, additionalHeaders, timeout), RawCodeApi {
+	json: Json,
+) : BaseRawApi(httpClient, additionalHeaders, timeout, json), RawCodeApi {
 	// region common endpoints
 
 	override suspend fun findCodesByLabel(
@@ -310,7 +313,7 @@ class RawCodeApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
-			setBody(filter)
+			setBodyWithSerializer(CodeAbstractFilterSerializer, filter)
 		}.wrap()
 
 	override suspend fun importCodes(codeType: String): HttpResponse<Unit> =

@@ -18,6 +18,7 @@ import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
+import kotlinx.serialization.json.Json
 import kotlin.Boolean
 import kotlin.Int
 import kotlin.String
@@ -34,7 +35,8 @@ class RawICureApiImpl(
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
-) : BaseRawApi(httpClient, additionalHeaders, timeout), RawICureApi {
+	json: Json,
+) : BaseRawApi(httpClient, additionalHeaders, timeout, json), RawICureApi {
 	// region common endpoints
 
 	override suspend fun getVersion(): HttpResponse<String> =

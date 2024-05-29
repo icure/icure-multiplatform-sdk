@@ -5,14 +5,19 @@ import io.ktor.client.plugins.timeout
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.header
 import io.ktor.client.request.request
+import io.ktor.client.request.setBody
+import io.ktor.http.ContentType
 import io.ktor.http.HttpMethod
+import io.ktor.http.content.TextContent
 import io.ktor.http.headers
+import kotlinx.serialization.json.Json
 import kotlin.time.Duration
 
 abstract class BaseRawApi(
 	private val httpClient: HttpClient,
 	private val additionalHeaders: Map<String, String>,
-	private val requestTimeout : Duration?
+	private val requestTimeout : Duration?,
+	private val json: Json
 ) {
 	init {
 		require (additionalHeaders.keys.none { it.lowercase() == "content-type" }) {
@@ -56,4 +61,11 @@ abstract class BaseRawApi(
 			block()
 			addAccessControlKeys()
 		}
+
+	protected fun <T> HttpRequestBuilder.setBodyWithSerializer(serializer: kotlinx.serialization.KSerializer<T>, body: T) = this.setBody(
+		TextContent(
+			json.encodeToString(serializer, body),
+			ContentType.Application.Json
+		)
+	)
 }
