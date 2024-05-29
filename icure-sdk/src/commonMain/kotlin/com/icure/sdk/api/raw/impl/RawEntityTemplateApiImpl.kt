@@ -18,6 +18,7 @@ import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
+import kotlinx.serialization.json.Json
 import kotlin.Boolean
 import kotlin.String
 import kotlin.collections.List
@@ -33,7 +34,8 @@ class RawEntityTemplateApiImpl(
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
-) : BaseRawApi(httpClient, additionalHeaders, timeout), RawEntityTemplateApi {
+	json: Json,
+) : BaseRawApi(httpClient, additionalHeaders, timeout, json), RawEntityTemplateApi {
 	// region common endpoints
 
 	override suspend fun listEntityTemplatesBy(

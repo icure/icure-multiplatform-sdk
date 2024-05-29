@@ -23,6 +23,7 @@ import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
 import com.icure.sdk.model.specializations.AesExchangeKeyEncryptionKeypairIdentifier
 import com.icure.sdk.model.specializations.HexString
+import com.icure.sdk.serialization.PatientAbstractFilterSerializer
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
 import io.ktor.client.request.parameter
@@ -32,6 +33,7 @@ import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
+import kotlinx.serialization.json.Json
 import kotlin.Boolean
 import kotlin.Int
 import kotlin.Long
@@ -51,7 +53,8 @@ class RawPatientApiImpl(
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
-) : BaseRawApi(httpClient, additionalHeaders, timeout), RawPatientApi {
+	json: Json,
+) : BaseRawApi(httpClient, additionalHeaders, timeout, json), RawPatientApi {
 	override suspend fun getAccessControlKeysHeaderValues(): List<String>? =
 		accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithEncryptionMetadataTypeName.Patient)
 
@@ -291,7 +294,7 @@ class RawPatientApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
-			setBody(filter)
+			setBodyWithSerializer(PatientAbstractFilterSerializer, filter)
 		}.wrap()
 
 	override suspend fun fuzzySearch(
