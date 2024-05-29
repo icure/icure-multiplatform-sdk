@@ -16,6 +16,7 @@ import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.security.Enable2faRequest
 import com.icure.sdk.model.security.TokenWithGroup
+import com.icure.sdk.serialization.UserAbstractFilterSerializer
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
 import io.ktor.client.request.`header`
@@ -26,6 +27,7 @@ import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
+import kotlinx.serialization.json.Json.Json
 import kotlin.Boolean
 import kotlin.Int
 import kotlin.Long
@@ -44,6 +46,7 @@ class RawUserApiImpl(
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
+	json: Json,
 ) : BaseRawApi(httpClient, additionalHeaders, timeout), RawUserApi {
 	// region common endpoints
 
@@ -223,7 +226,7 @@ class RawUserApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
-			setBody(filter)
+			setBodyWithSerializer(UserAbstractFilterSerializer, filter)
 		}.wrap()
 
 	// endregion

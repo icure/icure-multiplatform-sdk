@@ -23,6 +23,7 @@ import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import io.ktor.utils.io.ByteReadChannel
+import kotlinx.serialization.json.Json.Json
 import kotlin.ByteArray
 import kotlin.String
 import kotlin.collections.List
@@ -39,6 +40,7 @@ class RawReceiptApiImpl(
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
+	json: Json,
 ) : BaseRawApi(httpClient, additionalHeaders, timeout), RawReceiptApi {
 	override suspend fun getAccessControlKeysHeaderValues(): List<String>? =
 		accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithEncryptionMetadataTypeName.Receipt)

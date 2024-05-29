@@ -18,6 +18,7 @@ import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
+import kotlinx.serialization.json.Json.Json
 import kotlin.String
 import kotlin.collections.List
 import kotlin.collections.Map
@@ -32,6 +33,7 @@ class RawSecureDelegationKeyMapApiImpl(
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
+	json: Json,
 ) : BaseRawApi(httpClient, additionalHeaders, timeout), RawSecureDelegationKeyMapApi {
 	// region common endpoints
 
