@@ -1,6 +1,6 @@
 // auto-generated file
 import {IcureStub} from '../../model/IcureStub.mjs';
-import {EncryptedInvoice} from '../../model/Invoice.mjs';
+import {EncryptedInvoice, Invoice} from '../../model/Invoice.mjs';
 import {PaginatedList} from '../../model/PaginatedList.mjs';
 import {DocIdentifier} from '../../model/couchdb/DocIdentifier.mjs';
 import {LabelledOccurence} from '../../model/data/LabelledOccurence.mjs';
@@ -27,7 +27,7 @@ export interface InvoiceBasicApi {
 
 	getInvoices(entityIds: Array<string>): Promise<Array<EncryptedInvoice>>;
 
-	filterInvoicesBy(filterChain: FilterChain<EncryptedInvoice>): Promise<Array<EncryptedInvoice>>;
+	filterInvoicesBy(filterChain: FilterChain<Invoice>): Promise<Array<EncryptedInvoice>>;
 
 	findInvoicesByHcPartyPatientForeignKeys(hcPartyId: string,
 			secretPatientKeys: Array<string>): Promise<Array<EncryptedInvoice>>;

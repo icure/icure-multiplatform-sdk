@@ -1,5 +1,5 @@
 // auto-generated file
-import {EncryptedMessage} from '../../model/Message.mjs';
+import {EncryptedMessage, Message} from '../../model/Message.mjs';
 import {PaginatedList} from '../../model/PaginatedList.mjs';
 import {DocIdentifier} from '../../model/couchdb/DocIdentifier.mjs';
 import {AbstractFilter} from '../../model/filter/AbstractFilter.mjs';
@@ -8,7 +8,7 @@ import {FilterChain} from '../../model/filter/chain/FilterChain.mjs';
 
 export interface MessageBasicApi {
 
-	matchMessagesBy(filter: AbstractFilter<EncryptedMessage>): Promise<Array<string>>;
+	matchMessagesBy(filter: AbstractFilter<Message>): Promise<Array<string>>;
 
 	deleteMessage(entityId: string): Promise<DocIdentifier>;
 
@@ -20,7 +20,7 @@ export interface MessageBasicApi {
 
 	getMessages(entityIds: Array<string>): Promise<Array<EncryptedMessage>>;
 
-	filterMessagesBy(filterChain: FilterChain<EncryptedMessage>, startDocumentId: string | undefined,
+	filterMessagesBy(filterChain: FilterChain<Message>, startDocumentId: string | undefined,
 			limit: number | undefined): Promise<PaginatedList<EncryptedMessage>>;
 
 	listMessagesByTransportGuids(hcPartyId: string,

@@ -9,28 +9,34 @@ import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.crypto.entities.simpleShareResult_toJs
 import com.icure.sdk.js.model.CalendarItemJs
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
+import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
+import com.icure.sdk.js.model.CheckedConverters.setToArray
 import com.icure.sdk.js.model.DecryptedCalendarItemJs
 import com.icure.sdk.js.model.EncryptedCalendarItemJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.PatientJs
 import com.icure.sdk.js.model.UserJs
+import com.icure.sdk.js.model.calendarItem_fromJs
 import com.icure.sdk.js.model.calendarItem_toJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.couchdb.docIdentifier_toJs
 import com.icure.sdk.js.model.paginatedList_toJs
+import com.icure.sdk.js.model.specializations.hexString_toJs
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.sdk.model.CalendarItem
 import com.icure.sdk.model.DecryptedCalendarItem
 import com.icure.sdk.model.EncryptedCalendarItem
 import com.icure.sdk.model.couchdb.DocIdentifier
+import com.icure.sdk.model.specializations.HexString
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
 import kotlin.OptIn
 import kotlin.String
+import kotlin.Unit
 import kotlin.js.Promise
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -61,6 +67,41 @@ internal class CalendarItemApiImplJs(
 			)}
 
 
+		override fun tryShareWithMany(calendarItem: EncryptedCalendarItemJs, delegates: dynamic):
+				Promise<SimpleShareResultJs<EncryptedCalendarItemJs>> = GlobalScope.promise {
+			simpleShareResult_toJs(
+				calendarItemApi.encrypted.tryShareWithMany(com.icure.sdk.js.model.calendarItem_fromJs(calendarItem),
+						com.icure.sdk.js.model.CheckedConverters.objectToMap(
+				  delegates,
+				  "delegates",
+				  { x1: kotlin.String ->
+				    x1
+				  },
+				  { x1: com.icure.sdk.js.crypto.entities.CalendarItemShareOptionsJs ->
+				    com.icure.sdk.js.crypto.entities.calendarItemShareOptions_fromJs(x1)
+				  },
+				)),
+				{ x1: EncryptedCalendarItem ->
+					calendarItem_toJs(x1)
+				},
+			)}
+
+
+		override fun shareWithMany(calendarItem: EncryptedCalendarItemJs, delegates: dynamic):
+				Promise<EncryptedCalendarItemJs> = GlobalScope.promise {
+			calendarItem_toJs(calendarItemApi.encrypted.shareWithMany(com.icure.sdk.js.model.calendarItem_fromJs(calendarItem),
+					com.icure.sdk.js.model.CheckedConverters.objectToMap(
+			  delegates,
+			  "delegates",
+			  { x1: kotlin.String ->
+			    x1
+			  },
+			  { x1: com.icure.sdk.js.crypto.entities.CalendarItemShareOptionsJs ->
+			    com.icure.sdk.js.crypto.entities.calendarItemShareOptions_fromJs(x1)
+			  },
+			)))}
+
+
 		override fun findCalendarItemsByHcPartyPatient(
 			hcPartyId: String,
 			patient: PatientJs,
@@ -77,6 +118,22 @@ internal class CalendarItemApiImplJs(
 					calendarItem_toJs(x1)
 				},
 			)}
+
+
+		override fun linkToPatient(
+			calendarItem: CalendarItemJs,
+			patient: PatientJs,
+			shareLinkWithDelegates: Array<String>,
+		): Promise<EncryptedCalendarItemJs> = GlobalScope.promise {
+			calendarItem_toJs(calendarItemApi.encrypted.linkToPatient(com.icure.sdk.js.model.calendarItem_fromJs(calendarItem),
+					com.icure.sdk.js.model.patient_fromJs(patient),
+					com.icure.sdk.js.model.CheckedConverters.arrayToSet(
+			  shareLinkWithDelegates,
+			  "shareLinkWithDelegates",
+			  { x1: kotlin.String ->
+			    x1
+			  },
+			)))}
 
 
 		override fun modifyCalendarItem(entity: EncryptedCalendarItemJs): Promise<EncryptedCalendarItemJs>
@@ -186,6 +243,41 @@ internal class CalendarItemApiImplJs(
 			)}
 
 
+		override fun tryShareWithMany(calendarItem: CalendarItemJs, delegates: dynamic):
+				Promise<SimpleShareResultJs<CalendarItemJs>> = GlobalScope.promise {
+			simpleShareResult_toJs(
+				calendarItemApi.tryAndRecover.tryShareWithMany(com.icure.sdk.js.model.calendarItem_fromJs(calendarItem),
+						com.icure.sdk.js.model.CheckedConverters.objectToMap(
+				  delegates,
+				  "delegates",
+				  { x1: kotlin.String ->
+				    x1
+				  },
+				  { x1: com.icure.sdk.js.crypto.entities.CalendarItemShareOptionsJs ->
+				    com.icure.sdk.js.crypto.entities.calendarItemShareOptions_fromJs(x1)
+				  },
+				)),
+				{ x1: CalendarItem ->
+					calendarItem_toJs(x1)
+				},
+			)}
+
+
+		override fun shareWithMany(calendarItem: CalendarItemJs, delegates: dynamic):
+				Promise<CalendarItemJs> = GlobalScope.promise {
+			calendarItem_toJs(calendarItemApi.tryAndRecover.shareWithMany(com.icure.sdk.js.model.calendarItem_fromJs(calendarItem),
+					com.icure.sdk.js.model.CheckedConverters.objectToMap(
+			  delegates,
+			  "delegates",
+			  { x1: kotlin.String ->
+			    x1
+			  },
+			  { x1: com.icure.sdk.js.crypto.entities.CalendarItemShareOptionsJs ->
+			    com.icure.sdk.js.crypto.entities.calendarItemShareOptions_fromJs(x1)
+			  },
+			)))}
+
+
 		override fun findCalendarItemsByHcPartyPatient(
 			hcPartyId: String,
 			patient: PatientJs,
@@ -202,6 +294,22 @@ internal class CalendarItemApiImplJs(
 					calendarItem_toJs(x1)
 				},
 			)}
+
+
+		override fun linkToPatient(
+			calendarItem: CalendarItemJs,
+			patient: PatientJs,
+			shareLinkWithDelegates: Array<String>,
+		): Promise<CalendarItemJs> = GlobalScope.promise {
+			calendarItem_toJs(calendarItemApi.tryAndRecover.linkToPatient(com.icure.sdk.js.model.calendarItem_fromJs(calendarItem),
+					com.icure.sdk.js.model.patient_fromJs(patient),
+					com.icure.sdk.js.model.CheckedConverters.arrayToSet(
+			  shareLinkWithDelegates,
+			  "shareLinkWithDelegates",
+			  { x1: kotlin.String ->
+			    x1
+			  },
+			)))}
 
 
 		override fun modifyCalendarItem(entity: CalendarItemJs): Promise<CalendarItemJs> =
@@ -317,6 +425,41 @@ internal class CalendarItemApiImplJs(
 		), com.icure.sdk.js.crypto.entities.secretIdOption_fromJs(secretId)))}
 
 
+	override fun getEncryptionKeysOf(calendarItem: CalendarItemJs): Promise<Array<String>> =
+			GlobalScope.promise {
+		setToArray(
+			calendarItemApi.getEncryptionKeysOf(calendarItem_fromJs(calendarItem)),
+			{ x1: HexString ->
+				hexString_toJs(x1)
+			},
+		)}
+
+
+	override fun hasWriteAccess(calendarItem: CalendarItemJs): Promise<Boolean> = GlobalScope.promise {
+		calendarItemApi.hasWriteAccess(calendarItem_fromJs(calendarItem))}
+
+
+	override fun decryptPatientIdOf(calendarItem: CalendarItemJs): Promise<Array<String>> =
+			GlobalScope.promise {
+		setToArray(
+			calendarItemApi.decryptPatientIdOf(calendarItem_fromJs(calendarItem)),
+			{ x1: String ->
+				x1
+			},
+		)}
+
+
+	override fun createDelegationDeAnonymizationMetadata(entity: CalendarItemJs,
+			delegates: Array<String>): Promise<Unit> = GlobalScope.promise {
+		calendarItemApi.createDelegationDeAnonymizationMetadata(calendarItem_fromJs(entity), arrayToSet(
+			delegates,
+			"delegates",
+			{ x1: String ->
+				x1
+			},
+		))}
+
+
 	override fun deleteCalendarItem(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {
 		docIdentifier_toJs(calendarItemApi.deleteCalendarItem(entityId))}
 
@@ -355,6 +498,41 @@ internal class CalendarItemApiImplJs(
 		)}
 
 
+	override fun tryShareWithMany(calendarItem: DecryptedCalendarItemJs, delegates: dynamic):
+			Promise<SimpleShareResultJs<DecryptedCalendarItemJs>> = GlobalScope.promise {
+		simpleShareResult_toJs(
+			calendarItemApi.tryShareWithMany(com.icure.sdk.js.model.calendarItem_fromJs(calendarItem),
+					com.icure.sdk.js.model.CheckedConverters.objectToMap(
+			  delegates,
+			  "delegates",
+			  { x1: kotlin.String ->
+			    x1
+			  },
+			  { x1: com.icure.sdk.js.crypto.entities.CalendarItemShareOptionsJs ->
+			    com.icure.sdk.js.crypto.entities.calendarItemShareOptions_fromJs(x1)
+			  },
+			)),
+			{ x1: DecryptedCalendarItem ->
+				calendarItem_toJs(x1)
+			},
+		)}
+
+
+	override fun shareWithMany(calendarItem: DecryptedCalendarItemJs, delegates: dynamic):
+			Promise<DecryptedCalendarItemJs> = GlobalScope.promise {
+		calendarItem_toJs(calendarItemApi.shareWithMany(com.icure.sdk.js.model.calendarItem_fromJs(calendarItem),
+				com.icure.sdk.js.model.CheckedConverters.objectToMap(
+		  delegates,
+		  "delegates",
+		  { x1: kotlin.String ->
+		    x1
+		  },
+		  { x1: com.icure.sdk.js.crypto.entities.CalendarItemShareOptionsJs ->
+		    com.icure.sdk.js.crypto.entities.calendarItemShareOptions_fromJs(x1)
+		  },
+		)))}
+
+
 	override fun findCalendarItemsByHcPartyPatient(
 		hcPartyId: String,
 		patient: PatientJs,
@@ -371,6 +549,22 @@ internal class CalendarItemApiImplJs(
 				calendarItem_toJs(x1)
 			},
 		)}
+
+
+	override fun linkToPatient(
+		calendarItem: CalendarItemJs,
+		patient: PatientJs,
+		shareLinkWithDelegates: Array<String>,
+	): Promise<DecryptedCalendarItemJs> = GlobalScope.promise {
+		calendarItem_toJs(calendarItemApi.linkToPatient(com.icure.sdk.js.model.calendarItem_fromJs(calendarItem),
+				com.icure.sdk.js.model.patient_fromJs(patient),
+				com.icure.sdk.js.model.CheckedConverters.arrayToSet(
+		  shareLinkWithDelegates,
+		  "shareLinkWithDelegates",
+		  { x1: kotlin.String ->
+		    x1
+		  },
+		)))}
 
 
 	override fun modifyCalendarItem(entity: DecryptedCalendarItemJs): Promise<DecryptedCalendarItemJs>

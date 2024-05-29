@@ -33,4 +33,6 @@ public external class CryptoActorStubJs(
 	override val publicKeysForOaepWithSha256: Array<String>
 
 	override val tags: Array<CodeStubJs>
+
+	override val ktClass: String
 }

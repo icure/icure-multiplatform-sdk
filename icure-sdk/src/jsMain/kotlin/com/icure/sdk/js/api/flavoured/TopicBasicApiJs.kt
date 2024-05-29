@@ -5,6 +5,7 @@ package com.icure.sdk.js.api.flavoured
 
 import com.icure.sdk.js.model.EncryptedTopicJs
 import com.icure.sdk.js.model.PaginatedListJs
+import com.icure.sdk.js.model.TopicJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.filter.AbstractFilterJs
 import com.icure.sdk.js.model.filter.chain.FilterChainJs
@@ -21,7 +22,7 @@ public external interface TopicBasicApiJs {
 
 	public fun deleteTopics(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
 
-	public fun matchTopicsBy(filter: AbstractFilterJs<EncryptedTopicJs>): Promise<Array<String>>
+	public fun matchTopicsBy(filter: AbstractFilterJs<TopicJs>): Promise<Array<String>>
 
 	public fun modifyTopic(entity: EncryptedTopicJs): Promise<EncryptedTopicJs>
 
@@ -32,7 +33,7 @@ public external interface TopicBasicApiJs {
 	public fun filterTopicsBy(
 		startDocumentId: String?,
 		limit: Double?,
-		filterChain: FilterChainJs<EncryptedTopicJs>,
+		filterChain: FilterChainJs<TopicJs>,
 	): Promise<PaginatedListJs<EncryptedTopicJs>>
 
 	public fun addParticipant(

@@ -51,4 +51,6 @@ public external interface DocumentTemplateApiJs {
 
 	public fun setDocumentTemplateAttachment(documentTemplateId: String, payload: ByteArray):
 			Promise<DocumentTemplateJs>
+
+	public fun getAttachmentUrl(documentId: String, attachmentId: String): String
 }

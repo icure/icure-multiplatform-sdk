@@ -22,6 +22,10 @@ public external interface TimeTableFlavouredApiJs<E : TimeTableJs> {
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<E>>
 
+	public fun tryShareWithMany(timeTable: E, delegates: dynamic): Promise<SimpleShareResultJs<E>>
+
+	public fun shareWithMany(timeTable: E, delegates: dynamic): Promise<E>
+
 	public fun modifyTimeTable(entity: E): Promise<E>
 
 	public fun getTimeTable(entityId: String): Promise<E>

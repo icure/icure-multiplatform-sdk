@@ -1,4 +1,5 @@
 // auto-generated file
+import {ReceiptShareOptions} from '../../crypto/entities/ReceiptShareOptions.mjs';
 import {SecretIdOption} from '../../crypto/entities/SecretIdOption.mjs';
 import {ShareMetadataBehaviour} from '../../crypto/entities/ShareMetadataBehaviour.mjs';
 import {SimpleShareResult} from '../../crypto/entities/SimpleShareResult.mjs';
@@ -8,6 +9,7 @@ import {User} from '../../model/User.mjs';
 import {DocIdentifier} from '../../model/couchdb/DocIdentifier.mjs';
 import {AccessLevel} from '../../model/embed/AccessLevel.mjs';
 import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs';
+import {HexString} from '../../model/specializations/HexString.mjs';
 import {ReceiptFlavouredApi} from './ReceiptFlavouredApi.mjs';
 
 
@@ -32,6 +34,22 @@ export interface ReceiptApi {
 	encryptAndSetReceiptAttachment(receipt: Receipt, blobType: string,
 			attachment: Int8Array): Promise<EncryptedReceipt>;
 
+	getEncryptionKeysOf(receipt: Receipt): Promise<Array<HexString>>;
+
+	hasWriteAccess(receipt: Receipt): Promise<boolean>;
+
+	decryptPatientIdOf(receipt: Receipt): Promise<Array<string>>;
+
+	createDelegationDeAnonymizationMetadata(entity: Receipt, delegates: Array<string>): Promise<void>;
+
+	logReceipt(
+			user: User,
+			docId: string,
+			refs: Array<string>,
+			blobType: string,
+			blob: Int8Array
+	): Promise<Receipt>;
+
 	deleteReceipt(entityId: string): Promise<DocIdentifier>;
 
 	deleteReceipts(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
@@ -48,6 +66,12 @@ export interface ReceiptApi {
 			shareOwningEntityIds: ShareMetadataBehaviour,
 			requestedPermission: RequestedPermission
 	): Promise<SimpleShareResult<DecryptedReceipt>>;
+
+	tryShareWithMany(receipt: DecryptedReceipt,
+			delegates: { [ key: string ]: ReceiptShareOptions }): Promise<SimpleShareResult<DecryptedReceipt>>;
+
+	shareWithMany(receipt: DecryptedReceipt,
+			delegates: { [ key: string ]: ReceiptShareOptions }): Promise<DecryptedReceipt>;
 
 	modifyReceipt(entity: DecryptedReceipt): Promise<DecryptedReceipt>;
 

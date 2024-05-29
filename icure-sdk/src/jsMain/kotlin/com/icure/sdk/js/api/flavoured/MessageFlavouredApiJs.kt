@@ -4,7 +4,6 @@
 package com.icure.sdk.js.api.flavoured
 
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
-import com.icure.sdk.js.model.EncryptedMessageJs
 import com.icure.sdk.js.model.MessageJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.PatientJs
@@ -29,6 +28,10 @@ public external interface MessageFlavouredApiJs<E : MessageJs> {
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<E>>
 
+	public fun tryShareWithMany(message: E, delegates: dynamic): Promise<SimpleShareResultJs<E>>
+
+	public fun shareWithMany(message: E, delegates: dynamic): Promise<E>
+
 	public fun findMessagesByHcPartyPatient(
 		hcPartyId: String,
 		patient: PatientJs,
@@ -44,7 +47,7 @@ public external interface MessageFlavouredApiJs<E : MessageJs> {
 	public fun getMessages(entityIds: Array<String>): Promise<Array<E>>
 
 	public fun filterMessagesBy(
-		filterChain: FilterChainJs<EncryptedMessageJs>,
+		filterChain: FilterChainJs<MessageJs>,
 		startDocumentId: String?,
 		limit: Double?,
 	): Promise<PaginatedListJs<E>>

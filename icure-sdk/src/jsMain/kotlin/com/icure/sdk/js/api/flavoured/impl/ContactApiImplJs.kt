@@ -8,8 +8,10 @@ import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.crypto.entities.simpleShareResult_toJs
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
+import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
+import com.icure.sdk.js.model.CheckedConverters.setToArray
 import com.icure.sdk.js.model.ContactJs
 import com.icure.sdk.js.model.DecryptedContactJs
 import com.icure.sdk.js.model.EncryptedContactJs
@@ -26,12 +28,14 @@ import com.icure.sdk.js.model.couchdb.docIdentifier_toJs
 import com.icure.sdk.js.model.embed.DecryptedServiceJs
 import com.icure.sdk.js.model.embed.EncryptedServiceJs
 import com.icure.sdk.js.model.embed.ServiceJs
+import com.icure.sdk.js.model.embed.service_fromJs
 import com.icure.sdk.js.model.embed.service_toJs
 import com.icure.sdk.js.model.filter.AbstractFilterJs
 import com.icure.sdk.js.model.filter.abstractFilter_fromJs
 import com.icure.sdk.js.model.filter.chain.FilterChainJs
 import com.icure.sdk.js.model.icureStub_toJs
 import com.icure.sdk.js.model.paginatedList_toJs
+import com.icure.sdk.js.model.specializations.hexString_toJs
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.sdk.model.Contact
@@ -43,11 +47,13 @@ import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.embed.DecryptedService
 import com.icure.sdk.model.embed.EncryptedService
 import com.icure.sdk.model.embed.Service
+import com.icure.sdk.model.specializations.HexString
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
 import kotlin.OptIn
 import kotlin.String
+import kotlin.Unit
 import kotlin.js.Promise
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -75,6 +81,41 @@ internal class ContactApiImplJs(
 					contact_toJs(x1)
 				},
 			)}
+
+
+		override fun tryShareWithMany(contact: EncryptedContactJs, delegates: dynamic):
+				Promise<SimpleShareResultJs<EncryptedContactJs>> = GlobalScope.promise {
+			simpleShareResult_toJs(
+				contactApi.encrypted.tryShareWithMany(com.icure.sdk.js.model.contact_fromJs(contact),
+						com.icure.sdk.js.model.CheckedConverters.objectToMap(
+				  delegates,
+				  "delegates",
+				  { x1: kotlin.String ->
+				    x1
+				  },
+				  { x1: com.icure.sdk.js.crypto.entities.ContactShareOptionsJs ->
+				    com.icure.sdk.js.crypto.entities.contactShareOptions_fromJs(x1)
+				  },
+				)),
+				{ x1: EncryptedContact ->
+					contact_toJs(x1)
+				},
+			)}
+
+
+		override fun shareWithMany(contact: EncryptedContactJs, delegates: dynamic):
+				Promise<EncryptedContactJs> = GlobalScope.promise {
+			contact_toJs(contactApi.encrypted.shareWithMany(com.icure.sdk.js.model.contact_fromJs(contact),
+					com.icure.sdk.js.model.CheckedConverters.objectToMap(
+			  delegates,
+			  "delegates",
+			  { x1: kotlin.String ->
+			    x1
+			  },
+			  { x1: com.icure.sdk.js.crypto.entities.ContactShareOptionsJs ->
+			    com.icure.sdk.js.crypto.entities.contactShareOptions_fromJs(x1)
+			  },
+			)))}
 
 
 		override fun findContactsByHcPartyPatient(
@@ -137,14 +178,14 @@ internal class ContactApiImplJs(
 
 
 		override fun filterContactsBy(
-			filterChain: FilterChainJs<EncryptedContactJs>,
+			filterChain: FilterChainJs<ContactJs>,
 			startDocumentId: String?,
 			limit: Double?,
 		): Promise<PaginatedListJs<EncryptedContactJs>> = GlobalScope.promise {
 			paginatedList_toJs(
 				contactApi.encrypted.filterContactsBy(com.icure.sdk.js.model.filter.chain.filterChain_fromJs(
 				  filterChain,
-				  { x1: com.icure.sdk.js.model.EncryptedContactJs ->
+				  { x1: com.icure.sdk.js.model.ContactJs ->
 				    com.icure.sdk.js.model.contact_fromJs(x1)
 				  },
 				), startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
@@ -313,14 +354,14 @@ internal class ContactApiImplJs(
 
 
 		override fun filterServicesBy(
-			filterChain: FilterChainJs<EncryptedServiceJs>,
+			filterChain: FilterChainJs<ServiceJs>,
 			startDocumentId: String?,
 			limit: Double?,
 		): Promise<PaginatedListJs<EncryptedServiceJs>> = GlobalScope.promise {
 			paginatedList_toJs(
 				contactApi.encrypted.filterServicesBy(com.icure.sdk.js.model.filter.chain.filterChain_fromJs(
 				  filterChain,
-				  { x1: com.icure.sdk.js.model.embed.EncryptedServiceJs ->
+				  { x1: com.icure.sdk.js.model.embed.ServiceJs ->
 				    com.icure.sdk.js.model.embed.service_fromJs(x1)
 				  },
 				), startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
@@ -349,6 +390,41 @@ internal class ContactApiImplJs(
 					contact_toJs(x1)
 				},
 			)}
+
+
+		override fun tryShareWithMany(contact: ContactJs, delegates: dynamic):
+				Promise<SimpleShareResultJs<ContactJs>> = GlobalScope.promise {
+			simpleShareResult_toJs(
+				contactApi.tryAndRecover.tryShareWithMany(com.icure.sdk.js.model.contact_fromJs(contact),
+						com.icure.sdk.js.model.CheckedConverters.objectToMap(
+				  delegates,
+				  "delegates",
+				  { x1: kotlin.String ->
+				    x1
+				  },
+				  { x1: com.icure.sdk.js.crypto.entities.ContactShareOptionsJs ->
+				    com.icure.sdk.js.crypto.entities.contactShareOptions_fromJs(x1)
+				  },
+				)),
+				{ x1: Contact ->
+					contact_toJs(x1)
+				},
+			)}
+
+
+		override fun shareWithMany(contact: ContactJs, delegates: dynamic): Promise<ContactJs> =
+				GlobalScope.promise {
+			contact_toJs(contactApi.tryAndRecover.shareWithMany(com.icure.sdk.js.model.contact_fromJs(contact),
+					com.icure.sdk.js.model.CheckedConverters.objectToMap(
+			  delegates,
+			  "delegates",
+			  { x1: kotlin.String ->
+			    x1
+			  },
+			  { x1: com.icure.sdk.js.crypto.entities.ContactShareOptionsJs ->
+			    com.icure.sdk.js.crypto.entities.contactShareOptions_fromJs(x1)
+			  },
+			)))}
 
 
 		override fun findContactsByHcPartyPatient(
@@ -410,14 +486,14 @@ internal class ContactApiImplJs(
 
 
 		override fun filterContactsBy(
-			filterChain: FilterChainJs<EncryptedContactJs>,
+			filterChain: FilterChainJs<ContactJs>,
 			startDocumentId: String?,
 			limit: Double?,
 		): Promise<PaginatedListJs<ContactJs>> = GlobalScope.promise {
 			paginatedList_toJs(
 				contactApi.tryAndRecover.filterContactsBy(com.icure.sdk.js.model.filter.chain.filterChain_fromJs(
 				  filterChain,
-				  { x1: com.icure.sdk.js.model.EncryptedContactJs ->
+				  { x1: com.icure.sdk.js.model.ContactJs ->
 				    com.icure.sdk.js.model.contact_fromJs(x1)
 				  },
 				), startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
@@ -586,14 +662,14 @@ internal class ContactApiImplJs(
 
 
 		override fun filterServicesBy(
-			filterChain: FilterChainJs<EncryptedServiceJs>,
+			filterChain: FilterChainJs<ServiceJs>,
 			startDocumentId: String?,
 			limit: Double?,
 		): Promise<PaginatedListJs<ServiceJs>> = GlobalScope.promise {
 			paginatedList_toJs(
 				contactApi.tryAndRecover.filterServicesBy(com.icure.sdk.js.model.filter.chain.filterChain_fromJs(
 				  filterChain,
-				  { x1: com.icure.sdk.js.model.embed.EncryptedServiceJs ->
+				  { x1: com.icure.sdk.js.model.embed.ServiceJs ->
 				    com.icure.sdk.js.model.embed.service_fromJs(x1)
 				  },
 				), startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
@@ -648,13 +724,62 @@ internal class ContactApiImplJs(
 		), com.icure.sdk.js.crypto.entities.secretIdOption_fromJs(secretId)))}
 
 
-	override fun matchContactsBy(filter: AbstractFilterJs<EncryptedContactJs>): Promise<Array<String>>
-			= GlobalScope.promise {
+	override fun getEncryptionKeysOf(contact: ContactJs): Promise<Array<String>> =
+			GlobalScope.promise {
+		setToArray(
+			contactApi.getEncryptionKeysOf(contact_fromJs(contact)),
+			{ x1: HexString ->
+				hexString_toJs(x1)
+			},
+		)}
+
+
+	override fun hasWriteAccess(contact: ContactJs): Promise<Boolean> = GlobalScope.promise {
+		contactApi.hasWriteAccess(contact_fromJs(contact))}
+
+
+	override fun decryptPatientIdOf(contact: ContactJs): Promise<Array<String>> = GlobalScope.promise {
+		setToArray(
+			contactApi.decryptPatientIdOf(contact_fromJs(contact)),
+			{ x1: String ->
+				x1
+			},
+		)}
+
+
+	override fun createDelegationDeAnonymizationMetadata(entity: ContactJs, delegates: Array<String>):
+			Promise<Unit> = GlobalScope.promise {
+		contactApi.createDelegationDeAnonymizationMetadata(contact_fromJs(entity), arrayToSet(
+			delegates,
+			"delegates",
+			{ x1: String ->
+				x1
+			},
+		))}
+
+
+	override fun matchContactsBy(filter: AbstractFilterJs<ContactJs>): Promise<Array<String>> =
+			GlobalScope.promise {
 		listToArray(
 			contactApi.matchContactsBy(abstractFilter_fromJs(
 				filter,
-				{ x1: EncryptedContactJs ->
+				{ x1: ContactJs ->
 					contact_fromJs(x1)
+				},
+			)),
+			{ x1: String ->
+				x1
+			},
+		)}
+
+
+	override fun matchServicesBy(filter: AbstractFilterJs<ServiceJs>): Promise<Array<String>> =
+			GlobalScope.promise {
+		listToArray(
+			contactApi.matchServicesBy(abstractFilter_fromJs(
+				filter,
+				{ x1: ServiceJs ->
+					service_fromJs(x1)
 				},
 			)),
 			{ x1: String ->
@@ -727,6 +852,41 @@ internal class ContactApiImplJs(
 		)}
 
 
+	override fun tryShareWithMany(contact: DecryptedContactJs, delegates: dynamic):
+			Promise<SimpleShareResultJs<DecryptedContactJs>> = GlobalScope.promise {
+		simpleShareResult_toJs(
+			contactApi.tryShareWithMany(com.icure.sdk.js.model.contact_fromJs(contact),
+					com.icure.sdk.js.model.CheckedConverters.objectToMap(
+			  delegates,
+			  "delegates",
+			  { x1: kotlin.String ->
+			    x1
+			  },
+			  { x1: com.icure.sdk.js.crypto.entities.ContactShareOptionsJs ->
+			    com.icure.sdk.js.crypto.entities.contactShareOptions_fromJs(x1)
+			  },
+			)),
+			{ x1: DecryptedContact ->
+				contact_toJs(x1)
+			},
+		)}
+
+
+	override fun shareWithMany(contact: DecryptedContactJs, delegates: dynamic):
+			Promise<DecryptedContactJs> = GlobalScope.promise {
+		contact_toJs(contactApi.shareWithMany(com.icure.sdk.js.model.contact_fromJs(contact),
+				com.icure.sdk.js.model.CheckedConverters.objectToMap(
+		  delegates,
+		  "delegates",
+		  { x1: kotlin.String ->
+		    x1
+		  },
+		  { x1: com.icure.sdk.js.crypto.entities.ContactShareOptionsJs ->
+		    com.icure.sdk.js.crypto.entities.contactShareOptions_fromJs(x1)
+		  },
+		)))}
+
+
 	override fun findContactsByHcPartyPatient(
 		hcPartyId: String,
 		patient: PatientJs,
@@ -787,14 +947,14 @@ internal class ContactApiImplJs(
 
 
 	override fun filterContactsBy(
-		filterChain: FilterChainJs<EncryptedContactJs>,
+		filterChain: FilterChainJs<ContactJs>,
 		startDocumentId: String?,
 		limit: Double?,
 	): Promise<PaginatedListJs<DecryptedContactJs>> = GlobalScope.promise {
 		paginatedList_toJs(
 			contactApi.filterContactsBy(com.icure.sdk.js.model.filter.chain.filterChain_fromJs(
 			  filterChain,
-			  { x1: com.icure.sdk.js.model.EncryptedContactJs ->
+			  { x1: com.icure.sdk.js.model.ContactJs ->
 			    com.icure.sdk.js.model.contact_fromJs(x1)
 			  },
 			), startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
@@ -963,14 +1123,14 @@ internal class ContactApiImplJs(
 
 
 	override fun filterServicesBy(
-		filterChain: FilterChainJs<EncryptedServiceJs>,
+		filterChain: FilterChainJs<ServiceJs>,
 		startDocumentId: String?,
 		limit: Double?,
 	): Promise<PaginatedListJs<DecryptedServiceJs>> = GlobalScope.promise {
 		paginatedList_toJs(
 			contactApi.filterServicesBy(com.icure.sdk.js.model.filter.chain.filterChain_fromJs(
 			  filterChain,
-			  { x1: com.icure.sdk.js.model.embed.EncryptedServiceJs ->
+			  { x1: com.icure.sdk.js.model.embed.ServiceJs ->
 			    com.icure.sdk.js.model.embed.service_fromJs(x1)
 			  },
 			), startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),

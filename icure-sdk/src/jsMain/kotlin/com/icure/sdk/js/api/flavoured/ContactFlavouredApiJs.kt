@@ -5,10 +5,8 @@ package com.icure.sdk.js.api.flavoured
 
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.model.ContactJs
-import com.icure.sdk.js.model.EncryptedContactJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.PatientJs
-import com.icure.sdk.js.model.embed.EncryptedServiceJs
 import com.icure.sdk.js.model.embed.ServiceJs
 import com.icure.sdk.js.model.filter.chain.FilterChainJs
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
@@ -30,6 +28,10 @@ public external interface ContactFlavouredApiJs<E : ContactJs, S : ServiceJs> {
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<E>>
 
+	public fun tryShareWithMany(contact: E, delegates: dynamic): Promise<SimpleShareResultJs<E>>
+
+	public fun shareWithMany(contact: E, delegates: dynamic): Promise<E>
+
 	public fun findContactsByHcPartyPatient(
 		hcPartyId: String,
 		patient: PatientJs,
@@ -47,7 +49,7 @@ public external interface ContactFlavouredApiJs<E : ContactJs, S : ServiceJs> {
 	public fun getContacts(entityIds: Array<String>): Promise<Array<E>>
 
 	public fun filterContactsBy(
-		filterChain: FilterChainJs<EncryptedContactJs>,
+		filterChain: FilterChainJs<ContactJs>,
 		startDocumentId: String?,
 		limit: Double?,
 	): Promise<PaginatedListJs<E>>
@@ -92,7 +94,7 @@ public external interface ContactFlavouredApiJs<E : ContactJs, S : ServiceJs> {
 	): Promise<PaginatedListJs<E>>
 
 	public fun filterServicesBy(
-		filterChain: FilterChainJs<EncryptedServiceJs>,
+		filterChain: FilterChainJs<ServiceJs>,
 		startDocumentId: String?,
 		limit: Double?,
 	): Promise<PaginatedListJs<S>>

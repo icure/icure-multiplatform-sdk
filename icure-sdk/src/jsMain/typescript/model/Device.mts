@@ -68,6 +68,8 @@ export class Device implements StoredDocument, ICureDocument<string>, Named, Cry
 
   publicKeysForOaepWithSha256: Array<SpkiHexString> = [];
 
+  readonly $ktClass: 'com.icure.sdk.model.Device' = 'com.icure.sdk.model.Device';
+
   constructor(partial: Partial<Device>) {
     this.id = partial.id ?? randomUuid();
     if ('rev' in partial) this.rev = partial.rev;

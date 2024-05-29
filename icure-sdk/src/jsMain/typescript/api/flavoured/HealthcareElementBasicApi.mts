@@ -1,5 +1,5 @@
 // auto-generated file
-import {EncryptedHealthElement} from '../../model/HealthElement.mjs';
+import {EncryptedHealthElement, HealthElement} from '../../model/HealthElement.mjs';
 import {IcureStub} from '../../model/IcureStub.mjs';
 import {PaginatedList} from '../../model/PaginatedList.mjs';
 import {DocIdentifier} from '../../model/couchdb/DocIdentifier.mjs';
@@ -9,7 +9,7 @@ import {FilterChain} from '../../model/filter/chain/FilterChain.mjs';
 
 export interface HealthcareElementBasicApi {
 
-	matchHealthcareElementsBy(filter: AbstractFilter<EncryptedHealthElement>): Promise<Array<string>>;
+	matchHealthcareElementsBy(filter: AbstractFilter<HealthElement>): Promise<Array<string>>;
 
 	deleteHealthcareElement(entityId: string): Promise<DocIdentifier>;
 
@@ -26,7 +26,7 @@ export interface HealthcareElementBasicApi {
 
 	getHealthcareElements(entityIds: Array<string>): Promise<Array<EncryptedHealthElement>>;
 
-	filterHealthcareElementsBy(filterChain: FilterChain<EncryptedHealthElement>,
+	filterHealthcareElementsBy(filterChain: FilterChain<HealthElement>,
 			startDocumentId: string | undefined,
 			limit: number | undefined): Promise<PaginatedList<EncryptedHealthElement>>;
 

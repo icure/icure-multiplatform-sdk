@@ -4,7 +4,6 @@
 package com.icure.sdk.js.api.flavoured
 
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
-import com.icure.sdk.js.model.EncryptedHealthElementJs
 import com.icure.sdk.js.model.HealthElementJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.PatientJs
@@ -28,6 +27,10 @@ public external interface HealthcareElementFlavouredApiJs<E : HealthElementJs> {
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<E>>
 
+	public fun tryShareWithMany(healthElement: E, delegates: dynamic): Promise<SimpleShareResultJs<E>>
+
+	public fun shareWithMany(healthElement: E, delegates: dynamic): Promise<E>
+
 	public fun findHealthcareElementsByHcPartyPatient(
 		hcPartyId: String,
 		patient: PatientJs,
@@ -45,7 +48,7 @@ public external interface HealthcareElementFlavouredApiJs<E : HealthElementJs> {
 	public fun getHealthcareElements(entityIds: Array<String>): Promise<Array<E>>
 
 	public fun filterHealthcareElementsBy(
-		filterChain: FilterChainJs<EncryptedHealthElementJs>,
+		filterChain: FilterChainJs<HealthElementJs>,
 		startDocumentId: String?,
 		limit: Double?,
 	): Promise<PaginatedListJs<E>>

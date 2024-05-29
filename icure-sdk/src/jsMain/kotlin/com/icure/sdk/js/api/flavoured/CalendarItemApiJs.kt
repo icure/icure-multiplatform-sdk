@@ -17,6 +17,7 @@ import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
 import kotlin.String
+import kotlin.Unit
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
 import kotlin.js.Promise
@@ -37,6 +38,15 @@ public external interface CalendarItemApiJs {
 		secretId: SecretIdOptionJs,
 	): Promise<DecryptedCalendarItemJs>
 
+	public fun getEncryptionKeysOf(calendarItem: CalendarItemJs): Promise<Array<String>>
+
+	public fun hasWriteAccess(calendarItem: CalendarItemJs): Promise<Boolean>
+
+	public fun decryptPatientIdOf(calendarItem: CalendarItemJs): Promise<Array<String>>
+
+	public fun createDelegationDeAnonymizationMetadata(entity: CalendarItemJs,
+			delegates: Array<String>): Promise<Unit>
+
 	public fun deleteCalendarItem(entityId: String): Promise<DocIdentifierJs>
 
 	public fun deleteCalendarItems(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
@@ -49,6 +59,12 @@ public external interface CalendarItemApiJs {
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<DecryptedCalendarItemJs>>
 
+	public fun tryShareWithMany(calendarItem: DecryptedCalendarItemJs, delegates: dynamic):
+			Promise<SimpleShareResultJs<DecryptedCalendarItemJs>>
+
+	public fun shareWithMany(calendarItem: DecryptedCalendarItemJs, delegates: dynamic):
+			Promise<DecryptedCalendarItemJs>
+
 	public fun findCalendarItemsByHcPartyPatient(
 		hcPartyId: String,
 		patient: PatientJs,
@@ -56,6 +72,12 @@ public external interface CalendarItemApiJs {
 		endDate: Double?,
 		descending: Boolean?,
 	): Promise<PaginatedListIteratorJs<DecryptedCalendarItemJs>>
+
+	public fun linkToPatient(
+		calendarItem: CalendarItemJs,
+		patient: PatientJs,
+		shareLinkWithDelegates: Array<String>,
+	): Promise<DecryptedCalendarItemJs>
 
 	public fun modifyCalendarItem(entity: DecryptedCalendarItemJs): Promise<DecryptedCalendarItemJs>
 

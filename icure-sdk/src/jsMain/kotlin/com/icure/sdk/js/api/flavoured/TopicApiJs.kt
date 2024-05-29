@@ -15,8 +15,10 @@ import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.filter.AbstractFilterJs
 import com.icure.sdk.js.model.filter.chain.FilterChainJs
 import kotlin.Array
+import kotlin.Boolean
 import kotlin.Double
 import kotlin.String
+import kotlin.Unit
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
 import kotlin.js.Promise
@@ -37,11 +39,20 @@ public external interface TopicApiJs {
 		secretId: SecretIdOptionJs,
 	): Promise<DecryptedTopicJs>
 
+	public fun getEncryptionKeysOf(topic: TopicJs): Promise<Array<String>>
+
+	public fun hasWriteAccess(topic: TopicJs): Promise<Boolean>
+
+	public fun decryptPatientIdOf(topic: TopicJs): Promise<Array<String>>
+
+	public fun createDelegationDeAnonymizationMetadata(entity: TopicJs, delegates: Array<String>):
+			Promise<Unit>
+
 	public fun deleteTopic(entityId: String): Promise<DocIdentifierJs>
 
 	public fun deleteTopics(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
 
-	public fun matchTopicsBy(filter: AbstractFilterJs<EncryptedTopicJs>): Promise<Array<String>>
+	public fun matchTopicsBy(filter: AbstractFilterJs<TopicJs>): Promise<Array<String>>
 
 	public fun shareWith(
 		delegateId: String,
@@ -50,6 +61,11 @@ public external interface TopicApiJs {
 		shareOwningEntityIds: String,
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<DecryptedTopicJs>>
+
+	public fun tryShareWithMany(topic: DecryptedTopicJs, delegates: dynamic):
+			Promise<SimpleShareResultJs<DecryptedTopicJs>>
+
+	public fun shareWithMany(topic: DecryptedTopicJs, delegates: dynamic): Promise<DecryptedTopicJs>
 
 	public fun modifyTopic(entity: DecryptedTopicJs): Promise<DecryptedTopicJs>
 
@@ -60,7 +76,7 @@ public external interface TopicApiJs {
 	public fun filterTopicsBy(
 		startDocumentId: String?,
 		limit: Double?,
-		filterChain: FilterChainJs<EncryptedTopicJs>,
+		filterChain: FilterChainJs<TopicJs>,
 	): Promise<PaginatedListJs<DecryptedTopicJs>>
 
 	public fun addParticipant(

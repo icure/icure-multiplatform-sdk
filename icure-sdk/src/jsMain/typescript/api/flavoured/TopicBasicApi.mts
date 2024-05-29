@@ -1,6 +1,6 @@
 // auto-generated file
 import {PaginatedList} from '../../model/PaginatedList.mjs';
-import {EncryptedTopic} from '../../model/Topic.mjs';
+import {EncryptedTopic, Topic} from '../../model/Topic.mjs';
 import {TopicRole} from '../../model/TopicRole.mjs';
 import {DocIdentifier} from '../../model/couchdb/DocIdentifier.mjs';
 import {AbstractFilter} from '../../model/filter/AbstractFilter.mjs';
@@ -13,7 +13,7 @@ export interface TopicBasicApi {
 
 	deleteTopics(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
-	matchTopicsBy(filter: AbstractFilter<EncryptedTopic>): Promise<Array<string>>;
+	matchTopicsBy(filter: AbstractFilter<Topic>): Promise<Array<string>>;
 
 	modifyTopic(entity: EncryptedTopic): Promise<EncryptedTopic>;
 
@@ -22,7 +22,7 @@ export interface TopicBasicApi {
 	getTopics(entityIds: Array<string>): Promise<Array<EncryptedTopic>>;
 
 	filterTopicsBy(startDocumentId: string | undefined, limit: number | undefined,
-			filterChain: FilterChain<EncryptedTopic>): Promise<PaginatedList<EncryptedTopic>>;
+			filterChain: FilterChain<Topic>): Promise<PaginatedList<EncryptedTopic>>;
 
 	addParticipant(entityId: string, dataOwnerId: string,
 			topicRole: TopicRole): Promise<EncryptedTopic>;

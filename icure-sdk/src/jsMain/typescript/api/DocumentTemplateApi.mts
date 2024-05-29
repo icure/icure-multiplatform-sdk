@@ -33,4 +33,6 @@ export interface DocumentTemplateApi {
 	setDocumentTemplateAttachment(documentTemplateId: string,
 			payload: Int8Array): Promise<DocumentTemplate>;
 
+	getAttachmentUrl(documentId: string, attachmentId: string): string;
+
 }

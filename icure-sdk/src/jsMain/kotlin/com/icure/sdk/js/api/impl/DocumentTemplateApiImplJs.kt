@@ -126,4 +126,7 @@ internal class DocumentTemplateApiImplJs(
 		documentTemplate_toJs(documentTemplateApi.setDocumentTemplateAttachment(documentTemplateId,
 				payload))}
 
+
+	override fun getAttachmentUrl(documentId: String, attachmentId: String): String =
+			documentTemplateApi.getAttachmentUrl(documentId, attachmentId)
 }

@@ -4,6 +4,7 @@
 package com.icure.sdk.js.api.flavoured
 
 import com.icure.sdk.js.model.EncryptedMessageJs
+import com.icure.sdk.js.model.MessageJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.filter.AbstractFilterJs
@@ -18,7 +19,7 @@ import kotlin.js.Promise
 
 @JsName("MessageBasicApi")
 public external interface MessageBasicApiJs {
-	public fun matchMessagesBy(filter: AbstractFilterJs<EncryptedMessageJs>): Promise<Array<String>>
+	public fun matchMessagesBy(filter: AbstractFilterJs<MessageJs>): Promise<Array<String>>
 
 	public fun deleteMessage(entityId: String): Promise<DocIdentifierJs>
 
@@ -31,7 +32,7 @@ public external interface MessageBasicApiJs {
 	public fun getMessages(entityIds: Array<String>): Promise<Array<EncryptedMessageJs>>
 
 	public fun filterMessagesBy(
-		filterChain: FilterChainJs<EncryptedMessageJs>,
+		filterChain: FilterChainJs<MessageJs>,
 		startDocumentId: String?,
 		limit: Double?,
 	): Promise<PaginatedListJs<EncryptedMessageJs>>

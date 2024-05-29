@@ -13,7 +13,7 @@ import {FilterChain} from '../../model/filter/chain/FilterChain.mjs';
 
 export interface PatientBasicApi {
 
-	matchPatientsBy(filter: AbstractFilter<EncryptedPatient>): Promise<Array<string>>;
+	matchPatientsBy(filter: AbstractFilter<Patient>): Promise<Array<string>>;
 
 	deletePatient(entityId: string): Promise<DocIdentifier>;
 
@@ -28,7 +28,7 @@ export interface PatientBasicApi {
 	getPatient(entityId: string): Promise<EncryptedPatient>;
 
 	filterPatientsBy(
-			filterChain: FilterChain<EncryptedPatient>,
+			filterChain: FilterChain<Patient>,
 			startKey: string | undefined,
 			startDocumentId: string | undefined,
 			limit: number | undefined,
@@ -87,15 +87,6 @@ export interface PatientBasicApi {
 			startDocumentId: string | undefined, limit: number | undefined): Promise<PaginatedList<string>>;
 
 	getPatientByExternalId(externalId: string): Promise<EncryptedPatient>;
-
-	findPatientsByAccessLogUserAfterDate(
-			userId: string,
-			accessType: string | undefined,
-			startDate: number | undefined,
-			startKey: string | undefined,
-			startDocumentId: string | undefined,
-			limit: number | undefined
-	): Promise<PaginatedList<EncryptedPatient>>;
 
 	fuzzySearch(firstName: string, lastName: string,
 			dateOfBirth: number | undefined): Promise<Array<EncryptedPatient>>;

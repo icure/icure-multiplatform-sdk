@@ -2,12 +2,14 @@
 import {SecretIdOption} from '../../crypto/entities/SecretIdOption.mjs';
 import {ShareMetadataBehaviour} from '../../crypto/entities/ShareMetadataBehaviour.mjs';
 import {SimpleShareResult} from '../../crypto/entities/SimpleShareResult.mjs';
+import {TimeTableShareOptions} from '../../crypto/entities/TimeTableShareOptions.mjs';
 import {Patient} from '../../model/Patient.mjs';
 import {DecryptedTimeTable, EncryptedTimeTable, TimeTable} from '../../model/TimeTable.mjs';
 import {User} from '../../model/User.mjs';
 import {DocIdentifier} from '../../model/couchdb/DocIdentifier.mjs';
 import {AccessLevel} from '../../model/embed/AccessLevel.mjs';
 import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs';
+import {HexString} from '../../model/specializations/HexString.mjs';
 import {TimeTableFlavouredApi} from './TimeTableFlavouredApi.mjs';
 
 
@@ -27,6 +29,15 @@ export interface TimeTableApi {
 			secretId: SecretIdOption
 	): Promise<DecryptedTimeTable>;
 
+	getEncryptionKeysOf(timeTable: TimeTable): Promise<Array<HexString>>;
+
+	hasWriteAccess(timeTable: TimeTable): Promise<boolean>;
+
+	decryptPatientIdOf(timeTable: TimeTable): Promise<Array<string>>;
+
+	createDelegationDeAnonymizationMetadata(entity: TimeTable,
+			delegates: Array<string>): Promise<void>;
+
 	deleteTimeTable(entityId: string): Promise<DocIdentifier>;
 
 	deleteTimeTables(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
@@ -38,6 +49,12 @@ export interface TimeTableApi {
 			shareOwningEntityIds: ShareMetadataBehaviour,
 			requestedPermission: RequestedPermission
 	): Promise<SimpleShareResult<DecryptedTimeTable>>;
+
+	tryShareWithMany(timeTable: DecryptedTimeTable,
+			delegates: { [ key: string ]: TimeTableShareOptions }): Promise<SimpleShareResult<DecryptedTimeTable>>;
+
+	shareWithMany(timeTable: DecryptedTimeTable,
+			delegates: { [ key: string ]: TimeTableShareOptions }): Promise<DecryptedTimeTable>;
 
 	modifyTimeTable(entity: DecryptedTimeTable): Promise<DecryptedTimeTable>;
 

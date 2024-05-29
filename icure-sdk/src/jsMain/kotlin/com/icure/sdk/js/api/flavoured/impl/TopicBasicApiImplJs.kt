@@ -7,6 +7,7 @@ import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.EncryptedTopicJs
 import com.icure.sdk.js.model.PaginatedListJs
+import com.icure.sdk.js.model.TopicJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.couchdb.docIdentifier_toJs
 import com.icure.sdk.js.model.filter.AbstractFilterJs
@@ -50,12 +51,12 @@ internal class TopicBasicApiImplJs(
 		)}
 
 
-	override fun matchTopicsBy(filter: AbstractFilterJs<EncryptedTopicJs>): Promise<Array<String>> =
+	override fun matchTopicsBy(filter: AbstractFilterJs<TopicJs>): Promise<Array<String>> =
 			GlobalScope.promise {
 		listToArray(
 			topicBasicApi.matchTopicsBy(abstractFilter_fromJs(
 				filter,
-				{ x1: EncryptedTopicJs ->
+				{ x1: TopicJs ->
 					topic_fromJs(x1)
 				},
 			)),
@@ -93,14 +94,14 @@ internal class TopicBasicApiImplJs(
 	override fun filterTopicsBy(
 		startDocumentId: String?,
 		limit: Double?,
-		filterChain: FilterChainJs<EncryptedTopicJs>,
+		filterChain: FilterChainJs<TopicJs>,
 	): Promise<PaginatedListJs<EncryptedTopicJs>> = GlobalScope.promise {
 		paginatedList_toJs(
 			topicBasicApi.filterTopicsBy(startDocumentId,
 					com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit"),
 					com.icure.sdk.js.model.filter.chain.filterChain_fromJs(
 			  filterChain,
-			  { x1: com.icure.sdk.js.model.EncryptedTopicJs ->
+			  { x1: com.icure.sdk.js.model.TopicJs ->
 			    com.icure.sdk.js.model.topic_fromJs(x1)
 			  },
 			)),

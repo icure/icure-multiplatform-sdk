@@ -18,6 +18,7 @@ import kotlin.Boolean
 import kotlin.ByteArray
 import kotlin.Double
 import kotlin.String
+import kotlin.Unit
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
 import kotlin.js.Promise
@@ -37,6 +38,24 @@ public external interface DocumentApiJs {
 		delegates: dynamic,
 		secretId: SecretIdOptionJs,
 	): Promise<DecryptedDocumentJs>
+
+	public fun getAndTryDecryptMainAttachment(
+		document: DocumentJs,
+		attachmentId: String,
+		decryptedDocumentValidator: (ByteArray) -> Promise<Boolean>,
+	): Promise<ByteArray?>
+
+	public fun getAndTryDecryptMainAttachmentAsPlainText(
+		document: DocumentJs,
+		attachmentId: String,
+		decryptedDocumentValidator: (ByteArray) -> Promise<Boolean>,
+	): Promise<String?>
+
+	public fun getAndTryDecryptMainAttachmentAsJson(
+		document: DocumentJs,
+		attachmentId: String,
+		decryptedDocumentValidator: (ByteArray) -> Promise<Boolean>,
+	): Promise<dynamic>
 
 	public fun getAndDecryptMainAttachment(
 		document: DocumentJs,
@@ -64,11 +83,24 @@ public external interface DocumentApiJs {
 		attachment: ByteArray,
 	): Promise<EncryptedDocumentJs>
 
+	public fun getEncryptionKeysOf(document: DocumentJs): Promise<Array<String>>
+
+	public fun hasWriteAccess(document: DocumentJs): Promise<Boolean>
+
+	public fun decryptPatientIdOf(document: DocumentJs): Promise<Array<String>>
+
+	public fun createDelegationDeAnonymizationMetadata(entity: DocumentJs, delegates: Array<String>):
+			Promise<Unit>
+
 	public fun deleteDocument(entityId: String): Promise<DocIdentifierJs>
 
 	public fun deleteDocuments(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
 
 	public fun getRawMainAttachment(documentId: String, attachmentId: String): Promise<ByteArray>
+
+	public fun getMainAttachmentAsPlainText(documentId: String, attachmentId: String): Promise<String>
+
+	public fun getMainAttachmentAsJson(documentId: String, attachmentId: String): Promise<dynamic>
 
 	public fun getRawSecondaryAttachment(
 		documentId: String,
@@ -83,6 +115,12 @@ public external interface DocumentApiJs {
 		shareOwningEntityIds: String,
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<DecryptedDocumentJs>>
+
+	public fun tryShareWithMany(document: DecryptedDocumentJs, delegates: dynamic):
+			Promise<SimpleShareResultJs<DecryptedDocumentJs>>
+
+	public fun shareWithMany(document: DecryptedDocumentJs, delegates: dynamic):
+			Promise<DecryptedDocumentJs>
 
 	public fun findDocumentsByHcPartyPatient(
 		hcPartyId: String,

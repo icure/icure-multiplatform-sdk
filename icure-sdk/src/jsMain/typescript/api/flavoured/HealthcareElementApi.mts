@@ -1,4 +1,5 @@
 // auto-generated file
+import {HealthElementShareOptions} from '../../crypto/entities/HealthElementShareOptions.mjs';
 import {SecretIdOption} from '../../crypto/entities/SecretIdOption.mjs';
 import {ShareMetadataBehaviour} from '../../crypto/entities/ShareMetadataBehaviour.mjs';
 import {SimpleShareResult} from '../../crypto/entities/SimpleShareResult.mjs';
@@ -13,6 +14,7 @@ import {AccessLevel} from '../../model/embed/AccessLevel.mjs';
 import {AbstractFilter} from '../../model/filter/AbstractFilter.mjs';
 import {FilterChain} from '../../model/filter/chain/FilterChain.mjs';
 import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs';
+import {HexString} from '../../model/specializations/HexString.mjs';
 import {HealthcareElementFlavouredApi} from './HealthcareElementFlavouredApi.mjs';
 
 
@@ -34,7 +36,16 @@ export interface HealthcareElementApi {
 			secretId: SecretIdOption
 	): Promise<DecryptedHealthElement>;
 
-	matchHealthcareElementsBy(filter: AbstractFilter<EncryptedHealthElement>): Promise<Array<string>>;
+	getEncryptionKeysOf(healthElement: HealthElement): Promise<Array<HexString>>;
+
+	hasWriteAccess(healthElement: HealthElement): Promise<boolean>;
+
+	decryptPatientIdOf(healthElement: HealthElement): Promise<Array<string>>;
+
+	createDelegationDeAnonymizationMetadata(entity: HealthElement,
+			delegates: Array<string>): Promise<void>;
+
+	matchHealthcareElementsBy(filter: AbstractFilter<HealthElement>): Promise<Array<string>>;
 
 	deleteHealthcareElement(entityId: string): Promise<DocIdentifier>;
 
@@ -50,6 +61,12 @@ export interface HealthcareElementApi {
 			shareOwningEntityIds: ShareMetadataBehaviour,
 			requestedPermission: RequestedPermission
 	): Promise<SimpleShareResult<DecryptedHealthElement>>;
+
+	tryShareWithMany(healthElement: DecryptedHealthElement,
+			delegates: { [ key: string ]: HealthElementShareOptions }): Promise<SimpleShareResult<DecryptedHealthElement>>;
+
+	shareWithMany(healthElement: DecryptedHealthElement,
+			delegates: { [ key: string ]: HealthElementShareOptions }): Promise<DecryptedHealthElement>;
 
 	findHealthcareElementsByHcPartyPatient(
 			hcPartyId: string,
@@ -67,7 +84,7 @@ export interface HealthcareElementApi {
 
 	getHealthcareElements(entityIds: Array<string>): Promise<Array<DecryptedHealthElement>>;
 
-	filterHealthcareElementsBy(filterChain: FilterChain<EncryptedHealthElement>,
+	filterHealthcareElementsBy(filterChain: FilterChain<HealthElement>,
 			startDocumentId: string | undefined,
 			limit: number | undefined): Promise<PaginatedList<DecryptedHealthElement>>;
 

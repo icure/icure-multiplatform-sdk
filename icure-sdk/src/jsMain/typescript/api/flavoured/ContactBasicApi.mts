@@ -1,17 +1,19 @@
 // auto-generated file
-import {EncryptedContact} from '../../model/Contact.mjs';
+import {Contact, EncryptedContact} from '../../model/Contact.mjs';
 import {IcureStub} from '../../model/IcureStub.mjs';
 import {PaginatedList} from '../../model/PaginatedList.mjs';
 import {DocIdentifier} from '../../model/couchdb/DocIdentifier.mjs';
 import {LabelledOccurence} from '../../model/data/LabelledOccurence.mjs';
-import {EncryptedService} from '../../model/embed/Service.mjs';
+import {EncryptedService, Service} from '../../model/embed/Service.mjs';
 import {AbstractFilter} from '../../model/filter/AbstractFilter.mjs';
 import {FilterChain} from '../../model/filter/chain/FilterChain.mjs';
 
 
 export interface ContactBasicApi {
 
-	matchContactsBy(filter: AbstractFilter<EncryptedContact>): Promise<Array<string>>;
+	matchContactsBy(filter: AbstractFilter<Contact>): Promise<Array<string>>;
+
+	matchServicesBy(filter: AbstractFilter<Service>): Promise<Array<string>>;
 
 	deleteContact(entityId: string): Promise<DocIdentifier>;
 
@@ -31,7 +33,7 @@ export interface ContactBasicApi {
 
 	getContacts(entityIds: Array<string>): Promise<Array<EncryptedContact>>;
 
-	filterContactsBy(filterChain: FilterChain<EncryptedContact>, startDocumentId: string | undefined,
+	filterContactsBy(filterChain: FilterChain<Contact>, startDocumentId: string | undefined,
 			limit: number | undefined): Promise<PaginatedList<EncryptedContact>>;
 
 	listContactByHCPartyServiceId(hcPartyId: string,
@@ -72,7 +74,7 @@ export interface ContactBasicApi {
 			limit: number | undefined
 	): Promise<PaginatedList<EncryptedContact>>;
 
-	filterServicesBy(filterChain: FilterChain<EncryptedService>, startDocumentId: string | undefined,
+	filterServicesBy(filterChain: FilterChain<Service>, startDocumentId: string | undefined,
 			limit: number | undefined): Promise<PaginatedList<EncryptedService>>;
 
 }

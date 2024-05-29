@@ -3,12 +3,14 @@
 
 package com.icure.sdk.js.api.flavoured
 
+import com.icure.sdk.js.model.ContactJs
 import com.icure.sdk.js.model.EncryptedContactJs
 import com.icure.sdk.js.model.IcureStubJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.`data`.LabelledOccurenceJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.embed.EncryptedServiceJs
+import com.icure.sdk.js.model.embed.ServiceJs
 import com.icure.sdk.js.model.filter.AbstractFilterJs
 import com.icure.sdk.js.model.filter.chain.FilterChainJs
 import kotlin.Array
@@ -21,7 +23,9 @@ import kotlin.js.Promise
 
 @JsName("ContactBasicApi")
 public external interface ContactBasicApiJs {
-	public fun matchContactsBy(filter: AbstractFilterJs<EncryptedContactJs>): Promise<Array<String>>
+	public fun matchContactsBy(filter: AbstractFilterJs<ContactJs>): Promise<Array<String>>
+
+	public fun matchServicesBy(filter: AbstractFilterJs<ServiceJs>): Promise<Array<String>>
 
 	public fun deleteContact(entityId: String): Promise<DocIdentifierJs>
 
@@ -42,7 +46,7 @@ public external interface ContactBasicApiJs {
 	public fun getContacts(entityIds: Array<String>): Promise<Array<EncryptedContactJs>>
 
 	public fun filterContactsBy(
-		filterChain: FilterChainJs<EncryptedContactJs>,
+		filterChain: FilterChainJs<ContactJs>,
 		startDocumentId: String?,
 		limit: Double?,
 	): Promise<PaginatedListJs<EncryptedContactJs>>
@@ -90,7 +94,7 @@ public external interface ContactBasicApiJs {
 	): Promise<PaginatedListJs<EncryptedContactJs>>
 
 	public fun filterServicesBy(
-		filterChain: FilterChainJs<EncryptedServiceJs>,
+		filterChain: FilterChainJs<ServiceJs>,
 		startDocumentId: String?,
 		limit: Double?,
 	): Promise<PaginatedListJs<EncryptedServiceJs>>

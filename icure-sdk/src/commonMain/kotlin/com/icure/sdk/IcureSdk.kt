@@ -4,6 +4,7 @@ import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.utils.toHexString
 import com.icure.sdk.api.ApiOptions
 import com.icure.sdk.api.CryptoApi
+import com.icure.sdk.api.CryptoApiImpl
 import com.icure.sdk.api.DeviceApi
 import com.icure.sdk.api.DeviceApiImpl
 import com.icure.sdk.api.PermissionApi
@@ -12,9 +13,11 @@ import com.icure.sdk.api.RecoveryApi
 import com.icure.sdk.api.RecoveryApiImpl
 import com.icure.sdk.api.UserApi
 import com.icure.sdk.api.UserApiImpl
+import com.icure.sdk.api.crypto.ShamirKeysManagerApiImpl
 import com.icure.sdk.api.extended.DataOwnerApi
 import com.icure.sdk.api.extended.DataOwnerApiImpl
 import com.icure.sdk.api.extended.IcureMaintenanceTaskApi
+import com.icure.sdk.api.extended.IcureMaintenanceTaskApiImpl
 import com.icure.sdk.api.flavoured.AccessLogApi
 import com.icure.sdk.api.flavoured.AccessLogApiImpl
 import com.icure.sdk.api.flavoured.CalendarItemApi
@@ -97,7 +100,6 @@ import com.icure.sdk.crypto.impl.RecoveryDataEncryptionImpl
 import com.icure.sdk.crypto.impl.SecureDelegationsDecryptorImpl
 import com.icure.sdk.crypto.impl.SecureDelegationsEncryptionImpl
 import com.icure.sdk.crypto.impl.SecureDelegationsManagerImpl
-import com.icure.sdk.crypto.impl.ShamirKeysManagerImpl
 import com.icure.sdk.crypto.impl.ShamirSecretSharingService
 import com.icure.sdk.crypto.impl.TransferKeysManagerImpl
 import com.icure.sdk.crypto.impl.UserEncryptionKeysManagerImpl
@@ -425,8 +427,8 @@ private class IcureApiImpl(
 		)
 	}
 	override val crypto: CryptoApi by lazy {
-		CryptoApi(
-			ShamirKeysManagerImpl(
+		CryptoApiImpl(
+			ShamirKeysManagerApiImpl(
 				internalCrypto.dataOwnerApi,
 				internalCrypto.userEncryptionKeysManager,
 				internalCrypto.exchangeDataManager,
@@ -449,7 +451,7 @@ private class IcureApiImpl(
 	}
 
 	override val icureMaintenanceTask: IcureMaintenanceTaskApi by lazy {
-		IcureMaintenanceTaskApi(
+		IcureMaintenanceTaskApiImpl(
 			internalCrypto.exchangeDataManager,
 			internalCrypto.exchangeKeysManager.base,
 			internalCrypto.userEncryptionKeysManager,

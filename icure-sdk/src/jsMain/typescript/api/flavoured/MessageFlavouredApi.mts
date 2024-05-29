@@ -1,8 +1,9 @@
 // auto-generated file
+import {MessageShareOptions} from '../../crypto/entities/MessageShareOptions.mjs';
 import {ShareMetadataBehaviour} from '../../crypto/entities/ShareMetadataBehaviour.mjs';
 import {SimpleShareResult} from '../../crypto/entities/SimpleShareResult.mjs';
 import {PaginatedListIterator} from '../../icure-sdk.mjs';
-import {EncryptedMessage, Message} from '../../model/Message.mjs';
+import {Message} from '../../model/Message.mjs';
 import {PaginatedList} from '../../model/PaginatedList.mjs';
 import {Patient} from '../../model/Patient.mjs';
 import {FilterChain} from '../../model/filter/chain/FilterChain.mjs';
@@ -20,6 +21,11 @@ export interface MessageFlavouredApi<E extends Message> {
 			requestedPermission: RequestedPermission
 	): Promise<SimpleShareResult<E>>;
 
+	tryShareWithMany(message: E,
+			delegates: { [ key: string ]: MessageShareOptions }): Promise<SimpleShareResult<E>>;
+
+	shareWithMany(message: E, delegates: { [ key: string ]: MessageShareOptions }): Promise<E>;
+
 	findMessagesByHcPartyPatient(
 			hcPartyId: string,
 			patient: Patient,
@@ -34,7 +40,7 @@ export interface MessageFlavouredApi<E extends Message> {
 
 	getMessages(entityIds: Array<string>): Promise<Array<E>>;
 
-	filterMessagesBy(filterChain: FilterChain<EncryptedMessage>, startDocumentId: string | undefined,
+	filterMessagesBy(filterChain: FilterChain<Message>, startDocumentId: string | undefined,
 			limit: number | undefined): Promise<PaginatedList<E>>;
 
 	listMessagesByTransportGuids(hcPartyId: string, transportGuids: Array<string>): Promise<Array<E>>;

@@ -21,7 +21,7 @@ import com.icure.sdk.utils.getLogger
 /**
  * Api for creating and interpreting iCure's standard maintenance tasks
  */
-interface IIcureMaintenanceTaskApi {
+interface IcureMaintenanceTaskApi {
 	/**
 	 * Applies a key pair update request between another data owner and the current data owner to allow the other data owner to access existing exchange
 	 * keys shared with the current data owner. IMPORTANT: it is your responsibility to verify the authenticity of the public key / update request
@@ -55,14 +55,14 @@ interface IIcureMaintenanceTaskApi {
 }
 
 @OptIn(InternalIcureApi::class)
-class IcureMaintenanceTaskApi(
+class IcureMaintenanceTaskApiImpl(
 	private val exchangeDataManager: ExchangeDataManager,
 	private val baseExchangeKeysManager: BaseExchangeKeysManager,
 	private val userKeysManager: UserEncryptionKeysManager,
 	private val maintenanceTaskApi: MaintenanceTaskApi,
 	private val dataOwnerApi: DataOwnerApi,
 	private val strongRandom: StrongRandom
-) : IIcureMaintenanceTaskApi {
+) : IcureMaintenanceTaskApi {
 	companion object {
 		private val log = getLogger("IcureMaintenanceTaskApi")
 	}

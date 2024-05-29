@@ -1,4 +1,5 @@
 // auto-generated file
+import {FormShareOptions} from '../../crypto/entities/FormShareOptions.mjs';
 import {SecretIdOption} from '../../crypto/entities/SecretIdOption.mjs';
 import {ShareMetadataBehaviour} from '../../crypto/entities/ShareMetadataBehaviour.mjs';
 import {SimpleShareResult} from '../../crypto/entities/SimpleShareResult.mjs';
@@ -10,6 +11,7 @@ import {User} from '../../model/User.mjs';
 import {DocIdentifier} from '../../model/couchdb/DocIdentifier.mjs';
 import {AccessLevel} from '../../model/embed/AccessLevel.mjs';
 import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs';
+import {HexString} from '../../model/specializations/HexString.mjs';
 import {FormFlavouredApi} from './FormFlavouredApi.mjs';
 
 
@@ -30,6 +32,14 @@ export interface FormApi {
 			delegates: { [ key: string ]: AccessLevel },
 			secretId: SecretIdOption
 	): Promise<DecryptedForm>;
+
+	getEncryptionKeysOf(form: Form): Promise<Array<HexString>>;
+
+	hasWriteAccess(form: Form): Promise<boolean>;
+
+	decryptPatientIdOf(form: Form): Promise<Array<string>>;
+
+	createDelegationDeAnonymizationMetadata(entity: Form, delegates: Array<string>): Promise<void>;
 
 	deleteForm(entityId: string): Promise<DocIdentifier>;
 
@@ -61,6 +71,12 @@ export interface FormApi {
 			shareOwningEntityIds: ShareMetadataBehaviour,
 			requestedPermission: RequestedPermission
 	): Promise<SimpleShareResult<DecryptedForm>>;
+
+	tryShareWithMany(form: DecryptedForm,
+			delegates: { [ key: string ]: FormShareOptions }): Promise<SimpleShareResult<DecryptedForm>>;
+
+	shareWithMany(form: DecryptedForm,
+			delegates: { [ key: string ]: FormShareOptions }): Promise<DecryptedForm>;
 
 	findFormsByHcPartyPatient(
 			hcPartyId: string,

@@ -4,7 +4,6 @@
 package com.icure.sdk.js.api.flavoured
 
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
-import com.icure.sdk.js.model.EncryptedTopicJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.TopicJs
 import com.icure.sdk.js.model.filter.chain.FilterChainJs
@@ -25,6 +24,10 @@ public external interface TopicFlavouredApiJs<E : TopicJs> {
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<E>>
 
+	public fun tryShareWithMany(topic: E, delegates: dynamic): Promise<SimpleShareResultJs<E>>
+
+	public fun shareWithMany(topic: E, delegates: dynamic): Promise<E>
+
 	public fun modifyTopic(entity: E): Promise<E>
 
 	public fun getTopic(entityId: String): Promise<E>
@@ -34,7 +37,7 @@ public external interface TopicFlavouredApiJs<E : TopicJs> {
 	public fun filterTopicsBy(
 		startDocumentId: String?,
 		limit: Double?,
-		filterChain: FilterChainJs<EncryptedTopicJs>,
+		filterChain: FilterChainJs<TopicJs>,
 	): Promise<PaginatedListJs<E>>
 
 	public fun addParticipant(

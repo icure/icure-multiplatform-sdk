@@ -1,4 +1,5 @@
 // auto-generated file
+import {DocumentShareOptions} from '../../crypto/entities/DocumentShareOptions.mjs';
 import {SecretIdOption} from '../../crypto/entities/SecretIdOption.mjs';
 import {ShareMetadataBehaviour} from '../../crypto/entities/ShareMetadataBehaviour.mjs';
 import {SimpleShareResult} from '../../crypto/entities/SimpleShareResult.mjs';
@@ -10,6 +11,7 @@ import {User} from '../../model/User.mjs';
 import {DocIdentifier} from '../../model/couchdb/DocIdentifier.mjs';
 import {AccessLevel} from '../../model/embed/AccessLevel.mjs';
 import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs';
+import {HexString} from '../../model/specializations/HexString.mjs';
 import {DocumentFlavouredApi} from './DocumentFlavouredApi.mjs';
 
 
@@ -29,6 +31,15 @@ export interface DocumentApi {
 			secretId: SecretIdOption
 	): Promise<DecryptedDocument>;
 
+	getAndTryDecryptMainAttachment(document: Document, attachmentId: string,
+			decryptedDocumentValidator: (x1: Int8Array) => boolean): Promise<Int8Array | undefined>;
+
+	getAndTryDecryptMainAttachmentAsPlainText(document: Document, attachmentId: string,
+			decryptedDocumentValidator: (x1: Int8Array) => boolean): Promise<string | undefined>;
+
+	getAndTryDecryptMainAttachmentAsJson(document: Document, attachmentId: string,
+			decryptedDocumentValidator: (x1: Int8Array) => boolean): Promise<any | undefined>;
+
 	getAndDecryptMainAttachment(document: Document, attachmentId: string,
 			decryptedDocumentValidator: (x1: Int8Array) => boolean): Promise<Int8Array>;
 
@@ -41,11 +52,23 @@ export interface DocumentApi {
 	encryptAndSetSecondaryAttachment(document: Document, key: string, utis: Array<string>,
 			attachment: Int8Array): Promise<EncryptedDocument>;
 
+	getEncryptionKeysOf(document: Document): Promise<Array<HexString>>;
+
+	hasWriteAccess(document: Document): Promise<boolean>;
+
+	decryptPatientIdOf(document: Document): Promise<Array<string>>;
+
+	createDelegationDeAnonymizationMetadata(entity: Document, delegates: Array<string>): Promise<void>;
+
 	deleteDocument(entityId: string): Promise<DocIdentifier>;
 
 	deleteDocuments(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
 	getRawMainAttachment(documentId: string, attachmentId: string): Promise<Int8Array>;
+
+	getMainAttachmentAsPlainText(documentId: string, attachmentId: string): Promise<string>;
+
+	getMainAttachmentAsJson(documentId: string, attachmentId: string): Promise<any>;
 
 	getRawSecondaryAttachment(documentId: string, key: string,
 			attachmentId: string): Promise<Int8Array>;
@@ -57,6 +80,12 @@ export interface DocumentApi {
 			shareOwningEntityIds: ShareMetadataBehaviour,
 			requestedPermission: RequestedPermission
 	): Promise<SimpleShareResult<DecryptedDocument>>;
+
+	tryShareWithMany(document: DecryptedDocument,
+			delegates: { [ key: string ]: DocumentShareOptions }): Promise<SimpleShareResult<DecryptedDocument>>;
+
+	shareWithMany(document: DecryptedDocument,
+			delegates: { [ key: string ]: DocumentShareOptions }): Promise<DecryptedDocument>;
 
 	findDocumentsByHcPartyPatient(
 			hcPartyId: string,

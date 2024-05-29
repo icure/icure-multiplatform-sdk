@@ -20,6 +20,7 @@ import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
 import kotlin.String
+import kotlin.Unit
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
 import kotlin.js.Promise
@@ -44,7 +45,16 @@ public external interface HealthcareElementApiJs {
 		secretId: SecretIdOptionJs,
 	): Promise<DecryptedHealthElementJs>
 
-	public fun matchHealthcareElementsBy(filter: AbstractFilterJs<EncryptedHealthElementJs>):
+	public fun getEncryptionKeysOf(healthElement: HealthElementJs): Promise<Array<String>>
+
+	public fun hasWriteAccess(healthElement: HealthElementJs): Promise<Boolean>
+
+	public fun decryptPatientIdOf(healthElement: HealthElementJs): Promise<Array<String>>
+
+	public fun createDelegationDeAnonymizationMetadata(entity: HealthElementJs,
+			delegates: Array<String>): Promise<Unit>
+
+	public fun matchHealthcareElementsBy(filter: AbstractFilterJs<HealthElementJs>):
 			Promise<Array<String>>
 
 	public fun deleteHealthcareElement(entityId: String): Promise<DocIdentifierJs>
@@ -61,6 +71,12 @@ public external interface HealthcareElementApiJs {
 		shareOwningEntityIds: String,
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<DecryptedHealthElementJs>>
+
+	public fun tryShareWithMany(healthElement: DecryptedHealthElementJs, delegates: dynamic):
+			Promise<SimpleShareResultJs<DecryptedHealthElementJs>>
+
+	public fun shareWithMany(healthElement: DecryptedHealthElementJs, delegates: dynamic):
+			Promise<DecryptedHealthElementJs>
 
 	public fun findHealthcareElementsByHcPartyPatient(
 		hcPartyId: String,
@@ -82,7 +98,7 @@ public external interface HealthcareElementApiJs {
 			Promise<Array<DecryptedHealthElementJs>>
 
 	public fun filterHealthcareElementsBy(
-		filterChain: FilterChainJs<EncryptedHealthElementJs>,
+		filterChain: FilterChainJs<HealthElementJs>,
 		startDocumentId: String?,
 		limit: Double?,
 	): Promise<PaginatedListJs<DecryptedHealthElementJs>>

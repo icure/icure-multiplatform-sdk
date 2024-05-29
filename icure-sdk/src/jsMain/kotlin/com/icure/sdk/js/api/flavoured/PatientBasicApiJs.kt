@@ -23,7 +23,7 @@ import kotlin.js.Promise
 
 @JsName("PatientBasicApi")
 public external interface PatientBasicApiJs {
-	public fun matchPatientsBy(filter: AbstractFilterJs<EncryptedPatientJs>): Promise<Array<String>>
+	public fun matchPatientsBy(filter: AbstractFilterJs<PatientJs>): Promise<Array<String>>
 
 	public fun deletePatient(entityId: String): Promise<DocIdentifierJs>
 
@@ -38,7 +38,7 @@ public external interface PatientBasicApiJs {
 	public fun getPatient(entityId: String): Promise<EncryptedPatientJs>
 
 	public fun filterPatientsBy(
-		filterChain: FilterChainJs<EncryptedPatientJs>,
+		filterChain: FilterChainJs<PatientJs>,
 		startKey: String?,
 		startDocumentId: String?,
 		limit: Double?,
@@ -104,15 +104,6 @@ public external interface PatientBasicApiJs {
 	): Promise<PaginatedListJs<String>>
 
 	public fun getPatientByExternalId(externalId: String): Promise<EncryptedPatientJs>
-
-	public fun findPatientsByAccessLogUserAfterDate(
-		userId: String,
-		accessType: String?,
-		startDate: Double?,
-		startKey: String?,
-		startDocumentId: String?,
-		limit: Double?,
-	): Promise<PaginatedListJs<EncryptedPatientJs>>
 
 	public fun fuzzySearch(
 		firstName: String,

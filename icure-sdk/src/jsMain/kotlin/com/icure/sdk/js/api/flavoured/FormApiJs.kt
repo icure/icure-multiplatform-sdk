@@ -18,6 +18,7 @@ import kotlin.Boolean
 import kotlin.ByteArray
 import kotlin.Double
 import kotlin.String
+import kotlin.Unit
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
 import kotlin.js.Promise
@@ -39,6 +40,15 @@ public external interface FormApiJs {
 		delegates: dynamic,
 		secretId: SecretIdOptionJs,
 	): Promise<DecryptedFormJs>
+
+	public fun getEncryptionKeysOf(form: FormJs): Promise<Array<String>>
+
+	public fun hasWriteAccess(form: FormJs): Promise<Boolean>
+
+	public fun decryptPatientIdOf(form: FormJs): Promise<Array<String>>
+
+	public fun createDelegationDeAnonymizationMetadata(entity: FormJs, delegates: Array<String>):
+			Promise<Unit>
 
 	public fun deleteForm(entityId: String): Promise<DocIdentifierJs>
 
@@ -72,6 +82,11 @@ public external interface FormApiJs {
 		shareOwningEntityIds: String,
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<DecryptedFormJs>>
+
+	public fun tryShareWithMany(form: DecryptedFormJs, delegates: dynamic):
+			Promise<SimpleShareResultJs<DecryptedFormJs>>
+
+	public fun shareWithMany(form: DecryptedFormJs, delegates: dynamic): Promise<DecryptedFormJs>
 
 	public fun findFormsByHcPartyPatient(
 		hcPartyId: String,

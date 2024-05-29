@@ -1,4 +1,5 @@
 // auto-generated file
+import {FormShareOptions} from '../../crypto/entities/FormShareOptions.mjs';
 import {ShareMetadataBehaviour} from '../../crypto/entities/ShareMetadataBehaviour.mjs';
 import {SimpleShareResult} from '../../crypto/entities/SimpleShareResult.mjs';
 import {PaginatedListIterator} from '../../icure-sdk.mjs';
@@ -16,6 +17,11 @@ export interface FormFlavouredApi<E extends Form> {
 			shareOwningEntityIds: ShareMetadataBehaviour,
 			requestedPermission: RequestedPermission
 	): Promise<SimpleShareResult<E>>;
+
+	tryShareWithMany(form: E,
+			delegates: { [ key: string ]: FormShareOptions }): Promise<SimpleShareResult<E>>;
+
+	shareWithMany(form: E, delegates: { [ key: string ]: FormShareOptions }): Promise<E>;
 
 	findFormsByHcPartyPatient(
 			hcPartyId: string,

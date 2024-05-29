@@ -1,4 +1,5 @@
 // auto-generated file
+import {ContactShareOptions} from '../../crypto/entities/ContactShareOptions.mjs';
 import {SecretIdOption} from '../../crypto/entities/SecretIdOption.mjs';
 import {ShareMetadataBehaviour} from '../../crypto/entities/ShareMetadataBehaviour.mjs';
 import {SimpleShareResult} from '../../crypto/entities/SimpleShareResult.mjs';
@@ -15,6 +16,7 @@ import {DecryptedService, EncryptedService, Service} from '../../model/embed/Ser
 import {AbstractFilter} from '../../model/filter/AbstractFilter.mjs';
 import {FilterChain} from '../../model/filter/chain/FilterChain.mjs';
 import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs';
+import {HexString} from '../../model/specializations/HexString.mjs';
 import {ContactFlavouredApi} from './ContactFlavouredApi.mjs';
 
 
@@ -36,7 +38,17 @@ export interface ContactApi {
 			secretId: SecretIdOption
 	): Promise<DecryptedContact>;
 
-	matchContactsBy(filter: AbstractFilter<EncryptedContact>): Promise<Array<string>>;
+	getEncryptionKeysOf(contact: Contact): Promise<Array<HexString>>;
+
+	hasWriteAccess(contact: Contact): Promise<boolean>;
+
+	decryptPatientIdOf(contact: Contact): Promise<Array<string>>;
+
+	createDelegationDeAnonymizationMetadata(entity: Contact, delegates: Array<string>): Promise<void>;
+
+	matchContactsBy(filter: AbstractFilter<Contact>): Promise<Array<string>>;
+
+	matchServicesBy(filter: AbstractFilter<Service>): Promise<Array<string>>;
 
 	deleteContact(entityId: string): Promise<DocIdentifier>;
 
@@ -56,6 +68,12 @@ export interface ContactApi {
 			requestedPermission: RequestedPermission
 	): Promise<SimpleShareResult<DecryptedContact>>;
 
+	tryShareWithMany(contact: DecryptedContact,
+			delegates: { [ key: string ]: ContactShareOptions }): Promise<SimpleShareResult<DecryptedContact>>;
+
+	shareWithMany(contact: DecryptedContact,
+			delegates: { [ key: string ]: ContactShareOptions }): Promise<DecryptedContact>;
+
 	findContactsByHcPartyPatient(
 			hcPartyId: string,
 			patient: Patient,
@@ -72,7 +90,7 @@ export interface ContactApi {
 
 	getContacts(entityIds: Array<string>): Promise<Array<DecryptedContact>>;
 
-	filterContactsBy(filterChain: FilterChain<EncryptedContact>, startDocumentId: string | undefined,
+	filterContactsBy(filterChain: FilterChain<Contact>, startDocumentId: string | undefined,
 			limit: number | undefined): Promise<PaginatedList<DecryptedContact>>;
 
 	listContactByHCPartyServiceId(hcPartyId: string,
@@ -113,7 +131,7 @@ export interface ContactApi {
 			limit: number | undefined
 	): Promise<PaginatedList<DecryptedContact>>;
 
-	filterServicesBy(filterChain: FilterChain<EncryptedService>, startDocumentId: string | undefined,
+	filterServicesBy(filterChain: FilterChain<Service>, startDocumentId: string | undefined,
 			limit: number | undefined): Promise<PaginatedList<DecryptedService>>;
 
 }

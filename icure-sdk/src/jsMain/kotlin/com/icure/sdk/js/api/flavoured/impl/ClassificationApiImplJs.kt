@@ -8,26 +8,32 @@ import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.crypto.entities.simpleShareResult_toJs
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
+import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.listToArray
+import com.icure.sdk.js.model.CheckedConverters.setToArray
 import com.icure.sdk.js.model.ClassificationJs
 import com.icure.sdk.js.model.DecryptedClassificationJs
 import com.icure.sdk.js.model.EncryptedClassificationJs
 import com.icure.sdk.js.model.PatientJs
 import com.icure.sdk.js.model.UserJs
+import com.icure.sdk.js.model.classification_fromJs
 import com.icure.sdk.js.model.classification_toJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.couchdb.docIdentifier_toJs
+import com.icure.sdk.js.model.specializations.hexString_toJs
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.sdk.model.Classification
 import com.icure.sdk.model.DecryptedClassification
 import com.icure.sdk.model.EncryptedClassification
 import com.icure.sdk.model.couchdb.DocIdentifier
+import com.icure.sdk.model.specializations.HexString
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
 import kotlin.OptIn
 import kotlin.String
+import kotlin.Unit
 import kotlin.js.Promise
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -56,6 +62,41 @@ internal class ClassificationApiImplJs(
 					classification_toJs(x1)
 				},
 			)}
+
+
+		override fun tryShareWithMany(classification: EncryptedClassificationJs, delegates: dynamic):
+				Promise<SimpleShareResultJs<EncryptedClassificationJs>> = GlobalScope.promise {
+			simpleShareResult_toJs(
+				classificationApi.encrypted.tryShareWithMany(com.icure.sdk.js.model.classification_fromJs(classification),
+						com.icure.sdk.js.model.CheckedConverters.objectToMap(
+				  delegates,
+				  "delegates",
+				  { x1: kotlin.String ->
+				    x1
+				  },
+				  { x1: com.icure.sdk.js.crypto.entities.ClassificationShareOptionsJs ->
+				    com.icure.sdk.js.crypto.entities.classificationShareOptions_fromJs(x1)
+				  },
+				)),
+				{ x1: EncryptedClassification ->
+					classification_toJs(x1)
+				},
+			)}
+
+
+		override fun shareWithMany(classification: EncryptedClassificationJs, delegates: dynamic):
+				Promise<EncryptedClassificationJs> = GlobalScope.promise {
+			classification_toJs(classificationApi.encrypted.shareWithMany(com.icure.sdk.js.model.classification_fromJs(classification),
+					com.icure.sdk.js.model.CheckedConverters.objectToMap(
+			  delegates,
+			  "delegates",
+			  { x1: kotlin.String ->
+			    x1
+			  },
+			  { x1: com.icure.sdk.js.crypto.entities.ClassificationShareOptionsJs ->
+			    com.icure.sdk.js.crypto.entities.classificationShareOptions_fromJs(x1)
+			  },
+			)))}
 
 
 		override fun findClassificationsByHcPartyPatient(
@@ -122,6 +163,41 @@ internal class ClassificationApiImplJs(
 					classification_toJs(x1)
 				},
 			)}
+
+
+		override fun tryShareWithMany(classification: ClassificationJs, delegates: dynamic):
+				Promise<SimpleShareResultJs<ClassificationJs>> = GlobalScope.promise {
+			simpleShareResult_toJs(
+				classificationApi.tryAndRecover.tryShareWithMany(com.icure.sdk.js.model.classification_fromJs(classification),
+						com.icure.sdk.js.model.CheckedConverters.objectToMap(
+				  delegates,
+				  "delegates",
+				  { x1: kotlin.String ->
+				    x1
+				  },
+				  { x1: com.icure.sdk.js.crypto.entities.ClassificationShareOptionsJs ->
+				    com.icure.sdk.js.crypto.entities.classificationShareOptions_fromJs(x1)
+				  },
+				)),
+				{ x1: Classification ->
+					classification_toJs(x1)
+				},
+			)}
+
+
+		override fun shareWithMany(classification: ClassificationJs, delegates: dynamic):
+				Promise<ClassificationJs> = GlobalScope.promise {
+			classification_toJs(classificationApi.tryAndRecover.shareWithMany(com.icure.sdk.js.model.classification_fromJs(classification),
+					com.icure.sdk.js.model.CheckedConverters.objectToMap(
+			  delegates,
+			  "delegates",
+			  { x1: kotlin.String ->
+			    x1
+			  },
+			  { x1: com.icure.sdk.js.crypto.entities.ClassificationShareOptionsJs ->
+			    com.icure.sdk.js.crypto.entities.classificationShareOptions_fromJs(x1)
+			  },
+			)))}
 
 
 		override fun findClassificationsByHcPartyPatient(
@@ -197,6 +273,43 @@ internal class ClassificationApiImplJs(
 		), com.icure.sdk.js.crypto.entities.secretIdOption_fromJs(secretId)))}
 
 
+	override fun getEncryptionKeysOf(classification: ClassificationJs): Promise<Array<String>> =
+			GlobalScope.promise {
+		setToArray(
+			classificationApi.getEncryptionKeysOf(classification_fromJs(classification)),
+			{ x1: HexString ->
+				hexString_toJs(x1)
+			},
+		)}
+
+
+	override fun hasWriteAccess(classification: ClassificationJs): Promise<Boolean> =
+			GlobalScope.promise {
+		classificationApi.hasWriteAccess(classification_fromJs(classification))}
+
+
+	override fun decryptPatientIdOf(classification: ClassificationJs): Promise<Array<String>> =
+			GlobalScope.promise {
+		setToArray(
+			classificationApi.decryptPatientIdOf(classification_fromJs(classification)),
+			{ x1: String ->
+				x1
+			},
+		)}
+
+
+	override fun createDelegationDeAnonymizationMetadata(entity: ClassificationJs,
+			delegates: Array<String>): Promise<Unit> = GlobalScope.promise {
+		classificationApi.createDelegationDeAnonymizationMetadata(classification_fromJs(entity),
+				arrayToSet(
+			delegates,
+			"delegates",
+			{ x1: String ->
+				x1
+			},
+		))}
+
+
 	override fun deleteClassification(entityId: String): Promise<DocIdentifierJs> =
 			GlobalScope.promise {
 		docIdentifier_toJs(classificationApi.deleteClassification(entityId))}
@@ -235,6 +348,41 @@ internal class ClassificationApiImplJs(
 				classification_toJs(x1)
 			},
 		)}
+
+
+	override fun tryShareWithMany(classification: DecryptedClassificationJs, delegates: dynamic):
+			Promise<SimpleShareResultJs<DecryptedClassificationJs>> = GlobalScope.promise {
+		simpleShareResult_toJs(
+			classificationApi.tryShareWithMany(com.icure.sdk.js.model.classification_fromJs(classification),
+					com.icure.sdk.js.model.CheckedConverters.objectToMap(
+			  delegates,
+			  "delegates",
+			  { x1: kotlin.String ->
+			    x1
+			  },
+			  { x1: com.icure.sdk.js.crypto.entities.ClassificationShareOptionsJs ->
+			    com.icure.sdk.js.crypto.entities.classificationShareOptions_fromJs(x1)
+			  },
+			)),
+			{ x1: DecryptedClassification ->
+				classification_toJs(x1)
+			},
+		)}
+
+
+	override fun shareWithMany(classification: DecryptedClassificationJs, delegates: dynamic):
+			Promise<DecryptedClassificationJs> = GlobalScope.promise {
+		classification_toJs(classificationApi.shareWithMany(com.icure.sdk.js.model.classification_fromJs(classification),
+				com.icure.sdk.js.model.CheckedConverters.objectToMap(
+		  delegates,
+		  "delegates",
+		  { x1: kotlin.String ->
+		    x1
+		  },
+		  { x1: com.icure.sdk.js.crypto.entities.ClassificationShareOptionsJs ->
+		    com.icure.sdk.js.crypto.entities.classificationShareOptions_fromJs(x1)
+		  },
+		)))}
 
 
 	override fun findClassificationsByHcPartyPatient(

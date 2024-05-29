@@ -9,27 +9,33 @@ import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.crypto.entities.simpleShareResult_toJs
 import com.icure.sdk.js.model.AccessLogJs
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
+import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.listToArray
+import com.icure.sdk.js.model.CheckedConverters.setToArray
 import com.icure.sdk.js.model.DecryptedAccessLogJs
 import com.icure.sdk.js.model.EncryptedAccessLogJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.PatientJs
 import com.icure.sdk.js.model.UserJs
+import com.icure.sdk.js.model.accessLog_fromJs
 import com.icure.sdk.js.model.accessLog_toJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.couchdb.docIdentifier_toJs
 import com.icure.sdk.js.model.paginatedList_toJs
+import com.icure.sdk.js.model.specializations.hexString_toJs
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.sdk.model.AccessLog
 import com.icure.sdk.model.DecryptedAccessLog
 import com.icure.sdk.model.EncryptedAccessLog
 import com.icure.sdk.model.couchdb.DocIdentifier
+import com.icure.sdk.model.specializations.HexString
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
 import kotlin.OptIn
 import kotlin.String
+import kotlin.Unit
 import kotlin.js.Promise
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -57,6 +63,41 @@ internal class AccessLogApiImplJs(
 					accessLog_toJs(x1)
 				},
 			)}
+
+
+		override fun tryShareWithMany(accessLog: EncryptedAccessLogJs, delegates: dynamic):
+				Promise<SimpleShareResultJs<EncryptedAccessLogJs>> = GlobalScope.promise {
+			simpleShareResult_toJs(
+				accessLogApi.encrypted.tryShareWithMany(com.icure.sdk.js.model.accessLog_fromJs(accessLog),
+						com.icure.sdk.js.model.CheckedConverters.objectToMap(
+				  delegates,
+				  "delegates",
+				  { x1: kotlin.String ->
+				    x1
+				  },
+				  { x1: com.icure.sdk.js.crypto.entities.AccessLogShareOptionsJs ->
+				    com.icure.sdk.js.crypto.entities.accessLogShareOptions_fromJs(x1)
+				  },
+				)),
+				{ x1: EncryptedAccessLog ->
+					accessLog_toJs(x1)
+				},
+			)}
+
+
+		override fun shareWithMany(accessLog: EncryptedAccessLogJs, delegates: dynamic):
+				Promise<EncryptedAccessLogJs> = GlobalScope.promise {
+			accessLog_toJs(accessLogApi.encrypted.shareWithMany(com.icure.sdk.js.model.accessLog_fromJs(accessLog),
+					com.icure.sdk.js.model.CheckedConverters.objectToMap(
+			  delegates,
+			  "delegates",
+			  { x1: kotlin.String ->
+			    x1
+			  },
+			  { x1: com.icure.sdk.js.crypto.entities.AccessLogShareOptionsJs ->
+			    com.icure.sdk.js.crypto.entities.accessLogShareOptions_fromJs(x1)
+			  },
+			)))}
 
 
 		override fun findAccessLogsByHcPartyPatient(
@@ -180,6 +221,41 @@ internal class AccessLogApiImplJs(
 					accessLog_toJs(x1)
 				},
 			)}
+
+
+		override fun tryShareWithMany(accessLog: AccessLogJs, delegates: dynamic):
+				Promise<SimpleShareResultJs<AccessLogJs>> = GlobalScope.promise {
+			simpleShareResult_toJs(
+				accessLogApi.tryAndRecover.tryShareWithMany(com.icure.sdk.js.model.accessLog_fromJs(accessLog),
+						com.icure.sdk.js.model.CheckedConverters.objectToMap(
+				  delegates,
+				  "delegates",
+				  { x1: kotlin.String ->
+				    x1
+				  },
+				  { x1: com.icure.sdk.js.crypto.entities.AccessLogShareOptionsJs ->
+				    com.icure.sdk.js.crypto.entities.accessLogShareOptions_fromJs(x1)
+				  },
+				)),
+				{ x1: AccessLog ->
+					accessLog_toJs(x1)
+				},
+			)}
+
+
+		override fun shareWithMany(accessLog: AccessLogJs, delegates: dynamic): Promise<AccessLogJs> =
+				GlobalScope.promise {
+			accessLog_toJs(accessLogApi.tryAndRecover.shareWithMany(com.icure.sdk.js.model.accessLog_fromJs(accessLog),
+					com.icure.sdk.js.model.CheckedConverters.objectToMap(
+			  delegates,
+			  "delegates",
+			  { x1: kotlin.String ->
+			    x1
+			  },
+			  { x1: com.icure.sdk.js.crypto.entities.AccessLogShareOptionsJs ->
+			    com.icure.sdk.js.crypto.entities.accessLogShareOptions_fromJs(x1)
+			  },
+			)))}
 
 
 		override fun findAccessLogsByHcPartyPatient(
@@ -311,6 +387,41 @@ internal class AccessLogApiImplJs(
 		), com.icure.sdk.js.crypto.entities.secretIdOption_fromJs(secretId)))}
 
 
+	override fun getEncryptionKeysOf(accessLog: AccessLogJs): Promise<Array<String>> =
+			GlobalScope.promise {
+		setToArray(
+			accessLogApi.getEncryptionKeysOf(accessLog_fromJs(accessLog)),
+			{ x1: HexString ->
+				hexString_toJs(x1)
+			},
+		)}
+
+
+	override fun hasWriteAccess(accessLog: AccessLogJs): Promise<Boolean> = GlobalScope.promise {
+		accessLogApi.hasWriteAccess(accessLog_fromJs(accessLog))}
+
+
+	override fun decryptPatientIdOf(accessLog: AccessLogJs): Promise<Array<String>> =
+			GlobalScope.promise {
+		setToArray(
+			accessLogApi.decryptPatientIdOf(accessLog_fromJs(accessLog)),
+			{ x1: String ->
+				x1
+			},
+		)}
+
+
+	override fun createDelegationDeAnonymizationMetadata(entity: AccessLogJs,
+			delegates: Array<String>): Promise<Unit> = GlobalScope.promise {
+		accessLogApi.createDelegationDeAnonymizationMetadata(accessLog_fromJs(entity), arrayToSet(
+			delegates,
+			"delegates",
+			{ x1: String ->
+				x1
+			},
+		))}
+
+
 	override fun deleteAccessLog(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {
 		docIdentifier_toJs(accessLogApi.deleteAccessLog(entityId))}
 
@@ -347,6 +458,41 @@ internal class AccessLogApiImplJs(
 				accessLog_toJs(x1)
 			},
 		)}
+
+
+	override fun tryShareWithMany(accessLog: DecryptedAccessLogJs, delegates: dynamic):
+			Promise<SimpleShareResultJs<DecryptedAccessLogJs>> = GlobalScope.promise {
+		simpleShareResult_toJs(
+			accessLogApi.tryShareWithMany(com.icure.sdk.js.model.accessLog_fromJs(accessLog),
+					com.icure.sdk.js.model.CheckedConverters.objectToMap(
+			  delegates,
+			  "delegates",
+			  { x1: kotlin.String ->
+			    x1
+			  },
+			  { x1: com.icure.sdk.js.crypto.entities.AccessLogShareOptionsJs ->
+			    com.icure.sdk.js.crypto.entities.accessLogShareOptions_fromJs(x1)
+			  },
+			)),
+			{ x1: DecryptedAccessLog ->
+				accessLog_toJs(x1)
+			},
+		)}
+
+
+	override fun shareWithMany(accessLog: DecryptedAccessLogJs, delegates: dynamic):
+			Promise<DecryptedAccessLogJs> = GlobalScope.promise {
+		accessLog_toJs(accessLogApi.shareWithMany(com.icure.sdk.js.model.accessLog_fromJs(accessLog),
+				com.icure.sdk.js.model.CheckedConverters.objectToMap(
+		  delegates,
+		  "delegates",
+		  { x1: kotlin.String ->
+		    x1
+		  },
+		  { x1: com.icure.sdk.js.crypto.entities.AccessLogShareOptionsJs ->
+		    com.icure.sdk.js.crypto.entities.accessLogShareOptions_fromJs(x1)
+		  },
+		)))}
 
 
 	override fun findAccessLogsByHcPartyPatient(

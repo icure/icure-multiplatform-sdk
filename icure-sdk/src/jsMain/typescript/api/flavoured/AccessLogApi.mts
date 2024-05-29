@@ -1,4 +1,5 @@
 // auto-generated file
+import {AccessLogShareOptions} from '../../crypto/entities/AccessLogShareOptions.mjs';
 import {SecretIdOption} from '../../crypto/entities/SecretIdOption.mjs';
 import {ShareMetadataBehaviour} from '../../crypto/entities/ShareMetadataBehaviour.mjs';
 import {SimpleShareResult} from '../../crypto/entities/SimpleShareResult.mjs';
@@ -10,6 +11,7 @@ import {User} from '../../model/User.mjs';
 import {DocIdentifier} from '../../model/couchdb/DocIdentifier.mjs';
 import {AccessLevel} from '../../model/embed/AccessLevel.mjs';
 import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs';
+import {HexString} from '../../model/specializations/HexString.mjs';
 import {AccessLogFlavouredApi} from './AccessLogFlavouredApi.mjs';
 
 
@@ -29,6 +31,15 @@ export interface AccessLogApi {
 			secretId: SecretIdOption
 	): Promise<DecryptedAccessLog>;
 
+	getEncryptionKeysOf(accessLog: AccessLog): Promise<Array<HexString>>;
+
+	hasWriteAccess(accessLog: AccessLog): Promise<boolean>;
+
+	decryptPatientIdOf(accessLog: AccessLog): Promise<Array<string>>;
+
+	createDelegationDeAnonymizationMetadata(entity: AccessLog,
+			delegates: Array<string>): Promise<void>;
+
 	deleteAccessLog(entityId: string): Promise<DocIdentifier>;
 
 	deleteAccessLogs(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
@@ -40,6 +51,12 @@ export interface AccessLogApi {
 			shareOwningEntityIds: ShareMetadataBehaviour,
 			requestedPermission: RequestedPermission
 	): Promise<SimpleShareResult<DecryptedAccessLog>>;
+
+	tryShareWithMany(accessLog: DecryptedAccessLog,
+			delegates: { [ key: string ]: AccessLogShareOptions }): Promise<SimpleShareResult<DecryptedAccessLog>>;
+
+	shareWithMany(accessLog: DecryptedAccessLog,
+			delegates: { [ key: string ]: AccessLogShareOptions }): Promise<DecryptedAccessLog>;
 
 	findAccessLogsByHcPartyPatient(
 			hcPartyId: string,

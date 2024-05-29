@@ -21,6 +21,7 @@ import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
 import kotlin.String
+import kotlin.Unit
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
 import kotlin.js.Promise
@@ -31,7 +32,7 @@ public external interface InvoiceApiJs {
 
 	public val tryAndRecover: InvoiceFlavouredApiJs<InvoiceJs>
 
-	public fun createInvoice(entity: DecryptedInvoiceJs): Promise<DecryptedInvoiceJs>
+	public fun createInvoice(entity: DecryptedInvoiceJs, prefix: String?): Promise<DecryptedInvoiceJs>
 
 	public fun createInvoices(entities: Array<DecryptedInvoiceJs>): Promise<Array<DecryptedInvoiceJs>>
 
@@ -42,6 +43,15 @@ public external interface InvoiceApiJs {
 		delegates: dynamic,
 		secretId: SecretIdOptionJs,
 	): Promise<DecryptedInvoiceJs>
+
+	public fun getEncryptionKeysOf(invoice: InvoiceJs): Promise<Array<String>>
+
+	public fun hasWriteAccess(invoice: InvoiceJs): Promise<Boolean>
+
+	public fun decryptPatientIdOf(invoice: InvoiceJs): Promise<Array<String>>
+
+	public fun createDelegationDeAnonymizationMetadata(entity: InvoiceJs, delegates: Array<String>):
+			Promise<Unit>
 
 	public fun deleteInvoice(entityId: String): Promise<DocIdentifierJs>
 
@@ -59,6 +69,12 @@ public external interface InvoiceApiJs {
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<DecryptedInvoiceJs>>
 
+	public fun tryShareWithMany(invoice: DecryptedInvoiceJs, delegates: dynamic):
+			Promise<SimpleShareResultJs<DecryptedInvoiceJs>>
+
+	public fun shareWithMany(invoice: DecryptedInvoiceJs, delegates: dynamic):
+			Promise<DecryptedInvoiceJs>
+
 	public fun findInvoicesByHcPartyPatient(
 		hcPartyId: String,
 		patient: PatientJs,
@@ -75,7 +91,7 @@ public external interface InvoiceApiJs {
 
 	public fun getInvoices(entityIds: Array<String>): Promise<Array<DecryptedInvoiceJs>>
 
-	public fun filterInvoicesBy(filterChain: FilterChainJs<EncryptedInvoiceJs>):
+	public fun filterInvoicesBy(filterChain: FilterChainJs<InvoiceJs>):
 			Promise<Array<DecryptedInvoiceJs>>
 
 	public fun findInvoicesByHcPartyPatientForeignKeys(hcPartyId: String,

@@ -27,6 +27,10 @@ public external interface DocumentFlavouredApiJs<E : DocumentJs> {
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<E>>
 
+	public fun tryShareWithMany(document: E, delegates: dynamic): Promise<SimpleShareResultJs<E>>
+
+	public fun shareWithMany(document: E, delegates: dynamic): Promise<E>
+
 	public fun findDocumentsByHcPartyPatient(
 		hcPartyId: String,
 		patient: PatientJs,

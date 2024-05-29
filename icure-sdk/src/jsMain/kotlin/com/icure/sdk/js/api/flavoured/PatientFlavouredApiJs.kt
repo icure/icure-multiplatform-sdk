@@ -30,6 +30,10 @@ public external interface PatientFlavouredApiJs<E : PatientJs> {
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<E>>
 
+	public fun tryShareWithMany(patient: E, delegates: dynamic): Promise<SimpleShareResultJs<E>>
+
+	public fun shareWithMany(patient: E, delegates: dynamic): Promise<E>
+
 	public fun initialiseConfidentialSecretId(patient: E): Promise<E>
 
 	public fun modifyPatient(entity: E): Promise<E>
@@ -37,7 +41,7 @@ public external interface PatientFlavouredApiJs<E : PatientJs> {
 	public fun getPatient(entityId: String): Promise<E>
 
 	public fun filterPatientsBy(
-		filterChain: FilterChainJs<EncryptedPatientJs>,
+		filterChain: FilterChainJs<PatientJs>,
 		startKey: String?,
 		startDocumentId: String?,
 		limit: Double?,
@@ -103,15 +107,6 @@ public external interface PatientFlavouredApiJs<E : PatientJs> {
 	): Promise<PaginatedListJs<String>>
 
 	public fun getPatientByExternalId(externalId: String): Promise<E>
-
-	public fun findPatientsByAccessLogUserAfterDate(
-		userId: String,
-		accessType: String?,
-		startDate: Double?,
-		startKey: String?,
-		startDocumentId: String?,
-		limit: Double?,
-	): Promise<PaginatedListJs<E>>
 
 	public fun fuzzySearch(
 		firstName: String,

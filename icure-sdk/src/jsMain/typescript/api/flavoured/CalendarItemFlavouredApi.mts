@@ -1,4 +1,5 @@
 // auto-generated file
+import {CalendarItemShareOptions} from '../../crypto/entities/CalendarItemShareOptions.mjs';
 import {ShareMetadataBehaviour} from '../../crypto/entities/ShareMetadataBehaviour.mjs';
 import {SimpleShareResult} from '../../crypto/entities/SimpleShareResult.mjs';
 import {PaginatedListIterator} from '../../icure-sdk.mjs';
@@ -18,6 +19,12 @@ export interface CalendarItemFlavouredApi<E extends CalendarItem> {
 			requestedPermission: RequestedPermission
 	): Promise<SimpleShareResult<E>>;
 
+	tryShareWithMany(calendarItem: E,
+			delegates: { [ key: string ]: CalendarItemShareOptions }): Promise<SimpleShareResult<E>>;
+
+	shareWithMany(calendarItem: E,
+			delegates: { [ key: string ]: CalendarItemShareOptions }): Promise<E>;
+
 	findCalendarItemsByHcPartyPatient(
 			hcPartyId: string,
 			patient: Patient,
@@ -25,6 +32,9 @@ export interface CalendarItemFlavouredApi<E extends CalendarItem> {
 			endDate: number | undefined,
 			descending: boolean | undefined
 	): Promise<PaginatedListIterator<E>>;
+
+	linkToPatient(calendarItem: CalendarItem, patient: Patient,
+			shareLinkWithDelegates: Array<string>): Promise<E>;
 
 	modifyCalendarItem(entity: E): Promise<E>;
 

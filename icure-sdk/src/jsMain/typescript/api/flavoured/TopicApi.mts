@@ -2,6 +2,7 @@
 import {SecretIdOption} from '../../crypto/entities/SecretIdOption.mjs';
 import {ShareMetadataBehaviour} from '../../crypto/entities/ShareMetadataBehaviour.mjs';
 import {SimpleShareResult} from '../../crypto/entities/SimpleShareResult.mjs';
+import {TopicShareOptions} from '../../crypto/entities/TopicShareOptions.mjs';
 import {PaginatedList} from '../../model/PaginatedList.mjs';
 import {Patient} from '../../model/Patient.mjs';
 import {DecryptedTopic, EncryptedTopic, Topic} from '../../model/Topic.mjs';
@@ -12,6 +13,7 @@ import {AccessLevel} from '../../model/embed/AccessLevel.mjs';
 import {AbstractFilter} from '../../model/filter/AbstractFilter.mjs';
 import {FilterChain} from '../../model/filter/chain/FilterChain.mjs';
 import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs';
+import {HexString} from '../../model/specializations/HexString.mjs';
 import {TopicFlavouredApi} from './TopicFlavouredApi.mjs';
 
 
@@ -31,11 +33,19 @@ export interface TopicApi {
 			secretId: SecretIdOption
 	): Promise<DecryptedTopic>;
 
+	getEncryptionKeysOf(topic: Topic): Promise<Array<HexString>>;
+
+	hasWriteAccess(topic: Topic): Promise<boolean>;
+
+	decryptPatientIdOf(topic: Topic): Promise<Array<string>>;
+
+	createDelegationDeAnonymizationMetadata(entity: Topic, delegates: Array<string>): Promise<void>;
+
 	deleteTopic(entityId: string): Promise<DocIdentifier>;
 
 	deleteTopics(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
-	matchTopicsBy(filter: AbstractFilter<EncryptedTopic>): Promise<Array<string>>;
+	matchTopicsBy(filter: AbstractFilter<Topic>): Promise<Array<string>>;
 
 	shareWith(
 			delegateId: string,
@@ -45,6 +55,12 @@ export interface TopicApi {
 			requestedPermission: RequestedPermission
 	): Promise<SimpleShareResult<DecryptedTopic>>;
 
+	tryShareWithMany(topic: DecryptedTopic,
+			delegates: { [ key: string ]: TopicShareOptions }): Promise<SimpleShareResult<DecryptedTopic>>;
+
+	shareWithMany(topic: DecryptedTopic,
+			delegates: { [ key: string ]: TopicShareOptions }): Promise<DecryptedTopic>;
+
 	modifyTopic(entity: DecryptedTopic): Promise<DecryptedTopic>;
 
 	getTopic(entityId: string): Promise<DecryptedTopic>;
@@ -52,7 +68,7 @@ export interface TopicApi {
 	getTopics(entityIds: Array<string>): Promise<Array<DecryptedTopic>>;
 
 	filterTopicsBy(startDocumentId: string | undefined, limit: number | undefined,
-			filterChain: FilterChain<EncryptedTopic>): Promise<PaginatedList<DecryptedTopic>>;
+			filterChain: FilterChain<Topic>): Promise<PaginatedList<DecryptedTopic>>;
 
 	addParticipant(entityId: string, dataOwnerId: string,
 			topicRole: TopicRole): Promise<DecryptedTopic>;

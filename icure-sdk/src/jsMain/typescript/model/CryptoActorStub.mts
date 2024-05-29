@@ -28,6 +28,8 @@ export class CryptoActorStub implements Versionable<string>, CryptoActor, HasTag
 
   tags: Array<CodeStub> = [];
 
+  readonly $ktClass: 'com.icure.sdk.model.CryptoActorStub' = 'com.icure.sdk.model.CryptoActorStub';
+
   constructor(partial: Partial<CryptoActorStub> & Pick<CryptoActorStub, "rev" | "publicKeysForOaepWithSha256">) {
     this.id = partial.id ?? randomUuid();
     this.rev = partial.rev;

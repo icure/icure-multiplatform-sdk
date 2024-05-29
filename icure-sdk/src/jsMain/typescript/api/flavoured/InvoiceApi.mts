@@ -1,4 +1,5 @@
 // auto-generated file
+import {InvoiceShareOptions} from '../../crypto/entities/InvoiceShareOptions.mjs';
 import {SecretIdOption} from '../../crypto/entities/SecretIdOption.mjs';
 import {ShareMetadataBehaviour} from '../../crypto/entities/ShareMetadataBehaviour.mjs';
 import {SimpleShareResult} from '../../crypto/entities/SimpleShareResult.mjs';
@@ -16,6 +17,7 @@ import {EncryptedInvoicingCode} from '../../model/embed/InvoicingCode.mjs';
 import {MediumType} from '../../model/embed/MediumType.mjs';
 import {FilterChain} from '../../model/filter/chain/FilterChain.mjs';
 import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs';
+import {HexString} from '../../model/specializations/HexString.mjs';
 import {InvoiceFlavouredApi} from './InvoiceFlavouredApi.mjs';
 
 
@@ -25,7 +27,7 @@ export interface InvoiceApi {
 
 	tryAndRecover: InvoiceFlavouredApi<Invoice>;
 
-	createInvoice(entity: DecryptedInvoice): Promise<DecryptedInvoice>;
+	createInvoice(entity: DecryptedInvoice, prefix: string | undefined): Promise<DecryptedInvoice>;
 
 	createInvoices(entities: Array<DecryptedInvoice>): Promise<Array<DecryptedInvoice>>;
 
@@ -36,6 +38,14 @@ export interface InvoiceApi {
 			delegates: { [ key: string ]: AccessLevel },
 			secretId: SecretIdOption
 	): Promise<DecryptedInvoice>;
+
+	getEncryptionKeysOf(invoice: Invoice): Promise<Array<HexString>>;
+
+	hasWriteAccess(invoice: Invoice): Promise<boolean>;
+
+	decryptPatientIdOf(invoice: Invoice): Promise<Array<string>>;
+
+	createDelegationDeAnonymizationMetadata(entity: Invoice, delegates: Array<string>): Promise<void>;
 
 	deleteInvoice(entityId: string): Promise<DocIdentifier>;
 
@@ -51,6 +61,12 @@ export interface InvoiceApi {
 			shareOwningEntityIds: ShareMetadataBehaviour,
 			requestedPermission: RequestedPermission
 	): Promise<SimpleShareResult<DecryptedInvoice>>;
+
+	tryShareWithMany(invoice: DecryptedInvoice,
+			delegates: { [ key: string ]: InvoiceShareOptions }): Promise<SimpleShareResult<DecryptedInvoice>>;
+
+	shareWithMany(invoice: DecryptedInvoice,
+			delegates: { [ key: string ]: InvoiceShareOptions }): Promise<DecryptedInvoice>;
 
 	findInvoicesByHcPartyPatient(
 			hcPartyId: string,
@@ -68,7 +84,7 @@ export interface InvoiceApi {
 
 	getInvoices(entityIds: Array<string>): Promise<Array<DecryptedInvoice>>;
 
-	filterInvoicesBy(filterChain: FilterChain<EncryptedInvoice>): Promise<Array<DecryptedInvoice>>;
+	filterInvoicesBy(filterChain: FilterChain<Invoice>): Promise<Array<DecryptedInvoice>>;
 
 	findInvoicesByHcPartyPatientForeignKeys(hcPartyId: string,
 			secretPatientKeys: Array<string>): Promise<Array<DecryptedInvoice>>;

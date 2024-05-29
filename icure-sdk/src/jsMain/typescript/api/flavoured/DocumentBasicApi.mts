@@ -11,6 +11,10 @@ export interface DocumentBasicApi {
 
 	getRawMainAttachment(documentId: string, attachmentId: string): Promise<Int8Array>;
 
+	getMainAttachmentAsPlainText(documentId: string, attachmentId: string): Promise<string>;
+
+	getMainAttachmentAsJson(documentId: string, attachmentId: string): Promise<any>;
+
 	getRawSecondaryAttachment(documentId: string, key: string,
 			attachmentId: string): Promise<Int8Array>;
 

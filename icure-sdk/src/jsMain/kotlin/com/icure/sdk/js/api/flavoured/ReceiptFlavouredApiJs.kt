@@ -21,6 +21,10 @@ public external interface ReceiptFlavouredApiJs<E : ReceiptJs> {
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<E>>
 
+	public fun tryShareWithMany(receipt: E, delegates: dynamic): Promise<SimpleShareResultJs<E>>
+
+	public fun shareWithMany(receipt: E, delegates: dynamic): Promise<E>
+
 	public fun modifyReceipt(entity: E): Promise<E>
 
 	public fun getReceipt(entityId: String): Promise<E>

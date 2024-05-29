@@ -26,6 +26,10 @@ public external interface AccessLogFlavouredApiJs<E : AccessLogJs> {
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<E>>
 
+	public fun tryShareWithMany(accessLog: E, delegates: dynamic): Promise<SimpleShareResultJs<E>>
+
+	public fun shareWithMany(accessLog: E, delegates: dynamic): Promise<E>
+
 	public fun findAccessLogsByHcPartyPatient(
 		hcPartyId: String,
 		patient: PatientJs,

@@ -1,4 +1,5 @@
 // auto-generated file
+import {AccessLogShareOptions} from '../../crypto/entities/AccessLogShareOptions.mjs';
 import {ShareMetadataBehaviour} from '../../crypto/entities/ShareMetadataBehaviour.mjs';
 import {SimpleShareResult} from '../../crypto/entities/SimpleShareResult.mjs';
 import {PaginatedListIterator} from '../../icure-sdk.mjs';
@@ -17,6 +18,11 @@ export interface AccessLogFlavouredApi<E extends AccessLog> {
 			shareOwningEntityIds: ShareMetadataBehaviour,
 			requestedPermission: RequestedPermission
 	): Promise<SimpleShareResult<E>>;
+
+	tryShareWithMany(accessLog: E,
+			delegates: { [ key: string ]: AccessLogShareOptions }): Promise<SimpleShareResult<E>>;
+
+	shareWithMany(accessLog: E, delegates: { [ key: string ]: AccessLogShareOptions }): Promise<E>;
 
 	findAccessLogsByHcPartyPatient(
 			hcPartyId: string,

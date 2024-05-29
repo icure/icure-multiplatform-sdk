@@ -9,6 +9,7 @@ import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.js.model.EncryptedInvoiceJs
 import com.icure.sdk.js.model.IcureStubJs
+import com.icure.sdk.js.model.InvoiceJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.`data`.LabelledOccurenceJs
 import com.icure.sdk.js.model.`data`.labelledOccurence_toJs
@@ -112,12 +113,12 @@ internal class InvoiceBasicApiImplJs(
 		)}
 
 
-	override fun filterInvoicesBy(filterChain: FilterChainJs<EncryptedInvoiceJs>):
+	override fun filterInvoicesBy(filterChain: FilterChainJs<InvoiceJs>):
 			Promise<Array<EncryptedInvoiceJs>> = GlobalScope.promise {
 		listToArray(
 			invoiceBasicApi.filterInvoicesBy(filterChain_fromJs(
 				filterChain,
-				{ x1: EncryptedInvoiceJs ->
+				{ x1: InvoiceJs ->
 					invoice_fromJs(x1)
 				},
 			)),

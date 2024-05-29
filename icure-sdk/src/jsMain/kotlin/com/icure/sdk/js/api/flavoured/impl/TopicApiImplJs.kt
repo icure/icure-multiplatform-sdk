@@ -8,7 +8,9 @@ import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.crypto.entities.simpleShareResult_toJs
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
+import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.listToArray
+import com.icure.sdk.js.model.CheckedConverters.setToArray
 import com.icure.sdk.js.model.DecryptedTopicJs
 import com.icure.sdk.js.model.EncryptedTopicJs
 import com.icure.sdk.js.model.PaginatedListJs
@@ -21,16 +23,20 @@ import com.icure.sdk.js.model.filter.AbstractFilterJs
 import com.icure.sdk.js.model.filter.abstractFilter_fromJs
 import com.icure.sdk.js.model.filter.chain.FilterChainJs
 import com.icure.sdk.js.model.paginatedList_toJs
+import com.icure.sdk.js.model.specializations.hexString_toJs
 import com.icure.sdk.js.model.topic_fromJs
 import com.icure.sdk.js.model.topic_toJs
 import com.icure.sdk.model.DecryptedTopic
 import com.icure.sdk.model.EncryptedTopic
 import com.icure.sdk.model.Topic
 import com.icure.sdk.model.couchdb.DocIdentifier
+import com.icure.sdk.model.specializations.HexString
 import kotlin.Array
+import kotlin.Boolean
 import kotlin.Double
 import kotlin.OptIn
 import kotlin.String
+import kotlin.Unit
 import kotlin.js.Promise
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -58,6 +64,41 @@ internal class TopicApiImplJs(
 					topic_toJs(x1)
 				},
 			)}
+
+
+		override fun tryShareWithMany(topic: EncryptedTopicJs, delegates: dynamic):
+				Promise<SimpleShareResultJs<EncryptedTopicJs>> = GlobalScope.promise {
+			simpleShareResult_toJs(
+				topicApi.encrypted.tryShareWithMany(com.icure.sdk.js.model.topic_fromJs(topic),
+						com.icure.sdk.js.model.CheckedConverters.objectToMap(
+				  delegates,
+				  "delegates",
+				  { x1: kotlin.String ->
+				    x1
+				  },
+				  { x1: com.icure.sdk.js.crypto.entities.TopicShareOptionsJs ->
+				    com.icure.sdk.js.crypto.entities.topicShareOptions_fromJs(x1)
+				  },
+				)),
+				{ x1: EncryptedTopic ->
+					topic_toJs(x1)
+				},
+			)}
+
+
+		override fun shareWithMany(topic: EncryptedTopicJs, delegates: dynamic): Promise<EncryptedTopicJs>
+				= GlobalScope.promise {
+			topic_toJs(topicApi.encrypted.shareWithMany(com.icure.sdk.js.model.topic_fromJs(topic),
+					com.icure.sdk.js.model.CheckedConverters.objectToMap(
+			  delegates,
+			  "delegates",
+			  { x1: kotlin.String ->
+			    x1
+			  },
+			  { x1: com.icure.sdk.js.crypto.entities.TopicShareOptionsJs ->
+			    com.icure.sdk.js.crypto.entities.topicShareOptions_fromJs(x1)
+			  },
+			)))}
 
 
 		override fun modifyTopic(entity: EncryptedTopicJs): Promise<EncryptedTopicJs> =
@@ -88,14 +129,14 @@ internal class TopicApiImplJs(
 		override fun filterTopicsBy(
 			startDocumentId: String?,
 			limit: Double?,
-			filterChain: FilterChainJs<EncryptedTopicJs>,
+			filterChain: FilterChainJs<TopicJs>,
 		): Promise<PaginatedListJs<EncryptedTopicJs>> = GlobalScope.promise {
 			paginatedList_toJs(
 				topicApi.encrypted.filterTopicsBy(startDocumentId,
 						com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit"),
 						com.icure.sdk.js.model.filter.chain.filterChain_fromJs(
 				  filterChain,
-				  { x1: com.icure.sdk.js.model.EncryptedTopicJs ->
+				  { x1: com.icure.sdk.js.model.TopicJs ->
 				    com.icure.sdk.js.model.topic_fromJs(x1)
 				  },
 				)),
@@ -139,6 +180,41 @@ internal class TopicApiImplJs(
 			)}
 
 
+		override fun tryShareWithMany(topic: TopicJs, delegates: dynamic):
+				Promise<SimpleShareResultJs<TopicJs>> = GlobalScope.promise {
+			simpleShareResult_toJs(
+				topicApi.tryAndRecover.tryShareWithMany(com.icure.sdk.js.model.topic_fromJs(topic),
+						com.icure.sdk.js.model.CheckedConverters.objectToMap(
+				  delegates,
+				  "delegates",
+				  { x1: kotlin.String ->
+				    x1
+				  },
+				  { x1: com.icure.sdk.js.crypto.entities.TopicShareOptionsJs ->
+				    com.icure.sdk.js.crypto.entities.topicShareOptions_fromJs(x1)
+				  },
+				)),
+				{ x1: Topic ->
+					topic_toJs(x1)
+				},
+			)}
+
+
+		override fun shareWithMany(topic: TopicJs, delegates: dynamic): Promise<TopicJs> =
+				GlobalScope.promise {
+			topic_toJs(topicApi.tryAndRecover.shareWithMany(com.icure.sdk.js.model.topic_fromJs(topic),
+					com.icure.sdk.js.model.CheckedConverters.objectToMap(
+			  delegates,
+			  "delegates",
+			  { x1: kotlin.String ->
+			    x1
+			  },
+			  { x1: com.icure.sdk.js.crypto.entities.TopicShareOptionsJs ->
+			    com.icure.sdk.js.crypto.entities.topicShareOptions_fromJs(x1)
+			  },
+			)))}
+
+
 		override fun modifyTopic(entity: TopicJs): Promise<TopicJs> = GlobalScope.promise {
 			topic_toJs(topicApi.tryAndRecover.modifyTopic(com.icure.sdk.js.model.topic_fromJs(entity)))}
 
@@ -165,14 +241,14 @@ internal class TopicApiImplJs(
 		override fun filterTopicsBy(
 			startDocumentId: String?,
 			limit: Double?,
-			filterChain: FilterChainJs<EncryptedTopicJs>,
+			filterChain: FilterChainJs<TopicJs>,
 		): Promise<PaginatedListJs<TopicJs>> = GlobalScope.promise {
 			paginatedList_toJs(
 				topicApi.tryAndRecover.filterTopicsBy(startDocumentId,
 						com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit"),
 						com.icure.sdk.js.model.filter.chain.filterChain_fromJs(
 				  filterChain,
-				  { x1: com.icure.sdk.js.model.EncryptedTopicJs ->
+				  { x1: com.icure.sdk.js.model.TopicJs ->
 				    com.icure.sdk.js.model.topic_fromJs(x1)
 				  },
 				)),
@@ -227,6 +303,39 @@ internal class TopicApiImplJs(
 		), com.icure.sdk.js.crypto.entities.secretIdOption_fromJs(secretId)))}
 
 
+	override fun getEncryptionKeysOf(topic: TopicJs): Promise<Array<String>> = GlobalScope.promise {
+		setToArray(
+			topicApi.getEncryptionKeysOf(topic_fromJs(topic)),
+			{ x1: HexString ->
+				hexString_toJs(x1)
+			},
+		)}
+
+
+	override fun hasWriteAccess(topic: TopicJs): Promise<Boolean> = GlobalScope.promise {
+		topicApi.hasWriteAccess(topic_fromJs(topic))}
+
+
+	override fun decryptPatientIdOf(topic: TopicJs): Promise<Array<String>> = GlobalScope.promise {
+		setToArray(
+			topicApi.decryptPatientIdOf(topic_fromJs(topic)),
+			{ x1: String ->
+				x1
+			},
+		)}
+
+
+	override fun createDelegationDeAnonymizationMetadata(entity: TopicJs, delegates: Array<String>):
+			Promise<Unit> = GlobalScope.promise {
+		topicApi.createDelegationDeAnonymizationMetadata(topic_fromJs(entity), arrayToSet(
+			delegates,
+			"delegates",
+			{ x1: String ->
+				x1
+			},
+		))}
+
+
 	override fun deleteTopic(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {
 		docIdentifier_toJs(topicApi.deleteTopic(entityId))}
 
@@ -247,12 +356,12 @@ internal class TopicApiImplJs(
 		)}
 
 
-	override fun matchTopicsBy(filter: AbstractFilterJs<EncryptedTopicJs>): Promise<Array<String>> =
+	override fun matchTopicsBy(filter: AbstractFilterJs<TopicJs>): Promise<Array<String>> =
 			GlobalScope.promise {
 		listToArray(
 			topicApi.matchTopicsBy(abstractFilter_fromJs(
 				filter,
-				{ x1: EncryptedTopicJs ->
+				{ x1: TopicJs ->
 					topic_fromJs(x1)
 				},
 			)),
@@ -278,6 +387,41 @@ internal class TopicApiImplJs(
 				topic_toJs(x1)
 			},
 		)}
+
+
+	override fun tryShareWithMany(topic: DecryptedTopicJs, delegates: dynamic):
+			Promise<SimpleShareResultJs<DecryptedTopicJs>> = GlobalScope.promise {
+		simpleShareResult_toJs(
+			topicApi.tryShareWithMany(com.icure.sdk.js.model.topic_fromJs(topic),
+					com.icure.sdk.js.model.CheckedConverters.objectToMap(
+			  delegates,
+			  "delegates",
+			  { x1: kotlin.String ->
+			    x1
+			  },
+			  { x1: com.icure.sdk.js.crypto.entities.TopicShareOptionsJs ->
+			    com.icure.sdk.js.crypto.entities.topicShareOptions_fromJs(x1)
+			  },
+			)),
+			{ x1: DecryptedTopic ->
+				topic_toJs(x1)
+			},
+		)}
+
+
+	override fun shareWithMany(topic: DecryptedTopicJs, delegates: dynamic): Promise<DecryptedTopicJs>
+			= GlobalScope.promise {
+		topic_toJs(topicApi.shareWithMany(com.icure.sdk.js.model.topic_fromJs(topic),
+				com.icure.sdk.js.model.CheckedConverters.objectToMap(
+		  delegates,
+		  "delegates",
+		  { x1: kotlin.String ->
+		    x1
+		  },
+		  { x1: com.icure.sdk.js.crypto.entities.TopicShareOptionsJs ->
+		    com.icure.sdk.js.crypto.entities.topicShareOptions_fromJs(x1)
+		  },
+		)))}
 
 
 	override fun modifyTopic(entity: DecryptedTopicJs): Promise<DecryptedTopicJs> =
@@ -308,14 +452,14 @@ internal class TopicApiImplJs(
 	override fun filterTopicsBy(
 		startDocumentId: String?,
 		limit: Double?,
-		filterChain: FilterChainJs<EncryptedTopicJs>,
+		filterChain: FilterChainJs<TopicJs>,
 	): Promise<PaginatedListJs<DecryptedTopicJs>> = GlobalScope.promise {
 		paginatedList_toJs(
 			topicApi.filterTopicsBy(startDocumentId,
 					com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit"),
 					com.icure.sdk.js.model.filter.chain.filterChain_fromJs(
 			  filterChain,
-			  { x1: com.icure.sdk.js.model.EncryptedTopicJs ->
+			  { x1: com.icure.sdk.js.model.TopicJs ->
 			    com.icure.sdk.js.model.topic_fromJs(x1)
 			  },
 			)),

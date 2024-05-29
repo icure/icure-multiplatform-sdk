@@ -25,6 +25,10 @@ public external interface FormFlavouredApiJs<E : FormJs> {
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<E>>
 
+	public fun tryShareWithMany(form: E, delegates: dynamic): Promise<SimpleShareResultJs<E>>
+
+	public fun shareWithMany(form: E, delegates: dynamic): Promise<E>
+
 	public fun findFormsByHcPartyPatient(
 		hcPartyId: String,
 		patient: PatientJs,

@@ -19,6 +19,7 @@ import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
 import kotlin.String
+import kotlin.Unit
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
 import kotlin.js.Promise
@@ -39,9 +40,18 @@ public external interface MessageApiJs {
 		secretId: SecretIdOptionJs,
 	): Promise<DecryptedMessageJs>
 
+	public fun getEncryptionKeysOf(message: MessageJs): Promise<Array<String>>
+
+	public fun hasWriteAccess(message: MessageJs): Promise<Boolean>
+
+	public fun decryptPatientIdOf(message: MessageJs): Promise<Array<String>>
+
+	public fun createDelegationDeAnonymizationMetadata(entity: MessageJs, delegates: Array<String>):
+			Promise<Unit>
+
 	public fun createMessageInTopic(entity: DecryptedMessageJs): Promise<DecryptedMessageJs>
 
-	public fun matchMessagesBy(filter: AbstractFilterJs<EncryptedMessageJs>): Promise<Array<String>>
+	public fun matchMessagesBy(filter: AbstractFilterJs<MessageJs>): Promise<Array<String>>
 
 	public fun deleteMessage(entityId: String): Promise<DocIdentifierJs>
 
@@ -55,6 +65,12 @@ public external interface MessageApiJs {
 		shareOwningEntityIds: String,
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<DecryptedMessageJs>>
+
+	public fun tryShareWithMany(message: DecryptedMessageJs, delegates: dynamic):
+			Promise<SimpleShareResultJs<DecryptedMessageJs>>
+
+	public fun shareWithMany(message: DecryptedMessageJs, delegates: dynamic):
+			Promise<DecryptedMessageJs>
 
 	public fun findMessagesByHcPartyPatient(
 		hcPartyId: String,
@@ -71,7 +87,7 @@ public external interface MessageApiJs {
 	public fun getMessages(entityIds: Array<String>): Promise<Array<DecryptedMessageJs>>
 
 	public fun filterMessagesBy(
-		filterChain: FilterChainJs<EncryptedMessageJs>,
+		filterChain: FilterChainJs<MessageJs>,
 		startDocumentId: String?,
 		limit: Double?,
 	): Promise<PaginatedListJs<DecryptedMessageJs>>

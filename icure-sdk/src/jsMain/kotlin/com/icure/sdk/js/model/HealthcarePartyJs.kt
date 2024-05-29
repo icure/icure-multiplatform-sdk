@@ -135,4 +135,6 @@ public external class HealthcarePartyJs(
 	override val publicKey: String?
 
 	override val publicKeysForOaepWithSha256: Array<String>
+
+	override val ktClass: String
 }

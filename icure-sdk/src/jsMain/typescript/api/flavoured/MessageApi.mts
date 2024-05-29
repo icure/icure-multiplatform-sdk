@@ -1,4 +1,5 @@
 // auto-generated file
+import {MessageShareOptions} from '../../crypto/entities/MessageShareOptions.mjs';
 import {SecretIdOption} from '../../crypto/entities/SecretIdOption.mjs';
 import {ShareMetadataBehaviour} from '../../crypto/entities/ShareMetadataBehaviour.mjs';
 import {SimpleShareResult} from '../../crypto/entities/SimpleShareResult.mjs';
@@ -12,6 +13,7 @@ import {AccessLevel} from '../../model/embed/AccessLevel.mjs';
 import {AbstractFilter} from '../../model/filter/AbstractFilter.mjs';
 import {FilterChain} from '../../model/filter/chain/FilterChain.mjs';
 import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs';
+import {HexString} from '../../model/specializations/HexString.mjs';
 import {MessageFlavouredApi} from './MessageFlavouredApi.mjs';
 
 
@@ -31,9 +33,17 @@ export interface MessageApi {
 			secretId: SecretIdOption
 	): Promise<DecryptedMessage>;
 
+	getEncryptionKeysOf(message: Message): Promise<Array<HexString>>;
+
+	hasWriteAccess(message: Message): Promise<boolean>;
+
+	decryptPatientIdOf(message: Message): Promise<Array<string>>;
+
+	createDelegationDeAnonymizationMetadata(entity: Message, delegates: Array<string>): Promise<void>;
+
 	createMessageInTopic(entity: DecryptedMessage): Promise<DecryptedMessage>;
 
-	matchMessagesBy(filter: AbstractFilter<EncryptedMessage>): Promise<Array<string>>;
+	matchMessagesBy(filter: AbstractFilter<Message>): Promise<Array<string>>;
 
 	deleteMessage(entityId: string): Promise<DocIdentifier>;
 
@@ -47,6 +57,12 @@ export interface MessageApi {
 			shareOwningEntityIds: ShareMetadataBehaviour,
 			requestedPermission: RequestedPermission
 	): Promise<SimpleShareResult<DecryptedMessage>>;
+
+	tryShareWithMany(message: DecryptedMessage,
+			delegates: { [ key: string ]: MessageShareOptions }): Promise<SimpleShareResult<DecryptedMessage>>;
+
+	shareWithMany(message: DecryptedMessage,
+			delegates: { [ key: string ]: MessageShareOptions }): Promise<DecryptedMessage>;
 
 	findMessagesByHcPartyPatient(
 			hcPartyId: string,
@@ -62,7 +78,7 @@ export interface MessageApi {
 
 	getMessages(entityIds: Array<string>): Promise<Array<DecryptedMessage>>;
 
-	filterMessagesBy(filterChain: FilterChain<EncryptedMessage>, startDocumentId: string | undefined,
+	filterMessagesBy(filterChain: FilterChain<Message>, startDocumentId: string | undefined,
 			limit: number | undefined): Promise<PaginatedList<DecryptedMessage>>;
 
 	listMessagesByTransportGuids(hcPartyId: string,

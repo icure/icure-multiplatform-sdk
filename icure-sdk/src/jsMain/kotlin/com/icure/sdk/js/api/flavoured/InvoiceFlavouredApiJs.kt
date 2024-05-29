@@ -4,7 +4,6 @@
 package com.icure.sdk.js.api.flavoured
 
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
-import com.icure.sdk.js.model.EncryptedInvoiceJs
 import com.icure.sdk.js.model.InvoiceJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.PatientJs
@@ -29,6 +28,10 @@ public external interface InvoiceFlavouredApiJs<E : InvoiceJs> {
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<E>>
 
+	public fun tryShareWithMany(invoice: E, delegates: dynamic): Promise<SimpleShareResultJs<E>>
+
+	public fun shareWithMany(invoice: E, delegates: dynamic): Promise<E>
+
 	public fun findInvoicesByHcPartyPatient(
 		hcPartyId: String,
 		patient: PatientJs,
@@ -45,7 +48,7 @@ public external interface InvoiceFlavouredApiJs<E : InvoiceJs> {
 
 	public fun getInvoices(entityIds: Array<String>): Promise<Array<E>>
 
-	public fun filterInvoicesBy(filterChain: FilterChainJs<EncryptedInvoiceJs>): Promise<Array<E>>
+	public fun filterInvoicesBy(filterChain: FilterChainJs<InvoiceJs>): Promise<Array<E>>
 
 	public fun findInvoicesByHcPartyPatientForeignKeys(hcPartyId: String,
 			secretPatientKeys: Array<String>): Promise<Array<E>>

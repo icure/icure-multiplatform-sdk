@@ -16,6 +16,7 @@ import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
 import kotlin.String
+import kotlin.Unit
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
 import kotlin.js.Promise
@@ -37,6 +38,15 @@ public external interface ClassificationApiJs {
 		secretId: SecretIdOptionJs,
 	): Promise<DecryptedClassificationJs>
 
+	public fun getEncryptionKeysOf(classification: ClassificationJs): Promise<Array<String>>
+
+	public fun hasWriteAccess(classification: ClassificationJs): Promise<Boolean>
+
+	public fun decryptPatientIdOf(classification: ClassificationJs): Promise<Array<String>>
+
+	public fun createDelegationDeAnonymizationMetadata(entity: ClassificationJs,
+			delegates: Array<String>): Promise<Unit>
+
 	public fun deleteClassification(entityId: String): Promise<DocIdentifierJs>
 
 	public fun deleteClassifications(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
@@ -48,6 +58,12 @@ public external interface ClassificationApiJs {
 		shareOwningEntityIds: String,
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<DecryptedClassificationJs>>
+
+	public fun tryShareWithMany(classification: DecryptedClassificationJs, delegates: dynamic):
+			Promise<SimpleShareResultJs<DecryptedClassificationJs>>
+
+	public fun shareWithMany(classification: DecryptedClassificationJs, delegates: dynamic):
+			Promise<DecryptedClassificationJs>
 
 	public fun findClassificationsByHcPartyPatient(
 		hcPartyId: String,

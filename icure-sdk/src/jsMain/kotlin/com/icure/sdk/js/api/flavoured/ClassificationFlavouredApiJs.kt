@@ -25,6 +25,10 @@ public external interface ClassificationFlavouredApiJs<E : ClassificationJs> {
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<E>>
 
+	public fun tryShareWithMany(classification: E, delegates: dynamic): Promise<SimpleShareResultJs<E>>
+
+	public fun shareWithMany(classification: E, delegates: dynamic): Promise<E>
+
 	public fun findClassificationsByHcPartyPatient(
 		hcPartyId: String,
 		patient: PatientJs,

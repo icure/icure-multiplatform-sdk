@@ -21,4 +21,7 @@ public external interface CryptoActorJs : VersionableJs<String>, HasTagsJs {
 	public val publicKey: String?
 
 	public val publicKeysForOaepWithSha256: Array<out String>
+
+	@JsName("${'$'}ktClass")
+	public val ktClass: String
 }

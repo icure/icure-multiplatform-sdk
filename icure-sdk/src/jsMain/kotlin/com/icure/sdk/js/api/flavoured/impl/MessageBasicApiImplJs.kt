@@ -8,6 +8,7 @@ import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.js.model.EncryptedMessageJs
+import com.icure.sdk.js.model.MessageJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.couchdb.docIdentifier_toJs
@@ -33,12 +34,12 @@ import kotlinx.coroutines.promise
 internal class MessageBasicApiImplJs(
 	private val messageBasicApi: MessageBasicApi,
 ) : MessageBasicApiJs {
-	override fun matchMessagesBy(filter: AbstractFilterJs<EncryptedMessageJs>): Promise<Array<String>>
-			= GlobalScope.promise {
+	override fun matchMessagesBy(filter: AbstractFilterJs<MessageJs>): Promise<Array<String>> =
+			GlobalScope.promise {
 		listToArray(
 			messageBasicApi.matchMessagesBy(abstractFilter_fromJs(
 				filter,
-				{ x1: EncryptedMessageJs ->
+				{ x1: MessageJs ->
 					message_fromJs(x1)
 				},
 			)),
@@ -94,14 +95,14 @@ internal class MessageBasicApiImplJs(
 
 
 	override fun filterMessagesBy(
-		filterChain: FilterChainJs<EncryptedMessageJs>,
+		filterChain: FilterChainJs<MessageJs>,
 		startDocumentId: String?,
 		limit: Double?,
 	): Promise<PaginatedListJs<EncryptedMessageJs>> = GlobalScope.promise {
 		paginatedList_toJs(
 			messageBasicApi.filterMessagesBy(com.icure.sdk.js.model.filter.chain.filterChain_fromJs(
 			  filterChain,
-			  { x1: com.icure.sdk.js.model.EncryptedMessageJs ->
+			  { x1: com.icure.sdk.js.model.MessageJs ->
 			    com.icure.sdk.js.model.message_fromJs(x1)
 			  },
 			), startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),

@@ -44,12 +44,12 @@ import kotlinx.coroutines.promise
 internal class PatientBasicApiImplJs(
 	private val patientBasicApi: PatientBasicApi,
 ) : PatientBasicApiJs {
-	override fun matchPatientsBy(filter: AbstractFilterJs<EncryptedPatientJs>): Promise<Array<String>>
-			= GlobalScope.promise {
+	override fun matchPatientsBy(filter: AbstractFilterJs<PatientJs>): Promise<Array<String>> =
+			GlobalScope.promise {
 		listToArray(
 			patientBasicApi.matchPatientsBy(abstractFilter_fromJs(
 				filter,
-				{ x1: EncryptedPatientJs ->
+				{ x1: PatientJs ->
 					patient_fromJs(x1)
 				},
 			)),
@@ -104,7 +104,7 @@ internal class PatientBasicApiImplJs(
 
 
 	override fun filterPatientsBy(
-		filterChain: FilterChainJs<EncryptedPatientJs>,
+		filterChain: FilterChainJs<PatientJs>,
 		startKey: String?,
 		startDocumentId: String?,
 		limit: Double?,
@@ -115,7 +115,7 @@ internal class PatientBasicApiImplJs(
 		paginatedList_toJs(
 			patientBasicApi.filterPatientsBy(com.icure.sdk.js.model.filter.chain.filterChain_fromJs(
 			  filterChain,
-			  { x1: com.icure.sdk.js.model.EncryptedPatientJs ->
+			  { x1: com.icure.sdk.js.model.PatientJs ->
 			    com.icure.sdk.js.model.patient_fromJs(x1)
 			  },
 			), startKey, startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit,
@@ -260,24 +260,6 @@ internal class PatientBasicApiImplJs(
 	override fun getPatientByExternalId(externalId: String): Promise<EncryptedPatientJs> =
 			GlobalScope.promise {
 		patient_toJs(patientBasicApi.getPatientByExternalId(externalId))}
-
-
-	override fun findPatientsByAccessLogUserAfterDate(
-		userId: String,
-		accessType: String?,
-		startDate: Double?,
-		startKey: String?,
-		startDocumentId: String?,
-		limit: Double?,
-	): Promise<PaginatedListJs<EncryptedPatientJs>> = GlobalScope.promise {
-		paginatedList_toJs(
-			patientBasicApi.findPatientsByAccessLogUserAfterDate(userId, accessType,
-					com.icure.sdk.js.model.CheckedConverters.numberToLong(startDate, "startDate"), startKey,
-					startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
-			{ x1: EncryptedPatient ->
-				patient_toJs(x1)
-			},
-		)}
 
 
 	override fun fuzzySearch(

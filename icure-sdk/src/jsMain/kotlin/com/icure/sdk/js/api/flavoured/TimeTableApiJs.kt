@@ -12,8 +12,10 @@ import com.icure.sdk.js.model.TimeTableJs
 import com.icure.sdk.js.model.UserJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import kotlin.Array
+import kotlin.Boolean
 import kotlin.Double
 import kotlin.String
+import kotlin.Unit
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
 import kotlin.js.Promise
@@ -34,6 +36,15 @@ public external interface TimeTableApiJs {
 		secretId: SecretIdOptionJs,
 	): Promise<DecryptedTimeTableJs>
 
+	public fun getEncryptionKeysOf(timeTable: TimeTableJs): Promise<Array<String>>
+
+	public fun hasWriteAccess(timeTable: TimeTableJs): Promise<Boolean>
+
+	public fun decryptPatientIdOf(timeTable: TimeTableJs): Promise<Array<String>>
+
+	public fun createDelegationDeAnonymizationMetadata(entity: TimeTableJs, delegates: Array<String>):
+			Promise<Unit>
+
 	public fun deleteTimeTable(entityId: String): Promise<DocIdentifierJs>
 
 	public fun deleteTimeTables(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
@@ -45,6 +56,12 @@ public external interface TimeTableApiJs {
 		shareOwningEntityIds: String,
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<DecryptedTimeTableJs>>
+
+	public fun tryShareWithMany(timeTable: DecryptedTimeTableJs, delegates: dynamic):
+			Promise<SimpleShareResultJs<DecryptedTimeTableJs>>
+
+	public fun shareWithMany(timeTable: DecryptedTimeTableJs, delegates: dynamic):
+			Promise<DecryptedTimeTableJs>
 
 	public fun modifyTimeTable(entity: DecryptedTimeTableJs): Promise<DecryptedTimeTableJs>
 

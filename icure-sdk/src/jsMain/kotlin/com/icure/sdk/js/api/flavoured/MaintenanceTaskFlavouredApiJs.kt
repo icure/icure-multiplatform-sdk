@@ -23,6 +23,11 @@ public external interface MaintenanceTaskFlavouredApiJs<E : MaintenanceTaskJs> {
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<E>>
 
+	public fun tryShareWithMany(maintenanceTask: E, delegates: dynamic):
+			Promise<SimpleShareResultJs<E>>
+
+	public fun shareWithMany(maintenanceTask: E, delegates: dynamic): Promise<E>
+
 	public fun modifyMaintenanceTask(entity: E): Promise<E>
 
 	public fun getMaintenanceTask(entityId: String): Promise<E>

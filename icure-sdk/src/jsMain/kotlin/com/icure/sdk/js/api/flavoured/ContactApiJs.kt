@@ -24,6 +24,7 @@ import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
 import kotlin.String
+import kotlin.Unit
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
 import kotlin.js.Promise
@@ -46,7 +47,18 @@ public external interface ContactApiJs {
 		secretId: SecretIdOptionJs,
 	): Promise<DecryptedContactJs>
 
-	public fun matchContactsBy(filter: AbstractFilterJs<EncryptedContactJs>): Promise<Array<String>>
+	public fun getEncryptionKeysOf(contact: ContactJs): Promise<Array<String>>
+
+	public fun hasWriteAccess(contact: ContactJs): Promise<Boolean>
+
+	public fun decryptPatientIdOf(contact: ContactJs): Promise<Array<String>>
+
+	public fun createDelegationDeAnonymizationMetadata(entity: ContactJs, delegates: Array<String>):
+			Promise<Unit>
+
+	public fun matchContactsBy(filter: AbstractFilterJs<ContactJs>): Promise<Array<String>>
+
+	public fun matchServicesBy(filter: AbstractFilterJs<ServiceJs>): Promise<Array<String>>
 
 	public fun deleteContact(entityId: String): Promise<DocIdentifierJs>
 
@@ -66,6 +78,12 @@ public external interface ContactApiJs {
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<DecryptedContactJs>>
 
+	public fun tryShareWithMany(contact: DecryptedContactJs, delegates: dynamic):
+			Promise<SimpleShareResultJs<DecryptedContactJs>>
+
+	public fun shareWithMany(contact: DecryptedContactJs, delegates: dynamic):
+			Promise<DecryptedContactJs>
+
 	public fun findContactsByHcPartyPatient(
 		hcPartyId: String,
 		patient: PatientJs,
@@ -83,7 +101,7 @@ public external interface ContactApiJs {
 	public fun getContacts(entityIds: Array<String>): Promise<Array<DecryptedContactJs>>
 
 	public fun filterContactsBy(
-		filterChain: FilterChainJs<EncryptedContactJs>,
+		filterChain: FilterChainJs<ContactJs>,
 		startDocumentId: String?,
 		limit: Double?,
 	): Promise<PaginatedListJs<DecryptedContactJs>>
@@ -131,7 +149,7 @@ public external interface ContactApiJs {
 	): Promise<PaginatedListJs<DecryptedContactJs>>
 
 	public fun filterServicesBy(
-		filterChain: FilterChainJs<EncryptedServiceJs>,
+		filterChain: FilterChainJs<ServiceJs>,
 		startDocumentId: String?,
 		limit: Double?,
 	): Promise<PaginatedListJs<DecryptedServiceJs>>

@@ -141,9 +141,6 @@ public sealed external interface PatientJs : StoredDocumentJs, ICureDocumentJs<S
 	public val employementInfos: Array<out EmploymentInfoJs>
 
 	public val isEncrypted: Boolean
-
-	@JsName("${'$'}ktClass")
-	public val ktClass: String
 }
 
 @JsName("DecryptedPatient")

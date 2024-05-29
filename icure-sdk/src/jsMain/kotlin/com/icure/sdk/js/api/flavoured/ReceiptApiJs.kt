@@ -12,8 +12,10 @@ import com.icure.sdk.js.model.ReceiptJs
 import com.icure.sdk.js.model.UserJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import kotlin.Array
+import kotlin.Boolean
 import kotlin.ByteArray
 import kotlin.String
+import kotlin.Unit
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
 import kotlin.js.Promise
@@ -43,6 +45,23 @@ public external interface ReceiptApiJs {
 		attachment: ByteArray,
 	): Promise<EncryptedReceiptJs>
 
+	public fun getEncryptionKeysOf(receipt: ReceiptJs): Promise<Array<String>>
+
+	public fun hasWriteAccess(receipt: ReceiptJs): Promise<Boolean>
+
+	public fun decryptPatientIdOf(receipt: ReceiptJs): Promise<Array<String>>
+
+	public fun createDelegationDeAnonymizationMetadata(entity: ReceiptJs, delegates: Array<String>):
+			Promise<Unit>
+
+	public fun logReceipt(
+		user: UserJs,
+		docId: String,
+		refs: Array<String>,
+		blobType: String,
+		blob: ByteArray,
+	): Promise<ReceiptJs>
+
 	public fun deleteReceipt(entityId: String): Promise<DocIdentifierJs>
 
 	public fun deleteReceipts(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
@@ -63,6 +82,12 @@ public external interface ReceiptApiJs {
 		shareOwningEntityIds: String,
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<DecryptedReceiptJs>>
+
+	public fun tryShareWithMany(receipt: DecryptedReceiptJs, delegates: dynamic):
+			Promise<SimpleShareResultJs<DecryptedReceiptJs>>
+
+	public fun shareWithMany(receipt: DecryptedReceiptJs, delegates: dynamic):
+			Promise<DecryptedReceiptJs>
 
 	public fun modifyReceipt(entity: DecryptedReceiptJs): Promise<DecryptedReceiptJs>
 

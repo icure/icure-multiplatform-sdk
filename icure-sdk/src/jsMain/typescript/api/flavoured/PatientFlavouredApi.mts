@@ -1,4 +1,5 @@
 // auto-generated file
+import {PatientShareOptions} from '../../crypto/entities/PatientShareOptions.mjs';
 import {ShareMetadataBehaviour} from '../../crypto/entities/ShareMetadataBehaviour.mjs';
 import {SimpleShareResult} from '../../crypto/entities/SimpleShareResult.mjs';
 import {IdWithRev} from '../../model/IdWithRev.mjs';
@@ -22,6 +23,11 @@ export interface PatientFlavouredApi<E extends Patient> {
 			requestedPermission: RequestedPermission
 	): Promise<SimpleShareResult<E>>;
 
+	tryShareWithMany(patient: E,
+			delegates: { [ key: string ]: PatientShareOptions }): Promise<SimpleShareResult<E>>;
+
+	shareWithMany(patient: E, delegates: { [ key: string ]: PatientShareOptions }): Promise<E>;
+
 	initialiseConfidentialSecretId(patient: E): Promise<E>;
 
 	modifyPatient(entity: E): Promise<E>;
@@ -29,7 +35,7 @@ export interface PatientFlavouredApi<E extends Patient> {
 	getPatient(entityId: string): Promise<E>;
 
 	filterPatientsBy(
-			filterChain: FilterChain<EncryptedPatient>,
+			filterChain: FilterChain<Patient>,
 			startKey: string | undefined,
 			startDocumentId: string | undefined,
 			limit: number | undefined,
@@ -87,15 +93,6 @@ export interface PatientFlavouredApi<E extends Patient> {
 			startDocumentId: string | undefined, limit: number | undefined): Promise<PaginatedList<string>>;
 
 	getPatientByExternalId(externalId: string): Promise<E>;
-
-	findPatientsByAccessLogUserAfterDate(
-			userId: string,
-			accessType: string | undefined,
-			startDate: number | undefined,
-			startKey: string | undefined,
-			startDocumentId: string | undefined,
-			limit: number | undefined
-	): Promise<PaginatedList<E>>;
 
 	fuzzySearch(firstName: string, lastName: string,
 			dateOfBirth: number | undefined): Promise<Array<E>>;

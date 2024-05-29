@@ -8,8 +8,11 @@ import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.crypto.entities.simpleShareResult_toJs
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
+import com.icure.sdk.js.model.CheckedConverters.arrayToSet
+import com.icure.sdk.js.model.CheckedConverters.jsonToDynamic
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
+import com.icure.sdk.js.model.CheckedConverters.setToArray
 import com.icure.sdk.js.model.DecryptedDocumentJs
 import com.icure.sdk.js.model.DocumentJs
 import com.icure.sdk.js.model.EncryptedDocumentJs
@@ -20,18 +23,21 @@ import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.couchdb.docIdentifier_toJs
 import com.icure.sdk.js.model.document_fromJs
 import com.icure.sdk.js.model.document_toJs
+import com.icure.sdk.js.model.specializations.hexString_toJs
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.sdk.model.DecryptedDocument
 import com.icure.sdk.model.Document
 import com.icure.sdk.model.EncryptedDocument
 import com.icure.sdk.model.couchdb.DocIdentifier
+import com.icure.sdk.model.specializations.HexString
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.ByteArray
 import kotlin.Double
 import kotlin.OptIn
 import kotlin.String
+import kotlin.Unit
 import kotlin.js.Promise
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -60,6 +66,41 @@ internal class DocumentApiImplJs(
 					document_toJs(x1)
 				},
 			)}
+
+
+		override fun tryShareWithMany(document: EncryptedDocumentJs, delegates: dynamic):
+				Promise<SimpleShareResultJs<EncryptedDocumentJs>> = GlobalScope.promise {
+			simpleShareResult_toJs(
+				documentApi.encrypted.tryShareWithMany(com.icure.sdk.js.model.document_fromJs(document),
+						com.icure.sdk.js.model.CheckedConverters.objectToMap(
+				  delegates,
+				  "delegates",
+				  { x1: kotlin.String ->
+				    x1
+				  },
+				  { x1: com.icure.sdk.js.crypto.entities.DocumentShareOptionsJs ->
+				    com.icure.sdk.js.crypto.entities.documentShareOptions_fromJs(x1)
+				  },
+				)),
+				{ x1: EncryptedDocument ->
+					document_toJs(x1)
+				},
+			)}
+
+
+		override fun shareWithMany(document: EncryptedDocumentJs, delegates: dynamic):
+				Promise<EncryptedDocumentJs> = GlobalScope.promise {
+			document_toJs(documentApi.encrypted.shareWithMany(com.icure.sdk.js.model.document_fromJs(document),
+					com.icure.sdk.js.model.CheckedConverters.objectToMap(
+			  delegates,
+			  "delegates",
+			  { x1: kotlin.String ->
+			    x1
+			  },
+			  { x1: com.icure.sdk.js.crypto.entities.DocumentShareOptionsJs ->
+			    com.icure.sdk.js.crypto.entities.documentShareOptions_fromJs(x1)
+			  },
+			)))}
 
 
 		override fun findDocumentsByHcPartyPatient(
@@ -236,6 +277,41 @@ internal class DocumentApiImplJs(
 					document_toJs(x1)
 				},
 			)}
+
+
+		override fun tryShareWithMany(document: DocumentJs, delegates: dynamic):
+				Promise<SimpleShareResultJs<DocumentJs>> = GlobalScope.promise {
+			simpleShareResult_toJs(
+				documentApi.tryAndRecover.tryShareWithMany(com.icure.sdk.js.model.document_fromJs(document),
+						com.icure.sdk.js.model.CheckedConverters.objectToMap(
+				  delegates,
+				  "delegates",
+				  { x1: kotlin.String ->
+				    x1
+				  },
+				  { x1: com.icure.sdk.js.crypto.entities.DocumentShareOptionsJs ->
+				    com.icure.sdk.js.crypto.entities.documentShareOptions_fromJs(x1)
+				  },
+				)),
+				{ x1: Document ->
+					document_toJs(x1)
+				},
+			)}
+
+
+		override fun shareWithMany(document: DocumentJs, delegates: dynamic): Promise<DocumentJs> =
+				GlobalScope.promise {
+			document_toJs(documentApi.tryAndRecover.shareWithMany(com.icure.sdk.js.model.document_fromJs(document),
+					com.icure.sdk.js.model.CheckedConverters.objectToMap(
+			  delegates,
+			  "delegates",
+			  { x1: kotlin.String ->
+			    x1
+			  },
+			  { x1: com.icure.sdk.js.crypto.entities.DocumentShareOptionsJs ->
+			    com.icure.sdk.js.crypto.entities.documentShareOptions_fromJs(x1)
+			  },
+			)))}
 
 
 		override fun findDocumentsByHcPartyPatient(
@@ -423,6 +499,45 @@ internal class DocumentApiImplJs(
 		), com.icure.sdk.js.crypto.entities.secretIdOption_fromJs(secretId)))}
 
 
+	override fun getAndTryDecryptMainAttachment(
+		document: DocumentJs,
+		attachmentId: String,
+		decryptedDocumentValidator: (ByteArray) -> Promise<Boolean>,
+	): Promise<ByteArray?> = GlobalScope.promise {
+		val decryptedDocumentValidatorConverted: suspend (ByteArray) -> Boolean = { arg0 ->
+			decryptedDocumentValidator(
+				arg0).await()
+		}
+		documentApi.getAndTryDecryptMainAttachment(document_fromJs(document), attachmentId,
+				decryptedDocumentValidatorConverted)}
+
+
+	override fun getAndTryDecryptMainAttachmentAsPlainText(
+		document: DocumentJs,
+		attachmentId: String,
+		decryptedDocumentValidator: (ByteArray) -> Promise<Boolean>,
+	): Promise<String?> = GlobalScope.promise {
+		val decryptedDocumentValidatorConverted: suspend (ByteArray) -> Boolean = { arg0 ->
+			decryptedDocumentValidator(
+				arg0).await()
+		}
+		documentApi.getAndTryDecryptMainAttachmentAsPlainText(document_fromJs(document), attachmentId,
+				decryptedDocumentValidatorConverted)}
+
+
+	override fun getAndTryDecryptMainAttachmentAsJson(
+		document: DocumentJs,
+		attachmentId: String,
+		decryptedDocumentValidator: (ByteArray) -> Promise<Boolean>,
+	): Promise<dynamic> = GlobalScope.promise {
+		val decryptedDocumentValidatorConverted: suspend (ByteArray) -> Boolean = { arg0 ->
+			decryptedDocumentValidator(
+				arg0).await()
+		}
+		jsonToDynamic(documentApi.getAndTryDecryptMainAttachmentAsJson(document_fromJs(document),
+				attachmentId, decryptedDocumentValidatorConverted))}
+
+
 	override fun getAndDecryptMainAttachment(
 		document: DocumentJs,
 		attachmentId: String,
@@ -481,6 +596,41 @@ internal class DocumentApiImplJs(
 		), attachment))}
 
 
+	override fun getEncryptionKeysOf(document: DocumentJs): Promise<Array<String>> =
+			GlobalScope.promise {
+		setToArray(
+			documentApi.getEncryptionKeysOf(document_fromJs(document)),
+			{ x1: HexString ->
+				hexString_toJs(x1)
+			},
+		)}
+
+
+	override fun hasWriteAccess(document: DocumentJs): Promise<Boolean> = GlobalScope.promise {
+		documentApi.hasWriteAccess(document_fromJs(document))}
+
+
+	override fun decryptPatientIdOf(document: DocumentJs): Promise<Array<String>> =
+			GlobalScope.promise {
+		setToArray(
+			documentApi.decryptPatientIdOf(document_fromJs(document)),
+			{ x1: String ->
+				x1
+			},
+		)}
+
+
+	override fun createDelegationDeAnonymizationMetadata(entity: DocumentJs, delegates: Array<String>):
+			Promise<Unit> = GlobalScope.promise {
+		documentApi.createDelegationDeAnonymizationMetadata(document_fromJs(entity), arrayToSet(
+			delegates,
+			"delegates",
+			{ x1: String ->
+				x1
+			},
+		))}
+
+
 	override fun deleteDocument(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {
 		docIdentifier_toJs(documentApi.deleteDocument(entityId))}
 
@@ -504,6 +654,16 @@ internal class DocumentApiImplJs(
 	override fun getRawMainAttachment(documentId: String, attachmentId: String): Promise<ByteArray> =
 			GlobalScope.promise {
 		documentApi.getRawMainAttachment(documentId, attachmentId)}
+
+
+	override fun getMainAttachmentAsPlainText(documentId: String, attachmentId: String):
+			Promise<String> = GlobalScope.promise {
+		documentApi.getMainAttachmentAsPlainText(documentId, attachmentId)}
+
+
+	override fun getMainAttachmentAsJson(documentId: String, attachmentId: String): Promise<dynamic> =
+			GlobalScope.promise {
+		jsonToDynamic(documentApi.getMainAttachmentAsJson(documentId, attachmentId))}
 
 
 	override fun getRawSecondaryAttachment(
@@ -530,6 +690,41 @@ internal class DocumentApiImplJs(
 				document_toJs(x1)
 			},
 		)}
+
+
+	override fun tryShareWithMany(document: DecryptedDocumentJs, delegates: dynamic):
+			Promise<SimpleShareResultJs<DecryptedDocumentJs>> = GlobalScope.promise {
+		simpleShareResult_toJs(
+			documentApi.tryShareWithMany(com.icure.sdk.js.model.document_fromJs(document),
+					com.icure.sdk.js.model.CheckedConverters.objectToMap(
+			  delegates,
+			  "delegates",
+			  { x1: kotlin.String ->
+			    x1
+			  },
+			  { x1: com.icure.sdk.js.crypto.entities.DocumentShareOptionsJs ->
+			    com.icure.sdk.js.crypto.entities.documentShareOptions_fromJs(x1)
+			  },
+			)),
+			{ x1: DecryptedDocument ->
+				document_toJs(x1)
+			},
+		)}
+
+
+	override fun shareWithMany(document: DecryptedDocumentJs, delegates: dynamic):
+			Promise<DecryptedDocumentJs> = GlobalScope.promise {
+		document_toJs(documentApi.shareWithMany(com.icure.sdk.js.model.document_fromJs(document),
+				com.icure.sdk.js.model.CheckedConverters.objectToMap(
+		  delegates,
+		  "delegates",
+		  { x1: kotlin.String ->
+		    x1
+		  },
+		  { x1: com.icure.sdk.js.crypto.entities.DocumentShareOptionsJs ->
+		    com.icure.sdk.js.crypto.entities.documentShareOptions_fromJs(x1)
+		  },
+		)))}
 
 
 	override fun findDocumentsByHcPartyPatient(

@@ -4,6 +4,7 @@ package com.icure.sdk.js.api.flavoured.`impl`
 import com.icure.sdk.api.flavoured.DocumentBasicApi
 import com.icure.sdk.js.api.flavoured.DocumentBasicApiJs
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
+import com.icure.sdk.js.model.CheckedConverters.jsonToDynamic
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.EncryptedDocumentJs
@@ -51,6 +52,16 @@ internal class DocumentBasicApiImplJs(
 	override fun getRawMainAttachment(documentId: String, attachmentId: String): Promise<ByteArray> =
 			GlobalScope.promise {
 		documentBasicApi.getRawMainAttachment(documentId, attachmentId)}
+
+
+	override fun getMainAttachmentAsPlainText(documentId: String, attachmentId: String):
+			Promise<String> = GlobalScope.promise {
+		documentBasicApi.getMainAttachmentAsPlainText(documentId, attachmentId)}
+
+
+	override fun getMainAttachmentAsJson(documentId: String, attachmentId: String): Promise<dynamic> =
+			GlobalScope.promise {
+		jsonToDynamic(documentBasicApi.getMainAttachmentAsJson(documentId, attachmentId))}
 
 
 	override fun getRawSecondaryAttachment(

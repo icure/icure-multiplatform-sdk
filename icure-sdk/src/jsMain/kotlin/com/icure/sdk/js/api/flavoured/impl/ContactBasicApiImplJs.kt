@@ -6,6 +6,7 @@ import com.icure.sdk.js.api.flavoured.ContactBasicApiJs
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
+import com.icure.sdk.js.model.ContactJs
 import com.icure.sdk.js.model.EncryptedContactJs
 import com.icure.sdk.js.model.IcureStubJs
 import com.icure.sdk.js.model.PaginatedListJs
@@ -16,6 +17,8 @@ import com.icure.sdk.js.model.contact_toJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.couchdb.docIdentifier_toJs
 import com.icure.sdk.js.model.embed.EncryptedServiceJs
+import com.icure.sdk.js.model.embed.ServiceJs
+import com.icure.sdk.js.model.embed.service_fromJs
 import com.icure.sdk.js.model.embed.service_toJs
 import com.icure.sdk.js.model.filter.AbstractFilterJs
 import com.icure.sdk.js.model.filter.abstractFilter_fromJs
@@ -41,13 +44,28 @@ import kotlinx.coroutines.promise
 internal class ContactBasicApiImplJs(
 	private val contactBasicApi: ContactBasicApi,
 ) : ContactBasicApiJs {
-	override fun matchContactsBy(filter: AbstractFilterJs<EncryptedContactJs>): Promise<Array<String>>
-			= GlobalScope.promise {
+	override fun matchContactsBy(filter: AbstractFilterJs<ContactJs>): Promise<Array<String>> =
+			GlobalScope.promise {
 		listToArray(
 			contactBasicApi.matchContactsBy(abstractFilter_fromJs(
 				filter,
-				{ x1: EncryptedContactJs ->
+				{ x1: ContactJs ->
 					contact_fromJs(x1)
+				},
+			)),
+			{ x1: String ->
+				x1
+			},
+		)}
+
+
+	override fun matchServicesBy(filter: AbstractFilterJs<ServiceJs>): Promise<Array<String>> =
+			GlobalScope.promise {
+		listToArray(
+			contactBasicApi.matchServicesBy(abstractFilter_fromJs(
+				filter,
+				{ x1: ServiceJs ->
+					service_fromJs(x1)
 				},
 			)),
 			{ x1: String ->
@@ -145,14 +163,14 @@ internal class ContactBasicApiImplJs(
 
 
 	override fun filterContactsBy(
-		filterChain: FilterChainJs<EncryptedContactJs>,
+		filterChain: FilterChainJs<ContactJs>,
 		startDocumentId: String?,
 		limit: Double?,
 	): Promise<PaginatedListJs<EncryptedContactJs>> = GlobalScope.promise {
 		paginatedList_toJs(
 			contactBasicApi.filterContactsBy(com.icure.sdk.js.model.filter.chain.filterChain_fromJs(
 			  filterChain,
-			  { x1: com.icure.sdk.js.model.EncryptedContactJs ->
+			  { x1: com.icure.sdk.js.model.ContactJs ->
 			    com.icure.sdk.js.model.contact_fromJs(x1)
 			  },
 			), startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
@@ -321,14 +339,14 @@ internal class ContactBasicApiImplJs(
 
 
 	override fun filterServicesBy(
-		filterChain: FilterChainJs<EncryptedServiceJs>,
+		filterChain: FilterChainJs<ServiceJs>,
 		startDocumentId: String?,
 		limit: Double?,
 	): Promise<PaginatedListJs<EncryptedServiceJs>> = GlobalScope.promise {
 		paginatedList_toJs(
 			contactBasicApi.filterServicesBy(com.icure.sdk.js.model.filter.chain.filterChain_fromJs(
 			  filterChain,
-			  { x1: com.icure.sdk.js.model.embed.EncryptedServiceJs ->
+			  { x1: com.icure.sdk.js.model.embed.ServiceJs ->
 			    com.icure.sdk.js.model.embed.service_fromJs(x1)
 			  },
 			), startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),

@@ -6,6 +6,7 @@ import com.icure.sdk.js.api.flavoured.HealthcareElementBasicApiJs
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.EncryptedHealthElementJs
+import com.icure.sdk.js.model.HealthElementJs
 import com.icure.sdk.js.model.IcureStubJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
@@ -33,12 +34,12 @@ import kotlinx.coroutines.promise
 internal class HealthcareElementBasicApiImplJs(
 	private val healthcareElementBasicApi: HealthcareElementBasicApi,
 ) : HealthcareElementBasicApiJs {
-	override fun matchHealthcareElementsBy(filter: AbstractFilterJs<EncryptedHealthElementJs>):
+	override fun matchHealthcareElementsBy(filter: AbstractFilterJs<HealthElementJs>):
 			Promise<Array<String>> = GlobalScope.promise {
 		listToArray(
 			healthcareElementBasicApi.matchHealthcareElementsBy(abstractFilter_fromJs(
 				filter,
-				{ x1: EncryptedHealthElementJs ->
+				{ x1: HealthElementJs ->
 					healthElement_fromJs(x1)
 				},
 			)),
@@ -129,14 +130,14 @@ internal class HealthcareElementBasicApiImplJs(
 
 
 	override fun filterHealthcareElementsBy(
-		filterChain: FilterChainJs<EncryptedHealthElementJs>,
+		filterChain: FilterChainJs<HealthElementJs>,
 		startDocumentId: String?,
 		limit: Double?,
 	): Promise<PaginatedListJs<EncryptedHealthElementJs>> = GlobalScope.promise {
 		paginatedList_toJs(
 			healthcareElementBasicApi.filterHealthcareElementsBy(com.icure.sdk.js.model.filter.chain.filterChain_fromJs(
 			  filterChain,
-			  { x1: com.icure.sdk.js.model.EncryptedHealthElementJs ->
+			  { x1: com.icure.sdk.js.model.HealthElementJs ->
 			    com.icure.sdk.js.model.healthElement_fromJs(x1)
 			  },
 			), startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),

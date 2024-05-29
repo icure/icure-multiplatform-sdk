@@ -1,5 +1,8 @@
 // auto-generated file
 import {EntityAccessInformation} from '../../crypto/entities/EntityAccessInformation.mjs';
+import {EntityWithTypeInfo} from '../../crypto/entities/EntityWithTypeInfo.mjs';
+import {PatientShareOptions} from '../../crypto/entities/PatientShareOptions.mjs';
+import {ShareAllPatientDataOptions} from '../../crypto/entities/ShareAllPatientDataOptions.mjs';
 import {ShareMetadataBehaviour} from '../../crypto/entities/ShareMetadataBehaviour.mjs';
 import {SimpleShareResult} from '../../crypto/entities/SimpleShareResult.mjs';
 import {DataOwnerRegistrationSuccess} from '../../model/DataOwnerRegistrationSuccess.mjs';
@@ -37,6 +40,12 @@ export interface PatientApi {
 	createDelegationsDeAnonymizationMetadata(patient: Patient,
 			dataOwnerIds: Array<string>): Promise<void>;
 
+	hasWriteAccess(patient: Patient): Promise<boolean>;
+
+	decryptPatientIdOf(patient: Patient): Promise<Array<string>>;
+
+	createDelegationDeAnonymizationMetadata(entity: Patient, delegates: Array<string>): Promise<void>;
+
 	createPatients(patientDtos: Array<DecryptedPatient>): Promise<Array<IdWithRev>>;
 
 	registerPatient(
@@ -48,11 +57,17 @@ export interface PatientApi {
 			patient: DecryptedPatient
 	): Promise<DataOwnerRegistrationSuccess>;
 
+	shareAllDataOfPatient(user: User, patientId: string, dataOwnerId: string,
+			delegatesWithShareType: { [ key: string ]: Array<ShareAllPatientDataOptions.Tag> }): Promise<ShareAllPatientDataOptions.Result>;
+
+	getPatientIdOfChildDocumentForHcpAndHcpParents(childDocument: EntityWithTypeInfo<any>,
+			healthcarePartyId: string): Promise<string>;
+
 	getConfidentialSecretIdsOf(patient: Patient): Promise<Array<string>>;
 
 	forceInitialiseExchangeDataToNewlyInvitedPatient(patientId: string): Promise<boolean>;
 
-	matchPatientsBy(filter: AbstractFilter<EncryptedPatient>): Promise<Array<string>>;
+	matchPatientsBy(filter: AbstractFilter<Patient>): Promise<Array<string>>;
 
 	deletePatient(entityId: string): Promise<DocIdentifier>;
 
@@ -71,6 +86,12 @@ export interface PatientApi {
 			requestedPermission: RequestedPermission
 	): Promise<SimpleShareResult<DecryptedPatient>>;
 
+	tryShareWithMany(patient: DecryptedPatient,
+			delegates: { [ key: string ]: PatientShareOptions }): Promise<SimpleShareResult<DecryptedPatient>>;
+
+	shareWithMany(patient: DecryptedPatient,
+			delegates: { [ key: string ]: PatientShareOptions }): Promise<DecryptedPatient>;
+
 	initialiseConfidentialSecretId(patient: DecryptedPatient): Promise<DecryptedPatient>;
 
 	modifyPatient(entity: DecryptedPatient): Promise<DecryptedPatient>;
@@ -78,7 +99,7 @@ export interface PatientApi {
 	getPatient(entityId: string): Promise<DecryptedPatient>;
 
 	filterPatientsBy(
-			filterChain: FilterChain<EncryptedPatient>,
+			filterChain: FilterChain<Patient>,
 			startKey: string | undefined,
 			startDocumentId: string | undefined,
 			limit: number | undefined,
@@ -137,15 +158,6 @@ export interface PatientApi {
 			startDocumentId: string | undefined, limit: number | undefined): Promise<PaginatedList<string>>;
 
 	getPatientByExternalId(externalId: string): Promise<DecryptedPatient>;
-
-	findPatientsByAccessLogUserAfterDate(
-			userId: string,
-			accessType: string | undefined,
-			startDate: number | undefined,
-			startKey: string | undefined,
-			startDocumentId: string | undefined,
-			limit: number | undefined
-	): Promise<PaginatedList<DecryptedPatient>>;
 
 	fuzzySearch(firstName: string, lastName: string,
 			dateOfBirth: number | undefined): Promise<Array<DecryptedPatient>>;

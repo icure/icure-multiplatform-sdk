@@ -12,8 +12,10 @@ import com.icure.sdk.js.model.UserJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.filter.chain.FilterChainJs
 import kotlin.Array
+import kotlin.Boolean
 import kotlin.Double
 import kotlin.String
+import kotlin.Unit
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
 import kotlin.js.Promise
@@ -33,6 +35,15 @@ public external interface MaintenanceTaskApiJs {
 		delegates: dynamic,
 	): Promise<DecryptedMaintenanceTaskJs>
 
+	public fun getEncryptionKeysOf(maintenanceTask: MaintenanceTaskJs): Promise<Array<String>>
+
+	public fun hasWriteAccess(maintenanceTask: MaintenanceTaskJs): Promise<Boolean>
+
+	public fun decryptPatientIdOf(maintenanceTask: MaintenanceTaskJs): Promise<Array<String>>
+
+	public fun createDelegationDeAnonymizationMetadata(entity: MaintenanceTaskJs,
+			delegates: Array<String>): Promise<Unit>
+
 	public fun deleteMaintenanceTask(entityId: String): Promise<DocIdentifierJs>
 
 	public fun deleteMaintenanceTasks(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
@@ -44,6 +55,12 @@ public external interface MaintenanceTaskApiJs {
 		shareOwningEntityIds: String,
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<DecryptedMaintenanceTaskJs>>
+
+	public fun tryShareWithMany(maintenanceTask: DecryptedMaintenanceTaskJs, delegates: dynamic):
+			Promise<SimpleShareResultJs<DecryptedMaintenanceTaskJs>>
+
+	public fun shareWithMany(maintenanceTask: DecryptedMaintenanceTaskJs, delegates: dynamic):
+			Promise<DecryptedMaintenanceTaskJs>
 
 	public fun modifyMaintenanceTask(entity: DecryptedMaintenanceTaskJs):
 			Promise<DecryptedMaintenanceTaskJs>

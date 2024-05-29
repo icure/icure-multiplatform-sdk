@@ -5,9 +5,13 @@ import com.icure.sdk.api.flavoured.PatientApi
 import com.icure.sdk.js.api.flavoured.PatientApiJs
 import com.icure.sdk.js.api.flavoured.PatientFlavouredApiJs
 import com.icure.sdk.js.crypto.entities.EntityAccessInformationJs
+import com.icure.sdk.js.crypto.entities.EntityWithTypeInfoJs
+import com.icure.sdk.js.crypto.entities.ShareAllPatientDataOptionsJs_ResultJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.crypto.entities.entityAccessInformation_toJs
+import com.icure.sdk.js.crypto.entities.shareAllPatientDataOptions_Result_toJs
 import com.icure.sdk.js.crypto.entities.simpleShareResult_toJs
+import com.icure.sdk.js.model.CheckedConverters.anyEntityWithTypeInfoToKt
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.listToArray
@@ -85,6 +89,41 @@ internal class PatientApiImplJs(
 			)}
 
 
+		override fun tryShareWithMany(patient: EncryptedPatientJs, delegates: dynamic):
+				Promise<SimpleShareResultJs<EncryptedPatientJs>> = GlobalScope.promise {
+			simpleShareResult_toJs(
+				patientApi.encrypted.tryShareWithMany(com.icure.sdk.js.model.patient_fromJs(patient),
+						com.icure.sdk.js.model.CheckedConverters.objectToMap(
+				  delegates,
+				  "delegates",
+				  { x1: kotlin.String ->
+				    x1
+				  },
+				  { x1: com.icure.sdk.js.crypto.entities.PatientShareOptionsJs ->
+				    com.icure.sdk.js.crypto.entities.patientShareOptions_fromJs(x1)
+				  },
+				)),
+				{ x1: EncryptedPatient ->
+					patient_toJs(x1)
+				},
+			)}
+
+
+		override fun shareWithMany(patient: EncryptedPatientJs, delegates: dynamic):
+				Promise<EncryptedPatientJs> = GlobalScope.promise {
+			patient_toJs(patientApi.encrypted.shareWithMany(com.icure.sdk.js.model.patient_fromJs(patient),
+					com.icure.sdk.js.model.CheckedConverters.objectToMap(
+			  delegates,
+			  "delegates",
+			  { x1: kotlin.String ->
+			    x1
+			  },
+			  { x1: com.icure.sdk.js.crypto.entities.PatientShareOptionsJs ->
+			    com.icure.sdk.js.crypto.entities.patientShareOptions_fromJs(x1)
+			  },
+			)))}
+
+
 		override fun initialiseConfidentialSecretId(patient: EncryptedPatientJs):
 				Promise<EncryptedPatientJs> = GlobalScope.promise {
 			patient_toJs(patientApi.encrypted.initialiseConfidentialSecretId(com.icure.sdk.js.model.patient_fromJs(patient)))}
@@ -100,7 +139,7 @@ internal class PatientApiImplJs(
 
 
 		override fun filterPatientsBy(
-			filterChain: FilterChainJs<EncryptedPatientJs>,
+			filterChain: FilterChainJs<PatientJs>,
 			startKey: String?,
 			startDocumentId: String?,
 			limit: Double?,
@@ -111,7 +150,7 @@ internal class PatientApiImplJs(
 			paginatedList_toJs(
 				patientApi.encrypted.filterPatientsBy(com.icure.sdk.js.model.filter.chain.filterChain_fromJs(
 				  filterChain,
-				  { x1: com.icure.sdk.js.model.EncryptedPatientJs ->
+				  { x1: com.icure.sdk.js.model.PatientJs ->
 				    com.icure.sdk.js.model.patient_fromJs(x1)
 				  },
 				), startKey, startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit,
@@ -256,24 +295,6 @@ internal class PatientApiImplJs(
 		override fun getPatientByExternalId(externalId: String): Promise<EncryptedPatientJs> =
 				GlobalScope.promise {
 			patient_toJs(patientApi.encrypted.getPatientByExternalId(externalId))}
-
-
-		override fun findPatientsByAccessLogUserAfterDate(
-			userId: String,
-			accessType: String?,
-			startDate: Double?,
-			startKey: String?,
-			startDocumentId: String?,
-			limit: Double?,
-		): Promise<PaginatedListJs<EncryptedPatientJs>> = GlobalScope.promise {
-			paginatedList_toJs(
-				patientApi.encrypted.findPatientsByAccessLogUserAfterDate(userId, accessType,
-						com.icure.sdk.js.model.CheckedConverters.numberToLong(startDate, "startDate"), startKey,
-						startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
-				{ x1: EncryptedPatient ->
-					patient_toJs(x1)
-				},
-			)}
 
 
 		override fun fuzzySearch(
@@ -432,6 +453,41 @@ internal class PatientApiImplJs(
 			)}
 
 
+		override fun tryShareWithMany(patient: PatientJs, delegates: dynamic):
+				Promise<SimpleShareResultJs<PatientJs>> = GlobalScope.promise {
+			simpleShareResult_toJs(
+				patientApi.tryAndRecover.tryShareWithMany(com.icure.sdk.js.model.patient_fromJs(patient),
+						com.icure.sdk.js.model.CheckedConverters.objectToMap(
+				  delegates,
+				  "delegates",
+				  { x1: kotlin.String ->
+				    x1
+				  },
+				  { x1: com.icure.sdk.js.crypto.entities.PatientShareOptionsJs ->
+				    com.icure.sdk.js.crypto.entities.patientShareOptions_fromJs(x1)
+				  },
+				)),
+				{ x1: Patient ->
+					patient_toJs(x1)
+				},
+			)}
+
+
+		override fun shareWithMany(patient: PatientJs, delegates: dynamic): Promise<PatientJs> =
+				GlobalScope.promise {
+			patient_toJs(patientApi.tryAndRecover.shareWithMany(com.icure.sdk.js.model.patient_fromJs(patient),
+					com.icure.sdk.js.model.CheckedConverters.objectToMap(
+			  delegates,
+			  "delegates",
+			  { x1: kotlin.String ->
+			    x1
+			  },
+			  { x1: com.icure.sdk.js.crypto.entities.PatientShareOptionsJs ->
+			    com.icure.sdk.js.crypto.entities.patientShareOptions_fromJs(x1)
+			  },
+			)))}
+
+
 		override fun initialiseConfidentialSecretId(patient: PatientJs): Promise<PatientJs> =
 				GlobalScope.promise {
 			patient_toJs(patientApi.tryAndRecover.initialiseConfidentialSecretId(com.icure.sdk.js.model.patient_fromJs(patient)))}
@@ -446,7 +502,7 @@ internal class PatientApiImplJs(
 
 
 		override fun filterPatientsBy(
-			filterChain: FilterChainJs<EncryptedPatientJs>,
+			filterChain: FilterChainJs<PatientJs>,
 			startKey: String?,
 			startDocumentId: String?,
 			limit: Double?,
@@ -457,7 +513,7 @@ internal class PatientApiImplJs(
 			paginatedList_toJs(
 				patientApi.tryAndRecover.filterPatientsBy(com.icure.sdk.js.model.filter.chain.filterChain_fromJs(
 				  filterChain,
-				  { x1: com.icure.sdk.js.model.EncryptedPatientJs ->
+				  { x1: com.icure.sdk.js.model.PatientJs ->
 				    com.icure.sdk.js.model.patient_fromJs(x1)
 				  },
 				), startKey, startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit,
@@ -601,24 +657,6 @@ internal class PatientApiImplJs(
 		override fun getPatientByExternalId(externalId: String): Promise<PatientJs> =
 				GlobalScope.promise {
 			patient_toJs(patientApi.tryAndRecover.getPatientByExternalId(externalId))}
-
-
-		override fun findPatientsByAccessLogUserAfterDate(
-			userId: String,
-			accessType: String?,
-			startDate: Double?,
-			startKey: String?,
-			startDocumentId: String?,
-			limit: Double?,
-		): Promise<PaginatedListJs<PatientJs>> = GlobalScope.promise {
-			paginatedList_toJs(
-				patientApi.tryAndRecover.findPatientsByAccessLogUserAfterDate(userId, accessType,
-						com.icure.sdk.js.model.CheckedConverters.numberToLong(startDate, "startDate"), startKey,
-						startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
-				{ x1: Patient ->
-					patient_toJs(x1)
-				},
-			)}
 
 
 		override fun fuzzySearch(
@@ -807,6 +845,30 @@ internal class PatientApiImplJs(
 		))}
 
 
+	override fun hasWriteAccess(patient: PatientJs): Promise<Boolean> = GlobalScope.promise {
+		patientApi.hasWriteAccess(patient_fromJs(patient))}
+
+
+	override fun decryptPatientIdOf(patient: PatientJs): Promise<Array<String>> = GlobalScope.promise {
+		setToArray(
+			patientApi.decryptPatientIdOf(patient_fromJs(patient)),
+			{ x1: String ->
+				x1
+			},
+		)}
+
+
+	override fun createDelegationDeAnonymizationMetadata(entity: PatientJs, delegates: Array<String>):
+			Promise<Unit> = GlobalScope.promise {
+		patientApi.createDelegationDeAnonymizationMetadata(patient_fromJs(entity), arrayToSet(
+			delegates,
+			"delegates",
+			{ x1: String ->
+				x1
+			},
+		))}
+
+
 	override fun createPatients(patientDtos: Array<DecryptedPatientJs>): Promise<Array<IdWithRevJs>> =
 			GlobalScope.promise {
 		listToArray(
@@ -835,6 +897,37 @@ internal class PatientApiImplJs(
 				useShortToken, createAutoDelegation, com.icure.sdk.js.model.patient_fromJs(patient)))}
 
 
+	override fun shareAllDataOfPatient(
+		user: UserJs,
+		patientId: String,
+		dataOwnerId: String,
+		delegatesWithShareType: dynamic,
+	): Promise<ShareAllPatientDataOptionsJs_ResultJs> = GlobalScope.promise {
+		shareAllPatientDataOptions_Result_toJs(patientApi.shareAllDataOfPatient(com.icure.sdk.js.model.user_fromJs(user),
+				patientId, dataOwnerId, com.icure.sdk.js.model.CheckedConverters.objectToMap(
+		  delegatesWithShareType,
+		  "delegatesWithShareType",
+		  { x1: kotlin.String ->
+		    x1
+		  },
+		  { x1: kotlin.Array<kotlin.String> ->
+		    com.icure.sdk.js.model.CheckedConverters.arrayToSet(
+		      x1,
+		      "x1",
+		      { x2: kotlin.String ->
+		        com.icure.sdk.js.crypto.entities.shareAllPatientDataOptions_Tag_fromJs(x2)
+		      },
+		    )
+		  },
+		)))}
+
+
+	override fun getPatientIdOfChildDocumentForHcpAndHcpParents(childDocument: EntityWithTypeInfoJs<*>,
+			healthcarePartyId: String): Promise<String> = GlobalScope.promise {
+		patientApi.getPatientIdOfChildDocumentForHcpAndHcpParents(anyEntityWithTypeInfoToKt(childDocument),
+				healthcarePartyId)}
+
+
 	override fun getConfidentialSecretIdsOf(patient: PatientJs): Promise<Array<String>> =
 			GlobalScope.promise {
 		setToArray(
@@ -850,12 +943,12 @@ internal class PatientApiImplJs(
 		patientApi.forceInitialiseExchangeDataToNewlyInvitedPatient(patientId)}
 
 
-	override fun matchPatientsBy(filter: AbstractFilterJs<EncryptedPatientJs>): Promise<Array<String>>
-			= GlobalScope.promise {
+	override fun matchPatientsBy(filter: AbstractFilterJs<PatientJs>): Promise<Array<String>> =
+			GlobalScope.promise {
 		listToArray(
 			patientApi.matchPatientsBy(abstractFilter_fromJs(
 				filter,
-				{ x1: EncryptedPatientJs ->
+				{ x1: PatientJs ->
 					patient_fromJs(x1)
 				},
 			)),
@@ -925,6 +1018,41 @@ internal class PatientApiImplJs(
 		)}
 
 
+	override fun tryShareWithMany(patient: DecryptedPatientJs, delegates: dynamic):
+			Promise<SimpleShareResultJs<DecryptedPatientJs>> = GlobalScope.promise {
+		simpleShareResult_toJs(
+			patientApi.tryShareWithMany(com.icure.sdk.js.model.patient_fromJs(patient),
+					com.icure.sdk.js.model.CheckedConverters.objectToMap(
+			  delegates,
+			  "delegates",
+			  { x1: kotlin.String ->
+			    x1
+			  },
+			  { x1: com.icure.sdk.js.crypto.entities.PatientShareOptionsJs ->
+			    com.icure.sdk.js.crypto.entities.patientShareOptions_fromJs(x1)
+			  },
+			)),
+			{ x1: DecryptedPatient ->
+				patient_toJs(x1)
+			},
+		)}
+
+
+	override fun shareWithMany(patient: DecryptedPatientJs, delegates: dynamic):
+			Promise<DecryptedPatientJs> = GlobalScope.promise {
+		patient_toJs(patientApi.shareWithMany(com.icure.sdk.js.model.patient_fromJs(patient),
+				com.icure.sdk.js.model.CheckedConverters.objectToMap(
+		  delegates,
+		  "delegates",
+		  { x1: kotlin.String ->
+		    x1
+		  },
+		  { x1: com.icure.sdk.js.crypto.entities.PatientShareOptionsJs ->
+		    com.icure.sdk.js.crypto.entities.patientShareOptions_fromJs(x1)
+		  },
+		)))}
+
+
 	override fun initialiseConfidentialSecretId(patient: DecryptedPatientJs):
 			Promise<DecryptedPatientJs> = GlobalScope.promise {
 		patient_toJs(patientApi.initialiseConfidentialSecretId(com.icure.sdk.js.model.patient_fromJs(patient)))}
@@ -940,7 +1068,7 @@ internal class PatientApiImplJs(
 
 
 	override fun filterPatientsBy(
-		filterChain: FilterChainJs<EncryptedPatientJs>,
+		filterChain: FilterChainJs<PatientJs>,
 		startKey: String?,
 		startDocumentId: String?,
 		limit: Double?,
@@ -951,7 +1079,7 @@ internal class PatientApiImplJs(
 		paginatedList_toJs(
 			patientApi.filterPatientsBy(com.icure.sdk.js.model.filter.chain.filterChain_fromJs(
 			  filterChain,
-			  { x1: com.icure.sdk.js.model.EncryptedPatientJs ->
+			  { x1: com.icure.sdk.js.model.PatientJs ->
 			    com.icure.sdk.js.model.patient_fromJs(x1)
 			  },
 			), startKey, startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit,
@@ -1096,24 +1224,6 @@ internal class PatientApiImplJs(
 	override fun getPatientByExternalId(externalId: String): Promise<DecryptedPatientJs> =
 			GlobalScope.promise {
 		patient_toJs(patientApi.getPatientByExternalId(externalId))}
-
-
-	override fun findPatientsByAccessLogUserAfterDate(
-		userId: String,
-		accessType: String?,
-		startDate: Double?,
-		startKey: String?,
-		startDocumentId: String?,
-		limit: Double?,
-	): Promise<PaginatedListJs<DecryptedPatientJs>> = GlobalScope.promise {
-		paginatedList_toJs(
-			patientApi.findPatientsByAccessLogUserAfterDate(userId, accessType,
-					com.icure.sdk.js.model.CheckedConverters.numberToLong(startDate, "startDate"), startKey,
-					startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
-			{ x1: DecryptedPatient ->
-				patient_toJs(x1)
-			},
-		)}
 
 
 	override fun fuzzySearch(

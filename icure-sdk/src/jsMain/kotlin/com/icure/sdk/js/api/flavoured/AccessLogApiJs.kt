@@ -17,6 +17,7 @@ import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
 import kotlin.String
+import kotlin.Unit
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
 import kotlin.js.Promise
@@ -37,6 +38,15 @@ public external interface AccessLogApiJs {
 		secretId: SecretIdOptionJs,
 	): Promise<DecryptedAccessLogJs>
 
+	public fun getEncryptionKeysOf(accessLog: AccessLogJs): Promise<Array<String>>
+
+	public fun hasWriteAccess(accessLog: AccessLogJs): Promise<Boolean>
+
+	public fun decryptPatientIdOf(accessLog: AccessLogJs): Promise<Array<String>>
+
+	public fun createDelegationDeAnonymizationMetadata(entity: AccessLogJs, delegates: Array<String>):
+			Promise<Unit>
+
 	public fun deleteAccessLog(entityId: String): Promise<DocIdentifierJs>
 
 	public fun deleteAccessLogs(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
@@ -48,6 +58,12 @@ public external interface AccessLogApiJs {
 		shareOwningEntityIds: String,
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<DecryptedAccessLogJs>>
+
+	public fun tryShareWithMany(accessLog: DecryptedAccessLogJs, delegates: dynamic):
+			Promise<SimpleShareResultJs<DecryptedAccessLogJs>>
+
+	public fun shareWithMany(accessLog: DecryptedAccessLogJs, delegates: dynamic):
+			Promise<DecryptedAccessLogJs>
 
 	public fun findAccessLogsByHcPartyPatient(
 		hcPartyId: String,

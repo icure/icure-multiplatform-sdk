@@ -22,6 +22,10 @@ public external interface DocumentBasicApiJs {
 
 	public fun getRawMainAttachment(documentId: String, attachmentId: String): Promise<ByteArray>
 
+	public fun getMainAttachmentAsPlainText(documentId: String, attachmentId: String): Promise<String>
+
+	public fun getMainAttachmentAsJson(documentId: String, attachmentId: String): Promise<dynamic>
+
 	public fun getRawSecondaryAttachment(
 		documentId: String,
 		key: String,

@@ -8,7 +8,9 @@ import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.crypto.entities.simpleShareResult_toJs
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
+import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.listToArray
+import com.icure.sdk.js.model.CheckedConverters.setToArray
 import com.icure.sdk.js.model.DecryptedFormJs
 import com.icure.sdk.js.model.EncryptedFormJs
 import com.icure.sdk.js.model.FormJs
@@ -20,6 +22,7 @@ import com.icure.sdk.js.model.couchdb.docIdentifier_toJs
 import com.icure.sdk.js.model.formTemplate_toJs
 import com.icure.sdk.js.model.form_fromJs
 import com.icure.sdk.js.model.form_toJs
+import com.icure.sdk.js.model.specializations.hexString_toJs
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.sdk.model.DecryptedForm
@@ -27,12 +30,14 @@ import com.icure.sdk.model.EncryptedForm
 import com.icure.sdk.model.Form
 import com.icure.sdk.model.FormTemplate
 import com.icure.sdk.model.couchdb.DocIdentifier
+import com.icure.sdk.model.specializations.HexString
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.ByteArray
 import kotlin.Double
 import kotlin.OptIn
 import kotlin.String
+import kotlin.Unit
 import kotlin.js.Promise
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -60,6 +65,41 @@ internal class FormApiImplJs(
 					form_toJs(x1)
 				},
 			)}
+
+
+		override fun tryShareWithMany(form: EncryptedFormJs, delegates: dynamic):
+				Promise<SimpleShareResultJs<EncryptedFormJs>> = GlobalScope.promise {
+			simpleShareResult_toJs(
+				formApi.encrypted.tryShareWithMany(com.icure.sdk.js.model.form_fromJs(form),
+						com.icure.sdk.js.model.CheckedConverters.objectToMap(
+				  delegates,
+				  "delegates",
+				  { x1: kotlin.String ->
+				    x1
+				  },
+				  { x1: com.icure.sdk.js.crypto.entities.FormShareOptionsJs ->
+				    com.icure.sdk.js.crypto.entities.formShareOptions_fromJs(x1)
+				  },
+				)),
+				{ x1: EncryptedForm ->
+					form_toJs(x1)
+				},
+			)}
+
+
+		override fun shareWithMany(form: EncryptedFormJs, delegates: dynamic): Promise<EncryptedFormJs> =
+				GlobalScope.promise {
+			form_toJs(formApi.encrypted.shareWithMany(com.icure.sdk.js.model.form_fromJs(form),
+					com.icure.sdk.js.model.CheckedConverters.objectToMap(
+			  delegates,
+			  "delegates",
+			  { x1: kotlin.String ->
+			    x1
+			  },
+			  { x1: com.icure.sdk.js.crypto.entities.FormShareOptionsJs ->
+			    com.icure.sdk.js.crypto.entities.formShareOptions_fromJs(x1)
+			  },
+			)))}
 
 
 		override fun findFormsByHcPartyPatient(
@@ -193,6 +233,41 @@ internal class FormApiImplJs(
 					form_toJs(x1)
 				},
 			)}
+
+
+		override fun tryShareWithMany(form: FormJs, delegates: dynamic):
+				Promise<SimpleShareResultJs<FormJs>> = GlobalScope.promise {
+			simpleShareResult_toJs(
+				formApi.tryAndRecover.tryShareWithMany(com.icure.sdk.js.model.form_fromJs(form),
+						com.icure.sdk.js.model.CheckedConverters.objectToMap(
+				  delegates,
+				  "delegates",
+				  { x1: kotlin.String ->
+				    x1
+				  },
+				  { x1: com.icure.sdk.js.crypto.entities.FormShareOptionsJs ->
+				    com.icure.sdk.js.crypto.entities.formShareOptions_fromJs(x1)
+				  },
+				)),
+				{ x1: Form ->
+					form_toJs(x1)
+				},
+			)}
+
+
+		override fun shareWithMany(form: FormJs, delegates: dynamic): Promise<FormJs> =
+				GlobalScope.promise {
+			form_toJs(formApi.tryAndRecover.shareWithMany(com.icure.sdk.js.model.form_fromJs(form),
+					com.icure.sdk.js.model.CheckedConverters.objectToMap(
+			  delegates,
+			  "delegates",
+			  { x1: kotlin.String ->
+			    x1
+			  },
+			  { x1: com.icure.sdk.js.crypto.entities.FormShareOptionsJs ->
+			    com.icure.sdk.js.crypto.entities.formShareOptions_fromJs(x1)
+			  },
+			)))}
 
 
 		override fun findFormsByHcPartyPatient(
@@ -348,6 +423,39 @@ internal class FormApiImplJs(
 		), com.icure.sdk.js.crypto.entities.secretIdOption_fromJs(secretId)))}
 
 
+	override fun getEncryptionKeysOf(form: FormJs): Promise<Array<String>> = GlobalScope.promise {
+		setToArray(
+			formApi.getEncryptionKeysOf(form_fromJs(form)),
+			{ x1: HexString ->
+				hexString_toJs(x1)
+			},
+		)}
+
+
+	override fun hasWriteAccess(form: FormJs): Promise<Boolean> = GlobalScope.promise {
+		formApi.hasWriteAccess(form_fromJs(form))}
+
+
+	override fun decryptPatientIdOf(form: FormJs): Promise<Array<String>> = GlobalScope.promise {
+		setToArray(
+			formApi.decryptPatientIdOf(form_fromJs(form)),
+			{ x1: String ->
+				x1
+			},
+		)}
+
+
+	override fun createDelegationDeAnonymizationMetadata(entity: FormJs, delegates: Array<String>):
+			Promise<Unit> = GlobalScope.promise {
+		formApi.createDelegationDeAnonymizationMetadata(form_fromJs(entity), arrayToSet(
+			delegates,
+			"delegates",
+			{ x1: String ->
+				x1
+			},
+		))}
+
+
 	override fun deleteForm(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {
 		docIdentifier_toJs(formApi.deleteForm(entityId))}
 
@@ -442,6 +550,41 @@ internal class FormApiImplJs(
 				form_toJs(x1)
 			},
 		)}
+
+
+	override fun tryShareWithMany(form: DecryptedFormJs, delegates: dynamic):
+			Promise<SimpleShareResultJs<DecryptedFormJs>> = GlobalScope.promise {
+		simpleShareResult_toJs(
+			formApi.tryShareWithMany(com.icure.sdk.js.model.form_fromJs(form),
+					com.icure.sdk.js.model.CheckedConverters.objectToMap(
+			  delegates,
+			  "delegates",
+			  { x1: kotlin.String ->
+			    x1
+			  },
+			  { x1: com.icure.sdk.js.crypto.entities.FormShareOptionsJs ->
+			    com.icure.sdk.js.crypto.entities.formShareOptions_fromJs(x1)
+			  },
+			)),
+			{ x1: DecryptedForm ->
+				form_toJs(x1)
+			},
+		)}
+
+
+	override fun shareWithMany(form: DecryptedFormJs, delegates: dynamic): Promise<DecryptedFormJs> =
+			GlobalScope.promise {
+		form_toJs(formApi.shareWithMany(com.icure.sdk.js.model.form_fromJs(form),
+				com.icure.sdk.js.model.CheckedConverters.objectToMap(
+		  delegates,
+		  "delegates",
+		  { x1: kotlin.String ->
+		    x1
+		  },
+		  { x1: com.icure.sdk.js.crypto.entities.FormShareOptionsJs ->
+		    com.icure.sdk.js.crypto.entities.formShareOptions_fromJs(x1)
+		  },
+		)))}
 
 
 	override fun findFormsByHcPartyPatient(

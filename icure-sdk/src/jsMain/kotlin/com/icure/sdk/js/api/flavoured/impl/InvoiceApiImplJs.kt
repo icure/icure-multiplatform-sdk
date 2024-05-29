@@ -8,9 +8,11 @@ import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.crypto.entities.simpleShareResult_toJs
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
+import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
+import com.icure.sdk.js.model.CheckedConverters.setToArray
 import com.icure.sdk.js.model.DecryptedInvoiceJs
 import com.icure.sdk.js.model.EncryptedInvoiceJs
 import com.icure.sdk.js.model.IcureStubJs
@@ -18,10 +20,10 @@ import com.icure.sdk.js.model.InvoiceJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.PatientJs
 import com.icure.sdk.js.model.UserJs
+import com.icure.sdk.js.model.`data`.LabelledOccurenceJs
+import com.icure.sdk.js.model.`data`.labelledOccurence_toJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.couchdb.docIdentifier_toJs
-import com.icure.sdk.js.model.data.LabelledOccurenceJs
-import com.icure.sdk.js.model.data.labelledOccurence_toJs
 import com.icure.sdk.js.model.embed.EncryptedInvoicingCodeJs
 import com.icure.sdk.js.model.embed.invoiceType_fromJs
 import com.icure.sdk.js.model.embed.invoicingCode_fromJs
@@ -32,17 +34,25 @@ import com.icure.sdk.js.model.icureStub_toJs
 import com.icure.sdk.js.model.invoice_fromJs
 import com.icure.sdk.js.model.invoice_toJs
 import com.icure.sdk.js.model.paginatedList_toJs
+import com.icure.sdk.js.model.specializations.hexString_toJs
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.sdk.model.DecryptedInvoice
 import com.icure.sdk.model.EncryptedInvoice
 import com.icure.sdk.model.IcureStub
 import com.icure.sdk.model.Invoice
-import com.icure.sdk.model.data.LabelledOccurence
+import com.icure.sdk.model.`data`.LabelledOccurence
+import com.icure.sdk.model.specializations.HexString
+import kotlin.Array
+import kotlin.Boolean
+import kotlin.Double
+import kotlin.OptIn
+import kotlin.String
+import kotlin.Unit
+import kotlin.js.Promise
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
-import kotlin.js.Promise
 
 @OptIn(DelicateCoroutinesApi::class)
 internal class InvoiceApiImplJs(
@@ -66,6 +76,41 @@ internal class InvoiceApiImplJs(
 					invoice_toJs(x1)
 				},
 			)}
+
+
+		override fun tryShareWithMany(invoice: EncryptedInvoiceJs, delegates: dynamic):
+				Promise<SimpleShareResultJs<EncryptedInvoiceJs>> = GlobalScope.promise {
+			simpleShareResult_toJs(
+				invoiceApi.encrypted.tryShareWithMany(com.icure.sdk.js.model.invoice_fromJs(invoice),
+						com.icure.sdk.js.model.CheckedConverters.objectToMap(
+				  delegates,
+				  "delegates",
+				  { x1: kotlin.String ->
+				    x1
+				  },
+				  { x1: com.icure.sdk.js.crypto.entities.InvoiceShareOptionsJs ->
+				    com.icure.sdk.js.crypto.entities.invoiceShareOptions_fromJs(x1)
+				  },
+				)),
+				{ x1: EncryptedInvoice ->
+					invoice_toJs(x1)
+				},
+			)}
+
+
+		override fun shareWithMany(invoice: EncryptedInvoiceJs, delegates: dynamic):
+				Promise<EncryptedInvoiceJs> = GlobalScope.promise {
+			invoice_toJs(invoiceApi.encrypted.shareWithMany(com.icure.sdk.js.model.invoice_fromJs(invoice),
+					com.icure.sdk.js.model.CheckedConverters.objectToMap(
+			  delegates,
+			  "delegates",
+			  { x1: kotlin.String ->
+			    x1
+			  },
+			  { x1: com.icure.sdk.js.crypto.entities.InvoiceShareOptionsJs ->
+			    com.icure.sdk.js.crypto.entities.invoiceShareOptions_fromJs(x1)
+			  },
+			)))}
 
 
 		override fun findInvoicesByHcPartyPatient(
@@ -127,12 +172,12 @@ internal class InvoiceApiImplJs(
 			)}
 
 
-		override fun filterInvoicesBy(filterChain: FilterChainJs<EncryptedInvoiceJs>):
+		override fun filterInvoicesBy(filterChain: FilterChainJs<InvoiceJs>):
 				Promise<Array<EncryptedInvoiceJs>> = GlobalScope.promise {
 			listToArray(
 				invoiceApi.encrypted.filterInvoicesBy(filterChain_fromJs(
 					filterChain,
-					{ x1: EncryptedInvoiceJs ->
+					{ x1: InvoiceJs ->
 						invoice_fromJs(x1)
 					},
 				)),
@@ -466,6 +511,41 @@ internal class InvoiceApiImplJs(
 			)}
 
 
+		override fun tryShareWithMany(invoice: InvoiceJs, delegates: dynamic):
+				Promise<SimpleShareResultJs<InvoiceJs>> = GlobalScope.promise {
+			simpleShareResult_toJs(
+				invoiceApi.tryAndRecover.tryShareWithMany(com.icure.sdk.js.model.invoice_fromJs(invoice),
+						com.icure.sdk.js.model.CheckedConverters.objectToMap(
+				  delegates,
+				  "delegates",
+				  { x1: kotlin.String ->
+				    x1
+				  },
+				  { x1: com.icure.sdk.js.crypto.entities.InvoiceShareOptionsJs ->
+				    com.icure.sdk.js.crypto.entities.invoiceShareOptions_fromJs(x1)
+				  },
+				)),
+				{ x1: Invoice ->
+					invoice_toJs(x1)
+				},
+			)}
+
+
+		override fun shareWithMany(invoice: InvoiceJs, delegates: dynamic): Promise<InvoiceJs> =
+				GlobalScope.promise {
+			invoice_toJs(invoiceApi.tryAndRecover.shareWithMany(com.icure.sdk.js.model.invoice_fromJs(invoice),
+					com.icure.sdk.js.model.CheckedConverters.objectToMap(
+			  delegates,
+			  "delegates",
+			  { x1: kotlin.String ->
+			    x1
+			  },
+			  { x1: com.icure.sdk.js.crypto.entities.InvoiceShareOptionsJs ->
+			    com.icure.sdk.js.crypto.entities.invoiceShareOptions_fromJs(x1)
+			  },
+			)))}
+
+
 		override fun findInvoicesByHcPartyPatient(
 			hcPartyId: String,
 			patient: PatientJs,
@@ -524,12 +604,12 @@ internal class InvoiceApiImplJs(
 			)}
 
 
-		override fun filterInvoicesBy(filterChain: FilterChainJs<EncryptedInvoiceJs>):
-				Promise<Array<InvoiceJs>> = GlobalScope.promise {
+		override fun filterInvoicesBy(filterChain: FilterChainJs<InvoiceJs>): Promise<Array<InvoiceJs>> =
+				GlobalScope.promise {
 			listToArray(
 				invoiceApi.tryAndRecover.filterInvoicesBy(filterChain_fromJs(
 					filterChain,
-					{ x1: EncryptedInvoiceJs ->
+					{ x1: InvoiceJs ->
 						invoice_fromJs(x1)
 					},
 				)),
@@ -841,9 +921,9 @@ internal class InvoiceApiImplJs(
 
 	}
 
-	override fun createInvoice(entity: DecryptedInvoiceJs): Promise<DecryptedInvoiceJs> =
-			GlobalScope.promise {
-		invoice_toJs(invoiceApi.createInvoice(com.icure.sdk.js.model.invoice_fromJs(entity), TODO()))}
+	override fun createInvoice(entity: DecryptedInvoiceJs, prefix: String?):
+			Promise<DecryptedInvoiceJs> = GlobalScope.promise {
+		invoice_toJs(invoiceApi.createInvoice(com.icure.sdk.js.model.invoice_fromJs(entity), prefix))}
 
 
 	override fun createInvoices(entities: Array<DecryptedInvoiceJs>):
@@ -885,6 +965,40 @@ internal class InvoiceApiImplJs(
 		    com.icure.sdk.js.model.embed.accessLevel_fromJs(x1)
 		  },
 		), com.icure.sdk.js.crypto.entities.secretIdOption_fromJs(secretId)))}
+
+
+	override fun getEncryptionKeysOf(invoice: InvoiceJs): Promise<Array<String>> =
+			GlobalScope.promise {
+		setToArray(
+			invoiceApi.getEncryptionKeysOf(invoice_fromJs(invoice)),
+			{ x1: HexString ->
+				hexString_toJs(x1)
+			},
+		)}
+
+
+	override fun hasWriteAccess(invoice: InvoiceJs): Promise<Boolean> = GlobalScope.promise {
+		invoiceApi.hasWriteAccess(invoice_fromJs(invoice))}
+
+
+	override fun decryptPatientIdOf(invoice: InvoiceJs): Promise<Array<String>> = GlobalScope.promise {
+		setToArray(
+			invoiceApi.decryptPatientIdOf(invoice_fromJs(invoice)),
+			{ x1: String ->
+				x1
+			},
+		)}
+
+
+	override fun createDelegationDeAnonymizationMetadata(entity: InvoiceJs, delegates: Array<String>):
+			Promise<Unit> = GlobalScope.promise {
+		invoiceApi.createDelegationDeAnonymizationMetadata(invoice_fromJs(entity), arrayToSet(
+			delegates,
+			"delegates",
+			{ x1: String ->
+				x1
+			},
+		))}
 
 
 	override fun deleteInvoice(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {
@@ -933,6 +1047,41 @@ internal class InvoiceApiImplJs(
 				invoice_toJs(x1)
 			},
 		)}
+
+
+	override fun tryShareWithMany(invoice: DecryptedInvoiceJs, delegates: dynamic):
+			Promise<SimpleShareResultJs<DecryptedInvoiceJs>> = GlobalScope.promise {
+		simpleShareResult_toJs(
+			invoiceApi.tryShareWithMany(com.icure.sdk.js.model.invoice_fromJs(invoice),
+					com.icure.sdk.js.model.CheckedConverters.objectToMap(
+			  delegates,
+			  "delegates",
+			  { x1: kotlin.String ->
+			    x1
+			  },
+			  { x1: com.icure.sdk.js.crypto.entities.InvoiceShareOptionsJs ->
+			    com.icure.sdk.js.crypto.entities.invoiceShareOptions_fromJs(x1)
+			  },
+			)),
+			{ x1: DecryptedInvoice ->
+				invoice_toJs(x1)
+			},
+		)}
+
+
+	override fun shareWithMany(invoice: DecryptedInvoiceJs, delegates: dynamic):
+			Promise<DecryptedInvoiceJs> = GlobalScope.promise {
+		invoice_toJs(invoiceApi.shareWithMany(com.icure.sdk.js.model.invoice_fromJs(invoice),
+				com.icure.sdk.js.model.CheckedConverters.objectToMap(
+		  delegates,
+		  "delegates",
+		  { x1: kotlin.String ->
+		    x1
+		  },
+		  { x1: com.icure.sdk.js.crypto.entities.InvoiceShareOptionsJs ->
+		    com.icure.sdk.js.crypto.entities.invoiceShareOptions_fromJs(x1)
+		  },
+		)))}
 
 
 	override fun findInvoicesByHcPartyPatient(
@@ -994,12 +1143,12 @@ internal class InvoiceApiImplJs(
 		)}
 
 
-	override fun filterInvoicesBy(filterChain: FilterChainJs<EncryptedInvoiceJs>):
+	override fun filterInvoicesBy(filterChain: FilterChainJs<InvoiceJs>):
 			Promise<Array<DecryptedInvoiceJs>> = GlobalScope.promise {
 		listToArray(
 			invoiceApi.filterInvoicesBy(filterChain_fromJs(
 				filterChain,
-				{ x1: EncryptedInvoiceJs ->
+				{ x1: InvoiceJs ->
 					invoice_fromJs(x1)
 				},
 			)),

@@ -4,6 +4,7 @@
 package com.icure.sdk.js.api.flavoured
 
 import com.icure.sdk.js.model.EncryptedHealthElementJs
+import com.icure.sdk.js.model.HealthElementJs
 import com.icure.sdk.js.model.IcureStubJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
@@ -18,7 +19,7 @@ import kotlin.js.Promise
 
 @JsName("HealthcareElementBasicApi")
 public external interface HealthcareElementBasicApiJs {
-	public fun matchHealthcareElementsBy(filter: AbstractFilterJs<EncryptedHealthElementJs>):
+	public fun matchHealthcareElementsBy(filter: AbstractFilterJs<HealthElementJs>):
 			Promise<Array<String>>
 
 	public fun deleteHealthcareElement(entityId: String): Promise<DocIdentifierJs>
@@ -40,7 +41,7 @@ public external interface HealthcareElementBasicApiJs {
 			Promise<Array<EncryptedHealthElementJs>>
 
 	public fun filterHealthcareElementsBy(
-		filterChain: FilterChainJs<EncryptedHealthElementJs>,
+		filterChain: FilterChainJs<HealthElementJs>,
 		startDocumentId: String?,
 		limit: Double?,
 	): Promise<PaginatedListJs<EncryptedHealthElementJs>>

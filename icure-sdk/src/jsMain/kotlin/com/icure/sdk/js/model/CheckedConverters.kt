@@ -1,5 +1,7 @@
 package com.icure.sdk.js.model
 
+import com.icure.sdk.crypto.entities.EntityWithTypeInfo
+import com.icure.sdk.js.crypto.entities.EntityWithTypeInfoJs
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.ensure
 import com.icure.sdk.utils.isJsSafe
@@ -231,4 +233,6 @@ object CheckedConverters {
 
 	fun jsonToDynamic(obj: JsonElement?): dynamic =
 		obj?.let { jsonToDynamic(it) }
+
+	fun anyEntityWithTypeInfoToKt(obj: EntityWithTypeInfoJs<*>): EntityWithTypeInfo<*> = TODO()
 }

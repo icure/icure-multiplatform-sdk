@@ -36,7 +36,7 @@ object ShareAllPatientDataOptions {
 
 	sealed interface SharePatientDataError
 
-	class BulkShareFailure(val errors: List<FailedRequestDetails>, message: String) : SharePatientDataError
+	class BulkShareFailure(val errors: List<FailedRequestDetails>, val message: String) : SharePatientDataError
 
 	class FailedRequest(val exception: Throwable) : SharePatientDataError
 }

@@ -8,7 +8,9 @@ import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.crypto.entities.simpleShareResult_toJs
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
+import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.listToArray
+import com.icure.sdk.js.model.CheckedConverters.setToArray
 import com.icure.sdk.js.model.DecryptedHealthElementJs
 import com.icure.sdk.js.model.EncryptedHealthElementJs
 import com.icure.sdk.js.model.HealthElementJs
@@ -25,6 +27,7 @@ import com.icure.sdk.js.model.healthElement_fromJs
 import com.icure.sdk.js.model.healthElement_toJs
 import com.icure.sdk.js.model.icureStub_toJs
 import com.icure.sdk.js.model.paginatedList_toJs
+import com.icure.sdk.js.model.specializations.hexString_toJs
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.sdk.model.DecryptedHealthElement
@@ -32,11 +35,13 @@ import com.icure.sdk.model.EncryptedHealthElement
 import com.icure.sdk.model.HealthElement
 import com.icure.sdk.model.IcureStub
 import com.icure.sdk.model.couchdb.DocIdentifier
+import com.icure.sdk.model.specializations.HexString
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
 import kotlin.OptIn
 import kotlin.String
+import kotlin.Unit
 import kotlin.js.Promise
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -65,6 +70,41 @@ internal class HealthcareElementApiImplJs(
 					healthElement_toJs(x1)
 				},
 			)}
+
+
+		override fun tryShareWithMany(healthElement: EncryptedHealthElementJs, delegates: dynamic):
+				Promise<SimpleShareResultJs<EncryptedHealthElementJs>> = GlobalScope.promise {
+			simpleShareResult_toJs(
+				healthcareElementApi.encrypted.tryShareWithMany(com.icure.sdk.js.model.healthElement_fromJs(healthElement),
+						com.icure.sdk.js.model.CheckedConverters.objectToMap(
+				  delegates,
+				  "delegates",
+				  { x1: kotlin.String ->
+				    x1
+				  },
+				  { x1: com.icure.sdk.js.crypto.entities.HealthElementShareOptionsJs ->
+				    com.icure.sdk.js.crypto.entities.healthElementShareOptions_fromJs(x1)
+				  },
+				)),
+				{ x1: EncryptedHealthElement ->
+					healthElement_toJs(x1)
+				},
+			)}
+
+
+		override fun shareWithMany(healthElement: EncryptedHealthElementJs, delegates: dynamic):
+				Promise<EncryptedHealthElementJs> = GlobalScope.promise {
+			healthElement_toJs(healthcareElementApi.encrypted.shareWithMany(com.icure.sdk.js.model.healthElement_fromJs(healthElement),
+					com.icure.sdk.js.model.CheckedConverters.objectToMap(
+			  delegates,
+			  "delegates",
+			  { x1: kotlin.String ->
+			    x1
+			  },
+			  { x1: com.icure.sdk.js.crypto.entities.HealthElementShareOptionsJs ->
+			    com.icure.sdk.js.crypto.entities.healthElementShareOptions_fromJs(x1)
+			  },
+			)))}
 
 
 		override fun findHealthcareElementsByHcPartyPatient(
@@ -128,14 +168,14 @@ internal class HealthcareElementApiImplJs(
 
 
 		override fun filterHealthcareElementsBy(
-			filterChain: FilterChainJs<EncryptedHealthElementJs>,
+			filterChain: FilterChainJs<HealthElementJs>,
 			startDocumentId: String?,
 			limit: Double?,
 		): Promise<PaginatedListJs<EncryptedHealthElementJs>> = GlobalScope.promise {
 			paginatedList_toJs(
 				healthcareElementApi.encrypted.filterHealthcareElementsBy(com.icure.sdk.js.model.filter.chain.filterChain_fromJs(
 				  filterChain,
-				  { x1: com.icure.sdk.js.model.EncryptedHealthElementJs ->
+				  { x1: com.icure.sdk.js.model.HealthElementJs ->
 				    com.icure.sdk.js.model.healthElement_fromJs(x1)
 				  },
 				), startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
@@ -183,6 +223,41 @@ internal class HealthcareElementApiImplJs(
 					healthElement_toJs(x1)
 				},
 			)}
+
+
+		override fun tryShareWithMany(healthElement: HealthElementJs, delegates: dynamic):
+				Promise<SimpleShareResultJs<HealthElementJs>> = GlobalScope.promise {
+			simpleShareResult_toJs(
+				healthcareElementApi.tryAndRecover.tryShareWithMany(com.icure.sdk.js.model.healthElement_fromJs(healthElement),
+						com.icure.sdk.js.model.CheckedConverters.objectToMap(
+				  delegates,
+				  "delegates",
+				  { x1: kotlin.String ->
+				    x1
+				  },
+				  { x1: com.icure.sdk.js.crypto.entities.HealthElementShareOptionsJs ->
+				    com.icure.sdk.js.crypto.entities.healthElementShareOptions_fromJs(x1)
+				  },
+				)),
+				{ x1: HealthElement ->
+					healthElement_toJs(x1)
+				},
+			)}
+
+
+		override fun shareWithMany(healthElement: HealthElementJs, delegates: dynamic):
+				Promise<HealthElementJs> = GlobalScope.promise {
+			healthElement_toJs(healthcareElementApi.tryAndRecover.shareWithMany(com.icure.sdk.js.model.healthElement_fromJs(healthElement),
+					com.icure.sdk.js.model.CheckedConverters.objectToMap(
+			  delegates,
+			  "delegates",
+			  { x1: kotlin.String ->
+			    x1
+			  },
+			  { x1: com.icure.sdk.js.crypto.entities.HealthElementShareOptionsJs ->
+			    com.icure.sdk.js.crypto.entities.healthElementShareOptions_fromJs(x1)
+			  },
+			)))}
 
 
 		override fun findHealthcareElementsByHcPartyPatient(
@@ -246,14 +321,14 @@ internal class HealthcareElementApiImplJs(
 
 
 		override fun filterHealthcareElementsBy(
-			filterChain: FilterChainJs<EncryptedHealthElementJs>,
+			filterChain: FilterChainJs<HealthElementJs>,
 			startDocumentId: String?,
 			limit: Double?,
 		): Promise<PaginatedListJs<HealthElementJs>> = GlobalScope.promise {
 			paginatedList_toJs(
 				healthcareElementApi.tryAndRecover.filterHealthcareElementsBy(com.icure.sdk.js.model.filter.chain.filterChain_fromJs(
 				  filterChain,
-				  { x1: com.icure.sdk.js.model.EncryptedHealthElementJs ->
+				  { x1: com.icure.sdk.js.model.HealthElementJs ->
 				    com.icure.sdk.js.model.healthElement_fromJs(x1)
 				  },
 				), startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
@@ -325,12 +400,49 @@ internal class HealthcareElementApiImplJs(
 		), com.icure.sdk.js.crypto.entities.secretIdOption_fromJs(secretId)))}
 
 
-	override fun matchHealthcareElementsBy(filter: AbstractFilterJs<EncryptedHealthElementJs>):
+	override fun getEncryptionKeysOf(healthElement: HealthElementJs): Promise<Array<String>> =
+			GlobalScope.promise {
+		setToArray(
+			healthcareElementApi.getEncryptionKeysOf(healthElement_fromJs(healthElement)),
+			{ x1: HexString ->
+				hexString_toJs(x1)
+			},
+		)}
+
+
+	override fun hasWriteAccess(healthElement: HealthElementJs): Promise<Boolean> =
+			GlobalScope.promise {
+		healthcareElementApi.hasWriteAccess(healthElement_fromJs(healthElement))}
+
+
+	override fun decryptPatientIdOf(healthElement: HealthElementJs): Promise<Array<String>> =
+			GlobalScope.promise {
+		setToArray(
+			healthcareElementApi.decryptPatientIdOf(healthElement_fromJs(healthElement)),
+			{ x1: String ->
+				x1
+			},
+		)}
+
+
+	override fun createDelegationDeAnonymizationMetadata(entity: HealthElementJs,
+			delegates: Array<String>): Promise<Unit> = GlobalScope.promise {
+		healthcareElementApi.createDelegationDeAnonymizationMetadata(healthElement_fromJs(entity),
+				arrayToSet(
+			delegates,
+			"delegates",
+			{ x1: String ->
+				x1
+			},
+		))}
+
+
+	override fun matchHealthcareElementsBy(filter: AbstractFilterJs<HealthElementJs>):
 			Promise<Array<String>> = GlobalScope.promise {
 		listToArray(
 			healthcareElementApi.matchHealthcareElementsBy(abstractFilter_fromJs(
 				filter,
-				{ x1: EncryptedHealthElementJs ->
+				{ x1: HealthElementJs ->
 					healthElement_fromJs(x1)
 				},
 			)),
@@ -397,6 +509,41 @@ internal class HealthcareElementApiImplJs(
 		)}
 
 
+	override fun tryShareWithMany(healthElement: DecryptedHealthElementJs, delegates: dynamic):
+			Promise<SimpleShareResultJs<DecryptedHealthElementJs>> = GlobalScope.promise {
+		simpleShareResult_toJs(
+			healthcareElementApi.tryShareWithMany(com.icure.sdk.js.model.healthElement_fromJs(healthElement),
+					com.icure.sdk.js.model.CheckedConverters.objectToMap(
+			  delegates,
+			  "delegates",
+			  { x1: kotlin.String ->
+			    x1
+			  },
+			  { x1: com.icure.sdk.js.crypto.entities.HealthElementShareOptionsJs ->
+			    com.icure.sdk.js.crypto.entities.healthElementShareOptions_fromJs(x1)
+			  },
+			)),
+			{ x1: DecryptedHealthElement ->
+				healthElement_toJs(x1)
+			},
+		)}
+
+
+	override fun shareWithMany(healthElement: DecryptedHealthElementJs, delegates: dynamic):
+			Promise<DecryptedHealthElementJs> = GlobalScope.promise {
+		healthElement_toJs(healthcareElementApi.shareWithMany(com.icure.sdk.js.model.healthElement_fromJs(healthElement),
+				com.icure.sdk.js.model.CheckedConverters.objectToMap(
+		  delegates,
+		  "delegates",
+		  { x1: kotlin.String ->
+		    x1
+		  },
+		  { x1: com.icure.sdk.js.crypto.entities.HealthElementShareOptionsJs ->
+		    com.icure.sdk.js.crypto.entities.healthElementShareOptions_fromJs(x1)
+		  },
+		)))}
+
+
 	override fun findHealthcareElementsByHcPartyPatient(
 		hcPartyId: String,
 		patient: PatientJs,
@@ -458,14 +605,14 @@ internal class HealthcareElementApiImplJs(
 
 
 	override fun filterHealthcareElementsBy(
-		filterChain: FilterChainJs<EncryptedHealthElementJs>,
+		filterChain: FilterChainJs<HealthElementJs>,
 		startDocumentId: String?,
 		limit: Double?,
 	): Promise<PaginatedListJs<DecryptedHealthElementJs>> = GlobalScope.promise {
 		paginatedList_toJs(
 			healthcareElementApi.filterHealthcareElementsBy(com.icure.sdk.js.model.filter.chain.filterChain_fromJs(
 			  filterChain,
-			  { x1: com.icure.sdk.js.model.EncryptedHealthElementJs ->
+			  { x1: com.icure.sdk.js.model.HealthElementJs ->
 			    com.icure.sdk.js.model.healthElement_fromJs(x1)
 			  },
 			), startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),

@@ -26,6 +26,10 @@ public external interface CalendarItemFlavouredApiJs<E : CalendarItemJs> {
 		requestedPermission: String,
 	): Promise<SimpleShareResultJs<E>>
 
+	public fun tryShareWithMany(calendarItem: E, delegates: dynamic): Promise<SimpleShareResultJs<E>>
+
+	public fun shareWithMany(calendarItem: E, delegates: dynamic): Promise<E>
+
 	public fun findCalendarItemsByHcPartyPatient(
 		hcPartyId: String,
 		patient: PatientJs,
@@ -33,6 +37,12 @@ public external interface CalendarItemFlavouredApiJs<E : CalendarItemJs> {
 		endDate: Double?,
 		descending: Boolean?,
 	): Promise<PaginatedListIteratorJs<E>>
+
+	public fun linkToPatient(
+		calendarItem: CalendarItemJs,
+		patient: PatientJs,
+		shareLinkWithDelegates: Array<String>,
+	): Promise<E>
 
 	public fun modifyCalendarItem(entity: E): Promise<E>
 

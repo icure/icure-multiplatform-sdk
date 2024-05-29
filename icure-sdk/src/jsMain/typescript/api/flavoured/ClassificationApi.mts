@@ -1,4 +1,5 @@
 // auto-generated file
+import {ClassificationShareOptions} from '../../crypto/entities/ClassificationShareOptions.mjs';
 import {SecretIdOption} from '../../crypto/entities/SecretIdOption.mjs';
 import {ShareMetadataBehaviour} from '../../crypto/entities/ShareMetadataBehaviour.mjs';
 import {SimpleShareResult} from '../../crypto/entities/SimpleShareResult.mjs';
@@ -9,6 +10,7 @@ import {User} from '../../model/User.mjs';
 import {DocIdentifier} from '../../model/couchdb/DocIdentifier.mjs';
 import {AccessLevel} from '../../model/embed/AccessLevel.mjs';
 import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs';
+import {HexString} from '../../model/specializations/HexString.mjs';
 import {ClassificationFlavouredApi} from './ClassificationFlavouredApi.mjs';
 
 
@@ -28,6 +30,15 @@ export interface ClassificationApi {
 			secretId: SecretIdOption
 	): Promise<DecryptedClassification>;
 
+	getEncryptionKeysOf(classification: Classification): Promise<Array<HexString>>;
+
+	hasWriteAccess(classification: Classification): Promise<boolean>;
+
+	decryptPatientIdOf(classification: Classification): Promise<Array<string>>;
+
+	createDelegationDeAnonymizationMetadata(entity: Classification,
+			delegates: Array<string>): Promise<void>;
+
 	deleteClassification(entityId: string): Promise<DocIdentifier>;
 
 	deleteClassifications(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
@@ -39,6 +50,12 @@ export interface ClassificationApi {
 			shareOwningEntityIds: ShareMetadataBehaviour,
 			requestedPermission: RequestedPermission
 	): Promise<SimpleShareResult<DecryptedClassification>>;
+
+	tryShareWithMany(classification: DecryptedClassification,
+			delegates: { [ key: string ]: ClassificationShareOptions }): Promise<SimpleShareResult<DecryptedClassification>>;
+
+	shareWithMany(classification: DecryptedClassification,
+			delegates: { [ key: string ]: ClassificationShareOptions }): Promise<DecryptedClassification>;
 
 	findClassificationsByHcPartyPatient(
 			hcPartyId: string,

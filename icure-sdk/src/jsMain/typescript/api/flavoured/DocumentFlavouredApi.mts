@@ -1,4 +1,5 @@
 // auto-generated file
+import {DocumentShareOptions} from '../../crypto/entities/DocumentShareOptions.mjs';
 import {ShareMetadataBehaviour} from '../../crypto/entities/ShareMetadataBehaviour.mjs';
 import {SimpleShareResult} from '../../crypto/entities/SimpleShareResult.mjs';
 import {PaginatedListIterator} from '../../icure-sdk.mjs';
@@ -16,6 +17,11 @@ export interface DocumentFlavouredApi<E extends Document> {
 			shareOwningEntityIds: ShareMetadataBehaviour,
 			requestedPermission: RequestedPermission
 	): Promise<SimpleShareResult<E>>;
+
+	tryShareWithMany(document: E,
+			delegates: { [ key: string ]: DocumentShareOptions }): Promise<SimpleShareResult<E>>;
+
+	shareWithMany(document: E, delegates: { [ key: string ]: DocumentShareOptions }): Promise<E>;
 
 	findDocumentsByHcPartyPatient(
 			hcPartyId: string,

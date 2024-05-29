@@ -1,8 +1,9 @@
 // auto-generated file
+import {HealthElementShareOptions} from '../../crypto/entities/HealthElementShareOptions.mjs';
 import {ShareMetadataBehaviour} from '../../crypto/entities/ShareMetadataBehaviour.mjs';
 import {SimpleShareResult} from '../../crypto/entities/SimpleShareResult.mjs';
 import {PaginatedListIterator} from '../../icure-sdk.mjs';
-import {EncryptedHealthElement, HealthElement} from '../../model/HealthElement.mjs';
+import {HealthElement} from '../../model/HealthElement.mjs';
 import {PaginatedList} from '../../model/PaginatedList.mjs';
 import {Patient} from '../../model/Patient.mjs';
 import {FilterChain} from '../../model/filter/chain/FilterChain.mjs';
@@ -18,6 +19,12 @@ export interface HealthcareElementFlavouredApi<E extends HealthElement> {
 			shareOwningEntityIds: ShareMetadataBehaviour,
 			requestedPermission: RequestedPermission
 	): Promise<SimpleShareResult<E>>;
+
+	tryShareWithMany(healthElement: E,
+			delegates: { [ key: string ]: HealthElementShareOptions }): Promise<SimpleShareResult<E>>;
+
+	shareWithMany(healthElement: E,
+			delegates: { [ key: string ]: HealthElementShareOptions }): Promise<E>;
 
 	findHealthcareElementsByHcPartyPatient(
 			hcPartyId: string,
@@ -35,7 +42,7 @@ export interface HealthcareElementFlavouredApi<E extends HealthElement> {
 
 	getHealthcareElements(entityIds: Array<string>): Promise<Array<E>>;
 
-	filterHealthcareElementsBy(filterChain: FilterChain<EncryptedHealthElement>,
+	filterHealthcareElementsBy(filterChain: FilterChain<HealthElement>,
 			startDocumentId: string | undefined, limit: number | undefined): Promise<PaginatedList<E>>;
 
 	findHealthcareElementsByHcPartyPatientForeignKeys(hcPartyId: string,

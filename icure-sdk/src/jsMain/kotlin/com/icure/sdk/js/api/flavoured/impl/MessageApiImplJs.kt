@@ -8,9 +8,11 @@ import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.crypto.entities.simpleShareResult_toJs
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
+import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
+import com.icure.sdk.js.model.CheckedConverters.setToArray
 import com.icure.sdk.js.model.DecryptedMessageJs
 import com.icure.sdk.js.model.EncryptedMessageJs
 import com.icure.sdk.js.model.MessageJs
@@ -25,17 +27,20 @@ import com.icure.sdk.js.model.filter.chain.FilterChainJs
 import com.icure.sdk.js.model.message_fromJs
 import com.icure.sdk.js.model.message_toJs
 import com.icure.sdk.js.model.paginatedList_toJs
+import com.icure.sdk.js.model.specializations.hexString_toJs
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.sdk.model.DecryptedMessage
 import com.icure.sdk.model.EncryptedMessage
 import com.icure.sdk.model.Message
 import com.icure.sdk.model.couchdb.DocIdentifier
+import com.icure.sdk.model.specializations.HexString
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
 import kotlin.OptIn
 import kotlin.String
+import kotlin.Unit
 import kotlin.js.Promise
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -70,6 +75,41 @@ internal class MessageApiImplJs(
 					message_toJs(x1)
 				},
 			)}
+
+
+		override fun tryShareWithMany(message: EncryptedMessageJs, delegates: dynamic):
+				Promise<SimpleShareResultJs<EncryptedMessageJs>> = GlobalScope.promise {
+			simpleShareResult_toJs(
+				messageApi.encrypted.tryShareWithMany(com.icure.sdk.js.model.message_fromJs(message),
+						com.icure.sdk.js.model.CheckedConverters.objectToMap(
+				  delegates,
+				  "delegates",
+				  { x1: kotlin.String ->
+				    x1
+				  },
+				  { x1: com.icure.sdk.js.crypto.entities.MessageShareOptionsJs ->
+				    com.icure.sdk.js.crypto.entities.messageShareOptions_fromJs(x1)
+				  },
+				)),
+				{ x1: EncryptedMessage ->
+					message_toJs(x1)
+				},
+			)}
+
+
+		override fun shareWithMany(message: EncryptedMessageJs, delegates: dynamic):
+				Promise<EncryptedMessageJs> = GlobalScope.promise {
+			message_toJs(messageApi.encrypted.shareWithMany(com.icure.sdk.js.model.message_fromJs(message),
+					com.icure.sdk.js.model.CheckedConverters.objectToMap(
+			  delegates,
+			  "delegates",
+			  { x1: kotlin.String ->
+			    x1
+			  },
+			  { x1: com.icure.sdk.js.crypto.entities.MessageShareOptionsJs ->
+			    com.icure.sdk.js.crypto.entities.messageShareOptions_fromJs(x1)
+			  },
+			)))}
 
 
 		override fun findMessagesByHcPartyPatient(
@@ -116,14 +156,14 @@ internal class MessageApiImplJs(
 
 
 		override fun filterMessagesBy(
-			filterChain: FilterChainJs<EncryptedMessageJs>,
+			filterChain: FilterChainJs<MessageJs>,
 			startDocumentId: String?,
 			limit: Double?,
 		): Promise<PaginatedListJs<EncryptedMessageJs>> = GlobalScope.promise {
 			paginatedList_toJs(
 				messageApi.encrypted.filterMessagesBy(com.icure.sdk.js.model.filter.chain.filterChain_fromJs(
 				  filterChain,
-				  { x1: com.icure.sdk.js.model.EncryptedMessageJs ->
+				  { x1: com.icure.sdk.js.model.MessageJs ->
 				    com.icure.sdk.js.model.message_fromJs(x1)
 				  },
 				), startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
@@ -349,6 +389,41 @@ internal class MessageApiImplJs(
 			)}
 
 
+		override fun tryShareWithMany(message: MessageJs, delegates: dynamic):
+				Promise<SimpleShareResultJs<MessageJs>> = GlobalScope.promise {
+			simpleShareResult_toJs(
+				messageApi.tryAndRecover.tryShareWithMany(com.icure.sdk.js.model.message_fromJs(message),
+						com.icure.sdk.js.model.CheckedConverters.objectToMap(
+				  delegates,
+				  "delegates",
+				  { x1: kotlin.String ->
+				    x1
+				  },
+				  { x1: com.icure.sdk.js.crypto.entities.MessageShareOptionsJs ->
+				    com.icure.sdk.js.crypto.entities.messageShareOptions_fromJs(x1)
+				  },
+				)),
+				{ x1: Message ->
+					message_toJs(x1)
+				},
+			)}
+
+
+		override fun shareWithMany(message: MessageJs, delegates: dynamic): Promise<MessageJs> =
+				GlobalScope.promise {
+			message_toJs(messageApi.tryAndRecover.shareWithMany(com.icure.sdk.js.model.message_fromJs(message),
+					com.icure.sdk.js.model.CheckedConverters.objectToMap(
+			  delegates,
+			  "delegates",
+			  { x1: kotlin.String ->
+			    x1
+			  },
+			  { x1: com.icure.sdk.js.crypto.entities.MessageShareOptionsJs ->
+			    com.icure.sdk.js.crypto.entities.messageShareOptions_fromJs(x1)
+			  },
+			)))}
+
+
 		override fun findMessagesByHcPartyPatient(
 			hcPartyId: String,
 			patient: PatientJs,
@@ -392,14 +467,14 @@ internal class MessageApiImplJs(
 
 
 		override fun filterMessagesBy(
-			filterChain: FilterChainJs<EncryptedMessageJs>,
+			filterChain: FilterChainJs<MessageJs>,
 			startDocumentId: String?,
 			limit: Double?,
 		): Promise<PaginatedListJs<MessageJs>> = GlobalScope.promise {
 			paginatedList_toJs(
 				messageApi.tryAndRecover.filterMessagesBy(com.icure.sdk.js.model.filter.chain.filterChain_fromJs(
 				  filterChain,
-				  { x1: com.icure.sdk.js.model.EncryptedMessageJs ->
+				  { x1: com.icure.sdk.js.model.MessageJs ->
 				    com.icure.sdk.js.model.message_fromJs(x1)
 				  },
 				), startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
@@ -628,17 +703,51 @@ internal class MessageApiImplJs(
 		), com.icure.sdk.js.crypto.entities.secretIdOption_fromJs(secretId)))}
 
 
+	override fun getEncryptionKeysOf(message: MessageJs): Promise<Array<String>> =
+			GlobalScope.promise {
+		setToArray(
+			messageApi.getEncryptionKeysOf(message_fromJs(message)),
+			{ x1: HexString ->
+				hexString_toJs(x1)
+			},
+		)}
+
+
+	override fun hasWriteAccess(message: MessageJs): Promise<Boolean> = GlobalScope.promise {
+		messageApi.hasWriteAccess(message_fromJs(message))}
+
+
+	override fun decryptPatientIdOf(message: MessageJs): Promise<Array<String>> = GlobalScope.promise {
+		setToArray(
+			messageApi.decryptPatientIdOf(message_fromJs(message)),
+			{ x1: String ->
+				x1
+			},
+		)}
+
+
+	override fun createDelegationDeAnonymizationMetadata(entity: MessageJs, delegates: Array<String>):
+			Promise<Unit> = GlobalScope.promise {
+		messageApi.createDelegationDeAnonymizationMetadata(message_fromJs(entity), arrayToSet(
+			delegates,
+			"delegates",
+			{ x1: String ->
+				x1
+			},
+		))}
+
+
 	override fun createMessageInTopic(entity: DecryptedMessageJs): Promise<DecryptedMessageJs> =
 			GlobalScope.promise {
 		message_toJs(messageApi.createMessageInTopic(com.icure.sdk.js.model.message_fromJs(entity)))}
 
 
-	override fun matchMessagesBy(filter: AbstractFilterJs<EncryptedMessageJs>): Promise<Array<String>>
-			= GlobalScope.promise {
+	override fun matchMessagesBy(filter: AbstractFilterJs<MessageJs>): Promise<Array<String>> =
+			GlobalScope.promise {
 		listToArray(
 			messageApi.matchMessagesBy(abstractFilter_fromJs(
 				filter,
-				{ x1: EncryptedMessageJs ->
+				{ x1: MessageJs ->
 					message_fromJs(x1)
 				},
 			)),
@@ -693,6 +802,41 @@ internal class MessageApiImplJs(
 		)}
 
 
+	override fun tryShareWithMany(message: DecryptedMessageJs, delegates: dynamic):
+			Promise<SimpleShareResultJs<DecryptedMessageJs>> = GlobalScope.promise {
+		simpleShareResult_toJs(
+			messageApi.tryShareWithMany(com.icure.sdk.js.model.message_fromJs(message),
+					com.icure.sdk.js.model.CheckedConverters.objectToMap(
+			  delegates,
+			  "delegates",
+			  { x1: kotlin.String ->
+			    x1
+			  },
+			  { x1: com.icure.sdk.js.crypto.entities.MessageShareOptionsJs ->
+			    com.icure.sdk.js.crypto.entities.messageShareOptions_fromJs(x1)
+			  },
+			)),
+			{ x1: DecryptedMessage ->
+				message_toJs(x1)
+			},
+		)}
+
+
+	override fun shareWithMany(message: DecryptedMessageJs, delegates: dynamic):
+			Promise<DecryptedMessageJs> = GlobalScope.promise {
+		message_toJs(messageApi.shareWithMany(com.icure.sdk.js.model.message_fromJs(message),
+				com.icure.sdk.js.model.CheckedConverters.objectToMap(
+		  delegates,
+		  "delegates",
+		  { x1: kotlin.String ->
+		    x1
+		  },
+		  { x1: com.icure.sdk.js.crypto.entities.MessageShareOptionsJs ->
+		    com.icure.sdk.js.crypto.entities.messageShareOptions_fromJs(x1)
+		  },
+		)))}
+
+
 	override fun findMessagesByHcPartyPatient(
 		hcPartyId: String,
 		patient: PatientJs,
@@ -737,14 +881,14 @@ internal class MessageApiImplJs(
 
 
 	override fun filterMessagesBy(
-		filterChain: FilterChainJs<EncryptedMessageJs>,
+		filterChain: FilterChainJs<MessageJs>,
 		startDocumentId: String?,
 		limit: Double?,
 	): Promise<PaginatedListJs<DecryptedMessageJs>> = GlobalScope.promise {
 		paginatedList_toJs(
 			messageApi.filterMessagesBy(com.icure.sdk.js.model.filter.chain.filterChain_fromJs(
 			  filterChain,
-			  { x1: com.icure.sdk.js.model.EncryptedMessageJs ->
+			  { x1: com.icure.sdk.js.model.MessageJs ->
 			    com.icure.sdk.js.model.message_fromJs(x1)
 			  },
 			), startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
