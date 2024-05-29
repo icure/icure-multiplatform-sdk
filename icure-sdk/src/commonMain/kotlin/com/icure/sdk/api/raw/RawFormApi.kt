@@ -11,6 +11,7 @@ import com.icure.sdk.utils.InternalIcureApi
 import kotlin.Boolean
 import kotlin.ByteArray
 import kotlin.Long
+import kotlin.Nothing
 import kotlin.String
 import kotlin.collections.List
 
@@ -73,12 +74,12 @@ public interface RawFormApi {
 		secretPatientKeys: ListOfIds,
 	): HttpResponse<List<String>>
 
-	suspend fun listFormsDelegationsStubsByHCPartyAndPatientForeignKeys(
+	suspend fun findFormsDelegationsStubsByHCPartyAndPatientForeignKeys(
 		hcPartyId: String,
 		secretFKeys: String,
 	): HttpResponse<List<IcureStub>>
 
-	suspend fun listFormsDelegationsStubsByHCPartyAndPatientForeignKeys(
+	suspend fun findFormsDelegationsStubsByHCPartyAndPatientForeignKeys(
 		hcPartyId: String,
 		secretPatientKeys: List<String>,
 	): HttpResponse<List<IcureStub>>
@@ -121,6 +122,6 @@ public interface RawFormApi {
 
 	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<EncryptedForm>>>
 
-	suspend fun bulkShareMinimal(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<EncryptedForm>>>
+	suspend fun bulkShareMinimal(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<Nothing>>>
 	// endregion
 }

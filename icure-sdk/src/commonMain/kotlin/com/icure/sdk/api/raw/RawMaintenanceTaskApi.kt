@@ -2,6 +2,7 @@ package com.icure.sdk.api.raw
 
 import com.icure.sdk.model.EncryptedMaintenanceTask
 import com.icure.sdk.model.ListOfIds
+import com.icure.sdk.model.MaintenanceTask
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.filter.chain.FilterChain
@@ -31,7 +32,7 @@ public interface RawMaintenanceTaskApi {
 	suspend fun filterMaintenanceTasksBy(
 		startDocumentId: String? = null,
 		limit: Int? = null,
-		filterChain: FilterChain<EncryptedMaintenanceTask>,
+		filterChain: FilterChain<MaintenanceTask>,
 	): HttpResponse<PaginatedList<EncryptedMaintenanceTask>>
 
 	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<EncryptedMaintenanceTask>>>

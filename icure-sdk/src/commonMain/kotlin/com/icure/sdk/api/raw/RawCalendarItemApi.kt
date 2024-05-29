@@ -1,6 +1,7 @@
 package com.icure.sdk.api.raw
 
 import com.icure.sdk.model.EncryptedCalendarItem
+import com.icure.sdk.model.IcureStub
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
@@ -10,6 +11,7 @@ import com.icure.sdk.utils.InternalIcureApi
 import kotlin.Boolean
 import kotlin.Int
 import kotlin.Long
+import kotlin.Nothing
 import kotlin.String
 import kotlin.collections.List
 
@@ -84,6 +86,11 @@ public interface RawCalendarItemApi {
 		secretPatientKeys: ListOfIds,
 	): HttpResponse<List<String>>
 
+	suspend fun findCalendarItemsDelegationsStubsByHCPartyPatientForeignKeys(
+		hcPartyId: String,
+		secretPatientKeys: List<String>,
+	): HttpResponse<List<IcureStub>>
+
 	suspend fun findCalendarItemsByRecurrenceId(
 		recurrenceId: String,
 		startKey: String? = null,
@@ -93,6 +100,6 @@ public interface RawCalendarItemApi {
 
 	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<EncryptedCalendarItem>>>
 
-	suspend fun bulkShareMinimal(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<EncryptedCalendarItem>>>
+	suspend fun bulkShareMinimal(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<Nothing>>>
 	// endregion
 }

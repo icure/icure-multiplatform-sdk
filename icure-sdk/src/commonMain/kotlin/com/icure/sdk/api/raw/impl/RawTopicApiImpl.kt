@@ -10,6 +10,7 @@ import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.model.EncryptedTopic
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
+import com.icure.sdk.model.Topic
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
@@ -122,7 +123,7 @@ class RawTopicApiImpl(
 	override suspend fun filterTopicsBy(
 		startDocumentId: String?,
 		limit: Int?,
-		filterChain: FilterChain<EncryptedTopic>,
+		filterChain: FilterChain<Topic>,
 	): HttpResponse<PaginatedList<EncryptedTopic>> =
 		post {
 			url {
@@ -136,7 +137,7 @@ class RawTopicApiImpl(
 			setBody(filterChain)
 		}.wrap()
 
-	override suspend fun matchTopicsBy(filter: AbstractFilter<EncryptedTopic>): HttpResponse<List<String>> =
+	override suspend fun matchTopicsBy(filter: AbstractFilter<Topic>): HttpResponse<List<String>> =
 		post {
 			url {
 				takeFrom(apiUrl)

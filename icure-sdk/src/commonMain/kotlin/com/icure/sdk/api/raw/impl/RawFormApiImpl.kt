@@ -28,6 +28,7 @@ import io.ktor.utils.io.ByteReadChannel
 import kotlin.Boolean
 import kotlin.ByteArray
 import kotlin.Long
+import kotlin.Nothing
 import kotlin.String
 import kotlin.collections.List
 import kotlin.collections.Map
@@ -250,7 +251,7 @@ class RawFormApiImpl(
 			setBody(secretPatientKeys)
 		}.wrap()
 
-	override suspend fun listFormsDelegationsStubsByHCPartyAndPatientForeignKeys(
+	override suspend fun findFormsDelegationsStubsByHCPartyAndPatientForeignKeys(
 		hcPartyId: String,
 		secretFKeys: String,
 	): HttpResponse<List<IcureStub>> =
@@ -265,7 +266,7 @@ class RawFormApiImpl(
 			setAuthorizationWith(authService)
 		}.wrap()
 
-	override suspend fun listFormsDelegationsStubsByHCPartyAndPatientForeignKeys(
+	override suspend fun findFormsDelegationsStubsByHCPartyAndPatientForeignKeys(
 		hcPartyId: String,
 		secretPatientKeys: List<String>,
 	): HttpResponse<List<IcureStub>> =
@@ -399,9 +400,7 @@ class RawFormApiImpl(
 			setBody(request)
 		}.wrap()
 
-	override suspend fun bulkShareMinimal(
-		request: BulkShareOrUpdateMetadataParams,
-	): HttpResponse<List<EntityBulkShareResult<EncryptedForm>>> =
+	override suspend fun bulkShareMinimal(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<Nothing>>> =
 		put {
 			url {
 				takeFrom(apiUrl)

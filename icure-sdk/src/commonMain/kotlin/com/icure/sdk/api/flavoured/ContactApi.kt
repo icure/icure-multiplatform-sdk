@@ -6,12 +6,13 @@ import com.icure.sdk.api.raw.RawContactApi
 import com.icure.sdk.crypto.EntityValidationService
 import com.icure.sdk.crypto.InternalCryptoServices
 import com.icure.sdk.crypto.JsonEncryptionService
+import com.icure.sdk.crypto.entities.ContactShareOptions
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.crypto.entities.EntityWithTypeInfo
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
-import com.icure.sdk.crypto.entities.SimpleDelegateShareOptions
+import com.icure.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.withTypeInfo
 import com.icure.sdk.model.Contact
@@ -34,6 +35,7 @@ import com.icure.sdk.model.extensions.dataOwnerId
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.requests.RequestedPermission
+import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.InternalIcureException
@@ -55,7 +57,8 @@ import kotlinx.serialization.json.jsonObject
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface ContactBasicFlavourlessApi {
-	suspend fun matchContactsBy(filter: AbstractFilter<EncryptedContact>): List<String>
+	suspend fun matchContactsBy(filter: AbstractFilter<Contact>): List<String>
+	suspend fun matchServicesBy(filter: AbstractFilter<Service>): List<String>
 	suspend fun deleteContact(entityId: String): DocIdentifier
 	suspend fun deleteContacts(entityIds: List<String>): List<DocIdentifier>
 	suspend fun findContactsDelegationsStubsByHcPartyPatientForeignKeys(
@@ -72,7 +75,7 @@ interface ContactBasicFlavouredApi<E : Contact, S : Service> {
 	suspend fun modifyContacts(entities: List<E>): List<E>
 	suspend fun getContact(entityId: String): E
 	suspend fun getContacts(entityIds: List<String>): List<E>
-	suspend fun filterContactsBy(filterChain: FilterChain<EncryptedContact>, startDocumentId: String?, limit: Int?): PaginatedList<E>
+	suspend fun filterContactsBy(filterChain: FilterChain<Contact>, startDocumentId: String?, limit: Int?): PaginatedList<E>
 
 	suspend fun listContactByHCPartyServiceId(hcPartyId: String, serviceId: String): List<E>
 	suspend fun listContactsByExternalId(externalId: String): List<E>
@@ -100,7 +103,7 @@ interface ContactBasicFlavouredApi<E : Contact, S : Service> {
 		limit: Int? = null,
 	): PaginatedList<E>
 
-	suspend fun filterServicesBy(filterChain: FilterChain<EncryptedService>, startDocumentId: String?, limit: Int?): PaginatedList<S>
+	suspend fun filterServicesBy(filterChain: FilterChain<Service>, startDocumentId: String?, limit: Int?): PaginatedList<S>
 }
 
 /* The extra API calls declared in this interface are the ones that can be used on encrypted or decrypted items but only when the user is a data owner */
@@ -112,6 +115,45 @@ interface ContactFlavouredApi<E : Contact, S : Service> : ContactBasicFlavouredA
 		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
 		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
 	): SimpleShareResult<E>
+
+	/**
+	 * Shares an existing access log with other data owners, allowing them to access the non-encrypted data of the access log and optionally also the
+	 * encrypted content, with read-only or read-write permissions.
+	 * @param contact the [Contact] to share.
+	 * @param delegates associates the id of data owners which will be granted access to the entity, to the following sharing options:
+	 * - shareEncryptionKey: specifies if the encryption key of the access log should be shared with the delegate, giving access to all encrypted
+	 * content of the entity, excluding other encrypted metadata (defaults to [ShareMetadataBehaviour.IfAvailable]).
+	 * - sharePatientId: specifies if the id of the patient that this access log refers to should be shared with the delegate. Normally this would
+	 * be the same as objectId, but it is encrypted separately from it allowing you to give access to the patient id without giving access to the other
+	 * encrypted data of the access log (defaults to [ShareMetadataBehaviour.IfAvailable]).
+	 * - requestedPermissions: the requested permissions for the delegate, defaults to [ShareMetadataBehaviour.IfAvailable].
+	 * @return the [SimpleShareResult] of the operation: the updated entity if the operation was successful or details of the error if
+	 * the operation failed.
+	 */
+	suspend fun tryShareWithMany(
+		contact: E,
+		delegates: Map<String, ContactShareOptions>
+	): SimpleShareResult<E>
+
+	/**
+	 * Shares an existing access log with other data owners, allowing them to access the non-encrypted data of the access log and optionally also the
+	 * encrypted content, with read-only or read-write permissions.
+	 * @param contact the [Contact] to share.
+	 * @param delegates associates the id of data owners which will be granted access to the entity, to the following sharing options:
+	 * - shareEncryptionKey: specifies if the encryption key of the access log should be shared with the delegate, giving access to all encrypted
+	 * content of the entity, excluding other encrypted metadata (defaults to [ShareMetadataBehaviour.IfAvailable]).
+	 * - sharePatientId: specifies if the id of the patient that this access log refers to should be shared with the delegate. Normally this would
+	 * be the same as objectId, but it is encrypted separately from it allowing you to give access to the patient id without giving access to the other
+	 * encrypted data of the access log (defaults to [ShareMetadataBehaviour.IfAvailable]).
+	 * - requestedPermissions: the requested permissions for the delegate, defaults to [ShareMetadataBehaviour.IfAvailable].
+	 * @return the updated entity.
+	 * @throws IllegalStateException if the operation was not successful.
+	 */
+	suspend fun shareWithMany(
+		contact: E,
+		delegates: Map<String, ContactShareOptions>
+	): E
+
 
 	suspend fun findContactsByHcPartyPatient(
 		hcPartyId: String,
@@ -134,6 +176,10 @@ interface ContactApi : ContactBasicFlavourlessApi, ContactFlavouredApi<Decrypted
 		delegates: Map<String, AccessLevel> = emptyMap(),
 		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent,
 	): DecryptedContact
+	suspend fun getEncryptionKeysOf(contact: Contact): Set<HexString>
+	suspend fun hasWriteAccess(contact: Contact): Boolean
+	suspend fun decryptPatientIdOf(contact: Contact): Set<String>
+	suspend fun createDelegationDeAnonymizationMetadata(entity: Contact, delegates: Set<String>)
 
 	val encrypted: ContactFlavouredApi<EncryptedContact, EncryptedService>
 	val tryAndRecover: ContactFlavouredApi<Contact, Service>
@@ -155,7 +201,7 @@ private abstract class AbstractContactBasicFlavouredApi<E : Contact, S : Service
 		rawApi.getContacts(ListOfIds(entityIds)).successBody().map { maybeDecrypt(it) }
 
 	override suspend fun filterContactsBy(
-		filterChain: FilterChain<EncryptedContact>,
+		filterChain: FilterChain<Contact>,
 		startDocumentId: String?,
 		limit: Int?,
 	): PaginatedList<E> =
@@ -187,7 +233,7 @@ private abstract class AbstractContactBasicFlavouredApi<E : Contact, S : Service
 
 	override suspend fun getService(serviceId: String): S = rawApi.getService(serviceId).successBody().let { maybeDecryptService(it) }
 	override suspend fun filterServicesBy(
-		filterChain: FilterChain<EncryptedService>,
+		filterChain: FilterChain<Service>,
 		startDocumentId: String?,
 		limit: Int?,
 	): PaginatedList<S> =
@@ -237,9 +283,9 @@ private abstract class AbstractContactFlavouredApi<E : Contact, S : Service>(
 			contact.withTypeInfo(),
 			true,
 			mapOf(
-				delegateId to SimpleDelegateShareOptions(
+				delegateId to SimpleDelegateShareOptionsImpl(
 					shareSecretIds = null,
-					shareEncryptionKeys = shareEncryptionKeys,
+					shareEncryptionKey = shareEncryptionKeys,
 					shareOwningEntityIds = shareOwningEntityIds,
 					requestedPermissions = requestedPermission,
 				),
@@ -247,6 +293,18 @@ private abstract class AbstractContactFlavouredApi<E : Contact, S : Service>(
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
 		}
+
+	override suspend fun tryShareWithMany(contact: E, delegates: Map<String, ContactShareOptions>): SimpleShareResult<E> =
+		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
+			contact.withTypeInfo(),
+			true,
+			delegates
+		) {
+			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
+		}
+
+	override suspend fun shareWithMany(contact: E, delegates: Map<String, ContactShareOptions>): E =
+		tryShareWithMany(contact, delegates).updatedEntityOrThrow()
 
 	override suspend fun findContactsByHcPartyPatient(
 		hcPartyId: String,
@@ -341,7 +399,8 @@ internal fun Service.asIcureStubWithTypeInfo(): EntityWithTypeInfo<IcureStub> {
 
 @InternalIcureApi
 private class AbstractContactBasicFlavourlessApi(val rawApi: RawContactApi) : ContactBasicFlavourlessApi {
-	override suspend fun matchContactsBy(filter: AbstractFilter<EncryptedContact>) = rawApi.matchContactsBy(filter).successBody()
+	override suspend fun matchContactsBy(filter: AbstractFilter<Contact>) = rawApi.matchContactsBy(filter).successBody()
+	override suspend fun matchServicesBy(filter: AbstractFilter<Service>): List<String> = rawApi.matchServicesBy(filter).successBody()
 	override suspend fun deleteContact(entityId: String) = rawApi.deleteContact(entityId).successBody()
 	override suspend fun deleteContacts(entityIds: List<String>) = rawApi.deleteContacts(ListOfIds(entityIds)).successBody()
 	override suspend fun findContactsDelegationsStubsByHcPartyPatientForeignKeys(
@@ -505,6 +564,16 @@ internal class ContactApiImpl(
 			initialiseSecretId = false,
 			autoDelegations = delegates + user?.autoDelegationsFor(DelegationTag.AdministrativeData).orEmpty(),
 		).updatedEntity
+
+	override suspend fun getEncryptionKeysOf(contact: Contact): Set<HexString> = crypto.entity.encryptionKeysOf(contact.withTypeInfo(), null)
+
+	override suspend fun hasWriteAccess(contact: Contact): Boolean = crypto.entity.hasWriteAccess(contact.withTypeInfo())
+
+	override suspend fun decryptPatientIdOf(contact: Contact): Set<String> = crypto.entity.owningEntityIdsOf(contact.withTypeInfo(), null)
+
+	override suspend fun createDelegationDeAnonymizationMetadata(entity: Contact, delegates: Set<String>) {
+		crypto.delegationsDeAnonymization.createOrUpdateDeAnonymizationInfo(entity.withTypeInfo(), delegates)
+	}
 
 	private suspend fun encrypt(entity: DecryptedContact) = crypto.entity.encryptEntity(
 		entity.withTypeInfo(),

@@ -1,11 +1,13 @@
 package com.icure.sdk
 
 import com.icure.kryptom.crypto.CryptoService
-import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.kryptom.utils.toHexString
 import com.icure.sdk.api.ApiOptions
 import com.icure.sdk.api.CryptoApi
-import com.icure.sdk.api.EncryptedFields
+import com.icure.sdk.api.DeviceApi
+import com.icure.sdk.api.DeviceApiImpl
+import com.icure.sdk.api.PermissionApi
+import com.icure.sdk.api.PermissionApiImpl
 import com.icure.sdk.api.RecoveryApi
 import com.icure.sdk.api.RecoveryApiImpl
 import com.icure.sdk.api.UserApi
@@ -50,6 +52,7 @@ import com.icure.sdk.api.raw.impl.RawContactApiImpl
 import com.icure.sdk.api.raw.impl.RawDataOwnerApiImpl
 import com.icure.sdk.api.raw.impl.RawDeviceApiImpl
 import com.icure.sdk.api.raw.impl.RawDocumentApiImpl
+import com.icure.sdk.api.raw.impl.RawEntityReferenceApiImpl
 import com.icure.sdk.api.raw.impl.RawExchangeDataApiImpl
 import com.icure.sdk.api.raw.impl.RawExchangeDataMapApiImpl
 import com.icure.sdk.api.raw.impl.RawFormApiImpl
@@ -72,10 +75,8 @@ import com.icure.sdk.auth.services.JwtAuthService
 import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.crypto.CryptoStrategies
 import com.icure.sdk.crypto.EntityEncryptionService
-import com.icure.sdk.crypto.JsonEncryptionService
-import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
-import com.icure.sdk.crypto.entities.SimpleDelegateShareOptions
+import com.icure.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
 import com.icure.sdk.crypto.entities.withTypeInfo
 import com.icure.sdk.crypto.impl.AccessControlKeysHeadersProviderImpl
 import com.icure.sdk.crypto.impl.BaseExchangeDataManagerImpl
@@ -122,6 +123,7 @@ interface IcureSdk {
 	val calendarItem: CalendarItemApi
 	val classification: ClassificationApi
 	val contact: ContactApi
+	val device: DeviceApi
 	val document: DocumentApi
 	val form: FormApi
 	val healthcareElement: HealthcareElementApi
@@ -129,6 +131,7 @@ interface IcureSdk {
 	val maintenanceTask: MaintenanceTaskApi
 	val message: MessageApi
 	val patient: PatientApi
+	val permission: PermissionApi
 	val receipt: ReceiptApi
 	val timeTable: TimeTableApi
 	val topic: TopicApi
@@ -358,6 +361,7 @@ private class IcureApiImpl(
 	private val encryptedFieldsManifests: EntitiesEncryptedFieldsManifests,
 	private val autofillAuthor: Boolean
 ): IcureSdk {
+	private val rawDataOwnerApi by lazy { RawDataOwnerApiImpl(apiUrl, authService, client) }
 	private val rawCalendarItemApi by lazy { RawCalendarItemApiImpl(apiUrl, authService, headersProvider, client) }
 
 	override val calendarItem: CalendarItemApi by lazy {
@@ -365,11 +369,13 @@ private class IcureApiImpl(
 			rawCalendarItemApi,
 			internalCrypto,
 			encryptedFieldsManifests.calendarItem,
-			autofillAuthor
+			autofillAuthor,
+			rawDataOwnerApi
 		)
 	}
 
 	private val rawContactApi by lazy { RawContactApiImpl(apiUrl, authService, headersProvider, client) }
+	private val rawHealthcarePartyApi by lazy { RawHealthcarePartyApiImpl(apiUrl, authService, client) }
 
 	override val contact: ContactApi by lazy {
 		ContactApiImpl(
@@ -386,6 +392,13 @@ private class IcureApiImpl(
 	override val patient: PatientApi by lazy {
 		PatientApiImpl(
 			rawPatientApi,
+			rawHealthcarePartyApi,
+			rawHealthcareElementApi,
+			rawFormApi,
+			rawContactApi,
+			rawInvoiceApi,
+			rawCalendarItemApi,
+			rawClassificationApi,
 			internalCrypto,
 			encryptedFieldsManifests.patient,
 			autofillAuthor
@@ -524,13 +537,15 @@ private class IcureApiImpl(
 	}
 
 	private val rawInvoiceApi by lazy { RawInvoiceApiImpl(apiUrl, authService, headersProvider, client) }
+	private val rawEntityReferenceApi by lazy { RawEntityReferenceApiImpl(apiUrl, authService, client) }
 
 	override val invoice: InvoiceApi by lazy {
 		InvoiceApiImpl(
 			rawInvoiceApi,
 			internalCrypto,
 			encryptedFieldsManifests.invoice,
-			autofillAuthor
+			autofillAuthor,
+			rawEntityReferenceApi
 		)
 	}
 
@@ -547,6 +562,14 @@ private class IcureApiImpl(
 
 	override val recovery: RecoveryApi by lazy {
 		RecoveryApiImpl(internalCrypto)
+	}
+
+	override val device: DeviceApi by lazy {
+		DeviceApiImpl(RawDeviceApiImpl(apiUrl, authService, client))
+	}
+
+	override val permission: PermissionApi by lazy {
+		PermissionApiImpl(RawPermissionApiImpl(apiUrl, authService, client))
 	}
 }
 
@@ -577,8 +600,8 @@ private suspend fun ensureDelegationForSelf(
 					patientSelf,
 					false,
 					mapOf(
-						self.dataOwner.id to SimpleDelegateShareOptions(
-							shareEncryptionKeys = ShareMetadataBehaviour.IfAvailable,
+						self.dataOwner.id to SimpleDelegateShareOptionsImpl(
+							shareEncryptionKey = ShareMetadataBehaviour.IfAvailable,
 							shareOwningEntityIds = ShareMetadataBehaviour.Never,
 							shareSecretIds = setOf(cryptoService.strongRandom.randomUUID()),
 							requestedPermissions = RequestedPermission.Root

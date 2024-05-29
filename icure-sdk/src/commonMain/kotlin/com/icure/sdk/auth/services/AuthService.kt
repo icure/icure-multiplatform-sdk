@@ -8,7 +8,7 @@ import io.ktor.client.request.HttpRequestBuilder
  * Specifies the behaviour for all the services that manage authentication.
  * Each implementation is responsible for providing a valid authentication token [T].
  */
-sealed interface AuthService {
+interface AuthService {
 
 	/**
 	 * Configures the authentication mechanism in a ktor request.
@@ -23,7 +23,6 @@ sealed interface AuthService {
 
 	class UnavailableAuthenticationClassException(authenticationClass: AuthenticationClass)
 		: Exception("Cannot generate a token with authentication class $authenticationClass")
-
 }
 
 /**

@@ -1,13 +1,16 @@
 package com.icure.sdk.api.flavoured
 
 import com.icure.sdk.api.raw.RawCalendarItemApi
+import com.icure.sdk.api.raw.RawDataOwnerApi
 import com.icure.sdk.crypto.BasicInternalCryptoApi
 import com.icure.sdk.crypto.InternalCryptoServices
+import com.icure.sdk.crypto.entities.CalendarItemShareOptions
+import com.icure.sdk.crypto.entities.DelegateShareOptions
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
-import com.icure.sdk.crypto.entities.SimpleDelegateShareOptions
+import com.icure.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.withTypeInfo
 import com.icure.sdk.model.CalendarItem
@@ -23,6 +26,7 @@ import com.icure.sdk.model.embed.DelegationTag
 import com.icure.sdk.model.extensions.autoDelegationsFor
 import com.icure.sdk.model.extensions.dataOwnerId
 import com.icure.sdk.model.requests.RequestedPermission
+import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
@@ -62,6 +66,45 @@ interface CalendarItemFlavouredApi<E : CalendarItem> : CalendarItemBasicFlavoure
 		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
 		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
 	): SimpleShareResult<E>
+
+	/**
+	 * Shares an existing access log with other data owners, allowing them to access the non-encrypted data of the access log and optionally also the
+	 * encrypted content, with read-only or read-write permissions.
+	 * @param calendarItem the [CalendarItem] to share.
+	 * @param delegates associates the id of data owners which will be granted access to the entity, to the following sharing options:
+	 * - shareEncryptionKey: specifies if the encryption key of the access log should be shared with the delegate, giving access to all encrypted
+	 * content of the entity, excluding other encrypted metadata (defaults to [ShareMetadataBehaviour.IfAvailable]).
+	 * - sharePatientId: specifies if the id of the patient that this access log refers to should be shared with the delegate. Normally this would
+	 * be the same as objectId, but it is encrypted separately from it allowing you to give access to the patient id without giving access to the other
+	 * encrypted data of the access log (defaults to [ShareMetadataBehaviour.IfAvailable]).
+	 * - requestedPermissions: the requested permissions for the delegate, defaults to [ShareMetadataBehaviour.IfAvailable].
+	 * @return the [SimpleShareResult] of the operation: the updated entity if the operation was successful or details of the error if
+	 * the operation failed.
+	 */
+	suspend fun tryShareWithMany(
+		calendarItem: E,
+		delegates: Map<String, CalendarItemShareOptions>
+	): SimpleShareResult<E>
+
+	/**
+	 * Shares an existing access log with other data owners, allowing them to access the non-encrypted data of the access log and optionally also the
+	 * encrypted content, with read-only or read-write permissions.
+	 * @param calendarItem the [CalendarItem] to share.
+	 * @param delegates associates the id of data owners which will be granted access to the entity, to the following sharing options:
+	 * - shareEncryptionKey: specifies if the encryption key of the access log should be shared with the delegate, giving access to all encrypted
+	 * content of the entity, excluding other encrypted metadata (defaults to [ShareMetadataBehaviour.IfAvailable]).
+	 * - sharePatientId: specifies if the id of the patient that this access log refers to should be shared with the delegate. Normally this would
+	 * be the same as objectId, but it is encrypted separately from it allowing you to give access to the patient id without giving access to the other
+	 * encrypted data of the access log (defaults to [ShareMetadataBehaviour.IfAvailable]).
+	 * - requestedPermissions: the requested permissions for the delegate, defaults to [ShareMetadataBehaviour.IfAvailable].
+	 * @return the updated entity.
+	 * @throws IllegalStateException if the operation was not successful.
+	 */
+	suspend fun shareWithMany(
+		calendarItem: E,
+		delegates: Map<String, CalendarItemShareOptions>
+	): E
+
 	suspend fun findCalendarItemsByHcPartyPatient(
 		hcPartyId: String,
 		patient: Patient,
@@ -70,6 +113,16 @@ interface CalendarItemFlavouredApi<E : CalendarItem> : CalendarItemBasicFlavoure
 		descending: Boolean? = null,
 	): PaginatedListIterator<E>
 
+	/**
+	 * Links a [CalendarItem] with a [Patient]. Note that this operation is not reversible: it is not possible to change the patient linked to a calendar
+	 * item.
+	 * @param calendarItem a [CalendarItem].
+	 * @param patient the [Patient] which will be linked to the [CalendarItem].
+	 * @param shareLinkWithDelegates data owners other than the current data owner which will also be able to decrypt the id of the newly linked
+	 * patient. If any of these data owners do not already have access to the calendar item, they will be granted read access (no write).
+	 * @return the updated [CalendarItem].
+	 */
+	suspend fun linkToPatient(calendarItem: CalendarItem, patient: Patient, shareLinkWithDelegates: Set<String>): E
 }
 
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
@@ -82,6 +135,10 @@ interface CalendarItemApi : CalendarItemBasicFlavourlessApi, CalendarItemFlavour
 		delegates: Map<String, AccessLevel>,
 		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent,
 		): DecryptedCalendarItem
+	suspend fun getEncryptionKeysOf(calendarItem: CalendarItem): Set<HexString>
+	suspend fun hasWriteAccess(calendarItem: CalendarItem): Boolean
+	suspend fun decryptPatientIdOf(calendarItem: CalendarItem): Set<String>
+	suspend fun createDelegationDeAnonymizationMetadata(entity: CalendarItem, delegates: Set<String>)
 
 	val encrypted: CalendarItemFlavouredApi<EncryptedCalendarItem>
 	val tryAndRecover: CalendarItemFlavouredApi<CalendarItem>
@@ -135,7 +192,8 @@ private abstract class AbstractCalendarItemBasicFlavouredApi<E : CalendarItem>(
 @InternalIcureApi
 private abstract class AbstractCalendarItemFlavouredApi<E : CalendarItem>(
 	rawApi: RawCalendarItemApi,
-	private val crypto: InternalCryptoServices
+	private val crypto: InternalCryptoServices,
+	private val dataOwnerApi: RawDataOwnerApi
 ) : AbstractCalendarItemBasicFlavouredApi<E>(rawApi), CalendarItemFlavouredApi<E> {
 	override suspend fun getSecureDelegationKeys(): List<String> =
 		crypto.exchangeDataManager
@@ -152,9 +210,9 @@ private abstract class AbstractCalendarItemFlavouredApi<E : CalendarItem>(
 			calendarItem.withTypeInfo(),
 			true,
 			mapOf(
-				delegateId to SimpleDelegateShareOptions(
+				delegateId to SimpleDelegateShareOptionsImpl(
 					shareSecretIds = null,
-					shareEncryptionKeys = shareEncryptionKeys,
+					shareEncryptionKey = shareEncryptionKeys,
 					shareOwningEntityIds = shareOwningEntityIds,
 					requestedPermissions = requestedPermission,
 				),
@@ -162,6 +220,17 @@ private abstract class AbstractCalendarItemFlavouredApi<E : CalendarItem>(
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
 		}
+
+	override suspend fun tryShareWithMany(calendarItem: E, delegates: Map<String, CalendarItemShareOptions>): SimpleShareResult<E> =
+		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
+			calendarItem.withTypeInfo(),
+			true,
+			delegates
+		) {
+			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
+		}
+
+	override suspend fun shareWithMany(calendarItem: E, delegates: Map<String, CalendarItemShareOptions>): E = tryShareWithMany(calendarItem, delegates).updatedEntityOrThrow()
 
 	override suspend fun findCalendarItemsByHcPartyPatient(
 		hcPartyId: String,
@@ -181,6 +250,33 @@ private abstract class AbstractCalendarItemFlavouredApi<E : CalendarItem>(
 		rawApi.getCalendarItemsWithIds(ListOfIds(ids)).successBody().map { maybeDecrypt(it) }
 	}
 
+	override suspend fun linkToPatient(calendarItem: CalendarItem, patient: Patient, shareLinkWithDelegates: Set<String>): E {
+		require(calendarItem.secretForeignKeys.isNotEmpty()) { "Calendar item ${calendarItem.id} is already linked to a patient" }
+		val currentDataOwnerId = dataOwnerApi.getCurrentDataOwner().successBody().dataOwner.id
+		val delegates = shareLinkWithDelegates + currentDataOwnerId
+		val secretForeignKeys = crypto.entity.getConfidentialSecretIdsOf(patient.withTypeInfo(), currentDataOwnerId)
+		require(secretForeignKeys.isNotEmpty()) { "Could not find any secret id for patient ${patient.id} which is shared with the topmost ancestor of the current data owner" }
+		val shareResult = crypto.entity.bulkShareOrUpdateEncryptedEntityMetadata(
+			listOf(Pair(
+				calendarItem.withTypeInfo(),
+				delegates.associateWith { DelegateShareOptions(
+					shareSecretIds = emptySet(),
+					shareEncryptionKeys = emptySet(),
+					shareOwningEntityIds = setOf(patient.id),
+					requestedPermissions = RequestedPermission.FullRead
+				) }
+			))
+		) { rawApi.bulkShare(it).successBody() }
+		if(shareResult.updatedEntities.isEmpty() || shareResult.updatedEntities.first().id != calendarItem.id) {
+			val errorsForEntity = shareResult.updateErrors.filter { it.entityId == calendarItem.id }
+			if (errorsForEntity.isEmpty() || errorsForEntity.none { it.code == 409 }) {
+				throw IllegalStateException("Unexpected error while linking calendar item ${calendarItem.id}")
+			} else {
+				throw IllegalStateException("Outdated calendar item revision ${calendarItem.id}-${calendarItem.rev}")
+			}
+		}
+		return maybeDecrypt((shareResult.updatedEntities.first() as EncryptedCalendarItem).copy(secretForeignKeys = secretForeignKeys))
+	}
 }
 
 @InternalIcureApi
@@ -195,8 +291,9 @@ internal class CalendarItemApiImpl(
 	private val crypto: InternalCryptoServices,
 	private val fieldsToEncrypt: EncryptedFieldsManifest,
 	private val autofillAuthor: Boolean,
+	private val rawDataOwnerApi: RawDataOwnerApi
 ) : CalendarItemApi, CalendarItemFlavouredApi<DecryptedCalendarItem> by object :
-	AbstractCalendarItemFlavouredApi<DecryptedCalendarItem>(rawApi, crypto) {
+	AbstractCalendarItemFlavouredApi<DecryptedCalendarItem>(rawApi, crypto, rawDataOwnerApi) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedCalendarItem): EncryptedCalendarItem =
 		crypto.entity.encryptEntity(
 			entity.withTypeInfo(),
@@ -213,7 +310,7 @@ internal class CalendarItemApiImpl(
 	}
 }, CalendarItemBasicFlavourlessApi by AbstractCalendarItemBasicFlavourlessApi(rawApi) {
 	override val encrypted: CalendarItemFlavouredApi<EncryptedCalendarItem> =
-		object : AbstractCalendarItemFlavouredApi<EncryptedCalendarItem>(rawApi, crypto) {
+		object : AbstractCalendarItemFlavouredApi<EncryptedCalendarItem>(rawApi, crypto, rawDataOwnerApi) {
 			override suspend fun validateAndMaybeEncrypt(entity: EncryptedCalendarItem): EncryptedCalendarItem =
 				crypto.entity.validateEncryptedEntity(entity.withTypeInfo(), EncryptedCalendarItem.serializer(), fieldsToEncrypt)
 
@@ -221,7 +318,7 @@ internal class CalendarItemApiImpl(
 		}
 
 	override val tryAndRecover: CalendarItemFlavouredApi<CalendarItem> =
-		object : AbstractCalendarItemFlavouredApi<CalendarItem>(rawApi, crypto) {
+		object : AbstractCalendarItemFlavouredApi<CalendarItem>(rawApi, crypto, rawDataOwnerApi) {
 			override suspend fun maybeDecrypt(entity: EncryptedCalendarItem): CalendarItem =
 				crypto.entity.tryDecryptEntity(
 					entity.withTypeInfo(),
@@ -274,6 +371,12 @@ internal class CalendarItemApiImpl(
 			autoDelegations = delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation).orEmpty(),
 		).updatedEntity
 
+	override suspend fun getEncryptionKeysOf(calendarItem: CalendarItem): Set<HexString> = crypto.entity.encryptionKeysOf(calendarItem.withTypeInfo(), null)
+
+	override suspend fun hasWriteAccess(calendarItem: CalendarItem): Boolean = crypto.entity.hasWriteAccess(calendarItem.withTypeInfo())
+
+	override suspend fun decryptPatientIdOf(calendarItem: CalendarItem): Set<String> = crypto.entity.owningEntityIdsOf(calendarItem.withTypeInfo(), null)
+
 	private suspend fun encrypt(entity: DecryptedCalendarItem) = crypto.entity.encryptEntity(
 		entity.withTypeInfo(),
 		DecryptedCalendarItem.serializer(),
@@ -285,6 +388,10 @@ internal class CalendarItemApiImpl(
 		EncryptedCalendarItem.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedCalendarItem>(it) }
 		?: throw EntityEncryptionException(errorMessage())
+
+	override suspend fun createDelegationDeAnonymizationMetadata(entity: CalendarItem, delegates: Set<String>) {
+		crypto.delegationsDeAnonymization.createOrUpdateDeAnonymizationInfo(entity.withTypeInfo(), delegates)
+	}
 
 }
 

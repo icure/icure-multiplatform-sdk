@@ -9,6 +9,7 @@ import com.icure.sdk.auth.services.setAuthorizationWith
 import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.model.EncryptedCalendarItem
+import com.icure.sdk.model.IcureStub
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
@@ -26,6 +27,7 @@ import io.ktor.util.date.GMTDate
 import kotlin.Boolean
 import kotlin.Int
 import kotlin.Long
+import kotlin.Nothing
 import kotlin.String
 import kotlin.collections.List
 import kotlin.collections.Map
@@ -260,6 +262,21 @@ class RawCalendarItemApiImpl(
 			setBody(secretPatientKeys)
 		}.wrap()
 
+	override suspend fun findCalendarItemsDelegationsStubsByHCPartyPatientForeignKeys(
+		hcPartyId: String,
+		secretPatientKeys: List<String>,
+	): HttpResponse<List<IcureStub>> =
+		post {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "calendarItem", "byHcPartySecretForeignKeys", "delegations")
+				parameter("hcPartyId", hcPartyId)
+			}
+			setAuthorizationWith(authService)
+			contentType(ContentType.Application.Json)
+			setBody(secretPatientKeys)
+		}.wrap()
+
 	override suspend fun findCalendarItemsByRecurrenceId(
 		recurrenceId: String,
 		startKey: String?,
@@ -292,9 +309,7 @@ class RawCalendarItemApiImpl(
 			setBody(request)
 		}.wrap()
 
-	override suspend fun bulkShareMinimal(
-		request: BulkShareOrUpdateMetadataParams,
-	): HttpResponse<List<EntityBulkShareResult<EncryptedCalendarItem>>> =
+	override suspend fun bulkShareMinimal(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<Nothing>>> =
 		put {
 			url {
 				takeFrom(apiUrl)

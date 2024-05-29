@@ -8,6 +8,7 @@ import com.icure.sdk.auth.services.AuthService
 import com.icure.sdk.auth.services.setAuthorizationWith
 import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
+import com.icure.sdk.model.Contact
 import com.icure.sdk.model.EncryptedContact
 import com.icure.sdk.model.IcureStub
 import com.icure.sdk.model.ListOfIds
@@ -16,6 +17,7 @@ import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.`data`.LabelledOccurence
 import com.icure.sdk.model.embed.EncryptedContent
 import com.icure.sdk.model.embed.EncryptedService
+import com.icure.sdk.model.embed.Service
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
@@ -32,6 +34,7 @@ import io.ktor.util.date.GMTDate
 import kotlin.Boolean
 import kotlin.Int
 import kotlin.Long
+import kotlin.Nothing
 import kotlin.String
 import kotlin.collections.List
 import kotlin.collections.Map
@@ -339,7 +342,7 @@ class RawContactApiImpl(
 	override suspend fun filterContactsBy(
 		startDocumentId: String?,
 		limit: Int?,
-		filterChain: FilterChain<EncryptedContact>,
+		filterChain: FilterChain<Contact>,
 	): HttpResponse<PaginatedList<EncryptedContact>> =
 		post {
 			url {
@@ -353,7 +356,7 @@ class RawContactApiImpl(
 			setBody(filterChain)
 		}.wrap()
 
-	override suspend fun matchContactsBy(filter: AbstractFilter<EncryptedContact>): HttpResponse<List<String>> =
+	override suspend fun matchContactsBy(filter: AbstractFilter<Contact>): HttpResponse<List<String>> =
 		post {
 			url {
 				takeFrom(apiUrl)
@@ -377,7 +380,7 @@ class RawContactApiImpl(
 	override suspend fun filterServicesBy(
 		startDocumentId: String?,
 		limit: Int?,
-		filterChain: FilterChain<EncryptedService>,
+		filterChain: FilterChain<Service>,
 	): HttpResponse<PaginatedList<EncryptedService>> =
 		post {
 			url {
@@ -391,7 +394,7 @@ class RawContactApiImpl(
 			setBody(filterChain)
 		}.wrap()
 
-	override suspend fun matchServicesBy(filter: AbstractFilter<EncryptedService>): HttpResponse<List<String>> =
+	override suspend fun matchServicesBy(filter: AbstractFilter<Service>): HttpResponse<List<String>> =
 		post {
 			url {
 				takeFrom(apiUrl)
@@ -487,9 +490,7 @@ class RawContactApiImpl(
 			setBody(request)
 		}.wrap()
 
-	override suspend fun bulkShareMinimal(
-		request: BulkShareOrUpdateMetadataParams,
-	): HttpResponse<List<EntityBulkShareResult<EncryptedContact>>> =
+	override suspend fun bulkShareMinimal(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<Nothing>>> =
 		put {
 			url {
 				takeFrom(apiUrl)

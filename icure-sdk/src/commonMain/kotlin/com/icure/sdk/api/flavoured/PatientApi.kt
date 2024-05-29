@@ -1,22 +1,39 @@
 package com.icure.sdk.api.flavoured
 
+import com.icure.sdk.api.raw.RawCalendarItemApi
+import com.icure.sdk.api.raw.RawClassificationApi
+import com.icure.sdk.api.raw.RawContactApi
+import com.icure.sdk.api.raw.RawFormApi
+import com.icure.sdk.api.raw.RawHealthElementApi
+import com.icure.sdk.api.raw.RawHealthcarePartyApi
+import com.icure.sdk.api.raw.RawInvoiceApi
 import com.icure.sdk.api.raw.RawPatientApi
 import com.icure.sdk.crypto.BasicInternalCryptoApi
 import com.icure.sdk.crypto.InternalCryptoServices
+import com.icure.sdk.crypto.entities.DelegateShareOptions
+import com.icure.sdk.crypto.entities.PatientShareOptions
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.EntityAccessInformation
+import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
+import com.icure.sdk.crypto.entities.EntityWithTypeInfo
+import com.icure.sdk.crypto.entities.ExportDataOptions
+import com.icure.sdk.crypto.entities.ShareAllPatientDataOptions
+import com.icure.sdk.crypto.entities.ShareAllPatientDataOptions.BulkShareErrorsException
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
-import com.icure.sdk.crypto.entities.SimpleDelegateShareOptions
+import com.icure.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.withTypeInfo
 import com.icure.sdk.model.DataOwnerRegistrationSuccess
+import com.icure.sdk.model.DecryptedContact
 import com.icure.sdk.model.DecryptedPatient
 import com.icure.sdk.model.EncryptedPatient
+import com.icure.sdk.model.IcureStub
 import com.icure.sdk.model.IdWithRev
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.Patient
 import com.icure.sdk.model.User
+import com.icure.sdk.model.base.HasEncryptionMetadata
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.couchdb.SortDirection
 import com.icure.sdk.model.embed.AccessLevel
@@ -27,13 +44,18 @@ import com.icure.sdk.model.extensions.dataOwnerId
 import com.icure.sdk.model.extensions.publicKeysSpki
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
+import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
+import com.icure.sdk.model.requests.EntityBulkShareResult
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.currentEpochMs
+import com.icure.sdk.utils.pagination.IdsPageIterator
+import com.icure.sdk.utils.pagination.forEach
 import kotlinx.serialization.json.decodeFromJsonElement
+import com.icure.sdk.api.RecoveryApi
 
 @OptIn(InternalIcureApi::class)
 private val ENCRYPTED_FIELDS_MANIFEST =
@@ -41,7 +63,7 @@ private val ENCRYPTED_FIELDS_MANIFEST =
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface PatientBasicFlavourlessApi {
-	suspend fun matchPatientsBy(filter: AbstractFilter<EncryptedPatient>): List<String>
+	suspend fun matchPatientsBy(filter: AbstractFilter<Patient>): List<String>
 	suspend fun deletePatient(entityId: String): DocIdentifier
 	suspend fun deletePatients(entityIds: List<String>): List<DocIdentifier>
 	suspend fun undeletePatient(patientIds: String): List<DocIdentifier>
@@ -53,7 +75,7 @@ interface PatientBasicFlavouredApi<E : Patient> {
 	suspend fun modifyPatient(entity: E): E
 	suspend fun getPatient(entityId: String): E
 	suspend fun filterPatientsBy(
-		filterChain: FilterChain<EncryptedPatient>,
+		filterChain: FilterChain<Patient>,
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
@@ -116,14 +138,6 @@ interface PatientBasicFlavouredApi<E : Patient> {
 	): PaginatedList<String>
 
 	suspend fun getPatientByExternalId(externalId: String): E
-	suspend fun findPatientsByAccessLogUserAfterDate(
-		userId: String,
-		accessType: String? = null,
-		startDate: Long? = null,
-		startKey: String? = null,
-		startDocumentId: String? = null,
-		limit: Int? = null,
-	): PaginatedList<E>
 
 	suspend fun fuzzySearch(
 		firstName: String,
@@ -193,6 +207,44 @@ interface PatientFlavouredApi<E : Patient> : PatientBasicFlavouredApi<E> {
 		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
 	): SimpleShareResult<E>
 
+	/**
+	 * Shares an existing access log with other data owners, allowing them to access the non-encrypted data of the access log and optionally also the
+	 * encrypted content, with read-only or read-write permissions.
+	 * @param patient the [Patient] to share.
+	 * @param delegates associates the id of data owners which will be granted access to the entity, to the following sharing options:
+	 * - shareEncryptionKey: specifies if the encryption key of the access log should be shared with the delegate, giving access to all encrypted
+	 * content of the entity, excluding other encrypted metadata (defaults to [ShareMetadataBehaviour.IfAvailable]).
+	 * - sharePatientId: specifies if the id of the patient that this access log refers to should be shared with the delegate. Normally this would
+	 * be the same as objectId, but it is encrypted separately from it allowing you to give access to the patient id without giving access to the other
+	 * encrypted data of the access log (defaults to [ShareMetadataBehaviour.IfAvailable]).
+	 * - requestedPermissions: the requested permissions for the delegate, defaults to [ShareMetadataBehaviour.IfAvailable].
+	 * @return the [SimpleShareResult] of the operation: the updated entity if the operation was successful or details of the error if
+	 * the operation failed.
+	 */
+	suspend fun tryShareWithMany(
+		patient: E,
+		delegates: Map<String, PatientShareOptions>
+	): SimpleShareResult<E>
+
+	/**
+	 * Shares an existing access log with other data owners, allowing them to access the non-encrypted data of the access log and optionally also the
+	 * encrypted content, with read-only or read-write permissions.
+	 * @param patient the [Patient] to share.
+	 * @param delegates associates the id of data owners which will be granted access to the entity, to the following sharing options:
+	 * - shareEncryptionKey: specifies if the encryption key of the access log should be shared with the delegate, giving access to all encrypted
+	 * content of the entity, excluding other encrypted metadata (defaults to [ShareMetadataBehaviour.IfAvailable]).
+	 * - sharePatientId: specifies if the id of the patient that this access log refers to should be shared with the delegate. Normally this would
+	 * be the same as objectId, but it is encrypted separately from it allowing you to give access to the patient id without giving access to the other
+	 * encrypted data of the access log (defaults to [ShareMetadataBehaviour.IfAvailable]).
+	 * - requestedPermissions: the requested permissions for the delegate, defaults to [ShareMetadataBehaviour.IfAvailable].
+	 * @return the updated entity.
+	 * @throws IllegalStateException if the operation was not successful.
+	 */
+	suspend fun shareWithMany(
+		patient: E,
+		delegates: Map<String, PatientShareOptions>
+	): E
+
 	suspend fun initialiseConfidentialSecretId(patient: E): E
 }
 
@@ -207,6 +259,9 @@ interface PatientApi : PatientBasicFlavourlessApi, PatientFlavouredApi<Decrypted
 		delegates: Map<String, AccessLevel> = emptyMap()
 	): DecryptedPatient
 	suspend fun createDelegationsDeAnonymizationMetadata(patient: Patient, dataOwnerIds: Set<String>)
+	suspend fun hasWriteAccess(patient: Patient): Boolean
+	suspend fun decryptPatientIdOf(patient: Patient): Set<String>
+	suspend fun createDelegationDeAnonymizationMetadata(entity: Patient, delegates: Set<String>)
 
 	val encrypted: PatientFlavouredApi<EncryptedPatient>
 	val tryAndRecover: PatientFlavouredApi<Patient>
@@ -220,6 +275,18 @@ interface PatientApi : PatientBasicFlavourlessApi, PatientFlavouredApi<Decrypted
 		patient: DecryptedPatient
 	): DataOwnerRegistrationSuccess
 
+	suspend fun shareAllDataOfPatient(
+		user: User,
+		patientId: String,
+		dataOwnerId: String,
+		delegatesWithShareType: Map<String, Set<ShareAllPatientDataOptions.Tag>>
+	): ShareAllPatientDataOptions.Result
+
+	suspend fun export(user: User, patientId: String, dataOwnerId: String): ExportDataOptions.Result
+
+	suspend fun <T : HasEncryptionMetadata> getPatientIdOfChildDocumentForHcpAndHcpParents(childDocument: EntityWithTypeInfo<T>, healthcarePartyId: String): String
+
+
 	suspend fun getConfidentialSecretIdsOf(patient: Patient): Set<String>
 
 	/**
@@ -231,9 +298,9 @@ interface PatientApi : PatientBasicFlavourlessApi, PatientFlavouredApi<Decrypted
 	 * automatically created the first time you share data with the patient, and your implementation of the crypto
 	 * strategies will be used to validate the public keys of the patient.
 	 *
-	 * Once exchange data is initialized you can use the {@link IccRecoveryXApi.createExchangeDataRecoveryInfo} to
+	 * Once exchange data is initialized you can use the [RecoveryApi.createExchangeDataRecoveryInfo] to
 	 * generate a key that the patient will be able to use on his first login to immediately gain access to the exchange
-	 * data (through the {@link IccRecoveryXApi.recoverExchangeData} method).
+	 * data (through the [RecoveryApi.recoverExchangeData] method).
 	 *
 	 * @param patientId the id of the newly invited patient.
 	 * @return true if exchange data was initialized, false if the patient already has a key pair and the exchange data
@@ -254,7 +321,7 @@ private abstract class AbstractPatientBasicFlavouredApi<E : Patient>(protected v
 	override suspend fun getPatient(entityId: String): E = rawApi.getPatient(entityId).successBody().let { maybeDecrypt(it) }
 
 	override suspend fun filterPatientsBy(
-		filterChain: FilterChain<EncryptedPatient>,
+		filterChain: FilterChain<Patient>,
 		startKey: String?,
 		startDocumentId: String?,
 		limit: Int?,
@@ -351,14 +418,7 @@ private abstract class AbstractPatientBasicFlavouredApi<E : Patient>(protected v
 	) = rawApi.findPatientsIdsByHealthcareParty(hcPartyId, startKey, startDocumentId, limit).successBody()
 
 	override suspend fun getPatientByExternalId(externalId: String) = rawApi.getPatientByExternalId(externalId).successBody().let { maybeDecrypt(it) }
-	override suspend fun findPatientsByAccessLogUserAfterDate(
-		userId: String,
-		accessType: String?,
-		startDate: Long?,
-		startKey: String?,
-		startDocumentId: String?,
-		limit: Int?,
-	) = rawApi.findPatientsByAccessLogUserAfterDate(userId, accessType, startDate, startKey, startDocumentId, limit).successBody().map { maybeDecrypt(it) }
+
 	override suspend fun fuzzySearch(
 		firstName: String,
 		lastName: String,
@@ -432,9 +492,9 @@ private abstract class AbstractPatientFlavouredApi<E : Patient>(
 			patient.withTypeInfo(),
 			false,
 			mapOf(
-				delegateId to SimpleDelegateShareOptions(
+				delegateId to SimpleDelegateShareOptionsImpl(
 					shareSecretIds = shareSecretIds,
-					shareEncryptionKeys = shareEncryptionKeys,
+					shareEncryptionKey = shareEncryptionKeys,
 					shareOwningEntityIds = shareOwningEntityIds,
 					requestedPermissions = requestedPermission,
 				),
@@ -442,6 +502,18 @@ private abstract class AbstractPatientFlavouredApi<E : Patient>(
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
 		}
+
+	override suspend fun tryShareWithMany(patient: E, delegates: Map<String, PatientShareOptions>): SimpleShareResult<E> =
+		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
+			patient.withTypeInfo(),
+			true,
+			delegates
+		) {
+			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
+		}
+
+	override suspend fun shareWithMany(patient: E, delegates: Map<String, PatientShareOptions>): E =
+		tryShareWithMany(patient, delegates).updatedEntityOrThrow()
 
 	override suspend fun initialiseConfidentialSecretId(patient: E): E {
 		requireNotNull(patient.rev) {
@@ -457,7 +529,7 @@ private abstract class AbstractPatientFlavouredApi<E : Patient>(
 
 @InternalIcureApi
 private class AbstractPatientBasicFlavourlessApi(val rawApi: RawPatientApi, val crypto: BasicInternalCryptoApi) : PatientBasicFlavourlessApi {
-	override suspend fun matchPatientsBy(filter: AbstractFilter<EncryptedPatient>) = rawApi.matchPatientsBy(filter).successBody()
+	override suspend fun matchPatientsBy(filter: AbstractFilter<Patient>) = rawApi.matchPatientsBy(filter).successBody()
 	override suspend fun deletePatient(entityId: String) = rawApi.deletePatient(entityId).successBody()
 	override suspend fun deletePatients(entityIds: List<String>) = rawApi.deletePatients(ListOfIds(entityIds)).successBody()
 	override suspend fun undeletePatient(patientIds: String) = rawApi.undeletePatient(patientIds).successBody()
@@ -468,6 +540,15 @@ private class AbstractPatientBasicFlavourlessApi(val rawApi: RawPatientApi, val 
 @InternalIcureApi
 internal class PatientApiImpl(
 	private val rawApi: RawPatientApi,
+	private val rawHealthcarePartyApi: RawHealthcarePartyApi,
+	private val rawHealthElementApi: RawHealthElementApi,
+	private val rawFormApi: RawFormApi,
+	private val rawContactApi: RawContactApi,
+	private val contactApi: ContactApi,
+	private val documentApi: DocumentApi,
+	private val rawInvoiceApi: RawInvoiceApi,
+	private val rawCalendarItemApi: RawCalendarItemApi,
+	private val rawClassificationApi: RawClassificationApi,
 	private val crypto: InternalCryptoServices,
 	private val fieldsToEncrypt: EncryptedFieldsManifest = ENCRYPTED_FIELDS_MANIFEST,
 	private val autofillAuthor: Boolean,
@@ -547,6 +628,262 @@ internal class PatientApiImpl(
 		encrypt(patient),
 	).successBody()
 
+	private suspend fun findDelegationStubsForHcPartyAndParent(
+		delegationSecretKeys: List<String>,
+		hcpId: String,
+		parentId: String?,
+		stubGetter: suspend (String, List<String>) -> List<IcureStub>
+	): List<IcureStub> {
+		val stubs = stubGetter(hcpId, delegationSecretKeys) +
+			if(parentId != null) stubGetter(parentId, delegationSecretKeys) else emptyList()
+		return stubs.distinctBy { it.id }
+	}
+
+	override suspend fun shareAllDataOfPatient(
+		user: User,
+		patientId: String,
+		dataOwnerId: String,
+		delegatesWithShareType: Map<String, Set<ShareAllPatientDataOptions.Tag>>
+	): ShareAllPatientDataOptions.Result {
+
+		val allTags = delegatesWithShareType.values.flatMap { it.toList() }.toSet()
+
+		val hcp = rawHealthcarePartyApi.getHealthcareParty(dataOwnerId).successBody() // Shall we do it for any data owner?
+		val parentId = hcp.parentId
+		val patient = encrypted.getPatient(patientId).let { patient ->
+			crypto.entity.ensureEncryptionKeysInitialised(patient.withTypeInfo())?.let {
+				encrypted.modifyPatient(it)
+			} ?: patient
+		}
+
+		val delegationSecretKeys = getSecretIdsOf(patient)
+
+		val shareStatus = if(delegationSecretKeys.isNotEmpty()) {
+			suspend fun <T : HasEncryptionMetadata> doShareEntitiesAndUpdateStatus(
+				entities: List<EntityWithTypeInfo<T>>,
+				tagsCondition: (tags: Set<ShareAllPatientDataOptions.Tag>) -> Boolean,
+				doShareMinimal: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<Nothing>>
+			): ShareAllPatientDataOptions.EntityResult {
+				val delegatesToApply = delegatesWithShareType.entries.mapNotNull { (delegateId, types) ->
+					delegateId.takeIf { tagsCondition(types) }
+				}
+				return if(entities.isNotEmpty() && delegatesToApply.isNotEmpty()) {
+					// Used a mutable list in the fold to avoid creating a new list at each iteration
+					val updates = entities.fold(mutableListOf<Pair<EntityWithTypeInfo<T>, Map<String, DelegateShareOptions>>>()) { acc, entity ->
+						val secretIds = crypto.entity.secretIdsOf(entity, null)
+						val entityEncryptionKeys = crypto.entity.encryptionKeysOf(entity, null)
+						acc.apply {
+							add(entity to delegatesToApply.associateWith {
+								DelegateShareOptions(
+									shareSecretIds = secretIds,
+									shareEncryptionKeys = entityEncryptionKeys,
+									shareOwningEntityIds = setOf(patient.id),
+									requestedPermissions = RequestedPermission.MaxWrite
+								)
+							})
+						}
+					}
+					try {
+						val result = crypto.entity.bulkShareOrUpdateEncryptedEntityMetadataNoEntities(updates, doShareMinimal)
+						ShareAllPatientDataOptions.EntityResult(
+							success = result.updateErrors.isEmpty(),
+							error = BulkShareErrorsException(
+								result.updateErrors,
+								"Error while sharing (some) entities of type ${entities.firstOrNull()?.type} for patient ${patient.id}"
+							).takeIf { result.updateErrors.isNotEmpty() },
+							modified = result.successfulUpdates.map { it.entityId }.toSet().size
+						)
+					} catch (e: Exception) {
+						ShareAllPatientDataOptions.EntityResult(success = false, error = e)
+					}
+				} else {
+					ShareAllPatientDataOptions.EntityResult(success = true)
+				}
+			}
+
+			val retrievedHealthElements = findDelegationStubsForHcPartyAndParent(delegationSecretKeys.toList(), hcp.id, parentId) { doId, delSecKeys ->
+				rawHealthElementApi.findHealthElementsDelegationsStubsByHCPartyPatientForeignKeys(doId, delSecKeys).successBody()
+			}
+			val shareHealthElementsResult = doShareEntitiesAndUpdateStatus(
+				entities = retrievedHealthElements.map { EntityWithTypeInfo(it, EntityWithEncryptionMetadataTypeName.HealthElement) },
+				tagsCondition = { it.contains(ShareAllPatientDataOptions.Tag.All) || it.contains(ShareAllPatientDataOptions.Tag.MedicalInformation) },
+			) { params -> rawHealthElementApi.bulkShareMinimal(params).successBody() }
+
+			val retrievedForms = findDelegationStubsForHcPartyAndParent(delegationSecretKeys.toList(), hcp.id, parentId) { doId, delSecKeys ->
+				rawFormApi.findFormsDelegationsStubsByHCPartyAndPatientForeignKeys(doId, delSecKeys).successBody()
+			}
+			val shareFormsResult = doShareEntitiesAndUpdateStatus(
+				entities = retrievedForms.map { EntityWithTypeInfo(it, EntityWithEncryptionMetadataTypeName.Form) },
+				tagsCondition = { it.contains(ShareAllPatientDataOptions.Tag.All) || it.contains(ShareAllPatientDataOptions.Tag.MedicalInformation) },
+			) { params -> rawFormApi.bulkShareMinimal(params).successBody() }
+
+			val retrievedContacts = findDelegationStubsForHcPartyAndParent(delegationSecretKeys.toList(), hcp.id, parentId) { doId, delSecKeys ->
+				rawContactApi.findContactsDelegationsStubsByHCPartyPatientForeignKeys(doId, delSecKeys).successBody()
+			}
+			val shareContactsResult = doShareEntitiesAndUpdateStatus(
+				entities = retrievedContacts.map { EntityWithTypeInfo(it, EntityWithEncryptionMetadataTypeName.Contact) },
+				tagsCondition = { it.contains(ShareAllPatientDataOptions.Tag.All) || it.contains(ShareAllPatientDataOptions.Tag.MedicalInformation) },
+			) { params -> rawContactApi.bulkShareMinimal(params).successBody() }
+
+			val retrievedInvoices = findDelegationStubsForHcPartyAndParent(delegationSecretKeys.toList(), hcp.id, parentId) { doId, delSecKeys ->
+				rawInvoiceApi.findInvoicesDelegationsStubsByHCPartyPatientForeignKeys(doId, delSecKeys).successBody()
+			}
+			val shareInvoicesResult = doShareEntitiesAndUpdateStatus(
+				entities = retrievedInvoices.map { EntityWithTypeInfo(it, EntityWithEncryptionMetadataTypeName.Invoice) },
+				tagsCondition = { it.contains(ShareAllPatientDataOptions.Tag.All) || it.contains(ShareAllPatientDataOptions.Tag.FinancialInformation) },
+			) { params -> rawInvoiceApi.bulkShareMinimal(params).successBody() }
+
+			val retrievedCalendarItems = findDelegationStubsForHcPartyAndParent(delegationSecretKeys.toList(), hcp.id, parentId) { doId, delSecKeys ->
+				rawCalendarItemApi.findCalendarItemsDelegationsStubsByHCPartyPatientForeignKeys(doId, delSecKeys).successBody()
+			}
+			val shareCalendarItemsResult = doShareEntitiesAndUpdateStatus(
+				entities = retrievedCalendarItems.map { EntityWithTypeInfo(it, EntityWithEncryptionMetadataTypeName.CalendarItem) },
+				tagsCondition = { it.contains(ShareAllPatientDataOptions.Tag.All) || it.contains(ShareAllPatientDataOptions.Tag.MedicalInformation) },
+			) { params -> rawCalendarItemApi.bulkShareMinimal(params).successBody() }
+
+			val retrievedClassifications = findDelegationStubsForHcPartyAndParent(delegationSecretKeys.toList(), hcp.id, parentId) { doId, delSecKeys ->
+				rawClassificationApi.findClassificationsDelegationsStubsByHCPartyPatientForeignKeys(doId, delSecKeys).successBody()
+			}
+			val shareClassificationResult = doShareEntitiesAndUpdateStatus(
+				entities = retrievedClassifications.map { EntityWithTypeInfo(it, EntityWithEncryptionMetadataTypeName.Classification) },
+				tagsCondition = { it.contains(ShareAllPatientDataOptions.Tag.All) || it.contains(ShareAllPatientDataOptions.Tag.MedicalInformation) },
+			) { params -> rawClassificationApi.bulkShareMinimal(params).successBody() }
+
+			mapOf(
+				ShareAllPatientDataOptions.ShareableEntity.HealthElement to shareHealthElementsResult,
+				ShareAllPatientDataOptions.ShareableEntity.Form to shareFormsResult,
+				ShareAllPatientDataOptions.ShareableEntity.Contact to shareContactsResult,
+				ShareAllPatientDataOptions.ShareableEntity.Invoice to shareInvoicesResult,
+				ShareAllPatientDataOptions.ShareableEntity.CalendarItem to shareCalendarItemsResult,
+				ShareAllPatientDataOptions.ShareableEntity.Classification to shareClassificationResult,
+			)
+		} else {
+			ShareAllPatientDataOptions.ShareableEntity.entries.associateWith { entity ->
+				ShareAllPatientDataOptions.EntityResult(
+					success = false.takeIf { allTags.contains(entity.type) || allTags.contains(ShareAllPatientDataOptions.Tag.All) },
+					error = null,
+					modified = 0
+				)
+			}
+		}
+
+		val patientStatus = try {
+			val result = crypto.entity.bulkShareOrUpdateEncryptedEntityMetadataNoEntities(listOf(
+				patient.withTypeInfo() to delegatesWithShareType.keys.associateWith {
+					DelegateShareOptions(
+						shareSecretIds = delegationSecretKeys,
+						shareEncryptionKeys = getEncryptionKeysOf(patient),
+						shareOwningEntityIds = setOf(),
+						requestedPermissions = RequestedPermission.MaxWrite
+					)
+				}
+			)) { params -> rawApi.bulkShareMinimal(params).successBody() }
+			ShareAllPatientDataOptions.EntityResult(
+				success = result.updateErrors.isEmpty(),
+				error = BulkShareErrorsException(
+					errors = result.updateErrors,
+					"Error while sharing patient ${patient.id}"
+				).takeIf { result.updateErrors.isNotEmpty() },
+				modified = result.successfulUpdates.map { it.entityId }.toSet().size
+			)
+		} catch (e: Exception) {
+			ShareAllPatientDataOptions.EntityResult(success = false, error = e)
+		}
+
+		return ShareAllPatientDataOptions.Result(
+			patient = patient,
+			statuses = shareStatus + (ShareAllPatientDataOptions.ShareableEntity.Patient to patientStatus)
+		)
+	}
+
+	override suspend fun export(
+		user: User,
+		patientId: String,
+		dataOwnerId: String
+	): ExportDataOptions.Result {
+		val hcp = rawHealthcarePartyApi.getHealthcareParty(dataOwnerId).successBody() // Should we do it also for other data owners?
+		val parentId = hcp.parentId
+		val patient = encrypted.getPatient(patientId).let { patient ->
+			crypto.entity.ensureEncryptionKeysInitialised(patient.withTypeInfo())?.let {
+				encrypted.modifyPatient(it)
+			} ?: patient
+		}
+		val delegationSecretKeys = crypto.entity.secretIdsOf(patient.withTypeInfo(), dataOwnerId).toList()
+		return if(delegationSecretKeys.isNotEmpty()) {
+			val retrievedHealthElements = findDelegationStubsForHcPartyAndParent(delegationSecretKeys, hcp.id, parentId) { doId, delSecKeys ->
+				rawHealthElementApi.findHealthElementsDelegationsStubsByHCPartyPatientForeignKeys(doId, delSecKeys).successBody()
+			}
+			val retrievedForms = findDelegationStubsForHcPartyAndParent(delegationSecretKeys, hcp.id, parentId) { doId, delSecKeys ->
+				rawFormApi.findFormsDelegationsStubsByHCPartyAndPatientForeignKeys(doId, delSecKeys).successBody()
+			}
+			val retrievedInvoices = findDelegationStubsForHcPartyAndParent(delegationSecretKeys, hcp.id, parentId) { doId, delSecKeys ->
+				rawInvoiceApi.findInvoicesDelegationsStubsByHCPartyPatientForeignKeys(doId, delSecKeys).successBody()
+			}
+			val retrievedCalendarItems = findDelegationStubsForHcPartyAndParent(delegationSecretKeys, hcp.id, parentId) { doId, delSecKeys ->
+				rawCalendarItemApi.findCalendarItemsDelegationsStubsByHCPartyPatientForeignKeys(doId, delSecKeys).successBody()
+			}
+			val retrievedClassifications = findDelegationStubsForHcPartyAndParent(delegationSecretKeys, hcp.id, parentId) { doId, delSecKeys ->
+				rawClassificationApi.findClassificationsDelegationsStubsByHCPartyPatientForeignKeys(doId, delSecKeys).successBody()
+			}
+			val retrievedContacts = findDelegationStubsForHcPartyAndParent(delegationSecretKeys.toList(), hcp.id, parentId) { doId, delSecKeys ->
+				rawContactApi.findContactsDelegationsStubsByHCPartyPatientForeignKeys(doId, delSecKeys).successBody()
+			}
+			val documentIds = mutableSetOf<String>()
+			val contacts = mutableListOf<DecryptedContact>()
+			val contactsIterator = IdsPageIterator(
+				ids = retrievedContacts.map { it.id }
+			) { contactApi.getContacts(it) }
+			contactsIterator.forEach { contact ->
+				contact.services.flatMap { it.content.values }.forEach { content ->
+					if(content.documentId != null) {
+						documentIds.add(content.documentId)
+					}
+				}
+				contacts.add(contact)
+			}
+			val retrievedDocuments = documentApi.getDocuments(documentIds.toList())
+			ExportDataOptions.Result(
+				id = patientId,
+				patient = patient,
+				contacts = contacts,
+				forms = retrievedForms,
+				healthElements = retrievedHealthElements,
+				invoices = retrievedInvoices,
+				classifications = retrievedClassifications,
+				calItems = retrievedCalendarItems,
+				documents = retrievedDocuments,
+			)
+		} else {
+			ExportDataOptions.Result(
+				id = patientId,
+				patient = patient
+			)
+		}
+	}
+
+	override suspend fun <T : HasEncryptionMetadata> getPatientIdOfChildDocumentForHcpAndHcpParents(
+		childDocument: EntityWithTypeInfo<T>,
+		healthcarePartyId: String
+	): String {
+		val parentIds = crypto.entity.owningEntityIdsOf(childDocument, healthcarePartyId)
+		check(parentIds.isNotEmpty()) {
+			"Parent id is empty in CFK of child document with id ${childDocument.id} for hcpId: $healthcarePartyId"
+		}
+		check(parentIds.size == 1) {
+			"Child document with id ${childDocument.id} contains multiple parent ids in its CFKs for hcpId: $healthcarePartyId"
+		}
+
+		tailrec suspend fun findLastMergedPatientInHierarchy(patient: DecryptedPatient, maxMergeLevel: Int): DecryptedPatient {
+			return if(patient.mergeToPatientId != null) {
+				require(maxMergeLevel > 0) {
+					"Too many merged levels for parent (Patient) of child document ${childDocument.id} ; hcpId: $healthcarePartyId"
+				}
+				findLastMergedPatientInHierarchy(getPatient(patient.mergeToPatientId), maxMergeLevel - 1)
+			} else patient
+		}
+
+		return findLastMergedPatientInHierarchy(getPatient(parentIds.first()), 10).id
+ 	}
 
 	override suspend fun withEncryptionMetadata(
 		base: DecryptedPatient?,
@@ -570,6 +907,14 @@ internal class PatientApiImpl(
 
 	override suspend fun createDelegationsDeAnonymizationMetadata(patient: Patient, dataOwnerIds: Set<String>) =
 		crypto.delegationsDeAnonymization.createOrUpdateDeAnonymizationInfo(patient.withTypeInfo(), dataOwnerIds)
+
+	override suspend fun hasWriteAccess(patient: Patient): Boolean = crypto.entity.hasWriteAccess(patient.withTypeInfo())
+
+	override suspend fun decryptPatientIdOf(patient: Patient): Set<String> = crypto.entity.owningEntityIdsOf(patient.withTypeInfo(), null)
+
+	override suspend fun createDelegationDeAnonymizationMetadata(entity: Patient, delegates: Set<String>) {
+		crypto.delegationsDeAnonymization.createOrUpdateDeAnonymizationInfo(entity.withTypeInfo(), delegates)
+	}
 
 	override suspend fun getSecretIdsOf(patient: Patient): Set<String> =
 		crypto.entity.secretIdsOf(patient.withTypeInfo(), null)
