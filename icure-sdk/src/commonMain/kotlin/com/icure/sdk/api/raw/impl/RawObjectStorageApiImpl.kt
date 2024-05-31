@@ -9,6 +9,7 @@ import com.icure.sdk.auth.services.setAuthorizationWith
 import com.icure.sdk.model.objectstorage.StoredObjectInformation
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
+import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
@@ -57,6 +58,7 @@ class RawObjectStorageApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.OctetStream)
+			accept(ContentType.Application.Json)
 			setBody(ByteReadChannel(content))
 		}.wrap()
 
@@ -72,6 +74,7 @@ class RawObjectStorageApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun getAttachmentInfo(
@@ -86,6 +89,7 @@ class RawObjectStorageApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	// endregion

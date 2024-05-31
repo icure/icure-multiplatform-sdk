@@ -20,6 +20,7 @@ import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.couchdb.ReplicatorDocument
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
+import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
@@ -58,6 +59,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun destroyTmpDatabase(): HttpResponse<Unit> =
@@ -67,6 +69,7 @@ class RawTmpApiImpl(
 				appendPathSegments("rest", "v2", "tmp")
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun replicateToTmpDatabase(
@@ -80,6 +83,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(ids)
 		}.wrap()
 
@@ -91,6 +95,7 @@ class RawTmpApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun createTmpPatient(c: EncryptedPatient): HttpResponse<EncryptedPatient> =
@@ -101,6 +106,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(c)
 		}.wrap()
 
@@ -112,6 +118,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(patientDto)
 		}.wrap()
 
@@ -123,6 +130,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(ids)
 		}.wrap()
 
@@ -134,6 +142,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(patientDtos)
 		}.wrap()
 
@@ -145,6 +154,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(patientDtos)
 		}.wrap()
 
@@ -161,6 +171,7 @@ class RawTmpApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun getTmpHealthElement(id: String): HttpResponse<EncryptedHealthElement> =
@@ -171,6 +182,7 @@ class RawTmpApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun createTmpHealthElement(c: EncryptedHealthElement): HttpResponse<EncryptedHealthElement> =
@@ -181,6 +193,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(c)
 		}.wrap()
 
@@ -192,6 +205,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(healthElementDto)
 		}.wrap()
 
@@ -203,6 +217,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(ids)
 		}.wrap()
 
@@ -216,6 +231,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(healthElementDtos)
 		}.wrap()
 
@@ -229,6 +245,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(healthElementDtos)
 		}.wrap()
 
@@ -245,6 +262,7 @@ class RawTmpApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun getTmpForm(id: String): HttpResponse<EncryptedForm> =
@@ -255,6 +273,7 @@ class RawTmpApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun createTmpForm(c: EncryptedForm): HttpResponse<EncryptedForm> =
@@ -265,6 +284,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(c)
 		}.wrap()
 
@@ -276,6 +296,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(formDto)
 		}.wrap()
 
@@ -287,6 +308,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(ids)
 		}.wrap()
 
@@ -298,6 +320,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(formDtos)
 		}.wrap()
 
@@ -309,6 +332,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(formDtos)
 		}.wrap()
 
@@ -325,6 +349,7 @@ class RawTmpApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun getTmpContact(id: String): HttpResponse<EncryptedContact> =
@@ -335,6 +360,7 @@ class RawTmpApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun createTmpContact(c: EncryptedContact): HttpResponse<EncryptedContact> =
@@ -345,6 +371,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(c)
 		}.wrap()
 
@@ -356,6 +383,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(contactDto)
 		}.wrap()
 
@@ -367,6 +395,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(ids)
 		}.wrap()
 
@@ -378,6 +407,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(contactDtos)
 		}.wrap()
 
@@ -389,6 +419,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(contactDtos)
 		}.wrap()
 
@@ -405,6 +436,7 @@ class RawTmpApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun getTmpMessage(id: String): HttpResponse<EncryptedMessage> =
@@ -415,6 +447,7 @@ class RawTmpApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun createTmpMessage(c: EncryptedMessage): HttpResponse<EncryptedMessage> =
@@ -425,6 +458,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(c)
 		}.wrap()
 
@@ -436,6 +470,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(messageDto)
 		}.wrap()
 
@@ -447,6 +482,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(ids)
 		}.wrap()
 
@@ -458,6 +494,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(messageDtos)
 		}.wrap()
 
@@ -469,6 +506,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(messageDtos)
 		}.wrap()
 
@@ -485,6 +523,7 @@ class RawTmpApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun getTmpInvoice(id: String): HttpResponse<EncryptedInvoice> =
@@ -495,6 +534,7 @@ class RawTmpApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun createTmpInvoice(c: EncryptedInvoice): HttpResponse<EncryptedInvoice> =
@@ -505,6 +545,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(c)
 		}.wrap()
 
@@ -516,6 +557,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(invoiceDto)
 		}.wrap()
 
@@ -527,6 +569,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(ids)
 		}.wrap()
 
@@ -538,6 +581,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(invoiceDtos)
 		}.wrap()
 
@@ -549,6 +593,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(invoiceDtos)
 		}.wrap()
 
@@ -565,6 +610,7 @@ class RawTmpApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun getTmpDocument(id: String): HttpResponse<EncryptedDocument> =
@@ -575,6 +621,7 @@ class RawTmpApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun getTmpDocumentAttachment(
@@ -592,6 +639,7 @@ class RawTmpApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.OctetStream)
 		}.wrap()
 
 	override suspend fun deleteTmpDocumentAttachment(documentId: String): HttpResponse<EncryptedDocument> =
@@ -601,6 +649,7 @@ class RawTmpApiImpl(
 				appendPathSegments("rest", "v2", "tmp", "document", documentId, "attachment")
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun setTmpDocumentAttachment(
@@ -616,6 +665,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.OctetStream)
+			accept(ContentType.Application.Json)
 			setBody(ByteReadChannel(payload))
 		}.wrap()
 
@@ -627,6 +677,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(c)
 		}.wrap()
 
@@ -638,6 +689,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(documentDto)
 		}.wrap()
 
@@ -649,6 +701,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(ids)
 		}.wrap()
 
@@ -660,6 +713,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(documentDtos)
 		}.wrap()
 
@@ -671,6 +725,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(documentDtos)
 		}.wrap()
 
@@ -687,6 +742,7 @@ class RawTmpApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun getTmpClassification(id: String): HttpResponse<EncryptedClassification> =
@@ -697,6 +753,7 @@ class RawTmpApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun createTmpClassification(c: EncryptedClassification): HttpResponse<EncryptedClassification> =
@@ -707,6 +764,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(c)
 		}.wrap()
 
@@ -718,6 +776,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(classificationDto)
 		}.wrap()
 
@@ -729,6 +788,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(ids)
 		}.wrap()
 
@@ -742,6 +802,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(classificationDtos)
 		}.wrap()
 
@@ -755,6 +816,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(classificationDtos)
 		}.wrap()
 
@@ -771,6 +833,7 @@ class RawTmpApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun getTmpEntityTemplate(id: String): HttpResponse<EntityTemplate> =
@@ -781,6 +844,7 @@ class RawTmpApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun createTmpEntityTemplate(c: EntityTemplate): HttpResponse<EntityTemplate> =
@@ -791,6 +855,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(c)
 		}.wrap()
 
@@ -802,6 +867,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(entityTemplateDto)
 		}.wrap()
 
@@ -813,6 +879,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(ids)
 		}.wrap()
 
@@ -824,6 +891,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(entityTemplateDtos)
 		}.wrap()
 
@@ -835,6 +903,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(entityTemplateDtos)
 		}.wrap()
 
@@ -851,6 +920,7 @@ class RawTmpApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun deleteTmpItems(ids: List<String>): HttpResponse<List<DocIdentifier>> =
@@ -861,6 +931,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(ids)
 		}.wrap()
 
@@ -872,6 +943,7 @@ class RawTmpApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(ids)
 		}.wrap()
 

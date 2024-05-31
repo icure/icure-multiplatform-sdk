@@ -15,6 +15,7 @@ import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.serialization.CodeAbstractFilterSerializer
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
+import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
@@ -69,6 +70,7 @@ class RawCodeApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun findCodesByType(
@@ -94,6 +96,7 @@ class RawCodeApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun findCodesByLink(
@@ -114,6 +117,7 @@ class RawCodeApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun listCodesByRegionTypeCodeVersion(
@@ -133,6 +137,7 @@ class RawCodeApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun listCodeTypesBy(
@@ -148,6 +153,7 @@ class RawCodeApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun listTagTypesBy(
@@ -163,6 +169,7 @@ class RawCodeApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun createCode(c: Code): HttpResponse<Code> =
@@ -173,6 +180,7 @@ class RawCodeApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(c)
 		}.wrap()
 
@@ -184,6 +192,7 @@ class RawCodeApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(codeBatch)
 		}.wrap()
 
@@ -202,6 +211,7 @@ class RawCodeApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun getCodeByRegionLanguageTypeLabel(
@@ -221,6 +231,7 @@ class RawCodeApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun getCodes(codeIds: ListOfIds): HttpResponse<List<Code>> =
@@ -231,6 +242,7 @@ class RawCodeApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(codeIds)
 		}.wrap()
 
@@ -242,6 +254,7 @@ class RawCodeApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun getCodeWithParts(
@@ -256,6 +269,7 @@ class RawCodeApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun modifyCode(codeDto: Code): HttpResponse<Code> =
@@ -266,6 +280,7 @@ class RawCodeApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(codeDto)
 		}.wrap()
 
@@ -277,6 +292,7 @@ class RawCodeApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(codeBatch)
 		}.wrap()
 
@@ -302,6 +318,7 @@ class RawCodeApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(filterChain)
 		}.wrap()
 
@@ -313,6 +330,7 @@ class RawCodeApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBodyWithSerializer(CodeAbstractFilterSerializer, filter)
 		}.wrap()
 
@@ -324,6 +342,7 @@ class RawCodeApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	// endregion

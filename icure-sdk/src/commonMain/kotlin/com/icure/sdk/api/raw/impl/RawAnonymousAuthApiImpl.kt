@@ -8,6 +8,7 @@ import com.icure.sdk.model.LoginCredentials
 import com.icure.sdk.model.security.jwt.JwtResponse
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
+import io.ktor.client.request.accept
 import io.ktor.client.request.`header`
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
@@ -47,6 +48,7 @@ class RawAnonymousAuthApiImpl(
 				parameter("groupId", groupId)
 			}
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(loginCredentials)
 		}.wrap()
 
@@ -61,6 +63,7 @@ class RawAnonymousAuthApiImpl(
 				parameter("totp", totp)
 			}
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			header("Refresh-Token", refreshToken)
 		}.wrap()
 
@@ -71,6 +74,7 @@ class RawAnonymousAuthApiImpl(
 				appendPathSegments("rest", "v2", "auth", "check")
 			}
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(loginCredentials)
 		}.wrap()
 
@@ -88,6 +92,7 @@ class RawAnonymousAuthApiImpl(
 				appendPathSegments("rest", "v2", "auth", "switch", groupId)
 			}
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			header("Refresh-Token", refreshToken)
 		}.wrap()
 
@@ -102,6 +107,7 @@ class RawAnonymousAuthApiImpl(
 				parameter("groupId", groupId)
 			}
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			header("token", token)
 		}.wrap()
 
@@ -116,6 +122,7 @@ class RawAnonymousAuthApiImpl(
 				parameter("groupId", groupId)
 			}
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			header("token", token)
 		}.wrap()
 
@@ -126,6 +133,7 @@ class RawAnonymousAuthApiImpl(
 				appendPathSegments("rest", "v2", "auth", "invalidate")
 			}
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			header("Refresh-Token", refreshToken)
 		}.wrap()
 

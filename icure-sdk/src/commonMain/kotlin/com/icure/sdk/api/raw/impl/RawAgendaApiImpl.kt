@@ -12,6 +12,7 @@ import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
+import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
@@ -52,6 +53,7 @@ class RawAgendaApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun createAgenda(agendaDto: Agenda): HttpResponse<Agenda> =
@@ -62,6 +64,7 @@ class RawAgendaApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(agendaDto)
 		}.wrap()
 
@@ -73,6 +76,7 @@ class RawAgendaApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(agendaIds)
 		}.wrap()
 
@@ -83,6 +87,7 @@ class RawAgendaApiImpl(
 				appendPathSegments("rest", "v2", "agenda", agendaId)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun getAgenda(agendaId: String): HttpResponse<Agenda> =
@@ -93,6 +98,7 @@ class RawAgendaApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun getAgendasForUser(userId: String): HttpResponse<Agenda> =
@@ -104,6 +110,7 @@ class RawAgendaApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun getReadableAgendasForUser(userId: String): HttpResponse<List<Agenda>> =
@@ -115,6 +122,7 @@ class RawAgendaApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun modifyAgenda(agendaDto: Agenda): HttpResponse<Agenda> =
@@ -125,6 +133,7 @@ class RawAgendaApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(agendaDto)
 		}.wrap()
 
