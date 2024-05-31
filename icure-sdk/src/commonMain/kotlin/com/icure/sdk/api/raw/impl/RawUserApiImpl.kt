@@ -261,6 +261,23 @@ class RawUserApiImpl(
 			setAuthorizationWith(authService)
 		}.wrap()
 
+	override suspend fun listUsersInAllGroups(
+		username: String?,
+		email: String?,
+		phone: String?,
+	): HttpResponse<List<User>> =
+		get {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "user", "inAllGroups")
+				parameter("username", username)
+				parameter("email", email)
+				parameter("phone", phone)
+				parameter("ts", GMTDate().timestamp)
+			}
+			setAuthorizationWith(authService)
+		}.wrap()
+
 	override suspend fun createUserInGroup(
 		groupId: String,
 		userDto: User,
