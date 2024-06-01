@@ -11,6 +11,7 @@ import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.Tarification
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
+import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
@@ -61,6 +62,7 @@ class RawTarificationApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun findTarificationsBy(
@@ -86,6 +88,7 @@ class RawTarificationApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun findTarificationsBy(
@@ -105,6 +108,7 @@ class RawTarificationApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun createTarification(c: Tarification): HttpResponse<Tarification> =
@@ -115,6 +119,7 @@ class RawTarificationApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(c)
 		}.wrap()
 
@@ -126,6 +131,7 @@ class RawTarificationApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(tarificationIds)
 		}.wrap()
 
@@ -137,6 +143,7 @@ class RawTarificationApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun getTarificationWithParts(
@@ -151,6 +158,7 @@ class RawTarificationApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun modifyTarification(tarificationDto: Tarification): HttpResponse<Tarification> =
@@ -161,6 +169,7 @@ class RawTarificationApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(tarificationDto)
 		}.wrap()
 

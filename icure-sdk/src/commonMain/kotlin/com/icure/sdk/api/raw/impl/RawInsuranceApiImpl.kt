@@ -12,6 +12,7 @@ import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
+import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
@@ -52,6 +53,7 @@ class RawInsuranceApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun createInsurance(insuranceDto: Insurance): HttpResponse<Insurance> =
@@ -62,6 +64,7 @@ class RawInsuranceApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(insuranceDto)
 		}.wrap()
 
@@ -72,6 +75,7 @@ class RawInsuranceApiImpl(
 				appendPathSegments("rest", "v2", "insurance", insuranceId)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun getInsurance(insuranceId: String): HttpResponse<Insurance> =
@@ -82,6 +86,7 @@ class RawInsuranceApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun getInsurances(insuranceIds: ListOfIds): HttpResponse<List<Insurance>> =
@@ -92,6 +97,7 @@ class RawInsuranceApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(insuranceIds)
 		}.wrap()
 
@@ -103,6 +109,7 @@ class RawInsuranceApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun listInsurancesByName(insuranceName: String): HttpResponse<List<Insurance>> =
@@ -113,6 +120,7 @@ class RawInsuranceApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun modifyInsurance(insuranceDto: Insurance): HttpResponse<Insurance> =
@@ -123,6 +131,7 @@ class RawInsuranceApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(insuranceDto)
 		}.wrap()
 

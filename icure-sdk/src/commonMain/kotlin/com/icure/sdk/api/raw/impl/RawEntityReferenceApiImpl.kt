@@ -9,6 +9,7 @@ import com.icure.sdk.auth.services.setAuthorizationWith
 import com.icure.sdk.model.EntityReference
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
+import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
@@ -42,6 +43,7 @@ class RawEntityReferenceApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun createEntityReference(er: EntityReference): HttpResponse<EntityReference> =
@@ -52,6 +54,7 @@ class RawEntityReferenceApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(er)
 		}.wrap()
 

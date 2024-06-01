@@ -10,6 +10,7 @@ import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.UserAndHealthcareParty
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
+import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
 import io.ktor.http.appendPathSegments
 import io.ktor.http.takeFrom
@@ -50,6 +51,7 @@ class RawAnonymousApiImpl(
 				parameter("limit", limit)
 				parameter("ts", GMTDate().timestamp)
 			}
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	// endregion
@@ -63,6 +65,7 @@ class RawAnonymousApiImpl(
 				appendPathSegments("rest", "v2", "aa", "hcparty", "inGroup", groupId)
 				parameter("ts", GMTDate().timestamp)
 			}
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	// endregion
@@ -83,6 +86,7 @@ class RawAnonymousApiImpl(
 				parameter("endDate", endDate)
 				parameter("ts", GMTDate().timestamp)
 			}
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun getAvailabilitiesByPeriodAndCalendarItemTypeId(
@@ -108,6 +112,7 @@ class RawAnonymousApiImpl(
 				parameter("limit", limit)
 				parameter("ts", GMTDate().timestamp)
 			}
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	// endregion

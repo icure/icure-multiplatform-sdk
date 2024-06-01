@@ -11,6 +11,7 @@ import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.embed.EncryptedContent
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
+import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
@@ -44,6 +45,7 @@ class RawRecoveryDataApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(recoveryData)
 		}.wrap()
 
@@ -55,6 +57,7 @@ class RawRecoveryDataApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun deleteRecoveryData(id: String): HttpResponse<DocIdentifier> =
@@ -64,6 +67,7 @@ class RawRecoveryDataApiImpl(
 				appendPathSegments("rest", "v2", "recoverydata", id)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun deleteAllRecoveryDataForRecipient(recipientId: String): HttpResponse<EncryptedContent> =
@@ -73,6 +77,7 @@ class RawRecoveryDataApiImpl(
 				appendPathSegments("rest", "v2", "recoverydataforRecipient", recipientId)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun deleteAllRecoveryDataOfTypeForRecipient(
@@ -85,6 +90,7 @@ class RawRecoveryDataApiImpl(
 				appendPathSegments("rest", "v2", "recoverydataforRecipient", recipientId, "ofType", "$type")
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	// endregion

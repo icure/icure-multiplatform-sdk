@@ -16,6 +16,7 @@ import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
+import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
@@ -57,6 +58,7 @@ class RawClassificationApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(c)
 		}.wrap()
 
@@ -68,6 +70,7 @@ class RawClassificationApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun getClassifications(classificationIds: ListOfIds): HttpResponse<List<EncryptedClassification>> =
@@ -78,6 +81,7 @@ class RawClassificationApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(classificationIds)
 		}.wrap()
 
@@ -94,6 +98,7 @@ class RawClassificationApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun listClassificationIdsByDataOwnerPatientCreated(
@@ -114,6 +119,7 @@ class RawClassificationApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(secretPatientKeys)
 		}.wrap()
 
@@ -125,6 +131,7 @@ class RawClassificationApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(classificationIds)
 		}.wrap()
 
@@ -135,6 +142,7 @@ class RawClassificationApiImpl(
 				appendPathSegments("rest", "v2", "classification", classificationId)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun modifyClassification(classificationDto: EncryptedClassification): HttpResponse<EncryptedClassification> =
@@ -145,6 +153,7 @@ class RawClassificationApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(classificationDto)
 		}.wrap()
 
@@ -160,6 +169,7 @@ class RawClassificationApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(secretPatientKeys)
 		}.wrap()
 
@@ -173,6 +183,7 @@ class RawClassificationApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(request)
 		}.wrap()
 
@@ -184,6 +195,7 @@ class RawClassificationApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(request)
 		}.wrap()
 
