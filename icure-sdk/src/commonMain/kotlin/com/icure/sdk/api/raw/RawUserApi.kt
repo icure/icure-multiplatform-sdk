@@ -83,6 +83,12 @@ public interface RawUserApi {
 		limit: Int? = null,
 	): HttpResponse<PaginatedList<User>>
 
+	suspend fun listUsersInAllGroups(
+		username: String? = null,
+		email: String? = null,
+		phone: String? = null,
+	): HttpResponse<List<User>>
+
 	suspend fun createUserInGroup(
 		groupId: String,
 		userDto: User,

@@ -10,6 +10,7 @@ import com.icure.sdk.model.ExchangeData
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
+import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
@@ -45,6 +46,7 @@ class RawExchangeDataApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(exchangeData)
 		}.wrap()
 
@@ -56,6 +58,7 @@ class RawExchangeDataApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(exchangeData)
 		}.wrap()
 
@@ -67,6 +70,7 @@ class RawExchangeDataApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun getExchangeDataByParticipant(
@@ -83,6 +87,7 @@ class RawExchangeDataApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun getExchangeDataByDelegatorDelegate(
@@ -96,6 +101,7 @@ class RawExchangeDataApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun getParticipantCounterparts(
@@ -112,6 +118,7 @@ class RawExchangeDataApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	// endregion
