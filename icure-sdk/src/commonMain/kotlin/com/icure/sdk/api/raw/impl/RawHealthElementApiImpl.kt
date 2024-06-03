@@ -21,6 +21,7 @@ import com.icure.sdk.model.requests.EntityBulkShareResult
 import com.icure.sdk.serialization.HealthElementAbstractFilterSerializer
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
+import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
@@ -63,6 +64,7 @@ class RawHealthElementApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(c)
 		}.wrap()
 
@@ -74,6 +76,7 @@ class RawHealthElementApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun getHealthElements(healthElementIds: ListOfIds): HttpResponse<List<EncryptedHealthElement>> =
@@ -84,6 +87,7 @@ class RawHealthElementApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(healthElementIds)
 		}.wrap()
 
@@ -100,6 +104,7 @@ class RawHealthElementApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun listHealthElementIdsByDataOwnerPatientOpeningDate(
@@ -120,6 +125,7 @@ class RawHealthElementApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(secretPatientKeys)
 		}.wrap()
 
@@ -135,6 +141,7 @@ class RawHealthElementApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(secretPatientKeys)
 		}.wrap()
 
@@ -151,6 +158,7 @@ class RawHealthElementApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun findHealthElementsDelegationsStubsByHCPartyPatientForeignKeys(
@@ -165,6 +173,7 @@ class RawHealthElementApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(secretPatientKeys)
 		}.wrap()
 
@@ -176,6 +185,7 @@ class RawHealthElementApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(healthElementIds)
 		}.wrap()
 
@@ -186,6 +196,7 @@ class RawHealthElementApiImpl(
 				appendPathSegments("rest", "v2", "helement", healthElementId)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun modifyHealthElement(healthElementDto: EncryptedHealthElement): HttpResponse<EncryptedHealthElement> =
@@ -196,6 +207,7 @@ class RawHealthElementApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(healthElementDto)
 		}.wrap()
 
@@ -207,6 +219,7 @@ class RawHealthElementApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(healthElementDtos)
 		}.wrap()
 
@@ -218,6 +231,7 @@ class RawHealthElementApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(healthElementDtos)
 		}.wrap()
 
@@ -235,6 +249,7 @@ class RawHealthElementApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(filterChain)
 		}.wrap()
 
@@ -248,6 +263,7 @@ class RawHealthElementApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(request)
 		}.wrap()
 
@@ -259,6 +275,7 @@ class RawHealthElementApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBodyWithSerializer(HealthElementAbstractFilterSerializer, filter)
 		}.wrap()
 
@@ -270,6 +287,7 @@ class RawHealthElementApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(request)
 		}.wrap()
 

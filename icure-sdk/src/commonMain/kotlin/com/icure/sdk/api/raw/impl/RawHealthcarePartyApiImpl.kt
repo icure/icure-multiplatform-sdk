@@ -19,6 +19,7 @@ import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.serialization.HealthcarePartyAbstractFilterSerializer
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
+import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
@@ -55,6 +56,7 @@ class RawHealthcarePartyApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun findHealthcarePartiesBy(
@@ -74,6 +76,7 @@ class RawHealthcarePartyApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun findHealthcarePartiesByName(
@@ -95,6 +98,7 @@ class RawHealthcarePartyApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun findHealthcarePartiesBySsinOrNihii(
@@ -115,6 +119,7 @@ class RawHealthcarePartyApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun listHealthcarePartiesByName(name: String): HttpResponse<List<HealthcareParty>> =
@@ -125,6 +130,7 @@ class RawHealthcarePartyApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun findHealthcarePartiesBySpecialityAndPostCode(
@@ -146,6 +152,7 @@ class RawHealthcarePartyApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun createHealthcareParty(h: HealthcareParty): HttpResponse<HealthcareParty> =
@@ -156,6 +163,7 @@ class RawHealthcarePartyApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(h)
 		}.wrap()
 
@@ -169,6 +177,7 @@ class RawHealthcarePartyApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun getHealthcareParty(healthcarePartyId: String): HttpResponse<HealthcareParty> =
@@ -179,6 +188,7 @@ class RawHealthcarePartyApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun getHealthcareParties(healthcarePartyIds: ListOfIds): HttpResponse<List<HealthcareParty>> =
@@ -189,6 +199,7 @@ class RawHealthcarePartyApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(healthcarePartyIds)
 		}.wrap()
 
@@ -200,6 +211,7 @@ class RawHealthcarePartyApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun getPublicKey(healthcarePartyId: String): HttpResponse<PublicKey> =
@@ -210,6 +222,7 @@ class RawHealthcarePartyApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun deleteHealthcareParties(healthcarePartyIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
@@ -220,6 +233,7 @@ class RawHealthcarePartyApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(healthcarePartyIds)
 		}.wrap()
 
@@ -230,6 +244,7 @@ class RawHealthcarePartyApiImpl(
 				appendPathSegments("rest", "v2", "hcparty", healthcarePartyId)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun modifyHealthcareParty(healthcarePartyDto: HealthcareParty): HttpResponse<HealthcareParty> =
@@ -240,6 +255,7 @@ class RawHealthcarePartyApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(healthcarePartyDto)
 		}.wrap()
 
@@ -251,6 +267,7 @@ class RawHealthcarePartyApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBodyWithSerializer(HealthcarePartyAbstractFilterSerializer, filter)
 		}.wrap()
 
@@ -268,6 +285,7 @@ class RawHealthcarePartyApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(filterChain)
 		}.wrap()
 
@@ -286,6 +304,7 @@ class RawHealthcarePartyApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(healthcarePartyIds)
 		}.wrap()
 
@@ -300,6 +319,7 @@ class RawHealthcarePartyApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(healthcarePartyIds)
 		}.wrap()
 
@@ -313,6 +333,7 @@ class RawHealthcarePartyApiImpl(
 				appendPathSegments("rest", "v2", "hcparty", healthcarePartyId, "inGroup", groupId)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun modifyHealthcarePartyInGroup(
@@ -326,6 +347,7 @@ class RawHealthcarePartyApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(healthcarePartyDto)
 		}.wrap()
 
@@ -340,6 +362,7 @@ class RawHealthcarePartyApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(h)
 		}.wrap()
 
@@ -360,6 +383,7 @@ class RawHealthcarePartyApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(hcp)
 		}.wrap()
 

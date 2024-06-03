@@ -26,6 +26,7 @@ import com.icure.sdk.model.security.Operation
 import com.icure.sdk.model.security.PermissionType
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
+import io.ktor.client.request.accept
 import io.ktor.client.request.`header`
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
@@ -81,6 +82,7 @@ class RawGroupApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			header("password", password)
 			setBody(initialisationData)
 		}.wrap()
@@ -99,6 +101,7 @@ class RawGroupApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(registrationInformation)
 		}.wrap()
 
@@ -110,6 +113,7 @@ class RawGroupApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun listApps(): HttpResponse<List<Group>> =
@@ -120,6 +124,7 @@ class RawGroupApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun findGroups(
@@ -136,6 +141,7 @@ class RawGroupApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun findGroupsWithContent(
@@ -156,6 +162,7 @@ class RawGroupApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun getGroup(id: String): HttpResponse<Group> =
@@ -166,6 +173,7 @@ class RawGroupApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun getNameOfGroupParent(id: String): HttpResponse<String> =
@@ -176,6 +184,7 @@ class RawGroupApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun modifyGroupName(
@@ -189,6 +198,7 @@ class RawGroupApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun getOperationToken(
@@ -206,6 +216,7 @@ class RawGroupApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun deleteOperationToken(tokenId: String): HttpResponse<Unit> =
@@ -215,6 +226,7 @@ class RawGroupApiImpl(
 				appendPathSegments("rest", "v2", "group", "operationToken", tokenId)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun setDefaultRoles(
@@ -230,6 +242,7 @@ class RawGroupApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(roleIds)
 		}.wrap()
 
@@ -241,6 +254,7 @@ class RawGroupApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun changeSuperGroup(
@@ -254,6 +268,7 @@ class RawGroupApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			header("Operation-Token", operationToken)
 		}.wrap()
 
@@ -264,6 +279,7 @@ class RawGroupApiImpl(
 				appendPathSegments("rest", "v2", "group", id)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun hardDeleteGroup(id: String): HttpResponse<List<GroupDeletionReport>> =
@@ -273,6 +289,7 @@ class RawGroupApiImpl(
 				appendPathSegments("rest", "v2", "group", "hard", id)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun modifyGroupProperties(
@@ -286,6 +303,7 @@ class RawGroupApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(properties)
 		}.wrap()
 
@@ -300,6 +318,7 @@ class RawGroupApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			header("password", password)
 		}.wrap()
 
@@ -319,6 +338,7 @@ class RawGroupApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun solveConflicts(
@@ -335,6 +355,7 @@ class RawGroupApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun resetStorage(
@@ -352,6 +373,7 @@ class RawGroupApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(databases)
 		}.wrap()
 
@@ -363,6 +385,7 @@ class RawGroupApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(groups)
 		}.wrap()
 
@@ -374,6 +397,7 @@ class RawGroupApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun getHierarchy(id: String): HttpResponse<List<String>> =
@@ -384,6 +408,7 @@ class RawGroupApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun listAllGroupsIds(): HttpResponse<List<DocIdentifier>> =
@@ -394,6 +419,7 @@ class RawGroupApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	// endregion

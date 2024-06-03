@@ -15,6 +15,7 @@ import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
+import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
@@ -55,6 +56,7 @@ class RawReceiptApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(receiptDto)
 		}.wrap()
 
@@ -66,6 +68,7 @@ class RawReceiptApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(receiptIds)
 		}.wrap()
 
@@ -76,6 +79,7 @@ class RawReceiptApiImpl(
 				appendPathSegments("rest", "v2", "receipt", receiptId)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun getReceiptAttachment(
@@ -89,6 +93,7 @@ class RawReceiptApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.OctetStream)
 		}.wrap()
 
 	override suspend fun setReceiptAttachment(
@@ -105,6 +110,7 @@ class RawReceiptApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.OctetStream)
+			accept(ContentType.Application.Json)
 			setBody(ByteReadChannel(payload))
 		}.wrap()
 
@@ -116,6 +122,7 @@ class RawReceiptApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun listByReference(ref: String): HttpResponse<List<EncryptedReceipt>> =
@@ -126,6 +133,7 @@ class RawReceiptApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun modifyReceipt(receiptDto: EncryptedReceipt): HttpResponse<EncryptedReceipt> =
@@ -136,6 +144,7 @@ class RawReceiptApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(receiptDto)
 		}.wrap()
 
@@ -147,6 +156,7 @@ class RawReceiptApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(request)
 		}.wrap()
 

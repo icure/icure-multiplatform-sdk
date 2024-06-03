@@ -9,6 +9,7 @@ import com.icure.sdk.auth.services.setAuthorizationWith
 import com.icure.sdk.model.security.Permission
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
+import io.ktor.client.request.accept
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
@@ -44,6 +45,7 @@ class RawPermissionApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(permissions)
 		}.wrap()
 

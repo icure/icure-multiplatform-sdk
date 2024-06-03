@@ -15,6 +15,7 @@ import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
+import io.ktor.client.request.accept
 import io.ktor.client.request.`header`
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
@@ -64,6 +65,7 @@ class RawDocumentApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(documentDto)
 		}.wrap()
 
@@ -75,6 +77,7 @@ class RawDocumentApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(documentIds)
 		}.wrap()
 
@@ -85,6 +88,7 @@ class RawDocumentApiImpl(
 				appendPathSegments("rest", "v2", "document", documentId)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun getMainAttachment(
@@ -99,6 +103,7 @@ class RawDocumentApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.OctetStream)
 		}.wrap()
 
 	override suspend fun deleteAttachment(
@@ -112,6 +117,7 @@ class RawDocumentApiImpl(
 				parameter("rev", rev)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun setDocumentAttachment(
@@ -132,6 +138,7 @@ class RawDocumentApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.OctetStream)
+			accept(ContentType.Application.Json)
 			header("Content-Length", lengthHeader)
 			setBody(ByteReadChannel(payload))
 		}.wrap()
@@ -144,6 +151,7 @@ class RawDocumentApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun getDocumentByExternalUuid(externalUuid: String): HttpResponse<EncryptedDocument> =
@@ -154,6 +162,7 @@ class RawDocumentApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun getDocumentsByExternalUuid(externalUuid: String): HttpResponse<List<EncryptedDocument>> =
@@ -164,6 +173,7 @@ class RawDocumentApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun getDocuments(documentIds: ListOfIds): HttpResponse<List<EncryptedDocument>> =
@@ -174,6 +184,7 @@ class RawDocumentApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(documentIds)
 		}.wrap()
 
@@ -185,6 +196,7 @@ class RawDocumentApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(documentDto)
 		}.wrap()
 
@@ -196,6 +208,7 @@ class RawDocumentApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(documentDtos)
 		}.wrap()
 
@@ -213,6 +226,7 @@ class RawDocumentApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(secretMessageKeys)
 		}.wrap()
 
@@ -234,6 +248,7 @@ class RawDocumentApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(secretPatientKeys)
 		}.wrap()
 
@@ -246,6 +261,7 @@ class RawDocumentApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun setSecondaryAttachment(
@@ -267,6 +283,7 @@ class RawDocumentApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.OctetStream)
+			accept(ContentType.Application.Json)
 			header("Content-Length", lengthHeader)
 			setBody(ByteReadChannel(payload))
 		}.wrap()
@@ -284,6 +301,7 @@ class RawDocumentApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun deleteSecondaryAttachment(
@@ -298,6 +316,7 @@ class RawDocumentApiImpl(
 				parameter("rev", rev)
 			}
 			setAuthorizationWith(authService)
+			accept(ContentType.Application.Json)
 		}.wrap()
 
 	override suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<EncryptedDocument>>> =
@@ -308,6 +327,7 @@ class RawDocumentApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(request)
 		}.wrap()
 
@@ -319,6 +339,7 @@ class RawDocumentApiImpl(
 			}
 			setAuthorizationWith(authService)
 			contentType(ContentType.Application.Json)
+			accept(ContentType.Application.Json)
 			setBody(request)
 		}.wrap()
 
