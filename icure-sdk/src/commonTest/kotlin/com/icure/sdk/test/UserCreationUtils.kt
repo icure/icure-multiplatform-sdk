@@ -1,3 +1,5 @@
+package com.icure.sdk.test
+
 import com.icure.kryptom.crypto.RsaAlgorithm
 import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.kryptom.utils.toHexString

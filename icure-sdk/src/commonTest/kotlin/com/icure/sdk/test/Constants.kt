@@ -1,3 +1,5 @@
+package com.icure.sdk.test
+
 import com.icure.sdk.IcureSdk
 import com.icure.sdk.api.raw.impl.RawAnonymousAuthApiImpl
 import com.icure.sdk.auth.UsernamePassword
