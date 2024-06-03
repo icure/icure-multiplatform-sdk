@@ -29,7 +29,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
-import io.ktor.http.ContentType
+import io.ktor.http.ContentType.Application
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
@@ -69,7 +69,7 @@ class RawContactApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
-			accept(ContentType.Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun createContact(c: EncryptedContact): HttpResponse<EncryptedContact> =
@@ -79,8 +79,8 @@ class RawContactApiImpl(
 				appendPathSegments("rest", "v2", "contact")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(c)
 		}.wrap()
 
@@ -92,7 +92,7 @@ class RawContactApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
-			accept(ContentType.Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getContacts(contactIds: ListOfIds): HttpResponse<List<EncryptedContact>> =
@@ -102,8 +102,8 @@ class RawContactApiImpl(
 				appendPathSegments("rest", "v2", "contact", "byIds")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(contactIds)
 		}.wrap()
 
@@ -118,7 +118,7 @@ class RawContactApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
-			accept(ContentType.Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun listContactByHCPartyServiceId(
@@ -134,7 +134,7 @@ class RawContactApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
-			accept(ContentType.Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun listContactsByExternalId(externalId: String): HttpResponse<List<EncryptedContact>> =
@@ -145,8 +145,8 @@ class RawContactApiImpl(
 				parameter("externalId", externalId)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun listContactsByHCPartyAndFormId(
@@ -162,7 +162,7 @@ class RawContactApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
-			accept(ContentType.Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun listContactsByHCPartyAndFormIds(
@@ -176,8 +176,8 @@ class RawContactApiImpl(
 				parameter("hcPartyId", hcPartyId)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(formIds)
 		}.wrap()
 
@@ -192,8 +192,8 @@ class RawContactApiImpl(
 				parameter("hcPartyId", hcPartyId)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(patientForeignKeys)
 		}.wrap()
 
@@ -214,8 +214,8 @@ class RawContactApiImpl(
 				parameter("descending", descending)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(secretPatientKeys)
 		}.wrap()
 
@@ -236,7 +236,7 @@ class RawContactApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
-			accept(ContentType.Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun listContactsByHCPartyAndPatientSecretFKeys(
@@ -254,8 +254,8 @@ class RawContactApiImpl(
 				parameter("skipClosedContacts", skipClosedContacts)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(secretPatientKeys)
 		}.wrap()
 
@@ -272,7 +272,7 @@ class RawContactApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
-			accept(ContentType.Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun findContactsDelegationsStubsByHCPartyPatientForeignKeys(
@@ -286,8 +286,8 @@ class RawContactApiImpl(
 				parameter("hcPartyId", hcPartyId)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(secretPatientKeys)
 		}.wrap()
 
@@ -303,8 +303,8 @@ class RawContactApiImpl(
 				parameter("secretFKeys", secretFKeys)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun deleteContacts(contactIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
@@ -314,8 +314,8 @@ class RawContactApiImpl(
 				appendPathSegments("rest", "v2", "contact", "delete", "batch")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(contactIds)
 		}.wrap()
 
@@ -326,7 +326,7 @@ class RawContactApiImpl(
 				appendPathSegments("rest", "v2", "contact", contactId)
 			}
 			setAuthorizationWith(authService)
-			accept(ContentType.Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun modifyContact(contactDto: EncryptedContact): HttpResponse<EncryptedContact> =
@@ -336,8 +336,8 @@ class RawContactApiImpl(
 				appendPathSegments("rest", "v2", "contact")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(contactDto)
 		}.wrap()
 
@@ -348,8 +348,8 @@ class RawContactApiImpl(
 				appendPathSegments("rest", "v2", "contact", "batch")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(contactDtos)
 		}.wrap()
 
@@ -360,8 +360,8 @@ class RawContactApiImpl(
 				appendPathSegments("rest", "v2", "contact", "batch")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(contactDtos)
 		}.wrap()
 
@@ -378,8 +378,8 @@ class RawContactApiImpl(
 				parameter("limit", limit)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(filterChain)
 		}.wrap()
 
@@ -390,8 +390,8 @@ class RawContactApiImpl(
 				appendPathSegments("rest", "v2", "contact", "match")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBodyWithSerializer(ContactAbstractFilterSerializer, filter)
 		}.wrap()
 
@@ -403,7 +403,7 @@ class RawContactApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
-			accept(ContentType.Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun filterServicesBy(
@@ -419,8 +419,8 @@ class RawContactApiImpl(
 				parameter("limit", limit)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(filterChain)
 		}.wrap()
 
@@ -431,8 +431,8 @@ class RawContactApiImpl(
 				appendPathSegments("rest", "v2", "contact", "service", "match")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBodyWithSerializer(ServiceAbstractFilterSerializer, filter)
 		}.wrap()
 
@@ -443,8 +443,8 @@ class RawContactApiImpl(
 				appendPathSegments("rest", "v2", "contact", "service")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(ids)
 		}.wrap()
 
@@ -459,8 +459,8 @@ class RawContactApiImpl(
 				parameter("linkType", linkType)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(ids)
 		}.wrap()
 
@@ -473,7 +473,7 @@ class RawContactApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
-			accept(ContentType.Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun listServicesByHealthElementId(
@@ -488,7 +488,7 @@ class RawContactApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
-			accept(ContentType.Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun findContactsByOpeningDate(
@@ -512,7 +512,7 @@ class RawContactApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
-			accept(ContentType.Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<EncryptedContact>>> =
@@ -522,8 +522,8 @@ class RawContactApiImpl(
 				appendPathSegments("rest", "v2", "contact", "bulkSharedMetadataUpdate")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(request)
 		}.wrap()
 
@@ -534,8 +534,8 @@ class RawContactApiImpl(
 				appendPathSegments("rest", "v2", "contact", "bulkSharedMetadataUpdateMinimal")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(request)
 		}.wrap()
 

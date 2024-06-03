@@ -17,7 +17,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
-import io.ktor.http.ContentType
+import io.ktor.http.ContentType.Application
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
@@ -53,8 +53,8 @@ class RawClassificationTemplateApiImpl(
 				appendPathSegments("rest", "v2", "classificationTemplate")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(c)
 		}.wrap()
 
@@ -66,7 +66,7 @@ class RawClassificationTemplateApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
-			accept(ContentType.Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getClassificationTemplateByIds(ids: String): HttpResponse<List<ClassificationTemplate>> =
@@ -77,7 +77,7 @@ class RawClassificationTemplateApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
-			accept(ContentType.Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun deleteClassificationTemplates(classificationTemplateIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
@@ -87,8 +87,8 @@ class RawClassificationTemplateApiImpl(
 				appendPathSegments("rest", "v2", "classificationTemplate", "delete", "batch")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(classificationTemplateIds)
 		}.wrap()
 
@@ -99,7 +99,7 @@ class RawClassificationTemplateApiImpl(
 				appendPathSegments("rest", "v2", "classificationTemplate", classificationTemplateId)
 			}
 			setAuthorizationWith(authService)
-			accept(ContentType.Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun modifyClassificationTemplate(
@@ -111,8 +111,8 @@ class RawClassificationTemplateApiImpl(
 				appendPathSegments("rest", "v2", "classificationTemplate")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(classificationTemplateDto)
 		}.wrap()
 
@@ -128,7 +128,7 @@ class RawClassificationTemplateApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
-			accept(ContentType.Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	// endregion

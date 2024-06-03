@@ -23,7 +23,7 @@ import io.ktor.client.request.accept
 import io.ktor.client.request.`header`
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
-import io.ktor.http.ContentType
+import io.ktor.http.ContentType.Application
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
@@ -59,7 +59,7 @@ class RawUserApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
-			accept(ContentType.Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun listUsersBy(
@@ -79,7 +79,7 @@ class RawUserApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
-			accept(ContentType.Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun createUser(userDto: User): HttpResponse<User> =
@@ -89,8 +89,8 @@ class RawUserApiImpl(
 				appendPathSegments("rest", "v2", "user")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(userDto)
 		}.wrap()
 
@@ -102,7 +102,7 @@ class RawUserApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
-			accept(ContentType.Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getUserByEmail(email: String): HttpResponse<User> =
@@ -113,7 +113,7 @@ class RawUserApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
-			accept(ContentType.Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getUserByPhoneNumber(phoneNumber: String): HttpResponse<User> =
@@ -124,7 +124,7 @@ class RawUserApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
-			accept(ContentType.Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun findByHcpartyId(id: String): HttpResponse<List<String>> =
@@ -135,7 +135,7 @@ class RawUserApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
-			accept(ContentType.Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun findByPatientId(id: String): HttpResponse<List<String>> =
@@ -146,7 +146,7 @@ class RawUserApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
-			accept(ContentType.Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun deleteUser(userId: String): HttpResponse<DocIdentifier> =
@@ -156,7 +156,7 @@ class RawUserApiImpl(
 				appendPathSegments("rest", "v2", "user", userId)
 			}
 			setAuthorizationWith(authService)
-			accept(ContentType.Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun modifyUser(userDto: User): HttpResponse<User> =
@@ -166,8 +166,8 @@ class RawUserApiImpl(
 				appendPathSegments("rest", "v2", "user")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(userDto)
 		}.wrap()
 
@@ -178,8 +178,8 @@ class RawUserApiImpl(
 				appendPathSegments("rest", "v2", "user", "current", "hcparty", healthcarePartyId)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun modifyProperties(
@@ -192,8 +192,8 @@ class RawUserApiImpl(
 				appendPathSegments("rest", "v2", "user", userId, "properties")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(properties)
 		}.wrap()
 
@@ -210,8 +210,8 @@ class RawUserApiImpl(
 				parameter("tokenValidity", tokenValidity)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			header("token", token)
 		}.wrap()
 
@@ -228,8 +228,8 @@ class RawUserApiImpl(
 				parameter("limit", limit)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(filterChain)
 		}.wrap()
 
@@ -240,8 +240,8 @@ class RawUserApiImpl(
 				appendPathSegments("rest", "v2", "user", "match")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBodyWithSerializer(UserAbstractFilterSerializer, filter)
 		}.wrap()
 
@@ -257,7 +257,7 @@ class RawUserApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
-			accept(ContentType.Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun listUsersInGroup(
@@ -276,7 +276,7 @@ class RawUserApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
-			accept(ContentType.Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun listUsersInAllGroups(
@@ -294,7 +294,7 @@ class RawUserApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
-			accept(ContentType.Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun createUserInGroup(
@@ -307,8 +307,8 @@ class RawUserApiImpl(
 				appendPathSegments("rest", "v2", "user", "inGroup", groupId)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(userDto)
 		}.wrap()
 
@@ -322,8 +322,8 @@ class RawUserApiImpl(
 				appendPathSegments("rest", "v2", "user", "inGroup", groupId)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(userDto)
 		}.wrap()
 
@@ -337,7 +337,7 @@ class RawUserApiImpl(
 				appendPathSegments("rest", "v2", "user", "inGroup", groupId, userId)
 			}
 			setAuthorizationWith(authService)
-			accept(ContentType.Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun addRolesToUser(
@@ -350,8 +350,8 @@ class RawUserApiImpl(
 				appendPathSegments("rest", "v2", "user", userId, "roles", "set")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(rolesId)
 		}.wrap()
 
@@ -366,8 +366,8 @@ class RawUserApiImpl(
 				appendPathSegments("rest", "v2", "user", userId, "inGroup", groupId, "roles", "set")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(rolesId)
 		}.wrap()
 
@@ -378,8 +378,8 @@ class RawUserApiImpl(
 				appendPathSegments("rest", "v2", "user", userId, "roles", "reset")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun removeRolesFromUserInGroup(
@@ -392,8 +392,8 @@ class RawUserApiImpl(
 				appendPathSegments("rest", "v2", "user", userId, "inGroup", groupId, "roles", "reset")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getTokenInGroup(
@@ -410,8 +410,8 @@ class RawUserApiImpl(
 				parameter("tokenValidity", tokenValidity)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			header("token", token)
 		}.wrap()
 
@@ -428,8 +428,8 @@ class RawUserApiImpl(
 				parameter("tokenValidity", tokenValidity)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			header("token", token)
 		}.wrap()
 
@@ -447,8 +447,8 @@ class RawUserApiImpl(
 				parameter("limit", limit)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(filterChain)
 		}.wrap()
 
@@ -463,8 +463,8 @@ class RawUserApiImpl(
 				appendPathSegments("rest", "v2", "user", userId, "inGroup", groupId, "2fa")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(request)
 		}.wrap()
 
@@ -478,7 +478,7 @@ class RawUserApiImpl(
 				appendPathSegments("rest", "v2", "user", userId, "inGroup", groupId, "2fa")
 			}
 			setAuthorizationWith(authService)
-			accept(ContentType.Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun enable2faForUser(
@@ -491,8 +491,8 @@ class RawUserApiImpl(
 				appendPathSegments("rest", "v2", "user", userId, "2fa")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(request)
 		}.wrap()
 
@@ -503,7 +503,7 @@ class RawUserApiImpl(
 				appendPathSegments("rest", "v2", "user", userId, "2fa")
 			}
 			setAuthorizationWith(authService)
-			accept(ContentType.Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun createAdminUser(userDto: User): HttpResponse<User> =
@@ -513,8 +513,8 @@ class RawUserApiImpl(
 				appendPathSegments("rest", "v2", "user", "admin")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(userDto)
 		}.wrap()
 
@@ -528,8 +528,8 @@ class RawUserApiImpl(
 				appendPathSegments("rest", "v2", "user", "admin", "inGroup", groupId)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(userDto)
 		}.wrap()
 
