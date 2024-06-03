@@ -9,21 +9,25 @@ import com.icure.sdk.auth.services.setAuthorizationWith
 import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.model.EncryptedClassification
+import com.icure.sdk.model.IcureStub
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
+import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
-import io.ktor.http.ContentType
+import io.ktor.http.ContentType.Application
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
+import kotlinx.serialization.json.Json
 import kotlin.Boolean
 import kotlin.Long
+import kotlin.Nothing
 import kotlin.String
 import kotlin.collections.List
 import kotlin.collections.Map
@@ -39,7 +43,8 @@ class RawClassificationApiImpl(
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
-) : BaseRawApi(httpClient, additionalHeaders, timeout), RawClassificationApi {
+	json: Json,
+) : BaseRawApi(httpClient, additionalHeaders, timeout, json), RawClassificationApi {
 	override suspend fun getAccessControlKeysHeaderValues(): List<String>? =
 		accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithEncryptionMetadataTypeName.Classification)
 
@@ -52,7 +57,8 @@ class RawClassificationApiImpl(
 				appendPathSegments("rest", "v2", "classification")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(c)
 		}.wrap()
 
@@ -64,6 +70,7 @@ class RawClassificationApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getClassifications(classificationIds: ListOfIds): HttpResponse<List<EncryptedClassification>> =
@@ -73,7 +80,8 @@ class RawClassificationApiImpl(
 				appendPathSegments("rest", "v2", "classification", "byIds")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(classificationIds)
 		}.wrap()
 
@@ -90,6 +98,7 @@ class RawClassificationApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun listClassificationIdsByDataOwnerPatientCreated(
@@ -109,7 +118,8 @@ class RawClassificationApiImpl(
 				parameter("descending", descending)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(secretPatientKeys)
 		}.wrap()
 
@@ -120,7 +130,8 @@ class RawClassificationApiImpl(
 				appendPathSegments("rest", "v2", "classification", "delete", "batch")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(classificationIds)
 		}.wrap()
 
@@ -131,6 +142,7 @@ class RawClassificationApiImpl(
 				appendPathSegments("rest", "v2", "classification", classificationId)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun modifyClassification(classificationDto: EncryptedClassification): HttpResponse<EncryptedClassification> =
@@ -140,8 +152,25 @@ class RawClassificationApiImpl(
 				appendPathSegments("rest", "v2", "classification")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(classificationDto)
+		}.wrap()
+
+	override suspend fun findClassificationsDelegationsStubsByHCPartyPatientForeignKeys(
+		hcPartyId: String,
+		secretPatientKeys: List<String>,
+	): HttpResponse<List<IcureStub>> =
+		post {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "classification", "byHcPartySecretForeignKeys", "delegations")
+				parameter("hcPartyId", hcPartyId)
+			}
+			setAuthorizationWith(authService)
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(secretPatientKeys)
 		}.wrap()
 
 	override suspend fun bulkShare(
@@ -153,20 +182,20 @@ class RawClassificationApiImpl(
 				appendPathSegments("rest", "v2", "classification", "bulkSharedMetadataUpdate")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(request)
 		}.wrap()
 
-	override suspend fun bulkShareMinimal(
-		request: BulkShareOrUpdateMetadataParams,
-	): HttpResponse<List<EntityBulkShareResult<EncryptedClassification>>> =
+	override suspend fun bulkShareMinimal(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<Nothing>>> =
 		put {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "classification", "bulkSharedMetadataUpdateMinimal")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(request)
 		}.wrap()
 

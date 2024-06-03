@@ -10,6 +10,7 @@ import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.model.EncryptedInvoice
 import com.icure.sdk.model.IcureStub
+import com.icure.sdk.model.Invoice
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
@@ -22,16 +23,19 @@ import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
+import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
-import io.ktor.http.ContentType
+import io.ktor.http.ContentType.Application
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
+import kotlinx.serialization.json.Json
 import kotlin.Boolean
 import kotlin.Int
 import kotlin.Long
+import kotlin.Nothing
 import kotlin.String
 import kotlin.collections.List
 import kotlin.collections.Map
@@ -47,7 +51,8 @@ class RawInvoiceApiImpl(
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
-) : BaseRawApi(httpClient, additionalHeaders, timeout), RawInvoiceApi {
+	json: Json,
+) : BaseRawApi(httpClient, additionalHeaders, timeout, json), RawInvoiceApi {
 	override suspend fun getAccessControlKeysHeaderValues(): List<String>? =
 		accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithEncryptionMetadataTypeName.Invoice)
 
@@ -60,7 +65,8 @@ class RawInvoiceApiImpl(
 				appendPathSegments("rest", "v2", "invoice")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(invoiceDto)
 		}.wrap()
 
@@ -71,6 +77,7 @@ class RawInvoiceApiImpl(
 				appendPathSegments("rest", "v2", "invoice", invoiceId)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getInvoice(invoiceId: String): HttpResponse<EncryptedInvoice> =
@@ -81,6 +88,7 @@ class RawInvoiceApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getInvoices(invoiceIds: ListOfIds): HttpResponse<List<EncryptedInvoice>> =
@@ -90,7 +98,8 @@ class RawInvoiceApiImpl(
 				appendPathSegments("rest", "v2", "invoice", "byIds")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(invoiceIds)
 		}.wrap()
 
@@ -101,7 +110,8 @@ class RawInvoiceApiImpl(
 				appendPathSegments("rest", "v2", "invoice")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(invoiceDto)
 		}.wrap()
 
@@ -112,7 +122,8 @@ class RawInvoiceApiImpl(
 				appendPathSegments("rest", "v2", "invoice", "reassign")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(invoiceDto)
 		}.wrap()
 
@@ -126,7 +137,8 @@ class RawInvoiceApiImpl(
 				appendPathSegments("rest", "v2", "invoice", "mergeTo", invoiceId)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(ids)
 		}.wrap()
 
@@ -143,7 +155,8 @@ class RawInvoiceApiImpl(
 				parameter("forcedValue", forcedValue)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun appendCodes(
@@ -166,7 +179,8 @@ class RawInvoiceApiImpl(
 				parameter("gracePeriod", gracePeriod)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(invoicingCodes)
 		}.wrap()
 
@@ -183,7 +197,8 @@ class RawInvoiceApiImpl(
 				parameter("secretFKeys", secretFKeys)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(tarificationIds)
 		}.wrap()
 
@@ -207,6 +222,7 @@ class RawInvoiceApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun listInvoicesByHCPartyAndPatientForeignKeys(
@@ -222,6 +238,7 @@ class RawInvoiceApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun findInvoicesByHCPartyPatientForeignKeys(
@@ -235,7 +252,8 @@ class RawInvoiceApiImpl(
 				parameter("hcPartyId", hcPartyId)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(secretPatientKeys)
 		}.wrap()
 
@@ -252,6 +270,7 @@ class RawInvoiceApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun listInvoiceIdsByDataOwnerPatientInvoiceDate(
@@ -271,7 +290,8 @@ class RawInvoiceApiImpl(
 				parameter("descending", descending)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(secretPatientKeys)
 		}.wrap()
 
@@ -286,7 +306,8 @@ class RawInvoiceApiImpl(
 				parameter("hcPartyId", hcPartyId)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(secretPatientKeys)
 		}.wrap()
 
@@ -301,6 +322,7 @@ class RawInvoiceApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(
@@ -332,6 +354,7 @@ class RawInvoiceApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun listInvoicesByContactIds(contactIds: ListOfIds): HttpResponse<List<EncryptedInvoice>> =
@@ -341,7 +364,8 @@ class RawInvoiceApiImpl(
 				appendPathSegments("rest", "v2", "invoice", "byContacts")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(contactIds)
 		}.wrap()
 
@@ -353,6 +377,7 @@ class RawInvoiceApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun listToInsurances(userIds: String?): HttpResponse<List<EncryptedInvoice>> =
@@ -364,6 +389,7 @@ class RawInvoiceApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun listToInsurancesUnsent(userIds: String?): HttpResponse<List<EncryptedInvoice>> =
@@ -375,6 +401,7 @@ class RawInvoiceApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun listToPatients(hcPartyId: String?): HttpResponse<List<EncryptedInvoice>> =
@@ -386,6 +413,7 @@ class RawInvoiceApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun listToPatientsUnsent(hcPartyId: String?): HttpResponse<List<EncryptedInvoice>> =
@@ -397,6 +425,7 @@ class RawInvoiceApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun listInvoicesByIds(invoiceIds: String): HttpResponse<List<EncryptedInvoice>> =
@@ -407,6 +436,7 @@ class RawInvoiceApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun listInvoicesByHcpartySendingModeStatusDate(
@@ -427,6 +457,7 @@ class RawInvoiceApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun listInvoicesByServiceIds(serviceIds: String): HttpResponse<List<EncryptedInvoice>> =
@@ -437,6 +468,7 @@ class RawInvoiceApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun listAllHcpsByStatus(
@@ -453,7 +485,8 @@ class RawInvoiceApiImpl(
 				parameter("to", to)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(hcpIds)
 		}.wrap()
 
@@ -465,16 +498,18 @@ class RawInvoiceApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun filterInvoicesBy(filterChain: FilterChain<EncryptedInvoice>): HttpResponse<List<EncryptedInvoice>> =
+	override suspend fun filterInvoicesBy(filterChain: FilterChain<Invoice>): HttpResponse<List<EncryptedInvoice>> =
 		post {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "invoice", "filter")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(filterChain)
 		}.wrap()
 
@@ -485,7 +520,8 @@ class RawInvoiceApiImpl(
 				appendPathSegments("rest", "v2", "invoice", "batch")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(invoiceDtos)
 		}.wrap()
 
@@ -496,7 +532,8 @@ class RawInvoiceApiImpl(
 				appendPathSegments("rest", "v2", "invoice", "batch")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(invoiceDtos)
 		}.wrap()
 
@@ -507,20 +544,20 @@ class RawInvoiceApiImpl(
 				appendPathSegments("rest", "v2", "invoice", "bulkSharedMetadataUpdate")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(request)
 		}.wrap()
 
-	override suspend fun bulkShareMinimal(
-		request: BulkShareOrUpdateMetadataParams,
-	): HttpResponse<List<EntityBulkShareResult<EncryptedInvoice>>> =
+	override suspend fun bulkShareMinimal(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<Nothing>>> =
 		put {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "invoice", "bulkSharedMetadataUpdateMinimal")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(request)
 		}.wrap()
 

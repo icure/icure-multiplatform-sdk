@@ -3,12 +3,14 @@ package com.icure.sdk.api.flavoured
 import com.icure.sdk.api.raw.RawTopicApi
 import com.icure.sdk.crypto.EntityValidationService
 import com.icure.sdk.crypto.InternalCryptoServices
+import com.icure.sdk.crypto.entities.TopicShareOptions
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
-import com.icure.sdk.crypto.entities.SimpleDelegateShareOptions
+import com.icure.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.withTypeInfo
+import com.icure.sdk.model.Topic
 import com.icure.sdk.model.DecryptedTopic
 import com.icure.sdk.model.EncryptedMessage
 import com.icure.sdk.model.EncryptedTopic
@@ -16,7 +18,6 @@ import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.Message
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.Patient
-import com.icure.sdk.model.Topic
 import com.icure.sdk.model.TopicRole
 import com.icure.sdk.model.User
 import com.icure.sdk.model.couchdb.DocIdentifier
@@ -30,6 +31,7 @@ import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.requests.topic.AddParticipant
 import com.icure.sdk.model.requests.topic.RemoveParticipant
+import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
@@ -52,7 +54,7 @@ private val ENCRYPTED_FIELDS_MANIFEST =
 interface TopicBasicFlavourlessApi {
 	suspend fun deleteTopic(entityId: String): DocIdentifier
 	suspend fun deleteTopics(entityIds: List<String>): List<DocIdentifier>
-	suspend fun matchTopicsBy(filter: AbstractFilter<EncryptedTopic>): List<String>
+	suspend fun matchTopicsBy(filter: AbstractFilter<Topic>): List<String>
 }
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
@@ -63,7 +65,7 @@ interface TopicBasicFlavouredApi<E : Topic>: Subscribable<Topic, E> {
 	suspend fun filterTopicsBy(
 		startDocumentId: String? = null,
 		limit: Int? = null,
-		filterChain: FilterChain<EncryptedTopic>
+		filterChain: FilterChain<Topic>
 	): PaginatedList<E>
 
 	suspend fun addParticipant(entityId: String, dataOwnerId: String, topicRole: TopicRole): E
@@ -79,6 +81,44 @@ interface TopicFlavouredApi<E : Topic> : TopicBasicFlavouredApi<E> {
 		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
 		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
 	): SimpleShareResult<E>
+
+	/**
+	 * Shares an existing access log with other data owners, allowing them to access the non-encrypted data of the access log and optionally also the
+	 * encrypted content, with read-only or read-write permissions.
+	 * @param topic the [Topic] to share.
+	 * @param delegates associates the id of data owners which will be granted access to the entity, to the following sharing options:
+	 * - shareEncryptionKey: specifies if the encryption key of the access log should be shared with the delegate, giving access to all encrypted
+	 * content of the entity, excluding other encrypted metadata (defaults to [ShareMetadataBehaviour.IfAvailable]).
+	 * - sharePatientId: specifies if the id of the patient that this access log refers to should be shared with the delegate. Normally this would
+	 * be the same as objectId, but it is encrypted separately from it allowing you to give access to the patient id without giving access to the other
+	 * encrypted data of the access log (defaults to [ShareMetadataBehaviour.IfAvailable]).
+	 * - requestedPermissions: the requested permissions for the delegate, defaults to [ShareMetadataBehaviour.IfAvailable].
+	 * @return the [SimpleShareResult] of the operation: the updated entity if the operation was successful or details of the error if
+	 * the operation failed.
+	 */
+	suspend fun tryShareWithMany(
+		topic: E,
+		delegates: Map<String, TopicShareOptions>
+	): SimpleShareResult<E>
+
+	/**
+	 * Shares an existing access log with other data owners, allowing them to access the non-encrypted data of the access log and optionally also the
+	 * encrypted content, with read-only or read-write permissions.
+	 * @param topic the [Topic] to share.
+	 * @param delegates associates the id of data owners which will be granted access to the entity, to the following sharing options:
+	 * - shareEncryptionKey: specifies if the encryption key of the access log should be shared with the delegate, giving access to all encrypted
+	 * content of the entity, excluding other encrypted metadata (defaults to [ShareMetadataBehaviour.IfAvailable]).
+	 * - sharePatientId: specifies if the id of the patient that this access log refers to should be shared with the delegate. Normally this would
+	 * be the same as objectId, but it is encrypted separately from it allowing you to give access to the patient id without giving access to the other
+	 * encrypted data of the access log (defaults to [ShareMetadataBehaviour.IfAvailable]).
+	 * - requestedPermissions: the requested permissions for the delegate, defaults to [ShareMetadataBehaviour.IfAvailable].
+	 * @return the updated entity.
+	 * @throws IllegalStateException if the operation was not successful.
+	 */
+	suspend fun shareWithMany(
+		topic: E,
+		delegates: Map<String, TopicShareOptions>
+	): E
 }
 
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
@@ -91,6 +131,10 @@ interface TopicApi : TopicBasicFlavourlessApi, TopicFlavouredApi<DecryptedTopic>
 		delegates: Map<String, AccessLevel> = emptyMap(),
 		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent,
 	): DecryptedTopic
+	suspend fun getEncryptionKeysOf(topic: Topic): Set<HexString>
+	suspend fun hasWriteAccess(topic: Topic): Boolean
+	suspend fun decryptPatientIdOf(topic: Topic): Set<String>
+	suspend fun createDelegationDeAnonymizationMetadata(entity: Topic, delegates: Set<String>)
 
 	val encrypted: TopicFlavouredApi<EncryptedTopic>
 	val tryAndRecover: TopicFlavouredApi<Topic>
@@ -114,7 +158,7 @@ private abstract class AbstractTopicBasicFlavouredApi<E : Topic>(
 	override suspend fun filterTopicsBy(
 		startDocumentId: String?,
 		limit: Int?,
-		filterChain: FilterChain<EncryptedTopic>,
+		filterChain: FilterChain<Topic>,
 		) = rawApi.filterTopicsBy(startDocumentId, limit, filterChain).successBody().map { maybeDecrypt(it) }
 	override suspend fun addParticipant(entityId: String, dataOwnerId: String, topicRole: TopicRole) =
 		rawApi.addParticipant(entityId, AddParticipant(dataOwnerId, topicRole)).successBody().let { maybeDecrypt(it) }
@@ -178,9 +222,9 @@ private abstract class AbstractTopicFlavouredApi<E : Topic>(
 			topic.withTypeInfo(),
 			true,
 			mapOf(
-				delegateId to SimpleDelegateShareOptions(
+				delegateId to SimpleDelegateShareOptionsImpl(
 					shareSecretIds = null,
-					shareEncryptionKeys = shareEncryptionKeys,
+					shareEncryptionKey = shareEncryptionKeys,
 					shareOwningEntityIds = shareOwningEntityIds,
 					requestedPermissions = requestedPermission,
 				),
@@ -188,13 +232,25 @@ private abstract class AbstractTopicFlavouredApi<E : Topic>(
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
 		}
+
+	override suspend fun tryShareWithMany(topic: E, delegates: Map<String, TopicShareOptions>): SimpleShareResult<E> =
+		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
+			topic.withTypeInfo(),
+			true,
+			delegates
+		) {
+			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
+		}
+
+	override suspend fun shareWithMany(topic: E, delegates: Map<String, TopicShareOptions>): E =
+		tryShareWithMany(topic, delegates).updatedEntityOrThrow()
 }
 
 @InternalIcureApi
 private class AbstractTopicBasicFlavourlessApi(val rawApi: RawTopicApi) : TopicBasicFlavourlessApi {
 	override suspend fun deleteTopic(entityId: String) = rawApi.deleteTopic(entityId).successBody()
 	override suspend fun deleteTopics(entityIds: List<String>) = rawApi.deleteTopics(ListOfIds(entityIds)).successBody()
-	override suspend fun matchTopicsBy(filter: AbstractFilter<EncryptedTopic>) = rawApi.matchTopicsBy(filter).successBody()
+	override suspend fun matchTopicsBy(filter: AbstractFilter<Topic>) = rawApi.matchTopicsBy(filter).successBody()
 }
 
 @InternalIcureApi
@@ -283,6 +339,16 @@ internal class TopicApiImpl(
 			initialiseSecretId = false,
 			autoDelegations = delegates  + user?.autoDelegationsFor(DelegationTag.MedicalInformation).orEmpty(),
 		).updatedEntity
+
+	override suspend fun getEncryptionKeysOf(topic: Topic): Set<HexString> = crypto.entity.encryptionKeysOf(topic.withTypeInfo(), null)
+
+	override suspend fun hasWriteAccess(topic: Topic): Boolean = crypto.entity.hasWriteAccess(topic.withTypeInfo())
+
+	override suspend fun decryptPatientIdOf(topic: Topic): Set<String> = crypto.entity.owningEntityIdsOf(topic.withTypeInfo(), null)
+
+	override suspend fun createDelegationDeAnonymizationMetadata(entity: Topic, delegates: Set<String>) {
+		crypto.delegationsDeAnonymization.createOrUpdateDeAnonymizationInfo(entity.withTypeInfo(), delegates)
+	}
 
 	private suspend fun encrypt(entity: DecryptedTopic) = crypto.entity.encryptEntity(
 		entity.withTypeInfo(),

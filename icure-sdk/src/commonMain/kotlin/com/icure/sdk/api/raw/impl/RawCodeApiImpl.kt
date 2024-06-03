@@ -12,15 +12,18 @@ import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
+import com.icure.sdk.serialization.CodeAbstractFilterSerializer
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
+import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
-import io.ktor.http.ContentType
+import io.ktor.http.ContentType.Application
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
+import kotlinx.serialization.json.Json
 import kotlin.Boolean
 import kotlin.Int
 import kotlin.String
@@ -38,7 +41,8 @@ class RawCodeApiImpl(
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
-) : BaseRawApi(httpClient, additionalHeaders, timeout), RawCodeApi {
+	json: Json,
+) : BaseRawApi(httpClient, additionalHeaders, timeout, json), RawCodeApi {
 	// region common endpoints
 
 	override suspend fun findCodesByLabel(
@@ -66,6 +70,7 @@ class RawCodeApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun findCodesByType(
@@ -91,6 +96,7 @@ class RawCodeApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun findCodesByLink(
@@ -111,6 +117,7 @@ class RawCodeApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun listCodesByRegionTypeCodeVersion(
@@ -130,6 +137,7 @@ class RawCodeApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun listCodeTypesBy(
@@ -145,6 +153,7 @@ class RawCodeApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun listTagTypesBy(
@@ -160,6 +169,7 @@ class RawCodeApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun createCode(c: Code): HttpResponse<Code> =
@@ -169,7 +179,8 @@ class RawCodeApiImpl(
 				appendPathSegments("rest", "v2", "code")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(c)
 		}.wrap()
 
@@ -180,7 +191,8 @@ class RawCodeApiImpl(
 				appendPathSegments("rest", "v2", "code", "batch")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(codeBatch)
 		}.wrap()
 
@@ -199,6 +211,7 @@ class RawCodeApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getCodeByRegionLanguageTypeLabel(
@@ -218,6 +231,7 @@ class RawCodeApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getCodes(codeIds: ListOfIds): HttpResponse<List<Code>> =
@@ -227,7 +241,8 @@ class RawCodeApiImpl(
 				appendPathSegments("rest", "v2", "code", "byIds")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(codeIds)
 		}.wrap()
 
@@ -239,6 +254,7 @@ class RawCodeApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getCodeWithParts(
@@ -253,6 +269,7 @@ class RawCodeApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun modifyCode(codeDto: Code): HttpResponse<Code> =
@@ -262,7 +279,8 @@ class RawCodeApiImpl(
 				appendPathSegments("rest", "v2", "code")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(codeDto)
 		}.wrap()
 
@@ -273,7 +291,8 @@ class RawCodeApiImpl(
 				appendPathSegments("rest", "v2", "code", "batch")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(codeBatch)
 		}.wrap()
 
@@ -298,7 +317,8 @@ class RawCodeApiImpl(
 				parameter("desc", desc)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(filterChain)
 		}.wrap()
 
@@ -309,8 +329,9 @@ class RawCodeApiImpl(
 				appendPathSegments("rest", "v2", "code", "match")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			setBody(filter)
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBodyWithSerializer(CodeAbstractFilterSerializer, filter)
 		}.wrap()
 
 	override suspend fun importCodes(codeType: String): HttpResponse<Unit> =
@@ -320,7 +341,8 @@ class RawCodeApiImpl(
 				appendPathSegments("rest", "v2", "code", codeType)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	// endregion

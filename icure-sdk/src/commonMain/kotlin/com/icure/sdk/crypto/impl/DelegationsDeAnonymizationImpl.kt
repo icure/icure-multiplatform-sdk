@@ -13,7 +13,7 @@ import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.crypto.entities.EntityWithTypeInfo
 import com.icure.sdk.crypto.entities.SecureDelegationMembersDetails
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
-import com.icure.sdk.crypto.entities.SimpleDelegateShareOptions
+import com.icure.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
 import com.icure.sdk.model.DecryptedSecureDelegationKeyMap
 import com.icure.sdk.model.EncryptedSecureDelegationKeyMap
 import com.icure.sdk.model.ListOfIds
@@ -152,9 +152,9 @@ class DelegationsDeAnonymizationImpl(
 				keyMapWithType,
 				false,
 				dataOwnersNeedingShare.associateWith {
-					SimpleDelegateShareOptions(
+					SimpleDelegateShareOptionsImpl(
 						shareSecretIds = emptySet(),
-						shareEncryptionKeys = ShareMetadataBehaviour.Required,
+						shareEncryptionKey = ShareMetadataBehaviour.Required,
 						shareOwningEntityIds = ShareMetadataBehaviour.Never,
 						requestedPermissions = RequestedPermission.FullRead
 					)

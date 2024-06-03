@@ -10,13 +10,15 @@ import com.icure.sdk.model.FrontEndMigration
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
+import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
-import io.ktor.http.ContentType
+import io.ktor.http.ContentType.Application
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
+import kotlinx.serialization.json.Json
 import kotlin.String
 import kotlin.collections.List
 import kotlin.collections.Map
@@ -31,7 +33,8 @@ class RawFrontEndMigrationApiImpl(
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
-) : BaseRawApi(httpClient, additionalHeaders, timeout), RawFrontEndMigrationApi {
+	json: Json,
+) : BaseRawApi(httpClient, additionalHeaders, timeout, json), RawFrontEndMigrationApi {
 	// region common endpoints
 
 	override suspend fun getFrontEndMigrations(): HttpResponse<List<FrontEndMigration>> =
@@ -42,6 +45,7 @@ class RawFrontEndMigrationApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun createFrontEndMigration(frontEndMigrationDto: FrontEndMigration): HttpResponse<FrontEndMigration> =
@@ -51,7 +55,8 @@ class RawFrontEndMigrationApiImpl(
 				appendPathSegments("rest", "v2", "frontendmigration")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(frontEndMigrationDto)
 		}.wrap()
 
@@ -62,6 +67,7 @@ class RawFrontEndMigrationApiImpl(
 				appendPathSegments("rest", "v2", "frontendmigration", frontEndMigrationId)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getFrontEndMigration(frontEndMigrationId: String): HttpResponse<FrontEndMigration> =
@@ -72,6 +78,7 @@ class RawFrontEndMigrationApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getFrontEndMigrationByName(frontEndMigrationName: String): HttpResponse<List<FrontEndMigration>> =
@@ -82,6 +89,7 @@ class RawFrontEndMigrationApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun modifyFrontEndMigration(frontEndMigrationDto: FrontEndMigration): HttpResponse<FrontEndMigration> =
@@ -91,7 +99,8 @@ class RawFrontEndMigrationApiImpl(
 				appendPathSegments("rest", "v2", "frontendmigration")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(frontEndMigrationDto)
 		}.wrap()
 

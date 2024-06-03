@@ -11,13 +11,15 @@ import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.Tarification
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
+import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
-import io.ktor.http.ContentType
+import io.ktor.http.ContentType.Application
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
+import kotlinx.serialization.json.Json
 import kotlin.Int
 import kotlin.String
 import kotlin.collections.List
@@ -33,7 +35,8 @@ class RawTarificationApiImpl(
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
-) : BaseRawApi(httpClient, additionalHeaders, timeout), RawTarificationApi {
+	json: Json,
+) : BaseRawApi(httpClient, additionalHeaders, timeout, json), RawTarificationApi {
 	// region common endpoints
 
 	override suspend fun findTarificationsByLabel(
@@ -59,6 +62,7 @@ class RawTarificationApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun findTarificationsBy(
@@ -84,6 +88,7 @@ class RawTarificationApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun findTarificationsBy(
@@ -103,6 +108,7 @@ class RawTarificationApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun createTarification(c: Tarification): HttpResponse<Tarification> =
@@ -112,7 +118,8 @@ class RawTarificationApiImpl(
 				appendPathSegments("rest", "v2", "tarification")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(c)
 		}.wrap()
 
@@ -123,7 +130,8 @@ class RawTarificationApiImpl(
 				appendPathSegments("rest", "v2", "tarification", "byIds")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(tarificationIds)
 		}.wrap()
 
@@ -135,6 +143,7 @@ class RawTarificationApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getTarificationWithParts(
@@ -149,6 +158,7 @@ class RawTarificationApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun modifyTarification(tarificationDto: Tarification): HttpResponse<Tarification> =
@@ -158,7 +168,8 @@ class RawTarificationApiImpl(
 				appendPathSegments("rest", "v2", "tarification")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(tarificationDto)
 		}.wrap()
 

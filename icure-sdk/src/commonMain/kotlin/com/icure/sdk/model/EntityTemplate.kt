@@ -9,9 +9,6 @@ import kotlin.Long
 import kotlin.String
 import kotlin.collections.List
 import kotlin.collections.Set
-import com.icure.sdk.serialization.EntityTemplateSerializer
-import kotlin.Any
-import kotlin.collections.Map
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).

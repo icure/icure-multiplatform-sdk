@@ -15,15 +15,18 @@ import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.specializations.AesExchangeKeyEncryptionKeypairIdentifier
 import com.icure.sdk.model.specializations.HexString
+import com.icure.sdk.serialization.DeviceAbstractFilterSerializer
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
+import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
-import io.ktor.http.ContentType
+import io.ktor.http.ContentType.Application
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
+import kotlinx.serialization.json.Json
 import kotlin.Int
 import kotlin.String
 import kotlin.collections.List
@@ -39,7 +42,8 @@ class RawDeviceApiImpl(
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
-) : BaseRawApi(httpClient, additionalHeaders, timeout), RawDeviceApi {
+	json: Json,
+) : BaseRawApi(httpClient, additionalHeaders, timeout, json), RawDeviceApi {
 	// region common endpoints
 
 	override suspend fun getDevice(deviceId: String): HttpResponse<Device> =
@@ -50,6 +54,7 @@ class RawDeviceApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getDevices(deviceIds: ListOfIds): HttpResponse<List<Device>> =
@@ -59,7 +64,8 @@ class RawDeviceApiImpl(
 				appendPathSegments("rest", "v2", "device", "byIds")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(deviceIds)
 		}.wrap()
 
@@ -70,7 +76,8 @@ class RawDeviceApiImpl(
 				appendPathSegments("rest", "v2", "device")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(p)
 		}.wrap()
 
@@ -81,7 +88,8 @@ class RawDeviceApiImpl(
 				appendPathSegments("rest", "v2", "device")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(deviceDto)
 		}.wrap()
 
@@ -92,7 +100,8 @@ class RawDeviceApiImpl(
 				appendPathSegments("rest", "v2", "device", "bulk")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(deviceDtos)
 		}.wrap()
 
@@ -103,7 +112,8 @@ class RawDeviceApiImpl(
 				appendPathSegments("rest", "v2", "device", "bulk")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(deviceDtos)
 		}.wrap()
 
@@ -120,7 +130,8 @@ class RawDeviceApiImpl(
 				parameter("limit", limit)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(filterChain)
 		}.wrap()
 
@@ -134,6 +145,7 @@ class RawDeviceApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun matchDevicesBy(filter: AbstractFilter<Device>): HttpResponse<List<String>> =
@@ -143,8 +155,9 @@ class RawDeviceApiImpl(
 				appendPathSegments("rest", "v2", "device", "match")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			setBody(filter)
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBodyWithSerializer(DeviceAbstractFilterSerializer, filter)
 		}.wrap()
 
 	override suspend fun deleteDevice(deviceId: String): HttpResponse<DocIdentifier> =
@@ -154,6 +167,7 @@ class RawDeviceApiImpl(
 				appendPathSegments("rest", "v2", "device", deviceId)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun deleteDevices(deviceIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
@@ -163,7 +177,8 @@ class RawDeviceApiImpl(
 				appendPathSegments("rest", "v2", "device", "delete", "batch")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(deviceIds)
 		}.wrap()
 
@@ -181,7 +196,8 @@ class RawDeviceApiImpl(
 				appendPathSegments("rest", "v2", "device", "inGroup", groupId, "byIds")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(deviceIds)
 		}.wrap()
 
@@ -195,7 +211,8 @@ class RawDeviceApiImpl(
 				appendPathSegments("rest", "v2", "device", "inGroup", groupId)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(deviceDto)
 		}.wrap()
 
@@ -209,7 +226,8 @@ class RawDeviceApiImpl(
 				appendPathSegments("rest", "v2", "device", "inGroup", groupId)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(deviceDto)
 		}.wrap()
 
@@ -223,6 +241,7 @@ class RawDeviceApiImpl(
 				appendPathSegments("rest", "v2", "device", "inGroup", groupId, deviceIds)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	// endregion

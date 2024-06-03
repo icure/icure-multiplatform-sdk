@@ -1,12 +1,18 @@
 package com.icure.sdk
 
 import com.icure.sdk.IcureSdk.Companion.sharedHttpClient
-import com.icure.sdk.api.ApiOptions
-import com.icure.sdk.api.BasicApiOptions
+import com.icure.sdk.options.BasicApiOptions
+import com.icure.sdk.api.AuthenticationMethod
 import com.icure.sdk.api.CodeApi
 import com.icure.sdk.api.CodeApiImpl
+import com.icure.sdk.api.DeviceApi
+import com.icure.sdk.api.DeviceApiImpl
 import com.icure.sdk.api.GroupApi
 import com.icure.sdk.api.GroupApiImpl
+import com.icure.sdk.api.HealthcarePartyApi
+import com.icure.sdk.api.HealthcarePartyApiImpl
+import com.icure.sdk.api.PermissionApi
+import com.icure.sdk.api.PermissionApiImpl
 import com.icure.sdk.api.UserApi
 import com.icure.sdk.api.UserApiImpl
 import com.icure.sdk.api.flavoured.AccessLogBasicApi
@@ -37,16 +43,19 @@ import com.icure.sdk.api.flavoured.TimeTableBasicApi
 import com.icure.sdk.api.flavoured.TimeTableBasicApiImpl
 import com.icure.sdk.api.flavoured.TopicBasicApi
 import com.icure.sdk.api.flavoured.TopicBasicApiImpl
+import com.icure.sdk.api.getAuthService
 import com.icure.sdk.api.raw.impl.RawAccessLogApiImpl
 import com.icure.sdk.api.raw.impl.RawAnonymousAuthApiImpl
 import com.icure.sdk.api.raw.impl.RawCalendarItemApiImpl
 import com.icure.sdk.api.raw.impl.RawClassificationApiImpl
 import com.icure.sdk.api.raw.impl.RawCodeApiImpl
 import com.icure.sdk.api.raw.impl.RawContactApiImpl
+import com.icure.sdk.api.raw.impl.RawDeviceApiImpl
 import com.icure.sdk.api.raw.impl.RawDocumentApiImpl
 import com.icure.sdk.api.raw.impl.RawFormApiImpl
 import com.icure.sdk.api.raw.impl.RawGroupApiImpl
 import com.icure.sdk.api.raw.impl.RawHealthElementApiImpl
+import com.icure.sdk.api.raw.impl.RawHealthcarePartyApiImpl
 import com.icure.sdk.api.raw.impl.RawInvoiceApiImpl
 import com.icure.sdk.api.raw.impl.RawMaintenanceTaskApiImpl
 import com.icure.sdk.api.raw.impl.RawMessageApiImpl
@@ -56,7 +65,6 @@ import com.icure.sdk.api.raw.impl.RawReceiptApiImpl
 import com.icure.sdk.api.raw.impl.RawTimeTableApiImpl
 import com.icure.sdk.api.raw.impl.RawTopicApiImpl
 import com.icure.sdk.api.raw.impl.RawUserApiImpl
-import com.icure.sdk.auth.UsernamePassword
 import com.icure.sdk.auth.services.AuthService
 import com.icure.sdk.auth.services.JwtAuthService
 import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
@@ -67,7 +75,9 @@ import com.icure.sdk.crypto.impl.JsonEncryptionServiceImpl
 import com.icure.sdk.crypto.impl.NoAccessControlKeysHeadersProvider
 import com.icure.sdk.options.EntitiesEncryptedFieldsManifests
 import com.icure.sdk.utils.InternalIcureApi
+import com.icure.sdk.utils.Serialization
 import io.ktor.client.HttpClient
+import kotlinx.serialization.json.Json
 
 interface IcureBaseSdk {
 	val accessLog: AccessLogBasicApi
@@ -75,14 +85,17 @@ interface IcureBaseSdk {
 	val classification: ClassificationBasicApi
 	val code: CodeApi
 	val contact: ContactBasicApi
+	val device: DeviceApi
 	val document: DocumentBasicApi
 	val form: FormBasicApi
 	val group: GroupApi
 	val healthcareElement: HealthcareElementBasicApi
+	val healthcareParty: HealthcarePartyApi
 	val invoice: InvoiceBasicApi
 	val maintenanceTask: MaintenanceTaskBasicApi
 	val message: MessageBasicApi
 	val patient: PatientBasicApi
+	val permission: PermissionApi
 	val receipt: ReceiptBasicApi
 	val timeTable: TimeTableBasicApi
 	val topic: TopicBasicApi
@@ -92,13 +105,14 @@ interface IcureBaseSdk {
 		@OptIn(InternalIcureApi::class)
 		suspend fun initialise(
 			baseUrl: String,
-			usernamePassword: UsernamePassword,
+			authenticationMethod: AuthenticationMethod,
 			options: BasicApiOptions = BasicApiOptions()
 		): IcureBaseSdk {
 			val client = options.httpClient ?: sharedHttpClient
+			val json = options.httpClientJson ?: Serialization.json
 			val apiUrl = baseUrl
-			val authApi = RawAnonymousAuthApiImpl(apiUrl, client)
-			val authService = JwtAuthService(authApi, usernamePassword)
+			val authApi = RawAnonymousAuthApiImpl(apiUrl = apiUrl, httpClient = client, json = json)
+			val authService = authenticationMethod.getAuthService(authApi)
 
 			val manifests = EntitiesEncryptedFieldsManifests.fromEncryptedFields(options.encryptedFields)
 
@@ -110,6 +124,7 @@ interface IcureBaseSdk {
 				client,
 				BasicInternalCryptoApiImpl(jsonEncryptionService, EntityValidationServiceImpl(jsonEncryptionService)),
 				manifests,
+				json
 			)
 		}
 	}
@@ -123,22 +138,26 @@ private class IcureBaseApiImpl(
 	private val client: HttpClient,
 	private val crypto: BasicInternalCryptoApi,
 	private val encryptedFieldsManifests: EntitiesEncryptedFieldsManifests,
+	private val httpClientJson: Json,
 ): IcureBaseSdk {
-	override val accessLog by lazy { AccessLogBasicApiImpl(RawAccessLogApiImpl(apiUrl, authService, headersProvider, client), crypto, encryptedFieldsManifests.accessLog) }
-	override val calendarItem by lazy { CalendarItemBasicApiImpl(RawCalendarItemApiImpl(apiUrl, authService, headersProvider, client), crypto, encryptedFieldsManifests.calendarItem) }
-	override val classification by lazy { ClassificationBasicApiImpl(RawClassificationApiImpl(apiUrl, authService, headersProvider, client), crypto.validationService, encryptedFieldsManifests.classification) }
-	override val code by lazy { CodeApiImpl(RawCodeApiImpl(apiUrl, authService, client)) }
-	override val contact by lazy { ContactBasicApiImpl(RawContactApiImpl(apiUrl, authService, headersProvider, client), crypto.validationService, crypto.jsonEncryption, encryptedFieldsManifests.contact, encryptedFieldsManifests.service) }
-	override val document by lazy { DocumentBasicApiImpl(RawDocumentApiImpl(apiUrl, authService, headersProvider, client), crypto.validationService, encryptedFieldsManifests.document) }
-	override val form by lazy { FormBasicApiImpl(RawFormApiImpl(apiUrl, authService, headersProvider, client), crypto.validationService, encryptedFieldsManifests.form) }
-	override val group: GroupApi by lazy { GroupApiImpl(RawGroupApiImpl(apiUrl, authService, client)) }
-	override val healthcareElement by lazy { HealthcareElementBasicApiImpl(RawHealthElementApiImpl(apiUrl, authService, headersProvider, client), crypto.validationService, encryptedFieldsManifests.healthElement) }
-	override val invoice by lazy { InvoiceBasicApiImpl(RawInvoiceApiImpl(apiUrl, authService, headersProvider, client), crypto.validationService, encryptedFieldsManifests.invoice) }
-	override val maintenanceTask by lazy { MaintenanceTaskBasicApiImpl(RawMaintenanceTaskApiImpl(apiUrl, authService, headersProvider, client), crypto, encryptedFieldsManifests.maintenanceTask) }
-	override val message by lazy { MessageBasicApiImpl(RawMessageApiImpl(apiUrl, authService, headersProvider, client), crypto.validationService, encryptedFieldsManifests.message) }
-	override val patient by lazy { PatientBasicApiImpl(RawPatientApiImpl(apiUrl, authService, headersProvider, client), crypto, encryptedFieldsManifests.patient) }
-	override val receipt by lazy { ReceiptBasicApiImpl(RawReceiptApiImpl(apiUrl, authService, headersProvider, client), crypto.validationService, encryptedFieldsManifests.receipt) }
-	override val timeTable by lazy { TimeTableBasicApiImpl(RawTimeTableApiImpl(apiUrl, authService, headersProvider, client), crypto.validationService, encryptedFieldsManifests.timeTable) }
-	override val topic by lazy { TopicBasicApiImpl(RawTopicApiImpl(apiUrl, authService, headersProvider, client), crypto.validationService, encryptedFieldsManifests.topic) }
-	override val user: UserApi by lazy { UserApiImpl(RawUserApiImpl(apiUrl, authService, client), RawPermissionApiImpl(apiUrl, authService, client)) }
+	override val accessLog by lazy { AccessLogBasicApiImpl(RawAccessLogApiImpl(apiUrl, authService, headersProvider, client, json = httpClientJson), crypto, encryptedFieldsManifests.accessLog) }
+	override val calendarItem by lazy { CalendarItemBasicApiImpl(RawCalendarItemApiImpl(apiUrl, authService, headersProvider, client, json = httpClientJson), crypto, encryptedFieldsManifests.calendarItem) }
+	override val classification by lazy { ClassificationBasicApiImpl(RawClassificationApiImpl(apiUrl, authService, headersProvider, client, json = httpClientJson), crypto.validationService, encryptedFieldsManifests.classification) }
+	override val code by lazy { CodeApiImpl(RawCodeApiImpl(apiUrl, authService, client, json = httpClientJson)) }
+	override val contact by lazy { ContactBasicApiImpl(RawContactApiImpl(apiUrl, authService, headersProvider, client, json = httpClientJson), crypto.validationService, crypto.jsonEncryption, encryptedFieldsManifests.contact, encryptedFieldsManifests.service) }
+	override val device by lazy { DeviceApiImpl(RawDeviceApiImpl(apiUrl, authService, client, json = httpClientJson)) }
+	override val document by lazy { DocumentBasicApiImpl(RawDocumentApiImpl(apiUrl, authService, headersProvider, client, json = httpClientJson), crypto.validationService, encryptedFieldsManifests.document) }
+	override val form by lazy { FormBasicApiImpl(RawFormApiImpl(apiUrl, authService, headersProvider, client, json = httpClientJson), crypto.validationService, encryptedFieldsManifests.form) }
+	override val group: GroupApi by lazy { GroupApiImpl(RawGroupApiImpl(apiUrl, authService, client, json = httpClientJson)) }
+	override val healthcareElement by lazy { HealthcareElementBasicApiImpl(RawHealthElementApiImpl(apiUrl, authService, headersProvider, client, json = httpClientJson), crypto.validationService, encryptedFieldsManifests.healthElement) }
+	override val healthcareParty by lazy { HealthcarePartyApiImpl(RawHealthcarePartyApiImpl(apiUrl, authService, client, json = httpClientJson)) }
+	override val invoice by lazy { InvoiceBasicApiImpl(RawInvoiceApiImpl(apiUrl, authService, headersProvider, client, json = httpClientJson), crypto.validationService, encryptedFieldsManifests.invoice) }
+	override val maintenanceTask by lazy { MaintenanceTaskBasicApiImpl(RawMaintenanceTaskApiImpl(apiUrl, authService, headersProvider, client, json = httpClientJson), crypto, encryptedFieldsManifests.maintenanceTask) }
+	override val message by lazy { MessageBasicApiImpl(RawMessageApiImpl(apiUrl, authService, headersProvider, client, json = httpClientJson), crypto.validationService, encryptedFieldsManifests.message) }
+	override val patient by lazy { PatientBasicApiImpl(RawPatientApiImpl(apiUrl, authService, headersProvider, client, json = httpClientJson), crypto, encryptedFieldsManifests.patient) }
+	override val permission by lazy { PermissionApiImpl(RawPermissionApiImpl(apiUrl, authService, client, json = httpClientJson)) }
+	override val receipt by lazy { ReceiptBasicApiImpl(RawReceiptApiImpl(apiUrl, authService, headersProvider, client, json = httpClientJson), crypto.validationService, encryptedFieldsManifests.receipt) }
+	override val timeTable by lazy { TimeTableBasicApiImpl(RawTimeTableApiImpl(apiUrl, authService, headersProvider, client, json = httpClientJson), crypto.validationService, encryptedFieldsManifests.timeTable) }
+	override val topic by lazy { TopicBasicApiImpl(RawTopicApiImpl(apiUrl, authService, headersProvider, client, json = httpClientJson), crypto.validationService, encryptedFieldsManifests.topic) }
+	override val user: UserApi by lazy { UserApiImpl(RawUserApiImpl(apiUrl, authService, client, json = httpClientJson), RawPermissionApiImpl(apiUrl, authService, client, json = httpClientJson)) }
 }

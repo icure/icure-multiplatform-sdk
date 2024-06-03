@@ -168,6 +168,20 @@ data class DecryptedCalendarItem(
 	// region CalendarItem-DecryptedCalendarItem
 override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedCalendarItem =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
+
+	/**
+	 * Resets the following delegation objects from the
+	 * [CalendarItem] instance: [CalendarItem.cryptedForeignKeys], [CalendarItem.secretForeignKeys].
+	 *
+	 * The [CalendarItem.delegations] & [CalendarItem.encryptionKeys] objects are not removed because
+	 * in the case the [CalendarItem] is saved in the DB & then encrypted,
+	 * if later we remove the patient from it, it'd reset the delegations
+	 * and encryptionKeys thus making impossible to further access it.
+	 */
+	fun resetCalendarDelegationObjects(): DecryptedCalendarItem = copy(
+		cryptedForeignKeys = emptyMap(),
+		secretForeignKeys = emptySet()
+	)
 	// endregion
 }
 
@@ -225,5 +239,19 @@ data class EncryptedCalendarItem(
 	// region CalendarItem-EncryptedCalendarItem
 override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedCalendarItem =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
+
+	/**
+	 * Resets the following delegation objects from the
+	 * [CalendarItem] instance: [CalendarItem.cryptedForeignKeys], [CalendarItem.secretForeignKeys].
+	 *
+	 * The [CalendarItem.delegations] & [CalendarItem.encryptionKeys] objects are not removed because
+	 * in the case the [CalendarItem] is saved in the DB & then encrypted,
+	 * if later we remove the patient from it, it'd reset the delegations
+	 * and encryptionKeys thus making impossible to further access it.
+	 */
+	fun resetCalendarDelegationObjects(): EncryptedCalendarItem = copy(
+		cryptedForeignKeys = emptyMap(),
+		secretForeignKeys = emptySet()
+	)
 	// endregion
 }

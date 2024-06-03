@@ -24,6 +24,7 @@ import com.icure.sdk.crypto.entities.MinimalBulkShareResult
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleDelegateShareOptions
+import com.icure.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.model.base.HasEncryptionMetadata
 import com.icure.sdk.model.embed.AccessLevel
@@ -31,7 +32,6 @@ import com.icure.sdk.model.embed.Encryptable
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
 import com.icure.sdk.model.requests.EntityShareOrMetadataUpdateRequest
-import com.icure.sdk.model.requests.MinimalEntityBulkShareResult
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.model.specializations.SecureDelegationKeyString
@@ -104,6 +104,21 @@ class EntityEncryptionServiceImpl(
 			updatedEntity?.entity,
 			cryptoService.aes.encrypt(content, encryptionKey),
 		)
+	}
+
+	override suspend fun tryDecryptAttachmentOf(
+		entity: EntityWithTypeInfo<*>,
+		content: ByteArray,
+		validator: suspend (decryptedData: ByteArray) -> Boolean
+	): ByteArray? {
+		return allDecryptors.decryptEncryptionKeysOf(entity, dataOwnersForDecryption(null).toSet()).mapNotNull { decryptedKeyInfo ->
+			kotlin.runCatching {
+				cryptoService.aes.decrypt(
+					content,
+					cryptoService.aes.loadKey(AesAlgorithm.CbcWithPkcs7Padding, decryptedKeyInfo.value.decodedBytes())
+				).takeIf { validator(it) }
+			}.getOrNull()
+		}.firstOrNull()
 	}
 
 	override suspend fun decryptAttachmentOf(
@@ -271,7 +286,7 @@ class EntityEncryptionServiceImpl(
 
 	override suspend fun bulkShareOrUpdateEncryptedEntityMetadataNoEntities(
 		entitiesUpdates: List<Pair<EntityWithTypeInfo<*>, Map<String, DelegateShareOptions>>>,
-		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<MinimalEntityBulkShareResult>
+		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<Nothing>>
 	): MinimalBulkShareResult {
 		val requestDetails = prepareBulkShareRequests(entitiesUpdates)
 		val shareResult = doRequestBulkShareOrUpdate(
@@ -472,7 +487,7 @@ class EntityEncryptionServiceImpl(
 		val availableOwningEntityIds = owningEntityIdsOf(entity, null)
 		val availableSecretIds = if (unusedSecretIds) secretIdsOf(entity, null) else null
 		val extendedDelegateOptions = delegates.mapValues { (_, simpleShareOptions) ->
-			if (availableEncryptionKeys.isEmpty() && simpleShareOptions.shareEncryptionKeys == ShareMetadataBehaviour.Required) {
+			if (availableEncryptionKeys.isEmpty() && simpleShareOptions.shareEncryptionKey == ShareMetadataBehaviour.Required) {
 				throw IllegalArgumentException("The current data owner can't access any encryption key in ${entity.type.id} ${entity.id}, but sharing is required.")
 			}
 			if (availableOwningEntityIds.isEmpty() && simpleShareOptions.shareOwningEntityIds == ShareMetadataBehaviour.Required) {
@@ -485,7 +500,7 @@ class EntityEncryptionServiceImpl(
 			}
 			DelegateShareOptions(
 				shareSecretIds = simpleShareOptions.shareSecretIds ?: availableSecretIds ?: emptySet(),
-				shareEncryptionKeys = if (simpleShareOptions.shareEncryptionKeys == ShareMetadataBehaviour.Never) emptySet() else availableEncryptionKeys,
+				shareEncryptionKeys = if (simpleShareOptions.shareEncryptionKey == ShareMetadataBehaviour.Never) emptySet() else availableEncryptionKeys,
 				shareOwningEntityIds = if (simpleShareOptions.shareOwningEntityIds == ShareMetadataBehaviour.Never) emptySet() else availableOwningEntityIds,
 				requestedPermissions = simpleShareOptions.requestedPermissions
 			)
@@ -548,9 +563,9 @@ class EntityEncryptionServiceImpl(
 		return simpleShareOrUpdateEncryptedEntityMetadata(
 			entity,
 			false,
-			mapOf(dataOwnerApi.getCurrentDataOwnerId() to SimpleDelegateShareOptions(
+			mapOf(dataOwnerApi.getCurrentDataOwnerId() to SimpleDelegateShareOptionsImpl(
 				shareSecretIds = setOf(cryptoService.strongRandom.randomUUID()),
-				shareEncryptionKeys = ShareMetadataBehaviour.Never,
+				shareEncryptionKey = ShareMetadataBehaviour.Never,
 				shareOwningEntityIds = ShareMetadataBehaviour.Never,
 				requestedPermissions = RequestedPermission.MaxWrite
 			)),
@@ -596,6 +611,6 @@ class EntityEncryptionServiceImpl(
 			listOf(self)
 		}
 
-	private suspend inline fun <T : Any> Iterable<DecryptedMetadataDetails<T>>.valuesAvailableToDataOwners(dataOwners: Set<String>): Set<T> =
+	private inline fun <T : Any> Iterable<DecryptedMetadataDetails<T>>.valuesAvailableToDataOwners(dataOwners: Set<String>): Set<T> =
 		mapNotNullTo(mutableSetOf()) { decryptedDataDetails -> if (dataOwners.any { it in decryptedDataDetails.dataOwnersWithAccess }) decryptedDataDetails.value else null }
 }

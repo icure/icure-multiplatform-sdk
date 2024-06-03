@@ -10,6 +10,7 @@ import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.model.EncryptedMaintenanceTask
 import com.icure.sdk.model.ListOfIds
+import com.icure.sdk.model.MaintenanceTask
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.filter.chain.FilterChain
@@ -17,13 +18,15 @@ import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
+import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
-import io.ktor.http.ContentType
+import io.ktor.http.ContentType.Application
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
+import kotlinx.serialization.json.Json
 import kotlin.Int
 import kotlin.String
 import kotlin.collections.List
@@ -40,7 +43,8 @@ class RawMaintenanceTaskApiImpl(
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
-) : BaseRawApi(httpClient, additionalHeaders, timeout), RawMaintenanceTaskApi {
+	json: Json,
+) : BaseRawApi(httpClient, additionalHeaders, timeout, json), RawMaintenanceTaskApi {
 	override suspend fun getAccessControlKeysHeaderValues(): List<String>? =
 		accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithEncryptionMetadataTypeName.MaintenanceTask)
 
@@ -53,7 +57,8 @@ class RawMaintenanceTaskApiImpl(
 				appendPathSegments("rest", "v2", "maintenancetask")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(maintenanceTaskDto)
 		}.wrap()
 
@@ -64,7 +69,8 @@ class RawMaintenanceTaskApiImpl(
 				appendPathSegments("rest", "v2", "maintenancetask", "delete", "batch")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(maintenanceTaskIds)
 		}.wrap()
 
@@ -75,6 +81,7 @@ class RawMaintenanceTaskApiImpl(
 				appendPathSegments("rest", "v2", "maintenancetask", maintenanceTaskId)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getMaintenanceTask(maintenanceTaskId: String): HttpResponse<EncryptedMaintenanceTask> =
@@ -85,6 +92,7 @@ class RawMaintenanceTaskApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun modifyMaintenanceTask(maintenanceTaskDto: EncryptedMaintenanceTask): HttpResponse<EncryptedMaintenanceTask> =
@@ -94,14 +102,15 @@ class RawMaintenanceTaskApiImpl(
 				appendPathSegments("rest", "v2", "maintenancetask")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(maintenanceTaskDto)
 		}.wrap()
 
 	override suspend fun filterMaintenanceTasksBy(
 		startDocumentId: String?,
 		limit: Int?,
-		filterChain: FilterChain<EncryptedMaintenanceTask>,
+		filterChain: FilterChain<MaintenanceTask>,
 	): HttpResponse<PaginatedList<EncryptedMaintenanceTask>> =
 		post {
 			url {
@@ -111,7 +120,8 @@ class RawMaintenanceTaskApiImpl(
 				parameter("limit", limit)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(filterChain)
 		}.wrap()
 
@@ -124,7 +134,8 @@ class RawMaintenanceTaskApiImpl(
 				appendPathSegments("rest", "v2", "maintenancetask", "bulkSharedMetadataUpdate")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(request)
 		}.wrap()
 

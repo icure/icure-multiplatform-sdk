@@ -9,10 +9,13 @@ import com.icure.sdk.auth.services.setAuthorizationWith
 import com.icure.sdk.model.Role
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
+import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
+import io.ktor.http.ContentType.Application
 import io.ktor.http.appendPathSegments
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
+import kotlinx.serialization.json.Json
 import kotlin.String
 import kotlin.collections.List
 import kotlin.collections.Map
@@ -27,7 +30,8 @@ class RawRoleApiImpl(
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
-) : BaseRawApi(httpClient, additionalHeaders, timeout), RawRoleApi {
+	json: Json,
+) : BaseRawApi(httpClient, additionalHeaders, timeout, json), RawRoleApi {
 	// region cloud endpoints
 
 	override suspend fun getAllRoles(): HttpResponse<List<Role>> =
@@ -38,6 +42,7 @@ class RawRoleApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	// endregion

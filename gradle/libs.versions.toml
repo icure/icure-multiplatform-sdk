@@ -1,5 +1,5 @@
 [versions]
-kotlin = "1.9.23"
+kotlin = "1.9.24"
 ktor = "2.3.8"
 coroutines = "1.8.0"
 kotlinSerialization = "1.6.1"
@@ -54,6 +54,9 @@ bouncyCastle = { group = "org.bouncycastle", name = "bcprov-jdk15on", version.re
 
 # Logging
 kermit = { group = "co.touchlab", name = "kermit", version.ref = "kermit" }
+
+# Kryptom
+kryptom = { group = "com.icure.kryptom", name = "kryptom", version = "1.0.3" }
 
 [bundles]
 ktorServer = ["ktorServerCore", "ktorServerNetty", "ktorServerWebsockets"]

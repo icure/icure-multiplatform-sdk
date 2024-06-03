@@ -11,13 +11,15 @@ import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.embed.EncryptedContent
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
+import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
-import io.ktor.http.ContentType
+import io.ktor.http.ContentType.Application
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
+import kotlinx.serialization.json.Json
 import kotlin.String
 import kotlin.collections.Map
 import kotlin.time.Duration
@@ -31,7 +33,8 @@ class RawRecoveryDataApiImpl(
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
-) : BaseRawApi(httpClient, additionalHeaders, timeout), RawRecoveryDataApi {
+	json: Json,
+) : BaseRawApi(httpClient, additionalHeaders, timeout, json), RawRecoveryDataApi {
 	// region common endpoints
 
 	override suspend fun createRecoveryData(recoveryData: RecoveryData): HttpResponse<RecoveryData> =
@@ -41,7 +44,8 @@ class RawRecoveryDataApiImpl(
 				appendPathSegments("rest", "v2", "recoverydata")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(recoveryData)
 		}.wrap()
 
@@ -53,6 +57,7 @@ class RawRecoveryDataApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun deleteRecoveryData(id: String): HttpResponse<DocIdentifier> =
@@ -62,6 +67,7 @@ class RawRecoveryDataApiImpl(
 				appendPathSegments("rest", "v2", "recoverydata", id)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun deleteAllRecoveryDataForRecipient(recipientId: String): HttpResponse<EncryptedContent> =
@@ -71,6 +77,7 @@ class RawRecoveryDataApiImpl(
 				appendPathSegments("rest", "v2", "recoverydataforRecipient", recipientId)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun deleteAllRecoveryDataOfTypeForRecipient(
@@ -83,6 +90,7 @@ class RawRecoveryDataApiImpl(
 				appendPathSegments("rest", "v2", "recoverydataforRecipient", recipientId, "ofType", "$type")
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	// endregion

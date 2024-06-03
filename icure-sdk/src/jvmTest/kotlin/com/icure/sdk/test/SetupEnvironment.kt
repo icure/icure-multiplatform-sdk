@@ -8,7 +8,8 @@ import com.icure.kryptom.crypto.RsaKeypair
 import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.kryptom.utils.toHexString
 import com.icure.sdk.IcureSdk
-import com.icure.sdk.api.ApiOptions
+import com.icure.sdk.api.AuthenticationMethod
+import com.icure.sdk.options.ApiOptions
 import com.icure.sdk.api.raw.impl.RawAnonymousAuthApiImpl
 import com.icure.sdk.api.raw.impl.RawGroupApiImpl
 import com.icure.sdk.api.raw.impl.RawHealthcarePartyApiImpl
@@ -32,6 +33,7 @@ import com.icure.sdk.storage.impl.DefaultStorageEntryKeysFactory
 import com.icure.sdk.storage.impl.JsonAndBase64KeyStorage
 import com.icure.sdk.storage.impl.VolatileStorageFacade
 import com.icure.sdk.utils.InternalIcureApi
+import com.icure.sdk.utils.Serialization
 import com.icure.test.setup.ICureTestSetup
 import io.kotest.common.runBlocking
 import java.util.UUID
@@ -42,11 +44,11 @@ private val testGroupId = testGroupName
 private val testGroupAdmin = "admin-${UUID.randomUUID()}@icure.com"
 private val testGroupAdminPassword = "admin-${UUID.randomUUID()}"
 val testGroupAdminAuth = JwtAuthService(
-	RawAnonymousAuthApiImpl(baseUrl, IcureSdk.sharedHttpClient),
+	RawAnonymousAuthApiImpl(baseUrl, IcureSdk.sharedHttpClient, json = Serialization.json),
 	UsernamePassword(testGroupAdmin, testGroupAdminPassword),
 )
 private val superadminAuth = JwtAuthService(
-	RawAnonymousAuthApiImpl(baseUrl, IcureSdk.sharedHttpClient),
+	RawAnonymousAuthApiImpl(baseUrl, IcureSdk.sharedHttpClient, json = Serialization.json),
 	UsernamePassword("john", "LetMeIn"),
 )
 private val defaultRoles = mapOf(
@@ -65,9 +67,9 @@ suspend fun initialiseTestEnvironment() {
 	initialised = true
 	println("Starting kraken")
 	ICureTestSetup.startKrakenEnvironment(
-		"file:///Users/clementvandendaelen/IdeaProjects/icure-typescript-sdk/custom-docker-compose-cloud.yaml",
+		"file:///Users/trema/icure-typescript-sdk/test/scratch/docker-compose-cloud-debuggable.yaml",
 		listOf("mock"),
-		"/Users/clementvandendaelen/IdeaProjects/icure-typescript-sdk/test/scratch"
+		"/Users/trema/icure-typescript-sdk/test/scratch"
 	)
 	println("Bootstrap cloud")
 	ICureTestSetup.bootstrapCloud(
@@ -80,7 +82,7 @@ suspend fun initialiseTestEnvironment() {
 		rootUserRoles = defaultRoles
 	)
 	println("Creating test group")
-	val groupApi = RawGroupApiImpl(baseUrl, superadminAuth, IcureSdk.sharedHttpClient)
+	val groupApi = RawGroupApiImpl(baseUrl, superadminAuth, IcureSdk.sharedHttpClient, json = Serialization.json)
 	if (groupApi.getGroup(testGroupId).status.value == 200) {
 		println("Group already exist")
 	} else  {
@@ -96,7 +98,7 @@ suspend fun initialiseTestEnvironment() {
 		)
 	}
 	println("Creating admin user - $testGroupAdmin:$testGroupAdminPassword")
-	RawUserApiImpl(baseUrl, superadminAuth, IcureSdk.sharedHttpClient).createAdminUserInGroup(
+	RawUserApiImpl(baseUrl, superadminAuth, IcureSdk.sharedHttpClient, json = Serialization.json).createAdminUserInGroup(
 		testGroupId,
 		User(
 			UUID.randomUUID().toString(),
@@ -179,7 +181,7 @@ data class DataOwnerDetails(
 	}
 
 	fun authService() =
-		JwtAuthService(RawAnonymousAuthApiImpl(baseUrl, IcureSdk.sharedHttpClient), UsernamePassword(username, password))
+		JwtAuthService(RawAnonymousAuthApiImpl(baseUrl, IcureSdk.sharedHttpClient, json = Serialization.json), UsernamePassword(username, password))
 
 	@OptIn(InternalIcureApi::class)
 	private suspend fun initApi(
@@ -188,7 +190,7 @@ data class DataOwnerDetails(
 	): IcureSdk =
 		IcureSdk.initialise(
 			baseUrl,
-			UsernamePassword(username, password),
+			AuthenticationMethod.UsingCredentials(UsernamePassword(username, password)),
 			VolatileStorageFacade().also {
 				IcureStorageFacade(
 					JsonAndBase64KeyStorage(it),
@@ -221,8 +223,8 @@ data class DataOwnerDetails(
  * latter will be the grandparent of this data owner, and so on. If null the data owner will not have any parent.
  */
 suspend fun createHcpUser(parent: DataOwnerDetails? = null, useLegacyKey: Boolean = false): DataOwnerDetails {
-	val hcpRawApi = RawHealthcarePartyApiImpl(baseUrl, testGroupAdminAuth, IcureSdk.sharedHttpClient)
-	val userRawApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, IcureSdk.sharedHttpClient)
+	val hcpRawApi = RawHealthcarePartyApiImpl(baseUrl, testGroupAdminAuth, IcureSdk.sharedHttpClient, json = Serialization.json)
+	val userRawApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, IcureSdk.sharedHttpClient, json = Serialization.json)
 	val hcpId = UUID.randomUUID().toString()
 	val login = "hcp-${UUID.randomUUID()}"
 	val password = UUID.randomUUID().toString()
@@ -258,8 +260,8 @@ suspend fun createHcpUser(parent: DataOwnerDetails? = null, useLegacyKey: Boolea
 }
 
 suspend fun createPatientUser(existingPatientId: String? = null): DataOwnerDetails {
-	val patientRawApi = RawPatientApiImpl(baseUrl, testGroupAdminAuth, null, IcureSdk.sharedHttpClient)
-	val userRawApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, IcureSdk.sharedHttpClient)
+	val patientRawApi = RawPatientApiImpl(baseUrl, testGroupAdminAuth, null, IcureSdk.sharedHttpClient, json = Serialization.json)
+	val userRawApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, IcureSdk.sharedHttpClient, json = Serialization.json)
 	val patientId = existingPatientId ?: UUID.randomUUID().toString()
 	val login = "patient-${UUID.randomUUID()}"
 	val password = UUID.randomUUID().toString()
@@ -289,8 +291,8 @@ suspend fun createPatientUser(existingPatientId: String? = null): DataOwnerDetai
 }
 
 suspend fun createUserFromExistingPatient(patient: Patient): DataOwnerDetails {
-	val patientRawApi = RawPatientApiImpl(baseUrl, testGroupAdminAuth, NoAccessControlKeysHeadersProvider, IcureSdk.sharedHttpClient)
-	val userRawApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, IcureSdk.sharedHttpClient)
+	val patientRawApi = RawPatientApiImpl(baseUrl, testGroupAdminAuth, NoAccessControlKeysHeadersProvider, IcureSdk.sharedHttpClient, json = Serialization.json)
+	val userRawApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, IcureSdk.sharedHttpClient, json = Serialization.json)
 	val login = "patient-${UUID.randomUUID()}"
 	val password = UUID.randomUUID().toString()
 	val keypair = defaultCryptoService.rsa.generateKeyPair(RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256)

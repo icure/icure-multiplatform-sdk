@@ -188,9 +188,9 @@ private suspend fun createTestDataAndApis(): TestData {
 		"encryptedSelf": "jgAFAlmd2QStXpOt3LnIhs4upJv2e10fp0u6/PburW7mq1r3vo/Q5/a4Yk7EWXG7oydMWb2i1UCCiNN80czGdA==" 
 	}
 	""")
-	val userApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, IcureSdk.sharedHttpClient)
-	val patientApi = RawPatientApiImpl(baseUrl, testGroupAdminAuth, null, IcureSdk.sharedHttpClient)
-	val healthcarePartyApi = RawHealthcarePartyApiImpl(baseUrl, testGroupAdminAuth, IcureSdk.sharedHttpClient)
+	val userApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, IcureSdk.sharedHttpClient, json = Serialization.json)
+	val patientApi = RawPatientApiImpl(baseUrl, testGroupAdminAuth, null, IcureSdk.sharedHttpClient, json = Serialization.json)
+	val healthcarePartyApi = RawHealthcarePartyApiImpl(baseUrl, testGroupAdminAuth, IcureSdk.sharedHttpClient, json = Serialization.json)
 	healthcarePartyApi.createHealthcareParty(pHcpBase)
 	healthcarePartyApi.createHealthcareParty(aHcpBase)
 	healthcarePartyApi.createHealthcareParty(bHcpBase)

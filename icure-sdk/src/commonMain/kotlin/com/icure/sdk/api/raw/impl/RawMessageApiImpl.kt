@@ -10,6 +10,7 @@ import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.model.EncryptedMessage
 import com.icure.sdk.model.ListOfIds
+import com.icure.sdk.model.Message
 import com.icure.sdk.model.MessagesReadStatusUpdate
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
@@ -17,15 +18,18 @@ import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
+import com.icure.sdk.serialization.MessageAbstractFilterSerializer
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
+import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
-import io.ktor.http.ContentType
+import io.ktor.http.ContentType.Application
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
+import kotlinx.serialization.json.Json
 import kotlin.Boolean
 import kotlin.Int
 import kotlin.Long
@@ -44,7 +48,8 @@ class RawMessageApiImpl(
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
-) : BaseRawApi(httpClient, additionalHeaders, timeout), RawMessageApi {
+	json: Json,
+) : BaseRawApi(httpClient, additionalHeaders, timeout, json), RawMessageApi {
 	override suspend fun getAccessControlKeysHeaderValues(): List<String>? =
 		accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithEncryptionMetadataTypeName.Message)
 
@@ -57,7 +62,8 @@ class RawMessageApiImpl(
 				appendPathSegments("rest", "v2", "message")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(messageDto)
 		}.wrap()
 
@@ -68,7 +74,8 @@ class RawMessageApiImpl(
 				appendPathSegments("rest", "v2", "message", "delete", "batch")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(messageIds)
 		}.wrap()
 
@@ -79,6 +86,7 @@ class RawMessageApiImpl(
 				appendPathSegments("rest", "v2", "message", messageId)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getMessage(messageId: String): HttpResponse<EncryptedMessage> =
@@ -89,6 +97,7 @@ class RawMessageApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getMessages(messageIds: ListOfIds): HttpResponse<List<EncryptedMessage>> =
@@ -98,7 +107,8 @@ class RawMessageApiImpl(
 				appendPathSegments("rest", "v2", "message", "byIds")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(messageIds)
 		}.wrap()
 
@@ -113,7 +123,8 @@ class RawMessageApiImpl(
 				parameter("hcpId", hcpId)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(transportGuids)
 		}.wrap()
 
@@ -126,6 +137,7 @@ class RawMessageApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun listMessageIdsByDataOwnerPatientSentDate(
@@ -145,7 +157,8 @@ class RawMessageApiImpl(
 				parameter("descending", descending)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(secretPatientKeys)
 		}.wrap()
 
@@ -156,7 +169,8 @@ class RawMessageApiImpl(
 				appendPathSegments("rest", "v2", "message", "byHcPartySecretForeignKeys")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(secretPatientKeys)
 		}.wrap()
 
@@ -175,6 +189,7 @@ class RawMessageApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getChildrenMessages(messageId: String): HttpResponse<List<EncryptedMessage>> =
@@ -185,6 +200,7 @@ class RawMessageApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getMessagesChildren(parentIds: ListOfIds): HttpResponse<List<EncryptedMessage>> =
@@ -194,7 +210,8 @@ class RawMessageApiImpl(
 				appendPathSegments("rest", "v2", "message", "children", "batch")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(parentIds)
 		}.wrap()
 
@@ -205,7 +222,8 @@ class RawMessageApiImpl(
 				appendPathSegments("rest", "v2", "message", "byInvoice")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(ids)
 		}.wrap()
 
@@ -230,6 +248,7 @@ class RawMessageApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun findMessagesByTransportGuidSentDate(
@@ -255,6 +274,7 @@ class RawMessageApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun findMessagesByToAddress(
@@ -278,6 +298,7 @@ class RawMessageApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun findMessagesByFromAddress(
@@ -299,6 +320,7 @@ class RawMessageApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun modifyMessage(messageDto: EncryptedMessage): HttpResponse<EncryptedMessage> =
@@ -308,7 +330,8 @@ class RawMessageApiImpl(
 				appendPathSegments("rest", "v2", "message")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(messageDto)
 		}.wrap()
 
@@ -322,7 +345,8 @@ class RawMessageApiImpl(
 				appendPathSegments("rest", "v2", "message", "status", "$status")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(messageIds)
 		}.wrap()
 
@@ -333,7 +357,8 @@ class RawMessageApiImpl(
 				appendPathSegments("rest", "v2", "message", "readstatus")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(data)
 		}.wrap()
 
@@ -344,14 +369,15 @@ class RawMessageApiImpl(
 				appendPathSegments("rest", "v2", "message", "bulkSharedMetadataUpdate")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(request)
 		}.wrap()
 
 	override suspend fun filterMessagesBy(
 		startDocumentId: String?,
 		limit: Int?,
-		filterChain: FilterChain<EncryptedMessage>,
+		filterChain: FilterChain<Message>,
 	): HttpResponse<PaginatedList<EncryptedMessage>> =
 		post {
 			url {
@@ -361,19 +387,21 @@ class RawMessageApiImpl(
 				parameter("limit", limit)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(filterChain)
 		}.wrap()
 
-	override suspend fun matchMessagesBy(filter: AbstractFilter<EncryptedMessage>): HttpResponse<List<String>> =
+	override suspend fun matchMessagesBy(filter: AbstractFilter<Message>): HttpResponse<List<String>> =
 		post {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "message", "match")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			setBody(filter)
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBodyWithSerializer(MessageAbstractFilterSerializer, filter)
 		}.wrap()
 
 	// endregion
@@ -387,7 +415,8 @@ class RawMessageApiImpl(
 				appendPathSegments("rest", "v2", "message", "topic")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(messageDto)
 		}.wrap()
 

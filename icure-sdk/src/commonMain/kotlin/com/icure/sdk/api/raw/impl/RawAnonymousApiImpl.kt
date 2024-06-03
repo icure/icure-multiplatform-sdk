@@ -10,10 +10,13 @@ import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.UserAndHealthcareParty
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
+import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
+import io.ktor.http.ContentType.Application
 import io.ktor.http.appendPathSegments
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
+import kotlinx.serialization.json.Json
 import kotlin.Boolean
 import kotlin.Int
 import kotlin.Long
@@ -30,7 +33,8 @@ class RawAnonymousApiImpl(
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
-) : BaseRawApi(httpClient, additionalHeaders, timeout), RawAnonymousApi {
+	json: Json,
+) : BaseRawApi(httpClient, additionalHeaders, timeout, json), RawAnonymousApi {
 	// region anonymous medicallocation endpoints
 
 	override suspend fun getPublicMedicalLocationsByGroupId(
@@ -48,6 +52,7 @@ class RawAnonymousApiImpl(
 				parameter("limit", limit)
 				parameter("ts", GMTDate().timestamp)
 			}
+			accept(Application.Json)
 		}.wrap()
 
 	// endregion
@@ -61,6 +66,7 @@ class RawAnonymousApiImpl(
 				appendPathSegments("rest", "v2", "aa", "hcparty", "inGroup", groupId)
 				parameter("ts", GMTDate().timestamp)
 			}
+			accept(Application.Json)
 		}.wrap()
 
 	// endregion
@@ -81,6 +87,7 @@ class RawAnonymousApiImpl(
 				parameter("endDate", endDate)
 				parameter("ts", GMTDate().timestamp)
 			}
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getAvailabilitiesByPeriodAndCalendarItemTypeId(
@@ -106,6 +113,7 @@ class RawAnonymousApiImpl(
 				parameter("limit", limit)
 				parameter("ts", GMTDate().timestamp)
 			}
+			accept(Application.Json)
 		}.wrap()
 
 	// endregion

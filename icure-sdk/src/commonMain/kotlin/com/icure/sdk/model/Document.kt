@@ -13,6 +13,7 @@ import com.icure.sdk.model.embed.DocumentType
 import com.icure.sdk.model.embed.Encryptable
 import com.icure.sdk.model.embed.SecurityMetadata
 import com.icure.sdk.model.specializations.Base64String
+import com.icure.sdk.serialization.ByteArraySerializer
 import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.ByteArray
@@ -140,7 +141,9 @@ data class DecryptedDocument(
 	override val secondaryAttachments: Map<String, DataAttachment> = emptyMap(),
 	@DefaultValue("emptyList()")
 	override val deletedAttachments: List<DeletedAttachment> = emptyList(),
+	@Serializable(with = ByteArraySerializer::class)
 	override val encryptedAttachment: ByteArray? = null,
+	@Serializable(with = ByteArraySerializer::class)
 	override val decryptedAttachment: ByteArray? = null,
 	@DefaultValue("emptySet()")
 	override val secretForeignKeys: Set<String> = emptySet(),
@@ -194,7 +197,9 @@ data class EncryptedDocument(
 	override val secondaryAttachments: Map<String, DataAttachment> = emptyMap(),
 	@DefaultValue("emptyList()")
 	override val deletedAttachments: List<DeletedAttachment> = emptyList(),
+	@Serializable(with = ByteArraySerializer::class)
 	override val encryptedAttachment: ByteArray? = null,
+	@Serializable(with = ByteArraySerializer::class)
 	override val decryptedAttachment: ByteArray? = null,
 	@DefaultValue("emptySet()")
 	override val secretForeignKeys: Set<String> = emptySet(),

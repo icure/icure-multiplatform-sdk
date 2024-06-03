@@ -14,13 +14,15 @@ import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
+import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
-import io.ktor.http.ContentType
+import io.ktor.http.ContentType.Application
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
+import kotlinx.serialization.json.Json
 import kotlin.Int
 import kotlin.String
 import kotlin.collections.List
@@ -37,7 +39,8 @@ class RawClassificationTemplateApiImpl(
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
-) : BaseRawApi(httpClient, additionalHeaders, timeout), RawClassificationTemplateApi {
+	json: Json,
+) : BaseRawApi(httpClient, additionalHeaders, timeout, json), RawClassificationTemplateApi {
 	override suspend fun getAccessControlKeysHeaderValues(): List<String>? =
 		accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithEncryptionMetadataTypeName.ClassificationTemplate)
 
@@ -50,7 +53,8 @@ class RawClassificationTemplateApiImpl(
 				appendPathSegments("rest", "v2", "classificationTemplate")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(c)
 		}.wrap()
 
@@ -62,6 +66,7 @@ class RawClassificationTemplateApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getClassificationTemplateByIds(ids: String): HttpResponse<List<ClassificationTemplate>> =
@@ -72,6 +77,7 @@ class RawClassificationTemplateApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun deleteClassificationTemplates(classificationTemplateIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
@@ -81,7 +87,8 @@ class RawClassificationTemplateApiImpl(
 				appendPathSegments("rest", "v2", "classificationTemplate", "delete", "batch")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(classificationTemplateIds)
 		}.wrap()
 
@@ -92,6 +99,7 @@ class RawClassificationTemplateApiImpl(
 				appendPathSegments("rest", "v2", "classificationTemplate", classificationTemplateId)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun modifyClassificationTemplate(
@@ -103,7 +111,8 @@ class RawClassificationTemplateApiImpl(
 				appendPathSegments("rest", "v2", "classificationTemplate")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(classificationTemplateDto)
 		}.wrap()
 
@@ -119,6 +128,7 @@ class RawClassificationTemplateApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	// endregion

@@ -3,6 +3,7 @@ package com.icure.sdk.model.filter.chain
 import com.icure.sdk.model.base.Identifiable
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.predicate.Predicate
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import kotlin.String
 
@@ -11,6 +12,7 @@ import kotlin.String
 
 @Serializable
 data class FilterChain<O : Identifiable<String>>(
+	@Contextual
 	public val filter: AbstractFilter<O>,
 	public val predicate: Predicate? = null,
 ) {

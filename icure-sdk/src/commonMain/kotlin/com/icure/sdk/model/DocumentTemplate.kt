@@ -6,6 +6,7 @@ import com.icure.sdk.model.base.ReportVersion
 import com.icure.sdk.model.base.StoredDocument
 import com.icure.sdk.model.embed.DocumentGroup
 import com.icure.sdk.model.embed.DocumentType
+import com.icure.sdk.serialization.ByteArraySerializer
 import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.ByteArray
@@ -31,6 +32,7 @@ data class DocumentTemplate(
 	override val codes: Set<CodeStub> = emptySet(),
 	override val endOfLife: Long? = null,
 	override val deletionDate: Long? = null,
+	@Serializable(with = ByteArraySerializer::class)
 	public val attachment: ByteArray? = null,
 	public val documentType: DocumentType? = null,
 	public val mainUti: String? = null,

@@ -3,15 +3,16 @@ package com.icure.sdk.api.flavoured
 import com.icure.sdk.api.raw.RawHealthElementApi
 import com.icure.sdk.crypto.EntityValidationService
 import com.icure.sdk.crypto.InternalCryptoServices
+import com.icure.sdk.crypto.entities.HealthElementShareOptions
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
-import com.icure.sdk.crypto.entities.SimpleDelegateShareOptions
+import com.icure.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.withTypeInfo
+import com.icure.sdk.model.HealthElement
 import com.icure.sdk.model.DecryptedHealthElement
 import com.icure.sdk.model.EncryptedHealthElement
-import com.icure.sdk.model.HealthElement
 import com.icure.sdk.model.IcureStub
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
@@ -26,6 +27,7 @@ import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.model.requests.RequestedPermission
+import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
@@ -48,7 +50,7 @@ private val ENCRYPTED_FIELDS_MANIFEST =
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface HealthcareElementBasicFlavourlessApi {
-	suspend fun matchHealthcareElementsBy(filter: AbstractFilter<EncryptedHealthElement>): List<String>
+	suspend fun matchHealthcareElementsBy(filter: AbstractFilter<HealthElement>): List<String>
 	suspend fun deleteHealthcareElement(entityId: String): DocIdentifier
 	suspend fun deleteHealthcareElements(entityIds: List<String>): List<DocIdentifier>
 	suspend fun findHealthcareElementsDelegationsStubsByHcPartyPatientForeignKeys(
@@ -64,7 +66,7 @@ interface HealthcareElementBasicFlavouredApi<E : HealthElement> : Subscribable<H
 	suspend fun getHealthcareElement(entityId: String): E
 	suspend fun getHealthcareElements(entityIds: List<String>): List<E>
 	suspend fun filterHealthcareElementsBy(
-		filterChain: FilterChain<EncryptedHealthElement>,
+		filterChain: FilterChain<HealthElement>,
 		startDocumentId: String?,
 		limit: Int?,
 	): PaginatedList<E>
@@ -80,6 +82,45 @@ interface HealthcareElementFlavouredApi<E : HealthElement> : HealthcareElementBa
 		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
 		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
 	): SimpleShareResult<E>
+
+	/**
+	 * Shares an existing access log with other data owners, allowing them to access the non-encrypted data of the access log and optionally also the
+	 * encrypted content, with read-only or read-write permissions.
+	 * @param healthElement the [HealthElement] to share.
+	 * @param delegates associates the id of data owners which will be granted access to the entity, to the following sharing options:
+	 * - shareEncryptionKey: specifies if the encryption key of the access log should be shared with the delegate, giving access to all encrypted
+	 * content of the entity, excluding other encrypted metadata (defaults to [ShareMetadataBehaviour.IfAvailable]).
+	 * - sharePatientId: specifies if the id of the patient that this access log refers to should be shared with the delegate. Normally this would
+	 * be the same as objectId, but it is encrypted separately from it allowing you to give access to the patient id without giving access to the other
+	 * encrypted data of the access log (defaults to [ShareMetadataBehaviour.IfAvailable]).
+	 * - requestedPermissions: the requested permissions for the delegate, defaults to [ShareMetadataBehaviour.IfAvailable].
+	 * @return the [SimpleShareResult] of the operation: the updated entity if the operation was successful or details of the error if
+	 * the operation failed.
+	 */
+	suspend fun tryShareWithMany(
+		healthElement: E,
+		delegates: Map<String, HealthElementShareOptions>
+	): SimpleShareResult<E>
+
+	/**
+	 * Shares an existing access log with other data owners, allowing them to access the non-encrypted data of the access log and optionally also the
+	 * encrypted content, with read-only or read-write permissions.
+	 * @param healthElement the [HealthElement] to share.
+	 * @param delegates associates the id of data owners which will be granted access to the entity, to the following sharing options:
+	 * - shareEncryptionKey: specifies if the encryption key of the access log should be shared with the delegate, giving access to all encrypted
+	 * content of the entity, excluding other encrypted metadata (defaults to [ShareMetadataBehaviour.IfAvailable]).
+	 * - sharePatientId: specifies if the id of the patient that this access log refers to should be shared with the delegate. Normally this would
+	 * be the same as objectId, but it is encrypted separately from it allowing you to give access to the patient id without giving access to the other
+	 * encrypted data of the access log (defaults to [ShareMetadataBehaviour.IfAvailable]).
+	 * - requestedPermissions: the requested permissions for the delegate, defaults to [ShareMetadataBehaviour.IfAvailable].
+	 * @return the updated entity.
+	 * @throws IllegalStateException if the operation was not successful.
+	 */
+	suspend fun shareWithMany(
+		healthElement: E,
+		delegates: Map<String, HealthElementShareOptions>
+	): E
+
 	suspend fun findHealthcareElementsByHcPartyPatient(
 		hcPartyId: String,
 		patient: Patient,
@@ -101,6 +142,10 @@ interface HealthcareElementApi : HealthcareElementBasicFlavourlessApi, Healthcar
 		delegates: Map<String, AccessLevel> = emptyMap(),
 		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent,
 	): DecryptedHealthElement
+	suspend fun getEncryptionKeysOf(healthElement: HealthElement): Set<HexString>
+	suspend fun hasWriteAccess(healthElement: HealthElement): Boolean
+	suspend fun decryptPatientIdOf(healthElement: HealthElement): Set<String>
+	suspend fun createDelegationDeAnonymizationMetadata(entity: HealthElement, delegates: Set<String>)
 
 	val encrypted: HealthcareElementFlavouredApi<EncryptedHealthElement>
 	val tryAndRecover: HealthcareElementFlavouredApi<HealthElement>
@@ -125,7 +170,7 @@ private abstract class AbstractHealthcareElementBasicFlavouredApi<E : HealthElem
 		rawApi.getHealthElements(ListOfIds(entityIds)).successBody().map { maybeDecrypt(it) }
 
 	override suspend fun filterHealthcareElementsBy(
-		filterChain: FilterChain<EncryptedHealthElement>,
+		filterChain: FilterChain<HealthElement>,
 		startDocumentId: String?,
 		limit: Int?,
 	): PaginatedList<E> =
@@ -190,9 +235,9 @@ private abstract class AbstractHealthcareElementFlavouredApi<E : HealthElement>(
 			healthcareElement.withTypeInfo(),
 			true,
 			mapOf(
-				delegateId to SimpleDelegateShareOptions(
+				delegateId to SimpleDelegateShareOptionsImpl(
 					shareSecretIds = null,
-					shareEncryptionKeys = shareEncryptionKeys,
+					shareEncryptionKey = shareEncryptionKeys,
 					shareOwningEntityIds = shareOwningEntityIds,
 					requestedPermissions = requestedPermission,
 				),
@@ -200,6 +245,19 @@ private abstract class AbstractHealthcareElementFlavouredApi<E : HealthElement>(
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
 		}
+
+	override suspend fun tryShareWithMany(healthElement: E, delegates: Map<String, HealthElementShareOptions>): SimpleShareResult<E> =
+		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
+			healthElement.withTypeInfo(),
+			true,
+			delegates
+		) {
+			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
+		}
+
+	override suspend fun shareWithMany(healthElement: E, delegates: Map<String, HealthElementShareOptions>): E =
+		tryShareWithMany(healthElement, delegates).updatedEntityOrThrow()
+
 	override suspend fun findHealthcareElementsByHcPartyPatient(
 		hcPartyId: String,
 		patient: Patient,
@@ -222,9 +280,8 @@ private abstract class AbstractHealthcareElementFlavouredApi<E : HealthElement>(
 
 @InternalIcureApi
 private class AbstractHealthcareElementBasicFlavourlessApi(val rawApi: RawHealthElementApi) : HealthcareElementBasicFlavourlessApi {
-	override suspend fun matchHealthcareElementsBy(filter: AbstractFilter<EncryptedHealthElement>) =
+	override suspend fun matchHealthcareElementsBy(filter: AbstractFilter<HealthElement>) =
 		rawApi.matchHealthElementsBy(filter).successBody()
-
 	override suspend fun deleteHealthcareElement(entityId: String) = rawApi.deleteHealthElement(entityId).successBody()
 	override suspend fun deleteHealthcareElements(entityIds: List<String>) = rawApi.deleteHealthElements(ListOfIds(entityIds)).successBody()
 	override suspend fun findHealthcareElementsDelegationsStubsByHcPartyPatientForeignKeys(
@@ -331,6 +388,16 @@ internal class HealthcareElementApiImpl(
 			initialiseSecretId = false,
 			autoDelegations = delegates  + user?.autoDelegationsFor(DelegationTag.MedicalInformation).orEmpty(),
 		).updatedEntity
+
+	override suspend fun getEncryptionKeysOf(healthElement: HealthElement): Set<HexString> = crypto.entity.encryptionKeysOf(healthElement.withTypeInfo(), null)
+
+	override suspend fun hasWriteAccess(healthElement: HealthElement): Boolean = crypto.entity.hasWriteAccess(healthElement.withTypeInfo())
+
+	override suspend fun decryptPatientIdOf(healthElement: HealthElement): Set<String> = crypto.entity.owningEntityIdsOf(healthElement.withTypeInfo(), null)
+
+	override suspend fun createDelegationDeAnonymizationMetadata(entity: HealthElement, delegates: Set<String>) {
+		crypto.delegationsDeAnonymization.createOrUpdateDeAnonymizationInfo(entity.withTypeInfo(), delegates)
+	}
 
 	private suspend fun encrypt(entity: DecryptedHealthElement) = crypto.entity.encryptEntity(
 		entity.withTypeInfo(),

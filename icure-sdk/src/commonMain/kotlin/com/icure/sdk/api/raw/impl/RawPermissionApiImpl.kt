@@ -9,11 +9,13 @@ import com.icure.sdk.auth.services.setAuthorizationWith
 import com.icure.sdk.model.security.Permission
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
+import io.ktor.client.request.accept
 import io.ktor.client.request.setBody
-import io.ktor.http.ContentType
+import io.ktor.http.ContentType.Application
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
+import kotlinx.serialization.json.Json
 import kotlin.String
 import kotlin.collections.List
 import kotlin.collections.Map
@@ -28,7 +30,8 @@ class RawPermissionApiImpl(
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
-) : BaseRawApi(httpClient, additionalHeaders, timeout), RawPermissionApi {
+	json: Json,
+) : BaseRawApi(httpClient, additionalHeaders, timeout, json), RawPermissionApi {
 	// region cloud endpoints
 
 	override suspend fun modifyUserPermissions(
@@ -41,7 +44,8 @@ class RawPermissionApiImpl(
 				appendPathSegments("rest", "v2", "permissions", userId)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(permissions)
 		}.wrap()
 
