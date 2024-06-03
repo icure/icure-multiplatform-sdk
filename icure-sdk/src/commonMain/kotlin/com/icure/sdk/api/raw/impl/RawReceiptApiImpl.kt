@@ -15,9 +15,10 @@ import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
+import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
-import io.ktor.http.ContentType
+import io.ktor.http.ContentType.Application
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
@@ -54,7 +55,8 @@ class RawReceiptApiImpl(
 				appendPathSegments("rest", "v2", "receipt")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(receiptDto)
 		}.wrap()
 
@@ -65,7 +67,8 @@ class RawReceiptApiImpl(
 				appendPathSegments("rest", "v2", "receipt", "delete", "batch")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(receiptIds)
 		}.wrap()
 
@@ -76,6 +79,7 @@ class RawReceiptApiImpl(
 				appendPathSegments("rest", "v2", "receipt", receiptId)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getReceiptAttachment(
@@ -89,6 +93,7 @@ class RawReceiptApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.OctetStream)
 		}.wrap()
 
 	override suspend fun setReceiptAttachment(
@@ -104,7 +109,8 @@ class RawReceiptApiImpl(
 				parameter("rev", rev)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.OctetStream)
+			contentType(Application.OctetStream)
+			accept(Application.Json)
 			setBody(ByteReadChannel(payload))
 		}.wrap()
 
@@ -116,6 +122,7 @@ class RawReceiptApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun listByReference(ref: String): HttpResponse<List<EncryptedReceipt>> =
@@ -126,6 +133,7 @@ class RawReceiptApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun modifyReceipt(receiptDto: EncryptedReceipt): HttpResponse<EncryptedReceipt> =
@@ -135,7 +143,8 @@ class RawReceiptApiImpl(
 				appendPathSegments("rest", "v2", "receipt")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(receiptDto)
 		}.wrap()
 
@@ -146,7 +155,8 @@ class RawReceiptApiImpl(
 				appendPathSegments("rest", "v2", "receipt", "bulkSharedMetadataUpdate")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(request)
 		}.wrap()
 

@@ -21,9 +21,10 @@ import com.icure.sdk.model.requests.topic.RemoveParticipant
 import com.icure.sdk.serialization.TopicAbstractFilterSerializer
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
+import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
-import io.ktor.http.ContentType
+import io.ktor.http.ContentType.Application
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
@@ -57,6 +58,7 @@ class RawTopicApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getTopics(topicIds: ListOfIds): HttpResponse<List<EncryptedTopic>> =
@@ -66,7 +68,8 @@ class RawTopicApiImpl(
 				appendPathSegments("rest", "v2", "topic", "byIds")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(topicIds)
 		}.wrap()
 
@@ -77,7 +80,8 @@ class RawTopicApiImpl(
 				appendPathSegments("rest", "v2", "topic")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(ft)
 		}.wrap()
 
@@ -88,7 +92,8 @@ class RawTopicApiImpl(
 				appendPathSegments("rest", "v2", "topic")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(topicDto)
 		}.wrap()
 
@@ -99,7 +104,8 @@ class RawTopicApiImpl(
 				appendPathSegments("rest", "v2", "topic", "delete", "batch")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(topicIds)
 		}.wrap()
 
@@ -110,6 +116,7 @@ class RawTopicApiImpl(
 				appendPathSegments("rest", "v2", "topic", topicId)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<EncryptedTopic>>> =
@@ -119,7 +126,8 @@ class RawTopicApiImpl(
 				appendPathSegments("rest", "v2", "topic", "bulkSharedMetadataUpdate")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(request)
 		}.wrap()
 
@@ -136,7 +144,8 @@ class RawTopicApiImpl(
 				parameter("limit", limit)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(filterChain)
 		}.wrap()
 
@@ -147,7 +156,8 @@ class RawTopicApiImpl(
 				appendPathSegments("rest", "v2", "topic", "match")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBodyWithSerializer(TopicAbstractFilterSerializer, filter)
 		}.wrap()
 
@@ -161,7 +171,8 @@ class RawTopicApiImpl(
 				appendPathSegments("rest", "v2", "topic", topicId, "addParticipant")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(request)
 		}.wrap()
 
@@ -175,7 +186,8 @@ class RawTopicApiImpl(
 				appendPathSegments("rest", "v2", "topic", topicId, "removeParticipant")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(request)
 		}.wrap()
 

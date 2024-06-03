@@ -11,8 +11,9 @@ import com.icure.sdk.model.ExchangeDataMapCreationBatch
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
+import io.ktor.client.request.accept
 import io.ktor.client.request.setBody
-import io.ktor.http.ContentType
+import io.ktor.http.ContentType.Application
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
@@ -42,7 +43,8 @@ class RawExchangeDataMapApiImpl(
 				appendPathSegments("rest", "v2", "exchangedatamap", "batch")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(batch)
 		}.wrap()
 
@@ -53,7 +55,8 @@ class RawExchangeDataMapApiImpl(
 				appendPathSegments("rest", "v2", "exchangedatamap", "batch")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(ids)
 		}.wrap()
 

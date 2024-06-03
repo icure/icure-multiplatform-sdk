@@ -12,9 +12,10 @@ import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
+import io.ktor.client.request.accept
 import io.ktor.client.request.`header`
 import io.ktor.client.request.setBody
-import io.ktor.http.ContentType
+import io.ktor.http.ContentType.Application
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
@@ -47,7 +48,8 @@ class RawSecureDelegationKeyMapApiImpl(
 				appendPathSegments("rest", "v2", "securedelegationkeymap")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(secureDelegationKeyMap)
 			accessControlKeysHeaderValues.forEach {
 				header(ACCESS_CONTROL_KEYS_HEADER, it)
@@ -64,7 +66,8 @@ class RawSecureDelegationKeyMapApiImpl(
 				appendPathSegments("rest", "v2", "securedelegationkeymap", "bydelegationkeys")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(delegationKeys)
 			accessControlKeysHeaderValues.forEach {
 				header(ACCESS_CONTROL_KEYS_HEADER, it)
@@ -81,7 +84,8 @@ class RawSecureDelegationKeyMapApiImpl(
 				appendPathSegments("rest", "v2", "securedelegationkeymap", "bulkSharedMetadataUpdate")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(request)
 			accessControlKeysHeaderValues.forEach {
 				header(ACCESS_CONTROL_KEYS_HEADER, it)

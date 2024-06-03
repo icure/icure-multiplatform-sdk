@@ -17,9 +17,10 @@ import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
+import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
-import io.ktor.http.ContentType
+import io.ktor.http.ContentType.Application
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
@@ -64,6 +65,7 @@ class RawCalendarItemApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun createCalendarItem(calendarItemDto: EncryptedCalendarItem): HttpResponse<EncryptedCalendarItem> =
@@ -73,7 +75,8 @@ class RawCalendarItemApiImpl(
 				appendPathSegments("rest", "v2", "calendarItem")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(calendarItemDto)
 		}.wrap()
 
@@ -84,7 +87,8 @@ class RawCalendarItemApiImpl(
 				appendPathSegments("rest", "v2", "calendarItem", "delete", "batch")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(calendarItemIds)
 		}.wrap()
 
@@ -95,6 +99,7 @@ class RawCalendarItemApiImpl(
 				appendPathSegments("rest", "v2", "calendarItem", calendarItemId)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun deleteCalendarItemsWithPost(calendarItemIds: String): HttpResponse<List<DocIdentifier>> =
@@ -104,7 +109,8 @@ class RawCalendarItemApiImpl(
 				appendPathSegments("rest", "v2", "calendarItem", calendarItemIds)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getCalendarItem(calendarItemId: String): HttpResponse<EncryptedCalendarItem> =
@@ -115,6 +121,7 @@ class RawCalendarItemApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun modifyCalendarItem(calendarItemDto: EncryptedCalendarItem): HttpResponse<EncryptedCalendarItem> =
@@ -124,7 +131,8 @@ class RawCalendarItemApiImpl(
 				appendPathSegments("rest", "v2", "calendarItem")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(calendarItemDto)
 		}.wrap()
 
@@ -142,7 +150,8 @@ class RawCalendarItemApiImpl(
 				parameter("hcPartyId", hcPartyId)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getCalendarsByPeriodAndAgendaId(
@@ -159,7 +168,8 @@ class RawCalendarItemApiImpl(
 				parameter("agendaId", agendaId)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getCalendarItemsWithIds(calendarItemIds: ListOfIds): HttpResponse<List<EncryptedCalendarItem>> =
@@ -169,7 +179,8 @@ class RawCalendarItemApiImpl(
 				appendPathSegments("rest", "v2", "calendarItem", "byIds")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(calendarItemIds)
 		}.wrap()
 
@@ -186,6 +197,7 @@ class RawCalendarItemApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun listCalendarItemsByHCPartyPatientForeignKeys(
@@ -199,7 +211,8 @@ class RawCalendarItemApiImpl(
 				parameter("hcPartyId", hcPartyId)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(secretPatientKeys)
 		}.wrap()
 
@@ -221,6 +234,7 @@ class RawCalendarItemApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun findCalendarItemsByHCPartyPatientForeignKeys(
@@ -239,7 +253,8 @@ class RawCalendarItemApiImpl(
 				parameter("startDocumentId", startDocumentId)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(secretPatientKeys)
 		}.wrap()
 
@@ -260,7 +275,8 @@ class RawCalendarItemApiImpl(
 				parameter("descending", descending)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(secretPatientKeys)
 		}.wrap()
 
@@ -275,7 +291,8 @@ class RawCalendarItemApiImpl(
 				parameter("hcPartyId", hcPartyId)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(secretPatientKeys)
 		}.wrap()
 
@@ -296,6 +313,7 @@ class RawCalendarItemApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun bulkShare(
@@ -307,7 +325,8 @@ class RawCalendarItemApiImpl(
 				appendPathSegments("rest", "v2", "calendarItem", "bulkSharedMetadataUpdate")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(request)
 		}.wrap()
 
@@ -318,7 +337,8 @@ class RawCalendarItemApiImpl(
 				appendPathSegments("rest", "v2", "calendarItem", "bulkSharedMetadataUpdateMinimal")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(request)
 		}.wrap()
 

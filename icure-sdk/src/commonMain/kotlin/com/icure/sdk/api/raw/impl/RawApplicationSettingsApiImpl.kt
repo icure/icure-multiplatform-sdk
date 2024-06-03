@@ -9,9 +9,10 @@ import com.icure.sdk.auth.services.setAuthorizationWith
 import com.icure.sdk.model.ApplicationSettings
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
+import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
-import io.ktor.http.ContentType
+import io.ktor.http.ContentType.Application
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
@@ -43,6 +44,7 @@ class RawApplicationSettingsApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun createApplicationSettings(applicationSettingsDto: ApplicationSettings): HttpResponse<ApplicationSettings> =
@@ -52,7 +54,8 @@ class RawApplicationSettingsApiImpl(
 				appendPathSegments("rest", "v2", "appsettings")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(applicationSettingsDto)
 		}.wrap()
 
@@ -63,7 +66,8 @@ class RawApplicationSettingsApiImpl(
 				appendPathSegments("rest", "v2", "appsettings")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(applicationSettingsDto)
 		}.wrap()
 

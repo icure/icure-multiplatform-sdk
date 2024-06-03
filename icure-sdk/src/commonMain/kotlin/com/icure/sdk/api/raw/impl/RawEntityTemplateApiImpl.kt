@@ -11,9 +11,10 @@ import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
+import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
-import io.ktor.http.ContentType
+import io.ktor.http.ContentType.Application
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
@@ -53,6 +54,7 @@ class RawEntityTemplateApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun listAllEntityTemplatesBy(
@@ -69,6 +71,7 @@ class RawEntityTemplateApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun listEntityTemplatesByKeyword(
@@ -85,6 +88,7 @@ class RawEntityTemplateApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun findAllEntityTemplatesByKeyword(
@@ -100,6 +104,7 @@ class RawEntityTemplateApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun createEntityTemplate(c: EntityTemplate): HttpResponse<EntityTemplate> =
@@ -109,7 +114,8 @@ class RawEntityTemplateApiImpl(
 				appendPathSegments("rest", "v2", "entitytemplate")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(c)
 		}.wrap()
 
@@ -120,7 +126,8 @@ class RawEntityTemplateApiImpl(
 				appendPathSegments("rest", "v2", "entitytemplate", "byIds")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(entityTemplateIds)
 		}.wrap()
 
@@ -132,6 +139,7 @@ class RawEntityTemplateApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun modifyEntityTemplate(entityTemplateDto: EntityTemplate): HttpResponse<EntityTemplate> =
@@ -141,7 +149,8 @@ class RawEntityTemplateApiImpl(
 				appendPathSegments("rest", "v2", "entitytemplate")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(entityTemplateDto)
 		}.wrap()
 
@@ -152,7 +161,8 @@ class RawEntityTemplateApiImpl(
 				appendPathSegments("rest", "v2", "entitytemplate", "batch")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(entityTemplateDtos)
 		}.wrap()
 
@@ -163,7 +173,8 @@ class RawEntityTemplateApiImpl(
 				appendPathSegments("rest", "v2", "entitytemplate", "batch")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(entityTemplateDtos)
 		}.wrap()
 
@@ -174,7 +185,8 @@ class RawEntityTemplateApiImpl(
 				appendPathSegments("rest", "v2", "entitytemplate", "delete", "batch")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(entityTemplateIds)
 		}.wrap()
 

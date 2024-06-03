@@ -17,9 +17,10 @@ import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
+import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
-import io.ktor.http.ContentType
+import io.ktor.http.ContentType.Application
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
@@ -60,6 +61,7 @@ class RawFormApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getForms(formIds: ListOfIds): HttpResponse<List<EncryptedForm>> =
@@ -69,7 +71,8 @@ class RawFormApiImpl(
 				appendPathSegments("rest", "v2", "form", "byIds")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(formIds)
 		}.wrap()
 
@@ -81,6 +84,7 @@ class RawFormApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getFormsByLogicalUuid(logicalUuid: String): HttpResponse<List<EncryptedForm>> =
@@ -91,6 +95,7 @@ class RawFormApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getFormsByUniqueId(uniqueId: String): HttpResponse<List<EncryptedForm>> =
@@ -101,6 +106,7 @@ class RawFormApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getFormByUniqueId(uniqueId: String): HttpResponse<EncryptedForm> =
@@ -111,6 +117,7 @@ class RawFormApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getChildrenForms(
@@ -124,6 +131,7 @@ class RawFormApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun createForm(ft: EncryptedForm): HttpResponse<EncryptedForm> =
@@ -133,7 +141,8 @@ class RawFormApiImpl(
 				appendPathSegments("rest", "v2", "form")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(ft)
 		}.wrap()
 
@@ -144,7 +153,8 @@ class RawFormApiImpl(
 				appendPathSegments("rest", "v2", "form")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(formDto)
 		}.wrap()
 
@@ -155,7 +165,8 @@ class RawFormApiImpl(
 				appendPathSegments("rest", "v2", "form", "delete", "batch")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(formIds)
 		}.wrap()
 
@@ -166,6 +177,7 @@ class RawFormApiImpl(
 				appendPathSegments("rest", "v2", "form", formId)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun modifyForms(formDtos: List<EncryptedForm>): HttpResponse<List<EncryptedForm>> =
@@ -175,7 +187,8 @@ class RawFormApiImpl(
 				appendPathSegments("rest", "v2", "form", "batch")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(formDtos)
 		}.wrap()
 
@@ -186,7 +199,8 @@ class RawFormApiImpl(
 				appendPathSegments("rest", "v2", "form", "batch")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(formDtos)
 		}.wrap()
 
@@ -209,6 +223,7 @@ class RawFormApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun findFormsByHCPartyPatientForeignKeys(
@@ -228,7 +243,8 @@ class RawFormApiImpl(
 				parameter("formTemplateId", formTemplateId)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(secretPatientKeys)
 		}.wrap()
 
@@ -249,7 +265,8 @@ class RawFormApiImpl(
 				parameter("descending", descending)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(secretPatientKeys)
 		}.wrap()
 
@@ -266,6 +283,7 @@ class RawFormApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun findFormsDelegationsStubsByHCPartyAndPatientForeignKeys(
@@ -279,7 +297,8 @@ class RawFormApiImpl(
 				parameter("hcPartyId", hcPartyId)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(secretPatientKeys)
 		}.wrap()
 
@@ -295,6 +314,7 @@ class RawFormApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getFormTemplatesByGuid(
@@ -310,6 +330,7 @@ class RawFormApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun listFormTemplatesBySpeciality(
@@ -326,6 +347,7 @@ class RawFormApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getFormTemplates(
@@ -341,6 +363,7 @@ class RawFormApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun createFormTemplate(ft: FormTemplate): HttpResponse<FormTemplate> =
@@ -350,7 +373,8 @@ class RawFormApiImpl(
 				appendPathSegments("rest", "v2", "form", "template")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(ft)
 		}.wrap()
 
@@ -361,6 +385,7 @@ class RawFormApiImpl(
 				appendPathSegments("rest", "v2", "form", "template", formTemplateId)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun updateFormTemplate(
@@ -373,7 +398,8 @@ class RawFormApiImpl(
 				appendPathSegments("rest", "v2", "form", "template", formTemplateId)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(ft)
 		}.wrap()
 
@@ -387,7 +413,8 @@ class RawFormApiImpl(
 				appendPathSegments("rest", "v2", "form", "template", formTemplateId, "attachment")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.OctetStream)
+			contentType(Application.OctetStream)
+			accept(Application.Json)
 			setBody(ByteReadChannel(payload))
 		}.wrap()
 
@@ -398,7 +425,8 @@ class RawFormApiImpl(
 				appendPathSegments("rest", "v2", "form", "bulkSharedMetadataUpdate")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(request)
 		}.wrap()
 
@@ -409,7 +437,8 @@ class RawFormApiImpl(
 				appendPathSegments("rest", "v2", "form", "bulkSharedMetadataUpdateMinimal")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(request)
 		}.wrap()
 

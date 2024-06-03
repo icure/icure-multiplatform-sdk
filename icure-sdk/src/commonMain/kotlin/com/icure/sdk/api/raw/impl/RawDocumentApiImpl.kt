@@ -15,10 +15,11 @@ import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
+import io.ktor.client.request.accept
 import io.ktor.client.request.`header`
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
-import io.ktor.http.ContentType
+import io.ktor.http.ContentType.Application
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
@@ -63,7 +64,8 @@ class RawDocumentApiImpl(
 				parameter("strict", strict)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(documentDto)
 		}.wrap()
 
@@ -74,7 +76,8 @@ class RawDocumentApiImpl(
 				appendPathSegments("rest", "v2", "document", "delete", "batch")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(documentIds)
 		}.wrap()
 
@@ -85,6 +88,7 @@ class RawDocumentApiImpl(
 				appendPathSegments("rest", "v2", "document", documentId)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getMainAttachment(
@@ -99,6 +103,7 @@ class RawDocumentApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.OctetStream)
 		}.wrap()
 
 	override suspend fun deleteAttachment(
@@ -112,6 +117,7 @@ class RawDocumentApiImpl(
 				parameter("rev", rev)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun setDocumentAttachment(
@@ -131,7 +137,8 @@ class RawDocumentApiImpl(
 				parameter("encrypted", encrypted)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.OctetStream)
+			contentType(Application.OctetStream)
+			accept(Application.Json)
 			header("Content-Length", lengthHeader)
 			setBody(ByteReadChannel(payload))
 		}.wrap()
@@ -144,6 +151,7 @@ class RawDocumentApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getDocumentByExternalUuid(externalUuid: String): HttpResponse<EncryptedDocument> =
@@ -154,6 +162,7 @@ class RawDocumentApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getDocumentsByExternalUuid(externalUuid: String): HttpResponse<List<EncryptedDocument>> =
@@ -164,6 +173,7 @@ class RawDocumentApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getDocuments(documentIds: ListOfIds): HttpResponse<List<EncryptedDocument>> =
@@ -173,7 +183,8 @@ class RawDocumentApiImpl(
 				appendPathSegments("rest", "v2", "document", "byIds")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(documentIds)
 		}.wrap()
 
@@ -184,7 +195,8 @@ class RawDocumentApiImpl(
 				appendPathSegments("rest", "v2", "document")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(documentDto)
 		}.wrap()
 
@@ -195,7 +207,8 @@ class RawDocumentApiImpl(
 				appendPathSegments("rest", "v2", "document", "batch")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(documentDtos)
 		}.wrap()
 
@@ -212,7 +225,8 @@ class RawDocumentApiImpl(
 				parameter("documentTypeCode", documentTypeCode)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(secretMessageKeys)
 		}.wrap()
 
@@ -233,7 +247,8 @@ class RawDocumentApiImpl(
 				parameter("descending", descending)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(secretPatientKeys)
 		}.wrap()
 
@@ -246,6 +261,7 @@ class RawDocumentApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun setSecondaryAttachment(
@@ -266,7 +282,8 @@ class RawDocumentApiImpl(
 				parameter("encrypted", encrypted)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.OctetStream)
+			contentType(Application.OctetStream)
+			accept(Application.Json)
 			header("Content-Length", lengthHeader)
 			setBody(ByteReadChannel(payload))
 		}.wrap()
@@ -284,6 +301,7 @@ class RawDocumentApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun deleteSecondaryAttachment(
@@ -298,6 +316,7 @@ class RawDocumentApiImpl(
 				parameter("rev", rev)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<EncryptedDocument>>> =
@@ -307,7 +326,8 @@ class RawDocumentApiImpl(
 				appendPathSegments("rest", "v2", "document", "bulkSharedMetadataUpdate")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(request)
 		}.wrap()
 
@@ -318,7 +338,8 @@ class RawDocumentApiImpl(
 				appendPathSegments("rest", "v2", "document", "bulkSharedMetadataUpdateMinimal")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(request)
 		}.wrap()
 

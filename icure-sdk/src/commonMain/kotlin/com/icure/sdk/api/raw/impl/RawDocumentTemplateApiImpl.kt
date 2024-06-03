@@ -12,9 +12,10 @@ import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
+import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
-import io.ktor.http.ContentType
+import io.ktor.http.ContentType.Application
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
@@ -50,6 +51,7 @@ class RawDocumentTemplateApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun deleteDocumentTemplates(documentTemplateIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
@@ -59,7 +61,8 @@ class RawDocumentTemplateApiImpl(
 				appendPathSegments("rest", "v2", "doctemplate", "delete", "batch")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(documentTemplateIds)
 		}.wrap()
 
@@ -75,6 +78,7 @@ class RawDocumentTemplateApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun listDocumentTemplatesByDocumentType(
@@ -89,6 +93,7 @@ class RawDocumentTemplateApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun listDocumentTemplatesByDocumentTypeForCurrentUser(
@@ -103,6 +108,7 @@ class RawDocumentTemplateApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun listDocumentTemplates(loadAttachment: Boolean?): HttpResponse<List<DocumentTemplate>> =
@@ -114,6 +120,7 @@ class RawDocumentTemplateApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun findAllDocumentTemplates(
@@ -131,6 +138,7 @@ class RawDocumentTemplateApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun createDocumentTemplate(ft: DocumentTemplate): HttpResponse<DocumentTemplate> =
@@ -140,7 +148,8 @@ class RawDocumentTemplateApiImpl(
 				appendPathSegments("rest", "v2", "doctemplate")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(ft)
 		}.wrap()
 
@@ -154,7 +163,8 @@ class RawDocumentTemplateApiImpl(
 				appendPathSegments("rest", "v2", "doctemplate", documentTemplateId)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(ft)
 		}.wrap()
 
@@ -169,6 +179,7 @@ class RawDocumentTemplateApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.OctetStream)
 		}.wrap()
 
 	override suspend fun getAttachmentText(
@@ -182,6 +193,7 @@ class RawDocumentTemplateApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
+			accept(Application.OctetStream)
 		}.wrap()
 
 	override suspend fun setDocumentTemplateAttachment(
@@ -194,7 +206,8 @@ class RawDocumentTemplateApiImpl(
 				appendPathSegments("rest", "v2", "doctemplate", documentTemplateId, "attachment")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.OctetStream)
+			contentType(Application.OctetStream)
+			accept(Application.Json)
 			setBody(ByteReadChannel(payload))
 		}.wrap()
 
