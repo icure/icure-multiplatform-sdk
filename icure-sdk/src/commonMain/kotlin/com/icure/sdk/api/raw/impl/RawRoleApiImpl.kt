@@ -11,6 +11,7 @@ import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
 import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
+import io.ktor.http.ContentType.Application.Json
 import io.ktor.http.appendPathSegments
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate

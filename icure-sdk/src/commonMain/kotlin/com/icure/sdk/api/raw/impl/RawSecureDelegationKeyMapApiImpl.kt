@@ -15,9 +15,9 @@ import io.ktor.client.HttpClient
 import io.ktor.client.request.accept
 import io.ktor.client.request.`header`
 import io.ktor.client.request.setBody
-import io.ktor.http.ContentType
+import io.ktor.http.ContentType.Application.Json
+import io.ktor.http.ContentType.contentType
 import io.ktor.http.appendPathSegments
-import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import kotlinx.serialization.json.Json
 import kotlin.String
