@@ -14,7 +14,8 @@ import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
 import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
-import io.ktor.http.ContentType
+import io.ktor.http.ContentType.Application
+import io.ktor.http.ContentType.Text
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
@@ -48,7 +49,7 @@ class RawICureApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
-			accept(ContentType.Text.Plain)
+			accept(Text.Plain)
 		}.wrap()
 
 	override suspend fun isReady(): HttpResponse<String> =
@@ -59,7 +60,7 @@ class RawICureApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
-			accept(ContentType.Text.Plain)
+			accept(Text.Plain)
 		}.wrap()
 
 	override suspend fun getProcessInfo(): HttpResponse<String> =
@@ -70,7 +71,7 @@ class RawICureApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
-			accept(ContentType.Text.Plain)
+			accept(Text.Plain)
 		}.wrap()
 
 	override suspend fun getIndexingInfo(): HttpResponse<IndexingInfo> =
@@ -81,7 +82,7 @@ class RawICureApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
-			accept(ContentType.Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getReplicationInfo(): HttpResponse<ReplicationInfo> =
@@ -92,7 +93,7 @@ class RawICureApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
-			accept(ContentType.Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun updateDesignDoc(
@@ -106,8 +107,8 @@ class RawICureApiImpl(
 				parameter("warmup", warmup)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun resolvePatientsConflicts(limit: Int?): HttpResponse<List<IdWithRev>> =
@@ -118,8 +119,8 @@ class RawICureApiImpl(
 				parameter("limit", limit)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun resolveContactsConflicts(limit: Int?): HttpResponse<List<IdWithRev>> =
@@ -130,8 +131,8 @@ class RawICureApiImpl(
 				parameter("limit", limit)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun resolveFormsConflicts(limit: Int?): HttpResponse<List<IdWithRev>> =
@@ -142,8 +143,8 @@ class RawICureApiImpl(
 				parameter("limit", limit)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun resolveHealthElementsConflicts(limit: Int?): HttpResponse<List<IdWithRev>> =
@@ -154,8 +155,8 @@ class RawICureApiImpl(
 				parameter("limit", limit)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun resolveInvoicesConflicts(limit: Int?): HttpResponse<List<IdWithRev>> =
@@ -166,8 +167,8 @@ class RawICureApiImpl(
 				parameter("limit", limit)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun resolveMessagesConflicts(limit: Int?): HttpResponse<List<IdWithRev>> =
@@ -178,8 +179,8 @@ class RawICureApiImpl(
 				parameter("limit", limit)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun resolveDocumentsConflicts(
@@ -194,8 +195,8 @@ class RawICureApiImpl(
 				parameter("limit", limit)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	// endregion
@@ -210,7 +211,7 @@ class RawICureApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
-			accept(ContentType.Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getReplicatorInfo(id: String): HttpResponse<ReplicatorDocument> =
@@ -221,7 +222,7 @@ class RawICureApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
-			accept(ContentType.Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun evictAllFromMap(mapName: String): HttpResponse<String> =
@@ -231,7 +232,7 @@ class RawICureApiImpl(
 				appendPathSegments("rest", "v2", "icure", "hzc", mapName)
 			}
 			setAuthorizationWith(authService)
-			accept(ContentType.Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	// endregion

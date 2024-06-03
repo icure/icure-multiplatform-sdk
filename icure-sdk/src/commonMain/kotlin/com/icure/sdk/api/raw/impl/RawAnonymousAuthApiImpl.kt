@@ -12,7 +12,7 @@ import io.ktor.client.request.accept
 import io.ktor.client.request.`header`
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
-import io.ktor.http.ContentType
+import io.ktor.http.ContentType.Application
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
@@ -47,8 +47,8 @@ class RawAnonymousAuthApiImpl(
 				parameter("duration", duration)
 				parameter("groupId", groupId)
 			}
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(loginCredentials)
 		}.wrap()
 
@@ -62,8 +62,8 @@ class RawAnonymousAuthApiImpl(
 				appendPathSegments("rest", "v2", "auth", "refresh")
 				parameter("totp", totp)
 			}
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			header("Refresh-Token", refreshToken)
 		}.wrap()
 
@@ -73,8 +73,8 @@ class RawAnonymousAuthApiImpl(
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "auth", "check")
 			}
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(loginCredentials)
 		}.wrap()
 
@@ -91,8 +91,8 @@ class RawAnonymousAuthApiImpl(
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "auth", "switch", groupId)
 			}
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			header("Refresh-Token", refreshToken)
 		}.wrap()
 
@@ -106,8 +106,8 @@ class RawAnonymousAuthApiImpl(
 				appendPathSegments("rest", "v2", "auth", "login", "google")
 				parameter("groupId", groupId)
 			}
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			header("token", token)
 		}.wrap()
 
@@ -121,8 +121,8 @@ class RawAnonymousAuthApiImpl(
 				appendPathSegments("rest", "v2", "auth", "login", "be.fas")
 				parameter("groupId", groupId)
 			}
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			header("token", token)
 		}.wrap()
 
@@ -132,8 +132,8 @@ class RawAnonymousAuthApiImpl(
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "auth", "invalidate")
 			}
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			header("Refresh-Token", refreshToken)
 		}.wrap()
 

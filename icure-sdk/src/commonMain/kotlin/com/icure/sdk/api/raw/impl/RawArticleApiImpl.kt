@@ -19,7 +19,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
-import io.ktor.http.ContentType
+import io.ktor.http.ContentType.Application
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
@@ -55,8 +55,8 @@ class RawArticleApiImpl(
 				appendPathSegments("rest", "v2", "article")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(articleDto)
 		}.wrap()
 
@@ -67,8 +67,8 @@ class RawArticleApiImpl(
 				appendPathSegments("rest", "v2", "article", "delete", "batch")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(articleIds)
 		}.wrap()
 
@@ -79,7 +79,7 @@ class RawArticleApiImpl(
 				appendPathSegments("rest", "v2", "article", articleId)
 			}
 			setAuthorizationWith(authService)
-			accept(ContentType.Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getArticle(articleId: String): HttpResponse<EncryptedArticle> =
@@ -90,7 +90,7 @@ class RawArticleApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
-			accept(ContentType.Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun modifyArticle(articleDto: EncryptedArticle): HttpResponse<EncryptedArticle> =
@@ -100,8 +100,8 @@ class RawArticleApiImpl(
 				appendPathSegments("rest", "v2", "article")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(articleDto)
 		}.wrap()
 
@@ -118,7 +118,7 @@ class RawArticleApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
-			accept(ContentType.Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<EncryptedArticle>>> =
@@ -128,8 +128,8 @@ class RawArticleApiImpl(
 				appendPathSegments("rest", "v2", "article", "bulkSharedMetadataUpdate")
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.Json)
-			accept(ContentType.Application.Json)
+			contentType(Application.Json)
+			accept(Application.Json)
 			setBody(request)
 		}.wrap()
 

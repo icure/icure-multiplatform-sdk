@@ -12,7 +12,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
-import io.ktor.http.ContentType
+import io.ktor.http.ContentType.Application
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
@@ -57,8 +57,8 @@ class RawObjectStorageApiImpl(
 				parameter("startByte", startByte)
 			}
 			setAuthorizationWith(authService)
-			contentType(ContentType.Application.OctetStream)
-			accept(ContentType.Application.Json)
+			contentType(Application.OctetStream)
+			accept(Application.Json)
 			setBody(ByteReadChannel(content))
 		}.wrap()
 
@@ -74,7 +74,7 @@ class RawObjectStorageApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
-			accept(ContentType.Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getAttachmentInfo(
@@ -89,7 +89,7 @@ class RawObjectStorageApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
-			accept(ContentType.Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	// endregion

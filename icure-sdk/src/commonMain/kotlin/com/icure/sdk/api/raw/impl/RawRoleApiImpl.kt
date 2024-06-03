@@ -11,6 +11,7 @@ import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
 import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
+import io.ktor.http.ContentType.Application
 import io.ktor.http.appendPathSegments
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
@@ -41,7 +42,7 @@ class RawRoleApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			setAuthorizationWith(authService)
-			accept(ContentType.Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	// endregion
