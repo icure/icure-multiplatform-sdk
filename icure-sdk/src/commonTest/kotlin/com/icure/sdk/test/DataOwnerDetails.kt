@@ -1,5 +1,6 @@
 package com.icure.sdk.test
 
+import baseUrl
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.crypto.RsaAlgorithm
 import com.icure.kryptom.crypto.RsaKeypair
