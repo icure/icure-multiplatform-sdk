@@ -1,5 +1,6 @@
 package com.icure.sdk.api
 
+import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.sdk.model.DecryptedDocument
 import com.icure.sdk.model.DecryptedMessage
 import com.icure.sdk.model.Message
@@ -28,15 +29,15 @@ class ByteArrayPayloadTest : StringSpec({
 		)
 		val createdDocument = api.document.createDocument(newDocument)
 
-		val payload = "Some text document that is actually a simple string"
-		val uti = "public.plain-text"
+		val payload = defaultCryptoService.strongRandom.randomBytes(2000)
+		val uti = "com.microsoft.windows-executable"
 
 		val updatedDocument = api.document.setRawMainAttachment(
 			documentId = createdDocument.id,
 			rev = createdDocument.rev.shouldNotBeNull(),
 			utis = listOf(uti),
 			blobType = uti,
-			attachment = payload.toByteArray(),
+			attachment = payload,
 			encrypted = false
 		)
 
@@ -45,7 +46,7 @@ class ByteArrayPayloadTest : StringSpec({
 			attachmentId = updatedDocument.attachmentId.shouldNotBeNull()
 		)
 
-		String(retrievedRawPayload) shouldBe payload
+		retrievedRawPayload.toList() shouldBe payload.toList()
 	}
 
 })
