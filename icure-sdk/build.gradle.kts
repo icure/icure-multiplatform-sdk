@@ -293,7 +293,8 @@ tasks.register("prepareDistributionPackage") {
 			from = ktJsCompiledPackage.resolve("ktor-ktor-utils.mjs"),
 			into = tsPackage.resolve("ktor-ktor-utils.mjs"),
 			replacing = listOf(
-				Replacement("eval('require')('crypto')", with = "crypto")
+				Replacement("eval('require')('crypto')", with = "crypto"),
+				Replacement(".randomFillSync(", with = ".getRandomValues(")
 			)
 		)
 	}
