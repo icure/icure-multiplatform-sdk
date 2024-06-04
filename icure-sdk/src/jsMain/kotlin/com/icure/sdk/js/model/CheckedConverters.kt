@@ -19,6 +19,7 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.decodeFromDynamic
 import kotlinx.serialization.json.encodeToDynamic
 import kotlin.math.floor
+import kotlin.time.Duration.Companion.milliseconds
 
 /**
  * Contains functions to convert from standard Kotlin to JavaScript types in a "checked" way.
@@ -286,4 +287,12 @@ object CheckedConverters {
 			),
 			EntityWithEncryptionMetadataTypeName.valueOf(obj.type)
 		)
+
+	fun durationToNumber(duration: kotlin.time.Duration): Double {
+		return longToNumber(duration.inWholeMilliseconds)
+	}
+
+	fun numberToDuration(number: Double, description: String): kotlin.time.Duration {
+		return numberToLong(number, description).milliseconds
+	}
 }
