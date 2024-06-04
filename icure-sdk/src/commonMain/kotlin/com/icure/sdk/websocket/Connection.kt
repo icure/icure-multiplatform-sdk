@@ -18,6 +18,7 @@ import kotlinx.serialization.KSerializer
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
+// TODO when AutoCloseable comes out of experimental for kotlin multiplatform it could be nice to make this AutoCloseable (allows to use `use`)
 interface Connection {
 
 	/**

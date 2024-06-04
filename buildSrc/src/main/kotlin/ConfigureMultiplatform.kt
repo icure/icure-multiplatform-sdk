@@ -25,7 +25,7 @@ fun Project.configureMultiplatform(
 			testTask {
 				useKarma {
 					useChromeHeadless()
-//					useFirefoxHeadless()
+					useFirefoxHeadless()
 				}
 			}
 		}

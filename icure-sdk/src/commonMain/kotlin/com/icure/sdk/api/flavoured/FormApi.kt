@@ -1,9 +1,8 @@
 package com.icure.sdk.api.flavoured
 
+import com.icure.sdk.api.ApiConfiguration
+import com.icure.sdk.api.BasicApiConfiguration
 import com.icure.sdk.api.raw.RawFormApi
-import com.icure.sdk.crypto.EntityValidationService
-import com.icure.sdk.crypto.InternalCryptoServices
-import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.FormShareOptions
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
@@ -31,10 +30,6 @@ import com.icure.sdk.utils.currentEpochMs
 import com.icure.sdk.utils.pagination.IdsPageIterator
 import com.icure.sdk.utils.pagination.PaginatedListIterator
 import kotlinx.serialization.json.decodeFromJsonElement
-
-@OptIn(InternalIcureApi::class)
-private val ENCRYPTED_FIELDS_MANIFEST =
-	EncryptedFieldsManifest("Form.", setOf("descr"), emptyMap(), emptyMap(), emptyMap())
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface FormBasicFlavourlessApi {
@@ -188,8 +183,11 @@ private abstract class AbstractFormBasicFlavouredApi<E : Form>(protected val raw
 @InternalIcureApi
 private abstract class AbstractFormFlavouredApi<E : Form>(
 	rawApi: RawFormApi,
-	private val crypto: InternalCryptoServices,
+	private val config: ApiConfiguration,
 ) : AbstractFormBasicFlavouredApi<E>(rawApi), FormFlavouredApi<E> {
+	protected val crypto get() = config.crypto
+	protected val fieldsToEncrypt get() = config.encryption.form
+
 	override suspend fun shareWith(
 		delegateId: String,
 		form: E,
@@ -289,11 +287,9 @@ private class AbstractFormBasicFlavourlessApi(val rawApi: RawFormApi) : FormBasi
 @InternalIcureApi
 internal class FormApiImpl(
 	private val rawApi: RawFormApi,
-	private val crypto: InternalCryptoServices,
-	private val fieldsToEncrypt: EncryptedFieldsManifest = ENCRYPTED_FIELDS_MANIFEST,
-	private val autofillAuthor: Boolean,
+	private val config: ApiConfiguration,
 ) : FormApi, FormFlavouredApi<DecryptedForm> by object :
-	AbstractFormFlavouredApi<DecryptedForm>(rawApi, crypto) {
+	AbstractFormFlavouredApi<DecryptedForm>(rawApi, config) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedForm): EncryptedForm =
 		crypto.entity.encryptEntity(
 			entity.withTypeInfo(),
@@ -310,7 +306,7 @@ internal class FormApiImpl(
 	}
 }, FormBasicFlavourlessApi by AbstractFormBasicFlavourlessApi(rawApi) {
 	override val encrypted: FormFlavouredApi<EncryptedForm> =
-		object : AbstractFormFlavouredApi<EncryptedForm>(rawApi, crypto) {
+		object : AbstractFormFlavouredApi<EncryptedForm>(rawApi, config) {
 			override suspend fun validateAndMaybeEncrypt(entity: EncryptedForm): EncryptedForm =
 				crypto.entity.validateEncryptedEntity(entity.withTypeInfo(), EncryptedForm.serializer(), fieldsToEncrypt)
 
@@ -318,7 +314,7 @@ internal class FormApiImpl(
 		}
 
 	override val tryAndRecover: FormFlavouredApi<Form> =
-		object : AbstractFormFlavouredApi<Form>(rawApi, crypto) {
+		object : AbstractFormFlavouredApi<Form>(rawApi, config) {
 			override suspend fun maybeDecrypt(entity: EncryptedForm): Form =
 				crypto.entity.tryDecryptEntity(
 					entity.withTypeInfo(),
@@ -361,6 +357,9 @@ internal class FormApiImpl(
 		}
 	}
 
+	private val crypto get() = config.crypto
+	private val fieldsToEncrypt get() = config.encryption.form
+
 	override suspend fun withEncryptionMetadata(
 		base: DecryptedForm?,
 		patient: Patient,
@@ -372,8 +371,8 @@ internal class FormApiImpl(
 			(base ?: DecryptedForm(crypto.primitives.strongRandom.randomUUID())).copy(
 				created = base?.created ?: currentEpochMs(),
 				modified = base?.modified ?: currentEpochMs(),
-				responsible = base?.responsible ?: user?.takeIf { autofillAuthor }?.dataOwnerId,
-				author = base?.author ?: user?.id?.takeIf { autofillAuthor },
+				responsible = base?.responsible ?: user?.takeIf { config.autofillAuthor }?.dataOwnerId,
+				author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
 			).withTypeInfo(),
 			patient.id,
 			crypto.entity.resolveSecretIdOption(patient.withTypeInfo(), secretId),
@@ -409,12 +408,11 @@ internal class FormApiImpl(
 @InternalIcureApi
 internal class FormBasicApiImpl(
 	rawApi: RawFormApi,
-	private val validationService: EntityValidationService,
-	private val fieldsToEncrypt: EncryptedFieldsManifest = ENCRYPTED_FIELDS_MANIFEST,
+	private val config: BasicApiConfiguration
 ) : FormBasicApi, FormBasicFlavouredApi<EncryptedForm> by object :
 	AbstractFormBasicFlavouredApi<EncryptedForm>(rawApi) {
 	override suspend fun validateAndMaybeEncrypt(entity: EncryptedForm): EncryptedForm =
-		validationService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedForm.serializer(), fieldsToEncrypt)
+		config.crypto.validationService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedForm.serializer(), config.encryption.form)
 
 	override suspend fun maybeDecrypt(entity: EncryptedForm): EncryptedForm = entity
 }, FormBasicFlavourlessApi by AbstractFormBasicFlavourlessApi(rawApi)

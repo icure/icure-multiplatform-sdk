@@ -1,5 +1,8 @@
 package com.icure.sdk.api.flavoured
 
+import co.touchlab.kermit.Logger.Companion.config
+import com.icure.sdk.api.ApiConfiguration
+import com.icure.sdk.api.BasicApiConfiguration
 import com.icure.sdk.api.raw.RawMaintenanceTaskApi
 import com.icure.sdk.crypto.BasicInternalCryptoApi
 import com.icure.sdk.crypto.InternalCryptoServices
@@ -140,7 +143,7 @@ interface MaintenanceTaskBasicApi : MaintenanceTaskBasicFlavourlessApi, Maintena
 @InternalIcureApi
 private abstract class AbstractMaintenanceTaskBasicFlavouredApi<E : MaintenanceTask>(
 	protected val rawApi: RawMaintenanceTaskApi,
-	private val webSocketAuthProvider: WebSocketAuthProvider
+	private val config: BasicApiConfiguration
 ) :
 	MaintenanceTaskBasicFlavouredApi<E> {
 	override suspend fun modifyMaintenanceTask(entity: E): E =
@@ -168,15 +171,15 @@ private abstract class AbstractMaintenanceTaskBasicFlavouredApi<E : MaintenanceT
 		eventFired: suspend (E) -> Unit
 	): Connection {
 		return ConnectionImpl.initialize(
-			client = rawApi.httpClient,
-			hostname = this.rawApi.apiUrl.replace("https://", "").replace("http://", ""),
+			client = config.httpClient,
+			hostname = config.apiUrl.replace("https://", "").replace("http://", ""),
 			path = "/ws/v2/notification/subscribe",
 			serializer = EncryptedMaintenanceTask.serializer(),
 			events = events,
 			filter = filter,
 			qualifiedName = MaintenanceTask.KRAKEN_QUALIFIED_NAME,
 			subscriptionSerializer = { Serialization.json.encodeToString(it) },
-			webSocketAuthProvider = webSocketAuthProvider,
+			webSocketAuthProvider = config.requireWebSocketAuthProvider(),
 			onOpenListener = onConnected,
 			retryDelay = retryDelay,
 			retryDelayExponentFactor = retryDelayExponentFactor,
@@ -198,9 +201,11 @@ private abstract class AbstractMaintenanceTaskBasicFlavouredApi<E : MaintenanceT
 @InternalIcureApi
 private abstract class AbstractMaintenanceTaskFlavouredApi<E : MaintenanceTask>(
 	rawApi: RawMaintenanceTaskApi,
-	private val crypto: InternalCryptoServices,
-	webSocketAuthProvider: WebSocketAuthProvider
-) : AbstractMaintenanceTaskBasicFlavouredApi<E>(rawApi, webSocketAuthProvider), MaintenanceTaskFlavouredApi<E> {
+	private val config: ApiConfiguration
+) : AbstractMaintenanceTaskBasicFlavouredApi<E>(rawApi, config), MaintenanceTaskFlavouredApi<E> {
+	protected val crypto get() = config.crypto
+	protected val fieldsToEncrypt get() = config.encryption.maintenanceTask
+
 	override suspend fun shareWith(
 		delegateId: String,
 		maintenanceTask: E,
@@ -245,12 +250,9 @@ private class AbstractMaintenanceTaskBasicFlavourlessApi(val rawApi: RawMaintena
 @InternalIcureApi
 internal class MaintenanceTaskApiImpl(
 	private val rawApi: RawMaintenanceTaskApi,
-	private val crypto: InternalCryptoServices,
-	private val fieldsToEncrypt: EncryptedFieldsManifest,
-	private val autofillAuthor: Boolean,
-	webSocketAuthProvider: WebSocketAuthProvider,
+	private val config: ApiConfiguration
 ) : MaintenanceTaskApi, MaintenanceTaskFlavouredApi<DecryptedMaintenanceTask> by object :
-	AbstractMaintenanceTaskFlavouredApi<DecryptedMaintenanceTask>(rawApi, crypto, webSocketAuthProvider) {
+	AbstractMaintenanceTaskFlavouredApi<DecryptedMaintenanceTask>(rawApi, config) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedMaintenanceTask): EncryptedMaintenanceTask =
 		crypto.entity.encryptEntity(
 			entity.withTypeInfo(),
@@ -267,7 +269,7 @@ internal class MaintenanceTaskApiImpl(
 	}
 }, MaintenanceTaskBasicFlavourlessApi by AbstractMaintenanceTaskBasicFlavourlessApi(rawApi) {
 	override val encrypted: MaintenanceTaskFlavouredApi<EncryptedMaintenanceTask> =
-		object : AbstractMaintenanceTaskFlavouredApi<EncryptedMaintenanceTask>(rawApi, crypto, webSocketAuthProvider) {
+		object : AbstractMaintenanceTaskFlavouredApi<EncryptedMaintenanceTask>(rawApi, config) {
 			override suspend fun validateAndMaybeEncrypt(entity: EncryptedMaintenanceTask): EncryptedMaintenanceTask =
 				crypto.entity.validateEncryptedEntity(entity.withTypeInfo(), EncryptedMaintenanceTask.serializer(), fieldsToEncrypt)
 
@@ -275,7 +277,7 @@ internal class MaintenanceTaskApiImpl(
 		}
 
 	override val tryAndRecover: MaintenanceTaskFlavouredApi<MaintenanceTask> =
-		object : AbstractMaintenanceTaskFlavouredApi<MaintenanceTask>(rawApi, crypto, webSocketAuthProvider) {
+		object : AbstractMaintenanceTaskFlavouredApi<MaintenanceTask>(rawApi, config) {
 			override suspend fun maybeDecrypt(entity: EncryptedMaintenanceTask): MaintenanceTask =
 				crypto.entity.tryDecryptEntity(
 					entity.withTypeInfo(),
@@ -307,6 +309,9 @@ internal class MaintenanceTaskApiImpl(
 		}
 	}
 
+	private val crypto get() = config.crypto
+	private val fieldsToEncrypt get() = config.encryption.maintenanceTask
+
 	override suspend fun getEncryptionKeysOf(maintenanceTask: MaintenanceTask): Set<HexString> = crypto.entity.encryptionKeysOf(maintenanceTask.withTypeInfo(), null)
 
 	override suspend fun hasWriteAccess(maintenanceTask: MaintenanceTask): Boolean = crypto.entity.hasWriteAccess(maintenanceTask.withTypeInfo())
@@ -327,8 +332,8 @@ internal class MaintenanceTaskApiImpl(
 			(maintenanceTask ?: DecryptedMaintenanceTask(crypto.primitives.strongRandom.randomUUID())).copy(
 				created = maintenanceTask?.created ?: currentEpochMs(),
 				modified = maintenanceTask?.modified ?: currentEpochMs(),
-				responsible = maintenanceTask?.responsible ?: user?.takeIf { autofillAuthor }?.dataOwnerId,
-				author = maintenanceTask?.author ?: user?.id?.takeIf { autofillAuthor },
+				responsible = maintenanceTask?.responsible ?: user?.takeIf { config.autofillAuthor }?.dataOwnerId,
+				author = maintenanceTask?.author ?: user?.id?.takeIf { config.autofillAuthor },
 			).withTypeInfo(),
 			null,
 			null,
@@ -354,13 +359,11 @@ internal class MaintenanceTaskApiImpl(
 @InternalIcureApi
 internal class MaintenanceTaskBasicApiImpl(
 	rawApi: RawMaintenanceTaskApi,
-	webSocketAuthProvider: WebSocketAuthProvider,
-	private val crypto: BasicInternalCryptoApi,
-	private val fieldsToEncrypt: EncryptedFieldsManifest,
+	private val config: BasicApiConfiguration
 ) : MaintenanceTaskBasicApi, MaintenanceTaskBasicFlavouredApi<EncryptedMaintenanceTask> by object :
-	AbstractMaintenanceTaskBasicFlavouredApi<EncryptedMaintenanceTask>(rawApi, webSocketAuthProvider) {
+	AbstractMaintenanceTaskBasicFlavouredApi<EncryptedMaintenanceTask>(rawApi, config) {
 	override suspend fun validateAndMaybeEncrypt(entity: EncryptedMaintenanceTask): EncryptedMaintenanceTask =
-		crypto.validationService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedMaintenanceTask.serializer(), fieldsToEncrypt)
+		config.crypto.validationService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedMaintenanceTask.serializer(), config.encryption.maintenanceTask)
 
 	override suspend fun maybeDecrypt(entity: EncryptedMaintenanceTask): EncryptedMaintenanceTask = entity
 }, MaintenanceTaskBasicFlavourlessApi by AbstractMaintenanceTaskBasicFlavourlessApi(rawApi)

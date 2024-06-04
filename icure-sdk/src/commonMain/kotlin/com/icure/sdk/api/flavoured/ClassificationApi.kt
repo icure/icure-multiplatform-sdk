@@ -1,10 +1,9 @@
 package com.icure.sdk.api.flavoured
 
+import com.icure.sdk.api.ApiConfiguration
+import com.icure.sdk.api.BasicApiConfiguration
 import com.icure.sdk.api.raw.RawClassificationApi
-import com.icure.sdk.crypto.EntityValidationService
-import com.icure.sdk.crypto.InternalCryptoServices
 import com.icure.sdk.crypto.entities.ClassificationShareOptions
-import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
@@ -30,10 +29,6 @@ import com.icure.sdk.utils.currentEpochMs
 import com.icure.sdk.utils.pagination.IdsPageIterator
 import com.icure.sdk.utils.pagination.PaginatedListIterator
 import kotlinx.serialization.json.decodeFromJsonElement
-
-@OptIn(InternalIcureApi::class)
-private val ENCRYPTED_FIELDS_MANIFEST =
-	EncryptedFieldsManifest("Classification.", emptySet(), emptyMap(), emptyMap(), emptyMap())
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface ClassificationBasicFlavourlessApi {
@@ -147,8 +142,11 @@ private abstract class AbstractClassificationBasicFlavouredApi<E : Classificatio
 @InternalIcureApi
 private abstract class AbstractClassificationFlavouredApi<E : Classification>(
 	rawApi: RawClassificationApi,
-	private val crypto: InternalCryptoServices,
+	private val config: ApiConfiguration,
 ) : AbstractClassificationBasicFlavouredApi<E>(rawApi), ClassificationFlavouredApi<E> {
+	protected val crypto get() = config.crypto
+	protected val fieldsToEncrypt get() = config.encryption.classification
+
 	override suspend fun shareWith(
 		delegateId: String,
 		classification: E,
@@ -212,11 +210,9 @@ private class AbstractClassificationBasicFlavourlessApi(val rawApi: RawClassific
 @InternalIcureApi
 internal class ClassificationApiImpl(
 	private val rawApi: RawClassificationApi,
-	private val crypto: InternalCryptoServices,
-	private val fieldsToEncrypt: EncryptedFieldsManifest,
-	private val autofillAuthor: Boolean,
+	private val config: ApiConfiguration,
 ) : ClassificationApi, ClassificationFlavouredApi<DecryptedClassification> by object :
-	AbstractClassificationFlavouredApi<DecryptedClassification>(rawApi, crypto) {
+	AbstractClassificationFlavouredApi<DecryptedClassification>(rawApi, config) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedClassification): EncryptedClassification =
 		crypto.entity.encryptEntity(
 			entity.withTypeInfo(),
@@ -233,7 +229,7 @@ internal class ClassificationApiImpl(
 	}
 }, ClassificationBasicFlavourlessApi by AbstractClassificationBasicFlavourlessApi(rawApi) {
 	override val encrypted: ClassificationFlavouredApi<EncryptedClassification> =
-		object : AbstractClassificationFlavouredApi<EncryptedClassification>(rawApi, crypto) {
+		object : AbstractClassificationFlavouredApi<EncryptedClassification>(rawApi, config) {
 			override suspend fun validateAndMaybeEncrypt(entity: EncryptedClassification): EncryptedClassification =
 				crypto.entity.validateEncryptedEntity(entity.withTypeInfo(), EncryptedClassification.serializer(), fieldsToEncrypt)
 
@@ -241,7 +237,7 @@ internal class ClassificationApiImpl(
 		}
 
 	override val tryAndRecover: ClassificationFlavouredApi<Classification> =
-		object : AbstractClassificationFlavouredApi<Classification>(rawApi, crypto) {
+		object : AbstractClassificationFlavouredApi<Classification>(rawApi, config) {
 			override suspend fun maybeDecrypt(entity: EncryptedClassification): Classification =
 				crypto.entity.tryDecryptEntity(
 					entity.withTypeInfo(),
@@ -273,6 +269,8 @@ internal class ClassificationApiImpl(
 		}
 	}
 
+	private val crypto get() = config.crypto
+
 	override suspend fun withEncryptionMetadata(
 		base: DecryptedClassification?,
 		patient: Patient,
@@ -284,8 +282,8 @@ internal class ClassificationApiImpl(
 			(base ?: DecryptedClassification(crypto.primitives.strongRandom.randomUUID())).copy(
 				created = base?.created ?: currentEpochMs(),
 				modified = base?.modified ?: currentEpochMs(),
-				responsible = base?.responsible ?: user?.takeIf { autofillAuthor }?.dataOwnerId,
-				author = base?.author ?: user?.id?.takeIf { autofillAuthor },
+				responsible = base?.responsible ?: user?.takeIf { config.autofillAuthor }?.dataOwnerId,
+				author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
 			).withTypeInfo(),
 			patient.id,
 			crypto.entity.resolveSecretIdOption(patient.withTypeInfo(), secretId),
@@ -307,7 +305,7 @@ internal class ClassificationApiImpl(
 	private suspend fun encrypt(entity: DecryptedClassification) = crypto.entity.encryptEntity(
 		entity.withTypeInfo(),
 		DecryptedClassification.serializer(),
-		fieldsToEncrypt,
+		config.encryption.classification
 	) { Serialization.json.decodeFromJsonElement<EncryptedClassification>(it) }
 
 	suspend fun decrypt(entity: EncryptedClassification, errorMessage: () -> String): DecryptedClassification =
@@ -322,12 +320,11 @@ internal class ClassificationApiImpl(
 @InternalIcureApi
 internal class ClassificationBasicApiImpl(
 	rawApi: RawClassificationApi,
-	private val validationService: EntityValidationService,
-	private val fieldsToEncrypt: EncryptedFieldsManifest = ENCRYPTED_FIELDS_MANIFEST,
+	private val config: BasicApiConfiguration,
 ) : ClassificationBasicApi, ClassificationBasicFlavouredApi<EncryptedClassification> by object :
 	AbstractClassificationBasicFlavouredApi<EncryptedClassification>(rawApi) {
 	override suspend fun validateAndMaybeEncrypt(entity: EncryptedClassification): EncryptedClassification =
-		validationService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedClassification.serializer(), fieldsToEncrypt)
+		config.crypto.validationService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedClassification.serializer(), config.encryption.classification)
 
 	override suspend fun maybeDecrypt(entity: EncryptedClassification): EncryptedClassification = entity
 }, ClassificationBasicFlavourlessApi by AbstractClassificationBasicFlavourlessApi(rawApi)

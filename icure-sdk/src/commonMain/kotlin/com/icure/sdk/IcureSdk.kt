@@ -2,6 +2,8 @@ package com.icure.sdk
 
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.utils.toHexString
+import com.icure.sdk.api.ApiConfiguration
+import com.icure.sdk.api.ApiConfigurationImpl
 import com.icure.sdk.api.AuthenticationMethod
 import com.icure.sdk.api.CryptoApi
 import com.icure.sdk.api.DeviceApi
@@ -114,7 +116,6 @@ import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.newPlatformHttpClient
 import com.icure.sdk.websocket.WebSocketAuthProvider
-import io.ktor.client.HttpClient
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.websocket.WebSockets
@@ -342,19 +343,22 @@ interface IcureSdk {
 				).updateTransferKeys(updatedSelf.toStub())
 			}
 
-			val webSocketAuthProvider = WebSocketAuthProvider(authService)
+			val webSocketAuthProvider = WebSocketAuthProvider.fromAuthServiceIfSupported(authService)
 
 			val manifests = EntitiesEncryptedFieldsManifests.fromEncryptedFields(options.encryptedFields)
-			return IcureApiImpl(
-				crypto,
+			val config = ApiConfigurationImpl(
 				apiUrl,
+				client,
+				webSocketAuthProvider,
+				!selfIsAnonymous,
+				crypto,
+				manifests
+			)
+			return IcureApiImpl(
 				authService,
 				headersProvider,
-				client,
-				manifests,
-				!selfIsAnonymous,
-				webSocketAuthProvider,
-				json
+				json,
+				config
 			)
 		}
 	}
@@ -362,26 +366,22 @@ interface IcureSdk {
 
 @OptIn(InternalIcureApi::class)
 private class IcureApiImpl(
-	private val internalCrypto: InternalCryptoApiImpl,
-	private val apiUrl: String,
 	private val authService: AuthService,
 	private val headersProvider: AccessControlKeysHeadersProvider,
-	private val client: HttpClient,
-	private val encryptedFieldsManifests: EntitiesEncryptedFieldsManifests,
-	private val autofillAuthor: Boolean,
-	private val webSocketAuthProvider: WebSocketAuthProvider,
-	private val json: Json
+	private val json: Json,
+	private val config: ApiConfiguration,
 ): IcureSdk {
+	private val apiUrl get() = config.apiUrl
+	private val client get() = config.httpClient
+
 	private val rawDataOwnerApi by lazy { RawDataOwnerApiImpl(apiUrl, authService, client, json = json) }
 	private val rawCalendarItemApi by lazy { RawCalendarItemApiImpl(apiUrl, authService, headersProvider, client, json = json) }
 
 	override val calendarItem: CalendarItemApi by lazy {
 		CalendarItemApiImpl(
 			rawCalendarItemApi,
-			internalCrypto,
-			encryptedFieldsManifests.calendarItem,
-			autofillAuthor,
-			rawDataOwnerApi
+			rawDataOwnerApi,
+			config
 		)
 	}
 
@@ -391,11 +391,7 @@ private class IcureApiImpl(
 	override val contact: ContactApi by lazy {
 		ContactApiImpl(
 			rawContactApi,
-			internalCrypto,
-			encryptedFieldsManifests.contact,
-			encryptedFieldsManifests.service,
-			autofillAuthor,
-			webSocketAuthProvider
+			config
 		)
 	}
 
@@ -411,10 +407,7 @@ private class IcureApiImpl(
 			rawInvoiceApi,
 			rawCalendarItemApi,
 			rawClassificationApi,
-			internalCrypto,
-			encryptedFieldsManifests.patient,
-			autofillAuthor,
-			webSocketAuthProvider
+			config
 		)
 	}
 
@@ -423,14 +416,11 @@ private class IcureApiImpl(
 	override val healthcareElement: HealthcareElementApi by lazy {
 		HealthcareElementApiImpl(
 			rawHealthcareElementApi,
-			internalCrypto,
-			encryptedFieldsManifests.healthElement,
-			autofillAuthor,
-			webSocketAuthProvider
+			config
 		)
 	}
 
-	override val dataOwner: DataOwnerApi get() = internalCrypto.dataOwnerApi
+	override val dataOwner: DataOwnerApi get() = config.crypto.dataOwnerApi
 
 	override val user: UserApi by lazy {
 		UserApiImpl(
@@ -441,13 +431,13 @@ private class IcureApiImpl(
 	override val crypto: CryptoApi by lazy {
 		CryptoApi(
 			ShamirKeysManagerImpl(
-				internalCrypto.dataOwnerApi,
-				internalCrypto.userEncryptionKeysManager,
-				internalCrypto.exchangeDataManager,
-				internalCrypto.primitives,
-				ShamirSecretSharingService(internalCrypto.primitives.strongRandom)
+				config.crypto.dataOwnerApi,
+				config.crypto.userEncryptionKeysManager,
+				config.crypto.exchangeDataManager,
+				config.crypto.primitives,
+				ShamirSecretSharingService(config.crypto.primitives.strongRandom)
 			),
-			internalCrypto
+			config.crypto
 		)
 	}
 
@@ -456,21 +446,18 @@ private class IcureApiImpl(
 	override val maintenanceTask: MaintenanceTaskApi by lazy {
 		MaintenanceTaskApiImpl(
 			rawMaintenanceTaskApi,
-			internalCrypto,
-			encryptedFieldsManifests.maintenanceTask,
-			autofillAuthor,
-			webSocketAuthProvider
+			config
 		)
 	}
 
 	override val icureMaintenanceTask: IcureMaintenanceTaskApi by lazy {
 		IcureMaintenanceTaskApi(
-			internalCrypto.exchangeDataManager,
-			internalCrypto.exchangeKeysManager.base,
-			internalCrypto.userEncryptionKeysManager,
+			config.crypto.exchangeDataManager,
+			config.crypto.exchangeKeysManager.base,
+			config.crypto.userEncryptionKeysManager,
 			maintenanceTask,
-			internalCrypto.dataOwnerApi,
-			internalCrypto.primitives.strongRandom,
+			dataOwner,
+			config.crypto.primitives.strongRandom,
 		)
 	}
 
@@ -479,9 +466,7 @@ private class IcureApiImpl(
 	override val accessLog: AccessLogApi by lazy {
 		AccessLogApiImpl(
 			rawAccessLogApi,
-			internalCrypto,
-			encryptedFieldsManifests.accessLog,
-			autofillAuthor
+			config
 		)
 	}
 
@@ -490,10 +475,7 @@ private class IcureApiImpl(
 	override val message: MessageApi by lazy {
 		MessageApiImpl(
 			rawMessageApi,
-			internalCrypto,
-			encryptedFieldsManifests.message,
-			autofillAuthor,
-			webSocketAuthProvider
+			config
 		)
 	}
 
@@ -502,10 +484,7 @@ private class IcureApiImpl(
 	override val topic: TopicApi by lazy {
 		TopicApiImpl(
 			rawTopicApi,
-			internalCrypto,
-			encryptedFieldsManifests.topic,
-			autofillAuthor,
-			webSocketAuthProvider
+			config
 		)
 	}
 
@@ -514,9 +493,7 @@ private class IcureApiImpl(
 	override val document: DocumentApi by lazy {
 		DocumentApiImpl(
 			rawDocumentApi,
-			internalCrypto,
-			encryptedFieldsManifests.document,
-			autofillAuthor
+			config
 		)
 	}
 
@@ -525,9 +502,7 @@ private class IcureApiImpl(
 	override val timeTable: TimeTableApi by lazy {
 		TimeTableApiImpl(
 			rawTimeTableApi,
-			internalCrypto,
-			encryptedFieldsManifests.timeTable,
-			autofillAuthor
+			config
 		)
 	}
 
@@ -536,9 +511,7 @@ private class IcureApiImpl(
 	override val classification: ClassificationApi by lazy {
 		ClassificationApiImpl(
 			rawClassificationApi,
-			internalCrypto,
-			encryptedFieldsManifests.classification,
-			autofillAuthor
+			config
 		)
 	}
 
@@ -547,9 +520,7 @@ private class IcureApiImpl(
 	override val form: FormApi by lazy {
 		FormApiImpl(
 			rawFormApi,
-			internalCrypto,
-			encryptedFieldsManifests.form,
-			autofillAuthor
+			config
 		)
 	}
 
@@ -559,10 +530,8 @@ private class IcureApiImpl(
 	override val invoice: InvoiceApi by lazy {
 		InvoiceApiImpl(
 			rawInvoiceApi,
-			internalCrypto,
-			encryptedFieldsManifests.invoice,
-			autofillAuthor,
-			rawEntityReferenceApi
+			rawEntityReferenceApi,
+			config
 		)
 	}
 
@@ -571,14 +540,12 @@ private class IcureApiImpl(
 	override val receipt: ReceiptApi by lazy {
 		ReceiptApiImpl(
 			rawReceiptApi,
-			internalCrypto,
-			encryptedFieldsManifests.receipt,
-			autofillAuthor
+			config
 		)
 	}
 
 	override val recovery: RecoveryApi by lazy {
-		RecoveryApiImpl(internalCrypto)
+		RecoveryApiImpl(config.crypto)
 	}
 
 	override val device: DeviceApi by lazy {
