@@ -212,7 +212,9 @@ sealed interface Patient :
 
 	public val employementInfos: List<EmploymentInfo>
 	// region Patient-Patient
-
+	companion object {
+		const val KRAKEN_QUALIFIED_NAME = "org.taktik.icure.entities.Patient"
+	}
 	// endregion
 }
 

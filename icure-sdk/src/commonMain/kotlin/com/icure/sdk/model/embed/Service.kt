@@ -89,7 +89,9 @@ sealed interface Service : Encryptable, ICureDocument<String> {
 
 	public val securityMetadata: SecurityMetadata?
 	// region Service-Service
-
+	companion object {
+		const val KRAKEN_QUALIFIED_NAME = "org.taktik.icure.entities.embed.Service"
+	}
 	// endregion
 }
 

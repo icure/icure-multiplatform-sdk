@@ -53,7 +53,7 @@ private val superadminAuth = JwtAuthService(
 )
 private val defaultRoles = mapOf(
 	"PATIENT" to "BASIC_USER\", \"BASIC_DATA_OWNER",
-	"HCP" to "BASIC_USER\", \"BASIC_DATA_OWNER\", \"PATIENT_USER_MANAGER\", \"LEGACY_MESSAGE_MANAGER\", \"HIERARCHICAL_DATA_OWNER",
+	"HCP" to "BASIC_USER\", \"BASIC_DATA_OWNER\", \"PATIENT_USER_MANAGER\", \"LEGACY_MESSAGE_MANAGER\", \"HIERARCHICAL_DATA_OWNER\", \"TOPIC_MANAGER",
 	"DEVICE" to "BASIC_USER\", \"BASIC_DATA_OWNER",
 	"USER" to "BASIC_USER"
 )
@@ -67,9 +67,9 @@ suspend fun initialiseTestEnvironment() {
 	initialised = true
 	println("Starting kraken")
 	ICureTestSetup.startKrakenEnvironment(
-		"file:///Users/vincenzoclaudiopierro/Documents/GitHub/icure-typescript-sdk/test/scratch/docker-compose-cloud-debuggable.yaml",
+		"file:///Users/trema/icure-typescript-sdk/test/scratch/docker-compose-cloud-debuggable.yaml",
 		listOf("mock"),
-		"/Users/vincenzoclaudiopierro/Documents/GitHub/icure-typescript-sdk/test/scratch"
+		"/Users/trema/icure-typescript-sdk/test/scratch"
 	)
 	println("Bootstrap cloud")
 	ICureTestSetup.bootstrapCloud(

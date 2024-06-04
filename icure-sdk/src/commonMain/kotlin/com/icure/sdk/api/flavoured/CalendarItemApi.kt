@@ -1,12 +1,11 @@
 package com.icure.sdk.api.flavoured
 
+import com.icure.sdk.api.ApiConfiguration
+import com.icure.sdk.api.BasicApiConfiguration
 import com.icure.sdk.api.raw.RawCalendarItemApi
 import com.icure.sdk.api.raw.RawDataOwnerApi
-import com.icure.sdk.crypto.BasicInternalCryptoApi
-import com.icure.sdk.crypto.InternalCryptoServices
 import com.icure.sdk.crypto.entities.CalendarItemShareOptions
 import com.icure.sdk.crypto.entities.DelegateShareOptions
-import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
@@ -192,9 +191,12 @@ private abstract class AbstractCalendarItemBasicFlavouredApi<E : CalendarItem>(
 @InternalIcureApi
 private abstract class AbstractCalendarItemFlavouredApi<E : CalendarItem>(
 	rawApi: RawCalendarItemApi,
-	private val crypto: InternalCryptoServices,
-	private val dataOwnerApi: RawDataOwnerApi
+	private val dataOwnerApi: RawDataOwnerApi,
+	private val config: ApiConfiguration
 ) : AbstractCalendarItemBasicFlavouredApi<E>(rawApi), CalendarItemFlavouredApi<E> {
+	protected val crypto get() = config.crypto
+
+
 	override suspend fun getSecureDelegationKeys(): List<String> =
 		crypto.exchangeDataManager
 			.getAccessControlKeysValue(EntityWithEncryptionMetadataTypeName.CalendarItem)?.map { it.s } ?: emptyList()
@@ -288,17 +290,15 @@ private class AbstractCalendarItemBasicFlavourlessApi(val rawApi: RawCalendarIte
 @InternalIcureApi
 internal class CalendarItemApiImpl(
 	private val rawApi: RawCalendarItemApi,
-	private val crypto: InternalCryptoServices,
-	private val fieldsToEncrypt: EncryptedFieldsManifest,
-	private val autofillAuthor: Boolean,
-	private val rawDataOwnerApi: RawDataOwnerApi
+	private val rawDataOwnerApi: RawDataOwnerApi,
+	private val config: ApiConfiguration
 ) : CalendarItemApi, CalendarItemFlavouredApi<DecryptedCalendarItem> by object :
-	AbstractCalendarItemFlavouredApi<DecryptedCalendarItem>(rawApi, crypto, rawDataOwnerApi) {
+	AbstractCalendarItemFlavouredApi<DecryptedCalendarItem>(rawApi, rawDataOwnerApi, config) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedCalendarItem): EncryptedCalendarItem =
 		crypto.entity.encryptEntity(
 			entity.withTypeInfo(),
 			DecryptedCalendarItem.serializer(),
-			fieldsToEncrypt,
+			config.encryption.calendarItem,
 		) { Serialization.json.decodeFromJsonElement<EncryptedCalendarItem>(it) }
 
 	override suspend fun maybeDecrypt(entity: EncryptedCalendarItem): DecryptedCalendarItem {
@@ -310,15 +310,15 @@ internal class CalendarItemApiImpl(
 	}
 }, CalendarItemBasicFlavourlessApi by AbstractCalendarItemBasicFlavourlessApi(rawApi) {
 	override val encrypted: CalendarItemFlavouredApi<EncryptedCalendarItem> =
-		object : AbstractCalendarItemFlavouredApi<EncryptedCalendarItem>(rawApi, crypto, rawDataOwnerApi) {
+		object : AbstractCalendarItemFlavouredApi<EncryptedCalendarItem>(rawApi, rawDataOwnerApi, config) {
 			override suspend fun validateAndMaybeEncrypt(entity: EncryptedCalendarItem): EncryptedCalendarItem =
-				crypto.entity.validateEncryptedEntity(entity.withTypeInfo(), EncryptedCalendarItem.serializer(), fieldsToEncrypt)
+				crypto.entity.validateEncryptedEntity(entity.withTypeInfo(), EncryptedCalendarItem.serializer(), config.encryption.calendarItem)
 
 			override suspend fun maybeDecrypt(entity: EncryptedCalendarItem): EncryptedCalendarItem = entity
 		}
 
 	override val tryAndRecover: CalendarItemFlavouredApi<CalendarItem> =
-		object : AbstractCalendarItemFlavouredApi<CalendarItem>(rawApi, crypto, rawDataOwnerApi) {
+		object : AbstractCalendarItemFlavouredApi<CalendarItem>(rawApi, rawDataOwnerApi, config) {
 			override suspend fun maybeDecrypt(entity: EncryptedCalendarItem): CalendarItem =
 				crypto.entity.tryDecryptEntity(
 					entity.withTypeInfo(),
@@ -330,13 +330,13 @@ internal class CalendarItemApiImpl(
 				is EncryptedCalendarItem -> crypto.entity.validateEncryptedEntity(
 					entity.withTypeInfo(),
 					EncryptedCalendarItem.serializer(),
-					fieldsToEncrypt,
+					config.encryption.calendarItem,
 				)
 
 				is DecryptedCalendarItem -> crypto.entity.encryptEntity(
 					entity.withTypeInfo(),
 					DecryptedCalendarItem.serializer(),
-					fieldsToEncrypt,
+					config.encryption.calendarItem,
 				) { Serialization.json.decodeFromJsonElement<EncryptedCalendarItem>(it) }
 			}
 		}
@@ -350,6 +350,8 @@ internal class CalendarItemApiImpl(
 		}
 	}
 
+	private val crypto get() = config.crypto
+
 	override suspend fun withEncryptionMetadata(
 		base: DecryptedCalendarItem?,
 		patient: Patient,
@@ -361,8 +363,8 @@ internal class CalendarItemApiImpl(
 			(base ?: DecryptedCalendarItem(crypto.primitives.strongRandom.randomUUID())).copy(
 				created = base?.created ?: currentEpochMs(),
 				modified = base?.modified ?: currentEpochMs(),
-				responsible = base?.responsible ?: user?.takeIf { autofillAuthor }?.dataOwnerId,
-				author = base?.author ?: user?.id?.takeIf { autofillAuthor },
+				responsible = base?.responsible ?: user?.takeIf { config.autofillAuthor }?.dataOwnerId,
+				author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
 			).withTypeInfo(),
 			patient.id,
 			crypto.entity.resolveSecretIdOption(patient.withTypeInfo(), secretId),
@@ -380,7 +382,7 @@ internal class CalendarItemApiImpl(
 	private suspend fun encrypt(entity: DecryptedCalendarItem) = crypto.entity.encryptEntity(
 		entity.withTypeInfo(),
 		DecryptedCalendarItem.serializer(),
-		fieldsToEncrypt,
+		config.encryption.calendarItem,
 	) { Serialization.json.decodeFromJsonElement<EncryptedCalendarItem>(it) }
 
 	suspend fun decrypt(entity: EncryptedCalendarItem, errorMessage: () -> String): DecryptedCalendarItem = crypto.entity.tryDecryptEntity(
@@ -398,12 +400,11 @@ internal class CalendarItemApiImpl(
 @InternalIcureApi
 internal class CalendarItemBasicApiImpl(
 	rawApi: RawCalendarItemApi,
-	private val crypto: BasicInternalCryptoApi,
-	private val fieldsToEncrypt: EncryptedFieldsManifest
+	private val config: BasicApiConfiguration
 ) : CalendarItemBasicApi, CalendarItemBasicFlavouredApi<EncryptedCalendarItem> by object :
 	AbstractCalendarItemBasicFlavouredApi<EncryptedCalendarItem>(rawApi) {
 	override suspend fun validateAndMaybeEncrypt(entity: EncryptedCalendarItem): EncryptedCalendarItem =
-		crypto.validationService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedCalendarItem.serializer(), fieldsToEncrypt)
+		config.crypto.validationService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedCalendarItem.serializer(), config.encryption.calendarItem)
 
 	override suspend fun maybeDecrypt(entity: EncryptedCalendarItem): EncryptedCalendarItem = entity
 }, CalendarItemBasicFlavourlessApi by AbstractCalendarItemBasicFlavourlessApi(rawApi)

@@ -1,21 +1,20 @@
 package com.icure.sdk.api.flavoured
 
+import com.icure.sdk.api.ApiConfiguration
+import com.icure.sdk.api.BasicApiConfiguration
 import com.icure.sdk.api.raw.RawEntityReferenceApi
 import com.icure.sdk.api.raw.RawInvoiceApi
-import com.icure.sdk.crypto.EntityValidationService
-import com.icure.sdk.crypto.InternalCryptoServices
 import com.icure.sdk.crypto.entities.InvoiceShareOptions
-import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.withTypeInfo
-import com.icure.sdk.model.Invoice
 import com.icure.sdk.model.DecryptedInvoice
 import com.icure.sdk.model.EncryptedInvoice
 import com.icure.sdk.model.EntityReference
 import com.icure.sdk.model.IcureStub
+import com.icure.sdk.model.Invoice
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.Patient
@@ -42,10 +41,6 @@ import com.icure.sdk.utils.pagination.PaginatedListIterator
 import kotlinx.datetime.TimeZone
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.decodeFromJsonElement
-
-@OptIn(InternalIcureApi::class)
-private val ENCRYPTED_FIELDS_MANIFEST =
-	EncryptedFieldsManifest("Invoice.", emptySet(), emptyMap(), emptyMap(), emptyMap())
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface InvoiceBasicFlavourlessApi {
@@ -321,8 +316,11 @@ private abstract class AbstractInvoiceBasicFlavouredApi<E : Invoice>(protected v
 @InternalIcureApi
 private abstract class AbstractInvoiceFlavouredApi<E : Invoice>(
 	rawApi: RawInvoiceApi,
-	private val crypto: InternalCryptoServices,
+	private val config: ApiConfiguration
 ) : AbstractInvoiceBasicFlavouredApi<E>(rawApi), InvoiceFlavouredApi<E> {
+	protected val crypto get() = config.crypto
+	protected val fieldsToEncrypt get() = config.encryption.invoice
+
 	override suspend fun shareWith(
 		delegateId: String,
 		invoice: E,
@@ -396,12 +394,10 @@ private class AbstractInvoiceBasicFlavourlessApi(
 @InternalIcureApi
 internal class InvoiceApiImpl(
 	private val rawApi: RawInvoiceApi,
-	private val crypto: InternalCryptoServices,
-	private val fieldsToEncrypt: EncryptedFieldsManifest = ENCRYPTED_FIELDS_MANIFEST,
-	private val autofillAuthor: Boolean,
-	private val rawEntityReferenceApi: RawEntityReferenceApi
+	private val rawEntityReferenceApi: RawEntityReferenceApi,
+	private val config: ApiConfiguration,
 ) : InvoiceApi, InvoiceFlavouredApi<DecryptedInvoice> by object :
-	AbstractInvoiceFlavouredApi<DecryptedInvoice>(rawApi, crypto) {
+	AbstractInvoiceFlavouredApi<DecryptedInvoice>(rawApi, config) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedInvoice): EncryptedInvoice =
 		crypto.entity.encryptEntity(
 			entity.withTypeInfo(),
@@ -418,7 +414,7 @@ internal class InvoiceApiImpl(
 	}
 }, InvoiceBasicFlavourlessApi by AbstractInvoiceBasicFlavourlessApi(rawApi) {
 	override val encrypted: InvoiceFlavouredApi<EncryptedInvoice> =
-		object : AbstractInvoiceFlavouredApi<EncryptedInvoice>(rawApi, crypto) {
+		object : AbstractInvoiceFlavouredApi<EncryptedInvoice>(rawApi, config) {
 			override suspend fun validateAndMaybeEncrypt(entity: EncryptedInvoice): EncryptedInvoice =
 				crypto.entity.validateEncryptedEntity(entity.withTypeInfo(), EncryptedInvoice.serializer(), fieldsToEncrypt)
 
@@ -426,7 +422,7 @@ internal class InvoiceApiImpl(
 		}
 
 	override val tryAndRecover: InvoiceFlavouredApi<Invoice> =
-		object : AbstractInvoiceFlavouredApi<Invoice>(rawApi, crypto) {
+		object : AbstractInvoiceFlavouredApi<Invoice>(rawApi, config) {
 			override suspend fun maybeDecrypt(entity: EncryptedInvoice): Invoice =
 				crypto.entity.tryDecryptEntity(
 					entity.withTypeInfo(),
@@ -499,6 +495,9 @@ internal class InvoiceApiImpl(
 		}
 	}
 
+	private val crypto get() = config.crypto
+	private val fieldsToEncrypt get() = config.encryption.invoice
+
 	override suspend fun getEncryptionKeysOf(invoice: Invoice): Set<HexString> = crypto.entity.encryptionKeysOf(invoice.withTypeInfo(), null)
 
 	override suspend fun hasWriteAccess(invoice: Invoice): Boolean = crypto.entity.hasWriteAccess(invoice.withTypeInfo())
@@ -521,8 +520,8 @@ internal class InvoiceApiImpl(
 			(base ?: DecryptedInvoice(crypto.primitives.strongRandom.randomUUID())).copy(
 				created = base?.created ?: currentEpochMs(),
 				modified = base?.modified ?: currentEpochMs(),
-				responsible = base?.responsible ?: user?.takeIf { autofillAuthor }?.dataOwnerId,
-				author = base?.author ?: user?.id?.takeIf { autofillAuthor },
+				responsible = base?.responsible ?: user?.takeIf { config.autofillAuthor }?.dataOwnerId,
+				author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
 				groupId = base?.groupId ?: base?.id,
 				invoiceDate = base?.invoiceDate ?: currentFuzzyDateTime(TimeZone.currentSystemDefault()),
 			).withTypeInfo(),
@@ -550,12 +549,11 @@ internal class InvoiceApiImpl(
 @InternalIcureApi
 internal class InvoiceBasicApiImpl(
 	rawApi: RawInvoiceApi,
-	private val validationService: EntityValidationService,
-	private val fieldsToEncrypt: EncryptedFieldsManifest = ENCRYPTED_FIELDS_MANIFEST,
+	private val config: BasicApiConfiguration
 ) : InvoiceBasicApi, InvoiceBasicFlavouredApi<EncryptedInvoice> by object :
 	AbstractInvoiceBasicFlavouredApi<EncryptedInvoice>(rawApi) {
 	override suspend fun validateAndMaybeEncrypt(entity: EncryptedInvoice): EncryptedInvoice =
-		validationService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedInvoice.serializer(), fieldsToEncrypt)
+		config.crypto.validationService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedInvoice.serializer(), config.encryption.invoice)
 
 	override suspend fun maybeDecrypt(entity: EncryptedInvoice): EncryptedInvoice = entity
 }, InvoiceBasicFlavourlessApi by AbstractInvoiceBasicFlavourlessApi(rawApi)

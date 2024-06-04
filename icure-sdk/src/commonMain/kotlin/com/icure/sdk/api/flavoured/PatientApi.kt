@@ -1,5 +1,7 @@
 package com.icure.sdk.api.flavoured
 
+import com.icure.sdk.api.ApiConfiguration
+import com.icure.sdk.api.BasicApiConfiguration
 import com.icure.sdk.api.RecoveryApi
 import com.icure.sdk.api.raw.RawCalendarItemApi
 import com.icure.sdk.api.raw.RawClassificationApi
@@ -9,8 +11,6 @@ import com.icure.sdk.api.raw.RawHealthElementApi
 import com.icure.sdk.api.raw.RawHealthcarePartyApi
 import com.icure.sdk.api.raw.RawInvoiceApi
 import com.icure.sdk.api.raw.RawPatientApi
-import com.icure.sdk.crypto.BasicInternalCryptoApi
-import com.icure.sdk.crypto.InternalCryptoServices
 import com.icure.sdk.crypto.entities.DelegateShareOptions
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.EntityAccessInformation
@@ -44,6 +44,7 @@ import com.icure.sdk.model.extensions.dataOwnerId
 import com.icure.sdk.model.extensions.publicKeysSpki
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
+import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
 import com.icure.sdk.model.requests.RequestedPermission
@@ -52,11 +53,14 @@ import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.currentEpochMs
+import com.icure.sdk.websocket.Connection
+import com.icure.sdk.websocket.ConnectionImpl
+import com.icure.sdk.websocket.EmittedEvent
+import com.icure.sdk.websocket.Subscribable
+import io.ktor.util.InternalAPI
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.decodeFromJsonElement
-
-@OptIn(InternalIcureApi::class)
-private val ENCRYPTED_FIELDS_MANIFEST =
-	EncryptedFieldsManifest("Patient.", emptySet(), emptyMap(), emptyMap(), emptyMap())
+import kotlin.time.Duration
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface PatientBasicFlavourlessApi {
@@ -68,7 +72,7 @@ interface PatientBasicFlavourlessApi {
 }
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
-interface PatientBasicFlavouredApi<E : Patient> {
+interface PatientBasicFlavouredApi<E : Patient>: Subscribable<Patient, E> {
 	suspend fun modifyPatient(entity: E): E
 	suspend fun getPatient(entityId: String): E
 	suspend fun filterPatientsBy(
@@ -307,7 +311,10 @@ interface PatientApi : PatientBasicFlavourlessApi, PatientFlavouredApi<Decrypted
 interface PatientBasicApi : PatientBasicFlavourlessApi, PatientBasicFlavouredApi<EncryptedPatient>
 
 @InternalIcureApi
-private abstract class AbstractPatientBasicFlavouredApi<E : Patient>(protected val rawApi: RawPatientApi) :
+private abstract class AbstractPatientBasicFlavouredApi<E : Patient>(
+	protected val rawApi: RawPatientApi,
+	private val config: BasicApiConfiguration,
+) :
 	PatientBasicFlavouredApi<E> {
 	override suspend fun modifyPatient(entity: E): E =
 		rawApi.modifyPatient(validateAndMaybeEncrypt(entity)).successBody().let { maybeDecrypt(it) }
@@ -465,6 +472,40 @@ private abstract class AbstractPatientBasicFlavouredApi<E : Patient>(protected v
 		updatedInto: EncryptedPatient,
 	) = rawApi.mergePatients(intoId, fromId, expectedFromRev, updatedInto).successBody().let { maybeDecrypt(it) }
 
+	@OptIn(InternalAPI::class)
+	override suspend fun subscribeToEvents(
+		events: Set<SubscriptionEventType>,
+		filter: AbstractFilter<Patient>,
+		onConnected: suspend () -> Unit,
+		channelCapacity: Int,
+		retryDelay: Duration,
+		retryDelayExponentFactor: Double,
+		maxRetries: Int,
+		eventFired: suspend (E) -> Unit
+	): Connection {
+		return ConnectionImpl.initialize(
+			client = config.httpClient,
+			hostname = config.apiUrl.replace("https://", "").replace("http://", ""),
+			path = "/ws/v2/notification/subscribe",
+			serializer = EncryptedPatient.serializer(),
+			events = events,
+			filter = filter,
+			qualifiedName = Patient.KRAKEN_QUALIFIED_NAME,
+			subscriptionSerializer = { Serialization.json.encodeToString(it) },
+			webSocketAuthProvider = config.requireWebSocketAuthProvider(),
+			onOpenListener = onConnected,
+			retryDelay = retryDelay,
+			retryDelayExponentFactor = retryDelayExponentFactor,
+			maxRetries = maxRetries,
+			eventCallback = { entity, onEvent ->
+				try {
+					eventFired(maybeDecrypt(entity))
+				} catch (e: EntityEncryptionException) {
+					onEvent(EmittedEvent.Error(e.message, false))
+				}
+			}
+		)
+	}
 
 	abstract suspend fun validateAndMaybeEncrypt(entity: E): EncryptedPatient
 	abstract suspend fun maybeDecrypt(entity: EncryptedPatient): E
@@ -473,8 +514,11 @@ private abstract class AbstractPatientBasicFlavouredApi<E : Patient>(protected v
 @InternalIcureApi
 private abstract class AbstractPatientFlavouredApi<E : Patient>(
 	rawApi: RawPatientApi,
-	private val crypto: InternalCryptoServices,
-) : AbstractPatientBasicFlavouredApi<E>(rawApi), PatientFlavouredApi<E> {
+	private val config: ApiConfiguration
+) : AbstractPatientBasicFlavouredApi<E>(rawApi, config), PatientFlavouredApi<E> {
+	protected val crypto get() = config.crypto
+	protected val fieldsToEncrypt get() = config.encryption.patient
+
 	override suspend fun shareWith(
 		delegateId: String,
 		patient: E,
@@ -523,13 +567,13 @@ private abstract class AbstractPatientFlavouredApi<E : Patient>(
 }
 
 @InternalIcureApi
-private class AbstractPatientBasicFlavourlessApi(val rawApi: RawPatientApi, val crypto: BasicInternalCryptoApi) : PatientBasicFlavourlessApi {
+private class AbstractPatientBasicFlavourlessApi(val rawApi: RawPatientApi, val config: BasicApiConfiguration) : PatientBasicFlavourlessApi {
 	override suspend fun matchPatientsBy(filter: AbstractFilter<Patient>) = rawApi.matchPatientsBy(filter).successBody()
 	override suspend fun deletePatient(entityId: String) = rawApi.deletePatient(entityId).successBody()
 	override suspend fun deletePatients(entityIds: List<String>) = rawApi.deletePatients(ListOfIds(entityIds)).successBody()
 	override suspend fun undeletePatient(patientIds: String) = rawApi.undeletePatient(patientIds).successBody()
 	override suspend fun getDataOwnersWithAccessTo(patient: Patient): EntityAccessInformation =
-		crypto.entityAccessInformationProvider.getDataOwnersWithAccessTo(patient.withTypeInfo())
+		config.crypto.entityAccessInformationProvider.getDataOwnersWithAccessTo(patient.withTypeInfo())
 }
 
 @InternalIcureApi
@@ -542,11 +586,9 @@ internal class PatientApiImpl(
 	private val rawInvoiceApi: RawInvoiceApi,
 	private val rawCalendarItemApi: RawCalendarItemApi,
 	private val rawClassificationApi: RawClassificationApi,
-	private val crypto: InternalCryptoServices,
-	private val fieldsToEncrypt: EncryptedFieldsManifest = ENCRYPTED_FIELDS_MANIFEST,
-	private val autofillAuthor: Boolean,
+	private val config: ApiConfiguration
 ) : PatientApi, PatientFlavouredApi<DecryptedPatient> by object :
-	AbstractPatientFlavouredApi<DecryptedPatient>(rawApi, crypto) {
+	AbstractPatientFlavouredApi<DecryptedPatient>(rawApi, config) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedPatient): EncryptedPatient =
 		crypto.entity.encryptEntity(
 			entity.withTypeInfo(),
@@ -554,16 +596,16 @@ internal class PatientApiImpl(
 			fieldsToEncrypt,
 		) { Serialization.json.decodeFromJsonElement<EncryptedPatient>(it) }
 
-	override suspend fun maybeDecrypt(entity: EncryptedPatient): DecryptedPatient {
-		return crypto.entity.tryDecryptEntity(
+	override suspend fun maybeDecrypt(entity: EncryptedPatient): DecryptedPatient =
+		crypto.entity.tryDecryptEntity(
 			entity.withTypeInfo(),
 			EncryptedPatient.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedPatient>(it) }
 			?: throw EntityEncryptionException("Entity ${entity.id} cannot be decrypted")
-	}
-}, PatientBasicFlavourlessApi by AbstractPatientBasicFlavourlessApi(rawApi, crypto) {
+
+}, PatientBasicFlavourlessApi by AbstractPatientBasicFlavourlessApi(rawApi, config) {
 	override val encrypted: PatientFlavouredApi<EncryptedPatient> =
-		object : AbstractPatientFlavouredApi<EncryptedPatient>(rawApi, crypto) {
+		object : AbstractPatientFlavouredApi<EncryptedPatient>(rawApi, config) {
 			override suspend fun validateAndMaybeEncrypt(entity: EncryptedPatient): EncryptedPatient =
 				crypto.entity.validateEncryptedEntity(entity.withTypeInfo(), EncryptedPatient.serializer(), fieldsToEncrypt)
 
@@ -571,7 +613,8 @@ internal class PatientApiImpl(
 		}
 
 	override val tryAndRecover: PatientFlavouredApi<Patient> =
-		object : AbstractPatientFlavouredApi<Patient>(rawApi, crypto) {
+		object : AbstractPatientFlavouredApi<Patient>(rawApi, config) {
+
 			override suspend fun maybeDecrypt(entity: EncryptedPatient): Patient =
 				crypto.entity.tryDecryptEntity(
 					entity.withTypeInfo(),
@@ -631,6 +674,9 @@ internal class PatientApiImpl(
 			if(parentId != null) stubGetter(parentId, delegationSecretKeys) else emptyList()
 		return stubs.distinctBy { it.id }
 	}
+
+	private val crypto get() = config.crypto
+	private val fieldsToEncrypt get() = config.encryption.patient
 
 	override suspend fun shareAllDataOfPatient(
 		user: User,
@@ -824,8 +870,8 @@ internal class PatientApiImpl(
 			(base ?: DecryptedPatient(crypto.primitives.strongRandom.randomUUID())).copy(
 				created = base?.created ?: currentEpochMs(),
 				modified = base?.modified ?: currentEpochMs(),
-				responsible = base?.responsible ?: user?.takeIf { autofillAuthor }?.dataOwnerId,
-				author = base?.author ?: user?.id?.takeIf { autofillAuthor },
+				responsible = base?.responsible ?: user?.takeIf { config.autofillAuthor }?.dataOwnerId,
+				author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
 			).withTypeInfo(),
 			null,
 			null,
@@ -877,12 +923,11 @@ internal class PatientApiImpl(
 @InternalIcureApi
 internal class PatientBasicApiImpl(
 	rawApi: RawPatientApi,
-	crypto: BasicInternalCryptoApi,
-	private val fieldsToEncrypt: EncryptedFieldsManifest = ENCRYPTED_FIELDS_MANIFEST,
+	private val config: BasicApiConfiguration
 ) : PatientBasicApi, PatientBasicFlavouredApi<EncryptedPatient> by object :
-	AbstractPatientBasicFlavouredApi<EncryptedPatient>(rawApi) {
+	AbstractPatientBasicFlavouredApi<EncryptedPatient>(rawApi, config) {
 	override suspend fun validateAndMaybeEncrypt(entity: EncryptedPatient): EncryptedPatient =
-		crypto.validationService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedPatient.serializer(), fieldsToEncrypt)
+		config.crypto.validationService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedPatient.serializer(), config.encryption.patient)
 
 	override suspend fun maybeDecrypt(entity: EncryptedPatient): EncryptedPatient = entity
-}, PatientBasicFlavourlessApi by AbstractPatientBasicFlavourlessApi(rawApi, crypto)
+}, PatientBasicFlavourlessApi by AbstractPatientBasicFlavourlessApi(rawApi, config)
