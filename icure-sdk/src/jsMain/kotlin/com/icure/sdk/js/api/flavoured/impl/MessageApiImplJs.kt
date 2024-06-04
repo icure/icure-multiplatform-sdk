@@ -32,6 +32,8 @@ import com.icure.sdk.js.model.specializations.hexString_toJs
 import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.sdk.js.utils.pagination.paginatedListIterator_toJs
+import com.icure.sdk.js.websocket.ConnectionJs
+import com.icure.sdk.js.websocket.connection_toJs
 import com.icure.sdk.model.DecryptedMessage
 import com.icure.sdk.model.EncryptedMessage
 import com.icure.sdk.model.Message
@@ -46,6 +48,7 @@ import kotlin.Unit
 import kotlin.js.Promise
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.await
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
@@ -364,6 +367,42 @@ internal class MessageApiImplJs(
 				},
 			)}
 
+
+		override fun subscribeToEvents(
+			events: Array<String>,
+			filter: AbstractFilterJs<MessageJs>,
+			onConnected: () -> Promise<Unit>,
+			channelCapacity: Double,
+			retryDelay: Double,
+			retryDelayExponentFactor: Double,
+			maxRetries: Double,
+			eventFired: (EncryptedMessageJs) -> Promise<Unit>,
+		): Promise<ConnectionJs> = GlobalScope.promise {
+			val onConnectedConverted: suspend () -> Unit = {  ->
+				onConnected(
+				).await()
+			}
+			val eventFiredConverted: suspend (EncryptedMessage) -> Unit = { arg0 ->
+				eventFired(
+					message_toJs(arg0)).await()
+			}
+			connection_toJs(messageApi.encrypted.subscribeToEvents(com.icure.sdk.js.model.CheckedConverters.arrayToSet(
+			  events,
+			  "events",
+			  { x1: kotlin.String ->
+			    com.icure.sdk.model.notification.SubscriptionEventType.valueOf(x1)
+			  },
+			), com.icure.sdk.js.model.filter.abstractFilter_fromJs(
+			  filter,
+			  { x1: com.icure.sdk.js.model.MessageJs ->
+			    com.icure.sdk.js.model.message_fromJs(x1)
+			  },
+			), onConnectedConverted, com.icure.sdk.js.model.CheckedConverters.numberToInt(channelCapacity,
+					"channelCapacity"), com.icure.sdk.js.model.CheckedConverters.numberToDuration(retryDelay,
+					"retryDelay"), retryDelayExponentFactor,
+					com.icure.sdk.js.model.CheckedConverters.numberToInt(maxRetries, "maxRetries"),
+					eventFiredConverted))}
+
 	}
 
 	override val tryAndRecover: MessageFlavouredApiJs<MessageJs> = object :
@@ -675,6 +714,42 @@ internal class MessageApiImplJs(
 					message_toJs(x1)
 				},
 			)}
+
+
+		override fun subscribeToEvents(
+			events: Array<String>,
+			filter: AbstractFilterJs<MessageJs>,
+			onConnected: () -> Promise<Unit>,
+			channelCapacity: Double,
+			retryDelay: Double,
+			retryDelayExponentFactor: Double,
+			maxRetries: Double,
+			eventFired: (MessageJs) -> Promise<Unit>,
+		): Promise<ConnectionJs> = GlobalScope.promise {
+			val onConnectedConverted: suspend () -> Unit = {  ->
+				onConnected(
+				).await()
+			}
+			val eventFiredConverted: suspend (Message) -> Unit = { arg0 ->
+				eventFired(
+					message_toJs(arg0)).await()
+			}
+			connection_toJs(messageApi.tryAndRecover.subscribeToEvents(com.icure.sdk.js.model.CheckedConverters.arrayToSet(
+			  events,
+			  "events",
+			  { x1: kotlin.String ->
+			    com.icure.sdk.model.notification.SubscriptionEventType.valueOf(x1)
+			  },
+			), com.icure.sdk.js.model.filter.abstractFilter_fromJs(
+			  filter,
+			  { x1: com.icure.sdk.js.model.MessageJs ->
+			    com.icure.sdk.js.model.message_fromJs(x1)
+			  },
+			), onConnectedConverted, com.icure.sdk.js.model.CheckedConverters.numberToInt(channelCapacity,
+					"channelCapacity"), com.icure.sdk.js.model.CheckedConverters.numberToDuration(retryDelay,
+					"retryDelay"), retryDelayExponentFactor,
+					com.icure.sdk.js.model.CheckedConverters.numberToInt(maxRetries, "maxRetries"),
+					eventFiredConverted))}
 
 	}
 
@@ -1091,5 +1166,41 @@ internal class MessageApiImplJs(
 				message_toJs(x1)
 			},
 		)}
+
+
+	override fun subscribeToEvents(
+		events: Array<String>,
+		filter: AbstractFilterJs<MessageJs>,
+		onConnected: () -> Promise<Unit>,
+		channelCapacity: Double,
+		retryDelay: Double,
+		retryDelayExponentFactor: Double,
+		maxRetries: Double,
+		eventFired: (DecryptedMessageJs) -> Promise<Unit>,
+	): Promise<ConnectionJs> = GlobalScope.promise {
+		val onConnectedConverted: suspend () -> Unit = {  ->
+			onConnected(
+			).await()
+		}
+		val eventFiredConverted: suspend (DecryptedMessage) -> Unit = { arg0 ->
+			eventFired(
+				message_toJs(arg0)).await()
+		}
+		connection_toJs(messageApi.subscribeToEvents(com.icure.sdk.js.model.CheckedConverters.arrayToSet(
+		  events,
+		  "events",
+		  { x1: kotlin.String ->
+		    com.icure.sdk.model.notification.SubscriptionEventType.valueOf(x1)
+		  },
+		), com.icure.sdk.js.model.filter.abstractFilter_fromJs(
+		  filter,
+		  { x1: com.icure.sdk.js.model.MessageJs ->
+		    com.icure.sdk.js.model.message_fromJs(x1)
+		  },
+		), onConnectedConverted, com.icure.sdk.js.model.CheckedConverters.numberToInt(channelCapacity,
+				"channelCapacity"), com.icure.sdk.js.model.CheckedConverters.numberToDuration(retryDelay,
+				"retryDelay"), retryDelayExponentFactor,
+				com.icure.sdk.js.model.CheckedConverters.numberToInt(maxRetries, "maxRetries"),
+				eventFiredConverted))}
 
 }

@@ -12,8 +12,11 @@ import {DocIdentifier} from '../../model/couchdb/DocIdentifier.mjs';
 import {AccessLevel} from '../../model/embed/AccessLevel.mjs';
 import {AbstractFilter} from '../../model/filter/AbstractFilter.mjs';
 import {FilterChain} from '../../model/filter/chain/FilterChain.mjs';
+import {SubscriptionEventType} from '../../model/notification/SubscriptionEventType.mjs';
 import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs';
 import {HexString} from '../../model/specializations/HexString.mjs';
+import {DurationMs} from '../../utils/DurationMs.mjs';
+import {Connection} from '../../websocket/Connection.mjs';
 import {MessageFlavouredApi} from './MessageFlavouredApi.mjs';
 
 
@@ -120,5 +123,16 @@ export interface MessageApi {
 
 	setMessagesReadStatus(entityIds: Array<string>, time: number | undefined, readStatus: boolean,
 			userId: string): Promise<Array<DecryptedMessage>>;
+
+	subscribeToEvents(
+			events: Array<SubscriptionEventType>,
+			filter: AbstractFilter<Message>,
+			onConnected: () => void,
+			channelCapacity: number,
+			retryDelay: DurationMs,
+			retryDelayExponentFactor: number,
+			maxRetries: number,
+			eventFired: (x1: DecryptedMessage) => void
+	): Promise<Connection>;
 
 }

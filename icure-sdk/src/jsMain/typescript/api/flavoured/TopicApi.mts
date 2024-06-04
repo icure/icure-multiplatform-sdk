@@ -12,8 +12,11 @@ import {DocIdentifier} from '../../model/couchdb/DocIdentifier.mjs';
 import {AccessLevel} from '../../model/embed/AccessLevel.mjs';
 import {AbstractFilter} from '../../model/filter/AbstractFilter.mjs';
 import {FilterChain} from '../../model/filter/chain/FilterChain.mjs';
+import {SubscriptionEventType} from '../../model/notification/SubscriptionEventType.mjs';
 import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs';
 import {HexString} from '../../model/specializations/HexString.mjs';
+import {DurationMs} from '../../utils/DurationMs.mjs';
+import {Connection} from '../../websocket/Connection.mjs';
 import {TopicFlavouredApi} from './TopicFlavouredApi.mjs';
 
 
@@ -74,5 +77,16 @@ export interface TopicApi {
 			topicRole: TopicRole): Promise<DecryptedTopic>;
 
 	removeParticipant(entityId: string, dataOwnerId: string): Promise<DecryptedTopic>;
+
+	subscribeToEvents(
+			events: Array<SubscriptionEventType>,
+			filter: AbstractFilter<Topic>,
+			onConnected: () => void,
+			channelCapacity: number,
+			retryDelay: DurationMs,
+			retryDelayExponentFactor: number,
+			maxRetries: number,
+			eventFired: (x1: DecryptedTopic) => void
+	): Promise<Connection>;
 
 }

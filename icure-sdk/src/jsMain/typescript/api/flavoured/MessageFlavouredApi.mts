@@ -6,8 +6,12 @@ import {PaginatedListIterator} from '../../icure-sdk.mjs';
 import {Message} from '../../model/Message.mjs';
 import {PaginatedList} from '../../model/PaginatedList.mjs';
 import {Patient} from '../../model/Patient.mjs';
+import {AbstractFilter} from '../../model/filter/AbstractFilter.mjs';
 import {FilterChain} from '../../model/filter/chain/FilterChain.mjs';
+import {SubscriptionEventType} from '../../model/notification/SubscriptionEventType.mjs';
 import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs';
+import {DurationMs} from '../../utils/DurationMs.mjs';
+import {Connection} from '../../websocket/Connection.mjs';
 
 
 export interface MessageFlavouredApi<E extends Message> {
@@ -78,5 +82,16 @@ export interface MessageFlavouredApi<E extends Message> {
 
 	setMessagesReadStatus(entityIds: Array<string>, time: number | undefined, readStatus: boolean,
 			userId: string): Promise<Array<E>>;
+
+	subscribeToEvents(
+			events: Array<SubscriptionEventType>,
+			filter: AbstractFilter<Message>,
+			onConnected: () => void,
+			channelCapacity: number,
+			retryDelay: DurationMs,
+			retryDelayExponentFactor: number,
+			maxRetries: number,
+			eventFired: (x1: E) => void
+	): Promise<Connection>;
 
 }

@@ -17,6 +17,7 @@ import com.icure.sdk.js.model.filter.AbstractFilterJs
 import com.icure.sdk.js.model.filter.chain.FilterChainJs
 import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
+import com.icure.sdk.js.websocket.ConnectionJs
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
@@ -149,4 +150,15 @@ public external interface MessageApiJs {
 		readStatus: Boolean,
 		userId: String,
 	): Promise<Array<DecryptedMessageJs>>
+
+	public fun subscribeToEvents(
+		events: Array<String>,
+		filter: AbstractFilterJs<MessageJs>,
+		onConnected: () -> Promise<Unit>,
+		channelCapacity: Double,
+		retryDelay: Double,
+		retryDelayExponentFactor: Double,
+		maxRetries: Double,
+		eventFired: (DecryptedMessageJs) -> Promise<Unit>,
+	): Promise<ConnectionJs>
 }

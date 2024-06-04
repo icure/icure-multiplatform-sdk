@@ -9,6 +9,9 @@ import {SortDirection} from '../../model/couchdb/SortDirection.mjs';
 import {EncryptedContent} from '../../model/embed/Content.mjs';
 import {AbstractFilter} from '../../model/filter/AbstractFilter.mjs';
 import {FilterChain} from '../../model/filter/chain/FilterChain.mjs';
+import {SubscriptionEventType} from '../../model/notification/SubscriptionEventType.mjs';
+import {DurationMs} from '../../utils/DurationMs.mjs';
+import {Connection} from '../../websocket/Connection.mjs';
 
 
 export interface PatientBasicApi {
@@ -123,5 +126,16 @@ export interface PatientBasicApi {
 
 	mergePatients(intoId: string, fromId: string, expectedFromRev: string,
 			updatedInto: EncryptedPatient): Promise<EncryptedPatient>;
+
+	subscribeToEvents(
+			events: Array<SubscriptionEventType>,
+			filter: AbstractFilter<Patient>,
+			onConnected: () => void,
+			channelCapacity: number,
+			retryDelay: DurationMs,
+			retryDelayExponentFactor: number,
+			maxRetries: number,
+			eventFired: (x1: EncryptedPatient) => void
+	): Promise<Connection>;
 
 }

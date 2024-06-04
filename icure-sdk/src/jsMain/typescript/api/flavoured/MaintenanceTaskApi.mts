@@ -7,9 +7,13 @@ import {PaginatedList} from '../../model/PaginatedList.mjs';
 import {User} from '../../model/User.mjs';
 import {DocIdentifier} from '../../model/couchdb/DocIdentifier.mjs';
 import {AccessLevel} from '../../model/embed/AccessLevel.mjs';
+import {AbstractFilter} from '../../model/filter/AbstractFilter.mjs';
 import {FilterChain} from '../../model/filter/chain/FilterChain.mjs';
+import {SubscriptionEventType} from '../../model/notification/SubscriptionEventType.mjs';
 import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs';
 import {HexString} from '../../model/specializations/HexString.mjs';
+import {DurationMs} from '../../utils/DurationMs.mjs';
+import {Connection} from '../../websocket/Connection.mjs';
 import {MaintenanceTaskFlavouredApi} from './MaintenanceTaskFlavouredApi.mjs';
 
 
@@ -58,5 +62,16 @@ export interface MaintenanceTaskApi {
 
 	filterMaintenanceTasksBy(startDocumentId: string | undefined, limit: number | undefined,
 			filterChain: FilterChain<MaintenanceTask>): Promise<PaginatedList<DecryptedMaintenanceTask>>;
+
+	subscribeToEvents(
+			events: Array<SubscriptionEventType>,
+			filter: AbstractFilter<MaintenanceTask>,
+			onConnected: () => void,
+			channelCapacity: number,
+			retryDelay: DurationMs,
+			retryDelayExponentFactor: number,
+			maxRetries: number,
+			eventFired: (x1: DecryptedMaintenanceTask) => void
+	): Promise<Connection>;
 
 }

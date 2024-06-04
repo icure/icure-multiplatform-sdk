@@ -22,6 +22,7 @@ import com.icure.sdk.js.model.filter.AbstractFilterJs
 import com.icure.sdk.js.model.filter.chain.FilterChainJs
 import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
+import com.icure.sdk.js.websocket.ConnectionJs
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
@@ -156,4 +157,26 @@ public external interface ContactApiJs {
 		startDocumentId: String?,
 		limit: Double?,
 	): Promise<PaginatedListJs<DecryptedServiceJs>>
+
+	public fun subscribeToServiceEvents(
+		events: Array<String>,
+		filter: AbstractFilterJs<ServiceJs>,
+		onConnected: () -> Promise<Unit>,
+		channelCapacity: Double,
+		retryDelay: Double,
+		retryDelayExponentFactor: Double,
+		maxRetries: Double,
+		eventFired: (DecryptedServiceJs) -> Promise<Unit>,
+	): Promise<ConnectionJs>
+
+	public fun subscribeToEvents(
+		events: Array<String>,
+		filter: AbstractFilterJs<ContactJs>,
+		onConnected: () -> Promise<Unit>,
+		channelCapacity: Double,
+		retryDelay: Double,
+		retryDelayExponentFactor: Double,
+		maxRetries: Double,
+		eventFired: (DecryptedContactJs) -> Promise<Unit>,
+	): Promise<ConnectionJs>
 }

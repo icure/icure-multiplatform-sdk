@@ -7,11 +7,14 @@ import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.crypto.entities.TopicShareOptionsJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.TopicJs
+import com.icure.sdk.js.model.filter.AbstractFilterJs
 import com.icure.sdk.js.model.filter.chain.FilterChainJs
 import com.icure.sdk.js.utils.Record
+import com.icure.sdk.js.websocket.ConnectionJs
 import kotlin.Array
 import kotlin.Double
 import kotlin.String
+import kotlin.Unit
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
 import kotlin.js.Promise
@@ -50,4 +53,15 @@ public external interface TopicFlavouredApiJs<E : TopicJs> {
 	): Promise<E>
 
 	public fun removeParticipant(entityId: String, dataOwnerId: String): Promise<E>
+
+	public fun subscribeToEvents(
+		events: Array<String>,
+		filter: AbstractFilterJs<TopicJs>,
+		onConnected: () -> Promise<Unit>,
+		channelCapacity: Double,
+		retryDelay: Double,
+		retryDelayExponentFactor: Double,
+		maxRetries: Double,
+		eventFired: (E) -> Promise<Unit>,
+	): Promise<ConnectionJs>
 }

@@ -6,8 +6,12 @@ import {PaginatedListIterator} from '../../icure-sdk.mjs';
 import {HealthElement} from '../../model/HealthElement.mjs';
 import {PaginatedList} from '../../model/PaginatedList.mjs';
 import {Patient} from '../../model/Patient.mjs';
+import {AbstractFilter} from '../../model/filter/AbstractFilter.mjs';
 import {FilterChain} from '../../model/filter/chain/FilterChain.mjs';
+import {SubscriptionEventType} from '../../model/notification/SubscriptionEventType.mjs';
 import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs';
+import {DurationMs} from '../../utils/DurationMs.mjs';
+import {Connection} from '../../websocket/Connection.mjs';
 
 
 export interface HealthcareElementFlavouredApi<E extends HealthElement> {
@@ -47,5 +51,16 @@ export interface HealthcareElementFlavouredApi<E extends HealthElement> {
 
 	findHealthcareElementsByHcPartyPatientForeignKeys(hcPartyId: string,
 			secretPatientKeys: Array<string>): Promise<Array<E>>;
+
+	subscribeToEvents(
+			events: Array<SubscriptionEventType>,
+			filter: AbstractFilter<HealthElement>,
+			onConnected: () => void,
+			channelCapacity: number,
+			retryDelay: DurationMs,
+			retryDelayExponentFactor: number,
+			maxRetries: number,
+			eventFired: (x1: E) => void
+	): Promise<Connection>;
 
 }

@@ -7,6 +7,9 @@ import {LabelledOccurence} from '../../model/data/LabelledOccurence.mjs';
 import {EncryptedService, Service} from '../../model/embed/Service.mjs';
 import {AbstractFilter} from '../../model/filter/AbstractFilter.mjs';
 import {FilterChain} from '../../model/filter/chain/FilterChain.mjs';
+import {SubscriptionEventType} from '../../model/notification/SubscriptionEventType.mjs';
+import {DurationMs} from '../../utils/DurationMs.mjs';
+import {Connection} from '../../websocket/Connection.mjs';
 
 
 export interface ContactBasicApi {
@@ -76,5 +79,27 @@ export interface ContactBasicApi {
 
 	filterServicesBy(filterChain: FilterChain<Service>, startDocumentId: string | undefined,
 			limit: number | undefined): Promise<PaginatedList<EncryptedService>>;
+
+	subscribeToServiceEvents(
+			events: Array<SubscriptionEventType>,
+			filter: AbstractFilter<Service>,
+			onConnected: () => void,
+			channelCapacity: number,
+			retryDelay: DurationMs,
+			retryDelayExponentFactor: number,
+			maxRetries: number,
+			eventFired: (x1: EncryptedService) => void
+	): Promise<Connection>;
+
+	subscribeToEvents(
+			events: Array<SubscriptionEventType>,
+			filter: AbstractFilter<Contact>,
+			onConnected: () => void,
+			channelCapacity: number,
+			retryDelay: DurationMs,
+			retryDelayExponentFactor: number,
+			maxRetries: number,
+			eventFired: (x1: EncryptedContact) => void
+	): Promise<Connection>;
 
 }

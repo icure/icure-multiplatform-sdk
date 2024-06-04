@@ -32,6 +32,8 @@ import com.icure.sdk.js.model.specializations.hexString_toJs
 import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.sdk.js.utils.pagination.paginatedListIterator_toJs
+import com.icure.sdk.js.websocket.ConnectionJs
+import com.icure.sdk.js.websocket.connection_toJs
 import com.icure.sdk.model.DecryptedHealthElement
 import com.icure.sdk.model.EncryptedHealthElement
 import com.icure.sdk.model.HealthElement
@@ -47,6 +49,7 @@ import kotlin.Unit
 import kotlin.js.Promise
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.await
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
@@ -206,6 +209,42 @@ internal class HealthcareElementApiImplJs(
 				},
 			)}
 
+
+		override fun subscribeToEvents(
+			events: Array<String>,
+			filter: AbstractFilterJs<HealthElementJs>,
+			onConnected: () -> Promise<Unit>,
+			channelCapacity: Double,
+			retryDelay: Double,
+			retryDelayExponentFactor: Double,
+			maxRetries: Double,
+			eventFired: (EncryptedHealthElementJs) -> Promise<Unit>,
+		): Promise<ConnectionJs> = GlobalScope.promise {
+			val onConnectedConverted: suspend () -> Unit = {  ->
+				onConnected(
+				).await()
+			}
+			val eventFiredConverted: suspend (EncryptedHealthElement) -> Unit = { arg0 ->
+				eventFired(
+					healthElement_toJs(arg0)).await()
+			}
+			connection_toJs(healthcareElementApi.encrypted.subscribeToEvents(com.icure.sdk.js.model.CheckedConverters.arrayToSet(
+			  events,
+			  "events",
+			  { x1: kotlin.String ->
+			    com.icure.sdk.model.notification.SubscriptionEventType.valueOf(x1)
+			  },
+			), com.icure.sdk.js.model.filter.abstractFilter_fromJs(
+			  filter,
+			  { x1: com.icure.sdk.js.model.HealthElementJs ->
+			    com.icure.sdk.js.model.healthElement_fromJs(x1)
+			  },
+			), onConnectedConverted, com.icure.sdk.js.model.CheckedConverters.numberToInt(channelCapacity,
+					"channelCapacity"), com.icure.sdk.js.model.CheckedConverters.numberToDuration(retryDelay,
+					"retryDelay"), retryDelayExponentFactor,
+					com.icure.sdk.js.model.CheckedConverters.numberToInt(maxRetries, "maxRetries"),
+					eventFiredConverted))}
+
 	}
 
 	override val tryAndRecover: HealthcareElementFlavouredApiJs<HealthElementJs> = object :
@@ -359,6 +398,42 @@ internal class HealthcareElementApiImplJs(
 					healthElement_toJs(x1)
 				},
 			)}
+
+
+		override fun subscribeToEvents(
+			events: Array<String>,
+			filter: AbstractFilterJs<HealthElementJs>,
+			onConnected: () -> Promise<Unit>,
+			channelCapacity: Double,
+			retryDelay: Double,
+			retryDelayExponentFactor: Double,
+			maxRetries: Double,
+			eventFired: (HealthElementJs) -> Promise<Unit>,
+		): Promise<ConnectionJs> = GlobalScope.promise {
+			val onConnectedConverted: suspend () -> Unit = {  ->
+				onConnected(
+				).await()
+			}
+			val eventFiredConverted: suspend (HealthElement) -> Unit = { arg0 ->
+				eventFired(
+					healthElement_toJs(arg0)).await()
+			}
+			connection_toJs(healthcareElementApi.tryAndRecover.subscribeToEvents(com.icure.sdk.js.model.CheckedConverters.arrayToSet(
+			  events,
+			  "events",
+			  { x1: kotlin.String ->
+			    com.icure.sdk.model.notification.SubscriptionEventType.valueOf(x1)
+			  },
+			), com.icure.sdk.js.model.filter.abstractFilter_fromJs(
+			  filter,
+			  { x1: com.icure.sdk.js.model.HealthElementJs ->
+			    com.icure.sdk.js.model.healthElement_fromJs(x1)
+			  },
+			), onConnectedConverted, com.icure.sdk.js.model.CheckedConverters.numberToInt(channelCapacity,
+					"channelCapacity"), com.icure.sdk.js.model.CheckedConverters.numberToDuration(retryDelay,
+					"retryDelay"), retryDelayExponentFactor,
+					com.icure.sdk.js.model.CheckedConverters.numberToInt(maxRetries, "maxRetries"),
+					eventFiredConverted))}
 
 	}
 
@@ -645,5 +720,41 @@ internal class HealthcareElementApiImplJs(
 				healthElement_toJs(x1)
 			},
 		)}
+
+
+	override fun subscribeToEvents(
+		events: Array<String>,
+		filter: AbstractFilterJs<HealthElementJs>,
+		onConnected: () -> Promise<Unit>,
+		channelCapacity: Double,
+		retryDelay: Double,
+		retryDelayExponentFactor: Double,
+		maxRetries: Double,
+		eventFired: (DecryptedHealthElementJs) -> Promise<Unit>,
+	): Promise<ConnectionJs> = GlobalScope.promise {
+		val onConnectedConverted: suspend () -> Unit = {  ->
+			onConnected(
+			).await()
+		}
+		val eventFiredConverted: suspend (DecryptedHealthElement) -> Unit = { arg0 ->
+			eventFired(
+				healthElement_toJs(arg0)).await()
+		}
+		connection_toJs(healthcareElementApi.subscribeToEvents(com.icure.sdk.js.model.CheckedConverters.arrayToSet(
+		  events,
+		  "events",
+		  { x1: kotlin.String ->
+		    com.icure.sdk.model.notification.SubscriptionEventType.valueOf(x1)
+		  },
+		), com.icure.sdk.js.model.filter.abstractFilter_fromJs(
+		  filter,
+		  { x1: com.icure.sdk.js.model.HealthElementJs ->
+		    com.icure.sdk.js.model.healthElement_fromJs(x1)
+		  },
+		), onConnectedConverted, com.icure.sdk.js.model.CheckedConverters.numberToInt(channelCapacity,
+				"channelCapacity"), com.icure.sdk.js.model.CheckedConverters.numberToDuration(retryDelay,
+				"retryDelay"), retryDelayExponentFactor,
+				com.icure.sdk.js.model.CheckedConverters.numberToInt(maxRetries, "maxRetries"),
+				eventFiredConverted))}
 
 }

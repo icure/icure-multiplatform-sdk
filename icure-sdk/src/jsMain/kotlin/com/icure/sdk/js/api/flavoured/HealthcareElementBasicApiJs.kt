@@ -10,9 +10,11 @@ import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.filter.AbstractFilterJs
 import com.icure.sdk.js.model.filter.chain.FilterChainJs
+import com.icure.sdk.js.websocket.ConnectionJs
 import kotlin.Array
 import kotlin.Double
 import kotlin.String
+import kotlin.Unit
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
 import kotlin.js.Promise
@@ -48,4 +50,15 @@ public external interface HealthcareElementBasicApiJs {
 
 	public fun findHealthcareElementsByHcPartyPatientForeignKeys(hcPartyId: String,
 			secretPatientKeys: Array<String>): Promise<Array<EncryptedHealthElementJs>>
+
+	public fun subscribeToEvents(
+		events: Array<String>,
+		filter: AbstractFilterJs<HealthElementJs>,
+		onConnected: () -> Promise<Unit>,
+		channelCapacity: Double,
+		retryDelay: Double,
+		retryDelayExponentFactor: Double,
+		maxRetries: Double,
+		eventFired: (EncryptedHealthElementJs) -> Promise<Unit>,
+	): Promise<ConnectionJs>
 }

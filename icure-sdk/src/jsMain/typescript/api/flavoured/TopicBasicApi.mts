@@ -5,6 +5,9 @@ import {TopicRole} from '../../model/TopicRole.mjs';
 import {DocIdentifier} from '../../model/couchdb/DocIdentifier.mjs';
 import {AbstractFilter} from '../../model/filter/AbstractFilter.mjs';
 import {FilterChain} from '../../model/filter/chain/FilterChain.mjs';
+import {SubscriptionEventType} from '../../model/notification/SubscriptionEventType.mjs';
+import {DurationMs} from '../../utils/DurationMs.mjs';
+import {Connection} from '../../websocket/Connection.mjs';
 
 
 export interface TopicBasicApi {
@@ -28,5 +31,16 @@ export interface TopicBasicApi {
 			topicRole: TopicRole): Promise<EncryptedTopic>;
 
 	removeParticipant(entityId: string, dataOwnerId: string): Promise<EncryptedTopic>;
+
+	subscribeToEvents(
+			events: Array<SubscriptionEventType>,
+			filter: AbstractFilter<Topic>,
+			onConnected: () => void,
+			channelCapacity: number,
+			retryDelay: DurationMs,
+			retryDelayExponentFactor: number,
+			maxRetries: number,
+			eventFired: (x1: EncryptedTopic) => void
+	): Promise<Connection>;
 
 }

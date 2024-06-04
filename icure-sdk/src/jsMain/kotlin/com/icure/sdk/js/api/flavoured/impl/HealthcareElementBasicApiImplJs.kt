@@ -18,6 +18,8 @@ import com.icure.sdk.js.model.healthElement_fromJs
 import com.icure.sdk.js.model.healthElement_toJs
 import com.icure.sdk.js.model.icureStub_toJs
 import com.icure.sdk.js.model.paginatedList_toJs
+import com.icure.sdk.js.websocket.ConnectionJs
+import com.icure.sdk.js.websocket.connection_toJs
 import com.icure.sdk.model.EncryptedHealthElement
 import com.icure.sdk.model.IcureStub
 import com.icure.sdk.model.couchdb.DocIdentifier
@@ -25,9 +27,11 @@ import kotlin.Array
 import kotlin.Double
 import kotlin.OptIn
 import kotlin.String
+import kotlin.Unit
 import kotlin.js.Promise
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.await
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
@@ -163,5 +167,41 @@ internal class HealthcareElementBasicApiImplJs(
 				healthElement_toJs(x1)
 			},
 		)}
+
+
+	override fun subscribeToEvents(
+		events: Array<String>,
+		filter: AbstractFilterJs<HealthElementJs>,
+		onConnected: () -> Promise<Unit>,
+		channelCapacity: Double,
+		retryDelay: Double,
+		retryDelayExponentFactor: Double,
+		maxRetries: Double,
+		eventFired: (EncryptedHealthElementJs) -> Promise<Unit>,
+	): Promise<ConnectionJs> = GlobalScope.promise {
+		val onConnectedConverted: suspend () -> Unit = {  ->
+			onConnected(
+			).await()
+		}
+		val eventFiredConverted: suspend (EncryptedHealthElement) -> Unit = { arg0 ->
+			eventFired(
+				healthElement_toJs(arg0)).await()
+		}
+		connection_toJs(healthcareElementBasicApi.subscribeToEvents(com.icure.sdk.js.model.CheckedConverters.arrayToSet(
+		  events,
+		  "events",
+		  { x1: kotlin.String ->
+		    com.icure.sdk.model.notification.SubscriptionEventType.valueOf(x1)
+		  },
+		), com.icure.sdk.js.model.filter.abstractFilter_fromJs(
+		  filter,
+		  { x1: com.icure.sdk.js.model.HealthElementJs ->
+		    com.icure.sdk.js.model.healthElement_fromJs(x1)
+		  },
+		), onConnectedConverted, com.icure.sdk.js.model.CheckedConverters.numberToInt(channelCapacity,
+				"channelCapacity"), com.icure.sdk.js.model.CheckedConverters.numberToDuration(retryDelay,
+				"retryDelay"), retryDelayExponentFactor,
+				com.icure.sdk.js.model.CheckedConverters.numberToInt(maxRetries, "maxRetries"),
+				eventFiredConverted))}
 
 }

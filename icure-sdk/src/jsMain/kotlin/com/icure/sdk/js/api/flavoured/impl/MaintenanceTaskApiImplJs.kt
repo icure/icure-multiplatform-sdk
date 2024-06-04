@@ -18,12 +18,15 @@ import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.UserJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.couchdb.docIdentifier_toJs
+import com.icure.sdk.js.model.filter.AbstractFilterJs
 import com.icure.sdk.js.model.filter.chain.FilterChainJs
 import com.icure.sdk.js.model.maintenanceTask_fromJs
 import com.icure.sdk.js.model.maintenanceTask_toJs
 import com.icure.sdk.js.model.paginatedList_toJs
 import com.icure.sdk.js.model.specializations.hexString_toJs
 import com.icure.sdk.js.utils.Record
+import com.icure.sdk.js.websocket.ConnectionJs
+import com.icure.sdk.js.websocket.connection_toJs
 import com.icure.sdk.model.DecryptedMaintenanceTask
 import com.icure.sdk.model.EncryptedMaintenanceTask
 import com.icure.sdk.model.MaintenanceTask
@@ -38,6 +41,7 @@ import kotlin.Unit
 import kotlin.js.Promise
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.await
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
@@ -131,6 +135,42 @@ internal class MaintenanceTaskApiImplJs(
 				},
 			)}
 
+
+		override fun subscribeToEvents(
+			events: Array<String>,
+			filter: AbstractFilterJs<MaintenanceTaskJs>,
+			onConnected: () -> Promise<Unit>,
+			channelCapacity: Double,
+			retryDelay: Double,
+			retryDelayExponentFactor: Double,
+			maxRetries: Double,
+			eventFired: (EncryptedMaintenanceTaskJs) -> Promise<Unit>,
+		): Promise<ConnectionJs> = GlobalScope.promise {
+			val onConnectedConverted: suspend () -> Unit = {  ->
+				onConnected(
+				).await()
+			}
+			val eventFiredConverted: suspend (EncryptedMaintenanceTask) -> Unit = { arg0 ->
+				eventFired(
+					maintenanceTask_toJs(arg0)).await()
+			}
+			connection_toJs(maintenanceTaskApi.encrypted.subscribeToEvents(com.icure.sdk.js.model.CheckedConverters.arrayToSet(
+			  events,
+			  "events",
+			  { x1: kotlin.String ->
+			    com.icure.sdk.model.notification.SubscriptionEventType.valueOf(x1)
+			  },
+			), com.icure.sdk.js.model.filter.abstractFilter_fromJs(
+			  filter,
+			  { x1: com.icure.sdk.js.model.MaintenanceTaskJs ->
+			    com.icure.sdk.js.model.maintenanceTask_fromJs(x1)
+			  },
+			), onConnectedConverted, com.icure.sdk.js.model.CheckedConverters.numberToInt(channelCapacity,
+					"channelCapacity"), com.icure.sdk.js.model.CheckedConverters.numberToDuration(retryDelay,
+					"retryDelay"), retryDelayExponentFactor,
+					com.icure.sdk.js.model.CheckedConverters.numberToInt(maxRetries, "maxRetries"),
+					eventFiredConverted))}
+
 	}
 
 	override val tryAndRecover: MaintenanceTaskFlavouredApiJs<MaintenanceTaskJs> = object :
@@ -219,6 +259,42 @@ internal class MaintenanceTaskApiImplJs(
 					maintenanceTask_toJs(x1)
 				},
 			)}
+
+
+		override fun subscribeToEvents(
+			events: Array<String>,
+			filter: AbstractFilterJs<MaintenanceTaskJs>,
+			onConnected: () -> Promise<Unit>,
+			channelCapacity: Double,
+			retryDelay: Double,
+			retryDelayExponentFactor: Double,
+			maxRetries: Double,
+			eventFired: (MaintenanceTaskJs) -> Promise<Unit>,
+		): Promise<ConnectionJs> = GlobalScope.promise {
+			val onConnectedConverted: suspend () -> Unit = {  ->
+				onConnected(
+				).await()
+			}
+			val eventFiredConverted: suspend (MaintenanceTask) -> Unit = { arg0 ->
+				eventFired(
+					maintenanceTask_toJs(arg0)).await()
+			}
+			connection_toJs(maintenanceTaskApi.tryAndRecover.subscribeToEvents(com.icure.sdk.js.model.CheckedConverters.arrayToSet(
+			  events,
+			  "events",
+			  { x1: kotlin.String ->
+			    com.icure.sdk.model.notification.SubscriptionEventType.valueOf(x1)
+			  },
+			), com.icure.sdk.js.model.filter.abstractFilter_fromJs(
+			  filter,
+			  { x1: com.icure.sdk.js.model.MaintenanceTaskJs ->
+			    com.icure.sdk.js.model.maintenanceTask_fromJs(x1)
+			  },
+			), onConnectedConverted, com.icure.sdk.js.model.CheckedConverters.numberToInt(channelCapacity,
+					"channelCapacity"), com.icure.sdk.js.model.CheckedConverters.numberToDuration(retryDelay,
+					"retryDelay"), retryDelayExponentFactor,
+					com.icure.sdk.js.model.CheckedConverters.numberToInt(maxRetries, "maxRetries"),
+					eventFiredConverted))}
 
 	}
 
@@ -390,5 +466,41 @@ internal class MaintenanceTaskApiImplJs(
 				maintenanceTask_toJs(x1)
 			},
 		)}
+
+
+	override fun subscribeToEvents(
+		events: Array<String>,
+		filter: AbstractFilterJs<MaintenanceTaskJs>,
+		onConnected: () -> Promise<Unit>,
+		channelCapacity: Double,
+		retryDelay: Double,
+		retryDelayExponentFactor: Double,
+		maxRetries: Double,
+		eventFired: (DecryptedMaintenanceTaskJs) -> Promise<Unit>,
+	): Promise<ConnectionJs> = GlobalScope.promise {
+		val onConnectedConverted: suspend () -> Unit = {  ->
+			onConnected(
+			).await()
+		}
+		val eventFiredConverted: suspend (DecryptedMaintenanceTask) -> Unit = { arg0 ->
+			eventFired(
+				maintenanceTask_toJs(arg0)).await()
+		}
+		connection_toJs(maintenanceTaskApi.subscribeToEvents(com.icure.sdk.js.model.CheckedConverters.arrayToSet(
+		  events,
+		  "events",
+		  { x1: kotlin.String ->
+		    com.icure.sdk.model.notification.SubscriptionEventType.valueOf(x1)
+		  },
+		), com.icure.sdk.js.model.filter.abstractFilter_fromJs(
+		  filter,
+		  { x1: com.icure.sdk.js.model.MaintenanceTaskJs ->
+		    com.icure.sdk.js.model.maintenanceTask_fromJs(x1)
+		  },
+		), onConnectedConverted, com.icure.sdk.js.model.CheckedConverters.numberToInt(channelCapacity,
+				"channelCapacity"), com.icure.sdk.js.model.CheckedConverters.numberToDuration(retryDelay,
+				"retryDelay"), retryDelayExponentFactor,
+				com.icure.sdk.js.model.CheckedConverters.numberToInt(maxRetries, "maxRetries"),
+				eventFiredConverted))}
 
 }

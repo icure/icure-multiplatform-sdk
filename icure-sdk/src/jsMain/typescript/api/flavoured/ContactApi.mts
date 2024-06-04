@@ -15,8 +15,11 @@ import {AccessLevel} from '../../model/embed/AccessLevel.mjs';
 import {DecryptedService, EncryptedService, Service} from '../../model/embed/Service.mjs';
 import {AbstractFilter} from '../../model/filter/AbstractFilter.mjs';
 import {FilterChain} from '../../model/filter/chain/FilterChain.mjs';
+import {SubscriptionEventType} from '../../model/notification/SubscriptionEventType.mjs';
 import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs';
 import {HexString} from '../../model/specializations/HexString.mjs';
+import {DurationMs} from '../../utils/DurationMs.mjs';
+import {Connection} from '../../websocket/Connection.mjs';
 import {ContactFlavouredApi} from './ContactFlavouredApi.mjs';
 
 
@@ -133,5 +136,27 @@ export interface ContactApi {
 
 	filterServicesBy(filterChain: FilterChain<Service>, startDocumentId: string | undefined,
 			limit: number | undefined): Promise<PaginatedList<DecryptedService>>;
+
+	subscribeToServiceEvents(
+			events: Array<SubscriptionEventType>,
+			filter: AbstractFilter<Service>,
+			onConnected: () => void,
+			channelCapacity: number,
+			retryDelay: DurationMs,
+			retryDelayExponentFactor: number,
+			maxRetries: number,
+			eventFired: (x1: DecryptedService) => void
+	): Promise<Connection>;
+
+	subscribeToEvents(
+			events: Array<SubscriptionEventType>,
+			filter: AbstractFilter<Contact>,
+			onConnected: () => void,
+			channelCapacity: number,
+			retryDelay: DurationMs,
+			retryDelayExponentFactor: number,
+			maxRetries: number,
+			eventFired: (x1: DecryptedContact) => void
+	): Promise<Connection>;
 
 }

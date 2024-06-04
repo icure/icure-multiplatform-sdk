@@ -33,7 +33,7 @@ interface Connection {
 	 *
 	 * @param callback The callback to be called when the connection is reconnected (due to a retry)
 	 */
-	suspend fun onReconnected(callback: suspend (Unit) -> Unit)
+	fun onReconnected(callback: suspend () -> Unit)
 
 	/**
 	 * Subscribe to connection state changes
@@ -42,7 +42,7 @@ interface Connection {
 	 * - `code` The close code
 	 * - `reason` The close reason
 	 */
-	suspend fun onDisconnected(callback: (code: Short?, reason: String?) -> Unit)
+	fun onDisconnected(callback: suspend (code: Short?, reason: String?) -> Unit)
 
 	/**
 	 * Subscribe to connection state changes
@@ -51,7 +51,7 @@ interface Connection {
 	 * - `errorMessage` The error message
 	 * - `fatal` Whether the error is fatal or not, if `fatal` is `true`, the connection will be closed and have to be re-established by the client
 	 */
-	suspend fun onError(callback: (errorMessage: String?, fatal: Boolean) -> Unit)
+	fun onError(callback: suspend (errorMessage: String?, fatal: Boolean) -> Unit)
 }
 
 @InternalAPI
@@ -204,15 +204,15 @@ class ConnectionImpl private constructor(
 		)
 	}
 
-	override suspend fun onReconnected(callback: suspend (Unit) -> Unit) {
-		webSocketWrapper.onReconnect(callback)
+	override fun onReconnected(callback: suspend () -> Unit) {
+		webSocketWrapper.onReconnect { callback() }
 	}
 
-	override suspend fun onDisconnected(callback: (code: Short?, reason: String?) -> Unit) {
+	override fun onDisconnected(callback: suspend (code: Short?, reason: String?) -> Unit) {
 		webSocketWrapper.onClose(callback)
 	}
 
-	override suspend fun onError(callback: (errorMessage: String?, fatal: Boolean) -> Unit) {
+	override fun onError(callback: suspend (errorMessage: String?, fatal: Boolean) -> Unit) {
 		webSocketWrapper.onError(callback)
 	}
 }

@@ -13,10 +13,12 @@ import com.icure.sdk.js.model.embed.EncryptedServiceJs
 import com.icure.sdk.js.model.embed.ServiceJs
 import com.icure.sdk.js.model.filter.AbstractFilterJs
 import com.icure.sdk.js.model.filter.chain.FilterChainJs
+import com.icure.sdk.js.websocket.ConnectionJs
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
 import kotlin.String
+import kotlin.Unit
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
 import kotlin.js.Promise
@@ -98,4 +100,26 @@ public external interface ContactBasicApiJs {
 		startDocumentId: String?,
 		limit: Double?,
 	): Promise<PaginatedListJs<EncryptedServiceJs>>
+
+	public fun subscribeToServiceEvents(
+		events: Array<String>,
+		filter: AbstractFilterJs<ServiceJs>,
+		onConnected: () -> Promise<Unit>,
+		channelCapacity: Double,
+		retryDelay: Double,
+		retryDelayExponentFactor: Double,
+		maxRetries: Double,
+		eventFired: (EncryptedServiceJs) -> Promise<Unit>,
+	): Promise<ConnectionJs>
+
+	public fun subscribeToEvents(
+		events: Array<String>,
+		filter: AbstractFilterJs<ContactJs>,
+		onConnected: () -> Promise<Unit>,
+		channelCapacity: Double,
+		retryDelay: Double,
+		retryDelayExponentFactor: Double,
+		maxRetries: Double,
+		eventFired: (EncryptedContactJs) -> Promise<Unit>,
+	): Promise<ConnectionJs>
 }

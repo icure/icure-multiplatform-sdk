@@ -28,6 +28,8 @@ import com.icure.sdk.js.model.specializations.hexString_toJs
 import com.icure.sdk.js.model.topic_fromJs
 import com.icure.sdk.js.model.topic_toJs
 import com.icure.sdk.js.utils.Record
+import com.icure.sdk.js.websocket.ConnectionJs
+import com.icure.sdk.js.websocket.connection_toJs
 import com.icure.sdk.model.DecryptedTopic
 import com.icure.sdk.model.EncryptedTopic
 import com.icure.sdk.model.Topic
@@ -42,6 +44,7 @@ import kotlin.Unit
 import kotlin.js.Promise
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.await
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
@@ -163,6 +166,42 @@ internal class TopicApiImplJs(
 				GlobalScope.promise {
 			topic_toJs(topicApi.encrypted.removeParticipant(entityId, dataOwnerId))}
 
+
+		override fun subscribeToEvents(
+			events: Array<String>,
+			filter: AbstractFilterJs<TopicJs>,
+			onConnected: () -> Promise<Unit>,
+			channelCapacity: Double,
+			retryDelay: Double,
+			retryDelayExponentFactor: Double,
+			maxRetries: Double,
+			eventFired: (EncryptedTopicJs) -> Promise<Unit>,
+		): Promise<ConnectionJs> = GlobalScope.promise {
+			val onConnectedConverted: suspend () -> Unit = {  ->
+				onConnected(
+				).await()
+			}
+			val eventFiredConverted: suspend (EncryptedTopic) -> Unit = { arg0 ->
+				eventFired(
+					topic_toJs(arg0)).await()
+			}
+			connection_toJs(topicApi.encrypted.subscribeToEvents(com.icure.sdk.js.model.CheckedConverters.arrayToSet(
+			  events,
+			  "events",
+			  { x1: kotlin.String ->
+			    com.icure.sdk.model.notification.SubscriptionEventType.valueOf(x1)
+			  },
+			), com.icure.sdk.js.model.filter.abstractFilter_fromJs(
+			  filter,
+			  { x1: com.icure.sdk.js.model.TopicJs ->
+			    com.icure.sdk.js.model.topic_fromJs(x1)
+			  },
+			), onConnectedConverted, com.icure.sdk.js.model.CheckedConverters.numberToInt(channelCapacity,
+					"channelCapacity"), com.icure.sdk.js.model.CheckedConverters.numberToDuration(retryDelay,
+					"retryDelay"), retryDelayExponentFactor,
+					com.icure.sdk.js.model.CheckedConverters.numberToInt(maxRetries, "maxRetries"),
+					eventFiredConverted))}
+
 	}
 
 	override val tryAndRecover: TopicFlavouredApiJs<TopicJs> = object : TopicFlavouredApiJs<TopicJs> {
@@ -274,6 +313,42 @@ internal class TopicApiImplJs(
 		override fun removeParticipant(entityId: String, dataOwnerId: String): Promise<TopicJs> =
 				GlobalScope.promise {
 			topic_toJs(topicApi.tryAndRecover.removeParticipant(entityId, dataOwnerId))}
+
+
+		override fun subscribeToEvents(
+			events: Array<String>,
+			filter: AbstractFilterJs<TopicJs>,
+			onConnected: () -> Promise<Unit>,
+			channelCapacity: Double,
+			retryDelay: Double,
+			retryDelayExponentFactor: Double,
+			maxRetries: Double,
+			eventFired: (TopicJs) -> Promise<Unit>,
+		): Promise<ConnectionJs> = GlobalScope.promise {
+			val onConnectedConverted: suspend () -> Unit = {  ->
+				onConnected(
+				).await()
+			}
+			val eventFiredConverted: suspend (Topic) -> Unit = { arg0 ->
+				eventFired(
+					topic_toJs(arg0)).await()
+			}
+			connection_toJs(topicApi.tryAndRecover.subscribeToEvents(com.icure.sdk.js.model.CheckedConverters.arrayToSet(
+			  events,
+			  "events",
+			  { x1: kotlin.String ->
+			    com.icure.sdk.model.notification.SubscriptionEventType.valueOf(x1)
+			  },
+			), com.icure.sdk.js.model.filter.abstractFilter_fromJs(
+			  filter,
+			  { x1: com.icure.sdk.js.model.TopicJs ->
+			    com.icure.sdk.js.model.topic_fromJs(x1)
+			  },
+			), onConnectedConverted, com.icure.sdk.js.model.CheckedConverters.numberToInt(channelCapacity,
+					"channelCapacity"), com.icure.sdk.js.model.CheckedConverters.numberToDuration(retryDelay,
+					"retryDelay"), retryDelayExponentFactor,
+					com.icure.sdk.js.model.CheckedConverters.numberToInt(maxRetries, "maxRetries"),
+					eventFiredConverted))}
 
 	}
 
@@ -487,5 +562,41 @@ internal class TopicApiImplJs(
 	override fun removeParticipant(entityId: String, dataOwnerId: String): Promise<DecryptedTopicJs> =
 			GlobalScope.promise {
 		topic_toJs(topicApi.removeParticipant(entityId, dataOwnerId))}
+
+
+	override fun subscribeToEvents(
+		events: Array<String>,
+		filter: AbstractFilterJs<TopicJs>,
+		onConnected: () -> Promise<Unit>,
+		channelCapacity: Double,
+		retryDelay: Double,
+		retryDelayExponentFactor: Double,
+		maxRetries: Double,
+		eventFired: (DecryptedTopicJs) -> Promise<Unit>,
+	): Promise<ConnectionJs> = GlobalScope.promise {
+		val onConnectedConverted: suspend () -> Unit = {  ->
+			onConnected(
+			).await()
+		}
+		val eventFiredConverted: suspend (DecryptedTopic) -> Unit = { arg0 ->
+			eventFired(
+				topic_toJs(arg0)).await()
+		}
+		connection_toJs(topicApi.subscribeToEvents(com.icure.sdk.js.model.CheckedConverters.arrayToSet(
+		  events,
+		  "events",
+		  { x1: kotlin.String ->
+		    com.icure.sdk.model.notification.SubscriptionEventType.valueOf(x1)
+		  },
+		), com.icure.sdk.js.model.filter.abstractFilter_fromJs(
+		  filter,
+		  { x1: com.icure.sdk.js.model.TopicJs ->
+		    com.icure.sdk.js.model.topic_fromJs(x1)
+		  },
+		), onConnectedConverted, com.icure.sdk.js.model.CheckedConverters.numberToInt(channelCapacity,
+				"channelCapacity"), com.icure.sdk.js.model.CheckedConverters.numberToDuration(retryDelay,
+				"retryDelay"), retryDelayExponentFactor,
+				com.icure.sdk.js.model.CheckedConverters.numberToInt(maxRetries, "maxRetries"),
+				eventFiredConverted))}
 
 }
