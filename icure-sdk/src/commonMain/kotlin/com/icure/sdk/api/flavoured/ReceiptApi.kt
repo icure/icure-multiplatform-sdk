@@ -1,20 +1,19 @@
 package com.icure.sdk.api.flavoured
 
+import com.icure.sdk.api.ApiConfiguration
+import com.icure.sdk.api.BasicApiConfiguration
 import com.icure.sdk.api.raw.RawReceiptApi
-import com.icure.sdk.crypto.EntityValidationService
-import com.icure.sdk.crypto.InternalCryptoServices
 import com.icure.sdk.crypto.entities.ReceiptShareOptions
-import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.withTypeInfo
-import com.icure.sdk.model.Receipt
 import com.icure.sdk.model.DecryptedReceipt
 import com.icure.sdk.model.EncryptedReceipt
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.Patient
+import com.icure.sdk.model.Receipt
 import com.icure.sdk.model.User
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.embed.AccessLevel
@@ -28,10 +27,6 @@ import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.currentEpochMs
 import kotlinx.serialization.json.decodeFromJsonElement
-
-@OptIn(InternalIcureApi::class)
-private val ENCRYPTED_FIELDS_MANIFEST =
-	EncryptedFieldsManifest("Receipt.", emptySet(), emptyMap(), emptyMap(), emptyMap())
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface ReceiptBasicFlavourlessApi {
@@ -138,8 +133,11 @@ private abstract class AbstractReceiptBasicFlavouredApi<E : Receipt>(protected v
 @InternalIcureApi
 private abstract class AbstractReceiptFlavouredApi<E : Receipt>(
 	rawApi: RawReceiptApi,
-	private val crypto: InternalCryptoServices,
+	private val config: ApiConfiguration,
 ) : AbstractReceiptBasicFlavouredApi<E>(rawApi), ReceiptFlavouredApi<E> {
+	protected val crypto get() = config.crypto
+	protected val fieldsToEncrypt get() = config.encryption.receipt
+
 	override suspend fun shareWith(
 		delegateId: String,
 		receipt: E,
@@ -189,11 +187,9 @@ private class AbstractReceiptBasicFlavourlessApi(val rawApi: RawReceiptApi) : Re
 @InternalIcureApi
 internal class ReceiptApiImpl(
 	private val rawApi: RawReceiptApi,
-	private val crypto: InternalCryptoServices,
-	private val fieldsToEncrypt: EncryptedFieldsManifest,
-	private val autofillAuthor: Boolean,
+	private val config: ApiConfiguration
 	) : ReceiptApi, ReceiptFlavouredApi<DecryptedReceipt> by object :
-	AbstractReceiptFlavouredApi<DecryptedReceipt>(rawApi, crypto) {
+	AbstractReceiptFlavouredApi<DecryptedReceipt>(rawApi, config) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedReceipt): EncryptedReceipt =
 		crypto.entity.encryptEntity(
 			entity.withTypeInfo(),
@@ -210,7 +206,7 @@ internal class ReceiptApiImpl(
 	}
 }, ReceiptBasicFlavourlessApi by AbstractReceiptBasicFlavourlessApi(rawApi) {
 	override val encrypted: ReceiptFlavouredApi<EncryptedReceipt> =
-		object : AbstractReceiptFlavouredApi<EncryptedReceipt>(rawApi, crypto) {
+		object : AbstractReceiptFlavouredApi<EncryptedReceipt>(rawApi, config) {
 			override suspend fun validateAndMaybeEncrypt(entity: EncryptedReceipt): EncryptedReceipt =
 				crypto.entity.validateEncryptedEntity(entity.withTypeInfo(), EncryptedReceipt.serializer(), fieldsToEncrypt)
 
@@ -218,7 +214,7 @@ internal class ReceiptApiImpl(
 		}
 
 	override val tryAndRecover: ReceiptFlavouredApi<Receipt> =
-		object : AbstractReceiptFlavouredApi<Receipt>(rawApi, crypto) {
+		object : AbstractReceiptFlavouredApi<Receipt>(rawApi, config) {
 			override suspend fun maybeDecrypt(entity: EncryptedReceipt): Receipt =
 				crypto.entity.tryDecryptEntity(
 					entity.withTypeInfo(),
@@ -250,6 +246,9 @@ internal class ReceiptApiImpl(
 		}
 	}
 
+	private val crypto get() = config.crypto
+	private val fieldsToEncrypt get() = config.encryption.receipt
+
 	override suspend fun withEncryptionMetadata(
 		base: DecryptedReceipt?,
 		patient: Patient?,
@@ -262,8 +261,8 @@ internal class ReceiptApiImpl(
 			(base ?: DecryptedReceipt(crypto.primitives.strongRandom.randomUUID())).copy(
 				created = base?.created ?: currentEpochMs(),
 				modified = base?.modified ?: currentEpochMs(),
-				responsible = base?.responsible ?: user?.takeIf { autofillAuthor }?.dataOwnerId,
-				author = base?.author ?: user?.id?.takeIf { autofillAuthor },
+				responsible = base?.responsible ?: user?.takeIf { config.autofillAuthor }?.dataOwnerId,
+				author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
 			).withTypeInfo(),
 			patient?.id,
 			patient?.let { crypto.entity.resolveSecretIdOption(it.withTypeInfo(), secretId) },
@@ -338,12 +337,11 @@ internal class ReceiptApiImpl(
 @InternalIcureApi
 internal class ReceiptBasicApiImpl(
 	rawApi: RawReceiptApi,
-	private val validationService: EntityValidationService,
-	private val fieldsToEncrypt: EncryptedFieldsManifest = ENCRYPTED_FIELDS_MANIFEST,
+	private val config: BasicApiConfiguration
 ) : ReceiptBasicApi, ReceiptBasicFlavouredApi<EncryptedReceipt> by object :
 	AbstractReceiptBasicFlavouredApi<EncryptedReceipt>(rawApi) {
 	override suspend fun validateAndMaybeEncrypt(entity: EncryptedReceipt): EncryptedReceipt =
-		validationService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedReceipt.serializer(), fieldsToEncrypt)
+		config.crypto.validationService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedReceipt.serializer(), config.encryption.receipt)
 
 	override suspend fun maybeDecrypt(entity: EncryptedReceipt): EncryptedReceipt = entity
 }, ReceiptBasicFlavourlessApi by AbstractReceiptBasicFlavourlessApi(rawApi)

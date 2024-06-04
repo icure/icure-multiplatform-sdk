@@ -1,5 +1,8 @@
 package com.icure.sdk.api.flavoured
 
+import co.touchlab.kermit.Logger.Companion.config
+import com.icure.sdk.api.ApiConfiguration
+import com.icure.sdk.api.BasicApiConfiguration
 import com.icure.sdk.api.raw.RawMaintenanceTaskApi
 import com.icure.sdk.crypto.BasicInternalCryptoApi
 import com.icure.sdk.crypto.InternalCryptoServices
@@ -11,7 +14,9 @@ import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.withTypeInfo
 import com.icure.sdk.model.MaintenanceTask
 import com.icure.sdk.model.DecryptedMaintenanceTask
+import com.icure.sdk.model.EncryptedHealthElement
 import com.icure.sdk.model.EncryptedMaintenanceTask
+import com.icure.sdk.model.HealthElement
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.User
@@ -20,14 +25,24 @@ import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.embed.DelegationTag
 import com.icure.sdk.model.extensions.autoDelegationsFor
 import com.icure.sdk.model.extensions.dataOwnerId
+import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
+import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.currentEpochMs
+import com.icure.sdk.websocket.Connection
+import com.icure.sdk.websocket.ConnectionImpl
+import com.icure.sdk.websocket.EmittedEvent
+import com.icure.sdk.websocket.Subscribable
+import com.icure.sdk.websocket.WebSocketAuthProvider
+import io.ktor.util.InternalAPI
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.decodeFromJsonElement
+import kotlin.time.Duration
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface MaintenanceTaskBasicFlavourlessApi {
@@ -36,7 +51,7 @@ interface MaintenanceTaskBasicFlavourlessApi {
 }
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
-interface MaintenanceTaskBasicFlavouredApi<E : MaintenanceTask> {
+interface MaintenanceTaskBasicFlavouredApi<E : MaintenanceTask>: Subscribable<MaintenanceTask, E> {
 	suspend fun modifyMaintenanceTask(entity: E): E
 	suspend fun getMaintenanceTask(entityId: String): E
 	suspend fun filterMaintenanceTasksBy(
@@ -126,7 +141,10 @@ interface MaintenanceTaskApi : MaintenanceTaskBasicFlavourlessApi, MaintenanceTa
 interface MaintenanceTaskBasicApi : MaintenanceTaskBasicFlavourlessApi, MaintenanceTaskBasicFlavouredApi<EncryptedMaintenanceTask>
 
 @InternalIcureApi
-private abstract class AbstractMaintenanceTaskBasicFlavouredApi<E : MaintenanceTask>(protected val rawApi: RawMaintenanceTaskApi) :
+private abstract class AbstractMaintenanceTaskBasicFlavouredApi<E : MaintenanceTask>(
+	protected val rawApi: RawMaintenanceTaskApi,
+	private val config: BasicApiConfiguration
+) :
 	MaintenanceTaskBasicFlavouredApi<E> {
 	override suspend fun modifyMaintenanceTask(entity: E): E =
 		rawApi.modifyMaintenanceTask(validateAndMaybeEncrypt(entity)).successBody().let { maybeDecrypt(it) }
@@ -141,6 +159,41 @@ private abstract class AbstractMaintenanceTaskBasicFlavouredApi<E : MaintenanceT
 	): PaginatedList<E> =
 		rawApi.filterMaintenanceTasksBy(startDocumentId, limit, filterChain).successBody().map { maybeDecrypt(it) }
 
+	@OptIn(InternalAPI::class)
+	override suspend fun subscribeToEvents(
+		events: Set<SubscriptionEventType>,
+		filter: AbstractFilter<MaintenanceTask>,
+		onConnected: suspend () -> Unit,
+		channelCapacity: Int,
+		retryDelay: Duration,
+		retryDelayExponentFactor: Double,
+		maxRetries: Int,
+		eventFired: suspend (E) -> Unit
+	): Connection {
+		return ConnectionImpl.initialize(
+			client = config.httpClient,
+			hostname = config.apiUrl.replace("https://", "").replace("http://", ""),
+			path = "/ws/v2/notification/subscribe",
+			serializer = EncryptedMaintenanceTask.serializer(),
+			events = events,
+			filter = filter,
+			qualifiedName = MaintenanceTask.KRAKEN_QUALIFIED_NAME,
+			subscriptionSerializer = { Serialization.json.encodeToString(it) },
+			webSocketAuthProvider = config.requireWebSocketAuthProvider(),
+			onOpenListener = onConnected,
+			retryDelay = retryDelay,
+			retryDelayExponentFactor = retryDelayExponentFactor,
+			maxRetries = maxRetries,
+			eventCallback = { entity, onEvent ->
+				try {
+					eventFired(maybeDecrypt(entity))
+				} catch (e: EntityEncryptionException) {
+					onEvent(EmittedEvent.Error(e.message, false))
+				}
+			}
+		)
+	}
+
 	abstract suspend fun validateAndMaybeEncrypt(entity: E): EncryptedMaintenanceTask
 	abstract suspend fun maybeDecrypt(entity: EncryptedMaintenanceTask): E
 }
@@ -148,8 +201,11 @@ private abstract class AbstractMaintenanceTaskBasicFlavouredApi<E : MaintenanceT
 @InternalIcureApi
 private abstract class AbstractMaintenanceTaskFlavouredApi<E : MaintenanceTask>(
 	rawApi: RawMaintenanceTaskApi,
-	private val crypto: InternalCryptoServices
-) : AbstractMaintenanceTaskBasicFlavouredApi<E>(rawApi), MaintenanceTaskFlavouredApi<E> {
+	private val config: ApiConfiguration
+) : AbstractMaintenanceTaskBasicFlavouredApi<E>(rawApi, config), MaintenanceTaskFlavouredApi<E> {
+	protected val crypto get() = config.crypto
+	protected val fieldsToEncrypt get() = config.encryption.maintenanceTask
+
 	override suspend fun shareWith(
 		delegateId: String,
 		maintenanceTask: E,
@@ -194,11 +250,9 @@ private class AbstractMaintenanceTaskBasicFlavourlessApi(val rawApi: RawMaintena
 @InternalIcureApi
 internal class MaintenanceTaskApiImpl(
 	private val rawApi: RawMaintenanceTaskApi,
-	private val crypto: InternalCryptoServices,
-	private val fieldsToEncrypt: EncryptedFieldsManifest,
-	private val autofillAuthor: Boolean,
+	private val config: ApiConfiguration
 ) : MaintenanceTaskApi, MaintenanceTaskFlavouredApi<DecryptedMaintenanceTask> by object :
-	AbstractMaintenanceTaskFlavouredApi<DecryptedMaintenanceTask>(rawApi, crypto) {
+	AbstractMaintenanceTaskFlavouredApi<DecryptedMaintenanceTask>(rawApi, config) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedMaintenanceTask): EncryptedMaintenanceTask =
 		crypto.entity.encryptEntity(
 			entity.withTypeInfo(),
@@ -215,7 +269,7 @@ internal class MaintenanceTaskApiImpl(
 	}
 }, MaintenanceTaskBasicFlavourlessApi by AbstractMaintenanceTaskBasicFlavourlessApi(rawApi) {
 	override val encrypted: MaintenanceTaskFlavouredApi<EncryptedMaintenanceTask> =
-		object : AbstractMaintenanceTaskFlavouredApi<EncryptedMaintenanceTask>(rawApi, crypto) {
+		object : AbstractMaintenanceTaskFlavouredApi<EncryptedMaintenanceTask>(rawApi, config) {
 			override suspend fun validateAndMaybeEncrypt(entity: EncryptedMaintenanceTask): EncryptedMaintenanceTask =
 				crypto.entity.validateEncryptedEntity(entity.withTypeInfo(), EncryptedMaintenanceTask.serializer(), fieldsToEncrypt)
 
@@ -223,7 +277,7 @@ internal class MaintenanceTaskApiImpl(
 		}
 
 	override val tryAndRecover: MaintenanceTaskFlavouredApi<MaintenanceTask> =
-		object : AbstractMaintenanceTaskFlavouredApi<MaintenanceTask>(rawApi, crypto) {
+		object : AbstractMaintenanceTaskFlavouredApi<MaintenanceTask>(rawApi, config) {
 			override suspend fun maybeDecrypt(entity: EncryptedMaintenanceTask): MaintenanceTask =
 				crypto.entity.tryDecryptEntity(
 					entity.withTypeInfo(),
@@ -255,6 +309,9 @@ internal class MaintenanceTaskApiImpl(
 		}
 	}
 
+	private val crypto get() = config.crypto
+	private val fieldsToEncrypt get() = config.encryption.maintenanceTask
+
 	override suspend fun getEncryptionKeysOf(maintenanceTask: MaintenanceTask): Set<HexString> = crypto.entity.encryptionKeysOf(maintenanceTask.withTypeInfo(), null)
 
 	override suspend fun hasWriteAccess(maintenanceTask: MaintenanceTask): Boolean = crypto.entity.hasWriteAccess(maintenanceTask.withTypeInfo())
@@ -275,8 +332,8 @@ internal class MaintenanceTaskApiImpl(
 			(maintenanceTask ?: DecryptedMaintenanceTask(crypto.primitives.strongRandom.randomUUID())).copy(
 				created = maintenanceTask?.created ?: currentEpochMs(),
 				modified = maintenanceTask?.modified ?: currentEpochMs(),
-				responsible = maintenanceTask?.responsible ?: user?.takeIf { autofillAuthor }?.dataOwnerId,
-				author = maintenanceTask?.author ?: user?.id?.takeIf { autofillAuthor },
+				responsible = maintenanceTask?.responsible ?: user?.takeIf { config.autofillAuthor }?.dataOwnerId,
+				author = maintenanceTask?.author ?: user?.id?.takeIf { config.autofillAuthor },
 			).withTypeInfo(),
 			null,
 			null,
@@ -302,12 +359,11 @@ internal class MaintenanceTaskApiImpl(
 @InternalIcureApi
 internal class MaintenanceTaskBasicApiImpl(
 	rawApi: RawMaintenanceTaskApi,
-	private val crypto: BasicInternalCryptoApi,
-	private val fieldsToEncrypt: EncryptedFieldsManifest,
+	private val config: BasicApiConfiguration
 ) : MaintenanceTaskBasicApi, MaintenanceTaskBasicFlavouredApi<EncryptedMaintenanceTask> by object :
-	AbstractMaintenanceTaskBasicFlavouredApi<EncryptedMaintenanceTask>(rawApi) {
+	AbstractMaintenanceTaskBasicFlavouredApi<EncryptedMaintenanceTask>(rawApi, config) {
 	override suspend fun validateAndMaybeEncrypt(entity: EncryptedMaintenanceTask): EncryptedMaintenanceTask =
-		crypto.validationService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedMaintenanceTask.serializer(), fieldsToEncrypt)
+		config.crypto.validationService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedMaintenanceTask.serializer(), config.encryption.maintenanceTask)
 
 	override suspend fun maybeDecrypt(entity: EncryptedMaintenanceTask): EncryptedMaintenanceTask = entity
 }, MaintenanceTaskBasicFlavourlessApi by AbstractMaintenanceTaskBasicFlavourlessApi(rawApi)

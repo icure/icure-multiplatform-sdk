@@ -1,20 +1,19 @@
 package com.icure.sdk.api.flavoured
 
+import com.icure.sdk.api.ApiConfiguration
+import com.icure.sdk.api.BasicApiConfiguration
 import com.icure.sdk.api.raw.RawTimeTableApi
-import com.icure.sdk.crypto.EntityValidationService
-import com.icure.sdk.crypto.InternalCryptoServices
-import com.icure.sdk.crypto.entities.TimeTableShareOptions
-import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
 import com.icure.sdk.crypto.entities.SimpleShareResult
+import com.icure.sdk.crypto.entities.TimeTableShareOptions
 import com.icure.sdk.crypto.entities.withTypeInfo
-import com.icure.sdk.model.TimeTable
 import com.icure.sdk.model.DecryptedTimeTable
 import com.icure.sdk.model.EncryptedTimeTable
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.Patient
+import com.icure.sdk.model.TimeTable
 import com.icure.sdk.model.User
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.embed.AccessLevel
@@ -28,10 +27,6 @@ import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.currentEpochMs
 import kotlinx.serialization.json.decodeFromJsonElement
-
-@OptIn(InternalIcureApi::class)
-private val ENCRYPTED_FIELDS_MANIFEST =
-	EncryptedFieldsManifest("TimeTable.", emptySet(), emptyMap(), emptyMap(), emptyMap())
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface TimeTableBasicFlavourlessApi {
@@ -139,8 +134,11 @@ private abstract class AbstractTimeTableBasicFlavouredApi<E : TimeTable>(protect
 @InternalIcureApi
 private abstract class AbstractTimeTableFlavouredApi<E : TimeTable>(
 	rawApi: RawTimeTableApi,
-	private val crypto: InternalCryptoServices,
+	private val config: ApiConfiguration
 ) : AbstractTimeTableBasicFlavouredApi<E>(rawApi), TimeTableFlavouredApi<E> {
+	protected val crypto get() = config.crypto
+	protected val fieldsToEncrypt get() = config.encryption.timeTable
+
 	override suspend fun shareWith(
 		delegateId: String,
 		timeTable: E,
@@ -185,11 +183,9 @@ private class AbstractTimeTableBasicFlavourlessApi(val rawApi: RawTimeTableApi) 
 @InternalIcureApi
 internal class TimeTableApiImpl(
 	private val rawApi: RawTimeTableApi,
-	private val crypto: InternalCryptoServices,
-	private val fieldsToEncrypt: EncryptedFieldsManifest = ENCRYPTED_FIELDS_MANIFEST,
-	private val autofillAuthor: Boolean,
+	private val config: ApiConfiguration
 ) : TimeTableApi, TimeTableFlavouredApi<DecryptedTimeTable> by object :
-	AbstractTimeTableFlavouredApi<DecryptedTimeTable>(rawApi, crypto) {
+	AbstractTimeTableFlavouredApi<DecryptedTimeTable>(rawApi, config) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedTimeTable): EncryptedTimeTable =
 		crypto.entity.encryptEntity(
 			entity.withTypeInfo(),
@@ -206,7 +202,7 @@ internal class TimeTableApiImpl(
 	}
 }, TimeTableBasicFlavourlessApi by AbstractTimeTableBasicFlavourlessApi(rawApi) {
 	override val encrypted: TimeTableFlavouredApi<EncryptedTimeTable> =
-		object : AbstractTimeTableFlavouredApi<EncryptedTimeTable>(rawApi, crypto) {
+		object : AbstractTimeTableFlavouredApi<EncryptedTimeTable>(rawApi, config) {
 			override suspend fun validateAndMaybeEncrypt(entity: EncryptedTimeTable): EncryptedTimeTable =
 				crypto.entity.validateEncryptedEntity(entity.withTypeInfo(), EncryptedTimeTable.serializer(), fieldsToEncrypt)
 
@@ -214,7 +210,7 @@ internal class TimeTableApiImpl(
 		}
 
 	override val tryAndRecover: TimeTableFlavouredApi<TimeTable> =
-		object : AbstractTimeTableFlavouredApi<TimeTable>(rawApi, crypto) {
+		object : AbstractTimeTableFlavouredApi<TimeTable>(rawApi, config) {
 			override suspend fun maybeDecrypt(entity: EncryptedTimeTable): TimeTable =
 				crypto.entity.tryDecryptEntity(
 					entity.withTypeInfo(),
@@ -246,6 +242,8 @@ internal class TimeTableApiImpl(
 		}
 	}
 
+	private val crypto get() = config.crypto
+	private val fieldsToEncrypt get() = config.encryption.timeTable
 
 	override suspend fun getEncryptionKeysOf(timeTable: TimeTable): Set<HexString> = crypto.entity.encryptionKeysOf(timeTable.withTypeInfo(), null)
 
@@ -268,8 +266,8 @@ internal class TimeTableApiImpl(
 			(base ?: DecryptedTimeTable(crypto.primitives.strongRandom.randomUUID())).copy(
 				created = base?.created ?: currentEpochMs(),
 				modified = base?.modified ?: currentEpochMs(),
-				responsible = base?.responsible ?: user?.takeIf { autofillAuthor }?.dataOwnerId,
-				author = base?.author ?: user?.id?.takeIf { autofillAuthor },
+				responsible = base?.responsible ?: user?.takeIf { config.autofillAuthor }?.dataOwnerId,
+				author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
 			).withTypeInfo(),
 			patient?.id,
 			patient?.let { crypto.entity.resolveSecretIdOption(it.withTypeInfo(), secretId) },
@@ -295,12 +293,11 @@ internal class TimeTableApiImpl(
 @InternalIcureApi
 internal class TimeTableBasicApiImpl(
 	rawApi: RawTimeTableApi,
-	private val validationService: EntityValidationService,
-	private val fieldsToEncrypt: EncryptedFieldsManifest = ENCRYPTED_FIELDS_MANIFEST,
+	private val config: BasicApiConfiguration
 ) : TimeTableBasicApi, TimeTableBasicFlavouredApi<EncryptedTimeTable> by object :
 	AbstractTimeTableBasicFlavouredApi<EncryptedTimeTable>(rawApi) {
 	override suspend fun validateAndMaybeEncrypt(entity: EncryptedTimeTable): EncryptedTimeTable =
-		validationService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedTimeTable.serializer(), fieldsToEncrypt)
+		config.crypto.validationService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedTimeTable.serializer(), config.encryption.timeTable)
 
 	override suspend fun maybeDecrypt(entity: EncryptedTimeTable): EncryptedTimeTable = entity
 }, TimeTableBasicFlavourlessApi by AbstractTimeTableBasicFlavourlessApi(rawApi)

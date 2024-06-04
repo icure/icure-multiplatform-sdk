@@ -1,21 +1,20 @@
 package com.icure.sdk.api.flavoured
 
+import com.icure.sdk.api.ApiConfiguration
+import com.icure.sdk.api.BasicApiConfiguration
 import com.icure.sdk.api.raw.RawTopicApi
-import com.icure.sdk.crypto.EntityValidationService
-import com.icure.sdk.crypto.InternalCryptoServices
-import com.icure.sdk.crypto.entities.TopicShareOptions
-import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
 import com.icure.sdk.crypto.entities.SimpleShareResult
+import com.icure.sdk.crypto.entities.TopicShareOptions
 import com.icure.sdk.crypto.entities.withTypeInfo
-import com.icure.sdk.model.Topic
 import com.icure.sdk.model.DecryptedTopic
 import com.icure.sdk.model.EncryptedTopic
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.Patient
+import com.icure.sdk.model.Topic
 import com.icure.sdk.model.TopicRole
 import com.icure.sdk.model.User
 import com.icure.sdk.model.couchdb.DocIdentifier
@@ -25,6 +24,7 @@ import com.icure.sdk.model.extensions.autoDelegationsFor
 import com.icure.sdk.model.extensions.dataOwnerId
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
+import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.requests.topic.AddParticipant
 import com.icure.sdk.model.requests.topic.RemoveParticipant
@@ -33,11 +33,14 @@ import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.currentEpochMs
+import com.icure.sdk.websocket.Connection
+import com.icure.sdk.websocket.ConnectionImpl
+import com.icure.sdk.websocket.EmittedEvent
+import com.icure.sdk.websocket.Subscribable
+import io.ktor.util.InternalAPI
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.decodeFromJsonElement
-
-@OptIn(InternalIcureApi::class)
-private val ENCRYPTED_FIELDS_MANIFEST =
-	EncryptedFieldsManifest("Topic.", emptySet(), emptyMap(), emptyMap(), emptyMap())
+import kotlin.time.Duration
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface TopicBasicFlavourlessApi {
@@ -47,7 +50,7 @@ interface TopicBasicFlavourlessApi {
 }
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
-interface TopicBasicFlavouredApi<E : Topic> {
+interface TopicBasicFlavouredApi<E : Topic>: Subscribable<Topic, E> {
 	suspend fun modifyTopic(entity: E): E
 	suspend fun getTopic(entityId: String): E
 	suspend fun getTopics(entityIds: List<String>): List<E>
@@ -132,7 +135,10 @@ interface TopicApi : TopicBasicFlavourlessApi, TopicFlavouredApi<DecryptedTopic>
 interface TopicBasicApi : TopicBasicFlavourlessApi, TopicBasicFlavouredApi<EncryptedTopic>
 
 @InternalIcureApi
-private abstract class AbstractTopicBasicFlavouredApi<E : Topic>(protected val rawApi: RawTopicApi) :
+private abstract class AbstractTopicBasicFlavouredApi<E : Topic>(
+	protected val rawApi: RawTopicApi,
+	private val config: BasicApiConfiguration,
+) :
 	TopicBasicFlavouredApi<E> {
 	override suspend fun modifyTopic(entity: E): E =
 		rawApi.modifyTopic(validateAndMaybeEncrypt(entity)).successBody().let { maybeDecrypt(it) }
@@ -151,6 +157,41 @@ private abstract class AbstractTopicBasicFlavouredApi<E : Topic>(protected val r
 	override suspend fun removeParticipant(entityId: String, dataOwnerId: String) =
 		rawApi.removeParticipant(entityId, RemoveParticipant(dataOwnerId)).successBody().let { maybeDecrypt(it) }
 
+	@OptIn(InternalAPI::class)
+	override suspend fun subscribeToEvents(
+		events: Set<SubscriptionEventType>,
+		filter: AbstractFilter<Topic>,
+		onConnected: suspend () -> Unit,
+		channelCapacity: Int,
+		retryDelay: Duration,
+		retryDelayExponentFactor: Double,
+		maxRetries: Int,
+		eventFired: suspend (E) -> Unit
+	): Connection {
+		return ConnectionImpl.initialize(
+			client = config.httpClient,
+			hostname = config.apiUrl.replace("https://", "").replace("http://", ""),
+			path = "/ws/v2/notification/subscribe",
+			serializer = EncryptedTopic.serializer(),
+			events = events,
+			filter = filter,
+			qualifiedName = Topic.KRAKEN_QUALIFIED_NAME,
+			subscriptionSerializer = { Serialization.json.encodeToString(it) },
+			webSocketAuthProvider = config.requireWebSocketAuthProvider(),
+			onOpenListener = onConnected,
+			retryDelay = retryDelay,
+			retryDelayExponentFactor = retryDelayExponentFactor,
+			maxRetries = maxRetries,
+			eventCallback = { entity, onEvent ->
+				try {
+					eventFired(maybeDecrypt(entity))
+				} catch (e: EntityEncryptionException) {
+					onEvent(EmittedEvent.Error(e.message, false))
+				}
+			}
+		)
+	}
+
 
 	abstract suspend fun validateAndMaybeEncrypt(entity: E): EncryptedTopic
 	abstract suspend fun maybeDecrypt(entity: EncryptedTopic): E
@@ -159,8 +200,11 @@ private abstract class AbstractTopicBasicFlavouredApi<E : Topic>(protected val r
 @InternalIcureApi
 private abstract class AbstractTopicFlavouredApi<E : Topic>(
 	rawApi: RawTopicApi,
-	private val crypto: InternalCryptoServices,
-) : AbstractTopicBasicFlavouredApi<E>(rawApi), TopicFlavouredApi<E> {
+	private val config: ApiConfiguration
+) : AbstractTopicBasicFlavouredApi<E>(rawApi, config), TopicFlavouredApi<E> {
+	protected val crypto get() = config.crypto
+	protected val fieldsToEncrypt get() = config.encryption.topic
+
 	override suspend fun shareWith(
 		delegateId: String,
 		topic: E,
@@ -206,11 +250,11 @@ private class AbstractTopicBasicFlavourlessApi(val rawApi: RawTopicApi) : TopicB
 @InternalIcureApi
 internal class TopicApiImpl(
 	private val rawApi: RawTopicApi,
-	private val crypto: InternalCryptoServices,
-	private val fieldsToEncrypt: EncryptedFieldsManifest = ENCRYPTED_FIELDS_MANIFEST,
-	private val autofillAuthor: Boolean,
-) : TopicApi, TopicFlavouredApi<DecryptedTopic> by object :
-	AbstractTopicFlavouredApi<DecryptedTopic>(rawApi, crypto) {
+	private val config: ApiConfiguration,
+) : TopicApi, TopicFlavouredApi<DecryptedTopic> by object : AbstractTopicFlavouredApi<DecryptedTopic>(
+	rawApi,
+	config
+) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedTopic): EncryptedTopic =
 		crypto.entity.encryptEntity(
 			entity.withTypeInfo(),
@@ -227,7 +271,7 @@ internal class TopicApiImpl(
 	}
 }, TopicBasicFlavourlessApi by AbstractTopicBasicFlavourlessApi(rawApi) {
 	override val encrypted: TopicFlavouredApi<EncryptedTopic> =
-		object : AbstractTopicFlavouredApi<EncryptedTopic>(rawApi, crypto) {
+		object : AbstractTopicFlavouredApi<EncryptedTopic>(rawApi, config) {
 			override suspend fun validateAndMaybeEncrypt(entity: EncryptedTopic): EncryptedTopic =
 				crypto.entity.validateEncryptedEntity(entity.withTypeInfo(), EncryptedTopic.serializer(), fieldsToEncrypt)
 
@@ -235,7 +279,7 @@ internal class TopicApiImpl(
 		}
 
 	override val tryAndRecover: TopicFlavouredApi<Topic> =
-		object : AbstractTopicFlavouredApi<Topic>(rawApi, crypto) {
+		object : AbstractTopicFlavouredApi<Topic>(rawApi, config) {
 			override suspend fun maybeDecrypt(entity: EncryptedTopic): Topic =
 				crypto.entity.tryDecryptEntity(
 					entity.withTypeInfo(),
@@ -267,6 +311,9 @@ internal class TopicApiImpl(
 		}
 	}
 
+	private val crypto get() = config.crypto
+	private val fieldsToEncrypt get() = config.encryption.topic
+
 	override suspend fun withEncryptionMetadata(
 		base: DecryptedTopic?,
 		patient: Patient?,
@@ -279,8 +326,8 @@ internal class TopicApiImpl(
 			(base ?: DecryptedTopic(crypto.primitives.strongRandom.randomUUID())).copy(
 				created = base?.created ?: currentEpochMs(),
 				modified = base?.modified ?: currentEpochMs(),
-				responsible = base?.responsible ?: user?.takeIf { autofillAuthor }?.dataOwnerId,
-				author = base?.author ?: user?.id?.takeIf { autofillAuthor },
+				responsible = base?.responsible ?: user?.takeIf { config.autofillAuthor }?.dataOwnerId,
+				author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
 			).withTypeInfo(),
 			patient?.id,
 			patient?.let { crypto.entity.resolveSecretIdOption(it.withTypeInfo(), secretId) },
@@ -316,12 +363,15 @@ internal class TopicApiImpl(
 @InternalIcureApi
 internal class TopicBasicApiImpl(
 	rawApi: RawTopicApi,
-	private val validationService: EntityValidationService,
-	private val fieldsToEncrypt: EncryptedFieldsManifest = ENCRYPTED_FIELDS_MANIFEST,
+	private val config: BasicApiConfiguration
 ) : TopicBasicApi, TopicBasicFlavouredApi<EncryptedTopic> by object :
-	AbstractTopicBasicFlavouredApi<EncryptedTopic>(rawApi) {
+	AbstractTopicBasicFlavouredApi<EncryptedTopic>(rawApi, config) {
 	override suspend fun validateAndMaybeEncrypt(entity: EncryptedTopic): EncryptedTopic =
-		validationService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedTopic.serializer(), fieldsToEncrypt)
+		config.crypto.validationService.validateEncryptedEntity(
+			entity.withTypeInfo(),
+			EncryptedTopic.serializer(),
+			config.encryption.topic
+		)
 
 	override suspend fun maybeDecrypt(entity: EncryptedTopic): EncryptedTopic = entity
 }, TopicBasicFlavourlessApi by AbstractTopicBasicFlavourlessApi(rawApi)

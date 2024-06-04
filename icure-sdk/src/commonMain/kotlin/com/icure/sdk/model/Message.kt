@@ -104,7 +104,9 @@ sealed interface Message :
 
 	override val securityMetadata: SecurityMetadata?
 	// region Message-Message
-
+	companion object{
+		const val KRAKEN_QUALIFIED_NAME = "org.taktik.icure.entities.Message"
+	}
 	// endregion
 }
 

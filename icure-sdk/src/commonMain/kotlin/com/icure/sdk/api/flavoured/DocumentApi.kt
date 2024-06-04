@@ -1,10 +1,9 @@
 package com.icure.sdk.api.flavoured
 
+import com.icure.sdk.api.ApiConfiguration
+import com.icure.sdk.api.BasicApiConfiguration
 import com.icure.sdk.api.raw.RawDocumentApi
-import com.icure.sdk.crypto.EntityValidationService
-import com.icure.sdk.crypto.InternalCryptoServices
 import com.icure.sdk.crypto.entities.DocumentShareOptions
-import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
@@ -32,10 +31,6 @@ import com.icure.sdk.utils.pagination.IdsPageIterator
 import com.icure.sdk.utils.pagination.PaginatedListIterator
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.decodeFromJsonElement
-
-@OptIn(InternalIcureApi::class)
-private val ENCRYPTED_FIELDS_MANIFEST =
-	EncryptedFieldsManifest("Document.", emptySet(), emptyMap(), emptyMap(), emptyMap())
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface DocumentBasicFlavourlessApi {
@@ -245,8 +240,11 @@ private abstract class AbstractDocumentBasicFlavouredApi<E : Document>(protected
 @InternalIcureApi
 private abstract class AbstractDocumentFlavouredApi<E : Document>(
 	rawApi: RawDocumentApi,
-	private val crypto: InternalCryptoServices,
+	private val config: ApiConfiguration
 ) : AbstractDocumentBasicFlavouredApi<E>(rawApi), DocumentFlavouredApi<E> {
+	protected val crypto get() = config.crypto
+	protected val fieldsToEncrypt get() = config.encryption.document
+
 	override suspend fun shareWith(
 		delegateId: String,
 		document: E,
@@ -322,11 +320,9 @@ private class AbstractDocumentBasicFlavourlessApi(val rawApi: RawDocumentApi) : 
 @InternalIcureApi
 internal class DocumentApiImpl(
 	private val rawApi: RawDocumentApi,
-	private val crypto: InternalCryptoServices,
-	private val fieldsToEncrypt: EncryptedFieldsManifest,
-	private val autofillAuthor: Boolean,
+	private val config: ApiConfiguration
 ) : DocumentApi, DocumentFlavouredApi<DecryptedDocument> by object :
-	AbstractDocumentFlavouredApi<DecryptedDocument>(rawApi, crypto) {
+	AbstractDocumentFlavouredApi<DecryptedDocument>(rawApi, config) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedDocument): EncryptedDocument =
 		crypto.entity.encryptEntity(
 			entity.withTypeInfo(),
@@ -343,7 +339,7 @@ internal class DocumentApiImpl(
 	}
 }, DocumentBasicFlavourlessApi by AbstractDocumentBasicFlavourlessApi(rawApi) {
 	override val encrypted: DocumentFlavouredApi<EncryptedDocument> =
-		object : AbstractDocumentFlavouredApi<EncryptedDocument>(rawApi, crypto) {
+		object : AbstractDocumentFlavouredApi<EncryptedDocument>(rawApi, config) {
 			override suspend fun validateAndMaybeEncrypt(entity: EncryptedDocument): EncryptedDocument =
 				crypto.entity.validateEncryptedEntity(entity.withTypeInfo(), EncryptedDocument.serializer(), fieldsToEncrypt)
 
@@ -351,7 +347,7 @@ internal class DocumentApiImpl(
 		}
 
 	override val tryAndRecover: DocumentFlavouredApi<Document> =
-		object : AbstractDocumentFlavouredApi<Document>(rawApi, crypto) {
+		object : AbstractDocumentFlavouredApi<Document>(rawApi, config) {
 			override suspend fun maybeDecrypt(entity: EncryptedDocument): Document =
 				crypto.entity.tryDecryptEntity(
 					entity.withTypeInfo(),
@@ -383,6 +379,9 @@ internal class DocumentApiImpl(
 		}
 	}
 
+	private val crypto get() = config.crypto
+	private val fieldsToEncrypt get() = config.encryption.document
+
 	override suspend fun withEncryptionMetadata(
 		base: DecryptedDocument?,
 		message: Message?,
@@ -395,8 +394,8 @@ internal class DocumentApiImpl(
 			(base ?: DecryptedDocument(crypto.primitives.strongRandom.randomUUID())).copy(
 				created = base?.created ?: currentEpochMs(),
 				modified = base?.modified ?: currentEpochMs(),
-				responsible = base?.responsible ?: user?.takeIf { autofillAuthor }?.dataOwnerId,
-				author = base?.author ?: user?.id?.takeIf { autofillAuthor },
+				responsible = base?.responsible ?: user?.takeIf { config.autofillAuthor }?.dataOwnerId,
+				author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
 			).withTypeInfo(),
 			message?.id,
 			message?.let { crypto.entity.resolveSecretIdOption(it.withTypeInfo(), secretId) },
@@ -507,12 +506,11 @@ internal class DocumentApiImpl(
 @InternalIcureApi
 internal class DocumentBasicApiImpl(
 	rawApi: RawDocumentApi,
-	private val validationService: EntityValidationService,
-	private val fieldsToEncrypt: EncryptedFieldsManifest = ENCRYPTED_FIELDS_MANIFEST,
+	private val config: BasicApiConfiguration
 ) : DocumentBasicApi, DocumentBasicFlavouredApi<EncryptedDocument> by object :
 	AbstractDocumentBasicFlavouredApi<EncryptedDocument>(rawApi) {
 	override suspend fun validateAndMaybeEncrypt(entity: EncryptedDocument): EncryptedDocument =
-		validationService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedDocument.serializer(), fieldsToEncrypt)
+		config.crypto.validationService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedDocument.serializer(), config.encryption.document)
 
 	override suspend fun maybeDecrypt(entity: EncryptedDocument): EncryptedDocument = entity
 }, DocumentBasicFlavourlessApi by AbstractDocumentBasicFlavourlessApi(rawApi)
