@@ -58,22 +58,23 @@ object Serialization {
 		 * kotlinx.serialization.Polymorphic<Identifiable> happens when using a filter<*> inside another filter
 		 * AbstractFilter<T> happens when using for example a union filter inside a filter chain
 		 * com.icure.sdk.model.T happens when using the filter<T> directly as contextual
+		 * TODO check which entities require polymorphic and which not
 		 */
 		contextual(AbstractFilter::class) {
 			when (val serialName = it.single().descriptor.serialName) {
-				"AbstractFilter<MaintenanceTask>", "com.icure.sdk.model.MaintenanceTask" -> MaintenanceTaskAbstractFilterSerializer
 				"AbstractFilter<Identifiable>", "kotlinx.serialization.Polymorphic<Identifiable>" -> AnyAbstractFilterSerializer
-				"AbstractFilter<Code>", "com.icure.sdk.model.Code" -> CodeAbstractFilterSerializer
-				"AbstractFilter<Contact>", "com.icure.sdk.model.Contact" -> ContactAbstractFilterSerializer
-				"AbstractFilter<Device>", "com.icure.sdk.model.Device" -> DeviceAbstractFilterSerializer
-				"AbstractFilter<HealthcareParty>", "com.icure.sdk.model.HealthcareParty" -> HealthcarePartyAbstractFilterSerializer
-				"AbstractFilter<HealthElement>", "com.icure.sdk.model.HealthElement" -> HealthElementAbstractFilterSerializer
-				"AbstractFilter<Invoice>", "com.icure.sdk.model.Invoice" -> InvoiceAbstractFilterSerializer
-				"AbstractFilter<Message>", "com.icure.sdk.model.Message" -> MessageAbstractFilterSerializer
-				"AbstractFilter<Patient>", "com.icure.sdk.model.Patient" -> PatientAbstractFilterSerializer
-				"AbstractFilter<Service>", "com.icure.sdk.model.Service" -> ServiceAbstractFilterSerializer
-				"AbstractFilter<Topic>", "com.icure.sdk.model.Topic" -> TopicAbstractFilterSerializer
-				"AbstractFilter<User>", "com.icure.sdk.model.User" -> UserAbstractFilterSerializer
+				"kotlinx.serialization.Polymorphic<MaintenanceTask>", "AbstractFilter<MaintenanceTask>", "com.icure.sdk.model.MaintenanceTask" -> MaintenanceTaskAbstractFilterSerializer
+				"kotlinx.serialization.Polymorphic<Code>", "AbstractFilter<Code>", "com.icure.sdk.model.Code" -> CodeAbstractFilterSerializer
+				"kotlinx.serialization.Polymorphic<Contact>", "AbstractFilter<Contact>", "com.icure.sdk.model.Contact" -> ContactAbstractFilterSerializer
+				"kotlinx.serialization.Polymorphic<Device>", "AbstractFilter<Device>", "com.icure.sdk.model.Device" -> DeviceAbstractFilterSerializer
+				"kotlinx.serialization.Polymorphic<HealthcareParty>", "AbstractFilter<HealthcareParty>", "com.icure.sdk.model.HealthcareParty" -> HealthcarePartyAbstractFilterSerializer
+				"kotlinx.serialization.Polymorphic<HealthElement>", "AbstractFilter<HealthElement>", "com.icure.sdk.model.HealthElement" -> HealthElementAbstractFilterSerializer
+				"kotlinx.serialization.Polymorphic<Invoice>", "AbstractFilter<Invoice>", "com.icure.sdk.model.Invoice" -> InvoiceAbstractFilterSerializer
+				"kotlinx.serialization.Polymorphic<Message>", "AbstractFilter<Message>", "com.icure.sdk.model.Message" -> MessageAbstractFilterSerializer
+				"kotlinx.serialization.Polymorphic<Patient>", "AbstractFilter<Patient>", "com.icure.sdk.model.Patient" -> PatientAbstractFilterSerializer
+				"kotlinx.serialization.Polymorphic<Service>", "AbstractFilter<Service>", "com.icure.sdk.model.Service" -> ServiceAbstractFilterSerializer
+				"kotlinx.serialization.Polymorphic<Topic>", "AbstractFilter<Topic>", "com.icure.sdk.model.Topic" -> TopicAbstractFilterSerializer
+				"kotlinx.serialization.Polymorphic<User>", "AbstractFilter<User>", "com.icure.sdk.model.User" -> UserAbstractFilterSerializer
 				else -> throw SerializationException("Unknown serial name $serialName for generic parameter of AbstractFilter")
 			}
 		}
