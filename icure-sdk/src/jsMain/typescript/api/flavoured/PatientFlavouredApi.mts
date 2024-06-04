@@ -135,12 +135,12 @@ export interface PatientFlavouredApi<E extends Patient> {
 	subscribeToEvents(
 			events: Array<SubscriptionEventType>,
 			filter: AbstractFilter<Patient>,
-			onConnected: () => void,
+			onConnected: () => Promise<void>,
 			channelCapacity: number,
 			retryDelay: DurationMs,
 			retryDelayExponentFactor: number,
 			maxRetries: number,
-			eventFired: (x1: E) => void
+			eventFired: (x1: E) => Promise<void>
 	): Promise<Connection>;
 
 }

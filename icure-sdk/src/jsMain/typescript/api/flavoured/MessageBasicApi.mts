@@ -69,12 +69,12 @@ export interface MessageBasicApi {
 	subscribeToEvents(
 			events: Array<SubscriptionEventType>,
 			filter: AbstractFilter<Message>,
-			onConnected: () => void,
+			onConnected: () => Promise<void>,
 			channelCapacity: number,
 			retryDelay: DurationMs,
 			retryDelayExponentFactor: number,
 			maxRetries: number,
-			eventFired: (x1: EncryptedMessage) => void
+			eventFired: (x1: EncryptedMessage) => Promise<void>
 	): Promise<Connection>;
 
 }

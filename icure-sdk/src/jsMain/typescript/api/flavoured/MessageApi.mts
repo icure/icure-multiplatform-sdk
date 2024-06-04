@@ -127,12 +127,12 @@ export interface MessageApi {
 	subscribeToEvents(
 			events: Array<SubscriptionEventType>,
 			filter: AbstractFilter<Message>,
-			onConnected: () => void,
+			onConnected: () => Promise<void>,
 			channelCapacity: number,
 			retryDelay: DurationMs,
 			retryDelayExponentFactor: number,
 			maxRetries: number,
-			eventFired: (x1: DecryptedMessage) => void
+			eventFired: (x1: DecryptedMessage) => Promise<void>
 	): Promise<Connection>;
 
 }

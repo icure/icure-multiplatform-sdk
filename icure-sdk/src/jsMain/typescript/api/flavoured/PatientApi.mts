@@ -201,12 +201,12 @@ export interface PatientApi {
 	subscribeToEvents(
 			events: Array<SubscriptionEventType>,
 			filter: AbstractFilter<Patient>,
-			onConnected: () => void,
+			onConnected: () => Promise<void>,
 			channelCapacity: number,
 			retryDelay: DurationMs,
 			retryDelayExponentFactor: number,
 			maxRetries: number,
-			eventFired: (x1: DecryptedPatient) => void
+			eventFired: (x1: DecryptedPatient) => Promise<void>
 	): Promise<Connection>;
 
 }

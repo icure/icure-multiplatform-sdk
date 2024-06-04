@@ -83,23 +83,23 @@ export interface ContactBasicApi {
 	subscribeToServiceEvents(
 			events: Array<SubscriptionEventType>,
 			filter: AbstractFilter<Service>,
-			onConnected: () => void,
+			onConnected: () => Promise<void>,
 			channelCapacity: number,
 			retryDelay: DurationMs,
 			retryDelayExponentFactor: number,
 			maxRetries: number,
-			eventFired: (x1: EncryptedService) => void
+			eventFired: (x1: EncryptedService) => Promise<void>
 	): Promise<Connection>;
 
 	subscribeToEvents(
 			events: Array<SubscriptionEventType>,
 			filter: AbstractFilter<Contact>,
-			onConnected: () => void,
+			onConnected: () => Promise<void>,
 			channelCapacity: number,
 			retryDelay: DurationMs,
 			retryDelayExponentFactor: number,
 			maxRetries: number,
-			eventFired: (x1: EncryptedContact) => void
+			eventFired: (x1: EncryptedContact) => Promise<void>
 	): Promise<Connection>;
 
 }

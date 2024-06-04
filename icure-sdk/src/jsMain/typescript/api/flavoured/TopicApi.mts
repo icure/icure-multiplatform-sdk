@@ -81,12 +81,12 @@ export interface TopicApi {
 	subscribeToEvents(
 			events: Array<SubscriptionEventType>,
 			filter: AbstractFilter<Topic>,
-			onConnected: () => void,
+			onConnected: () => Promise<void>,
 			channelCapacity: number,
 			retryDelay: DurationMs,
 			retryDelayExponentFactor: number,
 			maxRetries: number,
-			eventFired: (x1: DecryptedTopic) => void
+			eventFired: (x1: DecryptedTopic) => Promise<void>
 	): Promise<Connection>;
 
 }

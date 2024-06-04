@@ -25,12 +25,12 @@ export interface MaintenanceTaskBasicApi {
 	subscribeToEvents(
 			events: Array<SubscriptionEventType>,
 			filter: AbstractFilter<MaintenanceTask>,
-			onConnected: () => void,
+			onConnected: () => Promise<void>,
 			channelCapacity: number,
 			retryDelay: DurationMs,
 			retryDelayExponentFactor: number,
 			maxRetries: number,
-			eventFired: (x1: EncryptedMaintenanceTask) => void
+			eventFired: (x1: EncryptedMaintenanceTask) => Promise<void>
 	): Promise<Connection>;
 
 }

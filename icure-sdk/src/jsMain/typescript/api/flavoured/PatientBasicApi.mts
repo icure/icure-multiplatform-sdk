@@ -130,12 +130,12 @@ export interface PatientBasicApi {
 	subscribeToEvents(
 			events: Array<SubscriptionEventType>,
 			filter: AbstractFilter<Patient>,
-			onConnected: () => void,
+			onConnected: () => Promise<void>,
 			channelCapacity: number,
 			retryDelay: DurationMs,
 			retryDelayExponentFactor: number,
 			maxRetries: number,
-			eventFired: (x1: EncryptedPatient) => void
+			eventFired: (x1: EncryptedPatient) => Promise<void>
 	): Promise<Connection>;
 
 }

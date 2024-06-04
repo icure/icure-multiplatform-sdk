@@ -32,22 +32,22 @@ export interface DocumentApi {
 	): Promise<DecryptedDocument>;
 
 	getAndTryDecryptMainAttachment(document: Document, attachmentId: string,
-			decryptedDocumentValidator: (x1: Int8Array) => boolean): Promise<Int8Array | undefined>;
+			decryptedDocumentValidator: (x1: Int8Array) => Promise<boolean>): Promise<Int8Array | undefined>;
 
 	getAndTryDecryptMainAttachmentAsPlainText(document: Document, attachmentId: string,
-			decryptedDocumentValidator: (x1: Int8Array) => boolean): Promise<string | undefined>;
+			decryptedDocumentValidator: (x1: Int8Array) => Promise<boolean>): Promise<string | undefined>;
 
 	getAndTryDecryptMainAttachmentAsJson(document: Document, attachmentId: string,
-			decryptedDocumentValidator: (x1: Int8Array) => boolean): Promise<any | undefined>;
+			decryptedDocumentValidator: (x1: Int8Array) => Promise<boolean>): Promise<any | undefined>;
 
 	getAndDecryptMainAttachment(document: Document, attachmentId: string,
-			decryptedDocumentValidator: (x1: Int8Array) => boolean): Promise<Int8Array>;
+			decryptedDocumentValidator: (x1: Int8Array) => Promise<boolean>): Promise<Int8Array>;
 
 	encryptAndSetMainAttachment(document: Document, utis: Array<string>,
 			attachment: Int8Array): Promise<EncryptedDocument>;
 
 	getAndDecryptSecondaryAttachment(document: Document, key: string, attachmentId: string,
-			decryptedDocumentValidator: (x1: Int8Array) => boolean): Promise<Int8Array>;
+			decryptedDocumentValidator: (x1: Int8Array) => Promise<boolean>): Promise<Int8Array>;
 
 	encryptAndSetSecondaryAttachment(document: Document, key: string, utis: Array<string>,
 			attachment: Int8Array): Promise<EncryptedDocument>;

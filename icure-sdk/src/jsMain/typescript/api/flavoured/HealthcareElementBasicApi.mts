@@ -39,12 +39,12 @@ export interface HealthcareElementBasicApi {
 	subscribeToEvents(
 			events: Array<SubscriptionEventType>,
 			filter: AbstractFilter<HealthElement>,
-			onConnected: () => void,
+			onConnected: () => Promise<void>,
 			channelCapacity: number,
 			retryDelay: DurationMs,
 			retryDelayExponentFactor: number,
 			maxRetries: number,
-			eventFired: (x1: EncryptedHealthElement) => void
+			eventFired: (x1: EncryptedHealthElement) => Promise<void>
 	): Promise<Connection>;
 
 }

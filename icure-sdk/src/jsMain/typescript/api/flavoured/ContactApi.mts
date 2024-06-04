@@ -140,23 +140,23 @@ export interface ContactApi {
 	subscribeToServiceEvents(
 			events: Array<SubscriptionEventType>,
 			filter: AbstractFilter<Service>,
-			onConnected: () => void,
+			onConnected: () => Promise<void>,
 			channelCapacity: number,
 			retryDelay: DurationMs,
 			retryDelayExponentFactor: number,
 			maxRetries: number,
-			eventFired: (x1: DecryptedService) => void
+			eventFired: (x1: DecryptedService) => Promise<void>
 	): Promise<Connection>;
 
 	subscribeToEvents(
 			events: Array<SubscriptionEventType>,
 			filter: AbstractFilter<Contact>,
-			onConnected: () => void,
+			onConnected: () => Promise<void>,
 			channelCapacity: number,
 			retryDelay: DurationMs,
 			retryDelayExponentFactor: number,
 			maxRetries: number,
-			eventFired: (x1: DecryptedContact) => void
+			eventFired: (x1: DecryptedContact) => Promise<void>
 	): Promise<Connection>;
 
 }
