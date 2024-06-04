@@ -2,8 +2,8 @@ package com.icure.sdk
 
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.utils.toHexString
-import com.icure.sdk.api.ApiConfiguration
-import com.icure.sdk.api.ApiConfigurationImpl
+import com.icure.sdk.options.ApiConfiguration
+import com.icure.sdk.options.ApiConfigurationImpl
 import com.icure.sdk.api.CryptoApi
 import com.icure.sdk.api.CryptoApiImpl
 import com.icure.sdk.api.DeviceApi

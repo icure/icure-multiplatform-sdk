@@ -1,7 +1,7 @@
 package com.icure.sdk.api.flavoured
 
-import com.icure.sdk.api.ApiConfiguration
-import com.icure.sdk.api.BasicApiConfiguration
+import com.icure.sdk.options.ApiConfiguration
+import com.icure.sdk.options.BasicApiConfiguration
 import com.icure.sdk.api.RecoveryApi
 import com.icure.sdk.api.raw.RawCalendarItemApi
 import com.icure.sdk.api.raw.RawClassificationApi
@@ -12,7 +12,6 @@ import com.icure.sdk.api.raw.RawHealthcarePartyApi
 import com.icure.sdk.api.raw.RawInvoiceApi
 import com.icure.sdk.api.raw.RawPatientApi
 import com.icure.sdk.crypto.entities.DelegateShareOptions
-import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.EntityAccessInformation
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.crypto.entities.EntityWithTypeInfo

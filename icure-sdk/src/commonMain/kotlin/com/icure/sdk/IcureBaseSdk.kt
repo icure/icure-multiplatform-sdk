@@ -1,8 +1,8 @@
 package com.icure.sdk
 
 import com.icure.sdk.IcureSdk.Companion.sharedHttpClient
-import com.icure.sdk.api.BasicApiConfiguration
-import com.icure.sdk.api.BasicApiConfigurationImpl
+import com.icure.sdk.options.BasicApiConfiguration
+import com.icure.sdk.options.BasicApiConfigurationImpl
 import com.icure.sdk.api.CodeApi
 import com.icure.sdk.api.CodeApiImpl
 import com.icure.sdk.api.DeviceApi

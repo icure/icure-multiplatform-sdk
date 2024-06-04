@@ -1,7 +1,7 @@
 package com.icure.sdk.api.flavoured
 
-import com.icure.sdk.api.ApiConfiguration
-import com.icure.sdk.api.BasicApiConfiguration
+import com.icure.sdk.options.ApiConfiguration
+import com.icure.sdk.options.BasicApiConfiguration
 import com.icure.sdk.api.raw.RawClassificationApi
 import com.icure.sdk.crypto.entities.ClassificationShareOptions
 import com.icure.sdk.crypto.entities.SecretIdOption

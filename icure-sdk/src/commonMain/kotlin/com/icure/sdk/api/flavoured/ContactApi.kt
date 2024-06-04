@@ -2,8 +2,8 @@ package com.icure.sdk.api.flavoured
 
 import com.icure.kryptom.crypto.AesAlgorithm
 import com.icure.kryptom.crypto.AesKey
-import com.icure.sdk.api.ApiConfiguration
-import com.icure.sdk.api.BasicApiConfiguration
+import com.icure.sdk.options.ApiConfiguration
+import com.icure.sdk.options.BasicApiConfiguration
 import com.icure.sdk.api.raw.RawContactApi
 import com.icure.sdk.crypto.JsonEncryptionService
 import com.icure.sdk.crypto.entities.ContactShareOptions
