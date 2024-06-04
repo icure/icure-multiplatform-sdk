@@ -1,8 +1,7 @@
 package com.icure.sdk
 
 import com.icure.sdk.IcureSdk.Companion.sharedHttpClient
-import com.icure.sdk.api.AuthenticationMethod
-import com.icure.sdk.options.BasicApiConfiguration
+import com.icure.sdk.api.BasicApiConfiguration
 import com.icure.sdk.api.BasicApiConfigurationImpl
 import com.icure.sdk.api.CodeApi
 import com.icure.sdk.api.CodeApiImpl
@@ -72,6 +71,7 @@ import com.icure.sdk.crypto.impl.BasicInternalCryptoApiImpl
 import com.icure.sdk.crypto.impl.EntityValidationServiceImpl
 import com.icure.sdk.crypto.impl.JsonEncryptionServiceImpl
 import com.icure.sdk.crypto.impl.NoAccessControlKeysHeadersProvider
+import com.icure.sdk.options.AuthenticationMethod
 import com.icure.sdk.options.BasicApiOptions
 import com.icure.sdk.options.EntitiesEncryptedFieldsManifests
 import com.icure.sdk.utils.InternalIcureApi
