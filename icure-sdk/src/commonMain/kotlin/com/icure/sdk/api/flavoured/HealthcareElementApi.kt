@@ -1,18 +1,17 @@
 package com.icure.sdk.api.flavoured
 
+import com.icure.sdk.api.ApiConfiguration
+import com.icure.sdk.api.BasicApiConfiguration
 import com.icure.sdk.api.raw.RawHealthElementApi
-import com.icure.sdk.crypto.EntityValidationService
-import com.icure.sdk.crypto.InternalCryptoServices
 import com.icure.sdk.crypto.entities.HealthElementShareOptions
-import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.withTypeInfo
-import com.icure.sdk.model.HealthElement
 import com.icure.sdk.model.DecryptedHealthElement
 import com.icure.sdk.model.EncryptedHealthElement
+import com.icure.sdk.model.HealthElement
 import com.icure.sdk.model.IcureStub
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
@@ -25,6 +24,7 @@ import com.icure.sdk.model.extensions.autoDelegationsFor
 import com.icure.sdk.model.extensions.dataOwnerId
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
+import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.utils.EntityEncryptionException
@@ -33,27 +33,37 @@ import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.currentEpochMs
 import com.icure.sdk.utils.pagination.IdsPageIterator
 import com.icure.sdk.utils.pagination.PaginatedListIterator
+import com.icure.sdk.websocket.Connection
+import com.icure.sdk.websocket.ConnectionImpl
+import com.icure.sdk.websocket.EmittedEvent
+import com.icure.sdk.websocket.Subscribable
+import io.ktor.util.InternalAPI
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.decodeFromJsonElement
-
-@OptIn(InternalIcureApi::class)
-private val ENCRYPTED_FIELDS_MANIFEST =
-	EncryptedFieldsManifest("HealthElement.", setOf("note", "descr"), emptyMap(), emptyMap(), emptyMap())
+import kotlin.time.Duration
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface HealthcareElementBasicFlavourlessApi {
 	suspend fun matchHealthcareElementsBy(filter: AbstractFilter<HealthElement>): List<String>
 	suspend fun deleteHealthcareElement(entityId: String): DocIdentifier
 	suspend fun deleteHealthcareElements(entityIds: List<String>): List<DocIdentifier>
-	suspend fun findHealthcareElementsDelegationsStubsByHcPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<IcureStub>
+	suspend fun findHealthcareElementsDelegationsStubsByHcPartyPatientForeignKeys(
+		hcPartyId: String,
+		secretPatientKeys: List<String>,
+	): List<IcureStub>
 }
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
-interface HealthcareElementBasicFlavouredApi<E : HealthElement> {
+interface HealthcareElementBasicFlavouredApi<E : HealthElement> : Subscribable<HealthElement, E> {
 	suspend fun modifyHealthcareElement(entity: E): E
 	suspend fun modifyHealthcareElements(entities: List<E>): List<E>
 	suspend fun getHealthcareElement(entityId: String): E
 	suspend fun getHealthcareElements(entityIds: List<String>): List<E>
-	suspend fun filterHealthcareElementsBy(filterChain: FilterChain<HealthElement>, startDocumentId: String?, limit: Int?): PaginatedList<E>
+	suspend fun filterHealthcareElementsBy(
+		filterChain: FilterChain<HealthElement>,
+		startDocumentId: String?,
+		limit: Int?,
+	): PaginatedList<E>
 	suspend fun findHealthcareElementsByHcPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<E>
 }
 
@@ -138,19 +148,27 @@ interface HealthcareElementApi : HealthcareElementBasicFlavourlessApi, Healthcar
 interface HealthcareElementBasicApi : HealthcareElementBasicFlavourlessApi, HealthcareElementBasicFlavouredApi<EncryptedHealthElement>
 
 @InternalIcureApi
-private abstract class AbstractHealthcareElementBasicFlavouredApi<E : HealthElement>(protected val rawApi: RawHealthElementApi) :
-	HealthcareElementBasicFlavouredApi<E> {
+private abstract class AbstractHealthcareElementBasicFlavouredApi<E : HealthElement>(
+	protected val rawApi: RawHealthElementApi,
+	private val config: BasicApiConfiguration
+) :	HealthcareElementBasicFlavouredApi<E> {
 	override suspend fun modifyHealthcareElement(entity: E): E =
 		rawApi.modifyHealthElement(validateAndMaybeEncrypt(entity)).successBody().let { maybeDecrypt(it) }
 
 	override suspend fun modifyHealthcareElements(entities: List<E>): List<E> =
 		rawApi.modifyHealthElements(entities.map { validateAndMaybeEncrypt(it) }).successBody().map { maybeDecrypt(it) }
 
-	override suspend fun getHealthcareElement(entityId: String): E = rawApi.getHealthElement(entityId).successBody().let { maybeDecrypt(it) }
+	override suspend fun getHealthcareElement(entityId: String): E =
+		rawApi.getHealthElement(entityId).successBody().let { maybeDecrypt(it) }
+
 	override suspend fun getHealthcareElements(entityIds: List<String>): List<E> =
 		rawApi.getHealthElements(ListOfIds(entityIds)).successBody().map { maybeDecrypt(it) }
 
-	override suspend fun filterHealthcareElementsBy(filterChain: FilterChain<HealthElement>, startDocumentId: String?, limit: Int?): PaginatedList<E> =
+	override suspend fun filterHealthcareElementsBy(
+		filterChain: FilterChain<HealthElement>,
+		startDocumentId: String?,
+		limit: Int?,
+	): PaginatedList<E> =
 		rawApi.filterHealthElementsBy(startDocumentId, limit, filterChain).successBody().map { maybeDecrypt(it) }
 
 	override suspend fun findHealthcareElementsByHcPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<E> =
@@ -158,13 +176,51 @@ private abstract class AbstractHealthcareElementBasicFlavouredApi<E : HealthElem
 
 	abstract suspend fun validateAndMaybeEncrypt(entity: E): EncryptedHealthElement
 	abstract suspend fun maybeDecrypt(entity: EncryptedHealthElement): E
+
+	@OptIn(InternalAPI::class)
+	override suspend fun subscribeToEvents(
+		events: Set<SubscriptionEventType>,
+		filter: AbstractFilter<HealthElement>,
+		onConnected: suspend () -> Unit,
+		channelCapacity: Int,
+		retryDelay: Duration,
+		retryDelayExponentFactor: Double,
+		maxRetries: Int,
+		eventFired: suspend (E) -> Unit,
+	): Connection {
+		return ConnectionImpl.initialize(
+			client = config.httpClient,
+			hostname = config.apiUrl.replace("https://", "").replace("http://", ""),
+			path = "/ws/v2/notification/subscribe",
+			serializer = EncryptedHealthElement.serializer(),
+			events = events,
+			filter = filter,
+			qualifiedName = HealthElement.KRAKEN_QUALIFIED_NAME,
+			subscriptionSerializer = { Serialization.json.encodeToString(it) },
+			webSocketAuthProvider = config.requireWebSocketAuthProvider(),
+			onOpenListener = onConnected,
+			retryDelay = retryDelay,
+			retryDelayExponentFactor = retryDelayExponentFactor,
+			maxRetries = maxRetries,
+			eventCallback = { entity, onEvent ->
+				try {
+					eventFired(maybeDecrypt(entity))
+				} catch (e: EntityEncryptionException) {
+					onEvent(EmittedEvent.Error(e.message, false))
+				}
+			}
+		)
+	}
 }
 
 @InternalIcureApi
 private abstract class AbstractHealthcareElementFlavouredApi<E : HealthElement>(
 	rawApi: RawHealthElementApi,
-	private val crypto: InternalCryptoServices,
-) : AbstractHealthcareElementBasicFlavouredApi<E>(rawApi), HealthcareElementFlavouredApi<E> {
+	private val config: ApiConfiguration
+) : AbstractHealthcareElementBasicFlavouredApi<E>(rawApi, config), HealthcareElementFlavouredApi<E> {
+	protected val crypto get() = config.crypto
+	protected val fieldsToEncrypt get() = config.encryption.healthElement
+
 	override suspend fun shareWith(
 		delegateId: String,
 		healthcareElement: E,
@@ -221,7 +277,8 @@ private abstract class AbstractHealthcareElementFlavouredApi<E : HealthElement>(
 
 @InternalIcureApi
 private class AbstractHealthcareElementBasicFlavourlessApi(val rawApi: RawHealthElementApi) : HealthcareElementBasicFlavourlessApi {
-	override suspend fun matchHealthcareElementsBy(filter: AbstractFilter<HealthElement>) = rawApi.matchHealthElementsBy(filter).successBody()
+	override suspend fun matchHealthcareElementsBy(filter: AbstractFilter<HealthElement>) =
+		rawApi.matchHealthElementsBy(filter).successBody()
 	override suspend fun deleteHealthcareElement(entityId: String) = rawApi.deleteHealthElement(entityId).successBody()
 	override suspend fun deleteHealthcareElements(entityIds: List<String>) = rawApi.deleteHealthElements(ListOfIds(entityIds)).successBody()
 	override suspend fun findHealthcareElementsDelegationsStubsByHcPartyPatientForeignKeys(
@@ -233,11 +290,9 @@ private class AbstractHealthcareElementBasicFlavourlessApi(val rawApi: RawHealth
 @InternalIcureApi
 internal class HealthcareElementApiImpl(
 	private val rawApi: RawHealthElementApi,
-	private val crypto: InternalCryptoServices,
-	private val fieldsToEncrypt: EncryptedFieldsManifest = ENCRYPTED_FIELDS_MANIFEST,
-	private val autofillAuthor: Boolean,
-	) : HealthcareElementApi, HealthcareElementFlavouredApi<DecryptedHealthElement> by object :
-	AbstractHealthcareElementFlavouredApi<DecryptedHealthElement>(rawApi, crypto) {
+	private val config: ApiConfiguration
+) : HealthcareElementApi, HealthcareElementFlavouredApi<DecryptedHealthElement> by object :
+	AbstractHealthcareElementFlavouredApi<DecryptedHealthElement>(rawApi, config) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedHealthElement): EncryptedHealthElement =
 		crypto.entity.encryptEntity(
 			entity.withTypeInfo(),
@@ -250,11 +305,12 @@ internal class HealthcareElementApiImpl(
 			entity.withTypeInfo(),
 			EncryptedHealthElement.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedHealthElement>(it) }
-			?: throw EntityEncryptionException("Entity ${entity.id} cannot be created")
+			?: throw EntityEncryptionException("Entity ${entity.id} cannot be decrypted")
 	}
 }, HealthcareElementBasicFlavourlessApi by AbstractHealthcareElementBasicFlavourlessApi(rawApi) {
+
 	override val encrypted: HealthcareElementFlavouredApi<EncryptedHealthElement> =
-		object : AbstractHealthcareElementFlavouredApi<EncryptedHealthElement>(rawApi, crypto) {
+		object : AbstractHealthcareElementFlavouredApi<EncryptedHealthElement>(rawApi, config) {
 			override suspend fun validateAndMaybeEncrypt(entity: EncryptedHealthElement): EncryptedHealthElement =
 				crypto.entity.validateEncryptedEntity(entity.withTypeInfo(), EncryptedHealthElement.serializer(), fieldsToEncrypt)
 
@@ -262,7 +318,7 @@ internal class HealthcareElementApiImpl(
 		}
 
 	override val tryAndRecover: HealthcareElementFlavouredApi<HealthElement> =
-		object : AbstractHealthcareElementFlavouredApi<HealthElement>(rawApi, crypto) {
+		object : AbstractHealthcareElementFlavouredApi<HealthElement>(rawApi, config) {
 			override suspend fun maybeDecrypt(entity: EncryptedHealthElement): HealthElement =
 				crypto.entity.tryDecryptEntity(
 					entity.withTypeInfo(),
@@ -305,6 +361,9 @@ internal class HealthcareElementApiImpl(
 		}
 	}
 
+	private val crypto get() = config.crypto
+	private val fieldsToEncrypt get() = config.encryption.healthElement
+
 	override suspend fun withEncryptionMetadata(
 		base: DecryptedHealthElement?,
 		patient: Patient,
@@ -317,8 +376,8 @@ internal class HealthcareElementApiImpl(
 			(base ?: DecryptedHealthElement(crypto.primitives.strongRandom.randomUUID())).copy(
 				created = base?.created ?: currentEpochMs(),
 				modified = base?.modified ?: currentEpochMs(),
-				responsible = base?.responsible ?: user?.takeIf { autofillAuthor }?.dataOwnerId,
-				author = base?.author ?: user?.id?.takeIf { autofillAuthor },
+				responsible = base?.responsible ?: user?.takeIf { config.autofillAuthor }?.dataOwnerId,
+				author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
 			).withTypeInfo(),
 			patient.id,
 			crypto.entity.resolveSecretIdOption(patient.withTypeInfo(), secretId),
@@ -343,23 +402,23 @@ internal class HealthcareElementApiImpl(
 		fieldsToEncrypt,
 	) { Serialization.json.decodeFromJsonElement<EncryptedHealthElement>(it) }
 
-	suspend fun decrypt(entity: EncryptedHealthElement, errorMessage: () -> String): DecryptedHealthElement = crypto.entity.tryDecryptEntity(
-		entity.withTypeInfo(),
-		EncryptedHealthElement.serializer(),
-	) { Serialization.json.decodeFromJsonElement<DecryptedHealthElement>(it) }
-		?: throw EntityEncryptionException(errorMessage())
+	suspend fun decrypt(entity: EncryptedHealthElement, errorMessage: () -> String): DecryptedHealthElement =
+		crypto.entity.tryDecryptEntity(
+			entity.withTypeInfo(),
+			EncryptedHealthElement.serializer(),
+		) { Serialization.json.decodeFromJsonElement<DecryptedHealthElement>(it) }
+			?: throw EntityEncryptionException(errorMessage())
 
 }
 
 @InternalIcureApi
 internal class HealthcareElementBasicApiImpl(
 	rawApi: RawHealthElementApi,
-	private val validationService: EntityValidationService,
-	private val fieldsToEncrypt: EncryptedFieldsManifest = ENCRYPTED_FIELDS_MANIFEST,
+	private val config: BasicApiConfiguration
 ) : HealthcareElementBasicApi, HealthcareElementBasicFlavouredApi<EncryptedHealthElement> by object :
-	AbstractHealthcareElementBasicFlavouredApi<EncryptedHealthElement>(rawApi) {
+	AbstractHealthcareElementBasicFlavouredApi<EncryptedHealthElement>(rawApi, config) {
 	override suspend fun validateAndMaybeEncrypt(entity: EncryptedHealthElement): EncryptedHealthElement =
-		validationService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedHealthElement.serializer(), fieldsToEncrypt)
+		config.crypto.validationService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedHealthElement.serializer(), config.encryption.healthElement)
 
 	override suspend fun maybeDecrypt(entity: EncryptedHealthElement): EncryptedHealthElement = entity
 }, HealthcareElementBasicFlavourlessApi by AbstractHealthcareElementBasicFlavourlessApi(rawApi)

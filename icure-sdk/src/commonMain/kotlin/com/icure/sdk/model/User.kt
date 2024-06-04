@@ -67,5 +67,9 @@ data class User(
 	)
 	// region User-User
 
+	companion object {
+		const val KRAKEN_QUALIFIED_NAME = "org.taktik.icure.entities.User"
+	}
+
 	// endregion
 }

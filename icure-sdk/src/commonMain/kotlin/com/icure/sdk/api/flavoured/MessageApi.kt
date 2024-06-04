@@ -1,19 +1,18 @@
 package com.icure.sdk.api.flavoured
 
+import com.icure.sdk.api.ApiConfiguration
+import com.icure.sdk.api.BasicApiConfiguration
 import com.icure.sdk.api.raw.RawMessageApi
-import com.icure.sdk.crypto.EntityValidationService
-import com.icure.sdk.crypto.InternalCryptoServices
 import com.icure.sdk.crypto.entities.MessageShareOptions
-import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.withTypeInfo
-import com.icure.sdk.model.Message
 import com.icure.sdk.model.DecryptedMessage
 import com.icure.sdk.model.EncryptedMessage
 import com.icure.sdk.model.ListOfIds
+import com.icure.sdk.model.Message
 import com.icure.sdk.model.MessagesReadStatusUpdate
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.Patient
@@ -25,6 +24,7 @@ import com.icure.sdk.model.extensions.autoDelegationsFor
 import com.icure.sdk.model.extensions.dataOwnerId
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
+import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.utils.EntityEncryptionException
@@ -33,12 +33,15 @@ import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.currentEpochMs
 import com.icure.sdk.utils.pagination.IdsPageIterator
 import com.icure.sdk.utils.pagination.PaginatedListIterator
+import com.icure.sdk.websocket.Connection
+import com.icure.sdk.websocket.ConnectionImpl
+import com.icure.sdk.websocket.EmittedEvent
+import com.icure.sdk.websocket.Subscribable
+import io.ktor.util.InternalAPI
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.decodeFromJsonElement
-
-@OptIn(InternalIcureApi::class)
-private val ENCRYPTED_FIELDS_MANIFEST =
-	EncryptedFieldsManifest("Message.", emptySet(), emptyMap(), emptyMap(), emptyMap())
+import kotlin.time.Duration
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface MessageBasicFlavourlessApi {
@@ -48,7 +51,7 @@ interface MessageBasicFlavourlessApi {
 }
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
-interface MessageBasicFlavouredApi<E : Message> {
+interface MessageBasicFlavouredApi<E : Message>: Subscribable<Message, E> {
 	suspend fun modifyMessage(entity: E): E
 	suspend fun getMessage(entityId: String): E
 	suspend fun getMessages(entityIds: List<String>): List<E>
@@ -164,7 +167,10 @@ interface MessageApi : MessageBasicFlavourlessApi, MessageFlavouredApi<Decrypted
 interface MessageBasicApi : MessageBasicFlavourlessApi, MessageBasicFlavouredApi<EncryptedMessage>
 
 @InternalIcureApi
-private abstract class AbstractMessageBasicFlavouredApi<E : Message>(protected val rawApi: RawMessageApi) :
+private abstract class AbstractMessageBasicFlavouredApi<E : Message>(
+	protected val rawApi: RawMessageApi,
+	private val config: BasicApiConfiguration,
+) :
 	MessageBasicFlavouredApi<E> {
 	override suspend fun modifyMessage(entity: E): E =
 		rawApi.modifyMessage(validateAndMaybeEncrypt(entity)).successBody().let { maybeDecrypt(it) }
@@ -244,6 +250,41 @@ private abstract class AbstractMessageBasicFlavouredApi<E : Message>(protected v
 		userId: String,
 	) = rawApi.setMessagesReadStatus(MessagesReadStatusUpdate(entityIds, time, readStatus, userId)).successBody().map { maybeDecrypt(it) }
 
+	@OptIn(InternalAPI::class)
+	override suspend fun subscribeToEvents(
+		events: Set<SubscriptionEventType>,
+		filter: AbstractFilter<Message>,
+		onConnected: suspend () -> Unit,
+		channelCapacity: Int,
+		retryDelay: Duration,
+		retryDelayExponentFactor: Double,
+		maxRetries: Int,
+		eventFired: suspend (E) -> Unit
+	): Connection {
+		return ConnectionImpl.initialize(
+			client = config.httpClient,
+			hostname = config.apiUrl.replace("https://", "").replace("http://", ""),
+			path = "/ws/v2/notification/subscribe",
+			serializer = EncryptedMessage.serializer(),
+			events = events,
+			filter = filter,
+			qualifiedName = Message.KRAKEN_QUALIFIED_NAME,
+			subscriptionSerializer = { Serialization.json.encodeToString(it) },
+			webSocketAuthProvider = config.requireWebSocketAuthProvider(),
+			onOpenListener = onConnected,
+			retryDelay = retryDelay,
+			retryDelayExponentFactor = retryDelayExponentFactor,
+			maxRetries = maxRetries,
+			eventCallback = { entity, onEvent ->
+				try {
+					eventFired(maybeDecrypt(entity))
+				} catch (e: EntityEncryptionException) {
+					onEvent(EmittedEvent.Error(e.message, false))
+				}
+			}
+		)
+	}
+
 	abstract suspend fun validateAndMaybeEncrypt(entity: E): EncryptedMessage
 	abstract suspend fun maybeDecrypt(entity: EncryptedMessage): E
 }
@@ -251,8 +292,11 @@ private abstract class AbstractMessageBasicFlavouredApi<E : Message>(protected v
 @InternalIcureApi
 private abstract class AbstractMessageFlavouredApi<E : Message>(
 	rawApi: RawMessageApi,
-	private val crypto: InternalCryptoServices,
-) : AbstractMessageBasicFlavouredApi<E>(rawApi), MessageFlavouredApi<E> {
+	private val config: ApiConfiguration
+) : AbstractMessageBasicFlavouredApi<E>(rawApi, config), MessageFlavouredApi<E> {
+	protected val crypto get() = config.crypto
+	protected val fieldsToEncrypt get() = config.encryption.message
+
 	override suspend fun shareWith(
 		delegateId: String,
 		message: E,
@@ -317,11 +361,9 @@ private class AbstractMessageBasicFlavourlessApi(val rawApi: RawMessageApi) : Me
 @InternalIcureApi
 internal class MessageApiImpl(
 	private val rawApi: RawMessageApi,
-	private val crypto: InternalCryptoServices,
-	private val fieldsToEncrypt: EncryptedFieldsManifest = ENCRYPTED_FIELDS_MANIFEST,
-	private val autofillAuthor: Boolean,
+	private val config: ApiConfiguration,
 	) : MessageApi, MessageFlavouredApi<DecryptedMessage> by object :
-	AbstractMessageFlavouredApi<DecryptedMessage>(rawApi, crypto) {
+	AbstractMessageFlavouredApi<DecryptedMessage>(rawApi, config) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedMessage): EncryptedMessage =
 		crypto.entity.encryptEntity(
 			entity.withTypeInfo(),
@@ -338,7 +380,7 @@ internal class MessageApiImpl(
 	}
 }, MessageBasicFlavourlessApi by AbstractMessageBasicFlavourlessApi(rawApi) {
 	override val encrypted: MessageFlavouredApi<EncryptedMessage> =
-		object : AbstractMessageFlavouredApi<EncryptedMessage>(rawApi, crypto) {
+		object : AbstractMessageFlavouredApi<EncryptedMessage>(rawApi, config) {
 			override suspend fun validateAndMaybeEncrypt(entity: EncryptedMessage): EncryptedMessage =
 				crypto.entity.validateEncryptedEntity(entity.withTypeInfo(), EncryptedMessage.serializer(), fieldsToEncrypt)
 
@@ -346,7 +388,7 @@ internal class MessageApiImpl(
 		}
 
 	override val tryAndRecover: MessageFlavouredApi<Message> =
-		object : AbstractMessageFlavouredApi<Message>(rawApi, crypto) {
+		object : AbstractMessageFlavouredApi<Message>(rawApi, config) {
 			override suspend fun maybeDecrypt(entity: EncryptedMessage): Message =
 				crypto.entity.tryDecryptEntity(
 					entity.withTypeInfo(),
@@ -381,6 +423,9 @@ internal class MessageApiImpl(
 	override suspend fun createMessageInTopic(entity: DecryptedMessage): DecryptedMessage =
 		rawApi.createMessageInTopic(encrypt(entity)).successBody().let { decrypt(it) { "Created entity cannot be decrypted" } }
 
+	private val crypto get() = config.crypto
+	private val fieldsToEncrypt get() = config.encryption.message
+
 	override suspend fun withEncryptionMetadata(
 		base: DecryptedMessage?,
 		patient: Patient?,
@@ -393,8 +438,8 @@ internal class MessageApiImpl(
 			(base ?: DecryptedMessage(crypto.primitives.strongRandom.randomUUID())).copy(
 				created = base?.created ?: currentEpochMs(),
 				modified = base?.modified ?: currentEpochMs(),
-				responsible = base?.responsible ?: user?.takeIf { autofillAuthor }?.dataOwnerId,
-				author = base?.author ?: user?.id?.takeIf { autofillAuthor },
+				responsible = base?.responsible ?: user?.takeIf { config.autofillAuthor }?.dataOwnerId,
+				author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
 			).withTypeInfo(),
 			patient?.id,
 			patient?.let { crypto.entity.resolveSecretIdOption(it.withTypeInfo(), secretId) },
@@ -430,12 +475,11 @@ internal class MessageApiImpl(
 @InternalIcureApi
 internal class MessageBasicApiImpl(
 	rawApi: RawMessageApi,
-	private val validationService: EntityValidationService,
-	private val fieldsToEncrypt: EncryptedFieldsManifest = ENCRYPTED_FIELDS_MANIFEST,
+	private val config: BasicApiConfiguration
 ) : MessageBasicApi, MessageBasicFlavouredApi<EncryptedMessage> by object :
-	AbstractMessageBasicFlavouredApi<EncryptedMessage>(rawApi) {
+	AbstractMessageBasicFlavouredApi<EncryptedMessage>(rawApi, config) {
 	override suspend fun validateAndMaybeEncrypt(entity: EncryptedMessage): EncryptedMessage =
-		validationService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedMessage.serializer(), fieldsToEncrypt)
+		config.crypto.validationService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedMessage.serializer(), config.encryption.message)
 
 	override suspend fun maybeDecrypt(entity: EncryptedMessage): EncryptedMessage = entity
 }, MessageBasicFlavourlessApi by AbstractMessageBasicFlavourlessApi(rawApi)

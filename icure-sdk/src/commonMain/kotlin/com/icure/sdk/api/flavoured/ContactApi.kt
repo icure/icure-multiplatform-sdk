@@ -2,9 +2,9 @@ package com.icure.sdk.api.flavoured
 
 import com.icure.kryptom.crypto.AesAlgorithm
 import com.icure.kryptom.crypto.AesKey
+import com.icure.sdk.api.ApiConfiguration
+import com.icure.sdk.api.BasicApiConfiguration
 import com.icure.sdk.api.raw.RawContactApi
-import com.icure.sdk.crypto.EntityValidationService
-import com.icure.sdk.crypto.InternalCryptoServices
 import com.icure.sdk.crypto.JsonEncryptionService
 import com.icure.sdk.crypto.entities.ContactShareOptions
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
@@ -34,6 +34,7 @@ import com.icure.sdk.model.extensions.autoDelegationsFor
 import com.icure.sdk.model.extensions.dataOwnerId
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
+import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.utils.EntityEncryptionException
@@ -45,7 +46,14 @@ import com.icure.sdk.utils.currentFuzzyDateTime
 import com.icure.sdk.utils.ensure
 import com.icure.sdk.utils.pagination.IdsPageIterator
 import com.icure.sdk.utils.pagination.PaginatedListIterator
+import com.icure.sdk.websocket.Connection
+import com.icure.sdk.websocket.ConnectionImpl
+import com.icure.sdk.websocket.EmittedEvent
+import com.icure.sdk.websocket.Subscribable
+import io.ktor.util.InternalAPI
+import kotlinx.coroutines.channels.Channel
 import kotlinx.datetime.TimeZone
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonNull
@@ -54,6 +62,8 @@ import kotlinx.serialization.json.decodeFromJsonElement
 import kotlinx.serialization.json.encodeToJsonElement
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface ContactBasicFlavourlessApi {
@@ -70,7 +80,7 @@ interface ContactBasicFlavourlessApi {
 }
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
-interface ContactBasicFlavouredApi<E : Contact, S : Service> {
+interface ContactBasicFlavouredApi<E : Contact, S : Service> : Subscribable<Contact, E> {
 	suspend fun modifyContact(entity: E): E
 	suspend fun modifyContacts(entities: List<E>): List<E>
 	suspend fun getContact(entityId: String): E
@@ -104,6 +114,17 @@ interface ContactBasicFlavouredApi<E : Contact, S : Service> {
 	): PaginatedList<E>
 
 	suspend fun filterServicesBy(filterChain: FilterChain<Service>, startDocumentId: String?, limit: Int?): PaginatedList<S>
+
+	suspend fun subscribeToServiceEvents(
+		events: Set<SubscriptionEventType>,
+		filter: AbstractFilter<Service>,
+		onConnected: suspend () -> Unit = {},
+		channelCapacity: Int = Channel.BUFFERED,
+		retryDelay: Duration = 2.seconds,
+		retryDelayExponentFactor: Double = 2.0,
+		maxRetries: Int = 5,
+		eventFired: suspend (S) -> Unit,
+	): Connection
 }
 
 /* The extra API calls declared in this interface are the ones that can be used on encrypted or decrypted items but only when the user is a data owner */
@@ -188,8 +209,10 @@ interface ContactApi : ContactBasicFlavourlessApi, ContactFlavouredApi<Decrypted
 interface ContactBasicApi : ContactBasicFlavourlessApi, ContactBasicFlavouredApi<EncryptedContact, EncryptedService>
 
 @InternalIcureApi
-private abstract class AbstractContactBasicFlavouredApi<E : Contact, S : Service>(protected val rawApi: RawContactApi) :
-	ContactBasicFlavouredApi<E, S> {
+private abstract class AbstractContactBasicFlavouredApi<E : Contact, S : Service>(
+	protected val rawApi: RawContactApi,
+	private val config: BasicApiConfiguration
+) :	ContactBasicFlavouredApi<E, S> {
 	override suspend fun modifyContact(entity: E): E =
 		rawApi.modifyContact(validateAndMaybeEncrypt(entity)).successBody().let { maybeDecrypt(it) }
 
@@ -261,6 +284,75 @@ private abstract class AbstractContactBasicFlavouredApi<E : Contact, S : Service
 	): PaginatedList<E> = rawApi.findContactsByOpeningDate(startDate, endDate, hcPartyId, startKey.encodeStartKey(), startDocumentId, limit).successBody()
 		.map { maybeDecrypt(it) }
 
+	@OptIn(InternalAPI::class)
+	override suspend fun subscribeToServiceEvents(
+		events: Set<SubscriptionEventType>,
+		filter: AbstractFilter<Service>,
+		onConnected: suspend () -> Unit,
+		channelCapacity: Int,
+		retryDelay: Duration,
+		retryDelayExponentFactor: Double,
+		maxRetries: Int,
+		eventFired: suspend (S) -> Unit
+	): Connection {
+		return ConnectionImpl.initialize(
+			client = config.httpClient,
+			hostname = config.apiUrl.replace("https://", "").replace("http://", ""),
+			path = "/ws/v2/notification/subscribe",
+			serializer = EncryptedService.serializer(),
+			events = events,
+			filter = filter,
+			qualifiedName = Service.KRAKEN_QUALIFIED_NAME,
+			subscriptionSerializer = { Serialization.json.encodeToString(it) },
+			webSocketAuthProvider = config.requireWebSocketAuthProvider(),
+			onOpenListener = onConnected,
+			retryDelay = retryDelay,
+			retryDelayExponentFactor = retryDelayExponentFactor,
+			maxRetries = maxRetries,
+			eventCallback = { entity, onEvent ->
+				try {
+					eventFired(maybeDecryptService(entity))
+				} catch (e: EntityEncryptionException) {
+					onEvent(EmittedEvent.Error(e.message, false))
+				}
+			}
+		)
+	}
+
+	@OptIn(InternalAPI::class)
+	override suspend fun subscribeToEvents(
+		events: Set<SubscriptionEventType>,
+		filter: AbstractFilter<Contact>,
+		onConnected: suspend () -> Unit,
+		channelCapacity: Int,
+		retryDelay: Duration,
+		retryDelayExponentFactor: Double,
+		maxRetries: Int,
+		eventFired: suspend (E) -> Unit
+	): Connection {
+		return ConnectionImpl.initialize(
+			client = config.httpClient,
+			hostname = config.apiUrl.replace("https://", "").replace("http://", ""),
+			path = "/ws/v2/notification/subscribe",
+			serializer = EncryptedContact.serializer(),
+			events = events,
+			filter = filter,
+			qualifiedName = Contact.KRAKEN_QUALIFIED_NAME,
+			subscriptionSerializer = { Serialization.json.encodeToString(it) },
+			webSocketAuthProvider = config.requireWebSocketAuthProvider(),
+			onOpenListener = onConnected,
+			retryDelay = retryDelay,
+			retryDelayExponentFactor = retryDelayExponentFactor,
+			maxRetries = maxRetries,
+			eventCallback = { entity, onEvent ->
+				try {
+					eventFired(maybeDecrypt(entity))
+				} catch (e: EntityEncryptionException) {
+					onEvent(EmittedEvent.Error(e.message, false))
+				}
+			}
+		)
+	}
 
 	abstract suspend fun validateAndMaybeEncrypt(entity: E): EncryptedContact
 	abstract suspend fun maybeDecrypt(entity: EncryptedContact): E
@@ -270,8 +362,12 @@ private abstract class AbstractContactBasicFlavouredApi<E : Contact, S : Service
 @InternalIcureApi
 private abstract class AbstractContactFlavouredApi<E : Contact, S : Service>(
 	rawApi: RawContactApi,
-	private val crypto: InternalCryptoServices,
-) : AbstractContactBasicFlavouredApi<E, S>(rawApi), ContactFlavouredApi<E, S> {
+	private val config: ApiConfiguration,
+) : AbstractContactBasicFlavouredApi<E, S>(rawApi, config), ContactFlavouredApi<E, S> {
+	protected val crypto get() = config.crypto
+	protected val fieldsToEncrypt get() = config.encryption.contact
+	protected val serviceFieldsToEncrypt get() = config.encryption.service
+
 	override suspend fun shareWith(
 		delegateId: String,
 		contact: E,
@@ -323,7 +419,6 @@ private abstract class AbstractContactFlavouredApi<E : Contact, S : Service>(
 	) { ids ->
 		rawApi.getContacts(ListOfIds(ids)).successBody().map { maybeDecrypt(it) }
 	}
-
 }
 
 suspend fun JsonObject.walkCompounds(transform: suspend (JsonObject) -> JsonObject): JsonObject =
@@ -415,12 +510,9 @@ private class AbstractContactBasicFlavourlessApi(val rawApi: RawContactApi) : Co
 @InternalIcureApi
 internal class ContactApiImpl(
 	private val rawApi: RawContactApi,
-	private val crypto: InternalCryptoServices,
-	private val fieldsToEncrypt: EncryptedFieldsManifest,
-	private val serviceFieldsToEncrypt: EncryptedFieldsManifest,
-	private val autofillAuthor: Boolean,
+	private val config: ApiConfiguration,
 ) : ContactApi, ContactFlavouredApi<DecryptedContact, DecryptedService> by object :
-	AbstractContactFlavouredApi<DecryptedContact, DecryptedService>(rawApi, crypto) {
+	AbstractContactFlavouredApi<DecryptedContact, DecryptedService>(rawApi, config) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedContact): EncryptedContact =
 		crypto.entity.encryptEntity(
 			entity.withTypeInfo(),
@@ -459,8 +551,10 @@ internal class ContactApiImpl(
 		} ?: throw EntityEncryptionException("Service ${entity.id} cannot be decrypted")
 
 }, ContactBasicFlavourlessApi by AbstractContactBasicFlavourlessApi(rawApi) {
+	private val crypto get() = config.crypto
+
 	override val encrypted: ContactFlavouredApi<EncryptedContact, EncryptedService> =
-		object : AbstractContactFlavouredApi<EncryptedContact, EncryptedService>(rawApi, crypto) {
+		object : AbstractContactFlavouredApi<EncryptedContact, EncryptedService>(rawApi, config) {
 			override suspend fun validateAndMaybeEncrypt(entity: EncryptedContact): EncryptedContact =
 				crypto.entity.validateEncryptedEntity(entity.withTypeInfo(), EncryptedContact.serializer(), fieldsToEncrypt).copy(
 					services = entity.services.map {
@@ -473,7 +567,7 @@ internal class ContactApiImpl(
 		}
 
 	override val tryAndRecover: ContactFlavouredApi<Contact, Service> =
-		object : AbstractContactFlavouredApi<Contact, Service>(rawApi, crypto) {
+		object : AbstractContactFlavouredApi<Contact, Service>(rawApi, config) {
 			override suspend fun maybeDecrypt(entity: EncryptedContact): Contact =
 				crypto.entity.tryDecryptEntity(
 					entity.withTypeInfo(),
@@ -553,8 +647,8 @@ internal class ContactApiImpl(
 			(base ?: DecryptedContact(crypto.primitives.strongRandom.randomUUID())).copy(
 				created = base?.created ?: currentEpochMs(),
 				modified = base?.modified ?: currentEpochMs(),
-				responsible = base?.responsible ?: user?.takeIf { autofillAuthor }?.dataOwnerId,
-				author = base?.author ?: user?.id?.takeIf { autofillAuthor },
+				responsible = base?.responsible ?: user?.takeIf { config.autofillAuthor }?.dataOwnerId,
+				author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
 				openingDate = base?.openingDate ?: currentFuzzyDateTime(TimeZone.currentSystemDefault()),
 				groupId = base?.groupId ?: base?.id,
 				).withTypeInfo(),
@@ -578,14 +672,14 @@ internal class ContactApiImpl(
 	private suspend fun encrypt(entity: DecryptedContact) = crypto.entity.encryptEntity(
 		entity.withTypeInfo(),
 		DecryptedContact.serializer(),
-		fieldsToEncrypt,
+		config.encryption.contact,
 	) { Serialization.json.decodeFromJsonElement<EncryptedContact>(it) }.copy(
 		services = entity.services.map {
 			it.encrypt(
 				crypto.jsonEncryption,
 				crypto.entity.tryDecryptAndImportAnyEncryptionKey(entity.withTypeInfo())?.key
 					?: throw EntityEncryptionException("Cannot obtain key from contact"),
-				serviceFieldsToEncrypt
+				config.encryption.service
 			)
 		}.toSet(),
 	)
@@ -600,16 +694,13 @@ internal class ContactApiImpl(
 @InternalIcureApi
 internal class ContactBasicApiImpl(
 	rawApi: RawContactApi,
-	private val validationService: EntityValidationService,
-	private val jsonEncryptionService: JsonEncryptionService,
-	private val fieldsToEncrypt: EncryptedFieldsManifest,
-	private val serviceFieldsToEncrypt: EncryptedFieldsManifest,
+	config: BasicApiConfiguration
 ) : ContactBasicApi, ContactBasicFlavouredApi<EncryptedContact, EncryptedService> by object :
-	AbstractContactBasicFlavouredApi<EncryptedContact, EncryptedService>(rawApi) {
+	AbstractContactBasicFlavouredApi<EncryptedContact, EncryptedService>(rawApi, config) {
 	override suspend fun validateAndMaybeEncrypt(entity: EncryptedContact): EncryptedContact =
-		validationService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedContact.serializer(), fieldsToEncrypt).copy(
+		config.crypto.validationService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedContact.serializer(), config.encryption.contact).copy(
 			services = entity.services.map {
-				it.validate(jsonEncryptionService, serviceFieldsToEncrypt)
+				it.validate(config.crypto.jsonEncryption, config.encryption.service)
 			}.toSet(),
 		)
 

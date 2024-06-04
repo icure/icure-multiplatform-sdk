@@ -68,7 +68,9 @@ sealed interface Topic :
 
 	public val linkedServices: Set<String>
 	// region Topic-Topic
-
+	companion object {
+		const val KRAKEN_QUALIFIED_NAME = "org.taktik.icure.entities.Topic"
+	}
 	// endregion
 }
 

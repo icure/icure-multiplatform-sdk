@@ -67,7 +67,9 @@ sealed interface MaintenanceTask :
 
 	override val securityMetadata: SecurityMetadata?
 	// region MaintenanceTask-MaintenanceTask
-
+	companion object {
+		const val KRAKEN_QUALIFIED_NAME = "org.taktik.icure.entities.MaintenanceTask"
+	}
 	// endregion
 }
 
