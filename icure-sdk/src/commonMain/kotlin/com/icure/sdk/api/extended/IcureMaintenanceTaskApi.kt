@@ -19,38 +19,16 @@ import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.getLogger
 
 /**
- * Api for creating and interpreting maintenance tasks
+ * Api for creating and interpreting iCure's standard maintenance tasks
  */
-@OptIn(InternalIcureApi::class)
-class IcureMaintenanceTaskApi(
-	private val exchangeDataManager: ExchangeDataManager,
-	private val baseExchangeKeysManager: BaseExchangeKeysManager,
-	private val userKeysManager: UserEncryptionKeysManager,
-	private val maintenanceTaskApi: MaintenanceTaskApi,
-	private val dataOwnerApi: DataOwnerApi,
-	private val strongRandom: StrongRandom
-) {
-	companion object {
-		private val log = getLogger("IcureMaintenanceTaskApi")
-	}
-
+interface IcureMaintenanceTaskApi {
 	/**
 	 * Applies a key pair update request between another data owner and the current data owner to allow the other data owner to access existing exchange
 	 * keys shared with the current data owner. IMPORTANT: it is your responsibility to verify the authenticity of the public key / update request
 	 * before calling this method: this method assumes the new public key for the concerned data owner is authentic.
 	 * @param updateRequest a keypair update request to the current data owner.
 	 */
-	suspend fun applyKeyPairUpdate(updateRequest: KeyPairUpdateNotification) {
-		exchangeDataManager.giveAccessBackTo(
-			updateRequest.concernedDataOwnerId,
-			updateRequest.newPublicKey
-		)
-		baseExchangeKeysManager.giveAccessBackTo(
-			updateRequest.concernedDataOwnerId,
-			updateRequest.newPublicKey,
-			userKeysManager.getDecryptionKeys()
-		)
-	}
+	suspend fun applyKeyPairUpdate(updateRequest: KeyPairUpdateNotification)
 
 	/**
 	 * Creates the necessary maintenance tasks to request access through the keypair corresponding to [key] to ALL existing exchange keys between the
@@ -64,6 +42,46 @@ class IcureMaintenanceTaskApi(
 	suspend fun createKeyPairUpdateNotificationsToAllDelegationCounterparts(
 		key: SpkiHexString,
 		requestToOwnerTypes: Set<DataOwnerType>? = null
+	)
+
+	/**
+	 * Creates a maintenance tasks to request access through the keypair corresponding to [key] to ALL existing exchange keys between the
+	 * current data owner and [dataOwnerId].
+	 */
+	suspend fun createKeyPairUpdateNotificationTo(
+		dataOwnerId: String,
+		key: SpkiHexString
+	)
+}
+
+@OptIn(InternalIcureApi::class)
+class IcureMaintenanceTaskApiImpl(
+	private val exchangeDataManager: ExchangeDataManager,
+	private val baseExchangeKeysManager: BaseExchangeKeysManager,
+	private val userKeysManager: UserEncryptionKeysManager,
+	private val maintenanceTaskApi: MaintenanceTaskApi,
+	private val dataOwnerApi: DataOwnerApi,
+	private val strongRandom: StrongRandom
+) : IcureMaintenanceTaskApi {
+	companion object {
+		private val log = getLogger("IcureMaintenanceTaskApi")
+	}
+
+	override suspend fun applyKeyPairUpdate(updateRequest: KeyPairUpdateNotification) {
+		exchangeDataManager.giveAccessBackTo(
+			updateRequest.concernedDataOwnerId,
+			updateRequest.newPublicKey
+		)
+		baseExchangeKeysManager.giveAccessBackTo(
+			updateRequest.concernedDataOwnerId,
+			updateRequest.newPublicKey,
+			userKeysManager.getDecryptionKeys()
+		)
+	}
+
+	override suspend fun createKeyPairUpdateNotificationsToAllDelegationCounterparts(
+		key: SpkiHexString,
+		requestToOwnerTypes: Set<DataOwnerType>?
 	) {
 		val doRequestTo = requestToOwnerTypes ?: when (dataOwnerApi.getCurrentDataOwnerType()) {
 			DataOwnerType.Device -> {
@@ -77,11 +95,7 @@ class IcureMaintenanceTaskApi(
 		doCreateKeyPairUpdateNotifications(getUpdateRequestCandidatesIdsFor(key, doRequestTo), key)
 	}
 
-	/**
-	 * Creates a maintenance tasks to request access through the keypair corresponding to [key] to ALL existing exchange keys between the
-	 * current data owner and [dataOwnerId].
-	 */
-	suspend fun createKeyPairUpdateNotificationTo(
+	override suspend fun createKeyPairUpdateNotificationTo(
 		dataOwnerId: String,
 		key: SpkiHexString
 	) = doCreateKeyPairUpdateNotifications(setOf(dataOwnerId), key)

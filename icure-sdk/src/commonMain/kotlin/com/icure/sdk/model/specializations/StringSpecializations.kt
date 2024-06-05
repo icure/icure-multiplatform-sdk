@@ -181,5 +181,3 @@ value class KeypairFingerprintV2String(
 		require(pattern.matches(s)) { "Invalid fingerprint v2 string: $s" }
 	}
 }
-
-typealias JsonString = String

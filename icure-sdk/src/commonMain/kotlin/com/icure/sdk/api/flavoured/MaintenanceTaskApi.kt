@@ -1,22 +1,16 @@
 package com.icure.sdk.api.flavoured
 
-import co.touchlab.kermit.Logger.Companion.config
-import com.icure.sdk.api.ApiConfiguration
-import com.icure.sdk.api.BasicApiConfiguration
+import com.icure.sdk.options.ApiConfiguration
+import com.icure.sdk.options.BasicApiConfiguration
 import com.icure.sdk.api.raw.RawMaintenanceTaskApi
-import com.icure.sdk.crypto.BasicInternalCryptoApi
-import com.icure.sdk.crypto.InternalCryptoServices
 import com.icure.sdk.crypto.entities.MaintenanceTaskShareOptions
-import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.withTypeInfo
 import com.icure.sdk.model.MaintenanceTask
 import com.icure.sdk.model.DecryptedMaintenanceTask
-import com.icure.sdk.model.EncryptedHealthElement
 import com.icure.sdk.model.EncryptedMaintenanceTask
-import com.icure.sdk.model.HealthElement
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.User
@@ -38,7 +32,6 @@ import com.icure.sdk.websocket.Connection
 import com.icure.sdk.websocket.ConnectionImpl
 import com.icure.sdk.websocket.EmittedEvent
 import com.icure.sdk.websocket.Subscribable
-import com.icure.sdk.websocket.WebSocketAuthProvider
 import io.ktor.util.InternalAPI
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.decodeFromJsonElement

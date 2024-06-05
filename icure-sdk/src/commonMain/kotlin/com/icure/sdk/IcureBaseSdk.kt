@@ -1,9 +1,8 @@
 package com.icure.sdk
 
 import com.icure.sdk.IcureSdk.Companion.sharedHttpClient
-import com.icure.sdk.api.AuthenticationMethod
-import com.icure.sdk.api.BasicApiConfiguration
-import com.icure.sdk.api.BasicApiConfigurationImpl
+import com.icure.sdk.options.BasicApiConfiguration
+import com.icure.sdk.options.BasicApiConfigurationImpl
 import com.icure.sdk.api.CodeApi
 import com.icure.sdk.api.CodeApiImpl
 import com.icure.sdk.api.DeviceApi
@@ -44,7 +43,7 @@ import com.icure.sdk.api.flavoured.TimeTableBasicApi
 import com.icure.sdk.api.flavoured.TimeTableBasicApiImpl
 import com.icure.sdk.api.flavoured.TopicBasicApi
 import com.icure.sdk.api.flavoured.TopicBasicApiImpl
-import com.icure.sdk.api.getAuthService
+import com.icure.sdk.options.getAuthService
 import com.icure.sdk.api.raw.impl.RawAccessLogApiImpl
 import com.icure.sdk.api.raw.impl.RawAnonymousAuthApiImpl
 import com.icure.sdk.api.raw.impl.RawCalendarItemApiImpl
@@ -72,6 +71,7 @@ import com.icure.sdk.crypto.impl.BasicInternalCryptoApiImpl
 import com.icure.sdk.crypto.impl.EntityValidationServiceImpl
 import com.icure.sdk.crypto.impl.JsonEncryptionServiceImpl
 import com.icure.sdk.crypto.impl.NoAccessControlKeysHeadersProvider
+import com.icure.sdk.options.AuthenticationMethod
 import com.icure.sdk.options.BasicApiOptions
 import com.icure.sdk.options.EntitiesEncryptedFieldsManifests
 import com.icure.sdk.utils.InternalIcureApi

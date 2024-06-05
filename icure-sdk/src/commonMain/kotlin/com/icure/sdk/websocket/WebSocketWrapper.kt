@@ -232,7 +232,7 @@ class WebSocketWrapper(
 	/**
 	 * Allows to listen to the close event
 	 */
-	fun onClose(callback: (Short?, String?) -> Unit) {
+	fun onClose(callback: suspend (Short?, String?) -> Unit) {
 		onCloseListeners.addListener { (code, reason) ->
 			callback(code, reason)
 		}
@@ -241,7 +241,7 @@ class WebSocketWrapper(
 	/**
 	 * Allows to listen to the error event
 	 */
-	fun onError(callback: (String?, Boolean) -> Unit) {
+	fun onError(callback: suspend (String?, Boolean) -> Unit) {
 		onErrorListeners.addListener { (data, fatal) ->
 			callback(data, fatal)
 		}

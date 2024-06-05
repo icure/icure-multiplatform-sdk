@@ -1,10 +1,6 @@
 package com.icure.sdk.crypto.entities
 
 import com.icure.sdk.api.flavoured.PatientApi
-import com.icure.sdk.model.DecryptedContact
-import com.icure.sdk.model.DecryptedDocument
-import com.icure.sdk.model.EncryptedPatient
-import com.icure.sdk.model.IcureStub
 import com.icure.sdk.model.Patient
 
 object ShareAllPatientDataOptions {
@@ -29,7 +25,7 @@ object ShareAllPatientDataOptions {
 
 	data class EntityResult(
 		val success: Boolean? = null,
-		val error: Exception? = null,
+		val error: SharePatientDataError? = null,
 		val modified: Int = 0
 	)
 
@@ -38,6 +34,9 @@ object ShareAllPatientDataOptions {
 		val statuses: Map<ShareableEntity, EntityResult>
 	)
 
-	class BulkShareErrorsException(val errors: List<FailedRequestDetails>, message: String) : Exception(message)
+	sealed interface SharePatientDataError
 
+	class BulkShareFailure(val errors: List<FailedRequestDetails>, val message: String) : SharePatientDataError
+
+	class FailedRequest(val exception: Throwable) : SharePatientDataError
 }

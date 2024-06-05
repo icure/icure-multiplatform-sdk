@@ -6,7 +6,7 @@ kotlinSerialization = "1.6.1"
 kotlinDateTime = "0.6.0-RC.2"
 kotest = "5.8.0"
 androidLibrary = "8.2.2"
-bouncyCastle = "1.70"
+kryptom = "1.0.4"
 kermit = "2.0.3"
 
 [libraries]
@@ -48,15 +48,11 @@ kotestRunnerJunit = { group = "io.kotest", name = "kotest-runner-junit5", versio
 
 # Mockk
 mockk = { group = "io.mockk", name = "mockk", version = "1.13.10" }
-
-# Cryptography providers
-bouncyCastle = { group = "org.bouncycastle", name = "bcprov-jdk15on", version.ref = "bouncyCastle" }
-
 # Logging
 kermit = { group = "co.touchlab", name = "kermit", version.ref = "kermit" }
 
 # Kryptom
-kryptom = { group = "com.icure.kryptom", name = "kryptom", version = "1.0.3" }
+kryptom = { group = "com.icure.kryptom", name = "kryptom", version.ref = "kryptom" }
 
 [bundles]
 ktorServer = ["ktorServerCore", "ktorServerNetty", "ktorServerWebsockets"]

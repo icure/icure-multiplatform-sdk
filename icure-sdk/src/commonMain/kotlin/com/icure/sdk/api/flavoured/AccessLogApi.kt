@@ -1,7 +1,7 @@
 package com.icure.sdk.api.flavoured
 
-import com.icure.sdk.api.ApiConfiguration
-import com.icure.sdk.api.BasicApiConfiguration
+import com.icure.sdk.options.ApiConfiguration
+import com.icure.sdk.options.BasicApiConfiguration
 import com.icure.sdk.api.raw.RawAccessLogApi
 import com.icure.sdk.crypto.InternalCryptoServices
 import com.icure.sdk.crypto.entities.AccessLogShareOptions
