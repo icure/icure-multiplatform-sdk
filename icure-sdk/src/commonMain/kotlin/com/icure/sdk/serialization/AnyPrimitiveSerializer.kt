@@ -1,5 +1,6 @@
 package com.icure.sdk.serialization
 
+import com.icure.sdk.model.specializations.AnyPrimitive
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
@@ -12,15 +13,15 @@ import kotlinx.serialization.json.doubleOrNull
 import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.longOrNull
 
-object AnyPrimitiveSerializer : KSerializer<Any> {
+object AnyPrimitiveSerializer : KSerializer<AnyPrimitive> {
 	override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("AnyPrimitive", PrimitiveKind.STRING)
 
-	override fun deserialize(decoder: Decoder): Any {
+	override fun deserialize(decoder: Decoder): AnyPrimitive {
 		val primitive = decoder.decodeSerializableValue(JsonElement.serializer()).jsonPrimitive
-		return primitive.longOrNull ?: primitive.doubleOrNull ?: primitive.booleanOrNull ?: primitive.content
+		return AnyPrimitive(primitive.longOrNull ?: primitive.doubleOrNull ?: primitive.booleanOrNull ?: primitive.content)
 	}
 
-	override fun serialize(encoder: Encoder, value: Any) {
-		encoder.encodeString(value.toString())
+	override fun serialize(encoder: Encoder, value: AnyPrimitive) {
+		encoder.encodeString(value.v.toString())
 	}
 }

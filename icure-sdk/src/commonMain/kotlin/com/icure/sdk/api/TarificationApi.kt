@@ -31,13 +31,6 @@ interface TarificationApi {
 		limit: Int? = null
 	): PaginatedList<Tarification>
 
-	suspend fun findTarificationsBy(
-		region: String? = null,
-		type: String? = null,
-		tarification: String? = null,
-		version: String? = null
-	): List<Tarification>
-
 	suspend fun getTarificationWithParts(type: String, tarification: String, version: String): Tarification
 }
 
@@ -73,13 +66,6 @@ internal class TarificationApiImpl(
 		startKey: String?,
 		limit: Int?,
 	) = rawApi.findTarificationsBy(region, type, tarification, version, startDocumentId, startKey, limit).successBody()
-
-	override suspend fun findTarificationsBy(
-		region: String?,
-		type: String?,
-		tarification: String?,
-		version: String?,
-	) = rawApi.findTarificationsBy(region, type, tarification, version).successBody()
 
 	override suspend fun getTarificationWithParts(
 		type: String,

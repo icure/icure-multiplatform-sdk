@@ -21,6 +21,7 @@ fun Project.configureMultiplatform(
 		}
 	}
 	js(IR) {
+		moduleName = project.name
 		browser {
 			testTask {
 				useKarma {
@@ -32,6 +33,7 @@ fun Project.configureMultiplatform(
 		nodejs { }
 		binaries.library()
 		generateTypeScriptDefinitions()
+		useEsModules()
 	}
 	androidTarget {
 		compilations.all {

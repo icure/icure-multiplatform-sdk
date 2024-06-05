@@ -2,7 +2,7 @@ package com.icure.sdk.crypto.entities
 
 import com.icure.sdk.model.base.HasEncryptionMetadata
 
-interface SimpleShareResult<out T : HasEncryptionMetadata> {
+sealed interface SimpleShareResult<out T : HasEncryptionMetadata> {
 	val isSuccess: Boolean
 
 	/**

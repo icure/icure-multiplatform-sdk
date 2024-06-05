@@ -2,10 +2,10 @@ package com.icure.sdk
 
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.utils.toHexString
-import com.icure.sdk.api.ApiConfiguration
-import com.icure.sdk.api.ApiConfigurationImpl
-import com.icure.sdk.api.AuthenticationMethod
+import com.icure.sdk.options.ApiConfiguration
+import com.icure.sdk.options.ApiConfigurationImpl
 import com.icure.sdk.api.CryptoApi
+import com.icure.sdk.api.CryptoApiImpl
 import com.icure.sdk.api.DeviceApi
 import com.icure.sdk.api.DeviceApiImpl
 import com.icure.sdk.api.PermissionApi
@@ -14,9 +14,11 @@ import com.icure.sdk.api.RecoveryApi
 import com.icure.sdk.api.RecoveryApiImpl
 import com.icure.sdk.api.UserApi
 import com.icure.sdk.api.UserApiImpl
+import com.icure.sdk.api.crypto.ShamirKeysManagerApiImpl
 import com.icure.sdk.api.extended.DataOwnerApi
 import com.icure.sdk.api.extended.DataOwnerApiImpl
 import com.icure.sdk.api.extended.IcureMaintenanceTaskApi
+import com.icure.sdk.api.extended.IcureMaintenanceTaskApiImpl
 import com.icure.sdk.api.flavoured.AccessLogApi
 import com.icure.sdk.api.flavoured.AccessLogApiImpl
 import com.icure.sdk.api.flavoured.CalendarItemApi
@@ -45,7 +47,6 @@ import com.icure.sdk.api.flavoured.TimeTableApi
 import com.icure.sdk.api.flavoured.TimeTableApiImpl
 import com.icure.sdk.api.flavoured.TopicApi
 import com.icure.sdk.api.flavoured.TopicApiImpl
-import com.icure.sdk.api.getAuthService
 import com.icure.sdk.api.raw.RawPatientApi
 import com.icure.sdk.api.raw.impl.RawAccessLogApiImpl
 import com.icure.sdk.api.raw.impl.RawAnonymousAuthApiImpl
@@ -98,7 +99,6 @@ import com.icure.sdk.crypto.impl.RecoveryDataEncryptionImpl
 import com.icure.sdk.crypto.impl.SecureDelegationsDecryptorImpl
 import com.icure.sdk.crypto.impl.SecureDelegationsEncryptionImpl
 import com.icure.sdk.crypto.impl.SecureDelegationsManagerImpl
-import com.icure.sdk.crypto.impl.ShamirKeysManagerImpl
 import com.icure.sdk.crypto.impl.ShamirSecretSharingService
 import com.icure.sdk.crypto.impl.TransferKeysManagerImpl
 import com.icure.sdk.crypto.impl.UserEncryptionKeysManagerImpl
@@ -107,7 +107,9 @@ import com.icure.sdk.model.DataOwnerWithType
 import com.icure.sdk.model.extensions.toStub
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.options.ApiOptions
+import com.icure.sdk.options.AuthenticationMethod
 import com.icure.sdk.options.EntitiesEncryptedFieldsManifests
+import com.icure.sdk.options.getAuthService
 import com.icure.sdk.storage.IcureStorageFacade
 import com.icure.sdk.storage.StorageFacade
 import com.icure.sdk.storage.impl.DefaultStorageEntryKeysFactory
@@ -429,8 +431,8 @@ private class IcureApiImpl(
 		)
 	}
 	override val crypto: CryptoApi by lazy {
-		CryptoApi(
-			ShamirKeysManagerImpl(
+		CryptoApiImpl(
+			ShamirKeysManagerApiImpl(
 				config.crypto.dataOwnerApi,
 				config.crypto.userEncryptionKeysManager,
 				config.crypto.exchangeDataManager,
@@ -451,7 +453,7 @@ private class IcureApiImpl(
 	}
 
 	override val icureMaintenanceTask: IcureMaintenanceTaskApi by lazy {
-		IcureMaintenanceTaskApi(
+		IcureMaintenanceTaskApiImpl(
 			config.crypto.exchangeDataManager,
 			config.crypto.exchangeKeysManager.base,
 			config.crypto.userEncryptionKeysManager,

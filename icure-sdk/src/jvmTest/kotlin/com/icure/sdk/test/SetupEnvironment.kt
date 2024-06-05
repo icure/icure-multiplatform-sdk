@@ -8,7 +8,7 @@ import com.icure.kryptom.crypto.RsaKeypair
 import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.kryptom.utils.toHexString
 import com.icure.sdk.IcureSdk
-import com.icure.sdk.api.AuthenticationMethod
+import com.icure.sdk.options.AuthenticationMethod
 import com.icure.sdk.options.ApiOptions
 import com.icure.sdk.api.raw.impl.RawAnonymousAuthApiImpl
 import com.icure.sdk.api.raw.impl.RawGroupApiImpl

@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "es6",
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "noImplicitThis": true,
+    "allowSyntheticDefaultImports": true,
+    "preserveConstEnums": true,
+    "lib": [
+      "es2017",
+      "es6",
+      "es5",
+      "dom"
+    ],
+    "sourceMap": true,
+    "inlineSources": true,
+    "declaration": true,
+    "outDir": "./build/tsCompiledSources",
+    "baseUrl": "./"
+  },
+  "include": [
+    "build/tsSourcesProject/**/*.mts",
+    "build/tsSourcesProject/**/*.ts"
+  ]
+}
