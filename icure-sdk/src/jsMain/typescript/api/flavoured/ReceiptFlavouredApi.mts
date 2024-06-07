@@ -8,13 +8,8 @@ import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs'
 
 export interface ReceiptFlavouredApi<E extends Receipt> {
 
-	shareWith(
-			delegateId: string,
-			receipt: E,
-			shareEncryptionKeys: ShareMetadataBehaviour,
-			shareOwningEntityIds: ShareMetadataBehaviour,
-			requestedPermission: RequestedPermission
-	): Promise<SimpleShareResult<E>>;
+	shareWith(delegateId: string, receipt: E,
+			options?: { delegateId?: string, receipt?: E, shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<E>>;
 
 	tryShareWithMany(receipt: E,
 			delegates: { [ key: string ]: ReceiptShareOptions }): Promise<SimpleShareResult<E>>;

@@ -6,18 +6,24 @@ import com.icure.kryptom.crypto.RsaKeypair
 import com.icure.kryptom.crypto.`external`.XRsaKeypair
 import com.icure.kryptom.crypto.`external`.toExternal
 import com.icure.sdk.api.RecoveryApi
+import com.icure.sdk.crypto.entities.RecoveryDataKey
+import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefault
 import com.icure.sdk.js.api.RecoveryApiJs
+import com.icure.sdk.js.api.RecoveryApi_createExchangeDataRecoveryInfo_Options
+import com.icure.sdk.js.api.RecoveryApi_createRecoveryInfoForAvailableKeyPairs_Options
 import com.icure.sdk.js.crypto.entities.RecoveryResultJs
 import com.icure.sdk.js.crypto.entities.recoveryDataKey_fromJs
 import com.icure.sdk.js.crypto.entities.recoveryDataKey_toJs
 import com.icure.sdk.js.crypto.entities.recoveryResult_toJs
 import com.icure.sdk.js.model.CheckedConverters.intToNumber
 import com.icure.sdk.js.model.CheckedConverters.mapToObject
+import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.specializations.spkiHexString_toJs
 import com.icure.sdk.js.utils.Record
 import com.icure.sdk.model.specializations.SpkiHexString
 import kotlin.Boolean
 import kotlin.Double
+import kotlin.Int
 import kotlin.OptIn
 import kotlin.String
 import kotlin.Unit
@@ -31,17 +37,41 @@ import kotlinx.coroutines.promise
 internal class RecoveryApiImplJs(
 	private val recoveryApi: RecoveryApi,
 ) : RecoveryApiJs {
-	override fun createRecoveryInfoForAvailableKeyPairs(includeParentsKeys: Boolean,
-			lifetimeSeconds: Double?): Promise<String> = GlobalScope.promise {
-		recoveryDataKey_toJs(recoveryApi.createRecoveryInfoForAvailableKeyPairs(includeParentsKeys,
-				com.icure.sdk.js.model.CheckedConverters.numberToInt(lifetimeSeconds, "lifetimeSeconds")))}
-
+	override
+			fun createRecoveryInfoForAvailableKeyPairs(options: RecoveryApi_createRecoveryInfoForAvailableKeyPairs_Options?):
+			Promise<String> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val includeParentsKeysConverted: Boolean = convertingOptionOrDefault(
+				_options.includeParentsKeys,
+				false
+			) { includeParentsKeys ->
+				includeParentsKeys
+			}
+			val lifetimeSecondsConverted: Int? = convertingOptionOrDefault(
+				_options.lifetimeSeconds,
+				null
+			) { lifetimeSeconds ->
+				numberToInt(lifetimeSeconds, "lifetimeSeconds")
+			}
+			val result = recoveryApi.createRecoveryInfoForAvailableKeyPairs(
+				includeParentsKeysConverted,
+				lifetimeSecondsConverted,
+			)
+			recoveryDataKey_toJs(result)
+		}
+	}
 
 	override fun recoverKeyPairs(recoveryKey: String, autoDelete: Boolean):
 			Promise<RecoveryResultJs<Record<String, Record<String, XRsaKeypair>>>> = GlobalScope.promise {
+		val recoveryKeyConverted: RecoveryDataKey = recoveryDataKey_fromJs(recoveryKey)
+		val autoDeleteConverted: Boolean = autoDelete
+		val result = recoveryApi.recoverKeyPairs(
+			recoveryKeyConverted,
+			autoDeleteConverted,
+		)
 		recoveryResult_toJs(
-			recoveryApi.recoverKeyPairs(com.icure.sdk.js.crypto.entities.recoveryDataKey_fromJs(recoveryKey),
-					autoDelete),
+			result,
 			{ x1: Map<String, Map<SpkiHexString, RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>> ->
 				mapToObject(
 					x1,
@@ -61,37 +91,69 @@ internal class RecoveryApiImplJs(
 					},
 				)
 			},
-		)}
+		)
+	}
 
-
-	override fun createExchangeDataRecoveryInfo(delegateId: String, lifetimeSeconds: Double?):
-			Promise<String> = GlobalScope.promise {
-		recoveryDataKey_toJs(recoveryApi.createExchangeDataRecoveryInfo(delegateId,
-				com.icure.sdk.js.model.CheckedConverters.numberToInt(lifetimeSeconds, "lifetimeSeconds")))}
-
+	override fun createExchangeDataRecoveryInfo(delegateId: String,
+			options: RecoveryApi_createExchangeDataRecoveryInfo_Options?): Promise<String> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val delegateIdConverted: String = delegateId
+			val lifetimeSecondsConverted: Int? = convertingOptionOrDefault(
+				_options.lifetimeSeconds,
+				null
+			) { lifetimeSeconds ->
+				numberToInt(lifetimeSeconds, "lifetimeSeconds")
+			}
+			val result = recoveryApi.createExchangeDataRecoveryInfo(
+				delegateIdConverted,
+				lifetimeSecondsConverted,
+			)
+			recoveryDataKey_toJs(result)
+		}
+	}
 
 	override fun recoverExchangeData(recoveryKey: String): Promise<String?> = GlobalScope.promise {
-		recoveryApi.recoverExchangeData(com.icure.sdk.js.crypto.entities.recoveryDataKey_fromJs(recoveryKey))?.let {
-				nonNull1 ->
-			recoveryApi.recoverExchangeData(recoveryDataKey_fromJs(recoveryKey))?.name
-		}}
-
+		val recoveryKeyConverted: RecoveryDataKey = recoveryDataKey_fromJs(recoveryKey)
+		val result = recoveryApi.recoverExchangeData(
+			recoveryKeyConverted,
+		)
+		result?.let { nonNull1 ->
+			result?.name
+		}
+	}
 
 	override fun deleteRecoveryInfo(recoveryKey: String): Promise<Unit> = GlobalScope.promise {
-		recoveryApi.deleteRecoveryInfo(recoveryDataKey_fromJs(recoveryKey))}
+		val recoveryKeyConverted: RecoveryDataKey = recoveryDataKey_fromJs(recoveryKey)
+		recoveryApi.deleteRecoveryInfo(
+			recoveryKeyConverted,
+		)
 
+	}
 
 	override fun deleteAllRecoveryInfoFor(dataOwnerId: String): Promise<Double> = GlobalScope.promise {
-		intToNumber(recoveryApi.deleteAllRecoveryInfoFor(dataOwnerId))}
-
+		val dataOwnerIdConverted: String = dataOwnerId
+		val result = recoveryApi.deleteAllRecoveryInfoFor(
+			dataOwnerIdConverted,
+		)
+		intToNumber(result)
+	}
 
 	override fun deleteAllKeyPairRecoveryInfoFor(dataOwnerId: String): Promise<Double> =
 			GlobalScope.promise {
-		intToNumber(recoveryApi.deleteAllKeyPairRecoveryInfoFor(dataOwnerId))}
-
+		val dataOwnerIdConverted: String = dataOwnerId
+		val result = recoveryApi.deleteAllKeyPairRecoveryInfoFor(
+			dataOwnerIdConverted,
+		)
+		intToNumber(result)
+	}
 
 	override fun deleteAllExchangeDataRecoveryInfoFor(dataOwnerId: String): Promise<Double> =
 			GlobalScope.promise {
-		intToNumber(recoveryApi.deleteAllExchangeDataRecoveryInfoFor(dataOwnerId))}
-
+		val dataOwnerIdConverted: String = dataOwnerId
+		val result = recoveryApi.deleteAllExchangeDataRecoveryInfoFor(
+			dataOwnerIdConverted,
+		)
+		intToNumber(result)
+	}
 }

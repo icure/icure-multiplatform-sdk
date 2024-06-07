@@ -14,8 +14,7 @@ export interface InsuranceApi {
 
 	deleteInsurance(insuranceId: string): Promise<DocIdentifier>;
 
-	getAllInsurances(startDocumentId: string | undefined,
-			limit: number | undefined): Promise<PaginatedList<Insurance>>;
+	getAllInsurances(options?: { startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<Insurance>>;
 
 	listInsurancesByCode(insuranceCode: string): Promise<Array<Insurance>>;
 

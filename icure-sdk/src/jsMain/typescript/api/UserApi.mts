@@ -15,8 +15,7 @@ export interface UserApi {
 
 	getCurrentUser(): Promise<User>;
 
-	listUsersBy(startKey: string | undefined, startDocumentId: string | undefined,
-			limit: number | undefined, skipPatients: boolean | undefined): Promise<PaginatedList<User>>;
+	listUsersBy(options?: { startKey?: string | undefined, startDocumentId?: string | undefined, limit?: number | undefined, skipPatients?: boolean | undefined }): Promise<PaginatedList<User>>;
 
 	createUser(user: User): Promise<User>;
 
@@ -39,18 +38,18 @@ export interface UserApi {
 	modifyProperties(userId: string,
 			properties: Array<EncryptedPropertyStub> | undefined): Promise<User>;
 
-	getToken(userId: string, key: string, tokenValidity: number | undefined,
-			token: string | undefined): Promise<string>;
+	getToken(userId: string, key: string,
+			options?: { userId?: string, key?: string, tokenValidity?: number | undefined, token?: string | undefined }): Promise<string>;
 
-	filterUsersBy(startDocumentId: string | undefined, limit: number | undefined,
-			filterChain: FilterChain<User>): Promise<PaginatedList<User>>;
+	filterUsersBy(filterChain: FilterChain<User>,
+			options?: { startDocumentId?: string | undefined, limit?: number | undefined, filterChain?: FilterChain<User> }): Promise<PaginatedList<User>>;
 
 	matchUsersBy(filter: AbstractFilter<User>): Promise<Array<string>>;
 
 	getMatchingUsers(): Promise<Array<UserGroup>>;
 
-	listUsersInGroup(groupId: string, startKey: string | undefined,
-			startDocumentId: string | undefined, limit: number | undefined): Promise<PaginatedList<User>>;
+	listUsersInGroup(groupId: string,
+			options?: { groupId?: string, startKey?: string | undefined, startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<User>>;
 
 	createUserInGroup(groupId: string, user: User): Promise<User>;
 
@@ -66,19 +65,14 @@ export interface UserApi {
 
 	removeRolesFromUserInGroup(userId: string, groupId: string): Promise<User>;
 
-	getTokenInGroup(
-			groupId: string,
-			userId: string,
-			key: string,
-			token: string | undefined,
-			tokenValidity: number | undefined
-	): Promise<string>;
+	getTokenInGroup(groupId: string, userId: string, key: string,
+			options?: { groupId?: string, userId?: string, key?: string, token?: string | undefined, tokenValidity?: number | undefined }): Promise<string>;
 
-	getTokenInAllGroups(userIdentifier: string, key: string, token: string | undefined,
-			tokenValidity: number | undefined): Promise<Array<TokenWithGroup>>;
+	getTokenInAllGroups(userIdentifier: string, key: string,
+			options?: { userIdentifier?: string, key?: string, token?: string | undefined, tokenValidity?: number | undefined }): Promise<Array<TokenWithGroup>>;
 
-	filterUsersInGroupBy(groupId: string, startDocumentId: string | undefined,
-			limit: number | undefined, filterChain: FilterChain<User>): Promise<PaginatedList<User>>;
+	filterUsersInGroupBy(groupId: string, filterChain: FilterChain<User>,
+			options?: { groupId?: string, startDocumentId?: string | undefined, limit?: number | undefined, filterChain?: FilterChain<User> }): Promise<PaginatedList<User>>;
 
 	enable2faForUser(userId: string, groupId: string, request: Enable2faRequest): Promise<void>;
 

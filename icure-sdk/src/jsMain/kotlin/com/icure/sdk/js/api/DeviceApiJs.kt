@@ -30,11 +30,8 @@ public external interface DeviceApiJs {
 
 	public fun updateDevices(devices: Array<DeviceJs>): Promise<Array<IdWithRevJs>>
 
-	public fun filterDevicesBy(
-		startDocumentId: String?,
-		limit: Double?,
-		filterChain: FilterChainJs<DeviceJs>,
-	): Promise<PaginatedListJs<DeviceJs>>
+	public fun filterDevicesBy(filterChain: FilterChainJs<DeviceJs>,
+			options: DeviceApi_filterDevicesBy_Options?): Promise<PaginatedListJs<DeviceJs>>
 
 	public fun matchDevicesBy(filter: AbstractFilterJs<DeviceJs>): Promise<Array<String>>
 
@@ -42,7 +39,8 @@ public external interface DeviceApiJs {
 
 	public fun deleteDevices(deviceIds: Array<String>): Promise<Array<DocIdentifierJs>>
 
-	public fun getDevicesInGroup(groupId: String, deviceIds: Array<String>?): Promise<Array<DeviceJs>>
+	public fun getDevicesInGroup(groupId: String, options: DeviceApi_getDevicesInGroup_Options?):
+			Promise<Array<DeviceJs>>
 
 	public fun modifyDeviceInGroup(groupId: String, device: DeviceJs): Promise<DeviceJs>
 
@@ -50,4 +48,14 @@ public external interface DeviceApiJs {
 
 	public fun deleteDevicesInGroup(groupId: String, deviceIds: String):
 			Promise<Array<DocIdentifierJs>>
+}
+
+public external interface DeviceApi_filterDevicesBy_Options {
+	public val startDocumentId: String?
+
+	public val limit: Double?
+}
+
+public external interface DeviceApi_getDevicesInGroup_Options {
+	public val deviceIds: Array<String>?
 }

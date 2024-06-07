@@ -2,39 +2,57 @@
 package com.icure.sdk.js.api.flavoured.`impl`
 
 import com.icure.sdk.api.flavoured.TimeTableApi
+import com.icure.sdk.crypto.entities.SecretIdOption
+import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
+import com.icure.sdk.crypto.entities.TimeTableShareOptions
+import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefault
 import com.icure.sdk.js.api.flavoured.TimeTableApiJs
+import com.icure.sdk.js.api.flavoured.TimeTableApi_shareWith_Options
+import com.icure.sdk.js.api.flavoured.TimeTableApi_withEncryptionMetadata_Options
 import com.icure.sdk.js.api.flavoured.TimeTableFlavouredApiJs
-import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
+import com.icure.sdk.js.api.flavoured.TimeTableFlavouredApi_shareWith_Options
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.crypto.entities.TimeTableShareOptionsJs
+import com.icure.sdk.js.crypto.entities.secretIdOption_fromJs
 import com.icure.sdk.js.crypto.entities.simpleShareResult_toJs
+import com.icure.sdk.js.crypto.entities.timeTableShareOptions_fromJs
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
+import com.icure.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.sdk.js.model.CheckedConverters.setToArray
 import com.icure.sdk.js.model.DecryptedTimeTableJs
 import com.icure.sdk.js.model.EncryptedTimeTableJs
 import com.icure.sdk.js.model.PatientJs
 import com.icure.sdk.js.model.TimeTableJs
-import com.icure.sdk.js.model.UserJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.couchdb.docIdentifier_toJs
+import com.icure.sdk.js.model.patient_fromJs
 import com.icure.sdk.js.model.specializations.hexString_toJs
 import com.icure.sdk.js.model.timeTable_fromJs
 import com.icure.sdk.js.model.timeTable_toJs
+import com.icure.sdk.js.model.user_fromJs
 import com.icure.sdk.js.utils.Record
 import com.icure.sdk.model.DecryptedTimeTable
 import com.icure.sdk.model.EncryptedTimeTable
+import com.icure.sdk.model.Patient
 import com.icure.sdk.model.TimeTable
+import com.icure.sdk.model.User
 import com.icure.sdk.model.couchdb.DocIdentifier
+import com.icure.sdk.model.embed.AccessLevel
+import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
+import kotlin.Long
 import kotlin.OptIn
 import kotlin.String
 import kotlin.Unit
+import kotlin.collections.List
+import kotlin.collections.Map
+import kotlin.collections.Set
 import kotlin.js.Promise
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -49,90 +67,144 @@ internal class TimeTableApiImplJs(
 		override fun shareWith(
 			delegateId: String,
 			timeTable: EncryptedTimeTableJs,
-			shareEncryptionKeys: String,
-			shareOwningEntityIds: String,
-			requestedPermission: String,
-		): Promise<SimpleShareResultJs<EncryptedTimeTableJs>> = GlobalScope.promise {
-			simpleShareResult_toJs(
-				timeTableApi.encrypted.shareWith(delegateId, com.icure.sdk.js.model.timeTable_fromJs(timeTable),
-						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareEncryptionKeys),
-						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareOwningEntityIds),
-						com.icure.sdk.model.requests.RequestedPermission.valueOf(requestedPermission)),
-				{ x1: EncryptedTimeTable ->
-					timeTable_toJs(x1)
-				},
-			)}
-
+			options: TimeTableFlavouredApi_shareWith_Options?,
+		): Promise<SimpleShareResultJs<EncryptedTimeTableJs>> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val delegateIdConverted: String = delegateId
+				val timeTableConverted: EncryptedTimeTable = timeTable_fromJs(timeTable)
+				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
+					_options.shareEncryptionKeys,
+					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
+				) { shareEncryptionKeys ->
+					ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
+				}
+				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
+					_options.shareOwningEntityIds,
+					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
+				) { shareOwningEntityIds ->
+					ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
+				}
+				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefault(
+					_options.requestedPermission,
+					com.icure.sdk.model.requests.RequestedPermission.MaxWrite
+				) { requestedPermission ->
+					RequestedPermission.valueOf(requestedPermission)
+				}
+				val result = timeTableApi.encrypted.shareWith(
+					delegateIdConverted,
+					timeTableConverted,
+					shareEncryptionKeysConverted,
+					shareOwningEntityIdsConverted,
+					requestedPermissionConverted,
+				)
+				simpleShareResult_toJs(
+					result,
+					{ x1: EncryptedTimeTable ->
+						timeTable_toJs(x1)
+					},
+				)
+			}
+		}
 
 		override fun tryShareWithMany(timeTable: EncryptedTimeTableJs,
 				delegates: Record<String, TimeTableShareOptionsJs>):
 				Promise<SimpleShareResultJs<EncryptedTimeTableJs>> = GlobalScope.promise {
+			val timeTableConverted: EncryptedTimeTable = timeTable_fromJs(timeTable)
+			val delegatesConverted: Map<String, TimeTableShareOptions> = objectToMap(
+				delegates,
+				"delegates",
+				{ x1: String ->
+					x1
+				},
+				{ x1: TimeTableShareOptionsJs ->
+					timeTableShareOptions_fromJs(x1)
+				},
+			)
+			val result = timeTableApi.encrypted.tryShareWithMany(
+				timeTableConverted,
+				delegatesConverted,
+			)
 			simpleShareResult_toJs(
-				timeTableApi.encrypted.tryShareWithMany(com.icure.sdk.js.model.timeTable_fromJs(timeTable),
-						com.icure.sdk.js.model.CheckedConverters.objectToMap(
-				  delegates,
-				  "delegates",
-				  { x1: kotlin.String ->
-				    x1
-				  },
-				  { x1: com.icure.sdk.js.crypto.entities.TimeTableShareOptionsJs ->
-				    com.icure.sdk.js.crypto.entities.timeTableShareOptions_fromJs(x1)
-				  },
-				)),
+				result,
 				{ x1: EncryptedTimeTable ->
 					timeTable_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun shareWithMany(timeTable: EncryptedTimeTableJs,
 				delegates: Record<String, TimeTableShareOptionsJs>): Promise<EncryptedTimeTableJs> =
 				GlobalScope.promise {
-			timeTable_toJs(timeTableApi.encrypted.shareWithMany(com.icure.sdk.js.model.timeTable_fromJs(timeTable),
-					com.icure.sdk.js.model.CheckedConverters.objectToMap(
-			  delegates,
-			  "delegates",
-			  { x1: kotlin.String ->
-			    x1
-			  },
-			  { x1: com.icure.sdk.js.crypto.entities.TimeTableShareOptionsJs ->
-			    com.icure.sdk.js.crypto.entities.timeTableShareOptions_fromJs(x1)
-			  },
-			)))}
-
+			val timeTableConverted: EncryptedTimeTable = timeTable_fromJs(timeTable)
+			val delegatesConverted: Map<String, TimeTableShareOptions> = objectToMap(
+				delegates,
+				"delegates",
+				{ x1: String ->
+					x1
+				},
+				{ x1: TimeTableShareOptionsJs ->
+					timeTableShareOptions_fromJs(x1)
+				},
+			)
+			val result = timeTableApi.encrypted.shareWithMany(
+				timeTableConverted,
+				delegatesConverted,
+			)
+			timeTable_toJs(result)
+		}
 
 		override fun modifyTimeTable(entity: EncryptedTimeTableJs): Promise<EncryptedTimeTableJs> =
 				GlobalScope.promise {
-			timeTable_toJs(timeTableApi.encrypted.modifyTimeTable(com.icure.sdk.js.model.timeTable_fromJs(entity)))}
-
+			val entityConverted: EncryptedTimeTable = timeTable_fromJs(entity)
+			val result = timeTableApi.encrypted.modifyTimeTable(
+				entityConverted,
+			)
+			timeTable_toJs(result)
+		}
 
 		override fun getTimeTable(entityId: String): Promise<EncryptedTimeTableJs> = GlobalScope.promise {
-			timeTable_toJs(timeTableApi.encrypted.getTimeTable(entityId))}
-
+			val entityIdConverted: String = entityId
+			val result = timeTableApi.encrypted.getTimeTable(
+				entityIdConverted,
+			)
+			timeTable_toJs(result)
+		}
 
 		override fun getTimeTablesByPeriodAndAgendaId(
 			startDate: Double,
 			endDate: Double,
 			agendaId: String,
 		): Promise<Array<EncryptedTimeTableJs>> = GlobalScope.promise {
+			val startDateConverted: Long = numberToLong(startDate, "startDate")
+			val endDateConverted: Long = numberToLong(endDate, "endDate")
+			val agendaIdConverted: String = agendaId
+			val result = timeTableApi.encrypted.getTimeTablesByPeriodAndAgendaId(
+				startDateConverted,
+				endDateConverted,
+				agendaIdConverted,
+			)
 			listToArray(
-				timeTableApi.encrypted.getTimeTablesByPeriodAndAgendaId(numberToLong(startDate, "startDate"),
-						numberToLong(endDate, "endDate"), agendaId),
+				result,
 				{ x1: EncryptedTimeTable ->
 					timeTable_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun getTimeTablesByAgendaId(agendaId: String): Promise<Array<EncryptedTimeTableJs>> =
 				GlobalScope.promise {
+			val agendaIdConverted: String = agendaId
+			val result = timeTableApi.encrypted.getTimeTablesByAgendaId(
+				agendaIdConverted,
+			)
 			listToArray(
-				timeTableApi.encrypted.getTimeTablesByAgendaId(agendaId),
+				result,
 				{ x1: EncryptedTimeTable ->
 					timeTable_toJs(x1)
 				},
-			)}
-
+			)
+		}
 	}
 
 	override val tryAndRecover: TimeTableFlavouredApiJs<TimeTableJs> = object :
@@ -140,262 +212,427 @@ internal class TimeTableApiImplJs(
 		override fun shareWith(
 			delegateId: String,
 			timeTable: TimeTableJs,
-			shareEncryptionKeys: String,
-			shareOwningEntityIds: String,
-			requestedPermission: String,
-		): Promise<SimpleShareResultJs<TimeTableJs>> = GlobalScope.promise {
-			simpleShareResult_toJs(
-				timeTableApi.tryAndRecover.shareWith(delegateId,
-						com.icure.sdk.js.model.timeTable_fromJs(timeTable),
-						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareEncryptionKeys),
-						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareOwningEntityIds),
-						com.icure.sdk.model.requests.RequestedPermission.valueOf(requestedPermission)),
-				{ x1: TimeTable ->
-					timeTable_toJs(x1)
-				},
-			)}
-
+			options: TimeTableFlavouredApi_shareWith_Options?,
+		): Promise<SimpleShareResultJs<TimeTableJs>> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val delegateIdConverted: String = delegateId
+				val timeTableConverted: TimeTable = timeTable_fromJs(timeTable)
+				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
+					_options.shareEncryptionKeys,
+					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
+				) { shareEncryptionKeys ->
+					ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
+				}
+				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
+					_options.shareOwningEntityIds,
+					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
+				) { shareOwningEntityIds ->
+					ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
+				}
+				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefault(
+					_options.requestedPermission,
+					com.icure.sdk.model.requests.RequestedPermission.MaxWrite
+				) { requestedPermission ->
+					RequestedPermission.valueOf(requestedPermission)
+				}
+				val result = timeTableApi.tryAndRecover.shareWith(
+					delegateIdConverted,
+					timeTableConverted,
+					shareEncryptionKeysConverted,
+					shareOwningEntityIdsConverted,
+					requestedPermissionConverted,
+				)
+				simpleShareResult_toJs(
+					result,
+					{ x1: TimeTable ->
+						timeTable_toJs(x1)
+					},
+				)
+			}
+		}
 
 		override fun tryShareWithMany(timeTable: TimeTableJs,
 				delegates: Record<String, TimeTableShareOptionsJs>): Promise<SimpleShareResultJs<TimeTableJs>> =
 				GlobalScope.promise {
+			val timeTableConverted: TimeTable = timeTable_fromJs(timeTable)
+			val delegatesConverted: Map<String, TimeTableShareOptions> = objectToMap(
+				delegates,
+				"delegates",
+				{ x1: String ->
+					x1
+				},
+				{ x1: TimeTableShareOptionsJs ->
+					timeTableShareOptions_fromJs(x1)
+				},
+			)
+			val result = timeTableApi.tryAndRecover.tryShareWithMany(
+				timeTableConverted,
+				delegatesConverted,
+			)
 			simpleShareResult_toJs(
-				timeTableApi.tryAndRecover.tryShareWithMany(com.icure.sdk.js.model.timeTable_fromJs(timeTable),
-						com.icure.sdk.js.model.CheckedConverters.objectToMap(
-				  delegates,
-				  "delegates",
-				  { x1: kotlin.String ->
-				    x1
-				  },
-				  { x1: com.icure.sdk.js.crypto.entities.TimeTableShareOptionsJs ->
-				    com.icure.sdk.js.crypto.entities.timeTableShareOptions_fromJs(x1)
-				  },
-				)),
+				result,
 				{ x1: TimeTable ->
 					timeTable_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun shareWithMany(timeTable: TimeTableJs,
 				delegates: Record<String, TimeTableShareOptionsJs>): Promise<TimeTableJs> =
 				GlobalScope.promise {
-			timeTable_toJs(timeTableApi.tryAndRecover.shareWithMany(com.icure.sdk.js.model.timeTable_fromJs(timeTable),
-					com.icure.sdk.js.model.CheckedConverters.objectToMap(
-			  delegates,
-			  "delegates",
-			  { x1: kotlin.String ->
-			    x1
-			  },
-			  { x1: com.icure.sdk.js.crypto.entities.TimeTableShareOptionsJs ->
-			    com.icure.sdk.js.crypto.entities.timeTableShareOptions_fromJs(x1)
-			  },
-			)))}
-
+			val timeTableConverted: TimeTable = timeTable_fromJs(timeTable)
+			val delegatesConverted: Map<String, TimeTableShareOptions> = objectToMap(
+				delegates,
+				"delegates",
+				{ x1: String ->
+					x1
+				},
+				{ x1: TimeTableShareOptionsJs ->
+					timeTableShareOptions_fromJs(x1)
+				},
+			)
+			val result = timeTableApi.tryAndRecover.shareWithMany(
+				timeTableConverted,
+				delegatesConverted,
+			)
+			timeTable_toJs(result)
+		}
 
 		override fun modifyTimeTable(entity: TimeTableJs): Promise<TimeTableJs> = GlobalScope.promise {
-			timeTable_toJs(timeTableApi.tryAndRecover.modifyTimeTable(com.icure.sdk.js.model.timeTable_fromJs(entity)))}
-
+			val entityConverted: TimeTable = timeTable_fromJs(entity)
+			val result = timeTableApi.tryAndRecover.modifyTimeTable(
+				entityConverted,
+			)
+			timeTable_toJs(result)
+		}
 
 		override fun getTimeTable(entityId: String): Promise<TimeTableJs> = GlobalScope.promise {
-			timeTable_toJs(timeTableApi.tryAndRecover.getTimeTable(entityId))}
-
+			val entityIdConverted: String = entityId
+			val result = timeTableApi.tryAndRecover.getTimeTable(
+				entityIdConverted,
+			)
+			timeTable_toJs(result)
+		}
 
 		override fun getTimeTablesByPeriodAndAgendaId(
 			startDate: Double,
 			endDate: Double,
 			agendaId: String,
 		): Promise<Array<TimeTableJs>> = GlobalScope.promise {
+			val startDateConverted: Long = numberToLong(startDate, "startDate")
+			val endDateConverted: Long = numberToLong(endDate, "endDate")
+			val agendaIdConverted: String = agendaId
+			val result = timeTableApi.tryAndRecover.getTimeTablesByPeriodAndAgendaId(
+				startDateConverted,
+				endDateConverted,
+				agendaIdConverted,
+			)
 			listToArray(
-				timeTableApi.tryAndRecover.getTimeTablesByPeriodAndAgendaId(numberToLong(startDate,
-						"startDate"), numberToLong(endDate, "endDate"), agendaId),
+				result,
 				{ x1: TimeTable ->
 					timeTable_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun getTimeTablesByAgendaId(agendaId: String): Promise<Array<TimeTableJs>> =
 				GlobalScope.promise {
+			val agendaIdConverted: String = agendaId
+			val result = timeTableApi.tryAndRecover.getTimeTablesByAgendaId(
+				agendaIdConverted,
+			)
 			listToArray(
-				timeTableApi.tryAndRecover.getTimeTablesByAgendaId(agendaId),
+				result,
 				{ x1: TimeTable ->
 					timeTable_toJs(x1)
 				},
-			)}
-
+			)
+		}
 	}
 
 	override fun createTimeTable(entity: DecryptedTimeTableJs): Promise<DecryptedTimeTableJs> =
 			GlobalScope.promise {
-		timeTable_toJs(timeTableApi.createTimeTable(com.icure.sdk.js.model.timeTable_fromJs(entity)))}
-
+		val entityConverted: DecryptedTimeTable = timeTable_fromJs(entity)
+		val result = timeTableApi.createTimeTable(
+			entityConverted,
+		)
+		timeTable_toJs(result)
+	}
 
 	override fun withEncryptionMetadata(
 		base: DecryptedTimeTableJs?,
 		patient: PatientJs?,
-		user: UserJs?,
-		delegates: Record<String, String>,
-		secretId: SecretIdOptionJs,
-	): Promise<DecryptedTimeTableJs> = GlobalScope.promise {
-		timeTable_toJs(timeTableApi.withEncryptionMetadata(base?.let { nonNull1 ->
-		  com.icure.sdk.js.model.timeTable_fromJs(nonNull1)
-		}, patient?.let { nonNull1 ->
-		  com.icure.sdk.js.model.patient_fromJs(nonNull1)
-		}, user?.let { nonNull1 ->
-		  com.icure.sdk.js.model.user_fromJs(nonNull1)
-		}, com.icure.sdk.js.model.CheckedConverters.objectToMap(
-		  delegates,
-		  "delegates",
-		  { x1: kotlin.String ->
-		    x1
-		  },
-		  { x1: kotlin.String ->
-		    com.icure.sdk.model.embed.AccessLevel.valueOf(x1)
-		  },
-		), com.icure.sdk.js.crypto.entities.secretIdOption_fromJs(secretId)))}
-
+		options: TimeTableApi_withEncryptionMetadata_Options?,
+	): Promise<DecryptedTimeTableJs> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val baseConverted: DecryptedTimeTable? = base?.let { nonNull1 ->
+				timeTable_fromJs(nonNull1)
+			}
+			val patientConverted: Patient? = patient?.let { nonNull1 ->
+				patient_fromJs(nonNull1)
+			}
+			val userConverted: User? = convertingOptionOrDefault(
+				_options.user,
+				null
+			) { user ->
+				user?.let { nonNull1 ->
+					user_fromJs(nonNull1)
+				}
+			}
+			val delegatesConverted: Map<String, AccessLevel> = convertingOptionOrDefault(
+				_options.delegates,
+				emptyMap()
+			) { delegates ->
+				objectToMap(
+					delegates,
+					"delegates",
+					{ x1: String ->
+						x1
+					},
+					{ x1: String ->
+						AccessLevel.valueOf(x1)
+					},
+				)
+			}
+			val secretIdConverted: SecretIdOption = convertingOptionOrDefault(
+				_options.secretId,
+				com.icure.sdk.crypto.entities.SecretIdOption.UseAnySharedWithParent
+			) { secretId ->
+				secretIdOption_fromJs(secretId)
+			}
+			val result = timeTableApi.withEncryptionMetadata(
+				baseConverted,
+				patientConverted,
+				userConverted,
+				delegatesConverted,
+				secretIdConverted,
+			)
+			timeTable_toJs(result)
+		}
+	}
 
 	override fun getEncryptionKeysOf(timeTable: TimeTableJs): Promise<Array<String>> =
 			GlobalScope.promise {
+		val timeTableConverted: TimeTable = timeTable_fromJs(timeTable)
+		val result = timeTableApi.getEncryptionKeysOf(
+			timeTableConverted,
+		)
 		setToArray(
-			timeTableApi.getEncryptionKeysOf(timeTable_fromJs(timeTable)),
+			result,
 			{ x1: HexString ->
 				hexString_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun hasWriteAccess(timeTable: TimeTableJs): Promise<Boolean> = GlobalScope.promise {
-		timeTableApi.hasWriteAccess(timeTable_fromJs(timeTable))}
-
+		val timeTableConverted: TimeTable = timeTable_fromJs(timeTable)
+		val result = timeTableApi.hasWriteAccess(
+			timeTableConverted,
+		)
+		result
+	}
 
 	override fun decryptPatientIdOf(timeTable: TimeTableJs): Promise<Array<String>> =
 			GlobalScope.promise {
+		val timeTableConverted: TimeTable = timeTable_fromJs(timeTable)
+		val result = timeTableApi.decryptPatientIdOf(
+			timeTableConverted,
+		)
 		setToArray(
-			timeTableApi.decryptPatientIdOf(timeTable_fromJs(timeTable)),
+			result,
 			{ x1: String ->
 				x1
 			},
-		)}
-
+		)
+	}
 
 	override fun createDelegationDeAnonymizationMetadata(entity: TimeTableJs,
 			delegates: Array<String>): Promise<Unit> = GlobalScope.promise {
-		timeTableApi.createDelegationDeAnonymizationMetadata(timeTable_fromJs(entity), arrayToSet(
+		val entityConverted: TimeTable = timeTable_fromJs(entity)
+		val delegatesConverted: Set<String> = arrayToSet(
 			delegates,
 			"delegates",
 			{ x1: String ->
 				x1
 			},
-		))}
+		)
+		timeTableApi.createDelegationDeAnonymizationMetadata(
+			entityConverted,
+			delegatesConverted,
+		)
 
+	}
 
 	override fun deleteTimeTable(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {
-		docIdentifier_toJs(timeTableApi.deleteTimeTable(entityId))}
-
+		val entityIdConverted: String = entityId
+		val result = timeTableApi.deleteTimeTable(
+			entityIdConverted,
+		)
+		docIdentifier_toJs(result)
+	}
 
 	override fun deleteTimeTables(entityIds: Array<String>): Promise<Array<DocIdentifierJs>> =
 			GlobalScope.promise {
+		val entityIdsConverted: List<String> = arrayToList(
+			entityIds,
+			"entityIds",
+			{ x1: String ->
+				x1
+			},
+		)
+		val result = timeTableApi.deleteTimeTables(
+			entityIdsConverted,
+		)
 		listToArray(
-			timeTableApi.deleteTimeTables(arrayToList(
-				entityIds,
-				"entityIds",
-				{ x1: String ->
-					x1
-				},
-			)),
+			result,
 			{ x1: DocIdentifier ->
 				docIdentifier_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun shareWith(
 		delegateId: String,
 		timeTable: DecryptedTimeTableJs,
-		shareEncryptionKeys: String,
-		shareOwningEntityIds: String,
-		requestedPermission: String,
-	): Promise<SimpleShareResultJs<DecryptedTimeTableJs>> = GlobalScope.promise {
-		simpleShareResult_toJs(
-			timeTableApi.shareWith(delegateId, com.icure.sdk.js.model.timeTable_fromJs(timeTable),
-					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareEncryptionKeys),
-					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareOwningEntityIds),
-					com.icure.sdk.model.requests.RequestedPermission.valueOf(requestedPermission)),
-			{ x1: DecryptedTimeTable ->
-				timeTable_toJs(x1)
-			},
-		)}
-
+		options: TimeTableApi_shareWith_Options?,
+	): Promise<SimpleShareResultJs<DecryptedTimeTableJs>> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val delegateIdConverted: String = delegateId
+			val timeTableConverted: DecryptedTimeTable = timeTable_fromJs(timeTable)
+			val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
+				_options.shareEncryptionKeys,
+				com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
+			) { shareEncryptionKeys ->
+				ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
+			}
+			val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
+				_options.shareOwningEntityIds,
+				com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
+			) { shareOwningEntityIds ->
+				ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
+			}
+			val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefault(
+				_options.requestedPermission,
+				com.icure.sdk.model.requests.RequestedPermission.MaxWrite
+			) { requestedPermission ->
+				RequestedPermission.valueOf(requestedPermission)
+			}
+			val result = timeTableApi.shareWith(
+				delegateIdConverted,
+				timeTableConverted,
+				shareEncryptionKeysConverted,
+				shareOwningEntityIdsConverted,
+				requestedPermissionConverted,
+			)
+			simpleShareResult_toJs(
+				result,
+				{ x1: DecryptedTimeTable ->
+					timeTable_toJs(x1)
+				},
+			)
+		}
+	}
 
 	override fun tryShareWithMany(timeTable: DecryptedTimeTableJs,
 			delegates: Record<String, TimeTableShareOptionsJs>):
 			Promise<SimpleShareResultJs<DecryptedTimeTableJs>> = GlobalScope.promise {
+		val timeTableConverted: DecryptedTimeTable = timeTable_fromJs(timeTable)
+		val delegatesConverted: Map<String, TimeTableShareOptions> = objectToMap(
+			delegates,
+			"delegates",
+			{ x1: String ->
+				x1
+			},
+			{ x1: TimeTableShareOptionsJs ->
+				timeTableShareOptions_fromJs(x1)
+			},
+		)
+		val result = timeTableApi.tryShareWithMany(
+			timeTableConverted,
+			delegatesConverted,
+		)
 		simpleShareResult_toJs(
-			timeTableApi.tryShareWithMany(com.icure.sdk.js.model.timeTable_fromJs(timeTable),
-					com.icure.sdk.js.model.CheckedConverters.objectToMap(
-			  delegates,
-			  "delegates",
-			  { x1: kotlin.String ->
-			    x1
-			  },
-			  { x1: com.icure.sdk.js.crypto.entities.TimeTableShareOptionsJs ->
-			    com.icure.sdk.js.crypto.entities.timeTableShareOptions_fromJs(x1)
-			  },
-			)),
+			result,
 			{ x1: DecryptedTimeTable ->
 				timeTable_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun shareWithMany(timeTable: DecryptedTimeTableJs,
 			delegates: Record<String, TimeTableShareOptionsJs>): Promise<DecryptedTimeTableJs> =
 			GlobalScope.promise {
-		timeTable_toJs(timeTableApi.shareWithMany(com.icure.sdk.js.model.timeTable_fromJs(timeTable),
-				com.icure.sdk.js.model.CheckedConverters.objectToMap(
-		  delegates,
-		  "delegates",
-		  { x1: kotlin.String ->
-		    x1
-		  },
-		  { x1: com.icure.sdk.js.crypto.entities.TimeTableShareOptionsJs ->
-		    com.icure.sdk.js.crypto.entities.timeTableShareOptions_fromJs(x1)
-		  },
-		)))}
-
+		val timeTableConverted: DecryptedTimeTable = timeTable_fromJs(timeTable)
+		val delegatesConverted: Map<String, TimeTableShareOptions> = objectToMap(
+			delegates,
+			"delegates",
+			{ x1: String ->
+				x1
+			},
+			{ x1: TimeTableShareOptionsJs ->
+				timeTableShareOptions_fromJs(x1)
+			},
+		)
+		val result = timeTableApi.shareWithMany(
+			timeTableConverted,
+			delegatesConverted,
+		)
+		timeTable_toJs(result)
+	}
 
 	override fun modifyTimeTable(entity: DecryptedTimeTableJs): Promise<DecryptedTimeTableJs> =
 			GlobalScope.promise {
-		timeTable_toJs(timeTableApi.modifyTimeTable(com.icure.sdk.js.model.timeTable_fromJs(entity)))}
-
+		val entityConverted: DecryptedTimeTable = timeTable_fromJs(entity)
+		val result = timeTableApi.modifyTimeTable(
+			entityConverted,
+		)
+		timeTable_toJs(result)
+	}
 
 	override fun getTimeTable(entityId: String): Promise<DecryptedTimeTableJs> = GlobalScope.promise {
-		timeTable_toJs(timeTableApi.getTimeTable(entityId))}
-
+		val entityIdConverted: String = entityId
+		val result = timeTableApi.getTimeTable(
+			entityIdConverted,
+		)
+		timeTable_toJs(result)
+	}
 
 	override fun getTimeTablesByPeriodAndAgendaId(
 		startDate: Double,
 		endDate: Double,
 		agendaId: String,
 	): Promise<Array<DecryptedTimeTableJs>> = GlobalScope.promise {
+		val startDateConverted: Long = numberToLong(startDate, "startDate")
+		val endDateConverted: Long = numberToLong(endDate, "endDate")
+		val agendaIdConverted: String = agendaId
+		val result = timeTableApi.getTimeTablesByPeriodAndAgendaId(
+			startDateConverted,
+			endDateConverted,
+			agendaIdConverted,
+		)
 		listToArray(
-			timeTableApi.getTimeTablesByPeriodAndAgendaId(numberToLong(startDate, "startDate"),
-					numberToLong(endDate, "endDate"), agendaId),
+			result,
 			{ x1: DecryptedTimeTable ->
 				timeTable_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun getTimeTablesByAgendaId(agendaId: String): Promise<Array<DecryptedTimeTableJs>> =
 			GlobalScope.promise {
+		val agendaIdConverted: String = agendaId
+		val result = timeTableApi.getTimeTablesByAgendaId(
+			agendaIdConverted,
+		)
 		listToArray(
-			timeTableApi.getTimeTablesByAgendaId(agendaId),
+			result,
 			{ x1: DecryptedTimeTable ->
 				timeTable_toJs(x1)
 			},
-		)}
-
+		)
+	}
 }

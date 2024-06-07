@@ -24,40 +24,21 @@ public external interface CodeApiJs {
 		types: String,
 		language: String,
 		label: String,
-		version: String?,
-		startKey: dynamic,
-		startDocumentId: String?,
-		limit: Double?,
+		options: CodeApi_findCodesByLabel_Options?,
 	): Promise<PaginatedListJs<CodeJs>>
 
-	public fun findCodesByType(
-		region: String,
-		type: String?,
-		code: String?,
-		version: String?,
-		startKey: dynamic,
-		startDocumentId: String?,
-		limit: Double?,
-	): Promise<PaginatedListJs<CodeJs>>
+	public fun findCodesByType(region: String, options: CodeApi_findCodesByType_Options?):
+			Promise<PaginatedListJs<CodeJs>>
 
-	public fun findCodesByLink(
-		linkType: String,
-		linkedId: String?,
-		startKey: dynamic,
-		startDocumentId: String?,
-		limit: Double?,
-	): Promise<PaginatedListJs<CodeJs>>
+	public fun findCodesByLink(linkType: String, options: CodeApi_findCodesByLink_Options?):
+			Promise<PaginatedListJs<CodeJs>>
 
-	public fun listCodesByRegionTypeCodeVersion(
-		region: String,
-		type: String?,
-		code: String?,
-		version: String?,
-	): Promise<Array<CodeJs>>
+	public fun listCodesByRegionTypeCodeVersion(region: String,
+			options: CodeApi_listCodesByRegionTypeCodeVersion_Options?): Promise<Array<CodeJs>>
 
-	public fun listCodeTypesBy(region: String?, type: String?): Promise<Array<String>>
+	public fun listCodeTypesBy(options: CodeApi_listCodeTypesBy_Options?): Promise<Array<String>>
 
-	public fun listTagTypesBy(region: String?, type: String?): Promise<Array<String>>
+	public fun listTagTypesBy(options: CodeApi_listTagTypesBy_Options?): Promise<Array<String>>
 
 	public fun createCode(c: CodeJs): Promise<CodeJs>
 
@@ -90,17 +71,78 @@ public external interface CodeApiJs {
 
 	public fun modifyCodes(codeBatch: Array<CodeJs>): Promise<Array<CodeJs>>
 
-	public fun filterCodesBy(
-		startKey: dynamic,
-		startDocumentId: String?,
-		limit: Double?,
-		skip: Double?,
-		sort: String?,
-		desc: Boolean?,
-		filterChain: FilterChainJs<CodeJs>,
-	): Promise<PaginatedListJs<CodeJs>>
+	public fun filterCodesBy(filterChain: FilterChainJs<CodeJs>,
+			options: CodeApi_filterCodesBy_Options?): Promise<PaginatedListJs<CodeJs>>
 
 	public fun matchCodesBy(filter: AbstractFilterJs<CodeJs>): Promise<Array<String>>
 
 	public fun importCodes(codeType: String): Promise<Unit>
+}
+
+public external interface CodeApi_findCodesByLabel_Options {
+	public val version: String?
+
+	public val startKey: dynamic
+
+	public val startDocumentId: String?
+
+	public val limit: Double?
+}
+
+public external interface CodeApi_findCodesByType_Options {
+	public val type: String?
+
+	public val code: String?
+
+	public val version: String?
+
+	public val startKey: dynamic
+
+	public val startDocumentId: String?
+
+	public val limit: Double?
+}
+
+public external interface CodeApi_findCodesByLink_Options {
+	public val linkedId: String?
+
+	public val startKey: dynamic
+
+	public val startDocumentId: String?
+
+	public val limit: Double?
+}
+
+public external interface CodeApi_listCodesByRegionTypeCodeVersion_Options {
+	public val type: String?
+
+	public val code: String?
+
+	public val version: String?
+}
+
+public external interface CodeApi_listCodeTypesBy_Options {
+	public val region: String?
+
+	public val type: String?
+}
+
+public external interface CodeApi_listTagTypesBy_Options {
+	public val region: String?
+
+	public val type: String?
+}
+
+public external interface CodeApi_filterCodesBy_Options {
+	public val startKey: dynamic
+
+	public val startDocumentId: String?
+
+	public val limit: Double?
+
+	public val skip: Double?
+
+	public val sort: String?
+
+	public val desc: Boolean?
 }

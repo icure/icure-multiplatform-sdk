@@ -7,6 +7,7 @@ import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.FrontEndMigrationJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.couchdb.docIdentifier_toJs
+import com.icure.sdk.js.model.frontEndMigration_fromJs
 import com.icure.sdk.js.model.frontEndMigration_toJs
 import com.icure.sdk.model.FrontEndMigration
 import kotlin.Array
@@ -23,40 +24,62 @@ internal class FrontEndMigrationApiImplJs(
 ) : FrontEndMigrationApiJs {
 	override fun getFrontEndMigration(frontEndMigrationId: String): Promise<FrontEndMigrationJs> =
 			GlobalScope.promise {
-		frontEndMigration_toJs(frontEndMigrationApi.getFrontEndMigration(frontEndMigrationId))}
-
+		val frontEndMigrationIdConverted: String = frontEndMigrationId
+		val result = frontEndMigrationApi.getFrontEndMigration(
+			frontEndMigrationIdConverted,
+		)
+		frontEndMigration_toJs(result)
+	}
 
 	override fun createFrontEndMigration(frontEndMigration: FrontEndMigrationJs):
 			Promise<FrontEndMigrationJs> = GlobalScope.promise {
-		frontEndMigration_toJs(frontEndMigrationApi.createFrontEndMigration(com.icure.sdk.js.model.frontEndMigration_fromJs(frontEndMigration)))}
-
+		val frontEndMigrationConverted: FrontEndMigration = frontEndMigration_fromJs(frontEndMigration)
+		val result = frontEndMigrationApi.createFrontEndMigration(
+			frontEndMigrationConverted,
+		)
+		frontEndMigration_toJs(result)
+	}
 
 	override fun getFrontEndMigrations(): Promise<Array<FrontEndMigrationJs>> = GlobalScope.promise {
+		val result = frontEndMigrationApi.getFrontEndMigrations(
+		)
 		listToArray(
-			frontEndMigrationApi.getFrontEndMigrations(),
+			result,
 			{ x1: FrontEndMigration ->
 				frontEndMigration_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun deleteFrontEndMigration(frontEndMigrationId: String): Promise<DocIdentifierJs> =
 			GlobalScope.promise {
-		docIdentifier_toJs(frontEndMigrationApi.deleteFrontEndMigration(frontEndMigrationId))}
-
+		val frontEndMigrationIdConverted: String = frontEndMigrationId
+		val result = frontEndMigrationApi.deleteFrontEndMigration(
+			frontEndMigrationIdConverted,
+		)
+		docIdentifier_toJs(result)
+	}
 
 	override fun getFrontEndMigrationByName(frontEndMigrationName: String):
 			Promise<Array<FrontEndMigrationJs>> = GlobalScope.promise {
+		val frontEndMigrationNameConverted: String = frontEndMigrationName
+		val result = frontEndMigrationApi.getFrontEndMigrationByName(
+			frontEndMigrationNameConverted,
+		)
 		listToArray(
-			frontEndMigrationApi.getFrontEndMigrationByName(frontEndMigrationName),
+			result,
 			{ x1: FrontEndMigration ->
 				frontEndMigration_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun modifyFrontEndMigration(frontEndMigration: FrontEndMigrationJs):
 			Promise<FrontEndMigrationJs> = GlobalScope.promise {
-		frontEndMigration_toJs(frontEndMigrationApi.modifyFrontEndMigration(com.icure.sdk.js.model.frontEndMigration_fromJs(frontEndMigration)))}
-
+		val frontEndMigrationConverted: FrontEndMigration = frontEndMigration_fromJs(frontEndMigration)
+		val result = frontEndMigrationApi.modifyFrontEndMigration(
+			frontEndMigrationConverted,
+		)
+		frontEndMigration_toJs(result)
+	}
 }

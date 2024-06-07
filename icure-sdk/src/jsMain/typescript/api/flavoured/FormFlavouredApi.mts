@@ -10,26 +10,16 @@ import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs'
 
 export interface FormFlavouredApi<E extends Form> {
 
-	shareWith(
-			delegateId: string,
-			form: E,
-			shareEncryptionKeys: ShareMetadataBehaviour,
-			shareOwningEntityIds: ShareMetadataBehaviour,
-			requestedPermission: RequestedPermission
-	): Promise<SimpleShareResult<E>>;
+	shareWith(delegateId: string, form: E,
+			options?: { delegateId?: string, form?: E, shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<E>>;
 
 	tryShareWithMany(form: E,
 			delegates: { [ key: string ]: FormShareOptions }): Promise<SimpleShareResult<E>>;
 
 	shareWithMany(form: E, delegates: { [ key: string ]: FormShareOptions }): Promise<E>;
 
-	findFormsByHcPartyPatient(
-			hcPartyId: string,
-			patient: Patient,
-			startDate: number | undefined,
-			endDate: number | undefined,
-			descending: boolean | undefined
-	): Promise<PaginatedListIterator<E>>;
+	findFormsByHcPartyPatient(hcPartyId: string, patient: Patient,
+			options?: { hcPartyId?: string, patient?: Patient, startDate?: number | undefined, endDate?: number | undefined, descending?: boolean | undefined }): Promise<PaginatedListIterator<E>>;
 
 	modifyForm(entity: E): Promise<E>;
 
@@ -49,12 +39,7 @@ export interface FormFlavouredApi<E extends Form> {
 
 	getChildrenForms(hcPartyId: string, parentId: string): Promise<Array<E>>;
 
-	listFormsByHCPartyAndPatientForeignKeys(
-			hcPartyId: string,
-			secretFKeys: string,
-			healthElementId: string | undefined,
-			planOfActionId: string | undefined,
-			formTemplateId: string | undefined
-	): Promise<Array<E>>;
+	listFormsByHCPartyAndPatientForeignKeys(hcPartyId: string, secretFKeys: string,
+			options?: { hcPartyId?: string, secretFKeys?: string, healthElementId?: string | undefined, planOfActionId?: string | undefined, formTemplateId?: string | undefined }): Promise<Array<E>>;
 
 }

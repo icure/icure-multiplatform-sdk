@@ -2,8 +2,14 @@
 package com.icure.sdk.js.api.flavoured.`impl`
 
 import com.icure.sdk.api.flavoured.InvoiceBasicApi
+import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefault
 import com.icure.sdk.js.api.flavoured.InvoiceBasicApiJs
+import com.icure.sdk.js.api.flavoured.InvoiceBasicApi_appendCodes_Options
+import com.icure.sdk.js.api.flavoured.InvoiceBasicApi_findInvoicesByAuthor_Options
+import com.icure.sdk.js.api.flavoured.InvoiceBasicApi_listAllHcpsByStatus_Options
+import com.icure.sdk.js.api.flavoured.InvoiceBasicApi_listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate_Options
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
+import com.icure.sdk.js.model.CheckedConverters.dynamicToJsonNullsafe
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
@@ -25,174 +31,271 @@ import com.icure.sdk.js.model.invoice_toJs
 import com.icure.sdk.js.model.paginatedList_toJs
 import com.icure.sdk.model.EncryptedInvoice
 import com.icure.sdk.model.IcureStub
+import com.icure.sdk.model.Invoice
 import com.icure.sdk.model.`data`.LabelledOccurence
+import com.icure.sdk.model.embed.EncryptedInvoicingCode
 import com.icure.sdk.model.embed.InvoiceType
 import com.icure.sdk.model.embed.MediumType
+import com.icure.sdk.model.filter.chain.FilterChain
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
+import kotlin.Int
+import kotlin.Long
 import kotlin.OptIn
 import kotlin.String
+import kotlin.collections.List
 import kotlin.js.Promise
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
+import kotlinx.serialization.json.JsonElement
 
 @OptIn(DelicateCoroutinesApi::class)
 internal class InvoiceBasicApiImplJs(
 	private val invoiceBasicApi: InvoiceBasicApi,
 ) : InvoiceBasicApiJs {
 	override fun deleteInvoice(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {
-		docIdentifier_toJs(invoiceBasicApi.deleteInvoice(entityId))}
-
+		val entityIdConverted: String = entityId
+		val result = invoiceBasicApi.deleteInvoice(
+			entityIdConverted,
+		)
+		docIdentifier_toJs(result)
+	}
 
 	override fun findInvoicesDelegationsStubsByHcPartyPatientForeignKeys(hcPartyId: String,
 			secretPatientKeys: Array<String>): Promise<Array<IcureStubJs>> = GlobalScope.promise {
+		val hcPartyIdConverted: String = hcPartyId
+		val secretPatientKeysConverted: List<String> = arrayToList(
+			secretPatientKeys,
+			"secretPatientKeys",
+			{ x1: String ->
+				x1
+			},
+		)
+		val result = invoiceBasicApi.findInvoicesDelegationsStubsByHcPartyPatientForeignKeys(
+			hcPartyIdConverted,
+			secretPatientKeysConverted,
+		)
 		listToArray(
-			invoiceBasicApi.findInvoicesDelegationsStubsByHcPartyPatientForeignKeys(hcPartyId, arrayToList(
-				secretPatientKeys,
-				"secretPatientKeys",
-				{ x1: String ->
-					x1
-				},
-			)),
+			result,
 			{ x1: IcureStub ->
 				icureStub_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun getTarificationsCodesOccurrences(minOccurrence: Double):
 			Promise<Array<LabelledOccurenceJs>> = GlobalScope.promise {
+		val minOccurrenceConverted: Int = numberToInt(minOccurrence, "minOccurrence")
+		val result = invoiceBasicApi.getTarificationsCodesOccurrences(
+			minOccurrenceConverted,
+		)
 		listToArray(
-			invoiceBasicApi.getTarificationsCodesOccurrences(numberToInt(minOccurrence, "minOccurrence")),
+			result,
 			{ x1: LabelledOccurence ->
 				labelledOccurence_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun modifyInvoice(entity: EncryptedInvoiceJs): Promise<EncryptedInvoiceJs> =
 			GlobalScope.promise {
-		invoice_toJs(invoiceBasicApi.modifyInvoice(com.icure.sdk.js.model.invoice_fromJs(entity)))}
-
+		val entityConverted: EncryptedInvoice = invoice_fromJs(entity)
+		val result = invoiceBasicApi.modifyInvoice(
+			entityConverted,
+		)
+		invoice_toJs(result)
+	}
 
 	override fun modifyInvoices(entities: Array<EncryptedInvoiceJs>):
 			Promise<Array<EncryptedInvoiceJs>> = GlobalScope.promise {
+		val entitiesConverted: List<EncryptedInvoice> = arrayToList(
+			entities,
+			"entities",
+			{ x1: EncryptedInvoiceJs ->
+				invoice_fromJs(x1)
+			},
+		)
+		val result = invoiceBasicApi.modifyInvoices(
+			entitiesConverted,
+		)
 		listToArray(
-			invoiceBasicApi.modifyInvoices(arrayToList(
-				entities,
-				"entities",
-				{ x1: EncryptedInvoiceJs ->
-					invoice_fromJs(x1)
-				},
-			)),
+			result,
 			{ x1: EncryptedInvoice ->
 				invoice_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun getInvoice(entityId: String): Promise<EncryptedInvoiceJs> = GlobalScope.promise {
-		invoice_toJs(invoiceBasicApi.getInvoice(entityId))}
-
+		val entityIdConverted: String = entityId
+		val result = invoiceBasicApi.getInvoice(
+			entityIdConverted,
+		)
+		invoice_toJs(result)
+	}
 
 	override fun getInvoices(entityIds: Array<String>): Promise<Array<EncryptedInvoiceJs>> =
 			GlobalScope.promise {
+		val entityIdsConverted: List<String> = arrayToList(
+			entityIds,
+			"entityIds",
+			{ x1: String ->
+				x1
+			},
+		)
+		val result = invoiceBasicApi.getInvoices(
+			entityIdsConverted,
+		)
 		listToArray(
-			invoiceBasicApi.getInvoices(arrayToList(
-				entityIds,
-				"entityIds",
-				{ x1: String ->
-					x1
-				},
-			)),
+			result,
 			{ x1: EncryptedInvoice ->
 				invoice_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun filterInvoicesBy(filterChain: FilterChainJs<InvoiceJs>):
 			Promise<Array<EncryptedInvoiceJs>> = GlobalScope.promise {
+		val filterChainConverted: FilterChain<Invoice> = filterChain_fromJs(
+			filterChain,
+			{ x1: InvoiceJs ->
+				invoice_fromJs(x1)
+			},
+		)
+		val result = invoiceBasicApi.filterInvoicesBy(
+			filterChainConverted,
+		)
 		listToArray(
-			invoiceBasicApi.filterInvoicesBy(filterChain_fromJs(
-				filterChain,
-				{ x1: InvoiceJs ->
-					invoice_fromJs(x1)
-				},
-			)),
+			result,
 			{ x1: EncryptedInvoice ->
 				invoice_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun findInvoicesByHcPartyPatientForeignKeys(hcPartyId: String,
 			secretPatientKeys: Array<String>): Promise<Array<EncryptedInvoiceJs>> = GlobalScope.promise {
+		val hcPartyIdConverted: String = hcPartyId
+		val secretPatientKeysConverted: List<String> = arrayToList(
+			secretPatientKeys,
+			"secretPatientKeys",
+			{ x1: String ->
+				x1
+			},
+		)
+		val result = invoiceBasicApi.findInvoicesByHcPartyPatientForeignKeys(
+			hcPartyIdConverted,
+			secretPatientKeysConverted,
+		)
 		listToArray(
-			invoiceBasicApi.findInvoicesByHcPartyPatientForeignKeys(hcPartyId, arrayToList(
-				secretPatientKeys,
-				"secretPatientKeys",
-				{ x1: String ->
-					x1
-				},
-			)),
+			result,
 			{ x1: EncryptedInvoice ->
 				invoice_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun reassignInvoice(invoice: EncryptedInvoiceJs): Promise<EncryptedInvoiceJs> =
 			GlobalScope.promise {
-		invoice_toJs(invoiceBasicApi.reassignInvoice(com.icure.sdk.js.model.invoice_fromJs(invoice)))}
-
+		val invoiceConverted: EncryptedInvoice = invoice_fromJs(invoice)
+		val result = invoiceBasicApi.reassignInvoice(
+			invoiceConverted,
+		)
+		invoice_toJs(result)
+	}
 
 	override fun mergeTo(invoiceId: String, ids: Array<String>): Promise<EncryptedInvoiceJs> =
 			GlobalScope.promise {
-		invoice_toJs(invoiceBasicApi.mergeTo(invoiceId,
-				com.icure.sdk.js.model.CheckedConverters.arrayToList(
-		  ids,
-		  "ids",
-		  { x1: kotlin.String ->
-		    x1
-		  },
-		)))}
-
+		val invoiceIdConverted: String = invoiceId
+		val idsConverted: List<String> = arrayToList(
+			ids,
+			"ids",
+			{ x1: String ->
+				x1
+			},
+		)
+		val result = invoiceBasicApi.mergeTo(
+			invoiceIdConverted,
+			idsConverted,
+		)
+		invoice_toJs(result)
+	}
 
 	override fun validate(
 		invoiceId: String,
 		scheme: String,
 		forcedValue: String,
 	): Promise<EncryptedInvoiceJs> = GlobalScope.promise {
-		invoice_toJs(invoiceBasicApi.validate(invoiceId, scheme, forcedValue))}
-
+		val invoiceIdConverted: String = invoiceId
+		val schemeConverted: String = scheme
+		val forcedValueConverted: String = forcedValue
+		val result = invoiceBasicApi.validate(
+			invoiceIdConverted,
+			schemeConverted,
+			forcedValueConverted,
+		)
+		invoice_toJs(result)
+	}
 
 	override fun appendCodes(
 		userId: String,
 		type: String,
 		sentMediumType: String,
 		secretFKeys: String,
-		insuranceId: String?,
-		invoiceId: String?,
-		gracePeriod: Double?,
 		invoicingCodes: Array<EncryptedInvoicingCodeJs>,
-	): Promise<Array<EncryptedInvoiceJs>> = GlobalScope.promise {
-		listToArray(
-			invoiceBasicApi.appendCodes(userId, type, sentMediumType, secretFKeys, insuranceId, invoiceId,
-					numberToInt(gracePeriod, "gracePeriod"), arrayToList(
+		options: InvoiceBasicApi_appendCodes_Options?,
+	): Promise<Array<EncryptedInvoiceJs>> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val userIdConverted: String = userId
+			val typeConverted: String = type
+			val sentMediumTypeConverted: String = sentMediumType
+			val secretFKeysConverted: String = secretFKeys
+			val insuranceIdConverted: String? = convertingOptionOrDefault(
+				_options.insuranceId,
+				null
+			) { insuranceId ->
+				insuranceId
+			}
+			val invoiceIdConverted: String? = convertingOptionOrDefault(
+				_options.invoiceId,
+				null
+			) { invoiceId ->
+				invoiceId
+			}
+			val gracePeriodConverted: Int? = convertingOptionOrDefault(
+				_options.gracePeriod,
+				null
+			) { gracePeriod ->
+				numberToInt(gracePeriod, "gracePeriod")
+			}
+			val invoicingCodesConverted: List<EncryptedInvoicingCode> = arrayToList(
 				invoicingCodes,
 				"invoicingCodes",
 				{ x1: EncryptedInvoicingCodeJs ->
 					invoicingCode_fromJs(x1)
 				},
-			)),
-			{ x1: EncryptedInvoice ->
-				invoice_toJs(x1)
-			},
-		)}
-
+			)
+			val result = invoiceBasicApi.appendCodes(
+				userIdConverted,
+				typeConverted,
+				sentMediumTypeConverted,
+				secretFKeysConverted,
+				insuranceIdConverted,
+				invoiceIdConverted,
+				gracePeriodConverted,
+				invoicingCodesConverted,
+			)
+			listToArray(
+				result,
+				{ x1: EncryptedInvoice ->
+					invoice_toJs(x1)
+				},
+			)
+		}
+	}
 
 	override fun removeCodes(
 		userId: String,
@@ -200,183 +303,290 @@ internal class InvoiceBasicApiImplJs(
 		secretFKeys: String,
 		tarificationIds: Array<String>,
 	): Promise<Array<EncryptedInvoiceJs>> = GlobalScope.promise {
+		val userIdConverted: String = userId
+		val serviceIdConverted: String = serviceId
+		val secretFKeysConverted: String = secretFKeys
+		val tarificationIdsConverted: List<String> = arrayToList(
+			tarificationIds,
+			"tarificationIds",
+			{ x1: String ->
+				x1
+			},
+		)
+		val result = invoiceBasicApi.removeCodes(
+			userIdConverted,
+			serviceIdConverted,
+			secretFKeysConverted,
+			tarificationIdsConverted,
+		)
 		listToArray(
-			invoiceBasicApi.removeCodes(userId, serviceId, secretFKeys, arrayToList(
-				tarificationIds,
-				"tarificationIds",
-				{ x1: String ->
-					x1
+			result,
+			{ x1: EncryptedInvoice ->
+				invoice_toJs(x1)
+			},
+		)
+	}
+
+	override fun findInvoicesByAuthor(hcPartyId: String,
+			options: InvoiceBasicApi_findInvoicesByAuthor_Options?):
+			Promise<PaginatedListJs<EncryptedInvoiceJs>> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val hcPartyIdConverted: String = hcPartyId
+			val fromDateConverted: Long? = convertingOptionOrDefault(
+				_options.fromDate,
+				null
+			) { fromDate ->
+				numberToLong(fromDate, "fromDate")
+			}
+			val toDateConverted: Long? = convertingOptionOrDefault(
+				_options.toDate,
+				null
+			) { toDate ->
+				numberToLong(toDate, "toDate")
+			}
+			val startKeyConverted: JsonElement? = convertingOptionOrDefault(
+				_options.startKey,
+				null
+			) { startKey ->
+				dynamicToJsonNullsafe(startKey, "startKey")
+			}
+			val startDocumentIdConverted: String? = convertingOptionOrDefault(
+				_options.startDocumentId,
+				null
+			) { startDocumentId ->
+				startDocumentId
+			}
+			val limitConverted: Int? = convertingOptionOrDefault(
+				_options.limit,
+				null
+			) { limit ->
+				numberToInt(limit, "limit")
+			}
+			val result = invoiceBasicApi.findInvoicesByAuthor(
+				hcPartyIdConverted,
+				fromDateConverted,
+				toDateConverted,
+				startKeyConverted,
+				startDocumentIdConverted,
+				limitConverted,
+			)
+			paginatedList_toJs(
+				result,
+				{ x1: EncryptedInvoice ->
+					invoice_toJs(x1)
 				},
-			)),
-			{ x1: EncryptedInvoice ->
-				invoice_toJs(x1)
-			},
-		)}
-
-
-	override fun findInvoicesByAuthor(
-		hcPartyId: String,
-		fromDate: Double?,
-		toDate: Double?,
-		startKey: dynamic,
-		startDocumentId: String?,
-		limit: Double?,
-	): Promise<PaginatedListJs<EncryptedInvoiceJs>> = GlobalScope.promise {
-		paginatedList_toJs(
-			invoiceBasicApi.findInvoicesByAuthor(hcPartyId,
-					com.icure.sdk.js.model.CheckedConverters.numberToLong(fromDate, "fromDate"),
-					com.icure.sdk.js.model.CheckedConverters.numberToLong(toDate, "toDate"),
-					com.icure.sdk.js.model.CheckedConverters.dynamicToJsonNullsafe(startKey, "startKey"),
-					startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
-			{ x1: EncryptedInvoice ->
-				invoice_toJs(x1)
-			},
-		)}
-
+			)
+		}
+	}
 
 	override fun listInvoicesByHCPartyAndPatientForeignKeys(hcPartyId: String,
 			secretPatientKeys: Array<String>): Promise<Array<EncryptedInvoiceJs>> = GlobalScope.promise {
+		val hcPartyIdConverted: String = hcPartyId
+		val secretPatientKeysConverted: List<String> = arrayToList(
+			secretPatientKeys,
+			"secretPatientKeys",
+			{ x1: String ->
+				x1
+			},
+		)
+		val result = invoiceBasicApi.listInvoicesByHCPartyAndPatientForeignKeys(
+			hcPartyIdConverted,
+			secretPatientKeysConverted,
+		)
 		listToArray(
-			invoiceBasicApi.listInvoicesByHCPartyAndPatientForeignKeys(hcPartyId, arrayToList(
-				secretPatientKeys,
-				"secretPatientKeys",
-				{ x1: String ->
-					x1
-				},
-			)),
+			result,
 			{ x1: EncryptedInvoice ->
 				invoice_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun listInvoicesByHcPartyAndGroupId(hcPartyId: String, groupId: String):
 			Promise<Array<EncryptedInvoiceJs>> = GlobalScope.promise {
+		val hcPartyIdConverted: String = hcPartyId
+		val groupIdConverted: String = groupId
+		val result = invoiceBasicApi.listInvoicesByHcPartyAndGroupId(
+			hcPartyIdConverted,
+			groupIdConverted,
+		)
 		listToArray(
-			invoiceBasicApi.listInvoicesByHcPartyAndGroupId(hcPartyId, groupId),
+			result,
 			{ x1: EncryptedInvoice ->
 				invoice_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(
 		hcPartyId: String,
 		sentMediumType: String,
 		invoiceType: String,
 		sent: Boolean,
-		from: Double?,
-		to: Double?,
-	): Promise<Array<EncryptedInvoiceJs>> = GlobalScope.promise {
-		listToArray(
-			invoiceBasicApi.listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(hcPartyId,
-					MediumType.valueOf(sentMediumType), InvoiceType.valueOf(invoiceType), sent, numberToLong(from,
-					"from"), numberToLong(to, "to")),
-			{ x1: EncryptedInvoice ->
-				invoice_toJs(x1)
-			},
-		)}
-
+		options: InvoiceBasicApi_listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate_Options?,
+	): Promise<Array<EncryptedInvoiceJs>> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val hcPartyIdConverted: String = hcPartyId
+			val sentMediumTypeConverted: MediumType = MediumType.valueOf(sentMediumType)
+			val invoiceTypeConverted: InvoiceType = InvoiceType.valueOf(invoiceType)
+			val sentConverted: Boolean = sent
+			val fromConverted: Long? = convertingOptionOrDefault(
+				_options.from,
+				null
+			) { from ->
+				numberToLong(from, "from")
+			}
+			val toConverted: Long? = convertingOptionOrDefault(
+				_options.to,
+				null
+			) { to ->
+				numberToLong(to, "to")
+			}
+			val result = invoiceBasicApi.listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(
+				hcPartyIdConverted,
+				sentMediumTypeConverted,
+				invoiceTypeConverted,
+				sentConverted,
+				fromConverted,
+				toConverted,
+			)
+			listToArray(
+				result,
+				{ x1: EncryptedInvoice ->
+					invoice_toJs(x1)
+				},
+			)
+		}
+	}
 
 	override fun listInvoicesByContactIds(contactIds: Array<String>):
 			Promise<Array<EncryptedInvoiceJs>> = GlobalScope.promise {
+		val contactIdsConverted: List<String> = arrayToList(
+			contactIds,
+			"contactIds",
+			{ x1: String ->
+				x1
+			},
+		)
+		val result = invoiceBasicApi.listInvoicesByContactIds(
+			contactIdsConverted,
+		)
 		listToArray(
-			invoiceBasicApi.listInvoicesByContactIds(arrayToList(
-				contactIds,
-				"contactIds",
-				{ x1: String ->
-					x1
-				},
-			)),
+			result,
 			{ x1: EncryptedInvoice ->
 				invoice_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun listInvoicesByRecipientsIds(recipientsIds: Array<String>):
 			Promise<Array<EncryptedInvoiceJs>> = GlobalScope.promise {
+		val recipientsIdsConverted: List<String> = arrayToList(
+			recipientsIds,
+			"recipientsIds",
+			{ x1: String ->
+				x1
+			},
+		)
+		val result = invoiceBasicApi.listInvoicesByRecipientsIds(
+			recipientsIdsConverted,
+		)
 		listToArray(
-			invoiceBasicApi.listInvoicesByRecipientsIds(arrayToList(
-				recipientsIds,
-				"recipientsIds",
-				{ x1: String ->
-					x1
-				},
-			)),
+			result,
 			{ x1: EncryptedInvoice ->
 				invoice_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun listToInsurances(userIds: Array<String>): Promise<Array<EncryptedInvoiceJs>> =
 			GlobalScope.promise {
+		val userIdsConverted: List<String> = arrayToList(
+			userIds,
+			"userIds",
+			{ x1: String ->
+				x1
+			},
+		)
+		val result = invoiceBasicApi.listToInsurances(
+			userIdsConverted,
+		)
 		listToArray(
-			invoiceBasicApi.listToInsurances(arrayToList(
-				userIds,
-				"userIds",
-				{ x1: String ->
-					x1
-				},
-			)),
+			result,
 			{ x1: EncryptedInvoice ->
 				invoice_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun listToInsurancesUnsent(userIds: Array<String>): Promise<Array<EncryptedInvoiceJs>> =
 			GlobalScope.promise {
+		val userIdsConverted: List<String> = arrayToList(
+			userIds,
+			"userIds",
+			{ x1: String ->
+				x1
+			},
+		)
+		val result = invoiceBasicApi.listToInsurancesUnsent(
+			userIdsConverted,
+		)
 		listToArray(
-			invoiceBasicApi.listToInsurancesUnsent(arrayToList(
-				userIds,
-				"userIds",
-				{ x1: String ->
-					x1
-				},
-			)),
+			result,
 			{ x1: EncryptedInvoice ->
 				invoice_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun listToPatients(hcPartyId: String): Promise<Array<EncryptedInvoiceJs>> =
 			GlobalScope.promise {
+		val hcPartyIdConverted: String = hcPartyId
+		val result = invoiceBasicApi.listToPatients(
+			hcPartyIdConverted,
+		)
 		listToArray(
-			invoiceBasicApi.listToPatients(hcPartyId),
+			result,
 			{ x1: EncryptedInvoice ->
 				invoice_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun listToPatientsUnsent(hcPartyId: String?): Promise<Array<EncryptedInvoiceJs>> =
 			GlobalScope.promise {
+		val hcPartyIdConverted: String? = hcPartyId
+		val result = invoiceBasicApi.listToPatientsUnsent(
+			hcPartyIdConverted,
+		)
 		listToArray(
-			invoiceBasicApi.listToPatientsUnsent(hcPartyId),
+			result,
 			{ x1: EncryptedInvoice ->
 				invoice_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun listInvoicesByIds(ids: Array<String>): Promise<Array<EncryptedInvoiceJs>> =
 			GlobalScope.promise {
+		val idsConverted: List<String> = arrayToList(
+			ids,
+			"ids",
+			{ x1: String ->
+				x1
+			},
+		)
+		val result = invoiceBasicApi.listInvoicesByIds(
+			idsConverted,
+		)
 		listToArray(
-			invoiceBasicApi.listInvoicesByIds(arrayToList(
-				ids,
-				"ids",
-				{ x1: String ->
-					x1
-				},
-			)),
+			result,
 			{ x1: EncryptedInvoice ->
 				invoice_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun listInvoicesByHcpartySendingModeStatusDate(
 		hcPartyId: String,
@@ -385,49 +595,85 @@ internal class InvoiceBasicApiImplJs(
 		from: Double,
 		to: Double,
 	): Promise<Array<EncryptedInvoiceJs>> = GlobalScope.promise {
+		val hcPartyIdConverted: String = hcPartyId
+		val sendingModeConverted: String = sendingMode
+		val statusConverted: String = status
+		val fromConverted: Long = numberToLong(from, "from")
+		val toConverted: Long = numberToLong(to, "to")
+		val result = invoiceBasicApi.listInvoicesByHcpartySendingModeStatusDate(
+			hcPartyIdConverted,
+			sendingModeConverted,
+			statusConverted,
+			fromConverted,
+			toConverted,
+		)
 		listToArray(
-			invoiceBasicApi.listInvoicesByHcpartySendingModeStatusDate(hcPartyId, sendingMode, status,
-					numberToLong(from, "from"), numberToLong(to, "to")),
+			result,
 			{ x1: EncryptedInvoice ->
 				invoice_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun listInvoicesByServiceIds(serviceIds: Array<String>):
 			Promise<Array<EncryptedInvoiceJs>> = GlobalScope.promise {
+		val serviceIdsConverted: List<String> = arrayToList(
+			serviceIds,
+			"serviceIds",
+			{ x1: String ->
+				x1
+			},
+		)
+		val result = invoiceBasicApi.listInvoicesByServiceIds(
+			serviceIdsConverted,
+		)
 		listToArray(
-			invoiceBasicApi.listInvoicesByServiceIds(arrayToList(
-				serviceIds,
-				"serviceIds",
-				{ x1: String ->
-					x1
-				},
-			)),
+			result,
 			{ x1: EncryptedInvoice ->
 				invoice_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun listAllHcpsByStatus(
 		status: String,
-		from: Double?,
-		to: Double?,
 		hcpIds: Array<String>,
-	): Promise<Array<EncryptedInvoiceJs>> = GlobalScope.promise {
-		listToArray(
-			invoiceBasicApi.listAllHcpsByStatus(status, numberToLong(from, "from"), numberToLong(to, "to"),
-					arrayToList(
+		options: InvoiceBasicApi_listAllHcpsByStatus_Options?,
+	): Promise<Array<EncryptedInvoiceJs>> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val statusConverted: String = status
+			val fromConverted: Long? = convertingOptionOrDefault(
+				_options.from,
+				null
+			) { from ->
+				numberToLong(from, "from")
+			}
+			val toConverted: Long? = convertingOptionOrDefault(
+				_options.to,
+				null
+			) { to ->
+				numberToLong(to, "to")
+			}
+			val hcpIdsConverted: List<String> = arrayToList(
 				hcpIds,
 				"hcpIds",
 				{ x1: String ->
 					x1
 				},
-			)),
-			{ x1: EncryptedInvoice ->
-				invoice_toJs(x1)
-			},
-		)}
-
+			)
+			val result = invoiceBasicApi.listAllHcpsByStatus(
+				statusConverted,
+				fromConverted,
+				toConverted,
+				hcpIdsConverted,
+			)
+			listToArray(
+				result,
+				{ x1: EncryptedInvoice ->
+					invoice_toJs(x1)
+				},
+			)
+		}
+	}
 }

@@ -28,13 +28,8 @@ export interface MessageApi {
 
 	createMessage(entity: DecryptedMessage): Promise<DecryptedMessage>;
 
-	withEncryptionMetadata(
-			base: DecryptedMessage | undefined,
-			patient: Patient | undefined,
-			user: User | undefined,
-			delegates: { [ key: string ]: AccessLevel },
-			secretId: SecretIdOption
-	): Promise<DecryptedMessage>;
+	withEncryptionMetadata(base: DecryptedMessage | undefined, patient: Patient | undefined,
+			options?: { base?: DecryptedMessage | undefined, patient?: Patient | undefined, user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdOption }): Promise<DecryptedMessage>;
 
 	getEncryptionKeysOf(message: Message): Promise<Array<HexString>>;
 
@@ -52,14 +47,8 @@ export interface MessageApi {
 
 	deleteMessages(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
-	shareWith(
-			delegateId: string,
-			message: DecryptedMessage,
-			shareSecretIds: Array<string>,
-			shareEncryptionKeys: ShareMetadataBehaviour,
-			shareOwningEntityIds: ShareMetadataBehaviour,
-			requestedPermission: RequestedPermission
-	): Promise<SimpleShareResult<DecryptedMessage>>;
+	shareWith(delegateId: string, message: DecryptedMessage, shareSecretIds: Array<string>,
+			options?: { delegateId?: string, message?: DecryptedMessage, shareSecretIds?: Array<string>, shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<DecryptedMessage>>;
 
 	tryShareWithMany(message: DecryptedMessage,
 			delegates: { [ key: string ]: MessageShareOptions }): Promise<SimpleShareResult<DecryptedMessage>>;
@@ -67,13 +56,8 @@ export interface MessageApi {
 	shareWithMany(message: DecryptedMessage,
 			delegates: { [ key: string ]: MessageShareOptions }): Promise<DecryptedMessage>;
 
-	findMessagesByHcPartyPatient(
-			hcPartyId: string,
-			patient: Patient,
-			startDate: number | undefined,
-			endDate: number | undefined,
-			descending: boolean | undefined
-	): Promise<PaginatedListIterator<DecryptedMessage>>;
+	findMessagesByHcPartyPatient(hcPartyId: string, patient: Patient,
+			options?: { hcPartyId?: string, patient?: Patient, startDate?: number | undefined, endDate?: number | undefined, descending?: boolean | undefined }): Promise<PaginatedListIterator<DecryptedMessage>>;
 
 	modifyMessage(entity: DecryptedMessage): Promise<DecryptedMessage>;
 
@@ -100,15 +84,8 @@ export interface MessageApi {
 
 	findMessagesByTransportGuid(transportGuid: string): Promise<PaginatedList<DecryptedMessage>>;
 
-	findMessagesByTransportGuidSentDate(
-			transportGuid: string,
-			from: number,
-			to: number,
-			startKey: any | undefined,
-			startDocumentId: string | undefined,
-			limit: number | undefined,
-			hcpId: string | undefined
-	): Promise<PaginatedList<DecryptedMessage>>;
+	findMessagesByTransportGuidSentDate(transportGuid: string, from: number, to: number,
+			options?: { transportGuid?: string, from?: number, to?: number, startKey?: any | undefined, startDocumentId?: string | undefined, limit?: number | undefined, hcpId?: string | undefined }): Promise<PaginatedList<DecryptedMessage>>;
 
 	findMessagesByToAddress(toAddress: string, startKey: any | undefined,
 			startDocumentId: string | undefined,
@@ -124,15 +101,8 @@ export interface MessageApi {
 	setMessagesReadStatus(entityIds: Array<string>, time: number | undefined, readStatus: boolean,
 			userId: string): Promise<Array<DecryptedMessage>>;
 
-	subscribeToEvents(
-			events: Array<SubscriptionEventType>,
-			filter: AbstractFilter<Message>,
-			onConnected: () => Promise<void>,
-			channelCapacity: number,
-			retryDelay: DurationMs,
-			retryDelayExponentFactor: number,
-			maxRetries: number,
-			eventFired: (x1: DecryptedMessage) => Promise<void>
-	): Promise<Connection>;
+	subscribeToEvents(events: Array<SubscriptionEventType>, filter: AbstractFilter<Message>,
+			eventFired: (x1: DecryptedMessage) => Promise<void>,
+			options?: { events?: Array<SubscriptionEventType>, filter?: AbstractFilter<Message>, onConnected?: () => Promise<void>, channelCapacity?: number, retryDelay?: DurationMs, retryDelayExponentFactor?: number, maxRetries?: number, eventFired?: (x1: DecryptedMessage) => Promise<void> }): Promise<Connection>;
 
 }

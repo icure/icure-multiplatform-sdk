@@ -23,13 +23,8 @@ export interface DocumentApi {
 
 	createDocument(entity: DecryptedDocument): Promise<DecryptedDocument>;
 
-	withEncryptionMetadata(
-			base: DecryptedDocument | undefined,
-			message: Message | undefined,
-			user: User | undefined,
-			delegates: { [ key: string ]: AccessLevel },
-			secretId: SecretIdOption
-	): Promise<DecryptedDocument>;
+	withEncryptionMetadata(base: DecryptedDocument | undefined, message: Message | undefined,
+			options?: { base?: DecryptedDocument | undefined, message?: Message | undefined, user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdOption }): Promise<DecryptedDocument>;
 
 	getAndTryDecryptMainAttachment(document: Document, attachmentId: string,
 			decryptedDocumentValidator: (x1: Int8Array) => Promise<boolean>): Promise<Int8Array | undefined>;
@@ -73,13 +68,8 @@ export interface DocumentApi {
 	getRawSecondaryAttachment(documentId: string, key: string,
 			attachmentId: string): Promise<Int8Array>;
 
-	shareWith(
-			delegateId: string,
-			document: DecryptedDocument,
-			shareEncryptionKeys: ShareMetadataBehaviour,
-			shareOwningEntityIds: ShareMetadataBehaviour,
-			requestedPermission: RequestedPermission
-	): Promise<SimpleShareResult<DecryptedDocument>>;
+	shareWith(delegateId: string, document: DecryptedDocument,
+			options?: { delegateId?: string, document?: DecryptedDocument, shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<DecryptedDocument>>;
 
 	tryShareWithMany(document: DecryptedDocument,
 			delegates: { [ key: string ]: DocumentShareOptions }): Promise<SimpleShareResult<DecryptedDocument>>;
@@ -87,13 +77,8 @@ export interface DocumentApi {
 	shareWithMany(document: DecryptedDocument,
 			delegates: { [ key: string ]: DocumentShareOptions }): Promise<DecryptedDocument>;
 
-	findDocumentsByHcPartyPatient(
-			hcPartyId: string,
-			patient: Patient,
-			startDate: number | undefined,
-			endDate: number | undefined,
-			descending: boolean | undefined
-	): Promise<PaginatedListIterator<DecryptedDocument>>;
+	findDocumentsByHcPartyPatient(hcPartyId: string, patient: Patient,
+			options?: { hcPartyId?: string, patient?: Patient, startDate?: number | undefined, endDate?: number | undefined, descending?: boolean | undefined }): Promise<PaginatedListIterator<DecryptedDocument>>;
 
 	modifyDocument(entity: DecryptedDocument): Promise<DecryptedDocument>;
 

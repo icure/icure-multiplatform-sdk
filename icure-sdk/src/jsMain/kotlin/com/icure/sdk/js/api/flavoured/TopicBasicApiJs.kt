@@ -32,11 +32,8 @@ public external interface TopicBasicApiJs {
 
 	public fun getTopics(entityIds: Array<String>): Promise<Array<EncryptedTopicJs>>
 
-	public fun filterTopicsBy(
-		startDocumentId: String?,
-		limit: Double?,
-		filterChain: FilterChainJs<TopicJs>,
-	): Promise<PaginatedListJs<EncryptedTopicJs>>
+	public fun filterTopicsBy(filterChain: FilterChainJs<TopicJs>,
+			options: TopicBasicApi_filterTopicsBy_Options?): Promise<PaginatedListJs<EncryptedTopicJs>>
 
 	public fun addParticipant(
 		entityId: String,
@@ -49,11 +46,25 @@ public external interface TopicBasicApiJs {
 	public fun subscribeToEvents(
 		events: Array<String>,
 		filter: AbstractFilterJs<TopicJs>,
-		onConnected: () -> Promise<Unit>,
-		channelCapacity: Double,
-		retryDelay: Double,
-		retryDelayExponentFactor: Double,
-		maxRetries: Double,
 		eventFired: (EncryptedTopicJs) -> Promise<Unit>,
+		options: TopicBasicApi_subscribeToEvents_Options?,
 	): Promise<ConnectionJs>
+}
+
+public external interface TopicBasicApi_filterTopicsBy_Options {
+	public val startDocumentId: String?
+
+	public val limit: Double?
+}
+
+public external interface TopicBasicApi_subscribeToEvents_Options {
+	public val onConnected: () -> Promise<Unit>
+
+	public val channelCapacity: Double
+
+	public val retryDelay: Double
+
+	public val retryDelayExponentFactor: Double
+
+	public val maxRetries: Double
 }

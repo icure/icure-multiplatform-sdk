@@ -7,14 +7,13 @@ import {XRsaKeypair} from '../icure-sdk.mjs';
 
 export interface RecoveryApi {
 
-	createRecoveryInfoForAvailableKeyPairs(includeParentsKeys: boolean,
-			lifetimeSeconds: number | undefined): Promise<RecoveryDataKey>;
+	createRecoveryInfoForAvailableKeyPairs(options?: { includeParentsKeys?: boolean, lifetimeSeconds?: number | undefined }): Promise<RecoveryDataKey>;
 
 	recoverKeyPairs(recoveryKey: RecoveryDataKey,
 			autoDelete: boolean): Promise<RecoveryResult<{ [ key: string ]: { [ key: string ]: XRsaKeypair } }>>;
 
 	createExchangeDataRecoveryInfo(delegateId: string,
-			lifetimeSeconds: number | undefined): Promise<RecoveryDataKey>;
+			options?: { delegateId?: string, lifetimeSeconds?: number | undefined }): Promise<RecoveryDataKey>;
 
 	recoverExchangeData(recoveryKey: RecoveryDataKey): Promise<RecoveryDataUseFailureReason | undefined>;
 

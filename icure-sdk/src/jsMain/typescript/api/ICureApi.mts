@@ -17,22 +17,22 @@ export interface ICureApi {
 
 	getReplicationInfo(): Promise<ReplicationInfo>;
 
-	updateDesignDoc(entityName: string, warmup: boolean | undefined): Promise<boolean>;
+	updateDesignDoc(entityName: string,
+			options?: { entityName?: string, warmup?: boolean | undefined }): Promise<boolean>;
 
-	resolvePatientsConflicts(limit: number | undefined): Promise<Array<IdWithRev>>;
+	resolvePatientsConflicts(options?: { limit?: number | undefined }): Promise<Array<IdWithRev>>;
 
-	resolveContactsConflicts(limit: number | undefined): Promise<Array<IdWithRev>>;
+	resolveContactsConflicts(options?: { limit?: number | undefined }): Promise<Array<IdWithRev>>;
 
-	resolveFormsConflicts(limit: number | undefined): Promise<Array<IdWithRev>>;
+	resolveFormsConflicts(options?: { limit?: number | undefined }): Promise<Array<IdWithRev>>;
 
-	resolveHealthElementsConflicts(limit: number | undefined): Promise<Array<IdWithRev>>;
+	resolveHealthElementsConflicts(options?: { limit?: number | undefined }): Promise<Array<IdWithRev>>;
 
-	resolveInvoicesConflicts(limit: number | undefined): Promise<Array<IdWithRev>>;
+	resolveInvoicesConflicts(options?: { limit?: number | undefined }): Promise<Array<IdWithRev>>;
 
-	resolveMessagesConflicts(limit: number | undefined): Promise<Array<IdWithRev>>;
+	resolveMessagesConflicts(options?: { limit?: number | undefined }): Promise<Array<IdWithRev>>;
 
-	resolveDocumentsConflicts(ids: string | undefined,
-			limit: number | undefined): Promise<Array<IdWithRev>>;
+	resolveDocumentsConflicts(options?: { ids?: string | undefined, limit?: number | undefined }): Promise<Array<IdWithRev>>;
 
 	getIndexingInfoByGroup(groupId: string): Promise<IndexingInfo>;
 

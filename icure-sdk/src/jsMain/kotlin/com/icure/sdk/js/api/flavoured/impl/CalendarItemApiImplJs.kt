@@ -2,43 +2,65 @@
 package com.icure.sdk.js.api.flavoured.`impl`
 
 import com.icure.sdk.api.flavoured.CalendarItemApi
+import com.icure.sdk.crypto.entities.CalendarItemShareOptions
+import com.icure.sdk.crypto.entities.SecretIdOption
+import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
+import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefault
 import com.icure.sdk.js.api.flavoured.CalendarItemApiJs
+import com.icure.sdk.js.api.flavoured.CalendarItemApi_findCalendarItemsByHcPartyPatient_Options
+import com.icure.sdk.js.api.flavoured.CalendarItemApi_shareWith_Options
+import com.icure.sdk.js.api.flavoured.CalendarItemApi_withEncryptionMetadata_Options
 import com.icure.sdk.js.api.flavoured.CalendarItemFlavouredApiJs
+import com.icure.sdk.js.api.flavoured.CalendarItemFlavouredApi_findCalendarItemsByHcPartyPatient_Options
+import com.icure.sdk.js.api.flavoured.CalendarItemFlavouredApi_shareWith_Options
 import com.icure.sdk.js.crypto.entities.CalendarItemShareOptionsJs
-import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
+import com.icure.sdk.js.crypto.entities.calendarItemShareOptions_fromJs
+import com.icure.sdk.js.crypto.entities.secretIdOption_fromJs
 import com.icure.sdk.js.crypto.entities.simpleShareResult_toJs
 import com.icure.sdk.js.model.CalendarItemJs
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.listToArray
+import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
+import com.icure.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.sdk.js.model.CheckedConverters.setToArray
 import com.icure.sdk.js.model.DecryptedCalendarItemJs
 import com.icure.sdk.js.model.EncryptedCalendarItemJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.PatientJs
-import com.icure.sdk.js.model.UserJs
 import com.icure.sdk.js.model.calendarItem_fromJs
 import com.icure.sdk.js.model.calendarItem_toJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.couchdb.docIdentifier_toJs
 import com.icure.sdk.js.model.paginatedList_toJs
+import com.icure.sdk.js.model.patient_fromJs
 import com.icure.sdk.js.model.specializations.hexString_toJs
+import com.icure.sdk.js.model.user_fromJs
 import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.sdk.model.CalendarItem
 import com.icure.sdk.model.DecryptedCalendarItem
 import com.icure.sdk.model.EncryptedCalendarItem
+import com.icure.sdk.model.Patient
+import com.icure.sdk.model.User
 import com.icure.sdk.model.couchdb.DocIdentifier
+import com.icure.sdk.model.embed.AccessLevel
+import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
+import kotlin.Int
+import kotlin.Long
 import kotlin.OptIn
 import kotlin.String
 import kotlin.Unit
+import kotlin.collections.List
+import kotlin.collections.Map
+import kotlin.collections.Set
 import kotlin.js.Promise
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -53,162 +75,257 @@ internal class CalendarItemApiImplJs(
 		override fun shareWith(
 			delegateId: String,
 			calendarItem: EncryptedCalendarItemJs,
-			shareEncryptionKeys: String,
-			shareOwningEntityIds: String,
-			requestedPermission: String,
-		): Promise<SimpleShareResultJs<EncryptedCalendarItemJs>> = GlobalScope.promise {
-			simpleShareResult_toJs(
-				calendarItemApi.encrypted.shareWith(delegateId,
-						com.icure.sdk.js.model.calendarItem_fromJs(calendarItem),
-						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareEncryptionKeys),
-						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareOwningEntityIds),
-						com.icure.sdk.model.requests.RequestedPermission.valueOf(requestedPermission)),
-				{ x1: EncryptedCalendarItem ->
-					calendarItem_toJs(x1)
-				},
-			)}
-
+			options: CalendarItemFlavouredApi_shareWith_Options?,
+		): Promise<SimpleShareResultJs<EncryptedCalendarItemJs>> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val delegateIdConverted: String = delegateId
+				val calendarItemConverted: EncryptedCalendarItem = calendarItem_fromJs(calendarItem)
+				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
+					_options.shareEncryptionKeys,
+					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
+				) { shareEncryptionKeys ->
+					ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
+				}
+				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
+					_options.shareOwningEntityIds,
+					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
+				) { shareOwningEntityIds ->
+					ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
+				}
+				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefault(
+					_options.requestedPermission,
+					com.icure.sdk.model.requests.RequestedPermission.MaxWrite
+				) { requestedPermission ->
+					RequestedPermission.valueOf(requestedPermission)
+				}
+				val result = calendarItemApi.encrypted.shareWith(
+					delegateIdConverted,
+					calendarItemConverted,
+					shareEncryptionKeysConverted,
+					shareOwningEntityIdsConverted,
+					requestedPermissionConverted,
+				)
+				simpleShareResult_toJs(
+					result,
+					{ x1: EncryptedCalendarItem ->
+						calendarItem_toJs(x1)
+					},
+				)
+			}
+		}
 
 		override fun tryShareWithMany(calendarItem: EncryptedCalendarItemJs,
 				delegates: Record<String, CalendarItemShareOptionsJs>):
 				Promise<SimpleShareResultJs<EncryptedCalendarItemJs>> = GlobalScope.promise {
+			val calendarItemConverted: EncryptedCalendarItem = calendarItem_fromJs(calendarItem)
+			val delegatesConverted: Map<String, CalendarItemShareOptions> = objectToMap(
+				delegates,
+				"delegates",
+				{ x1: String ->
+					x1
+				},
+				{ x1: CalendarItemShareOptionsJs ->
+					calendarItemShareOptions_fromJs(x1)
+				},
+			)
+			val result = calendarItemApi.encrypted.tryShareWithMany(
+				calendarItemConverted,
+				delegatesConverted,
+			)
 			simpleShareResult_toJs(
-				calendarItemApi.encrypted.tryShareWithMany(com.icure.sdk.js.model.calendarItem_fromJs(calendarItem),
-						com.icure.sdk.js.model.CheckedConverters.objectToMap(
-				  delegates,
-				  "delegates",
-				  { x1: kotlin.String ->
-				    x1
-				  },
-				  { x1: com.icure.sdk.js.crypto.entities.CalendarItemShareOptionsJs ->
-				    com.icure.sdk.js.crypto.entities.calendarItemShareOptions_fromJs(x1)
-				  },
-				)),
+				result,
 				{ x1: EncryptedCalendarItem ->
 					calendarItem_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun shareWithMany(calendarItem: EncryptedCalendarItemJs,
 				delegates: Record<String, CalendarItemShareOptionsJs>): Promise<EncryptedCalendarItemJs> =
 				GlobalScope.promise {
-			calendarItem_toJs(calendarItemApi.encrypted.shareWithMany(com.icure.sdk.js.model.calendarItem_fromJs(calendarItem),
-					com.icure.sdk.js.model.CheckedConverters.objectToMap(
-			  delegates,
-			  "delegates",
-			  { x1: kotlin.String ->
-			    x1
-			  },
-			  { x1: com.icure.sdk.js.crypto.entities.CalendarItemShareOptionsJs ->
-			    com.icure.sdk.js.crypto.entities.calendarItemShareOptions_fromJs(x1)
-			  },
-			)))}
-
+			val calendarItemConverted: EncryptedCalendarItem = calendarItem_fromJs(calendarItem)
+			val delegatesConverted: Map<String, CalendarItemShareOptions> = objectToMap(
+				delegates,
+				"delegates",
+				{ x1: String ->
+					x1
+				},
+				{ x1: CalendarItemShareOptionsJs ->
+					calendarItemShareOptions_fromJs(x1)
+				},
+			)
+			val result = calendarItemApi.encrypted.shareWithMany(
+				calendarItemConverted,
+				delegatesConverted,
+			)
+			calendarItem_toJs(result)
+		}
 
 		override fun findCalendarItemsByHcPartyPatient(
 			hcPartyId: String,
 			patient: PatientJs,
-			startDate: Double?,
-			endDate: Double?,
-			descending: Boolean?,
-		): Promise<PaginatedListIteratorJs<EncryptedCalendarItemJs>> = GlobalScope.promise {
-			paginatedListIterator_toJs(
-				calendarItemApi.encrypted.findCalendarItemsByHcPartyPatient(hcPartyId,
-						com.icure.sdk.js.model.patient_fromJs(patient),
-						com.icure.sdk.js.model.CheckedConverters.numberToLong(startDate, "startDate"),
-						com.icure.sdk.js.model.CheckedConverters.numberToLong(endDate, "endDate"), descending),
-				{ x1: EncryptedCalendarItem ->
-					calendarItem_toJs(x1)
-				},
-			)}
-
+			options: CalendarItemFlavouredApi_findCalendarItemsByHcPartyPatient_Options?,
+		): Promise<PaginatedListIteratorJs<EncryptedCalendarItemJs>> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val hcPartyIdConverted: String = hcPartyId
+				val patientConverted: Patient = patient_fromJs(patient)
+				val startDateConverted: Long? = convertingOptionOrDefault(
+					_options.startDate,
+					null
+				) { startDate ->
+					numberToLong(startDate, "startDate")
+				}
+				val endDateConverted: Long? = convertingOptionOrDefault(
+					_options.endDate,
+					null
+				) { endDate ->
+					numberToLong(endDate, "endDate")
+				}
+				val descendingConverted: Boolean? = convertingOptionOrDefault(
+					_options.descending,
+					null
+				) { descending ->
+					descending
+				}
+				val result = calendarItemApi.encrypted.findCalendarItemsByHcPartyPatient(
+					hcPartyIdConverted,
+					patientConverted,
+					startDateConverted,
+					endDateConverted,
+					descendingConverted,
+				)
+				paginatedListIterator_toJs(
+					result,
+					{ x1: EncryptedCalendarItem ->
+						calendarItem_toJs(x1)
+					},
+				)
+			}
+		}
 
 		override fun linkToPatient(
 			calendarItem: CalendarItemJs,
 			patient: PatientJs,
 			shareLinkWithDelegates: Array<String>,
 		): Promise<EncryptedCalendarItemJs> = GlobalScope.promise {
-			calendarItem_toJs(calendarItemApi.encrypted.linkToPatient(com.icure.sdk.js.model.calendarItem_fromJs(calendarItem),
-					com.icure.sdk.js.model.patient_fromJs(patient),
-					com.icure.sdk.js.model.CheckedConverters.arrayToSet(
-			  shareLinkWithDelegates,
-			  "shareLinkWithDelegates",
-			  { x1: kotlin.String ->
-			    x1
-			  },
-			)))}
-
+			val calendarItemConverted: CalendarItem = calendarItem_fromJs(calendarItem)
+			val patientConverted: Patient = patient_fromJs(patient)
+			val shareLinkWithDelegatesConverted: Set<String> = arrayToSet(
+				shareLinkWithDelegates,
+				"shareLinkWithDelegates",
+				{ x1: String ->
+					x1
+				},
+			)
+			val result = calendarItemApi.encrypted.linkToPatient(
+				calendarItemConverted,
+				patientConverted,
+				shareLinkWithDelegatesConverted,
+			)
+			calendarItem_toJs(result)
+		}
 
 		override fun modifyCalendarItem(entity: EncryptedCalendarItemJs): Promise<EncryptedCalendarItemJs>
 				= GlobalScope.promise {
-			calendarItem_toJs(calendarItemApi.encrypted.modifyCalendarItem(com.icure.sdk.js.model.calendarItem_fromJs(entity)))}
-
+			val entityConverted: EncryptedCalendarItem = calendarItem_fromJs(entity)
+			val result = calendarItemApi.encrypted.modifyCalendarItem(
+				entityConverted,
+			)
+			calendarItem_toJs(result)
+		}
 
 		override fun getCalendarItem(entityId: String): Promise<EncryptedCalendarItemJs> =
 				GlobalScope.promise {
-			calendarItem_toJs(calendarItemApi.encrypted.getCalendarItem(entityId))}
-
+			val entityIdConverted: String = entityId
+			val result = calendarItemApi.encrypted.getCalendarItem(
+				entityIdConverted,
+			)
+			calendarItem_toJs(result)
+		}
 
 		override fun getCalendarItems(entityIds: Array<String>): Promise<Array<EncryptedCalendarItemJs>> =
 				GlobalScope.promise {
+			val entityIdsConverted: List<String> = arrayToList(
+				entityIds,
+				"entityIds",
+				{ x1: String ->
+					x1
+				},
+			)
+			val result = calendarItemApi.encrypted.getCalendarItems(
+				entityIdsConverted,
+			)
 			listToArray(
-				calendarItemApi.encrypted.getCalendarItems(arrayToList(
-					entityIds,
-					"entityIds",
-					{ x1: String ->
-						x1
-					},
-				)),
+				result,
 				{ x1: EncryptedCalendarItem ->
 					calendarItem_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun getCalendarItemsByPeriodAndHcPartyId(
 			startDate: Double,
 			endDate: Double,
 			hcPartyId: String,
 		): Promise<Array<EncryptedCalendarItemJs>> = GlobalScope.promise {
+			val startDateConverted: Long = numberToLong(startDate, "startDate")
+			val endDateConverted: Long = numberToLong(endDate, "endDate")
+			val hcPartyIdConverted: String = hcPartyId
+			val result = calendarItemApi.encrypted.getCalendarItemsByPeriodAndHcPartyId(
+				startDateConverted,
+				endDateConverted,
+				hcPartyIdConverted,
+			)
 			listToArray(
-				calendarItemApi.encrypted.getCalendarItemsByPeriodAndHcPartyId(numberToLong(startDate,
-						"startDate"), numberToLong(endDate, "endDate"), hcPartyId),
+				result,
 				{ x1: EncryptedCalendarItem ->
 					calendarItem_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun getCalendarsByPeriodAndAgendaId(
 			startDate: Double,
 			endDate: Double,
 			agendaId: String,
 		): Promise<Array<EncryptedCalendarItemJs>> = GlobalScope.promise {
+			val startDateConverted: Long = numberToLong(startDate, "startDate")
+			val endDateConverted: Long = numberToLong(endDate, "endDate")
+			val agendaIdConverted: String = agendaId
+			val result = calendarItemApi.encrypted.getCalendarsByPeriodAndAgendaId(
+				startDateConverted,
+				endDateConverted,
+				agendaIdConverted,
+			)
 			listToArray(
-				calendarItemApi.encrypted.getCalendarsByPeriodAndAgendaId(numberToLong(startDate, "startDate"),
-						numberToLong(endDate, "endDate"), agendaId),
+				result,
 				{ x1: EncryptedCalendarItem ->
 					calendarItem_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun getCalendarItemsWithIds(entityIds: Array<String>):
 				Promise<Array<EncryptedCalendarItemJs>> = GlobalScope.promise {
+			val entityIdsConverted: List<String> = arrayToList(
+				entityIds,
+				"entityIds",
+				{ x1: String ->
+					x1
+				},
+			)
+			val result = calendarItemApi.encrypted.getCalendarItemsWithIds(
+				entityIdsConverted,
+			)
 			listToArray(
-				calendarItemApi.encrypted.getCalendarItemsWithIds(arrayToList(
-					entityIds,
-					"entityIds",
-					{ x1: String ->
-						x1
-					},
-				)),
+				result,
 				{ x1: EncryptedCalendarItem ->
 					calendarItem_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun findCalendarItemsByRecurrenceId(
 			recurrenceId: String,
@@ -216,14 +333,23 @@ internal class CalendarItemApiImplJs(
 			startDocumentId: String?,
 			limit: Double,
 		): Promise<PaginatedListJs<EncryptedCalendarItemJs>> = GlobalScope.promise {
+			val recurrenceIdConverted: String = recurrenceId
+			val startKeyConverted: String? = startKey
+			val startDocumentIdConverted: String? = startDocumentId
+			val limitConverted: Int = numberToInt(limit, "limit")
+			val result = calendarItemApi.encrypted.findCalendarItemsByRecurrenceId(
+				recurrenceIdConverted,
+				startKeyConverted,
+				startDocumentIdConverted,
+				limitConverted,
+			)
 			paginatedList_toJs(
-				calendarItemApi.encrypted.findCalendarItemsByRecurrenceId(recurrenceId, startKey,
-						startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
+				result,
 				{ x1: EncryptedCalendarItem ->
 					calendarItem_toJs(x1)
 				},
-			)}
-
+			)
+		}
 	}
 
 	override val tryAndRecover: CalendarItemFlavouredApiJs<CalendarItemJs> = object :
@@ -231,161 +357,256 @@ internal class CalendarItemApiImplJs(
 		override fun shareWith(
 			delegateId: String,
 			calendarItem: CalendarItemJs,
-			shareEncryptionKeys: String,
-			shareOwningEntityIds: String,
-			requestedPermission: String,
-		): Promise<SimpleShareResultJs<CalendarItemJs>> = GlobalScope.promise {
-			simpleShareResult_toJs(
-				calendarItemApi.tryAndRecover.shareWith(delegateId,
-						com.icure.sdk.js.model.calendarItem_fromJs(calendarItem),
-						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareEncryptionKeys),
-						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareOwningEntityIds),
-						com.icure.sdk.model.requests.RequestedPermission.valueOf(requestedPermission)),
-				{ x1: CalendarItem ->
-					calendarItem_toJs(x1)
-				},
-			)}
-
+			options: CalendarItemFlavouredApi_shareWith_Options?,
+		): Promise<SimpleShareResultJs<CalendarItemJs>> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val delegateIdConverted: String = delegateId
+				val calendarItemConverted: CalendarItem = calendarItem_fromJs(calendarItem)
+				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
+					_options.shareEncryptionKeys,
+					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
+				) { shareEncryptionKeys ->
+					ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
+				}
+				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
+					_options.shareOwningEntityIds,
+					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
+				) { shareOwningEntityIds ->
+					ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
+				}
+				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefault(
+					_options.requestedPermission,
+					com.icure.sdk.model.requests.RequestedPermission.MaxWrite
+				) { requestedPermission ->
+					RequestedPermission.valueOf(requestedPermission)
+				}
+				val result = calendarItemApi.tryAndRecover.shareWith(
+					delegateIdConverted,
+					calendarItemConverted,
+					shareEncryptionKeysConverted,
+					shareOwningEntityIdsConverted,
+					requestedPermissionConverted,
+				)
+				simpleShareResult_toJs(
+					result,
+					{ x1: CalendarItem ->
+						calendarItem_toJs(x1)
+					},
+				)
+			}
+		}
 
 		override fun tryShareWithMany(calendarItem: CalendarItemJs,
 				delegates: Record<String, CalendarItemShareOptionsJs>):
 				Promise<SimpleShareResultJs<CalendarItemJs>> = GlobalScope.promise {
+			val calendarItemConverted: CalendarItem = calendarItem_fromJs(calendarItem)
+			val delegatesConverted: Map<String, CalendarItemShareOptions> = objectToMap(
+				delegates,
+				"delegates",
+				{ x1: String ->
+					x1
+				},
+				{ x1: CalendarItemShareOptionsJs ->
+					calendarItemShareOptions_fromJs(x1)
+				},
+			)
+			val result = calendarItemApi.tryAndRecover.tryShareWithMany(
+				calendarItemConverted,
+				delegatesConverted,
+			)
 			simpleShareResult_toJs(
-				calendarItemApi.tryAndRecover.tryShareWithMany(com.icure.sdk.js.model.calendarItem_fromJs(calendarItem),
-						com.icure.sdk.js.model.CheckedConverters.objectToMap(
-				  delegates,
-				  "delegates",
-				  { x1: kotlin.String ->
-				    x1
-				  },
-				  { x1: com.icure.sdk.js.crypto.entities.CalendarItemShareOptionsJs ->
-				    com.icure.sdk.js.crypto.entities.calendarItemShareOptions_fromJs(x1)
-				  },
-				)),
+				result,
 				{ x1: CalendarItem ->
 					calendarItem_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun shareWithMany(calendarItem: CalendarItemJs,
 				delegates: Record<String, CalendarItemShareOptionsJs>): Promise<CalendarItemJs> =
 				GlobalScope.promise {
-			calendarItem_toJs(calendarItemApi.tryAndRecover.shareWithMany(com.icure.sdk.js.model.calendarItem_fromJs(calendarItem),
-					com.icure.sdk.js.model.CheckedConverters.objectToMap(
-			  delegates,
-			  "delegates",
-			  { x1: kotlin.String ->
-			    x1
-			  },
-			  { x1: com.icure.sdk.js.crypto.entities.CalendarItemShareOptionsJs ->
-			    com.icure.sdk.js.crypto.entities.calendarItemShareOptions_fromJs(x1)
-			  },
-			)))}
-
+			val calendarItemConverted: CalendarItem = calendarItem_fromJs(calendarItem)
+			val delegatesConverted: Map<String, CalendarItemShareOptions> = objectToMap(
+				delegates,
+				"delegates",
+				{ x1: String ->
+					x1
+				},
+				{ x1: CalendarItemShareOptionsJs ->
+					calendarItemShareOptions_fromJs(x1)
+				},
+			)
+			val result = calendarItemApi.tryAndRecover.shareWithMany(
+				calendarItemConverted,
+				delegatesConverted,
+			)
+			calendarItem_toJs(result)
+		}
 
 		override fun findCalendarItemsByHcPartyPatient(
 			hcPartyId: String,
 			patient: PatientJs,
-			startDate: Double?,
-			endDate: Double?,
-			descending: Boolean?,
-		): Promise<PaginatedListIteratorJs<CalendarItemJs>> = GlobalScope.promise {
-			paginatedListIterator_toJs(
-				calendarItemApi.tryAndRecover.findCalendarItemsByHcPartyPatient(hcPartyId,
-						com.icure.sdk.js.model.patient_fromJs(patient),
-						com.icure.sdk.js.model.CheckedConverters.numberToLong(startDate, "startDate"),
-						com.icure.sdk.js.model.CheckedConverters.numberToLong(endDate, "endDate"), descending),
-				{ x1: CalendarItem ->
-					calendarItem_toJs(x1)
-				},
-			)}
-
+			options: CalendarItemFlavouredApi_findCalendarItemsByHcPartyPatient_Options?,
+		): Promise<PaginatedListIteratorJs<CalendarItemJs>> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val hcPartyIdConverted: String = hcPartyId
+				val patientConverted: Patient = patient_fromJs(patient)
+				val startDateConverted: Long? = convertingOptionOrDefault(
+					_options.startDate,
+					null
+				) { startDate ->
+					numberToLong(startDate, "startDate")
+				}
+				val endDateConverted: Long? = convertingOptionOrDefault(
+					_options.endDate,
+					null
+				) { endDate ->
+					numberToLong(endDate, "endDate")
+				}
+				val descendingConverted: Boolean? = convertingOptionOrDefault(
+					_options.descending,
+					null
+				) { descending ->
+					descending
+				}
+				val result = calendarItemApi.tryAndRecover.findCalendarItemsByHcPartyPatient(
+					hcPartyIdConverted,
+					patientConverted,
+					startDateConverted,
+					endDateConverted,
+					descendingConverted,
+				)
+				paginatedListIterator_toJs(
+					result,
+					{ x1: CalendarItem ->
+						calendarItem_toJs(x1)
+					},
+				)
+			}
+		}
 
 		override fun linkToPatient(
 			calendarItem: CalendarItemJs,
 			patient: PatientJs,
 			shareLinkWithDelegates: Array<String>,
 		): Promise<CalendarItemJs> = GlobalScope.promise {
-			calendarItem_toJs(calendarItemApi.tryAndRecover.linkToPatient(com.icure.sdk.js.model.calendarItem_fromJs(calendarItem),
-					com.icure.sdk.js.model.patient_fromJs(patient),
-					com.icure.sdk.js.model.CheckedConverters.arrayToSet(
-			  shareLinkWithDelegates,
-			  "shareLinkWithDelegates",
-			  { x1: kotlin.String ->
-			    x1
-			  },
-			)))}
-
+			val calendarItemConverted: CalendarItem = calendarItem_fromJs(calendarItem)
+			val patientConverted: Patient = patient_fromJs(patient)
+			val shareLinkWithDelegatesConverted: Set<String> = arrayToSet(
+				shareLinkWithDelegates,
+				"shareLinkWithDelegates",
+				{ x1: String ->
+					x1
+				},
+			)
+			val result = calendarItemApi.tryAndRecover.linkToPatient(
+				calendarItemConverted,
+				patientConverted,
+				shareLinkWithDelegatesConverted,
+			)
+			calendarItem_toJs(result)
+		}
 
 		override fun modifyCalendarItem(entity: CalendarItemJs): Promise<CalendarItemJs> =
 				GlobalScope.promise {
-			calendarItem_toJs(calendarItemApi.tryAndRecover.modifyCalendarItem(com.icure.sdk.js.model.calendarItem_fromJs(entity)))}
-
+			val entityConverted: CalendarItem = calendarItem_fromJs(entity)
+			val result = calendarItemApi.tryAndRecover.modifyCalendarItem(
+				entityConverted,
+			)
+			calendarItem_toJs(result)
+		}
 
 		override fun getCalendarItem(entityId: String): Promise<CalendarItemJs> = GlobalScope.promise {
-			calendarItem_toJs(calendarItemApi.tryAndRecover.getCalendarItem(entityId))}
-
+			val entityIdConverted: String = entityId
+			val result = calendarItemApi.tryAndRecover.getCalendarItem(
+				entityIdConverted,
+			)
+			calendarItem_toJs(result)
+		}
 
 		override fun getCalendarItems(entityIds: Array<String>): Promise<Array<CalendarItemJs>> =
 				GlobalScope.promise {
+			val entityIdsConverted: List<String> = arrayToList(
+				entityIds,
+				"entityIds",
+				{ x1: String ->
+					x1
+				},
+			)
+			val result = calendarItemApi.tryAndRecover.getCalendarItems(
+				entityIdsConverted,
+			)
 			listToArray(
-				calendarItemApi.tryAndRecover.getCalendarItems(arrayToList(
-					entityIds,
-					"entityIds",
-					{ x1: String ->
-						x1
-					},
-				)),
+				result,
 				{ x1: CalendarItem ->
 					calendarItem_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun getCalendarItemsByPeriodAndHcPartyId(
 			startDate: Double,
 			endDate: Double,
 			hcPartyId: String,
 		): Promise<Array<CalendarItemJs>> = GlobalScope.promise {
+			val startDateConverted: Long = numberToLong(startDate, "startDate")
+			val endDateConverted: Long = numberToLong(endDate, "endDate")
+			val hcPartyIdConverted: String = hcPartyId
+			val result = calendarItemApi.tryAndRecover.getCalendarItemsByPeriodAndHcPartyId(
+				startDateConverted,
+				endDateConverted,
+				hcPartyIdConverted,
+			)
 			listToArray(
-				calendarItemApi.tryAndRecover.getCalendarItemsByPeriodAndHcPartyId(numberToLong(startDate,
-						"startDate"), numberToLong(endDate, "endDate"), hcPartyId),
+				result,
 				{ x1: CalendarItem ->
 					calendarItem_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun getCalendarsByPeriodAndAgendaId(
 			startDate: Double,
 			endDate: Double,
 			agendaId: String,
 		): Promise<Array<CalendarItemJs>> = GlobalScope.promise {
+			val startDateConverted: Long = numberToLong(startDate, "startDate")
+			val endDateConverted: Long = numberToLong(endDate, "endDate")
+			val agendaIdConverted: String = agendaId
+			val result = calendarItemApi.tryAndRecover.getCalendarsByPeriodAndAgendaId(
+				startDateConverted,
+				endDateConverted,
+				agendaIdConverted,
+			)
 			listToArray(
-				calendarItemApi.tryAndRecover.getCalendarsByPeriodAndAgendaId(numberToLong(startDate,
-						"startDate"), numberToLong(endDate, "endDate"), agendaId),
+				result,
 				{ x1: CalendarItem ->
 					calendarItem_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun getCalendarItemsWithIds(entityIds: Array<String>): Promise<Array<CalendarItemJs>> =
 				GlobalScope.promise {
+			val entityIdsConverted: List<String> = arrayToList(
+				entityIds,
+				"entityIds",
+				{ x1: String ->
+					x1
+				},
+			)
+			val result = calendarItemApi.tryAndRecover.getCalendarItemsWithIds(
+				entityIdsConverted,
+			)
 			listToArray(
-				calendarItemApi.tryAndRecover.getCalendarItemsWithIds(arrayToList(
-					entityIds,
-					"entityIds",
-					{ x1: String ->
-						x1
-					},
-				)),
+				result,
 				{ x1: CalendarItem ->
 					calendarItem_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun findCalendarItemsByRecurrenceId(
 			recurrenceId: String,
@@ -393,257 +614,420 @@ internal class CalendarItemApiImplJs(
 			startDocumentId: String?,
 			limit: Double,
 		): Promise<PaginatedListJs<CalendarItemJs>> = GlobalScope.promise {
+			val recurrenceIdConverted: String = recurrenceId
+			val startKeyConverted: String? = startKey
+			val startDocumentIdConverted: String? = startDocumentId
+			val limitConverted: Int = numberToInt(limit, "limit")
+			val result = calendarItemApi.tryAndRecover.findCalendarItemsByRecurrenceId(
+				recurrenceIdConverted,
+				startKeyConverted,
+				startDocumentIdConverted,
+				limitConverted,
+			)
 			paginatedList_toJs(
-				calendarItemApi.tryAndRecover.findCalendarItemsByRecurrenceId(recurrenceId, startKey,
-						startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
+				result,
 				{ x1: CalendarItem ->
 					calendarItem_toJs(x1)
 				},
-			)}
-
+			)
+		}
 	}
 
 	override fun createCalendarItem(entity: DecryptedCalendarItemJs): Promise<DecryptedCalendarItemJs>
 			= GlobalScope.promise {
-		calendarItem_toJs(calendarItemApi.createCalendarItem(com.icure.sdk.js.model.calendarItem_fromJs(entity)))}
-
+		val entityConverted: DecryptedCalendarItem = calendarItem_fromJs(entity)
+		val result = calendarItemApi.createCalendarItem(
+			entityConverted,
+		)
+		calendarItem_toJs(result)
+	}
 
 	override fun withEncryptionMetadata(
 		base: DecryptedCalendarItemJs?,
 		patient: PatientJs,
-		user: UserJs?,
-		delegates: Record<String, String>,
-		secretId: SecretIdOptionJs,
-	): Promise<DecryptedCalendarItemJs> = GlobalScope.promise {
-		calendarItem_toJs(calendarItemApi.withEncryptionMetadata(base?.let { nonNull1 ->
-		  com.icure.sdk.js.model.calendarItem_fromJs(nonNull1)
-		}, com.icure.sdk.js.model.patient_fromJs(patient), user?.let { nonNull1 ->
-		  com.icure.sdk.js.model.user_fromJs(nonNull1)
-		}, com.icure.sdk.js.model.CheckedConverters.objectToMap(
-		  delegates,
-		  "delegates",
-		  { x1: kotlin.String ->
-		    x1
-		  },
-		  { x1: kotlin.String ->
-		    com.icure.sdk.model.embed.AccessLevel.valueOf(x1)
-		  },
-		), com.icure.sdk.js.crypto.entities.secretIdOption_fromJs(secretId)))}
-
+		options: CalendarItemApi_withEncryptionMetadata_Options?,
+	): Promise<DecryptedCalendarItemJs> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val baseConverted: DecryptedCalendarItem? = base?.let { nonNull1 ->
+				calendarItem_fromJs(nonNull1)
+			}
+			val patientConverted: Patient = patient_fromJs(patient)
+			val userConverted: User? = convertingOptionOrDefault(
+				_options.user,
+				null
+			) { user ->
+				user?.let { nonNull1 ->
+					user_fromJs(nonNull1)
+				}
+			}
+			val delegatesConverted: Map<String, AccessLevel> = convertingOptionOrDefault(
+				_options.delegates,
+				emptyMap()
+			) { delegates ->
+				objectToMap(
+					delegates,
+					"delegates",
+					{ x1: String ->
+						x1
+					},
+					{ x1: String ->
+						AccessLevel.valueOf(x1)
+					},
+				)
+			}
+			val secretIdConverted: SecretIdOption = convertingOptionOrDefault(
+				_options.secretId,
+				com.icure.sdk.crypto.entities.SecretIdOption.UseAnySharedWithParent
+			) { secretId ->
+				secretIdOption_fromJs(secretId)
+			}
+			val result = calendarItemApi.withEncryptionMetadata(
+				baseConverted,
+				patientConverted,
+				userConverted,
+				delegatesConverted,
+				secretIdConverted,
+			)
+			calendarItem_toJs(result)
+		}
+	}
 
 	override fun getEncryptionKeysOf(calendarItem: CalendarItemJs): Promise<Array<String>> =
 			GlobalScope.promise {
+		val calendarItemConverted: CalendarItem = calendarItem_fromJs(calendarItem)
+		val result = calendarItemApi.getEncryptionKeysOf(
+			calendarItemConverted,
+		)
 		setToArray(
-			calendarItemApi.getEncryptionKeysOf(calendarItem_fromJs(calendarItem)),
+			result,
 			{ x1: HexString ->
 				hexString_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun hasWriteAccess(calendarItem: CalendarItemJs): Promise<Boolean> = GlobalScope.promise {
-		calendarItemApi.hasWriteAccess(calendarItem_fromJs(calendarItem))}
-
+		val calendarItemConverted: CalendarItem = calendarItem_fromJs(calendarItem)
+		val result = calendarItemApi.hasWriteAccess(
+			calendarItemConverted,
+		)
+		result
+	}
 
 	override fun decryptPatientIdOf(calendarItem: CalendarItemJs): Promise<Array<String>> =
 			GlobalScope.promise {
+		val calendarItemConverted: CalendarItem = calendarItem_fromJs(calendarItem)
+		val result = calendarItemApi.decryptPatientIdOf(
+			calendarItemConverted,
+		)
 		setToArray(
-			calendarItemApi.decryptPatientIdOf(calendarItem_fromJs(calendarItem)),
+			result,
 			{ x1: String ->
 				x1
 			},
-		)}
-
+		)
+	}
 
 	override fun createDelegationDeAnonymizationMetadata(entity: CalendarItemJs,
 			delegates: Array<String>): Promise<Unit> = GlobalScope.promise {
-		calendarItemApi.createDelegationDeAnonymizationMetadata(calendarItem_fromJs(entity), arrayToSet(
+		val entityConverted: CalendarItem = calendarItem_fromJs(entity)
+		val delegatesConverted: Set<String> = arrayToSet(
 			delegates,
 			"delegates",
 			{ x1: String ->
 				x1
 			},
-		))}
+		)
+		calendarItemApi.createDelegationDeAnonymizationMetadata(
+			entityConverted,
+			delegatesConverted,
+		)
 
+	}
 
 	override fun deleteCalendarItem(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {
-		docIdentifier_toJs(calendarItemApi.deleteCalendarItem(entityId))}
-
+		val entityIdConverted: String = entityId
+		val result = calendarItemApi.deleteCalendarItem(
+			entityIdConverted,
+		)
+		docIdentifier_toJs(result)
+	}
 
 	override fun deleteCalendarItems(entityIds: Array<String>): Promise<Array<DocIdentifierJs>> =
 			GlobalScope.promise {
+		val entityIdsConverted: List<String> = arrayToList(
+			entityIds,
+			"entityIds",
+			{ x1: String ->
+				x1
+			},
+		)
+		val result = calendarItemApi.deleteCalendarItems(
+			entityIdsConverted,
+		)
 		listToArray(
-			calendarItemApi.deleteCalendarItems(arrayToList(
-				entityIds,
-				"entityIds",
-				{ x1: String ->
-					x1
-				},
-			)),
+			result,
 			{ x1: DocIdentifier ->
 				docIdentifier_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun shareWith(
 		delegateId: String,
 		calendarItem: DecryptedCalendarItemJs,
-		shareEncryptionKeys: String,
-		shareOwningEntityIds: String,
-		requestedPermission: String,
-	): Promise<SimpleShareResultJs<DecryptedCalendarItemJs>> = GlobalScope.promise {
-		simpleShareResult_toJs(
-			calendarItemApi.shareWith(delegateId, com.icure.sdk.js.model.calendarItem_fromJs(calendarItem),
-					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareEncryptionKeys),
-					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareOwningEntityIds),
-					com.icure.sdk.model.requests.RequestedPermission.valueOf(requestedPermission)),
-			{ x1: DecryptedCalendarItem ->
-				calendarItem_toJs(x1)
-			},
-		)}
-
+		options: CalendarItemApi_shareWith_Options?,
+	): Promise<SimpleShareResultJs<DecryptedCalendarItemJs>> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val delegateIdConverted: String = delegateId
+			val calendarItemConverted: DecryptedCalendarItem = calendarItem_fromJs(calendarItem)
+			val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
+				_options.shareEncryptionKeys,
+				com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
+			) { shareEncryptionKeys ->
+				ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
+			}
+			val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
+				_options.shareOwningEntityIds,
+				com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
+			) { shareOwningEntityIds ->
+				ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
+			}
+			val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefault(
+				_options.requestedPermission,
+				com.icure.sdk.model.requests.RequestedPermission.MaxWrite
+			) { requestedPermission ->
+				RequestedPermission.valueOf(requestedPermission)
+			}
+			val result = calendarItemApi.shareWith(
+				delegateIdConverted,
+				calendarItemConverted,
+				shareEncryptionKeysConverted,
+				shareOwningEntityIdsConverted,
+				requestedPermissionConverted,
+			)
+			simpleShareResult_toJs(
+				result,
+				{ x1: DecryptedCalendarItem ->
+					calendarItem_toJs(x1)
+				},
+			)
+		}
+	}
 
 	override fun tryShareWithMany(calendarItem: DecryptedCalendarItemJs,
 			delegates: Record<String, CalendarItemShareOptionsJs>):
 			Promise<SimpleShareResultJs<DecryptedCalendarItemJs>> = GlobalScope.promise {
+		val calendarItemConverted: DecryptedCalendarItem = calendarItem_fromJs(calendarItem)
+		val delegatesConverted: Map<String, CalendarItemShareOptions> = objectToMap(
+			delegates,
+			"delegates",
+			{ x1: String ->
+				x1
+			},
+			{ x1: CalendarItemShareOptionsJs ->
+				calendarItemShareOptions_fromJs(x1)
+			},
+		)
+		val result = calendarItemApi.tryShareWithMany(
+			calendarItemConverted,
+			delegatesConverted,
+		)
 		simpleShareResult_toJs(
-			calendarItemApi.tryShareWithMany(com.icure.sdk.js.model.calendarItem_fromJs(calendarItem),
-					com.icure.sdk.js.model.CheckedConverters.objectToMap(
-			  delegates,
-			  "delegates",
-			  { x1: kotlin.String ->
-			    x1
-			  },
-			  { x1: com.icure.sdk.js.crypto.entities.CalendarItemShareOptionsJs ->
-			    com.icure.sdk.js.crypto.entities.calendarItemShareOptions_fromJs(x1)
-			  },
-			)),
+			result,
 			{ x1: DecryptedCalendarItem ->
 				calendarItem_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun shareWithMany(calendarItem: DecryptedCalendarItemJs,
 			delegates: Record<String, CalendarItemShareOptionsJs>): Promise<DecryptedCalendarItemJs> =
 			GlobalScope.promise {
-		calendarItem_toJs(calendarItemApi.shareWithMany(com.icure.sdk.js.model.calendarItem_fromJs(calendarItem),
-				com.icure.sdk.js.model.CheckedConverters.objectToMap(
-		  delegates,
-		  "delegates",
-		  { x1: kotlin.String ->
-		    x1
-		  },
-		  { x1: com.icure.sdk.js.crypto.entities.CalendarItemShareOptionsJs ->
-		    com.icure.sdk.js.crypto.entities.calendarItemShareOptions_fromJs(x1)
-		  },
-		)))}
-
+		val calendarItemConverted: DecryptedCalendarItem = calendarItem_fromJs(calendarItem)
+		val delegatesConverted: Map<String, CalendarItemShareOptions> = objectToMap(
+			delegates,
+			"delegates",
+			{ x1: String ->
+				x1
+			},
+			{ x1: CalendarItemShareOptionsJs ->
+				calendarItemShareOptions_fromJs(x1)
+			},
+		)
+		val result = calendarItemApi.shareWithMany(
+			calendarItemConverted,
+			delegatesConverted,
+		)
+		calendarItem_toJs(result)
+	}
 
 	override fun findCalendarItemsByHcPartyPatient(
 		hcPartyId: String,
 		patient: PatientJs,
-		startDate: Double?,
-		endDate: Double?,
-		descending: Boolean?,
-	): Promise<PaginatedListIteratorJs<DecryptedCalendarItemJs>> = GlobalScope.promise {
-		paginatedListIterator_toJs(
-			calendarItemApi.findCalendarItemsByHcPartyPatient(hcPartyId,
-					com.icure.sdk.js.model.patient_fromJs(patient),
-					com.icure.sdk.js.model.CheckedConverters.numberToLong(startDate, "startDate"),
-					com.icure.sdk.js.model.CheckedConverters.numberToLong(endDate, "endDate"), descending),
-			{ x1: DecryptedCalendarItem ->
-				calendarItem_toJs(x1)
-			},
-		)}
-
+		options: CalendarItemApi_findCalendarItemsByHcPartyPatient_Options?,
+	): Promise<PaginatedListIteratorJs<DecryptedCalendarItemJs>> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val hcPartyIdConverted: String = hcPartyId
+			val patientConverted: Patient = patient_fromJs(patient)
+			val startDateConverted: Long? = convertingOptionOrDefault(
+				_options.startDate,
+				null
+			) { startDate ->
+				numberToLong(startDate, "startDate")
+			}
+			val endDateConverted: Long? = convertingOptionOrDefault(
+				_options.endDate,
+				null
+			) { endDate ->
+				numberToLong(endDate, "endDate")
+			}
+			val descendingConverted: Boolean? = convertingOptionOrDefault(
+				_options.descending,
+				null
+			) { descending ->
+				descending
+			}
+			val result = calendarItemApi.findCalendarItemsByHcPartyPatient(
+				hcPartyIdConverted,
+				patientConverted,
+				startDateConverted,
+				endDateConverted,
+				descendingConverted,
+			)
+			paginatedListIterator_toJs(
+				result,
+				{ x1: DecryptedCalendarItem ->
+					calendarItem_toJs(x1)
+				},
+			)
+		}
+	}
 
 	override fun linkToPatient(
 		calendarItem: CalendarItemJs,
 		patient: PatientJs,
 		shareLinkWithDelegates: Array<String>,
 	): Promise<DecryptedCalendarItemJs> = GlobalScope.promise {
-		calendarItem_toJs(calendarItemApi.linkToPatient(com.icure.sdk.js.model.calendarItem_fromJs(calendarItem),
-				com.icure.sdk.js.model.patient_fromJs(patient),
-				com.icure.sdk.js.model.CheckedConverters.arrayToSet(
-		  shareLinkWithDelegates,
-		  "shareLinkWithDelegates",
-		  { x1: kotlin.String ->
-		    x1
-		  },
-		)))}
-
+		val calendarItemConverted: CalendarItem = calendarItem_fromJs(calendarItem)
+		val patientConverted: Patient = patient_fromJs(patient)
+		val shareLinkWithDelegatesConverted: Set<String> = arrayToSet(
+			shareLinkWithDelegates,
+			"shareLinkWithDelegates",
+			{ x1: String ->
+				x1
+			},
+		)
+		val result = calendarItemApi.linkToPatient(
+			calendarItemConverted,
+			patientConverted,
+			shareLinkWithDelegatesConverted,
+		)
+		calendarItem_toJs(result)
+	}
 
 	override fun modifyCalendarItem(entity: DecryptedCalendarItemJs): Promise<DecryptedCalendarItemJs>
 			= GlobalScope.promise {
-		calendarItem_toJs(calendarItemApi.modifyCalendarItem(com.icure.sdk.js.model.calendarItem_fromJs(entity)))}
-
+		val entityConverted: DecryptedCalendarItem = calendarItem_fromJs(entity)
+		val result = calendarItemApi.modifyCalendarItem(
+			entityConverted,
+		)
+		calendarItem_toJs(result)
+	}
 
 	override fun getCalendarItem(entityId: String): Promise<DecryptedCalendarItemJs> =
 			GlobalScope.promise {
-		calendarItem_toJs(calendarItemApi.getCalendarItem(entityId))}
-
+		val entityIdConverted: String = entityId
+		val result = calendarItemApi.getCalendarItem(
+			entityIdConverted,
+		)
+		calendarItem_toJs(result)
+	}
 
 	override fun getCalendarItems(entityIds: Array<String>): Promise<Array<DecryptedCalendarItemJs>> =
 			GlobalScope.promise {
+		val entityIdsConverted: List<String> = arrayToList(
+			entityIds,
+			"entityIds",
+			{ x1: String ->
+				x1
+			},
+		)
+		val result = calendarItemApi.getCalendarItems(
+			entityIdsConverted,
+		)
 		listToArray(
-			calendarItemApi.getCalendarItems(arrayToList(
-				entityIds,
-				"entityIds",
-				{ x1: String ->
-					x1
-				},
-			)),
+			result,
 			{ x1: DecryptedCalendarItem ->
 				calendarItem_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun getCalendarItemsByPeriodAndHcPartyId(
 		startDate: Double,
 		endDate: Double,
 		hcPartyId: String,
 	): Promise<Array<DecryptedCalendarItemJs>> = GlobalScope.promise {
+		val startDateConverted: Long = numberToLong(startDate, "startDate")
+		val endDateConverted: Long = numberToLong(endDate, "endDate")
+		val hcPartyIdConverted: String = hcPartyId
+		val result = calendarItemApi.getCalendarItemsByPeriodAndHcPartyId(
+			startDateConverted,
+			endDateConverted,
+			hcPartyIdConverted,
+		)
 		listToArray(
-			calendarItemApi.getCalendarItemsByPeriodAndHcPartyId(numberToLong(startDate, "startDate"),
-					numberToLong(endDate, "endDate"), hcPartyId),
+			result,
 			{ x1: DecryptedCalendarItem ->
 				calendarItem_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun getCalendarsByPeriodAndAgendaId(
 		startDate: Double,
 		endDate: Double,
 		agendaId: String,
 	): Promise<Array<DecryptedCalendarItemJs>> = GlobalScope.promise {
+		val startDateConverted: Long = numberToLong(startDate, "startDate")
+		val endDateConverted: Long = numberToLong(endDate, "endDate")
+		val agendaIdConverted: String = agendaId
+		val result = calendarItemApi.getCalendarsByPeriodAndAgendaId(
+			startDateConverted,
+			endDateConverted,
+			agendaIdConverted,
+		)
 		listToArray(
-			calendarItemApi.getCalendarsByPeriodAndAgendaId(numberToLong(startDate, "startDate"),
-					numberToLong(endDate, "endDate"), agendaId),
+			result,
 			{ x1: DecryptedCalendarItem ->
 				calendarItem_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun getCalendarItemsWithIds(entityIds: Array<String>):
 			Promise<Array<DecryptedCalendarItemJs>> = GlobalScope.promise {
+		val entityIdsConverted: List<String> = arrayToList(
+			entityIds,
+			"entityIds",
+			{ x1: String ->
+				x1
+			},
+		)
+		val result = calendarItemApi.getCalendarItemsWithIds(
+			entityIdsConverted,
+		)
 		listToArray(
-			calendarItemApi.getCalendarItemsWithIds(arrayToList(
-				entityIds,
-				"entityIds",
-				{ x1: String ->
-					x1
-				},
-			)),
+			result,
 			{ x1: DecryptedCalendarItem ->
 				calendarItem_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun findCalendarItemsByRecurrenceId(
 		recurrenceId: String,
@@ -651,12 +1035,21 @@ internal class CalendarItemApiImplJs(
 		startDocumentId: String?,
 		limit: Double,
 	): Promise<PaginatedListJs<DecryptedCalendarItemJs>> = GlobalScope.promise {
+		val recurrenceIdConverted: String = recurrenceId
+		val startKeyConverted: String? = startKey
+		val startDocumentIdConverted: String? = startDocumentId
+		val limitConverted: Int = numberToInt(limit, "limit")
+		val result = calendarItemApi.findCalendarItemsByRecurrenceId(
+			recurrenceIdConverted,
+			startKeyConverted,
+			startDocumentIdConverted,
+			limitConverted,
+		)
 		paginatedList_toJs(
-			calendarItemApi.findCalendarItemsByRecurrenceId(recurrenceId, startKey, startDocumentId,
-					com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
+			result,
 			{ x1: DecryptedCalendarItem ->
 				calendarItem_toJs(x1)
 			},
-		)}
-
+		)
+	}
 }

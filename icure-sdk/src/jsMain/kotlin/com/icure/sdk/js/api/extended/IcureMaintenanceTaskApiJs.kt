@@ -16,7 +16,13 @@ public external interface IcureMaintenanceTaskApiJs {
 	public fun applyKeyPairUpdate(updateRequest: KeyPairUpdateNotificationJs): Promise<Unit>
 
 	public fun createKeyPairUpdateNotificationsToAllDelegationCounterparts(key: String,
-			requestToOwnerTypes: Array<String>?): Promise<Unit>
+			options: IcureMaintenanceTaskApi_createKeyPairUpdateNotificationsToAllDelegationCounterparts_Options?):
+			Promise<Unit>
 
 	public fun createKeyPairUpdateNotificationTo(dataOwnerId: String, key: String): Promise<Unit>
+}
+
+public external interface
+		IcureMaintenanceTaskApi_createKeyPairUpdateNotificationsToAllDelegationCounterparts_Options {
+	public val requestToOwnerTypes: Array<String>?
 }

@@ -14,7 +14,6 @@ export interface PlaceApi {
 
 	deletePlaces(placeIds: Array<string>): Promise<Array<DocIdentifier>>;
 
-	getPlaces(startDocumentId: string | undefined,
-			limit: number | undefined): Promise<PaginatedList<Place>>;
+	getPlaces(options?: { startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<Place>>;
 
 }

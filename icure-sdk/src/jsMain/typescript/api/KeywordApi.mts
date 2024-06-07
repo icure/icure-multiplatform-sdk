@@ -10,8 +10,7 @@ export interface KeywordApi {
 
 	createKeyword(frontEndMigration: Keyword): Promise<Keyword>;
 
-	getKeywords(startDocumentId: string | undefined,
-			limit: number | undefined): Promise<PaginatedList<Keyword>>;
+	getKeywords(options?: { startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<Keyword>>;
 
 	modifyKeyword(keyword: Keyword): Promise<Keyword>;
 

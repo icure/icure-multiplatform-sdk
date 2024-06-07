@@ -10,16 +10,16 @@ export interface FormBasicApi {
 
 	deleteForms(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
-	getFormTemplate(formTemplateId: string, raw: boolean | undefined): Promise<FormTemplate>;
+	getFormTemplate(formTemplateId: string,
+			options?: { formTemplateId?: string, raw?: boolean | undefined }): Promise<FormTemplate>;
 
 	getFormTemplatesByGuid(formTemplateGuid: string, specialityCode: string,
 			raw: boolean | undefined): Promise<Array<FormTemplate>>;
 
 	listFormTemplatesBySpeciality(specialityCode: string,
-			raw: boolean | undefined): Promise<Array<FormTemplate>>;
+			options?: { specialityCode?: string, raw?: boolean | undefined }): Promise<Array<FormTemplate>>;
 
-	getFormTemplates(loadLayout: boolean | undefined,
-			raw: boolean | undefined): Promise<Array<FormTemplate>>;
+	getFormTemplates(options?: { loadLayout?: boolean | undefined, raw?: boolean | undefined }): Promise<Array<FormTemplate>>;
 
 	createFormTemplate(formTemplate: FormTemplate): Promise<FormTemplate>;
 
@@ -47,12 +47,7 @@ export interface FormBasicApi {
 
 	getChildrenForms(hcPartyId: string, parentId: string): Promise<Array<EncryptedForm>>;
 
-	listFormsByHCPartyAndPatientForeignKeys(
-			hcPartyId: string,
-			secretFKeys: string,
-			healthElementId: string | undefined,
-			planOfActionId: string | undefined,
-			formTemplateId: string | undefined
-	): Promise<Array<EncryptedForm>>;
+	listFormsByHCPartyAndPatientForeignKeys(hcPartyId: string, secretFKeys: string,
+			options?: { hcPartyId?: string, secretFKeys?: string, healthElementId?: string | undefined, planOfActionId?: string | undefined, formTemplateId?: string | undefined }): Promise<Array<EncryptedForm>>;
 
 }

@@ -58,10 +58,8 @@ public external interface InvoiceBasicApiJs {
 		type: String,
 		sentMediumType: String,
 		secretFKeys: String,
-		insuranceId: String?,
-		invoiceId: String?,
-		gracePeriod: Double?,
 		invoicingCodes: Array<EncryptedInvoicingCodeJs>,
+		options: InvoiceBasicApi_appendCodes_Options?,
 	): Promise<Array<EncryptedInvoiceJs>>
 
 	public fun removeCodes(
@@ -71,14 +69,9 @@ public external interface InvoiceBasicApiJs {
 		tarificationIds: Array<String>,
 	): Promise<Array<EncryptedInvoiceJs>>
 
-	public fun findInvoicesByAuthor(
-		hcPartyId: String,
-		fromDate: Double?,
-		toDate: Double?,
-		startKey: dynamic,
-		startDocumentId: String?,
-		limit: Double?,
-	): Promise<PaginatedListJs<EncryptedInvoiceJs>>
+	public fun findInvoicesByAuthor(hcPartyId: String,
+			options: InvoiceBasicApi_findInvoicesByAuthor_Options?):
+			Promise<PaginatedListJs<EncryptedInvoiceJs>>
 
 	public fun listInvoicesByHCPartyAndPatientForeignKeys(hcPartyId: String,
 			secretPatientKeys: Array<String>): Promise<Array<EncryptedInvoiceJs>>
@@ -91,8 +84,7 @@ public external interface InvoiceBasicApiJs {
 		sentMediumType: String,
 		invoiceType: String,
 		sent: Boolean,
-		from: Double?,
-		to: Double?,
+		options: InvoiceBasicApi_listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate_Options?,
 	): Promise<Array<EncryptedInvoiceJs>>
 
 	public fun listInvoicesByContactIds(contactIds: Array<String>): Promise<Array<EncryptedInvoiceJs>>
@@ -122,8 +114,40 @@ public external interface InvoiceBasicApiJs {
 
 	public fun listAllHcpsByStatus(
 		status: String,
-		from: Double?,
-		to: Double?,
 		hcpIds: Array<String>,
+		options: InvoiceBasicApi_listAllHcpsByStatus_Options?,
 	): Promise<Array<EncryptedInvoiceJs>>
+}
+
+public external interface InvoiceBasicApi_appendCodes_Options {
+	public val insuranceId: String?
+
+	public val invoiceId: String?
+
+	public val gracePeriod: Double?
+}
+
+public external interface InvoiceBasicApi_findInvoicesByAuthor_Options {
+	public val fromDate: Double?
+
+	public val toDate: Double?
+
+	public val startKey: dynamic
+
+	public val startDocumentId: String?
+
+	public val limit: Double?
+}
+
+public external interface
+		InvoiceBasicApi_listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate_Options {
+	public val from: Double?
+
+	public val to: Double?
+}
+
+public external interface InvoiceBasicApi_listAllHcpsByStatus_Options {
+	public val from: Double?
+
+	public val to: Double?
 }

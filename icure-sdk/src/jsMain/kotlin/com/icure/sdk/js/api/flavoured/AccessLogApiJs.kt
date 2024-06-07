@@ -35,9 +35,7 @@ public external interface AccessLogApiJs {
 	public fun withEncryptionMetadata(
 		base: DecryptedAccessLogJs?,
 		patient: PatientJs,
-		user: UserJs?,
-		delegates: Record<String, String>,
-		secretId: SecretIdOptionJs,
+		options: AccessLogApi_withEncryptionMetadata_Options?,
 	): Promise<DecryptedAccessLogJs>
 
 	public fun getEncryptionKeysOf(accessLog: AccessLogJs): Promise<Array<String>>
@@ -56,9 +54,7 @@ public external interface AccessLogApiJs {
 	public fun shareWith(
 		delegateId: String,
 		accessLog: DecryptedAccessLogJs,
-		shareEncryptionKeys: String,
-		shareOwningEntityIds: String,
-		requestedPermission: String,
+		options: AccessLogApi_shareWith_Options?,
 	): Promise<SimpleShareResultJs<DecryptedAccessLogJs>>
 
 	public fun tryShareWithMany(accessLog: DecryptedAccessLogJs,
@@ -71,9 +67,7 @@ public external interface AccessLogApiJs {
 	public fun findAccessLogsByHcPartyPatient(
 		hcPartyId: String,
 		patient: PatientJs,
-		startDate: Double?,
-		endDate: Double?,
-		descending: Boolean?,
+		options: AccessLogApi_findAccessLogsByHcPartyPatient_Options?,
 	): Promise<PaginatedListIteratorJs<DecryptedAccessLogJs>>
 
 	public fun modifyAccessLog(entity: DecryptedAccessLogJs): Promise<DecryptedAccessLogJs>
@@ -90,22 +84,61 @@ public external interface AccessLogApiJs {
 		limit: Double?,
 	): Promise<PaginatedListJs<DecryptedAccessLogJs>>
 
-	public fun findAccessLogsByUserAfterDate(
-		userId: String,
-		accessType: String?,
-		startDate: Double?,
-		startKey: String?,
-		startDocumentId: String?,
-		limit: Double?,
-		descending: Boolean?,
-	): Promise<PaginatedListJs<DecryptedAccessLogJs>>
+	public fun findAccessLogsByUserAfterDate(userId: String,
+			options: AccessLogApi_findAccessLogsByUserAfterDate_Options?):
+			Promise<PaginatedListJs<DecryptedAccessLogJs>>
 
-	public fun findAccessLogsInGroup(
-		groupId: String,
-		fromEpoch: Double?,
-		toEpoch: Double?,
-		startKey: Double?,
-		startDocumentId: String?,
-		limit: Double?,
-	): Promise<PaginatedListJs<DecryptedAccessLogJs>>
+	public fun findAccessLogsInGroup(groupId: String,
+			options: AccessLogApi_findAccessLogsInGroup_Options?):
+			Promise<PaginatedListJs<DecryptedAccessLogJs>>
+}
+
+public external interface AccessLogApi_withEncryptionMetadata_Options {
+	public val user: UserJs?
+
+	public val delegates: Record<String, String>
+
+	public val secretId: SecretIdOptionJs
+}
+
+public external interface AccessLogApi_shareWith_Options {
+	public val shareEncryptionKeys: String
+
+	public val shareOwningEntityIds: String
+
+	public val requestedPermission: String
+}
+
+public external interface AccessLogApi_findAccessLogsByHcPartyPatient_Options {
+	public val startDate: Double?
+
+	public val endDate: Double?
+
+	public val descending: Boolean?
+}
+
+public external interface AccessLogApi_findAccessLogsByUserAfterDate_Options {
+	public val accessType: String?
+
+	public val startDate: Double?
+
+	public val startKey: String?
+
+	public val startDocumentId: String?
+
+	public val limit: Double?
+
+	public val descending: Boolean?
+}
+
+public external interface AccessLogApi_findAccessLogsInGroup_Options {
+	public val fromEpoch: Double?
+
+	public val toEpoch: Double?
+
+	public val startKey: Double?
+
+	public val startDocumentId: String?
+
+	public val limit: Double?
 }

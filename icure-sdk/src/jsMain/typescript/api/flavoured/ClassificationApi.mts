@@ -22,13 +22,8 @@ export interface ClassificationApi {
 
 	createClassification(entity: DecryptedClassification): Promise<DecryptedClassification>;
 
-	withEncryptionMetadata(
-			base: DecryptedClassification | undefined,
-			patient: Patient,
-			user: User | undefined,
-			delegates: { [ key: string ]: AccessLevel },
-			secretId: SecretIdOption
-	): Promise<DecryptedClassification>;
+	withEncryptionMetadata(base: DecryptedClassification | undefined, patient: Patient,
+			options?: { base?: DecryptedClassification | undefined, patient?: Patient, user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdOption }): Promise<DecryptedClassification>;
 
 	getEncryptionKeysOf(classification: Classification): Promise<Array<HexString>>;
 
@@ -43,13 +38,8 @@ export interface ClassificationApi {
 
 	deleteClassifications(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
-	shareWith(
-			delegateId: string,
-			classification: DecryptedClassification,
-			shareEncryptionKeys: ShareMetadataBehaviour,
-			shareOwningEntityIds: ShareMetadataBehaviour,
-			requestedPermission: RequestedPermission
-	): Promise<SimpleShareResult<DecryptedClassification>>;
+	shareWith(delegateId: string, classification: DecryptedClassification,
+			options?: { delegateId?: string, classification?: DecryptedClassification, shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<DecryptedClassification>>;
 
 	tryShareWithMany(classification: DecryptedClassification,
 			delegates: { [ key: string ]: ClassificationShareOptions }): Promise<SimpleShareResult<DecryptedClassification>>;
@@ -57,13 +47,8 @@ export interface ClassificationApi {
 	shareWithMany(classification: DecryptedClassification,
 			delegates: { [ key: string ]: ClassificationShareOptions }): Promise<DecryptedClassification>;
 
-	findClassificationsByHcPartyPatient(
-			hcPartyId: string,
-			patient: Patient,
-			startDate: number | undefined,
-			endDate: number | undefined,
-			descending: boolean | undefined
-	): Promise<PaginatedListIterator<DecryptedClassification>>;
+	findClassificationsByHcPartyPatient(hcPartyId: string, patient: Patient,
+			options?: { hcPartyId?: string, patient?: Patient, startDate?: number | undefined, endDate?: number | undefined, descending?: boolean | undefined }): Promise<PaginatedListIterator<DecryptedClassification>>;
 
 	modifyClassification(entity: DecryptedClassification): Promise<DecryptedClassification>;
 

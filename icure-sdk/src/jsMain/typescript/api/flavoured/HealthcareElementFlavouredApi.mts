@@ -16,13 +16,8 @@ import {Connection} from '../../websocket/Connection.mjs';
 
 export interface HealthcareElementFlavouredApi<E extends HealthElement> {
 
-	shareWith(
-			delegateId: string,
-			healthcareElement: E,
-			shareEncryptionKeys: ShareMetadataBehaviour,
-			shareOwningEntityIds: ShareMetadataBehaviour,
-			requestedPermission: RequestedPermission
-	): Promise<SimpleShareResult<E>>;
+	shareWith(delegateId: string, healthcareElement: E,
+			options?: { delegateId?: string, healthcareElement?: E, shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<E>>;
 
 	tryShareWithMany(healthElement: E,
 			delegates: { [ key: string ]: HealthElementShareOptions }): Promise<SimpleShareResult<E>>;
@@ -30,13 +25,8 @@ export interface HealthcareElementFlavouredApi<E extends HealthElement> {
 	shareWithMany(healthElement: E,
 			delegates: { [ key: string ]: HealthElementShareOptions }): Promise<E>;
 
-	findHealthcareElementsByHcPartyPatient(
-			hcPartyId: string,
-			patient: Patient,
-			startDate: number | undefined,
-			endDate: number | undefined,
-			descending: boolean | undefined
-	): Promise<PaginatedListIterator<E>>;
+	findHealthcareElementsByHcPartyPatient(hcPartyId: string, patient: Patient,
+			options?: { hcPartyId?: string, patient?: Patient, startDate?: number | undefined, endDate?: number | undefined, descending?: boolean | undefined }): Promise<PaginatedListIterator<E>>;
 
 	modifyHealthcareElement(entity: E): Promise<E>;
 
@@ -52,15 +42,8 @@ export interface HealthcareElementFlavouredApi<E extends HealthElement> {
 	findHealthcareElementsByHcPartyPatientForeignKeys(hcPartyId: string,
 			secretPatientKeys: Array<string>): Promise<Array<E>>;
 
-	subscribeToEvents(
-			events: Array<SubscriptionEventType>,
-			filter: AbstractFilter<HealthElement>,
-			onConnected: () => Promise<void>,
-			channelCapacity: number,
-			retryDelay: DurationMs,
-			retryDelayExponentFactor: number,
-			maxRetries: number,
-			eventFired: (x1: E) => Promise<void>
-	): Promise<Connection>;
+	subscribeToEvents(events: Array<SubscriptionEventType>, filter: AbstractFilter<HealthElement>,
+			eventFired: (x1: E) => Promise<void>,
+			options?: { events?: Array<SubscriptionEventType>, filter?: AbstractFilter<HealthElement>, onConnected?: () => Promise<void>, channelCapacity?: number, retryDelay?: DurationMs, retryDelayExponentFactor?: number, maxRetries?: number, eventFired?: (x1: E) => Promise<void> }): Promise<Connection>;
 
 }

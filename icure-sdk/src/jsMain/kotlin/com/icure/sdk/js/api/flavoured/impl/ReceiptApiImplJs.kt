@@ -2,15 +2,24 @@
 package com.icure.sdk.js.api.flavoured.`impl`
 
 import com.icure.sdk.api.flavoured.ReceiptApi
+import com.icure.sdk.crypto.entities.ReceiptShareOptions
+import com.icure.sdk.crypto.entities.SecretIdOption
+import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
+import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefault
 import com.icure.sdk.js.api.flavoured.ReceiptApiJs
+import com.icure.sdk.js.api.flavoured.ReceiptApi_shareWith_Options
+import com.icure.sdk.js.api.flavoured.ReceiptApi_withEncryptionMetadata_Options
 import com.icure.sdk.js.api.flavoured.ReceiptFlavouredApiJs
+import com.icure.sdk.js.api.flavoured.ReceiptFlavouredApi_shareWith_Options
 import com.icure.sdk.js.crypto.entities.ReceiptShareOptionsJs
-import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
+import com.icure.sdk.js.crypto.entities.receiptShareOptions_fromJs
+import com.icure.sdk.js.crypto.entities.secretIdOption_fromJs
 import com.icure.sdk.js.crypto.entities.simpleShareResult_toJs
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.listToArray
+import com.icure.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.sdk.js.model.CheckedConverters.setToArray
 import com.icure.sdk.js.model.DecryptedReceiptJs
 import com.icure.sdk.js.model.EncryptedReceiptJs
@@ -19,14 +28,20 @@ import com.icure.sdk.js.model.ReceiptJs
 import com.icure.sdk.js.model.UserJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.couchdb.docIdentifier_toJs
+import com.icure.sdk.js.model.patient_fromJs
 import com.icure.sdk.js.model.receipt_fromJs
 import com.icure.sdk.js.model.receipt_toJs
 import com.icure.sdk.js.model.specializations.hexString_toJs
+import com.icure.sdk.js.model.user_fromJs
 import com.icure.sdk.js.utils.Record
 import com.icure.sdk.model.DecryptedReceipt
 import com.icure.sdk.model.EncryptedReceipt
+import com.icure.sdk.model.Patient
 import com.icure.sdk.model.Receipt
+import com.icure.sdk.model.User
 import com.icure.sdk.model.couchdb.DocIdentifier
+import com.icure.sdk.model.embed.AccessLevel
+import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import kotlin.Array
 import kotlin.Boolean
@@ -34,6 +49,9 @@ import kotlin.ByteArray
 import kotlin.OptIn
 import kotlin.String
 import kotlin.Unit
+import kotlin.collections.List
+import kotlin.collections.Map
+import kotlin.collections.Set
 import kotlin.js.Promise
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -48,76 +66,123 @@ internal class ReceiptApiImplJs(
 		override fun shareWith(
 			delegateId: String,
 			receipt: EncryptedReceiptJs,
-			shareEncryptionKeys: String,
-			shareOwningEntityIds: String,
-			requestedPermission: String,
-		): Promise<SimpleShareResultJs<EncryptedReceiptJs>> = GlobalScope.promise {
-			simpleShareResult_toJs(
-				receiptApi.encrypted.shareWith(delegateId, com.icure.sdk.js.model.receipt_fromJs(receipt),
-						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareEncryptionKeys),
-						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareOwningEntityIds),
-						com.icure.sdk.model.requests.RequestedPermission.valueOf(requestedPermission)),
-				{ x1: EncryptedReceipt ->
-					receipt_toJs(x1)
-				},
-			)}
-
+			options: ReceiptFlavouredApi_shareWith_Options?,
+		): Promise<SimpleShareResultJs<EncryptedReceiptJs>> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val delegateIdConverted: String = delegateId
+				val receiptConverted: EncryptedReceipt = receipt_fromJs(receipt)
+				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
+					_options.shareEncryptionKeys,
+					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
+				) { shareEncryptionKeys ->
+					ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
+				}
+				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
+					_options.shareOwningEntityIds,
+					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
+				) { shareOwningEntityIds ->
+					ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
+				}
+				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefault(
+					_options.requestedPermission,
+					com.icure.sdk.model.requests.RequestedPermission.MaxWrite
+				) { requestedPermission ->
+					RequestedPermission.valueOf(requestedPermission)
+				}
+				val result = receiptApi.encrypted.shareWith(
+					delegateIdConverted,
+					receiptConverted,
+					shareEncryptionKeysConverted,
+					shareOwningEntityIdsConverted,
+					requestedPermissionConverted,
+				)
+				simpleShareResult_toJs(
+					result,
+					{ x1: EncryptedReceipt ->
+						receipt_toJs(x1)
+					},
+				)
+			}
+		}
 
 		override fun tryShareWithMany(receipt: EncryptedReceiptJs,
 				delegates: Record<String, ReceiptShareOptionsJs>):
 				Promise<SimpleShareResultJs<EncryptedReceiptJs>> = GlobalScope.promise {
+			val receiptConverted: EncryptedReceipt = receipt_fromJs(receipt)
+			val delegatesConverted: Map<String, ReceiptShareOptions> = objectToMap(
+				delegates,
+				"delegates",
+				{ x1: String ->
+					x1
+				},
+				{ x1: ReceiptShareOptionsJs ->
+					receiptShareOptions_fromJs(x1)
+				},
+			)
+			val result = receiptApi.encrypted.tryShareWithMany(
+				receiptConverted,
+				delegatesConverted,
+			)
 			simpleShareResult_toJs(
-				receiptApi.encrypted.tryShareWithMany(com.icure.sdk.js.model.receipt_fromJs(receipt),
-						com.icure.sdk.js.model.CheckedConverters.objectToMap(
-				  delegates,
-				  "delegates",
-				  { x1: kotlin.String ->
-				    x1
-				  },
-				  { x1: com.icure.sdk.js.crypto.entities.ReceiptShareOptionsJs ->
-				    com.icure.sdk.js.crypto.entities.receiptShareOptions_fromJs(x1)
-				  },
-				)),
+				result,
 				{ x1: EncryptedReceipt ->
 					receipt_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun shareWithMany(receipt: EncryptedReceiptJs,
 				delegates: Record<String, ReceiptShareOptionsJs>): Promise<EncryptedReceiptJs> =
 				GlobalScope.promise {
-			receipt_toJs(receiptApi.encrypted.shareWithMany(com.icure.sdk.js.model.receipt_fromJs(receipt),
-					com.icure.sdk.js.model.CheckedConverters.objectToMap(
-			  delegates,
-			  "delegates",
-			  { x1: kotlin.String ->
-			    x1
-			  },
-			  { x1: com.icure.sdk.js.crypto.entities.ReceiptShareOptionsJs ->
-			    com.icure.sdk.js.crypto.entities.receiptShareOptions_fromJs(x1)
-			  },
-			)))}
-
+			val receiptConverted: EncryptedReceipt = receipt_fromJs(receipt)
+			val delegatesConverted: Map<String, ReceiptShareOptions> = objectToMap(
+				delegates,
+				"delegates",
+				{ x1: String ->
+					x1
+				},
+				{ x1: ReceiptShareOptionsJs ->
+					receiptShareOptions_fromJs(x1)
+				},
+			)
+			val result = receiptApi.encrypted.shareWithMany(
+				receiptConverted,
+				delegatesConverted,
+			)
+			receipt_toJs(result)
+		}
 
 		override fun modifyReceipt(entity: EncryptedReceiptJs): Promise<EncryptedReceiptJs> =
 				GlobalScope.promise {
-			receipt_toJs(receiptApi.encrypted.modifyReceipt(com.icure.sdk.js.model.receipt_fromJs(entity)))}
-
+			val entityConverted: EncryptedReceipt = receipt_fromJs(entity)
+			val result = receiptApi.encrypted.modifyReceipt(
+				entityConverted,
+			)
+			receipt_toJs(result)
+		}
 
 		override fun getReceipt(entityId: String): Promise<EncryptedReceiptJs> = GlobalScope.promise {
-			receipt_toJs(receiptApi.encrypted.getReceipt(entityId))}
-
+			val entityIdConverted: String = entityId
+			val result = receiptApi.encrypted.getReceipt(
+				entityIdConverted,
+			)
+			receipt_toJs(result)
+		}
 
 		override fun listByReference(reference: String): Promise<Array<EncryptedReceiptJs>> =
 				GlobalScope.promise {
+			val referenceConverted: String = reference
+			val result = receiptApi.encrypted.listByReference(
+				referenceConverted,
+			)
 			listToArray(
-				receiptApi.encrypted.listByReference(reference),
+				result,
 				{ x1: EncryptedReceipt ->
 					receipt_toJs(x1)
 				},
-			)}
-
+			)
+		}
 	}
 
 	override val tryAndRecover: ReceiptFlavouredApiJs<ReceiptJs> = object :
@@ -125,152 +190,262 @@ internal class ReceiptApiImplJs(
 		override fun shareWith(
 			delegateId: String,
 			receipt: ReceiptJs,
-			shareEncryptionKeys: String,
-			shareOwningEntityIds: String,
-			requestedPermission: String,
-		): Promise<SimpleShareResultJs<ReceiptJs>> = GlobalScope.promise {
-			simpleShareResult_toJs(
-				receiptApi.tryAndRecover.shareWith(delegateId, com.icure.sdk.js.model.receipt_fromJs(receipt),
-						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareEncryptionKeys),
-						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareOwningEntityIds),
-						com.icure.sdk.model.requests.RequestedPermission.valueOf(requestedPermission)),
-				{ x1: Receipt ->
-					receipt_toJs(x1)
-				},
-			)}
-
+			options: ReceiptFlavouredApi_shareWith_Options?,
+		): Promise<SimpleShareResultJs<ReceiptJs>> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val delegateIdConverted: String = delegateId
+				val receiptConverted: Receipt = receipt_fromJs(receipt)
+				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
+					_options.shareEncryptionKeys,
+					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
+				) { shareEncryptionKeys ->
+					ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
+				}
+				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
+					_options.shareOwningEntityIds,
+					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
+				) { shareOwningEntityIds ->
+					ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
+				}
+				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefault(
+					_options.requestedPermission,
+					com.icure.sdk.model.requests.RequestedPermission.MaxWrite
+				) { requestedPermission ->
+					RequestedPermission.valueOf(requestedPermission)
+				}
+				val result = receiptApi.tryAndRecover.shareWith(
+					delegateIdConverted,
+					receiptConverted,
+					shareEncryptionKeysConverted,
+					shareOwningEntityIdsConverted,
+					requestedPermissionConverted,
+				)
+				simpleShareResult_toJs(
+					result,
+					{ x1: Receipt ->
+						receipt_toJs(x1)
+					},
+				)
+			}
+		}
 
 		override fun tryShareWithMany(receipt: ReceiptJs,
 				delegates: Record<String, ReceiptShareOptionsJs>): Promise<SimpleShareResultJs<ReceiptJs>> =
 				GlobalScope.promise {
+			val receiptConverted: Receipt = receipt_fromJs(receipt)
+			val delegatesConverted: Map<String, ReceiptShareOptions> = objectToMap(
+				delegates,
+				"delegates",
+				{ x1: String ->
+					x1
+				},
+				{ x1: ReceiptShareOptionsJs ->
+					receiptShareOptions_fromJs(x1)
+				},
+			)
+			val result = receiptApi.tryAndRecover.tryShareWithMany(
+				receiptConverted,
+				delegatesConverted,
+			)
 			simpleShareResult_toJs(
-				receiptApi.tryAndRecover.tryShareWithMany(com.icure.sdk.js.model.receipt_fromJs(receipt),
-						com.icure.sdk.js.model.CheckedConverters.objectToMap(
-				  delegates,
-				  "delegates",
-				  { x1: kotlin.String ->
-				    x1
-				  },
-				  { x1: com.icure.sdk.js.crypto.entities.ReceiptShareOptionsJs ->
-				    com.icure.sdk.js.crypto.entities.receiptShareOptions_fromJs(x1)
-				  },
-				)),
+				result,
 				{ x1: Receipt ->
 					receipt_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun shareWithMany(receipt: ReceiptJs, delegates: Record<String, ReceiptShareOptionsJs>):
 				Promise<ReceiptJs> = GlobalScope.promise {
-			receipt_toJs(receiptApi.tryAndRecover.shareWithMany(com.icure.sdk.js.model.receipt_fromJs(receipt),
-					com.icure.sdk.js.model.CheckedConverters.objectToMap(
-			  delegates,
-			  "delegates",
-			  { x1: kotlin.String ->
-			    x1
-			  },
-			  { x1: com.icure.sdk.js.crypto.entities.ReceiptShareOptionsJs ->
-			    com.icure.sdk.js.crypto.entities.receiptShareOptions_fromJs(x1)
-			  },
-			)))}
-
+			val receiptConverted: Receipt = receipt_fromJs(receipt)
+			val delegatesConverted: Map<String, ReceiptShareOptions> = objectToMap(
+				delegates,
+				"delegates",
+				{ x1: String ->
+					x1
+				},
+				{ x1: ReceiptShareOptionsJs ->
+					receiptShareOptions_fromJs(x1)
+				},
+			)
+			val result = receiptApi.tryAndRecover.shareWithMany(
+				receiptConverted,
+				delegatesConverted,
+			)
+			receipt_toJs(result)
+		}
 
 		override fun modifyReceipt(entity: ReceiptJs): Promise<ReceiptJs> = GlobalScope.promise {
-			receipt_toJs(receiptApi.tryAndRecover.modifyReceipt(com.icure.sdk.js.model.receipt_fromJs(entity)))}
-
+			val entityConverted: Receipt = receipt_fromJs(entity)
+			val result = receiptApi.tryAndRecover.modifyReceipt(
+				entityConverted,
+			)
+			receipt_toJs(result)
+		}
 
 		override fun getReceipt(entityId: String): Promise<ReceiptJs> = GlobalScope.promise {
-			receipt_toJs(receiptApi.tryAndRecover.getReceipt(entityId))}
-
+			val entityIdConverted: String = entityId
+			val result = receiptApi.tryAndRecover.getReceipt(
+				entityIdConverted,
+			)
+			receipt_toJs(result)
+		}
 
 		override fun listByReference(reference: String): Promise<Array<ReceiptJs>> = GlobalScope.promise {
+			val referenceConverted: String = reference
+			val result = receiptApi.tryAndRecover.listByReference(
+				referenceConverted,
+			)
 			listToArray(
-				receiptApi.tryAndRecover.listByReference(reference),
+				result,
 				{ x1: Receipt ->
 					receipt_toJs(x1)
 				},
-			)}
-
+			)
+		}
 	}
 
 	override fun createReceipt(entity: DecryptedReceiptJs): Promise<DecryptedReceiptJs> =
 			GlobalScope.promise {
-		receipt_toJs(receiptApi.createReceipt(com.icure.sdk.js.model.receipt_fromJs(entity)))}
-
+		val entityConverted: DecryptedReceipt = receipt_fromJs(entity)
+		val result = receiptApi.createReceipt(
+			entityConverted,
+		)
+		receipt_toJs(result)
+	}
 
 	override fun withEncryptionMetadata(
 		base: DecryptedReceiptJs?,
 		patient: PatientJs?,
-		user: UserJs?,
-		delegates: Record<String, String>,
-		secretId: SecretIdOptionJs,
-	): Promise<DecryptedReceiptJs> = GlobalScope.promise {
-		receipt_toJs(receiptApi.withEncryptionMetadata(base?.let { nonNull1 ->
-		  com.icure.sdk.js.model.receipt_fromJs(nonNull1)
-		}, patient?.let { nonNull1 ->
-		  com.icure.sdk.js.model.patient_fromJs(nonNull1)
-		}, user?.let { nonNull1 ->
-		  com.icure.sdk.js.model.user_fromJs(nonNull1)
-		}, com.icure.sdk.js.model.CheckedConverters.objectToMap(
-		  delegates,
-		  "delegates",
-		  { x1: kotlin.String ->
-		    x1
-		  },
-		  { x1: kotlin.String ->
-		    com.icure.sdk.model.embed.AccessLevel.valueOf(x1)
-		  },
-		), com.icure.sdk.js.crypto.entities.secretIdOption_fromJs(secretId)))}
-
+		options: ReceiptApi_withEncryptionMetadata_Options?,
+	): Promise<DecryptedReceiptJs> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val baseConverted: DecryptedReceipt? = base?.let { nonNull1 ->
+				receipt_fromJs(nonNull1)
+			}
+			val patientConverted: Patient? = patient?.let { nonNull1 ->
+				patient_fromJs(nonNull1)
+			}
+			val userConverted: User? = convertingOptionOrDefault(
+				_options.user,
+				null
+			) { user ->
+				user?.let { nonNull1 ->
+					user_fromJs(nonNull1)
+				}
+			}
+			val delegatesConverted: Map<String, AccessLevel> = convertingOptionOrDefault(
+				_options.delegates,
+				emptyMap()
+			) { delegates ->
+				objectToMap(
+					delegates,
+					"delegates",
+					{ x1: String ->
+						x1
+					},
+					{ x1: String ->
+						AccessLevel.valueOf(x1)
+					},
+				)
+			}
+			val secretIdConverted: SecretIdOption = convertingOptionOrDefault(
+				_options.secretId,
+				SecretIdOption.UseAnySharedWithParent
+			) { secretId ->
+				secretIdOption_fromJs(secretId)
+			}
+			val result = receiptApi.withEncryptionMetadata(
+				baseConverted,
+				patientConverted,
+				userConverted,
+				delegatesConverted,
+				secretIdConverted,
+			)
+			receipt_toJs(result)
+		}
+	}
 
 	override fun getAndDecryptReceiptAttachment(receipt: ReceiptJs, attachmentId: String):
 			Promise<ByteArray> = GlobalScope.promise {
-		receiptApi.getAndDecryptReceiptAttachment(receipt_fromJs(receipt), attachmentId)}
-
+		val receiptConverted: Receipt = receipt_fromJs(receipt)
+		val attachmentIdConverted: String = attachmentId
+		val result = receiptApi.getAndDecryptReceiptAttachment(
+			receiptConverted,
+			attachmentIdConverted,
+		)
+		result
+	}
 
 	override fun encryptAndSetReceiptAttachment(
 		receipt: ReceiptJs,
 		blobType: String,
 		attachment: ByteArray,
 	): Promise<EncryptedReceiptJs> = GlobalScope.promise {
-		receipt_toJs(receiptApi.encryptAndSetReceiptAttachment(com.icure.sdk.js.model.receipt_fromJs(receipt),
-				blobType, attachment))}
-
+		val receiptConverted: Receipt = receipt_fromJs(receipt)
+		val blobTypeConverted: String = blobType
+		val attachmentConverted: ByteArray = attachment
+		val result = receiptApi.encryptAndSetReceiptAttachment(
+			receiptConverted,
+			blobTypeConverted,
+			attachmentConverted,
+		)
+		receipt_toJs(result)
+	}
 
 	override fun getEncryptionKeysOf(receipt: ReceiptJs): Promise<Array<String>> =
 			GlobalScope.promise {
+		val receiptConverted: Receipt = receipt_fromJs(receipt)
+		val result = receiptApi.getEncryptionKeysOf(
+			receiptConverted,
+		)
 		setToArray(
-			receiptApi.getEncryptionKeysOf(receipt_fromJs(receipt)),
+			result,
 			{ x1: HexString ->
 				hexString_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun hasWriteAccess(receipt: ReceiptJs): Promise<Boolean> = GlobalScope.promise {
-		receiptApi.hasWriteAccess(receipt_fromJs(receipt))}
-
+		val receiptConverted: Receipt = receipt_fromJs(receipt)
+		val result = receiptApi.hasWriteAccess(
+			receiptConverted,
+		)
+		result
+	}
 
 	override fun decryptPatientIdOf(receipt: ReceiptJs): Promise<Array<String>> = GlobalScope.promise {
+		val receiptConverted: Receipt = receipt_fromJs(receipt)
+		val result = receiptApi.decryptPatientIdOf(
+			receiptConverted,
+		)
 		setToArray(
-			receiptApi.decryptPatientIdOf(receipt_fromJs(receipt)),
+			result,
 			{ x1: String ->
 				x1
 			},
-		)}
-
+		)
+	}
 
 	override fun createDelegationDeAnonymizationMetadata(entity: ReceiptJs, delegates: Array<String>):
 			Promise<Unit> = GlobalScope.promise {
-		receiptApi.createDelegationDeAnonymizationMetadata(receipt_fromJs(entity), arrayToSet(
+		val entityConverted: Receipt = receipt_fromJs(entity)
+		val delegatesConverted: Set<String> = arrayToSet(
 			delegates,
 			"delegates",
 			{ x1: String ->
 				x1
 			},
-		))}
+		)
+		receiptApi.createDelegationDeAnonymizationMetadata(
+			entityConverted,
+			delegatesConverted,
+		)
 
+	}
 
 	override fun logReceipt(
 		user: UserJs,
@@ -279,40 +454,65 @@ internal class ReceiptApiImplJs(
 		blobType: String,
 		blob: ByteArray,
 	): Promise<ReceiptJs> = GlobalScope.promise {
-		receipt_toJs(receiptApi.logReceipt(com.icure.sdk.js.model.user_fromJs(user), docId,
-				com.icure.sdk.js.model.CheckedConverters.arrayToList(
-		  refs,
-		  "refs",
-		  { x1: kotlin.String ->
-		    x1
-		  },
-		), blobType, blob))}
-
+		val userConverted: User = user_fromJs(user)
+		val docIdConverted: String = docId
+		val refsConverted: List<String> = arrayToList(
+			refs,
+			"refs",
+			{ x1: String ->
+				x1
+			},
+		)
+		val blobTypeConverted: String = blobType
+		val blobConverted: ByteArray = blob
+		val result = receiptApi.logReceipt(
+			userConverted,
+			docIdConverted,
+			refsConverted,
+			blobTypeConverted,
+			blobConverted,
+		)
+		receipt_toJs(result)
+	}
 
 	override fun deleteReceipt(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {
-		docIdentifier_toJs(receiptApi.deleteReceipt(entityId))}
-
+		val entityIdConverted: String = entityId
+		val result = receiptApi.deleteReceipt(
+			entityIdConverted,
+		)
+		docIdentifier_toJs(result)
+	}
 
 	override fun deleteReceipts(entityIds: Array<String>): Promise<Array<DocIdentifierJs>> =
 			GlobalScope.promise {
+		val entityIdsConverted: List<String> = arrayToList(
+			entityIds,
+			"entityIds",
+			{ x1: String ->
+				x1
+			},
+		)
+		val result = receiptApi.deleteReceipts(
+			entityIdsConverted,
+		)
 		listToArray(
-			receiptApi.deleteReceipts(arrayToList(
-				entityIds,
-				"entityIds",
-				{ x1: String ->
-					x1
-				},
-			)),
+			result,
 			{ x1: DocIdentifier ->
 				docIdentifier_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun getRawReceiptAttachment(receiptId: String, attachmentId: String): Promise<ByteArray> =
 			GlobalScope.promise {
-		receiptApi.getRawReceiptAttachment(receiptId, attachmentId)}
-
+		val receiptIdConverted: String = receiptId
+		val attachmentIdConverted: String = attachmentId
+		val result = receiptApi.getRawReceiptAttachment(
+			receiptIdConverted,
+			attachmentIdConverted,
+		)
+		result
+	}
 
 	override fun setRawReceiptAttachment(
 		receiptId: String,
@@ -320,80 +520,137 @@ internal class ReceiptApiImplJs(
 		blobType: String,
 		attachment: ByteArray,
 	): Promise<EncryptedReceiptJs> = GlobalScope.promise {
-		receipt_toJs(receiptApi.setRawReceiptAttachment(receiptId, rev, blobType, attachment))}
-
+		val receiptIdConverted: String = receiptId
+		val revConverted: String = rev
+		val blobTypeConverted: String = blobType
+		val attachmentConverted: ByteArray = attachment
+		val result = receiptApi.setRawReceiptAttachment(
+			receiptIdConverted,
+			revConverted,
+			blobTypeConverted,
+			attachmentConverted,
+		)
+		receipt_toJs(result)
+	}
 
 	override fun shareWith(
 		delegateId: String,
 		receipt: DecryptedReceiptJs,
-		shareEncryptionKeys: String,
-		shareOwningEntityIds: String,
-		requestedPermission: String,
-	): Promise<SimpleShareResultJs<DecryptedReceiptJs>> = GlobalScope.promise {
-		simpleShareResult_toJs(
-			receiptApi.shareWith(delegateId, com.icure.sdk.js.model.receipt_fromJs(receipt),
-					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareEncryptionKeys),
-					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareOwningEntityIds),
-					com.icure.sdk.model.requests.RequestedPermission.valueOf(requestedPermission)),
-			{ x1: DecryptedReceipt ->
-				receipt_toJs(x1)
-			},
-		)}
-
+		options: ReceiptApi_shareWith_Options?,
+	): Promise<SimpleShareResultJs<DecryptedReceiptJs>> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val delegateIdConverted: String = delegateId
+			val receiptConverted: DecryptedReceipt = receipt_fromJs(receipt)
+			val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
+				_options.shareEncryptionKeys,
+				com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
+			) { shareEncryptionKeys ->
+				ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
+			}
+			val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
+				_options.shareOwningEntityIds,
+				com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
+			) { shareOwningEntityIds ->
+				ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
+			}
+			val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefault(
+				_options.requestedPermission,
+				com.icure.sdk.model.requests.RequestedPermission.MaxWrite
+			) { requestedPermission ->
+				RequestedPermission.valueOf(requestedPermission)
+			}
+			val result = receiptApi.shareWith(
+				delegateIdConverted,
+				receiptConverted,
+				shareEncryptionKeysConverted,
+				shareOwningEntityIdsConverted,
+				requestedPermissionConverted,
+			)
+			simpleShareResult_toJs(
+				result,
+				{ x1: DecryptedReceipt ->
+					receipt_toJs(x1)
+				},
+			)
+		}
+	}
 
 	override fun tryShareWithMany(receipt: DecryptedReceiptJs,
 			delegates: Record<String, ReceiptShareOptionsJs>):
 			Promise<SimpleShareResultJs<DecryptedReceiptJs>> = GlobalScope.promise {
+		val receiptConverted: DecryptedReceipt = receipt_fromJs(receipt)
+		val delegatesConverted: Map<String, ReceiptShareOptions> = objectToMap(
+			delegates,
+			"delegates",
+			{ x1: String ->
+				x1
+			},
+			{ x1: ReceiptShareOptionsJs ->
+				receiptShareOptions_fromJs(x1)
+			},
+		)
+		val result = receiptApi.tryShareWithMany(
+			receiptConverted,
+			delegatesConverted,
+		)
 		simpleShareResult_toJs(
-			receiptApi.tryShareWithMany(com.icure.sdk.js.model.receipt_fromJs(receipt),
-					com.icure.sdk.js.model.CheckedConverters.objectToMap(
-			  delegates,
-			  "delegates",
-			  { x1: kotlin.String ->
-			    x1
-			  },
-			  { x1: com.icure.sdk.js.crypto.entities.ReceiptShareOptionsJs ->
-			    com.icure.sdk.js.crypto.entities.receiptShareOptions_fromJs(x1)
-			  },
-			)),
+			result,
 			{ x1: DecryptedReceipt ->
 				receipt_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun shareWithMany(receipt: DecryptedReceiptJs,
 			delegates: Record<String, ReceiptShareOptionsJs>): Promise<DecryptedReceiptJs> =
 			GlobalScope.promise {
-		receipt_toJs(receiptApi.shareWithMany(com.icure.sdk.js.model.receipt_fromJs(receipt),
-				com.icure.sdk.js.model.CheckedConverters.objectToMap(
-		  delegates,
-		  "delegates",
-		  { x1: kotlin.String ->
-		    x1
-		  },
-		  { x1: com.icure.sdk.js.crypto.entities.ReceiptShareOptionsJs ->
-		    com.icure.sdk.js.crypto.entities.receiptShareOptions_fromJs(x1)
-		  },
-		)))}
-
+		val receiptConverted: DecryptedReceipt = receipt_fromJs(receipt)
+		val delegatesConverted: Map<String, ReceiptShareOptions> = objectToMap(
+			delegates,
+			"delegates",
+			{ x1: String ->
+				x1
+			},
+			{ x1: ReceiptShareOptionsJs ->
+				receiptShareOptions_fromJs(x1)
+			},
+		)
+		val result = receiptApi.shareWithMany(
+			receiptConverted,
+			delegatesConverted,
+		)
+		receipt_toJs(result)
+	}
 
 	override fun modifyReceipt(entity: DecryptedReceiptJs): Promise<DecryptedReceiptJs> =
 			GlobalScope.promise {
-		receipt_toJs(receiptApi.modifyReceipt(com.icure.sdk.js.model.receipt_fromJs(entity)))}
-
+		val entityConverted: DecryptedReceipt = receipt_fromJs(entity)
+		val result = receiptApi.modifyReceipt(
+			entityConverted,
+		)
+		receipt_toJs(result)
+	}
 
 	override fun getReceipt(entityId: String): Promise<DecryptedReceiptJs> = GlobalScope.promise {
-		receipt_toJs(receiptApi.getReceipt(entityId))}
-
+		val entityIdConverted: String = entityId
+		val result = receiptApi.getReceipt(
+			entityIdConverted,
+		)
+		receipt_toJs(result)
+	}
 
 	override fun listByReference(reference: String): Promise<Array<DecryptedReceiptJs>> =
 			GlobalScope.promise {
+		val referenceConverted: String = reference
+		val result = receiptApi.listByReference(
+			referenceConverted,
+		)
 		listToArray(
-			receiptApi.listByReference(reference),
+			result,
 			{ x1: DecryptedReceipt ->
 				receipt_toJs(x1)
 			},
-		)}
-
+		)
+	}
 }

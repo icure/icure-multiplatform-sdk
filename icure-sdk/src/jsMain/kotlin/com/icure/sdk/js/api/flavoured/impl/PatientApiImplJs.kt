@@ -2,14 +2,53 @@
 package com.icure.sdk.js.api.flavoured.`impl`
 
 import com.icure.sdk.api.flavoured.PatientApi
+import com.icure.sdk.crypto.entities.EntityWithTypeInfo
+import com.icure.sdk.crypto.entities.PatientShareOptions
+import com.icure.sdk.crypto.entities.ShareAllPatientDataOptions
+import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
+import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefault
 import com.icure.sdk.js.api.flavoured.PatientApiJs
+import com.icure.sdk.js.api.flavoured.PatientApi_filterPatientsBy_Options
+import com.icure.sdk.js.api.flavoured.PatientApi_findDeletedPatients_Options
+import com.icure.sdk.js.api.flavoured.PatientApi_findDuplicatesByName_Options
+import com.icure.sdk.js.api.flavoured.PatientApi_findDuplicatesBySsin_Options
+import com.icure.sdk.js.api.flavoured.PatientApi_findPatientsByHealthcareParty_Options
+import com.icure.sdk.js.api.flavoured.PatientApi_findPatientsByNameBirthSsinAuto_Options
+import com.icure.sdk.js.api.flavoured.PatientApi_findPatientsIdsByHealthcareParty_Options
+import com.icure.sdk.js.api.flavoured.PatientApi_findPatientsModifiedAfter_Options
+import com.icure.sdk.js.api.flavoured.PatientApi_fuzzySearch_Options
+import com.icure.sdk.js.api.flavoured.PatientApi_getPatientByHealthcarePartyAndIdentifier_Options
+import com.icure.sdk.js.api.flavoured.PatientApi_listDeletedPatientsByName_Options
+import com.icure.sdk.js.api.flavoured.PatientApi_listPatientsByHcParty_Options
+import com.icure.sdk.js.api.flavoured.PatientApi_listPatientsOfHcParty_Options
+import com.icure.sdk.js.api.flavoured.PatientApi_modifyPatientReferral_Options
+import com.icure.sdk.js.api.flavoured.PatientApi_shareWith_Options
+import com.icure.sdk.js.api.flavoured.PatientApi_subscribeToEvents_Options
+import com.icure.sdk.js.api.flavoured.PatientApi_withEncryptionMetadata_Options
 import com.icure.sdk.js.api.flavoured.PatientFlavouredApiJs
+import com.icure.sdk.js.api.flavoured.PatientFlavouredApi_filterPatientsBy_Options
+import com.icure.sdk.js.api.flavoured.PatientFlavouredApi_findDeletedPatients_Options
+import com.icure.sdk.js.api.flavoured.PatientFlavouredApi_findDuplicatesByName_Options
+import com.icure.sdk.js.api.flavoured.PatientFlavouredApi_findDuplicatesBySsin_Options
+import com.icure.sdk.js.api.flavoured.PatientFlavouredApi_findPatientsByHealthcareParty_Options
+import com.icure.sdk.js.api.flavoured.PatientFlavouredApi_findPatientsByNameBirthSsinAuto_Options
+import com.icure.sdk.js.api.flavoured.PatientFlavouredApi_findPatientsIdsByHealthcareParty_Options
+import com.icure.sdk.js.api.flavoured.PatientFlavouredApi_findPatientsModifiedAfter_Options
+import com.icure.sdk.js.api.flavoured.PatientFlavouredApi_fuzzySearch_Options
+import com.icure.sdk.js.api.flavoured.PatientFlavouredApi_getPatientByHealthcarePartyAndIdentifier_Options
+import com.icure.sdk.js.api.flavoured.PatientFlavouredApi_listDeletedPatientsByName_Options
+import com.icure.sdk.js.api.flavoured.PatientFlavouredApi_listPatientsByHcParty_Options
+import com.icure.sdk.js.api.flavoured.PatientFlavouredApi_listPatientsOfHcParty_Options
+import com.icure.sdk.js.api.flavoured.PatientFlavouredApi_modifyPatientReferral_Options
+import com.icure.sdk.js.api.flavoured.PatientFlavouredApi_shareWith_Options
+import com.icure.sdk.js.api.flavoured.PatientFlavouredApi_subscribeToEvents_Options
 import com.icure.sdk.js.crypto.entities.EntityAccessInformationJs
 import com.icure.sdk.js.crypto.entities.EntityWithTypeInfoJs
 import com.icure.sdk.js.crypto.entities.PatientShareOptionsJs
 import com.icure.sdk.js.crypto.entities.ShareAllPatientDataOptionsJs_ResultJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.crypto.entities.entityAccessInformation_toJs
+import com.icure.sdk.js.crypto.entities.patientShareOptions_fromJs
 import com.icure.sdk.js.crypto.entities.shareAllPatientDataOptions_Result_toJs
 import com.icure.sdk.js.crypto.entities.simpleShareResult_toJs
 import com.icure.sdk.js.model.CheckedConverters.anyEntityWithTypeInfoToKt
@@ -17,8 +56,10 @@ import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.mapToObject
+import com.icure.sdk.js.model.CheckedConverters.numberToDuration
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
+import com.icure.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.sdk.js.model.CheckedConverters.setToArray
 import com.icure.sdk.js.model.DataOwnerRegistrationSuccessJs
 import com.icure.sdk.js.model.DecryptedPatientJs
@@ -36,28 +77,45 @@ import com.icure.sdk.js.model.embed.content_toJs
 import com.icure.sdk.js.model.filter.AbstractFilterJs
 import com.icure.sdk.js.model.filter.abstractFilter_fromJs
 import com.icure.sdk.js.model.filter.chain.FilterChainJs
+import com.icure.sdk.js.model.filter.chain.filterChain_fromJs
 import com.icure.sdk.js.model.idWithRev_toJs
 import com.icure.sdk.js.model.listOfIds_fromJs
 import com.icure.sdk.js.model.paginatedList_toJs
 import com.icure.sdk.js.model.patient_fromJs
 import com.icure.sdk.js.model.patient_toJs
 import com.icure.sdk.js.model.specializations.hexString_toJs
+import com.icure.sdk.js.model.user_fromJs
 import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.websocket.ConnectionJs
 import com.icure.sdk.js.websocket.connection_toJs
 import com.icure.sdk.model.DecryptedPatient
 import com.icure.sdk.model.EncryptedPatient
 import com.icure.sdk.model.IdWithRev
+import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.Patient
+import com.icure.sdk.model.User
 import com.icure.sdk.model.couchdb.DocIdentifier
+import com.icure.sdk.model.couchdb.SortDirection
+import com.icure.sdk.model.embed.AccessLevel
+import com.icure.sdk.model.filter.AbstractFilter
+import com.icure.sdk.model.filter.chain.FilterChain
+import com.icure.sdk.model.notification.SubscriptionEventType
+import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
+import kotlin.Int
+import kotlin.Long
 import kotlin.OptIn
 import kotlin.String
 import kotlin.Unit
+import kotlin.collections.List
+import kotlin.collections.Map
+import kotlin.collections.Set
 import kotlin.js.Promise
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.await
@@ -73,354 +131,814 @@ internal class PatientApiImplJs(
 			delegateId: String,
 			patient: EncryptedPatientJs,
 			shareSecretIds: Array<String>,
-			shareEncryptionKeys: String,
-			shareOwningEntityIds: String,
-			requestedPermission: String,
-		): Promise<SimpleShareResultJs<EncryptedPatientJs>> = GlobalScope.promise {
-			simpleShareResult_toJs(
-				patientApi.encrypted.shareWith(delegateId, com.icure.sdk.js.model.patient_fromJs(patient),
-						com.icure.sdk.js.model.CheckedConverters.arrayToSet(
-				  shareSecretIds,
-				  "shareSecretIds",
-				  { x1: kotlin.String ->
-				    x1
-				  },
-				), com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareEncryptionKeys),
-						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareOwningEntityIds),
-						com.icure.sdk.model.requests.RequestedPermission.valueOf(requestedPermission)),
-				{ x1: EncryptedPatient ->
-					patient_toJs(x1)
-				},
-			)}
-
+			options: PatientFlavouredApi_shareWith_Options?,
+		): Promise<SimpleShareResultJs<EncryptedPatientJs>> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val delegateIdConverted: String = delegateId
+				val patientConverted: EncryptedPatient = patient_fromJs(patient)
+				val shareSecretIdsConverted: Set<String> = arrayToSet(
+					shareSecretIds,
+					"shareSecretIds",
+					{ x1: String ->
+						x1
+					},
+				)
+				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
+					_options.shareEncryptionKeys,
+					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
+				) { shareEncryptionKeys ->
+					ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
+				}
+				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
+					_options.shareOwningEntityIds,
+					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
+				) { shareOwningEntityIds ->
+					ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
+				}
+				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefault(
+					_options.requestedPermission,
+					com.icure.sdk.model.requests.RequestedPermission.MaxWrite
+				) { requestedPermission ->
+					RequestedPermission.valueOf(requestedPermission)
+				}
+				val result = patientApi.encrypted.shareWith(
+					delegateIdConverted,
+					patientConverted,
+					shareSecretIdsConverted,
+					shareEncryptionKeysConverted,
+					shareOwningEntityIdsConverted,
+					requestedPermissionConverted,
+				)
+				simpleShareResult_toJs(
+					result,
+					{ x1: EncryptedPatient ->
+						patient_toJs(x1)
+					},
+				)
+			}
+		}
 
 		override fun tryShareWithMany(patient: EncryptedPatientJs,
 				delegates: Record<String, PatientShareOptionsJs>):
 				Promise<SimpleShareResultJs<EncryptedPatientJs>> = GlobalScope.promise {
+			val patientConverted: EncryptedPatient = patient_fromJs(patient)
+			val delegatesConverted: Map<String, PatientShareOptions> = objectToMap(
+				delegates,
+				"delegates",
+				{ x1: String ->
+					x1
+				},
+				{ x1: PatientShareOptionsJs ->
+					patientShareOptions_fromJs(x1)
+				},
+			)
+			val result = patientApi.encrypted.tryShareWithMany(
+				patientConverted,
+				delegatesConverted,
+			)
 			simpleShareResult_toJs(
-				patientApi.encrypted.tryShareWithMany(com.icure.sdk.js.model.patient_fromJs(patient),
-						com.icure.sdk.js.model.CheckedConverters.objectToMap(
-				  delegates,
-				  "delegates",
-				  { x1: kotlin.String ->
-				    x1
-				  },
-				  { x1: com.icure.sdk.js.crypto.entities.PatientShareOptionsJs ->
-				    com.icure.sdk.js.crypto.entities.patientShareOptions_fromJs(x1)
-				  },
-				)),
+				result,
 				{ x1: EncryptedPatient ->
 					patient_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun shareWithMany(patient: EncryptedPatientJs,
 				delegates: Record<String, PatientShareOptionsJs>): Promise<EncryptedPatientJs> =
 				GlobalScope.promise {
-			patient_toJs(patientApi.encrypted.shareWithMany(com.icure.sdk.js.model.patient_fromJs(patient),
-					com.icure.sdk.js.model.CheckedConverters.objectToMap(
-			  delegates,
-			  "delegates",
-			  { x1: kotlin.String ->
-			    x1
-			  },
-			  { x1: com.icure.sdk.js.crypto.entities.PatientShareOptionsJs ->
-			    com.icure.sdk.js.crypto.entities.patientShareOptions_fromJs(x1)
-			  },
-			)))}
-
+			val patientConverted: EncryptedPatient = patient_fromJs(patient)
+			val delegatesConverted: Map<String, PatientShareOptions> = objectToMap(
+				delegates,
+				"delegates",
+				{ x1: String ->
+					x1
+				},
+				{ x1: PatientShareOptionsJs ->
+					patientShareOptions_fromJs(x1)
+				},
+			)
+			val result = patientApi.encrypted.shareWithMany(
+				patientConverted,
+				delegatesConverted,
+			)
+			patient_toJs(result)
+		}
 
 		override fun initialiseConfidentialSecretId(patient: EncryptedPatientJs):
 				Promise<EncryptedPatientJs> = GlobalScope.promise {
-			patient_toJs(patientApi.encrypted.initialiseConfidentialSecretId(com.icure.sdk.js.model.patient_fromJs(patient)))}
-
+			val patientConverted: EncryptedPatient = patient_fromJs(patient)
+			val result = patientApi.encrypted.initialiseConfidentialSecretId(
+				patientConverted,
+			)
+			patient_toJs(result)
+		}
 
 		override fun modifyPatient(entity: EncryptedPatientJs): Promise<EncryptedPatientJs> =
 				GlobalScope.promise {
-			patient_toJs(patientApi.encrypted.modifyPatient(com.icure.sdk.js.model.patient_fromJs(entity)))}
-
+			val entityConverted: EncryptedPatient = patient_fromJs(entity)
+			val result = patientApi.encrypted.modifyPatient(
+				entityConverted,
+			)
+			patient_toJs(result)
+		}
 
 		override fun getPatient(entityId: String): Promise<EncryptedPatientJs> = GlobalScope.promise {
-			patient_toJs(patientApi.encrypted.getPatient(entityId))}
+			val entityIdConverted: String = entityId
+			val result = patientApi.encrypted.getPatient(
+				entityIdConverted,
+			)
+			patient_toJs(result)
+		}
 
+		override fun filterPatientsBy(filterChain: FilterChainJs<PatientJs>,
+				options: PatientFlavouredApi_filterPatientsBy_Options?):
+				Promise<PaginatedListJs<EncryptedPatientJs>> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val filterChainConverted: FilterChain<Patient> = filterChain_fromJs(
+					filterChain,
+					{ x1: PatientJs ->
+						patient_fromJs(x1)
+					},
+				)
+				val startKeyConverted: String? = convertingOptionOrDefault(
+					_options.startKey,
+					null
+				) { startKey ->
+					startKey
+				}
+				val startDocumentIdConverted: String? = convertingOptionOrDefault(
+					_options.startDocumentId,
+					null
+				) { startDocumentId ->
+					startDocumentId
+				}
+				val limitConverted: Int? = convertingOptionOrDefault(
+					_options.limit,
+					null
+				) { limit ->
+					numberToInt(limit, "limit")
+				}
+				val skipConverted: Int? = convertingOptionOrDefault(
+					_options.skip,
+					null
+				) { skip ->
+					numberToInt(skip, "skip")
+				}
+				val sortConverted: String? = convertingOptionOrDefault(
+					_options.sort,
+					null
+				) { sort ->
+					sort
+				}
+				val descConverted: Boolean? = convertingOptionOrDefault(
+					_options.desc,
+					null
+				) { desc ->
+					desc
+				}
+				val result = patientApi.encrypted.filterPatientsBy(
+					filterChainConverted,
+					startKeyConverted,
+					startDocumentIdConverted,
+					limitConverted,
+					skipConverted,
+					sortConverted,
+					descConverted,
+				)
+				paginatedList_toJs(
+					result,
+					{ x1: EncryptedPatient ->
+						patient_toJs(x1)
+					},
+				)
+			}
+		}
 
-		override fun filterPatientsBy(
-			filterChain: FilterChainJs<PatientJs>,
-			startKey: String?,
-			startDocumentId: String?,
-			limit: Double?,
-			skip: Double?,
-			sort: String?,
-			desc: Boolean?,
-		): Promise<PaginatedListJs<EncryptedPatientJs>> = GlobalScope.promise {
-			paginatedList_toJs(
-				patientApi.encrypted.filterPatientsBy(com.icure.sdk.js.model.filter.chain.filterChain_fromJs(
-				  filterChain,
-				  { x1: com.icure.sdk.js.model.PatientJs ->
-				    com.icure.sdk.js.model.patient_fromJs(x1)
-				  },
-				), startKey, startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit,
-						"limit"), com.icure.sdk.js.model.CheckedConverters.numberToInt(skip, "skip"), sort, desc),
-				{ x1: EncryptedPatient ->
-					patient_toJs(x1)
-				},
-			)}
+		override fun findPatientsByNameBirthSsinAuto(filterValue: String,
+				options: PatientFlavouredApi_findPatientsByNameBirthSsinAuto_Options?):
+				Promise<PaginatedListJs<EncryptedPatientJs>> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val healthcarePartyIdConverted: String? = convertingOptionOrDefault(
+					_options.healthcarePartyId,
+					null
+				) { healthcarePartyId ->
+					healthcarePartyId
+				}
+				val filterValueConverted: String = filterValue
+				val startKeyConverted: String? = convertingOptionOrDefault(
+					_options.startKey,
+					null
+				) { startKey ->
+					startKey
+				}
+				val startDocumentIdConverted: String? = convertingOptionOrDefault(
+					_options.startDocumentId,
+					null
+				) { startDocumentId ->
+					startDocumentId
+				}
+				val limitConverted: Int? = convertingOptionOrDefault(
+					_options.limit,
+					null
+				) { limit ->
+					numberToInt(limit, "limit")
+				}
+				val sortDirectionConverted: SortDirection = convertingOptionOrDefault(
+					_options.sortDirection,
+					com.icure.sdk.model.couchdb.SortDirection.Asc
+				) { sortDirection ->
+					SortDirection.valueOf(sortDirection)
+				}
+				val result = patientApi.encrypted.findPatientsByNameBirthSsinAuto(
+					healthcarePartyIdConverted,
+					filterValueConverted,
+					startKeyConverted,
+					startDocumentIdConverted,
+					limitConverted,
+					sortDirectionConverted,
+				)
+				paginatedList_toJs(
+					result,
+					{ x1: EncryptedPatient ->
+						patient_toJs(x1)
+					},
+				)
+			}
+		}
 
-
-		override fun findPatientsByNameBirthSsinAuto(
-			healthcarePartyId: String?,
-			filterValue: String,
-			startKey: String?,
-			startDocumentId: String?,
-			limit: Double?,
-			sortDirection: String,
-		): Promise<PaginatedListJs<EncryptedPatientJs>> = GlobalScope.promise {
-			paginatedList_toJs(
-				patientApi.encrypted.findPatientsByNameBirthSsinAuto(healthcarePartyId, filterValue, startKey,
-						startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit"),
-						com.icure.sdk.model.couchdb.SortDirection.valueOf(sortDirection)),
-				{ x1: EncryptedPatient ->
-					patient_toJs(x1)
-				},
-			)}
-
-
-		override fun listPatientsOfHcParty(
-			hcPartyId: String,
-			sortField: String,
-			startKey: String?,
-			startDocumentId: String?,
-			limit: Double?,
-			sortDirection: String,
-		): Promise<PaginatedListJs<EncryptedPatientJs>> = GlobalScope.promise {
-			paginatedList_toJs(
-				patientApi.encrypted.listPatientsOfHcParty(hcPartyId, sortField, startKey, startDocumentId,
-						com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit"),
-						com.icure.sdk.model.couchdb.SortDirection.valueOf(sortDirection)),
-				{ x1: EncryptedPatient ->
-					patient_toJs(x1)
-				},
-			)}
-
+		override fun listPatientsOfHcParty(hcPartyId: String,
+				options: PatientFlavouredApi_listPatientsOfHcParty_Options?):
+				Promise<PaginatedListJs<EncryptedPatientJs>> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val hcPartyIdConverted: String = hcPartyId
+				val sortFieldConverted: String = convertingOptionOrDefault(
+					_options.sortField,
+					"name"
+				) { sortField ->
+					sortField
+				}
+				val startKeyConverted: String? = convertingOptionOrDefault(
+					_options.startKey,
+					null
+				) { startKey ->
+					startKey
+				}
+				val startDocumentIdConverted: String? = convertingOptionOrDefault(
+					_options.startDocumentId,
+					null
+				) { startDocumentId ->
+					startDocumentId
+				}
+				val limitConverted: Int? = convertingOptionOrDefault(
+					_options.limit,
+					null
+				) { limit ->
+					numberToInt(limit, "limit")
+				}
+				val sortDirectionConverted: SortDirection = convertingOptionOrDefault(
+					_options.sortDirection,
+					com.icure.sdk.model.couchdb.SortDirection.Asc
+				) { sortDirection ->
+					SortDirection.valueOf(sortDirection)
+				}
+				val result = patientApi.encrypted.listPatientsOfHcParty(
+					hcPartyIdConverted,
+					sortFieldConverted,
+					startKeyConverted,
+					startDocumentIdConverted,
+					limitConverted,
+					sortDirectionConverted,
+				)
+				paginatedList_toJs(
+					result,
+					{ x1: EncryptedPatient ->
+						patient_toJs(x1)
+					},
+				)
+			}
+		}
 
 		override fun listOfMergesAfter(date: Double): Promise<Array<EncryptedPatientJs>> =
 				GlobalScope.promise {
+			val dateConverted: Long = numberToLong(date, "date")
+			val result = patientApi.encrypted.listOfMergesAfter(
+				dateConverted,
+			)
 			listToArray(
-				patientApi.encrypted.listOfMergesAfter(numberToLong(date, "date")),
+				result,
 				{ x1: EncryptedPatient ->
 					patient_toJs(x1)
 				},
-			)}
+			)
+		}
 
+		override fun findPatientsModifiedAfter(date: Double,
+				options: PatientFlavouredApi_findPatientsModifiedAfter_Options?):
+				Promise<PaginatedListJs<EncryptedPatientJs>> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val dateConverted: Long = numberToLong(date, "date")
+				val startKeyConverted: Long? = convertingOptionOrDefault(
+					_options.startKey,
+					null
+				) { startKey ->
+					numberToLong(startKey, "startKey")
+				}
+				val startDocumentIdConverted: String? = convertingOptionOrDefault(
+					_options.startDocumentId,
+					null
+				) { startDocumentId ->
+					startDocumentId
+				}
+				val limitConverted: Int? = convertingOptionOrDefault(
+					_options.limit,
+					null
+				) { limit ->
+					numberToInt(limit, "limit")
+				}
+				val result = patientApi.encrypted.findPatientsModifiedAfter(
+					dateConverted,
+					startKeyConverted,
+					startDocumentIdConverted,
+					limitConverted,
+				)
+				paginatedList_toJs(
+					result,
+					{ x1: EncryptedPatient ->
+						patient_toJs(x1)
+					},
+				)
+			}
+		}
 
-		override fun findPatientsModifiedAfter(
-			date: Double,
-			startKey: Double?,
-			startDocumentId: String?,
-			limit: Double?,
-		): Promise<PaginatedListJs<EncryptedPatientJs>> = GlobalScope.promise {
-			paginatedList_toJs(
-				patientApi.encrypted.findPatientsModifiedAfter(com.icure.sdk.js.model.CheckedConverters.numberToLong(date,
-						"date"), com.icure.sdk.js.model.CheckedConverters.numberToLong(startKey, "startKey"),
-						startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
-				{ x1: EncryptedPatient ->
-					patient_toJs(x1)
-				},
-			)}
-
-
-		override fun listPatientsByHcParty(
-			hcPartyId: String,
-			sortField: String,
-			startKey: String?,
-			startDocumentId: String?,
-			limit: Double?,
-			sortDirection: String,
-		): Promise<PaginatedListJs<EncryptedPatientJs>> = GlobalScope.promise {
-			paginatedList_toJs(
-				patientApi.encrypted.listPatientsByHcParty(hcPartyId, sortField, startKey, startDocumentId,
-						com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit"),
-						com.icure.sdk.model.couchdb.SortDirection.valueOf(sortDirection)),
-				{ x1: EncryptedPatient ->
-					patient_toJs(x1)
-				},
-			)}
-
+		override fun listPatientsByHcParty(hcPartyId: String,
+				options: PatientFlavouredApi_listPatientsByHcParty_Options?):
+				Promise<PaginatedListJs<EncryptedPatientJs>> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val hcPartyIdConverted: String = hcPartyId
+				val sortFieldConverted: String = convertingOptionOrDefault(
+					_options.sortField,
+					"name"
+				) { sortField ->
+					sortField
+				}
+				val startKeyConverted: String? = convertingOptionOrDefault(
+					_options.startKey,
+					null
+				) { startKey ->
+					startKey
+				}
+				val startDocumentIdConverted: String? = convertingOptionOrDefault(
+					_options.startDocumentId,
+					null
+				) { startDocumentId ->
+					startDocumentId
+				}
+				val limitConverted: Int? = convertingOptionOrDefault(
+					_options.limit,
+					null
+				) { limit ->
+					numberToInt(limit, "limit")
+				}
+				val sortDirectionConverted: SortDirection = convertingOptionOrDefault(
+					_options.sortDirection,
+					com.icure.sdk.model.couchdb.SortDirection.Asc
+				) { sortDirection ->
+					SortDirection.valueOf(sortDirection)
+				}
+				val result = patientApi.encrypted.listPatientsByHcParty(
+					hcPartyIdConverted,
+					sortFieldConverted,
+					startKeyConverted,
+					startDocumentIdConverted,
+					limitConverted,
+					sortDirectionConverted,
+				)
+				paginatedList_toJs(
+					result,
+					{ x1: EncryptedPatient ->
+						patient_toJs(x1)
+					},
+				)
+			}
+		}
 
 		override fun getPatientHcPartyKeysForDelegate(patientId: String): Promise<Record<String, String>>
 				= GlobalScope.promise {
+			val patientIdConverted: String = patientId
+			val result = patientApi.encrypted.getPatientHcPartyKeysForDelegate(
+				patientIdConverted,
+			)
 			mapToObject(
-				patientApi.encrypted.getPatientHcPartyKeysForDelegate(patientId),
+				result,
 				{ x1: String ->
 					x1
 				},
 				{ x1: String ->
 					x1
 				},
-			)}
-
+			)
+		}
 
 		override fun countOfPatients(hcPartyId: String): Promise<EncryptedContentJs> =
 				GlobalScope.promise {
-			content_toJs(patientApi.encrypted.countOfPatients(hcPartyId))}
+			val hcPartyIdConverted: String = hcPartyId
+			val result = patientApi.encrypted.countOfPatients(
+				hcPartyIdConverted,
+			)
+			content_toJs(result)
+		}
 
+		override
+				fun findPatientsByHealthcareParty(options: PatientFlavouredApi_findPatientsByHealthcareParty_Options?):
+				Promise<PaginatedListJs<EncryptedPatientJs>> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val hcPartyIdConverted: String? = convertingOptionOrDefault(
+					_options.hcPartyId,
+					null
+				) { hcPartyId ->
+					hcPartyId
+				}
+				val sortFieldConverted: String = convertingOptionOrDefault(
+					_options.sortField,
+					"name"
+				) { sortField ->
+					sortField
+				}
+				val startKeyConverted: String? = convertingOptionOrDefault(
+					_options.startKey,
+					null
+				) { startKey ->
+					startKey
+				}
+				val startDocumentIdConverted: String? = convertingOptionOrDefault(
+					_options.startDocumentId,
+					null
+				) { startDocumentId ->
+					startDocumentId
+				}
+				val limitConverted: Int? = convertingOptionOrDefault(
+					_options.limit,
+					null
+				) { limit ->
+					numberToInt(limit, "limit")
+				}
+				val sortDirectionConverted: SortDirection = convertingOptionOrDefault(
+					_options.sortDirection,
+					com.icure.sdk.model.couchdb.SortDirection.Asc
+				) { sortDirection ->
+					SortDirection.valueOf(sortDirection)
+				}
+				val result = patientApi.encrypted.findPatientsByHealthcareParty(
+					hcPartyIdConverted,
+					sortFieldConverted,
+					startKeyConverted,
+					startDocumentIdConverted,
+					limitConverted,
+					sortDirectionConverted,
+				)
+				paginatedList_toJs(
+					result,
+					{ x1: EncryptedPatient ->
+						patient_toJs(x1)
+					},
+				)
+			}
+		}
 
-		override fun findPatientsByHealthcareParty(
-			hcPartyId: String?,
-			sortField: String,
-			startKey: String?,
-			startDocumentId: String?,
-			limit: Double?,
-			sortDirection: String,
-		): Promise<PaginatedListJs<EncryptedPatientJs>> = GlobalScope.promise {
-			paginatedList_toJs(
-				patientApi.encrypted.findPatientsByHealthcareParty(hcPartyId, sortField, startKey,
-						startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit"),
-						com.icure.sdk.model.couchdb.SortDirection.valueOf(sortDirection)),
-				{ x1: EncryptedPatient ->
-					patient_toJs(x1)
-				},
-			)}
-
-
-		override fun findPatientsIdsByHealthcareParty(
-			hcPartyId: String,
-			startKey: String?,
-			startDocumentId: String?,
-			limit: Double?,
-		): Promise<PaginatedListJs<String>> = GlobalScope.promise {
-			paginatedList_toJs(
-				patientApi.encrypted.findPatientsIdsByHealthcareParty(hcPartyId, startKey, startDocumentId,
-						com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
-				{ x1: String ->
-					x1
-				},
-			)}
-
+		override fun findPatientsIdsByHealthcareParty(hcPartyId: String,
+				options: PatientFlavouredApi_findPatientsIdsByHealthcareParty_Options?):
+				Promise<PaginatedListJs<String>> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val hcPartyIdConverted: String = hcPartyId
+				val startKeyConverted: String? = convertingOptionOrDefault(
+					_options.startKey,
+					null
+				) { startKey ->
+					startKey
+				}
+				val startDocumentIdConverted: String? = convertingOptionOrDefault(
+					_options.startDocumentId,
+					null
+				) { startDocumentId ->
+					startDocumentId
+				}
+				val limitConverted: Int? = convertingOptionOrDefault(
+					_options.limit,
+					null
+				) { limit ->
+					numberToInt(limit, "limit")
+				}
+				val result = patientApi.encrypted.findPatientsIdsByHealthcareParty(
+					hcPartyIdConverted,
+					startKeyConverted,
+					startDocumentIdConverted,
+					limitConverted,
+				)
+				paginatedList_toJs(
+					result,
+					{ x1: String ->
+						x1
+					},
+				)
+			}
+		}
 
 		override fun getPatientByExternalId(externalId: String): Promise<EncryptedPatientJs> =
 				GlobalScope.promise {
-			patient_toJs(patientApi.encrypted.getPatientByExternalId(externalId))}
-
+			val externalIdConverted: String = externalId
+			val result = patientApi.encrypted.getPatientByExternalId(
+				externalIdConverted,
+			)
+			patient_toJs(result)
+		}
 
 		override fun fuzzySearch(
 			firstName: String,
 			lastName: String,
-			dateOfBirth: Double?,
-		): Promise<Array<EncryptedPatientJs>> = GlobalScope.promise {
-			listToArray(
-				patientApi.encrypted.fuzzySearch(firstName, lastName, numberToInt(dateOfBirth, "dateOfBirth")),
-				{ x1: EncryptedPatient ->
-					patient_toJs(x1)
-				},
-			)}
+			options: PatientFlavouredApi_fuzzySearch_Options?,
+		): Promise<Array<EncryptedPatientJs>> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val firstNameConverted: String = firstName
+				val lastNameConverted: String = lastName
+				val dateOfBirthConverted: Int? = convertingOptionOrDefault(
+					_options.dateOfBirth,
+					null
+				) { dateOfBirth ->
+					numberToInt(dateOfBirth, "dateOfBirth")
+				}
+				val result = patientApi.encrypted.fuzzySearch(
+					firstNameConverted,
+					lastNameConverted,
+					dateOfBirthConverted,
+				)
+				listToArray(
+					result,
+					{ x1: EncryptedPatient ->
+						patient_toJs(x1)
+					},
+				)
+			}
+		}
 
+		override fun findDeletedPatients(startDate: Double,
+				options: PatientFlavouredApi_findDeletedPatients_Options?):
+				Promise<PaginatedListJs<EncryptedPatientJs>> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val startDateConverted: Long = numberToLong(startDate, "startDate")
+				val endDateConverted: Long? = convertingOptionOrDefault(
+					_options.endDate,
+					null
+				) { endDate ->
+					numberToLong(endDate, "endDate")
+				}
+				val descConverted: Boolean? = convertingOptionOrDefault(
+					_options.desc,
+					null
+				) { desc ->
+					desc
+				}
+				val startKeyConverted: Long? = convertingOptionOrDefault(
+					_options.startKey,
+					null
+				) { startKey ->
+					numberToLong(startKey, "startKey")
+				}
+				val startDocumentIdConverted: String? = convertingOptionOrDefault(
+					_options.startDocumentId,
+					null
+				) { startDocumentId ->
+					startDocumentId
+				}
+				val limitConverted: Int? = convertingOptionOrDefault(
+					_options.limit,
+					null
+				) { limit ->
+					numberToInt(limit, "limit")
+				}
+				val result = patientApi.encrypted.findDeletedPatients(
+					startDateConverted,
+					endDateConverted,
+					descConverted,
+					startKeyConverted,
+					startDocumentIdConverted,
+					limitConverted,
+				)
+				paginatedList_toJs(
+					result,
+					{ x1: EncryptedPatient ->
+						patient_toJs(x1)
+					},
+				)
+			}
+		}
 
-		override fun findDeletedPatients(
-			startDate: Double,
-			endDate: Double?,
-			desc: Boolean?,
-			startKey: Double?,
-			startDocumentId: String?,
-			limit: Double?,
-		): Promise<PaginatedListJs<EncryptedPatientJs>> = GlobalScope.promise {
-			paginatedList_toJs(
-				patientApi.encrypted.findDeletedPatients(com.icure.sdk.js.model.CheckedConverters.numberToLong(startDate,
-						"startDate"), com.icure.sdk.js.model.CheckedConverters.numberToLong(endDate, "endDate"), desc,
-						com.icure.sdk.js.model.CheckedConverters.numberToLong(startKey, "startKey"), startDocumentId,
-						com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
-				{ x1: EncryptedPatient ->
-					patient_toJs(x1)
-				},
-			)}
-
-
-		override fun listDeletedPatientsByName(firstName: String?, lastName: String?):
-				Promise<Array<EncryptedPatientJs>> = GlobalScope.promise {
-			listToArray(
-				patientApi.encrypted.listDeletedPatientsByName(firstName, lastName),
-				{ x1: EncryptedPatient ->
-					patient_toJs(x1)
-				},
-			)}
-
+		override
+				fun listDeletedPatientsByName(options: PatientFlavouredApi_listDeletedPatientsByName_Options?):
+				Promise<Array<EncryptedPatientJs>> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val firstNameConverted: String? = convertingOptionOrDefault(
+					_options.firstName,
+					null
+				) { firstName ->
+					firstName
+				}
+				val lastNameConverted: String? = convertingOptionOrDefault(
+					_options.lastName,
+					null
+				) { lastName ->
+					lastName
+				}
+				val result = patientApi.encrypted.listDeletedPatientsByName(
+					firstNameConverted,
+					lastNameConverted,
+				)
+				listToArray(
+					result,
+					{ x1: EncryptedPatient ->
+						patient_toJs(x1)
+					},
+				)
+			}
+		}
 
 		override fun getPatients(patientIds: ListOfIdsJs): Promise<Array<EncryptedPatientJs>> =
 				GlobalScope.promise {
+			val patientIdsConverted: ListOfIds = listOfIds_fromJs(patientIds)
+			val result = patientApi.encrypted.getPatients(
+				patientIdsConverted,
+			)
 			listToArray(
-				patientApi.encrypted.getPatients(listOfIds_fromJs(patientIds)),
+				result,
 				{ x1: EncryptedPatient ->
 					patient_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun getPatientByHealthcarePartyAndIdentifier(
 			hcPartyId: String,
 			id: String,
-			system: String?,
-		): Promise<EncryptedPatientJs> = GlobalScope.promise {
-			patient_toJs(patientApi.encrypted.getPatientByHealthcarePartyAndIdentifier(hcPartyId, id,
-					system))}
-
+			options: PatientFlavouredApi_getPatientByHealthcarePartyAndIdentifier_Options?,
+		): Promise<EncryptedPatientJs> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val hcPartyIdConverted: String = hcPartyId
+				val idConverted: String = id
+				val systemConverted: String? = convertingOptionOrDefault(
+					_options.system,
+					null
+				) { system ->
+					system
+				}
+				val result = patientApi.encrypted.getPatientByHealthcarePartyAndIdentifier(
+					hcPartyIdConverted,
+					idConverted,
+					systemConverted,
+				)
+				patient_toJs(result)
+			}
+		}
 
 		override fun modifyPatients(patientDtos: Array<EncryptedPatientJs>): Promise<Array<IdWithRevJs>> =
 				GlobalScope.promise {
+			val patientDtosConverted: List<EncryptedPatient> = arrayToList(
+				patientDtos,
+				"patientDtos",
+				{ x1: EncryptedPatientJs ->
+					patient_fromJs(x1)
+				},
+			)
+			val result = patientApi.encrypted.modifyPatients(
+				patientDtosConverted,
+			)
 			listToArray(
-				patientApi.encrypted.modifyPatients(arrayToList(
-					patientDtos,
-					"patientDtos",
-					{ x1: EncryptedPatientJs ->
-						patient_fromJs(x1)
-					},
-				)),
+				result,
 				{ x1: IdWithRev ->
 					idWithRev_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun modifyPatientReferral(
 			patientId: String,
 			referralId: String,
-			start: Double?,
-			end: Double?,
-		): Promise<EncryptedPatientJs> = GlobalScope.promise {
-			patient_toJs(patientApi.encrypted.modifyPatientReferral(patientId, referralId,
-					com.icure.sdk.js.model.CheckedConverters.numberToLong(start, "start"),
-					com.icure.sdk.js.model.CheckedConverters.numberToLong(end, "end")))}
+			options: PatientFlavouredApi_modifyPatientReferral_Options?,
+		): Promise<EncryptedPatientJs> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val patientIdConverted: String = patientId
+				val referralIdConverted: String = referralId
+				val startConverted: Long? = convertingOptionOrDefault(
+					_options.start,
+					null
+				) { start ->
+					numberToLong(start, "start")
+				}
+				val endConverted: Long? = convertingOptionOrDefault(
+					_options.end,
+					null
+				) { end ->
+					numberToLong(end, "end")
+				}
+				val result = patientApi.encrypted.modifyPatientReferral(
+					patientIdConverted,
+					referralIdConverted,
+					startConverted,
+					endConverted,
+				)
+				patient_toJs(result)
+			}
+		}
 
+		override fun findDuplicatesBySsin(hcPartyId: String,
+				options: PatientFlavouredApi_findDuplicatesBySsin_Options?):
+				Promise<PaginatedListJs<EncryptedPatientJs>> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val hcPartyIdConverted: String = hcPartyId
+				val startKeyConverted: String? = convertingOptionOrDefault(
+					_options.startKey,
+					null
+				) { startKey ->
+					startKey
+				}
+				val startDocumentIdConverted: String? = convertingOptionOrDefault(
+					_options.startDocumentId,
+					null
+				) { startDocumentId ->
+					startDocumentId
+				}
+				val limitConverted: Int? = convertingOptionOrDefault(
+					_options.limit,
+					null
+				) { limit ->
+					numberToInt(limit, "limit")
+				}
+				val result = patientApi.encrypted.findDuplicatesBySsin(
+					hcPartyIdConverted,
+					startKeyConverted,
+					startDocumentIdConverted,
+					limitConverted,
+				)
+				paginatedList_toJs(
+					result,
+					{ x1: EncryptedPatient ->
+						patient_toJs(x1)
+					},
+				)
+			}
+		}
 
-		override fun findDuplicatesBySsin(
-			hcPartyId: String,
-			startKey: String?,
-			startDocumentId: String?,
-			limit: Double?,
-		): Promise<PaginatedListJs<EncryptedPatientJs>> = GlobalScope.promise {
-			paginatedList_toJs(
-				patientApi.encrypted.findDuplicatesBySsin(hcPartyId, startKey, startDocumentId,
-						com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
-				{ x1: EncryptedPatient ->
-					patient_toJs(x1)
-				},
-			)}
-
-
-		override fun findDuplicatesByName(
-			hcPartyId: String,
-			startKey: String?,
-			startDocumentId: String?,
-			limit: Double?,
-		): Promise<PaginatedListJs<EncryptedPatientJs>> = GlobalScope.promise {
-			paginatedList_toJs(
-				patientApi.encrypted.findDuplicatesByName(hcPartyId, startKey, startDocumentId,
-						com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
-				{ x1: EncryptedPatient ->
-					patient_toJs(x1)
-				},
-			)}
-
+		override fun findDuplicatesByName(hcPartyId: String,
+				options: PatientFlavouredApi_findDuplicatesByName_Options?):
+				Promise<PaginatedListJs<EncryptedPatientJs>> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val hcPartyIdConverted: String = hcPartyId
+				val startKeyConverted: String? = convertingOptionOrDefault(
+					_options.startKey,
+					null
+				) { startKey ->
+					startKey
+				}
+				val startDocumentIdConverted: String? = convertingOptionOrDefault(
+					_options.startDocumentId,
+					null
+				) { startDocumentId ->
+					startDocumentId
+				}
+				val limitConverted: Int? = convertingOptionOrDefault(
+					_options.limit,
+					null
+				) { limit ->
+					numberToInt(limit, "limit")
+				}
+				val result = patientApi.encrypted.findDuplicatesByName(
+					hcPartyIdConverted,
+					startKeyConverted,
+					startDocumentIdConverted,
+					limitConverted,
+				)
+				paginatedList_toJs(
+					result,
+					{ x1: EncryptedPatient ->
+						patient_toJs(x1)
+					},
+				)
+			}
+		}
 
 		override fun mergePatients(
 			intoId: String,
@@ -428,45 +946,90 @@ internal class PatientApiImplJs(
 			expectedFromRev: String,
 			updatedInto: EncryptedPatientJs,
 		): Promise<EncryptedPatientJs> = GlobalScope.promise {
-			patient_toJs(patientApi.encrypted.mergePatients(intoId, fromId, expectedFromRev,
-					com.icure.sdk.js.model.patient_fromJs(updatedInto)))}
-
+			val intoIdConverted: String = intoId
+			val fromIdConverted: String = fromId
+			val expectedFromRevConverted: String = expectedFromRev
+			val updatedIntoConverted: EncryptedPatient = patient_fromJs(updatedInto)
+			val result = patientApi.encrypted.mergePatients(
+				intoIdConverted,
+				fromIdConverted,
+				expectedFromRevConverted,
+				updatedIntoConverted,
+			)
+			patient_toJs(result)
+		}
 
 		override fun subscribeToEvents(
 			events: Array<String>,
 			filter: AbstractFilterJs<PatientJs>,
-			onConnected: () -> Promise<Unit>,
-			channelCapacity: Double,
-			retryDelay: Double,
-			retryDelayExponentFactor: Double,
-			maxRetries: Double,
 			eventFired: (EncryptedPatientJs) -> Promise<Unit>,
-		): Promise<ConnectionJs> = GlobalScope.promise {
-			val onConnectedConverted: suspend () -> Unit = {  ->
-				onConnected(
-				).await()
+			options: PatientFlavouredApi_subscribeToEvents_Options?,
+		): Promise<ConnectionJs> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
+					events,
+					"events",
+					{ x1: String ->
+						SubscriptionEventType.valueOf(x1)
+					},
+				)
+				val filterConverted: AbstractFilter<Patient> = abstractFilter_fromJs(
+					filter,
+					{ x1: PatientJs ->
+						patient_fromJs(x1)
+					},
+				)
+				val onConnectedConverted: suspend () -> Unit = convertingOptionOrDefault(
+					_options.onConnected,
+					{}
+				) { onConnected ->
+					{  ->
+						onConnected().await()
+					}
+				}
+				val channelCapacityConverted: Int = convertingOptionOrDefault(
+					_options.channelCapacity,
+					kotlinx.coroutines.channels.Channel.BUFFERED
+				) { channelCapacity ->
+					numberToInt(channelCapacity, "channelCapacity")
+				}
+				val retryDelayConverted: Duration = convertingOptionOrDefault(
+					_options.retryDelay,
+					2.seconds
+				) { retryDelay ->
+					numberToDuration(retryDelay, "retryDelay")
+				}
+				val retryDelayExponentFactorConverted: Double = convertingOptionOrDefault(
+					_options.retryDelayExponentFactor,
+					2.0
+				) { retryDelayExponentFactor ->
+					retryDelayExponentFactor
+				}
+				val maxRetriesConverted: Int = convertingOptionOrDefault(
+					_options.maxRetries,
+					5
+				) { maxRetries ->
+					numberToInt(maxRetries, "maxRetries")
+				}
+				val eventFiredConverted: suspend (EncryptedPatient) -> Unit = { arg0 ->
+					eventFired(
+						patient_toJs(arg0),
+					).await()
+				}
+				val result = patientApi.encrypted.subscribeToEvents(
+					eventsConverted,
+					filterConverted,
+					onConnectedConverted,
+					channelCapacityConverted,
+					retryDelayConverted,
+					retryDelayExponentFactorConverted,
+					maxRetriesConverted,
+					eventFiredConverted,
+				)
+				connection_toJs(result)
 			}
-			val eventFiredConverted: suspend (EncryptedPatient) -> Unit = { arg0 ->
-				eventFired(
-					patient_toJs(arg0)).await()
-			}
-			connection_toJs(patientApi.encrypted.subscribeToEvents(com.icure.sdk.js.model.CheckedConverters.arrayToSet(
-			  events,
-			  "events",
-			  { x1: kotlin.String ->
-			    com.icure.sdk.model.notification.SubscriptionEventType.valueOf(x1)
-			  },
-			), com.icure.sdk.js.model.filter.abstractFilter_fromJs(
-			  filter,
-			  { x1: com.icure.sdk.js.model.PatientJs ->
-			    com.icure.sdk.js.model.patient_fromJs(x1)
-			  },
-			), onConnectedConverted, com.icure.sdk.js.model.CheckedConverters.numberToInt(channelCapacity,
-					"channelCapacity"), com.icure.sdk.js.model.CheckedConverters.numberToDuration(retryDelay,
-					"retryDelay"), retryDelayExponentFactor,
-					com.icure.sdk.js.model.CheckedConverters.numberToInt(maxRetries, "maxRetries"),
-					eventFiredConverted))}
-
+		}
 	}
 
 	override val tryAndRecover: PatientFlavouredApiJs<PatientJs> = object :
@@ -475,352 +1038,810 @@ internal class PatientApiImplJs(
 			delegateId: String,
 			patient: PatientJs,
 			shareSecretIds: Array<String>,
-			shareEncryptionKeys: String,
-			shareOwningEntityIds: String,
-			requestedPermission: String,
-		): Promise<SimpleShareResultJs<PatientJs>> = GlobalScope.promise {
-			simpleShareResult_toJs(
-				patientApi.tryAndRecover.shareWith(delegateId, com.icure.sdk.js.model.patient_fromJs(patient),
-						com.icure.sdk.js.model.CheckedConverters.arrayToSet(
-				  shareSecretIds,
-				  "shareSecretIds",
-				  { x1: kotlin.String ->
-				    x1
-				  },
-				), com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareEncryptionKeys),
-						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareOwningEntityIds),
-						com.icure.sdk.model.requests.RequestedPermission.valueOf(requestedPermission)),
-				{ x1: Patient ->
-					patient_toJs(x1)
-				},
-			)}
-
+			options: PatientFlavouredApi_shareWith_Options?,
+		): Promise<SimpleShareResultJs<PatientJs>> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val delegateIdConverted: String = delegateId
+				val patientConverted: Patient = patient_fromJs(patient)
+				val shareSecretIdsConverted: Set<String> = arrayToSet(
+					shareSecretIds,
+					"shareSecretIds",
+					{ x1: String ->
+						x1
+					},
+				)
+				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
+					_options.shareEncryptionKeys,
+					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
+				) { shareEncryptionKeys ->
+					ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
+				}
+				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
+					_options.shareOwningEntityIds,
+					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
+				) { shareOwningEntityIds ->
+					ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
+				}
+				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefault(
+					_options.requestedPermission,
+					com.icure.sdk.model.requests.RequestedPermission.MaxWrite
+				) { requestedPermission ->
+					RequestedPermission.valueOf(requestedPermission)
+				}
+				val result = patientApi.tryAndRecover.shareWith(
+					delegateIdConverted,
+					patientConverted,
+					shareSecretIdsConverted,
+					shareEncryptionKeysConverted,
+					shareOwningEntityIdsConverted,
+					requestedPermissionConverted,
+				)
+				simpleShareResult_toJs(
+					result,
+					{ x1: Patient ->
+						patient_toJs(x1)
+					},
+				)
+			}
+		}
 
 		override fun tryShareWithMany(patient: PatientJs,
 				delegates: Record<String, PatientShareOptionsJs>): Promise<SimpleShareResultJs<PatientJs>> =
 				GlobalScope.promise {
+			val patientConverted: Patient = patient_fromJs(patient)
+			val delegatesConverted: Map<String, PatientShareOptions> = objectToMap(
+				delegates,
+				"delegates",
+				{ x1: String ->
+					x1
+				},
+				{ x1: PatientShareOptionsJs ->
+					patientShareOptions_fromJs(x1)
+				},
+			)
+			val result = patientApi.tryAndRecover.tryShareWithMany(
+				patientConverted,
+				delegatesConverted,
+			)
 			simpleShareResult_toJs(
-				patientApi.tryAndRecover.tryShareWithMany(com.icure.sdk.js.model.patient_fromJs(patient),
-						com.icure.sdk.js.model.CheckedConverters.objectToMap(
-				  delegates,
-				  "delegates",
-				  { x1: kotlin.String ->
-				    x1
-				  },
-				  { x1: com.icure.sdk.js.crypto.entities.PatientShareOptionsJs ->
-				    com.icure.sdk.js.crypto.entities.patientShareOptions_fromJs(x1)
-				  },
-				)),
+				result,
 				{ x1: Patient ->
 					patient_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun shareWithMany(patient: PatientJs, delegates: Record<String, PatientShareOptionsJs>):
 				Promise<PatientJs> = GlobalScope.promise {
-			patient_toJs(patientApi.tryAndRecover.shareWithMany(com.icure.sdk.js.model.patient_fromJs(patient),
-					com.icure.sdk.js.model.CheckedConverters.objectToMap(
-			  delegates,
-			  "delegates",
-			  { x1: kotlin.String ->
-			    x1
-			  },
-			  { x1: com.icure.sdk.js.crypto.entities.PatientShareOptionsJs ->
-			    com.icure.sdk.js.crypto.entities.patientShareOptions_fromJs(x1)
-			  },
-			)))}
-
+			val patientConverted: Patient = patient_fromJs(patient)
+			val delegatesConverted: Map<String, PatientShareOptions> = objectToMap(
+				delegates,
+				"delegates",
+				{ x1: String ->
+					x1
+				},
+				{ x1: PatientShareOptionsJs ->
+					patientShareOptions_fromJs(x1)
+				},
+			)
+			val result = patientApi.tryAndRecover.shareWithMany(
+				patientConverted,
+				delegatesConverted,
+			)
+			patient_toJs(result)
+		}
 
 		override fun initialiseConfidentialSecretId(patient: PatientJs): Promise<PatientJs> =
 				GlobalScope.promise {
-			patient_toJs(patientApi.tryAndRecover.initialiseConfidentialSecretId(com.icure.sdk.js.model.patient_fromJs(patient)))}
-
+			val patientConverted: Patient = patient_fromJs(patient)
+			val result = patientApi.tryAndRecover.initialiseConfidentialSecretId(
+				patientConverted,
+			)
+			patient_toJs(result)
+		}
 
 		override fun modifyPatient(entity: PatientJs): Promise<PatientJs> = GlobalScope.promise {
-			patient_toJs(patientApi.tryAndRecover.modifyPatient(com.icure.sdk.js.model.patient_fromJs(entity)))}
-
+			val entityConverted: Patient = patient_fromJs(entity)
+			val result = patientApi.tryAndRecover.modifyPatient(
+				entityConverted,
+			)
+			patient_toJs(result)
+		}
 
 		override fun getPatient(entityId: String): Promise<PatientJs> = GlobalScope.promise {
-			patient_toJs(patientApi.tryAndRecover.getPatient(entityId))}
+			val entityIdConverted: String = entityId
+			val result = patientApi.tryAndRecover.getPatient(
+				entityIdConverted,
+			)
+			patient_toJs(result)
+		}
 
+		override fun filterPatientsBy(filterChain: FilterChainJs<PatientJs>,
+				options: PatientFlavouredApi_filterPatientsBy_Options?): Promise<PaginatedListJs<PatientJs>> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val filterChainConverted: FilterChain<Patient> = filterChain_fromJs(
+					filterChain,
+					{ x1: PatientJs ->
+						patient_fromJs(x1)
+					},
+				)
+				val startKeyConverted: String? = convertingOptionOrDefault(
+					_options.startKey,
+					null
+				) { startKey ->
+					startKey
+				}
+				val startDocumentIdConverted: String? = convertingOptionOrDefault(
+					_options.startDocumentId,
+					null
+				) { startDocumentId ->
+					startDocumentId
+				}
+				val limitConverted: Int? = convertingOptionOrDefault(
+					_options.limit,
+					null
+				) { limit ->
+					numberToInt(limit, "limit")
+				}
+				val skipConverted: Int? = convertingOptionOrDefault(
+					_options.skip,
+					null
+				) { skip ->
+					numberToInt(skip, "skip")
+				}
+				val sortConverted: String? = convertingOptionOrDefault(
+					_options.sort,
+					null
+				) { sort ->
+					sort
+				}
+				val descConverted: Boolean? = convertingOptionOrDefault(
+					_options.desc,
+					null
+				) { desc ->
+					desc
+				}
+				val result = patientApi.tryAndRecover.filterPatientsBy(
+					filterChainConverted,
+					startKeyConverted,
+					startDocumentIdConverted,
+					limitConverted,
+					skipConverted,
+					sortConverted,
+					descConverted,
+				)
+				paginatedList_toJs(
+					result,
+					{ x1: Patient ->
+						patient_toJs(x1)
+					},
+				)
+			}
+		}
 
-		override fun filterPatientsBy(
-			filterChain: FilterChainJs<PatientJs>,
-			startKey: String?,
-			startDocumentId: String?,
-			limit: Double?,
-			skip: Double?,
-			sort: String?,
-			desc: Boolean?,
-		): Promise<PaginatedListJs<PatientJs>> = GlobalScope.promise {
-			paginatedList_toJs(
-				patientApi.tryAndRecover.filterPatientsBy(com.icure.sdk.js.model.filter.chain.filterChain_fromJs(
-				  filterChain,
-				  { x1: com.icure.sdk.js.model.PatientJs ->
-				    com.icure.sdk.js.model.patient_fromJs(x1)
-				  },
-				), startKey, startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit,
-						"limit"), com.icure.sdk.js.model.CheckedConverters.numberToInt(skip, "skip"), sort, desc),
-				{ x1: Patient ->
-					patient_toJs(x1)
-				},
-			)}
+		override fun findPatientsByNameBirthSsinAuto(filterValue: String,
+				options: PatientFlavouredApi_findPatientsByNameBirthSsinAuto_Options?):
+				Promise<PaginatedListJs<PatientJs>> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val healthcarePartyIdConverted: String? = convertingOptionOrDefault(
+					_options.healthcarePartyId,
+					null
+				) { healthcarePartyId ->
+					healthcarePartyId
+				}
+				val filterValueConverted: String = filterValue
+				val startKeyConverted: String? = convertingOptionOrDefault(
+					_options.startKey,
+					null
+				) { startKey ->
+					startKey
+				}
+				val startDocumentIdConverted: String? = convertingOptionOrDefault(
+					_options.startDocumentId,
+					null
+				) { startDocumentId ->
+					startDocumentId
+				}
+				val limitConverted: Int? = convertingOptionOrDefault(
+					_options.limit,
+					null
+				) { limit ->
+					numberToInt(limit, "limit")
+				}
+				val sortDirectionConverted: SortDirection = convertingOptionOrDefault(
+					_options.sortDirection,
+					com.icure.sdk.model.couchdb.SortDirection.Asc
+				) { sortDirection ->
+					SortDirection.valueOf(sortDirection)
+				}
+				val result = patientApi.tryAndRecover.findPatientsByNameBirthSsinAuto(
+					healthcarePartyIdConverted,
+					filterValueConverted,
+					startKeyConverted,
+					startDocumentIdConverted,
+					limitConverted,
+					sortDirectionConverted,
+				)
+				paginatedList_toJs(
+					result,
+					{ x1: Patient ->
+						patient_toJs(x1)
+					},
+				)
+			}
+		}
 
-
-		override fun findPatientsByNameBirthSsinAuto(
-			healthcarePartyId: String?,
-			filterValue: String,
-			startKey: String?,
-			startDocumentId: String?,
-			limit: Double?,
-			sortDirection: String,
-		): Promise<PaginatedListJs<PatientJs>> = GlobalScope.promise {
-			paginatedList_toJs(
-				patientApi.tryAndRecover.findPatientsByNameBirthSsinAuto(healthcarePartyId, filterValue,
-						startKey, startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit,
-						"limit"), com.icure.sdk.model.couchdb.SortDirection.valueOf(sortDirection)),
-				{ x1: Patient ->
-					patient_toJs(x1)
-				},
-			)}
-
-
-		override fun listPatientsOfHcParty(
-			hcPartyId: String,
-			sortField: String,
-			startKey: String?,
-			startDocumentId: String?,
-			limit: Double?,
-			sortDirection: String,
-		): Promise<PaginatedListJs<PatientJs>> = GlobalScope.promise {
-			paginatedList_toJs(
-				patientApi.tryAndRecover.listPatientsOfHcParty(hcPartyId, sortField, startKey, startDocumentId,
-						com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit"),
-						com.icure.sdk.model.couchdb.SortDirection.valueOf(sortDirection)),
-				{ x1: Patient ->
-					patient_toJs(x1)
-				},
-			)}
-
+		override fun listPatientsOfHcParty(hcPartyId: String,
+				options: PatientFlavouredApi_listPatientsOfHcParty_Options?):
+				Promise<PaginatedListJs<PatientJs>> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val hcPartyIdConverted: String = hcPartyId
+				val sortFieldConverted: String = convertingOptionOrDefault(
+					_options.sortField,
+					"name"
+				) { sortField ->
+					sortField
+				}
+				val startKeyConverted: String? = convertingOptionOrDefault(
+					_options.startKey,
+					null
+				) { startKey ->
+					startKey
+				}
+				val startDocumentIdConverted: String? = convertingOptionOrDefault(
+					_options.startDocumentId,
+					null
+				) { startDocumentId ->
+					startDocumentId
+				}
+				val limitConverted: Int? = convertingOptionOrDefault(
+					_options.limit,
+					null
+				) { limit ->
+					numberToInt(limit, "limit")
+				}
+				val sortDirectionConverted: SortDirection = convertingOptionOrDefault(
+					_options.sortDirection,
+					com.icure.sdk.model.couchdb.SortDirection.Asc
+				) { sortDirection ->
+					SortDirection.valueOf(sortDirection)
+				}
+				val result = patientApi.tryAndRecover.listPatientsOfHcParty(
+					hcPartyIdConverted,
+					sortFieldConverted,
+					startKeyConverted,
+					startDocumentIdConverted,
+					limitConverted,
+					sortDirectionConverted,
+				)
+				paginatedList_toJs(
+					result,
+					{ x1: Patient ->
+						patient_toJs(x1)
+					},
+				)
+			}
+		}
 
 		override fun listOfMergesAfter(date: Double): Promise<Array<PatientJs>> = GlobalScope.promise {
+			val dateConverted: Long = numberToLong(date, "date")
+			val result = patientApi.tryAndRecover.listOfMergesAfter(
+				dateConverted,
+			)
 			listToArray(
-				patientApi.tryAndRecover.listOfMergesAfter(numberToLong(date, "date")),
+				result,
 				{ x1: Patient ->
 					patient_toJs(x1)
 				},
-			)}
+			)
+		}
 
+		override fun findPatientsModifiedAfter(date: Double,
+				options: PatientFlavouredApi_findPatientsModifiedAfter_Options?):
+				Promise<PaginatedListJs<PatientJs>> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val dateConverted: Long = numberToLong(date, "date")
+				val startKeyConverted: Long? = convertingOptionOrDefault(
+					_options.startKey,
+					null
+				) { startKey ->
+					numberToLong(startKey, "startKey")
+				}
+				val startDocumentIdConverted: String? = convertingOptionOrDefault(
+					_options.startDocumentId,
+					null
+				) { startDocumentId ->
+					startDocumentId
+				}
+				val limitConverted: Int? = convertingOptionOrDefault(
+					_options.limit,
+					null
+				) { limit ->
+					numberToInt(limit, "limit")
+				}
+				val result = patientApi.tryAndRecover.findPatientsModifiedAfter(
+					dateConverted,
+					startKeyConverted,
+					startDocumentIdConverted,
+					limitConverted,
+				)
+				paginatedList_toJs(
+					result,
+					{ x1: Patient ->
+						patient_toJs(x1)
+					},
+				)
+			}
+		}
 
-		override fun findPatientsModifiedAfter(
-			date: Double,
-			startKey: Double?,
-			startDocumentId: String?,
-			limit: Double?,
-		): Promise<PaginatedListJs<PatientJs>> = GlobalScope.promise {
-			paginatedList_toJs(
-				patientApi.tryAndRecover.findPatientsModifiedAfter(com.icure.sdk.js.model.CheckedConverters.numberToLong(date,
-						"date"), com.icure.sdk.js.model.CheckedConverters.numberToLong(startKey, "startKey"),
-						startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
-				{ x1: Patient ->
-					patient_toJs(x1)
-				},
-			)}
-
-
-		override fun listPatientsByHcParty(
-			hcPartyId: String,
-			sortField: String,
-			startKey: String?,
-			startDocumentId: String?,
-			limit: Double?,
-			sortDirection: String,
-		): Promise<PaginatedListJs<PatientJs>> = GlobalScope.promise {
-			paginatedList_toJs(
-				patientApi.tryAndRecover.listPatientsByHcParty(hcPartyId, sortField, startKey, startDocumentId,
-						com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit"),
-						com.icure.sdk.model.couchdb.SortDirection.valueOf(sortDirection)),
-				{ x1: Patient ->
-					patient_toJs(x1)
-				},
-			)}
-
+		override fun listPatientsByHcParty(hcPartyId: String,
+				options: PatientFlavouredApi_listPatientsByHcParty_Options?):
+				Promise<PaginatedListJs<PatientJs>> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val hcPartyIdConverted: String = hcPartyId
+				val sortFieldConverted: String = convertingOptionOrDefault(
+					_options.sortField,
+					"name"
+				) { sortField ->
+					sortField
+				}
+				val startKeyConverted: String? = convertingOptionOrDefault(
+					_options.startKey,
+					null
+				) { startKey ->
+					startKey
+				}
+				val startDocumentIdConverted: String? = convertingOptionOrDefault(
+					_options.startDocumentId,
+					null
+				) { startDocumentId ->
+					startDocumentId
+				}
+				val limitConverted: Int? = convertingOptionOrDefault(
+					_options.limit,
+					null
+				) { limit ->
+					numberToInt(limit, "limit")
+				}
+				val sortDirectionConverted: SortDirection = convertingOptionOrDefault(
+					_options.sortDirection,
+					com.icure.sdk.model.couchdb.SortDirection.Asc
+				) { sortDirection ->
+					SortDirection.valueOf(sortDirection)
+				}
+				val result = patientApi.tryAndRecover.listPatientsByHcParty(
+					hcPartyIdConverted,
+					sortFieldConverted,
+					startKeyConverted,
+					startDocumentIdConverted,
+					limitConverted,
+					sortDirectionConverted,
+				)
+				paginatedList_toJs(
+					result,
+					{ x1: Patient ->
+						patient_toJs(x1)
+					},
+				)
+			}
+		}
 
 		override fun getPatientHcPartyKeysForDelegate(patientId: String): Promise<Record<String, String>>
 				= GlobalScope.promise {
+			val patientIdConverted: String = patientId
+			val result = patientApi.tryAndRecover.getPatientHcPartyKeysForDelegate(
+				patientIdConverted,
+			)
 			mapToObject(
-				patientApi.tryAndRecover.getPatientHcPartyKeysForDelegate(patientId),
+				result,
 				{ x1: String ->
 					x1
 				},
 				{ x1: String ->
 					x1
 				},
-			)}
-
+			)
+		}
 
 		override fun countOfPatients(hcPartyId: String): Promise<EncryptedContentJs> =
 				GlobalScope.promise {
-			content_toJs(patientApi.tryAndRecover.countOfPatients(hcPartyId))}
+			val hcPartyIdConverted: String = hcPartyId
+			val result = patientApi.tryAndRecover.countOfPatients(
+				hcPartyIdConverted,
+			)
+			content_toJs(result)
+		}
 
+		override
+				fun findPatientsByHealthcareParty(options: PatientFlavouredApi_findPatientsByHealthcareParty_Options?):
+				Promise<PaginatedListJs<PatientJs>> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val hcPartyIdConverted: String? = convertingOptionOrDefault(
+					_options.hcPartyId,
+					null
+				) { hcPartyId ->
+					hcPartyId
+				}
+				val sortFieldConverted: String = convertingOptionOrDefault(
+					_options.sortField,
+					"name"
+				) { sortField ->
+					sortField
+				}
+				val startKeyConverted: String? = convertingOptionOrDefault(
+					_options.startKey,
+					null
+				) { startKey ->
+					startKey
+				}
+				val startDocumentIdConverted: String? = convertingOptionOrDefault(
+					_options.startDocumentId,
+					null
+				) { startDocumentId ->
+					startDocumentId
+				}
+				val limitConverted: Int? = convertingOptionOrDefault(
+					_options.limit,
+					null
+				) { limit ->
+					numberToInt(limit, "limit")
+				}
+				val sortDirectionConverted: SortDirection = convertingOptionOrDefault(
+					_options.sortDirection,
+					com.icure.sdk.model.couchdb.SortDirection.Asc
+				) { sortDirection ->
+					SortDirection.valueOf(sortDirection)
+				}
+				val result = patientApi.tryAndRecover.findPatientsByHealthcareParty(
+					hcPartyIdConverted,
+					sortFieldConverted,
+					startKeyConverted,
+					startDocumentIdConverted,
+					limitConverted,
+					sortDirectionConverted,
+				)
+				paginatedList_toJs(
+					result,
+					{ x1: Patient ->
+						patient_toJs(x1)
+					},
+				)
+			}
+		}
 
-		override fun findPatientsByHealthcareParty(
-			hcPartyId: String?,
-			sortField: String,
-			startKey: String?,
-			startDocumentId: String?,
-			limit: Double?,
-			sortDirection: String,
-		): Promise<PaginatedListJs<PatientJs>> = GlobalScope.promise {
-			paginatedList_toJs(
-				patientApi.tryAndRecover.findPatientsByHealthcareParty(hcPartyId, sortField, startKey,
-						startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit"),
-						com.icure.sdk.model.couchdb.SortDirection.valueOf(sortDirection)),
-				{ x1: Patient ->
-					patient_toJs(x1)
-				},
-			)}
-
-
-		override fun findPatientsIdsByHealthcareParty(
-			hcPartyId: String,
-			startKey: String?,
-			startDocumentId: String?,
-			limit: Double?,
-		): Promise<PaginatedListJs<String>> = GlobalScope.promise {
-			paginatedList_toJs(
-				patientApi.tryAndRecover.findPatientsIdsByHealthcareParty(hcPartyId, startKey, startDocumentId,
-						com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
-				{ x1: String ->
-					x1
-				},
-			)}
-
+		override fun findPatientsIdsByHealthcareParty(hcPartyId: String,
+				options: PatientFlavouredApi_findPatientsIdsByHealthcareParty_Options?):
+				Promise<PaginatedListJs<String>> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val hcPartyIdConverted: String = hcPartyId
+				val startKeyConverted: String? = convertingOptionOrDefault(
+					_options.startKey,
+					null
+				) { startKey ->
+					startKey
+				}
+				val startDocumentIdConverted: String? = convertingOptionOrDefault(
+					_options.startDocumentId,
+					null
+				) { startDocumentId ->
+					startDocumentId
+				}
+				val limitConverted: Int? = convertingOptionOrDefault(
+					_options.limit,
+					null
+				) { limit ->
+					numberToInt(limit, "limit")
+				}
+				val result = patientApi.tryAndRecover.findPatientsIdsByHealthcareParty(
+					hcPartyIdConverted,
+					startKeyConverted,
+					startDocumentIdConverted,
+					limitConverted,
+				)
+				paginatedList_toJs(
+					result,
+					{ x1: String ->
+						x1
+					},
+				)
+			}
+		}
 
 		override fun getPatientByExternalId(externalId: String): Promise<PatientJs> =
 				GlobalScope.promise {
-			patient_toJs(patientApi.tryAndRecover.getPatientByExternalId(externalId))}
-
+			val externalIdConverted: String = externalId
+			val result = patientApi.tryAndRecover.getPatientByExternalId(
+				externalIdConverted,
+			)
+			patient_toJs(result)
+		}
 
 		override fun fuzzySearch(
 			firstName: String,
 			lastName: String,
-			dateOfBirth: Double?,
-		): Promise<Array<PatientJs>> = GlobalScope.promise {
-			listToArray(
-				patientApi.tryAndRecover.fuzzySearch(firstName, lastName, numberToInt(dateOfBirth,
-						"dateOfBirth")),
-				{ x1: Patient ->
-					patient_toJs(x1)
-				},
-			)}
+			options: PatientFlavouredApi_fuzzySearch_Options?,
+		): Promise<Array<PatientJs>> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val firstNameConverted: String = firstName
+				val lastNameConverted: String = lastName
+				val dateOfBirthConverted: Int? = convertingOptionOrDefault(
+					_options.dateOfBirth,
+					null
+				) { dateOfBirth ->
+					numberToInt(dateOfBirth, "dateOfBirth")
+				}
+				val result = patientApi.tryAndRecover.fuzzySearch(
+					firstNameConverted,
+					lastNameConverted,
+					dateOfBirthConverted,
+				)
+				listToArray(
+					result,
+					{ x1: Patient ->
+						patient_toJs(x1)
+					},
+				)
+			}
+		}
 
+		override fun findDeletedPatients(startDate: Double,
+				options: PatientFlavouredApi_findDeletedPatients_Options?):
+				Promise<PaginatedListJs<PatientJs>> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val startDateConverted: Long = numberToLong(startDate, "startDate")
+				val endDateConverted: Long? = convertingOptionOrDefault(
+					_options.endDate,
+					null
+				) { endDate ->
+					numberToLong(endDate, "endDate")
+				}
+				val descConverted: Boolean? = convertingOptionOrDefault(
+					_options.desc,
+					null
+				) { desc ->
+					desc
+				}
+				val startKeyConverted: Long? = convertingOptionOrDefault(
+					_options.startKey,
+					null
+				) { startKey ->
+					numberToLong(startKey, "startKey")
+				}
+				val startDocumentIdConverted: String? = convertingOptionOrDefault(
+					_options.startDocumentId,
+					null
+				) { startDocumentId ->
+					startDocumentId
+				}
+				val limitConverted: Int? = convertingOptionOrDefault(
+					_options.limit,
+					null
+				) { limit ->
+					numberToInt(limit, "limit")
+				}
+				val result = patientApi.tryAndRecover.findDeletedPatients(
+					startDateConverted,
+					endDateConverted,
+					descConverted,
+					startKeyConverted,
+					startDocumentIdConverted,
+					limitConverted,
+				)
+				paginatedList_toJs(
+					result,
+					{ x1: Patient ->
+						patient_toJs(x1)
+					},
+				)
+			}
+		}
 
-		override fun findDeletedPatients(
-			startDate: Double,
-			endDate: Double?,
-			desc: Boolean?,
-			startKey: Double?,
-			startDocumentId: String?,
-			limit: Double?,
-		): Promise<PaginatedListJs<PatientJs>> = GlobalScope.promise {
-			paginatedList_toJs(
-				patientApi.tryAndRecover.findDeletedPatients(com.icure.sdk.js.model.CheckedConverters.numberToLong(startDate,
-						"startDate"), com.icure.sdk.js.model.CheckedConverters.numberToLong(endDate, "endDate"), desc,
-						com.icure.sdk.js.model.CheckedConverters.numberToLong(startKey, "startKey"), startDocumentId,
-						com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
-				{ x1: Patient ->
-					patient_toJs(x1)
-				},
-			)}
-
-
-		override fun listDeletedPatientsByName(firstName: String?, lastName: String?):
-				Promise<Array<PatientJs>> = GlobalScope.promise {
-			listToArray(
-				patientApi.tryAndRecover.listDeletedPatientsByName(firstName, lastName),
-				{ x1: Patient ->
-					patient_toJs(x1)
-				},
-			)}
-
+		override
+				fun listDeletedPatientsByName(options: PatientFlavouredApi_listDeletedPatientsByName_Options?):
+				Promise<Array<PatientJs>> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val firstNameConverted: String? = convertingOptionOrDefault(
+					_options.firstName,
+					null
+				) { firstName ->
+					firstName
+				}
+				val lastNameConverted: String? = convertingOptionOrDefault(
+					_options.lastName,
+					null
+				) { lastName ->
+					lastName
+				}
+				val result = patientApi.tryAndRecover.listDeletedPatientsByName(
+					firstNameConverted,
+					lastNameConverted,
+				)
+				listToArray(
+					result,
+					{ x1: Patient ->
+						patient_toJs(x1)
+					},
+				)
+			}
+		}
 
 		override fun getPatients(patientIds: ListOfIdsJs): Promise<Array<PatientJs>> =
 				GlobalScope.promise {
+			val patientIdsConverted: ListOfIds = listOfIds_fromJs(patientIds)
+			val result = patientApi.tryAndRecover.getPatients(
+				patientIdsConverted,
+			)
 			listToArray(
-				patientApi.tryAndRecover.getPatients(listOfIds_fromJs(patientIds)),
+				result,
 				{ x1: Patient ->
 					patient_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun getPatientByHealthcarePartyAndIdentifier(
 			hcPartyId: String,
 			id: String,
-			system: String?,
-		): Promise<PatientJs> = GlobalScope.promise {
-			patient_toJs(patientApi.tryAndRecover.getPatientByHealthcarePartyAndIdentifier(hcPartyId, id,
-					system))}
-
+			options: PatientFlavouredApi_getPatientByHealthcarePartyAndIdentifier_Options?,
+		): Promise<PatientJs> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val hcPartyIdConverted: String = hcPartyId
+				val idConverted: String = id
+				val systemConverted: String? = convertingOptionOrDefault(
+					_options.system,
+					null
+				) { system ->
+					system
+				}
+				val result = patientApi.tryAndRecover.getPatientByHealthcarePartyAndIdentifier(
+					hcPartyIdConverted,
+					idConverted,
+					systemConverted,
+				)
+				patient_toJs(result)
+			}
+		}
 
 		override fun modifyPatients(patientDtos: Array<EncryptedPatientJs>): Promise<Array<IdWithRevJs>> =
 				GlobalScope.promise {
+			val patientDtosConverted: List<EncryptedPatient> = arrayToList(
+				patientDtos,
+				"patientDtos",
+				{ x1: EncryptedPatientJs ->
+					patient_fromJs(x1)
+				},
+			)
+			val result = patientApi.tryAndRecover.modifyPatients(
+				patientDtosConverted,
+			)
 			listToArray(
-				patientApi.tryAndRecover.modifyPatients(arrayToList(
-					patientDtos,
-					"patientDtos",
-					{ x1: EncryptedPatientJs ->
-						patient_fromJs(x1)
-					},
-				)),
+				result,
 				{ x1: IdWithRev ->
 					idWithRev_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun modifyPatientReferral(
 			patientId: String,
 			referralId: String,
-			start: Double?,
-			end: Double?,
-		): Promise<PatientJs> = GlobalScope.promise {
-			patient_toJs(patientApi.tryAndRecover.modifyPatientReferral(patientId, referralId,
-					com.icure.sdk.js.model.CheckedConverters.numberToLong(start, "start"),
-					com.icure.sdk.js.model.CheckedConverters.numberToLong(end, "end")))}
+			options: PatientFlavouredApi_modifyPatientReferral_Options?,
+		): Promise<PatientJs> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val patientIdConverted: String = patientId
+				val referralIdConverted: String = referralId
+				val startConverted: Long? = convertingOptionOrDefault(
+					_options.start,
+					null
+				) { start ->
+					numberToLong(start, "start")
+				}
+				val endConverted: Long? = convertingOptionOrDefault(
+					_options.end,
+					null
+				) { end ->
+					numberToLong(end, "end")
+				}
+				val result = patientApi.tryAndRecover.modifyPatientReferral(
+					patientIdConverted,
+					referralIdConverted,
+					startConverted,
+					endConverted,
+				)
+				patient_toJs(result)
+			}
+		}
 
+		override fun findDuplicatesBySsin(hcPartyId: String,
+				options: PatientFlavouredApi_findDuplicatesBySsin_Options?):
+				Promise<PaginatedListJs<PatientJs>> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val hcPartyIdConverted: String = hcPartyId
+				val startKeyConverted: String? = convertingOptionOrDefault(
+					_options.startKey,
+					null
+				) { startKey ->
+					startKey
+				}
+				val startDocumentIdConverted: String? = convertingOptionOrDefault(
+					_options.startDocumentId,
+					null
+				) { startDocumentId ->
+					startDocumentId
+				}
+				val limitConverted: Int? = convertingOptionOrDefault(
+					_options.limit,
+					null
+				) { limit ->
+					numberToInt(limit, "limit")
+				}
+				val result = patientApi.tryAndRecover.findDuplicatesBySsin(
+					hcPartyIdConverted,
+					startKeyConverted,
+					startDocumentIdConverted,
+					limitConverted,
+				)
+				paginatedList_toJs(
+					result,
+					{ x1: Patient ->
+						patient_toJs(x1)
+					},
+				)
+			}
+		}
 
-		override fun findDuplicatesBySsin(
-			hcPartyId: String,
-			startKey: String?,
-			startDocumentId: String?,
-			limit: Double?,
-		): Promise<PaginatedListJs<PatientJs>> = GlobalScope.promise {
-			paginatedList_toJs(
-				patientApi.tryAndRecover.findDuplicatesBySsin(hcPartyId, startKey, startDocumentId,
-						com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
-				{ x1: Patient ->
-					patient_toJs(x1)
-				},
-			)}
-
-
-		override fun findDuplicatesByName(
-			hcPartyId: String,
-			startKey: String?,
-			startDocumentId: String?,
-			limit: Double?,
-		): Promise<PaginatedListJs<PatientJs>> = GlobalScope.promise {
-			paginatedList_toJs(
-				patientApi.tryAndRecover.findDuplicatesByName(hcPartyId, startKey, startDocumentId,
-						com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
-				{ x1: Patient ->
-					patient_toJs(x1)
-				},
-			)}
-
+		override fun findDuplicatesByName(hcPartyId: String,
+				options: PatientFlavouredApi_findDuplicatesByName_Options?):
+				Promise<PaginatedListJs<PatientJs>> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val hcPartyIdConverted: String = hcPartyId
+				val startKeyConverted: String? = convertingOptionOrDefault(
+					_options.startKey,
+					null
+				) { startKey ->
+					startKey
+				}
+				val startDocumentIdConverted: String? = convertingOptionOrDefault(
+					_options.startDocumentId,
+					null
+				) { startDocumentId ->
+					startDocumentId
+				}
+				val limitConverted: Int? = convertingOptionOrDefault(
+					_options.limit,
+					null
+				) { limit ->
+					numberToInt(limit, "limit")
+				}
+				val result = patientApi.tryAndRecover.findDuplicatesByName(
+					hcPartyIdConverted,
+					startKeyConverted,
+					startDocumentIdConverted,
+					limitConverted,
+				)
+				paginatedList_toJs(
+					result,
+					{ x1: Patient ->
+						patient_toJs(x1)
+					},
+				)
+			}
+		}
 
 		override fun mergePatients(
 			intoId: String,
@@ -828,142 +1849,241 @@ internal class PatientApiImplJs(
 			expectedFromRev: String,
 			updatedInto: EncryptedPatientJs,
 		): Promise<PatientJs> = GlobalScope.promise {
-			patient_toJs(patientApi.tryAndRecover.mergePatients(intoId, fromId, expectedFromRev,
-					com.icure.sdk.js.model.patient_fromJs(updatedInto)))}
-
+			val intoIdConverted: String = intoId
+			val fromIdConverted: String = fromId
+			val expectedFromRevConverted: String = expectedFromRev
+			val updatedIntoConverted: EncryptedPatient = patient_fromJs(updatedInto)
+			val result = patientApi.tryAndRecover.mergePatients(
+				intoIdConverted,
+				fromIdConverted,
+				expectedFromRevConverted,
+				updatedIntoConverted,
+			)
+			patient_toJs(result)
+		}
 
 		override fun subscribeToEvents(
 			events: Array<String>,
 			filter: AbstractFilterJs<PatientJs>,
-			onConnected: () -> Promise<Unit>,
-			channelCapacity: Double,
-			retryDelay: Double,
-			retryDelayExponentFactor: Double,
-			maxRetries: Double,
 			eventFired: (PatientJs) -> Promise<Unit>,
-		): Promise<ConnectionJs> = GlobalScope.promise {
-			val onConnectedConverted: suspend () -> Unit = {  ->
-				onConnected(
-				).await()
+			options: PatientFlavouredApi_subscribeToEvents_Options?,
+		): Promise<ConnectionJs> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
+					events,
+					"events",
+					{ x1: String ->
+						SubscriptionEventType.valueOf(x1)
+					},
+				)
+				val filterConverted: AbstractFilter<Patient> = abstractFilter_fromJs(
+					filter,
+					{ x1: PatientJs ->
+						patient_fromJs(x1)
+					},
+				)
+				val onConnectedConverted: suspend () -> Unit = convertingOptionOrDefault(
+					_options.onConnected,
+					{}
+				) { onConnected ->
+					{  ->
+						onConnected().await()
+					}
+				}
+				val channelCapacityConverted: Int = convertingOptionOrDefault(
+					_options.channelCapacity,
+					kotlinx.coroutines.channels.Channel.BUFFERED
+				) { channelCapacity ->
+					numberToInt(channelCapacity, "channelCapacity")
+				}
+				val retryDelayConverted: Duration = convertingOptionOrDefault(
+					_options.retryDelay,
+					2.seconds
+				) { retryDelay ->
+					numberToDuration(retryDelay, "retryDelay")
+				}
+				val retryDelayExponentFactorConverted: Double = convertingOptionOrDefault(
+					_options.retryDelayExponentFactor,
+					2.0
+				) { retryDelayExponentFactor ->
+					retryDelayExponentFactor
+				}
+				val maxRetriesConverted: Int = convertingOptionOrDefault(
+					_options.maxRetries,
+					5
+				) { maxRetries ->
+					numberToInt(maxRetries, "maxRetries")
+				}
+				val eventFiredConverted: suspend (Patient) -> Unit = { arg0 ->
+					eventFired(
+						patient_toJs(arg0),
+					).await()
+				}
+				val result = patientApi.tryAndRecover.subscribeToEvents(
+					eventsConverted,
+					filterConverted,
+					onConnectedConverted,
+					channelCapacityConverted,
+					retryDelayConverted,
+					retryDelayExponentFactorConverted,
+					maxRetriesConverted,
+					eventFiredConverted,
+				)
+				connection_toJs(result)
 			}
-			val eventFiredConverted: suspend (Patient) -> Unit = { arg0 ->
-				eventFired(
-					patient_toJs(arg0)).await()
-			}
-			connection_toJs(patientApi.tryAndRecover.subscribeToEvents(com.icure.sdk.js.model.CheckedConverters.arrayToSet(
-			  events,
-			  "events",
-			  { x1: kotlin.String ->
-			    com.icure.sdk.model.notification.SubscriptionEventType.valueOf(x1)
-			  },
-			), com.icure.sdk.js.model.filter.abstractFilter_fromJs(
-			  filter,
-			  { x1: com.icure.sdk.js.model.PatientJs ->
-			    com.icure.sdk.js.model.patient_fromJs(x1)
-			  },
-			), onConnectedConverted, com.icure.sdk.js.model.CheckedConverters.numberToInt(channelCapacity,
-					"channelCapacity"), com.icure.sdk.js.model.CheckedConverters.numberToDuration(retryDelay,
-					"retryDelay"), retryDelayExponentFactor,
-					com.icure.sdk.js.model.CheckedConverters.numberToInt(maxRetries, "maxRetries"),
-					eventFiredConverted))}
-
+		}
 	}
 
 	override fun getSecretIdsOf(patient: PatientJs): Promise<Array<String>> = GlobalScope.promise {
+		val patientConverted: Patient = patient_fromJs(patient)
+		val result = patientApi.getSecretIdsOf(
+			patientConverted,
+		)
 		setToArray(
-			patientApi.getSecretIdsOf(patient_fromJs(patient)),
+			result,
 			{ x1: String ->
 				x1
 			},
-		)}
-
+		)
+	}
 
 	override fun getEncryptionKeysOf(patient: PatientJs): Promise<Array<String>> =
 			GlobalScope.promise {
+		val patientConverted: Patient = patient_fromJs(patient)
+		val result = patientApi.getEncryptionKeysOf(
+			patientConverted,
+		)
 		setToArray(
-			patientApi.getEncryptionKeysOf(patient_fromJs(patient)),
+			result,
 			{ x1: HexString ->
 				hexString_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun createPatient(patient: DecryptedPatientJs): Promise<DecryptedPatientJs> =
 			GlobalScope.promise {
-		patient_toJs(patientApi.createPatient(com.icure.sdk.js.model.patient_fromJs(patient)))}
+		val patientConverted: DecryptedPatient = patient_fromJs(patient)
+		val result = patientApi.createPatient(
+			patientConverted,
+		)
+		patient_toJs(result)
+	}
 
-
-	override fun withEncryptionMetadata(
-		base: DecryptedPatientJs?,
-		user: UserJs?,
-		delegates: Record<String, String>,
-	): Promise<DecryptedPatientJs> = GlobalScope.promise {
-		patient_toJs(patientApi.withEncryptionMetadata(base?.let { nonNull1 ->
-		  com.icure.sdk.js.model.patient_fromJs(nonNull1)
-		}, user?.let { nonNull1 ->
-		  com.icure.sdk.js.model.user_fromJs(nonNull1)
-		}, com.icure.sdk.js.model.CheckedConverters.objectToMap(
-		  delegates,
-		  "delegates",
-		  { x1: kotlin.String ->
-		    x1
-		  },
-		  { x1: kotlin.String ->
-		    com.icure.sdk.model.embed.AccessLevel.valueOf(x1)
-		  },
-		)))}
-
+	override fun withEncryptionMetadata(base: DecryptedPatientJs?,
+			options: PatientApi_withEncryptionMetadata_Options?): Promise<DecryptedPatientJs> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val baseConverted: DecryptedPatient? = base?.let { nonNull1 ->
+				patient_fromJs(nonNull1)
+			}
+			val userConverted: User? = convertingOptionOrDefault(
+				_options.user,
+				null
+			) { user ->
+				user?.let { nonNull1 ->
+					user_fromJs(nonNull1)
+				}
+			}
+			val delegatesConverted: Map<String, AccessLevel> = convertingOptionOrDefault(
+				_options.delegates,
+				emptyMap()
+			) { delegates ->
+				objectToMap(
+					delegates,
+					"delegates",
+					{ x1: String ->
+						x1
+					},
+					{ x1: String ->
+						AccessLevel.valueOf(x1)
+					},
+				)
+			}
+			val result = patientApi.withEncryptionMetadata(
+				baseConverted,
+				userConverted,
+				delegatesConverted,
+			)
+			patient_toJs(result)
+		}
+	}
 
 	override fun createDelegationsDeAnonymizationMetadata(patient: PatientJs,
 			dataOwnerIds: Array<String>): Promise<Unit> = GlobalScope.promise {
-		patientApi.createDelegationsDeAnonymizationMetadata(patient_fromJs(patient), arrayToSet(
+		val patientConverted: Patient = patient_fromJs(patient)
+		val dataOwnerIdsConverted: Set<String> = arrayToSet(
 			dataOwnerIds,
 			"dataOwnerIds",
 			{ x1: String ->
 				x1
 			},
-		))}
+		)
+		patientApi.createDelegationsDeAnonymizationMetadata(
+			patientConverted,
+			dataOwnerIdsConverted,
+		)
 
+	}
 
 	override fun hasWriteAccess(patient: PatientJs): Promise<Boolean> = GlobalScope.promise {
-		patientApi.hasWriteAccess(patient_fromJs(patient))}
-
+		val patientConverted: Patient = patient_fromJs(patient)
+		val result = patientApi.hasWriteAccess(
+			patientConverted,
+		)
+		result
+	}
 
 	override fun decryptPatientIdOf(patient: PatientJs): Promise<Array<String>> = GlobalScope.promise {
+		val patientConverted: Patient = patient_fromJs(patient)
+		val result = patientApi.decryptPatientIdOf(
+			patientConverted,
+		)
 		setToArray(
-			patientApi.decryptPatientIdOf(patient_fromJs(patient)),
+			result,
 			{ x1: String ->
 				x1
 			},
-		)}
-
+		)
+	}
 
 	override fun createDelegationDeAnonymizationMetadata(entity: PatientJs, delegates: Array<String>):
 			Promise<Unit> = GlobalScope.promise {
-		patientApi.createDelegationDeAnonymizationMetadata(patient_fromJs(entity), arrayToSet(
+		val entityConverted: Patient = patient_fromJs(entity)
+		val delegatesConverted: Set<String> = arrayToSet(
 			delegates,
 			"delegates",
 			{ x1: String ->
 				x1
 			},
-		))}
+		)
+		patientApi.createDelegationDeAnonymizationMetadata(
+			entityConverted,
+			delegatesConverted,
+		)
 
+	}
 
 	override fun createPatients(patientDtos: Array<DecryptedPatientJs>): Promise<Array<IdWithRevJs>> =
 			GlobalScope.promise {
+		val patientDtosConverted: List<DecryptedPatient> = arrayToList(
+			patientDtos,
+			"patientDtos",
+			{ x1: DecryptedPatientJs ->
+				patient_fromJs(x1)
+			},
+		)
+		val result = patientApi.createPatients(
+			patientDtosConverted,
+		)
 		listToArray(
-			patientApi.createPatients(arrayToList(
-				patientDtos,
-				"patientDtos",
-				{ x1: DecryptedPatientJs ->
-					patient_fromJs(x1)
-				},
-			)),
+			result,
 			{ x1: IdWithRev ->
 				idWithRev_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun registerPatient(
 		hcPartyId: String,
@@ -973,9 +2093,22 @@ internal class PatientApiImplJs(
 		createAutoDelegation: Boolean,
 		patient: DecryptedPatientJs,
 	): Promise<DataOwnerRegistrationSuccessJs> = GlobalScope.promise {
-		dataOwnerRegistrationSuccess_toJs(patientApi.registerPatient(hcPartyId, groupId, token,
-				useShortToken, createAutoDelegation, com.icure.sdk.js.model.patient_fromJs(patient)))}
-
+		val hcPartyIdConverted: String = hcPartyId
+		val groupIdConverted: String = groupId
+		val tokenConverted: String? = token
+		val useShortTokenConverted: Boolean? = useShortToken
+		val createAutoDelegationConverted: Boolean = createAutoDelegation
+		val patientConverted: DecryptedPatient = patient_fromJs(patient)
+		val result = patientApi.registerPatient(
+			hcPartyIdConverted,
+			groupIdConverted,
+			tokenConverted,
+			useShortTokenConverted,
+			createAutoDelegationConverted,
+			patientConverted,
+		)
+		dataOwnerRegistrationSuccess_toJs(result)
+	}
 
 	override fun shareAllDataOfPatient(
 		user: UserJs,
@@ -983,447 +2116,948 @@ internal class PatientApiImplJs(
 		dataOwnerId: String,
 		delegatesWithShareType: Record<String, Array<String>>,
 	): Promise<ShareAllPatientDataOptionsJs_ResultJs> = GlobalScope.promise {
-		shareAllPatientDataOptions_Result_toJs(patientApi.shareAllDataOfPatient(com.icure.sdk.js.model.user_fromJs(user),
-				patientId, dataOwnerId, com.icure.sdk.js.model.CheckedConverters.objectToMap(
-		  delegatesWithShareType,
-		  "delegatesWithShareType",
-		  { x1: kotlin.String ->
-		    x1
-		  },
-		  { x1: kotlin.Array<kotlin.String> ->
-		    com.icure.sdk.js.model.CheckedConverters.arrayToSet(
-		      x1,
-		      "x1",
-		      { x2: kotlin.String ->
-		        com.icure.sdk.crypto.entities.ShareAllPatientDataOptions.Tag.valueOf(x2)
-		      },
-		    )
-		  },
-		)))}
-
+		val userConverted: User = user_fromJs(user)
+		val patientIdConverted: String = patientId
+		val dataOwnerIdConverted: String = dataOwnerId
+		val delegatesWithShareTypeConverted: Map<String, Set<ShareAllPatientDataOptions.Tag>> =
+				objectToMap(
+			delegatesWithShareType,
+			"delegatesWithShareType",
+			{ x1: String ->
+				x1
+			},
+			{ x1: Array<String> ->
+				arrayToSet(
+					x1,
+					"x1",
+					{ x2: String ->
+						ShareAllPatientDataOptions.Tag.valueOf(x2)
+					},
+				)
+			},
+		)
+		val result = patientApi.shareAllDataOfPatient(
+			userConverted,
+			patientIdConverted,
+			dataOwnerIdConverted,
+			delegatesWithShareTypeConverted,
+		)
+		shareAllPatientDataOptions_Result_toJs(result)
+	}
 
 	override fun getPatientIdOfChildDocumentForHcpAndHcpParents(childDocument: EntityWithTypeInfoJs<*>,
 			healthcarePartyId: String): Promise<String> = GlobalScope.promise {
-		patientApi.getPatientIdOfChildDocumentForHcpAndHcpParents(anyEntityWithTypeInfoToKt(childDocument),
-				healthcarePartyId)}
-
+		val childDocumentConverted: EntityWithTypeInfo<*> = anyEntityWithTypeInfoToKt(childDocument)
+		val healthcarePartyIdConverted: String = healthcarePartyId
+		val result = patientApi.getPatientIdOfChildDocumentForHcpAndHcpParents(
+			childDocumentConverted,
+			healthcarePartyIdConverted,
+		)
+		result
+	}
 
 	override fun getConfidentialSecretIdsOf(patient: PatientJs): Promise<Array<String>> =
 			GlobalScope.promise {
+		val patientConverted: Patient = patient_fromJs(patient)
+		val result = patientApi.getConfidentialSecretIdsOf(
+			patientConverted,
+		)
 		setToArray(
-			patientApi.getConfidentialSecretIdsOf(patient_fromJs(patient)),
+			result,
 			{ x1: String ->
 				x1
 			},
-		)}
-
+		)
+	}
 
 	override fun forceInitialiseExchangeDataToNewlyInvitedPatient(patientId: String): Promise<Boolean>
 			= GlobalScope.promise {
-		patientApi.forceInitialiseExchangeDataToNewlyInvitedPatient(patientId)}
-
+		val patientIdConverted: String = patientId
+		val result = patientApi.forceInitialiseExchangeDataToNewlyInvitedPatient(
+			patientIdConverted,
+		)
+		result
+	}
 
 	override fun matchPatientsBy(filter: AbstractFilterJs<PatientJs>): Promise<Array<String>> =
 			GlobalScope.promise {
+		val filterConverted: AbstractFilter<Patient> = abstractFilter_fromJs(
+			filter,
+			{ x1: PatientJs ->
+				patient_fromJs(x1)
+			},
+		)
+		val result = patientApi.matchPatientsBy(
+			filterConverted,
+		)
 		listToArray(
-			patientApi.matchPatientsBy(abstractFilter_fromJs(
-				filter,
-				{ x1: PatientJs ->
-					patient_fromJs(x1)
-				},
-			)),
+			result,
 			{ x1: String ->
 				x1
 			},
-		)}
-
+		)
+	}
 
 	override fun deletePatient(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {
-		docIdentifier_toJs(patientApi.deletePatient(entityId))}
-
+		val entityIdConverted: String = entityId
+		val result = patientApi.deletePatient(
+			entityIdConverted,
+		)
+		docIdentifier_toJs(result)
+	}
 
 	override fun deletePatients(entityIds: Array<String>): Promise<Array<DocIdentifierJs>> =
 			GlobalScope.promise {
+		val entityIdsConverted: List<String> = arrayToList(
+			entityIds,
+			"entityIds",
+			{ x1: String ->
+				x1
+			},
+		)
+		val result = patientApi.deletePatients(
+			entityIdsConverted,
+		)
 		listToArray(
-			patientApi.deletePatients(arrayToList(
-				entityIds,
-				"entityIds",
-				{ x1: String ->
-					x1
-				},
-			)),
+			result,
 			{ x1: DocIdentifier ->
 				docIdentifier_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun undeletePatient(patientIds: String): Promise<Array<DocIdentifierJs>> =
 			GlobalScope.promise {
+		val patientIdsConverted: String = patientIds
+		val result = patientApi.undeletePatient(
+			patientIdsConverted,
+		)
 		listToArray(
-			patientApi.undeletePatient(patientIds),
+			result,
 			{ x1: DocIdentifier ->
 				docIdentifier_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun getDataOwnersWithAccessTo(patient: PatientJs): Promise<EntityAccessInformationJs> =
 			GlobalScope.promise {
-		entityAccessInformation_toJs(patientApi.getDataOwnersWithAccessTo(com.icure.sdk.js.model.patient_fromJs(patient)))}
-
+		val patientConverted: Patient = patient_fromJs(patient)
+		val result = patientApi.getDataOwnersWithAccessTo(
+			patientConverted,
+		)
+		entityAccessInformation_toJs(result)
+	}
 
 	override fun shareWith(
 		delegateId: String,
 		patient: DecryptedPatientJs,
 		shareSecretIds: Array<String>,
-		shareEncryptionKeys: String,
-		shareOwningEntityIds: String,
-		requestedPermission: String,
-	): Promise<SimpleShareResultJs<DecryptedPatientJs>> = GlobalScope.promise {
-		simpleShareResult_toJs(
-			patientApi.shareWith(delegateId, com.icure.sdk.js.model.patient_fromJs(patient),
-					com.icure.sdk.js.model.CheckedConverters.arrayToSet(
-			  shareSecretIds,
-			  "shareSecretIds",
-			  { x1: kotlin.String ->
-			    x1
-			  },
-			), com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareEncryptionKeys),
-					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareOwningEntityIds),
-					com.icure.sdk.model.requests.RequestedPermission.valueOf(requestedPermission)),
-			{ x1: DecryptedPatient ->
-				patient_toJs(x1)
-			},
-		)}
-
+		options: PatientApi_shareWith_Options?,
+	): Promise<SimpleShareResultJs<DecryptedPatientJs>> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val delegateIdConverted: String = delegateId
+			val patientConverted: DecryptedPatient = patient_fromJs(patient)
+			val shareSecretIdsConverted: Set<String> = arrayToSet(
+				shareSecretIds,
+				"shareSecretIds",
+				{ x1: String ->
+					x1
+				},
+			)
+			val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
+				_options.shareEncryptionKeys,
+				com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
+			) { shareEncryptionKeys ->
+				ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
+			}
+			val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
+				_options.shareOwningEntityIds,
+				com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
+			) { shareOwningEntityIds ->
+				ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
+			}
+			val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefault(
+				_options.requestedPermission,
+				com.icure.sdk.model.requests.RequestedPermission.MaxWrite
+			) { requestedPermission ->
+				RequestedPermission.valueOf(requestedPermission)
+			}
+			val result = patientApi.shareWith(
+				delegateIdConverted,
+				patientConverted,
+				shareSecretIdsConverted,
+				shareEncryptionKeysConverted,
+				shareOwningEntityIdsConverted,
+				requestedPermissionConverted,
+			)
+			simpleShareResult_toJs(
+				result,
+				{ x1: DecryptedPatient ->
+					patient_toJs(x1)
+				},
+			)
+		}
+	}
 
 	override fun tryShareWithMany(patient: DecryptedPatientJs,
 			delegates: Record<String, PatientShareOptionsJs>):
 			Promise<SimpleShareResultJs<DecryptedPatientJs>> = GlobalScope.promise {
+		val patientConverted: DecryptedPatient = patient_fromJs(patient)
+		val delegatesConverted: Map<String, PatientShareOptions> = objectToMap(
+			delegates,
+			"delegates",
+			{ x1: String ->
+				x1
+			},
+			{ x1: PatientShareOptionsJs ->
+				patientShareOptions_fromJs(x1)
+			},
+		)
+		val result = patientApi.tryShareWithMany(
+			patientConverted,
+			delegatesConverted,
+		)
 		simpleShareResult_toJs(
-			patientApi.tryShareWithMany(com.icure.sdk.js.model.patient_fromJs(patient),
-					com.icure.sdk.js.model.CheckedConverters.objectToMap(
-			  delegates,
-			  "delegates",
-			  { x1: kotlin.String ->
-			    x1
-			  },
-			  { x1: com.icure.sdk.js.crypto.entities.PatientShareOptionsJs ->
-			    com.icure.sdk.js.crypto.entities.patientShareOptions_fromJs(x1)
-			  },
-			)),
+			result,
 			{ x1: DecryptedPatient ->
 				patient_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun shareWithMany(patient: DecryptedPatientJs,
 			delegates: Record<String, PatientShareOptionsJs>): Promise<DecryptedPatientJs> =
 			GlobalScope.promise {
-		patient_toJs(patientApi.shareWithMany(com.icure.sdk.js.model.patient_fromJs(patient),
-				com.icure.sdk.js.model.CheckedConverters.objectToMap(
-		  delegates,
-		  "delegates",
-		  { x1: kotlin.String ->
-		    x1
-		  },
-		  { x1: com.icure.sdk.js.crypto.entities.PatientShareOptionsJs ->
-		    com.icure.sdk.js.crypto.entities.patientShareOptions_fromJs(x1)
-		  },
-		)))}
-
+		val patientConverted: DecryptedPatient = patient_fromJs(patient)
+		val delegatesConverted: Map<String, PatientShareOptions> = objectToMap(
+			delegates,
+			"delegates",
+			{ x1: String ->
+				x1
+			},
+			{ x1: PatientShareOptionsJs ->
+				patientShareOptions_fromJs(x1)
+			},
+		)
+		val result = patientApi.shareWithMany(
+			patientConverted,
+			delegatesConverted,
+		)
+		patient_toJs(result)
+	}
 
 	override fun initialiseConfidentialSecretId(patient: DecryptedPatientJs):
 			Promise<DecryptedPatientJs> = GlobalScope.promise {
-		patient_toJs(patientApi.initialiseConfidentialSecretId(com.icure.sdk.js.model.patient_fromJs(patient)))}
-
+		val patientConverted: DecryptedPatient = patient_fromJs(patient)
+		val result = patientApi.initialiseConfidentialSecretId(
+			patientConverted,
+		)
+		patient_toJs(result)
+	}
 
 	override fun modifyPatient(entity: DecryptedPatientJs): Promise<DecryptedPatientJs> =
 			GlobalScope.promise {
-		patient_toJs(patientApi.modifyPatient(com.icure.sdk.js.model.patient_fromJs(entity)))}
-
+		val entityConverted: DecryptedPatient = patient_fromJs(entity)
+		val result = patientApi.modifyPatient(
+			entityConverted,
+		)
+		patient_toJs(result)
+	}
 
 	override fun getPatient(entityId: String): Promise<DecryptedPatientJs> = GlobalScope.promise {
-		patient_toJs(patientApi.getPatient(entityId))}
+		val entityIdConverted: String = entityId
+		val result = patientApi.getPatient(
+			entityIdConverted,
+		)
+		patient_toJs(result)
+	}
 
+	override fun filterPatientsBy(filterChain: FilterChainJs<PatientJs>,
+			options: PatientApi_filterPatientsBy_Options?): Promise<PaginatedListJs<DecryptedPatientJs>> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val filterChainConverted: FilterChain<Patient> = filterChain_fromJs(
+				filterChain,
+				{ x1: PatientJs ->
+					patient_fromJs(x1)
+				},
+			)
+			val startKeyConverted: String? = convertingOptionOrDefault(
+				_options.startKey,
+				null
+			) { startKey ->
+				startKey
+			}
+			val startDocumentIdConverted: String? = convertingOptionOrDefault(
+				_options.startDocumentId,
+				null
+			) { startDocumentId ->
+				startDocumentId
+			}
+			val limitConverted: Int? = convertingOptionOrDefault(
+				_options.limit,
+				null
+			) { limit ->
+				numberToInt(limit, "limit")
+			}
+			val skipConverted: Int? = convertingOptionOrDefault(
+				_options.skip,
+				null
+			) { skip ->
+				numberToInt(skip, "skip")
+			}
+			val sortConverted: String? = convertingOptionOrDefault(
+				_options.sort,
+				null
+			) { sort ->
+				sort
+			}
+			val descConverted: Boolean? = convertingOptionOrDefault(
+				_options.desc,
+				null
+			) { desc ->
+				desc
+			}
+			val result = patientApi.filterPatientsBy(
+				filterChainConverted,
+				startKeyConverted,
+				startDocumentIdConverted,
+				limitConverted,
+				skipConverted,
+				sortConverted,
+				descConverted,
+			)
+			paginatedList_toJs(
+				result,
+				{ x1: DecryptedPatient ->
+					patient_toJs(x1)
+				},
+			)
+		}
+	}
 
-	override fun filterPatientsBy(
-		filterChain: FilterChainJs<PatientJs>,
-		startKey: String?,
-		startDocumentId: String?,
-		limit: Double?,
-		skip: Double?,
-		sort: String?,
-		desc: Boolean?,
-	): Promise<PaginatedListJs<DecryptedPatientJs>> = GlobalScope.promise {
-		paginatedList_toJs(
-			patientApi.filterPatientsBy(com.icure.sdk.js.model.filter.chain.filterChain_fromJs(
-			  filterChain,
-			  { x1: com.icure.sdk.js.model.PatientJs ->
-			    com.icure.sdk.js.model.patient_fromJs(x1)
-			  },
-			), startKey, startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit,
-					"limit"), com.icure.sdk.js.model.CheckedConverters.numberToInt(skip, "skip"), sort, desc),
-			{ x1: DecryptedPatient ->
-				patient_toJs(x1)
-			},
-		)}
+	override fun findPatientsByNameBirthSsinAuto(filterValue: String,
+			options: PatientApi_findPatientsByNameBirthSsinAuto_Options?):
+			Promise<PaginatedListJs<DecryptedPatientJs>> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val healthcarePartyIdConverted: String? = convertingOptionOrDefault(
+				_options.healthcarePartyId,
+				null
+			) { healthcarePartyId ->
+				healthcarePartyId
+			}
+			val filterValueConverted: String = filterValue
+			val startKeyConverted: String? = convertingOptionOrDefault(
+				_options.startKey,
+				null
+			) { startKey ->
+				startKey
+			}
+			val startDocumentIdConverted: String? = convertingOptionOrDefault(
+				_options.startDocumentId,
+				null
+			) { startDocumentId ->
+				startDocumentId
+			}
+			val limitConverted: Int? = convertingOptionOrDefault(
+				_options.limit,
+				null
+			) { limit ->
+				numberToInt(limit, "limit")
+			}
+			val sortDirectionConverted: SortDirection = convertingOptionOrDefault(
+				_options.sortDirection,
+				com.icure.sdk.model.couchdb.SortDirection.Asc
+			) { sortDirection ->
+				SortDirection.valueOf(sortDirection)
+			}
+			val result = patientApi.findPatientsByNameBirthSsinAuto(
+				healthcarePartyIdConverted,
+				filterValueConverted,
+				startKeyConverted,
+				startDocumentIdConverted,
+				limitConverted,
+				sortDirectionConverted,
+			)
+			paginatedList_toJs(
+				result,
+				{ x1: DecryptedPatient ->
+					patient_toJs(x1)
+				},
+			)
+		}
+	}
 
-
-	override fun findPatientsByNameBirthSsinAuto(
-		healthcarePartyId: String?,
-		filterValue: String,
-		startKey: String?,
-		startDocumentId: String?,
-		limit: Double?,
-		sortDirection: String,
-	): Promise<PaginatedListJs<DecryptedPatientJs>> = GlobalScope.promise {
-		paginatedList_toJs(
-			patientApi.findPatientsByNameBirthSsinAuto(healthcarePartyId, filterValue, startKey,
-					startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit"),
-					com.icure.sdk.model.couchdb.SortDirection.valueOf(sortDirection)),
-			{ x1: DecryptedPatient ->
-				patient_toJs(x1)
-			},
-		)}
-
-
-	override fun listPatientsOfHcParty(
-		hcPartyId: String,
-		sortField: String,
-		startKey: String?,
-		startDocumentId: String?,
-		limit: Double?,
-		sortDirection: String,
-	): Promise<PaginatedListJs<DecryptedPatientJs>> = GlobalScope.promise {
-		paginatedList_toJs(
-			patientApi.listPatientsOfHcParty(hcPartyId, sortField, startKey, startDocumentId,
-					com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit"),
-					com.icure.sdk.model.couchdb.SortDirection.valueOf(sortDirection)),
-			{ x1: DecryptedPatient ->
-				patient_toJs(x1)
-			},
-		)}
-
+	override fun listPatientsOfHcParty(hcPartyId: String,
+			options: PatientApi_listPatientsOfHcParty_Options?):
+			Promise<PaginatedListJs<DecryptedPatientJs>> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val hcPartyIdConverted: String = hcPartyId
+			val sortFieldConverted: String = convertingOptionOrDefault(
+				_options.sortField,
+				"name"
+			) { sortField ->
+				sortField
+			}
+			val startKeyConverted: String? = convertingOptionOrDefault(
+				_options.startKey,
+				null
+			) { startKey ->
+				startKey
+			}
+			val startDocumentIdConverted: String? = convertingOptionOrDefault(
+				_options.startDocumentId,
+				null
+			) { startDocumentId ->
+				startDocumentId
+			}
+			val limitConverted: Int? = convertingOptionOrDefault(
+				_options.limit,
+				null
+			) { limit ->
+				numberToInt(limit, "limit")
+			}
+			val sortDirectionConverted: SortDirection = convertingOptionOrDefault(
+				_options.sortDirection,
+				com.icure.sdk.model.couchdb.SortDirection.Asc
+			) { sortDirection ->
+				SortDirection.valueOf(sortDirection)
+			}
+			val result = patientApi.listPatientsOfHcParty(
+				hcPartyIdConverted,
+				sortFieldConverted,
+				startKeyConverted,
+				startDocumentIdConverted,
+				limitConverted,
+				sortDirectionConverted,
+			)
+			paginatedList_toJs(
+				result,
+				{ x1: DecryptedPatient ->
+					patient_toJs(x1)
+				},
+			)
+		}
+	}
 
 	override fun listOfMergesAfter(date: Double): Promise<Array<DecryptedPatientJs>> =
 			GlobalScope.promise {
+		val dateConverted: Long = numberToLong(date, "date")
+		val result = patientApi.listOfMergesAfter(
+			dateConverted,
+		)
 		listToArray(
-			patientApi.listOfMergesAfter(numberToLong(date, "date")),
+			result,
 			{ x1: DecryptedPatient ->
 				patient_toJs(x1)
 			},
-		)}
+		)
+	}
 
+	override fun findPatientsModifiedAfter(date: Double,
+			options: PatientApi_findPatientsModifiedAfter_Options?):
+			Promise<PaginatedListJs<DecryptedPatientJs>> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val dateConverted: Long = numberToLong(date, "date")
+			val startKeyConverted: Long? = convertingOptionOrDefault(
+				_options.startKey,
+				null
+			) { startKey ->
+				numberToLong(startKey, "startKey")
+			}
+			val startDocumentIdConverted: String? = convertingOptionOrDefault(
+				_options.startDocumentId,
+				null
+			) { startDocumentId ->
+				startDocumentId
+			}
+			val limitConverted: Int? = convertingOptionOrDefault(
+				_options.limit,
+				null
+			) { limit ->
+				numberToInt(limit, "limit")
+			}
+			val result = patientApi.findPatientsModifiedAfter(
+				dateConverted,
+				startKeyConverted,
+				startDocumentIdConverted,
+				limitConverted,
+			)
+			paginatedList_toJs(
+				result,
+				{ x1: DecryptedPatient ->
+					patient_toJs(x1)
+				},
+			)
+		}
+	}
 
-	override fun findPatientsModifiedAfter(
-		date: Double,
-		startKey: Double?,
-		startDocumentId: String?,
-		limit: Double?,
-	): Promise<PaginatedListJs<DecryptedPatientJs>> = GlobalScope.promise {
-		paginatedList_toJs(
-			patientApi.findPatientsModifiedAfter(com.icure.sdk.js.model.CheckedConverters.numberToLong(date,
-					"date"), com.icure.sdk.js.model.CheckedConverters.numberToLong(startKey, "startKey"),
-					startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
-			{ x1: DecryptedPatient ->
-				patient_toJs(x1)
-			},
-		)}
-
-
-	override fun listPatientsByHcParty(
-		hcPartyId: String,
-		sortField: String,
-		startKey: String?,
-		startDocumentId: String?,
-		limit: Double?,
-		sortDirection: String,
-	): Promise<PaginatedListJs<DecryptedPatientJs>> = GlobalScope.promise {
-		paginatedList_toJs(
-			patientApi.listPatientsByHcParty(hcPartyId, sortField, startKey, startDocumentId,
-					com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit"),
-					com.icure.sdk.model.couchdb.SortDirection.valueOf(sortDirection)),
-			{ x1: DecryptedPatient ->
-				patient_toJs(x1)
-			},
-		)}
-
+	override fun listPatientsByHcParty(hcPartyId: String,
+			options: PatientApi_listPatientsByHcParty_Options?):
+			Promise<PaginatedListJs<DecryptedPatientJs>> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val hcPartyIdConverted: String = hcPartyId
+			val sortFieldConverted: String = convertingOptionOrDefault(
+				_options.sortField,
+				"name"
+			) { sortField ->
+				sortField
+			}
+			val startKeyConverted: String? = convertingOptionOrDefault(
+				_options.startKey,
+				null
+			) { startKey ->
+				startKey
+			}
+			val startDocumentIdConverted: String? = convertingOptionOrDefault(
+				_options.startDocumentId,
+				null
+			) { startDocumentId ->
+				startDocumentId
+			}
+			val limitConverted: Int? = convertingOptionOrDefault(
+				_options.limit,
+				null
+			) { limit ->
+				numberToInt(limit, "limit")
+			}
+			val sortDirectionConverted: SortDirection = convertingOptionOrDefault(
+				_options.sortDirection,
+				com.icure.sdk.model.couchdb.SortDirection.Asc
+			) { sortDirection ->
+				SortDirection.valueOf(sortDirection)
+			}
+			val result = patientApi.listPatientsByHcParty(
+				hcPartyIdConverted,
+				sortFieldConverted,
+				startKeyConverted,
+				startDocumentIdConverted,
+				limitConverted,
+				sortDirectionConverted,
+			)
+			paginatedList_toJs(
+				result,
+				{ x1: DecryptedPatient ->
+					patient_toJs(x1)
+				},
+			)
+		}
+	}
 
 	override fun getPatientHcPartyKeysForDelegate(patientId: String): Promise<Record<String, String>> =
 			GlobalScope.promise {
+		val patientIdConverted: String = patientId
+		val result = patientApi.getPatientHcPartyKeysForDelegate(
+			patientIdConverted,
+		)
 		mapToObject(
-			patientApi.getPatientHcPartyKeysForDelegate(patientId),
+			result,
 			{ x1: String ->
 				x1
 			},
 			{ x1: String ->
 				x1
 			},
-		)}
-
+		)
+	}
 
 	override fun countOfPatients(hcPartyId: String): Promise<EncryptedContentJs> =
 			GlobalScope.promise {
-		content_toJs(patientApi.countOfPatients(hcPartyId))}
+		val hcPartyIdConverted: String = hcPartyId
+		val result = patientApi.countOfPatients(
+			hcPartyIdConverted,
+		)
+		content_toJs(result)
+	}
 
+	override
+			fun findPatientsByHealthcareParty(options: PatientApi_findPatientsByHealthcareParty_Options?):
+			Promise<PaginatedListJs<DecryptedPatientJs>> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val hcPartyIdConverted: String? = convertingOptionOrDefault(
+				_options.hcPartyId,
+				null
+			) { hcPartyId ->
+				hcPartyId
+			}
+			val sortFieldConverted: String = convertingOptionOrDefault(
+				_options.sortField,
+				"name"
+			) { sortField ->
+				sortField
+			}
+			val startKeyConverted: String? = convertingOptionOrDefault(
+				_options.startKey,
+				null
+			) { startKey ->
+				startKey
+			}
+			val startDocumentIdConverted: String? = convertingOptionOrDefault(
+				_options.startDocumentId,
+				null
+			) { startDocumentId ->
+				startDocumentId
+			}
+			val limitConverted: Int? = convertingOptionOrDefault(
+				_options.limit,
+				null
+			) { limit ->
+				numberToInt(limit, "limit")
+			}
+			val sortDirectionConverted: SortDirection = convertingOptionOrDefault(
+				_options.sortDirection,
+				com.icure.sdk.model.couchdb.SortDirection.Asc
+			) { sortDirection ->
+				SortDirection.valueOf(sortDirection)
+			}
+			val result = patientApi.findPatientsByHealthcareParty(
+				hcPartyIdConverted,
+				sortFieldConverted,
+				startKeyConverted,
+				startDocumentIdConverted,
+				limitConverted,
+				sortDirectionConverted,
+			)
+			paginatedList_toJs(
+				result,
+				{ x1: DecryptedPatient ->
+					patient_toJs(x1)
+				},
+			)
+		}
+	}
 
-	override fun findPatientsByHealthcareParty(
-		hcPartyId: String?,
-		sortField: String,
-		startKey: String?,
-		startDocumentId: String?,
-		limit: Double?,
-		sortDirection: String,
-	): Promise<PaginatedListJs<DecryptedPatientJs>> = GlobalScope.promise {
-		paginatedList_toJs(
-			patientApi.findPatientsByHealthcareParty(hcPartyId, sortField, startKey, startDocumentId,
-					com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit"),
-					com.icure.sdk.model.couchdb.SortDirection.valueOf(sortDirection)),
-			{ x1: DecryptedPatient ->
-				patient_toJs(x1)
-			},
-		)}
-
-
-	override fun findPatientsIdsByHealthcareParty(
-		hcPartyId: String,
-		startKey: String?,
-		startDocumentId: String?,
-		limit: Double?,
-	): Promise<PaginatedListJs<String>> = GlobalScope.promise {
-		paginatedList_toJs(
-			patientApi.findPatientsIdsByHealthcareParty(hcPartyId, startKey, startDocumentId,
-					com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
-			{ x1: String ->
-				x1
-			},
-		)}
-
+	override fun findPatientsIdsByHealthcareParty(hcPartyId: String,
+			options: PatientApi_findPatientsIdsByHealthcareParty_Options?):
+			Promise<PaginatedListJs<String>> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val hcPartyIdConverted: String = hcPartyId
+			val startKeyConverted: String? = convertingOptionOrDefault(
+				_options.startKey,
+				null
+			) { startKey ->
+				startKey
+			}
+			val startDocumentIdConverted: String? = convertingOptionOrDefault(
+				_options.startDocumentId,
+				null
+			) { startDocumentId ->
+				startDocumentId
+			}
+			val limitConverted: Int? = convertingOptionOrDefault(
+				_options.limit,
+				null
+			) { limit ->
+				numberToInt(limit, "limit")
+			}
+			val result = patientApi.findPatientsIdsByHealthcareParty(
+				hcPartyIdConverted,
+				startKeyConverted,
+				startDocumentIdConverted,
+				limitConverted,
+			)
+			paginatedList_toJs(
+				result,
+				{ x1: String ->
+					x1
+				},
+			)
+		}
+	}
 
 	override fun getPatientByExternalId(externalId: String): Promise<DecryptedPatientJs> =
 			GlobalScope.promise {
-		patient_toJs(patientApi.getPatientByExternalId(externalId))}
-
+		val externalIdConverted: String = externalId
+		val result = patientApi.getPatientByExternalId(
+			externalIdConverted,
+		)
+		patient_toJs(result)
+	}
 
 	override fun fuzzySearch(
 		firstName: String,
 		lastName: String,
-		dateOfBirth: Double?,
-	): Promise<Array<DecryptedPatientJs>> = GlobalScope.promise {
-		listToArray(
-			patientApi.fuzzySearch(firstName, lastName, numberToInt(dateOfBirth, "dateOfBirth")),
-			{ x1: DecryptedPatient ->
-				patient_toJs(x1)
-			},
-		)}
+		options: PatientApi_fuzzySearch_Options?,
+	): Promise<Array<DecryptedPatientJs>> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val firstNameConverted: String = firstName
+			val lastNameConverted: String = lastName
+			val dateOfBirthConverted: Int? = convertingOptionOrDefault(
+				_options.dateOfBirth,
+				null
+			) { dateOfBirth ->
+				numberToInt(dateOfBirth, "dateOfBirth")
+			}
+			val result = patientApi.fuzzySearch(
+				firstNameConverted,
+				lastNameConverted,
+				dateOfBirthConverted,
+			)
+			listToArray(
+				result,
+				{ x1: DecryptedPatient ->
+					patient_toJs(x1)
+				},
+			)
+		}
+	}
 
+	override fun findDeletedPatients(startDate: Double,
+			options: PatientApi_findDeletedPatients_Options?): Promise<PaginatedListJs<DecryptedPatientJs>> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val startDateConverted: Long = numberToLong(startDate, "startDate")
+			val endDateConverted: Long? = convertingOptionOrDefault(
+				_options.endDate,
+				null
+			) { endDate ->
+				numberToLong(endDate, "endDate")
+			}
+			val descConverted: Boolean? = convertingOptionOrDefault(
+				_options.desc,
+				null
+			) { desc ->
+				desc
+			}
+			val startKeyConverted: Long? = convertingOptionOrDefault(
+				_options.startKey,
+				null
+			) { startKey ->
+				numberToLong(startKey, "startKey")
+			}
+			val startDocumentIdConverted: String? = convertingOptionOrDefault(
+				_options.startDocumentId,
+				null
+			) { startDocumentId ->
+				startDocumentId
+			}
+			val limitConverted: Int? = convertingOptionOrDefault(
+				_options.limit,
+				null
+			) { limit ->
+				numberToInt(limit, "limit")
+			}
+			val result = patientApi.findDeletedPatients(
+				startDateConverted,
+				endDateConverted,
+				descConverted,
+				startKeyConverted,
+				startDocumentIdConverted,
+				limitConverted,
+			)
+			paginatedList_toJs(
+				result,
+				{ x1: DecryptedPatient ->
+					patient_toJs(x1)
+				},
+			)
+		}
+	}
 
-	override fun findDeletedPatients(
-		startDate: Double,
-		endDate: Double?,
-		desc: Boolean?,
-		startKey: Double?,
-		startDocumentId: String?,
-		limit: Double?,
-	): Promise<PaginatedListJs<DecryptedPatientJs>> = GlobalScope.promise {
-		paginatedList_toJs(
-			patientApi.findDeletedPatients(com.icure.sdk.js.model.CheckedConverters.numberToLong(startDate,
-					"startDate"), com.icure.sdk.js.model.CheckedConverters.numberToLong(endDate, "endDate"), desc,
-					com.icure.sdk.js.model.CheckedConverters.numberToLong(startKey, "startKey"), startDocumentId,
-					com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
-			{ x1: DecryptedPatient ->
-				patient_toJs(x1)
-			},
-		)}
-
-
-	override fun listDeletedPatientsByName(firstName: String?, lastName: String?):
-			Promise<Array<DecryptedPatientJs>> = GlobalScope.promise {
-		listToArray(
-			patientApi.listDeletedPatientsByName(firstName, lastName),
-			{ x1: DecryptedPatient ->
-				patient_toJs(x1)
-			},
-		)}
-
+	override fun listDeletedPatientsByName(options: PatientApi_listDeletedPatientsByName_Options?):
+			Promise<Array<DecryptedPatientJs>> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val firstNameConverted: String? = convertingOptionOrDefault(
+				_options.firstName,
+				null
+			) { firstName ->
+				firstName
+			}
+			val lastNameConverted: String? = convertingOptionOrDefault(
+				_options.lastName,
+				null
+			) { lastName ->
+				lastName
+			}
+			val result = patientApi.listDeletedPatientsByName(
+				firstNameConverted,
+				lastNameConverted,
+			)
+			listToArray(
+				result,
+				{ x1: DecryptedPatient ->
+					patient_toJs(x1)
+				},
+			)
+		}
+	}
 
 	override fun getPatients(patientIds: ListOfIdsJs): Promise<Array<DecryptedPatientJs>> =
 			GlobalScope.promise {
+		val patientIdsConverted: ListOfIds = listOfIds_fromJs(patientIds)
+		val result = patientApi.getPatients(
+			patientIdsConverted,
+		)
 		listToArray(
-			patientApi.getPatients(listOfIds_fromJs(patientIds)),
+			result,
 			{ x1: DecryptedPatient ->
 				patient_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun getPatientByHealthcarePartyAndIdentifier(
 		hcPartyId: String,
 		id: String,
-		system: String?,
-	): Promise<DecryptedPatientJs> = GlobalScope.promise {
-		patient_toJs(patientApi.getPatientByHealthcarePartyAndIdentifier(hcPartyId, id, system))}
-
+		options: PatientApi_getPatientByHealthcarePartyAndIdentifier_Options?,
+	): Promise<DecryptedPatientJs> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val hcPartyIdConverted: String = hcPartyId
+			val idConverted: String = id
+			val systemConverted: String? = convertingOptionOrDefault(
+				_options.system,
+				null
+			) { system ->
+				system
+			}
+			val result = patientApi.getPatientByHealthcarePartyAndIdentifier(
+				hcPartyIdConverted,
+				idConverted,
+				systemConverted,
+			)
+			patient_toJs(result)
+		}
+	}
 
 	override fun modifyPatients(patientDtos: Array<EncryptedPatientJs>): Promise<Array<IdWithRevJs>> =
 			GlobalScope.promise {
+		val patientDtosConverted: List<EncryptedPatient> = arrayToList(
+			patientDtos,
+			"patientDtos",
+			{ x1: EncryptedPatientJs ->
+				patient_fromJs(x1)
+			},
+		)
+		val result = patientApi.modifyPatients(
+			patientDtosConverted,
+		)
 		listToArray(
-			patientApi.modifyPatients(arrayToList(
-				patientDtos,
-				"patientDtos",
-				{ x1: EncryptedPatientJs ->
-					patient_fromJs(x1)
-				},
-			)),
+			result,
 			{ x1: IdWithRev ->
 				idWithRev_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun modifyPatientReferral(
 		patientId: String,
 		referralId: String,
-		start: Double?,
-		end: Double?,
-	): Promise<DecryptedPatientJs> = GlobalScope.promise {
-		patient_toJs(patientApi.modifyPatientReferral(patientId, referralId,
-				com.icure.sdk.js.model.CheckedConverters.numberToLong(start, "start"),
-				com.icure.sdk.js.model.CheckedConverters.numberToLong(end, "end")))}
+		options: PatientApi_modifyPatientReferral_Options?,
+	): Promise<DecryptedPatientJs> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val patientIdConverted: String = patientId
+			val referralIdConverted: String = referralId
+			val startConverted: Long? = convertingOptionOrDefault(
+				_options.start,
+				null
+			) { start ->
+				numberToLong(start, "start")
+			}
+			val endConverted: Long? = convertingOptionOrDefault(
+				_options.end,
+				null
+			) { end ->
+				numberToLong(end, "end")
+			}
+			val result = patientApi.modifyPatientReferral(
+				patientIdConverted,
+				referralIdConverted,
+				startConverted,
+				endConverted,
+			)
+			patient_toJs(result)
+		}
+	}
 
+	override fun findDuplicatesBySsin(hcPartyId: String,
+			options: PatientApi_findDuplicatesBySsin_Options?):
+			Promise<PaginatedListJs<DecryptedPatientJs>> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val hcPartyIdConverted: String = hcPartyId
+			val startKeyConverted: String? = convertingOptionOrDefault(
+				_options.startKey,
+				null
+			) { startKey ->
+				startKey
+			}
+			val startDocumentIdConverted: String? = convertingOptionOrDefault(
+				_options.startDocumentId,
+				null
+			) { startDocumentId ->
+				startDocumentId
+			}
+			val limitConverted: Int? = convertingOptionOrDefault(
+				_options.limit,
+				null
+			) { limit ->
+				numberToInt(limit, "limit")
+			}
+			val result = patientApi.findDuplicatesBySsin(
+				hcPartyIdConverted,
+				startKeyConverted,
+				startDocumentIdConverted,
+				limitConverted,
+			)
+			paginatedList_toJs(
+				result,
+				{ x1: DecryptedPatient ->
+					patient_toJs(x1)
+				},
+			)
+		}
+	}
 
-	override fun findDuplicatesBySsin(
-		hcPartyId: String,
-		startKey: String?,
-		startDocumentId: String?,
-		limit: Double?,
-	): Promise<PaginatedListJs<DecryptedPatientJs>> = GlobalScope.promise {
-		paginatedList_toJs(
-			patientApi.findDuplicatesBySsin(hcPartyId, startKey, startDocumentId,
-					com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
-			{ x1: DecryptedPatient ->
-				patient_toJs(x1)
-			},
-		)}
-
-
-	override fun findDuplicatesByName(
-		hcPartyId: String,
-		startKey: String?,
-		startDocumentId: String?,
-		limit: Double?,
-	): Promise<PaginatedListJs<DecryptedPatientJs>> = GlobalScope.promise {
-		paginatedList_toJs(
-			patientApi.findDuplicatesByName(hcPartyId, startKey, startDocumentId,
-					com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
-			{ x1: DecryptedPatient ->
-				patient_toJs(x1)
-			},
-		)}
-
+	override fun findDuplicatesByName(hcPartyId: String,
+			options: PatientApi_findDuplicatesByName_Options?):
+			Promise<PaginatedListJs<DecryptedPatientJs>> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val hcPartyIdConverted: String = hcPartyId
+			val startKeyConverted: String? = convertingOptionOrDefault(
+				_options.startKey,
+				null
+			) { startKey ->
+				startKey
+			}
+			val startDocumentIdConverted: String? = convertingOptionOrDefault(
+				_options.startDocumentId,
+				null
+			) { startDocumentId ->
+				startDocumentId
+			}
+			val limitConverted: Int? = convertingOptionOrDefault(
+				_options.limit,
+				null
+			) { limit ->
+				numberToInt(limit, "limit")
+			}
+			val result = patientApi.findDuplicatesByName(
+				hcPartyIdConverted,
+				startKeyConverted,
+				startDocumentIdConverted,
+				limitConverted,
+			)
+			paginatedList_toJs(
+				result,
+				{ x1: DecryptedPatient ->
+					patient_toJs(x1)
+				},
+			)
+		}
+	}
 
 	override fun mergePatients(
 		intoId: String,
@@ -1431,43 +3065,88 @@ internal class PatientApiImplJs(
 		expectedFromRev: String,
 		updatedInto: EncryptedPatientJs,
 	): Promise<DecryptedPatientJs> = GlobalScope.promise {
-		patient_toJs(patientApi.mergePatients(intoId, fromId, expectedFromRev,
-				com.icure.sdk.js.model.patient_fromJs(updatedInto)))}
-
+		val intoIdConverted: String = intoId
+		val fromIdConverted: String = fromId
+		val expectedFromRevConverted: String = expectedFromRev
+		val updatedIntoConverted: EncryptedPatient = patient_fromJs(updatedInto)
+		val result = patientApi.mergePatients(
+			intoIdConverted,
+			fromIdConverted,
+			expectedFromRevConverted,
+			updatedIntoConverted,
+		)
+		patient_toJs(result)
+	}
 
 	override fun subscribeToEvents(
 		events: Array<String>,
 		filter: AbstractFilterJs<PatientJs>,
-		onConnected: () -> Promise<Unit>,
-		channelCapacity: Double,
-		retryDelay: Double,
-		retryDelayExponentFactor: Double,
-		maxRetries: Double,
 		eventFired: (DecryptedPatientJs) -> Promise<Unit>,
-	): Promise<ConnectionJs> = GlobalScope.promise {
-		val onConnectedConverted: suspend () -> Unit = {  ->
-			onConnected(
-			).await()
+		options: PatientApi_subscribeToEvents_Options?,
+	): Promise<ConnectionJs> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
+				events,
+				"events",
+				{ x1: String ->
+					SubscriptionEventType.valueOf(x1)
+				},
+			)
+			val filterConverted: AbstractFilter<Patient> = abstractFilter_fromJs(
+				filter,
+				{ x1: PatientJs ->
+					patient_fromJs(x1)
+				},
+			)
+			val onConnectedConverted: suspend () -> Unit = convertingOptionOrDefault(
+				_options.onConnected,
+				{}
+			) { onConnected ->
+				{  ->
+					onConnected().await()
+				}
+			}
+			val channelCapacityConverted: Int = convertingOptionOrDefault(
+				_options.channelCapacity,
+				kotlinx.coroutines.channels.Channel.BUFFERED
+			) { channelCapacity ->
+				numberToInt(channelCapacity, "channelCapacity")
+			}
+			val retryDelayConverted: Duration = convertingOptionOrDefault(
+				_options.retryDelay,
+				2.seconds
+			) { retryDelay ->
+				numberToDuration(retryDelay, "retryDelay")
+			}
+			val retryDelayExponentFactorConverted: Double = convertingOptionOrDefault(
+				_options.retryDelayExponentFactor,
+				2.0
+			) { retryDelayExponentFactor ->
+				retryDelayExponentFactor
+			}
+			val maxRetriesConverted: Int = convertingOptionOrDefault(
+				_options.maxRetries,
+				5
+			) { maxRetries ->
+				numberToInt(maxRetries, "maxRetries")
+			}
+			val eventFiredConverted: suspend (DecryptedPatient) -> Unit = { arg0 ->
+				eventFired(
+					patient_toJs(arg0),
+				).await()
+			}
+			val result = patientApi.subscribeToEvents(
+				eventsConverted,
+				filterConverted,
+				onConnectedConverted,
+				channelCapacityConverted,
+				retryDelayConverted,
+				retryDelayExponentFactorConverted,
+				maxRetriesConverted,
+				eventFiredConverted,
+			)
+			connection_toJs(result)
 		}
-		val eventFiredConverted: suspend (DecryptedPatient) -> Unit = { arg0 ->
-			eventFired(
-				patient_toJs(arg0)).await()
-		}
-		connection_toJs(patientApi.subscribeToEvents(com.icure.sdk.js.model.CheckedConverters.arrayToSet(
-		  events,
-		  "events",
-		  { x1: kotlin.String ->
-		    com.icure.sdk.model.notification.SubscriptionEventType.valueOf(x1)
-		  },
-		), com.icure.sdk.js.model.filter.abstractFilter_fromJs(
-		  filter,
-		  { x1: com.icure.sdk.js.model.PatientJs ->
-		    com.icure.sdk.js.model.patient_fromJs(x1)
-		  },
-		), onConnectedConverted, com.icure.sdk.js.model.CheckedConverters.numberToInt(channelCapacity,
-				"channelCapacity"), com.icure.sdk.js.model.CheckedConverters.numberToDuration(retryDelay,
-				"retryDelay"), retryDelayExponentFactor,
-				com.icure.sdk.js.model.CheckedConverters.numberToInt(maxRetries, "maxRetries"),
-				eventFiredConverted))}
-
+	}
 }

@@ -2,33 +2,52 @@
 package com.icure.sdk.js.api.flavoured.`impl`
 
 import com.icure.sdk.api.flavoured.MessageApi
+import com.icure.sdk.crypto.entities.MessageShareOptions
+import com.icure.sdk.crypto.entities.SecretIdOption
+import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
+import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefault
 import com.icure.sdk.js.api.flavoured.MessageApiJs
+import com.icure.sdk.js.api.flavoured.MessageApi_findMessagesByHcPartyPatient_Options
+import com.icure.sdk.js.api.flavoured.MessageApi_findMessagesByTransportGuidSentDate_Options
+import com.icure.sdk.js.api.flavoured.MessageApi_shareWith_Options
+import com.icure.sdk.js.api.flavoured.MessageApi_subscribeToEvents_Options
+import com.icure.sdk.js.api.flavoured.MessageApi_withEncryptionMetadata_Options
 import com.icure.sdk.js.api.flavoured.MessageFlavouredApiJs
+import com.icure.sdk.js.api.flavoured.MessageFlavouredApi_findMessagesByHcPartyPatient_Options
+import com.icure.sdk.js.api.flavoured.MessageFlavouredApi_findMessagesByTransportGuidSentDate_Options
+import com.icure.sdk.js.api.flavoured.MessageFlavouredApi_shareWith_Options
+import com.icure.sdk.js.api.flavoured.MessageFlavouredApi_subscribeToEvents_Options
 import com.icure.sdk.js.crypto.entities.MessageShareOptionsJs
-import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
+import com.icure.sdk.js.crypto.entities.messageShareOptions_fromJs
+import com.icure.sdk.js.crypto.entities.secretIdOption_fromJs
 import com.icure.sdk.js.crypto.entities.simpleShareResult_toJs
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.arrayToSet
+import com.icure.sdk.js.model.CheckedConverters.dynamicToJsonNullsafe
 import com.icure.sdk.js.model.CheckedConverters.listToArray
+import com.icure.sdk.js.model.CheckedConverters.numberToDuration
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
+import com.icure.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.sdk.js.model.CheckedConverters.setToArray
 import com.icure.sdk.js.model.DecryptedMessageJs
 import com.icure.sdk.js.model.EncryptedMessageJs
 import com.icure.sdk.js.model.MessageJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.PatientJs
-import com.icure.sdk.js.model.UserJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.couchdb.docIdentifier_toJs
 import com.icure.sdk.js.model.filter.AbstractFilterJs
 import com.icure.sdk.js.model.filter.abstractFilter_fromJs
 import com.icure.sdk.js.model.filter.chain.FilterChainJs
+import com.icure.sdk.js.model.filter.chain.filterChain_fromJs
 import com.icure.sdk.js.model.message_fromJs
 import com.icure.sdk.js.model.message_toJs
 import com.icure.sdk.js.model.paginatedList_toJs
+import com.icure.sdk.js.model.patient_fromJs
 import com.icure.sdk.js.model.specializations.hexString_toJs
+import com.icure.sdk.js.model.user_fromJs
 import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.sdk.js.utils.pagination.paginatedListIterator_toJs
@@ -37,19 +56,34 @@ import com.icure.sdk.js.websocket.connection_toJs
 import com.icure.sdk.model.DecryptedMessage
 import com.icure.sdk.model.EncryptedMessage
 import com.icure.sdk.model.Message
+import com.icure.sdk.model.Patient
+import com.icure.sdk.model.User
 import com.icure.sdk.model.couchdb.DocIdentifier
+import com.icure.sdk.model.embed.AccessLevel
+import com.icure.sdk.model.filter.AbstractFilter
+import com.icure.sdk.model.filter.chain.FilterChain
+import com.icure.sdk.model.notification.SubscriptionEventType
+import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
+import kotlin.Int
+import kotlin.Long
 import kotlin.OptIn
 import kotlin.String
 import kotlin.Unit
+import kotlin.collections.List
+import kotlin.collections.Map
+import kotlin.collections.Set
 import kotlin.js.Promise
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.await
 import kotlinx.coroutines.promise
+import kotlinx.serialization.json.JsonElement
 
 @OptIn(DelicateCoroutinesApi::class)
 internal class MessageApiImplJs(
@@ -61,244 +95,390 @@ internal class MessageApiImplJs(
 			delegateId: String,
 			message: EncryptedMessageJs,
 			shareSecretIds: Array<String>,
-			shareEncryptionKeys: String,
-			shareOwningEntityIds: String,
-			requestedPermission: String,
-		): Promise<SimpleShareResultJs<EncryptedMessageJs>> = GlobalScope.promise {
-			simpleShareResult_toJs(
-				messageApi.encrypted.shareWith(delegateId, com.icure.sdk.js.model.message_fromJs(message),
-						com.icure.sdk.js.model.CheckedConverters.arrayToSet(
-				  shareSecretIds,
-				  "shareSecretIds",
-				  { x1: kotlin.String ->
-				    x1
-				  },
-				), com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareEncryptionKeys),
-						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareOwningEntityIds),
-						com.icure.sdk.model.requests.RequestedPermission.valueOf(requestedPermission)),
-				{ x1: EncryptedMessage ->
-					message_toJs(x1)
-				},
-			)}
-
+			options: MessageFlavouredApi_shareWith_Options?,
+		): Promise<SimpleShareResultJs<EncryptedMessageJs>> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val delegateIdConverted: String = delegateId
+				val messageConverted: EncryptedMessage = message_fromJs(message)
+				val shareSecretIdsConverted: Set<String> = arrayToSet(
+					shareSecretIds,
+					"shareSecretIds",
+					{ x1: String ->
+						x1
+					},
+				)
+				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
+					_options.shareEncryptionKeys,
+					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
+				) { shareEncryptionKeys ->
+					ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
+				}
+				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
+					_options.shareOwningEntityIds,
+					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
+				) { shareOwningEntityIds ->
+					ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
+				}
+				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefault(
+					_options.requestedPermission,
+					com.icure.sdk.model.requests.RequestedPermission.MaxWrite
+				) { requestedPermission ->
+					RequestedPermission.valueOf(requestedPermission)
+				}
+				val result = messageApi.encrypted.shareWith(
+					delegateIdConverted,
+					messageConverted,
+					shareSecretIdsConverted,
+					shareEncryptionKeysConverted,
+					shareOwningEntityIdsConverted,
+					requestedPermissionConverted,
+				)
+				simpleShareResult_toJs(
+					result,
+					{ x1: EncryptedMessage ->
+						message_toJs(x1)
+					},
+				)
+			}
+		}
 
 		override fun tryShareWithMany(message: EncryptedMessageJs,
 				delegates: Record<String, MessageShareOptionsJs>):
 				Promise<SimpleShareResultJs<EncryptedMessageJs>> = GlobalScope.promise {
+			val messageConverted: EncryptedMessage = message_fromJs(message)
+			val delegatesConverted: Map<String, MessageShareOptions> = objectToMap(
+				delegates,
+				"delegates",
+				{ x1: String ->
+					x1
+				},
+				{ x1: MessageShareOptionsJs ->
+					messageShareOptions_fromJs(x1)
+				},
+			)
+			val result = messageApi.encrypted.tryShareWithMany(
+				messageConverted,
+				delegatesConverted,
+			)
 			simpleShareResult_toJs(
-				messageApi.encrypted.tryShareWithMany(com.icure.sdk.js.model.message_fromJs(message),
-						com.icure.sdk.js.model.CheckedConverters.objectToMap(
-				  delegates,
-				  "delegates",
-				  { x1: kotlin.String ->
-				    x1
-				  },
-				  { x1: com.icure.sdk.js.crypto.entities.MessageShareOptionsJs ->
-				    com.icure.sdk.js.crypto.entities.messageShareOptions_fromJs(x1)
-				  },
-				)),
+				result,
 				{ x1: EncryptedMessage ->
 					message_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun shareWithMany(message: EncryptedMessageJs,
 				delegates: Record<String, MessageShareOptionsJs>): Promise<EncryptedMessageJs> =
 				GlobalScope.promise {
-			message_toJs(messageApi.encrypted.shareWithMany(com.icure.sdk.js.model.message_fromJs(message),
-					com.icure.sdk.js.model.CheckedConverters.objectToMap(
-			  delegates,
-			  "delegates",
-			  { x1: kotlin.String ->
-			    x1
-			  },
-			  { x1: com.icure.sdk.js.crypto.entities.MessageShareOptionsJs ->
-			    com.icure.sdk.js.crypto.entities.messageShareOptions_fromJs(x1)
-			  },
-			)))}
-
+			val messageConverted: EncryptedMessage = message_fromJs(message)
+			val delegatesConverted: Map<String, MessageShareOptions> = objectToMap(
+				delegates,
+				"delegates",
+				{ x1: String ->
+					x1
+				},
+				{ x1: MessageShareOptionsJs ->
+					messageShareOptions_fromJs(x1)
+				},
+			)
+			val result = messageApi.encrypted.shareWithMany(
+				messageConverted,
+				delegatesConverted,
+			)
+			message_toJs(result)
+		}
 
 		override fun findMessagesByHcPartyPatient(
 			hcPartyId: String,
 			patient: PatientJs,
-			startDate: Double?,
-			endDate: Double?,
-			descending: Boolean?,
-		): Promise<PaginatedListIteratorJs<EncryptedMessageJs>> = GlobalScope.promise {
-			paginatedListIterator_toJs(
-				messageApi.encrypted.findMessagesByHcPartyPatient(hcPartyId,
-						com.icure.sdk.js.model.patient_fromJs(patient),
-						com.icure.sdk.js.model.CheckedConverters.numberToLong(startDate, "startDate"),
-						com.icure.sdk.js.model.CheckedConverters.numberToLong(endDate, "endDate"), descending),
-				{ x1: EncryptedMessage ->
-					message_toJs(x1)
-				},
-			)}
-
+			options: MessageFlavouredApi_findMessagesByHcPartyPatient_Options?,
+		): Promise<PaginatedListIteratorJs<EncryptedMessageJs>> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val hcPartyIdConverted: String = hcPartyId
+				val patientConverted: Patient = patient_fromJs(patient)
+				val startDateConverted: Long? = convertingOptionOrDefault(
+					_options.startDate,
+					null
+				) { startDate ->
+					numberToLong(startDate, "startDate")
+				}
+				val endDateConverted: Long? = convertingOptionOrDefault(
+					_options.endDate,
+					null
+				) { endDate ->
+					numberToLong(endDate, "endDate")
+				}
+				val descendingConverted: Boolean? = convertingOptionOrDefault(
+					_options.descending,
+					null
+				) { descending ->
+					descending
+				}
+				val result = messageApi.encrypted.findMessagesByHcPartyPatient(
+					hcPartyIdConverted,
+					patientConverted,
+					startDateConverted,
+					endDateConverted,
+					descendingConverted,
+				)
+				paginatedListIterator_toJs(
+					result,
+					{ x1: EncryptedMessage ->
+						message_toJs(x1)
+					},
+				)
+			}
+		}
 
 		override fun modifyMessage(entity: EncryptedMessageJs): Promise<EncryptedMessageJs> =
 				GlobalScope.promise {
-			message_toJs(messageApi.encrypted.modifyMessage(com.icure.sdk.js.model.message_fromJs(entity)))}
-
+			val entityConverted: EncryptedMessage = message_fromJs(entity)
+			val result = messageApi.encrypted.modifyMessage(
+				entityConverted,
+			)
+			message_toJs(result)
+		}
 
 		override fun getMessage(entityId: String): Promise<EncryptedMessageJs> = GlobalScope.promise {
-			message_toJs(messageApi.encrypted.getMessage(entityId))}
-
+			val entityIdConverted: String = entityId
+			val result = messageApi.encrypted.getMessage(
+				entityIdConverted,
+			)
+			message_toJs(result)
+		}
 
 		override fun getMessages(entityIds: Array<String>): Promise<Array<EncryptedMessageJs>> =
 				GlobalScope.promise {
+			val entityIdsConverted: List<String> = arrayToList(
+				entityIds,
+				"entityIds",
+				{ x1: String ->
+					x1
+				},
+			)
+			val result = messageApi.encrypted.getMessages(
+				entityIdsConverted,
+			)
 			listToArray(
-				messageApi.encrypted.getMessages(arrayToList(
-					entityIds,
-					"entityIds",
-					{ x1: String ->
-						x1
-					},
-				)),
+				result,
 				{ x1: EncryptedMessage ->
 					message_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun filterMessagesBy(
 			filterChain: FilterChainJs<MessageJs>,
 			startDocumentId: String?,
 			limit: Double?,
 		): Promise<PaginatedListJs<EncryptedMessageJs>> = GlobalScope.promise {
+			val filterChainConverted: FilterChain<Message> = filterChain_fromJs(
+				filterChain,
+				{ x1: MessageJs ->
+					message_fromJs(x1)
+				},
+			)
+			val startDocumentIdConverted: String? = startDocumentId
+			val limitConverted: Int? = numberToInt(limit, "limit")
+			val result = messageApi.encrypted.filterMessagesBy(
+				filterChainConverted,
+				startDocumentIdConverted,
+				limitConverted,
+			)
 			paginatedList_toJs(
-				messageApi.encrypted.filterMessagesBy(com.icure.sdk.js.model.filter.chain.filterChain_fromJs(
-				  filterChain,
-				  { x1: com.icure.sdk.js.model.MessageJs ->
-				    com.icure.sdk.js.model.message_fromJs(x1)
-				  },
-				), startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
+				result,
 				{ x1: EncryptedMessage ->
 					message_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun listMessagesByTransportGuids(hcPartyId: String, transportGuids: Array<String>):
 				Promise<Array<EncryptedMessageJs>> = GlobalScope.promise {
+			val hcPartyIdConverted: String = hcPartyId
+			val transportGuidsConverted: List<String> = arrayToList(
+				transportGuids,
+				"transportGuids",
+				{ x1: String ->
+					x1
+				},
+			)
+			val result = messageApi.encrypted.listMessagesByTransportGuids(
+				hcPartyIdConverted,
+				transportGuidsConverted,
+			)
 			listToArray(
-				messageApi.encrypted.listMessagesByTransportGuids(hcPartyId, arrayToList(
-					transportGuids,
-					"transportGuids",
-					{ x1: String ->
-						x1
-					},
-				)),
+				result,
 				{ x1: EncryptedMessage ->
 					message_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun findMessagesByHCPartyPatientForeignKeys(secretPatientKeys: Array<String>):
 				Promise<Array<EncryptedMessageJs>> = GlobalScope.promise {
+			val secretPatientKeysConverted: List<String> = arrayToList(
+				secretPatientKeys,
+				"secretPatientKeys",
+				{ x1: String ->
+					x1
+				},
+			)
+			val result = messageApi.encrypted.findMessagesByHCPartyPatientForeignKeys(
+				secretPatientKeysConverted,
+			)
 			listToArray(
-				messageApi.encrypted.findMessagesByHCPartyPatientForeignKeys(arrayToList(
-					secretPatientKeys,
-					"secretPatientKeys",
-					{ x1: String ->
-						x1
-					},
-				)),
+				result,
 				{ x1: EncryptedMessage ->
 					message_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun findMessages(
 			startKey: dynamic,
 			startDocumentId: String?,
 			limit: Double?,
 		): Promise<PaginatedListJs<EncryptedMessageJs>> = GlobalScope.promise {
+			val startKeyConverted: JsonElement? = dynamicToJsonNullsafe(startKey, "startKey")
+			val startDocumentIdConverted: String? = startDocumentId
+			val limitConverted: Int? = numberToInt(limit, "limit")
+			val result = messageApi.encrypted.findMessages(
+				startKeyConverted,
+				startDocumentIdConverted,
+				limitConverted,
+			)
 			paginatedList_toJs(
-				messageApi.encrypted.findMessages(com.icure.sdk.js.model.CheckedConverters.dynamicToJsonNullsafe(startKey,
-						"startKey"), startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit,
-						"limit")),
+				result,
 				{ x1: EncryptedMessage ->
 					message_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun getChildrenMessages(messageId: String): Promise<Array<EncryptedMessageJs>> =
 				GlobalScope.promise {
+			val messageIdConverted: String = messageId
+			val result = messageApi.encrypted.getChildrenMessages(
+				messageIdConverted,
+			)
 			listToArray(
-				messageApi.encrypted.getChildrenMessages(messageId),
+				result,
 				{ x1: EncryptedMessage ->
 					message_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun getMessagesChildren(messageIds: Array<String>): Promise<Array<EncryptedMessageJs>> =
 				GlobalScope.promise {
+			val messageIdsConverted: List<String> = arrayToList(
+				messageIds,
+				"messageIds",
+				{ x1: String ->
+					x1
+				},
+			)
+			val result = messageApi.encrypted.getMessagesChildren(
+				messageIdsConverted,
+			)
 			listToArray(
-				messageApi.encrypted.getMessagesChildren(arrayToList(
-					messageIds,
-					"messageIds",
-					{ x1: String ->
-						x1
-					},
-				)),
+				result,
 				{ x1: EncryptedMessage ->
 					message_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun listMessagesByInvoices(invoiceIds: Array<String>): Promise<Array<EncryptedMessageJs>>
 				= GlobalScope.promise {
+			val invoiceIdsConverted: List<String> = arrayToList(
+				invoiceIds,
+				"invoiceIds",
+				{ x1: String ->
+					x1
+				},
+			)
+			val result = messageApi.encrypted.listMessagesByInvoices(
+				invoiceIdsConverted,
+			)
 			listToArray(
-				messageApi.encrypted.listMessagesByInvoices(arrayToList(
-					invoiceIds,
-					"invoiceIds",
-					{ x1: String ->
-						x1
-					},
-				)),
+				result,
 				{ x1: EncryptedMessage ->
 					message_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun findMessagesByTransportGuid(transportGuid: String):
 				Promise<PaginatedListJs<EncryptedMessageJs>> = GlobalScope.promise {
+			val transportGuidConverted: String = transportGuid
+			val result = messageApi.encrypted.findMessagesByTransportGuid(
+				transportGuidConverted,
+			)
 			paginatedList_toJs(
-				messageApi.encrypted.findMessagesByTransportGuid(transportGuid),
+				result,
 				{ x1: EncryptedMessage ->
 					message_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun findMessagesByTransportGuidSentDate(
 			transportGuid: String,
 			from: Double,
 			to: Double,
-			startKey: dynamic,
-			startDocumentId: String?,
-			limit: Double?,
-			hcpId: String?,
-		): Promise<PaginatedListJs<EncryptedMessageJs>> = GlobalScope.promise {
-			paginatedList_toJs(
-				messageApi.encrypted.findMessagesByTransportGuidSentDate(transportGuid,
-						com.icure.sdk.js.model.CheckedConverters.numberToLong(from, "from"),
-						com.icure.sdk.js.model.CheckedConverters.numberToLong(to, "to"),
-						com.icure.sdk.js.model.CheckedConverters.dynamicToJsonNullsafe(startKey, "startKey"),
-						startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit"), hcpId),
-				{ x1: EncryptedMessage ->
-					message_toJs(x1)
-				},
-			)}
-
+			options: MessageFlavouredApi_findMessagesByTransportGuidSentDate_Options?,
+		): Promise<PaginatedListJs<EncryptedMessageJs>> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val transportGuidConverted: String = transportGuid
+				val fromConverted: Long = numberToLong(from, "from")
+				val toConverted: Long = numberToLong(to, "to")
+				val startKeyConverted: JsonElement? = convertingOptionOrDefault(
+					_options.startKey,
+					null
+				) { startKey ->
+					dynamicToJsonNullsafe(startKey, "startKey")
+				}
+				val startDocumentIdConverted: String? = convertingOptionOrDefault(
+					_options.startDocumentId,
+					null
+				) { startDocumentId ->
+					startDocumentId
+				}
+				val limitConverted: Int? = convertingOptionOrDefault(
+					_options.limit,
+					null
+				) { limit ->
+					numberToInt(limit, "limit")
+				}
+				val hcpIdConverted: String? = convertingOptionOrDefault(
+					_options.hcpId,
+					null
+				) { hcpId ->
+					hcpId
+				}
+				val result = messageApi.encrypted.findMessagesByTransportGuidSentDate(
+					transportGuidConverted,
+					fromConverted,
+					toConverted,
+					startKeyConverted,
+					startDocumentIdConverted,
+					limitConverted,
+					hcpIdConverted,
+				)
+				paginatedList_toJs(
+					result,
+					{ x1: EncryptedMessage ->
+						message_toJs(x1)
+					},
+				)
+			}
+		}
 
 		override fun findMessagesByToAddress(
 			toAddress: String,
@@ -306,15 +486,23 @@ internal class MessageApiImplJs(
 			startDocumentId: String?,
 			limit: Double?,
 		): Promise<PaginatedListJs<EncryptedMessageJs>> = GlobalScope.promise {
+			val toAddressConverted: String = toAddress
+			val startKeyConverted: JsonElement? = dynamicToJsonNullsafe(startKey, "startKey")
+			val startDocumentIdConverted: String? = startDocumentId
+			val limitConverted: Int? = numberToInt(limit, "limit")
+			val result = messageApi.encrypted.findMessagesByToAddress(
+				toAddressConverted,
+				startKeyConverted,
+				startDocumentIdConverted,
+				limitConverted,
+			)
 			paginatedList_toJs(
-				messageApi.encrypted.findMessagesByToAddress(toAddress,
-						com.icure.sdk.js.model.CheckedConverters.dynamicToJsonNullsafe(startKey, "startKey"),
-						startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
+				result,
 				{ x1: EncryptedMessage ->
 					message_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun findMessagesByFromAddress(
 			fromAddress: String,
@@ -322,31 +510,45 @@ internal class MessageApiImplJs(
 			startDocumentId: String?,
 			limit: Double?,
 		): Promise<PaginatedListJs<EncryptedMessageJs>> = GlobalScope.promise {
+			val fromAddressConverted: String = fromAddress
+			val startKeyConverted: JsonElement? = dynamicToJsonNullsafe(startKey, "startKey")
+			val startDocumentIdConverted: String? = startDocumentId
+			val limitConverted: Int? = numberToInt(limit, "limit")
+			val result = messageApi.encrypted.findMessagesByFromAddress(
+				fromAddressConverted,
+				startKeyConverted,
+				startDocumentIdConverted,
+				limitConverted,
+			)
 			paginatedList_toJs(
-				messageApi.encrypted.findMessagesByFromAddress(fromAddress,
-						com.icure.sdk.js.model.CheckedConverters.dynamicToJsonNullsafe(startKey, "startKey"),
-						startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
+				result,
 				{ x1: EncryptedMessage ->
 					message_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun setMessagesStatusBits(entityIds: Array<String>, statusBits: Double):
 				Promise<Array<EncryptedMessageJs>> = GlobalScope.promise {
+			val entityIdsConverted: List<String> = arrayToList(
+				entityIds,
+				"entityIds",
+				{ x1: String ->
+					x1
+				},
+			)
+			val statusBitsConverted: Int = numberToInt(statusBits, "statusBits")
+			val result = messageApi.encrypted.setMessagesStatusBits(
+				entityIdsConverted,
+				statusBitsConverted,
+			)
 			listToArray(
-				messageApi.encrypted.setMessagesStatusBits(arrayToList(
-					entityIds,
-					"entityIds",
-					{ x1: String ->
-						x1
-					},
-				), numberToInt(statusBits, "statusBits")),
+				result,
 				{ x1: EncryptedMessage ->
 					message_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun setMessagesReadStatus(
 			entityIds: Array<String>,
@@ -354,55 +556,101 @@ internal class MessageApiImplJs(
 			readStatus: Boolean,
 			userId: String,
 		): Promise<Array<EncryptedMessageJs>> = GlobalScope.promise {
+			val entityIdsConverted: List<String> = arrayToList(
+				entityIds,
+				"entityIds",
+				{ x1: String ->
+					x1
+				},
+			)
+			val timeConverted: Long? = numberToLong(time, "time")
+			val readStatusConverted: Boolean = readStatus
+			val userIdConverted: String = userId
+			val result = messageApi.encrypted.setMessagesReadStatus(
+				entityIdsConverted,
+				timeConverted,
+				readStatusConverted,
+				userIdConverted,
+			)
 			listToArray(
-				messageApi.encrypted.setMessagesReadStatus(arrayToList(
-					entityIds,
-					"entityIds",
-					{ x1: String ->
-						x1
-					},
-				), numberToLong(time, "time"), readStatus, userId),
+				result,
 				{ x1: EncryptedMessage ->
 					message_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun subscribeToEvents(
 			events: Array<String>,
 			filter: AbstractFilterJs<MessageJs>,
-			onConnected: () -> Promise<Unit>,
-			channelCapacity: Double,
-			retryDelay: Double,
-			retryDelayExponentFactor: Double,
-			maxRetries: Double,
 			eventFired: (EncryptedMessageJs) -> Promise<Unit>,
-		): Promise<ConnectionJs> = GlobalScope.promise {
-			val onConnectedConverted: suspend () -> Unit = {  ->
-				onConnected(
-				).await()
+			options: MessageFlavouredApi_subscribeToEvents_Options?,
+		): Promise<ConnectionJs> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
+					events,
+					"events",
+					{ x1: String ->
+						SubscriptionEventType.valueOf(x1)
+					},
+				)
+				val filterConverted: AbstractFilter<Message> = abstractFilter_fromJs(
+					filter,
+					{ x1: MessageJs ->
+						message_fromJs(x1)
+					},
+				)
+				val onConnectedConverted: suspend () -> Unit = convertingOptionOrDefault(
+					_options.onConnected,
+					{}
+				) { onConnected ->
+					{  ->
+						onConnected().await()
+					}
+				}
+				val channelCapacityConverted: Int = convertingOptionOrDefault(
+					_options.channelCapacity,
+					kotlinx.coroutines.channels.Channel.BUFFERED
+				) { channelCapacity ->
+					numberToInt(channelCapacity, "channelCapacity")
+				}
+				val retryDelayConverted: Duration = convertingOptionOrDefault(
+					_options.retryDelay,
+					2.seconds
+				) { retryDelay ->
+					numberToDuration(retryDelay, "retryDelay")
+				}
+				val retryDelayExponentFactorConverted: Double = convertingOptionOrDefault(
+					_options.retryDelayExponentFactor,
+					2.0
+				) { retryDelayExponentFactor ->
+					retryDelayExponentFactor
+				}
+				val maxRetriesConverted: Int = convertingOptionOrDefault(
+					_options.maxRetries,
+					5
+				) { maxRetries ->
+					numberToInt(maxRetries, "maxRetries")
+				}
+				val eventFiredConverted: suspend (EncryptedMessage) -> Unit = { arg0 ->
+					eventFired(
+						message_toJs(arg0),
+					).await()
+				}
+				val result = messageApi.encrypted.subscribeToEvents(
+					eventsConverted,
+					filterConverted,
+					onConnectedConverted,
+					channelCapacityConverted,
+					retryDelayConverted,
+					retryDelayExponentFactorConverted,
+					maxRetriesConverted,
+					eventFiredConverted,
+				)
+				connection_toJs(result)
 			}
-			val eventFiredConverted: suspend (EncryptedMessage) -> Unit = { arg0 ->
-				eventFired(
-					message_toJs(arg0)).await()
-			}
-			connection_toJs(messageApi.encrypted.subscribeToEvents(com.icure.sdk.js.model.CheckedConverters.arrayToSet(
-			  events,
-			  "events",
-			  { x1: kotlin.String ->
-			    com.icure.sdk.model.notification.SubscriptionEventType.valueOf(x1)
-			  },
-			), com.icure.sdk.js.model.filter.abstractFilter_fromJs(
-			  filter,
-			  { x1: com.icure.sdk.js.model.MessageJs ->
-			    com.icure.sdk.js.model.message_fromJs(x1)
-			  },
-			), onConnectedConverted, com.icure.sdk.js.model.CheckedConverters.numberToInt(channelCapacity,
-					"channelCapacity"), com.icure.sdk.js.model.CheckedConverters.numberToDuration(retryDelay,
-					"retryDelay"), retryDelayExponentFactor,
-					com.icure.sdk.js.model.CheckedConverters.numberToInt(maxRetries, "maxRetries"),
-					eventFiredConverted))}
-
+		}
 	}
 
 	override val tryAndRecover: MessageFlavouredApiJs<MessageJs> = object :
@@ -411,242 +659,388 @@ internal class MessageApiImplJs(
 			delegateId: String,
 			message: MessageJs,
 			shareSecretIds: Array<String>,
-			shareEncryptionKeys: String,
-			shareOwningEntityIds: String,
-			requestedPermission: String,
-		): Promise<SimpleShareResultJs<MessageJs>> = GlobalScope.promise {
-			simpleShareResult_toJs(
-				messageApi.tryAndRecover.shareWith(delegateId, com.icure.sdk.js.model.message_fromJs(message),
-						com.icure.sdk.js.model.CheckedConverters.arrayToSet(
-				  shareSecretIds,
-				  "shareSecretIds",
-				  { x1: kotlin.String ->
-				    x1
-				  },
-				), com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareEncryptionKeys),
-						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareOwningEntityIds),
-						com.icure.sdk.model.requests.RequestedPermission.valueOf(requestedPermission)),
-				{ x1: Message ->
-					message_toJs(x1)
-				},
-			)}
-
+			options: MessageFlavouredApi_shareWith_Options?,
+		): Promise<SimpleShareResultJs<MessageJs>> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val delegateIdConverted: String = delegateId
+				val messageConverted: Message = message_fromJs(message)
+				val shareSecretIdsConverted: Set<String> = arrayToSet(
+					shareSecretIds,
+					"shareSecretIds",
+					{ x1: String ->
+						x1
+					},
+				)
+				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
+					_options.shareEncryptionKeys,
+					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
+				) { shareEncryptionKeys ->
+					ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
+				}
+				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
+					_options.shareOwningEntityIds,
+					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
+				) { shareOwningEntityIds ->
+					ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
+				}
+				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefault(
+					_options.requestedPermission,
+					com.icure.sdk.model.requests.RequestedPermission.MaxWrite
+				) { requestedPermission ->
+					RequestedPermission.valueOf(requestedPermission)
+				}
+				val result = messageApi.tryAndRecover.shareWith(
+					delegateIdConverted,
+					messageConverted,
+					shareSecretIdsConverted,
+					shareEncryptionKeysConverted,
+					shareOwningEntityIdsConverted,
+					requestedPermissionConverted,
+				)
+				simpleShareResult_toJs(
+					result,
+					{ x1: Message ->
+						message_toJs(x1)
+					},
+				)
+			}
+		}
 
 		override fun tryShareWithMany(message: MessageJs,
 				delegates: Record<String, MessageShareOptionsJs>): Promise<SimpleShareResultJs<MessageJs>> =
 				GlobalScope.promise {
+			val messageConverted: Message = message_fromJs(message)
+			val delegatesConverted: Map<String, MessageShareOptions> = objectToMap(
+				delegates,
+				"delegates",
+				{ x1: String ->
+					x1
+				},
+				{ x1: MessageShareOptionsJs ->
+					messageShareOptions_fromJs(x1)
+				},
+			)
+			val result = messageApi.tryAndRecover.tryShareWithMany(
+				messageConverted,
+				delegatesConverted,
+			)
 			simpleShareResult_toJs(
-				messageApi.tryAndRecover.tryShareWithMany(com.icure.sdk.js.model.message_fromJs(message),
-						com.icure.sdk.js.model.CheckedConverters.objectToMap(
-				  delegates,
-				  "delegates",
-				  { x1: kotlin.String ->
-				    x1
-				  },
-				  { x1: com.icure.sdk.js.crypto.entities.MessageShareOptionsJs ->
-				    com.icure.sdk.js.crypto.entities.messageShareOptions_fromJs(x1)
-				  },
-				)),
+				result,
 				{ x1: Message ->
 					message_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun shareWithMany(message: MessageJs, delegates: Record<String, MessageShareOptionsJs>):
 				Promise<MessageJs> = GlobalScope.promise {
-			message_toJs(messageApi.tryAndRecover.shareWithMany(com.icure.sdk.js.model.message_fromJs(message),
-					com.icure.sdk.js.model.CheckedConverters.objectToMap(
-			  delegates,
-			  "delegates",
-			  { x1: kotlin.String ->
-			    x1
-			  },
-			  { x1: com.icure.sdk.js.crypto.entities.MessageShareOptionsJs ->
-			    com.icure.sdk.js.crypto.entities.messageShareOptions_fromJs(x1)
-			  },
-			)))}
-
+			val messageConverted: Message = message_fromJs(message)
+			val delegatesConverted: Map<String, MessageShareOptions> = objectToMap(
+				delegates,
+				"delegates",
+				{ x1: String ->
+					x1
+				},
+				{ x1: MessageShareOptionsJs ->
+					messageShareOptions_fromJs(x1)
+				},
+			)
+			val result = messageApi.tryAndRecover.shareWithMany(
+				messageConverted,
+				delegatesConverted,
+			)
+			message_toJs(result)
+		}
 
 		override fun findMessagesByHcPartyPatient(
 			hcPartyId: String,
 			patient: PatientJs,
-			startDate: Double?,
-			endDate: Double?,
-			descending: Boolean?,
-		): Promise<PaginatedListIteratorJs<MessageJs>> = GlobalScope.promise {
-			paginatedListIterator_toJs(
-				messageApi.tryAndRecover.findMessagesByHcPartyPatient(hcPartyId,
-						com.icure.sdk.js.model.patient_fromJs(patient),
-						com.icure.sdk.js.model.CheckedConverters.numberToLong(startDate, "startDate"),
-						com.icure.sdk.js.model.CheckedConverters.numberToLong(endDate, "endDate"), descending),
-				{ x1: Message ->
-					message_toJs(x1)
-				},
-			)}
-
+			options: MessageFlavouredApi_findMessagesByHcPartyPatient_Options?,
+		): Promise<PaginatedListIteratorJs<MessageJs>> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val hcPartyIdConverted: String = hcPartyId
+				val patientConverted: Patient = patient_fromJs(patient)
+				val startDateConverted: Long? = convertingOptionOrDefault(
+					_options.startDate,
+					null
+				) { startDate ->
+					numberToLong(startDate, "startDate")
+				}
+				val endDateConverted: Long? = convertingOptionOrDefault(
+					_options.endDate,
+					null
+				) { endDate ->
+					numberToLong(endDate, "endDate")
+				}
+				val descendingConverted: Boolean? = convertingOptionOrDefault(
+					_options.descending,
+					null
+				) { descending ->
+					descending
+				}
+				val result = messageApi.tryAndRecover.findMessagesByHcPartyPatient(
+					hcPartyIdConverted,
+					patientConverted,
+					startDateConverted,
+					endDateConverted,
+					descendingConverted,
+				)
+				paginatedListIterator_toJs(
+					result,
+					{ x1: Message ->
+						message_toJs(x1)
+					},
+				)
+			}
+		}
 
 		override fun modifyMessage(entity: MessageJs): Promise<MessageJs> = GlobalScope.promise {
-			message_toJs(messageApi.tryAndRecover.modifyMessage(com.icure.sdk.js.model.message_fromJs(entity)))}
-
+			val entityConverted: Message = message_fromJs(entity)
+			val result = messageApi.tryAndRecover.modifyMessage(
+				entityConverted,
+			)
+			message_toJs(result)
+		}
 
 		override fun getMessage(entityId: String): Promise<MessageJs> = GlobalScope.promise {
-			message_toJs(messageApi.tryAndRecover.getMessage(entityId))}
-
+			val entityIdConverted: String = entityId
+			val result = messageApi.tryAndRecover.getMessage(
+				entityIdConverted,
+			)
+			message_toJs(result)
+		}
 
 		override fun getMessages(entityIds: Array<String>): Promise<Array<MessageJs>> =
 				GlobalScope.promise {
+			val entityIdsConverted: List<String> = arrayToList(
+				entityIds,
+				"entityIds",
+				{ x1: String ->
+					x1
+				},
+			)
+			val result = messageApi.tryAndRecover.getMessages(
+				entityIdsConverted,
+			)
 			listToArray(
-				messageApi.tryAndRecover.getMessages(arrayToList(
-					entityIds,
-					"entityIds",
-					{ x1: String ->
-						x1
-					},
-				)),
+				result,
 				{ x1: Message ->
 					message_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun filterMessagesBy(
 			filterChain: FilterChainJs<MessageJs>,
 			startDocumentId: String?,
 			limit: Double?,
 		): Promise<PaginatedListJs<MessageJs>> = GlobalScope.promise {
+			val filterChainConverted: FilterChain<Message> = filterChain_fromJs(
+				filterChain,
+				{ x1: MessageJs ->
+					message_fromJs(x1)
+				},
+			)
+			val startDocumentIdConverted: String? = startDocumentId
+			val limitConverted: Int? = numberToInt(limit, "limit")
+			val result = messageApi.tryAndRecover.filterMessagesBy(
+				filterChainConverted,
+				startDocumentIdConverted,
+				limitConverted,
+			)
 			paginatedList_toJs(
-				messageApi.tryAndRecover.filterMessagesBy(com.icure.sdk.js.model.filter.chain.filterChain_fromJs(
-				  filterChain,
-				  { x1: com.icure.sdk.js.model.MessageJs ->
-				    com.icure.sdk.js.model.message_fromJs(x1)
-				  },
-				), startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
+				result,
 				{ x1: Message ->
 					message_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun listMessagesByTransportGuids(hcPartyId: String, transportGuids: Array<String>):
 				Promise<Array<MessageJs>> = GlobalScope.promise {
+			val hcPartyIdConverted: String = hcPartyId
+			val transportGuidsConverted: List<String> = arrayToList(
+				transportGuids,
+				"transportGuids",
+				{ x1: String ->
+					x1
+				},
+			)
+			val result = messageApi.tryAndRecover.listMessagesByTransportGuids(
+				hcPartyIdConverted,
+				transportGuidsConverted,
+			)
 			listToArray(
-				messageApi.tryAndRecover.listMessagesByTransportGuids(hcPartyId, arrayToList(
-					transportGuids,
-					"transportGuids",
-					{ x1: String ->
-						x1
-					},
-				)),
+				result,
 				{ x1: Message ->
 					message_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun findMessagesByHCPartyPatientForeignKeys(secretPatientKeys: Array<String>):
 				Promise<Array<MessageJs>> = GlobalScope.promise {
+			val secretPatientKeysConverted: List<String> = arrayToList(
+				secretPatientKeys,
+				"secretPatientKeys",
+				{ x1: String ->
+					x1
+				},
+			)
+			val result = messageApi.tryAndRecover.findMessagesByHCPartyPatientForeignKeys(
+				secretPatientKeysConverted,
+			)
 			listToArray(
-				messageApi.tryAndRecover.findMessagesByHCPartyPatientForeignKeys(arrayToList(
-					secretPatientKeys,
-					"secretPatientKeys",
-					{ x1: String ->
-						x1
-					},
-				)),
+				result,
 				{ x1: Message ->
 					message_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun findMessages(
 			startKey: dynamic,
 			startDocumentId: String?,
 			limit: Double?,
 		): Promise<PaginatedListJs<MessageJs>> = GlobalScope.promise {
+			val startKeyConverted: JsonElement? = dynamicToJsonNullsafe(startKey, "startKey")
+			val startDocumentIdConverted: String? = startDocumentId
+			val limitConverted: Int? = numberToInt(limit, "limit")
+			val result = messageApi.tryAndRecover.findMessages(
+				startKeyConverted,
+				startDocumentIdConverted,
+				limitConverted,
+			)
 			paginatedList_toJs(
-				messageApi.tryAndRecover.findMessages(com.icure.sdk.js.model.CheckedConverters.dynamicToJsonNullsafe(startKey,
-						"startKey"), startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit,
-						"limit")),
+				result,
 				{ x1: Message ->
 					message_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun getChildrenMessages(messageId: String): Promise<Array<MessageJs>> =
 				GlobalScope.promise {
+			val messageIdConverted: String = messageId
+			val result = messageApi.tryAndRecover.getChildrenMessages(
+				messageIdConverted,
+			)
 			listToArray(
-				messageApi.tryAndRecover.getChildrenMessages(messageId),
+				result,
 				{ x1: Message ->
 					message_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun getMessagesChildren(messageIds: Array<String>): Promise<Array<MessageJs>> =
 				GlobalScope.promise {
+			val messageIdsConverted: List<String> = arrayToList(
+				messageIds,
+				"messageIds",
+				{ x1: String ->
+					x1
+				},
+			)
+			val result = messageApi.tryAndRecover.getMessagesChildren(
+				messageIdsConverted,
+			)
 			listToArray(
-				messageApi.tryAndRecover.getMessagesChildren(arrayToList(
-					messageIds,
-					"messageIds",
-					{ x1: String ->
-						x1
-					},
-				)),
+				result,
 				{ x1: Message ->
 					message_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun listMessagesByInvoices(invoiceIds: Array<String>): Promise<Array<MessageJs>> =
 				GlobalScope.promise {
+			val invoiceIdsConverted: List<String> = arrayToList(
+				invoiceIds,
+				"invoiceIds",
+				{ x1: String ->
+					x1
+				},
+			)
+			val result = messageApi.tryAndRecover.listMessagesByInvoices(
+				invoiceIdsConverted,
+			)
 			listToArray(
-				messageApi.tryAndRecover.listMessagesByInvoices(arrayToList(
-					invoiceIds,
-					"invoiceIds",
-					{ x1: String ->
-						x1
-					},
-				)),
+				result,
 				{ x1: Message ->
 					message_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun findMessagesByTransportGuid(transportGuid: String):
 				Promise<PaginatedListJs<MessageJs>> = GlobalScope.promise {
+			val transportGuidConverted: String = transportGuid
+			val result = messageApi.tryAndRecover.findMessagesByTransportGuid(
+				transportGuidConverted,
+			)
 			paginatedList_toJs(
-				messageApi.tryAndRecover.findMessagesByTransportGuid(transportGuid),
+				result,
 				{ x1: Message ->
 					message_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun findMessagesByTransportGuidSentDate(
 			transportGuid: String,
 			from: Double,
 			to: Double,
-			startKey: dynamic,
-			startDocumentId: String?,
-			limit: Double?,
-			hcpId: String?,
-		): Promise<PaginatedListJs<MessageJs>> = GlobalScope.promise {
-			paginatedList_toJs(
-				messageApi.tryAndRecover.findMessagesByTransportGuidSentDate(transportGuid,
-						com.icure.sdk.js.model.CheckedConverters.numberToLong(from, "from"),
-						com.icure.sdk.js.model.CheckedConverters.numberToLong(to, "to"),
-						com.icure.sdk.js.model.CheckedConverters.dynamicToJsonNullsafe(startKey, "startKey"),
-						startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit"), hcpId),
-				{ x1: Message ->
-					message_toJs(x1)
-				},
-			)}
-
+			options: MessageFlavouredApi_findMessagesByTransportGuidSentDate_Options?,
+		): Promise<PaginatedListJs<MessageJs>> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val transportGuidConverted: String = transportGuid
+				val fromConverted: Long = numberToLong(from, "from")
+				val toConverted: Long = numberToLong(to, "to")
+				val startKeyConverted: JsonElement? = convertingOptionOrDefault(
+					_options.startKey,
+					null
+				) { startKey ->
+					dynamicToJsonNullsafe(startKey, "startKey")
+				}
+				val startDocumentIdConverted: String? = convertingOptionOrDefault(
+					_options.startDocumentId,
+					null
+				) { startDocumentId ->
+					startDocumentId
+				}
+				val limitConverted: Int? = convertingOptionOrDefault(
+					_options.limit,
+					null
+				) { limit ->
+					numberToInt(limit, "limit")
+				}
+				val hcpIdConverted: String? = convertingOptionOrDefault(
+					_options.hcpId,
+					null
+				) { hcpId ->
+					hcpId
+				}
+				val result = messageApi.tryAndRecover.findMessagesByTransportGuidSentDate(
+					transportGuidConverted,
+					fromConverted,
+					toConverted,
+					startKeyConverted,
+					startDocumentIdConverted,
+					limitConverted,
+					hcpIdConverted,
+				)
+				paginatedList_toJs(
+					result,
+					{ x1: Message ->
+						message_toJs(x1)
+					},
+				)
+			}
+		}
 
 		override fun findMessagesByToAddress(
 			toAddress: String,
@@ -654,15 +1048,23 @@ internal class MessageApiImplJs(
 			startDocumentId: String?,
 			limit: Double?,
 		): Promise<PaginatedListJs<MessageJs>> = GlobalScope.promise {
+			val toAddressConverted: String = toAddress
+			val startKeyConverted: JsonElement? = dynamicToJsonNullsafe(startKey, "startKey")
+			val startDocumentIdConverted: String? = startDocumentId
+			val limitConverted: Int? = numberToInt(limit, "limit")
+			val result = messageApi.tryAndRecover.findMessagesByToAddress(
+				toAddressConverted,
+				startKeyConverted,
+				startDocumentIdConverted,
+				limitConverted,
+			)
 			paginatedList_toJs(
-				messageApi.tryAndRecover.findMessagesByToAddress(toAddress,
-						com.icure.sdk.js.model.CheckedConverters.dynamicToJsonNullsafe(startKey, "startKey"),
-						startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
+				result,
 				{ x1: Message ->
 					message_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun findMessagesByFromAddress(
 			fromAddress: String,
@@ -670,31 +1072,45 @@ internal class MessageApiImplJs(
 			startDocumentId: String?,
 			limit: Double?,
 		): Promise<PaginatedListJs<MessageJs>> = GlobalScope.promise {
+			val fromAddressConverted: String = fromAddress
+			val startKeyConverted: JsonElement? = dynamicToJsonNullsafe(startKey, "startKey")
+			val startDocumentIdConverted: String? = startDocumentId
+			val limitConverted: Int? = numberToInt(limit, "limit")
+			val result = messageApi.tryAndRecover.findMessagesByFromAddress(
+				fromAddressConverted,
+				startKeyConverted,
+				startDocumentIdConverted,
+				limitConverted,
+			)
 			paginatedList_toJs(
-				messageApi.tryAndRecover.findMessagesByFromAddress(fromAddress,
-						com.icure.sdk.js.model.CheckedConverters.dynamicToJsonNullsafe(startKey, "startKey"),
-						startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
+				result,
 				{ x1: Message ->
 					message_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun setMessagesStatusBits(entityIds: Array<String>, statusBits: Double):
 				Promise<Array<MessageJs>> = GlobalScope.promise {
+			val entityIdsConverted: List<String> = arrayToList(
+				entityIds,
+				"entityIds",
+				{ x1: String ->
+					x1
+				},
+			)
+			val statusBitsConverted: Int = numberToInt(statusBits, "statusBits")
+			val result = messageApi.tryAndRecover.setMessagesStatusBits(
+				entityIdsConverted,
+				statusBitsConverted,
+			)
 			listToArray(
-				messageApi.tryAndRecover.setMessagesStatusBits(arrayToList(
-					entityIds,
-					"entityIds",
-					{ x1: String ->
-						x1
-					},
-				), numberToInt(statusBits, "statusBits")),
+				result,
 				{ x1: Message ->
 					message_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun setMessagesReadStatus(
 			entityIds: Array<String>,
@@ -702,403 +1118,661 @@ internal class MessageApiImplJs(
 			readStatus: Boolean,
 			userId: String,
 		): Promise<Array<MessageJs>> = GlobalScope.promise {
+			val entityIdsConverted: List<String> = arrayToList(
+				entityIds,
+				"entityIds",
+				{ x1: String ->
+					x1
+				},
+			)
+			val timeConverted: Long? = numberToLong(time, "time")
+			val readStatusConverted: Boolean = readStatus
+			val userIdConverted: String = userId
+			val result = messageApi.tryAndRecover.setMessagesReadStatus(
+				entityIdsConverted,
+				timeConverted,
+				readStatusConverted,
+				userIdConverted,
+			)
 			listToArray(
-				messageApi.tryAndRecover.setMessagesReadStatus(arrayToList(
-					entityIds,
-					"entityIds",
-					{ x1: String ->
-						x1
-					},
-				), numberToLong(time, "time"), readStatus, userId),
+				result,
 				{ x1: Message ->
 					message_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun subscribeToEvents(
 			events: Array<String>,
 			filter: AbstractFilterJs<MessageJs>,
-			onConnected: () -> Promise<Unit>,
-			channelCapacity: Double,
-			retryDelay: Double,
-			retryDelayExponentFactor: Double,
-			maxRetries: Double,
 			eventFired: (MessageJs) -> Promise<Unit>,
-		): Promise<ConnectionJs> = GlobalScope.promise {
-			val onConnectedConverted: suspend () -> Unit = {  ->
-				onConnected(
-				).await()
+			options: MessageFlavouredApi_subscribeToEvents_Options?,
+		): Promise<ConnectionJs> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
+					events,
+					"events",
+					{ x1: String ->
+						SubscriptionEventType.valueOf(x1)
+					},
+				)
+				val filterConverted: AbstractFilter<Message> = abstractFilter_fromJs(
+					filter,
+					{ x1: MessageJs ->
+						message_fromJs(x1)
+					},
+				)
+				val onConnectedConverted: suspend () -> Unit = convertingOptionOrDefault(
+					_options.onConnected,
+					{}
+				) { onConnected ->
+					{  ->
+						onConnected().await()
+					}
+				}
+				val channelCapacityConverted: Int = convertingOptionOrDefault(
+					_options.channelCapacity,
+					kotlinx.coroutines.channels.Channel.BUFFERED
+				) { channelCapacity ->
+					numberToInt(channelCapacity, "channelCapacity")
+				}
+				val retryDelayConverted: Duration = convertingOptionOrDefault(
+					_options.retryDelay,
+					2.seconds
+				) { retryDelay ->
+					numberToDuration(retryDelay, "retryDelay")
+				}
+				val retryDelayExponentFactorConverted: Double = convertingOptionOrDefault(
+					_options.retryDelayExponentFactor,
+					2.0
+				) { retryDelayExponentFactor ->
+					retryDelayExponentFactor
+				}
+				val maxRetriesConverted: Int = convertingOptionOrDefault(
+					_options.maxRetries,
+					5
+				) { maxRetries ->
+					numberToInt(maxRetries, "maxRetries")
+				}
+				val eventFiredConverted: suspend (Message) -> Unit = { arg0 ->
+					eventFired(
+						message_toJs(arg0),
+					).await()
+				}
+				val result = messageApi.tryAndRecover.subscribeToEvents(
+					eventsConverted,
+					filterConverted,
+					onConnectedConverted,
+					channelCapacityConverted,
+					retryDelayConverted,
+					retryDelayExponentFactorConverted,
+					maxRetriesConverted,
+					eventFiredConverted,
+				)
+				connection_toJs(result)
 			}
-			val eventFiredConverted: suspend (Message) -> Unit = { arg0 ->
-				eventFired(
-					message_toJs(arg0)).await()
-			}
-			connection_toJs(messageApi.tryAndRecover.subscribeToEvents(com.icure.sdk.js.model.CheckedConverters.arrayToSet(
-			  events,
-			  "events",
-			  { x1: kotlin.String ->
-			    com.icure.sdk.model.notification.SubscriptionEventType.valueOf(x1)
-			  },
-			), com.icure.sdk.js.model.filter.abstractFilter_fromJs(
-			  filter,
-			  { x1: com.icure.sdk.js.model.MessageJs ->
-			    com.icure.sdk.js.model.message_fromJs(x1)
-			  },
-			), onConnectedConverted, com.icure.sdk.js.model.CheckedConverters.numberToInt(channelCapacity,
-					"channelCapacity"), com.icure.sdk.js.model.CheckedConverters.numberToDuration(retryDelay,
-					"retryDelay"), retryDelayExponentFactor,
-					com.icure.sdk.js.model.CheckedConverters.numberToInt(maxRetries, "maxRetries"),
-					eventFiredConverted))}
-
+		}
 	}
 
 	override fun createMessage(entity: DecryptedMessageJs): Promise<DecryptedMessageJs> =
 			GlobalScope.promise {
-		message_toJs(messageApi.createMessage(com.icure.sdk.js.model.message_fromJs(entity)))}
-
+		val entityConverted: DecryptedMessage = message_fromJs(entity)
+		val result = messageApi.createMessage(
+			entityConverted,
+		)
+		message_toJs(result)
+	}
 
 	override fun withEncryptionMetadata(
 		base: DecryptedMessageJs?,
 		patient: PatientJs?,
-		user: UserJs?,
-		delegates: Record<String, String>,
-		secretId: SecretIdOptionJs,
-	): Promise<DecryptedMessageJs> = GlobalScope.promise {
-		message_toJs(messageApi.withEncryptionMetadata(base?.let { nonNull1 ->
-		  com.icure.sdk.js.model.message_fromJs(nonNull1)
-		}, patient?.let { nonNull1 ->
-		  com.icure.sdk.js.model.patient_fromJs(nonNull1)
-		}, user?.let { nonNull1 ->
-		  com.icure.sdk.js.model.user_fromJs(nonNull1)
-		}, com.icure.sdk.js.model.CheckedConverters.objectToMap(
-		  delegates,
-		  "delegates",
-		  { x1: kotlin.String ->
-		    x1
-		  },
-		  { x1: kotlin.String ->
-		    com.icure.sdk.model.embed.AccessLevel.valueOf(x1)
-		  },
-		), com.icure.sdk.js.crypto.entities.secretIdOption_fromJs(secretId)))}
-
+		options: MessageApi_withEncryptionMetadata_Options?,
+	): Promise<DecryptedMessageJs> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val baseConverted: DecryptedMessage? = base?.let { nonNull1 ->
+				message_fromJs(nonNull1)
+			}
+			val patientConverted: Patient? = patient?.let { nonNull1 ->
+				patient_fromJs(nonNull1)
+			}
+			val userConverted: User? = convertingOptionOrDefault(
+				_options.user,
+				null
+			) { user ->
+				user?.let { nonNull1 ->
+					user_fromJs(nonNull1)
+				}
+			}
+			val delegatesConverted: Map<String, AccessLevel> = convertingOptionOrDefault(
+				_options.delegates,
+				emptyMap()
+			) { delegates ->
+				objectToMap(
+					delegates,
+					"delegates",
+					{ x1: String ->
+						x1
+					},
+					{ x1: String ->
+						AccessLevel.valueOf(x1)
+					},
+				)
+			}
+			val secretIdConverted: SecretIdOption = convertingOptionOrDefault(
+				_options.secretId,
+				com.icure.sdk.crypto.entities.SecretIdOption.UseAnySharedWithParent
+			) { secretId ->
+				secretIdOption_fromJs(secretId)
+			}
+			val result = messageApi.withEncryptionMetadata(
+				baseConverted,
+				patientConverted,
+				userConverted,
+				delegatesConverted,
+				secretIdConverted,
+			)
+			message_toJs(result)
+		}
+	}
 
 	override fun getEncryptionKeysOf(message: MessageJs): Promise<Array<String>> =
 			GlobalScope.promise {
+		val messageConverted: Message = message_fromJs(message)
+		val result = messageApi.getEncryptionKeysOf(
+			messageConverted,
+		)
 		setToArray(
-			messageApi.getEncryptionKeysOf(message_fromJs(message)),
+			result,
 			{ x1: HexString ->
 				hexString_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun hasWriteAccess(message: MessageJs): Promise<Boolean> = GlobalScope.promise {
-		messageApi.hasWriteAccess(message_fromJs(message))}
-
+		val messageConverted: Message = message_fromJs(message)
+		val result = messageApi.hasWriteAccess(
+			messageConverted,
+		)
+		result
+	}
 
 	override fun decryptPatientIdOf(message: MessageJs): Promise<Array<String>> = GlobalScope.promise {
+		val messageConverted: Message = message_fromJs(message)
+		val result = messageApi.decryptPatientIdOf(
+			messageConverted,
+		)
 		setToArray(
-			messageApi.decryptPatientIdOf(message_fromJs(message)),
+			result,
 			{ x1: String ->
 				x1
 			},
-		)}
-
+		)
+	}
 
 	override fun createDelegationDeAnonymizationMetadata(entity: MessageJs, delegates: Array<String>):
 			Promise<Unit> = GlobalScope.promise {
-		messageApi.createDelegationDeAnonymizationMetadata(message_fromJs(entity), arrayToSet(
+		val entityConverted: Message = message_fromJs(entity)
+		val delegatesConverted: Set<String> = arrayToSet(
 			delegates,
 			"delegates",
 			{ x1: String ->
 				x1
 			},
-		))}
+		)
+		messageApi.createDelegationDeAnonymizationMetadata(
+			entityConverted,
+			delegatesConverted,
+		)
 
+	}
 
 	override fun createMessageInTopic(entity: DecryptedMessageJs): Promise<DecryptedMessageJs> =
 			GlobalScope.promise {
-		message_toJs(messageApi.createMessageInTopic(com.icure.sdk.js.model.message_fromJs(entity)))}
-
+		val entityConverted: DecryptedMessage = message_fromJs(entity)
+		val result = messageApi.createMessageInTopic(
+			entityConverted,
+		)
+		message_toJs(result)
+	}
 
 	override fun matchMessagesBy(filter: AbstractFilterJs<MessageJs>): Promise<Array<String>> =
 			GlobalScope.promise {
+		val filterConverted: AbstractFilter<Message> = abstractFilter_fromJs(
+			filter,
+			{ x1: MessageJs ->
+				message_fromJs(x1)
+			},
+		)
+		val result = messageApi.matchMessagesBy(
+			filterConverted,
+		)
 		listToArray(
-			messageApi.matchMessagesBy(abstractFilter_fromJs(
-				filter,
-				{ x1: MessageJs ->
-					message_fromJs(x1)
-				},
-			)),
+			result,
 			{ x1: String ->
 				x1
 			},
-		)}
-
+		)
+	}
 
 	override fun deleteMessage(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {
-		docIdentifier_toJs(messageApi.deleteMessage(entityId))}
-
+		val entityIdConverted: String = entityId
+		val result = messageApi.deleteMessage(
+			entityIdConverted,
+		)
+		docIdentifier_toJs(result)
+	}
 
 	override fun deleteMessages(entityIds: Array<String>): Promise<Array<DocIdentifierJs>> =
 			GlobalScope.promise {
+		val entityIdsConverted: List<String> = arrayToList(
+			entityIds,
+			"entityIds",
+			{ x1: String ->
+				x1
+			},
+		)
+		val result = messageApi.deleteMessages(
+			entityIdsConverted,
+		)
 		listToArray(
-			messageApi.deleteMessages(arrayToList(
-				entityIds,
-				"entityIds",
-				{ x1: String ->
-					x1
-				},
-			)),
+			result,
 			{ x1: DocIdentifier ->
 				docIdentifier_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun shareWith(
 		delegateId: String,
 		message: DecryptedMessageJs,
 		shareSecretIds: Array<String>,
-		shareEncryptionKeys: String,
-		shareOwningEntityIds: String,
-		requestedPermission: String,
-	): Promise<SimpleShareResultJs<DecryptedMessageJs>> = GlobalScope.promise {
-		simpleShareResult_toJs(
-			messageApi.shareWith(delegateId, com.icure.sdk.js.model.message_fromJs(message),
-					com.icure.sdk.js.model.CheckedConverters.arrayToSet(
-			  shareSecretIds,
-			  "shareSecretIds",
-			  { x1: kotlin.String ->
-			    x1
-			  },
-			), com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareEncryptionKeys),
-					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareOwningEntityIds),
-					com.icure.sdk.model.requests.RequestedPermission.valueOf(requestedPermission)),
-			{ x1: DecryptedMessage ->
-				message_toJs(x1)
-			},
-		)}
-
+		options: MessageApi_shareWith_Options?,
+	): Promise<SimpleShareResultJs<DecryptedMessageJs>> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val delegateIdConverted: String = delegateId
+			val messageConverted: DecryptedMessage = message_fromJs(message)
+			val shareSecretIdsConverted: Set<String> = arrayToSet(
+				shareSecretIds,
+				"shareSecretIds",
+				{ x1: String ->
+					x1
+				},
+			)
+			val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
+				_options.shareEncryptionKeys,
+				com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
+			) { shareEncryptionKeys ->
+				ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
+			}
+			val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
+				_options.shareOwningEntityIds,
+				com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
+			) { shareOwningEntityIds ->
+				ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
+			}
+			val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefault(
+				_options.requestedPermission,
+				com.icure.sdk.model.requests.RequestedPermission.MaxWrite
+			) { requestedPermission ->
+				RequestedPermission.valueOf(requestedPermission)
+			}
+			val result = messageApi.shareWith(
+				delegateIdConverted,
+				messageConverted,
+				shareSecretIdsConverted,
+				shareEncryptionKeysConverted,
+				shareOwningEntityIdsConverted,
+				requestedPermissionConverted,
+			)
+			simpleShareResult_toJs(
+				result,
+				{ x1: DecryptedMessage ->
+					message_toJs(x1)
+				},
+			)
+		}
+	}
 
 	override fun tryShareWithMany(message: DecryptedMessageJs,
 			delegates: Record<String, MessageShareOptionsJs>):
 			Promise<SimpleShareResultJs<DecryptedMessageJs>> = GlobalScope.promise {
+		val messageConverted: DecryptedMessage = message_fromJs(message)
+		val delegatesConverted: Map<String, MessageShareOptions> = objectToMap(
+			delegates,
+			"delegates",
+			{ x1: String ->
+				x1
+			},
+			{ x1: MessageShareOptionsJs ->
+				messageShareOptions_fromJs(x1)
+			},
+		)
+		val result = messageApi.tryShareWithMany(
+			messageConverted,
+			delegatesConverted,
+		)
 		simpleShareResult_toJs(
-			messageApi.tryShareWithMany(com.icure.sdk.js.model.message_fromJs(message),
-					com.icure.sdk.js.model.CheckedConverters.objectToMap(
-			  delegates,
-			  "delegates",
-			  { x1: kotlin.String ->
-			    x1
-			  },
-			  { x1: com.icure.sdk.js.crypto.entities.MessageShareOptionsJs ->
-			    com.icure.sdk.js.crypto.entities.messageShareOptions_fromJs(x1)
-			  },
-			)),
+			result,
 			{ x1: DecryptedMessage ->
 				message_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun shareWithMany(message: DecryptedMessageJs,
 			delegates: Record<String, MessageShareOptionsJs>): Promise<DecryptedMessageJs> =
 			GlobalScope.promise {
-		message_toJs(messageApi.shareWithMany(com.icure.sdk.js.model.message_fromJs(message),
-				com.icure.sdk.js.model.CheckedConverters.objectToMap(
-		  delegates,
-		  "delegates",
-		  { x1: kotlin.String ->
-		    x1
-		  },
-		  { x1: com.icure.sdk.js.crypto.entities.MessageShareOptionsJs ->
-		    com.icure.sdk.js.crypto.entities.messageShareOptions_fromJs(x1)
-		  },
-		)))}
-
+		val messageConverted: DecryptedMessage = message_fromJs(message)
+		val delegatesConverted: Map<String, MessageShareOptions> = objectToMap(
+			delegates,
+			"delegates",
+			{ x1: String ->
+				x1
+			},
+			{ x1: MessageShareOptionsJs ->
+				messageShareOptions_fromJs(x1)
+			},
+		)
+		val result = messageApi.shareWithMany(
+			messageConverted,
+			delegatesConverted,
+		)
+		message_toJs(result)
+	}
 
 	override fun findMessagesByHcPartyPatient(
 		hcPartyId: String,
 		patient: PatientJs,
-		startDate: Double?,
-		endDate: Double?,
-		descending: Boolean?,
-	): Promise<PaginatedListIteratorJs<DecryptedMessageJs>> = GlobalScope.promise {
-		paginatedListIterator_toJs(
-			messageApi.findMessagesByHcPartyPatient(hcPartyId,
-					com.icure.sdk.js.model.patient_fromJs(patient),
-					com.icure.sdk.js.model.CheckedConverters.numberToLong(startDate, "startDate"),
-					com.icure.sdk.js.model.CheckedConverters.numberToLong(endDate, "endDate"), descending),
-			{ x1: DecryptedMessage ->
-				message_toJs(x1)
-			},
-		)}
-
+		options: MessageApi_findMessagesByHcPartyPatient_Options?,
+	): Promise<PaginatedListIteratorJs<DecryptedMessageJs>> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val hcPartyIdConverted: String = hcPartyId
+			val patientConverted: Patient = patient_fromJs(patient)
+			val startDateConverted: Long? = convertingOptionOrDefault(
+				_options.startDate,
+				null
+			) { startDate ->
+				numberToLong(startDate, "startDate")
+			}
+			val endDateConverted: Long? = convertingOptionOrDefault(
+				_options.endDate,
+				null
+			) { endDate ->
+				numberToLong(endDate, "endDate")
+			}
+			val descendingConverted: Boolean? = convertingOptionOrDefault(
+				_options.descending,
+				null
+			) { descending ->
+				descending
+			}
+			val result = messageApi.findMessagesByHcPartyPatient(
+				hcPartyIdConverted,
+				patientConverted,
+				startDateConverted,
+				endDateConverted,
+				descendingConverted,
+			)
+			paginatedListIterator_toJs(
+				result,
+				{ x1: DecryptedMessage ->
+					message_toJs(x1)
+				},
+			)
+		}
+	}
 
 	override fun modifyMessage(entity: DecryptedMessageJs): Promise<DecryptedMessageJs> =
 			GlobalScope.promise {
-		message_toJs(messageApi.modifyMessage(com.icure.sdk.js.model.message_fromJs(entity)))}
-
+		val entityConverted: DecryptedMessage = message_fromJs(entity)
+		val result = messageApi.modifyMessage(
+			entityConverted,
+		)
+		message_toJs(result)
+	}
 
 	override fun getMessage(entityId: String): Promise<DecryptedMessageJs> = GlobalScope.promise {
-		message_toJs(messageApi.getMessage(entityId))}
-
+		val entityIdConverted: String = entityId
+		val result = messageApi.getMessage(
+			entityIdConverted,
+		)
+		message_toJs(result)
+	}
 
 	override fun getMessages(entityIds: Array<String>): Promise<Array<DecryptedMessageJs>> =
 			GlobalScope.promise {
+		val entityIdsConverted: List<String> = arrayToList(
+			entityIds,
+			"entityIds",
+			{ x1: String ->
+				x1
+			},
+		)
+		val result = messageApi.getMessages(
+			entityIdsConverted,
+		)
 		listToArray(
-			messageApi.getMessages(arrayToList(
-				entityIds,
-				"entityIds",
-				{ x1: String ->
-					x1
-				},
-			)),
+			result,
 			{ x1: DecryptedMessage ->
 				message_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun filterMessagesBy(
 		filterChain: FilterChainJs<MessageJs>,
 		startDocumentId: String?,
 		limit: Double?,
 	): Promise<PaginatedListJs<DecryptedMessageJs>> = GlobalScope.promise {
+		val filterChainConverted: FilterChain<Message> = filterChain_fromJs(
+			filterChain,
+			{ x1: MessageJs ->
+				message_fromJs(x1)
+			},
+		)
+		val startDocumentIdConverted: String? = startDocumentId
+		val limitConverted: Int? = numberToInt(limit, "limit")
+		val result = messageApi.filterMessagesBy(
+			filterChainConverted,
+			startDocumentIdConverted,
+			limitConverted,
+		)
 		paginatedList_toJs(
-			messageApi.filterMessagesBy(com.icure.sdk.js.model.filter.chain.filterChain_fromJs(
-			  filterChain,
-			  { x1: com.icure.sdk.js.model.MessageJs ->
-			    com.icure.sdk.js.model.message_fromJs(x1)
-			  },
-			), startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
+			result,
 			{ x1: DecryptedMessage ->
 				message_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun listMessagesByTransportGuids(hcPartyId: String, transportGuids: Array<String>):
 			Promise<Array<DecryptedMessageJs>> = GlobalScope.promise {
+		val hcPartyIdConverted: String = hcPartyId
+		val transportGuidsConverted: List<String> = arrayToList(
+			transportGuids,
+			"transportGuids",
+			{ x1: String ->
+				x1
+			},
+		)
+		val result = messageApi.listMessagesByTransportGuids(
+			hcPartyIdConverted,
+			transportGuidsConverted,
+		)
 		listToArray(
-			messageApi.listMessagesByTransportGuids(hcPartyId, arrayToList(
-				transportGuids,
-				"transportGuids",
-				{ x1: String ->
-					x1
-				},
-			)),
+			result,
 			{ x1: DecryptedMessage ->
 				message_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun findMessagesByHCPartyPatientForeignKeys(secretPatientKeys: Array<String>):
 			Promise<Array<DecryptedMessageJs>> = GlobalScope.promise {
+		val secretPatientKeysConverted: List<String> = arrayToList(
+			secretPatientKeys,
+			"secretPatientKeys",
+			{ x1: String ->
+				x1
+			},
+		)
+		val result = messageApi.findMessagesByHCPartyPatientForeignKeys(
+			secretPatientKeysConverted,
+		)
 		listToArray(
-			messageApi.findMessagesByHCPartyPatientForeignKeys(arrayToList(
-				secretPatientKeys,
-				"secretPatientKeys",
-				{ x1: String ->
-					x1
-				},
-			)),
+			result,
 			{ x1: DecryptedMessage ->
 				message_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun findMessages(
 		startKey: dynamic,
 		startDocumentId: String?,
 		limit: Double?,
 	): Promise<PaginatedListJs<DecryptedMessageJs>> = GlobalScope.promise {
+		val startKeyConverted: JsonElement? = dynamicToJsonNullsafe(startKey, "startKey")
+		val startDocumentIdConverted: String? = startDocumentId
+		val limitConverted: Int? = numberToInt(limit, "limit")
+		val result = messageApi.findMessages(
+			startKeyConverted,
+			startDocumentIdConverted,
+			limitConverted,
+		)
 		paginatedList_toJs(
-			messageApi.findMessages(com.icure.sdk.js.model.CheckedConverters.dynamicToJsonNullsafe(startKey,
-					"startKey"), startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit,
-					"limit")),
+			result,
 			{ x1: DecryptedMessage ->
 				message_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun getChildrenMessages(messageId: String): Promise<Array<DecryptedMessageJs>> =
 			GlobalScope.promise {
+		val messageIdConverted: String = messageId
+		val result = messageApi.getChildrenMessages(
+			messageIdConverted,
+		)
 		listToArray(
-			messageApi.getChildrenMessages(messageId),
+			result,
 			{ x1: DecryptedMessage ->
 				message_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun getMessagesChildren(messageIds: Array<String>): Promise<Array<DecryptedMessageJs>> =
 			GlobalScope.promise {
+		val messageIdsConverted: List<String> = arrayToList(
+			messageIds,
+			"messageIds",
+			{ x1: String ->
+				x1
+			},
+		)
+		val result = messageApi.getMessagesChildren(
+			messageIdsConverted,
+		)
 		listToArray(
-			messageApi.getMessagesChildren(arrayToList(
-				messageIds,
-				"messageIds",
-				{ x1: String ->
-					x1
-				},
-			)),
+			result,
 			{ x1: DecryptedMessage ->
 				message_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun listMessagesByInvoices(invoiceIds: Array<String>): Promise<Array<DecryptedMessageJs>>
 			= GlobalScope.promise {
+		val invoiceIdsConverted: List<String> = arrayToList(
+			invoiceIds,
+			"invoiceIds",
+			{ x1: String ->
+				x1
+			},
+		)
+		val result = messageApi.listMessagesByInvoices(
+			invoiceIdsConverted,
+		)
 		listToArray(
-			messageApi.listMessagesByInvoices(arrayToList(
-				invoiceIds,
-				"invoiceIds",
-				{ x1: String ->
-					x1
-				},
-			)),
+			result,
 			{ x1: DecryptedMessage ->
 				message_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun findMessagesByTransportGuid(transportGuid: String):
 			Promise<PaginatedListJs<DecryptedMessageJs>> = GlobalScope.promise {
+		val transportGuidConverted: String = transportGuid
+		val result = messageApi.findMessagesByTransportGuid(
+			transportGuidConverted,
+		)
 		paginatedList_toJs(
-			messageApi.findMessagesByTransportGuid(transportGuid),
+			result,
 			{ x1: DecryptedMessage ->
 				message_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun findMessagesByTransportGuidSentDate(
 		transportGuid: String,
 		from: Double,
 		to: Double,
-		startKey: dynamic,
-		startDocumentId: String?,
-		limit: Double?,
-		hcpId: String?,
-	): Promise<PaginatedListJs<DecryptedMessageJs>> = GlobalScope.promise {
-		paginatedList_toJs(
-			messageApi.findMessagesByTransportGuidSentDate(transportGuid,
-					com.icure.sdk.js.model.CheckedConverters.numberToLong(from, "from"),
-					com.icure.sdk.js.model.CheckedConverters.numberToLong(to, "to"),
-					com.icure.sdk.js.model.CheckedConverters.dynamicToJsonNullsafe(startKey, "startKey"),
-					startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit"), hcpId),
-			{ x1: DecryptedMessage ->
-				message_toJs(x1)
-			},
-		)}
-
+		options: MessageApi_findMessagesByTransportGuidSentDate_Options?,
+	): Promise<PaginatedListJs<DecryptedMessageJs>> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val transportGuidConverted: String = transportGuid
+			val fromConverted: Long = numberToLong(from, "from")
+			val toConverted: Long = numberToLong(to, "to")
+			val startKeyConverted: JsonElement? = convertingOptionOrDefault(
+				_options.startKey,
+				null
+			) { startKey ->
+				dynamicToJsonNullsafe(startKey, "startKey")
+			}
+			val startDocumentIdConverted: String? = convertingOptionOrDefault(
+				_options.startDocumentId,
+				null
+			) { startDocumentId ->
+				startDocumentId
+			}
+			val limitConverted: Int? = convertingOptionOrDefault(
+				_options.limit,
+				null
+			) { limit ->
+				numberToInt(limit, "limit")
+			}
+			val hcpIdConverted: String? = convertingOptionOrDefault(
+				_options.hcpId,
+				null
+			) { hcpId ->
+				hcpId
+			}
+			val result = messageApi.findMessagesByTransportGuidSentDate(
+				transportGuidConverted,
+				fromConverted,
+				toConverted,
+				startKeyConverted,
+				startDocumentIdConverted,
+				limitConverted,
+				hcpIdConverted,
+			)
+			paginatedList_toJs(
+				result,
+				{ x1: DecryptedMessage ->
+					message_toJs(x1)
+				},
+			)
+		}
+	}
 
 	override fun findMessagesByToAddress(
 		toAddress: String,
@@ -1106,15 +1780,23 @@ internal class MessageApiImplJs(
 		startDocumentId: String?,
 		limit: Double?,
 	): Promise<PaginatedListJs<DecryptedMessageJs>> = GlobalScope.promise {
+		val toAddressConverted: String = toAddress
+		val startKeyConverted: JsonElement? = dynamicToJsonNullsafe(startKey, "startKey")
+		val startDocumentIdConverted: String? = startDocumentId
+		val limitConverted: Int? = numberToInt(limit, "limit")
+		val result = messageApi.findMessagesByToAddress(
+			toAddressConverted,
+			startKeyConverted,
+			startDocumentIdConverted,
+			limitConverted,
+		)
 		paginatedList_toJs(
-			messageApi.findMessagesByToAddress(toAddress,
-					com.icure.sdk.js.model.CheckedConverters.dynamicToJsonNullsafe(startKey, "startKey"),
-					startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
+			result,
 			{ x1: DecryptedMessage ->
 				message_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun findMessagesByFromAddress(
 		fromAddress: String,
@@ -1122,31 +1804,45 @@ internal class MessageApiImplJs(
 		startDocumentId: String?,
 		limit: Double?,
 	): Promise<PaginatedListJs<DecryptedMessageJs>> = GlobalScope.promise {
+		val fromAddressConverted: String = fromAddress
+		val startKeyConverted: JsonElement? = dynamicToJsonNullsafe(startKey, "startKey")
+		val startDocumentIdConverted: String? = startDocumentId
+		val limitConverted: Int? = numberToInt(limit, "limit")
+		val result = messageApi.findMessagesByFromAddress(
+			fromAddressConverted,
+			startKeyConverted,
+			startDocumentIdConverted,
+			limitConverted,
+		)
 		paginatedList_toJs(
-			messageApi.findMessagesByFromAddress(fromAddress,
-					com.icure.sdk.js.model.CheckedConverters.dynamicToJsonNullsafe(startKey, "startKey"),
-					startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
+			result,
 			{ x1: DecryptedMessage ->
 				message_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun setMessagesStatusBits(entityIds: Array<String>, statusBits: Double):
 			Promise<Array<DecryptedMessageJs>> = GlobalScope.promise {
+		val entityIdsConverted: List<String> = arrayToList(
+			entityIds,
+			"entityIds",
+			{ x1: String ->
+				x1
+			},
+		)
+		val statusBitsConverted: Int = numberToInt(statusBits, "statusBits")
+		val result = messageApi.setMessagesStatusBits(
+			entityIdsConverted,
+			statusBitsConverted,
+		)
 		listToArray(
-			messageApi.setMessagesStatusBits(arrayToList(
-				entityIds,
-				"entityIds",
-				{ x1: String ->
-					x1
-				},
-			), numberToInt(statusBits, "statusBits")),
+			result,
 			{ x1: DecryptedMessage ->
 				message_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun setMessagesReadStatus(
 		entityIds: Array<String>,
@@ -1154,53 +1850,99 @@ internal class MessageApiImplJs(
 		readStatus: Boolean,
 		userId: String,
 	): Promise<Array<DecryptedMessageJs>> = GlobalScope.promise {
+		val entityIdsConverted: List<String> = arrayToList(
+			entityIds,
+			"entityIds",
+			{ x1: String ->
+				x1
+			},
+		)
+		val timeConverted: Long? = numberToLong(time, "time")
+		val readStatusConverted: Boolean = readStatus
+		val userIdConverted: String = userId
+		val result = messageApi.setMessagesReadStatus(
+			entityIdsConverted,
+			timeConverted,
+			readStatusConverted,
+			userIdConverted,
+		)
 		listToArray(
-			messageApi.setMessagesReadStatus(arrayToList(
-				entityIds,
-				"entityIds",
-				{ x1: String ->
-					x1
-				},
-			), numberToLong(time, "time"), readStatus, userId),
+			result,
 			{ x1: DecryptedMessage ->
 				message_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun subscribeToEvents(
 		events: Array<String>,
 		filter: AbstractFilterJs<MessageJs>,
-		onConnected: () -> Promise<Unit>,
-		channelCapacity: Double,
-		retryDelay: Double,
-		retryDelayExponentFactor: Double,
-		maxRetries: Double,
 		eventFired: (DecryptedMessageJs) -> Promise<Unit>,
-	): Promise<ConnectionJs> = GlobalScope.promise {
-		val onConnectedConverted: suspend () -> Unit = {  ->
-			onConnected(
-			).await()
+		options: MessageApi_subscribeToEvents_Options?,
+	): Promise<ConnectionJs> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
+				events,
+				"events",
+				{ x1: String ->
+					SubscriptionEventType.valueOf(x1)
+				},
+			)
+			val filterConverted: AbstractFilter<Message> = abstractFilter_fromJs(
+				filter,
+				{ x1: MessageJs ->
+					message_fromJs(x1)
+				},
+			)
+			val onConnectedConverted: suspend () -> Unit = convertingOptionOrDefault(
+				_options.onConnected,
+				{}
+			) { onConnected ->
+				{  ->
+					onConnected().await()
+				}
+			}
+			val channelCapacityConverted: Int = convertingOptionOrDefault(
+				_options.channelCapacity,
+				kotlinx.coroutines.channels.Channel.BUFFERED
+			) { channelCapacity ->
+				numberToInt(channelCapacity, "channelCapacity")
+			}
+			val retryDelayConverted: Duration = convertingOptionOrDefault(
+				_options.retryDelay,
+				2.seconds
+			) { retryDelay ->
+				numberToDuration(retryDelay, "retryDelay")
+			}
+			val retryDelayExponentFactorConverted: Double = convertingOptionOrDefault(
+				_options.retryDelayExponentFactor,
+				2.0
+			) { retryDelayExponentFactor ->
+				retryDelayExponentFactor
+			}
+			val maxRetriesConverted: Int = convertingOptionOrDefault(
+				_options.maxRetries,
+				5
+			) { maxRetries ->
+				numberToInt(maxRetries, "maxRetries")
+			}
+			val eventFiredConverted: suspend (DecryptedMessage) -> Unit = { arg0 ->
+				eventFired(
+					message_toJs(arg0),
+				).await()
+			}
+			val result = messageApi.subscribeToEvents(
+				eventsConverted,
+				filterConverted,
+				onConnectedConverted,
+				channelCapacityConverted,
+				retryDelayConverted,
+				retryDelayExponentFactorConverted,
+				maxRetriesConverted,
+				eventFiredConverted,
+			)
+			connection_toJs(result)
 		}
-		val eventFiredConverted: suspend (DecryptedMessage) -> Unit = { arg0 ->
-			eventFired(
-				message_toJs(arg0)).await()
-		}
-		connection_toJs(messageApi.subscribeToEvents(com.icure.sdk.js.model.CheckedConverters.arrayToSet(
-		  events,
-		  "events",
-		  { x1: kotlin.String ->
-		    com.icure.sdk.model.notification.SubscriptionEventType.valueOf(x1)
-		  },
-		), com.icure.sdk.js.model.filter.abstractFilter_fromJs(
-		  filter,
-		  { x1: com.icure.sdk.js.model.MessageJs ->
-		    com.icure.sdk.js.model.message_fromJs(x1)
-		  },
-		), onConnectedConverted, com.icure.sdk.js.model.CheckedConverters.numberToInt(channelCapacity,
-				"channelCapacity"), com.icure.sdk.js.model.CheckedConverters.numberToDuration(retryDelay,
-				"retryDelay"), retryDelayExponentFactor,
-				com.icure.sdk.js.model.CheckedConverters.numberToInt(maxRetries, "maxRetries"),
-				eventFiredConverted))}
-
+	}
 }

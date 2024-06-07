@@ -9,7 +9,7 @@ export interface IcureMaintenanceTaskApi {
 	applyKeyPairUpdate(updateRequest: KeyPairUpdateNotification): Promise<void>;
 
 	createKeyPairUpdateNotificationsToAllDelegationCounterparts(key: SpkiHexString,
-			requestToOwnerTypes: Array<DataOwnerType> | undefined): Promise<void>;
+			options?: { key?: SpkiHexString, requestToOwnerTypes?: Array<DataOwnerType> | undefined }): Promise<void>;
 
 	createKeyPairUpdateNotificationTo(dataOwnerId: string, key: SpkiHexString): Promise<void>;
 

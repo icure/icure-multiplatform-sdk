@@ -19,18 +19,11 @@ export interface MaintenanceTaskBasicApi {
 
 	getMaintenanceTask(entityId: string): Promise<EncryptedMaintenanceTask>;
 
-	filterMaintenanceTasksBy(startDocumentId: string | undefined, limit: number | undefined,
-			filterChain: FilterChain<MaintenanceTask>): Promise<PaginatedList<EncryptedMaintenanceTask>>;
+	filterMaintenanceTasksBy(filterChain: FilterChain<MaintenanceTask>,
+			options?: { startDocumentId?: string | undefined, limit?: number | undefined, filterChain?: FilterChain<MaintenanceTask> }): Promise<PaginatedList<EncryptedMaintenanceTask>>;
 
-	subscribeToEvents(
-			events: Array<SubscriptionEventType>,
-			filter: AbstractFilter<MaintenanceTask>,
-			onConnected: () => Promise<void>,
-			channelCapacity: number,
-			retryDelay: DurationMs,
-			retryDelayExponentFactor: number,
-			maxRetries: number,
-			eventFired: (x1: EncryptedMaintenanceTask) => Promise<void>
-	): Promise<Connection>;
+	subscribeToEvents(events: Array<SubscriptionEventType>, filter: AbstractFilter<MaintenanceTask>,
+			eventFired: (x1: EncryptedMaintenanceTask) => Promise<void>,
+			options?: { events?: Array<SubscriptionEventType>, filter?: AbstractFilter<MaintenanceTask>, onConnected?: () => Promise<void>, channelCapacity?: number, retryDelay?: DurationMs, retryDelayExponentFactor?: number, maxRetries?: number, eventFired?: (x1: EncryptedMaintenanceTask) => Promise<void> }): Promise<Connection>;
 
 }

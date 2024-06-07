@@ -25,9 +25,7 @@ public external interface InvoiceFlavouredApiJs<E : InvoiceJs> {
 	public fun shareWith(
 		delegateId: String,
 		invoice: E,
-		shareEncryptionKeys: String,
-		shareOwningEntityIds: String,
-		requestedPermission: String,
+		options: InvoiceFlavouredApi_shareWith_Options?,
 	): Promise<SimpleShareResultJs<E>>
 
 	public fun tryShareWithMany(invoice: E, delegates: Record<String, InvoiceShareOptionsJs>):
@@ -38,9 +36,7 @@ public external interface InvoiceFlavouredApiJs<E : InvoiceJs> {
 	public fun findInvoicesByHcPartyPatient(
 		hcPartyId: String,
 		patient: PatientJs,
-		startDate: Double?,
-		endDate: Double?,
-		descending: Boolean?,
+		options: InvoiceFlavouredApi_findInvoicesByHcPartyPatient_Options?,
 	): Promise<PaginatedListIteratorJs<E>>
 
 	public fun modifyInvoice(entity: E): Promise<E>
@@ -71,10 +67,8 @@ public external interface InvoiceFlavouredApiJs<E : InvoiceJs> {
 		type: String,
 		sentMediumType: String,
 		secretFKeys: String,
-		insuranceId: String?,
-		invoiceId: String?,
-		gracePeriod: Double?,
 		invoicingCodes: Array<EncryptedInvoicingCodeJs>,
+		options: InvoiceFlavouredApi_appendCodes_Options?,
 	): Promise<Array<E>>
 
 	public fun removeCodes(
@@ -84,14 +78,8 @@ public external interface InvoiceFlavouredApiJs<E : InvoiceJs> {
 		tarificationIds: Array<String>,
 	): Promise<Array<E>>
 
-	public fun findInvoicesByAuthor(
-		hcPartyId: String,
-		fromDate: Double?,
-		toDate: Double?,
-		startKey: dynamic,
-		startDocumentId: String?,
-		limit: Double?,
-	): Promise<PaginatedListJs<E>>
+	public fun findInvoicesByAuthor(hcPartyId: String,
+			options: InvoiceFlavouredApi_findInvoicesByAuthor_Options?): Promise<PaginatedListJs<E>>
 
 	public fun listInvoicesByHCPartyAndPatientForeignKeys(hcPartyId: String,
 			secretPatientKeys: Array<String>): Promise<Array<E>>
@@ -103,8 +91,7 @@ public external interface InvoiceFlavouredApiJs<E : InvoiceJs> {
 		sentMediumType: String,
 		invoiceType: String,
 		sent: Boolean,
-		from: Double?,
-		to: Double?,
+		options: InvoiceFlavouredApi_listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate_Options?,
 	): Promise<Array<E>>
 
 	public fun listInvoicesByContactIds(contactIds: Array<String>): Promise<Array<E>>
@@ -133,8 +120,56 @@ public external interface InvoiceFlavouredApiJs<E : InvoiceJs> {
 
 	public fun listAllHcpsByStatus(
 		status: String,
-		from: Double?,
-		to: Double?,
 		hcpIds: Array<String>,
+		options: InvoiceFlavouredApi_listAllHcpsByStatus_Options?,
 	): Promise<Array<E>>
+}
+
+public external interface InvoiceFlavouredApi_shareWith_Options {
+	public val shareEncryptionKeys: String
+
+	public val shareOwningEntityIds: String
+
+	public val requestedPermission: String
+}
+
+public external interface InvoiceFlavouredApi_findInvoicesByHcPartyPatient_Options {
+	public val startDate: Double?
+
+	public val endDate: Double?
+
+	public val descending: Boolean?
+}
+
+public external interface InvoiceFlavouredApi_appendCodes_Options {
+	public val insuranceId: String?
+
+	public val invoiceId: String?
+
+	public val gracePeriod: Double?
+}
+
+public external interface InvoiceFlavouredApi_findInvoicesByAuthor_Options {
+	public val fromDate: Double?
+
+	public val toDate: Double?
+
+	public val startKey: dynamic
+
+	public val startDocumentId: String?
+
+	public val limit: Double?
+}
+
+public external interface
+		InvoiceFlavouredApi_listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate_Options {
+	public val from: Double?
+
+	public val to: Double?
+}
+
+public external interface InvoiceFlavouredApi_listAllHcpsByStatus_Options {
+	public val from: Double?
+
+	public val to: Double?
 }

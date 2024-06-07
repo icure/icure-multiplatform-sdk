@@ -22,29 +22,47 @@ public external interface TarificationApiJs {
 
 	public fun modifyTarification(tarification: TarificationJs): Promise<TarificationJs>
 
-	public fun findTarificationsByLabel(
-		region: String?,
-		types: String?,
-		language: String?,
-		label: String?,
-		startKey: String?,
-		startDocumentId: String?,
-		limit: Double?,
-	): Promise<PaginatedListJs<TarificationJs>>
+	public fun findTarificationsByLabel(options: TarificationApi_findTarificationsByLabel_Options?):
+			Promise<PaginatedListJs<TarificationJs>>
 
-	public fun findTarificationsBy(
-		region: String?,
-		type: String?,
-		tarification: String?,
-		version: String?,
-		startDocumentId: String?,
-		startKey: String?,
-		limit: Double?,
-	): Promise<PaginatedListJs<TarificationJs>>
+	public fun findTarificationsBy(options: TarificationApi_findTarificationsBy_Options?):
+			Promise<PaginatedListJs<TarificationJs>>
 
 	public fun getTarificationWithParts(
 		type: String,
 		tarification: String,
 		version: String,
 	): Promise<TarificationJs>
+}
+
+public external interface TarificationApi_findTarificationsByLabel_Options {
+	public val region: String?
+
+	public val types: String?
+
+	public val language: String?
+
+	public val label: String?
+
+	public val startKey: String?
+
+	public val startDocumentId: String?
+
+	public val limit: Double?
+}
+
+public external interface TarificationApi_findTarificationsBy_Options {
+	public val region: String?
+
+	public val type: String?
+
+	public val tarification: String?
+
+	public val version: String?
+
+	public val startDocumentId: String?
+
+	public val startKey: String?
+
+	public val limit: Double?
 }

@@ -22,11 +22,17 @@ internal class PermissionApiImplJs(
 ) : PermissionApiJs {
 	override fun modifyUserPermissions(userId: String, permissions: PermissionJs):
 			Promise<Array<PermissionJs>> = GlobalScope.promise {
+		val userIdConverted: String = userId
+		val permissionsConverted: Permission = permission_fromJs(permissions)
+		val result = permissionApi.modifyUserPermissions(
+			userIdConverted,
+			permissionsConverted,
+		)
 		listToArray(
-			permissionApi.modifyUserPermissions(userId, permission_fromJs(permissions)),
+			result,
 			{ x1: Permission ->
 				permission_toJs(x1)
 			},
-		)}
-
+		)
+	}
 }

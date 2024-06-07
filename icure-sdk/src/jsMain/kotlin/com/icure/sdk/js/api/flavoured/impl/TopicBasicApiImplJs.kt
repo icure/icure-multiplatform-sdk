@@ -2,9 +2,15 @@
 package com.icure.sdk.js.api.flavoured.`impl`
 
 import com.icure.sdk.api.flavoured.TopicBasicApi
+import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefault
 import com.icure.sdk.js.api.flavoured.TopicBasicApiJs
+import com.icure.sdk.js.api.flavoured.TopicBasicApi_filterTopicsBy_Options
+import com.icure.sdk.js.api.flavoured.TopicBasicApi_subscribeToEvents_Options
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
+import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.listToArray
+import com.icure.sdk.js.model.CheckedConverters.numberToDuration
+import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.EncryptedTopicJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.TopicJs
@@ -13,19 +19,30 @@ import com.icure.sdk.js.model.couchdb.docIdentifier_toJs
 import com.icure.sdk.js.model.filter.AbstractFilterJs
 import com.icure.sdk.js.model.filter.abstractFilter_fromJs
 import com.icure.sdk.js.model.filter.chain.FilterChainJs
+import com.icure.sdk.js.model.filter.chain.filterChain_fromJs
 import com.icure.sdk.js.model.paginatedList_toJs
 import com.icure.sdk.js.model.topic_fromJs
 import com.icure.sdk.js.model.topic_toJs
 import com.icure.sdk.js.websocket.ConnectionJs
 import com.icure.sdk.js.websocket.connection_toJs
 import com.icure.sdk.model.EncryptedTopic
+import com.icure.sdk.model.Topic
+import com.icure.sdk.model.TopicRole
 import com.icure.sdk.model.couchdb.DocIdentifier
+import com.icure.sdk.model.filter.AbstractFilter
+import com.icure.sdk.model.filter.chain.FilterChain
+import com.icure.sdk.model.notification.SubscriptionEventType
 import kotlin.Array
 import kotlin.Double
+import kotlin.Int
 import kotlin.OptIn
 import kotlin.String
 import kotlin.Unit
+import kotlin.collections.List
+import kotlin.collections.Set
 import kotlin.js.Promise
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.await
@@ -36,132 +53,221 @@ internal class TopicBasicApiImplJs(
 	private val topicBasicApi: TopicBasicApi,
 ) : TopicBasicApiJs {
 	override fun deleteTopic(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {
-		docIdentifier_toJs(topicBasicApi.deleteTopic(entityId))}
-
+		val entityIdConverted: String = entityId
+		val result = topicBasicApi.deleteTopic(
+			entityIdConverted,
+		)
+		docIdentifier_toJs(result)
+	}
 
 	override fun deleteTopics(entityIds: Array<String>): Promise<Array<DocIdentifierJs>> =
 			GlobalScope.promise {
-		listToArray(
-			topicBasicApi.deleteTopics(arrayToList(
-				entityIds,
-				"entityIds",
-				{ x1: String ->
-					x1
-				},
-			)),
-			{ x1: DocIdentifier ->
-				docIdentifier_toJs(x1)
-			},
-		)}
-
-
-	override fun matchTopicsBy(filter: AbstractFilterJs<TopicJs>): Promise<Array<String>> =
-			GlobalScope.promise {
-		listToArray(
-			topicBasicApi.matchTopicsBy(abstractFilter_fromJs(
-				filter,
-				{ x1: TopicJs ->
-					topic_fromJs(x1)
-				},
-			)),
+		val entityIdsConverted: List<String> = arrayToList(
+			entityIds,
+			"entityIds",
 			{ x1: String ->
 				x1
 			},
-		)}
+		)
+		val result = topicBasicApi.deleteTopics(
+			entityIdsConverted,
+		)
+		listToArray(
+			result,
+			{ x1: DocIdentifier ->
+				docIdentifier_toJs(x1)
+			},
+		)
+	}
 
+	override fun matchTopicsBy(filter: AbstractFilterJs<TopicJs>): Promise<Array<String>> =
+			GlobalScope.promise {
+		val filterConverted: AbstractFilter<Topic> = abstractFilter_fromJs(
+			filter,
+			{ x1: TopicJs ->
+				topic_fromJs(x1)
+			},
+		)
+		val result = topicBasicApi.matchTopicsBy(
+			filterConverted,
+		)
+		listToArray(
+			result,
+			{ x1: String ->
+				x1
+			},
+		)
+	}
 
 	override fun modifyTopic(entity: EncryptedTopicJs): Promise<EncryptedTopicJs> =
 			GlobalScope.promise {
-		topic_toJs(topicBasicApi.modifyTopic(com.icure.sdk.js.model.topic_fromJs(entity)))}
-
+		val entityConverted: EncryptedTopic = topic_fromJs(entity)
+		val result = topicBasicApi.modifyTopic(
+			entityConverted,
+		)
+		topic_toJs(result)
+	}
 
 	override fun getTopic(entityId: String): Promise<EncryptedTopicJs> = GlobalScope.promise {
-		topic_toJs(topicBasicApi.getTopic(entityId))}
-
+		val entityIdConverted: String = entityId
+		val result = topicBasicApi.getTopic(
+			entityIdConverted,
+		)
+		topic_toJs(result)
+	}
 
 	override fun getTopics(entityIds: Array<String>): Promise<Array<EncryptedTopicJs>> =
 			GlobalScope.promise {
+		val entityIdsConverted: List<String> = arrayToList(
+			entityIds,
+			"entityIds",
+			{ x1: String ->
+				x1
+			},
+		)
+		val result = topicBasicApi.getTopics(
+			entityIdsConverted,
+		)
 		listToArray(
-			topicBasicApi.getTopics(arrayToList(
-				entityIds,
-				"entityIds",
-				{ x1: String ->
-					x1
+			result,
+			{ x1: EncryptedTopic ->
+				topic_toJs(x1)
+			},
+		)
+	}
+
+	override fun filterTopicsBy(filterChain: FilterChainJs<TopicJs>,
+			options: TopicBasicApi_filterTopicsBy_Options?): Promise<PaginatedListJs<EncryptedTopicJs>> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val startDocumentIdConverted: String? = convertingOptionOrDefault(
+				_options.startDocumentId,
+				null
+			) { startDocumentId ->
+				startDocumentId
+			}
+			val limitConverted: Int? = convertingOptionOrDefault(
+				_options.limit,
+				null
+			) { limit ->
+				numberToInt(limit, "limit")
+			}
+			val filterChainConverted: FilterChain<Topic> = filterChain_fromJs(
+				filterChain,
+				{ x1: TopicJs ->
+					topic_fromJs(x1)
 				},
-			)),
-			{ x1: EncryptedTopic ->
-				topic_toJs(x1)
-			},
-		)}
-
-
-	override fun filterTopicsBy(
-		startDocumentId: String?,
-		limit: Double?,
-		filterChain: FilterChainJs<TopicJs>,
-	): Promise<PaginatedListJs<EncryptedTopicJs>> = GlobalScope.promise {
-		paginatedList_toJs(
-			topicBasicApi.filterTopicsBy(startDocumentId,
-					com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit"),
-					com.icure.sdk.js.model.filter.chain.filterChain_fromJs(
-			  filterChain,
-			  { x1: com.icure.sdk.js.model.TopicJs ->
-			    com.icure.sdk.js.model.topic_fromJs(x1)
-			  },
-			)),
-			{ x1: EncryptedTopic ->
-				topic_toJs(x1)
-			},
-		)}
-
+			)
+			val result = topicBasicApi.filterTopicsBy(
+				startDocumentIdConverted,
+				limitConverted,
+				filterChainConverted,
+			)
+			paginatedList_toJs(
+				result,
+				{ x1: EncryptedTopic ->
+					topic_toJs(x1)
+				},
+			)
+		}
+	}
 
 	override fun addParticipant(
 		entityId: String,
 		dataOwnerId: String,
 		topicRole: String,
 	): Promise<EncryptedTopicJs> = GlobalScope.promise {
-		topic_toJs(topicBasicApi.addParticipant(entityId, dataOwnerId,
-				com.icure.sdk.model.TopicRole.valueOf(topicRole)))}
-
+		val entityIdConverted: String = entityId
+		val dataOwnerIdConverted: String = dataOwnerId
+		val topicRoleConverted: TopicRole = TopicRole.valueOf(topicRole)
+		val result = topicBasicApi.addParticipant(
+			entityIdConverted,
+			dataOwnerIdConverted,
+			topicRoleConverted,
+		)
+		topic_toJs(result)
+	}
 
 	override fun removeParticipant(entityId: String, dataOwnerId: String): Promise<EncryptedTopicJs> =
 			GlobalScope.promise {
-		topic_toJs(topicBasicApi.removeParticipant(entityId, dataOwnerId))}
-
+		val entityIdConverted: String = entityId
+		val dataOwnerIdConverted: String = dataOwnerId
+		val result = topicBasicApi.removeParticipant(
+			entityIdConverted,
+			dataOwnerIdConverted,
+		)
+		topic_toJs(result)
+	}
 
 	override fun subscribeToEvents(
 		events: Array<String>,
 		filter: AbstractFilterJs<TopicJs>,
-		onConnected: () -> Promise<Unit>,
-		channelCapacity: Double,
-		retryDelay: Double,
-		retryDelayExponentFactor: Double,
-		maxRetries: Double,
 		eventFired: (EncryptedTopicJs) -> Promise<Unit>,
-	): Promise<ConnectionJs> = GlobalScope.promise {
-		val onConnectedConverted: suspend () -> Unit = {  ->
-			onConnected(
-			).await()
+		options: TopicBasicApi_subscribeToEvents_Options?,
+	): Promise<ConnectionJs> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
+				events,
+				"events",
+				{ x1: String ->
+					SubscriptionEventType.valueOf(x1)
+				},
+			)
+			val filterConverted: AbstractFilter<Topic> = abstractFilter_fromJs(
+				filter,
+				{ x1: TopicJs ->
+					topic_fromJs(x1)
+				},
+			)
+			val onConnectedConverted: suspend () -> Unit = convertingOptionOrDefault(
+				_options.onConnected,
+				{}
+			) { onConnected ->
+				{  ->
+					onConnected().await()
+				}
+			}
+			val channelCapacityConverted: Int = convertingOptionOrDefault(
+				_options.channelCapacity,
+				kotlinx.coroutines.channels.Channel.BUFFERED
+			) { channelCapacity ->
+				numberToInt(channelCapacity, "channelCapacity")
+			}
+			val retryDelayConverted: Duration = convertingOptionOrDefault(
+				_options.retryDelay,
+				2.seconds
+			) { retryDelay ->
+				numberToDuration(retryDelay, "retryDelay")
+			}
+			val retryDelayExponentFactorConverted: Double = convertingOptionOrDefault(
+				_options.retryDelayExponentFactor,
+				2.0
+			) { retryDelayExponentFactor ->
+				retryDelayExponentFactor
+			}
+			val maxRetriesConverted: Int = convertingOptionOrDefault(
+				_options.maxRetries,
+				5
+			) { maxRetries ->
+				numberToInt(maxRetries, "maxRetries")
+			}
+			val eventFiredConverted: suspend (EncryptedTopic) -> Unit = { arg0 ->
+				eventFired(
+					topic_toJs(arg0),
+				).await()
+			}
+			val result = topicBasicApi.subscribeToEvents(
+				eventsConverted,
+				filterConverted,
+				onConnectedConverted,
+				channelCapacityConverted,
+				retryDelayConverted,
+				retryDelayExponentFactorConverted,
+				maxRetriesConverted,
+				eventFiredConverted,
+			)
+			connection_toJs(result)
 		}
-		val eventFiredConverted: suspend (EncryptedTopic) -> Unit = { arg0 ->
-			eventFired(
-				topic_toJs(arg0)).await()
-		}
-		connection_toJs(topicBasicApi.subscribeToEvents(com.icure.sdk.js.model.CheckedConverters.arrayToSet(
-		  events,
-		  "events",
-		  { x1: kotlin.String ->
-		    com.icure.sdk.model.notification.SubscriptionEventType.valueOf(x1)
-		  },
-		), com.icure.sdk.js.model.filter.abstractFilter_fromJs(
-		  filter,
-		  { x1: com.icure.sdk.js.model.TopicJs ->
-		    com.icure.sdk.js.model.topic_fromJs(x1)
-		  },
-		), onConnectedConverted, com.icure.sdk.js.model.CheckedConverters.numberToInt(channelCapacity,
-				"channelCapacity"), com.icure.sdk.js.model.CheckedConverters.numberToDuration(retryDelay,
-				"retryDelay"), retryDelayExponentFactor,
-				com.icure.sdk.js.model.CheckedConverters.numberToInt(maxRetries, "maxRetries"),
-				eventFiredConverted))}
-
+	}
 }

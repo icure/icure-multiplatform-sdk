@@ -13,25 +13,9 @@ export interface TarificationApi {
 
 	modifyTarification(tarification: Tarification): Promise<Tarification>;
 
-	findTarificationsByLabel(
-			region: string | undefined,
-			types: string | undefined,
-			language: string | undefined,
-			label: string | undefined,
-			startKey: string | undefined,
-			startDocumentId: string | undefined,
-			limit: number | undefined
-	): Promise<PaginatedList<Tarification>>;
+	findTarificationsByLabel(options?: { region?: string | undefined, types?: string | undefined, language?: string | undefined, label?: string | undefined, startKey?: string | undefined, startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<Tarification>>;
 
-	findTarificationsBy(
-			region: string | undefined,
-			type: string | undefined,
-			tarification: string | undefined,
-			version: string | undefined,
-			startDocumentId: string | undefined,
-			startKey: string | undefined,
-			limit: number | undefined
-	): Promise<PaginatedList<Tarification>>;
+	findTarificationsBy(options?: { region?: string | undefined, type?: string | undefined, tarification?: string | undefined, version?: string | undefined, startDocumentId?: string | undefined, startKey?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<Tarification>>;
 
 	getTarificationWithParts(type: string, tarification: string,
 			version: string): Promise<Tarification>;
