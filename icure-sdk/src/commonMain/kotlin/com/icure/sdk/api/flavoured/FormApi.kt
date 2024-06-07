@@ -1,7 +1,5 @@
 package com.icure.sdk.api.flavoured
 
-import com.icure.sdk.options.ApiConfiguration
-import com.icure.sdk.options.BasicApiConfiguration
 import com.icure.sdk.api.raw.RawFormApi
 import com.icure.sdk.crypto.entities.FormShareOptions
 import com.icure.sdk.crypto.entities.SecretIdOption
@@ -23,6 +21,9 @@ import com.icure.sdk.model.extensions.autoDelegationsFor
 import com.icure.sdk.model.extensions.dataOwnerId
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
+import com.icure.sdk.options.ApiConfiguration
+import com.icure.sdk.options.BasicApiConfiguration
+import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
@@ -35,10 +36,23 @@ import kotlinx.serialization.json.decodeFromJsonElement
 interface FormBasicFlavourlessApi {
 	suspend fun deleteForm(entityId: String): DocIdentifier
 	suspend fun deleteForms(entityIds: List<String>): List<DocIdentifier>
-	suspend fun getFormTemplate(formTemplateId: String, raw: Boolean? = null): FormTemplate
+	suspend fun getFormTemplate(
+		formTemplateId: String,
+		@DefaultValue("null")
+		raw: Boolean? = null
+	): FormTemplate
 	suspend fun getFormTemplatesByGuid(formTemplateGuid: String, specialityCode: String, raw: Boolean? = null): List<FormTemplate>
-	suspend fun listFormTemplatesBySpeciality(specialityCode: String, raw: Boolean? = null): List<FormTemplate>
-	suspend fun getFormTemplates(loadLayout: Boolean? = null, raw: Boolean? = null): List<FormTemplate>
+	suspend fun listFormTemplatesBySpeciality(
+		specialityCode: String,
+		@DefaultValue("null")
+		raw: Boolean? = null
+	): List<FormTemplate>
+	suspend fun getFormTemplates(
+		@DefaultValue("null")
+		loadLayout: Boolean? = null,
+		@DefaultValue("null")
+		raw: Boolean? = null
+	): List<FormTemplate>
 	suspend fun createFormTemplate(formTemplate: FormTemplate): FormTemplate
 	suspend fun deleteFormTemplate(formTemplateId: String): DocIdentifier
 	suspend fun updateFormTemplate(formTemplate: FormTemplate): FormTemplate
@@ -60,8 +74,11 @@ interface FormBasicFlavouredApi<E : Form> {
 	suspend fun listFormsByHCPartyAndPatientForeignKeys(
 		hcPartyId: String,
 		secretFKeys: String,
+		@DefaultValue("null")
 		healthElementId: String? = null,
+		@DefaultValue("null")
 		planOfActionId: String? = null,
+		@DefaultValue("null")
 		formTemplateId: String? = null
 	): List<E>
 }
@@ -71,8 +88,11 @@ interface FormFlavouredApi<E : Form> : FormBasicFlavouredApi<E> {
 	suspend fun shareWith(
 		delegateId: String,
 		form: E,
+		@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
 		shareEncryptionKeys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
+		@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
 		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
+		@DefaultValue("com.icure.sdk.model.requests.RequestedPermission.MaxWrite")
 		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
 	): SimpleShareResult<E>
 
@@ -117,8 +137,11 @@ interface FormFlavouredApi<E : Form> : FormBasicFlavouredApi<E> {
 	suspend fun findFormsByHcPartyPatient(
 		hcPartyId: String,
 		patient: Patient,
+		@DefaultValue("null")
 		startDate: Long? = null,
+		@DefaultValue("null")
 		endDate: Long? = null,
+		@DefaultValue("null")
 		descending: Boolean? = null,
 	): PaginatedListIterator<E>
 }
@@ -130,8 +153,11 @@ interface FormApi : FormBasicFlavourlessApi, FormFlavouredApi<DecryptedForm> {
 	suspend fun withEncryptionMetadata(
 		base: DecryptedForm?,
 		patient: Patient,
-		user: User?,
+		@DefaultValue("null")
+		user: User? = null,
+		@DefaultValue("emptyMap()")
 		delegates: Map<String, AccessLevel> = emptyMap(),
+		@DefaultValue("com.icure.sdk.crypto.entities.SecretIdOption.UseAnySharedWithParent")
 		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent,
 	): DecryptedForm
 	suspend fun getEncryptionKeysOf(form: Form): Set<HexString>

@@ -5,6 +5,7 @@ import com.icure.sdk.model.DocumentTemplate
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
+import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.InternalIcureApi
 
 interface DocumentTemplateApi {
@@ -17,8 +18,11 @@ interface DocumentTemplateApi {
 	suspend fun listDocumentTemplatesByDocumentTypeForCurrentUser(documentTypeCode: String): List<DocumentTemplate>
 	suspend fun listDocumentTemplates(): List<DocumentTemplate>
 	suspend fun findAllDocumentTemplates(
+		@DefaultValue("null")
 		startKey: String? = null,
+		@DefaultValue("null")
 		startDocumentId: String? = null,
+		@DefaultValue("null")
 		limit: Int? = null
 	): PaginatedList<DocumentTemplate>
 

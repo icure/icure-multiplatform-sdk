@@ -1,7 +1,5 @@
 package com.icure.sdk.api.flavoured
 
-import com.icure.sdk.options.ApiConfiguration
-import com.icure.sdk.options.BasicApiConfiguration
 import com.icure.sdk.api.raw.RawCalendarItemApi
 import com.icure.sdk.api.raw.RawDataOwnerApi
 import com.icure.sdk.crypto.entities.CalendarItemShareOptions
@@ -26,6 +24,9 @@ import com.icure.sdk.model.extensions.autoDelegationsFor
 import com.icure.sdk.model.extensions.dataOwnerId
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
+import com.icure.sdk.options.ApiConfiguration
+import com.icure.sdk.options.BasicApiConfiguration
+import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
@@ -61,8 +62,11 @@ interface CalendarItemFlavouredApi<E : CalendarItem> : CalendarItemBasicFlavoure
 	suspend fun shareWith(
 		delegateId: String,
 		calendarItem: E,
+		@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
 		shareEncryptionKeys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
+		@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
 		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
+		@DefaultValue("com.icure.sdk.model.requests.RequestedPermission.MaxWrite")
 		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
 	): SimpleShareResult<E>
 
@@ -107,8 +111,11 @@ interface CalendarItemFlavouredApi<E : CalendarItem> : CalendarItemBasicFlavoure
 	suspend fun findCalendarItemsByHcPartyPatient(
 		hcPartyId: String,
 		patient: Patient,
+		@DefaultValue("null")
 		startDate: Long? = null,
+		@DefaultValue("null")
 		endDate: Long? = null,
+		@DefaultValue("null")
 		descending: Boolean? = null,
 	): PaginatedListIterator<E>
 
@@ -130,10 +137,13 @@ interface CalendarItemApi : CalendarItemBasicFlavourlessApi, CalendarItemFlavour
 	suspend fun withEncryptionMetadata(
 		base: DecryptedCalendarItem?,
 		patient: Patient,
-		user: User?,
-		delegates: Map<String, AccessLevel>,
+		@DefaultValue("null")
+		user: User? = null,
+		@DefaultValue("emptyMap()")
+		delegates: Map<String, AccessLevel> = emptyMap(),
+		@DefaultValue("com.icure.sdk.crypto.entities.SecretIdOption.UseAnySharedWithParent")
 		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent,
-		): DecryptedCalendarItem
+	): DecryptedCalendarItem
 	suspend fun getEncryptionKeysOf(calendarItem: CalendarItem): Set<HexString>
 	suspend fun hasWriteAccess(calendarItem: CalendarItem): Boolean
 	suspend fun decryptPatientIdOf(calendarItem: CalendarItem): Set<String>

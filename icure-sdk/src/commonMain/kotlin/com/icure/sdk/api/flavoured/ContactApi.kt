@@ -2,8 +2,6 @@ package com.icure.sdk.api.flavoured
 
 import com.icure.kryptom.crypto.AesAlgorithm
 import com.icure.kryptom.crypto.AesKey
-import com.icure.sdk.options.ApiConfiguration
-import com.icure.sdk.options.BasicApiConfiguration
 import com.icure.sdk.api.raw.RawContactApi
 import com.icure.sdk.crypto.JsonEncryptionService
 import com.icure.sdk.crypto.entities.ContactShareOptions
@@ -37,6 +35,9 @@ import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
+import com.icure.sdk.options.ApiConfiguration
+import com.icure.sdk.options.BasicApiConfiguration
+import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.InternalIcureException
@@ -94,7 +95,9 @@ interface ContactBasicFlavouredApi<E : Contact, S : Service> : Subscribable<Cont
 	suspend fun listContactsByHCPartyAndPatientSecretFKeys(
 		hcPartyId: String,
 		secretPatientKeys: List<String>,
+		@DefaultValue("null")
 		planOfActionsIds: String? = null,
+		@DefaultValue("null")
 		skipClosedContacts: Boolean? = null,
 	): List<E>
 
@@ -108,8 +111,11 @@ interface ContactBasicFlavouredApi<E : Contact, S : Service> : Subscribable<Cont
 		startDate: Long,
 		endDate: Long,
 		hcPartyId: String,
+		@DefaultValue("null")
 		startKey: JsonElement? = null,
+		@DefaultValue("null")
 		startDocumentId: String? = null,
+		@DefaultValue("null")
 		limit: Int? = null,
 	): PaginatedList<E>
 
@@ -118,10 +124,15 @@ interface ContactBasicFlavouredApi<E : Contact, S : Service> : Subscribable<Cont
 	suspend fun subscribeToServiceEvents(
 		events: Set<SubscriptionEventType>,
 		filter: AbstractFilter<Service>,
+		@DefaultValue("{}")
 		onConnected: suspend () -> Unit = {},
+		@DefaultValue("kotlinx.coroutines.channels.Channel.BUFFERED")
 		channelCapacity: Int = Channel.BUFFERED,
+		@DefaultValue("2.seconds")
 		retryDelay: Duration = 2.seconds,
+		@DefaultValue("2.0")
 		retryDelayExponentFactor: Double = 2.0,
+		@DefaultValue("5")
 		maxRetries: Int = 5,
 		eventFired: suspend (S) -> Unit,
 	): Connection
@@ -132,8 +143,11 @@ interface ContactFlavouredApi<E : Contact, S : Service> : ContactBasicFlavouredA
 	suspend fun shareWith(
 		delegateId: String,
 		contact: E,
+		@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
 		shareEncryptionKeys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
+		@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
 		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
+		@DefaultValue("com.icure.sdk.model.requests.RequestedPermission.MaxWrite")
 		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
 	): SimpleShareResult<E>
 
@@ -179,8 +193,11 @@ interface ContactFlavouredApi<E : Contact, S : Service> : ContactBasicFlavouredA
 	suspend fun findContactsByHcPartyPatient(
 		hcPartyId: String,
 		patient: Patient,
+		@DefaultValue("null")
 		startDate: Long? = null,
+		@DefaultValue("null")
 		endDate: Long? = null,
+		@DefaultValue("null")
 		descending: Boolean? = null,
 	): PaginatedListIterator<E>
 
@@ -193,8 +210,11 @@ interface ContactApi : ContactBasicFlavourlessApi, ContactFlavouredApi<Decrypted
 	suspend fun withEncryptionMetadata(
 		base: DecryptedContact?,
 		patient: Patient,
-		user: User?,
+		@DefaultValue("null")
+		user: User? = null,
+		@DefaultValue("emptyMap()")
 		delegates: Map<String, AccessLevel> = emptyMap(),
+		@DefaultValue("com.icure.sdk.crypto.entities.SecretIdOption.UseAnySharedWithParent")
 		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent,
 	): DecryptedContact
 	suspend fun getEncryptionKeysOf(contact: Contact): Set<HexString>

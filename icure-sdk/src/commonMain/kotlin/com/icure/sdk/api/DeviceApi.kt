@@ -8,6 +8,7 @@ import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
+import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.InternalIcureApi
 
 interface DeviceApi {
@@ -18,7 +19,9 @@ interface DeviceApi {
 	suspend fun createDevices(devices: List<Device>): List<IdWithRev>
 	suspend fun updateDevices(devices: List<Device>): List<IdWithRev>
 	suspend fun filterDevicesBy(
+		@DefaultValue("null")
 		startDocumentId: String? = null,
+		@DefaultValue("null")
 		limit: Int? = null,
 		filterChain: FilterChain<Device>,
 	): PaginatedList<Device>
@@ -28,6 +31,7 @@ interface DeviceApi {
 	suspend fun deleteDevices(deviceIds: List<String>): List<DocIdentifier>
 	suspend fun getDevicesInGroup(
 		groupId: String,
+		@DefaultValue("null")
 		deviceIds: List<String>? = null,
 	): List<Device>
 

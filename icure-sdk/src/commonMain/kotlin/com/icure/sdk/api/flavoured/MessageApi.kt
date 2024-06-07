@@ -1,7 +1,5 @@
 package com.icure.sdk.api.flavoured
 
-import com.icure.sdk.options.ApiConfiguration
-import com.icure.sdk.options.BasicApiConfiguration
 import com.icure.sdk.api.raw.RawMessageApi
 import com.icure.sdk.crypto.entities.MessageShareOptions
 import com.icure.sdk.crypto.entities.SecretIdOption
@@ -27,6 +25,9 @@ import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
+import com.icure.sdk.options.ApiConfiguration
+import com.icure.sdk.options.BasicApiConfiguration
+import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
@@ -68,9 +69,13 @@ interface MessageBasicFlavouredApi<E : Message>: Subscribable<Message, E> {
 		transportGuid: String,
 		from: Long,
 		to: Long,
+		@DefaultValue("null")
 		startKey: JsonElement? = null,
+		@DefaultValue("null")
 		startDocumentId: String? = null,
+		@DefaultValue("null")
 		limit: Int? = null,
+		@DefaultValue("null")
 		hcpId: String? = null,
 	): PaginatedList<E>
 
@@ -92,8 +97,11 @@ interface MessageFlavouredApi<E : Message> : MessageBasicFlavouredApi<E> {
 		delegateId: String,
 		message: E,
 		shareSecretIds: Set<String>,
+		@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
 		shareEncryptionKeys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
+		@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
 		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
+		@DefaultValue("com.icure.sdk.model.requests.RequestedPermission.MaxWrite")
 		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
 	): SimpleShareResult<E>
 
@@ -138,8 +146,11 @@ interface MessageFlavouredApi<E : Message> : MessageBasicFlavouredApi<E> {
 	suspend fun findMessagesByHcPartyPatient(
 		hcPartyId: String,
 		patient: Patient,
+		@DefaultValue("null")
 		startDate: Long? = null,
+		@DefaultValue("null")
 		endDate: Long? = null,
+		@DefaultValue("null")
 		descending: Boolean? = null,
 	): PaginatedListIterator<E>
 }
@@ -150,8 +161,11 @@ interface MessageApi : MessageBasicFlavourlessApi, MessageFlavouredApi<Decrypted
 	suspend fun withEncryptionMetadata(
 		base: DecryptedMessage?,
 		patient: Patient?,
-		user: User?,
+		@DefaultValue("null")
+		user: User? = null,
+		@DefaultValue("emptyMap()")
 		delegates: Map<String, AccessLevel> = emptyMap(),
+		@DefaultValue("com.icure.sdk.crypto.entities.SecretIdOption.UseAnySharedWithParent")
 		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent,
 	): DecryptedMessage
 	suspend fun getEncryptionKeysOf(message: Message): Set<HexString>

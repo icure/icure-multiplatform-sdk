@@ -1,7 +1,5 @@
 package com.icure.sdk.api.flavoured
 
-import com.icure.sdk.options.ApiConfiguration
-import com.icure.sdk.options.BasicApiConfiguration
 import com.icure.sdk.api.raw.RawTopicApi
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
@@ -29,6 +27,9 @@ import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.requests.topic.AddParticipant
 import com.icure.sdk.model.requests.topic.RemoveParticipant
 import com.icure.sdk.model.specializations.HexString
+import com.icure.sdk.options.ApiConfiguration
+import com.icure.sdk.options.BasicApiConfiguration
+import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
@@ -55,7 +56,9 @@ interface TopicBasicFlavouredApi<E : Topic>: Subscribable<Topic, E> {
 	suspend fun getTopic(entityId: String): E
 	suspend fun getTopics(entityIds: List<String>): List<E>
 	suspend fun filterTopicsBy(
+		@DefaultValue("null")
 		startDocumentId: String? = null,
+		@DefaultValue("null")
 		limit: Int? = null,
 		filterChain: FilterChain<Topic>
 	): PaginatedList<E>
@@ -69,8 +72,11 @@ interface TopicFlavouredApi<E : Topic> : TopicBasicFlavouredApi<E> {
 	suspend fun shareWith(
 		delegateId: String,
 		topic: E,
+		@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
 		shareEncryptionKeys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
+		@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
 		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
+		@DefaultValue("com.icure.sdk.model.requests.RequestedPermission.MaxWrite")
 		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
 	): SimpleShareResult<E>
 
@@ -119,8 +125,11 @@ interface TopicApi : TopicBasicFlavourlessApi, TopicFlavouredApi<DecryptedTopic>
 	suspend fun withEncryptionMetadata(
 		base: DecryptedTopic?,
 		patient: Patient?,
-		user: User?,
+		@DefaultValue("null")
+		user: User? = null,
+		@DefaultValue("emptyMap()")
 		delegates: Map<String, AccessLevel> = emptyMap(),
+		@DefaultValue("com.icure.sdk.crypto.entities.SecretIdOption.UseAnySharedWithParent")
 		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent,
 	): DecryptedTopic
 	suspend fun getEncryptionKeysOf(topic: Topic): Set<HexString>

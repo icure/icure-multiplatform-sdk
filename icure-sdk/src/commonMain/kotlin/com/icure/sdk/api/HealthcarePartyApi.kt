@@ -11,6 +11,7 @@ import com.icure.sdk.model.PublicKey
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
+import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.InternalIcureApi
 
 interface HealthcarePartyApi {
@@ -30,25 +31,38 @@ interface HealthcarePartyApi {
 
 	suspend fun getCurrentHealthcareParty(): HealthcareParty
 	suspend fun findHealthcarePartiesBy(
+		@DefaultValue("null")
 		startKey: String? = null,
+		@DefaultValue("null")
 		startDocumentId: String? = null,
+		@DefaultValue("null")
 		limit: Int? = null,
+		@DefaultValue("null")
 		desc: Boolean? = null,
 	): PaginatedList<HealthcareParty>
 
 	suspend fun findHealthcarePartiesByName(
+		@DefaultValue("null")
 		name: String? = null,
+		@DefaultValue("null")
 		startKey: String? = null,
+		@DefaultValue("null")
 		startDocumentId: String? = null,
+		@DefaultValue("null")
 		limit: Int? = null,
+		@DefaultValue("null")
 		desc: Boolean? = null,
 	): PaginatedList<HealthcareParty>
 
 	suspend fun findHealthcarePartiesBySsinOrNihii(
 		searchValue: String,
+		@DefaultValue("null")
 		startKey: String? = null,
+		@DefaultValue("null")
 		startDocumentId: String? = null,
+		@DefaultValue("null")
 		limit: Int? = null,
+		@DefaultValue("false")
 		desc: Boolean = false,
 	): PaginatedList<HealthcareParty>
 
@@ -58,8 +72,11 @@ interface HealthcarePartyApi {
 		spec: String,
 		firstCode: String,
 		lastCode: String,
+		@DefaultValue("null")
 		startKey: String? = null,
+		@DefaultValue("null")
 		startDocumentId: String? = null,
+		@DefaultValue("null")
 		limit: Int? = null,
 	): PaginatedList<HealthcareParty>
 
@@ -70,15 +87,17 @@ interface HealthcarePartyApi {
 	suspend fun modifyHealthcareParty(healthcarePartyDto: HealthcareParty): HealthcareParty
 	suspend fun matchHealthcarePartiesBy(filter: AbstractFilter<HealthcareParty>): List<String>
 	suspend fun filterHealthPartiesBy(
+		@DefaultValue("null")
 		startDocumentId: String? = null,
+		@DefaultValue("null")
 		limit: Int? = null,
 		filterChain: FilterChain<HealthcareParty>,
 	): PaginatedList<HealthcareParty>
 
 	suspend fun getHealthcarePartiesInGroup(
 		groupId: String,
-		healthcarePartyIds: List<String>? =
-			null,
+		@DefaultValue("null")
+		healthcarePartyIds: List<String>? = null,
 	): List<HealthcareParty>
 
 	suspend fun deleteHealthcarePartiesInGroup(
@@ -93,8 +112,11 @@ interface HealthcarePartyApi {
 
 	suspend fun registerPatient(
 		groupId: String,
+		@DefaultValue("null")
 		parentHcPartyId: String? = null,
+		@DefaultValue("null")
 		token: String? = null,
+		@DefaultValue("null")
 		useShortToken: Boolean? = null,
 		hcp: HealthcareParty,
 	): DataOwnerRegistrationSuccess

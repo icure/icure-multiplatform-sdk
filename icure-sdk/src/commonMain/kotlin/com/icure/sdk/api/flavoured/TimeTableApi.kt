@@ -1,7 +1,5 @@
 package com.icure.sdk.api.flavoured
 
-import com.icure.sdk.options.ApiConfiguration
-import com.icure.sdk.options.BasicApiConfiguration
 import com.icure.sdk.api.raw.RawTimeTableApi
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
@@ -22,6 +20,9 @@ import com.icure.sdk.model.extensions.autoDelegationsFor
 import com.icure.sdk.model.extensions.dataOwnerId
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
+import com.icure.sdk.options.ApiConfiguration
+import com.icure.sdk.options.BasicApiConfiguration
+import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
@@ -48,8 +49,11 @@ interface TimeTableFlavouredApi<E : TimeTable> : TimeTableBasicFlavouredApi<E> {
 	suspend fun shareWith(
 		delegateId: String,
 		timeTable: E,
+		@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
 		shareEncryptionKeys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
+		@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
 		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
+		@DefaultValue("com.icure.sdk.model.requests.RequestedPermission.MaxWrite")
 		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
 	): SimpleShareResult<E>
 
@@ -98,8 +102,11 @@ interface TimeTableApi : TimeTableBasicFlavourlessApi, TimeTableFlavouredApi<Dec
 	suspend fun withEncryptionMetadata(
 		base: DecryptedTimeTable?,
 		patient: Patient?,
-		user: User?,
+		@DefaultValue("null")
+		user: User? = null,
+		@DefaultValue("emptyMap()")
 		delegates: Map<String, AccessLevel> = emptyMap(),
+		@DefaultValue("com.icure.sdk.crypto.entities.SecretIdOption.UseAnySharedWithParent")
 		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent,
 	): DecryptedTimeTable
 	suspend fun getEncryptionKeysOf(timeTable: TimeTable): Set<HexString>

@@ -8,6 +8,7 @@ import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
+import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.InternalIcureApi
 import kotlinx.serialization.json.JsonElement
 
@@ -17,39 +18,66 @@ interface CodeApi {
 		types: String,
 		language: String,
 		label: String,
+		@DefaultValue("null")
 		version: String? = null,
+		@DefaultValue("null")
 		startKey: JsonElement? = null,
+		@DefaultValue("null")
 		startDocumentId: String? = null,
+		@DefaultValue("null")
 		limit: Int? = null,
 ): PaginatedList<Code>
 
 	suspend fun findCodesByType(
 		region: String,
+		@DefaultValue("null")
 		type: String? = null,
+		@DefaultValue("null")
 		code: String? = null,
+		@DefaultValue("null")
 		version: String? = null,
+		@DefaultValue("null")
 		startKey: JsonElement? = null,
+		@DefaultValue("null")
 		startDocumentId: String? = null,
+		@DefaultValue("null")
 		limit: Int? = null,
 ): PaginatedList<Code>
 
 	suspend fun findCodesByLink(
 		linkType: String,
+		@DefaultValue("null")
 		linkedId: String? = null,
+		@DefaultValue("null")
 		startKey: JsonElement? = null,
+		@DefaultValue("null")
 		startDocumentId: String? = null,
+		@DefaultValue("null")
 		limit: Int? = null,
 ): PaginatedList<Code>
 
 	suspend fun listCodesByRegionTypeCodeVersion(
 		region: String,
+		@DefaultValue("null")
 		type: String? = null,
+		@DefaultValue("null")
 		code: String? = null,
+		@DefaultValue("null")
 		version: String? = null,
 ): List<Code>
 
-	suspend fun listCodeTypesBy(region: String? = null, type: String? = null): List<String>
-	suspend fun listTagTypesBy(region: String? = null, type: String? = null): List<String>
+	suspend fun listCodeTypesBy(
+		@DefaultValue("null")
+		region: String? = null,
+		@DefaultValue("null")
+		type: String? = null
+	): List<String>
+	suspend fun listTagTypesBy(
+		@DefaultValue("null")
+		region: String? = null,
+		@DefaultValue("null")
+		type: String? = null
+	): List<String>
 	suspend fun createCode(c: Code): Code
 	suspend fun createCodes(codeBatch: List<Code>): List<Code>
 	suspend fun isCodeValid(
@@ -76,11 +104,17 @@ interface CodeApi {
 	suspend fun modifyCode(codeDto: Code): Code
 	suspend fun modifyCodes(codeBatch: List<Code>): List<Code>
 	suspend fun filterCodesBy(
+		@DefaultValue("null")
 		startKey: JsonElement? = null,
+		@DefaultValue("null")
 		startDocumentId: String? = null,
+		@DefaultValue("null")
 		limit: Int? = null,
+		@DefaultValue("null")
 		skip: Int? = null,
+		@DefaultValue("null")
 		sort: String? = null,
+		@DefaultValue("null")
 		desc: Boolean? = null,
 		filterChain: FilterChain<Code>,
 	): PaginatedList<Code>

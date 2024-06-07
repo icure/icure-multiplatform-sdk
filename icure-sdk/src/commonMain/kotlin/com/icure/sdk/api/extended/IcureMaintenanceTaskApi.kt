@@ -15,6 +15,7 @@ import com.icure.sdk.model.embed.TaskStatus
 import com.icure.sdk.model.embed.TypedValuesType
 import com.icure.sdk.model.sdk.KeyPairUpdateNotification
 import com.icure.sdk.model.specializations.SpkiHexString
+import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.getLogger
 
@@ -41,6 +42,7 @@ interface IcureMaintenanceTaskApi {
 	 */
 	suspend fun createKeyPairUpdateNotificationsToAllDelegationCounterparts(
 		key: SpkiHexString,
+		@DefaultValue("null")
 		requestToOwnerTypes: Set<DataOwnerType>? = null
 	)
 
