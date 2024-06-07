@@ -21,13 +21,8 @@ export interface TimeTableApi {
 
 	createTimeTable(entity: DecryptedTimeTable): Promise<DecryptedTimeTable>;
 
-	withEncryptionMetadata(
-			base: DecryptedTimeTable | undefined,
-			patient: Patient | undefined,
-			user: User | undefined,
-			delegates: { [ key: string ]: AccessLevel },
-			secretId: SecretIdOption
-	): Promise<DecryptedTimeTable>;
+	withEncryptionMetadata(base: DecryptedTimeTable | undefined, patient: Patient | undefined,
+			options?: { base?: DecryptedTimeTable | undefined, patient?: Patient | undefined, user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdOption }): Promise<DecryptedTimeTable>;
 
 	getEncryptionKeysOf(timeTable: TimeTable): Promise<Array<HexString>>;
 
@@ -42,13 +37,8 @@ export interface TimeTableApi {
 
 	deleteTimeTables(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
-	shareWith(
-			delegateId: string,
-			timeTable: DecryptedTimeTable,
-			shareEncryptionKeys: ShareMetadataBehaviour,
-			shareOwningEntityIds: ShareMetadataBehaviour,
-			requestedPermission: RequestedPermission
-	): Promise<SimpleShareResult<DecryptedTimeTable>>;
+	shareWith(delegateId: string, timeTable: DecryptedTimeTable,
+			options?: { delegateId?: string, timeTable?: DecryptedTimeTable, shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<DecryptedTimeTable>>;
 
 	tryShareWithMany(timeTable: DecryptedTimeTable,
 			delegates: { [ key: string ]: TimeTableShareOptions }): Promise<SimpleShareResult<DecryptedTimeTable>>;

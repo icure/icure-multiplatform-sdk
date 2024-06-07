@@ -34,22 +34,37 @@ public external interface AccessLogBasicApiJs {
 		limit: Double?,
 	): Promise<PaginatedListJs<EncryptedAccessLogJs>>
 
-	public fun findAccessLogsByUserAfterDate(
-		userId: String,
-		accessType: String?,
-		startDate: Double?,
-		startKey: String?,
-		startDocumentId: String?,
-		limit: Double?,
-		descending: Boolean?,
-	): Promise<PaginatedListJs<EncryptedAccessLogJs>>
+	public fun findAccessLogsByUserAfterDate(userId: String,
+			options: AccessLogBasicApi_findAccessLogsByUserAfterDate_Options?):
+			Promise<PaginatedListJs<EncryptedAccessLogJs>>
 
-	public fun findAccessLogsInGroup(
-		groupId: String,
-		fromEpoch: Double?,
-		toEpoch: Double?,
-		startKey: Double?,
-		startDocumentId: String?,
-		limit: Double?,
-	): Promise<PaginatedListJs<EncryptedAccessLogJs>>
+	public fun findAccessLogsInGroup(groupId: String,
+			options: AccessLogBasicApi_findAccessLogsInGroup_Options?):
+			Promise<PaginatedListJs<EncryptedAccessLogJs>>
+}
+
+public external interface AccessLogBasicApi_findAccessLogsByUserAfterDate_Options {
+	public val accessType: String?
+
+	public val startDate: Double?
+
+	public val startKey: String?
+
+	public val startDocumentId: String?
+
+	public val limit: Double?
+
+	public val descending: Boolean?
+}
+
+public external interface AccessLogBasicApi_findAccessLogsInGroup_Options {
+	public val fromEpoch: Double?
+
+	public val toEpoch: Double?
+
+	public val startKey: Double?
+
+	public val startDocumentId: String?
+
+	public val limit: Double?
 }

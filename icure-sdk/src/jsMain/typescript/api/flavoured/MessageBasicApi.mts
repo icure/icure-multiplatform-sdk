@@ -42,15 +42,8 @@ export interface MessageBasicApi {
 
 	findMessagesByTransportGuid(transportGuid: string): Promise<PaginatedList<EncryptedMessage>>;
 
-	findMessagesByTransportGuidSentDate(
-			transportGuid: string,
-			from: number,
-			to: number,
-			startKey: any | undefined,
-			startDocumentId: string | undefined,
-			limit: number | undefined,
-			hcpId: string | undefined
-	): Promise<PaginatedList<EncryptedMessage>>;
+	findMessagesByTransportGuidSentDate(transportGuid: string, from: number, to: number,
+			options?: { transportGuid?: string, from?: number, to?: number, startKey?: any | undefined, startDocumentId?: string | undefined, limit?: number | undefined, hcpId?: string | undefined }): Promise<PaginatedList<EncryptedMessage>>;
 
 	findMessagesByToAddress(toAddress: string, startKey: any | undefined,
 			startDocumentId: string | undefined,
@@ -66,15 +59,8 @@ export interface MessageBasicApi {
 	setMessagesReadStatus(entityIds: Array<string>, time: number | undefined, readStatus: boolean,
 			userId: string): Promise<Array<EncryptedMessage>>;
 
-	subscribeToEvents(
-			events: Array<SubscriptionEventType>,
-			filter: AbstractFilter<Message>,
-			onConnected: () => Promise<void>,
-			channelCapacity: number,
-			retryDelay: DurationMs,
-			retryDelayExponentFactor: number,
-			maxRetries: number,
-			eventFired: (x1: EncryptedMessage) => Promise<void>
-	): Promise<Connection>;
+	subscribeToEvents(events: Array<SubscriptionEventType>, filter: AbstractFilter<Message>,
+			eventFired: (x1: EncryptedMessage) => Promise<void>,
+			options?: { events?: Array<SubscriptionEventType>, filter?: AbstractFilter<Message>, onConnected?: () => Promise<void>, channelCapacity?: number, retryDelay?: DurationMs, retryDelayExponentFactor?: number, maxRetries?: number, eventFired?: (x1: EncryptedMessage) => Promise<void> }): Promise<Connection>;
 
 }

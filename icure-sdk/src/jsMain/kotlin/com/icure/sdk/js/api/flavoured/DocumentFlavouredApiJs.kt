@@ -24,9 +24,7 @@ public external interface DocumentFlavouredApiJs<E : DocumentJs> {
 	public fun shareWith(
 		delegateId: String,
 		document: E,
-		shareEncryptionKeys: String,
-		shareOwningEntityIds: String,
-		requestedPermission: String,
+		options: DocumentFlavouredApi_shareWith_Options?,
 	): Promise<SimpleShareResultJs<E>>
 
 	public fun tryShareWithMany(document: E, delegates: Record<String, DocumentShareOptionsJs>):
@@ -38,9 +36,7 @@ public external interface DocumentFlavouredApiJs<E : DocumentJs> {
 	public fun findDocumentsByHcPartyPatient(
 		hcPartyId: String,
 		patient: PatientJs,
-		startDate: Double?,
-		endDate: Double?,
-		descending: Boolean?,
+		options: DocumentFlavouredApi_findDocumentsByHcPartyPatient_Options?,
 	): Promise<PaginatedListIteratorJs<E>>
 
 	public fun modifyDocument(entity: E): Promise<E>
@@ -89,4 +85,20 @@ public external interface DocumentFlavouredApiJs<E : DocumentJs> {
 		key: String,
 		attachmentId: String,
 	): Promise<E>
+}
+
+public external interface DocumentFlavouredApi_shareWith_Options {
+	public val shareEncryptionKeys: String
+
+	public val shareOwningEntityIds: String
+
+	public val requestedPermission: String
+}
+
+public external interface DocumentFlavouredApi_findDocumentsByHcPartyPatient_Options {
+	public val startDate: Double?
+
+	public val endDate: Double?
+
+	public val descending: Boolean?
 }

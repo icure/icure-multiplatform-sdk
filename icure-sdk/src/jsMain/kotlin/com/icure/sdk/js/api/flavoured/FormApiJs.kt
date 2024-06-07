@@ -38,9 +38,7 @@ public external interface FormApiJs {
 	public fun withEncryptionMetadata(
 		base: DecryptedFormJs?,
 		patient: PatientJs,
-		user: UserJs?,
-		delegates: Record<String, String>,
-		secretId: SecretIdOptionJs,
+		options: FormApi_withEncryptionMetadata_Options?,
 	): Promise<DecryptedFormJs>
 
 	public fun getEncryptionKeysOf(form: FormJs): Promise<Array<String>>
@@ -56,7 +54,8 @@ public external interface FormApiJs {
 
 	public fun deleteForms(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
 
-	public fun getFormTemplate(formTemplateId: String, raw: Boolean?): Promise<FormTemplateJs>
+	public fun getFormTemplate(formTemplateId: String, options: FormApi_getFormTemplate_Options?):
+			Promise<FormTemplateJs>
 
 	public fun getFormTemplatesByGuid(
 		formTemplateGuid: String,
@@ -64,10 +63,11 @@ public external interface FormApiJs {
 		raw: Boolean?,
 	): Promise<Array<FormTemplateJs>>
 
-	public fun listFormTemplatesBySpeciality(specialityCode: String, raw: Boolean?):
-			Promise<Array<FormTemplateJs>>
+	public fun listFormTemplatesBySpeciality(specialityCode: String,
+			options: FormApi_listFormTemplatesBySpeciality_Options?): Promise<Array<FormTemplateJs>>
 
-	public fun getFormTemplates(loadLayout: Boolean?, raw: Boolean?): Promise<Array<FormTemplateJs>>
+	public fun getFormTemplates(options: FormApi_getFormTemplates_Options?):
+			Promise<Array<FormTemplateJs>>
 
 	public fun createFormTemplate(formTemplate: FormTemplateJs): Promise<FormTemplateJs>
 
@@ -80,9 +80,7 @@ public external interface FormApiJs {
 	public fun shareWith(
 		delegateId: String,
 		form: DecryptedFormJs,
-		shareEncryptionKeys: String,
-		shareOwningEntityIds: String,
-		requestedPermission: String,
+		options: FormApi_shareWith_Options?,
 	): Promise<SimpleShareResultJs<DecryptedFormJs>>
 
 	public fun tryShareWithMany(form: DecryptedFormJs, delegates: Record<String, FormShareOptionsJs>):
@@ -94,9 +92,7 @@ public external interface FormApiJs {
 	public fun findFormsByHcPartyPatient(
 		hcPartyId: String,
 		patient: PatientJs,
-		startDate: Double?,
-		endDate: Double?,
-		descending: Boolean?,
+		options: FormApi_findFormsByHcPartyPatient_Options?,
 	): Promise<PaginatedListIteratorJs<DecryptedFormJs>>
 
 	public fun modifyForm(entity: DecryptedFormJs): Promise<DecryptedFormJs>
@@ -120,8 +116,52 @@ public external interface FormApiJs {
 	public fun listFormsByHCPartyAndPatientForeignKeys(
 		hcPartyId: String,
 		secretFKeys: String,
-		healthElementId: String?,
-		planOfActionId: String?,
-		formTemplateId: String?,
+		options: FormApi_listFormsByHCPartyAndPatientForeignKeys_Options?,
 	): Promise<Array<DecryptedFormJs>>
+}
+
+public external interface FormApi_withEncryptionMetadata_Options {
+	public val user: UserJs?
+
+	public val delegates: Record<String, String>
+
+	public val secretId: SecretIdOptionJs
+}
+
+public external interface FormApi_getFormTemplate_Options {
+	public val raw: Boolean?
+}
+
+public external interface FormApi_listFormTemplatesBySpeciality_Options {
+	public val raw: Boolean?
+}
+
+public external interface FormApi_getFormTemplates_Options {
+	public val loadLayout: Boolean?
+
+	public val raw: Boolean?
+}
+
+public external interface FormApi_shareWith_Options {
+	public val shareEncryptionKeys: String
+
+	public val shareOwningEntityIds: String
+
+	public val requestedPermission: String
+}
+
+public external interface FormApi_findFormsByHcPartyPatient_Options {
+	public val startDate: Double?
+
+	public val endDate: Double?
+
+	public val descending: Boolean?
+}
+
+public external interface FormApi_listFormsByHCPartyAndPatientForeignKeys_Options {
+	public val healthElementId: String?
+
+	public val planOfActionId: String?
+
+	public val formTemplateId: String?
 }

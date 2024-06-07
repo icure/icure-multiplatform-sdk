@@ -38,9 +38,7 @@ public external interface MessageApiJs {
 	public fun withEncryptionMetadata(
 		base: DecryptedMessageJs?,
 		patient: PatientJs?,
-		user: UserJs?,
-		delegates: Record<String, String>,
-		secretId: SecretIdOptionJs,
+		options: MessageApi_withEncryptionMetadata_Options?,
 	): Promise<DecryptedMessageJs>
 
 	public fun getEncryptionKeysOf(message: MessageJs): Promise<Array<String>>
@@ -64,9 +62,7 @@ public external interface MessageApiJs {
 		delegateId: String,
 		message: DecryptedMessageJs,
 		shareSecretIds: Array<String>,
-		shareEncryptionKeys: String,
-		shareOwningEntityIds: String,
-		requestedPermission: String,
+		options: MessageApi_shareWith_Options?,
 	): Promise<SimpleShareResultJs<DecryptedMessageJs>>
 
 	public fun tryShareWithMany(message: DecryptedMessageJs,
@@ -79,9 +75,7 @@ public external interface MessageApiJs {
 	public fun findMessagesByHcPartyPatient(
 		hcPartyId: String,
 		patient: PatientJs,
-		startDate: Double?,
-		endDate: Double?,
-		descending: Boolean?,
+		options: MessageApi_findMessagesByHcPartyPatient_Options?,
 	): Promise<PaginatedListIteratorJs<DecryptedMessageJs>>
 
 	public fun modifyMessage(entity: DecryptedMessageJs): Promise<DecryptedMessageJs>
@@ -121,10 +115,7 @@ public external interface MessageApiJs {
 		transportGuid: String,
 		from: Double,
 		to: Double,
-		startKey: dynamic,
-		startDocumentId: String?,
-		limit: Double?,
-		hcpId: String?,
+		options: MessageApi_findMessagesByTransportGuidSentDate_Options?,
 	): Promise<PaginatedListJs<DecryptedMessageJs>>
 
 	public fun findMessagesByToAddress(
@@ -154,11 +145,53 @@ public external interface MessageApiJs {
 	public fun subscribeToEvents(
 		events: Array<String>,
 		filter: AbstractFilterJs<MessageJs>,
-		onConnected: () -> Promise<Unit>,
-		channelCapacity: Double,
-		retryDelay: Double,
-		retryDelayExponentFactor: Double,
-		maxRetries: Double,
 		eventFired: (DecryptedMessageJs) -> Promise<Unit>,
+		options: MessageApi_subscribeToEvents_Options?,
 	): Promise<ConnectionJs>
+}
+
+public external interface MessageApi_withEncryptionMetadata_Options {
+	public val user: UserJs?
+
+	public val delegates: Record<String, String>
+
+	public val secretId: SecretIdOptionJs
+}
+
+public external interface MessageApi_shareWith_Options {
+	public val shareEncryptionKeys: String
+
+	public val shareOwningEntityIds: String
+
+	public val requestedPermission: String
+}
+
+public external interface MessageApi_findMessagesByHcPartyPatient_Options {
+	public val startDate: Double?
+
+	public val endDate: Double?
+
+	public val descending: Boolean?
+}
+
+public external interface MessageApi_findMessagesByTransportGuidSentDate_Options {
+	public val startKey: dynamic
+
+	public val startDocumentId: String?
+
+	public val limit: Double?
+
+	public val hcpId: String?
+}
+
+public external interface MessageApi_subscribeToEvents_Options {
+	public val onConnected: () -> Promise<Unit>
+
+	public val channelCapacity: Double
+
+	public val retryDelay: Double
+
+	public val retryDelayExponentFactor: Double
+
+	public val maxRetries: Double
 }

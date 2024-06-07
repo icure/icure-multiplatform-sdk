@@ -19,11 +19,13 @@ internal class RoleApiImplJs(
 	private val roleApi: RoleApi,
 ) : RoleApiJs {
 	override fun getAllRoles(): Promise<Array<RoleJs>> = GlobalScope.promise {
+		val result = roleApi.getAllRoles(
+		)
 		listToArray(
-			roleApi.getAllRoles(),
+			result,
 			{ x1: Role ->
 				role_toJs(x1)
 			},
-		)}
-
+		)
+	}
 }

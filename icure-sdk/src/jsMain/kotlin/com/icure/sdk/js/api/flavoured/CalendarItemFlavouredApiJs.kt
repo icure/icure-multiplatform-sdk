@@ -23,9 +23,7 @@ public external interface CalendarItemFlavouredApiJs<E : CalendarItemJs> {
 	public fun shareWith(
 		delegateId: String,
 		calendarItem: E,
-		shareEncryptionKeys: String,
-		shareOwningEntityIds: String,
-		requestedPermission: String,
+		options: CalendarItemFlavouredApi_shareWith_Options?,
 	): Promise<SimpleShareResultJs<E>>
 
 	public fun tryShareWithMany(calendarItem: E,
@@ -37,9 +35,7 @@ public external interface CalendarItemFlavouredApiJs<E : CalendarItemJs> {
 	public fun findCalendarItemsByHcPartyPatient(
 		hcPartyId: String,
 		patient: PatientJs,
-		startDate: Double?,
-		endDate: Double?,
-		descending: Boolean?,
+		options: CalendarItemFlavouredApi_findCalendarItemsByHcPartyPatient_Options?,
 	): Promise<PaginatedListIteratorJs<E>>
 
 	public fun linkToPatient(
@@ -74,4 +70,20 @@ public external interface CalendarItemFlavouredApiJs<E : CalendarItemJs> {
 		startDocumentId: String?,
 		limit: Double,
 	): Promise<PaginatedListJs<E>>
+}
+
+public external interface CalendarItemFlavouredApi_shareWith_Options {
+	public val shareEncryptionKeys: String
+
+	public val shareOwningEntityIds: String
+
+	public val requestedPermission: String
+}
+
+public external interface CalendarItemFlavouredApi_findCalendarItemsByHcPartyPatient_Options {
+	public val startDate: Double?
+
+	public val endDate: Double?
+
+	public val descending: Boolean?
 }

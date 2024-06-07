@@ -2,9 +2,18 @@
 package com.icure.sdk.js.api.flavoured.`impl`
 
 import com.icure.sdk.api.flavoured.ContactBasicApi
+import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefault
 import com.icure.sdk.js.api.flavoured.ContactBasicApiJs
+import com.icure.sdk.js.api.flavoured.ContactBasicApi_findContactsByOpeningDate_Options
+import com.icure.sdk.js.api.flavoured.ContactBasicApi_listContactsByHCPartyAndPatientSecretFKeys_Options
+import com.icure.sdk.js.api.flavoured.ContactBasicApi_subscribeToEvents_Options
+import com.icure.sdk.js.api.flavoured.ContactBasicApi_subscribeToServiceEvents_Options
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
+import com.icure.sdk.js.model.CheckedConverters.arrayToSet
+import com.icure.sdk.js.model.CheckedConverters.dynamicToJsonNullsafe
 import com.icure.sdk.js.model.CheckedConverters.listToArray
+import com.icure.sdk.js.model.CheckedConverters.numberToDuration
+import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.js.model.ContactJs
 import com.icure.sdk.js.model.EncryptedContactJs
@@ -23,26 +32,39 @@ import com.icure.sdk.js.model.embed.service_toJs
 import com.icure.sdk.js.model.filter.AbstractFilterJs
 import com.icure.sdk.js.model.filter.abstractFilter_fromJs
 import com.icure.sdk.js.model.filter.chain.FilterChainJs
+import com.icure.sdk.js.model.filter.chain.filterChain_fromJs
 import com.icure.sdk.js.model.icureStub_toJs
 import com.icure.sdk.js.model.paginatedList_toJs
 import com.icure.sdk.js.websocket.ConnectionJs
 import com.icure.sdk.js.websocket.connection_toJs
+import com.icure.sdk.model.Contact
 import com.icure.sdk.model.EncryptedContact
 import com.icure.sdk.model.IcureStub
 import com.icure.sdk.model.`data`.LabelledOccurence
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.embed.EncryptedService
+import com.icure.sdk.model.embed.Service
+import com.icure.sdk.model.filter.AbstractFilter
+import com.icure.sdk.model.filter.chain.FilterChain
+import com.icure.sdk.model.notification.SubscriptionEventType
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
+import kotlin.Int
+import kotlin.Long
 import kotlin.OptIn
 import kotlin.String
 import kotlin.Unit
+import kotlin.collections.List
+import kotlin.collections.Set
 import kotlin.js.Promise
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.await
 import kotlinx.coroutines.promise
+import kotlinx.serialization.json.JsonElement
 
 @OptIn(DelicateCoroutinesApi::class)
 internal class ContactBasicApiImplJs(
@@ -50,385 +72,617 @@ internal class ContactBasicApiImplJs(
 ) : ContactBasicApiJs {
 	override fun matchContactsBy(filter: AbstractFilterJs<ContactJs>): Promise<Array<String>> =
 			GlobalScope.promise {
+		val filterConverted: AbstractFilter<Contact> = abstractFilter_fromJs(
+			filter,
+			{ x1: ContactJs ->
+				contact_fromJs(x1)
+			},
+		)
+		val result = contactBasicApi.matchContactsBy(
+			filterConverted,
+		)
 		listToArray(
-			contactBasicApi.matchContactsBy(abstractFilter_fromJs(
-				filter,
-				{ x1: ContactJs ->
-					contact_fromJs(x1)
-				},
-			)),
+			result,
 			{ x1: String ->
 				x1
 			},
-		)}
-
+		)
+	}
 
 	override fun matchServicesBy(filter: AbstractFilterJs<ServiceJs>): Promise<Array<String>> =
 			GlobalScope.promise {
+		val filterConverted: AbstractFilter<Service> = abstractFilter_fromJs(
+			filter,
+			{ x1: ServiceJs ->
+				service_fromJs(x1)
+			},
+		)
+		val result = contactBasicApi.matchServicesBy(
+			filterConverted,
+		)
 		listToArray(
-			contactBasicApi.matchServicesBy(abstractFilter_fromJs(
-				filter,
-				{ x1: ServiceJs ->
-					service_fromJs(x1)
-				},
-			)),
+			result,
 			{ x1: String ->
 				x1
 			},
-		)}
-
+		)
+	}
 
 	override fun deleteContact(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {
-		docIdentifier_toJs(contactBasicApi.deleteContact(entityId))}
-
+		val entityIdConverted: String = entityId
+		val result = contactBasicApi.deleteContact(
+			entityIdConverted,
+		)
+		docIdentifier_toJs(result)
+	}
 
 	override fun deleteContacts(entityIds: Array<String>): Promise<Array<DocIdentifierJs>> =
 			GlobalScope.promise {
+		val entityIdsConverted: List<String> = arrayToList(
+			entityIds,
+			"entityIds",
+			{ x1: String ->
+				x1
+			},
+		)
+		val result = contactBasicApi.deleteContacts(
+			entityIdsConverted,
+		)
 		listToArray(
-			contactBasicApi.deleteContacts(arrayToList(
-				entityIds,
-				"entityIds",
-				{ x1: String ->
-					x1
-				},
-			)),
+			result,
 			{ x1: DocIdentifier ->
 				docIdentifier_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun findContactsDelegationsStubsByHcPartyPatientForeignKeys(hcPartyId: String,
 			secretPatientKeys: Array<String>): Promise<Array<IcureStubJs>> = GlobalScope.promise {
+		val hcPartyIdConverted: String = hcPartyId
+		val secretPatientKeysConverted: List<String> = arrayToList(
+			secretPatientKeys,
+			"secretPatientKeys",
+			{ x1: String ->
+				x1
+			},
+		)
+		val result = contactBasicApi.findContactsDelegationsStubsByHcPartyPatientForeignKeys(
+			hcPartyIdConverted,
+			secretPatientKeysConverted,
+		)
 		listToArray(
-			contactBasicApi.findContactsDelegationsStubsByHcPartyPatientForeignKeys(hcPartyId, arrayToList(
-				secretPatientKeys,
-				"secretPatientKeys",
-				{ x1: String ->
-					x1
-				},
-			)),
+			result,
 			{ x1: IcureStub ->
 				icureStub_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun getServiceCodesOccurrences(codeType: String, minOccurrences: Double):
 			Promise<Array<LabelledOccurenceJs>> = GlobalScope.promise {
+		val codeTypeConverted: String = codeType
+		val minOccurrencesConverted: Long = numberToLong(minOccurrences, "minOccurrences")
+		val result = contactBasicApi.getServiceCodesOccurrences(
+			codeTypeConverted,
+			minOccurrencesConverted,
+		)
 		listToArray(
-			contactBasicApi.getServiceCodesOccurrences(codeType, numberToLong(minOccurrences,
-					"minOccurrences")),
+			result,
 			{ x1: LabelledOccurence ->
 				labelledOccurence_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun modifyContact(entity: EncryptedContactJs): Promise<EncryptedContactJs> =
 			GlobalScope.promise {
-		contact_toJs(contactBasicApi.modifyContact(com.icure.sdk.js.model.contact_fromJs(entity)))}
-
+		val entityConverted: EncryptedContact = contact_fromJs(entity)
+		val result = contactBasicApi.modifyContact(
+			entityConverted,
+		)
+		contact_toJs(result)
+	}
 
 	override fun modifyContacts(entities: Array<EncryptedContactJs>):
 			Promise<Array<EncryptedContactJs>> = GlobalScope.promise {
+		val entitiesConverted: List<EncryptedContact> = arrayToList(
+			entities,
+			"entities",
+			{ x1: EncryptedContactJs ->
+				contact_fromJs(x1)
+			},
+		)
+		val result = contactBasicApi.modifyContacts(
+			entitiesConverted,
+		)
 		listToArray(
-			contactBasicApi.modifyContacts(arrayToList(
-				entities,
-				"entities",
-				{ x1: EncryptedContactJs ->
-					contact_fromJs(x1)
-				},
-			)),
+			result,
 			{ x1: EncryptedContact ->
 				contact_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun getContact(entityId: String): Promise<EncryptedContactJs> = GlobalScope.promise {
-		contact_toJs(contactBasicApi.getContact(entityId))}
-
+		val entityIdConverted: String = entityId
+		val result = contactBasicApi.getContact(
+			entityIdConverted,
+		)
+		contact_toJs(result)
+	}
 
 	override fun getContacts(entityIds: Array<String>): Promise<Array<EncryptedContactJs>> =
 			GlobalScope.promise {
+		val entityIdsConverted: List<String> = arrayToList(
+			entityIds,
+			"entityIds",
+			{ x1: String ->
+				x1
+			},
+		)
+		val result = contactBasicApi.getContacts(
+			entityIdsConverted,
+		)
 		listToArray(
-			contactBasicApi.getContacts(arrayToList(
-				entityIds,
-				"entityIds",
-				{ x1: String ->
-					x1
-				},
-			)),
+			result,
 			{ x1: EncryptedContact ->
 				contact_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun filterContactsBy(
 		filterChain: FilterChainJs<ContactJs>,
 		startDocumentId: String?,
 		limit: Double?,
 	): Promise<PaginatedListJs<EncryptedContactJs>> = GlobalScope.promise {
+		val filterChainConverted: FilterChain<Contact> = filterChain_fromJs(
+			filterChain,
+			{ x1: ContactJs ->
+				contact_fromJs(x1)
+			},
+		)
+		val startDocumentIdConverted: String? = startDocumentId
+		val limitConverted: Int? = numberToInt(limit, "limit")
+		val result = contactBasicApi.filterContactsBy(
+			filterChainConverted,
+			startDocumentIdConverted,
+			limitConverted,
+		)
 		paginatedList_toJs(
-			contactBasicApi.filterContactsBy(com.icure.sdk.js.model.filter.chain.filterChain_fromJs(
-			  filterChain,
-			  { x1: com.icure.sdk.js.model.ContactJs ->
-			    com.icure.sdk.js.model.contact_fromJs(x1)
-			  },
-			), startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
+			result,
 			{ x1: EncryptedContact ->
 				contact_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun listContactByHCPartyServiceId(hcPartyId: String, serviceId: String):
 			Promise<Array<EncryptedContactJs>> = GlobalScope.promise {
+		val hcPartyIdConverted: String = hcPartyId
+		val serviceIdConverted: String = serviceId
+		val result = contactBasicApi.listContactByHCPartyServiceId(
+			hcPartyIdConverted,
+			serviceIdConverted,
+		)
 		listToArray(
-			contactBasicApi.listContactByHCPartyServiceId(hcPartyId, serviceId),
+			result,
 			{ x1: EncryptedContact ->
 				contact_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun listContactsByExternalId(externalId: String): Promise<Array<EncryptedContactJs>> =
 			GlobalScope.promise {
+		val externalIdConverted: String = externalId
+		val result = contactBasicApi.listContactsByExternalId(
+			externalIdConverted,
+		)
 		listToArray(
-			contactBasicApi.listContactsByExternalId(externalId),
+			result,
 			{ x1: EncryptedContact ->
 				contact_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun listContactsByHCPartyAndFormId(hcPartyId: String, formId: String):
 			Promise<Array<EncryptedContactJs>> = GlobalScope.promise {
+		val hcPartyIdConverted: String = hcPartyId
+		val formIdConverted: String = formId
+		val result = contactBasicApi.listContactsByHCPartyAndFormId(
+			hcPartyIdConverted,
+			formIdConverted,
+		)
 		listToArray(
-			contactBasicApi.listContactsByHCPartyAndFormId(hcPartyId, formId),
+			result,
 			{ x1: EncryptedContact ->
 				contact_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun listContactsByHCPartyAndFormIds(hcPartyId: String, formIds: Array<String>):
 			Promise<Array<EncryptedContactJs>> = GlobalScope.promise {
+		val hcPartyIdConverted: String = hcPartyId
+		val formIdsConverted: List<String> = arrayToList(
+			formIds,
+			"formIds",
+			{ x1: String ->
+				x1
+			},
+		)
+		val result = contactBasicApi.listContactsByHCPartyAndFormIds(
+			hcPartyIdConverted,
+			formIdsConverted,
+		)
 		listToArray(
-			contactBasicApi.listContactsByHCPartyAndFormIds(hcPartyId, arrayToList(
-				formIds,
-				"formIds",
-				{ x1: String ->
-					x1
-				},
-			)),
+			result,
 			{ x1: EncryptedContact ->
 				contact_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun listContactsByHCPartyAndPatientSecretFKeys(
 		hcPartyId: String,
 		secretPatientKeys: Array<String>,
-		planOfActionsIds: String?,
-		skipClosedContacts: Boolean?,
-	): Promise<Array<EncryptedContactJs>> = GlobalScope.promise {
-		listToArray(
-			contactBasicApi.listContactsByHCPartyAndPatientSecretFKeys(hcPartyId, arrayToList(
+		options: ContactBasicApi_listContactsByHCPartyAndPatientSecretFKeys_Options?,
+	): Promise<Array<EncryptedContactJs>> {
+		val _options: ContactBasicApi_listContactsByHCPartyAndPatientSecretFKeys_Options = options ?:
+				js("{}")
+		return GlobalScope.promise {
+			val hcPartyIdConverted: String = hcPartyId
+			val secretPatientKeysConverted: List<String> = arrayToList(
 				secretPatientKeys,
 				"secretPatientKeys",
 				{ x1: String ->
 					x1
 				},
-			), planOfActionsIds, skipClosedContacts),
-			{ x1: EncryptedContact ->
-				contact_toJs(x1)
-			},
-		)}
-
+			)
+			val planOfActionsIdsConverted: String? = convertingOptionOrDefault(
+				_options.planOfActionsIds,
+				null
+			) { planOfActionsIds ->
+				planOfActionsIds
+			}
+			val skipClosedContactsConverted: Boolean? = convertingOptionOrDefault(
+				_options.skipClosedContacts,
+				null
+			) { skipClosedContacts ->
+				skipClosedContacts
+			}
+			val result = contactBasicApi.listContactsByHCPartyAndPatientSecretFKeys(
+				hcPartyIdConverted,
+				secretPatientKeysConverted,
+				planOfActionsIdsConverted,
+				skipClosedContactsConverted,
+			)
+			listToArray(
+				result,
+				{ x1: EncryptedContact ->
+					contact_toJs(x1)
+				},
+			)
+		}
+	}
 
 	override fun closeForHCPartyPatientForeignKeys(hcPartyId: String,
 			secretPatientKeys: Array<String>): Promise<Array<EncryptedContactJs>> = GlobalScope.promise {
+		val hcPartyIdConverted: String = hcPartyId
+		val secretPatientKeysConverted: List<String> = arrayToList(
+			secretPatientKeys,
+			"secretPatientKeys",
+			{ x1: String ->
+				x1
+			},
+		)
+		val result = contactBasicApi.closeForHCPartyPatientForeignKeys(
+			hcPartyIdConverted,
+			secretPatientKeysConverted,
+		)
 		listToArray(
-			contactBasicApi.closeForHCPartyPatientForeignKeys(hcPartyId, arrayToList(
-				secretPatientKeys,
-				"secretPatientKeys",
-				{ x1: String ->
-					x1
-				},
-			)),
+			result,
 			{ x1: EncryptedContact ->
 				contact_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun getService(serviceId: String): Promise<EncryptedServiceJs> = GlobalScope.promise {
-		service_toJs(contactBasicApi.getService(serviceId))}
-
+		val serviceIdConverted: String = serviceId
+		val result = contactBasicApi.getService(
+			serviceIdConverted,
+		)
+		service_toJs(result)
+	}
 
 	override fun getServices(entityIds: Array<String>): Promise<Array<EncryptedServiceJs>> =
 			GlobalScope.promise {
+		val entityIdsConverted: List<String> = arrayToList(
+			entityIds,
+			"entityIds",
+			{ x1: String ->
+				x1
+			},
+		)
+		val result = contactBasicApi.getServices(
+			entityIdsConverted,
+		)
 		listToArray(
-			contactBasicApi.getServices(arrayToList(
-				entityIds,
-				"entityIds",
-				{ x1: String ->
-					x1
-				},
-			)),
+			result,
 			{ x1: EncryptedService ->
 				service_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun getServicesLinkedTo(linkType: String, ids: Array<String>):
 			Promise<Array<EncryptedServiceJs>> = GlobalScope.promise {
+		val linkTypeConverted: String = linkType
+		val idsConverted: List<String> = arrayToList(
+			ids,
+			"ids",
+			{ x1: String ->
+				x1
+			},
+		)
+		val result = contactBasicApi.getServicesLinkedTo(
+			linkTypeConverted,
+			idsConverted,
+		)
 		listToArray(
-			contactBasicApi.getServicesLinkedTo(linkType, arrayToList(
-				ids,
-				"ids",
-				{ x1: String ->
-					x1
-				},
-			)),
+			result,
 			{ x1: EncryptedService ->
 				service_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun listServicesByAssociationId(associationId: String): Promise<Array<EncryptedServiceJs>>
 			= GlobalScope.promise {
+		val associationIdConverted: String = associationId
+		val result = contactBasicApi.listServicesByAssociationId(
+			associationIdConverted,
+		)
 		listToArray(
-			contactBasicApi.listServicesByAssociationId(associationId),
+			result,
 			{ x1: EncryptedService ->
 				service_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun listServicesByHealthElementId(hcPartyId: String, healthElementId: String):
 			Promise<Array<EncryptedServiceJs>> = GlobalScope.promise {
+		val hcPartyIdConverted: String = hcPartyId
+		val healthElementIdConverted: String = healthElementId
+		val result = contactBasicApi.listServicesByHealthElementId(
+			hcPartyIdConverted,
+			healthElementIdConverted,
+		)
 		listToArray(
-			contactBasicApi.listServicesByHealthElementId(hcPartyId, healthElementId),
+			result,
 			{ x1: EncryptedService ->
 				service_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun findContactsByOpeningDate(
 		startDate: Double,
 		endDate: Double,
 		hcPartyId: String,
-		startKey: dynamic,
-		startDocumentId: String?,
-		limit: Double?,
-	): Promise<PaginatedListJs<EncryptedContactJs>> = GlobalScope.promise {
-		paginatedList_toJs(
-			contactBasicApi.findContactsByOpeningDate(com.icure.sdk.js.model.CheckedConverters.numberToLong(startDate,
-					"startDate"), com.icure.sdk.js.model.CheckedConverters.numberToLong(endDate, "endDate"),
-					hcPartyId, com.icure.sdk.js.model.CheckedConverters.dynamicToJsonNullsafe(startKey,
-					"startKey"), startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit,
-					"limit")),
-			{ x1: EncryptedContact ->
-				contact_toJs(x1)
-			},
-		)}
-
+		options: ContactBasicApi_findContactsByOpeningDate_Options?,
+	): Promise<PaginatedListJs<EncryptedContactJs>> {
+		val _options: ContactBasicApi_findContactsByOpeningDate_Options = options ?: js("{}")
+		return GlobalScope.promise {
+			val startDateConverted: Long = numberToLong(startDate, "startDate")
+			val endDateConverted: Long = numberToLong(endDate, "endDate")
+			val hcPartyIdConverted: String = hcPartyId
+			val startKeyConverted: JsonElement? = convertingOptionOrDefault(
+				_options.startKey,
+				null
+			) { startKey ->
+				dynamicToJsonNullsafe(startKey, "startKey")
+			}
+			val startDocumentIdConverted: String? = convertingOptionOrDefault(
+				_options.startDocumentId,
+				null
+			) { startDocumentId ->
+				startDocumentId
+			}
+			val limitConverted: Int? = convertingOptionOrDefault(
+				_options.limit,
+				null
+			) { limit ->
+				numberToInt(limit, "limit")
+			}
+			val result = contactBasicApi.findContactsByOpeningDate(
+				startDateConverted,
+				endDateConverted,
+				hcPartyIdConverted,
+				startKeyConverted,
+				startDocumentIdConverted,
+				limitConverted,
+			)
+			paginatedList_toJs(
+				result,
+				{ x1: EncryptedContact ->
+					contact_toJs(x1)
+				},
+			)
+		}
+	}
 
 	override fun filterServicesBy(
 		filterChain: FilterChainJs<ServiceJs>,
 		startDocumentId: String?,
 		limit: Double?,
 	): Promise<PaginatedListJs<EncryptedServiceJs>> = GlobalScope.promise {
+		val filterChainConverted: FilterChain<Service> = filterChain_fromJs(
+			filterChain,
+			{ x1: ServiceJs ->
+				service_fromJs(x1)
+			},
+		)
+		val startDocumentIdConverted: String? = startDocumentId
+		val limitConverted: Int? = numberToInt(limit, "limit")
+		val result = contactBasicApi.filterServicesBy(
+			filterChainConverted,
+			startDocumentIdConverted,
+			limitConverted,
+		)
 		paginatedList_toJs(
-			contactBasicApi.filterServicesBy(com.icure.sdk.js.model.filter.chain.filterChain_fromJs(
-			  filterChain,
-			  { x1: com.icure.sdk.js.model.embed.ServiceJs ->
-			    com.icure.sdk.js.model.embed.service_fromJs(x1)
-			  },
-			), startDocumentId, com.icure.sdk.js.model.CheckedConverters.numberToInt(limit, "limit")),
+			result,
 			{ x1: EncryptedService ->
 				service_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun subscribeToServiceEvents(
 		events: Array<String>,
 		filter: AbstractFilterJs<ServiceJs>,
-		onConnected: () -> Promise<Unit>,
-		channelCapacity: Double,
-		retryDelay: Double,
-		retryDelayExponentFactor: Double,
-		maxRetries: Double,
 		eventFired: (EncryptedServiceJs) -> Promise<Unit>,
-	): Promise<ConnectionJs> = GlobalScope.promise {
-		val onConnectedConverted: suspend () -> Unit = {  ->
-			onConnected(
-			).await()
+		options: ContactBasicApi_subscribeToServiceEvents_Options?,
+	): Promise<ConnectionJs> {
+		val _options: ContactBasicApi_subscribeToServiceEvents_Options = options ?: js("{}")
+		return GlobalScope.promise {
+			val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
+				events,
+				"events",
+				{ x1: String ->
+					SubscriptionEventType.valueOf(x1)
+				},
+			)
+			val filterConverted: AbstractFilter<Service> = abstractFilter_fromJs(
+				filter,
+				{ x1: ServiceJs ->
+					service_fromJs(x1)
+				},
+			)
+			val onConnectedConverted: suspend () -> Unit = convertingOptionOrDefault(
+				_options.onConnected,
+				{}
+			) { onConnected ->
+				{  ->
+					onConnected().await()
+				}
+			}
+			val channelCapacityConverted: Int = convertingOptionOrDefault(
+				_options.channelCapacity,
+				kotlinx.coroutines.channels.Channel.BUFFERED
+			) { channelCapacity ->
+				numberToInt(channelCapacity, "channelCapacity")
+			}
+			val retryDelayConverted: Duration = convertingOptionOrDefault(
+				_options.retryDelay,
+				2.seconds
+			) { retryDelay ->
+				numberToDuration(retryDelay, "retryDelay")
+			}
+			val retryDelayExponentFactorConverted: Double = convertingOptionOrDefault(
+				_options.retryDelayExponentFactor,
+				2.0
+			) { retryDelayExponentFactor ->
+				retryDelayExponentFactor
+			}
+			val maxRetriesConverted: Int = convertingOptionOrDefault(
+				_options.maxRetries,
+				5
+			) { maxRetries ->
+				numberToInt(maxRetries, "maxRetries")
+			}
+			val eventFiredConverted: suspend (EncryptedService) -> Unit = { arg0 ->
+				eventFired(
+					service_toJs(arg0),
+				).await()
+			}
+			val result = contactBasicApi.subscribeToServiceEvents(
+				eventsConverted,
+				filterConverted,
+				onConnectedConverted,
+				channelCapacityConverted,
+				retryDelayConverted,
+				retryDelayExponentFactorConverted,
+				maxRetriesConverted,
+				eventFiredConverted,
+			)
+			connection_toJs(result)
 		}
-		val eventFiredConverted: suspend (EncryptedService) -> Unit = { arg0 ->
-			eventFired(
-				service_toJs(arg0)).await()
-		}
-		connection_toJs(contactBasicApi.subscribeToServiceEvents(com.icure.sdk.js.model.CheckedConverters.arrayToSet(
-		  events,
-		  "events",
-		  { x1: kotlin.String ->
-		    com.icure.sdk.model.notification.SubscriptionEventType.valueOf(x1)
-		  },
-		), com.icure.sdk.js.model.filter.abstractFilter_fromJs(
-		  filter,
-		  { x1: com.icure.sdk.js.model.embed.ServiceJs ->
-		    com.icure.sdk.js.model.embed.service_fromJs(x1)
-		  },
-		), onConnectedConverted, com.icure.sdk.js.model.CheckedConverters.numberToInt(channelCapacity,
-				"channelCapacity"), com.icure.sdk.js.model.CheckedConverters.numberToDuration(retryDelay,
-				"retryDelay"), retryDelayExponentFactor,
-				com.icure.sdk.js.model.CheckedConverters.numberToInt(maxRetries, "maxRetries"),
-				eventFiredConverted))}
-
+	}
 
 	override fun subscribeToEvents(
 		events: Array<String>,
 		filter: AbstractFilterJs<ContactJs>,
-		onConnected: () -> Promise<Unit>,
-		channelCapacity: Double,
-		retryDelay: Double,
-		retryDelayExponentFactor: Double,
-		maxRetries: Double,
 		eventFired: (EncryptedContactJs) -> Promise<Unit>,
-	): Promise<ConnectionJs> = GlobalScope.promise {
-		val onConnectedConverted: suspend () -> Unit = {  ->
-			onConnected(
-			).await()
+		options: ContactBasicApi_subscribeToEvents_Options?,
+	): Promise<ConnectionJs> {
+		val _options: ContactBasicApi_subscribeToEvents_Options = options ?: js("{}")
+		return GlobalScope.promise {
+			val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
+				events,
+				"events",
+				{ x1: String ->
+					SubscriptionEventType.valueOf(x1)
+				},
+			)
+			val filterConverted: AbstractFilter<Contact> = abstractFilter_fromJs(
+				filter,
+				{ x1: ContactJs ->
+					contact_fromJs(x1)
+				},
+			)
+			val onConnectedConverted: suspend () -> Unit = convertingOptionOrDefault(
+				_options.onConnected,
+				{}
+			) { onConnected ->
+				{  ->
+					onConnected().await()
+				}
+			}
+			val channelCapacityConverted: Int = convertingOptionOrDefault(
+				_options.channelCapacity,
+				kotlinx.coroutines.channels.Channel.BUFFERED
+			) { channelCapacity ->
+				numberToInt(channelCapacity, "channelCapacity")
+			}
+			val retryDelayConverted: Duration = convertingOptionOrDefault(
+				_options.retryDelay,
+				2.seconds
+			) { retryDelay ->
+				numberToDuration(retryDelay, "retryDelay")
+			}
+			val retryDelayExponentFactorConverted: Double = convertingOptionOrDefault(
+				_options.retryDelayExponentFactor,
+				2.0
+			) { retryDelayExponentFactor ->
+				retryDelayExponentFactor
+			}
+			val maxRetriesConverted: Int = convertingOptionOrDefault(
+				_options.maxRetries,
+				5
+			) { maxRetries ->
+				numberToInt(maxRetries, "maxRetries")
+			}
+			val eventFiredConverted: suspend (EncryptedContact) -> Unit = { arg0 ->
+				eventFired(
+					contact_toJs(arg0),
+				).await()
+			}
+			val result = contactBasicApi.subscribeToEvents(
+				eventsConverted,
+				filterConverted,
+				onConnectedConverted,
+				channelCapacityConverted,
+				retryDelayConverted,
+				retryDelayExponentFactorConverted,
+				maxRetriesConverted,
+				eventFiredConverted,
+			)
+			connection_toJs(result)
 		}
-		val eventFiredConverted: suspend (EncryptedContact) -> Unit = { arg0 ->
-			eventFired(
-				contact_toJs(arg0)).await()
-		}
-		connection_toJs(contactBasicApi.subscribeToEvents(com.icure.sdk.js.model.CheckedConverters.arrayToSet(
-		  events,
-		  "events",
-		  { x1: kotlin.String ->
-		    com.icure.sdk.model.notification.SubscriptionEventType.valueOf(x1)
-		  },
-		), com.icure.sdk.js.model.filter.abstractFilter_fromJs(
-		  filter,
-		  { x1: com.icure.sdk.js.model.ContactJs ->
-		    com.icure.sdk.js.model.contact_fromJs(x1)
-		  },
-		), onConnectedConverted, com.icure.sdk.js.model.CheckedConverters.numberToInt(channelCapacity,
-				"channelCapacity"), com.icure.sdk.js.model.CheckedConverters.numberToDuration(retryDelay,
-				"retryDelay"), retryDelayExponentFactor,
-				com.icure.sdk.js.model.CheckedConverters.numberToInt(maxRetries, "maxRetries"),
-				eventFiredConverted))}
-
+	}
 }

@@ -26,8 +26,7 @@ export interface MaintenanceTaskApi {
 	createMaintenanceTask(entity: DecryptedMaintenanceTask): Promise<DecryptedMaintenanceTask>;
 
 	withEncryptionMetadata(maintenanceTask: DecryptedMaintenanceTask | undefined,
-			user: User | undefined,
-			delegates: { [ key: string ]: AccessLevel }): Promise<DecryptedMaintenanceTask>;
+			options?: { maintenanceTask?: DecryptedMaintenanceTask | undefined, user?: User | undefined, delegates?: { [ key: string ]: AccessLevel } }): Promise<DecryptedMaintenanceTask>;
 
 	getEncryptionKeysOf(maintenanceTask: MaintenanceTask): Promise<Array<HexString>>;
 
@@ -42,13 +41,8 @@ export interface MaintenanceTaskApi {
 
 	deleteMaintenanceTasks(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
-	shareWith(
-			delegateId: string,
-			maintenanceTask: DecryptedMaintenanceTask,
-			shareEncryptionKeys: ShareMetadataBehaviour,
-			shareOwningEntityIds: ShareMetadataBehaviour,
-			requestedPermission: RequestedPermission
-	): Promise<SimpleShareResult<DecryptedMaintenanceTask>>;
+	shareWith(delegateId: string, maintenanceTask: DecryptedMaintenanceTask,
+			options?: { delegateId?: string, maintenanceTask?: DecryptedMaintenanceTask, shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<DecryptedMaintenanceTask>>;
 
 	tryShareWithMany(maintenanceTask: DecryptedMaintenanceTask,
 			delegates: { [ key: string ]: MaintenanceTaskShareOptions }): Promise<SimpleShareResult<DecryptedMaintenanceTask>>;
@@ -60,18 +54,11 @@ export interface MaintenanceTaskApi {
 
 	getMaintenanceTask(entityId: string): Promise<DecryptedMaintenanceTask>;
 
-	filterMaintenanceTasksBy(startDocumentId: string | undefined, limit: number | undefined,
-			filterChain: FilterChain<MaintenanceTask>): Promise<PaginatedList<DecryptedMaintenanceTask>>;
+	filterMaintenanceTasksBy(filterChain: FilterChain<MaintenanceTask>,
+			options?: { startDocumentId?: string | undefined, limit?: number | undefined, filterChain?: FilterChain<MaintenanceTask> }): Promise<PaginatedList<DecryptedMaintenanceTask>>;
 
-	subscribeToEvents(
-			events: Array<SubscriptionEventType>,
-			filter: AbstractFilter<MaintenanceTask>,
-			onConnected: () => Promise<void>,
-			channelCapacity: number,
-			retryDelay: DurationMs,
-			retryDelayExponentFactor: number,
-			maxRetries: number,
-			eventFired: (x1: DecryptedMaintenanceTask) => Promise<void>
-	): Promise<Connection>;
+	subscribeToEvents(events: Array<SubscriptionEventType>, filter: AbstractFilter<MaintenanceTask>,
+			eventFired: (x1: DecryptedMaintenanceTask) => Promise<void>,
+			options?: { events?: Array<SubscriptionEventType>, filter?: AbstractFilter<MaintenanceTask>, onConnected?: () => Promise<void>, channelCapacity?: number, retryDelay?: DurationMs, retryDelayExponentFactor?: number, maxRetries?: number, eventFired?: (x1: DecryptedMaintenanceTask) => Promise<void> }): Promise<Connection>;
 
 }

@@ -5,6 +5,7 @@ import com.icure.sdk.model.Insurance
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
+import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.InternalIcureApi
 
 interface InsuranceApi {
@@ -13,7 +14,12 @@ interface InsuranceApi {
 	suspend fun createInsurance(insurance: Insurance): Insurance
 	suspend fun deleteInsurance(insuranceId: String): DocIdentifier
 
-	suspend fun getAllInsurances(startDocumentId: String? = null, limit: Int? = null): PaginatedList<Insurance>
+	suspend fun getAllInsurances(
+		@DefaultValue("null")
+		startDocumentId: String? = null,
+		@DefaultValue("null")
+		limit: Int? = null
+	): PaginatedList<Insurance>
 	suspend fun listInsurancesByCode(insuranceCode: String): List<Insurance>
 	suspend fun listInsurancesByName(insuranceName: String): List<Insurance>
 	suspend fun modifyInsurance(insurance: Insurance): Insurance

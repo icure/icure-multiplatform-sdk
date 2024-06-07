@@ -22,8 +22,7 @@ export interface DocumentTemplateApi {
 
 	listDocumentTemplates(): Promise<Array<DocumentTemplate>>;
 
-	findAllDocumentTemplates(startKey: string | undefined, startDocumentId: string | undefined,
-			limit: number | undefined): Promise<PaginatedList<DocumentTemplate>>;
+	findAllDocumentTemplates(options?: { startKey?: string | undefined, startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<DocumentTemplate>>;
 
 	getDocumentTemplateAttachment(documentTemplateId: string,
 			attachmentId: string): Promise<Int8Array>;

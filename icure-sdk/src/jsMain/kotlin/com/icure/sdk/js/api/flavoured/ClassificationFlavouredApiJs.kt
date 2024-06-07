@@ -22,9 +22,7 @@ public external interface ClassificationFlavouredApiJs<E : ClassificationJs> {
 	public fun shareWith(
 		delegateId: String,
 		classification: E,
-		shareEncryptionKeys: String,
-		shareOwningEntityIds: String,
-		requestedPermission: String,
+		options: ClassificationFlavouredApi_shareWith_Options?,
 	): Promise<SimpleShareResultJs<E>>
 
 	public fun tryShareWithMany(classification: E,
@@ -36,9 +34,7 @@ public external interface ClassificationFlavouredApiJs<E : ClassificationJs> {
 	public fun findClassificationsByHcPartyPatient(
 		hcPartyId: String,
 		patient: PatientJs,
-		startDate: Double?,
-		endDate: Double?,
-		descending: Boolean?,
+		options: ClassificationFlavouredApi_findClassificationsByHcPartyPatient_Options?,
 	): Promise<PaginatedListIteratorJs<E>>
 
 	public fun modifyClassification(entity: E): Promise<E>
@@ -46,4 +42,20 @@ public external interface ClassificationFlavouredApiJs<E : ClassificationJs> {
 	public fun getClassification(entityId: String): Promise<E>
 
 	public fun getClassifications(entityIds: Array<String>): Promise<Array<E>>
+}
+
+public external interface ClassificationFlavouredApi_shareWith_Options {
+	public val shareEncryptionKeys: String
+
+	public val shareOwningEntityIds: String
+
+	public val requestedPermission: String
+}
+
+public external interface ClassificationFlavouredApi_findClassificationsByHcPartyPatient_Options {
+	public val startDate: Double?
+
+	public val endDate: Double?
+
+	public val descending: Boolean?
 }

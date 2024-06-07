@@ -15,6 +15,7 @@ import com.icure.sdk.crypto.entities.toPublicKeyInfo
 import com.icure.sdk.model.RecoveryData
 import com.icure.sdk.model.embed.EncryptedContent
 import com.icure.sdk.model.specializations.SpkiHexString
+import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.InternalIcureException
 import com.icure.sdk.utils.base64Encode
@@ -53,7 +54,9 @@ interface RecoveryApi {
 	 * from another device. This value must be kept secret from other users. You can use this value with {@link recoverKeyPairs}
 	 */
 	suspend fun createRecoveryInfoForAvailableKeyPairs(
+		@DefaultValue("false")
 		includeParentsKeys: Boolean = false,
+		@DefaultValue("null")
 		lifetimeSeconds: Int? = null
 	): RecoveryDataKey
 
@@ -89,7 +92,11 @@ interface RecoveryApi {
 	 * This value must be kept secret from users other than the current data owner and the delegate.
 	 * You can use this value with {@link recoverExchangeData}
 	 */
-	suspend fun createExchangeDataRecoveryInfo(delegateId: String, lifetimeSeconds: Int? = null): RecoveryDataKey
+	suspend fun createExchangeDataRecoveryInfo(
+		delegateId: String,
+		@DefaultValue("null")
+		lifetimeSeconds: Int? = null
+	): RecoveryDataKey
 
 	/**
 	 * Recover the content of exchange data from the delegator that created the recovery data at the provided.

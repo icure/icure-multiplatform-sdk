@@ -35,9 +35,7 @@ public external interface CalendarItemApiJs {
 	public fun withEncryptionMetadata(
 		base: DecryptedCalendarItemJs?,
 		patient: PatientJs,
-		user: UserJs?,
-		delegates: Record<String, String>,
-		secretId: SecretIdOptionJs,
+		options: CalendarItemApi_withEncryptionMetadata_Options?,
 	): Promise<DecryptedCalendarItemJs>
 
 	public fun getEncryptionKeysOf(calendarItem: CalendarItemJs): Promise<Array<String>>
@@ -56,9 +54,7 @@ public external interface CalendarItemApiJs {
 	public fun shareWith(
 		delegateId: String,
 		calendarItem: DecryptedCalendarItemJs,
-		shareEncryptionKeys: String,
-		shareOwningEntityIds: String,
-		requestedPermission: String,
+		options: CalendarItemApi_shareWith_Options?,
 	): Promise<SimpleShareResultJs<DecryptedCalendarItemJs>>
 
 	public fun tryShareWithMany(calendarItem: DecryptedCalendarItemJs,
@@ -71,9 +67,7 @@ public external interface CalendarItemApiJs {
 	public fun findCalendarItemsByHcPartyPatient(
 		hcPartyId: String,
 		patient: PatientJs,
-		startDate: Double?,
-		endDate: Double?,
-		descending: Boolean?,
+		options: CalendarItemApi_findCalendarItemsByHcPartyPatient_Options?,
 	): Promise<PaginatedListIteratorJs<DecryptedCalendarItemJs>>
 
 	public fun linkToPatient(
@@ -109,4 +103,28 @@ public external interface CalendarItemApiJs {
 		startDocumentId: String?,
 		limit: Double,
 	): Promise<PaginatedListJs<DecryptedCalendarItemJs>>
+}
+
+public external interface CalendarItemApi_withEncryptionMetadata_Options {
+	public val user: UserJs?
+
+	public val delegates: Record<String, String>
+
+	public val secretId: SecretIdOptionJs
+}
+
+public external interface CalendarItemApi_shareWith_Options {
+	public val shareEncryptionKeys: String
+
+	public val shareOwningEntityIds: String
+
+	public val requestedPermission: String
+}
+
+public external interface CalendarItemApi_findCalendarItemsByHcPartyPatient_Options {
+	public val startDate: Double?
+
+	public val endDate: Double?
+
+	public val descending: Boolean?
 }

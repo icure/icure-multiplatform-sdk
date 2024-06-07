@@ -37,9 +37,7 @@ public external interface TopicApiJs {
 	public fun withEncryptionMetadata(
 		base: DecryptedTopicJs?,
 		patient: PatientJs?,
-		user: UserJs?,
-		delegates: Record<String, String>,
-		secretId: SecretIdOptionJs,
+		options: TopicApi_withEncryptionMetadata_Options?,
 	): Promise<DecryptedTopicJs>
 
 	public fun getEncryptionKeysOf(topic: TopicJs): Promise<Array<String>>
@@ -60,9 +58,7 @@ public external interface TopicApiJs {
 	public fun shareWith(
 		delegateId: String,
 		topic: DecryptedTopicJs,
-		shareEncryptionKeys: String,
-		shareOwningEntityIds: String,
-		requestedPermission: String,
+		options: TopicApi_shareWith_Options?,
 	): Promise<SimpleShareResultJs<DecryptedTopicJs>>
 
 	public fun tryShareWithMany(topic: DecryptedTopicJs,
@@ -77,11 +73,8 @@ public external interface TopicApiJs {
 
 	public fun getTopics(entityIds: Array<String>): Promise<Array<DecryptedTopicJs>>
 
-	public fun filterTopicsBy(
-		startDocumentId: String?,
-		limit: Double?,
-		filterChain: FilterChainJs<TopicJs>,
-	): Promise<PaginatedListJs<DecryptedTopicJs>>
+	public fun filterTopicsBy(filterChain: FilterChainJs<TopicJs>,
+			options: TopicApi_filterTopicsBy_Options?): Promise<PaginatedListJs<DecryptedTopicJs>>
 
 	public fun addParticipant(
 		entityId: String,
@@ -94,11 +87,41 @@ public external interface TopicApiJs {
 	public fun subscribeToEvents(
 		events: Array<String>,
 		filter: AbstractFilterJs<TopicJs>,
-		onConnected: () -> Promise<Unit>,
-		channelCapacity: Double,
-		retryDelay: Double,
-		retryDelayExponentFactor: Double,
-		maxRetries: Double,
 		eventFired: (DecryptedTopicJs) -> Promise<Unit>,
+		options: TopicApi_subscribeToEvents_Options?,
 	): Promise<ConnectionJs>
+}
+
+public external interface TopicApi_withEncryptionMetadata_Options {
+	public val user: UserJs?
+
+	public val delegates: Record<String, String>
+
+	public val secretId: SecretIdOptionJs
+}
+
+public external interface TopicApi_shareWith_Options {
+	public val shareEncryptionKeys: String
+
+	public val shareOwningEntityIds: String
+
+	public val requestedPermission: String
+}
+
+public external interface TopicApi_filterTopicsBy_Options {
+	public val startDocumentId: String?
+
+	public val limit: Double?
+}
+
+public external interface TopicApi_subscribeToEvents_Options {
+	public val onConnected: () -> Promise<Unit>
+
+	public val channelCapacity: Double
+
+	public val retryDelay: Double
+
+	public val retryDelayExponentFactor: Double
+
+	public val maxRetries: Double
 }

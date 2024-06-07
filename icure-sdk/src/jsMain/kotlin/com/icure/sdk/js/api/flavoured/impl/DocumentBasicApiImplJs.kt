@@ -18,8 +18,10 @@ import kotlin.Array
 import kotlin.Boolean
 import kotlin.ByteArray
 import kotlin.Double
+import kotlin.Int
 import kotlin.OptIn
 import kotlin.String
+import kotlin.collections.List
 import kotlin.js.Promise
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -30,133 +32,202 @@ internal class DocumentBasicApiImplJs(
 	private val documentBasicApi: DocumentBasicApi,
 ) : DocumentBasicApiJs {
 	override fun deleteDocument(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {
-		docIdentifier_toJs(documentBasicApi.deleteDocument(entityId))}
-
+		val entityIdConverted: String = entityId
+		val result = documentBasicApi.deleteDocument(
+			entityIdConverted,
+		)
+		docIdentifier_toJs(result)
+	}
 
 	override fun deleteDocuments(entityIds: Array<String>): Promise<Array<DocIdentifierJs>> =
 			GlobalScope.promise {
+		val entityIdsConverted: List<String> = arrayToList(
+			entityIds,
+			"entityIds",
+			{ x1: String ->
+				x1
+			},
+		)
+		val result = documentBasicApi.deleteDocuments(
+			entityIdsConverted,
+		)
 		listToArray(
-			documentBasicApi.deleteDocuments(arrayToList(
-				entityIds,
-				"entityIds",
-				{ x1: String ->
-					x1
-				},
-			)),
+			result,
 			{ x1: DocIdentifier ->
 				docIdentifier_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun getRawMainAttachment(documentId: String, attachmentId: String): Promise<ByteArray> =
 			GlobalScope.promise {
-		documentBasicApi.getRawMainAttachment(documentId, attachmentId)}
-
+		val documentIdConverted: String = documentId
+		val attachmentIdConverted: String = attachmentId
+		val result = documentBasicApi.getRawMainAttachment(
+			documentIdConverted,
+			attachmentIdConverted,
+		)
+		result
+	}
 
 	override fun getMainAttachmentAsPlainText(documentId: String, attachmentId: String):
 			Promise<String> = GlobalScope.promise {
-		documentBasicApi.getMainAttachmentAsPlainText(documentId, attachmentId)}
-
+		val documentIdConverted: String = documentId
+		val attachmentIdConverted: String = attachmentId
+		val result = documentBasicApi.getMainAttachmentAsPlainText(
+			documentIdConverted,
+			attachmentIdConverted,
+		)
+		result
+	}
 
 	override fun getMainAttachmentAsJson(documentId: String, attachmentId: String): Promise<dynamic> =
 			GlobalScope.promise {
-		jsonToDynamic(documentBasicApi.getMainAttachmentAsJson(documentId, attachmentId))}
-
+		val documentIdConverted: String = documentId
+		val attachmentIdConverted: String = attachmentId
+		val result = documentBasicApi.getMainAttachmentAsJson(
+			documentIdConverted,
+			attachmentIdConverted,
+		)
+		jsonToDynamic(result)
+	}
 
 	override fun getRawSecondaryAttachment(
 		documentId: String,
 		key: String,
 		attachmentId: String,
 	): Promise<ByteArray> = GlobalScope.promise {
-		documentBasicApi.getRawSecondaryAttachment(documentId, key, attachmentId)}
-
+		val documentIdConverted: String = documentId
+		val keyConverted: String = key
+		val attachmentIdConverted: String = attachmentId
+		val result = documentBasicApi.getRawSecondaryAttachment(
+			documentIdConverted,
+			keyConverted,
+			attachmentIdConverted,
+		)
+		result
+	}
 
 	override fun modifyDocument(entity: EncryptedDocumentJs): Promise<EncryptedDocumentJs> =
 			GlobalScope.promise {
-		document_toJs(documentBasicApi.modifyDocument(com.icure.sdk.js.model.document_fromJs(entity)))}
-
+		val entityConverted: EncryptedDocument = document_fromJs(entity)
+		val result = documentBasicApi.modifyDocument(
+			entityConverted,
+		)
+		document_toJs(result)
+	}
 
 	override fun getDocument(entityId: String): Promise<EncryptedDocumentJs> = GlobalScope.promise {
-		document_toJs(documentBasicApi.getDocument(entityId))}
-
+		val entityIdConverted: String = entityId
+		val result = documentBasicApi.getDocument(
+			entityIdConverted,
+		)
+		document_toJs(result)
+	}
 
 	override fun getDocumentByExternalUuid(externalUuid: String): Promise<EncryptedDocumentJs> =
 			GlobalScope.promise {
-		document_toJs(documentBasicApi.getDocumentByExternalUuid(externalUuid))}
-
+		val externalUuidConverted: String = externalUuid
+		val result = documentBasicApi.getDocumentByExternalUuid(
+			externalUuidConverted,
+		)
+		document_toJs(result)
+	}
 
 	override fun getDocumentsByExternalUuid(externalUuid: String): Promise<Array<EncryptedDocumentJs>>
 			= GlobalScope.promise {
+		val externalUuidConverted: String = externalUuid
+		val result = documentBasicApi.getDocumentsByExternalUuid(
+			externalUuidConverted,
+		)
 		listToArray(
-			documentBasicApi.getDocumentsByExternalUuid(externalUuid),
+			result,
 			{ x1: EncryptedDocument ->
 				document_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun getDocuments(entityIds: Array<String>): Promise<Array<EncryptedDocumentJs>> =
 			GlobalScope.promise {
+		val entityIdsConverted: List<String> = arrayToList(
+			entityIds,
+			"entityIds",
+			{ x1: String ->
+				x1
+			},
+		)
+		val result = documentBasicApi.getDocuments(
+			entityIdsConverted,
+		)
 		listToArray(
-			documentBasicApi.getDocuments(arrayToList(
-				entityIds,
-				"entityIds",
-				{ x1: String ->
-					x1
-				},
-			)),
+			result,
 			{ x1: EncryptedDocument ->
 				document_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun modifyDocuments(entities: Array<EncryptedDocumentJs>):
 			Promise<Array<EncryptedDocumentJs>> = GlobalScope.promise {
+		val entitiesConverted: List<EncryptedDocument> = arrayToList(
+			entities,
+			"entities",
+			{ x1: EncryptedDocumentJs ->
+				document_fromJs(x1)
+			},
+		)
+		val result = documentBasicApi.modifyDocuments(
+			entitiesConverted,
+		)
 		listToArray(
-			documentBasicApi.modifyDocuments(arrayToList(
-				entities,
-				"entities",
-				{ x1: EncryptedDocumentJs ->
-					document_fromJs(x1)
-				},
-			)),
+			result,
 			{ x1: EncryptedDocument ->
 				document_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun listDocumentsByHcPartyMessageForeignKeys(
 		hcPartyId: String,
 		documentTypeCode: String?,
 		secretMessageKeys: Array<String>,
 	): Promise<Array<EncryptedDocumentJs>> = GlobalScope.promise {
+		val hcPartyIdConverted: String = hcPartyId
+		val documentTypeCodeConverted: String? = documentTypeCode
+		val secretMessageKeysConverted: List<String> = arrayToList(
+			secretMessageKeys,
+			"secretMessageKeys",
+			{ x1: String ->
+				x1
+			},
+		)
+		val result = documentBasicApi.listDocumentsByHcPartyMessageForeignKeys(
+			hcPartyIdConverted,
+			documentTypeCodeConverted,
+			secretMessageKeysConverted,
+		)
 		listToArray(
-			documentBasicApi.listDocumentsByHcPartyMessageForeignKeys(hcPartyId, documentTypeCode,
-					arrayToList(
-				secretMessageKeys,
-				"secretMessageKeys",
-				{ x1: String ->
-					x1
-				},
-			)),
+			result,
 			{ x1: EncryptedDocument ->
 				document_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun findWithoutDelegation(limit: Double?): Promise<Array<EncryptedDocumentJs>> =
 			GlobalScope.promise {
+		val limitConverted: Int? = numberToInt(limit, "limit")
+		val result = documentBasicApi.findWithoutDelegation(
+			limitConverted,
+		)
 		listToArray(
-			documentBasicApi.findWithoutDelegation(numberToInt(limit, "limit")),
+			result,
 			{ x1: EncryptedDocument ->
 				document_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun setRawMainAttachment(
 		documentId: String,
@@ -166,15 +237,28 @@ internal class DocumentBasicApiImplJs(
 		attachment: ByteArray,
 		encrypted: Boolean,
 	): Promise<EncryptedDocumentJs> = GlobalScope.promise {
-		document_toJs(documentBasicApi.setRawMainAttachment(documentId, rev,
-				com.icure.sdk.js.model.CheckedConverters.arrayToList(
-		  utis,
-		  "utis",
-		  { x1: kotlin.String ->
-		    x1
-		  },
-		), blobType, attachment, encrypted))}
-
+		val documentIdConverted: String = documentId
+		val revConverted: String = rev
+		val utisConverted: List<String> = arrayToList(
+			utis,
+			"utis",
+			{ x1: String ->
+				x1
+			},
+		)
+		val blobTypeConverted: String = blobType
+		val attachmentConverted: ByteArray = attachment
+		val encryptedConverted: Boolean = encrypted
+		val result = documentBasicApi.setRawMainAttachment(
+			documentIdConverted,
+			revConverted,
+			utisConverted,
+			blobTypeConverted,
+			attachmentConverted,
+			encryptedConverted,
+		)
+		document_toJs(result)
+	}
 
 	override fun setRawSecondaryAttachment(
 		documentId: String,
@@ -185,26 +269,55 @@ internal class DocumentBasicApiImplJs(
 		attachment: ByteArray,
 		encrypted: Boolean,
 	): Promise<EncryptedDocumentJs> = GlobalScope.promise {
-		document_toJs(documentBasicApi.setRawSecondaryAttachment(documentId, key, rev,
-				com.icure.sdk.js.model.CheckedConverters.arrayToList(
-		  utis,
-		  "utis",
-		  { x1: kotlin.String ->
-		    x1
-		  },
-		), blobType, attachment, encrypted))}
-
+		val documentIdConverted: String = documentId
+		val keyConverted: String = key
+		val revConverted: String = rev
+		val utisConverted: List<String> = arrayToList(
+			utis,
+			"utis",
+			{ x1: String ->
+				x1
+			},
+		)
+		val blobTypeConverted: String = blobType
+		val attachmentConverted: ByteArray = attachment
+		val encryptedConverted: Boolean = encrypted
+		val result = documentBasicApi.setRawSecondaryAttachment(
+			documentIdConverted,
+			keyConverted,
+			revConverted,
+			utisConverted,
+			blobTypeConverted,
+			attachmentConverted,
+			encryptedConverted,
+		)
+		document_toJs(result)
+	}
 
 	override fun deleteMainAttachment(entityId: String, rev: String): Promise<EncryptedDocumentJs> =
 			GlobalScope.promise {
-		document_toJs(documentBasicApi.deleteMainAttachment(entityId, rev))}
-
+		val entityIdConverted: String = entityId
+		val revConverted: String = rev
+		val result = documentBasicApi.deleteMainAttachment(
+			entityIdConverted,
+			revConverted,
+		)
+		document_toJs(result)
+	}
 
 	override fun deleteSecondaryAttachment(
 		documentId: String,
 		key: String,
 		attachmentId: String,
 	): Promise<EncryptedDocumentJs> = GlobalScope.promise {
-		document_toJs(documentBasicApi.deleteSecondaryAttachment(documentId, key, attachmentId))}
-
+		val documentIdConverted: String = documentId
+		val keyConverted: String = key
+		val attachmentIdConverted: String = attachmentId
+		val result = documentBasicApi.deleteSecondaryAttachment(
+			documentIdConverted,
+			keyConverted,
+			attachmentIdConverted,
+		)
+		document_toJs(result)
+	}
 }

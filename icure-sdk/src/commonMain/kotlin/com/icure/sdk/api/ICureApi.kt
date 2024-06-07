@@ -5,6 +5,7 @@ import com.icure.sdk.model.IdWithRev
 import com.icure.sdk.model.IndexingInfo
 import com.icure.sdk.model.ReplicationInfo
 import com.icure.sdk.model.couchdb.ReplicatorDocument
+import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.InternalIcureApi
 
 interface ICureApi {
@@ -15,17 +16,38 @@ interface ICureApi {
 	suspend fun getReplicationInfo(): ReplicationInfo
 	suspend fun updateDesignDoc(
 		entityName: String,
+		@DefaultValue("null")
 		warmup: Boolean? = null,
 	): Boolean
 
-	suspend fun resolvePatientsConflicts(limit: Int? = null): List<IdWithRev>
-	suspend fun resolveContactsConflicts(limit: Int? = null): List<IdWithRev>
-	suspend fun resolveFormsConflicts(limit: Int? = null): List<IdWithRev>
-	suspend fun resolveHealthElementsConflicts(limit: Int? = null): List<IdWithRev>
-	suspend fun resolveInvoicesConflicts(limit: Int? = null): List<IdWithRev>
-	suspend fun resolveMessagesConflicts(limit: Int? = null): List<IdWithRev>
+	suspend fun resolvePatientsConflicts(
+		@DefaultValue("null")
+		limit: Int? = null
+	): List<IdWithRev>
+	suspend fun resolveContactsConflicts(
+		@DefaultValue("null")
+		limit: Int? = null
+	): List<IdWithRev>
+	suspend fun resolveFormsConflicts(
+		@DefaultValue("null")
+		limit: Int? = null
+	): List<IdWithRev>
+	suspend fun resolveHealthElementsConflicts(
+		@DefaultValue("null")
+		limit: Int? = null
+	): List<IdWithRev>
+	suspend fun resolveInvoicesConflicts(
+		@DefaultValue("null")
+		limit: Int? = null
+	): List<IdWithRev>
+	suspend fun resolveMessagesConflicts(
+		@DefaultValue("null")
+		limit: Int? = null
+	): List<IdWithRev>
 	suspend fun resolveDocumentsConflicts(
+		@DefaultValue("null")
 		ids: String? = null,
+		@DefaultValue("null")
 		limit: Int? = null,
 	): List<IdWithRev>
 

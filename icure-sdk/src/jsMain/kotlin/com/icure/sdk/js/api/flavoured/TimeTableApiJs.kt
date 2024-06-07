@@ -33,9 +33,7 @@ public external interface TimeTableApiJs {
 	public fun withEncryptionMetadata(
 		base: DecryptedTimeTableJs?,
 		patient: PatientJs?,
-		user: UserJs?,
-		delegates: Record<String, String>,
-		secretId: SecretIdOptionJs,
+		options: TimeTableApi_withEncryptionMetadata_Options?,
 	): Promise<DecryptedTimeTableJs>
 
 	public fun getEncryptionKeysOf(timeTable: TimeTableJs): Promise<Array<String>>
@@ -54,9 +52,7 @@ public external interface TimeTableApiJs {
 	public fun shareWith(
 		delegateId: String,
 		timeTable: DecryptedTimeTableJs,
-		shareEncryptionKeys: String,
-		shareOwningEntityIds: String,
-		requestedPermission: String,
+		options: TimeTableApi_shareWith_Options?,
 	): Promise<SimpleShareResultJs<DecryptedTimeTableJs>>
 
 	public fun tryShareWithMany(timeTable: DecryptedTimeTableJs,
@@ -77,4 +73,20 @@ public external interface TimeTableApiJs {
 	): Promise<Array<DecryptedTimeTableJs>>
 
 	public fun getTimeTablesByAgendaId(agendaId: String): Promise<Array<DecryptedTimeTableJs>>
+}
+
+public external interface TimeTableApi_withEncryptionMetadata_Options {
+	public val user: UserJs?
+
+	public val delegates: Record<String, String>
+
+	public val secretId: SecretIdOptionJs
+}
+
+public external interface TimeTableApi_shareWith_Options {
+	public val shareEncryptionKeys: String
+
+	public val shareOwningEntityIds: String
+
+	public val requestedPermission: String
 }

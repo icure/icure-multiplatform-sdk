@@ -25,13 +25,8 @@ export interface FormApi {
 
 	createForms(entities: Array<DecryptedForm>): Promise<Array<DecryptedForm>>;
 
-	withEncryptionMetadata(
-			base: DecryptedForm | undefined,
-			patient: Patient,
-			user: User | undefined,
-			delegates: { [ key: string ]: AccessLevel },
-			secretId: SecretIdOption
-	): Promise<DecryptedForm>;
+	withEncryptionMetadata(base: DecryptedForm | undefined, patient: Patient,
+			options?: { base?: DecryptedForm | undefined, patient?: Patient, user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdOption }): Promise<DecryptedForm>;
 
 	getEncryptionKeysOf(form: Form): Promise<Array<HexString>>;
 
@@ -45,16 +40,16 @@ export interface FormApi {
 
 	deleteForms(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
-	getFormTemplate(formTemplateId: string, raw: boolean | undefined): Promise<FormTemplate>;
+	getFormTemplate(formTemplateId: string,
+			options?: { formTemplateId?: string, raw?: boolean | undefined }): Promise<FormTemplate>;
 
 	getFormTemplatesByGuid(formTemplateGuid: string, specialityCode: string,
 			raw: boolean | undefined): Promise<Array<FormTemplate>>;
 
 	listFormTemplatesBySpeciality(specialityCode: string,
-			raw: boolean | undefined): Promise<Array<FormTemplate>>;
+			options?: { specialityCode?: string, raw?: boolean | undefined }): Promise<Array<FormTemplate>>;
 
-	getFormTemplates(loadLayout: boolean | undefined,
-			raw: boolean | undefined): Promise<Array<FormTemplate>>;
+	getFormTemplates(options?: { loadLayout?: boolean | undefined, raw?: boolean | undefined }): Promise<Array<FormTemplate>>;
 
 	createFormTemplate(formTemplate: FormTemplate): Promise<FormTemplate>;
 
@@ -64,13 +59,8 @@ export interface FormApi {
 
 	setTemplateAttachment(formTemplateId: string, payload: Int8Array): Promise<string>;
 
-	shareWith(
-			delegateId: string,
-			form: DecryptedForm,
-			shareEncryptionKeys: ShareMetadataBehaviour,
-			shareOwningEntityIds: ShareMetadataBehaviour,
-			requestedPermission: RequestedPermission
-	): Promise<SimpleShareResult<DecryptedForm>>;
+	shareWith(delegateId: string, form: DecryptedForm,
+			options?: { delegateId?: string, form?: DecryptedForm, shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<DecryptedForm>>;
 
 	tryShareWithMany(form: DecryptedForm,
 			delegates: { [ key: string ]: FormShareOptions }): Promise<SimpleShareResult<DecryptedForm>>;
@@ -78,13 +68,8 @@ export interface FormApi {
 	shareWithMany(form: DecryptedForm,
 			delegates: { [ key: string ]: FormShareOptions }): Promise<DecryptedForm>;
 
-	findFormsByHcPartyPatient(
-			hcPartyId: string,
-			patient: Patient,
-			startDate: number | undefined,
-			endDate: number | undefined,
-			descending: boolean | undefined
-	): Promise<PaginatedListIterator<DecryptedForm>>;
+	findFormsByHcPartyPatient(hcPartyId: string, patient: Patient,
+			options?: { hcPartyId?: string, patient?: Patient, startDate?: number | undefined, endDate?: number | undefined, descending?: boolean | undefined }): Promise<PaginatedListIterator<DecryptedForm>>;
 
 	modifyForm(entity: DecryptedForm): Promise<DecryptedForm>;
 
@@ -104,12 +89,7 @@ export interface FormApi {
 
 	getChildrenForms(hcPartyId: string, parentId: string): Promise<Array<DecryptedForm>>;
 
-	listFormsByHCPartyAndPatientForeignKeys(
-			hcPartyId: string,
-			secretFKeys: string,
-			healthElementId: string | undefined,
-			planOfActionId: string | undefined,
-			formTemplateId: string | undefined
-	): Promise<Array<DecryptedForm>>;
+	listFormsByHCPartyAndPatientForeignKeys(hcPartyId: string, secretFKeys: string,
+			options?: { hcPartyId?: string, secretFKeys?: string, healthElementId?: string | undefined, planOfActionId?: string | undefined, formTemplateId?: string | undefined }): Promise<Array<DecryptedForm>>;
 
 }

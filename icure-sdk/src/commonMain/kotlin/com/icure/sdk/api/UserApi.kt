@@ -13,15 +13,20 @@ import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.security.Enable2faRequest
 import com.icure.sdk.model.security.Permission
 import com.icure.sdk.model.security.TokenWithGroup
+import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.InternalIcureApi
 import kotlin.js.JsName
 
 interface UserApi {
 	suspend fun getCurrentUser(): User
 	suspend fun listUsersBy(
+		@DefaultValue("null")
 		startKey: String? = null,
+		@DefaultValue("null")
 		startDocumentId: String? = null,
+		@DefaultValue("null")
 		limit: Int? = null,
+		@DefaultValue("null")
 		skipPatients: Boolean? = null,
 	): PaginatedList<User>
 
@@ -42,12 +47,16 @@ interface UserApi {
 	suspend fun getToken(
 		userId: String,
 		key: String,
+		@DefaultValue("null")
 		tokenValidity: Long? = null,
+		@DefaultValue("null")
 		token: String? = null,
 	): String
 
 	suspend fun filterUsersBy(
+		@DefaultValue("null")
 		startDocumentId: String? = null,
+		@DefaultValue("null")
 		limit: Int? = null,
 		filterChain: FilterChain<User>,
 	): PaginatedList<User>
@@ -56,8 +65,11 @@ interface UserApi {
 	suspend fun getMatchingUsers(): List<UserGroup>
 	suspend fun listUsersInGroup(
 		groupId: String,
+		@DefaultValue("null")
 		startKey: String? = null,
+		@DefaultValue("null")
 		startDocumentId: String? = null,
+		@DefaultValue("null")
 		limit: Int? = null,
 	): PaginatedList<User>
 
@@ -97,20 +109,26 @@ interface UserApi {
 		groupId: String,
 		userId: String,
 		key: String,
+		@DefaultValue("null")
 		token: String? = null,
+		@DefaultValue("null")
 		tokenValidity: Long? = null,
 	): String
 
 	suspend fun getTokenInAllGroups(
 		userIdentifier: String,
 		key: String,
+		@DefaultValue("null")
 		token: String? = null,
+		@DefaultValue("null")
 		tokenValidity: Long? = null,
 	): List<TokenWithGroup>
 
 	suspend fun filterUsersInGroupBy(
 		groupId: String,
+		@DefaultValue("null")
 		startDocumentId: String? = null,
+		@DefaultValue("null")
 		limit: Int? = null,
 		filterChain: FilterChain<User>,
 	): PaginatedList<User>

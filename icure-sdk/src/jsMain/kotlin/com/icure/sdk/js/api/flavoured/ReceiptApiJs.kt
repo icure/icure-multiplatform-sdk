@@ -33,9 +33,7 @@ public external interface ReceiptApiJs {
 	public fun withEncryptionMetadata(
 		base: DecryptedReceiptJs?,
 		patient: PatientJs?,
-		user: UserJs?,
-		delegates: Record<String, String>,
-		secretId: SecretIdOptionJs,
+		options: ReceiptApi_withEncryptionMetadata_Options?,
 	): Promise<DecryptedReceiptJs>
 
 	public fun getAndDecryptReceiptAttachment(receipt: ReceiptJs, attachmentId: String):
@@ -80,9 +78,7 @@ public external interface ReceiptApiJs {
 	public fun shareWith(
 		delegateId: String,
 		receipt: DecryptedReceiptJs,
-		shareEncryptionKeys: String,
-		shareOwningEntityIds: String,
-		requestedPermission: String,
+		options: ReceiptApi_shareWith_Options?,
 	): Promise<SimpleShareResultJs<DecryptedReceiptJs>>
 
 	public fun tryShareWithMany(receipt: DecryptedReceiptJs,
@@ -97,4 +93,20 @@ public external interface ReceiptApiJs {
 	public fun getReceipt(entityId: String): Promise<DecryptedReceiptJs>
 
 	public fun listByReference(reference: String): Promise<Array<DecryptedReceiptJs>>
+}
+
+public external interface ReceiptApi_withEncryptionMetadata_Options {
+	public val user: UserJs?
+
+	public val delegates: Record<String, String>
+
+	public val secretId: SecretIdOptionJs
+}
+
+public external interface ReceiptApi_shareWith_Options {
+	public val shareEncryptionKeys: String
+
+	public val shareOwningEntityIds: String
+
+	public val requestedPermission: String
 }

@@ -18,9 +18,7 @@ public external interface ReceiptFlavouredApiJs<E : ReceiptJs> {
 	public fun shareWith(
 		delegateId: String,
 		receipt: E,
-		shareEncryptionKeys: String,
-		shareOwningEntityIds: String,
-		requestedPermission: String,
+		options: ReceiptFlavouredApi_shareWith_Options?,
 	): Promise<SimpleShareResultJs<E>>
 
 	public fun tryShareWithMany(receipt: E, delegates: Record<String, ReceiptShareOptionsJs>):
@@ -33,4 +31,12 @@ public external interface ReceiptFlavouredApiJs<E : ReceiptJs> {
 	public fun getReceipt(entityId: String): Promise<E>
 
 	public fun listByReference(reference: String): Promise<Array<E>>
+}
+
+public external interface ReceiptFlavouredApi_shareWith_Options {
+	public val shareEncryptionKeys: String
+
+	public val shareOwningEntityIds: String
+
+	public val requestedPermission: String
 }

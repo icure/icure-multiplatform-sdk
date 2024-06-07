@@ -48,7 +48,7 @@ export class DecryptedClassification {
 
   parentId: string | undefined = undefined;
 
-  label: string = '';
+  label: string = "";
 
   templateId: string | undefined = undefined;
 
@@ -120,7 +120,7 @@ export class EncryptedClassification {
 
   parentId: string | undefined = undefined;
 
-  label: string = '';
+  label: string = "";
 
   templateId: string | undefined = undefined;
 

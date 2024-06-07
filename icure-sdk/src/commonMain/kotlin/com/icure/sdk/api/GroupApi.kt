@@ -20,6 +20,7 @@ import com.icure.sdk.model.embed.RoleConfiguration
 import com.icure.sdk.model.embed.UserType
 import com.icure.sdk.model.security.Operation
 import com.icure.sdk.model.security.PermissionType
+import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.InternalIcureApi
 import kotlinx.serialization.json.JsonElement
 
@@ -29,17 +30,24 @@ interface GroupApi {
 	suspend fun createGroup(
 		id: String,
 		name: String,
+		@DefaultValue("null")
 		type: GroupType? = null,
 		password: String,
+		@DefaultValue("null")
 		server: String? = null,
+		@DefaultValue("null")
 		q: Int? = null,
+		@DefaultValue("null")
 		n: Int? = null,
+		@DefaultValue("null")
 		superGroup: String? = null,
 		initialisationData: DatabaseInitialisation,
 	): Group
 
 	suspend fun registerNewGroupAdministrator(
+		@DefaultValue("null")
 		type: GroupType? = null,
+		@DefaultValue("null")
 		role: PermissionType? = null,
 		registrationInformation: RegistrationInformation,
 	): RegistrationSuccess
@@ -47,15 +55,20 @@ interface GroupApi {
 	suspend fun listApps(): List<Group>
 	suspend fun findGroups(
 		id: String,
+		@DefaultValue("null")
 		startDocumentId: String? = null,
+		@DefaultValue("null")
 		limit: Int? = null,
 	): PaginatedList<Group>
 
 	suspend fun findGroupsWithContent(
 		id: String,
 		searchString: String,
+		@DefaultValue("null")
 		startKey: JsonElement? = null,
+		@DefaultValue("null")
 		startDocumentId: String? = null,
+		@DefaultValue("null")
 		limit: Int? = null,
 	): PaginatedList<Group>
 
@@ -64,6 +77,7 @@ interface GroupApi {
 	suspend fun getOperationToken(
 		operation: Operation,
 		duration: Long?,
+		@DefaultValue("null")
 		description: String? = null,
 	): String
 
@@ -82,13 +96,21 @@ interface GroupApi {
 	suspend fun setGroupPassword(id: String, password: String): Group
 	suspend fun initDesignDocs(
 		id: String,
+		@DefaultValue("null")
 		clazz: String? = null,
 		warmup: Boolean?,
 		dryRun: Boolean?
 	): List<DesignDocument>
 
 	suspend fun solveConflicts(id: String, limit: Int?, warmup: Boolean?): List<IdWithRev>
-	suspend fun resetStorage(id: String, q: Int? = null, n: Int? = null, databases: List<String>): Unit
+	suspend fun resetStorage(
+		id: String,
+		@DefaultValue("null")
+		q: Int? = null,
+		@DefaultValue("null")
+		n: Int? = null,
+		databases: List<String>
+	): Unit
 	suspend fun getGroupsStorageInfos(groups: List<String>): List<GroupDatabasesInfo>
 	suspend fun getReplicationInfo(id: String): ReplicationInfo
 	suspend fun getHierarchy(id: String): List<String>

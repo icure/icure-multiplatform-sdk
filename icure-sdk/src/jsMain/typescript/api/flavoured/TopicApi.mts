@@ -28,13 +28,8 @@ export interface TopicApi {
 
 	createTopic(entity: DecryptedTopic): Promise<DecryptedTopic>;
 
-	withEncryptionMetadata(
-			base: DecryptedTopic | undefined,
-			patient: Patient | undefined,
-			user: User | undefined,
-			delegates: { [ key: string ]: AccessLevel },
-			secretId: SecretIdOption
-	): Promise<DecryptedTopic>;
+	withEncryptionMetadata(base: DecryptedTopic | undefined, patient: Patient | undefined,
+			options?: { base?: DecryptedTopic | undefined, patient?: Patient | undefined, user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdOption }): Promise<DecryptedTopic>;
 
 	getEncryptionKeysOf(topic: Topic): Promise<Array<HexString>>;
 
@@ -50,13 +45,8 @@ export interface TopicApi {
 
 	matchTopicsBy(filter: AbstractFilter<Topic>): Promise<Array<string>>;
 
-	shareWith(
-			delegateId: string,
-			topic: DecryptedTopic,
-			shareEncryptionKeys: ShareMetadataBehaviour,
-			shareOwningEntityIds: ShareMetadataBehaviour,
-			requestedPermission: RequestedPermission
-	): Promise<SimpleShareResult<DecryptedTopic>>;
+	shareWith(delegateId: string, topic: DecryptedTopic,
+			options?: { delegateId?: string, topic?: DecryptedTopic, shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<DecryptedTopic>>;
 
 	tryShareWithMany(topic: DecryptedTopic,
 			delegates: { [ key: string ]: TopicShareOptions }): Promise<SimpleShareResult<DecryptedTopic>>;
@@ -70,23 +60,16 @@ export interface TopicApi {
 
 	getTopics(entityIds: Array<string>): Promise<Array<DecryptedTopic>>;
 
-	filterTopicsBy(startDocumentId: string | undefined, limit: number | undefined,
-			filterChain: FilterChain<Topic>): Promise<PaginatedList<DecryptedTopic>>;
+	filterTopicsBy(filterChain: FilterChain<Topic>,
+			options?: { startDocumentId?: string | undefined, limit?: number | undefined, filterChain?: FilterChain<Topic> }): Promise<PaginatedList<DecryptedTopic>>;
 
 	addParticipant(entityId: string, dataOwnerId: string,
 			topicRole: TopicRole): Promise<DecryptedTopic>;
 
 	removeParticipant(entityId: string, dataOwnerId: string): Promise<DecryptedTopic>;
 
-	subscribeToEvents(
-			events: Array<SubscriptionEventType>,
-			filter: AbstractFilter<Topic>,
-			onConnected: () => Promise<void>,
-			channelCapacity: number,
-			retryDelay: DurationMs,
-			retryDelayExponentFactor: number,
-			maxRetries: number,
-			eventFired: (x1: DecryptedTopic) => Promise<void>
-	): Promise<Connection>;
+	subscribeToEvents(events: Array<SubscriptionEventType>, filter: AbstractFilter<Topic>,
+			eventFired: (x1: DecryptedTopic) => Promise<void>,
+			options?: { events?: Array<SubscriptionEventType>, filter?: AbstractFilter<Topic>, onConnected?: () => Promise<void>, channelCapacity?: number, retryDelay?: DurationMs, retryDelayExponentFactor?: number, maxRetries?: number, eventFired?: (x1: DecryptedTopic) => Promise<void> }): Promise<Connection>;
 
 }

@@ -19,7 +19,7 @@ public external interface KeywordApiJs {
 
 	public fun createKeyword(frontEndMigration: KeywordJs): Promise<KeywordJs>
 
-	public fun getKeywords(startDocumentId: String?, limit: Double?):
+	public fun getKeywords(options: KeywordApi_getKeywords_Options?):
 			Promise<PaginatedListJs<KeywordJs>>
 
 	public fun modifyKeyword(keyword: KeywordJs): Promise<KeywordJs>
@@ -27,4 +27,10 @@ public external interface KeywordApiJs {
 	public fun getKeywordsByUser(userId: String): Promise<Array<KeywordJs>>
 
 	public fun deleteKeywords(keywordIds: Array<String>): Promise<Array<DocIdentifierJs>>
+}
+
+public external interface KeywordApi_getKeywords_Options {
+	public val startDocumentId: String?
+
+	public val limit: Double?
 }

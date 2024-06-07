@@ -23,9 +23,7 @@ public external interface AccessLogFlavouredApiJs<E : AccessLogJs> {
 	public fun shareWith(
 		delegateId: String,
 		accessLog: E,
-		shareEncryptionKeys: String,
-		shareOwningEntityIds: String,
-		requestedPermission: String,
+		options: AccessLogFlavouredApi_shareWith_Options?,
 	): Promise<SimpleShareResultJs<E>>
 
 	public fun tryShareWithMany(accessLog: E, delegates: Record<String, AccessLogShareOptionsJs>):
@@ -37,9 +35,7 @@ public external interface AccessLogFlavouredApiJs<E : AccessLogJs> {
 	public fun findAccessLogsByHcPartyPatient(
 		hcPartyId: String,
 		patient: PatientJs,
-		startDate: Double?,
-		endDate: Double?,
-		descending: Boolean?,
+		options: AccessLogFlavouredApi_findAccessLogsByHcPartyPatient_Options?,
 	): Promise<PaginatedListIteratorJs<E>>
 
 	public fun modifyAccessLog(entity: E): Promise<E>
@@ -56,22 +52,52 @@ public external interface AccessLogFlavouredApiJs<E : AccessLogJs> {
 		limit: Double?,
 	): Promise<PaginatedListJs<E>>
 
-	public fun findAccessLogsByUserAfterDate(
-		userId: String,
-		accessType: String?,
-		startDate: Double?,
-		startKey: String?,
-		startDocumentId: String?,
-		limit: Double?,
-		descending: Boolean?,
-	): Promise<PaginatedListJs<E>>
+	public fun findAccessLogsByUserAfterDate(userId: String,
+			options: AccessLogFlavouredApi_findAccessLogsByUserAfterDate_Options?):
+			Promise<PaginatedListJs<E>>
 
-	public fun findAccessLogsInGroup(
-		groupId: String,
-		fromEpoch: Double?,
-		toEpoch: Double?,
-		startKey: Double?,
-		startDocumentId: String?,
-		limit: Double?,
-	): Promise<PaginatedListJs<E>>
+	public fun findAccessLogsInGroup(groupId: String,
+			options: AccessLogFlavouredApi_findAccessLogsInGroup_Options?): Promise<PaginatedListJs<E>>
+}
+
+public external interface AccessLogFlavouredApi_shareWith_Options {
+	public val shareEncryptionKeys: String
+
+	public val shareOwningEntityIds: String
+
+	public val requestedPermission: String
+}
+
+public external interface AccessLogFlavouredApi_findAccessLogsByHcPartyPatient_Options {
+	public val startDate: Double?
+
+	public val endDate: Double?
+
+	public val descending: Boolean?
+}
+
+public external interface AccessLogFlavouredApi_findAccessLogsByUserAfterDate_Options {
+	public val accessType: String?
+
+	public val startDate: Double?
+
+	public val startKey: String?
+
+	public val startDocumentId: String?
+
+	public val limit: Double?
+
+	public val descending: Boolean?
+}
+
+public external interface AccessLogFlavouredApi_findAccessLogsInGroup_Options {
+	public val fromEpoch: Double?
+
+	public val toEpoch: Double?
+
+	public val startKey: Double?
+
+	public val startDocumentId: String?
+
+	public val limit: Double?
 }

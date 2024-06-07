@@ -24,9 +24,7 @@ public external interface TopicFlavouredApiJs<E : TopicJs> {
 	public fun shareWith(
 		delegateId: String,
 		topic: E,
-		shareEncryptionKeys: String,
-		shareOwningEntityIds: String,
-		requestedPermission: String,
+		options: TopicFlavouredApi_shareWith_Options?,
 	): Promise<SimpleShareResultJs<E>>
 
 	public fun tryShareWithMany(topic: E, delegates: Record<String, TopicShareOptionsJs>):
@@ -40,11 +38,8 @@ public external interface TopicFlavouredApiJs<E : TopicJs> {
 
 	public fun getTopics(entityIds: Array<String>): Promise<Array<E>>
 
-	public fun filterTopicsBy(
-		startDocumentId: String?,
-		limit: Double?,
-		filterChain: FilterChainJs<TopicJs>,
-	): Promise<PaginatedListJs<E>>
+	public fun filterTopicsBy(filterChain: FilterChainJs<TopicJs>,
+			options: TopicFlavouredApi_filterTopicsBy_Options?): Promise<PaginatedListJs<E>>
 
 	public fun addParticipant(
 		entityId: String,
@@ -57,11 +52,33 @@ public external interface TopicFlavouredApiJs<E : TopicJs> {
 	public fun subscribeToEvents(
 		events: Array<String>,
 		filter: AbstractFilterJs<TopicJs>,
-		onConnected: () -> Promise<Unit>,
-		channelCapacity: Double,
-		retryDelay: Double,
-		retryDelayExponentFactor: Double,
-		maxRetries: Double,
 		eventFired: (E) -> Promise<Unit>,
+		options: TopicFlavouredApi_subscribeToEvents_Options?,
 	): Promise<ConnectionJs>
+}
+
+public external interface TopicFlavouredApi_shareWith_Options {
+	public val shareEncryptionKeys: String
+
+	public val shareOwningEntityIds: String
+
+	public val requestedPermission: String
+}
+
+public external interface TopicFlavouredApi_filterTopicsBy_Options {
+	public val startDocumentId: String?
+
+	public val limit: Double?
+}
+
+public external interface TopicFlavouredApi_subscribeToEvents_Options {
+	public val onConnected: () -> Promise<Unit>
+
+	public val channelCapacity: Double
+
+	public val retryDelay: Double
+
+	public val retryDelayExponentFactor: Double
+
+	public val maxRetries: Double
 }
