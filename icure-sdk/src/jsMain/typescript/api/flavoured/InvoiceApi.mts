@@ -31,13 +31,8 @@ export interface InvoiceApi {
 
 	createInvoices(entities: Array<DecryptedInvoice>): Promise<Array<DecryptedInvoice>>;
 
-	withEncryptionMetadata(
-			base: DecryptedInvoice | undefined,
-			patient: Patient | undefined,
-			user: User | undefined,
-			delegates: { [ key: string ]: AccessLevel },
-			secretId: SecretIdOption
-	): Promise<DecryptedInvoice>;
+	withEncryptionMetadata(base: DecryptedInvoice | undefined, patient: Patient | undefined,
+			options?: { base?: DecryptedInvoice | undefined, patient?: Patient | undefined, user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdOption }): Promise<DecryptedInvoice>;
 
 	getEncryptionKeysOf(invoice: Invoice): Promise<Array<HexString>>;
 
@@ -54,13 +49,8 @@ export interface InvoiceApi {
 
 	getTarificationsCodesOccurrences(minOccurrence: number): Promise<Array<LabelledOccurence>>;
 
-	shareWith(
-			delegateId: string,
-			invoice: DecryptedInvoice,
-			shareEncryptionKeys: ShareMetadataBehaviour,
-			shareOwningEntityIds: ShareMetadataBehaviour,
-			requestedPermission: RequestedPermission
-	): Promise<SimpleShareResult<DecryptedInvoice>>;
+	shareWith(delegateId: string, invoice: DecryptedInvoice,
+			options?: { delegateId?: string, invoice?: DecryptedInvoice, shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<DecryptedInvoice>>;
 
 	tryShareWithMany(invoice: DecryptedInvoice,
 			delegates: { [ key: string ]: InvoiceShareOptions }): Promise<SimpleShareResult<DecryptedInvoice>>;
@@ -68,13 +58,8 @@ export interface InvoiceApi {
 	shareWithMany(invoice: DecryptedInvoice,
 			delegates: { [ key: string ]: InvoiceShareOptions }): Promise<DecryptedInvoice>;
 
-	findInvoicesByHcPartyPatient(
-			hcPartyId: string,
-			patient: Patient,
-			startDate: number | undefined,
-			endDate: number | undefined,
-			descending: boolean | undefined
-	): Promise<PaginatedListIterator<DecryptedInvoice>>;
+	findInvoicesByHcPartyPatient(hcPartyId: string, patient: Patient,
+			options?: { hcPartyId?: string, patient?: Patient, startDate?: number | undefined, endDate?: number | undefined, descending?: boolean | undefined }): Promise<PaginatedListIterator<DecryptedInvoice>>;
 
 	modifyInvoice(entity: DecryptedInvoice): Promise<DecryptedInvoice>;
 
@@ -100,23 +85,15 @@ export interface InvoiceApi {
 			type: string,
 			sentMediumType: string,
 			secretFKeys: string,
-			insuranceId: string | undefined,
-			invoiceId: string | undefined,
-			gracePeriod: number | undefined,
-			invoicingCodes: Array<EncryptedInvoicingCode>
+			invoicingCodes: Array<EncryptedInvoicingCode>,
+			options?: { userId?: string, type?: string, sentMediumType?: string, secretFKeys?: string, insuranceId?: string | undefined, invoiceId?: string | undefined, gracePeriod?: number | undefined, invoicingCodes?: Array<EncryptedInvoicingCode> }
 	): Promise<Array<DecryptedInvoice>>;
 
 	removeCodes(userId: string, serviceId: string, secretFKeys: string,
 			tarificationIds: Array<string>): Promise<Array<DecryptedInvoice>>;
 
-	findInvoicesByAuthor(
-			hcPartyId: string,
-			fromDate: number | undefined,
-			toDate: number | undefined,
-			startKey: any | undefined,
-			startDocumentId: string | undefined,
-			limit: number | undefined
-	): Promise<PaginatedList<DecryptedInvoice>>;
+	findInvoicesByAuthor(hcPartyId: string,
+			options?: { hcPartyId?: string, fromDate?: number | undefined, toDate?: number | undefined, startKey?: any | undefined, startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<DecryptedInvoice>>;
 
 	listInvoicesByHCPartyAndPatientForeignKeys(hcPartyId: string,
 			secretPatientKeys: Array<string>): Promise<Array<DecryptedInvoice>>;
@@ -129,8 +106,7 @@ export interface InvoiceApi {
 			sentMediumType: MediumType,
 			invoiceType: InvoiceType,
 			sent: boolean,
-			from: number | undefined,
-			to: number | undefined
+			options?: { hcPartyId?: string, sentMediumType?: MediumType, invoiceType?: InvoiceType, sent?: boolean, from?: number | undefined, to?: number | undefined }
 	): Promise<Array<DecryptedInvoice>>;
 
 	listInvoicesByContactIds(contactIds: Array<string>): Promise<Array<DecryptedInvoice>>;
@@ -157,7 +133,7 @@ export interface InvoiceApi {
 
 	listInvoicesByServiceIds(serviceIds: Array<string>): Promise<Array<DecryptedInvoice>>;
 
-	listAllHcpsByStatus(status: string, from: number | undefined, to: number | undefined,
-			hcpIds: Array<string>): Promise<Array<DecryptedInvoice>>;
+	listAllHcpsByStatus(status: string, hcpIds: Array<string>,
+			options?: { status?: string, from?: number | undefined, to?: number | undefined, hcpIds?: Array<string> }): Promise<Array<DecryptedInvoice>>;
 
 }

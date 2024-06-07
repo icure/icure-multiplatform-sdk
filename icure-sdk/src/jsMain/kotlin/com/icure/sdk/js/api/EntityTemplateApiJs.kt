@@ -23,21 +23,17 @@ public external interface EntityTemplateApiJs {
 	public fun listEntityTemplatesBy(
 		userId: String,
 		type: String,
-		searchString: String?,
-		includeEntities: Boolean?,
+		options: EntityTemplateApi_listEntityTemplatesBy_Options?,
 	): Promise<Array<EntityTemplateJs>>
 
-	public fun listAllEntityTemplatesBy(
-		type: String,
-		searchString: String?,
-		includeEntities: Boolean?,
-	): Promise<Array<EntityTemplateJs>>
+	public fun listAllEntityTemplatesBy(type: String,
+			options: EntityTemplateApi_listAllEntityTemplatesBy_Options?): Promise<Array<EntityTemplateJs>>
 
 	public fun listEntityTemplatesByKeyword(
 		userId: String,
 		type: String,
 		keyword: String,
-		includeEntities: Boolean?,
+		options: EntityTemplateApi_listEntityTemplatesByKeyword_Options?,
 	): Promise<Array<EntityTemplateJs>>
 
 	public fun findAllEntityTemplatesByKeyword(
@@ -55,4 +51,20 @@ public external interface EntityTemplateApiJs {
 			Promise<Array<EntityTemplateJs>>
 
 	public fun deleteEntityTemplate(entityTemplateIds: Array<String>): Promise<Array<DocIdentifierJs>>
+}
+
+public external interface EntityTemplateApi_listEntityTemplatesBy_Options {
+	public val searchString: String?
+
+	public val includeEntities: Boolean?
+}
+
+public external interface EntityTemplateApi_listAllEntityTemplatesBy_Options {
+	public val searchString: String?
+
+	public val includeEntities: Boolean?
+}
+
+public external interface EntityTemplateApi_listEntityTemplatesByKeyword_Options {
+	public val includeEntities: Boolean?
 }

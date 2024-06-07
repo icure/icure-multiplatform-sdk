@@ -23,7 +23,7 @@ public external interface InsuranceApiJs {
 
 	public fun deleteInsurance(insuranceId: String): Promise<DocIdentifierJs>
 
-	public fun getAllInsurances(startDocumentId: String?, limit: Double?):
+	public fun getAllInsurances(options: InsuranceApi_getAllInsurances_Options?):
 			Promise<PaginatedListJs<InsuranceJs>>
 
 	public fun listInsurancesByCode(insuranceCode: String): Promise<Array<InsuranceJs>>
@@ -31,4 +31,10 @@ public external interface InsuranceApiJs {
 	public fun listInsurancesByName(insuranceName: String): Promise<Array<InsuranceJs>>
 
 	public fun modifyInsurance(insurance: InsuranceJs): Promise<InsuranceJs>
+}
+
+public external interface InsuranceApi_getAllInsurances_Options {
+	public val startDocumentId: String?
+
+	public val limit: Double?
 }

@@ -14,13 +14,8 @@ import {Connection} from '../../websocket/Connection.mjs';
 
 export interface MaintenanceTaskFlavouredApi<E extends MaintenanceTask> {
 
-	shareWith(
-			delegateId: string,
-			maintenanceTask: E,
-			shareEncryptionKeys: ShareMetadataBehaviour,
-			shareOwningEntityIds: ShareMetadataBehaviour,
-			requestedPermission: RequestedPermission
-	): Promise<SimpleShareResult<E>>;
+	shareWith(delegateId: string, maintenanceTask: E,
+			options?: { delegateId?: string, maintenanceTask?: E, shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<E>>;
 
 	tryShareWithMany(maintenanceTask: E,
 			delegates: { [ key: string ]: MaintenanceTaskShareOptions }): Promise<SimpleShareResult<E>>;
@@ -32,18 +27,11 @@ export interface MaintenanceTaskFlavouredApi<E extends MaintenanceTask> {
 
 	getMaintenanceTask(entityId: string): Promise<E>;
 
-	filterMaintenanceTasksBy(startDocumentId: string | undefined, limit: number | undefined,
-			filterChain: FilterChain<MaintenanceTask>): Promise<PaginatedList<E>>;
+	filterMaintenanceTasksBy(filterChain: FilterChain<MaintenanceTask>,
+			options?: { startDocumentId?: string | undefined, limit?: number | undefined, filterChain?: FilterChain<MaintenanceTask> }): Promise<PaginatedList<E>>;
 
-	subscribeToEvents(
-			events: Array<SubscriptionEventType>,
-			filter: AbstractFilter<MaintenanceTask>,
-			onConnected: () => Promise<void>,
-			channelCapacity: number,
-			retryDelay: DurationMs,
-			retryDelayExponentFactor: number,
-			maxRetries: number,
-			eventFired: (x1: E) => Promise<void>
-	): Promise<Connection>;
+	subscribeToEvents(events: Array<SubscriptionEventType>, filter: AbstractFilter<MaintenanceTask>,
+			eventFired: (x1: E) => Promise<void>,
+			options?: { events?: Array<SubscriptionEventType>, filter?: AbstractFilter<MaintenanceTask>, onConnected?: () => Promise<void>, channelCapacity?: number, retryDelay?: DurationMs, retryDelayExponentFactor?: number, maxRetries?: number, eventFired?: (x1: E) => Promise<void> }): Promise<Connection>;
 
 }

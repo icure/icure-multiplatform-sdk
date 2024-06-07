@@ -64,10 +64,7 @@ public external interface MessageBasicApiJs {
 		transportGuid: String,
 		from: Double,
 		to: Double,
-		startKey: dynamic,
-		startDocumentId: String?,
-		limit: Double?,
-		hcpId: String?,
+		options: MessageBasicApi_findMessagesByTransportGuidSentDate_Options?,
 	): Promise<PaginatedListJs<EncryptedMessageJs>>
 
 	public fun findMessagesByToAddress(
@@ -97,11 +94,29 @@ public external interface MessageBasicApiJs {
 	public fun subscribeToEvents(
 		events: Array<String>,
 		filter: AbstractFilterJs<MessageJs>,
-		onConnected: () -> Promise<Unit>,
-		channelCapacity: Double,
-		retryDelay: Double,
-		retryDelayExponentFactor: Double,
-		maxRetries: Double,
 		eventFired: (EncryptedMessageJs) -> Promise<Unit>,
+		options: MessageBasicApi_subscribeToEvents_Options?,
 	): Promise<ConnectionJs>
+}
+
+public external interface MessageBasicApi_findMessagesByTransportGuidSentDate_Options {
+	public val startKey: dynamic
+
+	public val startDocumentId: String?
+
+	public val limit: Double?
+
+	public val hcpId: String?
+}
+
+public external interface MessageBasicApi_subscribeToEvents_Options {
+	public val onConnected: () -> Promise<Unit>
+
+	public val channelCapacity: Double
+
+	public val retryDelay: Double
+
+	public val retryDelayExponentFactor: Double
+
+	public val maxRetries: Double
 }

@@ -28,9 +28,7 @@ public external interface ContactFlavouredApiJs<E : ContactJs, S : ServiceJs> {
 	public fun shareWith(
 		delegateId: String,
 		contact: E,
-		shareEncryptionKeys: String,
-		shareOwningEntityIds: String,
-		requestedPermission: String,
+		options: ContactFlavouredApi_shareWith_Options?,
 	): Promise<SimpleShareResultJs<E>>
 
 	public fun tryShareWithMany(contact: E, delegates: Record<String, ContactShareOptionsJs>):
@@ -41,9 +39,7 @@ public external interface ContactFlavouredApiJs<E : ContactJs, S : ServiceJs> {
 	public fun findContactsByHcPartyPatient(
 		hcPartyId: String,
 		patient: PatientJs,
-		startDate: Double?,
-		endDate: Double?,
-		descending: Boolean?,
+		options: ContactFlavouredApi_findContactsByHcPartyPatient_Options?,
 	): Promise<PaginatedListIteratorJs<E>>
 
 	public fun modifyContact(entity: E): Promise<E>
@@ -72,8 +68,7 @@ public external interface ContactFlavouredApiJs<E : ContactJs, S : ServiceJs> {
 	public fun listContactsByHCPartyAndPatientSecretFKeys(
 		hcPartyId: String,
 		secretPatientKeys: Array<String>,
-		planOfActionsIds: String?,
-		skipClosedContacts: Boolean?,
+		options: ContactFlavouredApi_listContactsByHCPartyAndPatientSecretFKeys_Options?,
 	): Promise<Array<E>>
 
 	public fun closeForHCPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: Array<String>):
@@ -94,9 +89,7 @@ public external interface ContactFlavouredApiJs<E : ContactJs, S : ServiceJs> {
 		startDate: Double,
 		endDate: Double,
 		hcPartyId: String,
-		startKey: dynamic,
-		startDocumentId: String?,
-		limit: Double?,
+		options: ContactFlavouredApi_findContactsByOpeningDate_Options?,
 	): Promise<PaginatedListJs<E>>
 
 	public fun filterServicesBy(
@@ -108,22 +101,68 @@ public external interface ContactFlavouredApiJs<E : ContactJs, S : ServiceJs> {
 	public fun subscribeToServiceEvents(
 		events: Array<String>,
 		filter: AbstractFilterJs<ServiceJs>,
-		onConnected: () -> Promise<Unit>,
-		channelCapacity: Double,
-		retryDelay: Double,
-		retryDelayExponentFactor: Double,
-		maxRetries: Double,
 		eventFired: (S) -> Promise<Unit>,
+		options: ContactFlavouredApi_subscribeToServiceEvents_Options?,
 	): Promise<ConnectionJs>
 
 	public fun subscribeToEvents(
 		events: Array<String>,
 		filter: AbstractFilterJs<ContactJs>,
-		onConnected: () -> Promise<Unit>,
-		channelCapacity: Double,
-		retryDelay: Double,
-		retryDelayExponentFactor: Double,
-		maxRetries: Double,
 		eventFired: (E) -> Promise<Unit>,
+		options: ContactFlavouredApi_subscribeToEvents_Options?,
 	): Promise<ConnectionJs>
+}
+
+public external interface ContactFlavouredApi_shareWith_Options {
+	public val shareEncryptionKeys: String
+
+	public val shareOwningEntityIds: String
+
+	public val requestedPermission: String
+}
+
+public external interface ContactFlavouredApi_findContactsByHcPartyPatient_Options {
+	public val startDate: Double?
+
+	public val endDate: Double?
+
+	public val descending: Boolean?
+}
+
+public external interface ContactFlavouredApi_listContactsByHCPartyAndPatientSecretFKeys_Options {
+	public val planOfActionsIds: String?
+
+	public val skipClosedContacts: Boolean?
+}
+
+public external interface ContactFlavouredApi_findContactsByOpeningDate_Options {
+	public val startKey: dynamic
+
+	public val startDocumentId: String?
+
+	public val limit: Double?
+}
+
+public external interface ContactFlavouredApi_subscribeToServiceEvents_Options {
+	public val onConnected: () -> Promise<Unit>
+
+	public val channelCapacity: Double
+
+	public val retryDelay: Double
+
+	public val retryDelayExponentFactor: Double
+
+	public val maxRetries: Double
+}
+
+public external interface ContactFlavouredApi_subscribeToEvents_Options {
+	public val onConnected: () -> Promise<Unit>
+
+	public val channelCapacity: Double
+
+	public val retryDelay: Double
+
+	public val retryDelayExponentFactor: Double
+
+	public val maxRetries: Double
 }

@@ -28,9 +28,7 @@ public external interface MessageFlavouredApiJs<E : MessageJs> {
 		delegateId: String,
 		message: E,
 		shareSecretIds: Array<String>,
-		shareEncryptionKeys: String,
-		shareOwningEntityIds: String,
-		requestedPermission: String,
+		options: MessageFlavouredApi_shareWith_Options?,
 	): Promise<SimpleShareResultJs<E>>
 
 	public fun tryShareWithMany(message: E, delegates: Record<String, MessageShareOptionsJs>):
@@ -41,9 +39,7 @@ public external interface MessageFlavouredApiJs<E : MessageJs> {
 	public fun findMessagesByHcPartyPatient(
 		hcPartyId: String,
 		patient: PatientJs,
-		startDate: Double?,
-		endDate: Double?,
-		descending: Boolean?,
+		options: MessageFlavouredApi_findMessagesByHcPartyPatient_Options?,
 	): Promise<PaginatedListIteratorJs<E>>
 
 	public fun modifyMessage(entity: E): Promise<E>
@@ -82,10 +78,7 @@ public external interface MessageFlavouredApiJs<E : MessageJs> {
 		transportGuid: String,
 		from: Double,
 		to: Double,
-		startKey: dynamic,
-		startDocumentId: String?,
-		limit: Double?,
-		hcpId: String?,
+		options: MessageFlavouredApi_findMessagesByTransportGuidSentDate_Options?,
 	): Promise<PaginatedListJs<E>>
 
 	public fun findMessagesByToAddress(
@@ -114,11 +107,45 @@ public external interface MessageFlavouredApiJs<E : MessageJs> {
 	public fun subscribeToEvents(
 		events: Array<String>,
 		filter: AbstractFilterJs<MessageJs>,
-		onConnected: () -> Promise<Unit>,
-		channelCapacity: Double,
-		retryDelay: Double,
-		retryDelayExponentFactor: Double,
-		maxRetries: Double,
 		eventFired: (E) -> Promise<Unit>,
+		options: MessageFlavouredApi_subscribeToEvents_Options?,
 	): Promise<ConnectionJs>
+}
+
+public external interface MessageFlavouredApi_shareWith_Options {
+	public val shareEncryptionKeys: String
+
+	public val shareOwningEntityIds: String
+
+	public val requestedPermission: String
+}
+
+public external interface MessageFlavouredApi_findMessagesByHcPartyPatient_Options {
+	public val startDate: Double?
+
+	public val endDate: Double?
+
+	public val descending: Boolean?
+}
+
+public external interface MessageFlavouredApi_findMessagesByTransportGuidSentDate_Options {
+	public val startKey: dynamic
+
+	public val startDocumentId: String?
+
+	public val limit: Double?
+
+	public val hcpId: String?
+}
+
+public external interface MessageFlavouredApi_subscribeToEvents_Options {
+	public val onConnected: () -> Promise<Unit>
+
+	public val channelCapacity: Double
+
+	public val retryDelay: Double
+
+	public val retryDelayExponentFactor: Double
+
+	public val maxRetries: Double
 }

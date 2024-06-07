@@ -36,9 +36,7 @@ public external interface DocumentApiJs {
 	public fun withEncryptionMetadata(
 		base: DecryptedDocumentJs?,
 		message: MessageJs?,
-		user: UserJs?,
-		delegates: Record<String, String>,
-		secretId: SecretIdOptionJs,
+		options: DocumentApi_withEncryptionMetadata_Options?,
 	): Promise<DecryptedDocumentJs>
 
 	public fun getAndTryDecryptMainAttachment(
@@ -113,9 +111,7 @@ public external interface DocumentApiJs {
 	public fun shareWith(
 		delegateId: String,
 		document: DecryptedDocumentJs,
-		shareEncryptionKeys: String,
-		shareOwningEntityIds: String,
-		requestedPermission: String,
+		options: DocumentApi_shareWith_Options?,
 	): Promise<SimpleShareResultJs<DecryptedDocumentJs>>
 
 	public fun tryShareWithMany(document: DecryptedDocumentJs,
@@ -128,9 +124,7 @@ public external interface DocumentApiJs {
 	public fun findDocumentsByHcPartyPatient(
 		hcPartyId: String,
 		patient: PatientJs,
-		startDate: Double?,
-		endDate: Double?,
-		descending: Boolean?,
+		options: DocumentApi_findDocumentsByHcPartyPatient_Options?,
 	): Promise<PaginatedListIteratorJs<DecryptedDocumentJs>>
 
 	public fun modifyDocument(entity: DecryptedDocumentJs): Promise<DecryptedDocumentJs>
@@ -180,4 +174,28 @@ public external interface DocumentApiJs {
 		key: String,
 		attachmentId: String,
 	): Promise<DecryptedDocumentJs>
+}
+
+public external interface DocumentApi_withEncryptionMetadata_Options {
+	public val user: UserJs?
+
+	public val delegates: Record<String, String>
+
+	public val secretId: SecretIdOptionJs
+}
+
+public external interface DocumentApi_shareWith_Options {
+	public val shareEncryptionKeys: String
+
+	public val shareOwningEntityIds: String
+
+	public val requestedPermission: String
+}
+
+public external interface DocumentApi_findDocumentsByHcPartyPatient_Options {
+	public val startDate: Double?
+
+	public val endDate: Double?
+
+	public val descending: Boolean?
 }

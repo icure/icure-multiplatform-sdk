@@ -26,12 +26,7 @@ import kotlin.js.Promise
 public external interface UserApiJs {
 	public fun getCurrentUser(): Promise<UserJs>
 
-	public fun listUsersBy(
-		startKey: String?,
-		startDocumentId: String?,
-		limit: Double?,
-		skipPatients: Boolean?,
-	): Promise<PaginatedListJs<UserJs>>
+	public fun listUsersBy(options: UserApi_listUsersBy_Options?): Promise<PaginatedListJs<UserJs>>
 
 	public fun createUser(user: UserJs): Promise<UserJs>
 
@@ -57,26 +52,18 @@ public external interface UserApiJs {
 	public fun getToken(
 		userId: String,
 		key: String,
-		tokenValidity: Double?,
-		token: String?,
+		options: UserApi_getToken_Options?,
 	): Promise<String>
 
-	public fun filterUsersBy(
-		startDocumentId: String?,
-		limit: Double?,
-		filterChain: FilterChainJs<UserJs>,
-	): Promise<PaginatedListJs<UserJs>>
+	public fun filterUsersBy(filterChain: FilterChainJs<UserJs>,
+			options: UserApi_filterUsersBy_Options?): Promise<PaginatedListJs<UserJs>>
 
 	public fun matchUsersBy(filter: AbstractFilterJs<UserJs>): Promise<Array<String>>
 
 	public fun getMatchingUsers(): Promise<Array<UserGroupJs>>
 
-	public fun listUsersInGroup(
-		groupId: String,
-		startKey: String?,
-		startDocumentId: String?,
-		limit: Double?,
-	): Promise<PaginatedListJs<UserJs>>
+	public fun listUsersInGroup(groupId: String, options: UserApi_listUsersInGroup_Options?):
+			Promise<PaginatedListJs<UserJs>>
 
 	public fun createUserInGroup(groupId: String, user: UserJs): Promise<UserJs>
 
@@ -100,22 +87,19 @@ public external interface UserApiJs {
 		groupId: String,
 		userId: String,
 		key: String,
-		token: String?,
-		tokenValidity: Double?,
+		options: UserApi_getTokenInGroup_Options?,
 	): Promise<String>
 
 	public fun getTokenInAllGroups(
 		userIdentifier: String,
 		key: String,
-		token: String?,
-		tokenValidity: Double?,
+		options: UserApi_getTokenInAllGroups_Options?,
 	): Promise<Array<TokenWithGroupJs>>
 
 	public fun filterUsersInGroupBy(
 		groupId: String,
-		startDocumentId: String?,
-		limit: Double?,
 		filterChain: FilterChainJs<UserJs>,
+		options: UserApi_filterUsersInGroupBy_Options?,
 	): Promise<PaginatedListJs<UserJs>>
 
 	@JsName("enable2faForUserWithGroup")
@@ -135,4 +119,52 @@ public external interface UserApiJs {
 	public fun createAdminUser(user: UserJs): Promise<UserJs>
 
 	public fun createAdminUserInGroup(groupId: String, user: UserJs): Promise<UserJs>
+}
+
+public external interface UserApi_listUsersBy_Options {
+	public val startKey: String?
+
+	public val startDocumentId: String?
+
+	public val limit: Double?
+
+	public val skipPatients: Boolean?
+}
+
+public external interface UserApi_getToken_Options {
+	public val tokenValidity: Double?
+
+	public val token: String?
+}
+
+public external interface UserApi_filterUsersBy_Options {
+	public val startDocumentId: String?
+
+	public val limit: Double?
+}
+
+public external interface UserApi_listUsersInGroup_Options {
+	public val startKey: String?
+
+	public val startDocumentId: String?
+
+	public val limit: Double?
+}
+
+public external interface UserApi_getTokenInGroup_Options {
+	public val token: String?
+
+	public val tokenValidity: Double?
+}
+
+public external interface UserApi_getTokenInAllGroups_Options {
+	public val token: String?
+
+	public val tokenValidity: Double?
+}
+
+public external interface UserApi_filterUsersInGroupBy_Options {
+	public val startDocumentId: String?
+
+	public val limit: Double?
 }

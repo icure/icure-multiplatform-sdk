@@ -2,16 +2,20 @@
 package com.icure.sdk.js.api.extended.`impl`
 
 import com.icure.sdk.api.extended.IcureMaintenanceTaskApi
+import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefault
 import com.icure.sdk.js.api.extended.IcureMaintenanceTaskApiJs
+import com.icure.sdk.js.api.extended.IcureMaintenanceTaskApi_createKeyPairUpdateNotificationsToAllDelegationCounterparts_Options
 import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.sdk.KeyPairUpdateNotificationJs
 import com.icure.sdk.js.model.sdk.keyPairUpdateNotification_fromJs
 import com.icure.sdk.js.model.specializations.spkiHexString_fromJs
 import com.icure.sdk.model.DataOwnerType
-import kotlin.Array
+import com.icure.sdk.model.sdk.KeyPairUpdateNotification
+import com.icure.sdk.model.specializations.SpkiHexString
 import kotlin.OptIn
 import kotlin.String
 import kotlin.Unit
+import kotlin.collections.Set
 import kotlin.js.Promise
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -23,23 +27,50 @@ internal class IcureMaintenanceTaskApiImplJs(
 ) : IcureMaintenanceTaskApiJs {
 	override fun applyKeyPairUpdate(updateRequest: KeyPairUpdateNotificationJs): Promise<Unit> =
 			GlobalScope.promise {
-		icureMaintenanceTaskApi.applyKeyPairUpdate(keyPairUpdateNotification_fromJs(updateRequest))}
+		val updateRequestConverted: KeyPairUpdateNotification =
+				keyPairUpdateNotification_fromJs(updateRequest)
+		icureMaintenanceTaskApi.applyKeyPairUpdate(
+			updateRequestConverted,
+		)
 
+	}
 
 	override fun createKeyPairUpdateNotificationsToAllDelegationCounterparts(key: String,
-			requestToOwnerTypes: Array<String>?): Promise<Unit> = GlobalScope.promise {
-		icureMaintenanceTaskApi.createKeyPairUpdateNotificationsToAllDelegationCounterparts(spkiHexString_fromJs(key),
+			options: IcureMaintenanceTaskApi_createKeyPairUpdateNotificationsToAllDelegationCounterparts_Options?):
+			Promise<Unit> {
+		val _options:
+				IcureMaintenanceTaskApi_createKeyPairUpdateNotificationsToAllDelegationCounterparts_Options =
+				options ?: js("{}")
+		return GlobalScope.promise {
+			val keyConverted: SpkiHexString = spkiHexString_fromJs(key)
+			val requestToOwnerTypesConverted: Set<DataOwnerType>? = convertingOptionOrDefault(
+				_options.requestToOwnerTypes,
+				null
+			) { requestToOwnerTypes ->
 				arrayToSet(
-			requestToOwnerTypes,
-			"requestToOwnerTypes",
-			{ x1: String ->
-				DataOwnerType.valueOf(x1)
-			},
-		))}
+					requestToOwnerTypes,
+					"requestToOwnerTypes",
+					{ x1: String ->
+						DataOwnerType.valueOf(x1)
+					},
+				)
+			}
+			icureMaintenanceTaskApi.createKeyPairUpdateNotificationsToAllDelegationCounterparts(
+				keyConverted,
+				requestToOwnerTypesConverted,
+			)
 
+		}
+	}
 
 	override fun createKeyPairUpdateNotificationTo(dataOwnerId: String, key: String): Promise<Unit> =
 			GlobalScope.promise {
-		icureMaintenanceTaskApi.createKeyPairUpdateNotificationTo(dataOwnerId, spkiHexString_fromJs(key))}
+		val dataOwnerIdConverted: String = dataOwnerId
+		val keyConverted: SpkiHexString = spkiHexString_fromJs(key)
+		icureMaintenanceTaskApi.createKeyPairUpdateNotificationTo(
+			dataOwnerIdConverted,
+			keyConverted,
+		)
 
+	}
 }

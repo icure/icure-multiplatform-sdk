@@ -5,6 +5,7 @@ import com.icure.sdk.api.ApplicationSettingsApi
 import com.icure.sdk.js.api.ApplicationSettingsApiJs
 import com.icure.sdk.js.model.ApplicationSettingsJs
 import com.icure.sdk.js.model.CheckedConverters.listToArray
+import com.icure.sdk.js.model.applicationSettings_fromJs
 import com.icure.sdk.js.model.applicationSettings_toJs
 import com.icure.sdk.model.ApplicationSettings
 import kotlin.Array
@@ -20,21 +21,33 @@ internal class ApplicationSettingsApiImplJs(
 ) : ApplicationSettingsApiJs {
 	override fun getApplicationSettings(): Promise<Array<ApplicationSettingsJs>> =
 			GlobalScope.promise {
+		val result = applicationSettingsApi.getApplicationSettings(
+		)
 		listToArray(
-			applicationSettingsApi.getApplicationSettings(),
+			result,
 			{ x1: ApplicationSettings ->
 				applicationSettings_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun createApplicationSettings(applicationSettings: ApplicationSettingsJs):
 			Promise<ApplicationSettingsJs> = GlobalScope.promise {
-		applicationSettings_toJs(applicationSettingsApi.createApplicationSettings(com.icure.sdk.js.model.applicationSettings_fromJs(applicationSettings)))}
-
+		val applicationSettingsConverted: ApplicationSettings =
+				applicationSettings_fromJs(applicationSettings)
+		val result = applicationSettingsApi.createApplicationSettings(
+			applicationSettingsConverted,
+		)
+		applicationSettings_toJs(result)
+	}
 
 	override fun updateApplicationSettings(applicationSettings: ApplicationSettingsJs):
 			Promise<ApplicationSettingsJs> = GlobalScope.promise {
-		applicationSettings_toJs(applicationSettingsApi.updateApplicationSettings(com.icure.sdk.js.model.applicationSettings_fromJs(applicationSettings)))}
-
+		val applicationSettingsConverted: ApplicationSettings =
+				applicationSettings_fromJs(applicationSettings)
+		val result = applicationSettingsApi.updateApplicationSettings(
+			applicationSettingsConverted,
+		)
+		applicationSettings_toJs(result)
+	}
 }

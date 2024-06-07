@@ -33,11 +33,8 @@ public external interface MaintenanceTaskApiJs {
 	public fun createMaintenanceTask(entity: DecryptedMaintenanceTaskJs):
 			Promise<DecryptedMaintenanceTaskJs>
 
-	public fun withEncryptionMetadata(
-		maintenanceTask: DecryptedMaintenanceTaskJs?,
-		user: UserJs?,
-		delegates: Record<String, String>,
-	): Promise<DecryptedMaintenanceTaskJs>
+	public fun withEncryptionMetadata(maintenanceTask: DecryptedMaintenanceTaskJs?,
+			options: MaintenanceTaskApi_withEncryptionMetadata_Options?): Promise<DecryptedMaintenanceTaskJs>
 
 	public fun getEncryptionKeysOf(maintenanceTask: MaintenanceTaskJs): Promise<Array<String>>
 
@@ -55,9 +52,7 @@ public external interface MaintenanceTaskApiJs {
 	public fun shareWith(
 		delegateId: String,
 		maintenanceTask: DecryptedMaintenanceTaskJs,
-		shareEncryptionKeys: String,
-		shareOwningEntityIds: String,
-		requestedPermission: String,
+		options: MaintenanceTaskApi_shareWith_Options?,
 	): Promise<SimpleShareResultJs<DecryptedMaintenanceTaskJs>>
 
 	public fun tryShareWithMany(maintenanceTask: DecryptedMaintenanceTaskJs,
@@ -72,20 +67,46 @@ public external interface MaintenanceTaskApiJs {
 
 	public fun getMaintenanceTask(entityId: String): Promise<DecryptedMaintenanceTaskJs>
 
-	public fun filterMaintenanceTasksBy(
-		startDocumentId: String?,
-		limit: Double?,
-		filterChain: FilterChainJs<MaintenanceTaskJs>,
-	): Promise<PaginatedListJs<DecryptedMaintenanceTaskJs>>
+	public fun filterMaintenanceTasksBy(filterChain: FilterChainJs<MaintenanceTaskJs>,
+			options: MaintenanceTaskApi_filterMaintenanceTasksBy_Options?):
+			Promise<PaginatedListJs<DecryptedMaintenanceTaskJs>>
 
 	public fun subscribeToEvents(
 		events: Array<String>,
 		filter: AbstractFilterJs<MaintenanceTaskJs>,
-		onConnected: () -> Promise<Unit>,
-		channelCapacity: Double,
-		retryDelay: Double,
-		retryDelayExponentFactor: Double,
-		maxRetries: Double,
 		eventFired: (DecryptedMaintenanceTaskJs) -> Promise<Unit>,
+		options: MaintenanceTaskApi_subscribeToEvents_Options?,
 	): Promise<ConnectionJs>
+}
+
+public external interface MaintenanceTaskApi_withEncryptionMetadata_Options {
+	public val user: UserJs?
+
+	public val delegates: Record<String, String>
+}
+
+public external interface MaintenanceTaskApi_shareWith_Options {
+	public val shareEncryptionKeys: String
+
+	public val shareOwningEntityIds: String
+
+	public val requestedPermission: String
+}
+
+public external interface MaintenanceTaskApi_filterMaintenanceTasksBy_Options {
+	public val startDocumentId: String?
+
+	public val limit: Double?
+}
+
+public external interface MaintenanceTaskApi_subscribeToEvents_Options {
+	public val onConnected: () -> Promise<Unit>
+
+	public val channelCapacity: Double
+
+	public val retryDelay: Double
+
+	public val retryDelayExponentFactor: Double
+
+	public val maxRetries: Double
 }

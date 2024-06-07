@@ -22,24 +22,12 @@ export interface HealthcarePartyApi {
 
 	getCurrentHealthcareParty(): Promise<HealthcareParty>;
 
-	findHealthcarePartiesBy(startKey: string | undefined, startDocumentId: string | undefined,
-			limit: number | undefined, desc: boolean | undefined): Promise<PaginatedList<HealthcareParty>>;
+	findHealthcarePartiesBy(options?: { startKey?: string | undefined, startDocumentId?: string | undefined, limit?: number | undefined, desc?: boolean | undefined }): Promise<PaginatedList<HealthcareParty>>;
 
-	findHealthcarePartiesByName(
-			name: string | undefined,
-			startKey: string | undefined,
-			startDocumentId: string | undefined,
-			limit: number | undefined,
-			desc: boolean | undefined
-	): Promise<PaginatedList<HealthcareParty>>;
+	findHealthcarePartiesByName(options?: { name?: string | undefined, startKey?: string | undefined, startDocumentId?: string | undefined, limit?: number | undefined, desc?: boolean | undefined }): Promise<PaginatedList<HealthcareParty>>;
 
-	findHealthcarePartiesBySsinOrNihii(
-			searchValue: string,
-			startKey: string | undefined,
-			startDocumentId: string | undefined,
-			limit: number | undefined,
-			desc: boolean
-	): Promise<PaginatedList<HealthcareParty>>;
+	findHealthcarePartiesBySsinOrNihii(searchValue: string,
+			options?: { searchValue?: string, startKey?: string | undefined, startDocumentId?: string | undefined, limit?: number | undefined, desc?: boolean }): Promise<PaginatedList<HealthcareParty>>;
 
 	listHealthcarePartiesByName(name: string): Promise<Array<HealthcareParty>>;
 
@@ -48,9 +36,7 @@ export interface HealthcarePartyApi {
 			spec: string,
 			firstCode: string,
 			lastCode: string,
-			startKey: string | undefined,
-			startDocumentId: string | undefined,
-			limit: number | undefined
+			options?: { type?: string, spec?: string, firstCode?: string, lastCode?: string, startKey?: string | undefined, startDocumentId?: string | undefined, limit?: number | undefined }
 	): Promise<PaginatedList<HealthcareParty>>;
 
 	getHealthcareParties(healthcarePartyIds: Array<string>): Promise<Array<HealthcareParty>>;
@@ -65,23 +51,18 @@ export interface HealthcarePartyApi {
 
 	matchHealthcarePartiesBy(filter: AbstractFilter<HealthcareParty>): Promise<Array<string>>;
 
-	filterHealthPartiesBy(startDocumentId: string | undefined, limit: number | undefined,
-			filterChain: FilterChain<HealthcareParty>): Promise<PaginatedList<HealthcareParty>>;
+	filterHealthPartiesBy(filterChain: FilterChain<HealthcareParty>,
+			options?: { startDocumentId?: string | undefined, limit?: number | undefined, filterChain?: FilterChain<HealthcareParty> }): Promise<PaginatedList<HealthcareParty>>;
 
 	getHealthcarePartiesInGroup(groupId: string,
-			healthcarePartyIds: Array<string> | undefined): Promise<Array<HealthcareParty>>;
+			options?: { groupId?: string, healthcarePartyIds?: Array<string> | undefined }): Promise<Array<HealthcareParty>>;
 
 	deleteHealthcarePartiesInGroup(groupId: string,
 			healthcarePartyIds: Array<string>): Promise<Array<DocIdentifier>>;
 
 	deleteHealthcarePartyInGroup(healthcarePartyId: string, groupId: string): Promise<DocIdentifier>;
 
-	registerPatient(
-			groupId: string,
-			parentHcPartyId: string | undefined,
-			token: string | undefined,
-			useShortToken: boolean | undefined,
-			hcp: HealthcareParty
-	): Promise<DataOwnerRegistrationSuccess>;
+	registerPatient(groupId: string, hcp: HealthcareParty,
+			options?: { groupId?: string, parentHcPartyId?: string | undefined, token?: string | undefined, useShortToken?: boolean | undefined, hcp?: HealthcareParty }): Promise<DataOwnerRegistrationSuccess>;
 
 }

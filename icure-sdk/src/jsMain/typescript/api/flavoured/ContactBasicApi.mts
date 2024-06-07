@@ -51,8 +51,7 @@ export interface ContactBasicApi {
 			formIds: Array<string>): Promise<Array<EncryptedContact>>;
 
 	listContactsByHCPartyAndPatientSecretFKeys(hcPartyId: string, secretPatientKeys: Array<string>,
-			planOfActionsIds: string | undefined,
-			skipClosedContacts: boolean | undefined): Promise<Array<EncryptedContact>>;
+			options?: { hcPartyId?: string, secretPatientKeys?: Array<string>, planOfActionsIds?: string | undefined, skipClosedContacts?: boolean | undefined }): Promise<Array<EncryptedContact>>;
 
 	closeForHCPartyPatientForeignKeys(hcPartyId: string,
 			secretPatientKeys: Array<string>): Promise<Array<EncryptedContact>>;
@@ -68,38 +67,18 @@ export interface ContactBasicApi {
 	listServicesByHealthElementId(hcPartyId: string,
 			healthElementId: string): Promise<Array<EncryptedService>>;
 
-	findContactsByOpeningDate(
-			startDate: number,
-			endDate: number,
-			hcPartyId: string,
-			startKey: any | undefined,
-			startDocumentId: string | undefined,
-			limit: number | undefined
-	): Promise<PaginatedList<EncryptedContact>>;
+	findContactsByOpeningDate(startDate: number, endDate: number, hcPartyId: string,
+			options?: { startDate?: number, endDate?: number, hcPartyId?: string, startKey?: any | undefined, startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<EncryptedContact>>;
 
 	filterServicesBy(filterChain: FilterChain<Service>, startDocumentId: string | undefined,
 			limit: number | undefined): Promise<PaginatedList<EncryptedService>>;
 
-	subscribeToServiceEvents(
-			events: Array<SubscriptionEventType>,
-			filter: AbstractFilter<Service>,
-			onConnected: () => Promise<void>,
-			channelCapacity: number,
-			retryDelay: DurationMs,
-			retryDelayExponentFactor: number,
-			maxRetries: number,
-			eventFired: (x1: EncryptedService) => Promise<void>
-	): Promise<Connection>;
+	subscribeToServiceEvents(events: Array<SubscriptionEventType>, filter: AbstractFilter<Service>,
+			eventFired: (x1: EncryptedService) => Promise<void>,
+			options?: { events?: Array<SubscriptionEventType>, filter?: AbstractFilter<Service>, onConnected?: () => Promise<void>, channelCapacity?: number, retryDelay?: DurationMs, retryDelayExponentFactor?: number, maxRetries?: number, eventFired?: (x1: EncryptedService) => Promise<void> }): Promise<Connection>;
 
-	subscribeToEvents(
-			events: Array<SubscriptionEventType>,
-			filter: AbstractFilter<Contact>,
-			onConnected: () => Promise<void>,
-			channelCapacity: number,
-			retryDelay: DurationMs,
-			retryDelayExponentFactor: number,
-			maxRetries: number,
-			eventFired: (x1: EncryptedContact) => Promise<void>
-	): Promise<Connection>;
+	subscribeToEvents(events: Array<SubscriptionEventType>, filter: AbstractFilter<Contact>,
+			eventFired: (x1: EncryptedContact) => Promise<void>,
+			options?: { events?: Array<SubscriptionEventType>, filter?: AbstractFilter<Contact>, onConnected?: () => Promise<void>, channelCapacity?: number, retryDelay?: DurationMs, retryDelayExponentFactor?: number, maxRetries?: number, eventFired?: (x1: EncryptedContact) => Promise<void> }): Promise<Connection>;
 
 }

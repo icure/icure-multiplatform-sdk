@@ -27,9 +27,7 @@ public external interface HealthcareElementFlavouredApiJs<E : HealthElementJs> {
 	public fun shareWith(
 		delegateId: String,
 		healthcareElement: E,
-		shareEncryptionKeys: String,
-		shareOwningEntityIds: String,
-		requestedPermission: String,
+		options: HealthcareElementFlavouredApi_shareWith_Options?,
 	): Promise<SimpleShareResultJs<E>>
 
 	public fun tryShareWithMany(healthElement: E,
@@ -41,9 +39,7 @@ public external interface HealthcareElementFlavouredApiJs<E : HealthElementJs> {
 	public fun findHealthcareElementsByHcPartyPatient(
 		hcPartyId: String,
 		patient: PatientJs,
-		startDate: Double?,
-		endDate: Double?,
-		descending: Boolean?,
+		options: HealthcareElementFlavouredApi_findHealthcareElementsByHcPartyPatient_Options?,
 	): Promise<PaginatedListIteratorJs<E>>
 
 	public fun modifyHealthcareElement(entity: E): Promise<E>
@@ -66,11 +62,36 @@ public external interface HealthcareElementFlavouredApiJs<E : HealthElementJs> {
 	public fun subscribeToEvents(
 		events: Array<String>,
 		filter: AbstractFilterJs<HealthElementJs>,
-		onConnected: () -> Promise<Unit>,
-		channelCapacity: Double,
-		retryDelay: Double,
-		retryDelayExponentFactor: Double,
-		maxRetries: Double,
 		eventFired: (E) -> Promise<Unit>,
+		options: HealthcareElementFlavouredApi_subscribeToEvents_Options?,
 	): Promise<ConnectionJs>
+}
+
+public external interface HealthcareElementFlavouredApi_shareWith_Options {
+	public val shareEncryptionKeys: String
+
+	public val shareOwningEntityIds: String
+
+	public val requestedPermission: String
+}
+
+public external interface
+		HealthcareElementFlavouredApi_findHealthcareElementsByHcPartyPatient_Options {
+	public val startDate: Double?
+
+	public val endDate: Double?
+
+	public val descending: Boolean?
+}
+
+public external interface HealthcareElementFlavouredApi_subscribeToEvents_Options {
+	public val onConnected: () -> Promise<Unit>
+
+	public val channelCapacity: Double
+
+	public val retryDelay: Double
+
+	public val retryDelayExponentFactor: Double
+
+	public val maxRetries: Double
 }

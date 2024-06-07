@@ -17,26 +17,16 @@ import {Connection} from '../../websocket/Connection.mjs';
 
 export interface ContactFlavouredApi<E extends Contact, S extends Service> {
 
-	shareWith(
-			delegateId: string,
-			contact: E,
-			shareEncryptionKeys: ShareMetadataBehaviour,
-			shareOwningEntityIds: ShareMetadataBehaviour,
-			requestedPermission: RequestedPermission
-	): Promise<SimpleShareResult<E>>;
+	shareWith(delegateId: string, contact: E,
+			options?: { delegateId?: string, contact?: E, shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<E>>;
 
 	tryShareWithMany(contact: E,
 			delegates: { [ key: string ]: ContactShareOptions }): Promise<SimpleShareResult<E>>;
 
 	shareWithMany(contact: E, delegates: { [ key: string ]: ContactShareOptions }): Promise<E>;
 
-	findContactsByHcPartyPatient(
-			hcPartyId: string,
-			patient: Patient,
-			startDate: number | undefined,
-			endDate: number | undefined,
-			descending: boolean | undefined
-	): Promise<PaginatedListIterator<E>>;
+	findContactsByHcPartyPatient(hcPartyId: string, patient: Patient,
+			options?: { hcPartyId?: string, patient?: Patient, startDate?: number | undefined, endDate?: number | undefined, descending?: boolean | undefined }): Promise<PaginatedListIterator<E>>;
 
 	modifyContact(entity: E): Promise<E>;
 
@@ -58,8 +48,7 @@ export interface ContactFlavouredApi<E extends Contact, S extends Service> {
 	listContactsByHCPartyAndFormIds(hcPartyId: string, formIds: Array<string>): Promise<Array<E>>;
 
 	listContactsByHCPartyAndPatientSecretFKeys(hcPartyId: string, secretPatientKeys: Array<string>,
-			planOfActionsIds: string | undefined,
-			skipClosedContacts: boolean | undefined): Promise<Array<E>>;
+			options?: { hcPartyId?: string, secretPatientKeys?: Array<string>, planOfActionsIds?: string | undefined, skipClosedContacts?: boolean | undefined }): Promise<Array<E>>;
 
 	closeForHCPartyPatientForeignKeys(hcPartyId: string,
 			secretPatientKeys: Array<string>): Promise<Array<E>>;
@@ -74,38 +63,18 @@ export interface ContactFlavouredApi<E extends Contact, S extends Service> {
 
 	listServicesByHealthElementId(hcPartyId: string, healthElementId: string): Promise<Array<S>>;
 
-	findContactsByOpeningDate(
-			startDate: number,
-			endDate: number,
-			hcPartyId: string,
-			startKey: any | undefined,
-			startDocumentId: string | undefined,
-			limit: number | undefined
-	): Promise<PaginatedList<E>>;
+	findContactsByOpeningDate(startDate: number, endDate: number, hcPartyId: string,
+			options?: { startDate?: number, endDate?: number, hcPartyId?: string, startKey?: any | undefined, startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<E>>;
 
 	filterServicesBy(filterChain: FilterChain<Service>, startDocumentId: string | undefined,
 			limit: number | undefined): Promise<PaginatedList<S>>;
 
-	subscribeToServiceEvents(
-			events: Array<SubscriptionEventType>,
-			filter: AbstractFilter<Service>,
-			onConnected: () => Promise<void>,
-			channelCapacity: number,
-			retryDelay: DurationMs,
-			retryDelayExponentFactor: number,
-			maxRetries: number,
-			eventFired: (x1: S) => Promise<void>
-	): Promise<Connection>;
+	subscribeToServiceEvents(events: Array<SubscriptionEventType>, filter: AbstractFilter<Service>,
+			eventFired: (x1: S) => Promise<void>,
+			options?: { events?: Array<SubscriptionEventType>, filter?: AbstractFilter<Service>, onConnected?: () => Promise<void>, channelCapacity?: number, retryDelay?: DurationMs, retryDelayExponentFactor?: number, maxRetries?: number, eventFired?: (x1: S) => Promise<void> }): Promise<Connection>;
 
-	subscribeToEvents(
-			events: Array<SubscriptionEventType>,
-			filter: AbstractFilter<Contact>,
-			onConnected: () => Promise<void>,
-			channelCapacity: number,
-			retryDelay: DurationMs,
-			retryDelayExponentFactor: number,
-			maxRetries: number,
-			eventFired: (x1: E) => Promise<void>
-	): Promise<Connection>;
+	subscribeToEvents(events: Array<SubscriptionEventType>, filter: AbstractFilter<Contact>,
+			eventFired: (x1: E) => Promise<void>,
+			options?: { events?: Array<SubscriptionEventType>, filter?: AbstractFilter<Contact>, onConnected?: () => Promise<void>, channelCapacity?: number, retryDelay?: DurationMs, retryDelayExponentFactor?: number, maxRetries?: number, eventFired?: (x1: E) => Promise<void> }): Promise<Connection>;
 
 }

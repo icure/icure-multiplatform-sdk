@@ -54,11 +54,19 @@ public external interface HealthcareElementBasicApiJs {
 	public fun subscribeToEvents(
 		events: Array<String>,
 		filter: AbstractFilterJs<HealthElementJs>,
-		onConnected: () -> Promise<Unit>,
-		channelCapacity: Double,
-		retryDelay: Double,
-		retryDelayExponentFactor: Double,
-		maxRetries: Double,
 		eventFired: (EncryptedHealthElementJs) -> Promise<Unit>,
+		options: HealthcareElementBasicApi_subscribeToEvents_Options?,
 	): Promise<ConnectionJs>
+}
+
+public external interface HealthcareElementBasicApi_subscribeToEvents_Options {
+	public val onConnected: () -> Promise<Unit>
+
+	public val channelCapacity: Double
+
+	public val retryDelay: Double
+
+	public val retryDelayExponentFactor: Double
+
+	public val maxRetries: Double
 }

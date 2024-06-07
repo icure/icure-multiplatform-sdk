@@ -34,28 +34,16 @@ public external interface HealthcarePartyApiJs {
 
 	public fun getCurrentHealthcareParty(): Promise<HealthcarePartyJs>
 
-	public fun findHealthcarePartiesBy(
-		startKey: String?,
-		startDocumentId: String?,
-		limit: Double?,
-		desc: Boolean?,
-	): Promise<PaginatedListJs<HealthcarePartyJs>>
+	public fun findHealthcarePartiesBy(options: HealthcarePartyApi_findHealthcarePartiesBy_Options?):
+			Promise<PaginatedListJs<HealthcarePartyJs>>
 
-	public fun findHealthcarePartiesByName(
-		name: String?,
-		startKey: String?,
-		startDocumentId: String?,
-		limit: Double?,
-		desc: Boolean?,
-	): Promise<PaginatedListJs<HealthcarePartyJs>>
+	public
+			fun findHealthcarePartiesByName(options: HealthcarePartyApi_findHealthcarePartiesByName_Options?):
+			Promise<PaginatedListJs<HealthcarePartyJs>>
 
-	public fun findHealthcarePartiesBySsinOrNihii(
-		searchValue: String,
-		startKey: String?,
-		startDocumentId: String?,
-		limit: Double?,
-		desc: Boolean,
-	): Promise<PaginatedListJs<HealthcarePartyJs>>
+	public fun findHealthcarePartiesBySsinOrNihii(searchValue: String,
+			options: HealthcarePartyApi_findHealthcarePartiesBySsinOrNihii_Options?):
+			Promise<PaginatedListJs<HealthcarePartyJs>>
 
 	public fun listHealthcarePartiesByName(name: String): Promise<Array<HealthcarePartyJs>>
 
@@ -64,9 +52,7 @@ public external interface HealthcarePartyApiJs {
 		spec: String,
 		firstCode: String,
 		lastCode: String,
-		startKey: String?,
-		startDocumentId: String?,
-		limit: Double?,
+		options: HealthcarePartyApi_findHealthcarePartiesBySpecialityAndPostCode_Options?,
 	): Promise<PaginatedListJs<HealthcarePartyJs>>
 
 	public fun getHealthcareParties(healthcarePartyIds: Array<String>):
@@ -84,13 +70,12 @@ public external interface HealthcarePartyApiJs {
 	public fun matchHealthcarePartiesBy(filter: AbstractFilterJs<HealthcarePartyJs>):
 			Promise<Array<String>>
 
-	public fun filterHealthPartiesBy(
-		startDocumentId: String?,
-		limit: Double?,
-		filterChain: FilterChainJs<HealthcarePartyJs>,
-	): Promise<PaginatedListJs<HealthcarePartyJs>>
+	public fun filterHealthPartiesBy(filterChain: FilterChainJs<HealthcarePartyJs>,
+			options: HealthcarePartyApi_filterHealthPartiesBy_Options?):
+			Promise<PaginatedListJs<HealthcarePartyJs>>
 
-	public fun getHealthcarePartiesInGroup(groupId: String, healthcarePartyIds: Array<String>?):
+	public fun getHealthcarePartiesInGroup(groupId: String,
+			options: HealthcarePartyApi_getHealthcarePartiesInGroup_Options?):
 			Promise<Array<HealthcarePartyJs>>
 
 	public fun deleteHealthcarePartiesInGroup(groupId: String, healthcarePartyIds: Array<String>):
@@ -101,9 +86,65 @@ public external interface HealthcarePartyApiJs {
 
 	public fun registerPatient(
 		groupId: String,
-		parentHcPartyId: String?,
-		token: String?,
-		useShortToken: Boolean?,
 		hcp: HealthcarePartyJs,
+		options: HealthcarePartyApi_registerPatient_Options?,
 	): Promise<DataOwnerRegistrationSuccessJs>
+}
+
+public external interface HealthcarePartyApi_findHealthcarePartiesBy_Options {
+	public val startKey: String?
+
+	public val startDocumentId: String?
+
+	public val limit: Double?
+
+	public val desc: Boolean?
+}
+
+public external interface HealthcarePartyApi_findHealthcarePartiesByName_Options {
+	public val name: String?
+
+	public val startKey: String?
+
+	public val startDocumentId: String?
+
+	public val limit: Double?
+
+	public val desc: Boolean?
+}
+
+public external interface HealthcarePartyApi_findHealthcarePartiesBySsinOrNihii_Options {
+	public val startKey: String?
+
+	public val startDocumentId: String?
+
+	public val limit: Double?
+
+	public val desc: Boolean
+}
+
+public external interface HealthcarePartyApi_findHealthcarePartiesBySpecialityAndPostCode_Options {
+	public val startKey: String?
+
+	public val startDocumentId: String?
+
+	public val limit: Double?
+}
+
+public external interface HealthcarePartyApi_filterHealthPartiesBy_Options {
+	public val startDocumentId: String?
+
+	public val limit: Double?
+}
+
+public external interface HealthcarePartyApi_getHealthcarePartiesInGroup_Options {
+	public val healthcarePartyIds: Array<String>?
+}
+
+public external interface HealthcarePartyApi_registerPatient_Options {
+	public val parentHcPartyId: String?
+
+	public val token: String?
+
+	public val useShortToken: Boolean?
 }

@@ -23,5 +23,11 @@ public external interface PlaceApiJs {
 
 	public fun deletePlaces(placeIds: Array<String>): Promise<Array<DocIdentifierJs>>
 
-	public fun getPlaces(startDocumentId: String?, limit: Double?): Promise<PaginatedListJs<PlaceJs>>
+	public fun getPlaces(options: PlaceApi_getPlaces_Options?): Promise<PaginatedListJs<PlaceJs>>
+}
+
+public external interface PlaceApi_getPlaces_Options {
+	public val startDocumentId: String?
+
+	public val limit: Double?
 }

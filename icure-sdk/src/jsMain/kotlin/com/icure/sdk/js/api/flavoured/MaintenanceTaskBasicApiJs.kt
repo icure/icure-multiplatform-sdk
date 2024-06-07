@@ -29,20 +29,32 @@ public external interface MaintenanceTaskBasicApiJs {
 
 	public fun getMaintenanceTask(entityId: String): Promise<EncryptedMaintenanceTaskJs>
 
-	public fun filterMaintenanceTasksBy(
-		startDocumentId: String?,
-		limit: Double?,
-		filterChain: FilterChainJs<MaintenanceTaskJs>,
-	): Promise<PaginatedListJs<EncryptedMaintenanceTaskJs>>
+	public fun filterMaintenanceTasksBy(filterChain: FilterChainJs<MaintenanceTaskJs>,
+			options: MaintenanceTaskBasicApi_filterMaintenanceTasksBy_Options?):
+			Promise<PaginatedListJs<EncryptedMaintenanceTaskJs>>
 
 	public fun subscribeToEvents(
 		events: Array<String>,
 		filter: AbstractFilterJs<MaintenanceTaskJs>,
-		onConnected: () -> Promise<Unit>,
-		channelCapacity: Double,
-		retryDelay: Double,
-		retryDelayExponentFactor: Double,
-		maxRetries: Double,
 		eventFired: (EncryptedMaintenanceTaskJs) -> Promise<Unit>,
+		options: MaintenanceTaskBasicApi_subscribeToEvents_Options?,
 	): Promise<ConnectionJs>
+}
+
+public external interface MaintenanceTaskBasicApi_filterMaintenanceTasksBy_Options {
+	public val startDocumentId: String?
+
+	public val limit: Double?
+}
+
+public external interface MaintenanceTaskBasicApi_subscribeToEvents_Options {
+	public val onConnected: () -> Promise<Unit>
+
+	public val channelCapacity: Double
+
+	public val retryDelay: Double
+
+	public val retryDelayExponentFactor: Double
+
+	public val maxRetries: Double
 }

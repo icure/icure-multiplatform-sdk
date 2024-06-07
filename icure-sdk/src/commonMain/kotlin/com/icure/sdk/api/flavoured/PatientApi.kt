@@ -1,7 +1,5 @@
 package com.icure.sdk.api.flavoured
 
-import com.icure.sdk.options.ApiConfiguration
-import com.icure.sdk.options.BasicApiConfiguration
 import com.icure.sdk.api.RecoveryApi
 import com.icure.sdk.api.raw.RawCalendarItemApi
 import com.icure.sdk.api.raw.RawClassificationApi
@@ -48,6 +46,9 @@ import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
+import com.icure.sdk.options.ApiConfiguration
+import com.icure.sdk.options.BasicApiConfiguration
+import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
@@ -76,64 +77,97 @@ interface PatientBasicFlavouredApi<E : Patient>: Subscribable<Patient, E> {
 	suspend fun getPatient(entityId: String): E
 	suspend fun filterPatientsBy(
 		filterChain: FilterChain<Patient>,
+		@DefaultValue("null")
 		startKey: String? = null,
+		@DefaultValue("null")
 		startDocumentId: String? = null,
+		@DefaultValue("null")
 		limit: Int? = null,
+		@DefaultValue("null")
 		skip: Int? = null,
+		@DefaultValue("null")
 		sort: String? = null,
+		@DefaultValue("null")
 		desc: Boolean? = null
 	): PaginatedList<E>
 
 	suspend fun findPatientsByNameBirthSsinAuto(
+		@DefaultValue("null")
 		healthcarePartyId: String? = null,
 		filterValue: String,
+		@DefaultValue("null")
 		startKey: String? = null,
+		@DefaultValue("null")
 		startDocumentId: String? = null,
+		@DefaultValue("null")
 		limit: Int? = null,
+		@DefaultValue("com.icure.sdk.model.couchdb.SortDirection.Asc")
 		sortDirection: SortDirection = SortDirection.Asc,
 	): PaginatedList<E>
 
 	suspend fun listPatientsOfHcParty(
 		hcPartyId: String,
+		@DefaultValue("\"name\"")
 		sortField: String = "name",
+		@DefaultValue("null")
 		startKey: String? = null,
+		@DefaultValue("null")
 		startDocumentId: String? = null,
+		@DefaultValue("null")
 		limit: Int? = null,
+		@DefaultValue("com.icure.sdk.model.couchdb.SortDirection.Asc")
 		sortDirection: SortDirection = SortDirection.Asc,
 	): PaginatedList<E>
 
 	suspend fun listOfMergesAfter(date: Long): List<E>
 	suspend fun findPatientsModifiedAfter(
 		date: Long,
+		@DefaultValue("null")
 		startKey: Long? = null,
+		@DefaultValue("null")
 		startDocumentId: String? = null,
+		@DefaultValue("null")
 		limit: Int? = null,
 	): PaginatedList<E>
 
 	suspend fun listPatientsByHcParty(
 		hcPartyId: String,
+		@DefaultValue("\"name\"")
 		sortField: String = "name",
+		@DefaultValue("null")
 		startKey: String? = null,
+		@DefaultValue("null")
 		startDocumentId: String? = null,
+		@DefaultValue("null")
 		limit: Int? = null,
+		@DefaultValue("com.icure.sdk.model.couchdb.SortDirection.Asc")
 		sortDirection: SortDirection = SortDirection.Asc,
 	): PaginatedList<E>
 
 	suspend fun getPatientHcPartyKeysForDelegate(patientId: String): Map<String, String>
 	suspend fun countOfPatients(hcPartyId: String): EncryptedContent
 	suspend fun findPatientsByHealthcareParty(
+		@DefaultValue("null")
 		hcPartyId: String? = null,
+		@DefaultValue("\"name\"")
 		sortField: String = "name",
+		@DefaultValue("null")
 		startKey: String? = null,
+		@DefaultValue("null")
 		startDocumentId: String? = null,
+		@DefaultValue("null")
 		limit: Int? = null,
+		@DefaultValue("com.icure.sdk.model.couchdb.SortDirection.Asc")
 		sortDirection: SortDirection = SortDirection.Asc,
 	): PaginatedList<E>
 
 	suspend fun findPatientsIdsByHealthcareParty(
 		hcPartyId: String,
+		@DefaultValue("null")
 		startKey: String? = null,
+		@DefaultValue("null")
 		startDocumentId: String? = null,
+		@DefaultValue("null")
 		limit: Int? = null,
 	): PaginatedList<String>
 
@@ -142,20 +176,28 @@ interface PatientBasicFlavouredApi<E : Patient>: Subscribable<Patient, E> {
 	suspend fun fuzzySearch(
 		firstName: String,
 		lastName: String,
+		@DefaultValue("null")
 		dateOfBirth: Int? = null,
 	): List<E>
 
 	suspend fun findDeletedPatients(
 		startDate: Long,
+		@DefaultValue("null")
 		endDate: Long? = null,
+		@DefaultValue("null")
 		desc: Boolean? = null,
+		@DefaultValue("null")
 		startKey: Long? = null,
+		@DefaultValue("null")
 		startDocumentId: String? = null,
+		@DefaultValue("null")
 		limit: Int? = null,
 	): PaginatedList<E>
 
 	suspend fun listDeletedPatientsByName(
+		@DefaultValue("null")
 		firstName: String? = null,
+		@DefaultValue("null")
 		lastName: String? = null,
 	): List<E>
 
@@ -163,6 +205,7 @@ interface PatientBasicFlavouredApi<E : Patient>: Subscribable<Patient, E> {
 	suspend fun getPatientByHealthcarePartyAndIdentifier(
 		hcPartyId: String,
 		id: String,
+		@DefaultValue("null")
 		system: String? = null,
 	): E
 
@@ -170,21 +213,29 @@ interface PatientBasicFlavouredApi<E : Patient>: Subscribable<Patient, E> {
 	suspend fun modifyPatientReferral(
 		patientId: String,
 		referralId: String,
+		@DefaultValue("null")
 		start: Long? = null,
+		@DefaultValue("null")
 		end: Long? = null,
 	): E
 
 	suspend fun findDuplicatesBySsin(
 		hcPartyId: String,
+		@DefaultValue("null")
 		startKey: String? = null,
+		@DefaultValue("null")
 		startDocumentId: String? = null,
+		@DefaultValue("null")
 		limit: Int? = null,
 	): PaginatedList<E>
 
 	suspend fun findDuplicatesByName(
 		hcPartyId: String,
+		@DefaultValue("null")
 		startKey: String? = null,
+		@DefaultValue("null")
 		startDocumentId: String? = null,
+		@DefaultValue("null")
 		limit: Int? = null,
 	): PaginatedList<E>
 
@@ -202,8 +253,11 @@ interface PatientFlavouredApi<E : Patient> : PatientBasicFlavouredApi<E> {
 		delegateId: String,
 		patient: E,
 		shareSecretIds: Set<String>,
+		@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
 		shareEncryptionKeys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
+		@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
 		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
+		@DefaultValue("com.icure.sdk.model.requests.RequestedPermission.MaxWrite")
 		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
 	): SimpleShareResult<E>
 
@@ -254,8 +308,10 @@ interface PatientApi : PatientBasicFlavourlessApi, PatientFlavouredApi<Decrypted
 	suspend fun getEncryptionKeysOf(patient: Patient): Set<HexString>
 	suspend fun createPatient(patient: DecryptedPatient): DecryptedPatient
 	suspend fun withEncryptionMetadata(
-		base: DecryptedPatient? = null,
+		base: DecryptedPatient?,
+		@DefaultValue("null")
 		user: User? = null,
+		@DefaultValue("emptyMap()")
 		delegates: Map<String, AccessLevel> = emptyMap()
 	): DecryptedPatient
 	suspend fun createDelegationsDeAnonymizationMetadata(patient: Patient, dataOwnerIds: Set<String>)

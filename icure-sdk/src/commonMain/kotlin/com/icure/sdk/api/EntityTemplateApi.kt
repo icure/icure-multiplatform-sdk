@@ -4,6 +4,7 @@ import com.icure.sdk.api.raw.RawEntityTemplateApi
 import com.icure.sdk.model.EntityTemplate
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.couchdb.DocIdentifier
+import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.InternalIcureApi
 
 interface EntityTemplateApi {
@@ -13,15 +14,24 @@ interface EntityTemplateApi {
 	suspend fun listEntityTemplatesBy(
 		userId: String,
 		type: String,
+		@DefaultValue("null")
 		searchString: String? = null,
+		@DefaultValue("null")
 		includeEntities: Boolean? = null,
     ): List<EntityTemplate>
 
-	suspend fun listAllEntityTemplatesBy(type: String, searchString: String? = null, includeEntities: Boolean? = null): List<EntityTemplate>
+	suspend fun listAllEntityTemplatesBy(
+		type: String,
+		@DefaultValue("null")
+		searchString: String? = null,
+		@DefaultValue("null")
+		includeEntities: Boolean? = null
+	): List<EntityTemplate>
 	suspend fun listEntityTemplatesByKeyword(
 		userId: String,
 		type: String,
 		keyword: String,
+		@DefaultValue("null")
 		includeEntities: Boolean? = null,
     ): List<EntityTemplate>
 

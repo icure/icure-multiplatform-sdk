@@ -41,9 +41,7 @@ public external interface InvoiceApiJs {
 	public fun withEncryptionMetadata(
 		base: DecryptedInvoiceJs?,
 		patient: PatientJs?,
-		user: UserJs?,
-		delegates: Record<String, String>,
-		secretId: SecretIdOptionJs,
+		options: InvoiceApi_withEncryptionMetadata_Options?,
 	): Promise<DecryptedInvoiceJs>
 
 	public fun getEncryptionKeysOf(invoice: InvoiceJs): Promise<Array<String>>
@@ -66,9 +64,7 @@ public external interface InvoiceApiJs {
 	public fun shareWith(
 		delegateId: String,
 		invoice: DecryptedInvoiceJs,
-		shareEncryptionKeys: String,
-		shareOwningEntityIds: String,
-		requestedPermission: String,
+		options: InvoiceApi_shareWith_Options?,
 	): Promise<SimpleShareResultJs<DecryptedInvoiceJs>>
 
 	public fun tryShareWithMany(invoice: DecryptedInvoiceJs,
@@ -81,9 +77,7 @@ public external interface InvoiceApiJs {
 	public fun findInvoicesByHcPartyPatient(
 		hcPartyId: String,
 		patient: PatientJs,
-		startDate: Double?,
-		endDate: Double?,
-		descending: Boolean?,
+		options: InvoiceApi_findInvoicesByHcPartyPatient_Options?,
 	): Promise<PaginatedListIteratorJs<DecryptedInvoiceJs>>
 
 	public fun modifyInvoice(entity: DecryptedInvoiceJs): Promise<DecryptedInvoiceJs>
@@ -115,10 +109,8 @@ public external interface InvoiceApiJs {
 		type: String,
 		sentMediumType: String,
 		secretFKeys: String,
-		insuranceId: String?,
-		invoiceId: String?,
-		gracePeriod: Double?,
 		invoicingCodes: Array<EncryptedInvoicingCodeJs>,
+		options: InvoiceApi_appendCodes_Options?,
 	): Promise<Array<DecryptedInvoiceJs>>
 
 	public fun removeCodes(
@@ -128,14 +120,8 @@ public external interface InvoiceApiJs {
 		tarificationIds: Array<String>,
 	): Promise<Array<DecryptedInvoiceJs>>
 
-	public fun findInvoicesByAuthor(
-		hcPartyId: String,
-		fromDate: Double?,
-		toDate: Double?,
-		startKey: dynamic,
-		startDocumentId: String?,
-		limit: Double?,
-	): Promise<PaginatedListJs<DecryptedInvoiceJs>>
+	public fun findInvoicesByAuthor(hcPartyId: String,
+			options: InvoiceApi_findInvoicesByAuthor_Options?): Promise<PaginatedListJs<DecryptedInvoiceJs>>
 
 	public fun listInvoicesByHCPartyAndPatientForeignKeys(hcPartyId: String,
 			secretPatientKeys: Array<String>): Promise<Array<DecryptedInvoiceJs>>
@@ -148,8 +134,7 @@ public external interface InvoiceApiJs {
 		sentMediumType: String,
 		invoiceType: String,
 		sent: Boolean,
-		from: Double?,
-		to: Double?,
+		options: InvoiceApi_listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate_Options?,
 	): Promise<Array<DecryptedInvoiceJs>>
 
 	public fun listInvoicesByContactIds(contactIds: Array<String>): Promise<Array<DecryptedInvoiceJs>>
@@ -179,8 +164,64 @@ public external interface InvoiceApiJs {
 
 	public fun listAllHcpsByStatus(
 		status: String,
-		from: Double?,
-		to: Double?,
 		hcpIds: Array<String>,
+		options: InvoiceApi_listAllHcpsByStatus_Options?,
 	): Promise<Array<DecryptedInvoiceJs>>
+}
+
+public external interface InvoiceApi_withEncryptionMetadata_Options {
+	public val user: UserJs?
+
+	public val delegates: Record<String, String>
+
+	public val secretId: SecretIdOptionJs
+}
+
+public external interface InvoiceApi_shareWith_Options {
+	public val shareEncryptionKeys: String
+
+	public val shareOwningEntityIds: String
+
+	public val requestedPermission: String
+}
+
+public external interface InvoiceApi_findInvoicesByHcPartyPatient_Options {
+	public val startDate: Double?
+
+	public val endDate: Double?
+
+	public val descending: Boolean?
+}
+
+public external interface InvoiceApi_appendCodes_Options {
+	public val insuranceId: String?
+
+	public val invoiceId: String?
+
+	public val gracePeriod: Double?
+}
+
+public external interface InvoiceApi_findInvoicesByAuthor_Options {
+	public val fromDate: Double?
+
+	public val toDate: Double?
+
+	public val startKey: dynamic
+
+	public val startDocumentId: String?
+
+	public val limit: Double?
+}
+
+public external interface InvoiceApi_listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate_Options
+		{
+	public val from: Double?
+
+	public val to: Double?
+}
+
+public external interface InvoiceApi_listAllHcpsByStatus_Options {
+	public val from: Double?
+
+	public val to: Double?
 }

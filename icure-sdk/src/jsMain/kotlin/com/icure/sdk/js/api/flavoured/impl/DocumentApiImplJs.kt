@@ -2,44 +2,68 @@
 package com.icure.sdk.js.api.flavoured.`impl`
 
 import com.icure.sdk.api.flavoured.DocumentApi
+import com.icure.sdk.crypto.entities.DocumentShareOptions
+import com.icure.sdk.crypto.entities.SecretIdOption
+import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
+import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefault
 import com.icure.sdk.js.api.flavoured.DocumentApiJs
+import com.icure.sdk.js.api.flavoured.DocumentApi_findDocumentsByHcPartyPatient_Options
+import com.icure.sdk.js.api.flavoured.DocumentApi_shareWith_Options
+import com.icure.sdk.js.api.flavoured.DocumentApi_withEncryptionMetadata_Options
 import com.icure.sdk.js.api.flavoured.DocumentFlavouredApiJs
+import com.icure.sdk.js.api.flavoured.DocumentFlavouredApi_findDocumentsByHcPartyPatient_Options
+import com.icure.sdk.js.api.flavoured.DocumentFlavouredApi_shareWith_Options
 import com.icure.sdk.js.crypto.entities.DocumentShareOptionsJs
-import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
+import com.icure.sdk.js.crypto.entities.documentShareOptions_fromJs
+import com.icure.sdk.js.crypto.entities.secretIdOption_fromJs
 import com.icure.sdk.js.crypto.entities.simpleShareResult_toJs
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.jsonToDynamic
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
+import com.icure.sdk.js.model.CheckedConverters.numberToLong
+import com.icure.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.sdk.js.model.CheckedConverters.setToArray
 import com.icure.sdk.js.model.DecryptedDocumentJs
 import com.icure.sdk.js.model.DocumentJs
 import com.icure.sdk.js.model.EncryptedDocumentJs
 import com.icure.sdk.js.model.MessageJs
 import com.icure.sdk.js.model.PatientJs
-import com.icure.sdk.js.model.UserJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.couchdb.docIdentifier_toJs
 import com.icure.sdk.js.model.document_fromJs
 import com.icure.sdk.js.model.document_toJs
+import com.icure.sdk.js.model.message_fromJs
+import com.icure.sdk.js.model.patient_fromJs
 import com.icure.sdk.js.model.specializations.hexString_toJs
+import com.icure.sdk.js.model.user_fromJs
 import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.sdk.model.DecryptedDocument
 import com.icure.sdk.model.Document
 import com.icure.sdk.model.EncryptedDocument
+import com.icure.sdk.model.Message
+import com.icure.sdk.model.Patient
+import com.icure.sdk.model.User
 import com.icure.sdk.model.couchdb.DocIdentifier
+import com.icure.sdk.model.embed.AccessLevel
+import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.ByteArray
 import kotlin.Double
+import kotlin.Int
+import kotlin.Long
 import kotlin.OptIn
 import kotlin.String
 import kotlin.Unit
+import kotlin.collections.List
+import kotlin.collections.Map
+import kotlin.collections.Set
 import kotlin.js.Promise
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -55,161 +79,256 @@ internal class DocumentApiImplJs(
 		override fun shareWith(
 			delegateId: String,
 			document: EncryptedDocumentJs,
-			shareEncryptionKeys: String,
-			shareOwningEntityIds: String,
-			requestedPermission: String,
-		): Promise<SimpleShareResultJs<EncryptedDocumentJs>> = GlobalScope.promise {
-			simpleShareResult_toJs(
-				documentApi.encrypted.shareWith(delegateId, com.icure.sdk.js.model.document_fromJs(document),
-						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareEncryptionKeys),
-						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareOwningEntityIds),
-						com.icure.sdk.model.requests.RequestedPermission.valueOf(requestedPermission)),
-				{ x1: EncryptedDocument ->
-					document_toJs(x1)
-				},
-			)}
-
+			options: DocumentFlavouredApi_shareWith_Options?,
+		): Promise<SimpleShareResultJs<EncryptedDocumentJs>> {
+			val _options: DocumentFlavouredApi_shareWith_Options = options ?: js("{}")
+			return GlobalScope.promise {
+				val delegateIdConverted: String = delegateId
+				val documentConverted: EncryptedDocument = document_fromJs(document)
+				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
+					_options.shareEncryptionKeys,
+					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
+				) { shareEncryptionKeys ->
+					ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
+				}
+				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
+					_options.shareOwningEntityIds,
+					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
+				) { shareOwningEntityIds ->
+					ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
+				}
+				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefault(
+					_options.requestedPermission,
+					com.icure.sdk.model.requests.RequestedPermission.MaxWrite
+				) { requestedPermission ->
+					RequestedPermission.valueOf(requestedPermission)
+				}
+				val result = documentApi.encrypted.shareWith(
+					delegateIdConverted,
+					documentConverted,
+					shareEncryptionKeysConverted,
+					shareOwningEntityIdsConverted,
+					requestedPermissionConverted,
+				)
+				simpleShareResult_toJs(
+					result,
+					{ x1: EncryptedDocument ->
+						document_toJs(x1)
+					},
+				)
+			}
+		}
 
 		override fun tryShareWithMany(document: EncryptedDocumentJs,
 				delegates: Record<String, DocumentShareOptionsJs>):
 				Promise<SimpleShareResultJs<EncryptedDocumentJs>> = GlobalScope.promise {
+			val documentConverted: EncryptedDocument = document_fromJs(document)
+			val delegatesConverted: Map<String, DocumentShareOptions> = objectToMap(
+				delegates,
+				"delegates",
+				{ x1: String ->
+					x1
+				},
+				{ x1: DocumentShareOptionsJs ->
+					documentShareOptions_fromJs(x1)
+				},
+			)
+			val result = documentApi.encrypted.tryShareWithMany(
+				documentConverted,
+				delegatesConverted,
+			)
 			simpleShareResult_toJs(
-				documentApi.encrypted.tryShareWithMany(com.icure.sdk.js.model.document_fromJs(document),
-						com.icure.sdk.js.model.CheckedConverters.objectToMap(
-				  delegates,
-				  "delegates",
-				  { x1: kotlin.String ->
-				    x1
-				  },
-				  { x1: com.icure.sdk.js.crypto.entities.DocumentShareOptionsJs ->
-				    com.icure.sdk.js.crypto.entities.documentShareOptions_fromJs(x1)
-				  },
-				)),
+				result,
 				{ x1: EncryptedDocument ->
 					document_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun shareWithMany(document: EncryptedDocumentJs,
 				delegates: Record<String, DocumentShareOptionsJs>): Promise<EncryptedDocumentJs> =
 				GlobalScope.promise {
-			document_toJs(documentApi.encrypted.shareWithMany(com.icure.sdk.js.model.document_fromJs(document),
-					com.icure.sdk.js.model.CheckedConverters.objectToMap(
-			  delegates,
-			  "delegates",
-			  { x1: kotlin.String ->
-			    x1
-			  },
-			  { x1: com.icure.sdk.js.crypto.entities.DocumentShareOptionsJs ->
-			    com.icure.sdk.js.crypto.entities.documentShareOptions_fromJs(x1)
-			  },
-			)))}
-
+			val documentConverted: EncryptedDocument = document_fromJs(document)
+			val delegatesConverted: Map<String, DocumentShareOptions> = objectToMap(
+				delegates,
+				"delegates",
+				{ x1: String ->
+					x1
+				},
+				{ x1: DocumentShareOptionsJs ->
+					documentShareOptions_fromJs(x1)
+				},
+			)
+			val result = documentApi.encrypted.shareWithMany(
+				documentConverted,
+				delegatesConverted,
+			)
+			document_toJs(result)
+		}
 
 		override fun findDocumentsByHcPartyPatient(
 			hcPartyId: String,
 			patient: PatientJs,
-			startDate: Double?,
-			endDate: Double?,
-			descending: Boolean?,
-		): Promise<PaginatedListIteratorJs<EncryptedDocumentJs>> = GlobalScope.promise {
-			paginatedListIterator_toJs(
-				documentApi.encrypted.findDocumentsByHcPartyPatient(hcPartyId,
-						com.icure.sdk.js.model.patient_fromJs(patient),
-						com.icure.sdk.js.model.CheckedConverters.numberToLong(startDate, "startDate"),
-						com.icure.sdk.js.model.CheckedConverters.numberToLong(endDate, "endDate"), descending),
-				{ x1: EncryptedDocument ->
-					document_toJs(x1)
-				},
-			)}
-
+			options: DocumentFlavouredApi_findDocumentsByHcPartyPatient_Options?,
+		): Promise<PaginatedListIteratorJs<EncryptedDocumentJs>> {
+			val _options: DocumentFlavouredApi_findDocumentsByHcPartyPatient_Options = options ?: js("{}")
+			return GlobalScope.promise {
+				val hcPartyIdConverted: String = hcPartyId
+				val patientConverted: Patient = patient_fromJs(patient)
+				val startDateConverted: Long? = convertingOptionOrDefault(
+					_options.startDate,
+					null
+				) { startDate ->
+					numberToLong(startDate, "startDate")
+				}
+				val endDateConverted: Long? = convertingOptionOrDefault(
+					_options.endDate,
+					null
+				) { endDate ->
+					numberToLong(endDate, "endDate")
+				}
+				val descendingConverted: Boolean? = convertingOptionOrDefault(
+					_options.descending,
+					null
+				) { descending ->
+					descending
+				}
+				val result = documentApi.encrypted.findDocumentsByHcPartyPatient(
+					hcPartyIdConverted,
+					patientConverted,
+					startDateConverted,
+					endDateConverted,
+					descendingConverted,
+				)
+				paginatedListIterator_toJs(
+					result,
+					{ x1: EncryptedDocument ->
+						document_toJs(x1)
+					},
+				)
+			}
+		}
 
 		override fun modifyDocument(entity: EncryptedDocumentJs): Promise<EncryptedDocumentJs> =
 				GlobalScope.promise {
-			document_toJs(documentApi.encrypted.modifyDocument(com.icure.sdk.js.model.document_fromJs(entity)))}
-
+			val entityConverted: EncryptedDocument = document_fromJs(entity)
+			val result = documentApi.encrypted.modifyDocument(
+				entityConverted,
+			)
+			document_toJs(result)
+		}
 
 		override fun getDocument(entityId: String): Promise<EncryptedDocumentJs> = GlobalScope.promise {
-			document_toJs(documentApi.encrypted.getDocument(entityId))}
-
+			val entityIdConverted: String = entityId
+			val result = documentApi.encrypted.getDocument(
+				entityIdConverted,
+			)
+			document_toJs(result)
+		}
 
 		override fun getDocumentByExternalUuid(externalUuid: String): Promise<EncryptedDocumentJs> =
 				GlobalScope.promise {
-			document_toJs(documentApi.encrypted.getDocumentByExternalUuid(externalUuid))}
-
+			val externalUuidConverted: String = externalUuid
+			val result = documentApi.encrypted.getDocumentByExternalUuid(
+				externalUuidConverted,
+			)
+			document_toJs(result)
+		}
 
 		override fun getDocumentsByExternalUuid(externalUuid: String): Promise<Array<EncryptedDocumentJs>>
 				= GlobalScope.promise {
+			val externalUuidConverted: String = externalUuid
+			val result = documentApi.encrypted.getDocumentsByExternalUuid(
+				externalUuidConverted,
+			)
 			listToArray(
-				documentApi.encrypted.getDocumentsByExternalUuid(externalUuid),
+				result,
 				{ x1: EncryptedDocument ->
 					document_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun getDocuments(entityIds: Array<String>): Promise<Array<EncryptedDocumentJs>> =
 				GlobalScope.promise {
+			val entityIdsConverted: List<String> = arrayToList(
+				entityIds,
+				"entityIds",
+				{ x1: String ->
+					x1
+				},
+			)
+			val result = documentApi.encrypted.getDocuments(
+				entityIdsConverted,
+			)
 			listToArray(
-				documentApi.encrypted.getDocuments(arrayToList(
-					entityIds,
-					"entityIds",
-					{ x1: String ->
-						x1
-					},
-				)),
+				result,
 				{ x1: EncryptedDocument ->
 					document_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun modifyDocuments(entities: Array<EncryptedDocumentJs>):
 				Promise<Array<EncryptedDocumentJs>> = GlobalScope.promise {
+			val entitiesConverted: List<EncryptedDocument> = arrayToList(
+				entities,
+				"entities",
+				{ x1: EncryptedDocumentJs ->
+					document_fromJs(x1)
+				},
+			)
+			val result = documentApi.encrypted.modifyDocuments(
+				entitiesConverted,
+			)
 			listToArray(
-				documentApi.encrypted.modifyDocuments(arrayToList(
-					entities,
-					"entities",
-					{ x1: EncryptedDocumentJs ->
-						document_fromJs(x1)
-					},
-				)),
+				result,
 				{ x1: EncryptedDocument ->
 					document_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun listDocumentsByHcPartyMessageForeignKeys(
 			hcPartyId: String,
 			documentTypeCode: String?,
 			secretMessageKeys: Array<String>,
 		): Promise<Array<EncryptedDocumentJs>> = GlobalScope.promise {
+			val hcPartyIdConverted: String = hcPartyId
+			val documentTypeCodeConverted: String? = documentTypeCode
+			val secretMessageKeysConverted: List<String> = arrayToList(
+				secretMessageKeys,
+				"secretMessageKeys",
+				{ x1: String ->
+					x1
+				},
+			)
+			val result = documentApi.encrypted.listDocumentsByHcPartyMessageForeignKeys(
+				hcPartyIdConverted,
+				documentTypeCodeConverted,
+				secretMessageKeysConverted,
+			)
 			listToArray(
-				documentApi.encrypted.listDocumentsByHcPartyMessageForeignKeys(hcPartyId, documentTypeCode,
-						arrayToList(
-					secretMessageKeys,
-					"secretMessageKeys",
-					{ x1: String ->
-						x1
-					},
-				)),
+				result,
 				{ x1: EncryptedDocument ->
 					document_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun findWithoutDelegation(limit: Double?): Promise<Array<EncryptedDocumentJs>> =
 				GlobalScope.promise {
+			val limitConverted: Int? = numberToInt(limit, "limit")
+			val result = documentApi.encrypted.findWithoutDelegation(
+				limitConverted,
+			)
 			listToArray(
-				documentApi.encrypted.findWithoutDelegation(numberToInt(limit, "limit")),
+				result,
 				{ x1: EncryptedDocument ->
 					document_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun setRawMainAttachment(
 			documentId: String,
@@ -219,15 +338,28 @@ internal class DocumentApiImplJs(
 			attachment: ByteArray,
 			encrypted: Boolean,
 		): Promise<EncryptedDocumentJs> = GlobalScope.promise {
-			document_toJs(documentApi.encrypted.setRawMainAttachment(documentId, rev,
-					com.icure.sdk.js.model.CheckedConverters.arrayToList(
-			  utis,
-			  "utis",
-			  { x1: kotlin.String ->
-			    x1
-			  },
-			), blobType, attachment, encrypted))}
-
+			val documentIdConverted: String = documentId
+			val revConverted: String = rev
+			val utisConverted: List<String> = arrayToList(
+				utis,
+				"utis",
+				{ x1: String ->
+					x1
+				},
+			)
+			val blobTypeConverted: String = blobType
+			val attachmentConverted: ByteArray = attachment
+			val encryptedConverted: Boolean = encrypted
+			val result = documentApi.encrypted.setRawMainAttachment(
+				documentIdConverted,
+				revConverted,
+				utisConverted,
+				blobTypeConverted,
+				attachmentConverted,
+				encryptedConverted,
+			)
+			document_toJs(result)
+		}
 
 		override fun setRawSecondaryAttachment(
 			documentId: String,
@@ -238,28 +370,57 @@ internal class DocumentApiImplJs(
 			attachment: ByteArray,
 			encrypted: Boolean,
 		): Promise<EncryptedDocumentJs> = GlobalScope.promise {
-			document_toJs(documentApi.encrypted.setRawSecondaryAttachment(documentId, key, rev,
-					com.icure.sdk.js.model.CheckedConverters.arrayToList(
-			  utis,
-			  "utis",
-			  { x1: kotlin.String ->
-			    x1
-			  },
-			), blobType, attachment, encrypted))}
-
+			val documentIdConverted: String = documentId
+			val keyConverted: String = key
+			val revConverted: String = rev
+			val utisConverted: List<String> = arrayToList(
+				utis,
+				"utis",
+				{ x1: String ->
+					x1
+				},
+			)
+			val blobTypeConverted: String = blobType
+			val attachmentConverted: ByteArray = attachment
+			val encryptedConverted: Boolean = encrypted
+			val result = documentApi.encrypted.setRawSecondaryAttachment(
+				documentIdConverted,
+				keyConverted,
+				revConverted,
+				utisConverted,
+				blobTypeConverted,
+				attachmentConverted,
+				encryptedConverted,
+			)
+			document_toJs(result)
+		}
 
 		override fun deleteMainAttachment(entityId: String, rev: String): Promise<EncryptedDocumentJs> =
 				GlobalScope.promise {
-			document_toJs(documentApi.encrypted.deleteMainAttachment(entityId, rev))}
-
+			val entityIdConverted: String = entityId
+			val revConverted: String = rev
+			val result = documentApi.encrypted.deleteMainAttachment(
+				entityIdConverted,
+				revConverted,
+			)
+			document_toJs(result)
+		}
 
 		override fun deleteSecondaryAttachment(
 			documentId: String,
 			key: String,
 			attachmentId: String,
 		): Promise<EncryptedDocumentJs> = GlobalScope.promise {
-			document_toJs(documentApi.encrypted.deleteSecondaryAttachment(documentId, key, attachmentId))}
-
+			val documentIdConverted: String = documentId
+			val keyConverted: String = key
+			val attachmentIdConverted: String = attachmentId
+			val result = documentApi.encrypted.deleteSecondaryAttachment(
+				documentIdConverted,
+				keyConverted,
+				attachmentIdConverted,
+			)
+			document_toJs(result)
+		}
 	}
 
 	override val tryAndRecover: DocumentFlavouredApiJs<DocumentJs> = object :
@@ -267,160 +428,254 @@ internal class DocumentApiImplJs(
 		override fun shareWith(
 			delegateId: String,
 			document: DocumentJs,
-			shareEncryptionKeys: String,
-			shareOwningEntityIds: String,
-			requestedPermission: String,
-		): Promise<SimpleShareResultJs<DocumentJs>> = GlobalScope.promise {
-			simpleShareResult_toJs(
-				documentApi.tryAndRecover.shareWith(delegateId,
-						com.icure.sdk.js.model.document_fromJs(document),
-						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareEncryptionKeys),
-						com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareOwningEntityIds),
-						com.icure.sdk.model.requests.RequestedPermission.valueOf(requestedPermission)),
-				{ x1: Document ->
-					document_toJs(x1)
-				},
-			)}
-
+			options: DocumentFlavouredApi_shareWith_Options?,
+		): Promise<SimpleShareResultJs<DocumentJs>> {
+			val _options: DocumentFlavouredApi_shareWith_Options = options ?: js("{}")
+			return GlobalScope.promise {
+				val delegateIdConverted: String = delegateId
+				val documentConverted: Document = document_fromJs(document)
+				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
+					_options.shareEncryptionKeys,
+					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
+				) { shareEncryptionKeys ->
+					ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
+				}
+				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
+					_options.shareOwningEntityIds,
+					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
+				) { shareOwningEntityIds ->
+					ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
+				}
+				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefault(
+					_options.requestedPermission,
+					com.icure.sdk.model.requests.RequestedPermission.MaxWrite
+				) { requestedPermission ->
+					RequestedPermission.valueOf(requestedPermission)
+				}
+				val result = documentApi.tryAndRecover.shareWith(
+					delegateIdConverted,
+					documentConverted,
+					shareEncryptionKeysConverted,
+					shareOwningEntityIdsConverted,
+					requestedPermissionConverted,
+				)
+				simpleShareResult_toJs(
+					result,
+					{ x1: Document ->
+						document_toJs(x1)
+					},
+				)
+			}
+		}
 
 		override fun tryShareWithMany(document: DocumentJs,
 				delegates: Record<String, DocumentShareOptionsJs>): Promise<SimpleShareResultJs<DocumentJs>> =
 				GlobalScope.promise {
+			val documentConverted: Document = document_fromJs(document)
+			val delegatesConverted: Map<String, DocumentShareOptions> = objectToMap(
+				delegates,
+				"delegates",
+				{ x1: String ->
+					x1
+				},
+				{ x1: DocumentShareOptionsJs ->
+					documentShareOptions_fromJs(x1)
+				},
+			)
+			val result = documentApi.tryAndRecover.tryShareWithMany(
+				documentConverted,
+				delegatesConverted,
+			)
 			simpleShareResult_toJs(
-				documentApi.tryAndRecover.tryShareWithMany(com.icure.sdk.js.model.document_fromJs(document),
-						com.icure.sdk.js.model.CheckedConverters.objectToMap(
-				  delegates,
-				  "delegates",
-				  { x1: kotlin.String ->
-				    x1
-				  },
-				  { x1: com.icure.sdk.js.crypto.entities.DocumentShareOptionsJs ->
-				    com.icure.sdk.js.crypto.entities.documentShareOptions_fromJs(x1)
-				  },
-				)),
+				result,
 				{ x1: Document ->
 					document_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun shareWithMany(document: DocumentJs,
 				delegates: Record<String, DocumentShareOptionsJs>): Promise<DocumentJs> = GlobalScope.promise {
-			document_toJs(documentApi.tryAndRecover.shareWithMany(com.icure.sdk.js.model.document_fromJs(document),
-					com.icure.sdk.js.model.CheckedConverters.objectToMap(
-			  delegates,
-			  "delegates",
-			  { x1: kotlin.String ->
-			    x1
-			  },
-			  { x1: com.icure.sdk.js.crypto.entities.DocumentShareOptionsJs ->
-			    com.icure.sdk.js.crypto.entities.documentShareOptions_fromJs(x1)
-			  },
-			)))}
-
+			val documentConverted: Document = document_fromJs(document)
+			val delegatesConverted: Map<String, DocumentShareOptions> = objectToMap(
+				delegates,
+				"delegates",
+				{ x1: String ->
+					x1
+				},
+				{ x1: DocumentShareOptionsJs ->
+					documentShareOptions_fromJs(x1)
+				},
+			)
+			val result = documentApi.tryAndRecover.shareWithMany(
+				documentConverted,
+				delegatesConverted,
+			)
+			document_toJs(result)
+		}
 
 		override fun findDocumentsByHcPartyPatient(
 			hcPartyId: String,
 			patient: PatientJs,
-			startDate: Double?,
-			endDate: Double?,
-			descending: Boolean?,
-		): Promise<PaginatedListIteratorJs<DocumentJs>> = GlobalScope.promise {
-			paginatedListIterator_toJs(
-				documentApi.tryAndRecover.findDocumentsByHcPartyPatient(hcPartyId,
-						com.icure.sdk.js.model.patient_fromJs(patient),
-						com.icure.sdk.js.model.CheckedConverters.numberToLong(startDate, "startDate"),
-						com.icure.sdk.js.model.CheckedConverters.numberToLong(endDate, "endDate"), descending),
-				{ x1: Document ->
-					document_toJs(x1)
-				},
-			)}
-
+			options: DocumentFlavouredApi_findDocumentsByHcPartyPatient_Options?,
+		): Promise<PaginatedListIteratorJs<DocumentJs>> {
+			val _options: DocumentFlavouredApi_findDocumentsByHcPartyPatient_Options = options ?: js("{}")
+			return GlobalScope.promise {
+				val hcPartyIdConverted: String = hcPartyId
+				val patientConverted: Patient = patient_fromJs(patient)
+				val startDateConverted: Long? = convertingOptionOrDefault(
+					_options.startDate,
+					null
+				) { startDate ->
+					numberToLong(startDate, "startDate")
+				}
+				val endDateConverted: Long? = convertingOptionOrDefault(
+					_options.endDate,
+					null
+				) { endDate ->
+					numberToLong(endDate, "endDate")
+				}
+				val descendingConverted: Boolean? = convertingOptionOrDefault(
+					_options.descending,
+					null
+				) { descending ->
+					descending
+				}
+				val result = documentApi.tryAndRecover.findDocumentsByHcPartyPatient(
+					hcPartyIdConverted,
+					patientConverted,
+					startDateConverted,
+					endDateConverted,
+					descendingConverted,
+				)
+				paginatedListIterator_toJs(
+					result,
+					{ x1: Document ->
+						document_toJs(x1)
+					},
+				)
+			}
+		}
 
 		override fun modifyDocument(entity: DocumentJs): Promise<DocumentJs> = GlobalScope.promise {
-			document_toJs(documentApi.tryAndRecover.modifyDocument(com.icure.sdk.js.model.document_fromJs(entity)))}
-
+			val entityConverted: Document = document_fromJs(entity)
+			val result = documentApi.tryAndRecover.modifyDocument(
+				entityConverted,
+			)
+			document_toJs(result)
+		}
 
 		override fun getDocument(entityId: String): Promise<DocumentJs> = GlobalScope.promise {
-			document_toJs(documentApi.tryAndRecover.getDocument(entityId))}
-
+			val entityIdConverted: String = entityId
+			val result = documentApi.tryAndRecover.getDocument(
+				entityIdConverted,
+			)
+			document_toJs(result)
+		}
 
 		override fun getDocumentByExternalUuid(externalUuid: String): Promise<DocumentJs> =
 				GlobalScope.promise {
-			document_toJs(documentApi.tryAndRecover.getDocumentByExternalUuid(externalUuid))}
-
+			val externalUuidConverted: String = externalUuid
+			val result = documentApi.tryAndRecover.getDocumentByExternalUuid(
+				externalUuidConverted,
+			)
+			document_toJs(result)
+		}
 
 		override fun getDocumentsByExternalUuid(externalUuid: String): Promise<Array<DocumentJs>> =
 				GlobalScope.promise {
+			val externalUuidConverted: String = externalUuid
+			val result = documentApi.tryAndRecover.getDocumentsByExternalUuid(
+				externalUuidConverted,
+			)
 			listToArray(
-				documentApi.tryAndRecover.getDocumentsByExternalUuid(externalUuid),
+				result,
 				{ x1: Document ->
 					document_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun getDocuments(entityIds: Array<String>): Promise<Array<DocumentJs>> =
 				GlobalScope.promise {
+			val entityIdsConverted: List<String> = arrayToList(
+				entityIds,
+				"entityIds",
+				{ x1: String ->
+					x1
+				},
+			)
+			val result = documentApi.tryAndRecover.getDocuments(
+				entityIdsConverted,
+			)
 			listToArray(
-				documentApi.tryAndRecover.getDocuments(arrayToList(
-					entityIds,
-					"entityIds",
-					{ x1: String ->
-						x1
-					},
-				)),
+				result,
 				{ x1: Document ->
 					document_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun modifyDocuments(entities: Array<DocumentJs>): Promise<Array<DocumentJs>> =
 				GlobalScope.promise {
+			val entitiesConverted: List<Document> = arrayToList(
+				entities,
+				"entities",
+				{ x1: DocumentJs ->
+					document_fromJs(x1)
+				},
+			)
+			val result = documentApi.tryAndRecover.modifyDocuments(
+				entitiesConverted,
+			)
 			listToArray(
-				documentApi.tryAndRecover.modifyDocuments(arrayToList(
-					entities,
-					"entities",
-					{ x1: DocumentJs ->
-						document_fromJs(x1)
-					},
-				)),
+				result,
 				{ x1: Document ->
 					document_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun listDocumentsByHcPartyMessageForeignKeys(
 			hcPartyId: String,
 			documentTypeCode: String?,
 			secretMessageKeys: Array<String>,
 		): Promise<Array<DocumentJs>> = GlobalScope.promise {
+			val hcPartyIdConverted: String = hcPartyId
+			val documentTypeCodeConverted: String? = documentTypeCode
+			val secretMessageKeysConverted: List<String> = arrayToList(
+				secretMessageKeys,
+				"secretMessageKeys",
+				{ x1: String ->
+					x1
+				},
+			)
+			val result = documentApi.tryAndRecover.listDocumentsByHcPartyMessageForeignKeys(
+				hcPartyIdConverted,
+				documentTypeCodeConverted,
+				secretMessageKeysConverted,
+			)
 			listToArray(
-				documentApi.tryAndRecover.listDocumentsByHcPartyMessageForeignKeys(hcPartyId, documentTypeCode,
-						arrayToList(
-					secretMessageKeys,
-					"secretMessageKeys",
-					{ x1: String ->
-						x1
-					},
-				)),
+				result,
 				{ x1: Document ->
 					document_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun findWithoutDelegation(limit: Double?): Promise<Array<DocumentJs>> =
 				GlobalScope.promise {
+			val limitConverted: Int? = numberToInt(limit, "limit")
+			val result = documentApi.tryAndRecover.findWithoutDelegation(
+				limitConverted,
+			)
 			listToArray(
-				documentApi.tryAndRecover.findWithoutDelegation(numberToInt(limit, "limit")),
+				result,
 				{ x1: Document ->
 					document_toJs(x1)
 				},
-			)}
-
+			)
+		}
 
 		override fun setRawMainAttachment(
 			documentId: String,
@@ -430,15 +685,28 @@ internal class DocumentApiImplJs(
 			attachment: ByteArray,
 			encrypted: Boolean,
 		): Promise<EncryptedDocumentJs> = GlobalScope.promise {
-			document_toJs(documentApi.tryAndRecover.setRawMainAttachment(documentId, rev,
-					com.icure.sdk.js.model.CheckedConverters.arrayToList(
-			  utis,
-			  "utis",
-			  { x1: kotlin.String ->
-			    x1
-			  },
-			), blobType, attachment, encrypted))}
-
+			val documentIdConverted: String = documentId
+			val revConverted: String = rev
+			val utisConverted: List<String> = arrayToList(
+				utis,
+				"utis",
+				{ x1: String ->
+					x1
+				},
+			)
+			val blobTypeConverted: String = blobType
+			val attachmentConverted: ByteArray = attachment
+			val encryptedConverted: Boolean = encrypted
+			val result = documentApi.tryAndRecover.setRawMainAttachment(
+				documentIdConverted,
+				revConverted,
+				utisConverted,
+				blobTypeConverted,
+				attachmentConverted,
+				encryptedConverted,
+			)
+			document_toJs(result)
+		}
 
 		override fun setRawSecondaryAttachment(
 			documentId: String,
@@ -449,127 +717,222 @@ internal class DocumentApiImplJs(
 			attachment: ByteArray,
 			encrypted: Boolean,
 		): Promise<EncryptedDocumentJs> = GlobalScope.promise {
-			document_toJs(documentApi.tryAndRecover.setRawSecondaryAttachment(documentId, key, rev,
-					com.icure.sdk.js.model.CheckedConverters.arrayToList(
-			  utis,
-			  "utis",
-			  { x1: kotlin.String ->
-			    x1
-			  },
-			), blobType, attachment, encrypted))}
-
+			val documentIdConverted: String = documentId
+			val keyConverted: String = key
+			val revConverted: String = rev
+			val utisConverted: List<String> = arrayToList(
+				utis,
+				"utis",
+				{ x1: String ->
+					x1
+				},
+			)
+			val blobTypeConverted: String = blobType
+			val attachmentConverted: ByteArray = attachment
+			val encryptedConverted: Boolean = encrypted
+			val result = documentApi.tryAndRecover.setRawSecondaryAttachment(
+				documentIdConverted,
+				keyConverted,
+				revConverted,
+				utisConverted,
+				blobTypeConverted,
+				attachmentConverted,
+				encryptedConverted,
+			)
+			document_toJs(result)
+		}
 
 		override fun deleteMainAttachment(entityId: String, rev: String): Promise<DocumentJs> =
 				GlobalScope.promise {
-			document_toJs(documentApi.tryAndRecover.deleteMainAttachment(entityId, rev))}
-
+			val entityIdConverted: String = entityId
+			val revConverted: String = rev
+			val result = documentApi.tryAndRecover.deleteMainAttachment(
+				entityIdConverted,
+				revConverted,
+			)
+			document_toJs(result)
+		}
 
 		override fun deleteSecondaryAttachment(
 			documentId: String,
 			key: String,
 			attachmentId: String,
 		): Promise<DocumentJs> = GlobalScope.promise {
-			document_toJs(documentApi.tryAndRecover.deleteSecondaryAttachment(documentId, key,
-					attachmentId))}
-
+			val documentIdConverted: String = documentId
+			val keyConverted: String = key
+			val attachmentIdConverted: String = attachmentId
+			val result = documentApi.tryAndRecover.deleteSecondaryAttachment(
+				documentIdConverted,
+				keyConverted,
+				attachmentIdConverted,
+			)
+			document_toJs(result)
+		}
 	}
 
 	override fun createDocument(entity: DecryptedDocumentJs): Promise<DecryptedDocumentJs> =
 			GlobalScope.promise {
-		document_toJs(documentApi.createDocument(com.icure.sdk.js.model.document_fromJs(entity)))}
-
+		val entityConverted: DecryptedDocument = document_fromJs(entity)
+		val result = documentApi.createDocument(
+			entityConverted,
+		)
+		document_toJs(result)
+	}
 
 	override fun withEncryptionMetadata(
 		base: DecryptedDocumentJs?,
 		message: MessageJs?,
-		user: UserJs?,
-		delegates: Record<String, String>,
-		secretId: SecretIdOptionJs,
-	): Promise<DecryptedDocumentJs> = GlobalScope.promise {
-		document_toJs(documentApi.withEncryptionMetadata(base?.let { nonNull1 ->
-		  com.icure.sdk.js.model.document_fromJs(nonNull1)
-		}, message?.let { nonNull1 ->
-		  com.icure.sdk.js.model.message_fromJs(nonNull1)
-		}, user?.let { nonNull1 ->
-		  com.icure.sdk.js.model.user_fromJs(nonNull1)
-		}, com.icure.sdk.js.model.CheckedConverters.objectToMap(
-		  delegates,
-		  "delegates",
-		  { x1: kotlin.String ->
-		    x1
-		  },
-		  { x1: kotlin.String ->
-		    com.icure.sdk.model.embed.AccessLevel.valueOf(x1)
-		  },
-		), com.icure.sdk.js.crypto.entities.secretIdOption_fromJs(secretId)))}
-
+		options: DocumentApi_withEncryptionMetadata_Options?,
+	): Promise<DecryptedDocumentJs> {
+		val _options: DocumentApi_withEncryptionMetadata_Options = options ?: js("{}")
+		return GlobalScope.promise {
+			val baseConverted: DecryptedDocument? = base?.let { nonNull1 ->
+				document_fromJs(nonNull1)
+			}
+			val messageConverted: Message? = message?.let { nonNull1 ->
+				message_fromJs(nonNull1)
+			}
+			val userConverted: User? = convertingOptionOrDefault(
+				_options.user,
+				null
+			) { user ->
+				user?.let { nonNull1 ->
+					user_fromJs(nonNull1)
+				}
+			}
+			val delegatesConverted: Map<String, AccessLevel> = convertingOptionOrDefault(
+				_options.delegates,
+				emptyMap()
+			) { delegates ->
+				objectToMap(
+					delegates,
+					"delegates",
+					{ x1: String ->
+						x1
+					},
+					{ x1: String ->
+						AccessLevel.valueOf(x1)
+					},
+				)
+			}
+			val secretIdConverted: SecretIdOption = convertingOptionOrDefault(
+				_options.secretId,
+				com.icure.sdk.crypto.entities.SecretIdOption.UseAnySharedWithParent
+			) { secretId ->
+				secretIdOption_fromJs(secretId)
+			}
+			val result = documentApi.withEncryptionMetadata(
+				baseConverted,
+				messageConverted,
+				userConverted,
+				delegatesConverted,
+				secretIdConverted,
+			)
+			document_toJs(result)
+		}
+	}
 
 	override fun getAndTryDecryptMainAttachment(
 		document: DocumentJs,
 		attachmentId: String,
 		decryptedDocumentValidator: (ByteArray) -> Promise<Boolean>,
 	): Promise<ByteArray?> = GlobalScope.promise {
+		val documentConverted: Document = document_fromJs(document)
+		val attachmentIdConverted: String = attachmentId
 		val decryptedDocumentValidatorConverted: suspend (ByteArray) -> Boolean = { arg0 ->
 			decryptedDocumentValidator(
-				arg0).await()
+				arg0,
+			).await()
 		}
-		documentApi.getAndTryDecryptMainAttachment(document_fromJs(document), attachmentId,
-				decryptedDocumentValidatorConverted)}
-
+		val result = documentApi.getAndTryDecryptMainAttachment(
+			documentConverted,
+			attachmentIdConverted,
+			decryptedDocumentValidatorConverted,
+		)
+		result
+	}
 
 	override fun getAndTryDecryptMainAttachmentAsPlainText(
 		document: DocumentJs,
 		attachmentId: String,
 		decryptedDocumentValidator: (ByteArray) -> Promise<Boolean>,
 	): Promise<String?> = GlobalScope.promise {
+		val documentConverted: Document = document_fromJs(document)
+		val attachmentIdConverted: String = attachmentId
 		val decryptedDocumentValidatorConverted: suspend (ByteArray) -> Boolean = { arg0 ->
 			decryptedDocumentValidator(
-				arg0).await()
+				arg0,
+			).await()
 		}
-		documentApi.getAndTryDecryptMainAttachmentAsPlainText(document_fromJs(document), attachmentId,
-				decryptedDocumentValidatorConverted)}
-
+		val result = documentApi.getAndTryDecryptMainAttachmentAsPlainText(
+			documentConverted,
+			attachmentIdConverted,
+			decryptedDocumentValidatorConverted,
+		)
+		result
+	}
 
 	override fun getAndTryDecryptMainAttachmentAsJson(
 		document: DocumentJs,
 		attachmentId: String,
 		decryptedDocumentValidator: (ByteArray) -> Promise<Boolean>,
 	): Promise<dynamic> = GlobalScope.promise {
+		val documentConverted: Document = document_fromJs(document)
+		val attachmentIdConverted: String = attachmentId
 		val decryptedDocumentValidatorConverted: suspend (ByteArray) -> Boolean = { arg0 ->
 			decryptedDocumentValidator(
-				arg0).await()
+				arg0,
+			).await()
 		}
-		jsonToDynamic(documentApi.getAndTryDecryptMainAttachmentAsJson(document_fromJs(document),
-				attachmentId, decryptedDocumentValidatorConverted))}
-
+		val result = documentApi.getAndTryDecryptMainAttachmentAsJson(
+			documentConverted,
+			attachmentIdConverted,
+			decryptedDocumentValidatorConverted,
+		)
+		jsonToDynamic(result)
+	}
 
 	override fun getAndDecryptMainAttachment(
 		document: DocumentJs,
 		attachmentId: String,
 		decryptedDocumentValidator: (ByteArray) -> Promise<Boolean>,
 	): Promise<ByteArray> = GlobalScope.promise {
+		val documentConverted: Document = document_fromJs(document)
+		val attachmentIdConverted: String = attachmentId
 		val decryptedDocumentValidatorConverted: suspend (ByteArray) -> Boolean = { arg0 ->
 			decryptedDocumentValidator(
-				arg0).await()
+				arg0,
+			).await()
 		}
-		documentApi.getAndDecryptMainAttachment(document_fromJs(document), attachmentId,
-				decryptedDocumentValidatorConverted)}
-
+		val result = documentApi.getAndDecryptMainAttachment(
+			documentConverted,
+			attachmentIdConverted,
+			decryptedDocumentValidatorConverted,
+		)
+		result
+	}
 
 	override fun encryptAndSetMainAttachment(
 		document: DocumentJs,
 		utis: Array<String>,
 		attachment: ByteArray,
 	): Promise<EncryptedDocumentJs> = GlobalScope.promise {
-		document_toJs(documentApi.encryptAndSetMainAttachment(com.icure.sdk.js.model.document_fromJs(document),
-				com.icure.sdk.js.model.CheckedConverters.arrayToList(
-		  utis,
-		  "utis",
-		  { x1: kotlin.String ->
-		    x1
-		  },
-		), attachment))}
-
+		val documentConverted: Document = document_fromJs(document)
+		val utisConverted: List<String> = arrayToList(
+			utis,
+			"utis",
+			{ x1: String ->
+				x1
+			},
+		)
+		val attachmentConverted: ByteArray = attachment
+		val result = documentApi.encryptAndSetMainAttachment(
+			documentConverted,
+			utisConverted,
+			attachmentConverted,
+		)
+		document_toJs(result)
+	}
 
 	override fun getAndDecryptSecondaryAttachment(
 		document: DocumentJs,
@@ -577,13 +940,22 @@ internal class DocumentApiImplJs(
 		attachmentId: String,
 		decryptedDocumentValidator: (ByteArray) -> Promise<Boolean>,
 	): Promise<ByteArray> = GlobalScope.promise {
+		val documentConverted: Document = document_fromJs(document)
+		val keyConverted: String = key
+		val attachmentIdConverted: String = attachmentId
 		val decryptedDocumentValidatorConverted: suspend (ByteArray) -> Boolean = { arg0 ->
 			decryptedDocumentValidator(
-				arg0).await()
+				arg0,
+			).await()
 		}
-		documentApi.getAndDecryptSecondaryAttachment(document_fromJs(document), key, attachmentId,
-				decryptedDocumentValidatorConverted)}
-
+		val result = documentApi.getAndDecryptSecondaryAttachment(
+			documentConverted,
+			keyConverted,
+			attachmentIdConverted,
+			decryptedDocumentValidatorConverted,
+		)
+		result
+	}
 
 	override fun encryptAndSetSecondaryAttachment(
 		document: DocumentJs,
@@ -591,251 +963,408 @@ internal class DocumentApiImplJs(
 		utis: Array<String>,
 		attachment: ByteArray,
 	): Promise<EncryptedDocumentJs> = GlobalScope.promise {
-		document_toJs(documentApi.encryptAndSetSecondaryAttachment(com.icure.sdk.js.model.document_fromJs(document),
-				key, com.icure.sdk.js.model.CheckedConverters.arrayToList(
-		  utis,
-		  "utis",
-		  { x1: kotlin.String ->
-		    x1
-		  },
-		), attachment))}
-
-
-	override fun getEncryptionKeysOf(document: DocumentJs): Promise<Array<String>> =
-			GlobalScope.promise {
-		setToArray(
-			documentApi.getEncryptionKeysOf(document_fromJs(document)),
-			{ x1: HexString ->
-				hexString_toJs(x1)
-			},
-		)}
-
-
-	override fun hasWriteAccess(document: DocumentJs): Promise<Boolean> = GlobalScope.promise {
-		documentApi.hasWriteAccess(document_fromJs(document))}
-
-
-	override fun decryptPatientIdOf(document: DocumentJs): Promise<Array<String>> =
-			GlobalScope.promise {
-		setToArray(
-			documentApi.decryptPatientIdOf(document_fromJs(document)),
+		val documentConverted: Document = document_fromJs(document)
+		val keyConverted: String = key
+		val utisConverted: List<String> = arrayToList(
+			utis,
+			"utis",
 			{ x1: String ->
 				x1
 			},
-		)}
+		)
+		val attachmentConverted: ByteArray = attachment
+		val result = documentApi.encryptAndSetSecondaryAttachment(
+			documentConverted,
+			keyConverted,
+			utisConverted,
+			attachmentConverted,
+		)
+		document_toJs(result)
+	}
 
+	override fun getEncryptionKeysOf(document: DocumentJs): Promise<Array<String>> =
+			GlobalScope.promise {
+		val documentConverted: Document = document_fromJs(document)
+		val result = documentApi.getEncryptionKeysOf(
+			documentConverted,
+		)
+		setToArray(
+			result,
+			{ x1: HexString ->
+				hexString_toJs(x1)
+			},
+		)
+	}
+
+	override fun hasWriteAccess(document: DocumentJs): Promise<Boolean> = GlobalScope.promise {
+		val documentConverted: Document = document_fromJs(document)
+		val result = documentApi.hasWriteAccess(
+			documentConverted,
+		)
+		result
+	}
+
+	override fun decryptPatientIdOf(document: DocumentJs): Promise<Array<String>> =
+			GlobalScope.promise {
+		val documentConverted: Document = document_fromJs(document)
+		val result = documentApi.decryptPatientIdOf(
+			documentConverted,
+		)
+		setToArray(
+			result,
+			{ x1: String ->
+				x1
+			},
+		)
+	}
 
 	override fun createDelegationDeAnonymizationMetadata(entity: DocumentJs, delegates: Array<String>):
 			Promise<Unit> = GlobalScope.promise {
-		documentApi.createDelegationDeAnonymizationMetadata(document_fromJs(entity), arrayToSet(
+		val entityConverted: Document = document_fromJs(entity)
+		val delegatesConverted: Set<String> = arrayToSet(
 			delegates,
 			"delegates",
 			{ x1: String ->
 				x1
 			},
-		))}
+		)
+		documentApi.createDelegationDeAnonymizationMetadata(
+			entityConverted,
+			delegatesConverted,
+		)
 
+	}
 
 	override fun deleteDocument(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {
-		docIdentifier_toJs(documentApi.deleteDocument(entityId))}
-
+		val entityIdConverted: String = entityId
+		val result = documentApi.deleteDocument(
+			entityIdConverted,
+		)
+		docIdentifier_toJs(result)
+	}
 
 	override fun deleteDocuments(entityIds: Array<String>): Promise<Array<DocIdentifierJs>> =
 			GlobalScope.promise {
+		val entityIdsConverted: List<String> = arrayToList(
+			entityIds,
+			"entityIds",
+			{ x1: String ->
+				x1
+			},
+		)
+		val result = documentApi.deleteDocuments(
+			entityIdsConverted,
+		)
 		listToArray(
-			documentApi.deleteDocuments(arrayToList(
-				entityIds,
-				"entityIds",
-				{ x1: String ->
-					x1
-				},
-			)),
+			result,
 			{ x1: DocIdentifier ->
 				docIdentifier_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun getRawMainAttachment(documentId: String, attachmentId: String): Promise<ByteArray> =
 			GlobalScope.promise {
-		documentApi.getRawMainAttachment(documentId, attachmentId)}
-
+		val documentIdConverted: String = documentId
+		val attachmentIdConverted: String = attachmentId
+		val result = documentApi.getRawMainAttachment(
+			documentIdConverted,
+			attachmentIdConverted,
+		)
+		result
+	}
 
 	override fun getMainAttachmentAsPlainText(documentId: String, attachmentId: String):
 			Promise<String> = GlobalScope.promise {
-		documentApi.getMainAttachmentAsPlainText(documentId, attachmentId)}
-
+		val documentIdConverted: String = documentId
+		val attachmentIdConverted: String = attachmentId
+		val result = documentApi.getMainAttachmentAsPlainText(
+			documentIdConverted,
+			attachmentIdConverted,
+		)
+		result
+	}
 
 	override fun getMainAttachmentAsJson(documentId: String, attachmentId: String): Promise<dynamic> =
 			GlobalScope.promise {
-		jsonToDynamic(documentApi.getMainAttachmentAsJson(documentId, attachmentId))}
-
+		val documentIdConverted: String = documentId
+		val attachmentIdConverted: String = attachmentId
+		val result = documentApi.getMainAttachmentAsJson(
+			documentIdConverted,
+			attachmentIdConverted,
+		)
+		jsonToDynamic(result)
+	}
 
 	override fun getRawSecondaryAttachment(
 		documentId: String,
 		key: String,
 		attachmentId: String,
 	): Promise<ByteArray> = GlobalScope.promise {
-		documentApi.getRawSecondaryAttachment(documentId, key, attachmentId)}
-
+		val documentIdConverted: String = documentId
+		val keyConverted: String = key
+		val attachmentIdConverted: String = attachmentId
+		val result = documentApi.getRawSecondaryAttachment(
+			documentIdConverted,
+			keyConverted,
+			attachmentIdConverted,
+		)
+		result
+	}
 
 	override fun shareWith(
 		delegateId: String,
 		document: DecryptedDocumentJs,
-		shareEncryptionKeys: String,
-		shareOwningEntityIds: String,
-		requestedPermission: String,
-	): Promise<SimpleShareResultJs<DecryptedDocumentJs>> = GlobalScope.promise {
-		simpleShareResult_toJs(
-			documentApi.shareWith(delegateId, com.icure.sdk.js.model.document_fromJs(document),
-					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareEncryptionKeys),
-					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.valueOf(shareOwningEntityIds),
-					com.icure.sdk.model.requests.RequestedPermission.valueOf(requestedPermission)),
-			{ x1: DecryptedDocument ->
-				document_toJs(x1)
-			},
-		)}
-
+		options: DocumentApi_shareWith_Options?,
+	): Promise<SimpleShareResultJs<DecryptedDocumentJs>> {
+		val _options: DocumentApi_shareWith_Options = options ?: js("{}")
+		return GlobalScope.promise {
+			val delegateIdConverted: String = delegateId
+			val documentConverted: DecryptedDocument = document_fromJs(document)
+			val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
+				_options.shareEncryptionKeys,
+				com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
+			) { shareEncryptionKeys ->
+				ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
+			}
+			val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
+				_options.shareOwningEntityIds,
+				com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
+			) { shareOwningEntityIds ->
+				ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
+			}
+			val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefault(
+				_options.requestedPermission,
+				com.icure.sdk.model.requests.RequestedPermission.MaxWrite
+			) { requestedPermission ->
+				RequestedPermission.valueOf(requestedPermission)
+			}
+			val result = documentApi.shareWith(
+				delegateIdConverted,
+				documentConverted,
+				shareEncryptionKeysConverted,
+				shareOwningEntityIdsConverted,
+				requestedPermissionConverted,
+			)
+			simpleShareResult_toJs(
+				result,
+				{ x1: DecryptedDocument ->
+					document_toJs(x1)
+				},
+			)
+		}
+	}
 
 	override fun tryShareWithMany(document: DecryptedDocumentJs,
 			delegates: Record<String, DocumentShareOptionsJs>):
 			Promise<SimpleShareResultJs<DecryptedDocumentJs>> = GlobalScope.promise {
+		val documentConverted: DecryptedDocument = document_fromJs(document)
+		val delegatesConverted: Map<String, DocumentShareOptions> = objectToMap(
+			delegates,
+			"delegates",
+			{ x1: String ->
+				x1
+			},
+			{ x1: DocumentShareOptionsJs ->
+				documentShareOptions_fromJs(x1)
+			},
+		)
+		val result = documentApi.tryShareWithMany(
+			documentConverted,
+			delegatesConverted,
+		)
 		simpleShareResult_toJs(
-			documentApi.tryShareWithMany(com.icure.sdk.js.model.document_fromJs(document),
-					com.icure.sdk.js.model.CheckedConverters.objectToMap(
-			  delegates,
-			  "delegates",
-			  { x1: kotlin.String ->
-			    x1
-			  },
-			  { x1: com.icure.sdk.js.crypto.entities.DocumentShareOptionsJs ->
-			    com.icure.sdk.js.crypto.entities.documentShareOptions_fromJs(x1)
-			  },
-			)),
+			result,
 			{ x1: DecryptedDocument ->
 				document_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun shareWithMany(document: DecryptedDocumentJs,
 			delegates: Record<String, DocumentShareOptionsJs>): Promise<DecryptedDocumentJs> =
 			GlobalScope.promise {
-		document_toJs(documentApi.shareWithMany(com.icure.sdk.js.model.document_fromJs(document),
-				com.icure.sdk.js.model.CheckedConverters.objectToMap(
-		  delegates,
-		  "delegates",
-		  { x1: kotlin.String ->
-		    x1
-		  },
-		  { x1: com.icure.sdk.js.crypto.entities.DocumentShareOptionsJs ->
-		    com.icure.sdk.js.crypto.entities.documentShareOptions_fromJs(x1)
-		  },
-		)))}
-
+		val documentConverted: DecryptedDocument = document_fromJs(document)
+		val delegatesConverted: Map<String, DocumentShareOptions> = objectToMap(
+			delegates,
+			"delegates",
+			{ x1: String ->
+				x1
+			},
+			{ x1: DocumentShareOptionsJs ->
+				documentShareOptions_fromJs(x1)
+			},
+		)
+		val result = documentApi.shareWithMany(
+			documentConverted,
+			delegatesConverted,
+		)
+		document_toJs(result)
+	}
 
 	override fun findDocumentsByHcPartyPatient(
 		hcPartyId: String,
 		patient: PatientJs,
-		startDate: Double?,
-		endDate: Double?,
-		descending: Boolean?,
-	): Promise<PaginatedListIteratorJs<DecryptedDocumentJs>> = GlobalScope.promise {
-		paginatedListIterator_toJs(
-			documentApi.findDocumentsByHcPartyPatient(hcPartyId,
-					com.icure.sdk.js.model.patient_fromJs(patient),
-					com.icure.sdk.js.model.CheckedConverters.numberToLong(startDate, "startDate"),
-					com.icure.sdk.js.model.CheckedConverters.numberToLong(endDate, "endDate"), descending),
-			{ x1: DecryptedDocument ->
-				document_toJs(x1)
-			},
-		)}
-
+		options: DocumentApi_findDocumentsByHcPartyPatient_Options?,
+	): Promise<PaginatedListIteratorJs<DecryptedDocumentJs>> {
+		val _options: DocumentApi_findDocumentsByHcPartyPatient_Options = options ?: js("{}")
+		return GlobalScope.promise {
+			val hcPartyIdConverted: String = hcPartyId
+			val patientConverted: Patient = patient_fromJs(patient)
+			val startDateConverted: Long? = convertingOptionOrDefault(
+				_options.startDate,
+				null
+			) { startDate ->
+				numberToLong(startDate, "startDate")
+			}
+			val endDateConverted: Long? = convertingOptionOrDefault(
+				_options.endDate,
+				null
+			) { endDate ->
+				numberToLong(endDate, "endDate")
+			}
+			val descendingConverted: Boolean? = convertingOptionOrDefault(
+				_options.descending,
+				null
+			) { descending ->
+				descending
+			}
+			val result = documentApi.findDocumentsByHcPartyPatient(
+				hcPartyIdConverted,
+				patientConverted,
+				startDateConverted,
+				endDateConverted,
+				descendingConverted,
+			)
+			paginatedListIterator_toJs(
+				result,
+				{ x1: DecryptedDocument ->
+					document_toJs(x1)
+				},
+			)
+		}
+	}
 
 	override fun modifyDocument(entity: DecryptedDocumentJs): Promise<DecryptedDocumentJs> =
 			GlobalScope.promise {
-		document_toJs(documentApi.modifyDocument(com.icure.sdk.js.model.document_fromJs(entity)))}
-
+		val entityConverted: DecryptedDocument = document_fromJs(entity)
+		val result = documentApi.modifyDocument(
+			entityConverted,
+		)
+		document_toJs(result)
+	}
 
 	override fun getDocument(entityId: String): Promise<DecryptedDocumentJs> = GlobalScope.promise {
-		document_toJs(documentApi.getDocument(entityId))}
-
+		val entityIdConverted: String = entityId
+		val result = documentApi.getDocument(
+			entityIdConverted,
+		)
+		document_toJs(result)
+	}
 
 	override fun getDocumentByExternalUuid(externalUuid: String): Promise<DecryptedDocumentJs> =
 			GlobalScope.promise {
-		document_toJs(documentApi.getDocumentByExternalUuid(externalUuid))}
-
+		val externalUuidConverted: String = externalUuid
+		val result = documentApi.getDocumentByExternalUuid(
+			externalUuidConverted,
+		)
+		document_toJs(result)
+	}
 
 	override fun getDocumentsByExternalUuid(externalUuid: String): Promise<Array<DecryptedDocumentJs>>
 			= GlobalScope.promise {
+		val externalUuidConverted: String = externalUuid
+		val result = documentApi.getDocumentsByExternalUuid(
+			externalUuidConverted,
+		)
 		listToArray(
-			documentApi.getDocumentsByExternalUuid(externalUuid),
+			result,
 			{ x1: DecryptedDocument ->
 				document_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun getDocuments(entityIds: Array<String>): Promise<Array<DecryptedDocumentJs>> =
 			GlobalScope.promise {
+		val entityIdsConverted: List<String> = arrayToList(
+			entityIds,
+			"entityIds",
+			{ x1: String ->
+				x1
+			},
+		)
+		val result = documentApi.getDocuments(
+			entityIdsConverted,
+		)
 		listToArray(
-			documentApi.getDocuments(arrayToList(
-				entityIds,
-				"entityIds",
-				{ x1: String ->
-					x1
-				},
-			)),
+			result,
 			{ x1: DecryptedDocument ->
 				document_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun modifyDocuments(entities: Array<DecryptedDocumentJs>):
 			Promise<Array<DecryptedDocumentJs>> = GlobalScope.promise {
+		val entitiesConverted: List<DecryptedDocument> = arrayToList(
+			entities,
+			"entities",
+			{ x1: DecryptedDocumentJs ->
+				document_fromJs(x1)
+			},
+		)
+		val result = documentApi.modifyDocuments(
+			entitiesConverted,
+		)
 		listToArray(
-			documentApi.modifyDocuments(arrayToList(
-				entities,
-				"entities",
-				{ x1: DecryptedDocumentJs ->
-					document_fromJs(x1)
-				},
-			)),
+			result,
 			{ x1: DecryptedDocument ->
 				document_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun listDocumentsByHcPartyMessageForeignKeys(
 		hcPartyId: String,
 		documentTypeCode: String?,
 		secretMessageKeys: Array<String>,
 	): Promise<Array<DecryptedDocumentJs>> = GlobalScope.promise {
+		val hcPartyIdConverted: String = hcPartyId
+		val documentTypeCodeConverted: String? = documentTypeCode
+		val secretMessageKeysConverted: List<String> = arrayToList(
+			secretMessageKeys,
+			"secretMessageKeys",
+			{ x1: String ->
+				x1
+			},
+		)
+		val result = documentApi.listDocumentsByHcPartyMessageForeignKeys(
+			hcPartyIdConverted,
+			documentTypeCodeConverted,
+			secretMessageKeysConverted,
+		)
 		listToArray(
-			documentApi.listDocumentsByHcPartyMessageForeignKeys(hcPartyId, documentTypeCode, arrayToList(
-				secretMessageKeys,
-				"secretMessageKeys",
-				{ x1: String ->
-					x1
-				},
-			)),
+			result,
 			{ x1: DecryptedDocument ->
 				document_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun findWithoutDelegation(limit: Double?): Promise<Array<DecryptedDocumentJs>> =
 			GlobalScope.promise {
+		val limitConverted: Int? = numberToInt(limit, "limit")
+		val result = documentApi.findWithoutDelegation(
+			limitConverted,
+		)
 		listToArray(
-			documentApi.findWithoutDelegation(numberToInt(limit, "limit")),
+			result,
 			{ x1: DecryptedDocument ->
 				document_toJs(x1)
 			},
-		)}
-
+		)
+	}
 
 	override fun setRawMainAttachment(
 		documentId: String,
@@ -845,15 +1374,28 @@ internal class DocumentApiImplJs(
 		attachment: ByteArray,
 		encrypted: Boolean,
 	): Promise<EncryptedDocumentJs> = GlobalScope.promise {
-		document_toJs(documentApi.setRawMainAttachment(documentId, rev,
-				com.icure.sdk.js.model.CheckedConverters.arrayToList(
-		  utis,
-		  "utis",
-		  { x1: kotlin.String ->
-		    x1
-		  },
-		), blobType, attachment, encrypted))}
-
+		val documentIdConverted: String = documentId
+		val revConverted: String = rev
+		val utisConverted: List<String> = arrayToList(
+			utis,
+			"utis",
+			{ x1: String ->
+				x1
+			},
+		)
+		val blobTypeConverted: String = blobType
+		val attachmentConverted: ByteArray = attachment
+		val encryptedConverted: Boolean = encrypted
+		val result = documentApi.setRawMainAttachment(
+			documentIdConverted,
+			revConverted,
+			utisConverted,
+			blobTypeConverted,
+			attachmentConverted,
+			encryptedConverted,
+		)
+		document_toJs(result)
+	}
 
 	override fun setRawSecondaryAttachment(
 		documentId: String,
@@ -864,26 +1406,55 @@ internal class DocumentApiImplJs(
 		attachment: ByteArray,
 		encrypted: Boolean,
 	): Promise<EncryptedDocumentJs> = GlobalScope.promise {
-		document_toJs(documentApi.setRawSecondaryAttachment(documentId, key, rev,
-				com.icure.sdk.js.model.CheckedConverters.arrayToList(
-		  utis,
-		  "utis",
-		  { x1: kotlin.String ->
-		    x1
-		  },
-		), blobType, attachment, encrypted))}
-
+		val documentIdConverted: String = documentId
+		val keyConverted: String = key
+		val revConverted: String = rev
+		val utisConverted: List<String> = arrayToList(
+			utis,
+			"utis",
+			{ x1: String ->
+				x1
+			},
+		)
+		val blobTypeConverted: String = blobType
+		val attachmentConverted: ByteArray = attachment
+		val encryptedConverted: Boolean = encrypted
+		val result = documentApi.setRawSecondaryAttachment(
+			documentIdConverted,
+			keyConverted,
+			revConverted,
+			utisConverted,
+			blobTypeConverted,
+			attachmentConverted,
+			encryptedConverted,
+		)
+		document_toJs(result)
+	}
 
 	override fun deleteMainAttachment(entityId: String, rev: String): Promise<DecryptedDocumentJs> =
 			GlobalScope.promise {
-		document_toJs(documentApi.deleteMainAttachment(entityId, rev))}
-
+		val entityIdConverted: String = entityId
+		val revConverted: String = rev
+		val result = documentApi.deleteMainAttachment(
+			entityIdConverted,
+			revConverted,
+		)
+		document_toJs(result)
+	}
 
 	override fun deleteSecondaryAttachment(
 		documentId: String,
 		key: String,
 		attachmentId: String,
 	): Promise<DecryptedDocumentJs> = GlobalScope.promise {
-		document_toJs(documentApi.deleteSecondaryAttachment(documentId, key, attachmentId))}
-
+		val documentIdConverted: String = documentId
+		val keyConverted: String = key
+		val attachmentIdConverted: String = attachmentId
+		val result = documentApi.deleteSecondaryAttachment(
+			documentIdConverted,
+			keyConverted,
+			attachmentIdConverted,
+		)
+		document_toJs(result)
+	}
 }

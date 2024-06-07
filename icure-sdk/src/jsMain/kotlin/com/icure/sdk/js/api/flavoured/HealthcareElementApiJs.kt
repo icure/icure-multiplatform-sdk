@@ -43,9 +43,7 @@ public external interface HealthcareElementApiJs {
 	public fun withEncryptionMetadata(
 		base: DecryptedHealthElementJs?,
 		patient: PatientJs,
-		user: UserJs?,
-		delegates: Record<String, String>,
-		secretId: SecretIdOptionJs,
+		options: HealthcareElementApi_withEncryptionMetadata_Options?,
 	): Promise<DecryptedHealthElementJs>
 
 	public fun getEncryptionKeysOf(healthElement: HealthElementJs): Promise<Array<String>>
@@ -70,9 +68,7 @@ public external interface HealthcareElementApiJs {
 	public fun shareWith(
 		delegateId: String,
 		healthcareElement: DecryptedHealthElementJs,
-		shareEncryptionKeys: String,
-		shareOwningEntityIds: String,
-		requestedPermission: String,
+		options: HealthcareElementApi_shareWith_Options?,
 	): Promise<SimpleShareResultJs<DecryptedHealthElementJs>>
 
 	public fun tryShareWithMany(healthElement: DecryptedHealthElementJs,
@@ -85,9 +81,7 @@ public external interface HealthcareElementApiJs {
 	public fun findHealthcareElementsByHcPartyPatient(
 		hcPartyId: String,
 		patient: PatientJs,
-		startDate: Double?,
-		endDate: Double?,
-		descending: Boolean?,
+		options: HealthcareElementApi_findHealthcareElementsByHcPartyPatient_Options?,
 	): Promise<PaginatedListIteratorJs<DecryptedHealthElementJs>>
 
 	public fun modifyHealthcareElement(entity: DecryptedHealthElementJs):
@@ -113,11 +107,43 @@ public external interface HealthcareElementApiJs {
 	public fun subscribeToEvents(
 		events: Array<String>,
 		filter: AbstractFilterJs<HealthElementJs>,
-		onConnected: () -> Promise<Unit>,
-		channelCapacity: Double,
-		retryDelay: Double,
-		retryDelayExponentFactor: Double,
-		maxRetries: Double,
 		eventFired: (DecryptedHealthElementJs) -> Promise<Unit>,
+		options: HealthcareElementApi_subscribeToEvents_Options?,
 	): Promise<ConnectionJs>
+}
+
+public external interface HealthcareElementApi_withEncryptionMetadata_Options {
+	public val user: UserJs?
+
+	public val delegates: Record<String, String>
+
+	public val secretId: SecretIdOptionJs
+}
+
+public external interface HealthcareElementApi_shareWith_Options {
+	public val shareEncryptionKeys: String
+
+	public val shareOwningEntityIds: String
+
+	public val requestedPermission: String
+}
+
+public external interface HealthcareElementApi_findHealthcareElementsByHcPartyPatient_Options {
+	public val startDate: Double?
+
+	public val endDate: Double?
+
+	public val descending: Boolean?
+}
+
+public external interface HealthcareElementApi_subscribeToEvents_Options {
+	public val onConnected: () -> Promise<Unit>
+
+	public val channelCapacity: Double
+
+	public val retryDelay: Double
+
+	public val retryDelayExponentFactor: Double
+
+	public val maxRetries: Double
 }

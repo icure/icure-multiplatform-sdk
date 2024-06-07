@@ -1,7 +1,5 @@
 package com.icure.sdk.api.flavoured
 
-import com.icure.sdk.options.ApiConfiguration
-import com.icure.sdk.options.BasicApiConfiguration
 import com.icure.sdk.api.raw.RawEntityReferenceApi
 import com.icure.sdk.api.raw.RawInvoiceApi
 import com.icure.sdk.crypto.entities.InvoiceShareOptions
@@ -31,6 +29,9 @@ import com.icure.sdk.model.extensions.dataOwnerId
 import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
+import com.icure.sdk.options.ApiConfiguration
+import com.icure.sdk.options.BasicApiConfiguration
+import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
@@ -65,8 +66,11 @@ interface InvoiceBasicFlavouredApi<E : Invoice> {
 		type: String,
 		sentMediumType: String,
 		secretFKeys: String,
+		@DefaultValue("null")
 		insuranceId: String? = null,
+		@DefaultValue("null")
 		invoiceId: String? = null,
+		@DefaultValue("null")
 		gracePeriod: Int? = null,
 		invoicingCodes: List<EncryptedInvoicingCode>
 	): List<E>
@@ -74,10 +78,15 @@ interface InvoiceBasicFlavouredApi<E : Invoice> {
 	suspend fun removeCodes(userId: String, serviceId: String, secretFKeys: String, tarificationIds: List<String>): List<E>
 	suspend fun findInvoicesByAuthor(
 		hcPartyId: String,
+		@DefaultValue("null")
 		fromDate: Long? = null,
+		@DefaultValue("null")
 		toDate: Long? = null,
+		@DefaultValue("null")
 		startKey: JsonElement? = null,
+		@DefaultValue("null")
 		startDocumentId: String? = null,
+		@DefaultValue("null")
 		limit: Int? = null
 	): PaginatedList<E>
 
@@ -88,7 +97,9 @@ interface InvoiceBasicFlavouredApi<E : Invoice> {
 		sentMediumType: MediumType,
 		invoiceType: InvoiceType,
 		sent: Boolean,
+		@DefaultValue("null")
 		from: Long? = null,
+		@DefaultValue("null")
 		to: Long? = null
 	): List<E>
 
@@ -108,7 +119,14 @@ interface InvoiceBasicFlavouredApi<E : Invoice> {
 	): List<E>
 
 	suspend fun listInvoicesByServiceIds(serviceIds: List<String>): List<E>
-	suspend fun listAllHcpsByStatus(status: String, from: Long? = null, to: Long? = null, hcpIds: List<String>): List<E>
+	suspend fun listAllHcpsByStatus(
+		status: String,
+		@DefaultValue("null")
+		from: Long? = null,
+		@DefaultValue("null")
+		to: Long? = null,
+		hcpIds: List<String>
+	): List<E>
 }
 
 /* The extra API calls declared in this interface are the ones that can be used on encrypted or decrypted items but only when the user is a data owner */
@@ -116,8 +134,11 @@ interface InvoiceFlavouredApi<E : Invoice> : InvoiceBasicFlavouredApi<E> {
 	suspend fun shareWith(
 		delegateId: String,
 		invoice: E,
+		@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
 		shareEncryptionKeys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
+		@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
 		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
+		@DefaultValue("com.icure.sdk.model.requests.RequestedPermission.MaxWrite")
 		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
 	): SimpleShareResult<E>
 
@@ -162,8 +183,11 @@ interface InvoiceFlavouredApi<E : Invoice> : InvoiceBasicFlavouredApi<E> {
 	suspend fun findInvoicesByHcPartyPatient(
 		hcPartyId: String,
 		patient: Patient,
+		@DefaultValue("null")
 		startDate: Long? = null,
+		@DefaultValue("null")
 		endDate: Long? = null,
+		@DefaultValue("null")
 		descending: Boolean? = null,
 	): PaginatedListIterator<E>
 }
@@ -175,8 +199,11 @@ interface InvoiceApi : InvoiceBasicFlavourlessApi, InvoiceFlavouredApi<Decrypted
 	suspend fun withEncryptionMetadata(
 		base: DecryptedInvoice?,
 		patient: Patient?,
-		user: User?,
+		@DefaultValue("null")
+		user: User? = null,
+		@DefaultValue("emptyMap()")
 		delegates: Map<String, AccessLevel> = emptyMap(),
+		@DefaultValue("com.icure.sdk.crypto.entities.SecretIdOption.UseAnySharedWithParent")
 		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent,
 	): DecryptedInvoice
 	suspend fun getEncryptionKeysOf(invoice: Invoice): Set<HexString>

@@ -27,25 +27,68 @@ public external interface ICureApiJs {
 
 	public fun getReplicationInfo(): Promise<ReplicationInfoJs>
 
-	public fun updateDesignDoc(entityName: String, warmup: Boolean?): Promise<Boolean>
+	public fun updateDesignDoc(entityName: String, options: ICureApi_updateDesignDoc_Options?):
+			Promise<Boolean>
 
-	public fun resolvePatientsConflicts(limit: Double?): Promise<Array<IdWithRevJs>>
+	public fun resolvePatientsConflicts(options: ICureApi_resolvePatientsConflicts_Options?):
+			Promise<Array<IdWithRevJs>>
 
-	public fun resolveContactsConflicts(limit: Double?): Promise<Array<IdWithRevJs>>
+	public fun resolveContactsConflicts(options: ICureApi_resolveContactsConflicts_Options?):
+			Promise<Array<IdWithRevJs>>
 
-	public fun resolveFormsConflicts(limit: Double?): Promise<Array<IdWithRevJs>>
+	public fun resolveFormsConflicts(options: ICureApi_resolveFormsConflicts_Options?):
+			Promise<Array<IdWithRevJs>>
 
-	public fun resolveHealthElementsConflicts(limit: Double?): Promise<Array<IdWithRevJs>>
+	public
+			fun resolveHealthElementsConflicts(options: ICureApi_resolveHealthElementsConflicts_Options?):
+			Promise<Array<IdWithRevJs>>
 
-	public fun resolveInvoicesConflicts(limit: Double?): Promise<Array<IdWithRevJs>>
+	public fun resolveInvoicesConflicts(options: ICureApi_resolveInvoicesConflicts_Options?):
+			Promise<Array<IdWithRevJs>>
 
-	public fun resolveMessagesConflicts(limit: Double?): Promise<Array<IdWithRevJs>>
+	public fun resolveMessagesConflicts(options: ICureApi_resolveMessagesConflicts_Options?):
+			Promise<Array<IdWithRevJs>>
 
-	public fun resolveDocumentsConflicts(ids: String?, limit: Double?): Promise<Array<IdWithRevJs>>
+	public fun resolveDocumentsConflicts(options: ICureApi_resolveDocumentsConflicts_Options?):
+			Promise<Array<IdWithRevJs>>
 
 	public fun getIndexingInfoByGroup(groupId: String): Promise<IndexingInfoJs>
 
 	public fun getReplicatorInfo(id: String): Promise<ReplicatorDocumentJs>
 
 	public fun evictAllFromMap(mapName: String): Promise<String>
+}
+
+public external interface ICureApi_updateDesignDoc_Options {
+	public val warmup: Boolean?
+}
+
+public external interface ICureApi_resolvePatientsConflicts_Options {
+	public val limit: Double?
+}
+
+public external interface ICureApi_resolveContactsConflicts_Options {
+	public val limit: Double?
+}
+
+public external interface ICureApi_resolveFormsConflicts_Options {
+	public val limit: Double?
+}
+
+public external interface ICureApi_resolveHealthElementsConflicts_Options {
+	public val limit: Double?
+}
+
+public external interface ICureApi_resolveInvoicesConflicts_Options {
+	public val limit: Double?
+}
+
+public external interface ICureApi_resolveMessagesConflicts_Options {
+	public val limit: Double?
+}
+
+public external interface ICureApi_resolveDocumentsConflicts_Options {
+	public val ids: String?
+
+	public val limit: Double?
 }
