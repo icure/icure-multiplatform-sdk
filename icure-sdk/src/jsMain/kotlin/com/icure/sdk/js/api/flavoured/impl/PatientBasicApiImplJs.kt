@@ -170,7 +170,7 @@ internal class PatientBasicApiImplJs(
 	override fun filterPatientsBy(filterChain: FilterChainJs<PatientJs>,
 			options: PatientBasicApi_filterPatientsBy_Options?):
 			Promise<PaginatedListJs<EncryptedPatientJs>> {
-		val _options = options ?: js("{}")
+		val _options: PatientBasicApi_filterPatientsBy_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val filterChainConverted: FilterChain<Patient> = filterChain_fromJs(
 				filterChain,
@@ -235,7 +235,7 @@ internal class PatientBasicApiImplJs(
 	override fun findPatientsByNameBirthSsinAuto(filterValue: String,
 			options: PatientBasicApi_findPatientsByNameBirthSsinAuto_Options?):
 			Promise<PaginatedListJs<EncryptedPatientJs>> {
-		val _options = options ?: js("{}")
+		val _options: PatientBasicApi_findPatientsByNameBirthSsinAuto_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val healthcarePartyIdConverted: String? = convertingOptionOrDefault(
 				_options.healthcarePartyId,
@@ -288,7 +288,7 @@ internal class PatientBasicApiImplJs(
 	override fun listPatientsOfHcParty(hcPartyId: String,
 			options: PatientBasicApi_listPatientsOfHcParty_Options?):
 			Promise<PaginatedListJs<EncryptedPatientJs>> {
-		val _options = options ?: js("{}")
+		val _options: PatientBasicApi_listPatientsOfHcParty_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val hcPartyIdConverted: String = hcPartyId
 			val sortFieldConverted: String = convertingOptionOrDefault(
@@ -355,7 +355,7 @@ internal class PatientBasicApiImplJs(
 	override fun findPatientsModifiedAfter(date: Double,
 			options: PatientBasicApi_findPatientsModifiedAfter_Options?):
 			Promise<PaginatedListJs<EncryptedPatientJs>> {
-		val _options = options ?: js("{}")
+		val _options: PatientBasicApi_findPatientsModifiedAfter_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val dateConverted: Long = numberToLong(date, "date")
 			val startKeyConverted: Long? = convertingOptionOrDefault(
@@ -394,7 +394,7 @@ internal class PatientBasicApiImplJs(
 	override fun listPatientsByHcParty(hcPartyId: String,
 			options: PatientBasicApi_listPatientsByHcParty_Options?):
 			Promise<PaginatedListJs<EncryptedPatientJs>> {
-		val _options = options ?: js("{}")
+		val _options: PatientBasicApi_listPatientsByHcParty_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val hcPartyIdConverted: String = hcPartyId
 			val sortFieldConverted: String = convertingOptionOrDefault(
@@ -473,7 +473,7 @@ internal class PatientBasicApiImplJs(
 	override
 			fun findPatientsByHealthcareParty(options: PatientBasicApi_findPatientsByHealthcareParty_Options?):
 			Promise<PaginatedListJs<EncryptedPatientJs>> {
-		val _options = options ?: js("{}")
+		val _options: PatientBasicApi_findPatientsByHealthcareParty_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val hcPartyIdConverted: String? = convertingOptionOrDefault(
 				_options.hcPartyId,
@@ -531,7 +531,7 @@ internal class PatientBasicApiImplJs(
 	override fun findPatientsIdsByHealthcareParty(hcPartyId: String,
 			options: PatientBasicApi_findPatientsIdsByHealthcareParty_Options?):
 			Promise<PaginatedListJs<String>> {
-		val _options = options ?: js("{}")
+		val _options: PatientBasicApi_findPatientsIdsByHealthcareParty_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val hcPartyIdConverted: String = hcPartyId
 			val startKeyConverted: String? = convertingOptionOrDefault(
@@ -581,7 +581,7 @@ internal class PatientBasicApiImplJs(
 		lastName: String,
 		options: PatientBasicApi_fuzzySearch_Options?,
 	): Promise<Array<EncryptedPatientJs>> {
-		val _options = options ?: js("{}")
+		val _options: PatientBasicApi_fuzzySearch_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val firstNameConverted: String = firstName
 			val lastNameConverted: String = lastName
@@ -608,7 +608,7 @@ internal class PatientBasicApiImplJs(
 	override fun findDeletedPatients(startDate: Double,
 			options: PatientBasicApi_findDeletedPatients_Options?):
 			Promise<PaginatedListJs<EncryptedPatientJs>> {
-		val _options = options ?: js("{}")
+		val _options: PatientBasicApi_findDeletedPatients_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val startDateConverted: Long = numberToLong(startDate, "startDate")
 			val endDateConverted: Long? = convertingOptionOrDefault(
@@ -661,7 +661,7 @@ internal class PatientBasicApiImplJs(
 	override
 			fun listDeletedPatientsByName(options: PatientBasicApi_listDeletedPatientsByName_Options?):
 			Promise<Array<EncryptedPatientJs>> {
-		val _options = options ?: js("{}")
+		val _options: PatientBasicApi_listDeletedPatientsByName_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val firstNameConverted: String? = convertingOptionOrDefault(
 				_options.firstName,
@@ -707,7 +707,8 @@ internal class PatientBasicApiImplJs(
 		id: String,
 		options: PatientBasicApi_getPatientByHealthcarePartyAndIdentifier_Options?,
 	): Promise<EncryptedPatientJs> {
-		val _options = options ?: js("{}")
+		val _options: PatientBasicApi_getPatientByHealthcarePartyAndIdentifier_Options = options ?:
+				js("{}")
 		return GlobalScope.promise {
 			val hcPartyIdConverted: String = hcPartyId
 			val idConverted: String = id
@@ -751,7 +752,7 @@ internal class PatientBasicApiImplJs(
 		referralId: String,
 		options: PatientBasicApi_modifyPatientReferral_Options?,
 	): Promise<EncryptedPatientJs> {
-		val _options = options ?: js("{}")
+		val _options: PatientBasicApi_modifyPatientReferral_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val patientIdConverted: String = patientId
 			val referralIdConverted: String = referralId
@@ -780,7 +781,7 @@ internal class PatientBasicApiImplJs(
 	override fun findDuplicatesBySsin(hcPartyId: String,
 			options: PatientBasicApi_findDuplicatesBySsin_Options?):
 			Promise<PaginatedListJs<EncryptedPatientJs>> {
-		val _options = options ?: js("{}")
+		val _options: PatientBasicApi_findDuplicatesBySsin_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val hcPartyIdConverted: String = hcPartyId
 			val startKeyConverted: String? = convertingOptionOrDefault(
@@ -819,7 +820,7 @@ internal class PatientBasicApiImplJs(
 	override fun findDuplicatesByName(hcPartyId: String,
 			options: PatientBasicApi_findDuplicatesByName_Options?):
 			Promise<PaginatedListJs<EncryptedPatientJs>> {
-		val _options = options ?: js("{}")
+		val _options: PatientBasicApi_findDuplicatesByName_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val hcPartyIdConverted: String = hcPartyId
 			val startKeyConverted: String? = convertingOptionOrDefault(
@@ -880,7 +881,7 @@ internal class PatientBasicApiImplJs(
 		eventFired: (EncryptedPatientJs) -> Promise<Unit>,
 		options: PatientBasicApi_subscribeToEvents_Options?,
 	): Promise<ConnectionJs> {
-		val _options = options ?: js("{}")
+		val _options: PatientBasicApi_subscribeToEvents_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
 				events,

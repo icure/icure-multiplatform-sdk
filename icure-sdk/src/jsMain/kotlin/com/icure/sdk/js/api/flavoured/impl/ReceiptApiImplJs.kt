@@ -68,7 +68,7 @@ internal class ReceiptApiImplJs(
 			receipt: EncryptedReceiptJs,
 			options: ReceiptFlavouredApi_shareWith_Options?,
 		): Promise<SimpleShareResultJs<EncryptedReceiptJs>> {
-			val _options = options ?: js("{}")
+			val _options: ReceiptFlavouredApi_shareWith_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val receiptConverted: EncryptedReceipt = receipt_fromJs(receipt)
@@ -192,7 +192,7 @@ internal class ReceiptApiImplJs(
 			receipt: ReceiptJs,
 			options: ReceiptFlavouredApi_shareWith_Options?,
 		): Promise<SimpleShareResultJs<ReceiptJs>> {
-			val _options = options ?: js("{}")
+			val _options: ReceiptFlavouredApi_shareWith_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val receiptConverted: Receipt = receipt_fromJs(receipt)
@@ -320,7 +320,7 @@ internal class ReceiptApiImplJs(
 		patient: PatientJs?,
 		options: ReceiptApi_withEncryptionMetadata_Options?,
 	): Promise<DecryptedReceiptJs> {
-		val _options = options ?: js("{}")
+		val _options: ReceiptApi_withEncryptionMetadata_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val baseConverted: DecryptedReceipt? = base?.let { nonNull1 ->
 				receipt_fromJs(nonNull1)
@@ -538,7 +538,7 @@ internal class ReceiptApiImplJs(
 		receipt: DecryptedReceiptJs,
 		options: ReceiptApi_shareWith_Options?,
 	): Promise<SimpleShareResultJs<DecryptedReceiptJs>> {
-		val _options = options ?: js("{}")
+		val _options: ReceiptApi_shareWith_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val delegateIdConverted: String = delegateId
 			val receiptConverted: DecryptedReceipt = receipt_fromJs(receipt)

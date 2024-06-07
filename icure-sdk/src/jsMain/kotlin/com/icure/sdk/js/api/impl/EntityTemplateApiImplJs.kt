@@ -62,7 +62,7 @@ internal class EntityTemplateApiImplJs(
 		type: String,
 		options: EntityTemplateApi_listEntityTemplatesBy_Options?,
 	): Promise<Array<EntityTemplateJs>> {
-		val _options = options ?: js("{}")
+		val _options: EntityTemplateApi_listEntityTemplatesBy_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val userIdConverted: String = userId
 			val typeConverted: String = type
@@ -95,7 +95,7 @@ internal class EntityTemplateApiImplJs(
 
 	override fun listAllEntityTemplatesBy(type: String,
 			options: EntityTemplateApi_listAllEntityTemplatesBy_Options?): Promise<Array<EntityTemplateJs>> {
-		val _options = options ?: js("{}")
+		val _options: EntityTemplateApi_listAllEntityTemplatesBy_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val typeConverted: String = type
 			val searchStringConverted: String? = convertingOptionOrDefault(
@@ -130,7 +130,7 @@ internal class EntityTemplateApiImplJs(
 		keyword: String,
 		options: EntityTemplateApi_listEntityTemplatesByKeyword_Options?,
 	): Promise<Array<EntityTemplateJs>> {
-		val _options = options ?: js("{}")
+		val _options: EntityTemplateApi_listEntityTemplatesByKeyword_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val userIdConverted: String = userId
 			val typeConverted: String = type

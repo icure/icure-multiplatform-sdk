@@ -97,7 +97,7 @@ internal class MessageApiImplJs(
 			shareSecretIds: Array<String>,
 			options: MessageFlavouredApi_shareWith_Options?,
 		): Promise<SimpleShareResultJs<EncryptedMessageJs>> {
-			val _options = options ?: js("{}")
+			val _options: MessageFlavouredApi_shareWith_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val messageConverted: EncryptedMessage = message_fromJs(message)
@@ -195,7 +195,7 @@ internal class MessageApiImplJs(
 			patient: PatientJs,
 			options: MessageFlavouredApi_findMessagesByHcPartyPatient_Options?,
 		): Promise<PaginatedListIteratorJs<EncryptedMessageJs>> {
-			val _options = options ?: js("{}")
+			val _options: MessageFlavouredApi_findMessagesByHcPartyPatient_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val hcPartyIdConverted: String = hcPartyId
 				val patientConverted: Patient = patient_fromJs(patient)
@@ -433,7 +433,8 @@ internal class MessageApiImplJs(
 			to: Double,
 			options: MessageFlavouredApi_findMessagesByTransportGuidSentDate_Options?,
 		): Promise<PaginatedListJs<EncryptedMessageJs>> {
-			val _options = options ?: js("{}")
+			val _options: MessageFlavouredApi_findMessagesByTransportGuidSentDate_Options = options ?:
+					js("{}")
 			return GlobalScope.promise {
 				val transportGuidConverted: String = transportGuid
 				val fromConverted: Long = numberToLong(from, "from")
@@ -586,7 +587,7 @@ internal class MessageApiImplJs(
 			eventFired: (EncryptedMessageJs) -> Promise<Unit>,
 			options: MessageFlavouredApi_subscribeToEvents_Options?,
 		): Promise<ConnectionJs> {
-			val _options = options ?: js("{}")
+			val _options: MessageFlavouredApi_subscribeToEvents_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
 					events,
@@ -661,7 +662,7 @@ internal class MessageApiImplJs(
 			shareSecretIds: Array<String>,
 			options: MessageFlavouredApi_shareWith_Options?,
 		): Promise<SimpleShareResultJs<MessageJs>> {
-			val _options = options ?: js("{}")
+			val _options: MessageFlavouredApi_shareWith_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val messageConverted: Message = message_fromJs(message)
@@ -758,7 +759,7 @@ internal class MessageApiImplJs(
 			patient: PatientJs,
 			options: MessageFlavouredApi_findMessagesByHcPartyPatient_Options?,
 		): Promise<PaginatedListIteratorJs<MessageJs>> {
-			val _options = options ?: js("{}")
+			val _options: MessageFlavouredApi_findMessagesByHcPartyPatient_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val hcPartyIdConverted: String = hcPartyId
 				val patientConverted: Patient = patient_fromJs(patient)
@@ -995,7 +996,8 @@ internal class MessageApiImplJs(
 			to: Double,
 			options: MessageFlavouredApi_findMessagesByTransportGuidSentDate_Options?,
 		): Promise<PaginatedListJs<MessageJs>> {
-			val _options = options ?: js("{}")
+			val _options: MessageFlavouredApi_findMessagesByTransportGuidSentDate_Options = options ?:
+					js("{}")
 			return GlobalScope.promise {
 				val transportGuidConverted: String = transportGuid
 				val fromConverted: Long = numberToLong(from, "from")
@@ -1148,7 +1150,7 @@ internal class MessageApiImplJs(
 			eventFired: (MessageJs) -> Promise<Unit>,
 			options: MessageFlavouredApi_subscribeToEvents_Options?,
 		): Promise<ConnectionJs> {
-			val _options = options ?: js("{}")
+			val _options: MessageFlavouredApi_subscribeToEvents_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
 					events,
@@ -1229,7 +1231,7 @@ internal class MessageApiImplJs(
 		patient: PatientJs?,
 		options: MessageApi_withEncryptionMetadata_Options?,
 	): Promise<DecryptedMessageJs> {
-		val _options = options ?: js("{}")
+		val _options: MessageApi_withEncryptionMetadata_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val baseConverted: DecryptedMessage? = base?.let { nonNull1 ->
 				message_fromJs(nonNull1)
@@ -1391,7 +1393,7 @@ internal class MessageApiImplJs(
 		shareSecretIds: Array<String>,
 		options: MessageApi_shareWith_Options?,
 	): Promise<SimpleShareResultJs<DecryptedMessageJs>> {
-		val _options = options ?: js("{}")
+		val _options: MessageApi_shareWith_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val delegateIdConverted: String = delegateId
 			val messageConverted: DecryptedMessage = message_fromJs(message)
@@ -1489,7 +1491,7 @@ internal class MessageApiImplJs(
 		patient: PatientJs,
 		options: MessageApi_findMessagesByHcPartyPatient_Options?,
 	): Promise<PaginatedListIteratorJs<DecryptedMessageJs>> {
-		val _options = options ?: js("{}")
+		val _options: MessageApi_findMessagesByHcPartyPatient_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val hcPartyIdConverted: String = hcPartyId
 			val patientConverted: Patient = patient_fromJs(patient)
@@ -1727,7 +1729,7 @@ internal class MessageApiImplJs(
 		to: Double,
 		options: MessageApi_findMessagesByTransportGuidSentDate_Options?,
 	): Promise<PaginatedListJs<DecryptedMessageJs>> {
-		val _options = options ?: js("{}")
+		val _options: MessageApi_findMessagesByTransportGuidSentDate_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val transportGuidConverted: String = transportGuid
 			val fromConverted: Long = numberToLong(from, "from")
@@ -1880,7 +1882,7 @@ internal class MessageApiImplJs(
 		eventFired: (DecryptedMessageJs) -> Promise<Unit>,
 		options: MessageApi_subscribeToEvents_Options?,
 	): Promise<ConnectionJs> {
-		val _options = options ?: js("{}")
+		val _options: MessageApi_subscribeToEvents_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
 				events,

@@ -40,7 +40,7 @@ internal class RecoveryApiImplJs(
 	override
 			fun createRecoveryInfoForAvailableKeyPairs(options: RecoveryApi_createRecoveryInfoForAvailableKeyPairs_Options?):
 			Promise<String> {
-		val _options = options ?: js("{}")
+		val _options: RecoveryApi_createRecoveryInfoForAvailableKeyPairs_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val includeParentsKeysConverted: Boolean = convertingOptionOrDefault(
 				_options.includeParentsKeys,
@@ -96,7 +96,7 @@ internal class RecoveryApiImplJs(
 
 	override fun createExchangeDataRecoveryInfo(delegateId: String,
 			options: RecoveryApi_createExchangeDataRecoveryInfo_Options?): Promise<String> {
-		val _options = options ?: js("{}")
+		val _options: RecoveryApi_createExchangeDataRecoveryInfo_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val delegateIdConverted: String = delegateId
 			val lifetimeSecondsConverted: Int? = convertingOptionOrDefault(

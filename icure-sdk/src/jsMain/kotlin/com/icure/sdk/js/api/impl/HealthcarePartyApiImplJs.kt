@@ -105,7 +105,7 @@ internal class HealthcarePartyApiImplJs(
 
 	override fun findHealthcarePartiesBy(options: HealthcarePartyApi_findHealthcarePartiesBy_Options?):
 			Promise<PaginatedListJs<HealthcarePartyJs>> {
-		val _options = options ?: js("{}")
+		val _options: HealthcarePartyApi_findHealthcarePartiesBy_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val startKeyConverted: String? = convertingOptionOrDefault(
 				_options.startKey,
@@ -149,7 +149,7 @@ internal class HealthcarePartyApiImplJs(
 	override
 			fun findHealthcarePartiesByName(options: HealthcarePartyApi_findHealthcarePartiesByName_Options?):
 			Promise<PaginatedListJs<HealthcarePartyJs>> {
-		val _options = options ?: js("{}")
+		val _options: HealthcarePartyApi_findHealthcarePartiesByName_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val nameConverted: String? = convertingOptionOrDefault(
 				_options.name,
@@ -200,7 +200,7 @@ internal class HealthcarePartyApiImplJs(
 	override fun findHealthcarePartiesBySsinOrNihii(searchValue: String,
 			options: HealthcarePartyApi_findHealthcarePartiesBySsinOrNihii_Options?):
 			Promise<PaginatedListJs<HealthcarePartyJs>> {
-		val _options = options ?: js("{}")
+		val _options: HealthcarePartyApi_findHealthcarePartiesBySsinOrNihii_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val searchValueConverted: String = searchValue
 			val startKeyConverted: String? = convertingOptionOrDefault(
@@ -264,7 +264,8 @@ internal class HealthcarePartyApiImplJs(
 		lastCode: String,
 		options: HealthcarePartyApi_findHealthcarePartiesBySpecialityAndPostCode_Options?,
 	): Promise<PaginatedListJs<HealthcarePartyJs>> {
-		val _options = options ?: js("{}")
+		val _options: HealthcarePartyApi_findHealthcarePartiesBySpecialityAndPostCode_Options = options ?:
+				js("{}")
 		return GlobalScope.promise {
 			val typeConverted: String = type
 			val specConverted: String = spec
@@ -399,7 +400,7 @@ internal class HealthcarePartyApiImplJs(
 	override fun filterHealthPartiesBy(filterChain: FilterChainJs<HealthcarePartyJs>,
 			options: HealthcarePartyApi_filterHealthPartiesBy_Options?):
 			Promise<PaginatedListJs<HealthcarePartyJs>> {
-		val _options = options ?: js("{}")
+		val _options: HealthcarePartyApi_filterHealthPartiesBy_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val startDocumentIdConverted: String? = convertingOptionOrDefault(
 				_options.startDocumentId,
@@ -436,7 +437,7 @@ internal class HealthcarePartyApiImplJs(
 	override fun getHealthcarePartiesInGroup(groupId: String,
 			options: HealthcarePartyApi_getHealthcarePartiesInGroup_Options?):
 			Promise<Array<HealthcarePartyJs>> {
-		val _options = options ?: js("{}")
+		val _options: HealthcarePartyApi_getHealthcarePartiesInGroup_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val groupIdConverted: String = groupId
 			val healthcarePartyIdsConverted: List<String>? = convertingOptionOrDefault(
@@ -502,7 +503,7 @@ internal class HealthcarePartyApiImplJs(
 		hcp: HealthcarePartyJs,
 		options: HealthcarePartyApi_registerPatient_Options?,
 	): Promise<DataOwnerRegistrationSuccessJs> {
-		val _options = options ?: js("{}")
+		val _options: HealthcarePartyApi_registerPatient_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val groupIdConverted: String = groupId
 			val parentHcPartyIdConverted: String? = convertingOptionOrDefault(

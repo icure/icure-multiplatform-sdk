@@ -69,7 +69,7 @@ internal class TimeTableApiImplJs(
 			timeTable: EncryptedTimeTableJs,
 			options: TimeTableFlavouredApi_shareWith_Options?,
 		): Promise<SimpleShareResultJs<EncryptedTimeTableJs>> {
-			val _options = options ?: js("{}")
+			val _options: TimeTableFlavouredApi_shareWith_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val timeTableConverted: EncryptedTimeTable = timeTable_fromJs(timeTable)
@@ -214,7 +214,7 @@ internal class TimeTableApiImplJs(
 			timeTable: TimeTableJs,
 			options: TimeTableFlavouredApi_shareWith_Options?,
 		): Promise<SimpleShareResultJs<TimeTableJs>> {
-			val _options = options ?: js("{}")
+			val _options: TimeTableFlavouredApi_shareWith_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val timeTableConverted: TimeTable = timeTable_fromJs(timeTable)
@@ -365,7 +365,7 @@ internal class TimeTableApiImplJs(
 		patient: PatientJs?,
 		options: TimeTableApi_withEncryptionMetadata_Options?,
 	): Promise<DecryptedTimeTableJs> {
-		val _options = options ?: js("{}")
+		val _options: TimeTableApi_withEncryptionMetadata_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val baseConverted: DecryptedTimeTable? = base?.let { nonNull1 ->
 				timeTable_fromJs(nonNull1)
@@ -499,7 +499,7 @@ internal class TimeTableApiImplJs(
 		timeTable: DecryptedTimeTableJs,
 		options: TimeTableApi_shareWith_Options?,
 	): Promise<SimpleShareResultJs<DecryptedTimeTableJs>> {
-		val _options = options ?: js("{}")
+		val _options: TimeTableApi_shareWith_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val delegateIdConverted: String = delegateId
 			val timeTableConverted: DecryptedTimeTable = timeTable_fromJs(timeTable)

@@ -81,7 +81,7 @@ internal class AccessLogApiImplJs(
 			accessLog: EncryptedAccessLogJs,
 			options: AccessLogFlavouredApi_shareWith_Options?,
 		): Promise<SimpleShareResultJs<EncryptedAccessLogJs>> {
-			val _options = options ?: js("{}")
+			val _options: AccessLogFlavouredApi_shareWith_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val accessLogConverted: EncryptedAccessLog = accessLog_fromJs(accessLog)
@@ -171,7 +171,7 @@ internal class AccessLogApiImplJs(
 			patient: PatientJs,
 			options: AccessLogFlavouredApi_findAccessLogsByHcPartyPatient_Options?,
 		): Promise<PaginatedListIteratorJs<EncryptedAccessLogJs>> {
-			val _options = options ?: js("{}")
+			val _options: AccessLogFlavouredApi_findAccessLogsByHcPartyPatient_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val hcPartyIdConverted: String = hcPartyId
 				val patientConverted: Patient = patient_fromJs(patient)
@@ -276,7 +276,7 @@ internal class AccessLogApiImplJs(
 		override fun findAccessLogsByUserAfterDate(userId: String,
 				options: AccessLogFlavouredApi_findAccessLogsByUserAfterDate_Options?):
 				Promise<PaginatedListJs<EncryptedAccessLogJs>> {
-			val _options = options ?: js("{}")
+			val _options: AccessLogFlavouredApi_findAccessLogsByUserAfterDate_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val userIdConverted: String = userId
 				val accessTypeConverted: String? = convertingOptionOrDefault(
@@ -336,7 +336,7 @@ internal class AccessLogApiImplJs(
 		override fun findAccessLogsInGroup(groupId: String,
 				options: AccessLogFlavouredApi_findAccessLogsInGroup_Options?):
 				Promise<PaginatedListJs<EncryptedAccessLogJs>> {
-			val _options = options ?: js("{}")
+			val _options: AccessLogFlavouredApi_findAccessLogsInGroup_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val groupIdConverted: String = groupId
 				val fromEpochConverted: Long? = convertingOptionOrDefault(
@@ -394,7 +394,7 @@ internal class AccessLogApiImplJs(
 			accessLog: AccessLogJs,
 			options: AccessLogFlavouredApi_shareWith_Options?,
 		): Promise<SimpleShareResultJs<AccessLogJs>> {
-			val _options = options ?: js("{}")
+			val _options: AccessLogFlavouredApi_shareWith_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val accessLogConverted: AccessLog = accessLog_fromJs(accessLog)
@@ -484,7 +484,7 @@ internal class AccessLogApiImplJs(
 			patient: PatientJs,
 			options: AccessLogFlavouredApi_findAccessLogsByHcPartyPatient_Options?,
 		): Promise<PaginatedListIteratorJs<AccessLogJs>> {
-			val _options = options ?: js("{}")
+			val _options: AccessLogFlavouredApi_findAccessLogsByHcPartyPatient_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val hcPartyIdConverted: String = hcPartyId
 				val patientConverted: Patient = patient_fromJs(patient)
@@ -588,7 +588,7 @@ internal class AccessLogApiImplJs(
 		override fun findAccessLogsByUserAfterDate(userId: String,
 				options: AccessLogFlavouredApi_findAccessLogsByUserAfterDate_Options?):
 				Promise<PaginatedListJs<AccessLogJs>> {
-			val _options = options ?: js("{}")
+			val _options: AccessLogFlavouredApi_findAccessLogsByUserAfterDate_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val userIdConverted: String = userId
 				val accessTypeConverted: String? = convertingOptionOrDefault(
@@ -648,7 +648,7 @@ internal class AccessLogApiImplJs(
 		override fun findAccessLogsInGroup(groupId: String,
 				options: AccessLogFlavouredApi_findAccessLogsInGroup_Options?):
 				Promise<PaginatedListJs<AccessLogJs>> {
-			val _options = options ?: js("{}")
+			val _options: AccessLogFlavouredApi_findAccessLogsInGroup_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val groupIdConverted: String = groupId
 				val fromEpochConverted: Long? = convertingOptionOrDefault(
@@ -713,7 +713,7 @@ internal class AccessLogApiImplJs(
 		patient: PatientJs,
 		options: AccessLogApi_withEncryptionMetadata_Options?,
 	): Promise<DecryptedAccessLogJs> {
-		val _options = options ?: js("{}")
+		val _options: AccessLogApi_withEncryptionMetadata_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val baseConverted: DecryptedAccessLog? = base?.let { nonNull1 ->
 				accessLog_fromJs(nonNull1)
@@ -845,7 +845,7 @@ internal class AccessLogApiImplJs(
 		accessLog: DecryptedAccessLogJs,
 		options: AccessLogApi_shareWith_Options?,
 	): Promise<SimpleShareResultJs<DecryptedAccessLogJs>> {
-		val _options = options ?: js("{}")
+		val _options: AccessLogApi_shareWith_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val delegateIdConverted: String = delegateId
 			val accessLogConverted: DecryptedAccessLog = accessLog_fromJs(accessLog)
@@ -935,7 +935,7 @@ internal class AccessLogApiImplJs(
 		patient: PatientJs,
 		options: AccessLogApi_findAccessLogsByHcPartyPatient_Options?,
 	): Promise<PaginatedListIteratorJs<DecryptedAccessLogJs>> {
-		val _options = options ?: js("{}")
+		val _options: AccessLogApi_findAccessLogsByHcPartyPatient_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val hcPartyIdConverted: String = hcPartyId
 			val patientConverted: Patient = patient_fromJs(patient)
@@ -1040,7 +1040,7 @@ internal class AccessLogApiImplJs(
 	override fun findAccessLogsByUserAfterDate(userId: String,
 			options: AccessLogApi_findAccessLogsByUserAfterDate_Options?):
 			Promise<PaginatedListJs<DecryptedAccessLogJs>> {
-		val _options = options ?: js("{}")
+		val _options: AccessLogApi_findAccessLogsByUserAfterDate_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val userIdConverted: String = userId
 			val accessTypeConverted: String? = convertingOptionOrDefault(
@@ -1100,7 +1100,7 @@ internal class AccessLogApiImplJs(
 	override fun findAccessLogsInGroup(groupId: String,
 			options: AccessLogApi_findAccessLogsInGroup_Options?):
 			Promise<PaginatedListJs<DecryptedAccessLogJs>> {
-		val _options = options ?: js("{}")
+		val _options: AccessLogApi_findAccessLogsInGroup_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val groupIdConverted: String = groupId
 			val fromEpochConverted: Long? = convertingOptionOrDefault(

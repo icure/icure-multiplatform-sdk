@@ -76,7 +76,7 @@ internal class InsuranceApiImplJs(
 
 	override fun getAllInsurances(options: InsuranceApi_getAllInsurances_Options?):
 			Promise<PaginatedListJs<InsuranceJs>> {
-		val _options = options ?: js("{}")
+		val _options: InsuranceApi_getAllInsurances_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val startDocumentIdConverted: String? = convertingOptionOrDefault(
 				_options.startDocumentId,

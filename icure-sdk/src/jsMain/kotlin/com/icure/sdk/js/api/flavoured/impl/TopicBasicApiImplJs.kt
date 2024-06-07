@@ -138,7 +138,7 @@ internal class TopicBasicApiImplJs(
 
 	override fun filterTopicsBy(filterChain: FilterChainJs<TopicJs>,
 			options: TopicBasicApi_filterTopicsBy_Options?): Promise<PaginatedListJs<EncryptedTopicJs>> {
-		val _options = options ?: js("{}")
+		val _options: TopicBasicApi_filterTopicsBy_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val startDocumentIdConverted: String? = convertingOptionOrDefault(
 				_options.startDocumentId,
@@ -205,7 +205,7 @@ internal class TopicBasicApiImplJs(
 		eventFired: (EncryptedTopicJs) -> Promise<Unit>,
 		options: TopicBasicApi_subscribeToEvents_Options?,
 	): Promise<ConnectionJs> {
-		val _options = options ?: js("{}")
+		val _options: TopicBasicApi_subscribeToEvents_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
 				events,

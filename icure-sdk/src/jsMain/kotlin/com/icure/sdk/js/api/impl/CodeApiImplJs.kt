@@ -53,7 +53,7 @@ internal class CodeApiImplJs(
 		label: String,
 		options: CodeApi_findCodesByLabel_Options?,
 	): Promise<PaginatedListJs<CodeJs>> {
-		val _options = options ?: js("{}")
+		val _options: CodeApi_findCodesByLabel_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val regionConverted: String? = region
 			val typesConverted: String = types
@@ -104,7 +104,7 @@ internal class CodeApiImplJs(
 
 	override fun findCodesByType(region: String, options: CodeApi_findCodesByType_Options?):
 			Promise<PaginatedListJs<CodeJs>> {
-		val _options = options ?: js("{}")
+		val _options: CodeApi_findCodesByType_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val regionConverted: String = region
 			val typeConverted: String? = convertingOptionOrDefault(
@@ -163,7 +163,7 @@ internal class CodeApiImplJs(
 
 	override fun findCodesByLink(linkType: String, options: CodeApi_findCodesByLink_Options?):
 			Promise<PaginatedListJs<CodeJs>> {
-		val _options = options ?: js("{}")
+		val _options: CodeApi_findCodesByLink_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val linkTypeConverted: String = linkType
 			val linkedIdConverted: String? = convertingOptionOrDefault(
@@ -208,7 +208,7 @@ internal class CodeApiImplJs(
 
 	override fun listCodesByRegionTypeCodeVersion(region: String,
 			options: CodeApi_listCodesByRegionTypeCodeVersion_Options?): Promise<Array<CodeJs>> {
-		val _options = options ?: js("{}")
+		val _options: CodeApi_listCodesByRegionTypeCodeVersion_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val regionConverted: String = region
 			val typeConverted: String? = convertingOptionOrDefault(
@@ -245,7 +245,7 @@ internal class CodeApiImplJs(
 	}
 
 	override fun listCodeTypesBy(options: CodeApi_listCodeTypesBy_Options?): Promise<Array<String>> {
-		val _options = options ?: js("{}")
+		val _options: CodeApi_listCodeTypesBy_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val regionConverted: String? = convertingOptionOrDefault(
 				_options.region,
@@ -273,7 +273,7 @@ internal class CodeApiImplJs(
 	}
 
 	override fun listTagTypesBy(options: CodeApi_listTagTypesBy_Options?): Promise<Array<String>> {
-		val _options = options ?: js("{}")
+		val _options: CodeApi_listTagTypesBy_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val regionConverted: String? = convertingOptionOrDefault(
 				_options.region,
@@ -434,7 +434,7 @@ internal class CodeApiImplJs(
 
 	override fun filterCodesBy(filterChain: FilterChainJs<CodeJs>,
 			options: CodeApi_filterCodesBy_Options?): Promise<PaginatedListJs<CodeJs>> {
-		val _options = options ?: js("{}")
+		val _options: CodeApi_filterCodesBy_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val startKeyConverted: JsonElement? = convertingOptionOrDefault(
 				_options.startKey,

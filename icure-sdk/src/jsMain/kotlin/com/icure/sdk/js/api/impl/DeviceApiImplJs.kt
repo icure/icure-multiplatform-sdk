@@ -126,7 +126,7 @@ internal class DeviceApiImplJs(
 
 	override fun filterDevicesBy(filterChain: FilterChainJs<DeviceJs>,
 			options: DeviceApi_filterDevicesBy_Options?): Promise<PaginatedListJs<DeviceJs>> {
-		val _options = options ?: js("{}")
+		val _options: DeviceApi_filterDevicesBy_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val startDocumentIdConverted: String? = convertingOptionOrDefault(
 				_options.startDocumentId,
@@ -209,7 +209,7 @@ internal class DeviceApiImplJs(
 
 	override fun getDevicesInGroup(groupId: String, options: DeviceApi_getDevicesInGroup_Options?):
 			Promise<Array<DeviceJs>> {
-		val _options = options ?: js("{}")
+		val _options: DeviceApi_getDevicesInGroup_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val groupIdConverted: String = groupId
 			val deviceIdsConverted: List<String>? = convertingOptionOrDefault(

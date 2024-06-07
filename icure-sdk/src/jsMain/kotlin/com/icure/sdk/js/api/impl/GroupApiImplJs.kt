@@ -103,7 +103,7 @@ internal class GroupApiImplJs(
 		initialisationData: DatabaseInitialisationJs,
 		options: GroupApi_createGroup_Options?,
 	): Promise<GroupJs> {
-		val _options = options ?: js("{}")
+		val _options: GroupApi_createGroup_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val idConverted: String = id
 			val nameConverted: String = name
@@ -159,7 +159,7 @@ internal class GroupApiImplJs(
 
 	override fun registerNewGroupAdministrator(registrationInformation: RegistrationInformationJs,
 			options: GroupApi_registerNewGroupAdministrator_Options?): Promise<RegistrationSuccessJs> {
-		val _options = options ?: js("{}")
+		val _options: GroupApi_registerNewGroupAdministrator_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val typeConverted: GroupType? = convertingOptionOrDefault(
 				_options.type,
@@ -201,7 +201,7 @@ internal class GroupApiImplJs(
 
 	override fun findGroups(id: String, options: GroupApi_findGroups_Options?):
 			Promise<PaginatedListJs<GroupJs>> {
-		val _options = options ?: js("{}")
+		val _options: GroupApi_findGroups_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val idConverted: String = id
 			val startDocumentIdConverted: String? = convertingOptionOrDefault(
@@ -235,7 +235,7 @@ internal class GroupApiImplJs(
 		searchString: String,
 		options: GroupApi_findGroupsWithContent_Options?,
 	): Promise<PaginatedListJs<GroupJs>> {
-		val _options = options ?: js("{}")
+		val _options: GroupApi_findGroupsWithContent_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val idConverted: String = id
 			val searchStringConverted: String = searchString
@@ -296,7 +296,7 @@ internal class GroupApiImplJs(
 		duration: Double?,
 		options: GroupApi_getOperationToken_Options?,
 	): Promise<String> {
-		val _options = options ?: js("{}")
+		val _options: GroupApi_getOperationToken_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val operationConverted: Operation = Operation.valueOf(operation)
 			val durationConverted: Long? = numberToLong(duration, "duration")
@@ -428,7 +428,7 @@ internal class GroupApiImplJs(
 		dryRun: Boolean?,
 		options: GroupApi_initDesignDocs_Options?,
 	): Promise<Array<DesignDocumentJs>> {
-		val _options = options ?: js("{}")
+		val _options: GroupApi_initDesignDocs_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val idConverted: String = id
 			val clazzConverted: String? = convertingOptionOrDefault(
@@ -480,7 +480,7 @@ internal class GroupApiImplJs(
 		databases: Array<String>,
 		options: GroupApi_resetStorage_Options?,
 	): Promise<Unit> {
-		val _options = options ?: js("{}")
+		val _options: GroupApi_resetStorage_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val idConverted: String = id
 			val qConverted: Int? = convertingOptionOrDefault(

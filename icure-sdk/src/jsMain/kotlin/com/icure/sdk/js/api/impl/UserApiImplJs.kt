@@ -68,7 +68,7 @@ internal class UserApiImplJs(
 	}
 
 	override fun listUsersBy(options: UserApi_listUsersBy_Options?): Promise<PaginatedListJs<UserJs>> {
-		val _options = options ?: js("{}")
+		val _options: UserApi_listUsersBy_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val startKeyConverted: String? = convertingOptionOrDefault(
 				_options.startKey,
@@ -214,7 +214,7 @@ internal class UserApiImplJs(
 		key: String,
 		options: UserApi_getToken_Options?,
 	): Promise<String> {
-		val _options = options ?: js("{}")
+		val _options: UserApi_getToken_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val userIdConverted: String = userId
 			val keyConverted: String = key
@@ -242,7 +242,7 @@ internal class UserApiImplJs(
 
 	override fun filterUsersBy(filterChain: FilterChainJs<UserJs>,
 			options: UserApi_filterUsersBy_Options?): Promise<PaginatedListJs<UserJs>> {
-		val _options = options ?: js("{}")
+		val _options: UserApi_filterUsersBy_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val startDocumentIdConverted: String? = convertingOptionOrDefault(
 				_options.startDocumentId,
@@ -308,7 +308,7 @@ internal class UserApiImplJs(
 
 	override fun listUsersInGroup(groupId: String, options: UserApi_listUsersInGroup_Options?):
 			Promise<PaginatedListJs<UserJs>> {
-		val _options = options ?: js("{}")
+		val _options: UserApi_listUsersInGroup_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val groupIdConverted: String = groupId
 			val startKeyConverted: String? = convertingOptionOrDefault(
@@ -429,7 +429,7 @@ internal class UserApiImplJs(
 		key: String,
 		options: UserApi_getTokenInGroup_Options?,
 	): Promise<String> {
-		val _options = options ?: js("{}")
+		val _options: UserApi_getTokenInGroup_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val groupIdConverted: String = groupId
 			val userIdConverted: String = userId
@@ -462,7 +462,7 @@ internal class UserApiImplJs(
 		key: String,
 		options: UserApi_getTokenInAllGroups_Options?,
 	): Promise<Array<TokenWithGroupJs>> {
-		val _options = options ?: js("{}")
+		val _options: UserApi_getTokenInAllGroups_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val userIdentifierConverted: String = userIdentifier
 			val keyConverted: String = key
@@ -498,7 +498,7 @@ internal class UserApiImplJs(
 		filterChain: FilterChainJs<UserJs>,
 		options: UserApi_filterUsersInGroupBy_Options?,
 	): Promise<PaginatedListJs<UserJs>> {
-		val _options = options ?: js("{}")
+		val _options: UserApi_filterUsersInGroupBy_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val groupIdConverted: String = groupId
 			val startDocumentIdConverted: String? = convertingOptionOrDefault(

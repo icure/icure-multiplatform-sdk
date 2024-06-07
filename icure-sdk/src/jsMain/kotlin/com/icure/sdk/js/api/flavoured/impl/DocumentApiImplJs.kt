@@ -81,7 +81,7 @@ internal class DocumentApiImplJs(
 			document: EncryptedDocumentJs,
 			options: DocumentFlavouredApi_shareWith_Options?,
 		): Promise<SimpleShareResultJs<EncryptedDocumentJs>> {
-			val _options = options ?: js("{}")
+			val _options: DocumentFlavouredApi_shareWith_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val documentConverted: EncryptedDocument = document_fromJs(document)
@@ -171,7 +171,7 @@ internal class DocumentApiImplJs(
 			patient: PatientJs,
 			options: DocumentFlavouredApi_findDocumentsByHcPartyPatient_Options?,
 		): Promise<PaginatedListIteratorJs<EncryptedDocumentJs>> {
-			val _options = options ?: js("{}")
+			val _options: DocumentFlavouredApi_findDocumentsByHcPartyPatient_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val hcPartyIdConverted: String = hcPartyId
 				val patientConverted: Patient = patient_fromJs(patient)
@@ -430,7 +430,7 @@ internal class DocumentApiImplJs(
 			document: DocumentJs,
 			options: DocumentFlavouredApi_shareWith_Options?,
 		): Promise<SimpleShareResultJs<DocumentJs>> {
-			val _options = options ?: js("{}")
+			val _options: DocumentFlavouredApi_shareWith_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val documentConverted: Document = document_fromJs(document)
@@ -519,7 +519,7 @@ internal class DocumentApiImplJs(
 			patient: PatientJs,
 			options: DocumentFlavouredApi_findDocumentsByHcPartyPatient_Options?,
 		): Promise<PaginatedListIteratorJs<DocumentJs>> {
-			val _options = options ?: js("{}")
+			val _options: DocumentFlavouredApi_findDocumentsByHcPartyPatient_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val hcPartyIdConverted: String = hcPartyId
 				val patientConverted: Patient = patient_fromJs(patient)
@@ -784,7 +784,7 @@ internal class DocumentApiImplJs(
 		message: MessageJs?,
 		options: DocumentApi_withEncryptionMetadata_Options?,
 	): Promise<DecryptedDocumentJs> {
-		val _options = options ?: js("{}")
+		val _options: DocumentApi_withEncryptionMetadata_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val baseConverted: DecryptedDocument? = base?.let { nonNull1 ->
 				document_fromJs(nonNull1)
@@ -1117,7 +1117,7 @@ internal class DocumentApiImplJs(
 		document: DecryptedDocumentJs,
 		options: DocumentApi_shareWith_Options?,
 	): Promise<SimpleShareResultJs<DecryptedDocumentJs>> {
-		val _options = options ?: js("{}")
+		val _options: DocumentApi_shareWith_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val delegateIdConverted: String = delegateId
 			val documentConverted: DecryptedDocument = document_fromJs(document)
@@ -1207,7 +1207,7 @@ internal class DocumentApiImplJs(
 		patient: PatientJs,
 		options: DocumentApi_findDocumentsByHcPartyPatient_Options?,
 	): Promise<PaginatedListIteratorJs<DecryptedDocumentJs>> {
-		val _options = options ?: js("{}")
+		val _options: DocumentApi_findDocumentsByHcPartyPatient_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val hcPartyIdConverted: String = hcPartyId
 			val patientConverted: Patient = patient_fromJs(patient)

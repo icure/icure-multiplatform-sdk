@@ -330,7 +330,8 @@ internal class ContactBasicApiImplJs(
 		secretPatientKeys: Array<String>,
 		options: ContactBasicApi_listContactsByHCPartyAndPatientSecretFKeys_Options?,
 	): Promise<Array<EncryptedContactJs>> {
-		val _options = options ?: js("{}")
+		val _options: ContactBasicApi_listContactsByHCPartyAndPatientSecretFKeys_Options = options ?:
+				js("{}")
 		return GlobalScope.promise {
 			val hcPartyIdConverted: String = hcPartyId
 			val secretPatientKeysConverted: List<String> = arrayToList(
@@ -475,7 +476,7 @@ internal class ContactBasicApiImplJs(
 		hcPartyId: String,
 		options: ContactBasicApi_findContactsByOpeningDate_Options?,
 	): Promise<PaginatedListJs<EncryptedContactJs>> {
-		val _options = options ?: js("{}")
+		val _options: ContactBasicApi_findContactsByOpeningDate_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val startDateConverted: Long = numberToLong(startDate, "startDate")
 			val endDateConverted: Long = numberToLong(endDate, "endDate")
@@ -547,7 +548,7 @@ internal class ContactBasicApiImplJs(
 		eventFired: (EncryptedServiceJs) -> Promise<Unit>,
 		options: ContactBasicApi_subscribeToServiceEvents_Options?,
 	): Promise<ConnectionJs> {
-		val _options = options ?: js("{}")
+		val _options: ContactBasicApi_subscribeToServiceEvents_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
 				events,
@@ -619,7 +620,7 @@ internal class ContactBasicApiImplJs(
 		eventFired: (EncryptedContactJs) -> Promise<Unit>,
 		options: ContactBasicApi_subscribeToEvents_Options?,
 	): Promise<ConnectionJs> {
-		val _options = options ?: js("{}")
+		val _options: ContactBasicApi_subscribeToEvents_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
 				events,

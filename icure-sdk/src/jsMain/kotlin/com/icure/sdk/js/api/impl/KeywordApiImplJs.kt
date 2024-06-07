@@ -50,7 +50,7 @@ internal class KeywordApiImplJs(
 
 	override fun getKeywords(options: KeywordApi_getKeywords_Options?):
 			Promise<PaginatedListJs<KeywordJs>> {
-		val _options = options ?: js("{}")
+		val _options: KeywordApi_getKeywords_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val startDocumentIdConverted: String? = convertingOptionOrDefault(
 				_options.startDocumentId,

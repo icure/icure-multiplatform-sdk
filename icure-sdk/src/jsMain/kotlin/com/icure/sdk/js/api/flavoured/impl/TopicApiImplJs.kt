@@ -89,7 +89,7 @@ internal class TopicApiImplJs(
 			topic: EncryptedTopicJs,
 			options: TopicFlavouredApi_shareWith_Options?,
 		): Promise<SimpleShareResultJs<EncryptedTopicJs>> {
-			val _options = options ?: js("{}")
+			val _options: TopicFlavouredApi_shareWith_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val topicConverted: EncryptedTopic = topic_fromJs(topic)
@@ -214,7 +214,7 @@ internal class TopicApiImplJs(
 		override fun filterTopicsBy(filterChain: FilterChainJs<TopicJs>,
 				options: TopicFlavouredApi_filterTopicsBy_Options?):
 				Promise<PaginatedListJs<EncryptedTopicJs>> {
-			val _options = options ?: js("{}")
+			val _options: TopicFlavouredApi_filterTopicsBy_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val startDocumentIdConverted: String? = convertingOptionOrDefault(
 					_options.startDocumentId,
@@ -281,7 +281,7 @@ internal class TopicApiImplJs(
 			eventFired: (EncryptedTopicJs) -> Promise<Unit>,
 			options: TopicFlavouredApi_subscribeToEvents_Options?,
 		): Promise<ConnectionJs> {
-			val _options = options ?: js("{}")
+			val _options: TopicFlavouredApi_subscribeToEvents_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
 					events,
@@ -354,7 +354,7 @@ internal class TopicApiImplJs(
 			topic: TopicJs,
 			options: TopicFlavouredApi_shareWith_Options?,
 		): Promise<SimpleShareResultJs<TopicJs>> {
-			val _options = options ?: js("{}")
+			val _options: TopicFlavouredApi_shareWith_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val topicConverted: Topic = topic_fromJs(topic)
@@ -474,7 +474,7 @@ internal class TopicApiImplJs(
 
 		override fun filterTopicsBy(filterChain: FilterChainJs<TopicJs>,
 				options: TopicFlavouredApi_filterTopicsBy_Options?): Promise<PaginatedListJs<TopicJs>> {
-			val _options = options ?: js("{}")
+			val _options: TopicFlavouredApi_filterTopicsBy_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val startDocumentIdConverted: String? = convertingOptionOrDefault(
 					_options.startDocumentId,
@@ -541,7 +541,7 @@ internal class TopicApiImplJs(
 			eventFired: (TopicJs) -> Promise<Unit>,
 			options: TopicFlavouredApi_subscribeToEvents_Options?,
 		): Promise<ConnectionJs> {
-			val _options = options ?: js("{}")
+			val _options: TopicFlavouredApi_subscribeToEvents_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
 					events,
@@ -622,7 +622,7 @@ internal class TopicApiImplJs(
 		patient: PatientJs?,
 		options: TopicApi_withEncryptionMetadata_Options?,
 	): Promise<DecryptedTopicJs> {
-		val _options = options ?: js("{}")
+		val _options: TopicApi_withEncryptionMetadata_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val baseConverted: DecryptedTopic? = base?.let { nonNull1 ->
 				topic_fromJs(nonNull1)
@@ -773,7 +773,7 @@ internal class TopicApiImplJs(
 		topic: DecryptedTopicJs,
 		options: TopicApi_shareWith_Options?,
 	): Promise<SimpleShareResultJs<DecryptedTopicJs>> {
-		val _options = options ?: js("{}")
+		val _options: TopicApi_shareWith_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val delegateIdConverted: String = delegateId
 			val topicConverted: DecryptedTopic = topic_fromJs(topic)
@@ -897,7 +897,7 @@ internal class TopicApiImplJs(
 
 	override fun filterTopicsBy(filterChain: FilterChainJs<TopicJs>,
 			options: TopicApi_filterTopicsBy_Options?): Promise<PaginatedListJs<DecryptedTopicJs>> {
-		val _options = options ?: js("{}")
+		val _options: TopicApi_filterTopicsBy_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val startDocumentIdConverted: String? = convertingOptionOrDefault(
 				_options.startDocumentId,
@@ -964,7 +964,7 @@ internal class TopicApiImplJs(
 		eventFired: (DecryptedTopicJs) -> Promise<Unit>,
 		options: TopicApi_subscribeToEvents_Options?,
 	): Promise<ConnectionJs> {
-		val _options = options ?: js("{}")
+		val _options: TopicApi_subscribeToEvents_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
 				events,

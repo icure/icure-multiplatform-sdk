@@ -95,7 +95,7 @@ internal class HealthcareElementApiImplJs(
 			healthcareElement: EncryptedHealthElementJs,
 			options: HealthcareElementFlavouredApi_shareWith_Options?,
 		): Promise<SimpleShareResultJs<EncryptedHealthElementJs>> {
-			val _options = options ?: js("{}")
+			val _options: HealthcareElementFlavouredApi_shareWith_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val healthcareElementConverted: EncryptedHealthElement = healthElement_fromJs(healthcareElement)
@@ -185,7 +185,8 @@ internal class HealthcareElementApiImplJs(
 			patient: PatientJs,
 			options: HealthcareElementFlavouredApi_findHealthcareElementsByHcPartyPatient_Options?,
 		): Promise<PaginatedListIteratorJs<EncryptedHealthElementJs>> {
-			val _options = options ?: js("{}")
+			val _options: HealthcareElementFlavouredApi_findHealthcareElementsByHcPartyPatient_Options =
+					options ?: js("{}")
 			return GlobalScope.promise {
 				val hcPartyIdConverted: String = hcPartyId
 				val patientConverted: Patient = patient_fromJs(patient)
@@ -336,7 +337,7 @@ internal class HealthcareElementApiImplJs(
 			eventFired: (EncryptedHealthElementJs) -> Promise<Unit>,
 			options: HealthcareElementFlavouredApi_subscribeToEvents_Options?,
 		): Promise<ConnectionJs> {
-			val _options = options ?: js("{}")
+			val _options: HealthcareElementFlavouredApi_subscribeToEvents_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
 					events,
@@ -410,7 +411,7 @@ internal class HealthcareElementApiImplJs(
 			healthcareElement: HealthElementJs,
 			options: HealthcareElementFlavouredApi_shareWith_Options?,
 		): Promise<SimpleShareResultJs<HealthElementJs>> {
-			val _options = options ?: js("{}")
+			val _options: HealthcareElementFlavouredApi_shareWith_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val healthcareElementConverted: HealthElement = healthElement_fromJs(healthcareElement)
@@ -500,7 +501,8 @@ internal class HealthcareElementApiImplJs(
 			patient: PatientJs,
 			options: HealthcareElementFlavouredApi_findHealthcareElementsByHcPartyPatient_Options?,
 		): Promise<PaginatedListIteratorJs<HealthElementJs>> {
-			val _options = options ?: js("{}")
+			val _options: HealthcareElementFlavouredApi_findHealthcareElementsByHcPartyPatient_Options =
+					options ?: js("{}")
 			return GlobalScope.promise {
 				val hcPartyIdConverted: String = hcPartyId
 				val patientConverted: Patient = patient_fromJs(patient)
@@ -651,7 +653,7 @@ internal class HealthcareElementApiImplJs(
 			eventFired: (HealthElementJs) -> Promise<Unit>,
 			options: HealthcareElementFlavouredApi_subscribeToEvents_Options?,
 		): Promise<ConnectionJs> {
-			val _options = options ?: js("{}")
+			val _options: HealthcareElementFlavouredApi_subscribeToEvents_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
 					events,
@@ -752,7 +754,7 @@ internal class HealthcareElementApiImplJs(
 		patient: PatientJs,
 		options: HealthcareElementApi_withEncryptionMetadata_Options?,
 	): Promise<DecryptedHealthElementJs> {
-		val _options = options ?: js("{}")
+		val _options: HealthcareElementApi_withEncryptionMetadata_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val baseConverted: DecryptedHealthElement? = base?.let { nonNull1 ->
 				healthElement_fromJs(nonNull1)
@@ -928,7 +930,7 @@ internal class HealthcareElementApiImplJs(
 		healthcareElement: DecryptedHealthElementJs,
 		options: HealthcareElementApi_shareWith_Options?,
 	): Promise<SimpleShareResultJs<DecryptedHealthElementJs>> {
-		val _options = options ?: js("{}")
+		val _options: HealthcareElementApi_shareWith_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val delegateIdConverted: String = delegateId
 			val healthcareElementConverted: DecryptedHealthElement = healthElement_fromJs(healthcareElement)
@@ -1018,7 +1020,8 @@ internal class HealthcareElementApiImplJs(
 		patient: PatientJs,
 		options: HealthcareElementApi_findHealthcareElementsByHcPartyPatient_Options?,
 	): Promise<PaginatedListIteratorJs<DecryptedHealthElementJs>> {
-		val _options = options ?: js("{}")
+		val _options: HealthcareElementApi_findHealthcareElementsByHcPartyPatient_Options = options ?:
+				js("{}")
 		return GlobalScope.promise {
 			val hcPartyIdConverted: String = hcPartyId
 			val patientConverted: Patient = patient_fromJs(patient)
@@ -1169,7 +1172,7 @@ internal class HealthcareElementApiImplJs(
 		eventFired: (DecryptedHealthElementJs) -> Promise<Unit>,
 		options: HealthcareElementApi_subscribeToEvents_Options?,
 	): Promise<ConnectionJs> {
-		val _options = options ?: js("{}")
+		val _options: HealthcareElementApi_subscribeToEvents_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
 				events,

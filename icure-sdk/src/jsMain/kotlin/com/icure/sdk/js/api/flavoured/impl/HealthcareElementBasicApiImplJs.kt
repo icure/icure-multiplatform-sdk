@@ -237,7 +237,7 @@ internal class HealthcareElementBasicApiImplJs(
 		eventFired: (EncryptedHealthElementJs) -> Promise<Unit>,
 		options: HealthcareElementBasicApi_subscribeToEvents_Options?,
 	): Promise<ConnectionJs> {
-		val _options = options ?: js("{}")
+		val _options: HealthcareElementBasicApi_subscribeToEvents_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
 				events,

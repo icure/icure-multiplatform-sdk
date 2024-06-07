@@ -247,7 +247,7 @@ internal class InvoiceBasicApiImplJs(
 		invoicingCodes: Array<EncryptedInvoicingCodeJs>,
 		options: InvoiceBasicApi_appendCodes_Options?,
 	): Promise<Array<EncryptedInvoiceJs>> {
-		val _options = options ?: js("{}")
+		val _options: InvoiceBasicApi_appendCodes_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val userIdConverted: String = userId
 			val typeConverted: String = type
@@ -330,7 +330,7 @@ internal class InvoiceBasicApiImplJs(
 	override fun findInvoicesByAuthor(hcPartyId: String,
 			options: InvoiceBasicApi_findInvoicesByAuthor_Options?):
 			Promise<PaginatedListJs<EncryptedInvoiceJs>> {
-		val _options = options ?: js("{}")
+		val _options: InvoiceBasicApi_findInvoicesByAuthor_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val hcPartyIdConverted: String = hcPartyId
 			val fromDateConverted: Long? = convertingOptionOrDefault(
@@ -425,7 +425,8 @@ internal class InvoiceBasicApiImplJs(
 		sent: Boolean,
 		options: InvoiceBasicApi_listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate_Options?,
 	): Promise<Array<EncryptedInvoiceJs>> {
-		val _options = options ?: js("{}")
+		val _options: InvoiceBasicApi_listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate_Options =
+				options ?: js("{}")
 		return GlobalScope.promise {
 			val hcPartyIdConverted: String = hcPartyId
 			val sentMediumTypeConverted: MediumType = MediumType.valueOf(sentMediumType)
@@ -640,7 +641,7 @@ internal class InvoiceBasicApiImplJs(
 		hcpIds: Array<String>,
 		options: InvoiceBasicApi_listAllHcpsByStatus_Options?,
 	): Promise<Array<EncryptedInvoiceJs>> {
-		val _options = options ?: js("{}")
+		val _options: InvoiceBasicApi_listAllHcpsByStatus_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val statusConverted: String = status
 			val fromConverted: Long? = convertingOptionOrDefault(

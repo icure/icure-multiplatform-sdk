@@ -69,7 +69,7 @@ internal class ICureApiImplJs(
 
 	override fun updateDesignDoc(entityName: String, options: ICureApi_updateDesignDoc_Options?):
 			Promise<Boolean> {
-		val _options = options ?: js("{}")
+		val _options: ICureApi_updateDesignDoc_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val entityNameConverted: String = entityName
 			val warmupConverted: Boolean? = convertingOptionOrDefault(
@@ -88,7 +88,7 @@ internal class ICureApiImplJs(
 
 	override fun resolvePatientsConflicts(options: ICureApi_resolvePatientsConflicts_Options?):
 			Promise<Array<IdWithRevJs>> {
-		val _options = options ?: js("{}")
+		val _options: ICureApi_resolvePatientsConflicts_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val limitConverted: Int? = convertingOptionOrDefault(
 				_options.limit,
@@ -110,7 +110,7 @@ internal class ICureApiImplJs(
 
 	override fun resolveContactsConflicts(options: ICureApi_resolveContactsConflicts_Options?):
 			Promise<Array<IdWithRevJs>> {
-		val _options = options ?: js("{}")
+		val _options: ICureApi_resolveContactsConflicts_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val limitConverted: Int? = convertingOptionOrDefault(
 				_options.limit,
@@ -132,7 +132,7 @@ internal class ICureApiImplJs(
 
 	override fun resolveFormsConflicts(options: ICureApi_resolveFormsConflicts_Options?):
 			Promise<Array<IdWithRevJs>> {
-		val _options = options ?: js("{}")
+		val _options: ICureApi_resolveFormsConflicts_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val limitConverted: Int? = convertingOptionOrDefault(
 				_options.limit,
@@ -155,7 +155,7 @@ internal class ICureApiImplJs(
 	override
 			fun resolveHealthElementsConflicts(options: ICureApi_resolveHealthElementsConflicts_Options?):
 			Promise<Array<IdWithRevJs>> {
-		val _options = options ?: js("{}")
+		val _options: ICureApi_resolveHealthElementsConflicts_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val limitConverted: Int? = convertingOptionOrDefault(
 				_options.limit,
@@ -177,7 +177,7 @@ internal class ICureApiImplJs(
 
 	override fun resolveInvoicesConflicts(options: ICureApi_resolveInvoicesConflicts_Options?):
 			Promise<Array<IdWithRevJs>> {
-		val _options = options ?: js("{}")
+		val _options: ICureApi_resolveInvoicesConflicts_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val limitConverted: Int? = convertingOptionOrDefault(
 				_options.limit,
@@ -199,7 +199,7 @@ internal class ICureApiImplJs(
 
 	override fun resolveMessagesConflicts(options: ICureApi_resolveMessagesConflicts_Options?):
 			Promise<Array<IdWithRevJs>> {
-		val _options = options ?: js("{}")
+		val _options: ICureApi_resolveMessagesConflicts_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val limitConverted: Int? = convertingOptionOrDefault(
 				_options.limit,
@@ -221,7 +221,7 @@ internal class ICureApiImplJs(
 
 	override fun resolveDocumentsConflicts(options: ICureApi_resolveDocumentsConflicts_Options?):
 			Promise<Array<IdWithRevJs>> {
-		val _options = options ?: js("{}")
+		val _options: ICureApi_resolveDocumentsConflicts_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val idsConverted: String? = convertingOptionOrDefault(
 				_options.ids,

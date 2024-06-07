@@ -83,7 +83,7 @@ internal class MaintenanceTaskApiImplJs(
 			maintenanceTask: EncryptedMaintenanceTaskJs,
 			options: MaintenanceTaskFlavouredApi_shareWith_Options?,
 		): Promise<SimpleShareResultJs<EncryptedMaintenanceTaskJs>> {
-			val _options = options ?: js("{}")
+			val _options: MaintenanceTaskFlavouredApi_shareWith_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val maintenanceTaskConverted: EncryptedMaintenanceTask = maintenanceTask_fromJs(maintenanceTask)
@@ -189,7 +189,7 @@ internal class MaintenanceTaskApiImplJs(
 		override fun filterMaintenanceTasksBy(filterChain: FilterChainJs<MaintenanceTaskJs>,
 				options: MaintenanceTaskFlavouredApi_filterMaintenanceTasksBy_Options?):
 				Promise<PaginatedListJs<EncryptedMaintenanceTaskJs>> {
-			val _options = options ?: js("{}")
+			val _options: MaintenanceTaskFlavouredApi_filterMaintenanceTasksBy_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val startDocumentIdConverted: String? = convertingOptionOrDefault(
 					_options.startDocumentId,
@@ -229,7 +229,7 @@ internal class MaintenanceTaskApiImplJs(
 			eventFired: (EncryptedMaintenanceTaskJs) -> Promise<Unit>,
 			options: MaintenanceTaskFlavouredApi_subscribeToEvents_Options?,
 		): Promise<ConnectionJs> {
-			val _options = options ?: js("{}")
+			val _options: MaintenanceTaskFlavouredApi_subscribeToEvents_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
 					events,
@@ -303,7 +303,7 @@ internal class MaintenanceTaskApiImplJs(
 			maintenanceTask: MaintenanceTaskJs,
 			options: MaintenanceTaskFlavouredApi_shareWith_Options?,
 		): Promise<SimpleShareResultJs<MaintenanceTaskJs>> {
-			val _options = options ?: js("{}")
+			val _options: MaintenanceTaskFlavouredApi_shareWith_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val maintenanceTaskConverted: MaintenanceTask = maintenanceTask_fromJs(maintenanceTask)
@@ -409,7 +409,7 @@ internal class MaintenanceTaskApiImplJs(
 		override fun filterMaintenanceTasksBy(filterChain: FilterChainJs<MaintenanceTaskJs>,
 				options: MaintenanceTaskFlavouredApi_filterMaintenanceTasksBy_Options?):
 				Promise<PaginatedListJs<MaintenanceTaskJs>> {
-			val _options = options ?: js("{}")
+			val _options: MaintenanceTaskFlavouredApi_filterMaintenanceTasksBy_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val startDocumentIdConverted: String? = convertingOptionOrDefault(
 					_options.startDocumentId,
@@ -449,7 +449,7 @@ internal class MaintenanceTaskApiImplJs(
 			eventFired: (MaintenanceTaskJs) -> Promise<Unit>,
 			options: MaintenanceTaskFlavouredApi_subscribeToEvents_Options?,
 		): Promise<ConnectionJs> {
-			val _options = options ?: js("{}")
+			val _options: MaintenanceTaskFlavouredApi_subscribeToEvents_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
 					events,
@@ -528,7 +528,7 @@ internal class MaintenanceTaskApiImplJs(
 	override fun withEncryptionMetadata(maintenanceTask: DecryptedMaintenanceTaskJs?,
 			options: MaintenanceTaskApi_withEncryptionMetadata_Options?):
 			Promise<DecryptedMaintenanceTaskJs> {
-		val _options = options ?: js("{}")
+		val _options: MaintenanceTaskApi_withEncryptionMetadata_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val maintenanceTaskConverted: DecryptedMaintenanceTask? = maintenanceTask?.let { nonNull1 ->
 				maintenanceTask_fromJs(nonNull1)
@@ -653,7 +653,7 @@ internal class MaintenanceTaskApiImplJs(
 		maintenanceTask: DecryptedMaintenanceTaskJs,
 		options: MaintenanceTaskApi_shareWith_Options?,
 	): Promise<SimpleShareResultJs<DecryptedMaintenanceTaskJs>> {
-		val _options = options ?: js("{}")
+		val _options: MaintenanceTaskApi_shareWith_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val delegateIdConverted: String = delegateId
 			val maintenanceTaskConverted: DecryptedMaintenanceTask = maintenanceTask_fromJs(maintenanceTask)
@@ -759,7 +759,7 @@ internal class MaintenanceTaskApiImplJs(
 	override fun filterMaintenanceTasksBy(filterChain: FilterChainJs<MaintenanceTaskJs>,
 			options: MaintenanceTaskApi_filterMaintenanceTasksBy_Options?):
 			Promise<PaginatedListJs<DecryptedMaintenanceTaskJs>> {
-		val _options = options ?: js("{}")
+		val _options: MaintenanceTaskApi_filterMaintenanceTasksBy_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val startDocumentIdConverted: String? = convertingOptionOrDefault(
 				_options.startDocumentId,
@@ -799,7 +799,7 @@ internal class MaintenanceTaskApiImplJs(
 		eventFired: (DecryptedMaintenanceTaskJs) -> Promise<Unit>,
 		options: MaintenanceTaskApi_subscribeToEvents_Options?,
 	): Promise<ConnectionJs> {
-		val _options = options ?: js("{}")
+		val _options: MaintenanceTaskApi_subscribeToEvents_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
 				events,

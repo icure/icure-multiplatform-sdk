@@ -135,7 +135,7 @@ internal class DocumentTemplateApiImplJs(
 	override
 			fun findAllDocumentTemplates(options: DocumentTemplateApi_findAllDocumentTemplates_Options?):
 			Promise<PaginatedListJs<DocumentTemplateJs>> {
-		val _options = options ?: js("{}")
+		val _options: DocumentTemplateApi_findAllDocumentTemplates_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val startKeyConverted: String? = convertingOptionOrDefault(
 				_options.startKey,

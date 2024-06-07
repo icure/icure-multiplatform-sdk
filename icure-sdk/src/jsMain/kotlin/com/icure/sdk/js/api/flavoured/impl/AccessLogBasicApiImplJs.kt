@@ -131,7 +131,7 @@ internal class AccessLogBasicApiImplJs(
 	override fun findAccessLogsByUserAfterDate(userId: String,
 			options: AccessLogBasicApi_findAccessLogsByUserAfterDate_Options?):
 			Promise<PaginatedListJs<EncryptedAccessLogJs>> {
-		val _options = options ?: js("{}")
+		val _options: AccessLogBasicApi_findAccessLogsByUserAfterDate_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val userIdConverted: String = userId
 			val accessTypeConverted: String? = convertingOptionOrDefault(
@@ -191,7 +191,7 @@ internal class AccessLogBasicApiImplJs(
 	override fun findAccessLogsInGroup(groupId: String,
 			options: AccessLogBasicApi_findAccessLogsInGroup_Options?):
 			Promise<PaginatedListJs<EncryptedAccessLogJs>> {
-		val _options = options ?: js("{}")
+		val _options: AccessLogBasicApi_findAccessLogsInGroup_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val groupIdConverted: String = groupId
 			val fromEpochConverted: Long? = convertingOptionOrDefault(

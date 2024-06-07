@@ -38,7 +38,9 @@ internal class IcureMaintenanceTaskApiImplJs(
 	override fun createKeyPairUpdateNotificationsToAllDelegationCounterparts(key: String,
 			options: IcureMaintenanceTaskApi_createKeyPairUpdateNotificationsToAllDelegationCounterparts_Options?):
 			Promise<Unit> {
-		val _options = options ?: js("{}")
+		val _options:
+				IcureMaintenanceTaskApi_createKeyPairUpdateNotificationsToAllDelegationCounterparts_Options =
+				options ?: js("{}")
 		return GlobalScope.promise {
 			val keyConverted: SpkiHexString = spkiHexString_fromJs(key)
 			val requestToOwnerTypesConverted: Set<DataOwnerType>? = convertingOptionOrDefault(

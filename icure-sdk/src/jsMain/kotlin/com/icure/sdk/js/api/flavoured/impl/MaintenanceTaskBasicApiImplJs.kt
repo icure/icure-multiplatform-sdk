@@ -101,7 +101,7 @@ internal class MaintenanceTaskBasicApiImplJs(
 	override fun filterMaintenanceTasksBy(filterChain: FilterChainJs<MaintenanceTaskJs>,
 			options: MaintenanceTaskBasicApi_filterMaintenanceTasksBy_Options?):
 			Promise<PaginatedListJs<EncryptedMaintenanceTaskJs>> {
-		val _options = options ?: js("{}")
+		val _options: MaintenanceTaskBasicApi_filterMaintenanceTasksBy_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val startDocumentIdConverted: String? = convertingOptionOrDefault(
 				_options.startDocumentId,
@@ -141,7 +141,7 @@ internal class MaintenanceTaskBasicApiImplJs(
 		eventFired: (EncryptedMaintenanceTaskJs) -> Promise<Unit>,
 		options: MaintenanceTaskBasicApi_subscribeToEvents_Options?,
 	): Promise<ConnectionJs> {
-		val _options = options ?: js("{}")
+		val _options: MaintenanceTaskBasicApi_subscribeToEvents_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
 				events,

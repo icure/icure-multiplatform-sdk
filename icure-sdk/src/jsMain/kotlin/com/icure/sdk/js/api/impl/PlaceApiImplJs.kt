@@ -76,7 +76,7 @@ internal class PlaceApiImplJs(
 	}
 
 	override fun getPlaces(options: PlaceApi_getPlaces_Options?): Promise<PaginatedListJs<PlaceJs>> {
-		val _options = options ?: js("{}")
+		val _options: PlaceApi_getPlaces_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val startDocumentIdConverted: String? = convertingOptionOrDefault(
 				_options.startDocumentId,

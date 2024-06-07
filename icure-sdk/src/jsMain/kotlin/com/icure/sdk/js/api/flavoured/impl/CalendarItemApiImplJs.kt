@@ -77,7 +77,7 @@ internal class CalendarItemApiImplJs(
 			calendarItem: EncryptedCalendarItemJs,
 			options: CalendarItemFlavouredApi_shareWith_Options?,
 		): Promise<SimpleShareResultJs<EncryptedCalendarItemJs>> {
-			val _options = options ?: js("{}")
+			val _options: CalendarItemFlavouredApi_shareWith_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val calendarItemConverted: EncryptedCalendarItem = calendarItem_fromJs(calendarItem)
@@ -167,7 +167,8 @@ internal class CalendarItemApiImplJs(
 			patient: PatientJs,
 			options: CalendarItemFlavouredApi_findCalendarItemsByHcPartyPatient_Options?,
 		): Promise<PaginatedListIteratorJs<EncryptedCalendarItemJs>> {
-			val _options = options ?: js("{}")
+			val _options: CalendarItemFlavouredApi_findCalendarItemsByHcPartyPatient_Options = options ?:
+					js("{}")
 			return GlobalScope.promise {
 				val hcPartyIdConverted: String = hcPartyId
 				val patientConverted: Patient = patient_fromJs(patient)
@@ -359,7 +360,7 @@ internal class CalendarItemApiImplJs(
 			calendarItem: CalendarItemJs,
 			options: CalendarItemFlavouredApi_shareWith_Options?,
 		): Promise<SimpleShareResultJs<CalendarItemJs>> {
-			val _options = options ?: js("{}")
+			val _options: CalendarItemFlavouredApi_shareWith_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val calendarItemConverted: CalendarItem = calendarItem_fromJs(calendarItem)
@@ -449,7 +450,8 @@ internal class CalendarItemApiImplJs(
 			patient: PatientJs,
 			options: CalendarItemFlavouredApi_findCalendarItemsByHcPartyPatient_Options?,
 		): Promise<PaginatedListIteratorJs<CalendarItemJs>> {
-			val _options = options ?: js("{}")
+			val _options: CalendarItemFlavouredApi_findCalendarItemsByHcPartyPatient_Options = options ?:
+					js("{}")
 			return GlobalScope.promise {
 				val hcPartyIdConverted: String = hcPartyId
 				val patientConverted: Patient = patient_fromJs(patient)
@@ -647,7 +649,7 @@ internal class CalendarItemApiImplJs(
 		patient: PatientJs,
 		options: CalendarItemApi_withEncryptionMetadata_Options?,
 	): Promise<DecryptedCalendarItemJs> {
-		val _options = options ?: js("{}")
+		val _options: CalendarItemApi_withEncryptionMetadata_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val baseConverted: DecryptedCalendarItem? = base?.let { nonNull1 ->
 				calendarItem_fromJs(nonNull1)
@@ -779,7 +781,7 @@ internal class CalendarItemApiImplJs(
 		calendarItem: DecryptedCalendarItemJs,
 		options: CalendarItemApi_shareWith_Options?,
 	): Promise<SimpleShareResultJs<DecryptedCalendarItemJs>> {
-		val _options = options ?: js("{}")
+		val _options: CalendarItemApi_shareWith_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val delegateIdConverted: String = delegateId
 			val calendarItemConverted: DecryptedCalendarItem = calendarItem_fromJs(calendarItem)
@@ -869,7 +871,7 @@ internal class CalendarItemApiImplJs(
 		patient: PatientJs,
 		options: CalendarItemApi_findCalendarItemsByHcPartyPatient_Options?,
 	): Promise<PaginatedListIteratorJs<DecryptedCalendarItemJs>> {
-		val _options = options ?: js("{}")
+		val _options: CalendarItemApi_findCalendarItemsByHcPartyPatient_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val hcPartyIdConverted: String = hcPartyId
 			val patientConverted: Patient = patient_fromJs(patient)

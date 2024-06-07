@@ -78,7 +78,7 @@ internal class TarificationApiImplJs(
 
 	override fun findTarificationsByLabel(options: TarificationApi_findTarificationsByLabel_Options?):
 			Promise<PaginatedListJs<TarificationJs>> {
-		val _options = options ?: js("{}")
+		val _options: TarificationApi_findTarificationsByLabel_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val regionConverted: String? = convertingOptionOrDefault(
 				_options.region,
@@ -142,7 +142,7 @@ internal class TarificationApiImplJs(
 
 	override fun findTarificationsBy(options: TarificationApi_findTarificationsBy_Options?):
 			Promise<PaginatedListJs<TarificationJs>> {
-		val _options = options ?: js("{}")
+		val _options: TarificationApi_findTarificationsBy_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val regionConverted: String? = convertingOptionOrDefault(
 				_options.region,

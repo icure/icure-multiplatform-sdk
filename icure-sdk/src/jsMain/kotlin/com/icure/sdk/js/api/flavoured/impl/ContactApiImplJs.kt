@@ -114,7 +114,7 @@ internal class ContactApiImplJs(
 			contact: EncryptedContactJs,
 			options: ContactFlavouredApi_shareWith_Options?,
 		): Promise<SimpleShareResultJs<EncryptedContactJs>> {
-			val _options = options ?: js("{}")
+			val _options: ContactFlavouredApi_shareWith_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val contactConverted: EncryptedContact = contact_fromJs(contact)
@@ -204,7 +204,7 @@ internal class ContactApiImplJs(
 			patient: PatientJs,
 			options: ContactFlavouredApi_findContactsByHcPartyPatient_Options?,
 		): Promise<PaginatedListIteratorJs<EncryptedContactJs>> {
-			val _options = options ?: js("{}")
+			val _options: ContactFlavouredApi_findContactsByHcPartyPatient_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val hcPartyIdConverted: String = hcPartyId
 				val patientConverted: Patient = patient_fromJs(patient)
@@ -398,7 +398,8 @@ internal class ContactApiImplJs(
 			secretPatientKeys: Array<String>,
 			options: ContactFlavouredApi_listContactsByHCPartyAndPatientSecretFKeys_Options?,
 		): Promise<Array<EncryptedContactJs>> {
-			val _options = options ?: js("{}")
+			val _options: ContactFlavouredApi_listContactsByHCPartyAndPatientSecretFKeys_Options = options ?:
+					js("{}")
 			return GlobalScope.promise {
 				val hcPartyIdConverted: String = hcPartyId
 				val secretPatientKeysConverted: List<String> = arrayToList(
@@ -543,7 +544,7 @@ internal class ContactApiImplJs(
 			hcPartyId: String,
 			options: ContactFlavouredApi_findContactsByOpeningDate_Options?,
 		): Promise<PaginatedListJs<EncryptedContactJs>> {
-			val _options = options ?: js("{}")
+			val _options: ContactFlavouredApi_findContactsByOpeningDate_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val startDateConverted: Long = numberToLong(startDate, "startDate")
 				val endDateConverted: Long = numberToLong(endDate, "endDate")
@@ -615,7 +616,7 @@ internal class ContactApiImplJs(
 			eventFired: (EncryptedServiceJs) -> Promise<Unit>,
 			options: ContactFlavouredApi_subscribeToServiceEvents_Options?,
 		): Promise<ConnectionJs> {
-			val _options = options ?: js("{}")
+			val _options: ContactFlavouredApi_subscribeToServiceEvents_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
 					events,
@@ -687,7 +688,7 @@ internal class ContactApiImplJs(
 			eventFired: (EncryptedContactJs) -> Promise<Unit>,
 			options: ContactFlavouredApi_subscribeToEvents_Options?,
 		): Promise<ConnectionJs> {
-			val _options = options ?: js("{}")
+			val _options: ContactFlavouredApi_subscribeToEvents_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
 					events,
@@ -761,7 +762,7 @@ internal class ContactApiImplJs(
 			contact: ContactJs,
 			options: ContactFlavouredApi_shareWith_Options?,
 		): Promise<SimpleShareResultJs<ContactJs>> {
-			val _options = options ?: js("{}")
+			val _options: ContactFlavouredApi_shareWith_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val contactConverted: Contact = contact_fromJs(contact)
@@ -850,7 +851,7 @@ internal class ContactApiImplJs(
 			patient: PatientJs,
 			options: ContactFlavouredApi_findContactsByHcPartyPatient_Options?,
 		): Promise<PaginatedListIteratorJs<ContactJs>> {
-			val _options = options ?: js("{}")
+			val _options: ContactFlavouredApi_findContactsByHcPartyPatient_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val hcPartyIdConverted: String = hcPartyId
 				val patientConverted: Patient = patient_fromJs(patient)
@@ -1043,7 +1044,8 @@ internal class ContactApiImplJs(
 			secretPatientKeys: Array<String>,
 			options: ContactFlavouredApi_listContactsByHCPartyAndPatientSecretFKeys_Options?,
 		): Promise<Array<ContactJs>> {
-			val _options = options ?: js("{}")
+			val _options: ContactFlavouredApi_listContactsByHCPartyAndPatientSecretFKeys_Options = options ?:
+					js("{}")
 			return GlobalScope.promise {
 				val hcPartyIdConverted: String = hcPartyId
 				val secretPatientKeysConverted: List<String> = arrayToList(
@@ -1188,7 +1190,7 @@ internal class ContactApiImplJs(
 			hcPartyId: String,
 			options: ContactFlavouredApi_findContactsByOpeningDate_Options?,
 		): Promise<PaginatedListJs<ContactJs>> {
-			val _options = options ?: js("{}")
+			val _options: ContactFlavouredApi_findContactsByOpeningDate_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val startDateConverted: Long = numberToLong(startDate, "startDate")
 				val endDateConverted: Long = numberToLong(endDate, "endDate")
@@ -1260,7 +1262,7 @@ internal class ContactApiImplJs(
 			eventFired: (ServiceJs) -> Promise<Unit>,
 			options: ContactFlavouredApi_subscribeToServiceEvents_Options?,
 		): Promise<ConnectionJs> {
-			val _options = options ?: js("{}")
+			val _options: ContactFlavouredApi_subscribeToServiceEvents_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
 					events,
@@ -1332,7 +1334,7 @@ internal class ContactApiImplJs(
 			eventFired: (ContactJs) -> Promise<Unit>,
 			options: ContactFlavouredApi_subscribeToEvents_Options?,
 		): Promise<ConnectionJs> {
-			val _options = options ?: js("{}")
+			val _options: ContactFlavouredApi_subscribeToEvents_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
 					events,
@@ -1433,7 +1435,7 @@ internal class ContactApiImplJs(
 		patient: PatientJs,
 		options: ContactApi_withEncryptionMetadata_Options?,
 	): Promise<DecryptedContactJs> {
-		val _options = options ?: js("{}")
+		val _options: ContactApi_withEncryptionMetadata_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val baseConverted: DecryptedContact? = base?.let { nonNull1 ->
 				contact_fromJs(nonNull1)
@@ -1640,7 +1642,7 @@ internal class ContactApiImplJs(
 		contact: DecryptedContactJs,
 		options: ContactApi_shareWith_Options?,
 	): Promise<SimpleShareResultJs<DecryptedContactJs>> {
-		val _options = options ?: js("{}")
+		val _options: ContactApi_shareWith_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val delegateIdConverted: String = delegateId
 			val contactConverted: DecryptedContact = contact_fromJs(contact)
@@ -1730,7 +1732,7 @@ internal class ContactApiImplJs(
 		patient: PatientJs,
 		options: ContactApi_findContactsByHcPartyPatient_Options?,
 	): Promise<PaginatedListIteratorJs<DecryptedContactJs>> {
-		val _options = options ?: js("{}")
+		val _options: ContactApi_findContactsByHcPartyPatient_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val hcPartyIdConverted: String = hcPartyId
 			val patientConverted: Patient = patient_fromJs(patient)
@@ -1924,7 +1926,7 @@ internal class ContactApiImplJs(
 		secretPatientKeys: Array<String>,
 		options: ContactApi_listContactsByHCPartyAndPatientSecretFKeys_Options?,
 	): Promise<Array<DecryptedContactJs>> {
-		val _options = options ?: js("{}")
+		val _options: ContactApi_listContactsByHCPartyAndPatientSecretFKeys_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val hcPartyIdConverted: String = hcPartyId
 			val secretPatientKeysConverted: List<String> = arrayToList(
@@ -2069,7 +2071,7 @@ internal class ContactApiImplJs(
 		hcPartyId: String,
 		options: ContactApi_findContactsByOpeningDate_Options?,
 	): Promise<PaginatedListJs<DecryptedContactJs>> {
-		val _options = options ?: js("{}")
+		val _options: ContactApi_findContactsByOpeningDate_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val startDateConverted: Long = numberToLong(startDate, "startDate")
 			val endDateConverted: Long = numberToLong(endDate, "endDate")
@@ -2141,7 +2143,7 @@ internal class ContactApiImplJs(
 		eventFired: (DecryptedServiceJs) -> Promise<Unit>,
 		options: ContactApi_subscribeToServiceEvents_Options?,
 	): Promise<ConnectionJs> {
-		val _options = options ?: js("{}")
+		val _options: ContactApi_subscribeToServiceEvents_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
 				events,
@@ -2213,7 +2215,7 @@ internal class ContactApiImplJs(
 		eventFired: (DecryptedContactJs) -> Promise<Unit>,
 		options: ContactApi_subscribeToEvents_Options?,
 	): Promise<ConnectionJs> {
-		val _options = options ?: js("{}")
+		val _options: ContactApi_subscribeToEvents_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
 				events,

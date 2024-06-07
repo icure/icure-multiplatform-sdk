@@ -72,7 +72,7 @@ internal class ClassificationApiImplJs(
 			classification: EncryptedClassificationJs,
 			options: ClassificationFlavouredApi_shareWith_Options?,
 		): Promise<SimpleShareResultJs<EncryptedClassificationJs>> {
-			val _options = options ?: js("{}")
+			val _options: ClassificationFlavouredApi_shareWith_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val classificationConverted: EncryptedClassification = classification_fromJs(classification)
@@ -162,7 +162,8 @@ internal class ClassificationApiImplJs(
 			patient: PatientJs,
 			options: ClassificationFlavouredApi_findClassificationsByHcPartyPatient_Options?,
 		): Promise<PaginatedListIteratorJs<EncryptedClassificationJs>> {
-			val _options = options ?: js("{}")
+			val _options: ClassificationFlavouredApi_findClassificationsByHcPartyPatient_Options = options ?:
+					js("{}")
 			return GlobalScope.promise {
 				val hcPartyIdConverted: String = hcPartyId
 				val patientConverted: Patient = patient_fromJs(patient)
@@ -246,7 +247,7 @@ internal class ClassificationApiImplJs(
 			classification: ClassificationJs,
 			options: ClassificationFlavouredApi_shareWith_Options?,
 		): Promise<SimpleShareResultJs<ClassificationJs>> {
-			val _options = options ?: js("{}")
+			val _options: ClassificationFlavouredApi_shareWith_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val classificationConverted: Classification = classification_fromJs(classification)
@@ -336,7 +337,8 @@ internal class ClassificationApiImplJs(
 			patient: PatientJs,
 			options: ClassificationFlavouredApi_findClassificationsByHcPartyPatient_Options?,
 		): Promise<PaginatedListIteratorJs<ClassificationJs>> {
-			val _options = options ?: js("{}")
+			val _options: ClassificationFlavouredApi_findClassificationsByHcPartyPatient_Options = options ?:
+					js("{}")
 			return GlobalScope.promise {
 				val hcPartyIdConverted: String = hcPartyId
 				val patientConverted: Patient = patient_fromJs(patient)
@@ -427,7 +429,7 @@ internal class ClassificationApiImplJs(
 		patient: PatientJs,
 		options: ClassificationApi_withEncryptionMetadata_Options?,
 	): Promise<DecryptedClassificationJs> {
-		val _options = options ?: js("{}")
+		val _options: ClassificationApi_withEncryptionMetadata_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val baseConverted: DecryptedClassification? = base?.let { nonNull1 ->
 				classification_fromJs(nonNull1)
@@ -561,7 +563,7 @@ internal class ClassificationApiImplJs(
 		classification: DecryptedClassificationJs,
 		options: ClassificationApi_shareWith_Options?,
 	): Promise<SimpleShareResultJs<DecryptedClassificationJs>> {
-		val _options = options ?: js("{}")
+		val _options: ClassificationApi_shareWith_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val delegateIdConverted: String = delegateId
 			val classificationConverted: DecryptedClassification = classification_fromJs(classification)
@@ -651,7 +653,7 @@ internal class ClassificationApiImplJs(
 		patient: PatientJs,
 		options: ClassificationApi_findClassificationsByHcPartyPatient_Options?,
 	): Promise<PaginatedListIteratorJs<DecryptedClassificationJs>> {
-		val _options = options ?: js("{}")
+		val _options: ClassificationApi_findClassificationsByHcPartyPatient_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val hcPartyIdConverted: String = hcPartyId
 			val patientConverted: Patient = patient_fromJs(patient)

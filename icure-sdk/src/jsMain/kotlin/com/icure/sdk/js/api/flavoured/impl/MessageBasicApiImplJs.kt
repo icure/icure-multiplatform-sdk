@@ -303,7 +303,7 @@ internal class MessageBasicApiImplJs(
 		to: Double,
 		options: MessageBasicApi_findMessagesByTransportGuidSentDate_Options?,
 	): Promise<PaginatedListJs<EncryptedMessageJs>> {
-		val _options = options ?: js("{}")
+		val _options: MessageBasicApi_findMessagesByTransportGuidSentDate_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val transportGuidConverted: String = transportGuid
 			val fromConverted: Long = numberToLong(from, "from")
@@ -456,7 +456,7 @@ internal class MessageBasicApiImplJs(
 		eventFired: (EncryptedMessageJs) -> Promise<Unit>,
 		options: MessageBasicApi_subscribeToEvents_Options?,
 	): Promise<ConnectionJs> {
-		val _options = options ?: js("{}")
+		val _options: MessageBasicApi_subscribeToEvents_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
 				events,

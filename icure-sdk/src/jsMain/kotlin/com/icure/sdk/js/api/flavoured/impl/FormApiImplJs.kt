@@ -82,7 +82,7 @@ internal class FormApiImplJs(
 			form: EncryptedFormJs,
 			options: FormFlavouredApi_shareWith_Options?,
 		): Promise<SimpleShareResultJs<EncryptedFormJs>> {
-			val _options = options ?: js("{}")
+			val _options: FormFlavouredApi_shareWith_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val formConverted: EncryptedForm = form_fromJs(form)
@@ -171,7 +171,7 @@ internal class FormApiImplJs(
 			patient: PatientJs,
 			options: FormFlavouredApi_findFormsByHcPartyPatient_Options?,
 		): Promise<PaginatedListIteratorJs<EncryptedFormJs>> {
-			val _options = options ?: js("{}")
+			val _options: FormFlavouredApi_findFormsByHcPartyPatient_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val hcPartyIdConverted: String = hcPartyId
 				val patientConverted: Patient = patient_fromJs(patient)
@@ -331,7 +331,8 @@ internal class FormApiImplJs(
 			secretFKeys: String,
 			options: FormFlavouredApi_listFormsByHCPartyAndPatientForeignKeys_Options?,
 		): Promise<Array<EncryptedFormJs>> {
-			val _options = options ?: js("{}")
+			val _options: FormFlavouredApi_listFormsByHCPartyAndPatientForeignKeys_Options = options ?:
+					js("{}")
 			return GlobalScope.promise {
 				val hcPartyIdConverted: String = hcPartyId
 				val secretFKeysConverted: String = secretFKeys
@@ -376,7 +377,7 @@ internal class FormApiImplJs(
 			form: FormJs,
 			options: FormFlavouredApi_shareWith_Options?,
 		): Promise<SimpleShareResultJs<FormJs>> {
-			val _options = options ?: js("{}")
+			val _options: FormFlavouredApi_shareWith_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val formConverted: Form = form_fromJs(form)
@@ -464,7 +465,7 @@ internal class FormApiImplJs(
 			patient: PatientJs,
 			options: FormFlavouredApi_findFormsByHcPartyPatient_Options?,
 		): Promise<PaginatedListIteratorJs<FormJs>> {
-			val _options = options ?: js("{}")
+			val _options: FormFlavouredApi_findFormsByHcPartyPatient_Options = options ?: js("{}")
 			return GlobalScope.promise {
 				val hcPartyIdConverted: String = hcPartyId
 				val patientConverted: Patient = patient_fromJs(patient)
@@ -620,7 +621,8 @@ internal class FormApiImplJs(
 			secretFKeys: String,
 			options: FormFlavouredApi_listFormsByHCPartyAndPatientForeignKeys_Options?,
 		): Promise<Array<FormJs>> {
-			val _options = options ?: js("{}")
+			val _options: FormFlavouredApi_listFormsByHCPartyAndPatientForeignKeys_Options = options ?:
+					js("{}")
 			return GlobalScope.promise {
 				val hcPartyIdConverted: String = hcPartyId
 				val secretFKeysConverted: String = secretFKeys
@@ -692,7 +694,7 @@ internal class FormApiImplJs(
 		patient: PatientJs,
 		options: FormApi_withEncryptionMetadata_Options?,
 	): Promise<DecryptedFormJs> {
-		val _options = options ?: js("{}")
+		val _options: FormApi_withEncryptionMetadata_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val baseConverted: DecryptedForm? = base?.let { nonNull1 ->
 				form_fromJs(nonNull1)
@@ -819,7 +821,7 @@ internal class FormApiImplJs(
 
 	override fun getFormTemplate(formTemplateId: String, options: FormApi_getFormTemplate_Options?):
 			Promise<FormTemplateJs> {
-		val _options = options ?: js("{}")
+		val _options: FormApi_getFormTemplate_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val formTemplateIdConverted: String = formTemplateId
 			val rawConverted: Boolean? = convertingOptionOrDefault(
@@ -859,7 +861,7 @@ internal class FormApiImplJs(
 
 	override fun listFormTemplatesBySpeciality(specialityCode: String,
 			options: FormApi_listFormTemplatesBySpeciality_Options?): Promise<Array<FormTemplateJs>> {
-		val _options = options ?: js("{}")
+		val _options: FormApi_listFormTemplatesBySpeciality_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val specialityCodeConverted: String = specialityCode
 			val rawConverted: Boolean? = convertingOptionOrDefault(
@@ -883,7 +885,7 @@ internal class FormApiImplJs(
 
 	override fun getFormTemplates(options: FormApi_getFormTemplates_Options?):
 			Promise<Array<FormTemplateJs>> {
-		val _options = options ?: js("{}")
+		val _options: FormApi_getFormTemplates_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val loadLayoutConverted: Boolean? = convertingOptionOrDefault(
 				_options.loadLayout,
@@ -953,7 +955,7 @@ internal class FormApiImplJs(
 		form: DecryptedFormJs,
 		options: FormApi_shareWith_Options?,
 	): Promise<SimpleShareResultJs<DecryptedFormJs>> {
-		val _options = options ?: js("{}")
+		val _options: FormApi_shareWith_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val delegateIdConverted: String = delegateId
 			val formConverted: DecryptedForm = form_fromJs(form)
@@ -1042,7 +1044,7 @@ internal class FormApiImplJs(
 		patient: PatientJs,
 		options: FormApi_findFormsByHcPartyPatient_Options?,
 	): Promise<PaginatedListIteratorJs<DecryptedFormJs>> {
-		val _options = options ?: js("{}")
+		val _options: FormApi_findFormsByHcPartyPatient_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val hcPartyIdConverted: String = hcPartyId
 			val patientConverted: Patient = patient_fromJs(patient)
@@ -1202,7 +1204,7 @@ internal class FormApiImplJs(
 		secretFKeys: String,
 		options: FormApi_listFormsByHCPartyAndPatientForeignKeys_Options?,
 	): Promise<Array<DecryptedFormJs>> {
-		val _options = options ?: js("{}")
+		val _options: FormApi_listFormsByHCPartyAndPatientForeignKeys_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val hcPartyIdConverted: String = hcPartyId
 			val secretFKeysConverted: String = secretFKeys

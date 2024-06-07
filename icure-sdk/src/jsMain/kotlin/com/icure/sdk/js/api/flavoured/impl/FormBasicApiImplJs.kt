@@ -66,7 +66,7 @@ internal class FormBasicApiImplJs(
 
 	override fun getFormTemplate(formTemplateId: String,
 			options: FormBasicApi_getFormTemplate_Options?): Promise<FormTemplateJs> {
-		val _options = options ?: js("{}")
+		val _options: FormBasicApi_getFormTemplate_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val formTemplateIdConverted: String = formTemplateId
 			val rawConverted: Boolean? = convertingOptionOrDefault(
@@ -106,7 +106,7 @@ internal class FormBasicApiImplJs(
 
 	override fun listFormTemplatesBySpeciality(specialityCode: String,
 			options: FormBasicApi_listFormTemplatesBySpeciality_Options?): Promise<Array<FormTemplateJs>> {
-		val _options = options ?: js("{}")
+		val _options: FormBasicApi_listFormTemplatesBySpeciality_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val specialityCodeConverted: String = specialityCode
 			val rawConverted: Boolean? = convertingOptionOrDefault(
@@ -130,7 +130,7 @@ internal class FormBasicApiImplJs(
 
 	override fun getFormTemplates(options: FormBasicApi_getFormTemplates_Options?):
 			Promise<Array<FormTemplateJs>> {
-		val _options = options ?: js("{}")
+		val _options: FormBasicApi_getFormTemplates_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val loadLayoutConverted: Boolean? = convertingOptionOrDefault(
 				_options.loadLayout,
@@ -317,7 +317,7 @@ internal class FormBasicApiImplJs(
 		secretFKeys: String,
 		options: FormBasicApi_listFormsByHCPartyAndPatientForeignKeys_Options?,
 	): Promise<Array<EncryptedFormJs>> {
-		val _options = options ?: js("{}")
+		val _options: FormBasicApi_listFormsByHCPartyAndPatientForeignKeys_Options = options ?: js("{}")
 		return GlobalScope.promise {
 			val hcPartyIdConverted: String = hcPartyId
 			val secretFKeysConverted: String = secretFKeys
