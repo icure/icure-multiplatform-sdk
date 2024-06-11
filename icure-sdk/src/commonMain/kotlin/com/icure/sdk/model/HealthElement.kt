@@ -109,7 +109,6 @@ sealed interface HealthElement :
 	companion object {
 		const val KRAKEN_QUALIFIED_NAME = "org.taktik.icure.entities.HealthElement"
 	}
-
 	// endregion
 }
 

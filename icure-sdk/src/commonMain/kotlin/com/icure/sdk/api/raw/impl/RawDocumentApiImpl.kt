@@ -215,7 +215,7 @@ class RawDocumentApiImpl(
 	override suspend fun listDocumentsByHcPartyMessageForeignKeys(
 		hcPartyId: String,
 		documentTypeCode: String?,
-		secretMessageKeys: List<String>,
+		secretMessageKeys: ListOfIds,
 	): HttpResponse<List<EncryptedDocument>> =
 		post {
 			url {
