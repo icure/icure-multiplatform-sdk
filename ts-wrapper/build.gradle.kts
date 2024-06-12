@@ -215,6 +215,7 @@ tasks.register("prepareDistributionPackage") {
 			into = tsPackage.resolve("ktor-ktor-utils.mjs"),
 			replacing = listOf(
 				Replacement("eval('require')('crypto')", with = "crypto"),
+				// The global crypto from node19+ is actually the same as webcrypto -> no randomFillSync, only getRandomValues
 				Replacement(".randomFillSync(", with = ".getRandomValues(")
 			)
 		)
