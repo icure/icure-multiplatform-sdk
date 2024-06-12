@@ -26,7 +26,7 @@ data class EntityWithTypeInfo<T : HasEncryptionMetadata>(
 ) : HasEncryptionMetadata by entity
 
 @InternalIcureApi
-internal data class EntityWithEncryptionMetadataStub(
+data class EntityWithEncryptionMetadataStub(
 	override val id: String,
 	override val rev: String?,
 	override val secretForeignKeys: Set<String>,

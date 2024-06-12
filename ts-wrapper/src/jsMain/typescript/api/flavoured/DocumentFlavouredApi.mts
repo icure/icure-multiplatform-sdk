@@ -2,7 +2,7 @@
 import {DocumentShareOptions} from '../../crypto/entities/DocumentShareOptions.mjs';
 import {ShareMetadataBehaviour} from '../../crypto/entities/ShareMetadataBehaviour.mjs';
 import {SimpleShareResult} from '../../crypto/entities/SimpleShareResult.mjs';
-import {PaginatedListIterator} from '../../icure-sdk.mjs';
+import {PaginatedListIterator} from '../../icure-sdk-ts.mjs';
 import {Document, EncryptedDocument} from '../../model/Document.mjs';
 import {Patient} from '../../model/Patient.mjs';
 import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs';

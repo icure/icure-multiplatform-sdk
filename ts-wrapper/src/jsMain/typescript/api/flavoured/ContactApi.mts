@@ -3,7 +3,7 @@ import {ContactShareOptions} from '../../crypto/entities/ContactShareOptions.mjs
 import {SecretIdOption} from '../../crypto/entities/SecretIdOption.mjs';
 import {ShareMetadataBehaviour} from '../../crypto/entities/ShareMetadataBehaviour.mjs';
 import {SimpleShareResult} from '../../crypto/entities/SimpleShareResult.mjs';
-import {PaginatedListIterator} from '../../icure-sdk.mjs';
+import {PaginatedListIterator} from '../../icure-sdk-ts.mjs';
 import {Contact, DecryptedContact, EncryptedContact} from '../../model/Contact.mjs';
 import {IcureStub} from '../../model/IcureStub.mjs';
 import {PaginatedList} from '../../model/PaginatedList.mjs';

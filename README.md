@@ -377,7 +377,7 @@ How to build the distribution package for the js wrapper. Tested on node and on 
    import * as model from './model';
    export { model }
    ```
-   and in the `icure-multiplatform-sdk-icure-sdk.mjs` file:
+   and in the `icure-multiplatform-sdk-icure-sdk-ts.mjs` file:
    ```javascript
    import * as model from './model.mjs';
    export { model }

@@ -7,21 +7,12 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 import java.util.Properties
 
-/**
- * Configures targets and source sets for multiplatform modules.
- */
-fun Project.configureMultiplatform(
-	kotlinMultiplatformExtension: KotlinMultiplatformExtension
+fun Project.configureKotlinJs(
+	kotlinMultiplatformExtension: KotlinMultiplatformExtension,
+	overrideModuleName: String? = null
 ) = with(kotlinMultiplatformExtension) {
-	val frameworkName = project.name.replaceFirstChar { it.uppercase() }
-	val xcf = XCFramework(frameworkName)
-	jvm {
-		compilations.all {
-			kotlinOptions.jvmTarget = "1.8"
-		}
-	}
 	js(IR) {
-		moduleName = project.name
+		moduleName = overrideModuleName ?: project.name
 		browser {
 			testTask {
 				useKarma {
@@ -35,6 +26,22 @@ fun Project.configureMultiplatform(
 		generateTypeScriptDefinitions()
 		useEsModules()
 	}
+}
+
+/**
+ * Configures targets and source sets for multiplatform modules.
+ */
+fun Project.configureMultiplatform(
+	kotlinMultiplatformExtension: KotlinMultiplatformExtension
+) = with(kotlinMultiplatformExtension) {
+	val frameworkName = project.name.replaceFirstChar { it.uppercase() }
+	val xcf = XCFramework(frameworkName)
+	jvm {
+		compilations.all {
+			kotlinOptions.jvmTarget = "1.8"
+		}
+	}
+	configureKotlinJs(this)
 	androidTarget {
 		compilations.all {
 			kotlinOptions.jvmTarget = "1.8"

@@ -3,7 +3,7 @@ import {CalendarItemShareOptions} from '../../crypto/entities/CalendarItemShareO
 import {SecretIdOption} from '../../crypto/entities/SecretIdOption.mjs';
 import {ShareMetadataBehaviour} from '../../crypto/entities/ShareMetadataBehaviour.mjs';
 import {SimpleShareResult} from '../../crypto/entities/SimpleShareResult.mjs';
-import {PaginatedListIterator} from '../../icure-sdk.mjs';
+import {PaginatedListIterator} from '../../icure-sdk-ts.mjs';
 import {CalendarItem, DecryptedCalendarItem, EncryptedCalendarItem} from '../../model/CalendarItem.mjs';
 import {PaginatedList} from '../../model/PaginatedList.mjs';
 import {Patient} from '../../model/Patient.mjs';

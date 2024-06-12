@@ -3,7 +3,7 @@ import {FormShareOptions} from '../../crypto/entities/FormShareOptions.mjs';
 import {SecretIdOption} from '../../crypto/entities/SecretIdOption.mjs';
 import {ShareMetadataBehaviour} from '../../crypto/entities/ShareMetadataBehaviour.mjs';
 import {SimpleShareResult} from '../../crypto/entities/SimpleShareResult.mjs';
-import {PaginatedListIterator} from '../../icure-sdk.mjs';
+import {PaginatedListIterator} from '../../icure-sdk-ts.mjs';
 import {DecryptedForm, EncryptedForm, Form} from '../../model/Form.mjs';
 import {FormTemplate} from '../../model/FormTemplate.mjs';
 import {Patient} from '../../model/Patient.mjs';

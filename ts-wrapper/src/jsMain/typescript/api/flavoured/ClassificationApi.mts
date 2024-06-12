@@ -3,7 +3,7 @@ import {ClassificationShareOptions} from '../../crypto/entities/ClassificationSh
 import {SecretIdOption} from '../../crypto/entities/SecretIdOption.mjs';
 import {ShareMetadataBehaviour} from '../../crypto/entities/ShareMetadataBehaviour.mjs';
 import {SimpleShareResult} from '../../crypto/entities/SimpleShareResult.mjs';
-import {PaginatedListIterator} from '../../icure-sdk.mjs';
+import {PaginatedListIterator} from '../../icure-sdk-ts.mjs';
 import {Classification, DecryptedClassification, EncryptedClassification} from '../../model/Classification.mjs';
 import {Patient} from '../../model/Patient.mjs';
 import {User} from '../../model/User.mjs';

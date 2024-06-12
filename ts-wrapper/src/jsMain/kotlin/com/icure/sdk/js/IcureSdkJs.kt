@@ -49,10 +49,14 @@ import com.icure.sdk.js.options.ApiOptionsJs
 import com.icure.sdk.js.options.toKt
 import com.icure.sdk.options.AuthenticationMethod
 import com.icure.sdk.storage.impl.VolatileStorageFacade
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 import kotlin.js.Promise
 
+/**
+ * SDK for pure typescript. You should not use this from kotlin.
+ */
 @JsExport
 @JsName("IcureSdk")
 interface IcureSdkJs {
@@ -79,6 +83,9 @@ interface IcureSdkJs {
 	val recovery: RecoveryApiJs
 }
 
+/**
+ * Provides access to the SDK from pure typescript. You should not use this from kotlin.
+ */
 @JsExport
 fun initialiseSdk(
 	baseUrl: String,

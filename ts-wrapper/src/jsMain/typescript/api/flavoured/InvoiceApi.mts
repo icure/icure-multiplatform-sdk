@@ -3,7 +3,7 @@ import {InvoiceShareOptions} from '../../crypto/entities/InvoiceShareOptions.mjs
 import {SecretIdOption} from '../../crypto/entities/SecretIdOption.mjs';
 import {ShareMetadataBehaviour} from '../../crypto/entities/ShareMetadataBehaviour.mjs';
 import {SimpleShareResult} from '../../crypto/entities/SimpleShareResult.mjs';
-import {PaginatedListIterator} from '../../icure-sdk.mjs';
+import {PaginatedListIterator} from '../../icure-sdk-ts.mjs';
 import {IcureStub} from '../../model/IcureStub.mjs';
 import {DecryptedInvoice, EncryptedInvoice, Invoice} from '../../model/Invoice.mjs';
 import {PaginatedList} from '../../model/PaginatedList.mjs';

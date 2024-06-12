@@ -1,6 +1,7 @@
 rootProject.name = "icure-multiplatform-sdk"
 
 include("icure-sdk")
+include("ts-wrapper")
 include("sdk-codegen")
 
 pluginManagement {
