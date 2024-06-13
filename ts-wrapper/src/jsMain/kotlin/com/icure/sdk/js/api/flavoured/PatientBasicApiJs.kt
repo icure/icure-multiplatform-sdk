@@ -16,7 +16,6 @@ import com.icure.sdk.js.model.filter.chain.FilterChainJs
 import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.websocket.ConnectionJs
 import kotlin.Array
-import kotlin.Boolean
 import kotlin.Double
 import kotlin.String
 import kotlin.Unit
@@ -40,37 +39,31 @@ public external interface PatientBasicApiJs {
 
 	public fun getPatient(entityId: String): Promise<EncryptedPatientJs>
 
-	public fun filterPatientsBy(filterChain: FilterChainJs<PatientJs>,
-			options: PatientBasicApi_filterPatientsBy_Options?): Promise<PaginatedListJs<EncryptedPatientJs>>
-
-	public fun findPatientsByNameBirthSsinAuto(filterValue: String,
-			options: PatientBasicApi_findPatientsByNameBirthSsinAuto_Options?):
+	public fun filterPatientsBy(filterChain: FilterChainJs<PatientJs>, options: dynamic):
 			Promise<PaginatedListJs<EncryptedPatientJs>>
 
-	public fun listPatientsOfHcParty(hcPartyId: String,
-			options: PatientBasicApi_listPatientsOfHcParty_Options?):
+	public fun findPatientsByNameBirthSsinAuto(filterValue: String, options: dynamic):
+			Promise<PaginatedListJs<EncryptedPatientJs>>
+
+	public fun listPatientsOfHcParty(hcPartyId: String, options: dynamic):
 			Promise<PaginatedListJs<EncryptedPatientJs>>
 
 	public fun listOfMergesAfter(date: Double): Promise<Array<EncryptedPatientJs>>
 
-	public fun findPatientsModifiedAfter(date: Double,
-			options: PatientBasicApi_findPatientsModifiedAfter_Options?):
+	public fun findPatientsModifiedAfter(date: Double, options: dynamic):
 			Promise<PaginatedListJs<EncryptedPatientJs>>
 
-	public fun listPatientsByHcParty(hcPartyId: String,
-			options: PatientBasicApi_listPatientsByHcParty_Options?):
+	public fun listPatientsByHcParty(hcPartyId: String, options: dynamic):
 			Promise<PaginatedListJs<EncryptedPatientJs>>
 
 	public fun getPatientHcPartyKeysForDelegate(patientId: String): Promise<Record<String, String>>
 
 	public fun countOfPatients(hcPartyId: String): Promise<EncryptedContentJs>
 
-	public
-			fun findPatientsByHealthcareParty(options: PatientBasicApi_findPatientsByHealthcareParty_Options?):
+	public fun findPatientsByHealthcareParty(options: dynamic):
 			Promise<PaginatedListJs<EncryptedPatientJs>>
 
-	public fun findPatientsIdsByHealthcareParty(hcPartyId: String,
-			options: PatientBasicApi_findPatientsIdsByHealthcareParty_Options?):
+	public fun findPatientsIdsByHealthcareParty(hcPartyId: String, options: dynamic):
 			Promise<PaginatedListJs<String>>
 
 	public fun getPatientByExternalId(externalId: String): Promise<EncryptedPatientJs>
@@ -78,22 +71,20 @@ public external interface PatientBasicApiJs {
 	public fun fuzzySearch(
 		firstName: String,
 		lastName: String,
-		options: PatientBasicApi_fuzzySearch_Options?,
+		options: dynamic,
 	): Promise<Array<EncryptedPatientJs>>
 
-	public fun findDeletedPatients(startDate: Double,
-			options: PatientBasicApi_findDeletedPatients_Options?):
+	public fun findDeletedPatients(startDate: Double, options: dynamic):
 			Promise<PaginatedListJs<EncryptedPatientJs>>
 
-	public fun listDeletedPatientsByName(options: PatientBasicApi_listDeletedPatientsByName_Options?):
-			Promise<Array<EncryptedPatientJs>>
+	public fun listDeletedPatientsByName(options: dynamic): Promise<Array<EncryptedPatientJs>>
 
 	public fun getPatients(patientIds: ListOfIdsJs): Promise<Array<EncryptedPatientJs>>
 
 	public fun getPatientByHealthcarePartyAndIdentifier(
 		hcPartyId: String,
 		id: String,
-		options: PatientBasicApi_getPatientByHealthcarePartyAndIdentifier_Options?,
+		options: dynamic,
 	): Promise<EncryptedPatientJs>
 
 	public fun modifyPatients(patientDtos: Array<EncryptedPatientJs>): Promise<Array<IdWithRevJs>>
@@ -101,15 +92,13 @@ public external interface PatientBasicApiJs {
 	public fun modifyPatientReferral(
 		patientId: String,
 		referralId: String,
-		options: PatientBasicApi_modifyPatientReferral_Options?,
+		options: dynamic,
 	): Promise<EncryptedPatientJs>
 
-	public fun findDuplicatesBySsin(hcPartyId: String,
-			options: PatientBasicApi_findDuplicatesBySsin_Options?):
+	public fun findDuplicatesBySsin(hcPartyId: String, options: dynamic):
 			Promise<PaginatedListJs<EncryptedPatientJs>>
 
-	public fun findDuplicatesByName(hcPartyId: String,
-			options: PatientBasicApi_findDuplicatesByName_Options?):
+	public fun findDuplicatesByName(hcPartyId: String, options: dynamic):
 			Promise<PaginatedListJs<EncryptedPatientJs>>
 
 	public fun mergePatients(
@@ -123,146 +112,6 @@ public external interface PatientBasicApiJs {
 		events: Array<String>,
 		filter: AbstractFilterJs<PatientJs>,
 		eventFired: (EncryptedPatientJs) -> Promise<Unit>,
-		options: PatientBasicApi_subscribeToEvents_Options?,
+		options: dynamic,
 	): Promise<ConnectionJs>
-}
-
-public external interface PatientBasicApi_filterPatientsBy_Options {
-	public val startKey: String?
-
-	public val startDocumentId: String?
-
-	public val limit: Double?
-
-	public val skip: Double?
-
-	public val sort: String?
-
-	public val desc: Boolean?
-}
-
-public external interface PatientBasicApi_findPatientsByNameBirthSsinAuto_Options {
-	public val healthcarePartyId: String?
-
-	public val startKey: String?
-
-	public val startDocumentId: String?
-
-	public val limit: Double?
-
-	public val sortDirection: String
-}
-
-public external interface PatientBasicApi_listPatientsOfHcParty_Options {
-	public val sortField: String
-
-	public val startKey: String?
-
-	public val startDocumentId: String?
-
-	public val limit: Double?
-
-	public val sortDirection: String
-}
-
-public external interface PatientBasicApi_findPatientsModifiedAfter_Options {
-	public val startKey: Double?
-
-	public val startDocumentId: String?
-
-	public val limit: Double?
-}
-
-public external interface PatientBasicApi_listPatientsByHcParty_Options {
-	public val sortField: String
-
-	public val startKey: String?
-
-	public val startDocumentId: String?
-
-	public val limit: Double?
-
-	public val sortDirection: String
-}
-
-public external interface PatientBasicApi_findPatientsByHealthcareParty_Options {
-	public val hcPartyId: String?
-
-	public val sortField: String
-
-	public val startKey: String?
-
-	public val startDocumentId: String?
-
-	public val limit: Double?
-
-	public val sortDirection: String
-}
-
-public external interface PatientBasicApi_findPatientsIdsByHealthcareParty_Options {
-	public val startKey: String?
-
-	public val startDocumentId: String?
-
-	public val limit: Double?
-}
-
-public external interface PatientBasicApi_fuzzySearch_Options {
-	public val dateOfBirth: Double?
-}
-
-public external interface PatientBasicApi_findDeletedPatients_Options {
-	public val endDate: Double?
-
-	public val desc: Boolean?
-
-	public val startKey: Double?
-
-	public val startDocumentId: String?
-
-	public val limit: Double?
-}
-
-public external interface PatientBasicApi_listDeletedPatientsByName_Options {
-	public val firstName: String?
-
-	public val lastName: String?
-}
-
-public external interface PatientBasicApi_getPatientByHealthcarePartyAndIdentifier_Options {
-	public val system: String?
-}
-
-public external interface PatientBasicApi_modifyPatientReferral_Options {
-	public val start: Double?
-
-	public val end: Double?
-}
-
-public external interface PatientBasicApi_findDuplicatesBySsin_Options {
-	public val startKey: String?
-
-	public val startDocumentId: String?
-
-	public val limit: Double?
-}
-
-public external interface PatientBasicApi_findDuplicatesByName_Options {
-	public val startKey: String?
-
-	public val startDocumentId: String?
-
-	public val limit: Double?
-}
-
-public external interface PatientBasicApi_subscribeToEvents_Options {
-	public val onConnected: () -> Promise<Unit>
-
-	public val channelCapacity: Double
-
-	public val retryDelay: Double
-
-	public val retryDelayExponentFactor: Double
-
-	public val maxRetries: Double
 }

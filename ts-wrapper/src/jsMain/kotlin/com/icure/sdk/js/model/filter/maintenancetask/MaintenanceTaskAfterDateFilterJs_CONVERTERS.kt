@@ -3,7 +3,9 @@ package com.icure.sdk.js.model.filter.maintenancetask
 import com.icure.sdk.js.model.CheckedConverters.longToNumber
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.model.filter.maintenancetask.MaintenanceTaskAfterDateFilter
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun maintenanceTaskAfterDateFilter_toJs(obj: MaintenanceTaskAfterDateFilter):
 		MaintenanceTaskAfterDateFilterJs {
 	val desc = obj.desc

@@ -30,9 +30,11 @@ import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.model.specializations.SpkiHexString
 import kotlin.Array
 import kotlin.String
+import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.Map
 
+@Suppress("UNUSED_VARIABLE")
 public fun device_toJs(obj: Device): DeviceJs {
 	val id = obj.id
 	val rev = obj.rev

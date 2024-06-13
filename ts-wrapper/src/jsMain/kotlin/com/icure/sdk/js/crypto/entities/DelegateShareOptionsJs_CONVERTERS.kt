@@ -8,7 +8,9 @@ import com.icure.sdk.js.model.specializations.hexString_toJs
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun delegateShareOptions_toJs(obj: DelegateShareOptions): DelegateShareOptionsJs {
 	val shareSecretIds = setToArray(
 		obj.shareSecretIds,

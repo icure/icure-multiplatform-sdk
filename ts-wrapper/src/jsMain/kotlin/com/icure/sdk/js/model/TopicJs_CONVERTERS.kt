@@ -24,8 +24,10 @@ import com.icure.sdk.model.base.CodeStub
 import com.icure.sdk.model.embed.Delegation
 import kotlin.Array
 import kotlin.String
+import kotlin.Suppress
 import kotlin.collections.Set
 
+@Suppress("UNUSED_VARIABLE")
 public fun topic_toJs(obj: DecryptedTopic): DecryptedTopicJs {
 	val id = obj.id
 	val rev = obj.rev
@@ -292,6 +294,7 @@ public fun topic_fromJs(obj: DecryptedTopicJs): DecryptedTopic {
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun topic_toJs(obj: EncryptedTopic): EncryptedTopicJs {
 	val id = obj.id
 	val rev = obj.rev
@@ -558,6 +561,7 @@ public fun topic_fromJs(obj: EncryptedTopicJs): EncryptedTopic {
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun topic_toJs(obj: Topic): TopicJs = when (obj) {
 	is EncryptedTopic -> topic_toJs(obj)
 	is DecryptedTopic -> topic_toJs(obj)

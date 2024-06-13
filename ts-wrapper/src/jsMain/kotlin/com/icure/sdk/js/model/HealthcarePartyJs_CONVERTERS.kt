@@ -56,9 +56,11 @@ import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.model.specializations.SpkiHexString
 import kotlin.Array
 import kotlin.String
+import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.Map
 
+@Suppress("UNUSED_VARIABLE")
 public fun healthcareParty_toJs(obj: HealthcareParty): HealthcarePartyJs {
 	val id = obj.id
 	val rev = obj.rev
@@ -93,7 +95,7 @@ public fun healthcareParty_toJs(obj: HealthcareParty): HealthcarePartyJs {
 		},
 	)
 	val gender = obj.gender?.let { nonNull1 ->
-		obj.gender?.name
+		nonNull1.name
 	}
 	val civility = obj.civility
 	val companyName = obj.companyName

@@ -5,7 +5,9 @@ import com.icure.sdk.js.model.CheckedConverters.longToNumber
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.model.embed.IdentityDocumentReader
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun identityDocumentReader_toJs(obj: IdentityDocumentReader): IdentityDocumentReaderJs {
 	val justificatifDocumentNumber = obj.justificatifDocumentNumber
 	val supportSerialNumber = obj.supportSerialNumber

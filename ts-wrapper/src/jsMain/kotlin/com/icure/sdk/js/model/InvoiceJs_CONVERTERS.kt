@@ -43,8 +43,10 @@ import com.icure.sdk.model.embed.Payment
 import com.icure.sdk.model.embed.PaymentType
 import kotlin.Array
 import kotlin.String
+import kotlin.Suppress
 import kotlin.collections.Set
 
+@Suppress("UNUSED_VARIABLE")
 public fun invoice_toJs(obj: DecryptedInvoice): DecryptedInvoiceJs {
 	val id = obj.id
 	val rev = obj.rev
@@ -93,17 +95,17 @@ public fun invoice_toJs(obj: DecryptedInvoice): DecryptedInvoiceJs {
 	val thirdPartyPaymentReason = obj.thirdPartyPaymentReason
 	val reason = obj.reason
 	val invoiceType = obj.invoiceType?.let { nonNull1 ->
-		obj.invoiceType?.name
+		nonNull1.name
 	}
 	val sentMediumType = obj.sentMediumType?.let { nonNull1 ->
-		obj.sentMediumType?.name
+		nonNull1.name
 	}
 	val interventionType = obj.interventionType?.let { nonNull1 ->
-		obj.interventionType?.name
+		nonNull1.name
 	}
 	val groupId = obj.groupId
 	val paymentType = obj.paymentType?.let { nonNull1 ->
-		obj.paymentType?.name
+		nonNull1.name
 	}
 	val paid = obj.paid
 	val payments = listToArray(
@@ -540,6 +542,7 @@ public fun invoice_fromJs(obj: DecryptedInvoiceJs): DecryptedInvoice {
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun invoice_toJs(obj: EncryptedInvoice): EncryptedInvoiceJs {
 	val id = obj.id
 	val rev = obj.rev
@@ -588,17 +591,17 @@ public fun invoice_toJs(obj: EncryptedInvoice): EncryptedInvoiceJs {
 	val thirdPartyPaymentReason = obj.thirdPartyPaymentReason
 	val reason = obj.reason
 	val invoiceType = obj.invoiceType?.let { nonNull1 ->
-		obj.invoiceType?.name
+		nonNull1.name
 	}
 	val sentMediumType = obj.sentMediumType?.let { nonNull1 ->
-		obj.sentMediumType?.name
+		nonNull1.name
 	}
 	val interventionType = obj.interventionType?.let { nonNull1 ->
-		obj.interventionType?.name
+		nonNull1.name
 	}
 	val groupId = obj.groupId
 	val paymentType = obj.paymentType?.let { nonNull1 ->
-		obj.paymentType?.name
+		nonNull1.name
 	}
 	val paid = obj.paid
 	val payments = listToArray(
@@ -1035,6 +1038,7 @@ public fun invoice_fromJs(obj: EncryptedInvoiceJs): EncryptedInvoice {
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun invoice_toJs(obj: Invoice): InvoiceJs = when (obj) {
 	is EncryptedInvoice -> invoice_toJs(obj)
 	is DecryptedInvoice -> invoice_toJs(obj)

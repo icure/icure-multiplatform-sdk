@@ -7,7 +7,6 @@ import com.icure.sdk.js.model.KeywordJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import kotlin.Array
-import kotlin.Double
 import kotlin.String
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
@@ -19,18 +18,11 @@ public external interface KeywordApiJs {
 
 	public fun createKeyword(frontEndMigration: KeywordJs): Promise<KeywordJs>
 
-	public fun getKeywords(options: KeywordApi_getKeywords_Options?):
-			Promise<PaginatedListJs<KeywordJs>>
+	public fun getKeywords(options: dynamic): Promise<PaginatedListJs<KeywordJs>>
 
 	public fun modifyKeyword(keyword: KeywordJs): Promise<KeywordJs>
 
 	public fun getKeywordsByUser(userId: String): Promise<Array<KeywordJs>>
 
 	public fun deleteKeywords(keywordIds: Array<String>): Promise<Array<DocIdentifierJs>>
-}
-
-public external interface KeywordApi_getKeywords_Options {
-	public val startDocumentId: String?
-
-	public val limit: Double?
 }

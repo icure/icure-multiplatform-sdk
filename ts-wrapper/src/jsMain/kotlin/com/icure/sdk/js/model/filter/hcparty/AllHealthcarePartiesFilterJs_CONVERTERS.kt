@@ -1,7 +1,9 @@
 package com.icure.sdk.js.model.filter.hcparty
 
 import com.icure.sdk.model.filter.hcparty.AllHealthcarePartiesFilter
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun allHealthcarePartiesFilter_toJs(obj: AllHealthcarePartiesFilter):
 		AllHealthcarePartiesFilterJs {
 	val desc = obj.desc

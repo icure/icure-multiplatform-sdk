@@ -29,8 +29,10 @@ import com.icure.sdk.model.embed.Delegation
 import com.icure.sdk.model.embed.TimeTableItem
 import kotlin.Array
 import kotlin.String
+import kotlin.Suppress
 import kotlin.collections.Set
 
+@Suppress("UNUSED_VARIABLE")
 public fun timeTable_toJs(obj: DecryptedTimeTable): DecryptedTimeTableJs {
 	val id = obj.id
 	val rev = obj.rev
@@ -265,6 +267,7 @@ public fun timeTable_fromJs(obj: DecryptedTimeTableJs): DecryptedTimeTable {
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun timeTable_toJs(obj: EncryptedTimeTable): EncryptedTimeTableJs {
 	val id = obj.id
 	val rev = obj.rev
@@ -499,6 +502,7 @@ public fun timeTable_fromJs(obj: EncryptedTimeTableJs): EncryptedTimeTable {
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun timeTable_toJs(obj: TimeTable): TimeTableJs = when (obj) {
 	is EncryptedTimeTable -> timeTable_toJs(obj)
 	is DecryptedTimeTable -> timeTable_toJs(obj)

@@ -20,8 +20,7 @@ public external interface FormBasicApiJs {
 
 	public fun deleteForms(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
 
-	public fun getFormTemplate(formTemplateId: String, options: FormBasicApi_getFormTemplate_Options?):
-			Promise<FormTemplateJs>
+	public fun getFormTemplate(formTemplateId: String, options: dynamic): Promise<FormTemplateJs>
 
 	public fun getFormTemplatesByGuid(
 		formTemplateGuid: String,
@@ -29,11 +28,10 @@ public external interface FormBasicApiJs {
 		raw: Boolean?,
 	): Promise<Array<FormTemplateJs>>
 
-	public fun listFormTemplatesBySpeciality(specialityCode: String,
-			options: FormBasicApi_listFormTemplatesBySpeciality_Options?): Promise<Array<FormTemplateJs>>
-
-	public fun getFormTemplates(options: FormBasicApi_getFormTemplates_Options?):
+	public fun listFormTemplatesBySpeciality(specialityCode: String, options: dynamic):
 			Promise<Array<FormTemplateJs>>
+
+	public fun getFormTemplates(options: dynamic): Promise<Array<FormTemplateJs>>
 
 	public fun createFormTemplate(formTemplate: FormTemplateJs): Promise<FormTemplateJs>
 
@@ -64,28 +62,6 @@ public external interface FormBasicApiJs {
 	public fun listFormsByHCPartyAndPatientForeignKeys(
 		hcPartyId: String,
 		secretFKeys: String,
-		options: FormBasicApi_listFormsByHCPartyAndPatientForeignKeys_Options?,
+		options: dynamic,
 	): Promise<Array<EncryptedFormJs>>
-}
-
-public external interface FormBasicApi_getFormTemplate_Options {
-	public val raw: Boolean?
-}
-
-public external interface FormBasicApi_listFormTemplatesBySpeciality_Options {
-	public val raw: Boolean?
-}
-
-public external interface FormBasicApi_getFormTemplates_Options {
-	public val loadLayout: Boolean?
-
-	public val raw: Boolean?
-}
-
-public external interface FormBasicApi_listFormsByHCPartyAndPatientForeignKeys_Options {
-	public val healthElementId: String?
-
-	public val planOfActionId: String?
-
-	public val formTemplateId: String?
 }

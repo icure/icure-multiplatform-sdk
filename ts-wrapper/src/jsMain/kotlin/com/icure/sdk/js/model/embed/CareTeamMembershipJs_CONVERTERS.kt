@@ -8,14 +8,16 @@ import com.icure.sdk.model.embed.CareTeamMembership
 import com.icure.sdk.model.embed.DecryptedCareTeamMembership
 import com.icure.sdk.model.embed.EncryptedCareTeamMembership
 import com.icure.sdk.model.embed.MembershipType
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun careTeamMembership_toJs(obj: DecryptedCareTeamMembership):
 		DecryptedCareTeamMembershipJs {
 	val startDate = longToNumber(obj.startDate)
 	val endDate = longToNumber(obj.endDate)
 	val careTeamMemberId = obj.careTeamMemberId
 	val membershipType = obj.membershipType?.let { nonNull1 ->
-		obj.membershipType?.name
+		nonNull1.name
 	}
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
@@ -49,13 +51,14 @@ public fun careTeamMembership_fromJs(obj: DecryptedCareTeamMembershipJs):
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun careTeamMembership_toJs(obj: EncryptedCareTeamMembership):
 		EncryptedCareTeamMembershipJs {
 	val startDate = longToNumber(obj.startDate)
 	val endDate = longToNumber(obj.endDate)
 	val careTeamMemberId = obj.careTeamMemberId
 	val membershipType = obj.membershipType?.let { nonNull1 ->
-		obj.membershipType?.name
+		nonNull1.name
 	}
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
@@ -89,6 +92,7 @@ public fun careTeamMembership_fromJs(obj: EncryptedCareTeamMembershipJs):
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun careTeamMembership_toJs(obj: CareTeamMembership): CareTeamMembershipJs = when (obj) {
 	is EncryptedCareTeamMembership -> careTeamMembership_toJs(obj)
 	is DecryptedCareTeamMembership -> careTeamMembership_toJs(obj)

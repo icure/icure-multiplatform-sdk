@@ -4,7 +4,9 @@ import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.setToArray
 import com.icure.sdk.model.filter.healthelement.HealthElementByHcPartySecretForeignKeysFilter
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public
 		fun healthElementByHcPartySecretForeignKeysFilter_toJs(obj: HealthElementByHcPartySecretForeignKeysFilter):
 		HealthElementByHcPartySecretForeignKeysFilterJs {

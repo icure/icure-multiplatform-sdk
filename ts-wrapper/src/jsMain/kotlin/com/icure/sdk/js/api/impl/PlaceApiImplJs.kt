@@ -2,9 +2,8 @@
 package com.icure.sdk.js.api.`impl`
 
 import com.icure.sdk.api.PlaceApi
-import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefault
+import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.sdk.js.api.PlaceApiJs
-import com.icure.sdk.js.api.PlaceApi_getPlaces_Options
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
@@ -18,6 +17,7 @@ import com.icure.sdk.js.model.place_toJs
 import com.icure.sdk.model.Place
 import com.icure.sdk.model.couchdb.DocIdentifier
 import kotlin.Array
+import kotlin.Double
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String
@@ -75,19 +75,21 @@ internal class PlaceApiImplJs(
 		)
 	}
 
-	override fun getPlaces(options: PlaceApi_getPlaces_Options?): Promise<PaginatedListJs<PlaceJs>> {
-		val _options: PlaceApi_getPlaces_Options = options ?: js("{}")
+	override fun getPlaces(options: dynamic): Promise<PaginatedListJs<PlaceJs>> {
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
-			val startDocumentIdConverted: String? = convertingOptionOrDefault(
-				_options.startDocumentId,
+			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"startDocumentId",
 				null
-			) { startDocumentId ->
+			) { startDocumentId: String? ->
 				startDocumentId
 			}
-			val limitConverted: Int? = convertingOptionOrDefault(
-				_options.limit,
+			val limitConverted: Int? = convertingOptionOrDefaultNullable(
+				_options,
+				"limit",
 				null
-			) { limit ->
+			) { limit: Double? ->
 				numberToInt(limit, "limit")
 			}
 			val result = placeApi.getPlaces(

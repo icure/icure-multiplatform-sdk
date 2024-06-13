@@ -5,7 +5,9 @@ import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.js.model.base.codeStub_fromJs
 import com.icure.sdk.js.model.base.codeStub_toJs
 import com.icure.sdk.model.embed.EmploymentInfo
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun employmentInfo_toJs(obj: EmploymentInfo): EmploymentInfoJs {
 	val startDate = longToNumber(obj.startDate)
 	val endDate = longToNumber(obj.endDate)

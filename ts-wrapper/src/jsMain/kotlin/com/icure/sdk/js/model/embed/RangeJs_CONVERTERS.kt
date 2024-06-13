@@ -1,7 +1,9 @@
 package com.icure.sdk.js.model.embed
 
 import com.icure.sdk.model.embed.Range
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun range_toJs(obj: Range): RangeJs {
 	val low = obj.low
 	val high = obj.high

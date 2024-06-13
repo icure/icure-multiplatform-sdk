@@ -7,7 +7,9 @@ import com.icure.sdk.js.model.specializations.base64String_toJs
 import com.icure.sdk.model.embed.DecryptedEpisode
 import com.icure.sdk.model.embed.EncryptedEpisode
 import com.icure.sdk.model.embed.Episode
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun episode_toJs(obj: DecryptedEpisode): DecryptedEpisodeJs {
 	val id = obj.id
 	val name = obj.name
@@ -46,6 +48,7 @@ public fun episode_fromJs(obj: DecryptedEpisodeJs): DecryptedEpisode {
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun episode_toJs(obj: EncryptedEpisode): EncryptedEpisodeJs {
 	val id = obj.id
 	val name = obj.name
@@ -84,6 +87,7 @@ public fun episode_fromJs(obj: EncryptedEpisodeJs): EncryptedEpisode {
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun episode_toJs(obj: Episode): EpisodeJs = when (obj) {
 	is EncryptedEpisode -> episode_toJs(obj)
 	is DecryptedEpisode -> episode_toJs(obj)

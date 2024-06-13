@@ -7,10 +7,9 @@ import com.icure.kryptom.crypto.`external`.XRsaKeypair
 import com.icure.kryptom.crypto.`external`.toExternal
 import com.icure.sdk.api.RecoveryApi
 import com.icure.sdk.crypto.entities.RecoveryDataKey
-import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefault
+import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNonNull
+import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.sdk.js.api.RecoveryApiJs
-import com.icure.sdk.js.api.RecoveryApi_createExchangeDataRecoveryInfo_Options
-import com.icure.sdk.js.api.RecoveryApi_createRecoveryInfoForAvailableKeyPairs_Options
 import com.icure.sdk.js.crypto.entities.RecoveryResultJs
 import com.icure.sdk.js.crypto.entities.recoveryDataKey_fromJs
 import com.icure.sdk.js.crypto.entities.recoveryDataKey_toJs
@@ -37,21 +36,21 @@ import kotlinx.coroutines.promise
 internal class RecoveryApiImplJs(
 	private val recoveryApi: RecoveryApi,
 ) : RecoveryApiJs {
-	override
-			fun createRecoveryInfoForAvailableKeyPairs(options: RecoveryApi_createRecoveryInfoForAvailableKeyPairs_Options?):
-			Promise<String> {
-		val _options: RecoveryApi_createRecoveryInfoForAvailableKeyPairs_Options = options ?: js("{}")
+	override fun createRecoveryInfoForAvailableKeyPairs(options: dynamic): Promise<String> {
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
-			val includeParentsKeysConverted: Boolean = convertingOptionOrDefault(
-				_options.includeParentsKeys,
+			val includeParentsKeysConverted: Boolean = convertingOptionOrDefaultNonNull(
+				_options,
+				"includeParentsKeys",
 				false
-			) { includeParentsKeys ->
+			) { includeParentsKeys: Boolean ->
 				includeParentsKeys
 			}
-			val lifetimeSecondsConverted: Int? = convertingOptionOrDefault(
-				_options.lifetimeSeconds,
+			val lifetimeSecondsConverted: Int? = convertingOptionOrDefaultNullable(
+				_options,
+				"lifetimeSeconds",
 				null
-			) { lifetimeSeconds ->
+			) { lifetimeSeconds: Double? ->
 				numberToInt(lifetimeSeconds, "lifetimeSeconds")
 			}
 			val result = recoveryApi.createRecoveryInfoForAvailableKeyPairs(
@@ -94,15 +93,16 @@ internal class RecoveryApiImplJs(
 		)
 	}
 
-	override fun createExchangeDataRecoveryInfo(delegateId: String,
-			options: RecoveryApi_createExchangeDataRecoveryInfo_Options?): Promise<String> {
-		val _options: RecoveryApi_createExchangeDataRecoveryInfo_Options = options ?: js("{}")
+	override fun createExchangeDataRecoveryInfo(delegateId: String, options: dynamic):
+			Promise<String> {
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val delegateIdConverted: String = delegateId
-			val lifetimeSecondsConverted: Int? = convertingOptionOrDefault(
-				_options.lifetimeSeconds,
+			val lifetimeSecondsConverted: Int? = convertingOptionOrDefaultNullable(
+				_options,
+				"lifetimeSeconds",
 				null
-			) { lifetimeSeconds ->
+			) { lifetimeSeconds: Double? ->
 				numberToInt(lifetimeSeconds, "lifetimeSeconds")
 			}
 			val result = recoveryApi.createExchangeDataRecoveryInfo(
@@ -119,7 +119,7 @@ internal class RecoveryApiImplJs(
 			recoveryKeyConverted,
 		)
 		result?.let { nonNull1 ->
-			result?.name
+			nonNull1.name
 		}
 	}
 

@@ -2,12 +2,8 @@
 package com.icure.sdk.js.api.flavoured.`impl`
 
 import com.icure.sdk.api.flavoured.InvoiceBasicApi
-import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefault
+import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.sdk.js.api.flavoured.InvoiceBasicApiJs
-import com.icure.sdk.js.api.flavoured.InvoiceBasicApi_appendCodes_Options
-import com.icure.sdk.js.api.flavoured.InvoiceBasicApi_findInvoicesByAuthor_Options
-import com.icure.sdk.js.api.flavoured.InvoiceBasicApi_listAllHcpsByStatus_Options
-import com.icure.sdk.js.api.flavoured.InvoiceBasicApi_listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate_Options
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.dynamicToJsonNullsafe
 import com.icure.sdk.js.model.CheckedConverters.listToArray
@@ -245,30 +241,33 @@ internal class InvoiceBasicApiImplJs(
 		sentMediumType: String,
 		secretFKeys: String,
 		invoicingCodes: Array<EncryptedInvoicingCodeJs>,
-		options: InvoiceBasicApi_appendCodes_Options?,
+		options: dynamic,
 	): Promise<Array<EncryptedInvoiceJs>> {
-		val _options: InvoiceBasicApi_appendCodes_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val userIdConverted: String = userId
 			val typeConverted: String = type
 			val sentMediumTypeConverted: String = sentMediumType
 			val secretFKeysConverted: String = secretFKeys
-			val insuranceIdConverted: String? = convertingOptionOrDefault(
-				_options.insuranceId,
+			val insuranceIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"insuranceId",
 				null
-			) { insuranceId ->
+			) { insuranceId: String? ->
 				insuranceId
 			}
-			val invoiceIdConverted: String? = convertingOptionOrDefault(
-				_options.invoiceId,
+			val invoiceIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"invoiceId",
 				null
-			) { invoiceId ->
+			) { invoiceId: String? ->
 				invoiceId
 			}
-			val gracePeriodConverted: Int? = convertingOptionOrDefault(
-				_options.gracePeriod,
+			val gracePeriodConverted: Int? = convertingOptionOrDefaultNullable(
+				_options,
+				"gracePeriod",
 				null
-			) { gracePeriod ->
+			) { gracePeriod: Double? ->
 				numberToInt(gracePeriod, "gracePeriod")
 			}
 			val invoicingCodesConverted: List<EncryptedInvoicingCode> = arrayToList(
@@ -327,40 +326,44 @@ internal class InvoiceBasicApiImplJs(
 		)
 	}
 
-	override fun findInvoicesByAuthor(hcPartyId: String,
-			options: InvoiceBasicApi_findInvoicesByAuthor_Options?):
+	override fun findInvoicesByAuthor(hcPartyId: String, options: dynamic):
 			Promise<PaginatedListJs<EncryptedInvoiceJs>> {
-		val _options: InvoiceBasicApi_findInvoicesByAuthor_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val hcPartyIdConverted: String = hcPartyId
-			val fromDateConverted: Long? = convertingOptionOrDefault(
-				_options.fromDate,
+			val fromDateConverted: Long? = convertingOptionOrDefaultNullable(
+				_options,
+				"fromDate",
 				null
-			) { fromDate ->
+			) { fromDate: Double? ->
 				numberToLong(fromDate, "fromDate")
 			}
-			val toDateConverted: Long? = convertingOptionOrDefault(
-				_options.toDate,
+			val toDateConverted: Long? = convertingOptionOrDefaultNullable(
+				_options,
+				"toDate",
 				null
-			) { toDate ->
+			) { toDate: Double? ->
 				numberToLong(toDate, "toDate")
 			}
-			val startKeyConverted: JsonElement? = convertingOptionOrDefault(
-				_options.startKey,
+			val startKeyConverted: JsonElement? = convertingOptionOrDefaultNullable(
+				_options,
+				"startKey",
 				null
-			) { startKey ->
+			) { startKey: dynamic ->
 				dynamicToJsonNullsafe(startKey, "startKey")
 			}
-			val startDocumentIdConverted: String? = convertingOptionOrDefault(
-				_options.startDocumentId,
+			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"startDocumentId",
 				null
-			) { startDocumentId ->
+			) { startDocumentId: String? ->
 				startDocumentId
 			}
-			val limitConverted: Int? = convertingOptionOrDefault(
-				_options.limit,
+			val limitConverted: Int? = convertingOptionOrDefaultNullable(
+				_options,
+				"limit",
 				null
-			) { limit ->
+			) { limit: Double? ->
 				numberToInt(limit, "limit")
 			}
 			val result = invoiceBasicApi.findInvoicesByAuthor(
@@ -423,25 +426,26 @@ internal class InvoiceBasicApiImplJs(
 		sentMediumType: String,
 		invoiceType: String,
 		sent: Boolean,
-		options: InvoiceBasicApi_listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate_Options?,
+		options: dynamic,
 	): Promise<Array<EncryptedInvoiceJs>> {
-		val _options: InvoiceBasicApi_listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate_Options =
-				options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val hcPartyIdConverted: String = hcPartyId
 			val sentMediumTypeConverted: MediumType = MediumType.valueOf(sentMediumType)
 			val invoiceTypeConverted: InvoiceType = InvoiceType.valueOf(invoiceType)
 			val sentConverted: Boolean = sent
-			val fromConverted: Long? = convertingOptionOrDefault(
-				_options.from,
+			val fromConverted: Long? = convertingOptionOrDefaultNullable(
+				_options,
+				"from",
 				null
-			) { from ->
+			) { from: Double? ->
 				numberToLong(from, "from")
 			}
-			val toConverted: Long? = convertingOptionOrDefault(
-				_options.to,
+			val toConverted: Long? = convertingOptionOrDefaultNullable(
+				_options,
+				"to",
 				null
-			) { to ->
+			) { to: Double? ->
 				numberToLong(to, "to")
 			}
 			val result = invoiceBasicApi.listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(
@@ -639,21 +643,23 @@ internal class InvoiceBasicApiImplJs(
 	override fun listAllHcpsByStatus(
 		status: String,
 		hcpIds: Array<String>,
-		options: InvoiceBasicApi_listAllHcpsByStatus_Options?,
+		options: dynamic,
 	): Promise<Array<EncryptedInvoiceJs>> {
-		val _options: InvoiceBasicApi_listAllHcpsByStatus_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val statusConverted: String = status
-			val fromConverted: Long? = convertingOptionOrDefault(
-				_options.from,
+			val fromConverted: Long? = convertingOptionOrDefaultNullable(
+				_options,
+				"from",
 				null
-			) { from ->
+			) { from: Double? ->
 				numberToLong(from, "from")
 			}
-			val toConverted: Long? = convertingOptionOrDefault(
-				_options.to,
+			val toConverted: Long? = convertingOptionOrDefaultNullable(
+				_options,
+				"to",
 				null
-			) { to ->
+			) { to: Double? ->
 				numberToLong(to, "to")
 			}
 			val hcpIdsConverted: List<String> = arrayToList(

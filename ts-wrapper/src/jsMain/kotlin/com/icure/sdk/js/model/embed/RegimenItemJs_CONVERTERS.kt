@@ -7,7 +7,9 @@ import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.js.model.base.codeStub_fromJs
 import com.icure.sdk.js.model.base.codeStub_toJs
 import com.icure.sdk.model.embed.RegimenItem
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun regimenItem_toJs(obj: RegimenItem): RegimenItemJs {
 	val date = longToNumber(obj.date)
 	val dayNumber = intToNumber(obj.dayNumber)

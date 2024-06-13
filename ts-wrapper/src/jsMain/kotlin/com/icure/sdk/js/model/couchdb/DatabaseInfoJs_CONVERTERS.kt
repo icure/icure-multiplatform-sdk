@@ -5,7 +5,9 @@ import com.icure.sdk.js.model.CheckedConverters.longToNumber
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.model.couchdb.DatabaseInfo
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun databaseInfo_toJs(obj: DatabaseInfo): DatabaseInfoJs {
 	val id = obj.id
 	val updateSeq = obj.updateSeq

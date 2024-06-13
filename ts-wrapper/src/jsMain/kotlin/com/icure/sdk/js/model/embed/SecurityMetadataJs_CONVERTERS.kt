@@ -11,7 +11,9 @@ import com.icure.sdk.model.embed.SecurityMetadata
 import com.icure.sdk.model.specializations.SecureDelegationKeyString
 import com.icure.sdk.model.specializations.Sha256HexString
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun securityMetadata_toJs(obj: SecurityMetadata): SecurityMetadataJs {
 	val secureDelegations = mapToObject(
 		obj.secureDelegations,

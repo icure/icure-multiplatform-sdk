@@ -3,7 +3,9 @@ package com.icure.sdk.js.model
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.model.PaginatedList
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun <T, T_JS> paginatedList_toJs(obj: PaginatedList<T>, convertT: (T) -> T_JS):
 		PaginatedListJs<T_JS> {
 	val rows = listToArray(

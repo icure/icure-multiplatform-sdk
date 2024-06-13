@@ -9,7 +9,7 @@ import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs'
 export interface TimeTableFlavouredApi<E extends TimeTable> {
 
 	shareWith(delegateId: string, timeTable: E,
-			options?: { delegateId?: string, timeTable?: E, shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<E>>;
+			options?: { shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<E>>;
 
 	tryShareWithMany(timeTable: E,
 			delegates: { [ key: string ]: TimeTableShareOptions }): Promise<SimpleShareResult<E>>;

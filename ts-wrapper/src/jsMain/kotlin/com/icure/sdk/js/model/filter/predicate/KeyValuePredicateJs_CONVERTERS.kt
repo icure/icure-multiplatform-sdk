@@ -4,11 +4,13 @@ import com.icure.sdk.js.model.specializations.anyPrimitive_fromJs
 import com.icure.sdk.js.model.specializations.anyPrimitive_toJs
 import com.icure.sdk.model.filter.predicate.KeyValuePredicate
 import com.icure.sdk.model.filter.predicate.Operator
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun keyValuePredicate_toJs(obj: KeyValuePredicate): KeyValuePredicateJs {
 	val key = obj.key
 	val operator = obj.operator?.let { nonNull1 ->
-		obj.operator?.name
+		nonNull1.name
 	}
 	val value = obj.value?.let { nonNull1 ->
 		anyPrimitive_toJs(nonNull1)

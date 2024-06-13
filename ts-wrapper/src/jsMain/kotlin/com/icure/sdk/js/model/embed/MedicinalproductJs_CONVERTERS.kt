@@ -7,7 +7,9 @@ import com.icure.sdk.js.model.base.codeStub_fromJs
 import com.icure.sdk.js.model.base.codeStub_toJs
 import com.icure.sdk.model.base.CodeStub
 import com.icure.sdk.model.embed.Medicinalproduct
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun medicinalproduct_toJs(obj: Medicinalproduct): MedicinalproductJs {
 	val intendedcds = listToArray(
 		obj.intendedcds,

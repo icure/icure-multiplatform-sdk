@@ -3,7 +3,9 @@ package com.icure.sdk.js.crypto.entities
 import com.icure.sdk.crypto.entities.HealthElementShareOptions
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.model.requests.RequestedPermission
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun healthElementShareOptions_toJs(obj: HealthElementShareOptions):
 		HealthElementShareOptionsJs {
 	val requestedPermissions = obj.requestedPermissions.name

@@ -7,7 +7,9 @@ import com.icure.sdk.js.model.base.identifier_fromJs
 import com.icure.sdk.js.model.base.identifier_toJs
 import com.icure.sdk.model.base.Identifier
 import com.icure.sdk.model.filter.contact.ContactByHcPartyIdentifiersFilter
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun contactByHcPartyIdentifiersFilter_toJs(obj: ContactByHcPartyIdentifiersFilter):
 		ContactByHcPartyIdentifiersFilterJs {
 	val healthcarePartyId = obj.healthcarePartyId

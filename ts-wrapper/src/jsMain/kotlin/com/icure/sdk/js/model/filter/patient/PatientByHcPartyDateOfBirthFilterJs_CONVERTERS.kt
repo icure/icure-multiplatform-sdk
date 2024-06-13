@@ -3,7 +3,9 @@ package com.icure.sdk.js.model.filter.patient
 import com.icure.sdk.js.model.CheckedConverters.intToNumber
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.model.filter.patient.PatientByHcPartyDateOfBirthFilter
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun patientByHcPartyDateOfBirthFilter_toJs(obj: PatientByHcPartyDateOfBirthFilter):
 		PatientByHcPartyDateOfBirthFilterJs {
 	val desc = obj.desc

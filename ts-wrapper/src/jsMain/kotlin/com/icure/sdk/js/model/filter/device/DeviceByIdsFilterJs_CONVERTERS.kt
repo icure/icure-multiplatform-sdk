@@ -4,7 +4,9 @@ import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.setToArray
 import com.icure.sdk.model.filter.device.DeviceByIdsFilter
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun deviceByIdsFilter_toJs(obj: DeviceByIdsFilter): DeviceByIdsFilterJs {
 	val ids = setToArray(
 		obj.ids,

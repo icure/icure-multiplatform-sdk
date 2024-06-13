@@ -2,10 +2,8 @@
 package com.icure.sdk.js.api.`impl`
 
 import com.icure.sdk.api.DeviceApi
-import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefault
+import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.sdk.js.api.DeviceApiJs
-import com.icure.sdk.js.api.DeviceApi_filterDevicesBy_Options
-import com.icure.sdk.js.api.DeviceApi_getDevicesInGroup_Options
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
@@ -28,6 +26,7 @@ import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
 import kotlin.Array
+import kotlin.Double
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String
@@ -124,20 +123,22 @@ internal class DeviceApiImplJs(
 		)
 	}
 
-	override fun filterDevicesBy(filterChain: FilterChainJs<DeviceJs>,
-			options: DeviceApi_filterDevicesBy_Options?): Promise<PaginatedListJs<DeviceJs>> {
-		val _options: DeviceApi_filterDevicesBy_Options = options ?: js("{}")
+	override fun filterDevicesBy(filterChain: FilterChainJs<DeviceJs>, options: dynamic):
+			Promise<PaginatedListJs<DeviceJs>> {
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
-			val startDocumentIdConverted: String? = convertingOptionOrDefault(
-				_options.startDocumentId,
+			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"startDocumentId",
 				null
-			) { startDocumentId ->
+			) { startDocumentId: String? ->
 				startDocumentId
 			}
-			val limitConverted: Int? = convertingOptionOrDefault(
-				_options.limit,
+			val limitConverted: Int? = convertingOptionOrDefaultNullable(
+				_options,
+				"limit",
 				null
-			) { limit ->
+			) { limit: Double? ->
 				numberToInt(limit, "limit")
 			}
 			val filterChainConverted: FilterChain<Device> = filterChain_fromJs(
@@ -207,15 +208,15 @@ internal class DeviceApiImplJs(
 		)
 	}
 
-	override fun getDevicesInGroup(groupId: String, options: DeviceApi_getDevicesInGroup_Options?):
-			Promise<Array<DeviceJs>> {
-		val _options: DeviceApi_getDevicesInGroup_Options = options ?: js("{}")
+	override fun getDevicesInGroup(groupId: String, options: dynamic): Promise<Array<DeviceJs>> {
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val groupIdConverted: String = groupId
-			val deviceIdsConverted: List<String>? = convertingOptionOrDefault(
-				_options.deviceIds,
+			val deviceIdsConverted: List<String>? = convertingOptionOrDefaultNullable(
+				_options,
+				"deviceIds",
 				null
-			) { deviceIds ->
+			) { deviceIds: Array<String>? ->
 				arrayToList(
 					deviceIds,
 					"deviceIds",

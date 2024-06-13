@@ -11,10 +11,12 @@ import com.icure.sdk.model.embed.DecryptedAddress
 import com.icure.sdk.model.embed.DecryptedTelecom
 import com.icure.sdk.model.embed.EncryptedAddress
 import com.icure.sdk.model.embed.EncryptedTelecom
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun address_toJs(obj: DecryptedAddress): DecryptedAddressJs {
 	val addressType = obj.addressType?.let { nonNull1 ->
-		obj.addressType?.name
+		nonNull1.name
 	}
 	val descr = obj.descr
 	val street = obj.street
@@ -104,9 +106,10 @@ public fun address_fromJs(obj: DecryptedAddressJs): DecryptedAddress {
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun address_toJs(obj: EncryptedAddress): EncryptedAddressJs {
 	val addressType = obj.addressType?.let { nonNull1 ->
-		obj.addressType?.name
+		nonNull1.name
 	}
 	val descr = obj.descr
 	val street = obj.street
@@ -196,6 +199,7 @@ public fun address_fromJs(obj: EncryptedAddressJs): EncryptedAddress {
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun address_toJs(obj: Address): AddressJs = when (obj) {
 	is EncryptedAddress -> address_toJs(obj)
 	is DecryptedAddress -> address_toJs(obj)

@@ -4,7 +4,9 @@ import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.setToArray
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun secretIdOption_toJs(obj: SecretIdOption): SecretIdOptionJs = when (obj) {
 	is SecretIdOption.UseAnyConfidential -> secretIdOption_UseAnyConfidential_toJs(obj)
 	is SecretIdOption.UseAnySharedWithParent -> secretIdOption_UseAnySharedWithParent_toJs(obj)
@@ -25,12 +27,14 @@ public fun secretIdOption_fromJs(obj: SecretIdOptionJs): SecretIdOption = when {
 			IllegalArgumentException("""Unknown concrete implementation for com.icure.sdk.crypto.entities.SecretIdOption: $obj""")
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun secretIdOption_UseAnyConfidential_toJs(obj: SecretIdOption.UseAnyConfidential):
 		SecretIdOptionJs_UseAnyConfidentialJs = SecretIdOptionJs_UseAnyConfidentialJs
 
 public fun secretIdOption_UseAnyConfidential_fromJs(obj: SecretIdOptionJs_UseAnyConfidentialJs):
 		SecretIdOption.UseAnyConfidential = SecretIdOption.UseAnyConfidential
 
+@Suppress("UNUSED_VARIABLE")
 public fun secretIdOption_UseAnySharedWithParent_toJs(obj: SecretIdOption.UseAnySharedWithParent):
 		SecretIdOptionJs_UseAnySharedWithParentJs = SecretIdOptionJs_UseAnySharedWithParentJs
 
@@ -38,6 +42,7 @@ public
 		fun secretIdOption_UseAnySharedWithParent_fromJs(obj: SecretIdOptionJs_UseAnySharedWithParentJs):
 		SecretIdOption.UseAnySharedWithParent = SecretIdOption.UseAnySharedWithParent
 
+@Suppress("UNUSED_VARIABLE")
 public fun secretIdOption_Use_toJs(obj: SecretIdOption.Use): SecretIdOptionJs_UseJs {
 	val secretIds = setToArray(
 		obj.secretIds,

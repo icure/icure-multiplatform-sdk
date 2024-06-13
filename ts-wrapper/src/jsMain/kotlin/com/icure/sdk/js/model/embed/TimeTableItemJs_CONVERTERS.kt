@@ -9,7 +9,9 @@ import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.model.embed.TimeTableHour
 import com.icure.sdk.model.embed.TimeTableItem
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun timeTableItem_toJs(obj: TimeTableItem): TimeTableItemJs {
 	val rruleStartDate = longToNumber(obj.rruleStartDate)
 	val rrule = obj.rrule

@@ -34,7 +34,7 @@ export interface ContactApi {
 	createContacts(entities: Array<DecryptedContact>): Promise<Array<DecryptedContact>>;
 
 	withEncryptionMetadata(base: DecryptedContact | undefined, patient: Patient,
-			options?: { base?: DecryptedContact | undefined, patient?: Patient, user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdOption }): Promise<DecryptedContact>;
+			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdOption }): Promise<DecryptedContact>;
 
 	getEncryptionKeysOf(contact: Contact): Promise<Array<HexString>>;
 
@@ -59,7 +59,7 @@ export interface ContactApi {
 			minOccurrences: number): Promise<Array<LabelledOccurence>>;
 
 	shareWith(delegateId: string, contact: DecryptedContact,
-			options?: { delegateId?: string, contact?: DecryptedContact, shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<DecryptedContact>>;
+			options?: { shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<DecryptedContact>>;
 
 	tryShareWithMany(contact: DecryptedContact,
 			delegates: { [ key: string ]: ContactShareOptions }): Promise<SimpleShareResult<DecryptedContact>>;
@@ -68,7 +68,7 @@ export interface ContactApi {
 			delegates: { [ key: string ]: ContactShareOptions }): Promise<DecryptedContact>;
 
 	findContactsByHcPartyPatient(hcPartyId: string, patient: Patient,
-			options?: { hcPartyId?: string, patient?: Patient, startDate?: number | undefined, endDate?: number | undefined, descending?: boolean | undefined }): Promise<PaginatedListIterator<DecryptedContact>>;
+			options?: { startDate?: number | undefined, endDate?: number | undefined, descending?: boolean | undefined }): Promise<PaginatedListIterator<DecryptedContact>>;
 
 	modifyContact(entity: DecryptedContact): Promise<DecryptedContact>;
 
@@ -93,7 +93,7 @@ export interface ContactApi {
 			formIds: Array<string>): Promise<Array<DecryptedContact>>;
 
 	listContactsByHCPartyAndPatientSecretFKeys(hcPartyId: string, secretPatientKeys: Array<string>,
-			options?: { hcPartyId?: string, secretPatientKeys?: Array<string>, planOfActionsIds?: string | undefined, skipClosedContacts?: boolean | undefined }): Promise<Array<DecryptedContact>>;
+			options?: { planOfActionsIds?: string | undefined, skipClosedContacts?: boolean | undefined }): Promise<Array<DecryptedContact>>;
 
 	closeForHCPartyPatientForeignKeys(hcPartyId: string,
 			secretPatientKeys: Array<string>): Promise<Array<DecryptedContact>>;
@@ -110,17 +110,17 @@ export interface ContactApi {
 			healthElementId: string): Promise<Array<DecryptedService>>;
 
 	findContactsByOpeningDate(startDate: number, endDate: number, hcPartyId: string,
-			options?: { startDate?: number, endDate?: number, hcPartyId?: string, startKey?: any | undefined, startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<DecryptedContact>>;
+			options?: { startKey?: any | undefined, startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<DecryptedContact>>;
 
 	filterServicesBy(filterChain: FilterChain<Service>, startDocumentId: string | undefined,
 			limit: number | undefined): Promise<PaginatedList<DecryptedService>>;
 
 	subscribeToServiceEvents(events: Array<SubscriptionEventType>, filter: AbstractFilter<Service>,
 			eventFired: (x1: DecryptedService) => Promise<void>,
-			options?: { events?: Array<SubscriptionEventType>, filter?: AbstractFilter<Service>, onConnected?: () => Promise<void>, channelCapacity?: number, retryDelay?: DurationMs, retryDelayExponentFactor?: number, maxRetries?: number, eventFired?: (x1: DecryptedService) => Promise<void> }): Promise<Connection>;
+			options?: { onConnected?: () => Promise<void>, channelCapacity?: number, retryDelay?: DurationMs, retryDelayExponentFactor?: number, maxRetries?: number }): Promise<Connection>;
 
 	subscribeToEvents(events: Array<SubscriptionEventType>, filter: AbstractFilter<Contact>,
 			eventFired: (x1: DecryptedContact) => Promise<void>,
-			options?: { events?: Array<SubscriptionEventType>, filter?: AbstractFilter<Contact>, onConnected?: () => Promise<void>, channelCapacity?: number, retryDelay?: DurationMs, retryDelayExponentFactor?: number, maxRetries?: number, eventFired?: (x1: DecryptedContact) => Promise<void> }): Promise<Connection>;
+			options?: { onConnected?: () => Promise<void>, channelCapacity?: number, retryDelay?: DurationMs, retryDelayExponentFactor?: number, maxRetries?: number }): Promise<Connection>;
 
 }

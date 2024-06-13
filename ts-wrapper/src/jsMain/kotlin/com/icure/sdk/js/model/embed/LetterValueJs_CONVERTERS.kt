@@ -1,7 +1,9 @@
 package com.icure.sdk.js.model.embed
 
 import com.icure.sdk.model.embed.LetterValue
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun letterValue_toJs(obj: LetterValue): LetterValueJs {
 	val letter = obj.letter
 	val index = obj.index

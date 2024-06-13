@@ -1,7 +1,9 @@
 package com.icure.sdk.js.model.filter.code
 
 import com.icure.sdk.model.filter.code.CodeByRegionTypeLabelLanguageFilter
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun codeByRegionTypeLabelLanguageFilter_toJs(obj: CodeByRegionTypeLabelLanguageFilter):
 		CodeByRegionTypeLabelLanguageFilterJs {
 	val desc = obj.desc

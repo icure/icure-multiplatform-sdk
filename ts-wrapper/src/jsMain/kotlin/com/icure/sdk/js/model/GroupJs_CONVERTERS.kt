@@ -22,8 +22,10 @@ import com.icure.sdk.model.embed.UserType
 import com.icure.sdk.model.security.OperationToken
 import kotlin.Array
 import kotlin.String
+import kotlin.Suppress
 import kotlin.collections.Set
 
+@Suppress("UNUSED_VARIABLE")
 public fun group_toJs(obj: Group): GroupJs {
 	val id = obj.id
 	val rev = obj.rev

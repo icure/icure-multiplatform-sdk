@@ -19,7 +19,7 @@ public external interface TimeTableFlavouredApiJs<E : TimeTableJs> {
 	public fun shareWith(
 		delegateId: String,
 		timeTable: E,
-		options: TimeTableFlavouredApi_shareWith_Options?,
+		options: dynamic,
 	): Promise<SimpleShareResultJs<E>>
 
 	public fun tryShareWithMany(timeTable: E, delegates: Record<String, TimeTableShareOptionsJs>):
@@ -39,12 +39,4 @@ public external interface TimeTableFlavouredApiJs<E : TimeTableJs> {
 	): Promise<Array<E>>
 
 	public fun getTimeTablesByAgendaId(agendaId: String): Promise<Array<E>>
-}
-
-public external interface TimeTableFlavouredApi_shareWith_Options {
-	public val shareEncryptionKeys: String
-
-	public val shareOwningEntityIds: String
-
-	public val requestedPermission: String
 }

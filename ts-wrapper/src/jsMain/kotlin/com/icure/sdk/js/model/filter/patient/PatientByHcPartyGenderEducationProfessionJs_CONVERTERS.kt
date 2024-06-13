@@ -2,14 +2,16 @@ package com.icure.sdk.js.model.filter.patient
 
 import com.icure.sdk.model.embed.Gender
 import com.icure.sdk.model.filter.patient.PatientByHcPartyGenderEducationProfession
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public
 		fun patientByHcPartyGenderEducationProfession_toJs(obj: PatientByHcPartyGenderEducationProfession):
 		PatientByHcPartyGenderEducationProfessionJs {
 	val desc = obj.desc
 	val healthcarePartyId = obj.healthcarePartyId
 	val gender = obj.gender?.let { nonNull1 ->
-		obj.gender?.name
+		nonNull1.name
 	}
 	val education = obj.education
 	val profession = obj.profession

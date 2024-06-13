@@ -4,7 +4,9 @@ import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.setToArray
 import com.icure.sdk.model.filter.hcparty.HealthcarePartyByIdsFilter
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun healthcarePartyByIdsFilter_toJs(obj: HealthcarePartyByIdsFilter):
 		HealthcarePartyByIdsFilterJs {
 	val ids = setToArray(

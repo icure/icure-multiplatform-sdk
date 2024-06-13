@@ -17,8 +17,7 @@ export interface ICureApi {
 
 	getReplicationInfo(): Promise<ReplicationInfo>;
 
-	updateDesignDoc(entityName: string,
-			options?: { entityName?: string, warmup?: boolean | undefined }): Promise<boolean>;
+	updateDesignDoc(entityName: string, options?: { warmup?: boolean | undefined }): Promise<boolean>;
 
 	resolvePatientsConflicts(options?: { limit?: number | undefined }): Promise<Array<IdWithRev>>;
 

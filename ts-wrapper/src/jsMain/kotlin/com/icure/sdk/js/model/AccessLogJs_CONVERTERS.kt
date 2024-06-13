@@ -25,8 +25,10 @@ import com.icure.sdk.model.base.CodeStub
 import com.icure.sdk.model.embed.Delegation
 import kotlin.Array
 import kotlin.String
+import kotlin.Suppress
 import kotlin.collections.Set
 
+@Suppress("UNUSED_VARIABLE")
 public fun accessLog_toJs(obj: DecryptedAccessLog): DecryptedAccessLogJs {
 	val id = obj.id
 	val rev = obj.rev
@@ -254,6 +256,7 @@ public fun accessLog_fromJs(obj: DecryptedAccessLogJs): DecryptedAccessLog {
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun accessLog_toJs(obj: EncryptedAccessLog): EncryptedAccessLogJs {
 	val id = obj.id
 	val rev = obj.rev
@@ -481,6 +484,7 @@ public fun accessLog_fromJs(obj: EncryptedAccessLogJs): EncryptedAccessLog {
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun accessLog_toJs(obj: AccessLog): AccessLogJs = when (obj) {
 	is EncryptedAccessLog -> accessLog_toJs(obj)
 	is DecryptedAccessLog -> accessLog_toJs(obj)

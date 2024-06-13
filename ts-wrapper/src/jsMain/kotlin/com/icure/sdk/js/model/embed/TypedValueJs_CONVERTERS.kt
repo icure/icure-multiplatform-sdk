@@ -10,10 +10,12 @@ import com.icure.sdk.model.embed.DecryptedTypedValue
 import com.icure.sdk.model.embed.EncryptedTypedValue
 import com.icure.sdk.model.embed.TypedValue
 import com.icure.sdk.model.embed.TypedValuesType
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun typedValue_toJs(obj: DecryptedTypedValue): DecryptedTypedValueJs {
 	val type = obj.type?.let { nonNull1 ->
-		obj.type?.name
+		nonNull1.name
 	}
 	val booleanValue = obj.booleanValue
 	val integerValue = longToNumber(obj.integerValue)
@@ -57,9 +59,10 @@ public fun typedValue_fromJs(obj: DecryptedTypedValueJs): DecryptedTypedValue {
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun typedValue_toJs(obj: EncryptedTypedValue): EncryptedTypedValueJs {
 	val type = obj.type?.let { nonNull1 ->
-		obj.type?.name
+		nonNull1.name
 	}
 	val booleanValue = obj.booleanValue
 	val integerValue = longToNumber(obj.integerValue)
@@ -103,6 +106,7 @@ public fun typedValue_fromJs(obj: EncryptedTypedValueJs): EncryptedTypedValue {
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun typedValue_toJs(obj: TypedValue): TypedValueJs = when (obj) {
 	is EncryptedTypedValue -> typedValue_toJs(obj)
 	is DecryptedTypedValue -> typedValue_toJs(obj)

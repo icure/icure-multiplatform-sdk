@@ -4,7 +4,9 @@ import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.model.ListOfIds
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun listOfIds_toJs(obj: ListOfIds): ListOfIdsJs {
 	val ids = listToArray(
 		obj.ids,

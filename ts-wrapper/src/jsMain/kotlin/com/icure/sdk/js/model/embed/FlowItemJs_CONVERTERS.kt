@@ -3,7 +3,9 @@ package com.icure.sdk.js.model.embed
 import com.icure.sdk.js.model.CheckedConverters.longToNumber
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.model.embed.FlowItem
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun flowItem_toJs(obj: FlowItem): FlowItemJs {
 	val id = obj.id
 	val title = obj.title

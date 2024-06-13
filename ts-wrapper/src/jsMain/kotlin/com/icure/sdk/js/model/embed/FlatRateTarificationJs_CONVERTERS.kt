@@ -13,12 +13,14 @@ import com.icure.sdk.model.embed.EncryptedValorisation
 import com.icure.sdk.model.embed.FlatRateTarification
 import com.icure.sdk.model.embed.FlatRateType
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun flatRateTarification_toJs(obj: DecryptedFlatRateTarification):
 		DecryptedFlatRateTarificationJs {
 	val code = obj.code
 	val flatRateType = obj.flatRateType?.let { nonNull1 ->
-		obj.flatRateType?.name
+		nonNull1.name
 	}
 	val label = mapToObject(
 		obj.label,
@@ -82,11 +84,12 @@ public fun flatRateTarification_fromJs(obj: DecryptedFlatRateTarificationJs):
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun flatRateTarification_toJs(obj: EncryptedFlatRateTarification):
 		EncryptedFlatRateTarificationJs {
 	val code = obj.code
 	val flatRateType = obj.flatRateType?.let { nonNull1 ->
-		obj.flatRateType?.name
+		nonNull1.name
 	}
 	val label = mapToObject(
 		obj.label,
@@ -150,6 +153,7 @@ public fun flatRateTarification_fromJs(obj: EncryptedFlatRateTarificationJs):
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun flatRateTarification_toJs(obj: FlatRateTarification): FlatRateTarificationJs = when (obj)
 		{
 	is EncryptedFlatRateTarification -> flatRateTarification_toJs(obj)

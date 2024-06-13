@@ -1,7 +1,9 @@
 package com.icure.sdk.js.model.filter.user
 
 import com.icure.sdk.model.filter.user.UsersByPatientIdFilter
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun usersByPatientIdFilter_toJs(obj: UsersByPatientIdFilter): UsersByPatientIdFilterJs {
 	val patientId = obj.patientId
 	val desc = obj.desc

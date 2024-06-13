@@ -13,7 +13,9 @@ import com.icure.sdk.model.embed.ParagraphAgreement
 import kotlin.Double
 import kotlin.Long
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun paragraphAgreement_toJs(obj: ParagraphAgreement): ParagraphAgreementJs {
 	val timestamp = longToNumber(obj.timestamp)
 	val paragraph = obj.paragraph

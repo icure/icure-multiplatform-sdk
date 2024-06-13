@@ -6,7 +6,9 @@ import com.icure.sdk.js.model.CheckedConverters.intToNumber
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.setToArray
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun shamirUpdateRequest_toJs(obj: ShamirUpdateRequest): ShamirUpdateRequestJs {
 	val notariesIds = setToArray(
 		obj.notariesIds,

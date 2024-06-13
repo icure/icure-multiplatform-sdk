@@ -8,7 +8,9 @@ import com.icure.sdk.model.embed.DecryptedFinancialInstitutionInformation
 import com.icure.sdk.model.embed.EncryptedFinancialInstitutionInformation
 import com.icure.sdk.model.embed.FinancialInstitutionInformation
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun financialInstitutionInformation_toJs(obj: DecryptedFinancialInstitutionInformation):
 		DecryptedFinancialInstitutionInformationJs {
 	val name = obj.name
@@ -68,6 +70,7 @@ public fun financialInstitutionInformation_fromJs(obj: DecryptedFinancialInstitu
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun financialInstitutionInformation_toJs(obj: EncryptedFinancialInstitutionInformation):
 		EncryptedFinancialInstitutionInformationJs {
 	val name = obj.name
@@ -127,6 +130,7 @@ public fun financialInstitutionInformation_fromJs(obj: EncryptedFinancialInstitu
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun financialInstitutionInformation_toJs(obj: FinancialInstitutionInformation):
 		FinancialInstitutionInformationJs = when (obj) {
 	is EncryptedFinancialInstitutionInformation -> financialInstitutionInformation_toJs(obj)

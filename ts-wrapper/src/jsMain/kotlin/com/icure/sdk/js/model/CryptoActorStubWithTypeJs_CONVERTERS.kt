@@ -2,7 +2,9 @@ package com.icure.sdk.js.model
 
 import com.icure.sdk.model.CryptoActorStubWithType
 import com.icure.sdk.model.DataOwnerType
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun cryptoActorStubWithType_toJs(obj: CryptoActorStubWithType): CryptoActorStubWithTypeJs {
 	val type = obj.type.name
 	val stub = cryptoActorStub_toJs(obj.stub)

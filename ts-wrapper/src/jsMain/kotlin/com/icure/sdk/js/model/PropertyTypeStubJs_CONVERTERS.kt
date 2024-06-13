@@ -2,11 +2,13 @@ package com.icure.sdk.js.model
 
 import com.icure.sdk.model.PropertyTypeStub
 import com.icure.sdk.model.embed.TypedValuesType
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun propertyTypeStub_toJs(obj: PropertyTypeStub): PropertyTypeStubJs {
 	val identifier = obj.identifier
 	val type = obj.type?.let { nonNull1 ->
-		obj.type?.name
+		nonNull1.name
 	}
 	return PropertyTypeStubJs(js("{" +
 		"identifier:identifier," +

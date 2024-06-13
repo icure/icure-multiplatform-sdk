@@ -25,8 +25,10 @@ import com.icure.sdk.model.base.CodeStub
 import com.icure.sdk.model.embed.Delegation
 import kotlin.Array
 import kotlin.String
+import kotlin.Suppress
 import kotlin.collections.Set
 
+@Suppress("UNUSED_VARIABLE")
 public fun form_toJs(obj: DecryptedForm): DecryptedFormJs {
 	val id = obj.id
 	val rev = obj.rev
@@ -274,6 +276,7 @@ public fun form_fromJs(obj: DecryptedFormJs): DecryptedForm {
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun form_toJs(obj: EncryptedForm): EncryptedFormJs {
 	val id = obj.id
 	val rev = obj.rev
@@ -521,6 +524,7 @@ public fun form_fromJs(obj: EncryptedFormJs): EncryptedForm {
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun form_toJs(obj: Form): FormJs = when (obj) {
 	is EncryptedForm -> form_toJs(obj)
 	is DecryptedForm -> form_toJs(obj)

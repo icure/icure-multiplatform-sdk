@@ -1,7 +1,9 @@
 package com.icure.sdk.js.model
 
 import com.icure.sdk.model.DataOwnerWithType
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun dataOwnerWithType_toJs(obj: DataOwnerWithType): DataOwnerWithTypeJs = when (obj) {
 	is DataOwnerWithType.HcpDataOwner -> dataOwnerWithType_HcpDataOwner_toJs(obj)
 	is DataOwnerWithType.PatientDataOwner -> dataOwnerWithType_PatientDataOwner_toJs(obj)
@@ -22,6 +24,7 @@ public fun dataOwnerWithType_fromJs(obj: DataOwnerWithTypeJs): DataOwnerWithType
 			IllegalArgumentException("""Unknown concrete implementation for com.icure.sdk.model.DataOwnerWithType: $obj""")
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun dataOwnerWithType_HcpDataOwner_toJs(obj: DataOwnerWithType.HcpDataOwner):
 		DataOwnerWithTypeJs_HcpDataOwnerJs {
 	val dataOwner = healthcareParty_toJs(obj.dataOwner)
@@ -38,6 +41,7 @@ public fun dataOwnerWithType_HcpDataOwner_fromJs(obj: DataOwnerWithTypeJs_HcpDat
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun dataOwnerWithType_PatientDataOwner_toJs(obj: DataOwnerWithType.PatientDataOwner):
 		DataOwnerWithTypeJs_PatientDataOwnerJs {
 	val dataOwner = patient_toJs(obj.dataOwner)
@@ -54,6 +58,7 @@ public fun dataOwnerWithType_PatientDataOwner_fromJs(obj: DataOwnerWithTypeJs_Pa
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun dataOwnerWithType_DeviceDataOwner_toJs(obj: DataOwnerWithType.DeviceDataOwner):
 		DataOwnerWithTypeJs_DeviceDataOwnerJs {
 	val dataOwner = device_toJs(obj.dataOwner)

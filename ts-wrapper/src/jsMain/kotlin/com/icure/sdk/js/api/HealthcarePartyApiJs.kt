@@ -11,8 +11,6 @@ import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.filter.AbstractFilterJs
 import com.icure.sdk.js.model.filter.chain.FilterChainJs
 import kotlin.Array
-import kotlin.Boolean
-import kotlin.Double
 import kotlin.String
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
@@ -34,15 +32,12 @@ public external interface HealthcarePartyApiJs {
 
 	public fun getCurrentHealthcareParty(): Promise<HealthcarePartyJs>
 
-	public fun findHealthcarePartiesBy(options: HealthcarePartyApi_findHealthcarePartiesBy_Options?):
+	public fun findHealthcarePartiesBy(options: dynamic): Promise<PaginatedListJs<HealthcarePartyJs>>
+
+	public fun findHealthcarePartiesByName(options: dynamic):
 			Promise<PaginatedListJs<HealthcarePartyJs>>
 
-	public
-			fun findHealthcarePartiesByName(options: HealthcarePartyApi_findHealthcarePartiesByName_Options?):
-			Promise<PaginatedListJs<HealthcarePartyJs>>
-
-	public fun findHealthcarePartiesBySsinOrNihii(searchValue: String,
-			options: HealthcarePartyApi_findHealthcarePartiesBySsinOrNihii_Options?):
+	public fun findHealthcarePartiesBySsinOrNihii(searchValue: String, options: dynamic):
 			Promise<PaginatedListJs<HealthcarePartyJs>>
 
 	public fun listHealthcarePartiesByName(name: String): Promise<Array<HealthcarePartyJs>>
@@ -52,7 +47,7 @@ public external interface HealthcarePartyApiJs {
 		spec: String,
 		firstCode: String,
 		lastCode: String,
-		options: HealthcarePartyApi_findHealthcarePartiesBySpecialityAndPostCode_Options?,
+		options: dynamic,
 	): Promise<PaginatedListJs<HealthcarePartyJs>>
 
 	public fun getHealthcareParties(healthcarePartyIds: Array<String>):
@@ -70,12 +65,10 @@ public external interface HealthcarePartyApiJs {
 	public fun matchHealthcarePartiesBy(filter: AbstractFilterJs<HealthcarePartyJs>):
 			Promise<Array<String>>
 
-	public fun filterHealthPartiesBy(filterChain: FilterChainJs<HealthcarePartyJs>,
-			options: HealthcarePartyApi_filterHealthPartiesBy_Options?):
+	public fun filterHealthPartiesBy(filterChain: FilterChainJs<HealthcarePartyJs>, options: dynamic):
 			Promise<PaginatedListJs<HealthcarePartyJs>>
 
-	public fun getHealthcarePartiesInGroup(groupId: String,
-			options: HealthcarePartyApi_getHealthcarePartiesInGroup_Options?):
+	public fun getHealthcarePartiesInGroup(groupId: String, options: dynamic):
 			Promise<Array<HealthcarePartyJs>>
 
 	public fun deleteHealthcarePartiesInGroup(groupId: String, healthcarePartyIds: Array<String>):
@@ -87,64 +80,6 @@ public external interface HealthcarePartyApiJs {
 	public fun registerPatient(
 		groupId: String,
 		hcp: HealthcarePartyJs,
-		options: HealthcarePartyApi_registerPatient_Options?,
+		options: dynamic,
 	): Promise<DataOwnerRegistrationSuccessJs>
-}
-
-public external interface HealthcarePartyApi_findHealthcarePartiesBy_Options {
-	public val startKey: String?
-
-	public val startDocumentId: String?
-
-	public val limit: Double?
-
-	public val desc: Boolean?
-}
-
-public external interface HealthcarePartyApi_findHealthcarePartiesByName_Options {
-	public val name: String?
-
-	public val startKey: String?
-
-	public val startDocumentId: String?
-
-	public val limit: Double?
-
-	public val desc: Boolean?
-}
-
-public external interface HealthcarePartyApi_findHealthcarePartiesBySsinOrNihii_Options {
-	public val startKey: String?
-
-	public val startDocumentId: String?
-
-	public val limit: Double?
-
-	public val desc: Boolean
-}
-
-public external interface HealthcarePartyApi_findHealthcarePartiesBySpecialityAndPostCode_Options {
-	public val startKey: String?
-
-	public val startDocumentId: String?
-
-	public val limit: Double?
-}
-
-public external interface HealthcarePartyApi_filterHealthPartiesBy_Options {
-	public val startDocumentId: String?
-
-	public val limit: Double?
-}
-
-public external interface HealthcarePartyApi_getHealthcarePartiesInGroup_Options {
-	public val healthcarePartyIds: Array<String>?
-}
-
-public external interface HealthcarePartyApi_registerPatient_Options {
-	public val parentHcPartyId: String?
-
-	public val token: String?
-
-	public val useShortToken: Boolean?
 }

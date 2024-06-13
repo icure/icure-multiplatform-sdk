@@ -6,7 +6,9 @@ import com.icure.sdk.js.model.CheckedConverters.objectToMapNullsafe
 import com.icure.sdk.model.couchdb.DesignDocument
 import com.icure.sdk.model.couchdb.View
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun designDocument_toJs(obj: DesignDocument): DesignDocumentJs {
 	val id = obj.id
 	val rev = obj.rev

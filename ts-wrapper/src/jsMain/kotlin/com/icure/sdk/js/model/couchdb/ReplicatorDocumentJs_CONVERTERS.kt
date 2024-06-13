@@ -12,8 +12,10 @@ import com.icure.sdk.js.model.CheckedConverters.zonedDateTimeToString
 import com.icure.sdk.js.utils.Record
 import com.icure.sdk.model.couchdb.ReplicatorDocument
 import kotlin.String
+import kotlin.Suppress
 import kotlin.collections.Map
 
+@Suppress("UNUSED_VARIABLE")
 public fun replicatorDocument_toJs(obj: ReplicatorDocument): ReplicatorDocumentJs {
 	val id = obj.id
 	val rev = obj.rev

@@ -1,7 +1,9 @@
 package com.icure.sdk.js.model.filter.message
 
 import com.icure.sdk.model.filter.message.MessageByHcPartyFilter
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun messageByHcPartyFilter_toJs(obj: MessageByHcPartyFilter): MessageByHcPartyFilterJs {
 	val hcpId = obj.hcpId
 	val desc = obj.desc

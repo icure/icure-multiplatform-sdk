@@ -5,19 +5,12 @@ import com.icure.sdk.api.flavoured.MessageApi
 import com.icure.sdk.crypto.entities.MessageShareOptions
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
-import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefault
+import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNonNull
+import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.sdk.js.api.flavoured.MessageApiJs
-import com.icure.sdk.js.api.flavoured.MessageApi_findMessagesByHcPartyPatient_Options
-import com.icure.sdk.js.api.flavoured.MessageApi_findMessagesByTransportGuidSentDate_Options
-import com.icure.sdk.js.api.flavoured.MessageApi_shareWith_Options
-import com.icure.sdk.js.api.flavoured.MessageApi_subscribeToEvents_Options
-import com.icure.sdk.js.api.flavoured.MessageApi_withEncryptionMetadata_Options
 import com.icure.sdk.js.api.flavoured.MessageFlavouredApiJs
-import com.icure.sdk.js.api.flavoured.MessageFlavouredApi_findMessagesByHcPartyPatient_Options
-import com.icure.sdk.js.api.flavoured.MessageFlavouredApi_findMessagesByTransportGuidSentDate_Options
-import com.icure.sdk.js.api.flavoured.MessageFlavouredApi_shareWith_Options
-import com.icure.sdk.js.api.flavoured.MessageFlavouredApi_subscribeToEvents_Options
 import com.icure.sdk.js.crypto.entities.MessageShareOptionsJs
+import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.crypto.entities.messageShareOptions_fromJs
 import com.icure.sdk.js.crypto.entities.secretIdOption_fromJs
@@ -36,6 +29,7 @@ import com.icure.sdk.js.model.EncryptedMessageJs
 import com.icure.sdk.js.model.MessageJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.PatientJs
+import com.icure.sdk.js.model.UserJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.couchdb.docIdentifier_toJs
 import com.icure.sdk.js.model.filter.AbstractFilterJs
@@ -95,9 +89,9 @@ internal class MessageApiImplJs(
 			delegateId: String,
 			message: EncryptedMessageJs,
 			shareSecretIds: Array<String>,
-			options: MessageFlavouredApi_shareWith_Options?,
+			options: dynamic,
 		): Promise<SimpleShareResultJs<EncryptedMessageJs>> {
-			val _options: MessageFlavouredApi_shareWith_Options = options ?: js("{}")
+			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val messageConverted: EncryptedMessage = message_fromJs(message)
@@ -108,22 +102,25 @@ internal class MessageApiImplJs(
 						x1
 					},
 				)
-				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
-					_options.shareEncryptionKeys,
+				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+					_options,
+					"shareEncryptionKeys",
 					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareEncryptionKeys ->
+				) { shareEncryptionKeys: String ->
 					ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
 				}
-				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
-					_options.shareOwningEntityIds,
+				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+					_options,
+					"shareOwningEntityIds",
 					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareOwningEntityIds ->
+				) { shareOwningEntityIds: String ->
 					ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
 				}
-				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefault(
-					_options.requestedPermission,
+				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefaultNonNull(
+					_options,
+					"requestedPermission",
 					com.icure.sdk.model.requests.RequestedPermission.MaxWrite
-				) { requestedPermission ->
+				) { requestedPermission: String ->
 					RequestedPermission.valueOf(requestedPermission)
 				}
 				val result = messageApi.encrypted.shareWith(
@@ -193,28 +190,31 @@ internal class MessageApiImplJs(
 		override fun findMessagesByHcPartyPatient(
 			hcPartyId: String,
 			patient: PatientJs,
-			options: MessageFlavouredApi_findMessagesByHcPartyPatient_Options?,
+			options: dynamic,
 		): Promise<PaginatedListIteratorJs<EncryptedMessageJs>> {
-			val _options: MessageFlavouredApi_findMessagesByHcPartyPatient_Options = options ?: js("{}")
+			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val hcPartyIdConverted: String = hcPartyId
 				val patientConverted: Patient = patient_fromJs(patient)
-				val startDateConverted: Long? = convertingOptionOrDefault(
-					_options.startDate,
+				val startDateConverted: Long? = convertingOptionOrDefaultNullable(
+					_options,
+					"startDate",
 					null
-				) { startDate ->
+				) { startDate: Double? ->
 					numberToLong(startDate, "startDate")
 				}
-				val endDateConverted: Long? = convertingOptionOrDefault(
-					_options.endDate,
+				val endDateConverted: Long? = convertingOptionOrDefaultNullable(
+					_options,
+					"endDate",
 					null
-				) { endDate ->
+				) { endDate: Double? ->
 					numberToLong(endDate, "endDate")
 				}
-				val descendingConverted: Boolean? = convertingOptionOrDefault(
-					_options.descending,
+				val descendingConverted: Boolean? = convertingOptionOrDefaultNullable(
+					_options,
+					"descending",
 					null
-				) { descending ->
+				) { descending: Boolean? ->
 					descending
 				}
 				val result = messageApi.encrypted.findMessagesByHcPartyPatient(
@@ -431,36 +431,39 @@ internal class MessageApiImplJs(
 			transportGuid: String,
 			from: Double,
 			to: Double,
-			options: MessageFlavouredApi_findMessagesByTransportGuidSentDate_Options?,
+			options: dynamic,
 		): Promise<PaginatedListJs<EncryptedMessageJs>> {
-			val _options: MessageFlavouredApi_findMessagesByTransportGuidSentDate_Options = options ?:
-					js("{}")
+			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val transportGuidConverted: String = transportGuid
 				val fromConverted: Long = numberToLong(from, "from")
 				val toConverted: Long = numberToLong(to, "to")
-				val startKeyConverted: JsonElement? = convertingOptionOrDefault(
-					_options.startKey,
+				val startKeyConverted: JsonElement? = convertingOptionOrDefaultNullable(
+					_options,
+					"startKey",
 					null
-				) { startKey ->
+				) { startKey: dynamic ->
 					dynamicToJsonNullsafe(startKey, "startKey")
 				}
-				val startDocumentIdConverted: String? = convertingOptionOrDefault(
-					_options.startDocumentId,
+				val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
+					_options,
+					"startDocumentId",
 					null
-				) { startDocumentId ->
+				) { startDocumentId: String? ->
 					startDocumentId
 				}
-				val limitConverted: Int? = convertingOptionOrDefault(
-					_options.limit,
+				val limitConverted: Int? = convertingOptionOrDefaultNullable(
+					_options,
+					"limit",
 					null
-				) { limit ->
+				) { limit: Double? ->
 					numberToInt(limit, "limit")
 				}
-				val hcpIdConverted: String? = convertingOptionOrDefault(
-					_options.hcpId,
+				val hcpIdConverted: String? = convertingOptionOrDefaultNullable(
+					_options,
+					"hcpId",
 					null
-				) { hcpId ->
+				) { hcpId: String? ->
 					hcpId
 				}
 				val result = messageApi.encrypted.findMessagesByTransportGuidSentDate(
@@ -585,9 +588,9 @@ internal class MessageApiImplJs(
 			events: Array<String>,
 			filter: AbstractFilterJs<MessageJs>,
 			eventFired: (EncryptedMessageJs) -> Promise<Unit>,
-			options: MessageFlavouredApi_subscribeToEvents_Options?,
+			options: dynamic,
 		): Promise<ConnectionJs> {
-			val _options: MessageFlavouredApi_subscribeToEvents_Options = options ?: js("{}")
+			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
 					events,
@@ -602,36 +605,41 @@ internal class MessageApiImplJs(
 						message_fromJs(x1)
 					},
 				)
-				val onConnectedConverted: suspend () -> Unit = convertingOptionOrDefault(
-					_options.onConnected,
+				val onConnectedConverted: suspend () -> Unit = convertingOptionOrDefaultNonNull(
+					_options,
+					"onConnected",
 					{}
-				) { onConnected ->
+				) { onConnected: () -> Promise<Unit> ->
 					{  ->
 						onConnected().await()
 					}
 				}
-				val channelCapacityConverted: Int = convertingOptionOrDefault(
-					_options.channelCapacity,
+				val channelCapacityConverted: Int = convertingOptionOrDefaultNonNull(
+					_options,
+					"channelCapacity",
 					kotlinx.coroutines.channels.Channel.BUFFERED
-				) { channelCapacity ->
+				) { channelCapacity: Double ->
 					numberToInt(channelCapacity, "channelCapacity")
 				}
-				val retryDelayConverted: Duration = convertingOptionOrDefault(
-					_options.retryDelay,
+				val retryDelayConverted: Duration = convertingOptionOrDefaultNonNull(
+					_options,
+					"retryDelay",
 					2.seconds
-				) { retryDelay ->
+				) { retryDelay: Double ->
 					numberToDuration(retryDelay, "retryDelay")
 				}
-				val retryDelayExponentFactorConverted: Double = convertingOptionOrDefault(
-					_options.retryDelayExponentFactor,
+				val retryDelayExponentFactorConverted: Double = convertingOptionOrDefaultNonNull(
+					_options,
+					"retryDelayExponentFactor",
 					2.0
-				) { retryDelayExponentFactor ->
+				) { retryDelayExponentFactor: Double ->
 					retryDelayExponentFactor
 				}
-				val maxRetriesConverted: Int = convertingOptionOrDefault(
-					_options.maxRetries,
+				val maxRetriesConverted: Int = convertingOptionOrDefaultNonNull(
+					_options,
+					"maxRetries",
 					5
-				) { maxRetries ->
+				) { maxRetries: Double ->
 					numberToInt(maxRetries, "maxRetries")
 				}
 				val eventFiredConverted: suspend (EncryptedMessage) -> Unit = { arg0 ->
@@ -660,9 +668,9 @@ internal class MessageApiImplJs(
 			delegateId: String,
 			message: MessageJs,
 			shareSecretIds: Array<String>,
-			options: MessageFlavouredApi_shareWith_Options?,
+			options: dynamic,
 		): Promise<SimpleShareResultJs<MessageJs>> {
-			val _options: MessageFlavouredApi_shareWith_Options = options ?: js("{}")
+			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val messageConverted: Message = message_fromJs(message)
@@ -673,22 +681,25 @@ internal class MessageApiImplJs(
 						x1
 					},
 				)
-				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
-					_options.shareEncryptionKeys,
+				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+					_options,
+					"shareEncryptionKeys",
 					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareEncryptionKeys ->
+				) { shareEncryptionKeys: String ->
 					ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
 				}
-				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
-					_options.shareOwningEntityIds,
+				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+					_options,
+					"shareOwningEntityIds",
 					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareOwningEntityIds ->
+				) { shareOwningEntityIds: String ->
 					ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
 				}
-				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefault(
-					_options.requestedPermission,
+				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefaultNonNull(
+					_options,
+					"requestedPermission",
 					com.icure.sdk.model.requests.RequestedPermission.MaxWrite
-				) { requestedPermission ->
+				) { requestedPermission: String ->
 					RequestedPermission.valueOf(requestedPermission)
 				}
 				val result = messageApi.tryAndRecover.shareWith(
@@ -757,28 +768,31 @@ internal class MessageApiImplJs(
 		override fun findMessagesByHcPartyPatient(
 			hcPartyId: String,
 			patient: PatientJs,
-			options: MessageFlavouredApi_findMessagesByHcPartyPatient_Options?,
+			options: dynamic,
 		): Promise<PaginatedListIteratorJs<MessageJs>> {
-			val _options: MessageFlavouredApi_findMessagesByHcPartyPatient_Options = options ?: js("{}")
+			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val hcPartyIdConverted: String = hcPartyId
 				val patientConverted: Patient = patient_fromJs(patient)
-				val startDateConverted: Long? = convertingOptionOrDefault(
-					_options.startDate,
+				val startDateConverted: Long? = convertingOptionOrDefaultNullable(
+					_options,
+					"startDate",
 					null
-				) { startDate ->
+				) { startDate: Double? ->
 					numberToLong(startDate, "startDate")
 				}
-				val endDateConverted: Long? = convertingOptionOrDefault(
-					_options.endDate,
+				val endDateConverted: Long? = convertingOptionOrDefaultNullable(
+					_options,
+					"endDate",
 					null
-				) { endDate ->
+				) { endDate: Double? ->
 					numberToLong(endDate, "endDate")
 				}
-				val descendingConverted: Boolean? = convertingOptionOrDefault(
-					_options.descending,
+				val descendingConverted: Boolean? = convertingOptionOrDefaultNullable(
+					_options,
+					"descending",
 					null
-				) { descending ->
+				) { descending: Boolean? ->
 					descending
 				}
 				val result = messageApi.tryAndRecover.findMessagesByHcPartyPatient(
@@ -994,36 +1008,39 @@ internal class MessageApiImplJs(
 			transportGuid: String,
 			from: Double,
 			to: Double,
-			options: MessageFlavouredApi_findMessagesByTransportGuidSentDate_Options?,
+			options: dynamic,
 		): Promise<PaginatedListJs<MessageJs>> {
-			val _options: MessageFlavouredApi_findMessagesByTransportGuidSentDate_Options = options ?:
-					js("{}")
+			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val transportGuidConverted: String = transportGuid
 				val fromConverted: Long = numberToLong(from, "from")
 				val toConverted: Long = numberToLong(to, "to")
-				val startKeyConverted: JsonElement? = convertingOptionOrDefault(
-					_options.startKey,
+				val startKeyConverted: JsonElement? = convertingOptionOrDefaultNullable(
+					_options,
+					"startKey",
 					null
-				) { startKey ->
+				) { startKey: dynamic ->
 					dynamicToJsonNullsafe(startKey, "startKey")
 				}
-				val startDocumentIdConverted: String? = convertingOptionOrDefault(
-					_options.startDocumentId,
+				val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
+					_options,
+					"startDocumentId",
 					null
-				) { startDocumentId ->
+				) { startDocumentId: String? ->
 					startDocumentId
 				}
-				val limitConverted: Int? = convertingOptionOrDefault(
-					_options.limit,
+				val limitConverted: Int? = convertingOptionOrDefaultNullable(
+					_options,
+					"limit",
 					null
-				) { limit ->
+				) { limit: Double? ->
 					numberToInt(limit, "limit")
 				}
-				val hcpIdConverted: String? = convertingOptionOrDefault(
-					_options.hcpId,
+				val hcpIdConverted: String? = convertingOptionOrDefaultNullable(
+					_options,
+					"hcpId",
 					null
-				) { hcpId ->
+				) { hcpId: String? ->
 					hcpId
 				}
 				val result = messageApi.tryAndRecover.findMessagesByTransportGuidSentDate(
@@ -1148,9 +1165,9 @@ internal class MessageApiImplJs(
 			events: Array<String>,
 			filter: AbstractFilterJs<MessageJs>,
 			eventFired: (MessageJs) -> Promise<Unit>,
-			options: MessageFlavouredApi_subscribeToEvents_Options?,
+			options: dynamic,
 		): Promise<ConnectionJs> {
-			val _options: MessageFlavouredApi_subscribeToEvents_Options = options ?: js("{}")
+			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
 					events,
@@ -1165,36 +1182,41 @@ internal class MessageApiImplJs(
 						message_fromJs(x1)
 					},
 				)
-				val onConnectedConverted: suspend () -> Unit = convertingOptionOrDefault(
-					_options.onConnected,
+				val onConnectedConverted: suspend () -> Unit = convertingOptionOrDefaultNonNull(
+					_options,
+					"onConnected",
 					{}
-				) { onConnected ->
+				) { onConnected: () -> Promise<Unit> ->
 					{  ->
 						onConnected().await()
 					}
 				}
-				val channelCapacityConverted: Int = convertingOptionOrDefault(
-					_options.channelCapacity,
+				val channelCapacityConverted: Int = convertingOptionOrDefaultNonNull(
+					_options,
+					"channelCapacity",
 					kotlinx.coroutines.channels.Channel.BUFFERED
-				) { channelCapacity ->
+				) { channelCapacity: Double ->
 					numberToInt(channelCapacity, "channelCapacity")
 				}
-				val retryDelayConverted: Duration = convertingOptionOrDefault(
-					_options.retryDelay,
+				val retryDelayConverted: Duration = convertingOptionOrDefaultNonNull(
+					_options,
+					"retryDelay",
 					2.seconds
-				) { retryDelay ->
+				) { retryDelay: Double ->
 					numberToDuration(retryDelay, "retryDelay")
 				}
-				val retryDelayExponentFactorConverted: Double = convertingOptionOrDefault(
-					_options.retryDelayExponentFactor,
+				val retryDelayExponentFactorConverted: Double = convertingOptionOrDefaultNonNull(
+					_options,
+					"retryDelayExponentFactor",
 					2.0
-				) { retryDelayExponentFactor ->
+				) { retryDelayExponentFactor: Double ->
 					retryDelayExponentFactor
 				}
-				val maxRetriesConverted: Int = convertingOptionOrDefault(
-					_options.maxRetries,
+				val maxRetriesConverted: Int = convertingOptionOrDefaultNonNull(
+					_options,
+					"maxRetries",
 					5
-				) { maxRetries ->
+				) { maxRetries: Double ->
 					numberToInt(maxRetries, "maxRetries")
 				}
 				val eventFiredConverted: suspend (Message) -> Unit = { arg0 ->
@@ -1229,9 +1251,9 @@ internal class MessageApiImplJs(
 	override fun withEncryptionMetadata(
 		base: DecryptedMessageJs?,
 		patient: PatientJs?,
-		options: MessageApi_withEncryptionMetadata_Options?,
+		options: dynamic,
 	): Promise<DecryptedMessageJs> {
-		val _options: MessageApi_withEncryptionMetadata_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val baseConverted: DecryptedMessage? = base?.let { nonNull1 ->
 				message_fromJs(nonNull1)
@@ -1239,18 +1261,20 @@ internal class MessageApiImplJs(
 			val patientConverted: Patient? = patient?.let { nonNull1 ->
 				patient_fromJs(nonNull1)
 			}
-			val userConverted: User? = convertingOptionOrDefault(
-				_options.user,
+			val userConverted: User? = convertingOptionOrDefaultNullable(
+				_options,
+				"user",
 				null
-			) { user ->
+			) { user: UserJs? ->
 				user?.let { nonNull1 ->
 					user_fromJs(nonNull1)
 				}
 			}
-			val delegatesConverted: Map<String, AccessLevel> = convertingOptionOrDefault(
-				_options.delegates,
+			val delegatesConverted: Map<String, AccessLevel> = convertingOptionOrDefaultNonNull(
+				_options,
+				"delegates",
 				emptyMap()
-			) { delegates ->
+			) { delegates: Record<String, String> ->
 				objectToMap(
 					delegates,
 					"delegates",
@@ -1262,10 +1286,11 @@ internal class MessageApiImplJs(
 					},
 				)
 			}
-			val secretIdConverted: SecretIdOption = convertingOptionOrDefault(
-				_options.secretId,
+			val secretIdConverted: SecretIdOption = convertingOptionOrDefaultNonNull(
+				_options,
+				"secretId",
 				com.icure.sdk.crypto.entities.SecretIdOption.UseAnySharedWithParent
-			) { secretId ->
+			) { secretId: SecretIdOptionJs ->
 				secretIdOption_fromJs(secretId)
 			}
 			val result = messageApi.withEncryptionMetadata(
@@ -1391,9 +1416,9 @@ internal class MessageApiImplJs(
 		delegateId: String,
 		message: DecryptedMessageJs,
 		shareSecretIds: Array<String>,
-		options: MessageApi_shareWith_Options?,
+		options: dynamic,
 	): Promise<SimpleShareResultJs<DecryptedMessageJs>> {
-		val _options: MessageApi_shareWith_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val delegateIdConverted: String = delegateId
 			val messageConverted: DecryptedMessage = message_fromJs(message)
@@ -1404,22 +1429,25 @@ internal class MessageApiImplJs(
 					x1
 				},
 			)
-			val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
-				_options.shareEncryptionKeys,
+			val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+				_options,
+				"shareEncryptionKeys",
 				com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-			) { shareEncryptionKeys ->
+			) { shareEncryptionKeys: String ->
 				ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
 			}
-			val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
-				_options.shareOwningEntityIds,
+			val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+				_options,
+				"shareOwningEntityIds",
 				com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-			) { shareOwningEntityIds ->
+			) { shareOwningEntityIds: String ->
 				ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
 			}
-			val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefault(
-				_options.requestedPermission,
+			val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefaultNonNull(
+				_options,
+				"requestedPermission",
 				com.icure.sdk.model.requests.RequestedPermission.MaxWrite
-			) { requestedPermission ->
+			) { requestedPermission: String ->
 				RequestedPermission.valueOf(requestedPermission)
 			}
 			val result = messageApi.shareWith(
@@ -1489,28 +1517,31 @@ internal class MessageApiImplJs(
 	override fun findMessagesByHcPartyPatient(
 		hcPartyId: String,
 		patient: PatientJs,
-		options: MessageApi_findMessagesByHcPartyPatient_Options?,
+		options: dynamic,
 	): Promise<PaginatedListIteratorJs<DecryptedMessageJs>> {
-		val _options: MessageApi_findMessagesByHcPartyPatient_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val hcPartyIdConverted: String = hcPartyId
 			val patientConverted: Patient = patient_fromJs(patient)
-			val startDateConverted: Long? = convertingOptionOrDefault(
-				_options.startDate,
+			val startDateConverted: Long? = convertingOptionOrDefaultNullable(
+				_options,
+				"startDate",
 				null
-			) { startDate ->
+			) { startDate: Double? ->
 				numberToLong(startDate, "startDate")
 			}
-			val endDateConverted: Long? = convertingOptionOrDefault(
-				_options.endDate,
+			val endDateConverted: Long? = convertingOptionOrDefaultNullable(
+				_options,
+				"endDate",
 				null
-			) { endDate ->
+			) { endDate: Double? ->
 				numberToLong(endDate, "endDate")
 			}
-			val descendingConverted: Boolean? = convertingOptionOrDefault(
-				_options.descending,
+			val descendingConverted: Boolean? = convertingOptionOrDefaultNullable(
+				_options,
+				"descending",
 				null
-			) { descending ->
+			) { descending: Boolean? ->
 				descending
 			}
 			val result = messageApi.findMessagesByHcPartyPatient(
@@ -1727,35 +1758,39 @@ internal class MessageApiImplJs(
 		transportGuid: String,
 		from: Double,
 		to: Double,
-		options: MessageApi_findMessagesByTransportGuidSentDate_Options?,
+		options: dynamic,
 	): Promise<PaginatedListJs<DecryptedMessageJs>> {
-		val _options: MessageApi_findMessagesByTransportGuidSentDate_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val transportGuidConverted: String = transportGuid
 			val fromConverted: Long = numberToLong(from, "from")
 			val toConverted: Long = numberToLong(to, "to")
-			val startKeyConverted: JsonElement? = convertingOptionOrDefault(
-				_options.startKey,
+			val startKeyConverted: JsonElement? = convertingOptionOrDefaultNullable(
+				_options,
+				"startKey",
 				null
-			) { startKey ->
+			) { startKey: dynamic ->
 				dynamicToJsonNullsafe(startKey, "startKey")
 			}
-			val startDocumentIdConverted: String? = convertingOptionOrDefault(
-				_options.startDocumentId,
+			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"startDocumentId",
 				null
-			) { startDocumentId ->
+			) { startDocumentId: String? ->
 				startDocumentId
 			}
-			val limitConverted: Int? = convertingOptionOrDefault(
-				_options.limit,
+			val limitConverted: Int? = convertingOptionOrDefaultNullable(
+				_options,
+				"limit",
 				null
-			) { limit ->
+			) { limit: Double? ->
 				numberToInt(limit, "limit")
 			}
-			val hcpIdConverted: String? = convertingOptionOrDefault(
-				_options.hcpId,
+			val hcpIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"hcpId",
 				null
-			) { hcpId ->
+			) { hcpId: String? ->
 				hcpId
 			}
 			val result = messageApi.findMessagesByTransportGuidSentDate(
@@ -1880,9 +1915,9 @@ internal class MessageApiImplJs(
 		events: Array<String>,
 		filter: AbstractFilterJs<MessageJs>,
 		eventFired: (DecryptedMessageJs) -> Promise<Unit>,
-		options: MessageApi_subscribeToEvents_Options?,
+		options: dynamic,
 	): Promise<ConnectionJs> {
-		val _options: MessageApi_subscribeToEvents_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
 				events,
@@ -1897,36 +1932,41 @@ internal class MessageApiImplJs(
 					message_fromJs(x1)
 				},
 			)
-			val onConnectedConverted: suspend () -> Unit = convertingOptionOrDefault(
-				_options.onConnected,
+			val onConnectedConverted: suspend () -> Unit = convertingOptionOrDefaultNonNull(
+				_options,
+				"onConnected",
 				{}
-			) { onConnected ->
+			) { onConnected: () -> Promise<Unit> ->
 				{  ->
 					onConnected().await()
 				}
 			}
-			val channelCapacityConverted: Int = convertingOptionOrDefault(
-				_options.channelCapacity,
+			val channelCapacityConverted: Int = convertingOptionOrDefaultNonNull(
+				_options,
+				"channelCapacity",
 				kotlinx.coroutines.channels.Channel.BUFFERED
-			) { channelCapacity ->
+			) { channelCapacity: Double ->
 				numberToInt(channelCapacity, "channelCapacity")
 			}
-			val retryDelayConverted: Duration = convertingOptionOrDefault(
-				_options.retryDelay,
+			val retryDelayConverted: Duration = convertingOptionOrDefaultNonNull(
+				_options,
+				"retryDelay",
 				2.seconds
-			) { retryDelay ->
+			) { retryDelay: Double ->
 				numberToDuration(retryDelay, "retryDelay")
 			}
-			val retryDelayExponentFactorConverted: Double = convertingOptionOrDefault(
-				_options.retryDelayExponentFactor,
+			val retryDelayExponentFactorConverted: Double = convertingOptionOrDefaultNonNull(
+				_options,
+				"retryDelayExponentFactor",
 				2.0
-			) { retryDelayExponentFactor ->
+			) { retryDelayExponentFactor: Double ->
 				retryDelayExponentFactor
 			}
-			val maxRetriesConverted: Int = convertingOptionOrDefault(
-				_options.maxRetries,
+			val maxRetriesConverted: Int = convertingOptionOrDefaultNonNull(
+				_options,
+				"maxRetries",
 				5
-			) { maxRetries ->
+			) { maxRetries: Double ->
 				numberToInt(maxRetries, "maxRetries")
 			}
 			val eventFiredConverted: suspend (DecryptedMessage) -> Unit = { arg0 ->

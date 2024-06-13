@@ -6,7 +6,9 @@ import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.js.model.CheckedConverters.setToArray
 import com.icure.sdk.model.filter.service.ServiceByContactsAndSubcontactsFilter
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun serviceByContactsAndSubcontactsFilter_toJs(obj: ServiceByContactsAndSubcontactsFilter):
 		ServiceByContactsAndSubcontactsFilterJs {
 	val desc = obj.desc

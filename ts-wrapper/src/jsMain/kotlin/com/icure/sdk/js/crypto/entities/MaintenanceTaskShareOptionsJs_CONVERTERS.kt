@@ -3,7 +3,9 @@ package com.icure.sdk.js.crypto.entities
 import com.icure.sdk.crypto.entities.MaintenanceTaskShareOptions
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.model.requests.RequestedPermission
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun maintenanceTaskShareOptions_toJs(obj: MaintenanceTaskShareOptions):
 		MaintenanceTaskShareOptionsJs {
 	val requestedPermissions = obj.requestedPermissions.name

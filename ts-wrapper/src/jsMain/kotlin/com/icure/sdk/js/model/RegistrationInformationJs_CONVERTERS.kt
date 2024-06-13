@@ -4,7 +4,9 @@ import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.setToArray
 import com.icure.sdk.model.RegistrationInformation
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun registrationInformation_toJs(obj: RegistrationInformation): RegistrationInformationJs {
 	val firstName = obj.firstName
 	val lastName = obj.lastName

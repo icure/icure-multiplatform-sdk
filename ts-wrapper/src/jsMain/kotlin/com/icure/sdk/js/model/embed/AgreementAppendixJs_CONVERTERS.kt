@@ -3,7 +3,9 @@ package com.icure.sdk.js.model.embed
 import com.icure.sdk.js.model.CheckedConverters.intToNumber
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.model.embed.AgreementAppendix
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun agreementAppendix_toJs(obj: AgreementAppendix): AgreementAppendixJs {
 	val docSeq = intToNumber(obj.docSeq)
 	val verseSeq = intToNumber(obj.verseSeq)

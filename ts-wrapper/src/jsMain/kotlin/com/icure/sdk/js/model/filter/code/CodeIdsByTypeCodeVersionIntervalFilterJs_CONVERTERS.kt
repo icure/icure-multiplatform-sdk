@@ -1,7 +1,9 @@
 package com.icure.sdk.js.model.filter.code
 
 import com.icure.sdk.model.filter.code.CodeIdsByTypeCodeVersionIntervalFilter
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun codeIdsByTypeCodeVersionIntervalFilter_toJs(obj: CodeIdsByTypeCodeVersionIntervalFilter):
 		CodeIdsByTypeCodeVersionIntervalFilterJs {
 	val desc = obj.desc

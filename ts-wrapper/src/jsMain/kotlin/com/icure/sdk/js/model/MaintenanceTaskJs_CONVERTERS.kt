@@ -32,8 +32,10 @@ import com.icure.sdk.model.embed.Delegation
 import com.icure.sdk.model.embed.TaskStatus
 import kotlin.Array
 import kotlin.String
+import kotlin.Suppress
 import kotlin.collections.Set
 
+@Suppress("UNUSED_VARIABLE")
 public fun maintenanceTask_toJs(obj: DecryptedMaintenanceTask): DecryptedMaintenanceTaskJs {
 	val id = obj.id
 	val rev = obj.rev
@@ -275,6 +277,7 @@ public fun maintenanceTask_fromJs(obj: DecryptedMaintenanceTaskJs): DecryptedMai
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun maintenanceTask_toJs(obj: EncryptedMaintenanceTask): EncryptedMaintenanceTaskJs {
 	val id = obj.id
 	val rev = obj.rev
@@ -516,6 +519,7 @@ public fun maintenanceTask_fromJs(obj: EncryptedMaintenanceTaskJs): EncryptedMai
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun maintenanceTask_toJs(obj: MaintenanceTask): MaintenanceTaskJs = when (obj) {
 	is EncryptedMaintenanceTask -> maintenanceTask_toJs(obj)
 	is DecryptedMaintenanceTask -> maintenanceTask_toJs(obj)

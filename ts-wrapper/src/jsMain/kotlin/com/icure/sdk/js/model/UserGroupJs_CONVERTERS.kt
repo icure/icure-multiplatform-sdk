@@ -4,7 +4,9 @@ import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.model.Group
 import com.icure.sdk.model.UserGroup
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun userGroup_toJs(obj: UserGroup): UserGroupJs {
 	val groupId = obj.groupId
 	val groupName = obj.groupName

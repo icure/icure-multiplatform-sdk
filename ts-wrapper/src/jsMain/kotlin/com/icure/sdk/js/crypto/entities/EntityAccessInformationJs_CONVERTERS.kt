@@ -5,7 +5,9 @@ import com.icure.sdk.js.model.CheckedConverters.mapToObject
 import com.icure.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.sdk.model.embed.AccessLevel
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun entityAccessInformation_toJs(obj: EntityAccessInformation): EntityAccessInformationJs {
 	val permissionsByDataOwnerId = mapToObject(
 		obj.permissionsByDataOwnerId,

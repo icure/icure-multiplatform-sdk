@@ -22,7 +22,7 @@ export interface ReceiptApi {
 	createReceipt(entity: DecryptedReceipt): Promise<DecryptedReceipt>;
 
 	withEncryptionMetadata(base: DecryptedReceipt | undefined, patient: Patient | undefined,
-			options?: { base?: DecryptedReceipt | undefined, patient?: Patient | undefined, user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdOption }): Promise<DecryptedReceipt>;
+			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdOption }): Promise<DecryptedReceipt>;
 
 	getAndDecryptReceiptAttachment(receipt: Receipt, attachmentId: string): Promise<Int8Array>;
 
@@ -55,7 +55,7 @@ export interface ReceiptApi {
 			attachment: Int8Array): Promise<EncryptedReceipt>;
 
 	shareWith(delegateId: string, receipt: DecryptedReceipt,
-			options?: { delegateId?: string, receipt?: DecryptedReceipt, shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<DecryptedReceipt>>;
+			options?: { shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<DecryptedReceipt>>;
 
 	tryShareWithMany(receipt: DecryptedReceipt,
 			delegates: { [ key: string ]: ReceiptShareOptions }): Promise<SimpleShareResult<DecryptedReceipt>>;

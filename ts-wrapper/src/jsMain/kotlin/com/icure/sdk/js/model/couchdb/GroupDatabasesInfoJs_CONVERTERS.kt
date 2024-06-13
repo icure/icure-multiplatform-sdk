@@ -6,7 +6,9 @@ import com.icure.sdk.js.model.CheckedConverters.longToNumber
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.model.couchdb.DatabaseInfo
 import com.icure.sdk.model.couchdb.GroupDatabasesInfo
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun groupDatabasesInfo_toJs(obj: GroupDatabasesInfo): GroupDatabasesInfoJs {
 	val groupId = obj.groupId
 	val databasesInfo = listToArray(

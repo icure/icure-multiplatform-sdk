@@ -6,7 +6,9 @@ import com.icure.sdk.js.model.base.IdentifiableJs
 import com.icure.sdk.model.base.Identifiable
 import com.icure.sdk.model.filter.IdsFilter
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun <O : Identifiable<String>, O_JS : IdentifiableJs<String>>
 		idsFilter_toJs(obj: IdsFilter<O>, convertO: (O) -> O_JS): IdsFilterJs<O_JS> {
 	val desc = obj.desc

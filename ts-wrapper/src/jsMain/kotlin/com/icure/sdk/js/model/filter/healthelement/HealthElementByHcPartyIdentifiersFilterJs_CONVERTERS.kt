@@ -7,7 +7,9 @@ import com.icure.sdk.js.model.base.identifier_fromJs
 import com.icure.sdk.js.model.base.identifier_toJs
 import com.icure.sdk.model.base.Identifier
 import com.icure.sdk.model.filter.healthelement.HealthElementByHcPartyIdentifiersFilter
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public
 		fun healthElementByHcPartyIdentifiersFilter_toJs(obj: HealthElementByHcPartyIdentifiersFilter):
 		HealthElementByHcPartyIdentifiersFilterJs {

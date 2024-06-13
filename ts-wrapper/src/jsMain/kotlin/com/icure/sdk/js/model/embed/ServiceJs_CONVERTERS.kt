@@ -31,9 +31,11 @@ import com.icure.sdk.model.embed.EncryptedService
 import com.icure.sdk.model.embed.Service
 import kotlin.Array
 import kotlin.String
+import kotlin.Suppress
 import kotlin.collections.Map
 import kotlin.collections.Set
 
+@Suppress("UNUSED_VARIABLE")
 public fun service_toJs(obj: DecryptedService): DecryptedServiceJs {
 	val id = obj.id
 	val transactionId = obj.transactionId
@@ -458,6 +460,7 @@ public fun service_fromJs(obj: DecryptedServiceJs): DecryptedService {
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun service_toJs(obj: EncryptedService): EncryptedServiceJs {
 	val id = obj.id
 	val transactionId = obj.transactionId
@@ -882,6 +885,7 @@ public fun service_fromJs(obj: EncryptedServiceJs): EncryptedService {
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun service_toJs(obj: Service): ServiceJs = when (obj) {
 	is EncryptedService -> service_toJs(obj)
 	is DecryptedService -> service_toJs(obj)

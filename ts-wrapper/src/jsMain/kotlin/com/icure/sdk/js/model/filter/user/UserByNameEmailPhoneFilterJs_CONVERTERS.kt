@@ -1,7 +1,9 @@
 package com.icure.sdk.js.model.filter.user
 
 import com.icure.sdk.model.filter.user.UserByNameEmailPhoneFilter
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun userByNameEmailPhoneFilter_toJs(obj: UserByNameEmailPhoneFilter):
 		UserByNameEmailPhoneFilterJs {
 	val searchString = obj.searchString

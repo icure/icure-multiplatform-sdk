@@ -16,15 +16,12 @@ import kotlin.js.Promise
 
 @JsName("RecoveryApi")
 public external interface RecoveryApiJs {
-	public
-			fun createRecoveryInfoForAvailableKeyPairs(options: RecoveryApi_createRecoveryInfoForAvailableKeyPairs_Options?):
-			Promise<String>
+	public fun createRecoveryInfoForAvailableKeyPairs(options: dynamic): Promise<String>
 
 	public fun recoverKeyPairs(recoveryKey: String, autoDelete: Boolean):
 			Promise<RecoveryResultJs<Record<String, Record<String, XRsaKeypair>>>>
 
-	public fun createExchangeDataRecoveryInfo(delegateId: String,
-			options: RecoveryApi_createExchangeDataRecoveryInfo_Options?): Promise<String>
+	public fun createExchangeDataRecoveryInfo(delegateId: String, options: dynamic): Promise<String>
 
 	public fun recoverExchangeData(recoveryKey: String): Promise<String?>
 
@@ -35,14 +32,4 @@ public external interface RecoveryApiJs {
 	public fun deleteAllKeyPairRecoveryInfoFor(dataOwnerId: String): Promise<Double>
 
 	public fun deleteAllExchangeDataRecoveryInfoFor(dataOwnerId: String): Promise<Double>
-}
-
-public external interface RecoveryApi_createRecoveryInfoForAvailableKeyPairs_Options {
-	public val includeParentsKeys: Boolean
-
-	public val lifetimeSeconds: Double?
-}
-
-public external interface RecoveryApi_createExchangeDataRecoveryInfo_Options {
-	public val lifetimeSeconds: Double?
 }

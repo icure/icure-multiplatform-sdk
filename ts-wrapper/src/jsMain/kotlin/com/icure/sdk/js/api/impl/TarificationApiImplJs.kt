@@ -2,10 +2,8 @@
 package com.icure.sdk.js.api.`impl`
 
 import com.icure.sdk.api.TarificationApi
-import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefault
+import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.sdk.js.api.TarificationApiJs
-import com.icure.sdk.js.api.TarificationApi_findTarificationsByLabel_Options
-import com.icure.sdk.js.api.TarificationApi_findTarificationsBy_Options
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
@@ -16,6 +14,7 @@ import com.icure.sdk.js.model.tarification_fromJs
 import com.icure.sdk.js.model.tarification_toJs
 import com.icure.sdk.model.Tarification
 import kotlin.Array
+import kotlin.Double
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String
@@ -76,50 +75,56 @@ internal class TarificationApiImplJs(
 		tarification_toJs(result)
 	}
 
-	override fun findTarificationsByLabel(options: TarificationApi_findTarificationsByLabel_Options?):
-			Promise<PaginatedListJs<TarificationJs>> {
-		val _options: TarificationApi_findTarificationsByLabel_Options = options ?: js("{}")
+	override fun findTarificationsByLabel(options: dynamic): Promise<PaginatedListJs<TarificationJs>> {
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
-			val regionConverted: String? = convertingOptionOrDefault(
-				_options.region,
+			val regionConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"region",
 				null
-			) { region ->
+			) { region: String? ->
 				region
 			}
-			val typesConverted: String? = convertingOptionOrDefault(
-				_options.types,
+			val typesConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"types",
 				null
-			) { types ->
+			) { types: String? ->
 				types
 			}
-			val languageConverted: String? = convertingOptionOrDefault(
-				_options.language,
+			val languageConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"language",
 				null
-			) { language ->
+			) { language: String? ->
 				language
 			}
-			val labelConverted: String? = convertingOptionOrDefault(
-				_options.label,
+			val labelConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"label",
 				null
-			) { label ->
+			) { label: String? ->
 				label
 			}
-			val startKeyConverted: String? = convertingOptionOrDefault(
-				_options.startKey,
+			val startKeyConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"startKey",
 				null
-			) { startKey ->
+			) { startKey: String? ->
 				startKey
 			}
-			val startDocumentIdConverted: String? = convertingOptionOrDefault(
-				_options.startDocumentId,
+			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"startDocumentId",
 				null
-			) { startDocumentId ->
+			) { startDocumentId: String? ->
 				startDocumentId
 			}
-			val limitConverted: Int? = convertingOptionOrDefault(
-				_options.limit,
+			val limitConverted: Int? = convertingOptionOrDefaultNullable(
+				_options,
+				"limit",
 				null
-			) { limit ->
+			) { limit: Double? ->
 				numberToInt(limit, "limit")
 			}
 			val result = tarificationApi.findTarificationsByLabel(
@@ -140,50 +145,56 @@ internal class TarificationApiImplJs(
 		}
 	}
 
-	override fun findTarificationsBy(options: TarificationApi_findTarificationsBy_Options?):
-			Promise<PaginatedListJs<TarificationJs>> {
-		val _options: TarificationApi_findTarificationsBy_Options = options ?: js("{}")
+	override fun findTarificationsBy(options: dynamic): Promise<PaginatedListJs<TarificationJs>> {
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
-			val regionConverted: String? = convertingOptionOrDefault(
-				_options.region,
+			val regionConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"region",
 				null
-			) { region ->
+			) { region: String? ->
 				region
 			}
-			val typeConverted: String? = convertingOptionOrDefault(
-				_options.type,
+			val typeConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"type",
 				null
-			) { type ->
+			) { type: String? ->
 				type
 			}
-			val tarificationConverted: String? = convertingOptionOrDefault(
-				_options.tarification,
+			val tarificationConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"tarification",
 				null
-			) { tarification ->
+			) { tarification: String? ->
 				tarification
 			}
-			val versionConverted: String? = convertingOptionOrDefault(
-				_options.version,
+			val versionConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"version",
 				null
-			) { version ->
+			) { version: String? ->
 				version
 			}
-			val startDocumentIdConverted: String? = convertingOptionOrDefault(
-				_options.startDocumentId,
+			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"startDocumentId",
 				null
-			) { startDocumentId ->
+			) { startDocumentId: String? ->
 				startDocumentId
 			}
-			val startKeyConverted: String? = convertingOptionOrDefault(
-				_options.startKey,
+			val startKeyConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"startKey",
 				null
-			) { startKey ->
+			) { startKey: String? ->
 				startKey
 			}
-			val limitConverted: Int? = convertingOptionOrDefault(
-				_options.limit,
+			val limitConverted: Int? = convertingOptionOrDefaultNullable(
+				_options,
+				"limit",
 				null
-			) { limit ->
+			) { limit: Double? ->
 				numberToInt(limit, "limit")
 			}
 			val result = tarificationApi.findTarificationsBy(

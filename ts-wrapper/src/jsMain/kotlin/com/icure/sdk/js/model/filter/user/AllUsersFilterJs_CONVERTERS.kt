@@ -1,7 +1,9 @@
 package com.icure.sdk.js.model.filter.user
 
 import com.icure.sdk.model.filter.user.AllUsersFilter
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun allUsersFilter_toJs(obj: AllUsersFilter): AllUsersFilterJs {
 	val desc = obj.desc
 	return AllUsersFilterJs(js("{" +

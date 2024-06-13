@@ -3,7 +3,9 @@ package com.icure.sdk.js.model
 import com.icure.sdk.js.model.CheckedConverters.dynamicToJsonNullsafe
 import com.icure.sdk.js.model.CheckedConverters.jsonToDynamic
 import com.icure.sdk.model.PaginatedDocumentKeyIdPair
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun paginatedDocumentKeyIdPair_toJs(obj: PaginatedDocumentKeyIdPair):
 		PaginatedDocumentKeyIdPairJs {
 	val startKey = jsonToDynamic(obj.startKey)

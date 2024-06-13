@@ -12,7 +12,9 @@ import com.icure.sdk.js.model.base.codeStub_toJs
 import com.icure.sdk.model.ApplicationSettings
 import com.icure.sdk.model.base.CodeStub
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun applicationSettings_toJs(obj: ApplicationSettings): ApplicationSettingsJs {
 	val id = obj.id
 	val rev = obj.rev

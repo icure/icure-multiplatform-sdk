@@ -8,7 +8,9 @@ import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.objectToMapNullsafe
 import com.icure.sdk.model.embed.form.template.NumberField
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun numberField_toJs(obj: NumberField): NumberFieldJs {
 	val field = obj.field
 	val shortLabel = obj.shortLabel

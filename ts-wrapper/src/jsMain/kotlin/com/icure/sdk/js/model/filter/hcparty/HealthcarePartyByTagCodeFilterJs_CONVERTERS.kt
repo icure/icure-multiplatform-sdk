@@ -1,7 +1,9 @@
 package com.icure.sdk.js.model.filter.hcparty
 
 import com.icure.sdk.model.filter.hcparty.HealthcarePartyByTagCodeFilter
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun healthcarePartyByTagCodeFilter_toJs(obj: HealthcarePartyByTagCodeFilter):
 		HealthcarePartyByTagCodeFilterJs {
 	val tagType = obj.tagType

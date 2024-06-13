@@ -3,7 +3,9 @@ package com.icure.sdk.js.model.embed
 import com.icure.sdk.js.model.CheckedConverters.longToNumber
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.model.embed.TimeTableHour
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun timeTableHour_toJs(obj: TimeTableHour): TimeTableHourJs {
 	val startHour = longToNumber(obj.startHour)
 	val endHour = longToNumber(obj.endHour)

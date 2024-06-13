@@ -3,7 +3,9 @@ package com.icure.sdk.js.model.embed
 import com.icure.sdk.js.model.base.codeStub_fromJs
 import com.icure.sdk.js.model.base.codeStub_toJs
 import com.icure.sdk.model.embed.Periodicity
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun periodicity_toJs(obj: Periodicity): PeriodicityJs {
 	val relatedCode = obj.relatedCode?.let { nonNull1 ->
 		codeStub_toJs(nonNull1)

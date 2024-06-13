@@ -1,7 +1,9 @@
 package com.icure.sdk.js.model.filter.patient
 
 import com.icure.sdk.model.filter.patient.PatientByHcPartyAndSsinFilter
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun patientByHcPartyAndSsinFilter_toJs(obj: PatientByHcPartyAndSsinFilter):
 		PatientByHcPartyAndSsinFilterJs {
 	val desc = obj.desc

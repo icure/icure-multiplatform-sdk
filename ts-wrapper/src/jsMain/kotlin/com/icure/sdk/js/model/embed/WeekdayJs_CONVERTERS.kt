@@ -5,7 +5,9 @@ import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.base.codeStub_fromJs
 import com.icure.sdk.js.model.base.codeStub_toJs
 import com.icure.sdk.model.embed.Weekday
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun weekday_toJs(obj: Weekday): WeekdayJs {
 	val weekday = obj.weekday?.let { nonNull1 ->
 		codeStub_toJs(nonNull1)

@@ -23,8 +23,10 @@ import com.icure.sdk.model.base.CodeStub
 import com.icure.sdk.model.embed.Delegation
 import kotlin.Array
 import kotlin.String
+import kotlin.Suppress
 import kotlin.collections.Set
 
+@Suppress("UNUSED_VARIABLE")
 public fun classification_toJs(obj: DecryptedClassification): DecryptedClassificationJs {
 	val id = obj.id
 	val rev = obj.rev
@@ -240,6 +242,7 @@ public fun classification_fromJs(obj: DecryptedClassificationJs): DecryptedClass
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun classification_toJs(obj: EncryptedClassification): EncryptedClassificationJs {
 	val id = obj.id
 	val rev = obj.rev
@@ -455,6 +458,7 @@ public fun classification_fromJs(obj: EncryptedClassificationJs): EncryptedClass
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun classification_toJs(obj: Classification): ClassificationJs = when (obj) {
 	is EncryptedClassification -> classification_toJs(obj)
 	is DecryptedClassification -> classification_toJs(obj)

@@ -8,7 +8,9 @@ import com.icure.sdk.js.model.filter.predicate.predicate_toJs
 import com.icure.sdk.model.base.Identifiable
 import com.icure.sdk.model.filter.chain.FilterChain
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun <O : Identifiable<String>, O_JS : IdentifiableJs<String>>
 		filterChain_toJs(obj: FilterChain<O>, convertO: (O) -> O_JS): FilterChainJs<O_JS> {
 	val filter = abstractFilter_toJs(

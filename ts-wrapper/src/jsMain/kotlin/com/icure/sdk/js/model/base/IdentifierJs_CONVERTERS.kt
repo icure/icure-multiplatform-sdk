@@ -1,7 +1,9 @@
 package com.icure.sdk.js.model.base
 
 import com.icure.sdk.model.base.Identifier
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun identifier_toJs(obj: Identifier): IdentifierJs {
 	val id = obj.id
 	val assigner = obj.assigner

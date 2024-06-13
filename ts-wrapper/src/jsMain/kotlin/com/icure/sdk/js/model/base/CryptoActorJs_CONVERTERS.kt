@@ -19,7 +19,9 @@ import com.icure.sdk.model.Device
 import com.icure.sdk.model.EncryptedPatient
 import com.icure.sdk.model.HealthcareParty
 import com.icure.sdk.model.base.CryptoActor
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun cryptoActor_toJs(obj: CryptoActor): CryptoActorJs = when (obj) {
 	is CryptoActorStub -> cryptoActorStub_toJs(obj)
 	is EncryptedPatient -> patient_toJs(obj)

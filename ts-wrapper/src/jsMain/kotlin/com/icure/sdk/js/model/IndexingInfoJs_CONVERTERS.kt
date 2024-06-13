@@ -8,7 +8,9 @@ import com.icure.sdk.model.IndexingInfo
 import kotlin.Double
 import kotlin.Int
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun indexingInfo_toJs(obj: IndexingInfo): IndexingInfoJs {
 	val statuses = mapToObject(
 		obj.statuses,

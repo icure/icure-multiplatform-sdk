@@ -9,7 +9,9 @@ import com.icure.sdk.js.model.specializations.base64String_toJs
 import com.icure.sdk.model.DecryptedPropertyStub
 import com.icure.sdk.model.EncryptedPropertyStub
 import com.icure.sdk.model.PropertyStub
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun propertyStub_toJs(obj: DecryptedPropertyStub): DecryptedPropertyStubJs {
 	val id = obj.id
 	val type = obj.type?.let { nonNull1 ->
@@ -52,6 +54,7 @@ public fun propertyStub_fromJs(obj: DecryptedPropertyStubJs): DecryptedPropertyS
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun propertyStub_toJs(obj: EncryptedPropertyStub): EncryptedPropertyStubJs {
 	val id = obj.id
 	val type = obj.type?.let { nonNull1 ->
@@ -94,6 +97,7 @@ public fun propertyStub_fromJs(obj: EncryptedPropertyStubJs): EncryptedPropertyS
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun propertyStub_toJs(obj: PropertyStub): PropertyStubJs = when (obj) {
 	is EncryptedPropertyStub -> propertyStub_toJs(obj)
 	is DecryptedPropertyStub -> propertyStub_toJs(obj)

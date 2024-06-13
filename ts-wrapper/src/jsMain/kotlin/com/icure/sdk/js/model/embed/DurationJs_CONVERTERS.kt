@@ -3,7 +3,9 @@ package com.icure.sdk.js.model.embed
 import com.icure.sdk.js.model.base.codeStub_fromJs
 import com.icure.sdk.js.model.base.codeStub_toJs
 import com.icure.sdk.model.embed.Duration
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun duration_toJs(obj: Duration): DurationJs {
 	val value = obj.value
 	val unit = obj.unit?.let { nonNull1 ->

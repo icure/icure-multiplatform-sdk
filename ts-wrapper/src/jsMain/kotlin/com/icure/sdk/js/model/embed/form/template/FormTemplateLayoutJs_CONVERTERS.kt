@@ -6,7 +6,9 @@ import com.icure.sdk.model.embed.form.template.Action
 import com.icure.sdk.model.embed.form.template.FormTemplateLayout
 import com.icure.sdk.model.embed.form.template.Section
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun formTemplateLayout_toJs(obj: FormTemplateLayout): FormTemplateLayoutJs {
 	val form = obj.form
 	val actions = listToArray(

@@ -3,14 +3,7 @@ package com.icure.sdk.js.api.`impl`
 
 import com.icure.sdk.api.CodeApi
 import com.icure.sdk.js.api.CodeApiJs
-import com.icure.sdk.js.api.CodeApi_filterCodesBy_Options
-import com.icure.sdk.js.api.CodeApi_findCodesByLabel_Options
-import com.icure.sdk.js.api.CodeApi_findCodesByLink_Options
-import com.icure.sdk.js.api.CodeApi_findCodesByType_Options
-import com.icure.sdk.js.api.CodeApi_listCodeTypesBy_Options
-import com.icure.sdk.js.api.CodeApi_listCodesByRegionTypeCodeVersion_Options
-import com.icure.sdk.js.api.CodeApi_listTagTypesBy_Options
-import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefault
+import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.sdk.js.model.BooleanResponseJs
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.dynamicToJsonNullsafe
@@ -31,6 +24,7 @@ import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
 import kotlin.Array
 import kotlin.Boolean
+import kotlin.Double
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String
@@ -51,36 +45,40 @@ internal class CodeApiImplJs(
 		types: String,
 		language: String,
 		label: String,
-		options: CodeApi_findCodesByLabel_Options?,
+		options: dynamic,
 	): Promise<PaginatedListJs<CodeJs>> {
-		val _options: CodeApi_findCodesByLabel_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val regionConverted: String? = region
 			val typesConverted: String = types
 			val languageConverted: String = language
 			val labelConverted: String = label
-			val versionConverted: String? = convertingOptionOrDefault(
-				_options.version,
+			val versionConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"version",
 				null
-			) { version ->
+			) { version: String? ->
 				version
 			}
-			val startKeyConverted: JsonElement? = convertingOptionOrDefault(
-				_options.startKey,
+			val startKeyConverted: JsonElement? = convertingOptionOrDefaultNullable(
+				_options,
+				"startKey",
 				null
-			) { startKey ->
+			) { startKey: dynamic ->
 				dynamicToJsonNullsafe(startKey, "startKey")
 			}
-			val startDocumentIdConverted: String? = convertingOptionOrDefault(
-				_options.startDocumentId,
+			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"startDocumentId",
 				null
-			) { startDocumentId ->
+			) { startDocumentId: String? ->
 				startDocumentId
 			}
-			val limitConverted: Int? = convertingOptionOrDefault(
-				_options.limit,
+			val limitConverted: Int? = convertingOptionOrDefaultNullable(
+				_options,
+				"limit",
 				null
-			) { limit ->
+			) { limit: Double? ->
 				numberToInt(limit, "limit")
 			}
 			val result = codeApi.findCodesByLabel(
@@ -102,45 +100,50 @@ internal class CodeApiImplJs(
 		}
 	}
 
-	override fun findCodesByType(region: String, options: CodeApi_findCodesByType_Options?):
-			Promise<PaginatedListJs<CodeJs>> {
-		val _options: CodeApi_findCodesByType_Options = options ?: js("{}")
+	override fun findCodesByType(region: String, options: dynamic): Promise<PaginatedListJs<CodeJs>> {
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val regionConverted: String = region
-			val typeConverted: String? = convertingOptionOrDefault(
-				_options.type,
+			val typeConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"type",
 				null
-			) { type ->
+			) { type: String? ->
 				type
 			}
-			val codeConverted: String? = convertingOptionOrDefault(
-				_options.code,
+			val codeConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"code",
 				null
-			) { code ->
+			) { code: String? ->
 				code
 			}
-			val versionConverted: String? = convertingOptionOrDefault(
-				_options.version,
+			val versionConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"version",
 				null
-			) { version ->
+			) { version: String? ->
 				version
 			}
-			val startKeyConverted: JsonElement? = convertingOptionOrDefault(
-				_options.startKey,
+			val startKeyConverted: JsonElement? = convertingOptionOrDefaultNullable(
+				_options,
+				"startKey",
 				null
-			) { startKey ->
+			) { startKey: dynamic ->
 				dynamicToJsonNullsafe(startKey, "startKey")
 			}
-			val startDocumentIdConverted: String? = convertingOptionOrDefault(
-				_options.startDocumentId,
+			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"startDocumentId",
 				null
-			) { startDocumentId ->
+			) { startDocumentId: String? ->
 				startDocumentId
 			}
-			val limitConverted: Int? = convertingOptionOrDefault(
-				_options.limit,
+			val limitConverted: Int? = convertingOptionOrDefaultNullable(
+				_options,
+				"limit",
 				null
-			) { limit ->
+			) { limit: Double? ->
 				numberToInt(limit, "limit")
 			}
 			val result = codeApi.findCodesByType(
@@ -161,33 +164,37 @@ internal class CodeApiImplJs(
 		}
 	}
 
-	override fun findCodesByLink(linkType: String, options: CodeApi_findCodesByLink_Options?):
+	override fun findCodesByLink(linkType: String, options: dynamic):
 			Promise<PaginatedListJs<CodeJs>> {
-		val _options: CodeApi_findCodesByLink_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val linkTypeConverted: String = linkType
-			val linkedIdConverted: String? = convertingOptionOrDefault(
-				_options.linkedId,
+			val linkedIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"linkedId",
 				null
-			) { linkedId ->
+			) { linkedId: String? ->
 				linkedId
 			}
-			val startKeyConverted: JsonElement? = convertingOptionOrDefault(
-				_options.startKey,
+			val startKeyConverted: JsonElement? = convertingOptionOrDefaultNullable(
+				_options,
+				"startKey",
 				null
-			) { startKey ->
+			) { startKey: dynamic ->
 				dynamicToJsonNullsafe(startKey, "startKey")
 			}
-			val startDocumentIdConverted: String? = convertingOptionOrDefault(
-				_options.startDocumentId,
+			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"startDocumentId",
 				null
-			) { startDocumentId ->
+			) { startDocumentId: String? ->
 				startDocumentId
 			}
-			val limitConverted: Int? = convertingOptionOrDefault(
-				_options.limit,
+			val limitConverted: Int? = convertingOptionOrDefaultNullable(
+				_options,
+				"limit",
 				null
-			) { limit ->
+			) { limit: Double? ->
 				numberToInt(limit, "limit")
 			}
 			val result = codeApi.findCodesByLink(
@@ -206,27 +213,30 @@ internal class CodeApiImplJs(
 		}
 	}
 
-	override fun listCodesByRegionTypeCodeVersion(region: String,
-			options: CodeApi_listCodesByRegionTypeCodeVersion_Options?): Promise<Array<CodeJs>> {
-		val _options: CodeApi_listCodesByRegionTypeCodeVersion_Options = options ?: js("{}")
+	override fun listCodesByRegionTypeCodeVersion(region: String, options: dynamic):
+			Promise<Array<CodeJs>> {
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val regionConverted: String = region
-			val typeConverted: String? = convertingOptionOrDefault(
-				_options.type,
+			val typeConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"type",
 				null
-			) { type ->
+			) { type: String? ->
 				type
 			}
-			val codeConverted: String? = convertingOptionOrDefault(
-				_options.code,
+			val codeConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"code",
 				null
-			) { code ->
+			) { code: String? ->
 				code
 			}
-			val versionConverted: String? = convertingOptionOrDefault(
-				_options.version,
+			val versionConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"version",
 				null
-			) { version ->
+			) { version: String? ->
 				version
 			}
 			val result = codeApi.listCodesByRegionTypeCodeVersion(
@@ -244,19 +254,21 @@ internal class CodeApiImplJs(
 		}
 	}
 
-	override fun listCodeTypesBy(options: CodeApi_listCodeTypesBy_Options?): Promise<Array<String>> {
-		val _options: CodeApi_listCodeTypesBy_Options = options ?: js("{}")
+	override fun listCodeTypesBy(options: dynamic): Promise<Array<String>> {
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
-			val regionConverted: String? = convertingOptionOrDefault(
-				_options.region,
+			val regionConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"region",
 				null
-			) { region ->
+			) { region: String? ->
 				region
 			}
-			val typeConverted: String? = convertingOptionOrDefault(
-				_options.type,
+			val typeConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"type",
 				null
-			) { type ->
+			) { type: String? ->
 				type
 			}
 			val result = codeApi.listCodeTypesBy(
@@ -272,19 +284,21 @@ internal class CodeApiImplJs(
 		}
 	}
 
-	override fun listTagTypesBy(options: CodeApi_listTagTypesBy_Options?): Promise<Array<String>> {
-		val _options: CodeApi_listTagTypesBy_Options = options ?: js("{}")
+	override fun listTagTypesBy(options: dynamic): Promise<Array<String>> {
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
-			val regionConverted: String? = convertingOptionOrDefault(
-				_options.region,
+			val regionConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"region",
 				null
-			) { region ->
+			) { region: String? ->
 				region
 			}
-			val typeConverted: String? = convertingOptionOrDefault(
-				_options.type,
+			val typeConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"type",
 				null
-			) { type ->
+			) { type: String? ->
 				type
 			}
 			val result = codeApi.listTagTypesBy(
@@ -432,44 +446,50 @@ internal class CodeApiImplJs(
 		)
 	}
 
-	override fun filterCodesBy(filterChain: FilterChainJs<CodeJs>,
-			options: CodeApi_filterCodesBy_Options?): Promise<PaginatedListJs<CodeJs>> {
-		val _options: CodeApi_filterCodesBy_Options = options ?: js("{}")
+	override fun filterCodesBy(filterChain: FilterChainJs<CodeJs>, options: dynamic):
+			Promise<PaginatedListJs<CodeJs>> {
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
-			val startKeyConverted: JsonElement? = convertingOptionOrDefault(
-				_options.startKey,
+			val startKeyConverted: JsonElement? = convertingOptionOrDefaultNullable(
+				_options,
+				"startKey",
 				null
-			) { startKey ->
+			) { startKey: dynamic ->
 				dynamicToJsonNullsafe(startKey, "startKey")
 			}
-			val startDocumentIdConverted: String? = convertingOptionOrDefault(
-				_options.startDocumentId,
+			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"startDocumentId",
 				null
-			) { startDocumentId ->
+			) { startDocumentId: String? ->
 				startDocumentId
 			}
-			val limitConverted: Int? = convertingOptionOrDefault(
-				_options.limit,
+			val limitConverted: Int? = convertingOptionOrDefaultNullable(
+				_options,
+				"limit",
 				null
-			) { limit ->
+			) { limit: Double? ->
 				numberToInt(limit, "limit")
 			}
-			val skipConverted: Int? = convertingOptionOrDefault(
-				_options.skip,
+			val skipConverted: Int? = convertingOptionOrDefaultNullable(
+				_options,
+				"skip",
 				null
-			) { skip ->
+			) { skip: Double? ->
 				numberToInt(skip, "skip")
 			}
-			val sortConverted: String? = convertingOptionOrDefault(
-				_options.sort,
+			val sortConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"sort",
 				null
-			) { sort ->
+			) { sort: String? ->
 				sort
 			}
-			val descConverted: Boolean? = convertingOptionOrDefault(
-				_options.desc,
+			val descConverted: Boolean? = convertingOptionOrDefaultNullable(
+				_options,
+				"desc",
 				null
-			) { desc ->
+			) { desc: Boolean? ->
 				desc
 			}
 			val filterChainConverted: FilterChain<Code> = filterChain_fromJs(

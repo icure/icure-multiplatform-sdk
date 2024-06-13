@@ -25,9 +25,9 @@ export interface AccessLogBasicApi {
 	): Promise<PaginatedList<EncryptedAccessLog>>;
 
 	findAccessLogsByUserAfterDate(userId: string,
-			options?: { userId?: string, accessType?: string | undefined, startDate?: number | undefined, startKey?: string | undefined, startDocumentId?: string | undefined, limit?: number | undefined, descending?: boolean | undefined }): Promise<PaginatedList<EncryptedAccessLog>>;
+			options?: { accessType?: string | undefined, startDate?: number | undefined, startKey?: string | undefined, startDocumentId?: string | undefined, limit?: number | undefined, descending?: boolean | undefined }): Promise<PaginatedList<EncryptedAccessLog>>;
 
 	findAccessLogsInGroup(groupId: string,
-			options?: { groupId?: string, fromEpoch?: number | undefined, toEpoch?: number | undefined, startKey?: number | undefined, startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<EncryptedAccessLog>>;
+			options?: { fromEpoch?: number | undefined, toEpoch?: number | undefined, startKey?: number | undefined, startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<EncryptedAccessLog>>;
 
 }

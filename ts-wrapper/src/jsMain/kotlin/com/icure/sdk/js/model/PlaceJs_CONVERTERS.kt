@@ -5,7 +5,9 @@ import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.js.model.embed.address_fromJs
 import com.icure.sdk.js.model.embed.address_toJs
 import com.icure.sdk.model.Place
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun place_toJs(obj: Place): PlaceJs {
 	val id = obj.id
 	val rev = obj.rev

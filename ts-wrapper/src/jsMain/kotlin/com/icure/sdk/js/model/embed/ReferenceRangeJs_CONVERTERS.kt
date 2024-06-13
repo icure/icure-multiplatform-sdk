@@ -8,7 +8,9 @@ import com.icure.sdk.js.model.base.codeStub_toJs
 import com.icure.sdk.model.base.CodeStub
 import com.icure.sdk.model.embed.Annotation
 import com.icure.sdk.model.embed.ReferenceRange
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun referenceRange_toJs(obj: ReferenceRange): ReferenceRangeJs {
 	val low = obj.low
 	val high = obj.high

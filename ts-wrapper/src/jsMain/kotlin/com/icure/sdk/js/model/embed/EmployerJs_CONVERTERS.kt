@@ -1,7 +1,9 @@
 package com.icure.sdk.js.model.embed
 
 import com.icure.sdk.model.embed.Employer
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun employer_toJs(obj: Employer): EmployerJs {
 	val name = obj.name
 	val addresse = obj.addresse?.let { nonNull1 ->

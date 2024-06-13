@@ -4,7 +4,9 @@ import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.model.filter.predicate.AndPredicate
 import com.icure.sdk.model.filter.predicate.Predicate
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun andPredicate_toJs(obj: AndPredicate): AndPredicateJs {
 	val predicates = listToArray(
 		obj.predicates,

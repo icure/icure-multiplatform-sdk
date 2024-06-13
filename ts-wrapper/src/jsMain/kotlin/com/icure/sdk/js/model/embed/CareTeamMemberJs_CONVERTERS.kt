@@ -8,11 +8,13 @@ import com.icure.sdk.model.embed.CareTeamMember
 import com.icure.sdk.model.embed.CareTeamMemberType
 import com.icure.sdk.model.embed.DecryptedCareTeamMember
 import com.icure.sdk.model.embed.EncryptedCareTeamMember
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun careTeamMember_toJs(obj: DecryptedCareTeamMember): DecryptedCareTeamMemberJs {
 	val id = obj.id
 	val careTeamMemberType = obj.careTeamMemberType?.let { nonNull1 ->
-		obj.careTeamMemberType?.name
+		nonNull1.name
 	}
 	val healthcarePartyId = obj.healthcarePartyId
 	val quality = obj.quality?.let { nonNull1 ->
@@ -51,10 +53,11 @@ public fun careTeamMember_fromJs(obj: DecryptedCareTeamMemberJs): DecryptedCareT
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun careTeamMember_toJs(obj: EncryptedCareTeamMember): EncryptedCareTeamMemberJs {
 	val id = obj.id
 	val careTeamMemberType = obj.careTeamMemberType?.let { nonNull1 ->
-		obj.careTeamMemberType?.name
+		nonNull1.name
 	}
 	val healthcarePartyId = obj.healthcarePartyId
 	val quality = obj.quality?.let { nonNull1 ->
@@ -93,6 +96,7 @@ public fun careTeamMember_fromJs(obj: EncryptedCareTeamMemberJs): EncryptedCareT
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun careTeamMember_toJs(obj: CareTeamMember): CareTeamMemberJs = when (obj) {
 	is EncryptedCareTeamMember -> careTeamMember_toJs(obj)
 	is DecryptedCareTeamMember -> careTeamMember_toJs(obj)

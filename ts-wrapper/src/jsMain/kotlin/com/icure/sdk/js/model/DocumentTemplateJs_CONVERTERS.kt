@@ -14,7 +14,9 @@ import com.icure.sdk.model.base.CodeStub
 import com.icure.sdk.model.base.ReportVersion
 import com.icure.sdk.model.embed.DocumentType
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun documentTemplate_toJs(obj: DocumentTemplate): DocumentTemplateJs {
 	val id = obj.id
 	val rev = obj.rev
@@ -39,7 +41,7 @@ public fun documentTemplate_toJs(obj: DocumentTemplate): DocumentTemplateJs {
 	val deletionDate = longToNumber(obj.deletionDate)
 	val attachment = obj.attachment
 	val documentType = obj.documentType?.let { nonNull1 ->
-		obj.documentType?.name
+		nonNull1.name
 	}
 	val mainUti = obj.mainUti
 	val name = obj.name
@@ -51,7 +53,7 @@ public fun documentTemplate_toJs(obj: DocumentTemplate): DocumentTemplateJs {
 	)
 	val attachmentId = obj.attachmentId
 	val version = obj.version?.let { nonNull1 ->
-		obj.version?.name
+		nonNull1.name
 	}
 	val owner = obj.owner
 	val guid = obj.guid

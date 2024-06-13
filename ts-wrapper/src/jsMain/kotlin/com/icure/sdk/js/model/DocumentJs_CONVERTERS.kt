@@ -36,8 +36,10 @@ import com.icure.sdk.model.embed.DocumentStatus
 import com.icure.sdk.model.embed.DocumentType
 import kotlin.Array
 import kotlin.String
+import kotlin.Suppress
 import kotlin.collections.Set
 
+@Suppress("UNUSED_VARIABLE")
 public fun document_toJs(obj: DecryptedDocument): DecryptedDocumentJs {
 	val id = obj.id
 	val rev = obj.rev
@@ -61,13 +63,13 @@ public fun document_toJs(obj: DecryptedDocument): DecryptedDocumentJs {
 	val endOfLife = longToNumber(obj.endOfLife)
 	val deletionDate = longToNumber(obj.deletionDate)
 	val documentLocation = obj.documentLocation?.let { nonNull1 ->
-		obj.documentLocation?.name
+		nonNull1.name
 	}
 	val documentType = obj.documentType?.let { nonNull1 ->
-		obj.documentType?.name
+		nonNull1.name
 	}
 	val documentStatus = obj.documentStatus?.let { nonNull1 ->
-		obj.documentStatus?.name
+		nonNull1.name
 	}
 	val externalUri = obj.externalUri
 	val name = obj.name
@@ -368,6 +370,7 @@ public fun document_fromJs(obj: DecryptedDocumentJs): DecryptedDocument {
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun document_toJs(obj: EncryptedDocument): EncryptedDocumentJs {
 	val id = obj.id
 	val rev = obj.rev
@@ -391,13 +394,13 @@ public fun document_toJs(obj: EncryptedDocument): EncryptedDocumentJs {
 	val endOfLife = longToNumber(obj.endOfLife)
 	val deletionDate = longToNumber(obj.deletionDate)
 	val documentLocation = obj.documentLocation?.let { nonNull1 ->
-		obj.documentLocation?.name
+		nonNull1.name
 	}
 	val documentType = obj.documentType?.let { nonNull1 ->
-		obj.documentType?.name
+		nonNull1.name
 	}
 	val documentStatus = obj.documentStatus?.let { nonNull1 ->
-		obj.documentStatus?.name
+		nonNull1.name
 	}
 	val externalUri = obj.externalUri
 	val name = obj.name
@@ -698,6 +701,7 @@ public fun document_fromJs(obj: EncryptedDocumentJs): EncryptedDocument {
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun document_toJs(obj: Document): DocumentJs = when (obj) {
 	is EncryptedDocument -> document_toJs(obj)
 	is DecryptedDocument -> document_toJs(obj)

@@ -1,7 +1,9 @@
 package com.icure.sdk.js.model.embed
 
 import com.icure.sdk.model.embed.DocumentGroup
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun documentGroup_toJs(obj: DocumentGroup): DocumentGroupJs {
 	val guid = obj.guid
 	val name = obj.name

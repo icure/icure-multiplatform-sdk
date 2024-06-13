@@ -16,7 +16,9 @@ import com.icure.sdk.model.embed.Valorisation
 import kotlin.Double
 import kotlin.Int
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun valorisation_toJs(obj: DecryptedValorisation): DecryptedValorisationJs {
 	val startOfValidity = longToNumber(obj.startOfValidity)
 	val endOfValidity = longToNumber(obj.endOfValidity)
@@ -103,6 +105,7 @@ public fun valorisation_fromJs(obj: DecryptedValorisationJs): DecryptedValorisat
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun valorisation_toJs(obj: EncryptedValorisation): EncryptedValorisationJs {
 	val startOfValidity = longToNumber(obj.startOfValidity)
 	val endOfValidity = longToNumber(obj.endOfValidity)
@@ -189,6 +192,7 @@ public fun valorisation_fromJs(obj: EncryptedValorisationJs): EncryptedValorisat
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun valorisation_toJs(obj: Valorisation): ValorisationJs = when (obj) {
 	is EncryptedValorisation -> valorisation_toJs(obj)
 	is DecryptedValorisation -> valorisation_toJs(obj)

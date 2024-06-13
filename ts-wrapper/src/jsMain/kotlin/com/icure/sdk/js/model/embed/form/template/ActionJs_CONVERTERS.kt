@@ -5,7 +5,9 @@ import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.model.embed.form.template.Action
 import com.icure.sdk.model.embed.form.template.Launcher
 import com.icure.sdk.model.embed.form.template.State
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun action_toJs(obj: Action): ActionJs {
 	val launchers = listToArray(
 		obj.launchers,

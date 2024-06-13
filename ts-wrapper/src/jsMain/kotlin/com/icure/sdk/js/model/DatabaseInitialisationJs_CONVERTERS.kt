@@ -5,7 +5,9 @@ import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.model.DatabaseInitialisation
 import com.icure.sdk.model.HealthcareParty
 import com.icure.sdk.model.User
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun databaseInitialisation_toJs(obj: DatabaseInitialisation): DatabaseInitialisationJs {
 	val users = listToArray(
 		obj.users,

@@ -12,7 +12,9 @@ import com.icure.sdk.model.embed.form.template.RadioButton
 import com.icure.sdk.model.embed.form.template.StructureElement
 import com.icure.sdk.model.embed.form.template.TextField
 import com.icure.sdk.model.embed.form.template.TimePicker
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun structureElement_toJs(obj: StructureElement): StructureElementJs = when (obj) {
 	is DropdownField -> dropdownField_toJs(obj)
 	is RadioButton -> radioButton_toJs(obj)

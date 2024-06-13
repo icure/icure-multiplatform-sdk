@@ -9,7 +9,9 @@ import com.icure.sdk.js.model.embed.databaseSynchronization_fromJs
 import com.icure.sdk.js.model.embed.databaseSynchronization_toJs
 import com.icure.sdk.model.Replication
 import com.icure.sdk.model.embed.DatabaseSynchronization
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun replication_toJs(obj: Replication): ReplicationJs {
 	val id = obj.id
 	val rev = obj.rev

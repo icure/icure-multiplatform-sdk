@@ -4,21 +4,18 @@
 package com.icure.sdk.js.api.flavoured
 
 import com.icure.sdk.js.crypto.entities.FormShareOptionsJs
-import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.model.DecryptedFormJs
 import com.icure.sdk.js.model.EncryptedFormJs
 import com.icure.sdk.js.model.FormJs
 import com.icure.sdk.js.model.FormTemplateJs
 import com.icure.sdk.js.model.PatientJs
-import com.icure.sdk.js.model.UserJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.ByteArray
-import kotlin.Double
 import kotlin.String
 import kotlin.Unit
 import kotlin.js.JsName
@@ -38,7 +35,7 @@ public external interface FormApiJs {
 	public fun withEncryptionMetadata(
 		base: DecryptedFormJs?,
 		patient: PatientJs,
-		options: FormApi_withEncryptionMetadata_Options?,
+		options: dynamic,
 	): Promise<DecryptedFormJs>
 
 	public fun getEncryptionKeysOf(form: FormJs): Promise<Array<String>>
@@ -54,8 +51,7 @@ public external interface FormApiJs {
 
 	public fun deleteForms(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
 
-	public fun getFormTemplate(formTemplateId: String, options: FormApi_getFormTemplate_Options?):
-			Promise<FormTemplateJs>
+	public fun getFormTemplate(formTemplateId: String, options: dynamic): Promise<FormTemplateJs>
 
 	public fun getFormTemplatesByGuid(
 		formTemplateGuid: String,
@@ -63,11 +59,10 @@ public external interface FormApiJs {
 		raw: Boolean?,
 	): Promise<Array<FormTemplateJs>>
 
-	public fun listFormTemplatesBySpeciality(specialityCode: String,
-			options: FormApi_listFormTemplatesBySpeciality_Options?): Promise<Array<FormTemplateJs>>
-
-	public fun getFormTemplates(options: FormApi_getFormTemplates_Options?):
+	public fun listFormTemplatesBySpeciality(specialityCode: String, options: dynamic):
 			Promise<Array<FormTemplateJs>>
+
+	public fun getFormTemplates(options: dynamic): Promise<Array<FormTemplateJs>>
 
 	public fun createFormTemplate(formTemplate: FormTemplateJs): Promise<FormTemplateJs>
 
@@ -80,7 +75,7 @@ public external interface FormApiJs {
 	public fun shareWith(
 		delegateId: String,
 		form: DecryptedFormJs,
-		options: FormApi_shareWith_Options?,
+		options: dynamic,
 	): Promise<SimpleShareResultJs<DecryptedFormJs>>
 
 	public fun tryShareWithMany(form: DecryptedFormJs, delegates: Record<String, FormShareOptionsJs>):
@@ -92,7 +87,7 @@ public external interface FormApiJs {
 	public fun findFormsByHcPartyPatient(
 		hcPartyId: String,
 		patient: PatientJs,
-		options: FormApi_findFormsByHcPartyPatient_Options?,
+		options: dynamic,
 	): Promise<PaginatedListIteratorJs<DecryptedFormJs>>
 
 	public fun modifyForm(entity: DecryptedFormJs): Promise<DecryptedFormJs>
@@ -116,52 +111,6 @@ public external interface FormApiJs {
 	public fun listFormsByHCPartyAndPatientForeignKeys(
 		hcPartyId: String,
 		secretFKeys: String,
-		options: FormApi_listFormsByHCPartyAndPatientForeignKeys_Options?,
+		options: dynamic,
 	): Promise<Array<DecryptedFormJs>>
-}
-
-public external interface FormApi_withEncryptionMetadata_Options {
-	public val user: UserJs?
-
-	public val delegates: Record<String, String>
-
-	public val secretId: SecretIdOptionJs
-}
-
-public external interface FormApi_getFormTemplate_Options {
-	public val raw: Boolean?
-}
-
-public external interface FormApi_listFormTemplatesBySpeciality_Options {
-	public val raw: Boolean?
-}
-
-public external interface FormApi_getFormTemplates_Options {
-	public val loadLayout: Boolean?
-
-	public val raw: Boolean?
-}
-
-public external interface FormApi_shareWith_Options {
-	public val shareEncryptionKeys: String
-
-	public val shareOwningEntityIds: String
-
-	public val requestedPermission: String
-}
-
-public external interface FormApi_findFormsByHcPartyPatient_Options {
-	public val startDate: Double?
-
-	public val endDate: Double?
-
-	public val descending: Boolean?
-}
-
-public external interface FormApi_listFormsByHCPartyAndPatientForeignKeys_Options {
-	public val healthElementId: String?
-
-	public val planOfActionId: String?
-
-	public val formTemplateId: String?
 }

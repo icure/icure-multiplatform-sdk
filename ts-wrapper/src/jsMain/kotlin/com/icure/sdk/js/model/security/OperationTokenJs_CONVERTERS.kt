@@ -4,7 +4,9 @@ import com.icure.sdk.js.model.CheckedConverters.longToNumber
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.model.security.Operation
 import com.icure.sdk.model.security.OperationToken
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun operationToken_toJs(obj: OperationToken): OperationTokenJs {
 	val tokenHash = obj.tokenHash
 	val creationTime = longToNumber(obj.creationTime)

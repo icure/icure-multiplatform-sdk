@@ -7,7 +7,9 @@ import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.model.embed.PersonName
 import com.icure.sdk.model.embed.PersonNameUse
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun personName_toJs(obj: PersonName): PersonNameJs {
 	val lastName = obj.lastName
 	val firstNames = listToArray(
@@ -32,7 +34,7 @@ public fun personName_toJs(obj: PersonName): PersonNameJs {
 	)
 	val text = obj.text
 	val use = obj.use?.let { nonNull1 ->
-		obj.use?.name
+		nonNull1.name
 	}
 	return PersonNameJs(js("{" +
 		"lastName:lastName," +

@@ -10,8 +10,10 @@ import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.js.model.CheckedConverters.setToArray
 import com.icure.sdk.model.EntityTemplate
 import kotlin.String
+import kotlin.Suppress
 import kotlinx.serialization.json.JsonElement
 
+@Suppress("UNUSED_VARIABLE")
 public fun entityTemplate_toJs(obj: EntityTemplate): EntityTemplateJs {
 	val id = obj.id
 	val rev = obj.rev

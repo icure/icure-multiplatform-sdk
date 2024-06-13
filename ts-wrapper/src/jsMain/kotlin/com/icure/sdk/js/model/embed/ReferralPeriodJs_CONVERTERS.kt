@@ -3,7 +3,9 @@ package com.icure.sdk.js.model.embed
 import com.icure.sdk.js.model.CheckedConverters.instantToNumber
 import com.icure.sdk.js.model.CheckedConverters.numberToInstant
 import com.icure.sdk.model.embed.ReferralPeriod
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun referralPeriod_toJs(obj: ReferralPeriod): ReferralPeriodJs {
 	val startDate = instantToNumber(obj.startDate)
 	val endDate = instantToNumber(obj.endDate)

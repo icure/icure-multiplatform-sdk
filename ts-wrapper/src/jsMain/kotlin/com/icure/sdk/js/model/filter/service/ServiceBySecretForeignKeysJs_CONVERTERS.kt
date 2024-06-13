@@ -4,7 +4,9 @@ import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.setToArray
 import com.icure.sdk.model.filter.service.ServiceBySecretForeignKeys
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun serviceBySecretForeignKeys_toJs(obj: ServiceBySecretForeignKeys):
 		ServiceBySecretForeignKeysJs {
 	val desc = obj.desc

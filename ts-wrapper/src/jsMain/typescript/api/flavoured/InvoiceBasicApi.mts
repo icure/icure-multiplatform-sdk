@@ -44,14 +44,14 @@ export interface InvoiceBasicApi {
 			sentMediumType: string,
 			secretFKeys: string,
 			invoicingCodes: Array<EncryptedInvoicingCode>,
-			options?: { userId?: string, type?: string, sentMediumType?: string, secretFKeys?: string, insuranceId?: string | undefined, invoiceId?: string | undefined, gracePeriod?: number | undefined, invoicingCodes?: Array<EncryptedInvoicingCode> }
+			options?: { insuranceId?: string | undefined, invoiceId?: string | undefined, gracePeriod?: number | undefined }
 	): Promise<Array<EncryptedInvoice>>;
 
 	removeCodes(userId: string, serviceId: string, secretFKeys: string,
 			tarificationIds: Array<string>): Promise<Array<EncryptedInvoice>>;
 
 	findInvoicesByAuthor(hcPartyId: string,
-			options?: { hcPartyId?: string, fromDate?: number | undefined, toDate?: number | undefined, startKey?: any | undefined, startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<EncryptedInvoice>>;
+			options?: { fromDate?: number | undefined, toDate?: number | undefined, startKey?: any | undefined, startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<EncryptedInvoice>>;
 
 	listInvoicesByHCPartyAndPatientForeignKeys(hcPartyId: string,
 			secretPatientKeys: Array<string>): Promise<Array<EncryptedInvoice>>;
@@ -64,7 +64,7 @@ export interface InvoiceBasicApi {
 			sentMediumType: MediumType,
 			invoiceType: InvoiceType,
 			sent: boolean,
-			options?: { hcPartyId?: string, sentMediumType?: MediumType, invoiceType?: InvoiceType, sent?: boolean, from?: number | undefined, to?: number | undefined }
+			options?: { from?: number | undefined, to?: number | undefined }
 	): Promise<Array<EncryptedInvoice>>;
 
 	listInvoicesByContactIds(contactIds: Array<string>): Promise<Array<EncryptedInvoice>>;
@@ -92,6 +92,6 @@ export interface InvoiceBasicApi {
 	listInvoicesByServiceIds(serviceIds: Array<string>): Promise<Array<EncryptedInvoice>>;
 
 	listAllHcpsByStatus(status: string, hcpIds: Array<string>,
-			options?: { status?: string, from?: number | undefined, to?: number | undefined, hcpIds?: Array<string> }): Promise<Array<EncryptedInvoice>>;
+			options?: { from?: number | undefined, to?: number | undefined }): Promise<Array<EncryptedInvoice>>;
 
 }

@@ -23,9 +23,11 @@ import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.model.specializations.SpkiHexString
 import kotlin.Array
 import kotlin.String
+import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.Map
 
+@Suppress("UNUSED_VARIABLE")
 public fun cryptoActorStub_toJs(obj: CryptoActorStub): CryptoActorStubJs {
 	val id = obj.id
 	val rev = obj.rev

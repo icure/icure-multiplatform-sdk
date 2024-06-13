@@ -13,7 +13,9 @@ import com.icure.sdk.js.model.embed.keywordSubword_toJs
 import com.icure.sdk.model.Keyword
 import com.icure.sdk.model.base.CodeStub
 import com.icure.sdk.model.embed.KeywordSubword
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun keyword_toJs(obj: Keyword): KeywordJs {
 	val id = obj.id
 	val rev = obj.rev

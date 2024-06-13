@@ -12,7 +12,9 @@ import com.icure.sdk.model.embed.DecryptedService
 import com.icure.sdk.model.embed.EncryptedContent
 import com.icure.sdk.model.embed.EncryptedService
 import com.icure.sdk.model.embed.Measure
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun content_toJs(obj: DecryptedContent): DecryptedContentJs {
 	val stringValue = obj.stringValue
 	val numberValue = obj.numberValue
@@ -120,6 +122,7 @@ public fun content_fromJs(obj: DecryptedContentJs): DecryptedContent {
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun content_toJs(obj: EncryptedContent): EncryptedContentJs {
 	val stringValue = obj.stringValue
 	val numberValue = obj.numberValue
@@ -227,6 +230,7 @@ public fun content_fromJs(obj: EncryptedContentJs): EncryptedContent {
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun content_toJs(obj: Content): ContentJs = when (obj) {
 	is EncryptedContent -> content_toJs(obj)
 	is DecryptedContent -> content_toJs(obj)

@@ -54,8 +54,10 @@ import com.icure.sdk.model.embed.EncryptedPlanOfAction
 import com.icure.sdk.model.embed.Laterality
 import kotlin.Array
 import kotlin.String
+import kotlin.Suppress
 import kotlin.collections.Set
 
+@Suppress("UNUSED_VARIABLE")
 public fun healthElement_toJs(obj: DecryptedHealthElement): DecryptedHealthElementJs {
 	val id = obj.id
 	val identifiers = listToArray(
@@ -102,7 +104,7 @@ public fun healthElement_toJs(obj: DecryptedHealthElement): DecryptedHealthEleme
 	val idService = obj.idService
 	val status = intToNumber(obj.status)
 	val laterality = obj.laterality?.let { nonNull1 ->
-		obj.laterality?.name
+		nonNull1.name
 	}
 	val plansOfAction = listToArray(
 		obj.plansOfAction,
@@ -386,6 +388,7 @@ public fun healthElement_fromJs(obj: DecryptedHealthElementJs): DecryptedHealthE
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun healthElement_toJs(obj: EncryptedHealthElement): EncryptedHealthElementJs {
 	val id = obj.id
 	val identifiers = listToArray(
@@ -432,7 +435,7 @@ public fun healthElement_toJs(obj: EncryptedHealthElement): EncryptedHealthEleme
 	val idService = obj.idService
 	val status = intToNumber(obj.status)
 	val laterality = obj.laterality?.let { nonNull1 ->
-		obj.laterality?.name
+		nonNull1.name
 	}
 	val plansOfAction = listToArray(
 		obj.plansOfAction,
@@ -716,6 +719,7 @@ public fun healthElement_fromJs(obj: EncryptedHealthElementJs): EncryptedHealthE
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun healthElement_toJs(obj: HealthElement): HealthElementJs = when (obj) {
 	is EncryptedHealthElement -> healthElement_toJs(obj)
 	is DecryptedHealthElement -> healthElement_toJs(obj)

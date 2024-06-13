@@ -32,7 +32,7 @@ export interface HealthcareElementApi {
 	createHealthcareElements(entities: Array<DecryptedHealthElement>): Promise<Array<DecryptedHealthElement>>;
 
 	withEncryptionMetadata(base: DecryptedHealthElement | undefined, patient: Patient,
-			options?: { base?: DecryptedHealthElement | undefined, patient?: Patient, user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdOption }): Promise<DecryptedHealthElement>;
+			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdOption }): Promise<DecryptedHealthElement>;
 
 	getEncryptionKeysOf(healthElement: HealthElement): Promise<Array<HexString>>;
 
@@ -53,7 +53,7 @@ export interface HealthcareElementApi {
 			secretPatientKeys: Array<string>): Promise<Array<IcureStub>>;
 
 	shareWith(delegateId: string, healthcareElement: DecryptedHealthElement,
-			options?: { delegateId?: string, healthcareElement?: DecryptedHealthElement, shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<DecryptedHealthElement>>;
+			options?: { shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<DecryptedHealthElement>>;
 
 	tryShareWithMany(healthElement: DecryptedHealthElement,
 			delegates: { [ key: string ]: HealthElementShareOptions }): Promise<SimpleShareResult<DecryptedHealthElement>>;
@@ -62,7 +62,7 @@ export interface HealthcareElementApi {
 			delegates: { [ key: string ]: HealthElementShareOptions }): Promise<DecryptedHealthElement>;
 
 	findHealthcareElementsByHcPartyPatient(hcPartyId: string, patient: Patient,
-			options?: { hcPartyId?: string, patient?: Patient, startDate?: number | undefined, endDate?: number | undefined, descending?: boolean | undefined }): Promise<PaginatedListIterator<DecryptedHealthElement>>;
+			options?: { startDate?: number | undefined, endDate?: number | undefined, descending?: boolean | undefined }): Promise<PaginatedListIterator<DecryptedHealthElement>>;
 
 	modifyHealthcareElement(entity: DecryptedHealthElement): Promise<DecryptedHealthElement>;
 
@@ -81,6 +81,6 @@ export interface HealthcareElementApi {
 
 	subscribeToEvents(events: Array<SubscriptionEventType>, filter: AbstractFilter<HealthElement>,
 			eventFired: (x1: DecryptedHealthElement) => Promise<void>,
-			options?: { events?: Array<SubscriptionEventType>, filter?: AbstractFilter<HealthElement>, onConnected?: () => Promise<void>, channelCapacity?: number, retryDelay?: DurationMs, retryDelayExponentFactor?: number, maxRetries?: number, eventFired?: (x1: DecryptedHealthElement) => Promise<void> }): Promise<Connection>;
+			options?: { onConnected?: () => Promise<void>, channelCapacity?: number, retryDelay?: DurationMs, retryDelayExponentFactor?: number, maxRetries?: number }): Promise<Connection>;
 
 }

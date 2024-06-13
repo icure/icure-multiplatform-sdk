@@ -1,7 +1,9 @@
 package com.icure.sdk.js.model.couchdb
 
 import com.icure.sdk.model.couchdb.DocIdentifier
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun docIdentifier_toJs(obj: DocIdentifier): DocIdentifierJs {
 	val id = obj.id
 	val rev = obj.rev

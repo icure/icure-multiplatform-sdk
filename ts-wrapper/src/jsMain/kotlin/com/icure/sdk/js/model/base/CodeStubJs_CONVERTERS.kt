@@ -4,7 +4,9 @@ import com.icure.sdk.js.model.CheckedConverters.mapToObject
 import com.icure.sdk.js.model.CheckedConverters.objectToMapNullsafe
 import com.icure.sdk.model.base.CodeStub
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun codeStub_toJs(obj: CodeStub): CodeStubJs {
 	val id = obj.id
 	val context = obj.context

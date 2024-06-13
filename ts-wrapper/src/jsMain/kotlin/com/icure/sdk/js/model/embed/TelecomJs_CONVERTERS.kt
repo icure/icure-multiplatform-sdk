@@ -6,10 +6,12 @@ import com.icure.sdk.model.embed.DecryptedTelecom
 import com.icure.sdk.model.embed.EncryptedTelecom
 import com.icure.sdk.model.embed.Telecom
 import com.icure.sdk.model.embed.TelecomType
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun telecom_toJs(obj: DecryptedTelecom): DecryptedTelecomJs {
 	val telecomType = obj.telecomType?.let { nonNull1 ->
-		obj.telecomType?.name
+		nonNull1.name
 	}
 	val telecomNumber = obj.telecomNumber
 	val telecomDescription = obj.telecomDescription
@@ -41,9 +43,10 @@ public fun telecom_fromJs(obj: DecryptedTelecomJs): DecryptedTelecom {
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun telecom_toJs(obj: EncryptedTelecom): EncryptedTelecomJs {
 	val telecomType = obj.telecomType?.let { nonNull1 ->
-		obj.telecomType?.name
+		nonNull1.name
 	}
 	val telecomNumber = obj.telecomNumber
 	val telecomDescription = obj.telecomDescription
@@ -75,6 +78,7 @@ public fun telecom_fromJs(obj: EncryptedTelecomJs): EncryptedTelecom {
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun telecom_toJs(obj: Telecom): TelecomJs = when (obj) {
 	is EncryptedTelecom -> telecom_toJs(obj)
 	is DecryptedTelecom -> telecom_toJs(obj)

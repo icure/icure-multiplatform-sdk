@@ -6,7 +6,9 @@ import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.js.model.CheckedConverters.setToArray
 import com.icure.sdk.model.Role
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun role_toJs(obj: Role): RoleJs {
 	val id = obj.id
 	val rev = obj.rev

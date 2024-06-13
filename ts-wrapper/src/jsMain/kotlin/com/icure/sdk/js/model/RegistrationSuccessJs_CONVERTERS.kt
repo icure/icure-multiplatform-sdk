@@ -1,7 +1,9 @@
 package com.icure.sdk.js.model
 
 import com.icure.sdk.model.RegistrationSuccess
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun registrationSuccess_toJs(obj: RegistrationSuccess): RegistrationSuccessJs {
 	val groupId = obj.groupId
 	val userId = obj.userId

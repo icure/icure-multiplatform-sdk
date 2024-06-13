@@ -3,7 +3,9 @@ package com.icure.sdk.js.model.embed
 import com.icure.sdk.js.model.base.codeStub_fromJs
 import com.icure.sdk.js.model.base.codeStub_toJs
 import com.icure.sdk.model.embed.AdministrationQuantity
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun administrationQuantity_toJs(obj: AdministrationQuantity): AdministrationQuantityJs {
 	val quantity = obj.quantity
 	val administrationUnit = obj.administrationUnit?.let { nonNull1 ->

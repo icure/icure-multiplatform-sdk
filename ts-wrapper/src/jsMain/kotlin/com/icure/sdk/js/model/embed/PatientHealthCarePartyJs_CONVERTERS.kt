@@ -13,11 +13,13 @@ import com.icure.sdk.model.embed.PatientHealthCarePartyType
 import com.icure.sdk.model.embed.ReferralPeriod
 import com.icure.sdk.model.embed.TelecomType
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun patientHealthCareParty_toJs(obj: DecryptedPatientHealthCareParty):
 		DecryptedPatientHealthCarePartyJs {
 	val type = obj.type?.let { nonNull1 ->
-		obj.type?.name
+		nonNull1.name
 	}
 	val healthcarePartyId = obj.healthcarePartyId
 	val sendFormats = mapToObject(
@@ -86,10 +88,11 @@ public fun patientHealthCareParty_fromJs(obj: DecryptedPatientHealthCarePartyJs)
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun patientHealthCareParty_toJs(obj: EncryptedPatientHealthCareParty):
 		EncryptedPatientHealthCarePartyJs {
 	val type = obj.type?.let { nonNull1 ->
-		obj.type?.name
+		nonNull1.name
 	}
 	val healthcarePartyId = obj.healthcarePartyId
 	val sendFormats = mapToObject(
@@ -158,6 +161,7 @@ public fun patientHealthCareParty_fromJs(obj: EncryptedPatientHealthCarePartyJs)
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun patientHealthCareParty_toJs(obj: PatientHealthCareParty): PatientHealthCarePartyJs = when
 		(obj) {
 	is EncryptedPatientHealthCareParty -> patientHealthCareParty_toJs(obj)

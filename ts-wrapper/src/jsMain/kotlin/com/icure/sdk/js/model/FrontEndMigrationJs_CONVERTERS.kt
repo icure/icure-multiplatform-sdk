@@ -7,7 +7,9 @@ import com.icure.sdk.js.model.CheckedConverters.setToArray
 import com.icure.sdk.model.DecryptedPropertyStub
 import com.icure.sdk.model.FrontEndMigration
 import com.icure.sdk.model.embed.FrontEndMigrationStatus
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun frontEndMigration_toJs(obj: FrontEndMigration): FrontEndMigrationJs {
 	val id = obj.id
 	val rev = obj.rev
@@ -16,7 +18,7 @@ public fun frontEndMigration_toJs(obj: FrontEndMigration): FrontEndMigrationJs {
 	val startDate = longToNumber(obj.startDate)
 	val endDate = longToNumber(obj.endDate)
 	val status = obj.status?.let { nonNull1 ->
-		obj.status?.name
+		nonNull1.name
 	}
 	val logs = obj.logs
 	val userId = obj.userId

@@ -7,7 +7,6 @@ import com.icure.sdk.js.model.InsuranceJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import kotlin.Array
-import kotlin.Double
 import kotlin.String
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
@@ -23,18 +22,11 @@ public external interface InsuranceApiJs {
 
 	public fun deleteInsurance(insuranceId: String): Promise<DocIdentifierJs>
 
-	public fun getAllInsurances(options: InsuranceApi_getAllInsurances_Options?):
-			Promise<PaginatedListJs<InsuranceJs>>
+	public fun getAllInsurances(options: dynamic): Promise<PaginatedListJs<InsuranceJs>>
 
 	public fun listInsurancesByCode(insuranceCode: String): Promise<Array<InsuranceJs>>
 
 	public fun listInsurancesByName(insuranceName: String): Promise<Array<InsuranceJs>>
 
 	public fun modifyInsurance(insurance: InsuranceJs): Promise<InsuranceJs>
-}
-
-public external interface InsuranceApi_getAllInsurances_Options {
-	public val startDocumentId: String?
-
-	public val limit: Double?
 }

@@ -1,13 +1,15 @@
 package com.icure.sdk.js.model.embed
 
 import com.icure.sdk.model.embed.DatabaseSynchronization
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun databaseSynchronization_toJs(obj: DatabaseSynchronization): DatabaseSynchronizationJs {
 	val source = obj.source
 	val target = obj.target
 	val filter = obj.filter
 	val localTarget = obj.localTarget?.let { nonNull1 ->
-		obj.localTarget?.name
+		nonNull1.name
 	}
 	return DatabaseSynchronizationJs(js("{" +
 		"source:source," +

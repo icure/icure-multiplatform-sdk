@@ -7,7 +7,9 @@ import com.icure.sdk.model.base.Identifiable
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.UnionFilter
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun <O : Identifiable<String>, O_JS : IdentifiableJs<String>>
 		unionFilter_toJs(obj: UnionFilter<O>, convertO: (O) -> O_JS): UnionFilterJs<O_JS> {
 	val desc = obj.desc

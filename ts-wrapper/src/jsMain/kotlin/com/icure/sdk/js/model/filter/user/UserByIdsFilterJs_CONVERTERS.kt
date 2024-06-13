@@ -4,7 +4,9 @@ import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.setToArray
 import com.icure.sdk.model.filter.user.UserByIdsFilter
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun userByIdsFilter_toJs(obj: UserByIdsFilter): UserByIdsFilterJs {
 	val ids = setToArray(
 		obj.ids,

@@ -5,7 +5,9 @@ import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.stringToZonedDateTime
 import com.icure.sdk.js.model.CheckedConverters.zonedDateTimeToString
 import com.icure.sdk.model.couchdb.ReplicationStats
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun replicationStats_toJs(obj: ReplicationStats): ReplicationStatsJs {
 	val revisionsChecked = intToNumber(obj.revisionsChecked)
 	val missingRevisionsFound = intToNumber(obj.missingRevisionsFound)

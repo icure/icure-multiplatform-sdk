@@ -11,7 +11,9 @@ import com.icure.sdk.model.embed.SecureDelegation
 import com.icure.sdk.model.specializations.Base64String
 import com.icure.sdk.model.specializations.SecureDelegationKeyString
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun secureDelegation_toJs(obj: SecureDelegation): SecureDelegationJs {
 	val delegator = obj.delegator
 	val delegate = obj.delegate

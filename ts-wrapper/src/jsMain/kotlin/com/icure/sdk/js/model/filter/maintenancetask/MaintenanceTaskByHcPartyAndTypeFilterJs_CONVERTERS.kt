@@ -1,7 +1,9 @@
 package com.icure.sdk.js.model.filter.maintenancetask
 
 import com.icure.sdk.model.filter.maintenancetask.MaintenanceTaskByHcPartyAndTypeFilter
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun maintenanceTaskByHcPartyAndTypeFilter_toJs(obj: MaintenanceTaskByHcPartyAndTypeFilter):
 		MaintenanceTaskByHcPartyAndTypeFilterJs {
 	val desc = obj.desc

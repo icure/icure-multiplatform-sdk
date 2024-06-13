@@ -35,8 +35,10 @@ import com.icure.sdk.model.embed.MessageAttachment
 import com.icure.sdk.model.embed.MessageReadStatus
 import kotlin.Array
 import kotlin.String
+import kotlin.Suppress
 import kotlin.collections.Set
 
+@Suppress("UNUSED_VARIABLE")
 public fun message_toJs(obj: DecryptedMessage): DecryptedMessageJs {
 	val id = obj.id
 	val rev = obj.rev
@@ -451,6 +453,7 @@ public fun message_fromJs(obj: DecryptedMessageJs): DecryptedMessage {
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun message_toJs(obj: EncryptedMessage): EncryptedMessageJs {
 	val id = obj.id
 	val rev = obj.rev
@@ -865,6 +868,7 @@ public fun message_fromJs(obj: EncryptedMessageJs): EncryptedMessage {
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun message_toJs(obj: Message): MessageJs = when (obj) {
 	is EncryptedMessage -> message_toJs(obj)
 	is DecryptedMessage -> message_toJs(obj)

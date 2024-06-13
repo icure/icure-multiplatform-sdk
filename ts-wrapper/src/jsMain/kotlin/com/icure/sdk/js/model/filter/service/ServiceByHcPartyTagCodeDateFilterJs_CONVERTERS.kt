@@ -3,7 +3,9 @@ package com.icure.sdk.js.model.filter.service
 import com.icure.sdk.js.model.CheckedConverters.longToNumber
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.model.filter.service.ServiceByHcPartyTagCodeDateFilter
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun serviceByHcPartyTagCodeDateFilter_toJs(obj: ServiceByHcPartyTagCodeDateFilter):
 		ServiceByHcPartyTagCodeDateFilterJs {
 	val desc = obj.desc

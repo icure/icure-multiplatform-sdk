@@ -3,7 +3,9 @@ package com.icure.sdk.js.model.filter.invoice
 import com.icure.sdk.js.model.CheckedConverters.longToNumber
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.model.filter.invoice.InvoiceByHcPartyCodeDateFilter
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun invoiceByHcPartyCodeDateFilter_toJs(obj: InvoiceByHcPartyCodeDateFilter):
 		InvoiceByHcPartyCodeDateFilterJs {
 	val desc = obj.desc

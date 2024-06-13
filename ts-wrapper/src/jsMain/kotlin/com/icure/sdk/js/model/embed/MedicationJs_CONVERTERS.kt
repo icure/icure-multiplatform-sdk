@@ -15,7 +15,9 @@ import com.icure.sdk.model.embed.ParagraphAgreement
 import com.icure.sdk.model.embed.RegimenItem
 import com.icure.sdk.model.embed.Suspension
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun medication_toJs(obj: Medication): MedicationJs {
 	val compoundPrescription = obj.compoundPrescription
 	val substanceProduct = obj.substanceProduct?.let { nonNull1 ->

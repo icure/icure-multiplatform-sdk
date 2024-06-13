@@ -1,7 +1,9 @@
 package com.icure.sdk.js.model.security
 
 import com.icure.sdk.model.security.TokenWithGroup
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun tokenWithGroup_toJs(obj: TokenWithGroup): TokenWithGroupJs {
 	val token = obj.token
 	val groupId = obj.groupId

@@ -3,7 +3,9 @@ package com.icure.sdk.js.crypto.entities
 import com.icure.sdk.crypto.entities.FailedRequestDetails
 import com.icure.sdk.js.model.CheckedConverters.intToNumber
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun failedRequestDetails_toJs(obj: FailedRequestDetails): FailedRequestDetailsJs {
 	val entityId = obj.entityId
 	val delegateId = obj.delegateId

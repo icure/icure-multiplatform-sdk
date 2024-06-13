@@ -3,7 +3,9 @@ package com.icure.sdk.js.model.security
 import com.icure.sdk.js.model.CheckedConverters.longToNumber
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.model.security.AuthenticationToken
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun authenticationToken_toJs(obj: AuthenticationToken): AuthenticationTokenJs {
 	val token = obj.token
 	val creationTime = longToNumber(obj.creationTime)

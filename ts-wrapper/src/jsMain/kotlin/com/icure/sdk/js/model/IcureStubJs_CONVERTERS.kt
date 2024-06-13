@@ -19,8 +19,10 @@ import com.icure.sdk.model.base.CodeStub
 import com.icure.sdk.model.embed.Delegation
 import kotlin.Array
 import kotlin.String
+import kotlin.Suppress
 import kotlin.collections.Set
 
+@Suppress("UNUSED_VARIABLE")
 public fun icureStub_toJs(obj: IcureStub): IcureStubJs {
 	val id = obj.id
 	val rev = obj.rev

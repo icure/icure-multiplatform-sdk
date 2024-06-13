@@ -4,7 +4,9 @@ import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.setToArray
 import com.icure.sdk.model.filter.code.CodeByIdsFilter
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun codeByIdsFilter_toJs(obj: CodeByIdsFilter): CodeByIdsFilterJs {
 	val ids = setToArray(
 		obj.ids,

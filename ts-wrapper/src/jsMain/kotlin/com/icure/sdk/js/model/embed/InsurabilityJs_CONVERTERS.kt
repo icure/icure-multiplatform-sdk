@@ -10,7 +10,9 @@ import com.icure.sdk.model.embed.DecryptedInsurability
 import com.icure.sdk.model.embed.EncryptedInsurability
 import com.icure.sdk.model.embed.Insurability
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun insurability_toJs(obj: DecryptedInsurability): DecryptedInsurabilityJs {
 	val parameters = mapToObject(
 		obj.parameters,
@@ -82,6 +84,7 @@ public fun insurability_fromJs(obj: DecryptedInsurabilityJs): DecryptedInsurabil
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun insurability_toJs(obj: EncryptedInsurability): EncryptedInsurabilityJs {
 	val parameters = mapToObject(
 		obj.parameters,
@@ -153,6 +156,7 @@ public fun insurability_fromJs(obj: EncryptedInsurabilityJs): EncryptedInsurabil
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun insurability_toJs(obj: Insurability): InsurabilityJs = when (obj) {
 	is EncryptedInsurability -> insurability_toJs(obj)
 	is DecryptedInsurability -> insurability_toJs(obj)

@@ -3,7 +3,9 @@ package com.icure.sdk.js.model.sdk
 import com.icure.sdk.js.model.specializations.spkiHexString_fromJs
 import com.icure.sdk.js.model.specializations.spkiHexString_toJs
 import com.icure.sdk.model.sdk.KeyPairUpdateNotification
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun keyPairUpdateNotification_toJs(obj: KeyPairUpdateNotification):
 		KeyPairUpdateNotificationJs {
 	val newPublicKey = spkiHexString_toJs(obj.newPublicKey)

@@ -11,7 +11,9 @@ import com.icure.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.sdk.js.model.patient_fromJs
 import com.icure.sdk.js.model.patient_toJs
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public
 		fun shareAllPatientDataOptions_SharePatientDataError_toJs(obj: ShareAllPatientDataOptions.SharePatientDataError):
 		ShareAllPatientDataOptionsJs_SharePatientDataErrorJs = when (obj) {
@@ -33,6 +35,7 @@ public
 			IllegalArgumentException("""Unknown concrete implementation for com.icure.sdk.crypto.entities.ShareAllPatientDataOptions.SharePatientDataError: $obj""")
 }
 
+@Suppress("UNUSED_VARIABLE")
 public
 		fun shareAllPatientDataOptions_EntityResult_toJs(obj: ShareAllPatientDataOptions.EntityResult):
 		ShareAllPatientDataOptionsJs_EntityResultJs {
@@ -63,6 +66,7 @@ public
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun shareAllPatientDataOptions_Result_toJs(obj: ShareAllPatientDataOptions.Result):
 		ShareAllPatientDataOptionsJs_ResultJs {
 	val patient = patient_toJs(obj.patient)
@@ -100,6 +104,7 @@ public fun shareAllPatientDataOptions_Result_fromJs(obj: ShareAllPatientDataOpti
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public
 		fun shareAllPatientDataOptions_BulkShareFailure_toJs(obj: ShareAllPatientDataOptions.BulkShareFailure):
 		ShareAllPatientDataOptionsJs_BulkShareFailureJs {
@@ -133,6 +138,7 @@ public
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public
 		fun shareAllPatientDataOptions_FailedRequest_toJs(obj: ShareAllPatientDataOptions.FailedRequest):
 		ShareAllPatientDataOptionsJs_FailedRequestJs {

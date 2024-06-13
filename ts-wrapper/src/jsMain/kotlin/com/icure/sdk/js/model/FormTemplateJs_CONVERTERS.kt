@@ -14,7 +14,9 @@ import com.icure.sdk.js.model.embed.form.template.formTemplateLayout_toJs
 import com.icure.sdk.model.FormTemplate
 import com.icure.sdk.model.base.CodeStub
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun formTemplate_toJs(obj: FormTemplate): FormTemplateJs {
 	val id = obj.id
 	val rev = obj.rev

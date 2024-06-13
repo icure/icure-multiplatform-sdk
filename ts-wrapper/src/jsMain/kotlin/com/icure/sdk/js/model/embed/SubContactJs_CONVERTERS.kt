@@ -18,7 +18,9 @@ import com.icure.sdk.model.embed.DecryptedSubContact
 import com.icure.sdk.model.embed.EncryptedSubContact
 import com.icure.sdk.model.embed.ServiceLink
 import com.icure.sdk.model.embed.SubContact
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun subContact_toJs(obj: DecryptedSubContact): DecryptedSubContactJs {
 	val id = obj.id
 	val created = longToNumber(obj.created)
@@ -138,6 +140,7 @@ public fun subContact_fromJs(obj: DecryptedSubContactJs): DecryptedSubContact {
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun subContact_toJs(obj: EncryptedSubContact): EncryptedSubContactJs {
 	val id = obj.id
 	val created = longToNumber(obj.created)
@@ -257,6 +260,7 @@ public fun subContact_fromJs(obj: EncryptedSubContactJs): EncryptedSubContact {
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun subContact_toJs(obj: SubContact): SubContactJs = when (obj) {
 	is EncryptedSubContact -> subContact_toJs(obj)
 	is DecryptedSubContact -> subContact_toJs(obj)

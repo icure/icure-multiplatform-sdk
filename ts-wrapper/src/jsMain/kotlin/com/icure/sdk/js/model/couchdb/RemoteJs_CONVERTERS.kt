@@ -1,7 +1,9 @@
 package com.icure.sdk.js.model.couchdb
 
 import com.icure.sdk.model.couchdb.Remote
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun remote_toJs(obj: Remote): RemoteJs {
 	val url = obj.url
 	val auth = obj.auth?.let { nonNull1 ->

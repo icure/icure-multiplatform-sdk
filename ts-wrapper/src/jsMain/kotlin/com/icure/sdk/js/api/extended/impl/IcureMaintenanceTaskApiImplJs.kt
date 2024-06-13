@@ -2,9 +2,8 @@
 package com.icure.sdk.js.api.extended.`impl`
 
 import com.icure.sdk.api.extended.IcureMaintenanceTaskApi
-import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefault
+import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.sdk.js.api.extended.IcureMaintenanceTaskApiJs
-import com.icure.sdk.js.api.extended.IcureMaintenanceTaskApi_createKeyPairUpdateNotificationsToAllDelegationCounterparts_Options
 import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.sdk.KeyPairUpdateNotificationJs
 import com.icure.sdk.js.model.sdk.keyPairUpdateNotification_fromJs
@@ -12,6 +11,7 @@ import com.icure.sdk.js.model.specializations.spkiHexString_fromJs
 import com.icure.sdk.model.DataOwnerType
 import com.icure.sdk.model.sdk.KeyPairUpdateNotification
 import com.icure.sdk.model.specializations.SpkiHexString
+import kotlin.Array
 import kotlin.OptIn
 import kotlin.String
 import kotlin.Unit
@@ -36,17 +36,15 @@ internal class IcureMaintenanceTaskApiImplJs(
 	}
 
 	override fun createKeyPairUpdateNotificationsToAllDelegationCounterparts(key: String,
-			options: IcureMaintenanceTaskApi_createKeyPairUpdateNotificationsToAllDelegationCounterparts_Options?):
-			Promise<Unit> {
-		val _options:
-				IcureMaintenanceTaskApi_createKeyPairUpdateNotificationsToAllDelegationCounterparts_Options =
-				options ?: js("{}")
+			options: dynamic): Promise<Unit> {
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val keyConverted: SpkiHexString = spkiHexString_fromJs(key)
-			val requestToOwnerTypesConverted: Set<DataOwnerType>? = convertingOptionOrDefault(
-				_options.requestToOwnerTypes,
+			val requestToOwnerTypesConverted: Set<DataOwnerType>? = convertingOptionOrDefaultNullable(
+				_options,
+				"requestToOwnerTypes",
 				null
-			) { requestToOwnerTypes ->
+			) { requestToOwnerTypes: Array<String>? ->
 				arrayToSet(
 					requestToOwnerTypes,
 					"requestToOwnerTypes",

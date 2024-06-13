@@ -19,7 +19,7 @@ import {Connection} from '../../websocket/Connection.mjs';
 export interface PatientFlavouredApi<E extends Patient> {
 
 	shareWith(delegateId: string, patient: E, shareSecretIds: Array<string>,
-			options?: { delegateId?: string, patient?: E, shareSecretIds?: Array<string>, shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<E>>;
+			options?: { shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<E>>;
 
 	tryShareWithMany(patient: E,
 			delegates: { [ key: string ]: PatientShareOptions }): Promise<SimpleShareResult<E>>;
@@ -33,21 +33,21 @@ export interface PatientFlavouredApi<E extends Patient> {
 	getPatient(entityId: string): Promise<E>;
 
 	filterPatientsBy(filterChain: FilterChain<Patient>,
-			options?: { filterChain?: FilterChain<Patient>, startKey?: string | undefined, startDocumentId?: string | undefined, limit?: number | undefined, skip?: number | undefined, sort?: string | undefined, desc?: boolean | undefined }): Promise<PaginatedList<E>>;
+			options?: { startKey?: string | undefined, startDocumentId?: string | undefined, limit?: number | undefined, skip?: number | undefined, sort?: string | undefined, desc?: boolean | undefined }): Promise<PaginatedList<E>>;
 
 	findPatientsByNameBirthSsinAuto(filterValue: string,
-			options?: { healthcarePartyId?: string | undefined, filterValue?: string, startKey?: string | undefined, startDocumentId?: string | undefined, limit?: number | undefined, sortDirection?: SortDirection }): Promise<PaginatedList<E>>;
+			options?: { healthcarePartyId?: string | undefined, startKey?: string | undefined, startDocumentId?: string | undefined, limit?: number | undefined, sortDirection?: SortDirection }): Promise<PaginatedList<E>>;
 
 	listPatientsOfHcParty(hcPartyId: string,
-			options?: { hcPartyId?: string, sortField?: string, startKey?: string | undefined, startDocumentId?: string | undefined, limit?: number | undefined, sortDirection?: SortDirection }): Promise<PaginatedList<E>>;
+			options?: { sortField?: string, startKey?: string | undefined, startDocumentId?: string | undefined, limit?: number | undefined, sortDirection?: SortDirection }): Promise<PaginatedList<E>>;
 
 	listOfMergesAfter(date: number): Promise<Array<E>>;
 
 	findPatientsModifiedAfter(date: number,
-			options?: { date?: number, startKey?: number | undefined, startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<E>>;
+			options?: { startKey?: number | undefined, startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<E>>;
 
 	listPatientsByHcParty(hcPartyId: string,
-			options?: { hcPartyId?: string, sortField?: string, startKey?: string | undefined, startDocumentId?: string | undefined, limit?: number | undefined, sortDirection?: SortDirection }): Promise<PaginatedList<E>>;
+			options?: { sortField?: string, startKey?: string | undefined, startDocumentId?: string | undefined, limit?: number | undefined, sortDirection?: SortDirection }): Promise<PaginatedList<E>>;
 
 	getPatientHcPartyKeysForDelegate(patientId: string): Promise<{ [ key: string ]: string }>;
 
@@ -56,39 +56,39 @@ export interface PatientFlavouredApi<E extends Patient> {
 	findPatientsByHealthcareParty(options?: { hcPartyId?: string | undefined, sortField?: string, startKey?: string | undefined, startDocumentId?: string | undefined, limit?: number | undefined, sortDirection?: SortDirection }): Promise<PaginatedList<E>>;
 
 	findPatientsIdsByHealthcareParty(hcPartyId: string,
-			options?: { hcPartyId?: string, startKey?: string | undefined, startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<string>>;
+			options?: { startKey?: string | undefined, startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<string>>;
 
 	getPatientByExternalId(externalId: string): Promise<E>;
 
 	fuzzySearch(firstName: string, lastName: string,
-			options?: { firstName?: string, lastName?: string, dateOfBirth?: number | undefined }): Promise<Array<E>>;
+			options?: { dateOfBirth?: number | undefined }): Promise<Array<E>>;
 
 	findDeletedPatients(startDate: number,
-			options?: { startDate?: number, endDate?: number | undefined, desc?: boolean | undefined, startKey?: number | undefined, startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<E>>;
+			options?: { endDate?: number | undefined, desc?: boolean | undefined, startKey?: number | undefined, startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<E>>;
 
 	listDeletedPatientsByName(options?: { firstName?: string | undefined, lastName?: string | undefined }): Promise<Array<E>>;
 
 	getPatients(patientIds: ListOfIds): Promise<Array<E>>;
 
 	getPatientByHealthcarePartyAndIdentifier(hcPartyId: string, id: string,
-			options?: { hcPartyId?: string, id?: string, system?: string | undefined }): Promise<E>;
+			options?: { system?: string | undefined }): Promise<E>;
 
 	modifyPatients(patientDtos: Array<EncryptedPatient>): Promise<Array<IdWithRev>>;
 
 	modifyPatientReferral(patientId: string, referralId: string,
-			options?: { patientId?: string, referralId?: string, start?: number | undefined, end?: number | undefined }): Promise<E>;
+			options?: { start?: number | undefined, end?: number | undefined }): Promise<E>;
 
 	findDuplicatesBySsin(hcPartyId: string,
-			options?: { hcPartyId?: string, startKey?: string | undefined, startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<E>>;
+			options?: { startKey?: string | undefined, startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<E>>;
 
 	findDuplicatesByName(hcPartyId: string,
-			options?: { hcPartyId?: string, startKey?: string | undefined, startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<E>>;
+			options?: { startKey?: string | undefined, startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<E>>;
 
 	mergePatients(intoId: string, fromId: string, expectedFromRev: string,
 			updatedInto: EncryptedPatient): Promise<E>;
 
 	subscribeToEvents(events: Array<SubscriptionEventType>, filter: AbstractFilter<Patient>,
 			eventFired: (x1: E) => Promise<void>,
-			options?: { events?: Array<SubscriptionEventType>, filter?: AbstractFilter<Patient>, onConnected?: () => Promise<void>, channelCapacity?: number, retryDelay?: DurationMs, retryDelayExponentFactor?: number, maxRetries?: number, eventFired?: (x1: E) => Promise<void> }): Promise<Connection>;
+			options?: { onConnected?: () => Promise<void>, channelCapacity?: number, retryDelay?: DurationMs, retryDelayExponentFactor?: number, maxRetries?: number }): Promise<Connection>;
 
 }

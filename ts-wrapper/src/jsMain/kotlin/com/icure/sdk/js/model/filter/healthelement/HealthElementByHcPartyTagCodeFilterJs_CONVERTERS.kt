@@ -3,7 +3,9 @@ package com.icure.sdk.js.model.filter.healthelement
 import com.icure.sdk.js.model.CheckedConverters.intToNumber
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.model.filter.healthelement.HealthElementByHcPartyTagCodeFilter
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun healthElementByHcPartyTagCodeFilter_toJs(obj: HealthElementByHcPartyTagCodeFilter):
 		HealthElementByHcPartyTagCodeFilterJs {
 	val desc = obj.desc

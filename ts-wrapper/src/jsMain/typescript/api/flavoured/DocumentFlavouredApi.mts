@@ -11,7 +11,7 @@ import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs'
 export interface DocumentFlavouredApi<E extends Document> {
 
 	shareWith(delegateId: string, document: E,
-			options?: { delegateId?: string, document?: E, shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<E>>;
+			options?: { shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<E>>;
 
 	tryShareWithMany(document: E,
 			delegates: { [ key: string ]: DocumentShareOptions }): Promise<SimpleShareResult<E>>;
@@ -19,7 +19,7 @@ export interface DocumentFlavouredApi<E extends Document> {
 	shareWithMany(document: E, delegates: { [ key: string ]: DocumentShareOptions }): Promise<E>;
 
 	findDocumentsByHcPartyPatient(hcPartyId: string, patient: Patient,
-			options?: { hcPartyId?: string, patient?: Patient, startDate?: number | undefined, endDate?: number | undefined, descending?: boolean | undefined }): Promise<PaginatedListIterator<E>>;
+			options?: { startDate?: number | undefined, endDate?: number | undefined, descending?: boolean | undefined }): Promise<PaginatedListIterator<E>>;
 
 	modifyDocument(entity: E): Promise<E>;
 

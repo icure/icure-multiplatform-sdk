@@ -31,8 +31,10 @@ import com.icure.sdk.model.embed.CalendarItemTag
 import com.icure.sdk.model.embed.Delegation
 import kotlin.Array
 import kotlin.String
+import kotlin.Suppress
 import kotlin.collections.Set
 
+@Suppress("UNUSED_VARIABLE")
 public fun calendarItem_toJs(obj: DecryptedCalendarItem): DecryptedCalendarItemJs {
 	val id = obj.id
 	val rev = obj.rev
@@ -351,6 +353,7 @@ public fun calendarItem_fromJs(obj: DecryptedCalendarItemJs): DecryptedCalendarI
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun calendarItem_toJs(obj: EncryptedCalendarItem): EncryptedCalendarItemJs {
 	val id = obj.id
 	val rev = obj.rev
@@ -669,6 +672,7 @@ public fun calendarItem_fromJs(obj: EncryptedCalendarItemJs): EncryptedCalendarI
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun calendarItem_toJs(obj: CalendarItem): CalendarItemJs = when (obj) {
 	is EncryptedCalendarItem -> calendarItem_toJs(obj)
 	is DecryptedCalendarItem -> calendarItem_toJs(obj)

@@ -55,18 +55,6 @@ public external interface HealthcareElementBasicApiJs {
 		events: Array<String>,
 		filter: AbstractFilterJs<HealthElementJs>,
 		eventFired: (EncryptedHealthElementJs) -> Promise<Unit>,
-		options: HealthcareElementBasicApi_subscribeToEvents_Options?,
+		options: dynamic,
 	): Promise<ConnectionJs>
-}
-
-public external interface HealthcareElementBasicApi_subscribeToEvents_Options {
-	public val onConnected: () -> Promise<Unit>
-
-	public val channelCapacity: Double
-
-	public val retryDelay: Double
-
-	public val retryDelayExponentFactor: Double
-
-	public val maxRetries: Double
 }

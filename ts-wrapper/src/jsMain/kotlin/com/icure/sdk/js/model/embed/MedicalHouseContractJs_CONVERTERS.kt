@@ -15,7 +15,9 @@ import com.icure.sdk.model.embed.MedicalHouseContract
 import com.icure.sdk.model.embed.MhcSignatureType
 import com.icure.sdk.model.embed.SuspensionReason
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun medicalHouseContract_toJs(obj: DecryptedMedicalHouseContract):
 		DecryptedMedicalHouseContractJs {
 	val contractId = obj.contractId
@@ -24,7 +26,7 @@ public fun medicalHouseContract_toJs(obj: DecryptedMedicalHouseContract):
 	val mmNihii = obj.mmNihii
 	val hcpId = obj.hcpId
 	val changeType = obj.changeType?.let { nonNull1 ->
-		obj.changeType?.name
+		nonNull1.name
 	}
 	val parentContractId = obj.parentContractId
 	val changedBy = obj.changedBy
@@ -46,12 +48,12 @@ public fun medicalHouseContract_toJs(obj: DecryptedMedicalHouseContract):
 	val startOfSuspension = longToNumber(obj.startOfSuspension)
 	val endOfSuspension = longToNumber(obj.endOfSuspension)
 	val suspensionReason = obj.suspensionReason?.let { nonNull1 ->
-		obj.suspensionReason?.name
+		nonNull1.name
 	}
 	val suspensionSource = obj.suspensionSource
 	val forcedSuspension = obj.forcedSuspension
 	val signatureType = obj.signatureType?.let { nonNull1 ->
-		obj.signatureType?.name
+		nonNull1.name
 	}
 	val status = intToNumber(obj.status)
 	val options = mapToObject(
@@ -210,6 +212,7 @@ public fun medicalHouseContract_fromJs(obj: DecryptedMedicalHouseContractJs):
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun medicalHouseContract_toJs(obj: EncryptedMedicalHouseContract):
 		EncryptedMedicalHouseContractJs {
 	val contractId = obj.contractId
@@ -218,7 +221,7 @@ public fun medicalHouseContract_toJs(obj: EncryptedMedicalHouseContract):
 	val mmNihii = obj.mmNihii
 	val hcpId = obj.hcpId
 	val changeType = obj.changeType?.let { nonNull1 ->
-		obj.changeType?.name
+		nonNull1.name
 	}
 	val parentContractId = obj.parentContractId
 	val changedBy = obj.changedBy
@@ -240,12 +243,12 @@ public fun medicalHouseContract_toJs(obj: EncryptedMedicalHouseContract):
 	val startOfSuspension = longToNumber(obj.startOfSuspension)
 	val endOfSuspension = longToNumber(obj.endOfSuspension)
 	val suspensionReason = obj.suspensionReason?.let { nonNull1 ->
-		obj.suspensionReason?.name
+		nonNull1.name
 	}
 	val suspensionSource = obj.suspensionSource
 	val forcedSuspension = obj.forcedSuspension
 	val signatureType = obj.signatureType?.let { nonNull1 ->
-		obj.signatureType?.name
+		nonNull1.name
 	}
 	val status = intToNumber(obj.status)
 	val options = mapToObject(
@@ -404,6 +407,7 @@ public fun medicalHouseContract_fromJs(obj: EncryptedMedicalHouseContractJs):
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun medicalHouseContract_toJs(obj: MedicalHouseContract): MedicalHouseContractJs = when (obj)
 		{
 	is EncryptedMedicalHouseContract -> medicalHouseContract_toJs(obj)

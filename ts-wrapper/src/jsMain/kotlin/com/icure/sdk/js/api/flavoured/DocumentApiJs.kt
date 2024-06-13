@@ -4,14 +4,12 @@
 package com.icure.sdk.js.api.flavoured
 
 import com.icure.sdk.js.crypto.entities.DocumentShareOptionsJs
-import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.model.DecryptedDocumentJs
 import com.icure.sdk.js.model.DocumentJs
 import com.icure.sdk.js.model.EncryptedDocumentJs
 import com.icure.sdk.js.model.MessageJs
 import com.icure.sdk.js.model.PatientJs
-import com.icure.sdk.js.model.UserJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
@@ -36,7 +34,7 @@ public external interface DocumentApiJs {
 	public fun withEncryptionMetadata(
 		base: DecryptedDocumentJs?,
 		message: MessageJs?,
-		options: DocumentApi_withEncryptionMetadata_Options?,
+		options: dynamic,
 	): Promise<DecryptedDocumentJs>
 
 	public fun getAndTryDecryptMainAttachment(
@@ -111,7 +109,7 @@ public external interface DocumentApiJs {
 	public fun shareWith(
 		delegateId: String,
 		document: DecryptedDocumentJs,
-		options: DocumentApi_shareWith_Options?,
+		options: dynamic,
 	): Promise<SimpleShareResultJs<DecryptedDocumentJs>>
 
 	public fun tryShareWithMany(document: DecryptedDocumentJs,
@@ -124,7 +122,7 @@ public external interface DocumentApiJs {
 	public fun findDocumentsByHcPartyPatient(
 		hcPartyId: String,
 		patient: PatientJs,
-		options: DocumentApi_findDocumentsByHcPartyPatient_Options?,
+		options: dynamic,
 	): Promise<PaginatedListIteratorJs<DecryptedDocumentJs>>
 
 	public fun modifyDocument(entity: DecryptedDocumentJs): Promise<DecryptedDocumentJs>
@@ -174,28 +172,4 @@ public external interface DocumentApiJs {
 		key: String,
 		attachmentId: String,
 	): Promise<DecryptedDocumentJs>
-}
-
-public external interface DocumentApi_withEncryptionMetadata_Options {
-	public val user: UserJs?
-
-	public val delegates: Record<String, String>
-
-	public val secretId: SecretIdOptionJs
-}
-
-public external interface DocumentApi_shareWith_Options {
-	public val shareEncryptionKeys: String
-
-	public val shareOwningEntityIds: String
-
-	public val requestedPermission: String
-}
-
-public external interface DocumentApi_findDocumentsByHcPartyPatient_Options {
-	public val startDate: Double?
-
-	public val endDate: Double?
-
-	public val descending: Boolean?
 }

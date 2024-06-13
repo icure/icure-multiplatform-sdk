@@ -6,7 +6,9 @@ import com.icure.sdk.js.model.CheckedConverters.longToNumber
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.model.filter.contact.ContactByHcPartyPatientTagCodeDateFilter
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public
 		fun contactByHcPartyPatientTagCodeDateFilter_toJs(obj: ContactByHcPartyPatientTagCodeDateFilter):
 		ContactByHcPartyPatientTagCodeDateFilterJs {

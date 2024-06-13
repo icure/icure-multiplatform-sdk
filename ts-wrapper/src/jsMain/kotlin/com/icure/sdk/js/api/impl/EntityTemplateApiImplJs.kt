@@ -2,11 +2,8 @@
 package com.icure.sdk.js.api.`impl`
 
 import com.icure.sdk.api.EntityTemplateApi
-import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefault
+import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.sdk.js.api.EntityTemplateApiJs
-import com.icure.sdk.js.api.EntityTemplateApi_listAllEntityTemplatesBy_Options
-import com.icure.sdk.js.api.EntityTemplateApi_listEntityTemplatesByKeyword_Options
-import com.icure.sdk.js.api.EntityTemplateApi_listEntityTemplatesBy_Options
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.EntityTemplateJs
@@ -60,22 +57,24 @@ internal class EntityTemplateApiImplJs(
 	override fun listEntityTemplatesBy(
 		userId: String,
 		type: String,
-		options: EntityTemplateApi_listEntityTemplatesBy_Options?,
+		options: dynamic,
 	): Promise<Array<EntityTemplateJs>> {
-		val _options: EntityTemplateApi_listEntityTemplatesBy_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val userIdConverted: String = userId
 			val typeConverted: String = type
-			val searchStringConverted: String? = convertingOptionOrDefault(
-				_options.searchString,
+			val searchStringConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"searchString",
 				null
-			) { searchString ->
+			) { searchString: String? ->
 				searchString
 			}
-			val includeEntitiesConverted: Boolean? = convertingOptionOrDefault(
-				_options.includeEntities,
+			val includeEntitiesConverted: Boolean? = convertingOptionOrDefaultNullable(
+				_options,
+				"includeEntities",
 				null
-			) { includeEntities ->
+			) { includeEntities: Boolean? ->
 				includeEntities
 			}
 			val result = entityTemplateApi.listEntityTemplatesBy(
@@ -93,21 +92,23 @@ internal class EntityTemplateApiImplJs(
 		}
 	}
 
-	override fun listAllEntityTemplatesBy(type: String,
-			options: EntityTemplateApi_listAllEntityTemplatesBy_Options?): Promise<Array<EntityTemplateJs>> {
-		val _options: EntityTemplateApi_listAllEntityTemplatesBy_Options = options ?: js("{}")
+	override fun listAllEntityTemplatesBy(type: String, options: dynamic):
+			Promise<Array<EntityTemplateJs>> {
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val typeConverted: String = type
-			val searchStringConverted: String? = convertingOptionOrDefault(
-				_options.searchString,
+			val searchStringConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"searchString",
 				null
-			) { searchString ->
+			) { searchString: String? ->
 				searchString
 			}
-			val includeEntitiesConverted: Boolean? = convertingOptionOrDefault(
-				_options.includeEntities,
+			val includeEntitiesConverted: Boolean? = convertingOptionOrDefaultNullable(
+				_options,
+				"includeEntities",
 				null
-			) { includeEntities ->
+			) { includeEntities: Boolean? ->
 				includeEntities
 			}
 			val result = entityTemplateApi.listAllEntityTemplatesBy(
@@ -128,17 +129,18 @@ internal class EntityTemplateApiImplJs(
 		userId: String,
 		type: String,
 		keyword: String,
-		options: EntityTemplateApi_listEntityTemplatesByKeyword_Options?,
+		options: dynamic,
 	): Promise<Array<EntityTemplateJs>> {
-		val _options: EntityTemplateApi_listEntityTemplatesByKeyword_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val userIdConverted: String = userId
 			val typeConverted: String = type
 			val keywordConverted: String = keyword
-			val includeEntitiesConverted: Boolean? = convertingOptionOrDefault(
-				_options.includeEntities,
+			val includeEntitiesConverted: Boolean? = convertingOptionOrDefaultNullable(
+				_options,
+				"includeEntities",
 				null
-			) { includeEntities ->
+			) { includeEntities: Boolean? ->
 				includeEntities
 			}
 			val result = entityTemplateApi.listEntityTemplatesByKeyword(

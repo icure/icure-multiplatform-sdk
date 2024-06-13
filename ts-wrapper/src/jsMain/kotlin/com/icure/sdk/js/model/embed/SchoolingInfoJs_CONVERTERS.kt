@@ -5,7 +5,9 @@ import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.js.model.base.codeStub_fromJs
 import com.icure.sdk.js.model.base.codeStub_toJs
 import com.icure.sdk.model.embed.SchoolingInfo
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun schoolingInfo_toJs(obj: SchoolingInfo): SchoolingInfoJs {
 	val startDate = longToNumber(obj.startDate)
 	val endDate = longToNumber(obj.endDate)

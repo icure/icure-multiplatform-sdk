@@ -29,26 +29,26 @@ export interface GroupApi {
 			name: string,
 			password: string,
 			initialisationData: DatabaseInitialisation,
-			options?: { id?: string, name?: string, type?: GroupType | undefined, password?: string, server?: string | undefined, q?: number | undefined, n?: number | undefined, superGroup?: string | undefined, initialisationData?: DatabaseInitialisation }
+			options?: { type?: GroupType | undefined, server?: string | undefined, q?: number | undefined, n?: number | undefined, superGroup?: string | undefined }
 	): Promise<Group>;
 
 	registerNewGroupAdministrator(registrationInformation: RegistrationInformation,
-			options?: { type?: GroupType | undefined, role?: PermissionType | undefined, registrationInformation?: RegistrationInformation }): Promise<RegistrationSuccess>;
+			options?: { type?: GroupType | undefined, role?: PermissionType | undefined }): Promise<RegistrationSuccess>;
 
 	listApps(): Promise<Array<Group>>;
 
 	findGroups(id: string,
-			options?: { id?: string, startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<Group>>;
+			options?: { startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<Group>>;
 
 	findGroupsWithContent(id: string, searchString: string,
-			options?: { id?: string, searchString?: string, startKey?: any | undefined, startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<Group>>;
+			options?: { startKey?: any | undefined, startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<Group>>;
 
 	getNameOfGroupParent(id: string): Promise<string>;
 
 	modifyGroupName(id: string, name: string): Promise<Group>;
 
 	getOperationToken(operation: Operation, duration: number | undefined,
-			options?: { operation?: Operation, duration?: number | undefined, description?: string | undefined }): Promise<string>;
+			options?: { description?: string | undefined }): Promise<string>;
 
 	deleteOperationToken(tokenId: string): Promise<void>;
 
@@ -67,13 +67,13 @@ export interface GroupApi {
 	setGroupPassword(id: string, password: string): Promise<Group>;
 
 	initDesignDocs(id: string, warmup: boolean | undefined, dryRun: boolean | undefined,
-			options?: { id?: string, clazz?: string | undefined, warmup?: boolean | undefined, dryRun?: boolean | undefined }): Promise<Array<DesignDocument>>;
+			options?: { clazz?: string | undefined }): Promise<Array<DesignDocument>>;
 
 	solveConflicts(id: string, limit: number | undefined,
 			warmup: boolean | undefined): Promise<Array<IdWithRev>>;
 
 	resetStorage(id: string, databases: Array<string>,
-			options?: { id?: string, q?: number | undefined, n?: number | undefined, databases?: Array<string> }): Promise<void>;
+			options?: { q?: number | undefined, n?: number | undefined }): Promise<void>;
 
 	getGroupsStorageInfos(groups: Array<string>): Promise<Array<GroupDatabasesInfo>>;
 

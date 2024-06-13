@@ -4,7 +4,9 @@ import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.model.embed.DataAttachment
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun dataAttachment_toJs(obj: DataAttachment): DataAttachmentJs {
 	val couchDbAttachmentId = obj.couchDbAttachmentId
 	val objectStoreAttachmentId = obj.objectStoreAttachmentId

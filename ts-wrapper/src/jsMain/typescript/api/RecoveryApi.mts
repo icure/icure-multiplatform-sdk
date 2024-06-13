@@ -13,7 +13,7 @@ export interface RecoveryApi {
 			autoDelete: boolean): Promise<RecoveryResult<{ [ key: string ]: { [ key: string ]: XRsaKeypair } }>>;
 
 	createExchangeDataRecoveryInfo(delegateId: string,
-			options?: { delegateId?: string, lifetimeSeconds?: number | undefined }): Promise<RecoveryDataKey>;
+			options?: { lifetimeSeconds?: number | undefined }): Promise<RecoveryDataKey>;
 
 	recoverExchangeData(recoveryKey: RecoveryDataKey): Promise<RecoveryDataUseFailureReason | undefined>;
 

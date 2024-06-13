@@ -2,15 +2,8 @@
 package com.icure.sdk.js.api.`impl`
 
 import com.icure.sdk.api.UserApi
-import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefault
+import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.sdk.js.api.UserApiJs
-import com.icure.sdk.js.api.UserApi_filterUsersBy_Options
-import com.icure.sdk.js.api.UserApi_filterUsersInGroupBy_Options
-import com.icure.sdk.js.api.UserApi_getTokenInAllGroups_Options
-import com.icure.sdk.js.api.UserApi_getTokenInGroup_Options
-import com.icure.sdk.js.api.UserApi_getToken_Options
-import com.icure.sdk.js.api.UserApi_listUsersBy_Options
-import com.icure.sdk.js.api.UserApi_listUsersInGroup_Options
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
@@ -46,6 +39,7 @@ import com.icure.sdk.model.security.Enable2faRequest
 import com.icure.sdk.model.security.TokenWithGroup
 import kotlin.Array
 import kotlin.Boolean
+import kotlin.Double
 import kotlin.Int
 import kotlin.Long
 import kotlin.OptIn
@@ -67,31 +61,35 @@ internal class UserApiImplJs(
 		user_toJs(result)
 	}
 
-	override fun listUsersBy(options: UserApi_listUsersBy_Options?): Promise<PaginatedListJs<UserJs>> {
-		val _options: UserApi_listUsersBy_Options = options ?: js("{}")
+	override fun listUsersBy(options: dynamic): Promise<PaginatedListJs<UserJs>> {
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
-			val startKeyConverted: String? = convertingOptionOrDefault(
-				_options.startKey,
+			val startKeyConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"startKey",
 				null
-			) { startKey ->
+			) { startKey: String? ->
 				startKey
 			}
-			val startDocumentIdConverted: String? = convertingOptionOrDefault(
-				_options.startDocumentId,
+			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"startDocumentId",
 				null
-			) { startDocumentId ->
+			) { startDocumentId: String? ->
 				startDocumentId
 			}
-			val limitConverted: Int? = convertingOptionOrDefault(
-				_options.limit,
+			val limitConverted: Int? = convertingOptionOrDefaultNullable(
+				_options,
+				"limit",
 				null
-			) { limit ->
+			) { limit: Double? ->
 				numberToInt(limit, "limit")
 			}
-			val skipPatientsConverted: Boolean? = convertingOptionOrDefault(
-				_options.skipPatients,
+			val skipPatientsConverted: Boolean? = convertingOptionOrDefaultNullable(
+				_options,
+				"skipPatients",
 				null
-			) { skipPatients ->
+			) { skipPatients: Boolean? ->
 				skipPatients
 			}
 			val result = userApi.listUsersBy(
@@ -212,22 +210,24 @@ internal class UserApiImplJs(
 	override fun getToken(
 		userId: String,
 		key: String,
-		options: UserApi_getToken_Options?,
+		options: dynamic,
 	): Promise<String> {
-		val _options: UserApi_getToken_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val userIdConverted: String = userId
 			val keyConverted: String = key
-			val tokenValidityConverted: Long? = convertingOptionOrDefault(
-				_options.tokenValidity,
+			val tokenValidityConverted: Long? = convertingOptionOrDefaultNullable(
+				_options,
+				"tokenValidity",
 				null
-			) { tokenValidity ->
+			) { tokenValidity: Double? ->
 				numberToLong(tokenValidity, "tokenValidity")
 			}
-			val tokenConverted: String? = convertingOptionOrDefault(
-				_options.token,
+			val tokenConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"token",
 				null
-			) { token ->
+			) { token: String? ->
 				token
 			}
 			val result = userApi.getToken(
@@ -240,20 +240,22 @@ internal class UserApiImplJs(
 		}
 	}
 
-	override fun filterUsersBy(filterChain: FilterChainJs<UserJs>,
-			options: UserApi_filterUsersBy_Options?): Promise<PaginatedListJs<UserJs>> {
-		val _options: UserApi_filterUsersBy_Options = options ?: js("{}")
+	override fun filterUsersBy(filterChain: FilterChainJs<UserJs>, options: dynamic):
+			Promise<PaginatedListJs<UserJs>> {
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
-			val startDocumentIdConverted: String? = convertingOptionOrDefault(
-				_options.startDocumentId,
+			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"startDocumentId",
 				null
-			) { startDocumentId ->
+			) { startDocumentId: String? ->
 				startDocumentId
 			}
-			val limitConverted: Int? = convertingOptionOrDefault(
-				_options.limit,
+			val limitConverted: Int? = convertingOptionOrDefaultNullable(
+				_options,
+				"limit",
 				null
-			) { limit ->
+			) { limit: Double? ->
 				numberToInt(limit, "limit")
 			}
 			val filterChainConverted: FilterChain<User> = filterChain_fromJs(
@@ -306,27 +308,30 @@ internal class UserApiImplJs(
 		)
 	}
 
-	override fun listUsersInGroup(groupId: String, options: UserApi_listUsersInGroup_Options?):
+	override fun listUsersInGroup(groupId: String, options: dynamic):
 			Promise<PaginatedListJs<UserJs>> {
-		val _options: UserApi_listUsersInGroup_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val groupIdConverted: String = groupId
-			val startKeyConverted: String? = convertingOptionOrDefault(
-				_options.startKey,
+			val startKeyConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"startKey",
 				null
-			) { startKey ->
+			) { startKey: String? ->
 				startKey
 			}
-			val startDocumentIdConverted: String? = convertingOptionOrDefault(
-				_options.startDocumentId,
+			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"startDocumentId",
 				null
-			) { startDocumentId ->
+			) { startDocumentId: String? ->
 				startDocumentId
 			}
-			val limitConverted: Int? = convertingOptionOrDefault(
-				_options.limit,
+			val limitConverted: Int? = convertingOptionOrDefaultNullable(
+				_options,
+				"limit",
 				null
-			) { limit ->
+			) { limit: Double? ->
 				numberToInt(limit, "limit")
 			}
 			val result = userApi.listUsersInGroup(
@@ -427,23 +432,25 @@ internal class UserApiImplJs(
 		groupId: String,
 		userId: String,
 		key: String,
-		options: UserApi_getTokenInGroup_Options?,
+		options: dynamic,
 	): Promise<String> {
-		val _options: UserApi_getTokenInGroup_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val groupIdConverted: String = groupId
 			val userIdConverted: String = userId
 			val keyConverted: String = key
-			val tokenConverted: String? = convertingOptionOrDefault(
-				_options.token,
+			val tokenConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"token",
 				null
-			) { token ->
+			) { token: String? ->
 				token
 			}
-			val tokenValidityConverted: Long? = convertingOptionOrDefault(
-				_options.tokenValidity,
+			val tokenValidityConverted: Long? = convertingOptionOrDefaultNullable(
+				_options,
+				"tokenValidity",
 				null
-			) { tokenValidity ->
+			) { tokenValidity: Double? ->
 				numberToLong(tokenValidity, "tokenValidity")
 			}
 			val result = userApi.getTokenInGroup(
@@ -460,22 +467,24 @@ internal class UserApiImplJs(
 	override fun getTokenInAllGroups(
 		userIdentifier: String,
 		key: String,
-		options: UserApi_getTokenInAllGroups_Options?,
+		options: dynamic,
 	): Promise<Array<TokenWithGroupJs>> {
-		val _options: UserApi_getTokenInAllGroups_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val userIdentifierConverted: String = userIdentifier
 			val keyConverted: String = key
-			val tokenConverted: String? = convertingOptionOrDefault(
-				_options.token,
+			val tokenConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"token",
 				null
-			) { token ->
+			) { token: String? ->
 				token
 			}
-			val tokenValidityConverted: Long? = convertingOptionOrDefault(
-				_options.tokenValidity,
+			val tokenValidityConverted: Long? = convertingOptionOrDefaultNullable(
+				_options,
+				"tokenValidity",
 				null
-			) { tokenValidity ->
+			) { tokenValidity: Double? ->
 				numberToLong(tokenValidity, "tokenValidity")
 			}
 			val result = userApi.getTokenInAllGroups(
@@ -496,21 +505,23 @@ internal class UserApiImplJs(
 	override fun filterUsersInGroupBy(
 		groupId: String,
 		filterChain: FilterChainJs<UserJs>,
-		options: UserApi_filterUsersInGroupBy_Options?,
+		options: dynamic,
 	): Promise<PaginatedListJs<UserJs>> {
-		val _options: UserApi_filterUsersInGroupBy_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val groupIdConverted: String = groupId
-			val startDocumentIdConverted: String? = convertingOptionOrDefault(
-				_options.startDocumentId,
+			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"startDocumentId",
 				null
-			) { startDocumentId ->
+			) { startDocumentId: String? ->
 				startDocumentId
 			}
-			val limitConverted: Int? = convertingOptionOrDefault(
-				_options.limit,
+			val limitConverted: Int? = convertingOptionOrDefaultNullable(
+				_options,
+				"limit",
 				null
-			) { limit ->
+			) { limit: Double? ->
 				numberToInt(limit, "limit")
 			}
 			val filterChainConverted: FilterChain<User> = filterChain_fromJs(

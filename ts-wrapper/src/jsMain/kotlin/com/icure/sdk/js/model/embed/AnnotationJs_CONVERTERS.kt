@@ -12,7 +12,9 @@ import com.icure.sdk.js.model.base.codeStub_toJs
 import com.icure.sdk.model.base.CodeStub
 import com.icure.sdk.model.embed.Annotation
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun annotation_toJs(obj: Annotation): AnnotationJs {
 	val id = obj.id
 	val author = obj.author

@@ -26,8 +26,10 @@ import com.icure.sdk.model.embed.Delegation
 import com.icure.sdk.model.embed.ReceiptBlobType
 import kotlin.Array
 import kotlin.String
+import kotlin.Suppress
 import kotlin.collections.Set
 
+@Suppress("UNUSED_VARIABLE")
 public fun receipt_toJs(obj: DecryptedReceipt): DecryptedReceiptJs {
 	val id = obj.id
 	val rev = obj.rev
@@ -279,6 +281,7 @@ public fun receipt_fromJs(obj: DecryptedReceiptJs): DecryptedReceipt {
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun receipt_toJs(obj: EncryptedReceipt): EncryptedReceiptJs {
 	val id = obj.id
 	val rev = obj.rev
@@ -530,6 +533,7 @@ public fun receipt_fromJs(obj: EncryptedReceiptJs): EncryptedReceipt {
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun receipt_toJs(obj: Receipt): ReceiptJs = when (obj) {
 	is EncryptedReceipt -> receipt_toJs(obj)
 	is DecryptedReceipt -> receipt_toJs(obj)

@@ -7,7 +7,9 @@ import com.icure.sdk.model.base.Identifiable
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.IntersectionFilter
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun <O : Identifiable<String>, O_JS : IdentifiableJs<String>>
 		intersectionFilter_toJs(obj: IntersectionFilter<O>, convertO: (O) -> O_JS):
 		IntersectionFilterJs<O_JS> {

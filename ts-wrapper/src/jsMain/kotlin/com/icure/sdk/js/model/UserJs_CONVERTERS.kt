@@ -29,8 +29,10 @@ import com.icure.sdk.model.security.AuthenticationToken
 import com.icure.sdk.model.security.Permission
 import kotlin.Array
 import kotlin.String
+import kotlin.Suppress
 import kotlin.collections.Set
 
+@Suppress("UNUSED_VARIABLE")
 public fun user_toJs(obj: User): UserJs {
 	val id = obj.id
 	val rev = obj.rev
@@ -62,10 +64,10 @@ public fun user_toJs(obj: User): UserJs {
 		},
 	)
 	val type = obj.type?.let { nonNull1 ->
-		obj.type?.name
+		nonNull1.name
 	}
 	val status = obj.status?.let { nonNull1 ->
-		obj.status?.name
+		nonNull1.name
 	}
 	val login = obj.login
 	val passwordHash = obj.passwordHash
@@ -259,6 +261,7 @@ public fun user_fromJs(obj: UserJs): User {
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun user_SystemMetadata_toJs(obj: User.SystemMetadata): UserJs_SystemMetadataJs {
 	val roles = setToArray(
 		obj.roles,

@@ -1,7 +1,9 @@
 package com.icure.sdk.js.model.couchdb
 
 import com.icure.sdk.model.couchdb.Basic
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun basic_toJs(obj: Basic): BasicJs {
 	val username = obj.username
 	val password = obj.password

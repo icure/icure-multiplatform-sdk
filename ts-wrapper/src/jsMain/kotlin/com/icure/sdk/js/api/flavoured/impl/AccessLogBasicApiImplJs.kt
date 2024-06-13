@@ -2,10 +2,8 @@
 package com.icure.sdk.js.api.flavoured.`impl`
 
 import com.icure.sdk.api.flavoured.AccessLogBasicApi
-import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefault
+import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.sdk.js.api.flavoured.AccessLogBasicApiJs
-import com.icure.sdk.js.api.flavoured.AccessLogBasicApi_findAccessLogsByUserAfterDate_Options
-import com.icure.sdk.js.api.flavoured.AccessLogBasicApi_findAccessLogsInGroup_Options
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
@@ -128,46 +126,51 @@ internal class AccessLogBasicApiImplJs(
 		)
 	}
 
-	override fun findAccessLogsByUserAfterDate(userId: String,
-			options: AccessLogBasicApi_findAccessLogsByUserAfterDate_Options?):
+	override fun findAccessLogsByUserAfterDate(userId: String, options: dynamic):
 			Promise<PaginatedListJs<EncryptedAccessLogJs>> {
-		val _options: AccessLogBasicApi_findAccessLogsByUserAfterDate_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val userIdConverted: String = userId
-			val accessTypeConverted: String? = convertingOptionOrDefault(
-				_options.accessType,
+			val accessTypeConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"accessType",
 				null
-			) { accessType ->
+			) { accessType: String? ->
 				accessType
 			}
-			val startDateConverted: Long? = convertingOptionOrDefault(
-				_options.startDate,
+			val startDateConverted: Long? = convertingOptionOrDefaultNullable(
+				_options,
+				"startDate",
 				null
-			) { startDate ->
+			) { startDate: Double? ->
 				numberToLong(startDate, "startDate")
 			}
-			val startKeyConverted: String? = convertingOptionOrDefault(
-				_options.startKey,
+			val startKeyConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"startKey",
 				null
-			) { startKey ->
+			) { startKey: String? ->
 				startKey
 			}
-			val startDocumentIdConverted: String? = convertingOptionOrDefault(
-				_options.startDocumentId,
+			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"startDocumentId",
 				null
-			) { startDocumentId ->
+			) { startDocumentId: String? ->
 				startDocumentId
 			}
-			val limitConverted: Int? = convertingOptionOrDefault(
-				_options.limit,
+			val limitConverted: Int? = convertingOptionOrDefaultNullable(
+				_options,
+				"limit",
 				null
-			) { limit ->
+			) { limit: Double? ->
 				numberToInt(limit, "limit")
 			}
-			val descendingConverted: Boolean? = convertingOptionOrDefault(
-				_options.descending,
+			val descendingConverted: Boolean? = convertingOptionOrDefaultNullable(
+				_options,
+				"descending",
 				null
-			) { descending ->
+			) { descending: Boolean? ->
 				descending
 			}
 			val result = accessLogBasicApi.findAccessLogsByUserAfterDate(
@@ -188,40 +191,44 @@ internal class AccessLogBasicApiImplJs(
 		}
 	}
 
-	override fun findAccessLogsInGroup(groupId: String,
-			options: AccessLogBasicApi_findAccessLogsInGroup_Options?):
+	override fun findAccessLogsInGroup(groupId: String, options: dynamic):
 			Promise<PaginatedListJs<EncryptedAccessLogJs>> {
-		val _options: AccessLogBasicApi_findAccessLogsInGroup_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val groupIdConverted: String = groupId
-			val fromEpochConverted: Long? = convertingOptionOrDefault(
-				_options.fromEpoch,
+			val fromEpochConverted: Long? = convertingOptionOrDefaultNullable(
+				_options,
+				"fromEpoch",
 				null
-			) { fromEpoch ->
+			) { fromEpoch: Double? ->
 				numberToLong(fromEpoch, "fromEpoch")
 			}
-			val toEpochConverted: Long? = convertingOptionOrDefault(
-				_options.toEpoch,
+			val toEpochConverted: Long? = convertingOptionOrDefaultNullable(
+				_options,
+				"toEpoch",
 				null
-			) { toEpoch ->
+			) { toEpoch: Double? ->
 				numberToLong(toEpoch, "toEpoch")
 			}
-			val startKeyConverted: Long? = convertingOptionOrDefault(
-				_options.startKey,
+			val startKeyConverted: Long? = convertingOptionOrDefaultNullable(
+				_options,
+				"startKey",
 				null
-			) { startKey ->
+			) { startKey: Double? ->
 				numberToLong(startKey, "startKey")
 			}
-			val startDocumentIdConverted: String? = convertingOptionOrDefault(
-				_options.startDocumentId,
+			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"startDocumentId",
 				null
-			) { startDocumentId ->
+			) { startDocumentId: String? ->
 				startDocumentId
 			}
-			val limitConverted: Int? = convertingOptionOrDefault(
-				_options.limit,
+			val limitConverted: Int? = convertingOptionOrDefaultNullable(
+				_options,
+				"limit",
 				null
-			) { limit ->
+			) { limit: Double? ->
 				numberToInt(limit, "limit")
 			}
 			val result = accessLogBasicApi.findAccessLogsInGroup(

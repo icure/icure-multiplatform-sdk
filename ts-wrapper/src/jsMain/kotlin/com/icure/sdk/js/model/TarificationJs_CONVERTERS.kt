@@ -29,9 +29,11 @@ import com.icure.sdk.model.embed.LetterValue
 import com.icure.sdk.model.embed.Periodicity
 import kotlin.Array
 import kotlin.String
+import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.Set
 
+@Suppress("UNUSED_VARIABLE")
 public fun tarification_toJs(obj: Tarification): TarificationJs {
 	val id = obj.id
 	val rev = obj.rev

@@ -4,11 +4,13 @@ import com.icure.sdk.js.model.CheckedConverters.longToNumber
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.model.embed.Payment
 import com.icure.sdk.model.embed.PaymentType
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun payment_toJs(obj: Payment): PaymentJs {
 	val paymentDate = longToNumber(obj.paymentDate)
 	val paymentType = obj.paymentType?.let { nonNull1 ->
-		obj.paymentType?.name
+		nonNull1.name
 	}
 	val paid = obj.paid
 	return PaymentJs(js("{" +

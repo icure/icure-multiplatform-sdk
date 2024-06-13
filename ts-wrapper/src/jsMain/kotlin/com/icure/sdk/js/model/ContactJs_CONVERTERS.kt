@@ -45,8 +45,10 @@ import com.icure.sdk.model.embed.EncryptedService
 import com.icure.sdk.model.embed.EncryptedSubContact
 import kotlin.Array
 import kotlin.String
+import kotlin.Suppress
 import kotlin.collections.Set
 
+@Suppress("UNUSED_VARIABLE")
 public fun contact_toJs(obj: DecryptedContact): DecryptedContactJs {
 	val id = obj.id
 	val rev = obj.rev
@@ -350,6 +352,7 @@ public fun contact_fromJs(obj: DecryptedContactJs): DecryptedContact {
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun contact_toJs(obj: EncryptedContact): EncryptedContactJs {
 	val id = obj.id
 	val rev = obj.rev
@@ -653,6 +656,7 @@ public fun contact_fromJs(obj: EncryptedContactJs): EncryptedContact {
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun contact_toJs(obj: Contact): ContactJs = when (obj) {
 	is EncryptedContact -> contact_toJs(obj)
 	is DecryptedContact -> contact_toJs(obj)

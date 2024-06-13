@@ -20,9 +20,11 @@ import com.icure.sdk.model.base.CodeFlag
 import com.icure.sdk.model.embed.Periodicity
 import kotlin.Array
 import kotlin.String
+import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.Set
 
+@Suppress("UNUSED_VARIABLE")
 public fun code_toJs(obj: Code): CodeJs {
 	val id = obj.id
 	val rev = obj.rev

@@ -2,15 +2,8 @@
 package com.icure.sdk.js.api.`impl`
 
 import com.icure.sdk.api.GroupApi
-import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefault
+import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.sdk.js.api.GroupApiJs
-import com.icure.sdk.js.api.GroupApi_createGroup_Options
-import com.icure.sdk.js.api.GroupApi_findGroupsWithContent_Options
-import com.icure.sdk.js.api.GroupApi_findGroups_Options
-import com.icure.sdk.js.api.GroupApi_getOperationToken_Options
-import com.icure.sdk.js.api.GroupApi_initDesignDocs_Options
-import com.icure.sdk.js.api.GroupApi_registerNewGroupAdministrator_Options
-import com.icure.sdk.js.api.GroupApi_resetStorage_Options
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.dynamicToJsonNullsafe
 import com.icure.sdk.js.model.CheckedConverters.listToArray
@@ -101,43 +94,48 @@ internal class GroupApiImplJs(
 		name: String,
 		password: String,
 		initialisationData: DatabaseInitialisationJs,
-		options: GroupApi_createGroup_Options?,
+		options: dynamic,
 	): Promise<GroupJs> {
-		val _options: GroupApi_createGroup_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val idConverted: String = id
 			val nameConverted: String = name
-			val typeConverted: GroupType? = convertingOptionOrDefault(
-				_options.type,
+			val typeConverted: GroupType? = convertingOptionOrDefaultNullable(
+				_options,
+				"type",
 				null
-			) { type ->
+			) { type: String? ->
 				type?.let { nonNull1 ->
 					GroupType.valueOf(nonNull1)
 				}
 			}
 			val passwordConverted: String = password
-			val serverConverted: String? = convertingOptionOrDefault(
-				_options.server,
+			val serverConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"server",
 				null
-			) { server ->
+			) { server: String? ->
 				server
 			}
-			val qConverted: Int? = convertingOptionOrDefault(
-				_options.q,
+			val qConverted: Int? = convertingOptionOrDefaultNullable(
+				_options,
+				"q",
 				null
-			) { q ->
+			) { q: Double? ->
 				numberToInt(q, "q")
 			}
-			val nConverted: Int? = convertingOptionOrDefault(
-				_options.n,
+			val nConverted: Int? = convertingOptionOrDefaultNullable(
+				_options,
+				"n",
 				null
-			) { n ->
+			) { n: Double? ->
 				numberToInt(n, "n")
 			}
-			val superGroupConverted: String? = convertingOptionOrDefault(
-				_options.superGroup,
+			val superGroupConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"superGroup",
 				null
-			) { superGroup ->
+			) { superGroup: String? ->
 				superGroup
 			}
 			val initialisationDataConverted: DatabaseInitialisation =
@@ -158,21 +156,23 @@ internal class GroupApiImplJs(
 	}
 
 	override fun registerNewGroupAdministrator(registrationInformation: RegistrationInformationJs,
-			options: GroupApi_registerNewGroupAdministrator_Options?): Promise<RegistrationSuccessJs> {
-		val _options: GroupApi_registerNewGroupAdministrator_Options = options ?: js("{}")
+			options: dynamic): Promise<RegistrationSuccessJs> {
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
-			val typeConverted: GroupType? = convertingOptionOrDefault(
-				_options.type,
+			val typeConverted: GroupType? = convertingOptionOrDefaultNullable(
+				_options,
+				"type",
 				null
-			) { type ->
+			) { type: String? ->
 				type?.let { nonNull1 ->
 					GroupType.valueOf(nonNull1)
 				}
 			}
-			val roleConverted: PermissionType? = convertingOptionOrDefault(
-				_options.role,
+			val roleConverted: PermissionType? = convertingOptionOrDefaultNullable(
+				_options,
+				"role",
 				null
-			) { role ->
+			) { role: String? ->
 				role?.let { nonNull1 ->
 					PermissionType.valueOf(nonNull1)
 				}
@@ -199,21 +199,22 @@ internal class GroupApiImplJs(
 		)
 	}
 
-	override fun findGroups(id: String, options: GroupApi_findGroups_Options?):
-			Promise<PaginatedListJs<GroupJs>> {
-		val _options: GroupApi_findGroups_Options = options ?: js("{}")
+	override fun findGroups(id: String, options: dynamic): Promise<PaginatedListJs<GroupJs>> {
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val idConverted: String = id
-			val startDocumentIdConverted: String? = convertingOptionOrDefault(
-				_options.startDocumentId,
+			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"startDocumentId",
 				null
-			) { startDocumentId ->
+			) { startDocumentId: String? ->
 				startDocumentId
 			}
-			val limitConverted: Int? = convertingOptionOrDefault(
-				_options.limit,
+			val limitConverted: Int? = convertingOptionOrDefaultNullable(
+				_options,
+				"limit",
 				null
-			) { limit ->
+			) { limit: Double? ->
 				numberToInt(limit, "limit")
 			}
 			val result = groupApi.findGroups(
@@ -233,28 +234,31 @@ internal class GroupApiImplJs(
 	override fun findGroupsWithContent(
 		id: String,
 		searchString: String,
-		options: GroupApi_findGroupsWithContent_Options?,
+		options: dynamic,
 	): Promise<PaginatedListJs<GroupJs>> {
-		val _options: GroupApi_findGroupsWithContent_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val idConverted: String = id
 			val searchStringConverted: String = searchString
-			val startKeyConverted: JsonElement? = convertingOptionOrDefault(
-				_options.startKey,
+			val startKeyConverted: JsonElement? = convertingOptionOrDefaultNullable(
+				_options,
+				"startKey",
 				null
-			) { startKey ->
+			) { startKey: dynamic ->
 				dynamicToJsonNullsafe(startKey, "startKey")
 			}
-			val startDocumentIdConverted: String? = convertingOptionOrDefault(
-				_options.startDocumentId,
+			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"startDocumentId",
 				null
-			) { startDocumentId ->
+			) { startDocumentId: String? ->
 				startDocumentId
 			}
-			val limitConverted: Int? = convertingOptionOrDefault(
-				_options.limit,
+			val limitConverted: Int? = convertingOptionOrDefaultNullable(
+				_options,
+				"limit",
 				null
-			) { limit ->
+			) { limit: Double? ->
 				numberToInt(limit, "limit")
 			}
 			val result = groupApi.findGroupsWithContent(
@@ -294,16 +298,17 @@ internal class GroupApiImplJs(
 	override fun getOperationToken(
 		operation: String,
 		duration: Double?,
-		options: GroupApi_getOperationToken_Options?,
+		options: dynamic,
 	): Promise<String> {
-		val _options: GroupApi_getOperationToken_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val operationConverted: Operation = Operation.valueOf(operation)
 			val durationConverted: Long? = numberToLong(duration, "duration")
-			val descriptionConverted: String? = convertingOptionOrDefault(
-				_options.description,
+			val descriptionConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"description",
 				null
-			) { description ->
+			) { description: String? ->
 				description
 			}
 			val result = groupApi.getOperationToken(
@@ -426,15 +431,16 @@ internal class GroupApiImplJs(
 		id: String,
 		warmup: Boolean?,
 		dryRun: Boolean?,
-		options: GroupApi_initDesignDocs_Options?,
+		options: dynamic,
 	): Promise<Array<DesignDocumentJs>> {
-		val _options: GroupApi_initDesignDocs_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val idConverted: String = id
-			val clazzConverted: String? = convertingOptionOrDefault(
-				_options.clazz,
+			val clazzConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"clazz",
 				null
-			) { clazz ->
+			) { clazz: String? ->
 				clazz
 			}
 			val warmupConverted: Boolean? = warmup
@@ -478,21 +484,23 @@ internal class GroupApiImplJs(
 	override fun resetStorage(
 		id: String,
 		databases: Array<String>,
-		options: GroupApi_resetStorage_Options?,
+		options: dynamic,
 	): Promise<Unit> {
-		val _options: GroupApi_resetStorage_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val idConverted: String = id
-			val qConverted: Int? = convertingOptionOrDefault(
-				_options.q,
+			val qConverted: Int? = convertingOptionOrDefaultNullable(
+				_options,
+				"q",
 				null
-			) { q ->
+			) { q: Double? ->
 				numberToInt(q, "q")
 			}
-			val nConverted: Int? = convertingOptionOrDefault(
-				_options.n,
+			val nConverted: Int? = convertingOptionOrDefaultNullable(
+				_options,
+				"n",
 				null
-			) { n ->
+			) { n: Double? ->
 				numberToInt(n, "n")
 			}
 			val databasesConverted: List<String> = arrayToList(

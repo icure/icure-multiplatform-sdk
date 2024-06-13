@@ -20,7 +20,9 @@ import com.icure.sdk.model.embed.EncryptedCareTeamMembership
 import com.icure.sdk.model.embed.EncryptedPlanOfAction
 import com.icure.sdk.model.embed.PlanOfAction
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun planOfAction_toJs(obj: DecryptedPlanOfAction): DecryptedPlanOfActionJs {
 	val id = obj.id
 	val created = longToNumber(obj.created)
@@ -183,6 +185,7 @@ public fun planOfAction_fromJs(obj: DecryptedPlanOfActionJs): DecryptedPlanOfAct
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun planOfAction_toJs(obj: EncryptedPlanOfAction): EncryptedPlanOfActionJs {
 	val id = obj.id
 	val created = longToNumber(obj.created)
@@ -345,6 +348,7 @@ public fun planOfAction_fromJs(obj: EncryptedPlanOfActionJs): EncryptedPlanOfAct
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun planOfAction_toJs(obj: PlanOfAction): PlanOfActionJs = when (obj) {
 	is EncryptedPlanOfAction -> planOfAction_toJs(obj)
 	is DecryptedPlanOfAction -> planOfAction_toJs(obj)

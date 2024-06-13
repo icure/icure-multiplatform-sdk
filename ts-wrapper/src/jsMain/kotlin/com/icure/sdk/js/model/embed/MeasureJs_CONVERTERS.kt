@@ -12,7 +12,9 @@ import com.icure.sdk.js.model.base.codeStub_toJs
 import com.icure.sdk.model.base.CodeStub
 import com.icure.sdk.model.embed.Measure
 import com.icure.sdk.model.embed.ReferenceRange
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun measure_toJs(obj: Measure): MeasureJs {
 	val value = obj.value
 	val ref = obj.ref

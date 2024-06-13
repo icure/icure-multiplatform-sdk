@@ -12,7 +12,6 @@ import com.icure.sdk.js.model.filter.chain.FilterChainJs
 import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.websocket.ConnectionJs
 import kotlin.Array
-import kotlin.Double
 import kotlin.String
 import kotlin.Unit
 import kotlin.js.JsName
@@ -24,7 +23,7 @@ public external interface MaintenanceTaskFlavouredApiJs<E : MaintenanceTaskJs> {
 	public fun shareWith(
 		delegateId: String,
 		maintenanceTask: E,
-		options: MaintenanceTaskFlavouredApi_shareWith_Options?,
+		options: dynamic,
 	): Promise<SimpleShareResultJs<E>>
 
 	public fun tryShareWithMany(maintenanceTask: E,
@@ -38,39 +37,12 @@ public external interface MaintenanceTaskFlavouredApiJs<E : MaintenanceTaskJs> {
 	public fun getMaintenanceTask(entityId: String): Promise<E>
 
 	public fun filterMaintenanceTasksBy(filterChain: FilterChainJs<MaintenanceTaskJs>,
-			options: MaintenanceTaskFlavouredApi_filterMaintenanceTasksBy_Options?):
-			Promise<PaginatedListJs<E>>
+			options: dynamic): Promise<PaginatedListJs<E>>
 
 	public fun subscribeToEvents(
 		events: Array<String>,
 		filter: AbstractFilterJs<MaintenanceTaskJs>,
 		eventFired: (E) -> Promise<Unit>,
-		options: MaintenanceTaskFlavouredApi_subscribeToEvents_Options?,
+		options: dynamic,
 	): Promise<ConnectionJs>
-}
-
-public external interface MaintenanceTaskFlavouredApi_shareWith_Options {
-	public val shareEncryptionKeys: String
-
-	public val shareOwningEntityIds: String
-
-	public val requestedPermission: String
-}
-
-public external interface MaintenanceTaskFlavouredApi_filterMaintenanceTasksBy_Options {
-	public val startDocumentId: String?
-
-	public val limit: Double?
-}
-
-public external interface MaintenanceTaskFlavouredApi_subscribeToEvents_Options {
-	public val onConnected: () -> Promise<Unit>
-
-	public val channelCapacity: Double
-
-	public val retryDelay: Double
-
-	public val retryDelayExponentFactor: Double
-
-	public val maxRetries: Double
 }

@@ -8,7 +8,9 @@ import com.icure.sdk.js.model.embed.address_fromJs
 import com.icure.sdk.js.model.embed.address_toJs
 import com.icure.sdk.model.Insurance
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun insurance_toJs(obj: Insurance): InsuranceJs {
 	val id = obj.id
 	val rev = obj.rev

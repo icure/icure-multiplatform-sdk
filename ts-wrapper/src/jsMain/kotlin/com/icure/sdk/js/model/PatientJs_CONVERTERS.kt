@@ -96,10 +96,12 @@ import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.model.specializations.SpkiHexString
 import kotlin.Array
 import kotlin.String
+import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.Map
 import kotlin.collections.Set
 
+@Suppress("UNUSED_VARIABLE")
 public fun patient_toJs(obj: DecryptedPatient): DecryptedPatientJs {
 	val id = obj.id
 	val identifier = listToArray(
@@ -150,10 +152,10 @@ public fun patient_toJs(obj: DecryptedPatient): DecryptedPatientJs {
 	)
 	val civility = obj.civility
 	val gender = obj.gender?.let { nonNull1 ->
-		obj.gender?.name
+		nonNull1.name
 	}
 	val birthSex = obj.birthSex?.let { nonNull1 ->
-		obj.birthSex?.name
+		nonNull1.name
 	}
 	val mergeToPatientId = obj.mergeToPatientId
 	val mergedIds = setToArray(
@@ -171,7 +173,7 @@ public fun patient_toJs(obj: DecryptedPatient): DecryptedPatientJs {
 	val spouseName = obj.spouseName
 	val partnerName = obj.partnerName
 	val personalStatus = obj.personalStatus?.let { nonNull1 ->
-		obj.personalStatus?.name
+		nonNull1.name
 	}
 	val dateOfBirth = intToNumber(obj.dateOfBirth)
 	val dateOfDeath = intToNumber(obj.dateOfDeath)
@@ -948,6 +950,7 @@ public fun patient_fromJs(obj: DecryptedPatientJs): DecryptedPatient {
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun patient_toJs(obj: EncryptedPatient): EncryptedPatientJs {
 	val id = obj.id
 	val identifier = listToArray(
@@ -998,10 +1001,10 @@ public fun patient_toJs(obj: EncryptedPatient): EncryptedPatientJs {
 	)
 	val civility = obj.civility
 	val gender = obj.gender?.let { nonNull1 ->
-		obj.gender?.name
+		nonNull1.name
 	}
 	val birthSex = obj.birthSex?.let { nonNull1 ->
-		obj.birthSex?.name
+		nonNull1.name
 	}
 	val mergeToPatientId = obj.mergeToPatientId
 	val mergedIds = setToArray(
@@ -1019,7 +1022,7 @@ public fun patient_toJs(obj: EncryptedPatient): EncryptedPatientJs {
 	val spouseName = obj.spouseName
 	val partnerName = obj.partnerName
 	val personalStatus = obj.personalStatus?.let { nonNull1 ->
-		obj.personalStatus?.name
+		nonNull1.name
 	}
 	val dateOfBirth = intToNumber(obj.dateOfBirth)
 	val dateOfDeath = intToNumber(obj.dateOfDeath)
@@ -1796,6 +1799,7 @@ public fun patient_fromJs(obj: EncryptedPatientJs): EncryptedPatient {
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun patient_toJs(obj: Patient): PatientJs = when (obj) {
 	is EncryptedPatient -> patient_toJs(obj)
 	is DecryptedPatient -> patient_toJs(obj)

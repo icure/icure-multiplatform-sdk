@@ -6,7 +6,9 @@ import com.icure.sdk.js.model.specializations.hexString_fromJs
 import com.icure.sdk.js.model.specializations.hexString_toJs
 import com.icure.sdk.model.embed.Delegation
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun delegation_toJs(obj: Delegation): DelegationJs {
 	val owner = obj.owner
 	val delegatedTo = obj.delegatedTo
