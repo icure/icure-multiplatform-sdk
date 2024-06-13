@@ -17,12 +17,12 @@ import kotlin.Suppress
 @Suppress("UNUSED_VARIABLE")
 public fun applicationSettings_toJs(obj: ApplicationSettings): ApplicationSettingsJs {
 	val id = obj.id
-	val rev = obj.rev
-	val created = longToNumber(obj.created)
-	val modified = longToNumber(obj.modified)
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
+	val rev = obj.rev ?: undefined
+	val created = longToNumber(obj.created) ?: undefined
+	val modified = longToNumber(obj.modified) ?: undefined
+	val author = obj.author ?: undefined
+	val responsible = obj.responsible ?: undefined
+	val medicalLocationId = obj.medicalLocationId ?: undefined
 	val tags = setToArray(
 		obj.tags,
 		{ x1: CodeStub ->
@@ -35,8 +35,8 @@ public fun applicationSettings_toJs(obj: ApplicationSettings): ApplicationSettin
 			codeStub_toJs(x1)
 		},
 	)
-	val endOfLife = longToNumber(obj.endOfLife)
-	val deletionDate = longToNumber(obj.deletionDate)
+	val endOfLife = longToNumber(obj.endOfLife) ?: undefined
+	val deletionDate = longToNumber(obj.deletionDate) ?: undefined
 	val settings = mapToObject(
 		obj.settings,
 		{ x1: String ->

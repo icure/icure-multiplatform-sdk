@@ -9,13 +9,13 @@ import kotlin.Suppress
 public fun partnership_toJs(obj: Partnership): PartnershipJs {
 	val type = obj.type?.let { nonNull1 ->
 		nonNull1.name
-	}
+	} ?: undefined
 	val status = obj.status?.let { nonNull1 ->
 		nonNull1.name
-	}
-	val partnerId = obj.partnerId
-	val meToOtherRelationshipDescription = obj.meToOtherRelationshipDescription
-	val otherToMeRelationshipDescription = obj.otherToMeRelationshipDescription
+	} ?: undefined
+	val partnerId = obj.partnerId ?: undefined
+	val meToOtherRelationshipDescription = obj.meToOtherRelationshipDescription ?: undefined
+	val otherToMeRelationshipDescription = obj.otherToMeRelationshipDescription ?: undefined
 	return PartnershipJs(js("{" +
 		"type:type," +
 		"status:status," +

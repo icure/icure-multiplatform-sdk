@@ -10,12 +10,12 @@ import kotlin.Suppress
 @Suppress("UNUSED_VARIABLE")
 public fun place_toJs(obj: Place): PlaceJs {
 	val id = obj.id
-	val rev = obj.rev
-	val deletionDate = longToNumber(obj.deletionDate)
-	val name = obj.name
+	val rev = obj.rev ?: undefined
+	val deletionDate = longToNumber(obj.deletionDate) ?: undefined
+	val name = obj.name ?: undefined
 	val address = obj.address?.let { nonNull1 ->
 		address_toJs(nonNull1)
-	}
+	} ?: undefined
 	return PlaceJs(js("{" +
 		"id:id," +
 		"rev:rev," +

@@ -14,10 +14,10 @@ import kotlin.Suppress
 @Suppress("UNUSED_VARIABLE")
 public fun replication_toJs(obj: Replication): ReplicationJs {
 	val id = obj.id
-	val rev = obj.rev
-	val deletionDate = longToNumber(obj.deletionDate)
-	val name = obj.name
-	val context = obj.context
+	val rev = obj.rev ?: undefined
+	val deletionDate = longToNumber(obj.deletionDate) ?: undefined
+	val name = obj.name ?: undefined
+	val context = obj.context ?: undefined
 	val databaseSynchronizations = listToArray(
 		obj.databaseSynchronizations,
 		{ x1: DatabaseSynchronization ->

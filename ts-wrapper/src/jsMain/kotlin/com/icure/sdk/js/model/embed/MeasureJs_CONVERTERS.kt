@@ -16,21 +16,21 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun measure_toJs(obj: Measure): MeasureJs {
-	val value = obj.value
-	val ref = obj.ref
-	val severity = intToNumber(obj.severity)
-	val severityCode = obj.severityCode
-	val evolution = intToNumber(obj.evolution)
-	val unit = obj.unit
+	val value = obj.value ?: undefined
+	val ref = obj.ref ?: undefined
+	val severity = intToNumber(obj.severity) ?: undefined
+	val severityCode = obj.severityCode ?: undefined
+	val evolution = intToNumber(obj.evolution) ?: undefined
+	val unit = obj.unit ?: undefined
 	val unitCodes = setToArray(
 		obj.unitCodes,
 		{ x1: CodeStub ->
 			codeStub_toJs(x1)
 		},
-	)
-	val comment = obj.comment
-	val comparator = obj.comparator
-	val sign = obj.sign
+	) ?: undefined
+	val comment = obj.comment ?: undefined
+	val comparator = obj.comparator ?: undefined
+	val sign = obj.sign ?: undefined
 	val referenceRanges = listToArray(
 		obj.referenceRanges,
 		{ x1: ReferenceRange ->

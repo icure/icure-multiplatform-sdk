@@ -5,12 +5,12 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun databaseSynchronization_toJs(obj: DatabaseSynchronization): DatabaseSynchronizationJs {
-	val source = obj.source
-	val target = obj.target
-	val filter = obj.filter
+	val source = obj.source ?: undefined
+	val target = obj.target ?: undefined
+	val filter = obj.filter ?: undefined
 	val localTarget = obj.localTarget?.let { nonNull1 ->
 		nonNull1.name
-	}
+	} ?: undefined
 	return DatabaseSynchronizationJs(js("{" +
 		"source:source," +
 		"target:target," +

@@ -25,11 +25,11 @@ import kotlin.Suppress
 @Suppress("UNUSED_VARIABLE")
 public fun planOfAction_toJs(obj: DecryptedPlanOfAction): DecryptedPlanOfActionJs {
 	val id = obj.id
-	val created = longToNumber(obj.created)
-	val modified = longToNumber(obj.modified)
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
+	val created = longToNumber(obj.created) ?: undefined
+	val modified = longToNumber(obj.modified) ?: undefined
+	val author = obj.author ?: undefined
+	val responsible = obj.responsible ?: undefined
+	val medicalLocationId = obj.medicalLocationId ?: undefined
 	val tags = setToArray(
 		obj.tags,
 		{ x1: CodeStub ->
@@ -42,17 +42,17 @@ public fun planOfAction_toJs(obj: DecryptedPlanOfAction): DecryptedPlanOfActionJ
 			codeStub_toJs(x1)
 		},
 	)
-	val endOfLife = longToNumber(obj.endOfLife)
-	val prescriberId = obj.prescriberId
-	val valueDate = longToNumber(obj.valueDate)
-	val openingDate = longToNumber(obj.openingDate)
-	val closingDate = longToNumber(obj.closingDate)
-	val deadlineDate = longToNumber(obj.deadlineDate)
-	val name = obj.name
-	val descr = obj.descr
-	val note = obj.note
-	val idOpeningContact = obj.idOpeningContact
-	val idClosingContact = obj.idClosingContact
+	val endOfLife = longToNumber(obj.endOfLife) ?: undefined
+	val prescriberId = obj.prescriberId ?: undefined
+	val valueDate = longToNumber(obj.valueDate) ?: undefined
+	val openingDate = longToNumber(obj.openingDate) ?: undefined
+	val closingDate = longToNumber(obj.closingDate) ?: undefined
+	val deadlineDate = longToNumber(obj.deadlineDate) ?: undefined
+	val name = obj.name ?: undefined
+	val descr = obj.descr ?: undefined
+	val note = obj.note ?: undefined
+	val idOpeningContact = obj.idOpeningContact ?: undefined
+	val idClosingContact = obj.idClosingContact ?: undefined
 	val status = intToNumber(obj.status)
 	val documentIds = setToArray(
 		obj.documentIds,
@@ -60,19 +60,19 @@ public fun planOfAction_toJs(obj: DecryptedPlanOfAction): DecryptedPlanOfActionJ
 			x1
 		},
 	)
-	val numberOfCares = intToNumber(obj.numberOfCares)
+	val numberOfCares = intToNumber(obj.numberOfCares) ?: undefined
 	val careTeamMemberships = listToArray(
 		obj.careTeamMemberships,
 		{ x1: DecryptedCareTeamMembership? ->
 			x1?.let { nonNull2 ->
 				careTeamMembership_toJs(nonNull2)
-			}
+			} ?: undefined
 		},
 	)
 	val relevant = obj.relevant
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
-	}
+	} ?: undefined
 	return DecryptedPlanOfActionJs(js("{" +
 		"id:id," +
 		"created:created," +
@@ -188,11 +188,11 @@ public fun planOfAction_fromJs(obj: DecryptedPlanOfActionJs): DecryptedPlanOfAct
 @Suppress("UNUSED_VARIABLE")
 public fun planOfAction_toJs(obj: EncryptedPlanOfAction): EncryptedPlanOfActionJs {
 	val id = obj.id
-	val created = longToNumber(obj.created)
-	val modified = longToNumber(obj.modified)
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
+	val created = longToNumber(obj.created) ?: undefined
+	val modified = longToNumber(obj.modified) ?: undefined
+	val author = obj.author ?: undefined
+	val responsible = obj.responsible ?: undefined
+	val medicalLocationId = obj.medicalLocationId ?: undefined
 	val tags = setToArray(
 		obj.tags,
 		{ x1: CodeStub ->
@@ -205,17 +205,17 @@ public fun planOfAction_toJs(obj: EncryptedPlanOfAction): EncryptedPlanOfActionJ
 			codeStub_toJs(x1)
 		},
 	)
-	val endOfLife = longToNumber(obj.endOfLife)
-	val prescriberId = obj.prescriberId
-	val valueDate = longToNumber(obj.valueDate)
-	val openingDate = longToNumber(obj.openingDate)
-	val closingDate = longToNumber(obj.closingDate)
-	val deadlineDate = longToNumber(obj.deadlineDate)
-	val name = obj.name
-	val descr = obj.descr
-	val note = obj.note
-	val idOpeningContact = obj.idOpeningContact
-	val idClosingContact = obj.idClosingContact
+	val endOfLife = longToNumber(obj.endOfLife) ?: undefined
+	val prescriberId = obj.prescriberId ?: undefined
+	val valueDate = longToNumber(obj.valueDate) ?: undefined
+	val openingDate = longToNumber(obj.openingDate) ?: undefined
+	val closingDate = longToNumber(obj.closingDate) ?: undefined
+	val deadlineDate = longToNumber(obj.deadlineDate) ?: undefined
+	val name = obj.name ?: undefined
+	val descr = obj.descr ?: undefined
+	val note = obj.note ?: undefined
+	val idOpeningContact = obj.idOpeningContact ?: undefined
+	val idClosingContact = obj.idClosingContact ?: undefined
 	val status = intToNumber(obj.status)
 	val documentIds = setToArray(
 		obj.documentIds,
@@ -223,19 +223,19 @@ public fun planOfAction_toJs(obj: EncryptedPlanOfAction): EncryptedPlanOfActionJ
 			x1
 		},
 	)
-	val numberOfCares = intToNumber(obj.numberOfCares)
+	val numberOfCares = intToNumber(obj.numberOfCares) ?: undefined
 	val careTeamMemberships = listToArray(
 		obj.careTeamMemberships,
 		{ x1: EncryptedCareTeamMembership? ->
 			x1?.let { nonNull2 ->
 				careTeamMembership_toJs(nonNull2)
-			}
+			} ?: undefined
 		},
 	)
 	val relevant = obj.relevant
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
-	}
+	} ?: undefined
 	return EncryptedPlanOfActionJs(js("{" +
 		"id:id," +
 		"created:created," +

@@ -12,12 +12,12 @@ import kotlin.Suppress
 public fun telecom_toJs(obj: DecryptedTelecom): DecryptedTelecomJs {
 	val telecomType = obj.telecomType?.let { nonNull1 ->
 		nonNull1.name
-	}
-	val telecomNumber = obj.telecomNumber
-	val telecomDescription = obj.telecomDescription
+	} ?: undefined
+	val telecomNumber = obj.telecomNumber ?: undefined
+	val telecomDescription = obj.telecomDescription ?: undefined
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
-	}
+	} ?: undefined
 	return DecryptedTelecomJs(js("{" +
 		"telecomType:telecomType," +
 		"telecomNumber:telecomNumber," +
@@ -47,12 +47,12 @@ public fun telecom_fromJs(obj: DecryptedTelecomJs): DecryptedTelecom {
 public fun telecom_toJs(obj: EncryptedTelecom): EncryptedTelecomJs {
 	val telecomType = obj.telecomType?.let { nonNull1 ->
 		nonNull1.name
-	}
-	val telecomNumber = obj.telecomNumber
-	val telecomDescription = obj.telecomDescription
+	} ?: undefined
+	val telecomNumber = obj.telecomNumber ?: undefined
+	val telecomDescription = obj.telecomDescription ?: undefined
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
-	}
+	} ?: undefined
 	return EncryptedTelecomJs(js("{" +
 		"telecomType:telecomType," +
 		"telecomNumber:telecomNumber," +

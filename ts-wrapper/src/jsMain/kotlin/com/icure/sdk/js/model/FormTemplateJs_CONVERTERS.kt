@@ -19,28 +19,28 @@ import kotlin.Suppress
 @Suppress("UNUSED_VARIABLE")
 public fun formTemplate_toJs(obj: FormTemplate): FormTemplateJs {
 	val id = obj.id
-	val rev = obj.rev
-	val deletionDate = longToNumber(obj.deletionDate)
+	val rev = obj.rev ?: undefined
+	val deletionDate = longToNumber(obj.deletionDate) ?: undefined
 	val templateLayout = obj.templateLayout?.let { nonNull1 ->
 		formTemplateLayout_toJs(nonNull1)
-	}
-	val rawTemplateLayout = obj.rawTemplateLayout
-	val name = obj.name
-	val guid = obj.guid
+	} ?: undefined
+	val rawTemplateLayout = obj.rawTemplateLayout ?: undefined
+	val name = obj.name ?: undefined
+	val guid = obj.guid ?: undefined
 	val group = obj.group?.let { nonNull1 ->
 		documentGroup_toJs(nonNull1)
-	}
-	val descr = obj.descr
-	val disabled = obj.disabled
+	} ?: undefined
+	val descr = obj.descr ?: undefined
+	val disabled = obj.disabled ?: undefined
 	val specialty = obj.specialty?.let { nonNull1 ->
 		codeStub_toJs(nonNull1)
-	}
-	val author = obj.author
-	val formInstancePreferredLocation = obj.formInstancePreferredLocation
-	val keyboardShortcut = obj.keyboardShortcut
-	val shortReport = obj.shortReport
-	val mediumReport = obj.mediumReport
-	val longReport = obj.longReport
+	} ?: undefined
+	val author = obj.author ?: undefined
+	val formInstancePreferredLocation = obj.formInstancePreferredLocation ?: undefined
+	val keyboardShortcut = obj.keyboardShortcut ?: undefined
+	val shortReport = obj.shortReport ?: undefined
+	val mediumReport = obj.mediumReport ?: undefined
+	val longReport = obj.longReport ?: undefined
 	val reports = setToArray(
 		obj.reports,
 		{ x1: String ->
@@ -53,8 +53,8 @@ public fun formTemplate_toJs(obj: FormTemplate): FormTemplateJs {
 			codeStub_toJs(x1)
 		},
 	)
-	val layoutAttachmentId = obj.layoutAttachmentId
-	val templateLayoutAttachmentId = obj.templateLayoutAttachmentId
+	val layoutAttachmentId = obj.layoutAttachmentId ?: undefined
+	val templateLayoutAttachmentId = obj.templateLayoutAttachmentId ?: undefined
 	return FormTemplateJs(js("{" +
 		"id:id," +
 		"rev:rev," +

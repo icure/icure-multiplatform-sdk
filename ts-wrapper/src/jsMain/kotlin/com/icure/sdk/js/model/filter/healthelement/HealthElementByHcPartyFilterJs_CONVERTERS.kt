@@ -7,7 +7,7 @@ import kotlin.Suppress
 public fun healthElementByHcPartyFilter_toJs(obj: HealthElementByHcPartyFilter):
 		HealthElementByHcPartyFilterJs {
 	val hcpId = obj.hcpId
-	val desc = obj.desc
+	val desc = obj.desc ?: undefined
 	return HealthElementByHcPartyFilterJs(js("{" +
 		"hcpId:hcpId," +
 		"desc:desc" +

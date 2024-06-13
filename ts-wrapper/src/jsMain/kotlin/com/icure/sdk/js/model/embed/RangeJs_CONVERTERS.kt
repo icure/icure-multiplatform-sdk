@@ -5,8 +5,8 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun range_toJs(obj: Range): RangeJs {
-	val low = obj.low
-	val high = obj.high
+	val low = obj.low ?: undefined
+	val high = obj.high ?: undefined
 	return RangeJs(js("{" +
 		"low:low," +
 		"high:high" +

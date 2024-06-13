@@ -9,10 +9,10 @@ import kotlin.Suppress
 public fun periodicity_toJs(obj: Periodicity): PeriodicityJs {
 	val relatedCode = obj.relatedCode?.let { nonNull1 ->
 		codeStub_toJs(nonNull1)
-	}
+	} ?: undefined
 	val relatedPeriodicity = obj.relatedPeriodicity?.let { nonNull1 ->
 		codeStub_toJs(nonNull1)
-	}
+	} ?: undefined
 	return PeriodicityJs(js("{" +
 		"relatedCode:relatedCode," +
 		"relatedPeriodicity:relatedPeriodicity" +

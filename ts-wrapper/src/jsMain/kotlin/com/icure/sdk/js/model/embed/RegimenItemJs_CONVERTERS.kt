@@ -11,18 +11,18 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun regimenItem_toJs(obj: RegimenItem): RegimenItemJs {
-	val date = longToNumber(obj.date)
-	val dayNumber = intToNumber(obj.dayNumber)
+	val date = longToNumber(obj.date) ?: undefined
+	val dayNumber = intToNumber(obj.dayNumber) ?: undefined
 	val weekday = obj.weekday?.let { nonNull1 ->
 		weekday_toJs(nonNull1)
-	}
+	} ?: undefined
 	val dayPeriod = obj.dayPeriod?.let { nonNull1 ->
 		codeStub_toJs(nonNull1)
-	}
-	val timeOfDay = longToNumber(obj.timeOfDay)
+	} ?: undefined
+	val timeOfDay = longToNumber(obj.timeOfDay) ?: undefined
 	val administratedQuantity = obj.administratedQuantity?.let { nonNull1 ->
 		administrationQuantity_toJs(nonNull1)
-	}
+	} ?: undefined
 	return RegimenItemJs(js("{" +
 		"date:date," +
 		"dayNumber:dayNumber," +

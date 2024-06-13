@@ -5,8 +5,8 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun publicKey_toJs(obj: PublicKey): PublicKeyJs {
-	val hcPartyId = obj.hcPartyId
-	val hexString = obj.hexString
+	val hcPartyId = obj.hcPartyId ?: undefined
+	val hexString = obj.hexString ?: undefined
 	return PublicKeyJs(js("{" +
 		"hcPartyId:hcPartyId," +
 		"hexString:hexString" +

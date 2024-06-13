@@ -6,11 +6,11 @@ import kotlin.Suppress
 @Suppress("UNUSED_VARIABLE")
 public fun patientByHcPartyAndAddressFilter_toJs(obj: PatientByHcPartyAndAddressFilter):
 		PatientByHcPartyAndAddressFilterJs {
-	val desc = obj.desc
-	val searchString = obj.searchString
-	val healthcarePartyId = obj.healthcarePartyId
-	val postalCode = obj.postalCode
-	val houseNumber = obj.houseNumber
+	val desc = obj.desc ?: undefined
+	val searchString = obj.searchString ?: undefined
+	val healthcarePartyId = obj.healthcarePartyId ?: undefined
+	val postalCode = obj.postalCode ?: undefined
+	val houseNumber = obj.houseNumber ?: undefined
 	return PatientByHcPartyAndAddressFilterJs(js("{" +
 		"desc:desc," +
 		"searchString:searchString," +

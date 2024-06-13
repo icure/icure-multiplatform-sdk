@@ -20,8 +20,8 @@ public fun patientHealthCareParty_toJs(obj: DecryptedPatientHealthCareParty):
 		DecryptedPatientHealthCarePartyJs {
 	val type = obj.type?.let { nonNull1 ->
 		nonNull1.name
-	}
-	val healthcarePartyId = obj.healthcarePartyId
+	} ?: undefined
+	val healthcarePartyId = obj.healthcarePartyId ?: undefined
 	val sendFormats = mapToObject(
 		obj.sendFormats,
 		{ x1: TelecomType ->
@@ -40,7 +40,7 @@ public fun patientHealthCareParty_toJs(obj: DecryptedPatientHealthCareParty):
 	val referral = obj.referral
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
-	}
+	} ?: undefined
 	return DecryptedPatientHealthCarePartyJs(js("{" +
 		"type:type," +
 		"healthcarePartyId:healthcarePartyId," +
@@ -93,8 +93,8 @@ public fun patientHealthCareParty_toJs(obj: EncryptedPatientHealthCareParty):
 		EncryptedPatientHealthCarePartyJs {
 	val type = obj.type?.let { nonNull1 ->
 		nonNull1.name
-	}
-	val healthcarePartyId = obj.healthcarePartyId
+	} ?: undefined
+	val healthcarePartyId = obj.healthcarePartyId ?: undefined
 	val sendFormats = mapToObject(
 		obj.sendFormats,
 		{ x1: TelecomType ->
@@ -113,7 +113,7 @@ public fun patientHealthCareParty_toJs(obj: EncryptedPatientHealthCareParty):
 	val referral = obj.referral
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
-	}
+	} ?: undefined
 	return EncryptedPatientHealthCarePartyJs(js("{" +
 		"type:type," +
 		"healthcarePartyId:healthcarePartyId," +

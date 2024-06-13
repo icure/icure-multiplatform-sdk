@@ -37,18 +37,18 @@ import kotlin.collections.Map
 @Suppress("UNUSED_VARIABLE")
 public fun device_toJs(obj: Device): DeviceJs {
 	val id = obj.id
-	val rev = obj.rev
-	val deletionDate = longToNumber(obj.deletionDate)
+	val rev = obj.rev ?: undefined
+	val deletionDate = longToNumber(obj.deletionDate) ?: undefined
 	val identifiers = listToArray(
 		obj.identifiers,
 		{ x1: Identifier ->
 			identifier_toJs(x1)
 		},
 	)
-	val created = longToNumber(obj.created)
-	val modified = longToNumber(obj.modified)
-	val author = obj.author
-	val responsible = obj.responsible
+	val created = longToNumber(obj.created) ?: undefined
+	val modified = longToNumber(obj.modified) ?: undefined
+	val author = obj.author ?: undefined
+	val responsible = obj.responsible ?: undefined
 	val tags = setToArray(
 		obj.tags,
 		{ x1: CodeStub ->
@@ -61,16 +61,16 @@ public fun device_toJs(obj: Device): DeviceJs {
 			codeStub_toJs(x1)
 		},
 	)
-	val endOfLife = longToNumber(obj.endOfLife)
-	val medicalLocationId = obj.medicalLocationId
-	val externalId = obj.externalId
-	val name = obj.name
-	val type = obj.type
-	val brand = obj.brand
-	val model = obj.model
-	val serialNumber = obj.serialNumber
-	val parentId = obj.parentId
-	val picture = obj.picture
+	val endOfLife = longToNumber(obj.endOfLife) ?: undefined
+	val medicalLocationId = obj.medicalLocationId ?: undefined
+	val externalId = obj.externalId ?: undefined
+	val name = obj.name ?: undefined
+	val type = obj.type ?: undefined
+	val brand = obj.brand ?: undefined
+	val model = obj.model ?: undefined
+	val serialNumber = obj.serialNumber ?: undefined
+	val parentId = obj.parentId ?: undefined
+	val picture = obj.picture ?: undefined
 	val properties = setToArray(
 		obj.properties,
 		{ x1: DecryptedPropertyStub ->
@@ -144,7 +144,7 @@ public fun device_toJs(obj: Device): DeviceJs {
 	)
 	val publicKey = obj.publicKey?.let { nonNull1 ->
 		spkiHexString_toJs(nonNull1)
-	}
+	} ?: undefined
 	val publicKeysForOaepWithSha256 = setToArray(
 		obj.publicKeysForOaepWithSha256,
 		{ x1: SpkiHexString ->

@@ -17,10 +17,10 @@ import kotlin.Suppress
 @Suppress("UNUSED_VARIABLE")
 public fun annotation_toJs(obj: Annotation): AnnotationJs {
 	val id = obj.id
-	val author = obj.author
-	val created = longToNumber(obj.created)
-	val modified = longToNumber(obj.modified)
-	val text = obj.text
+	val author = obj.author ?: undefined
+	val created = longToNumber(obj.created) ?: undefined
+	val modified = longToNumber(obj.modified) ?: undefined
+	val text = obj.text ?: undefined
 	val markdown = mapToObject(
 		obj.markdown,
 		{ x1: String ->
@@ -30,15 +30,15 @@ public fun annotation_toJs(obj: Annotation): AnnotationJs {
 			x1
 		},
 	)
-	val location = obj.location
-	val confidential = obj.confidential
+	val location = obj.location ?: undefined
+	val confidential = obj.confidential ?: undefined
 	val tags = setToArray(
 		obj.tags,
 		{ x1: CodeStub ->
 			codeStub_toJs(x1)
 		},
 	)
-	val encryptedSelf = obj.encryptedSelf
+	val encryptedSelf = obj.encryptedSelf ?: undefined
 	return AnnotationJs(js("{" +
 		"id:id," +
 		"author:author," +

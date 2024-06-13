@@ -13,24 +13,24 @@ import kotlin.Suppress
 @Suppress("UNUSED_VARIABLE")
 public fun radioButton_toJs(obj: RadioButton): RadioButtonJs {
 	val field = obj.field
-	val shortLabel = obj.shortLabel
-	val rows = intToNumber(obj.rows)
-	val columns = intToNumber(obj.columns)
-	val grows = obj.grows
-	val multiline = obj.multiline
-	val schema = obj.schema
+	val shortLabel = obj.shortLabel ?: undefined
+	val rows = intToNumber(obj.rows) ?: undefined
+	val columns = intToNumber(obj.columns) ?: undefined
+	val grows = obj.grows ?: undefined
+	val multiline = obj.multiline ?: undefined
+	val schema = obj.schema ?: undefined
 	val tags = listToArray(
 		obj.tags,
 		{ x1: String ->
 			x1
 		},
-	)
+	) ?: undefined
 	val codifications = listToArray(
 		obj.codifications,
 		{ x1: String ->
 			x1
 		},
-	)
+	) ?: undefined
 	val options = mapToObject(
 		obj.options,
 		{ x1: String ->
@@ -39,7 +39,7 @@ public fun radioButton_toJs(obj: RadioButton): RadioButtonJs {
 		{ x1: String ->
 			x1
 		},
-	)
+	) ?: undefined
 	val labels = mapToObject(
 		obj.labels,
 		{ x1: String ->
@@ -48,13 +48,13 @@ public fun radioButton_toJs(obj: RadioButton): RadioButtonJs {
 		{ x1: String ->
 			x1
 		},
-	)
-	val value = obj.value
-	val unit = obj.unit
-	val required = obj.required
-	val hideCondition = obj.hideCondition
-	val now = obj.now
-	val translate = obj.translate
+	) ?: undefined
+	val value = obj.value ?: undefined
+	val unit = obj.unit ?: undefined
+	val required = obj.required ?: undefined
+	val hideCondition = obj.hideCondition ?: undefined
+	val now = obj.now ?: undefined
+	val translate = obj.translate ?: undefined
 	return RadioButtonJs(js("{" +
 		"field:field," +
 		"shortLabel:shortLabel," +

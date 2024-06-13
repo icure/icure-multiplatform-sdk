@@ -9,8 +9,8 @@ import kotlin.Suppress
 public fun replicationInfo_toJs(obj: ReplicationInfo): ReplicationInfoJs {
 	val active = obj.active
 	val running = obj.running
-	val pendingFrom = intToNumber(obj.pendingFrom)
-	val pendingTo = intToNumber(obj.pendingTo)
+	val pendingFrom = intToNumber(obj.pendingFrom) ?: undefined
+	val pendingTo = intToNumber(obj.pendingTo) ?: undefined
 	return ReplicationInfoJs(js("{" +
 		"active:active," +
 		"running:running," +

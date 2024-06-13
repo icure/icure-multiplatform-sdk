@@ -38,44 +38,44 @@ import kotlin.collections.Set
 @Suppress("UNUSED_VARIABLE")
 public fun service_toJs(obj: DecryptedService): DecryptedServiceJs {
 	val id = obj.id
-	val transactionId = obj.transactionId
+	val transactionId = obj.transactionId ?: undefined
 	val identifier = listToArray(
 		obj.identifier,
 		{ x1: Identifier ->
 			identifier_toJs(x1)
 		},
 	)
-	val contactId = obj.contactId
+	val contactId = obj.contactId ?: undefined
 	val subContactIds = setToArray(
 		obj.subContactIds,
 		{ x1: String ->
 			x1
 		},
-	)
+	) ?: undefined
 	val plansOfActionIds = setToArray(
 		obj.plansOfActionIds,
 		{ x1: String ->
 			x1
 		},
-	)
+	) ?: undefined
 	val healthElementsIds = setToArray(
 		obj.healthElementsIds,
 		{ x1: String ->
 			x1
 		},
-	)
+	) ?: undefined
 	val formIds = setToArray(
 		obj.formIds,
 		{ x1: String ->
 			x1
 		},
-	)
+	) ?: undefined
 	val secretForeignKeys = setToArray(
 		obj.secretForeignKeys,
 		{ x1: String ->
 			x1
 		},
-	)
+	) ?: undefined
 	val cryptedForeignKeys = mapToObject(
 		obj.cryptedForeignKeys,
 		{ x1: String ->
@@ -118,8 +118,8 @@ public fun service_toJs(obj: DecryptedService): DecryptedServiceJs {
 			)
 		},
 	)
-	val label = obj.label
-	val index = longToNumber(obj.index)
+	val label = obj.label ?: undefined
+	val index = longToNumber(obj.index) ?: undefined
 	val content = mapToObject(
 		obj.content,
 		{ x1: String ->
@@ -129,7 +129,7 @@ public fun service_toJs(obj: DecryptedService): DecryptedServiceJs {
 			content_toJs(x1)
 		},
 	)
-	val encryptedContent = obj.encryptedContent
+	val encryptedContent = obj.encryptedContent ?: undefined
 	val textIndexes = mapToObject(
 		obj.textIndexes,
 		{ x1: String ->
@@ -139,18 +139,18 @@ public fun service_toJs(obj: DecryptedService): DecryptedServiceJs {
 			x1
 		},
 	)
-	val valueDate = longToNumber(obj.valueDate)
-	val openingDate = longToNumber(obj.openingDate)
-	val closingDate = longToNumber(obj.closingDate)
-	val formId = obj.formId
-	val created = longToNumber(obj.created)
-	val modified = longToNumber(obj.modified)
-	val endOfLife = longToNumber(obj.endOfLife)
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
-	val comment = obj.comment
-	val status = intToNumber(obj.status)
+	val valueDate = longToNumber(obj.valueDate) ?: undefined
+	val openingDate = longToNumber(obj.openingDate) ?: undefined
+	val closingDate = longToNumber(obj.closingDate) ?: undefined
+	val formId = obj.formId ?: undefined
+	val created = longToNumber(obj.created) ?: undefined
+	val modified = longToNumber(obj.modified) ?: undefined
+	val endOfLife = longToNumber(obj.endOfLife) ?: undefined
+	val author = obj.author ?: undefined
+	val responsible = obj.responsible ?: undefined
+	val medicalLocationId = obj.medicalLocationId ?: undefined
+	val comment = obj.comment ?: undefined
+	val status = intToNumber(obj.status) ?: undefined
 	val invoicingCodes = setToArray(
 		obj.invoicingCodes,
 		{ x1: String ->
@@ -194,10 +194,10 @@ public fun service_toJs(obj: DecryptedService): DecryptedServiceJs {
 	)
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
-	}
+	} ?: undefined
 	val securityMetadata = obj.securityMetadata?.let { nonNull1 ->
 		securityMetadata_toJs(nonNull1)
-	}
+	} ?: undefined
 	return DecryptedServiceJs(js("{" +
 		"id:id," +
 		"transactionId:transactionId," +
@@ -463,44 +463,44 @@ public fun service_fromJs(obj: DecryptedServiceJs): DecryptedService {
 @Suppress("UNUSED_VARIABLE")
 public fun service_toJs(obj: EncryptedService): EncryptedServiceJs {
 	val id = obj.id
-	val transactionId = obj.transactionId
+	val transactionId = obj.transactionId ?: undefined
 	val identifier = listToArray(
 		obj.identifier,
 		{ x1: Identifier ->
 			identifier_toJs(x1)
 		},
 	)
-	val contactId = obj.contactId
+	val contactId = obj.contactId ?: undefined
 	val subContactIds = setToArray(
 		obj.subContactIds,
 		{ x1: String ->
 			x1
 		},
-	)
+	) ?: undefined
 	val plansOfActionIds = setToArray(
 		obj.plansOfActionIds,
 		{ x1: String ->
 			x1
 		},
-	)
+	) ?: undefined
 	val healthElementsIds = setToArray(
 		obj.healthElementsIds,
 		{ x1: String ->
 			x1
 		},
-	)
+	) ?: undefined
 	val formIds = setToArray(
 		obj.formIds,
 		{ x1: String ->
 			x1
 		},
-	)
+	) ?: undefined
 	val secretForeignKeys = setToArray(
 		obj.secretForeignKeys,
 		{ x1: String ->
 			x1
 		},
-	)
+	) ?: undefined
 	val cryptedForeignKeys = mapToObject(
 		obj.cryptedForeignKeys,
 		{ x1: String ->
@@ -543,8 +543,8 @@ public fun service_toJs(obj: EncryptedService): EncryptedServiceJs {
 			)
 		},
 	)
-	val label = obj.label
-	val index = longToNumber(obj.index)
+	val label = obj.label ?: undefined
+	val index = longToNumber(obj.index) ?: undefined
 	val content = mapToObject(
 		obj.content,
 		{ x1: String ->
@@ -554,7 +554,7 @@ public fun service_toJs(obj: EncryptedService): EncryptedServiceJs {
 			content_toJs(x1)
 		},
 	)
-	val encryptedContent = obj.encryptedContent
+	val encryptedContent = obj.encryptedContent ?: undefined
 	val textIndexes = mapToObject(
 		obj.textIndexes,
 		{ x1: String ->
@@ -564,18 +564,18 @@ public fun service_toJs(obj: EncryptedService): EncryptedServiceJs {
 			x1
 		},
 	)
-	val valueDate = longToNumber(obj.valueDate)
-	val openingDate = longToNumber(obj.openingDate)
-	val closingDate = longToNumber(obj.closingDate)
-	val formId = obj.formId
-	val created = longToNumber(obj.created)
-	val modified = longToNumber(obj.modified)
-	val endOfLife = longToNumber(obj.endOfLife)
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
-	val comment = obj.comment
-	val status = intToNumber(obj.status)
+	val valueDate = longToNumber(obj.valueDate) ?: undefined
+	val openingDate = longToNumber(obj.openingDate) ?: undefined
+	val closingDate = longToNumber(obj.closingDate) ?: undefined
+	val formId = obj.formId ?: undefined
+	val created = longToNumber(obj.created) ?: undefined
+	val modified = longToNumber(obj.modified) ?: undefined
+	val endOfLife = longToNumber(obj.endOfLife) ?: undefined
+	val author = obj.author ?: undefined
+	val responsible = obj.responsible ?: undefined
+	val medicalLocationId = obj.medicalLocationId ?: undefined
+	val comment = obj.comment ?: undefined
+	val status = intToNumber(obj.status) ?: undefined
 	val invoicingCodes = setToArray(
 		obj.invoicingCodes,
 		{ x1: String ->
@@ -619,10 +619,10 @@ public fun service_toJs(obj: EncryptedService): EncryptedServiceJs {
 	)
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
-	}
+	} ?: undefined
 	val securityMetadata = obj.securityMetadata?.let { nonNull1 ->
 		securityMetadata_toJs(nonNull1)
-	}
+	} ?: undefined
 	return EncryptedServiceJs(js("{" +
 		"id:id," +
 		"transactionId:transactionId," +

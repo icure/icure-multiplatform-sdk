@@ -7,9 +7,9 @@ import kotlin.Suppress
 public
 		fun patientByHcPartyNameContainsFuzzyFilter_toJs(obj: PatientByHcPartyNameContainsFuzzyFilter):
 		PatientByHcPartyNameContainsFuzzyFilterJs {
-	val desc = obj.desc
-	val searchString = obj.searchString
-	val healthcarePartyId = obj.healthcarePartyId
+	val desc = obj.desc ?: undefined
+	val searchString = obj.searchString ?: undefined
+	val healthcarePartyId = obj.healthcarePartyId ?: undefined
 	return PatientByHcPartyNameContainsFuzzyFilterJs(js("{" +
 		"desc:desc," +
 		"searchString:searchString," +

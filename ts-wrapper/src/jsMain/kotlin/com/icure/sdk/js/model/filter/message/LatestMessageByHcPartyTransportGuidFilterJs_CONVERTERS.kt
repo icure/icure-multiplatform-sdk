@@ -9,7 +9,7 @@ public
 		LatestMessageByHcPartyTransportGuidFilterJs {
 	val healthcarePartyId = obj.healthcarePartyId
 	val transportGuid = obj.transportGuid
-	val desc = obj.desc
+	val desc = obj.desc ?: undefined
 	return LatestMessageByHcPartyTransportGuidFilterJs(js("{" +
 		"healthcarePartyId:healthcarePartyId," +
 		"transportGuid:transportGuid," +

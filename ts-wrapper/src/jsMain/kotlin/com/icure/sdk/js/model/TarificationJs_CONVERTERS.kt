@@ -36,8 +36,8 @@ import kotlin.collections.Set
 @Suppress("UNUSED_VARIABLE")
 public fun tarification_toJs(obj: Tarification): TarificationJs {
 	val id = obj.id
-	val rev = obj.rev
-	val deletionDate = longToNumber(obj.deletionDate)
+	val rev = obj.rev ?: undefined
+	val deletionDate = longToNumber(obj.deletionDate) ?: undefined
 	val label = mapToObject(
 		obj.label,
 		{ x1: String ->
@@ -46,12 +46,12 @@ public fun tarification_toJs(obj: Tarification): TarificationJs {
 		{ x1: String ->
 			x1
 		},
-	)
-	val context = obj.context
-	val type = obj.type
-	val code = obj.code
-	val version = obj.version
-	val author = obj.author
+	) ?: undefined
+	val context = obj.context ?: undefined
+	val type = obj.type ?: undefined
+	val code = obj.code ?: undefined
+	val version = obj.version ?: undefined
+	val author = obj.author ?: undefined
 	val regions = setToArray(
 		obj.regions,
 		{ x1: String ->
@@ -64,7 +64,7 @@ public fun tarification_toJs(obj: Tarification): TarificationJs {
 			periodicity_toJs(x1)
 		},
 	)
-	val level = intToNumber(obj.level)
+	val level = intToNumber(obj.level) ?: undefined
 	val links = listToArray(
 		obj.links,
 		{ x1: String ->
@@ -105,7 +105,7 @@ public fun tarification_toJs(obj: Tarification): TarificationJs {
 			)
 		},
 	)
-	val data = obj.data
+	val data = obj.data ?: undefined
 	val appendices = mapToObject(
 		obj.appendices,
 		{ x1: AppendixType ->
@@ -131,16 +131,16 @@ public fun tarification_toJs(obj: Tarification): TarificationJs {
 			x1
 		},
 	)
-	val consultationCode = obj.consultationCode
-	val hasRelatedCode = obj.hasRelatedCode
-	val needsPrescriber = obj.needsPrescriber
+	val consultationCode = obj.consultationCode ?: undefined
+	val hasRelatedCode = obj.hasRelatedCode ?: undefined
+	val needsPrescriber = obj.needsPrescriber ?: undefined
 	val relatedCodes = setToArray(
 		obj.relatedCodes,
 		{ x1: String ->
 			x1
 		},
 	)
-	val ngroup = obj.ngroup
+	val ngroup = obj.ngroup ?: undefined
 	val letterValues = listToArray(
 		obj.letterValues,
 		{ x1: LetterValue ->

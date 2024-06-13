@@ -110,11 +110,11 @@ public fun patient_toJs(obj: DecryptedPatient): DecryptedPatientJs {
 			identifier_toJs(x1)
 		},
 	)
-	val rev = obj.rev
-	val created = longToNumber(obj.created)
-	val modified = longToNumber(obj.modified)
-	val author = obj.author
-	val responsible = obj.responsible
+	val rev = obj.rev ?: undefined
+	val created = longToNumber(obj.created) ?: undefined
+	val modified = longToNumber(obj.modified) ?: undefined
+	val author = obj.author ?: undefined
+	val responsible = obj.responsible ?: undefined
 	val tags = setToArray(
 		obj.tags,
 		{ x1: CodeStub ->
@@ -127,17 +127,17 @@ public fun patient_toJs(obj: DecryptedPatient): DecryptedPatientJs {
 			codeStub_toJs(x1)
 		},
 	)
-	val endOfLife = longToNumber(obj.endOfLife)
-	val deletionDate = longToNumber(obj.deletionDate)
-	val firstName = obj.firstName
-	val lastName = obj.lastName
+	val endOfLife = longToNumber(obj.endOfLife) ?: undefined
+	val deletionDate = longToNumber(obj.deletionDate) ?: undefined
+	val firstName = obj.firstName ?: undefined
+	val lastName = obj.lastName ?: undefined
 	val names = listToArray(
 		obj.names,
 		{ x1: PersonName ->
 			personName_toJs(x1)
 		},
 	)
-	val companyName = obj.companyName
+	val companyName = obj.companyName ?: undefined
 	val languages = listToArray(
 		obj.languages,
 		{ x1: String ->
@@ -150,53 +150,53 @@ public fun patient_toJs(obj: DecryptedPatient): DecryptedPatientJs {
 			address_toJs(x1)
 		},
 	)
-	val civility = obj.civility
+	val civility = obj.civility ?: undefined
 	val gender = obj.gender?.let { nonNull1 ->
 		nonNull1.name
-	}
+	} ?: undefined
 	val birthSex = obj.birthSex?.let { nonNull1 ->
 		nonNull1.name
-	}
-	val mergeToPatientId = obj.mergeToPatientId
+	} ?: undefined
+	val mergeToPatientId = obj.mergeToPatientId ?: undefined
 	val mergedIds = setToArray(
 		obj.mergedIds,
 		{ x1: String ->
 			x1
 		},
 	)
-	val alias = obj.alias
+	val alias = obj.alias ?: undefined
 	val active = obj.active
 	val deactivationReason = obj.deactivationReason.name
-	val deactivationDate = intToNumber(obj.deactivationDate)
-	val ssin = obj.ssin
-	val maidenName = obj.maidenName
-	val spouseName = obj.spouseName
-	val partnerName = obj.partnerName
+	val deactivationDate = intToNumber(obj.deactivationDate) ?: undefined
+	val ssin = obj.ssin ?: undefined
+	val maidenName = obj.maidenName ?: undefined
+	val spouseName = obj.spouseName ?: undefined
+	val partnerName = obj.partnerName ?: undefined
 	val personalStatus = obj.personalStatus?.let { nonNull1 ->
 		nonNull1.name
-	}
-	val dateOfBirth = intToNumber(obj.dateOfBirth)
-	val dateOfDeath = intToNumber(obj.dateOfDeath)
-	val timestampOfLatestEidReading = longToNumber(obj.timestampOfLatestEidReading)
-	val placeOfBirth = obj.placeOfBirth
-	val placeOfDeath = obj.placeOfDeath
-	val deceased = obj.deceased
-	val education = obj.education
-	val profession = obj.profession
+	} ?: undefined
+	val dateOfBirth = intToNumber(obj.dateOfBirth) ?: undefined
+	val dateOfDeath = intToNumber(obj.dateOfDeath) ?: undefined
+	val timestampOfLatestEidReading = longToNumber(obj.timestampOfLatestEidReading) ?: undefined
+	val placeOfBirth = obj.placeOfBirth ?: undefined
+	val placeOfDeath = obj.placeOfDeath ?: undefined
+	val deceased = obj.deceased ?: undefined
+	val education = obj.education ?: undefined
+	val profession = obj.profession ?: undefined
 	val notes = listToArray(
 		obj.notes,
 		{ x1: Annotation ->
 			annotation_toJs(x1)
 		},
 	)
-	val note = obj.note
-	val administrativeNote = obj.administrativeNote
-	val nationality = obj.nationality
-	val race = obj.race
-	val ethnicity = obj.ethnicity
-	val preferredUserId = obj.preferredUserId
-	val picture = obj.picture
-	val externalId = obj.externalId
+	val note = obj.note ?: undefined
+	val administrativeNote = obj.administrativeNote ?: undefined
+	val nationality = obj.nationality ?: undefined
+	val race = obj.race ?: undefined
+	val ethnicity = obj.ethnicity ?: undefined
+	val preferredUserId = obj.preferredUserId ?: undefined
+	val picture = obj.picture ?: undefined
+	val externalId = obj.externalId ?: undefined
 	val insurabilities = listToArray(
 		obj.insurabilities,
 		{ x1: DecryptedInsurability ->
@@ -320,7 +320,7 @@ public fun patient_toJs(obj: DecryptedPatient): DecryptedPatientJs {
 	)
 	val publicKey = obj.publicKey?.let { nonNull1 ->
 		spkiHexString_toJs(nonNull1)
-	}
+	} ?: undefined
 	val publicKeysForOaepWithSha256 = setToArray(
 		obj.publicKeysForOaepWithSha256,
 		{ x1: SpkiHexString ->
@@ -377,11 +377,11 @@ public fun patient_toJs(obj: DecryptedPatient): DecryptedPatientJs {
 	)
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
-	}
+	} ?: undefined
 	val securityMetadata = obj.securityMetadata?.let { nonNull1 ->
 		securityMetadata_toJs(nonNull1)
-	}
-	val medicalLocationId = obj.medicalLocationId
+	} ?: undefined
+	val medicalLocationId = obj.medicalLocationId ?: undefined
 	val nonDuplicateIds = setToArray(
 		obj.nonDuplicateIds,
 		{ x1: String ->
@@ -394,23 +394,23 @@ public fun patient_toJs(obj: DecryptedPatient): DecryptedPatientJs {
 			x1
 		},
 	)
-	val comment = obj.comment
-	val warning = obj.warning
+	val comment = obj.comment ?: undefined
+	val warning = obj.warning ?: undefined
 	val fatherBirthCountry = obj.fatherBirthCountry?.let { nonNull1 ->
 		codeStub_toJs(nonNull1)
-	}
+	} ?: undefined
 	val birthCountry = obj.birthCountry?.let { nonNull1 ->
 		codeStub_toJs(nonNull1)
-	}
+	} ?: undefined
 	val nativeCountry = obj.nativeCountry?.let { nonNull1 ->
 		codeStub_toJs(nonNull1)
-	}
+	} ?: undefined
 	val socialStatus = obj.socialStatus?.let { nonNull1 ->
 		codeStub_toJs(nonNull1)
-	}
+	} ?: undefined
 	val mainSourceOfIncome = obj.mainSourceOfIncome?.let { nonNull1 ->
 		codeStub_toJs(nonNull1)
-	}
+	} ?: undefined
 	val schoolingInfos = listToArray(
 		obj.schoolingInfos,
 		{ x1: SchoolingInfo ->
@@ -959,11 +959,11 @@ public fun patient_toJs(obj: EncryptedPatient): EncryptedPatientJs {
 			identifier_toJs(x1)
 		},
 	)
-	val rev = obj.rev
-	val created = longToNumber(obj.created)
-	val modified = longToNumber(obj.modified)
-	val author = obj.author
-	val responsible = obj.responsible
+	val rev = obj.rev ?: undefined
+	val created = longToNumber(obj.created) ?: undefined
+	val modified = longToNumber(obj.modified) ?: undefined
+	val author = obj.author ?: undefined
+	val responsible = obj.responsible ?: undefined
 	val tags = setToArray(
 		obj.tags,
 		{ x1: CodeStub ->
@@ -976,17 +976,17 @@ public fun patient_toJs(obj: EncryptedPatient): EncryptedPatientJs {
 			codeStub_toJs(x1)
 		},
 	)
-	val endOfLife = longToNumber(obj.endOfLife)
-	val deletionDate = longToNumber(obj.deletionDate)
-	val firstName = obj.firstName
-	val lastName = obj.lastName
+	val endOfLife = longToNumber(obj.endOfLife) ?: undefined
+	val deletionDate = longToNumber(obj.deletionDate) ?: undefined
+	val firstName = obj.firstName ?: undefined
+	val lastName = obj.lastName ?: undefined
 	val names = listToArray(
 		obj.names,
 		{ x1: PersonName ->
 			personName_toJs(x1)
 		},
 	)
-	val companyName = obj.companyName
+	val companyName = obj.companyName ?: undefined
 	val languages = listToArray(
 		obj.languages,
 		{ x1: String ->
@@ -999,53 +999,53 @@ public fun patient_toJs(obj: EncryptedPatient): EncryptedPatientJs {
 			address_toJs(x1)
 		},
 	)
-	val civility = obj.civility
+	val civility = obj.civility ?: undefined
 	val gender = obj.gender?.let { nonNull1 ->
 		nonNull1.name
-	}
+	} ?: undefined
 	val birthSex = obj.birthSex?.let { nonNull1 ->
 		nonNull1.name
-	}
-	val mergeToPatientId = obj.mergeToPatientId
+	} ?: undefined
+	val mergeToPatientId = obj.mergeToPatientId ?: undefined
 	val mergedIds = setToArray(
 		obj.mergedIds,
 		{ x1: String ->
 			x1
 		},
 	)
-	val alias = obj.alias
+	val alias = obj.alias ?: undefined
 	val active = obj.active
 	val deactivationReason = obj.deactivationReason.name
-	val deactivationDate = intToNumber(obj.deactivationDate)
-	val ssin = obj.ssin
-	val maidenName = obj.maidenName
-	val spouseName = obj.spouseName
-	val partnerName = obj.partnerName
+	val deactivationDate = intToNumber(obj.deactivationDate) ?: undefined
+	val ssin = obj.ssin ?: undefined
+	val maidenName = obj.maidenName ?: undefined
+	val spouseName = obj.spouseName ?: undefined
+	val partnerName = obj.partnerName ?: undefined
 	val personalStatus = obj.personalStatus?.let { nonNull1 ->
 		nonNull1.name
-	}
-	val dateOfBirth = intToNumber(obj.dateOfBirth)
-	val dateOfDeath = intToNumber(obj.dateOfDeath)
-	val timestampOfLatestEidReading = longToNumber(obj.timestampOfLatestEidReading)
-	val placeOfBirth = obj.placeOfBirth
-	val placeOfDeath = obj.placeOfDeath
-	val deceased = obj.deceased
-	val education = obj.education
-	val profession = obj.profession
+	} ?: undefined
+	val dateOfBirth = intToNumber(obj.dateOfBirth) ?: undefined
+	val dateOfDeath = intToNumber(obj.dateOfDeath) ?: undefined
+	val timestampOfLatestEidReading = longToNumber(obj.timestampOfLatestEidReading) ?: undefined
+	val placeOfBirth = obj.placeOfBirth ?: undefined
+	val placeOfDeath = obj.placeOfDeath ?: undefined
+	val deceased = obj.deceased ?: undefined
+	val education = obj.education ?: undefined
+	val profession = obj.profession ?: undefined
 	val notes = listToArray(
 		obj.notes,
 		{ x1: Annotation ->
 			annotation_toJs(x1)
 		},
 	)
-	val note = obj.note
-	val administrativeNote = obj.administrativeNote
-	val nationality = obj.nationality
-	val race = obj.race
-	val ethnicity = obj.ethnicity
-	val preferredUserId = obj.preferredUserId
-	val picture = obj.picture
-	val externalId = obj.externalId
+	val note = obj.note ?: undefined
+	val administrativeNote = obj.administrativeNote ?: undefined
+	val nationality = obj.nationality ?: undefined
+	val race = obj.race ?: undefined
+	val ethnicity = obj.ethnicity ?: undefined
+	val preferredUserId = obj.preferredUserId ?: undefined
+	val picture = obj.picture ?: undefined
+	val externalId = obj.externalId ?: undefined
 	val insurabilities = listToArray(
 		obj.insurabilities,
 		{ x1: EncryptedInsurability ->
@@ -1169,7 +1169,7 @@ public fun patient_toJs(obj: EncryptedPatient): EncryptedPatientJs {
 	)
 	val publicKey = obj.publicKey?.let { nonNull1 ->
 		spkiHexString_toJs(nonNull1)
-	}
+	} ?: undefined
 	val publicKeysForOaepWithSha256 = setToArray(
 		obj.publicKeysForOaepWithSha256,
 		{ x1: SpkiHexString ->
@@ -1226,11 +1226,11 @@ public fun patient_toJs(obj: EncryptedPatient): EncryptedPatientJs {
 	)
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
-	}
+	} ?: undefined
 	val securityMetadata = obj.securityMetadata?.let { nonNull1 ->
 		securityMetadata_toJs(nonNull1)
-	}
-	val medicalLocationId = obj.medicalLocationId
+	} ?: undefined
+	val medicalLocationId = obj.medicalLocationId ?: undefined
 	val nonDuplicateIds = setToArray(
 		obj.nonDuplicateIds,
 		{ x1: String ->
@@ -1243,23 +1243,23 @@ public fun patient_toJs(obj: EncryptedPatient): EncryptedPatientJs {
 			x1
 		},
 	)
-	val comment = obj.comment
-	val warning = obj.warning
+	val comment = obj.comment ?: undefined
+	val warning = obj.warning ?: undefined
 	val fatherBirthCountry = obj.fatherBirthCountry?.let { nonNull1 ->
 		codeStub_toJs(nonNull1)
-	}
+	} ?: undefined
 	val birthCountry = obj.birthCountry?.let { nonNull1 ->
 		codeStub_toJs(nonNull1)
-	}
+	} ?: undefined
 	val nativeCountry = obj.nativeCountry?.let { nonNull1 ->
 		codeStub_toJs(nonNull1)
-	}
+	} ?: undefined
 	val socialStatus = obj.socialStatus?.let { nonNull1 ->
 		codeStub_toJs(nonNull1)
-	}
+	} ?: undefined
 	val mainSourceOfIncome = obj.mainSourceOfIncome?.let { nonNull1 ->
 		codeStub_toJs(nonNull1)
-	}
+	} ?: undefined
 	val schoolingInfos = listToArray(
 		obj.schoolingInfos,
 		{ x1: SchoolingInfo ->

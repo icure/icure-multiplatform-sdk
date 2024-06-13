@@ -8,13 +8,13 @@ import kotlin.Suppress
 @Suppress("UNUSED_VARIABLE")
 public fun healthElementByHcPartyTagCodeFilter_toJs(obj: HealthElementByHcPartyTagCodeFilter):
 		HealthElementByHcPartyTagCodeFilterJs {
-	val desc = obj.desc
-	val healthcarePartyId = obj.healthcarePartyId
-	val codeType = obj.codeType
-	val codeCode = obj.codeCode
-	val tagType = obj.tagType
-	val tagCode = obj.tagCode
-	val status = intToNumber(obj.status)
+	val desc = obj.desc ?: undefined
+	val healthcarePartyId = obj.healthcarePartyId ?: undefined
+	val codeType = obj.codeType ?: undefined
+	val codeCode = obj.codeCode ?: undefined
+	val tagType = obj.tagType ?: undefined
+	val tagCode = obj.tagCode ?: undefined
+	val status = intToNumber(obj.status) ?: undefined
 	return HealthElementByHcPartyTagCodeFilterJs(js("{" +
 		"desc:desc," +
 		"healthcarePartyId:healthcarePartyId," +

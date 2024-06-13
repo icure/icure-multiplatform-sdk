@@ -23,9 +23,9 @@ public fun substanceproduct_toJs(obj: Substanceproduct): SubstanceproductJs {
 			codeStub_toJs(x1)
 		},
 	)
-	val intendedname = obj.intendedname
-	val deliveredname = obj.deliveredname
-	val productId = obj.productId
+	val intendedname = obj.intendedname ?: undefined
+	val deliveredname = obj.deliveredname ?: undefined
+	val productId = obj.productId ?: undefined
 	return SubstanceproductJs(js("{" +
 		"intendedcds:intendedcds," +
 		"deliveredcds:deliveredcds," +

@@ -14,7 +14,7 @@ public fun userByIdsFilter_toJs(obj: UserByIdsFilter): UserByIdsFilterJs {
 			x1
 		},
 	)
-	val desc = obj.desc
+	val desc = obj.desc ?: undefined
 	return UserByIdsFilterJs(js("{" +
 		"ids:ids," +
 		"desc:desc" +

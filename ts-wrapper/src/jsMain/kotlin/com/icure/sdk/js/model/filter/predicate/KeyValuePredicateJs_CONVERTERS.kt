@@ -8,13 +8,13 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun keyValuePredicate_toJs(obj: KeyValuePredicate): KeyValuePredicateJs {
-	val key = obj.key
+	val key = obj.key ?: undefined
 	val operator = obj.operator?.let { nonNull1 ->
 		nonNull1.name
-	}
+	} ?: undefined
 	val value = obj.value?.let { nonNull1 ->
 		anyPrimitive_toJs(nonNull1)
-	}
+	} ?: undefined
 	return KeyValuePredicateJs(js("{" +
 		"key:key," +
 		"operator:operator," +

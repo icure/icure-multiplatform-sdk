@@ -7,10 +7,10 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun authenticationToken_toJs(obj: AuthenticationToken): AuthenticationTokenJs {
-	val token = obj.token
+	val token = obj.token ?: undefined
 	val creationTime = longToNumber(obj.creationTime)
 	val validity = longToNumber(obj.validity)
-	val deletionDate = longToNumber(obj.deletionDate)
+	val deletionDate = longToNumber(obj.deletionDate) ?: undefined
 	return AuthenticationTokenJs(js("{" +
 		"token:token," +
 		"creationTime:creationTime," +

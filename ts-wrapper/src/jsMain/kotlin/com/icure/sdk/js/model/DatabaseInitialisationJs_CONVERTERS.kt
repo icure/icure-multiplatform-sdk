@@ -14,17 +14,17 @@ public fun databaseInitialisation_toJs(obj: DatabaseInitialisation): DatabaseIni
 		{ x1: User ->
 			user_toJs(x1)
 		},
-	)
+	) ?: undefined
 	val healthcareParties = listToArray(
 		obj.healthcareParties,
 		{ x1: HealthcareParty ->
 			healthcareParty_toJs(x1)
 		},
-	)
+	) ?: undefined
 	val replication = obj.replication?.let { nonNull1 ->
 		replication_toJs(nonNull1)
-	}
-	val minimumKrakenVersion = obj.minimumKrakenVersion
+	} ?: undefined
+	val minimumKrakenVersion = obj.minimumKrakenVersion ?: undefined
 	return DatabaseInitialisationJs(js("{" +
 		"users:users," +
 		"healthcareParties:healthcareParties," +

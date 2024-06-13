@@ -8,9 +8,9 @@ import kotlin.Suppress
 @Suppress("UNUSED_VARIABLE")
 public fun entityReference_toJs(obj: EntityReference): EntityReferenceJs {
 	val id = obj.id
-	val rev = obj.rev
-	val deletionDate = longToNumber(obj.deletionDate)
-	val docId = obj.docId
+	val rev = obj.rev ?: undefined
+	val deletionDate = longToNumber(obj.deletionDate) ?: undefined
+	val docId = obj.docId ?: undefined
 	return EntityReferenceJs(js("{" +
 		"id:id," +
 		"rev:rev," +

@@ -41,12 +41,12 @@ import kotlin.collections.Set
 @Suppress("UNUSED_VARIABLE")
 public fun message_toJs(obj: DecryptedMessage): DecryptedMessageJs {
 	val id = obj.id
-	val rev = obj.rev
-	val created = longToNumber(obj.created)
-	val modified = longToNumber(obj.modified)
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
+	val rev = obj.rev ?: undefined
+	val created = longToNumber(obj.created) ?: undefined
+	val modified = longToNumber(obj.modified) ?: undefined
+	val author = obj.author ?: undefined
+	val responsible = obj.responsible ?: undefined
+	val medicalLocationId = obj.medicalLocationId ?: undefined
 	val tags = setToArray(
 		obj.tags,
 		{ x1: CodeStub ->
@@ -59,13 +59,13 @@ public fun message_toJs(obj: DecryptedMessage): DecryptedMessageJs {
 			codeStub_toJs(x1)
 		},
 	)
-	val endOfLife = longToNumber(obj.endOfLife)
-	val deletionDate = longToNumber(obj.deletionDate)
-	val fromAddress = obj.fromAddress
-	val fromHealthcarePartyId = obj.fromHealthcarePartyId
-	val formId = obj.formId
-	val status = intToNumber(obj.status)
-	val recipientsType = obj.recipientsType
+	val endOfLife = longToNumber(obj.endOfLife) ?: undefined
+	val deletionDate = longToNumber(obj.deletionDate) ?: undefined
+	val fromAddress = obj.fromAddress ?: undefined
+	val fromHealthcarePartyId = obj.fromHealthcarePartyId ?: undefined
+	val formId = obj.formId ?: undefined
+	val status = intToNumber(obj.status) ?: undefined
+	val recipientsType = obj.recipientsType ?: undefined
 	val recipients = setToArray(
 		obj.recipients,
 		{ x1: String ->
@@ -78,8 +78,8 @@ public fun message_toJs(obj: DecryptedMessage): DecryptedMessageJs {
 			x1
 		},
 	)
-	val received = longToNumber(obj.received)
-	val sent = longToNumber(obj.sent)
+	val received = longToNumber(obj.received) ?: undefined
+	val sent = longToNumber(obj.sent) ?: undefined
 	val metas = mapToObject(
 		obj.metas,
 		{ x1: String ->
@@ -104,18 +104,18 @@ public fun message_toJs(obj: DecryptedMessage): DecryptedMessageJs {
 			messageAttachment_toJs(x1)
 		},
 	)
-	val transportGuid = obj.transportGuid
-	val remark = obj.remark
-	val conversationGuid = obj.conversationGuid
-	val subject = obj.subject
+	val transportGuid = obj.transportGuid ?: undefined
+	val remark = obj.remark ?: undefined
+	val conversationGuid = obj.conversationGuid ?: undefined
+	val subject = obj.subject ?: undefined
 	val invoiceIds = setToArray(
 		obj.invoiceIds,
 		{ x1: String ->
 			x1
 		},
 	)
-	val parentId = obj.parentId
-	val externalRef = obj.externalRef
+	val parentId = obj.parentId ?: undefined
+	val externalRef = obj.externalRef ?: undefined
 	val unassignedResults = setToArray(
 		obj.unassignedResults,
 		{ x1: String ->
@@ -190,10 +190,10 @@ public fun message_toJs(obj: DecryptedMessage): DecryptedMessageJs {
 	)
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
-	}
+	} ?: undefined
 	val securityMetadata = obj.securityMetadata?.let { nonNull1 ->
 		securityMetadata_toJs(nonNull1)
-	}
+	} ?: undefined
 	return DecryptedMessageJs(js("{" +
 		"id:id," +
 		"rev:rev," +
@@ -456,12 +456,12 @@ public fun message_fromJs(obj: DecryptedMessageJs): DecryptedMessage {
 @Suppress("UNUSED_VARIABLE")
 public fun message_toJs(obj: EncryptedMessage): EncryptedMessageJs {
 	val id = obj.id
-	val rev = obj.rev
-	val created = longToNumber(obj.created)
-	val modified = longToNumber(obj.modified)
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
+	val rev = obj.rev ?: undefined
+	val created = longToNumber(obj.created) ?: undefined
+	val modified = longToNumber(obj.modified) ?: undefined
+	val author = obj.author ?: undefined
+	val responsible = obj.responsible ?: undefined
+	val medicalLocationId = obj.medicalLocationId ?: undefined
 	val tags = setToArray(
 		obj.tags,
 		{ x1: CodeStub ->
@@ -474,13 +474,13 @@ public fun message_toJs(obj: EncryptedMessage): EncryptedMessageJs {
 			codeStub_toJs(x1)
 		},
 	)
-	val endOfLife = longToNumber(obj.endOfLife)
-	val deletionDate = longToNumber(obj.deletionDate)
-	val fromAddress = obj.fromAddress
-	val fromHealthcarePartyId = obj.fromHealthcarePartyId
-	val formId = obj.formId
-	val status = intToNumber(obj.status)
-	val recipientsType = obj.recipientsType
+	val endOfLife = longToNumber(obj.endOfLife) ?: undefined
+	val deletionDate = longToNumber(obj.deletionDate) ?: undefined
+	val fromAddress = obj.fromAddress ?: undefined
+	val fromHealthcarePartyId = obj.fromHealthcarePartyId ?: undefined
+	val formId = obj.formId ?: undefined
+	val status = intToNumber(obj.status) ?: undefined
+	val recipientsType = obj.recipientsType ?: undefined
 	val recipients = setToArray(
 		obj.recipients,
 		{ x1: String ->
@@ -493,8 +493,8 @@ public fun message_toJs(obj: EncryptedMessage): EncryptedMessageJs {
 			x1
 		},
 	)
-	val received = longToNumber(obj.received)
-	val sent = longToNumber(obj.sent)
+	val received = longToNumber(obj.received) ?: undefined
+	val sent = longToNumber(obj.sent) ?: undefined
 	val metas = mapToObject(
 		obj.metas,
 		{ x1: String ->
@@ -519,18 +519,18 @@ public fun message_toJs(obj: EncryptedMessage): EncryptedMessageJs {
 			messageAttachment_toJs(x1)
 		},
 	)
-	val transportGuid = obj.transportGuid
-	val remark = obj.remark
-	val conversationGuid = obj.conversationGuid
-	val subject = obj.subject
+	val transportGuid = obj.transportGuid ?: undefined
+	val remark = obj.remark ?: undefined
+	val conversationGuid = obj.conversationGuid ?: undefined
+	val subject = obj.subject ?: undefined
 	val invoiceIds = setToArray(
 		obj.invoiceIds,
 		{ x1: String ->
 			x1
 		},
 	)
-	val parentId = obj.parentId
-	val externalRef = obj.externalRef
+	val parentId = obj.parentId ?: undefined
+	val externalRef = obj.externalRef ?: undefined
 	val unassignedResults = setToArray(
 		obj.unassignedResults,
 		{ x1: String ->
@@ -605,10 +605,10 @@ public fun message_toJs(obj: EncryptedMessage): EncryptedMessageJs {
 	)
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
-	}
+	} ?: undefined
 	val securityMetadata = obj.securityMetadata?.let { nonNull1 ->
 		securityMetadata_toJs(nonNull1)
-	}
+	} ?: undefined
 	return EncryptedMessageJs(js("{" +
 		"id:id," +
 		"rev:rev," +

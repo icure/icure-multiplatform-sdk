@@ -9,10 +9,10 @@ import kotlin.Suppress
 public
 		fun patientByHcPartyDateOfBirthBetweenFilter_toJs(obj: PatientByHcPartyDateOfBirthBetweenFilter):
 		PatientByHcPartyDateOfBirthBetweenFilterJs {
-	val desc = obj.desc
-	val minDateOfBirth = intToNumber(obj.minDateOfBirth)
-	val maxDateOfBirth = intToNumber(obj.maxDateOfBirth)
-	val healthcarePartyId = obj.healthcarePartyId
+	val desc = obj.desc ?: undefined
+	val minDateOfBirth = intToNumber(obj.minDateOfBirth) ?: undefined
+	val maxDateOfBirth = intToNumber(obj.maxDateOfBirth) ?: undefined
+	val healthcarePartyId = obj.healthcarePartyId ?: undefined
 	return PatientByHcPartyDateOfBirthBetweenFilterJs(js("{" +
 		"desc:desc," +
 		"minDateOfBirth:minDateOfBirth," +

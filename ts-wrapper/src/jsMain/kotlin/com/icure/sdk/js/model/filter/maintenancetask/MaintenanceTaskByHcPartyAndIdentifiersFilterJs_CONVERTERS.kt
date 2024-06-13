@@ -13,14 +13,14 @@ import kotlin.Suppress
 public
 		fun maintenanceTaskByHcPartyAndIdentifiersFilter_toJs(obj: MaintenanceTaskByHcPartyAndIdentifiersFilter):
 		MaintenanceTaskByHcPartyAndIdentifiersFilterJs {
-	val healthcarePartyId = obj.healthcarePartyId
+	val healthcarePartyId = obj.healthcarePartyId ?: undefined
 	val identifiers = listToArray(
 		obj.identifiers,
 		{ x1: Identifier ->
 			identifier_toJs(x1)
 		},
 	)
-	val desc = obj.desc
+	val desc = obj.desc ?: undefined
 	return MaintenanceTaskByHcPartyAndIdentifiersFilterJs(js("{" +
 		"healthcarePartyId:healthcarePartyId," +
 		"identifiers:identifiers," +

@@ -17,20 +17,20 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun paragraphAgreement_toJs(obj: ParagraphAgreement): ParagraphAgreementJs {
-	val timestamp = longToNumber(obj.timestamp)
-	val paragraph = obj.paragraph
-	val accepted = obj.accepted
-	val inTreatment = obj.inTreatment
-	val canceled = obj.canceled
-	val careProviderReference = obj.careProviderReference
-	val decisionReference = obj.decisionReference
-	val start = longToNumber(obj.start)
-	val end = longToNumber(obj.end)
-	val cancelationDate = longToNumber(obj.cancelationDate)
-	val quantityValue = obj.quantityValue
-	val quantityUnit = obj.quantityUnit
-	val ioRequestReference = obj.ioRequestReference
-	val responseType = obj.responseType
+	val timestamp = longToNumber(obj.timestamp) ?: undefined
+	val paragraph = obj.paragraph ?: undefined
+	val accepted = obj.accepted ?: undefined
+	val inTreatment = obj.inTreatment ?: undefined
+	val canceled = obj.canceled ?: undefined
+	val careProviderReference = obj.careProviderReference ?: undefined
+	val decisionReference = obj.decisionReference ?: undefined
+	val start = longToNumber(obj.start) ?: undefined
+	val end = longToNumber(obj.end) ?: undefined
+	val cancelationDate = longToNumber(obj.cancelationDate) ?: undefined
+	val quantityValue = obj.quantityValue ?: undefined
+	val quantityUnit = obj.quantityUnit ?: undefined
+	val ioRequestReference = obj.ioRequestReference ?: undefined
+	val responseType = obj.responseType ?: undefined
 	val refusalJustification = mapToObject(
 		obj.refusalJustification,
 		{ x1: String ->
@@ -39,24 +39,24 @@ public fun paragraphAgreement_toJs(obj: ParagraphAgreement): ParagraphAgreementJ
 		{ x1: String ->
 			x1
 		},
-	)
+	) ?: undefined
 	val verses = setToArray(
 		obj.verses,
 		{ x1: Long ->
 			longToNumber(x1)
 		},
-	)
-	val coverageType = obj.coverageType
-	val unitNumber = obj.unitNumber
-	val strength = obj.strength
-	val strengthUnit = obj.strengthUnit
+	) ?: undefined
+	val coverageType = obj.coverageType ?: undefined
+	val unitNumber = obj.unitNumber ?: undefined
+	val strength = obj.strength ?: undefined
+	val strengthUnit = obj.strengthUnit ?: undefined
 	val agreementAppendices = listToArray(
 		obj.agreementAppendices,
 		{ x1: AgreementAppendix ->
 			agreementAppendix_toJs(x1)
 		},
-	)
-	val documentId = obj.documentId
+	) ?: undefined
+	val documentId = obj.documentId ?: undefined
 	return ParagraphAgreementJs(js("{" +
 		"timestamp:timestamp," +
 		"paragraph:paragraph," +

@@ -7,10 +7,10 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun renewal_toJs(obj: Renewal): RenewalJs {
-	val decimal = intToNumber(obj.decimal)
+	val decimal = intToNumber(obj.decimal) ?: undefined
 	val duration = obj.duration?.let { nonNull1 ->
 		duration_toJs(nonNull1)
-	}
+	} ?: undefined
 	return RenewalJs(js("{" +
 		"decimal:decimal," +
 		"duration:duration" +

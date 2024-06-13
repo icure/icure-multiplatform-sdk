@@ -8,7 +8,7 @@ public fun messageByHcPartyTransportGuidFilter_toJs(obj: MessageByHcPartyTranspo
 		MessageByHcPartyTransportGuidFilterJs {
 	val healthcarePartyId = obj.healthcarePartyId
 	val transportGuid = obj.transportGuid
-	val desc = obj.desc
+	val desc = obj.desc ?: undefined
 	return MessageByHcPartyTransportGuidFilterJs(js("{" +
 		"healthcarePartyId:healthcarePartyId," +
 		"transportGuid:transportGuid," +

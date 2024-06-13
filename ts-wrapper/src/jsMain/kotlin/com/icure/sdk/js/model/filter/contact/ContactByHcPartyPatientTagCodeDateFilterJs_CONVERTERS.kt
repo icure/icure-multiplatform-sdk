@@ -12,21 +12,21 @@ import kotlin.Suppress
 public
 		fun contactByHcPartyPatientTagCodeDateFilter_toJs(obj: ContactByHcPartyPatientTagCodeDateFilter):
 		ContactByHcPartyPatientTagCodeDateFilterJs {
-	val desc = obj.desc
-	val healthcarePartyId = obj.healthcarePartyId
-	val patientSecretForeignKey = obj.patientSecretForeignKey
+	val desc = obj.desc ?: undefined
+	val healthcarePartyId = obj.healthcarePartyId ?: undefined
+	val patientSecretForeignKey = obj.patientSecretForeignKey ?: undefined
 	val patientSecretForeignKeys = listToArray(
 		obj.patientSecretForeignKeys,
 		{ x1: String ->
 			x1
 		},
-	)
-	val tagType = obj.tagType
-	val tagCode = obj.tagCode
-	val codeType = obj.codeType
-	val codeCode = obj.codeCode
-	val startOfContactOpeningDate = longToNumber(obj.startOfContactOpeningDate)
-	val endOfContactOpeningDate = longToNumber(obj.endOfContactOpeningDate)
+	) ?: undefined
+	val tagType = obj.tagType ?: undefined
+	val tagCode = obj.tagCode ?: undefined
+	val codeType = obj.codeType ?: undefined
+	val codeCode = obj.codeCode ?: undefined
+	val startOfContactOpeningDate = longToNumber(obj.startOfContactOpeningDate) ?: undefined
+	val endOfContactOpeningDate = longToNumber(obj.endOfContactOpeningDate) ?: undefined
 	return ContactByHcPartyPatientTagCodeDateFilterJs(js("{" +
 		"desc:desc," +
 		"healthcarePartyId:healthcarePartyId," +

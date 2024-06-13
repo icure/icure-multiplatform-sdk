@@ -5,7 +5,7 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun allDevicesFilter_toJs(obj: AllDevicesFilter): AllDevicesFilterJs {
-	val desc = obj.desc
+	val desc = obj.desc ?: undefined
 	return AllDevicesFilterJs(js("{" +
 		"desc:desc" +
 	"}"))

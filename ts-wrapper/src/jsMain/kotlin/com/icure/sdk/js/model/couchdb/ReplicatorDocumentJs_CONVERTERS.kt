@@ -18,28 +18,28 @@ import kotlin.collections.Map
 @Suppress("UNUSED_VARIABLE")
 public fun replicatorDocument_toJs(obj: ReplicatorDocument): ReplicatorDocumentJs {
 	val id = obj.id
-	val rev = obj.rev
+	val rev = obj.rev ?: undefined
 	val source = obj.source?.let { nonNull1 ->
 		remote_toJs(nonNull1)
-	}
+	} ?: undefined
 	val target = obj.target?.let { nonNull1 ->
 		remote_toJs(nonNull1)
-	}
-	val owner = obj.owner
-	val create_target = obj.create_target
-	val continuous = obj.continuous
+	} ?: undefined
+	val owner = obj.owner ?: undefined
+	val create_target = obj.create_target ?: undefined
+	val continuous = obj.continuous ?: undefined
 	val doc_ids = listToArray(
 		obj.doc_ids,
 		{ x1: String ->
 			x1
 		},
-	)
-	val replicationState = obj.replicationState
-	val replicationStateTime = zonedDateTimeToString(obj.replicationStateTime)
+	) ?: undefined
+	val replicationState = obj.replicationState ?: undefined
+	val replicationStateTime = zonedDateTimeToString(obj.replicationStateTime) ?: undefined
 	val replicationStats = obj.replicationStats?.let { nonNull1 ->
 		replicationStats_toJs(nonNull1)
-	}
-	val errorCount = intToNumber(obj.errorCount)
+	} ?: undefined
+	val errorCount = intToNumber(obj.errorCount) ?: undefined
 	val revsInfo = listToArray(
 		obj.revsInfo,
 		{ x1: Map<String, String> ->
@@ -53,7 +53,7 @@ public fun replicatorDocument_toJs(obj: ReplicatorDocument): ReplicatorDocumentJ
 				},
 			)
 		},
-	)
+	) ?: undefined
 	val revHistory = mapToObject(
 		obj.revHistory,
 		{ x1: String ->
@@ -62,7 +62,7 @@ public fun replicatorDocument_toJs(obj: ReplicatorDocument): ReplicatorDocumentJ
 		{ x1: String ->
 			x1
 		},
-	)
+	) ?: undefined
 	return ReplicatorDocumentJs(js("{" +
 		"id:id," +
 		"rev:rev," +

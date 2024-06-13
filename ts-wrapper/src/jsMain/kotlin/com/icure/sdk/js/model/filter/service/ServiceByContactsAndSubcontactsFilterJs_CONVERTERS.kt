@@ -11,8 +11,8 @@ import kotlin.Suppress
 @Suppress("UNUSED_VARIABLE")
 public fun serviceByContactsAndSubcontactsFilter_toJs(obj: ServiceByContactsAndSubcontactsFilter):
 		ServiceByContactsAndSubcontactsFilterJs {
-	val desc = obj.desc
-	val healthcarePartyId = obj.healthcarePartyId
+	val desc = obj.desc ?: undefined
+	val healthcarePartyId = obj.healthcarePartyId ?: undefined
 	val contacts = setToArray(
 		obj.contacts,
 		{ x1: String ->
@@ -24,9 +24,9 @@ public fun serviceByContactsAndSubcontactsFilter_toJs(obj: ServiceByContactsAndS
 		{ x1: String ->
 			x1
 		},
-	)
-	val startValueDate = longToNumber(obj.startValueDate)
-	val endValueDate = longToNumber(obj.endValueDate)
+	) ?: undefined
+	val startValueDate = longToNumber(obj.startValueDate) ?: undefined
+	val endValueDate = longToNumber(obj.endValueDate) ?: undefined
 	return ServiceByContactsAndSubcontactsFilterJs(js("{" +
 		"desc:desc," +
 		"healthcarePartyId:healthcarePartyId," +

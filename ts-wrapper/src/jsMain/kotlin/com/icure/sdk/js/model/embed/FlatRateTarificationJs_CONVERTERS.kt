@@ -18,10 +18,10 @@ import kotlin.Suppress
 @Suppress("UNUSED_VARIABLE")
 public fun flatRateTarification_toJs(obj: DecryptedFlatRateTarification):
 		DecryptedFlatRateTarificationJs {
-	val code = obj.code
+	val code = obj.code ?: undefined
 	val flatRateType = obj.flatRateType?.let { nonNull1 ->
 		nonNull1.name
-	}
+	} ?: undefined
 	val label = mapToObject(
 		obj.label,
 		{ x1: String ->
@@ -30,7 +30,7 @@ public fun flatRateTarification_toJs(obj: DecryptedFlatRateTarification):
 		{ x1: String ->
 			x1
 		},
-	)
+	) ?: undefined
 	val valorisations = listToArray(
 		obj.valorisations,
 		{ x1: DecryptedValorisation ->
@@ -39,7 +39,7 @@ public fun flatRateTarification_toJs(obj: DecryptedFlatRateTarification):
 	)
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
-	}
+	} ?: undefined
 	return DecryptedFlatRateTarificationJs(js("{" +
 		"code:code," +
 		"flatRateType:flatRateType," +
@@ -87,10 +87,10 @@ public fun flatRateTarification_fromJs(obj: DecryptedFlatRateTarificationJs):
 @Suppress("UNUSED_VARIABLE")
 public fun flatRateTarification_toJs(obj: EncryptedFlatRateTarification):
 		EncryptedFlatRateTarificationJs {
-	val code = obj.code
+	val code = obj.code ?: undefined
 	val flatRateType = obj.flatRateType?.let { nonNull1 ->
 		nonNull1.name
-	}
+	} ?: undefined
 	val label = mapToObject(
 		obj.label,
 		{ x1: String ->
@@ -99,7 +99,7 @@ public fun flatRateTarification_toJs(obj: EncryptedFlatRateTarification):
 		{ x1: String ->
 			x1
 		},
-	)
+	) ?: undefined
 	val valorisations = listToArray(
 		obj.valorisations,
 		{ x1: EncryptedValorisation ->
@@ -108,7 +108,7 @@ public fun flatRateTarification_toJs(obj: EncryptedFlatRateTarification):
 	)
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
-	}
+	} ?: undefined
 	return EncryptedFlatRateTarificationJs(js("{" +
 		"code:code," +
 		"flatRateType:flatRateType," +

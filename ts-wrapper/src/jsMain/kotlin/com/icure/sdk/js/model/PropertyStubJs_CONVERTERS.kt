@@ -13,17 +13,17 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun propertyStub_toJs(obj: DecryptedPropertyStub): DecryptedPropertyStubJs {
-	val id = obj.id
+	val id = obj.id ?: undefined
 	val type = obj.type?.let { nonNull1 ->
 		propertyTypeStub_toJs(nonNull1)
-	}
+	} ?: undefined
 	val typedValue = obj.typedValue?.let { nonNull1 ->
 		typedValue_toJs(nonNull1)
-	}
-	val deletionDate = longToNumber(obj.deletionDate)
+	} ?: undefined
+	val deletionDate = longToNumber(obj.deletionDate) ?: undefined
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
-	}
+	} ?: undefined
 	return DecryptedPropertyStubJs(js("{" +
 		"id:id," +
 		"type:type," +
@@ -56,17 +56,17 @@ public fun propertyStub_fromJs(obj: DecryptedPropertyStubJs): DecryptedPropertyS
 
 @Suppress("UNUSED_VARIABLE")
 public fun propertyStub_toJs(obj: EncryptedPropertyStub): EncryptedPropertyStubJs {
-	val id = obj.id
+	val id = obj.id ?: undefined
 	val type = obj.type?.let { nonNull1 ->
 		propertyTypeStub_toJs(nonNull1)
-	}
+	} ?: undefined
 	val typedValue = obj.typedValue?.let { nonNull1 ->
 		typedValue_toJs(nonNull1)
-	}
-	val deletionDate = longToNumber(obj.deletionDate)
+	} ?: undefined
+	val deletionDate = longToNumber(obj.deletionDate) ?: undefined
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
-	}
+	} ?: undefined
 	return EncryptedPropertyStubJs(js("{" +
 		"id:id," +
 		"type:type," +

@@ -9,12 +9,12 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun schoolingInfo_toJs(obj: SchoolingInfo): SchoolingInfoJs {
-	val startDate = longToNumber(obj.startDate)
-	val endDate = longToNumber(obj.endDate)
-	val school = obj.school
+	val startDate = longToNumber(obj.startDate) ?: undefined
+	val endDate = longToNumber(obj.endDate) ?: undefined
+	val school = obj.school ?: undefined
 	val typeOfEducation = obj.typeOfEducation?.let { nonNull1 ->
 		codeStub_toJs(nonNull1)
-	}
+	} ?: undefined
 	return SchoolingInfoJs(js("{" +
 		"startDate:startDate," +
 		"endDate:endDate," +

@@ -20,7 +20,7 @@ public fun indexingInfo_toJs(obj: IndexingInfo): IndexingInfoJs {
 		{ x1: Int ->
 			intToNumber(x1)
 		},
-	)
+	) ?: undefined
 	return IndexingInfoJs(js("{" +
 		"statuses:statuses" +
 	"}"))

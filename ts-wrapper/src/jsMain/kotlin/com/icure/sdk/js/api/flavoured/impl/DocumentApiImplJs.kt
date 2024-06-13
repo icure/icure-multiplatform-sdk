@@ -862,7 +862,7 @@ internal class DocumentApiImplJs(
 			attachmentIdConverted,
 			decryptedDocumentValidatorConverted,
 		)
-		result
+		result ?: undefined
 	}
 
 	override fun getAndTryDecryptMainAttachmentAsPlainText(
@@ -882,7 +882,7 @@ internal class DocumentApiImplJs(
 			attachmentIdConverted,
 			decryptedDocumentValidatorConverted,
 		)
-		result
+		result ?: undefined
 	}
 
 	override fun getAndTryDecryptMainAttachmentAsJson(
@@ -902,7 +902,7 @@ internal class DocumentApiImplJs(
 			attachmentIdConverted,
 			decryptedDocumentValidatorConverted,
 		)
-		jsonToDynamic(result)
+		jsonToDynamic(result) ?: undefined
 	}
 
 	override fun getAndDecryptMainAttachment(

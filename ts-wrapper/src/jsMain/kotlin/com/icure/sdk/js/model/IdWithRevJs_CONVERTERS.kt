@@ -6,7 +6,7 @@ import kotlin.Suppress
 @Suppress("UNUSED_VARIABLE")
 public fun idWithRev_toJs(obj: IdWithRev): IdWithRevJs {
 	val id = obj.id
-	val rev = obj.rev
+	val rev = obj.rev ?: undefined
 	return IdWithRevJs(js("{" +
 		"id:id," +
 		"rev:rev" +

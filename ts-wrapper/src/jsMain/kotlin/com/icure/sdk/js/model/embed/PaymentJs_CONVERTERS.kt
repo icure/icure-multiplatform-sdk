@@ -11,8 +11,8 @@ public fun payment_toJs(obj: Payment): PaymentJs {
 	val paymentDate = longToNumber(obj.paymentDate)
 	val paymentType = obj.paymentType?.let { nonNull1 ->
 		nonNull1.name
-	}
-	val paid = obj.paid
+	} ?: undefined
+	val paid = obj.paid ?: undefined
 	return PaymentJs(js("{" +
 		"paymentDate:paymentDate," +
 		"paymentType:paymentType," +

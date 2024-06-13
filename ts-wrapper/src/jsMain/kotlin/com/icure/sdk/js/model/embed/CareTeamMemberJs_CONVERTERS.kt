@@ -15,14 +15,14 @@ public fun careTeamMember_toJs(obj: DecryptedCareTeamMember): DecryptedCareTeamM
 	val id = obj.id
 	val careTeamMemberType = obj.careTeamMemberType?.let { nonNull1 ->
 		nonNull1.name
-	}
-	val healthcarePartyId = obj.healthcarePartyId
+	} ?: undefined
+	val healthcarePartyId = obj.healthcarePartyId ?: undefined
 	val quality = obj.quality?.let { nonNull1 ->
 		codeStub_toJs(nonNull1)
-	}
+	} ?: undefined
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
-	}
+	} ?: undefined
 	return DecryptedCareTeamMemberJs(js("{" +
 		"id:id," +
 		"careTeamMemberType:careTeamMemberType," +
@@ -58,14 +58,14 @@ public fun careTeamMember_toJs(obj: EncryptedCareTeamMember): EncryptedCareTeamM
 	val id = obj.id
 	val careTeamMemberType = obj.careTeamMemberType?.let { nonNull1 ->
 		nonNull1.name
-	}
-	val healthcarePartyId = obj.healthcarePartyId
+	} ?: undefined
+	val healthcarePartyId = obj.healthcarePartyId ?: undefined
 	val quality = obj.quality?.let { nonNull1 ->
 		codeStub_toJs(nonNull1)
-	}
+	} ?: undefined
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
-	}
+	} ?: undefined
 	return EncryptedCareTeamMemberJs(js("{" +
 		"id:id," +
 		"careTeamMemberType:careTeamMemberType," +

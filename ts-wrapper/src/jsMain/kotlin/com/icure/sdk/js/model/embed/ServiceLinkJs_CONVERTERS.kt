@@ -5,7 +5,7 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun serviceLink_toJs(obj: ServiceLink): ServiceLinkJs {
-	val serviceId = obj.serviceId
+	val serviceId = obj.serviceId ?: undefined
 	return ServiceLinkJs(js("{" +
 		"serviceId:serviceId" +
 	"}"))

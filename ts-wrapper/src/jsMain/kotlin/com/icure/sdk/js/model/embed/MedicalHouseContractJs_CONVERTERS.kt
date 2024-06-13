@@ -20,20 +20,20 @@ import kotlin.Suppress
 @Suppress("UNUSED_VARIABLE")
 public fun medicalHouseContract_toJs(obj: DecryptedMedicalHouseContract):
 		DecryptedMedicalHouseContractJs {
-	val contractId = obj.contractId
-	val validFrom = longToNumber(obj.validFrom)
-	val validTo = longToNumber(obj.validTo)
-	val mmNihii = obj.mmNihii
-	val hcpId = obj.hcpId
+	val contractId = obj.contractId ?: undefined
+	val validFrom = longToNumber(obj.validFrom) ?: undefined
+	val validTo = longToNumber(obj.validTo) ?: undefined
+	val mmNihii = obj.mmNihii ?: undefined
+	val hcpId = obj.hcpId ?: undefined
 	val changeType = obj.changeType?.let { nonNull1 ->
 		nonNull1.name
-	}
-	val parentContractId = obj.parentContractId
-	val changedBy = obj.changedBy
-	val startOfContract = longToNumber(obj.startOfContract)
-	val startOfCoverage = longToNumber(obj.startOfCoverage)
-	val endOfContract = longToNumber(obj.endOfContract)
-	val endOfCoverage = longToNumber(obj.endOfCoverage)
+	} ?: undefined
+	val parentContractId = obj.parentContractId ?: undefined
+	val changedBy = obj.changedBy ?: undefined
+	val startOfContract = longToNumber(obj.startOfContract) ?: undefined
+	val startOfCoverage = longToNumber(obj.startOfCoverage) ?: undefined
+	val endOfContract = longToNumber(obj.endOfContract) ?: undefined
+	val endOfCoverage = longToNumber(obj.endOfCoverage) ?: undefined
 	val kine = obj.kine
 	val gp = obj.gp
 	val ptd = obj.ptd
@@ -41,21 +41,21 @@ public fun medicalHouseContract_toJs(obj: DecryptedMedicalHouseContract):
 	val noKine = obj.noKine
 	val noGp = obj.noGp
 	val noNurse = obj.noNurse
-	val unsubscriptionReasonId = intToNumber(obj.unsubscriptionReasonId)
-	val ptdStart = longToNumber(obj.ptdStart)
-	val ptdEnd = longToNumber(obj.ptdEnd)
-	val ptdLastInvoiced = longToNumber(obj.ptdLastInvoiced)
-	val startOfSuspension = longToNumber(obj.startOfSuspension)
-	val endOfSuspension = longToNumber(obj.endOfSuspension)
+	val unsubscriptionReasonId = intToNumber(obj.unsubscriptionReasonId) ?: undefined
+	val ptdStart = longToNumber(obj.ptdStart) ?: undefined
+	val ptdEnd = longToNumber(obj.ptdEnd) ?: undefined
+	val ptdLastInvoiced = longToNumber(obj.ptdLastInvoiced) ?: undefined
+	val startOfSuspension = longToNumber(obj.startOfSuspension) ?: undefined
+	val endOfSuspension = longToNumber(obj.endOfSuspension) ?: undefined
 	val suspensionReason = obj.suspensionReason?.let { nonNull1 ->
 		nonNull1.name
-	}
-	val suspensionSource = obj.suspensionSource
+	} ?: undefined
+	val suspensionSource = obj.suspensionSource ?: undefined
 	val forcedSuspension = obj.forcedSuspension
 	val signatureType = obj.signatureType?.let { nonNull1 ->
 		nonNull1.name
-	}
-	val status = intToNumber(obj.status)
+	} ?: undefined
+	val status = intToNumber(obj.status) ?: undefined
 	val options = mapToObject(
 		obj.options,
 		{ x1: String ->
@@ -76,7 +76,7 @@ public fun medicalHouseContract_toJs(obj: DecryptedMedicalHouseContract):
 	)
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
-	}
+	} ?: undefined
 	return DecryptedMedicalHouseContractJs(js("{" +
 		"contractId:contractId," +
 		"validFrom:validFrom," +
@@ -215,20 +215,20 @@ public fun medicalHouseContract_fromJs(obj: DecryptedMedicalHouseContractJs):
 @Suppress("UNUSED_VARIABLE")
 public fun medicalHouseContract_toJs(obj: EncryptedMedicalHouseContract):
 		EncryptedMedicalHouseContractJs {
-	val contractId = obj.contractId
-	val validFrom = longToNumber(obj.validFrom)
-	val validTo = longToNumber(obj.validTo)
-	val mmNihii = obj.mmNihii
-	val hcpId = obj.hcpId
+	val contractId = obj.contractId ?: undefined
+	val validFrom = longToNumber(obj.validFrom) ?: undefined
+	val validTo = longToNumber(obj.validTo) ?: undefined
+	val mmNihii = obj.mmNihii ?: undefined
+	val hcpId = obj.hcpId ?: undefined
 	val changeType = obj.changeType?.let { nonNull1 ->
 		nonNull1.name
-	}
-	val parentContractId = obj.parentContractId
-	val changedBy = obj.changedBy
-	val startOfContract = longToNumber(obj.startOfContract)
-	val startOfCoverage = longToNumber(obj.startOfCoverage)
-	val endOfContract = longToNumber(obj.endOfContract)
-	val endOfCoverage = longToNumber(obj.endOfCoverage)
+	} ?: undefined
+	val parentContractId = obj.parentContractId ?: undefined
+	val changedBy = obj.changedBy ?: undefined
+	val startOfContract = longToNumber(obj.startOfContract) ?: undefined
+	val startOfCoverage = longToNumber(obj.startOfCoverage) ?: undefined
+	val endOfContract = longToNumber(obj.endOfContract) ?: undefined
+	val endOfCoverage = longToNumber(obj.endOfCoverage) ?: undefined
 	val kine = obj.kine
 	val gp = obj.gp
 	val ptd = obj.ptd
@@ -236,21 +236,21 @@ public fun medicalHouseContract_toJs(obj: EncryptedMedicalHouseContract):
 	val noKine = obj.noKine
 	val noGp = obj.noGp
 	val noNurse = obj.noNurse
-	val unsubscriptionReasonId = intToNumber(obj.unsubscriptionReasonId)
-	val ptdStart = longToNumber(obj.ptdStart)
-	val ptdEnd = longToNumber(obj.ptdEnd)
-	val ptdLastInvoiced = longToNumber(obj.ptdLastInvoiced)
-	val startOfSuspension = longToNumber(obj.startOfSuspension)
-	val endOfSuspension = longToNumber(obj.endOfSuspension)
+	val unsubscriptionReasonId = intToNumber(obj.unsubscriptionReasonId) ?: undefined
+	val ptdStart = longToNumber(obj.ptdStart) ?: undefined
+	val ptdEnd = longToNumber(obj.ptdEnd) ?: undefined
+	val ptdLastInvoiced = longToNumber(obj.ptdLastInvoiced) ?: undefined
+	val startOfSuspension = longToNumber(obj.startOfSuspension) ?: undefined
+	val endOfSuspension = longToNumber(obj.endOfSuspension) ?: undefined
 	val suspensionReason = obj.suspensionReason?.let { nonNull1 ->
 		nonNull1.name
-	}
-	val suspensionSource = obj.suspensionSource
+	} ?: undefined
+	val suspensionSource = obj.suspensionSource ?: undefined
 	val forcedSuspension = obj.forcedSuspension
 	val signatureType = obj.signatureType?.let { nonNull1 ->
 		nonNull1.name
-	}
-	val status = intToNumber(obj.status)
+	} ?: undefined
+	val status = intToNumber(obj.status) ?: undefined
 	val options = mapToObject(
 		obj.options,
 		{ x1: String ->
@@ -271,7 +271,7 @@ public fun medicalHouseContract_toJs(obj: EncryptedMedicalHouseContract):
 	)
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
-	}
+	} ?: undefined
 	return EncryptedMedicalHouseContractJs(js("{" +
 		"contractId:contractId," +
 		"validFrom:validFrom," +

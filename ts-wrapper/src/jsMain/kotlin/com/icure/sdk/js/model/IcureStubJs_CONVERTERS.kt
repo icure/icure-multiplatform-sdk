@@ -25,12 +25,12 @@ import kotlin.collections.Set
 @Suppress("UNUSED_VARIABLE")
 public fun icureStub_toJs(obj: IcureStub): IcureStubJs {
 	val id = obj.id
-	val rev = obj.rev
-	val created = longToNumber(obj.created)
-	val modified = longToNumber(obj.modified)
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
+	val rev = obj.rev ?: undefined
+	val created = longToNumber(obj.created) ?: undefined
+	val modified = longToNumber(obj.modified) ?: undefined
+	val author = obj.author ?: undefined
+	val responsible = obj.responsible ?: undefined
+	val medicalLocationId = obj.medicalLocationId ?: undefined
 	val tags = setToArray(
 		obj.tags,
 		{ x1: CodeStub ->
@@ -43,7 +43,7 @@ public fun icureStub_toJs(obj: IcureStub): IcureStubJs {
 			codeStub_toJs(x1)
 		},
 	)
-	val endOfLife = longToNumber(obj.endOfLife)
+	val endOfLife = longToNumber(obj.endOfLife) ?: undefined
 	val secretForeignKeys = setToArray(
 		obj.secretForeignKeys,
 		{ x1: String ->
@@ -94,7 +94,7 @@ public fun icureStub_toJs(obj: IcureStub): IcureStubJs {
 	)
 	val securityMetadata = obj.securityMetadata?.let { nonNull1 ->
 		securityMetadata_toJs(nonNull1)
-	}
+	} ?: undefined
 	return IcureStubJs(js("{" +
 		"id:id," +
 		"rev:rev," +

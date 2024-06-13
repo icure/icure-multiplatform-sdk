@@ -8,12 +8,12 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun codeStub_toJs(obj: CodeStub): CodeStubJs {
-	val id = obj.id
-	val context = obj.context
-	val type = obj.type
-	val code = obj.code
-	val version = obj.version
-	val contextLabel = obj.contextLabel
+	val id = obj.id ?: undefined
+	val context = obj.context ?: undefined
+	val type = obj.type ?: undefined
+	val code = obj.code ?: undefined
+	val version = obj.version ?: undefined
+	val contextLabel = obj.contextLabel ?: undefined
 	val label = mapToObject(
 		obj.label,
 		{ x1: String ->
@@ -22,7 +22,7 @@ public fun codeStub_toJs(obj: CodeStub): CodeStubJs {
 		{ x1: String ->
 			x1
 		},
-	)
+	) ?: undefined
 	return CodeStubJs(js("{" +
 		"id:id," +
 		"context:context," +

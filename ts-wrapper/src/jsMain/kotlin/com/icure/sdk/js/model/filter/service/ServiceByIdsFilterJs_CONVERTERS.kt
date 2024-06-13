@@ -14,7 +14,7 @@ public fun serviceByIdsFilter_toJs(obj: ServiceByIdsFilter): ServiceByIdsFilterJ
 			x1
 		},
 	)
-	val desc = obj.desc
+	val desc = obj.desc ?: undefined
 	return ServiceByIdsFilterJs(js("{" +
 		"ids:ids," +
 		"desc:desc" +

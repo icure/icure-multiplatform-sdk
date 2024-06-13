@@ -18,7 +18,7 @@ public fun healthcarePartyByIdentifiersFilter_toJs(obj: HealthcarePartyByIdentif
 			identifier_toJs(x1)
 		},
 	)
-	val desc = obj.desc
+	val desc = obj.desc ?: undefined
 	return HealthcarePartyByIdentifiersFilterJs(js("{" +
 		"identifiers:identifiers," +
 		"desc:desc" +

@@ -6,7 +6,7 @@ import kotlin.Suppress
 @Suppress("UNUSED_VARIABLE")
 public fun view_toJs(obj: View): ViewJs {
 	val map = obj.map
-	val reduce = obj.reduce
+	val reduce = obj.reduce ?: undefined
 	return ViewJs(js("{" +
 		"map:map," +
 		"reduce:reduce" +

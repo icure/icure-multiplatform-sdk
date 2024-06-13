@@ -11,14 +11,14 @@ public fun registrationInformation_toJs(obj: RegistrationInformation): Registrat
 	val firstName = obj.firstName
 	val lastName = obj.lastName
 	val emailAddress = obj.emailAddress
-	val userOptions = obj.userOptions
+	val userOptions = obj.userOptions ?: undefined
 	val userRoles = setToArray(
 		obj.userRoles,
 		{ x1: String ->
 			x1
 		},
 	)
-	val minimumKrakenVersion = obj.minimumKrakenVersion
+	val minimumKrakenVersion = obj.minimumKrakenVersion ?: undefined
 	return RegistrationInformationJs(js("{" +
 		"firstName:firstName," +
 		"lastName:lastName," +

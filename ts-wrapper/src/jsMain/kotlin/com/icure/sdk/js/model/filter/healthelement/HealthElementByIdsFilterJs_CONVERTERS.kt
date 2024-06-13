@@ -15,7 +15,7 @@ public fun healthElementByIdsFilter_toJs(obj: HealthElementByIdsFilter):
 			x1
 		},
 	)
-	val desc = obj.desc
+	val desc = obj.desc ?: undefined
 	return HealthElementByIdsFilterJs(js("{" +
 		"ids:ids," +
 		"desc:desc" +

@@ -38,18 +38,18 @@ import kotlin.collections.Set
 @Suppress("UNUSED_VARIABLE")
 public fun maintenanceTask_toJs(obj: DecryptedMaintenanceTask): DecryptedMaintenanceTaskJs {
 	val id = obj.id
-	val rev = obj.rev
+	val rev = obj.rev ?: undefined
 	val identifier = listToArray(
 		obj.identifier,
 		{ x1: Identifier ->
 			identifier_toJs(x1)
 		},
 	)
-	val created = longToNumber(obj.created)
-	val modified = longToNumber(obj.modified)
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
+	val created = longToNumber(obj.created) ?: undefined
+	val modified = longToNumber(obj.modified) ?: undefined
+	val author = obj.author ?: undefined
+	val responsible = obj.responsible ?: undefined
+	val medicalLocationId = obj.medicalLocationId ?: undefined
 	val tags = setToArray(
 		obj.tags,
 		{ x1: CodeStub ->
@@ -62,9 +62,9 @@ public fun maintenanceTask_toJs(obj: DecryptedMaintenanceTask): DecryptedMainten
 			codeStub_toJs(x1)
 		},
 	)
-	val endOfLife = longToNumber(obj.endOfLife)
-	val deletionDate = longToNumber(obj.deletionDate)
-	val taskType = obj.taskType
+	val endOfLife = longToNumber(obj.endOfLife) ?: undefined
+	val deletionDate = longToNumber(obj.deletionDate) ?: undefined
+	val taskType = obj.taskType ?: undefined
 	val properties = setToArray(
 		obj.properties,
 		{ x1: DecryptedPropertyStub ->
@@ -122,10 +122,10 @@ public fun maintenanceTask_toJs(obj: DecryptedMaintenanceTask): DecryptedMainten
 	)
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
-	}
+	} ?: undefined
 	val securityMetadata = obj.securityMetadata?.let { nonNull1 ->
 		securityMetadata_toJs(nonNull1)
-	}
+	} ?: undefined
 	return DecryptedMaintenanceTaskJs(js("{" +
 		"id:id," +
 		"rev:rev," +
@@ -280,18 +280,18 @@ public fun maintenanceTask_fromJs(obj: DecryptedMaintenanceTaskJs): DecryptedMai
 @Suppress("UNUSED_VARIABLE")
 public fun maintenanceTask_toJs(obj: EncryptedMaintenanceTask): EncryptedMaintenanceTaskJs {
 	val id = obj.id
-	val rev = obj.rev
+	val rev = obj.rev ?: undefined
 	val identifier = listToArray(
 		obj.identifier,
 		{ x1: Identifier ->
 			identifier_toJs(x1)
 		},
 	)
-	val created = longToNumber(obj.created)
-	val modified = longToNumber(obj.modified)
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
+	val created = longToNumber(obj.created) ?: undefined
+	val modified = longToNumber(obj.modified) ?: undefined
+	val author = obj.author ?: undefined
+	val responsible = obj.responsible ?: undefined
+	val medicalLocationId = obj.medicalLocationId ?: undefined
 	val tags = setToArray(
 		obj.tags,
 		{ x1: CodeStub ->
@@ -304,9 +304,9 @@ public fun maintenanceTask_toJs(obj: EncryptedMaintenanceTask): EncryptedMainten
 			codeStub_toJs(x1)
 		},
 	)
-	val endOfLife = longToNumber(obj.endOfLife)
-	val deletionDate = longToNumber(obj.deletionDate)
-	val taskType = obj.taskType
+	val endOfLife = longToNumber(obj.endOfLife) ?: undefined
+	val deletionDate = longToNumber(obj.deletionDate) ?: undefined
+	val taskType = obj.taskType ?: undefined
 	val properties = setToArray(
 		obj.properties,
 		{ x1: EncryptedPropertyStub ->
@@ -364,10 +364,10 @@ public fun maintenanceTask_toJs(obj: EncryptedMaintenanceTask): EncryptedMainten
 	)
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
-	}
+	} ?: undefined
 	val securityMetadata = obj.securityMetadata?.let { nonNull1 ->
 		securityMetadata_toJs(nonNull1)
-	}
+	} ?: undefined
 	return EncryptedMaintenanceTaskJs(js("{" +
 		"id:id," +
 		"rev:rev," +

@@ -19,46 +19,46 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun medication_toJs(obj: Medication): MedicationJs {
-	val compoundPrescription = obj.compoundPrescription
+	val compoundPrescription = obj.compoundPrescription ?: undefined
 	val substanceProduct = obj.substanceProduct?.let { nonNull1 ->
 		substanceproduct_toJs(nonNull1)
-	}
+	} ?: undefined
 	val medicinalProduct = obj.medicinalProduct?.let { nonNull1 ->
 		medicinalproduct_toJs(nonNull1)
-	}
-	val numberOfPackages = intToNumber(obj.numberOfPackages)
-	val batch = obj.batch
-	val expirationDate = longToNumber(obj.expirationDate)
-	val instructionForPatient = obj.instructionForPatient
-	val instructionForReimbursement = obj.instructionForReimbursement
-	val commentForDelivery = obj.commentForDelivery
-	val drugRoute = obj.drugRoute
-	val temporality = obj.temporality
+	} ?: undefined
+	val numberOfPackages = intToNumber(obj.numberOfPackages) ?: undefined
+	val batch = obj.batch ?: undefined
+	val expirationDate = longToNumber(obj.expirationDate) ?: undefined
+	val instructionForPatient = obj.instructionForPatient ?: undefined
+	val instructionForReimbursement = obj.instructionForReimbursement ?: undefined
+	val commentForDelivery = obj.commentForDelivery ?: undefined
+	val drugRoute = obj.drugRoute ?: undefined
+	val temporality = obj.temporality ?: undefined
 	val frequency = obj.frequency?.let { nonNull1 ->
 		codeStub_toJs(nonNull1)
-	}
+	} ?: undefined
 	val reimbursementReason = obj.reimbursementReason?.let { nonNull1 ->
 		codeStub_toJs(nonNull1)
-	}
-	val substitutionAllowed = obj.substitutionAllowed
-	val beginMoment = longToNumber(obj.beginMoment)
-	val endMoment = longToNumber(obj.endMoment)
-	val deliveryMoment = longToNumber(obj.deliveryMoment)
-	val endExecutionMoment = longToNumber(obj.endExecutionMoment)
+	} ?: undefined
+	val substitutionAllowed = obj.substitutionAllowed ?: undefined
+	val beginMoment = longToNumber(obj.beginMoment) ?: undefined
+	val endMoment = longToNumber(obj.endMoment) ?: undefined
+	val deliveryMoment = longToNumber(obj.deliveryMoment) ?: undefined
+	val endExecutionMoment = longToNumber(obj.endExecutionMoment) ?: undefined
 	val duration = obj.duration?.let { nonNull1 ->
 		duration_toJs(nonNull1)
-	}
+	} ?: undefined
 	val renewal = obj.renewal?.let { nonNull1 ->
 		renewal_toJs(nonNull1)
-	}
-	val knownUsage = obj.knownUsage
+	} ?: undefined
+	val knownUsage = obj.knownUsage ?: undefined
 	val regimen = listToArray(
 		obj.regimen,
 		{ x1: RegimenItem ->
 			regimenItem_toJs(x1)
 		},
-	)
-	val posology = obj.posology
+	) ?: undefined
+	val posology = obj.posology ?: undefined
 	val agreements = mapToObject(
 		obj.agreements,
 		{ x1: String ->
@@ -67,30 +67,31 @@ public fun medication_toJs(obj: Medication): MedicationJs {
 		{ x1: ParagraphAgreement ->
 			paragraphAgreement_toJs(x1)
 		},
-	)
-	val medicationSchemeIdOnSafe = obj.medicationSchemeIdOnSafe
-	val medicationSchemeSafeVersion = intToNumber(obj.medicationSchemeSafeVersion)
-	val medicationSchemeTimeStampOnSafe = longToNumber(obj.medicationSchemeTimeStampOnSafe)
-	val medicationSchemeDocumentId = obj.medicationSchemeDocumentId
-	val safeIdName = obj.safeIdName
-	val idOnSafes = obj.idOnSafes
-	val timestampOnSafe = longToNumber(obj.timestampOnSafe)
-	val changeValidated = obj.changeValidated
-	val newSafeMedication = obj.newSafeMedication
-	val medicationUse = obj.medicationUse
-	val beginCondition = obj.beginCondition
-	val endCondition = obj.endCondition
-	val origin = obj.origin
-	val medicationChanged = obj.medicationChanged
-	val posologyChanged = obj.posologyChanged
+	) ?: undefined
+	val medicationSchemeIdOnSafe = obj.medicationSchemeIdOnSafe ?: undefined
+	val medicationSchemeSafeVersion = intToNumber(obj.medicationSchemeSafeVersion) ?: undefined
+	val medicationSchemeTimeStampOnSafe = longToNumber(obj.medicationSchemeTimeStampOnSafe) ?:
+			undefined
+	val medicationSchemeDocumentId = obj.medicationSchemeDocumentId ?: undefined
+	val safeIdName = obj.safeIdName ?: undefined
+	val idOnSafes = obj.idOnSafes ?: undefined
+	val timestampOnSafe = longToNumber(obj.timestampOnSafe) ?: undefined
+	val changeValidated = obj.changeValidated ?: undefined
+	val newSafeMedication = obj.newSafeMedication ?: undefined
+	val medicationUse = obj.medicationUse ?: undefined
+	val beginCondition = obj.beginCondition ?: undefined
+	val endCondition = obj.endCondition ?: undefined
+	val origin = obj.origin ?: undefined
+	val medicationChanged = obj.medicationChanged ?: undefined
+	val posologyChanged = obj.posologyChanged ?: undefined
 	val suspension = listToArray(
 		obj.suspension,
 		{ x1: Suspension ->
 			suspension_toJs(x1)
 		},
-	)
-	val prescriptionRID = obj.prescriptionRID
-	val status = intToNumber(obj.status)
+	) ?: undefined
+	val prescriptionRID = obj.prescriptionRID ?: undefined
+	val status = intToNumber(obj.status) ?: undefined
 	return MedicationJs(js("{" +
 		"compoundPrescription:compoundPrescription," +
 		"substanceProduct:substanceProduct," +

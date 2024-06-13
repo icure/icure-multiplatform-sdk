@@ -12,9 +12,9 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun referenceRange_toJs(obj: ReferenceRange): ReferenceRangeJs {
-	val low = obj.low
-	val high = obj.high
-	val stringValue = obj.stringValue
+	val low = obj.low ?: undefined
+	val high = obj.high ?: undefined
+	val stringValue = obj.stringValue ?: undefined
 	val tags = listToArray(
 		obj.tags,
 		{ x1: CodeStub ->
@@ -35,7 +35,7 @@ public fun referenceRange_toJs(obj: ReferenceRange): ReferenceRangeJs {
 	)
 	val age = obj.age?.let { nonNull1 ->
 		range_toJs(nonNull1)
-	}
+	} ?: undefined
 	return ReferenceRangeJs(js("{" +
 		"low:low," +
 		"high:high," +

@@ -5,8 +5,8 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun docIdentifier_toJs(obj: DocIdentifier): DocIdentifierJs {
-	val id = obj.id
-	val rev = obj.rev
+	val id = obj.id ?: undefined
+	val rev = obj.rev ?: undefined
 	return DocIdentifierJs(js("{" +
 		"id:id," +
 		"rev:rev" +

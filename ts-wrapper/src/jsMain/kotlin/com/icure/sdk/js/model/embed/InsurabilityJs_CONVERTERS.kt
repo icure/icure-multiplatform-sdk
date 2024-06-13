@@ -23,17 +23,17 @@ public fun insurability_toJs(obj: DecryptedInsurability): DecryptedInsurabilityJ
 			x1
 		},
 	)
-	val hospitalisation = obj.hospitalisation
-	val ambulatory = obj.ambulatory
-	val dental = obj.dental
-	val identificationNumber = obj.identificationNumber
-	val insuranceId = obj.insuranceId
-	val startDate = longToNumber(obj.startDate)
-	val endDate = longToNumber(obj.endDate)
-	val titularyId = obj.titularyId
+	val hospitalisation = obj.hospitalisation ?: undefined
+	val ambulatory = obj.ambulatory ?: undefined
+	val dental = obj.dental ?: undefined
+	val identificationNumber = obj.identificationNumber ?: undefined
+	val insuranceId = obj.insuranceId ?: undefined
+	val startDate = longToNumber(obj.startDate) ?: undefined
+	val endDate = longToNumber(obj.endDate) ?: undefined
+	val titularyId = obj.titularyId ?: undefined
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
-	}
+	} ?: undefined
 	return DecryptedInsurabilityJs(js("{" +
 		"parameters:parameters," +
 		"hospitalisation:hospitalisation," +
@@ -95,17 +95,17 @@ public fun insurability_toJs(obj: EncryptedInsurability): EncryptedInsurabilityJ
 			x1
 		},
 	)
-	val hospitalisation = obj.hospitalisation
-	val ambulatory = obj.ambulatory
-	val dental = obj.dental
-	val identificationNumber = obj.identificationNumber
-	val insuranceId = obj.insuranceId
-	val startDate = longToNumber(obj.startDate)
-	val endDate = longToNumber(obj.endDate)
-	val titularyId = obj.titularyId
+	val hospitalisation = obj.hospitalisation ?: undefined
+	val ambulatory = obj.ambulatory ?: undefined
+	val dental = obj.dental ?: undefined
+	val identificationNumber = obj.identificationNumber ?: undefined
+	val insuranceId = obj.insuranceId ?: undefined
+	val startDate = longToNumber(obj.startDate) ?: undefined
+	val endDate = longToNumber(obj.endDate) ?: undefined
+	val titularyId = obj.titularyId ?: undefined
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
-	}
+	} ?: undefined
 	return EncryptedInsurabilityJs(js("{" +
 		"parameters:parameters," +
 		"hospitalisation:hospitalisation," +

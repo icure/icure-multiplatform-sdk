@@ -39,10 +39,10 @@ public
 public
 		fun shareAllPatientDataOptions_EntityResult_toJs(obj: ShareAllPatientDataOptions.EntityResult):
 		ShareAllPatientDataOptionsJs_EntityResultJs {
-	val success = obj.success
+	val success = obj.success ?: undefined
 	val error = obj.error?.let { nonNull1 ->
 		shareAllPatientDataOptions_SharePatientDataError_toJs(nonNull1)
-	}
+	} ?: undefined
 	val modified = intToNumber(obj.modified)
 	return ShareAllPatientDataOptionsJs_EntityResultJs(js("{" +
 		"success:success," +

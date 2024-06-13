@@ -13,15 +13,15 @@ import kotlin.Suppress
 @Suppress("UNUSED_VARIABLE")
 public fun careTeamMembership_toJs(obj: DecryptedCareTeamMembership):
 		DecryptedCareTeamMembershipJs {
-	val startDate = longToNumber(obj.startDate)
-	val endDate = longToNumber(obj.endDate)
-	val careTeamMemberId = obj.careTeamMemberId
+	val startDate = longToNumber(obj.startDate) ?: undefined
+	val endDate = longToNumber(obj.endDate) ?: undefined
+	val careTeamMemberId = obj.careTeamMemberId ?: undefined
 	val membershipType = obj.membershipType?.let { nonNull1 ->
 		nonNull1.name
-	}
+	} ?: undefined
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
-	}
+	} ?: undefined
 	return DecryptedCareTeamMembershipJs(js("{" +
 		"startDate:startDate," +
 		"endDate:endDate," +
@@ -54,15 +54,15 @@ public fun careTeamMembership_fromJs(obj: DecryptedCareTeamMembershipJs):
 @Suppress("UNUSED_VARIABLE")
 public fun careTeamMembership_toJs(obj: EncryptedCareTeamMembership):
 		EncryptedCareTeamMembershipJs {
-	val startDate = longToNumber(obj.startDate)
-	val endDate = longToNumber(obj.endDate)
-	val careTeamMemberId = obj.careTeamMemberId
+	val startDate = longToNumber(obj.startDate) ?: undefined
+	val endDate = longToNumber(obj.endDate) ?: undefined
+	val careTeamMemberId = obj.careTeamMemberId ?: undefined
 	val membershipType = obj.membershipType?.let { nonNull1 ->
 		nonNull1.name
-	}
+	} ?: undefined
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
-	}
+	} ?: undefined
 	return EncryptedCareTeamMembershipJs(js("{" +
 		"startDate:startDate," +
 		"endDate:endDate," +

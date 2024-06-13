@@ -14,14 +14,14 @@ public fun action_toJs(obj: Action): ActionJs {
 		{ x1: Launcher ->
 			launcher_toJs(x1)
 		},
-	)
-	val expression = obj.expression
+	) ?: undefined
+	val expression = obj.expression ?: undefined
 	val states = listToArray(
 		obj.states,
 		{ x1: State ->
 			state_toJs(x1)
 		},
-	)
+	) ?: undefined
 	return ActionJs(js("{" +
 		"launchers:launchers," +
 		"expression:expression," +

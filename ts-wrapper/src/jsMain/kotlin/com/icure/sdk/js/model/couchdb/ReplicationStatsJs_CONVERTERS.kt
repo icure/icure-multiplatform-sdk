@@ -9,15 +9,15 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun replicationStats_toJs(obj: ReplicationStats): ReplicationStatsJs {
-	val revisionsChecked = intToNumber(obj.revisionsChecked)
-	val missingRevisionsFound = intToNumber(obj.missingRevisionsFound)
-	val docsRead = intToNumber(obj.docsRead)
-	val docsWritten = intToNumber(obj.docsWritten)
-	val changesPending = intToNumber(obj.changesPending)
-	val docWriteFailures = intToNumber(obj.docWriteFailures)
-	val checkpointedSourceSeq = obj.checkpointedSourceSeq
-	val startTime = zonedDateTimeToString(obj.startTime)
-	val error = obj.error
+	val revisionsChecked = intToNumber(obj.revisionsChecked) ?: undefined
+	val missingRevisionsFound = intToNumber(obj.missingRevisionsFound) ?: undefined
+	val docsRead = intToNumber(obj.docsRead) ?: undefined
+	val docsWritten = intToNumber(obj.docsWritten) ?: undefined
+	val changesPending = intToNumber(obj.changesPending) ?: undefined
+	val docWriteFailures = intToNumber(obj.docWriteFailures) ?: undefined
+	val checkpointedSourceSeq = obj.checkpointedSourceSeq ?: undefined
+	val startTime = zonedDateTimeToString(obj.startTime) ?: undefined
+	val error = obj.error ?: undefined
 	return ReplicationStatsJs(js("{" +
 		"revisionsChecked:revisionsChecked," +
 		"missingRevisionsFound:missingRevisionsFound," +

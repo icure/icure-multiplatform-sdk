@@ -8,8 +8,8 @@ import kotlin.Suppress
 @Suppress("UNUSED_VARIABLE")
 public fun maintenanceTaskAfterDateFilter_toJs(obj: MaintenanceTaskAfterDateFilter):
 		MaintenanceTaskAfterDateFilterJs {
-	val desc = obj.desc
-	val healthcarePartyId = obj.healthcarePartyId
+	val desc = obj.desc ?: undefined
+	val healthcarePartyId = obj.healthcarePartyId ?: undefined
 	val date = longToNumber(obj.date)
 	return MaintenanceTaskAfterDateFilterJs(js("{" +
 		"desc:desc," +

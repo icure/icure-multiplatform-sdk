@@ -35,16 +35,16 @@ import kotlin.collections.Set
 @Suppress("UNUSED_VARIABLE")
 public fun user_toJs(obj: User): UserJs {
 	val id = obj.id
-	val rev = obj.rev
-	val deletionDate = longToNumber(obj.deletionDate)
-	val created = longToNumber(obj.created)
+	val rev = obj.rev ?: undefined
+	val deletionDate = longToNumber(obj.deletionDate) ?: undefined
+	val created = longToNumber(obj.created) ?: undefined
 	val identifier = listToArray(
 		obj.identifier,
 		{ x1: Identifier ->
 			identifier_toJs(x1)
 		},
 	)
-	val name = obj.name
+	val name = obj.name ?: undefined
 	val properties = setToArray(
 		obj.properties,
 		{ x1: DecryptedPropertyStub ->
@@ -65,16 +65,16 @@ public fun user_toJs(obj: User): UserJs {
 	)
 	val type = obj.type?.let { nonNull1 ->
 		nonNull1.name
-	}
+	} ?: undefined
 	val status = obj.status?.let { nonNull1 ->
 		nonNull1.name
-	}
-	val login = obj.login
-	val passwordHash = obj.passwordHash
-	val groupId = obj.groupId
-	val healthcarePartyId = obj.healthcarePartyId
-	val patientId = obj.patientId
-	val deviceId = obj.deviceId
+	} ?: undefined
+	val login = obj.login ?: undefined
+	val passwordHash = obj.passwordHash ?: undefined
+	val groupId = obj.groupId ?: undefined
+	val healthcarePartyId = obj.healthcarePartyId ?: undefined
+	val patientId = obj.patientId ?: undefined
+	val deviceId = obj.deviceId ?: undefined
 	val autoDelegations = mapToObject(
 		obj.autoDelegations,
 		{ x1: DelegationTag ->
@@ -89,10 +89,10 @@ public fun user_toJs(obj: User): UserJs {
 			)
 		},
 	)
-	val createdDate = instantToNumber(obj.createdDate)
-	val termsOfUseDate = instantToNumber(obj.termsOfUseDate)
-	val email = obj.email
-	val mobilePhone = obj.mobilePhone
+	val createdDate = instantToNumber(obj.createdDate) ?: undefined
+	val termsOfUseDate = instantToNumber(obj.termsOfUseDate) ?: undefined
+	val email = obj.email ?: undefined
+	val mobilePhone = obj.mobilePhone ?: undefined
 	val applicationTokens = mapToObject(
 		obj.applicationTokens,
 		{ x1: String ->
@@ -113,7 +113,7 @@ public fun user_toJs(obj: User): UserJs {
 	)
 	val systemMetadata = obj.systemMetadata?.let { nonNull1 ->
 		user_SystemMetadata_toJs(nonNull1)
-	}
+	} ?: undefined
 	return UserJs(js("{" +
 		"id:id," +
 		"rev:rev," +

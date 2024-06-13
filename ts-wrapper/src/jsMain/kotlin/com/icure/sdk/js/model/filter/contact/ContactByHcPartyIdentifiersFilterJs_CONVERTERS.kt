@@ -12,8 +12,8 @@ import kotlin.Suppress
 @Suppress("UNUSED_VARIABLE")
 public fun contactByHcPartyIdentifiersFilter_toJs(obj: ContactByHcPartyIdentifiersFilter):
 		ContactByHcPartyIdentifiersFilterJs {
-	val healthcarePartyId = obj.healthcarePartyId
-	val desc = obj.desc
+	val healthcarePartyId = obj.healthcarePartyId ?: undefined
+	val desc = obj.desc ?: undefined
 	val identifiers = listToArray(
 		obj.identifiers,
 		{ x1: Identifier ->

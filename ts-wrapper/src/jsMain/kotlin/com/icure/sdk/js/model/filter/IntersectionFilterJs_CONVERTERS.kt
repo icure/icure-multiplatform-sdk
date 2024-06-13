@@ -13,7 +13,7 @@ import kotlin.Suppress
 public fun <O : Identifiable<String>, O_JS : IdentifiableJs<String>>
 		intersectionFilter_toJs(obj: IntersectionFilter<O>, convertO: (O) -> O_JS):
 		IntersectionFilterJs<O_JS> {
-	val desc = obj.desc
+	val desc = obj.desc ?: undefined
 	val filters = listToArray(
 		obj.filters,
 		{ x1: AbstractFilter<O> ->

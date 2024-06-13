@@ -20,20 +20,20 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun valorisation_toJs(obj: DecryptedValorisation): DecryptedValorisationJs {
-	val startOfValidity = longToNumber(obj.startOfValidity)
-	val endOfValidity = longToNumber(obj.endOfValidity)
-	val predicate = obj.predicate
+	val startOfValidity = longToNumber(obj.startOfValidity) ?: undefined
+	val endOfValidity = longToNumber(obj.endOfValidity) ?: undefined
+	val predicate = obj.predicate ?: undefined
 	val reference = listToArray(
 		obj.reference,
 		{ x1: Int ->
 			intToNumber(x1)
 		},
-	)
-	val totalAmount = obj.totalAmount
-	val reimbursement = obj.reimbursement
-	val patientIntervention = obj.patientIntervention
-	val doctorSupplement = obj.doctorSupplement
-	val vat = obj.vat
+	) ?: undefined
+	val totalAmount = obj.totalAmount ?: undefined
+	val reimbursement = obj.reimbursement ?: undefined
+	val patientIntervention = obj.patientIntervention ?: undefined
+	val doctorSupplement = obj.doctorSupplement ?: undefined
+	val vat = obj.vat ?: undefined
 	val label = mapToObject(
 		obj.label,
 		{ x1: String ->
@@ -42,10 +42,10 @@ public fun valorisation_toJs(obj: DecryptedValorisation): DecryptedValorisationJ
 		{ x1: String ->
 			x1
 		},
-	)
+	) ?: undefined
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
-	}
+	} ?: undefined
 	return DecryptedValorisationJs(js("{" +
 		"startOfValidity:startOfValidity," +
 		"endOfValidity:endOfValidity," +
@@ -107,20 +107,20 @@ public fun valorisation_fromJs(obj: DecryptedValorisationJs): DecryptedValorisat
 
 @Suppress("UNUSED_VARIABLE")
 public fun valorisation_toJs(obj: EncryptedValorisation): EncryptedValorisationJs {
-	val startOfValidity = longToNumber(obj.startOfValidity)
-	val endOfValidity = longToNumber(obj.endOfValidity)
-	val predicate = obj.predicate
+	val startOfValidity = longToNumber(obj.startOfValidity) ?: undefined
+	val endOfValidity = longToNumber(obj.endOfValidity) ?: undefined
+	val predicate = obj.predicate ?: undefined
 	val reference = listToArray(
 		obj.reference,
 		{ x1: Int ->
 			intToNumber(x1)
 		},
-	)
-	val totalAmount = obj.totalAmount
-	val reimbursement = obj.reimbursement
-	val patientIntervention = obj.patientIntervention
-	val doctorSupplement = obj.doctorSupplement
-	val vat = obj.vat
+	) ?: undefined
+	val totalAmount = obj.totalAmount ?: undefined
+	val reimbursement = obj.reimbursement ?: undefined
+	val patientIntervention = obj.patientIntervention ?: undefined
+	val doctorSupplement = obj.doctorSupplement ?: undefined
+	val vat = obj.vat ?: undefined
 	val label = mapToObject(
 		obj.label,
 		{ x1: String ->
@@ -129,10 +129,10 @@ public fun valorisation_toJs(obj: EncryptedValorisation): EncryptedValorisationJ
 		{ x1: String ->
 			x1
 		},
-	)
+	) ?: undefined
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
-	}
+	} ?: undefined
 	return EncryptedValorisationJs(js("{" +
 		"startOfValidity:startOfValidity," +
 		"endOfValidity:endOfValidity," +

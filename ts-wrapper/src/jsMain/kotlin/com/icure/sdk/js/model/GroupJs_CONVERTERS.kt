@@ -28,22 +28,22 @@ import kotlin.collections.Set
 @Suppress("UNUSED_VARIABLE")
 public fun group_toJs(obj: Group): GroupJs {
 	val id = obj.id
-	val rev = obj.rev
-	val deletionDate = longToNumber(obj.deletionDate)
+	val rev = obj.rev ?: undefined
+	val deletionDate = longToNumber(obj.deletionDate) ?: undefined
 	val tags = setToArray(
 		obj.tags,
 		{ x1: CodeStub ->
 			codeStub_toJs(x1)
 		},
 	)
-	val name = obj.name
-	val password = obj.password
+	val name = obj.name ?: undefined
+	val password = obj.password ?: undefined
 	val servers = listToArray(
 		obj.servers,
 		{ x1: String ->
 			x1
 		},
-	)
+	) ?: undefined
 	val superAdmin = obj.superAdmin
 	val properties = setToArray(
 		obj.properties,
@@ -83,10 +83,10 @@ public fun group_toJs(obj: Group): GroupJs {
 			x1
 		},
 	)
-	val minimumKrakenVersion = obj.minimumKrakenVersion
+	val minimumKrakenVersion = obj.minimumKrakenVersion ?: undefined
 	val minimumAuthenticationClassForElevatedPrivileges =
 			obj.minimumAuthenticationClassForElevatedPrivileges.name
-	val superGroup = obj.superGroup
+	val superGroup = obj.superGroup ?: undefined
 	return GroupJs(js("{" +
 		"id:id," +
 		"rev:rev," +

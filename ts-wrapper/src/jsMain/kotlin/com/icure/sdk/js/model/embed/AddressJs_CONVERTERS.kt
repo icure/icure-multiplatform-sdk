@@ -17,16 +17,16 @@ import kotlin.Suppress
 public fun address_toJs(obj: DecryptedAddress): DecryptedAddressJs {
 	val addressType = obj.addressType?.let { nonNull1 ->
 		nonNull1.name
-	}
-	val descr = obj.descr
-	val street = obj.street
-	val houseNumber = obj.houseNumber
-	val postboxNumber = obj.postboxNumber
-	val postalCode = obj.postalCode
-	val city = obj.city
-	val state = obj.state
-	val country = obj.country
-	val note = obj.note
+	} ?: undefined
+	val descr = obj.descr ?: undefined
+	val street = obj.street ?: undefined
+	val houseNumber = obj.houseNumber ?: undefined
+	val postboxNumber = obj.postboxNumber ?: undefined
+	val postalCode = obj.postalCode ?: undefined
+	val city = obj.city ?: undefined
+	val state = obj.state ?: undefined
+	val country = obj.country ?: undefined
+	val note = obj.note ?: undefined
 	val notes = listToArray(
 		obj.notes,
 		{ x1: Annotation ->
@@ -41,7 +41,7 @@ public fun address_toJs(obj: DecryptedAddress): DecryptedAddressJs {
 	)
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
-	}
+	} ?: undefined
 	return DecryptedAddressJs(js("{" +
 		"addressType:addressType," +
 		"descr:descr," +
@@ -110,16 +110,16 @@ public fun address_fromJs(obj: DecryptedAddressJs): DecryptedAddress {
 public fun address_toJs(obj: EncryptedAddress): EncryptedAddressJs {
 	val addressType = obj.addressType?.let { nonNull1 ->
 		nonNull1.name
-	}
-	val descr = obj.descr
-	val street = obj.street
-	val houseNumber = obj.houseNumber
-	val postboxNumber = obj.postboxNumber
-	val postalCode = obj.postalCode
-	val city = obj.city
-	val state = obj.state
-	val country = obj.country
-	val note = obj.note
+	} ?: undefined
+	val descr = obj.descr ?: undefined
+	val street = obj.street ?: undefined
+	val houseNumber = obj.houseNumber ?: undefined
+	val postboxNumber = obj.postboxNumber ?: undefined
+	val postalCode = obj.postalCode ?: undefined
+	val city = obj.city ?: undefined
+	val state = obj.state ?: undefined
+	val country = obj.country ?: undefined
+	val note = obj.note ?: undefined
 	val notes = listToArray(
 		obj.notes,
 		{ x1: Annotation ->
@@ -134,7 +134,7 @@ public fun address_toJs(obj: EncryptedAddress): EncryptedAddressJs {
 	)
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
-	}
+	} ?: undefined
 	return EncryptedAddressJs(js("{" +
 		"addressType:addressType," +
 		"descr:descr," +

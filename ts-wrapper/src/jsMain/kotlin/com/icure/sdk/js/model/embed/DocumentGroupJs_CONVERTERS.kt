@@ -5,8 +5,8 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun documentGroup_toJs(obj: DocumentGroup): DocumentGroupJs {
-	val guid = obj.guid
-	val name = obj.name
+	val guid = obj.guid ?: undefined
+	val name = obj.name ?: undefined
 	return DocumentGroupJs(js("{" +
 		"guid:guid," +
 		"name:name" +

@@ -11,7 +11,7 @@ import kotlin.Suppress
 @Suppress("UNUSED_VARIABLE")
 public fun designDocument_toJs(obj: DesignDocument): DesignDocumentJs {
 	val id = obj.id
-	val rev = obj.rev
+	val rev = obj.rev ?: undefined
 	val revHistory = mapToObject(
 		obj.revHistory,
 		{ x1: String ->
@@ -21,7 +21,7 @@ public fun designDocument_toJs(obj: DesignDocument): DesignDocumentJs {
 			x1
 		},
 	)
-	val language = obj.language
+	val language = obj.language ?: undefined
 	val views = mapToObject(
 		obj.views,
 		{ x1: String ->
@@ -57,7 +57,7 @@ public fun designDocument_toJs(obj: DesignDocument): DesignDocumentJs {
 		{ x1: String ->
 			x1
 		},
-	)
+	) ?: undefined
 	val filters = mapToObject(
 		obj.filters,
 		{ x1: String ->

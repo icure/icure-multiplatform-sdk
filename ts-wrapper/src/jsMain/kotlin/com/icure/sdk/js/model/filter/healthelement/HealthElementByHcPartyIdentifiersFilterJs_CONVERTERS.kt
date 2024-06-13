@@ -13,8 +13,8 @@ import kotlin.Suppress
 public
 		fun healthElementByHcPartyIdentifiersFilter_toJs(obj: HealthElementByHcPartyIdentifiersFilter):
 		HealthElementByHcPartyIdentifiersFilterJs {
-	val desc = obj.desc
-	val hcPartyId = obj.hcPartyId
+	val desc = obj.desc ?: undefined
+	val hcPartyId = obj.hcPartyId ?: undefined
 	val identifiers = listToArray(
 		obj.identifiers,
 		{ x1: Identifier ->

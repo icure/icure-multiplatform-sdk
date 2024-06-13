@@ -11,15 +11,15 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun personName_toJs(obj: PersonName): PersonNameJs {
-	val lastName = obj.lastName
+	val lastName = obj.lastName ?: undefined
 	val firstNames = listToArray(
 		obj.firstNames,
 		{ x1: String ->
 			x1
 		},
 	)
-	val start = longToNumber(obj.start)
-	val end = longToNumber(obj.end)
+	val start = longToNumber(obj.start) ?: undefined
+	val end = longToNumber(obj.end) ?: undefined
 	val prefix = listToArray(
 		obj.prefix,
 		{ x1: String ->
@@ -32,10 +32,10 @@ public fun personName_toJs(obj: PersonName): PersonNameJs {
 			x1
 		},
 	)
-	val text = obj.text
+	val text = obj.text ?: undefined
 	val use = obj.use?.let { nonNull1 ->
 		nonNull1.name
-	}
+	} ?: undefined
 	return PersonNameJs(js("{" +
 		"lastName:lastName," +
 		"firstNames:firstNames," +

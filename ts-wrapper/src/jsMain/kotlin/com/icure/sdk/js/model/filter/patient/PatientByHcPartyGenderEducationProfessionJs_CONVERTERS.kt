@@ -8,13 +8,13 @@ import kotlin.Suppress
 public
 		fun patientByHcPartyGenderEducationProfession_toJs(obj: PatientByHcPartyGenderEducationProfession):
 		PatientByHcPartyGenderEducationProfessionJs {
-	val desc = obj.desc
-	val healthcarePartyId = obj.healthcarePartyId
+	val desc = obj.desc ?: undefined
+	val healthcarePartyId = obj.healthcarePartyId ?: undefined
 	val gender = obj.gender?.let { nonNull1 ->
 		nonNull1.name
-	}
-	val education = obj.education
-	val profession = obj.profession
+	} ?: undefined
+	val education = obj.education ?: undefined
+	val profession = obj.profession ?: undefined
 	return PatientByHcPartyGenderEducationProfessionJs(js("{" +
 		"desc:desc," +
 		"healthcarePartyId:healthcarePartyId," +

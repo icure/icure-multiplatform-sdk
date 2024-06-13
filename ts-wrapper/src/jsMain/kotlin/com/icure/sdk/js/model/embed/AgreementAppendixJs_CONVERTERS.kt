@@ -7,10 +7,10 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun agreementAppendix_toJs(obj: AgreementAppendix): AgreementAppendixJs {
-	val docSeq = intToNumber(obj.docSeq)
-	val verseSeq = intToNumber(obj.verseSeq)
-	val documentId = obj.documentId
-	val path = obj.path
+	val docSeq = intToNumber(obj.docSeq) ?: undefined
+	val verseSeq = intToNumber(obj.verseSeq) ?: undefined
+	val documentId = obj.documentId ?: undefined
+	val path = obj.path ?: undefined
 	return AgreementAppendixJs(js("{" +
 		"docSeq:docSeq," +
 		"verseSeq:verseSeq," +

@@ -7,7 +7,7 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun messageReadStatus_toJs(obj: MessageReadStatus): MessageReadStatusJs {
-	val time = longToNumber(obj.time)
+	val time = longToNumber(obj.time) ?: undefined
 	val read = obj.read
 	return MessageReadStatusJs(js("{" +
 		"time:time," +

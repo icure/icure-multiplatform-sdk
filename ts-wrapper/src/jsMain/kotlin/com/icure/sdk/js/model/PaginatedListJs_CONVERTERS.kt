@@ -16,7 +16,7 @@ public fun <T, T_JS> paginatedList_toJs(obj: PaginatedList<T>, convertT: (T) -> 
 	)
 	val nextKeyPair = obj.nextKeyPair?.let { nonNull1 ->
 		paginatedDocumentKeyIdPair_toJs(nonNull1)
-	}
+	} ?: undefined
 	return PaginatedListJs<T_JS>(js("{" +
 		"rows:rows," +
 		"nextKeyPair:nextKeyPair" +

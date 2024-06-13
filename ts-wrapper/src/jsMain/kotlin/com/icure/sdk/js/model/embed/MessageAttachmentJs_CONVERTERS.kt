@@ -11,7 +11,7 @@ import kotlin.Suppress
 public fun messageAttachment_toJs(obj: MessageAttachment): MessageAttachmentJs {
 	val type = obj.type?.let { nonNull1 ->
 		nonNull1.name
-	}
+	} ?: undefined
 	val ids = listToArray(
 		obj.ids,
 		{ x1: String ->

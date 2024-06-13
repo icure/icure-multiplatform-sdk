@@ -12,7 +12,7 @@ public fun operationToken_toJs(obj: OperationToken): OperationTokenJs {
 	val creationTime = longToNumber(obj.creationTime)
 	val validity = longToNumber(obj.validity)
 	val operation = obj.operation.name
-	val description = obj.description
+	val description = obj.description ?: undefined
 	return OperationTokenJs(js("{" +
 		"tokenHash:tokenHash," +
 		"creationTime:creationTime," +

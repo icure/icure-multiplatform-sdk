@@ -7,10 +7,10 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun suspension_toJs(obj: Suspension): SuspensionJs {
-	val beginMoment = longToNumber(obj.beginMoment)
-	val endMoment = longToNumber(obj.endMoment)
-	val suspensionReason = obj.suspensionReason
-	val lifecycle = obj.lifecycle
+	val beginMoment = longToNumber(obj.beginMoment) ?: undefined
+	val endMoment = longToNumber(obj.endMoment) ?: undefined
+	val suspensionReason = obj.suspensionReason ?: undefined
+	val lifecycle = obj.lifecycle ?: undefined
 	return SuspensionJs(js("{" +
 		"beginMoment:beginMoment," +
 		"endMoment:endMoment," +

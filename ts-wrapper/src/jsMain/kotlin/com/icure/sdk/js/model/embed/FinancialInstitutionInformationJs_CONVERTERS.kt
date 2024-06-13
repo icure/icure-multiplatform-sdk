@@ -13,12 +13,12 @@ import kotlin.Suppress
 @Suppress("UNUSED_VARIABLE")
 public fun financialInstitutionInformation_toJs(obj: DecryptedFinancialInstitutionInformation):
 		DecryptedFinancialInstitutionInformationJs {
-	val name = obj.name
-	val key = obj.key
-	val bankAccount = obj.bankAccount
-	val bic = obj.bic
-	val proxyBankAccount = obj.proxyBankAccount
-	val proxyBic = obj.proxyBic
+	val name = obj.name ?: undefined
+	val key = obj.key ?: undefined
+	val bankAccount = obj.bankAccount ?: undefined
+	val bic = obj.bic ?: undefined
+	val proxyBankAccount = obj.proxyBankAccount ?: undefined
+	val proxyBic = obj.proxyBic ?: undefined
 	val preferredFiiForPartners = setToArray(
 		obj.preferredFiiForPartners,
 		{ x1: String ->
@@ -27,7 +27,7 @@ public fun financialInstitutionInformation_toJs(obj: DecryptedFinancialInstituti
 	)
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
-	}
+	} ?: undefined
 	return DecryptedFinancialInstitutionInformationJs(js("{" +
 		"name:name," +
 		"key:key," +
@@ -73,12 +73,12 @@ public fun financialInstitutionInformation_fromJs(obj: DecryptedFinancialInstitu
 @Suppress("UNUSED_VARIABLE")
 public fun financialInstitutionInformation_toJs(obj: EncryptedFinancialInstitutionInformation):
 		EncryptedFinancialInstitutionInformationJs {
-	val name = obj.name
-	val key = obj.key
-	val bankAccount = obj.bankAccount
-	val bic = obj.bic
-	val proxyBankAccount = obj.proxyBankAccount
-	val proxyBic = obj.proxyBic
+	val name = obj.name ?: undefined
+	val key = obj.key ?: undefined
+	val bankAccount = obj.bankAccount ?: undefined
+	val bic = obj.bic ?: undefined
+	val proxyBankAccount = obj.proxyBankAccount ?: undefined
+	val proxyBic = obj.proxyBic ?: undefined
 	val preferredFiiForPartners = setToArray(
 		obj.preferredFiiForPartners,
 		{ x1: String ->
@@ -87,7 +87,7 @@ public fun financialInstitutionInformation_toJs(obj: EncryptedFinancialInstituti
 	)
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
-	}
+	} ?: undefined
 	return EncryptedFinancialInstitutionInformationJs(js("{" +
 		"name:name," +
 		"key:key," +

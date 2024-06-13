@@ -30,12 +30,12 @@ import kotlin.collections.Set
 @Suppress("UNUSED_VARIABLE")
 public fun topic_toJs(obj: DecryptedTopic): DecryptedTopicJs {
 	val id = obj.id
-	val rev = obj.rev
-	val created = longToNumber(obj.created)
-	val modified = longToNumber(obj.modified)
-	val healthElementId = obj.healthElementId
-	val contactId = obj.contactId
-	val description = obj.description
+	val rev = obj.rev ?: undefined
+	val created = longToNumber(obj.created) ?: undefined
+	val modified = longToNumber(obj.modified) ?: undefined
+	val healthElementId = obj.healthElementId ?: undefined
+	val contactId = obj.contactId ?: undefined
+	val description = obj.description ?: undefined
 	val codes = setToArray(
 		obj.codes,
 		{ x1: CodeStub ->
@@ -48,11 +48,11 @@ public fun topic_toJs(obj: DecryptedTopic): DecryptedTopicJs {
 			codeStub_toJs(x1)
 		},
 	)
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
-	val endOfLife = longToNumber(obj.endOfLife)
-	val deletionDate = longToNumber(obj.deletionDate)
+	val author = obj.author ?: undefined
+	val responsible = obj.responsible ?: undefined
+	val medicalLocationId = obj.medicalLocationId ?: undefined
+	val endOfLife = longToNumber(obj.endOfLife) ?: undefined
+	val deletionDate = longToNumber(obj.deletionDate) ?: undefined
 	val activeParticipants = mapToObject(
 		obj.activeParticipants,
 		{ x1: String ->
@@ -64,7 +64,7 @@ public fun topic_toJs(obj: DecryptedTopic): DecryptedTopicJs {
 	)
 	val securityMetadata = obj.securityMetadata?.let { nonNull1 ->
 		securityMetadata_toJs(nonNull1)
-	}
+	} ?: undefined
 	val secretForeignKeys = setToArray(
 		obj.secretForeignKeys,
 		{ x1: String ->
@@ -115,7 +115,7 @@ public fun topic_toJs(obj: DecryptedTopic): DecryptedTopicJs {
 	)
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
-	}
+	} ?: undefined
 	val linkedHealthElements = setToArray(
 		obj.linkedHealthElements,
 		{ x1: String ->
@@ -297,12 +297,12 @@ public fun topic_fromJs(obj: DecryptedTopicJs): DecryptedTopic {
 @Suppress("UNUSED_VARIABLE")
 public fun topic_toJs(obj: EncryptedTopic): EncryptedTopicJs {
 	val id = obj.id
-	val rev = obj.rev
-	val created = longToNumber(obj.created)
-	val modified = longToNumber(obj.modified)
-	val healthElementId = obj.healthElementId
-	val contactId = obj.contactId
-	val description = obj.description
+	val rev = obj.rev ?: undefined
+	val created = longToNumber(obj.created) ?: undefined
+	val modified = longToNumber(obj.modified) ?: undefined
+	val healthElementId = obj.healthElementId ?: undefined
+	val contactId = obj.contactId ?: undefined
+	val description = obj.description ?: undefined
 	val codes = setToArray(
 		obj.codes,
 		{ x1: CodeStub ->
@@ -315,11 +315,11 @@ public fun topic_toJs(obj: EncryptedTopic): EncryptedTopicJs {
 			codeStub_toJs(x1)
 		},
 	)
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
-	val endOfLife = longToNumber(obj.endOfLife)
-	val deletionDate = longToNumber(obj.deletionDate)
+	val author = obj.author ?: undefined
+	val responsible = obj.responsible ?: undefined
+	val medicalLocationId = obj.medicalLocationId ?: undefined
+	val endOfLife = longToNumber(obj.endOfLife) ?: undefined
+	val deletionDate = longToNumber(obj.deletionDate) ?: undefined
 	val activeParticipants = mapToObject(
 		obj.activeParticipants,
 		{ x1: String ->
@@ -331,7 +331,7 @@ public fun topic_toJs(obj: EncryptedTopic): EncryptedTopicJs {
 	)
 	val securityMetadata = obj.securityMetadata?.let { nonNull1 ->
 		securityMetadata_toJs(nonNull1)
-	}
+	} ?: undefined
 	val secretForeignKeys = setToArray(
 		obj.secretForeignKeys,
 		{ x1: String ->
@@ -382,7 +382,7 @@ public fun topic_toJs(obj: EncryptedTopic): EncryptedTopicJs {
 	)
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
-	}
+	} ?: undefined
 	val linkedHealthElements = setToArray(
 		obj.linkedHealthElements,
 		{ x1: String ->

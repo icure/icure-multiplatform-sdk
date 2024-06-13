@@ -23,13 +23,13 @@ public fun formTemplateLayout_toJs(obj: FormTemplateLayout): FormTemplateLayoutJ
 			section_toJs(x1)
 		},
 	)
-	val description = obj.description
+	val description = obj.description ?: undefined
 	val keywords = listToArray(
 		obj.keywords,
 		{ x1: String ->
 			x1
 		},
-	)
+	) ?: undefined
 	return FormTemplateLayoutJs(js("{" +
 		"form:form," +
 		"actions:actions," +

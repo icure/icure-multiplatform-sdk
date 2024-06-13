@@ -16,19 +16,19 @@ import kotlinx.serialization.json.JsonElement
 @Suppress("UNUSED_VARIABLE")
 public fun entityTemplate_toJs(obj: EntityTemplate): EntityTemplateJs {
 	val id = obj.id
-	val rev = obj.rev
-	val deletionDate = longToNumber(obj.deletionDate)
-	val userId = obj.userId
-	val descr = obj.descr
+	val rev = obj.rev ?: undefined
+	val deletionDate = longToNumber(obj.deletionDate) ?: undefined
+	val userId = obj.userId ?: undefined
+	val descr = obj.descr ?: undefined
 	val keywords = setToArray(
 		obj.keywords,
 		{ x1: String ->
 			x1
 		},
-	)
-	val entityType = obj.entityType
-	val subType = obj.subType
-	val defaultTemplate = obj.defaultTemplate
+	) ?: undefined
+	val entityType = obj.entityType ?: undefined
+	val subType = obj.subType ?: undefined
+	val defaultTemplate = obj.defaultTemplate ?: undefined
 	val entity = listToArray(
 		obj.entity,
 		{ x1: JsonElement ->

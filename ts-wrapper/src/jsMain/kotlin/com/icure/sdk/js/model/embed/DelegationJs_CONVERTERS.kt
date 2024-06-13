@@ -10,11 +10,11 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun delegation_toJs(obj: Delegation): DelegationJs {
-	val owner = obj.owner
-	val delegatedTo = obj.delegatedTo
+	val owner = obj.owner ?: undefined
+	val delegatedTo = obj.delegatedTo ?: undefined
 	val key = obj.key?.let { nonNull1 ->
 		hexString_toJs(nonNull1)
-	}
+	} ?: undefined
 	val tags = listToArray(
 		obj.tags,
 		{ x1: String ->

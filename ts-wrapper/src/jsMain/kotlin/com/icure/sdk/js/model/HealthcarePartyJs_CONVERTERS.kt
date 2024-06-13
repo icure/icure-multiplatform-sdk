@@ -63,10 +63,10 @@ import kotlin.collections.Map
 @Suppress("UNUSED_VARIABLE")
 public fun healthcareParty_toJs(obj: HealthcareParty): HealthcarePartyJs {
 	val id = obj.id
-	val rev = obj.rev
-	val created = longToNumber(obj.created)
-	val modified = longToNumber(obj.modified)
-	val deletionDate = longToNumber(obj.deletionDate)
+	val rev = obj.rev ?: undefined
+	val created = longToNumber(obj.created) ?: undefined
+	val modified = longToNumber(obj.modified) ?: undefined
+	val deletionDate = longToNumber(obj.deletionDate) ?: undefined
 	val identifier = listToArray(
 		obj.identifier,
 		{ x1: Identifier ->
@@ -85,9 +85,9 @@ public fun healthcareParty_toJs(obj: HealthcareParty): HealthcarePartyJs {
 			codeStub_toJs(x1)
 		},
 	)
-	val name = obj.name
-	val lastName = obj.lastName
-	val firstName = obj.firstName
+	val name = obj.name ?: undefined
+	val lastName = obj.lastName ?: undefined
+	val firstName = obj.firstName ?: undefined
 	val names = listToArray(
 		obj.names,
 		{ x1: PersonName ->
@@ -96,23 +96,23 @@ public fun healthcareParty_toJs(obj: HealthcareParty): HealthcarePartyJs {
 	)
 	val gender = obj.gender?.let { nonNull1 ->
 		nonNull1.name
-	}
-	val civility = obj.civility
-	val companyName = obj.companyName
-	val speciality = obj.speciality
-	val bankAccount = obj.bankAccount
-	val bic = obj.bic
-	val proxyBankAccount = obj.proxyBankAccount
-	val proxyBic = obj.proxyBic
-	val invoiceHeader = obj.invoiceHeader
-	val cbe = obj.cbe
-	val ehp = obj.ehp
-	val userId = obj.userId
-	val parentId = obj.parentId
-	val convention = intToNumber(obj.convention)
-	val nihii = obj.nihii
-	val nihiiSpecCode = obj.nihiiSpecCode
-	val ssin = obj.ssin
+	} ?: undefined
+	val civility = obj.civility ?: undefined
+	val companyName = obj.companyName ?: undefined
+	val speciality = obj.speciality ?: undefined
+	val bankAccount = obj.bankAccount ?: undefined
+	val bic = obj.bic ?: undefined
+	val proxyBankAccount = obj.proxyBankAccount ?: undefined
+	val proxyBic = obj.proxyBic ?: undefined
+	val invoiceHeader = obj.invoiceHeader ?: undefined
+	val cbe = obj.cbe ?: undefined
+	val ehp = obj.ehp ?: undefined
+	val userId = obj.userId ?: undefined
+	val parentId = obj.parentId ?: undefined
+	val convention = intToNumber(obj.convention) ?: undefined
+	val nihii = obj.nihii ?: undefined
+	val nihiiSpecCode = obj.nihiiSpecCode ?: undefined
+	val ssin = obj.ssin ?: undefined
 	val addresses = listToArray(
 		obj.addresses,
 		{ x1: DecryptedAddress ->
@@ -125,7 +125,7 @@ public fun healthcareParty_toJs(obj: HealthcareParty): HealthcarePartyJs {
 			x1
 		},
 	)
-	val picture = obj.picture
+	val picture = obj.picture ?: undefined
 	val statuses = setToArray(
 		obj.statuses,
 		{ x1: HealthcarePartyStatus ->
@@ -153,7 +153,7 @@ public fun healthcareParty_toJs(obj: HealthcareParty): HealthcarePartyJs {
 			x1
 		},
 	)
-	val notes = obj.notes
+	val notes = obj.notes ?: undefined
 	val financialInstitutionInformation = listToArray(
 		obj.financialInstitutionInformation,
 		{ x1: DecryptedFinancialInstitutionInformation ->
@@ -168,12 +168,12 @@ public fun healthcareParty_toJs(obj: HealthcareParty): HealthcarePartyJs {
 		{ x1: String ->
 			x1
 		},
-	)
-	val billingType = obj.billingType
-	val type = obj.type
-	val contactPerson = obj.contactPerson
-	val contactPersonHcpId = obj.contactPersonHcpId
-	val supervisorId = obj.supervisorId
+	) ?: undefined
+	val billingType = obj.billingType ?: undefined
+	val type = obj.type ?: undefined
+	val contactPerson = obj.contactPerson ?: undefined
+	val contactPersonHcpId = obj.contactPersonHcpId ?: undefined
+	val supervisorId = obj.supervisorId ?: undefined
 	val flatRateTarifications = listToArray(
 		obj.flatRateTarifications,
 		{ x1: DecryptedFlatRateTarification ->
@@ -271,7 +271,7 @@ public fun healthcareParty_toJs(obj: HealthcareParty): HealthcarePartyJs {
 	)
 	val publicKey = obj.publicKey?.let { nonNull1 ->
 		spkiHexString_toJs(nonNull1)
-	}
+	} ?: undefined
 	val publicKeysForOaepWithSha256 = setToArray(
 		obj.publicKeysForOaepWithSha256,
 		{ x1: SpkiHexString ->

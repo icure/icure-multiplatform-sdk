@@ -7,7 +7,7 @@ import kotlin.Suppress
 public fun tokenWithGroup_toJs(obj: TokenWithGroup): TokenWithGroupJs {
 	val token = obj.token
 	val groupId = obj.groupId
-	val groupName = obj.groupName
+	val groupName = obj.groupName ?: undefined
 	return TokenWithGroupJs(js("{" +
 		"token:token," +
 		"groupId:groupId," +

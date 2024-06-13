@@ -9,13 +9,13 @@ import kotlin.Suppress
 @Suppress("UNUSED_VARIABLE")
 public fun contactByServiceIdsFilter_toJs(obj: ContactByServiceIdsFilter):
 		ContactByServiceIdsFilterJs {
-	val desc = obj.desc
+	val desc = obj.desc ?: undefined
 	val ids = listToArray(
 		obj.ids,
 		{ x1: String ->
 			x1
 		},
-	)
+	) ?: undefined
 	return ContactByServiceIdsFilterJs(js("{" +
 		"desc:desc," +
 		"ids:ids" +

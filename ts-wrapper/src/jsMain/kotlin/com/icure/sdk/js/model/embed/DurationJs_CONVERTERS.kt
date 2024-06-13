@@ -7,10 +7,10 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun duration_toJs(obj: Duration): DurationJs {
-	val value = obj.value
+	val value = obj.value ?: undefined
 	val unit = obj.unit?.let { nonNull1 ->
 		codeStub_toJs(nonNull1)
-	}
+	} ?: undefined
 	return DurationJs(js("{" +
 		"value:value," +
 		"unit:unit" +

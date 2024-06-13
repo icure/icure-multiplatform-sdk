@@ -22,12 +22,12 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun subContact_toJs(obj: DecryptedSubContact): DecryptedSubContactJs {
-	val id = obj.id
-	val created = longToNumber(obj.created)
-	val modified = longToNumber(obj.modified)
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
+	val id = obj.id ?: undefined
+	val created = longToNumber(obj.created) ?: undefined
+	val modified = longToNumber(obj.modified) ?: undefined
+	val author = obj.author ?: undefined
+	val responsible = obj.responsible ?: undefined
+	val medicalLocationId = obj.medicalLocationId ?: undefined
 	val tags = setToArray(
 		obj.tags,
 		{ x1: CodeStub ->
@@ -40,14 +40,14 @@ public fun subContact_toJs(obj: DecryptedSubContact): DecryptedSubContactJs {
 			codeStub_toJs(x1)
 		},
 	)
-	val endOfLife = longToNumber(obj.endOfLife)
-	val descr = obj.descr
-	val protocol = obj.protocol
-	val status = intToNumber(obj.status)
-	val formId = obj.formId
-	val planOfActionId = obj.planOfActionId
-	val healthElementId = obj.healthElementId
-	val classificationId = obj.classificationId
+	val endOfLife = longToNumber(obj.endOfLife) ?: undefined
+	val descr = obj.descr ?: undefined
+	val protocol = obj.protocol ?: undefined
+	val status = intToNumber(obj.status) ?: undefined
+	val formId = obj.formId ?: undefined
+	val planOfActionId = obj.planOfActionId ?: undefined
+	val healthElementId = obj.healthElementId ?: undefined
+	val classificationId = obj.classificationId ?: undefined
 	val services = listToArray(
 		obj.services,
 		{ x1: ServiceLink ->
@@ -56,7 +56,7 @@ public fun subContact_toJs(obj: DecryptedSubContact): DecryptedSubContactJs {
 	)
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
-	}
+	} ?: undefined
 	return DecryptedSubContactJs(js("{" +
 		"id:id," +
 		"created:created," +
@@ -142,12 +142,12 @@ public fun subContact_fromJs(obj: DecryptedSubContactJs): DecryptedSubContact {
 
 @Suppress("UNUSED_VARIABLE")
 public fun subContact_toJs(obj: EncryptedSubContact): EncryptedSubContactJs {
-	val id = obj.id
-	val created = longToNumber(obj.created)
-	val modified = longToNumber(obj.modified)
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
+	val id = obj.id ?: undefined
+	val created = longToNumber(obj.created) ?: undefined
+	val modified = longToNumber(obj.modified) ?: undefined
+	val author = obj.author ?: undefined
+	val responsible = obj.responsible ?: undefined
+	val medicalLocationId = obj.medicalLocationId ?: undefined
 	val tags = setToArray(
 		obj.tags,
 		{ x1: CodeStub ->
@@ -160,14 +160,14 @@ public fun subContact_toJs(obj: EncryptedSubContact): EncryptedSubContactJs {
 			codeStub_toJs(x1)
 		},
 	)
-	val endOfLife = longToNumber(obj.endOfLife)
-	val descr = obj.descr
-	val protocol = obj.protocol
-	val status = intToNumber(obj.status)
-	val formId = obj.formId
-	val planOfActionId = obj.planOfActionId
-	val healthElementId = obj.healthElementId
-	val classificationId = obj.classificationId
+	val endOfLife = longToNumber(obj.endOfLife) ?: undefined
+	val descr = obj.descr ?: undefined
+	val protocol = obj.protocol ?: undefined
+	val status = intToNumber(obj.status) ?: undefined
+	val formId = obj.formId ?: undefined
+	val planOfActionId = obj.planOfActionId ?: undefined
+	val healthElementId = obj.healthElementId ?: undefined
+	val classificationId = obj.classificationId ?: undefined
 	val services = listToArray(
 		obj.services,
 		{ x1: ServiceLink ->
@@ -176,7 +176,7 @@ public fun subContact_toJs(obj: EncryptedSubContact): EncryptedSubContactJs {
 	)
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
-	}
+	} ?: undefined
 	return EncryptedSubContactJs(js("{" +
 		"id:id," +
 		"created:created," +

@@ -7,11 +7,11 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun administrationQuantity_toJs(obj: AdministrationQuantity): AdministrationQuantityJs {
-	val quantity = obj.quantity
+	val quantity = obj.quantity ?: undefined
 	val administrationUnit = obj.administrationUnit?.let { nonNull1 ->
 		codeStub_toJs(nonNull1)
-	}
-	val unit = obj.unit
+	} ?: undefined
+	val unit = obj.unit ?: undefined
 	return AdministrationQuantityJs(js("{" +
 		"quantity:quantity," +
 		"administrationUnit:administrationUnit," +

@@ -31,12 +31,12 @@ import kotlin.collections.Set
 @Suppress("UNUSED_VARIABLE")
 public fun form_toJs(obj: DecryptedForm): DecryptedFormJs {
 	val id = obj.id
-	val rev = obj.rev
-	val created = longToNumber(obj.created)
-	val modified = longToNumber(obj.modified)
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
+	val rev = obj.rev ?: undefined
+	val created = longToNumber(obj.created) ?: undefined
+	val modified = longToNumber(obj.modified) ?: undefined
+	val author = obj.author ?: undefined
+	val responsible = obj.responsible ?: undefined
+	val medicalLocationId = obj.medicalLocationId ?: undefined
 	val tags = setToArray(
 		obj.tags,
 		{ x1: CodeStub ->
@@ -49,19 +49,19 @@ public fun form_toJs(obj: DecryptedForm): DecryptedFormJs {
 			codeStub_toJs(x1)
 		},
 	)
-	val endOfLife = longToNumber(obj.endOfLife)
-	val deletionDate = longToNumber(obj.deletionDate)
-	val openingDate = longToNumber(obj.openingDate)
-	val status = obj.status
-	val version = intToNumber(obj.version)
-	val logicalUuid = obj.logicalUuid
-	val descr = obj.descr
-	val uniqueId = obj.uniqueId
-	val formTemplateId = obj.formTemplateId
-	val contactId = obj.contactId
-	val healthElementId = obj.healthElementId
-	val planOfActionId = obj.planOfActionId
-	val parent = obj.parent
+	val endOfLife = longToNumber(obj.endOfLife) ?: undefined
+	val deletionDate = longToNumber(obj.deletionDate) ?: undefined
+	val openingDate = longToNumber(obj.openingDate) ?: undefined
+	val status = obj.status ?: undefined
+	val version = intToNumber(obj.version) ?: undefined
+	val logicalUuid = obj.logicalUuid ?: undefined
+	val descr = obj.descr ?: undefined
+	val uniqueId = obj.uniqueId ?: undefined
+	val formTemplateId = obj.formTemplateId ?: undefined
+	val contactId = obj.contactId ?: undefined
+	val healthElementId = obj.healthElementId ?: undefined
+	val planOfActionId = obj.planOfActionId ?: undefined
+	val parent = obj.parent ?: undefined
 	val secretForeignKeys = setToArray(
 		obj.secretForeignKeys,
 		{ x1: String ->
@@ -112,10 +112,10 @@ public fun form_toJs(obj: DecryptedForm): DecryptedFormJs {
 	)
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
-	}
+	} ?: undefined
 	val securityMetadata = obj.securityMetadata?.let { nonNull1 ->
 		securityMetadata_toJs(nonNull1)
-	}
+	} ?: undefined
 	return DecryptedFormJs(js("{" +
 		"id:id," +
 		"rev:rev," +
@@ -279,12 +279,12 @@ public fun form_fromJs(obj: DecryptedFormJs): DecryptedForm {
 @Suppress("UNUSED_VARIABLE")
 public fun form_toJs(obj: EncryptedForm): EncryptedFormJs {
 	val id = obj.id
-	val rev = obj.rev
-	val created = longToNumber(obj.created)
-	val modified = longToNumber(obj.modified)
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
+	val rev = obj.rev ?: undefined
+	val created = longToNumber(obj.created) ?: undefined
+	val modified = longToNumber(obj.modified) ?: undefined
+	val author = obj.author ?: undefined
+	val responsible = obj.responsible ?: undefined
+	val medicalLocationId = obj.medicalLocationId ?: undefined
 	val tags = setToArray(
 		obj.tags,
 		{ x1: CodeStub ->
@@ -297,19 +297,19 @@ public fun form_toJs(obj: EncryptedForm): EncryptedFormJs {
 			codeStub_toJs(x1)
 		},
 	)
-	val endOfLife = longToNumber(obj.endOfLife)
-	val deletionDate = longToNumber(obj.deletionDate)
-	val openingDate = longToNumber(obj.openingDate)
-	val status = obj.status
-	val version = intToNumber(obj.version)
-	val logicalUuid = obj.logicalUuid
-	val descr = obj.descr
-	val uniqueId = obj.uniqueId
-	val formTemplateId = obj.formTemplateId
-	val contactId = obj.contactId
-	val healthElementId = obj.healthElementId
-	val planOfActionId = obj.planOfActionId
-	val parent = obj.parent
+	val endOfLife = longToNumber(obj.endOfLife) ?: undefined
+	val deletionDate = longToNumber(obj.deletionDate) ?: undefined
+	val openingDate = longToNumber(obj.openingDate) ?: undefined
+	val status = obj.status ?: undefined
+	val version = intToNumber(obj.version) ?: undefined
+	val logicalUuid = obj.logicalUuid ?: undefined
+	val descr = obj.descr ?: undefined
+	val uniqueId = obj.uniqueId ?: undefined
+	val formTemplateId = obj.formTemplateId ?: undefined
+	val contactId = obj.contactId ?: undefined
+	val healthElementId = obj.healthElementId ?: undefined
+	val planOfActionId = obj.planOfActionId ?: undefined
+	val parent = obj.parent ?: undefined
 	val secretForeignKeys = setToArray(
 		obj.secretForeignKeys,
 		{ x1: String ->
@@ -360,10 +360,10 @@ public fun form_toJs(obj: EncryptedForm): EncryptedFormJs {
 	)
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
-	}
+	} ?: undefined
 	val securityMetadata = obj.securityMetadata?.let { nonNull1 ->
 		securityMetadata_toJs(nonNull1)
-	}
+	} ?: undefined
 	return EncryptedFormJs(js("{" +
 		"id:id," +
 		"rev:rev," +

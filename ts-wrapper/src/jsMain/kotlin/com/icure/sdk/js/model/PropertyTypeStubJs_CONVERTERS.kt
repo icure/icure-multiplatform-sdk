@@ -6,10 +6,10 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun propertyTypeStub_toJs(obj: PropertyTypeStub): PropertyTypeStubJs {
-	val identifier = obj.identifier
+	val identifier = obj.identifier ?: undefined
 	val type = obj.type?.let { nonNull1 ->
 		nonNull1.name
-	}
+	} ?: undefined
 	return PropertyTypeStubJs(js("{" +
 		"identifier:identifier," +
 		"type:type" +

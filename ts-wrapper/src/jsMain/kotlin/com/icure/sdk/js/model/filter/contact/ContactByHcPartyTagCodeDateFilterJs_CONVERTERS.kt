@@ -8,14 +8,14 @@ import kotlin.Suppress
 @Suppress("UNUSED_VARIABLE")
 public fun contactByHcPartyTagCodeDateFilter_toJs(obj: ContactByHcPartyTagCodeDateFilter):
 		ContactByHcPartyTagCodeDateFilterJs {
-	val desc = obj.desc
-	val healthcarePartyId = obj.healthcarePartyId
-	val tagType = obj.tagType
-	val tagCode = obj.tagCode
-	val codeType = obj.codeType
-	val codeCode = obj.codeCode
-	val startOfContactOpeningDate = longToNumber(obj.startOfContactOpeningDate)
-	val endOfContactOpeningDate = longToNumber(obj.endOfContactOpeningDate)
+	val desc = obj.desc ?: undefined
+	val healthcarePartyId = obj.healthcarePartyId ?: undefined
+	val tagType = obj.tagType ?: undefined
+	val tagCode = obj.tagCode ?: undefined
+	val codeType = obj.codeType ?: undefined
+	val codeCode = obj.codeCode ?: undefined
+	val startOfContactOpeningDate = longToNumber(obj.startOfContactOpeningDate) ?: undefined
+	val endOfContactOpeningDate = longToNumber(obj.endOfContactOpeningDate) ?: undefined
 	return ContactByHcPartyTagCodeDateFilterJs(js("{" +
 		"desc:desc," +
 		"healthcarePartyId:healthcarePartyId," +

@@ -9,14 +9,14 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun employmentInfo_toJs(obj: EmploymentInfo): EmploymentInfoJs {
-	val startDate = longToNumber(obj.startDate)
-	val endDate = longToNumber(obj.endDate)
+	val startDate = longToNumber(obj.startDate) ?: undefined
+	val endDate = longToNumber(obj.endDate) ?: undefined
 	val professionType = obj.professionType?.let { nonNull1 ->
 		codeStub_toJs(nonNull1)
-	}
+	} ?: undefined
 	val employer = obj.employer?.let { nonNull1 ->
 		employer_toJs(nonNull1)
-	}
+	} ?: undefined
 	return EmploymentInfoJs(js("{" +
 		"startDate:startDate," +
 		"endDate:endDate," +

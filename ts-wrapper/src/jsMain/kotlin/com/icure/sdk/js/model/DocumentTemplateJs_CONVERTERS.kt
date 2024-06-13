@@ -19,12 +19,12 @@ import kotlin.Suppress
 @Suppress("UNUSED_VARIABLE")
 public fun documentTemplate_toJs(obj: DocumentTemplate): DocumentTemplateJs {
 	val id = obj.id
-	val rev = obj.rev
-	val created = longToNumber(obj.created)
-	val modified = longToNumber(obj.modified)
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
+	val rev = obj.rev ?: undefined
+	val created = longToNumber(obj.created) ?: undefined
+	val modified = longToNumber(obj.modified) ?: undefined
+	val author = obj.author ?: undefined
+	val responsible = obj.responsible ?: undefined
+	val medicalLocationId = obj.medicalLocationId ?: undefined
 	val tags = setToArray(
 		obj.tags,
 		{ x1: CodeStub ->
@@ -37,34 +37,34 @@ public fun documentTemplate_toJs(obj: DocumentTemplate): DocumentTemplateJs {
 			codeStub_toJs(x1)
 		},
 	)
-	val endOfLife = longToNumber(obj.endOfLife)
-	val deletionDate = longToNumber(obj.deletionDate)
-	val attachment = obj.attachment
+	val endOfLife = longToNumber(obj.endOfLife) ?: undefined
+	val deletionDate = longToNumber(obj.deletionDate) ?: undefined
+	val attachment = obj.attachment ?: undefined
 	val documentType = obj.documentType?.let { nonNull1 ->
 		nonNull1.name
-	}
-	val mainUti = obj.mainUti
-	val name = obj.name
+	} ?: undefined
+	val mainUti = obj.mainUti ?: undefined
+	val name = obj.name ?: undefined
 	val otherUtis = setToArray(
 		obj.otherUtis,
 		{ x1: String ->
 			x1
 		},
 	)
-	val attachmentId = obj.attachmentId
+	val attachmentId = obj.attachmentId ?: undefined
 	val version = obj.version?.let { nonNull1 ->
 		nonNull1.name
-	}
-	val owner = obj.owner
-	val guid = obj.guid
+	} ?: undefined
+	val owner = obj.owner ?: undefined
+	val guid = obj.guid ?: undefined
 	val group = obj.group?.let { nonNull1 ->
 		documentGroup_toJs(nonNull1)
-	}
-	val descr = obj.descr
-	val disabled = obj.disabled
+	} ?: undefined
+	val descr = obj.descr ?: undefined
+	val disabled = obj.disabled ?: undefined
 	val specialty = obj.specialty?.let { nonNull1 ->
 		codeStub_toJs(nonNull1)
-	}
+	} ?: undefined
 	return DocumentTemplateJs(js("{" +
 		"id:id," +
 		"rev:rev," +

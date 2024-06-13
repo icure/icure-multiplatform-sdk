@@ -8,11 +8,11 @@ import kotlin.Suppress
 @Suppress("UNUSED_VARIABLE")
 public fun invoiceByHcPartyCodeDateFilter_toJs(obj: InvoiceByHcPartyCodeDateFilter):
 		InvoiceByHcPartyCodeDateFilterJs {
-	val desc = obj.desc
-	val healthcarePartyId = obj.healthcarePartyId
+	val desc = obj.desc ?: undefined
+	val healthcarePartyId = obj.healthcarePartyId ?: undefined
 	val code = obj.code
-	val startInvoiceDate = longToNumber(obj.startInvoiceDate)
-	val endInvoiceDate = longToNumber(obj.endInvoiceDate)
+	val startInvoiceDate = longToNumber(obj.startInvoiceDate) ?: undefined
+	val endInvoiceDate = longToNumber(obj.endInvoiceDate) ?: undefined
 	return InvoiceByHcPartyCodeDateFilterJs(js("{" +
 		"desc:desc," +
 		"healthcarePartyId:healthcarePartyId," +

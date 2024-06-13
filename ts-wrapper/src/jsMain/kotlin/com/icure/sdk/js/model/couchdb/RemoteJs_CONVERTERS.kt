@@ -8,7 +8,7 @@ public fun remote_toJs(obj: Remote): RemoteJs {
 	val url = obj.url
 	val auth = obj.auth?.let { nonNull1 ->
 		remoteAuthentication_toJs(nonNull1)
-	}
+	} ?: undefined
 	return RemoteJs(js("{" +
 		"url:url," +
 		"auth:auth" +

@@ -15,7 +15,7 @@ public fun maintenanceTaskByIdsFilter_toJs(obj: MaintenanceTaskByIdsFilter):
 			x1
 		},
 	)
-	val desc = obj.desc
+	val desc = obj.desc ?: undefined
 	return MaintenanceTaskByIdsFilterJs(js("{" +
 		"ids:ids," +
 		"desc:desc" +

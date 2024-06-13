@@ -7,13 +7,13 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun keywordSubword_toJs(obj: KeywordSubword): KeywordSubwordJs {
-	val value = obj.value
+	val value = obj.value ?: undefined
 	val subWords = listToArray(
 		obj.subWords,
 		{ x1: KeywordSubword ->
 			keywordSubword_toJs(x1)
 		},
-	)
+	) ?: undefined
 	return KeywordSubwordJs(js("{" +
 		"value:value," +
 		"subWords:subWords" +

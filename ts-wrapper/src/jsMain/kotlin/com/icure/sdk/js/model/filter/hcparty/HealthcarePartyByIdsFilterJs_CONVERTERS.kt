@@ -15,7 +15,7 @@ public fun healthcarePartyByIdsFilter_toJs(obj: HealthcarePartyByIdsFilter):
 			x1
 		},
 	)
-	val desc = obj.desc
+	val desc = obj.desc ?: undefined
 	return HealthcarePartyByIdsFilterJs(js("{" +
 		"ids:ids," +
 		"desc:desc" +

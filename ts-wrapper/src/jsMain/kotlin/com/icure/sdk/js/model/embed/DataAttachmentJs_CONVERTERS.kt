@@ -8,8 +8,8 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun dataAttachment_toJs(obj: DataAttachment): DataAttachmentJs {
-	val couchDbAttachmentId = obj.couchDbAttachmentId
-	val objectStoreAttachmentId = obj.objectStoreAttachmentId
+	val couchDbAttachmentId = obj.couchDbAttachmentId ?: undefined
+	val objectStoreAttachmentId = obj.objectStoreAttachmentId ?: undefined
 	val utis = listToArray(
 		obj.utis,
 		{ x1: String ->

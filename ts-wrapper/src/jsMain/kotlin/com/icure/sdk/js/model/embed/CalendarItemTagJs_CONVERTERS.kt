@@ -7,10 +7,10 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun calendarItemTag_toJs(obj: CalendarItemTag): CalendarItemTagJs {
-	val code = obj.code
-	val date = longToNumber(obj.date)
-	val userId = obj.userId
-	val userName = obj.userName
+	val code = obj.code ?: undefined
+	val date = longToNumber(obj.date) ?: undefined
+	val userId = obj.userId ?: undefined
+	val userName = obj.userName ?: undefined
 	return CalendarItemTagJs(js("{" +
 		"code:code," +
 		"date:date," +

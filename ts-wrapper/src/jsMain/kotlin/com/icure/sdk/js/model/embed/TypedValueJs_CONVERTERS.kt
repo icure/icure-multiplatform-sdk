@@ -16,15 +16,15 @@ import kotlin.Suppress
 public fun typedValue_toJs(obj: DecryptedTypedValue): DecryptedTypedValueJs {
 	val type = obj.type?.let { nonNull1 ->
 		nonNull1.name
-	}
-	val booleanValue = obj.booleanValue
-	val integerValue = longToNumber(obj.integerValue)
-	val doubleValue = obj.doubleValue
-	val stringValue = obj.stringValue
-	val dateValue = instantToNumber(obj.dateValue)
+	} ?: undefined
+	val booleanValue = obj.booleanValue ?: undefined
+	val integerValue = longToNumber(obj.integerValue) ?: undefined
+	val doubleValue = obj.doubleValue ?: undefined
+	val stringValue = obj.stringValue ?: undefined
+	val dateValue = instantToNumber(obj.dateValue) ?: undefined
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
-	}
+	} ?: undefined
 	return DecryptedTypedValueJs(js("{" +
 		"type:type," +
 		"booleanValue:booleanValue," +
@@ -63,15 +63,15 @@ public fun typedValue_fromJs(obj: DecryptedTypedValueJs): DecryptedTypedValue {
 public fun typedValue_toJs(obj: EncryptedTypedValue): EncryptedTypedValueJs {
 	val type = obj.type?.let { nonNull1 ->
 		nonNull1.name
-	}
-	val booleanValue = obj.booleanValue
-	val integerValue = longToNumber(obj.integerValue)
-	val doubleValue = obj.doubleValue
-	val stringValue = obj.stringValue
-	val dateValue = instantToNumber(obj.dateValue)
+	} ?: undefined
+	val booleanValue = obj.booleanValue ?: undefined
+	val integerValue = longToNumber(obj.integerValue) ?: undefined
+	val doubleValue = obj.doubleValue ?: undefined
+	val stringValue = obj.stringValue ?: undefined
+	val dateValue = instantToNumber(obj.dateValue) ?: undefined
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
-	}
+	} ?: undefined
 	return EncryptedTypedValueJs(js("{" +
 		"type:type," +
 		"booleanValue:booleanValue," +

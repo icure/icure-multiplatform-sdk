@@ -9,7 +9,7 @@ import kotlin.Suppress
 @Suppress("UNUSED_VARIABLE")
 public fun <O : Identifiable<String>, O_JS : IdentifiableJs<String>>
 		complementFilter_toJs(obj: ComplementFilter<O>, convertO: (O) -> O_JS): ComplementFilterJs<O_JS> {
-	val desc = obj.desc
+	val desc = obj.desc ?: undefined
 	val superSet = abstractFilter_toJs(
 		obj.superSet,
 		{ x1: O ->

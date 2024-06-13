@@ -98,7 +98,7 @@ public fun cryptoActorStub_toJs(obj: CryptoActorStub): CryptoActorStubJs {
 	)
 	val publicKey = obj.publicKey?.let { nonNull1 ->
 		spkiHexString_toJs(nonNull1)
-	}
+	} ?: undefined
 	val publicKeysForOaepWithSha256 = setToArray(
 		obj.publicKeysForOaepWithSha256,
 		{ x1: SpkiHexString ->

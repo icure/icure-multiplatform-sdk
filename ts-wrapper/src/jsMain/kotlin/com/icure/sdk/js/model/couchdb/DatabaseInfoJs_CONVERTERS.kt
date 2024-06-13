@@ -10,15 +10,15 @@ import kotlin.Suppress
 @Suppress("UNUSED_VARIABLE")
 public fun databaseInfo_toJs(obj: DatabaseInfo): DatabaseInfoJs {
 	val id = obj.id
-	val updateSeq = obj.updateSeq
-	val fileSize = longToNumber(obj.fileSize)
-	val externalSize = longToNumber(obj.externalSize)
-	val activeSize = longToNumber(obj.activeSize)
-	val docs = longToNumber(obj.docs)
-	val q = intToNumber(obj.q)
-	val n = intToNumber(obj.n)
-	val w = intToNumber(obj.w)
-	val r = intToNumber(obj.r)
+	val updateSeq = obj.updateSeq ?: undefined
+	val fileSize = longToNumber(obj.fileSize) ?: undefined
+	val externalSize = longToNumber(obj.externalSize) ?: undefined
+	val activeSize = longToNumber(obj.activeSize) ?: undefined
+	val docs = longToNumber(obj.docs) ?: undefined
+	val q = intToNumber(obj.q) ?: undefined
+	val n = intToNumber(obj.n) ?: undefined
+	val w = intToNumber(obj.w) ?: undefined
+	val r = intToNumber(obj.r) ?: undefined
 	return DatabaseInfoJs(js("{" +
 		"id:id," +
 		"updateSeq:updateSeq," +

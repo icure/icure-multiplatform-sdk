@@ -7,8 +7,8 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun timeTableHour_toJs(obj: TimeTableHour): TimeTableHourJs {
-	val startHour = longToNumber(obj.startHour)
-	val endHour = longToNumber(obj.endHour)
+	val startHour = longToNumber(obj.startHour) ?: undefined
+	val endHour = longToNumber(obj.endHour) ?: undefined
 	return TimeTableHourJs(js("{" +
 		"startHour:startHour," +
 		"endHour:endHour" +

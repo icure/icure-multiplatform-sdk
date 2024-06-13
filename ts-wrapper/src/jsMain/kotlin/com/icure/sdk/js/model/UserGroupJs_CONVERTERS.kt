@@ -8,23 +8,23 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun userGroup_toJs(obj: UserGroup): UserGroupJs {
-	val groupId = obj.groupId
-	val groupName = obj.groupName
+	val groupId = obj.groupId ?: undefined
+	val groupName = obj.groupName ?: undefined
 	val groupsHierarchy = listToArray(
 		obj.groupsHierarchy,
 		{ x1: Group ->
 			group_toJs(x1)
 		},
 	)
-	val userId = obj.userId
-	val login = obj.login
-	val name = obj.name
-	val email = obj.email
-	val phone = obj.phone
-	val patientId = obj.patientId
-	val healthcarePartyId = obj.healthcarePartyId
-	val deviceId = obj.deviceId
-	val nameOfParentOfTopmostGroupInHierarchy = obj.nameOfParentOfTopmostGroupInHierarchy
+	val userId = obj.userId ?: undefined
+	val login = obj.login ?: undefined
+	val name = obj.name ?: undefined
+	val email = obj.email ?: undefined
+	val phone = obj.phone ?: undefined
+	val patientId = obj.patientId ?: undefined
+	val healthcarePartyId = obj.healthcarePartyId ?: undefined
+	val deviceId = obj.deviceId ?: undefined
+	val nameOfParentOfTopmostGroupInHierarchy = obj.nameOfParentOfTopmostGroupInHierarchy ?: undefined
 	return UserGroupJs(js("{" +
 		"groupId:groupId," +
 		"groupName:groupName," +

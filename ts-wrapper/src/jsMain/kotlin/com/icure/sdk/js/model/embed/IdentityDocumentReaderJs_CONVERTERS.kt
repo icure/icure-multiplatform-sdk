@@ -9,9 +9,9 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun identityDocumentReader_toJs(obj: IdentityDocumentReader): IdentityDocumentReaderJs {
-	val justificatifDocumentNumber = obj.justificatifDocumentNumber
-	val supportSerialNumber = obj.supportSerialNumber
-	val timeReadingEIdDocument = longToNumber(obj.timeReadingEIdDocument)
+	val justificatifDocumentNumber = obj.justificatifDocumentNumber ?: undefined
+	val supportSerialNumber = obj.supportSerialNumber ?: undefined
+	val timeReadingEIdDocument = longToNumber(obj.timeReadingEIdDocument) ?: undefined
 	val eidDocumentSupportType = intToNumber(obj.eidDocumentSupportType)
 	val reasonManualEncoding = intToNumber(obj.reasonManualEncoding)
 	val reasonUsingVignette = intToNumber(obj.reasonUsingVignette)

@@ -51,12 +51,12 @@ import kotlin.collections.Set
 @Suppress("UNUSED_VARIABLE")
 public fun contact_toJs(obj: DecryptedContact): DecryptedContactJs {
 	val id = obj.id
-	val rev = obj.rev
-	val created = longToNumber(obj.created)
-	val modified = longToNumber(obj.modified)
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
+	val rev = obj.rev ?: undefined
+	val created = longToNumber(obj.created) ?: undefined
+	val modified = longToNumber(obj.modified) ?: undefined
+	val author = obj.author ?: undefined
+	val responsible = obj.responsible ?: undefined
+	val medicalLocationId = obj.medicalLocationId ?: undefined
 	val tags = setToArray(
 		obj.tags,
 		{ x1: CodeStub ->
@@ -75,17 +75,17 @@ public fun contact_toJs(obj: DecryptedContact): DecryptedContactJs {
 			identifier_toJs(x1)
 		},
 	)
-	val endOfLife = longToNumber(obj.endOfLife)
-	val deletionDate = longToNumber(obj.deletionDate)
-	val groupId = obj.groupId
-	val openingDate = longToNumber(obj.openingDate)
-	val closingDate = longToNumber(obj.closingDate)
-	val descr = obj.descr
-	val location = obj.location
-	val externalId = obj.externalId
+	val endOfLife = longToNumber(obj.endOfLife) ?: undefined
+	val deletionDate = longToNumber(obj.deletionDate) ?: undefined
+	val groupId = obj.groupId ?: undefined
+	val openingDate = longToNumber(obj.openingDate) ?: undefined
+	val closingDate = longToNumber(obj.closingDate) ?: undefined
+	val descr = obj.descr ?: undefined
+	val location = obj.location ?: undefined
+	val externalId = obj.externalId ?: undefined
 	val encounterType = obj.encounterType?.let { nonNull1 ->
 		codeStub_toJs(nonNull1)
-	}
+	} ?: undefined
 	val subContacts = setToArray(
 		obj.subContacts,
 		{ x1: DecryptedSubContact ->
@@ -98,8 +98,8 @@ public fun contact_toJs(obj: DecryptedContact): DecryptedContactJs {
 			service_toJs(x1)
 		},
 	)
-	val healthcarePartyId = obj.healthcarePartyId
-	val modifiedContactId = obj.modifiedContactId
+	val healthcarePartyId = obj.healthcarePartyId ?: undefined
+	val modifiedContactId = obj.modifiedContactId ?: undefined
 	val secretForeignKeys = setToArray(
 		obj.secretForeignKeys,
 		{ x1: String ->
@@ -150,10 +150,10 @@ public fun contact_toJs(obj: DecryptedContact): DecryptedContactJs {
 	)
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
-	}
+	} ?: undefined
 	val securityMetadata = obj.securityMetadata?.let { nonNull1 ->
 		securityMetadata_toJs(nonNull1)
-	}
+	} ?: undefined
 	val notes = listToArray(
 		obj.notes,
 		{ x1: Annotation ->
@@ -355,12 +355,12 @@ public fun contact_fromJs(obj: DecryptedContactJs): DecryptedContact {
 @Suppress("UNUSED_VARIABLE")
 public fun contact_toJs(obj: EncryptedContact): EncryptedContactJs {
 	val id = obj.id
-	val rev = obj.rev
-	val created = longToNumber(obj.created)
-	val modified = longToNumber(obj.modified)
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
+	val rev = obj.rev ?: undefined
+	val created = longToNumber(obj.created) ?: undefined
+	val modified = longToNumber(obj.modified) ?: undefined
+	val author = obj.author ?: undefined
+	val responsible = obj.responsible ?: undefined
+	val medicalLocationId = obj.medicalLocationId ?: undefined
 	val tags = setToArray(
 		obj.tags,
 		{ x1: CodeStub ->
@@ -379,17 +379,17 @@ public fun contact_toJs(obj: EncryptedContact): EncryptedContactJs {
 			identifier_toJs(x1)
 		},
 	)
-	val endOfLife = longToNumber(obj.endOfLife)
-	val deletionDate = longToNumber(obj.deletionDate)
-	val groupId = obj.groupId
-	val openingDate = longToNumber(obj.openingDate)
-	val closingDate = longToNumber(obj.closingDate)
-	val descr = obj.descr
-	val location = obj.location
-	val externalId = obj.externalId
+	val endOfLife = longToNumber(obj.endOfLife) ?: undefined
+	val deletionDate = longToNumber(obj.deletionDate) ?: undefined
+	val groupId = obj.groupId ?: undefined
+	val openingDate = longToNumber(obj.openingDate) ?: undefined
+	val closingDate = longToNumber(obj.closingDate) ?: undefined
+	val descr = obj.descr ?: undefined
+	val location = obj.location ?: undefined
+	val externalId = obj.externalId ?: undefined
 	val encounterType = obj.encounterType?.let { nonNull1 ->
 		codeStub_toJs(nonNull1)
-	}
+	} ?: undefined
 	val subContacts = setToArray(
 		obj.subContacts,
 		{ x1: EncryptedSubContact ->
@@ -402,8 +402,8 @@ public fun contact_toJs(obj: EncryptedContact): EncryptedContactJs {
 			service_toJs(x1)
 		},
 	)
-	val healthcarePartyId = obj.healthcarePartyId
-	val modifiedContactId = obj.modifiedContactId
+	val healthcarePartyId = obj.healthcarePartyId ?: undefined
+	val modifiedContactId = obj.modifiedContactId ?: undefined
 	val secretForeignKeys = setToArray(
 		obj.secretForeignKeys,
 		{ x1: String ->
@@ -454,10 +454,10 @@ public fun contact_toJs(obj: EncryptedContact): EncryptedContactJs {
 	)
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
-	}
+	} ?: undefined
 	val securityMetadata = obj.securityMetadata?.let { nonNull1 ->
 		securityMetadata_toJs(nonNull1)
-	}
+	} ?: undefined
 	val notes = listToArray(
 		obj.notes,
 		{ x1: Annotation ->

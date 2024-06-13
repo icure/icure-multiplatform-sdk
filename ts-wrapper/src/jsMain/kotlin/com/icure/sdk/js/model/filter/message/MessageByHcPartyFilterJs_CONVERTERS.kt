@@ -6,7 +6,7 @@ import kotlin.Suppress
 @Suppress("UNUSED_VARIABLE")
 public fun messageByHcPartyFilter_toJs(obj: MessageByHcPartyFilter): MessageByHcPartyFilterJs {
 	val hcpId = obj.hcpId
-	val desc = obj.desc
+	val desc = obj.desc ?: undefined
 	return MessageByHcPartyFilterJs(js("{" +
 		"hcpId:hcpId," +
 		"desc:desc" +

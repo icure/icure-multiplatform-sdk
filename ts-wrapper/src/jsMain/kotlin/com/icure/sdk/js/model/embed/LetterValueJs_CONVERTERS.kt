@@ -5,10 +5,10 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun letterValue_toJs(obj: LetterValue): LetterValueJs {
-	val letter = obj.letter
-	val index = obj.index
-	val coefficient = obj.coefficient
-	val value = obj.value
+	val letter = obj.letter ?: undefined
+	val index = obj.index ?: undefined
+	val coefficient = obj.coefficient ?: undefined
+	val value = obj.value ?: undefined
 	return LetterValueJs(js("{" +
 		"letter:letter," +
 		"index:index," +

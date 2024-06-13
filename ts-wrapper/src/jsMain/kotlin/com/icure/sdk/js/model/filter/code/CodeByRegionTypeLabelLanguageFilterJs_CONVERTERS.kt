@@ -6,11 +6,11 @@ import kotlin.Suppress
 @Suppress("UNUSED_VARIABLE")
 public fun codeByRegionTypeLabelLanguageFilter_toJs(obj: CodeByRegionTypeLabelLanguageFilter):
 		CodeByRegionTypeLabelLanguageFilterJs {
-	val desc = obj.desc
-	val region = obj.region
+	val desc = obj.desc ?: undefined
+	val region = obj.region ?: undefined
 	val type = obj.type
 	val language = obj.language
-	val label = obj.label
+	val label = obj.label ?: undefined
 	return CodeByRegionTypeLabelLanguageFilterJs(js("{" +
 		"desc:desc," +
 		"region:region," +

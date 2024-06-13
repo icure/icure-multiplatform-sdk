@@ -11,9 +11,9 @@ import kotlin.Suppress
 @Suppress("UNUSED_VARIABLE")
 public fun role_toJs(obj: Role): RoleJs {
 	val id = obj.id
-	val rev = obj.rev
-	val deletionDate = longToNumber(obj.deletionDate)
-	val name = obj.name
+	val rev = obj.rev ?: undefined
+	val deletionDate = longToNumber(obj.deletionDate) ?: undefined
+	val name = obj.name ?: undefined
 	val permissions = setToArray(
 		obj.permissions,
 		{ x1: String ->

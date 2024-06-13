@@ -8,8 +8,8 @@ import kotlin.Suppress
 @Suppress("UNUSED_VARIABLE")
 public fun paginatedDocumentKeyIdPair_toJs(obj: PaginatedDocumentKeyIdPair):
 		PaginatedDocumentKeyIdPairJs {
-	val startKey = jsonToDynamic(obj.startKey)
-	val startKeyDocId = obj.startKeyDocId
+	val startKey = jsonToDynamic(obj.startKey) ?: undefined
+	val startKeyDocId = obj.startKeyDocId ?: undefined
 	return PaginatedDocumentKeyIdPairJs(js("{" +
 		"startKey:startKey," +
 		"startKeyDocId:startKeyDocId" +

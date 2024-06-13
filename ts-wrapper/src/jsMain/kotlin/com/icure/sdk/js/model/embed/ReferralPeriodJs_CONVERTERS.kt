@@ -7,9 +7,9 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun referralPeriod_toJs(obj: ReferralPeriod): ReferralPeriodJs {
-	val startDate = instantToNumber(obj.startDate)
-	val endDate = instantToNumber(obj.endDate)
-	val comment = obj.comment
+	val startDate = instantToNumber(obj.startDate) ?: undefined
+	val endDate = instantToNumber(obj.endDate) ?: undefined
+	val comment = obj.comment ?: undefined
 	return ReferralPeriodJs(js("{" +
 		"startDate:startDate," +
 		"endDate:endDate," +

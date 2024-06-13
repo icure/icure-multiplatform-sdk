@@ -9,8 +9,8 @@ import kotlin.Suppress
 @Suppress("UNUSED_VARIABLE")
 public fun serviceByHcPartyHealthElementIdsFilter_toJs(obj: ServiceByHcPartyHealthElementIdsFilter):
 		ServiceByHcPartyHealthElementIdsFilterJs {
-	val desc = obj.desc
-	val healthcarePartyId = obj.healthcarePartyId
+	val desc = obj.desc ?: undefined
+	val healthcarePartyId = obj.healthcarePartyId ?: undefined
 	val healthElementIds = listToArray(
 		obj.healthElementIds,
 		{ x1: String ->

@@ -14,7 +14,7 @@ public fun fieldsGroup_toJs(obj: FieldsGroup): FieldsGroupJs {
 		{ x1: StructureElement ->
 			structureElement_toJs(x1)
 		},
-	)
+	) ?: undefined
 	return FieldsGroupJs(js("{" +
 		"group:group," +
 		"fields:fields" +

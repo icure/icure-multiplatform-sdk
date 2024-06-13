@@ -32,12 +32,12 @@ import kotlin.collections.Set
 @Suppress("UNUSED_VARIABLE")
 public fun receipt_toJs(obj: DecryptedReceipt): DecryptedReceiptJs {
 	val id = obj.id
-	val rev = obj.rev
-	val created = longToNumber(obj.created)
-	val modified = longToNumber(obj.modified)
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
+	val rev = obj.rev ?: undefined
+	val created = longToNumber(obj.created) ?: undefined
+	val modified = longToNumber(obj.modified) ?: undefined
+	val author = obj.author ?: undefined
+	val responsible = obj.responsible ?: undefined
+	val medicalLocationId = obj.medicalLocationId ?: undefined
 	val tags = setToArray(
 		obj.tags,
 		{ x1: CodeStub ->
@@ -50,8 +50,8 @@ public fun receipt_toJs(obj: DecryptedReceipt): DecryptedReceiptJs {
 			codeStub_toJs(x1)
 		},
 	)
-	val endOfLife = longToNumber(obj.endOfLife)
-	val deletionDate = longToNumber(obj.deletionDate)
+	val endOfLife = longToNumber(obj.endOfLife) ?: undefined
+	val deletionDate = longToNumber(obj.deletionDate) ?: undefined
 	val attachmentIds = mapToObject(
 		obj.attachmentIds,
 		{ x1: ReceiptBlobType ->
@@ -67,9 +67,9 @@ public fun receipt_toJs(obj: DecryptedReceipt): DecryptedReceiptJs {
 			x1
 		},
 	)
-	val documentId = obj.documentId
-	val category = obj.category
-	val subCategory = obj.subCategory
+	val documentId = obj.documentId ?: undefined
+	val category = obj.category ?: undefined
+	val subCategory = obj.subCategory ?: undefined
 	val secretForeignKeys = setToArray(
 		obj.secretForeignKeys,
 		{ x1: String ->
@@ -120,10 +120,10 @@ public fun receipt_toJs(obj: DecryptedReceipt): DecryptedReceiptJs {
 	)
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
-	}
+	} ?: undefined
 	val securityMetadata = obj.securityMetadata?.let { nonNull1 ->
 		securityMetadata_toJs(nonNull1)
-	}
+	} ?: undefined
 	return DecryptedReceiptJs(js("{" +
 		"id:id," +
 		"rev:rev," +
@@ -284,12 +284,12 @@ public fun receipt_fromJs(obj: DecryptedReceiptJs): DecryptedReceipt {
 @Suppress("UNUSED_VARIABLE")
 public fun receipt_toJs(obj: EncryptedReceipt): EncryptedReceiptJs {
 	val id = obj.id
-	val rev = obj.rev
-	val created = longToNumber(obj.created)
-	val modified = longToNumber(obj.modified)
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
+	val rev = obj.rev ?: undefined
+	val created = longToNumber(obj.created) ?: undefined
+	val modified = longToNumber(obj.modified) ?: undefined
+	val author = obj.author ?: undefined
+	val responsible = obj.responsible ?: undefined
+	val medicalLocationId = obj.medicalLocationId ?: undefined
 	val tags = setToArray(
 		obj.tags,
 		{ x1: CodeStub ->
@@ -302,8 +302,8 @@ public fun receipt_toJs(obj: EncryptedReceipt): EncryptedReceiptJs {
 			codeStub_toJs(x1)
 		},
 	)
-	val endOfLife = longToNumber(obj.endOfLife)
-	val deletionDate = longToNumber(obj.deletionDate)
+	val endOfLife = longToNumber(obj.endOfLife) ?: undefined
+	val deletionDate = longToNumber(obj.deletionDate) ?: undefined
 	val attachmentIds = mapToObject(
 		obj.attachmentIds,
 		{ x1: ReceiptBlobType ->
@@ -319,9 +319,9 @@ public fun receipt_toJs(obj: EncryptedReceipt): EncryptedReceiptJs {
 			x1
 		},
 	)
-	val documentId = obj.documentId
-	val category = obj.category
-	val subCategory = obj.subCategory
+	val documentId = obj.documentId ?: undefined
+	val category = obj.category ?: undefined
+	val subCategory = obj.subCategory ?: undefined
 	val secretForeignKeys = setToArray(
 		obj.secretForeignKeys,
 		{ x1: String ->
@@ -372,10 +372,10 @@ public fun receipt_toJs(obj: EncryptedReceipt): EncryptedReceiptJs {
 	)
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
-	}
+	} ?: undefined
 	val securityMetadata = obj.securityMetadata?.let { nonNull1 ->
 		securityMetadata_toJs(nonNull1)
-	}
+	} ?: undefined
 	return EncryptedReceiptJs(js("{" +
 		"id:id," +
 		"rev:rev," +

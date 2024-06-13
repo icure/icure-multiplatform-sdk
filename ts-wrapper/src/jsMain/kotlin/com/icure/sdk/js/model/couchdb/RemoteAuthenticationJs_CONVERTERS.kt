@@ -7,7 +7,7 @@ import kotlin.Suppress
 public fun remoteAuthentication_toJs(obj: RemoteAuthentication): RemoteAuthenticationJs {
 	val basic = obj.basic?.let { nonNull1 ->
 		basic_toJs(nonNull1)
-	}
+	} ?: undefined
 	return RemoteAuthenticationJs(js("{" +
 		"basic:basic" +
 	"}"))

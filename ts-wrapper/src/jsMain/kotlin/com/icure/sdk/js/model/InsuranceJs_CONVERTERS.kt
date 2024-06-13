@@ -13,8 +13,8 @@ import kotlin.Suppress
 @Suppress("UNUSED_VARIABLE")
 public fun insurance_toJs(obj: Insurance): InsuranceJs {
 	val id = obj.id
-	val rev = obj.rev
-	val deletionDate = longToNumber(obj.deletionDate)
+	val rev = obj.rev ?: undefined
+	val deletionDate = longToNumber(obj.deletionDate) ?: undefined
 	val name = mapToObject(
 		obj.name,
 		{ x1: String ->
@@ -27,9 +27,9 @@ public fun insurance_toJs(obj: Insurance): InsuranceJs {
 	val privateInsurance = obj.privateInsurance
 	val hospitalisationInsurance = obj.hospitalisationInsurance
 	val ambulatoryInsurance = obj.ambulatoryInsurance
-	val code = obj.code
-	val agreementNumber = obj.agreementNumber
-	val parent = obj.parent
+	val code = obj.code ?: undefined
+	val agreementNumber = obj.agreementNumber ?: undefined
+	val parent = obj.parent ?: undefined
 	val address = address_toJs(obj.address)
 	return InsuranceJs(js("{" +
 		"id:id," +

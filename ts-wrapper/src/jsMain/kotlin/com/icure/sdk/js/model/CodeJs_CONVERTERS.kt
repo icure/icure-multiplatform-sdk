@@ -27,12 +27,12 @@ import kotlin.collections.Set
 @Suppress("UNUSED_VARIABLE")
 public fun code_toJs(obj: Code): CodeJs {
 	val id = obj.id
-	val rev = obj.rev
-	val deletionDate = longToNumber(obj.deletionDate)
-	val context = obj.context
-	val type = obj.type
-	val code = obj.code
-	val version = obj.version
+	val rev = obj.rev ?: undefined
+	val deletionDate = longToNumber(obj.deletionDate) ?: undefined
+	val context = obj.context ?: undefined
+	val type = obj.type ?: undefined
+	val code = obj.code ?: undefined
+	val version = obj.version ?: undefined
 	val label = mapToObject(
 		obj.label,
 		{ x1: String ->
@@ -41,8 +41,8 @@ public fun code_toJs(obj: Code): CodeJs {
 		{ x1: String ->
 			x1
 		},
-	)
-	val author = obj.author
+	) ?: undefined
+	val author = obj.author ?: undefined
 	val regions = setToArray(
 		obj.regions,
 		{ x1: String ->
@@ -55,7 +55,7 @@ public fun code_toJs(obj: Code): CodeJs {
 			periodicity_toJs(x1)
 		},
 	)
-	val level = intToNumber(obj.level)
+	val level = intToNumber(obj.level) ?: undefined
 	val links = setToArray(
 		obj.links,
 		{ x1: String ->
@@ -96,7 +96,7 @@ public fun code_toJs(obj: Code): CodeJs {
 			)
 		},
 	)
-	val data = obj.data
+	val data = obj.data ?: undefined
 	val appendices = mapToObject(
 		obj.appendices,
 		{ x1: AppendixType ->

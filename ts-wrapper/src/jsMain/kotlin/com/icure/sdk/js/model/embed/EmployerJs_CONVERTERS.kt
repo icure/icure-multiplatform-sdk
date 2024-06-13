@@ -5,10 +5,10 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun employer_toJs(obj: Employer): EmployerJs {
-	val name = obj.name
+	val name = obj.name ?: undefined
 	val addresse = obj.addresse?.let { nonNull1 ->
 		address_toJs(nonNull1)
-	}
+	} ?: undefined
 	return EmployerJs(js("{" +
 		"name:name," +
 		"addresse:addresse" +

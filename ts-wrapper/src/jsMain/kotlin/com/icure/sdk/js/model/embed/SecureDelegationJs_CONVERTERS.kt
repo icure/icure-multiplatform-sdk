@@ -15,8 +15,8 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun secureDelegation_toJs(obj: SecureDelegation): SecureDelegationJs {
-	val delegator = obj.delegator
-	val delegate = obj.delegate
+	val delegator = obj.delegator ?: undefined
+	val delegate = obj.delegate ?: undefined
 	val secretIds = setToArray(
 		obj.secretIds,
 		{ x1: Base64String ->
@@ -41,7 +41,7 @@ public fun secureDelegation_toJs(obj: SecureDelegation): SecureDelegationJs {
 			secureDelegationKeyString_toJs(x1)
 		},
 	)
-	val exchangeDataId = obj.exchangeDataId
+	val exchangeDataId = obj.exchangeDataId ?: undefined
 	val permissions = obj.permissions.name
 	return SecureDelegationJs(js("{" +
 		"delegator:delegator," +

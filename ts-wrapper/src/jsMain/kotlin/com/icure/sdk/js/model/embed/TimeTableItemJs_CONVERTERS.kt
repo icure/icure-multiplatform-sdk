@@ -13,11 +13,11 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun timeTableItem_toJs(obj: TimeTableItem): TimeTableItemJs {
-	val rruleStartDate = longToNumber(obj.rruleStartDate)
-	val rrule = obj.rrule
-	val notBeforeInMinutes = intToNumber(obj.notBeforeInMinutes)
-	val notAfterInMinutes = intToNumber(obj.notAfterInMinutes)
-	val zoneId = obj.zoneId
+	val rruleStartDate = longToNumber(obj.rruleStartDate) ?: undefined
+	val rrule = obj.rrule ?: undefined
+	val notBeforeInMinutes = intToNumber(obj.notBeforeInMinutes) ?: undefined
+	val notAfterInMinutes = intToNumber(obj.notAfterInMinutes) ?: undefined
+	val zoneId = obj.zoneId ?: undefined
 	val days = listToArray(
 		obj.days,
 		{ x1: String ->
@@ -36,9 +36,9 @@ public fun timeTableItem_toJs(obj: TimeTableItem): TimeTableItemJs {
 			timeTableHour_toJs(x1)
 		},
 	)
-	val calendarItemTypeId = obj.calendarItemTypeId
+	val calendarItemTypeId = obj.calendarItemTypeId ?: undefined
 	val homeVisit = obj.homeVisit
-	val placeId = obj.placeId
+	val placeId = obj.placeId ?: undefined
 	val publicTimeTableItem = obj.publicTimeTableItem
 	val acceptsNewPatient = obj.acceptsNewPatient
 	val unavailable = obj.unavailable

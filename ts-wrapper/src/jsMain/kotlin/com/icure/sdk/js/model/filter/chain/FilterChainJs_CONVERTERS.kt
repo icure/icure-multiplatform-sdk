@@ -21,7 +21,7 @@ public fun <O : Identifiable<String>, O_JS : IdentifiableJs<String>>
 	)
 	val predicate = obj.predicate?.let { nonNull1 ->
 		predicate_toJs(nonNull1)
-	}
+	} ?: undefined
 	return FilterChainJs<O_JS>(js("{" +
 		"filter:filter," +
 		"predicate:predicate" +

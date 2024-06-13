@@ -14,7 +14,7 @@ public fun patientByIdsFilter_toJs(obj: PatientByIdsFilter): PatientByIdsFilterJ
 			x1
 		},
 	)
-	val desc = obj.desc
+	val desc = obj.desc ?: undefined
 	return PatientByIdsFilterJs(js("{" +
 		"ids:ids," +
 		"desc:desc" +

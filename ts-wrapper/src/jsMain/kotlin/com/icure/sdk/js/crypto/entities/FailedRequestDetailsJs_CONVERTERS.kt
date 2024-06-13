@@ -10,11 +10,11 @@ public fun failedRequestDetails_toJs(obj: FailedRequestDetails): FailedRequestDe
 	val entityId = obj.entityId
 	val delegateId = obj.delegateId
 	val updatedForMigration = obj.updatedForMigration
-	val code = intToNumber(obj.code)
-	val reason = obj.reason
+	val code = intToNumber(obj.code) ?: undefined
+	val reason = obj.reason ?: undefined
 	val request = obj.request?.let { nonNull1 ->
 		delegateShareOptions_toJs(nonNull1)
-	}
+	} ?: undefined
 	return FailedRequestDetailsJs(js("{" +
 		"entityId:entityId," +
 		"delegateId:delegateId," +

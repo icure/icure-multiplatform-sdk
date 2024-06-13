@@ -6,7 +6,7 @@ import kotlin.Suppress
 @Suppress("UNUSED_VARIABLE")
 public fun allHealthcarePartiesFilter_toJs(obj: AllHealthcarePartiesFilter):
 		AllHealthcarePartiesFilterJs {
-	val desc = obj.desc
+	val desc = obj.desc ?: undefined
 	return AllHealthcarePartiesFilterJs(js("{" +
 		"desc:desc" +
 	"}"))

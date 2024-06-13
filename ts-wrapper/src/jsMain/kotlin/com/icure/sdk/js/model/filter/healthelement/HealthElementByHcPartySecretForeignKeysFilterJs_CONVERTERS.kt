@@ -10,8 +10,8 @@ import kotlin.Suppress
 public
 		fun healthElementByHcPartySecretForeignKeysFilter_toJs(obj: HealthElementByHcPartySecretForeignKeysFilter):
 		HealthElementByHcPartySecretForeignKeysFilterJs {
-	val desc = obj.desc
-	val healthcarePartyId = obj.healthcarePartyId
+	val desc = obj.desc ?: undefined
+	val healthcarePartyId = obj.healthcarePartyId ?: undefined
 	val patientSecretForeignKeys = setToArray(
 		obj.patientSecretForeignKeys,
 		{ x1: String ->

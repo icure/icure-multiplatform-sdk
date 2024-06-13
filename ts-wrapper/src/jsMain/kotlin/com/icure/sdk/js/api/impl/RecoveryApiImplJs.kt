@@ -120,7 +120,7 @@ internal class RecoveryApiImplJs(
 		)
 		result?.let { nonNull1 ->
 			nonNull1.name
-		}
+		} ?: undefined
 	}
 
 	override fun deleteRecoveryInfo(recoveryKey: String): Promise<Unit> = GlobalScope.promise {

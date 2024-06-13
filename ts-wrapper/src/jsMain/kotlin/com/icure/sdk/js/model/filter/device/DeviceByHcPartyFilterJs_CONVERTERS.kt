@@ -5,8 +5,8 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun deviceByHcPartyFilter_toJs(obj: DeviceByHcPartyFilter): DeviceByHcPartyFilterJs {
-	val desc = obj.desc
-	val responsibleId = obj.responsibleId
+	val desc = obj.desc ?: undefined
+	val responsibleId = obj.responsibleId ?: undefined
 	return DeviceByHcPartyFilterJs(js("{" +
 		"desc:desc," +
 		"responsibleId:responsibleId" +

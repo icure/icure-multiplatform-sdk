@@ -7,7 +7,7 @@ import kotlin.Suppress
 public fun userByNameEmailPhoneFilter_toJs(obj: UserByNameEmailPhoneFilter):
 		UserByNameEmailPhoneFilterJs {
 	val searchString = obj.searchString
-	val desc = obj.desc
+	val desc = obj.desc ?: undefined
 	return UserByNameEmailPhoneFilterJs(js("{" +
 		"searchString:searchString," +
 		"desc:desc" +

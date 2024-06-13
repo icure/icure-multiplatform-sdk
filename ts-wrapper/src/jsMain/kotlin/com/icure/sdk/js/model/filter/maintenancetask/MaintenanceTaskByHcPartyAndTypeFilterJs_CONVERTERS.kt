@@ -6,9 +6,9 @@ import kotlin.Suppress
 @Suppress("UNUSED_VARIABLE")
 public fun maintenanceTaskByHcPartyAndTypeFilter_toJs(obj: MaintenanceTaskByHcPartyAndTypeFilter):
 		MaintenanceTaskByHcPartyAndTypeFilterJs {
-	val desc = obj.desc
+	val desc = obj.desc ?: undefined
 	val type = obj.type
-	val healthcarePartyId = obj.healthcarePartyId
+	val healthcarePartyId = obj.healthcarePartyId ?: undefined
 	return MaintenanceTaskByHcPartyAndTypeFilterJs(js("{" +
 		"desc:desc," +
 		"type:type," +

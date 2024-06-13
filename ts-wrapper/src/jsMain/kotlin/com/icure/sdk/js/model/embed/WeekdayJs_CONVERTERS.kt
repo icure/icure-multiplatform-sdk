@@ -11,8 +11,8 @@ import kotlin.Suppress
 public fun weekday_toJs(obj: Weekday): WeekdayJs {
 	val weekday = obj.weekday?.let { nonNull1 ->
 		codeStub_toJs(nonNull1)
-	}
-	val weekNumber = intToNumber(obj.weekNumber)
+	} ?: undefined
+	val weekNumber = intToNumber(obj.weekNumber) ?: undefined
 	return WeekdayJs(js("{" +
 		"weekday:weekday," +
 		"weekNumber:weekNumber" +

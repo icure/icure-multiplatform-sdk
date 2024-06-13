@@ -12,14 +12,14 @@ import kotlin.Suppress
 @Suppress("UNUSED_VARIABLE")
 public fun serviceByHcPartyIdentifiersFilter_toJs(obj: ServiceByHcPartyIdentifiersFilter):
 		ServiceByHcPartyIdentifiersFilterJs {
-	val healthcarePartyId = obj.healthcarePartyId
+	val healthcarePartyId = obj.healthcarePartyId ?: undefined
 	val identifiers = listToArray(
 		obj.identifiers,
 		{ x1: Identifier ->
 			identifier_toJs(x1)
 		},
 	)
-	val desc = obj.desc
+	val desc = obj.desc ?: undefined
 	return ServiceByHcPartyIdentifiersFilterJs(js("{" +
 		"healthcarePartyId:healthcarePartyId," +
 		"identifiers:identifiers," +

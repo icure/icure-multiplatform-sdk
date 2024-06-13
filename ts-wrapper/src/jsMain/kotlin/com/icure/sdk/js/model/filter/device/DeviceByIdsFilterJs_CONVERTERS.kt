@@ -14,7 +14,7 @@ public fun deviceByIdsFilter_toJs(obj: DeviceByIdsFilter): DeviceByIdsFilterJs {
 			x1
 		},
 	)
-	val desc = obj.desc
+	val desc = obj.desc ?: undefined
 	return DeviceByIdsFilterJs(js("{" +
 		"ids:ids," +
 		"desc:desc" +

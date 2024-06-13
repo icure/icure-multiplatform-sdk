@@ -29,12 +29,12 @@ import kotlin.collections.Set
 @Suppress("UNUSED_VARIABLE")
 public fun classification_toJs(obj: DecryptedClassification): DecryptedClassificationJs {
 	val id = obj.id
-	val rev = obj.rev
-	val created = longToNumber(obj.created)
-	val modified = longToNumber(obj.modified)
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
+	val rev = obj.rev ?: undefined
+	val created = longToNumber(obj.created) ?: undefined
+	val modified = longToNumber(obj.modified) ?: undefined
+	val author = obj.author ?: undefined
+	val responsible = obj.responsible ?: undefined
+	val medicalLocationId = obj.medicalLocationId ?: undefined
 	val tags = setToArray(
 		obj.tags,
 		{ x1: CodeStub ->
@@ -47,11 +47,11 @@ public fun classification_toJs(obj: DecryptedClassification): DecryptedClassific
 			codeStub_toJs(x1)
 		},
 	)
-	val endOfLife = longToNumber(obj.endOfLife)
-	val deletionDate = longToNumber(obj.deletionDate)
-	val parentId = obj.parentId
+	val endOfLife = longToNumber(obj.endOfLife) ?: undefined
+	val deletionDate = longToNumber(obj.deletionDate) ?: undefined
+	val parentId = obj.parentId ?: undefined
 	val label = obj.label
-	val templateId = obj.templateId
+	val templateId = obj.templateId ?: undefined
 	val secretForeignKeys = setToArray(
 		obj.secretForeignKeys,
 		{ x1: String ->
@@ -102,10 +102,10 @@ public fun classification_toJs(obj: DecryptedClassification): DecryptedClassific
 	)
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
-	}
+	} ?: undefined
 	val securityMetadata = obj.securityMetadata?.let { nonNull1 ->
 		securityMetadata_toJs(nonNull1)
-	}
+	} ?: undefined
 	return DecryptedClassificationJs(js("{" +
 		"id:id," +
 		"rev:rev," +
@@ -245,12 +245,12 @@ public fun classification_fromJs(obj: DecryptedClassificationJs): DecryptedClass
 @Suppress("UNUSED_VARIABLE")
 public fun classification_toJs(obj: EncryptedClassification): EncryptedClassificationJs {
 	val id = obj.id
-	val rev = obj.rev
-	val created = longToNumber(obj.created)
-	val modified = longToNumber(obj.modified)
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
+	val rev = obj.rev ?: undefined
+	val created = longToNumber(obj.created) ?: undefined
+	val modified = longToNumber(obj.modified) ?: undefined
+	val author = obj.author ?: undefined
+	val responsible = obj.responsible ?: undefined
+	val medicalLocationId = obj.medicalLocationId ?: undefined
 	val tags = setToArray(
 		obj.tags,
 		{ x1: CodeStub ->
@@ -263,11 +263,11 @@ public fun classification_toJs(obj: EncryptedClassification): EncryptedClassific
 			codeStub_toJs(x1)
 		},
 	)
-	val endOfLife = longToNumber(obj.endOfLife)
-	val deletionDate = longToNumber(obj.deletionDate)
-	val parentId = obj.parentId
+	val endOfLife = longToNumber(obj.endOfLife) ?: undefined
+	val deletionDate = longToNumber(obj.deletionDate) ?: undefined
+	val parentId = obj.parentId ?: undefined
 	val label = obj.label
-	val templateId = obj.templateId
+	val templateId = obj.templateId ?: undefined
 	val secretForeignKeys = setToArray(
 		obj.secretForeignKeys,
 		{ x1: String ->
@@ -318,10 +318,10 @@ public fun classification_toJs(obj: EncryptedClassification): EncryptedClassific
 	)
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_toJs(nonNull1)
-	}
+	} ?: undefined
 	val securityMetadata = obj.securityMetadata?.let { nonNull1 ->
 		securityMetadata_toJs(nonNull1)
-	}
+	} ?: undefined
 	return EncryptedClassificationJs(js("{" +
 		"id:id," +
 		"rev:rev," +

@@ -7,7 +7,7 @@ import kotlin.Suppress
 public fun topicByParticipantFilter_toJs(obj: TopicByParticipantFilter):
 		TopicByParticipantFilterJs {
 	val participantId = obj.participantId
-	val desc = obj.desc
+	val desc = obj.desc ?: undefined
 	return TopicByParticipantFilterJs(js("{" +
 		"participantId:participantId," +
 		"desc:desc" +

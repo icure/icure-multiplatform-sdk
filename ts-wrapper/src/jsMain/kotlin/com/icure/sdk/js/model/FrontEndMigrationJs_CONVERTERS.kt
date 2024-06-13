@@ -12,19 +12,19 @@ import kotlin.Suppress
 @Suppress("UNUSED_VARIABLE")
 public fun frontEndMigration_toJs(obj: FrontEndMigration): FrontEndMigrationJs {
 	val id = obj.id
-	val rev = obj.rev
-	val deletionDate = longToNumber(obj.deletionDate)
-	val name = obj.name
-	val startDate = longToNumber(obj.startDate)
-	val endDate = longToNumber(obj.endDate)
+	val rev = obj.rev ?: undefined
+	val deletionDate = longToNumber(obj.deletionDate) ?: undefined
+	val name = obj.name ?: undefined
+	val startDate = longToNumber(obj.startDate) ?: undefined
+	val endDate = longToNumber(obj.endDate) ?: undefined
 	val status = obj.status?.let { nonNull1 ->
 		nonNull1.name
-	}
-	val logs = obj.logs
-	val userId = obj.userId
-	val startKey = obj.startKey
-	val startKeyDocId = obj.startKeyDocId
-	val processCount = longToNumber(obj.processCount)
+	} ?: undefined
+	val logs = obj.logs ?: undefined
+	val userId = obj.userId ?: undefined
+	val startKey = obj.startKey ?: undefined
+	val startKeyDocId = obj.startKeyDocId ?: undefined
+	val processCount = longToNumber(obj.processCount) ?: undefined
 	val properties = setToArray(
 		obj.properties,
 		{ x1: DecryptedPropertyStub ->
