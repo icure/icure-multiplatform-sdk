@@ -4,7 +4,6 @@
 package com.icure.sdk.js.api.flavoured
 
 import com.icure.sdk.js.crypto.entities.InvoiceShareOptionsJs
-import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.model.DecryptedInvoiceJs
 import com.icure.sdk.js.model.EncryptedInvoiceJs
@@ -12,7 +11,6 @@ import com.icure.sdk.js.model.IcureStubJs
 import com.icure.sdk.js.model.InvoiceJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.PatientJs
-import com.icure.sdk.js.model.UserJs
 import com.icure.sdk.js.model.`data`.LabelledOccurenceJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.embed.EncryptedInvoicingCodeJs
@@ -41,7 +39,7 @@ public external interface InvoiceApiJs {
 	public fun withEncryptionMetadata(
 		base: DecryptedInvoiceJs?,
 		patient: PatientJs?,
-		options: InvoiceApi_withEncryptionMetadata_Options?,
+		options: dynamic,
 	): Promise<DecryptedInvoiceJs>
 
 	public fun getEncryptionKeysOf(invoice: InvoiceJs): Promise<Array<String>>
@@ -64,7 +62,7 @@ public external interface InvoiceApiJs {
 	public fun shareWith(
 		delegateId: String,
 		invoice: DecryptedInvoiceJs,
-		options: InvoiceApi_shareWith_Options?,
+		options: dynamic,
 	): Promise<SimpleShareResultJs<DecryptedInvoiceJs>>
 
 	public fun tryShareWithMany(invoice: DecryptedInvoiceJs,
@@ -77,7 +75,7 @@ public external interface InvoiceApiJs {
 	public fun findInvoicesByHcPartyPatient(
 		hcPartyId: String,
 		patient: PatientJs,
-		options: InvoiceApi_findInvoicesByHcPartyPatient_Options?,
+		options: dynamic,
 	): Promise<PaginatedListIteratorJs<DecryptedInvoiceJs>>
 
 	public fun modifyInvoice(entity: DecryptedInvoiceJs): Promise<DecryptedInvoiceJs>
@@ -110,7 +108,7 @@ public external interface InvoiceApiJs {
 		sentMediumType: String,
 		secretFKeys: String,
 		invoicingCodes: Array<EncryptedInvoicingCodeJs>,
-		options: InvoiceApi_appendCodes_Options?,
+		options: dynamic,
 	): Promise<Array<DecryptedInvoiceJs>>
 
 	public fun removeCodes(
@@ -120,8 +118,8 @@ public external interface InvoiceApiJs {
 		tarificationIds: Array<String>,
 	): Promise<Array<DecryptedInvoiceJs>>
 
-	public fun findInvoicesByAuthor(hcPartyId: String,
-			options: InvoiceApi_findInvoicesByAuthor_Options?): Promise<PaginatedListJs<DecryptedInvoiceJs>>
+	public fun findInvoicesByAuthor(hcPartyId: String, options: dynamic):
+			Promise<PaginatedListJs<DecryptedInvoiceJs>>
 
 	public fun listInvoicesByHCPartyAndPatientForeignKeys(hcPartyId: String,
 			secretPatientKeys: Array<String>): Promise<Array<DecryptedInvoiceJs>>
@@ -134,7 +132,7 @@ public external interface InvoiceApiJs {
 		sentMediumType: String,
 		invoiceType: String,
 		sent: Boolean,
-		options: InvoiceApi_listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate_Options?,
+		options: dynamic,
 	): Promise<Array<DecryptedInvoiceJs>>
 
 	public fun listInvoicesByContactIds(contactIds: Array<String>): Promise<Array<DecryptedInvoiceJs>>
@@ -165,63 +163,6 @@ public external interface InvoiceApiJs {
 	public fun listAllHcpsByStatus(
 		status: String,
 		hcpIds: Array<String>,
-		options: InvoiceApi_listAllHcpsByStatus_Options?,
+		options: dynamic,
 	): Promise<Array<DecryptedInvoiceJs>>
-}
-
-public external interface InvoiceApi_withEncryptionMetadata_Options {
-	public val user: UserJs?
-
-	public val delegates: Record<String, String>
-
-	public val secretId: SecretIdOptionJs
-}
-
-public external interface InvoiceApi_shareWith_Options {
-	public val shareEncryptionKeys: String
-
-	public val shareOwningEntityIds: String
-
-	public val requestedPermission: String
-}
-
-public external interface InvoiceApi_findInvoicesByHcPartyPatient_Options {
-	public val startDate: Double?
-
-	public val endDate: Double?
-
-	public val descending: Boolean?
-}
-
-public external interface InvoiceApi_appendCodes_Options {
-	public val insuranceId: String?
-
-	public val invoiceId: String?
-
-	public val gracePeriod: Double?
-}
-
-public external interface InvoiceApi_findInvoicesByAuthor_Options {
-	public val fromDate: Double?
-
-	public val toDate: Double?
-
-	public val startKey: dynamic
-
-	public val startDocumentId: String?
-
-	public val limit: Double?
-}
-
-public external interface InvoiceApi_listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate_Options
-		{
-	public val from: Double?
-
-	public val to: Double?
-}
-
-public external interface InvoiceApi_listAllHcpsByStatus_Options {
-	public val from: Double?
-
-	public val to: Double?
 }

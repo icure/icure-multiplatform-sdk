@@ -2,27 +2,53 @@ package com.icure.sdk.js.model
 
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.listToArray
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.model.Group
 import com.icure.sdk.model.UserGroup
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun userGroup_toJs(obj: UserGroup): UserGroupJs {
-	val groupId = obj.groupId
-	val groupName = obj.groupName
+	val groupId = nullToUndefined(
+		obj.groupId
+	)
+	val groupName = nullToUndefined(
+		obj.groupName
+	)
 	val groupsHierarchy = listToArray(
 		obj.groupsHierarchy,
 		{ x1: Group ->
 			group_toJs(x1)
 		},
 	)
-	val userId = obj.userId
-	val login = obj.login
-	val name = obj.name
-	val email = obj.email
-	val phone = obj.phone
-	val patientId = obj.patientId
-	val healthcarePartyId = obj.healthcarePartyId
-	val deviceId = obj.deviceId
-	val nameOfParentOfTopmostGroupInHierarchy = obj.nameOfParentOfTopmostGroupInHierarchy
+	val userId = nullToUndefined(
+		obj.userId
+	)
+	val login = nullToUndefined(
+		obj.login
+	)
+	val name = nullToUndefined(
+		obj.name
+	)
+	val email = nullToUndefined(
+		obj.email
+	)
+	val phone = nullToUndefined(
+		obj.phone
+	)
+	val patientId = nullToUndefined(
+		obj.patientId
+	)
+	val healthcarePartyId = nullToUndefined(
+		obj.healthcarePartyId
+	)
+	val deviceId = nullToUndefined(
+		obj.deviceId
+	)
+	val nameOfParentOfTopmostGroupInHierarchy = nullToUndefined(
+		obj.nameOfParentOfTopmostGroupInHierarchy
+	)
 	return UserGroupJs(js("{" +
 		"groupId:groupId," +
 		"groupName:groupName," +
@@ -40,8 +66,8 @@ public fun userGroup_toJs(obj: UserGroup): UserGroupJs {
 }
 
 public fun userGroup_fromJs(obj: UserGroupJs): UserGroup {
-	val groupId = obj.groupId
-	val groupName = obj.groupName
+	val groupId = undefinedToNull(obj.groupId)
+	val groupName = undefinedToNull(obj.groupName)
 	val groupsHierarchy = arrayToList(
 		obj.groupsHierarchy,
 		"obj.groupsHierarchy",
@@ -49,15 +75,16 @@ public fun userGroup_fromJs(obj: UserGroupJs): UserGroup {
 			group_fromJs(x1)
 		},
 	)
-	val userId = obj.userId
-	val login = obj.login
-	val name = obj.name
-	val email = obj.email
-	val phone = obj.phone
-	val patientId = obj.patientId
-	val healthcarePartyId = obj.healthcarePartyId
-	val deviceId = obj.deviceId
-	val nameOfParentOfTopmostGroupInHierarchy = obj.nameOfParentOfTopmostGroupInHierarchy
+	val userId = undefinedToNull(obj.userId)
+	val login = undefinedToNull(obj.login)
+	val name = undefinedToNull(obj.name)
+	val email = undefinedToNull(obj.email)
+	val phone = undefinedToNull(obj.phone)
+	val patientId = undefinedToNull(obj.patientId)
+	val healthcarePartyId = undefinedToNull(obj.healthcarePartyId)
+	val deviceId = undefinedToNull(obj.deviceId)
+	val nameOfParentOfTopmostGroupInHierarchy =
+			undefinedToNull(obj.nameOfParentOfTopmostGroupInHierarchy)
 	return UserGroup(
 		groupId = groupId,
 		groupName = groupName,

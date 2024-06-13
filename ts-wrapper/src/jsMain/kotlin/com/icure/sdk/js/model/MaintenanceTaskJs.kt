@@ -31,9 +31,6 @@ public sealed external interface MaintenanceTaskJs : StoredDocumentJs, ICureDocu
 	public val status: String
 
 	public val isEncrypted: Boolean
-
-	@JsName("${'$'}ktClass")
-	public val ktClass: String
 }
 
 @JsName("DecryptedMaintenanceTask")
@@ -83,8 +80,6 @@ public external class DecryptedMaintenanceTaskJs(
 	override val securityMetadata: SecurityMetadataJs?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }
 
 @JsName("EncryptedMaintenanceTask")
@@ -134,6 +129,4 @@ public external class EncryptedMaintenanceTaskJs(
 	override val securityMetadata: SecurityMetadataJs?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }

@@ -2,10 +2,14 @@ package com.icure.sdk.js.model.embed.form.template
 
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.listToArray
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.model.embed.form.template.Section
 import com.icure.sdk.model.embed.form.template.StructureElement
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun section_toJs(obj: Section): SectionJs {
 	val section = obj.section
 	val fields = listToArray(
@@ -14,12 +18,16 @@ public fun section_toJs(obj: Section): SectionJs {
 			structureElement_toJs(x1)
 		},
 	)
-	val description = obj.description
-	val keywords = listToArray(
-		obj.keywords,
-		{ x1: String ->
-			x1
-		},
+	val description = nullToUndefined(
+		obj.description
+	)
+	val keywords = nullToUndefined(
+		listToArray(
+			obj.keywords,
+			{ x1: String ->
+				x1
+			},
+		)
 	)
 	return SectionJs(js("{" +
 		"section:section," +
@@ -38,7 +46,7 @@ public fun section_fromJs(obj: SectionJs): Section {
 			structureElement_fromJs(x1)
 		},
 	)
-	val description = obj.description
+	val description = undefinedToNull(obj.description)
 	val keywords = arrayToList(
 		obj.keywords,
 		"obj.keywords",

@@ -19,9 +19,6 @@ public sealed external interface CareTeamMemberJs : EncryptableJs, IdentifiableJ
 	public val quality: CodeStubJs?
 
 	public val isEncrypted: Boolean
-
-	@JsName("${'$'}ktClass")
-	public val ktClass: String
 }
 
 @JsName("DecryptedCareTeamMember")
@@ -39,8 +36,6 @@ public external class DecryptedCareTeamMemberJs(
 	override val encryptedSelf: String?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }
 
 @JsName("EncryptedCareTeamMember")
@@ -58,6 +53,4 @@ public external class EncryptedCareTeamMemberJs(
 	override val encryptedSelf: String?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }

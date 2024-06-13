@@ -83,7 +83,7 @@ object Serialization {
 	@OptIn(ExperimentalSerializationApi::class)
 	val json = Json {
 		encodeDefaults = false
-		explicitNulls = false
+		explicitNulls = true
 		ignoreUnknownKeys = false
 		serializersModule = ICureSerializerModule
 	}
@@ -91,7 +91,7 @@ object Serialization {
 	@OptIn(ExperimentalSerializationApi::class)
 	val lenientJson = Json {
 		encodeDefaults = false
-		explicitNulls = false
+		explicitNulls = true
 		ignoreUnknownKeys = true
 		serializersModule = ICureSerializerModule
 	}

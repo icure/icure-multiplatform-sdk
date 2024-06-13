@@ -1,7 +1,9 @@
 package com.icure.sdk.js.model
 
 import com.icure.sdk.model.BooleanResponse
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun booleanResponse_toJs(obj: BooleanResponse): BooleanResponseJs {
 	val response = obj.response
 	return BooleanResponseJs(js("{" +

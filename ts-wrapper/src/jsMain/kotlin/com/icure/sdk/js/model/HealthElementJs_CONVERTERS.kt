@@ -6,10 +6,12 @@ import com.icure.sdk.js.model.CheckedConverters.intToNumber
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.longToNumber
 import com.icure.sdk.js.model.CheckedConverters.mapToObject
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.sdk.js.model.CheckedConverters.setToArray
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.base.CodeStubJs
 import com.icure.sdk.js.model.base.IdentifierJs
 import com.icure.sdk.js.model.base.codeStub_fromJs
@@ -54,8 +56,10 @@ import com.icure.sdk.model.embed.EncryptedPlanOfAction
 import com.icure.sdk.model.embed.Laterality
 import kotlin.Array
 import kotlin.String
+import kotlin.Suppress
 import kotlin.collections.Set
 
+@Suppress("UNUSED_VARIABLE")
 public fun healthElement_toJs(obj: DecryptedHealthElement): DecryptedHealthElementJs {
 	val id = obj.id
 	val identifiers = listToArray(
@@ -64,12 +68,24 @@ public fun healthElement_toJs(obj: DecryptedHealthElement): DecryptedHealthEleme
 			identifier_toJs(x1)
 		},
 	)
-	val rev = obj.rev
-	val created = longToNumber(obj.created)
-	val modified = longToNumber(obj.modified)
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
+	val rev = nullToUndefined(
+		obj.rev
+	)
+	val created = nullToUndefined(
+		longToNumber(obj.created)
+	)
+	val modified = nullToUndefined(
+		longToNumber(obj.modified)
+	)
+	val author = nullToUndefined(
+		obj.author
+	)
+	val responsible = nullToUndefined(
+		obj.responsible
+	)
+	val medicalLocationId = nullToUndefined(
+		obj.medicalLocationId
+	)
 	val tags = setToArray(
 		obj.tags,
 		{ x1: CodeStub ->
@@ -82,14 +98,30 @@ public fun healthElement_toJs(obj: DecryptedHealthElement): DecryptedHealthEleme
 			codeStub_toJs(x1)
 		},
 	)
-	val endOfLife = longToNumber(obj.endOfLife)
-	val deletionDate = longToNumber(obj.deletionDate)
-	val healthElementId = obj.healthElementId
-	val valueDate = longToNumber(obj.valueDate)
-	val openingDate = longToNumber(obj.openingDate)
-	val closingDate = longToNumber(obj.closingDate)
-	val descr = obj.descr
-	val note = obj.note
+	val endOfLife = nullToUndefined(
+		longToNumber(obj.endOfLife)
+	)
+	val deletionDate = nullToUndefined(
+		longToNumber(obj.deletionDate)
+	)
+	val healthElementId = nullToUndefined(
+		obj.healthElementId
+	)
+	val valueDate = nullToUndefined(
+		longToNumber(obj.valueDate)
+	)
+	val openingDate = nullToUndefined(
+		longToNumber(obj.openingDate)
+	)
+	val closingDate = nullToUndefined(
+		longToNumber(obj.closingDate)
+	)
+	val descr = nullToUndefined(
+		obj.descr
+	)
+	val note = nullToUndefined(
+		obj.note
+	)
 	val notes = listToArray(
 		obj.notes,
 		{ x1: Annotation ->
@@ -97,13 +129,21 @@ public fun healthElement_toJs(obj: DecryptedHealthElement): DecryptedHealthEleme
 		},
 	)
 	val relevant = obj.relevant
-	val idOpeningContact = obj.idOpeningContact
-	val idClosingContact = obj.idClosingContact
-	val idService = obj.idService
+	val idOpeningContact = nullToUndefined(
+		obj.idOpeningContact
+	)
+	val idClosingContact = nullToUndefined(
+		obj.idClosingContact
+	)
+	val idService = nullToUndefined(
+		obj.idService
+	)
 	val status = intToNumber(obj.status)
-	val laterality = obj.laterality?.let { nonNull1 ->
-		obj.laterality?.name
-	}
+	val laterality = nullToUndefined(
+		obj.laterality?.let { nonNull1 ->
+			nonNull1.name
+		}
+	)
 	val plansOfAction = listToArray(
 		obj.plansOfAction,
 		{ x1: DecryptedPlanOfAction ->
@@ -170,12 +210,16 @@ public fun healthElement_toJs(obj: DecryptedHealthElement): DecryptedHealthEleme
 			)
 		},
 	)
-	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
-		base64String_toJs(nonNull1)
-	}
-	val securityMetadata = obj.securityMetadata?.let { nonNull1 ->
-		securityMetadata_toJs(nonNull1)
-	}
+	val encryptedSelf = nullToUndefined(
+		obj.encryptedSelf?.let { nonNull1 ->
+			base64String_toJs(nonNull1)
+		}
+	)
+	val securityMetadata = nullToUndefined(
+		obj.securityMetadata?.let { nonNull1 ->
+			securityMetadata_toJs(nonNull1)
+		}
+	)
 	return DecryptedHealthElementJs(js("{" +
 		"id:id," +
 		"identifiers:identifiers," +
@@ -223,12 +267,12 @@ public fun healthElement_fromJs(obj: DecryptedHealthElementJs): DecryptedHealthE
 			identifier_fromJs(x1)
 		},
 	)
-	val rev = obj.rev
+	val rev = undefinedToNull(obj.rev)
 	val created = numberToLong(obj.created, "obj.created")
 	val modified = numberToLong(obj.modified, "obj.modified")
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
+	val author = undefinedToNull(obj.author)
+	val responsible = undefinedToNull(obj.responsible)
+	val medicalLocationId = undefinedToNull(obj.medicalLocationId)
 	val tags = arrayToSet(
 		obj.tags,
 		"obj.tags",
@@ -245,12 +289,12 @@ public fun healthElement_fromJs(obj: DecryptedHealthElementJs): DecryptedHealthE
 	)
 	val endOfLife = numberToLong(obj.endOfLife, "obj.endOfLife")
 	val deletionDate = numberToLong(obj.deletionDate, "obj.deletionDate")
-	val healthElementId = obj.healthElementId
+	val healthElementId = undefinedToNull(obj.healthElementId)
 	val valueDate = numberToLong(obj.valueDate, "obj.valueDate")
 	val openingDate = numberToLong(obj.openingDate, "obj.openingDate")
 	val closingDate = numberToLong(obj.closingDate, "obj.closingDate")
-	val descr = obj.descr
-	val note = obj.note
+	val descr = undefinedToNull(obj.descr)
+	val note = undefinedToNull(obj.note)
 	val notes = arrayToList(
 		obj.notes,
 		"obj.notes",
@@ -259,9 +303,9 @@ public fun healthElement_fromJs(obj: DecryptedHealthElementJs): DecryptedHealthE
 		},
 	)
 	val relevant = obj.relevant
-	val idOpeningContact = obj.idOpeningContact
-	val idClosingContact = obj.idClosingContact
-	val idService = obj.idService
+	val idOpeningContact = undefinedToNull(obj.idOpeningContact)
+	val idClosingContact = undefinedToNull(obj.idClosingContact)
+	val idService = undefinedToNull(obj.idService)
 	val status = numberToInt(obj.status, "obj.status")
 	val laterality = obj.laterality?.let { nonNull1 ->
 		Laterality.valueOf(nonNull1)
@@ -386,6 +430,7 @@ public fun healthElement_fromJs(obj: DecryptedHealthElementJs): DecryptedHealthE
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun healthElement_toJs(obj: EncryptedHealthElement): EncryptedHealthElementJs {
 	val id = obj.id
 	val identifiers = listToArray(
@@ -394,12 +439,24 @@ public fun healthElement_toJs(obj: EncryptedHealthElement): EncryptedHealthEleme
 			identifier_toJs(x1)
 		},
 	)
-	val rev = obj.rev
-	val created = longToNumber(obj.created)
-	val modified = longToNumber(obj.modified)
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
+	val rev = nullToUndefined(
+		obj.rev
+	)
+	val created = nullToUndefined(
+		longToNumber(obj.created)
+	)
+	val modified = nullToUndefined(
+		longToNumber(obj.modified)
+	)
+	val author = nullToUndefined(
+		obj.author
+	)
+	val responsible = nullToUndefined(
+		obj.responsible
+	)
+	val medicalLocationId = nullToUndefined(
+		obj.medicalLocationId
+	)
 	val tags = setToArray(
 		obj.tags,
 		{ x1: CodeStub ->
@@ -412,14 +469,30 @@ public fun healthElement_toJs(obj: EncryptedHealthElement): EncryptedHealthEleme
 			codeStub_toJs(x1)
 		},
 	)
-	val endOfLife = longToNumber(obj.endOfLife)
-	val deletionDate = longToNumber(obj.deletionDate)
-	val healthElementId = obj.healthElementId
-	val valueDate = longToNumber(obj.valueDate)
-	val openingDate = longToNumber(obj.openingDate)
-	val closingDate = longToNumber(obj.closingDate)
-	val descr = obj.descr
-	val note = obj.note
+	val endOfLife = nullToUndefined(
+		longToNumber(obj.endOfLife)
+	)
+	val deletionDate = nullToUndefined(
+		longToNumber(obj.deletionDate)
+	)
+	val healthElementId = nullToUndefined(
+		obj.healthElementId
+	)
+	val valueDate = nullToUndefined(
+		longToNumber(obj.valueDate)
+	)
+	val openingDate = nullToUndefined(
+		longToNumber(obj.openingDate)
+	)
+	val closingDate = nullToUndefined(
+		longToNumber(obj.closingDate)
+	)
+	val descr = nullToUndefined(
+		obj.descr
+	)
+	val note = nullToUndefined(
+		obj.note
+	)
 	val notes = listToArray(
 		obj.notes,
 		{ x1: Annotation ->
@@ -427,13 +500,21 @@ public fun healthElement_toJs(obj: EncryptedHealthElement): EncryptedHealthEleme
 		},
 	)
 	val relevant = obj.relevant
-	val idOpeningContact = obj.idOpeningContact
-	val idClosingContact = obj.idClosingContact
-	val idService = obj.idService
+	val idOpeningContact = nullToUndefined(
+		obj.idOpeningContact
+	)
+	val idClosingContact = nullToUndefined(
+		obj.idClosingContact
+	)
+	val idService = nullToUndefined(
+		obj.idService
+	)
 	val status = intToNumber(obj.status)
-	val laterality = obj.laterality?.let { nonNull1 ->
-		obj.laterality?.name
-	}
+	val laterality = nullToUndefined(
+		obj.laterality?.let { nonNull1 ->
+			nonNull1.name
+		}
+	)
 	val plansOfAction = listToArray(
 		obj.plansOfAction,
 		{ x1: EncryptedPlanOfAction ->
@@ -500,12 +581,16 @@ public fun healthElement_toJs(obj: EncryptedHealthElement): EncryptedHealthEleme
 			)
 		},
 	)
-	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
-		base64String_toJs(nonNull1)
-	}
-	val securityMetadata = obj.securityMetadata?.let { nonNull1 ->
-		securityMetadata_toJs(nonNull1)
-	}
+	val encryptedSelf = nullToUndefined(
+		obj.encryptedSelf?.let { nonNull1 ->
+			base64String_toJs(nonNull1)
+		}
+	)
+	val securityMetadata = nullToUndefined(
+		obj.securityMetadata?.let { nonNull1 ->
+			securityMetadata_toJs(nonNull1)
+		}
+	)
 	return EncryptedHealthElementJs(js("{" +
 		"id:id," +
 		"identifiers:identifiers," +
@@ -553,12 +638,12 @@ public fun healthElement_fromJs(obj: EncryptedHealthElementJs): EncryptedHealthE
 			identifier_fromJs(x1)
 		},
 	)
-	val rev = obj.rev
+	val rev = undefinedToNull(obj.rev)
 	val created = numberToLong(obj.created, "obj.created")
 	val modified = numberToLong(obj.modified, "obj.modified")
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
+	val author = undefinedToNull(obj.author)
+	val responsible = undefinedToNull(obj.responsible)
+	val medicalLocationId = undefinedToNull(obj.medicalLocationId)
 	val tags = arrayToSet(
 		obj.tags,
 		"obj.tags",
@@ -575,12 +660,12 @@ public fun healthElement_fromJs(obj: EncryptedHealthElementJs): EncryptedHealthE
 	)
 	val endOfLife = numberToLong(obj.endOfLife, "obj.endOfLife")
 	val deletionDate = numberToLong(obj.deletionDate, "obj.deletionDate")
-	val healthElementId = obj.healthElementId
+	val healthElementId = undefinedToNull(obj.healthElementId)
 	val valueDate = numberToLong(obj.valueDate, "obj.valueDate")
 	val openingDate = numberToLong(obj.openingDate, "obj.openingDate")
 	val closingDate = numberToLong(obj.closingDate, "obj.closingDate")
-	val descr = obj.descr
-	val note = obj.note
+	val descr = undefinedToNull(obj.descr)
+	val note = undefinedToNull(obj.note)
 	val notes = arrayToList(
 		obj.notes,
 		"obj.notes",
@@ -589,9 +674,9 @@ public fun healthElement_fromJs(obj: EncryptedHealthElementJs): EncryptedHealthE
 		},
 	)
 	val relevant = obj.relevant
-	val idOpeningContact = obj.idOpeningContact
-	val idClosingContact = obj.idClosingContact
-	val idService = obj.idService
+	val idOpeningContact = undefinedToNull(obj.idOpeningContact)
+	val idClosingContact = undefinedToNull(obj.idClosingContact)
+	val idService = undefinedToNull(obj.idService)
 	val status = numberToInt(obj.status, "obj.status")
 	val laterality = obj.laterality?.let { nonNull1 ->
 		Laterality.valueOf(nonNull1)
@@ -716,6 +801,7 @@ public fun healthElement_fromJs(obj: EncryptedHealthElementJs): EncryptedHealthE
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun healthElement_toJs(obj: HealthElement): HealthElementJs = when (obj) {
 	is EncryptedHealthElement -> healthElement_toJs(obj)
 	is DecryptedHealthElement -> healthElement_toJs(obj)

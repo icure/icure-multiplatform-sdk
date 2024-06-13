@@ -12,7 +12,6 @@ import com.icure.sdk.js.model.filter.chain.FilterChainJs
 import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.websocket.ConnectionJs
 import kotlin.Array
-import kotlin.Double
 import kotlin.String
 import kotlin.Unit
 import kotlin.js.JsName
@@ -24,7 +23,7 @@ public external interface TopicFlavouredApiJs<E : TopicJs> {
 	public fun shareWith(
 		delegateId: String,
 		topic: E,
-		options: TopicFlavouredApi_shareWith_Options?,
+		options: dynamic,
 	): Promise<SimpleShareResultJs<E>>
 
 	public fun tryShareWithMany(topic: E, delegates: Record<String, TopicShareOptionsJs>):
@@ -38,8 +37,8 @@ public external interface TopicFlavouredApiJs<E : TopicJs> {
 
 	public fun getTopics(entityIds: Array<String>): Promise<Array<E>>
 
-	public fun filterTopicsBy(filterChain: FilterChainJs<TopicJs>,
-			options: TopicFlavouredApi_filterTopicsBy_Options?): Promise<PaginatedListJs<E>>
+	public fun filterTopicsBy(filterChain: FilterChainJs<TopicJs>, options: dynamic):
+			Promise<PaginatedListJs<E>>
 
 	public fun addParticipant(
 		entityId: String,
@@ -53,32 +52,6 @@ public external interface TopicFlavouredApiJs<E : TopicJs> {
 		events: Array<String>,
 		filter: AbstractFilterJs<TopicJs>,
 		eventFired: (E) -> Promise<Unit>,
-		options: TopicFlavouredApi_subscribeToEvents_Options?,
+		options: dynamic,
 	): Promise<ConnectionJs>
-}
-
-public external interface TopicFlavouredApi_shareWith_Options {
-	public val shareEncryptionKeys: String
-
-	public val shareOwningEntityIds: String
-
-	public val requestedPermission: String
-}
-
-public external interface TopicFlavouredApi_filterTopicsBy_Options {
-	public val startDocumentId: String?
-
-	public val limit: Double?
-}
-
-public external interface TopicFlavouredApi_subscribeToEvents_Options {
-	public val onConnected: () -> Promise<Unit>
-
-	public val channelCapacity: Double
-
-	public val retryDelay: Double
-
-	public val retryDelayExponentFactor: Double
-
-	public val maxRetries: Double
 }

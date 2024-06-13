@@ -1,7 +1,9 @@
 package com.icure.sdk.js.model
 
 import com.icure.sdk.model.GroupDeletionReport
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun groupDeletionReport_toJs(obj: GroupDeletionReport): GroupDeletionReportJs {
 	val type = obj.type
 	val id = obj.id

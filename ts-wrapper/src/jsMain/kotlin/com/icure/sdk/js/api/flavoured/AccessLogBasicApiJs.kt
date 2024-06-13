@@ -7,7 +7,6 @@ import com.icure.sdk.js.model.EncryptedAccessLogJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import kotlin.Array
-import kotlin.Boolean
 import kotlin.Double
 import kotlin.String
 import kotlin.js.JsName
@@ -34,37 +33,9 @@ public external interface AccessLogBasicApiJs {
 		limit: Double?,
 	): Promise<PaginatedListJs<EncryptedAccessLogJs>>
 
-	public fun findAccessLogsByUserAfterDate(userId: String,
-			options: AccessLogBasicApi_findAccessLogsByUserAfterDate_Options?):
+	public fun findAccessLogsByUserAfterDate(userId: String, options: dynamic):
 			Promise<PaginatedListJs<EncryptedAccessLogJs>>
 
-	public fun findAccessLogsInGroup(groupId: String,
-			options: AccessLogBasicApi_findAccessLogsInGroup_Options?):
+	public fun findAccessLogsInGroup(groupId: String, options: dynamic):
 			Promise<PaginatedListJs<EncryptedAccessLogJs>>
-}
-
-public external interface AccessLogBasicApi_findAccessLogsByUserAfterDate_Options {
-	public val accessType: String?
-
-	public val startDate: Double?
-
-	public val startKey: String?
-
-	public val startDocumentId: String?
-
-	public val limit: Double?
-
-	public val descending: Boolean?
-}
-
-public external interface AccessLogBasicApi_findAccessLogsInGroup_Options {
-	public val fromEpoch: Double?
-
-	public val toEpoch: Double?
-
-	public val startKey: Double?
-
-	public val startDocumentId: String?
-
-	public val limit: Double?
 }

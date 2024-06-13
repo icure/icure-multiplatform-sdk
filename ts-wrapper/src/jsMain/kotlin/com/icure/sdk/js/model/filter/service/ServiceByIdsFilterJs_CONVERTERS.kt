@@ -1,10 +1,14 @@
 package com.icure.sdk.js.model.filter.service
 
 import com.icure.sdk.js.model.CheckedConverters.arrayToSet
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.setToArray
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.model.filter.service.ServiceByIdsFilter
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun serviceByIdsFilter_toJs(obj: ServiceByIdsFilter): ServiceByIdsFilterJs {
 	val ids = setToArray(
 		obj.ids,
@@ -12,7 +16,9 @@ public fun serviceByIdsFilter_toJs(obj: ServiceByIdsFilter): ServiceByIdsFilterJ
 			x1
 		},
 	)
-	val desc = obj.desc
+	val desc = nullToUndefined(
+		obj.desc
+	)
 	return ServiceByIdsFilterJs(js("{" +
 		"ids:ids," +
 		"desc:desc" +
@@ -27,7 +33,7 @@ public fun serviceByIdsFilter_fromJs(obj: ServiceByIdsFilterJs): ServiceByIdsFil
 			x1
 		},
 	)
-	val desc = obj.desc
+	val desc = undefinedToNull(obj.desc)
 	return ServiceByIdsFilter(
 		ids = ids,
 		desc = desc,

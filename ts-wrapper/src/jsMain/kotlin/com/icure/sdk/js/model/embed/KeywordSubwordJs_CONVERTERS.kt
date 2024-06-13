@@ -2,15 +2,23 @@ package com.icure.sdk.js.model.embed
 
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.listToArray
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.model.embed.KeywordSubword
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun keywordSubword_toJs(obj: KeywordSubword): KeywordSubwordJs {
-	val value = obj.value
-	val subWords = listToArray(
-		obj.subWords,
-		{ x1: KeywordSubword ->
-			keywordSubword_toJs(x1)
-		},
+	val value = nullToUndefined(
+		obj.value
+	)
+	val subWords = nullToUndefined(
+		listToArray(
+			obj.subWords,
+			{ x1: KeywordSubword ->
+				keywordSubword_toJs(x1)
+			},
+		)
 	)
 	return KeywordSubwordJs(js("{" +
 		"value:value," +
@@ -19,7 +27,7 @@ public fun keywordSubword_toJs(obj: KeywordSubword): KeywordSubwordJs {
 }
 
 public fun keywordSubword_fromJs(obj: KeywordSubwordJs): KeywordSubword {
-	val value = obj.value
+	val value = undefinedToNull(obj.value)
 	val subWords = arrayToList(
 		obj.subWords,
 		"obj.subWords",

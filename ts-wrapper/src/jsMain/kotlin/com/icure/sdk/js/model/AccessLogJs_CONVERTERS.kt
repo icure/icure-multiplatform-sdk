@@ -4,10 +4,12 @@ import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.instantToNumber
 import com.icure.sdk.js.model.CheckedConverters.longToNumber
 import com.icure.sdk.js.model.CheckedConverters.mapToObject
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.numberToInstant
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.sdk.js.model.CheckedConverters.setToArray
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.base.CodeStubJs
 import com.icure.sdk.js.model.base.codeStub_fromJs
 import com.icure.sdk.js.model.base.codeStub_toJs
@@ -25,16 +27,30 @@ import com.icure.sdk.model.base.CodeStub
 import com.icure.sdk.model.embed.Delegation
 import kotlin.Array
 import kotlin.String
+import kotlin.Suppress
 import kotlin.collections.Set
 
+@Suppress("UNUSED_VARIABLE")
 public fun accessLog_toJs(obj: DecryptedAccessLog): DecryptedAccessLogJs {
 	val id = obj.id
-	val rev = obj.rev
-	val created = longToNumber(obj.created)
-	val modified = longToNumber(obj.modified)
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
+	val rev = nullToUndefined(
+		obj.rev
+	)
+	val created = nullToUndefined(
+		longToNumber(obj.created)
+	)
+	val modified = nullToUndefined(
+		longToNumber(obj.modified)
+	)
+	val author = nullToUndefined(
+		obj.author
+	)
+	val responsible = nullToUndefined(
+		obj.responsible
+	)
+	val medicalLocationId = nullToUndefined(
+		obj.medicalLocationId
+	)
 	val tags = setToArray(
 		obj.tags,
 		{ x1: CodeStub ->
@@ -47,14 +63,30 @@ public fun accessLog_toJs(obj: DecryptedAccessLog): DecryptedAccessLogJs {
 			codeStub_toJs(x1)
 		},
 	)
-	val endOfLife = longToNumber(obj.endOfLife)
-	val deletionDate = longToNumber(obj.deletionDate)
-	val objectId = obj.objectId
-	val accessType = obj.accessType
-	val user = obj.user
-	val detail = obj.detail
-	val date = instantToNumber(obj.date)
-	val patientId = obj.patientId
+	val endOfLife = nullToUndefined(
+		longToNumber(obj.endOfLife)
+	)
+	val deletionDate = nullToUndefined(
+		longToNumber(obj.deletionDate)
+	)
+	val objectId = nullToUndefined(
+		obj.objectId
+	)
+	val accessType = nullToUndefined(
+		obj.accessType
+	)
+	val user = nullToUndefined(
+		obj.user
+	)
+	val detail = nullToUndefined(
+		obj.detail
+	)
+	val date = nullToUndefined(
+		instantToNumber(obj.date)
+	)
+	val patientId = nullToUndefined(
+		obj.patientId
+	)
 	val secretForeignKeys = setToArray(
 		obj.secretForeignKeys,
 		{ x1: String ->
@@ -103,12 +135,16 @@ public fun accessLog_toJs(obj: DecryptedAccessLog): DecryptedAccessLogJs {
 			)
 		},
 	)
-	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
-		base64String_toJs(nonNull1)
-	}
-	val securityMetadata = obj.securityMetadata?.let { nonNull1 ->
-		securityMetadata_toJs(nonNull1)
-	}
+	val encryptedSelf = nullToUndefined(
+		obj.encryptedSelf?.let { nonNull1 ->
+			base64String_toJs(nonNull1)
+		}
+	)
+	val securityMetadata = nullToUndefined(
+		obj.securityMetadata?.let { nonNull1 ->
+			securityMetadata_toJs(nonNull1)
+		}
+	)
 	return DecryptedAccessLogJs(js("{" +
 		"id:id," +
 		"rev:rev," +
@@ -138,12 +174,12 @@ public fun accessLog_toJs(obj: DecryptedAccessLog): DecryptedAccessLogJs {
 
 public fun accessLog_fromJs(obj: DecryptedAccessLogJs): DecryptedAccessLog {
 	val id = obj.id
-	val rev = obj.rev
+	val rev = undefinedToNull(obj.rev)
 	val created = numberToLong(obj.created, "obj.created")
 	val modified = numberToLong(obj.modified, "obj.modified")
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
+	val author = undefinedToNull(obj.author)
+	val responsible = undefinedToNull(obj.responsible)
+	val medicalLocationId = undefinedToNull(obj.medicalLocationId)
 	val tags = arrayToSet(
 		obj.tags,
 		"obj.tags",
@@ -160,12 +196,12 @@ public fun accessLog_fromJs(obj: DecryptedAccessLogJs): DecryptedAccessLog {
 	)
 	val endOfLife = numberToLong(obj.endOfLife, "obj.endOfLife")
 	val deletionDate = numberToLong(obj.deletionDate, "obj.deletionDate")
-	val objectId = obj.objectId
-	val accessType = obj.accessType
-	val user = obj.user
-	val detail = obj.detail
+	val objectId = undefinedToNull(obj.objectId)
+	val accessType = undefinedToNull(obj.accessType)
+	val user = undefinedToNull(obj.user)
+	val detail = undefinedToNull(obj.detail)
 	val date = numberToInstant(obj.date, "obj.date")
-	val patientId = obj.patientId
+	val patientId = undefinedToNull(obj.patientId)
 	val secretForeignKeys = arrayToSet(
 		obj.secretForeignKeys,
 		"obj.secretForeignKeys",
@@ -254,14 +290,27 @@ public fun accessLog_fromJs(obj: DecryptedAccessLogJs): DecryptedAccessLog {
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun accessLog_toJs(obj: EncryptedAccessLog): EncryptedAccessLogJs {
 	val id = obj.id
-	val rev = obj.rev
-	val created = longToNumber(obj.created)
-	val modified = longToNumber(obj.modified)
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
+	val rev = nullToUndefined(
+		obj.rev
+	)
+	val created = nullToUndefined(
+		longToNumber(obj.created)
+	)
+	val modified = nullToUndefined(
+		longToNumber(obj.modified)
+	)
+	val author = nullToUndefined(
+		obj.author
+	)
+	val responsible = nullToUndefined(
+		obj.responsible
+	)
+	val medicalLocationId = nullToUndefined(
+		obj.medicalLocationId
+	)
 	val tags = setToArray(
 		obj.tags,
 		{ x1: CodeStub ->
@@ -274,14 +323,30 @@ public fun accessLog_toJs(obj: EncryptedAccessLog): EncryptedAccessLogJs {
 			codeStub_toJs(x1)
 		},
 	)
-	val endOfLife = longToNumber(obj.endOfLife)
-	val deletionDate = longToNumber(obj.deletionDate)
-	val objectId = obj.objectId
-	val accessType = obj.accessType
-	val user = obj.user
-	val detail = obj.detail
-	val date = instantToNumber(obj.date)
-	val patientId = obj.patientId
+	val endOfLife = nullToUndefined(
+		longToNumber(obj.endOfLife)
+	)
+	val deletionDate = nullToUndefined(
+		longToNumber(obj.deletionDate)
+	)
+	val objectId = nullToUndefined(
+		obj.objectId
+	)
+	val accessType = nullToUndefined(
+		obj.accessType
+	)
+	val user = nullToUndefined(
+		obj.user
+	)
+	val detail = nullToUndefined(
+		obj.detail
+	)
+	val date = nullToUndefined(
+		instantToNumber(obj.date)
+	)
+	val patientId = nullToUndefined(
+		obj.patientId
+	)
 	val secretForeignKeys = setToArray(
 		obj.secretForeignKeys,
 		{ x1: String ->
@@ -330,12 +395,16 @@ public fun accessLog_toJs(obj: EncryptedAccessLog): EncryptedAccessLogJs {
 			)
 		},
 	)
-	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
-		base64String_toJs(nonNull1)
-	}
-	val securityMetadata = obj.securityMetadata?.let { nonNull1 ->
-		securityMetadata_toJs(nonNull1)
-	}
+	val encryptedSelf = nullToUndefined(
+		obj.encryptedSelf?.let { nonNull1 ->
+			base64String_toJs(nonNull1)
+		}
+	)
+	val securityMetadata = nullToUndefined(
+		obj.securityMetadata?.let { nonNull1 ->
+			securityMetadata_toJs(nonNull1)
+		}
+	)
 	return EncryptedAccessLogJs(js("{" +
 		"id:id," +
 		"rev:rev," +
@@ -365,12 +434,12 @@ public fun accessLog_toJs(obj: EncryptedAccessLog): EncryptedAccessLogJs {
 
 public fun accessLog_fromJs(obj: EncryptedAccessLogJs): EncryptedAccessLog {
 	val id = obj.id
-	val rev = obj.rev
+	val rev = undefinedToNull(obj.rev)
 	val created = numberToLong(obj.created, "obj.created")
 	val modified = numberToLong(obj.modified, "obj.modified")
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
+	val author = undefinedToNull(obj.author)
+	val responsible = undefinedToNull(obj.responsible)
+	val medicalLocationId = undefinedToNull(obj.medicalLocationId)
 	val tags = arrayToSet(
 		obj.tags,
 		"obj.tags",
@@ -387,12 +456,12 @@ public fun accessLog_fromJs(obj: EncryptedAccessLogJs): EncryptedAccessLog {
 	)
 	val endOfLife = numberToLong(obj.endOfLife, "obj.endOfLife")
 	val deletionDate = numberToLong(obj.deletionDate, "obj.deletionDate")
-	val objectId = obj.objectId
-	val accessType = obj.accessType
-	val user = obj.user
-	val detail = obj.detail
+	val objectId = undefinedToNull(obj.objectId)
+	val accessType = undefinedToNull(obj.accessType)
+	val user = undefinedToNull(obj.user)
+	val detail = undefinedToNull(obj.detail)
 	val date = numberToInstant(obj.date, "obj.date")
-	val patientId = obj.patientId
+	val patientId = undefinedToNull(obj.patientId)
 	val secretForeignKeys = arrayToSet(
 		obj.secretForeignKeys,
 		"obj.secretForeignKeys",
@@ -481,6 +550,7 @@ public fun accessLog_fromJs(obj: EncryptedAccessLogJs): EncryptedAccessLog {
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun accessLog_toJs(obj: AccessLog): AccessLogJs = when (obj) {
 	is EncryptedAccessLog -> accessLog_toJs(obj)
 	is DecryptedAccessLog -> accessLog_toJs(obj)

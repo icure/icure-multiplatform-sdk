@@ -3,28 +3,52 @@ package com.icure.sdk.js.model.filter.contact
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.longToNumber
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.model.filter.contact.ContactByHcPartyPatientTagCodeDateFilter
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public
 		fun contactByHcPartyPatientTagCodeDateFilter_toJs(obj: ContactByHcPartyPatientTagCodeDateFilter):
 		ContactByHcPartyPatientTagCodeDateFilterJs {
-	val desc = obj.desc
-	val healthcarePartyId = obj.healthcarePartyId
-	val patientSecretForeignKey = obj.patientSecretForeignKey
-	val patientSecretForeignKeys = listToArray(
-		obj.patientSecretForeignKeys,
-		{ x1: String ->
-			x1
-		},
+	val desc = nullToUndefined(
+		obj.desc
 	)
-	val tagType = obj.tagType
-	val tagCode = obj.tagCode
-	val codeType = obj.codeType
-	val codeCode = obj.codeCode
-	val startOfContactOpeningDate = longToNumber(obj.startOfContactOpeningDate)
-	val endOfContactOpeningDate = longToNumber(obj.endOfContactOpeningDate)
+	val healthcarePartyId = nullToUndefined(
+		obj.healthcarePartyId
+	)
+	val patientSecretForeignKey = nullToUndefined(
+		obj.patientSecretForeignKey
+	)
+	val patientSecretForeignKeys = nullToUndefined(
+		listToArray(
+			obj.patientSecretForeignKeys,
+			{ x1: String ->
+				x1
+			},
+		)
+	)
+	val tagType = nullToUndefined(
+		obj.tagType
+	)
+	val tagCode = nullToUndefined(
+		obj.tagCode
+	)
+	val codeType = nullToUndefined(
+		obj.codeType
+	)
+	val codeCode = nullToUndefined(
+		obj.codeCode
+	)
+	val startOfContactOpeningDate = nullToUndefined(
+		longToNumber(obj.startOfContactOpeningDate)
+	)
+	val endOfContactOpeningDate = nullToUndefined(
+		longToNumber(obj.endOfContactOpeningDate)
+	)
 	return ContactByHcPartyPatientTagCodeDateFilterJs(js("{" +
 		"desc:desc," +
 		"healthcarePartyId:healthcarePartyId," +
@@ -42,9 +66,9 @@ public
 public
 		fun contactByHcPartyPatientTagCodeDateFilter_fromJs(obj: ContactByHcPartyPatientTagCodeDateFilterJs):
 		ContactByHcPartyPatientTagCodeDateFilter {
-	val desc = obj.desc
-	val healthcarePartyId = obj.healthcarePartyId
-	val patientSecretForeignKey = obj.patientSecretForeignKey
+	val desc = undefinedToNull(obj.desc)
+	val healthcarePartyId = undefinedToNull(obj.healthcarePartyId)
+	val patientSecretForeignKey = undefinedToNull(obj.patientSecretForeignKey)
 	val patientSecretForeignKeys = arrayToList(
 		obj.patientSecretForeignKeys,
 		"obj.patientSecretForeignKeys",
@@ -52,10 +76,10 @@ public
 			x1
 		},
 	)
-	val tagType = obj.tagType
-	val tagCode = obj.tagCode
-	val codeType = obj.codeType
-	val codeCode = obj.codeCode
+	val tagType = undefinedToNull(obj.tagType)
+	val tagCode = undefinedToNull(obj.tagCode)
+	val codeType = undefinedToNull(obj.codeType)
+	val codeCode = undefinedToNull(obj.codeCode)
 	val startOfContactOpeningDate = numberToLong(obj.startOfContactOpeningDate,
 			"obj.startOfContactOpeningDate")
 	val endOfContactOpeningDate = numberToLong(obj.endOfContactOpeningDate,

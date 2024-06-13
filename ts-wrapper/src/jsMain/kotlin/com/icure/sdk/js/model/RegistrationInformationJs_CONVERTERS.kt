@@ -1,22 +1,30 @@
 package com.icure.sdk.js.model
 
 import com.icure.sdk.js.model.CheckedConverters.arrayToSet
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.setToArray
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.model.RegistrationInformation
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun registrationInformation_toJs(obj: RegistrationInformation): RegistrationInformationJs {
 	val firstName = obj.firstName
 	val lastName = obj.lastName
 	val emailAddress = obj.emailAddress
-	val userOptions = obj.userOptions
+	val userOptions = nullToUndefined(
+		obj.userOptions
+	)
 	val userRoles = setToArray(
 		obj.userRoles,
 		{ x1: String ->
 			x1
 		},
 	)
-	val minimumKrakenVersion = obj.minimumKrakenVersion
+	val minimumKrakenVersion = nullToUndefined(
+		obj.minimumKrakenVersion
+	)
 	return RegistrationInformationJs(js("{" +
 		"firstName:firstName," +
 		"lastName:lastName," +
@@ -31,7 +39,7 @@ public fun registrationInformation_fromJs(obj: RegistrationInformationJs): Regis
 	val firstName = obj.firstName
 	val lastName = obj.lastName
 	val emailAddress = obj.emailAddress
-	val userOptions = obj.userOptions
+	val userOptions = undefinedToNull(obj.userOptions)
 	val userRoles = arrayToSet(
 		obj.userRoles,
 		"obj.userRoles",
@@ -39,7 +47,7 @@ public fun registrationInformation_fromJs(obj: RegistrationInformationJs): Regis
 			x1
 		},
 	)
-	val minimumKrakenVersion = obj.minimumKrakenVersion
+	val minimumKrakenVersion = undefinedToNull(obj.minimumKrakenVersion)
 	return RegistrationInformation(
 		firstName = firstName,
 		lastName = lastName,

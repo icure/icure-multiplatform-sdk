@@ -11,7 +11,6 @@ import com.icure.sdk.js.model.filter.AbstractFilterJs
 import com.icure.sdk.js.model.filter.chain.FilterChainJs
 import com.icure.sdk.js.websocket.ConnectionJs
 import kotlin.Array
-import kotlin.Double
 import kotlin.String
 import kotlin.Unit
 import kotlin.js.JsName
@@ -32,8 +31,8 @@ public external interface TopicBasicApiJs {
 
 	public fun getTopics(entityIds: Array<String>): Promise<Array<EncryptedTopicJs>>
 
-	public fun filterTopicsBy(filterChain: FilterChainJs<TopicJs>,
-			options: TopicBasicApi_filterTopicsBy_Options?): Promise<PaginatedListJs<EncryptedTopicJs>>
+	public fun filterTopicsBy(filterChain: FilterChainJs<TopicJs>, options: dynamic):
+			Promise<PaginatedListJs<EncryptedTopicJs>>
 
 	public fun addParticipant(
 		entityId: String,
@@ -47,24 +46,6 @@ public external interface TopicBasicApiJs {
 		events: Array<String>,
 		filter: AbstractFilterJs<TopicJs>,
 		eventFired: (EncryptedTopicJs) -> Promise<Unit>,
-		options: TopicBasicApi_subscribeToEvents_Options?,
+		options: dynamic,
 	): Promise<ConnectionJs>
-}
-
-public external interface TopicBasicApi_filterTopicsBy_Options {
-	public val startDocumentId: String?
-
-	public val limit: Double?
-}
-
-public external interface TopicBasicApi_subscribeToEvents_Options {
-	public val onConnected: () -> Promise<Unit>
-
-	public val channelCapacity: Double
-
-	public val retryDelay: Double
-
-	public val retryDelayExponentFactor: Double
-
-	public val maxRetries: Double
 }

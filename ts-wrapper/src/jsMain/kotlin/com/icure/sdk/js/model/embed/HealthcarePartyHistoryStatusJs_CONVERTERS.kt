@@ -4,7 +4,9 @@ import com.icure.sdk.js.model.CheckedConverters.longToNumber
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.model.embed.HealthcarePartyHistoryStatus
 import com.icure.sdk.model.embed.HealthcarePartyStatus
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun healthcarePartyHistoryStatus_toJs(obj: HealthcarePartyHistoryStatus):
 		HealthcarePartyHistoryStatusJs {
 	val status = obj.status.name

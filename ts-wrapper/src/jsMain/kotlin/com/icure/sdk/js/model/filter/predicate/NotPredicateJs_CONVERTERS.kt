@@ -1,7 +1,9 @@
 package com.icure.sdk.js.model.filter.predicate
 
 import com.icure.sdk.model.filter.predicate.NotPredicate
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun notPredicate_toJs(obj: NotPredicate): NotPredicateJs {
 	val predicate = predicate_toJs(obj.predicate)
 	return NotPredicateJs(js("{" +

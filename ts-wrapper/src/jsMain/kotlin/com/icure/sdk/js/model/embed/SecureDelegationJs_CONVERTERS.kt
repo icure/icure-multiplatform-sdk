@@ -1,7 +1,9 @@
 package com.icure.sdk.js.model.embed
 
 import com.icure.sdk.js.model.CheckedConverters.arrayToSet
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.setToArray
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.specializations.base64String_fromJs
 import com.icure.sdk.js.model.specializations.base64String_toJs
 import com.icure.sdk.js.model.specializations.secureDelegationKeyString_fromJs
@@ -11,10 +13,16 @@ import com.icure.sdk.model.embed.SecureDelegation
 import com.icure.sdk.model.specializations.Base64String
 import com.icure.sdk.model.specializations.SecureDelegationKeyString
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun secureDelegation_toJs(obj: SecureDelegation): SecureDelegationJs {
-	val delegator = obj.delegator
-	val delegate = obj.delegate
+	val delegator = nullToUndefined(
+		obj.delegator
+	)
+	val delegate = nullToUndefined(
+		obj.delegate
+	)
 	val secretIds = setToArray(
 		obj.secretIds,
 		{ x1: Base64String ->
@@ -39,7 +47,9 @@ public fun secureDelegation_toJs(obj: SecureDelegation): SecureDelegationJs {
 			secureDelegationKeyString_toJs(x1)
 		},
 	)
-	val exchangeDataId = obj.exchangeDataId
+	val exchangeDataId = nullToUndefined(
+		obj.exchangeDataId
+	)
 	val permissions = obj.permissions.name
 	return SecureDelegationJs(js("{" +
 		"delegator:delegator," +
@@ -54,8 +64,8 @@ public fun secureDelegation_toJs(obj: SecureDelegation): SecureDelegationJs {
 }
 
 public fun secureDelegation_fromJs(obj: SecureDelegationJs): SecureDelegation {
-	val delegator = obj.delegator
-	val delegate = obj.delegate
+	val delegator = undefinedToNull(obj.delegator)
+	val delegate = undefinedToNull(obj.delegate)
 	val secretIds = arrayToSet(
 		obj.secretIds,
 		"obj.secretIds",
@@ -84,7 +94,7 @@ public fun secureDelegation_fromJs(obj: SecureDelegationJs): SecureDelegation {
 			secureDelegationKeyString_fromJs(x1)
 		},
 	)
-	val exchangeDataId = obj.exchangeDataId
+	val exchangeDataId = undefinedToNull(obj.exchangeDataId)
 	val permissions = AccessLevel.valueOf(obj.permissions)
 	return SecureDelegation(
 		delegator = delegator,

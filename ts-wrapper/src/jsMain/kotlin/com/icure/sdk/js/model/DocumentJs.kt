@@ -63,9 +63,6 @@ public sealed external interface DocumentJs : StoredDocumentJs, ICureDocumentJs<
 	public val decryptedAttachment: ByteArray?
 
 	public val isEncrypted: Boolean
-
-	@JsName("${'$'}ktClass")
-	public val ktClass: String
 }
 
 @JsName("DecryptedDocument")
@@ -145,8 +142,6 @@ public external class DecryptedDocumentJs(
 	override val securityMetadata: SecurityMetadataJs?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }
 
 @JsName("EncryptedDocument")
@@ -226,6 +221,4 @@ public external class EncryptedDocumentJs(
 	override val securityMetadata: SecurityMetadataJs?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }

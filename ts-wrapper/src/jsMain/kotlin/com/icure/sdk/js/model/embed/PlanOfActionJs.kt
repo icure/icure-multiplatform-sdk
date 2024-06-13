@@ -44,9 +44,6 @@ public sealed external interface PlanOfActionJs : EncryptableJs, ICureDocumentJs
 	public val relevant: Boolean
 
 	public val isEncrypted: Boolean
-
-	@JsName("${'$'}ktClass")
-	public val ktClass: String
 }
 
 @JsName("DecryptedPlanOfAction")
@@ -104,8 +101,6 @@ public external class DecryptedPlanOfActionJs(
 	override val encryptedSelf: String?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }
 
 @JsName("EncryptedPlanOfAction")
@@ -163,6 +158,4 @@ public external class EncryptedPlanOfActionJs(
 	override val encryptedSelf: String?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }

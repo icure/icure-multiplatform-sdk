@@ -31,9 +31,6 @@ public sealed external interface InsurabilityJs : EncryptableJs {
 	public val titularyId: String?
 
 	public val isEncrypted: Boolean
-
-	@JsName("${'$'}ktClass")
-	public val ktClass: String
 }
 
 @JsName("DecryptedInsurability")
@@ -61,8 +58,6 @@ public external class DecryptedInsurabilityJs(
 	override val encryptedSelf: String?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }
 
 @JsName("EncryptedInsurability")
@@ -90,6 +85,4 @@ public external class EncryptedInsurabilityJs(
 	override val encryptedSelf: String?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }

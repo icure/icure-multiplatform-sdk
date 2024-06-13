@@ -25,7 +25,7 @@ export interface TopicBasicApi {
 	getTopics(entityIds: Array<string>): Promise<Array<EncryptedTopic>>;
 
 	filterTopicsBy(filterChain: FilterChain<Topic>,
-			options?: { startDocumentId?: string | undefined, limit?: number | undefined, filterChain?: FilterChain<Topic> }): Promise<PaginatedList<EncryptedTopic>>;
+			options?: { startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<EncryptedTopic>>;
 
 	addParticipant(entityId: string, dataOwnerId: string,
 			topicRole: TopicRole): Promise<EncryptedTopic>;
@@ -34,6 +34,6 @@ export interface TopicBasicApi {
 
 	subscribeToEvents(events: Array<SubscriptionEventType>, filter: AbstractFilter<Topic>,
 			eventFired: (x1: EncryptedTopic) => Promise<void>,
-			options?: { events?: Array<SubscriptionEventType>, filter?: AbstractFilter<Topic>, onConnected?: () => Promise<void>, channelCapacity?: number, retryDelay?: DurationMs, retryDelayExponentFactor?: number, maxRetries?: number, eventFired?: (x1: EncryptedTopic) => Promise<void> }): Promise<Connection>;
+			options?: { onConnected?: () => Promise<void>, channelCapacity?: number, retryDelay?: DurationMs, retryDelayExponentFactor?: number, maxRetries?: number }): Promise<Connection>;
 
 }

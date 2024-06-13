@@ -6,7 +6,9 @@ import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.base.HasEncryptionMetadataJs
 import com.icure.sdk.model.base.HasEncryptionMetadata
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun <T : HasEncryptionMetadata, T_JS : HasEncryptionMetadataJs>
 		simpleShareResult_toJs(obj: SimpleShareResult<T>, convertT: (T) -> T_JS):
 		SimpleShareResultJs<T_JS> = when (obj) {
@@ -36,6 +38,7 @@ public fun <T : HasEncryptionMetadataJs, T_KT : HasEncryptionMetadata>
 			IllegalArgumentException("""Unknown concrete implementation for com.icure.sdk.crypto.entities.SimpleShareResult: $obj""")
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun <T : HasEncryptionMetadata, T_JS : HasEncryptionMetadataJs>
 		simpleShareResult_Success_toJs(obj: SimpleShareResult.Success<T>, convertT: (T) -> T_JS):
 		SimpleShareResultJs_SuccessJs<T_JS> {
@@ -54,6 +57,7 @@ public fun <T : HasEncryptionMetadataJs, T_KT : HasEncryptionMetadata>
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun simpleShareResult_Failure_toJs(obj: SimpleShareResult.Failure):
 		SimpleShareResultJs_FailureJs {
 	val errorsDetails = listToArray(

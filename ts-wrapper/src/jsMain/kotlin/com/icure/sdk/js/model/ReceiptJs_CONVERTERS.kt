@@ -5,9 +5,11 @@ import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.longToNumber
 import com.icure.sdk.js.model.CheckedConverters.mapToObject
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.sdk.js.model.CheckedConverters.setToArray
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.base.CodeStubJs
 import com.icure.sdk.js.model.base.codeStub_fromJs
 import com.icure.sdk.js.model.base.codeStub_toJs
@@ -26,16 +28,30 @@ import com.icure.sdk.model.embed.Delegation
 import com.icure.sdk.model.embed.ReceiptBlobType
 import kotlin.Array
 import kotlin.String
+import kotlin.Suppress
 import kotlin.collections.Set
 
+@Suppress("UNUSED_VARIABLE")
 public fun receipt_toJs(obj: DecryptedReceipt): DecryptedReceiptJs {
 	val id = obj.id
-	val rev = obj.rev
-	val created = longToNumber(obj.created)
-	val modified = longToNumber(obj.modified)
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
+	val rev = nullToUndefined(
+		obj.rev
+	)
+	val created = nullToUndefined(
+		longToNumber(obj.created)
+	)
+	val modified = nullToUndefined(
+		longToNumber(obj.modified)
+	)
+	val author = nullToUndefined(
+		obj.author
+	)
+	val responsible = nullToUndefined(
+		obj.responsible
+	)
+	val medicalLocationId = nullToUndefined(
+		obj.medicalLocationId
+	)
 	val tags = setToArray(
 		obj.tags,
 		{ x1: CodeStub ->
@@ -48,8 +64,12 @@ public fun receipt_toJs(obj: DecryptedReceipt): DecryptedReceiptJs {
 			codeStub_toJs(x1)
 		},
 	)
-	val endOfLife = longToNumber(obj.endOfLife)
-	val deletionDate = longToNumber(obj.deletionDate)
+	val endOfLife = nullToUndefined(
+		longToNumber(obj.endOfLife)
+	)
+	val deletionDate = nullToUndefined(
+		longToNumber(obj.deletionDate)
+	)
 	val attachmentIds = mapToObject(
 		obj.attachmentIds,
 		{ x1: ReceiptBlobType ->
@@ -65,9 +85,15 @@ public fun receipt_toJs(obj: DecryptedReceipt): DecryptedReceiptJs {
 			x1
 		},
 	)
-	val documentId = obj.documentId
-	val category = obj.category
-	val subCategory = obj.subCategory
+	val documentId = nullToUndefined(
+		obj.documentId
+	)
+	val category = nullToUndefined(
+		obj.category
+	)
+	val subCategory = nullToUndefined(
+		obj.subCategory
+	)
 	val secretForeignKeys = setToArray(
 		obj.secretForeignKeys,
 		{ x1: String ->
@@ -116,12 +142,16 @@ public fun receipt_toJs(obj: DecryptedReceipt): DecryptedReceiptJs {
 			)
 		},
 	)
-	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
-		base64String_toJs(nonNull1)
-	}
-	val securityMetadata = obj.securityMetadata?.let { nonNull1 ->
-		securityMetadata_toJs(nonNull1)
-	}
+	val encryptedSelf = nullToUndefined(
+		obj.encryptedSelf?.let { nonNull1 ->
+			base64String_toJs(nonNull1)
+		}
+	)
+	val securityMetadata = nullToUndefined(
+		obj.securityMetadata?.let { nonNull1 ->
+			securityMetadata_toJs(nonNull1)
+		}
+	)
 	return DecryptedReceiptJs(js("{" +
 		"id:id," +
 		"rev:rev," +
@@ -150,12 +180,12 @@ public fun receipt_toJs(obj: DecryptedReceipt): DecryptedReceiptJs {
 
 public fun receipt_fromJs(obj: DecryptedReceiptJs): DecryptedReceipt {
 	val id = obj.id
-	val rev = obj.rev
+	val rev = undefinedToNull(obj.rev)
 	val created = numberToLong(obj.created, "obj.created")
 	val modified = numberToLong(obj.modified, "obj.modified")
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
+	val author = undefinedToNull(obj.author)
+	val responsible = undefinedToNull(obj.responsible)
+	val medicalLocationId = undefinedToNull(obj.medicalLocationId)
 	val tags = arrayToSet(
 		obj.tags,
 		"obj.tags",
@@ -189,9 +219,9 @@ public fun receipt_fromJs(obj: DecryptedReceiptJs): DecryptedReceipt {
 			x1
 		},
 	)
-	val documentId = obj.documentId
-	val category = obj.category
-	val subCategory = obj.subCategory
+	val documentId = undefinedToNull(obj.documentId)
+	val category = undefinedToNull(obj.category)
+	val subCategory = undefinedToNull(obj.subCategory)
 	val secretForeignKeys = arrayToSet(
 		obj.secretForeignKeys,
 		"obj.secretForeignKeys",
@@ -279,14 +309,27 @@ public fun receipt_fromJs(obj: DecryptedReceiptJs): DecryptedReceipt {
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun receipt_toJs(obj: EncryptedReceipt): EncryptedReceiptJs {
 	val id = obj.id
-	val rev = obj.rev
-	val created = longToNumber(obj.created)
-	val modified = longToNumber(obj.modified)
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
+	val rev = nullToUndefined(
+		obj.rev
+	)
+	val created = nullToUndefined(
+		longToNumber(obj.created)
+	)
+	val modified = nullToUndefined(
+		longToNumber(obj.modified)
+	)
+	val author = nullToUndefined(
+		obj.author
+	)
+	val responsible = nullToUndefined(
+		obj.responsible
+	)
+	val medicalLocationId = nullToUndefined(
+		obj.medicalLocationId
+	)
 	val tags = setToArray(
 		obj.tags,
 		{ x1: CodeStub ->
@@ -299,8 +342,12 @@ public fun receipt_toJs(obj: EncryptedReceipt): EncryptedReceiptJs {
 			codeStub_toJs(x1)
 		},
 	)
-	val endOfLife = longToNumber(obj.endOfLife)
-	val deletionDate = longToNumber(obj.deletionDate)
+	val endOfLife = nullToUndefined(
+		longToNumber(obj.endOfLife)
+	)
+	val deletionDate = nullToUndefined(
+		longToNumber(obj.deletionDate)
+	)
 	val attachmentIds = mapToObject(
 		obj.attachmentIds,
 		{ x1: ReceiptBlobType ->
@@ -316,9 +363,15 @@ public fun receipt_toJs(obj: EncryptedReceipt): EncryptedReceiptJs {
 			x1
 		},
 	)
-	val documentId = obj.documentId
-	val category = obj.category
-	val subCategory = obj.subCategory
+	val documentId = nullToUndefined(
+		obj.documentId
+	)
+	val category = nullToUndefined(
+		obj.category
+	)
+	val subCategory = nullToUndefined(
+		obj.subCategory
+	)
 	val secretForeignKeys = setToArray(
 		obj.secretForeignKeys,
 		{ x1: String ->
@@ -367,12 +420,16 @@ public fun receipt_toJs(obj: EncryptedReceipt): EncryptedReceiptJs {
 			)
 		},
 	)
-	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
-		base64String_toJs(nonNull1)
-	}
-	val securityMetadata = obj.securityMetadata?.let { nonNull1 ->
-		securityMetadata_toJs(nonNull1)
-	}
+	val encryptedSelf = nullToUndefined(
+		obj.encryptedSelf?.let { nonNull1 ->
+			base64String_toJs(nonNull1)
+		}
+	)
+	val securityMetadata = nullToUndefined(
+		obj.securityMetadata?.let { nonNull1 ->
+			securityMetadata_toJs(nonNull1)
+		}
+	)
 	return EncryptedReceiptJs(js("{" +
 		"id:id," +
 		"rev:rev," +
@@ -401,12 +458,12 @@ public fun receipt_toJs(obj: EncryptedReceipt): EncryptedReceiptJs {
 
 public fun receipt_fromJs(obj: EncryptedReceiptJs): EncryptedReceipt {
 	val id = obj.id
-	val rev = obj.rev
+	val rev = undefinedToNull(obj.rev)
 	val created = numberToLong(obj.created, "obj.created")
 	val modified = numberToLong(obj.modified, "obj.modified")
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
+	val author = undefinedToNull(obj.author)
+	val responsible = undefinedToNull(obj.responsible)
+	val medicalLocationId = undefinedToNull(obj.medicalLocationId)
 	val tags = arrayToSet(
 		obj.tags,
 		"obj.tags",
@@ -440,9 +497,9 @@ public fun receipt_fromJs(obj: EncryptedReceiptJs): EncryptedReceipt {
 			x1
 		},
 	)
-	val documentId = obj.documentId
-	val category = obj.category
-	val subCategory = obj.subCategory
+	val documentId = undefinedToNull(obj.documentId)
+	val category = undefinedToNull(obj.category)
+	val subCategory = undefinedToNull(obj.subCategory)
 	val secretForeignKeys = arrayToSet(
 		obj.secretForeignKeys,
 		"obj.secretForeignKeys",
@@ -530,6 +587,7 @@ public fun receipt_fromJs(obj: EncryptedReceiptJs): EncryptedReceipt {
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun receipt_toJs(obj: Receipt): ReceiptJs = when (obj) {
 	is EncryptedReceipt -> receipt_toJs(obj)
 	is DecryptedReceipt -> receipt_toJs(obj)

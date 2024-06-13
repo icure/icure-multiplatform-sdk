@@ -11,7 +11,6 @@ import com.icure.sdk.js.model.PatientJs
 import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
-import kotlin.Boolean
 import kotlin.Double
 import kotlin.String
 import kotlin.js.JsName
@@ -23,7 +22,7 @@ public external interface CalendarItemFlavouredApiJs<E : CalendarItemJs> {
 	public fun shareWith(
 		delegateId: String,
 		calendarItem: E,
-		options: CalendarItemFlavouredApi_shareWith_Options?,
+		options: dynamic,
 	): Promise<SimpleShareResultJs<E>>
 
 	public fun tryShareWithMany(calendarItem: E,
@@ -35,7 +34,7 @@ public external interface CalendarItemFlavouredApiJs<E : CalendarItemJs> {
 	public fun findCalendarItemsByHcPartyPatient(
 		hcPartyId: String,
 		patient: PatientJs,
-		options: CalendarItemFlavouredApi_findCalendarItemsByHcPartyPatient_Options?,
+		options: dynamic,
 	): Promise<PaginatedListIteratorJs<E>>
 
 	public fun linkToPatient(
@@ -70,20 +69,4 @@ public external interface CalendarItemFlavouredApiJs<E : CalendarItemJs> {
 		startDocumentId: String?,
 		limit: Double,
 	): Promise<PaginatedListJs<E>>
-}
-
-public external interface CalendarItemFlavouredApi_shareWith_Options {
-	public val shareEncryptionKeys: String
-
-	public val shareOwningEntityIds: String
-
-	public val requestedPermission: String
-}
-
-public external interface CalendarItemFlavouredApi_findCalendarItemsByHcPartyPatient_Options {
-	public val startDate: Double?
-
-	public val endDate: Double?
-
-	public val descending: Boolean?
 }

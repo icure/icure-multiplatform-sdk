@@ -4,19 +4,16 @@
 package com.icure.sdk.js.api.flavoured
 
 import com.icure.sdk.js.crypto.entities.ClassificationShareOptionsJs
-import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.model.ClassificationJs
 import com.icure.sdk.js.model.DecryptedClassificationJs
 import com.icure.sdk.js.model.EncryptedClassificationJs
 import com.icure.sdk.js.model.PatientJs
-import com.icure.sdk.js.model.UserJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
 import kotlin.Boolean
-import kotlin.Double
 import kotlin.String
 import kotlin.Unit
 import kotlin.js.JsName
@@ -35,7 +32,7 @@ public external interface ClassificationApiJs {
 	public fun withEncryptionMetadata(
 		base: DecryptedClassificationJs?,
 		patient: PatientJs,
-		options: ClassificationApi_withEncryptionMetadata_Options?,
+		options: dynamic,
 	): Promise<DecryptedClassificationJs>
 
 	public fun getEncryptionKeysOf(classification: ClassificationJs): Promise<Array<String>>
@@ -54,7 +51,7 @@ public external interface ClassificationApiJs {
 	public fun shareWith(
 		delegateId: String,
 		classification: DecryptedClassificationJs,
-		options: ClassificationApi_shareWith_Options?,
+		options: dynamic,
 	): Promise<SimpleShareResultJs<DecryptedClassificationJs>>
 
 	public fun tryShareWithMany(classification: DecryptedClassificationJs,
@@ -67,7 +64,7 @@ public external interface ClassificationApiJs {
 	public fun findClassificationsByHcPartyPatient(
 		hcPartyId: String,
 		patient: PatientJs,
-		options: ClassificationApi_findClassificationsByHcPartyPatient_Options?,
+		options: dynamic,
 	): Promise<PaginatedListIteratorJs<DecryptedClassificationJs>>
 
 	public fun modifyClassification(entity: DecryptedClassificationJs):
@@ -76,28 +73,4 @@ public external interface ClassificationApiJs {
 	public fun getClassification(entityId: String): Promise<DecryptedClassificationJs>
 
 	public fun getClassifications(entityIds: Array<String>): Promise<Array<DecryptedClassificationJs>>
-}
-
-public external interface ClassificationApi_withEncryptionMetadata_Options {
-	public val user: UserJs?
-
-	public val delegates: Record<String, String>
-
-	public val secretId: SecretIdOptionJs
-}
-
-public external interface ClassificationApi_shareWith_Options {
-	public val shareEncryptionKeys: String
-
-	public val shareOwningEntityIds: String
-
-	public val requestedPermission: String
-}
-
-public external interface ClassificationApi_findClassificationsByHcPartyPatient_Options {
-	public val startDate: Double?
-
-	public val endDate: Double?
-
-	public val descending: Boolean?
 }

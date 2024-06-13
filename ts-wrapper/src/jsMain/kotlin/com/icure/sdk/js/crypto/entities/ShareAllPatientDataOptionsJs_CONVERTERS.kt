@@ -6,12 +6,16 @@ import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.intToNumber
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.mapToObject
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.objectToMap
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.patient_fromJs
 import com.icure.sdk.js.model.patient_toJs
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public
 		fun shareAllPatientDataOptions_SharePatientDataError_toJs(obj: ShareAllPatientDataOptions.SharePatientDataError):
 		ShareAllPatientDataOptionsJs_SharePatientDataErrorJs = when (obj) {
@@ -33,13 +37,18 @@ public
 			IllegalArgumentException("""Unknown concrete implementation for com.icure.sdk.crypto.entities.ShareAllPatientDataOptions.SharePatientDataError: $obj""")
 }
 
+@Suppress("UNUSED_VARIABLE")
 public
 		fun shareAllPatientDataOptions_EntityResult_toJs(obj: ShareAllPatientDataOptions.EntityResult):
 		ShareAllPatientDataOptionsJs_EntityResultJs {
-	val success = obj.success
-	val error = obj.error?.let { nonNull1 ->
-		shareAllPatientDataOptions_SharePatientDataError_toJs(nonNull1)
-	}
+	val success = nullToUndefined(
+		obj.success
+	)
+	val error = nullToUndefined(
+		obj.error?.let { nonNull1 ->
+			shareAllPatientDataOptions_SharePatientDataError_toJs(nonNull1)
+		}
+	)
 	val modified = intToNumber(obj.modified)
 	return ShareAllPatientDataOptionsJs_EntityResultJs(js("{" +
 		"success:success," +
@@ -51,7 +60,7 @@ public
 public
 		fun shareAllPatientDataOptions_EntityResult_fromJs(obj: ShareAllPatientDataOptionsJs_EntityResultJs):
 		ShareAllPatientDataOptions.EntityResult {
-	val success = obj.success
+	val success = undefinedToNull(obj.success)
 	val error = obj.error?.let { nonNull1 ->
 		shareAllPatientDataOptions_SharePatientDataError_fromJs(nonNull1)
 	}
@@ -63,6 +72,7 @@ public
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun shareAllPatientDataOptions_Result_toJs(obj: ShareAllPatientDataOptions.Result):
 		ShareAllPatientDataOptionsJs_ResultJs {
 	val patient = patient_toJs(obj.patient)
@@ -100,6 +110,7 @@ public fun shareAllPatientDataOptions_Result_fromJs(obj: ShareAllPatientDataOpti
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public
 		fun shareAllPatientDataOptions_BulkShareFailure_toJs(obj: ShareAllPatientDataOptions.BulkShareFailure):
 		ShareAllPatientDataOptionsJs_BulkShareFailureJs {
@@ -133,6 +144,7 @@ public
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public
 		fun shareAllPatientDataOptions_FailedRequest_toJs(obj: ShareAllPatientDataOptions.FailedRequest):
 		ShareAllPatientDataOptionsJs_FailedRequestJs {

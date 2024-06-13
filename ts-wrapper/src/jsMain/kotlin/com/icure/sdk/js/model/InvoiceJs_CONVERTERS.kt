@@ -6,10 +6,12 @@ import com.icure.sdk.js.model.CheckedConverters.intToNumber
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.longToNumber
 import com.icure.sdk.js.model.CheckedConverters.mapToObject
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.sdk.js.model.CheckedConverters.setToArray
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.base.CodeStubJs
 import com.icure.sdk.js.model.base.codeStub_fromJs
 import com.icure.sdk.js.model.base.codeStub_toJs
@@ -43,16 +45,30 @@ import com.icure.sdk.model.embed.Payment
 import com.icure.sdk.model.embed.PaymentType
 import kotlin.Array
 import kotlin.String
+import kotlin.Suppress
 import kotlin.collections.Set
 
+@Suppress("UNUSED_VARIABLE")
 public fun invoice_toJs(obj: DecryptedInvoice): DecryptedInvoiceJs {
 	val id = obj.id
-	val rev = obj.rev
-	val created = longToNumber(obj.created)
-	val modified = longToNumber(obj.modified)
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
+	val rev = nullToUndefined(
+		obj.rev
+	)
+	val created = nullToUndefined(
+		longToNumber(obj.created)
+	)
+	val modified = nullToUndefined(
+		longToNumber(obj.modified)
+	)
+	val author = nullToUndefined(
+		obj.author
+	)
+	val responsible = nullToUndefined(
+		obj.responsible
+	)
+	val medicalLocationId = nullToUndefined(
+		obj.medicalLocationId
+	)
 	val tags = setToArray(
 		obj.tags,
 		{ x1: CodeStub ->
@@ -65,11 +81,21 @@ public fun invoice_toJs(obj: DecryptedInvoice): DecryptedInvoiceJs {
 			codeStub_toJs(x1)
 		},
 	)
-	val endOfLife = longToNumber(obj.endOfLife)
-	val deletionDate = longToNumber(obj.deletionDate)
-	val invoiceDate = longToNumber(obj.invoiceDate)
-	val sentDate = longToNumber(obj.sentDate)
-	val printedDate = longToNumber(obj.printedDate)
+	val endOfLife = nullToUndefined(
+		longToNumber(obj.endOfLife)
+	)
+	val deletionDate = nullToUndefined(
+		longToNumber(obj.deletionDate)
+	)
+	val invoiceDate = nullToUndefined(
+		longToNumber(obj.invoiceDate)
+	)
+	val sentDate = nullToUndefined(
+		longToNumber(obj.sentDate)
+	)
+	val printedDate = nullToUndefined(
+		longToNumber(obj.printedDate)
+	)
 	val invoicingCodes = listToArray(
 		obj.invoicingCodes,
 		{ x1: DecryptedInvoicingCode ->
@@ -85,69 +111,165 @@ public fun invoice_toJs(obj: DecryptedInvoice): DecryptedInvoiceJs {
 			x1
 		},
 	)
-	val recipientType = obj.recipientType
-	val recipientId = obj.recipientId
-	val invoiceReference = obj.invoiceReference
-	val thirdPartyReference = obj.thirdPartyReference
-	val thirdPartyPaymentJustification = obj.thirdPartyPaymentJustification
-	val thirdPartyPaymentReason = obj.thirdPartyPaymentReason
-	val reason = obj.reason
-	val invoiceType = obj.invoiceType?.let { nonNull1 ->
-		obj.invoiceType?.name
-	}
-	val sentMediumType = obj.sentMediumType?.let { nonNull1 ->
-		obj.sentMediumType?.name
-	}
-	val interventionType = obj.interventionType?.let { nonNull1 ->
-		obj.interventionType?.name
-	}
-	val groupId = obj.groupId
-	val paymentType = obj.paymentType?.let { nonNull1 ->
-		obj.paymentType?.name
-	}
-	val paid = obj.paid
-	val payments = listToArray(
-		obj.payments,
-		{ x1: Payment ->
-			payment_toJs(x1)
-		},
+	val recipientType = nullToUndefined(
+		obj.recipientType
 	)
-	val gnotionNihii = obj.gnotionNihii
-	val gnotionSsin = obj.gnotionSsin
-	val gnotionLastName = obj.gnotionLastName
-	val gnotionFirstName = obj.gnotionFirstName
-	val gnotionCdHcParty = obj.gnotionCdHcParty
-	val invoicePeriod = intToNumber(obj.invoicePeriod)
-	val careProviderType = obj.careProviderType
-	val internshipNihii = obj.internshipNihii
-	val internshipSsin = obj.internshipSsin
-	val internshipLastName = obj.internshipLastName
-	val internshipFirstName = obj.internshipFirstName
-	val internshipCdHcParty = obj.internshipCdHcParty
-	val internshipCbe = obj.internshipCbe
-	val supervisorNihii = obj.supervisorNihii
-	val supervisorSsin = obj.supervisorSsin
-	val supervisorLastName = obj.supervisorLastName
-	val supervisorFirstName = obj.supervisorFirstName
-	val supervisorCdHcParty = obj.supervisorCdHcParty
-	val supervisorCbe = obj.supervisorCbe
-	val error = obj.error
-	val encounterLocationName = obj.encounterLocationName
-	val encounterLocationNihii = obj.encounterLocationNihii
-	val encounterLocationNorm = intToNumber(obj.encounterLocationNorm)
-	val longDelayJustification = intToNumber(obj.longDelayJustification)
-	val correctiveInvoiceId = obj.correctiveInvoiceId
-	val correctedInvoiceId = obj.correctedInvoiceId
-	val creditNote = obj.creditNote
-	val creditNoteRelatedInvoiceId = obj.creditNoteRelatedInvoiceId
-	val idDocument = obj.idDocument?.let { nonNull1 ->
-		identityDocumentReader_toJs(nonNull1)
-	}
-	val admissionDate = longToNumber(obj.admissionDate)
-	val locationNihii = obj.locationNihii
-	val locationService = intToNumber(obj.locationService)
-	val cancelReason = obj.cancelReason
-	val cancelDate = longToNumber(obj.cancelDate)
+	val recipientId = nullToUndefined(
+		obj.recipientId
+	)
+	val invoiceReference = nullToUndefined(
+		obj.invoiceReference
+	)
+	val thirdPartyReference = nullToUndefined(
+		obj.thirdPartyReference
+	)
+	val thirdPartyPaymentJustification = nullToUndefined(
+		obj.thirdPartyPaymentJustification
+	)
+	val thirdPartyPaymentReason = nullToUndefined(
+		obj.thirdPartyPaymentReason
+	)
+	val reason = nullToUndefined(
+		obj.reason
+	)
+	val invoiceType = nullToUndefined(
+		obj.invoiceType?.let { nonNull1 ->
+			nonNull1.name
+		}
+	)
+	val sentMediumType = nullToUndefined(
+		obj.sentMediumType?.let { nonNull1 ->
+			nonNull1.name
+		}
+	)
+	val interventionType = nullToUndefined(
+		obj.interventionType?.let { nonNull1 ->
+			nonNull1.name
+		}
+	)
+	val groupId = nullToUndefined(
+		obj.groupId
+	)
+	val paymentType = nullToUndefined(
+		obj.paymentType?.let { nonNull1 ->
+			nonNull1.name
+		}
+	)
+	val paid = nullToUndefined(
+		obj.paid
+	)
+	val payments = nullToUndefined(
+		listToArray(
+			obj.payments,
+			{ x1: Payment ->
+				payment_toJs(x1)
+			},
+		)
+	)
+	val gnotionNihii = nullToUndefined(
+		obj.gnotionNihii
+	)
+	val gnotionSsin = nullToUndefined(
+		obj.gnotionSsin
+	)
+	val gnotionLastName = nullToUndefined(
+		obj.gnotionLastName
+	)
+	val gnotionFirstName = nullToUndefined(
+		obj.gnotionFirstName
+	)
+	val gnotionCdHcParty = nullToUndefined(
+		obj.gnotionCdHcParty
+	)
+	val invoicePeriod = nullToUndefined(
+		intToNumber(obj.invoicePeriod)
+	)
+	val careProviderType = nullToUndefined(
+		obj.careProviderType
+	)
+	val internshipNihii = nullToUndefined(
+		obj.internshipNihii
+	)
+	val internshipSsin = nullToUndefined(
+		obj.internshipSsin
+	)
+	val internshipLastName = nullToUndefined(
+		obj.internshipLastName
+	)
+	val internshipFirstName = nullToUndefined(
+		obj.internshipFirstName
+	)
+	val internshipCdHcParty = nullToUndefined(
+		obj.internshipCdHcParty
+	)
+	val internshipCbe = nullToUndefined(
+		obj.internshipCbe
+	)
+	val supervisorNihii = nullToUndefined(
+		obj.supervisorNihii
+	)
+	val supervisorSsin = nullToUndefined(
+		obj.supervisorSsin
+	)
+	val supervisorLastName = nullToUndefined(
+		obj.supervisorLastName
+	)
+	val supervisorFirstName = nullToUndefined(
+		obj.supervisorFirstName
+	)
+	val supervisorCdHcParty = nullToUndefined(
+		obj.supervisorCdHcParty
+	)
+	val supervisorCbe = nullToUndefined(
+		obj.supervisorCbe
+	)
+	val error = nullToUndefined(
+		obj.error
+	)
+	val encounterLocationName = nullToUndefined(
+		obj.encounterLocationName
+	)
+	val encounterLocationNihii = nullToUndefined(
+		obj.encounterLocationNihii
+	)
+	val encounterLocationNorm = nullToUndefined(
+		intToNumber(obj.encounterLocationNorm)
+	)
+	val longDelayJustification = nullToUndefined(
+		intToNumber(obj.longDelayJustification)
+	)
+	val correctiveInvoiceId = nullToUndefined(
+		obj.correctiveInvoiceId
+	)
+	val correctedInvoiceId = nullToUndefined(
+		obj.correctedInvoiceId
+	)
+	val creditNote = nullToUndefined(
+		obj.creditNote
+	)
+	val creditNoteRelatedInvoiceId = nullToUndefined(
+		obj.creditNoteRelatedInvoiceId
+	)
+	val idDocument = nullToUndefined(
+		obj.idDocument?.let { nonNull1 ->
+			identityDocumentReader_toJs(nonNull1)
+		}
+	)
+	val admissionDate = nullToUndefined(
+		longToNumber(obj.admissionDate)
+	)
+	val locationNihii = nullToUndefined(
+		obj.locationNihii
+	)
+	val locationService = nullToUndefined(
+		intToNumber(obj.locationService)
+	)
+	val cancelReason = nullToUndefined(
+		obj.cancelReason
+	)
+	val cancelDate = nullToUndefined(
+		longToNumber(obj.cancelDate)
+	)
 	val options = mapToObject(
 		obj.options,
 		{ x1: String ->
@@ -205,12 +327,16 @@ public fun invoice_toJs(obj: DecryptedInvoice): DecryptedInvoiceJs {
 			)
 		},
 	)
-	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
-		base64String_toJs(nonNull1)
-	}
-	val securityMetadata = obj.securityMetadata?.let { nonNull1 ->
-		securityMetadata_toJs(nonNull1)
-	}
+	val encryptedSelf = nullToUndefined(
+		obj.encryptedSelf?.let { nonNull1 ->
+			base64String_toJs(nonNull1)
+		}
+	)
+	val securityMetadata = nullToUndefined(
+		obj.securityMetadata?.let { nonNull1 ->
+			securityMetadata_toJs(nonNull1)
+		}
+	)
 	return DecryptedInvoiceJs(js("{" +
 		"id:id," +
 		"rev:rev," +
@@ -288,12 +414,12 @@ public fun invoice_toJs(obj: DecryptedInvoice): DecryptedInvoiceJs {
 
 public fun invoice_fromJs(obj: DecryptedInvoiceJs): DecryptedInvoice {
 	val id = obj.id
-	val rev = obj.rev
+	val rev = undefinedToNull(obj.rev)
 	val created = numberToLong(obj.created, "obj.created")
 	val modified = numberToLong(obj.modified, "obj.modified")
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
+	val author = undefinedToNull(obj.author)
+	val responsible = undefinedToNull(obj.responsible)
+	val medicalLocationId = undefinedToNull(obj.medicalLocationId)
 	val tags = arrayToSet(
 		obj.tags,
 		"obj.tags",
@@ -330,13 +456,13 @@ public fun invoice_fromJs(obj: DecryptedInvoiceJs): DecryptedInvoice {
 			x1
 		},
 	)
-	val recipientType = obj.recipientType
-	val recipientId = obj.recipientId
-	val invoiceReference = obj.invoiceReference
-	val thirdPartyReference = obj.thirdPartyReference
-	val thirdPartyPaymentJustification = obj.thirdPartyPaymentJustification
-	val thirdPartyPaymentReason = obj.thirdPartyPaymentReason
-	val reason = obj.reason
+	val recipientType = undefinedToNull(obj.recipientType)
+	val recipientId = undefinedToNull(obj.recipientId)
+	val invoiceReference = undefinedToNull(obj.invoiceReference)
+	val thirdPartyReference = undefinedToNull(obj.thirdPartyReference)
+	val thirdPartyPaymentJustification = undefinedToNull(obj.thirdPartyPaymentJustification)
+	val thirdPartyPaymentReason = undefinedToNull(obj.thirdPartyPaymentReason)
+	val reason = undefinedToNull(obj.reason)
 	val invoiceType = obj.invoiceType?.let { nonNull1 ->
 		InvoiceType.valueOf(nonNull1)
 	}
@@ -346,11 +472,11 @@ public fun invoice_fromJs(obj: DecryptedInvoiceJs): DecryptedInvoice {
 	val interventionType = obj.interventionType?.let { nonNull1 ->
 		InvoiceInterventionType.valueOf(nonNull1)
 	}
-	val groupId = obj.groupId
+	val groupId = undefinedToNull(obj.groupId)
 	val paymentType = obj.paymentType?.let { nonNull1 ->
 		PaymentType.valueOf(nonNull1)
 	}
-	val paid = obj.paid
+	val paid = undefinedToNull(obj.paid)
 	val payments = arrayToList(
 		obj.payments,
 		"obj.payments",
@@ -358,41 +484,41 @@ public fun invoice_fromJs(obj: DecryptedInvoiceJs): DecryptedInvoice {
 			payment_fromJs(x1)
 		},
 	)
-	val gnotionNihii = obj.gnotionNihii
-	val gnotionSsin = obj.gnotionSsin
-	val gnotionLastName = obj.gnotionLastName
-	val gnotionFirstName = obj.gnotionFirstName
-	val gnotionCdHcParty = obj.gnotionCdHcParty
+	val gnotionNihii = undefinedToNull(obj.gnotionNihii)
+	val gnotionSsin = undefinedToNull(obj.gnotionSsin)
+	val gnotionLastName = undefinedToNull(obj.gnotionLastName)
+	val gnotionFirstName = undefinedToNull(obj.gnotionFirstName)
+	val gnotionCdHcParty = undefinedToNull(obj.gnotionCdHcParty)
 	val invoicePeriod = numberToInt(obj.invoicePeriod, "obj.invoicePeriod")
-	val careProviderType = obj.careProviderType
-	val internshipNihii = obj.internshipNihii
-	val internshipSsin = obj.internshipSsin
-	val internshipLastName = obj.internshipLastName
-	val internshipFirstName = obj.internshipFirstName
-	val internshipCdHcParty = obj.internshipCdHcParty
-	val internshipCbe = obj.internshipCbe
-	val supervisorNihii = obj.supervisorNihii
-	val supervisorSsin = obj.supervisorSsin
-	val supervisorLastName = obj.supervisorLastName
-	val supervisorFirstName = obj.supervisorFirstName
-	val supervisorCdHcParty = obj.supervisorCdHcParty
-	val supervisorCbe = obj.supervisorCbe
-	val error = obj.error
-	val encounterLocationName = obj.encounterLocationName
-	val encounterLocationNihii = obj.encounterLocationNihii
+	val careProviderType = undefinedToNull(obj.careProviderType)
+	val internshipNihii = undefinedToNull(obj.internshipNihii)
+	val internshipSsin = undefinedToNull(obj.internshipSsin)
+	val internshipLastName = undefinedToNull(obj.internshipLastName)
+	val internshipFirstName = undefinedToNull(obj.internshipFirstName)
+	val internshipCdHcParty = undefinedToNull(obj.internshipCdHcParty)
+	val internshipCbe = undefinedToNull(obj.internshipCbe)
+	val supervisorNihii = undefinedToNull(obj.supervisorNihii)
+	val supervisorSsin = undefinedToNull(obj.supervisorSsin)
+	val supervisorLastName = undefinedToNull(obj.supervisorLastName)
+	val supervisorFirstName = undefinedToNull(obj.supervisorFirstName)
+	val supervisorCdHcParty = undefinedToNull(obj.supervisorCdHcParty)
+	val supervisorCbe = undefinedToNull(obj.supervisorCbe)
+	val error = undefinedToNull(obj.error)
+	val encounterLocationName = undefinedToNull(obj.encounterLocationName)
+	val encounterLocationNihii = undefinedToNull(obj.encounterLocationNihii)
 	val encounterLocationNorm = numberToInt(obj.encounterLocationNorm, "obj.encounterLocationNorm")
 	val longDelayJustification = numberToInt(obj.longDelayJustification, "obj.longDelayJustification")
-	val correctiveInvoiceId = obj.correctiveInvoiceId
-	val correctedInvoiceId = obj.correctedInvoiceId
-	val creditNote = obj.creditNote
-	val creditNoteRelatedInvoiceId = obj.creditNoteRelatedInvoiceId
+	val correctiveInvoiceId = undefinedToNull(obj.correctiveInvoiceId)
+	val correctedInvoiceId = undefinedToNull(obj.correctedInvoiceId)
+	val creditNote = undefinedToNull(obj.creditNote)
+	val creditNoteRelatedInvoiceId = undefinedToNull(obj.creditNoteRelatedInvoiceId)
 	val idDocument = obj.idDocument?.let { nonNull1 ->
 		identityDocumentReader_fromJs(nonNull1)
 	}
 	val admissionDate = numberToLong(obj.admissionDate, "obj.admissionDate")
-	val locationNihii = obj.locationNihii
+	val locationNihii = undefinedToNull(obj.locationNihii)
 	val locationService = numberToInt(obj.locationService, "obj.locationService")
-	val cancelReason = obj.cancelReason
+	val cancelReason = undefinedToNull(obj.cancelReason)
 	val cancelDate = numberToLong(obj.cancelDate, "obj.cancelDate")
 	val options = objectToMap(
 		obj.options,
@@ -540,14 +666,27 @@ public fun invoice_fromJs(obj: DecryptedInvoiceJs): DecryptedInvoice {
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun invoice_toJs(obj: EncryptedInvoice): EncryptedInvoiceJs {
 	val id = obj.id
-	val rev = obj.rev
-	val created = longToNumber(obj.created)
-	val modified = longToNumber(obj.modified)
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
+	val rev = nullToUndefined(
+		obj.rev
+	)
+	val created = nullToUndefined(
+		longToNumber(obj.created)
+	)
+	val modified = nullToUndefined(
+		longToNumber(obj.modified)
+	)
+	val author = nullToUndefined(
+		obj.author
+	)
+	val responsible = nullToUndefined(
+		obj.responsible
+	)
+	val medicalLocationId = nullToUndefined(
+		obj.medicalLocationId
+	)
 	val tags = setToArray(
 		obj.tags,
 		{ x1: CodeStub ->
@@ -560,11 +699,21 @@ public fun invoice_toJs(obj: EncryptedInvoice): EncryptedInvoiceJs {
 			codeStub_toJs(x1)
 		},
 	)
-	val endOfLife = longToNumber(obj.endOfLife)
-	val deletionDate = longToNumber(obj.deletionDate)
-	val invoiceDate = longToNumber(obj.invoiceDate)
-	val sentDate = longToNumber(obj.sentDate)
-	val printedDate = longToNumber(obj.printedDate)
+	val endOfLife = nullToUndefined(
+		longToNumber(obj.endOfLife)
+	)
+	val deletionDate = nullToUndefined(
+		longToNumber(obj.deletionDate)
+	)
+	val invoiceDate = nullToUndefined(
+		longToNumber(obj.invoiceDate)
+	)
+	val sentDate = nullToUndefined(
+		longToNumber(obj.sentDate)
+	)
+	val printedDate = nullToUndefined(
+		longToNumber(obj.printedDate)
+	)
 	val invoicingCodes = listToArray(
 		obj.invoicingCodes,
 		{ x1: EncryptedInvoicingCode ->
@@ -580,69 +729,165 @@ public fun invoice_toJs(obj: EncryptedInvoice): EncryptedInvoiceJs {
 			x1
 		},
 	)
-	val recipientType = obj.recipientType
-	val recipientId = obj.recipientId
-	val invoiceReference = obj.invoiceReference
-	val thirdPartyReference = obj.thirdPartyReference
-	val thirdPartyPaymentJustification = obj.thirdPartyPaymentJustification
-	val thirdPartyPaymentReason = obj.thirdPartyPaymentReason
-	val reason = obj.reason
-	val invoiceType = obj.invoiceType?.let { nonNull1 ->
-		obj.invoiceType?.name
-	}
-	val sentMediumType = obj.sentMediumType?.let { nonNull1 ->
-		obj.sentMediumType?.name
-	}
-	val interventionType = obj.interventionType?.let { nonNull1 ->
-		obj.interventionType?.name
-	}
-	val groupId = obj.groupId
-	val paymentType = obj.paymentType?.let { nonNull1 ->
-		obj.paymentType?.name
-	}
-	val paid = obj.paid
-	val payments = listToArray(
-		obj.payments,
-		{ x1: Payment ->
-			payment_toJs(x1)
-		},
+	val recipientType = nullToUndefined(
+		obj.recipientType
 	)
-	val gnotionNihii = obj.gnotionNihii
-	val gnotionSsin = obj.gnotionSsin
-	val gnotionLastName = obj.gnotionLastName
-	val gnotionFirstName = obj.gnotionFirstName
-	val gnotionCdHcParty = obj.gnotionCdHcParty
-	val invoicePeriod = intToNumber(obj.invoicePeriod)
-	val careProviderType = obj.careProviderType
-	val internshipNihii = obj.internshipNihii
-	val internshipSsin = obj.internshipSsin
-	val internshipLastName = obj.internshipLastName
-	val internshipFirstName = obj.internshipFirstName
-	val internshipCdHcParty = obj.internshipCdHcParty
-	val internshipCbe = obj.internshipCbe
-	val supervisorNihii = obj.supervisorNihii
-	val supervisorSsin = obj.supervisorSsin
-	val supervisorLastName = obj.supervisorLastName
-	val supervisorFirstName = obj.supervisorFirstName
-	val supervisorCdHcParty = obj.supervisorCdHcParty
-	val supervisorCbe = obj.supervisorCbe
-	val error = obj.error
-	val encounterLocationName = obj.encounterLocationName
-	val encounterLocationNihii = obj.encounterLocationNihii
-	val encounterLocationNorm = intToNumber(obj.encounterLocationNorm)
-	val longDelayJustification = intToNumber(obj.longDelayJustification)
-	val correctiveInvoiceId = obj.correctiveInvoiceId
-	val correctedInvoiceId = obj.correctedInvoiceId
-	val creditNote = obj.creditNote
-	val creditNoteRelatedInvoiceId = obj.creditNoteRelatedInvoiceId
-	val idDocument = obj.idDocument?.let { nonNull1 ->
-		identityDocumentReader_toJs(nonNull1)
-	}
-	val admissionDate = longToNumber(obj.admissionDate)
-	val locationNihii = obj.locationNihii
-	val locationService = intToNumber(obj.locationService)
-	val cancelReason = obj.cancelReason
-	val cancelDate = longToNumber(obj.cancelDate)
+	val recipientId = nullToUndefined(
+		obj.recipientId
+	)
+	val invoiceReference = nullToUndefined(
+		obj.invoiceReference
+	)
+	val thirdPartyReference = nullToUndefined(
+		obj.thirdPartyReference
+	)
+	val thirdPartyPaymentJustification = nullToUndefined(
+		obj.thirdPartyPaymentJustification
+	)
+	val thirdPartyPaymentReason = nullToUndefined(
+		obj.thirdPartyPaymentReason
+	)
+	val reason = nullToUndefined(
+		obj.reason
+	)
+	val invoiceType = nullToUndefined(
+		obj.invoiceType?.let { nonNull1 ->
+			nonNull1.name
+		}
+	)
+	val sentMediumType = nullToUndefined(
+		obj.sentMediumType?.let { nonNull1 ->
+			nonNull1.name
+		}
+	)
+	val interventionType = nullToUndefined(
+		obj.interventionType?.let { nonNull1 ->
+			nonNull1.name
+		}
+	)
+	val groupId = nullToUndefined(
+		obj.groupId
+	)
+	val paymentType = nullToUndefined(
+		obj.paymentType?.let { nonNull1 ->
+			nonNull1.name
+		}
+	)
+	val paid = nullToUndefined(
+		obj.paid
+	)
+	val payments = nullToUndefined(
+		listToArray(
+			obj.payments,
+			{ x1: Payment ->
+				payment_toJs(x1)
+			},
+		)
+	)
+	val gnotionNihii = nullToUndefined(
+		obj.gnotionNihii
+	)
+	val gnotionSsin = nullToUndefined(
+		obj.gnotionSsin
+	)
+	val gnotionLastName = nullToUndefined(
+		obj.gnotionLastName
+	)
+	val gnotionFirstName = nullToUndefined(
+		obj.gnotionFirstName
+	)
+	val gnotionCdHcParty = nullToUndefined(
+		obj.gnotionCdHcParty
+	)
+	val invoicePeriod = nullToUndefined(
+		intToNumber(obj.invoicePeriod)
+	)
+	val careProviderType = nullToUndefined(
+		obj.careProviderType
+	)
+	val internshipNihii = nullToUndefined(
+		obj.internshipNihii
+	)
+	val internshipSsin = nullToUndefined(
+		obj.internshipSsin
+	)
+	val internshipLastName = nullToUndefined(
+		obj.internshipLastName
+	)
+	val internshipFirstName = nullToUndefined(
+		obj.internshipFirstName
+	)
+	val internshipCdHcParty = nullToUndefined(
+		obj.internshipCdHcParty
+	)
+	val internshipCbe = nullToUndefined(
+		obj.internshipCbe
+	)
+	val supervisorNihii = nullToUndefined(
+		obj.supervisorNihii
+	)
+	val supervisorSsin = nullToUndefined(
+		obj.supervisorSsin
+	)
+	val supervisorLastName = nullToUndefined(
+		obj.supervisorLastName
+	)
+	val supervisorFirstName = nullToUndefined(
+		obj.supervisorFirstName
+	)
+	val supervisorCdHcParty = nullToUndefined(
+		obj.supervisorCdHcParty
+	)
+	val supervisorCbe = nullToUndefined(
+		obj.supervisorCbe
+	)
+	val error = nullToUndefined(
+		obj.error
+	)
+	val encounterLocationName = nullToUndefined(
+		obj.encounterLocationName
+	)
+	val encounterLocationNihii = nullToUndefined(
+		obj.encounterLocationNihii
+	)
+	val encounterLocationNorm = nullToUndefined(
+		intToNumber(obj.encounterLocationNorm)
+	)
+	val longDelayJustification = nullToUndefined(
+		intToNumber(obj.longDelayJustification)
+	)
+	val correctiveInvoiceId = nullToUndefined(
+		obj.correctiveInvoiceId
+	)
+	val correctedInvoiceId = nullToUndefined(
+		obj.correctedInvoiceId
+	)
+	val creditNote = nullToUndefined(
+		obj.creditNote
+	)
+	val creditNoteRelatedInvoiceId = nullToUndefined(
+		obj.creditNoteRelatedInvoiceId
+	)
+	val idDocument = nullToUndefined(
+		obj.idDocument?.let { nonNull1 ->
+			identityDocumentReader_toJs(nonNull1)
+		}
+	)
+	val admissionDate = nullToUndefined(
+		longToNumber(obj.admissionDate)
+	)
+	val locationNihii = nullToUndefined(
+		obj.locationNihii
+	)
+	val locationService = nullToUndefined(
+		intToNumber(obj.locationService)
+	)
+	val cancelReason = nullToUndefined(
+		obj.cancelReason
+	)
+	val cancelDate = nullToUndefined(
+		longToNumber(obj.cancelDate)
+	)
 	val options = mapToObject(
 		obj.options,
 		{ x1: String ->
@@ -700,12 +945,16 @@ public fun invoice_toJs(obj: EncryptedInvoice): EncryptedInvoiceJs {
 			)
 		},
 	)
-	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
-		base64String_toJs(nonNull1)
-	}
-	val securityMetadata = obj.securityMetadata?.let { nonNull1 ->
-		securityMetadata_toJs(nonNull1)
-	}
+	val encryptedSelf = nullToUndefined(
+		obj.encryptedSelf?.let { nonNull1 ->
+			base64String_toJs(nonNull1)
+		}
+	)
+	val securityMetadata = nullToUndefined(
+		obj.securityMetadata?.let { nonNull1 ->
+			securityMetadata_toJs(nonNull1)
+		}
+	)
 	return EncryptedInvoiceJs(js("{" +
 		"id:id," +
 		"rev:rev," +
@@ -783,12 +1032,12 @@ public fun invoice_toJs(obj: EncryptedInvoice): EncryptedInvoiceJs {
 
 public fun invoice_fromJs(obj: EncryptedInvoiceJs): EncryptedInvoice {
 	val id = obj.id
-	val rev = obj.rev
+	val rev = undefinedToNull(obj.rev)
 	val created = numberToLong(obj.created, "obj.created")
 	val modified = numberToLong(obj.modified, "obj.modified")
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
+	val author = undefinedToNull(obj.author)
+	val responsible = undefinedToNull(obj.responsible)
+	val medicalLocationId = undefinedToNull(obj.medicalLocationId)
 	val tags = arrayToSet(
 		obj.tags,
 		"obj.tags",
@@ -825,13 +1074,13 @@ public fun invoice_fromJs(obj: EncryptedInvoiceJs): EncryptedInvoice {
 			x1
 		},
 	)
-	val recipientType = obj.recipientType
-	val recipientId = obj.recipientId
-	val invoiceReference = obj.invoiceReference
-	val thirdPartyReference = obj.thirdPartyReference
-	val thirdPartyPaymentJustification = obj.thirdPartyPaymentJustification
-	val thirdPartyPaymentReason = obj.thirdPartyPaymentReason
-	val reason = obj.reason
+	val recipientType = undefinedToNull(obj.recipientType)
+	val recipientId = undefinedToNull(obj.recipientId)
+	val invoiceReference = undefinedToNull(obj.invoiceReference)
+	val thirdPartyReference = undefinedToNull(obj.thirdPartyReference)
+	val thirdPartyPaymentJustification = undefinedToNull(obj.thirdPartyPaymentJustification)
+	val thirdPartyPaymentReason = undefinedToNull(obj.thirdPartyPaymentReason)
+	val reason = undefinedToNull(obj.reason)
 	val invoiceType = obj.invoiceType?.let { nonNull1 ->
 		InvoiceType.valueOf(nonNull1)
 	}
@@ -841,11 +1090,11 @@ public fun invoice_fromJs(obj: EncryptedInvoiceJs): EncryptedInvoice {
 	val interventionType = obj.interventionType?.let { nonNull1 ->
 		InvoiceInterventionType.valueOf(nonNull1)
 	}
-	val groupId = obj.groupId
+	val groupId = undefinedToNull(obj.groupId)
 	val paymentType = obj.paymentType?.let { nonNull1 ->
 		PaymentType.valueOf(nonNull1)
 	}
-	val paid = obj.paid
+	val paid = undefinedToNull(obj.paid)
 	val payments = arrayToList(
 		obj.payments,
 		"obj.payments",
@@ -853,41 +1102,41 @@ public fun invoice_fromJs(obj: EncryptedInvoiceJs): EncryptedInvoice {
 			payment_fromJs(x1)
 		},
 	)
-	val gnotionNihii = obj.gnotionNihii
-	val gnotionSsin = obj.gnotionSsin
-	val gnotionLastName = obj.gnotionLastName
-	val gnotionFirstName = obj.gnotionFirstName
-	val gnotionCdHcParty = obj.gnotionCdHcParty
+	val gnotionNihii = undefinedToNull(obj.gnotionNihii)
+	val gnotionSsin = undefinedToNull(obj.gnotionSsin)
+	val gnotionLastName = undefinedToNull(obj.gnotionLastName)
+	val gnotionFirstName = undefinedToNull(obj.gnotionFirstName)
+	val gnotionCdHcParty = undefinedToNull(obj.gnotionCdHcParty)
 	val invoicePeriod = numberToInt(obj.invoicePeriod, "obj.invoicePeriod")
-	val careProviderType = obj.careProviderType
-	val internshipNihii = obj.internshipNihii
-	val internshipSsin = obj.internshipSsin
-	val internshipLastName = obj.internshipLastName
-	val internshipFirstName = obj.internshipFirstName
-	val internshipCdHcParty = obj.internshipCdHcParty
-	val internshipCbe = obj.internshipCbe
-	val supervisorNihii = obj.supervisorNihii
-	val supervisorSsin = obj.supervisorSsin
-	val supervisorLastName = obj.supervisorLastName
-	val supervisorFirstName = obj.supervisorFirstName
-	val supervisorCdHcParty = obj.supervisorCdHcParty
-	val supervisorCbe = obj.supervisorCbe
-	val error = obj.error
-	val encounterLocationName = obj.encounterLocationName
-	val encounterLocationNihii = obj.encounterLocationNihii
+	val careProviderType = undefinedToNull(obj.careProviderType)
+	val internshipNihii = undefinedToNull(obj.internshipNihii)
+	val internshipSsin = undefinedToNull(obj.internshipSsin)
+	val internshipLastName = undefinedToNull(obj.internshipLastName)
+	val internshipFirstName = undefinedToNull(obj.internshipFirstName)
+	val internshipCdHcParty = undefinedToNull(obj.internshipCdHcParty)
+	val internshipCbe = undefinedToNull(obj.internshipCbe)
+	val supervisorNihii = undefinedToNull(obj.supervisorNihii)
+	val supervisorSsin = undefinedToNull(obj.supervisorSsin)
+	val supervisorLastName = undefinedToNull(obj.supervisorLastName)
+	val supervisorFirstName = undefinedToNull(obj.supervisorFirstName)
+	val supervisorCdHcParty = undefinedToNull(obj.supervisorCdHcParty)
+	val supervisorCbe = undefinedToNull(obj.supervisorCbe)
+	val error = undefinedToNull(obj.error)
+	val encounterLocationName = undefinedToNull(obj.encounterLocationName)
+	val encounterLocationNihii = undefinedToNull(obj.encounterLocationNihii)
 	val encounterLocationNorm = numberToInt(obj.encounterLocationNorm, "obj.encounterLocationNorm")
 	val longDelayJustification = numberToInt(obj.longDelayJustification, "obj.longDelayJustification")
-	val correctiveInvoiceId = obj.correctiveInvoiceId
-	val correctedInvoiceId = obj.correctedInvoiceId
-	val creditNote = obj.creditNote
-	val creditNoteRelatedInvoiceId = obj.creditNoteRelatedInvoiceId
+	val correctiveInvoiceId = undefinedToNull(obj.correctiveInvoiceId)
+	val correctedInvoiceId = undefinedToNull(obj.correctedInvoiceId)
+	val creditNote = undefinedToNull(obj.creditNote)
+	val creditNoteRelatedInvoiceId = undefinedToNull(obj.creditNoteRelatedInvoiceId)
 	val idDocument = obj.idDocument?.let { nonNull1 ->
 		identityDocumentReader_fromJs(nonNull1)
 	}
 	val admissionDate = numberToLong(obj.admissionDate, "obj.admissionDate")
-	val locationNihii = obj.locationNihii
+	val locationNihii = undefinedToNull(obj.locationNihii)
 	val locationService = numberToInt(obj.locationService, "obj.locationService")
-	val cancelReason = obj.cancelReason
+	val cancelReason = undefinedToNull(obj.cancelReason)
 	val cancelDate = numberToLong(obj.cancelDate, "obj.cancelDate")
 	val options = objectToMap(
 		obj.options,
@@ -1035,6 +1284,7 @@ public fun invoice_fromJs(obj: EncryptedInvoiceJs): EncryptedInvoice {
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun invoice_toJs(obj: Invoice): InvoiceJs = when (obj) {
 	is EncryptedInvoice -> invoice_toJs(obj)
 	is DecryptedInvoice -> invoice_toJs(obj)

@@ -2,16 +2,21 @@ package com.icure.sdk.js.model.embed.form.template
 
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.listToArray
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.model.embed.form.template.FieldsGroup
 import com.icure.sdk.model.embed.form.template.StructureElement
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun fieldsGroup_toJs(obj: FieldsGroup): FieldsGroupJs {
 	val group = obj.group
-	val fields = listToArray(
-		obj.fields,
-		{ x1: StructureElement ->
-			structureElement_toJs(x1)
-		},
+	val fields = nullToUndefined(
+		listToArray(
+			obj.fields,
+			{ x1: StructureElement ->
+				structureElement_toJs(x1)
+			},
+		)
 	)
 	return FieldsGroupJs(js("{" +
 		"group:group," +

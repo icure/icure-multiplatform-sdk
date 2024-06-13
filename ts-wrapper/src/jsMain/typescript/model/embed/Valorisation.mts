@@ -55,8 +55,6 @@ export class DecryptedValorisation {
 
   readonly isEncrypted: false = false;
 
-  readonly $ktClass: 'com.icure.sdk.model.embed.DecryptedValorisation' = 'com.icure.sdk.model.embed.DecryptedValorisation';
-
   constructor(partial: Partial<DecryptedValorisation>) {
     if (partial.isEncrypted !== undefined && partial.isEncrypted !== false) throw new Error('partial.isEncrypted must be undefined or false');
     if ('startOfValidity' in partial) this.startOfValidity = partial.startOfValidity;
@@ -99,8 +97,6 @@ export class EncryptedValorisation {
   encryptedSelf: Base64String | undefined = undefined;
 
   readonly isEncrypted: true = true;
-
-  readonly $ktClass: 'com.icure.sdk.model.embed.EncryptedValorisation' = 'com.icure.sdk.model.embed.EncryptedValorisation';
 
   constructor(partial: Partial<EncryptedValorisation>) {
     if (partial.isEncrypted !== undefined && partial.isEncrypted !== true) throw new Error('partial.isEncrypted must be undefined or true');

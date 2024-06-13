@@ -2,12 +2,9 @@
 package com.icure.sdk.js.api.flavoured.`impl`
 
 import com.icure.sdk.api.flavoured.ContactBasicApi
-import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefault
+import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNonNull
+import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.sdk.js.api.flavoured.ContactBasicApiJs
-import com.icure.sdk.js.api.flavoured.ContactBasicApi_findContactsByOpeningDate_Options
-import com.icure.sdk.js.api.flavoured.ContactBasicApi_listContactsByHCPartyAndPatientSecretFKeys_Options
-import com.icure.sdk.js.api.flavoured.ContactBasicApi_subscribeToEvents_Options
-import com.icure.sdk.js.api.flavoured.ContactBasicApi_subscribeToServiceEvents_Options
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.dynamicToJsonNullsafe
@@ -15,6 +12,7 @@ import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.numberToDuration
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.ContactJs
 import com.icure.sdk.js.model.EncryptedContactJs
 import com.icure.sdk.js.model.IcureStubJs
@@ -242,7 +240,7 @@ internal class ContactBasicApiImplJs(
 				contact_fromJs(x1)
 			},
 		)
-		val startDocumentIdConverted: String? = startDocumentId
+		val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
 		val limitConverted: Int? = numberToInt(limit, "limit")
 		val result = contactBasicApi.filterContactsBy(
 			filterChainConverted,
@@ -328,10 +326,9 @@ internal class ContactBasicApiImplJs(
 	override fun listContactsByHCPartyAndPatientSecretFKeys(
 		hcPartyId: String,
 		secretPatientKeys: Array<String>,
-		options: ContactBasicApi_listContactsByHCPartyAndPatientSecretFKeys_Options?,
+		options: dynamic,
 	): Promise<Array<EncryptedContactJs>> {
-		val _options: ContactBasicApi_listContactsByHCPartyAndPatientSecretFKeys_Options = options ?:
-				js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val hcPartyIdConverted: String = hcPartyId
 			val secretPatientKeysConverted: List<String> = arrayToList(
@@ -341,17 +338,19 @@ internal class ContactBasicApiImplJs(
 					x1
 				},
 			)
-			val planOfActionsIdsConverted: String? = convertingOptionOrDefault(
-				_options.planOfActionsIds,
+			val planOfActionsIdsConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"planOfActionsIds",
 				null
-			) { planOfActionsIds ->
-				planOfActionsIds
+			) { planOfActionsIds: String? ->
+				undefinedToNull(planOfActionsIds)
 			}
-			val skipClosedContactsConverted: Boolean? = convertingOptionOrDefault(
-				_options.skipClosedContacts,
+			val skipClosedContactsConverted: Boolean? = convertingOptionOrDefaultNullable(
+				_options,
+				"skipClosedContacts",
 				null
-			) { skipClosedContacts ->
-				skipClosedContacts
+			) { skipClosedContacts: Boolean? ->
+				undefinedToNull(skipClosedContacts)
 			}
 			val result = contactBasicApi.listContactsByHCPartyAndPatientSecretFKeys(
 				hcPartyIdConverted,
@@ -474,29 +473,32 @@ internal class ContactBasicApiImplJs(
 		startDate: Double,
 		endDate: Double,
 		hcPartyId: String,
-		options: ContactBasicApi_findContactsByOpeningDate_Options?,
+		options: dynamic,
 	): Promise<PaginatedListJs<EncryptedContactJs>> {
-		val _options: ContactBasicApi_findContactsByOpeningDate_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val startDateConverted: Long = numberToLong(startDate, "startDate")
 			val endDateConverted: Long = numberToLong(endDate, "endDate")
 			val hcPartyIdConverted: String = hcPartyId
-			val startKeyConverted: JsonElement? = convertingOptionOrDefault(
-				_options.startKey,
+			val startKeyConverted: JsonElement? = convertingOptionOrDefaultNullable(
+				_options,
+				"startKey",
 				null
-			) { startKey ->
+			) { startKey: dynamic ->
 				dynamicToJsonNullsafe(startKey, "startKey")
 			}
-			val startDocumentIdConverted: String? = convertingOptionOrDefault(
-				_options.startDocumentId,
+			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"startDocumentId",
 				null
-			) { startDocumentId ->
-				startDocumentId
+			) { startDocumentId: String? ->
+				undefinedToNull(startDocumentId)
 			}
-			val limitConverted: Int? = convertingOptionOrDefault(
-				_options.limit,
+			val limitConverted: Int? = convertingOptionOrDefaultNullable(
+				_options,
+				"limit",
 				null
-			) { limit ->
+			) { limit: Double? ->
 				numberToInt(limit, "limit")
 			}
 			val result = contactBasicApi.findContactsByOpeningDate(
@@ -527,7 +529,7 @@ internal class ContactBasicApiImplJs(
 				service_fromJs(x1)
 			},
 		)
-		val startDocumentIdConverted: String? = startDocumentId
+		val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
 		val limitConverted: Int? = numberToInt(limit, "limit")
 		val result = contactBasicApi.filterServicesBy(
 			filterChainConverted,
@@ -546,9 +548,9 @@ internal class ContactBasicApiImplJs(
 		events: Array<String>,
 		filter: AbstractFilterJs<ServiceJs>,
 		eventFired: (EncryptedServiceJs) -> Promise<Unit>,
-		options: ContactBasicApi_subscribeToServiceEvents_Options?,
+		options: dynamic,
 	): Promise<ConnectionJs> {
-		val _options: ContactBasicApi_subscribeToServiceEvents_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
 				events,
@@ -563,36 +565,41 @@ internal class ContactBasicApiImplJs(
 					service_fromJs(x1)
 				},
 			)
-			val onConnectedConverted: suspend () -> Unit = convertingOptionOrDefault(
-				_options.onConnected,
+			val onConnectedConverted: suspend () -> Unit = convertingOptionOrDefaultNonNull(
+				_options,
+				"onConnected",
 				{}
-			) { onConnected ->
+			) { onConnected: () -> Promise<Unit> ->
 				{  ->
 					onConnected().await()
 				}
 			}
-			val channelCapacityConverted: Int = convertingOptionOrDefault(
-				_options.channelCapacity,
+			val channelCapacityConverted: Int = convertingOptionOrDefaultNonNull(
+				_options,
+				"channelCapacity",
 				kotlinx.coroutines.channels.Channel.BUFFERED
-			) { channelCapacity ->
+			) { channelCapacity: Double ->
 				numberToInt(channelCapacity, "channelCapacity")
 			}
-			val retryDelayConverted: Duration = convertingOptionOrDefault(
-				_options.retryDelay,
+			val retryDelayConverted: Duration = convertingOptionOrDefaultNonNull(
+				_options,
+				"retryDelay",
 				2.seconds
-			) { retryDelay ->
+			) { retryDelay: Double ->
 				numberToDuration(retryDelay, "retryDelay")
 			}
-			val retryDelayExponentFactorConverted: Double = convertingOptionOrDefault(
-				_options.retryDelayExponentFactor,
+			val retryDelayExponentFactorConverted: Double = convertingOptionOrDefaultNonNull(
+				_options,
+				"retryDelayExponentFactor",
 				2.0
-			) { retryDelayExponentFactor ->
+			) { retryDelayExponentFactor: Double ->
 				retryDelayExponentFactor
 			}
-			val maxRetriesConverted: Int = convertingOptionOrDefault(
-				_options.maxRetries,
+			val maxRetriesConverted: Int = convertingOptionOrDefaultNonNull(
+				_options,
+				"maxRetries",
 				5
-			) { maxRetries ->
+			) { maxRetries: Double ->
 				numberToInt(maxRetries, "maxRetries")
 			}
 			val eventFiredConverted: suspend (EncryptedService) -> Unit = { arg0 ->
@@ -618,9 +625,9 @@ internal class ContactBasicApiImplJs(
 		events: Array<String>,
 		filter: AbstractFilterJs<ContactJs>,
 		eventFired: (EncryptedContactJs) -> Promise<Unit>,
-		options: ContactBasicApi_subscribeToEvents_Options?,
+		options: dynamic,
 	): Promise<ConnectionJs> {
-		val _options: ContactBasicApi_subscribeToEvents_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
 				events,
@@ -635,36 +642,41 @@ internal class ContactBasicApiImplJs(
 					contact_fromJs(x1)
 				},
 			)
-			val onConnectedConverted: suspend () -> Unit = convertingOptionOrDefault(
-				_options.onConnected,
+			val onConnectedConverted: suspend () -> Unit = convertingOptionOrDefaultNonNull(
+				_options,
+				"onConnected",
 				{}
-			) { onConnected ->
+			) { onConnected: () -> Promise<Unit> ->
 				{  ->
 					onConnected().await()
 				}
 			}
-			val channelCapacityConverted: Int = convertingOptionOrDefault(
-				_options.channelCapacity,
+			val channelCapacityConverted: Int = convertingOptionOrDefaultNonNull(
+				_options,
+				"channelCapacity",
 				kotlinx.coroutines.channels.Channel.BUFFERED
-			) { channelCapacity ->
+			) { channelCapacity: Double ->
 				numberToInt(channelCapacity, "channelCapacity")
 			}
-			val retryDelayConverted: Duration = convertingOptionOrDefault(
-				_options.retryDelay,
+			val retryDelayConverted: Duration = convertingOptionOrDefaultNonNull(
+				_options,
+				"retryDelay",
 				2.seconds
-			) { retryDelay ->
+			) { retryDelay: Double ->
 				numberToDuration(retryDelay, "retryDelay")
 			}
-			val retryDelayExponentFactorConverted: Double = convertingOptionOrDefault(
-				_options.retryDelayExponentFactor,
+			val retryDelayExponentFactorConverted: Double = convertingOptionOrDefaultNonNull(
+				_options,
+				"retryDelayExponentFactor",
 				2.0
-			) { retryDelayExponentFactor ->
+			) { retryDelayExponentFactor: Double ->
 				retryDelayExponentFactor
 			}
-			val maxRetriesConverted: Int = convertingOptionOrDefault(
-				_options.maxRetries,
+			val maxRetriesConverted: Int = convertingOptionOrDefaultNonNull(
+				_options,
+				"maxRetries",
 				5
-			) { maxRetries ->
+			) { maxRetries: Double ->
 				numberToInt(maxRetries, "maxRetries")
 			}
 			val eventFiredConverted: suspend (EncryptedContact) -> Unit = { arg0 ->

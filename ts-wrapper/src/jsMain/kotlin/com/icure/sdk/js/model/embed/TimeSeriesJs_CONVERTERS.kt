@@ -6,8 +6,10 @@ import com.icure.sdk.model.embed.TimeSeries
 import kotlin.Array
 import kotlin.Double
 import kotlin.String
+import kotlin.Suppress
 import kotlin.collections.List
 
+@Suppress("UNUSED_VARIABLE")
 public fun timeSeries_toJs(obj: TimeSeries): TimeSeriesJs {
 	val fields = listToArray(
 		obj.fields,

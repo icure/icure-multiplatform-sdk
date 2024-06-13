@@ -2,8 +2,11 @@ package com.icure.sdk.js.model
 
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.listToArray
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.model.PaginatedList
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun <T, T_JS> paginatedList_toJs(obj: PaginatedList<T>, convertT: (T) -> T_JS):
 		PaginatedListJs<T_JS> {
 	val rows = listToArray(
@@ -12,9 +15,11 @@ public fun <T, T_JS> paginatedList_toJs(obj: PaginatedList<T>, convertT: (T) -> 
 			convertT(x1)
 		},
 	)
-	val nextKeyPair = obj.nextKeyPair?.let { nonNull1 ->
-		paginatedDocumentKeyIdPair_toJs(nonNull1)
-	}
+	val nextKeyPair = nullToUndefined(
+		obj.nextKeyPair?.let { nonNull1 ->
+			paginatedDocumentKeyIdPair_toJs(nonNull1)
+		}
+	)
 	return PaginatedListJs<T_JS>(js("{" +
 		"rows:rows," +
 		"nextKeyPair:nextKeyPair" +

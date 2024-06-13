@@ -2,72 +2,180 @@ package com.icure.sdk.js.model.embed
 
 import com.icure.sdk.js.model.CheckedConverters.intToNumber
 import com.icure.sdk.js.model.CheckedConverters.longToNumber
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.specializations.base64String_fromJs
 import com.icure.sdk.js.model.specializations.base64String_toJs
 import com.icure.sdk.model.embed.DecryptedInvoicingCode
 import com.icure.sdk.model.embed.EncryptedInvoicingCode
 import com.icure.sdk.model.embed.InvoicingCode
 import com.icure.sdk.model.embed.PaymentType
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun invoicingCode_toJs(obj: DecryptedInvoicingCode): DecryptedInvoicingCodeJs {
-	val id = obj.id
-	val dateCode = longToNumber(obj.dateCode)
-	val logicalId = obj.logicalId
-	val label = obj.label
-	val userId = obj.userId
-	val contactId = obj.contactId
-	val serviceId = obj.serviceId
-	val tarificationId = obj.tarificationId
-	val code = obj.code
-	val paymentType = obj.paymentType?.let { nonNull1 ->
-		obj.paymentType?.name
-	}
-	val paid = obj.paid
-	val totalAmount = obj.totalAmount
-	val reimbursement = obj.reimbursement
-	val patientIntervention = obj.patientIntervention
-	val doctorSupplement = obj.doctorSupplement
-	val conventionAmount = obj.conventionAmount
-	val vat = obj.vat
-	val error = obj.error
-	val contract = obj.contract
-	val contractDate = longToNumber(obj.contractDate)
-	val units = intToNumber(obj.units)
-	val side = intToNumber(obj.side)
-	val timeOfDay = intToNumber(obj.timeOfDay)
-	val eidReadingHour = intToNumber(obj.eidReadingHour)
-	val eidReadingValue = obj.eidReadingValue
-	val override3rdPayerCode = intToNumber(obj.override3rdPayerCode)
-	val override3rdPayerReason = obj.override3rdPayerReason
-	val transplantationCode = intToNumber(obj.transplantationCode)
-	val prescriberNorm = intToNumber(obj.prescriberNorm)
-	val percentNorm = intToNumber(obj.percentNorm)
-	val prescriberNihii = obj.prescriberNihii
-	val relatedCode = obj.relatedCode
-	val prescriptionDate = longToNumber(obj.prescriptionDate)
-	val derogationMaxNumber = intToNumber(obj.derogationMaxNumber)
-	val prescriberSsin = obj.prescriberSsin
-	val prescriberLastName = obj.prescriberLastName
-	val prescriberFirstName = obj.prescriberFirstName
-	val prescriberCdHcParty = obj.prescriberCdHcParty
-	val locationNihii = obj.locationNihii
-	val locationCdHcParty = obj.locationCdHcParty
-	val locationService = intToNumber(obj.locationService)
-	val admissionDate = longToNumber(obj.admissionDate)
-	val canceled = obj.canceled
-	val accepted = obj.accepted
-	val pending = obj.pending
-	val resent = obj.resent
-	val archived = obj.archived
-	val lost = obj.lost
-	val insuranceJustification = intToNumber(obj.insuranceJustification)
-	val cancelPatientInterventionReason = intToNumber(obj.cancelPatientInterventionReason)
-	val status = longToNumber(obj.status)
-	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
-		base64String_toJs(nonNull1)
-	}
+	val id = nullToUndefined(
+		obj.id
+	)
+	val dateCode = nullToUndefined(
+		longToNumber(obj.dateCode)
+	)
+	val logicalId = nullToUndefined(
+		obj.logicalId
+	)
+	val label = nullToUndefined(
+		obj.label
+	)
+	val userId = nullToUndefined(
+		obj.userId
+	)
+	val contactId = nullToUndefined(
+		obj.contactId
+	)
+	val serviceId = nullToUndefined(
+		obj.serviceId
+	)
+	val tarificationId = nullToUndefined(
+		obj.tarificationId
+	)
+	val code = nullToUndefined(
+		obj.code
+	)
+	val paymentType = nullToUndefined(
+		obj.paymentType?.let { nonNull1 ->
+			nonNull1.name
+		}
+	)
+	val paid = nullToUndefined(
+		obj.paid
+	)
+	val totalAmount = nullToUndefined(
+		obj.totalAmount
+	)
+	val reimbursement = nullToUndefined(
+		obj.reimbursement
+	)
+	val patientIntervention = nullToUndefined(
+		obj.patientIntervention
+	)
+	val doctorSupplement = nullToUndefined(
+		obj.doctorSupplement
+	)
+	val conventionAmount = nullToUndefined(
+		obj.conventionAmount
+	)
+	val vat = nullToUndefined(
+		obj.vat
+	)
+	val error = nullToUndefined(
+		obj.error
+	)
+	val contract = nullToUndefined(
+		obj.contract
+	)
+	val contractDate = nullToUndefined(
+		longToNumber(obj.contractDate)
+	)
+	val units = nullToUndefined(
+		intToNumber(obj.units)
+	)
+	val side = nullToUndefined(
+		intToNumber(obj.side)
+	)
+	val timeOfDay = nullToUndefined(
+		intToNumber(obj.timeOfDay)
+	)
+	val eidReadingHour = nullToUndefined(
+		intToNumber(obj.eidReadingHour)
+	)
+	val eidReadingValue = nullToUndefined(
+		obj.eidReadingValue
+	)
+	val override3rdPayerCode = nullToUndefined(
+		intToNumber(obj.override3rdPayerCode)
+	)
+	val override3rdPayerReason = nullToUndefined(
+		obj.override3rdPayerReason
+	)
+	val transplantationCode = nullToUndefined(
+		intToNumber(obj.transplantationCode)
+	)
+	val prescriberNorm = nullToUndefined(
+		intToNumber(obj.prescriberNorm)
+	)
+	val percentNorm = nullToUndefined(
+		intToNumber(obj.percentNorm)
+	)
+	val prescriberNihii = nullToUndefined(
+		obj.prescriberNihii
+	)
+	val relatedCode = nullToUndefined(
+		obj.relatedCode
+	)
+	val prescriptionDate = nullToUndefined(
+		longToNumber(obj.prescriptionDate)
+	)
+	val derogationMaxNumber = nullToUndefined(
+		intToNumber(obj.derogationMaxNumber)
+	)
+	val prescriberSsin = nullToUndefined(
+		obj.prescriberSsin
+	)
+	val prescriberLastName = nullToUndefined(
+		obj.prescriberLastName
+	)
+	val prescriberFirstName = nullToUndefined(
+		obj.prescriberFirstName
+	)
+	val prescriberCdHcParty = nullToUndefined(
+		obj.prescriberCdHcParty
+	)
+	val locationNihii = nullToUndefined(
+		obj.locationNihii
+	)
+	val locationCdHcParty = nullToUndefined(
+		obj.locationCdHcParty
+	)
+	val locationService = nullToUndefined(
+		intToNumber(obj.locationService)
+	)
+	val admissionDate = nullToUndefined(
+		longToNumber(obj.admissionDate)
+	)
+	val canceled = nullToUndefined(
+		obj.canceled
+	)
+	val accepted = nullToUndefined(
+		obj.accepted
+	)
+	val pending = nullToUndefined(
+		obj.pending
+	)
+	val resent = nullToUndefined(
+		obj.resent
+	)
+	val archived = nullToUndefined(
+		obj.archived
+	)
+	val lost = nullToUndefined(
+		obj.lost
+	)
+	val insuranceJustification = nullToUndefined(
+		intToNumber(obj.insuranceJustification)
+	)
+	val cancelPatientInterventionReason = nullToUndefined(
+		intToNumber(obj.cancelPatientInterventionReason)
+	)
+	val status = nullToUndefined(
+		longToNumber(obj.status)
+	)
+	val encryptedSelf = nullToUndefined(
+		obj.encryptedSelf?.let { nonNull1 ->
+			base64String_toJs(nonNull1)
+		}
+	)
 	return DecryptedInvoicingCodeJs(js("{" +
 		"id:id," +
 		"dateCode:dateCode," +
@@ -125,56 +233,56 @@ public fun invoicingCode_toJs(obj: DecryptedInvoicingCode): DecryptedInvoicingCo
 }
 
 public fun invoicingCode_fromJs(obj: DecryptedInvoicingCodeJs): DecryptedInvoicingCode {
-	val id = obj.id
+	val id = undefinedToNull(obj.id)
 	val dateCode = numberToLong(obj.dateCode, "obj.dateCode")
-	val logicalId = obj.logicalId
-	val label = obj.label
-	val userId = obj.userId
-	val contactId = obj.contactId
-	val serviceId = obj.serviceId
-	val tarificationId = obj.tarificationId
-	val code = obj.code
+	val logicalId = undefinedToNull(obj.logicalId)
+	val label = undefinedToNull(obj.label)
+	val userId = undefinedToNull(obj.userId)
+	val contactId = undefinedToNull(obj.contactId)
+	val serviceId = undefinedToNull(obj.serviceId)
+	val tarificationId = undefinedToNull(obj.tarificationId)
+	val code = undefinedToNull(obj.code)
 	val paymentType = obj.paymentType?.let { nonNull1 ->
 		PaymentType.valueOf(nonNull1)
 	}
-	val paid = obj.paid
-	val totalAmount = obj.totalAmount
-	val reimbursement = obj.reimbursement
-	val patientIntervention = obj.patientIntervention
-	val doctorSupplement = obj.doctorSupplement
-	val conventionAmount = obj.conventionAmount
-	val vat = obj.vat
-	val error = obj.error
-	val contract = obj.contract
+	val paid = undefinedToNull(obj.paid)
+	val totalAmount = undefinedToNull(obj.totalAmount)
+	val reimbursement = undefinedToNull(obj.reimbursement)
+	val patientIntervention = undefinedToNull(obj.patientIntervention)
+	val doctorSupplement = undefinedToNull(obj.doctorSupplement)
+	val conventionAmount = undefinedToNull(obj.conventionAmount)
+	val vat = undefinedToNull(obj.vat)
+	val error = undefinedToNull(obj.error)
+	val contract = undefinedToNull(obj.contract)
 	val contractDate = numberToLong(obj.contractDate, "obj.contractDate")
 	val units = numberToInt(obj.units, "obj.units")
 	val side = numberToInt(obj.side, "obj.side")
 	val timeOfDay = numberToInt(obj.timeOfDay, "obj.timeOfDay")
 	val eidReadingHour = numberToInt(obj.eidReadingHour, "obj.eidReadingHour")
-	val eidReadingValue = obj.eidReadingValue
+	val eidReadingValue = undefinedToNull(obj.eidReadingValue)
 	val override3rdPayerCode = numberToInt(obj.override3rdPayerCode, "obj.override3rdPayerCode")
-	val override3rdPayerReason = obj.override3rdPayerReason
+	val override3rdPayerReason = undefinedToNull(obj.override3rdPayerReason)
 	val transplantationCode = numberToInt(obj.transplantationCode, "obj.transplantationCode")
 	val prescriberNorm = numberToInt(obj.prescriberNorm, "obj.prescriberNorm")
 	val percentNorm = numberToInt(obj.percentNorm, "obj.percentNorm")
-	val prescriberNihii = obj.prescriberNihii
-	val relatedCode = obj.relatedCode
+	val prescriberNihii = undefinedToNull(obj.prescriberNihii)
+	val relatedCode = undefinedToNull(obj.relatedCode)
 	val prescriptionDate = numberToLong(obj.prescriptionDate, "obj.prescriptionDate")
 	val derogationMaxNumber = numberToInt(obj.derogationMaxNumber, "obj.derogationMaxNumber")
-	val prescriberSsin = obj.prescriberSsin
-	val prescriberLastName = obj.prescriberLastName
-	val prescriberFirstName = obj.prescriberFirstName
-	val prescriberCdHcParty = obj.prescriberCdHcParty
-	val locationNihii = obj.locationNihii
-	val locationCdHcParty = obj.locationCdHcParty
+	val prescriberSsin = undefinedToNull(obj.prescriberSsin)
+	val prescriberLastName = undefinedToNull(obj.prescriberLastName)
+	val prescriberFirstName = undefinedToNull(obj.prescriberFirstName)
+	val prescriberCdHcParty = undefinedToNull(obj.prescriberCdHcParty)
+	val locationNihii = undefinedToNull(obj.locationNihii)
+	val locationCdHcParty = undefinedToNull(obj.locationCdHcParty)
 	val locationService = numberToInt(obj.locationService, "obj.locationService")
 	val admissionDate = numberToLong(obj.admissionDate, "obj.admissionDate")
-	val canceled = obj.canceled
-	val accepted = obj.accepted
-	val pending = obj.pending
-	val resent = obj.resent
-	val archived = obj.archived
-	val lost = obj.lost
+	val canceled = undefinedToNull(obj.canceled)
+	val accepted = undefinedToNull(obj.accepted)
+	val pending = undefinedToNull(obj.pending)
+	val resent = undefinedToNull(obj.resent)
+	val archived = undefinedToNull(obj.archived)
+	val lost = undefinedToNull(obj.lost)
 	val insuranceJustification = numberToInt(obj.insuranceJustification, "obj.insuranceJustification")
 	val cancelPatientInterventionReason = numberToInt(obj.cancelPatientInterventionReason,
 			"obj.cancelPatientInterventionReason")
@@ -238,63 +346,168 @@ public fun invoicingCode_fromJs(obj: DecryptedInvoicingCodeJs): DecryptedInvoici
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun invoicingCode_toJs(obj: EncryptedInvoicingCode): EncryptedInvoicingCodeJs {
-	val id = obj.id
-	val dateCode = longToNumber(obj.dateCode)
-	val logicalId = obj.logicalId
-	val label = obj.label
-	val userId = obj.userId
-	val contactId = obj.contactId
-	val serviceId = obj.serviceId
-	val tarificationId = obj.tarificationId
-	val code = obj.code
-	val paymentType = obj.paymentType?.let { nonNull1 ->
-		obj.paymentType?.name
-	}
-	val paid = obj.paid
-	val totalAmount = obj.totalAmount
-	val reimbursement = obj.reimbursement
-	val patientIntervention = obj.patientIntervention
-	val doctorSupplement = obj.doctorSupplement
-	val conventionAmount = obj.conventionAmount
-	val vat = obj.vat
-	val error = obj.error
-	val contract = obj.contract
-	val contractDate = longToNumber(obj.contractDate)
-	val units = intToNumber(obj.units)
-	val side = intToNumber(obj.side)
-	val timeOfDay = intToNumber(obj.timeOfDay)
-	val eidReadingHour = intToNumber(obj.eidReadingHour)
-	val eidReadingValue = obj.eidReadingValue
-	val override3rdPayerCode = intToNumber(obj.override3rdPayerCode)
-	val override3rdPayerReason = obj.override3rdPayerReason
-	val transplantationCode = intToNumber(obj.transplantationCode)
-	val prescriberNorm = intToNumber(obj.prescriberNorm)
-	val percentNorm = intToNumber(obj.percentNorm)
-	val prescriberNihii = obj.prescriberNihii
-	val relatedCode = obj.relatedCode
-	val prescriptionDate = longToNumber(obj.prescriptionDate)
-	val derogationMaxNumber = intToNumber(obj.derogationMaxNumber)
-	val prescriberSsin = obj.prescriberSsin
-	val prescriberLastName = obj.prescriberLastName
-	val prescriberFirstName = obj.prescriberFirstName
-	val prescriberCdHcParty = obj.prescriberCdHcParty
-	val locationNihii = obj.locationNihii
-	val locationCdHcParty = obj.locationCdHcParty
-	val locationService = intToNumber(obj.locationService)
-	val admissionDate = longToNumber(obj.admissionDate)
-	val canceled = obj.canceled
-	val accepted = obj.accepted
-	val pending = obj.pending
-	val resent = obj.resent
-	val archived = obj.archived
-	val lost = obj.lost
-	val insuranceJustification = intToNumber(obj.insuranceJustification)
-	val cancelPatientInterventionReason = intToNumber(obj.cancelPatientInterventionReason)
-	val status = longToNumber(obj.status)
-	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
-		base64String_toJs(nonNull1)
-	}
+	val id = nullToUndefined(
+		obj.id
+	)
+	val dateCode = nullToUndefined(
+		longToNumber(obj.dateCode)
+	)
+	val logicalId = nullToUndefined(
+		obj.logicalId
+	)
+	val label = nullToUndefined(
+		obj.label
+	)
+	val userId = nullToUndefined(
+		obj.userId
+	)
+	val contactId = nullToUndefined(
+		obj.contactId
+	)
+	val serviceId = nullToUndefined(
+		obj.serviceId
+	)
+	val tarificationId = nullToUndefined(
+		obj.tarificationId
+	)
+	val code = nullToUndefined(
+		obj.code
+	)
+	val paymentType = nullToUndefined(
+		obj.paymentType?.let { nonNull1 ->
+			nonNull1.name
+		}
+	)
+	val paid = nullToUndefined(
+		obj.paid
+	)
+	val totalAmount = nullToUndefined(
+		obj.totalAmount
+	)
+	val reimbursement = nullToUndefined(
+		obj.reimbursement
+	)
+	val patientIntervention = nullToUndefined(
+		obj.patientIntervention
+	)
+	val doctorSupplement = nullToUndefined(
+		obj.doctorSupplement
+	)
+	val conventionAmount = nullToUndefined(
+		obj.conventionAmount
+	)
+	val vat = nullToUndefined(
+		obj.vat
+	)
+	val error = nullToUndefined(
+		obj.error
+	)
+	val contract = nullToUndefined(
+		obj.contract
+	)
+	val contractDate = nullToUndefined(
+		longToNumber(obj.contractDate)
+	)
+	val units = nullToUndefined(
+		intToNumber(obj.units)
+	)
+	val side = nullToUndefined(
+		intToNumber(obj.side)
+	)
+	val timeOfDay = nullToUndefined(
+		intToNumber(obj.timeOfDay)
+	)
+	val eidReadingHour = nullToUndefined(
+		intToNumber(obj.eidReadingHour)
+	)
+	val eidReadingValue = nullToUndefined(
+		obj.eidReadingValue
+	)
+	val override3rdPayerCode = nullToUndefined(
+		intToNumber(obj.override3rdPayerCode)
+	)
+	val override3rdPayerReason = nullToUndefined(
+		obj.override3rdPayerReason
+	)
+	val transplantationCode = nullToUndefined(
+		intToNumber(obj.transplantationCode)
+	)
+	val prescriberNorm = nullToUndefined(
+		intToNumber(obj.prescriberNorm)
+	)
+	val percentNorm = nullToUndefined(
+		intToNumber(obj.percentNorm)
+	)
+	val prescriberNihii = nullToUndefined(
+		obj.prescriberNihii
+	)
+	val relatedCode = nullToUndefined(
+		obj.relatedCode
+	)
+	val prescriptionDate = nullToUndefined(
+		longToNumber(obj.prescriptionDate)
+	)
+	val derogationMaxNumber = nullToUndefined(
+		intToNumber(obj.derogationMaxNumber)
+	)
+	val prescriberSsin = nullToUndefined(
+		obj.prescriberSsin
+	)
+	val prescriberLastName = nullToUndefined(
+		obj.prescriberLastName
+	)
+	val prescriberFirstName = nullToUndefined(
+		obj.prescriberFirstName
+	)
+	val prescriberCdHcParty = nullToUndefined(
+		obj.prescriberCdHcParty
+	)
+	val locationNihii = nullToUndefined(
+		obj.locationNihii
+	)
+	val locationCdHcParty = nullToUndefined(
+		obj.locationCdHcParty
+	)
+	val locationService = nullToUndefined(
+		intToNumber(obj.locationService)
+	)
+	val admissionDate = nullToUndefined(
+		longToNumber(obj.admissionDate)
+	)
+	val canceled = nullToUndefined(
+		obj.canceled
+	)
+	val accepted = nullToUndefined(
+		obj.accepted
+	)
+	val pending = nullToUndefined(
+		obj.pending
+	)
+	val resent = nullToUndefined(
+		obj.resent
+	)
+	val archived = nullToUndefined(
+		obj.archived
+	)
+	val lost = nullToUndefined(
+		obj.lost
+	)
+	val insuranceJustification = nullToUndefined(
+		intToNumber(obj.insuranceJustification)
+	)
+	val cancelPatientInterventionReason = nullToUndefined(
+		intToNumber(obj.cancelPatientInterventionReason)
+	)
+	val status = nullToUndefined(
+		longToNumber(obj.status)
+	)
+	val encryptedSelf = nullToUndefined(
+		obj.encryptedSelf?.let { nonNull1 ->
+			base64String_toJs(nonNull1)
+		}
+	)
 	return EncryptedInvoicingCodeJs(js("{" +
 		"id:id," +
 		"dateCode:dateCode," +
@@ -352,56 +565,56 @@ public fun invoicingCode_toJs(obj: EncryptedInvoicingCode): EncryptedInvoicingCo
 }
 
 public fun invoicingCode_fromJs(obj: EncryptedInvoicingCodeJs): EncryptedInvoicingCode {
-	val id = obj.id
+	val id = undefinedToNull(obj.id)
 	val dateCode = numberToLong(obj.dateCode, "obj.dateCode")
-	val logicalId = obj.logicalId
-	val label = obj.label
-	val userId = obj.userId
-	val contactId = obj.contactId
-	val serviceId = obj.serviceId
-	val tarificationId = obj.tarificationId
-	val code = obj.code
+	val logicalId = undefinedToNull(obj.logicalId)
+	val label = undefinedToNull(obj.label)
+	val userId = undefinedToNull(obj.userId)
+	val contactId = undefinedToNull(obj.contactId)
+	val serviceId = undefinedToNull(obj.serviceId)
+	val tarificationId = undefinedToNull(obj.tarificationId)
+	val code = undefinedToNull(obj.code)
 	val paymentType = obj.paymentType?.let { nonNull1 ->
 		PaymentType.valueOf(nonNull1)
 	}
-	val paid = obj.paid
-	val totalAmount = obj.totalAmount
-	val reimbursement = obj.reimbursement
-	val patientIntervention = obj.patientIntervention
-	val doctorSupplement = obj.doctorSupplement
-	val conventionAmount = obj.conventionAmount
-	val vat = obj.vat
-	val error = obj.error
-	val contract = obj.contract
+	val paid = undefinedToNull(obj.paid)
+	val totalAmount = undefinedToNull(obj.totalAmount)
+	val reimbursement = undefinedToNull(obj.reimbursement)
+	val patientIntervention = undefinedToNull(obj.patientIntervention)
+	val doctorSupplement = undefinedToNull(obj.doctorSupplement)
+	val conventionAmount = undefinedToNull(obj.conventionAmount)
+	val vat = undefinedToNull(obj.vat)
+	val error = undefinedToNull(obj.error)
+	val contract = undefinedToNull(obj.contract)
 	val contractDate = numberToLong(obj.contractDate, "obj.contractDate")
 	val units = numberToInt(obj.units, "obj.units")
 	val side = numberToInt(obj.side, "obj.side")
 	val timeOfDay = numberToInt(obj.timeOfDay, "obj.timeOfDay")
 	val eidReadingHour = numberToInt(obj.eidReadingHour, "obj.eidReadingHour")
-	val eidReadingValue = obj.eidReadingValue
+	val eidReadingValue = undefinedToNull(obj.eidReadingValue)
 	val override3rdPayerCode = numberToInt(obj.override3rdPayerCode, "obj.override3rdPayerCode")
-	val override3rdPayerReason = obj.override3rdPayerReason
+	val override3rdPayerReason = undefinedToNull(obj.override3rdPayerReason)
 	val transplantationCode = numberToInt(obj.transplantationCode, "obj.transplantationCode")
 	val prescriberNorm = numberToInt(obj.prescriberNorm, "obj.prescriberNorm")
 	val percentNorm = numberToInt(obj.percentNorm, "obj.percentNorm")
-	val prescriberNihii = obj.prescriberNihii
-	val relatedCode = obj.relatedCode
+	val prescriberNihii = undefinedToNull(obj.prescriberNihii)
+	val relatedCode = undefinedToNull(obj.relatedCode)
 	val prescriptionDate = numberToLong(obj.prescriptionDate, "obj.prescriptionDate")
 	val derogationMaxNumber = numberToInt(obj.derogationMaxNumber, "obj.derogationMaxNumber")
-	val prescriberSsin = obj.prescriberSsin
-	val prescriberLastName = obj.prescriberLastName
-	val prescriberFirstName = obj.prescriberFirstName
-	val prescriberCdHcParty = obj.prescriberCdHcParty
-	val locationNihii = obj.locationNihii
-	val locationCdHcParty = obj.locationCdHcParty
+	val prescriberSsin = undefinedToNull(obj.prescriberSsin)
+	val prescriberLastName = undefinedToNull(obj.prescriberLastName)
+	val prescriberFirstName = undefinedToNull(obj.prescriberFirstName)
+	val prescriberCdHcParty = undefinedToNull(obj.prescriberCdHcParty)
+	val locationNihii = undefinedToNull(obj.locationNihii)
+	val locationCdHcParty = undefinedToNull(obj.locationCdHcParty)
 	val locationService = numberToInt(obj.locationService, "obj.locationService")
 	val admissionDate = numberToLong(obj.admissionDate, "obj.admissionDate")
-	val canceled = obj.canceled
-	val accepted = obj.accepted
-	val pending = obj.pending
-	val resent = obj.resent
-	val archived = obj.archived
-	val lost = obj.lost
+	val canceled = undefinedToNull(obj.canceled)
+	val accepted = undefinedToNull(obj.accepted)
+	val pending = undefinedToNull(obj.pending)
+	val resent = undefinedToNull(obj.resent)
+	val archived = undefinedToNull(obj.archived)
+	val lost = undefinedToNull(obj.lost)
 	val insuranceJustification = numberToInt(obj.insuranceJustification, "obj.insuranceJustification")
 	val cancelPatientInterventionReason = numberToInt(obj.cancelPatientInterventionReason,
 			"obj.cancelPatientInterventionReason")
@@ -465,6 +678,7 @@ public fun invoicingCode_fromJs(obj: EncryptedInvoicingCodeJs): EncryptedInvoici
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun invoicingCode_toJs(obj: InvoicingCode): InvoicingCodeJs = when (obj) {
 	is EncryptedInvoicingCode -> invoicingCode_toJs(obj)
 	is DecryptedInvoicingCode -> invoicingCode_toJs(obj)

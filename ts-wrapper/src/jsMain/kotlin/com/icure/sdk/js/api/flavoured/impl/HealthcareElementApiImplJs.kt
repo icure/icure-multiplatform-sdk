@@ -5,17 +5,12 @@ import com.icure.sdk.api.flavoured.HealthcareElementApi
 import com.icure.sdk.crypto.entities.HealthElementShareOptions
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
-import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefault
+import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNonNull
+import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.sdk.js.api.flavoured.HealthcareElementApiJs
-import com.icure.sdk.js.api.flavoured.HealthcareElementApi_findHealthcareElementsByHcPartyPatient_Options
-import com.icure.sdk.js.api.flavoured.HealthcareElementApi_shareWith_Options
-import com.icure.sdk.js.api.flavoured.HealthcareElementApi_subscribeToEvents_Options
-import com.icure.sdk.js.api.flavoured.HealthcareElementApi_withEncryptionMetadata_Options
 import com.icure.sdk.js.api.flavoured.HealthcareElementFlavouredApiJs
-import com.icure.sdk.js.api.flavoured.HealthcareElementFlavouredApi_findHealthcareElementsByHcPartyPatient_Options
-import com.icure.sdk.js.api.flavoured.HealthcareElementFlavouredApi_shareWith_Options
-import com.icure.sdk.js.api.flavoured.HealthcareElementFlavouredApi_subscribeToEvents_Options
 import com.icure.sdk.js.crypto.entities.HealthElementShareOptionsJs
+import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.crypto.entities.healthElementShareOptions_fromJs
 import com.icure.sdk.js.crypto.entities.secretIdOption_fromJs
@@ -28,12 +23,14 @@ import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.sdk.js.model.CheckedConverters.setToArray
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.DecryptedHealthElementJs
 import com.icure.sdk.js.model.EncryptedHealthElementJs
 import com.icure.sdk.js.model.HealthElementJs
 import com.icure.sdk.js.model.IcureStubJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.PatientJs
+import com.icure.sdk.js.model.UserJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.couchdb.docIdentifier_toJs
 import com.icure.sdk.js.model.filter.AbstractFilterJs
@@ -93,28 +90,31 @@ internal class HealthcareElementApiImplJs(
 		override fun shareWith(
 			delegateId: String,
 			healthcareElement: EncryptedHealthElementJs,
-			options: HealthcareElementFlavouredApi_shareWith_Options?,
+			options: dynamic,
 		): Promise<SimpleShareResultJs<EncryptedHealthElementJs>> {
-			val _options: HealthcareElementFlavouredApi_shareWith_Options = options ?: js("{}")
+			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val healthcareElementConverted: EncryptedHealthElement = healthElement_fromJs(healthcareElement)
-				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
-					_options.shareEncryptionKeys,
+				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+					_options,
+					"shareEncryptionKeys",
 					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareEncryptionKeys ->
+				) { shareEncryptionKeys: String ->
 					ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
 				}
-				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
-					_options.shareOwningEntityIds,
+				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+					_options,
+					"shareOwningEntityIds",
 					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareOwningEntityIds ->
+				) { shareOwningEntityIds: String ->
 					ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
 				}
-				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefault(
-					_options.requestedPermission,
+				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefaultNonNull(
+					_options,
+					"requestedPermission",
 					com.icure.sdk.model.requests.RequestedPermission.MaxWrite
-				) { requestedPermission ->
+				) { requestedPermission: String ->
 					RequestedPermission.valueOf(requestedPermission)
 				}
 				val result = healthcareElementApi.encrypted.shareWith(
@@ -183,30 +183,32 @@ internal class HealthcareElementApiImplJs(
 		override fun findHealthcareElementsByHcPartyPatient(
 			hcPartyId: String,
 			patient: PatientJs,
-			options: HealthcareElementFlavouredApi_findHealthcareElementsByHcPartyPatient_Options?,
+			options: dynamic,
 		): Promise<PaginatedListIteratorJs<EncryptedHealthElementJs>> {
-			val _options: HealthcareElementFlavouredApi_findHealthcareElementsByHcPartyPatient_Options =
-					options ?: js("{}")
+			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val hcPartyIdConverted: String = hcPartyId
 				val patientConverted: Patient = patient_fromJs(patient)
-				val startDateConverted: Long? = convertingOptionOrDefault(
-					_options.startDate,
+				val startDateConverted: Long? = convertingOptionOrDefaultNullable(
+					_options,
+					"startDate",
 					null
-				) { startDate ->
+				) { startDate: Double? ->
 					numberToLong(startDate, "startDate")
 				}
-				val endDateConverted: Long? = convertingOptionOrDefault(
-					_options.endDate,
+				val endDateConverted: Long? = convertingOptionOrDefaultNullable(
+					_options,
+					"endDate",
 					null
-				) { endDate ->
+				) { endDate: Double? ->
 					numberToLong(endDate, "endDate")
 				}
-				val descendingConverted: Boolean? = convertingOptionOrDefault(
-					_options.descending,
+				val descendingConverted: Boolean? = convertingOptionOrDefaultNullable(
+					_options,
+					"descending",
 					null
-				) { descending ->
-					descending
+				) { descending: Boolean? ->
+					undefinedToNull(descending)
 				}
 				val result = healthcareElementApi.encrypted.findHealthcareElementsByHcPartyPatient(
 					hcPartyIdConverted,
@@ -293,7 +295,7 @@ internal class HealthcareElementApiImplJs(
 					healthElement_fromJs(x1)
 				},
 			)
-			val startDocumentIdConverted: String? = startDocumentId
+			val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
 			val limitConverted: Int? = numberToInt(limit, "limit")
 			val result = healthcareElementApi.encrypted.filterHealthcareElementsBy(
 				filterChainConverted,
@@ -335,9 +337,9 @@ internal class HealthcareElementApiImplJs(
 			events: Array<String>,
 			filter: AbstractFilterJs<HealthElementJs>,
 			eventFired: (EncryptedHealthElementJs) -> Promise<Unit>,
-			options: HealthcareElementFlavouredApi_subscribeToEvents_Options?,
+			options: dynamic,
 		): Promise<ConnectionJs> {
-			val _options: HealthcareElementFlavouredApi_subscribeToEvents_Options = options ?: js("{}")
+			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
 					events,
@@ -352,36 +354,41 @@ internal class HealthcareElementApiImplJs(
 						healthElement_fromJs(x1)
 					},
 				)
-				val onConnectedConverted: suspend () -> Unit = convertingOptionOrDefault(
-					_options.onConnected,
+				val onConnectedConverted: suspend () -> Unit = convertingOptionOrDefaultNonNull(
+					_options,
+					"onConnected",
 					{}
-				) { onConnected ->
+				) { onConnected: () -> Promise<Unit> ->
 					{  ->
 						onConnected().await()
 					}
 				}
-				val channelCapacityConverted: Int = convertingOptionOrDefault(
-					_options.channelCapacity,
+				val channelCapacityConverted: Int = convertingOptionOrDefaultNonNull(
+					_options,
+					"channelCapacity",
 					kotlinx.coroutines.channels.Channel.BUFFERED
-				) { channelCapacity ->
+				) { channelCapacity: Double ->
 					numberToInt(channelCapacity, "channelCapacity")
 				}
-				val retryDelayConverted: Duration = convertingOptionOrDefault(
-					_options.retryDelay,
+				val retryDelayConverted: Duration = convertingOptionOrDefaultNonNull(
+					_options,
+					"retryDelay",
 					2.seconds
-				) { retryDelay ->
+				) { retryDelay: Double ->
 					numberToDuration(retryDelay, "retryDelay")
 				}
-				val retryDelayExponentFactorConverted: Double = convertingOptionOrDefault(
-					_options.retryDelayExponentFactor,
+				val retryDelayExponentFactorConverted: Double = convertingOptionOrDefaultNonNull(
+					_options,
+					"retryDelayExponentFactor",
 					2.0
-				) { retryDelayExponentFactor ->
+				) { retryDelayExponentFactor: Double ->
 					retryDelayExponentFactor
 				}
-				val maxRetriesConverted: Int = convertingOptionOrDefault(
-					_options.maxRetries,
+				val maxRetriesConverted: Int = convertingOptionOrDefaultNonNull(
+					_options,
+					"maxRetries",
 					5
-				) { maxRetries ->
+				) { maxRetries: Double ->
 					numberToInt(maxRetries, "maxRetries")
 				}
 				val eventFiredConverted: suspend (EncryptedHealthElement) -> Unit = { arg0 ->
@@ -409,28 +416,31 @@ internal class HealthcareElementApiImplJs(
 		override fun shareWith(
 			delegateId: String,
 			healthcareElement: HealthElementJs,
-			options: HealthcareElementFlavouredApi_shareWith_Options?,
+			options: dynamic,
 		): Promise<SimpleShareResultJs<HealthElementJs>> {
-			val _options: HealthcareElementFlavouredApi_shareWith_Options = options ?: js("{}")
+			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val healthcareElementConverted: HealthElement = healthElement_fromJs(healthcareElement)
-				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
-					_options.shareEncryptionKeys,
+				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+					_options,
+					"shareEncryptionKeys",
 					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareEncryptionKeys ->
+				) { shareEncryptionKeys: String ->
 					ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
 				}
-				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
-					_options.shareOwningEntityIds,
+				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+					_options,
+					"shareOwningEntityIds",
 					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareOwningEntityIds ->
+				) { shareOwningEntityIds: String ->
 					ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
 				}
-				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefault(
-					_options.requestedPermission,
+				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefaultNonNull(
+					_options,
+					"requestedPermission",
 					com.icure.sdk.model.requests.RequestedPermission.MaxWrite
-				) { requestedPermission ->
+				) { requestedPermission: String ->
 					RequestedPermission.valueOf(requestedPermission)
 				}
 				val result = healthcareElementApi.tryAndRecover.shareWith(
@@ -499,30 +509,32 @@ internal class HealthcareElementApiImplJs(
 		override fun findHealthcareElementsByHcPartyPatient(
 			hcPartyId: String,
 			patient: PatientJs,
-			options: HealthcareElementFlavouredApi_findHealthcareElementsByHcPartyPatient_Options?,
+			options: dynamic,
 		): Promise<PaginatedListIteratorJs<HealthElementJs>> {
-			val _options: HealthcareElementFlavouredApi_findHealthcareElementsByHcPartyPatient_Options =
-					options ?: js("{}")
+			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val hcPartyIdConverted: String = hcPartyId
 				val patientConverted: Patient = patient_fromJs(patient)
-				val startDateConverted: Long? = convertingOptionOrDefault(
-					_options.startDate,
+				val startDateConverted: Long? = convertingOptionOrDefaultNullable(
+					_options,
+					"startDate",
 					null
-				) { startDate ->
+				) { startDate: Double? ->
 					numberToLong(startDate, "startDate")
 				}
-				val endDateConverted: Long? = convertingOptionOrDefault(
-					_options.endDate,
+				val endDateConverted: Long? = convertingOptionOrDefaultNullable(
+					_options,
+					"endDate",
 					null
-				) { endDate ->
+				) { endDate: Double? ->
 					numberToLong(endDate, "endDate")
 				}
-				val descendingConverted: Boolean? = convertingOptionOrDefault(
-					_options.descending,
+				val descendingConverted: Boolean? = convertingOptionOrDefaultNullable(
+					_options,
+					"descending",
 					null
-				) { descending ->
-					descending
+				) { descending: Boolean? ->
+					undefinedToNull(descending)
 				}
 				val result = healthcareElementApi.tryAndRecover.findHealthcareElementsByHcPartyPatient(
 					hcPartyIdConverted,
@@ -609,7 +621,7 @@ internal class HealthcareElementApiImplJs(
 					healthElement_fromJs(x1)
 				},
 			)
-			val startDocumentIdConverted: String? = startDocumentId
+			val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
 			val limitConverted: Int? = numberToInt(limit, "limit")
 			val result = healthcareElementApi.tryAndRecover.filterHealthcareElementsBy(
 				filterChainConverted,
@@ -651,9 +663,9 @@ internal class HealthcareElementApiImplJs(
 			events: Array<String>,
 			filter: AbstractFilterJs<HealthElementJs>,
 			eventFired: (HealthElementJs) -> Promise<Unit>,
-			options: HealthcareElementFlavouredApi_subscribeToEvents_Options?,
+			options: dynamic,
 		): Promise<ConnectionJs> {
-			val _options: HealthcareElementFlavouredApi_subscribeToEvents_Options = options ?: js("{}")
+			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
 					events,
@@ -668,36 +680,41 @@ internal class HealthcareElementApiImplJs(
 						healthElement_fromJs(x1)
 					},
 				)
-				val onConnectedConverted: suspend () -> Unit = convertingOptionOrDefault(
-					_options.onConnected,
+				val onConnectedConverted: suspend () -> Unit = convertingOptionOrDefaultNonNull(
+					_options,
+					"onConnected",
 					{}
-				) { onConnected ->
+				) { onConnected: () -> Promise<Unit> ->
 					{  ->
 						onConnected().await()
 					}
 				}
-				val channelCapacityConverted: Int = convertingOptionOrDefault(
-					_options.channelCapacity,
+				val channelCapacityConverted: Int = convertingOptionOrDefaultNonNull(
+					_options,
+					"channelCapacity",
 					kotlinx.coroutines.channels.Channel.BUFFERED
-				) { channelCapacity ->
+				) { channelCapacity: Double ->
 					numberToInt(channelCapacity, "channelCapacity")
 				}
-				val retryDelayConverted: Duration = convertingOptionOrDefault(
-					_options.retryDelay,
+				val retryDelayConverted: Duration = convertingOptionOrDefaultNonNull(
+					_options,
+					"retryDelay",
 					2.seconds
-				) { retryDelay ->
+				) { retryDelay: Double ->
 					numberToDuration(retryDelay, "retryDelay")
 				}
-				val retryDelayExponentFactorConverted: Double = convertingOptionOrDefault(
-					_options.retryDelayExponentFactor,
+				val retryDelayExponentFactorConverted: Double = convertingOptionOrDefaultNonNull(
+					_options,
+					"retryDelayExponentFactor",
 					2.0
-				) { retryDelayExponentFactor ->
+				) { retryDelayExponentFactor: Double ->
 					retryDelayExponentFactor
 				}
-				val maxRetriesConverted: Int = convertingOptionOrDefault(
-					_options.maxRetries,
+				val maxRetriesConverted: Int = convertingOptionOrDefaultNonNull(
+					_options,
+					"maxRetries",
 					5
-				) { maxRetries ->
+				) { maxRetries: Double ->
 					numberToInt(maxRetries, "maxRetries")
 				}
 				val eventFiredConverted: suspend (HealthElement) -> Unit = { arg0 ->
@@ -752,26 +769,28 @@ internal class HealthcareElementApiImplJs(
 	override fun withEncryptionMetadata(
 		base: DecryptedHealthElementJs?,
 		patient: PatientJs,
-		options: HealthcareElementApi_withEncryptionMetadata_Options?,
+		options: dynamic,
 	): Promise<DecryptedHealthElementJs> {
-		val _options: HealthcareElementApi_withEncryptionMetadata_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val baseConverted: DecryptedHealthElement? = base?.let { nonNull1 ->
 				healthElement_fromJs(nonNull1)
 			}
 			val patientConverted: Patient = patient_fromJs(patient)
-			val userConverted: User? = convertingOptionOrDefault(
-				_options.user,
+			val userConverted: User? = convertingOptionOrDefaultNullable(
+				_options,
+				"user",
 				null
-			) { user ->
+			) { user: UserJs? ->
 				user?.let { nonNull1 ->
 					user_fromJs(nonNull1)
 				}
 			}
-			val delegatesConverted: Map<String, AccessLevel> = convertingOptionOrDefault(
-				_options.delegates,
+			val delegatesConverted: Map<String, AccessLevel> = convertingOptionOrDefaultNonNull(
+				_options,
+				"delegates",
 				emptyMap()
-			) { delegates ->
+			) { delegates: Record<String, String> ->
 				objectToMap(
 					delegates,
 					"delegates",
@@ -783,10 +802,11 @@ internal class HealthcareElementApiImplJs(
 					},
 				)
 			}
-			val secretIdConverted: SecretIdOption = convertingOptionOrDefault(
-				_options.secretId,
+			val secretIdConverted: SecretIdOption = convertingOptionOrDefaultNonNull(
+				_options,
+				"secretId",
 				com.icure.sdk.crypto.entities.SecretIdOption.UseAnySharedWithParent
-			) { secretId ->
+			) { secretId: SecretIdOptionJs ->
 				secretIdOption_fromJs(secretId)
 			}
 			val result = healthcareElementApi.withEncryptionMetadata(
@@ -928,28 +948,31 @@ internal class HealthcareElementApiImplJs(
 	override fun shareWith(
 		delegateId: String,
 		healthcareElement: DecryptedHealthElementJs,
-		options: HealthcareElementApi_shareWith_Options?,
+		options: dynamic,
 	): Promise<SimpleShareResultJs<DecryptedHealthElementJs>> {
-		val _options: HealthcareElementApi_shareWith_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val delegateIdConverted: String = delegateId
 			val healthcareElementConverted: DecryptedHealthElement = healthElement_fromJs(healthcareElement)
-			val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
-				_options.shareEncryptionKeys,
+			val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+				_options,
+				"shareEncryptionKeys",
 				com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-			) { shareEncryptionKeys ->
+			) { shareEncryptionKeys: String ->
 				ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
 			}
-			val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
-				_options.shareOwningEntityIds,
+			val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+				_options,
+				"shareOwningEntityIds",
 				com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-			) { shareOwningEntityIds ->
+			) { shareOwningEntityIds: String ->
 				ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
 			}
-			val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefault(
-				_options.requestedPermission,
+			val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefaultNonNull(
+				_options,
+				"requestedPermission",
 				com.icure.sdk.model.requests.RequestedPermission.MaxWrite
-			) { requestedPermission ->
+			) { requestedPermission: String ->
 				RequestedPermission.valueOf(requestedPermission)
 			}
 			val result = healthcareElementApi.shareWith(
@@ -1018,30 +1041,32 @@ internal class HealthcareElementApiImplJs(
 	override fun findHealthcareElementsByHcPartyPatient(
 		hcPartyId: String,
 		patient: PatientJs,
-		options: HealthcareElementApi_findHealthcareElementsByHcPartyPatient_Options?,
+		options: dynamic,
 	): Promise<PaginatedListIteratorJs<DecryptedHealthElementJs>> {
-		val _options: HealthcareElementApi_findHealthcareElementsByHcPartyPatient_Options = options ?:
-				js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val hcPartyIdConverted: String = hcPartyId
 			val patientConverted: Patient = patient_fromJs(patient)
-			val startDateConverted: Long? = convertingOptionOrDefault(
-				_options.startDate,
+			val startDateConverted: Long? = convertingOptionOrDefaultNullable(
+				_options,
+				"startDate",
 				null
-			) { startDate ->
+			) { startDate: Double? ->
 				numberToLong(startDate, "startDate")
 			}
-			val endDateConverted: Long? = convertingOptionOrDefault(
-				_options.endDate,
+			val endDateConverted: Long? = convertingOptionOrDefaultNullable(
+				_options,
+				"endDate",
 				null
-			) { endDate ->
+			) { endDate: Double? ->
 				numberToLong(endDate, "endDate")
 			}
-			val descendingConverted: Boolean? = convertingOptionOrDefault(
-				_options.descending,
+			val descendingConverted: Boolean? = convertingOptionOrDefaultNullable(
+				_options,
+				"descending",
 				null
-			) { descending ->
-				descending
+			) { descending: Boolean? ->
+				undefinedToNull(descending)
 			}
 			val result = healthcareElementApi.findHealthcareElementsByHcPartyPatient(
 				hcPartyIdConverted,
@@ -1128,7 +1153,7 @@ internal class HealthcareElementApiImplJs(
 				healthElement_fromJs(x1)
 			},
 		)
-		val startDocumentIdConverted: String? = startDocumentId
+		val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
 		val limitConverted: Int? = numberToInt(limit, "limit")
 		val result = healthcareElementApi.filterHealthcareElementsBy(
 			filterChainConverted,
@@ -1170,9 +1195,9 @@ internal class HealthcareElementApiImplJs(
 		events: Array<String>,
 		filter: AbstractFilterJs<HealthElementJs>,
 		eventFired: (DecryptedHealthElementJs) -> Promise<Unit>,
-		options: HealthcareElementApi_subscribeToEvents_Options?,
+		options: dynamic,
 	): Promise<ConnectionJs> {
-		val _options: HealthcareElementApi_subscribeToEvents_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
 				events,
@@ -1187,36 +1212,41 @@ internal class HealthcareElementApiImplJs(
 					healthElement_fromJs(x1)
 				},
 			)
-			val onConnectedConverted: suspend () -> Unit = convertingOptionOrDefault(
-				_options.onConnected,
+			val onConnectedConverted: suspend () -> Unit = convertingOptionOrDefaultNonNull(
+				_options,
+				"onConnected",
 				{}
-			) { onConnected ->
+			) { onConnected: () -> Promise<Unit> ->
 				{  ->
 					onConnected().await()
 				}
 			}
-			val channelCapacityConverted: Int = convertingOptionOrDefault(
-				_options.channelCapacity,
+			val channelCapacityConverted: Int = convertingOptionOrDefaultNonNull(
+				_options,
+				"channelCapacity",
 				kotlinx.coroutines.channels.Channel.BUFFERED
-			) { channelCapacity ->
+			) { channelCapacity: Double ->
 				numberToInt(channelCapacity, "channelCapacity")
 			}
-			val retryDelayConverted: Duration = convertingOptionOrDefault(
-				_options.retryDelay,
+			val retryDelayConverted: Duration = convertingOptionOrDefaultNonNull(
+				_options,
+				"retryDelay",
 				2.seconds
-			) { retryDelay ->
+			) { retryDelay: Double ->
 				numberToDuration(retryDelay, "retryDelay")
 			}
-			val retryDelayExponentFactorConverted: Double = convertingOptionOrDefault(
-				_options.retryDelayExponentFactor,
+			val retryDelayExponentFactorConverted: Double = convertingOptionOrDefaultNonNull(
+				_options,
+				"retryDelayExponentFactor",
 				2.0
-			) { retryDelayExponentFactor ->
+			) { retryDelayExponentFactor: Double ->
 				retryDelayExponentFactor
 			}
-			val maxRetriesConverted: Int = convertingOptionOrDefault(
-				_options.maxRetries,
+			val maxRetriesConverted: Int = convertingOptionOrDefaultNonNull(
+				_options,
+				"maxRetries",
 				5
-			) { maxRetries ->
+			) { maxRetries: Double ->
 				numberToInt(maxRetries, "maxRetries")
 			}
 			val eventFiredConverted: suspend (DecryptedHealthElement) -> Unit = { arg0 ->

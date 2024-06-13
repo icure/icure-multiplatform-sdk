@@ -2,18 +2,13 @@
 package com.icure.sdk.js.api.`impl`
 
 import com.icure.sdk.api.HealthcarePartyApi
-import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefault
+import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNonNull
+import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.sdk.js.api.HealthcarePartyApiJs
-import com.icure.sdk.js.api.HealthcarePartyApi_filterHealthPartiesBy_Options
-import com.icure.sdk.js.api.HealthcarePartyApi_findHealthcarePartiesByName_Options
-import com.icure.sdk.js.api.HealthcarePartyApi_findHealthcarePartiesBySpecialityAndPostCode_Options
-import com.icure.sdk.js.api.HealthcarePartyApi_findHealthcarePartiesBySsinOrNihii_Options
-import com.icure.sdk.js.api.HealthcarePartyApi_findHealthcarePartiesBy_Options
-import com.icure.sdk.js.api.HealthcarePartyApi_getHealthcarePartiesInGroup_Options
-import com.icure.sdk.js.api.HealthcarePartyApi_registerPatient_Options
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.DataOwnerRegistrationSuccessJs
 import com.icure.sdk.js.model.HealthcarePartyJs
 import com.icure.sdk.js.model.PaginatedListJs
@@ -35,6 +30,7 @@ import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
 import kotlin.Array
 import kotlin.Boolean
+import kotlin.Double
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String
@@ -103,33 +99,37 @@ internal class HealthcarePartyApiImplJs(
 		healthcareParty_toJs(result)
 	}
 
-	override fun findHealthcarePartiesBy(options: HealthcarePartyApi_findHealthcarePartiesBy_Options?):
+	override fun findHealthcarePartiesBy(options: dynamic):
 			Promise<PaginatedListJs<HealthcarePartyJs>> {
-		val _options: HealthcarePartyApi_findHealthcarePartiesBy_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
-			val startKeyConverted: String? = convertingOptionOrDefault(
-				_options.startKey,
+			val startKeyConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"startKey",
 				null
-			) { startKey ->
-				startKey
+			) { startKey: String? ->
+				undefinedToNull(startKey)
 			}
-			val startDocumentIdConverted: String? = convertingOptionOrDefault(
-				_options.startDocumentId,
+			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"startDocumentId",
 				null
-			) { startDocumentId ->
-				startDocumentId
+			) { startDocumentId: String? ->
+				undefinedToNull(startDocumentId)
 			}
-			val limitConverted: Int? = convertingOptionOrDefault(
-				_options.limit,
+			val limitConverted: Int? = convertingOptionOrDefaultNullable(
+				_options,
+				"limit",
 				null
-			) { limit ->
+			) { limit: Double? ->
 				numberToInt(limit, "limit")
 			}
-			val descConverted: Boolean? = convertingOptionOrDefault(
-				_options.desc,
+			val descConverted: Boolean? = convertingOptionOrDefaultNullable(
+				_options,
+				"desc",
 				null
-			) { desc ->
-				desc
+			) { desc: Boolean? ->
+				undefinedToNull(desc)
 			}
 			val result = healthcarePartyApi.findHealthcarePartiesBy(
 				startKeyConverted,
@@ -146,40 +146,44 @@ internal class HealthcarePartyApiImplJs(
 		}
 	}
 
-	override
-			fun findHealthcarePartiesByName(options: HealthcarePartyApi_findHealthcarePartiesByName_Options?):
+	override fun findHealthcarePartiesByName(options: dynamic):
 			Promise<PaginatedListJs<HealthcarePartyJs>> {
-		val _options: HealthcarePartyApi_findHealthcarePartiesByName_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
-			val nameConverted: String? = convertingOptionOrDefault(
-				_options.name,
+			val nameConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"name",
 				null
-			) { name ->
-				name
+			) { name: String? ->
+				undefinedToNull(name)
 			}
-			val startKeyConverted: String? = convertingOptionOrDefault(
-				_options.startKey,
+			val startKeyConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"startKey",
 				null
-			) { startKey ->
-				startKey
+			) { startKey: String? ->
+				undefinedToNull(startKey)
 			}
-			val startDocumentIdConverted: String? = convertingOptionOrDefault(
-				_options.startDocumentId,
+			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"startDocumentId",
 				null
-			) { startDocumentId ->
-				startDocumentId
+			) { startDocumentId: String? ->
+				undefinedToNull(startDocumentId)
 			}
-			val limitConverted: Int? = convertingOptionOrDefault(
-				_options.limit,
+			val limitConverted: Int? = convertingOptionOrDefaultNullable(
+				_options,
+				"limit",
 				null
-			) { limit ->
+			) { limit: Double? ->
 				numberToInt(limit, "limit")
 			}
-			val descConverted: Boolean? = convertingOptionOrDefault(
-				_options.desc,
+			val descConverted: Boolean? = convertingOptionOrDefaultNullable(
+				_options,
+				"desc",
 				null
-			) { desc ->
-				desc
+			) { desc: Boolean? ->
+				undefinedToNull(desc)
 			}
 			val result = healthcarePartyApi.findHealthcarePartiesByName(
 				nameConverted,
@@ -197,34 +201,37 @@ internal class HealthcarePartyApiImplJs(
 		}
 	}
 
-	override fun findHealthcarePartiesBySsinOrNihii(searchValue: String,
-			options: HealthcarePartyApi_findHealthcarePartiesBySsinOrNihii_Options?):
+	override fun findHealthcarePartiesBySsinOrNihii(searchValue: String, options: dynamic):
 			Promise<PaginatedListJs<HealthcarePartyJs>> {
-		val _options: HealthcarePartyApi_findHealthcarePartiesBySsinOrNihii_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val searchValueConverted: String = searchValue
-			val startKeyConverted: String? = convertingOptionOrDefault(
-				_options.startKey,
+			val startKeyConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"startKey",
 				null
-			) { startKey ->
-				startKey
+			) { startKey: String? ->
+				undefinedToNull(startKey)
 			}
-			val startDocumentIdConverted: String? = convertingOptionOrDefault(
-				_options.startDocumentId,
+			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"startDocumentId",
 				null
-			) { startDocumentId ->
-				startDocumentId
+			) { startDocumentId: String? ->
+				undefinedToNull(startDocumentId)
 			}
-			val limitConverted: Int? = convertingOptionOrDefault(
-				_options.limit,
+			val limitConverted: Int? = convertingOptionOrDefaultNullable(
+				_options,
+				"limit",
 				null
-			) { limit ->
+			) { limit: Double? ->
 				numberToInt(limit, "limit")
 			}
-			val descConverted: Boolean = convertingOptionOrDefault(
-				_options.desc,
+			val descConverted: Boolean = convertingOptionOrDefaultNonNull(
+				_options,
+				"desc",
 				false
-			) { desc ->
+			) { desc: Boolean ->
 				desc
 			}
 			val result = healthcarePartyApi.findHealthcarePartiesBySsinOrNihii(
@@ -262,31 +269,33 @@ internal class HealthcarePartyApiImplJs(
 		spec: String,
 		firstCode: String,
 		lastCode: String,
-		options: HealthcarePartyApi_findHealthcarePartiesBySpecialityAndPostCode_Options?,
+		options: dynamic,
 	): Promise<PaginatedListJs<HealthcarePartyJs>> {
-		val _options: HealthcarePartyApi_findHealthcarePartiesBySpecialityAndPostCode_Options = options ?:
-				js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val typeConverted: String = type
 			val specConverted: String = spec
 			val firstCodeConverted: String = firstCode
 			val lastCodeConverted: String = lastCode
-			val startKeyConverted: String? = convertingOptionOrDefault(
-				_options.startKey,
+			val startKeyConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"startKey",
 				null
-			) { startKey ->
-				startKey
+			) { startKey: String? ->
+				undefinedToNull(startKey)
 			}
-			val startDocumentIdConverted: String? = convertingOptionOrDefault(
-				_options.startDocumentId,
+			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"startDocumentId",
 				null
-			) { startDocumentId ->
-				startDocumentId
+			) { startDocumentId: String? ->
+				undefinedToNull(startDocumentId)
 			}
-			val limitConverted: Int? = convertingOptionOrDefault(
-				_options.limit,
+			val limitConverted: Int? = convertingOptionOrDefaultNullable(
+				_options,
+				"limit",
 				null
-			) { limit ->
+			) { limit: Double? ->
 				numberToInt(limit, "limit")
 			}
 			val result = healthcarePartyApi.findHealthcarePartiesBySpecialityAndPostCode(
@@ -398,20 +407,21 @@ internal class HealthcarePartyApiImplJs(
 	}
 
 	override fun filterHealthPartiesBy(filterChain: FilterChainJs<HealthcarePartyJs>,
-			options: HealthcarePartyApi_filterHealthPartiesBy_Options?):
-			Promise<PaginatedListJs<HealthcarePartyJs>> {
-		val _options: HealthcarePartyApi_filterHealthPartiesBy_Options = options ?: js("{}")
+			options: dynamic): Promise<PaginatedListJs<HealthcarePartyJs>> {
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
-			val startDocumentIdConverted: String? = convertingOptionOrDefault(
-				_options.startDocumentId,
+			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"startDocumentId",
 				null
-			) { startDocumentId ->
-				startDocumentId
+			) { startDocumentId: String? ->
+				undefinedToNull(startDocumentId)
 			}
-			val limitConverted: Int? = convertingOptionOrDefault(
-				_options.limit,
+			val limitConverted: Int? = convertingOptionOrDefaultNullable(
+				_options,
+				"limit",
 				null
-			) { limit ->
+			) { limit: Double? ->
 				numberToInt(limit, "limit")
 			}
 			val filterChainConverted: FilterChain<HealthcareParty> = filterChain_fromJs(
@@ -434,16 +444,16 @@ internal class HealthcarePartyApiImplJs(
 		}
 	}
 
-	override fun getHealthcarePartiesInGroup(groupId: String,
-			options: HealthcarePartyApi_getHealthcarePartiesInGroup_Options?):
+	override fun getHealthcarePartiesInGroup(groupId: String, options: dynamic):
 			Promise<Array<HealthcarePartyJs>> {
-		val _options: HealthcarePartyApi_getHealthcarePartiesInGroup_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val groupIdConverted: String = groupId
-			val healthcarePartyIdsConverted: List<String>? = convertingOptionOrDefault(
-				_options.healthcarePartyIds,
+			val healthcarePartyIdsConverted: List<String>? = convertingOptionOrDefaultNullable(
+				_options,
+				"healthcarePartyIds",
 				null
-			) { healthcarePartyIds ->
+			) { healthcarePartyIds: Array<String>? ->
 				arrayToList(
 					healthcarePartyIds,
 					"healthcarePartyIds",
@@ -501,28 +511,31 @@ internal class HealthcarePartyApiImplJs(
 	override fun registerPatient(
 		groupId: String,
 		hcp: HealthcarePartyJs,
-		options: HealthcarePartyApi_registerPatient_Options?,
+		options: dynamic,
 	): Promise<DataOwnerRegistrationSuccessJs> {
-		val _options: HealthcarePartyApi_registerPatient_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val groupIdConverted: String = groupId
-			val parentHcPartyIdConverted: String? = convertingOptionOrDefault(
-				_options.parentHcPartyId,
+			val parentHcPartyIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"parentHcPartyId",
 				null
-			) { parentHcPartyId ->
-				parentHcPartyId
+			) { parentHcPartyId: String? ->
+				undefinedToNull(parentHcPartyId)
 			}
-			val tokenConverted: String? = convertingOptionOrDefault(
-				_options.token,
+			val tokenConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"token",
 				null
-			) { token ->
-				token
+			) { token: String? ->
+				undefinedToNull(token)
 			}
-			val useShortTokenConverted: Boolean? = convertingOptionOrDefault(
-				_options.useShortToken,
+			val useShortTokenConverted: Boolean? = convertingOptionOrDefaultNullable(
+				_options,
+				"useShortToken",
 				null
-			) { useShortToken ->
-				useShortToken
+			) { useShortToken: Boolean? ->
+				undefinedToNull(useShortToken)
 			}
 			val hcpConverted: HealthcareParty = healthcareParty_fromJs(hcp)
 			val result = healthcarePartyApi.registerPatient(

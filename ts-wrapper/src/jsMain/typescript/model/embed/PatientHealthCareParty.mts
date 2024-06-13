@@ -38,8 +38,6 @@ export class DecryptedPatientHealthCareParty {
 
   readonly isEncrypted: false = false;
 
-  readonly $ktClass: 'com.icure.sdk.model.embed.DecryptedPatientHealthCareParty' = 'com.icure.sdk.model.embed.DecryptedPatientHealthCareParty';
-
   constructor(partial: Partial<DecryptedPatientHealthCareParty>) {
     if (partial.isEncrypted !== undefined && partial.isEncrypted !== false) throw new Error('partial.isEncrypted must be undefined or false');
     if ('type' in partial) this.type = partial.type;
@@ -67,8 +65,6 @@ export class EncryptedPatientHealthCareParty {
   encryptedSelf: Base64String | undefined = undefined;
 
   readonly isEncrypted: true = true;
-
-  readonly $ktClass: 'com.icure.sdk.model.embed.EncryptedPatientHealthCareParty' = 'com.icure.sdk.model.embed.EncryptedPatientHealthCareParty';
 
   constructor(partial: Partial<EncryptedPatientHealthCareParty>) {
     if (partial.isEncrypted !== undefined && partial.isEncrypted !== true) throw new Error('partial.isEncrypted must be undefined or true');

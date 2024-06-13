@@ -15,7 +15,6 @@ import com.icure.sdk.js.model.filter.AbstractFilterJs
 import com.icure.sdk.js.model.filter.chain.FilterChainJs
 import com.icure.sdk.js.websocket.ConnectionJs
 import kotlin.Array
-import kotlin.Boolean
 import kotlin.Double
 import kotlin.String
 import kotlin.Unit
@@ -67,7 +66,7 @@ public external interface ContactBasicApiJs {
 	public fun listContactsByHCPartyAndPatientSecretFKeys(
 		hcPartyId: String,
 		secretPatientKeys: Array<String>,
-		options: ContactBasicApi_listContactsByHCPartyAndPatientSecretFKeys_Options?,
+		options: dynamic,
 	): Promise<Array<EncryptedContactJs>>
 
 	public fun closeForHCPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: Array<String>):
@@ -89,7 +88,7 @@ public external interface ContactBasicApiJs {
 		startDate: Double,
 		endDate: Double,
 		hcPartyId: String,
-		options: ContactBasicApi_findContactsByOpeningDate_Options?,
+		options: dynamic,
 	): Promise<PaginatedListJs<EncryptedContactJs>>
 
 	public fun filterServicesBy(
@@ -102,51 +101,13 @@ public external interface ContactBasicApiJs {
 		events: Array<String>,
 		filter: AbstractFilterJs<ServiceJs>,
 		eventFired: (EncryptedServiceJs) -> Promise<Unit>,
-		options: ContactBasicApi_subscribeToServiceEvents_Options?,
+		options: dynamic,
 	): Promise<ConnectionJs>
 
 	public fun subscribeToEvents(
 		events: Array<String>,
 		filter: AbstractFilterJs<ContactJs>,
 		eventFired: (EncryptedContactJs) -> Promise<Unit>,
-		options: ContactBasicApi_subscribeToEvents_Options?,
+		options: dynamic,
 	): Promise<ConnectionJs>
-}
-
-public external interface ContactBasicApi_listContactsByHCPartyAndPatientSecretFKeys_Options {
-	public val planOfActionsIds: String?
-
-	public val skipClosedContacts: Boolean?
-}
-
-public external interface ContactBasicApi_findContactsByOpeningDate_Options {
-	public val startKey: dynamic
-
-	public val startDocumentId: String?
-
-	public val limit: Double?
-}
-
-public external interface ContactBasicApi_subscribeToServiceEvents_Options {
-	public val onConnected: () -> Promise<Unit>
-
-	public val channelCapacity: Double
-
-	public val retryDelay: Double
-
-	public val retryDelayExponentFactor: Double
-
-	public val maxRetries: Double
-}
-
-public external interface ContactBasicApi_subscribeToEvents_Options {
-	public val onConnected: () -> Promise<Unit>
-
-	public val channelCapacity: Double
-
-	public val retryDelay: Double
-
-	public val retryDelayExponentFactor: Double
-
-	public val maxRetries: Double
 }

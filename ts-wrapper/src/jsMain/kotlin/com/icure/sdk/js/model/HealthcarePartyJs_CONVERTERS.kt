@@ -6,11 +6,13 @@ import com.icure.sdk.js.model.CheckedConverters.intToNumber
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.longToNumber
 import com.icure.sdk.js.model.CheckedConverters.mapToObject
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.sdk.js.model.CheckedConverters.objectToMapNullsafe
 import com.icure.sdk.js.model.CheckedConverters.setToArray
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.base.CodeStubJs
 import com.icure.sdk.js.model.base.IdentifierJs
 import com.icure.sdk.js.model.base.codeStub_fromJs
@@ -56,15 +58,25 @@ import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.model.specializations.SpkiHexString
 import kotlin.Array
 import kotlin.String
+import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.Map
 
+@Suppress("UNUSED_VARIABLE")
 public fun healthcareParty_toJs(obj: HealthcareParty): HealthcarePartyJs {
 	val id = obj.id
-	val rev = obj.rev
-	val created = longToNumber(obj.created)
-	val modified = longToNumber(obj.modified)
-	val deletionDate = longToNumber(obj.deletionDate)
+	val rev = nullToUndefined(
+		obj.rev
+	)
+	val created = nullToUndefined(
+		longToNumber(obj.created)
+	)
+	val modified = nullToUndefined(
+		longToNumber(obj.modified)
+	)
+	val deletionDate = nullToUndefined(
+		longToNumber(obj.deletionDate)
+	)
 	val identifier = listToArray(
 		obj.identifier,
 		{ x1: Identifier ->
@@ -83,34 +95,74 @@ public fun healthcareParty_toJs(obj: HealthcareParty): HealthcarePartyJs {
 			codeStub_toJs(x1)
 		},
 	)
-	val name = obj.name
-	val lastName = obj.lastName
-	val firstName = obj.firstName
+	val name = nullToUndefined(
+		obj.name
+	)
+	val lastName = nullToUndefined(
+		obj.lastName
+	)
+	val firstName = nullToUndefined(
+		obj.firstName
+	)
 	val names = listToArray(
 		obj.names,
 		{ x1: PersonName ->
 			personName_toJs(x1)
 		},
 	)
-	val gender = obj.gender?.let { nonNull1 ->
-		obj.gender?.name
-	}
-	val civility = obj.civility
-	val companyName = obj.companyName
-	val speciality = obj.speciality
-	val bankAccount = obj.bankAccount
-	val bic = obj.bic
-	val proxyBankAccount = obj.proxyBankAccount
-	val proxyBic = obj.proxyBic
-	val invoiceHeader = obj.invoiceHeader
-	val cbe = obj.cbe
-	val ehp = obj.ehp
-	val userId = obj.userId
-	val parentId = obj.parentId
-	val convention = intToNumber(obj.convention)
-	val nihii = obj.nihii
-	val nihiiSpecCode = obj.nihiiSpecCode
-	val ssin = obj.ssin
+	val gender = nullToUndefined(
+		obj.gender?.let { nonNull1 ->
+			nonNull1.name
+		}
+	)
+	val civility = nullToUndefined(
+		obj.civility
+	)
+	val companyName = nullToUndefined(
+		obj.companyName
+	)
+	val speciality = nullToUndefined(
+		obj.speciality
+	)
+	val bankAccount = nullToUndefined(
+		obj.bankAccount
+	)
+	val bic = nullToUndefined(
+		obj.bic
+	)
+	val proxyBankAccount = nullToUndefined(
+		obj.proxyBankAccount
+	)
+	val proxyBic = nullToUndefined(
+		obj.proxyBic
+	)
+	val invoiceHeader = nullToUndefined(
+		obj.invoiceHeader
+	)
+	val cbe = nullToUndefined(
+		obj.cbe
+	)
+	val ehp = nullToUndefined(
+		obj.ehp
+	)
+	val userId = nullToUndefined(
+		obj.userId
+	)
+	val parentId = nullToUndefined(
+		obj.parentId
+	)
+	val convention = nullToUndefined(
+		intToNumber(obj.convention)
+	)
+	val nihii = nullToUndefined(
+		obj.nihii
+	)
+	val nihiiSpecCode = nullToUndefined(
+		obj.nihiiSpecCode
+	)
+	val ssin = nullToUndefined(
+		obj.ssin
+	)
 	val addresses = listToArray(
 		obj.addresses,
 		{ x1: DecryptedAddress ->
@@ -123,7 +175,9 @@ public fun healthcareParty_toJs(obj: HealthcareParty): HealthcarePartyJs {
 			x1
 		},
 	)
-	val picture = obj.picture
+	val picture = nullToUndefined(
+		obj.picture
+	)
 	val statuses = setToArray(
 		obj.statuses,
 		{ x1: HealthcarePartyStatus ->
@@ -151,27 +205,41 @@ public fun healthcareParty_toJs(obj: HealthcareParty): HealthcarePartyJs {
 			x1
 		},
 	)
-	val notes = obj.notes
+	val notes = nullToUndefined(
+		obj.notes
+	)
 	val financialInstitutionInformation = listToArray(
 		obj.financialInstitutionInformation,
 		{ x1: DecryptedFinancialInstitutionInformation ->
 			financialInstitutionInformation_toJs(x1)
 		},
 	)
-	val descr = mapToObject(
-		obj.descr,
-		{ x1: String ->
-			x1
-		},
-		{ x1: String ->
-			x1
-		},
+	val descr = nullToUndefined(
+		mapToObject(
+			obj.descr,
+			{ x1: String ->
+				x1
+			},
+			{ x1: String ->
+				x1
+			},
+		)
 	)
-	val billingType = obj.billingType
-	val type = obj.type
-	val contactPerson = obj.contactPerson
-	val contactPersonHcpId = obj.contactPersonHcpId
-	val supervisorId = obj.supervisorId
+	val billingType = nullToUndefined(
+		obj.billingType
+	)
+	val type = nullToUndefined(
+		obj.type
+	)
+	val contactPerson = nullToUndefined(
+		obj.contactPerson
+	)
+	val contactPersonHcpId = nullToUndefined(
+		obj.contactPersonHcpId
+	)
+	val supervisorId = nullToUndefined(
+		obj.supervisorId
+	)
 	val flatRateTarifications = listToArray(
 		obj.flatRateTarifications,
 		{ x1: DecryptedFlatRateTarification ->
@@ -267,9 +335,11 @@ public fun healthcareParty_toJs(obj: HealthcareParty): HealthcarePartyJs {
 			hexString_toJs(x1)
 		},
 	)
-	val publicKey = obj.publicKey?.let { nonNull1 ->
-		spkiHexString_toJs(nonNull1)
-	}
+	val publicKey = nullToUndefined(
+		obj.publicKey?.let { nonNull1 ->
+			spkiHexString_toJs(nonNull1)
+		}
+	)
 	val publicKeysForOaepWithSha256 = setToArray(
 		obj.publicKeysForOaepWithSha256,
 		{ x1: SpkiHexString ->
@@ -336,7 +406,7 @@ public fun healthcareParty_toJs(obj: HealthcareParty): HealthcarePartyJs {
 
 public fun healthcareParty_fromJs(obj: HealthcarePartyJs): HealthcareParty {
 	val id = obj.id
-	val rev = obj.rev
+	val rev = undefinedToNull(obj.rev)
 	val created = numberToLong(obj.created, "obj.created")
 	val modified = numberToLong(obj.modified, "obj.modified")
 	val deletionDate = numberToLong(obj.deletionDate, "obj.deletionDate")
@@ -361,9 +431,9 @@ public fun healthcareParty_fromJs(obj: HealthcarePartyJs): HealthcareParty {
 			codeStub_fromJs(x1)
 		},
 	)
-	val name = obj.name
-	val lastName = obj.lastName
-	val firstName = obj.firstName
+	val name = undefinedToNull(obj.name)
+	val lastName = undefinedToNull(obj.lastName)
+	val firstName = undefinedToNull(obj.firstName)
 	val names = arrayToList(
 		obj.names,
 		"obj.names",
@@ -374,22 +444,22 @@ public fun healthcareParty_fromJs(obj: HealthcarePartyJs): HealthcareParty {
 	val gender = obj.gender?.let { nonNull1 ->
 		Gender.valueOf(nonNull1)
 	}
-	val civility = obj.civility
-	val companyName = obj.companyName
-	val speciality = obj.speciality
-	val bankAccount = obj.bankAccount
-	val bic = obj.bic
-	val proxyBankAccount = obj.proxyBankAccount
-	val proxyBic = obj.proxyBic
-	val invoiceHeader = obj.invoiceHeader
-	val cbe = obj.cbe
-	val ehp = obj.ehp
-	val userId = obj.userId
-	val parentId = obj.parentId
+	val civility = undefinedToNull(obj.civility)
+	val companyName = undefinedToNull(obj.companyName)
+	val speciality = undefinedToNull(obj.speciality)
+	val bankAccount = undefinedToNull(obj.bankAccount)
+	val bic = undefinedToNull(obj.bic)
+	val proxyBankAccount = undefinedToNull(obj.proxyBankAccount)
+	val proxyBic = undefinedToNull(obj.proxyBic)
+	val invoiceHeader = undefinedToNull(obj.invoiceHeader)
+	val cbe = undefinedToNull(obj.cbe)
+	val ehp = undefinedToNull(obj.ehp)
+	val userId = undefinedToNull(obj.userId)
+	val parentId = undefinedToNull(obj.parentId)
 	val convention = numberToInt(obj.convention, "obj.convention")
-	val nihii = obj.nihii
-	val nihiiSpecCode = obj.nihiiSpecCode
-	val ssin = obj.ssin
+	val nihii = undefinedToNull(obj.nihii)
+	val nihiiSpecCode = undefinedToNull(obj.nihiiSpecCode)
+	val ssin = undefinedToNull(obj.ssin)
 	val addresses = arrayToList(
 		obj.addresses,
 		"obj.addresses",
@@ -404,7 +474,7 @@ public fun healthcareParty_fromJs(obj: HealthcarePartyJs): HealthcareParty {
 			x1
 		},
 	)
-	val picture = obj.picture
+	val picture = undefinedToNull(obj.picture)
 	val statuses = arrayToSet(
 		obj.statuses,
 		"obj.statuses",
@@ -436,7 +506,7 @@ public fun healthcareParty_fromJs(obj: HealthcarePartyJs): HealthcareParty {
 			x1
 		},
 	)
-	val notes = obj.notes
+	val notes = undefinedToNull(obj.notes)
 	val financialInstitutionInformation = arrayToList(
 		obj.financialInstitutionInformation,
 		"obj.financialInstitutionInformation",
@@ -454,11 +524,11 @@ public fun healthcareParty_fromJs(obj: HealthcarePartyJs): HealthcareParty {
 			x1
 		},
 	)
-	val billingType = obj.billingType
-	val type = obj.type
-	val contactPerson = obj.contactPerson
-	val contactPersonHcpId = obj.contactPersonHcpId
-	val supervisorId = obj.supervisorId
+	val billingType = undefinedToNull(obj.billingType)
+	val type = undefinedToNull(obj.type)
+	val contactPerson = undefinedToNull(obj.contactPerson)
+	val contactPersonHcpId = undefinedToNull(obj.contactPersonHcpId)
+	val supervisorId = undefinedToNull(obj.supervisorId)
 	val flatRateTarifications = arrayToList(
 		obj.flatRateTarifications,
 		"obj.flatRateTarifications",

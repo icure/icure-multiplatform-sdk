@@ -34,9 +34,6 @@ public sealed external interface TopicJs : StoredDocumentJs, ICureDocumentJs<Str
 	public val linkedServices: Array<out String>
 
 	public val isEncrypted: Boolean
-
-	@JsName("${'$'}ktClass")
-	public val ktClass: String
 }
 
 @JsName("DecryptedTopic")
@@ -90,8 +87,6 @@ public external class DecryptedTopicJs(
 	override val linkedServices: Array<String>
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }
 
 @JsName("EncryptedTopic")
@@ -145,6 +140,4 @@ public external class EncryptedTopicJs(
 	override val linkedServices: Array<String>
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }

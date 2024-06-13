@@ -68,9 +68,6 @@ public sealed external interface MessageJs : StoredDocumentJs, ICureDocumentJs<S
 	public val senderReferences: Record<String, out String>
 
 	public val isEncrypted: Boolean
-
-	@JsName("${'$'}ktClass")
-	public val ktClass: String
 }
 
 @JsName("DecryptedMessage")
@@ -156,8 +153,6 @@ public external class DecryptedMessageJs(
 	override val securityMetadata: SecurityMetadataJs?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }
 
 @JsName("EncryptedMessage")
@@ -243,6 +238,4 @@ public external class EncryptedMessageJs(
 	override val securityMetadata: SecurityMetadataJs?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }

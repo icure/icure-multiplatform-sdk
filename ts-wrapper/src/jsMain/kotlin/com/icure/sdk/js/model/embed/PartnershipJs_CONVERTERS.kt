@@ -1,19 +1,33 @@
 package com.icure.sdk.js.model.embed
 
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.model.embed.Partnership
 import com.icure.sdk.model.embed.PartnershipStatus
 import com.icure.sdk.model.embed.PartnershipType
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun partnership_toJs(obj: Partnership): PartnershipJs {
-	val type = obj.type?.let { nonNull1 ->
-		obj.type?.name
-	}
-	val status = obj.status?.let { nonNull1 ->
-		obj.status?.name
-	}
-	val partnerId = obj.partnerId
-	val meToOtherRelationshipDescription = obj.meToOtherRelationshipDescription
-	val otherToMeRelationshipDescription = obj.otherToMeRelationshipDescription
+	val type = nullToUndefined(
+		obj.type?.let { nonNull1 ->
+			nonNull1.name
+		}
+	)
+	val status = nullToUndefined(
+		obj.status?.let { nonNull1 ->
+			nonNull1.name
+		}
+	)
+	val partnerId = nullToUndefined(
+		obj.partnerId
+	)
+	val meToOtherRelationshipDescription = nullToUndefined(
+		obj.meToOtherRelationshipDescription
+	)
+	val otherToMeRelationshipDescription = nullToUndefined(
+		obj.otherToMeRelationshipDescription
+	)
 	return PartnershipJs(js("{" +
 		"type:type," +
 		"status:status," +
@@ -30,9 +44,9 @@ public fun partnership_fromJs(obj: PartnershipJs): Partnership {
 	val status = obj.status?.let { nonNull1 ->
 		PartnershipStatus.valueOf(nonNull1)
 	}
-	val partnerId = obj.partnerId
-	val meToOtherRelationshipDescription = obj.meToOtherRelationshipDescription
-	val otherToMeRelationshipDescription = obj.otherToMeRelationshipDescription
+	val partnerId = undefinedToNull(obj.partnerId)
+	val meToOtherRelationshipDescription = undefinedToNull(obj.meToOtherRelationshipDescription)
+	val otherToMeRelationshipDescription = undefinedToNull(obj.otherToMeRelationshipDescription)
 	return Partnership(
 		type = type,
 		status = status,

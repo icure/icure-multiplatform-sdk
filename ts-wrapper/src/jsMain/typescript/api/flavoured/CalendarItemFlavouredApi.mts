@@ -12,7 +12,7 @@ import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs'
 export interface CalendarItemFlavouredApi<E extends CalendarItem> {
 
 	shareWith(delegateId: string, calendarItem: E,
-			options?: { delegateId?: string, calendarItem?: E, shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<E>>;
+			options?: { shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<E>>;
 
 	tryShareWithMany(calendarItem: E,
 			delegates: { [ key: string ]: CalendarItemShareOptions }): Promise<SimpleShareResult<E>>;
@@ -21,7 +21,7 @@ export interface CalendarItemFlavouredApi<E extends CalendarItem> {
 			delegates: { [ key: string ]: CalendarItemShareOptions }): Promise<E>;
 
 	findCalendarItemsByHcPartyPatient(hcPartyId: string, patient: Patient,
-			options?: { hcPartyId?: string, patient?: Patient, startDate?: number | undefined, endDate?: number | undefined, descending?: boolean | undefined }): Promise<PaginatedListIterator<E>>;
+			options?: { startDate?: number | undefined, endDate?: number | undefined, descending?: boolean | undefined }): Promise<PaginatedListIterator<E>>;
 
 	linkToPatient(calendarItem: CalendarItem, patient: Patient,
 			shareLinkWithDelegates: Array<string>): Promise<E>;

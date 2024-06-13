@@ -6,7 +6,9 @@ import com.icure.sdk.model.filter.predicate.KeyValuePredicate
 import com.icure.sdk.model.filter.predicate.NotPredicate
 import com.icure.sdk.model.filter.predicate.OrPredicate
 import com.icure.sdk.model.filter.predicate.Predicate
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun predicate_toJs(obj: Predicate): PredicateJs = when (obj) {
 	is NotPredicate -> notPredicate_toJs(obj)
 	is AndPredicate -> andPredicate_toJs(obj)

@@ -4,6 +4,7 @@ import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.mapToObject
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.sdk.js.model.CheckedConverters.setToArray
 import com.icure.sdk.js.model.base.CodeStubJs
@@ -23,9 +24,11 @@ import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.model.specializations.SpkiHexString
 import kotlin.Array
 import kotlin.String
+import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.Map
 
+@Suppress("UNUSED_VARIABLE")
 public fun cryptoActorStub_toJs(obj: CryptoActorStub): CryptoActorStubJs {
 	val id = obj.id
 	val rev = obj.rev
@@ -94,9 +97,11 @@ public fun cryptoActorStub_toJs(obj: CryptoActorStub): CryptoActorStubJs {
 			hexString_toJs(x1)
 		},
 	)
-	val publicKey = obj.publicKey?.let { nonNull1 ->
-		spkiHexString_toJs(nonNull1)
-	}
+	val publicKey = nullToUndefined(
+		obj.publicKey?.let { nonNull1 ->
+			spkiHexString_toJs(nonNull1)
+		}
+	)
 	val publicKeysForOaepWithSha256 = setToArray(
 		obj.publicKeysForOaepWithSha256,
 		{ x1: SpkiHexString ->

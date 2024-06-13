@@ -2,12 +2,12 @@
 package com.icure.sdk.js.api.`impl`
 
 import com.icure.sdk.api.InsuranceApi
-import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefault
+import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.sdk.js.api.InsuranceApiJs
-import com.icure.sdk.js.api.InsuranceApi_getAllInsurances_Options
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.InsuranceJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
@@ -17,6 +17,7 @@ import com.icure.sdk.js.model.insurance_toJs
 import com.icure.sdk.js.model.paginatedList_toJs
 import com.icure.sdk.model.Insurance
 import kotlin.Array
+import kotlin.Double
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String
@@ -74,20 +75,21 @@ internal class InsuranceApiImplJs(
 		docIdentifier_toJs(result)
 	}
 
-	override fun getAllInsurances(options: InsuranceApi_getAllInsurances_Options?):
-			Promise<PaginatedListJs<InsuranceJs>> {
-		val _options: InsuranceApi_getAllInsurances_Options = options ?: js("{}")
+	override fun getAllInsurances(options: dynamic): Promise<PaginatedListJs<InsuranceJs>> {
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
-			val startDocumentIdConverted: String? = convertingOptionOrDefault(
-				_options.startDocumentId,
+			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"startDocumentId",
 				null
-			) { startDocumentId ->
-				startDocumentId
+			) { startDocumentId: String? ->
+				undefinedToNull(startDocumentId)
 			}
-			val limitConverted: Int? = convertingOptionOrDefault(
-				_options.limit,
+			val limitConverted: Int? = convertingOptionOrDefaultNullable(
+				_options,
+				"limit",
 				null
-			) { limit ->
+			) { limit: Double? ->
 				numberToInt(limit, "limit")
 			}
 			val result = insuranceApi.getAllInsurances(

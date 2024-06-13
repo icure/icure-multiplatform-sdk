@@ -5,9 +5,11 @@ import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.longToNumber
 import com.icure.sdk.js.model.CheckedConverters.mapToObject
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.sdk.js.model.CheckedConverters.setToArray
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.base.CodeStubJs
 import com.icure.sdk.js.model.base.IdentifierJs
 import com.icure.sdk.js.model.base.codeStub_fromJs
@@ -45,16 +47,30 @@ import com.icure.sdk.model.embed.EncryptedService
 import com.icure.sdk.model.embed.EncryptedSubContact
 import kotlin.Array
 import kotlin.String
+import kotlin.Suppress
 import kotlin.collections.Set
 
+@Suppress("UNUSED_VARIABLE")
 public fun contact_toJs(obj: DecryptedContact): DecryptedContactJs {
 	val id = obj.id
-	val rev = obj.rev
-	val created = longToNumber(obj.created)
-	val modified = longToNumber(obj.modified)
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
+	val rev = nullToUndefined(
+		obj.rev
+	)
+	val created = nullToUndefined(
+		longToNumber(obj.created)
+	)
+	val modified = nullToUndefined(
+		longToNumber(obj.modified)
+	)
+	val author = nullToUndefined(
+		obj.author
+	)
+	val responsible = nullToUndefined(
+		obj.responsible
+	)
+	val medicalLocationId = nullToUndefined(
+		obj.medicalLocationId
+	)
 	val tags = setToArray(
 		obj.tags,
 		{ x1: CodeStub ->
@@ -73,17 +89,35 @@ public fun contact_toJs(obj: DecryptedContact): DecryptedContactJs {
 			identifier_toJs(x1)
 		},
 	)
-	val endOfLife = longToNumber(obj.endOfLife)
-	val deletionDate = longToNumber(obj.deletionDate)
-	val groupId = obj.groupId
-	val openingDate = longToNumber(obj.openingDate)
-	val closingDate = longToNumber(obj.closingDate)
-	val descr = obj.descr
-	val location = obj.location
-	val externalId = obj.externalId
-	val encounterType = obj.encounterType?.let { nonNull1 ->
-		codeStub_toJs(nonNull1)
-	}
+	val endOfLife = nullToUndefined(
+		longToNumber(obj.endOfLife)
+	)
+	val deletionDate = nullToUndefined(
+		longToNumber(obj.deletionDate)
+	)
+	val groupId = nullToUndefined(
+		obj.groupId
+	)
+	val openingDate = nullToUndefined(
+		longToNumber(obj.openingDate)
+	)
+	val closingDate = nullToUndefined(
+		longToNumber(obj.closingDate)
+	)
+	val descr = nullToUndefined(
+		obj.descr
+	)
+	val location = nullToUndefined(
+		obj.location
+	)
+	val externalId = nullToUndefined(
+		obj.externalId
+	)
+	val encounterType = nullToUndefined(
+		obj.encounterType?.let { nonNull1 ->
+			codeStub_toJs(nonNull1)
+		}
+	)
 	val subContacts = setToArray(
 		obj.subContacts,
 		{ x1: DecryptedSubContact ->
@@ -96,8 +130,12 @@ public fun contact_toJs(obj: DecryptedContact): DecryptedContactJs {
 			service_toJs(x1)
 		},
 	)
-	val healthcarePartyId = obj.healthcarePartyId
-	val modifiedContactId = obj.modifiedContactId
+	val healthcarePartyId = nullToUndefined(
+		obj.healthcarePartyId
+	)
+	val modifiedContactId = nullToUndefined(
+		obj.modifiedContactId
+	)
 	val secretForeignKeys = setToArray(
 		obj.secretForeignKeys,
 		{ x1: String ->
@@ -146,12 +184,16 @@ public fun contact_toJs(obj: DecryptedContact): DecryptedContactJs {
 			)
 		},
 	)
-	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
-		base64String_toJs(nonNull1)
-	}
-	val securityMetadata = obj.securityMetadata?.let { nonNull1 ->
-		securityMetadata_toJs(nonNull1)
-	}
+	val encryptedSelf = nullToUndefined(
+		obj.encryptedSelf?.let { nonNull1 ->
+			base64String_toJs(nonNull1)
+		}
+	)
+	val securityMetadata = nullToUndefined(
+		obj.securityMetadata?.let { nonNull1 ->
+			securityMetadata_toJs(nonNull1)
+		}
+	)
 	val notes = listToArray(
 		obj.notes,
 		{ x1: Annotation ->
@@ -194,12 +236,12 @@ public fun contact_toJs(obj: DecryptedContact): DecryptedContactJs {
 
 public fun contact_fromJs(obj: DecryptedContactJs): DecryptedContact {
 	val id = obj.id
-	val rev = obj.rev
+	val rev = undefinedToNull(obj.rev)
 	val created = numberToLong(obj.created, "obj.created")
 	val modified = numberToLong(obj.modified, "obj.modified")
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
+	val author = undefinedToNull(obj.author)
+	val responsible = undefinedToNull(obj.responsible)
+	val medicalLocationId = undefinedToNull(obj.medicalLocationId)
 	val tags = arrayToSet(
 		obj.tags,
 		"obj.tags",
@@ -223,12 +265,12 @@ public fun contact_fromJs(obj: DecryptedContactJs): DecryptedContact {
 	)
 	val endOfLife = numberToLong(obj.endOfLife, "obj.endOfLife")
 	val deletionDate = numberToLong(obj.deletionDate, "obj.deletionDate")
-	val groupId = obj.groupId
+	val groupId = undefinedToNull(obj.groupId)
 	val openingDate = numberToLong(obj.openingDate, "obj.openingDate")
 	val closingDate = numberToLong(obj.closingDate, "obj.closingDate")
-	val descr = obj.descr
-	val location = obj.location
-	val externalId = obj.externalId
+	val descr = undefinedToNull(obj.descr)
+	val location = undefinedToNull(obj.location)
+	val externalId = undefinedToNull(obj.externalId)
 	val encounterType = obj.encounterType?.let { nonNull1 ->
 		codeStub_fromJs(nonNull1)
 	}
@@ -246,8 +288,8 @@ public fun contact_fromJs(obj: DecryptedContactJs): DecryptedContact {
 			service_fromJs(x1)
 		},
 	)
-	val healthcarePartyId = obj.healthcarePartyId
-	val modifiedContactId = obj.modifiedContactId
+	val healthcarePartyId = undefinedToNull(obj.healthcarePartyId)
+	val modifiedContactId = undefinedToNull(obj.modifiedContactId)
 	val secretForeignKeys = arrayToSet(
 		obj.secretForeignKeys,
 		"obj.secretForeignKeys",
@@ -350,14 +392,27 @@ public fun contact_fromJs(obj: DecryptedContactJs): DecryptedContact {
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun contact_toJs(obj: EncryptedContact): EncryptedContactJs {
 	val id = obj.id
-	val rev = obj.rev
-	val created = longToNumber(obj.created)
-	val modified = longToNumber(obj.modified)
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
+	val rev = nullToUndefined(
+		obj.rev
+	)
+	val created = nullToUndefined(
+		longToNumber(obj.created)
+	)
+	val modified = nullToUndefined(
+		longToNumber(obj.modified)
+	)
+	val author = nullToUndefined(
+		obj.author
+	)
+	val responsible = nullToUndefined(
+		obj.responsible
+	)
+	val medicalLocationId = nullToUndefined(
+		obj.medicalLocationId
+	)
 	val tags = setToArray(
 		obj.tags,
 		{ x1: CodeStub ->
@@ -376,17 +431,35 @@ public fun contact_toJs(obj: EncryptedContact): EncryptedContactJs {
 			identifier_toJs(x1)
 		},
 	)
-	val endOfLife = longToNumber(obj.endOfLife)
-	val deletionDate = longToNumber(obj.deletionDate)
-	val groupId = obj.groupId
-	val openingDate = longToNumber(obj.openingDate)
-	val closingDate = longToNumber(obj.closingDate)
-	val descr = obj.descr
-	val location = obj.location
-	val externalId = obj.externalId
-	val encounterType = obj.encounterType?.let { nonNull1 ->
-		codeStub_toJs(nonNull1)
-	}
+	val endOfLife = nullToUndefined(
+		longToNumber(obj.endOfLife)
+	)
+	val deletionDate = nullToUndefined(
+		longToNumber(obj.deletionDate)
+	)
+	val groupId = nullToUndefined(
+		obj.groupId
+	)
+	val openingDate = nullToUndefined(
+		longToNumber(obj.openingDate)
+	)
+	val closingDate = nullToUndefined(
+		longToNumber(obj.closingDate)
+	)
+	val descr = nullToUndefined(
+		obj.descr
+	)
+	val location = nullToUndefined(
+		obj.location
+	)
+	val externalId = nullToUndefined(
+		obj.externalId
+	)
+	val encounterType = nullToUndefined(
+		obj.encounterType?.let { nonNull1 ->
+			codeStub_toJs(nonNull1)
+		}
+	)
 	val subContacts = setToArray(
 		obj.subContacts,
 		{ x1: EncryptedSubContact ->
@@ -399,8 +472,12 @@ public fun contact_toJs(obj: EncryptedContact): EncryptedContactJs {
 			service_toJs(x1)
 		},
 	)
-	val healthcarePartyId = obj.healthcarePartyId
-	val modifiedContactId = obj.modifiedContactId
+	val healthcarePartyId = nullToUndefined(
+		obj.healthcarePartyId
+	)
+	val modifiedContactId = nullToUndefined(
+		obj.modifiedContactId
+	)
 	val secretForeignKeys = setToArray(
 		obj.secretForeignKeys,
 		{ x1: String ->
@@ -449,12 +526,16 @@ public fun contact_toJs(obj: EncryptedContact): EncryptedContactJs {
 			)
 		},
 	)
-	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
-		base64String_toJs(nonNull1)
-	}
-	val securityMetadata = obj.securityMetadata?.let { nonNull1 ->
-		securityMetadata_toJs(nonNull1)
-	}
+	val encryptedSelf = nullToUndefined(
+		obj.encryptedSelf?.let { nonNull1 ->
+			base64String_toJs(nonNull1)
+		}
+	)
+	val securityMetadata = nullToUndefined(
+		obj.securityMetadata?.let { nonNull1 ->
+			securityMetadata_toJs(nonNull1)
+		}
+	)
 	val notes = listToArray(
 		obj.notes,
 		{ x1: Annotation ->
@@ -497,12 +578,12 @@ public fun contact_toJs(obj: EncryptedContact): EncryptedContactJs {
 
 public fun contact_fromJs(obj: EncryptedContactJs): EncryptedContact {
 	val id = obj.id
-	val rev = obj.rev
+	val rev = undefinedToNull(obj.rev)
 	val created = numberToLong(obj.created, "obj.created")
 	val modified = numberToLong(obj.modified, "obj.modified")
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
+	val author = undefinedToNull(obj.author)
+	val responsible = undefinedToNull(obj.responsible)
+	val medicalLocationId = undefinedToNull(obj.medicalLocationId)
 	val tags = arrayToSet(
 		obj.tags,
 		"obj.tags",
@@ -526,12 +607,12 @@ public fun contact_fromJs(obj: EncryptedContactJs): EncryptedContact {
 	)
 	val endOfLife = numberToLong(obj.endOfLife, "obj.endOfLife")
 	val deletionDate = numberToLong(obj.deletionDate, "obj.deletionDate")
-	val groupId = obj.groupId
+	val groupId = undefinedToNull(obj.groupId)
 	val openingDate = numberToLong(obj.openingDate, "obj.openingDate")
 	val closingDate = numberToLong(obj.closingDate, "obj.closingDate")
-	val descr = obj.descr
-	val location = obj.location
-	val externalId = obj.externalId
+	val descr = undefinedToNull(obj.descr)
+	val location = undefinedToNull(obj.location)
+	val externalId = undefinedToNull(obj.externalId)
 	val encounterType = obj.encounterType?.let { nonNull1 ->
 		codeStub_fromJs(nonNull1)
 	}
@@ -549,8 +630,8 @@ public fun contact_fromJs(obj: EncryptedContactJs): EncryptedContact {
 			service_fromJs(x1)
 		},
 	)
-	val healthcarePartyId = obj.healthcarePartyId
-	val modifiedContactId = obj.modifiedContactId
+	val healthcarePartyId = undefinedToNull(obj.healthcarePartyId)
+	val modifiedContactId = undefinedToNull(obj.modifiedContactId)
 	val secretForeignKeys = arrayToSet(
 		obj.secretForeignKeys,
 		"obj.secretForeignKeys",
@@ -653,6 +734,7 @@ public fun contact_fromJs(obj: EncryptedContactJs): EncryptedContact {
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun contact_toJs(obj: Contact): ContactJs = when (obj) {
 	is EncryptedContact -> contact_toJs(obj)
 	is DecryptedContact -> contact_toJs(obj)

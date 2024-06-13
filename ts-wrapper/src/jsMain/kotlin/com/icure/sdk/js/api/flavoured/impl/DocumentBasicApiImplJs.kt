@@ -7,6 +7,7 @@ import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.jsonToDynamic
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.EncryptedDocumentJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.couchdb.docIdentifier_toJs
@@ -194,7 +195,7 @@ internal class DocumentBasicApiImplJs(
 		secretMessageKeys: Array<String>,
 	): Promise<Array<EncryptedDocumentJs>> = GlobalScope.promise {
 		val hcPartyIdConverted: String = hcPartyId
-		val documentTypeCodeConverted: String? = documentTypeCode
+		val documentTypeCodeConverted: String? = undefinedToNull(documentTypeCode)
 		val secretMessageKeysConverted: List<String> = arrayToList(
 			secretMessageKeys,
 			"secretMessageKeys",

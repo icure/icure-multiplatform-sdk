@@ -7,6 +7,7 @@ import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.EncryptedCalendarItemJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.calendarItem_fromJs
@@ -167,8 +168,8 @@ internal class CalendarItemBasicApiImplJs(
 		limit: Double,
 	): Promise<PaginatedListJs<EncryptedCalendarItemJs>> = GlobalScope.promise {
 		val recurrenceIdConverted: String = recurrenceId
-		val startKeyConverted: String? = startKey
-		val startDocumentIdConverted: String? = startDocumentId
+		val startKeyConverted: String? = undefinedToNull(startKey)
+		val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
 		val limitConverted: Int = numberToInt(limit, "limit")
 		val result = calendarItemBasicApi.findCalendarItemsByRecurrenceId(
 			recurrenceIdConverted,

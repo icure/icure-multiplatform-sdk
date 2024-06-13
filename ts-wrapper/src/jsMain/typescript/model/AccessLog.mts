@@ -78,8 +78,6 @@ export class DecryptedAccessLog {
 
   readonly isEncrypted: false = false;
 
-  readonly $ktClass: 'com.icure.sdk.model.DecryptedAccessLog' = 'com.icure.sdk.model.DecryptedAccessLog';
-
   constructor(partial: Partial<DecryptedAccessLog>) {
     if (partial.isEncrypted !== undefined && partial.isEncrypted !== false) throw new Error('partial.isEncrypted must be undefined or false');
     this.id = partial.id ?? randomUuid();
@@ -158,8 +156,6 @@ export class EncryptedAccessLog {
   securityMetadata: SecurityMetadata | undefined = undefined;
 
   readonly isEncrypted: true = true;
-
-  readonly $ktClass: 'com.icure.sdk.model.EncryptedAccessLog' = 'com.icure.sdk.model.EncryptedAccessLog';
 
   constructor(partial: Partial<EncryptedAccessLog>) {
     if (partial.isEncrypted !== undefined && partial.isEncrypted !== true) throw new Error('partial.isEncrypted must be undefined or true');

@@ -67,8 +67,6 @@ export class DecryptedContent {
 
   readonly isEncrypted: false = false;
 
-  readonly $ktClass: 'com.icure.sdk.model.embed.DecryptedContent' = 'com.icure.sdk.model.embed.DecryptedContent';
-
   constructor(partial: Partial<DecryptedContent>) {
     if (partial.isEncrypted !== undefined && partial.isEncrypted !== false) throw new Error('partial.isEncrypted must be undefined or false');
     if ('stringValue' in partial) this.stringValue = partial.stringValue;
@@ -117,8 +115,6 @@ export class EncryptedContent {
   range: Array<Measure> | undefined = undefined;
 
   readonly isEncrypted: true = true;
-
-  readonly $ktClass: 'com.icure.sdk.model.embed.EncryptedContent' = 'com.icure.sdk.model.embed.EncryptedContent';
 
   constructor(partial: Partial<EncryptedContent>) {
     if (partial.isEncrypted !== undefined && partial.isEncrypted !== true) throw new Error('partial.isEncrypted must be undefined or true');

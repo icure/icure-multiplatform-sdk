@@ -4,7 +4,6 @@
 package com.icure.sdk.js.api.flavoured
 
 import com.icure.sdk.js.crypto.entities.ReceiptShareOptionsJs
-import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.model.DecryptedReceiptJs
 import com.icure.sdk.js.model.EncryptedReceiptJs
@@ -33,7 +32,7 @@ public external interface ReceiptApiJs {
 	public fun withEncryptionMetadata(
 		base: DecryptedReceiptJs?,
 		patient: PatientJs?,
-		options: ReceiptApi_withEncryptionMetadata_Options?,
+		options: dynamic,
 	): Promise<DecryptedReceiptJs>
 
 	public fun getAndDecryptReceiptAttachment(receipt: ReceiptJs, attachmentId: String):
@@ -78,7 +77,7 @@ public external interface ReceiptApiJs {
 	public fun shareWith(
 		delegateId: String,
 		receipt: DecryptedReceiptJs,
-		options: ReceiptApi_shareWith_Options?,
+		options: dynamic,
 	): Promise<SimpleShareResultJs<DecryptedReceiptJs>>
 
 	public fun tryShareWithMany(receipt: DecryptedReceiptJs,
@@ -93,20 +92,4 @@ public external interface ReceiptApiJs {
 	public fun getReceipt(entityId: String): Promise<DecryptedReceiptJs>
 
 	public fun listByReference(reference: String): Promise<Array<DecryptedReceiptJs>>
-}
-
-public external interface ReceiptApi_withEncryptionMetadata_Options {
-	public val user: UserJs?
-
-	public val delegates: Record<String, String>
-
-	public val secretId: SecretIdOptionJs
-}
-
-public external interface ReceiptApi_shareWith_Options {
-	public val shareEncryptionKeys: String
-
-	public val shareOwningEntityIds: String
-
-	public val requestedPermission: String
 }

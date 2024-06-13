@@ -32,8 +32,6 @@ export class DecryptedCareTeamMembership {
 
   readonly isEncrypted: false = false;
 
-  readonly $ktClass: 'com.icure.sdk.model.embed.DecryptedCareTeamMembership' = 'com.icure.sdk.model.embed.DecryptedCareTeamMembership';
-
   constructor(partial: Partial<DecryptedCareTeamMembership>) {
     if (partial.isEncrypted !== undefined && partial.isEncrypted !== false) throw new Error('partial.isEncrypted must be undefined or false');
     if ('startDate' in partial) this.startDate = partial.startDate;
@@ -58,8 +56,6 @@ export class EncryptedCareTeamMembership {
   encryptedSelf: Base64String | undefined = undefined;
 
   readonly isEncrypted: true = true;
-
-  readonly $ktClass: 'com.icure.sdk.model.embed.EncryptedCareTeamMembership' = 'com.icure.sdk.model.embed.EncryptedCareTeamMembership';
 
   constructor(partial: Partial<EncryptedCareTeamMembership>) {
     if (partial.isEncrypted !== undefined && partial.isEncrypted !== true) throw new Error('partial.isEncrypted must be undefined or true');

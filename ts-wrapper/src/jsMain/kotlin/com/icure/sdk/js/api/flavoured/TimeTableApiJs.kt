@@ -3,14 +3,12 @@
 
 package com.icure.sdk.js.api.flavoured
 
-import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.crypto.entities.TimeTableShareOptionsJs
 import com.icure.sdk.js.model.DecryptedTimeTableJs
 import com.icure.sdk.js.model.EncryptedTimeTableJs
 import com.icure.sdk.js.model.PatientJs
 import com.icure.sdk.js.model.TimeTableJs
-import com.icure.sdk.js.model.UserJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.utils.Record
 import kotlin.Array
@@ -33,7 +31,7 @@ public external interface TimeTableApiJs {
 	public fun withEncryptionMetadata(
 		base: DecryptedTimeTableJs?,
 		patient: PatientJs?,
-		options: TimeTableApi_withEncryptionMetadata_Options?,
+		options: dynamic,
 	): Promise<DecryptedTimeTableJs>
 
 	public fun getEncryptionKeysOf(timeTable: TimeTableJs): Promise<Array<String>>
@@ -52,7 +50,7 @@ public external interface TimeTableApiJs {
 	public fun shareWith(
 		delegateId: String,
 		timeTable: DecryptedTimeTableJs,
-		options: TimeTableApi_shareWith_Options?,
+		options: dynamic,
 	): Promise<SimpleShareResultJs<DecryptedTimeTableJs>>
 
 	public fun tryShareWithMany(timeTable: DecryptedTimeTableJs,
@@ -73,20 +71,4 @@ public external interface TimeTableApiJs {
 	): Promise<Array<DecryptedTimeTableJs>>
 
 	public fun getTimeTablesByAgendaId(agendaId: String): Promise<Array<DecryptedTimeTableJs>>
-}
-
-public external interface TimeTableApi_withEncryptionMetadata_Options {
-	public val user: UserJs?
-
-	public val delegates: Record<String, String>
-
-	public val secretId: SecretIdOptionJs
-}
-
-public external interface TimeTableApi_shareWith_Options {
-	public val shareEncryptionKeys: String
-
-	public val shareOwningEntityIds: String
-
-	public val requestedPermission: String
 }

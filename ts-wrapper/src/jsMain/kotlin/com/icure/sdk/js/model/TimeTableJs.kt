@@ -33,9 +33,6 @@ public sealed external interface TimeTableJs : StoredDocumentJs, ICureDocumentJs
 	public val items: Array<out TimeTableItemJs>
 
 	public val isEncrypted: Boolean
-
-	@JsName("${'$'}ktClass")
-	public val ktClass: String
 }
 
 @JsName("DecryptedTimeTable")
@@ -87,8 +84,6 @@ public external class DecryptedTimeTableJs(
 	override val securityMetadata: SecurityMetadataJs?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }
 
 @JsName("EncryptedTimeTable")
@@ -140,6 +135,4 @@ public external class EncryptedTimeTableJs(
 	override val securityMetadata: SecurityMetadataJs?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }

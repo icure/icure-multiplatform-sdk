@@ -11,7 +11,7 @@ import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs'
 export interface ClassificationFlavouredApi<E extends Classification> {
 
 	shareWith(delegateId: string, classification: E,
-			options?: { delegateId?: string, classification?: E, shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<E>>;
+			options?: { shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<E>>;
 
 	tryShareWithMany(classification: E,
 			delegates: { [ key: string ]: ClassificationShareOptions }): Promise<SimpleShareResult<E>>;
@@ -20,7 +20,7 @@ export interface ClassificationFlavouredApi<E extends Classification> {
 			delegates: { [ key: string ]: ClassificationShareOptions }): Promise<E>;
 
 	findClassificationsByHcPartyPatient(hcPartyId: string, patient: Patient,
-			options?: { hcPartyId?: string, patient?: Patient, startDate?: number | undefined, endDate?: number | undefined, descending?: boolean | undefined }): Promise<PaginatedListIterator<E>>;
+			options?: { startDate?: number | undefined, endDate?: number | undefined, descending?: boolean | undefined }): Promise<PaginatedListIterator<E>>;
 
 	modifyClassification(entity: E): Promise<E>;
 

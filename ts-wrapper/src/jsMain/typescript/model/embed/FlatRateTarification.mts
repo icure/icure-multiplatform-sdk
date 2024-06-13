@@ -33,8 +33,6 @@ export class DecryptedFlatRateTarification {
 
   readonly isEncrypted: false = false;
 
-  readonly $ktClass: 'com.icure.sdk.model.embed.DecryptedFlatRateTarification' = 'com.icure.sdk.model.embed.DecryptedFlatRateTarification';
-
   constructor(partial: Partial<DecryptedFlatRateTarification>) {
     if (partial.isEncrypted !== undefined && partial.isEncrypted !== false) throw new Error('partial.isEncrypted must be undefined or false');
     if ('code' in partial) this.code = partial.code;
@@ -59,8 +57,6 @@ export class EncryptedFlatRateTarification {
   encryptedSelf: Base64String | undefined = undefined;
 
   readonly isEncrypted: true = true;
-
-  readonly $ktClass: 'com.icure.sdk.model.embed.EncryptedFlatRateTarification' = 'com.icure.sdk.model.embed.EncryptedFlatRateTarification';
 
   constructor(partial: Partial<EncryptedFlatRateTarification>) {
     if (partial.isEncrypted !== undefined && partial.isEncrypted !== true) throw new Error('partial.isEncrypted must be undefined or true');

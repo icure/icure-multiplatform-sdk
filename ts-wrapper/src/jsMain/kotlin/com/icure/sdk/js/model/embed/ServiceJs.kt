@@ -69,9 +69,6 @@ public sealed external interface ServiceJs : EncryptableJs, ICureDocumentJs<Stri
 	public val securityMetadata: SecurityMetadataJs?
 
 	public val isEncrypted: Boolean
-
-	@JsName("${'$'}ktClass")
-	public val ktClass: String
 }
 
 @JsName("DecryptedService")
@@ -151,8 +148,6 @@ public external class DecryptedServiceJs(
 	override val securityMetadata: SecurityMetadataJs?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }
 
 @JsName("EncryptedService")
@@ -232,6 +227,4 @@ public external class EncryptedServiceJs(
 	override val securityMetadata: SecurityMetadataJs?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }

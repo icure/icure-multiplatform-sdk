@@ -16,7 +16,7 @@ import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs'
 export interface InvoiceFlavouredApi<E extends Invoice> {
 
 	shareWith(delegateId: string, invoice: E,
-			options?: { delegateId?: string, invoice?: E, shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<E>>;
+			options?: { shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<E>>;
 
 	tryShareWithMany(invoice: E,
 			delegates: { [ key: string ]: InvoiceShareOptions }): Promise<SimpleShareResult<E>>;
@@ -24,7 +24,7 @@ export interface InvoiceFlavouredApi<E extends Invoice> {
 	shareWithMany(invoice: E, delegates: { [ key: string ]: InvoiceShareOptions }): Promise<E>;
 
 	findInvoicesByHcPartyPatient(hcPartyId: string, patient: Patient,
-			options?: { hcPartyId?: string, patient?: Patient, startDate?: number | undefined, endDate?: number | undefined, descending?: boolean | undefined }): Promise<PaginatedListIterator<E>>;
+			options?: { startDate?: number | undefined, endDate?: number | undefined, descending?: boolean | undefined }): Promise<PaginatedListIterator<E>>;
 
 	modifyInvoice(entity: E): Promise<E>;
 
@@ -51,14 +51,14 @@ export interface InvoiceFlavouredApi<E extends Invoice> {
 			sentMediumType: string,
 			secretFKeys: string,
 			invoicingCodes: Array<EncryptedInvoicingCode>,
-			options?: { userId?: string, type?: string, sentMediumType?: string, secretFKeys?: string, insuranceId?: string | undefined, invoiceId?: string | undefined, gracePeriod?: number | undefined, invoicingCodes?: Array<EncryptedInvoicingCode> }
+			options?: { insuranceId?: string | undefined, invoiceId?: string | undefined, gracePeriod?: number | undefined }
 	): Promise<Array<E>>;
 
 	removeCodes(userId: string, serviceId: string, secretFKeys: string,
 			tarificationIds: Array<string>): Promise<Array<E>>;
 
 	findInvoicesByAuthor(hcPartyId: string,
-			options?: { hcPartyId?: string, fromDate?: number | undefined, toDate?: number | undefined, startKey?: any | undefined, startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<E>>;
+			options?: { fromDate?: number | undefined, toDate?: number | undefined, startKey?: any | undefined, startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<E>>;
 
 	listInvoicesByHCPartyAndPatientForeignKeys(hcPartyId: string,
 			secretPatientKeys: Array<string>): Promise<Array<E>>;
@@ -70,7 +70,7 @@ export interface InvoiceFlavouredApi<E extends Invoice> {
 			sentMediumType: MediumType,
 			invoiceType: InvoiceType,
 			sent: boolean,
-			options?: { hcPartyId?: string, sentMediumType?: MediumType, invoiceType?: InvoiceType, sent?: boolean, from?: number | undefined, to?: number | undefined }
+			options?: { from?: number | undefined, to?: number | undefined }
 	): Promise<Array<E>>;
 
 	listInvoicesByContactIds(contactIds: Array<string>): Promise<Array<E>>;
@@ -98,6 +98,6 @@ export interface InvoiceFlavouredApi<E extends Invoice> {
 	listInvoicesByServiceIds(serviceIds: Array<string>): Promise<Array<E>>;
 
 	listAllHcpsByStatus(status: string, hcpIds: Array<string>,
-			options?: { status?: string, from?: number | undefined, to?: number | undefined, hcpIds?: Array<string> }): Promise<Array<E>>;
+			options?: { from?: number | undefined, to?: number | undefined }): Promise<Array<E>>;
 
 }

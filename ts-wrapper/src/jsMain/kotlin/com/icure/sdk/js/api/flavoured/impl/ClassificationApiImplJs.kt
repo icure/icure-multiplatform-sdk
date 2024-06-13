@@ -5,15 +5,12 @@ import com.icure.sdk.api.flavoured.ClassificationApi
 import com.icure.sdk.crypto.entities.ClassificationShareOptions
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
-import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefault
+import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNonNull
+import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.sdk.js.api.flavoured.ClassificationApiJs
-import com.icure.sdk.js.api.flavoured.ClassificationApi_findClassificationsByHcPartyPatient_Options
-import com.icure.sdk.js.api.flavoured.ClassificationApi_shareWith_Options
-import com.icure.sdk.js.api.flavoured.ClassificationApi_withEncryptionMetadata_Options
 import com.icure.sdk.js.api.flavoured.ClassificationFlavouredApiJs
-import com.icure.sdk.js.api.flavoured.ClassificationFlavouredApi_findClassificationsByHcPartyPatient_Options
-import com.icure.sdk.js.api.flavoured.ClassificationFlavouredApi_shareWith_Options
 import com.icure.sdk.js.crypto.entities.ClassificationShareOptionsJs
+import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.crypto.entities.classificationShareOptions_fromJs
 import com.icure.sdk.js.crypto.entities.secretIdOption_fromJs
@@ -24,10 +21,12 @@ import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.sdk.js.model.CheckedConverters.setToArray
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.ClassificationJs
 import com.icure.sdk.js.model.DecryptedClassificationJs
 import com.icure.sdk.js.model.EncryptedClassificationJs
 import com.icure.sdk.js.model.PatientJs
+import com.icure.sdk.js.model.UserJs
 import com.icure.sdk.js.model.classification_fromJs
 import com.icure.sdk.js.model.classification_toJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
@@ -49,6 +48,7 @@ import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import kotlin.Array
 import kotlin.Boolean
+import kotlin.Double
 import kotlin.Long
 import kotlin.OptIn
 import kotlin.String
@@ -70,28 +70,31 @@ internal class ClassificationApiImplJs(
 		override fun shareWith(
 			delegateId: String,
 			classification: EncryptedClassificationJs,
-			options: ClassificationFlavouredApi_shareWith_Options?,
+			options: dynamic,
 		): Promise<SimpleShareResultJs<EncryptedClassificationJs>> {
-			val _options: ClassificationFlavouredApi_shareWith_Options = options ?: js("{}")
+			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val classificationConverted: EncryptedClassification = classification_fromJs(classification)
-				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
-					_options.shareEncryptionKeys,
+				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+					_options,
+					"shareEncryptionKeys",
 					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareEncryptionKeys ->
+				) { shareEncryptionKeys: String ->
 					ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
 				}
-				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
-					_options.shareOwningEntityIds,
+				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+					_options,
+					"shareOwningEntityIds",
 					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareOwningEntityIds ->
+				) { shareOwningEntityIds: String ->
 					ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
 				}
-				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefault(
-					_options.requestedPermission,
+				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefaultNonNull(
+					_options,
+					"requestedPermission",
 					com.icure.sdk.model.requests.RequestedPermission.MaxWrite
-				) { requestedPermission ->
+				) { requestedPermission: String ->
 					RequestedPermission.valueOf(requestedPermission)
 				}
 				val result = classificationApi.encrypted.shareWith(
@@ -160,30 +163,32 @@ internal class ClassificationApiImplJs(
 		override fun findClassificationsByHcPartyPatient(
 			hcPartyId: String,
 			patient: PatientJs,
-			options: ClassificationFlavouredApi_findClassificationsByHcPartyPatient_Options?,
+			options: dynamic,
 		): Promise<PaginatedListIteratorJs<EncryptedClassificationJs>> {
-			val _options: ClassificationFlavouredApi_findClassificationsByHcPartyPatient_Options = options ?:
-					js("{}")
+			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val hcPartyIdConverted: String = hcPartyId
 				val patientConverted: Patient = patient_fromJs(patient)
-				val startDateConverted: Long? = convertingOptionOrDefault(
-					_options.startDate,
+				val startDateConverted: Long? = convertingOptionOrDefaultNullable(
+					_options,
+					"startDate",
 					null
-				) { startDate ->
+				) { startDate: Double? ->
 					numberToLong(startDate, "startDate")
 				}
-				val endDateConverted: Long? = convertingOptionOrDefault(
-					_options.endDate,
+				val endDateConverted: Long? = convertingOptionOrDefaultNullable(
+					_options,
+					"endDate",
 					null
-				) { endDate ->
+				) { endDate: Double? ->
 					numberToLong(endDate, "endDate")
 				}
-				val descendingConverted: Boolean? = convertingOptionOrDefault(
-					_options.descending,
+				val descendingConverted: Boolean? = convertingOptionOrDefaultNullable(
+					_options,
+					"descending",
 					null
-				) { descending ->
-					descending
+				) { descending: Boolean? ->
+					undefinedToNull(descending)
 				}
 				val result = classificationApi.encrypted.findClassificationsByHcPartyPatient(
 					hcPartyIdConverted,
@@ -245,28 +250,31 @@ internal class ClassificationApiImplJs(
 		override fun shareWith(
 			delegateId: String,
 			classification: ClassificationJs,
-			options: ClassificationFlavouredApi_shareWith_Options?,
+			options: dynamic,
 		): Promise<SimpleShareResultJs<ClassificationJs>> {
-			val _options: ClassificationFlavouredApi_shareWith_Options = options ?: js("{}")
+			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val classificationConverted: Classification = classification_fromJs(classification)
-				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
-					_options.shareEncryptionKeys,
+				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+					_options,
+					"shareEncryptionKeys",
 					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareEncryptionKeys ->
+				) { shareEncryptionKeys: String ->
 					ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
 				}
-				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
-					_options.shareOwningEntityIds,
+				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+					_options,
+					"shareOwningEntityIds",
 					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareOwningEntityIds ->
+				) { shareOwningEntityIds: String ->
 					ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
 				}
-				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefault(
-					_options.requestedPermission,
+				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefaultNonNull(
+					_options,
+					"requestedPermission",
 					com.icure.sdk.model.requests.RequestedPermission.MaxWrite
-				) { requestedPermission ->
+				) { requestedPermission: String ->
 					RequestedPermission.valueOf(requestedPermission)
 				}
 				val result = classificationApi.tryAndRecover.shareWith(
@@ -335,30 +343,32 @@ internal class ClassificationApiImplJs(
 		override fun findClassificationsByHcPartyPatient(
 			hcPartyId: String,
 			patient: PatientJs,
-			options: ClassificationFlavouredApi_findClassificationsByHcPartyPatient_Options?,
+			options: dynamic,
 		): Promise<PaginatedListIteratorJs<ClassificationJs>> {
-			val _options: ClassificationFlavouredApi_findClassificationsByHcPartyPatient_Options = options ?:
-					js("{}")
+			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val hcPartyIdConverted: String = hcPartyId
 				val patientConverted: Patient = patient_fromJs(patient)
-				val startDateConverted: Long? = convertingOptionOrDefault(
-					_options.startDate,
+				val startDateConverted: Long? = convertingOptionOrDefaultNullable(
+					_options,
+					"startDate",
 					null
-				) { startDate ->
+				) { startDate: Double? ->
 					numberToLong(startDate, "startDate")
 				}
-				val endDateConverted: Long? = convertingOptionOrDefault(
-					_options.endDate,
+				val endDateConverted: Long? = convertingOptionOrDefaultNullable(
+					_options,
+					"endDate",
 					null
-				) { endDate ->
+				) { endDate: Double? ->
 					numberToLong(endDate, "endDate")
 				}
-				val descendingConverted: Boolean? = convertingOptionOrDefault(
-					_options.descending,
+				val descendingConverted: Boolean? = convertingOptionOrDefaultNullable(
+					_options,
+					"descending",
 					null
-				) { descending ->
-					descending
+				) { descending: Boolean? ->
+					undefinedToNull(descending)
 				}
 				val result = classificationApi.tryAndRecover.findClassificationsByHcPartyPatient(
 					hcPartyIdConverted,
@@ -427,26 +437,28 @@ internal class ClassificationApiImplJs(
 	override fun withEncryptionMetadata(
 		base: DecryptedClassificationJs?,
 		patient: PatientJs,
-		options: ClassificationApi_withEncryptionMetadata_Options?,
+		options: dynamic,
 	): Promise<DecryptedClassificationJs> {
-		val _options: ClassificationApi_withEncryptionMetadata_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val baseConverted: DecryptedClassification? = base?.let { nonNull1 ->
 				classification_fromJs(nonNull1)
 			}
 			val patientConverted: Patient = patient_fromJs(patient)
-			val userConverted: User? = convertingOptionOrDefault(
-				_options.user,
+			val userConverted: User? = convertingOptionOrDefaultNullable(
+				_options,
+				"user",
 				null
-			) { user ->
+			) { user: UserJs? ->
 				user?.let { nonNull1 ->
 					user_fromJs(nonNull1)
 				}
 			}
-			val delegatesConverted: Map<String, AccessLevel> = convertingOptionOrDefault(
-				_options.delegates,
+			val delegatesConverted: Map<String, AccessLevel> = convertingOptionOrDefaultNonNull(
+				_options,
+				"delegates",
 				emptyMap()
-			) { delegates ->
+			) { delegates: Record<String, String> ->
 				objectToMap(
 					delegates,
 					"delegates",
@@ -458,10 +470,11 @@ internal class ClassificationApiImplJs(
 					},
 				)
 			}
-			val secretIdConverted: SecretIdOption = convertingOptionOrDefault(
-				_options.secretId,
+			val secretIdConverted: SecretIdOption = convertingOptionOrDefaultNonNull(
+				_options,
+				"secretId",
 				com.icure.sdk.crypto.entities.SecretIdOption.UseAnySharedWithParent
-			) { secretId ->
+			) { secretId: SecretIdOptionJs ->
 				secretIdOption_fromJs(secretId)
 			}
 			val result = classificationApi.withEncryptionMetadata(
@@ -561,28 +574,31 @@ internal class ClassificationApiImplJs(
 	override fun shareWith(
 		delegateId: String,
 		classification: DecryptedClassificationJs,
-		options: ClassificationApi_shareWith_Options?,
+		options: dynamic,
 	): Promise<SimpleShareResultJs<DecryptedClassificationJs>> {
-		val _options: ClassificationApi_shareWith_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val delegateIdConverted: String = delegateId
 			val classificationConverted: DecryptedClassification = classification_fromJs(classification)
-			val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
-				_options.shareEncryptionKeys,
+			val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+				_options,
+				"shareEncryptionKeys",
 				com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-			) { shareEncryptionKeys ->
+			) { shareEncryptionKeys: String ->
 				ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
 			}
-			val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
-				_options.shareOwningEntityIds,
+			val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+				_options,
+				"shareOwningEntityIds",
 				com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-			) { shareOwningEntityIds ->
+			) { shareOwningEntityIds: String ->
 				ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
 			}
-			val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefault(
-				_options.requestedPermission,
+			val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefaultNonNull(
+				_options,
+				"requestedPermission",
 				com.icure.sdk.model.requests.RequestedPermission.MaxWrite
-			) { requestedPermission ->
+			) { requestedPermission: String ->
 				RequestedPermission.valueOf(requestedPermission)
 			}
 			val result = classificationApi.shareWith(
@@ -651,29 +667,32 @@ internal class ClassificationApiImplJs(
 	override fun findClassificationsByHcPartyPatient(
 		hcPartyId: String,
 		patient: PatientJs,
-		options: ClassificationApi_findClassificationsByHcPartyPatient_Options?,
+		options: dynamic,
 	): Promise<PaginatedListIteratorJs<DecryptedClassificationJs>> {
-		val _options: ClassificationApi_findClassificationsByHcPartyPatient_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val hcPartyIdConverted: String = hcPartyId
 			val patientConverted: Patient = patient_fromJs(patient)
-			val startDateConverted: Long? = convertingOptionOrDefault(
-				_options.startDate,
+			val startDateConverted: Long? = convertingOptionOrDefaultNullable(
+				_options,
+				"startDate",
 				null
-			) { startDate ->
+			) { startDate: Double? ->
 				numberToLong(startDate, "startDate")
 			}
-			val endDateConverted: Long? = convertingOptionOrDefault(
-				_options.endDate,
+			val endDateConverted: Long? = convertingOptionOrDefaultNullable(
+				_options,
+				"endDate",
 				null
-			) { endDate ->
+			) { endDate: Double? ->
 				numberToLong(endDate, "endDate")
 			}
-			val descendingConverted: Boolean? = convertingOptionOrDefault(
-				_options.descending,
+			val descendingConverted: Boolean? = convertingOptionOrDefaultNullable(
+				_options,
+				"descending",
 				null
-			) { descending ->
-				descending
+			) { descending: Boolean? ->
+				undefinedToNull(descending)
 			}
 			val result = classificationApi.findClassificationsByHcPartyPatient(
 				hcPartyIdConverted,

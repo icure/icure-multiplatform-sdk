@@ -1,31 +1,49 @@
 package com.icure.sdk.js.model.embed
 
 import com.icure.sdk.js.model.CheckedConverters.arrayToSet
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.setToArray
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.specializations.base64String_fromJs
 import com.icure.sdk.js.model.specializations.base64String_toJs
 import com.icure.sdk.model.embed.DecryptedFinancialInstitutionInformation
 import com.icure.sdk.model.embed.EncryptedFinancialInstitutionInformation
 import com.icure.sdk.model.embed.FinancialInstitutionInformation
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun financialInstitutionInformation_toJs(obj: DecryptedFinancialInstitutionInformation):
 		DecryptedFinancialInstitutionInformationJs {
-	val name = obj.name
-	val key = obj.key
-	val bankAccount = obj.bankAccount
-	val bic = obj.bic
-	val proxyBankAccount = obj.proxyBankAccount
-	val proxyBic = obj.proxyBic
+	val name = nullToUndefined(
+		obj.name
+	)
+	val key = nullToUndefined(
+		obj.key
+	)
+	val bankAccount = nullToUndefined(
+		obj.bankAccount
+	)
+	val bic = nullToUndefined(
+		obj.bic
+	)
+	val proxyBankAccount = nullToUndefined(
+		obj.proxyBankAccount
+	)
+	val proxyBic = nullToUndefined(
+		obj.proxyBic
+	)
 	val preferredFiiForPartners = setToArray(
 		obj.preferredFiiForPartners,
 		{ x1: String ->
 			x1
 		},
 	)
-	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
-		base64String_toJs(nonNull1)
-	}
+	val encryptedSelf = nullToUndefined(
+		obj.encryptedSelf?.let { nonNull1 ->
+			base64String_toJs(nonNull1)
+		}
+	)
 	return DecryptedFinancialInstitutionInformationJs(js("{" +
 		"name:name," +
 		"key:key," +
@@ -40,12 +58,12 @@ public fun financialInstitutionInformation_toJs(obj: DecryptedFinancialInstituti
 
 public fun financialInstitutionInformation_fromJs(obj: DecryptedFinancialInstitutionInformationJs):
 		DecryptedFinancialInstitutionInformation {
-	val name = obj.name
-	val key = obj.key
-	val bankAccount = obj.bankAccount
-	val bic = obj.bic
-	val proxyBankAccount = obj.proxyBankAccount
-	val proxyBic = obj.proxyBic
+	val name = undefinedToNull(obj.name)
+	val key = undefinedToNull(obj.key)
+	val bankAccount = undefinedToNull(obj.bankAccount)
+	val bic = undefinedToNull(obj.bic)
+	val proxyBankAccount = undefinedToNull(obj.proxyBankAccount)
+	val proxyBic = undefinedToNull(obj.proxyBic)
 	val preferredFiiForPartners = arrayToSet(
 		obj.preferredFiiForPartners,
 		"obj.preferredFiiForPartners",
@@ -68,23 +86,38 @@ public fun financialInstitutionInformation_fromJs(obj: DecryptedFinancialInstitu
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun financialInstitutionInformation_toJs(obj: EncryptedFinancialInstitutionInformation):
 		EncryptedFinancialInstitutionInformationJs {
-	val name = obj.name
-	val key = obj.key
-	val bankAccount = obj.bankAccount
-	val bic = obj.bic
-	val proxyBankAccount = obj.proxyBankAccount
-	val proxyBic = obj.proxyBic
+	val name = nullToUndefined(
+		obj.name
+	)
+	val key = nullToUndefined(
+		obj.key
+	)
+	val bankAccount = nullToUndefined(
+		obj.bankAccount
+	)
+	val bic = nullToUndefined(
+		obj.bic
+	)
+	val proxyBankAccount = nullToUndefined(
+		obj.proxyBankAccount
+	)
+	val proxyBic = nullToUndefined(
+		obj.proxyBic
+	)
 	val preferredFiiForPartners = setToArray(
 		obj.preferredFiiForPartners,
 		{ x1: String ->
 			x1
 		},
 	)
-	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
-		base64String_toJs(nonNull1)
-	}
+	val encryptedSelf = nullToUndefined(
+		obj.encryptedSelf?.let { nonNull1 ->
+			base64String_toJs(nonNull1)
+		}
+	)
 	return EncryptedFinancialInstitutionInformationJs(js("{" +
 		"name:name," +
 		"key:key," +
@@ -99,12 +132,12 @@ public fun financialInstitutionInformation_toJs(obj: EncryptedFinancialInstituti
 
 public fun financialInstitutionInformation_fromJs(obj: EncryptedFinancialInstitutionInformationJs):
 		EncryptedFinancialInstitutionInformation {
-	val name = obj.name
-	val key = obj.key
-	val bankAccount = obj.bankAccount
-	val bic = obj.bic
-	val proxyBankAccount = obj.proxyBankAccount
-	val proxyBic = obj.proxyBic
+	val name = undefinedToNull(obj.name)
+	val key = undefinedToNull(obj.key)
+	val bankAccount = undefinedToNull(obj.bankAccount)
+	val bic = undefinedToNull(obj.bic)
+	val proxyBankAccount = undefinedToNull(obj.proxyBankAccount)
+	val proxyBic = undefinedToNull(obj.proxyBic)
 	val preferredFiiForPartners = arrayToSet(
 		obj.preferredFiiForPartners,
 		"obj.preferredFiiForPartners",
@@ -127,6 +160,7 @@ public fun financialInstitutionInformation_fromJs(obj: EncryptedFinancialInstitu
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun financialInstitutionInformation_toJs(obj: FinancialInstitutionInformation):
 		FinancialInstitutionInformationJs = when (obj) {
 	is EncryptedFinancialInstitutionInformation -> financialInstitutionInformation_toJs(obj)

@@ -40,8 +40,6 @@ export class DecryptedTypedValue {
 
   readonly isEncrypted: false = false;
 
-  readonly $ktClass: 'com.icure.sdk.model.embed.DecryptedTypedValue' = 'com.icure.sdk.model.embed.DecryptedTypedValue';
-
   constructor(partial: Partial<DecryptedTypedValue>) {
     if (partial.isEncrypted !== undefined && partial.isEncrypted !== false) throw new Error('partial.isEncrypted must be undefined or false');
     if ('type' in partial) this.type = partial.type;
@@ -72,8 +70,6 @@ export class EncryptedTypedValue {
   encryptedSelf: Base64String | undefined = undefined;
 
   readonly isEncrypted: true = true;
-
-  readonly $ktClass: 'com.icure.sdk.model.embed.EncryptedTypedValue' = 'com.icure.sdk.model.embed.EncryptedTypedValue';
 
   constructor(partial: Partial<EncryptedTypedValue>) {
     if (partial.isEncrypted !== undefined && partial.isEncrypted !== true) throw new Error('partial.isEncrypted must be undefined or true');

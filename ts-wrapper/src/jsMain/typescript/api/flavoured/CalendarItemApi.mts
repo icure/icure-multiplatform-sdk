@@ -24,7 +24,7 @@ export interface CalendarItemApi {
 	createCalendarItem(entity: DecryptedCalendarItem): Promise<DecryptedCalendarItem>;
 
 	withEncryptionMetadata(base: DecryptedCalendarItem | undefined, patient: Patient,
-			options?: { base?: DecryptedCalendarItem | undefined, patient?: Patient, user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdOption }): Promise<DecryptedCalendarItem>;
+			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdOption }): Promise<DecryptedCalendarItem>;
 
 	getEncryptionKeysOf(calendarItem: CalendarItem): Promise<Array<HexString>>;
 
@@ -40,7 +40,7 @@ export interface CalendarItemApi {
 	deleteCalendarItems(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
 	shareWith(delegateId: string, calendarItem: DecryptedCalendarItem,
-			options?: { delegateId?: string, calendarItem?: DecryptedCalendarItem, shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<DecryptedCalendarItem>>;
+			options?: { shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<DecryptedCalendarItem>>;
 
 	tryShareWithMany(calendarItem: DecryptedCalendarItem,
 			delegates: { [ key: string ]: CalendarItemShareOptions }): Promise<SimpleShareResult<DecryptedCalendarItem>>;
@@ -49,7 +49,7 @@ export interface CalendarItemApi {
 			delegates: { [ key: string ]: CalendarItemShareOptions }): Promise<DecryptedCalendarItem>;
 
 	findCalendarItemsByHcPartyPatient(hcPartyId: string, patient: Patient,
-			options?: { hcPartyId?: string, patient?: Patient, startDate?: number | undefined, endDate?: number | undefined, descending?: boolean | undefined }): Promise<PaginatedListIterator<DecryptedCalendarItem>>;
+			options?: { startDate?: number | undefined, endDate?: number | undefined, descending?: boolean | undefined }): Promise<PaginatedListIterator<DecryptedCalendarItem>>;
 
 	linkToPatient(calendarItem: CalendarItem, patient: Patient,
 			shareLinkWithDelegates: Array<string>): Promise<DecryptedCalendarItem>;

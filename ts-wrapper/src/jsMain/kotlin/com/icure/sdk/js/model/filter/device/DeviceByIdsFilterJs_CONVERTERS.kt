@@ -1,10 +1,14 @@
 package com.icure.sdk.js.model.filter.device
 
 import com.icure.sdk.js.model.CheckedConverters.arrayToSet
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.setToArray
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.model.filter.device.DeviceByIdsFilter
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun deviceByIdsFilter_toJs(obj: DeviceByIdsFilter): DeviceByIdsFilterJs {
 	val ids = setToArray(
 		obj.ids,
@@ -12,7 +16,9 @@ public fun deviceByIdsFilter_toJs(obj: DeviceByIdsFilter): DeviceByIdsFilterJs {
 			x1
 		},
 	)
-	val desc = obj.desc
+	val desc = nullToUndefined(
+		obj.desc
+	)
 	return DeviceByIdsFilterJs(js("{" +
 		"ids:ids," +
 		"desc:desc" +
@@ -27,7 +33,7 @@ public fun deviceByIdsFilter_fromJs(obj: DeviceByIdsFilterJs): DeviceByIdsFilter
 			x1
 		},
 	)
-	val desc = obj.desc
+	val desc = undefinedToNull(obj.desc)
 	return DeviceByIdsFilter(
 		ids = ids,
 		desc = desc,

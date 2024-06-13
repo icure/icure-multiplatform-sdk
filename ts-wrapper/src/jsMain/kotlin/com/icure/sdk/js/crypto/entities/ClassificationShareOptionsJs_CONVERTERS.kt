@@ -3,7 +3,9 @@ package com.icure.sdk.js.crypto.entities
 import com.icure.sdk.crypto.entities.ClassificationShareOptions
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.model.requests.RequestedPermission
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun classificationShareOptions_toJs(obj: ClassificationShareOptions):
 		ClassificationShareOptionsJs {
 	val requestedPermissions = obj.requestedPermissions.name

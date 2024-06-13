@@ -10,8 +10,6 @@ import com.icure.sdk.js.model.PatientJs
 import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
-import kotlin.Boolean
-import kotlin.Double
 import kotlin.String
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
@@ -22,7 +20,7 @@ public external interface FormFlavouredApiJs<E : FormJs> {
 	public fun shareWith(
 		delegateId: String,
 		form: E,
-		options: FormFlavouredApi_shareWith_Options?,
+		options: dynamic,
 	): Promise<SimpleShareResultJs<E>>
 
 	public fun tryShareWithMany(form: E, delegates: Record<String, FormShareOptionsJs>):
@@ -33,7 +31,7 @@ public external interface FormFlavouredApiJs<E : FormJs> {
 	public fun findFormsByHcPartyPatient(
 		hcPartyId: String,
 		patient: PatientJs,
-		options: FormFlavouredApi_findFormsByHcPartyPatient_Options?,
+		options: dynamic,
 	): Promise<PaginatedListIteratorJs<E>>
 
 	public fun modifyForm(entity: E): Promise<E>
@@ -57,30 +55,6 @@ public external interface FormFlavouredApiJs<E : FormJs> {
 	public fun listFormsByHCPartyAndPatientForeignKeys(
 		hcPartyId: String,
 		secretFKeys: String,
-		options: FormFlavouredApi_listFormsByHCPartyAndPatientForeignKeys_Options?,
+		options: dynamic,
 	): Promise<Array<E>>
-}
-
-public external interface FormFlavouredApi_shareWith_Options {
-	public val shareEncryptionKeys: String
-
-	public val shareOwningEntityIds: String
-
-	public val requestedPermission: String
-}
-
-public external interface FormFlavouredApi_findFormsByHcPartyPatient_Options {
-	public val startDate: Double?
-
-	public val endDate: Double?
-
-	public val descending: Boolean?
-}
-
-public external interface FormFlavouredApi_listFormsByHCPartyAndPatientForeignKeys_Options {
-	public val healthElementId: String?
-
-	public val planOfActionId: String?
-
-	public val formTemplateId: String?
 }

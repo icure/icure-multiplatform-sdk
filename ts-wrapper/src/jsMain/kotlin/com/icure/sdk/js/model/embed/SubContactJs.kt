@@ -31,9 +31,6 @@ public sealed external interface SubContactJs : EncryptableJs, ICureDocumentJs<S
 	public val services: Array<out ServiceLinkJs>
 
 	public val isEncrypted: Boolean
-
-	@JsName("${'$'}ktClass")
-	public val ktClass: String
 }
 
 @JsName("DecryptedSubContact")
@@ -77,8 +74,6 @@ public external class DecryptedSubContactJs(
 	override val encryptedSelf: String?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }
 
 @JsName("EncryptedSubContact")
@@ -122,6 +117,4 @@ public external class EncryptedSubContactJs(
 	override val encryptedSelf: String?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }

@@ -34,9 +34,6 @@ public sealed external interface AccessLogJs : StoredDocumentJs, ICureDocumentJs
 	public val patientId: String?
 
 	public val isEncrypted: Boolean
-
-	@JsName("${'$'}ktClass")
-	public val ktClass: String
 }
 
 @JsName("DecryptedAccessLog")
@@ -90,8 +87,6 @@ public external class DecryptedAccessLogJs(
 	override val securityMetadata: SecurityMetadataJs?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }
 
 @JsName("EncryptedAccessLog")
@@ -145,6 +140,4 @@ public external class EncryptedAccessLogJs(
 	override val securityMetadata: SecurityMetadataJs?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }

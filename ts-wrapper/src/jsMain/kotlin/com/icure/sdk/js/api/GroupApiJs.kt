@@ -37,21 +37,20 @@ public external interface GroupApiJs {
 		name: String,
 		password: String,
 		initialisationData: DatabaseInitialisationJs,
-		options: GroupApi_createGroup_Options?,
+		options: dynamic,
 	): Promise<GroupJs>
 
 	public fun registerNewGroupAdministrator(registrationInformation: RegistrationInformationJs,
-			options: GroupApi_registerNewGroupAdministrator_Options?): Promise<RegistrationSuccessJs>
+			options: dynamic): Promise<RegistrationSuccessJs>
 
 	public fun listApps(): Promise<Array<GroupJs>>
 
-	public fun findGroups(id: String, options: GroupApi_findGroups_Options?):
-			Promise<PaginatedListJs<GroupJs>>
+	public fun findGroups(id: String, options: dynamic): Promise<PaginatedListJs<GroupJs>>
 
 	public fun findGroupsWithContent(
 		id: String,
 		searchString: String,
-		options: GroupApi_findGroupsWithContent_Options?,
+		options: dynamic,
 	): Promise<PaginatedListJs<GroupJs>>
 
 	public fun getNameOfGroupParent(id: String): Promise<String>
@@ -61,7 +60,7 @@ public external interface GroupApiJs {
 	public fun getOperationToken(
 		operation: String,
 		duration: Double?,
-		options: GroupApi_getOperationToken_Options?,
+		options: dynamic,
 	): Promise<String>
 
 	public fun deleteOperationToken(tokenId: String): Promise<Unit>
@@ -88,7 +87,7 @@ public external interface GroupApiJs {
 		id: String,
 		warmup: Boolean?,
 		dryRun: Boolean?,
-		options: GroupApi_initDesignDocs_Options?,
+		options: dynamic,
 	): Promise<Array<DesignDocumentJs>>
 
 	public fun solveConflicts(
@@ -100,7 +99,7 @@ public external interface GroupApiJs {
 	public fun resetStorage(
 		id: String,
 		databases: Array<String>,
-		options: GroupApi_resetStorage_Options?,
+		options: dynamic,
 	): Promise<Unit>
 
 	public fun getGroupsStorageInfos(groups: Array<String>): Promise<Array<GroupDatabasesInfoJs>>
@@ -110,50 +109,4 @@ public external interface GroupApiJs {
 	public fun getHierarchy(id: String): Promise<Array<String>>
 
 	public fun listAllGroupsIds(): Promise<Array<DocIdentifierJs>>
-}
-
-public external interface GroupApi_createGroup_Options {
-	public val type: String?
-
-	public val server: String?
-
-	public val q: Double?
-
-	public val n: Double?
-
-	public val superGroup: String?
-}
-
-public external interface GroupApi_registerNewGroupAdministrator_Options {
-	public val type: String?
-
-	public val role: String?
-}
-
-public external interface GroupApi_findGroups_Options {
-	public val startDocumentId: String?
-
-	public val limit: Double?
-}
-
-public external interface GroupApi_findGroupsWithContent_Options {
-	public val startKey: dynamic
-
-	public val startDocumentId: String?
-
-	public val limit: Double?
-}
-
-public external interface GroupApi_getOperationToken_Options {
-	public val description: String?
-}
-
-public external interface GroupApi_initDesignDocs_Options {
-	public val clazz: String?
-}
-
-public external interface GroupApi_resetStorage_Options {
-	public val q: Double?
-
-	public val n: Double?
 }

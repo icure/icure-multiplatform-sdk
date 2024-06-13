@@ -2,15 +2,19 @@ package com.icure.sdk.js.model.embed
 
 import com.icure.sdk.js.model.CheckedConverters.longToNumber
 import com.icure.sdk.js.model.CheckedConverters.mapToObject
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.js.model.CheckedConverters.objectToMap
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.specializations.base64String_fromJs
 import com.icure.sdk.js.model.specializations.base64String_toJs
 import com.icure.sdk.model.embed.DecryptedInsurability
 import com.icure.sdk.model.embed.EncryptedInsurability
 import com.icure.sdk.model.embed.Insurability
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun insurability_toJs(obj: DecryptedInsurability): DecryptedInsurabilityJs {
 	val parameters = mapToObject(
 		obj.parameters,
@@ -21,17 +25,35 @@ public fun insurability_toJs(obj: DecryptedInsurability): DecryptedInsurabilityJ
 			x1
 		},
 	)
-	val hospitalisation = obj.hospitalisation
-	val ambulatory = obj.ambulatory
-	val dental = obj.dental
-	val identificationNumber = obj.identificationNumber
-	val insuranceId = obj.insuranceId
-	val startDate = longToNumber(obj.startDate)
-	val endDate = longToNumber(obj.endDate)
-	val titularyId = obj.titularyId
-	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
-		base64String_toJs(nonNull1)
-	}
+	val hospitalisation = nullToUndefined(
+		obj.hospitalisation
+	)
+	val ambulatory = nullToUndefined(
+		obj.ambulatory
+	)
+	val dental = nullToUndefined(
+		obj.dental
+	)
+	val identificationNumber = nullToUndefined(
+		obj.identificationNumber
+	)
+	val insuranceId = nullToUndefined(
+		obj.insuranceId
+	)
+	val startDate = nullToUndefined(
+		longToNumber(obj.startDate)
+	)
+	val endDate = nullToUndefined(
+		longToNumber(obj.endDate)
+	)
+	val titularyId = nullToUndefined(
+		obj.titularyId
+	)
+	val encryptedSelf = nullToUndefined(
+		obj.encryptedSelf?.let { nonNull1 ->
+			base64String_toJs(nonNull1)
+		}
+	)
 	return DecryptedInsurabilityJs(js("{" +
 		"parameters:parameters," +
 		"hospitalisation:hospitalisation," +
@@ -57,14 +79,14 @@ public fun insurability_fromJs(obj: DecryptedInsurabilityJs): DecryptedInsurabil
 			x1
 		},
 	)
-	val hospitalisation = obj.hospitalisation
-	val ambulatory = obj.ambulatory
-	val dental = obj.dental
-	val identificationNumber = obj.identificationNumber
-	val insuranceId = obj.insuranceId
+	val hospitalisation = undefinedToNull(obj.hospitalisation)
+	val ambulatory = undefinedToNull(obj.ambulatory)
+	val dental = undefinedToNull(obj.dental)
+	val identificationNumber = undefinedToNull(obj.identificationNumber)
+	val insuranceId = undefinedToNull(obj.insuranceId)
 	val startDate = numberToLong(obj.startDate, "obj.startDate")
 	val endDate = numberToLong(obj.endDate, "obj.endDate")
-	val titularyId = obj.titularyId
+	val titularyId = undefinedToNull(obj.titularyId)
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_fromJs(nonNull1)
 	}
@@ -82,6 +104,7 @@ public fun insurability_fromJs(obj: DecryptedInsurabilityJs): DecryptedInsurabil
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun insurability_toJs(obj: EncryptedInsurability): EncryptedInsurabilityJs {
 	val parameters = mapToObject(
 		obj.parameters,
@@ -92,17 +115,35 @@ public fun insurability_toJs(obj: EncryptedInsurability): EncryptedInsurabilityJ
 			x1
 		},
 	)
-	val hospitalisation = obj.hospitalisation
-	val ambulatory = obj.ambulatory
-	val dental = obj.dental
-	val identificationNumber = obj.identificationNumber
-	val insuranceId = obj.insuranceId
-	val startDate = longToNumber(obj.startDate)
-	val endDate = longToNumber(obj.endDate)
-	val titularyId = obj.titularyId
-	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
-		base64String_toJs(nonNull1)
-	}
+	val hospitalisation = nullToUndefined(
+		obj.hospitalisation
+	)
+	val ambulatory = nullToUndefined(
+		obj.ambulatory
+	)
+	val dental = nullToUndefined(
+		obj.dental
+	)
+	val identificationNumber = nullToUndefined(
+		obj.identificationNumber
+	)
+	val insuranceId = nullToUndefined(
+		obj.insuranceId
+	)
+	val startDate = nullToUndefined(
+		longToNumber(obj.startDate)
+	)
+	val endDate = nullToUndefined(
+		longToNumber(obj.endDate)
+	)
+	val titularyId = nullToUndefined(
+		obj.titularyId
+	)
+	val encryptedSelf = nullToUndefined(
+		obj.encryptedSelf?.let { nonNull1 ->
+			base64String_toJs(nonNull1)
+		}
+	)
 	return EncryptedInsurabilityJs(js("{" +
 		"parameters:parameters," +
 		"hospitalisation:hospitalisation," +
@@ -128,14 +169,14 @@ public fun insurability_fromJs(obj: EncryptedInsurabilityJs): EncryptedInsurabil
 			x1
 		},
 	)
-	val hospitalisation = obj.hospitalisation
-	val ambulatory = obj.ambulatory
-	val dental = obj.dental
-	val identificationNumber = obj.identificationNumber
-	val insuranceId = obj.insuranceId
+	val hospitalisation = undefinedToNull(obj.hospitalisation)
+	val ambulatory = undefinedToNull(obj.ambulatory)
+	val dental = undefinedToNull(obj.dental)
+	val identificationNumber = undefinedToNull(obj.identificationNumber)
+	val insuranceId = undefinedToNull(obj.insuranceId)
 	val startDate = numberToLong(obj.startDate, "obj.startDate")
 	val endDate = numberToLong(obj.endDate, "obj.endDate")
-	val titularyId = obj.titularyId
+	val titularyId = undefinedToNull(obj.titularyId)
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_fromJs(nonNull1)
 	}
@@ -153,6 +194,7 @@ public fun insurability_fromJs(obj: EncryptedInsurabilityJs): EncryptedInsurabil
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun insurability_toJs(obj: Insurability): InsurabilityJs = when (obj) {
 	is EncryptedInsurability -> insurability_toJs(obj)
 	is DecryptedInsurability -> insurability_toJs(obj)

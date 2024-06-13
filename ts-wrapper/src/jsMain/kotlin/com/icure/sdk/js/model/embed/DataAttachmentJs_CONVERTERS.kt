@@ -2,12 +2,20 @@ package com.icure.sdk.js.model.embed
 
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.listToArray
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.model.embed.DataAttachment
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun dataAttachment_toJs(obj: DataAttachment): DataAttachmentJs {
-	val couchDbAttachmentId = obj.couchDbAttachmentId
-	val objectStoreAttachmentId = obj.objectStoreAttachmentId
+	val couchDbAttachmentId = nullToUndefined(
+		obj.couchDbAttachmentId
+	)
+	val objectStoreAttachmentId = nullToUndefined(
+		obj.objectStoreAttachmentId
+	)
 	val utis = listToArray(
 		obj.utis,
 		{ x1: String ->
@@ -22,8 +30,8 @@ public fun dataAttachment_toJs(obj: DataAttachment): DataAttachmentJs {
 }
 
 public fun dataAttachment_fromJs(obj: DataAttachmentJs): DataAttachment {
-	val couchDbAttachmentId = obj.couchDbAttachmentId
-	val objectStoreAttachmentId = obj.objectStoreAttachmentId
+	val couchDbAttachmentId = undefinedToNull(obj.couchDbAttachmentId)
+	val objectStoreAttachmentId = undefinedToNull(obj.objectStoreAttachmentId)
 	val utis = arrayToList(
 		obj.utis,
 		"obj.utis",

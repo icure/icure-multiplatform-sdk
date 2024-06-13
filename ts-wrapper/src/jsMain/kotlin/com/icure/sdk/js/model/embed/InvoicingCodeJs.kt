@@ -114,9 +114,6 @@ public sealed external interface InvoicingCodeJs : EncryptableJs {
 	public val status: Double?
 
 	public val isEncrypted: Boolean
-
-	@JsName("${'$'}ktClass")
-	public val ktClass: String
 }
 
 @JsName("DecryptedInvoicingCode")
@@ -228,8 +225,6 @@ public external class DecryptedInvoicingCodeJs(
 	override val encryptedSelf: String?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }
 
 @JsName("EncryptedInvoicingCode")
@@ -341,6 +336,4 @@ public external class EncryptedInvoicingCodeJs(
 	override val encryptedSelf: String?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }

@@ -236,7 +236,9 @@ import com.icure.sdk.model.filter.user.UserByIdsFilter
 import com.icure.sdk.model.filter.user.UserByNameEmailPhoneFilter
 import com.icure.sdk.model.filter.user.UsersByPatientIdFilter
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun <O : Identifiable<String>, O_JS : IdentifiableJs<String>>
 		abstractFilter_toJs(obj: AbstractFilter<O>, convertO: (O) -> O_JS): AbstractFilterJs<O_JS> = when
 		(obj) {

@@ -33,8 +33,6 @@ export class DecryptedPropertyStub {
 
   readonly isEncrypted: false = false;
 
-  readonly $ktClass: 'com.icure.sdk.model.DecryptedPropertyStub' = 'com.icure.sdk.model.DecryptedPropertyStub';
-
   constructor(partial: Partial<DecryptedPropertyStub>) {
     if (partial.isEncrypted !== undefined && partial.isEncrypted !== false) throw new Error('partial.isEncrypted must be undefined or false');
     if ('id' in partial) this.id = partial.id;
@@ -59,8 +57,6 @@ export class EncryptedPropertyStub {
   encryptedSelf: Base64String | undefined = undefined;
 
   readonly isEncrypted: true = true;
-
-  readonly $ktClass: 'com.icure.sdk.model.EncryptedPropertyStub' = 'com.icure.sdk.model.EncryptedPropertyStub';
 
   constructor(partial: Partial<EncryptedPropertyStub>) {
     if (partial.isEncrypted !== undefined && partial.isEncrypted !== true) throw new Error('partial.isEncrypted must be undefined or true');

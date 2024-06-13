@@ -2,7 +2,9 @@ package com.icure.sdk.js.model.security
 
 import com.icure.sdk.model.security.AlwaysPermissionItem
 import com.icure.sdk.model.security.PermissionItem
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun permissionItem_toJs(obj: PermissionItem): PermissionItemJs = when (obj) {
 	is AlwaysPermissionItem -> alwaysPermissionItem_toJs(obj)
 }

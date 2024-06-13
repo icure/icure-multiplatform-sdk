@@ -8,7 +8,6 @@ import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import kotlin.Array
 import kotlin.ByteArray
-import kotlin.Double
 import kotlin.String
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
@@ -38,9 +37,7 @@ public external interface DocumentTemplateApiJs {
 
 	public fun listDocumentTemplates(): Promise<Array<DocumentTemplateJs>>
 
-	public
-			fun findAllDocumentTemplates(options: DocumentTemplateApi_findAllDocumentTemplates_Options?):
-			Promise<PaginatedListJs<DocumentTemplateJs>>
+	public fun findAllDocumentTemplates(options: dynamic): Promise<PaginatedListJs<DocumentTemplateJs>>
 
 	public fun getDocumentTemplateAttachment(documentTemplateId: String, attachmentId: String):
 			Promise<ByteArray>
@@ -51,12 +48,4 @@ public external interface DocumentTemplateApiJs {
 			Promise<DocumentTemplateJs>
 
 	public fun getAttachmentUrl(documentId: String, attachmentId: String): String
-}
-
-public external interface DocumentTemplateApi_findAllDocumentTemplates_Options {
-	public val startKey: String?
-
-	public val startDocumentId: String?
-
-	public val limit: Double?
 }

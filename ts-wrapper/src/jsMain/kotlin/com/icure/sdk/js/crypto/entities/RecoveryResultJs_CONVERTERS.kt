@@ -2,7 +2,9 @@ package com.icure.sdk.js.crypto.entities
 
 import com.icure.sdk.crypto.entities.RecoveryDataUseFailureReason
 import com.icure.sdk.crypto.entities.RecoveryResult
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun <T, T_JS> recoveryResult_toJs(obj: RecoveryResult<T>, convertT: (T) -> T_JS):
 		RecoveryResultJs<T_JS> = when (obj) {
 	is RecoveryResult.Success<T> -> recoveryResult_Success_toJs(
@@ -30,6 +32,7 @@ public fun <T, T_KT> recoveryResult_fromJs(obj: RecoveryResultJs<T>, convertT: (
 			IllegalArgumentException("""Unknown concrete implementation for com.icure.sdk.crypto.entities.RecoveryResult: $obj""")
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun <T, T_JS> recoveryResult_Success_toJs(obj: RecoveryResult.Success<T>,
 		convertT: (T) -> T_JS): RecoveryResultJs_SuccessJs<T_JS> {
 	val data = convertT(obj.data)
@@ -46,6 +49,7 @@ public fun <T, T_KT> recoveryResult_Success_fromJs(obj: RecoveryResultJs_Success
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun recoveryResult_Failure_toJs(obj: RecoveryResult.Failure): RecoveryResultJs_FailureJs {
 	val reason = obj.reason.name
 	return RecoveryResultJs_FailureJs(js("{" +

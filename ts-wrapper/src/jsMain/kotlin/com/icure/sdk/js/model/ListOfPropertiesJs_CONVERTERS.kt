@@ -4,7 +4,9 @@ import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.setToArray
 import com.icure.sdk.model.DecryptedPropertyStub
 import com.icure.sdk.model.ListOfProperties
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun listOfProperties_toJs(obj: ListOfProperties): ListOfPropertiesJs {
 	val properties = setToArray(
 		obj.properties,

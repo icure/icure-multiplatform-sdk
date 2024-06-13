@@ -2,25 +2,40 @@ package com.icure.sdk.js.model.embed
 
 import com.icure.sdk.js.model.CheckedConverters.intToNumber
 import com.icure.sdk.js.model.CheckedConverters.longToNumber
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.js.model.base.codeStub_fromJs
 import com.icure.sdk.js.model.base.codeStub_toJs
 import com.icure.sdk.model.embed.RegimenItem
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun regimenItem_toJs(obj: RegimenItem): RegimenItemJs {
-	val date = longToNumber(obj.date)
-	val dayNumber = intToNumber(obj.dayNumber)
-	val weekday = obj.weekday?.let { nonNull1 ->
-		weekday_toJs(nonNull1)
-	}
-	val dayPeriod = obj.dayPeriod?.let { nonNull1 ->
-		codeStub_toJs(nonNull1)
-	}
-	val timeOfDay = longToNumber(obj.timeOfDay)
-	val administratedQuantity = obj.administratedQuantity?.let { nonNull1 ->
-		administrationQuantity_toJs(nonNull1)
-	}
+	val date = nullToUndefined(
+		longToNumber(obj.date)
+	)
+	val dayNumber = nullToUndefined(
+		intToNumber(obj.dayNumber)
+	)
+	val weekday = nullToUndefined(
+		obj.weekday?.let { nonNull1 ->
+			weekday_toJs(nonNull1)
+		}
+	)
+	val dayPeriod = nullToUndefined(
+		obj.dayPeriod?.let { nonNull1 ->
+			codeStub_toJs(nonNull1)
+		}
+	)
+	val timeOfDay = nullToUndefined(
+		longToNumber(obj.timeOfDay)
+	)
+	val administratedQuantity = nullToUndefined(
+		obj.administratedQuantity?.let { nonNull1 ->
+			administrationQuantity_toJs(nonNull1)
+		}
+	)
 	return RegimenItemJs(js("{" +
 		"date:date," +
 		"dayNumber:dayNumber," +

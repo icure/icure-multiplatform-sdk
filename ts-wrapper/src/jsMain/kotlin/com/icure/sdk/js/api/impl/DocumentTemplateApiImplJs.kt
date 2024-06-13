@@ -2,12 +2,12 @@
 package com.icure.sdk.js.api.`impl`
 
 import com.icure.sdk.api.DocumentTemplateApi
-import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefault
+import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.sdk.js.api.DocumentTemplateApiJs
-import com.icure.sdk.js.api.DocumentTemplateApi_findAllDocumentTemplates_Options
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.DocumentTemplateJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
@@ -19,6 +19,7 @@ import com.icure.sdk.model.DocumentTemplate
 import com.icure.sdk.model.couchdb.DocIdentifier
 import kotlin.Array
 import kotlin.ByteArray
+import kotlin.Double
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String
@@ -132,27 +133,29 @@ internal class DocumentTemplateApiImplJs(
 		)
 	}
 
-	override
-			fun findAllDocumentTemplates(options: DocumentTemplateApi_findAllDocumentTemplates_Options?):
+	override fun findAllDocumentTemplates(options: dynamic):
 			Promise<PaginatedListJs<DocumentTemplateJs>> {
-		val _options: DocumentTemplateApi_findAllDocumentTemplates_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
-			val startKeyConverted: String? = convertingOptionOrDefault(
-				_options.startKey,
+			val startKeyConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"startKey",
 				null
-			) { startKey ->
-				startKey
+			) { startKey: String? ->
+				undefinedToNull(startKey)
 			}
-			val startDocumentIdConverted: String? = convertingOptionOrDefault(
-				_options.startDocumentId,
+			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"startDocumentId",
 				null
-			) { startDocumentId ->
-				startDocumentId
+			) { startDocumentId: String? ->
+				undefinedToNull(startDocumentId)
 			}
-			val limitConverted: Int? = convertingOptionOrDefault(
-				_options.limit,
+			val limitConverted: Int? = convertingOptionOrDefaultNullable(
+				_options,
+				"limit",
 				null
-			) { limit ->
+			) { limit: Double? ->
 				numberToInt(limit, "limit")
 			}
 			val result = documentTemplateApi.findAllDocumentTemplates(

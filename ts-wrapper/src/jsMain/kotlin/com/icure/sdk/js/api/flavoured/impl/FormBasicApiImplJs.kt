@@ -2,14 +2,11 @@
 package com.icure.sdk.js.api.flavoured.`impl`
 
 import com.icure.sdk.api.flavoured.FormBasicApi
-import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefault
+import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.sdk.js.api.flavoured.FormBasicApiJs
-import com.icure.sdk.js.api.flavoured.FormBasicApi_getFormTemplate_Options
-import com.icure.sdk.js.api.flavoured.FormBasicApi_getFormTemplates_Options
-import com.icure.sdk.js.api.flavoured.FormBasicApi_listFormTemplatesBySpeciality_Options
-import com.icure.sdk.js.api.flavoured.FormBasicApi_listFormsByHCPartyAndPatientForeignKeys_Options
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.listToArray
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.EncryptedFormJs
 import com.icure.sdk.js.model.FormTemplateJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
@@ -64,16 +61,16 @@ internal class FormBasicApiImplJs(
 		)
 	}
 
-	override fun getFormTemplate(formTemplateId: String,
-			options: FormBasicApi_getFormTemplate_Options?): Promise<FormTemplateJs> {
-		val _options: FormBasicApi_getFormTemplate_Options = options ?: js("{}")
+	override fun getFormTemplate(formTemplateId: String, options: dynamic): Promise<FormTemplateJs> {
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val formTemplateIdConverted: String = formTemplateId
-			val rawConverted: Boolean? = convertingOptionOrDefault(
-				_options.raw,
+			val rawConverted: Boolean? = convertingOptionOrDefaultNullable(
+				_options,
+				"raw",
 				null
-			) { raw ->
-				raw
+			) { raw: Boolean? ->
+				undefinedToNull(raw)
 			}
 			val result = formBasicApi.getFormTemplate(
 				formTemplateIdConverted,
@@ -90,7 +87,7 @@ internal class FormBasicApiImplJs(
 	): Promise<Array<FormTemplateJs>> = GlobalScope.promise {
 		val formTemplateGuidConverted: String = formTemplateGuid
 		val specialityCodeConverted: String = specialityCode
-		val rawConverted: Boolean? = raw
+		val rawConverted: Boolean? = undefinedToNull(raw)
 		val result = formBasicApi.getFormTemplatesByGuid(
 			formTemplateGuidConverted,
 			specialityCodeConverted,
@@ -104,16 +101,17 @@ internal class FormBasicApiImplJs(
 		)
 	}
 
-	override fun listFormTemplatesBySpeciality(specialityCode: String,
-			options: FormBasicApi_listFormTemplatesBySpeciality_Options?): Promise<Array<FormTemplateJs>> {
-		val _options: FormBasicApi_listFormTemplatesBySpeciality_Options = options ?: js("{}")
+	override fun listFormTemplatesBySpeciality(specialityCode: String, options: dynamic):
+			Promise<Array<FormTemplateJs>> {
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val specialityCodeConverted: String = specialityCode
-			val rawConverted: Boolean? = convertingOptionOrDefault(
-				_options.raw,
+			val rawConverted: Boolean? = convertingOptionOrDefaultNullable(
+				_options,
+				"raw",
 				null
-			) { raw ->
-				raw
+			) { raw: Boolean? ->
+				undefinedToNull(raw)
 			}
 			val result = formBasicApi.listFormTemplatesBySpeciality(
 				specialityCodeConverted,
@@ -128,21 +126,22 @@ internal class FormBasicApiImplJs(
 		}
 	}
 
-	override fun getFormTemplates(options: FormBasicApi_getFormTemplates_Options?):
-			Promise<Array<FormTemplateJs>> {
-		val _options: FormBasicApi_getFormTemplates_Options = options ?: js("{}")
+	override fun getFormTemplates(options: dynamic): Promise<Array<FormTemplateJs>> {
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
-			val loadLayoutConverted: Boolean? = convertingOptionOrDefault(
-				_options.loadLayout,
+			val loadLayoutConverted: Boolean? = convertingOptionOrDefaultNullable(
+				_options,
+				"loadLayout",
 				null
-			) { loadLayout ->
-				loadLayout
+			) { loadLayout: Boolean? ->
+				undefinedToNull(loadLayout)
 			}
-			val rawConverted: Boolean? = convertingOptionOrDefault(
-				_options.raw,
+			val rawConverted: Boolean? = convertingOptionOrDefaultNullable(
+				_options,
+				"raw",
 				null
-			) { raw ->
-				raw
+			) { raw: Boolean? ->
+				undefinedToNull(raw)
 			}
 			val result = formBasicApi.getFormTemplates(
 				loadLayoutConverted,
@@ -315,29 +314,32 @@ internal class FormBasicApiImplJs(
 	override fun listFormsByHCPartyAndPatientForeignKeys(
 		hcPartyId: String,
 		secretFKeys: String,
-		options: FormBasicApi_listFormsByHCPartyAndPatientForeignKeys_Options?,
+		options: dynamic,
 	): Promise<Array<EncryptedFormJs>> {
-		val _options: FormBasicApi_listFormsByHCPartyAndPatientForeignKeys_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val hcPartyIdConverted: String = hcPartyId
 			val secretFKeysConverted: String = secretFKeys
-			val healthElementIdConverted: String? = convertingOptionOrDefault(
-				_options.healthElementId,
+			val healthElementIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"healthElementId",
 				null
-			) { healthElementId ->
-				healthElementId
+			) { healthElementId: String? ->
+				undefinedToNull(healthElementId)
 			}
-			val planOfActionIdConverted: String? = convertingOptionOrDefault(
-				_options.planOfActionId,
+			val planOfActionIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"planOfActionId",
 				null
-			) { planOfActionId ->
-				planOfActionId
+			) { planOfActionId: String? ->
+				undefinedToNull(planOfActionId)
 			}
-			val formTemplateIdConverted: String? = convertingOptionOrDefault(
-				_options.formTemplateId,
+			val formTemplateIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"formTemplateId",
 				null
-			) { formTemplateId ->
-				formTemplateId
+			) { formTemplateId: String? ->
+				undefinedToNull(formTemplateId)
 			}
 			val result = formBasicApi.listFormsByHCPartyAndPatientForeignKeys(
 				hcPartyIdConverted,

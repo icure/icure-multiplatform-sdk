@@ -2,7 +2,9 @@ package com.icure.sdk.js.model.embed.form.template
 
 import com.icure.sdk.model.embed.form.template.State
 import com.icure.sdk.model.embed.form.template.StateToUpdate
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun state_toJs(obj: State): StateJs {
 	val name = obj.name
 	val stateToUpdate = obj.stateToUpdate.name

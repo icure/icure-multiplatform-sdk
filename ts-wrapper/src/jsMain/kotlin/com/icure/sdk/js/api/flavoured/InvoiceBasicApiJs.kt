@@ -59,7 +59,7 @@ public external interface InvoiceBasicApiJs {
 		sentMediumType: String,
 		secretFKeys: String,
 		invoicingCodes: Array<EncryptedInvoicingCodeJs>,
-		options: InvoiceBasicApi_appendCodes_Options?,
+		options: dynamic,
 	): Promise<Array<EncryptedInvoiceJs>>
 
 	public fun removeCodes(
@@ -69,8 +69,7 @@ public external interface InvoiceBasicApiJs {
 		tarificationIds: Array<String>,
 	): Promise<Array<EncryptedInvoiceJs>>
 
-	public fun findInvoicesByAuthor(hcPartyId: String,
-			options: InvoiceBasicApi_findInvoicesByAuthor_Options?):
+	public fun findInvoicesByAuthor(hcPartyId: String, options: dynamic):
 			Promise<PaginatedListJs<EncryptedInvoiceJs>>
 
 	public fun listInvoicesByHCPartyAndPatientForeignKeys(hcPartyId: String,
@@ -84,7 +83,7 @@ public external interface InvoiceBasicApiJs {
 		sentMediumType: String,
 		invoiceType: String,
 		sent: Boolean,
-		options: InvoiceBasicApi_listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate_Options?,
+		options: dynamic,
 	): Promise<Array<EncryptedInvoiceJs>>
 
 	public fun listInvoicesByContactIds(contactIds: Array<String>): Promise<Array<EncryptedInvoiceJs>>
@@ -115,39 +114,6 @@ public external interface InvoiceBasicApiJs {
 	public fun listAllHcpsByStatus(
 		status: String,
 		hcpIds: Array<String>,
-		options: InvoiceBasicApi_listAllHcpsByStatus_Options?,
+		options: dynamic,
 	): Promise<Array<EncryptedInvoiceJs>>
-}
-
-public external interface InvoiceBasicApi_appendCodes_Options {
-	public val insuranceId: String?
-
-	public val invoiceId: String?
-
-	public val gracePeriod: Double?
-}
-
-public external interface InvoiceBasicApi_findInvoicesByAuthor_Options {
-	public val fromDate: Double?
-
-	public val toDate: Double?
-
-	public val startKey: dynamic
-
-	public val startDocumentId: String?
-
-	public val limit: Double?
-}
-
-public external interface
-		InvoiceBasicApi_listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate_Options {
-	public val from: Double?
-
-	public val to: Double?
-}
-
-public external interface InvoiceBasicApi_listAllHcpsByStatus_Options {
-	public val from: Double?
-
-	public val to: Double?
 }

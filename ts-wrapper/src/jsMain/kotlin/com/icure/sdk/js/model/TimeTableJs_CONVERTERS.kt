@@ -5,9 +5,11 @@ import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.longToNumber
 import com.icure.sdk.js.model.CheckedConverters.mapToObject
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.sdk.js.model.CheckedConverters.setToArray
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.base.CodeStubJs
 import com.icure.sdk.js.model.base.codeStub_fromJs
 import com.icure.sdk.js.model.base.codeStub_toJs
@@ -29,16 +31,30 @@ import com.icure.sdk.model.embed.Delegation
 import com.icure.sdk.model.embed.TimeTableItem
 import kotlin.Array
 import kotlin.String
+import kotlin.Suppress
 import kotlin.collections.Set
 
+@Suppress("UNUSED_VARIABLE")
 public fun timeTable_toJs(obj: DecryptedTimeTable): DecryptedTimeTableJs {
 	val id = obj.id
-	val rev = obj.rev
-	val created = longToNumber(obj.created)
-	val modified = longToNumber(obj.modified)
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
+	val rev = nullToUndefined(
+		obj.rev
+	)
+	val created = nullToUndefined(
+		longToNumber(obj.created)
+	)
+	val modified = nullToUndefined(
+		longToNumber(obj.modified)
+	)
+	val author = nullToUndefined(
+		obj.author
+	)
+	val responsible = nullToUndefined(
+		obj.responsible
+	)
+	val medicalLocationId = nullToUndefined(
+		obj.medicalLocationId
+	)
 	val tags = setToArray(
 		obj.tags,
 		{ x1: CodeStub ->
@@ -51,12 +67,24 @@ public fun timeTable_toJs(obj: DecryptedTimeTable): DecryptedTimeTableJs {
 			codeStub_toJs(x1)
 		},
 	)
-	val endOfLife = longToNumber(obj.endOfLife)
-	val deletionDate = longToNumber(obj.deletionDate)
-	val name = obj.name
-	val agendaId = obj.agendaId
-	val startTime = longToNumber(obj.startTime)
-	val endTime = longToNumber(obj.endTime)
+	val endOfLife = nullToUndefined(
+		longToNumber(obj.endOfLife)
+	)
+	val deletionDate = nullToUndefined(
+		longToNumber(obj.deletionDate)
+	)
+	val name = nullToUndefined(
+		obj.name
+	)
+	val agendaId = nullToUndefined(
+		obj.agendaId
+	)
+	val startTime = nullToUndefined(
+		longToNumber(obj.startTime)
+	)
+	val endTime = nullToUndefined(
+		longToNumber(obj.endTime)
+	)
 	val items = listToArray(
 		obj.items,
 		{ x1: TimeTableItem ->
@@ -111,12 +139,16 @@ public fun timeTable_toJs(obj: DecryptedTimeTable): DecryptedTimeTableJs {
 			)
 		},
 	)
-	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
-		base64String_toJs(nonNull1)
-	}
-	val securityMetadata = obj.securityMetadata?.let { nonNull1 ->
-		securityMetadata_toJs(nonNull1)
-	}
+	val encryptedSelf = nullToUndefined(
+		obj.encryptedSelf?.let { nonNull1 ->
+			base64String_toJs(nonNull1)
+		}
+	)
+	val securityMetadata = nullToUndefined(
+		obj.securityMetadata?.let { nonNull1 ->
+			securityMetadata_toJs(nonNull1)
+		}
+	)
 	return DecryptedTimeTableJs(js("{" +
 		"id:id," +
 		"rev:rev," +
@@ -145,12 +177,12 @@ public fun timeTable_toJs(obj: DecryptedTimeTable): DecryptedTimeTableJs {
 
 public fun timeTable_fromJs(obj: DecryptedTimeTableJs): DecryptedTimeTable {
 	val id = obj.id
-	val rev = obj.rev
+	val rev = undefinedToNull(obj.rev)
 	val created = numberToLong(obj.created, "obj.created")
 	val modified = numberToLong(obj.modified, "obj.modified")
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
+	val author = undefinedToNull(obj.author)
+	val responsible = undefinedToNull(obj.responsible)
+	val medicalLocationId = undefinedToNull(obj.medicalLocationId)
 	val tags = arrayToSet(
 		obj.tags,
 		"obj.tags",
@@ -167,8 +199,8 @@ public fun timeTable_fromJs(obj: DecryptedTimeTableJs): DecryptedTimeTable {
 	)
 	val endOfLife = numberToLong(obj.endOfLife, "obj.endOfLife")
 	val deletionDate = numberToLong(obj.deletionDate, "obj.deletionDate")
-	val name = obj.name
-	val agendaId = obj.agendaId
+	val name = undefinedToNull(obj.name)
+	val agendaId = undefinedToNull(obj.agendaId)
 	val startTime = numberToLong(obj.startTime, "obj.startTime")
 	val endTime = numberToLong(obj.endTime, "obj.endTime")
 	val items = arrayToList(
@@ -265,14 +297,27 @@ public fun timeTable_fromJs(obj: DecryptedTimeTableJs): DecryptedTimeTable {
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun timeTable_toJs(obj: EncryptedTimeTable): EncryptedTimeTableJs {
 	val id = obj.id
-	val rev = obj.rev
-	val created = longToNumber(obj.created)
-	val modified = longToNumber(obj.modified)
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
+	val rev = nullToUndefined(
+		obj.rev
+	)
+	val created = nullToUndefined(
+		longToNumber(obj.created)
+	)
+	val modified = nullToUndefined(
+		longToNumber(obj.modified)
+	)
+	val author = nullToUndefined(
+		obj.author
+	)
+	val responsible = nullToUndefined(
+		obj.responsible
+	)
+	val medicalLocationId = nullToUndefined(
+		obj.medicalLocationId
+	)
 	val tags = setToArray(
 		obj.tags,
 		{ x1: CodeStub ->
@@ -285,12 +330,24 @@ public fun timeTable_toJs(obj: EncryptedTimeTable): EncryptedTimeTableJs {
 			codeStub_toJs(x1)
 		},
 	)
-	val endOfLife = longToNumber(obj.endOfLife)
-	val deletionDate = longToNumber(obj.deletionDate)
-	val name = obj.name
-	val agendaId = obj.agendaId
-	val startTime = longToNumber(obj.startTime)
-	val endTime = longToNumber(obj.endTime)
+	val endOfLife = nullToUndefined(
+		longToNumber(obj.endOfLife)
+	)
+	val deletionDate = nullToUndefined(
+		longToNumber(obj.deletionDate)
+	)
+	val name = nullToUndefined(
+		obj.name
+	)
+	val agendaId = nullToUndefined(
+		obj.agendaId
+	)
+	val startTime = nullToUndefined(
+		longToNumber(obj.startTime)
+	)
+	val endTime = nullToUndefined(
+		longToNumber(obj.endTime)
+	)
 	val items = listToArray(
 		obj.items,
 		{ x1: TimeTableItem ->
@@ -345,12 +402,16 @@ public fun timeTable_toJs(obj: EncryptedTimeTable): EncryptedTimeTableJs {
 			)
 		},
 	)
-	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
-		base64String_toJs(nonNull1)
-	}
-	val securityMetadata = obj.securityMetadata?.let { nonNull1 ->
-		securityMetadata_toJs(nonNull1)
-	}
+	val encryptedSelf = nullToUndefined(
+		obj.encryptedSelf?.let { nonNull1 ->
+			base64String_toJs(nonNull1)
+		}
+	)
+	val securityMetadata = nullToUndefined(
+		obj.securityMetadata?.let { nonNull1 ->
+			securityMetadata_toJs(nonNull1)
+		}
+	)
 	return EncryptedTimeTableJs(js("{" +
 		"id:id," +
 		"rev:rev," +
@@ -379,12 +440,12 @@ public fun timeTable_toJs(obj: EncryptedTimeTable): EncryptedTimeTableJs {
 
 public fun timeTable_fromJs(obj: EncryptedTimeTableJs): EncryptedTimeTable {
 	val id = obj.id
-	val rev = obj.rev
+	val rev = undefinedToNull(obj.rev)
 	val created = numberToLong(obj.created, "obj.created")
 	val modified = numberToLong(obj.modified, "obj.modified")
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
+	val author = undefinedToNull(obj.author)
+	val responsible = undefinedToNull(obj.responsible)
+	val medicalLocationId = undefinedToNull(obj.medicalLocationId)
 	val tags = arrayToSet(
 		obj.tags,
 		"obj.tags",
@@ -401,8 +462,8 @@ public fun timeTable_fromJs(obj: EncryptedTimeTableJs): EncryptedTimeTable {
 	)
 	val endOfLife = numberToLong(obj.endOfLife, "obj.endOfLife")
 	val deletionDate = numberToLong(obj.deletionDate, "obj.deletionDate")
-	val name = obj.name
-	val agendaId = obj.agendaId
+	val name = undefinedToNull(obj.name)
+	val agendaId = undefinedToNull(obj.agendaId)
 	val startTime = numberToLong(obj.startTime, "obj.startTime")
 	val endTime = numberToLong(obj.endTime, "obj.endTime")
 	val items = arrayToList(
@@ -499,6 +560,7 @@ public fun timeTable_fromJs(obj: EncryptedTimeTableJs): EncryptedTimeTable {
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun timeTable_toJs(obj: TimeTable): TimeTableJs = when (obj) {
 	is EncryptedTimeTable -> timeTable_toJs(obj)
 	is DecryptedTimeTable -> timeTable_toJs(obj)

@@ -4,14 +4,12 @@
 package com.icure.sdk.js.api.flavoured
 
 import com.icure.sdk.js.crypto.entities.CalendarItemShareOptionsJs
-import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.model.CalendarItemJs
 import com.icure.sdk.js.model.DecryptedCalendarItemJs
 import com.icure.sdk.js.model.EncryptedCalendarItemJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.PatientJs
-import com.icure.sdk.js.model.UserJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
@@ -35,7 +33,7 @@ public external interface CalendarItemApiJs {
 	public fun withEncryptionMetadata(
 		base: DecryptedCalendarItemJs?,
 		patient: PatientJs,
-		options: CalendarItemApi_withEncryptionMetadata_Options?,
+		options: dynamic,
 	): Promise<DecryptedCalendarItemJs>
 
 	public fun getEncryptionKeysOf(calendarItem: CalendarItemJs): Promise<Array<String>>
@@ -54,7 +52,7 @@ public external interface CalendarItemApiJs {
 	public fun shareWith(
 		delegateId: String,
 		calendarItem: DecryptedCalendarItemJs,
-		options: CalendarItemApi_shareWith_Options?,
+		options: dynamic,
 	): Promise<SimpleShareResultJs<DecryptedCalendarItemJs>>
 
 	public fun tryShareWithMany(calendarItem: DecryptedCalendarItemJs,
@@ -67,7 +65,7 @@ public external interface CalendarItemApiJs {
 	public fun findCalendarItemsByHcPartyPatient(
 		hcPartyId: String,
 		patient: PatientJs,
-		options: CalendarItemApi_findCalendarItemsByHcPartyPatient_Options?,
+		options: dynamic,
 	): Promise<PaginatedListIteratorJs<DecryptedCalendarItemJs>>
 
 	public fun linkToPatient(
@@ -103,28 +101,4 @@ public external interface CalendarItemApiJs {
 		startDocumentId: String?,
 		limit: Double,
 	): Promise<PaginatedListJs<DecryptedCalendarItemJs>>
-}
-
-public external interface CalendarItemApi_withEncryptionMetadata_Options {
-	public val user: UserJs?
-
-	public val delegates: Record<String, String>
-
-	public val secretId: SecretIdOptionJs
-}
-
-public external interface CalendarItemApi_shareWith_Options {
-	public val shareEncryptionKeys: String
-
-	public val shareOwningEntityIds: String
-
-	public val requestedPermission: String
-}
-
-public external interface CalendarItemApi_findCalendarItemsByHcPartyPatient_Options {
-	public val startDate: Double?
-
-	public val endDate: Double?
-
-	public val descending: Boolean?
 }

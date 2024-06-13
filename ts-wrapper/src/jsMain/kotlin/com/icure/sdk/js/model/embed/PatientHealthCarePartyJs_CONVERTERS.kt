@@ -3,7 +3,9 @@ package com.icure.sdk.js.model.embed
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.mapToObject
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.objectToMap
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.specializations.base64String_fromJs
 import com.icure.sdk.js.model.specializations.base64String_toJs
 import com.icure.sdk.model.embed.DecryptedPatientHealthCareParty
@@ -13,13 +15,19 @@ import com.icure.sdk.model.embed.PatientHealthCarePartyType
 import com.icure.sdk.model.embed.ReferralPeriod
 import com.icure.sdk.model.embed.TelecomType
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun patientHealthCareParty_toJs(obj: DecryptedPatientHealthCareParty):
 		DecryptedPatientHealthCarePartyJs {
-	val type = obj.type?.let { nonNull1 ->
-		obj.type?.name
-	}
-	val healthcarePartyId = obj.healthcarePartyId
+	val type = nullToUndefined(
+		obj.type?.let { nonNull1 ->
+			nonNull1.name
+		}
+	)
+	val healthcarePartyId = nullToUndefined(
+		obj.healthcarePartyId
+	)
 	val sendFormats = mapToObject(
 		obj.sendFormats,
 		{ x1: TelecomType ->
@@ -36,9 +44,11 @@ public fun patientHealthCareParty_toJs(obj: DecryptedPatientHealthCareParty):
 		},
 	)
 	val referral = obj.referral
-	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
-		base64String_toJs(nonNull1)
-	}
+	val encryptedSelf = nullToUndefined(
+		obj.encryptedSelf?.let { nonNull1 ->
+			base64String_toJs(nonNull1)
+		}
+	)
 	return DecryptedPatientHealthCarePartyJs(js("{" +
 		"type:type," +
 		"healthcarePartyId:healthcarePartyId," +
@@ -54,7 +64,7 @@ public fun patientHealthCareParty_fromJs(obj: DecryptedPatientHealthCarePartyJs)
 	val type = obj.type?.let { nonNull1 ->
 		PatientHealthCarePartyType.valueOf(nonNull1)
 	}
-	val healthcarePartyId = obj.healthcarePartyId
+	val healthcarePartyId = undefinedToNull(obj.healthcarePartyId)
 	val sendFormats = objectToMap(
 		obj.sendFormats,
 		"obj.sendFormats",
@@ -86,12 +96,17 @@ public fun patientHealthCareParty_fromJs(obj: DecryptedPatientHealthCarePartyJs)
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun patientHealthCareParty_toJs(obj: EncryptedPatientHealthCareParty):
 		EncryptedPatientHealthCarePartyJs {
-	val type = obj.type?.let { nonNull1 ->
-		obj.type?.name
-	}
-	val healthcarePartyId = obj.healthcarePartyId
+	val type = nullToUndefined(
+		obj.type?.let { nonNull1 ->
+			nonNull1.name
+		}
+	)
+	val healthcarePartyId = nullToUndefined(
+		obj.healthcarePartyId
+	)
 	val sendFormats = mapToObject(
 		obj.sendFormats,
 		{ x1: TelecomType ->
@@ -108,9 +123,11 @@ public fun patientHealthCareParty_toJs(obj: EncryptedPatientHealthCareParty):
 		},
 	)
 	val referral = obj.referral
-	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
-		base64String_toJs(nonNull1)
-	}
+	val encryptedSelf = nullToUndefined(
+		obj.encryptedSelf?.let { nonNull1 ->
+			base64String_toJs(nonNull1)
+		}
+	)
 	return EncryptedPatientHealthCarePartyJs(js("{" +
 		"type:type," +
 		"healthcarePartyId:healthcarePartyId," +
@@ -126,7 +143,7 @@ public fun patientHealthCareParty_fromJs(obj: EncryptedPatientHealthCarePartyJs)
 	val type = obj.type?.let { nonNull1 ->
 		PatientHealthCarePartyType.valueOf(nonNull1)
 	}
-	val healthcarePartyId = obj.healthcarePartyId
+	val healthcarePartyId = undefinedToNull(obj.healthcarePartyId)
 	val sendFormats = objectToMap(
 		obj.sendFormats,
 		"obj.sendFormats",
@@ -158,6 +175,7 @@ public fun patientHealthCareParty_fromJs(obj: EncryptedPatientHealthCarePartyJs)
 	)
 }
 
+@Suppress("UNUSED_VARIABLE")
 public fun patientHealthCareParty_toJs(obj: PatientHealthCareParty): PatientHealthCarePartyJs = when
 		(obj) {
 	is EncryptedPatientHealthCareParty -> patientHealthCareParty_toJs(obj)

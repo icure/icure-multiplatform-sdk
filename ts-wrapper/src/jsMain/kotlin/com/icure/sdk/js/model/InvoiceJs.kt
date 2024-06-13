@@ -135,9 +135,6 @@ public sealed external interface InvoiceJs : StoredDocumentJs, ICureDocumentJs<S
 	public val options: Record<String, out String>
 
 	public val isEncrypted: Boolean
-
-	@JsName("${'$'}ktClass")
-	public val ktClass: String
 }
 
 @JsName("DecryptedInvoice")
@@ -287,8 +284,6 @@ public external class DecryptedInvoiceJs(
 	override val securityMetadata: SecurityMetadataJs?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }
 
 @JsName("EncryptedInvoice")
@@ -438,6 +433,4 @@ public external class EncryptedInvoiceJs(
 	override val securityMetadata: SecurityMetadataJs?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }

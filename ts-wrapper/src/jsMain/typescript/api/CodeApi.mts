@@ -13,17 +13,17 @@ export interface CodeApi {
 			types: string,
 			language: string,
 			label: string,
-			options?: { region?: string | undefined, types?: string, language?: string, label?: string, version?: string | undefined, startKey?: any | undefined, startDocumentId?: string | undefined, limit?: number | undefined }
+			options?: { version?: string | undefined, startKey?: any | undefined, startDocumentId?: string | undefined, limit?: number | undefined }
 	): Promise<PaginatedList<Code>>;
 
 	findCodesByType(region: string,
-			options?: { region?: string, type?: string | undefined, code?: string | undefined, version?: string | undefined, startKey?: any | undefined, startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<Code>>;
+			options?: { type?: string | undefined, code?: string | undefined, version?: string | undefined, startKey?: any | undefined, startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<Code>>;
 
 	findCodesByLink(linkType: string,
-			options?: { linkType?: string, linkedId?: string | undefined, startKey?: any | undefined, startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<Code>>;
+			options?: { linkedId?: string | undefined, startKey?: any | undefined, startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<Code>>;
 
 	listCodesByRegionTypeCodeVersion(region: string,
-			options?: { region?: string, type?: string | undefined, code?: string | undefined, version?: string | undefined }): Promise<Array<Code>>;
+			options?: { type?: string | undefined, code?: string | undefined, version?: string | undefined }): Promise<Array<Code>>;
 
 	listCodeTypesBy(options?: { region?: string | undefined, type?: string | undefined }): Promise<Array<string>>;
 
@@ -49,7 +49,7 @@ export interface CodeApi {
 	modifyCodes(codeBatch: Array<Code>): Promise<Array<Code>>;
 
 	filterCodesBy(filterChain: FilterChain<Code>,
-			options?: { startKey?: any | undefined, startDocumentId?: string | undefined, limit?: number | undefined, skip?: number | undefined, sort?: string | undefined, desc?: boolean | undefined, filterChain?: FilterChain<Code> }): Promise<PaginatedList<Code>>;
+			options?: { startKey?: any | undefined, startDocumentId?: string | undefined, limit?: number | undefined, skip?: number | undefined, sort?: string | undefined, desc?: boolean | undefined }): Promise<PaginatedList<Code>>;
 
 	matchCodesBy(filter: AbstractFilter<Code>): Promise<Array<string>>;
 

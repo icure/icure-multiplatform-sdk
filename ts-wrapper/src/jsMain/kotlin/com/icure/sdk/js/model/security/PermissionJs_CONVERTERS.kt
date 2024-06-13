@@ -4,7 +4,9 @@ import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.setToArray
 import com.icure.sdk.model.security.Permission
 import com.icure.sdk.model.security.PermissionItem
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun permission_toJs(obj: Permission): PermissionJs {
 	val grants = setToArray(
 		obj.grants,

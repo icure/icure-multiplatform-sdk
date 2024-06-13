@@ -12,13 +12,13 @@ export interface EntityTemplateApi {
 	modifyEntityTemplate(documentTemplate: EntityTemplate): Promise<EntityTemplate>;
 
 	listEntityTemplatesBy(userId: string, type: string,
-			options?: { userId?: string, type?: string, searchString?: string | undefined, includeEntities?: boolean | undefined }): Promise<Array<EntityTemplate>>;
+			options?: { searchString?: string | undefined, includeEntities?: boolean | undefined }): Promise<Array<EntityTemplate>>;
 
 	listAllEntityTemplatesBy(type: string,
-			options?: { type?: string, searchString?: string | undefined, includeEntities?: boolean | undefined }): Promise<Array<EntityTemplate>>;
+			options?: { searchString?: string | undefined, includeEntities?: boolean | undefined }): Promise<Array<EntityTemplate>>;
 
 	listEntityTemplatesByKeyword(userId: string, type: string, keyword: string,
-			options?: { userId?: string, type?: string, keyword?: string, includeEntities?: boolean | undefined }): Promise<Array<EntityTemplate>>;
+			options?: { includeEntities?: boolean | undefined }): Promise<Array<EntityTemplate>>;
 
 	findAllEntityTemplatesByKeyword(type: string, keyword: string,
 			includeEntities: boolean | undefined): Promise<Array<EntityTemplate>>;

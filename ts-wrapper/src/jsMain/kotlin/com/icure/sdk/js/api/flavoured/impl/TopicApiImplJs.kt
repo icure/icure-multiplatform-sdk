@@ -5,16 +5,11 @@ import com.icure.sdk.api.flavoured.TopicApi
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.TopicShareOptions
-import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefault
+import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNonNull
+import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.sdk.js.api.flavoured.TopicApiJs
-import com.icure.sdk.js.api.flavoured.TopicApi_filterTopicsBy_Options
-import com.icure.sdk.js.api.flavoured.TopicApi_shareWith_Options
-import com.icure.sdk.js.api.flavoured.TopicApi_subscribeToEvents_Options
-import com.icure.sdk.js.api.flavoured.TopicApi_withEncryptionMetadata_Options
 import com.icure.sdk.js.api.flavoured.TopicFlavouredApiJs
-import com.icure.sdk.js.api.flavoured.TopicFlavouredApi_filterTopicsBy_Options
-import com.icure.sdk.js.api.flavoured.TopicFlavouredApi_shareWith_Options
-import com.icure.sdk.js.api.flavoured.TopicFlavouredApi_subscribeToEvents_Options
+import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.crypto.entities.TopicShareOptionsJs
 import com.icure.sdk.js.crypto.entities.secretIdOption_fromJs
@@ -27,11 +22,13 @@ import com.icure.sdk.js.model.CheckedConverters.numberToDuration
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.sdk.js.model.CheckedConverters.setToArray
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.DecryptedTopicJs
 import com.icure.sdk.js.model.EncryptedTopicJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.PatientJs
 import com.icure.sdk.js.model.TopicJs
+import com.icure.sdk.js.model.UserJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.couchdb.docIdentifier_toJs
 import com.icure.sdk.js.model.filter.AbstractFilterJs
@@ -87,28 +84,31 @@ internal class TopicApiImplJs(
 		override fun shareWith(
 			delegateId: String,
 			topic: EncryptedTopicJs,
-			options: TopicFlavouredApi_shareWith_Options?,
+			options: dynamic,
 		): Promise<SimpleShareResultJs<EncryptedTopicJs>> {
-			val _options: TopicFlavouredApi_shareWith_Options = options ?: js("{}")
+			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val topicConverted: EncryptedTopic = topic_fromJs(topic)
-				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
-					_options.shareEncryptionKeys,
+				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+					_options,
+					"shareEncryptionKeys",
 					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareEncryptionKeys ->
+				) { shareEncryptionKeys: String ->
 					ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
 				}
-				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
-					_options.shareOwningEntityIds,
+				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+					_options,
+					"shareOwningEntityIds",
 					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareOwningEntityIds ->
+				) { shareOwningEntityIds: String ->
 					ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
 				}
-				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefault(
-					_options.requestedPermission,
+				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefaultNonNull(
+					_options,
+					"requestedPermission",
 					com.icure.sdk.model.requests.RequestedPermission.MaxWrite
-				) { requestedPermission ->
+				) { requestedPermission: String ->
 					RequestedPermission.valueOf(requestedPermission)
 				}
 				val result = topicApi.encrypted.shareWith(
@@ -211,21 +211,22 @@ internal class TopicApiImplJs(
 			)
 		}
 
-		override fun filterTopicsBy(filterChain: FilterChainJs<TopicJs>,
-				options: TopicFlavouredApi_filterTopicsBy_Options?):
+		override fun filterTopicsBy(filterChain: FilterChainJs<TopicJs>, options: dynamic):
 				Promise<PaginatedListJs<EncryptedTopicJs>> {
-			val _options: TopicFlavouredApi_filterTopicsBy_Options = options ?: js("{}")
+			val _options = options ?: js("{}")
 			return GlobalScope.promise {
-				val startDocumentIdConverted: String? = convertingOptionOrDefault(
-					_options.startDocumentId,
+				val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
+					_options,
+					"startDocumentId",
 					null
-				) { startDocumentId ->
-					startDocumentId
+				) { startDocumentId: String? ->
+					undefinedToNull(startDocumentId)
 				}
-				val limitConverted: Int? = convertingOptionOrDefault(
-					_options.limit,
+				val limitConverted: Int? = convertingOptionOrDefaultNullable(
+					_options,
+					"limit",
 					null
-				) { limit ->
+				) { limit: Double? ->
 					numberToInt(limit, "limit")
 				}
 				val filterChainConverted: FilterChain<Topic> = filterChain_fromJs(
@@ -279,9 +280,9 @@ internal class TopicApiImplJs(
 			events: Array<String>,
 			filter: AbstractFilterJs<TopicJs>,
 			eventFired: (EncryptedTopicJs) -> Promise<Unit>,
-			options: TopicFlavouredApi_subscribeToEvents_Options?,
+			options: dynamic,
 		): Promise<ConnectionJs> {
-			val _options: TopicFlavouredApi_subscribeToEvents_Options = options ?: js("{}")
+			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
 					events,
@@ -296,36 +297,41 @@ internal class TopicApiImplJs(
 						topic_fromJs(x1)
 					},
 				)
-				val onConnectedConverted: suspend () -> Unit = convertingOptionOrDefault(
-					_options.onConnected,
+				val onConnectedConverted: suspend () -> Unit = convertingOptionOrDefaultNonNull(
+					_options,
+					"onConnected",
 					{}
-				) { onConnected ->
+				) { onConnected: () -> Promise<Unit> ->
 					{  ->
 						onConnected().await()
 					}
 				}
-				val channelCapacityConverted: Int = convertingOptionOrDefault(
-					_options.channelCapacity,
+				val channelCapacityConverted: Int = convertingOptionOrDefaultNonNull(
+					_options,
+					"channelCapacity",
 					kotlinx.coroutines.channels.Channel.BUFFERED
-				) { channelCapacity ->
+				) { channelCapacity: Double ->
 					numberToInt(channelCapacity, "channelCapacity")
 				}
-				val retryDelayConverted: Duration = convertingOptionOrDefault(
-					_options.retryDelay,
+				val retryDelayConverted: Duration = convertingOptionOrDefaultNonNull(
+					_options,
+					"retryDelay",
 					2.seconds
-				) { retryDelay ->
+				) { retryDelay: Double ->
 					numberToDuration(retryDelay, "retryDelay")
 				}
-				val retryDelayExponentFactorConverted: Double = convertingOptionOrDefault(
-					_options.retryDelayExponentFactor,
+				val retryDelayExponentFactorConverted: Double = convertingOptionOrDefaultNonNull(
+					_options,
+					"retryDelayExponentFactor",
 					2.0
-				) { retryDelayExponentFactor ->
+				) { retryDelayExponentFactor: Double ->
 					retryDelayExponentFactor
 				}
-				val maxRetriesConverted: Int = convertingOptionOrDefault(
-					_options.maxRetries,
+				val maxRetriesConverted: Int = convertingOptionOrDefaultNonNull(
+					_options,
+					"maxRetries",
 					5
-				) { maxRetries ->
+				) { maxRetries: Double ->
 					numberToInt(maxRetries, "maxRetries")
 				}
 				val eventFiredConverted: suspend (EncryptedTopic) -> Unit = { arg0 ->
@@ -352,28 +358,31 @@ internal class TopicApiImplJs(
 		override fun shareWith(
 			delegateId: String,
 			topic: TopicJs,
-			options: TopicFlavouredApi_shareWith_Options?,
+			options: dynamic,
 		): Promise<SimpleShareResultJs<TopicJs>> {
-			val _options: TopicFlavouredApi_shareWith_Options = options ?: js("{}")
+			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val topicConverted: Topic = topic_fromJs(topic)
-				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
-					_options.shareEncryptionKeys,
+				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+					_options,
+					"shareEncryptionKeys",
 					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareEncryptionKeys ->
+				) { shareEncryptionKeys: String ->
 					ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
 				}
-				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
-					_options.shareOwningEntityIds,
+				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+					_options,
+					"shareOwningEntityIds",
 					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareOwningEntityIds ->
+				) { shareOwningEntityIds: String ->
 					ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
 				}
-				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefault(
-					_options.requestedPermission,
+				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefaultNonNull(
+					_options,
+					"requestedPermission",
 					com.icure.sdk.model.requests.RequestedPermission.MaxWrite
-				) { requestedPermission ->
+				) { requestedPermission: String ->
 					RequestedPermission.valueOf(requestedPermission)
 				}
 				val result = topicApi.tryAndRecover.shareWith(
@@ -472,20 +481,22 @@ internal class TopicApiImplJs(
 			)
 		}
 
-		override fun filterTopicsBy(filterChain: FilterChainJs<TopicJs>,
-				options: TopicFlavouredApi_filterTopicsBy_Options?): Promise<PaginatedListJs<TopicJs>> {
-			val _options: TopicFlavouredApi_filterTopicsBy_Options = options ?: js("{}")
+		override fun filterTopicsBy(filterChain: FilterChainJs<TopicJs>, options: dynamic):
+				Promise<PaginatedListJs<TopicJs>> {
+			val _options = options ?: js("{}")
 			return GlobalScope.promise {
-				val startDocumentIdConverted: String? = convertingOptionOrDefault(
-					_options.startDocumentId,
+				val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
+					_options,
+					"startDocumentId",
 					null
-				) { startDocumentId ->
-					startDocumentId
+				) { startDocumentId: String? ->
+					undefinedToNull(startDocumentId)
 				}
-				val limitConverted: Int? = convertingOptionOrDefault(
-					_options.limit,
+				val limitConverted: Int? = convertingOptionOrDefaultNullable(
+					_options,
+					"limit",
 					null
-				) { limit ->
+				) { limit: Double? ->
 					numberToInt(limit, "limit")
 				}
 				val filterChainConverted: FilterChain<Topic> = filterChain_fromJs(
@@ -539,9 +550,9 @@ internal class TopicApiImplJs(
 			events: Array<String>,
 			filter: AbstractFilterJs<TopicJs>,
 			eventFired: (TopicJs) -> Promise<Unit>,
-			options: TopicFlavouredApi_subscribeToEvents_Options?,
+			options: dynamic,
 		): Promise<ConnectionJs> {
-			val _options: TopicFlavouredApi_subscribeToEvents_Options = options ?: js("{}")
+			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
 					events,
@@ -556,36 +567,41 @@ internal class TopicApiImplJs(
 						topic_fromJs(x1)
 					},
 				)
-				val onConnectedConverted: suspend () -> Unit = convertingOptionOrDefault(
-					_options.onConnected,
+				val onConnectedConverted: suspend () -> Unit = convertingOptionOrDefaultNonNull(
+					_options,
+					"onConnected",
 					{}
-				) { onConnected ->
+				) { onConnected: () -> Promise<Unit> ->
 					{  ->
 						onConnected().await()
 					}
 				}
-				val channelCapacityConverted: Int = convertingOptionOrDefault(
-					_options.channelCapacity,
+				val channelCapacityConverted: Int = convertingOptionOrDefaultNonNull(
+					_options,
+					"channelCapacity",
 					kotlinx.coroutines.channels.Channel.BUFFERED
-				) { channelCapacity ->
+				) { channelCapacity: Double ->
 					numberToInt(channelCapacity, "channelCapacity")
 				}
-				val retryDelayConverted: Duration = convertingOptionOrDefault(
-					_options.retryDelay,
+				val retryDelayConverted: Duration = convertingOptionOrDefaultNonNull(
+					_options,
+					"retryDelay",
 					2.seconds
-				) { retryDelay ->
+				) { retryDelay: Double ->
 					numberToDuration(retryDelay, "retryDelay")
 				}
-				val retryDelayExponentFactorConverted: Double = convertingOptionOrDefault(
-					_options.retryDelayExponentFactor,
+				val retryDelayExponentFactorConverted: Double = convertingOptionOrDefaultNonNull(
+					_options,
+					"retryDelayExponentFactor",
 					2.0
-				) { retryDelayExponentFactor ->
+				) { retryDelayExponentFactor: Double ->
 					retryDelayExponentFactor
 				}
-				val maxRetriesConverted: Int = convertingOptionOrDefault(
-					_options.maxRetries,
+				val maxRetriesConverted: Int = convertingOptionOrDefaultNonNull(
+					_options,
+					"maxRetries",
 					5
-				) { maxRetries ->
+				) { maxRetries: Double ->
 					numberToInt(maxRetries, "maxRetries")
 				}
 				val eventFiredConverted: suspend (Topic) -> Unit = { arg0 ->
@@ -620,9 +636,9 @@ internal class TopicApiImplJs(
 	override fun withEncryptionMetadata(
 		base: DecryptedTopicJs?,
 		patient: PatientJs?,
-		options: TopicApi_withEncryptionMetadata_Options?,
+		options: dynamic,
 	): Promise<DecryptedTopicJs> {
-		val _options: TopicApi_withEncryptionMetadata_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val baseConverted: DecryptedTopic? = base?.let { nonNull1 ->
 				topic_fromJs(nonNull1)
@@ -630,18 +646,20 @@ internal class TopicApiImplJs(
 			val patientConverted: Patient? = patient?.let { nonNull1 ->
 				patient_fromJs(nonNull1)
 			}
-			val userConverted: User? = convertingOptionOrDefault(
-				_options.user,
+			val userConverted: User? = convertingOptionOrDefaultNullable(
+				_options,
+				"user",
 				null
-			) { user ->
+			) { user: UserJs? ->
 				user?.let { nonNull1 ->
 					user_fromJs(nonNull1)
 				}
 			}
-			val delegatesConverted: Map<String, AccessLevel> = convertingOptionOrDefault(
-				_options.delegates,
+			val delegatesConverted: Map<String, AccessLevel> = convertingOptionOrDefaultNonNull(
+				_options,
+				"delegates",
 				emptyMap()
-			) { delegates ->
+			) { delegates: Record<String, String> ->
 				objectToMap(
 					delegates,
 					"delegates",
@@ -653,10 +671,11 @@ internal class TopicApiImplJs(
 					},
 				)
 			}
-			val secretIdConverted: SecretIdOption = convertingOptionOrDefault(
-				_options.secretId,
+			val secretIdConverted: SecretIdOption = convertingOptionOrDefaultNonNull(
+				_options,
+				"secretId",
 				com.icure.sdk.crypto.entities.SecretIdOption.UseAnySharedWithParent
-			) { secretId ->
+			) { secretId: SecretIdOptionJs ->
 				secretIdOption_fromJs(secretId)
 			}
 			val result = topicApi.withEncryptionMetadata(
@@ -771,28 +790,31 @@ internal class TopicApiImplJs(
 	override fun shareWith(
 		delegateId: String,
 		topic: DecryptedTopicJs,
-		options: TopicApi_shareWith_Options?,
+		options: dynamic,
 	): Promise<SimpleShareResultJs<DecryptedTopicJs>> {
-		val _options: TopicApi_shareWith_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val delegateIdConverted: String = delegateId
 			val topicConverted: DecryptedTopic = topic_fromJs(topic)
-			val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
-				_options.shareEncryptionKeys,
+			val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+				_options,
+				"shareEncryptionKeys",
 				com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-			) { shareEncryptionKeys ->
+			) { shareEncryptionKeys: String ->
 				ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
 			}
-			val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
-				_options.shareOwningEntityIds,
+			val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+				_options,
+				"shareOwningEntityIds",
 				com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-			) { shareOwningEntityIds ->
+			) { shareOwningEntityIds: String ->
 				ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
 			}
-			val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefault(
-				_options.requestedPermission,
+			val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefaultNonNull(
+				_options,
+				"requestedPermission",
 				com.icure.sdk.model.requests.RequestedPermission.MaxWrite
-			) { requestedPermission ->
+			) { requestedPermission: String ->
 				RequestedPermission.valueOf(requestedPermission)
 			}
 			val result = topicApi.shareWith(
@@ -895,20 +917,22 @@ internal class TopicApiImplJs(
 		)
 	}
 
-	override fun filterTopicsBy(filterChain: FilterChainJs<TopicJs>,
-			options: TopicApi_filterTopicsBy_Options?): Promise<PaginatedListJs<DecryptedTopicJs>> {
-		val _options: TopicApi_filterTopicsBy_Options = options ?: js("{}")
+	override fun filterTopicsBy(filterChain: FilterChainJs<TopicJs>, options: dynamic):
+			Promise<PaginatedListJs<DecryptedTopicJs>> {
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
-			val startDocumentIdConverted: String? = convertingOptionOrDefault(
-				_options.startDocumentId,
+			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"startDocumentId",
 				null
-			) { startDocumentId ->
-				startDocumentId
+			) { startDocumentId: String? ->
+				undefinedToNull(startDocumentId)
 			}
-			val limitConverted: Int? = convertingOptionOrDefault(
-				_options.limit,
+			val limitConverted: Int? = convertingOptionOrDefaultNullable(
+				_options,
+				"limit",
 				null
-			) { limit ->
+			) { limit: Double? ->
 				numberToInt(limit, "limit")
 			}
 			val filterChainConverted: FilterChain<Topic> = filterChain_fromJs(
@@ -962,9 +986,9 @@ internal class TopicApiImplJs(
 		events: Array<String>,
 		filter: AbstractFilterJs<TopicJs>,
 		eventFired: (DecryptedTopicJs) -> Promise<Unit>,
-		options: TopicApi_subscribeToEvents_Options?,
+		options: dynamic,
 	): Promise<ConnectionJs> {
-		val _options: TopicApi_subscribeToEvents_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
 				events,
@@ -979,36 +1003,41 @@ internal class TopicApiImplJs(
 					topic_fromJs(x1)
 				},
 			)
-			val onConnectedConverted: suspend () -> Unit = convertingOptionOrDefault(
-				_options.onConnected,
+			val onConnectedConverted: suspend () -> Unit = convertingOptionOrDefaultNonNull(
+				_options,
+				"onConnected",
 				{}
-			) { onConnected ->
+			) { onConnected: () -> Promise<Unit> ->
 				{  ->
 					onConnected().await()
 				}
 			}
-			val channelCapacityConverted: Int = convertingOptionOrDefault(
-				_options.channelCapacity,
+			val channelCapacityConverted: Int = convertingOptionOrDefaultNonNull(
+				_options,
+				"channelCapacity",
 				kotlinx.coroutines.channels.Channel.BUFFERED
-			) { channelCapacity ->
+			) { channelCapacity: Double ->
 				numberToInt(channelCapacity, "channelCapacity")
 			}
-			val retryDelayConverted: Duration = convertingOptionOrDefault(
-				_options.retryDelay,
+			val retryDelayConverted: Duration = convertingOptionOrDefaultNonNull(
+				_options,
+				"retryDelay",
 				2.seconds
-			) { retryDelay ->
+			) { retryDelay: Double ->
 				numberToDuration(retryDelay, "retryDelay")
 			}
-			val retryDelayExponentFactorConverted: Double = convertingOptionOrDefault(
-				_options.retryDelayExponentFactor,
+			val retryDelayExponentFactorConverted: Double = convertingOptionOrDefaultNonNull(
+				_options,
+				"retryDelayExponentFactor",
 				2.0
-			) { retryDelayExponentFactor ->
+			) { retryDelayExponentFactor: Double ->
 				retryDelayExponentFactor
 			}
-			val maxRetriesConverted: Int = convertingOptionOrDefault(
-				_options.maxRetries,
+			val maxRetriesConverted: Int = convertingOptionOrDefaultNonNull(
+				_options,
+				"maxRetries",
 				5
-			) { maxRetries ->
+			) { maxRetries: Double ->
 				numberToInt(maxRetries, "maxRetries")
 			}
 			val eventFiredConverted: suspend (DecryptedTopic) -> Unit = { arg0 ->

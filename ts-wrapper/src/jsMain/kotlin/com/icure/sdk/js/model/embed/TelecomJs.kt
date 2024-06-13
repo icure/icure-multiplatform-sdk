@@ -17,9 +17,6 @@ public sealed external interface TelecomJs : EncryptableJs {
 	public val telecomDescription: String?
 
 	public val isEncrypted: Boolean
-
-	@JsName("${'$'}ktClass")
-	public val ktClass: String
 }
 
 @JsName("DecryptedTelecom")
@@ -35,8 +32,6 @@ public external class DecryptedTelecomJs(
 	override val encryptedSelf: String?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }
 
 @JsName("EncryptedTelecom")
@@ -52,6 +47,4 @@ public external class EncryptedTelecomJs(
 	override val encryptedSelf: String?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }

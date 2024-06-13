@@ -5,19 +5,12 @@ import com.icure.sdk.api.flavoured.AccessLogApi
 import com.icure.sdk.crypto.entities.AccessLogShareOptions
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
-import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefault
+import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNonNull
+import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.sdk.js.api.flavoured.AccessLogApiJs
-import com.icure.sdk.js.api.flavoured.AccessLogApi_findAccessLogsByHcPartyPatient_Options
-import com.icure.sdk.js.api.flavoured.AccessLogApi_findAccessLogsByUserAfterDate_Options
-import com.icure.sdk.js.api.flavoured.AccessLogApi_findAccessLogsInGroup_Options
-import com.icure.sdk.js.api.flavoured.AccessLogApi_shareWith_Options
-import com.icure.sdk.js.api.flavoured.AccessLogApi_withEncryptionMetadata_Options
 import com.icure.sdk.js.api.flavoured.AccessLogFlavouredApiJs
-import com.icure.sdk.js.api.flavoured.AccessLogFlavouredApi_findAccessLogsByHcPartyPatient_Options
-import com.icure.sdk.js.api.flavoured.AccessLogFlavouredApi_findAccessLogsByUserAfterDate_Options
-import com.icure.sdk.js.api.flavoured.AccessLogFlavouredApi_findAccessLogsInGroup_Options
-import com.icure.sdk.js.api.flavoured.AccessLogFlavouredApi_shareWith_Options
 import com.icure.sdk.js.crypto.entities.AccessLogShareOptionsJs
+import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.crypto.entities.accessLogShareOptions_fromJs
 import com.icure.sdk.js.crypto.entities.secretIdOption_fromJs
@@ -30,10 +23,12 @@ import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.sdk.js.model.CheckedConverters.setToArray
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.DecryptedAccessLogJs
 import com.icure.sdk.js.model.EncryptedAccessLogJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.PatientJs
+import com.icure.sdk.js.model.UserJs
 import com.icure.sdk.js.model.accessLog_fromJs
 import com.icure.sdk.js.model.accessLog_toJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
@@ -79,28 +74,31 @@ internal class AccessLogApiImplJs(
 		override fun shareWith(
 			delegateId: String,
 			accessLog: EncryptedAccessLogJs,
-			options: AccessLogFlavouredApi_shareWith_Options?,
+			options: dynamic,
 		): Promise<SimpleShareResultJs<EncryptedAccessLogJs>> {
-			val _options: AccessLogFlavouredApi_shareWith_Options = options ?: js("{}")
+			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val accessLogConverted: EncryptedAccessLog = accessLog_fromJs(accessLog)
-				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
-					_options.shareEncryptionKeys,
+				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+					_options,
+					"shareEncryptionKeys",
 					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareEncryptionKeys ->
+				) { shareEncryptionKeys: String ->
 					ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
 				}
-				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
-					_options.shareOwningEntityIds,
+				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+					_options,
+					"shareOwningEntityIds",
 					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareOwningEntityIds ->
+				) { shareOwningEntityIds: String ->
 					ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
 				}
-				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefault(
-					_options.requestedPermission,
+				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefaultNonNull(
+					_options,
+					"requestedPermission",
 					com.icure.sdk.model.requests.RequestedPermission.MaxWrite
-				) { requestedPermission ->
+				) { requestedPermission: String ->
 					RequestedPermission.valueOf(requestedPermission)
 				}
 				val result = accessLogApi.encrypted.shareWith(
@@ -169,29 +167,32 @@ internal class AccessLogApiImplJs(
 		override fun findAccessLogsByHcPartyPatient(
 			hcPartyId: String,
 			patient: PatientJs,
-			options: AccessLogFlavouredApi_findAccessLogsByHcPartyPatient_Options?,
+			options: dynamic,
 		): Promise<PaginatedListIteratorJs<EncryptedAccessLogJs>> {
-			val _options: AccessLogFlavouredApi_findAccessLogsByHcPartyPatient_Options = options ?: js("{}")
+			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val hcPartyIdConverted: String = hcPartyId
 				val patientConverted: Patient = patient_fromJs(patient)
-				val startDateConverted: Long? = convertingOptionOrDefault(
-					_options.startDate,
+				val startDateConverted: Long? = convertingOptionOrDefaultNullable(
+					_options,
+					"startDate",
 					null
-				) { startDate ->
+				) { startDate: Double? ->
 					numberToLong(startDate, "startDate")
 				}
-				val endDateConverted: Long? = convertingOptionOrDefault(
-					_options.endDate,
+				val endDateConverted: Long? = convertingOptionOrDefaultNullable(
+					_options,
+					"endDate",
 					null
-				) { endDate ->
+				) { endDate: Double? ->
 					numberToLong(endDate, "endDate")
 				}
-				val descendingConverted: Boolean? = convertingOptionOrDefault(
-					_options.descending,
+				val descendingConverted: Boolean? = convertingOptionOrDefaultNullable(
+					_options,
+					"descending",
 					null
-				) { descending ->
-					descending
+				) { descending: Boolean? ->
+					undefinedToNull(descending)
 				}
 				val result = accessLogApi.encrypted.findAccessLogsByHcPartyPatient(
 					hcPartyIdConverted,
@@ -256,7 +257,7 @@ internal class AccessLogApiImplJs(
 			val fromEpochConverted: Long? = numberToLong(fromEpoch, "fromEpoch")
 			val toEpochConverted: Long? = numberToLong(toEpoch, "toEpoch")
 			val startKeyConverted: Long? = numberToLong(startKey, "startKey")
-			val startDocumentIdConverted: String? = startDocumentId
+			val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
 			val limitConverted: Int? = numberToInt(limit, "limit")
 			val result = accessLogApi.encrypted.findAccessLogsBy(
 				fromEpochConverted,
@@ -273,47 +274,52 @@ internal class AccessLogApiImplJs(
 			)
 		}
 
-		override fun findAccessLogsByUserAfterDate(userId: String,
-				options: AccessLogFlavouredApi_findAccessLogsByUserAfterDate_Options?):
+		override fun findAccessLogsByUserAfterDate(userId: String, options: dynamic):
 				Promise<PaginatedListJs<EncryptedAccessLogJs>> {
-			val _options: AccessLogFlavouredApi_findAccessLogsByUserAfterDate_Options = options ?: js("{}")
+			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val userIdConverted: String = userId
-				val accessTypeConverted: String? = convertingOptionOrDefault(
-					_options.accessType,
+				val accessTypeConverted: String? = convertingOptionOrDefaultNullable(
+					_options,
+					"accessType",
 					null
-				) { accessType ->
-					accessType
+				) { accessType: String? ->
+					undefinedToNull(accessType)
 				}
-				val startDateConverted: Long? = convertingOptionOrDefault(
-					_options.startDate,
+				val startDateConverted: Long? = convertingOptionOrDefaultNullable(
+					_options,
+					"startDate",
 					null
-				) { startDate ->
+				) { startDate: Double? ->
 					numberToLong(startDate, "startDate")
 				}
-				val startKeyConverted: String? = convertingOptionOrDefault(
-					_options.startKey,
+				val startKeyConverted: String? = convertingOptionOrDefaultNullable(
+					_options,
+					"startKey",
 					null
-				) { startKey ->
-					startKey
+				) { startKey: String? ->
+					undefinedToNull(startKey)
 				}
-				val startDocumentIdConverted: String? = convertingOptionOrDefault(
-					_options.startDocumentId,
+				val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
+					_options,
+					"startDocumentId",
 					null
-				) { startDocumentId ->
-					startDocumentId
+				) { startDocumentId: String? ->
+					undefinedToNull(startDocumentId)
 				}
-				val limitConverted: Int? = convertingOptionOrDefault(
-					_options.limit,
+				val limitConverted: Int? = convertingOptionOrDefaultNullable(
+					_options,
+					"limit",
 					null
-				) { limit ->
+				) { limit: Double? ->
 					numberToInt(limit, "limit")
 				}
-				val descendingConverted: Boolean? = convertingOptionOrDefault(
-					_options.descending,
+				val descendingConverted: Boolean? = convertingOptionOrDefaultNullable(
+					_options,
+					"descending",
 					null
-				) { descending ->
-					descending
+				) { descending: Boolean? ->
+					undefinedToNull(descending)
 				}
 				val result = accessLogApi.encrypted.findAccessLogsByUserAfterDate(
 					userIdConverted,
@@ -333,40 +339,44 @@ internal class AccessLogApiImplJs(
 			}
 		}
 
-		override fun findAccessLogsInGroup(groupId: String,
-				options: AccessLogFlavouredApi_findAccessLogsInGroup_Options?):
+		override fun findAccessLogsInGroup(groupId: String, options: dynamic):
 				Promise<PaginatedListJs<EncryptedAccessLogJs>> {
-			val _options: AccessLogFlavouredApi_findAccessLogsInGroup_Options = options ?: js("{}")
+			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val groupIdConverted: String = groupId
-				val fromEpochConverted: Long? = convertingOptionOrDefault(
-					_options.fromEpoch,
+				val fromEpochConverted: Long? = convertingOptionOrDefaultNullable(
+					_options,
+					"fromEpoch",
 					null
-				) { fromEpoch ->
+				) { fromEpoch: Double? ->
 					numberToLong(fromEpoch, "fromEpoch")
 				}
-				val toEpochConverted: Long? = convertingOptionOrDefault(
-					_options.toEpoch,
+				val toEpochConverted: Long? = convertingOptionOrDefaultNullable(
+					_options,
+					"toEpoch",
 					null
-				) { toEpoch ->
+				) { toEpoch: Double? ->
 					numberToLong(toEpoch, "toEpoch")
 				}
-				val startKeyConverted: Long? = convertingOptionOrDefault(
-					_options.startKey,
+				val startKeyConverted: Long? = convertingOptionOrDefaultNullable(
+					_options,
+					"startKey",
 					null
-				) { startKey ->
+				) { startKey: Double? ->
 					numberToLong(startKey, "startKey")
 				}
-				val startDocumentIdConverted: String? = convertingOptionOrDefault(
-					_options.startDocumentId,
+				val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
+					_options,
+					"startDocumentId",
 					null
-				) { startDocumentId ->
-					startDocumentId
+				) { startDocumentId: String? ->
+					undefinedToNull(startDocumentId)
 				}
-				val limitConverted: Int? = convertingOptionOrDefault(
-					_options.limit,
+				val limitConverted: Int? = convertingOptionOrDefaultNullable(
+					_options,
+					"limit",
 					null
-				) { limit ->
+				) { limit: Double? ->
 					numberToInt(limit, "limit")
 				}
 				val result = accessLogApi.encrypted.findAccessLogsInGroup(
@@ -392,28 +402,31 @@ internal class AccessLogApiImplJs(
 		override fun shareWith(
 			delegateId: String,
 			accessLog: AccessLogJs,
-			options: AccessLogFlavouredApi_shareWith_Options?,
+			options: dynamic,
 		): Promise<SimpleShareResultJs<AccessLogJs>> {
-			val _options: AccessLogFlavouredApi_shareWith_Options = options ?: js("{}")
+			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val accessLogConverted: AccessLog = accessLog_fromJs(accessLog)
-				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
-					_options.shareEncryptionKeys,
+				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+					_options,
+					"shareEncryptionKeys",
 					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareEncryptionKeys ->
+				) { shareEncryptionKeys: String ->
 					ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
 				}
-				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
-					_options.shareOwningEntityIds,
+				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+					_options,
+					"shareOwningEntityIds",
 					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareOwningEntityIds ->
+				) { shareOwningEntityIds: String ->
 					ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
 				}
-				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefault(
-					_options.requestedPermission,
+				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefaultNonNull(
+					_options,
+					"requestedPermission",
 					com.icure.sdk.model.requests.RequestedPermission.MaxWrite
-				) { requestedPermission ->
+				) { requestedPermission: String ->
 					RequestedPermission.valueOf(requestedPermission)
 				}
 				val result = accessLogApi.tryAndRecover.shareWith(
@@ -482,29 +495,32 @@ internal class AccessLogApiImplJs(
 		override fun findAccessLogsByHcPartyPatient(
 			hcPartyId: String,
 			patient: PatientJs,
-			options: AccessLogFlavouredApi_findAccessLogsByHcPartyPatient_Options?,
+			options: dynamic,
 		): Promise<PaginatedListIteratorJs<AccessLogJs>> {
-			val _options: AccessLogFlavouredApi_findAccessLogsByHcPartyPatient_Options = options ?: js("{}")
+			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val hcPartyIdConverted: String = hcPartyId
 				val patientConverted: Patient = patient_fromJs(patient)
-				val startDateConverted: Long? = convertingOptionOrDefault(
-					_options.startDate,
+				val startDateConverted: Long? = convertingOptionOrDefaultNullable(
+					_options,
+					"startDate",
 					null
-				) { startDate ->
+				) { startDate: Double? ->
 					numberToLong(startDate, "startDate")
 				}
-				val endDateConverted: Long? = convertingOptionOrDefault(
-					_options.endDate,
+				val endDateConverted: Long? = convertingOptionOrDefaultNullable(
+					_options,
+					"endDate",
 					null
-				) { endDate ->
+				) { endDate: Double? ->
 					numberToLong(endDate, "endDate")
 				}
-				val descendingConverted: Boolean? = convertingOptionOrDefault(
-					_options.descending,
+				val descendingConverted: Boolean? = convertingOptionOrDefaultNullable(
+					_options,
+					"descending",
 					null
-				) { descending ->
-					descending
+				) { descending: Boolean? ->
+					undefinedToNull(descending)
 				}
 				val result = accessLogApi.tryAndRecover.findAccessLogsByHcPartyPatient(
 					hcPartyIdConverted,
@@ -568,7 +584,7 @@ internal class AccessLogApiImplJs(
 			val fromEpochConverted: Long? = numberToLong(fromEpoch, "fromEpoch")
 			val toEpochConverted: Long? = numberToLong(toEpoch, "toEpoch")
 			val startKeyConverted: Long? = numberToLong(startKey, "startKey")
-			val startDocumentIdConverted: String? = startDocumentId
+			val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
 			val limitConverted: Int? = numberToInt(limit, "limit")
 			val result = accessLogApi.tryAndRecover.findAccessLogsBy(
 				fromEpochConverted,
@@ -585,47 +601,52 @@ internal class AccessLogApiImplJs(
 			)
 		}
 
-		override fun findAccessLogsByUserAfterDate(userId: String,
-				options: AccessLogFlavouredApi_findAccessLogsByUserAfterDate_Options?):
+		override fun findAccessLogsByUserAfterDate(userId: String, options: dynamic):
 				Promise<PaginatedListJs<AccessLogJs>> {
-			val _options: AccessLogFlavouredApi_findAccessLogsByUserAfterDate_Options = options ?: js("{}")
+			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val userIdConverted: String = userId
-				val accessTypeConverted: String? = convertingOptionOrDefault(
-					_options.accessType,
+				val accessTypeConverted: String? = convertingOptionOrDefaultNullable(
+					_options,
+					"accessType",
 					null
-				) { accessType ->
-					accessType
+				) { accessType: String? ->
+					undefinedToNull(accessType)
 				}
-				val startDateConverted: Long? = convertingOptionOrDefault(
-					_options.startDate,
+				val startDateConverted: Long? = convertingOptionOrDefaultNullable(
+					_options,
+					"startDate",
 					null
-				) { startDate ->
+				) { startDate: Double? ->
 					numberToLong(startDate, "startDate")
 				}
-				val startKeyConverted: String? = convertingOptionOrDefault(
-					_options.startKey,
+				val startKeyConverted: String? = convertingOptionOrDefaultNullable(
+					_options,
+					"startKey",
 					null
-				) { startKey ->
-					startKey
+				) { startKey: String? ->
+					undefinedToNull(startKey)
 				}
-				val startDocumentIdConverted: String? = convertingOptionOrDefault(
-					_options.startDocumentId,
+				val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
+					_options,
+					"startDocumentId",
 					null
-				) { startDocumentId ->
-					startDocumentId
+				) { startDocumentId: String? ->
+					undefinedToNull(startDocumentId)
 				}
-				val limitConverted: Int? = convertingOptionOrDefault(
-					_options.limit,
+				val limitConverted: Int? = convertingOptionOrDefaultNullable(
+					_options,
+					"limit",
 					null
-				) { limit ->
+				) { limit: Double? ->
 					numberToInt(limit, "limit")
 				}
-				val descendingConverted: Boolean? = convertingOptionOrDefault(
-					_options.descending,
+				val descendingConverted: Boolean? = convertingOptionOrDefaultNullable(
+					_options,
+					"descending",
 					null
-				) { descending ->
-					descending
+				) { descending: Boolean? ->
+					undefinedToNull(descending)
 				}
 				val result = accessLogApi.tryAndRecover.findAccessLogsByUserAfterDate(
 					userIdConverted,
@@ -645,40 +666,44 @@ internal class AccessLogApiImplJs(
 			}
 		}
 
-		override fun findAccessLogsInGroup(groupId: String,
-				options: AccessLogFlavouredApi_findAccessLogsInGroup_Options?):
+		override fun findAccessLogsInGroup(groupId: String, options: dynamic):
 				Promise<PaginatedListJs<AccessLogJs>> {
-			val _options: AccessLogFlavouredApi_findAccessLogsInGroup_Options = options ?: js("{}")
+			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val groupIdConverted: String = groupId
-				val fromEpochConverted: Long? = convertingOptionOrDefault(
-					_options.fromEpoch,
+				val fromEpochConverted: Long? = convertingOptionOrDefaultNullable(
+					_options,
+					"fromEpoch",
 					null
-				) { fromEpoch ->
+				) { fromEpoch: Double? ->
 					numberToLong(fromEpoch, "fromEpoch")
 				}
-				val toEpochConverted: Long? = convertingOptionOrDefault(
-					_options.toEpoch,
+				val toEpochConverted: Long? = convertingOptionOrDefaultNullable(
+					_options,
+					"toEpoch",
 					null
-				) { toEpoch ->
+				) { toEpoch: Double? ->
 					numberToLong(toEpoch, "toEpoch")
 				}
-				val startKeyConverted: Long? = convertingOptionOrDefault(
-					_options.startKey,
+				val startKeyConverted: Long? = convertingOptionOrDefaultNullable(
+					_options,
+					"startKey",
 					null
-				) { startKey ->
+				) { startKey: Double? ->
 					numberToLong(startKey, "startKey")
 				}
-				val startDocumentIdConverted: String? = convertingOptionOrDefault(
-					_options.startDocumentId,
+				val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
+					_options,
+					"startDocumentId",
 					null
-				) { startDocumentId ->
-					startDocumentId
+				) { startDocumentId: String? ->
+					undefinedToNull(startDocumentId)
 				}
-				val limitConverted: Int? = convertingOptionOrDefault(
-					_options.limit,
+				val limitConverted: Int? = convertingOptionOrDefaultNullable(
+					_options,
+					"limit",
 					null
-				) { limit ->
+				) { limit: Double? ->
 					numberToInt(limit, "limit")
 				}
 				val result = accessLogApi.tryAndRecover.findAccessLogsInGroup(
@@ -711,26 +736,28 @@ internal class AccessLogApiImplJs(
 	override fun withEncryptionMetadata(
 		base: DecryptedAccessLogJs?,
 		patient: PatientJs,
-		options: AccessLogApi_withEncryptionMetadata_Options?,
+		options: dynamic,
 	): Promise<DecryptedAccessLogJs> {
-		val _options: AccessLogApi_withEncryptionMetadata_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val baseConverted: DecryptedAccessLog? = base?.let { nonNull1 ->
 				accessLog_fromJs(nonNull1)
 			}
 			val patientConverted: Patient = patient_fromJs(patient)
-			val userConverted: User? = convertingOptionOrDefault(
-				_options.user,
+			val userConverted: User? = convertingOptionOrDefaultNullable(
+				_options,
+				"user",
 				null
-			) { user ->
+			) { user: UserJs? ->
 				user?.let { nonNull1 ->
 					user_fromJs(nonNull1)
 				}
 			}
-			val delegatesConverted: Map<String, AccessLevel> = convertingOptionOrDefault(
-				_options.delegates,
+			val delegatesConverted: Map<String, AccessLevel> = convertingOptionOrDefaultNonNull(
+				_options,
+				"delegates",
 				emptyMap()
-			) { delegates ->
+			) { delegates: Record<String, String> ->
 				objectToMap(
 					delegates,
 					"delegates",
@@ -742,10 +769,11 @@ internal class AccessLogApiImplJs(
 					},
 				)
 			}
-			val secretIdConverted: SecretIdOption = convertingOptionOrDefault(
-				_options.secretId,
+			val secretIdConverted: SecretIdOption = convertingOptionOrDefaultNonNull(
+				_options,
+				"secretId",
 				com.icure.sdk.crypto.entities.SecretIdOption.UseAnySharedWithParent
-			) { secretId ->
+			) { secretId: SecretIdOptionJs ->
 				secretIdOption_fromJs(secretId)
 			}
 			val result = accessLogApi.withEncryptionMetadata(
@@ -843,28 +871,31 @@ internal class AccessLogApiImplJs(
 	override fun shareWith(
 		delegateId: String,
 		accessLog: DecryptedAccessLogJs,
-		options: AccessLogApi_shareWith_Options?,
+		options: dynamic,
 	): Promise<SimpleShareResultJs<DecryptedAccessLogJs>> {
-		val _options: AccessLogApi_shareWith_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val delegateIdConverted: String = delegateId
 			val accessLogConverted: DecryptedAccessLog = accessLog_fromJs(accessLog)
-			val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
-				_options.shareEncryptionKeys,
+			val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+				_options,
+				"shareEncryptionKeys",
 				com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-			) { shareEncryptionKeys ->
+			) { shareEncryptionKeys: String ->
 				ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
 			}
-			val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefault(
-				_options.shareOwningEntityIds,
+			val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+				_options,
+				"shareOwningEntityIds",
 				com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-			) { shareOwningEntityIds ->
+			) { shareOwningEntityIds: String ->
 				ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
 			}
-			val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefault(
-				_options.requestedPermission,
+			val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefaultNonNull(
+				_options,
+				"requestedPermission",
 				com.icure.sdk.model.requests.RequestedPermission.MaxWrite
-			) { requestedPermission ->
+			) { requestedPermission: String ->
 				RequestedPermission.valueOf(requestedPermission)
 			}
 			val result = accessLogApi.shareWith(
@@ -933,29 +964,32 @@ internal class AccessLogApiImplJs(
 	override fun findAccessLogsByHcPartyPatient(
 		hcPartyId: String,
 		patient: PatientJs,
-		options: AccessLogApi_findAccessLogsByHcPartyPatient_Options?,
+		options: dynamic,
 	): Promise<PaginatedListIteratorJs<DecryptedAccessLogJs>> {
-		val _options: AccessLogApi_findAccessLogsByHcPartyPatient_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val hcPartyIdConverted: String = hcPartyId
 			val patientConverted: Patient = patient_fromJs(patient)
-			val startDateConverted: Long? = convertingOptionOrDefault(
-				_options.startDate,
+			val startDateConverted: Long? = convertingOptionOrDefaultNullable(
+				_options,
+				"startDate",
 				null
-			) { startDate ->
+			) { startDate: Double? ->
 				numberToLong(startDate, "startDate")
 			}
-			val endDateConverted: Long? = convertingOptionOrDefault(
-				_options.endDate,
+			val endDateConverted: Long? = convertingOptionOrDefaultNullable(
+				_options,
+				"endDate",
 				null
-			) { endDate ->
+			) { endDate: Double? ->
 				numberToLong(endDate, "endDate")
 			}
-			val descendingConverted: Boolean? = convertingOptionOrDefault(
-				_options.descending,
+			val descendingConverted: Boolean? = convertingOptionOrDefaultNullable(
+				_options,
+				"descending",
 				null
-			) { descending ->
-				descending
+			) { descending: Boolean? ->
+				undefinedToNull(descending)
 			}
 			val result = accessLogApi.findAccessLogsByHcPartyPatient(
 				hcPartyIdConverted,
@@ -1020,7 +1054,7 @@ internal class AccessLogApiImplJs(
 		val fromEpochConverted: Long? = numberToLong(fromEpoch, "fromEpoch")
 		val toEpochConverted: Long? = numberToLong(toEpoch, "toEpoch")
 		val startKeyConverted: Long? = numberToLong(startKey, "startKey")
-		val startDocumentIdConverted: String? = startDocumentId
+		val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
 		val limitConverted: Int? = numberToInt(limit, "limit")
 		val result = accessLogApi.findAccessLogsBy(
 			fromEpochConverted,
@@ -1037,47 +1071,52 @@ internal class AccessLogApiImplJs(
 		)
 	}
 
-	override fun findAccessLogsByUserAfterDate(userId: String,
-			options: AccessLogApi_findAccessLogsByUserAfterDate_Options?):
+	override fun findAccessLogsByUserAfterDate(userId: String, options: dynamic):
 			Promise<PaginatedListJs<DecryptedAccessLogJs>> {
-		val _options: AccessLogApi_findAccessLogsByUserAfterDate_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val userIdConverted: String = userId
-			val accessTypeConverted: String? = convertingOptionOrDefault(
-				_options.accessType,
+			val accessTypeConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"accessType",
 				null
-			) { accessType ->
-				accessType
+			) { accessType: String? ->
+				undefinedToNull(accessType)
 			}
-			val startDateConverted: Long? = convertingOptionOrDefault(
-				_options.startDate,
+			val startDateConverted: Long? = convertingOptionOrDefaultNullable(
+				_options,
+				"startDate",
 				null
-			) { startDate ->
+			) { startDate: Double? ->
 				numberToLong(startDate, "startDate")
 			}
-			val startKeyConverted: String? = convertingOptionOrDefault(
-				_options.startKey,
+			val startKeyConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"startKey",
 				null
-			) { startKey ->
-				startKey
+			) { startKey: String? ->
+				undefinedToNull(startKey)
 			}
-			val startDocumentIdConverted: String? = convertingOptionOrDefault(
-				_options.startDocumentId,
+			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"startDocumentId",
 				null
-			) { startDocumentId ->
-				startDocumentId
+			) { startDocumentId: String? ->
+				undefinedToNull(startDocumentId)
 			}
-			val limitConverted: Int? = convertingOptionOrDefault(
-				_options.limit,
+			val limitConverted: Int? = convertingOptionOrDefaultNullable(
+				_options,
+				"limit",
 				null
-			) { limit ->
+			) { limit: Double? ->
 				numberToInt(limit, "limit")
 			}
-			val descendingConverted: Boolean? = convertingOptionOrDefault(
-				_options.descending,
+			val descendingConverted: Boolean? = convertingOptionOrDefaultNullable(
+				_options,
+				"descending",
 				null
-			) { descending ->
-				descending
+			) { descending: Boolean? ->
+				undefinedToNull(descending)
 			}
 			val result = accessLogApi.findAccessLogsByUserAfterDate(
 				userIdConverted,
@@ -1097,40 +1136,44 @@ internal class AccessLogApiImplJs(
 		}
 	}
 
-	override fun findAccessLogsInGroup(groupId: String,
-			options: AccessLogApi_findAccessLogsInGroup_Options?):
+	override fun findAccessLogsInGroup(groupId: String, options: dynamic):
 			Promise<PaginatedListJs<DecryptedAccessLogJs>> {
-		val _options: AccessLogApi_findAccessLogsInGroup_Options = options ?: js("{}")
+		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val groupIdConverted: String = groupId
-			val fromEpochConverted: Long? = convertingOptionOrDefault(
-				_options.fromEpoch,
+			val fromEpochConverted: Long? = convertingOptionOrDefaultNullable(
+				_options,
+				"fromEpoch",
 				null
-			) { fromEpoch ->
+			) { fromEpoch: Double? ->
 				numberToLong(fromEpoch, "fromEpoch")
 			}
-			val toEpochConverted: Long? = convertingOptionOrDefault(
-				_options.toEpoch,
+			val toEpochConverted: Long? = convertingOptionOrDefaultNullable(
+				_options,
+				"toEpoch",
 				null
-			) { toEpoch ->
+			) { toEpoch: Double? ->
 				numberToLong(toEpoch, "toEpoch")
 			}
-			val startKeyConverted: Long? = convertingOptionOrDefault(
-				_options.startKey,
+			val startKeyConverted: Long? = convertingOptionOrDefaultNullable(
+				_options,
+				"startKey",
 				null
-			) { startKey ->
+			) { startKey: Double? ->
 				numberToLong(startKey, "startKey")
 			}
-			val startDocumentIdConverted: String? = convertingOptionOrDefault(
-				_options.startDocumentId,
+			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"startDocumentId",
 				null
-			) { startDocumentId ->
-				startDocumentId
+			) { startDocumentId: String? ->
+				undefinedToNull(startDocumentId)
 			}
-			val limitConverted: Int? = convertingOptionOrDefault(
-				_options.limit,
+			val limitConverted: Int? = convertingOptionOrDefaultNullable(
+				_options,
+				"limit",
 				null
-			) { limit ->
+			) { limit: Double? ->
 				numberToInt(limit, "limit")
 			}
 			val result = accessLogApi.findAccessLogsInGroup(

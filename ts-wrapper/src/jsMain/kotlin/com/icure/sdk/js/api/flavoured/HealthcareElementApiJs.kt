@@ -4,7 +4,6 @@
 package com.icure.sdk.js.api.flavoured
 
 import com.icure.sdk.js.crypto.entities.HealthElementShareOptionsJs
-import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.model.DecryptedHealthElementJs
 import com.icure.sdk.js.model.EncryptedHealthElementJs
@@ -12,7 +11,6 @@ import com.icure.sdk.js.model.HealthElementJs
 import com.icure.sdk.js.model.IcureStubJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.PatientJs
-import com.icure.sdk.js.model.UserJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.filter.AbstractFilterJs
 import com.icure.sdk.js.model.filter.chain.FilterChainJs
@@ -43,7 +41,7 @@ public external interface HealthcareElementApiJs {
 	public fun withEncryptionMetadata(
 		base: DecryptedHealthElementJs?,
 		patient: PatientJs,
-		options: HealthcareElementApi_withEncryptionMetadata_Options?,
+		options: dynamic,
 	): Promise<DecryptedHealthElementJs>
 
 	public fun getEncryptionKeysOf(healthElement: HealthElementJs): Promise<Array<String>>
@@ -68,7 +66,7 @@ public external interface HealthcareElementApiJs {
 	public fun shareWith(
 		delegateId: String,
 		healthcareElement: DecryptedHealthElementJs,
-		options: HealthcareElementApi_shareWith_Options?,
+		options: dynamic,
 	): Promise<SimpleShareResultJs<DecryptedHealthElementJs>>
 
 	public fun tryShareWithMany(healthElement: DecryptedHealthElementJs,
@@ -81,7 +79,7 @@ public external interface HealthcareElementApiJs {
 	public fun findHealthcareElementsByHcPartyPatient(
 		hcPartyId: String,
 		patient: PatientJs,
-		options: HealthcareElementApi_findHealthcareElementsByHcPartyPatient_Options?,
+		options: dynamic,
 	): Promise<PaginatedListIteratorJs<DecryptedHealthElementJs>>
 
 	public fun modifyHealthcareElement(entity: DecryptedHealthElementJs):
@@ -108,42 +106,6 @@ public external interface HealthcareElementApiJs {
 		events: Array<String>,
 		filter: AbstractFilterJs<HealthElementJs>,
 		eventFired: (DecryptedHealthElementJs) -> Promise<Unit>,
-		options: HealthcareElementApi_subscribeToEvents_Options?,
+		options: dynamic,
 	): Promise<ConnectionJs>
-}
-
-public external interface HealthcareElementApi_withEncryptionMetadata_Options {
-	public val user: UserJs?
-
-	public val delegates: Record<String, String>
-
-	public val secretId: SecretIdOptionJs
-}
-
-public external interface HealthcareElementApi_shareWith_Options {
-	public val shareEncryptionKeys: String
-
-	public val shareOwningEntityIds: String
-
-	public val requestedPermission: String
-}
-
-public external interface HealthcareElementApi_findHealthcareElementsByHcPartyPatient_Options {
-	public val startDate: Double?
-
-	public val endDate: Double?
-
-	public val descending: Boolean?
-}
-
-public external interface HealthcareElementApi_subscribeToEvents_Options {
-	public val onConnected: () -> Promise<Unit>
-
-	public val channelCapacity: Double
-
-	public val retryDelay: Double
-
-	public val retryDelayExponentFactor: Double
-
-	public val maxRetries: Double
 }

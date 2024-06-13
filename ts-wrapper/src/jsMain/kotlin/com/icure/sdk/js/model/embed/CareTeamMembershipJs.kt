@@ -20,9 +20,6 @@ public sealed external interface CareTeamMembershipJs : EncryptableJs {
 	public val membershipType: String?
 
 	public val isEncrypted: Boolean
-
-	@JsName("${'$'}ktClass")
-	public val ktClass: String
 }
 
 @JsName("DecryptedCareTeamMembership")
@@ -40,8 +37,6 @@ public external class DecryptedCareTeamMembershipJs(
 	override val encryptedSelf: String?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }
 
 @JsName("EncryptedCareTeamMembership")
@@ -59,6 +54,4 @@ public external class EncryptedCareTeamMembershipJs(
 	override val encryptedSelf: String?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }

@@ -4,31 +4,55 @@ import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.intToNumber
 import com.icure.sdk.js.model.CheckedConverters.listToArray
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.setToArray
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.base.CodeStubJs
 import com.icure.sdk.js.model.base.codeStub_fromJs
 import com.icure.sdk.js.model.base.codeStub_toJs
 import com.icure.sdk.model.base.CodeStub
 import com.icure.sdk.model.embed.Measure
 import com.icure.sdk.model.embed.ReferenceRange
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun measure_toJs(obj: Measure): MeasureJs {
-	val value = obj.value
-	val ref = obj.ref
-	val severity = intToNumber(obj.severity)
-	val severityCode = obj.severityCode
-	val evolution = intToNumber(obj.evolution)
-	val unit = obj.unit
-	val unitCodes = setToArray(
-		obj.unitCodes,
-		{ x1: CodeStub ->
-			codeStub_toJs(x1)
-		},
+	val value = nullToUndefined(
+		obj.value
 	)
-	val comment = obj.comment
-	val comparator = obj.comparator
-	val sign = obj.sign
+	val ref = nullToUndefined(
+		obj.ref
+	)
+	val severity = nullToUndefined(
+		intToNumber(obj.severity)
+	)
+	val severityCode = nullToUndefined(
+		obj.severityCode
+	)
+	val evolution = nullToUndefined(
+		intToNumber(obj.evolution)
+	)
+	val unit = nullToUndefined(
+		obj.unit
+	)
+	val unitCodes = nullToUndefined(
+		setToArray(
+			obj.unitCodes,
+			{ x1: CodeStub ->
+				codeStub_toJs(x1)
+			},
+		)
+	)
+	val comment = nullToUndefined(
+		obj.comment
+	)
+	val comparator = nullToUndefined(
+		obj.comparator
+	)
+	val sign = nullToUndefined(
+		obj.sign
+	)
 	val referenceRanges = listToArray(
 		obj.referenceRanges,
 		{ x1: ReferenceRange ->
@@ -51,12 +75,12 @@ public fun measure_toJs(obj: Measure): MeasureJs {
 }
 
 public fun measure_fromJs(obj: MeasureJs): Measure {
-	val value = obj.value
-	val ref = obj.ref
+	val value = undefinedToNull(obj.value)
+	val ref = undefinedToNull(obj.ref)
 	val severity = numberToInt(obj.severity, "obj.severity")
-	val severityCode = obj.severityCode
+	val severityCode = undefinedToNull(obj.severityCode)
 	val evolution = numberToInt(obj.evolution, "obj.evolution")
-	val unit = obj.unit
+	val unit = undefinedToNull(obj.unit)
 	val unitCodes = arrayToSet(
 		obj.unitCodes,
 		"obj.unitCodes",
@@ -64,9 +88,9 @@ public fun measure_fromJs(obj: MeasureJs): Measure {
 			codeStub_fromJs(x1)
 		},
 	)
-	val comment = obj.comment
-	val comparator = obj.comparator
-	val sign = obj.sign
+	val comment = undefinedToNull(obj.comment)
+	val comparator = undefinedToNull(obj.comparator)
+	val sign = undefinedToNull(obj.sign)
 	val referenceRanges = arrayToList(
 		obj.referenceRanges,
 		"obj.referenceRanges",

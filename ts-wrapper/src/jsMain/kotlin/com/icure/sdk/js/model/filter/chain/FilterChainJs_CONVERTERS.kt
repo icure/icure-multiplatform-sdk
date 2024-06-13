@@ -1,5 +1,6 @@
 package com.icure.sdk.js.model.filter.chain
 
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.base.IdentifiableJs
 import com.icure.sdk.js.model.filter.abstractFilter_fromJs
 import com.icure.sdk.js.model.filter.abstractFilter_toJs
@@ -8,7 +9,9 @@ import com.icure.sdk.js.model.filter.predicate.predicate_toJs
 import com.icure.sdk.model.base.Identifiable
 import com.icure.sdk.model.filter.chain.FilterChain
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun <O : Identifiable<String>, O_JS : IdentifiableJs<String>>
 		filterChain_toJs(obj: FilterChain<O>, convertO: (O) -> O_JS): FilterChainJs<O_JS> {
 	val filter = abstractFilter_toJs(
@@ -17,9 +20,11 @@ public fun <O : Identifiable<String>, O_JS : IdentifiableJs<String>>
 			convertO(x1)
 		},
 	)
-	val predicate = obj.predicate?.let { nonNull1 ->
-		predicate_toJs(nonNull1)
-	}
+	val predicate = nullToUndefined(
+		obj.predicate?.let { nonNull1 ->
+			predicate_toJs(nonNull1)
+		}
+	)
 	return FilterChainJs<O_JS>(js("{" +
 		"filter:filter," +
 		"predicate:predicate" +

@@ -6,11 +6,13 @@ import com.icure.sdk.js.model.CheckedConverters.intToNumber
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.longToNumber
 import com.icure.sdk.js.model.CheckedConverters.mapToObject
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.sdk.js.model.CheckedConverters.objectToMapNullsafe
 import com.icure.sdk.js.model.CheckedConverters.setToArray
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.embed.PeriodicityJs
 import com.icure.sdk.js.model.embed.periodicity_fromJs
 import com.icure.sdk.js.model.embed.periodicity_toJs
@@ -20,27 +22,45 @@ import com.icure.sdk.model.base.CodeFlag
 import com.icure.sdk.model.embed.Periodicity
 import kotlin.Array
 import kotlin.String
+import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.Set
 
+@Suppress("UNUSED_VARIABLE")
 public fun code_toJs(obj: Code): CodeJs {
 	val id = obj.id
-	val rev = obj.rev
-	val deletionDate = longToNumber(obj.deletionDate)
-	val context = obj.context
-	val type = obj.type
-	val code = obj.code
-	val version = obj.version
-	val label = mapToObject(
-		obj.label,
-		{ x1: String ->
-			x1
-		},
-		{ x1: String ->
-			x1
-		},
+	val rev = nullToUndefined(
+		obj.rev
 	)
-	val author = obj.author
+	val deletionDate = nullToUndefined(
+		longToNumber(obj.deletionDate)
+	)
+	val context = nullToUndefined(
+		obj.context
+	)
+	val type = nullToUndefined(
+		obj.type
+	)
+	val code = nullToUndefined(
+		obj.code
+	)
+	val version = nullToUndefined(
+		obj.version
+	)
+	val label = nullToUndefined(
+		mapToObject(
+			obj.label,
+			{ x1: String ->
+				x1
+			},
+			{ x1: String ->
+				x1
+			},
+		)
+	)
+	val author = nullToUndefined(
+		obj.author
+	)
 	val regions = setToArray(
 		obj.regions,
 		{ x1: String ->
@@ -53,7 +73,9 @@ public fun code_toJs(obj: Code): CodeJs {
 			periodicity_toJs(x1)
 		},
 	)
-	val level = intToNumber(obj.level)
+	val level = nullToUndefined(
+		intToNumber(obj.level)
+	)
 	val links = setToArray(
 		obj.links,
 		{ x1: String ->
@@ -94,7 +116,9 @@ public fun code_toJs(obj: Code): CodeJs {
 			)
 		},
 	)
-	val data = obj.data
+	val data = nullToUndefined(
+		obj.data
+	)
 	val appendices = mapToObject(
 		obj.appendices,
 		{ x1: AppendixType ->
@@ -130,12 +154,12 @@ public fun code_toJs(obj: Code): CodeJs {
 
 public fun code_fromJs(obj: CodeJs): Code {
 	val id = obj.id
-	val rev = obj.rev
+	val rev = undefinedToNull(obj.rev)
 	val deletionDate = numberToLong(obj.deletionDate, "obj.deletionDate")
-	val context = obj.context
-	val type = obj.type
-	val code = obj.code
-	val version = obj.version
+	val context = undefinedToNull(obj.context)
+	val type = undefinedToNull(obj.type)
+	val code = undefinedToNull(obj.code)
+	val version = undefinedToNull(obj.version)
 	val label = objectToMapNullsafe(
 		obj.label,
 		"obj.label",
@@ -146,7 +170,7 @@ public fun code_fromJs(obj: CodeJs): Code {
 			x1
 		},
 	)
-	val author = obj.author
+	val author = undefinedToNull(obj.author)
 	val regions = arrayToSet(
 		obj.regions,
 		"obj.regions",
@@ -208,7 +232,7 @@ public fun code_fromJs(obj: CodeJs): Code {
 			)
 		},
 	)
-	val data = obj.data
+	val data = undefinedToNull(obj.data)
 	val appendices = objectToMap(
 		obj.appendices,
 		"obj.appendices",

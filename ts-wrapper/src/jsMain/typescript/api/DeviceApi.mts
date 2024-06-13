@@ -22,7 +22,7 @@ export interface DeviceApi {
 	updateDevices(devices: Array<Device>): Promise<Array<IdWithRev>>;
 
 	filterDevicesBy(filterChain: FilterChain<Device>,
-			options?: { startDocumentId?: string | undefined, limit?: number | undefined, filterChain?: FilterChain<Device> }): Promise<PaginatedList<Device>>;
+			options?: { startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<Device>>;
 
 	matchDevicesBy(filter: AbstractFilter<Device>): Promise<Array<string>>;
 
@@ -31,7 +31,7 @@ export interface DeviceApi {
 	deleteDevices(deviceIds: Array<string>): Promise<Array<DocIdentifier>>;
 
 	getDevicesInGroup(groupId: string,
-			options?: { groupId?: string, deviceIds?: Array<string> | undefined }): Promise<Array<Device>>;
+			options?: { deviceIds?: Array<string> | undefined }): Promise<Array<Device>>;
 
 	modifyDeviceInGroup(groupId: string, device: Device): Promise<Device>;
 

@@ -4,7 +4,6 @@
 package com.icure.sdk.js.api.flavoured
 
 import com.icure.sdk.js.crypto.entities.ContactShareOptionsJs
-import com.icure.sdk.js.crypto.entities.SecretIdOptionJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.model.ContactJs
 import com.icure.sdk.js.model.DecryptedContactJs
@@ -12,7 +11,6 @@ import com.icure.sdk.js.model.EncryptedContactJs
 import com.icure.sdk.js.model.IcureStubJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.PatientJs
-import com.icure.sdk.js.model.UserJs
 import com.icure.sdk.js.model.`data`.LabelledOccurenceJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.embed.DecryptedServiceJs
@@ -45,7 +43,7 @@ public external interface ContactApiJs {
 	public fun withEncryptionMetadata(
 		base: DecryptedContactJs?,
 		patient: PatientJs,
-		options: ContactApi_withEncryptionMetadata_Options?,
+		options: dynamic,
 	): Promise<DecryptedContactJs>
 
 	public fun getEncryptionKeysOf(contact: ContactJs): Promise<Array<String>>
@@ -74,7 +72,7 @@ public external interface ContactApiJs {
 	public fun shareWith(
 		delegateId: String,
 		contact: DecryptedContactJs,
-		options: ContactApi_shareWith_Options?,
+		options: dynamic,
 	): Promise<SimpleShareResultJs<DecryptedContactJs>>
 
 	public fun tryShareWithMany(contact: DecryptedContactJs,
@@ -87,7 +85,7 @@ public external interface ContactApiJs {
 	public fun findContactsByHcPartyPatient(
 		hcPartyId: String,
 		patient: PatientJs,
-		options: ContactApi_findContactsByHcPartyPatient_Options?,
+		options: dynamic,
 	): Promise<PaginatedListIteratorJs<DecryptedContactJs>>
 
 	public fun modifyContact(entity: DecryptedContactJs): Promise<DecryptedContactJs>
@@ -118,7 +116,7 @@ public external interface ContactApiJs {
 	public fun listContactsByHCPartyAndPatientSecretFKeys(
 		hcPartyId: String,
 		secretPatientKeys: Array<String>,
-		options: ContactApi_listContactsByHCPartyAndPatientSecretFKeys_Options?,
+		options: dynamic,
 	): Promise<Array<DecryptedContactJs>>
 
 	public fun closeForHCPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: Array<String>):
@@ -140,7 +138,7 @@ public external interface ContactApiJs {
 		startDate: Double,
 		endDate: Double,
 		hcPartyId: String,
-		options: ContactApi_findContactsByOpeningDate_Options?,
+		options: dynamic,
 	): Promise<PaginatedListJs<DecryptedContactJs>>
 
 	public fun filterServicesBy(
@@ -153,75 +151,13 @@ public external interface ContactApiJs {
 		events: Array<String>,
 		filter: AbstractFilterJs<ServiceJs>,
 		eventFired: (DecryptedServiceJs) -> Promise<Unit>,
-		options: ContactApi_subscribeToServiceEvents_Options?,
+		options: dynamic,
 	): Promise<ConnectionJs>
 
 	public fun subscribeToEvents(
 		events: Array<String>,
 		filter: AbstractFilterJs<ContactJs>,
 		eventFired: (DecryptedContactJs) -> Promise<Unit>,
-		options: ContactApi_subscribeToEvents_Options?,
+		options: dynamic,
 	): Promise<ConnectionJs>
-}
-
-public external interface ContactApi_withEncryptionMetadata_Options {
-	public val user: UserJs?
-
-	public val delegates: Record<String, String>
-
-	public val secretId: SecretIdOptionJs
-}
-
-public external interface ContactApi_shareWith_Options {
-	public val shareEncryptionKeys: String
-
-	public val shareOwningEntityIds: String
-
-	public val requestedPermission: String
-}
-
-public external interface ContactApi_findContactsByHcPartyPatient_Options {
-	public val startDate: Double?
-
-	public val endDate: Double?
-
-	public val descending: Boolean?
-}
-
-public external interface ContactApi_listContactsByHCPartyAndPatientSecretFKeys_Options {
-	public val planOfActionsIds: String?
-
-	public val skipClosedContacts: Boolean?
-}
-
-public external interface ContactApi_findContactsByOpeningDate_Options {
-	public val startKey: dynamic
-
-	public val startDocumentId: String?
-
-	public val limit: Double?
-}
-
-public external interface ContactApi_subscribeToServiceEvents_Options {
-	public val onConnected: () -> Promise<Unit>
-
-	public val channelCapacity: Double
-
-	public val retryDelay: Double
-
-	public val retryDelayExponentFactor: Double
-
-	public val maxRetries: Double
-}
-
-public external interface ContactApi_subscribeToEvents_Options {
-	public val onConnected: () -> Promise<Unit>
-
-	public val channelCapacity: Double
-
-	public val retryDelay: Double
-
-	public val retryDelayExponentFactor: Double
-
-	public val maxRetries: Double
 }

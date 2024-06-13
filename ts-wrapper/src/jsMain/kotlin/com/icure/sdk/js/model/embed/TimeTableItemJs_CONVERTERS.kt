@@ -4,18 +4,32 @@ import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.intToNumber
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.longToNumber
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.model.embed.TimeTableHour
 import com.icure.sdk.model.embed.TimeTableItem
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun timeTableItem_toJs(obj: TimeTableItem): TimeTableItemJs {
-	val rruleStartDate = longToNumber(obj.rruleStartDate)
-	val rrule = obj.rrule
-	val notBeforeInMinutes = intToNumber(obj.notBeforeInMinutes)
-	val notAfterInMinutes = intToNumber(obj.notAfterInMinutes)
-	val zoneId = obj.zoneId
+	val rruleStartDate = nullToUndefined(
+		longToNumber(obj.rruleStartDate)
+	)
+	val rrule = nullToUndefined(
+		obj.rrule
+	)
+	val notBeforeInMinutes = nullToUndefined(
+		intToNumber(obj.notBeforeInMinutes)
+	)
+	val notAfterInMinutes = nullToUndefined(
+		intToNumber(obj.notAfterInMinutes)
+	)
+	val zoneId = nullToUndefined(
+		obj.zoneId
+	)
 	val days = listToArray(
 		obj.days,
 		{ x1: String ->
@@ -34,9 +48,13 @@ public fun timeTableItem_toJs(obj: TimeTableItem): TimeTableItemJs {
 			timeTableHour_toJs(x1)
 		},
 	)
-	val calendarItemTypeId = obj.calendarItemTypeId
+	val calendarItemTypeId = nullToUndefined(
+		obj.calendarItemTypeId
+	)
 	val homeVisit = obj.homeVisit
-	val placeId = obj.placeId
+	val placeId = nullToUndefined(
+		obj.placeId
+	)
 	val publicTimeTableItem = obj.publicTimeTableItem
 	val acceptsNewPatient = obj.acceptsNewPatient
 	val unavailable = obj.unavailable
@@ -60,10 +78,10 @@ public fun timeTableItem_toJs(obj: TimeTableItem): TimeTableItemJs {
 
 public fun timeTableItem_fromJs(obj: TimeTableItemJs): TimeTableItem {
 	val rruleStartDate = numberToLong(obj.rruleStartDate, "obj.rruleStartDate")
-	val rrule = obj.rrule
+	val rrule = undefinedToNull(obj.rrule)
 	val notBeforeInMinutes = numberToInt(obj.notBeforeInMinutes, "obj.notBeforeInMinutes")
 	val notAfterInMinutes = numberToInt(obj.notAfterInMinutes, "obj.notAfterInMinutes")
-	val zoneId = obj.zoneId
+	val zoneId = undefinedToNull(obj.zoneId)
 	val days = arrayToList(
 		obj.days,
 		"obj.days",
@@ -85,9 +103,9 @@ public fun timeTableItem_fromJs(obj: TimeTableItemJs): TimeTableItem {
 			timeTableHour_fromJs(x1)
 		},
 	)
-	val calendarItemTypeId = obj.calendarItemTypeId
+	val calendarItemTypeId = undefinedToNull(obj.calendarItemTypeId)
 	val homeVisit = obj.homeVisit
-	val placeId = obj.placeId
+	val placeId = undefinedToNull(obj.placeId)
 	val publicTimeTableItem = obj.publicTimeTableItem
 	val acceptsNewPatient = obj.acceptsNewPatient
 	val unavailable = obj.unavailable

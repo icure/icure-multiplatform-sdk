@@ -2,7 +2,9 @@ package com.icure.sdk.js.model.embed.form.template
 
 import com.icure.sdk.model.embed.form.template.Launcher
 import com.icure.sdk.model.embed.form.template.Trigger
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun launcher_toJs(obj: Launcher): LauncherJs {
 	val name = obj.name
 	val triggerer = obj.triggerer.name

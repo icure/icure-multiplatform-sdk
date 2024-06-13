@@ -128,8 +128,6 @@ export class DecryptedHealthElement {
 
   readonly isEncrypted: false = false;
 
-  readonly $ktClass: 'com.icure.sdk.model.DecryptedHealthElement' = 'com.icure.sdk.model.DecryptedHealthElement';
-
   constructor(partial: Partial<DecryptedHealthElement>) {
     if (partial.isEncrypted !== undefined && partial.isEncrypted !== false) throw new Error('partial.isEncrypted must be undefined or false');
     this.id = partial.id ?? randomUuid();
@@ -241,8 +239,6 @@ export class EncryptedHealthElement {
   securityMetadata: SecurityMetadata | undefined = undefined;
 
   readonly isEncrypted: true = true;
-
-  readonly $ktClass: 'com.icure.sdk.model.EncryptedHealthElement' = 'com.icure.sdk.model.EncryptedHealthElement';
 
   constructor(partial: Partial<EncryptedHealthElement>) {
     if (partial.isEncrypted !== undefined && partial.isEncrypted !== true) throw new Error('partial.isEncrypted must be undefined or true');

@@ -17,7 +17,7 @@ import {Connection} from '../../websocket/Connection.mjs';
 export interface MessageFlavouredApi<E extends Message> {
 
 	shareWith(delegateId: string, message: E, shareSecretIds: Array<string>,
-			options?: { delegateId?: string, message?: E, shareSecretIds?: Array<string>, shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<E>>;
+			options?: { shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<E>>;
 
 	tryShareWithMany(message: E,
 			delegates: { [ key: string ]: MessageShareOptions }): Promise<SimpleShareResult<E>>;
@@ -25,7 +25,7 @@ export interface MessageFlavouredApi<E extends Message> {
 	shareWithMany(message: E, delegates: { [ key: string ]: MessageShareOptions }): Promise<E>;
 
 	findMessagesByHcPartyPatient(hcPartyId: string, patient: Patient,
-			options?: { hcPartyId?: string, patient?: Patient, startDate?: number | undefined, endDate?: number | undefined, descending?: boolean | undefined }): Promise<PaginatedListIterator<E>>;
+			options?: { startDate?: number | undefined, endDate?: number | undefined, descending?: boolean | undefined }): Promise<PaginatedListIterator<E>>;
 
 	modifyMessage(entity: E): Promise<E>;
 
@@ -52,7 +52,7 @@ export interface MessageFlavouredApi<E extends Message> {
 	findMessagesByTransportGuid(transportGuid: string): Promise<PaginatedList<E>>;
 
 	findMessagesByTransportGuidSentDate(transportGuid: string, from: number, to: number,
-			options?: { transportGuid?: string, from?: number, to?: number, startKey?: any | undefined, startDocumentId?: string | undefined, limit?: number | undefined, hcpId?: string | undefined }): Promise<PaginatedList<E>>;
+			options?: { startKey?: any | undefined, startDocumentId?: string | undefined, limit?: number | undefined, hcpId?: string | undefined }): Promise<PaginatedList<E>>;
 
 	findMessagesByToAddress(toAddress: string, startKey: any | undefined,
 			startDocumentId: string | undefined, limit: number | undefined): Promise<PaginatedList<E>>;
@@ -67,6 +67,6 @@ export interface MessageFlavouredApi<E extends Message> {
 
 	subscribeToEvents(events: Array<SubscriptionEventType>, filter: AbstractFilter<Message>,
 			eventFired: (x1: E) => Promise<void>,
-			options?: { events?: Array<SubscriptionEventType>, filter?: AbstractFilter<Message>, onConnected?: () => Promise<void>, channelCapacity?: number, retryDelay?: DurationMs, retryDelayExponentFactor?: number, maxRetries?: number, eventFired?: (x1: E) => Promise<void> }): Promise<Connection>;
+			options?: { onConnected?: () => Promise<void>, channelCapacity?: number, retryDelay?: DurationMs, retryDelayExponentFactor?: number, maxRetries?: number }): Promise<Connection>;
 
 }

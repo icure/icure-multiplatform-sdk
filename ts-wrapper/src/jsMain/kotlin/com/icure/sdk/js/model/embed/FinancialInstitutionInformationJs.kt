@@ -26,9 +26,6 @@ public sealed external interface FinancialInstitutionInformationJs : Encryptable
 	public val preferredFiiForPartners: Array<out String>
 
 	public val isEncrypted: Boolean
-
-	@JsName("${'$'}ktClass")
-	public val ktClass: String
 }
 
 @JsName("DecryptedFinancialInstitutionInformation")
@@ -52,8 +49,6 @@ public external class DecryptedFinancialInstitutionInformationJs(
 	override val encryptedSelf: String?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }
 
 @JsName("EncryptedFinancialInstitutionInformation")
@@ -77,6 +72,4 @@ public external class EncryptedFinancialInstitutionInformationJs(
 	override val encryptedSelf: String?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }

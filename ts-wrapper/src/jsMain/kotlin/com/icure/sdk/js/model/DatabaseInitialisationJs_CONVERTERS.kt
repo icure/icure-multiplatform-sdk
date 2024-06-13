@@ -2,27 +2,39 @@ package com.icure.sdk.js.model
 
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.listToArray
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.model.DatabaseInitialisation
 import com.icure.sdk.model.HealthcareParty
 import com.icure.sdk.model.User
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun databaseInitialisation_toJs(obj: DatabaseInitialisation): DatabaseInitialisationJs {
-	val users = listToArray(
-		obj.users,
-		{ x1: User ->
-			user_toJs(x1)
-		},
+	val users = nullToUndefined(
+		listToArray(
+			obj.users,
+			{ x1: User ->
+				user_toJs(x1)
+			},
+		)
 	)
-	val healthcareParties = listToArray(
-		obj.healthcareParties,
-		{ x1: HealthcareParty ->
-			healthcareParty_toJs(x1)
-		},
+	val healthcareParties = nullToUndefined(
+		listToArray(
+			obj.healthcareParties,
+			{ x1: HealthcareParty ->
+				healthcareParty_toJs(x1)
+			},
+		)
 	)
-	val replication = obj.replication?.let { nonNull1 ->
-		replication_toJs(nonNull1)
-	}
-	val minimumKrakenVersion = obj.minimumKrakenVersion
+	val replication = nullToUndefined(
+		obj.replication?.let { nonNull1 ->
+			replication_toJs(nonNull1)
+		}
+	)
+	val minimumKrakenVersion = nullToUndefined(
+		obj.minimumKrakenVersion
+	)
 	return DatabaseInitialisationJs(js("{" +
 		"users:users," +
 		"healthcareParties:healthcareParties," +
@@ -49,7 +61,7 @@ public fun databaseInitialisation_fromJs(obj: DatabaseInitialisationJs): Databas
 	val replication = obj.replication?.let { nonNull1 ->
 		replication_fromJs(nonNull1)
 	}
-	val minimumKrakenVersion = obj.minimumKrakenVersion
+	val minimumKrakenVersion = undefinedToNull(obj.minimumKrakenVersion)
 	return DatabaseInitialisation(
 		users = users,
 		healthcareParties = healthcareParties,

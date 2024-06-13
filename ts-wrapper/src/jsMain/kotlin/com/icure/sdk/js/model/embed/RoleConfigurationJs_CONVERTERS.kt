@@ -4,7 +4,9 @@ import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.setToArray
 import com.icure.sdk.model.embed.RoleConfiguration
 import kotlin.String
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun roleConfiguration_toJs(obj: RoleConfiguration): RoleConfigurationJs {
 	val source = obj.source.name
 	val roles = setToArray(

@@ -3,7 +3,9 @@ package com.icure.sdk.js.crypto.entities
 import com.icure.sdk.crypto.entities.CalendarItemShareOptions
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.model.requests.RequestedPermission
+import kotlin.Suppress
 
+@Suppress("UNUSED_VARIABLE")
 public fun calendarItemShareOptions_toJs(obj: CalendarItemShareOptions):
 		CalendarItemShareOptionsJs {
 	val requestedPermissions = obj.requestedPermissions.name
