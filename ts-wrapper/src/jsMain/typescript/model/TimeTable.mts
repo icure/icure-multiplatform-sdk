@@ -75,8 +75,6 @@ export class DecryptedTimeTable {
 
   readonly isEncrypted: false = false;
 
-  readonly $ktClass: 'com.icure.sdk.model.DecryptedTimeTable' = 'com.icure.sdk.model.DecryptedTimeTable';
-
   constructor(partial: Partial<DecryptedTimeTable>) {
     if (partial.isEncrypted !== undefined && partial.isEncrypted !== false) throw new Error('partial.isEncrypted must be undefined or false');
     this.id = partial.id ?? randomUuid();
@@ -152,8 +150,6 @@ export class EncryptedTimeTable {
   securityMetadata: SecurityMetadata | undefined = undefined;
 
   readonly isEncrypted: true = true;
-
-  readonly $ktClass: 'com.icure.sdk.model.EncryptedTimeTable' = 'com.icure.sdk.model.EncryptedTimeTable';
 
   constructor(partial: Partial<EncryptedTimeTable>) {
     if (partial.isEncrypted !== undefined && partial.isEncrypted !== true) throw new Error('partial.isEncrypted must be undefined or true');

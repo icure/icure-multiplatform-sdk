@@ -3,7 +3,9 @@ package com.icure.sdk.js.model.embed
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.mapToObject
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.objectToMapNullsafe
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.specializations.base64String_fromJs
 import com.icure.sdk.js.model.specializations.base64String_toJs
 import com.icure.sdk.model.embed.DecryptedFlatRateTarification
@@ -18,28 +20,36 @@ import kotlin.Suppress
 @Suppress("UNUSED_VARIABLE")
 public fun flatRateTarification_toJs(obj: DecryptedFlatRateTarification):
 		DecryptedFlatRateTarificationJs {
-	val code = obj.code ?: undefined
-	val flatRateType = obj.flatRateType?.let { nonNull1 ->
-		nonNull1.name
-	} ?: undefined
-	val label = mapToObject(
-		obj.label,
-		{ x1: String ->
-			x1
-		},
-		{ x1: String ->
-			x1
-		},
-	) ?: undefined
+	val code = nullToUndefined(
+		obj.code
+	)
+	val flatRateType = nullToUndefined(
+		obj.flatRateType?.let { nonNull1 ->
+			nonNull1.name
+		}
+	)
+	val label = nullToUndefined(
+		mapToObject(
+			obj.label,
+			{ x1: String ->
+				x1
+			},
+			{ x1: String ->
+				x1
+			},
+		)
+	)
 	val valorisations = listToArray(
 		obj.valorisations,
 		{ x1: DecryptedValorisation ->
 			valorisation_toJs(x1)
 		},
 	)
-	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
-		base64String_toJs(nonNull1)
-	} ?: undefined
+	val encryptedSelf = nullToUndefined(
+		obj.encryptedSelf?.let { nonNull1 ->
+			base64String_toJs(nonNull1)
+		}
+	)
 	return DecryptedFlatRateTarificationJs(js("{" +
 		"code:code," +
 		"flatRateType:flatRateType," +
@@ -51,7 +61,7 @@ public fun flatRateTarification_toJs(obj: DecryptedFlatRateTarification):
 
 public fun flatRateTarification_fromJs(obj: DecryptedFlatRateTarificationJs):
 		DecryptedFlatRateTarification {
-	val code = obj.code
+	val code = undefinedToNull(obj.code)
 	val flatRateType = obj.flatRateType?.let { nonNull1 ->
 		FlatRateType.valueOf(nonNull1)
 	}
@@ -87,28 +97,36 @@ public fun flatRateTarification_fromJs(obj: DecryptedFlatRateTarificationJs):
 @Suppress("UNUSED_VARIABLE")
 public fun flatRateTarification_toJs(obj: EncryptedFlatRateTarification):
 		EncryptedFlatRateTarificationJs {
-	val code = obj.code ?: undefined
-	val flatRateType = obj.flatRateType?.let { nonNull1 ->
-		nonNull1.name
-	} ?: undefined
-	val label = mapToObject(
-		obj.label,
-		{ x1: String ->
-			x1
-		},
-		{ x1: String ->
-			x1
-		},
-	) ?: undefined
+	val code = nullToUndefined(
+		obj.code
+	)
+	val flatRateType = nullToUndefined(
+		obj.flatRateType?.let { nonNull1 ->
+			nonNull1.name
+		}
+	)
+	val label = nullToUndefined(
+		mapToObject(
+			obj.label,
+			{ x1: String ->
+				x1
+			},
+			{ x1: String ->
+				x1
+			},
+		)
+	)
 	val valorisations = listToArray(
 		obj.valorisations,
 		{ x1: EncryptedValorisation ->
 			valorisation_toJs(x1)
 		},
 	)
-	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
-		base64String_toJs(nonNull1)
-	} ?: undefined
+	val encryptedSelf = nullToUndefined(
+		obj.encryptedSelf?.let { nonNull1 ->
+			base64String_toJs(nonNull1)
+		}
+	)
 	return EncryptedFlatRateTarificationJs(js("{" +
 		"code:code," +
 		"flatRateType:flatRateType," +
@@ -120,7 +138,7 @@ public fun flatRateTarification_toJs(obj: EncryptedFlatRateTarification):
 
 public fun flatRateTarification_fromJs(obj: EncryptedFlatRateTarificationJs):
 		EncryptedFlatRateTarification {
-	val code = obj.code
+	val code = undefinedToNull(obj.code)
 	val flatRateType = obj.flatRateType?.let { nonNull1 ->
 		FlatRateType.valueOf(nonNull1)
 	}

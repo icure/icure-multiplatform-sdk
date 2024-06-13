@@ -51,8 +51,6 @@ export class DecryptedInsurability {
 
   readonly isEncrypted: false = false;
 
-  readonly $ktClass: 'com.icure.sdk.model.embed.DecryptedInsurability' = 'com.icure.sdk.model.embed.DecryptedInsurability';
-
   constructor(partial: Partial<DecryptedInsurability>) {
     if (partial.isEncrypted !== undefined && partial.isEncrypted !== false) throw new Error('partial.isEncrypted must be undefined or false');
     if ('parameters' in partial && partial.parameters !== undefined) this.parameters = partial.parameters;
@@ -92,8 +90,6 @@ export class EncryptedInsurability {
   encryptedSelf: Base64String | undefined = undefined;
 
   readonly isEncrypted: true = true;
-
-  readonly $ktClass: 'com.icure.sdk.model.embed.EncryptedInsurability' = 'com.icure.sdk.model.embed.EncryptedInsurability';
 
   constructor(partial: Partial<EncryptedInsurability>) {
     if (partial.isEncrypted !== undefined && partial.isEncrypted !== true) throw new Error('partial.isEncrypted must be undefined or true');

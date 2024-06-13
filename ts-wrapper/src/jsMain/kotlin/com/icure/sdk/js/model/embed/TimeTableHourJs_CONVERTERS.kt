@@ -1,14 +1,19 @@
 package com.icure.sdk.js.model.embed
 
 import com.icure.sdk.js.model.CheckedConverters.longToNumber
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.model.embed.TimeTableHour
 import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun timeTableHour_toJs(obj: TimeTableHour): TimeTableHourJs {
-	val startHour = longToNumber(obj.startHour) ?: undefined
-	val endHour = longToNumber(obj.endHour) ?: undefined
+	val startHour = nullToUndefined(
+		longToNumber(obj.startHour)
+	)
+	val endHour = nullToUndefined(
+		longToNumber(obj.endHour)
+	)
 	return TimeTableHourJs(js("{" +
 		"startHour:startHour," +
 		"endHour:endHour" +

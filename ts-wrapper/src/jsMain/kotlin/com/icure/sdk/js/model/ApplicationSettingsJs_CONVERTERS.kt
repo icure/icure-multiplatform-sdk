@@ -3,9 +3,11 @@ package com.icure.sdk.js.model
 import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.longToNumber
 import com.icure.sdk.js.model.CheckedConverters.mapToObject
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.sdk.js.model.CheckedConverters.setToArray
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.base.CodeStubJs
 import com.icure.sdk.js.model.base.codeStub_fromJs
 import com.icure.sdk.js.model.base.codeStub_toJs
@@ -17,12 +19,24 @@ import kotlin.Suppress
 @Suppress("UNUSED_VARIABLE")
 public fun applicationSettings_toJs(obj: ApplicationSettings): ApplicationSettingsJs {
 	val id = obj.id
-	val rev = obj.rev ?: undefined
-	val created = longToNumber(obj.created) ?: undefined
-	val modified = longToNumber(obj.modified) ?: undefined
-	val author = obj.author ?: undefined
-	val responsible = obj.responsible ?: undefined
-	val medicalLocationId = obj.medicalLocationId ?: undefined
+	val rev = nullToUndefined(
+		obj.rev
+	)
+	val created = nullToUndefined(
+		longToNumber(obj.created)
+	)
+	val modified = nullToUndefined(
+		longToNumber(obj.modified)
+	)
+	val author = nullToUndefined(
+		obj.author
+	)
+	val responsible = nullToUndefined(
+		obj.responsible
+	)
+	val medicalLocationId = nullToUndefined(
+		obj.medicalLocationId
+	)
 	val tags = setToArray(
 		obj.tags,
 		{ x1: CodeStub ->
@@ -35,8 +49,12 @@ public fun applicationSettings_toJs(obj: ApplicationSettings): ApplicationSettin
 			codeStub_toJs(x1)
 		},
 	)
-	val endOfLife = longToNumber(obj.endOfLife) ?: undefined
-	val deletionDate = longToNumber(obj.deletionDate) ?: undefined
+	val endOfLife = nullToUndefined(
+		longToNumber(obj.endOfLife)
+	)
+	val deletionDate = nullToUndefined(
+		longToNumber(obj.deletionDate)
+	)
 	val settings = mapToObject(
 		obj.settings,
 		{ x1: String ->
@@ -64,12 +82,12 @@ public fun applicationSettings_toJs(obj: ApplicationSettings): ApplicationSettin
 
 public fun applicationSettings_fromJs(obj: ApplicationSettingsJs): ApplicationSettings {
 	val id = obj.id
-	val rev = obj.rev
+	val rev = undefinedToNull(obj.rev)
 	val created = numberToLong(obj.created, "obj.created")
 	val modified = numberToLong(obj.modified, "obj.modified")
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
+	val author = undefinedToNull(obj.author)
+	val responsible = undefinedToNull(obj.responsible)
+	val medicalLocationId = undefinedToNull(obj.medicalLocationId)
 	val tags = arrayToSet(
 		obj.tags,
 		"obj.tags",

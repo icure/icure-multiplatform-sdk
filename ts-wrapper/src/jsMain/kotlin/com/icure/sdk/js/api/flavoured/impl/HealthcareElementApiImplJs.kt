@@ -23,6 +23,7 @@ import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.sdk.js.model.CheckedConverters.setToArray
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.DecryptedHealthElementJs
 import com.icure.sdk.js.model.EncryptedHealthElementJs
 import com.icure.sdk.js.model.HealthElementJs
@@ -207,7 +208,7 @@ internal class HealthcareElementApiImplJs(
 					"descending",
 					null
 				) { descending: Boolean? ->
-					descending
+					undefinedToNull(descending)
 				}
 				val result = healthcareElementApi.encrypted.findHealthcareElementsByHcPartyPatient(
 					hcPartyIdConverted,
@@ -294,7 +295,7 @@ internal class HealthcareElementApiImplJs(
 					healthElement_fromJs(x1)
 				},
 			)
-			val startDocumentIdConverted: String? = startDocumentId
+			val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
 			val limitConverted: Int? = numberToInt(limit, "limit")
 			val result = healthcareElementApi.encrypted.filterHealthcareElementsBy(
 				filterChainConverted,
@@ -533,7 +534,7 @@ internal class HealthcareElementApiImplJs(
 					"descending",
 					null
 				) { descending: Boolean? ->
-					descending
+					undefinedToNull(descending)
 				}
 				val result = healthcareElementApi.tryAndRecover.findHealthcareElementsByHcPartyPatient(
 					hcPartyIdConverted,
@@ -620,7 +621,7 @@ internal class HealthcareElementApiImplJs(
 					healthElement_fromJs(x1)
 				},
 			)
-			val startDocumentIdConverted: String? = startDocumentId
+			val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
 			val limitConverted: Int? = numberToInt(limit, "limit")
 			val result = healthcareElementApi.tryAndRecover.filterHealthcareElementsBy(
 				filterChainConverted,
@@ -1065,7 +1066,7 @@ internal class HealthcareElementApiImplJs(
 				"descending",
 				null
 			) { descending: Boolean? ->
-				descending
+				undefinedToNull(descending)
 			}
 			val result = healthcareElementApi.findHealthcareElementsByHcPartyPatient(
 				hcPartyIdConverted,
@@ -1152,7 +1153,7 @@ internal class HealthcareElementApiImplJs(
 				healthElement_fromJs(x1)
 			},
 		)
-		val startDocumentIdConverted: String? = startDocumentId
+		val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
 		val limitConverted: Int? = numberToInt(limit, "limit")
 		val result = healthcareElementApi.filterHealthcareElementsBy(
 			filterChainConverted,

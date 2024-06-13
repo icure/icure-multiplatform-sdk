@@ -1,5 +1,7 @@
 package com.icure.sdk.js.model.embed
 
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.base.codeStub_fromJs
 import com.icure.sdk.js.model.base.codeStub_toJs
 import com.icure.sdk.js.model.specializations.base64String_fromJs
@@ -13,16 +15,24 @@ import kotlin.Suppress
 @Suppress("UNUSED_VARIABLE")
 public fun careTeamMember_toJs(obj: DecryptedCareTeamMember): DecryptedCareTeamMemberJs {
 	val id = obj.id
-	val careTeamMemberType = obj.careTeamMemberType?.let { nonNull1 ->
-		nonNull1.name
-	} ?: undefined
-	val healthcarePartyId = obj.healthcarePartyId ?: undefined
-	val quality = obj.quality?.let { nonNull1 ->
-		codeStub_toJs(nonNull1)
-	} ?: undefined
-	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
-		base64String_toJs(nonNull1)
-	} ?: undefined
+	val careTeamMemberType = nullToUndefined(
+		obj.careTeamMemberType?.let { nonNull1 ->
+			nonNull1.name
+		}
+	)
+	val healthcarePartyId = nullToUndefined(
+		obj.healthcarePartyId
+	)
+	val quality = nullToUndefined(
+		obj.quality?.let { nonNull1 ->
+			codeStub_toJs(nonNull1)
+		}
+	)
+	val encryptedSelf = nullToUndefined(
+		obj.encryptedSelf?.let { nonNull1 ->
+			base64String_toJs(nonNull1)
+		}
+	)
 	return DecryptedCareTeamMemberJs(js("{" +
 		"id:id," +
 		"careTeamMemberType:careTeamMemberType," +
@@ -37,7 +47,7 @@ public fun careTeamMember_fromJs(obj: DecryptedCareTeamMemberJs): DecryptedCareT
 	val careTeamMemberType = obj.careTeamMemberType?.let { nonNull1 ->
 		CareTeamMemberType.valueOf(nonNull1)
 	}
-	val healthcarePartyId = obj.healthcarePartyId
+	val healthcarePartyId = undefinedToNull(obj.healthcarePartyId)
 	val quality = obj.quality?.let { nonNull1 ->
 		codeStub_fromJs(nonNull1)
 	}
@@ -56,16 +66,24 @@ public fun careTeamMember_fromJs(obj: DecryptedCareTeamMemberJs): DecryptedCareT
 @Suppress("UNUSED_VARIABLE")
 public fun careTeamMember_toJs(obj: EncryptedCareTeamMember): EncryptedCareTeamMemberJs {
 	val id = obj.id
-	val careTeamMemberType = obj.careTeamMemberType?.let { nonNull1 ->
-		nonNull1.name
-	} ?: undefined
-	val healthcarePartyId = obj.healthcarePartyId ?: undefined
-	val quality = obj.quality?.let { nonNull1 ->
-		codeStub_toJs(nonNull1)
-	} ?: undefined
-	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
-		base64String_toJs(nonNull1)
-	} ?: undefined
+	val careTeamMemberType = nullToUndefined(
+		obj.careTeamMemberType?.let { nonNull1 ->
+			nonNull1.name
+		}
+	)
+	val healthcarePartyId = nullToUndefined(
+		obj.healthcarePartyId
+	)
+	val quality = nullToUndefined(
+		obj.quality?.let { nonNull1 ->
+			codeStub_toJs(nonNull1)
+		}
+	)
+	val encryptedSelf = nullToUndefined(
+		obj.encryptedSelf?.let { nonNull1 ->
+			base64String_toJs(nonNull1)
+		}
+	)
 	return EncryptedCareTeamMemberJs(js("{" +
 		"id:id," +
 		"careTeamMemberType:careTeamMemberType," +
@@ -80,7 +98,7 @@ public fun careTeamMember_fromJs(obj: EncryptedCareTeamMemberJs): EncryptedCareT
 	val careTeamMemberType = obj.careTeamMemberType?.let { nonNull1 ->
 		CareTeamMemberType.valueOf(nonNull1)
 	}
-	val healthcarePartyId = obj.healthcarePartyId
+	val healthcarePartyId = undefinedToNull(obj.healthcarePartyId)
 	val quality = obj.quality?.let { nonNull1 ->
 		codeStub_fromJs(nonNull1)
 	}

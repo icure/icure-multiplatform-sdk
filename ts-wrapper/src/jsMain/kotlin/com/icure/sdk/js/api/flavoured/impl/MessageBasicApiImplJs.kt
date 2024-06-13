@@ -12,6 +12,7 @@ import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.numberToDuration
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.EncryptedMessageJs
 import com.icure.sdk.js.model.MessageJs
 import com.icure.sdk.js.model.PaginatedListJs
@@ -150,7 +151,7 @@ internal class MessageBasicApiImplJs(
 				message_fromJs(x1)
 			},
 		)
-		val startDocumentIdConverted: String? = startDocumentId
+		val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
 		val limitConverted: Int? = numberToInt(limit, "limit")
 		val result = messageBasicApi.filterMessagesBy(
 			filterChainConverted,
@@ -213,7 +214,7 @@ internal class MessageBasicApiImplJs(
 		limit: Double?,
 	): Promise<PaginatedListJs<EncryptedMessageJs>> = GlobalScope.promise {
 		val startKeyConverted: JsonElement? = dynamicToJsonNullsafe(startKey, "startKey")
-		val startDocumentIdConverted: String? = startDocumentId
+		val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
 		val limitConverted: Int? = numberToInt(limit, "limit")
 		val result = messageBasicApi.findMessages(
 			startKeyConverted,
@@ -319,7 +320,7 @@ internal class MessageBasicApiImplJs(
 				"startDocumentId",
 				null
 			) { startDocumentId: String? ->
-				startDocumentId
+				undefinedToNull(startDocumentId)
 			}
 			val limitConverted: Int? = convertingOptionOrDefaultNullable(
 				_options,
@@ -333,7 +334,7 @@ internal class MessageBasicApiImplJs(
 				"hcpId",
 				null
 			) { hcpId: String? ->
-				hcpId
+				undefinedToNull(hcpId)
 			}
 			val result = messageBasicApi.findMessagesByTransportGuidSentDate(
 				transportGuidConverted,
@@ -361,7 +362,7 @@ internal class MessageBasicApiImplJs(
 	): Promise<PaginatedListJs<EncryptedMessageJs>> = GlobalScope.promise {
 		val toAddressConverted: String = toAddress
 		val startKeyConverted: JsonElement? = dynamicToJsonNullsafe(startKey, "startKey")
-		val startDocumentIdConverted: String? = startDocumentId
+		val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
 		val limitConverted: Int? = numberToInt(limit, "limit")
 		val result = messageBasicApi.findMessagesByToAddress(
 			toAddressConverted,
@@ -385,7 +386,7 @@ internal class MessageBasicApiImplJs(
 	): Promise<PaginatedListJs<EncryptedMessageJs>> = GlobalScope.promise {
 		val fromAddressConverted: String = fromAddress
 		val startKeyConverted: JsonElement? = dynamicToJsonNullsafe(startKey, "startKey")
-		val startDocumentIdConverted: String? = startDocumentId
+		val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
 		val limitConverted: Int? = numberToInt(limit, "limit")
 		val result = messageBasicApi.findMessagesByFromAddress(
 			fromAddressConverted,

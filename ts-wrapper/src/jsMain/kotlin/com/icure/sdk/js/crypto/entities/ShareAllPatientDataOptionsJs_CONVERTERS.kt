@@ -6,8 +6,10 @@ import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.intToNumber
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.mapToObject
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.objectToMap
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.patient_fromJs
 import com.icure.sdk.js.model.patient_toJs
 import kotlin.String
@@ -39,10 +41,14 @@ public
 public
 		fun shareAllPatientDataOptions_EntityResult_toJs(obj: ShareAllPatientDataOptions.EntityResult):
 		ShareAllPatientDataOptionsJs_EntityResultJs {
-	val success = obj.success ?: undefined
-	val error = obj.error?.let { nonNull1 ->
-		shareAllPatientDataOptions_SharePatientDataError_toJs(nonNull1)
-	} ?: undefined
+	val success = nullToUndefined(
+		obj.success
+	)
+	val error = nullToUndefined(
+		obj.error?.let { nonNull1 ->
+			shareAllPatientDataOptions_SharePatientDataError_toJs(nonNull1)
+		}
+	)
 	val modified = intToNumber(obj.modified)
 	return ShareAllPatientDataOptionsJs_EntityResultJs(js("{" +
 		"success:success," +
@@ -54,7 +60,7 @@ public
 public
 		fun shareAllPatientDataOptions_EntityResult_fromJs(obj: ShareAllPatientDataOptionsJs_EntityResultJs):
 		ShareAllPatientDataOptions.EntityResult {
-	val success = obj.success
+	val success = undefinedToNull(obj.success)
 	val error = obj.error?.let { nonNull1 ->
 		shareAllPatientDataOptions_SharePatientDataError_fromJs(nonNull1)
 	}

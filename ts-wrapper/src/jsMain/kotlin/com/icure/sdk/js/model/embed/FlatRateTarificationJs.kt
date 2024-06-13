@@ -21,9 +21,6 @@ public sealed external interface FlatRateTarificationJs : EncryptableJs {
 	public val valorisations: Array<out ValorisationJs>
 
 	public val isEncrypted: Boolean
-
-	@JsName("${'$'}ktClass")
-	public val ktClass: String
 }
 
 @JsName("DecryptedFlatRateTarification")
@@ -41,8 +38,6 @@ public external class DecryptedFlatRateTarificationJs(
 	override val encryptedSelf: String?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }
 
 @JsName("EncryptedFlatRateTarification")
@@ -60,6 +55,4 @@ public external class EncryptedFlatRateTarificationJs(
 	override val encryptedSelf: String?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }

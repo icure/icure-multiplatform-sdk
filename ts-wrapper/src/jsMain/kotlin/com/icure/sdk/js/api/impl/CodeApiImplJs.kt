@@ -9,6 +9,7 @@ import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.dynamicToJsonNullsafe
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.CodeJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.booleanResponse_toJs
@@ -49,7 +50,7 @@ internal class CodeApiImplJs(
 	): Promise<PaginatedListJs<CodeJs>> {
 		val _options = options ?: js("{}")
 		return GlobalScope.promise {
-			val regionConverted: String? = region
+			val regionConverted: String? = undefinedToNull(region)
 			val typesConverted: String = types
 			val languageConverted: String = language
 			val labelConverted: String = label
@@ -58,7 +59,7 @@ internal class CodeApiImplJs(
 				"version",
 				null
 			) { version: String? ->
-				version
+				undefinedToNull(version)
 			}
 			val startKeyConverted: JsonElement? = convertingOptionOrDefaultNullable(
 				_options,
@@ -72,7 +73,7 @@ internal class CodeApiImplJs(
 				"startDocumentId",
 				null
 			) { startDocumentId: String? ->
-				startDocumentId
+				undefinedToNull(startDocumentId)
 			}
 			val limitConverted: Int? = convertingOptionOrDefaultNullable(
 				_options,
@@ -109,21 +110,21 @@ internal class CodeApiImplJs(
 				"type",
 				null
 			) { type: String? ->
-				type
+				undefinedToNull(type)
 			}
 			val codeConverted: String? = convertingOptionOrDefaultNullable(
 				_options,
 				"code",
 				null
 			) { code: String? ->
-				code
+				undefinedToNull(code)
 			}
 			val versionConverted: String? = convertingOptionOrDefaultNullable(
 				_options,
 				"version",
 				null
 			) { version: String? ->
-				version
+				undefinedToNull(version)
 			}
 			val startKeyConverted: JsonElement? = convertingOptionOrDefaultNullable(
 				_options,
@@ -137,7 +138,7 @@ internal class CodeApiImplJs(
 				"startDocumentId",
 				null
 			) { startDocumentId: String? ->
-				startDocumentId
+				undefinedToNull(startDocumentId)
 			}
 			val limitConverted: Int? = convertingOptionOrDefaultNullable(
 				_options,
@@ -174,7 +175,7 @@ internal class CodeApiImplJs(
 				"linkedId",
 				null
 			) { linkedId: String? ->
-				linkedId
+				undefinedToNull(linkedId)
 			}
 			val startKeyConverted: JsonElement? = convertingOptionOrDefaultNullable(
 				_options,
@@ -188,7 +189,7 @@ internal class CodeApiImplJs(
 				"startDocumentId",
 				null
 			) { startDocumentId: String? ->
-				startDocumentId
+				undefinedToNull(startDocumentId)
 			}
 			val limitConverted: Int? = convertingOptionOrDefaultNullable(
 				_options,
@@ -223,21 +224,21 @@ internal class CodeApiImplJs(
 				"type",
 				null
 			) { type: String? ->
-				type
+				undefinedToNull(type)
 			}
 			val codeConverted: String? = convertingOptionOrDefaultNullable(
 				_options,
 				"code",
 				null
 			) { code: String? ->
-				code
+				undefinedToNull(code)
 			}
 			val versionConverted: String? = convertingOptionOrDefaultNullable(
 				_options,
 				"version",
 				null
 			) { version: String? ->
-				version
+				undefinedToNull(version)
 			}
 			val result = codeApi.listCodesByRegionTypeCodeVersion(
 				regionConverted,
@@ -262,14 +263,14 @@ internal class CodeApiImplJs(
 				"region",
 				null
 			) { region: String? ->
-				region
+				undefinedToNull(region)
 			}
 			val typeConverted: String? = convertingOptionOrDefaultNullable(
 				_options,
 				"type",
 				null
 			) { type: String? ->
-				type
+				undefinedToNull(type)
 			}
 			val result = codeApi.listCodeTypesBy(
 				regionConverted,
@@ -292,14 +293,14 @@ internal class CodeApiImplJs(
 				"region",
 				null
 			) { region: String? ->
-				region
+				undefinedToNull(region)
 			}
 			val typeConverted: String? = convertingOptionOrDefaultNullable(
 				_options,
 				"type",
 				null
 			) { type: String? ->
-				type
+				undefinedToNull(type)
 			}
 			val result = codeApi.listTagTypesBy(
 				regionConverted,
@@ -348,7 +349,7 @@ internal class CodeApiImplJs(
 	): Promise<BooleanResponseJs> = GlobalScope.promise {
 		val typeConverted: String = type
 		val codeConverted: String = code
-		val versionConverted: String? = version
+		val versionConverted: String? = undefinedToNull(version)
 		val result = codeApi.isCodeValid(
 			typeConverted,
 			codeConverted,
@@ -366,7 +367,7 @@ internal class CodeApiImplJs(
 		val regionConverted: String = region
 		val labelConverted: String = label
 		val typeConverted: String = type
-		val languagesConverted: String? = languages
+		val languagesConverted: String? = undefinedToNull(languages)
 		val result = codeApi.getCodeByRegionLanguageTypeLabel(
 			regionConverted,
 			labelConverted,
@@ -462,7 +463,7 @@ internal class CodeApiImplJs(
 				"startDocumentId",
 				null
 			) { startDocumentId: String? ->
-				startDocumentId
+				undefinedToNull(startDocumentId)
 			}
 			val limitConverted: Int? = convertingOptionOrDefaultNullable(
 				_options,
@@ -483,14 +484,14 @@ internal class CodeApiImplJs(
 				"sort",
 				null
 			) { sort: String? ->
-				sort
+				undefinedToNull(sort)
 			}
 			val descConverted: Boolean? = convertingOptionOrDefaultNullable(
 				_options,
 				"desc",
 				null
 			) { desc: Boolean? ->
-				desc
+				undefinedToNull(desc)
 			}
 			val filterChainConverted: FilterChain<Code> = filterChain_fromJs(
 				filterChain,

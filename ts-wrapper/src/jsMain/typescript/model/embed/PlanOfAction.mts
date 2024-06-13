@@ -96,8 +96,6 @@ export class DecryptedPlanOfAction {
 
   readonly isEncrypted: false = false;
 
-  readonly $ktClass: 'com.icure.sdk.model.embed.DecryptedPlanOfAction' = 'com.icure.sdk.model.embed.DecryptedPlanOfAction';
-
   constructor(partial: Partial<DecryptedPlanOfAction>) {
     if (partial.isEncrypted !== undefined && partial.isEncrypted !== false) throw new Error('partial.isEncrypted must be undefined or false');
     this.id = partial.id ?? randomUuid();
@@ -182,8 +180,6 @@ export class EncryptedPlanOfAction {
   encryptedSelf: Base64String | undefined = undefined;
 
   readonly isEncrypted: true = true;
-
-  readonly $ktClass: 'com.icure.sdk.model.embed.EncryptedPlanOfAction' = 'com.icure.sdk.model.embed.EncryptedPlanOfAction';
 
   constructor(partial: Partial<EncryptedPlanOfAction>) {
     if (partial.isEncrypted !== undefined && partial.isEncrypted !== true) throw new Error('partial.isEncrypted must be undefined or true');

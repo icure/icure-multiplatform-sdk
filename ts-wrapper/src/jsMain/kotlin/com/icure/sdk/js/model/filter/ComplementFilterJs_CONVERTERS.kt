@@ -1,5 +1,7 @@
 package com.icure.sdk.js.model.filter
 
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.base.IdentifiableJs
 import com.icure.sdk.model.base.Identifiable
 import com.icure.sdk.model.filter.ComplementFilter
@@ -9,7 +11,9 @@ import kotlin.Suppress
 @Suppress("UNUSED_VARIABLE")
 public fun <O : Identifiable<String>, O_JS : IdentifiableJs<String>>
 		complementFilter_toJs(obj: ComplementFilter<O>, convertO: (O) -> O_JS): ComplementFilterJs<O_JS> {
-	val desc = obj.desc ?: undefined
+	val desc = nullToUndefined(
+		obj.desc
+	)
 	val superSet = abstractFilter_toJs(
 		obj.superSet,
 		{ x1: O ->
@@ -32,7 +36,7 @@ public fun <O : Identifiable<String>, O_JS : IdentifiableJs<String>>
 public fun <O : IdentifiableJs<String>, O_KT : Identifiable<String>>
 		complementFilter_fromJs(obj: ComplementFilterJs<O>, convertO: (O) -> O_KT):
 		ComplementFilter<O_KT> {
-	val desc = obj.desc
+	val desc = undefinedToNull(obj.desc)
 	val superSet = abstractFilter_fromJs(
 		obj.superSet,
 		{ x1: O ->

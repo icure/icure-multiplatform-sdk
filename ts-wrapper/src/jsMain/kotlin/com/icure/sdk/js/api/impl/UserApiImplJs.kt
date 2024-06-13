@@ -8,6 +8,7 @@ import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.EncryptedPropertyStubJs
 import com.icure.sdk.js.model.ListOfIdsJs
 import com.icure.sdk.js.model.PaginatedListJs
@@ -69,14 +70,14 @@ internal class UserApiImplJs(
 				"startKey",
 				null
 			) { startKey: String? ->
-				startKey
+				undefinedToNull(startKey)
 			}
 			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
 				_options,
 				"startDocumentId",
 				null
 			) { startDocumentId: String? ->
-				startDocumentId
+				undefinedToNull(startDocumentId)
 			}
 			val limitConverted: Int? = convertingOptionOrDefaultNullable(
 				_options,
@@ -90,7 +91,7 @@ internal class UserApiImplJs(
 				"skipPatients",
 				null
 			) { skipPatients: Boolean? ->
-				skipPatients
+				undefinedToNull(skipPatients)
 			}
 			val result = userApi.listUsersBy(
 				startKeyConverted,
@@ -228,7 +229,7 @@ internal class UserApiImplJs(
 				"token",
 				null
 			) { token: String? ->
-				token
+				undefinedToNull(token)
 			}
 			val result = userApi.getToken(
 				userIdConverted,
@@ -249,7 +250,7 @@ internal class UserApiImplJs(
 				"startDocumentId",
 				null
 			) { startDocumentId: String? ->
-				startDocumentId
+				undefinedToNull(startDocumentId)
 			}
 			val limitConverted: Int? = convertingOptionOrDefaultNullable(
 				_options,
@@ -318,14 +319,14 @@ internal class UserApiImplJs(
 				"startKey",
 				null
 			) { startKey: String? ->
-				startKey
+				undefinedToNull(startKey)
 			}
 			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
 				_options,
 				"startDocumentId",
 				null
 			) { startDocumentId: String? ->
-				startDocumentId
+				undefinedToNull(startDocumentId)
 			}
 			val limitConverted: Int? = convertingOptionOrDefaultNullable(
 				_options,
@@ -444,7 +445,7 @@ internal class UserApiImplJs(
 				"token",
 				null
 			) { token: String? ->
-				token
+				undefinedToNull(token)
 			}
 			val tokenValidityConverted: Long? = convertingOptionOrDefaultNullable(
 				_options,
@@ -478,7 +479,7 @@ internal class UserApiImplJs(
 				"token",
 				null
 			) { token: String? ->
-				token
+				undefinedToNull(token)
 			}
 			val tokenValidityConverted: Long? = convertingOptionOrDefaultNullable(
 				_options,
@@ -515,7 +516,7 @@ internal class UserApiImplJs(
 				"startDocumentId",
 				null
 			) { startDocumentId: String? ->
-				startDocumentId
+				undefinedToNull(startDocumentId)
 			}
 			val limitConverted: Int? = convertingOptionOrDefaultNullable(
 				_options,

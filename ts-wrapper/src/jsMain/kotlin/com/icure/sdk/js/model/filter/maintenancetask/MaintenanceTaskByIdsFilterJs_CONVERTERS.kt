@@ -1,7 +1,9 @@
 package com.icure.sdk.js.model.filter.maintenancetask
 
 import com.icure.sdk.js.model.CheckedConverters.arrayToSet
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.setToArray
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.model.filter.maintenancetask.MaintenanceTaskByIdsFilter
 import kotlin.String
 import kotlin.Suppress
@@ -15,7 +17,9 @@ public fun maintenanceTaskByIdsFilter_toJs(obj: MaintenanceTaskByIdsFilter):
 			x1
 		},
 	)
-	val desc = obj.desc ?: undefined
+	val desc = nullToUndefined(
+		obj.desc
+	)
 	return MaintenanceTaskByIdsFilterJs(js("{" +
 		"ids:ids," +
 		"desc:desc" +
@@ -31,7 +35,7 @@ public fun maintenanceTaskByIdsFilter_fromJs(obj: MaintenanceTaskByIdsFilterJs):
 			x1
 		},
 	)
-	val desc = obj.desc
+	val desc = undefinedToNull(obj.desc)
 	return MaintenanceTaskByIdsFilter(
 		ids = ids,
 		desc = desc,

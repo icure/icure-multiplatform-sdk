@@ -16,6 +16,7 @@ import com.icure.sdk.js.crypto.entities.recoveryDataKey_toJs
 import com.icure.sdk.js.crypto.entities.recoveryResult_toJs
 import com.icure.sdk.js.model.CheckedConverters.intToNumber
 import com.icure.sdk.js.model.CheckedConverters.mapToObject
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.specializations.spkiHexString_toJs
 import com.icure.sdk.js.utils.Record
@@ -118,9 +119,11 @@ internal class RecoveryApiImplJs(
 		val result = recoveryApi.recoverExchangeData(
 			recoveryKeyConverted,
 		)
-		result?.let { nonNull1 ->
-			nonNull1.name
-		} ?: undefined
+		nullToUndefined(
+			result?.let { nonNull1 ->
+				nonNull1.name
+			}
+		)
 	}
 
 	override fun deleteRecoveryInfo(recoveryKey: String): Promise<Unit> = GlobalScope.promise {

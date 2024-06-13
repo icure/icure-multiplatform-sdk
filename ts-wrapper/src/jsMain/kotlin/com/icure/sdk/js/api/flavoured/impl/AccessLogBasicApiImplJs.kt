@@ -8,6 +8,7 @@ import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.EncryptedAccessLogJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.accessLog_fromJs
@@ -109,7 +110,7 @@ internal class AccessLogBasicApiImplJs(
 		val fromEpochConverted: Long? = numberToLong(fromEpoch, "fromEpoch")
 		val toEpochConverted: Long? = numberToLong(toEpoch, "toEpoch")
 		val startKeyConverted: Long? = numberToLong(startKey, "startKey")
-		val startDocumentIdConverted: String? = startDocumentId
+		val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
 		val limitConverted: Int? = numberToInt(limit, "limit")
 		val result = accessLogBasicApi.findAccessLogsBy(
 			fromEpochConverted,
@@ -136,7 +137,7 @@ internal class AccessLogBasicApiImplJs(
 				"accessType",
 				null
 			) { accessType: String? ->
-				accessType
+				undefinedToNull(accessType)
 			}
 			val startDateConverted: Long? = convertingOptionOrDefaultNullable(
 				_options,
@@ -150,14 +151,14 @@ internal class AccessLogBasicApiImplJs(
 				"startKey",
 				null
 			) { startKey: String? ->
-				startKey
+				undefinedToNull(startKey)
 			}
 			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
 				_options,
 				"startDocumentId",
 				null
 			) { startDocumentId: String? ->
-				startDocumentId
+				undefinedToNull(startDocumentId)
 			}
 			val limitConverted: Int? = convertingOptionOrDefaultNullable(
 				_options,
@@ -171,7 +172,7 @@ internal class AccessLogBasicApiImplJs(
 				"descending",
 				null
 			) { descending: Boolean? ->
-				descending
+				undefinedToNull(descending)
 			}
 			val result = accessLogBasicApi.findAccessLogsByUserAfterDate(
 				userIdConverted,
@@ -222,7 +223,7 @@ internal class AccessLogBasicApiImplJs(
 				"startDocumentId",
 				null
 			) { startDocumentId: String? ->
-				startDocumentId
+				undefinedToNull(startDocumentId)
 			}
 			val limitConverted: Int? = convertingOptionOrDefaultNullable(
 				_options,

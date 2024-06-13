@@ -4,8 +4,10 @@ import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.instantToNumber
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.longToNumber
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.numberToInstant
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.model.embed.Content
 import com.icure.sdk.model.embed.DecryptedContent
 import com.icure.sdk.model.embed.DecryptedService
@@ -16,40 +18,66 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun content_toJs(obj: DecryptedContent): DecryptedContentJs {
-	val stringValue = obj.stringValue ?: undefined
-	val numberValue = obj.numberValue ?: undefined
-	val booleanValue = obj.booleanValue ?: undefined
-	val instantValue = instantToNumber(obj.instantValue) ?: undefined
-	val fuzzyDateValue = longToNumber(obj.fuzzyDateValue) ?: undefined
-	val binaryValue = obj.binaryValue ?: undefined
-	val documentId = obj.documentId ?: undefined
-	val measureValue = obj.measureValue?.let { nonNull1 ->
-		measure_toJs(nonNull1)
-	} ?: undefined
-	val medicationValue = obj.medicationValue?.let { nonNull1 ->
-		medication_toJs(nonNull1)
-	} ?: undefined
-	val timeSeries = obj.timeSeries?.let { nonNull1 ->
-		timeSeries_toJs(nonNull1)
-	} ?: undefined
-	val compoundValue = listToArray(
-		obj.compoundValue,
-		{ x1: DecryptedService ->
-			service_toJs(x1)
-		},
-	) ?: undefined
-	val ratio = listToArray(
-		obj.ratio,
-		{ x1: Measure ->
-			measure_toJs(x1)
-		},
-	) ?: undefined
-	val range = listToArray(
-		obj.range,
-		{ x1: Measure ->
-			measure_toJs(x1)
-		},
-	) ?: undefined
+	val stringValue = nullToUndefined(
+		obj.stringValue
+	)
+	val numberValue = nullToUndefined(
+		obj.numberValue
+	)
+	val booleanValue = nullToUndefined(
+		obj.booleanValue
+	)
+	val instantValue = nullToUndefined(
+		instantToNumber(obj.instantValue)
+	)
+	val fuzzyDateValue = nullToUndefined(
+		longToNumber(obj.fuzzyDateValue)
+	)
+	val binaryValue = nullToUndefined(
+		obj.binaryValue
+	)
+	val documentId = nullToUndefined(
+		obj.documentId
+	)
+	val measureValue = nullToUndefined(
+		obj.measureValue?.let { nonNull1 ->
+			measure_toJs(nonNull1)
+		}
+	)
+	val medicationValue = nullToUndefined(
+		obj.medicationValue?.let { nonNull1 ->
+			medication_toJs(nonNull1)
+		}
+	)
+	val timeSeries = nullToUndefined(
+		obj.timeSeries?.let { nonNull1 ->
+			timeSeries_toJs(nonNull1)
+		}
+	)
+	val compoundValue = nullToUndefined(
+		listToArray(
+			obj.compoundValue,
+			{ x1: DecryptedService ->
+				service_toJs(x1)
+			},
+		)
+	)
+	val ratio = nullToUndefined(
+		listToArray(
+			obj.ratio,
+			{ x1: Measure ->
+				measure_toJs(x1)
+			},
+		)
+	)
+	val range = nullToUndefined(
+		listToArray(
+			obj.range,
+			{ x1: Measure ->
+				measure_toJs(x1)
+			},
+		)
+	)
 	return DecryptedContentJs(js("{" +
 		"stringValue:stringValue," +
 		"numberValue:numberValue," +
@@ -68,13 +96,13 @@ public fun content_toJs(obj: DecryptedContent): DecryptedContentJs {
 }
 
 public fun content_fromJs(obj: DecryptedContentJs): DecryptedContent {
-	val stringValue = obj.stringValue
-	val numberValue = obj.numberValue
-	val booleanValue = obj.booleanValue
+	val stringValue = undefinedToNull(obj.stringValue)
+	val numberValue = undefinedToNull(obj.numberValue)
+	val booleanValue = undefinedToNull(obj.booleanValue)
 	val instantValue = numberToInstant(obj.instantValue, "obj.instantValue")
 	val fuzzyDateValue = numberToLong(obj.fuzzyDateValue, "obj.fuzzyDateValue")
-	val binaryValue = obj.binaryValue
-	val documentId = obj.documentId
+	val binaryValue = undefinedToNull(obj.binaryValue)
+	val documentId = undefinedToNull(obj.documentId)
 	val measureValue = obj.measureValue?.let { nonNull1 ->
 		measure_fromJs(nonNull1)
 	}
@@ -124,40 +152,66 @@ public fun content_fromJs(obj: DecryptedContentJs): DecryptedContent {
 
 @Suppress("UNUSED_VARIABLE")
 public fun content_toJs(obj: EncryptedContent): EncryptedContentJs {
-	val stringValue = obj.stringValue ?: undefined
-	val numberValue = obj.numberValue ?: undefined
-	val booleanValue = obj.booleanValue ?: undefined
-	val instantValue = instantToNumber(obj.instantValue) ?: undefined
-	val fuzzyDateValue = longToNumber(obj.fuzzyDateValue) ?: undefined
-	val binaryValue = obj.binaryValue ?: undefined
-	val documentId = obj.documentId ?: undefined
-	val measureValue = obj.measureValue?.let { nonNull1 ->
-		measure_toJs(nonNull1)
-	} ?: undefined
-	val medicationValue = obj.medicationValue?.let { nonNull1 ->
-		medication_toJs(nonNull1)
-	} ?: undefined
-	val timeSeries = obj.timeSeries?.let { nonNull1 ->
-		timeSeries_toJs(nonNull1)
-	} ?: undefined
-	val compoundValue = listToArray(
-		obj.compoundValue,
-		{ x1: EncryptedService ->
-			service_toJs(x1)
-		},
-	) ?: undefined
-	val ratio = listToArray(
-		obj.ratio,
-		{ x1: Measure ->
-			measure_toJs(x1)
-		},
-	) ?: undefined
-	val range = listToArray(
-		obj.range,
-		{ x1: Measure ->
-			measure_toJs(x1)
-		},
-	) ?: undefined
+	val stringValue = nullToUndefined(
+		obj.stringValue
+	)
+	val numberValue = nullToUndefined(
+		obj.numberValue
+	)
+	val booleanValue = nullToUndefined(
+		obj.booleanValue
+	)
+	val instantValue = nullToUndefined(
+		instantToNumber(obj.instantValue)
+	)
+	val fuzzyDateValue = nullToUndefined(
+		longToNumber(obj.fuzzyDateValue)
+	)
+	val binaryValue = nullToUndefined(
+		obj.binaryValue
+	)
+	val documentId = nullToUndefined(
+		obj.documentId
+	)
+	val measureValue = nullToUndefined(
+		obj.measureValue?.let { nonNull1 ->
+			measure_toJs(nonNull1)
+		}
+	)
+	val medicationValue = nullToUndefined(
+		obj.medicationValue?.let { nonNull1 ->
+			medication_toJs(nonNull1)
+		}
+	)
+	val timeSeries = nullToUndefined(
+		obj.timeSeries?.let { nonNull1 ->
+			timeSeries_toJs(nonNull1)
+		}
+	)
+	val compoundValue = nullToUndefined(
+		listToArray(
+			obj.compoundValue,
+			{ x1: EncryptedService ->
+				service_toJs(x1)
+			},
+		)
+	)
+	val ratio = nullToUndefined(
+		listToArray(
+			obj.ratio,
+			{ x1: Measure ->
+				measure_toJs(x1)
+			},
+		)
+	)
+	val range = nullToUndefined(
+		listToArray(
+			obj.range,
+			{ x1: Measure ->
+				measure_toJs(x1)
+			},
+		)
+	)
 	return EncryptedContentJs(js("{" +
 		"stringValue:stringValue," +
 		"numberValue:numberValue," +
@@ -176,13 +230,13 @@ public fun content_toJs(obj: EncryptedContent): EncryptedContentJs {
 }
 
 public fun content_fromJs(obj: EncryptedContentJs): EncryptedContent {
-	val stringValue = obj.stringValue
-	val numberValue = obj.numberValue
-	val booleanValue = obj.booleanValue
+	val stringValue = undefinedToNull(obj.stringValue)
+	val numberValue = undefinedToNull(obj.numberValue)
+	val booleanValue = undefinedToNull(obj.booleanValue)
 	val instantValue = numberToInstant(obj.instantValue, "obj.instantValue")
 	val fuzzyDateValue = numberToLong(obj.fuzzyDateValue, "obj.fuzzyDateValue")
-	val binaryValue = obj.binaryValue
-	val documentId = obj.documentId
+	val binaryValue = undefinedToNull(obj.binaryValue)
+	val documentId = undefinedToNull(obj.documentId)
 	val measureValue = obj.measureValue?.let { nonNull1 ->
 		measure_fromJs(nonNull1)
 	}

@@ -66,8 +66,6 @@ export class DecryptedAddress {
 
   readonly isEncrypted: false = false;
 
-  readonly $ktClass: 'com.icure.sdk.model.embed.DecryptedAddress' = 'com.icure.sdk.model.embed.DecryptedAddress';
-
   constructor(partial: Partial<DecryptedAddress>) {
     if (partial.isEncrypted !== undefined && partial.isEncrypted !== false) throw new Error('partial.isEncrypted must be undefined or false');
     if ('addressType' in partial) this.addressType = partial.addressType;
@@ -116,8 +114,6 @@ export class EncryptedAddress {
   encryptedSelf: Base64String | undefined = undefined;
 
   readonly isEncrypted: true = true;
-
-  readonly $ktClass: 'com.icure.sdk.model.embed.EncryptedAddress' = 'com.icure.sdk.model.embed.EncryptedAddress';
 
   constructor(partial: Partial<EncryptedAddress>) {
     if (partial.isEncrypted !== undefined && partial.isEncrypted !== true) throw new Error('partial.isEncrypted must be undefined or true');

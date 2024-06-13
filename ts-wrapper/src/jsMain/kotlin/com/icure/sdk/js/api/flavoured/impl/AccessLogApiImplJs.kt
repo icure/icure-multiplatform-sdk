@@ -23,6 +23,7 @@ import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.sdk.js.model.CheckedConverters.setToArray
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.DecryptedAccessLogJs
 import com.icure.sdk.js.model.EncryptedAccessLogJs
 import com.icure.sdk.js.model.PaginatedListJs
@@ -191,7 +192,7 @@ internal class AccessLogApiImplJs(
 					"descending",
 					null
 				) { descending: Boolean? ->
-					descending
+					undefinedToNull(descending)
 				}
 				val result = accessLogApi.encrypted.findAccessLogsByHcPartyPatient(
 					hcPartyIdConverted,
@@ -256,7 +257,7 @@ internal class AccessLogApiImplJs(
 			val fromEpochConverted: Long? = numberToLong(fromEpoch, "fromEpoch")
 			val toEpochConverted: Long? = numberToLong(toEpoch, "toEpoch")
 			val startKeyConverted: Long? = numberToLong(startKey, "startKey")
-			val startDocumentIdConverted: String? = startDocumentId
+			val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
 			val limitConverted: Int? = numberToInt(limit, "limit")
 			val result = accessLogApi.encrypted.findAccessLogsBy(
 				fromEpochConverted,
@@ -283,7 +284,7 @@ internal class AccessLogApiImplJs(
 					"accessType",
 					null
 				) { accessType: String? ->
-					accessType
+					undefinedToNull(accessType)
 				}
 				val startDateConverted: Long? = convertingOptionOrDefaultNullable(
 					_options,
@@ -297,14 +298,14 @@ internal class AccessLogApiImplJs(
 					"startKey",
 					null
 				) { startKey: String? ->
-					startKey
+					undefinedToNull(startKey)
 				}
 				val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
 					_options,
 					"startDocumentId",
 					null
 				) { startDocumentId: String? ->
-					startDocumentId
+					undefinedToNull(startDocumentId)
 				}
 				val limitConverted: Int? = convertingOptionOrDefaultNullable(
 					_options,
@@ -318,7 +319,7 @@ internal class AccessLogApiImplJs(
 					"descending",
 					null
 				) { descending: Boolean? ->
-					descending
+					undefinedToNull(descending)
 				}
 				val result = accessLogApi.encrypted.findAccessLogsByUserAfterDate(
 					userIdConverted,
@@ -369,7 +370,7 @@ internal class AccessLogApiImplJs(
 					"startDocumentId",
 					null
 				) { startDocumentId: String? ->
-					startDocumentId
+					undefinedToNull(startDocumentId)
 				}
 				val limitConverted: Int? = convertingOptionOrDefaultNullable(
 					_options,
@@ -519,7 +520,7 @@ internal class AccessLogApiImplJs(
 					"descending",
 					null
 				) { descending: Boolean? ->
-					descending
+					undefinedToNull(descending)
 				}
 				val result = accessLogApi.tryAndRecover.findAccessLogsByHcPartyPatient(
 					hcPartyIdConverted,
@@ -583,7 +584,7 @@ internal class AccessLogApiImplJs(
 			val fromEpochConverted: Long? = numberToLong(fromEpoch, "fromEpoch")
 			val toEpochConverted: Long? = numberToLong(toEpoch, "toEpoch")
 			val startKeyConverted: Long? = numberToLong(startKey, "startKey")
-			val startDocumentIdConverted: String? = startDocumentId
+			val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
 			val limitConverted: Int? = numberToInt(limit, "limit")
 			val result = accessLogApi.tryAndRecover.findAccessLogsBy(
 				fromEpochConverted,
@@ -610,7 +611,7 @@ internal class AccessLogApiImplJs(
 					"accessType",
 					null
 				) { accessType: String? ->
-					accessType
+					undefinedToNull(accessType)
 				}
 				val startDateConverted: Long? = convertingOptionOrDefaultNullable(
 					_options,
@@ -624,14 +625,14 @@ internal class AccessLogApiImplJs(
 					"startKey",
 					null
 				) { startKey: String? ->
-					startKey
+					undefinedToNull(startKey)
 				}
 				val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
 					_options,
 					"startDocumentId",
 					null
 				) { startDocumentId: String? ->
-					startDocumentId
+					undefinedToNull(startDocumentId)
 				}
 				val limitConverted: Int? = convertingOptionOrDefaultNullable(
 					_options,
@@ -645,7 +646,7 @@ internal class AccessLogApiImplJs(
 					"descending",
 					null
 				) { descending: Boolean? ->
-					descending
+					undefinedToNull(descending)
 				}
 				val result = accessLogApi.tryAndRecover.findAccessLogsByUserAfterDate(
 					userIdConverted,
@@ -696,7 +697,7 @@ internal class AccessLogApiImplJs(
 					"startDocumentId",
 					null
 				) { startDocumentId: String? ->
-					startDocumentId
+					undefinedToNull(startDocumentId)
 				}
 				val limitConverted: Int? = convertingOptionOrDefaultNullable(
 					_options,
@@ -988,7 +989,7 @@ internal class AccessLogApiImplJs(
 				"descending",
 				null
 			) { descending: Boolean? ->
-				descending
+				undefinedToNull(descending)
 			}
 			val result = accessLogApi.findAccessLogsByHcPartyPatient(
 				hcPartyIdConverted,
@@ -1053,7 +1054,7 @@ internal class AccessLogApiImplJs(
 		val fromEpochConverted: Long? = numberToLong(fromEpoch, "fromEpoch")
 		val toEpochConverted: Long? = numberToLong(toEpoch, "toEpoch")
 		val startKeyConverted: Long? = numberToLong(startKey, "startKey")
-		val startDocumentIdConverted: String? = startDocumentId
+		val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
 		val limitConverted: Int? = numberToInt(limit, "limit")
 		val result = accessLogApi.findAccessLogsBy(
 			fromEpochConverted,
@@ -1080,7 +1081,7 @@ internal class AccessLogApiImplJs(
 				"accessType",
 				null
 			) { accessType: String? ->
-				accessType
+				undefinedToNull(accessType)
 			}
 			val startDateConverted: Long? = convertingOptionOrDefaultNullable(
 				_options,
@@ -1094,14 +1095,14 @@ internal class AccessLogApiImplJs(
 				"startKey",
 				null
 			) { startKey: String? ->
-				startKey
+				undefinedToNull(startKey)
 			}
 			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
 				_options,
 				"startDocumentId",
 				null
 			) { startDocumentId: String? ->
-				startDocumentId
+				undefinedToNull(startDocumentId)
 			}
 			val limitConverted: Int? = convertingOptionOrDefaultNullable(
 				_options,
@@ -1115,7 +1116,7 @@ internal class AccessLogApiImplJs(
 				"descending",
 				null
 			) { descending: Boolean? ->
-				descending
+				undefinedToNull(descending)
 			}
 			val result = accessLogApi.findAccessLogsByUserAfterDate(
 				userIdConverted,
@@ -1166,7 +1167,7 @@ internal class AccessLogApiImplJs(
 				"startDocumentId",
 				null
 			) { startDocumentId: String? ->
-				startDocumentId
+				undefinedToNull(startDocumentId)
 			}
 			val limitConverted: Int? = convertingOptionOrDefaultNullable(
 				_options,

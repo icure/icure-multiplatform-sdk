@@ -23,6 +23,7 @@ import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.sdk.js.model.CheckedConverters.setToArray
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.DecryptedInvoiceJs
 import com.icure.sdk.js.model.EncryptedInvoiceJs
 import com.icure.sdk.js.model.IcureStubJs
@@ -206,7 +207,7 @@ internal class InvoiceApiImplJs(
 					"descending",
 					null
 				) { descending: Boolean? ->
-					descending
+					undefinedToNull(descending)
 				}
 				val result = invoiceApi.encrypted.findInvoicesByHcPartyPatient(
 					hcPartyIdConverted,
@@ -383,14 +384,14 @@ internal class InvoiceApiImplJs(
 					"insuranceId",
 					null
 				) { insuranceId: String? ->
-					insuranceId
+					undefinedToNull(insuranceId)
 				}
 				val invoiceIdConverted: String? = convertingOptionOrDefaultNullable(
 					_options,
 					"invoiceId",
 					null
 				) { invoiceId: String? ->
-					invoiceId
+					undefinedToNull(invoiceId)
 				}
 				val gracePeriodConverted: Int? = convertingOptionOrDefaultNullable(
 					_options,
@@ -486,7 +487,7 @@ internal class InvoiceApiImplJs(
 					"startDocumentId",
 					null
 				) { startDocumentId: String? ->
-					startDocumentId
+					undefinedToNull(startDocumentId)
 				}
 				val limitConverted: Int? = convertingOptionOrDefaultNullable(
 					_options,
@@ -690,7 +691,7 @@ internal class InvoiceApiImplJs(
 
 		override fun listToPatientsUnsent(hcPartyId: String?): Promise<Array<EncryptedInvoiceJs>> =
 				GlobalScope.promise {
-			val hcPartyIdConverted: String? = hcPartyId
+			val hcPartyIdConverted: String? = undefinedToNull(hcPartyId)
 			val result = invoiceApi.encrypted.listToPatientsUnsent(
 				hcPartyIdConverted,
 			)
@@ -936,7 +937,7 @@ internal class InvoiceApiImplJs(
 					"descending",
 					null
 				) { descending: Boolean? ->
-					descending
+					undefinedToNull(descending)
 				}
 				val result = invoiceApi.tryAndRecover.findInvoicesByHcPartyPatient(
 					hcPartyIdConverted,
@@ -1111,14 +1112,14 @@ internal class InvoiceApiImplJs(
 					"insuranceId",
 					null
 				) { insuranceId: String? ->
-					insuranceId
+					undefinedToNull(insuranceId)
 				}
 				val invoiceIdConverted: String? = convertingOptionOrDefaultNullable(
 					_options,
 					"invoiceId",
 					null
 				) { invoiceId: String? ->
-					invoiceId
+					undefinedToNull(invoiceId)
 				}
 				val gracePeriodConverted: Int? = convertingOptionOrDefaultNullable(
 					_options,
@@ -1214,7 +1215,7 @@ internal class InvoiceApiImplJs(
 					"startDocumentId",
 					null
 				) { startDocumentId: String? ->
-					startDocumentId
+					undefinedToNull(startDocumentId)
 				}
 				val limitConverted: Int? = convertingOptionOrDefaultNullable(
 					_options,
@@ -1417,7 +1418,7 @@ internal class InvoiceApiImplJs(
 
 		override fun listToPatientsUnsent(hcPartyId: String?): Promise<Array<InvoiceJs>> =
 				GlobalScope.promise {
-			val hcPartyIdConverted: String? = hcPartyId
+			val hcPartyIdConverted: String? = undefinedToNull(hcPartyId)
 			val result = invoiceApi.tryAndRecover.listToPatientsUnsent(
 				hcPartyIdConverted,
 			)
@@ -1544,7 +1545,7 @@ internal class InvoiceApiImplJs(
 	override fun createInvoice(entity: DecryptedInvoiceJs, prefix: String?):
 			Promise<DecryptedInvoiceJs> = GlobalScope.promise {
 		val entityConverted: DecryptedInvoice = invoice_fromJs(entity)
-		val prefixConverted: String? = prefix
+		val prefixConverted: String? = undefinedToNull(prefix)
 		val result = invoiceApi.createInvoice(
 			entityConverted,
 			prefixConverted,
@@ -1845,7 +1846,7 @@ internal class InvoiceApiImplJs(
 				"descending",
 				null
 			) { descending: Boolean? ->
-				descending
+				undefinedToNull(descending)
 			}
 			val result = invoiceApi.findInvoicesByHcPartyPatient(
 				hcPartyIdConverted,
@@ -2022,14 +2023,14 @@ internal class InvoiceApiImplJs(
 				"insuranceId",
 				null
 			) { insuranceId: String? ->
-				insuranceId
+				undefinedToNull(insuranceId)
 			}
 			val invoiceIdConverted: String? = convertingOptionOrDefaultNullable(
 				_options,
 				"invoiceId",
 				null
 			) { invoiceId: String? ->
-				invoiceId
+				undefinedToNull(invoiceId)
 			}
 			val gracePeriodConverted: Int? = convertingOptionOrDefaultNullable(
 				_options,
@@ -2125,7 +2126,7 @@ internal class InvoiceApiImplJs(
 				"startDocumentId",
 				null
 			) { startDocumentId: String? ->
-				startDocumentId
+				undefinedToNull(startDocumentId)
 			}
 			val limitConverted: Int? = convertingOptionOrDefaultNullable(
 				_options,
@@ -2329,7 +2330,7 @@ internal class InvoiceApiImplJs(
 
 	override fun listToPatientsUnsent(hcPartyId: String?): Promise<Array<DecryptedInvoiceJs>> =
 			GlobalScope.promise {
-		val hcPartyIdConverted: String? = hcPartyId
+		val hcPartyIdConverted: String? = undefinedToNull(hcPartyId)
 		val result = invoiceApi.listToPatientsUnsent(
 			hcPartyIdConverted,
 		)

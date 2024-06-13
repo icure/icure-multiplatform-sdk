@@ -1,7 +1,9 @@
 package com.icure.sdk.js.model
 
 import com.icure.sdk.js.model.CheckedConverters.longToNumber
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.embed.typedValue_fromJs
 import com.icure.sdk.js.model.embed.typedValue_toJs
 import com.icure.sdk.js.model.specializations.base64String_fromJs
@@ -13,17 +15,27 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun propertyStub_toJs(obj: DecryptedPropertyStub): DecryptedPropertyStubJs {
-	val id = obj.id ?: undefined
-	val type = obj.type?.let { nonNull1 ->
-		propertyTypeStub_toJs(nonNull1)
-	} ?: undefined
-	val typedValue = obj.typedValue?.let { nonNull1 ->
-		typedValue_toJs(nonNull1)
-	} ?: undefined
-	val deletionDate = longToNumber(obj.deletionDate) ?: undefined
-	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
-		base64String_toJs(nonNull1)
-	} ?: undefined
+	val id = nullToUndefined(
+		obj.id
+	)
+	val type = nullToUndefined(
+		obj.type?.let { nonNull1 ->
+			propertyTypeStub_toJs(nonNull1)
+		}
+	)
+	val typedValue = nullToUndefined(
+		obj.typedValue?.let { nonNull1 ->
+			typedValue_toJs(nonNull1)
+		}
+	)
+	val deletionDate = nullToUndefined(
+		longToNumber(obj.deletionDate)
+	)
+	val encryptedSelf = nullToUndefined(
+		obj.encryptedSelf?.let { nonNull1 ->
+			base64String_toJs(nonNull1)
+		}
+	)
 	return DecryptedPropertyStubJs(js("{" +
 		"id:id," +
 		"type:type," +
@@ -34,7 +46,7 @@ public fun propertyStub_toJs(obj: DecryptedPropertyStub): DecryptedPropertyStubJ
 }
 
 public fun propertyStub_fromJs(obj: DecryptedPropertyStubJs): DecryptedPropertyStub {
-	val id = obj.id
+	val id = undefinedToNull(obj.id)
 	val type = obj.type?.let { nonNull1 ->
 		propertyTypeStub_fromJs(nonNull1)
 	}
@@ -56,17 +68,27 @@ public fun propertyStub_fromJs(obj: DecryptedPropertyStubJs): DecryptedPropertyS
 
 @Suppress("UNUSED_VARIABLE")
 public fun propertyStub_toJs(obj: EncryptedPropertyStub): EncryptedPropertyStubJs {
-	val id = obj.id ?: undefined
-	val type = obj.type?.let { nonNull1 ->
-		propertyTypeStub_toJs(nonNull1)
-	} ?: undefined
-	val typedValue = obj.typedValue?.let { nonNull1 ->
-		typedValue_toJs(nonNull1)
-	} ?: undefined
-	val deletionDate = longToNumber(obj.deletionDate) ?: undefined
-	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
-		base64String_toJs(nonNull1)
-	} ?: undefined
+	val id = nullToUndefined(
+		obj.id
+	)
+	val type = nullToUndefined(
+		obj.type?.let { nonNull1 ->
+			propertyTypeStub_toJs(nonNull1)
+		}
+	)
+	val typedValue = nullToUndefined(
+		obj.typedValue?.let { nonNull1 ->
+			typedValue_toJs(nonNull1)
+		}
+	)
+	val deletionDate = nullToUndefined(
+		longToNumber(obj.deletionDate)
+	)
+	val encryptedSelf = nullToUndefined(
+		obj.encryptedSelf?.let { nonNull1 ->
+			base64String_toJs(nonNull1)
+		}
+	)
 	return EncryptedPropertyStubJs(js("{" +
 		"id:id," +
 		"type:type," +
@@ -77,7 +99,7 @@ public fun propertyStub_toJs(obj: EncryptedPropertyStub): EncryptedPropertyStubJ
 }
 
 public fun propertyStub_fromJs(obj: EncryptedPropertyStubJs): EncryptedPropertyStub {
-	val id = obj.id
+	val id = undefinedToNull(obj.id)
 	val type = obj.type?.let { nonNull1 ->
 		propertyTypeStub_fromJs(nonNull1)
 	}

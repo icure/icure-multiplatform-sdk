@@ -32,9 +32,6 @@ public sealed external interface ReceiptJs : StoredDocumentJs, ICureDocumentJs<S
 	public val subCategory: String?
 
 	public val isEncrypted: Boolean
-
-	@JsName("${'$'}ktClass")
-	public val ktClass: String
 }
 
 @JsName("DecryptedReceipt")
@@ -86,8 +83,6 @@ public external class DecryptedReceiptJs(
 	override val securityMetadata: SecurityMetadataJs?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }
 
 @JsName("EncryptedReceipt")
@@ -139,6 +134,4 @@ public external class EncryptedReceiptJs(
 	override val securityMetadata: SecurityMetadataJs?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }

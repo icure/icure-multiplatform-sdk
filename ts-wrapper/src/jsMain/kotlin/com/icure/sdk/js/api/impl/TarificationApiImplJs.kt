@@ -7,6 +7,7 @@ import com.icure.sdk.js.api.TarificationApiJs
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.TarificationJs
 import com.icure.sdk.js.model.paginatedList_toJs
@@ -83,42 +84,42 @@ internal class TarificationApiImplJs(
 				"region",
 				null
 			) { region: String? ->
-				region
+				undefinedToNull(region)
 			}
 			val typesConverted: String? = convertingOptionOrDefaultNullable(
 				_options,
 				"types",
 				null
 			) { types: String? ->
-				types
+				undefinedToNull(types)
 			}
 			val languageConverted: String? = convertingOptionOrDefaultNullable(
 				_options,
 				"language",
 				null
 			) { language: String? ->
-				language
+				undefinedToNull(language)
 			}
 			val labelConverted: String? = convertingOptionOrDefaultNullable(
 				_options,
 				"label",
 				null
 			) { label: String? ->
-				label
+				undefinedToNull(label)
 			}
 			val startKeyConverted: String? = convertingOptionOrDefaultNullable(
 				_options,
 				"startKey",
 				null
 			) { startKey: String? ->
-				startKey
+				undefinedToNull(startKey)
 			}
 			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
 				_options,
 				"startDocumentId",
 				null
 			) { startDocumentId: String? ->
-				startDocumentId
+				undefinedToNull(startDocumentId)
 			}
 			val limitConverted: Int? = convertingOptionOrDefaultNullable(
 				_options,
@@ -153,42 +154,42 @@ internal class TarificationApiImplJs(
 				"region",
 				null
 			) { region: String? ->
-				region
+				undefinedToNull(region)
 			}
 			val typeConverted: String? = convertingOptionOrDefaultNullable(
 				_options,
 				"type",
 				null
 			) { type: String? ->
-				type
+				undefinedToNull(type)
 			}
 			val tarificationConverted: String? = convertingOptionOrDefaultNullable(
 				_options,
 				"tarification",
 				null
 			) { tarification: String? ->
-				tarification
+				undefinedToNull(tarification)
 			}
 			val versionConverted: String? = convertingOptionOrDefaultNullable(
 				_options,
 				"version",
 				null
 			) { version: String? ->
-				version
+				undefinedToNull(version)
 			}
 			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
 				_options,
 				"startDocumentId",
 				null
 			) { startDocumentId: String? ->
-				startDocumentId
+				undefinedToNull(startDocumentId)
 			}
 			val startKeyConverted: String? = convertingOptionOrDefaultNullable(
 				_options,
 				"startKey",
 				null
 			) { startKey: String? ->
-				startKey
+				undefinedToNull(startKey)
 			}
 			val limitConverted: Int? = convertingOptionOrDefaultNullable(
 				_options,

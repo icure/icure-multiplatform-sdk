@@ -110,8 +110,6 @@ export class DecryptedContact {
 
   readonly isEncrypted: false = false;
 
-  readonly $ktClass: 'com.icure.sdk.model.DecryptedContact' = 'com.icure.sdk.model.DecryptedContact';
-
   constructor(partial: Partial<DecryptedContact>) {
     if (partial.isEncrypted !== undefined && partial.isEncrypted !== false) throw new Error('partial.isEncrypted must be undefined or false');
     this.id = partial.id ?? randomUuid();
@@ -211,8 +209,6 @@ export class EncryptedContact {
   notes: Array<Annotation> = [];
 
   readonly isEncrypted: true = true;
-
-  readonly $ktClass: 'com.icure.sdk.model.EncryptedContact' = 'com.icure.sdk.model.EncryptedContact';
 
   constructor(partial: Partial<EncryptedContact>) {
     if (partial.isEncrypted !== undefined && partial.isEncrypted !== true) throw new Error('partial.isEncrypted must be undefined or true');

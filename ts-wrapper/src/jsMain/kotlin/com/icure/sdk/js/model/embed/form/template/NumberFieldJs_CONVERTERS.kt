@@ -4,8 +4,10 @@ import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.intToNumber
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.mapToObject
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.objectToMapNullsafe
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.model.embed.form.template.NumberField
 import kotlin.String
 import kotlin.Suppress
@@ -13,48 +15,80 @@ import kotlin.Suppress
 @Suppress("UNUSED_VARIABLE")
 public fun numberField_toJs(obj: NumberField): NumberFieldJs {
 	val field = obj.field
-	val shortLabel = obj.shortLabel ?: undefined
-	val rows = intToNumber(obj.rows) ?: undefined
-	val columns = intToNumber(obj.columns) ?: undefined
-	val grows = obj.grows ?: undefined
-	val multiline = obj.multiline ?: undefined
-	val schema = obj.schema ?: undefined
-	val tags = listToArray(
-		obj.tags,
-		{ x1: String ->
-			x1
-		},
-	) ?: undefined
-	val codifications = listToArray(
-		obj.codifications,
-		{ x1: String ->
-			x1
-		},
-	) ?: undefined
-	val options = mapToObject(
-		obj.options,
-		{ x1: String ->
-			x1
-		},
-		{ x1: String ->
-			x1
-		},
-	) ?: undefined
-	val labels = mapToObject(
-		obj.labels,
-		{ x1: String ->
-			x1
-		},
-		{ x1: String ->
-			x1
-		},
-	) ?: undefined
-	val value = obj.value ?: undefined
-	val unit = obj.unit ?: undefined
-	val required = obj.required ?: undefined
-	val hideCondition = obj.hideCondition ?: undefined
-	val now = obj.now ?: undefined
-	val translate = obj.translate ?: undefined
+	val shortLabel = nullToUndefined(
+		obj.shortLabel
+	)
+	val rows = nullToUndefined(
+		intToNumber(obj.rows)
+	)
+	val columns = nullToUndefined(
+		intToNumber(obj.columns)
+	)
+	val grows = nullToUndefined(
+		obj.grows
+	)
+	val multiline = nullToUndefined(
+		obj.multiline
+	)
+	val schema = nullToUndefined(
+		obj.schema
+	)
+	val tags = nullToUndefined(
+		listToArray(
+			obj.tags,
+			{ x1: String ->
+				x1
+			},
+		)
+	)
+	val codifications = nullToUndefined(
+		listToArray(
+			obj.codifications,
+			{ x1: String ->
+				x1
+			},
+		)
+	)
+	val options = nullToUndefined(
+		mapToObject(
+			obj.options,
+			{ x1: String ->
+				x1
+			},
+			{ x1: String ->
+				x1
+			},
+		)
+	)
+	val labels = nullToUndefined(
+		mapToObject(
+			obj.labels,
+			{ x1: String ->
+				x1
+			},
+			{ x1: String ->
+				x1
+			},
+		)
+	)
+	val value = nullToUndefined(
+		obj.value
+	)
+	val unit = nullToUndefined(
+		obj.unit
+	)
+	val required = nullToUndefined(
+		obj.required
+	)
+	val hideCondition = nullToUndefined(
+		obj.hideCondition
+	)
+	val now = nullToUndefined(
+		obj.now
+	)
+	val translate = nullToUndefined(
+		obj.translate
+	)
 	return NumberFieldJs(js("{" +
 		"field:field," +
 		"shortLabel:shortLabel," +
@@ -78,12 +112,12 @@ public fun numberField_toJs(obj: NumberField): NumberFieldJs {
 
 public fun numberField_fromJs(obj: NumberFieldJs): NumberField {
 	val field = obj.field
-	val shortLabel = obj.shortLabel
+	val shortLabel = undefinedToNull(obj.shortLabel)
 	val rows = numberToInt(obj.rows, "obj.rows")
 	val columns = numberToInt(obj.columns, "obj.columns")
-	val grows = obj.grows
-	val multiline = obj.multiline
-	val schema = obj.schema
+	val grows = undefinedToNull(obj.grows)
+	val multiline = undefinedToNull(obj.multiline)
+	val schema = undefinedToNull(obj.schema)
 	val tags = arrayToList(
 		obj.tags,
 		"obj.tags",
@@ -118,12 +152,12 @@ public fun numberField_fromJs(obj: NumberFieldJs): NumberField {
 			x1
 		},
 	)
-	val value = obj.value
-	val unit = obj.unit
-	val required = obj.required
-	val hideCondition = obj.hideCondition
-	val now = obj.now
-	val translate = obj.translate
+	val value = undefinedToNull(obj.value)
+	val unit = undefinedToNull(obj.unit)
+	val required = undefinedToNull(obj.required)
+	val hideCondition = undefinedToNull(obj.hideCondition)
+	val now = undefinedToNull(obj.now)
+	val translate = undefinedToNull(obj.translate)
 	return NumberField(
 		field = field,
 		shortLabel = shortLabel,

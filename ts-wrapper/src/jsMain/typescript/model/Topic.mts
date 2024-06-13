@@ -79,8 +79,6 @@ export class DecryptedTopic {
 
   readonly isEncrypted: false = false;
 
-  readonly $ktClass: 'com.icure.sdk.model.DecryptedTopic' = 'com.icure.sdk.model.DecryptedTopic';
-
   constructor(partial: Partial<DecryptedTopic>) {
     if (partial.isEncrypted !== undefined && partial.isEncrypted !== false) throw new Error('partial.isEncrypted must be undefined or false');
     this.id = partial.id ?? randomUuid();
@@ -159,8 +157,6 @@ export class EncryptedTopic {
   linkedServices: Array<string> = [];
 
   readonly isEncrypted: true = true;
-
-  readonly $ktClass: 'com.icure.sdk.model.EncryptedTopic' = 'com.icure.sdk.model.EncryptedTopic';
 
   constructor(partial: Partial<EncryptedTopic>) {
     if (partial.isEncrypted !== undefined && partial.isEncrypted !== true) throw new Error('partial.isEncrypted must be undefined or true');

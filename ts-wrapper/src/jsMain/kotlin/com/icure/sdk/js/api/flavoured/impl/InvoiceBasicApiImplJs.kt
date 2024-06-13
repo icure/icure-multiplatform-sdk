@@ -9,6 +9,7 @@ import com.icure.sdk.js.model.CheckedConverters.dynamicToJsonNullsafe
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.EncryptedInvoiceJs
 import com.icure.sdk.js.model.IcureStubJs
 import com.icure.sdk.js.model.InvoiceJs
@@ -254,14 +255,14 @@ internal class InvoiceBasicApiImplJs(
 				"insuranceId",
 				null
 			) { insuranceId: String? ->
-				insuranceId
+				undefinedToNull(insuranceId)
 			}
 			val invoiceIdConverted: String? = convertingOptionOrDefaultNullable(
 				_options,
 				"invoiceId",
 				null
 			) { invoiceId: String? ->
-				invoiceId
+				undefinedToNull(invoiceId)
 			}
 			val gracePeriodConverted: Int? = convertingOptionOrDefaultNullable(
 				_options,
@@ -357,7 +358,7 @@ internal class InvoiceBasicApiImplJs(
 				"startDocumentId",
 				null
 			) { startDocumentId: String? ->
-				startDocumentId
+				undefinedToNull(startDocumentId)
 			}
 			val limitConverted: Int? = convertingOptionOrDefaultNullable(
 				_options,
@@ -561,7 +562,7 @@ internal class InvoiceBasicApiImplJs(
 
 	override fun listToPatientsUnsent(hcPartyId: String?): Promise<Array<EncryptedInvoiceJs>> =
 			GlobalScope.promise {
-		val hcPartyIdConverted: String? = hcPartyId
+		val hcPartyIdConverted: String? = undefinedToNull(hcPartyId)
 		val result = invoiceBasicApi.listToPatientsUnsent(
 			hcPartyIdConverted,
 		)

@@ -5,9 +5,11 @@ import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.longToNumber
 import com.icure.sdk.js.model.CheckedConverters.mapToObject
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.js.model.CheckedConverters.objectToMapNullsafe
 import com.icure.sdk.js.model.CheckedConverters.setToArray
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.model.embed.AgreementAppendix
 import com.icure.sdk.model.embed.ParagraphAgreement
 import kotlin.Double
@@ -17,46 +19,90 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun paragraphAgreement_toJs(obj: ParagraphAgreement): ParagraphAgreementJs {
-	val timestamp = longToNumber(obj.timestamp) ?: undefined
-	val paragraph = obj.paragraph ?: undefined
-	val accepted = obj.accepted ?: undefined
-	val inTreatment = obj.inTreatment ?: undefined
-	val canceled = obj.canceled ?: undefined
-	val careProviderReference = obj.careProviderReference ?: undefined
-	val decisionReference = obj.decisionReference ?: undefined
-	val start = longToNumber(obj.start) ?: undefined
-	val end = longToNumber(obj.end) ?: undefined
-	val cancelationDate = longToNumber(obj.cancelationDate) ?: undefined
-	val quantityValue = obj.quantityValue ?: undefined
-	val quantityUnit = obj.quantityUnit ?: undefined
-	val ioRequestReference = obj.ioRequestReference ?: undefined
-	val responseType = obj.responseType ?: undefined
-	val refusalJustification = mapToObject(
-		obj.refusalJustification,
-		{ x1: String ->
-			x1
-		},
-		{ x1: String ->
-			x1
-		},
-	) ?: undefined
-	val verses = setToArray(
-		obj.verses,
-		{ x1: Long ->
-			longToNumber(x1)
-		},
-	) ?: undefined
-	val coverageType = obj.coverageType ?: undefined
-	val unitNumber = obj.unitNumber ?: undefined
-	val strength = obj.strength ?: undefined
-	val strengthUnit = obj.strengthUnit ?: undefined
-	val agreementAppendices = listToArray(
-		obj.agreementAppendices,
-		{ x1: AgreementAppendix ->
-			agreementAppendix_toJs(x1)
-		},
-	) ?: undefined
-	val documentId = obj.documentId ?: undefined
+	val timestamp = nullToUndefined(
+		longToNumber(obj.timestamp)
+	)
+	val paragraph = nullToUndefined(
+		obj.paragraph
+	)
+	val accepted = nullToUndefined(
+		obj.accepted
+	)
+	val inTreatment = nullToUndefined(
+		obj.inTreatment
+	)
+	val canceled = nullToUndefined(
+		obj.canceled
+	)
+	val careProviderReference = nullToUndefined(
+		obj.careProviderReference
+	)
+	val decisionReference = nullToUndefined(
+		obj.decisionReference
+	)
+	val start = nullToUndefined(
+		longToNumber(obj.start)
+	)
+	val end = nullToUndefined(
+		longToNumber(obj.end)
+	)
+	val cancelationDate = nullToUndefined(
+		longToNumber(obj.cancelationDate)
+	)
+	val quantityValue = nullToUndefined(
+		obj.quantityValue
+	)
+	val quantityUnit = nullToUndefined(
+		obj.quantityUnit
+	)
+	val ioRequestReference = nullToUndefined(
+		obj.ioRequestReference
+	)
+	val responseType = nullToUndefined(
+		obj.responseType
+	)
+	val refusalJustification = nullToUndefined(
+		mapToObject(
+			obj.refusalJustification,
+			{ x1: String ->
+				x1
+			},
+			{ x1: String ->
+				x1
+			},
+		)
+	)
+	val verses = nullToUndefined(
+		setToArray(
+			obj.verses,
+			{ x1: Long ->
+				longToNumber(x1)
+			},
+		)
+	)
+	val coverageType = nullToUndefined(
+		obj.coverageType
+	)
+	val unitNumber = nullToUndefined(
+		obj.unitNumber
+	)
+	val strength = nullToUndefined(
+		obj.strength
+	)
+	val strengthUnit = nullToUndefined(
+		obj.strengthUnit
+	)
+	val agreementAppendices = nullToUndefined(
+		listToArray(
+			obj.agreementAppendices,
+			{ x1: AgreementAppendix ->
+				agreementAppendix_toJs(x1)
+			},
+		)
+	)
+	val documentId = nullToUndefined(
+		obj.documentId
+	)
 	return ParagraphAgreementJs(js("{" +
 		"timestamp:timestamp," +
 		"paragraph:paragraph," +
@@ -85,19 +131,19 @@ public fun paragraphAgreement_toJs(obj: ParagraphAgreement): ParagraphAgreementJ
 
 public fun paragraphAgreement_fromJs(obj: ParagraphAgreementJs): ParagraphAgreement {
 	val timestamp = numberToLong(obj.timestamp, "obj.timestamp")
-	val paragraph = obj.paragraph
-	val accepted = obj.accepted
-	val inTreatment = obj.inTreatment
-	val canceled = obj.canceled
-	val careProviderReference = obj.careProviderReference
-	val decisionReference = obj.decisionReference
+	val paragraph = undefinedToNull(obj.paragraph)
+	val accepted = undefinedToNull(obj.accepted)
+	val inTreatment = undefinedToNull(obj.inTreatment)
+	val canceled = undefinedToNull(obj.canceled)
+	val careProviderReference = undefinedToNull(obj.careProviderReference)
+	val decisionReference = undefinedToNull(obj.decisionReference)
 	val start = numberToLong(obj.start, "obj.start")
 	val end = numberToLong(obj.end, "obj.end")
 	val cancelationDate = numberToLong(obj.cancelationDate, "obj.cancelationDate")
-	val quantityValue = obj.quantityValue
-	val quantityUnit = obj.quantityUnit
-	val ioRequestReference = obj.ioRequestReference
-	val responseType = obj.responseType
+	val quantityValue = undefinedToNull(obj.quantityValue)
+	val quantityUnit = undefinedToNull(obj.quantityUnit)
+	val ioRequestReference = undefinedToNull(obj.ioRequestReference)
+	val responseType = undefinedToNull(obj.responseType)
 	val refusalJustification = objectToMapNullsafe(
 		obj.refusalJustification,
 		"obj.refusalJustification",
@@ -115,10 +161,10 @@ public fun paragraphAgreement_fromJs(obj: ParagraphAgreementJs): ParagraphAgreem
 			numberToLong(x1, "x1")
 		},
 	)
-	val coverageType = obj.coverageType
-	val unitNumber = obj.unitNumber
-	val strength = obj.strength
-	val strengthUnit = obj.strengthUnit
+	val coverageType = undefinedToNull(obj.coverageType)
+	val unitNumber = undefinedToNull(obj.unitNumber)
+	val strength = undefinedToNull(obj.strength)
+	val strengthUnit = undefinedToNull(obj.strengthUnit)
 	val agreementAppendices = arrayToList(
 		obj.agreementAppendices,
 		"obj.agreementAppendices",
@@ -126,7 +172,7 @@ public fun paragraphAgreement_fromJs(obj: ParagraphAgreementJs): ParagraphAgreem
 			agreementAppendix_fromJs(x1)
 		},
 	)
-	val documentId = obj.documentId
+	val documentId = undefinedToNull(obj.documentId)
 	return ParagraphAgreement(
 		timestamp = timestamp,
 		paragraph = paragraph,

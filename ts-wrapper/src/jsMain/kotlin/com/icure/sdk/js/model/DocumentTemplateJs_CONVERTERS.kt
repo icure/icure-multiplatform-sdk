@@ -2,8 +2,10 @@ package com.icure.sdk.js.model
 
 import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.longToNumber
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.js.model.CheckedConverters.setToArray
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.base.CodeStubJs
 import com.icure.sdk.js.model.base.codeStub_fromJs
 import com.icure.sdk.js.model.base.codeStub_toJs
@@ -19,12 +21,24 @@ import kotlin.Suppress
 @Suppress("UNUSED_VARIABLE")
 public fun documentTemplate_toJs(obj: DocumentTemplate): DocumentTemplateJs {
 	val id = obj.id
-	val rev = obj.rev ?: undefined
-	val created = longToNumber(obj.created) ?: undefined
-	val modified = longToNumber(obj.modified) ?: undefined
-	val author = obj.author ?: undefined
-	val responsible = obj.responsible ?: undefined
-	val medicalLocationId = obj.medicalLocationId ?: undefined
+	val rev = nullToUndefined(
+		obj.rev
+	)
+	val created = nullToUndefined(
+		longToNumber(obj.created)
+	)
+	val modified = nullToUndefined(
+		longToNumber(obj.modified)
+	)
+	val author = nullToUndefined(
+		obj.author
+	)
+	val responsible = nullToUndefined(
+		obj.responsible
+	)
+	val medicalLocationId = nullToUndefined(
+		obj.medicalLocationId
+	)
 	val tags = setToArray(
 		obj.tags,
 		{ x1: CodeStub ->
@@ -37,34 +51,62 @@ public fun documentTemplate_toJs(obj: DocumentTemplate): DocumentTemplateJs {
 			codeStub_toJs(x1)
 		},
 	)
-	val endOfLife = longToNumber(obj.endOfLife) ?: undefined
-	val deletionDate = longToNumber(obj.deletionDate) ?: undefined
-	val attachment = obj.attachment ?: undefined
-	val documentType = obj.documentType?.let { nonNull1 ->
-		nonNull1.name
-	} ?: undefined
-	val mainUti = obj.mainUti ?: undefined
-	val name = obj.name ?: undefined
+	val endOfLife = nullToUndefined(
+		longToNumber(obj.endOfLife)
+	)
+	val deletionDate = nullToUndefined(
+		longToNumber(obj.deletionDate)
+	)
+	val attachment = nullToUndefined(
+		obj.attachment
+	)
+	val documentType = nullToUndefined(
+		obj.documentType?.let { nonNull1 ->
+			nonNull1.name
+		}
+	)
+	val mainUti = nullToUndefined(
+		obj.mainUti
+	)
+	val name = nullToUndefined(
+		obj.name
+	)
 	val otherUtis = setToArray(
 		obj.otherUtis,
 		{ x1: String ->
 			x1
 		},
 	)
-	val attachmentId = obj.attachmentId ?: undefined
-	val version = obj.version?.let { nonNull1 ->
-		nonNull1.name
-	} ?: undefined
-	val owner = obj.owner ?: undefined
-	val guid = obj.guid ?: undefined
-	val group = obj.group?.let { nonNull1 ->
-		documentGroup_toJs(nonNull1)
-	} ?: undefined
-	val descr = obj.descr ?: undefined
-	val disabled = obj.disabled ?: undefined
-	val specialty = obj.specialty?.let { nonNull1 ->
-		codeStub_toJs(nonNull1)
-	} ?: undefined
+	val attachmentId = nullToUndefined(
+		obj.attachmentId
+	)
+	val version = nullToUndefined(
+		obj.version?.let { nonNull1 ->
+			nonNull1.name
+		}
+	)
+	val owner = nullToUndefined(
+		obj.owner
+	)
+	val guid = nullToUndefined(
+		obj.guid
+	)
+	val group = nullToUndefined(
+		obj.group?.let { nonNull1 ->
+			documentGroup_toJs(nonNull1)
+		}
+	)
+	val descr = nullToUndefined(
+		obj.descr
+	)
+	val disabled = nullToUndefined(
+		obj.disabled
+	)
+	val specialty = nullToUndefined(
+		obj.specialty?.let { nonNull1 ->
+			codeStub_toJs(nonNull1)
+		}
+	)
 	return DocumentTemplateJs(js("{" +
 		"id:id," +
 		"rev:rev," +
@@ -95,12 +137,12 @@ public fun documentTemplate_toJs(obj: DocumentTemplate): DocumentTemplateJs {
 
 public fun documentTemplate_fromJs(obj: DocumentTemplateJs): DocumentTemplate {
 	val id = obj.id
-	val rev = obj.rev
+	val rev = undefinedToNull(obj.rev)
 	val created = numberToLong(obj.created, "obj.created")
 	val modified = numberToLong(obj.modified, "obj.modified")
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
+	val author = undefinedToNull(obj.author)
+	val responsible = undefinedToNull(obj.responsible)
+	val medicalLocationId = undefinedToNull(obj.medicalLocationId)
 	val tags = arrayToSet(
 		obj.tags,
 		"obj.tags",
@@ -117,12 +159,12 @@ public fun documentTemplate_fromJs(obj: DocumentTemplateJs): DocumentTemplate {
 	)
 	val endOfLife = numberToLong(obj.endOfLife, "obj.endOfLife")
 	val deletionDate = numberToLong(obj.deletionDate, "obj.deletionDate")
-	val attachment = obj.attachment
+	val attachment = undefinedToNull(obj.attachment)
 	val documentType = obj.documentType?.let { nonNull1 ->
 		DocumentType.valueOf(nonNull1)
 	}
-	val mainUti = obj.mainUti
-	val name = obj.name
+	val mainUti = undefinedToNull(obj.mainUti)
+	val name = undefinedToNull(obj.name)
 	val otherUtis = arrayToSet(
 		obj.otherUtis,
 		"obj.otherUtis",
@@ -130,17 +172,17 @@ public fun documentTemplate_fromJs(obj: DocumentTemplateJs): DocumentTemplate {
 			x1
 		},
 	)
-	val attachmentId = obj.attachmentId
+	val attachmentId = undefinedToNull(obj.attachmentId)
 	val version = obj.version?.let { nonNull1 ->
 		ReportVersion.valueOf(nonNull1)
 	}
-	val owner = obj.owner
-	val guid = obj.guid
+	val owner = undefinedToNull(obj.owner)
+	val guid = undefinedToNull(obj.guid)
 	val group = obj.group?.let { nonNull1 ->
 		documentGroup_fromJs(nonNull1)
 	}
-	val descr = obj.descr
-	val disabled = obj.disabled
+	val descr = undefinedToNull(obj.descr)
+	val disabled = undefinedToNull(obj.disabled)
 	val specialty = obj.specialty?.let { nonNull1 ->
 		codeStub_fromJs(nonNull1)
 	}

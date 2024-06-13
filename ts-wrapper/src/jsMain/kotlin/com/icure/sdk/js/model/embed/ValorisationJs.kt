@@ -34,9 +34,6 @@ public sealed external interface ValorisationJs : EncryptableJs {
 	public val label: Record<String, out String>?
 
 	public val isEncrypted: Boolean
-
-	@JsName("${'$'}ktClass")
-	public val ktClass: String
 }
 
 @JsName("DecryptedValorisation")
@@ -66,8 +63,6 @@ public external class DecryptedValorisationJs(
 	override val encryptedSelf: String?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }
 
 @JsName("EncryptedValorisation")
@@ -97,6 +92,4 @@ public external class EncryptedValorisationJs(
 	override val encryptedSelf: String?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }

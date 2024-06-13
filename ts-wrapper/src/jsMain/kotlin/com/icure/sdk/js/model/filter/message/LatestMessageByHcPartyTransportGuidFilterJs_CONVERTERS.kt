@@ -1,5 +1,7 @@
 package com.icure.sdk.js.model.filter.message
 
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.model.filter.message.LatestMessageByHcPartyTransportGuidFilter
 import kotlin.Suppress
 
@@ -9,7 +11,9 @@ public
 		LatestMessageByHcPartyTransportGuidFilterJs {
 	val healthcarePartyId = obj.healthcarePartyId
 	val transportGuid = obj.transportGuid
-	val desc = obj.desc ?: undefined
+	val desc = nullToUndefined(
+		obj.desc
+	)
 	return LatestMessageByHcPartyTransportGuidFilterJs(js("{" +
 		"healthcarePartyId:healthcarePartyId," +
 		"transportGuid:transportGuid," +
@@ -22,7 +26,7 @@ public
 		LatestMessageByHcPartyTransportGuidFilter {
 	val healthcarePartyId = obj.healthcarePartyId
 	val transportGuid = obj.transportGuid
-	val desc = obj.desc
+	val desc = undefinedToNull(obj.desc)
 	return LatestMessageByHcPartyTransportGuidFilter(
 		healthcarePartyId = healthcarePartyId,
 		transportGuid = transportGuid,

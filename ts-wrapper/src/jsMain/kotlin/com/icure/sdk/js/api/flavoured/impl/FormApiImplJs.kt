@@ -21,6 +21,7 @@ import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.sdk.js.model.CheckedConverters.setToArray
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.DecryptedFormJs
 import com.icure.sdk.js.model.EncryptedFormJs
 import com.icure.sdk.js.model.FormJs
@@ -191,7 +192,7 @@ internal class FormApiImplJs(
 					"descending",
 					null
 				) { descending: Boolean? ->
-					descending
+					undefinedToNull(descending)
 				}
 				val result = formApi.encrypted.findFormsByHcPartyPatient(
 					hcPartyIdConverted,
@@ -340,21 +341,21 @@ internal class FormApiImplJs(
 					"healthElementId",
 					null
 				) { healthElementId: String? ->
-					healthElementId
+					undefinedToNull(healthElementId)
 				}
 				val planOfActionIdConverted: String? = convertingOptionOrDefaultNullable(
 					_options,
 					"planOfActionId",
 					null
 				) { planOfActionId: String? ->
-					planOfActionId
+					undefinedToNull(planOfActionId)
 				}
 				val formTemplateIdConverted: String? = convertingOptionOrDefaultNullable(
 					_options,
 					"formTemplateId",
 					null
 				) { formTemplateId: String? ->
-					formTemplateId
+					undefinedToNull(formTemplateId)
 				}
 				val result = formApi.encrypted.listFormsByHCPartyAndPatientForeignKeys(
 					hcPartyIdConverted,
@@ -493,7 +494,7 @@ internal class FormApiImplJs(
 					"descending",
 					null
 				) { descending: Boolean? ->
-					descending
+					undefinedToNull(descending)
 				}
 				val result = formApi.tryAndRecover.findFormsByHcPartyPatient(
 					hcPartyIdConverted,
@@ -638,21 +639,21 @@ internal class FormApiImplJs(
 					"healthElementId",
 					null
 				) { healthElementId: String? ->
-					healthElementId
+					undefinedToNull(healthElementId)
 				}
 				val planOfActionIdConverted: String? = convertingOptionOrDefaultNullable(
 					_options,
 					"planOfActionId",
 					null
 				) { planOfActionId: String? ->
-					planOfActionId
+					undefinedToNull(planOfActionId)
 				}
 				val formTemplateIdConverted: String? = convertingOptionOrDefaultNullable(
 					_options,
 					"formTemplateId",
 					null
 				) { formTemplateId: String? ->
-					formTemplateId
+					undefinedToNull(formTemplateId)
 				}
 				val result = formApi.tryAndRecover.listFormsByHCPartyAndPatientForeignKeys(
 					hcPartyIdConverted,
@@ -841,7 +842,7 @@ internal class FormApiImplJs(
 				"raw",
 				null
 			) { raw: Boolean? ->
-				raw
+				undefinedToNull(raw)
 			}
 			val result = formApi.getFormTemplate(
 				formTemplateIdConverted,
@@ -858,7 +859,7 @@ internal class FormApiImplJs(
 	): Promise<Array<FormTemplateJs>> = GlobalScope.promise {
 		val formTemplateGuidConverted: String = formTemplateGuid
 		val specialityCodeConverted: String = specialityCode
-		val rawConverted: Boolean? = raw
+		val rawConverted: Boolean? = undefinedToNull(raw)
 		val result = formApi.getFormTemplatesByGuid(
 			formTemplateGuidConverted,
 			specialityCodeConverted,
@@ -882,7 +883,7 @@ internal class FormApiImplJs(
 				"raw",
 				null
 			) { raw: Boolean? ->
-				raw
+				undefinedToNull(raw)
 			}
 			val result = formApi.listFormTemplatesBySpeciality(
 				specialityCodeConverted,
@@ -905,14 +906,14 @@ internal class FormApiImplJs(
 				"loadLayout",
 				null
 			) { loadLayout: Boolean? ->
-				loadLayout
+				undefinedToNull(loadLayout)
 			}
 			val rawConverted: Boolean? = convertingOptionOrDefaultNullable(
 				_options,
 				"raw",
 				null
 			) { raw: Boolean? ->
-				raw
+				undefinedToNull(raw)
 			}
 			val result = formApi.getFormTemplates(
 				loadLayoutConverted,
@@ -1085,7 +1086,7 @@ internal class FormApiImplJs(
 				"descending",
 				null
 			) { descending: Boolean? ->
-				descending
+				undefinedToNull(descending)
 			}
 			val result = formApi.findFormsByHcPartyPatient(
 				hcPartyIdConverted,
@@ -1234,21 +1235,21 @@ internal class FormApiImplJs(
 				"healthElementId",
 				null
 			) { healthElementId: String? ->
-				healthElementId
+				undefinedToNull(healthElementId)
 			}
 			val planOfActionIdConverted: String? = convertingOptionOrDefaultNullable(
 				_options,
 				"planOfActionId",
 				null
 			) { planOfActionId: String? ->
-				planOfActionId
+				undefinedToNull(planOfActionId)
 			}
 			val formTemplateIdConverted: String? = convertingOptionOrDefaultNullable(
 				_options,
 				"formTemplateId",
 				null
 			) { formTemplateId: String? ->
-				formTemplateId
+				undefinedToNull(formTemplateId)
 			}
 			val result = formApi.listFormsByHCPartyAndPatientForeignKeys(
 				hcPartyIdConverted,

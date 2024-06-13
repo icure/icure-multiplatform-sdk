@@ -2,6 +2,8 @@ package com.icure.sdk.js.model.filter
 
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.listToArray
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.base.IdentifiableJs
 import com.icure.sdk.model.base.Identifiable
 import com.icure.sdk.model.filter.AbstractFilter
@@ -12,7 +14,9 @@ import kotlin.Suppress
 @Suppress("UNUSED_VARIABLE")
 public fun <O : Identifiable<String>, O_JS : IdentifiableJs<String>>
 		unionFilter_toJs(obj: UnionFilter<O>, convertO: (O) -> O_JS): UnionFilterJs<O_JS> {
-	val desc = obj.desc ?: undefined
+	val desc = nullToUndefined(
+		obj.desc
+	)
 	val filters = listToArray(
 		obj.filters,
 		{ x1: AbstractFilter<O> ->
@@ -32,7 +36,7 @@ public fun <O : Identifiable<String>, O_JS : IdentifiableJs<String>>
 
 public fun <O : IdentifiableJs<String>, O_KT : Identifiable<String>>
 		unionFilter_fromJs(obj: UnionFilterJs<O>, convertO: (O) -> O_KT): UnionFilter<O_KT> {
-	val desc = obj.desc
+	val desc = undefinedToNull(obj.desc)
 	val filters = arrayToList(
 		obj.filters,
 		"obj.filters",

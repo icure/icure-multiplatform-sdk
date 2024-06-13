@@ -2,8 +2,10 @@ package com.icure.sdk.js.model.embed
 
 import com.icure.sdk.js.model.CheckedConverters.instantToNumber
 import com.icure.sdk.js.model.CheckedConverters.longToNumber
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.numberToInstant
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.specializations.base64String_fromJs
 import com.icure.sdk.js.model.specializations.base64String_toJs
 import com.icure.sdk.model.embed.DecryptedTypedValue
@@ -14,17 +16,31 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun typedValue_toJs(obj: DecryptedTypedValue): DecryptedTypedValueJs {
-	val type = obj.type?.let { nonNull1 ->
-		nonNull1.name
-	} ?: undefined
-	val booleanValue = obj.booleanValue ?: undefined
-	val integerValue = longToNumber(obj.integerValue) ?: undefined
-	val doubleValue = obj.doubleValue ?: undefined
-	val stringValue = obj.stringValue ?: undefined
-	val dateValue = instantToNumber(obj.dateValue) ?: undefined
-	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
-		base64String_toJs(nonNull1)
-	} ?: undefined
+	val type = nullToUndefined(
+		obj.type?.let { nonNull1 ->
+			nonNull1.name
+		}
+	)
+	val booleanValue = nullToUndefined(
+		obj.booleanValue
+	)
+	val integerValue = nullToUndefined(
+		longToNumber(obj.integerValue)
+	)
+	val doubleValue = nullToUndefined(
+		obj.doubleValue
+	)
+	val stringValue = nullToUndefined(
+		obj.stringValue
+	)
+	val dateValue = nullToUndefined(
+		instantToNumber(obj.dateValue)
+	)
+	val encryptedSelf = nullToUndefined(
+		obj.encryptedSelf?.let { nonNull1 ->
+			base64String_toJs(nonNull1)
+		}
+	)
 	return DecryptedTypedValueJs(js("{" +
 		"type:type," +
 		"booleanValue:booleanValue," +
@@ -40,10 +56,10 @@ public fun typedValue_fromJs(obj: DecryptedTypedValueJs): DecryptedTypedValue {
 	val type = obj.type?.let { nonNull1 ->
 		TypedValuesType.valueOf(nonNull1)
 	}
-	val booleanValue = obj.booleanValue
+	val booleanValue = undefinedToNull(obj.booleanValue)
 	val integerValue = numberToLong(obj.integerValue, "obj.integerValue")
-	val doubleValue = obj.doubleValue
-	val stringValue = obj.stringValue
+	val doubleValue = undefinedToNull(obj.doubleValue)
+	val stringValue = undefinedToNull(obj.stringValue)
 	val dateValue = numberToInstant(obj.dateValue, "obj.dateValue")
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_fromJs(nonNull1)
@@ -61,17 +77,31 @@ public fun typedValue_fromJs(obj: DecryptedTypedValueJs): DecryptedTypedValue {
 
 @Suppress("UNUSED_VARIABLE")
 public fun typedValue_toJs(obj: EncryptedTypedValue): EncryptedTypedValueJs {
-	val type = obj.type?.let { nonNull1 ->
-		nonNull1.name
-	} ?: undefined
-	val booleanValue = obj.booleanValue ?: undefined
-	val integerValue = longToNumber(obj.integerValue) ?: undefined
-	val doubleValue = obj.doubleValue ?: undefined
-	val stringValue = obj.stringValue ?: undefined
-	val dateValue = instantToNumber(obj.dateValue) ?: undefined
-	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
-		base64String_toJs(nonNull1)
-	} ?: undefined
+	val type = nullToUndefined(
+		obj.type?.let { nonNull1 ->
+			nonNull1.name
+		}
+	)
+	val booleanValue = nullToUndefined(
+		obj.booleanValue
+	)
+	val integerValue = nullToUndefined(
+		longToNumber(obj.integerValue)
+	)
+	val doubleValue = nullToUndefined(
+		obj.doubleValue
+	)
+	val stringValue = nullToUndefined(
+		obj.stringValue
+	)
+	val dateValue = nullToUndefined(
+		instantToNumber(obj.dateValue)
+	)
+	val encryptedSelf = nullToUndefined(
+		obj.encryptedSelf?.let { nonNull1 ->
+			base64String_toJs(nonNull1)
+		}
+	)
 	return EncryptedTypedValueJs(js("{" +
 		"type:type," +
 		"booleanValue:booleanValue," +
@@ -87,10 +117,10 @@ public fun typedValue_fromJs(obj: EncryptedTypedValueJs): EncryptedTypedValue {
 	val type = obj.type?.let { nonNull1 ->
 		TypedValuesType.valueOf(nonNull1)
 	}
-	val booleanValue = obj.booleanValue
+	val booleanValue = undefinedToNull(obj.booleanValue)
 	val integerValue = numberToLong(obj.integerValue, "obj.integerValue")
-	val doubleValue = obj.doubleValue
-	val stringValue = obj.stringValue
+	val doubleValue = undefinedToNull(obj.doubleValue)
+	val stringValue = undefinedToNull(obj.stringValue)
 	val dateValue = numberToInstant(obj.dateValue, "obj.dateValue")
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_fromJs(nonNull1)

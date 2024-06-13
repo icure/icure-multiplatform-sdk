@@ -98,8 +98,6 @@ export class DecryptedForm {
 
   readonly isEncrypted: false = false;
 
-  readonly $ktClass: 'com.icure.sdk.model.DecryptedForm' = 'com.icure.sdk.model.DecryptedForm';
-
   constructor(partial: Partial<DecryptedForm>) {
     if (partial.isEncrypted !== undefined && partial.isEncrypted !== false) throw new Error('partial.isEncrypted must be undefined or false');
     this.id = partial.id ?? randomUuid();
@@ -193,8 +191,6 @@ export class EncryptedForm {
   securityMetadata: SecurityMetadata | undefined = undefined;
 
   readonly isEncrypted: true = true;
-
-  readonly $ktClass: 'com.icure.sdk.model.EncryptedForm' = 'com.icure.sdk.model.EncryptedForm';
 
   constructor(partial: Partial<EncryptedForm>) {
     if (partial.isEncrypted !== undefined && partial.isEncrypted !== true) throw new Error('partial.isEncrypted must be undefined or true');

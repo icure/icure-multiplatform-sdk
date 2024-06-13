@@ -1,7 +1,9 @@
 package com.icure.sdk.js.model.filter.healthelement
 
 import com.icure.sdk.js.model.CheckedConverters.arrayToSet
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.setToArray
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.model.filter.healthelement.HealthElementByIdsFilter
 import kotlin.String
 import kotlin.Suppress
@@ -15,7 +17,9 @@ public fun healthElementByIdsFilter_toJs(obj: HealthElementByIdsFilter):
 			x1
 		},
 	)
-	val desc = obj.desc ?: undefined
+	val desc = nullToUndefined(
+		obj.desc
+	)
 	return HealthElementByIdsFilterJs(js("{" +
 		"ids:ids," +
 		"desc:desc" +
@@ -31,7 +35,7 @@ public fun healthElementByIdsFilter_fromJs(obj: HealthElementByIdsFilterJs):
 			x1
 		},
 	)
-	val desc = obj.desc
+	val desc = undefinedToNull(obj.desc)
 	return HealthElementByIdsFilter(
 		ids = ids,
 		desc = desc,

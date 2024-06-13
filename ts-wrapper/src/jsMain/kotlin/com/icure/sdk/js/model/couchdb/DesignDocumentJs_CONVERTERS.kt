@@ -1,8 +1,10 @@
 package com.icure.sdk.js.model.couchdb
 
 import com.icure.sdk.js.model.CheckedConverters.mapToObject
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.sdk.js.model.CheckedConverters.objectToMapNullsafe
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.model.couchdb.DesignDocument
 import com.icure.sdk.model.couchdb.View
 import kotlin.String
@@ -11,7 +13,9 @@ import kotlin.Suppress
 @Suppress("UNUSED_VARIABLE")
 public fun designDocument_toJs(obj: DesignDocument): DesignDocumentJs {
 	val id = obj.id
-	val rev = obj.rev ?: undefined
+	val rev = nullToUndefined(
+		obj.rev
+	)
 	val revHistory = mapToObject(
 		obj.revHistory,
 		{ x1: String ->
@@ -21,7 +25,9 @@ public fun designDocument_toJs(obj: DesignDocument): DesignDocumentJs {
 			x1
 		},
 	)
-	val language = obj.language ?: undefined
+	val language = nullToUndefined(
+		obj.language
+	)
 	val views = mapToObject(
 		obj.views,
 		{ x1: String ->
@@ -49,15 +55,17 @@ public fun designDocument_toJs(obj: DesignDocument): DesignDocumentJs {
 			x1
 		},
 	)
-	val updateHandlers = mapToObject(
-		obj.updateHandlers,
-		{ x1: String ->
-			x1
-		},
-		{ x1: String ->
-			x1
-		},
-	) ?: undefined
+	val updateHandlers = nullToUndefined(
+		mapToObject(
+			obj.updateHandlers,
+			{ x1: String ->
+				x1
+			},
+			{ x1: String ->
+				x1
+			},
+		)
+	)
 	val filters = mapToObject(
 		obj.filters,
 		{ x1: String ->
@@ -82,7 +90,7 @@ public fun designDocument_toJs(obj: DesignDocument): DesignDocumentJs {
 
 public fun designDocument_fromJs(obj: DesignDocumentJs): DesignDocument {
 	val id = obj.id
-	val rev = obj.rev
+	val rev = undefinedToNull(obj.rev)
 	val revHistory = objectToMap(
 		obj.revHistory,
 		"obj.revHistory",
@@ -93,7 +101,7 @@ public fun designDocument_fromJs(obj: DesignDocumentJs): DesignDocument {
 			x1
 		},
 	)
-	val language = obj.language
+	val language = undefinedToNull(obj.language)
 	val views = objectToMap(
 		obj.views,
 		"obj.views",

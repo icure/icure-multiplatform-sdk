@@ -3,9 +3,11 @@ package com.icure.sdk.js.model
 import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.longToNumber
 import com.icure.sdk.js.model.CheckedConverters.mapToObject
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.sdk.js.model.CheckedConverters.setToArray
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.base.CodeStubJs
 import com.icure.sdk.js.model.base.codeStub_fromJs
 import com.icure.sdk.js.model.base.codeStub_toJs
@@ -37,12 +39,24 @@ import kotlin.collections.Set
 @Suppress("UNUSED_VARIABLE")
 public fun calendarItem_toJs(obj: DecryptedCalendarItem): DecryptedCalendarItemJs {
 	val id = obj.id
-	val rev = obj.rev ?: undefined
-	val created = longToNumber(obj.created) ?: undefined
-	val modified = longToNumber(obj.modified) ?: undefined
-	val author = obj.author ?: undefined
-	val responsible = obj.responsible ?: undefined
-	val medicalLocationId = obj.medicalLocationId ?: undefined
+	val rev = nullToUndefined(
+		obj.rev
+	)
+	val created = nullToUndefined(
+		longToNumber(obj.created)
+	)
+	val modified = nullToUndefined(
+		longToNumber(obj.modified)
+	)
+	val author = nullToUndefined(
+		obj.author
+	)
+	val responsible = nullToUndefined(
+		obj.responsible
+	)
+	val medicalLocationId = nullToUndefined(
+		obj.medicalLocationId
+	)
 	val tags = setToArray(
 		obj.tags,
 		{ x1: CodeStub ->
@@ -55,41 +69,91 @@ public fun calendarItem_toJs(obj: DecryptedCalendarItem): DecryptedCalendarItemJ
 			codeStub_toJs(x1)
 		},
 	)
-	val endOfLife = longToNumber(obj.endOfLife) ?: undefined
-	val deletionDate = longToNumber(obj.deletionDate) ?: undefined
-	val title = obj.title ?: undefined
-	val calendarItemTypeId = obj.calendarItemTypeId ?: undefined
-	val masterCalendarItemId = obj.masterCalendarItemId ?: undefined
-	val patientId = obj.patientId ?: undefined
-	val important = obj.important ?: undefined
-	val homeVisit = obj.homeVisit ?: undefined
-	val phoneNumber = obj.phoneNumber ?: undefined
-	val placeId = obj.placeId ?: undefined
-	val address = obj.address?.let { nonNull1 ->
-		address_toJs(nonNull1)
-	} ?: undefined
-	val addressText = obj.addressText ?: undefined
-	val startTime = longToNumber(obj.startTime) ?: undefined
-	val endTime = longToNumber(obj.endTime) ?: undefined
-	val confirmationTime = longToNumber(obj.confirmationTime) ?: undefined
-	val cancellationTimestamp = longToNumber(obj.cancellationTimestamp) ?: undefined
-	val confirmationId = obj.confirmationId ?: undefined
-	val duration = longToNumber(obj.duration) ?: undefined
-	val allDay = obj.allDay ?: undefined
-	val details = obj.details ?: undefined
-	val wasMigrated = obj.wasMigrated ?: undefined
-	val agendaId = obj.agendaId ?: undefined
-	val hcpId = obj.hcpId ?: undefined
-	val recurrenceId = obj.recurrenceId ?: undefined
+	val endOfLife = nullToUndefined(
+		longToNumber(obj.endOfLife)
+	)
+	val deletionDate = nullToUndefined(
+		longToNumber(obj.deletionDate)
+	)
+	val title = nullToUndefined(
+		obj.title
+	)
+	val calendarItemTypeId = nullToUndefined(
+		obj.calendarItemTypeId
+	)
+	val masterCalendarItemId = nullToUndefined(
+		obj.masterCalendarItemId
+	)
+	val patientId = nullToUndefined(
+		obj.patientId
+	)
+	val important = nullToUndefined(
+		obj.important
+	)
+	val homeVisit = nullToUndefined(
+		obj.homeVisit
+	)
+	val phoneNumber = nullToUndefined(
+		obj.phoneNumber
+	)
+	val placeId = nullToUndefined(
+		obj.placeId
+	)
+	val address = nullToUndefined(
+		obj.address?.let { nonNull1 ->
+			address_toJs(nonNull1)
+		}
+	)
+	val addressText = nullToUndefined(
+		obj.addressText
+	)
+	val startTime = nullToUndefined(
+		longToNumber(obj.startTime)
+	)
+	val endTime = nullToUndefined(
+		longToNumber(obj.endTime)
+	)
+	val confirmationTime = nullToUndefined(
+		longToNumber(obj.confirmationTime)
+	)
+	val cancellationTimestamp = nullToUndefined(
+		longToNumber(obj.cancellationTimestamp)
+	)
+	val confirmationId = nullToUndefined(
+		obj.confirmationId
+	)
+	val duration = nullToUndefined(
+		longToNumber(obj.duration)
+	)
+	val allDay = nullToUndefined(
+		obj.allDay
+	)
+	val details = nullToUndefined(
+		obj.details
+	)
+	val wasMigrated = nullToUndefined(
+		obj.wasMigrated
+	)
+	val agendaId = nullToUndefined(
+		obj.agendaId
+	)
+	val hcpId = nullToUndefined(
+		obj.hcpId
+	)
+	val recurrenceId = nullToUndefined(
+		obj.recurrenceId
+	)
 	val meetingTags = setToArray(
 		obj.meetingTags,
 		{ x1: CalendarItemTag ->
 			calendarItemTag_toJs(x1)
 		},
 	)
-	val flowItem = obj.flowItem?.let { nonNull1 ->
-		flowItem_toJs(nonNull1)
-	} ?: undefined
+	val flowItem = nullToUndefined(
+		obj.flowItem?.let { nonNull1 ->
+			flowItem_toJs(nonNull1)
+		}
+	)
 	val secretForeignKeys = setToArray(
 		obj.secretForeignKeys,
 		{ x1: String ->
@@ -138,12 +202,16 @@ public fun calendarItem_toJs(obj: DecryptedCalendarItem): DecryptedCalendarItemJ
 			)
 		},
 	)
-	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
-		base64String_toJs(nonNull1)
-	} ?: undefined
-	val securityMetadata = obj.securityMetadata?.let { nonNull1 ->
-		securityMetadata_toJs(nonNull1)
-	} ?: undefined
+	val encryptedSelf = nullToUndefined(
+		obj.encryptedSelf?.let { nonNull1 ->
+			base64String_toJs(nonNull1)
+		}
+	)
+	val securityMetadata = nullToUndefined(
+		obj.securityMetadata?.let { nonNull1 ->
+			securityMetadata_toJs(nonNull1)
+		}
+	)
 	return DecryptedCalendarItemJs(js("{" +
 		"id:id," +
 		"rev:rev," +
@@ -191,12 +259,12 @@ public fun calendarItem_toJs(obj: DecryptedCalendarItem): DecryptedCalendarItemJ
 
 public fun calendarItem_fromJs(obj: DecryptedCalendarItemJs): DecryptedCalendarItem {
 	val id = obj.id
-	val rev = obj.rev
+	val rev = undefinedToNull(obj.rev)
 	val created = numberToLong(obj.created, "obj.created")
 	val modified = numberToLong(obj.modified, "obj.modified")
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
+	val author = undefinedToNull(obj.author)
+	val responsible = undefinedToNull(obj.responsible)
+	val medicalLocationId = undefinedToNull(obj.medicalLocationId)
 	val tags = arrayToSet(
 		obj.tags,
 		"obj.tags",
@@ -213,30 +281,30 @@ public fun calendarItem_fromJs(obj: DecryptedCalendarItemJs): DecryptedCalendarI
 	)
 	val endOfLife = numberToLong(obj.endOfLife, "obj.endOfLife")
 	val deletionDate = numberToLong(obj.deletionDate, "obj.deletionDate")
-	val title = obj.title
-	val calendarItemTypeId = obj.calendarItemTypeId
-	val masterCalendarItemId = obj.masterCalendarItemId
-	val patientId = obj.patientId
-	val important = obj.important
-	val homeVisit = obj.homeVisit
-	val phoneNumber = obj.phoneNumber
-	val placeId = obj.placeId
+	val title = undefinedToNull(obj.title)
+	val calendarItemTypeId = undefinedToNull(obj.calendarItemTypeId)
+	val masterCalendarItemId = undefinedToNull(obj.masterCalendarItemId)
+	val patientId = undefinedToNull(obj.patientId)
+	val important = undefinedToNull(obj.important)
+	val homeVisit = undefinedToNull(obj.homeVisit)
+	val phoneNumber = undefinedToNull(obj.phoneNumber)
+	val placeId = undefinedToNull(obj.placeId)
 	val address = obj.address?.let { nonNull1 ->
 		address_fromJs(nonNull1)
 	}
-	val addressText = obj.addressText
+	val addressText = undefinedToNull(obj.addressText)
 	val startTime = numberToLong(obj.startTime, "obj.startTime")
 	val endTime = numberToLong(obj.endTime, "obj.endTime")
 	val confirmationTime = numberToLong(obj.confirmationTime, "obj.confirmationTime")
 	val cancellationTimestamp = numberToLong(obj.cancellationTimestamp, "obj.cancellationTimestamp")
-	val confirmationId = obj.confirmationId
+	val confirmationId = undefinedToNull(obj.confirmationId)
 	val duration = numberToLong(obj.duration, "obj.duration")
-	val allDay = obj.allDay
-	val details = obj.details
-	val wasMigrated = obj.wasMigrated
-	val agendaId = obj.agendaId
-	val hcpId = obj.hcpId
-	val recurrenceId = obj.recurrenceId
+	val allDay = undefinedToNull(obj.allDay)
+	val details = undefinedToNull(obj.details)
+	val wasMigrated = undefinedToNull(obj.wasMigrated)
+	val agendaId = undefinedToNull(obj.agendaId)
+	val hcpId = undefinedToNull(obj.hcpId)
+	val recurrenceId = undefinedToNull(obj.recurrenceId)
 	val meetingTags = arrayToSet(
 		obj.meetingTags,
 		"obj.meetingTags",
@@ -356,12 +424,24 @@ public fun calendarItem_fromJs(obj: DecryptedCalendarItemJs): DecryptedCalendarI
 @Suppress("UNUSED_VARIABLE")
 public fun calendarItem_toJs(obj: EncryptedCalendarItem): EncryptedCalendarItemJs {
 	val id = obj.id
-	val rev = obj.rev ?: undefined
-	val created = longToNumber(obj.created) ?: undefined
-	val modified = longToNumber(obj.modified) ?: undefined
-	val author = obj.author ?: undefined
-	val responsible = obj.responsible ?: undefined
-	val medicalLocationId = obj.medicalLocationId ?: undefined
+	val rev = nullToUndefined(
+		obj.rev
+	)
+	val created = nullToUndefined(
+		longToNumber(obj.created)
+	)
+	val modified = nullToUndefined(
+		longToNumber(obj.modified)
+	)
+	val author = nullToUndefined(
+		obj.author
+	)
+	val responsible = nullToUndefined(
+		obj.responsible
+	)
+	val medicalLocationId = nullToUndefined(
+		obj.medicalLocationId
+	)
 	val tags = setToArray(
 		obj.tags,
 		{ x1: CodeStub ->
@@ -374,41 +454,91 @@ public fun calendarItem_toJs(obj: EncryptedCalendarItem): EncryptedCalendarItemJ
 			codeStub_toJs(x1)
 		},
 	)
-	val endOfLife = longToNumber(obj.endOfLife) ?: undefined
-	val deletionDate = longToNumber(obj.deletionDate) ?: undefined
-	val title = obj.title ?: undefined
-	val calendarItemTypeId = obj.calendarItemTypeId ?: undefined
-	val masterCalendarItemId = obj.masterCalendarItemId ?: undefined
-	val patientId = obj.patientId ?: undefined
-	val important = obj.important ?: undefined
-	val homeVisit = obj.homeVisit ?: undefined
-	val phoneNumber = obj.phoneNumber ?: undefined
-	val placeId = obj.placeId ?: undefined
-	val address = obj.address?.let { nonNull1 ->
-		address_toJs(nonNull1)
-	} ?: undefined
-	val addressText = obj.addressText ?: undefined
-	val startTime = longToNumber(obj.startTime) ?: undefined
-	val endTime = longToNumber(obj.endTime) ?: undefined
-	val confirmationTime = longToNumber(obj.confirmationTime) ?: undefined
-	val cancellationTimestamp = longToNumber(obj.cancellationTimestamp) ?: undefined
-	val confirmationId = obj.confirmationId ?: undefined
-	val duration = longToNumber(obj.duration) ?: undefined
-	val allDay = obj.allDay ?: undefined
-	val details = obj.details ?: undefined
-	val wasMigrated = obj.wasMigrated ?: undefined
-	val agendaId = obj.agendaId ?: undefined
-	val hcpId = obj.hcpId ?: undefined
-	val recurrenceId = obj.recurrenceId ?: undefined
+	val endOfLife = nullToUndefined(
+		longToNumber(obj.endOfLife)
+	)
+	val deletionDate = nullToUndefined(
+		longToNumber(obj.deletionDate)
+	)
+	val title = nullToUndefined(
+		obj.title
+	)
+	val calendarItemTypeId = nullToUndefined(
+		obj.calendarItemTypeId
+	)
+	val masterCalendarItemId = nullToUndefined(
+		obj.masterCalendarItemId
+	)
+	val patientId = nullToUndefined(
+		obj.patientId
+	)
+	val important = nullToUndefined(
+		obj.important
+	)
+	val homeVisit = nullToUndefined(
+		obj.homeVisit
+	)
+	val phoneNumber = nullToUndefined(
+		obj.phoneNumber
+	)
+	val placeId = nullToUndefined(
+		obj.placeId
+	)
+	val address = nullToUndefined(
+		obj.address?.let { nonNull1 ->
+			address_toJs(nonNull1)
+		}
+	)
+	val addressText = nullToUndefined(
+		obj.addressText
+	)
+	val startTime = nullToUndefined(
+		longToNumber(obj.startTime)
+	)
+	val endTime = nullToUndefined(
+		longToNumber(obj.endTime)
+	)
+	val confirmationTime = nullToUndefined(
+		longToNumber(obj.confirmationTime)
+	)
+	val cancellationTimestamp = nullToUndefined(
+		longToNumber(obj.cancellationTimestamp)
+	)
+	val confirmationId = nullToUndefined(
+		obj.confirmationId
+	)
+	val duration = nullToUndefined(
+		longToNumber(obj.duration)
+	)
+	val allDay = nullToUndefined(
+		obj.allDay
+	)
+	val details = nullToUndefined(
+		obj.details
+	)
+	val wasMigrated = nullToUndefined(
+		obj.wasMigrated
+	)
+	val agendaId = nullToUndefined(
+		obj.agendaId
+	)
+	val hcpId = nullToUndefined(
+		obj.hcpId
+	)
+	val recurrenceId = nullToUndefined(
+		obj.recurrenceId
+	)
 	val meetingTags = setToArray(
 		obj.meetingTags,
 		{ x1: CalendarItemTag ->
 			calendarItemTag_toJs(x1)
 		},
 	)
-	val flowItem = obj.flowItem?.let { nonNull1 ->
-		flowItem_toJs(nonNull1)
-	} ?: undefined
+	val flowItem = nullToUndefined(
+		obj.flowItem?.let { nonNull1 ->
+			flowItem_toJs(nonNull1)
+		}
+	)
 	val secretForeignKeys = setToArray(
 		obj.secretForeignKeys,
 		{ x1: String ->
@@ -457,12 +587,16 @@ public fun calendarItem_toJs(obj: EncryptedCalendarItem): EncryptedCalendarItemJ
 			)
 		},
 	)
-	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
-		base64String_toJs(nonNull1)
-	} ?: undefined
-	val securityMetadata = obj.securityMetadata?.let { nonNull1 ->
-		securityMetadata_toJs(nonNull1)
-	} ?: undefined
+	val encryptedSelf = nullToUndefined(
+		obj.encryptedSelf?.let { nonNull1 ->
+			base64String_toJs(nonNull1)
+		}
+	)
+	val securityMetadata = nullToUndefined(
+		obj.securityMetadata?.let { nonNull1 ->
+			securityMetadata_toJs(nonNull1)
+		}
+	)
 	return EncryptedCalendarItemJs(js("{" +
 		"id:id," +
 		"rev:rev," +
@@ -510,12 +644,12 @@ public fun calendarItem_toJs(obj: EncryptedCalendarItem): EncryptedCalendarItemJ
 
 public fun calendarItem_fromJs(obj: EncryptedCalendarItemJs): EncryptedCalendarItem {
 	val id = obj.id
-	val rev = obj.rev
+	val rev = undefinedToNull(obj.rev)
 	val created = numberToLong(obj.created, "obj.created")
 	val modified = numberToLong(obj.modified, "obj.modified")
-	val author = obj.author
-	val responsible = obj.responsible
-	val medicalLocationId = obj.medicalLocationId
+	val author = undefinedToNull(obj.author)
+	val responsible = undefinedToNull(obj.responsible)
+	val medicalLocationId = undefinedToNull(obj.medicalLocationId)
 	val tags = arrayToSet(
 		obj.tags,
 		"obj.tags",
@@ -532,30 +666,30 @@ public fun calendarItem_fromJs(obj: EncryptedCalendarItemJs): EncryptedCalendarI
 	)
 	val endOfLife = numberToLong(obj.endOfLife, "obj.endOfLife")
 	val deletionDate = numberToLong(obj.deletionDate, "obj.deletionDate")
-	val title = obj.title
-	val calendarItemTypeId = obj.calendarItemTypeId
-	val masterCalendarItemId = obj.masterCalendarItemId
-	val patientId = obj.patientId
-	val important = obj.important
-	val homeVisit = obj.homeVisit
-	val phoneNumber = obj.phoneNumber
-	val placeId = obj.placeId
+	val title = undefinedToNull(obj.title)
+	val calendarItemTypeId = undefinedToNull(obj.calendarItemTypeId)
+	val masterCalendarItemId = undefinedToNull(obj.masterCalendarItemId)
+	val patientId = undefinedToNull(obj.patientId)
+	val important = undefinedToNull(obj.important)
+	val homeVisit = undefinedToNull(obj.homeVisit)
+	val phoneNumber = undefinedToNull(obj.phoneNumber)
+	val placeId = undefinedToNull(obj.placeId)
 	val address = obj.address?.let { nonNull1 ->
 		address_fromJs(nonNull1)
 	}
-	val addressText = obj.addressText
+	val addressText = undefinedToNull(obj.addressText)
 	val startTime = numberToLong(obj.startTime, "obj.startTime")
 	val endTime = numberToLong(obj.endTime, "obj.endTime")
 	val confirmationTime = numberToLong(obj.confirmationTime, "obj.confirmationTime")
 	val cancellationTimestamp = numberToLong(obj.cancellationTimestamp, "obj.cancellationTimestamp")
-	val confirmationId = obj.confirmationId
+	val confirmationId = undefinedToNull(obj.confirmationId)
 	val duration = numberToLong(obj.duration, "obj.duration")
-	val allDay = obj.allDay
-	val details = obj.details
-	val wasMigrated = obj.wasMigrated
-	val agendaId = obj.agendaId
-	val hcpId = obj.hcpId
-	val recurrenceId = obj.recurrenceId
+	val allDay = undefinedToNull(obj.allDay)
+	val details = undefinedToNull(obj.details)
+	val wasMigrated = undefinedToNull(obj.wasMigrated)
+	val agendaId = undefinedToNull(obj.agendaId)
+	val hcpId = undefinedToNull(obj.hcpId)
+	val recurrenceId = undefinedToNull(obj.recurrenceId)
 	val meetingTags = arrayToSet(
 		obj.meetingTags,
 		"obj.meetingTags",

@@ -21,6 +21,7 @@ import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.sdk.js.model.CheckedConverters.setToArray
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.ClassificationJs
 import com.icure.sdk.js.model.DecryptedClassificationJs
 import com.icure.sdk.js.model.EncryptedClassificationJs
@@ -187,7 +188,7 @@ internal class ClassificationApiImplJs(
 					"descending",
 					null
 				) { descending: Boolean? ->
-					descending
+					undefinedToNull(descending)
 				}
 				val result = classificationApi.encrypted.findClassificationsByHcPartyPatient(
 					hcPartyIdConverted,
@@ -367,7 +368,7 @@ internal class ClassificationApiImplJs(
 					"descending",
 					null
 				) { descending: Boolean? ->
-					descending
+					undefinedToNull(descending)
 				}
 				val result = classificationApi.tryAndRecover.findClassificationsByHcPartyPatient(
 					hcPartyIdConverted,
@@ -691,7 +692,7 @@ internal class ClassificationApiImplJs(
 				"descending",
 				null
 			) { descending: Boolean? ->
-				descending
+				undefinedToNull(descending)
 			}
 			val result = classificationApi.findClassificationsByHcPartyPatient(
 				hcPartyIdConverted,

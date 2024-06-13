@@ -20,9 +20,6 @@ public sealed external interface EpisodeJs : EncryptableJs, IdentifiableJs<Strin
 	public val endDate: Double?
 
 	public val isEncrypted: Boolean
-
-	@JsName("${'$'}ktClass")
-	public val ktClass: String
 }
 
 @JsName("DecryptedEpisode")
@@ -42,8 +39,6 @@ public external class DecryptedEpisodeJs(
 	override val encryptedSelf: String?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }
 
 @JsName("EncryptedEpisode")
@@ -63,6 +58,4 @@ public external class EncryptedEpisodeJs(
 	override val encryptedSelf: String?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }

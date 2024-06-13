@@ -1,13 +1,16 @@
 package com.icure.sdk.js.model.embed
 
 import com.icure.sdk.js.model.CheckedConverters.longToNumber
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.model.embed.MessageReadStatus
 import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun messageReadStatus_toJs(obj: MessageReadStatus): MessageReadStatusJs {
-	val time = longToNumber(obj.time) ?: undefined
+	val time = nullToUndefined(
+		longToNumber(obj.time)
+	)
 	val read = obj.read
 	return MessageReadStatusJs(js("{" +
 		"time:time," +

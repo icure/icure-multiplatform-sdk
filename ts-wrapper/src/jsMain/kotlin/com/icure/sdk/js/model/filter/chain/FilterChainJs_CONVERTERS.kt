@@ -1,5 +1,6 @@
 package com.icure.sdk.js.model.filter.chain
 
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.base.IdentifiableJs
 import com.icure.sdk.js.model.filter.abstractFilter_fromJs
 import com.icure.sdk.js.model.filter.abstractFilter_toJs
@@ -19,9 +20,11 @@ public fun <O : Identifiable<String>, O_JS : IdentifiableJs<String>>
 			convertO(x1)
 		},
 	)
-	val predicate = obj.predicate?.let { nonNull1 ->
-		predicate_toJs(nonNull1)
-	} ?: undefined
+	val predicate = nullToUndefined(
+		obj.predicate?.let { nonNull1 ->
+			predicate_toJs(nonNull1)
+		}
+	)
 	return FilterChainJs<O_JS>(js("{" +
 		"filter:filter," +
 		"predicate:predicate" +

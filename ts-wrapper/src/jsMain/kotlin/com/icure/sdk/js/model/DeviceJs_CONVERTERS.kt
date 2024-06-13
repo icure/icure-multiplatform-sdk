@@ -5,9 +5,11 @@ import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.longToNumber
 import com.icure.sdk.js.model.CheckedConverters.mapToObject
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.sdk.js.model.CheckedConverters.setToArray
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.base.CodeStubJs
 import com.icure.sdk.js.model.base.IdentifierJs
 import com.icure.sdk.js.model.base.codeStub_fromJs
@@ -37,18 +39,30 @@ import kotlin.collections.Map
 @Suppress("UNUSED_VARIABLE")
 public fun device_toJs(obj: Device): DeviceJs {
 	val id = obj.id
-	val rev = obj.rev ?: undefined
-	val deletionDate = longToNumber(obj.deletionDate) ?: undefined
+	val rev = nullToUndefined(
+		obj.rev
+	)
+	val deletionDate = nullToUndefined(
+		longToNumber(obj.deletionDate)
+	)
 	val identifiers = listToArray(
 		obj.identifiers,
 		{ x1: Identifier ->
 			identifier_toJs(x1)
 		},
 	)
-	val created = longToNumber(obj.created) ?: undefined
-	val modified = longToNumber(obj.modified) ?: undefined
-	val author = obj.author ?: undefined
-	val responsible = obj.responsible ?: undefined
+	val created = nullToUndefined(
+		longToNumber(obj.created)
+	)
+	val modified = nullToUndefined(
+		longToNumber(obj.modified)
+	)
+	val author = nullToUndefined(
+		obj.author
+	)
+	val responsible = nullToUndefined(
+		obj.responsible
+	)
 	val tags = setToArray(
 		obj.tags,
 		{ x1: CodeStub ->
@@ -61,16 +75,36 @@ public fun device_toJs(obj: Device): DeviceJs {
 			codeStub_toJs(x1)
 		},
 	)
-	val endOfLife = longToNumber(obj.endOfLife) ?: undefined
-	val medicalLocationId = obj.medicalLocationId ?: undefined
-	val externalId = obj.externalId ?: undefined
-	val name = obj.name ?: undefined
-	val type = obj.type ?: undefined
-	val brand = obj.brand ?: undefined
-	val model = obj.model ?: undefined
-	val serialNumber = obj.serialNumber ?: undefined
-	val parentId = obj.parentId ?: undefined
-	val picture = obj.picture ?: undefined
+	val endOfLife = nullToUndefined(
+		longToNumber(obj.endOfLife)
+	)
+	val medicalLocationId = nullToUndefined(
+		obj.medicalLocationId
+	)
+	val externalId = nullToUndefined(
+		obj.externalId
+	)
+	val name = nullToUndefined(
+		obj.name
+	)
+	val type = nullToUndefined(
+		obj.type
+	)
+	val brand = nullToUndefined(
+		obj.brand
+	)
+	val model = nullToUndefined(
+		obj.model
+	)
+	val serialNumber = nullToUndefined(
+		obj.serialNumber
+	)
+	val parentId = nullToUndefined(
+		obj.parentId
+	)
+	val picture = nullToUndefined(
+		obj.picture
+	)
 	val properties = setToArray(
 		obj.properties,
 		{ x1: DecryptedPropertyStub ->
@@ -142,9 +176,11 @@ public fun device_toJs(obj: Device): DeviceJs {
 			hexString_toJs(x1)
 		},
 	)
-	val publicKey = obj.publicKey?.let { nonNull1 ->
-		spkiHexString_toJs(nonNull1)
-	} ?: undefined
+	val publicKey = nullToUndefined(
+		obj.publicKey?.let { nonNull1 ->
+			spkiHexString_toJs(nonNull1)
+		}
+	)
 	val publicKeysForOaepWithSha256 = setToArray(
 		obj.publicKeysForOaepWithSha256,
 		{ x1: SpkiHexString ->
@@ -184,7 +220,7 @@ public fun device_toJs(obj: Device): DeviceJs {
 
 public fun device_fromJs(obj: DeviceJs): Device {
 	val id = obj.id
-	val rev = obj.rev
+	val rev = undefinedToNull(obj.rev)
 	val deletionDate = numberToLong(obj.deletionDate, "obj.deletionDate")
 	val identifiers = arrayToList(
 		obj.identifiers,
@@ -195,8 +231,8 @@ public fun device_fromJs(obj: DeviceJs): Device {
 	)
 	val created = numberToLong(obj.created, "obj.created")
 	val modified = numberToLong(obj.modified, "obj.modified")
-	val author = obj.author
-	val responsible = obj.responsible
+	val author = undefinedToNull(obj.author)
+	val responsible = undefinedToNull(obj.responsible)
 	val tags = arrayToSet(
 		obj.tags,
 		"obj.tags",
@@ -212,15 +248,15 @@ public fun device_fromJs(obj: DeviceJs): Device {
 		},
 	)
 	val endOfLife = numberToLong(obj.endOfLife, "obj.endOfLife")
-	val medicalLocationId = obj.medicalLocationId
-	val externalId = obj.externalId
-	val name = obj.name
-	val type = obj.type
-	val brand = obj.brand
-	val model = obj.model
-	val serialNumber = obj.serialNumber
-	val parentId = obj.parentId
-	val picture = obj.picture
+	val medicalLocationId = undefinedToNull(obj.medicalLocationId)
+	val externalId = undefinedToNull(obj.externalId)
+	val name = undefinedToNull(obj.name)
+	val type = undefinedToNull(obj.type)
+	val brand = undefinedToNull(obj.brand)
+	val model = undefinedToNull(obj.model)
+	val serialNumber = undefinedToNull(obj.serialNumber)
+	val parentId = undefinedToNull(obj.parentId)
+	val picture = undefinedToNull(obj.picture)
 	val properties = arrayToSet(
 		obj.properties,
 		"obj.properties",

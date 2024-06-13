@@ -1,14 +1,24 @@
 package com.icure.sdk.js.model.embed
 
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.model.embed.LetterValue
 import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun letterValue_toJs(obj: LetterValue): LetterValueJs {
-	val letter = obj.letter ?: undefined
-	val index = obj.index ?: undefined
-	val coefficient = obj.coefficient ?: undefined
-	val value = obj.value ?: undefined
+	val letter = nullToUndefined(
+		obj.letter
+	)
+	val index = nullToUndefined(
+		obj.index
+	)
+	val coefficient = nullToUndefined(
+		obj.coefficient
+	)
+	val value = nullToUndefined(
+		obj.value
+	)
 	return LetterValueJs(js("{" +
 		"letter:letter," +
 		"index:index," +
@@ -18,10 +28,10 @@ public fun letterValue_toJs(obj: LetterValue): LetterValueJs {
 }
 
 public fun letterValue_fromJs(obj: LetterValueJs): LetterValue {
-	val letter = obj.letter
-	val index = obj.index
-	val coefficient = obj.coefficient
-	val value = obj.value
+	val letter = undefinedToNull(obj.letter)
+	val index = undefinedToNull(obj.index)
+	val coefficient = undefinedToNull(obj.coefficient)
+	val value = undefinedToNull(obj.value)
 	return LetterValue(
 		letter = letter,
 		index = index,

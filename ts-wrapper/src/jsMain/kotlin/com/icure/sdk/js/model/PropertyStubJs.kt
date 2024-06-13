@@ -24,9 +24,6 @@ public sealed external interface PropertyStubJs : EncryptableJs {
 	public val deletionDate: Double?
 
 	public val isEncrypted: Boolean
-
-	@JsName("${'$'}ktClass")
-	public val ktClass: String
 }
 
 @JsName("DecryptedPropertyStub")
@@ -44,8 +41,6 @@ public external class DecryptedPropertyStubJs(
 	override val encryptedSelf: String?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }
 
 @JsName("EncryptedPropertyStub")
@@ -63,6 +58,4 @@ public external class EncryptedPropertyStubJs(
 	override val encryptedSelf: String?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }

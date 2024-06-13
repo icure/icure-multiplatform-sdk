@@ -3,7 +3,9 @@ package com.icure.sdk.js.model.embed
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.longToNumber
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.model.embed.PersonName
 import com.icure.sdk.model.embed.PersonNameUse
 import kotlin.String
@@ -11,15 +13,21 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun personName_toJs(obj: PersonName): PersonNameJs {
-	val lastName = obj.lastName ?: undefined
+	val lastName = nullToUndefined(
+		obj.lastName
+	)
 	val firstNames = listToArray(
 		obj.firstNames,
 		{ x1: String ->
 			x1
 		},
 	)
-	val start = longToNumber(obj.start) ?: undefined
-	val end = longToNumber(obj.end) ?: undefined
+	val start = nullToUndefined(
+		longToNumber(obj.start)
+	)
+	val end = nullToUndefined(
+		longToNumber(obj.end)
+	)
 	val prefix = listToArray(
 		obj.prefix,
 		{ x1: String ->
@@ -32,10 +40,14 @@ public fun personName_toJs(obj: PersonName): PersonNameJs {
 			x1
 		},
 	)
-	val text = obj.text ?: undefined
-	val use = obj.use?.let { nonNull1 ->
-		nonNull1.name
-	} ?: undefined
+	val text = nullToUndefined(
+		obj.text
+	)
+	val use = nullToUndefined(
+		obj.use?.let { nonNull1 ->
+			nonNull1.name
+		}
+	)
 	return PersonNameJs(js("{" +
 		"lastName:lastName," +
 		"firstNames:firstNames," +
@@ -49,7 +61,7 @@ public fun personName_toJs(obj: PersonName): PersonNameJs {
 }
 
 public fun personName_fromJs(obj: PersonNameJs): PersonName {
-	val lastName = obj.lastName
+	val lastName = undefinedToNull(obj.lastName)
 	val firstNames = arrayToList(
 		obj.firstNames,
 		"obj.firstNames",
@@ -73,7 +85,7 @@ public fun personName_fromJs(obj: PersonNameJs): PersonName {
 			x1
 		},
 	)
-	val text = obj.text
+	val text = undefinedToNull(obj.text)
 	val use = obj.use?.let { nonNull1 ->
 		PersonNameUse.valueOf(nonNull1)
 	}

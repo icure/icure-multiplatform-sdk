@@ -36,9 +36,6 @@ public sealed external interface AddressJs : EncryptableJs {
 	public val telecoms: Array<out TelecomJs>
 
 	public val isEncrypted: Boolean
-
-	@JsName("${'$'}ktClass")
-	public val ktClass: String
 }
 
 @JsName("DecryptedAddress")
@@ -72,8 +69,6 @@ public external class DecryptedAddressJs(
 	override val encryptedSelf: String?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }
 
 @JsName("EncryptedAddress")
@@ -107,6 +102,4 @@ public external class EncryptedAddressJs(
 	override val encryptedSelf: String?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }

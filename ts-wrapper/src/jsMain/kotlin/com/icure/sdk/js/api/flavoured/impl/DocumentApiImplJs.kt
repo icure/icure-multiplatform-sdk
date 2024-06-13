@@ -19,10 +19,12 @@ import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.jsonToDynamic
 import com.icure.sdk.js.model.CheckedConverters.listToArray
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.sdk.js.model.CheckedConverters.setToArray
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.DecryptedDocumentJs
 import com.icure.sdk.js.model.DocumentJs
 import com.icure.sdk.js.model.EncryptedDocumentJs
@@ -195,7 +197,7 @@ internal class DocumentApiImplJs(
 					"descending",
 					null
 				) { descending: Boolean? ->
-					descending
+					undefinedToNull(descending)
 				}
 				val result = documentApi.encrypted.findDocumentsByHcPartyPatient(
 					hcPartyIdConverted,
@@ -299,7 +301,7 @@ internal class DocumentApiImplJs(
 			secretMessageKeys: Array<String>,
 		): Promise<Array<EncryptedDocumentJs>> = GlobalScope.promise {
 			val hcPartyIdConverted: String = hcPartyId
-			val documentTypeCodeConverted: String? = documentTypeCode
+			val documentTypeCodeConverted: String? = undefinedToNull(documentTypeCode)
 			val secretMessageKeysConverted: List<String> = arrayToList(
 				secretMessageKeys,
 				"secretMessageKeys",
@@ -549,7 +551,7 @@ internal class DocumentApiImplJs(
 					"descending",
 					null
 				) { descending: Boolean? ->
-					descending
+					undefinedToNull(descending)
 				}
 				val result = documentApi.tryAndRecover.findDocumentsByHcPartyPatient(
 					hcPartyIdConverted,
@@ -652,7 +654,7 @@ internal class DocumentApiImplJs(
 			secretMessageKeys: Array<String>,
 		): Promise<Array<DocumentJs>> = GlobalScope.promise {
 			val hcPartyIdConverted: String = hcPartyId
-			val documentTypeCodeConverted: String? = documentTypeCode
+			val documentTypeCodeConverted: String? = undefinedToNull(documentTypeCode)
 			val secretMessageKeysConverted: List<String> = arrayToList(
 				secretMessageKeys,
 				"secretMessageKeys",
@@ -862,7 +864,9 @@ internal class DocumentApiImplJs(
 			attachmentIdConverted,
 			decryptedDocumentValidatorConverted,
 		)
-		result ?: undefined
+		nullToUndefined(
+			result
+		)
 	}
 
 	override fun getAndTryDecryptMainAttachmentAsPlainText(
@@ -882,7 +886,9 @@ internal class DocumentApiImplJs(
 			attachmentIdConverted,
 			decryptedDocumentValidatorConverted,
 		)
-		result ?: undefined
+		nullToUndefined(
+			result
+		)
 	}
 
 	override fun getAndTryDecryptMainAttachmentAsJson(
@@ -902,7 +908,9 @@ internal class DocumentApiImplJs(
 			attachmentIdConverted,
 			decryptedDocumentValidatorConverted,
 		)
-		jsonToDynamic(result) ?: undefined
+		nullToUndefined(
+			jsonToDynamic(result)
+		)
 	}
 
 	override fun getAndDecryptMainAttachment(
@@ -1246,7 +1254,7 @@ internal class DocumentApiImplJs(
 				"descending",
 				null
 			) { descending: Boolean? ->
-				descending
+				undefinedToNull(descending)
 			}
 			val result = documentApi.findDocumentsByHcPartyPatient(
 				hcPartyIdConverted,
@@ -1350,7 +1358,7 @@ internal class DocumentApiImplJs(
 		secretMessageKeys: Array<String>,
 	): Promise<Array<DecryptedDocumentJs>> = GlobalScope.promise {
 		val hcPartyIdConverted: String = hcPartyId
-		val documentTypeCodeConverted: String? = documentTypeCode
+		val documentTypeCodeConverted: String? = undefinedToNull(documentTypeCode)
 		val secretMessageKeysConverted: List<String> = arrayToList(
 			secretMessageKeys,
 			"secretMessageKeys",

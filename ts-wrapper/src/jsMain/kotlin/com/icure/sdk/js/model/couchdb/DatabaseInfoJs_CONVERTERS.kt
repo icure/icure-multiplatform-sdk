@@ -2,23 +2,43 @@ package com.icure.sdk.js.model.couchdb
 
 import com.icure.sdk.js.model.CheckedConverters.intToNumber
 import com.icure.sdk.js.model.CheckedConverters.longToNumber
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.model.couchdb.DatabaseInfo
 import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun databaseInfo_toJs(obj: DatabaseInfo): DatabaseInfoJs {
 	val id = obj.id
-	val updateSeq = obj.updateSeq ?: undefined
-	val fileSize = longToNumber(obj.fileSize) ?: undefined
-	val externalSize = longToNumber(obj.externalSize) ?: undefined
-	val activeSize = longToNumber(obj.activeSize) ?: undefined
-	val docs = longToNumber(obj.docs) ?: undefined
-	val q = intToNumber(obj.q) ?: undefined
-	val n = intToNumber(obj.n) ?: undefined
-	val w = intToNumber(obj.w) ?: undefined
-	val r = intToNumber(obj.r) ?: undefined
+	val updateSeq = nullToUndefined(
+		obj.updateSeq
+	)
+	val fileSize = nullToUndefined(
+		longToNumber(obj.fileSize)
+	)
+	val externalSize = nullToUndefined(
+		longToNumber(obj.externalSize)
+	)
+	val activeSize = nullToUndefined(
+		longToNumber(obj.activeSize)
+	)
+	val docs = nullToUndefined(
+		longToNumber(obj.docs)
+	)
+	val q = nullToUndefined(
+		intToNumber(obj.q)
+	)
+	val n = nullToUndefined(
+		intToNumber(obj.n)
+	)
+	val w = nullToUndefined(
+		intToNumber(obj.w)
+	)
+	val r = nullToUndefined(
+		intToNumber(obj.r)
+	)
 	return DatabaseInfoJs(js("{" +
 		"id:id," +
 		"updateSeq:updateSeq," +
@@ -35,7 +55,7 @@ public fun databaseInfo_toJs(obj: DatabaseInfo): DatabaseInfoJs {
 
 public fun databaseInfo_fromJs(obj: DatabaseInfoJs): DatabaseInfo {
 	val id = obj.id
-	val updateSeq = obj.updateSeq
+	val updateSeq = undefinedToNull(obj.updateSeq)
 	val fileSize = numberToLong(obj.fileSize, "obj.fileSize")
 	val externalSize = numberToLong(obj.externalSize, "obj.externalSize")
 	val activeSize = numberToLong(obj.activeSize, "obj.activeSize")

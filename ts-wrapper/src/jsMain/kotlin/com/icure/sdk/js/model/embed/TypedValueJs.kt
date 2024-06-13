@@ -24,9 +24,6 @@ public sealed external interface TypedValueJs : EncryptableJs {
 	public val dateValue: Double?
 
 	public val isEncrypted: Boolean
-
-	@JsName("${'$'}ktClass")
-	public val ktClass: String
 }
 
 @JsName("DecryptedTypedValue")
@@ -48,8 +45,6 @@ public external class DecryptedTypedValueJs(
 	override val encryptedSelf: String?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }
 
 @JsName("EncryptedTypedValue")
@@ -71,6 +66,4 @@ public external class EncryptedTypedValueJs(
 	override val encryptedSelf: String?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }

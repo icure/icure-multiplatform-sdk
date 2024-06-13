@@ -6,6 +6,7 @@ import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNu
 import com.icure.sdk.js.api.ICureApiJs
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.IdWithRevJs
 import com.icure.sdk.js.model.IndexingInfoJs
 import com.icure.sdk.js.model.ReplicationInfoJs
@@ -69,7 +70,7 @@ internal class ICureApiImplJs(
 				"warmup",
 				null
 			) { warmup: Boolean? ->
-				warmup
+				undefinedToNull(warmup)
 			}
 			val result = iCureApi.updateDesignDoc(
 				entityNameConverted,
@@ -219,7 +220,7 @@ internal class ICureApiImplJs(
 				"ids",
 				null
 			) { ids: String? ->
-				ids
+				undefinedToNull(ids)
 			}
 			val limitConverted: Int? = convertingOptionOrDefaultNullable(
 				_options,

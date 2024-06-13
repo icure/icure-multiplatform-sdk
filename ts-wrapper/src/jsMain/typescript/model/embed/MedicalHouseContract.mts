@@ -146,8 +146,6 @@ export class DecryptedMedicalHouseContract {
 
   readonly isEncrypted: false = false;
 
-  readonly $ktClass: 'com.icure.sdk.model.embed.DecryptedMedicalHouseContract' = 'com.icure.sdk.model.embed.DecryptedMedicalHouseContract';
-
   constructor(partial: Partial<DecryptedMedicalHouseContract>) {
     if (partial.isEncrypted !== undefined && partial.isEncrypted !== false) throw new Error('partial.isEncrypted must be undefined or false');
     if ('contractId' in partial) this.contractId = partial.contractId;
@@ -256,8 +254,6 @@ export class EncryptedMedicalHouseContract {
   encryptedSelf: Base64String | undefined = undefined;
 
   readonly isEncrypted: true = true;
-
-  readonly $ktClass: 'com.icure.sdk.model.embed.EncryptedMedicalHouseContract' = 'com.icure.sdk.model.embed.EncryptedMedicalHouseContract';
 
   constructor(partial: Partial<EncryptedMedicalHouseContract>) {
     if (partial.isEncrypted !== undefined && partial.isEncrypted !== true) throw new Error('partial.isEncrypted must be undefined or true');

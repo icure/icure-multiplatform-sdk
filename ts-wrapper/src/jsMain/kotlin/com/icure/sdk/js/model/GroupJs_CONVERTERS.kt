@@ -5,9 +5,11 @@ import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.longToNumber
 import com.icure.sdk.js.model.CheckedConverters.mapToObject
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.sdk.js.model.CheckedConverters.setToArray
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.base.CodeStubJs
 import com.icure.sdk.js.model.base.codeStub_fromJs
 import com.icure.sdk.js.model.base.codeStub_toJs
@@ -28,22 +30,32 @@ import kotlin.collections.Set
 @Suppress("UNUSED_VARIABLE")
 public fun group_toJs(obj: Group): GroupJs {
 	val id = obj.id
-	val rev = obj.rev ?: undefined
-	val deletionDate = longToNumber(obj.deletionDate) ?: undefined
+	val rev = nullToUndefined(
+		obj.rev
+	)
+	val deletionDate = nullToUndefined(
+		longToNumber(obj.deletionDate)
+	)
 	val tags = setToArray(
 		obj.tags,
 		{ x1: CodeStub ->
 			codeStub_toJs(x1)
 		},
 	)
-	val name = obj.name ?: undefined
-	val password = obj.password ?: undefined
-	val servers = listToArray(
-		obj.servers,
-		{ x1: String ->
-			x1
-		},
-	) ?: undefined
+	val name = nullToUndefined(
+		obj.name
+	)
+	val password = nullToUndefined(
+		obj.password
+	)
+	val servers = nullToUndefined(
+		listToArray(
+			obj.servers,
+			{ x1: String ->
+				x1
+			},
+		)
+	)
 	val superAdmin = obj.superAdmin
 	val properties = setToArray(
 		obj.properties,
@@ -83,10 +95,14 @@ public fun group_toJs(obj: Group): GroupJs {
 			x1
 		},
 	)
-	val minimumKrakenVersion = obj.minimumKrakenVersion ?: undefined
+	val minimumKrakenVersion = nullToUndefined(
+		obj.minimumKrakenVersion
+	)
 	val minimumAuthenticationClassForElevatedPrivileges =
 			obj.minimumAuthenticationClassForElevatedPrivileges.name
-	val superGroup = obj.superGroup ?: undefined
+	val superGroup = nullToUndefined(
+		obj.superGroup
+	)
 	return GroupJs(js("{" +
 		"id:id," +
 		"rev:rev," +
@@ -108,7 +124,7 @@ public fun group_toJs(obj: Group): GroupJs {
 
 public fun group_fromJs(obj: GroupJs): Group {
 	val id = obj.id
-	val rev = obj.rev
+	val rev = undefinedToNull(obj.rev)
 	val deletionDate = numberToLong(obj.deletionDate, "obj.deletionDate")
 	val tags = arrayToSet(
 		obj.tags,
@@ -117,8 +133,8 @@ public fun group_fromJs(obj: GroupJs): Group {
 			codeStub_fromJs(x1)
 		},
 	)
-	val name = obj.name
-	val password = obj.password
+	val name = undefinedToNull(obj.name)
+	val password = undefinedToNull(obj.password)
 	val servers = arrayToList(
 		obj.servers,
 		"obj.servers",
@@ -170,10 +186,10 @@ public fun group_fromJs(obj: GroupJs): Group {
 			x1
 		},
 	)
-	val minimumKrakenVersion = obj.minimumKrakenVersion
+	val minimumKrakenVersion = undefinedToNull(obj.minimumKrakenVersion)
 	val minimumAuthenticationClassForElevatedPrivileges =
 			AuthenticationClass.valueOf(obj.minimumAuthenticationClassForElevatedPrivileges)
-	val superGroup = obj.superGroup
+	val superGroup = undefinedToNull(obj.superGroup)
 	return Group(
 		id = id,
 		rev = rev,

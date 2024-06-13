@@ -9,6 +9,7 @@ import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.numberToDuration
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.EncryptedHealthElementJs
 import com.icure.sdk.js.model.HealthElementJs
 import com.icure.sdk.js.model.IcureStubJs
@@ -192,7 +193,7 @@ internal class HealthcareElementBasicApiImplJs(
 				healthElement_fromJs(x1)
 			},
 		)
-		val startDocumentIdConverted: String? = startDocumentId
+		val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
 		val limitConverted: Int? = numberToInt(limit, "limit")
 		val result = healthcareElementBasicApi.filterHealthcareElementsBy(
 			filterChainConverted,

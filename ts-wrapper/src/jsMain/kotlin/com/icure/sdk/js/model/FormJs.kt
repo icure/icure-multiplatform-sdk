@@ -44,9 +44,6 @@ public sealed external interface FormJs : StoredDocumentJs, ICureDocumentJs<Stri
 	public val parent: String?
 
 	public val isEncrypted: Boolean
-
-	@JsName("${'$'}ktClass")
-	public val ktClass: String
 }
 
 @JsName("DecryptedForm")
@@ -110,8 +107,6 @@ public external class DecryptedFormJs(
 	override val securityMetadata: SecurityMetadataJs?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }
 
 @JsName("EncryptedForm")
@@ -175,6 +170,4 @@ public external class EncryptedFormJs(
 	override val securityMetadata: SecurityMetadataJs?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }

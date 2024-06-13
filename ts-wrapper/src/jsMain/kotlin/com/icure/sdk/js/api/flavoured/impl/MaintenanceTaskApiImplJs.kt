@@ -19,6 +19,7 @@ import com.icure.sdk.js.model.CheckedConverters.numberToDuration
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.sdk.js.model.CheckedConverters.setToArray
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.DecryptedMaintenanceTaskJs
 import com.icure.sdk.js.model.EncryptedMaintenanceTaskJs
 import com.icure.sdk.js.model.MaintenanceTaskJs
@@ -193,7 +194,7 @@ internal class MaintenanceTaskApiImplJs(
 					"startDocumentId",
 					null
 				) { startDocumentId: String? ->
-					startDocumentId
+					undefinedToNull(startDocumentId)
 				}
 				val limitConverted: Int? = convertingOptionOrDefaultNullable(
 					_options,
@@ -422,7 +423,7 @@ internal class MaintenanceTaskApiImplJs(
 					"startDocumentId",
 					null
 				) { startDocumentId: String? ->
-					startDocumentId
+					undefinedToNull(startDocumentId)
 				}
 				val limitConverted: Int? = convertingOptionOrDefaultNullable(
 					_options,
@@ -782,7 +783,7 @@ internal class MaintenanceTaskApiImplJs(
 				"startDocumentId",
 				null
 			) { startDocumentId: String? ->
-				startDocumentId
+				undefinedToNull(startDocumentId)
 			}
 			val limitConverted: Int? = convertingOptionOrDefaultNullable(
 				_options,

@@ -23,6 +23,7 @@ import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.sdk.js.model.CheckedConverters.setToArray
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.DecryptedCalendarItemJs
 import com.icure.sdk.js.model.EncryptedCalendarItemJs
 import com.icure.sdk.js.model.PaginatedListJs
@@ -191,7 +192,7 @@ internal class CalendarItemApiImplJs(
 					"descending",
 					null
 				) { descending: Boolean? ->
-					descending
+					undefinedToNull(descending)
 				}
 				val result = calendarItemApi.encrypted.findCalendarItemsByHcPartyPatient(
 					hcPartyIdConverted,
@@ -338,8 +339,8 @@ internal class CalendarItemApiImplJs(
 			limit: Double,
 		): Promise<PaginatedListJs<EncryptedCalendarItemJs>> = GlobalScope.promise {
 			val recurrenceIdConverted: String = recurrenceId
-			val startKeyConverted: String? = startKey
-			val startDocumentIdConverted: String? = startDocumentId
+			val startKeyConverted: String? = undefinedToNull(startKey)
+			val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
 			val limitConverted: Int = numberToInt(limit, "limit")
 			val result = calendarItemApi.encrypted.findCalendarItemsByRecurrenceId(
 				recurrenceIdConverted,
@@ -479,7 +480,7 @@ internal class CalendarItemApiImplJs(
 					"descending",
 					null
 				) { descending: Boolean? ->
-					descending
+					undefinedToNull(descending)
 				}
 				val result = calendarItemApi.tryAndRecover.findCalendarItemsByHcPartyPatient(
 					hcPartyIdConverted,
@@ -625,8 +626,8 @@ internal class CalendarItemApiImplJs(
 			limit: Double,
 		): Promise<PaginatedListJs<CalendarItemJs>> = GlobalScope.promise {
 			val recurrenceIdConverted: String = recurrenceId
-			val startKeyConverted: String? = startKey
-			val startDocumentIdConverted: String? = startDocumentId
+			val startKeyConverted: String? = undefinedToNull(startKey)
+			val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
 			val limitConverted: Int = numberToInt(limit, "limit")
 			val result = calendarItemApi.tryAndRecover.findCalendarItemsByRecurrenceId(
 				recurrenceIdConverted,
@@ -908,7 +909,7 @@ internal class CalendarItemApiImplJs(
 				"descending",
 				null
 			) { descending: Boolean? ->
-				descending
+				undefinedToNull(descending)
 			}
 			val result = calendarItemApi.findCalendarItemsByHcPartyPatient(
 				hcPartyIdConverted,
@@ -1055,8 +1056,8 @@ internal class CalendarItemApiImplJs(
 		limit: Double,
 	): Promise<PaginatedListJs<DecryptedCalendarItemJs>> = GlobalScope.promise {
 		val recurrenceIdConverted: String = recurrenceId
-		val startKeyConverted: String? = startKey
-		val startDocumentIdConverted: String? = startDocumentId
+		val startKeyConverted: String? = undefinedToNull(startKey)
+		val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
 		val limitConverted: Int = numberToInt(limit, "limit")
 		val result = calendarItemApi.findCalendarItemsByRecurrenceId(
 			recurrenceIdConverted,

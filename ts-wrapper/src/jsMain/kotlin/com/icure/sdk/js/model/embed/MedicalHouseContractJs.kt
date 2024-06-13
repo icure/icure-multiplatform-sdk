@@ -77,9 +77,6 @@ public sealed external interface MedicalHouseContractJs : EncryptableJs {
 	public val receipts: Record<String, out String>
 
 	public val isEncrypted: Boolean
-
-	@JsName("${'$'}ktClass")
-	public val ktClass: String
 }
 
 @JsName("DecryptedMedicalHouseContract")
@@ -153,8 +150,6 @@ public external class DecryptedMedicalHouseContractJs(
 	override val encryptedSelf: String?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }
 
 @JsName("EncryptedMedicalHouseContract")
@@ -228,6 +223,4 @@ public external class EncryptedMedicalHouseContractJs(
 	override val encryptedSelf: String?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }

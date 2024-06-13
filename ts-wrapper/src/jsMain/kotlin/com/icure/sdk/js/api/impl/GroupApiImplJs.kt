@@ -10,6 +10,7 @@ import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.mapToObject
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.DatabaseInitialisationJs
 import com.icure.sdk.js.model.GroupDeletionReportJs
 import com.icure.sdk.js.model.GroupJs
@@ -115,7 +116,7 @@ internal class GroupApiImplJs(
 				"server",
 				null
 			) { server: String? ->
-				server
+				undefinedToNull(server)
 			}
 			val qConverted: Int? = convertingOptionOrDefaultNullable(
 				_options,
@@ -136,7 +137,7 @@ internal class GroupApiImplJs(
 				"superGroup",
 				null
 			) { superGroup: String? ->
-				superGroup
+				undefinedToNull(superGroup)
 			}
 			val initialisationDataConverted: DatabaseInitialisation =
 					databaseInitialisation_fromJs(initialisationData)
@@ -208,7 +209,7 @@ internal class GroupApiImplJs(
 				"startDocumentId",
 				null
 			) { startDocumentId: String? ->
-				startDocumentId
+				undefinedToNull(startDocumentId)
 			}
 			val limitConverted: Int? = convertingOptionOrDefaultNullable(
 				_options,
@@ -252,7 +253,7 @@ internal class GroupApiImplJs(
 				"startDocumentId",
 				null
 			) { startDocumentId: String? ->
-				startDocumentId
+				undefinedToNull(startDocumentId)
 			}
 			val limitConverted: Int? = convertingOptionOrDefaultNullable(
 				_options,
@@ -309,7 +310,7 @@ internal class GroupApiImplJs(
 				"description",
 				null
 			) { description: String? ->
-				description
+				undefinedToNull(description)
 			}
 			val result = groupApi.getOperationToken(
 				operationConverted,
@@ -441,10 +442,10 @@ internal class GroupApiImplJs(
 				"clazz",
 				null
 			) { clazz: String? ->
-				clazz
+				undefinedToNull(clazz)
 			}
-			val warmupConverted: Boolean? = warmup
-			val dryRunConverted: Boolean? = dryRun
+			val warmupConverted: Boolean? = undefinedToNull(warmup)
+			val dryRunConverted: Boolean? = undefinedToNull(dryRun)
 			val result = groupApi.initDesignDocs(
 				idConverted,
 				clazzConverted,
@@ -467,7 +468,7 @@ internal class GroupApiImplJs(
 	): Promise<Array<IdWithRevJs>> = GlobalScope.promise {
 		val idConverted: String = id
 		val limitConverted: Int? = numberToInt(limit, "limit")
-		val warmupConverted: Boolean? = warmup
+		val warmupConverted: Boolean? = undefinedToNull(warmup)
 		val result = groupApi.solveConflicts(
 			idConverted,
 			limitConverted,

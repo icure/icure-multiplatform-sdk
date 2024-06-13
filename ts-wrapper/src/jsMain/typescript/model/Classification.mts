@@ -66,8 +66,6 @@ export class DecryptedClassification {
 
   readonly isEncrypted: false = false;
 
-  readonly $ktClass: 'com.icure.sdk.model.DecryptedClassification' = 'com.icure.sdk.model.DecryptedClassification';
-
   constructor(partial: Partial<DecryptedClassification>) {
     if (partial.isEncrypted !== undefined && partial.isEncrypted !== false) throw new Error('partial.isEncrypted must be undefined or false');
     this.id = partial.id ?? randomUuid();
@@ -137,8 +135,6 @@ export class EncryptedClassification {
   securityMetadata: SecurityMetadata | undefined = undefined;
 
   readonly isEncrypted: true = true;
-
-  readonly $ktClass: 'com.icure.sdk.model.EncryptedClassification' = 'com.icure.sdk.model.EncryptedClassification';
 
   constructor(partial: Partial<EncryptedClassification>) {
     if (partial.isEncrypted !== undefined && partial.isEncrypted !== true) throw new Error('partial.isEncrypted must be undefined or true');

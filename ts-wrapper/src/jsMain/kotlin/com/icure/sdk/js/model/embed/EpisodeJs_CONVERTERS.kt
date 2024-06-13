@@ -1,7 +1,9 @@
 package com.icure.sdk.js.model.embed
 
 import com.icure.sdk.js.model.CheckedConverters.longToNumber
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.specializations.base64String_fromJs
 import com.icure.sdk.js.model.specializations.base64String_toJs
 import com.icure.sdk.model.embed.DecryptedEpisode
@@ -12,13 +14,23 @@ import kotlin.Suppress
 @Suppress("UNUSED_VARIABLE")
 public fun episode_toJs(obj: DecryptedEpisode): DecryptedEpisodeJs {
 	val id = obj.id
-	val name = obj.name ?: undefined
-	val comment = obj.comment ?: undefined
-	val startDate = longToNumber(obj.startDate) ?: undefined
-	val endDate = longToNumber(obj.endDate) ?: undefined
-	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
-		base64String_toJs(nonNull1)
-	} ?: undefined
+	val name = nullToUndefined(
+		obj.name
+	)
+	val comment = nullToUndefined(
+		obj.comment
+	)
+	val startDate = nullToUndefined(
+		longToNumber(obj.startDate)
+	)
+	val endDate = nullToUndefined(
+		longToNumber(obj.endDate)
+	)
+	val encryptedSelf = nullToUndefined(
+		obj.encryptedSelf?.let { nonNull1 ->
+			base64String_toJs(nonNull1)
+		}
+	)
 	return DecryptedEpisodeJs(js("{" +
 		"id:id," +
 		"name:name," +
@@ -31,8 +43,8 @@ public fun episode_toJs(obj: DecryptedEpisode): DecryptedEpisodeJs {
 
 public fun episode_fromJs(obj: DecryptedEpisodeJs): DecryptedEpisode {
 	val id = obj.id
-	val name = obj.name
-	val comment = obj.comment
+	val name = undefinedToNull(obj.name)
+	val comment = undefinedToNull(obj.comment)
 	val startDate = numberToLong(obj.startDate, "obj.startDate")
 	val endDate = numberToLong(obj.endDate, "obj.endDate")
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
@@ -51,13 +63,23 @@ public fun episode_fromJs(obj: DecryptedEpisodeJs): DecryptedEpisode {
 @Suppress("UNUSED_VARIABLE")
 public fun episode_toJs(obj: EncryptedEpisode): EncryptedEpisodeJs {
 	val id = obj.id
-	val name = obj.name ?: undefined
-	val comment = obj.comment ?: undefined
-	val startDate = longToNumber(obj.startDate) ?: undefined
-	val endDate = longToNumber(obj.endDate) ?: undefined
-	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
-		base64String_toJs(nonNull1)
-	} ?: undefined
+	val name = nullToUndefined(
+		obj.name
+	)
+	val comment = nullToUndefined(
+		obj.comment
+	)
+	val startDate = nullToUndefined(
+		longToNumber(obj.startDate)
+	)
+	val endDate = nullToUndefined(
+		longToNumber(obj.endDate)
+	)
+	val encryptedSelf = nullToUndefined(
+		obj.encryptedSelf?.let { nonNull1 ->
+			base64String_toJs(nonNull1)
+		}
+	)
 	return EncryptedEpisodeJs(js("{" +
 		"id:id," +
 		"name:name," +
@@ -70,8 +92,8 @@ public fun episode_toJs(obj: EncryptedEpisode): EncryptedEpisodeJs {
 
 public fun episode_fromJs(obj: EncryptedEpisodeJs): EncryptedEpisode {
 	val id = obj.id
-	val name = obj.name
-	val comment = obj.comment
+	val name = undefinedToNull(obj.name)
+	val comment = undefinedToNull(obj.comment)
 	val startDate = numberToLong(obj.startDate, "obj.startDate")
 	val endDate = numberToLong(obj.endDate, "obj.endDate")
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->

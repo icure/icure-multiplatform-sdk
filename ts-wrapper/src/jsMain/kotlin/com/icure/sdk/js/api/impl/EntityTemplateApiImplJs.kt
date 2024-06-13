@@ -6,6 +6,7 @@ import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNu
 import com.icure.sdk.js.api.EntityTemplateApiJs
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.listToArray
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.EntityTemplateJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.couchdb.docIdentifier_toJs
@@ -68,14 +69,14 @@ internal class EntityTemplateApiImplJs(
 				"searchString",
 				null
 			) { searchString: String? ->
-				searchString
+				undefinedToNull(searchString)
 			}
 			val includeEntitiesConverted: Boolean? = convertingOptionOrDefaultNullable(
 				_options,
 				"includeEntities",
 				null
 			) { includeEntities: Boolean? ->
-				includeEntities
+				undefinedToNull(includeEntities)
 			}
 			val result = entityTemplateApi.listEntityTemplatesBy(
 				userIdConverted,
@@ -102,14 +103,14 @@ internal class EntityTemplateApiImplJs(
 				"searchString",
 				null
 			) { searchString: String? ->
-				searchString
+				undefinedToNull(searchString)
 			}
 			val includeEntitiesConverted: Boolean? = convertingOptionOrDefaultNullable(
 				_options,
 				"includeEntities",
 				null
 			) { includeEntities: Boolean? ->
-				includeEntities
+				undefinedToNull(includeEntities)
 			}
 			val result = entityTemplateApi.listAllEntityTemplatesBy(
 				typeConverted,
@@ -141,7 +142,7 @@ internal class EntityTemplateApiImplJs(
 				"includeEntities",
 				null
 			) { includeEntities: Boolean? ->
-				includeEntities
+				undefinedToNull(includeEntities)
 			}
 			val result = entityTemplateApi.listEntityTemplatesByKeyword(
 				userIdConverted,
@@ -165,7 +166,7 @@ internal class EntityTemplateApiImplJs(
 	): Promise<Array<EntityTemplateJs>> = GlobalScope.promise {
 		val typeConverted: String = type
 		val keywordConverted: String = keyword
-		val includeEntitiesConverted: Boolean? = includeEntities
+		val includeEntitiesConverted: Boolean? = undefinedToNull(includeEntities)
 		val result = entityTemplateApi.findAllEntityTemplatesByKeyword(
 			typeConverted,
 			keywordConverted,

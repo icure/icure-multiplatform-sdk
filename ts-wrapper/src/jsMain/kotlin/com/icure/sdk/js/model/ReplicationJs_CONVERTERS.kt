@@ -3,7 +3,9 @@ package com.icure.sdk.js.model
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.longToNumber
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.embed.DatabaseSynchronizationJs
 import com.icure.sdk.js.model.embed.databaseSynchronization_fromJs
 import com.icure.sdk.js.model.embed.databaseSynchronization_toJs
@@ -14,10 +16,18 @@ import kotlin.Suppress
 @Suppress("UNUSED_VARIABLE")
 public fun replication_toJs(obj: Replication): ReplicationJs {
 	val id = obj.id
-	val rev = obj.rev ?: undefined
-	val deletionDate = longToNumber(obj.deletionDate) ?: undefined
-	val name = obj.name ?: undefined
-	val context = obj.context ?: undefined
+	val rev = nullToUndefined(
+		obj.rev
+	)
+	val deletionDate = nullToUndefined(
+		longToNumber(obj.deletionDate)
+	)
+	val name = nullToUndefined(
+		obj.name
+	)
+	val context = nullToUndefined(
+		obj.context
+	)
 	val databaseSynchronizations = listToArray(
 		obj.databaseSynchronizations,
 		{ x1: DatabaseSynchronization ->
@@ -36,10 +46,10 @@ public fun replication_toJs(obj: Replication): ReplicationJs {
 
 public fun replication_fromJs(obj: ReplicationJs): Replication {
 	val id = obj.id
-	val rev = obj.rev
+	val rev = undefinedToNull(obj.rev)
 	val deletionDate = numberToLong(obj.deletionDate, "obj.deletionDate")
-	val name = obj.name
-	val context = obj.context
+	val name = undefinedToNull(obj.name)
+	val context = undefinedToNull(obj.context)
 	val databaseSynchronizations = arrayToList(
 		obj.databaseSynchronizations,
 		"obj.databaseSynchronizations",

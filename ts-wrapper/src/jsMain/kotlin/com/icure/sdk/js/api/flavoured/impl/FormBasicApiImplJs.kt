@@ -6,6 +6,7 @@ import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNu
 import com.icure.sdk.js.api.flavoured.FormBasicApiJs
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.listToArray
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.EncryptedFormJs
 import com.icure.sdk.js.model.FormTemplateJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
@@ -69,7 +70,7 @@ internal class FormBasicApiImplJs(
 				"raw",
 				null
 			) { raw: Boolean? ->
-				raw
+				undefinedToNull(raw)
 			}
 			val result = formBasicApi.getFormTemplate(
 				formTemplateIdConverted,
@@ -86,7 +87,7 @@ internal class FormBasicApiImplJs(
 	): Promise<Array<FormTemplateJs>> = GlobalScope.promise {
 		val formTemplateGuidConverted: String = formTemplateGuid
 		val specialityCodeConverted: String = specialityCode
-		val rawConverted: Boolean? = raw
+		val rawConverted: Boolean? = undefinedToNull(raw)
 		val result = formBasicApi.getFormTemplatesByGuid(
 			formTemplateGuidConverted,
 			specialityCodeConverted,
@@ -110,7 +111,7 @@ internal class FormBasicApiImplJs(
 				"raw",
 				null
 			) { raw: Boolean? ->
-				raw
+				undefinedToNull(raw)
 			}
 			val result = formBasicApi.listFormTemplatesBySpeciality(
 				specialityCodeConverted,
@@ -133,14 +134,14 @@ internal class FormBasicApiImplJs(
 				"loadLayout",
 				null
 			) { loadLayout: Boolean? ->
-				loadLayout
+				undefinedToNull(loadLayout)
 			}
 			val rawConverted: Boolean? = convertingOptionOrDefaultNullable(
 				_options,
 				"raw",
 				null
 			) { raw: Boolean? ->
-				raw
+				undefinedToNull(raw)
 			}
 			val result = formBasicApi.getFormTemplates(
 				loadLayoutConverted,
@@ -324,21 +325,21 @@ internal class FormBasicApiImplJs(
 				"healthElementId",
 				null
 			) { healthElementId: String? ->
-				healthElementId
+				undefinedToNull(healthElementId)
 			}
 			val planOfActionIdConverted: String? = convertingOptionOrDefaultNullable(
 				_options,
 				"planOfActionId",
 				null
 			) { planOfActionId: String? ->
-				planOfActionId
+				undefinedToNull(planOfActionId)
 			}
 			val formTemplateIdConverted: String? = convertingOptionOrDefaultNullable(
 				_options,
 				"formTemplateId",
 				null
 			) { formTemplateId: String? ->
-				formTemplateId
+				undefinedToNull(formTemplateId)
 			}
 			val result = formBasicApi.listFormsByHCPartyAndPatientForeignKeys(
 				hcPartyIdConverted,

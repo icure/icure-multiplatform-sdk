@@ -23,9 +23,6 @@ public sealed external interface PatientHealthCarePartyJs : EncryptableJs {
 	public val referral: Boolean
 
 	public val isEncrypted: Boolean
-
-	@JsName("${'$'}ktClass")
-	public val ktClass: String
 }
 
 @JsName("DecryptedPatientHealthCareParty")
@@ -45,8 +42,6 @@ public external class DecryptedPatientHealthCarePartyJs(
 	override val encryptedSelf: String?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }
 
 @JsName("EncryptedPatientHealthCareParty")
@@ -66,6 +61,4 @@ public external class EncryptedPatientHealthCarePartyJs(
 	override val encryptedSelf: String?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }

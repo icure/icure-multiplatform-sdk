@@ -1,14 +1,22 @@
 package com.icure.sdk.js.model.filter.patient
 
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.model.filter.patient.PatientByHcPartyNameFilter
 import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun patientByHcPartyNameFilter_toJs(obj: PatientByHcPartyNameFilter):
 		PatientByHcPartyNameFilterJs {
-	val desc = obj.desc ?: undefined
-	val name = obj.name ?: undefined
-	val healthcarePartyId = obj.healthcarePartyId ?: undefined
+	val desc = nullToUndefined(
+		obj.desc
+	)
+	val name = nullToUndefined(
+		obj.name
+	)
+	val healthcarePartyId = nullToUndefined(
+		obj.healthcarePartyId
+	)
 	return PatientByHcPartyNameFilterJs(js("{" +
 		"desc:desc," +
 		"name:name," +
@@ -18,9 +26,9 @@ public fun patientByHcPartyNameFilter_toJs(obj: PatientByHcPartyNameFilter):
 
 public fun patientByHcPartyNameFilter_fromJs(obj: PatientByHcPartyNameFilterJs):
 		PatientByHcPartyNameFilter {
-	val desc = obj.desc
-	val name = obj.name
-	val healthcarePartyId = obj.healthcarePartyId
+	val desc = undefinedToNull(obj.desc)
+	val name = undefinedToNull(obj.name)
+	val healthcarePartyId = undefinedToNull(obj.healthcarePartyId)
 	return PatientByHcPartyNameFilter(
 		desc = desc,
 		name = name,

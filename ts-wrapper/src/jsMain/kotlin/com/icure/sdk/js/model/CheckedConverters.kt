@@ -295,4 +295,38 @@ object CheckedConverters {
 	fun numberToDuration(number: Double, description: String): kotlin.time.Duration {
 		return numberToLong(number, description).milliseconds
 	}
+
+	/**
+	 * Returns [obj] if it is neither null nor undefined, otherwise returns undefined.
+	 * Allows us to keep consistency with the typescript data model, where we use T | undefined for nullable types (no
+	 * null).
+	 */
+	fun <T : Any> nullToUndefined(obj: T?): T? =
+		obj ?: undefined
+
+	/**
+	 * Returns [obj] if it is neither null nor undefined, otherwise returns undefined.
+	 * Allows us to make sure that we have no ugly surprises with undefined values on kotlin side. Currently the only
+	 * ugly surprise we are aware of is related to json serialization.
+	 *
+	 * ```kotlin
+	 *	val json = Json {
+	 * 		encodeDefaults = false
+	 * 		explicitNulls = true
+	 * 	}
+	 * 	@Serializable data class Foo(
+	 * 		val nullDefault: String? = null,
+	 * 		val nonNullDefault: String? = "bar"
+	 * 	)
+	 * 	println(json.encodeToString(Foo(null, "bar")))
+	 * 	// {} - good
+	 * 	println(json.encodeToString(Foo("bar", null)))
+	 * 	// {"nullDefault":"bar","nonNullDefault":null} - good
+	 * 	println(json.encodeToString(Foo("bar", undefined)))
+	 * 	// {"nullDefault":"bar"} - BAD
+	 * ```
+	 */
+	@Suppress("USELESS_ELVIS_RIGHT_IS_NULL") // This is a lie when using kotlin js
+	fun <T : Any> undefinedToNull(obj: T?): T? =
+		obj ?: null
 }

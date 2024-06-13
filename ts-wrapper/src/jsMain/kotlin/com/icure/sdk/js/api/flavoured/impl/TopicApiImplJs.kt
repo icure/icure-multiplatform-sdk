@@ -22,6 +22,7 @@ import com.icure.sdk.js.model.CheckedConverters.numberToDuration
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.sdk.js.model.CheckedConverters.setToArray
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.DecryptedTopicJs
 import com.icure.sdk.js.model.EncryptedTopicJs
 import com.icure.sdk.js.model.PaginatedListJs
@@ -219,7 +220,7 @@ internal class TopicApiImplJs(
 					"startDocumentId",
 					null
 				) { startDocumentId: String? ->
-					startDocumentId
+					undefinedToNull(startDocumentId)
 				}
 				val limitConverted: Int? = convertingOptionOrDefaultNullable(
 					_options,
@@ -489,7 +490,7 @@ internal class TopicApiImplJs(
 					"startDocumentId",
 					null
 				) { startDocumentId: String? ->
-					startDocumentId
+					undefinedToNull(startDocumentId)
 				}
 				val limitConverted: Int? = convertingOptionOrDefaultNullable(
 					_options,
@@ -925,7 +926,7 @@ internal class TopicApiImplJs(
 				"startDocumentId",
 				null
 			) { startDocumentId: String? ->
-				startDocumentId
+				undefinedToNull(startDocumentId)
 			}
 			val limitConverted: Int? = convertingOptionOrDefaultNullable(
 				_options,

@@ -2,6 +2,8 @@ package com.icure.sdk.js.model.embed
 
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.listToArray
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.base.CodeStubJs
 import com.icure.sdk.js.model.base.codeStub_fromJs
 import com.icure.sdk.js.model.base.codeStub_toJs
@@ -12,9 +14,15 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun referenceRange_toJs(obj: ReferenceRange): ReferenceRangeJs {
-	val low = obj.low ?: undefined
-	val high = obj.high ?: undefined
-	val stringValue = obj.stringValue ?: undefined
+	val low = nullToUndefined(
+		obj.low
+	)
+	val high = nullToUndefined(
+		obj.high
+	)
+	val stringValue = nullToUndefined(
+		obj.stringValue
+	)
 	val tags = listToArray(
 		obj.tags,
 		{ x1: CodeStub ->
@@ -33,9 +41,11 @@ public fun referenceRange_toJs(obj: ReferenceRange): ReferenceRangeJs {
 			annotation_toJs(x1)
 		},
 	)
-	val age = obj.age?.let { nonNull1 ->
-		range_toJs(nonNull1)
-	} ?: undefined
+	val age = nullToUndefined(
+		obj.age?.let { nonNull1 ->
+			range_toJs(nonNull1)
+		}
+	)
 	return ReferenceRangeJs(js("{" +
 		"low:low," +
 		"high:high," +
@@ -48,9 +58,9 @@ public fun referenceRange_toJs(obj: ReferenceRange): ReferenceRangeJs {
 }
 
 public fun referenceRange_fromJs(obj: ReferenceRangeJs): ReferenceRange {
-	val low = obj.low
-	val high = obj.high
-	val stringValue = obj.stringValue
+	val low = undefinedToNull(obj.low)
+	val high = undefinedToNull(obj.high)
+	val stringValue = undefinedToNull(obj.stringValue)
 	val tags = arrayToList(
 		obj.tags,
 		"obj.tags",

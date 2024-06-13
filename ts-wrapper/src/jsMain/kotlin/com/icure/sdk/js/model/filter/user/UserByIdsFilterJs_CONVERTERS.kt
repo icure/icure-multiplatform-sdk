@@ -1,7 +1,9 @@
 package com.icure.sdk.js.model.filter.user
 
 import com.icure.sdk.js.model.CheckedConverters.arrayToSet
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.setToArray
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.model.filter.user.UserByIdsFilter
 import kotlin.String
 import kotlin.Suppress
@@ -14,7 +16,9 @@ public fun userByIdsFilter_toJs(obj: UserByIdsFilter): UserByIdsFilterJs {
 			x1
 		},
 	)
-	val desc = obj.desc ?: undefined
+	val desc = nullToUndefined(
+		obj.desc
+	)
 	return UserByIdsFilterJs(js("{" +
 		"ids:ids," +
 		"desc:desc" +
@@ -29,7 +33,7 @@ public fun userByIdsFilter_fromJs(obj: UserByIdsFilterJs): UserByIdsFilter {
 			x1
 		},
 	)
-	val desc = obj.desc
+	val desc = undefinedToNull(obj.desc)
 	return UserByIdsFilter(
 		ids = ids,
 		desc = desc,

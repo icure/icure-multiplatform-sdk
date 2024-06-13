@@ -67,9 +67,6 @@ public sealed external interface HealthElementJs : StoredDocumentJs, ICureDocume
 	public val careTeam: Array<out CareTeamMemberJs>
 
 	public val isEncrypted: Boolean
-
-	@JsName("${'$'}ktClass")
-	public val ktClass: String
 }
 
 @JsName("DecryptedHealthElement")
@@ -145,8 +142,6 @@ public external class DecryptedHealthElementJs(
 	override val securityMetadata: SecurityMetadataJs?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }
 
 @JsName("EncryptedHealthElement")
@@ -222,6 +217,4 @@ public external class EncryptedHealthElementJs(
 	override val securityMetadata: SecurityMetadataJs?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }

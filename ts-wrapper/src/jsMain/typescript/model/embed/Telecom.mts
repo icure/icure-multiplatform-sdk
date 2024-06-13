@@ -28,8 +28,6 @@ export class DecryptedTelecom {
 
   readonly isEncrypted: false = false;
 
-  readonly $ktClass: 'com.icure.sdk.model.embed.DecryptedTelecom' = 'com.icure.sdk.model.embed.DecryptedTelecom';
-
   constructor(partial: Partial<DecryptedTelecom>) {
     if (partial.isEncrypted !== undefined && partial.isEncrypted !== false) throw new Error('partial.isEncrypted must be undefined or false');
     if ('telecomType' in partial) this.telecomType = partial.telecomType;
@@ -51,8 +49,6 @@ export class EncryptedTelecom {
   encryptedSelf: Base64String | undefined = undefined;
 
   readonly isEncrypted: true = true;
-
-  readonly $ktClass: 'com.icure.sdk.model.embed.EncryptedTelecom' = 'com.icure.sdk.model.embed.EncryptedTelecom';
 
   constructor(partial: Partial<EncryptedTelecom>) {
     if (partial.isEncrypted !== undefined && partial.isEncrypted !== true) throw new Error('partial.isEncrypted must be undefined or true');

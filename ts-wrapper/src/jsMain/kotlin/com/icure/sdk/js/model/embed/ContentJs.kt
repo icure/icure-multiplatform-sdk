@@ -40,9 +40,6 @@ public sealed external interface ContentJs {
 	public val range: Array<out MeasureJs>?
 
 	public val isEncrypted: Boolean
-
-	@JsName("${'$'}ktClass")
-	public val ktClass: String
 }
 
 @JsName("DecryptedContent")
@@ -76,8 +73,6 @@ public external class DecryptedContentJs(
 	override val range: Array<MeasureJs>?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }
 
 @JsName("EncryptedContent")
@@ -111,6 +106,4 @@ public external class EncryptedContentJs(
 	override val range: Array<MeasureJs>?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }

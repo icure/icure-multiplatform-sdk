@@ -56,9 +56,6 @@ public sealed external interface ContactJs : StoredDocumentJs, ICureDocumentJs<S
 	public val notes: Array<out AnnotationJs>
 
 	public val isEncrypted: Boolean
-
-	@JsName("${'$'}ktClass")
-	public val ktClass: String
 }
 
 @JsName("DecryptedContact")
@@ -126,8 +123,6 @@ public external class DecryptedContactJs(
 	override val notes: Array<AnnotationJs>
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }
 
 @JsName("EncryptedContact")
@@ -195,6 +190,4 @@ public external class EncryptedContactJs(
 	override val notes: Array<AnnotationJs>
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }

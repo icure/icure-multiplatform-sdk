@@ -6,11 +6,13 @@ import com.icure.sdk.js.model.CheckedConverters.intToNumber
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.longToNumber
 import com.icure.sdk.js.model.CheckedConverters.mapToObject
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.sdk.js.model.CheckedConverters.objectToMapNullsafe
 import com.icure.sdk.js.model.CheckedConverters.setToArray
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.embed.DecryptedValorisationJs
 import com.icure.sdk.js.model.embed.LetterValueJs
 import com.icure.sdk.js.model.embed.PeriodicityJs
@@ -36,22 +38,38 @@ import kotlin.collections.Set
 @Suppress("UNUSED_VARIABLE")
 public fun tarification_toJs(obj: Tarification): TarificationJs {
 	val id = obj.id
-	val rev = obj.rev ?: undefined
-	val deletionDate = longToNumber(obj.deletionDate) ?: undefined
-	val label = mapToObject(
-		obj.label,
-		{ x1: String ->
-			x1
-		},
-		{ x1: String ->
-			x1
-		},
-	) ?: undefined
-	val context = obj.context ?: undefined
-	val type = obj.type ?: undefined
-	val code = obj.code ?: undefined
-	val version = obj.version ?: undefined
-	val author = obj.author ?: undefined
+	val rev = nullToUndefined(
+		obj.rev
+	)
+	val deletionDate = nullToUndefined(
+		longToNumber(obj.deletionDate)
+	)
+	val label = nullToUndefined(
+		mapToObject(
+			obj.label,
+			{ x1: String ->
+				x1
+			},
+			{ x1: String ->
+				x1
+			},
+		)
+	)
+	val context = nullToUndefined(
+		obj.context
+	)
+	val type = nullToUndefined(
+		obj.type
+	)
+	val code = nullToUndefined(
+		obj.code
+	)
+	val version = nullToUndefined(
+		obj.version
+	)
+	val author = nullToUndefined(
+		obj.author
+	)
 	val regions = setToArray(
 		obj.regions,
 		{ x1: String ->
@@ -64,7 +82,9 @@ public fun tarification_toJs(obj: Tarification): TarificationJs {
 			periodicity_toJs(x1)
 		},
 	)
-	val level = intToNumber(obj.level) ?: undefined
+	val level = nullToUndefined(
+		intToNumber(obj.level)
+	)
 	val links = listToArray(
 		obj.links,
 		{ x1: String ->
@@ -105,7 +125,9 @@ public fun tarification_toJs(obj: Tarification): TarificationJs {
 			)
 		},
 	)
-	val data = obj.data ?: undefined
+	val data = nullToUndefined(
+		obj.data
+	)
 	val appendices = mapToObject(
 		obj.appendices,
 		{ x1: AppendixType ->
@@ -131,16 +153,24 @@ public fun tarification_toJs(obj: Tarification): TarificationJs {
 			x1
 		},
 	)
-	val consultationCode = obj.consultationCode ?: undefined
-	val hasRelatedCode = obj.hasRelatedCode ?: undefined
-	val needsPrescriber = obj.needsPrescriber ?: undefined
+	val consultationCode = nullToUndefined(
+		obj.consultationCode
+	)
+	val hasRelatedCode = nullToUndefined(
+		obj.hasRelatedCode
+	)
+	val needsPrescriber = nullToUndefined(
+		obj.needsPrescriber
+	)
 	val relatedCodes = setToArray(
 		obj.relatedCodes,
 		{ x1: String ->
 			x1
 		},
 	)
-	val ngroup = obj.ngroup ?: undefined
+	val ngroup = nullToUndefined(
+		obj.ngroup
+	)
 	val letterValues = listToArray(
 		obj.letterValues,
 		{ x1: LetterValue ->
@@ -180,7 +210,7 @@ public fun tarification_toJs(obj: Tarification): TarificationJs {
 
 public fun tarification_fromJs(obj: TarificationJs): Tarification {
 	val id = obj.id
-	val rev = obj.rev
+	val rev = undefinedToNull(obj.rev)
 	val deletionDate = numberToLong(obj.deletionDate, "obj.deletionDate")
 	val label = objectToMapNullsafe(
 		obj.label,
@@ -192,11 +222,11 @@ public fun tarification_fromJs(obj: TarificationJs): Tarification {
 			x1
 		},
 	)
-	val context = obj.context
-	val type = obj.type
-	val code = obj.code
-	val version = obj.version
-	val author = obj.author
+	val context = undefinedToNull(obj.context)
+	val type = undefinedToNull(obj.type)
+	val code = undefinedToNull(obj.code)
+	val version = undefinedToNull(obj.version)
+	val author = undefinedToNull(obj.author)
 	val regions = arrayToSet(
 		obj.regions,
 		"obj.regions",
@@ -258,7 +288,7 @@ public fun tarification_fromJs(obj: TarificationJs): Tarification {
 			)
 		},
 	)
-	val data = obj.data
+	val data = undefinedToNull(obj.data)
 	val appendices = objectToMap(
 		obj.appendices,
 		"obj.appendices",
@@ -287,9 +317,9 @@ public fun tarification_fromJs(obj: TarificationJs): Tarification {
 			x1
 		},
 	)
-	val consultationCode = obj.consultationCode
-	val hasRelatedCode = obj.hasRelatedCode
-	val needsPrescriber = obj.needsPrescriber
+	val consultationCode = undefinedToNull(obj.consultationCode)
+	val hasRelatedCode = undefinedToNull(obj.hasRelatedCode)
+	val needsPrescriber = undefinedToNull(obj.needsPrescriber)
 	val relatedCodes = arrayToSet(
 		obj.relatedCodes,
 		"obj.relatedCodes",
@@ -297,7 +327,7 @@ public fun tarification_fromJs(obj: TarificationJs): Tarification {
 			x1
 		},
 	)
-	val ngroup = obj.ngroup
+	val ngroup = undefinedToNull(obj.ngroup)
 	val letterValues = arrayToList(
 		obj.letterValues,
 		"obj.letterValues",

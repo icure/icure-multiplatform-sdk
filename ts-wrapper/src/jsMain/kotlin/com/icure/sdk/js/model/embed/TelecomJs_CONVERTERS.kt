@@ -1,5 +1,7 @@
 package com.icure.sdk.js.model.embed
 
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.specializations.base64String_fromJs
 import com.icure.sdk.js.model.specializations.base64String_toJs
 import com.icure.sdk.model.embed.DecryptedTelecom
@@ -10,14 +12,22 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun telecom_toJs(obj: DecryptedTelecom): DecryptedTelecomJs {
-	val telecomType = obj.telecomType?.let { nonNull1 ->
-		nonNull1.name
-	} ?: undefined
-	val telecomNumber = obj.telecomNumber ?: undefined
-	val telecomDescription = obj.telecomDescription ?: undefined
-	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
-		base64String_toJs(nonNull1)
-	} ?: undefined
+	val telecomType = nullToUndefined(
+		obj.telecomType?.let { nonNull1 ->
+			nonNull1.name
+		}
+	)
+	val telecomNumber = nullToUndefined(
+		obj.telecomNumber
+	)
+	val telecomDescription = nullToUndefined(
+		obj.telecomDescription
+	)
+	val encryptedSelf = nullToUndefined(
+		obj.encryptedSelf?.let { nonNull1 ->
+			base64String_toJs(nonNull1)
+		}
+	)
 	return DecryptedTelecomJs(js("{" +
 		"telecomType:telecomType," +
 		"telecomNumber:telecomNumber," +
@@ -30,8 +40,8 @@ public fun telecom_fromJs(obj: DecryptedTelecomJs): DecryptedTelecom {
 	val telecomType = obj.telecomType?.let { nonNull1 ->
 		TelecomType.valueOf(nonNull1)
 	}
-	val telecomNumber = obj.telecomNumber
-	val telecomDescription = obj.telecomDescription
+	val telecomNumber = undefinedToNull(obj.telecomNumber)
+	val telecomDescription = undefinedToNull(obj.telecomDescription)
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_fromJs(nonNull1)
 	}
@@ -45,14 +55,22 @@ public fun telecom_fromJs(obj: DecryptedTelecomJs): DecryptedTelecom {
 
 @Suppress("UNUSED_VARIABLE")
 public fun telecom_toJs(obj: EncryptedTelecom): EncryptedTelecomJs {
-	val telecomType = obj.telecomType?.let { nonNull1 ->
-		nonNull1.name
-	} ?: undefined
-	val telecomNumber = obj.telecomNumber ?: undefined
-	val telecomDescription = obj.telecomDescription ?: undefined
-	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
-		base64String_toJs(nonNull1)
-	} ?: undefined
+	val telecomType = nullToUndefined(
+		obj.telecomType?.let { nonNull1 ->
+			nonNull1.name
+		}
+	)
+	val telecomNumber = nullToUndefined(
+		obj.telecomNumber
+	)
+	val telecomDescription = nullToUndefined(
+		obj.telecomDescription
+	)
+	val encryptedSelf = nullToUndefined(
+		obj.encryptedSelf?.let { nonNull1 ->
+			base64String_toJs(nonNull1)
+		}
+	)
 	return EncryptedTelecomJs(js("{" +
 		"telecomType:telecomType," +
 		"telecomNumber:telecomNumber," +
@@ -65,8 +83,8 @@ public fun telecom_fromJs(obj: EncryptedTelecomJs): EncryptedTelecom {
 	val telecomType = obj.telecomType?.let { nonNull1 ->
 		TelecomType.valueOf(nonNull1)
 	}
-	val telecomNumber = obj.telecomNumber
-	val telecomDescription = obj.telecomDescription
+	val telecomNumber = undefinedToNull(obj.telecomNumber)
+	val telecomDescription = undefinedToNull(obj.telecomDescription)
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_fromJs(nonNull1)
 	}

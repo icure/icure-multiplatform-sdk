@@ -24,6 +24,7 @@ import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.sdk.js.model.CheckedConverters.setToArray
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.DecryptedMessageJs
 import com.icure.sdk.js.model.EncryptedMessageJs
 import com.icure.sdk.js.model.MessageJs
@@ -215,7 +216,7 @@ internal class MessageApiImplJs(
 					"descending",
 					null
 				) { descending: Boolean? ->
-					descending
+					undefinedToNull(descending)
 				}
 				val result = messageApi.encrypted.findMessagesByHcPartyPatient(
 					hcPartyIdConverted,
@@ -281,7 +282,7 @@ internal class MessageApiImplJs(
 					message_fromJs(x1)
 				},
 			)
-			val startDocumentIdConverted: String? = startDocumentId
+			val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
 			val limitConverted: Int? = numberToInt(limit, "limit")
 			val result = messageApi.encrypted.filterMessagesBy(
 				filterChainConverted,
@@ -344,7 +345,7 @@ internal class MessageApiImplJs(
 			limit: Double?,
 		): Promise<PaginatedListJs<EncryptedMessageJs>> = GlobalScope.promise {
 			val startKeyConverted: JsonElement? = dynamicToJsonNullsafe(startKey, "startKey")
-			val startDocumentIdConverted: String? = startDocumentId
+			val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
 			val limitConverted: Int? = numberToInt(limit, "limit")
 			val result = messageApi.encrypted.findMessages(
 				startKeyConverted,
@@ -450,7 +451,7 @@ internal class MessageApiImplJs(
 					"startDocumentId",
 					null
 				) { startDocumentId: String? ->
-					startDocumentId
+					undefinedToNull(startDocumentId)
 				}
 				val limitConverted: Int? = convertingOptionOrDefaultNullable(
 					_options,
@@ -464,7 +465,7 @@ internal class MessageApiImplJs(
 					"hcpId",
 					null
 				) { hcpId: String? ->
-					hcpId
+					undefinedToNull(hcpId)
 				}
 				val result = messageApi.encrypted.findMessagesByTransportGuidSentDate(
 					transportGuidConverted,
@@ -492,7 +493,7 @@ internal class MessageApiImplJs(
 		): Promise<PaginatedListJs<EncryptedMessageJs>> = GlobalScope.promise {
 			val toAddressConverted: String = toAddress
 			val startKeyConverted: JsonElement? = dynamicToJsonNullsafe(startKey, "startKey")
-			val startDocumentIdConverted: String? = startDocumentId
+			val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
 			val limitConverted: Int? = numberToInt(limit, "limit")
 			val result = messageApi.encrypted.findMessagesByToAddress(
 				toAddressConverted,
@@ -516,7 +517,7 @@ internal class MessageApiImplJs(
 		): Promise<PaginatedListJs<EncryptedMessageJs>> = GlobalScope.promise {
 			val fromAddressConverted: String = fromAddress
 			val startKeyConverted: JsonElement? = dynamicToJsonNullsafe(startKey, "startKey")
-			val startDocumentIdConverted: String? = startDocumentId
+			val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
 			val limitConverted: Int? = numberToInt(limit, "limit")
 			val result = messageApi.encrypted.findMessagesByFromAddress(
 				fromAddressConverted,
@@ -793,7 +794,7 @@ internal class MessageApiImplJs(
 					"descending",
 					null
 				) { descending: Boolean? ->
-					descending
+					undefinedToNull(descending)
 				}
 				val result = messageApi.tryAndRecover.findMessagesByHcPartyPatient(
 					hcPartyIdConverted,
@@ -858,7 +859,7 @@ internal class MessageApiImplJs(
 					message_fromJs(x1)
 				},
 			)
-			val startDocumentIdConverted: String? = startDocumentId
+			val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
 			val limitConverted: Int? = numberToInt(limit, "limit")
 			val result = messageApi.tryAndRecover.filterMessagesBy(
 				filterChainConverted,
@@ -921,7 +922,7 @@ internal class MessageApiImplJs(
 			limit: Double?,
 		): Promise<PaginatedListJs<MessageJs>> = GlobalScope.promise {
 			val startKeyConverted: JsonElement? = dynamicToJsonNullsafe(startKey, "startKey")
-			val startDocumentIdConverted: String? = startDocumentId
+			val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
 			val limitConverted: Int? = numberToInt(limit, "limit")
 			val result = messageApi.tryAndRecover.findMessages(
 				startKeyConverted,
@@ -1027,7 +1028,7 @@ internal class MessageApiImplJs(
 					"startDocumentId",
 					null
 				) { startDocumentId: String? ->
-					startDocumentId
+					undefinedToNull(startDocumentId)
 				}
 				val limitConverted: Int? = convertingOptionOrDefaultNullable(
 					_options,
@@ -1041,7 +1042,7 @@ internal class MessageApiImplJs(
 					"hcpId",
 					null
 				) { hcpId: String? ->
-					hcpId
+					undefinedToNull(hcpId)
 				}
 				val result = messageApi.tryAndRecover.findMessagesByTransportGuidSentDate(
 					transportGuidConverted,
@@ -1069,7 +1070,7 @@ internal class MessageApiImplJs(
 		): Promise<PaginatedListJs<MessageJs>> = GlobalScope.promise {
 			val toAddressConverted: String = toAddress
 			val startKeyConverted: JsonElement? = dynamicToJsonNullsafe(startKey, "startKey")
-			val startDocumentIdConverted: String? = startDocumentId
+			val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
 			val limitConverted: Int? = numberToInt(limit, "limit")
 			val result = messageApi.tryAndRecover.findMessagesByToAddress(
 				toAddressConverted,
@@ -1093,7 +1094,7 @@ internal class MessageApiImplJs(
 		): Promise<PaginatedListJs<MessageJs>> = GlobalScope.promise {
 			val fromAddressConverted: String = fromAddress
 			val startKeyConverted: JsonElement? = dynamicToJsonNullsafe(startKey, "startKey")
-			val startDocumentIdConverted: String? = startDocumentId
+			val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
 			val limitConverted: Int? = numberToInt(limit, "limit")
 			val result = messageApi.tryAndRecover.findMessagesByFromAddress(
 				fromAddressConverted,
@@ -1542,7 +1543,7 @@ internal class MessageApiImplJs(
 				"descending",
 				null
 			) { descending: Boolean? ->
-				descending
+				undefinedToNull(descending)
 			}
 			val result = messageApi.findMessagesByHcPartyPatient(
 				hcPartyIdConverted,
@@ -1608,7 +1609,7 @@ internal class MessageApiImplJs(
 				message_fromJs(x1)
 			},
 		)
-		val startDocumentIdConverted: String? = startDocumentId
+		val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
 		val limitConverted: Int? = numberToInt(limit, "limit")
 		val result = messageApi.filterMessagesBy(
 			filterChainConverted,
@@ -1671,7 +1672,7 @@ internal class MessageApiImplJs(
 		limit: Double?,
 	): Promise<PaginatedListJs<DecryptedMessageJs>> = GlobalScope.promise {
 		val startKeyConverted: JsonElement? = dynamicToJsonNullsafe(startKey, "startKey")
-		val startDocumentIdConverted: String? = startDocumentId
+		val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
 		val limitConverted: Int? = numberToInt(limit, "limit")
 		val result = messageApi.findMessages(
 			startKeyConverted,
@@ -1777,7 +1778,7 @@ internal class MessageApiImplJs(
 				"startDocumentId",
 				null
 			) { startDocumentId: String? ->
-				startDocumentId
+				undefinedToNull(startDocumentId)
 			}
 			val limitConverted: Int? = convertingOptionOrDefaultNullable(
 				_options,
@@ -1791,7 +1792,7 @@ internal class MessageApiImplJs(
 				"hcpId",
 				null
 			) { hcpId: String? ->
-				hcpId
+				undefinedToNull(hcpId)
 			}
 			val result = messageApi.findMessagesByTransportGuidSentDate(
 				transportGuidConverted,
@@ -1819,7 +1820,7 @@ internal class MessageApiImplJs(
 	): Promise<PaginatedListJs<DecryptedMessageJs>> = GlobalScope.promise {
 		val toAddressConverted: String = toAddress
 		val startKeyConverted: JsonElement? = dynamicToJsonNullsafe(startKey, "startKey")
-		val startDocumentIdConverted: String? = startDocumentId
+		val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
 		val limitConverted: Int? = numberToInt(limit, "limit")
 		val result = messageApi.findMessagesByToAddress(
 			toAddressConverted,
@@ -1843,7 +1844,7 @@ internal class MessageApiImplJs(
 	): Promise<PaginatedListJs<DecryptedMessageJs>> = GlobalScope.promise {
 		val fromAddressConverted: String = fromAddress
 		val startKeyConverted: JsonElement? = dynamicToJsonNullsafe(startKey, "startKey")
-		val startDocumentIdConverted: String? = startDocumentId
+		val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
 		val limitConverted: Int? = numberToInt(limit, "limit")
 		val result = messageApi.findMessagesByFromAddress(
 			fromAddressConverted,

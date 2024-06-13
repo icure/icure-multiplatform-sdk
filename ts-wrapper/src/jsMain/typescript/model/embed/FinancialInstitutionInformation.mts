@@ -43,8 +43,6 @@ export class DecryptedFinancialInstitutionInformation {
 
   readonly isEncrypted: false = false;
 
-  readonly $ktClass: 'com.icure.sdk.model.embed.DecryptedFinancialInstitutionInformation' = 'com.icure.sdk.model.embed.DecryptedFinancialInstitutionInformation';
-
   constructor(partial: Partial<DecryptedFinancialInstitutionInformation>) {
     if (partial.isEncrypted !== undefined && partial.isEncrypted !== false) throw new Error('partial.isEncrypted must be undefined or false');
     if ('name' in partial) this.name = partial.name;
@@ -78,8 +76,6 @@ export class EncryptedFinancialInstitutionInformation {
   encryptedSelf: Base64String | undefined = undefined;
 
   readonly isEncrypted: true = true;
-
-  readonly $ktClass: 'com.icure.sdk.model.embed.EncryptedFinancialInstitutionInformation' = 'com.icure.sdk.model.embed.EncryptedFinancialInstitutionInformation';
 
   constructor(partial: Partial<EncryptedFinancialInstitutionInformation>) {
     if (partial.isEncrypted !== undefined && partial.isEncrypted !== true) throw new Error('partial.isEncrypted must be undefined or true');

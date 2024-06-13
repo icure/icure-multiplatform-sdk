@@ -1,16 +1,26 @@
 package com.icure.sdk.js.model.embed
 
 import com.icure.sdk.js.model.CheckedConverters.longToNumber
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.model.embed.Suspension
 import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun suspension_toJs(obj: Suspension): SuspensionJs {
-	val beginMoment = longToNumber(obj.beginMoment) ?: undefined
-	val endMoment = longToNumber(obj.endMoment) ?: undefined
-	val suspensionReason = obj.suspensionReason ?: undefined
-	val lifecycle = obj.lifecycle ?: undefined
+	val beginMoment = nullToUndefined(
+		longToNumber(obj.beginMoment)
+	)
+	val endMoment = nullToUndefined(
+		longToNumber(obj.endMoment)
+	)
+	val suspensionReason = nullToUndefined(
+		obj.suspensionReason
+	)
+	val lifecycle = nullToUndefined(
+		obj.lifecycle
+	)
 	return SuspensionJs(js("{" +
 		"beginMoment:beginMoment," +
 		"endMoment:endMoment," +
@@ -22,8 +32,8 @@ public fun suspension_toJs(obj: Suspension): SuspensionJs {
 public fun suspension_fromJs(obj: SuspensionJs): Suspension {
 	val beginMoment = numberToLong(obj.beginMoment, "obj.beginMoment")
 	val endMoment = numberToLong(obj.endMoment, "obj.endMoment")
-	val suspensionReason = obj.suspensionReason
-	val lifecycle = obj.lifecycle
+	val suspensionReason = undefinedToNull(obj.suspensionReason)
+	val lifecycle = undefinedToNull(obj.lifecycle)
 	return Suspension(
 		beginMoment = beginMoment,
 		endMoment = endMoment,

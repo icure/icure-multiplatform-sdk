@@ -2,6 +2,7 @@ package com.icure.sdk.js.model.embed
 
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.listToArray
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.model.embed.DocumentLocation
 import com.icure.sdk.model.embed.MessageAttachment
 import kotlin.String
@@ -9,9 +10,11 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun messageAttachment_toJs(obj: MessageAttachment): MessageAttachmentJs {
-	val type = obj.type?.let { nonNull1 ->
-		nonNull1.name
-	} ?: undefined
+	val type = nullToUndefined(
+		obj.type?.let { nonNull1 ->
+			nonNull1.name
+		}
+	)
 	val ids = listToArray(
 		obj.ids,
 		{ x1: String ->

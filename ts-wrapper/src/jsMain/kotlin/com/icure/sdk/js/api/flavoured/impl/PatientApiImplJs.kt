@@ -29,6 +29,7 @@ import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.sdk.js.model.CheckedConverters.setToArray
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.DataOwnerRegistrationSuccessJs
 import com.icure.sdk.js.model.DecryptedPatientJs
 import com.icure.sdk.js.model.EncryptedPatientJs
@@ -238,14 +239,14 @@ internal class PatientApiImplJs(
 					"startKey",
 					null
 				) { startKey: String? ->
-					startKey
+					undefinedToNull(startKey)
 				}
 				val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
 					_options,
 					"startDocumentId",
 					null
 				) { startDocumentId: String? ->
-					startDocumentId
+					undefinedToNull(startDocumentId)
 				}
 				val limitConverted: Int? = convertingOptionOrDefaultNullable(
 					_options,
@@ -266,14 +267,14 @@ internal class PatientApiImplJs(
 					"sort",
 					null
 				) { sort: String? ->
-					sort
+					undefinedToNull(sort)
 				}
 				val descConverted: Boolean? = convertingOptionOrDefaultNullable(
 					_options,
 					"desc",
 					null
 				) { desc: Boolean? ->
-					desc
+					undefinedToNull(desc)
 				}
 				val result = patientApi.encrypted.filterPatientsBy(
 					filterChainConverted,
@@ -302,7 +303,7 @@ internal class PatientApiImplJs(
 					"healthcarePartyId",
 					null
 				) { healthcarePartyId: String? ->
-					healthcarePartyId
+					undefinedToNull(healthcarePartyId)
 				}
 				val filterValueConverted: String = filterValue
 				val startKeyConverted: String? = convertingOptionOrDefaultNullable(
@@ -310,14 +311,14 @@ internal class PatientApiImplJs(
 					"startKey",
 					null
 				) { startKey: String? ->
-					startKey
+					undefinedToNull(startKey)
 				}
 				val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
 					_options,
 					"startDocumentId",
 					null
 				) { startDocumentId: String? ->
-					startDocumentId
+					undefinedToNull(startDocumentId)
 				}
 				val limitConverted: Int? = convertingOptionOrDefaultNullable(
 					_options,
@@ -367,14 +368,14 @@ internal class PatientApiImplJs(
 					"startKey",
 					null
 				) { startKey: String? ->
-					startKey
+					undefinedToNull(startKey)
 				}
 				val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
 					_options,
 					"startDocumentId",
 					null
 				) { startDocumentId: String? ->
-					startDocumentId
+					undefinedToNull(startDocumentId)
 				}
 				val limitConverted: Int? = convertingOptionOrDefaultNullable(
 					_options,
@@ -438,7 +439,7 @@ internal class PatientApiImplJs(
 					"startDocumentId",
 					null
 				) { startDocumentId: String? ->
-					startDocumentId
+					undefinedToNull(startDocumentId)
 				}
 				val limitConverted: Int? = convertingOptionOrDefaultNullable(
 					_options,
@@ -479,14 +480,14 @@ internal class PatientApiImplJs(
 					"startKey",
 					null
 				) { startKey: String? ->
-					startKey
+					undefinedToNull(startKey)
 				}
 				val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
 					_options,
 					"startDocumentId",
 					null
 				) { startDocumentId: String? ->
-					startDocumentId
+					undefinedToNull(startDocumentId)
 				}
 				val limitConverted: Int? = convertingOptionOrDefaultNullable(
 					_options,
@@ -554,7 +555,7 @@ internal class PatientApiImplJs(
 					"hcPartyId",
 					null
 				) { hcPartyId: String? ->
-					hcPartyId
+					undefinedToNull(hcPartyId)
 				}
 				val sortFieldConverted: String = convertingOptionOrDefaultNonNull(
 					_options,
@@ -568,14 +569,14 @@ internal class PatientApiImplJs(
 					"startKey",
 					null
 				) { startKey: String? ->
-					startKey
+					undefinedToNull(startKey)
 				}
 				val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
 					_options,
 					"startDocumentId",
 					null
 				) { startDocumentId: String? ->
-					startDocumentId
+					undefinedToNull(startDocumentId)
 				}
 				val limitConverted: Int? = convertingOptionOrDefaultNullable(
 					_options,
@@ -618,14 +619,14 @@ internal class PatientApiImplJs(
 					"startKey",
 					null
 				) { startKey: String? ->
-					startKey
+					undefinedToNull(startKey)
 				}
 				val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
 					_options,
 					"startDocumentId",
 					null
 				) { startDocumentId: String? ->
-					startDocumentId
+					undefinedToNull(startDocumentId)
 				}
 				val limitConverted: Int? = convertingOptionOrDefaultNullable(
 					_options,
@@ -705,7 +706,7 @@ internal class PatientApiImplJs(
 					"desc",
 					null
 				) { desc: Boolean? ->
-					desc
+					undefinedToNull(desc)
 				}
 				val startKeyConverted: Long? = convertingOptionOrDefaultNullable(
 					_options,
@@ -719,7 +720,7 @@ internal class PatientApiImplJs(
 					"startDocumentId",
 					null
 				) { startDocumentId: String? ->
-					startDocumentId
+					undefinedToNull(startDocumentId)
 				}
 				val limitConverted: Int? = convertingOptionOrDefaultNullable(
 					_options,
@@ -753,14 +754,14 @@ internal class PatientApiImplJs(
 					"firstName",
 					null
 				) { firstName: String? ->
-					firstName
+					undefinedToNull(firstName)
 				}
 				val lastNameConverted: String? = convertingOptionOrDefaultNullable(
 					_options,
 					"lastName",
 					null
 				) { lastName: String? ->
-					lastName
+					undefinedToNull(lastName)
 				}
 				val result = patientApi.encrypted.listDeletedPatientsByName(
 					firstNameConverted,
@@ -803,7 +804,7 @@ internal class PatientApiImplJs(
 					"system",
 					null
 				) { system: String? ->
-					system
+					undefinedToNull(system)
 				}
 				val result = patientApi.encrypted.getPatientByHealthcarePartyAndIdentifier(
 					hcPartyIdConverted,
@@ -877,14 +878,14 @@ internal class PatientApiImplJs(
 					"startKey",
 					null
 				) { startKey: String? ->
-					startKey
+					undefinedToNull(startKey)
 				}
 				val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
 					_options,
 					"startDocumentId",
 					null
 				) { startDocumentId: String? ->
-					startDocumentId
+					undefinedToNull(startDocumentId)
 				}
 				val limitConverted: Int? = convertingOptionOrDefaultNullable(
 					_options,
@@ -918,14 +919,14 @@ internal class PatientApiImplJs(
 					"startKey",
 					null
 				) { startKey: String? ->
-					startKey
+					undefinedToNull(startKey)
 				}
 				val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
 					_options,
 					"startDocumentId",
 					null
 				) { startDocumentId: String? ->
-					startDocumentId
+					undefinedToNull(startDocumentId)
 				}
 				val limitConverted: Int? = convertingOptionOrDefaultNullable(
 					_options,
@@ -1189,14 +1190,14 @@ internal class PatientApiImplJs(
 					"startKey",
 					null
 				) { startKey: String? ->
-					startKey
+					undefinedToNull(startKey)
 				}
 				val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
 					_options,
 					"startDocumentId",
 					null
 				) { startDocumentId: String? ->
-					startDocumentId
+					undefinedToNull(startDocumentId)
 				}
 				val limitConverted: Int? = convertingOptionOrDefaultNullable(
 					_options,
@@ -1217,14 +1218,14 @@ internal class PatientApiImplJs(
 					"sort",
 					null
 				) { sort: String? ->
-					sort
+					undefinedToNull(sort)
 				}
 				val descConverted: Boolean? = convertingOptionOrDefaultNullable(
 					_options,
 					"desc",
 					null
 				) { desc: Boolean? ->
-					desc
+					undefinedToNull(desc)
 				}
 				val result = patientApi.tryAndRecover.filterPatientsBy(
 					filterChainConverted,
@@ -1253,7 +1254,7 @@ internal class PatientApiImplJs(
 					"healthcarePartyId",
 					null
 				) { healthcarePartyId: String? ->
-					healthcarePartyId
+					undefinedToNull(healthcarePartyId)
 				}
 				val filterValueConverted: String = filterValue
 				val startKeyConverted: String? = convertingOptionOrDefaultNullable(
@@ -1261,14 +1262,14 @@ internal class PatientApiImplJs(
 					"startKey",
 					null
 				) { startKey: String? ->
-					startKey
+					undefinedToNull(startKey)
 				}
 				val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
 					_options,
 					"startDocumentId",
 					null
 				) { startDocumentId: String? ->
-					startDocumentId
+					undefinedToNull(startDocumentId)
 				}
 				val limitConverted: Int? = convertingOptionOrDefaultNullable(
 					_options,
@@ -1318,14 +1319,14 @@ internal class PatientApiImplJs(
 					"startKey",
 					null
 				) { startKey: String? ->
-					startKey
+					undefinedToNull(startKey)
 				}
 				val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
 					_options,
 					"startDocumentId",
 					null
 				) { startDocumentId: String? ->
-					startDocumentId
+					undefinedToNull(startDocumentId)
 				}
 				val limitConverted: Int? = convertingOptionOrDefaultNullable(
 					_options,
@@ -1388,7 +1389,7 @@ internal class PatientApiImplJs(
 					"startDocumentId",
 					null
 				) { startDocumentId: String? ->
-					startDocumentId
+					undefinedToNull(startDocumentId)
 				}
 				val limitConverted: Int? = convertingOptionOrDefaultNullable(
 					_options,
@@ -1429,14 +1430,14 @@ internal class PatientApiImplJs(
 					"startKey",
 					null
 				) { startKey: String? ->
-					startKey
+					undefinedToNull(startKey)
 				}
 				val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
 					_options,
 					"startDocumentId",
 					null
 				) { startDocumentId: String? ->
-					startDocumentId
+					undefinedToNull(startDocumentId)
 				}
 				val limitConverted: Int? = convertingOptionOrDefaultNullable(
 					_options,
@@ -1504,7 +1505,7 @@ internal class PatientApiImplJs(
 					"hcPartyId",
 					null
 				) { hcPartyId: String? ->
-					hcPartyId
+					undefinedToNull(hcPartyId)
 				}
 				val sortFieldConverted: String = convertingOptionOrDefaultNonNull(
 					_options,
@@ -1518,14 +1519,14 @@ internal class PatientApiImplJs(
 					"startKey",
 					null
 				) { startKey: String? ->
-					startKey
+					undefinedToNull(startKey)
 				}
 				val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
 					_options,
 					"startDocumentId",
 					null
 				) { startDocumentId: String? ->
-					startDocumentId
+					undefinedToNull(startDocumentId)
 				}
 				val limitConverted: Int? = convertingOptionOrDefaultNullable(
 					_options,
@@ -1568,14 +1569,14 @@ internal class PatientApiImplJs(
 					"startKey",
 					null
 				) { startKey: String? ->
-					startKey
+					undefinedToNull(startKey)
 				}
 				val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
 					_options,
 					"startDocumentId",
 					null
 				) { startDocumentId: String? ->
-					startDocumentId
+					undefinedToNull(startDocumentId)
 				}
 				val limitConverted: Int? = convertingOptionOrDefaultNullable(
 					_options,
@@ -1655,7 +1656,7 @@ internal class PatientApiImplJs(
 					"desc",
 					null
 				) { desc: Boolean? ->
-					desc
+					undefinedToNull(desc)
 				}
 				val startKeyConverted: Long? = convertingOptionOrDefaultNullable(
 					_options,
@@ -1669,7 +1670,7 @@ internal class PatientApiImplJs(
 					"startDocumentId",
 					null
 				) { startDocumentId: String? ->
-					startDocumentId
+					undefinedToNull(startDocumentId)
 				}
 				val limitConverted: Int? = convertingOptionOrDefaultNullable(
 					_options,
@@ -1703,14 +1704,14 @@ internal class PatientApiImplJs(
 					"firstName",
 					null
 				) { firstName: String? ->
-					firstName
+					undefinedToNull(firstName)
 				}
 				val lastNameConverted: String? = convertingOptionOrDefaultNullable(
 					_options,
 					"lastName",
 					null
 				) { lastName: String? ->
-					lastName
+					undefinedToNull(lastName)
 				}
 				val result = patientApi.tryAndRecover.listDeletedPatientsByName(
 					firstNameConverted,
@@ -1753,7 +1754,7 @@ internal class PatientApiImplJs(
 					"system",
 					null
 				) { system: String? ->
-					system
+					undefinedToNull(system)
 				}
 				val result = patientApi.tryAndRecover.getPatientByHealthcarePartyAndIdentifier(
 					hcPartyIdConverted,
@@ -1827,14 +1828,14 @@ internal class PatientApiImplJs(
 					"startKey",
 					null
 				) { startKey: String? ->
-					startKey
+					undefinedToNull(startKey)
 				}
 				val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
 					_options,
 					"startDocumentId",
 					null
 				) { startDocumentId: String? ->
-					startDocumentId
+					undefinedToNull(startDocumentId)
 				}
 				val limitConverted: Int? = convertingOptionOrDefaultNullable(
 					_options,
@@ -1868,14 +1869,14 @@ internal class PatientApiImplJs(
 					"startKey",
 					null
 				) { startKey: String? ->
-					startKey
+					undefinedToNull(startKey)
 				}
 				val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
 					_options,
 					"startDocumentId",
 					null
 				) { startDocumentId: String? ->
-					startDocumentId
+					undefinedToNull(startDocumentId)
 				}
 				val limitConverted: Int? = convertingOptionOrDefaultNullable(
 					_options,
@@ -2158,8 +2159,8 @@ internal class PatientApiImplJs(
 	): Promise<DataOwnerRegistrationSuccessJs> = GlobalScope.promise {
 		val hcPartyIdConverted: String = hcPartyId
 		val groupIdConverted: String = groupId
-		val tokenConverted: String? = token
-		val useShortTokenConverted: Boolean? = useShortToken
+		val tokenConverted: String? = undefinedToNull(token)
+		val useShortTokenConverted: Boolean? = undefinedToNull(useShortToken)
 		val createAutoDelegationConverted: Boolean = createAutoDelegation
 		val patientConverted: DecryptedPatient = patient_fromJs(patient)
 		val result = patientApi.registerPatient(
@@ -2455,14 +2456,14 @@ internal class PatientApiImplJs(
 				"startKey",
 				null
 			) { startKey: String? ->
-				startKey
+				undefinedToNull(startKey)
 			}
 			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
 				_options,
 				"startDocumentId",
 				null
 			) { startDocumentId: String? ->
-				startDocumentId
+				undefinedToNull(startDocumentId)
 			}
 			val limitConverted: Int? = convertingOptionOrDefaultNullable(
 				_options,
@@ -2483,14 +2484,14 @@ internal class PatientApiImplJs(
 				"sort",
 				null
 			) { sort: String? ->
-				sort
+				undefinedToNull(sort)
 			}
 			val descConverted: Boolean? = convertingOptionOrDefaultNullable(
 				_options,
 				"desc",
 				null
 			) { desc: Boolean? ->
-				desc
+				undefinedToNull(desc)
 			}
 			val result = patientApi.filterPatientsBy(
 				filterChainConverted,
@@ -2519,7 +2520,7 @@ internal class PatientApiImplJs(
 				"healthcarePartyId",
 				null
 			) { healthcarePartyId: String? ->
-				healthcarePartyId
+				undefinedToNull(healthcarePartyId)
 			}
 			val filterValueConverted: String = filterValue
 			val startKeyConverted: String? = convertingOptionOrDefaultNullable(
@@ -2527,14 +2528,14 @@ internal class PatientApiImplJs(
 				"startKey",
 				null
 			) { startKey: String? ->
-				startKey
+				undefinedToNull(startKey)
 			}
 			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
 				_options,
 				"startDocumentId",
 				null
 			) { startDocumentId: String? ->
-				startDocumentId
+				undefinedToNull(startDocumentId)
 			}
 			val limitConverted: Int? = convertingOptionOrDefaultNullable(
 				_options,
@@ -2584,14 +2585,14 @@ internal class PatientApiImplJs(
 				"startKey",
 				null
 			) { startKey: String? ->
-				startKey
+				undefinedToNull(startKey)
 			}
 			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
 				_options,
 				"startDocumentId",
 				null
 			) { startDocumentId: String? ->
-				startDocumentId
+				undefinedToNull(startDocumentId)
 			}
 			val limitConverted: Int? = convertingOptionOrDefaultNullable(
 				_options,
@@ -2655,7 +2656,7 @@ internal class PatientApiImplJs(
 				"startDocumentId",
 				null
 			) { startDocumentId: String? ->
-				startDocumentId
+				undefinedToNull(startDocumentId)
 			}
 			val limitConverted: Int? = convertingOptionOrDefaultNullable(
 				_options,
@@ -2696,14 +2697,14 @@ internal class PatientApiImplJs(
 				"startKey",
 				null
 			) { startKey: String? ->
-				startKey
+				undefinedToNull(startKey)
 			}
 			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
 				_options,
 				"startDocumentId",
 				null
 			) { startDocumentId: String? ->
-				startDocumentId
+				undefinedToNull(startDocumentId)
 			}
 			val limitConverted: Int? = convertingOptionOrDefaultNullable(
 				_options,
@@ -2771,7 +2772,7 @@ internal class PatientApiImplJs(
 				"hcPartyId",
 				null
 			) { hcPartyId: String? ->
-				hcPartyId
+				undefinedToNull(hcPartyId)
 			}
 			val sortFieldConverted: String = convertingOptionOrDefaultNonNull(
 				_options,
@@ -2785,14 +2786,14 @@ internal class PatientApiImplJs(
 				"startKey",
 				null
 			) { startKey: String? ->
-				startKey
+				undefinedToNull(startKey)
 			}
 			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
 				_options,
 				"startDocumentId",
 				null
 			) { startDocumentId: String? ->
-				startDocumentId
+				undefinedToNull(startDocumentId)
 			}
 			val limitConverted: Int? = convertingOptionOrDefaultNullable(
 				_options,
@@ -2835,14 +2836,14 @@ internal class PatientApiImplJs(
 				"startKey",
 				null
 			) { startKey: String? ->
-				startKey
+				undefinedToNull(startKey)
 			}
 			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
 				_options,
 				"startDocumentId",
 				null
 			) { startDocumentId: String? ->
-				startDocumentId
+				undefinedToNull(startDocumentId)
 			}
 			val limitConverted: Int? = convertingOptionOrDefaultNullable(
 				_options,
@@ -2922,7 +2923,7 @@ internal class PatientApiImplJs(
 				"desc",
 				null
 			) { desc: Boolean? ->
-				desc
+				undefinedToNull(desc)
 			}
 			val startKeyConverted: Long? = convertingOptionOrDefaultNullable(
 				_options,
@@ -2936,7 +2937,7 @@ internal class PatientApiImplJs(
 				"startDocumentId",
 				null
 			) { startDocumentId: String? ->
-				startDocumentId
+				undefinedToNull(startDocumentId)
 			}
 			val limitConverted: Int? = convertingOptionOrDefaultNullable(
 				_options,
@@ -2970,14 +2971,14 @@ internal class PatientApiImplJs(
 				"firstName",
 				null
 			) { firstName: String? ->
-				firstName
+				undefinedToNull(firstName)
 			}
 			val lastNameConverted: String? = convertingOptionOrDefaultNullable(
 				_options,
 				"lastName",
 				null
 			) { lastName: String? ->
-				lastName
+				undefinedToNull(lastName)
 			}
 			val result = patientApi.listDeletedPatientsByName(
 				firstNameConverted,
@@ -3020,7 +3021,7 @@ internal class PatientApiImplJs(
 				"system",
 				null
 			) { system: String? ->
-				system
+				undefinedToNull(system)
 			}
 			val result = patientApi.getPatientByHealthcarePartyAndIdentifier(
 				hcPartyIdConverted,
@@ -3094,14 +3095,14 @@ internal class PatientApiImplJs(
 				"startKey",
 				null
 			) { startKey: String? ->
-				startKey
+				undefinedToNull(startKey)
 			}
 			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
 				_options,
 				"startDocumentId",
 				null
 			) { startDocumentId: String? ->
-				startDocumentId
+				undefinedToNull(startDocumentId)
 			}
 			val limitConverted: Int? = convertingOptionOrDefaultNullable(
 				_options,
@@ -3135,14 +3136,14 @@ internal class PatientApiImplJs(
 				"startKey",
 				null
 			) { startKey: String? ->
-				startKey
+				undefinedToNull(startKey)
 			}
 			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
 				_options,
 				"startDocumentId",
 				null
 			) { startDocumentId: String? ->
-				startDocumentId
+				undefinedToNull(startDocumentId)
 			}
 			val limitConverted: Int? = convertingOptionOrDefaultNullable(
 				_options,

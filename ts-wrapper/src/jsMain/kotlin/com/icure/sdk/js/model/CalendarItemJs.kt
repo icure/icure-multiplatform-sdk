@@ -75,9 +75,6 @@ public sealed external interface CalendarItemJs : StoredDocumentJs, ICureDocumen
 	public val flowItem: FlowItemJs?
 
 	public val isEncrypted: Boolean
-
-	@JsName("${'$'}ktClass")
-	public val ktClass: String
 }
 
 @JsName("DecryptedCalendarItem")
@@ -167,8 +164,6 @@ public external class DecryptedCalendarItemJs(
 	override val securityMetadata: SecurityMetadataJs?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }
 
 @JsName("EncryptedCalendarItem")
@@ -258,6 +253,4 @@ public external class EncryptedCalendarItemJs(
 	override val securityMetadata: SecurityMetadataJs?
 
 	override val isEncrypted: Boolean
-
-	override val ktClass: String
 }

@@ -12,6 +12,7 @@ import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.numberToDuration
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.ContactJs
 import com.icure.sdk.js.model.EncryptedContactJs
 import com.icure.sdk.js.model.IcureStubJs
@@ -239,7 +240,7 @@ internal class ContactBasicApiImplJs(
 				contact_fromJs(x1)
 			},
 		)
-		val startDocumentIdConverted: String? = startDocumentId
+		val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
 		val limitConverted: Int? = numberToInt(limit, "limit")
 		val result = contactBasicApi.filterContactsBy(
 			filterChainConverted,
@@ -342,14 +343,14 @@ internal class ContactBasicApiImplJs(
 				"planOfActionsIds",
 				null
 			) { planOfActionsIds: String? ->
-				planOfActionsIds
+				undefinedToNull(planOfActionsIds)
 			}
 			val skipClosedContactsConverted: Boolean? = convertingOptionOrDefaultNullable(
 				_options,
 				"skipClosedContacts",
 				null
 			) { skipClosedContacts: Boolean? ->
-				skipClosedContacts
+				undefinedToNull(skipClosedContacts)
 			}
 			val result = contactBasicApi.listContactsByHCPartyAndPatientSecretFKeys(
 				hcPartyIdConverted,
@@ -491,7 +492,7 @@ internal class ContactBasicApiImplJs(
 				"startDocumentId",
 				null
 			) { startDocumentId: String? ->
-				startDocumentId
+				undefinedToNull(startDocumentId)
 			}
 			val limitConverted: Int? = convertingOptionOrDefaultNullable(
 				_options,
@@ -528,7 +529,7 @@ internal class ContactBasicApiImplJs(
 				service_fromJs(x1)
 			},
 		)
-		val startDocumentIdConverted: String? = startDocumentId
+		val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
 		val limitConverted: Int? = numberToInt(limit, "limit")
 		val result = contactBasicApi.filterServicesBy(
 			filterChainConverted,

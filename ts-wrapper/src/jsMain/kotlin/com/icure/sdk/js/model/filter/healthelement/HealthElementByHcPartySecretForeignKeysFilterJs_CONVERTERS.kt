@@ -1,7 +1,9 @@
 package com.icure.sdk.js.model.filter.healthelement
 
 import com.icure.sdk.js.model.CheckedConverters.arrayToSet
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.setToArray
+import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.model.filter.healthelement.HealthElementByHcPartySecretForeignKeysFilter
 import kotlin.String
 import kotlin.Suppress
@@ -10,8 +12,12 @@ import kotlin.Suppress
 public
 		fun healthElementByHcPartySecretForeignKeysFilter_toJs(obj: HealthElementByHcPartySecretForeignKeysFilter):
 		HealthElementByHcPartySecretForeignKeysFilterJs {
-	val desc = obj.desc ?: undefined
-	val healthcarePartyId = obj.healthcarePartyId ?: undefined
+	val desc = nullToUndefined(
+		obj.desc
+	)
+	val healthcarePartyId = nullToUndefined(
+		obj.healthcarePartyId
+	)
 	val patientSecretForeignKeys = setToArray(
 		obj.patientSecretForeignKeys,
 		{ x1: String ->
@@ -28,8 +34,8 @@ public
 public
 		fun healthElementByHcPartySecretForeignKeysFilter_fromJs(obj: HealthElementByHcPartySecretForeignKeysFilterJs):
 		HealthElementByHcPartySecretForeignKeysFilter {
-	val desc = obj.desc
-	val healthcarePartyId = obj.healthcarePartyId
+	val desc = undefinedToNull(obj.desc)
+	val healthcarePartyId = undefinedToNull(obj.healthcarePartyId)
 	val patientSecretForeignKeys = arrayToSet(
 		obj.patientSecretForeignKeys,
 		"obj.patientSecretForeignKeys",
