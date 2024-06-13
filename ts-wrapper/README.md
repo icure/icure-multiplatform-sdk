@@ -410,6 +410,44 @@ However when using websockets part of the implementation uses the require also o
 ([here](https://github.com/ktorio/ktor/blob/1eeb7c11c93ad1cce550c71df1a189d22c74148f/ktor-utils/jsAndWasmShared/src/io/ktor/util/CryptoJs.kt#L44)
 which means that patching is the only real option.
 
+The patch we apply uses a static import and refer to that import instead of using an inline `require`. We could not use 
+the dynamic import since that returns a promise of the module and would need more effort to be used. This means that the
+modules will be loaded even if we are running on browser, but they will never be used in that case. For this reason it
+may be a good idea to ignore those modules when using tools like webpack, for example by applying the following config:
+
+```javascript
+module.exports = {
+    mode: 'production',
+    resolve: {
+        modules: [
+            "node_modules"
+        ],
+        alias: {
+            // Configuration to ignore modules
+            "crypto": false,
+            "ws": false,
+            "abort-controller": false,
+            "node-fetch": false,
+        }
+    },
+    plugins: [],
+    module: {
+        rules: []
+    },
+    entry: {
+        main: ["./sample.mjs"]
+    },
+    output: {
+        filename: "bundle.js",
+        libraryTarget: "module",
+        globalObject: "this"
+    },
+    experiments: {
+        outputModule: true
+    }
+};
+```
+
 # Usage with expo
 
 The icure-multiplatform sdk (and more specifically ktor) uses some things that are not available on expo, such as the
