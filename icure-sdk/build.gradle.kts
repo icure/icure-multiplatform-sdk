@@ -75,6 +75,11 @@ kotlin {
 				implementation(libs.ktorClientEngineDarwin)
 			}
 		}
+		linuxMain {
+			dependencies {
+				implementation(libs.ktorClientEngineCurl)
+			}
+		}
 	}
 }
 

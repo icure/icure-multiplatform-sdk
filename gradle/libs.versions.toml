@@ -6,7 +6,7 @@ kotlinSerialization = "1.6.1"
 kotlinDateTime = "0.6.0-RC.2"
 kotest = "5.9.0"
 androidLibrary = "8.2.2"
-kryptom = "1.0.4"
+kryptom = "1.0.5"
 kermit = "2.0.3"
 
 [libraries]
@@ -26,8 +26,8 @@ ktorClientEngineDarwin = { group = "io.ktor", name = "ktor-client-darwin", versi
 ktorClientEngineJs = { group = "io.ktor", name = "ktor-client-js", version.ref = "ktor" }
 ktorClientEngineJava = { group = "io.ktor", name = "ktor-client-java", version.ref = "ktor" }
 ktorClientWebsocket = { group = "io.ktor", name = "ktor-client-websockets", version.ref = "ktor" }
-# TODO CIO engine only needed by the current test setup, remove later
 ktorClientEngineCio = { group = "io.ktor", name = "ktor-client-cio", version.ref = "ktor" }
+ktorClientEngineCurl = { group = "io.ktor", name = "ktor-client-curl", version.ref = "ktor" }
 ktorContentNegotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
 ktorSerializationJson = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ktorServerCore = { group = "io.ktor", name = "ktor-server-core", version.ref = "ktor" }

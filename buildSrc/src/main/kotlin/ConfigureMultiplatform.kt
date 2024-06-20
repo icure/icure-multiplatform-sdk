@@ -28,12 +28,34 @@ fun Project.configureKotlinJs(
 	}
 }
 
+fun Project.configureKotlinLinux(
+	kotlinMultiplatformExtension: KotlinMultiplatformExtension
+) = with(kotlinMultiplatformExtension) {
+	val localProperties = getLocalProperties()
+//	val linuxArm64Target = linuxArm64() currently have to disable since we have no good ktor engine implementation
+	val linuxX64Target = linuxX64()
+	listOf(
+//		linuxArm64Target,
+		linuxX64Target
+	).onEach { target ->
+		target.binaries {
+			all {
+				freeCompilerArgs += listOf("-linker-option", "--allow-shlib-undefined")
+				localProperties["cinteropsLibsDir"]?.also {
+					linkerOpts.add(0, "-L$it")
+				}
+			}
+		}
+	}
+}
+
 /**
  * Configures targets and source sets for multiplatform modules.
  */
 fun Project.configureMultiplatform(
 	kotlinMultiplatformExtension: KotlinMultiplatformExtension
 ) = with(kotlinMultiplatformExtension) {
+	val localProperties = getLocalProperties()
 	val frameworkName = project.name.replaceFirstChar { it.uppercase() }
 	val xcf = XCFramework(frameworkName)
 	jvm {
@@ -60,16 +82,12 @@ fun Project.configureMultiplatform(
 			xcf.add(this)
 		}
 	}
-	val localProperties = Properties().apply {
-		kotlin.runCatching {
-			load(rootProject.file("local.properties").reader())
-		}
-	}
 	iosSimulators.forEach { target ->
 		target.testRuns.forEach { testRun ->
 			(localProperties["ios.simulator"] as? String)?.let { testRun.deviceId = it }
 		}
 	}
+	configureKotlinLinux(kotlinMultiplatformExtension)
 
 	applyDefaultHierarchyTemplate()
 
@@ -95,3 +113,10 @@ fun NamedDomainObjectContainer<KotlinSourceSet>.optInIos(vararg optIns: String) 
 		}
 	}
 }
+
+private fun Project.getLocalProperties() =
+	Properties().apply {
+		kotlin.runCatching {
+			load(rootProject.file("local.properties").reader())
+		}
+	}
