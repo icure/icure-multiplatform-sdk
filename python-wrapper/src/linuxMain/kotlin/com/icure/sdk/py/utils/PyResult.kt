@@ -125,9 +125,9 @@ internal fun Result<*>.toPyResultAsyncCallback(
  * kotlin after the callback completes (it should be copied or decoded before the callback returns).
  */
 @OptIn(ExperimentalForeignApi::class)
-internal inline fun <reified T> Result<T>.failureToPyStringAsyncCallback(
+internal inline fun <reified T> Result<T>.failureToPyResultAsyncCallback(
 	callback: CPointer<CFunction<(result: COpaquePointer?, error: CValues<ByteVarOf<Byte>>?) -> Unit>>
-): Unit {
+) {
 	onFailure { e ->
 		callback.invoke(null, e.stringForPy().cstr)
 	}

@@ -2,6 +2,7 @@ package com.icure.sdk.crypto.entities
 
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.utils.InternalIcureApi
+import kotlinx.serialization.Serializable
 
 @InternalIcureApi
 interface SimpleDelegateShareOptions {
@@ -20,6 +21,7 @@ internal data class SimpleDelegateShareOptionsImpl(
 ) : SimpleDelegateShareOptions
 
 @OptIn(InternalIcureApi::class)
+@Serializable
 data class AccessLogShareOptions(
 	override val requestedPermissions: RequestedPermission = RequestedPermission.MaxWrite,
 	override val shareEncryptionKey: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
@@ -31,6 +33,7 @@ data class AccessLogShareOptions(
 }
 
 @OptIn(InternalIcureApi::class)
+@Serializable
 data class CalendarItemShareOptions(
 	override val requestedPermissions: RequestedPermission = RequestedPermission.MaxWrite,
 	override val shareEncryptionKey: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
@@ -42,6 +45,7 @@ data class CalendarItemShareOptions(
 }
 
 @OptIn(InternalIcureApi::class)
+@Serializable
 data class ClassificationShareOptions(
 	override val requestedPermissions: RequestedPermission = RequestedPermission.MaxWrite,
 	override val shareEncryptionKey: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
@@ -53,6 +57,7 @@ data class ClassificationShareOptions(
 }
 
 @OptIn(InternalIcureApi::class)
+@Serializable
 data class ContactShareOptions(
 	override val requestedPermissions: RequestedPermission,
 	override val shareEncryptionKey: ShareMetadataBehaviour,
@@ -64,6 +69,7 @@ data class ContactShareOptions(
 }
 
 @OptIn(InternalIcureApi::class)
+@Serializable
 data class DocumentShareOptions(
 	override val requestedPermissions: RequestedPermission,
 	override val shareEncryptionKey: ShareMetadataBehaviour,
@@ -75,6 +81,7 @@ data class DocumentShareOptions(
 }
 
 @OptIn(InternalIcureApi::class)
+@Serializable
 data class FormShareOptions(
 	override val requestedPermissions: RequestedPermission,
 	override val shareEncryptionKey: ShareMetadataBehaviour,
@@ -86,6 +93,7 @@ data class FormShareOptions(
 }
 
 @OptIn(InternalIcureApi::class)
+@Serializable
 data class HealthElementShareOptions(
 	override val requestedPermissions: RequestedPermission,
 	override val shareEncryptionKey: ShareMetadataBehaviour,
@@ -97,6 +105,7 @@ data class HealthElementShareOptions(
 }
 
 @OptIn(InternalIcureApi::class)
+@Serializable
 data class InvoiceShareOptions(
 	override val requestedPermissions: RequestedPermission,
 	override val shareEncryptionKey: ShareMetadataBehaviour,
@@ -108,6 +117,7 @@ data class InvoiceShareOptions(
 }
 
 @OptIn(InternalIcureApi::class)
+@Serializable
 data class MaintenanceTaskShareOptions(
 	override val requestedPermissions: RequestedPermission,
 	override val shareEncryptionKey: ShareMetadataBehaviour,
@@ -118,6 +128,7 @@ data class MaintenanceTaskShareOptions(
 }
 
 @OptIn(InternalIcureApi::class)
+@Serializable
 data class MessageShareOptions(
 	override val requestedPermissions: RequestedPermission,
 	override val shareEncryptionKey: ShareMetadataBehaviour,
@@ -129,6 +140,7 @@ data class MessageShareOptions(
 }
 
 @OptIn(InternalIcureApi::class)
+@Serializable
 data class PatientShareOptions(
 	override val requestedPermissions: RequestedPermission,
 	override val shareEncryptionKey: ShareMetadataBehaviour,
@@ -139,6 +151,7 @@ data class PatientShareOptions(
 }
 
 @OptIn(InternalIcureApi::class)
+@Serializable
 data class ReceiptShareOptions(
 	override val requestedPermissions: RequestedPermission,
 	override val shareEncryptionKey: ShareMetadataBehaviour,
@@ -149,6 +162,7 @@ data class ReceiptShareOptions(
 }
 
 @OptIn(InternalIcureApi::class)
+@Serializable
 data class TimeTableShareOptions(
 	override val requestedPermissions: RequestedPermission,
 	override val shareEncryptionKey: ShareMetadataBehaviour,
@@ -159,6 +173,7 @@ data class TimeTableShareOptions(
 }
 
 @OptIn(InternalIcureApi::class)
+@Serializable
 data class TopicShareOptions(
 	override val requestedPermissions: RequestedPermission,
 	override val shareEncryptionKey: ShareMetadataBehaviour,

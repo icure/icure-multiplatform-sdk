@@ -3,11 +3,13 @@ package com.icure.sdk.model.sdk
 import com.icure.sdk.model.DecryptedMaintenanceTask
 import com.icure.sdk.model.extensions.tryFindStringProperty
 import com.icure.sdk.model.specializations.SpkiHexString
+import kotlinx.serialization.Serializable
 
 /**
  * Notification that a new key was created by a data owner (usually due to a loss of a previous key) and that the data
  * owner is requesting to be given access to existing aes exchange keys and exchange data with the provided key.
  */
+@Serializable
 data class KeyPairUpdateNotification(
 	/**
 	 * New public key of the data owner, in hex-encoded spki format.
