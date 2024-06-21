@@ -19,8 +19,8 @@ interface CryptoApi {
 	suspend fun forceReload()
 }
 
-@OptIn(InternalIcureApi::class)
-class CryptoApiImpl(
+@InternalIcureApi
+internal class CryptoApiImpl(
 	override val shamirKeysManager: ShamirKeysManagerApi,
 	internal val internal: InternalCryptoServices
 ) : CryptoApi {
