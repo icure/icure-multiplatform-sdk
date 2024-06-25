@@ -11,6 +11,7 @@ import kotlinx.cinterop.StableRef
 import kotlinx.cinterop.cstr
 import kotlinx.cinterop.invoke
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 
@@ -24,12 +25,12 @@ private fun Throwable.stringForPy() =
  *
  * The caller of the method will be in charge of disposing the string.
  */
-internal fun <T> Result<T>.toPyString(
+internal fun <T : Any> Result<T?>.toPyString(
 	serializer: KSerializer<T>,
 ) =
 	fold(
 		onSuccess = { res ->
-			JsonObject(mapOf("success" to Serialization.json.encodeToJsonElement(serializer, res)))
+			JsonObject(mapOf("success" to (res?.let { Serialization.json.encodeToJsonElement(serializer, it) } ?: JsonNull)))
 		},
 		onFailure = { e ->
 			JsonObject(mapOf("failure" to JsonPrimitive(e.stringForPy())))
@@ -44,13 +45,16 @@ internal fun <T> Result<T>.toPyString(
  * kotlin after the callback completes (they should be copied or decoded before the callback returns).
  */
 @OptIn(ExperimentalForeignApi::class)
-internal fun <T> Result<T>.toPyStringAsyncCallback(
+internal fun <T : Any> Result<T?>.toPyStringAsyncCallback(
 	serializer: KSerializer<T>,
 	callback: CPointer<CFunction<(result: CValues<ByteVarOf<Byte>>?, error: CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ) =
 	fold(
 		onSuccess = { res ->
-			callback.invoke(Serialization.json.encodeToString(serializer, res).cstr, null)
+			callback.invoke(
+				res?.let { Serialization.json.encodeToString(serializer, it).cstr } ?: "null".cstr,
+				null
+			)
 		},
 		onFailure = { e ->
 			callback.invoke(null, e.stringForPy().cstr)
