@@ -1,10 +1,9 @@
 // auto-generated file
 import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs';
 import {ShareMetadataBehaviour} from './ShareMetadataBehaviour.mjs';
-import {SimpleDelegateShareOptions} from './SimpleDelegateShareOptions.mjs';
 
 
-export class FormShareOptions implements SimpleDelegateShareOptions {
+export class FormShareOptions {
 
   requestedPermissions: RequestedPermission;
 
@@ -12,16 +11,10 @@ export class FormShareOptions implements SimpleDelegateShareOptions {
 
   sharePatientId: ShareMetadataBehaviour;
 
-  shareOwningEntityIds: ShareMetadataBehaviour;
-
-  shareSecretIds: never | undefined;
-
-  constructor(partial: Partial<FormShareOptions> & Pick<FormShareOptions, "requestedPermissions" | "shareEncryptionKey" | "sharePatientId" | "shareOwningEntityIds" | "shareSecretIds">) {
+  constructor(partial: Partial<FormShareOptions> & Pick<FormShareOptions, "requestedPermissions" | "shareEncryptionKey" | "sharePatientId">) {
     this.requestedPermissions = partial.requestedPermissions;
     this.shareEncryptionKey = partial.shareEncryptionKey;
     this.sharePatientId = partial.sharePatientId;
-    this.shareOwningEntityIds = partial.shareOwningEntityIds;
-    this.shareSecretIds = partial.shareSecretIds;
   }
 
 }

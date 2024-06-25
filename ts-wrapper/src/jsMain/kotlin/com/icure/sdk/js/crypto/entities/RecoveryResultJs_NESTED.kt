@@ -3,7 +3,7 @@
 
 package com.icure.sdk.js.crypto.entities
 
-import kotlin.Boolean
+import kotlin.Deprecated
 import kotlin.Nothing
 import kotlin.String
 import kotlin.js.JsName
@@ -15,9 +15,17 @@ public external class RecoveryResultJs_SuccessJs<T>(
 ) : RecoveryResultJs<T> {
 	public val `data`: T
 
-	override val isSuccess: Boolean
+	@Deprecated(
+		level = DeprecationLevel.ERROR,
+		message = "This virtual member does not actually exist on the js entity",
+	)
+	override val isSuccess: Nothing
 
-	override val `value`: T
+	@Deprecated(
+		level = DeprecationLevel.ERROR,
+		message = "This virtual member does not actually exist on the js entity",
+	)
+	override val `value`: Nothing
 
 	override val ktClass: String
 }
@@ -28,8 +36,16 @@ public external class RecoveryResultJs_FailureJs(
 ) : RecoveryResultJs<Nothing> {
 	public val reason: String
 
-	override val isSuccess: Boolean
+	@Deprecated(
+		level = DeprecationLevel.ERROR,
+		message = "This virtual member does not actually exist on the js entity",
+	)
+	override val isSuccess: Nothing
 
+	@Deprecated(
+		level = DeprecationLevel.ERROR,
+		message = "This virtual member does not actually exist on the js entity",
+	)
 	override val `value`: Nothing
 
 	override val ktClass: String
