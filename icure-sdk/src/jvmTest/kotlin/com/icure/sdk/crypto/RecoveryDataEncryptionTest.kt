@@ -20,6 +20,7 @@ import com.icure.sdk.model.specializations.SpkiHexString
 import com.icure.sdk.test.createHcpUser
 import com.icure.sdk.test.createPatientUser
 import com.icure.sdk.test.initialiseTestEnvironment
+import com.icure.sdk.test.internal
 import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.base64Encode

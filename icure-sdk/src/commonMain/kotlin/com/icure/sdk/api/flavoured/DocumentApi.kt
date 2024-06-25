@@ -235,7 +235,7 @@ private abstract class AbstractDocumentBasicFlavouredApi<E : Document>(protected
 		documentTypeCode: String?,
 		secretMessageKeys: List<String>,
 	) =
-		rawApi.listDocumentsByHcPartyMessageForeignKeys(hcPartyId, documentTypeCode, secretMessageKeys).successBody()
+		rawApi.listDocumentsByHcPartyMessageForeignKeys(hcPartyId, documentTypeCode, ListOfIds(secretMessageKeys)).successBody()
 			.map { maybeDecrypt(it) }
 
 	override suspend fun findWithoutDelegation(

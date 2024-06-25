@@ -5,11 +5,14 @@ import com.icure.sdk.model.base.HasEncryptionMetadata
 import com.icure.sdk.model.base.ICureDocument
 import com.icure.sdk.model.base.Identifier
 import com.icure.sdk.model.base.StoredDocument
+import com.icure.sdk.model.embed.Address
 import com.icure.sdk.model.embed.Annotation
+import com.icure.sdk.model.embed.DecryptedAddress
 import com.icure.sdk.model.embed.DecryptedService
 import com.icure.sdk.model.embed.DecryptedSubContact
 import com.icure.sdk.model.embed.Delegation
 import com.icure.sdk.model.embed.Encryptable
+import com.icure.sdk.model.embed.EncryptedAddress
 import com.icure.sdk.model.embed.EncryptedService
 import com.icure.sdk.model.embed.EncryptedSubContact
 import com.icure.sdk.model.embed.SecurityMetadata
@@ -69,6 +72,8 @@ sealed interface Contact :
 
 	public val encounterType: CodeStub?
 
+	public val encounterLocation: Address?
+
 	public val subContacts: Set<SubContact>
 
 	public val services: Set<Service>
@@ -121,6 +126,7 @@ data class DecryptedContact(
 	override val location: String? = null,
 	override val externalId: String? = null,
 	override val encounterType: CodeStub? = null,
+	override val encounterLocation: DecryptedAddress? = null,
 	@DefaultValue("emptySet()")
 	override val subContacts: Set<DecryptedSubContact> = emptySet(),
 	@DefaultValue("emptySet()")
@@ -170,6 +176,7 @@ data class EncryptedContact(
 	override val location: String? = null,
 	override val externalId: String? = null,
 	override val encounterType: CodeStub? = null,
+	override val encounterLocation: EncryptedAddress? = null,
 	@DefaultValue("emptySet()")
 	override val subContacts: Set<EncryptedSubContact> = emptySet(),
 	@DefaultValue("emptySet()")

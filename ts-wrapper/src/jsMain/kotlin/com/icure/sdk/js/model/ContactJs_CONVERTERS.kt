@@ -22,6 +22,8 @@ import com.icure.sdk.js.model.embed.DecryptedSubContactJs
 import com.icure.sdk.js.model.embed.DelegationJs
 import com.icure.sdk.js.model.embed.EncryptedServiceJs
 import com.icure.sdk.js.model.embed.EncryptedSubContactJs
+import com.icure.sdk.js.model.embed.address_fromJs
+import com.icure.sdk.js.model.embed.address_toJs
 import com.icure.sdk.js.model.embed.annotation_fromJs
 import com.icure.sdk.js.model.embed.annotation_toJs
 import com.icure.sdk.js.model.embed.delegation_fromJs
@@ -116,6 +118,11 @@ public fun contact_toJs(obj: DecryptedContact): DecryptedContactJs {
 	val encounterType = nullToUndefined(
 		obj.encounterType?.let { nonNull1 ->
 			codeStub_toJs(nonNull1)
+		}
+	)
+	val encounterLocation = nullToUndefined(
+		obj.encounterLocation?.let { nonNull1 ->
+			address_toJs(nonNull1)
 		}
 	)
 	val subContacts = setToArray(
@@ -220,6 +227,7 @@ public fun contact_toJs(obj: DecryptedContact): DecryptedContactJs {
 		"location:location," +
 		"externalId:externalId," +
 		"encounterType:encounterType," +
+		"encounterLocation:encounterLocation," +
 		"subContacts:subContacts," +
 		"services:services," +
 		"healthcarePartyId:healthcarePartyId," +
@@ -273,6 +281,9 @@ public fun contact_fromJs(obj: DecryptedContactJs): DecryptedContact {
 	val externalId = undefinedToNull(obj.externalId)
 	val encounterType = obj.encounterType?.let { nonNull1 ->
 		codeStub_fromJs(nonNull1)
+	}
+	val encounterLocation = obj.encounterLocation?.let { nonNull1 ->
+		address_fromJs(nonNull1)
 	}
 	val subContacts = arrayToSet(
 		obj.subContacts,
@@ -378,6 +389,7 @@ public fun contact_fromJs(obj: DecryptedContactJs): DecryptedContact {
 		location = location,
 		externalId = externalId,
 		encounterType = encounterType,
+		encounterLocation = encounterLocation,
 		subContacts = subContacts,
 		services = services,
 		healthcarePartyId = healthcarePartyId,
@@ -458,6 +470,11 @@ public fun contact_toJs(obj: EncryptedContact): EncryptedContactJs {
 	val encounterType = nullToUndefined(
 		obj.encounterType?.let { nonNull1 ->
 			codeStub_toJs(nonNull1)
+		}
+	)
+	val encounterLocation = nullToUndefined(
+		obj.encounterLocation?.let { nonNull1 ->
+			address_toJs(nonNull1)
 		}
 	)
 	val subContacts = setToArray(
@@ -562,6 +579,7 @@ public fun contact_toJs(obj: EncryptedContact): EncryptedContactJs {
 		"location:location," +
 		"externalId:externalId," +
 		"encounterType:encounterType," +
+		"encounterLocation:encounterLocation," +
 		"subContacts:subContacts," +
 		"services:services," +
 		"healthcarePartyId:healthcarePartyId," +
@@ -615,6 +633,9 @@ public fun contact_fromJs(obj: EncryptedContactJs): EncryptedContact {
 	val externalId = undefinedToNull(obj.externalId)
 	val encounterType = obj.encounterType?.let { nonNull1 ->
 		codeStub_fromJs(nonNull1)
+	}
+	val encounterLocation = obj.encounterLocation?.let { nonNull1 ->
+		address_fromJs(nonNull1)
 	}
 	val subContacts = arrayToSet(
 		obj.subContacts,
@@ -720,6 +741,7 @@ public fun contact_fromJs(obj: EncryptedContactJs): EncryptedContact {
 		location = location,
 		externalId = externalId,
 		encounterType = encounterType,
+		encounterLocation = encounterLocation,
 		subContacts = subContacts,
 		services = services,
 		healthcarePartyId = healthcarePartyId,

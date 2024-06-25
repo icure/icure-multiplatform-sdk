@@ -71,12 +71,12 @@ export namespace ShareAllPatientDataOptions {
 
   export class FailedRequest {
 
-    exception: Error;
+    description: string;
 
     readonly $ktClass: 'com.icure.sdk.crypto.entities.ShareAllPatientDataOptions.FailedRequest' = 'com.icure.sdk.crypto.entities.ShareAllPatientDataOptions.FailedRequest';
 
-    constructor(partial: Partial<FailedRequest> & Pick<FailedRequest, "exception">) {
-      this.exception = partial.exception;
+    constructor(partial: Partial<FailedRequest> & Pick<FailedRequest, "description">) {
+      this.description = partial.description;
     }
 
   }
