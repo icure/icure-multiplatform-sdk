@@ -5,6 +5,7 @@ import {HasEncryptionMetadata} from './base/HasEncryptionMetadata.mjs';
 import {ICureDocument} from './base/ICureDocument.mjs';
 import {Identifier} from './base/Identifier.mjs';
 import {StoredDocument} from './base/StoredDocument.mjs';
+import {Address, DecryptedAddress, EncryptedAddress} from './embed/Address.mjs';
 import {Annotation} from './embed/Annotation.mjs';
 import {Delegation} from './embed/Delegation.mjs';
 import {Encryptable} from './embed/Encryptable.mjs';
@@ -31,6 +32,8 @@ export interface Contact extends StoredDocument, ICureDocument<string>, HasEncry
   externalId: string | undefined;
 
   encounterType: CodeStub | undefined;
+
+  encounterLocation: Address | undefined;
 
   subContacts: Array<SubContact>;
 
@@ -86,6 +89,8 @@ export class DecryptedContact {
 
   encounterType: CodeStub | undefined = undefined;
 
+  encounterLocation: DecryptedAddress | undefined = undefined;
+
   subContacts: Array<DecryptedSubContact> = [];
 
   services: Array<DecryptedService> = [];
@@ -131,6 +136,7 @@ export class DecryptedContact {
     if ('location' in partial) this.location = partial.location;
     if ('externalId' in partial) this.externalId = partial.externalId;
     if ('encounterType' in partial) this.encounterType = partial.encounterType;
+    if ('encounterLocation' in partial) this.encounterLocation = partial.encounterLocation;
     if ('subContacts' in partial && partial.subContacts !== undefined) this.subContacts = partial.subContacts;
     if ('services' in partial && partial.services !== undefined) this.services = partial.services;
     if ('healthcarePartyId' in partial) this.healthcarePartyId = partial.healthcarePartyId;
@@ -186,6 +192,8 @@ export class EncryptedContact {
 
   encounterType: CodeStub | undefined = undefined;
 
+  encounterLocation: EncryptedAddress | undefined = undefined;
+
   subContacts: Array<EncryptedSubContact> = [];
 
   services: Array<EncryptedService> = [];
@@ -231,6 +239,7 @@ export class EncryptedContact {
     if ('location' in partial) this.location = partial.location;
     if ('externalId' in partial) this.externalId = partial.externalId;
     if ('encounterType' in partial) this.encounterType = partial.encounterType;
+    if ('encounterLocation' in partial) this.encounterLocation = partial.encounterLocation;
     if ('subContacts' in partial && partial.subContacts !== undefined) this.subContacts = partial.subContacts;
     if ('services' in partial && partial.services !== undefined) this.services = partial.services;
     if ('healthcarePartyId' in partial) this.healthcarePartyId = partial.healthcarePartyId;

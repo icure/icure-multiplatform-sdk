@@ -9,7 +9,6 @@ import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
 import kotlin.String
-import kotlin.Throwable
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
 
@@ -54,7 +53,7 @@ public external class ShareAllPatientDataOptionsJs_BulkShareFailureJs(
 public external class ShareAllPatientDataOptionsJs_FailedRequestJs(
 	partial: dynamic,
 ) : ShareAllPatientDataOptionsJs_SharePatientDataErrorJs {
-	public val exception: Throwable
+	public val description: String
 
 	override val ktClass: String
 }

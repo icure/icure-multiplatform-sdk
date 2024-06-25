@@ -8,11 +8,14 @@ import com.icure.sdk.js.model.base.HasEncryptionMetadataJs
 import com.icure.sdk.js.model.base.ICureDocumentJs
 import com.icure.sdk.js.model.base.IdentifierJs
 import com.icure.sdk.js.model.base.StoredDocumentJs
+import com.icure.sdk.js.model.embed.AddressJs
 import com.icure.sdk.js.model.embed.AnnotationJs
+import com.icure.sdk.js.model.embed.DecryptedAddressJs
 import com.icure.sdk.js.model.embed.DecryptedServiceJs
 import com.icure.sdk.js.model.embed.DecryptedSubContactJs
 import com.icure.sdk.js.model.embed.DelegationJs
 import com.icure.sdk.js.model.embed.EncryptableJs
+import com.icure.sdk.js.model.embed.EncryptedAddressJs
 import com.icure.sdk.js.model.embed.EncryptedServiceJs
 import com.icure.sdk.js.model.embed.EncryptedSubContactJs
 import com.icure.sdk.js.model.embed.SecurityMetadataJs
@@ -44,6 +47,8 @@ public sealed external interface ContactJs : StoredDocumentJs, ICureDocumentJs<S
 	public val externalId: String?
 
 	public val encounterType: CodeStubJs?
+
+	public val encounterLocation: AddressJs?
 
 	public val subContacts: Array<out SubContactJs>
 
@@ -99,6 +104,8 @@ public external class DecryptedContactJs(
 	override val externalId: String?
 
 	override val encounterType: CodeStubJs?
+
+	override val encounterLocation: DecryptedAddressJs?
 
 	override val subContacts: Array<DecryptedSubContactJs>
 
@@ -166,6 +173,8 @@ public external class EncryptedContactJs(
 	override val externalId: String?
 
 	override val encounterType: CodeStubJs?
+
+	override val encounterLocation: EncryptedAddressJs?
 
 	override val subContacts: Array<EncryptedSubContactJs>
 

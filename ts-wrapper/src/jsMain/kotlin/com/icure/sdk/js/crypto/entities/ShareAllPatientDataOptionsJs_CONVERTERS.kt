@@ -148,17 +148,17 @@ public
 public
 		fun shareAllPatientDataOptions_FailedRequest_toJs(obj: ShareAllPatientDataOptions.FailedRequest):
 		ShareAllPatientDataOptionsJs_FailedRequestJs {
-	val exception = obj.exception
+	val description = obj.description
 	return ShareAllPatientDataOptionsJs_FailedRequestJs(js("{" +
-		"exception:exception" +
+		"description:description" +
 	"}"))
 }
 
 public
 		fun shareAllPatientDataOptions_FailedRequest_fromJs(obj: ShareAllPatientDataOptionsJs_FailedRequestJs):
 		ShareAllPatientDataOptions.FailedRequest {
-	val exception = obj.exception
+	val description = obj.description
 	return ShareAllPatientDataOptions.FailedRequest(
-		exception = exception,
+		description = description,
 	)
 }

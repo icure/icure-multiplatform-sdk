@@ -38,5 +38,5 @@ object ShareAllPatientDataOptions {
 
 	class BulkShareFailure(val errors: List<FailedRequestDetails>, val message: String) : SharePatientDataError
 
-	class FailedRequest(val exception: Throwable) : SharePatientDataError
+	class FailedRequest(val description: String) : SharePatientDataError
 }
