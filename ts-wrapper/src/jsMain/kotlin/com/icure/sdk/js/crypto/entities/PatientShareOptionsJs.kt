@@ -11,12 +11,10 @@ import kotlin.js.JsQualifier
 @JsName("PatientShareOptions")
 public external class PatientShareOptionsJs(
 	partial: dynamic,
-) : SimpleDelegateShareOptionsJs {
-	override val requestedPermissions: String
+) {
+	public val requestedPermissions: String
 
-	override val shareEncryptionKey: String
+	public val shareEncryptionKey: String
 
-	override val shareSecretIds: Array<String>
-
-	override val shareOwningEntityIds: String
+	public val shareSecretIds: Array<String>
 }

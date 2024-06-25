@@ -5,7 +5,7 @@ package com.icure.sdk.js.crypto.entities
 
 import com.icure.sdk.js.model.base.HasEncryptionMetadataJs
 import kotlin.Array
-import kotlin.Boolean
+import kotlin.Deprecated
 import kotlin.Nothing
 import kotlin.String
 import kotlin.js.JsName
@@ -17,7 +17,11 @@ public external class SimpleShareResultJs_SuccessJs<T : HasEncryptionMetadataJs>
 ) : SimpleShareResultJs<T> {
 	public val updatedEntity: T
 
-	override val isSuccess: Boolean
+	@Deprecated(
+		level = DeprecationLevel.ERROR,
+		message = "This virtual member does not actually exist on the js entity",
+	)
+	override val isSuccess: Nothing
 
 	override val ktClass: String
 }
@@ -28,7 +32,11 @@ public external class SimpleShareResultJs_FailureJs(
 ) : SimpleShareResultJs<Nothing> {
 	public val errorsDetails: Array<FailedRequestDetailsJs>
 
-	override val isSuccess: Boolean
+	@Deprecated(
+		level = DeprecationLevel.ERROR,
+		message = "This virtual member does not actually exist on the js entity",
+	)
+	override val isSuccess: Nothing
 
 	override val ktClass: String
 }
