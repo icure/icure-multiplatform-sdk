@@ -1,4 +1,4 @@
-package com.icure.sdk.py.utils
+package com.icure.sdk.py.serialization
 
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataStub
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
@@ -24,7 +24,7 @@ import kotlinx.serialization.json.jsonObject
  * A deserializer that always deserializes an EntityWithTypeInfo<*> always using stubs for the entity.
  */
 @OptIn(InternalIcureApi::class)
-object EntityWithTypeInfoAsStubDeserializer : KSerializer<EntityWithTypeInfo<*>> {
+internal object EntityWithTypeInfoAsStubDeserializer : KSerializer<EntityWithTypeInfo<*>> {
 	override val descriptor: SerialDescriptor = buildClassSerialDescriptor("EntityWithTypeInfo") {
 		element("entity", EntityWithEncryptionMetadataStubSerializer.descriptor)
 		element<EntityWithEncryptionMetadataTypeName>("type")

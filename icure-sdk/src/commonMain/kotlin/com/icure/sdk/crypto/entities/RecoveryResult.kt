@@ -1,5 +1,7 @@
 package com.icure.sdk.crypto.entities
 
+import kotlinx.serialization.Serializable
+
 
 sealed interface RecoveryResult<out T> {
 	val isSuccess: Boolean
@@ -21,6 +23,7 @@ inline fun <T, R> RecoveryResult<T>.map(transform: (T) -> R): RecoveryResult<R> 
 	is RecoveryResult.Failure -> this
 }
 
+@Serializable
 enum class RecoveryDataUseFailureReason {
 	/**
 	 * The recovery data matching the provided recovery key does not exist. It could have been deleted, or it could have been expired.

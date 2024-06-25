@@ -10,10 +10,9 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.StableRef
 import kotlinx.cinterop.cstr
 import kotlinx.cinterop.invoke
-import kotlinx.serialization.encodeToString
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
-import kotlinx.serialization.json.encodeToJsonElement
 
 
 private fun Throwable.stringForPy() =
@@ -25,10 +24,12 @@ private fun Throwable.stringForPy() =
  *
  * The caller of the method will be in charge of disposing the string.
  */
-internal inline fun <reified T> Result<T>.toPyString() =
+internal fun <T> Result<T>.toPyString(
+	serializer: KSerializer<T>,
+) =
 	fold(
 		onSuccess = { res ->
-			JsonObject(mapOf("success" to Serialization.json.encodeToJsonElement(res)))
+			JsonObject(mapOf("success" to Serialization.json.encodeToJsonElement(serializer, res)))
 		},
 		onFailure = { e ->
 			JsonObject(mapOf("failure" to JsonPrimitive(e.stringForPy())))
@@ -43,12 +44,13 @@ internal inline fun <reified T> Result<T>.toPyString() =
  * kotlin after the callback completes (they should be copied or decoded before the callback returns).
  */
 @OptIn(ExperimentalForeignApi::class)
-internal inline fun <reified T> Result<T>.toPyStringAsyncCallback(
-	callback: CPointer<CFunction<(result: CValues<ByteVarOf<Byte>>?, error: CValues<ByteVarOf<Byte>>?) -> Unit>>
+internal fun <T> Result<T>.toPyStringAsyncCallback(
+	serializer: KSerializer<T>,
+	callback: CPointer<CFunction<(result: CValues<ByteVarOf<Byte>>?, error: CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ) =
 	fold(
 		onSuccess = { res ->
-			callback.invoke(Serialization.json.encodeToString(res).cstr, null)
+			callback.invoke(Serialization.json.encodeToString(serializer, res).cstr, null)
 		},
 		onFailure = { e ->
 			callback.invoke(null, e.stringForPy().cstr)
@@ -62,9 +64,9 @@ internal inline fun <reified T> Result<T>.toPyStringAsyncCallback(
  * kotlin after the callback completes (it should be copied or decoded before the callback returns).
  */
 @OptIn(ExperimentalForeignApi::class)
-internal inline fun <reified T> Result<T>.failureToPyStringAsyncCallback(
-	callback: CPointer<CFunction<(result: CValues<ByteVarOf<Byte>>?, error: CValues<ByteVarOf<Byte>>?) -> Unit>>
-): Unit {
+internal fun <T> Result<T>.failureToPyStringAsyncCallback(
+	callback: CPointer<CFunction<(result: CValues<ByteVarOf<Byte>>?, error: CValues<ByteVarOf<Byte>>?) -> Unit>>,
+) {
 	onFailure { e ->
 		callback.invoke(null, e.stringForPy().cstr)
 	}
@@ -107,7 +109,7 @@ internal fun Result<*>.toPyResult() =
  */
 @OptIn(ExperimentalForeignApi::class)
 internal fun Result<*>.toPyResultAsyncCallback(
-	callback: CPointer<CFunction<(result: COpaquePointer?, error: CValues<ByteVarOf<Byte>>?) -> Unit>>
+	callback: CPointer<CFunction<(result: COpaquePointer?, error: CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ) =
 	fold(
 		onSuccess = { res ->
@@ -126,7 +128,7 @@ internal fun Result<*>.toPyResultAsyncCallback(
  */
 @OptIn(ExperimentalForeignApi::class)
 internal inline fun <reified T> Result<T>.failureToPyResultAsyncCallback(
-	callback: CPointer<CFunction<(result: COpaquePointer?, error: CValues<ByteVarOf<Byte>>?) -> Unit>>
+	callback: CPointer<CFunction<(result: COpaquePointer?, error: CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ) {
 	onFailure { e ->
 		callback.invoke(null, e.stringForPy().cstr)

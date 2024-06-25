@@ -1,10 +1,12 @@
 package com.icure.sdk.crypto.entities
 
 import com.icure.sdk.model.embed.AccessLevel
+import kotlinx.serialization.Serializable
 
 /**
  * Details on data owners with access to an entity
  */
+@Serializable
 data class EntityAccessInformation(
 	/**
 	 * The data owners with access to the entity, and how

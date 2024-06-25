@@ -788,7 +788,9 @@ internal class PatientApiImpl(
 							modified = result.successfulUpdates.map { it.entityId }.toSet().size
 						)
 					} catch (e: Exception) {
-						ShareAllPatientDataOptions.EntityResult(success = false, error = FailedRequest(e)
+						ShareAllPatientDataOptions.EntityResult(
+							success = false,
+							error = FailedRequest("${e::class.simpleName}: ${e.message}")
 						)
 					}
 				} else {
@@ -882,7 +884,10 @@ internal class PatientApiImpl(
 				modified = result.successfulUpdates.map { it.entityId }.toSet().size
 			)
 		} catch (e: Exception) {
-			ShareAllPatientDataOptions.EntityResult(success = false, error = FailedRequest(e))
+			ShareAllPatientDataOptions.EntityResult(
+				success = false,
+				error = FailedRequest("${e::class.simpleName}: ${e.message}")
+			)
 		}
 
 		return ShareAllPatientDataOptions.Result(
