@@ -923,8 +923,8 @@ class HealthcareElementApi:
 
 	class HealthcareElementFlavouredEncryptedApi:
 
-		def __init__(self):
-
+		def __init__(self, icure_sdk):
+			self.icure_sdk = icure_sdk
 
 		async def share_with_async(self, delegate_id: str, healthcare_element: EncryptedHealthElement, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
 			loop = asyncio.get_running_loop()
@@ -1370,8 +1370,8 @@ class HealthcareElementApi:
 
 	class HealthcareElementFlavouredApi:
 
-		def __init__(self):
-
+		def __init__(self, icure_sdk):
+			self.icure_sdk = icure_sdk
 
 		async def share_with_async(self, delegate_id: str, healthcare_element: HealthElement, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
 			loop = asyncio.get_running_loop()

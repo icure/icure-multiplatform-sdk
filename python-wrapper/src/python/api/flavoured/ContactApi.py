@@ -1533,8 +1533,8 @@ class ContactApi:
 
 	class ContactFlavouredEncryptedApi:
 
-		def __init__(self):
-
+		def __init__(self, icure_sdk):
+			self.icure_sdk = icure_sdk
 
 		async def share_with_async(self, delegate_id: str, contact: EncryptedContact, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
 			loop = asyncio.get_running_loop()
@@ -2506,8 +2506,8 @@ class ContactApi:
 
 	class ContactFlavouredApi:
 
-		def __init__(self):
-
+		def __init__(self, icure_sdk):
+			self.icure_sdk = icure_sdk
 
 		async def share_with_async(self, delegate_id: str, contact: Contact, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
 			loop = asyncio.get_running_loop()

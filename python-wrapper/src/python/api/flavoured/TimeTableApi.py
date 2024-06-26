@@ -649,8 +649,8 @@ class TimeTableApi:
 
 	class TimeTableFlavouredEncryptedApi:
 
-		def __init__(self):
-
+		def __init__(self, icure_sdk):
+			self.icure_sdk = icure_sdk
 
 		async def share_with_async(self, delegate_id: str, time_table: EncryptedTimeTable, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
 			loop = asyncio.get_running_loop()
@@ -950,8 +950,8 @@ class TimeTableApi:
 
 	class TimeTableFlavouredApi:
 
-		def __init__(self):
-
+		def __init__(self, icure_sdk):
+			self.icure_sdk = icure_sdk
 
 		async def share_with_async(self, delegate_id: str, time_table: TimeTable, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
 			loop = asyncio.get_running_loop()

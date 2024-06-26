@@ -613,8 +613,8 @@ class MaintenanceTaskApi:
 
 	class MaintenanceTaskFlavouredEncryptedApi:
 
-		def __init__(self):
-
+		def __init__(self, icure_sdk):
+			self.icure_sdk = icure_sdk
 
 		async def share_with_async(self, delegate_id: str, maintenance_task: EncryptedMaintenanceTask, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
 			loop = asyncio.get_running_loop()
@@ -882,8 +882,8 @@ class MaintenanceTaskApi:
 
 	class MaintenanceTaskFlavouredApi:
 
-		def __init__(self):
-
+		def __init__(self, icure_sdk):
+			self.icure_sdk = icure_sdk
 
 		async def share_with_async(self, delegate_id: str, maintenance_task: MaintenanceTask, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
 			loop = asyncio.get_running_loop()
