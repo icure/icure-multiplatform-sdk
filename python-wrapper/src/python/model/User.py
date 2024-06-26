@@ -8,7 +8,6 @@ from model.enums.UsersType import UsersType
 from model.enums.UsersStatus import UsersStatus
 from model.embed.DelegationTag import DelegationTag
 from model.security.AuthenticationToken import AuthenticationToken
-from model.SystemMetadata import SystemMetadata
 
 @dataclass
 class User:

@@ -1,5 +1,4 @@
 import json
-from model.embed.Source import Source
 from typing import List, Union, Dict
 from dataclasses import field, dataclass
 

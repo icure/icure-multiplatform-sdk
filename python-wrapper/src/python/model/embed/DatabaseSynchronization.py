@@ -1,6 +1,5 @@
 import json
 from typing import Optional, Union, Dict
-from model.embed.Target import Target
 from dataclasses import dataclass
 
 @dataclass
