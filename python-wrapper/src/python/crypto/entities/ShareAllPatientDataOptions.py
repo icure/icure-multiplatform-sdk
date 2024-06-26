@@ -2,7 +2,7 @@ import json
 from typing import Union, Dict, Optional, List
 from enum import Enum
 from dataclasses import dataclass
-from model.Patient import Patient
+from model.Patient import Patient, serialize_patient, deserialize_patient
 from crypto.entities.FailedRequestDetails import FailedRequestDetails
 
 class Tag(Enum):

@@ -1,7 +1,7 @@
 import json
-from model.filter.AbstractFilter import AbstractFilter
+from model.filter.AbstractFilter import AbstractFilter, serialize_abstract_filter, deserialize_abstract_filter
 from typing import Optional, Union, Dict
-from model.filter.predicate.Predicate import Predicate
+from model.filter.predicate.Predicate import Predicate, serialize_predicate, deserialize_predicate
 from dataclasses import dataclass
 
 @dataclass

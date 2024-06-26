@@ -1,14 +1,14 @@
 import asyncio
 import json
 from model.CallResult import CallResult, create_result_from_json
-from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from model.HealthcareParty import HealthcareParty
+from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from ctypes import cast, c_char_p
 from model.couchdb.DocIdentifier import DocIdentifier
 from typing import Optional, List
 from model.PaginatedList import PaginatedList
 from model.PublicKey import PublicKey
-from model.filter.AbstractFilter import AbstractFilter
+from model.filter.AbstractFilter import AbstractFilter, serialize_abstract_filter
 from model.filter.chain.FilterChain import FilterChain
 from model.DataOwnerRegistrationSuccess import DataOwnerRegistrationSuccess
 

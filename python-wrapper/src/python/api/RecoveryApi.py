@@ -2,10 +2,10 @@ import asyncio
 import json
 from typing import Optional
 from model.CallResult import CallResult, create_result_from_json
-from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from crypto.entities.RecoveryDataKey import RecoveryDataKey
+from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from ctypes import cast, c_char_p
-from crypto.entities.RecoveryResult import RecoveryResult
+from crypto.entities.RecoveryResult import deserialize_recovery_result, RecoveryResult
 from crypto.entities.RecoveryDataUseFailureReason import RecoveryDataUseFailureReason
 
 class RecoveryApi:

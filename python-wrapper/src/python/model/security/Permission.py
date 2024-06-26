@@ -1,6 +1,6 @@
 import json
 from typing import List, Union, Dict
-from model.security.PermissionItem import PermissionItem
+from model.security.PermissionItem import PermissionItem, serialize_permission_item, deserialize_permission_item
 from dataclasses import field, dataclass
 
 @dataclass

@@ -1,6 +1,6 @@
 import asyncio
 import json
-from model.MaintenanceTask import DecryptedMaintenanceTask, MaintenanceTask
+from model.MaintenanceTask import DecryptedMaintenanceTask, MaintenanceTask, serialize_maintenance_task
 from model.CallResult import CallResult, create_result_from_json
 from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from ctypes import cast, c_char_p
@@ -12,7 +12,7 @@ from model.specializations.HexString import HexString
 from model.couchdb.DocIdentifier import DocIdentifier
 from crypto.entities.ShareMetadataBehaviour import ShareMetadataBehaviour
 from model.requests.RequestedPermission import RequestedPermission
-from crypto.entities.SimpleShareResult import SimpleShareResult
+from crypto.entities.SimpleShareResult import deserialize_simple_share_result, SimpleShareResult
 from crypto.entities.MaintenanceTaskShareOptions import MaintenanceTaskShareOptions
 from model.filter.chain.FilterChain import FilterChain
 from model.PaginatedList import PaginatedList

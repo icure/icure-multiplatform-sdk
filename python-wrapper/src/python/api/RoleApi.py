@@ -1,9 +1,9 @@
 import asyncio
 import json
 from model.CallResult import CallResult, create_result_from_json
+from model.Role import Role
 from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from typing import List
-from model.Role import Role
 from ctypes import cast, c_char_p
 
 class RoleApi:

@@ -1,21 +1,21 @@
 import asyncio
 import json
-from model.Message import DecryptedMessage, Message
+from model.Message import DecryptedMessage, Message, serialize_message
 from model.CallResult import CallResult, create_result_from_json
 from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from ctypes import cast, c_char_p, c_void_p
 from typing import Optional, Dict, List
-from model.Patient import Patient
+from model.Patient import Patient, serialize_patient
 from model.User import User
 from model.embed.AccessLevel import AccessLevel
 from dataclasses import field
-from crypto.entities.SecretIdOption import SecretIdOption
+from crypto.entities.SecretIdOption import SecretIdOption, serialize_secret_id_option
 from model.specializations.HexString import HexString
-from model.filter.AbstractFilter import AbstractFilter
+from model.filter.AbstractFilter import AbstractFilter, serialize_abstract_filter
 from model.couchdb.DocIdentifier import DocIdentifier
 from crypto.entities.ShareMetadataBehaviour import ShareMetadataBehaviour
 from model.requests.RequestedPermission import RequestedPermission
-from crypto.entities.SimpleShareResult import SimpleShareResult
+from crypto.entities.SimpleShareResult import deserialize_simple_share_result, SimpleShareResult
 from crypto.entities.MessageShareOptions import MessageShareOptions
 from pagination.PaginatedListIterator import PaginatedListIterator
 from KotlinTypes import PyResult

@@ -1,15 +1,15 @@
 import asyncio
 import json
 from model.CallResult import CallResult, create_result_from_json
-from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from model.User import User
+from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from ctypes import cast, c_char_p
 from typing import Optional, List
 from model.PaginatedList import PaginatedList
 from model.couchdb.DocIdentifier import DocIdentifier
 from model.PropertyStub import EncryptedPropertyStub
 from model.filter.chain.FilterChain import FilterChain
-from model.filter.AbstractFilter import AbstractFilter
+from model.filter.AbstractFilter import AbstractFilter, serialize_abstract_filter
 from model.UserGroup import UserGroup
 from model.ListOfIds import ListOfIds
 from model.security.TokenWithGroup import TokenWithGroup

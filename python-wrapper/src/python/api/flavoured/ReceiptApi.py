@@ -1,21 +1,21 @@
 import asyncio
 import json
 import base64
-from model.Receipt import DecryptedReceipt, Receipt, EncryptedReceipt
+from model.Receipt import DecryptedReceipt, Receipt, serialize_receipt, EncryptedReceipt, deserialize_receipt
 from model.CallResult import CallResult, create_result_from_json
 from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from ctypes import cast, c_char_p
 from typing import Optional, Dict, List
-from model.Patient import Patient
+from model.Patient import Patient, serialize_patient
 from model.User import User
 from model.embed.AccessLevel import AccessLevel
 from dataclasses import field
-from crypto.entities.SecretIdOption import SecretIdOption
+from crypto.entities.SecretIdOption import SecretIdOption, serialize_secret_id_option
 from model.specializations.HexString import HexString
 from model.couchdb.DocIdentifier import DocIdentifier
 from crypto.entities.ShareMetadataBehaviour import ShareMetadataBehaviour
 from model.requests.RequestedPermission import RequestedPermission
-from crypto.entities.SimpleShareResult import SimpleShareResult
+from crypto.entities.SimpleShareResult import deserialize_simple_share_result, SimpleShareResult
 from crypto.entities.ReceiptShareOptions import ReceiptShareOptions
 
 class ReceiptApi:

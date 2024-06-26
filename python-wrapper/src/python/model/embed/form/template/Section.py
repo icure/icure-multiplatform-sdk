@@ -1,6 +1,6 @@
 import json
 from typing import List, Optional, Union, Dict
-from model.embed.form.template.StructureElement import StructureElement
+from model.embed.form.template.StructureElement import StructureElement, serialize_structure_element, deserialize_structure_element
 from dataclasses import dataclass
 
 @dataclass

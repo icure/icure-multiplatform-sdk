@@ -1,6 +1,6 @@
 import asyncio
 import json
-from model.Patient import Patient, DecryptedPatient, EncryptedPatient
+from model.Patient import Patient, serialize_patient, DecryptedPatient, EncryptedPatient
 from model.CallResult import CallResult, create_result_from_json
 from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from typing import List, Optional, Dict
@@ -13,12 +13,12 @@ from model.IdWithRev import IdWithRev
 from model.DataOwnerRegistrationSuccess import DataOwnerRegistrationSuccess
 from crypto.entities.ShareAllPatientDataOptions import Tag, Result
 from crypto.entities.EntityWithTypeInfo import EntityWithTypeInfo
-from model.filter.AbstractFilter import AbstractFilter
+from model.filter.AbstractFilter import AbstractFilter, serialize_abstract_filter
 from model.couchdb.DocIdentifier import DocIdentifier
 from crypto.entities.EntityAccessInformation import EntityAccessInformation
 from crypto.entities.ShareMetadataBehaviour import ShareMetadataBehaviour
 from model.requests.RequestedPermission import RequestedPermission
-from crypto.entities.SimpleShareResult import SimpleShareResult
+from crypto.entities.SimpleShareResult import deserialize_simple_share_result, SimpleShareResult
 from crypto.entities.PatientShareOptions import PatientShareOptions
 from model.filter.chain.FilterChain import FilterChain
 from model.PaginatedList import PaginatedList

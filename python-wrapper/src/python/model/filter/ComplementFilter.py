@@ -1,5 +1,5 @@
 import json
-from model.filter.AbstractFilter import AbstractFilter
+from model.filter.AbstractFilter import AbstractFilter, serialize_abstract_filter, deserialize_abstract_filter
 from typing import Optional, Union, Dict
 from dataclasses import dataclass
 

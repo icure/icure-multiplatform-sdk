@@ -1,8 +1,8 @@
 import asyncio
 import json
 from model.CallResult import CallResult, create_result_from_json
-from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from model.Tarification import Tarification
+from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from ctypes import cast, c_char_p
 from typing import List, Optional
 from model.PaginatedList import PaginatedList

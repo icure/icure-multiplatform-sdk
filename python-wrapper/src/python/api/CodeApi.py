@@ -2,13 +2,13 @@ import asyncio
 import json
 from typing import Optional, Dict, List
 from model.CallResult import CallResult, create_result_from_json
-from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from model.PaginatedList import PaginatedList
-from ctypes import cast, c_char_p
 from model.Code import Code
+from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
+from ctypes import cast, c_char_p
 from model.BooleanResponse import BooleanResponse
 from model.filter.chain.FilterChain import FilterChain
-from model.filter.AbstractFilter import AbstractFilter
+from model.filter.AbstractFilter import AbstractFilter, serialize_abstract_filter
 
 class CodeApi:
 

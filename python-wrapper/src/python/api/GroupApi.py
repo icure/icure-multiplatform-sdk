@@ -1,9 +1,9 @@
 import asyncio
 import json
 from model.CallResult import CallResult, create_result_from_json
+from model.Group import Group
 from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from typing import List, Optional, Dict
-from model.Group import Group
 from ctypes import cast, c_char_p
 from model.DatabaseInitialisation import DatabaseInitialisation
 from model.embed.GroupType import GroupType

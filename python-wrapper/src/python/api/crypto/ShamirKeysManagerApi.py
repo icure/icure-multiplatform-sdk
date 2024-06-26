@@ -1,6 +1,6 @@
 import json
 import asyncio
-from model.base.CryptoActor import CryptoActor
+from model.base.CryptoActor import CryptoActor, serialize_crypto_actor
 from kotlin_types import symbols, DATA_RESULT_CALLBACK_FUNC
 from model.CallResult import create_result_from_json, CallResult
 from ctypes import cast, c_char_p
