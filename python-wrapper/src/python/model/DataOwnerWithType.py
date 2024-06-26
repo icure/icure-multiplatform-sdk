@@ -8,15 +8,15 @@ from model.Device import Device
 DataOwnerWithType = Union['DataOwnerWithTypeHcpDataOwner', 'DataOwnerWithTypePatientDataOwner', 'DataOwnerWithTypeDeviceDataOwner']
 
 def serialize_data_owner_with_type(data_owner_with_type: DataOwnerWithType) -> object:
-	if instanceof(data_owner_with_type, DataOwnerWithTypeHcpDataOwner):
+	if isinstance(data_owner_with_type, DataOwnerWithTypeHcpDataOwner):
 		serialized_entity = data_owner_with_type.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.model.DataOwnerWithType.HcpDataOwner"})
 		return serialized_entity
-	elif instanceof(data_owner_with_type, DataOwnerWithTypePatientDataOwner):
+	elif isinstance(data_owner_with_type, DataOwnerWithTypePatientDataOwner):
 		serialized_entity = data_owner_with_type.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.model.DataOwnerWithType.PatientDataOwner"})
 		return serialized_entity
-	elif instanceof(data_owner_with_type, DataOwnerWithTypeDeviceDataOwner):
+	elif isinstance(data_owner_with_type, DataOwnerWithTypeDeviceDataOwner):
 		serialized_entity = data_owner_with_type.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.model.DataOwnerWithType.DeviceDataOwner"})
 		return serialized_entity

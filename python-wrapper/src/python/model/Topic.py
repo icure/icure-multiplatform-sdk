@@ -10,12 +10,12 @@ from model.specializations.Base64String import Base64String
 Topic = Union['DecryptedTopic', 'EncryptedTopic']
 
 def serialize_topic(topic: Topic) -> object:
-	if instanceof(topic, DecryptedTopic):
+	if isinstance(topic, DecryptedTopic):
 		return {
 			"type": "com.icure.sdk.model.DecryptedTopic",
 			"entity": topic.__serialize__()
 		}
-	elif instanceof(topic, EncryptedTopic):
+	elif isinstance(topic, EncryptedTopic):
 		return {
 			"type": "com.icure.sdk.model.EncryptedTopic",
 			"entity": topic.__serialize__()

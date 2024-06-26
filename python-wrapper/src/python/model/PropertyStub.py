@@ -8,12 +8,12 @@ from dataclasses import dataclass
 PropertyStub = Union['EncryptedPropertyStub', 'DecryptedPropertyStub']
 
 def serialize_property_stub(property_stub: PropertyStub) -> object:
-	if instanceof(property_stub, EncryptedPropertyStub):
+	if isinstance(property_stub, EncryptedPropertyStub):
 		return {
 			"type": "com.icure.sdk.model.EncryptedPropertyStub",
 			"entity": property_stub.__serialize__()
 		}
-	elif instanceof(property_stub, DecryptedPropertyStub):
+	elif isinstance(property_stub, DecryptedPropertyStub):
 		return {
 			"type": "com.icure.sdk.model.DecryptedPropertyStub",
 			"entity": property_stub.__serialize__()

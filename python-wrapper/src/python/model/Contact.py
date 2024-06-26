@@ -14,12 +14,12 @@ from model.embed.Annotation import Annotation
 Contact = Union['DecryptedContact', 'EncryptedContact']
 
 def serialize_contact(contact: Contact) -> object:
-	if instanceof(contact, DecryptedContact):
+	if isinstance(contact, DecryptedContact):
 		return {
 			"type": "com.icure.sdk.model.DecryptedContact",
 			"entity": contact.__serialize__()
 		}
-	elif instanceof(contact, EncryptedContact):
+	elif isinstance(contact, EncryptedContact):
 		return {
 			"type": "com.icure.sdk.model.EncryptedContact",
 			"entity": contact.__serialize__()

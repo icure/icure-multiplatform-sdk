@@ -8,12 +8,12 @@ from dataclasses import dataclass
 CareTeamMember = Union['EncryptedCareTeamMember', 'DecryptedCareTeamMember']
 
 def serialize_care_team_member(care_team_member: CareTeamMember) -> object:
-	if instanceof(care_team_member, EncryptedCareTeamMember):
+	if isinstance(care_team_member, EncryptedCareTeamMember):
 		return {
 			"type": "com.icure.sdk.model.embed.EncryptedCareTeamMember",
 			"entity": care_team_member.__serialize__()
 		}
-	elif instanceof(care_team_member, DecryptedCareTeamMember):
+	elif isinstance(care_team_member, DecryptedCareTeamMember):
 		return {
 			"type": "com.icure.sdk.model.embed.DecryptedCareTeamMember",
 			"entity": care_team_member.__serialize__()

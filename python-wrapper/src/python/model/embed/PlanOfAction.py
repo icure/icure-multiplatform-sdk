@@ -8,12 +8,12 @@ from model.specializations.Base64String import Base64String
 PlanOfAction = Union['EncryptedPlanOfAction', 'DecryptedPlanOfAction']
 
 def serialize_plan_of_action(plan_of_action: PlanOfAction) -> object:
-	if instanceof(plan_of_action, EncryptedPlanOfAction):
+	if isinstance(plan_of_action, EncryptedPlanOfAction):
 		return {
 			"type": "com.icure.sdk.model.embed.EncryptedPlanOfAction",
 			"entity": plan_of_action.__serialize__()
 		}
-	elif instanceof(plan_of_action, DecryptedPlanOfAction):
+	elif isinstance(plan_of_action, DecryptedPlanOfAction):
 		return {
 			"type": "com.icure.sdk.model.embed.DecryptedPlanOfAction",
 			"entity": plan_of_action.__serialize__()

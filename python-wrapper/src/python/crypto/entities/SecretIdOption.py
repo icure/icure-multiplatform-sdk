@@ -7,15 +7,15 @@ from dataclasses import dataclass
 SecretIdOption = Union['SecretIdOptionUseAnyConfidential', 'SecretIdOptionUseAnySharedWithParent', 'SecretIdOptionUse']
 
 def serialize_secret_id_option(secret_id_option: SecretIdOption) -> object:
-	if instanceof(secret_id_option, SecretIdOptionUseAnyConfidential):
+	if isinstance(secret_id_option, SecretIdOptionUseAnyConfidential):
 		serialized_entity = secret_id_option.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SecretIdOption.UseAnyConfidential"})
 		return serialized_entity
-	elif instanceof(secret_id_option, SecretIdOptionUseAnySharedWithParent):
+	elif isinstance(secret_id_option, SecretIdOptionUseAnySharedWithParent):
 		serialized_entity = secret_id_option.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SecretIdOption.UseAnySharedWithParent"})
 		return serialized_entity
-	elif instanceof(secret_id_option, SecretIdOptionUse):
+	elif isinstance(secret_id_option, SecretIdOptionUse):
 		serialized_entity = secret_id_option.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SecretIdOption.Use"})
 		return serialized_entity

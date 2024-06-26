@@ -7,12 +7,12 @@ from dataclasses import dataclass
 TypedValue = Union['DecryptedTypedValue', 'EncryptedTypedValue']
 
 def serialize_typed_value(typed_value: TypedValue) -> object:
-	if instanceof(typed_value, DecryptedTypedValue):
+	if isinstance(typed_value, DecryptedTypedValue):
 		return {
 			"type": "com.icure.sdk.model.embed.DecryptedTypedValue",
 			"entity": typed_value.__serialize__()
 		}
-	elif instanceof(typed_value, EncryptedTypedValue):
+	elif isinstance(typed_value, EncryptedTypedValue):
 		return {
 			"type": "com.icure.sdk.model.embed.EncryptedTypedValue",
 			"entity": typed_value.__serialize__()

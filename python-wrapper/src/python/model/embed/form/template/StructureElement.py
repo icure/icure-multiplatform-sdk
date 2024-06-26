@@ -15,47 +15,47 @@ from model.embed.form.template.FieldsGroup import FieldsGroup
 StructureElement = Union['DropdownField', 'RadioButton', 'DatePicker', 'TimePicker', 'DateTimePicker', 'NumberField', 'TextField', 'CheckBox', 'MultipleChoice', 'MeasureField', 'FieldsGroup']
 
 def serialize_structure_element(structure_element: StructureElement) -> object:
-	if instanceof(structure_element, DropdownField):
+	if isinstance(structure_element, DropdownField):
 		serialized_entity = structure_element.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.model.embed.form.template.DropdownField"})
 		return serialized_entity
-	elif instanceof(structure_element, RadioButton):
+	elif isinstance(structure_element, RadioButton):
 		serialized_entity = structure_element.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.model.embed.form.template.RadioButton"})
 		return serialized_entity
-	elif instanceof(structure_element, DatePicker):
+	elif isinstance(structure_element, DatePicker):
 		serialized_entity = structure_element.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.model.embed.form.template.DatePicker"})
 		return serialized_entity
-	elif instanceof(structure_element, TimePicker):
+	elif isinstance(structure_element, TimePicker):
 		serialized_entity = structure_element.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.model.embed.form.template.TimePicker"})
 		return serialized_entity
-	elif instanceof(structure_element, DateTimePicker):
+	elif isinstance(structure_element, DateTimePicker):
 		serialized_entity = structure_element.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.model.embed.form.template.DateTimePicker"})
 		return serialized_entity
-	elif instanceof(structure_element, NumberField):
+	elif isinstance(structure_element, NumberField):
 		serialized_entity = structure_element.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.model.embed.form.template.NumberField"})
 		return serialized_entity
-	elif instanceof(structure_element, TextField):
+	elif isinstance(structure_element, TextField):
 		serialized_entity = structure_element.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.model.embed.form.template.TextField"})
 		return serialized_entity
-	elif instanceof(structure_element, CheckBox):
+	elif isinstance(structure_element, CheckBox):
 		serialized_entity = structure_element.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.model.embed.form.template.CheckBox"})
 		return serialized_entity
-	elif instanceof(structure_element, MultipleChoice):
+	elif isinstance(structure_element, MultipleChoice):
 		serialized_entity = structure_element.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.model.embed.form.template.MultipleChoice"})
 		return serialized_entity
-	elif instanceof(structure_element, MeasureField):
+	elif isinstance(structure_element, MeasureField):
 		serialized_entity = structure_element.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.model.embed.form.template.MeasureField"})
 		return serialized_entity
-	elif instanceof(structure_element, FieldsGroup):
+	elif isinstance(structure_element, FieldsGroup):
 		serialized_entity = structure_element.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.model.embed.form.template.FieldsGroup"})
 		return serialized_entity

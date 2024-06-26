@@ -12,12 +12,12 @@ from model.embed.SecurityMetadata import SecurityMetadata
 CalendarItem = Union['DecryptedCalendarItem', 'EncryptedCalendarItem']
 
 def serialize_calendar_item(calendar_item: CalendarItem) -> object:
-	if instanceof(calendar_item, DecryptedCalendarItem):
+	if isinstance(calendar_item, DecryptedCalendarItem):
 		return {
 			"type": "com.icure.sdk.model.DecryptedCalendarItem",
 			"entity": calendar_item.__serialize__()
 		}
-	elif instanceof(calendar_item, EncryptedCalendarItem):
+	elif isinstance(calendar_item, EncryptedCalendarItem):
 		return {
 			"type": "com.icure.sdk.model.EncryptedCalendarItem",
 			"entity": calendar_item.__serialize__()

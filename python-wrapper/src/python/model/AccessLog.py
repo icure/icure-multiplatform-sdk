@@ -9,12 +9,12 @@ from model.embed.SecurityMetadata import SecurityMetadata
 AccessLog = Union['DecryptedAccessLog', 'EncryptedAccessLog']
 
 def serialize_access_log(access_log: AccessLog) -> object:
-	if instanceof(access_log, DecryptedAccessLog):
+	if isinstance(access_log, DecryptedAccessLog):
 		return {
 			"type": "com.icure.sdk.model.DecryptedAccessLog",
 			"entity": access_log.__serialize__()
 		}
-	elif instanceof(access_log, EncryptedAccessLog):
+	elif isinstance(access_log, EncryptedAccessLog):
 		return {
 			"type": "com.icure.sdk.model.EncryptedAccessLog",
 			"entity": access_log.__serialize__()

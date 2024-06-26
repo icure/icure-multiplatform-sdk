@@ -15,12 +15,12 @@ from model.embed.SecurityMetadata import SecurityMetadata
 HealthElement = Union['EncryptedHealthElement', 'DecryptedHealthElement']
 
 def serialize_health_element(health_element: HealthElement) -> object:
-	if instanceof(health_element, EncryptedHealthElement):
+	if isinstance(health_element, EncryptedHealthElement):
 		return {
 			"type": "com.icure.sdk.model.EncryptedHealthElement",
 			"entity": health_element.__serialize__()
 		}
-	elif instanceof(health_element, DecryptedHealthElement):
+	elif isinstance(health_element, DecryptedHealthElement):
 		return {
 			"type": "com.icure.sdk.model.DecryptedHealthElement",
 			"entity": health_element.__serialize__()

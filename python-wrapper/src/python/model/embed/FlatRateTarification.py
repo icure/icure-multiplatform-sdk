@@ -8,12 +8,12 @@ from model.specializations.Base64String import Base64String
 FlatRateTarification = Union['EncryptedFlatRateTarification', 'DecryptedFlatRateTarification']
 
 def serialize_flat_rate_tarification(flat_rate_tarification: FlatRateTarification) -> object:
-	if instanceof(flat_rate_tarification, EncryptedFlatRateTarification):
+	if isinstance(flat_rate_tarification, EncryptedFlatRateTarification):
 		return {
 			"type": "com.icure.sdk.model.embed.EncryptedFlatRateTarification",
 			"entity": flat_rate_tarification.__serialize__()
 		}
-	elif instanceof(flat_rate_tarification, DecryptedFlatRateTarification):
+	elif isinstance(flat_rate_tarification, DecryptedFlatRateTarification):
 		return {
 			"type": "com.icure.sdk.model.embed.DecryptedFlatRateTarification",
 			"entity": flat_rate_tarification.__serialize__()

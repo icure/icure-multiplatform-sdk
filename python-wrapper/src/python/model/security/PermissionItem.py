@@ -5,7 +5,7 @@ from model.security.AlwaysPermissionItem import AlwaysPermissionItem
 PermissionItem = Union['AlwaysPermissionItem']
 
 def serialize_permission_item(permission_item: PermissionItem) -> object:
-	if instanceof(permission_item, AlwaysPermissionItem):
+	if isinstance(permission_item, AlwaysPermissionItem):
 		serialized_entity = permission_item.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.model.security.AlwaysPermissionItem"})
 		return serialized_entity

@@ -6,12 +6,12 @@ from model.specializations.Base64String import Base64String
 FinancialInstitutionInformation = Union['EncryptedFinancialInstitutionInformation', 'DecryptedFinancialInstitutionInformation']
 
 def serialize_financial_institution_information(financial_institution_information: FinancialInstitutionInformation) -> object:
-	if instanceof(financial_institution_information, EncryptedFinancialInstitutionInformation):
+	if isinstance(financial_institution_information, EncryptedFinancialInstitutionInformation):
 		return {
 			"type": "com.icure.sdk.model.embed.EncryptedFinancialInstitutionInformation",
 			"entity": financial_institution_information.__serialize__()
 		}
-	elif instanceof(financial_institution_information, DecryptedFinancialInstitutionInformation):
+	elif isinstance(financial_institution_information, DecryptedFinancialInstitutionInformation):
 		return {
 			"type": "com.icure.sdk.model.embed.DecryptedFinancialInstitutionInformation",
 			"entity": financial_institution_information.__serialize__()

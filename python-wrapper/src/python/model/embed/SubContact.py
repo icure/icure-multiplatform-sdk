@@ -8,12 +8,12 @@ from model.specializations.Base64String import Base64String
 SubContact = Union['EncryptedSubContact', 'DecryptedSubContact']
 
 def serialize_sub_contact(sub_contact: SubContact) -> object:
-	if instanceof(sub_contact, EncryptedSubContact):
+	if isinstance(sub_contact, EncryptedSubContact):
 		return {
 			"type": "com.icure.sdk.model.embed.EncryptedSubContact",
 			"entity": sub_contact.__serialize__()
 		}
-	elif instanceof(sub_contact, DecryptedSubContact):
+	elif isinstance(sub_contact, DecryptedSubContact):
 		return {
 			"type": "com.icure.sdk.model.embed.DecryptedSubContact",
 			"entity": sub_contact.__serialize__()

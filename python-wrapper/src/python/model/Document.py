@@ -15,12 +15,12 @@ from model.embed.SecurityMetadata import SecurityMetadata
 Document = Union['EncryptedDocument', 'DecryptedDocument']
 
 def serialize_document(document: Document) -> object:
-	if instanceof(document, EncryptedDocument):
+	if isinstance(document, EncryptedDocument):
 		return {
 			"type": "com.icure.sdk.model.EncryptedDocument",
 			"entity": document.__serialize__()
 		}
-	elif instanceof(document, DecryptedDocument):
+	elif isinstance(document, DecryptedDocument):
 		return {
 			"type": "com.icure.sdk.model.DecryptedDocument",
 			"entity": document.__serialize__()

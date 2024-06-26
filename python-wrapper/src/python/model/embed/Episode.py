@@ -6,12 +6,12 @@ from dataclasses import dataclass
 Episode = Union['DecryptedEpisode', 'EncryptedEpisode']
 
 def serialize_episode(episode: Episode) -> object:
-	if instanceof(episode, DecryptedEpisode):
+	if isinstance(episode, DecryptedEpisode):
 		return {
 			"type": "com.icure.sdk.model.embed.DecryptedEpisode",
 			"entity": episode.__serialize__()
 		}
-	elif instanceof(episode, EncryptedEpisode):
+	elif isinstance(episode, EncryptedEpisode):
 		return {
 			"type": "com.icure.sdk.model.embed.EncryptedEpisode",
 			"entity": episode.__serialize__()

@@ -7,12 +7,12 @@ from dataclasses import dataclass
 Telecom = Union['EncryptedTelecom', 'DecryptedTelecom']
 
 def serialize_telecom(telecom: Telecom) -> object:
-	if instanceof(telecom, EncryptedTelecom):
+	if isinstance(telecom, EncryptedTelecom):
 		return {
 			"type": "com.icure.sdk.model.embed.EncryptedTelecom",
 			"entity": telecom.__serialize__()
 		}
-	elif instanceof(telecom, DecryptedTelecom):
+	elif isinstance(telecom, DecryptedTelecom):
 		return {
 			"type": "com.icure.sdk.model.embed.DecryptedTelecom",
 			"entity": telecom.__serialize__()

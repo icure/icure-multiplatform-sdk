@@ -6,11 +6,11 @@ from crypto.entities.FailedRequestDetails import FailedRequestDetails
 SimpleShareResult = Union['SimpleShareResultSuccess', 'SimpleShareResultFailure']
 
 def serialize_simple_share_result(simple_share_result: SimpleShareResult) -> object:
-	if instanceof(simple_share_result, SimpleShareResultSuccess):
+	if isinstance(simple_share_result, SimpleShareResultSuccess):
 		serialized_entity = simple_share_result.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
 		return serialized_entity
-	elif instanceof(simple_share_result, SimpleShareResultFailure):
+	elif isinstance(simple_share_result, SimpleShareResultFailure):
 		serialized_entity = simple_share_result.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
 		return serialized_entity

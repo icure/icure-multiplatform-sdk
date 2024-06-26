@@ -6,11 +6,11 @@ from crypto.entities.RecoveryDataUseFailureReason import RecoveryDataUseFailureR
 RecoveryResult = Union['RecoveryResultSuccess', 'RecoveryResultFailure']
 
 def serialize_recovery_result(recovery_result: RecoveryResult) -> object:
-	if instanceof(recovery_result, RecoveryResultSuccess):
+	if isinstance(recovery_result, RecoveryResultSuccess):
 		serialized_entity = recovery_result.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.RecoveryResult.Success"})
 		return serialized_entity
-	elif instanceof(recovery_result, RecoveryResultFailure):
+	elif isinstance(recovery_result, RecoveryResultFailure):
 		serialized_entity = recovery_result.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.RecoveryResult.Failure"})
 		return serialized_entity

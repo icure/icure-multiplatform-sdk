@@ -10,12 +10,12 @@ from model.embed.SecurityMetadata import SecurityMetadata
 Receipt = Union['DecryptedReceipt', 'EncryptedReceipt']
 
 def serialize_receipt(receipt: Receipt) -> object:
-	if instanceof(receipt, DecryptedReceipt):
+	if isinstance(receipt, DecryptedReceipt):
 		return {
 			"type": "com.icure.sdk.model.DecryptedReceipt",
 			"entity": receipt.__serialize__()
 		}
-	elif instanceof(receipt, EncryptedReceipt):
+	elif isinstance(receipt, EncryptedReceipt):
 		return {
 			"type": "com.icure.sdk.model.EncryptedReceipt",
 			"entity": receipt.__serialize__()

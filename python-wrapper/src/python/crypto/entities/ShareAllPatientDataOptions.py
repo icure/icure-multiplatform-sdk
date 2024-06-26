@@ -110,11 +110,11 @@ class Result:
 SharePatientDataError = Union['BulkShareFailure', 'FailedRequest']
 
 def serialize_share_patient_data_error(share_patient_data_error: SharePatientDataError) -> object:
-	if instanceof(share_patient_data_error, BulkShareFailure):
+	if isinstance(share_patient_data_error, BulkShareFailure):
 		serialized_entity = share_patient_data_error.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.ShareAllPatientDataOptions.BulkShareFailure"})
 		return serialized_entity
-	elif instanceof(share_patient_data_error, FailedRequest):
+	elif isinstance(share_patient_data_error, FailedRequest):
 		serialized_entity = share_patient_data_error.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.ShareAllPatientDataOptions.FailedRequest"})
 		return serialized_entity

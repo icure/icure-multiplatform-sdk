@@ -13,12 +13,12 @@ from model.embed.SecurityMetadata import SecurityMetadata
 Service = Union['DecryptedService', 'EncryptedService']
 
 def serialize_service(service: Service) -> object:
-	if instanceof(service, DecryptedService):
+	if isinstance(service, DecryptedService):
 		return {
 			"type": "com.icure.sdk.model.embed.DecryptedService",
 			"entity": service.__serialize__()
 		}
-	elif instanceof(service, EncryptedService):
+	elif isinstance(service, EncryptedService):
 		return {
 			"type": "com.icure.sdk.model.embed.EncryptedService",
 			"entity": service.__serialize__()

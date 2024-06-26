@@ -28,12 +28,12 @@ from model.embed.EmploymentInfo import EmploymentInfo
 Patient = Union['EncryptedPatient', 'DecryptedPatient']
 
 def serialize_patient(patient: Patient) -> object:
-	if instanceof(patient, EncryptedPatient):
+	if isinstance(patient, EncryptedPatient):
 		return {
 			"type": "com.icure.sdk.model.EncryptedPatient",
 			"entity": patient.__serialize__()
 		}
-	elif instanceof(patient, DecryptedPatient):
+	elif isinstance(patient, DecryptedPatient):
 		return {
 			"type": "com.icure.sdk.model.DecryptedPatient",
 			"entity": patient.__serialize__()

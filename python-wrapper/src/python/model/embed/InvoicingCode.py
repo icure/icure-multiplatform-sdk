@@ -7,12 +7,12 @@ from dataclasses import dataclass
 InvoicingCode = Union['DecryptedInvoicingCode', 'EncryptedInvoicingCode']
 
 def serialize_invoicing_code(invoicing_code: InvoicingCode) -> object:
-	if instanceof(invoicing_code, DecryptedInvoicingCode):
+	if isinstance(invoicing_code, DecryptedInvoicingCode):
 		return {
 			"type": "com.icure.sdk.model.embed.DecryptedInvoicingCode",
 			"entity": invoicing_code.__serialize__()
 		}
-	elif instanceof(invoicing_code, EncryptedInvoicingCode):
+	elif isinstance(invoicing_code, EncryptedInvoicingCode):
 		return {
 			"type": "com.icure.sdk.model.embed.EncryptedInvoicingCode",
 			"entity": invoicing_code.__serialize__()

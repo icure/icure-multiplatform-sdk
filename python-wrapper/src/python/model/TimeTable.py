@@ -10,12 +10,12 @@ from model.embed.SecurityMetadata import SecurityMetadata
 TimeTable = Union['EncryptedTimeTable', 'DecryptedTimeTable']
 
 def serialize_time_table(time_table: TimeTable) -> object:
-	if instanceof(time_table, EncryptedTimeTable):
+	if isinstance(time_table, EncryptedTimeTable):
 		return {
 			"type": "com.icure.sdk.model.EncryptedTimeTable",
 			"entity": time_table.__serialize__()
 		}
-	elif instanceof(time_table, DecryptedTimeTable):
+	elif isinstance(time_table, DecryptedTimeTable):
 		return {
 			"type": "com.icure.sdk.model.DecryptedTimeTable",
 			"entity": time_table.__serialize__()

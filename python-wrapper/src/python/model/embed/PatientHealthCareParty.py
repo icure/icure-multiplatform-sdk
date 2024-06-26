@@ -9,12 +9,12 @@ from model.specializations.Base64String import Base64String
 PatientHealthCareParty = Union['EncryptedPatientHealthCareParty', 'DecryptedPatientHealthCareParty']
 
 def serialize_patient_health_care_party(patient_health_care_party: PatientHealthCareParty) -> object:
-	if instanceof(patient_health_care_party, EncryptedPatientHealthCareParty):
+	if isinstance(patient_health_care_party, EncryptedPatientHealthCareParty):
 		return {
 			"type": "com.icure.sdk.model.embed.EncryptedPatientHealthCareParty",
 			"entity": patient_health_care_party.__serialize__()
 		}
-	elif instanceof(patient_health_care_party, DecryptedPatientHealthCareParty):
+	elif isinstance(patient_health_care_party, DecryptedPatientHealthCareParty):
 		return {
 			"type": "com.icure.sdk.model.embed.DecryptedPatientHealthCareParty",
 			"entity": patient_health_care_party.__serialize__()

@@ -65,247 +65,247 @@ from model.filter.invoice.InvoiceByHcPartyCodeDateFilter import InvoiceByHcParty
 AbstractFilter = Union['ContactByHcPartyPatientTagCodeDateFilter', 'ContactByHcPartyTagCodeDateFilter', 'ContactByHcPartyFilter', 'ContactByServiceIdsFilter', 'ContactByHcPartyIdentifiersFilter', 'HealthcarePartyByIdsFilter', 'HealthcarePartyByTagCodeFilter', 'AllHealthcarePartiesFilter', 'HealthcarePartyByIdentifiersFilter', 'HealthcarePartyByNameFilter', 'HealthElementByHcPartySecretForeignKeysFilter', 'HealthElementByHcPartyTagCodeFilter', 'HealthElementByIdsFilter', 'HealthElementByHcPartyIdentifiersFilter', 'HealthElementByHcPartyFilter', 'CodeIdsByTypeCodeVersionIntervalFilter', 'AllCodesFilter', 'CodeByIdsFilter', 'CodeByRegionTypeLabelLanguageFilter', 'MessageByHcPartyTransportGuidFilter', 'MessageByHcPartyFilter', 'LatestMessageByHcPartyTransportGuidFilter', 'UserByIdsFilter', 'AllUsersFilter', 'UserByNameEmailPhoneFilter', 'UsersByPatientIdFilter', 'TopicByParticipantFilter', 'TopicByHcPartyFilter', 'UnionFilter', 'PatientByHcPartyGenderEducationProfession', 'PatientByHcPartyDateOfBirthFilter', 'PatientByHcPartyAndExternalIdFilter', 'PatientByHcPartyAndSsinsFilter', 'PatientByHcPartyAndActiveFilter', 'PatientByHcPartyAndAddressFilter', 'PatientByHcPartyNameFilter', 'PatientByHcPartyAndSsinFilter', 'PatientByHcPartyNameContainsFuzzyFilter', 'PatientByIdsFilter', 'PatientByHcPartyAndIdentifiersFilter', 'PatientByHcPartyDateOfBirthBetweenFilter', 'PatientByHcPartyAndTelecomFilter', 'PatientByHcPartyFilter', 'DeviceByIdsFilter', 'DeviceByHcPartyFilter', 'AllDevicesFilter', 'ComplementFilter', 'IntersectionFilter', 'IdsFilter', 'ServiceBySecretForeignKeys', 'ServiceByContactsAndSubcontactsFilter', 'ServiceByHcPartyTagCodeDateFilter', 'ServiceByHcPartyHealthElementIdsFilter', 'ServiceByHcPartyIdentifiersFilter', 'ServiceByHcPartyFilter', 'ServiceByIdsFilter', 'MaintenanceTaskByHcPartyAndTypeFilter', 'MaintenanceTaskByHcPartyAndIdentifiersFilter', 'MaintenanceTaskByIdsFilter', 'MaintenanceTaskAfterDateFilter', 'InvoiceByHcPartyCodeDateFilter']
 
 def serialize_abstract_filter(abstract_filter: AbstractFilter) -> object:
-	if instanceof(abstract_filter, ContactByHcPartyPatientTagCodeDateFilter):
+	if isinstance(abstract_filter, ContactByHcPartyPatientTagCodeDateFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "ContactByHcPartyPatientTagCodeDateFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, ContactByHcPartyTagCodeDateFilter):
+	elif isinstance(abstract_filter, ContactByHcPartyTagCodeDateFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "ContactByHcPartyTagCodeDateFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, ContactByHcPartyFilter):
+	elif isinstance(abstract_filter, ContactByHcPartyFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "ContactByHcPartyFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, ContactByServiceIdsFilter):
+	elif isinstance(abstract_filter, ContactByServiceIdsFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "ContactByServiceIdsFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, ContactByHcPartyIdentifiersFilter):
+	elif isinstance(abstract_filter, ContactByHcPartyIdentifiersFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "ContactByHcPartyIdentifiersFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, HealthcarePartyByIdsFilter):
+	elif isinstance(abstract_filter, HealthcarePartyByIdsFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "HealthcarePartyByIdsFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, HealthcarePartyByTagCodeFilter):
+	elif isinstance(abstract_filter, HealthcarePartyByTagCodeFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "HealthcarePartyByTagCodeFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, AllHealthcarePartiesFilter):
+	elif isinstance(abstract_filter, AllHealthcarePartiesFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "AllHealthcarePartiesFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, HealthcarePartyByIdentifiersFilter):
+	elif isinstance(abstract_filter, HealthcarePartyByIdentifiersFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "HealthcarePartyByIdentifiersFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, HealthcarePartyByNameFilter):
+	elif isinstance(abstract_filter, HealthcarePartyByNameFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "HealthcarePartyByNameFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, HealthElementByHcPartySecretForeignKeysFilter):
+	elif isinstance(abstract_filter, HealthElementByHcPartySecretForeignKeysFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "HealthElementByHcPartySecretForeignKeysFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, HealthElementByHcPartyTagCodeFilter):
+	elif isinstance(abstract_filter, HealthElementByHcPartyTagCodeFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "HealthElementByHcPartyTagCodeFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, HealthElementByIdsFilter):
+	elif isinstance(abstract_filter, HealthElementByIdsFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "HealthElementByIdsFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, HealthElementByHcPartyIdentifiersFilter):
+	elif isinstance(abstract_filter, HealthElementByHcPartyIdentifiersFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "HealthElementByHcPartyIdentifiersFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, HealthElementByHcPartyFilter):
+	elif isinstance(abstract_filter, HealthElementByHcPartyFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "HealthElementByHcPartyFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, CodeIdsByTypeCodeVersionIntervalFilter):
+	elif isinstance(abstract_filter, CodeIdsByTypeCodeVersionIntervalFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "CodeIdsByTypeCodeVersionIntervalFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, AllCodesFilter):
+	elif isinstance(abstract_filter, AllCodesFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "AllCodesFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, CodeByIdsFilter):
+	elif isinstance(abstract_filter, CodeByIdsFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "CodeByIdsFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, CodeByRegionTypeLabelLanguageFilter):
+	elif isinstance(abstract_filter, CodeByRegionTypeLabelLanguageFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "CodeByRegionTypeLabelLanguageFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, MessageByHcPartyTransportGuidFilter):
+	elif isinstance(abstract_filter, MessageByHcPartyTransportGuidFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "MessageByHcPartyTransportGuidFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, MessageByHcPartyFilter):
+	elif isinstance(abstract_filter, MessageByHcPartyFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "MessageByHcPartyFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, LatestMessageByHcPartyTransportGuidFilter):
+	elif isinstance(abstract_filter, LatestMessageByHcPartyTransportGuidFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "LatestMessageByHcPartyTransportGuidFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, UserByIdsFilter):
+	elif isinstance(abstract_filter, UserByIdsFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "UserByIdsFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, AllUsersFilter):
+	elif isinstance(abstract_filter, AllUsersFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "AllUsersFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, UserByNameEmailPhoneFilter):
+	elif isinstance(abstract_filter, UserByNameEmailPhoneFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "UserByNameEmailPhoneFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, UsersByPatientIdFilter):
+	elif isinstance(abstract_filter, UsersByPatientIdFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "UsersByPatientIdFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, TopicByParticipantFilter):
+	elif isinstance(abstract_filter, TopicByParticipantFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "TopicByParticipantFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, TopicByHcPartyFilter):
+	elif isinstance(abstract_filter, TopicByHcPartyFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "TopicByHcPartyFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, UnionFilter):
+	elif isinstance(abstract_filter, UnionFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "UnionFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, PatientByHcPartyGenderEducationProfession):
+	elif isinstance(abstract_filter, PatientByHcPartyGenderEducationProfession):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "PatientByHcPartyGenderEducationProfession"})
 		return serialized_entity
-	elif instanceof(abstract_filter, PatientByHcPartyDateOfBirthFilter):
+	elif isinstance(abstract_filter, PatientByHcPartyDateOfBirthFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "PatientByHcPartyDateOfBirthFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, PatientByHcPartyAndExternalIdFilter):
+	elif isinstance(abstract_filter, PatientByHcPartyAndExternalIdFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "PatientByHcPartyAndExternalIdFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, PatientByHcPartyAndSsinsFilter):
+	elif isinstance(abstract_filter, PatientByHcPartyAndSsinsFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "PatientByHcPartyAndSsinsFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, PatientByHcPartyAndActiveFilter):
+	elif isinstance(abstract_filter, PatientByHcPartyAndActiveFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "PatientByHcPartyAndActiveFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, PatientByHcPartyAndAddressFilter):
+	elif isinstance(abstract_filter, PatientByHcPartyAndAddressFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "PatientByHcPartyAndAddressFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, PatientByHcPartyNameFilter):
+	elif isinstance(abstract_filter, PatientByHcPartyNameFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "PatientByHcPartyNameFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, PatientByHcPartyAndSsinFilter):
+	elif isinstance(abstract_filter, PatientByHcPartyAndSsinFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "PatientByHcPartyAndSsinFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, PatientByHcPartyNameContainsFuzzyFilter):
+	elif isinstance(abstract_filter, PatientByHcPartyNameContainsFuzzyFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "PatientByHcPartyNameContainsFuzzyFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, PatientByIdsFilter):
+	elif isinstance(abstract_filter, PatientByIdsFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "PatientByIdsFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, PatientByHcPartyAndIdentifiersFilter):
+	elif isinstance(abstract_filter, PatientByHcPartyAndIdentifiersFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "PatientByHcPartyAndIdentifiersFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, PatientByHcPartyDateOfBirthBetweenFilter):
+	elif isinstance(abstract_filter, PatientByHcPartyDateOfBirthBetweenFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "PatientByHcPartyDateOfBirthBetweenFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, PatientByHcPartyAndTelecomFilter):
+	elif isinstance(abstract_filter, PatientByHcPartyAndTelecomFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "PatientByHcPartyAndTelecomFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, PatientByHcPartyFilter):
+	elif isinstance(abstract_filter, PatientByHcPartyFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "PatientByHcPartyFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, DeviceByIdsFilter):
+	elif isinstance(abstract_filter, DeviceByIdsFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "DeviceByIdsFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, DeviceByHcPartyFilter):
+	elif isinstance(abstract_filter, DeviceByHcPartyFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "DeviceByHcPartyFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, AllDevicesFilter):
+	elif isinstance(abstract_filter, AllDevicesFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "AllDevicesFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, ComplementFilter):
+	elif isinstance(abstract_filter, ComplementFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "ComplementFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, IntersectionFilter):
+	elif isinstance(abstract_filter, IntersectionFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "IntersectionFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, IdsFilter):
+	elif isinstance(abstract_filter, IdsFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "IdsFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, ServiceBySecretForeignKeys):
+	elif isinstance(abstract_filter, ServiceBySecretForeignKeys):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "ServiceBySecretForeignKeys"})
 		return serialized_entity
-	elif instanceof(abstract_filter, ServiceByContactsAndSubcontactsFilter):
+	elif isinstance(abstract_filter, ServiceByContactsAndSubcontactsFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "ServiceByContactsAndSubcontactsFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, ServiceByHcPartyTagCodeDateFilter):
+	elif isinstance(abstract_filter, ServiceByHcPartyTagCodeDateFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "ServiceByHcPartyTagCodeDateFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, ServiceByHcPartyHealthElementIdsFilter):
+	elif isinstance(abstract_filter, ServiceByHcPartyHealthElementIdsFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "ServiceByHcPartyHealthElementIdsFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, ServiceByHcPartyIdentifiersFilter):
+	elif isinstance(abstract_filter, ServiceByHcPartyIdentifiersFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "ServiceByHcPartyIdentifiersFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, ServiceByHcPartyFilter):
+	elif isinstance(abstract_filter, ServiceByHcPartyFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "ServiceByHcPartyFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, ServiceByIdsFilter):
+	elif isinstance(abstract_filter, ServiceByIdsFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "ServiceByIdsFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, MaintenanceTaskByHcPartyAndTypeFilter):
+	elif isinstance(abstract_filter, MaintenanceTaskByHcPartyAndTypeFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "MaintenanceTaskByHcPartyAndTypeFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, MaintenanceTaskByHcPartyAndIdentifiersFilter):
+	elif isinstance(abstract_filter, MaintenanceTaskByHcPartyAndIdentifiersFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "MaintenanceTaskByHcPartyAndIdentifiersFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, MaintenanceTaskByIdsFilter):
+	elif isinstance(abstract_filter, MaintenanceTaskByIdsFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "MaintenanceTaskByIdsFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, MaintenanceTaskAfterDateFilter):
+	elif isinstance(abstract_filter, MaintenanceTaskAfterDateFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "MaintenanceTaskAfterDateFilter"})
 		return serialized_entity
-	elif instanceof(abstract_filter, InvoiceByHcPartyCodeDateFilter):
+	elif isinstance(abstract_filter, InvoiceByHcPartyCodeDateFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "InvoiceByHcPartyCodeDateFilter"})
 		return serialized_entity

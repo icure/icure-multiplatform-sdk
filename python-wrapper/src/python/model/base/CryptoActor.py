@@ -9,23 +9,23 @@ from model.HealthcareParty import HealthcareParty
 CryptoActor = Union['CryptoActorStub', 'EncryptedPatient', 'DecryptedPatient', 'Device', 'HealthcareParty']
 
 def serialize_crypto_actor(crypto_actor: CryptoActor) -> object:
-	if instanceof(crypto_actor, CryptoActorStub):
+	if isinstance(crypto_actor, CryptoActorStub):
 		serialized_entity = crypto_actor.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.model.CryptoActorStub"})
 		return serialized_entity
-	elif instanceof(crypto_actor, EncryptedPatient):
+	elif isinstance(crypto_actor, EncryptedPatient):
 		serialized_entity = crypto_actor.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.model.EncryptedPatient"})
 		return serialized_entity
-	elif instanceof(crypto_actor, DecryptedPatient):
+	elif isinstance(crypto_actor, DecryptedPatient):
 		serialized_entity = crypto_actor.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.model.DecryptedPatient"})
 		return serialized_entity
-	elif instanceof(crypto_actor, Device):
+	elif isinstance(crypto_actor, Device):
 		serialized_entity = crypto_actor.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.model.Device"})
 		return serialized_entity
-	elif instanceof(crypto_actor, HealthcareParty):
+	elif isinstance(crypto_actor, HealthcareParty):
 		serialized_entity = crypto_actor.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.model.HealthcareParty"})
 		return serialized_entity

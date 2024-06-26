@@ -11,12 +11,12 @@ from model.embed.SecurityMetadata import SecurityMetadata
 Message = Union['DecryptedMessage', 'EncryptedMessage']
 
 def serialize_message(message: Message) -> object:
-	if instanceof(message, DecryptedMessage):
+	if isinstance(message, DecryptedMessage):
 		return {
 			"type": "com.icure.sdk.model.DecryptedMessage",
 			"entity": message.__serialize__()
 		}
-	elif instanceof(message, EncryptedMessage):
+	elif isinstance(message, EncryptedMessage):
 		return {
 			"type": "com.icure.sdk.model.EncryptedMessage",
 			"entity": message.__serialize__()

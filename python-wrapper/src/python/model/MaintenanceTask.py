@@ -12,12 +12,12 @@ from model.embed.SecurityMetadata import SecurityMetadata
 MaintenanceTask = Union['DecryptedMaintenanceTask', 'EncryptedMaintenanceTask']
 
 def serialize_maintenance_task(maintenance_task: MaintenanceTask) -> object:
-	if instanceof(maintenance_task, DecryptedMaintenanceTask):
+	if isinstance(maintenance_task, DecryptedMaintenanceTask):
 		return {
 			"type": "com.icure.sdk.model.DecryptedMaintenanceTask",
 			"entity": maintenance_task.__serialize__()
 		}
-	elif instanceof(maintenance_task, EncryptedMaintenanceTask):
+	elif isinstance(maintenance_task, EncryptedMaintenanceTask):
 		return {
 			"type": "com.icure.sdk.model.EncryptedMaintenanceTask",
 			"entity": maintenance_task.__serialize__()

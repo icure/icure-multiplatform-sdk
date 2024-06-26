@@ -9,12 +9,12 @@ from model.specializations.Base64String import Base64String
 MedicalHouseContract = Union['DecryptedMedicalHouseContract', 'EncryptedMedicalHouseContract']
 
 def serialize_medical_house_contract(medical_house_contract: MedicalHouseContract) -> object:
-	if instanceof(medical_house_contract, DecryptedMedicalHouseContract):
+	if isinstance(medical_house_contract, DecryptedMedicalHouseContract):
 		return {
 			"type": "com.icure.sdk.model.embed.DecryptedMedicalHouseContract",
 			"entity": medical_house_contract.__serialize__()
 		}
-	elif instanceof(medical_house_contract, EncryptedMedicalHouseContract):
+	elif isinstance(medical_house_contract, EncryptedMedicalHouseContract):
 		return {
 			"type": "com.icure.sdk.model.embed.EncryptedMedicalHouseContract",
 			"entity": medical_house_contract.__serialize__()

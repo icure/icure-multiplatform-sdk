@@ -9,12 +9,12 @@ from model.embed.SecurityMetadata import SecurityMetadata
 Form = Union['EncryptedForm', 'DecryptedForm']
 
 def serialize_form(form: Form) -> object:
-	if instanceof(form, EncryptedForm):
+	if isinstance(form, EncryptedForm):
 		return {
 			"type": "com.icure.sdk.model.EncryptedForm",
 			"entity": form.__serialize__()
 		}
-	elif instanceof(form, DecryptedForm):
+	elif isinstance(form, DecryptedForm):
 		return {
 			"type": "com.icure.sdk.model.DecryptedForm",
 			"entity": form.__serialize__()

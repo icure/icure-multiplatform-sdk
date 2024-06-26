@@ -6,12 +6,12 @@ from model.specializations.Base64String import Base64String
 Insurability = Union['DecryptedInsurability', 'EncryptedInsurability']
 
 def serialize_insurability(insurability: Insurability) -> object:
-	if instanceof(insurability, DecryptedInsurability):
+	if isinstance(insurability, DecryptedInsurability):
 		return {
 			"type": "com.icure.sdk.model.embed.DecryptedInsurability",
 			"entity": insurability.__serialize__()
 		}
-	elif instanceof(insurability, EncryptedInsurability):
+	elif isinstance(insurability, EncryptedInsurability):
 		return {
 			"type": "com.icure.sdk.model.embed.EncryptedInsurability",
 			"entity": insurability.__serialize__()

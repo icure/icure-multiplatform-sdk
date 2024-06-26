@@ -9,12 +9,12 @@ from model.embed.SecurityMetadata import SecurityMetadata
 Classification = Union['EncryptedClassification', 'DecryptedClassification']
 
 def serialize_classification(classification: Classification) -> object:
-	if instanceof(classification, EncryptedClassification):
+	if isinstance(classification, EncryptedClassification):
 		return {
 			"type": "com.icure.sdk.model.EncryptedClassification",
 			"entity": classification.__serialize__()
 		}
-	elif instanceof(classification, DecryptedClassification):
+	elif isinstance(classification, DecryptedClassification):
 		return {
 			"type": "com.icure.sdk.model.DecryptedClassification",
 			"entity": classification.__serialize__()

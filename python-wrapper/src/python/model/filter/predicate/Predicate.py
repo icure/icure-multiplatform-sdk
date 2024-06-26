@@ -9,23 +9,23 @@ from model.filter.predicate.KeyValuePredicate import KeyValuePredicate
 Predicate = Union['NotPredicate', 'AndPredicate', 'AlwaysPredicate', 'OrPredicate', 'KeyValuePredicate']
 
 def serialize_predicate(predicate: Predicate) -> object:
-	if instanceof(predicate, NotPredicate):
+	if isinstance(predicate, NotPredicate):
 		serialized_entity = predicate.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.model.filter.predicate.NotPredicate"})
 		return serialized_entity
-	elif instanceof(predicate, AndPredicate):
+	elif isinstance(predicate, AndPredicate):
 		serialized_entity = predicate.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.model.filter.predicate.AndPredicate"})
 		return serialized_entity
-	elif instanceof(predicate, AlwaysPredicate):
+	elif isinstance(predicate, AlwaysPredicate):
 		serialized_entity = predicate.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.model.filter.predicate.AlwaysPredicate"})
 		return serialized_entity
-	elif instanceof(predicate, OrPredicate):
+	elif isinstance(predicate, OrPredicate):
 		serialized_entity = predicate.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.model.filter.predicate.OrPredicate"})
 		return serialized_entity
-	elif instanceof(predicate, KeyValuePredicate):
+	elif isinstance(predicate, KeyValuePredicate):
 		serialized_entity = predicate.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.model.filter.predicate.KeyValuePredicate"})
 		return serialized_entity

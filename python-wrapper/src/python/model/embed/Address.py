@@ -9,12 +9,12 @@ from model.specializations.Base64String import Base64String
 Address = Union['EncryptedAddress', 'DecryptedAddress']
 
 def serialize_address(address: Address) -> object:
-	if instanceof(address, EncryptedAddress):
+	if isinstance(address, EncryptedAddress):
 		return {
 			"type": "com.icure.sdk.model.embed.EncryptedAddress",
 			"entity": address.__serialize__()
 		}
-	elif instanceof(address, DecryptedAddress):
+	elif isinstance(address, DecryptedAddress):
 		return {
 			"type": "com.icure.sdk.model.embed.DecryptedAddress",
 			"entity": address.__serialize__()

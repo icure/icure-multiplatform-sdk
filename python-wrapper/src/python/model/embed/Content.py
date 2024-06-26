@@ -10,12 +10,12 @@ from dataclasses import dataclass
 Content = Union['EncryptedContent', 'DecryptedContent']
 
 def serialize_content(content: Content) -> object:
-	if instanceof(content, EncryptedContent):
+	if isinstance(content, EncryptedContent):
 		return {
 			"type": "com.icure.sdk.model.embed.EncryptedContent",
 			"entity": content.__serialize__()
 		}
-	elif instanceof(content, DecryptedContent):
+	elif isinstance(content, DecryptedContent):
 		return {
 			"type": "com.icure.sdk.model.embed.DecryptedContent",
 			"entity": content.__serialize__()
