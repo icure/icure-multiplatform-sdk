@@ -11,6 +11,7 @@ import kotlinx.cinterop.StableRef
 import kotlinx.cinterop.cstr
 import kotlinx.cinterop.invoke
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
@@ -62,13 +63,42 @@ internal fun <T : Any> Result<T?>.toPyStringAsyncCallback(
 	).toString()
 
 /**
+ * Same as [toPyString] but the successful result is already encoded to json
+ */
+internal fun Result<JsonElement>.toPyJson() =
+	fold(
+		onSuccess = { res ->
+			JsonObject(mapOf("success" to res))
+		},
+		onFailure = { e ->
+			JsonObject(mapOf("failure" to JsonPrimitive(e.stringForPy())))
+		}
+	).toString()
+
+/**
+ * Same as [toPyStringAsyncCallback] but the successful result is already encoded to json
+ */
+@OptIn(ExperimentalForeignApi::class)
+internal fun Result<JsonElement>.toPyJsonAsyncCallback(
+	callback: CPointer<CFunction<(result: CValues<ByteVarOf<Byte>>?, error: CValues<ByteVarOf<Byte>>?) -> Unit>>,
+) =
+	fold(
+		onSuccess = { res ->
+			callback.invoke(res.toString().cstr, null)
+		},
+		onFailure = { e ->
+			callback.invoke(null, e.stringForPy().cstr)
+		}
+	).toString()
+
+/**
  * If the result is a failure calls the callback providing the error.
  *
  * The error string should not be used after the callback terminates, since it will be automatically disposed by
  * kotlin after the callback completes (it should be copied or decoded before the callback returns).
  */
 @OptIn(ExperimentalForeignApi::class)
-internal fun <T> Result<T>.failureToPyStringAsyncCallback(
+internal fun Result<*>.failureToPyStringAsyncCallback(
 	callback: CPointer<CFunction<(result: CValues<ByteVarOf<Byte>>?, error: CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ) {
 	onFailure { e ->
@@ -94,10 +124,12 @@ class PyResult internal constructor(
  *   be null if failure is null). This value may still be use after it is not needed anymore.
  */
 @OptIn(ExperimentalForeignApi::class)
-internal fun Result<*>.toPyResult() =
+internal fun <M : Any, P : Any> Result<M?>.toPyResult(
+	multiplatformToPythonType: (M) -> P
+) =
 	fold(
 		onSuccess = { res ->
-			PyResult(res?.let { StableRef.create(it).asCPointer() }, null)
+			PyResult(res?.let { StableRef.create(multiplatformToPythonType(it)).asCPointer() }, null)
 		},
 		onFailure = { e ->
 			PyResult(null, e.stringForPy())
@@ -112,12 +144,13 @@ internal fun Result<*>.toPyResult() =
  * not null) needs to be disposed manually by the caller.
  */
 @OptIn(ExperimentalForeignApi::class)
-internal fun Result<*>.toPyResultAsyncCallback(
+internal fun <M : Any, P : Any> Result<M?>.toPyResultAsyncCallback(
 	callback: CPointer<CFunction<(result: COpaquePointer?, error: CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	multiplatformToPythonType: (M) -> P
 ) =
 	fold(
 		onSuccess = { res ->
-			callback.invoke(res?.let { StableRef.create(it).asCPointer() }, null)
+			callback.invoke(res?.let { StableRef.create(multiplatformToPythonType(it)).asCPointer() }, null)
 		},
 		onFailure = { e ->
 			callback.invoke(null, e.stringForPy().cstr)
@@ -131,7 +164,7 @@ internal fun Result<*>.toPyResultAsyncCallback(
  * kotlin after the callback completes (it should be copied or decoded before the callback returns).
  */
 @OptIn(ExperimentalForeignApi::class)
-internal inline fun <reified T> Result<T>.failureToPyResultAsyncCallback(
+internal fun Result<*>.failureToPyResultAsyncCallback(
 	callback: CPointer<CFunction<(result: COpaquePointer?, error: CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ) {
 	onFailure { e ->
