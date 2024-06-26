@@ -16,9 +16,16 @@ kotlin {
 			}
 		}
 	}
+	macosArm64 {
+		binaries {
+			sharedLib {
+				baseName = "icure-sdk-native-pylib"
+			}
+		}
+	}
 
 	sourceSets {
-		linuxMain {
+		commonMain {
 			dependencies {
 				implementation(project(":icure-sdk"))
 				implementation(libs.coroutinesCore)

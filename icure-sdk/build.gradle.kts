@@ -70,7 +70,7 @@ kotlin {
 				implementation(libs.kotestRunnerJunit)
 			}
 		}
-		iosMain {
+		appleMain {
 			dependencies {
 				implementation(libs.ktorClientEngineDarwin)
 			}

@@ -1,9 +1,7 @@
 
-import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.get
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
-import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 import java.util.Properties
 
@@ -87,6 +85,8 @@ fun Project.configureMultiplatform(
 			(localProperties["ios.simulator"] as? String)?.let { testRun.deviceId = it }
 		}
 	}
+	macosX64()
+	macosArm64()
 	configureKotlinLinux(kotlinMultiplatformExtension)
 
 	applyDefaultHierarchyTemplate()
@@ -98,19 +98,6 @@ fun Project.configureMultiplatform(
 		}
 		get("jvmMain").dependsOn(jvmAndAndroidMain)
 		get("androidMain").dependsOn(jvmAndAndroidMain)
-	}
-}
-
-fun NamedDomainObjectContainer<KotlinSourceSet>.optInIos(vararg optIns: String) {
-	listOf(
-		get("iosMain"),
-		get("iosArm64Main"),
-		get("iosX64Main"),
-		get("iosSimulatorArm64Main"),
-	).forEach { sourceSet ->
-		optIns.forEach { optIn ->
-			sourceSet.languageSettings.optIn(optIn)
-		}
 	}
 }
 
