@@ -1,15 +1,14 @@
 import asyncio
 import json
-from kotlin_types import symbols, GENERAL_RESULT_CALLBACK
 from model.CallResult import CallResult, create_result_from_json
+from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from typing import List
 from model.Role import Role
-from ctypes import c_char_p
+from ctypes import cast, c_char_p
 
 class RoleApi:
 
 	def __init__(self, icure_sdk, executor):
-		self.native_api = symbols.kotlin.root.com.icure.sdk.py.api.createRoleApi()
 		self.icure_sdk = icure_sdk
 		self.executor = executor
 
@@ -26,11 +25,11 @@ class RoleApi:
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.RoleApi.getAllRolesAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -40,7 +39,7 @@ class RoleApi:
 		payload = {
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.RoleApi.getAllRolesBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))

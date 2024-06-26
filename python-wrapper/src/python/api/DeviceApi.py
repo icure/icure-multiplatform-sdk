@@ -1,9 +1,9 @@
 import asyncio
 import json
-from kotlin_types import symbols, GENERAL_RESULT_CALLBACK
 from model.CallResult import CallResult, create_result_from_json
+from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from model.Device import Device
-from ctypes import c_char_p
+from ctypes import cast, c_char_p
 from typing import List, Optional
 from model.IdWithRev import IdWithRev
 from model.filter.chain.FilterChain import FilterChain
@@ -14,7 +14,6 @@ from model.couchdb.DocIdentifier import DocIdentifier
 class DeviceApi:
 
 	def __init__(self, icure_sdk, executor):
-		self.native_api = symbols.kotlin.root.com.icure.sdk.py.api.createDeviceApi()
 		self.icure_sdk = icure_sdk
 		self.executor = executor
 
@@ -32,11 +31,11 @@ class DeviceApi:
 		payload = {
 			"device_id": device_id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.getDeviceAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -47,7 +46,7 @@ class DeviceApi:
 			"device_id": device_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.getDeviceBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -72,11 +71,11 @@ class DeviceApi:
 		payload = {
 			"device_ids": [x0 for x0 in device_ids],
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.getDevicesAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -87,7 +86,7 @@ class DeviceApi:
 			"device_ids": [x0 for x0 in device_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.getDevicesBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -112,11 +111,11 @@ class DeviceApi:
 		payload = {
 			"p": p.__serialize__(),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.createDeviceAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -127,7 +126,7 @@ class DeviceApi:
 			"p": p.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.createDeviceBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -152,11 +151,11 @@ class DeviceApi:
 		payload = {
 			"device": device.__serialize__(),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.updateDeviceAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -167,7 +166,7 @@ class DeviceApi:
 			"device": device.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.updateDeviceBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -192,11 +191,11 @@ class DeviceApi:
 		payload = {
 			"devices": [x0.__serialize__() for x0 in devices],
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.createDevicesAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -207,7 +206,7 @@ class DeviceApi:
 			"devices": [x0.__serialize__() for x0 in devices],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.createDevicesBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -232,11 +231,11 @@ class DeviceApi:
 		payload = {
 			"devices": [x0.__serialize__() for x0 in devices],
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.updateDevicesAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -247,7 +246,7 @@ class DeviceApi:
 			"devices": [x0.__serialize__() for x0 in devices],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.updateDevicesBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -268,8 +267,8 @@ class DeviceApi:
 			else:
 				success = PaginatedList._deserialize(success.decode('utf-8'))
 				success = PaginatedList(
-					rows = [Device._deserialize(item) for item in success.rows]
-					next_key_pair = return_value.next_key_pair
+					rows = [Device._deserialize(item) for item in success.rows],
+					next_key_pair = success.next_key_pair,
 				)
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
@@ -278,11 +277,11 @@ class DeviceApi:
 			"limit": limit,
 			"filter_chain": filter_chain.__serialize__(),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.filterDevicesByAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -295,7 +294,7 @@ class DeviceApi:
 			"filter_chain": filter_chain.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.filterDevicesByBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -305,8 +304,8 @@ class DeviceApi:
 		else:
 			return_value = PaginatedList._deserialize(result_info["success"])
 			return_value = PaginatedList(
-				rows = [Device._deserialize(item) for item in return_value.rows]
-				next_key_pair = return_value.next_key_pair
+				rows = [Device._deserialize(item) for item in return_value.rows],
+				next_key_pair = return_value.next_key_pair,
 			)
 			return return_value
 
@@ -324,11 +323,11 @@ class DeviceApi:
 		payload = {
 			"filter": serialize_abstract_filter(filter),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.matchDevicesByAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -339,7 +338,7 @@ class DeviceApi:
 			"filter": serialize_abstract_filter(filter),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.matchDevicesByBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -364,11 +363,11 @@ class DeviceApi:
 		payload = {
 			"device_id": device_id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.deleteDeviceAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -379,7 +378,7 @@ class DeviceApi:
 			"device_id": device_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.deleteDeviceBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -404,11 +403,11 @@ class DeviceApi:
 		payload = {
 			"device_ids": [x0 for x0 in device_ids],
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.deleteDevicesAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -419,7 +418,7 @@ class DeviceApi:
 			"device_ids": [x0 for x0 in device_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.deleteDevicesBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -445,11 +444,11 @@ class DeviceApi:
 			"group_id": group_id,
 			"device_ids": [x0 for x0 in device_ids] if device_ids is not None else None,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.getDevicesInGroupAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -461,7 +460,7 @@ class DeviceApi:
 			"device_ids": [x0 for x0 in device_ids] if device_ids is not None else None,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.getDevicesInGroupBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -487,11 +486,11 @@ class DeviceApi:
 			"group_id": group_id,
 			"device": device.__serialize__(),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.modifyDeviceInGroupAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -503,7 +502,7 @@ class DeviceApi:
 			"device": device.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.modifyDeviceInGroupBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -529,11 +528,11 @@ class DeviceApi:
 			"group_id": group_id,
 			"device": device.__serialize__(),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.createDeviceInGroupAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -545,7 +544,7 @@ class DeviceApi:
 			"device": device.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.createDeviceInGroupBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -571,11 +570,11 @@ class DeviceApi:
 			"group_id": group_id,
 			"device_ids": device_ids,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.deleteDevicesInGroupAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -587,7 +586,7 @@ class DeviceApi:
 			"device_ids": device_ids,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.deleteDevicesInGroupBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))

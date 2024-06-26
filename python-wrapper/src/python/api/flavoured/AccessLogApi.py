@@ -1,9 +1,9 @@
 import asyncio
 import json
-from kotlin_types import symbols, GENERAL_RESULT_CALLBACK
 from model.AccessLog import DecryptedAccessLog, AccessLog
 from model.CallResult import CallResult, create_result_from_json
-from ctypes import c_char_p, c_void_p
+from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
+from ctypes import cast, c_char_p, c_void_p
 from typing import Optional, Dict, List
 from model.Patient import Patient
 from model.User import User
@@ -23,7 +23,6 @@ from model.PaginatedList import PaginatedList
 class AccessLogApi:
 
 	def __init__(self, icure_sdk, executor):
-		self.native_api = symbols.kotlin.root.com.icure.sdk.py.api.createAccessLogApi()
 		self.icure_sdk = icure_sdk
 		self.executor = executor
 		self.encrypted = AccessLogFlavouredEncryptedApi(executor)
@@ -43,11 +42,11 @@ class AccessLogApi:
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.AccessLogApi.createAccessLogAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -58,7 +57,7 @@ class AccessLogApi:
 			"entity": entity.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.AccessLogApi.createAccessLogBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -87,11 +86,11 @@ class AccessLogApi:
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			"secret_id": serialize_secret_id_option(secret_id),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.AccessLogApi.withEncryptionMetadataAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -106,7 +105,7 @@ class AccessLogApi:
 			"secret_id": serialize_secret_id_option(secret_id),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.AccessLogApi.withEncryptionMetadataBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -131,11 +130,11 @@ class AccessLogApi:
 		payload = {
 			"access_log": serialize_access_log(access_log),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.AccessLogApi.getEncryptionKeysOfAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -146,7 +145,7 @@ class AccessLogApi:
 			"access_log": serialize_access_log(access_log),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.AccessLogApi.getEncryptionKeysOfBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -171,11 +170,11 @@ class AccessLogApi:
 		payload = {
 			"access_log": serialize_access_log(access_log),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.AccessLogApi.hasWriteAccessAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -186,7 +185,7 @@ class AccessLogApi:
 			"access_log": serialize_access_log(access_log),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.AccessLogApi.hasWriteAccessBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -211,11 +210,11 @@ class AccessLogApi:
 		payload = {
 			"access_log": serialize_access_log(access_log),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.AccessLogApi.decryptPatientIdOfAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -226,7 +225,7 @@ class AccessLogApi:
 			"access_log": serialize_access_log(access_log),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.AccessLogApi.decryptPatientIdOfBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -252,11 +251,11 @@ class AccessLogApi:
 			"entity": serialize_access_log(entity),
 			"delegates": [x0 for x0 in delegates],
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.AccessLogApi.createDelegationDeAnonymizationMetadataAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -268,7 +267,7 @@ class AccessLogApi:
 			"delegates": [x0 for x0 in delegates],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.AccessLogApi.createDelegationDeAnonymizationMetadataBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -290,11 +289,11 @@ class AccessLogApi:
 		payload = {
 			"entity_id": entity_id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavourlessApi.deleteAccessLogAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -305,7 +304,7 @@ class AccessLogApi:
 			"entity_id": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavourlessApi.deleteAccessLogBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -330,11 +329,11 @@ class AccessLogApi:
 		payload = {
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavourlessApi.deleteAccessLogsAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -345,7 +344,7 @@ class AccessLogApi:
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavourlessApi.deleteAccessLogsBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -374,11 +373,11 @@ class AccessLogApi:
 			"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
 			"requested_permission": requested_permission.__serialize__(),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.AccessLogFlavouredApi.shareWithAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -393,7 +392,7 @@ class AccessLogApi:
 			"requested_permission": requested_permission.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.AccessLogFlavouredApi.shareWithBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -419,11 +418,11 @@ class AccessLogApi:
 			"access_log": access_log.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.AccessLogFlavouredApi.tryShareWithManyAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -435,7 +434,7 @@ class AccessLogApi:
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.AccessLogFlavouredApi.tryShareWithManyBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -461,11 +460,11 @@ class AccessLogApi:
 			"access_log": access_log.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.AccessLogFlavouredApi.shareWithManyAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -477,7 +476,7 @@ class AccessLogApi:
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.AccessLogFlavouredApi.shareWithManyBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -508,11 +507,11 @@ class AccessLogApi:
 			"end_date": end_date,
 			"descending": descending,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.AccessLogFlavouredApi.findAccessLogsByHcPartyPatientAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -527,7 +526,7 @@ class AccessLogApi:
 			"descending": descending,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.AccessLogFlavouredApi.findAccessLogsByHcPartyPatientBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		error_str_pointer = PyResult.get_failure(call_result)
@@ -558,11 +557,11 @@ class AccessLogApi:
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.modifyAccessLogAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -573,7 +572,7 @@ class AccessLogApi:
 			"entity": entity.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.modifyAccessLogBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -598,11 +597,11 @@ class AccessLogApi:
 		payload = {
 			"entity_id": entity_id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.getAccessLogAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -613,7 +612,7 @@ class AccessLogApi:
 			"entity_id": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.getAccessLogBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -638,11 +637,11 @@ class AccessLogApi:
 		payload = {
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.getAccessLogsAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -653,7 +652,7 @@ class AccessLogApi:
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.getAccessLogsBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -674,8 +673,8 @@ class AccessLogApi:
 			else:
 				success = PaginatedList._deserialize(success.decode('utf-8'))
 				success = PaginatedList(
-					rows = [DecryptedAccessLog._deserialize(item) for item in success.rows]
-					next_key_pair = return_value.next_key_pair
+					rows = [DecryptedAccessLog._deserialize(item) for item in success.rows],
+					next_key_pair = success.next_key_pair,
 				)
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
@@ -686,11 +685,11 @@ class AccessLogApi:
 			"start_document_id": start_document_id,
 			"limit": limit,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.findAccessLogsByAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -705,7 +704,7 @@ class AccessLogApi:
 			"limit": limit,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.findAccessLogsByBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -715,8 +714,8 @@ class AccessLogApi:
 		else:
 			return_value = PaginatedList._deserialize(result_info["success"])
 			return_value = PaginatedList(
-				rows = [DecryptedAccessLog._deserialize(item) for item in return_value.rows]
-				next_key_pair = return_value.next_key_pair
+				rows = [DecryptedAccessLog._deserialize(item) for item in return_value.rows],
+				next_key_pair = return_value.next_key_pair,
 			)
 			return return_value
 
@@ -730,8 +729,8 @@ class AccessLogApi:
 			else:
 				success = PaginatedList._deserialize(success.decode('utf-8'))
 				success = PaginatedList(
-					rows = [DecryptedAccessLog._deserialize(item) for item in success.rows]
-					next_key_pair = return_value.next_key_pair
+					rows = [DecryptedAccessLog._deserialize(item) for item in success.rows],
+					next_key_pair = success.next_key_pair,
 				)
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
@@ -744,11 +743,11 @@ class AccessLogApi:
 			"limit": limit,
 			"descending": descending,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.findAccessLogsByUserAfterDateAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -765,7 +764,7 @@ class AccessLogApi:
 			"descending": descending,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.findAccessLogsByUserAfterDateBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -775,8 +774,8 @@ class AccessLogApi:
 		else:
 			return_value = PaginatedList._deserialize(result_info["success"])
 			return_value = PaginatedList(
-				rows = [DecryptedAccessLog._deserialize(item) for item in return_value.rows]
-				next_key_pair = return_value.next_key_pair
+				rows = [DecryptedAccessLog._deserialize(item) for item in return_value.rows],
+				next_key_pair = return_value.next_key_pair,
 			)
 			return return_value
 
@@ -790,8 +789,8 @@ class AccessLogApi:
 			else:
 				success = PaginatedList._deserialize(success.decode('utf-8'))
 				success = PaginatedList(
-					rows = [DecryptedAccessLog._deserialize(item) for item in success.rows]
-					next_key_pair = return_value.next_key_pair
+					rows = [DecryptedAccessLog._deserialize(item) for item in success.rows],
+					next_key_pair = success.next_key_pair,
 				)
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
@@ -803,11 +802,11 @@ class AccessLogApi:
 			"start_document_id": start_document_id,
 			"limit": limit,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.findAccessLogsInGroupAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -823,7 +822,7 @@ class AccessLogApi:
 			"limit": limit,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.findAccessLogsInGroupBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -833,15 +832,14 @@ class AccessLogApi:
 		else:
 			return_value = PaginatedList._deserialize(result_info["success"])
 			return_value = PaginatedList(
-				rows = [DecryptedAccessLog._deserialize(item) for item in return_value.rows]
-				next_key_pair = return_value.next_key_pair
+				rows = [DecryptedAccessLog._deserialize(item) for item in return_value.rows],
+				next_key_pair = return_value.next_key_pair,
 			)
 			return return_value
 
 	class AccessLogFlavouredEncryptedApi:
 
 		def __init__(self, executor):
-			self.native_api = symbols.kotlin.root.com.icure.sdk.py.api.createAccessLogFlavouredApi()
 			self.executor = executor
 
 		async def share_with_async(self, delegate_id: str, access_log: EncryptedAccessLog, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
@@ -862,11 +860,11 @@ class AccessLogApi:
 				"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
 				"requested_permission": requested_permission.__serialize__(),
 			}
-			callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.AccessLogFlavouredApi.shareWithAsync,
-				self.native_api,
+				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
 			)
@@ -881,7 +879,7 @@ class AccessLogApi:
 				"requested_permission": requested_permission.__serialize__(),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.AccessLogFlavouredApi.shareWithBlocking(
-				self.native_api,
+				self.icure_sdk.native,
 				json.dumps(payload)
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -907,11 +905,11 @@ class AccessLogApi:
 				"access_log": access_log.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
-			callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.AccessLogFlavouredApi.tryShareWithManyAsync,
-				self.native_api,
+				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
 			)
@@ -923,7 +921,7 @@ class AccessLogApi:
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.AccessLogFlavouredApi.tryShareWithManyBlocking(
-				self.native_api,
+				self.icure_sdk.native,
 				json.dumps(payload)
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -949,11 +947,11 @@ class AccessLogApi:
 				"access_log": access_log.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
-			callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.AccessLogFlavouredApi.shareWithManyAsync,
-				self.native_api,
+				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
 			)
@@ -965,7 +963,7 @@ class AccessLogApi:
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.AccessLogFlavouredApi.shareWithManyBlocking(
-				self.native_api,
+				self.icure_sdk.native,
 				json.dumps(payload)
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -996,11 +994,11 @@ class AccessLogApi:
 				"end_date": end_date,
 				"descending": descending,
 			}
-			callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.AccessLogFlavouredApi.findAccessLogsByHcPartyPatientAsync,
-				self.native_api,
+				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
 			)
@@ -1015,7 +1013,7 @@ class AccessLogApi:
 				"descending": descending,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.AccessLogFlavouredApi.findAccessLogsByHcPartyPatientBlocking(
-				self.native_api,
+				self.icure_sdk.native,
 				json.dumps(payload)
 			)
 			error_str_pointer = PyResult.get_failure(call_result)
@@ -1046,11 +1044,11 @@ class AccessLogApi:
 			payload = {
 				"entity": entity.__serialize__(),
 			}
-			callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.modifyAccessLogAsync,
-				self.native_api,
+				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
 			)
@@ -1061,7 +1059,7 @@ class AccessLogApi:
 				"entity": entity.__serialize__(),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.modifyAccessLogBlocking(
-				self.native_api,
+				self.icure_sdk.native,
 				json.dumps(payload)
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1086,11 +1084,11 @@ class AccessLogApi:
 			payload = {
 				"entity_id": entity_id,
 			}
-			callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.getAccessLogAsync,
-				self.native_api,
+				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
 			)
@@ -1101,7 +1099,7 @@ class AccessLogApi:
 				"entity_id": entity_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.getAccessLogBlocking(
-				self.native_api,
+				self.icure_sdk.native,
 				json.dumps(payload)
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1126,11 +1124,11 @@ class AccessLogApi:
 			payload = {
 				"entity_ids": [x0 for x0 in entity_ids],
 			}
-			callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.getAccessLogsAsync,
-				self.native_api,
+				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
 			)
@@ -1141,7 +1139,7 @@ class AccessLogApi:
 				"entity_ids": [x0 for x0 in entity_ids],
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.getAccessLogsBlocking(
-				self.native_api,
+				self.icure_sdk.native,
 				json.dumps(payload)
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1162,8 +1160,8 @@ class AccessLogApi:
 				else:
 					success = PaginatedList._deserialize(success.decode('utf-8'))
 					success = PaginatedList(
-						rows = [EncryptedAccessLog._deserialize(item) for item in success.rows]
-						next_key_pair = return_value.next_key_pair
+						rows = [EncryptedAccessLog._deserialize(item) for item in success.rows],
+						next_key_pair = success.next_key_pair,
 					)
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
@@ -1174,11 +1172,11 @@ class AccessLogApi:
 				"start_document_id": start_document_id,
 				"limit": limit,
 			}
-			callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.findAccessLogsByAsync,
-				self.native_api,
+				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
 			)
@@ -1193,7 +1191,7 @@ class AccessLogApi:
 				"limit": limit,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.findAccessLogsByBlocking(
-				self.native_api,
+				self.icure_sdk.native,
 				json.dumps(payload)
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1203,8 +1201,8 @@ class AccessLogApi:
 			else:
 				return_value = PaginatedList._deserialize(result_info["success"])
 				return_value = PaginatedList(
-					rows = [EncryptedAccessLog._deserialize(item) for item in return_value.rows]
-					next_key_pair = return_value.next_key_pair
+					rows = [EncryptedAccessLog._deserialize(item) for item in return_value.rows],
+					next_key_pair = return_value.next_key_pair,
 				)
 				return return_value
 
@@ -1218,8 +1216,8 @@ class AccessLogApi:
 				else:
 					success = PaginatedList._deserialize(success.decode('utf-8'))
 					success = PaginatedList(
-						rows = [EncryptedAccessLog._deserialize(item) for item in success.rows]
-						next_key_pair = return_value.next_key_pair
+						rows = [EncryptedAccessLog._deserialize(item) for item in success.rows],
+						next_key_pair = success.next_key_pair,
 					)
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
@@ -1232,11 +1230,11 @@ class AccessLogApi:
 				"limit": limit,
 				"descending": descending,
 			}
-			callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.findAccessLogsByUserAfterDateAsync,
-				self.native_api,
+				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
 			)
@@ -1253,7 +1251,7 @@ class AccessLogApi:
 				"descending": descending,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.findAccessLogsByUserAfterDateBlocking(
-				self.native_api,
+				self.icure_sdk.native,
 				json.dumps(payload)
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1263,8 +1261,8 @@ class AccessLogApi:
 			else:
 				return_value = PaginatedList._deserialize(result_info["success"])
 				return_value = PaginatedList(
-					rows = [EncryptedAccessLog._deserialize(item) for item in return_value.rows]
-					next_key_pair = return_value.next_key_pair
+					rows = [EncryptedAccessLog._deserialize(item) for item in return_value.rows],
+					next_key_pair = return_value.next_key_pair,
 				)
 				return return_value
 
@@ -1278,8 +1276,8 @@ class AccessLogApi:
 				else:
 					success = PaginatedList._deserialize(success.decode('utf-8'))
 					success = PaginatedList(
-						rows = [EncryptedAccessLog._deserialize(item) for item in success.rows]
-						next_key_pair = return_value.next_key_pair
+						rows = [EncryptedAccessLog._deserialize(item) for item in success.rows],
+						next_key_pair = success.next_key_pair,
 					)
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
@@ -1291,11 +1289,11 @@ class AccessLogApi:
 				"start_document_id": start_document_id,
 				"limit": limit,
 			}
-			callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.findAccessLogsInGroupAsync,
-				self.native_api,
+				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
 			)
@@ -1311,7 +1309,7 @@ class AccessLogApi:
 				"limit": limit,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.findAccessLogsInGroupBlocking(
-				self.native_api,
+				self.icure_sdk.native,
 				json.dumps(payload)
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1321,15 +1319,14 @@ class AccessLogApi:
 			else:
 				return_value = PaginatedList._deserialize(result_info["success"])
 				return_value = PaginatedList(
-					rows = [EncryptedAccessLog._deserialize(item) for item in return_value.rows]
-					next_key_pair = return_value.next_key_pair
+					rows = [EncryptedAccessLog._deserialize(item) for item in return_value.rows],
+					next_key_pair = return_value.next_key_pair,
 				)
 				return return_value
 
 	class AccessLogFlavouredApi:
 
 		def __init__(self, executor):
-			self.native_api = symbols.kotlin.root.com.icure.sdk.py.api.createAccessLogFlavouredApi()
 			self.executor = executor
 
 		async def share_with_async(self, delegate_id: str, access_log: AccessLog, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
@@ -1350,11 +1347,11 @@ class AccessLogApi:
 				"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
 				"requested_permission": requested_permission.__serialize__(),
 			}
-			callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.AccessLogFlavouredApi.shareWithAsync,
-				self.native_api,
+				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
 			)
@@ -1369,7 +1366,7 @@ class AccessLogApi:
 				"requested_permission": requested_permission.__serialize__(),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.AccessLogFlavouredApi.shareWithBlocking(
-				self.native_api,
+				self.icure_sdk.native,
 				json.dumps(payload)
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1395,11 +1392,11 @@ class AccessLogApi:
 				"access_log": access_log.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
-			callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.AccessLogFlavouredApi.tryShareWithManyAsync,
-				self.native_api,
+				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
 			)
@@ -1411,7 +1408,7 @@ class AccessLogApi:
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.AccessLogFlavouredApi.tryShareWithManyBlocking(
-				self.native_api,
+				self.icure_sdk.native,
 				json.dumps(payload)
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1437,11 +1434,11 @@ class AccessLogApi:
 				"access_log": access_log.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
-			callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.AccessLogFlavouredApi.shareWithManyAsync,
-				self.native_api,
+				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
 			)
@@ -1453,7 +1450,7 @@ class AccessLogApi:
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.AccessLogFlavouredApi.shareWithManyBlocking(
-				self.native_api,
+				self.icure_sdk.native,
 				json.dumps(payload)
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1484,11 +1481,11 @@ class AccessLogApi:
 				"end_date": end_date,
 				"descending": descending,
 			}
-			callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.AccessLogFlavouredApi.findAccessLogsByHcPartyPatientAsync,
-				self.native_api,
+				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
 			)
@@ -1503,7 +1500,7 @@ class AccessLogApi:
 				"descending": descending,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.AccessLogFlavouredApi.findAccessLogsByHcPartyPatientBlocking(
-				self.native_api,
+				self.icure_sdk.native,
 				json.dumps(payload)
 			)
 			error_str_pointer = PyResult.get_failure(call_result)
@@ -1534,11 +1531,11 @@ class AccessLogApi:
 			payload = {
 				"entity": entity.__serialize__(),
 			}
-			callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.modifyAccessLogAsync,
-				self.native_api,
+				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
 			)
@@ -1549,7 +1546,7 @@ class AccessLogApi:
 				"entity": entity.__serialize__(),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.modifyAccessLogBlocking(
-				self.native_api,
+				self.icure_sdk.native,
 				json.dumps(payload)
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1574,11 +1571,11 @@ class AccessLogApi:
 			payload = {
 				"entity_id": entity_id,
 			}
-			callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.getAccessLogAsync,
-				self.native_api,
+				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
 			)
@@ -1589,7 +1586,7 @@ class AccessLogApi:
 				"entity_id": entity_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.getAccessLogBlocking(
-				self.native_api,
+				self.icure_sdk.native,
 				json.dumps(payload)
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1614,11 +1611,11 @@ class AccessLogApi:
 			payload = {
 				"entity_ids": [x0 for x0 in entity_ids],
 			}
-			callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.getAccessLogsAsync,
-				self.native_api,
+				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
 			)
@@ -1629,7 +1626,7 @@ class AccessLogApi:
 				"entity_ids": [x0 for x0 in entity_ids],
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.getAccessLogsBlocking(
-				self.native_api,
+				self.icure_sdk.native,
 				json.dumps(payload)
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1650,8 +1647,8 @@ class AccessLogApi:
 				else:
 					success = PaginatedList._deserialize(success.decode('utf-8'))
 					success = PaginatedList(
-						rows = [deserialize_access_log(item) for item in success.rows]
-						next_key_pair = return_value.next_key_pair
+						rows = [deserialize_access_log(item) for item in success.rows],
+						next_key_pair = success.next_key_pair,
 					)
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
@@ -1662,11 +1659,11 @@ class AccessLogApi:
 				"start_document_id": start_document_id,
 				"limit": limit,
 			}
-			callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.findAccessLogsByAsync,
-				self.native_api,
+				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
 			)
@@ -1681,7 +1678,7 @@ class AccessLogApi:
 				"limit": limit,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.findAccessLogsByBlocking(
-				self.native_api,
+				self.icure_sdk.native,
 				json.dumps(payload)
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1691,8 +1688,8 @@ class AccessLogApi:
 			else:
 				return_value = PaginatedList._deserialize(result_info["success"])
 				return_value = PaginatedList(
-					rows = [deserialize_access_log(item) for item in return_value.rows]
-					next_key_pair = return_value.next_key_pair
+					rows = [deserialize_access_log(item) for item in return_value.rows],
+					next_key_pair = return_value.next_key_pair,
 				)
 				return return_value
 
@@ -1706,8 +1703,8 @@ class AccessLogApi:
 				else:
 					success = PaginatedList._deserialize(success.decode('utf-8'))
 					success = PaginatedList(
-						rows = [deserialize_access_log(item) for item in success.rows]
-						next_key_pair = return_value.next_key_pair
+						rows = [deserialize_access_log(item) for item in success.rows],
+						next_key_pair = success.next_key_pair,
 					)
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
@@ -1720,11 +1717,11 @@ class AccessLogApi:
 				"limit": limit,
 				"descending": descending,
 			}
-			callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.findAccessLogsByUserAfterDateAsync,
-				self.native_api,
+				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
 			)
@@ -1741,7 +1738,7 @@ class AccessLogApi:
 				"descending": descending,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.findAccessLogsByUserAfterDateBlocking(
-				self.native_api,
+				self.icure_sdk.native,
 				json.dumps(payload)
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1751,8 +1748,8 @@ class AccessLogApi:
 			else:
 				return_value = PaginatedList._deserialize(result_info["success"])
 				return_value = PaginatedList(
-					rows = [deserialize_access_log(item) for item in return_value.rows]
-					next_key_pair = return_value.next_key_pair
+					rows = [deserialize_access_log(item) for item in return_value.rows],
+					next_key_pair = return_value.next_key_pair,
 				)
 				return return_value
 
@@ -1766,8 +1763,8 @@ class AccessLogApi:
 				else:
 					success = PaginatedList._deserialize(success.decode('utf-8'))
 					success = PaginatedList(
-						rows = [deserialize_access_log(item) for item in success.rows]
-						next_key_pair = return_value.next_key_pair
+						rows = [deserialize_access_log(item) for item in success.rows],
+						next_key_pair = success.next_key_pair,
 					)
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
@@ -1779,11 +1776,11 @@ class AccessLogApi:
 				"start_document_id": start_document_id,
 				"limit": limit,
 			}
-			callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.findAccessLogsInGroupAsync,
-				self.native_api,
+				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
 			)
@@ -1799,7 +1796,7 @@ class AccessLogApi:
 				"limit": limit,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.findAccessLogsInGroupBlocking(
-				self.native_api,
+				self.icure_sdk.native,
 				json.dumps(payload)
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1809,8 +1806,8 @@ class AccessLogApi:
 			else:
 				return_value = PaginatedList._deserialize(result_info["success"])
 				return_value = PaginatedList(
-					rows = [deserialize_access_log(item) for item in return_value.rows]
-					next_key_pair = return_value.next_key_pair
+					rows = [deserialize_access_log(item) for item in return_value.rows],
+					next_key_pair = return_value.next_key_pair,
 				)
 				return return_value
 

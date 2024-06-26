@@ -1,9 +1,9 @@
 import asyncio
 import json
-from kotlin_types import symbols, GENERAL_RESULT_CALLBACK
 from model.CallResult import CallResult, create_result_from_json
+from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from model.couchdb.DocIdentifier import DocIdentifier
-from ctypes import c_char_p
+from ctypes import cast, c_char_p
 from typing import List, Optional, Dict
 from model.IcureStub import IcureStub
 from model.data.LabelledOccurence import LabelledOccurence
@@ -17,7 +17,6 @@ from model.embed.InvoiceType import InvoiceType
 class InvoiceBasicApi:
 
 	def __init__(self, icure_sdk, executor):
-		self.native_api = symbols.kotlin.root.com.icure.sdk.py.api.createInvoiceBasicApi()
 		self.icure_sdk = icure_sdk
 		self.executor = executor
 
@@ -35,11 +34,11 @@ class InvoiceBasicApi:
 		payload = {
 			"entity_id": entity_id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavourlessApi.deleteInvoiceAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -50,7 +49,7 @@ class InvoiceBasicApi:
 			"entity_id": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavourlessApi.deleteInvoiceBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -76,11 +75,11 @@ class InvoiceBasicApi:
 			"hc_party_id": hc_party_id,
 			"secret_patient_keys": [x0 for x0 in secret_patient_keys],
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavourlessApi.findInvoicesDelegationsStubsByHcPartyPatientForeignKeysAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -92,7 +91,7 @@ class InvoiceBasicApi:
 			"secret_patient_keys": [x0 for x0 in secret_patient_keys],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavourlessApi.findInvoicesDelegationsStubsByHcPartyPatientForeignKeysBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -117,11 +116,11 @@ class InvoiceBasicApi:
 		payload = {
 			"min_occurrence": min_occurrence,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavourlessApi.getTarificationsCodesOccurrencesAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -132,7 +131,7 @@ class InvoiceBasicApi:
 			"min_occurrence": min_occurrence,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavourlessApi.getTarificationsCodesOccurrencesBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -157,11 +156,11 @@ class InvoiceBasicApi:
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.modifyInvoiceAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -172,7 +171,7 @@ class InvoiceBasicApi:
 			"entity": entity.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.modifyInvoiceBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -197,11 +196,11 @@ class InvoiceBasicApi:
 		payload = {
 			"entities": [x0.__serialize__() for x0 in entities],
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.modifyInvoicesAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -212,7 +211,7 @@ class InvoiceBasicApi:
 			"entities": [x0.__serialize__() for x0 in entities],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.modifyInvoicesBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -237,11 +236,11 @@ class InvoiceBasicApi:
 		payload = {
 			"entity_id": entity_id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.getInvoiceAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -252,7 +251,7 @@ class InvoiceBasicApi:
 			"entity_id": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.getInvoiceBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -277,11 +276,11 @@ class InvoiceBasicApi:
 		payload = {
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.getInvoicesAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -292,7 +291,7 @@ class InvoiceBasicApi:
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.getInvoicesBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -317,11 +316,11 @@ class InvoiceBasicApi:
 		payload = {
 			"filter_chain": filter_chain.__serialize__(),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.filterInvoicesByAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -332,7 +331,7 @@ class InvoiceBasicApi:
 			"filter_chain": filter_chain.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.filterInvoicesByBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -358,11 +357,11 @@ class InvoiceBasicApi:
 			"hc_party_id": hc_party_id,
 			"secret_patient_keys": [x0 for x0 in secret_patient_keys],
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.findInvoicesByHcPartyPatientForeignKeysAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -374,7 +373,7 @@ class InvoiceBasicApi:
 			"secret_patient_keys": [x0 for x0 in secret_patient_keys],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.findInvoicesByHcPartyPatientForeignKeysBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -399,11 +398,11 @@ class InvoiceBasicApi:
 		payload = {
 			"invoice": invoice.__serialize__(),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.reassignInvoiceAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -414,7 +413,7 @@ class InvoiceBasicApi:
 			"invoice": invoice.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.reassignInvoiceBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -440,11 +439,11 @@ class InvoiceBasicApi:
 			"invoice_id": invoice_id,
 			"ids": [x0 for x0 in ids],
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.mergeToAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -456,7 +455,7 @@ class InvoiceBasicApi:
 			"ids": [x0 for x0 in ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.mergeToBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -483,11 +482,11 @@ class InvoiceBasicApi:
 			"scheme": scheme,
 			"forced_value": forced_value,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.validateAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -500,7 +499,7 @@ class InvoiceBasicApi:
 			"forced_value": forced_value,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.validateBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -532,11 +531,11 @@ class InvoiceBasicApi:
 			"grace_period": grace_period,
 			"invoicing_codes": [x0.__serialize__() for x0 in invoicing_codes],
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.appendCodesAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -554,7 +553,7 @@ class InvoiceBasicApi:
 			"invoicing_codes": [x0.__serialize__() for x0 in invoicing_codes],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.appendCodesBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -582,11 +581,11 @@ class InvoiceBasicApi:
 			"secret_fkeys": secret_fkeys,
 			"tarification_ids": [x0 for x0 in tarification_ids],
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.removeCodesAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -600,7 +599,7 @@ class InvoiceBasicApi:
 			"tarification_ids": [x0 for x0 in tarification_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.removeCodesBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -621,8 +620,8 @@ class InvoiceBasicApi:
 			else:
 				success = PaginatedList._deserialize(success.decode('utf-8'))
 				success = PaginatedList(
-					rows = [EncryptedInvoice._deserialize(item) for item in success.rows]
-					next_key_pair = return_value.next_key_pair
+					rows = [EncryptedInvoice._deserialize(item) for item in success.rows],
+					next_key_pair = success.next_key_pair,
 				)
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
@@ -634,11 +633,11 @@ class InvoiceBasicApi:
 			"start_document_id": start_document_id,
 			"limit": limit,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.findInvoicesByAuthorAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -654,7 +653,7 @@ class InvoiceBasicApi:
 			"limit": limit,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.findInvoicesByAuthorBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -664,8 +663,8 @@ class InvoiceBasicApi:
 		else:
 			return_value = PaginatedList._deserialize(result_info["success"])
 			return_value = PaginatedList(
-				rows = [EncryptedInvoice._deserialize(item) for item in return_value.rows]
-				next_key_pair = return_value.next_key_pair
+				rows = [EncryptedInvoice._deserialize(item) for item in return_value.rows],
+				next_key_pair = return_value.next_key_pair,
 			)
 			return return_value
 
@@ -684,11 +683,11 @@ class InvoiceBasicApi:
 			"hc_party_id": hc_party_id,
 			"secret_patient_keys": [x0 for x0 in secret_patient_keys],
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listInvoicesByHCPartyAndPatientForeignKeysAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -700,7 +699,7 @@ class InvoiceBasicApi:
 			"secret_patient_keys": [x0 for x0 in secret_patient_keys],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listInvoicesByHCPartyAndPatientForeignKeysBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -726,11 +725,11 @@ class InvoiceBasicApi:
 			"hc_party_id": hc_party_id,
 			"group_id": group_id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listInvoicesByHcPartyAndGroupIdAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -742,7 +741,7 @@ class InvoiceBasicApi:
 			"group_id": group_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listInvoicesByHcPartyAndGroupIdBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -772,11 +771,11 @@ class InvoiceBasicApi:
 			"from": from,
 			"to": to,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDateAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -792,7 +791,7 @@ class InvoiceBasicApi:
 			"to": to,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDateBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -817,11 +816,11 @@ class InvoiceBasicApi:
 		payload = {
 			"contact_ids": [x0 for x0 in contact_ids],
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listInvoicesByContactIdsAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -832,7 +831,7 @@ class InvoiceBasicApi:
 			"contact_ids": [x0 for x0 in contact_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listInvoicesByContactIdsBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -857,11 +856,11 @@ class InvoiceBasicApi:
 		payload = {
 			"recipients_ids": [x0 for x0 in recipients_ids],
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listInvoicesByRecipientsIdsAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -872,7 +871,7 @@ class InvoiceBasicApi:
 			"recipients_ids": [x0 for x0 in recipients_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listInvoicesByRecipientsIdsBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -897,11 +896,11 @@ class InvoiceBasicApi:
 		payload = {
 			"user_ids": [x0 for x0 in user_ids],
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listToInsurancesAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -912,7 +911,7 @@ class InvoiceBasicApi:
 			"user_ids": [x0 for x0 in user_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listToInsurancesBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -937,11 +936,11 @@ class InvoiceBasicApi:
 		payload = {
 			"user_ids": [x0 for x0 in user_ids],
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listToInsurancesUnsentAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -952,7 +951,7 @@ class InvoiceBasicApi:
 			"user_ids": [x0 for x0 in user_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listToInsurancesUnsentBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -977,11 +976,11 @@ class InvoiceBasicApi:
 		payload = {
 			"hc_party_id": hc_party_id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listToPatientsAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -992,7 +991,7 @@ class InvoiceBasicApi:
 			"hc_party_id": hc_party_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listToPatientsBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1017,11 +1016,11 @@ class InvoiceBasicApi:
 		payload = {
 			"hc_party_id": hc_party_id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listToPatientsUnsentAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -1032,7 +1031,7 @@ class InvoiceBasicApi:
 			"hc_party_id": hc_party_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listToPatientsUnsentBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1057,11 +1056,11 @@ class InvoiceBasicApi:
 		payload = {
 			"ids": [x0 for x0 in ids],
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listInvoicesByIdsAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -1072,7 +1071,7 @@ class InvoiceBasicApi:
 			"ids": [x0 for x0 in ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listInvoicesByIdsBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1101,11 +1100,11 @@ class InvoiceBasicApi:
 			"from": from,
 			"to": to,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listInvoicesByHcpartySendingModeStatusDateAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -1120,7 +1119,7 @@ class InvoiceBasicApi:
 			"to": to,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listInvoicesByHcpartySendingModeStatusDateBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1145,11 +1144,11 @@ class InvoiceBasicApi:
 		payload = {
 			"service_ids": [x0 for x0 in service_ids],
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listInvoicesByServiceIdsAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -1160,7 +1159,7 @@ class InvoiceBasicApi:
 			"service_ids": [x0 for x0 in service_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listInvoicesByServiceIdsBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1188,11 +1187,11 @@ class InvoiceBasicApi:
 			"to": to,
 			"hcp_ids": [x0 for x0 in hcp_ids],
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listAllHcpsByStatusAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -1206,7 +1205,7 @@ class InvoiceBasicApi:
 			"hcp_ids": [x0 for x0 in hcp_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listAllHcpsByStatusBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))

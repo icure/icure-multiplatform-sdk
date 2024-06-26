@@ -1,10 +1,10 @@
 import asyncio
 import json
 import base64
-from kotlin_types import symbols, GENERAL_RESULT_CALLBACK
 from model.CallResult import CallResult, create_result_from_json
+from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from model.DocumentTemplate import DocumentTemplate
-from ctypes import c_char_p
+from ctypes import cast, c_char_p
 from typing import List, Optional
 from model.couchdb.DocIdentifier import DocIdentifier
 from model.PaginatedList import PaginatedList
@@ -12,7 +12,6 @@ from model.PaginatedList import PaginatedList
 class DocumentTemplateApi:
 
 	def __init__(self, icure_sdk, executor):
-		self.native_api = symbols.kotlin.root.com.icure.sdk.py.api.createDocumentTemplateApi()
 		self.icure_sdk = icure_sdk
 		self.executor = executor
 
@@ -30,11 +29,11 @@ class DocumentTemplateApi:
 		payload = {
 			"document_template_id": document_template_id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.getDocumentTemplateAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -45,7 +44,7 @@ class DocumentTemplateApi:
 			"document_template_id": document_template_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.getDocumentTemplateBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -70,11 +69,11 @@ class DocumentTemplateApi:
 		payload = {
 			"document_template": document_template.__serialize__(),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.createDocumentTemplateAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -85,7 +84,7 @@ class DocumentTemplateApi:
 			"document_template": document_template.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.createDocumentTemplateBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -110,11 +109,11 @@ class DocumentTemplateApi:
 		payload = {
 			"document_template": document_template.__serialize__(),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.modifyDocumentTemplateAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -125,7 +124,7 @@ class DocumentTemplateApi:
 			"document_template": document_template.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.modifyDocumentTemplateBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -150,11 +149,11 @@ class DocumentTemplateApi:
 		payload = {
 			"document_template_ids": [x0 for x0 in document_template_ids],
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.deleteDocumentTemplatesAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -165,7 +164,7 @@ class DocumentTemplateApi:
 			"document_template_ids": [x0 for x0 in document_template_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.deleteDocumentTemplatesBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -190,11 +189,11 @@ class DocumentTemplateApi:
 		payload = {
 			"speciality_code": speciality_code,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.listDocumentTemplatesBySpecialityAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -205,7 +204,7 @@ class DocumentTemplateApi:
 			"speciality_code": speciality_code,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.listDocumentTemplatesBySpecialityBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -230,11 +229,11 @@ class DocumentTemplateApi:
 		payload = {
 			"document_type_code": document_type_code,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.listDocumentTemplatesByDocumentTypeAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -245,7 +244,7 @@ class DocumentTemplateApi:
 			"document_type_code": document_type_code,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.listDocumentTemplatesByDocumentTypeBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -270,11 +269,11 @@ class DocumentTemplateApi:
 		payload = {
 			"document_type_code": document_type_code,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.listDocumentTemplatesByDocumentTypeForCurrentUserAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -285,7 +284,7 @@ class DocumentTemplateApi:
 			"document_type_code": document_type_code,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.listDocumentTemplatesByDocumentTypeForCurrentUserBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -309,11 +308,11 @@ class DocumentTemplateApi:
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.listDocumentTemplatesAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -323,7 +322,7 @@ class DocumentTemplateApi:
 		payload = {
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.listDocumentTemplatesBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -344,8 +343,8 @@ class DocumentTemplateApi:
 			else:
 				success = PaginatedList._deserialize(success.decode('utf-8'))
 				success = PaginatedList(
-					rows = [DocumentTemplate._deserialize(item) for item in success.rows]
-					next_key_pair = return_value.next_key_pair
+					rows = [DocumentTemplate._deserialize(item) for item in success.rows],
+					next_key_pair = success.next_key_pair,
 				)
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
@@ -354,11 +353,11 @@ class DocumentTemplateApi:
 			"start_document_id": start_document_id,
 			"limit": limit,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.findAllDocumentTemplatesAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -371,7 +370,7 @@ class DocumentTemplateApi:
 			"limit": limit,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.findAllDocumentTemplatesBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -381,8 +380,8 @@ class DocumentTemplateApi:
 		else:
 			return_value = PaginatedList._deserialize(result_info["success"])
 			return_value = PaginatedList(
-				rows = [DocumentTemplate._deserialize(item) for item in return_value.rows]
-				next_key_pair = return_value.next_key_pair
+				rows = [DocumentTemplate._deserialize(item) for item in return_value.rows],
+				next_key_pair = return_value.next_key_pair,
 			)
 			return return_value
 
@@ -401,11 +400,11 @@ class DocumentTemplateApi:
 			"document_template_id": document_template_id,
 			"attachment_id": attachment_id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.getDocumentTemplateAttachmentAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -417,7 +416,7 @@ class DocumentTemplateApi:
 			"attachment_id": attachment_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.getDocumentTemplateAttachmentBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -443,11 +442,11 @@ class DocumentTemplateApi:
 			"document_template_id": document_template_id,
 			"attachment_id": attachment_id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.getAttachmentTextAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -459,7 +458,7 @@ class DocumentTemplateApi:
 			"attachment_id": attachment_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.getAttachmentTextBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -485,11 +484,11 @@ class DocumentTemplateApi:
 			"document_template_id": document_template_id,
 			"payload": base64.b64encode(payload).decode('utf-8'),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.setDocumentTemplateAttachmentAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -501,7 +500,7 @@ class DocumentTemplateApi:
 			"payload": base64.b64encode(payload).decode('utf-8'),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.setDocumentTemplateAttachmentBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -518,7 +517,7 @@ class DocumentTemplateApi:
 			"attachment_id": attachment_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.getAttachmentUrl(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))

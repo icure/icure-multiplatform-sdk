@@ -1,10 +1,10 @@
 import asyncio
 import json
 import base64
-from kotlin_types import symbols, GENERAL_RESULT_CALLBACK
 from model.CallResult import CallResult, create_result_from_json
+from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from model.couchdb.DocIdentifier import DocIdentifier
-from ctypes import c_char_p
+from ctypes import cast, c_char_p
 from typing import List, Optional
 from model.FormTemplate import FormTemplate
 from model.Form import EncryptedForm
@@ -12,7 +12,6 @@ from model.Form import EncryptedForm
 class FormBasicApi:
 
 	def __init__(self, icure_sdk, executor):
-		self.native_api = symbols.kotlin.root.com.icure.sdk.py.api.createFormBasicApi()
 		self.icure_sdk = icure_sdk
 		self.executor = executor
 
@@ -30,11 +29,11 @@ class FormBasicApi:
 		payload = {
 			"entity_id": entity_id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavourlessApi.deleteFormAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -45,7 +44,7 @@ class FormBasicApi:
 			"entity_id": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavourlessApi.deleteFormBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -70,11 +69,11 @@ class FormBasicApi:
 		payload = {
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavourlessApi.deleteFormsAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -85,7 +84,7 @@ class FormBasicApi:
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavourlessApi.deleteFormsBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -111,11 +110,11 @@ class FormBasicApi:
 			"form_template_id": form_template_id,
 			"raw": raw,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavourlessApi.getFormTemplateAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -127,7 +126,7 @@ class FormBasicApi:
 			"raw": raw,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavourlessApi.getFormTemplateBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -154,11 +153,11 @@ class FormBasicApi:
 			"speciality_code": speciality_code,
 			"raw": raw,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavourlessApi.getFormTemplatesByGuidAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -171,7 +170,7 @@ class FormBasicApi:
 			"raw": raw,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavourlessApi.getFormTemplatesByGuidBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -197,11 +196,11 @@ class FormBasicApi:
 			"speciality_code": speciality_code,
 			"raw": raw,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavourlessApi.listFormTemplatesBySpecialityAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -213,7 +212,7 @@ class FormBasicApi:
 			"raw": raw,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavourlessApi.listFormTemplatesBySpecialityBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -239,11 +238,11 @@ class FormBasicApi:
 			"load_layout": load_layout,
 			"raw": raw,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavourlessApi.getFormTemplatesAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -255,7 +254,7 @@ class FormBasicApi:
 			"raw": raw,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavourlessApi.getFormTemplatesBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -280,11 +279,11 @@ class FormBasicApi:
 		payload = {
 			"form_template": form_template.__serialize__(),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavourlessApi.createFormTemplateAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -295,7 +294,7 @@ class FormBasicApi:
 			"form_template": form_template.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavourlessApi.createFormTemplateBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -320,11 +319,11 @@ class FormBasicApi:
 		payload = {
 			"form_template_id": form_template_id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavourlessApi.deleteFormTemplateAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -335,7 +334,7 @@ class FormBasicApi:
 			"form_template_id": form_template_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavourlessApi.deleteFormTemplateBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -360,11 +359,11 @@ class FormBasicApi:
 		payload = {
 			"form_template": form_template.__serialize__(),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavourlessApi.updateFormTemplateAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -375,7 +374,7 @@ class FormBasicApi:
 			"form_template": form_template.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavourlessApi.updateFormTemplateBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -401,11 +400,11 @@ class FormBasicApi:
 			"form_template_id": form_template_id,
 			"payload": base64.b64encode(payload).decode('utf-8'),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavourlessApi.setTemplateAttachmentAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -417,7 +416,7 @@ class FormBasicApi:
 			"payload": base64.b64encode(payload).decode('utf-8'),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavourlessApi.setTemplateAttachmentBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -442,11 +441,11 @@ class FormBasicApi:
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavouredApi.modifyFormAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -457,7 +456,7 @@ class FormBasicApi:
 			"entity": entity.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavouredApi.modifyFormBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -482,11 +481,11 @@ class FormBasicApi:
 		payload = {
 			"entities": [x0.__serialize__() for x0 in entities],
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavouredApi.modifyFormsAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -497,7 +496,7 @@ class FormBasicApi:
 			"entities": [x0.__serialize__() for x0 in entities],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavouredApi.modifyFormsBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -522,11 +521,11 @@ class FormBasicApi:
 		payload = {
 			"entity_id": entity_id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavouredApi.getFormAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -537,7 +536,7 @@ class FormBasicApi:
 			"entity_id": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavouredApi.getFormBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -562,11 +561,11 @@ class FormBasicApi:
 		payload = {
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavouredApi.getFormsAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -577,7 +576,7 @@ class FormBasicApi:
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavouredApi.getFormsBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -602,11 +601,11 @@ class FormBasicApi:
 		payload = {
 			"logical_uuid": logical_uuid,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavouredApi.getFormByLogicalUuidAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -617,7 +616,7 @@ class FormBasicApi:
 			"logical_uuid": logical_uuid,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavouredApi.getFormByLogicalUuidBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -642,11 +641,11 @@ class FormBasicApi:
 		payload = {
 			"logical_uuid": logical_uuid,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavouredApi.getFormsByLogicalUuidAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -657,7 +656,7 @@ class FormBasicApi:
 			"logical_uuid": logical_uuid,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavouredApi.getFormsByLogicalUuidBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -682,11 +681,11 @@ class FormBasicApi:
 		payload = {
 			"unique_id": unique_id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavouredApi.getFormsByUniqueIdAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -697,7 +696,7 @@ class FormBasicApi:
 			"unique_id": unique_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavouredApi.getFormsByUniqueIdBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -722,11 +721,11 @@ class FormBasicApi:
 		payload = {
 			"unique_id": unique_id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavouredApi.getFormByUniqueIdAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -737,7 +736,7 @@ class FormBasicApi:
 			"unique_id": unique_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavouredApi.getFormByUniqueIdBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -763,11 +762,11 @@ class FormBasicApi:
 			"hc_party_id": hc_party_id,
 			"parent_id": parent_id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavouredApi.getChildrenFormsAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -779,7 +778,7 @@ class FormBasicApi:
 			"parent_id": parent_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavouredApi.getChildrenFormsBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -808,11 +807,11 @@ class FormBasicApi:
 			"plan_of_action_id": plan_of_action_id,
 			"form_template_id": form_template_id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavouredApi.listFormsByHCPartyAndPatientForeignKeysAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -827,7 +826,7 @@ class FormBasicApi:
 			"form_template_id": form_template_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavouredApi.listFormsByHCPartyAndPatientForeignKeysBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))

@@ -1,17 +1,16 @@
 import asyncio
 import json
-from kotlin_types import symbols, GENERAL_RESULT_CALLBACK
 from typing import Optional
 from model.CallResult import CallResult, create_result_from_json
+from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from crypto.entities.RecoveryDataKey import RecoveryDataKey
-from ctypes import c_char_p
+from ctypes import cast, c_char_p
 from crypto.entities.RecoveryResult import RecoveryResult
 from crypto.entities.RecoveryDataUseFailureReason import RecoveryDataUseFailureReason
 
 class RecoveryApi:
 
 	def __init__(self, icure_sdk, executor):
-		self.native_api = symbols.kotlin.root.com.icure.sdk.py.api.createRecoveryApi()
 		self.icure_sdk = icure_sdk
 		self.executor = executor
 
@@ -30,11 +29,11 @@ class RecoveryApi:
 			"include_parents_keys": include_parents_keys,
 			"lifetime_seconds": lifetime_seconds,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.createRecoveryInfoForAvailableKeyPairsAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -46,7 +45,7 @@ class RecoveryApi:
 			"lifetime_seconds": lifetime_seconds,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.createRecoveryInfoForAvailableKeyPairsBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -72,11 +71,11 @@ class RecoveryApi:
 			"recovery_key": recovery_key.__serialize__(),
 			"auto_delete": auto_delete,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.recoverKeyPairsAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -88,7 +87,7 @@ class RecoveryApi:
 			"auto_delete": auto_delete,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.recoverKeyPairsBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -114,11 +113,11 @@ class RecoveryApi:
 			"delegate_id": delegate_id,
 			"lifetime_seconds": lifetime_seconds,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.createExchangeDataRecoveryInfoAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -130,7 +129,7 @@ class RecoveryApi:
 			"lifetime_seconds": lifetime_seconds,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.createExchangeDataRecoveryInfoBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -155,11 +154,11 @@ class RecoveryApi:
 		payload = {
 			"recovery_key": recovery_key.__serialize__(),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.recoverExchangeDataAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -170,7 +169,7 @@ class RecoveryApi:
 			"recovery_key": recovery_key.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.recoverExchangeDataBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -195,11 +194,11 @@ class RecoveryApi:
 		payload = {
 			"recovery_key": recovery_key.__serialize__(),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.deleteRecoveryInfoAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -210,7 +209,7 @@ class RecoveryApi:
 			"recovery_key": recovery_key.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.deleteRecoveryInfoBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -232,11 +231,11 @@ class RecoveryApi:
 		payload = {
 			"data_owner_id": data_owner_id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.deleteAllRecoveryInfoForAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -247,7 +246,7 @@ class RecoveryApi:
 			"data_owner_id": data_owner_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.deleteAllRecoveryInfoForBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -272,11 +271,11 @@ class RecoveryApi:
 		payload = {
 			"data_owner_id": data_owner_id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.deleteAllKeyPairRecoveryInfoForAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -287,7 +286,7 @@ class RecoveryApi:
 			"data_owner_id": data_owner_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.deleteAllKeyPairRecoveryInfoForBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -312,11 +311,11 @@ class RecoveryApi:
 		payload = {
 			"data_owner_id": data_owner_id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.deleteAllExchangeDataRecoveryInfoForAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -327,7 +326,7 @@ class RecoveryApi:
 			"data_owner_id": data_owner_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.deleteAllExchangeDataRecoveryInfoForBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))

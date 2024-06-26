@@ -1,9 +1,9 @@
 import asyncio
 import json
-from kotlin_types import symbols, GENERAL_RESULT_CALLBACK
 from model.CallResult import CallResult, create_result_from_json
+from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from model.Insurance import Insurance
-from ctypes import c_char_p
+from ctypes import cast, c_char_p
 from typing import List, Optional
 from model.couchdb.DocIdentifier import DocIdentifier
 from model.PaginatedList import PaginatedList
@@ -11,7 +11,6 @@ from model.PaginatedList import PaginatedList
 class InsuranceApi:
 
 	def __init__(self, icure_sdk, executor):
-		self.native_api = symbols.kotlin.root.com.icure.sdk.py.api.createInsuranceApi()
 		self.icure_sdk = icure_sdk
 		self.executor = executor
 
@@ -29,11 +28,11 @@ class InsuranceApi:
 		payload = {
 			"insurance_id": insurance_id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.InsuranceApi.getInsuranceAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -44,7 +43,7 @@ class InsuranceApi:
 			"insurance_id": insurance_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InsuranceApi.getInsuranceBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -69,11 +68,11 @@ class InsuranceApi:
 		payload = {
 			"insurance_ids": [x0 for x0 in insurance_ids],
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.InsuranceApi.getInsurancesAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -84,7 +83,7 @@ class InsuranceApi:
 			"insurance_ids": [x0 for x0 in insurance_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InsuranceApi.getInsurancesBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -109,11 +108,11 @@ class InsuranceApi:
 		payload = {
 			"insurance": insurance.__serialize__(),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.InsuranceApi.createInsuranceAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -124,7 +123,7 @@ class InsuranceApi:
 			"insurance": insurance.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InsuranceApi.createInsuranceBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -149,11 +148,11 @@ class InsuranceApi:
 		payload = {
 			"insurance_id": insurance_id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.InsuranceApi.deleteInsuranceAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -164,7 +163,7 @@ class InsuranceApi:
 			"insurance_id": insurance_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InsuranceApi.deleteInsuranceBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -185,8 +184,8 @@ class InsuranceApi:
 			else:
 				success = PaginatedList._deserialize(success.decode('utf-8'))
 				success = PaginatedList(
-					rows = [Insurance._deserialize(item) for item in success.rows]
-					next_key_pair = return_value.next_key_pair
+					rows = [Insurance._deserialize(item) for item in success.rows],
+					next_key_pair = success.next_key_pair,
 				)
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
@@ -194,11 +193,11 @@ class InsuranceApi:
 			"start_document_id": start_document_id,
 			"limit": limit,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.InsuranceApi.getAllInsurancesAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -210,7 +209,7 @@ class InsuranceApi:
 			"limit": limit,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InsuranceApi.getAllInsurancesBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -220,8 +219,8 @@ class InsuranceApi:
 		else:
 			return_value = PaginatedList._deserialize(result_info["success"])
 			return_value = PaginatedList(
-				rows = [Insurance._deserialize(item) for item in return_value.rows]
-				next_key_pair = return_value.next_key_pair
+				rows = [Insurance._deserialize(item) for item in return_value.rows],
+				next_key_pair = return_value.next_key_pair,
 			)
 			return return_value
 
@@ -239,11 +238,11 @@ class InsuranceApi:
 		payload = {
 			"insurance_code": insurance_code,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.InsuranceApi.listInsurancesByCodeAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -254,7 +253,7 @@ class InsuranceApi:
 			"insurance_code": insurance_code,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InsuranceApi.listInsurancesByCodeBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -279,11 +278,11 @@ class InsuranceApi:
 		payload = {
 			"insurance_name": insurance_name,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.InsuranceApi.listInsurancesByNameAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -294,7 +293,7 @@ class InsuranceApi:
 			"insurance_name": insurance_name,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InsuranceApi.listInsurancesByNameBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -319,11 +318,11 @@ class InsuranceApi:
 		payload = {
 			"insurance": insurance.__serialize__(),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.InsuranceApi.modifyInsuranceAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -334,7 +333,7 @@ class InsuranceApi:
 			"insurance": insurance.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InsuranceApi.modifyInsuranceBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))

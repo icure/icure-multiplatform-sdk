@@ -1,10 +1,10 @@
 import asyncio
 import json
-from kotlin_types import symbols, GENERAL_RESULT_CALLBACK
 from model.filter.AbstractFilter import AbstractFilter
 from model.CallResult import CallResult, create_result_from_json
+from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from typing import List, Optional
-from ctypes import c_char_p
+from ctypes import cast, c_char_p
 from model.couchdb.DocIdentifier import DocIdentifier
 from model.IcureStub import IcureStub
 from model.HealthElement import EncryptedHealthElement
@@ -14,7 +14,6 @@ from model.PaginatedList import PaginatedList
 class HealthcareElementBasicApi:
 
 	def __init__(self, icure_sdk, executor):
-		self.native_api = symbols.kotlin.root.com.icure.sdk.py.api.createHealthcareElementBasicApi()
 		self.icure_sdk = icure_sdk
 		self.executor = executor
 
@@ -32,11 +31,11 @@ class HealthcareElementBasicApi:
 		payload = {
 			"filter": serialize_abstract_filter(filter),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.HealthcareElementBasicFlavourlessApi.matchHealthcareElementsByAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -47,7 +46,7 @@ class HealthcareElementBasicApi:
 			"filter": serialize_abstract_filter(filter),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcareElementBasicFlavourlessApi.matchHealthcareElementsByBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -72,11 +71,11 @@ class HealthcareElementBasicApi:
 		payload = {
 			"entity_id": entity_id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.HealthcareElementBasicFlavourlessApi.deleteHealthcareElementAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -87,7 +86,7 @@ class HealthcareElementBasicApi:
 			"entity_id": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcareElementBasicFlavourlessApi.deleteHealthcareElementBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -112,11 +111,11 @@ class HealthcareElementBasicApi:
 		payload = {
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.HealthcareElementBasicFlavourlessApi.deleteHealthcareElementsAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -127,7 +126,7 @@ class HealthcareElementBasicApi:
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcareElementBasicFlavourlessApi.deleteHealthcareElementsBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -153,11 +152,11 @@ class HealthcareElementBasicApi:
 			"hc_party_id": hc_party_id,
 			"secret_patient_keys": [x0 for x0 in secret_patient_keys],
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.HealthcareElementBasicFlavourlessApi.findHealthcareElementsDelegationsStubsByHcPartyPatientForeignKeysAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -169,7 +168,7 @@ class HealthcareElementBasicApi:
 			"secret_patient_keys": [x0 for x0 in secret_patient_keys],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcareElementBasicFlavourlessApi.findHealthcareElementsDelegationsStubsByHcPartyPatientForeignKeysBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -194,11 +193,11 @@ class HealthcareElementBasicApi:
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.HealthcareElementBasicFlavouredApi.modifyHealthcareElementAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -209,7 +208,7 @@ class HealthcareElementBasicApi:
 			"entity": entity.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcareElementBasicFlavouredApi.modifyHealthcareElementBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -234,11 +233,11 @@ class HealthcareElementBasicApi:
 		payload = {
 			"entities": [x0.__serialize__() for x0 in entities],
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.HealthcareElementBasicFlavouredApi.modifyHealthcareElementsAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -249,7 +248,7 @@ class HealthcareElementBasicApi:
 			"entities": [x0.__serialize__() for x0 in entities],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcareElementBasicFlavouredApi.modifyHealthcareElementsBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -274,11 +273,11 @@ class HealthcareElementBasicApi:
 		payload = {
 			"entity_id": entity_id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.HealthcareElementBasicFlavouredApi.getHealthcareElementAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -289,7 +288,7 @@ class HealthcareElementBasicApi:
 			"entity_id": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcareElementBasicFlavouredApi.getHealthcareElementBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -314,11 +313,11 @@ class HealthcareElementBasicApi:
 		payload = {
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.HealthcareElementBasicFlavouredApi.getHealthcareElementsAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -329,7 +328,7 @@ class HealthcareElementBasicApi:
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcareElementBasicFlavouredApi.getHealthcareElementsBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -350,8 +349,8 @@ class HealthcareElementBasicApi:
 			else:
 				success = PaginatedList._deserialize(success.decode('utf-8'))
 				success = PaginatedList(
-					rows = [EncryptedHealthElement._deserialize(item) for item in success.rows]
-					next_key_pair = return_value.next_key_pair
+					rows = [EncryptedHealthElement._deserialize(item) for item in success.rows],
+					next_key_pair = success.next_key_pair,
 				)
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
@@ -360,11 +359,11 @@ class HealthcareElementBasicApi:
 			"start_document_id": start_document_id,
 			"limit": limit,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.HealthcareElementBasicFlavouredApi.filterHealthcareElementsByAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -377,7 +376,7 @@ class HealthcareElementBasicApi:
 			"limit": limit,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcareElementBasicFlavouredApi.filterHealthcareElementsByBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -387,8 +386,8 @@ class HealthcareElementBasicApi:
 		else:
 			return_value = PaginatedList._deserialize(result_info["success"])
 			return_value = PaginatedList(
-				rows = [EncryptedHealthElement._deserialize(item) for item in return_value.rows]
-				next_key_pair = return_value.next_key_pair
+				rows = [EncryptedHealthElement._deserialize(item) for item in return_value.rows],
+				next_key_pair = return_value.next_key_pair,
 			)
 			return return_value
 
@@ -407,11 +406,11 @@ class HealthcareElementBasicApi:
 			"hc_party_id": hc_party_id,
 			"secret_patient_keys": [x0 for x0 in secret_patient_keys],
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.HealthcareElementBasicFlavouredApi.findHealthcareElementsByHcPartyPatientForeignKeysAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -423,7 +422,7 @@ class HealthcareElementBasicApi:
 			"secret_patient_keys": [x0 for x0 in secret_patient_keys],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcareElementBasicFlavouredApi.findHealthcareElementsByHcPartyPatientForeignKeysBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))

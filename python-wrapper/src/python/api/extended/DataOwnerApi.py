@@ -1,9 +1,9 @@
 import asyncio
 import json
-from kotlin_types import symbols, GENERAL_RESULT_CALLBACK
 from model.CallResult import CallResult, create_result_from_json
+from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from model.DataOwnerWithType import DataOwnerWithType
-from ctypes import c_char_p
+from ctypes import cast, c_char_p
 from model.CryptoActorStubWithType import CryptoActorStubWithType
 from typing import List
 from model.DataOwnerType import DataOwnerType
@@ -11,7 +11,6 @@ from model.DataOwnerType import DataOwnerType
 class DataOwnerApi:
 
 	def __init__(self, icure_sdk, executor):
-		self.native_api = symbols.kotlin.root.com.icure.sdk.py.api.createDataOwnerApi()
 		self.icure_sdk = icure_sdk
 		self.executor = executor
 
@@ -28,11 +27,11 @@ class DataOwnerApi:
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DataOwnerApi.getCurrentDataOwnerAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -42,7 +41,7 @@ class DataOwnerApi:
 		payload = {
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DataOwnerApi.getCurrentDataOwnerBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -66,11 +65,11 @@ class DataOwnerApi:
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DataOwnerApi.getCurrentDataOwnerStubAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -80,7 +79,7 @@ class DataOwnerApi:
 		payload = {
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DataOwnerApi.getCurrentDataOwnerStubBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -104,11 +103,11 @@ class DataOwnerApi:
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DataOwnerApi.getCurrentDataOwnerIdAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -118,7 +117,7 @@ class DataOwnerApi:
 		payload = {
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DataOwnerApi.getCurrentDataOwnerIdBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -142,11 +141,11 @@ class DataOwnerApi:
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DataOwnerApi.getCurrentDataOwnerHierarchyIdsAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -156,7 +155,7 @@ class DataOwnerApi:
 		payload = {
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DataOwnerApi.getCurrentDataOwnerHierarchyIdsBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -181,11 +180,11 @@ class DataOwnerApi:
 		payload = {
 			"owner_id": owner_id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DataOwnerApi.getDataOwnerAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -196,7 +195,7 @@ class DataOwnerApi:
 			"owner_id": owner_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DataOwnerApi.getDataOwnerBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -221,11 +220,11 @@ class DataOwnerApi:
 		payload = {
 			"owner_id": owner_id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DataOwnerApi.getDataOwnerStubAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -236,7 +235,7 @@ class DataOwnerApi:
 			"owner_id": owner_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DataOwnerApi.getDataOwnerStubBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -261,11 +260,11 @@ class DataOwnerApi:
 		payload = {
 			"parent_id": parent_id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DataOwnerApi.getCurrentDataOwnerHierarchyIdsFromAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -276,7 +275,7 @@ class DataOwnerApi:
 			"parent_id": parent_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DataOwnerApi.getCurrentDataOwnerHierarchyIdsFromBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -300,11 +299,11 @@ class DataOwnerApi:
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DataOwnerApi.getCurrentDataOwnerHierarchyAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -314,7 +313,7 @@ class DataOwnerApi:
 		payload = {
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DataOwnerApi.getCurrentDataOwnerHierarchyBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -339,11 +338,11 @@ class DataOwnerApi:
 		payload = {
 			"crypto_actor_stub_with_type_dto": crypto_actor_stub_with_type_dto.__serialize__(),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DataOwnerApi.modifyDataOwnerStubAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -354,7 +353,7 @@ class DataOwnerApi:
 			"crypto_actor_stub_with_type_dto": crypto_actor_stub_with_type_dto.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DataOwnerApi.modifyDataOwnerStubBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -378,11 +377,11 @@ class DataOwnerApi:
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DataOwnerApi.getCurrentDataOwnerTypeAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -392,7 +391,7 @@ class DataOwnerApi:
 		payload = {
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DataOwnerApi.getCurrentDataOwnerTypeBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -417,11 +416,11 @@ class DataOwnerApi:
 		payload = {
 			"owner_id": owner_id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DataOwnerApi.getCryptoActorStubAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -432,7 +431,7 @@ class DataOwnerApi:
 			"owner_id": owner_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DataOwnerApi.getCryptoActorStubBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -447,7 +446,7 @@ class DataOwnerApi:
 		payload = {
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DataOwnerApi.clearCurrentDataOwnerIdsCache(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))

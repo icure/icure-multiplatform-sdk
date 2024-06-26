@@ -1,9 +1,9 @@
 import asyncio
 import json
-from kotlin_types import symbols, GENERAL_RESULT_CALLBACK
 from model.CallResult import CallResult, create_result_from_json
+from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from model.User import User
-from ctypes import c_char_p
+from ctypes import cast, c_char_p
 from typing import Optional, List
 from model.PaginatedList import PaginatedList
 from model.couchdb.DocIdentifier import DocIdentifier
@@ -18,7 +18,6 @@ from model.security.Enable2faRequest import Enable2faRequest
 class UserApi:
 
 	def __init__(self, icure_sdk, executor):
-		self.native_api = symbols.kotlin.root.com.icure.sdk.py.api.createUserApi()
 		self.icure_sdk = icure_sdk
 		self.executor = executor
 
@@ -35,11 +34,11 @@ class UserApi:
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.getCurrentUserAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -49,7 +48,7 @@ class UserApi:
 		payload = {
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.getCurrentUserBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -70,8 +69,8 @@ class UserApi:
 			else:
 				success = PaginatedList._deserialize(success.decode('utf-8'))
 				success = PaginatedList(
-					rows = [User._deserialize(item) for item in success.rows]
-					next_key_pair = return_value.next_key_pair
+					rows = [User._deserialize(item) for item in success.rows],
+					next_key_pair = success.next_key_pair,
 				)
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
@@ -81,11 +80,11 @@ class UserApi:
 			"limit": limit,
 			"skip_patients": skip_patients,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.listUsersByAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -99,7 +98,7 @@ class UserApi:
 			"skip_patients": skip_patients,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.listUsersByBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -109,8 +108,8 @@ class UserApi:
 		else:
 			return_value = PaginatedList._deserialize(result_info["success"])
 			return_value = PaginatedList(
-				rows = [User._deserialize(item) for item in return_value.rows]
-				next_key_pair = return_value.next_key_pair
+				rows = [User._deserialize(item) for item in return_value.rows],
+				next_key_pair = return_value.next_key_pair,
 			)
 			return return_value
 
@@ -128,11 +127,11 @@ class UserApi:
 		payload = {
 			"user": user.__serialize__(),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.createUserAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -143,7 +142,7 @@ class UserApi:
 			"user": user.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.createUserBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -168,11 +167,11 @@ class UserApi:
 		payload = {
 			"user_id": user_id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.getUserAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -183,7 +182,7 @@ class UserApi:
 			"user_id": user_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.getUserBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -208,11 +207,11 @@ class UserApi:
 		payload = {
 			"email": email,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.getUserByEmailAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -223,7 +222,7 @@ class UserApi:
 			"email": email,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.getUserByEmailBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -248,11 +247,11 @@ class UserApi:
 		payload = {
 			"phone_number": phone_number,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.getUserByPhoneNumberAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -263,7 +262,7 @@ class UserApi:
 			"phone_number": phone_number,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.getUserByPhoneNumberBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -288,11 +287,11 @@ class UserApi:
 		payload = {
 			"id": id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.findByHcpartyIdAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -303,7 +302,7 @@ class UserApi:
 			"id": id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.findByHcpartyIdBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -328,11 +327,11 @@ class UserApi:
 		payload = {
 			"id": id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.findByPatientIdAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -343,7 +342,7 @@ class UserApi:
 			"id": id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.findByPatientIdBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -368,11 +367,11 @@ class UserApi:
 		payload = {
 			"user_id": user_id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.deleteUserAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -383,7 +382,7 @@ class UserApi:
 			"user_id": user_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.deleteUserBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -408,11 +407,11 @@ class UserApi:
 		payload = {
 			"user": user.__serialize__(),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.modifyUserAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -423,7 +422,7 @@ class UserApi:
 			"user": user.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.modifyUserBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -448,11 +447,11 @@ class UserApi:
 		payload = {
 			"healthcare_party_id": healthcare_party_id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.assignHealthcarePartyAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -463,7 +462,7 @@ class UserApi:
 			"healthcare_party_id": healthcare_party_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.assignHealthcarePartyBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -489,11 +488,11 @@ class UserApi:
 			"user_id": user_id,
 			"properties": [x0.__serialize__() for x0 in properties] if properties is not None else None,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.modifyPropertiesAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -505,7 +504,7 @@ class UserApi:
 			"properties": [x0.__serialize__() for x0 in properties] if properties is not None else None,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.modifyPropertiesBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -533,11 +532,11 @@ class UserApi:
 			"token_validity": token_validity,
 			"token": token,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.getTokenAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -551,7 +550,7 @@ class UserApi:
 			"token": token,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.getTokenBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -572,8 +571,8 @@ class UserApi:
 			else:
 				success = PaginatedList._deserialize(success.decode('utf-8'))
 				success = PaginatedList(
-					rows = [User._deserialize(item) for item in success.rows]
-					next_key_pair = return_value.next_key_pair
+					rows = [User._deserialize(item) for item in success.rows],
+					next_key_pair = success.next_key_pair,
 				)
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
@@ -582,11 +581,11 @@ class UserApi:
 			"limit": limit,
 			"filter_chain": filter_chain.__serialize__(),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.filterUsersByAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -599,7 +598,7 @@ class UserApi:
 			"filter_chain": filter_chain.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.filterUsersByBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -609,8 +608,8 @@ class UserApi:
 		else:
 			return_value = PaginatedList._deserialize(result_info["success"])
 			return_value = PaginatedList(
-				rows = [User._deserialize(item) for item in return_value.rows]
-				next_key_pair = return_value.next_key_pair
+				rows = [User._deserialize(item) for item in return_value.rows],
+				next_key_pair = return_value.next_key_pair,
 			)
 			return return_value
 
@@ -628,11 +627,11 @@ class UserApi:
 		payload = {
 			"filter": serialize_abstract_filter(filter),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.matchUsersByAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -643,7 +642,7 @@ class UserApi:
 			"filter": serialize_abstract_filter(filter),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.matchUsersByBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -667,11 +666,11 @@ class UserApi:
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.getMatchingUsersAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -681,7 +680,7 @@ class UserApi:
 		payload = {
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.getMatchingUsersBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -702,8 +701,8 @@ class UserApi:
 			else:
 				success = PaginatedList._deserialize(success.decode('utf-8'))
 				success = PaginatedList(
-					rows = [User._deserialize(item) for item in success.rows]
-					next_key_pair = return_value.next_key_pair
+					rows = [User._deserialize(item) for item in success.rows],
+					next_key_pair = success.next_key_pair,
 				)
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
@@ -713,11 +712,11 @@ class UserApi:
 			"start_document_id": start_document_id,
 			"limit": limit,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.listUsersInGroupAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -731,7 +730,7 @@ class UserApi:
 			"limit": limit,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.listUsersInGroupBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -741,8 +740,8 @@ class UserApi:
 		else:
 			return_value = PaginatedList._deserialize(result_info["success"])
 			return_value = PaginatedList(
-				rows = [User._deserialize(item) for item in return_value.rows]
-				next_key_pair = return_value.next_key_pair
+				rows = [User._deserialize(item) for item in return_value.rows],
+				next_key_pair = return_value.next_key_pair,
 			)
 			return return_value
 
@@ -761,11 +760,11 @@ class UserApi:
 			"group_id": group_id,
 			"user": user.__serialize__(),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.createUserInGroupAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -777,7 +776,7 @@ class UserApi:
 			"user": user.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.createUserInGroupBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -803,11 +802,11 @@ class UserApi:
 			"group_id": group_id,
 			"user": user.__serialize__(),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.modifyUserInGroupAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -819,7 +818,7 @@ class UserApi:
 			"user": user.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.modifyUserInGroupBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -845,11 +844,11 @@ class UserApi:
 			"group_id": group_id,
 			"user_id": user_id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.deleteUserInGroupAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -861,7 +860,7 @@ class UserApi:
 			"user_id": user_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.deleteUserInGroupBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -887,11 +886,11 @@ class UserApi:
 			"user_id": user_id,
 			"roles_id": roles_id.__serialize__(),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.addRolesToUserAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -903,7 +902,7 @@ class UserApi:
 			"roles_id": roles_id.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.addRolesToUserBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -930,11 +929,11 @@ class UserApi:
 			"group_id": group_id,
 			"roles_id": roles_id.__serialize__(),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.addRolesToUserInGroupAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -947,7 +946,7 @@ class UserApi:
 			"roles_id": roles_id.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.addRolesToUserInGroupBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -972,11 +971,11 @@ class UserApi:
 		payload = {
 			"user_id": user_id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.removeRolesFromUserAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -987,7 +986,7 @@ class UserApi:
 			"user_id": user_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.removeRolesFromUserBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1013,11 +1012,11 @@ class UserApi:
 			"user_id": user_id,
 			"group_id": group_id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.removeRolesFromUserInGroupAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -1029,7 +1028,7 @@ class UserApi:
 			"group_id": group_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.removeRolesFromUserInGroupBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1058,11 +1057,11 @@ class UserApi:
 			"token": token,
 			"token_validity": token_validity,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.getTokenInGroupAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -1077,7 +1076,7 @@ class UserApi:
 			"token_validity": token_validity,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.getTokenInGroupBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1105,11 +1104,11 @@ class UserApi:
 			"token": token,
 			"token_validity": token_validity,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.getTokenInAllGroupsAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -1123,7 +1122,7 @@ class UserApi:
 			"token_validity": token_validity,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.getTokenInAllGroupsBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1144,8 +1143,8 @@ class UserApi:
 			else:
 				success = PaginatedList._deserialize(success.decode('utf-8'))
 				success = PaginatedList(
-					rows = [User._deserialize(item) for item in success.rows]
-					next_key_pair = return_value.next_key_pair
+					rows = [User._deserialize(item) for item in success.rows],
+					next_key_pair = success.next_key_pair,
 				)
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
@@ -1155,11 +1154,11 @@ class UserApi:
 			"limit": limit,
 			"filter_chain": filter_chain.__serialize__(),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.filterUsersInGroupByAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -1173,7 +1172,7 @@ class UserApi:
 			"filter_chain": filter_chain.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.filterUsersInGroupByBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1183,8 +1182,8 @@ class UserApi:
 		else:
 			return_value = PaginatedList._deserialize(result_info["success"])
 			return_value = PaginatedList(
-				rows = [User._deserialize(item) for item in return_value.rows]
-				next_key_pair = return_value.next_key_pair
+				rows = [User._deserialize(item) for item in return_value.rows],
+				next_key_pair = return_value.next_key_pair,
 			)
 			return return_value
 
@@ -1204,11 +1203,11 @@ class UserApi:
 			"group_id": group_id,
 			"request": request.__serialize__(),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.enable2faForUserAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -1221,7 +1220,7 @@ class UserApi:
 			"request": request.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.enable2faForUserBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1244,11 +1243,11 @@ class UserApi:
 			"user_id": user_id,
 			"request": request.__serialize__(),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.enable2faForUserAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -1260,7 +1259,7 @@ class UserApi:
 			"request": request.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.enable2faForUserBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1283,11 +1282,11 @@ class UserApi:
 			"user_id": user_id,
 			"group_id": group_id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.disable2faForUserAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -1299,7 +1298,7 @@ class UserApi:
 			"group_id": group_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.disable2faForUserBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1321,11 +1320,11 @@ class UserApi:
 		payload = {
 			"user_id": user_id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.disable2faForUserAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -1336,7 +1335,7 @@ class UserApi:
 			"user_id": user_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.disable2faForUserBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1358,11 +1357,11 @@ class UserApi:
 		payload = {
 			"user": user.__serialize__(),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.createAdminUserAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -1373,7 +1372,7 @@ class UserApi:
 			"user": user.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.createAdminUserBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1399,11 +1398,11 @@ class UserApi:
 			"group_id": group_id,
 			"user": user.__serialize__(),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.createAdminUserInGroupAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -1415,7 +1414,7 @@ class UserApi:
 			"user": user.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.createAdminUserInGroupBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))

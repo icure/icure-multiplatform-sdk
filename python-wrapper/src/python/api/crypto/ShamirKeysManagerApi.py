@@ -1,9 +1,9 @@
 import json
 import asyncio
-from kotlin_types import symbols, GENERAL_RESULT_CALLBACK
 from model.base.CryptoActor import CryptoActor
+from kotlin_types import symbols, DATA_RESULT_CALLBACK_FUNC
 from model.CallResult import create_result_from_json, CallResult
-from ctypes import c_char_p
+from ctypes import cast, c_char_p
 from typing import Dict, List
 from model.specializations.KeypairFingerprintV1String import KeypairFingerprintV1String
 from crypto.entities.ShamirUpdateRequest import ShamirUpdateRequest
@@ -12,7 +12,6 @@ from model.CryptoActorStubWithType import CryptoActorStubWithType
 class ShamirKeysManagerApi:
 
 	def __init__(self, icure_sdk, executor):
-		self.native_api = symbols.kotlin.root.com.icure.sdk.py.api.createShamirKeysManagerApi()
 		self.icure_sdk = icure_sdk
 		self.executor = executor
 
@@ -21,7 +20,7 @@ class ShamirKeysManagerApi:
 			"data_owner": serialize_crypto_actor(data_owner),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ShamirKeysManagerApi.getExistingSplitsInfo(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -47,11 +46,11 @@ class ShamirKeysManagerApi:
 			"key_splits_to_update": {k0: v0.__serialize__() for k0, v0 in key_splits_to_update.items()},
 			"key_splits_to_delete": [x0 for x0 in key_splits_to_delete],
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.ShamirKeysManagerApi.updateSelfSplitsAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -63,7 +62,7 @@ class ShamirKeysManagerApi:
 			"key_splits_to_delete": [x0 for x0 in key_splits_to_delete],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ShamirKeysManagerApi.updateSelfSplitsBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))

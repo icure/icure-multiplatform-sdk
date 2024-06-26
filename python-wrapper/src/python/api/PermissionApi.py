@@ -1,15 +1,14 @@
 import asyncio
 import json
-from kotlin_types import symbols, GENERAL_RESULT_CALLBACK
 from model.security.Permission import Permission
 from model.CallResult import CallResult, create_result_from_json
+from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from typing import List
-from ctypes import c_char_p
+from ctypes import cast, c_char_p
 
 class PermissionApi:
 
 	def __init__(self, icure_sdk, executor):
-		self.native_api = symbols.kotlin.root.com.icure.sdk.py.api.createPermissionApi()
 		self.icure_sdk = icure_sdk
 		self.executor = executor
 
@@ -28,11 +27,11 @@ class PermissionApi:
 			"user_id": user_id,
 			"permissions": permissions.__serialize__(),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.PermissionApi.modifyUserPermissionsAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -44,7 +43,7 @@ class PermissionApi:
 			"permissions": permissions.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.PermissionApi.modifyUserPermissionsBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))

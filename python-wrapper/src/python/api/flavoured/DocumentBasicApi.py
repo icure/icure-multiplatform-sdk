@@ -1,17 +1,16 @@
 import asyncio
 import json
 import base64
-from kotlin_types import symbols, GENERAL_RESULT_CALLBACK
 from model.CallResult import CallResult, create_result_from_json
+from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from model.couchdb.DocIdentifier import DocIdentifier
-from ctypes import c_char_p
+from ctypes import cast, c_char_p
 from typing import List, Dict, Optional
 from model.Document import EncryptedDocument
 
 class DocumentBasicApi:
 
 	def __init__(self, icure_sdk, executor):
-		self.native_api = symbols.kotlin.root.com.icure.sdk.py.api.createDocumentBasicApi()
 		self.icure_sdk = icure_sdk
 		self.executor = executor
 
@@ -29,11 +28,11 @@ class DocumentBasicApi:
 		payload = {
 			"entity_id": entity_id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavourlessApi.deleteDocumentAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -44,7 +43,7 @@ class DocumentBasicApi:
 			"entity_id": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavourlessApi.deleteDocumentBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -69,11 +68,11 @@ class DocumentBasicApi:
 		payload = {
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavourlessApi.deleteDocumentsAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -84,7 +83,7 @@ class DocumentBasicApi:
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavourlessApi.deleteDocumentsBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -110,11 +109,11 @@ class DocumentBasicApi:
 			"document_id": document_id,
 			"attachment_id": attachment_id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavourlessApi.getRawMainAttachmentAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -126,7 +125,7 @@ class DocumentBasicApi:
 			"attachment_id": attachment_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavourlessApi.getRawMainAttachmentBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -152,11 +151,11 @@ class DocumentBasicApi:
 			"document_id": document_id,
 			"attachment_id": attachment_id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavourlessApi.getMainAttachmentAsPlainTextAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -168,7 +167,7 @@ class DocumentBasicApi:
 			"attachment_id": attachment_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavourlessApi.getMainAttachmentAsPlainTextBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -194,11 +193,11 @@ class DocumentBasicApi:
 			"document_id": document_id,
 			"attachment_id": attachment_id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavourlessApi.getMainAttachmentAsJsonAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -210,7 +209,7 @@ class DocumentBasicApi:
 			"attachment_id": attachment_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavourlessApi.getMainAttachmentAsJsonBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -237,11 +236,11 @@ class DocumentBasicApi:
 			"key": key,
 			"attachment_id": attachment_id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavourlessApi.getRawSecondaryAttachmentAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -254,7 +253,7 @@ class DocumentBasicApi:
 			"attachment_id": attachment_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavourlessApi.getRawSecondaryAttachmentBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -279,11 +278,11 @@ class DocumentBasicApi:
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavouredApi.modifyDocumentAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -294,7 +293,7 @@ class DocumentBasicApi:
 			"entity": entity.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavouredApi.modifyDocumentBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -319,11 +318,11 @@ class DocumentBasicApi:
 		payload = {
 			"entity_id": entity_id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavouredApi.getDocumentAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -334,7 +333,7 @@ class DocumentBasicApi:
 			"entity_id": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavouredApi.getDocumentBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -359,11 +358,11 @@ class DocumentBasicApi:
 		payload = {
 			"external_uuid": external_uuid,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavouredApi.getDocumentByExternalUuidAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -374,7 +373,7 @@ class DocumentBasicApi:
 			"external_uuid": external_uuid,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavouredApi.getDocumentByExternalUuidBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -399,11 +398,11 @@ class DocumentBasicApi:
 		payload = {
 			"external_uuid": external_uuid,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavouredApi.getDocumentsByExternalUuidAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -414,7 +413,7 @@ class DocumentBasicApi:
 			"external_uuid": external_uuid,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavouredApi.getDocumentsByExternalUuidBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -439,11 +438,11 @@ class DocumentBasicApi:
 		payload = {
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavouredApi.getDocumentsAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -454,7 +453,7 @@ class DocumentBasicApi:
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavouredApi.getDocumentsBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -479,11 +478,11 @@ class DocumentBasicApi:
 		payload = {
 			"entities": [x0.__serialize__() for x0 in entities],
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavouredApi.modifyDocumentsAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -494,7 +493,7 @@ class DocumentBasicApi:
 			"entities": [x0.__serialize__() for x0 in entities],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavouredApi.modifyDocumentsBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -521,11 +520,11 @@ class DocumentBasicApi:
 			"document_type_code": document_type_code,
 			"secret_message_keys": [x0 for x0 in secret_message_keys],
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavouredApi.listDocumentsByHcPartyMessageForeignKeysAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -538,7 +537,7 @@ class DocumentBasicApi:
 			"secret_message_keys": [x0 for x0 in secret_message_keys],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavouredApi.listDocumentsByHcPartyMessageForeignKeysBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -563,11 +562,11 @@ class DocumentBasicApi:
 		payload = {
 			"limit": limit,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavouredApi.findWithoutDelegationAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -578,7 +577,7 @@ class DocumentBasicApi:
 			"limit": limit,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavouredApi.findWithoutDelegationBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -608,11 +607,11 @@ class DocumentBasicApi:
 			"attachment": base64.b64encode(attachment).decode('utf-8'),
 			"encrypted": encrypted,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavouredApi.setRawMainAttachmentAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -628,7 +627,7 @@ class DocumentBasicApi:
 			"encrypted": encrypted,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavouredApi.setRawMainAttachmentBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -659,11 +658,11 @@ class DocumentBasicApi:
 			"attachment": base64.b64encode(attachment).decode('utf-8'),
 			"encrypted": encrypted,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavouredApi.setRawSecondaryAttachmentAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -680,7 +679,7 @@ class DocumentBasicApi:
 			"encrypted": encrypted,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavouredApi.setRawSecondaryAttachmentBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -706,11 +705,11 @@ class DocumentBasicApi:
 			"entity_id": entity_id,
 			"rev": rev,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavouredApi.deleteMainAttachmentAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -722,7 +721,7 @@ class DocumentBasicApi:
 			"rev": rev,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavouredApi.deleteMainAttachmentBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -749,11 +748,11 @@ class DocumentBasicApi:
 			"key": key,
 			"attachment_id": attachment_id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavouredApi.deleteSecondaryAttachmentAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -766,7 +765,7 @@ class DocumentBasicApi:
 			"attachment_id": attachment_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavouredApi.deleteSecondaryAttachmentBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))

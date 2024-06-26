@@ -1,9 +1,9 @@
 import asyncio
 import json
-from kotlin_types import symbols, GENERAL_RESULT_CALLBACK
 from model.CallResult import CallResult, create_result_from_json
+from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from model.Keyword import Keyword
-from ctypes import c_char_p
+from ctypes import cast, c_char_p
 from typing import Optional, List
 from model.PaginatedList import PaginatedList
 from model.couchdb.DocIdentifier import DocIdentifier
@@ -11,7 +11,6 @@ from model.couchdb.DocIdentifier import DocIdentifier
 class KeywordApi:
 
 	def __init__(self, icure_sdk, executor):
-		self.native_api = symbols.kotlin.root.com.icure.sdk.py.api.createKeywordApi()
 		self.icure_sdk = icure_sdk
 		self.executor = executor
 
@@ -29,11 +28,11 @@ class KeywordApi:
 		payload = {
 			"front_end_migration_id": front_end_migration_id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.KeywordApi.getKeywordAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -44,7 +43,7 @@ class KeywordApi:
 			"front_end_migration_id": front_end_migration_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.KeywordApi.getKeywordBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -69,11 +68,11 @@ class KeywordApi:
 		payload = {
 			"front_end_migration": front_end_migration.__serialize__(),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.KeywordApi.createKeywordAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -84,7 +83,7 @@ class KeywordApi:
 			"front_end_migration": front_end_migration.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.KeywordApi.createKeywordBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -105,8 +104,8 @@ class KeywordApi:
 			else:
 				success = PaginatedList._deserialize(success.decode('utf-8'))
 				success = PaginatedList(
-					rows = [Keyword._deserialize(item) for item in success.rows]
-					next_key_pair = return_value.next_key_pair
+					rows = [Keyword._deserialize(item) for item in success.rows],
+					next_key_pair = success.next_key_pair,
 				)
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
@@ -114,11 +113,11 @@ class KeywordApi:
 			"start_document_id": start_document_id,
 			"limit": limit,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.KeywordApi.getKeywordsAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -130,7 +129,7 @@ class KeywordApi:
 			"limit": limit,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.KeywordApi.getKeywordsBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -140,8 +139,8 @@ class KeywordApi:
 		else:
 			return_value = PaginatedList._deserialize(result_info["success"])
 			return_value = PaginatedList(
-				rows = [Keyword._deserialize(item) for item in return_value.rows]
-				next_key_pair = return_value.next_key_pair
+				rows = [Keyword._deserialize(item) for item in return_value.rows],
+				next_key_pair = return_value.next_key_pair,
 			)
 			return return_value
 
@@ -159,11 +158,11 @@ class KeywordApi:
 		payload = {
 			"keyword": keyword.__serialize__(),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.KeywordApi.modifyKeywordAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -174,7 +173,7 @@ class KeywordApi:
 			"keyword": keyword.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.KeywordApi.modifyKeywordBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -199,11 +198,11 @@ class KeywordApi:
 		payload = {
 			"user_id": user_id,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.KeywordApi.getKeywordsByUserAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -214,7 +213,7 @@ class KeywordApi:
 			"user_id": user_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.KeywordApi.getKeywordsByUserBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -239,11 +238,11 @@ class KeywordApi:
 		payload = {
 			"keyword_ids": [x0 for x0 in keyword_ids],
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.KeywordApi.deleteKeywordsAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -254,7 +253,7 @@ class KeywordApi:
 			"keyword_ids": [x0 for x0 in keyword_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.KeywordApi.deleteKeywordsBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))

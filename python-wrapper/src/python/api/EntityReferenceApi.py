@@ -1,14 +1,13 @@
 import asyncio
 import json
-from kotlin_types import symbols, GENERAL_RESULT_CALLBACK
 from model.CallResult import CallResult, create_result_from_json
+from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from model.EntityReference import EntityReference
-from ctypes import c_char_p
+from ctypes import cast, c_char_p
 
 class EntityReferenceApi:
 
 	def __init__(self, icure_sdk, executor):
-		self.native_api = symbols.kotlin.root.com.icure.sdk.py.api.createEntityReferenceApi()
 		self.icure_sdk = icure_sdk
 		self.executor = executor
 
@@ -26,11 +25,11 @@ class EntityReferenceApi:
 		payload = {
 			"prefix": prefix,
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.EntityReferenceApi.getLatestAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -41,7 +40,7 @@ class EntityReferenceApi:
 			"prefix": prefix,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.EntityReferenceApi.getLatestBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -66,11 +65,11 @@ class EntityReferenceApi:
 		payload = {
 			"entity_reference": entity_reference.__serialize__(),
 		}
-		callback = GENERAL_RESULT_CALLBACK(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.EntityReferenceApi.createEntityReferenceAsync,
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
 		)
@@ -81,7 +80,7 @@ class EntityReferenceApi:
 			"entity_reference": entity_reference.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.EntityReferenceApi.createEntityReferenceBlocking(
-			self.native_api,
+			self.icure_sdk.native,
 			json.dumps(payload)
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
