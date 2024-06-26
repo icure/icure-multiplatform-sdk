@@ -12,9 +12,8 @@ from model.filter.AbstractFilter import AbstractFilter, serialize_abstract_filte
 
 class CodeApi:
 
-	def __init__(self, icure_sdk, executor):
+	def __init__(self, icure_sdk):
 		self.icure_sdk = icure_sdk
-		self.executor = executor
 
 	async def find_codes_by_label_async(self, region: Optional[str], types: str, language: str, label: str, version: Optional[str] = None, start_key: Optional[Dict[str, object]] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
 		loop = asyncio.get_running_loop()
@@ -43,7 +42,7 @@ class CodeApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.findCodesByLabelAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -104,7 +103,7 @@ class CodeApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.findCodesByTypeAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -162,7 +161,7 @@ class CodeApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.findCodesByLinkAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -213,7 +212,7 @@ class CodeApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.listCodesByRegionTypeCodeVersionAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -257,7 +256,7 @@ class CodeApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.listCodeTypesByAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -299,7 +298,7 @@ class CodeApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.listTagTypesByAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -340,7 +339,7 @@ class CodeApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.createCodeAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -380,7 +379,7 @@ class CodeApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.createCodesAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -422,7 +421,7 @@ class CodeApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.isCodeValidAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -467,7 +466,7 @@ class CodeApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.getCodeByRegionLanguageTypeLabelAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -510,7 +509,7 @@ class CodeApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.getCodesAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -550,7 +549,7 @@ class CodeApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.getCodeAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -592,7 +591,7 @@ class CodeApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.getCodeWithPartsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -634,7 +633,7 @@ class CodeApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.modifyCodeAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -674,7 +673,7 @@ class CodeApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.modifyCodesAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -724,7 +723,7 @@ class CodeApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.filterCodesByAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -774,7 +773,7 @@ class CodeApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.matchCodesByAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -814,7 +813,7 @@ class CodeApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.importCodesAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),

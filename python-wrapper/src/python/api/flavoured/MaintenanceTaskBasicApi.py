@@ -11,9 +11,8 @@ from model.PaginatedList import PaginatedList
 
 class MaintenanceTaskBasicApi:
 
-	def __init__(self, icure_sdk, executor):
+	def __init__(self, icure_sdk):
 		self.icure_sdk = icure_sdk
-		self.executor = executor
 
 	async def delete_maintenance_task_async(self, entity_id: str) -> DocIdentifier:
 		loop = asyncio.get_running_loop()
@@ -31,7 +30,7 @@ class MaintenanceTaskBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskBasicFlavourlessApi.deleteMaintenanceTaskAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -71,7 +70,7 @@ class MaintenanceTaskBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskBasicFlavourlessApi.deleteMaintenanceTasksAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -111,7 +110,7 @@ class MaintenanceTaskBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskBasicFlavouredApi.modifyMaintenanceTaskAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -151,7 +150,7 @@ class MaintenanceTaskBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskBasicFlavouredApi.getMaintenanceTaskAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -197,7 +196,7 @@ class MaintenanceTaskBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskBasicFlavouredApi.filterMaintenanceTasksByAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),

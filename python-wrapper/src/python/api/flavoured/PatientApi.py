@@ -28,9 +28,8 @@ from model.ListOfIds import ListOfIds
 
 class PatientApi:
 
-	def __init__(self, icure_sdk, executor):
+	def __init__(self, icure_sdk):
 		self.icure_sdk = icure_sdk
-		self.executor = executor
 		self.encrypted = PatientFlavouredEncryptedApi(executor)
 		self.tryAndRecover = PatientFlavouredApi(executor)
 
@@ -50,7 +49,7 @@ class PatientApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.PatientApi.getSecretIdsOfAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -90,7 +89,7 @@ class PatientApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.PatientApi.getEncryptionKeysOfAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -130,7 +129,7 @@ class PatientApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.PatientApi.createPatientAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -172,7 +171,7 @@ class PatientApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.PatientApi.withEncryptionMetadataAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -215,7 +214,7 @@ class PatientApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.PatientApi.createDelegationsDeAnonymizationMetadataAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -253,7 +252,7 @@ class PatientApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.PatientApi.hasWriteAccessAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -293,7 +292,7 @@ class PatientApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.PatientApi.decryptPatientIdOfAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -334,7 +333,7 @@ class PatientApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.PatientApi.createDelegationDeAnonymizationMetadataAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -372,7 +371,7 @@ class PatientApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.PatientApi.createPatientsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -417,7 +416,7 @@ class PatientApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.PatientApi.registerPatientAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -465,7 +464,7 @@ class PatientApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.PatientApi.shareAllDataOfPatientAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -509,7 +508,7 @@ class PatientApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.PatientApi.getPatientIdOfChildDocumentForHcpAndHcpParentsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -550,7 +549,7 @@ class PatientApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.PatientApi.getConfidentialSecretIdsOfAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -590,7 +589,7 @@ class PatientApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.PatientApi.forceInitialiseExchangeDataToNewlyInvitedPatientAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -630,7 +629,7 @@ class PatientApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavourlessApi.matchPatientsByAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -670,7 +669,7 @@ class PatientApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavourlessApi.deletePatientAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -710,7 +709,7 @@ class PatientApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavourlessApi.deletePatientsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -750,7 +749,7 @@ class PatientApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavourlessApi.undeletePatientAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -790,7 +789,7 @@ class PatientApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavourlessApi.getDataOwnersWithAccessToAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -835,7 +834,7 @@ class PatientApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.PatientFlavouredApi.shareWithAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -881,7 +880,7 @@ class PatientApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.PatientFlavouredApi.tryShareWithManyAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -923,7 +922,7 @@ class PatientApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.PatientFlavouredApi.shareWithManyAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -964,7 +963,7 @@ class PatientApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.PatientFlavouredApi.initialiseConfidentialSecretIdAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -1004,7 +1003,7 @@ class PatientApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.modifyPatientAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -1044,7 +1043,7 @@ class PatientApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.getPatientAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -1094,7 +1093,7 @@ class PatientApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.filterPatientsByAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -1153,7 +1152,7 @@ class PatientApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.findPatientsByNameBirthSsinAutoAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -1211,7 +1210,7 @@ class PatientApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.listPatientsOfHcPartyAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -1260,7 +1259,7 @@ class PatientApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.listOfMergesAfterAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -1307,7 +1306,7 @@ class PatientApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.findPatientsModifiedAfterAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -1363,7 +1362,7 @@ class PatientApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.listPatientsByHcPartyAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -1412,7 +1411,7 @@ class PatientApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.getPatientHcPartyKeysForDelegateAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -1452,7 +1451,7 @@ class PatientApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.countOfPatientsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -1501,7 +1500,7 @@ class PatientApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.findPatientsByHealthcarePartyAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -1557,7 +1556,7 @@ class PatientApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.findPatientsIdsByHealthcarePartyAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -1604,7 +1603,7 @@ class PatientApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.getPatientByExternalIdAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -1646,7 +1645,7 @@ class PatientApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.fuzzySearchAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -1697,7 +1696,7 @@ class PatientApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.findDeletedPatientsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -1747,7 +1746,7 @@ class PatientApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.listDeletedPatientsByNameAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -1788,7 +1787,7 @@ class PatientApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.getPatientsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -1830,7 +1829,7 @@ class PatientApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.getPatientByHealthcarePartyAndIdentifierAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -1872,7 +1871,7 @@ class PatientApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.modifyPatientsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -1915,7 +1914,7 @@ class PatientApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.modifyPatientReferralAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -1965,7 +1964,7 @@ class PatientApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.findDuplicatesBySsinAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -2019,7 +2018,7 @@ class PatientApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.findDuplicatesByNameAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -2069,7 +2068,7 @@ class PatientApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.mergePatientsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -2098,8 +2097,8 @@ class PatientApi:
 
 	class PatientFlavouredEncryptedApi:
 
-		def __init__(self, executor):
-			self.executor = executor
+		def __init__(self):
+
 
 		async def share_with_async(self, delegate_id: str, patient: EncryptedPatient, share_secret_ids: List[str], share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
 			loop = asyncio.get_running_loop()
@@ -2122,7 +2121,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientFlavouredApi.shareWithAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -2168,7 +2167,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientFlavouredApi.tryShareWithManyAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -2210,7 +2209,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientFlavouredApi.shareWithManyAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -2251,7 +2250,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientFlavouredApi.initialiseConfidentialSecretIdAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -2291,7 +2290,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.modifyPatientAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -2331,7 +2330,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.getPatientAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -2381,7 +2380,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.filterPatientsByAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -2440,7 +2439,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.findPatientsByNameBirthSsinAutoAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -2498,7 +2497,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.listPatientsOfHcPartyAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -2547,7 +2546,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.listOfMergesAfterAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -2594,7 +2593,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.findPatientsModifiedAfterAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -2650,7 +2649,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.listPatientsByHcPartyAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -2699,7 +2698,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.getPatientHcPartyKeysForDelegateAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -2739,7 +2738,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.countOfPatientsAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -2788,7 +2787,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.findPatientsByHealthcarePartyAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -2844,7 +2843,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.findPatientsIdsByHealthcarePartyAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -2891,7 +2890,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.getPatientByExternalIdAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -2933,7 +2932,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.fuzzySearchAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -2984,7 +2983,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.findDeletedPatientsAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -3034,7 +3033,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.listDeletedPatientsByNameAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -3075,7 +3074,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.getPatientsAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -3117,7 +3116,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.getPatientByHealthcarePartyAndIdentifierAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -3159,7 +3158,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.modifyPatientsAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -3202,7 +3201,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.modifyPatientReferralAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -3252,7 +3251,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.findDuplicatesBySsinAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -3306,7 +3305,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.findDuplicatesByNameAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -3356,7 +3355,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.mergePatientsAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -3385,8 +3384,8 @@ class PatientApi:
 
 	class PatientFlavouredApi:
 
-		def __init__(self, executor):
-			self.executor = executor
+		def __init__(self):
+
 
 		async def share_with_async(self, delegate_id: str, patient: Patient, share_secret_ids: List[str], share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
 			loop = asyncio.get_running_loop()
@@ -3409,7 +3408,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientFlavouredApi.shareWithAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -3455,7 +3454,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientFlavouredApi.tryShareWithManyAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -3497,7 +3496,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientFlavouredApi.shareWithManyAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -3538,7 +3537,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientFlavouredApi.initialiseConfidentialSecretIdAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -3578,7 +3577,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.modifyPatientAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -3618,7 +3617,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.getPatientAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -3668,7 +3667,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.filterPatientsByAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -3727,7 +3726,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.findPatientsByNameBirthSsinAutoAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -3785,7 +3784,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.listPatientsOfHcPartyAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -3834,7 +3833,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.listOfMergesAfterAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -3881,7 +3880,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.findPatientsModifiedAfterAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -3937,7 +3936,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.listPatientsByHcPartyAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -3986,7 +3985,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.getPatientHcPartyKeysForDelegateAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -4026,7 +4025,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.countOfPatientsAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -4075,7 +4074,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.findPatientsByHealthcarePartyAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -4131,7 +4130,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.findPatientsIdsByHealthcarePartyAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -4178,7 +4177,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.getPatientByExternalIdAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -4220,7 +4219,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.fuzzySearchAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -4271,7 +4270,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.findDeletedPatientsAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -4321,7 +4320,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.listDeletedPatientsByNameAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -4362,7 +4361,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.getPatientsAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -4404,7 +4403,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.getPatientByHealthcarePartyAndIdentifierAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -4446,7 +4445,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.modifyPatientsAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -4489,7 +4488,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.modifyPatientReferralAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -4539,7 +4538,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.findDuplicatesBySsinAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -4593,7 +4592,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.findDuplicatesByNameAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -4643,7 +4642,7 @@ class PatientApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.PatientBasicFlavouredApi.mergePatientsAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),

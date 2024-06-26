@@ -24,9 +24,8 @@ from model.couchdb.DocIdentifier import DocIdentifier
 
 class GroupApi:
 
-	def __init__(self, icure_sdk, executor):
+	def __init__(self, icure_sdk):
 		self.icure_sdk = icure_sdk
-		self.executor = executor
 
 	async def list_groups_async(self) -> List[Group]:
 		loop = asyncio.get_running_loop()
@@ -43,7 +42,7 @@ class GroupApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.listGroupsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -82,7 +81,7 @@ class GroupApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.getGroupAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -130,7 +129,7 @@ class GroupApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.createGroupAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -180,7 +179,7 @@ class GroupApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.registerNewGroupAdministratorAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -221,7 +220,7 @@ class GroupApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.listAppsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -266,7 +265,7 @@ class GroupApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.findGroupsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -320,7 +319,7 @@ class GroupApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.findGroupsWithContentAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -368,7 +367,7 @@ class GroupApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.getNameOfGroupParentAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -409,7 +408,7 @@ class GroupApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.modifyGroupNameAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -452,7 +451,7 @@ class GroupApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.getOperationTokenAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -494,7 +493,7 @@ class GroupApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.deleteOperationTokenAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -533,7 +532,7 @@ class GroupApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.setDefaultRolesAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -575,7 +574,7 @@ class GroupApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.getDefaultRolesAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -615,7 +614,7 @@ class GroupApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.deleteGroupAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -656,7 +655,7 @@ class GroupApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.changeSuperGroupAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -697,7 +696,7 @@ class GroupApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.hardDeleteGroupAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -738,7 +737,7 @@ class GroupApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.modifyGroupPropertiesAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -780,7 +779,7 @@ class GroupApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.setGroupPasswordAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -824,7 +823,7 @@ class GroupApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.initDesignDocsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -869,7 +868,7 @@ class GroupApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.solveConflictsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -914,7 +913,7 @@ class GroupApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.resetStorageAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -954,7 +953,7 @@ class GroupApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.getGroupsStorageInfosAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -994,7 +993,7 @@ class GroupApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.getReplicationInfoAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -1034,7 +1033,7 @@ class GroupApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.getHierarchyAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -1073,7 +1072,7 @@ class GroupApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.listAllGroupsIdsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),

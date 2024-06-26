@@ -17,9 +17,8 @@ from model.security.Enable2faRequest import Enable2faRequest
 
 class UserApi:
 
-	def __init__(self, icure_sdk, executor):
+	def __init__(self, icure_sdk):
 		self.icure_sdk = icure_sdk
-		self.executor = executor
 
 	async def get_current_user_async(self) -> User:
 		loop = asyncio.get_running_loop()
@@ -36,7 +35,7 @@ class UserApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.getCurrentUserAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -82,7 +81,7 @@ class UserApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.listUsersByAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -129,7 +128,7 @@ class UserApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.createUserAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -169,7 +168,7 @@ class UserApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.getUserAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -209,7 +208,7 @@ class UserApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.getUserByEmailAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -249,7 +248,7 @@ class UserApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.getUserByPhoneNumberAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -289,7 +288,7 @@ class UserApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.findByHcpartyIdAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -329,7 +328,7 @@ class UserApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.findByPatientIdAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -369,7 +368,7 @@ class UserApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.deleteUserAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -409,7 +408,7 @@ class UserApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.modifyUserAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -449,7 +448,7 @@ class UserApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.assignHealthcarePartyAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -490,7 +489,7 @@ class UserApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.modifyPropertiesAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -534,7 +533,7 @@ class UserApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.getTokenAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -583,7 +582,7 @@ class UserApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.filterUsersByAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -629,7 +628,7 @@ class UserApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.matchUsersByAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -668,7 +667,7 @@ class UserApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.getMatchingUsersAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -714,7 +713,7 @@ class UserApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.listUsersInGroupAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -762,7 +761,7 @@ class UserApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.createUserInGroupAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -804,7 +803,7 @@ class UserApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.modifyUserInGroupAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -846,7 +845,7 @@ class UserApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.deleteUserInGroupAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -888,7 +887,7 @@ class UserApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.addRolesToUserAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -931,7 +930,7 @@ class UserApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.addRolesToUserInGroupAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -973,7 +972,7 @@ class UserApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.removeRolesFromUserAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -1014,7 +1013,7 @@ class UserApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.removeRolesFromUserInGroupAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -1059,7 +1058,7 @@ class UserApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.getTokenInGroupAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -1106,7 +1105,7 @@ class UserApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.getTokenInAllGroupsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -1156,7 +1155,7 @@ class UserApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.filterUsersInGroupByAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -1205,7 +1204,7 @@ class UserApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.enable2faForUserAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -1245,7 +1244,7 @@ class UserApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.enable2faForUserAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -1284,7 +1283,7 @@ class UserApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.disable2faForUserAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -1322,7 +1321,7 @@ class UserApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.disable2faForUserAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -1359,7 +1358,7 @@ class UserApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.createAdminUserAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -1400,7 +1399,7 @@ class UserApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.createAdminUserInGroupAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),

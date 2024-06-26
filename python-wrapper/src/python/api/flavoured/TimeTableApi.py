@@ -19,9 +19,8 @@ from crypto.entities.TimeTableShareOptions import TimeTableShareOptions
 
 class TimeTableApi:
 
-	def __init__(self, icure_sdk, executor):
+	def __init__(self, icure_sdk):
 		self.icure_sdk = icure_sdk
-		self.executor = executor
 		self.encrypted = TimeTableFlavouredEncryptedApi(executor)
 		self.tryAndRecover = TimeTableFlavouredApi(executor)
 
@@ -41,7 +40,7 @@ class TimeTableApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.TimeTableApi.createTimeTableAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -85,7 +84,7 @@ class TimeTableApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.TimeTableApi.withEncryptionMetadataAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -129,7 +128,7 @@ class TimeTableApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.TimeTableApi.getEncryptionKeysOfAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -169,7 +168,7 @@ class TimeTableApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.TimeTableApi.hasWriteAccessAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -209,7 +208,7 @@ class TimeTableApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.TimeTableApi.decryptPatientIdOfAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -250,7 +249,7 @@ class TimeTableApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.TimeTableApi.createDelegationDeAnonymizationMetadataAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -288,7 +287,7 @@ class TimeTableApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.TimeTableBasicFlavourlessApi.deleteTimeTableAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -328,7 +327,7 @@ class TimeTableApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.TimeTableBasicFlavourlessApi.deleteTimeTablesAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -372,7 +371,7 @@ class TimeTableApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.TimeTableFlavouredApi.shareWithAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -417,7 +416,7 @@ class TimeTableApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.TimeTableFlavouredApi.tryShareWithManyAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -459,7 +458,7 @@ class TimeTableApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.TimeTableFlavouredApi.shareWithManyAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -500,7 +499,7 @@ class TimeTableApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.TimeTableBasicFlavouredApi.modifyTimeTableAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -540,7 +539,7 @@ class TimeTableApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.TimeTableBasicFlavouredApi.getTimeTableAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -582,7 +581,7 @@ class TimeTableApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.TimeTableBasicFlavouredApi.getTimeTablesByPeriodAndAgendaIdAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -624,7 +623,7 @@ class TimeTableApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.TimeTableBasicFlavouredApi.getTimeTablesByAgendaIdAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -650,8 +649,8 @@ class TimeTableApi:
 
 	class TimeTableFlavouredEncryptedApi:
 
-		def __init__(self, executor):
-			self.executor = executor
+		def __init__(self):
+
 
 		async def share_with_async(self, delegate_id: str, time_table: EncryptedTimeTable, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
 			loop = asyncio.get_running_loop()
@@ -673,7 +672,7 @@ class TimeTableApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.TimeTableFlavouredApi.shareWithAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -718,7 +717,7 @@ class TimeTableApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.TimeTableFlavouredApi.tryShareWithManyAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -760,7 +759,7 @@ class TimeTableApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.TimeTableFlavouredApi.shareWithManyAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -801,7 +800,7 @@ class TimeTableApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.TimeTableBasicFlavouredApi.modifyTimeTableAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -841,7 +840,7 @@ class TimeTableApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.TimeTableBasicFlavouredApi.getTimeTableAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -883,7 +882,7 @@ class TimeTableApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.TimeTableBasicFlavouredApi.getTimeTablesByPeriodAndAgendaIdAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -925,7 +924,7 @@ class TimeTableApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.TimeTableBasicFlavouredApi.getTimeTablesByAgendaIdAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -951,8 +950,8 @@ class TimeTableApi:
 
 	class TimeTableFlavouredApi:
 
-		def __init__(self, executor):
-			self.executor = executor
+		def __init__(self):
+
 
 		async def share_with_async(self, delegate_id: str, time_table: TimeTable, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
 			loop = asyncio.get_running_loop()
@@ -974,7 +973,7 @@ class TimeTableApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.TimeTableFlavouredApi.shareWithAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -1019,7 +1018,7 @@ class TimeTableApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.TimeTableFlavouredApi.tryShareWithManyAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -1061,7 +1060,7 @@ class TimeTableApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.TimeTableFlavouredApi.shareWithManyAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -1102,7 +1101,7 @@ class TimeTableApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.TimeTableBasicFlavouredApi.modifyTimeTableAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -1142,7 +1141,7 @@ class TimeTableApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.TimeTableBasicFlavouredApi.getTimeTableAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -1184,7 +1183,7 @@ class TimeTableApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.TimeTableBasicFlavouredApi.getTimeTablesByPeriodAndAgendaIdAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -1226,7 +1225,7 @@ class TimeTableApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.TimeTableBasicFlavouredApi.getTimeTablesByAgendaIdAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),

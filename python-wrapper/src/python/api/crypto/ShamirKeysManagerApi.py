@@ -11,9 +11,8 @@ from model.CryptoActorStubWithType import CryptoActorStubWithType
 
 class ShamirKeysManagerApi:
 
-	def __init__(self, icure_sdk, executor):
+	def __init__(self, icure_sdk):
 		self.icure_sdk = icure_sdk
-		self.executor = executor
 
 	def get_existing_splits_info(self, data_owner: CryptoActor) -> Dict[KeypairFingerprintV1String, List[str]]:
 		payload = {
@@ -48,7 +47,7 @@ class ShamirKeysManagerApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.ShamirKeysManagerApi.updateSelfSplitsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),

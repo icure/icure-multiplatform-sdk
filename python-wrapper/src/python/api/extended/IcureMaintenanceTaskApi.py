@@ -10,9 +10,8 @@ from model.DataOwnerType import DataOwnerType
 
 class IcureMaintenanceTaskApi:
 
-	def __init__(self, icure_sdk, executor):
+	def __init__(self, icure_sdk):
 		self.icure_sdk = icure_sdk
-		self.executor = executor
 
 	async def apply_key_pair_update_async(self, update_request: KeyPairUpdateNotification) -> None:
 		loop = asyncio.get_running_loop()
@@ -30,7 +29,7 @@ class IcureMaintenanceTaskApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.IcureMaintenanceTaskApi.applyKeyPairUpdateAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -68,7 +67,7 @@ class IcureMaintenanceTaskApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.IcureMaintenanceTaskApi.createKeyPairUpdateNotificationsToAllDelegationCounterpartsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -107,7 +106,7 @@ class IcureMaintenanceTaskApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.IcureMaintenanceTaskApi.createKeyPairUpdateNotificationToAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),

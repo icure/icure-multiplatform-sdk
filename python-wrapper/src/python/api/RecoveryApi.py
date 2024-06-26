@@ -10,9 +10,8 @@ from crypto.entities.RecoveryDataUseFailureReason import RecoveryDataUseFailureR
 
 class RecoveryApi:
 
-	def __init__(self, icure_sdk, executor):
+	def __init__(self, icure_sdk):
 		self.icure_sdk = icure_sdk
-		self.executor = executor
 
 	async def create_recovery_info_for_available_key_pairs_async(self, include_parents_keys: bool = False, lifetime_seconds: Optional[int] = None) -> RecoveryDataKey:
 		loop = asyncio.get_running_loop()
@@ -31,7 +30,7 @@ class RecoveryApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.createRecoveryInfoForAvailableKeyPairsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -73,7 +72,7 @@ class RecoveryApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.recoverKeyPairsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -115,7 +114,7 @@ class RecoveryApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.createExchangeDataRecoveryInfoAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -156,7 +155,7 @@ class RecoveryApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.recoverExchangeDataAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -196,7 +195,7 @@ class RecoveryApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.deleteRecoveryInfoAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -233,7 +232,7 @@ class RecoveryApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.deleteAllRecoveryInfoForAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -273,7 +272,7 @@ class RecoveryApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.deleteAllKeyPairRecoveryInfoForAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -313,7 +312,7 @@ class RecoveryApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.deleteAllExchangeDataRecoveryInfoForAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),

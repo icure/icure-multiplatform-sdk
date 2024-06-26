@@ -9,9 +9,8 @@ from model.couchdb.DocIdentifier import DocIdentifier
 
 class FrontEndMigrationApi:
 
-	def __init__(self, icure_sdk, executor):
+	def __init__(self, icure_sdk):
 		self.icure_sdk = icure_sdk
-		self.executor = executor
 
 	async def get_front_end_migration_async(self, front_end_migration_id: str) -> FrontEndMigration:
 		loop = asyncio.get_running_loop()
@@ -29,7 +28,7 @@ class FrontEndMigrationApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.FrontEndMigrationApi.getFrontEndMigrationAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -69,7 +68,7 @@ class FrontEndMigrationApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.FrontEndMigrationApi.createFrontEndMigrationAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -108,7 +107,7 @@ class FrontEndMigrationApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.FrontEndMigrationApi.getFrontEndMigrationsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -147,7 +146,7 @@ class FrontEndMigrationApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.FrontEndMigrationApi.deleteFrontEndMigrationAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -187,7 +186,7 @@ class FrontEndMigrationApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.FrontEndMigrationApi.getFrontEndMigrationByNameAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -227,7 +226,7 @@ class FrontEndMigrationApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.FrontEndMigrationApi.modifyFrontEndMigrationAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),

@@ -10,9 +10,8 @@ from model.DataOwnerType import DataOwnerType
 
 class DataOwnerApi:
 
-	def __init__(self, icure_sdk, executor):
+	def __init__(self, icure_sdk):
 		self.icure_sdk = icure_sdk
-		self.executor = executor
 
 	async def get_current_data_owner_async(self) -> DataOwnerWithType:
 		loop = asyncio.get_running_loop()
@@ -29,7 +28,7 @@ class DataOwnerApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DataOwnerApi.getCurrentDataOwnerAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -67,7 +66,7 @@ class DataOwnerApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DataOwnerApi.getCurrentDataOwnerStubAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -105,7 +104,7 @@ class DataOwnerApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DataOwnerApi.getCurrentDataOwnerIdAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -143,7 +142,7 @@ class DataOwnerApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DataOwnerApi.getCurrentDataOwnerHierarchyIdsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -182,7 +181,7 @@ class DataOwnerApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DataOwnerApi.getDataOwnerAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -222,7 +221,7 @@ class DataOwnerApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DataOwnerApi.getDataOwnerStubAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -262,7 +261,7 @@ class DataOwnerApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DataOwnerApi.getCurrentDataOwnerHierarchyIdsFromAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -301,7 +300,7 @@ class DataOwnerApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DataOwnerApi.getCurrentDataOwnerHierarchyAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -340,7 +339,7 @@ class DataOwnerApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DataOwnerApi.modifyDataOwnerStubAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -379,7 +378,7 @@ class DataOwnerApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DataOwnerApi.getCurrentDataOwnerTypeAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -418,7 +417,7 @@ class DataOwnerApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DataOwnerApi.getCryptoActorStubAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),

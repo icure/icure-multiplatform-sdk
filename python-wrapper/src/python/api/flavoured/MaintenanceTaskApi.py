@@ -19,9 +19,8 @@ from model.PaginatedList import PaginatedList
 
 class MaintenanceTaskApi:
 
-	def __init__(self, icure_sdk, executor):
+	def __init__(self, icure_sdk):
 		self.icure_sdk = icure_sdk
-		self.executor = executor
 		self.encrypted = MaintenanceTaskFlavouredEncryptedApi(executor)
 		self.tryAndRecover = MaintenanceTaskFlavouredApi(executor)
 
@@ -41,7 +40,7 @@ class MaintenanceTaskApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskApi.createMaintenanceTaskAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -83,7 +82,7 @@ class MaintenanceTaskApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskApi.withEncryptionMetadataAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -125,7 +124,7 @@ class MaintenanceTaskApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskApi.getEncryptionKeysOfAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -165,7 +164,7 @@ class MaintenanceTaskApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskApi.hasWriteAccessAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -205,7 +204,7 @@ class MaintenanceTaskApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskApi.decryptPatientIdOfAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -246,7 +245,7 @@ class MaintenanceTaskApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskApi.createDelegationDeAnonymizationMetadataAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -284,7 +283,7 @@ class MaintenanceTaskApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskBasicFlavourlessApi.deleteMaintenanceTaskAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -324,7 +323,7 @@ class MaintenanceTaskApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskBasicFlavourlessApi.deleteMaintenanceTasksAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -368,7 +367,7 @@ class MaintenanceTaskApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskFlavouredApi.shareWithAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -413,7 +412,7 @@ class MaintenanceTaskApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskFlavouredApi.tryShareWithManyAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -455,7 +454,7 @@ class MaintenanceTaskApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskFlavouredApi.shareWithManyAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -496,7 +495,7 @@ class MaintenanceTaskApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskBasicFlavouredApi.modifyMaintenanceTaskAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -536,7 +535,7 @@ class MaintenanceTaskApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskBasicFlavouredApi.getMaintenanceTaskAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -582,7 +581,7 @@ class MaintenanceTaskApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskBasicFlavouredApi.filterMaintenanceTasksByAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -614,8 +613,8 @@ class MaintenanceTaskApi:
 
 	class MaintenanceTaskFlavouredEncryptedApi:
 
-		def __init__(self, executor):
-			self.executor = executor
+		def __init__(self):
+
 
 		async def share_with_async(self, delegate_id: str, maintenance_task: EncryptedMaintenanceTask, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
 			loop = asyncio.get_running_loop()
@@ -637,7 +636,7 @@ class MaintenanceTaskApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskFlavouredApi.shareWithAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -682,7 +681,7 @@ class MaintenanceTaskApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskFlavouredApi.tryShareWithManyAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -724,7 +723,7 @@ class MaintenanceTaskApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskFlavouredApi.shareWithManyAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -765,7 +764,7 @@ class MaintenanceTaskApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskBasicFlavouredApi.modifyMaintenanceTaskAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -805,7 +804,7 @@ class MaintenanceTaskApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskBasicFlavouredApi.getMaintenanceTaskAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -851,7 +850,7 @@ class MaintenanceTaskApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskBasicFlavouredApi.filterMaintenanceTasksByAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -883,8 +882,8 @@ class MaintenanceTaskApi:
 
 	class MaintenanceTaskFlavouredApi:
 
-		def __init__(self, executor):
-			self.executor = executor
+		def __init__(self):
+
 
 		async def share_with_async(self, delegate_id: str, maintenance_task: MaintenanceTask, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
 			loop = asyncio.get_running_loop()
@@ -906,7 +905,7 @@ class MaintenanceTaskApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskFlavouredApi.shareWithAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -951,7 +950,7 @@ class MaintenanceTaskApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskFlavouredApi.tryShareWithManyAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -993,7 +992,7 @@ class MaintenanceTaskApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskFlavouredApi.shareWithManyAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -1034,7 +1033,7 @@ class MaintenanceTaskApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskBasicFlavouredApi.modifyMaintenanceTaskAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -1074,7 +1073,7 @@ class MaintenanceTaskApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskBasicFlavouredApi.getMaintenanceTaskAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -1120,7 +1119,7 @@ class MaintenanceTaskApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskBasicFlavouredApi.filterMaintenanceTasksByAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),

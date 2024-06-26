@@ -10,9 +10,8 @@ from model.PaginatedList import PaginatedList
 
 class InsuranceApi:
 
-	def __init__(self, icure_sdk, executor):
+	def __init__(self, icure_sdk):
 		self.icure_sdk = icure_sdk
-		self.executor = executor
 
 	async def get_insurance_async(self, insurance_id: str) -> Insurance:
 		loop = asyncio.get_running_loop()
@@ -30,7 +29,7 @@ class InsuranceApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.InsuranceApi.getInsuranceAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -70,7 +69,7 @@ class InsuranceApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.InsuranceApi.getInsurancesAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -110,7 +109,7 @@ class InsuranceApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.InsuranceApi.createInsuranceAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -150,7 +149,7 @@ class InsuranceApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.InsuranceApi.deleteInsuranceAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -195,7 +194,7 @@ class InsuranceApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.InsuranceApi.getAllInsurancesAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -240,7 +239,7 @@ class InsuranceApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.InsuranceApi.listInsurancesByCodeAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -280,7 +279,7 @@ class InsuranceApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.InsuranceApi.listInsurancesByNameAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -320,7 +319,7 @@ class InsuranceApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.InsuranceApi.modifyInsuranceAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),

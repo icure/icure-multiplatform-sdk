@@ -10,9 +10,8 @@ from model.PaginatedList import PaginatedList
 
 class CalendarItemBasicApi:
 
-	def __init__(self, icure_sdk, executor):
+	def __init__(self, icure_sdk):
 		self.icure_sdk = icure_sdk
-		self.executor = executor
 
 	async def delete_calendar_item_async(self, entity_id: str) -> DocIdentifier:
 		loop = asyncio.get_running_loop()
@@ -30,7 +29,7 @@ class CalendarItemBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavourlessApi.deleteCalendarItemAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -70,7 +69,7 @@ class CalendarItemBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavourlessApi.deleteCalendarItemsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -110,7 +109,7 @@ class CalendarItemBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavouredApi.modifyCalendarItemAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -150,7 +149,7 @@ class CalendarItemBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavouredApi.getCalendarItemAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -190,7 +189,7 @@ class CalendarItemBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavouredApi.getCalendarItemsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -232,7 +231,7 @@ class CalendarItemBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavouredApi.getCalendarItemsByPeriodAndHcPartyIdAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -276,7 +275,7 @@ class CalendarItemBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavouredApi.getCalendarsByPeriodAndAgendaIdAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -318,7 +317,7 @@ class CalendarItemBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavouredApi.getCalendarItemsWithIdsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -365,7 +364,7 @@ class CalendarItemBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavouredApi.findCalendarItemsByRecurrenceIdAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),

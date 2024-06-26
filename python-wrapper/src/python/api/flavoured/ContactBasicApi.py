@@ -15,9 +15,8 @@ from model.embed.Service import EncryptedService
 
 class ContactBasicApi:
 
-	def __init__(self, icure_sdk, executor):
+	def __init__(self, icure_sdk):
 		self.icure_sdk = icure_sdk
-		self.executor = executor
 
 	async def match_contacts_by_async(self, filter: AbstractFilter) -> List[str]:
 		loop = asyncio.get_running_loop()
@@ -35,7 +34,7 @@ class ContactBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavourlessApi.matchContactsByAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -75,7 +74,7 @@ class ContactBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavourlessApi.matchServicesByAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -115,7 +114,7 @@ class ContactBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavourlessApi.deleteContactAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -155,7 +154,7 @@ class ContactBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavourlessApi.deleteContactsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -196,7 +195,7 @@ class ContactBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavourlessApi.findContactsDelegationsStubsByHcPartyPatientForeignKeysAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -238,7 +237,7 @@ class ContactBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavourlessApi.getServiceCodesOccurrencesAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -279,7 +278,7 @@ class ContactBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.modifyContactAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -319,7 +318,7 @@ class ContactBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.modifyContactsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -359,7 +358,7 @@ class ContactBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.getContactAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -399,7 +398,7 @@ class ContactBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.getContactsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -445,7 +444,7 @@ class ContactBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.filterContactsByAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -492,7 +491,7 @@ class ContactBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.listContactByHCPartyServiceIdAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -533,7 +532,7 @@ class ContactBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.listContactsByExternalIdAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -574,7 +573,7 @@ class ContactBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.listContactsByHCPartyAndFormIdAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -616,7 +615,7 @@ class ContactBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.listContactsByHCPartyAndFormIdsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -660,7 +659,7 @@ class ContactBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.listContactsByHCPartyAndPatientSecretFKeysAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -704,7 +703,7 @@ class ContactBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.closeForHCPartyPatientForeignKeysAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -745,7 +744,7 @@ class ContactBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.getServiceAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -785,7 +784,7 @@ class ContactBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.getServicesAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -826,7 +825,7 @@ class ContactBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.getServicesLinkedToAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -867,7 +866,7 @@ class ContactBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.listServicesByAssociationIdAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -908,7 +907,7 @@ class ContactBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.listServicesByHealthElementIdAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -958,7 +957,7 @@ class ContactBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.findContactsByOpeningDateAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -1013,7 +1012,7 @@ class ContactBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.filterServicesByAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),

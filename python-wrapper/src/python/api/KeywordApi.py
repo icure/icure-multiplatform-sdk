@@ -10,9 +10,8 @@ from model.couchdb.DocIdentifier import DocIdentifier
 
 class KeywordApi:
 
-	def __init__(self, icure_sdk, executor):
+	def __init__(self, icure_sdk):
 		self.icure_sdk = icure_sdk
-		self.executor = executor
 
 	async def get_keyword_async(self, front_end_migration_id: str) -> Keyword:
 		loop = asyncio.get_running_loop()
@@ -30,7 +29,7 @@ class KeywordApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.KeywordApi.getKeywordAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -70,7 +69,7 @@ class KeywordApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.KeywordApi.createKeywordAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -115,7 +114,7 @@ class KeywordApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.KeywordApi.getKeywordsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -160,7 +159,7 @@ class KeywordApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.KeywordApi.modifyKeywordAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -200,7 +199,7 @@ class KeywordApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.KeywordApi.getKeywordsByUserAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -240,7 +239,7 @@ class KeywordApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.KeywordApi.deleteKeywordsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),

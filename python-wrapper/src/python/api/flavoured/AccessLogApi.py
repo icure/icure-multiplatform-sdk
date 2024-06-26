@@ -22,9 +22,8 @@ from model.PaginatedList import PaginatedList
 
 class AccessLogApi:
 
-	def __init__(self, icure_sdk, executor):
+	def __init__(self, icure_sdk):
 		self.icure_sdk = icure_sdk
-		self.executor = executor
 		self.encrypted = AccessLogFlavouredEncryptedApi(executor)
 		self.tryAndRecover = AccessLogFlavouredApi(executor)
 
@@ -44,7 +43,7 @@ class AccessLogApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.AccessLogApi.createAccessLogAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -88,7 +87,7 @@ class AccessLogApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.AccessLogApi.withEncryptionMetadataAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -132,7 +131,7 @@ class AccessLogApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.AccessLogApi.getEncryptionKeysOfAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -172,7 +171,7 @@ class AccessLogApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.AccessLogApi.hasWriteAccessAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -212,7 +211,7 @@ class AccessLogApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.AccessLogApi.decryptPatientIdOfAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -253,7 +252,7 @@ class AccessLogApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.AccessLogApi.createDelegationDeAnonymizationMetadataAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -291,7 +290,7 @@ class AccessLogApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavourlessApi.deleteAccessLogAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -331,7 +330,7 @@ class AccessLogApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavourlessApi.deleteAccessLogsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -375,7 +374,7 @@ class AccessLogApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.AccessLogFlavouredApi.shareWithAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -420,7 +419,7 @@ class AccessLogApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.AccessLogFlavouredApi.tryShareWithManyAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -462,7 +461,7 @@ class AccessLogApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.AccessLogFlavouredApi.shareWithManyAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -509,7 +508,7 @@ class AccessLogApi:
 		}
 		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.AccessLogFlavouredApi.findAccessLogsByHcPartyPatientAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -559,7 +558,7 @@ class AccessLogApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.modifyAccessLogAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -599,7 +598,7 @@ class AccessLogApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.getAccessLogAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -639,7 +638,7 @@ class AccessLogApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.getAccessLogsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -687,7 +686,7 @@ class AccessLogApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.findAccessLogsByAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -745,7 +744,7 @@ class AccessLogApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.findAccessLogsByUserAfterDateAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -804,7 +803,7 @@ class AccessLogApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.findAccessLogsInGroupAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -839,8 +838,8 @@ class AccessLogApi:
 
 	class AccessLogFlavouredEncryptedApi:
 
-		def __init__(self, executor):
-			self.executor = executor
+		def __init__(self):
+
 
 		async def share_with_async(self, delegate_id: str, access_log: EncryptedAccessLog, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
 			loop = asyncio.get_running_loop()
@@ -862,7 +861,7 @@ class AccessLogApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.AccessLogFlavouredApi.shareWithAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -907,7 +906,7 @@ class AccessLogApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.AccessLogFlavouredApi.tryShareWithManyAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -949,7 +948,7 @@ class AccessLogApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.AccessLogFlavouredApi.shareWithManyAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -996,7 +995,7 @@ class AccessLogApi:
 			}
 			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.AccessLogFlavouredApi.findAccessLogsByHcPartyPatientAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -1046,7 +1045,7 @@ class AccessLogApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.modifyAccessLogAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -1086,7 +1085,7 @@ class AccessLogApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.getAccessLogAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -1126,7 +1125,7 @@ class AccessLogApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.getAccessLogsAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -1174,7 +1173,7 @@ class AccessLogApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.findAccessLogsByAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -1232,7 +1231,7 @@ class AccessLogApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.findAccessLogsByUserAfterDateAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -1291,7 +1290,7 @@ class AccessLogApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.findAccessLogsInGroupAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -1326,8 +1325,8 @@ class AccessLogApi:
 
 	class AccessLogFlavouredApi:
 
-		def __init__(self, executor):
-			self.executor = executor
+		def __init__(self):
+
 
 		async def share_with_async(self, delegate_id: str, access_log: AccessLog, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
 			loop = asyncio.get_running_loop()
@@ -1349,7 +1348,7 @@ class AccessLogApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.AccessLogFlavouredApi.shareWithAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -1394,7 +1393,7 @@ class AccessLogApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.AccessLogFlavouredApi.tryShareWithManyAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -1436,7 +1435,7 @@ class AccessLogApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.AccessLogFlavouredApi.shareWithManyAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -1483,7 +1482,7 @@ class AccessLogApi:
 			}
 			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.AccessLogFlavouredApi.findAccessLogsByHcPartyPatientAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -1533,7 +1532,7 @@ class AccessLogApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.modifyAccessLogAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -1573,7 +1572,7 @@ class AccessLogApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.getAccessLogAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -1613,7 +1612,7 @@ class AccessLogApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.getAccessLogsAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -1661,7 +1660,7 @@ class AccessLogApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.findAccessLogsByAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -1719,7 +1718,7 @@ class AccessLogApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.findAccessLogsByUserAfterDateAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -1778,7 +1777,7 @@ class AccessLogApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.findAccessLogsInGroupAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),

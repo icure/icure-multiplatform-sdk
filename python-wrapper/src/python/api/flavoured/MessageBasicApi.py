@@ -12,9 +12,8 @@ from model.PaginatedList import PaginatedList
 
 class MessageBasicApi:
 
-	def __init__(self, icure_sdk, executor):
+	def __init__(self, icure_sdk):
 		self.icure_sdk = icure_sdk
-		self.executor = executor
 
 	async def match_messages_by_async(self, filter: AbstractFilter) -> List[str]:
 		loop = asyncio.get_running_loop()
@@ -32,7 +31,7 @@ class MessageBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.MessageBasicFlavourlessApi.matchMessagesByAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -72,7 +71,7 @@ class MessageBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.MessageBasicFlavourlessApi.deleteMessageAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -112,7 +111,7 @@ class MessageBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.MessageBasicFlavourlessApi.deleteMessagesAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -152,7 +151,7 @@ class MessageBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.MessageBasicFlavouredApi.modifyMessageAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -192,7 +191,7 @@ class MessageBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.MessageBasicFlavouredApi.getMessageAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -232,7 +231,7 @@ class MessageBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.MessageBasicFlavouredApi.getMessagesAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -278,7 +277,7 @@ class MessageBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.MessageBasicFlavouredApi.filterMessagesByAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -325,7 +324,7 @@ class MessageBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.MessageBasicFlavouredApi.listMessagesByTransportGuidsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -366,7 +365,7 @@ class MessageBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.MessageBasicFlavouredApi.findMessagesByHCPartyPatientForeignKeysAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -412,7 +411,7 @@ class MessageBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.MessageBasicFlavouredApi.findMessagesAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -458,7 +457,7 @@ class MessageBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.MessageBasicFlavouredApi.getChildrenMessagesAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -498,7 +497,7 @@ class MessageBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.MessageBasicFlavouredApi.getMessagesChildrenAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -538,7 +537,7 @@ class MessageBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.MessageBasicFlavouredApi.listMessagesByInvoicesAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -582,7 +581,7 @@ class MessageBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.MessageBasicFlavouredApi.findMessagesByTransportGuidAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -636,7 +635,7 @@ class MessageBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.MessageBasicFlavouredApi.findMessagesByTransportGuidSentDateAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -693,7 +692,7 @@ class MessageBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.MessageBasicFlavouredApi.findMessagesByToAddressAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -747,7 +746,7 @@ class MessageBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.MessageBasicFlavouredApi.findMessagesByFromAddressAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -795,7 +794,7 @@ class MessageBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.MessageBasicFlavouredApi.setMessagesStatusBitsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -839,7 +838,7 @@ class MessageBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.MessageBasicFlavouredApi.setMessagesReadStatusAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),

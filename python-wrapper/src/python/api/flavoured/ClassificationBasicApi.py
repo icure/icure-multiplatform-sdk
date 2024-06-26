@@ -9,9 +9,8 @@ from model.Classification import EncryptedClassification
 
 class ClassificationBasicApi:
 
-	def __init__(self, icure_sdk, executor):
+	def __init__(self, icure_sdk):
 		self.icure_sdk = icure_sdk
-		self.executor = executor
 
 	async def delete_classification_async(self, entity_id: str) -> DocIdentifier:
 		loop = asyncio.get_running_loop()
@@ -29,7 +28,7 @@ class ClassificationBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.ClassificationBasicFlavourlessApi.deleteClassificationAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -69,7 +68,7 @@ class ClassificationBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.ClassificationBasicFlavourlessApi.deleteClassificationsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -109,7 +108,7 @@ class ClassificationBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.ClassificationBasicFlavouredApi.modifyClassificationAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -149,7 +148,7 @@ class ClassificationBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.ClassificationBasicFlavouredApi.getClassificationAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -189,7 +188,7 @@ class ClassificationBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.ClassificationBasicFlavouredApi.getClassificationsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),

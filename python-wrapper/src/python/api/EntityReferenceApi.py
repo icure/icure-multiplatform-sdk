@@ -7,9 +7,8 @@ from ctypes import cast, c_char_p
 
 class EntityReferenceApi:
 
-	def __init__(self, icure_sdk, executor):
+	def __init__(self, icure_sdk):
 		self.icure_sdk = icure_sdk
-		self.executor = executor
 
 	async def get_latest_async(self, prefix: str) -> EntityReference:
 		loop = asyncio.get_running_loop()
@@ -27,7 +26,7 @@ class EntityReferenceApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.EntityReferenceApi.getLatestAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -67,7 +66,7 @@ class EntityReferenceApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.EntityReferenceApi.createEntityReferenceAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),

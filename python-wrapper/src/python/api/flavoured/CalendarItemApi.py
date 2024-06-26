@@ -22,9 +22,8 @@ from model.PaginatedList import PaginatedList
 
 class CalendarItemApi:
 
-	def __init__(self, icure_sdk, executor):
+	def __init__(self, icure_sdk):
 		self.icure_sdk = icure_sdk
-		self.executor = executor
 		self.encrypted = CalendarItemFlavouredEncryptedApi(executor)
 		self.tryAndRecover = CalendarItemFlavouredApi(executor)
 
@@ -44,7 +43,7 @@ class CalendarItemApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.createCalendarItemAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -88,7 +87,7 @@ class CalendarItemApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.withEncryptionMetadataAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -132,7 +131,7 @@ class CalendarItemApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.getEncryptionKeysOfAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -172,7 +171,7 @@ class CalendarItemApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.hasWriteAccessAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -212,7 +211,7 @@ class CalendarItemApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.decryptPatientIdOfAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -253,7 +252,7 @@ class CalendarItemApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.createDelegationDeAnonymizationMetadataAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -291,7 +290,7 @@ class CalendarItemApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavourlessApi.deleteCalendarItemAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -331,7 +330,7 @@ class CalendarItemApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavourlessApi.deleteCalendarItemsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -375,7 +374,7 @@ class CalendarItemApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemFlavouredApi.shareWithAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -420,7 +419,7 @@ class CalendarItemApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemFlavouredApi.tryShareWithManyAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -462,7 +461,7 @@ class CalendarItemApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemFlavouredApi.shareWithManyAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -509,7 +508,7 @@ class CalendarItemApi:
 		}
 		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemFlavouredApi.findCalendarItemsByHcPartyPatientAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -561,7 +560,7 @@ class CalendarItemApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemFlavouredApi.linkToPatientAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -603,7 +602,7 @@ class CalendarItemApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavouredApi.modifyCalendarItemAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -643,7 +642,7 @@ class CalendarItemApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavouredApi.getCalendarItemAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -683,7 +682,7 @@ class CalendarItemApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavouredApi.getCalendarItemsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -725,7 +724,7 @@ class CalendarItemApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavouredApi.getCalendarItemsByPeriodAndHcPartyIdAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -769,7 +768,7 @@ class CalendarItemApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavouredApi.getCalendarsByPeriodAndAgendaIdAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -811,7 +810,7 @@ class CalendarItemApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavouredApi.getCalendarItemsWithIdsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -858,7 +857,7 @@ class CalendarItemApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavouredApi.findCalendarItemsByRecurrenceIdAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -891,8 +890,8 @@ class CalendarItemApi:
 
 	class CalendarItemFlavouredEncryptedApi:
 
-		def __init__(self, executor):
-			self.executor = executor
+		def __init__(self):
+
 
 		async def share_with_async(self, delegate_id: str, calendar_item: EncryptedCalendarItem, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
 			loop = asyncio.get_running_loop()
@@ -914,7 +913,7 @@ class CalendarItemApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemFlavouredApi.shareWithAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -959,7 +958,7 @@ class CalendarItemApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemFlavouredApi.tryShareWithManyAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -1001,7 +1000,7 @@ class CalendarItemApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemFlavouredApi.shareWithManyAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -1048,7 +1047,7 @@ class CalendarItemApi:
 			}
 			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemFlavouredApi.findCalendarItemsByHcPartyPatientAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -1100,7 +1099,7 @@ class CalendarItemApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemFlavouredApi.linkToPatientAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -1142,7 +1141,7 @@ class CalendarItemApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavouredApi.modifyCalendarItemAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -1182,7 +1181,7 @@ class CalendarItemApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavouredApi.getCalendarItemAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -1222,7 +1221,7 @@ class CalendarItemApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavouredApi.getCalendarItemsAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -1264,7 +1263,7 @@ class CalendarItemApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavouredApi.getCalendarItemsByPeriodAndHcPartyIdAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -1308,7 +1307,7 @@ class CalendarItemApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavouredApi.getCalendarsByPeriodAndAgendaIdAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -1350,7 +1349,7 @@ class CalendarItemApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavouredApi.getCalendarItemsWithIdsAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -1397,7 +1396,7 @@ class CalendarItemApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavouredApi.findCalendarItemsByRecurrenceIdAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -1430,8 +1429,8 @@ class CalendarItemApi:
 
 	class CalendarItemFlavouredApi:
 
-		def __init__(self, executor):
-			self.executor = executor
+		def __init__(self):
+
 
 		async def share_with_async(self, delegate_id: str, calendar_item: CalendarItem, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
 			loop = asyncio.get_running_loop()
@@ -1453,7 +1452,7 @@ class CalendarItemApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemFlavouredApi.shareWithAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -1498,7 +1497,7 @@ class CalendarItemApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemFlavouredApi.tryShareWithManyAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -1540,7 +1539,7 @@ class CalendarItemApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemFlavouredApi.shareWithManyAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -1587,7 +1586,7 @@ class CalendarItemApi:
 			}
 			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemFlavouredApi.findCalendarItemsByHcPartyPatientAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -1639,7 +1638,7 @@ class CalendarItemApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemFlavouredApi.linkToPatientAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -1681,7 +1680,7 @@ class CalendarItemApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavouredApi.modifyCalendarItemAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -1721,7 +1720,7 @@ class CalendarItemApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavouredApi.getCalendarItemAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -1761,7 +1760,7 @@ class CalendarItemApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavouredApi.getCalendarItemsAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -1803,7 +1802,7 @@ class CalendarItemApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavouredApi.getCalendarItemsByPeriodAndHcPartyIdAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -1847,7 +1846,7 @@ class CalendarItemApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavouredApi.getCalendarsByPeriodAndAgendaIdAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -1889,7 +1888,7 @@ class CalendarItemApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavouredApi.getCalendarItemsWithIdsAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
@@ -1936,7 +1935,7 @@ class CalendarItemApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.executor,
+				self.icure_sdk.executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavouredApi.findCalendarItemsByRecurrenceIdAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),

@@ -10,9 +10,8 @@ from model.Document import EncryptedDocument
 
 class DocumentBasicApi:
 
-	def __init__(self, icure_sdk, executor):
+	def __init__(self, icure_sdk):
 		self.icure_sdk = icure_sdk
-		self.executor = executor
 
 	async def delete_document_async(self, entity_id: str) -> DocIdentifier:
 		loop = asyncio.get_running_loop()
@@ -30,7 +29,7 @@ class DocumentBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavourlessApi.deleteDocumentAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -70,7 +69,7 @@ class DocumentBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavourlessApi.deleteDocumentsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -111,7 +110,7 @@ class DocumentBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavourlessApi.getRawMainAttachmentAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -153,7 +152,7 @@ class DocumentBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavourlessApi.getMainAttachmentAsPlainTextAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -195,7 +194,7 @@ class DocumentBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavourlessApi.getMainAttachmentAsJsonAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -238,7 +237,7 @@ class DocumentBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavourlessApi.getRawSecondaryAttachmentAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -280,7 +279,7 @@ class DocumentBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavouredApi.modifyDocumentAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -320,7 +319,7 @@ class DocumentBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavouredApi.getDocumentAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -360,7 +359,7 @@ class DocumentBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavouredApi.getDocumentByExternalUuidAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -400,7 +399,7 @@ class DocumentBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavouredApi.getDocumentsByExternalUuidAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -440,7 +439,7 @@ class DocumentBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavouredApi.getDocumentsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -480,7 +479,7 @@ class DocumentBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavouredApi.modifyDocumentsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -522,7 +521,7 @@ class DocumentBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavouredApi.listDocumentsByHcPartyMessageForeignKeysAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -564,7 +563,7 @@ class DocumentBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavouredApi.findWithoutDelegationAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -609,7 +608,7 @@ class DocumentBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavouredApi.setRawMainAttachmentAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -660,7 +659,7 @@ class DocumentBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavouredApi.setRawSecondaryAttachmentAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -707,7 +706,7 @@ class DocumentBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavouredApi.deleteMainAttachmentAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -750,7 +749,7 @@ class DocumentBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentBasicFlavouredApi.deleteSecondaryAttachmentAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),

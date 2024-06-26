@@ -13,9 +13,8 @@ from model.couchdb.DocIdentifier import DocIdentifier
 
 class DeviceApi:
 
-	def __init__(self, icure_sdk, executor):
+	def __init__(self, icure_sdk):
 		self.icure_sdk = icure_sdk
-		self.executor = executor
 
 	async def get_device_async(self, device_id: str) -> Device:
 		loop = asyncio.get_running_loop()
@@ -33,7 +32,7 @@ class DeviceApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.getDeviceAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -73,7 +72,7 @@ class DeviceApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.getDevicesAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -113,7 +112,7 @@ class DeviceApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.createDeviceAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -153,7 +152,7 @@ class DeviceApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.updateDeviceAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -193,7 +192,7 @@ class DeviceApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.createDevicesAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -233,7 +232,7 @@ class DeviceApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.updateDevicesAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -279,7 +278,7 @@ class DeviceApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.filterDevicesByAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -325,7 +324,7 @@ class DeviceApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.matchDevicesByAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -365,7 +364,7 @@ class DeviceApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.deleteDeviceAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -405,7 +404,7 @@ class DeviceApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.deleteDevicesAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -446,7 +445,7 @@ class DeviceApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.getDevicesInGroupAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -488,7 +487,7 @@ class DeviceApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.modifyDeviceInGroupAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -530,7 +529,7 @@ class DeviceApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.createDeviceInGroupAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -572,7 +571,7 @@ class DeviceApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.deleteDevicesInGroupAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),

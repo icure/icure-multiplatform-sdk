@@ -10,9 +10,8 @@ from model.Receipt import EncryptedReceipt
 
 class ReceiptBasicApi:
 
-	def __init__(self, icure_sdk, executor):
+	def __init__(self, icure_sdk):
 		self.icure_sdk = icure_sdk
-		self.executor = executor
 
 	async def delete_receipt_async(self, entity_id: str) -> DocIdentifier:
 		loop = asyncio.get_running_loop()
@@ -30,7 +29,7 @@ class ReceiptBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.ReceiptBasicFlavourlessApi.deleteReceiptAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -70,7 +69,7 @@ class ReceiptBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.ReceiptBasicFlavourlessApi.deleteReceiptsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -111,7 +110,7 @@ class ReceiptBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.ReceiptBasicFlavourlessApi.getRawReceiptAttachmentAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -155,7 +154,7 @@ class ReceiptBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.ReceiptBasicFlavourlessApi.setRawReceiptAttachmentAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -198,7 +197,7 @@ class ReceiptBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.ReceiptBasicFlavouredApi.modifyReceiptAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -238,7 +237,7 @@ class ReceiptBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.ReceiptBasicFlavouredApi.getReceiptAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
@@ -278,7 +277,7 @@ class ReceiptBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.executor,
+			self.icure_sdk.executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.ReceiptBasicFlavouredApi.listByReferenceAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
