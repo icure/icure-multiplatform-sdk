@@ -9,18 +9,10 @@ from dataclasses import dataclass
 from model.specializations import HexString
 from model.specializations import SpkiHexString
 from model.specializations import AesExchangeKeyEncryptionKeypairIdentifier
-from model import serialize_abstract_filter
-from model import serialize_predicate
-from model import deserialize_abstract_filter
-from model import deserialize_predicate
 from model.specializations import Base64String
-from model import serialize_permission_item
-from model import deserialize_permission_item
 from enum import Enum
 from model.specializations import SecureDelegationKeyString
 from model.specializations import Sha256HexString
-from model import serialize_structure_element
-from model import deserialize_structure_element
 
 @dataclass
 class Keyword:
