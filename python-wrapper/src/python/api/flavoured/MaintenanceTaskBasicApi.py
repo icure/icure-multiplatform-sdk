@@ -28,7 +28,7 @@ class MaintenanceTaskBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskBasicFlavourlessApi.deleteMaintenanceTaskAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskBasicApi.deleteMaintenanceTaskAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -39,7 +39,7 @@ class MaintenanceTaskBasicApi:
 		payload = {
 			"entity_id": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskBasicFlavourlessApi.deleteMaintenanceTaskBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskBasicApi.deleteMaintenanceTaskBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -68,7 +68,7 @@ class MaintenanceTaskBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskBasicFlavourlessApi.deleteMaintenanceTasksAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskBasicApi.deleteMaintenanceTasksAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -79,7 +79,7 @@ class MaintenanceTaskBasicApi:
 		payload = {
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskBasicFlavourlessApi.deleteMaintenanceTasksBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskBasicApi.deleteMaintenanceTasksBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -108,7 +108,7 @@ class MaintenanceTaskBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskBasicFlavouredApi.modifyMaintenanceTaskAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskBasicApi.modifyMaintenanceTaskAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -119,7 +119,7 @@ class MaintenanceTaskBasicApi:
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskBasicFlavouredApi.modifyMaintenanceTaskBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskBasicApi.modifyMaintenanceTaskBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -148,7 +148,7 @@ class MaintenanceTaskBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskBasicFlavouredApi.getMaintenanceTaskAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskBasicApi.getMaintenanceTaskAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -159,7 +159,7 @@ class MaintenanceTaskBasicApi:
 		payload = {
 			"entity_id": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskBasicFlavouredApi.getMaintenanceTaskBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskBasicApi.getMaintenanceTaskBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -194,7 +194,7 @@ class MaintenanceTaskBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskBasicFlavouredApi.filterMaintenanceTasksByAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskBasicApi.filterMaintenanceTasksByAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -207,7 +207,7 @@ class MaintenanceTaskBasicApi:
 			"limit": limit,
 			"filter_chain": filter_chain.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskBasicFlavouredApi.filterMaintenanceTasksByBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskBasicApi.filterMaintenanceTasksByBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)

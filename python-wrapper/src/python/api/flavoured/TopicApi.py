@@ -36,7 +36,7 @@ class TopicApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicFlavouredApi.shareWithAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.encrypted.shareWithAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -51,7 +51,7 @@ class TopicApi:
 				"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
 				"requested_permission": requested_permission.__serialize__(),
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicFlavouredApi.shareWithBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.encrypted.shareWithBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -81,7 +81,7 @@ class TopicApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicFlavouredApi.tryShareWithManyAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.encrypted.tryShareWithManyAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -93,7 +93,7 @@ class TopicApi:
 				"topic": topic.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicFlavouredApi.tryShareWithManyBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.encrypted.tryShareWithManyBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -123,7 +123,7 @@ class TopicApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicFlavouredApi.shareWithManyAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.encrypted.shareWithManyAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -135,7 +135,7 @@ class TopicApi:
 				"topic": topic.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicFlavouredApi.shareWithManyBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.encrypted.shareWithManyBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -164,7 +164,7 @@ class TopicApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicBasicFlavouredApi.modifyTopicAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.encrypted.modifyTopicAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -175,7 +175,7 @@ class TopicApi:
 			payload = {
 				"entity": entity.__serialize__(),
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicBasicFlavouredApi.modifyTopicBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.encrypted.modifyTopicBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -204,7 +204,7 @@ class TopicApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicBasicFlavouredApi.getTopicAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.encrypted.getTopicAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -215,7 +215,7 @@ class TopicApi:
 			payload = {
 				"entity_id": entity_id,
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicBasicFlavouredApi.getTopicBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.encrypted.getTopicBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -244,7 +244,7 @@ class TopicApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicBasicFlavouredApi.getTopicsAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.encrypted.getTopicsAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -255,7 +255,7 @@ class TopicApi:
 			payload = {
 				"entity_ids": [x0 for x0 in entity_ids],
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicBasicFlavouredApi.getTopicsBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.encrypted.getTopicsBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -290,7 +290,7 @@ class TopicApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicBasicFlavouredApi.filterTopicsByAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.encrypted.filterTopicsByAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -303,7 +303,7 @@ class TopicApi:
 				"limit": limit,
 				"filter_chain": filter_chain.__serialize__(),
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicBasicFlavouredApi.filterTopicsByBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.encrypted.filterTopicsByBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -338,7 +338,7 @@ class TopicApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicBasicFlavouredApi.addParticipantAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.encrypted.addParticipantAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -351,7 +351,7 @@ class TopicApi:
 				"data_owner_id": data_owner_id,
 				"topic_role": topic_role.__serialize__(),
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicBasicFlavouredApi.addParticipantBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.encrypted.addParticipantBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -381,7 +381,7 @@ class TopicApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicBasicFlavouredApi.removeParticipantAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.encrypted.removeParticipantAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -393,7 +393,7 @@ class TopicApi:
 				"entity_id": entity_id,
 				"data_owner_id": data_owner_id,
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicBasicFlavouredApi.removeParticipantBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.encrypted.removeParticipantBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -431,7 +431,7 @@ class TopicApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicFlavouredApi.shareWithAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.tryAndRecover.shareWithAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -446,7 +446,7 @@ class TopicApi:
 				"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
 				"requested_permission": requested_permission.__serialize__(),
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicFlavouredApi.shareWithBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.tryAndRecover.shareWithBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -476,7 +476,7 @@ class TopicApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicFlavouredApi.tryShareWithManyAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.tryAndRecover.tryShareWithManyAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -488,7 +488,7 @@ class TopicApi:
 				"topic": topic.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicFlavouredApi.tryShareWithManyBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.tryAndRecover.tryShareWithManyBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -518,7 +518,7 @@ class TopicApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicFlavouredApi.shareWithManyAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.tryAndRecover.shareWithManyAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -530,7 +530,7 @@ class TopicApi:
 				"topic": topic.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicFlavouredApi.shareWithManyBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.tryAndRecover.shareWithManyBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -559,7 +559,7 @@ class TopicApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicBasicFlavouredApi.modifyTopicAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.tryAndRecover.modifyTopicAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -570,7 +570,7 @@ class TopicApi:
 			payload = {
 				"entity": entity.__serialize__(),
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicBasicFlavouredApi.modifyTopicBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.tryAndRecover.modifyTopicBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -599,7 +599,7 @@ class TopicApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicBasicFlavouredApi.getTopicAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.tryAndRecover.getTopicAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -610,7 +610,7 @@ class TopicApi:
 			payload = {
 				"entity_id": entity_id,
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicBasicFlavouredApi.getTopicBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.tryAndRecover.getTopicBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -639,7 +639,7 @@ class TopicApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicBasicFlavouredApi.getTopicsAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.tryAndRecover.getTopicsAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -650,7 +650,7 @@ class TopicApi:
 			payload = {
 				"entity_ids": [x0 for x0 in entity_ids],
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicBasicFlavouredApi.getTopicsBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.tryAndRecover.getTopicsBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -685,7 +685,7 @@ class TopicApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicBasicFlavouredApi.filterTopicsByAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.tryAndRecover.filterTopicsByAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -698,7 +698,7 @@ class TopicApi:
 				"limit": limit,
 				"filter_chain": filter_chain.__serialize__(),
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicBasicFlavouredApi.filterTopicsByBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.tryAndRecover.filterTopicsByBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -733,7 +733,7 @@ class TopicApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicBasicFlavouredApi.addParticipantAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.tryAndRecover.addParticipantAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -746,7 +746,7 @@ class TopicApi:
 				"data_owner_id": data_owner_id,
 				"topic_role": topic_role.__serialize__(),
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicBasicFlavouredApi.addParticipantBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.tryAndRecover.addParticipantBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -776,7 +776,7 @@ class TopicApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicBasicFlavouredApi.removeParticipantAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.tryAndRecover.removeParticipantAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -788,7 +788,7 @@ class TopicApi:
 				"entity_id": entity_id,
 				"data_owner_id": data_owner_id,
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicBasicFlavouredApi.removeParticipantBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.tryAndRecover.removeParticipantBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -1069,7 +1069,7 @@ class TopicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicBasicFlavourlessApi.deleteTopicAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.deleteTopicAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -1080,7 +1080,7 @@ class TopicApi:
 		payload = {
 			"entity_id": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicBasicFlavourlessApi.deleteTopicBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.deleteTopicBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -1109,7 +1109,7 @@ class TopicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicBasicFlavourlessApi.deleteTopicsAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.deleteTopicsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -1120,7 +1120,7 @@ class TopicApi:
 		payload = {
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicBasicFlavourlessApi.deleteTopicsBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.deleteTopicsBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -1149,7 +1149,7 @@ class TopicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicBasicFlavourlessApi.matchTopicsByAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.matchTopicsByAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -1160,7 +1160,7 @@ class TopicApi:
 		payload = {
 			"filter": serialize_abstract_filter(filter),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicBasicFlavourlessApi.matchTopicsByBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.matchTopicsByBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -1193,7 +1193,7 @@ class TopicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicFlavouredApi.shareWithAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.shareWithAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -1208,7 +1208,7 @@ class TopicApi:
 			"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
 			"requested_permission": requested_permission.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicFlavouredApi.shareWithBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.shareWithBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -1238,7 +1238,7 @@ class TopicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicFlavouredApi.tryShareWithManyAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.tryShareWithManyAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -1250,7 +1250,7 @@ class TopicApi:
 			"topic": topic.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicFlavouredApi.tryShareWithManyBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.tryShareWithManyBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -1280,7 +1280,7 @@ class TopicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicFlavouredApi.shareWithManyAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.shareWithManyAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -1292,7 +1292,7 @@ class TopicApi:
 			"topic": topic.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicFlavouredApi.shareWithManyBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.shareWithManyBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -1321,7 +1321,7 @@ class TopicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicBasicFlavouredApi.modifyTopicAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.modifyTopicAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -1332,7 +1332,7 @@ class TopicApi:
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicBasicFlavouredApi.modifyTopicBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.modifyTopicBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -1361,7 +1361,7 @@ class TopicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicBasicFlavouredApi.getTopicAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.getTopicAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -1372,7 +1372,7 @@ class TopicApi:
 		payload = {
 			"entity_id": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicBasicFlavouredApi.getTopicBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.getTopicBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -1401,7 +1401,7 @@ class TopicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicBasicFlavouredApi.getTopicsAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.getTopicsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -1412,7 +1412,7 @@ class TopicApi:
 		payload = {
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicBasicFlavouredApi.getTopicsBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.getTopicsBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -1447,7 +1447,7 @@ class TopicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicBasicFlavouredApi.filterTopicsByAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.filterTopicsByAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -1460,7 +1460,7 @@ class TopicApi:
 			"limit": limit,
 			"filter_chain": filter_chain.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicBasicFlavouredApi.filterTopicsByBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.filterTopicsByBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -1495,7 +1495,7 @@ class TopicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicBasicFlavouredApi.addParticipantAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.addParticipantAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -1508,7 +1508,7 @@ class TopicApi:
 			"data_owner_id": data_owner_id,
 			"topic_role": topic_role.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicBasicFlavouredApi.addParticipantBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.addParticipantBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -1538,7 +1538,7 @@ class TopicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicBasicFlavouredApi.removeParticipantAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.removeParticipantAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -1550,7 +1550,7 @@ class TopicApi:
 			"entity_id": entity_id,
 			"data_owner_id": data_owner_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicBasicFlavouredApi.removeParticipantBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.removeParticipantBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)

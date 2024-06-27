@@ -37,7 +37,7 @@ class HealthcareElementApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementFlavouredApi.shareWithAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.encrypted.shareWithAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -52,7 +52,7 @@ class HealthcareElementApi:
 				"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
 				"requested_permission": requested_permission.__serialize__(),
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementFlavouredApi.shareWithBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.encrypted.shareWithBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -82,7 +82,7 @@ class HealthcareElementApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementFlavouredApi.tryShareWithManyAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.encrypted.tryShareWithManyAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -94,7 +94,7 @@ class HealthcareElementApi:
 				"health_element": health_element.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementFlavouredApi.tryShareWithManyBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.encrypted.tryShareWithManyBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -124,7 +124,7 @@ class HealthcareElementApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementFlavouredApi.shareWithManyAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.encrypted.shareWithManyAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -136,7 +136,7 @@ class HealthcareElementApi:
 				"health_element": health_element.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementFlavouredApi.shareWithManyBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.encrypted.shareWithManyBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -171,7 +171,7 @@ class HealthcareElementApi:
 			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementFlavouredApi.findHealthcareElementsByHcPartyPatientAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.encrypted.findHealthcareElementsByHcPartyPatientAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -186,7 +186,7 @@ class HealthcareElementApi:
 				"end_date": end_date,
 				"descending": descending,
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementFlavouredApi.findHealthcareElementsByHcPartyPatientBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.encrypted.findHealthcareElementsByHcPartyPatientBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -221,7 +221,7 @@ class HealthcareElementApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.modifyHealthcareElementAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.encrypted.modifyHealthcareElementAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -232,7 +232,7 @@ class HealthcareElementApi:
 			payload = {
 				"entity": entity.__serialize__(),
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.modifyHealthcareElementBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.encrypted.modifyHealthcareElementBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -261,7 +261,7 @@ class HealthcareElementApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.modifyHealthcareElementsAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.encrypted.modifyHealthcareElementsAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -272,7 +272,7 @@ class HealthcareElementApi:
 			payload = {
 				"entities": [x0.__serialize__() for x0 in entities],
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.modifyHealthcareElementsBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.encrypted.modifyHealthcareElementsBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -301,7 +301,7 @@ class HealthcareElementApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.getHealthcareElementAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.encrypted.getHealthcareElementAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -312,7 +312,7 @@ class HealthcareElementApi:
 			payload = {
 				"entity_id": entity_id,
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.getHealthcareElementBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.encrypted.getHealthcareElementBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -341,7 +341,7 @@ class HealthcareElementApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.getHealthcareElementsAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.encrypted.getHealthcareElementsAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -352,7 +352,7 @@ class HealthcareElementApi:
 			payload = {
 				"entity_ids": [x0 for x0 in entity_ids],
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.getHealthcareElementsBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.encrypted.getHealthcareElementsBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -387,7 +387,7 @@ class HealthcareElementApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.filterHealthcareElementsByAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.encrypted.filterHealthcareElementsByAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -400,7 +400,7 @@ class HealthcareElementApi:
 				"start_document_id": start_document_id,
 				"limit": limit,
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.filterHealthcareElementsByBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.encrypted.filterHealthcareElementsByBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -434,7 +434,7 @@ class HealthcareElementApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.findHealthcareElementsByHcPartyPatientForeignKeysAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.encrypted.findHealthcareElementsByHcPartyPatientForeignKeysAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -446,7 +446,7 @@ class HealthcareElementApi:
 				"hc_party_id": hc_party_id,
 				"secret_patient_keys": [x0 for x0 in secret_patient_keys],
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.findHealthcareElementsByHcPartyPatientForeignKeysBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.encrypted.findHealthcareElementsByHcPartyPatientForeignKeysBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -484,7 +484,7 @@ class HealthcareElementApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementFlavouredApi.shareWithAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.tryAndRecover.shareWithAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -499,7 +499,7 @@ class HealthcareElementApi:
 				"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
 				"requested_permission": requested_permission.__serialize__(),
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementFlavouredApi.shareWithBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.tryAndRecover.shareWithBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -529,7 +529,7 @@ class HealthcareElementApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementFlavouredApi.tryShareWithManyAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.tryAndRecover.tryShareWithManyAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -541,7 +541,7 @@ class HealthcareElementApi:
 				"health_element": health_element.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementFlavouredApi.tryShareWithManyBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.tryAndRecover.tryShareWithManyBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -571,7 +571,7 @@ class HealthcareElementApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementFlavouredApi.shareWithManyAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.tryAndRecover.shareWithManyAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -583,7 +583,7 @@ class HealthcareElementApi:
 				"health_element": health_element.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementFlavouredApi.shareWithManyBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.tryAndRecover.shareWithManyBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -618,7 +618,7 @@ class HealthcareElementApi:
 			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementFlavouredApi.findHealthcareElementsByHcPartyPatientAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.tryAndRecover.findHealthcareElementsByHcPartyPatientAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -633,7 +633,7 @@ class HealthcareElementApi:
 				"end_date": end_date,
 				"descending": descending,
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementFlavouredApi.findHealthcareElementsByHcPartyPatientBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.tryAndRecover.findHealthcareElementsByHcPartyPatientBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -668,7 +668,7 @@ class HealthcareElementApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.modifyHealthcareElementAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.tryAndRecover.modifyHealthcareElementAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -679,7 +679,7 @@ class HealthcareElementApi:
 			payload = {
 				"entity": entity.__serialize__(),
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.modifyHealthcareElementBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.tryAndRecover.modifyHealthcareElementBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -708,7 +708,7 @@ class HealthcareElementApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.modifyHealthcareElementsAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.tryAndRecover.modifyHealthcareElementsAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -719,7 +719,7 @@ class HealthcareElementApi:
 			payload = {
 				"entities": [x0.__serialize__() for x0 in entities],
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.modifyHealthcareElementsBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.tryAndRecover.modifyHealthcareElementsBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -748,7 +748,7 @@ class HealthcareElementApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.getHealthcareElementAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.tryAndRecover.getHealthcareElementAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -759,7 +759,7 @@ class HealthcareElementApi:
 			payload = {
 				"entity_id": entity_id,
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.getHealthcareElementBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.tryAndRecover.getHealthcareElementBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -788,7 +788,7 @@ class HealthcareElementApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.getHealthcareElementsAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.tryAndRecover.getHealthcareElementsAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -799,7 +799,7 @@ class HealthcareElementApi:
 			payload = {
 				"entity_ids": [x0 for x0 in entity_ids],
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.getHealthcareElementsBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.tryAndRecover.getHealthcareElementsBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -834,7 +834,7 @@ class HealthcareElementApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.filterHealthcareElementsByAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.tryAndRecover.filterHealthcareElementsByAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -847,7 +847,7 @@ class HealthcareElementApi:
 				"start_document_id": start_document_id,
 				"limit": limit,
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.filterHealthcareElementsByBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.tryAndRecover.filterHealthcareElementsByBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -881,7 +881,7 @@ class HealthcareElementApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.findHealthcareElementsByHcPartyPatientForeignKeysAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.tryAndRecover.findHealthcareElementsByHcPartyPatientForeignKeysAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -893,7 +893,7 @@ class HealthcareElementApi:
 				"hc_party_id": hc_party_id,
 				"secret_patient_keys": [x0 for x0 in secret_patient_keys],
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.findHealthcareElementsByHcPartyPatientForeignKeysBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.tryAndRecover.findHealthcareElementsByHcPartyPatientForeignKeysBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -1214,7 +1214,7 @@ class HealthcareElementApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavourlessApi.matchHealthcareElementsByAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.matchHealthcareElementsByAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -1225,7 +1225,7 @@ class HealthcareElementApi:
 		payload = {
 			"filter": serialize_abstract_filter(filter),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavourlessApi.matchHealthcareElementsByBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.matchHealthcareElementsByBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -1254,7 +1254,7 @@ class HealthcareElementApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavourlessApi.deleteHealthcareElementAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.deleteHealthcareElementAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -1265,7 +1265,7 @@ class HealthcareElementApi:
 		payload = {
 			"entity_id": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavourlessApi.deleteHealthcareElementBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.deleteHealthcareElementBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -1294,7 +1294,7 @@ class HealthcareElementApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavourlessApi.deleteHealthcareElementsAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.deleteHealthcareElementsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -1305,7 +1305,7 @@ class HealthcareElementApi:
 		payload = {
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavourlessApi.deleteHealthcareElementsBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.deleteHealthcareElementsBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -1335,7 +1335,7 @@ class HealthcareElementApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavourlessApi.findHealthcareElementsDelegationsStubsByHcPartyPatientForeignKeysAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.findHealthcareElementsDelegationsStubsByHcPartyPatientForeignKeysAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -1347,7 +1347,7 @@ class HealthcareElementApi:
 			"hc_party_id": hc_party_id,
 			"secret_patient_keys": [x0 for x0 in secret_patient_keys],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavourlessApi.findHealthcareElementsDelegationsStubsByHcPartyPatientForeignKeysBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.findHealthcareElementsDelegationsStubsByHcPartyPatientForeignKeysBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -1380,7 +1380,7 @@ class HealthcareElementApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementFlavouredApi.shareWithAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.shareWithAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -1395,7 +1395,7 @@ class HealthcareElementApi:
 			"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
 			"requested_permission": requested_permission.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementFlavouredApi.shareWithBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.shareWithBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -1425,7 +1425,7 @@ class HealthcareElementApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementFlavouredApi.tryShareWithManyAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.tryShareWithManyAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -1437,7 +1437,7 @@ class HealthcareElementApi:
 			"health_element": health_element.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementFlavouredApi.tryShareWithManyBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.tryShareWithManyBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -1467,7 +1467,7 @@ class HealthcareElementApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementFlavouredApi.shareWithManyAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.shareWithManyAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -1479,7 +1479,7 @@ class HealthcareElementApi:
 			"health_element": health_element.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementFlavouredApi.shareWithManyBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.shareWithManyBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -1514,7 +1514,7 @@ class HealthcareElementApi:
 		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementFlavouredApi.findHealthcareElementsByHcPartyPatientAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.findHealthcareElementsByHcPartyPatientAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -1529,7 +1529,7 @@ class HealthcareElementApi:
 			"end_date": end_date,
 			"descending": descending,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementFlavouredApi.findHealthcareElementsByHcPartyPatientBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.findHealthcareElementsByHcPartyPatientBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -1564,7 +1564,7 @@ class HealthcareElementApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.modifyHealthcareElementAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.modifyHealthcareElementAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -1575,7 +1575,7 @@ class HealthcareElementApi:
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.modifyHealthcareElementBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.modifyHealthcareElementBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -1604,7 +1604,7 @@ class HealthcareElementApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.modifyHealthcareElementsAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.modifyHealthcareElementsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -1615,7 +1615,7 @@ class HealthcareElementApi:
 		payload = {
 			"entities": [x0.__serialize__() for x0 in entities],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.modifyHealthcareElementsBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.modifyHealthcareElementsBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -1644,7 +1644,7 @@ class HealthcareElementApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.getHealthcareElementAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.getHealthcareElementAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -1655,7 +1655,7 @@ class HealthcareElementApi:
 		payload = {
 			"entity_id": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.getHealthcareElementBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.getHealthcareElementBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -1684,7 +1684,7 @@ class HealthcareElementApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.getHealthcareElementsAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.getHealthcareElementsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -1695,7 +1695,7 @@ class HealthcareElementApi:
 		payload = {
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.getHealthcareElementsBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.getHealthcareElementsBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -1730,7 +1730,7 @@ class HealthcareElementApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.filterHealthcareElementsByAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.filterHealthcareElementsByAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -1743,7 +1743,7 @@ class HealthcareElementApi:
 			"start_document_id": start_document_id,
 			"limit": limit,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.filterHealthcareElementsByBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.filterHealthcareElementsByBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -1777,7 +1777,7 @@ class HealthcareElementApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.findHealthcareElementsByHcPartyPatientForeignKeysAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.findHealthcareElementsByHcPartyPatientForeignKeysAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -1789,7 +1789,7 @@ class HealthcareElementApi:
 			"hc_party_id": hc_party_id,
 			"secret_patient_keys": [x0 for x0 in secret_patient_keys],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.findHealthcareElementsByHcPartyPatientForeignKeysBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.findHealthcareElementsByHcPartyPatientForeignKeysBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)

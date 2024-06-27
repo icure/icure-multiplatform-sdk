@@ -37,7 +37,7 @@ class ReceiptApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptFlavouredApi.shareWithAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.encrypted.shareWithAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -52,7 +52,7 @@ class ReceiptApi:
 				"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
 				"requested_permission": requested_permission.__serialize__(),
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptFlavouredApi.shareWithBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.encrypted.shareWithBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -82,7 +82,7 @@ class ReceiptApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptFlavouredApi.tryShareWithManyAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.encrypted.tryShareWithManyAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -94,7 +94,7 @@ class ReceiptApi:
 				"receipt": receipt.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptFlavouredApi.tryShareWithManyBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.encrypted.tryShareWithManyBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -124,7 +124,7 @@ class ReceiptApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptFlavouredApi.shareWithManyAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.encrypted.shareWithManyAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -136,7 +136,7 @@ class ReceiptApi:
 				"receipt": receipt.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptFlavouredApi.shareWithManyBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.encrypted.shareWithManyBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -165,7 +165,7 @@ class ReceiptApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptBasicFlavouredApi.modifyReceiptAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.encrypted.modifyReceiptAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -176,7 +176,7 @@ class ReceiptApi:
 			payload = {
 				"entity": entity.__serialize__(),
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptBasicFlavouredApi.modifyReceiptBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.encrypted.modifyReceiptBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -205,7 +205,7 @@ class ReceiptApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptBasicFlavouredApi.getReceiptAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.encrypted.getReceiptAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -216,7 +216,7 @@ class ReceiptApi:
 			payload = {
 				"entity_id": entity_id,
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptBasicFlavouredApi.getReceiptBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.encrypted.getReceiptBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -245,7 +245,7 @@ class ReceiptApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptBasicFlavouredApi.listByReferenceAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.encrypted.listByReferenceAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -256,7 +256,7 @@ class ReceiptApi:
 			payload = {
 				"reference": reference,
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptBasicFlavouredApi.listByReferenceBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.encrypted.listByReferenceBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -294,7 +294,7 @@ class ReceiptApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptFlavouredApi.shareWithAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.tryAndRecover.shareWithAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -309,7 +309,7 @@ class ReceiptApi:
 				"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
 				"requested_permission": requested_permission.__serialize__(),
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptFlavouredApi.shareWithBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.tryAndRecover.shareWithBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -339,7 +339,7 @@ class ReceiptApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptFlavouredApi.tryShareWithManyAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.tryAndRecover.tryShareWithManyAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -351,7 +351,7 @@ class ReceiptApi:
 				"receipt": receipt.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptFlavouredApi.tryShareWithManyBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.tryAndRecover.tryShareWithManyBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -381,7 +381,7 @@ class ReceiptApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptFlavouredApi.shareWithManyAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.tryAndRecover.shareWithManyAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -393,7 +393,7 @@ class ReceiptApi:
 				"receipt": receipt.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptFlavouredApi.shareWithManyBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.tryAndRecover.shareWithManyBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -422,7 +422,7 @@ class ReceiptApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptBasicFlavouredApi.modifyReceiptAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.tryAndRecover.modifyReceiptAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -433,7 +433,7 @@ class ReceiptApi:
 			payload = {
 				"entity": entity.__serialize__(),
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptBasicFlavouredApi.modifyReceiptBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.tryAndRecover.modifyReceiptBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -462,7 +462,7 @@ class ReceiptApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptBasicFlavouredApi.getReceiptAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.tryAndRecover.getReceiptAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -473,7 +473,7 @@ class ReceiptApi:
 			payload = {
 				"entity_id": entity_id,
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptBasicFlavouredApi.getReceiptBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.tryAndRecover.getReceiptBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -502,7 +502,7 @@ class ReceiptApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk.executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptBasicFlavouredApi.listByReferenceAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.tryAndRecover.listByReferenceAsync,
 				self.icure_sdk.native,
 				json.dumps(payload),
 				callback
@@ -513,7 +513,7 @@ class ReceiptApi:
 			payload = {
 				"reference": reference,
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptBasicFlavouredApi.listByReferenceBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.tryAndRecover.listByReferenceBlocking(
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
@@ -928,7 +928,7 @@ class ReceiptApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptBasicFlavourlessApi.deleteReceiptAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.deleteReceiptAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -939,7 +939,7 @@ class ReceiptApi:
 		payload = {
 			"entity_id": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptBasicFlavourlessApi.deleteReceiptBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.deleteReceiptBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -968,7 +968,7 @@ class ReceiptApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptBasicFlavourlessApi.deleteReceiptsAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.deleteReceiptsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -979,7 +979,7 @@ class ReceiptApi:
 		payload = {
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptBasicFlavourlessApi.deleteReceiptsBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.deleteReceiptsBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -1009,7 +1009,7 @@ class ReceiptApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptBasicFlavourlessApi.getRawReceiptAttachmentAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.getRawReceiptAttachmentAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -1021,7 +1021,7 @@ class ReceiptApi:
 			"receipt_id": receipt_id,
 			"attachment_id": attachment_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptBasicFlavourlessApi.getRawReceiptAttachmentBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.getRawReceiptAttachmentBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -1053,7 +1053,7 @@ class ReceiptApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptBasicFlavourlessApi.setRawReceiptAttachmentAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.setRawReceiptAttachmentAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -1067,7 +1067,7 @@ class ReceiptApi:
 			"blob_type": blob_type,
 			"attachment": base64.b64encode(attachment).decode('utf-8'),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptBasicFlavourlessApi.setRawReceiptAttachmentBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.setRawReceiptAttachmentBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -1100,7 +1100,7 @@ class ReceiptApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptFlavouredApi.shareWithAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.shareWithAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -1115,7 +1115,7 @@ class ReceiptApi:
 			"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
 			"requested_permission": requested_permission.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptFlavouredApi.shareWithBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.shareWithBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -1145,7 +1145,7 @@ class ReceiptApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptFlavouredApi.tryShareWithManyAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.tryShareWithManyAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -1157,7 +1157,7 @@ class ReceiptApi:
 			"receipt": receipt.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptFlavouredApi.tryShareWithManyBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.tryShareWithManyBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -1187,7 +1187,7 @@ class ReceiptApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptFlavouredApi.shareWithManyAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.shareWithManyAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -1199,7 +1199,7 @@ class ReceiptApi:
 			"receipt": receipt.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptFlavouredApi.shareWithManyBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.shareWithManyBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -1228,7 +1228,7 @@ class ReceiptApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptBasicFlavouredApi.modifyReceiptAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.modifyReceiptAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -1239,7 +1239,7 @@ class ReceiptApi:
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptBasicFlavouredApi.modifyReceiptBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.modifyReceiptBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -1268,7 +1268,7 @@ class ReceiptApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptBasicFlavouredApi.getReceiptAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.getReceiptAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -1279,7 +1279,7 @@ class ReceiptApi:
 		payload = {
 			"entity_id": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptBasicFlavouredApi.getReceiptBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.getReceiptBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -1308,7 +1308,7 @@ class ReceiptApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptBasicFlavouredApi.listByReferenceAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.listByReferenceAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -1319,7 +1319,7 @@ class ReceiptApi:
 		payload = {
 			"reference": reference,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptBasicFlavouredApi.listByReferenceBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.listByReferenceBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)

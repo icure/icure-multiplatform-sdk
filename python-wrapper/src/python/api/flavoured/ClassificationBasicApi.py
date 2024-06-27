@@ -28,7 +28,7 @@ class ClassificationBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationBasicFlavourlessApi.deleteClassificationAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationBasicApi.deleteClassificationAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -39,7 +39,7 @@ class ClassificationBasicApi:
 		payload = {
 			"entity_id": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationBasicFlavourlessApi.deleteClassificationBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationBasicApi.deleteClassificationBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -68,7 +68,7 @@ class ClassificationBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationBasicFlavourlessApi.deleteClassificationsAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationBasicApi.deleteClassificationsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -79,7 +79,7 @@ class ClassificationBasicApi:
 		payload = {
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationBasicFlavourlessApi.deleteClassificationsBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationBasicApi.deleteClassificationsBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -108,7 +108,7 @@ class ClassificationBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationBasicFlavouredApi.modifyClassificationAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationBasicApi.modifyClassificationAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -119,7 +119,7 @@ class ClassificationBasicApi:
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationBasicFlavouredApi.modifyClassificationBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationBasicApi.modifyClassificationBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -148,7 +148,7 @@ class ClassificationBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationBasicFlavouredApi.getClassificationAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationBasicApi.getClassificationAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -159,7 +159,7 @@ class ClassificationBasicApi:
 		payload = {
 			"entity_id": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationBasicFlavouredApi.getClassificationBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationBasicApi.getClassificationBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -188,7 +188,7 @@ class ClassificationBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationBasicFlavouredApi.getClassificationsAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationBasicApi.getClassificationsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -199,7 +199,7 @@ class ClassificationBasicApi:
 		payload = {
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationBasicFlavouredApi.getClassificationsBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationBasicApi.getClassificationsBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)

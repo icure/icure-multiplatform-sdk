@@ -28,7 +28,7 @@ class MessageBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicFlavourlessApi.matchMessagesByAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.matchMessagesByAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -39,7 +39,7 @@ class MessageBasicApi:
 		payload = {
 			"filter": serialize_abstract_filter(filter),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicFlavourlessApi.matchMessagesByBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.matchMessagesByBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -68,7 +68,7 @@ class MessageBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicFlavourlessApi.deleteMessageAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.deleteMessageAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -79,7 +79,7 @@ class MessageBasicApi:
 		payload = {
 			"entity_id": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicFlavourlessApi.deleteMessageBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.deleteMessageBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -108,7 +108,7 @@ class MessageBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicFlavourlessApi.deleteMessagesAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.deleteMessagesAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -119,7 +119,7 @@ class MessageBasicApi:
 		payload = {
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicFlavourlessApi.deleteMessagesBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.deleteMessagesBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -148,7 +148,7 @@ class MessageBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicFlavouredApi.modifyMessageAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.modifyMessageAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -159,7 +159,7 @@ class MessageBasicApi:
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicFlavouredApi.modifyMessageBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.modifyMessageBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -188,7 +188,7 @@ class MessageBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicFlavouredApi.getMessageAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.getMessageAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -199,7 +199,7 @@ class MessageBasicApi:
 		payload = {
 			"entity_id": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicFlavouredApi.getMessageBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.getMessageBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -228,7 +228,7 @@ class MessageBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicFlavouredApi.getMessagesAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.getMessagesAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -239,7 +239,7 @@ class MessageBasicApi:
 		payload = {
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicFlavouredApi.getMessagesBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.getMessagesBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -274,7 +274,7 @@ class MessageBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicFlavouredApi.filterMessagesByAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.filterMessagesByAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -287,7 +287,7 @@ class MessageBasicApi:
 			"start_document_id": start_document_id,
 			"limit": limit,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicFlavouredApi.filterMessagesByBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.filterMessagesByBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -321,7 +321,7 @@ class MessageBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicFlavouredApi.listMessagesByTransportGuidsAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.listMessagesByTransportGuidsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -333,7 +333,7 @@ class MessageBasicApi:
 			"hc_party_id": hc_party_id,
 			"transport_guids": [x0 for x0 in transport_guids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicFlavouredApi.listMessagesByTransportGuidsBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.listMessagesByTransportGuidsBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -362,7 +362,7 @@ class MessageBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicFlavouredApi.findMessagesByHCPartyPatientForeignKeysAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.findMessagesByHCPartyPatientForeignKeysAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -373,7 +373,7 @@ class MessageBasicApi:
 		payload = {
 			"secret_patient_keys": [x0 for x0 in secret_patient_keys],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicFlavouredApi.findMessagesByHCPartyPatientForeignKeysBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.findMessagesByHCPartyPatientForeignKeysBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -408,7 +408,7 @@ class MessageBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicFlavouredApi.findMessagesAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.findMessagesAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -421,7 +421,7 @@ class MessageBasicApi:
 			"start_document_id": start_document_id,
 			"limit": limit,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicFlavouredApi.findMessagesBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.findMessagesBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -454,7 +454,7 @@ class MessageBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicFlavouredApi.getChildrenMessagesAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.getChildrenMessagesAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -465,7 +465,7 @@ class MessageBasicApi:
 		payload = {
 			"message_id": message_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicFlavouredApi.getChildrenMessagesBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.getChildrenMessagesBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -494,7 +494,7 @@ class MessageBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicFlavouredApi.getMessagesChildrenAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.getMessagesChildrenAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -505,7 +505,7 @@ class MessageBasicApi:
 		payload = {
 			"message_ids": [x0 for x0 in message_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicFlavouredApi.getMessagesChildrenBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.getMessagesChildrenBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -534,7 +534,7 @@ class MessageBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicFlavouredApi.listMessagesByInvoicesAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.listMessagesByInvoicesAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -545,7 +545,7 @@ class MessageBasicApi:
 		payload = {
 			"invoice_ids": [x0 for x0 in invoice_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicFlavouredApi.listMessagesByInvoicesBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.listMessagesByInvoicesBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -578,7 +578,7 @@ class MessageBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicFlavouredApi.findMessagesByTransportGuidAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.findMessagesByTransportGuidAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -589,7 +589,7 @@ class MessageBasicApi:
 		payload = {
 			"transport_guid": transport_guid,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicFlavouredApi.findMessagesByTransportGuidBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.findMessagesByTransportGuidBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -632,7 +632,7 @@ class MessageBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicFlavouredApi.findMessagesByTransportGuidSentDateAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.findMessagesByTransportGuidSentDateAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -649,7 +649,7 @@ class MessageBasicApi:
 			"limit": limit,
 			"hcp_id": hcp_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicFlavouredApi.findMessagesByTransportGuidSentDateBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.findMessagesByTransportGuidSentDateBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -689,7 +689,7 @@ class MessageBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicFlavouredApi.findMessagesByToAddressAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.findMessagesByToAddressAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -703,7 +703,7 @@ class MessageBasicApi:
 			"start_document_id": start_document_id,
 			"limit": limit,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicFlavouredApi.findMessagesByToAddressBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.findMessagesByToAddressBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -743,7 +743,7 @@ class MessageBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicFlavouredApi.findMessagesByFromAddressAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.findMessagesByFromAddressAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -757,7 +757,7 @@ class MessageBasicApi:
 			"start_document_id": start_document_id,
 			"limit": limit,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicFlavouredApi.findMessagesByFromAddressBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.findMessagesByFromAddressBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -791,7 +791,7 @@ class MessageBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicFlavouredApi.setMessagesStatusBitsAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.setMessagesStatusBitsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -803,7 +803,7 @@ class MessageBasicApi:
 			"entity_ids": [x0 for x0 in entity_ids],
 			"status_bits": status_bits,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicFlavouredApi.setMessagesStatusBitsBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.setMessagesStatusBitsBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -835,7 +835,7 @@ class MessageBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicFlavouredApi.setMessagesReadStatusAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.setMessagesReadStatusAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -849,7 +849,7 @@ class MessageBasicApi:
 			"read_status": read_status,
 			"user_id": user_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicFlavouredApi.setMessagesReadStatusBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.setMessagesReadStatusBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)

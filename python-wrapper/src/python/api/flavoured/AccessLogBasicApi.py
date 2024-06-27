@@ -28,7 +28,7 @@ class AccessLogBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicFlavourlessApi.deleteAccessLogAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicApi.deleteAccessLogAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -39,7 +39,7 @@ class AccessLogBasicApi:
 		payload = {
 			"entity_id": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicFlavourlessApi.deleteAccessLogBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicApi.deleteAccessLogBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -68,7 +68,7 @@ class AccessLogBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicFlavourlessApi.deleteAccessLogsAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicApi.deleteAccessLogsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -79,7 +79,7 @@ class AccessLogBasicApi:
 		payload = {
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicFlavourlessApi.deleteAccessLogsBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicApi.deleteAccessLogsBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -108,7 +108,7 @@ class AccessLogBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicFlavouredApi.modifyAccessLogAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicApi.modifyAccessLogAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -119,7 +119,7 @@ class AccessLogBasicApi:
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicFlavouredApi.modifyAccessLogBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicApi.modifyAccessLogBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -148,7 +148,7 @@ class AccessLogBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicFlavouredApi.getAccessLogAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicApi.getAccessLogAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -159,7 +159,7 @@ class AccessLogBasicApi:
 		payload = {
 			"entity_id": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicFlavouredApi.getAccessLogBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicApi.getAccessLogBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -188,7 +188,7 @@ class AccessLogBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicFlavouredApi.getAccessLogsAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicApi.getAccessLogsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -199,7 +199,7 @@ class AccessLogBasicApi:
 		payload = {
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicFlavouredApi.getAccessLogsBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicApi.getAccessLogsBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -236,7 +236,7 @@ class AccessLogBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicFlavouredApi.findAccessLogsByAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicApi.findAccessLogsByAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -251,7 +251,7 @@ class AccessLogBasicApi:
 			"start_document_id": start_document_id,
 			"limit": limit,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicFlavouredApi.findAccessLogsByBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicApi.findAccessLogsByBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -294,7 +294,7 @@ class AccessLogBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicFlavouredApi.findAccessLogsByUserAfterDateAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicApi.findAccessLogsByUserAfterDateAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -311,7 +311,7 @@ class AccessLogBasicApi:
 			"limit": limit,
 			"descending": descending,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicFlavouredApi.findAccessLogsByUserAfterDateBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicApi.findAccessLogsByUserAfterDateBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -353,7 +353,7 @@ class AccessLogBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicFlavouredApi.findAccessLogsInGroupAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicApi.findAccessLogsInGroupAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -369,7 +369,7 @@ class AccessLogBasicApi:
 			"start_document_id": start_document_id,
 			"limit": limit,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicFlavouredApi.findAccessLogsInGroupBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicApi.findAccessLogsInGroupBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)

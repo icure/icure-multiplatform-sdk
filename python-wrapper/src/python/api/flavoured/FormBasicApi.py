@@ -29,7 +29,7 @@ class FormBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavourlessApi.deleteFormAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.deleteFormAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -40,7 +40,7 @@ class FormBasicApi:
 		payload = {
 			"entity_id": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavourlessApi.deleteFormBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.deleteFormBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -69,7 +69,7 @@ class FormBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavourlessApi.deleteFormsAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.deleteFormsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -80,7 +80,7 @@ class FormBasicApi:
 		payload = {
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavourlessApi.deleteFormsBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.deleteFormsBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -110,7 +110,7 @@ class FormBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavourlessApi.getFormTemplateAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.getFormTemplateAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -122,7 +122,7 @@ class FormBasicApi:
 			"form_template_id": form_template_id,
 			"raw": raw,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavourlessApi.getFormTemplateBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.getFormTemplateBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -153,7 +153,7 @@ class FormBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavourlessApi.getFormTemplatesByGuidAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.getFormTemplatesByGuidAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -166,7 +166,7 @@ class FormBasicApi:
 			"speciality_code": speciality_code,
 			"raw": raw,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavourlessApi.getFormTemplatesByGuidBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.getFormTemplatesByGuidBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -196,7 +196,7 @@ class FormBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavourlessApi.listFormTemplatesBySpecialityAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.listFormTemplatesBySpecialityAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -208,7 +208,7 @@ class FormBasicApi:
 			"speciality_code": speciality_code,
 			"raw": raw,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavourlessApi.listFormTemplatesBySpecialityBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.listFormTemplatesBySpecialityBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -238,7 +238,7 @@ class FormBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavourlessApi.getFormTemplatesAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.getFormTemplatesAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -250,7 +250,7 @@ class FormBasicApi:
 			"load_layout": load_layout,
 			"raw": raw,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavourlessApi.getFormTemplatesBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.getFormTemplatesBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -279,7 +279,7 @@ class FormBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavourlessApi.createFormTemplateAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.createFormTemplateAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -290,7 +290,7 @@ class FormBasicApi:
 		payload = {
 			"form_template": form_template.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavourlessApi.createFormTemplateBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.createFormTemplateBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -319,7 +319,7 @@ class FormBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavourlessApi.deleteFormTemplateAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.deleteFormTemplateAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -330,7 +330,7 @@ class FormBasicApi:
 		payload = {
 			"form_template_id": form_template_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavourlessApi.deleteFormTemplateBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.deleteFormTemplateBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -359,7 +359,7 @@ class FormBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavourlessApi.updateFormTemplateAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.updateFormTemplateAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -370,7 +370,7 @@ class FormBasicApi:
 		payload = {
 			"form_template": form_template.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavourlessApi.updateFormTemplateBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.updateFormTemplateBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -400,7 +400,7 @@ class FormBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavourlessApi.setTemplateAttachmentAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.setTemplateAttachmentAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -412,7 +412,7 @@ class FormBasicApi:
 			"form_template_id": form_template_id,
 			"payload": base64.b64encode(payload).decode('utf-8'),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavourlessApi.setTemplateAttachmentBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.setTemplateAttachmentBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -441,7 +441,7 @@ class FormBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavouredApi.modifyFormAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.modifyFormAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -452,7 +452,7 @@ class FormBasicApi:
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavouredApi.modifyFormBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.modifyFormBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -481,7 +481,7 @@ class FormBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavouredApi.modifyFormsAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.modifyFormsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -492,7 +492,7 @@ class FormBasicApi:
 		payload = {
 			"entities": [x0.__serialize__() for x0 in entities],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavouredApi.modifyFormsBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.modifyFormsBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -521,7 +521,7 @@ class FormBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavouredApi.getFormAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.getFormAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -532,7 +532,7 @@ class FormBasicApi:
 		payload = {
 			"entity_id": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavouredApi.getFormBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.getFormBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -561,7 +561,7 @@ class FormBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavouredApi.getFormsAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.getFormsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -572,7 +572,7 @@ class FormBasicApi:
 		payload = {
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavouredApi.getFormsBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.getFormsBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -601,7 +601,7 @@ class FormBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavouredApi.getFormByLogicalUuidAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.getFormByLogicalUuidAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -612,7 +612,7 @@ class FormBasicApi:
 		payload = {
 			"logical_uuid": logical_uuid,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavouredApi.getFormByLogicalUuidBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.getFormByLogicalUuidBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -641,7 +641,7 @@ class FormBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavouredApi.getFormsByLogicalUuidAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.getFormsByLogicalUuidAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -652,7 +652,7 @@ class FormBasicApi:
 		payload = {
 			"logical_uuid": logical_uuid,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavouredApi.getFormsByLogicalUuidBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.getFormsByLogicalUuidBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -681,7 +681,7 @@ class FormBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavouredApi.getFormsByUniqueIdAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.getFormsByUniqueIdAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -692,7 +692,7 @@ class FormBasicApi:
 		payload = {
 			"unique_id": unique_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavouredApi.getFormsByUniqueIdBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.getFormsByUniqueIdBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -721,7 +721,7 @@ class FormBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavouredApi.getFormByUniqueIdAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.getFormByUniqueIdAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -732,7 +732,7 @@ class FormBasicApi:
 		payload = {
 			"unique_id": unique_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavouredApi.getFormByUniqueIdBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.getFormByUniqueIdBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -762,7 +762,7 @@ class FormBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavouredApi.getChildrenFormsAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.getChildrenFormsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -774,7 +774,7 @@ class FormBasicApi:
 			"hc_party_id": hc_party_id,
 			"parent_id": parent_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavouredApi.getChildrenFormsBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.getChildrenFormsBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -807,7 +807,7 @@ class FormBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavouredApi.listFormsByHCPartyAndPatientForeignKeysAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.listFormsByHCPartyAndPatientForeignKeysAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -822,7 +822,7 @@ class FormBasicApi:
 			"plan_of_action_id": plan_of_action_id,
 			"form_template_id": form_template_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavouredApi.listFormsByHCPartyAndPatientForeignKeysBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.listFormsByHCPartyAndPatientForeignKeysBlocking(
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
