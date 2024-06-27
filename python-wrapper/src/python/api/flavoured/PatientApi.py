@@ -6,7 +6,7 @@ from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from typing import List, Optional, Dict
 from ctypes import cast, c_char_p
 from model.specializations import HexString
-from crypto import Tag, Result, EntityWithTypeInfo, EntityAccessInformation, ShareMetadataBehaviour, deserialize_simple_share_result, SimpleShareResult, PatientShareOptions
+from crypto import ShareAllPatientDataOptions, EntityWithTypeInfo, EntityAccessInformation, ShareMetadataBehaviour, deserialize_simple_share_result, SimpleShareResult, PatientShareOptions
 
 class PatientApi:
 
@@ -3001,7 +3001,7 @@ class PatientApi:
 			return_value = DataOwnerRegistrationSuccess._deserialize(result_info.success)
 			return return_value
 
-	async def share_all_data_of_patient_async(self, user: User, patient_id: str, data_owner_id: str, delegates_with_share_type: Dict[str, List[Tag]]) -> Result:
+	async def share_all_data_of_patient_async(self, user: User, patient_id: str, data_owner_id: str, delegates_with_share_type: Dict[str, List[ShareAllPatientDataOptions.Tag]]) -> ShareAllPatientDataOptions.Result:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -3009,7 +3009,7 @@ class PatientApi:
 			if failure is not None:
 				result = CallResult(failure=failure.decode('utf-8'))
 			else:
-				success = Result._deserialize(success.decode('utf-8'))
+				success = ShareAllPatientDataOptions.Result._deserialize(success.decode('utf-8'))
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
@@ -3028,7 +3028,7 @@ class PatientApi:
 		)
 		return await future
 
-	def share_all_data_of_patient_blocking(self, user: User, patient_id: str, data_owner_id: str, delegates_with_share_type: Dict[str, List[Tag]]) -> Result:
+	def share_all_data_of_patient_blocking(self, user: User, patient_id: str, data_owner_id: str, delegates_with_share_type: Dict[str, List[ShareAllPatientDataOptions.Tag]]) -> ShareAllPatientDataOptions.Result:
 		payload = {
 			"user": user.__serialize__(),
 			"patient_id": patient_id,
@@ -3044,7 +3044,7 @@ class PatientApi:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 		else:
-			return_value = Result._deserialize(result_info.success)
+			return_value = ShareAllPatientDataOptions.Result._deserialize(result_info.success)
 			return return_value
 
 	async def get_patient_id_of_child_document_for_hcp_and_hcp_parents_async(self, child_document: EntityWithTypeInfo, healthcare_party_id: str) -> str:
