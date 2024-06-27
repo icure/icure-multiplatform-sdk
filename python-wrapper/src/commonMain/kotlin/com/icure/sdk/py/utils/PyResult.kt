@@ -31,7 +31,7 @@ internal fun <T : Any> Result<T?>.toPyString(
 ) =
 	fold(
 		onSuccess = { res ->
-			JsonObject(mapOf("success" to (res?.let { Serialization.json.encodeToJsonElement(serializer, it) } ?: JsonNull)))
+			JsonObject(mapOf("success" to (res?.let { Serialization.fullJson.encodeToJsonElement(serializer, it) } ?: JsonNull)))
 		},
 		onFailure = { e ->
 			JsonObject(mapOf("failure" to JsonPrimitive(e.stringForPy())))
@@ -53,7 +53,7 @@ internal fun <T : Any> Result<T?>.toPyStringAsyncCallback(
 	fold(
 		onSuccess = { res ->
 			callback.invoke(
-				res?.let { Serialization.json.encodeToString(serializer, it).cstr } ?: "null".cstr,
+				res?.let { Serialization.fullJson.encodeToString(serializer, it).cstr } ?: "null".cstr,
 				null
 			)
 		},

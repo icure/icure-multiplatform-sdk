@@ -88,6 +88,15 @@ object Serialization {
 		serializersModule = ICureSerializerModule
 	}
 
+
+	@OptIn(ExperimentalSerializationApi::class)
+	val fullJson = Json {
+		encodeDefaults = true
+		explicitNulls = true
+		ignoreUnknownKeys = false
+		serializersModule = ICureSerializerModule
+	}
+
 	@OptIn(ExperimentalSerializationApi::class)
 	val lenientJson = Json {
 		encodeDefaults = false
