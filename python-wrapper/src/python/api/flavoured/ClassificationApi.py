@@ -8,7 +8,6 @@ from typing import Optional, Dict, List
 from crypto import SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_secret_id_option, ShareMetadataBehaviour, deserialize_simple_share_result, SimpleShareResult, ClassificationShareOptions
 from model.specializations import HexString
 from pagination.PaginatedListIterator import PaginatedListIterator
-from KotlinTypes import PyResult
 
 class ClassificationApi:
 
@@ -191,14 +190,14 @@ class ClassificationApi:
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
-			error_str_pointer = PyResult.get_failure(call_result)
+			error_str_pointer = symbols.kotlin.root.com.icure.sdk.utils.PyResult.get_failure(call_result)
 			if error_str_pointer is not None:
 				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 				symbols.DisposeString(error_str_pointer)
 				symbols.DisposeStablePointer(call_result)
 				raise Exception(error_msg)
 			else:
-				class_pointer = PyResult.get_success(call_result)
+				class_pointer = symbols.kotlin.root.com.icure.sdk.utils.PyResult.get_success(call_result)
 				symbols.DisposeStablePointer(call_result)
 				return PaginatedListIterator[EncryptedClassification](
 					producer = cast(class_pointer, c_void_p),
@@ -504,14 +503,14 @@ class ClassificationApi:
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
-			error_str_pointer = PyResult.get_failure(call_result)
+			error_str_pointer = symbols.kotlin.root.com.icure.sdk.utils.PyResult.get_failure(call_result)
 			if error_str_pointer is not None:
 				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 				symbols.DisposeString(error_str_pointer)
 				symbols.DisposeStablePointer(call_result)
 				raise Exception(error_msg)
 			else:
-				class_pointer = PyResult.get_success(call_result)
+				class_pointer = symbols.kotlin.root.com.icure.sdk.utils.PyResult.get_success(call_result)
 				symbols.DisposeStablePointer(call_result)
 				return PaginatedListIterator[Classification](
 					producer = cast(class_pointer, c_void_p),
@@ -1144,14 +1143,14 @@ class ClassificationApi:
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
-		error_str_pointer = PyResult.get_failure(call_result)
+		error_str_pointer = symbols.kotlin.root.com.icure.sdk.utils.PyResult.get_failure(call_result)
 		if error_str_pointer is not None:
 			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 			symbols.DisposeString(error_str_pointer)
 			symbols.DisposeStablePointer(call_result)
 			raise Exception(error_msg)
 		else:
-			class_pointer = PyResult.get_success(call_result)
+			class_pointer = symbols.kotlin.root.com.icure.sdk.utils.PyResult.get_success(call_result)
 			symbols.DisposeStablePointer(call_result)
 			return PaginatedListIterator[DecryptedClassification](
 				producer = cast(class_pointer, c_void_p),
