@@ -31,7 +31,7 @@ class FormBasicApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.deleteFormAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -71,7 +71,7 @@ class FormBasicApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.deleteFormsAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -112,7 +112,7 @@ class FormBasicApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.getFormTemplateAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -155,7 +155,7 @@ class FormBasicApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.getFormTemplatesByGuidAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -198,7 +198,7 @@ class FormBasicApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.listFormTemplatesBySpecialityAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -240,7 +240,7 @@ class FormBasicApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.getFormTemplatesAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -281,7 +281,7 @@ class FormBasicApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.createFormTemplateAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -321,7 +321,7 @@ class FormBasicApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.deleteFormTemplateAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -361,7 +361,7 @@ class FormBasicApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.updateFormTemplateAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -402,7 +402,7 @@ class FormBasicApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.setTemplateAttachmentAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -443,7 +443,7 @@ class FormBasicApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.modifyFormAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -483,7 +483,7 @@ class FormBasicApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.modifyFormsAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -523,7 +523,7 @@ class FormBasicApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.getFormAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -563,7 +563,7 @@ class FormBasicApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.getFormsAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -603,7 +603,7 @@ class FormBasicApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.getFormByLogicalUuidAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -643,7 +643,7 @@ class FormBasicApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.getFormsByLogicalUuidAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -683,7 +683,7 @@ class FormBasicApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.getFormsByUniqueIdAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -723,7 +723,7 @@ class FormBasicApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.getFormByUniqueIdAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -764,7 +764,7 @@ class FormBasicApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.getChildrenFormsAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -809,7 +809,7 @@ class FormBasicApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicApi.listFormsByHCPartyAndPatientForeignKeysAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future

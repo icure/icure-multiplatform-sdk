@@ -30,7 +30,7 @@ class TimeTableBasicApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableBasicApi.deleteTimeTableAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -70,7 +70,7 @@ class TimeTableBasicApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableBasicApi.deleteTimeTablesAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -110,7 +110,7 @@ class TimeTableBasicApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableBasicApi.modifyTimeTableAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -150,7 +150,7 @@ class TimeTableBasicApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableBasicApi.getTimeTableAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -192,7 +192,7 @@ class TimeTableBasicApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableBasicApi.getTimeTablesByPeriodAndAgendaIdAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -234,7 +234,7 @@ class TimeTableBasicApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableBasicApi.getTimeTablesByAgendaIdAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future

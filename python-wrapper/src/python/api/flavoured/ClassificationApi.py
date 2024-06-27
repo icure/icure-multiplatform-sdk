@@ -39,7 +39,7 @@ class ClassificationApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.encrypted.shareWithAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -84,7 +84,7 @@ class ClassificationApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.encrypted.tryShareWithManyAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -126,7 +126,7 @@ class ClassificationApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.encrypted.shareWithManyAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -173,7 +173,7 @@ class ClassificationApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.encrypted.findClassificationsByHcPartyPatientAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -223,7 +223,7 @@ class ClassificationApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.encrypted.modifyClassificationAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -263,7 +263,7 @@ class ClassificationApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.encrypted.getClassificationAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -303,7 +303,7 @@ class ClassificationApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.encrypted.getClassificationsAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -352,7 +352,7 @@ class ClassificationApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.tryAndRecover.shareWithAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -397,7 +397,7 @@ class ClassificationApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.tryAndRecover.tryShareWithManyAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -439,7 +439,7 @@ class ClassificationApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.tryAndRecover.shareWithManyAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -486,7 +486,7 @@ class ClassificationApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.tryAndRecover.findClassificationsByHcPartyPatientAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -536,7 +536,7 @@ class ClassificationApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.tryAndRecover.modifyClassificationAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -576,7 +576,7 @@ class ClassificationApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.tryAndRecover.getClassificationAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -616,7 +616,7 @@ class ClassificationApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.tryAndRecover.getClassificationsAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -661,7 +661,7 @@ class ClassificationApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.createClassificationAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -705,7 +705,7 @@ class ClassificationApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.withEncryptionMetadataAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -749,7 +749,7 @@ class ClassificationApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.getEncryptionKeysOfAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -789,7 +789,7 @@ class ClassificationApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.hasWriteAccessAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -829,7 +829,7 @@ class ClassificationApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.decryptPatientIdOfAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -870,7 +870,7 @@ class ClassificationApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.createDelegationDeAnonymizationMetadataAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -908,7 +908,7 @@ class ClassificationApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.deleteClassificationAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -948,7 +948,7 @@ class ClassificationApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.deleteClassificationsAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -992,7 +992,7 @@ class ClassificationApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.shareWithAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -1037,7 +1037,7 @@ class ClassificationApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.tryShareWithManyAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -1079,7 +1079,7 @@ class ClassificationApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.shareWithManyAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -1126,7 +1126,7 @@ class ClassificationApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.findClassificationsByHcPartyPatientAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -1176,7 +1176,7 @@ class ClassificationApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.modifyClassificationAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -1216,7 +1216,7 @@ class ClassificationApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.getClassificationAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -1256,7 +1256,7 @@ class ClassificationApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.getClassificationsAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future

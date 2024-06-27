@@ -22,24 +22,18 @@ class GroupApi:
 				success = [Group._deserialize(x1) for x1 in success.decode('utf-8')]
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.listGroupsAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
 			callback
 		)
 		return await future
 
 	def list_groups_blocking(self) -> List[Group]:
-		payload = {
-		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.listGroupsBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -68,7 +62,7 @@ class GroupApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.getGroupAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -116,7 +110,7 @@ class GroupApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.createGroupAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -166,7 +160,7 @@ class GroupApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.registerNewGroupAdministratorAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -200,24 +194,18 @@ class GroupApi:
 				success = [Group._deserialize(x1) for x1 in success.decode('utf-8')]
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.listAppsAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
 			callback
 		)
 		return await future
 
 	def list_apps_blocking(self) -> List[Group]:
-		payload = {
-		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.listAppsBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -252,7 +240,7 @@ class GroupApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.findGroupsAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -306,7 +294,7 @@ class GroupApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.findGroupsWithContentAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -354,7 +342,7 @@ class GroupApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.getNameOfGroupParentAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -395,7 +383,7 @@ class GroupApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.modifyGroupNameAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -438,7 +426,7 @@ class GroupApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.getOperationTokenAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -480,7 +468,7 @@ class GroupApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.deleteOperationTokenAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -519,7 +507,7 @@ class GroupApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.setDefaultRolesAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -561,7 +549,7 @@ class GroupApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.getDefaultRolesAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -601,7 +589,7 @@ class GroupApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.deleteGroupAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -642,7 +630,7 @@ class GroupApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.changeSuperGroupAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -683,7 +671,7 @@ class GroupApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.hardDeleteGroupAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -724,7 +712,7 @@ class GroupApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.modifyGroupPropertiesAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -766,7 +754,7 @@ class GroupApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.setGroupPasswordAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -810,7 +798,7 @@ class GroupApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.initDesignDocsAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -855,7 +843,7 @@ class GroupApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.solveConflictsAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -900,7 +888,7 @@ class GroupApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.resetStorageAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -940,7 +928,7 @@ class GroupApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.getGroupsStorageInfosAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -980,7 +968,7 @@ class GroupApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.getReplicationInfoAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -1020,7 +1008,7 @@ class GroupApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.getHierarchyAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -1052,24 +1040,18 @@ class GroupApi:
 				success = [DocIdentifier._deserialize(x1) for x1 in success.decode('utf-8')]
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.listAllGroupsIdsAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
 			callback
 		)
 		return await future
 
 	def list_all_groups_ids_blocking(self) -> List[DocIdentifier]:
-		payload = {
-		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.listAllGroupsIdsBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)

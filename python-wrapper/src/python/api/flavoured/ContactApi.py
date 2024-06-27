@@ -39,7 +39,7 @@ class ContactApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.shareWithAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -84,7 +84,7 @@ class ContactApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.tryShareWithManyAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -126,7 +126,7 @@ class ContactApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.shareWithManyAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -173,7 +173,7 @@ class ContactApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.findContactsByHcPartyPatientAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -223,7 +223,7 @@ class ContactApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.modifyContactAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -263,7 +263,7 @@ class ContactApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.modifyContactsAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -303,7 +303,7 @@ class ContactApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.getContactAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -343,7 +343,7 @@ class ContactApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.getContactsAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -389,7 +389,7 @@ class ContactApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.filterContactsByAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -436,7 +436,7 @@ class ContactApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.listContactByHCPartyServiceIdAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -477,7 +477,7 @@ class ContactApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.listContactsByExternalIdAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -518,7 +518,7 @@ class ContactApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.listContactsByHCPartyAndFormIdAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -560,7 +560,7 @@ class ContactApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.listContactsByHCPartyAndFormIdsAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -604,7 +604,7 @@ class ContactApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.listContactsByHCPartyAndPatientSecretFKeysAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -648,7 +648,7 @@ class ContactApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.closeForHCPartyPatientForeignKeysAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -689,7 +689,7 @@ class ContactApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.getServiceAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -729,7 +729,7 @@ class ContactApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.getServicesAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -770,7 +770,7 @@ class ContactApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.getServicesLinkedToAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -811,7 +811,7 @@ class ContactApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.listServicesByAssociationIdAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -852,7 +852,7 @@ class ContactApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.listServicesByHealthElementIdAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -902,7 +902,7 @@ class ContactApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.findContactsByOpeningDateAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -957,7 +957,7 @@ class ContactApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.filterServicesByAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -1012,7 +1012,7 @@ class ContactApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.shareWithAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -1057,7 +1057,7 @@ class ContactApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.tryShareWithManyAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -1099,7 +1099,7 @@ class ContactApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.shareWithManyAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -1146,7 +1146,7 @@ class ContactApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.findContactsByHcPartyPatientAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -1196,7 +1196,7 @@ class ContactApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.modifyContactAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -1236,7 +1236,7 @@ class ContactApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.modifyContactsAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -1276,7 +1276,7 @@ class ContactApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.getContactAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -1316,7 +1316,7 @@ class ContactApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.getContactsAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -1362,7 +1362,7 @@ class ContactApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.filterContactsByAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -1409,7 +1409,7 @@ class ContactApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.listContactByHCPartyServiceIdAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -1450,7 +1450,7 @@ class ContactApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.listContactsByExternalIdAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -1491,7 +1491,7 @@ class ContactApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.listContactsByHCPartyAndFormIdAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -1533,7 +1533,7 @@ class ContactApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.listContactsByHCPartyAndFormIdsAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -1577,7 +1577,7 @@ class ContactApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.listContactsByHCPartyAndPatientSecretFKeysAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -1621,7 +1621,7 @@ class ContactApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.closeForHCPartyPatientForeignKeysAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -1662,7 +1662,7 @@ class ContactApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.getServiceAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -1702,7 +1702,7 @@ class ContactApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.getServicesAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -1743,7 +1743,7 @@ class ContactApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.getServicesLinkedToAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -1784,7 +1784,7 @@ class ContactApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.listServicesByAssociationIdAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -1825,7 +1825,7 @@ class ContactApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.listServicesByHealthElementIdAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -1875,7 +1875,7 @@ class ContactApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.findContactsByOpeningDateAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -1930,7 +1930,7 @@ class ContactApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.filterServicesByAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -1981,7 +1981,7 @@ class ContactApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.createContactAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -2021,7 +2021,7 @@ class ContactApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.createContactsAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -2065,7 +2065,7 @@ class ContactApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.withEncryptionMetadataAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -2109,7 +2109,7 @@ class ContactApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.getEncryptionKeysOfAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -2149,7 +2149,7 @@ class ContactApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.hasWriteAccessAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -2189,7 +2189,7 @@ class ContactApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.decryptPatientIdOfAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -2230,7 +2230,7 @@ class ContactApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.createDelegationDeAnonymizationMetadataAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -2268,7 +2268,7 @@ class ContactApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.matchContactsByAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -2308,7 +2308,7 @@ class ContactApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.matchServicesByAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -2348,7 +2348,7 @@ class ContactApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.deleteContactAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -2388,7 +2388,7 @@ class ContactApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.deleteContactsAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -2429,7 +2429,7 @@ class ContactApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.findContactsDelegationsStubsByHcPartyPatientForeignKeysAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -2471,7 +2471,7 @@ class ContactApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.getServiceCodesOccurrencesAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -2516,7 +2516,7 @@ class ContactApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.shareWithAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -2561,7 +2561,7 @@ class ContactApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryShareWithManyAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -2603,7 +2603,7 @@ class ContactApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.shareWithManyAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -2650,7 +2650,7 @@ class ContactApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.findContactsByHcPartyPatientAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -2700,7 +2700,7 @@ class ContactApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.modifyContactAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -2740,7 +2740,7 @@ class ContactApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.modifyContactsAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -2780,7 +2780,7 @@ class ContactApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.getContactAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -2820,7 +2820,7 @@ class ContactApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.getContactsAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -2866,7 +2866,7 @@ class ContactApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.filterContactsByAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -2913,7 +2913,7 @@ class ContactApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.listContactByHCPartyServiceIdAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -2954,7 +2954,7 @@ class ContactApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.listContactsByExternalIdAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -2995,7 +2995,7 @@ class ContactApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.listContactsByHCPartyAndFormIdAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -3037,7 +3037,7 @@ class ContactApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.listContactsByHCPartyAndFormIdsAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -3081,7 +3081,7 @@ class ContactApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.listContactsByHCPartyAndPatientSecretFKeysAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -3125,7 +3125,7 @@ class ContactApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.closeForHCPartyPatientForeignKeysAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -3166,7 +3166,7 @@ class ContactApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.getServiceAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -3206,7 +3206,7 @@ class ContactApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.getServicesAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -3247,7 +3247,7 @@ class ContactApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.getServicesLinkedToAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -3288,7 +3288,7 @@ class ContactApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.listServicesByAssociationIdAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -3329,7 +3329,7 @@ class ContactApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.listServicesByHealthElementIdAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -3379,7 +3379,7 @@ class ContactApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.findContactsByOpeningDateAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -3434,7 +3434,7 @@ class ContactApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.filterServicesByAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future

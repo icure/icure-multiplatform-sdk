@@ -38,7 +38,7 @@ class TimeTableApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.encrypted.shareWithAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -83,7 +83,7 @@ class TimeTableApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.encrypted.tryShareWithManyAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -125,7 +125,7 @@ class TimeTableApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.encrypted.shareWithManyAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -166,7 +166,7 @@ class TimeTableApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.encrypted.modifyTimeTableAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -206,7 +206,7 @@ class TimeTableApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.encrypted.getTimeTableAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -248,7 +248,7 @@ class TimeTableApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.encrypted.getTimeTablesByPeriodAndAgendaIdAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -290,7 +290,7 @@ class TimeTableApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.encrypted.getTimeTablesByAgendaIdAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -339,7 +339,7 @@ class TimeTableApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.tryAndRecover.shareWithAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -384,7 +384,7 @@ class TimeTableApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.tryAndRecover.tryShareWithManyAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -426,7 +426,7 @@ class TimeTableApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.tryAndRecover.shareWithManyAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -467,7 +467,7 @@ class TimeTableApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.tryAndRecover.modifyTimeTableAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -507,7 +507,7 @@ class TimeTableApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.tryAndRecover.getTimeTableAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -549,7 +549,7 @@ class TimeTableApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.tryAndRecover.getTimeTablesByPeriodAndAgendaIdAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -591,7 +591,7 @@ class TimeTableApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.tryAndRecover.getTimeTablesByAgendaIdAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -636,7 +636,7 @@ class TimeTableApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.createTimeTableAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -680,7 +680,7 @@ class TimeTableApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.withEncryptionMetadataAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -724,7 +724,7 @@ class TimeTableApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.getEncryptionKeysOfAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -764,7 +764,7 @@ class TimeTableApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.hasWriteAccessAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -804,7 +804,7 @@ class TimeTableApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.decryptPatientIdOfAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -845,7 +845,7 @@ class TimeTableApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.createDelegationDeAnonymizationMetadataAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -883,7 +883,7 @@ class TimeTableApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.deleteTimeTableAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -923,7 +923,7 @@ class TimeTableApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.deleteTimeTablesAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -967,7 +967,7 @@ class TimeTableApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.shareWithAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -1012,7 +1012,7 @@ class TimeTableApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.tryShareWithManyAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -1054,7 +1054,7 @@ class TimeTableApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.shareWithManyAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -1095,7 +1095,7 @@ class TimeTableApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.modifyTimeTableAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -1135,7 +1135,7 @@ class TimeTableApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.getTimeTableAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -1177,7 +1177,7 @@ class TimeTableApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.getTimeTablesByPeriodAndAgendaIdAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -1219,7 +1219,7 @@ class TimeTableApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.getTimeTablesByAgendaIdAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future

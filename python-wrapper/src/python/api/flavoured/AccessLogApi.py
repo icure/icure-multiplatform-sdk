@@ -39,7 +39,7 @@ class AccessLogApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.encrypted.shareWithAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -84,7 +84,7 @@ class AccessLogApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.encrypted.tryShareWithManyAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -126,7 +126,7 @@ class AccessLogApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.encrypted.shareWithManyAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -173,7 +173,7 @@ class AccessLogApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.encrypted.findAccessLogsByHcPartyPatientAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -223,7 +223,7 @@ class AccessLogApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.encrypted.modifyAccessLogAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -263,7 +263,7 @@ class AccessLogApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.encrypted.getAccessLogAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -303,7 +303,7 @@ class AccessLogApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.encrypted.getAccessLogsAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -351,7 +351,7 @@ class AccessLogApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.encrypted.findAccessLogsByAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -409,7 +409,7 @@ class AccessLogApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.encrypted.findAccessLogsByUserAfterDateAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -468,7 +468,7 @@ class AccessLogApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.encrypted.findAccessLogsInGroupAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -526,7 +526,7 @@ class AccessLogApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.tryAndRecover.shareWithAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -571,7 +571,7 @@ class AccessLogApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.tryAndRecover.tryShareWithManyAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -613,7 +613,7 @@ class AccessLogApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.tryAndRecover.shareWithManyAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -660,7 +660,7 @@ class AccessLogApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.tryAndRecover.findAccessLogsByHcPartyPatientAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -710,7 +710,7 @@ class AccessLogApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.tryAndRecover.modifyAccessLogAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -750,7 +750,7 @@ class AccessLogApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.tryAndRecover.getAccessLogAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -790,7 +790,7 @@ class AccessLogApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.tryAndRecover.getAccessLogsAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -838,7 +838,7 @@ class AccessLogApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.tryAndRecover.findAccessLogsByAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -896,7 +896,7 @@ class AccessLogApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.tryAndRecover.findAccessLogsByUserAfterDateAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -955,7 +955,7 @@ class AccessLogApi:
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.tryAndRecover.findAccessLogsInGroupAsync,
 				self.icure_sdk._native,
-				json.dumps(payload),
+				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
@@ -1009,7 +1009,7 @@ class AccessLogApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.createAccessLogAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -1053,7 +1053,7 @@ class AccessLogApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.withEncryptionMetadataAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -1097,7 +1097,7 @@ class AccessLogApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.getEncryptionKeysOfAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -1137,7 +1137,7 @@ class AccessLogApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.hasWriteAccessAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -1177,7 +1177,7 @@ class AccessLogApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.decryptPatientIdOfAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -1218,7 +1218,7 @@ class AccessLogApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.createDelegationDeAnonymizationMetadataAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -1256,7 +1256,7 @@ class AccessLogApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.deleteAccessLogAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -1296,7 +1296,7 @@ class AccessLogApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.deleteAccessLogsAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -1340,7 +1340,7 @@ class AccessLogApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.shareWithAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -1385,7 +1385,7 @@ class AccessLogApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.tryShareWithManyAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -1427,7 +1427,7 @@ class AccessLogApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.shareWithManyAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -1474,7 +1474,7 @@ class AccessLogApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.findAccessLogsByHcPartyPatientAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -1524,7 +1524,7 @@ class AccessLogApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.modifyAccessLogAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -1564,7 +1564,7 @@ class AccessLogApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.getAccessLogAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -1604,7 +1604,7 @@ class AccessLogApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.getAccessLogsAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -1652,7 +1652,7 @@ class AccessLogApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.findAccessLogsByAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -1710,7 +1710,7 @@ class AccessLogApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.findAccessLogsByUserAfterDateAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -1769,7 +1769,7 @@ class AccessLogApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.findAccessLogsInGroupAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future

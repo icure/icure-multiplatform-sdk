@@ -30,7 +30,7 @@ class MaintenanceTaskBasicApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskBasicApi.deleteMaintenanceTaskAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -70,7 +70,7 @@ class MaintenanceTaskBasicApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskBasicApi.deleteMaintenanceTasksAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -110,7 +110,7 @@ class MaintenanceTaskBasicApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskBasicApi.modifyMaintenanceTaskAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -150,7 +150,7 @@ class MaintenanceTaskBasicApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskBasicApi.getMaintenanceTaskAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -196,7 +196,7 @@ class MaintenanceTaskBasicApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskBasicApi.filterMaintenanceTasksByAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future

@@ -31,7 +31,7 @@ class DocumentTemplateApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.getDocumentTemplateAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -71,7 +71,7 @@ class DocumentTemplateApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.createDocumentTemplateAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -111,7 +111,7 @@ class DocumentTemplateApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.modifyDocumentTemplateAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -151,7 +151,7 @@ class DocumentTemplateApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.deleteDocumentTemplatesAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -191,7 +191,7 @@ class DocumentTemplateApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.listDocumentTemplatesBySpecialityAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -231,7 +231,7 @@ class DocumentTemplateApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.listDocumentTemplatesByDocumentTypeAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -271,7 +271,7 @@ class DocumentTemplateApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.listDocumentTemplatesByDocumentTypeForCurrentUserAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -303,24 +303,18 @@ class DocumentTemplateApi:
 				success = [DocumentTemplate._deserialize(x1) for x1 in success.decode('utf-8')]
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.listDocumentTemplatesAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
 			callback
 		)
 		return await future
 
 	def list_document_templates_blocking(self) -> List[DocumentTemplate]:
-		payload = {
-		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.listDocumentTemplatesBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -355,7 +349,7 @@ class DocumentTemplateApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.findAllDocumentTemplatesAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -402,7 +396,7 @@ class DocumentTemplateApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.getDocumentTemplateAttachmentAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -444,7 +438,7 @@ class DocumentTemplateApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.getAttachmentTextAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -486,7 +480,7 @@ class DocumentTemplateApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.setDocumentTemplateAttachmentAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future

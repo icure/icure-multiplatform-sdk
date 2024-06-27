@@ -9,10 +9,18 @@ from dataclasses import dataclass
 from model.specializations import HexString
 from model.specializations import SpkiHexString
 from model.specializations import AesExchangeKeyEncryptionKeypairIdentifier
+from model import serialize_abstract_filter
+from model import serialize_predicate
+from model import deserialize_abstract_filter
+from model import deserialize_predicate
 from model.specializations import Base64String
+from model import serialize_permission_item
+from model import deserialize_permission_item
 from enum import Enum
 from model.specializations import SecureDelegationKeyString
 from model.specializations import Sha256HexString
+from model import serialize_structure_element
+from model import deserialize_structure_element
 
 @dataclass
 class Keyword:
@@ -57,20 +65,20 @@ class Keyword:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			rev = deserialized_dict.get("rev"),
-			created = deserialized_dict.get("created"),
-			modified = deserialized_dict.get("modified"),
-			author = deserialized_dict.get("author"),
-			responsible = deserialized_dict.get("responsible"),
-			medical_location_id = deserialized_dict.get("medicalLocationId"),
-			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			codes = [CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
-			end_of_life = deserialized_dict.get("endOfLife"),
-			deletion_date = deserialized_dict.get("deletionDate"),
-			value = deserialized_dict.get("value"),
-			sub_words = [KeywordSubword._deserialize(x0) for x0 in deserialized_dict["subWords"]],
-			user_id = deserialized_dict.get("userId"),
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
+			created=deserialized_dict.get("created"),
+			modified=deserialized_dict.get("modified"),
+			author=deserialized_dict.get("author"),
+			responsible=deserialized_dict.get("responsible"),
+			medical_location_id=deserialized_dict.get("medicalLocationId"),
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
+			end_of_life=deserialized_dict.get("endOfLife"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			value=deserialized_dict.get("value"),
+			sub_words=[KeywordSubword._deserialize(x0) for x0 in deserialized_dict["subWords"]],
+			user_id=deserialized_dict.get("userId"),
 		)
 
 @dataclass
@@ -92,8 +100,8 @@ class PaginatedList:
 		else:
 			deserialized_dict = data
 		return cls(
-			rows = [x0 for x0 in deserialized_dict["rows"]],
-			next_key_pair = PaginatedDocumentKeyIdPair._deserialize(deserialized_dict.get("nextKeyPair")) if deserialized_dict.get("nextKeyPair") is not None else None,
+			rows=[x0 for x0 in deserialized_dict["rows"]],
+			next_key_pair=PaginatedDocumentKeyIdPair._deserialize(deserialized_dict.get("nextKeyPair")) if deserialized_dict.get("nextKeyPair") is not None else None,
 		)
 
 @dataclass
@@ -115,8 +123,8 @@ class DocIdentifier:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict.get("id"),
-			rev = deserialized_dict.get("rev"),
+			id=deserialized_dict.get("id"),
+			rev=deserialized_dict.get("rev"),
 		)
 
 @dataclass
@@ -188,33 +196,33 @@ class Device:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			rev = deserialized_dict.get("rev"),
-			deletion_date = deserialized_dict.get("deletionDate"),
-			identifiers = [Identifier._deserialize(x0) for x0 in deserialized_dict["identifiers"]],
-			created = deserialized_dict.get("created"),
-			modified = deserialized_dict.get("modified"),
-			author = deserialized_dict.get("author"),
-			responsible = deserialized_dict.get("responsible"),
-			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			codes = [CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
-			end_of_life = deserialized_dict.get("endOfLife"),
-			medical_location_id = deserialized_dict.get("medicalLocationId"),
-			external_id = deserialized_dict.get("externalId"),
-			name = deserialized_dict.get("name"),
-			type = deserialized_dict.get("type"),
-			brand = deserialized_dict.get("brand"),
-			model = deserialized_dict.get("model"),
-			serial_number = deserialized_dict.get("serialNumber"),
-			parent_id = deserialized_dict.get("parentId"),
-			picture = bytearray(base64.b64decode(deserialized_dict.get("picture"))) if deserialized_dict.get("picture") is not None else None,
-			properties = [DecryptedPropertyStub._deserialize(x0) for x0 in deserialized_dict["properties"]],
-			hc_party_keys = dict(map(lambda kv0: (kv0[0], [x1 for x1 in kv0[1]]), deserialized_dict["hcPartyKeys"].items())),
-			aes_exchange_keys = dict(map(lambda kv0: (kv0[0], dict(map(lambda kv1: (kv1[0], dict(map(lambda kv2: (kv2[0], kv2[1]), kv1[1].items()))), kv0[1].items()))), deserialized_dict["aesExchangeKeys"].items())),
-			transfer_keys = dict(map(lambda kv0: (kv0[0], dict(map(lambda kv1: (kv1[0], kv1[1]), kv0[1].items()))), deserialized_dict["transferKeys"].items())),
-			private_key_shamir_partitions = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["privateKeyShamirPartitions"].items())),
-			public_key = deserialized_dict.get("publicKey"),
-			public_keys_for_oaep_with_sha256 = [x0 for x0 in deserialized_dict["publicKeysForOaepWithSha256"]],
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			identifiers=[Identifier._deserialize(x0) for x0 in deserialized_dict["identifiers"]],
+			created=deserialized_dict.get("created"),
+			modified=deserialized_dict.get("modified"),
+			author=deserialized_dict.get("author"),
+			responsible=deserialized_dict.get("responsible"),
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
+			end_of_life=deserialized_dict.get("endOfLife"),
+			medical_location_id=deserialized_dict.get("medicalLocationId"),
+			external_id=deserialized_dict.get("externalId"),
+			name=deserialized_dict.get("name"),
+			type=deserialized_dict.get("type"),
+			brand=deserialized_dict.get("brand"),
+			model=deserialized_dict.get("model"),
+			serial_number=deserialized_dict.get("serialNumber"),
+			parent_id=deserialized_dict.get("parentId"),
+			picture=bytearray(base64.b64decode(deserialized_dict.get("picture"))) if deserialized_dict.get("picture") is not None else None,
+			properties=[DecryptedPropertyStub._deserialize(x0) for x0 in deserialized_dict["properties"]],
+			hc_party_keys=dict(map(lambda kv0: (kv0[0], [x1 for x1 in kv0[1]]), deserialized_dict["hcPartyKeys"].items())),
+			aes_exchange_keys=dict(map(lambda kv0: (kv0[0], dict(map(lambda kv1: (kv1[0], dict(map(lambda kv2: (kv2[0], kv2[1]), kv1[1].items()))), kv0[1].items()))), deserialized_dict["aesExchangeKeys"].items())),
+			transfer_keys=dict(map(lambda kv0: (kv0[0], dict(map(lambda kv1: (kv1[0], kv1[1]), kv0[1].items()))), deserialized_dict["transferKeys"].items())),
+			private_key_shamir_partitions=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["privateKeyShamirPartitions"].items())),
+			public_key=deserialized_dict.get("publicKey"),
+			public_keys_for_oaep_with_sha256=[x0 for x0 in deserialized_dict["publicKeysForOaepWithSha256"]],
 		)
 
 @dataclass
@@ -236,8 +244,8 @@ class IdWithRev:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			rev = deserialized_dict.get("rev"),
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
 		)
 
 @dataclass
@@ -259,8 +267,8 @@ class FilterChain:
 		else:
 			deserialized_dict = data
 		return cls(
-			filter = deserialize_abstract_filter(deserialized_dict["filter"]),
-			predicate = deserialize_predicate(deserialized_dict.get("predicate")) if deserialized_dict.get("predicate") is not None else None,
+			filter=deserialize_abstract_filter(deserialized_dict["filter"]),
+			predicate=deserialize_predicate(deserialized_dict.get("predicate")) if deserialized_dict.get("predicate") is not None else None,
 		)
 
 @dataclass
@@ -298,16 +306,16 @@ class ContactByHcPartyPatientTagCodeDateFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			desc = deserialized_dict.get("desc"),
-			healthcare_party_id = deserialized_dict.get("healthcarePartyId"),
-			patient_secret_foreign_key = deserialized_dict.get("patientSecretForeignKey"),
-			patient_secret_foreign_keys = [x0 for x0 in deserialized_dict.get("patientSecretForeignKeys")] if deserialized_dict.get("patientSecretForeignKeys") is not None else None,
-			tag_type = deserialized_dict.get("tagType"),
-			tag_code = deserialized_dict.get("tagCode"),
-			code_type = deserialized_dict.get("codeType"),
-			code_code = deserialized_dict.get("codeCode"),
-			start_of_contact_opening_date = deserialized_dict.get("startOfContactOpeningDate"),
-			end_of_contact_opening_date = deserialized_dict.get("endOfContactOpeningDate"),
+			desc=deserialized_dict.get("desc"),
+			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
+			patient_secret_foreign_key=deserialized_dict.get("patientSecretForeignKey"),
+			patient_secret_foreign_keys=[x0 for x0 in deserialized_dict.get("patientSecretForeignKeys")] if deserialized_dict.get("patientSecretForeignKeys") is not None else None,
+			tag_type=deserialized_dict.get("tagType"),
+			tag_code=deserialized_dict.get("tagCode"),
+			code_type=deserialized_dict.get("codeType"),
+			code_code=deserialized_dict.get("codeCode"),
+			start_of_contact_opening_date=deserialized_dict.get("startOfContactOpeningDate"),
+			end_of_contact_opening_date=deserialized_dict.get("endOfContactOpeningDate"),
 		)
 
 @dataclass
@@ -341,14 +349,14 @@ class ContactByHcPartyTagCodeDateFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			desc = deserialized_dict.get("desc"),
-			healthcare_party_id = deserialized_dict.get("healthcarePartyId"),
-			tag_type = deserialized_dict.get("tagType"),
-			tag_code = deserialized_dict.get("tagCode"),
-			code_type = deserialized_dict.get("codeType"),
-			code_code = deserialized_dict.get("codeCode"),
-			start_of_contact_opening_date = deserialized_dict.get("startOfContactOpeningDate"),
-			end_of_contact_opening_date = deserialized_dict.get("endOfContactOpeningDate"),
+			desc=deserialized_dict.get("desc"),
+			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
+			tag_type=deserialized_dict.get("tagType"),
+			tag_code=deserialized_dict.get("tagCode"),
+			code_type=deserialized_dict.get("codeType"),
+			code_code=deserialized_dict.get("codeCode"),
+			start_of_contact_opening_date=deserialized_dict.get("startOfContactOpeningDate"),
+			end_of_contact_opening_date=deserialized_dict.get("endOfContactOpeningDate"),
 		)
 
 @dataclass
@@ -370,8 +378,8 @@ class ContactByHcPartyFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			hcp_id = deserialized_dict["hcpId"],
-			desc = deserialized_dict.get("desc"),
+			hcp_id=deserialized_dict["hcpId"],
+			desc=deserialized_dict.get("desc"),
 		)
 
 @dataclass
@@ -393,8 +401,8 @@ class ContactByServiceIdsFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			desc = deserialized_dict.get("desc"),
-			ids = [x0 for x0 in deserialized_dict.get("ids")] if deserialized_dict.get("ids") is not None else None,
+			desc=deserialized_dict.get("desc"),
+			ids=[x0 for x0 in deserialized_dict.get("ids")] if deserialized_dict.get("ids") is not None else None,
 		)
 
 @dataclass
@@ -418,9 +426,9 @@ class ContactByHcPartyIdentifiersFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			healthcare_party_id = deserialized_dict.get("healthcarePartyId"),
-			desc = deserialized_dict.get("desc"),
-			identifiers = [Identifier._deserialize(x0) for x0 in deserialized_dict["identifiers"]],
+			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
+			desc=deserialized_dict.get("desc"),
+			identifiers=[Identifier._deserialize(x0) for x0 in deserialized_dict["identifiers"]],
 		)
 
 @dataclass
@@ -442,8 +450,8 @@ class HealthcarePartyByIdsFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			ids = [x0 for x0 in deserialized_dict["ids"]],
-			desc = deserialized_dict.get("desc"),
+			ids=[x0 for x0 in deserialized_dict["ids"]],
+			desc=deserialized_dict.get("desc"),
 		)
 
 @dataclass
@@ -471,11 +479,11 @@ class HealthcarePartyByTagCodeFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			tag_type = deserialized_dict.get("tagType"),
-			tag_code = deserialized_dict.get("tagCode"),
-			code_type = deserialized_dict.get("codeType"),
-			code_code = deserialized_dict.get("codeCode"),
-			desc = deserialized_dict.get("desc"),
+			tag_type=deserialized_dict.get("tagType"),
+			tag_code=deserialized_dict.get("tagCode"),
+			code_type=deserialized_dict.get("codeType"),
+			code_code=deserialized_dict.get("codeCode"),
+			desc=deserialized_dict.get("desc"),
 		)
 
 @dataclass
@@ -495,7 +503,7 @@ class AllHealthcarePartiesFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			desc = deserialized_dict.get("desc"),
+			desc=deserialized_dict.get("desc"),
 		)
 
 @dataclass
@@ -517,8 +525,8 @@ class HealthcarePartyByIdentifiersFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			identifiers = [Identifier._deserialize(x0) for x0 in deserialized_dict["identifiers"]],
-			desc = deserialized_dict.get("desc"),
+			identifiers=[Identifier._deserialize(x0) for x0 in deserialized_dict["identifiers"]],
+			desc=deserialized_dict.get("desc"),
 		)
 
 @dataclass
@@ -542,9 +550,9 @@ class HealthcarePartyByNameFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			desc = deserialized_dict.get("desc"),
-			name = deserialized_dict["name"],
-			descending = deserialized_dict.get("descending"),
+			desc=deserialized_dict.get("desc"),
+			name=deserialized_dict["name"],
+			descending=deserialized_dict.get("descending"),
 		)
 
 @dataclass
@@ -568,9 +576,9 @@ class HealthElementByHcPartySecretForeignKeysFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			desc = deserialized_dict.get("desc"),
-			healthcare_party_id = deserialized_dict.get("healthcarePartyId"),
-			patient_secret_foreign_keys = [x0 for x0 in deserialized_dict["patientSecretForeignKeys"]],
+			desc=deserialized_dict.get("desc"),
+			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
+			patient_secret_foreign_keys=[x0 for x0 in deserialized_dict["patientSecretForeignKeys"]],
 		)
 
 @dataclass
@@ -602,13 +610,13 @@ class HealthElementByHcPartyTagCodeFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			desc = deserialized_dict.get("desc"),
-			healthcare_party_id = deserialized_dict.get("healthcarePartyId"),
-			code_type = deserialized_dict.get("codeType"),
-			code_code = deserialized_dict.get("codeCode"),
-			tag_type = deserialized_dict.get("tagType"),
-			tag_code = deserialized_dict.get("tagCode"),
-			status = deserialized_dict.get("status"),
+			desc=deserialized_dict.get("desc"),
+			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
+			code_type=deserialized_dict.get("codeType"),
+			code_code=deserialized_dict.get("codeCode"),
+			tag_type=deserialized_dict.get("tagType"),
+			tag_code=deserialized_dict.get("tagCode"),
+			status=deserialized_dict.get("status"),
 		)
 
 @dataclass
@@ -630,8 +638,8 @@ class HealthElementByIdsFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			ids = [x0 for x0 in deserialized_dict["ids"]],
-			desc = deserialized_dict.get("desc"),
+			ids=[x0 for x0 in deserialized_dict["ids"]],
+			desc=deserialized_dict.get("desc"),
 		)
 
 @dataclass
@@ -655,9 +663,9 @@ class HealthElementByHcPartyIdentifiersFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			desc = deserialized_dict.get("desc"),
-			hc_party_id = deserialized_dict.get("hcPartyId"),
-			identifiers = [Identifier._deserialize(x0) for x0 in deserialized_dict["identifiers"]],
+			desc=deserialized_dict.get("desc"),
+			hc_party_id=deserialized_dict.get("hcPartyId"),
+			identifiers=[Identifier._deserialize(x0) for x0 in deserialized_dict["identifiers"]],
 		)
 
 @dataclass
@@ -679,8 +687,8 @@ class HealthElementByHcPartyFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			hcp_id = deserialized_dict["hcpId"],
-			desc = deserialized_dict.get("desc"),
+			hcp_id=deserialized_dict["hcpId"],
+			desc=deserialized_dict.get("desc"),
 		)
 
 @dataclass
@@ -712,13 +720,13 @@ class CodeIdsByTypeCodeVersionIntervalFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			desc = deserialized_dict.get("desc"),
-			start_type = deserialized_dict.get("startType"),
-			start_code = deserialized_dict.get("startCode"),
-			start_version = deserialized_dict.get("startVersion"),
-			end_type = deserialized_dict.get("endType"),
-			end_code = deserialized_dict.get("endCode"),
-			end_version = deserialized_dict.get("endVersion"),
+			desc=deserialized_dict.get("desc"),
+			start_type=deserialized_dict.get("startType"),
+			start_code=deserialized_dict.get("startCode"),
+			start_version=deserialized_dict.get("startVersion"),
+			end_type=deserialized_dict.get("endType"),
+			end_code=deserialized_dict.get("endCode"),
+			end_version=deserialized_dict.get("endVersion"),
 		)
 
 @dataclass
@@ -738,7 +746,7 @@ class AllCodesFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			desc = deserialized_dict.get("desc"),
+			desc=deserialized_dict.get("desc"),
 		)
 
 @dataclass
@@ -760,8 +768,8 @@ class CodeByIdsFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			ids = [x0 for x0 in deserialized_dict["ids"]],
-			desc = deserialized_dict.get("desc"),
+			ids=[x0 for x0 in deserialized_dict["ids"]],
+			desc=deserialized_dict.get("desc"),
 		)
 
 @dataclass
@@ -789,11 +797,11 @@ class CodeByRegionTypeLabelLanguageFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			desc = deserialized_dict.get("desc"),
-			region = deserialized_dict.get("region"),
-			type = deserialized_dict["type"],
-			language = deserialized_dict["language"],
-			label = deserialized_dict.get("label"),
+			desc=deserialized_dict.get("desc"),
+			region=deserialized_dict.get("region"),
+			type=deserialized_dict["type"],
+			language=deserialized_dict["language"],
+			label=deserialized_dict.get("label"),
 		)
 
 @dataclass
@@ -817,9 +825,9 @@ class MessageByHcPartyTransportGuidFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			healthcare_party_id = deserialized_dict["healthcarePartyId"],
-			transport_guid = deserialized_dict["transportGuid"],
-			desc = deserialized_dict.get("desc"),
+			healthcare_party_id=deserialized_dict["healthcarePartyId"],
+			transport_guid=deserialized_dict["transportGuid"],
+			desc=deserialized_dict.get("desc"),
 		)
 
 @dataclass
@@ -841,8 +849,8 @@ class MessageByHcPartyFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			hcp_id = deserialized_dict["hcpId"],
-			desc = deserialized_dict.get("desc"),
+			hcp_id=deserialized_dict["hcpId"],
+			desc=deserialized_dict.get("desc"),
 		)
 
 @dataclass
@@ -866,9 +874,9 @@ class LatestMessageByHcPartyTransportGuidFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			healthcare_party_id = deserialized_dict["healthcarePartyId"],
-			transport_guid = deserialized_dict["transportGuid"],
-			desc = deserialized_dict.get("desc"),
+			healthcare_party_id=deserialized_dict["healthcarePartyId"],
+			transport_guid=deserialized_dict["transportGuid"],
+			desc=deserialized_dict.get("desc"),
 		)
 
 @dataclass
@@ -890,8 +898,8 @@ class UserByIdsFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			ids = [x0 for x0 in deserialized_dict["ids"]],
-			desc = deserialized_dict.get("desc"),
+			ids=[x0 for x0 in deserialized_dict["ids"]],
+			desc=deserialized_dict.get("desc"),
 		)
 
 @dataclass
@@ -911,7 +919,7 @@ class AllUsersFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			desc = deserialized_dict.get("desc"),
+			desc=deserialized_dict.get("desc"),
 		)
 
 @dataclass
@@ -933,8 +941,8 @@ class UserByNameEmailPhoneFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			search_string = deserialized_dict["searchString"],
-			desc = deserialized_dict.get("desc"),
+			search_string=deserialized_dict["searchString"],
+			desc=deserialized_dict.get("desc"),
 		)
 
 @dataclass
@@ -956,8 +964,8 @@ class UsersByPatientIdFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			patient_id = deserialized_dict["patientId"],
-			desc = deserialized_dict.get("desc"),
+			patient_id=deserialized_dict["patientId"],
+			desc=deserialized_dict.get("desc"),
 		)
 
 @dataclass
@@ -979,8 +987,8 @@ class TopicByParticipantFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			participant_id = deserialized_dict["participantId"],
-			desc = deserialized_dict.get("desc"),
+			participant_id=deserialized_dict["participantId"],
+			desc=deserialized_dict.get("desc"),
 		)
 
 @dataclass
@@ -1002,8 +1010,8 @@ class TopicByHcPartyFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			hcp_id = deserialized_dict["hcpId"],
-			desc = deserialized_dict.get("desc"),
+			hcp_id=deserialized_dict["hcpId"],
+			desc=deserialized_dict.get("desc"),
 		)
 
 @dataclass
@@ -1025,8 +1033,8 @@ class UnionFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			desc = deserialized_dict.get("desc"),
-			filters = [deserialize_abstract_filter(x0) for x0 in deserialized_dict["filters"]],
+			desc=deserialized_dict.get("desc"),
+			filters=[deserialize_abstract_filter(x0) for x0 in deserialized_dict["filters"]],
 		)
 
 @dataclass
@@ -1054,11 +1062,11 @@ class PatientByHcPartyGenderEducationProfession:
 		else:
 			deserialized_dict = data
 		return cls(
-			desc = deserialized_dict.get("desc"),
-			healthcare_party_id = deserialized_dict.get("healthcarePartyId"),
-			gender = Gender._deserialize(deserialized_dict.get("gender")) if deserialized_dict.get("gender") is not None else None,
-			education = deserialized_dict.get("education"),
-			profession = deserialized_dict.get("profession"),
+			desc=deserialized_dict.get("desc"),
+			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
+			gender=Gender._deserialize(deserialized_dict.get("gender")) if deserialized_dict.get("gender") is not None else None,
+			education=deserialized_dict.get("education"),
+			profession=deserialized_dict.get("profession"),
 		)
 
 @dataclass
@@ -1082,9 +1090,9 @@ class PatientByHcPartyDateOfBirthFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			desc = deserialized_dict.get("desc"),
-			date_of_birth = deserialized_dict["dateOfBirth"],
-			healthcare_party_id = deserialized_dict.get("healthcarePartyId"),
+			desc=deserialized_dict.get("desc"),
+			date_of_birth=deserialized_dict["dateOfBirth"],
+			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
 		)
 
 @dataclass
@@ -1108,9 +1116,9 @@ class PatientByHcPartyAndExternalIdFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			desc = deserialized_dict.get("desc"),
-			external_id = deserialized_dict.get("externalId"),
-			healthcare_party_id = deserialized_dict.get("healthcarePartyId"),
+			desc=deserialized_dict.get("desc"),
+			external_id=deserialized_dict.get("externalId"),
+			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
 		)
 
 @dataclass
@@ -1134,9 +1142,9 @@ class PatientByHcPartyAndSsinsFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			desc = deserialized_dict.get("desc"),
-			ssins = [x0 for x0 in deserialized_dict.get("ssins")] if deserialized_dict.get("ssins") is not None else None,
-			healthcare_party_id = deserialized_dict.get("healthcarePartyId"),
+			desc=deserialized_dict.get("desc"),
+			ssins=[x0 for x0 in deserialized_dict.get("ssins")] if deserialized_dict.get("ssins") is not None else None,
+			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
 		)
 
 @dataclass
@@ -1160,9 +1168,9 @@ class PatientByHcPartyAndActiveFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			desc = deserialized_dict.get("desc"),
-			active = deserialized_dict["active"],
-			healthcare_party_id = deserialized_dict.get("healthcarePartyId"),
+			desc=deserialized_dict.get("desc"),
+			active=deserialized_dict["active"],
+			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
 		)
 
 @dataclass
@@ -1190,11 +1198,11 @@ class PatientByHcPartyAndAddressFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			desc = deserialized_dict.get("desc"),
-			search_string = deserialized_dict.get("searchString"),
-			healthcare_party_id = deserialized_dict.get("healthcarePartyId"),
-			postal_code = deserialized_dict.get("postalCode"),
-			house_number = deserialized_dict.get("houseNumber"),
+			desc=deserialized_dict.get("desc"),
+			search_string=deserialized_dict.get("searchString"),
+			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
+			postal_code=deserialized_dict.get("postalCode"),
+			house_number=deserialized_dict.get("houseNumber"),
 		)
 
 @dataclass
@@ -1218,9 +1226,9 @@ class PatientByHcPartyNameFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			desc = deserialized_dict.get("desc"),
-			name = deserialized_dict.get("name"),
-			healthcare_party_id = deserialized_dict.get("healthcarePartyId"),
+			desc=deserialized_dict.get("desc"),
+			name=deserialized_dict.get("name"),
+			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
 		)
 
 @dataclass
@@ -1244,9 +1252,9 @@ class PatientByHcPartyAndSsinFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			desc = deserialized_dict.get("desc"),
-			ssin = deserialized_dict["ssin"],
-			healthcare_party_id = deserialized_dict.get("healthcarePartyId"),
+			desc=deserialized_dict.get("desc"),
+			ssin=deserialized_dict["ssin"],
+			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
 		)
 
 @dataclass
@@ -1270,9 +1278,9 @@ class PatientByHcPartyNameContainsFuzzyFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			desc = deserialized_dict.get("desc"),
-			search_string = deserialized_dict.get("searchString"),
-			healthcare_party_id = deserialized_dict.get("healthcarePartyId"),
+			desc=deserialized_dict.get("desc"),
+			search_string=deserialized_dict.get("searchString"),
+			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
 		)
 
 @dataclass
@@ -1294,8 +1302,8 @@ class PatientByIdsFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			ids = [x0 for x0 in deserialized_dict["ids"]],
-			desc = deserialized_dict.get("desc"),
+			ids=[x0 for x0 in deserialized_dict["ids"]],
+			desc=deserialized_dict.get("desc"),
 		)
 
 @dataclass
@@ -1319,9 +1327,9 @@ class PatientByHcPartyAndIdentifiersFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			healthcare_party_id = deserialized_dict.get("healthcarePartyId"),
-			identifiers = [Identifier._deserialize(x0) for x0 in deserialized_dict["identifiers"]],
-			desc = deserialized_dict.get("desc"),
+			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
+			identifiers=[Identifier._deserialize(x0) for x0 in deserialized_dict["identifiers"]],
+			desc=deserialized_dict.get("desc"),
 		)
 
 @dataclass
@@ -1347,10 +1355,10 @@ class PatientByHcPartyDateOfBirthBetweenFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			desc = deserialized_dict.get("desc"),
-			min_date_of_birth = deserialized_dict.get("minDateOfBirth"),
-			max_date_of_birth = deserialized_dict.get("maxDateOfBirth"),
-			healthcare_party_id = deserialized_dict.get("healthcarePartyId"),
+			desc=deserialized_dict.get("desc"),
+			min_date_of_birth=deserialized_dict.get("minDateOfBirth"),
+			max_date_of_birth=deserialized_dict.get("maxDateOfBirth"),
+			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
 		)
 
 @dataclass
@@ -1374,9 +1382,9 @@ class PatientByHcPartyAndTelecomFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			desc = deserialized_dict.get("desc"),
-			search_string = deserialized_dict.get("searchString"),
-			healthcare_party_id = deserialized_dict.get("healthcarePartyId"),
+			desc=deserialized_dict.get("desc"),
+			search_string=deserialized_dict.get("searchString"),
+			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
 		)
 
 @dataclass
@@ -1398,8 +1406,8 @@ class PatientByHcPartyFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			desc = deserialized_dict.get("desc"),
-			healthcare_party_id = deserialized_dict.get("healthcarePartyId"),
+			desc=deserialized_dict.get("desc"),
+			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
 		)
 
 @dataclass
@@ -1421,8 +1429,8 @@ class DeviceByIdsFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			ids = [x0 for x0 in deserialized_dict["ids"]],
-			desc = deserialized_dict.get("desc"),
+			ids=[x0 for x0 in deserialized_dict["ids"]],
+			desc=deserialized_dict.get("desc"),
 		)
 
 @dataclass
@@ -1444,8 +1452,8 @@ class DeviceByHcPartyFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			desc = deserialized_dict.get("desc"),
-			responsible_id = deserialized_dict.get("responsibleId"),
+			desc=deserialized_dict.get("desc"),
+			responsible_id=deserialized_dict.get("responsibleId"),
 		)
 
 @dataclass
@@ -1465,7 +1473,7 @@ class AllDevicesFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			desc = deserialized_dict.get("desc"),
+			desc=deserialized_dict.get("desc"),
 		)
 
 @dataclass
@@ -1489,9 +1497,9 @@ class ComplementFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			desc = deserialized_dict.get("desc"),
-			super_set = deserialize_abstract_filter(deserialized_dict["superSet"]),
-			sub_set = deserialize_abstract_filter(deserialized_dict["subSet"]),
+			desc=deserialized_dict.get("desc"),
+			super_set=deserialize_abstract_filter(deserialized_dict["superSet"]),
+			sub_set=deserialize_abstract_filter(deserialized_dict["subSet"]),
 		)
 
 @dataclass
@@ -1513,8 +1521,8 @@ class IntersectionFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			desc = deserialized_dict.get("desc"),
-			filters = [deserialize_abstract_filter(x0) for x0 in deserialized_dict["filters"]],
+			desc=deserialized_dict.get("desc"),
+			filters=[deserialize_abstract_filter(x0) for x0 in deserialized_dict["filters"]],
 		)
 
 @dataclass
@@ -1536,8 +1544,8 @@ class IdsFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			desc = deserialized_dict.get("desc"),
-			ids = [x0 for x0 in deserialized_dict["ids"]],
+			desc=deserialized_dict.get("desc"),
+			ids=[x0 for x0 in deserialized_dict["ids"]],
 		)
 
 @dataclass
@@ -1561,9 +1569,9 @@ class ServiceBySecretForeignKeys:
 		else:
 			deserialized_dict = data
 		return cls(
-			desc = deserialized_dict.get("desc"),
-			healthcare_party_id = deserialized_dict.get("healthcarePartyId"),
-			patient_secret_foreign_keys = [x0 for x0 in deserialized_dict["patientSecretForeignKeys"]],
+			desc=deserialized_dict.get("desc"),
+			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
+			patient_secret_foreign_keys=[x0 for x0 in deserialized_dict["patientSecretForeignKeys"]],
 		)
 
 @dataclass
@@ -1593,12 +1601,12 @@ class ServiceByContactsAndSubcontactsFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			desc = deserialized_dict.get("desc"),
-			healthcare_party_id = deserialized_dict.get("healthcarePartyId"),
-			contacts = [x0 for x0 in deserialized_dict["contacts"]],
-			sub_contacts = [x0 for x0 in deserialized_dict.get("subContacts")] if deserialized_dict.get("subContacts") is not None else None,
-			start_value_date = deserialized_dict.get("startValueDate"),
-			end_value_date = deserialized_dict.get("endValueDate"),
+			desc=deserialized_dict.get("desc"),
+			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
+			contacts=[x0 for x0 in deserialized_dict["contacts"]],
+			sub_contacts=[x0 for x0 in deserialized_dict.get("subContacts")] if deserialized_dict.get("subContacts") is not None else None,
+			start_value_date=deserialized_dict.get("startValueDate"),
+			end_value_date=deserialized_dict.get("endValueDate"),
 		)
 
 @dataclass
@@ -1636,16 +1644,16 @@ class ServiceByHcPartyTagCodeDateFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			desc = deserialized_dict.get("desc"),
-			healthcare_party_id = deserialized_dict.get("healthcarePartyId"),
-			patient_secret_foreign_key = deserialized_dict.get("patientSecretForeignKey"),
-			tag_type = deserialized_dict.get("tagType"),
-			tag_code = deserialized_dict.get("tagCode"),
-			code_type = deserialized_dict.get("codeType"),
-			code_code = deserialized_dict.get("codeCode"),
-			start_value_date = deserialized_dict.get("startValueDate"),
-			end_value_date = deserialized_dict.get("endValueDate"),
-			descending = deserialized_dict["descending"],
+			desc=deserialized_dict.get("desc"),
+			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
+			patient_secret_foreign_key=deserialized_dict.get("patientSecretForeignKey"),
+			tag_type=deserialized_dict.get("tagType"),
+			tag_code=deserialized_dict.get("tagCode"),
+			code_type=deserialized_dict.get("codeType"),
+			code_code=deserialized_dict.get("codeCode"),
+			start_value_date=deserialized_dict.get("startValueDate"),
+			end_value_date=deserialized_dict.get("endValueDate"),
+			descending=deserialized_dict["descending"],
 		)
 
 @dataclass
@@ -1669,9 +1677,9 @@ class ServiceByHcPartyHealthElementIdsFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			desc = deserialized_dict.get("desc"),
-			healthcare_party_id = deserialized_dict.get("healthcarePartyId"),
-			health_element_ids = [x0 for x0 in deserialized_dict["healthElementIds"]],
+			desc=deserialized_dict.get("desc"),
+			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
+			health_element_ids=[x0 for x0 in deserialized_dict["healthElementIds"]],
 		)
 
 @dataclass
@@ -1695,9 +1703,9 @@ class ServiceByHcPartyIdentifiersFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			healthcare_party_id = deserialized_dict.get("healthcarePartyId"),
-			identifiers = [Identifier._deserialize(x0) for x0 in deserialized_dict["identifiers"]],
-			desc = deserialized_dict.get("desc"),
+			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
+			identifiers=[Identifier._deserialize(x0) for x0 in deserialized_dict["identifiers"]],
+			desc=deserialized_dict.get("desc"),
 		)
 
 @dataclass
@@ -1719,8 +1727,8 @@ class ServiceByHcPartyFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			hcp_id = deserialized_dict["hcpId"],
-			desc = deserialized_dict.get("desc"),
+			hcp_id=deserialized_dict["hcpId"],
+			desc=deserialized_dict.get("desc"),
 		)
 
 @dataclass
@@ -1742,8 +1750,8 @@ class ServiceByIdsFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			ids = [x0 for x0 in deserialized_dict["ids"]],
-			desc = deserialized_dict.get("desc"),
+			ids=[x0 for x0 in deserialized_dict["ids"]],
+			desc=deserialized_dict.get("desc"),
 		)
 
 @dataclass
@@ -1767,9 +1775,9 @@ class MaintenanceTaskByHcPartyAndTypeFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			desc = deserialized_dict.get("desc"),
-			type = deserialized_dict["type"],
-			healthcare_party_id = deserialized_dict.get("healthcarePartyId"),
+			desc=deserialized_dict.get("desc"),
+			type=deserialized_dict["type"],
+			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
 		)
 
 @dataclass
@@ -1793,9 +1801,9 @@ class MaintenanceTaskByHcPartyAndIdentifiersFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			healthcare_party_id = deserialized_dict.get("healthcarePartyId"),
-			identifiers = [Identifier._deserialize(x0) for x0 in deserialized_dict["identifiers"]],
-			desc = deserialized_dict.get("desc"),
+			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
+			identifiers=[Identifier._deserialize(x0) for x0 in deserialized_dict["identifiers"]],
+			desc=deserialized_dict.get("desc"),
 		)
 
 @dataclass
@@ -1817,8 +1825,8 @@ class MaintenanceTaskByIdsFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			ids = [x0 for x0 in deserialized_dict["ids"]],
-			desc = deserialized_dict.get("desc"),
+			ids=[x0 for x0 in deserialized_dict["ids"]],
+			desc=deserialized_dict.get("desc"),
 		)
 
 @dataclass
@@ -1842,9 +1850,9 @@ class MaintenanceTaskAfterDateFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			desc = deserialized_dict.get("desc"),
-			healthcare_party_id = deserialized_dict.get("healthcarePartyId"),
-			date = deserialized_dict["date"],
+			desc=deserialized_dict.get("desc"),
+			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
+			date=deserialized_dict["date"],
 		)
 
 @dataclass
@@ -1872,11 +1880,11 @@ class InvoiceByHcPartyCodeDateFilter:
 		else:
 			deserialized_dict = data
 		return cls(
-			desc = deserialized_dict.get("desc"),
-			healthcare_party_id = deserialized_dict.get("healthcarePartyId"),
-			code = deserialized_dict["code"],
-			start_invoice_date = deserialized_dict.get("startInvoiceDate"),
-			end_invoice_date = deserialized_dict.get("endInvoiceDate"),
+			desc=deserialized_dict.get("desc"),
+			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
+			code=deserialized_dict["code"],
+			start_invoice_date=deserialized_dict.get("startInvoiceDate"),
+			end_invoice_date=deserialized_dict.get("endInvoiceDate"),
 		)
 
 AbstractFilter = Union['ContactByHcPartyPatientTagCodeDateFilter', 'ContactByHcPartyTagCodeDateFilter', 'ContactByHcPartyFilter', 'ContactByServiceIdsFilter', 'ContactByHcPartyIdentifiersFilter', 'HealthcarePartyByIdsFilter', 'HealthcarePartyByTagCodeFilter', 'AllHealthcarePartiesFilter', 'HealthcarePartyByIdentifiersFilter', 'HealthcarePartyByNameFilter', 'HealthElementByHcPartySecretForeignKeysFilter', 'HealthElementByHcPartyTagCodeFilter', 'HealthElementByIdsFilter', 'HealthElementByHcPartyIdentifiersFilter', 'HealthElementByHcPartyFilter', 'CodeIdsByTypeCodeVersionIntervalFilter', 'AllCodesFilter', 'CodeByIdsFilter', 'CodeByRegionTypeLabelLanguageFilter', 'MessageByHcPartyTransportGuidFilter', 'MessageByHcPartyFilter', 'LatestMessageByHcPartyTransportGuidFilter', 'UserByIdsFilter', 'AllUsersFilter', 'UserByNameEmailPhoneFilter', 'UsersByPatientIdFilter', 'TopicByParticipantFilter', 'TopicByHcPartyFilter', 'UnionFilter', 'PatientByHcPartyGenderEducationProfession', 'PatientByHcPartyDateOfBirthFilter', 'PatientByHcPartyAndExternalIdFilter', 'PatientByHcPartyAndSsinsFilter', 'PatientByHcPartyAndActiveFilter', 'PatientByHcPartyAndAddressFilter', 'PatientByHcPartyNameFilter', 'PatientByHcPartyAndSsinFilter', 'PatientByHcPartyNameContainsFuzzyFilter', 'PatientByIdsFilter', 'PatientByHcPartyAndIdentifiersFilter', 'PatientByHcPartyDateOfBirthBetweenFilter', 'PatientByHcPartyAndTelecomFilter', 'PatientByHcPartyFilter', 'DeviceByIdsFilter', 'DeviceByHcPartyFilter', 'AllDevicesFilter', 'ComplementFilter', 'IntersectionFilter', 'IdsFilter', 'ServiceBySecretForeignKeys', 'ServiceByContactsAndSubcontactsFilter', 'ServiceByHcPartyTagCodeDateFilter', 'ServiceByHcPartyHealthElementIdsFilter', 'ServiceByHcPartyIdentifiersFilter', 'ServiceByHcPartyFilter', 'ServiceByIdsFilter', 'MaintenanceTaskByHcPartyAndTypeFilter', 'MaintenanceTaskByHcPartyAndIdentifiersFilter', 'MaintenanceTaskByIdsFilter', 'MaintenanceTaskAfterDateFilter', 'InvoiceByHcPartyCodeDateFilter']
@@ -2139,127 +2147,127 @@ def deserialize_abstract_filter(data: Union[str, Dict[str, object]]) -> 'Abstrac
 	if qualifier is None:
 		raise Exception("Missing qualifier: $type")
 	if qualifier == "ContactByHcPartyPatientTagCodeDateFilter":
-		ContactByHcPartyPatientTagCodeDateFilter._deserialize(deserialized_dict)
+		return ContactByHcPartyPatientTagCodeDateFilter._deserialize(deserialized_dict)
 	elif qualifier == "ContactByHcPartyTagCodeDateFilter":
-		ContactByHcPartyTagCodeDateFilter._deserialize(deserialized_dict)
+		return ContactByHcPartyTagCodeDateFilter._deserialize(deserialized_dict)
 	elif qualifier == "ContactByHcPartyFilter":
-		ContactByHcPartyFilter._deserialize(deserialized_dict)
+		return ContactByHcPartyFilter._deserialize(deserialized_dict)
 	elif qualifier == "ContactByServiceIdsFilter":
-		ContactByServiceIdsFilter._deserialize(deserialized_dict)
+		return ContactByServiceIdsFilter._deserialize(deserialized_dict)
 	elif qualifier == "ContactByHcPartyIdentifiersFilter":
-		ContactByHcPartyIdentifiersFilter._deserialize(deserialized_dict)
+		return ContactByHcPartyIdentifiersFilter._deserialize(deserialized_dict)
 	elif qualifier == "HealthcarePartyByIdsFilter":
-		HealthcarePartyByIdsFilter._deserialize(deserialized_dict)
+		return HealthcarePartyByIdsFilter._deserialize(deserialized_dict)
 	elif qualifier == "HealthcarePartyByTagCodeFilter":
-		HealthcarePartyByTagCodeFilter._deserialize(deserialized_dict)
+		return HealthcarePartyByTagCodeFilter._deserialize(deserialized_dict)
 	elif qualifier == "AllHealthcarePartiesFilter":
-		AllHealthcarePartiesFilter._deserialize(deserialized_dict)
+		return AllHealthcarePartiesFilter._deserialize(deserialized_dict)
 	elif qualifier == "HealthcarePartyByIdentifiersFilter":
-		HealthcarePartyByIdentifiersFilter._deserialize(deserialized_dict)
+		return HealthcarePartyByIdentifiersFilter._deserialize(deserialized_dict)
 	elif qualifier == "HealthcarePartyByNameFilter":
-		HealthcarePartyByNameFilter._deserialize(deserialized_dict)
+		return HealthcarePartyByNameFilter._deserialize(deserialized_dict)
 	elif qualifier == "HealthElementByHcPartySecretForeignKeysFilter":
-		HealthElementByHcPartySecretForeignKeysFilter._deserialize(deserialized_dict)
+		return HealthElementByHcPartySecretForeignKeysFilter._deserialize(deserialized_dict)
 	elif qualifier == "HealthElementByHcPartyTagCodeFilter":
-		HealthElementByHcPartyTagCodeFilter._deserialize(deserialized_dict)
+		return HealthElementByHcPartyTagCodeFilter._deserialize(deserialized_dict)
 	elif qualifier == "HealthElementByIdsFilter":
-		HealthElementByIdsFilter._deserialize(deserialized_dict)
+		return HealthElementByIdsFilter._deserialize(deserialized_dict)
 	elif qualifier == "HealthElementByHcPartyIdentifiersFilter":
-		HealthElementByHcPartyIdentifiersFilter._deserialize(deserialized_dict)
+		return HealthElementByHcPartyIdentifiersFilter._deserialize(deserialized_dict)
 	elif qualifier == "HealthElementByHcPartyFilter":
-		HealthElementByHcPartyFilter._deserialize(deserialized_dict)
+		return HealthElementByHcPartyFilter._deserialize(deserialized_dict)
 	elif qualifier == "CodeIdsByTypeCodeVersionIntervalFilter":
-		CodeIdsByTypeCodeVersionIntervalFilter._deserialize(deserialized_dict)
+		return CodeIdsByTypeCodeVersionIntervalFilter._deserialize(deserialized_dict)
 	elif qualifier == "AllCodesFilter":
-		AllCodesFilter._deserialize(deserialized_dict)
+		return AllCodesFilter._deserialize(deserialized_dict)
 	elif qualifier == "CodeByIdsFilter":
-		CodeByIdsFilter._deserialize(deserialized_dict)
+		return CodeByIdsFilter._deserialize(deserialized_dict)
 	elif qualifier == "CodeByRegionTypeLabelLanguageFilter":
-		CodeByRegionTypeLabelLanguageFilter._deserialize(deserialized_dict)
+		return CodeByRegionTypeLabelLanguageFilter._deserialize(deserialized_dict)
 	elif qualifier == "MessageByHcPartyTransportGuidFilter":
-		MessageByHcPartyTransportGuidFilter._deserialize(deserialized_dict)
+		return MessageByHcPartyTransportGuidFilter._deserialize(deserialized_dict)
 	elif qualifier == "MessageByHcPartyFilter":
-		MessageByHcPartyFilter._deserialize(deserialized_dict)
+		return MessageByHcPartyFilter._deserialize(deserialized_dict)
 	elif qualifier == "LatestMessageByHcPartyTransportGuidFilter":
-		LatestMessageByHcPartyTransportGuidFilter._deserialize(deserialized_dict)
+		return LatestMessageByHcPartyTransportGuidFilter._deserialize(deserialized_dict)
 	elif qualifier == "UserByIdsFilter":
-		UserByIdsFilter._deserialize(deserialized_dict)
+		return UserByIdsFilter._deserialize(deserialized_dict)
 	elif qualifier == "AllUsersFilter":
-		AllUsersFilter._deserialize(deserialized_dict)
+		return AllUsersFilter._deserialize(deserialized_dict)
 	elif qualifier == "UserByNameEmailPhoneFilter":
-		UserByNameEmailPhoneFilter._deserialize(deserialized_dict)
+		return UserByNameEmailPhoneFilter._deserialize(deserialized_dict)
 	elif qualifier == "UsersByPatientIdFilter":
-		UsersByPatientIdFilter._deserialize(deserialized_dict)
+		return UsersByPatientIdFilter._deserialize(deserialized_dict)
 	elif qualifier == "TopicByParticipantFilter":
-		TopicByParticipantFilter._deserialize(deserialized_dict)
+		return TopicByParticipantFilter._deserialize(deserialized_dict)
 	elif qualifier == "TopicByHcPartyFilter":
-		TopicByHcPartyFilter._deserialize(deserialized_dict)
+		return TopicByHcPartyFilter._deserialize(deserialized_dict)
 	elif qualifier == "UnionFilter":
-		UnionFilter._deserialize(deserialized_dict)
+		return UnionFilter._deserialize(deserialized_dict)
 	elif qualifier == "PatientByHcPartyGenderEducationProfession":
-		PatientByHcPartyGenderEducationProfession._deserialize(deserialized_dict)
+		return PatientByHcPartyGenderEducationProfession._deserialize(deserialized_dict)
 	elif qualifier == "PatientByHcPartyDateOfBirthFilter":
-		PatientByHcPartyDateOfBirthFilter._deserialize(deserialized_dict)
+		return PatientByHcPartyDateOfBirthFilter._deserialize(deserialized_dict)
 	elif qualifier == "PatientByHcPartyAndExternalIdFilter":
-		PatientByHcPartyAndExternalIdFilter._deserialize(deserialized_dict)
+		return PatientByHcPartyAndExternalIdFilter._deserialize(deserialized_dict)
 	elif qualifier == "PatientByHcPartyAndSsinsFilter":
-		PatientByHcPartyAndSsinsFilter._deserialize(deserialized_dict)
+		return PatientByHcPartyAndSsinsFilter._deserialize(deserialized_dict)
 	elif qualifier == "PatientByHcPartyAndActiveFilter":
-		PatientByHcPartyAndActiveFilter._deserialize(deserialized_dict)
+		return PatientByHcPartyAndActiveFilter._deserialize(deserialized_dict)
 	elif qualifier == "PatientByHcPartyAndAddressFilter":
-		PatientByHcPartyAndAddressFilter._deserialize(deserialized_dict)
+		return PatientByHcPartyAndAddressFilter._deserialize(deserialized_dict)
 	elif qualifier == "PatientByHcPartyNameFilter":
-		PatientByHcPartyNameFilter._deserialize(deserialized_dict)
+		return PatientByHcPartyNameFilter._deserialize(deserialized_dict)
 	elif qualifier == "PatientByHcPartyAndSsinFilter":
-		PatientByHcPartyAndSsinFilter._deserialize(deserialized_dict)
+		return PatientByHcPartyAndSsinFilter._deserialize(deserialized_dict)
 	elif qualifier == "PatientByHcPartyNameContainsFuzzyFilter":
-		PatientByHcPartyNameContainsFuzzyFilter._deserialize(deserialized_dict)
+		return PatientByHcPartyNameContainsFuzzyFilter._deserialize(deserialized_dict)
 	elif qualifier == "PatientByIdsFilter":
-		PatientByIdsFilter._deserialize(deserialized_dict)
+		return PatientByIdsFilter._deserialize(deserialized_dict)
 	elif qualifier == "PatientByHcPartyAndIdentifiersFilter":
-		PatientByHcPartyAndIdentifiersFilter._deserialize(deserialized_dict)
+		return PatientByHcPartyAndIdentifiersFilter._deserialize(deserialized_dict)
 	elif qualifier == "PatientByHcPartyDateOfBirthBetweenFilter":
-		PatientByHcPartyDateOfBirthBetweenFilter._deserialize(deserialized_dict)
+		return PatientByHcPartyDateOfBirthBetweenFilter._deserialize(deserialized_dict)
 	elif qualifier == "PatientByHcPartyAndTelecomFilter":
-		PatientByHcPartyAndTelecomFilter._deserialize(deserialized_dict)
+		return PatientByHcPartyAndTelecomFilter._deserialize(deserialized_dict)
 	elif qualifier == "PatientByHcPartyFilter":
-		PatientByHcPartyFilter._deserialize(deserialized_dict)
+		return PatientByHcPartyFilter._deserialize(deserialized_dict)
 	elif qualifier == "DeviceByIdsFilter":
-		DeviceByIdsFilter._deserialize(deserialized_dict)
+		return DeviceByIdsFilter._deserialize(deserialized_dict)
 	elif qualifier == "DeviceByHcPartyFilter":
-		DeviceByHcPartyFilter._deserialize(deserialized_dict)
+		return DeviceByHcPartyFilter._deserialize(deserialized_dict)
 	elif qualifier == "AllDevicesFilter":
-		AllDevicesFilter._deserialize(deserialized_dict)
+		return AllDevicesFilter._deserialize(deserialized_dict)
 	elif qualifier == "ComplementFilter":
-		ComplementFilter._deserialize(deserialized_dict)
+		return ComplementFilter._deserialize(deserialized_dict)
 	elif qualifier == "IntersectionFilter":
-		IntersectionFilter._deserialize(deserialized_dict)
+		return IntersectionFilter._deserialize(deserialized_dict)
 	elif qualifier == "IdsFilter":
-		IdsFilter._deserialize(deserialized_dict)
+		return IdsFilter._deserialize(deserialized_dict)
 	elif qualifier == "ServiceBySecretForeignKeys":
-		ServiceBySecretForeignKeys._deserialize(deserialized_dict)
+		return ServiceBySecretForeignKeys._deserialize(deserialized_dict)
 	elif qualifier == "ServiceByContactsAndSubcontactsFilter":
-		ServiceByContactsAndSubcontactsFilter._deserialize(deserialized_dict)
+		return ServiceByContactsAndSubcontactsFilter._deserialize(deserialized_dict)
 	elif qualifier == "ServiceByHcPartyTagCodeDateFilter":
-		ServiceByHcPartyTagCodeDateFilter._deserialize(deserialized_dict)
+		return ServiceByHcPartyTagCodeDateFilter._deserialize(deserialized_dict)
 	elif qualifier == "ServiceByHcPartyHealthElementIdsFilter":
-		ServiceByHcPartyHealthElementIdsFilter._deserialize(deserialized_dict)
+		return ServiceByHcPartyHealthElementIdsFilter._deserialize(deserialized_dict)
 	elif qualifier == "ServiceByHcPartyIdentifiersFilter":
-		ServiceByHcPartyIdentifiersFilter._deserialize(deserialized_dict)
+		return ServiceByHcPartyIdentifiersFilter._deserialize(deserialized_dict)
 	elif qualifier == "ServiceByHcPartyFilter":
-		ServiceByHcPartyFilter._deserialize(deserialized_dict)
+		return ServiceByHcPartyFilter._deserialize(deserialized_dict)
 	elif qualifier == "ServiceByIdsFilter":
-		ServiceByIdsFilter._deserialize(deserialized_dict)
+		return ServiceByIdsFilter._deserialize(deserialized_dict)
 	elif qualifier == "MaintenanceTaskByHcPartyAndTypeFilter":
-		MaintenanceTaskByHcPartyAndTypeFilter._deserialize(deserialized_dict)
+		return MaintenanceTaskByHcPartyAndTypeFilter._deserialize(deserialized_dict)
 	elif qualifier == "MaintenanceTaskByHcPartyAndIdentifiersFilter":
-		MaintenanceTaskByHcPartyAndIdentifiersFilter._deserialize(deserialized_dict)
+		return MaintenanceTaskByHcPartyAndIdentifiersFilter._deserialize(deserialized_dict)
 	elif qualifier == "MaintenanceTaskByIdsFilter":
-		MaintenanceTaskByIdsFilter._deserialize(deserialized_dict)
+		return MaintenanceTaskByIdsFilter._deserialize(deserialized_dict)
 	elif qualifier == "MaintenanceTaskAfterDateFilter":
-		MaintenanceTaskAfterDateFilter._deserialize(deserialized_dict)
+		return MaintenanceTaskAfterDateFilter._deserialize(deserialized_dict)
 	elif qualifier == "InvoiceByHcPartyCodeDateFilter":
-		InvoiceByHcPartyCodeDateFilter._deserialize(deserialized_dict)
+		return InvoiceByHcPartyCodeDateFilter._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of AbstractFilter")
 
@@ -2296,15 +2304,15 @@ class CryptoActorStub:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			rev = deserialized_dict["rev"],
-			hc_party_keys = dict(map(lambda kv0: (kv0[0], [x1 for x1 in kv0[1]]), deserialized_dict["hcPartyKeys"].items())),
-			aes_exchange_keys = dict(map(lambda kv0: (kv0[0], dict(map(lambda kv1: (kv1[0], dict(map(lambda kv2: (kv2[0], kv2[1]), kv1[1].items()))), kv0[1].items()))), deserialized_dict["aesExchangeKeys"].items())),
-			transfer_keys = dict(map(lambda kv0: (kv0[0], dict(map(lambda kv1: (kv1[0], kv1[1]), kv0[1].items()))), deserialized_dict["transferKeys"].items())),
-			private_key_shamir_partitions = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["privateKeyShamirPartitions"].items())),
-			public_key = deserialized_dict.get("publicKey"),
-			public_keys_for_oaep_with_sha256 = [x0 for x0 in deserialized_dict["publicKeysForOaepWithSha256"]],
-			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			id=deserialized_dict["id"],
+			rev=deserialized_dict["rev"],
+			hc_party_keys=dict(map(lambda kv0: (kv0[0], [x1 for x1 in kv0[1]]), deserialized_dict["hcPartyKeys"].items())),
+			aes_exchange_keys=dict(map(lambda kv0: (kv0[0], dict(map(lambda kv1: (kv1[0], dict(map(lambda kv2: (kv2[0], kv2[1]), kv1[1].items()))), kv0[1].items()))), deserialized_dict["aesExchangeKeys"].items())),
+			transfer_keys=dict(map(lambda kv0: (kv0[0], dict(map(lambda kv1: (kv1[0], kv1[1]), kv0[1].items()))), deserialized_dict["transferKeys"].items())),
+			private_key_shamir_partitions=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["privateKeyShamirPartitions"].items())),
+			public_key=deserialized_dict.get("publicKey"),
+			public_keys_for_oaep_with_sha256=[x0 for x0 in deserialized_dict["publicKeysForOaepWithSha256"]],
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
 		)
 
 @dataclass
@@ -2482,86 +2490,86 @@ class EncryptedPatient:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			identifier = [Identifier._deserialize(x0) for x0 in deserialized_dict["identifier"]],
-			rev = deserialized_dict.get("rev"),
-			created = deserialized_dict.get("created"),
-			modified = deserialized_dict.get("modified"),
-			author = deserialized_dict.get("author"),
-			responsible = deserialized_dict.get("responsible"),
-			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			codes = [CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
-			end_of_life = deserialized_dict.get("endOfLife"),
-			deletion_date = deserialized_dict.get("deletionDate"),
-			first_name = deserialized_dict.get("firstName"),
-			last_name = deserialized_dict.get("lastName"),
-			names = [PersonName._deserialize(x0) for x0 in deserialized_dict["names"]],
-			company_name = deserialized_dict.get("companyName"),
-			languages = [x0 for x0 in deserialized_dict["languages"]],
-			addresses = [EncryptedAddress._deserialize(x0) for x0 in deserialized_dict["addresses"]],
-			civility = deserialized_dict.get("civility"),
-			gender = Gender._deserialize(deserialized_dict.get("gender")) if deserialized_dict.get("gender") is not None else None,
-			birth_sex = Gender._deserialize(deserialized_dict.get("birthSex")) if deserialized_dict.get("birthSex") is not None else None,
-			merge_to_patient_id = deserialized_dict.get("mergeToPatientId"),
-			merged_ids = [x0 for x0 in deserialized_dict["mergedIds"]],
-			alias = deserialized_dict.get("alias"),
-			active = deserialized_dict["active"],
-			deactivation_reason = DeactivationReason._deserialize(deserialized_dict["deactivationReason"]),
-			deactivation_date = deserialized_dict.get("deactivationDate"),
-			ssin = deserialized_dict.get("ssin"),
-			maiden_name = deserialized_dict.get("maidenName"),
-			spouse_name = deserialized_dict.get("spouseName"),
-			partner_name = deserialized_dict.get("partnerName"),
-			personal_status = PersonalStatus._deserialize(deserialized_dict.get("personalStatus")) if deserialized_dict.get("personalStatus") is not None else None,
-			date_of_birth = deserialized_dict.get("dateOfBirth"),
-			date_of_death = deserialized_dict.get("dateOfDeath"),
-			timestamp_of_latest_eid_reading = deserialized_dict.get("timestampOfLatestEidReading"),
-			place_of_birth = deserialized_dict.get("placeOfBirth"),
-			place_of_death = deserialized_dict.get("placeOfDeath"),
-			deceased = deserialized_dict.get("deceased"),
-			education = deserialized_dict.get("education"),
-			profession = deserialized_dict.get("profession"),
-			notes = [Annotation._deserialize(x0) for x0 in deserialized_dict["notes"]],
-			note = deserialized_dict.get("note"),
-			administrative_note = deserialized_dict.get("administrativeNote"),
-			nationality = deserialized_dict.get("nationality"),
-			race = deserialized_dict.get("race"),
-			ethnicity = deserialized_dict.get("ethnicity"),
-			preferred_user_id = deserialized_dict.get("preferredUserId"),
-			picture = bytearray(base64.b64decode(deserialized_dict.get("picture"))) if deserialized_dict.get("picture") is not None else None,
-			external_id = deserialized_dict.get("externalId"),
-			insurabilities = [EncryptedInsurability._deserialize(x0) for x0 in deserialized_dict["insurabilities"]],
-			partnerships = [Partnership._deserialize(x0) for x0 in deserialized_dict["partnerships"]],
-			patient_health_care_parties = [EncryptedPatientHealthCareParty._deserialize(x0) for x0 in deserialized_dict["patientHealthCareParties"]],
-			financial_institution_information = [EncryptedFinancialInstitutionInformation._deserialize(x0) for x0 in deserialized_dict["financialInstitutionInformation"]],
-			medical_house_contracts = [EncryptedMedicalHouseContract._deserialize(x0) for x0 in deserialized_dict["medicalHouseContracts"]],
-			patient_professions = [CodeStub._deserialize(x0) for x0 in deserialized_dict["patientProfessions"]],
-			parameters = dict(map(lambda kv0: (kv0[0], [x1 for x1 in kv0[1]]), deserialized_dict["parameters"].items())),
-			properties = [EncryptedPropertyStub._deserialize(x0) for x0 in deserialized_dict["properties"]],
-			hc_party_keys = dict(map(lambda kv0: (kv0[0], [x1 for x1 in kv0[1]]), deserialized_dict["hcPartyKeys"].items())),
-			aes_exchange_keys = dict(map(lambda kv0: (kv0[0], dict(map(lambda kv1: (kv1[0], dict(map(lambda kv2: (kv2[0], kv2[1]), kv1[1].items()))), kv0[1].items()))), deserialized_dict["aesExchangeKeys"].items())),
-			transfer_keys = dict(map(lambda kv0: (kv0[0], dict(map(lambda kv1: (kv1[0], kv1[1]), kv0[1].items()))), deserialized_dict["transferKeys"].items())),
-			private_key_shamir_partitions = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["privateKeyShamirPartitions"].items())),
-			public_key = deserialized_dict.get("publicKey"),
-			public_keys_for_oaep_with_sha256 = [x0 for x0 in deserialized_dict["publicKeysForOaepWithSha256"]],
-			secret_foreign_keys = [x0 for x0 in deserialized_dict["secretForeignKeys"]],
-			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
-			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
-			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
-			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
-			medical_location_id = deserialized_dict.get("medicalLocationId"),
-			non_duplicate_ids = [x0 for x0 in deserialized_dict["nonDuplicateIds"]],
-			encrypted_administratives_documents = [x0 for x0 in deserialized_dict["encryptedAdministrativesDocuments"]],
-			comment = deserialized_dict.get("comment"),
-			warning = deserialized_dict.get("warning"),
-			father_birth_country = CodeStub._deserialize(deserialized_dict.get("fatherBirthCountry")) if deserialized_dict.get("fatherBirthCountry") is not None else None,
-			birth_country = CodeStub._deserialize(deserialized_dict.get("birthCountry")) if deserialized_dict.get("birthCountry") is not None else None,
-			native_country = CodeStub._deserialize(deserialized_dict.get("nativeCountry")) if deserialized_dict.get("nativeCountry") is not None else None,
-			social_status = CodeStub._deserialize(deserialized_dict.get("socialStatus")) if deserialized_dict.get("socialStatus") is not None else None,
-			main_source_of_income = CodeStub._deserialize(deserialized_dict.get("mainSourceOfIncome")) if deserialized_dict.get("mainSourceOfIncome") is not None else None,
-			schooling_infos = [SchoolingInfo._deserialize(x0) for x0 in deserialized_dict["schoolingInfos"]],
-			employement_infos = [EmploymentInfo._deserialize(x0) for x0 in deserialized_dict["employementInfos"]],
+			id=deserialized_dict["id"],
+			identifier=[Identifier._deserialize(x0) for x0 in deserialized_dict["identifier"]],
+			rev=deserialized_dict.get("rev"),
+			created=deserialized_dict.get("created"),
+			modified=deserialized_dict.get("modified"),
+			author=deserialized_dict.get("author"),
+			responsible=deserialized_dict.get("responsible"),
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
+			end_of_life=deserialized_dict.get("endOfLife"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			first_name=deserialized_dict.get("firstName"),
+			last_name=deserialized_dict.get("lastName"),
+			names=[PersonName._deserialize(x0) for x0 in deserialized_dict["names"]],
+			company_name=deserialized_dict.get("companyName"),
+			languages=[x0 for x0 in deserialized_dict["languages"]],
+			addresses=[EncryptedAddress._deserialize(x0) for x0 in deserialized_dict["addresses"]],
+			civility=deserialized_dict.get("civility"),
+			gender=Gender._deserialize(deserialized_dict.get("gender")) if deserialized_dict.get("gender") is not None else None,
+			birth_sex=Gender._deserialize(deserialized_dict.get("birthSex")) if deserialized_dict.get("birthSex") is not None else None,
+			merge_to_patient_id=deserialized_dict.get("mergeToPatientId"),
+			merged_ids=[x0 for x0 in deserialized_dict["mergedIds"]],
+			alias=deserialized_dict.get("alias"),
+			active=deserialized_dict["active"],
+			deactivation_reason=DeactivationReason._deserialize(deserialized_dict["deactivationReason"]),
+			deactivation_date=deserialized_dict.get("deactivationDate"),
+			ssin=deserialized_dict.get("ssin"),
+			maiden_name=deserialized_dict.get("maidenName"),
+			spouse_name=deserialized_dict.get("spouseName"),
+			partner_name=deserialized_dict.get("partnerName"),
+			personal_status=PersonalStatus._deserialize(deserialized_dict.get("personalStatus")) if deserialized_dict.get("personalStatus") is not None else None,
+			date_of_birth=deserialized_dict.get("dateOfBirth"),
+			date_of_death=deserialized_dict.get("dateOfDeath"),
+			timestamp_of_latest_eid_reading=deserialized_dict.get("timestampOfLatestEidReading"),
+			place_of_birth=deserialized_dict.get("placeOfBirth"),
+			place_of_death=deserialized_dict.get("placeOfDeath"),
+			deceased=deserialized_dict.get("deceased"),
+			education=deserialized_dict.get("education"),
+			profession=deserialized_dict.get("profession"),
+			notes=[Annotation._deserialize(x0) for x0 in deserialized_dict["notes"]],
+			note=deserialized_dict.get("note"),
+			administrative_note=deserialized_dict.get("administrativeNote"),
+			nationality=deserialized_dict.get("nationality"),
+			race=deserialized_dict.get("race"),
+			ethnicity=deserialized_dict.get("ethnicity"),
+			preferred_user_id=deserialized_dict.get("preferredUserId"),
+			picture=bytearray(base64.b64decode(deserialized_dict.get("picture"))) if deserialized_dict.get("picture") is not None else None,
+			external_id=deserialized_dict.get("externalId"),
+			insurabilities=[EncryptedInsurability._deserialize(x0) for x0 in deserialized_dict["insurabilities"]],
+			partnerships=[Partnership._deserialize(x0) for x0 in deserialized_dict["partnerships"]],
+			patient_health_care_parties=[EncryptedPatientHealthCareParty._deserialize(x0) for x0 in deserialized_dict["patientHealthCareParties"]],
+			financial_institution_information=[EncryptedFinancialInstitutionInformation._deserialize(x0) for x0 in deserialized_dict["financialInstitutionInformation"]],
+			medical_house_contracts=[EncryptedMedicalHouseContract._deserialize(x0) for x0 in deserialized_dict["medicalHouseContracts"]],
+			patient_professions=[CodeStub._deserialize(x0) for x0 in deserialized_dict["patientProfessions"]],
+			parameters=dict(map(lambda kv0: (kv0[0], [x1 for x1 in kv0[1]]), deserialized_dict["parameters"].items())),
+			properties=[EncryptedPropertyStub._deserialize(x0) for x0 in deserialized_dict["properties"]],
+			hc_party_keys=dict(map(lambda kv0: (kv0[0], [x1 for x1 in kv0[1]]), deserialized_dict["hcPartyKeys"].items())),
+			aes_exchange_keys=dict(map(lambda kv0: (kv0[0], dict(map(lambda kv1: (kv1[0], dict(map(lambda kv2: (kv2[0], kv2[1]), kv1[1].items()))), kv0[1].items()))), deserialized_dict["aesExchangeKeys"].items())),
+			transfer_keys=dict(map(lambda kv0: (kv0[0], dict(map(lambda kv1: (kv1[0], kv1[1]), kv0[1].items()))), deserialized_dict["transferKeys"].items())),
+			private_key_shamir_partitions=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["privateKeyShamirPartitions"].items())),
+			public_key=deserialized_dict.get("publicKey"),
+			public_keys_for_oaep_with_sha256=[x0 for x0 in deserialized_dict["publicKeysForOaepWithSha256"]],
+			secret_foreign_keys=[x0 for x0 in deserialized_dict["secretForeignKeys"]],
+			crypted_foreign_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
+			delegations=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
+			encryption_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
+			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
+			medical_location_id=deserialized_dict.get("medicalLocationId"),
+			non_duplicate_ids=[x0 for x0 in deserialized_dict["nonDuplicateIds"]],
+			encrypted_administratives_documents=[x0 for x0 in deserialized_dict["encryptedAdministrativesDocuments"]],
+			comment=deserialized_dict.get("comment"),
+			warning=deserialized_dict.get("warning"),
+			father_birth_country=CodeStub._deserialize(deserialized_dict.get("fatherBirthCountry")) if deserialized_dict.get("fatherBirthCountry") is not None else None,
+			birth_country=CodeStub._deserialize(deserialized_dict.get("birthCountry")) if deserialized_dict.get("birthCountry") is not None else None,
+			native_country=CodeStub._deserialize(deserialized_dict.get("nativeCountry")) if deserialized_dict.get("nativeCountry") is not None else None,
+			social_status=CodeStub._deserialize(deserialized_dict.get("socialStatus")) if deserialized_dict.get("socialStatus") is not None else None,
+			main_source_of_income=CodeStub._deserialize(deserialized_dict.get("mainSourceOfIncome")) if deserialized_dict.get("mainSourceOfIncome") is not None else None,
+			schooling_infos=[SchoolingInfo._deserialize(x0) for x0 in deserialized_dict["schoolingInfos"]],
+			employement_infos=[EmploymentInfo._deserialize(x0) for x0 in deserialized_dict["employementInfos"]],
 		)
 
 @dataclass
@@ -2739,86 +2747,86 @@ class DecryptedPatient:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			identifier = [Identifier._deserialize(x0) for x0 in deserialized_dict["identifier"]],
-			rev = deserialized_dict.get("rev"),
-			created = deserialized_dict.get("created"),
-			modified = deserialized_dict.get("modified"),
-			author = deserialized_dict.get("author"),
-			responsible = deserialized_dict.get("responsible"),
-			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			codes = [CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
-			end_of_life = deserialized_dict.get("endOfLife"),
-			deletion_date = deserialized_dict.get("deletionDate"),
-			first_name = deserialized_dict.get("firstName"),
-			last_name = deserialized_dict.get("lastName"),
-			names = [PersonName._deserialize(x0) for x0 in deserialized_dict["names"]],
-			company_name = deserialized_dict.get("companyName"),
-			languages = [x0 for x0 in deserialized_dict["languages"]],
-			addresses = [DecryptedAddress._deserialize(x0) for x0 in deserialized_dict["addresses"]],
-			civility = deserialized_dict.get("civility"),
-			gender = Gender._deserialize(deserialized_dict.get("gender")) if deserialized_dict.get("gender") is not None else None,
-			birth_sex = Gender._deserialize(deserialized_dict.get("birthSex")) if deserialized_dict.get("birthSex") is not None else None,
-			merge_to_patient_id = deserialized_dict.get("mergeToPatientId"),
-			merged_ids = [x0 for x0 in deserialized_dict["mergedIds"]],
-			alias = deserialized_dict.get("alias"),
-			active = deserialized_dict["active"],
-			deactivation_reason = DeactivationReason._deserialize(deserialized_dict["deactivationReason"]),
-			deactivation_date = deserialized_dict.get("deactivationDate"),
-			ssin = deserialized_dict.get("ssin"),
-			maiden_name = deserialized_dict.get("maidenName"),
-			spouse_name = deserialized_dict.get("spouseName"),
-			partner_name = deserialized_dict.get("partnerName"),
-			personal_status = PersonalStatus._deserialize(deserialized_dict.get("personalStatus")) if deserialized_dict.get("personalStatus") is not None else None,
-			date_of_birth = deserialized_dict.get("dateOfBirth"),
-			date_of_death = deserialized_dict.get("dateOfDeath"),
-			timestamp_of_latest_eid_reading = deserialized_dict.get("timestampOfLatestEidReading"),
-			place_of_birth = deserialized_dict.get("placeOfBirth"),
-			place_of_death = deserialized_dict.get("placeOfDeath"),
-			deceased = deserialized_dict.get("deceased"),
-			education = deserialized_dict.get("education"),
-			profession = deserialized_dict.get("profession"),
-			notes = [Annotation._deserialize(x0) for x0 in deserialized_dict["notes"]],
-			note = deserialized_dict.get("note"),
-			administrative_note = deserialized_dict.get("administrativeNote"),
-			nationality = deserialized_dict.get("nationality"),
-			race = deserialized_dict.get("race"),
-			ethnicity = deserialized_dict.get("ethnicity"),
-			preferred_user_id = deserialized_dict.get("preferredUserId"),
-			picture = bytearray(base64.b64decode(deserialized_dict.get("picture"))) if deserialized_dict.get("picture") is not None else None,
-			external_id = deserialized_dict.get("externalId"),
-			insurabilities = [DecryptedInsurability._deserialize(x0) for x0 in deserialized_dict["insurabilities"]],
-			partnerships = [Partnership._deserialize(x0) for x0 in deserialized_dict["partnerships"]],
-			patient_health_care_parties = [DecryptedPatientHealthCareParty._deserialize(x0) for x0 in deserialized_dict["patientHealthCareParties"]],
-			financial_institution_information = [DecryptedFinancialInstitutionInformation._deserialize(x0) for x0 in deserialized_dict["financialInstitutionInformation"]],
-			medical_house_contracts = [DecryptedMedicalHouseContract._deserialize(x0) for x0 in deserialized_dict["medicalHouseContracts"]],
-			patient_professions = [CodeStub._deserialize(x0) for x0 in deserialized_dict["patientProfessions"]],
-			parameters = dict(map(lambda kv0: (kv0[0], [x1 for x1 in kv0[1]]), deserialized_dict["parameters"].items())),
-			properties = [DecryptedPropertyStub._deserialize(x0) for x0 in deserialized_dict["properties"]],
-			hc_party_keys = dict(map(lambda kv0: (kv0[0], [x1 for x1 in kv0[1]]), deserialized_dict["hcPartyKeys"].items())),
-			aes_exchange_keys = dict(map(lambda kv0: (kv0[0], dict(map(lambda kv1: (kv1[0], dict(map(lambda kv2: (kv2[0], kv2[1]), kv1[1].items()))), kv0[1].items()))), deserialized_dict["aesExchangeKeys"].items())),
-			transfer_keys = dict(map(lambda kv0: (kv0[0], dict(map(lambda kv1: (kv1[0], kv1[1]), kv0[1].items()))), deserialized_dict["transferKeys"].items())),
-			private_key_shamir_partitions = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["privateKeyShamirPartitions"].items())),
-			public_key = deserialized_dict.get("publicKey"),
-			public_keys_for_oaep_with_sha256 = [x0 for x0 in deserialized_dict["publicKeysForOaepWithSha256"]],
-			secret_foreign_keys = [x0 for x0 in deserialized_dict["secretForeignKeys"]],
-			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
-			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
-			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
-			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
-			medical_location_id = deserialized_dict.get("medicalLocationId"),
-			non_duplicate_ids = [x0 for x0 in deserialized_dict["nonDuplicateIds"]],
-			encrypted_administratives_documents = [x0 for x0 in deserialized_dict["encryptedAdministrativesDocuments"]],
-			comment = deserialized_dict.get("comment"),
-			warning = deserialized_dict.get("warning"),
-			father_birth_country = CodeStub._deserialize(deserialized_dict.get("fatherBirthCountry")) if deserialized_dict.get("fatherBirthCountry") is not None else None,
-			birth_country = CodeStub._deserialize(deserialized_dict.get("birthCountry")) if deserialized_dict.get("birthCountry") is not None else None,
-			native_country = CodeStub._deserialize(deserialized_dict.get("nativeCountry")) if deserialized_dict.get("nativeCountry") is not None else None,
-			social_status = CodeStub._deserialize(deserialized_dict.get("socialStatus")) if deserialized_dict.get("socialStatus") is not None else None,
-			main_source_of_income = CodeStub._deserialize(deserialized_dict.get("mainSourceOfIncome")) if deserialized_dict.get("mainSourceOfIncome") is not None else None,
-			schooling_infos = [SchoolingInfo._deserialize(x0) for x0 in deserialized_dict["schoolingInfos"]],
-			employement_infos = [EmploymentInfo._deserialize(x0) for x0 in deserialized_dict["employementInfos"]],
+			id=deserialized_dict["id"],
+			identifier=[Identifier._deserialize(x0) for x0 in deserialized_dict["identifier"]],
+			rev=deserialized_dict.get("rev"),
+			created=deserialized_dict.get("created"),
+			modified=deserialized_dict.get("modified"),
+			author=deserialized_dict.get("author"),
+			responsible=deserialized_dict.get("responsible"),
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
+			end_of_life=deserialized_dict.get("endOfLife"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			first_name=deserialized_dict.get("firstName"),
+			last_name=deserialized_dict.get("lastName"),
+			names=[PersonName._deserialize(x0) for x0 in deserialized_dict["names"]],
+			company_name=deserialized_dict.get("companyName"),
+			languages=[x0 for x0 in deserialized_dict["languages"]],
+			addresses=[DecryptedAddress._deserialize(x0) for x0 in deserialized_dict["addresses"]],
+			civility=deserialized_dict.get("civility"),
+			gender=Gender._deserialize(deserialized_dict.get("gender")) if deserialized_dict.get("gender") is not None else None,
+			birth_sex=Gender._deserialize(deserialized_dict.get("birthSex")) if deserialized_dict.get("birthSex") is not None else None,
+			merge_to_patient_id=deserialized_dict.get("mergeToPatientId"),
+			merged_ids=[x0 for x0 in deserialized_dict["mergedIds"]],
+			alias=deserialized_dict.get("alias"),
+			active=deserialized_dict["active"],
+			deactivation_reason=DeactivationReason._deserialize(deserialized_dict["deactivationReason"]),
+			deactivation_date=deserialized_dict.get("deactivationDate"),
+			ssin=deserialized_dict.get("ssin"),
+			maiden_name=deserialized_dict.get("maidenName"),
+			spouse_name=deserialized_dict.get("spouseName"),
+			partner_name=deserialized_dict.get("partnerName"),
+			personal_status=PersonalStatus._deserialize(deserialized_dict.get("personalStatus")) if deserialized_dict.get("personalStatus") is not None else None,
+			date_of_birth=deserialized_dict.get("dateOfBirth"),
+			date_of_death=deserialized_dict.get("dateOfDeath"),
+			timestamp_of_latest_eid_reading=deserialized_dict.get("timestampOfLatestEidReading"),
+			place_of_birth=deserialized_dict.get("placeOfBirth"),
+			place_of_death=deserialized_dict.get("placeOfDeath"),
+			deceased=deserialized_dict.get("deceased"),
+			education=deserialized_dict.get("education"),
+			profession=deserialized_dict.get("profession"),
+			notes=[Annotation._deserialize(x0) for x0 in deserialized_dict["notes"]],
+			note=deserialized_dict.get("note"),
+			administrative_note=deserialized_dict.get("administrativeNote"),
+			nationality=deserialized_dict.get("nationality"),
+			race=deserialized_dict.get("race"),
+			ethnicity=deserialized_dict.get("ethnicity"),
+			preferred_user_id=deserialized_dict.get("preferredUserId"),
+			picture=bytearray(base64.b64decode(deserialized_dict.get("picture"))) if deserialized_dict.get("picture") is not None else None,
+			external_id=deserialized_dict.get("externalId"),
+			insurabilities=[DecryptedInsurability._deserialize(x0) for x0 in deserialized_dict["insurabilities"]],
+			partnerships=[Partnership._deserialize(x0) for x0 in deserialized_dict["partnerships"]],
+			patient_health_care_parties=[DecryptedPatientHealthCareParty._deserialize(x0) for x0 in deserialized_dict["patientHealthCareParties"]],
+			financial_institution_information=[DecryptedFinancialInstitutionInformation._deserialize(x0) for x0 in deserialized_dict["financialInstitutionInformation"]],
+			medical_house_contracts=[DecryptedMedicalHouseContract._deserialize(x0) for x0 in deserialized_dict["medicalHouseContracts"]],
+			patient_professions=[CodeStub._deserialize(x0) for x0 in deserialized_dict["patientProfessions"]],
+			parameters=dict(map(lambda kv0: (kv0[0], [x1 for x1 in kv0[1]]), deserialized_dict["parameters"].items())),
+			properties=[DecryptedPropertyStub._deserialize(x0) for x0 in deserialized_dict["properties"]],
+			hc_party_keys=dict(map(lambda kv0: (kv0[0], [x1 for x1 in kv0[1]]), deserialized_dict["hcPartyKeys"].items())),
+			aes_exchange_keys=dict(map(lambda kv0: (kv0[0], dict(map(lambda kv1: (kv1[0], dict(map(lambda kv2: (kv2[0], kv2[1]), kv1[1].items()))), kv0[1].items()))), deserialized_dict["aesExchangeKeys"].items())),
+			transfer_keys=dict(map(lambda kv0: (kv0[0], dict(map(lambda kv1: (kv1[0], kv1[1]), kv0[1].items()))), deserialized_dict["transferKeys"].items())),
+			private_key_shamir_partitions=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["privateKeyShamirPartitions"].items())),
+			public_key=deserialized_dict.get("publicKey"),
+			public_keys_for_oaep_with_sha256=[x0 for x0 in deserialized_dict["publicKeysForOaepWithSha256"]],
+			secret_foreign_keys=[x0 for x0 in deserialized_dict["secretForeignKeys"]],
+			crypted_foreign_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
+			delegations=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
+			encryption_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
+			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
+			medical_location_id=deserialized_dict.get("medicalLocationId"),
+			non_duplicate_ids=[x0 for x0 in deserialized_dict["nonDuplicateIds"]],
+			encrypted_administratives_documents=[x0 for x0 in deserialized_dict["encryptedAdministrativesDocuments"]],
+			comment=deserialized_dict.get("comment"),
+			warning=deserialized_dict.get("warning"),
+			father_birth_country=CodeStub._deserialize(deserialized_dict.get("fatherBirthCountry")) if deserialized_dict.get("fatherBirthCountry") is not None else None,
+			birth_country=CodeStub._deserialize(deserialized_dict.get("birthCountry")) if deserialized_dict.get("birthCountry") is not None else None,
+			native_country=CodeStub._deserialize(deserialized_dict.get("nativeCountry")) if deserialized_dict.get("nativeCountry") is not None else None,
+			social_status=CodeStub._deserialize(deserialized_dict.get("socialStatus")) if deserialized_dict.get("socialStatus") is not None else None,
+			main_source_of_income=CodeStub._deserialize(deserialized_dict.get("mainSourceOfIncome")) if deserialized_dict.get("mainSourceOfIncome") is not None else None,
+			schooling_infos=[SchoolingInfo._deserialize(x0) for x0 in deserialized_dict["schoolingInfos"]],
+			employement_infos=[EmploymentInfo._deserialize(x0) for x0 in deserialized_dict["employementInfos"]],
 		)
 
 Patient = Union['EncryptedPatient', 'DecryptedPatient']
@@ -2976,60 +2984,60 @@ class HealthcareParty:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			rev = deserialized_dict.get("rev"),
-			created = deserialized_dict.get("created"),
-			modified = deserialized_dict.get("modified"),
-			deletion_date = deserialized_dict.get("deletionDate"),
-			identifier = [Identifier._deserialize(x0) for x0 in deserialized_dict["identifier"]],
-			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			codes = [CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
-			name = deserialized_dict.get("name"),
-			last_name = deserialized_dict.get("lastName"),
-			first_name = deserialized_dict.get("firstName"),
-			names = [PersonName._deserialize(x0) for x0 in deserialized_dict["names"]],
-			gender = Gender._deserialize(deserialized_dict.get("gender")) if deserialized_dict.get("gender") is not None else None,
-			civility = deserialized_dict.get("civility"),
-			company_name = deserialized_dict.get("companyName"),
-			speciality = deserialized_dict.get("speciality"),
-			bank_account = deserialized_dict.get("bankAccount"),
-			bic = deserialized_dict.get("bic"),
-			proxy_bank_account = deserialized_dict.get("proxyBankAccount"),
-			proxy_bic = deserialized_dict.get("proxyBic"),
-			invoice_header = deserialized_dict.get("invoiceHeader"),
-			cbe = deserialized_dict.get("cbe"),
-			ehp = deserialized_dict.get("ehp"),
-			user_id = deserialized_dict.get("userId"),
-			parent_id = deserialized_dict.get("parentId"),
-			convention = deserialized_dict.get("convention"),
-			nihii = deserialized_dict.get("nihii"),
-			nihii_spec_code = deserialized_dict.get("nihiiSpecCode"),
-			ssin = deserialized_dict.get("ssin"),
-			addresses = [DecryptedAddress._deserialize(x0) for x0 in deserialized_dict["addresses"]],
-			languages = [x0 for x0 in deserialized_dict["languages"]],
-			picture = bytearray(base64.b64decode(deserialized_dict.get("picture"))) if deserialized_dict.get("picture") is not None else None,
-			statuses = [HealthcarePartyStatus._deserialize(x0) for x0 in deserialized_dict["statuses"]],
-			status_history = [HealthcarePartyHistoryStatus._deserialize(x0) for x0 in deserialized_dict["statusHistory"]],
-			speciality_codes = [CodeStub._deserialize(x0) for x0 in deserialized_dict["specialityCodes"]],
-			send_formats = dict(map(lambda kv0: (TelecomType._deserialize(kv0[0]), kv0[1]), deserialized_dict["sendFormats"].items())),
-			notes = deserialized_dict.get("notes"),
-			financial_institution_information = [DecryptedFinancialInstitutionInformation._deserialize(x0) for x0 in deserialized_dict["financialInstitutionInformation"]],
-			descr = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("descr").items())) if deserialized_dict.get("descr") is not None else None,
-			billing_type = deserialized_dict.get("billingType"),
-			type = deserialized_dict.get("type"),
-			contact_person = deserialized_dict.get("contactPerson"),
-			contact_person_hcp_id = deserialized_dict.get("contactPersonHcpId"),
-			supervisor_id = deserialized_dict.get("supervisorId"),
-			flat_rate_tarifications = [DecryptedFlatRateTarification._deserialize(x0) for x0 in deserialized_dict["flatRateTarifications"]],
-			imported_data = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["importedData"].items())),
-			options = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["options"].items())),
-			properties = [DecryptedPropertyStub._deserialize(x0) for x0 in deserialized_dict["properties"]],
-			hc_party_keys = dict(map(lambda kv0: (kv0[0], [x1 for x1 in kv0[1]]), deserialized_dict["hcPartyKeys"].items())),
-			aes_exchange_keys = dict(map(lambda kv0: (kv0[0], dict(map(lambda kv1: (kv1[0], dict(map(lambda kv2: (kv2[0], kv2[1]), kv1[1].items()))), kv0[1].items()))), deserialized_dict["aesExchangeKeys"].items())),
-			transfer_keys = dict(map(lambda kv0: (kv0[0], dict(map(lambda kv1: (kv1[0], kv1[1]), kv0[1].items()))), deserialized_dict["transferKeys"].items())),
-			private_key_shamir_partitions = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["privateKeyShamirPartitions"].items())),
-			public_key = deserialized_dict.get("publicKey"),
-			public_keys_for_oaep_with_sha256 = [x0 for x0 in deserialized_dict["publicKeysForOaepWithSha256"]],
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
+			created=deserialized_dict.get("created"),
+			modified=deserialized_dict.get("modified"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			identifier=[Identifier._deserialize(x0) for x0 in deserialized_dict["identifier"]],
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
+			name=deserialized_dict.get("name"),
+			last_name=deserialized_dict.get("lastName"),
+			first_name=deserialized_dict.get("firstName"),
+			names=[PersonName._deserialize(x0) for x0 in deserialized_dict["names"]],
+			gender=Gender._deserialize(deserialized_dict.get("gender")) if deserialized_dict.get("gender") is not None else None,
+			civility=deserialized_dict.get("civility"),
+			company_name=deserialized_dict.get("companyName"),
+			speciality=deserialized_dict.get("speciality"),
+			bank_account=deserialized_dict.get("bankAccount"),
+			bic=deserialized_dict.get("bic"),
+			proxy_bank_account=deserialized_dict.get("proxyBankAccount"),
+			proxy_bic=deserialized_dict.get("proxyBic"),
+			invoice_header=deserialized_dict.get("invoiceHeader"),
+			cbe=deserialized_dict.get("cbe"),
+			ehp=deserialized_dict.get("ehp"),
+			user_id=deserialized_dict.get("userId"),
+			parent_id=deserialized_dict.get("parentId"),
+			convention=deserialized_dict.get("convention"),
+			nihii=deserialized_dict.get("nihii"),
+			nihii_spec_code=deserialized_dict.get("nihiiSpecCode"),
+			ssin=deserialized_dict.get("ssin"),
+			addresses=[DecryptedAddress._deserialize(x0) for x0 in deserialized_dict["addresses"]],
+			languages=[x0 for x0 in deserialized_dict["languages"]],
+			picture=bytearray(base64.b64decode(deserialized_dict.get("picture"))) if deserialized_dict.get("picture") is not None else None,
+			statuses=[HealthcarePartyStatus._deserialize(x0) for x0 in deserialized_dict["statuses"]],
+			status_history=[HealthcarePartyHistoryStatus._deserialize(x0) for x0 in deserialized_dict["statusHistory"]],
+			speciality_codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["specialityCodes"]],
+			send_formats=dict(map(lambda kv0: (TelecomType._deserialize(kv0[0]), kv0[1]), deserialized_dict["sendFormats"].items())),
+			notes=deserialized_dict.get("notes"),
+			financial_institution_information=[DecryptedFinancialInstitutionInformation._deserialize(x0) for x0 in deserialized_dict["financialInstitutionInformation"]],
+			descr=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("descr").items())) if deserialized_dict.get("descr") is not None else None,
+			billing_type=deserialized_dict.get("billingType"),
+			type=deserialized_dict.get("type"),
+			contact_person=deserialized_dict.get("contactPerson"),
+			contact_person_hcp_id=deserialized_dict.get("contactPersonHcpId"),
+			supervisor_id=deserialized_dict.get("supervisorId"),
+			flat_rate_tarifications=[DecryptedFlatRateTarification._deserialize(x0) for x0 in deserialized_dict["flatRateTarifications"]],
+			imported_data=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["importedData"].items())),
+			options=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["options"].items())),
+			properties=[DecryptedPropertyStub._deserialize(x0) for x0 in deserialized_dict["properties"]],
+			hc_party_keys=dict(map(lambda kv0: (kv0[0], [x1 for x1 in kv0[1]]), deserialized_dict["hcPartyKeys"].items())),
+			aes_exchange_keys=dict(map(lambda kv0: (kv0[0], dict(map(lambda kv1: (kv1[0], dict(map(lambda kv2: (kv2[0], kv2[1]), kv1[1].items()))), kv0[1].items()))), deserialized_dict["aesExchangeKeys"].items())),
+			transfer_keys=dict(map(lambda kv0: (kv0[0], dict(map(lambda kv1: (kv1[0], kv1[1]), kv0[1].items()))), deserialized_dict["transferKeys"].items())),
+			private_key_shamir_partitions=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["privateKeyShamirPartitions"].items())),
+			public_key=deserialized_dict.get("publicKey"),
+			public_keys_for_oaep_with_sha256=[x0 for x0 in deserialized_dict["publicKeysForOaepWithSha256"]],
 		)
 
 CryptoActor = Union['CryptoActorStub', 'EncryptedPatient', 'DecryptedPatient', 'Device', 'HealthcareParty']
@@ -3068,15 +3076,15 @@ def deserialize_crypto_actor(data: Union[str, Dict[str, object]]) -> 'CryptoActo
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
 	if qualifier == "com.icure.sdk.model.CryptoActorStub":
-		CryptoActorStub._deserialize(deserialized_dict)
+		return CryptoActorStub._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.sdk.model.EncryptedPatient":
-		EncryptedPatient._deserialize(deserialized_dict)
+		return EncryptedPatient._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.sdk.model.DecryptedPatient":
-		DecryptedPatient._deserialize(deserialized_dict)
+		return DecryptedPatient._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.sdk.model.Device":
-		Device._deserialize(deserialized_dict)
+		return Device._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.sdk.model.HealthcareParty":
-		HealthcareParty._deserialize(deserialized_dict)
+		return HealthcareParty._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of CryptoActor")
 
@@ -3099,8 +3107,8 @@ class CryptoActorStubWithType:
 		else:
 			deserialized_dict = data
 		return cls(
-			type = DataOwnerType._deserialize(deserialized_dict["type"]),
-			stub = CryptoActorStub._deserialize(deserialized_dict["stub"]),
+			type=DataOwnerType._deserialize(deserialized_dict["type"]),
+			stub=CryptoActorStub._deserialize(deserialized_dict["stub"]),
 		)
 
 @dataclass
@@ -3128,11 +3136,11 @@ class Place:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			rev = deserialized_dict.get("rev"),
-			deletion_date = deserialized_dict.get("deletionDate"),
-			name = deserialized_dict.get("name"),
-			address = DecryptedAddress._deserialize(deserialized_dict.get("address")) if deserialized_dict.get("address") is not None else None,
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			name=deserialized_dict.get("name"),
+			address=DecryptedAddress._deserialize(deserialized_dict.get("address")) if deserialized_dict.get("address") is not None else None,
 		)
 
 @dataclass
@@ -3204,33 +3212,33 @@ class Tarification:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			rev = deserialized_dict.get("rev"),
-			deletion_date = deserialized_dict.get("deletionDate"),
-			label = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("label").items())) if deserialized_dict.get("label") is not None else None,
-			context = deserialized_dict.get("context"),
-			type = deserialized_dict.get("type"),
-			code = deserialized_dict.get("code"),
-			version = deserialized_dict.get("version"),
-			author = deserialized_dict.get("author"),
-			regions = [x0 for x0 in deserialized_dict["regions"]],
-			periodicity = [Periodicity._deserialize(x0) for x0 in deserialized_dict["periodicity"]],
-			level = deserialized_dict.get("level"),
-			links = [x0 for x0 in deserialized_dict["links"]],
-			qualified_links = dict(map(lambda kv0: (LinkQualification._deserialize(kv0[0]), [x1 for x1 in kv0[1]]), deserialized_dict["qualifiedLinks"].items())),
-			flags = [CodeFlag._deserialize(x0) for x0 in deserialized_dict["flags"]],
-			search_terms = dict(map(lambda kv0: (kv0[0], [x1 for x1 in kv0[1]]), deserialized_dict["searchTerms"].items())),
-			data = deserialized_dict.get("data"),
-			appendices = dict(map(lambda kv0: (AppendixType._deserialize(kv0[0]), kv0[1]), deserialized_dict["appendices"].items())),
-			disabled = deserialized_dict["disabled"],
-			valorisations = [DecryptedValorisation._deserialize(x0) for x0 in deserialized_dict["valorisations"]],
-			category = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["category"].items())),
-			consultation_code = deserialized_dict.get("consultationCode"),
-			has_related_code = deserialized_dict.get("hasRelatedCode"),
-			needs_prescriber = deserialized_dict.get("needsPrescriber"),
-			related_codes = [x0 for x0 in deserialized_dict["relatedCodes"]],
-			ngroup = deserialized_dict.get("ngroup"),
-			letter_values = [LetterValue._deserialize(x0) for x0 in deserialized_dict["letterValues"]],
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			label=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("label").items())) if deserialized_dict.get("label") is not None else None,
+			context=deserialized_dict.get("context"),
+			type=deserialized_dict.get("type"),
+			code=deserialized_dict.get("code"),
+			version=deserialized_dict.get("version"),
+			author=deserialized_dict.get("author"),
+			regions=[x0 for x0 in deserialized_dict["regions"]],
+			periodicity=[Periodicity._deserialize(x0) for x0 in deserialized_dict["periodicity"]],
+			level=deserialized_dict.get("level"),
+			links=[x0 for x0 in deserialized_dict["links"]],
+			qualified_links=dict(map(lambda kv0: (LinkQualification._deserialize(kv0[0]), [x1 for x1 in kv0[1]]), deserialized_dict["qualifiedLinks"].items())),
+			flags=[CodeFlag._deserialize(x0) for x0 in deserialized_dict["flags"]],
+			search_terms=dict(map(lambda kv0: (kv0[0], [x1 for x1 in kv0[1]]), deserialized_dict["searchTerms"].items())),
+			data=deserialized_dict.get("data"),
+			appendices=dict(map(lambda kv0: (AppendixType._deserialize(kv0[0]), kv0[1]), deserialized_dict["appendices"].items())),
+			disabled=deserialized_dict["disabled"],
+			valorisations=[DecryptedValorisation._deserialize(x0) for x0 in deserialized_dict["valorisations"]],
+			category=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["category"].items())),
+			consultation_code=deserialized_dict.get("consultationCode"),
+			has_related_code=deserialized_dict.get("hasRelatedCode"),
+			needs_prescriber=deserialized_dict.get("needsPrescriber"),
+			related_codes=[x0 for x0 in deserialized_dict["relatedCodes"]],
+			ngroup=deserialized_dict.get("ngroup"),
+			letter_values=[LetterValue._deserialize(x0) for x0 in deserialized_dict["letterValues"]],
 		)
 
 @dataclass
@@ -3252,8 +3260,8 @@ class PublicKey:
 		else:
 			deserialized_dict = data
 		return cls(
-			hc_party_id = deserialized_dict.get("hcPartyId"),
-			hex_string = deserialized_dict.get("hexString"),
+			hc_party_id=deserialized_dict.get("hcPartyId"),
+			hex_string=deserialized_dict.get("hexString"),
 		)
 
 @dataclass
@@ -3277,9 +3285,9 @@ class DataOwnerRegistrationSuccess:
 		else:
 			deserialized_dict = data
 		return cls(
-			user_login = deserialized_dict["userLogin"],
-			user_id = deserialized_dict["userId"],
-			token = deserialized_dict["token"],
+			user_login=deserialized_dict["userLogin"],
+			user_id=deserialized_dict["userId"],
+			token=deserialized_dict["token"],
 		)
 
 @dataclass
@@ -3301,8 +3309,8 @@ class Permission:
 		else:
 			deserialized_dict = data
 		return cls(
-			grants = [deserialize_permission_item(x0) for x0 in deserialized_dict["grants"]],
-			revokes = [deserialize_permission_item(x0) for x0 in deserialized_dict["revokes"]],
+			grants=[deserialize_permission_item(x0) for x0 in deserialized_dict["grants"]],
+			revokes=[deserialize_permission_item(x0) for x0 in deserialized_dict["revokes"]],
 		)
 
 @dataclass
@@ -3358,25 +3366,25 @@ class Code:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			rev = deserialized_dict.get("rev"),
-			deletion_date = deserialized_dict.get("deletionDate"),
-			context = deserialized_dict.get("context"),
-			type = deserialized_dict.get("type"),
-			code = deserialized_dict.get("code"),
-			version = deserialized_dict.get("version"),
-			label = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("label").items())) if deserialized_dict.get("label") is not None else None,
-			author = deserialized_dict.get("author"),
-			regions = [x0 for x0 in deserialized_dict["regions"]],
-			periodicity = [Periodicity._deserialize(x0) for x0 in deserialized_dict["periodicity"]],
-			level = deserialized_dict.get("level"),
-			links = [x0 for x0 in deserialized_dict["links"]],
-			qualified_links = dict(map(lambda kv0: (kv0[0], [x1 for x1 in kv0[1]]), deserialized_dict["qualifiedLinks"].items())),
-			flags = [CodeFlag._deserialize(x0) for x0 in deserialized_dict["flags"]],
-			search_terms = dict(map(lambda kv0: (kv0[0], [x1 for x1 in kv0[1]]), deserialized_dict["searchTerms"].items())),
-			data = deserialized_dict.get("data"),
-			appendices = dict(map(lambda kv0: (AppendixType._deserialize(kv0[0]), kv0[1]), deserialized_dict["appendices"].items())),
-			disabled = deserialized_dict["disabled"],
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			context=deserialized_dict.get("context"),
+			type=deserialized_dict.get("type"),
+			code=deserialized_dict.get("code"),
+			version=deserialized_dict.get("version"),
+			label=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("label").items())) if deserialized_dict.get("label") is not None else None,
+			author=deserialized_dict.get("author"),
+			regions=[x0 for x0 in deserialized_dict["regions"]],
+			periodicity=[Periodicity._deserialize(x0) for x0 in deserialized_dict["periodicity"]],
+			level=deserialized_dict.get("level"),
+			links=[x0 for x0 in deserialized_dict["links"]],
+			qualified_links=dict(map(lambda kv0: (kv0[0], [x1 for x1 in kv0[1]]), deserialized_dict["qualifiedLinks"].items())),
+			flags=[CodeFlag._deserialize(x0) for x0 in deserialized_dict["flags"]],
+			search_terms=dict(map(lambda kv0: (kv0[0], [x1 for x1 in kv0[1]]), deserialized_dict["searchTerms"].items())),
+			data=deserialized_dict.get("data"),
+			appendices=dict(map(lambda kv0: (AppendixType._deserialize(kv0[0]), kv0[1]), deserialized_dict["appendices"].items())),
+			disabled=deserialized_dict["disabled"],
 		)
 
 @dataclass
@@ -3396,7 +3404,7 @@ class BooleanResponse:
 		else:
 			deserialized_dict = data
 		return cls(
-			response = deserialized_dict["response"],
+			response=deserialized_dict["response"],
 		)
 
 @dataclass
@@ -3440,19 +3448,19 @@ class FrontEndMigration:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			rev = deserialized_dict.get("rev"),
-			deletion_date = deserialized_dict.get("deletionDate"),
-			name = deserialized_dict.get("name"),
-			start_date = deserialized_dict.get("startDate"),
-			end_date = deserialized_dict.get("endDate"),
-			status = FrontEndMigrationStatus._deserialize(deserialized_dict.get("status")) if deserialized_dict.get("status") is not None else None,
-			logs = deserialized_dict.get("logs"),
-			user_id = deserialized_dict.get("userId"),
-			start_key = deserialized_dict.get("startKey"),
-			start_key_doc_id = deserialized_dict.get("startKeyDocId"),
-			process_count = deserialized_dict.get("processCount"),
-			properties = [DecryptedPropertyStub._deserialize(x0) for x0 in deserialized_dict["properties"]],
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			name=deserialized_dict.get("name"),
+			start_date=deserialized_dict.get("startDate"),
+			end_date=deserialized_dict.get("endDate"),
+			status=FrontEndMigrationStatus._deserialize(deserialized_dict.get("status")) if deserialized_dict.get("status") is not None else None,
+			logs=deserialized_dict.get("logs"),
+			user_id=deserialized_dict.get("userId"),
+			start_key=deserialized_dict.get("startKey"),
+			start_key_doc_id=deserialized_dict.get("startKeyDocId"),
+			process_count=deserialized_dict.get("processCount"),
+			properties=[DecryptedPropertyStub._deserialize(x0) for x0 in deserialized_dict["properties"]],
 		)
 
 @dataclass
@@ -3518,30 +3526,30 @@ class DocumentTemplate:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			rev = deserialized_dict.get("rev"),
-			created = deserialized_dict.get("created"),
-			modified = deserialized_dict.get("modified"),
-			author = deserialized_dict.get("author"),
-			responsible = deserialized_dict.get("responsible"),
-			medical_location_id = deserialized_dict.get("medicalLocationId"),
-			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			codes = [CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
-			end_of_life = deserialized_dict.get("endOfLife"),
-			deletion_date = deserialized_dict.get("deletionDate"),
-			attachment = bytearray(base64.b64decode(deserialized_dict.get("attachment"))) if deserialized_dict.get("attachment") is not None else None,
-			document_type = DocumentType._deserialize(deserialized_dict.get("documentType")) if deserialized_dict.get("documentType") is not None else None,
-			main_uti = deserialized_dict.get("mainUti"),
-			name = deserialized_dict.get("name"),
-			other_utis = [x0 for x0 in deserialized_dict["otherUtis"]],
-			attachment_id = deserialized_dict.get("attachmentId"),
-			version = ReportVersion._deserialize(deserialized_dict.get("version")) if deserialized_dict.get("version") is not None else None,
-			owner = deserialized_dict.get("owner"),
-			guid = deserialized_dict.get("guid"),
-			group = DocumentGroup._deserialize(deserialized_dict.get("group")) if deserialized_dict.get("group") is not None else None,
-			descr = deserialized_dict.get("descr"),
-			disabled = deserialized_dict.get("disabled"),
-			specialty = CodeStub._deserialize(deserialized_dict.get("specialty")) if deserialized_dict.get("specialty") is not None else None,
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
+			created=deserialized_dict.get("created"),
+			modified=deserialized_dict.get("modified"),
+			author=deserialized_dict.get("author"),
+			responsible=deserialized_dict.get("responsible"),
+			medical_location_id=deserialized_dict.get("medicalLocationId"),
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
+			end_of_life=deserialized_dict.get("endOfLife"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			attachment=bytearray(base64.b64decode(deserialized_dict.get("attachment"))) if deserialized_dict.get("attachment") is not None else None,
+			document_type=DocumentType._deserialize(deserialized_dict.get("documentType")) if deserialized_dict.get("documentType") is not None else None,
+			main_uti=deserialized_dict.get("mainUti"),
+			name=deserialized_dict.get("name"),
+			other_utis=[x0 for x0 in deserialized_dict["otherUtis"]],
+			attachment_id=deserialized_dict.get("attachmentId"),
+			version=ReportVersion._deserialize(deserialized_dict.get("version")) if deserialized_dict.get("version") is not None else None,
+			owner=deserialized_dict.get("owner"),
+			guid=deserialized_dict.get("guid"),
+			group=DocumentGroup._deserialize(deserialized_dict.get("group")) if deserialized_dict.get("group") is not None else None,
+			descr=deserialized_dict.get("descr"),
+			disabled=deserialized_dict.get("disabled"),
+			specialty=CodeStub._deserialize(deserialized_dict.get("specialty")) if deserialized_dict.get("specialty") is not None else None,
 		)
 
 @dataclass
@@ -3583,18 +3591,18 @@ class ApplicationSettings:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			rev = deserialized_dict.get("rev"),
-			created = deserialized_dict.get("created"),
-			modified = deserialized_dict.get("modified"),
-			author = deserialized_dict.get("author"),
-			responsible = deserialized_dict.get("responsible"),
-			medical_location_id = deserialized_dict.get("medicalLocationId"),
-			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			codes = [CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
-			end_of_life = deserialized_dict.get("endOfLife"),
-			deletion_date = deserialized_dict.get("deletionDate"),
-			settings = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["settings"].items())),
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
+			created=deserialized_dict.get("created"),
+			modified=deserialized_dict.get("modified"),
+			author=deserialized_dict.get("author"),
+			responsible=deserialized_dict.get("responsible"),
+			medical_location_id=deserialized_dict.get("medicalLocationId"),
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
+			end_of_life=deserialized_dict.get("endOfLife"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			settings=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["settings"].items())),
 		)
 
 @dataclass
@@ -3620,10 +3628,10 @@ class EntityReference:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			rev = deserialized_dict.get("rev"),
-			deletion_date = deserialized_dict.get("deletionDate"),
-			doc_id = deserialized_dict.get("docId"),
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			doc_id=deserialized_dict.get("docId"),
 		)
 
 @dataclass
@@ -3661,16 +3669,16 @@ class EntityTemplate:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			rev = deserialized_dict.get("rev"),
-			deletion_date = deserialized_dict.get("deletionDate"),
-			user_id = deserialized_dict.get("userId"),
-			descr = deserialized_dict.get("descr"),
-			keywords = [x0 for x0 in deserialized_dict.get("keywords")] if deserialized_dict.get("keywords") is not None else None,
-			entity_type = deserialized_dict.get("entityType"),
-			sub_type = deserialized_dict.get("subType"),
-			default_template = deserialized_dict.get("defaultTemplate"),
-			entity = [dict(map(lambda kv1: (kv1[0], kv1[1]), x0.items())) for x0 in deserialized_dict["entity"]],
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			user_id=deserialized_dict.get("userId"),
+			descr=deserialized_dict.get("descr"),
+			keywords=[x0 for x0 in deserialized_dict.get("keywords")] if deserialized_dict.get("keywords") is not None else None,
+			entity_type=deserialized_dict.get("entityType"),
+			sub_type=deserialized_dict.get("subType"),
+			default_template=deserialized_dict.get("defaultTemplate"),
+			entity=[dict(map(lambda kv1: (kv1[0], kv1[1]), x0.items())) for x0 in deserialized_dict["entity"]],
 		)
 
 @dataclass
@@ -3722,9 +3730,9 @@ class User:
 			else:
 				deserialized_dict = data
 			return cls(
-				roles = [x0 for x0 in deserialized_dict["roles"]],
-				is_admin = deserialized_dict["isAdmin"],
-				inherits_roles = deserialized_dict["inheritsRoles"],
+				roles=[x0 for x0 in deserialized_dict["roles"]],
+				is_admin=deserialized_dict["isAdmin"],
+				inherits_roles=deserialized_dict["inheritsRoles"],
 			)
 
 	def __serialize__(self) -> object:
@@ -3764,31 +3772,31 @@ class User:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			rev = deserialized_dict.get("rev"),
-			deletion_date = deserialized_dict.get("deletionDate"),
-			created = deserialized_dict.get("created"),
-			identifier = [Identifier._deserialize(x0) for x0 in deserialized_dict["identifier"]],
-			name = deserialized_dict.get("name"),
-			properties = [DecryptedPropertyStub._deserialize(x0) for x0 in deserialized_dict["properties"]],
-			permissions = [Permission._deserialize(x0) for x0 in deserialized_dict["permissions"]],
-			roles = [x0 for x0 in deserialized_dict["roles"]],
-			type = UsersType._deserialize(deserialized_dict.get("type")) if deserialized_dict.get("type") is not None else None,
-			status = UsersStatus._deserialize(deserialized_dict.get("status")) if deserialized_dict.get("status") is not None else None,
-			login = deserialized_dict.get("login"),
-			password_hash = deserialized_dict.get("passwordHash"),
-			group_id = deserialized_dict.get("groupId"),
-			healthcare_party_id = deserialized_dict.get("healthcarePartyId"),
-			patient_id = deserialized_dict.get("patientId"),
-			device_id = deserialized_dict.get("deviceId"),
-			auto_delegations = dict(map(lambda kv0: (DelegationTag._deserialize(kv0[0]), [x1 for x1 in kv0[1]]), deserialized_dict["autoDelegations"].items())),
-			created_date = deserialized_dict.get("createdDate"),
-			terms_of_use_date = deserialized_dict.get("termsOfUseDate"),
-			email = deserialized_dict.get("email"),
-			mobile_phone = deserialized_dict.get("mobilePhone"),
-			application_tokens = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["applicationTokens"].items())),
-			authentication_tokens = dict(map(lambda kv0: (kv0[0], AuthenticationToken._deserialize(kv0[1])), deserialized_dict["authenticationTokens"].items())),
-			system_metadata = User.SystemMetadata._deserialize(deserialized_dict.get("systemMetadata")) if deserialized_dict.get("systemMetadata") is not None else None,
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			created=deserialized_dict.get("created"),
+			identifier=[Identifier._deserialize(x0) for x0 in deserialized_dict["identifier"]],
+			name=deserialized_dict.get("name"),
+			properties=[DecryptedPropertyStub._deserialize(x0) for x0 in deserialized_dict["properties"]],
+			permissions=[Permission._deserialize(x0) for x0 in deserialized_dict["permissions"]],
+			roles=[x0 for x0 in deserialized_dict["roles"]],
+			type=UsersType._deserialize(deserialized_dict.get("type")) if deserialized_dict.get("type") is not None else None,
+			status=UsersStatus._deserialize(deserialized_dict.get("status")) if deserialized_dict.get("status") is not None else None,
+			login=deserialized_dict.get("login"),
+			password_hash=deserialized_dict.get("passwordHash"),
+			group_id=deserialized_dict.get("groupId"),
+			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
+			patient_id=deserialized_dict.get("patientId"),
+			device_id=deserialized_dict.get("deviceId"),
+			auto_delegations=dict(map(lambda kv0: (DelegationTag._deserialize(kv0[0]), [x1 for x1 in kv0[1]]), deserialized_dict["autoDelegations"].items())),
+			created_date=deserialized_dict.get("createdDate"),
+			terms_of_use_date=deserialized_dict.get("termsOfUseDate"),
+			email=deserialized_dict.get("email"),
+			mobile_phone=deserialized_dict.get("mobilePhone"),
+			application_tokens=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["applicationTokens"].items())),
+			authentication_tokens=dict(map(lambda kv0: (kv0[0], AuthenticationToken._deserialize(kv0[1])), deserialized_dict["authenticationTokens"].items())),
+			system_metadata=User.SystemMetadata._deserialize(deserialized_dict.get("systemMetadata")) if deserialized_dict.get("systemMetadata") is not None else None,
 		)
 
 @dataclass
@@ -3816,11 +3824,11 @@ class EncryptedPropertyStub:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict.get("id"),
-			type = PropertyTypeStub._deserialize(deserialized_dict.get("type")) if deserialized_dict.get("type") is not None else None,
-			typed_value = EncryptedTypedValue._deserialize(deserialized_dict.get("typedValue")) if deserialized_dict.get("typedValue") is not None else None,
-			deletion_date = deserialized_dict.get("deletionDate"),
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
+			id=deserialized_dict.get("id"),
+			type=PropertyTypeStub._deserialize(deserialized_dict.get("type")) if deserialized_dict.get("type") is not None else None,
+			typed_value=EncryptedTypedValue._deserialize(deserialized_dict.get("typedValue")) if deserialized_dict.get("typedValue") is not None else None,
+			deletion_date=deserialized_dict.get("deletionDate"),
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
 @dataclass
@@ -3848,11 +3856,11 @@ class DecryptedPropertyStub:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict.get("id"),
-			type = PropertyTypeStub._deserialize(deserialized_dict.get("type")) if deserialized_dict.get("type") is not None else None,
-			typed_value = DecryptedTypedValue._deserialize(deserialized_dict.get("typedValue")) if deserialized_dict.get("typedValue") is not None else None,
-			deletion_date = deserialized_dict.get("deletionDate"),
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
+			id=deserialized_dict.get("id"),
+			type=PropertyTypeStub._deserialize(deserialized_dict.get("type")) if deserialized_dict.get("type") is not None else None,
+			typed_value=DecryptedTypedValue._deserialize(deserialized_dict.get("typedValue")) if deserialized_dict.get("typedValue") is not None else None,
+			deletion_date=deserialized_dict.get("deletionDate"),
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
 PropertyStub = Union['EncryptedPropertyStub', 'DecryptedPropertyStub']
@@ -3926,18 +3934,18 @@ class UserGroup:
 		else:
 			deserialized_dict = data
 		return cls(
-			group_id = deserialized_dict.get("groupId"),
-			group_name = deserialized_dict.get("groupName"),
-			groups_hierarchy = [Group._deserialize(x0) for x0 in deserialized_dict["groupsHierarchy"]],
-			user_id = deserialized_dict.get("userId"),
-			login = deserialized_dict.get("login"),
-			name = deserialized_dict.get("name"),
-			email = deserialized_dict.get("email"),
-			phone = deserialized_dict.get("phone"),
-			patient_id = deserialized_dict.get("patientId"),
-			healthcare_party_id = deserialized_dict.get("healthcarePartyId"),
-			device_id = deserialized_dict.get("deviceId"),
-			name_of_parent_of_topmost_group_in_hierarchy = deserialized_dict.get("nameOfParentOfTopmostGroupInHierarchy"),
+			group_id=deserialized_dict.get("groupId"),
+			group_name=deserialized_dict.get("groupName"),
+			groups_hierarchy=[Group._deserialize(x0) for x0 in deserialized_dict["groupsHierarchy"]],
+			user_id=deserialized_dict.get("userId"),
+			login=deserialized_dict.get("login"),
+			name=deserialized_dict.get("name"),
+			email=deserialized_dict.get("email"),
+			phone=deserialized_dict.get("phone"),
+			patient_id=deserialized_dict.get("patientId"),
+			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
+			device_id=deserialized_dict.get("deviceId"),
+			name_of_parent_of_topmost_group_in_hierarchy=deserialized_dict.get("nameOfParentOfTopmostGroupInHierarchy"),
 		)
 
 @dataclass
@@ -3957,7 +3965,7 @@ class ListOfIds:
 		else:
 			deserialized_dict = data
 		return cls(
-			ids = [x0 for x0 in deserialized_dict["ids"]],
+			ids=[x0 for x0 in deserialized_dict["ids"]],
 		)
 
 @dataclass
@@ -3981,9 +3989,9 @@ class TokenWithGroup:
 		else:
 			deserialized_dict = data
 		return cls(
-			token = deserialized_dict["token"],
-			group_id = deserialized_dict["groupId"],
-			group_name = deserialized_dict.get("groupName"),
+			token=deserialized_dict["token"],
+			group_id=deserialized_dict["groupId"],
+			group_name=deserialized_dict.get("groupName"),
 		)
 
 @dataclass
@@ -4003,7 +4011,7 @@ class Enable2faRequest:
 		else:
 			deserialized_dict = data
 		return cls(
-			secret = deserialized_dict["secret"],
+			secret=deserialized_dict["secret"],
 		)
 
 @dataclass
@@ -4031,11 +4039,11 @@ class Role:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			rev = deserialized_dict.get("rev"),
-			deletion_date = deserialized_dict.get("deletionDate"),
-			name = deserialized_dict.get("name"),
-			permissions = [x0 for x0 in deserialized_dict["permissions"]],
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			name=deserialized_dict.get("name"),
+			permissions=[x0 for x0 in deserialized_dict["permissions"]],
 		)
 
 @dataclass
@@ -4057,8 +4065,8 @@ class KeyPairUpdateNotification:
 		else:
 			deserialized_dict = data
 		return cls(
-			new_public_key = deserialized_dict["newPublicKey"],
-			concerned_data_owner_id = deserialized_dict["concernedDataOwnerId"],
+			new_public_key=deserialized_dict["newPublicKey"],
+			concerned_data_owner_id=deserialized_dict["concernedDataOwnerId"],
 		)
 
 class DataOwnerType(Enum):
@@ -4099,7 +4107,7 @@ class DataOwnerWithTypeHcpDataOwner:
 		else:
 			deserialized_dict = data
 		return cls(
-			data_owner = HealthcareParty._deserialize(deserialized_dict["dataOwner"]),
+			data_owner=HealthcareParty._deserialize(deserialized_dict["dataOwner"]),
 		)
 
 @dataclass
@@ -4119,7 +4127,7 @@ class DataOwnerWithTypePatientDataOwner:
 		else:
 			deserialized_dict = data
 		return cls(
-			data_owner = EncryptedPatient._deserialize(deserialized_dict["dataOwner"]),
+			data_owner=EncryptedPatient._deserialize(deserialized_dict["dataOwner"]),
 		)
 
 @dataclass
@@ -4139,7 +4147,7 @@ class DataOwnerWithTypeDeviceDataOwner:
 		else:
 			deserialized_dict = data
 		return cls(
-			data_owner = Device._deserialize(deserialized_dict["dataOwner"]),
+			data_owner=Device._deserialize(deserialized_dict["dataOwner"]),
 		)
 
 def serialize_data_owner_with_type(data_owner_with_type: DataOwnerWithType) -> object:
@@ -4168,11 +4176,11 @@ def deserialize_data_owner_with_type(data: Union[str, Dict[str, object]]) -> 'Da
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
 	if qualifier == "com.icure.sdk.model.DataOwnerWithType.HcpDataOwner":
-		DataOwnerWithTypeHcpDataOwner._deserialize(deserialized_dict)
+		return DataOwnerWithTypeHcpDataOwner._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.sdk.model.DataOwnerWithType.PatientDataOwner":
-		DataOwnerWithTypePatientDataOwner._deserialize(deserialized_dict)
+		return DataOwnerWithTypePatientDataOwner._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.sdk.model.DataOwnerWithType.DeviceDataOwner":
-		DataOwnerWithTypeDeviceDataOwner._deserialize(deserialized_dict)
+		return DataOwnerWithTypeDeviceDataOwner._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of DataOwnerWithType")
 
@@ -4193,7 +4201,7 @@ class IndexingInfo:
 		else:
 			deserialized_dict = data
 		return cls(
-			statuses = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("statuses").items())) if deserialized_dict.get("statuses") is not None else None,
+			statuses=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("statuses").items())) if deserialized_dict.get("statuses") is not None else None,
 		)
 
 @dataclass
@@ -4219,10 +4227,10 @@ class ReplicationInfo:
 		else:
 			deserialized_dict = data
 		return cls(
-			active = deserialized_dict["active"],
-			running = deserialized_dict["running"],
-			pending_from = deserialized_dict.get("pendingFrom"),
-			pending_to = deserialized_dict.get("pendingTo"),
+			active=deserialized_dict["active"],
+			running=deserialized_dict["running"],
+			pending_from=deserialized_dict.get("pendingFrom"),
+			pending_to=deserialized_dict.get("pendingTo"),
 		)
 
 @dataclass
@@ -4268,20 +4276,20 @@ class ReplicatorDocument:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			rev = deserialized_dict.get("rev"),
-			source = Remote._deserialize(deserialized_dict.get("source")) if deserialized_dict.get("source") is not None else None,
-			target = Remote._deserialize(deserialized_dict.get("target")) if deserialized_dict.get("target") is not None else None,
-			owner = deserialized_dict.get("owner"),
-			create_target = deserialized_dict.get("create_target"),
-			continuous = deserialized_dict.get("continuous"),
-			doc_ids = [x0 for x0 in deserialized_dict.get("doc_ids")] if deserialized_dict.get("doc_ids") is not None else None,
-			replication_state = deserialized_dict.get("replicationState"),
-			replication_state_time = deserialized_dict.get("replicationStateTime"),
-			replication_stats = ReplicationStats._deserialize(deserialized_dict.get("replicationStats")) if deserialized_dict.get("replicationStats") is not None else None,
-			error_count = deserialized_dict.get("errorCount"),
-			revs_info = [dict(map(lambda kv1: (kv1[0], kv1[1]), x0.items())) for x0 in deserialized_dict.get("revsInfo")] if deserialized_dict.get("revsInfo") is not None else None,
-			rev_history = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("revHistory").items())) if deserialized_dict.get("revHistory") is not None else None,
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
+			source=Remote._deserialize(deserialized_dict.get("source")) if deserialized_dict.get("source") is not None else None,
+			target=Remote._deserialize(deserialized_dict.get("target")) if deserialized_dict.get("target") is not None else None,
+			owner=deserialized_dict.get("owner"),
+			create_target=deserialized_dict.get("create_target"),
+			continuous=deserialized_dict.get("continuous"),
+			doc_ids=[x0 for x0 in deserialized_dict.get("doc_ids")] if deserialized_dict.get("doc_ids") is not None else None,
+			replication_state=deserialized_dict.get("replicationState"),
+			replication_state_time=deserialized_dict.get("replicationStateTime"),
+			replication_stats=ReplicationStats._deserialize(deserialized_dict.get("replicationStats")) if deserialized_dict.get("replicationStats") is not None else None,
+			error_count=deserialized_dict.get("errorCount"),
+			revs_info=[dict(map(lambda kv1: (kv1[0], kv1[1]), x0.items())) for x0 in deserialized_dict.get("revsInfo")] if deserialized_dict.get("revsInfo") is not None else None,
+			rev_history=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("revHistory").items())) if deserialized_dict.get("revHistory") is not None else None,
 		)
 
 @dataclass
@@ -4343,28 +4351,28 @@ class EncryptedTimeTable:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			rev = deserialized_dict.get("rev"),
-			created = deserialized_dict.get("created"),
-			modified = deserialized_dict.get("modified"),
-			author = deserialized_dict.get("author"),
-			responsible = deserialized_dict.get("responsible"),
-			medical_location_id = deserialized_dict.get("medicalLocationId"),
-			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			codes = [CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
-			end_of_life = deserialized_dict.get("endOfLife"),
-			deletion_date = deserialized_dict.get("deletionDate"),
-			name = deserialized_dict.get("name"),
-			agenda_id = deserialized_dict.get("agendaId"),
-			start_time = deserialized_dict.get("startTime"),
-			end_time = deserialized_dict.get("endTime"),
-			items = [TimeTableItem._deserialize(x0) for x0 in deserialized_dict["items"]],
-			secret_foreign_keys = [x0 for x0 in deserialized_dict["secretForeignKeys"]],
-			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
-			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
-			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
-			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
+			created=deserialized_dict.get("created"),
+			modified=deserialized_dict.get("modified"),
+			author=deserialized_dict.get("author"),
+			responsible=deserialized_dict.get("responsible"),
+			medical_location_id=deserialized_dict.get("medicalLocationId"),
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
+			end_of_life=deserialized_dict.get("endOfLife"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			name=deserialized_dict.get("name"),
+			agenda_id=deserialized_dict.get("agendaId"),
+			start_time=deserialized_dict.get("startTime"),
+			end_time=deserialized_dict.get("endTime"),
+			items=[TimeTableItem._deserialize(x0) for x0 in deserialized_dict["items"]],
+			secret_foreign_keys=[x0 for x0 in deserialized_dict["secretForeignKeys"]],
+			crypted_foreign_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
+			delegations=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
+			encryption_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
+			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
 @dataclass
@@ -4426,28 +4434,28 @@ class DecryptedTimeTable:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			rev = deserialized_dict.get("rev"),
-			created = deserialized_dict.get("created"),
-			modified = deserialized_dict.get("modified"),
-			author = deserialized_dict.get("author"),
-			responsible = deserialized_dict.get("responsible"),
-			medical_location_id = deserialized_dict.get("medicalLocationId"),
-			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			codes = [CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
-			end_of_life = deserialized_dict.get("endOfLife"),
-			deletion_date = deserialized_dict.get("deletionDate"),
-			name = deserialized_dict.get("name"),
-			agenda_id = deserialized_dict.get("agendaId"),
-			start_time = deserialized_dict.get("startTime"),
-			end_time = deserialized_dict.get("endTime"),
-			items = [TimeTableItem._deserialize(x0) for x0 in deserialized_dict["items"]],
-			secret_foreign_keys = [x0 for x0 in deserialized_dict["secretForeignKeys"]],
-			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
-			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
-			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
-			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
+			created=deserialized_dict.get("created"),
+			modified=deserialized_dict.get("modified"),
+			author=deserialized_dict.get("author"),
+			responsible=deserialized_dict.get("responsible"),
+			medical_location_id=deserialized_dict.get("medicalLocationId"),
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
+			end_of_life=deserialized_dict.get("endOfLife"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			name=deserialized_dict.get("name"),
+			agenda_id=deserialized_dict.get("agendaId"),
+			start_time=deserialized_dict.get("startTime"),
+			end_time=deserialized_dict.get("endTime"),
+			items=[TimeTableItem._deserialize(x0) for x0 in deserialized_dict["items"]],
+			secret_foreign_keys=[x0 for x0 in deserialized_dict["secretForeignKeys"]],
+			crypted_foreign_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
+			delegations=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
+			encryption_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
+			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
 TimeTable = Union['EncryptedTimeTable', 'DecryptedTimeTable']
@@ -4610,42 +4618,42 @@ class EncryptedDocument:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			rev = deserialized_dict.get("rev"),
-			created = deserialized_dict.get("created"),
-			modified = deserialized_dict.get("modified"),
-			author = deserialized_dict.get("author"),
-			responsible = deserialized_dict.get("responsible"),
-			medical_location_id = deserialized_dict.get("medicalLocationId"),
-			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			codes = [CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
-			end_of_life = deserialized_dict.get("endOfLife"),
-			deletion_date = deserialized_dict.get("deletionDate"),
-			document_location = DocumentLocation._deserialize(deserialized_dict.get("documentLocation")) if deserialized_dict.get("documentLocation") is not None else None,
-			document_type = DocumentType._deserialize(deserialized_dict.get("documentType")) if deserialized_dict.get("documentType") is not None else None,
-			document_status = DocumentStatus._deserialize(deserialized_dict.get("documentStatus")) if deserialized_dict.get("documentStatus") is not None else None,
-			external_uri = deserialized_dict.get("externalUri"),
-			name = deserialized_dict.get("name"),
-			version = deserialized_dict.get("version"),
-			stored_icure_document_id = deserialized_dict.get("storedICureDocumentId"),
-			external_uuid = deserialized_dict.get("externalUuid"),
-			size = deserialized_dict.get("size"),
-			hash = deserialized_dict.get("hash"),
-			opening_contact_id = deserialized_dict.get("openingContactId"),
-			attachment_id = deserialized_dict.get("attachmentId"),
-			object_store_reference = deserialized_dict.get("objectStoreReference"),
-			main_uti = deserialized_dict.get("mainUti"),
-			other_utis = [x0 for x0 in deserialized_dict["otherUtis"]],
-			secondary_attachments = dict(map(lambda kv0: (kv0[0], DataAttachment._deserialize(kv0[1])), deserialized_dict["secondaryAttachments"].items())),
-			deleted_attachments = [DeletedAttachment._deserialize(x0) for x0 in deserialized_dict["deletedAttachments"]],
-			encrypted_attachment = bytearray(base64.b64decode(deserialized_dict.get("encryptedAttachment"))) if deserialized_dict.get("encryptedAttachment") is not None else None,
-			decrypted_attachment = bytearray(base64.b64decode(deserialized_dict.get("decryptedAttachment"))) if deserialized_dict.get("decryptedAttachment") is not None else None,
-			secret_foreign_keys = [x0 for x0 in deserialized_dict["secretForeignKeys"]],
-			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
-			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
-			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
-			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
+			created=deserialized_dict.get("created"),
+			modified=deserialized_dict.get("modified"),
+			author=deserialized_dict.get("author"),
+			responsible=deserialized_dict.get("responsible"),
+			medical_location_id=deserialized_dict.get("medicalLocationId"),
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
+			end_of_life=deserialized_dict.get("endOfLife"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			document_location=DocumentLocation._deserialize(deserialized_dict.get("documentLocation")) if deserialized_dict.get("documentLocation") is not None else None,
+			document_type=DocumentType._deserialize(deserialized_dict.get("documentType")) if deserialized_dict.get("documentType") is not None else None,
+			document_status=DocumentStatus._deserialize(deserialized_dict.get("documentStatus")) if deserialized_dict.get("documentStatus") is not None else None,
+			external_uri=deserialized_dict.get("externalUri"),
+			name=deserialized_dict.get("name"),
+			version=deserialized_dict.get("version"),
+			stored_icure_document_id=deserialized_dict.get("storedICureDocumentId"),
+			external_uuid=deserialized_dict.get("externalUuid"),
+			size=deserialized_dict.get("size"),
+			hash=deserialized_dict.get("hash"),
+			opening_contact_id=deserialized_dict.get("openingContactId"),
+			attachment_id=deserialized_dict.get("attachmentId"),
+			object_store_reference=deserialized_dict.get("objectStoreReference"),
+			main_uti=deserialized_dict.get("mainUti"),
+			other_utis=[x0 for x0 in deserialized_dict["otherUtis"]],
+			secondary_attachments=dict(map(lambda kv0: (kv0[0], DataAttachment._deserialize(kv0[1])), deserialized_dict["secondaryAttachments"].items())),
+			deleted_attachments=[DeletedAttachment._deserialize(x0) for x0 in deserialized_dict["deletedAttachments"]],
+			encrypted_attachment=bytearray(base64.b64decode(deserialized_dict.get("encryptedAttachment"))) if deserialized_dict.get("encryptedAttachment") is not None else None,
+			decrypted_attachment=bytearray(base64.b64decode(deserialized_dict.get("decryptedAttachment"))) if deserialized_dict.get("decryptedAttachment") is not None else None,
+			secret_foreign_keys=[x0 for x0 in deserialized_dict["secretForeignKeys"]],
+			crypted_foreign_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
+			delegations=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
+			encryption_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
+			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
 @dataclass
@@ -4735,42 +4743,42 @@ class DecryptedDocument:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			rev = deserialized_dict.get("rev"),
-			created = deserialized_dict.get("created"),
-			modified = deserialized_dict.get("modified"),
-			author = deserialized_dict.get("author"),
-			responsible = deserialized_dict.get("responsible"),
-			medical_location_id = deserialized_dict.get("medicalLocationId"),
-			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			codes = [CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
-			end_of_life = deserialized_dict.get("endOfLife"),
-			deletion_date = deserialized_dict.get("deletionDate"),
-			document_location = DocumentLocation._deserialize(deserialized_dict.get("documentLocation")) if deserialized_dict.get("documentLocation") is not None else None,
-			document_type = DocumentType._deserialize(deserialized_dict.get("documentType")) if deserialized_dict.get("documentType") is not None else None,
-			document_status = DocumentStatus._deserialize(deserialized_dict.get("documentStatus")) if deserialized_dict.get("documentStatus") is not None else None,
-			external_uri = deserialized_dict.get("externalUri"),
-			name = deserialized_dict.get("name"),
-			version = deserialized_dict.get("version"),
-			stored_icure_document_id = deserialized_dict.get("storedICureDocumentId"),
-			external_uuid = deserialized_dict.get("externalUuid"),
-			size = deserialized_dict.get("size"),
-			hash = deserialized_dict.get("hash"),
-			opening_contact_id = deserialized_dict.get("openingContactId"),
-			attachment_id = deserialized_dict.get("attachmentId"),
-			object_store_reference = deserialized_dict.get("objectStoreReference"),
-			main_uti = deserialized_dict.get("mainUti"),
-			other_utis = [x0 for x0 in deserialized_dict["otherUtis"]],
-			secondary_attachments = dict(map(lambda kv0: (kv0[0], DataAttachment._deserialize(kv0[1])), deserialized_dict["secondaryAttachments"].items())),
-			deleted_attachments = [DeletedAttachment._deserialize(x0) for x0 in deserialized_dict["deletedAttachments"]],
-			encrypted_attachment = bytearray(base64.b64decode(deserialized_dict.get("encryptedAttachment"))) if deserialized_dict.get("encryptedAttachment") is not None else None,
-			decrypted_attachment = bytearray(base64.b64decode(deserialized_dict.get("decryptedAttachment"))) if deserialized_dict.get("decryptedAttachment") is not None else None,
-			secret_foreign_keys = [x0 for x0 in deserialized_dict["secretForeignKeys"]],
-			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
-			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
-			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
-			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
+			created=deserialized_dict.get("created"),
+			modified=deserialized_dict.get("modified"),
+			author=deserialized_dict.get("author"),
+			responsible=deserialized_dict.get("responsible"),
+			medical_location_id=deserialized_dict.get("medicalLocationId"),
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
+			end_of_life=deserialized_dict.get("endOfLife"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			document_location=DocumentLocation._deserialize(deserialized_dict.get("documentLocation")) if deserialized_dict.get("documentLocation") is not None else None,
+			document_type=DocumentType._deserialize(deserialized_dict.get("documentType")) if deserialized_dict.get("documentType") is not None else None,
+			document_status=DocumentStatus._deserialize(deserialized_dict.get("documentStatus")) if deserialized_dict.get("documentStatus") is not None else None,
+			external_uri=deserialized_dict.get("externalUri"),
+			name=deserialized_dict.get("name"),
+			version=deserialized_dict.get("version"),
+			stored_icure_document_id=deserialized_dict.get("storedICureDocumentId"),
+			external_uuid=deserialized_dict.get("externalUuid"),
+			size=deserialized_dict.get("size"),
+			hash=deserialized_dict.get("hash"),
+			opening_contact_id=deserialized_dict.get("openingContactId"),
+			attachment_id=deserialized_dict.get("attachmentId"),
+			object_store_reference=deserialized_dict.get("objectStoreReference"),
+			main_uti=deserialized_dict.get("mainUti"),
+			other_utis=[x0 for x0 in deserialized_dict["otherUtis"]],
+			secondary_attachments=dict(map(lambda kv0: (kv0[0], DataAttachment._deserialize(kv0[1])), deserialized_dict["secondaryAttachments"].items())),
+			deleted_attachments=[DeletedAttachment._deserialize(x0) for x0 in deserialized_dict["deletedAttachments"]],
+			encrypted_attachment=bytearray(base64.b64decode(deserialized_dict.get("encryptedAttachment"))) if deserialized_dict.get("encryptedAttachment") is not None else None,
+			decrypted_attachment=bytearray(base64.b64decode(deserialized_dict.get("decryptedAttachment"))) if deserialized_dict.get("decryptedAttachment") is not None else None,
+			secret_foreign_keys=[x0 for x0 in deserialized_dict["secretForeignKeys"]],
+			crypted_foreign_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
+			delegations=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
+			encryption_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
+			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
 Document = Union['EncryptedDocument', 'DecryptedDocument']
@@ -4862,19 +4870,19 @@ class EncryptedContent:
 		else:
 			deserialized_dict = data
 		return cls(
-			string_value = deserialized_dict.get("stringValue"),
-			number_value = deserialized_dict.get("numberValue"),
-			boolean_value = deserialized_dict.get("booleanValue"),
-			instant_value = deserialized_dict.get("instantValue"),
-			fuzzy_date_value = deserialized_dict.get("fuzzyDateValue"),
-			binary_value = bytearray(base64.b64decode(deserialized_dict.get("binaryValue"))) if deserialized_dict.get("binaryValue") is not None else None,
-			document_id = deserialized_dict.get("documentId"),
-			measure_value = Measure._deserialize(deserialized_dict.get("measureValue")) if deserialized_dict.get("measureValue") is not None else None,
-			medication_value = Medication._deserialize(deserialized_dict.get("medicationValue")) if deserialized_dict.get("medicationValue") is not None else None,
-			time_series = TimeSeries._deserialize(deserialized_dict.get("timeSeries")) if deserialized_dict.get("timeSeries") is not None else None,
-			compound_value = [EncryptedService._deserialize(x0) for x0 in deserialized_dict.get("compoundValue")] if deserialized_dict.get("compoundValue") is not None else None,
-			ratio = [Measure._deserialize(x0) for x0 in deserialized_dict.get("ratio")] if deserialized_dict.get("ratio") is not None else None,
-			range = [Measure._deserialize(x0) for x0 in deserialized_dict.get("range")] if deserialized_dict.get("range") is not None else None,
+			string_value=deserialized_dict.get("stringValue"),
+			number_value=deserialized_dict.get("numberValue"),
+			boolean_value=deserialized_dict.get("booleanValue"),
+			instant_value=deserialized_dict.get("instantValue"),
+			fuzzy_date_value=deserialized_dict.get("fuzzyDateValue"),
+			binary_value=bytearray(base64.b64decode(deserialized_dict.get("binaryValue"))) if deserialized_dict.get("binaryValue") is not None else None,
+			document_id=deserialized_dict.get("documentId"),
+			measure_value=Measure._deserialize(deserialized_dict.get("measureValue")) if deserialized_dict.get("measureValue") is not None else None,
+			medication_value=Medication._deserialize(deserialized_dict.get("medicationValue")) if deserialized_dict.get("medicationValue") is not None else None,
+			time_series=TimeSeries._deserialize(deserialized_dict.get("timeSeries")) if deserialized_dict.get("timeSeries") is not None else None,
+			compound_value=[EncryptedService._deserialize(x0) for x0 in deserialized_dict.get("compoundValue")] if deserialized_dict.get("compoundValue") is not None else None,
+			ratio=[Measure._deserialize(x0) for x0 in deserialized_dict.get("ratio")] if deserialized_dict.get("ratio") is not None else None,
+			range=[Measure._deserialize(x0) for x0 in deserialized_dict.get("range")] if deserialized_dict.get("range") is not None else None,
 		)
 
 @dataclass
@@ -4918,19 +4926,19 @@ class DecryptedContent:
 		else:
 			deserialized_dict = data
 		return cls(
-			string_value = deserialized_dict.get("stringValue"),
-			number_value = deserialized_dict.get("numberValue"),
-			boolean_value = deserialized_dict.get("booleanValue"),
-			instant_value = deserialized_dict.get("instantValue"),
-			fuzzy_date_value = deserialized_dict.get("fuzzyDateValue"),
-			binary_value = bytearray(base64.b64decode(deserialized_dict.get("binaryValue"))) if deserialized_dict.get("binaryValue") is not None else None,
-			document_id = deserialized_dict.get("documentId"),
-			measure_value = Measure._deserialize(deserialized_dict.get("measureValue")) if deserialized_dict.get("measureValue") is not None else None,
-			medication_value = Medication._deserialize(deserialized_dict.get("medicationValue")) if deserialized_dict.get("medicationValue") is not None else None,
-			time_series = TimeSeries._deserialize(deserialized_dict.get("timeSeries")) if deserialized_dict.get("timeSeries") is not None else None,
-			compound_value = [DecryptedService._deserialize(x0) for x0 in deserialized_dict.get("compoundValue")] if deserialized_dict.get("compoundValue") is not None else None,
-			ratio = [Measure._deserialize(x0) for x0 in deserialized_dict.get("ratio")] if deserialized_dict.get("ratio") is not None else None,
-			range = [Measure._deserialize(x0) for x0 in deserialized_dict.get("range")] if deserialized_dict.get("range") is not None else None,
+			string_value=deserialized_dict.get("stringValue"),
+			number_value=deserialized_dict.get("numberValue"),
+			boolean_value=deserialized_dict.get("booleanValue"),
+			instant_value=deserialized_dict.get("instantValue"),
+			fuzzy_date_value=deserialized_dict.get("fuzzyDateValue"),
+			binary_value=bytearray(base64.b64decode(deserialized_dict.get("binaryValue"))) if deserialized_dict.get("binaryValue") is not None else None,
+			document_id=deserialized_dict.get("documentId"),
+			measure_value=Measure._deserialize(deserialized_dict.get("measureValue")) if deserialized_dict.get("measureValue") is not None else None,
+			medication_value=Medication._deserialize(deserialized_dict.get("medicationValue")) if deserialized_dict.get("medicationValue") is not None else None,
+			time_series=TimeSeries._deserialize(deserialized_dict.get("timeSeries")) if deserialized_dict.get("timeSeries") is not None else None,
+			compound_value=[DecryptedService._deserialize(x0) for x0 in deserialized_dict.get("compoundValue")] if deserialized_dict.get("compoundValue") is not None else None,
+			ratio=[Measure._deserialize(x0) for x0 in deserialized_dict.get("ratio")] if deserialized_dict.get("ratio") is not None else None,
+			range=[Measure._deserialize(x0) for x0 in deserialized_dict.get("range")] if deserialized_dict.get("range") is not None else None,
 		)
 
 Content = Union['EncryptedContent', 'DecryptedContent']
@@ -5039,26 +5047,26 @@ class EncryptedClassification:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			rev = deserialized_dict.get("rev"),
-			created = deserialized_dict.get("created"),
-			modified = deserialized_dict.get("modified"),
-			author = deserialized_dict.get("author"),
-			responsible = deserialized_dict.get("responsible"),
-			medical_location_id = deserialized_dict.get("medicalLocationId"),
-			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			codes = [CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
-			end_of_life = deserialized_dict.get("endOfLife"),
-			deletion_date = deserialized_dict.get("deletionDate"),
-			parent_id = deserialized_dict.get("parentId"),
-			label = deserialized_dict["label"],
-			template_id = deserialized_dict.get("templateId"),
-			secret_foreign_keys = [x0 for x0 in deserialized_dict["secretForeignKeys"]],
-			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
-			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
-			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
-			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
+			created=deserialized_dict.get("created"),
+			modified=deserialized_dict.get("modified"),
+			author=deserialized_dict.get("author"),
+			responsible=deserialized_dict.get("responsible"),
+			medical_location_id=deserialized_dict.get("medicalLocationId"),
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
+			end_of_life=deserialized_dict.get("endOfLife"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			parent_id=deserialized_dict.get("parentId"),
+			label=deserialized_dict["label"],
+			template_id=deserialized_dict.get("templateId"),
+			secret_foreign_keys=[x0 for x0 in deserialized_dict["secretForeignKeys"]],
+			crypted_foreign_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
+			delegations=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
+			encryption_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
+			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
 @dataclass
@@ -5116,26 +5124,26 @@ class DecryptedClassification:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			rev = deserialized_dict.get("rev"),
-			created = deserialized_dict.get("created"),
-			modified = deserialized_dict.get("modified"),
-			author = deserialized_dict.get("author"),
-			responsible = deserialized_dict.get("responsible"),
-			medical_location_id = deserialized_dict.get("medicalLocationId"),
-			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			codes = [CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
-			end_of_life = deserialized_dict.get("endOfLife"),
-			deletion_date = deserialized_dict.get("deletionDate"),
-			parent_id = deserialized_dict.get("parentId"),
-			label = deserialized_dict["label"],
-			template_id = deserialized_dict.get("templateId"),
-			secret_foreign_keys = [x0 for x0 in deserialized_dict["secretForeignKeys"]],
-			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
-			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
-			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
-			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
+			created=deserialized_dict.get("created"),
+			modified=deserialized_dict.get("modified"),
+			author=deserialized_dict.get("author"),
+			responsible=deserialized_dict.get("responsible"),
+			medical_location_id=deserialized_dict.get("medicalLocationId"),
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
+			end_of_life=deserialized_dict.get("endOfLife"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			parent_id=deserialized_dict.get("parentId"),
+			label=deserialized_dict["label"],
+			template_id=deserialized_dict.get("templateId"),
+			secret_foreign_keys=[x0 for x0 in deserialized_dict["secretForeignKeys"]],
+			crypted_foreign_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
+			delegations=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
+			encryption_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
+			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
 Classification = Union['EncryptedClassification', 'DecryptedClassification']
@@ -5227,27 +5235,27 @@ class DecryptedMaintenanceTask:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			rev = deserialized_dict.get("rev"),
-			identifier = [Identifier._deserialize(x0) for x0 in deserialized_dict["identifier"]],
-			created = deserialized_dict.get("created"),
-			modified = deserialized_dict.get("modified"),
-			author = deserialized_dict.get("author"),
-			responsible = deserialized_dict.get("responsible"),
-			medical_location_id = deserialized_dict.get("medicalLocationId"),
-			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			codes = [CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
-			end_of_life = deserialized_dict.get("endOfLife"),
-			deletion_date = deserialized_dict.get("deletionDate"),
-			task_type = deserialized_dict.get("taskType"),
-			properties = [DecryptedPropertyStub._deserialize(x0) for x0 in deserialized_dict["properties"]],
-			status = TaskStatus._deserialize(deserialized_dict["status"]),
-			secret_foreign_keys = [x0 for x0 in deserialized_dict["secretForeignKeys"]],
-			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
-			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
-			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
-			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
+			identifier=[Identifier._deserialize(x0) for x0 in deserialized_dict["identifier"]],
+			created=deserialized_dict.get("created"),
+			modified=deserialized_dict.get("modified"),
+			author=deserialized_dict.get("author"),
+			responsible=deserialized_dict.get("responsible"),
+			medical_location_id=deserialized_dict.get("medicalLocationId"),
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
+			end_of_life=deserialized_dict.get("endOfLife"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			task_type=deserialized_dict.get("taskType"),
+			properties=[DecryptedPropertyStub._deserialize(x0) for x0 in deserialized_dict["properties"]],
+			status=TaskStatus._deserialize(deserialized_dict["status"]),
+			secret_foreign_keys=[x0 for x0 in deserialized_dict["secretForeignKeys"]],
+			crypted_foreign_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
+			delegations=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
+			encryption_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
+			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
 @dataclass
@@ -5307,27 +5315,27 @@ class EncryptedMaintenanceTask:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			rev = deserialized_dict.get("rev"),
-			identifier = [Identifier._deserialize(x0) for x0 in deserialized_dict["identifier"]],
-			created = deserialized_dict.get("created"),
-			modified = deserialized_dict.get("modified"),
-			author = deserialized_dict.get("author"),
-			responsible = deserialized_dict.get("responsible"),
-			medical_location_id = deserialized_dict.get("medicalLocationId"),
-			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			codes = [CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
-			end_of_life = deserialized_dict.get("endOfLife"),
-			deletion_date = deserialized_dict.get("deletionDate"),
-			task_type = deserialized_dict.get("taskType"),
-			properties = [EncryptedPropertyStub._deserialize(x0) for x0 in deserialized_dict["properties"]],
-			status = TaskStatus._deserialize(deserialized_dict["status"]),
-			secret_foreign_keys = [x0 for x0 in deserialized_dict["secretForeignKeys"]],
-			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
-			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
-			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
-			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
+			identifier=[Identifier._deserialize(x0) for x0 in deserialized_dict["identifier"]],
+			created=deserialized_dict.get("created"),
+			modified=deserialized_dict.get("modified"),
+			author=deserialized_dict.get("author"),
+			responsible=deserialized_dict.get("responsible"),
+			medical_location_id=deserialized_dict.get("medicalLocationId"),
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
+			end_of_life=deserialized_dict.get("endOfLife"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			task_type=deserialized_dict.get("taskType"),
+			properties=[EncryptedPropertyStub._deserialize(x0) for x0 in deserialized_dict["properties"]],
+			status=TaskStatus._deserialize(deserialized_dict["status"]),
+			secret_foreign_keys=[x0 for x0 in deserialized_dict["secretForeignKeys"]],
+			crypted_foreign_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
+			delegations=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
+			encryption_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
+			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
 MaintenanceTask = Union['DecryptedMaintenanceTask', 'EncryptedMaintenanceTask']
@@ -5419,27 +5427,27 @@ class FormTemplate:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			rev = deserialized_dict.get("rev"),
-			deletion_date = deserialized_dict.get("deletionDate"),
-			template_layout = FormTemplateLayout._deserialize(deserialized_dict.get("templateLayout")) if deserialized_dict.get("templateLayout") is not None else None,
-			raw_template_layout = bytearray(base64.b64decode(deserialized_dict.get("rawTemplateLayout"))) if deserialized_dict.get("rawTemplateLayout") is not None else None,
-			name = deserialized_dict.get("name"),
-			guid = deserialized_dict.get("guid"),
-			group = DocumentGroup._deserialize(deserialized_dict.get("group")) if deserialized_dict.get("group") is not None else None,
-			descr = deserialized_dict.get("descr"),
-			disabled = deserialized_dict.get("disabled"),
-			specialty = CodeStub._deserialize(deserialized_dict.get("specialty")) if deserialized_dict.get("specialty") is not None else None,
-			author = deserialized_dict.get("author"),
-			form_instance_preferred_location = deserialized_dict.get("formInstancePreferredLocation"),
-			keyboard_shortcut = deserialized_dict.get("keyboardShortcut"),
-			short_report = deserialized_dict.get("shortReport"),
-			medium_report = deserialized_dict.get("mediumReport"),
-			long_report = deserialized_dict.get("longReport"),
-			reports = [x0 for x0 in deserialized_dict["reports"]],
-			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			layout_attachment_id = deserialized_dict.get("layoutAttachmentId"),
-			template_layout_attachment_id = deserialized_dict.get("templateLayoutAttachmentId"),
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			template_layout=FormTemplateLayout._deserialize(deserialized_dict.get("templateLayout")) if deserialized_dict.get("templateLayout") is not None else None,
+			raw_template_layout=bytearray(base64.b64decode(deserialized_dict.get("rawTemplateLayout"))) if deserialized_dict.get("rawTemplateLayout") is not None else None,
+			name=deserialized_dict.get("name"),
+			guid=deserialized_dict.get("guid"),
+			group=DocumentGroup._deserialize(deserialized_dict.get("group")) if deserialized_dict.get("group") is not None else None,
+			descr=deserialized_dict.get("descr"),
+			disabled=deserialized_dict.get("disabled"),
+			specialty=CodeStub._deserialize(deserialized_dict.get("specialty")) if deserialized_dict.get("specialty") is not None else None,
+			author=deserialized_dict.get("author"),
+			form_instance_preferred_location=deserialized_dict.get("formInstancePreferredLocation"),
+			keyboard_shortcut=deserialized_dict.get("keyboardShortcut"),
+			short_report=deserialized_dict.get("shortReport"),
+			medium_report=deserialized_dict.get("mediumReport"),
+			long_report=deserialized_dict.get("longReport"),
+			reports=[x0 for x0 in deserialized_dict["reports"]],
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			layout_attachment_id=deserialized_dict.get("layoutAttachmentId"),
+			template_layout_attachment_id=deserialized_dict.get("templateLayoutAttachmentId"),
 		)
 
 @dataclass
@@ -5525,40 +5533,40 @@ class EncryptedHealthElement:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			identifiers = [Identifier._deserialize(x0) for x0 in deserialized_dict["identifiers"]],
-			rev = deserialized_dict.get("rev"),
-			created = deserialized_dict.get("created"),
-			modified = deserialized_dict.get("modified"),
-			author = deserialized_dict.get("author"),
-			responsible = deserialized_dict.get("responsible"),
-			medical_location_id = deserialized_dict.get("medicalLocationId"),
-			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			codes = [CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
-			end_of_life = deserialized_dict.get("endOfLife"),
-			deletion_date = deserialized_dict.get("deletionDate"),
-			health_element_id = deserialized_dict.get("healthElementId"),
-			value_date = deserialized_dict.get("valueDate"),
-			opening_date = deserialized_dict.get("openingDate"),
-			closing_date = deserialized_dict.get("closingDate"),
-			descr = deserialized_dict.get("descr"),
-			note = deserialized_dict.get("note"),
-			notes = [Annotation._deserialize(x0) for x0 in deserialized_dict["notes"]],
-			relevant = deserialized_dict["relevant"],
-			id_opening_contact = deserialized_dict.get("idOpeningContact"),
-			id_closing_contact = deserialized_dict.get("idClosingContact"),
-			id_service = deserialized_dict.get("idService"),
-			status = deserialized_dict["status"],
-			laterality = Laterality._deserialize(deserialized_dict.get("laterality")) if deserialized_dict.get("laterality") is not None else None,
-			plans_of_action = [EncryptedPlanOfAction._deserialize(x0) for x0 in deserialized_dict["plansOfAction"]],
-			episodes = [EncryptedEpisode._deserialize(x0) for x0 in deserialized_dict["episodes"]],
-			care_team = [EncryptedCareTeamMember._deserialize(x0) for x0 in deserialized_dict["careTeam"]],
-			secret_foreign_keys = [x0 for x0 in deserialized_dict["secretForeignKeys"]],
-			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
-			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
-			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
-			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
+			id=deserialized_dict["id"],
+			identifiers=[Identifier._deserialize(x0) for x0 in deserialized_dict["identifiers"]],
+			rev=deserialized_dict.get("rev"),
+			created=deserialized_dict.get("created"),
+			modified=deserialized_dict.get("modified"),
+			author=deserialized_dict.get("author"),
+			responsible=deserialized_dict.get("responsible"),
+			medical_location_id=deserialized_dict.get("medicalLocationId"),
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
+			end_of_life=deserialized_dict.get("endOfLife"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			health_element_id=deserialized_dict.get("healthElementId"),
+			value_date=deserialized_dict.get("valueDate"),
+			opening_date=deserialized_dict.get("openingDate"),
+			closing_date=deserialized_dict.get("closingDate"),
+			descr=deserialized_dict.get("descr"),
+			note=deserialized_dict.get("note"),
+			notes=[Annotation._deserialize(x0) for x0 in deserialized_dict["notes"]],
+			relevant=deserialized_dict["relevant"],
+			id_opening_contact=deserialized_dict.get("idOpeningContact"),
+			id_closing_contact=deserialized_dict.get("idClosingContact"),
+			id_service=deserialized_dict.get("idService"),
+			status=deserialized_dict["status"],
+			laterality=Laterality._deserialize(deserialized_dict.get("laterality")) if deserialized_dict.get("laterality") is not None else None,
+			plans_of_action=[EncryptedPlanOfAction._deserialize(x0) for x0 in deserialized_dict["plansOfAction"]],
+			episodes=[EncryptedEpisode._deserialize(x0) for x0 in deserialized_dict["episodes"]],
+			care_team=[EncryptedCareTeamMember._deserialize(x0) for x0 in deserialized_dict["careTeam"]],
+			secret_foreign_keys=[x0 for x0 in deserialized_dict["secretForeignKeys"]],
+			crypted_foreign_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
+			delegations=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
+			encryption_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
+			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
 @dataclass
@@ -5644,40 +5652,40 @@ class DecryptedHealthElement:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			identifiers = [Identifier._deserialize(x0) for x0 in deserialized_dict["identifiers"]],
-			rev = deserialized_dict.get("rev"),
-			created = deserialized_dict.get("created"),
-			modified = deserialized_dict.get("modified"),
-			author = deserialized_dict.get("author"),
-			responsible = deserialized_dict.get("responsible"),
-			medical_location_id = deserialized_dict.get("medicalLocationId"),
-			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			codes = [CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
-			end_of_life = deserialized_dict.get("endOfLife"),
-			deletion_date = deserialized_dict.get("deletionDate"),
-			health_element_id = deserialized_dict.get("healthElementId"),
-			value_date = deserialized_dict.get("valueDate"),
-			opening_date = deserialized_dict.get("openingDate"),
-			closing_date = deserialized_dict.get("closingDate"),
-			descr = deserialized_dict.get("descr"),
-			note = deserialized_dict.get("note"),
-			notes = [Annotation._deserialize(x0) for x0 in deserialized_dict["notes"]],
-			relevant = deserialized_dict["relevant"],
-			id_opening_contact = deserialized_dict.get("idOpeningContact"),
-			id_closing_contact = deserialized_dict.get("idClosingContact"),
-			id_service = deserialized_dict.get("idService"),
-			status = deserialized_dict["status"],
-			laterality = Laterality._deserialize(deserialized_dict.get("laterality")) if deserialized_dict.get("laterality") is not None else None,
-			plans_of_action = [DecryptedPlanOfAction._deserialize(x0) for x0 in deserialized_dict["plansOfAction"]],
-			episodes = [DecryptedEpisode._deserialize(x0) for x0 in deserialized_dict["episodes"]],
-			care_team = [DecryptedCareTeamMember._deserialize(x0) for x0 in deserialized_dict["careTeam"]],
-			secret_foreign_keys = [x0 for x0 in deserialized_dict["secretForeignKeys"]],
-			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
-			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
-			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
-			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
+			id=deserialized_dict["id"],
+			identifiers=[Identifier._deserialize(x0) for x0 in deserialized_dict["identifiers"]],
+			rev=deserialized_dict.get("rev"),
+			created=deserialized_dict.get("created"),
+			modified=deserialized_dict.get("modified"),
+			author=deserialized_dict.get("author"),
+			responsible=deserialized_dict.get("responsible"),
+			medical_location_id=deserialized_dict.get("medicalLocationId"),
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
+			end_of_life=deserialized_dict.get("endOfLife"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			health_element_id=deserialized_dict.get("healthElementId"),
+			value_date=deserialized_dict.get("valueDate"),
+			opening_date=deserialized_dict.get("openingDate"),
+			closing_date=deserialized_dict.get("closingDate"),
+			descr=deserialized_dict.get("descr"),
+			note=deserialized_dict.get("note"),
+			notes=[Annotation._deserialize(x0) for x0 in deserialized_dict["notes"]],
+			relevant=deserialized_dict["relevant"],
+			id_opening_contact=deserialized_dict.get("idOpeningContact"),
+			id_closing_contact=deserialized_dict.get("idClosingContact"),
+			id_service=deserialized_dict.get("idService"),
+			status=deserialized_dict["status"],
+			laterality=Laterality._deserialize(deserialized_dict.get("laterality")) if deserialized_dict.get("laterality") is not None else None,
+			plans_of_action=[DecryptedPlanOfAction._deserialize(x0) for x0 in deserialized_dict["plansOfAction"]],
+			episodes=[DecryptedEpisode._deserialize(x0) for x0 in deserialized_dict["episodes"]],
+			care_team=[DecryptedCareTeamMember._deserialize(x0) for x0 in deserialized_dict["careTeam"]],
+			secret_foreign_keys=[x0 for x0 in deserialized_dict["secretForeignKeys"]],
+			crypted_foreign_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
+			delegations=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
+			encryption_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
+			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
 HealthElement = Union['EncryptedHealthElement', 'DecryptedHealthElement']
@@ -5757,21 +5765,21 @@ class IcureStub:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			rev = deserialized_dict.get("rev"),
-			created = deserialized_dict.get("created"),
-			modified = deserialized_dict.get("modified"),
-			author = deserialized_dict.get("author"),
-			responsible = deserialized_dict.get("responsible"),
-			medical_location_id = deserialized_dict.get("medicalLocationId"),
-			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			codes = [CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
-			end_of_life = deserialized_dict.get("endOfLife"),
-			secret_foreign_keys = [x0 for x0 in deserialized_dict["secretForeignKeys"]],
-			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
-			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
-			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
+			created=deserialized_dict.get("created"),
+			modified=deserialized_dict.get("modified"),
+			author=deserialized_dict.get("author"),
+			responsible=deserialized_dict.get("responsible"),
+			medical_location_id=deserialized_dict.get("medicalLocationId"),
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
+			end_of_life=deserialized_dict.get("endOfLife"),
+			secret_foreign_keys=[x0 for x0 in deserialized_dict["secretForeignKeys"]],
+			crypted_foreign_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
+			delegations=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
+			encryption_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
+			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
 @dataclass
@@ -5851,37 +5859,37 @@ class DecryptedContact:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			rev = deserialized_dict.get("rev"),
-			created = deserialized_dict.get("created"),
-			modified = deserialized_dict.get("modified"),
-			author = deserialized_dict.get("author"),
-			responsible = deserialized_dict.get("responsible"),
-			medical_location_id = deserialized_dict.get("medicalLocationId"),
-			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			codes = [CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
-			identifier = [Identifier._deserialize(x0) for x0 in deserialized_dict["identifier"]],
-			end_of_life = deserialized_dict.get("endOfLife"),
-			deletion_date = deserialized_dict.get("deletionDate"),
-			group_id = deserialized_dict.get("groupId"),
-			opening_date = deserialized_dict.get("openingDate"),
-			closing_date = deserialized_dict.get("closingDate"),
-			descr = deserialized_dict.get("descr"),
-			location = deserialized_dict.get("location"),
-			external_id = deserialized_dict.get("externalId"),
-			encounter_type = CodeStub._deserialize(deserialized_dict.get("encounterType")) if deserialized_dict.get("encounterType") is not None else None,
-			encounter_location = DecryptedAddress._deserialize(deserialized_dict.get("encounterLocation")) if deserialized_dict.get("encounterLocation") is not None else None,
-			sub_contacts = [DecryptedSubContact._deserialize(x0) for x0 in deserialized_dict["subContacts"]],
-			services = [DecryptedService._deserialize(x0) for x0 in deserialized_dict["services"]],
-			healthcare_party_id = deserialized_dict.get("healthcarePartyId"),
-			modified_contact_id = deserialized_dict.get("modifiedContactId"),
-			secret_foreign_keys = [x0 for x0 in deserialized_dict["secretForeignKeys"]],
-			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
-			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
-			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
-			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
-			notes = [Annotation._deserialize(x0) for x0 in deserialized_dict["notes"]],
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
+			created=deserialized_dict.get("created"),
+			modified=deserialized_dict.get("modified"),
+			author=deserialized_dict.get("author"),
+			responsible=deserialized_dict.get("responsible"),
+			medical_location_id=deserialized_dict.get("medicalLocationId"),
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
+			identifier=[Identifier._deserialize(x0) for x0 in deserialized_dict["identifier"]],
+			end_of_life=deserialized_dict.get("endOfLife"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			group_id=deserialized_dict.get("groupId"),
+			opening_date=deserialized_dict.get("openingDate"),
+			closing_date=deserialized_dict.get("closingDate"),
+			descr=deserialized_dict.get("descr"),
+			location=deserialized_dict.get("location"),
+			external_id=deserialized_dict.get("externalId"),
+			encounter_type=CodeStub._deserialize(deserialized_dict.get("encounterType")) if deserialized_dict.get("encounterType") is not None else None,
+			encounter_location=DecryptedAddress._deserialize(deserialized_dict.get("encounterLocation")) if deserialized_dict.get("encounterLocation") is not None else None,
+			sub_contacts=[DecryptedSubContact._deserialize(x0) for x0 in deserialized_dict["subContacts"]],
+			services=[DecryptedService._deserialize(x0) for x0 in deserialized_dict["services"]],
+			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
+			modified_contact_id=deserialized_dict.get("modifiedContactId"),
+			secret_foreign_keys=[x0 for x0 in deserialized_dict["secretForeignKeys"]],
+			crypted_foreign_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
+			delegations=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
+			encryption_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
+			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
+			notes=[Annotation._deserialize(x0) for x0 in deserialized_dict["notes"]],
 		)
 
 @dataclass
@@ -5961,37 +5969,37 @@ class EncryptedContact:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			rev = deserialized_dict.get("rev"),
-			created = deserialized_dict.get("created"),
-			modified = deserialized_dict.get("modified"),
-			author = deserialized_dict.get("author"),
-			responsible = deserialized_dict.get("responsible"),
-			medical_location_id = deserialized_dict.get("medicalLocationId"),
-			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			codes = [CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
-			identifier = [Identifier._deserialize(x0) for x0 in deserialized_dict["identifier"]],
-			end_of_life = deserialized_dict.get("endOfLife"),
-			deletion_date = deserialized_dict.get("deletionDate"),
-			group_id = deserialized_dict.get("groupId"),
-			opening_date = deserialized_dict.get("openingDate"),
-			closing_date = deserialized_dict.get("closingDate"),
-			descr = deserialized_dict.get("descr"),
-			location = deserialized_dict.get("location"),
-			external_id = deserialized_dict.get("externalId"),
-			encounter_type = CodeStub._deserialize(deserialized_dict.get("encounterType")) if deserialized_dict.get("encounterType") is not None else None,
-			encounter_location = EncryptedAddress._deserialize(deserialized_dict.get("encounterLocation")) if deserialized_dict.get("encounterLocation") is not None else None,
-			sub_contacts = [EncryptedSubContact._deserialize(x0) for x0 in deserialized_dict["subContacts"]],
-			services = [EncryptedService._deserialize(x0) for x0 in deserialized_dict["services"]],
-			healthcare_party_id = deserialized_dict.get("healthcarePartyId"),
-			modified_contact_id = deserialized_dict.get("modifiedContactId"),
-			secret_foreign_keys = [x0 for x0 in deserialized_dict["secretForeignKeys"]],
-			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
-			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
-			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
-			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
-			notes = [Annotation._deserialize(x0) for x0 in deserialized_dict["notes"]],
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
+			created=deserialized_dict.get("created"),
+			modified=deserialized_dict.get("modified"),
+			author=deserialized_dict.get("author"),
+			responsible=deserialized_dict.get("responsible"),
+			medical_location_id=deserialized_dict.get("medicalLocationId"),
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
+			identifier=[Identifier._deserialize(x0) for x0 in deserialized_dict["identifier"]],
+			end_of_life=deserialized_dict.get("endOfLife"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			group_id=deserialized_dict.get("groupId"),
+			opening_date=deserialized_dict.get("openingDate"),
+			closing_date=deserialized_dict.get("closingDate"),
+			descr=deserialized_dict.get("descr"),
+			location=deserialized_dict.get("location"),
+			external_id=deserialized_dict.get("externalId"),
+			encounter_type=CodeStub._deserialize(deserialized_dict.get("encounterType")) if deserialized_dict.get("encounterType") is not None else None,
+			encounter_location=EncryptedAddress._deserialize(deserialized_dict.get("encounterLocation")) if deserialized_dict.get("encounterLocation") is not None else None,
+			sub_contacts=[EncryptedSubContact._deserialize(x0) for x0 in deserialized_dict["subContacts"]],
+			services=[EncryptedService._deserialize(x0) for x0 in deserialized_dict["services"]],
+			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
+			modified_contact_id=deserialized_dict.get("modifiedContactId"),
+			secret_foreign_keys=[x0 for x0 in deserialized_dict["secretForeignKeys"]],
+			crypted_foreign_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
+			delegations=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
+			encryption_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
+			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
+			notes=[Annotation._deserialize(x0) for x0 in deserialized_dict["notes"]],
 		)
 
 Contact = Union['DecryptedContact', 'EncryptedContact']
@@ -6113,42 +6121,42 @@ class DecryptedService:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			transaction_id = deserialized_dict.get("transactionId"),
-			identifier = [Identifier._deserialize(x0) for x0 in deserialized_dict["identifier"]],
-			contact_id = deserialized_dict.get("contactId"),
-			sub_contact_ids = [x0 for x0 in deserialized_dict.get("subContactIds")] if deserialized_dict.get("subContactIds") is not None else None,
-			plans_of_action_ids = [x0 for x0 in deserialized_dict.get("plansOfActionIds")] if deserialized_dict.get("plansOfActionIds") is not None else None,
-			health_elements_ids = [x0 for x0 in deserialized_dict.get("healthElementsIds")] if deserialized_dict.get("healthElementsIds") is not None else None,
-			form_ids = [x0 for x0 in deserialized_dict.get("formIds")] if deserialized_dict.get("formIds") is not None else None,
-			secret_foreign_keys = [x0 for x0 in deserialized_dict.get("secretForeignKeys")] if deserialized_dict.get("secretForeignKeys") is not None else None,
-			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
-			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
-			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			label = deserialized_dict.get("label"),
-			index = deserialized_dict.get("index"),
-			content = dict(map(lambda kv0: (kv0[0], DecryptedContent._deserialize(kv0[1])), deserialized_dict["content"].items())),
-			encrypted_content = deserialized_dict.get("encryptedContent"),
-			text_indexes = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["textIndexes"].items())),
-			value_date = deserialized_dict.get("valueDate"),
-			opening_date = deserialized_dict.get("openingDate"),
-			closing_date = deserialized_dict.get("closingDate"),
-			form_id = deserialized_dict.get("formId"),
-			created = deserialized_dict.get("created"),
-			modified = deserialized_dict.get("modified"),
-			end_of_life = deserialized_dict.get("endOfLife"),
-			author = deserialized_dict.get("author"),
-			responsible = deserialized_dict.get("responsible"),
-			medical_location_id = deserialized_dict.get("medicalLocationId"),
-			comment = deserialized_dict.get("comment"),
-			status = deserialized_dict.get("status"),
-			invoicing_codes = [x0 for x0 in deserialized_dict["invoicingCodes"]],
-			notes = [Annotation._deserialize(x0) for x0 in deserialized_dict["notes"]],
-			qualified_links = dict(map(lambda kv0: (LinkQualification._deserialize(kv0[0]), dict(map(lambda kv1: (kv1[0], kv1[1]), kv0[1].items()))), deserialized_dict["qualifiedLinks"].items())),
-			codes = [CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
-			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
-			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
+			id=deserialized_dict["id"],
+			transaction_id=deserialized_dict.get("transactionId"),
+			identifier=[Identifier._deserialize(x0) for x0 in deserialized_dict["identifier"]],
+			contact_id=deserialized_dict.get("contactId"),
+			sub_contact_ids=[x0 for x0 in deserialized_dict.get("subContactIds")] if deserialized_dict.get("subContactIds") is not None else None,
+			plans_of_action_ids=[x0 for x0 in deserialized_dict.get("plansOfActionIds")] if deserialized_dict.get("plansOfActionIds") is not None else None,
+			health_elements_ids=[x0 for x0 in deserialized_dict.get("healthElementsIds")] if deserialized_dict.get("healthElementsIds") is not None else None,
+			form_ids=[x0 for x0 in deserialized_dict.get("formIds")] if deserialized_dict.get("formIds") is not None else None,
+			secret_foreign_keys=[x0 for x0 in deserialized_dict.get("secretForeignKeys")] if deserialized_dict.get("secretForeignKeys") is not None else None,
+			crypted_foreign_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
+			delegations=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
+			encryption_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
+			label=deserialized_dict.get("label"),
+			index=deserialized_dict.get("index"),
+			content=dict(map(lambda kv0: (kv0[0], DecryptedContent._deserialize(kv0[1])), deserialized_dict["content"].items())),
+			encrypted_content=deserialized_dict.get("encryptedContent"),
+			text_indexes=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["textIndexes"].items())),
+			value_date=deserialized_dict.get("valueDate"),
+			opening_date=deserialized_dict.get("openingDate"),
+			closing_date=deserialized_dict.get("closingDate"),
+			form_id=deserialized_dict.get("formId"),
+			created=deserialized_dict.get("created"),
+			modified=deserialized_dict.get("modified"),
+			end_of_life=deserialized_dict.get("endOfLife"),
+			author=deserialized_dict.get("author"),
+			responsible=deserialized_dict.get("responsible"),
+			medical_location_id=deserialized_dict.get("medicalLocationId"),
+			comment=deserialized_dict.get("comment"),
+			status=deserialized_dict.get("status"),
+			invoicing_codes=[x0 for x0 in deserialized_dict["invoicingCodes"]],
+			notes=[Annotation._deserialize(x0) for x0 in deserialized_dict["notes"]],
+			qualified_links=dict(map(lambda kv0: (LinkQualification._deserialize(kv0[0]), dict(map(lambda kv1: (kv1[0], kv1[1]), kv0[1].items()))), deserialized_dict["qualifiedLinks"].items())),
+			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
+			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
 @dataclass
@@ -6238,42 +6246,42 @@ class EncryptedService:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			transaction_id = deserialized_dict.get("transactionId"),
-			identifier = [Identifier._deserialize(x0) for x0 in deserialized_dict["identifier"]],
-			contact_id = deserialized_dict.get("contactId"),
-			sub_contact_ids = [x0 for x0 in deserialized_dict.get("subContactIds")] if deserialized_dict.get("subContactIds") is not None else None,
-			plans_of_action_ids = [x0 for x0 in deserialized_dict.get("plansOfActionIds")] if deserialized_dict.get("plansOfActionIds") is not None else None,
-			health_elements_ids = [x0 for x0 in deserialized_dict.get("healthElementsIds")] if deserialized_dict.get("healthElementsIds") is not None else None,
-			form_ids = [x0 for x0 in deserialized_dict.get("formIds")] if deserialized_dict.get("formIds") is not None else None,
-			secret_foreign_keys = [x0 for x0 in deserialized_dict.get("secretForeignKeys")] if deserialized_dict.get("secretForeignKeys") is not None else None,
-			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
-			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
-			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			label = deserialized_dict.get("label"),
-			index = deserialized_dict.get("index"),
-			content = dict(map(lambda kv0: (kv0[0], EncryptedContent._deserialize(kv0[1])), deserialized_dict["content"].items())),
-			encrypted_content = deserialized_dict.get("encryptedContent"),
-			text_indexes = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["textIndexes"].items())),
-			value_date = deserialized_dict.get("valueDate"),
-			opening_date = deserialized_dict.get("openingDate"),
-			closing_date = deserialized_dict.get("closingDate"),
-			form_id = deserialized_dict.get("formId"),
-			created = deserialized_dict.get("created"),
-			modified = deserialized_dict.get("modified"),
-			end_of_life = deserialized_dict.get("endOfLife"),
-			author = deserialized_dict.get("author"),
-			responsible = deserialized_dict.get("responsible"),
-			medical_location_id = deserialized_dict.get("medicalLocationId"),
-			comment = deserialized_dict.get("comment"),
-			status = deserialized_dict.get("status"),
-			invoicing_codes = [x0 for x0 in deserialized_dict["invoicingCodes"]],
-			notes = [Annotation._deserialize(x0) for x0 in deserialized_dict["notes"]],
-			qualified_links = dict(map(lambda kv0: (LinkQualification._deserialize(kv0[0]), dict(map(lambda kv1: (kv1[0], kv1[1]), kv0[1].items()))), deserialized_dict["qualifiedLinks"].items())),
-			codes = [CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
-			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
-			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
+			id=deserialized_dict["id"],
+			transaction_id=deserialized_dict.get("transactionId"),
+			identifier=[Identifier._deserialize(x0) for x0 in deserialized_dict["identifier"]],
+			contact_id=deserialized_dict.get("contactId"),
+			sub_contact_ids=[x0 for x0 in deserialized_dict.get("subContactIds")] if deserialized_dict.get("subContactIds") is not None else None,
+			plans_of_action_ids=[x0 for x0 in deserialized_dict.get("plansOfActionIds")] if deserialized_dict.get("plansOfActionIds") is not None else None,
+			health_elements_ids=[x0 for x0 in deserialized_dict.get("healthElementsIds")] if deserialized_dict.get("healthElementsIds") is not None else None,
+			form_ids=[x0 for x0 in deserialized_dict.get("formIds")] if deserialized_dict.get("formIds") is not None else None,
+			secret_foreign_keys=[x0 for x0 in deserialized_dict.get("secretForeignKeys")] if deserialized_dict.get("secretForeignKeys") is not None else None,
+			crypted_foreign_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
+			delegations=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
+			encryption_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
+			label=deserialized_dict.get("label"),
+			index=deserialized_dict.get("index"),
+			content=dict(map(lambda kv0: (kv0[0], EncryptedContent._deserialize(kv0[1])), deserialized_dict["content"].items())),
+			encrypted_content=deserialized_dict.get("encryptedContent"),
+			text_indexes=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["textIndexes"].items())),
+			value_date=deserialized_dict.get("valueDate"),
+			opening_date=deserialized_dict.get("openingDate"),
+			closing_date=deserialized_dict.get("closingDate"),
+			form_id=deserialized_dict.get("formId"),
+			created=deserialized_dict.get("created"),
+			modified=deserialized_dict.get("modified"),
+			end_of_life=deserialized_dict.get("endOfLife"),
+			author=deserialized_dict.get("author"),
+			responsible=deserialized_dict.get("responsible"),
+			medical_location_id=deserialized_dict.get("medicalLocationId"),
+			comment=deserialized_dict.get("comment"),
+			status=deserialized_dict.get("status"),
+			invoicing_codes=[x0 for x0 in deserialized_dict["invoicingCodes"]],
+			notes=[Annotation._deserialize(x0) for x0 in deserialized_dict["notes"]],
+			qualified_links=dict(map(lambda kv0: (LinkQualification._deserialize(kv0[0]), dict(map(lambda kv1: (kv1[0], kv1[1]), kv0[1].items()))), deserialized_dict["qualifiedLinks"].items())),
+			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
+			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
 Service = Union['DecryptedService', 'EncryptedService']
@@ -6327,8 +6335,8 @@ class LabelledOccurence:
 		else:
 			deserialized_dict = data
 		return cls(
-			label = deserialized_dict["label"],
-			occurence = deserialized_dict["occurence"],
+			label=deserialized_dict["label"],
+			occurence=deserialized_dict["occurence"],
 		)
 
 @dataclass
@@ -6390,28 +6398,28 @@ class DecryptedReceipt:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			rev = deserialized_dict.get("rev"),
-			created = deserialized_dict.get("created"),
-			modified = deserialized_dict.get("modified"),
-			author = deserialized_dict.get("author"),
-			responsible = deserialized_dict.get("responsible"),
-			medical_location_id = deserialized_dict.get("medicalLocationId"),
-			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			codes = [CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
-			end_of_life = deserialized_dict.get("endOfLife"),
-			deletion_date = deserialized_dict.get("deletionDate"),
-			attachment_ids = dict(map(lambda kv0: (ReceiptBlobType._deserialize(kv0[0]), kv0[1]), deserialized_dict["attachmentIds"].items())),
-			references = [x0 for x0 in deserialized_dict["references"]],
-			document_id = deserialized_dict.get("documentId"),
-			category = deserialized_dict.get("category"),
-			sub_category = deserialized_dict.get("subCategory"),
-			secret_foreign_keys = [x0 for x0 in deserialized_dict["secretForeignKeys"]],
-			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
-			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
-			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
-			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
+			created=deserialized_dict.get("created"),
+			modified=deserialized_dict.get("modified"),
+			author=deserialized_dict.get("author"),
+			responsible=deserialized_dict.get("responsible"),
+			medical_location_id=deserialized_dict.get("medicalLocationId"),
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
+			end_of_life=deserialized_dict.get("endOfLife"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			attachment_ids=dict(map(lambda kv0: (ReceiptBlobType._deserialize(kv0[0]), kv0[1]), deserialized_dict["attachmentIds"].items())),
+			references=[x0 for x0 in deserialized_dict["references"]],
+			document_id=deserialized_dict.get("documentId"),
+			category=deserialized_dict.get("category"),
+			sub_category=deserialized_dict.get("subCategory"),
+			secret_foreign_keys=[x0 for x0 in deserialized_dict["secretForeignKeys"]],
+			crypted_foreign_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
+			delegations=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
+			encryption_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
+			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
 @dataclass
@@ -6473,28 +6481,28 @@ class EncryptedReceipt:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			rev = deserialized_dict.get("rev"),
-			created = deserialized_dict.get("created"),
-			modified = deserialized_dict.get("modified"),
-			author = deserialized_dict.get("author"),
-			responsible = deserialized_dict.get("responsible"),
-			medical_location_id = deserialized_dict.get("medicalLocationId"),
-			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			codes = [CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
-			end_of_life = deserialized_dict.get("endOfLife"),
-			deletion_date = deserialized_dict.get("deletionDate"),
-			attachment_ids = dict(map(lambda kv0: (ReceiptBlobType._deserialize(kv0[0]), kv0[1]), deserialized_dict["attachmentIds"].items())),
-			references = [x0 for x0 in deserialized_dict["references"]],
-			document_id = deserialized_dict.get("documentId"),
-			category = deserialized_dict.get("category"),
-			sub_category = deserialized_dict.get("subCategory"),
-			secret_foreign_keys = [x0 for x0 in deserialized_dict["secretForeignKeys"]],
-			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
-			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
-			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
-			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
+			created=deserialized_dict.get("created"),
+			modified=deserialized_dict.get("modified"),
+			author=deserialized_dict.get("author"),
+			responsible=deserialized_dict.get("responsible"),
+			medical_location_id=deserialized_dict.get("medicalLocationId"),
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
+			end_of_life=deserialized_dict.get("endOfLife"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			attachment_ids=dict(map(lambda kv0: (ReceiptBlobType._deserialize(kv0[0]), kv0[1]), deserialized_dict["attachmentIds"].items())),
+			references=[x0 for x0 in deserialized_dict["references"]],
+			document_id=deserialized_dict.get("documentId"),
+			category=deserialized_dict.get("category"),
+			sub_category=deserialized_dict.get("subCategory"),
+			secret_foreign_keys=[x0 for x0 in deserialized_dict["secretForeignKeys"]],
+			crypted_foreign_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
+			delegations=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
+			encryption_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
+			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
 Receipt = Union['DecryptedReceipt', 'EncryptedReceipt']
@@ -6590,29 +6598,29 @@ class DecryptedAccessLog:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			rev = deserialized_dict.get("rev"),
-			created = deserialized_dict.get("created"),
-			modified = deserialized_dict.get("modified"),
-			author = deserialized_dict.get("author"),
-			responsible = deserialized_dict.get("responsible"),
-			medical_location_id = deserialized_dict.get("medicalLocationId"),
-			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			codes = [CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
-			end_of_life = deserialized_dict.get("endOfLife"),
-			deletion_date = deserialized_dict.get("deletionDate"),
-			object_id = deserialized_dict.get("objectId"),
-			access_type = deserialized_dict.get("accessType"),
-			user = deserialized_dict.get("user"),
-			detail = deserialized_dict.get("detail"),
-			date = deserialized_dict.get("date"),
-			patient_id = deserialized_dict.get("patientId"),
-			secret_foreign_keys = [x0 for x0 in deserialized_dict["secretForeignKeys"]],
-			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
-			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
-			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
-			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
+			created=deserialized_dict.get("created"),
+			modified=deserialized_dict.get("modified"),
+			author=deserialized_dict.get("author"),
+			responsible=deserialized_dict.get("responsible"),
+			medical_location_id=deserialized_dict.get("medicalLocationId"),
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
+			end_of_life=deserialized_dict.get("endOfLife"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			object_id=deserialized_dict.get("objectId"),
+			access_type=deserialized_dict.get("accessType"),
+			user=deserialized_dict.get("user"),
+			detail=deserialized_dict.get("detail"),
+			date=deserialized_dict.get("date"),
+			patient_id=deserialized_dict.get("patientId"),
+			secret_foreign_keys=[x0 for x0 in deserialized_dict["secretForeignKeys"]],
+			crypted_foreign_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
+			delegations=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
+			encryption_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
+			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
 @dataclass
@@ -6676,29 +6684,29 @@ class EncryptedAccessLog:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			rev = deserialized_dict.get("rev"),
-			created = deserialized_dict.get("created"),
-			modified = deserialized_dict.get("modified"),
-			author = deserialized_dict.get("author"),
-			responsible = deserialized_dict.get("responsible"),
-			medical_location_id = deserialized_dict.get("medicalLocationId"),
-			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			codes = [CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
-			end_of_life = deserialized_dict.get("endOfLife"),
-			deletion_date = deserialized_dict.get("deletionDate"),
-			object_id = deserialized_dict.get("objectId"),
-			access_type = deserialized_dict.get("accessType"),
-			user = deserialized_dict.get("user"),
-			detail = deserialized_dict.get("detail"),
-			date = deserialized_dict.get("date"),
-			patient_id = deserialized_dict.get("patientId"),
-			secret_foreign_keys = [x0 for x0 in deserialized_dict["secretForeignKeys"]],
-			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
-			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
-			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
-			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
+			created=deserialized_dict.get("created"),
+			modified=deserialized_dict.get("modified"),
+			author=deserialized_dict.get("author"),
+			responsible=deserialized_dict.get("responsible"),
+			medical_location_id=deserialized_dict.get("medicalLocationId"),
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
+			end_of_life=deserialized_dict.get("endOfLife"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			object_id=deserialized_dict.get("objectId"),
+			access_type=deserialized_dict.get("accessType"),
+			user=deserialized_dict.get("user"),
+			detail=deserialized_dict.get("detail"),
+			date=deserialized_dict.get("date"),
+			patient_id=deserialized_dict.get("patientId"),
+			secret_foreign_keys=[x0 for x0 in deserialized_dict["secretForeignKeys"]],
+			crypted_foreign_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
+			delegations=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
+			encryption_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
+			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
 AccessLog = Union['DecryptedAccessLog', 'EncryptedAccessLog']
@@ -6794,29 +6802,29 @@ class DecryptedTopic:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			rev = deserialized_dict.get("rev"),
-			created = deserialized_dict.get("created"),
-			modified = deserialized_dict.get("modified"),
-			health_element_id = deserialized_dict.get("healthElementId"),
-			contact_id = deserialized_dict.get("contactId"),
-			description = deserialized_dict.get("description"),
-			codes = [CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
-			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			author = deserialized_dict.get("author"),
-			responsible = deserialized_dict.get("responsible"),
-			medical_location_id = deserialized_dict.get("medicalLocationId"),
-			end_of_life = deserialized_dict.get("endOfLife"),
-			deletion_date = deserialized_dict.get("deletionDate"),
-			active_participants = dict(map(lambda kv0: (kv0[0], TopicRole._deserialize(kv0[1])), deserialized_dict["activeParticipants"].items())),
-			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
-			secret_foreign_keys = [x0 for x0 in deserialized_dict["secretForeignKeys"]],
-			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
-			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
-			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
-			linked_health_elements = [x0 for x0 in deserialized_dict["linkedHealthElements"]],
-			linked_services = [x0 for x0 in deserialized_dict["linkedServices"]],
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
+			created=deserialized_dict.get("created"),
+			modified=deserialized_dict.get("modified"),
+			health_element_id=deserialized_dict.get("healthElementId"),
+			contact_id=deserialized_dict.get("contactId"),
+			description=deserialized_dict.get("description"),
+			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			author=deserialized_dict.get("author"),
+			responsible=deserialized_dict.get("responsible"),
+			medical_location_id=deserialized_dict.get("medicalLocationId"),
+			end_of_life=deserialized_dict.get("endOfLife"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			active_participants=dict(map(lambda kv0: (kv0[0], TopicRole._deserialize(kv0[1])), deserialized_dict["activeParticipants"].items())),
+			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
+			secret_foreign_keys=[x0 for x0 in deserialized_dict["secretForeignKeys"]],
+			crypted_foreign_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
+			delegations=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
+			encryption_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
+			linked_health_elements=[x0 for x0 in deserialized_dict["linkedHealthElements"]],
+			linked_services=[x0 for x0 in deserialized_dict["linkedServices"]],
 		)
 
 @dataclass
@@ -6880,29 +6888,29 @@ class EncryptedTopic:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			rev = deserialized_dict.get("rev"),
-			created = deserialized_dict.get("created"),
-			modified = deserialized_dict.get("modified"),
-			health_element_id = deserialized_dict.get("healthElementId"),
-			contact_id = deserialized_dict.get("contactId"),
-			description = deserialized_dict.get("description"),
-			codes = [CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
-			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			author = deserialized_dict.get("author"),
-			responsible = deserialized_dict.get("responsible"),
-			medical_location_id = deserialized_dict.get("medicalLocationId"),
-			end_of_life = deserialized_dict.get("endOfLife"),
-			deletion_date = deserialized_dict.get("deletionDate"),
-			active_participants = dict(map(lambda kv0: (kv0[0], TopicRole._deserialize(kv0[1])), deserialized_dict["activeParticipants"].items())),
-			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
-			secret_foreign_keys = [x0 for x0 in deserialized_dict["secretForeignKeys"]],
-			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
-			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
-			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
-			linked_health_elements = [x0 for x0 in deserialized_dict["linkedHealthElements"]],
-			linked_services = [x0 for x0 in deserialized_dict["linkedServices"]],
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
+			created=deserialized_dict.get("created"),
+			modified=deserialized_dict.get("modified"),
+			health_element_id=deserialized_dict.get("healthElementId"),
+			contact_id=deserialized_dict.get("contactId"),
+			description=deserialized_dict.get("description"),
+			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			author=deserialized_dict.get("author"),
+			responsible=deserialized_dict.get("responsible"),
+			medical_location_id=deserialized_dict.get("medicalLocationId"),
+			end_of_life=deserialized_dict.get("endOfLife"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			active_participants=dict(map(lambda kv0: (kv0[0], TopicRole._deserialize(kv0[1])), deserialized_dict["activeParticipants"].items())),
+			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
+			secret_foreign_keys=[x0 for x0 in deserialized_dict["secretForeignKeys"]],
+			crypted_foreign_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
+			delegations=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
+			encryption_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
+			linked_health_elements=[x0 for x0 in deserialized_dict["linkedHealthElements"]],
+			linked_services=[x0 for x0 in deserialized_dict["linkedServices"]],
 		)
 
 Topic = Union['DecryptedTopic', 'EncryptedTopic']
@@ -7053,47 +7061,47 @@ class DecryptedCalendarItem:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			rev = deserialized_dict.get("rev"),
-			created = deserialized_dict.get("created"),
-			modified = deserialized_dict.get("modified"),
-			author = deserialized_dict.get("author"),
-			responsible = deserialized_dict.get("responsible"),
-			medical_location_id = deserialized_dict.get("medicalLocationId"),
-			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			codes = [CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
-			end_of_life = deserialized_dict.get("endOfLife"),
-			deletion_date = deserialized_dict.get("deletionDate"),
-			title = deserialized_dict.get("title"),
-			calendar_item_type_id = deserialized_dict.get("calendarItemTypeId"),
-			master_calendar_item_id = deserialized_dict.get("masterCalendarItemId"),
-			patient_id = deserialized_dict.get("patientId"),
-			important = deserialized_dict.get("important"),
-			home_visit = deserialized_dict.get("homeVisit"),
-			phone_number = deserialized_dict.get("phoneNumber"),
-			place_id = deserialized_dict.get("placeId"),
-			address = DecryptedAddress._deserialize(deserialized_dict.get("address")) if deserialized_dict.get("address") is not None else None,
-			address_text = deserialized_dict.get("addressText"),
-			start_time = deserialized_dict.get("startTime"),
-			end_time = deserialized_dict.get("endTime"),
-			confirmation_time = deserialized_dict.get("confirmationTime"),
-			cancellation_timestamp = deserialized_dict.get("cancellationTimestamp"),
-			confirmation_id = deserialized_dict.get("confirmationId"),
-			duration = deserialized_dict.get("duration"),
-			all_day = deserialized_dict.get("allDay"),
-			details = deserialized_dict.get("details"),
-			was_migrated = deserialized_dict.get("wasMigrated"),
-			agenda_id = deserialized_dict.get("agendaId"),
-			hcp_id = deserialized_dict.get("hcpId"),
-			recurrence_id = deserialized_dict.get("recurrenceId"),
-			meeting_tags = [CalendarItemTag._deserialize(x0) for x0 in deserialized_dict["meetingTags"]],
-			flow_item = FlowItem._deserialize(deserialized_dict.get("flowItem")) if deserialized_dict.get("flowItem") is not None else None,
-			secret_foreign_keys = [x0 for x0 in deserialized_dict["secretForeignKeys"]],
-			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
-			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
-			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
-			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
+			created=deserialized_dict.get("created"),
+			modified=deserialized_dict.get("modified"),
+			author=deserialized_dict.get("author"),
+			responsible=deserialized_dict.get("responsible"),
+			medical_location_id=deserialized_dict.get("medicalLocationId"),
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
+			end_of_life=deserialized_dict.get("endOfLife"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			title=deserialized_dict.get("title"),
+			calendar_item_type_id=deserialized_dict.get("calendarItemTypeId"),
+			master_calendar_item_id=deserialized_dict.get("masterCalendarItemId"),
+			patient_id=deserialized_dict.get("patientId"),
+			important=deserialized_dict.get("important"),
+			home_visit=deserialized_dict.get("homeVisit"),
+			phone_number=deserialized_dict.get("phoneNumber"),
+			place_id=deserialized_dict.get("placeId"),
+			address=DecryptedAddress._deserialize(deserialized_dict.get("address")) if deserialized_dict.get("address") is not None else None,
+			address_text=deserialized_dict.get("addressText"),
+			start_time=deserialized_dict.get("startTime"),
+			end_time=deserialized_dict.get("endTime"),
+			confirmation_time=deserialized_dict.get("confirmationTime"),
+			cancellation_timestamp=deserialized_dict.get("cancellationTimestamp"),
+			confirmation_id=deserialized_dict.get("confirmationId"),
+			duration=deserialized_dict.get("duration"),
+			all_day=deserialized_dict.get("allDay"),
+			details=deserialized_dict.get("details"),
+			was_migrated=deserialized_dict.get("wasMigrated"),
+			agenda_id=deserialized_dict.get("agendaId"),
+			hcp_id=deserialized_dict.get("hcpId"),
+			recurrence_id=deserialized_dict.get("recurrenceId"),
+			meeting_tags=[CalendarItemTag._deserialize(x0) for x0 in deserialized_dict["meetingTags"]],
+			flow_item=FlowItem._deserialize(deserialized_dict.get("flowItem")) if deserialized_dict.get("flowItem") is not None else None,
+			secret_foreign_keys=[x0 for x0 in deserialized_dict["secretForeignKeys"]],
+			crypted_foreign_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
+			delegations=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
+			encryption_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
+			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
 @dataclass
@@ -7193,47 +7201,47 @@ class EncryptedCalendarItem:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			rev = deserialized_dict.get("rev"),
-			created = deserialized_dict.get("created"),
-			modified = deserialized_dict.get("modified"),
-			author = deserialized_dict.get("author"),
-			responsible = deserialized_dict.get("responsible"),
-			medical_location_id = deserialized_dict.get("medicalLocationId"),
-			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			codes = [CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
-			end_of_life = deserialized_dict.get("endOfLife"),
-			deletion_date = deserialized_dict.get("deletionDate"),
-			title = deserialized_dict.get("title"),
-			calendar_item_type_id = deserialized_dict.get("calendarItemTypeId"),
-			master_calendar_item_id = deserialized_dict.get("masterCalendarItemId"),
-			patient_id = deserialized_dict.get("patientId"),
-			important = deserialized_dict.get("important"),
-			home_visit = deserialized_dict.get("homeVisit"),
-			phone_number = deserialized_dict.get("phoneNumber"),
-			place_id = deserialized_dict.get("placeId"),
-			address = EncryptedAddress._deserialize(deserialized_dict.get("address")) if deserialized_dict.get("address") is not None else None,
-			address_text = deserialized_dict.get("addressText"),
-			start_time = deserialized_dict.get("startTime"),
-			end_time = deserialized_dict.get("endTime"),
-			confirmation_time = deserialized_dict.get("confirmationTime"),
-			cancellation_timestamp = deserialized_dict.get("cancellationTimestamp"),
-			confirmation_id = deserialized_dict.get("confirmationId"),
-			duration = deserialized_dict.get("duration"),
-			all_day = deserialized_dict.get("allDay"),
-			details = deserialized_dict.get("details"),
-			was_migrated = deserialized_dict.get("wasMigrated"),
-			agenda_id = deserialized_dict.get("agendaId"),
-			hcp_id = deserialized_dict.get("hcpId"),
-			recurrence_id = deserialized_dict.get("recurrenceId"),
-			meeting_tags = [CalendarItemTag._deserialize(x0) for x0 in deserialized_dict["meetingTags"]],
-			flow_item = FlowItem._deserialize(deserialized_dict.get("flowItem")) if deserialized_dict.get("flowItem") is not None else None,
-			secret_foreign_keys = [x0 for x0 in deserialized_dict["secretForeignKeys"]],
-			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
-			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
-			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
-			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
+			created=deserialized_dict.get("created"),
+			modified=deserialized_dict.get("modified"),
+			author=deserialized_dict.get("author"),
+			responsible=deserialized_dict.get("responsible"),
+			medical_location_id=deserialized_dict.get("medicalLocationId"),
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
+			end_of_life=deserialized_dict.get("endOfLife"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			title=deserialized_dict.get("title"),
+			calendar_item_type_id=deserialized_dict.get("calendarItemTypeId"),
+			master_calendar_item_id=deserialized_dict.get("masterCalendarItemId"),
+			patient_id=deserialized_dict.get("patientId"),
+			important=deserialized_dict.get("important"),
+			home_visit=deserialized_dict.get("homeVisit"),
+			phone_number=deserialized_dict.get("phoneNumber"),
+			place_id=deserialized_dict.get("placeId"),
+			address=EncryptedAddress._deserialize(deserialized_dict.get("address")) if deserialized_dict.get("address") is not None else None,
+			address_text=deserialized_dict.get("addressText"),
+			start_time=deserialized_dict.get("startTime"),
+			end_time=deserialized_dict.get("endTime"),
+			confirmation_time=deserialized_dict.get("confirmationTime"),
+			cancellation_timestamp=deserialized_dict.get("cancellationTimestamp"),
+			confirmation_id=deserialized_dict.get("confirmationId"),
+			duration=deserialized_dict.get("duration"),
+			all_day=deserialized_dict.get("allDay"),
+			details=deserialized_dict.get("details"),
+			was_migrated=deserialized_dict.get("wasMigrated"),
+			agenda_id=deserialized_dict.get("agendaId"),
+			hcp_id=deserialized_dict.get("hcpId"),
+			recurrence_id=deserialized_dict.get("recurrenceId"),
+			meeting_tags=[CalendarItemTag._deserialize(x0) for x0 in deserialized_dict["meetingTags"]],
+			flow_item=FlowItem._deserialize(deserialized_dict.get("flowItem")) if deserialized_dict.get("flowItem") is not None else None,
+			secret_foreign_keys=[x0 for x0 in deserialized_dict["secretForeignKeys"]],
+			crypted_foreign_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
+			delegations=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
+			encryption_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
+			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
 CalendarItem = Union['DecryptedCalendarItem', 'EncryptedCalendarItem']
@@ -7361,45 +7369,45 @@ class DecryptedMessage:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			rev = deserialized_dict.get("rev"),
-			created = deserialized_dict.get("created"),
-			modified = deserialized_dict.get("modified"),
-			author = deserialized_dict.get("author"),
-			responsible = deserialized_dict.get("responsible"),
-			medical_location_id = deserialized_dict.get("medicalLocationId"),
-			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			codes = [CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
-			end_of_life = deserialized_dict.get("endOfLife"),
-			deletion_date = deserialized_dict.get("deletionDate"),
-			from_address = deserialized_dict.get("fromAddress"),
-			from_healthcare_party_id = deserialized_dict.get("fromHealthcarePartyId"),
-			form_id = deserialized_dict.get("formId"),
-			status = deserialized_dict.get("status"),
-			recipients_type = deserialized_dict.get("recipientsType"),
-			recipients = [x0 for x0 in deserialized_dict["recipients"]],
-			to_addresses = [x0 for x0 in deserialized_dict["toAddresses"]],
-			received = deserialized_dict.get("received"),
-			sent = deserialized_dict.get("sent"),
-			metas = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["metas"].items())),
-			read_status = dict(map(lambda kv0: (kv0[0], MessageReadStatus._deserialize(kv0[1])), deserialized_dict["readStatus"].items())),
-			message_attachments = [MessageAttachment._deserialize(x0) for x0 in deserialized_dict["messageAttachments"]],
-			transport_guid = deserialized_dict.get("transportGuid"),
-			remark = deserialized_dict.get("remark"),
-			conversation_guid = deserialized_dict.get("conversationGuid"),
-			subject = deserialized_dict.get("subject"),
-			invoice_ids = [x0 for x0 in deserialized_dict["invoiceIds"]],
-			parent_id = deserialized_dict.get("parentId"),
-			external_ref = deserialized_dict.get("externalRef"),
-			unassigned_results = [x0 for x0 in deserialized_dict["unassignedResults"]],
-			assigned_results = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["assignedResults"].items())),
-			sender_references = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["senderReferences"].items())),
-			secret_foreign_keys = [x0 for x0 in deserialized_dict["secretForeignKeys"]],
-			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
-			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
-			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
-			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
+			created=deserialized_dict.get("created"),
+			modified=deserialized_dict.get("modified"),
+			author=deserialized_dict.get("author"),
+			responsible=deserialized_dict.get("responsible"),
+			medical_location_id=deserialized_dict.get("medicalLocationId"),
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
+			end_of_life=deserialized_dict.get("endOfLife"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			from_address=deserialized_dict.get("fromAddress"),
+			from_healthcare_party_id=deserialized_dict.get("fromHealthcarePartyId"),
+			form_id=deserialized_dict.get("formId"),
+			status=deserialized_dict.get("status"),
+			recipients_type=deserialized_dict.get("recipientsType"),
+			recipients=[x0 for x0 in deserialized_dict["recipients"]],
+			to_addresses=[x0 for x0 in deserialized_dict["toAddresses"]],
+			received=deserialized_dict.get("received"),
+			sent=deserialized_dict.get("sent"),
+			metas=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["metas"].items())),
+			read_status=dict(map(lambda kv0: (kv0[0], MessageReadStatus._deserialize(kv0[1])), deserialized_dict["readStatus"].items())),
+			message_attachments=[MessageAttachment._deserialize(x0) for x0 in deserialized_dict["messageAttachments"]],
+			transport_guid=deserialized_dict.get("transportGuid"),
+			remark=deserialized_dict.get("remark"),
+			conversation_guid=deserialized_dict.get("conversationGuid"),
+			subject=deserialized_dict.get("subject"),
+			invoice_ids=[x0 for x0 in deserialized_dict["invoiceIds"]],
+			parent_id=deserialized_dict.get("parentId"),
+			external_ref=deserialized_dict.get("externalRef"),
+			unassigned_results=[x0 for x0 in deserialized_dict["unassignedResults"]],
+			assigned_results=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["assignedResults"].items())),
+			sender_references=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["senderReferences"].items())),
+			secret_foreign_keys=[x0 for x0 in deserialized_dict["secretForeignKeys"]],
+			crypted_foreign_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
+			delegations=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
+			encryption_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
+			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
 @dataclass
@@ -7495,45 +7503,45 @@ class EncryptedMessage:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			rev = deserialized_dict.get("rev"),
-			created = deserialized_dict.get("created"),
-			modified = deserialized_dict.get("modified"),
-			author = deserialized_dict.get("author"),
-			responsible = deserialized_dict.get("responsible"),
-			medical_location_id = deserialized_dict.get("medicalLocationId"),
-			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			codes = [CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
-			end_of_life = deserialized_dict.get("endOfLife"),
-			deletion_date = deserialized_dict.get("deletionDate"),
-			from_address = deserialized_dict.get("fromAddress"),
-			from_healthcare_party_id = deserialized_dict.get("fromHealthcarePartyId"),
-			form_id = deserialized_dict.get("formId"),
-			status = deserialized_dict.get("status"),
-			recipients_type = deserialized_dict.get("recipientsType"),
-			recipients = [x0 for x0 in deserialized_dict["recipients"]],
-			to_addresses = [x0 for x0 in deserialized_dict["toAddresses"]],
-			received = deserialized_dict.get("received"),
-			sent = deserialized_dict.get("sent"),
-			metas = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["metas"].items())),
-			read_status = dict(map(lambda kv0: (kv0[0], MessageReadStatus._deserialize(kv0[1])), deserialized_dict["readStatus"].items())),
-			message_attachments = [MessageAttachment._deserialize(x0) for x0 in deserialized_dict["messageAttachments"]],
-			transport_guid = deserialized_dict.get("transportGuid"),
-			remark = deserialized_dict.get("remark"),
-			conversation_guid = deserialized_dict.get("conversationGuid"),
-			subject = deserialized_dict.get("subject"),
-			invoice_ids = [x0 for x0 in deserialized_dict["invoiceIds"]],
-			parent_id = deserialized_dict.get("parentId"),
-			external_ref = deserialized_dict.get("externalRef"),
-			unassigned_results = [x0 for x0 in deserialized_dict["unassignedResults"]],
-			assigned_results = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["assignedResults"].items())),
-			sender_references = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["senderReferences"].items())),
-			secret_foreign_keys = [x0 for x0 in deserialized_dict["secretForeignKeys"]],
-			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
-			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
-			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
-			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
+			created=deserialized_dict.get("created"),
+			modified=deserialized_dict.get("modified"),
+			author=deserialized_dict.get("author"),
+			responsible=deserialized_dict.get("responsible"),
+			medical_location_id=deserialized_dict.get("medicalLocationId"),
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
+			end_of_life=deserialized_dict.get("endOfLife"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			from_address=deserialized_dict.get("fromAddress"),
+			from_healthcare_party_id=deserialized_dict.get("fromHealthcarePartyId"),
+			form_id=deserialized_dict.get("formId"),
+			status=deserialized_dict.get("status"),
+			recipients_type=deserialized_dict.get("recipientsType"),
+			recipients=[x0 for x0 in deserialized_dict["recipients"]],
+			to_addresses=[x0 for x0 in deserialized_dict["toAddresses"]],
+			received=deserialized_dict.get("received"),
+			sent=deserialized_dict.get("sent"),
+			metas=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["metas"].items())),
+			read_status=dict(map(lambda kv0: (kv0[0], MessageReadStatus._deserialize(kv0[1])), deserialized_dict["readStatus"].items())),
+			message_attachments=[MessageAttachment._deserialize(x0) for x0 in deserialized_dict["messageAttachments"]],
+			transport_guid=deserialized_dict.get("transportGuid"),
+			remark=deserialized_dict.get("remark"),
+			conversation_guid=deserialized_dict.get("conversationGuid"),
+			subject=deserialized_dict.get("subject"),
+			invoice_ids=[x0 for x0 in deserialized_dict["invoiceIds"]],
+			parent_id=deserialized_dict.get("parentId"),
+			external_ref=deserialized_dict.get("externalRef"),
+			unassigned_results=[x0 for x0 in deserialized_dict["unassignedResults"]],
+			assigned_results=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["assignedResults"].items())),
+			sender_references=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["senderReferences"].items())),
+			secret_foreign_keys=[x0 for x0 in deserialized_dict["secretForeignKeys"]],
+			crypted_foreign_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
+			delegations=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
+			encryption_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
+			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
 Message = Union['DecryptedMessage', 'EncryptedMessage']
@@ -7639,34 +7647,34 @@ class EncryptedForm:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			rev = deserialized_dict.get("rev"),
-			created = deserialized_dict.get("created"),
-			modified = deserialized_dict.get("modified"),
-			author = deserialized_dict.get("author"),
-			responsible = deserialized_dict.get("responsible"),
-			medical_location_id = deserialized_dict.get("medicalLocationId"),
-			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			codes = [CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
-			end_of_life = deserialized_dict.get("endOfLife"),
-			deletion_date = deserialized_dict.get("deletionDate"),
-			opening_date = deserialized_dict.get("openingDate"),
-			status = deserialized_dict.get("status"),
-			version = deserialized_dict.get("version"),
-			logical_uuid = deserialized_dict.get("logicalUuid"),
-			descr = deserialized_dict.get("descr"),
-			unique_id = deserialized_dict.get("uniqueId"),
-			form_template_id = deserialized_dict.get("formTemplateId"),
-			contact_id = deserialized_dict.get("contactId"),
-			health_element_id = deserialized_dict.get("healthElementId"),
-			plan_of_action_id = deserialized_dict.get("planOfActionId"),
-			parent = deserialized_dict.get("parent"),
-			secret_foreign_keys = [x0 for x0 in deserialized_dict["secretForeignKeys"]],
-			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
-			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
-			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
-			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
+			created=deserialized_dict.get("created"),
+			modified=deserialized_dict.get("modified"),
+			author=deserialized_dict.get("author"),
+			responsible=deserialized_dict.get("responsible"),
+			medical_location_id=deserialized_dict.get("medicalLocationId"),
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
+			end_of_life=deserialized_dict.get("endOfLife"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			opening_date=deserialized_dict.get("openingDate"),
+			status=deserialized_dict.get("status"),
+			version=deserialized_dict.get("version"),
+			logical_uuid=deserialized_dict.get("logicalUuid"),
+			descr=deserialized_dict.get("descr"),
+			unique_id=deserialized_dict.get("uniqueId"),
+			form_template_id=deserialized_dict.get("formTemplateId"),
+			contact_id=deserialized_dict.get("contactId"),
+			health_element_id=deserialized_dict.get("healthElementId"),
+			plan_of_action_id=deserialized_dict.get("planOfActionId"),
+			parent=deserialized_dict.get("parent"),
+			secret_foreign_keys=[x0 for x0 in deserialized_dict["secretForeignKeys"]],
+			crypted_foreign_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
+			delegations=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
+			encryption_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
+			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
 @dataclass
@@ -7740,34 +7748,34 @@ class DecryptedForm:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			rev = deserialized_dict.get("rev"),
-			created = deserialized_dict.get("created"),
-			modified = deserialized_dict.get("modified"),
-			author = deserialized_dict.get("author"),
-			responsible = deserialized_dict.get("responsible"),
-			medical_location_id = deserialized_dict.get("medicalLocationId"),
-			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			codes = [CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
-			end_of_life = deserialized_dict.get("endOfLife"),
-			deletion_date = deserialized_dict.get("deletionDate"),
-			opening_date = deserialized_dict.get("openingDate"),
-			status = deserialized_dict.get("status"),
-			version = deserialized_dict.get("version"),
-			logical_uuid = deserialized_dict.get("logicalUuid"),
-			descr = deserialized_dict.get("descr"),
-			unique_id = deserialized_dict.get("uniqueId"),
-			form_template_id = deserialized_dict.get("formTemplateId"),
-			contact_id = deserialized_dict.get("contactId"),
-			health_element_id = deserialized_dict.get("healthElementId"),
-			plan_of_action_id = deserialized_dict.get("planOfActionId"),
-			parent = deserialized_dict.get("parent"),
-			secret_foreign_keys = [x0 for x0 in deserialized_dict["secretForeignKeys"]],
-			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
-			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
-			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
-			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
+			created=deserialized_dict.get("created"),
+			modified=deserialized_dict.get("modified"),
+			author=deserialized_dict.get("author"),
+			responsible=deserialized_dict.get("responsible"),
+			medical_location_id=deserialized_dict.get("medicalLocationId"),
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
+			end_of_life=deserialized_dict.get("endOfLife"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			opening_date=deserialized_dict.get("openingDate"),
+			status=deserialized_dict.get("status"),
+			version=deserialized_dict.get("version"),
+			logical_uuid=deserialized_dict.get("logicalUuid"),
+			descr=deserialized_dict.get("descr"),
+			unique_id=deserialized_dict.get("uniqueId"),
+			form_template_id=deserialized_dict.get("formTemplateId"),
+			contact_id=deserialized_dict.get("contactId"),
+			health_element_id=deserialized_dict.get("healthElementId"),
+			plan_of_action_id=deserialized_dict.get("planOfActionId"),
+			parent=deserialized_dict.get("parent"),
+			secret_foreign_keys=[x0 for x0 in deserialized_dict["secretForeignKeys"]],
+			crypted_foreign_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
+			delegations=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
+			encryption_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
+			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
 Form = Union['EncryptedForm', 'DecryptedForm']
@@ -7959,77 +7967,77 @@ class DecryptedInvoice:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			rev = deserialized_dict.get("rev"),
-			created = deserialized_dict.get("created"),
-			modified = deserialized_dict.get("modified"),
-			author = deserialized_dict.get("author"),
-			responsible = deserialized_dict.get("responsible"),
-			medical_location_id = deserialized_dict.get("medicalLocationId"),
-			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			codes = [CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
-			end_of_life = deserialized_dict.get("endOfLife"),
-			deletion_date = deserialized_dict.get("deletionDate"),
-			invoice_date = deserialized_dict.get("invoiceDate"),
-			sent_date = deserialized_dict.get("sentDate"),
-			printed_date = deserialized_dict.get("printedDate"),
-			invoicing_codes = [DecryptedInvoicingCode._deserialize(x0) for x0 in deserialized_dict["invoicingCodes"]],
-			receipts = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["receipts"].items())),
-			recipient_type = deserialized_dict.get("recipientType"),
-			recipient_id = deserialized_dict.get("recipientId"),
-			invoice_reference = deserialized_dict.get("invoiceReference"),
-			third_party_reference = deserialized_dict.get("thirdPartyReference"),
-			third_party_payment_justification = deserialized_dict.get("thirdPartyPaymentJustification"),
-			third_party_payment_reason = deserialized_dict.get("thirdPartyPaymentReason"),
-			reason = deserialized_dict.get("reason"),
-			invoice_type = InvoiceType._deserialize(deserialized_dict.get("invoiceType")) if deserialized_dict.get("invoiceType") is not None else None,
-			sent_medium_type = MediumType._deserialize(deserialized_dict.get("sentMediumType")) if deserialized_dict.get("sentMediumType") is not None else None,
-			intervention_type = InvoiceInterventionType._deserialize(deserialized_dict.get("interventionType")) if deserialized_dict.get("interventionType") is not None else None,
-			group_id = deserialized_dict.get("groupId"),
-			payment_type = PaymentType._deserialize(deserialized_dict.get("paymentType")) if deserialized_dict.get("paymentType") is not None else None,
-			paid = deserialized_dict.get("paid"),
-			payments = [Payment._deserialize(x0) for x0 in deserialized_dict.get("payments")] if deserialized_dict.get("payments") is not None else None,
-			gnotion_nihii = deserialized_dict.get("gnotionNihii"),
-			gnotion_ssin = deserialized_dict.get("gnotionSsin"),
-			gnotion_last_name = deserialized_dict.get("gnotionLastName"),
-			gnotion_first_name = deserialized_dict.get("gnotionFirstName"),
-			gnotion_cd_hc_party = deserialized_dict.get("gnotionCdHcParty"),
-			invoice_period = deserialized_dict.get("invoicePeriod"),
-			care_provider_type = deserialized_dict.get("careProviderType"),
-			internship_nihii = deserialized_dict.get("internshipNihii"),
-			internship_ssin = deserialized_dict.get("internshipSsin"),
-			internship_last_name = deserialized_dict.get("internshipLastName"),
-			internship_first_name = deserialized_dict.get("internshipFirstName"),
-			internship_cd_hc_party = deserialized_dict.get("internshipCdHcParty"),
-			internship_cbe = deserialized_dict.get("internshipCbe"),
-			supervisor_nihii = deserialized_dict.get("supervisorNihii"),
-			supervisor_ssin = deserialized_dict.get("supervisorSsin"),
-			supervisor_last_name = deserialized_dict.get("supervisorLastName"),
-			supervisor_first_name = deserialized_dict.get("supervisorFirstName"),
-			supervisor_cd_hc_party = deserialized_dict.get("supervisorCdHcParty"),
-			supervisor_cbe = deserialized_dict.get("supervisorCbe"),
-			error = deserialized_dict.get("error"),
-			encounter_location_name = deserialized_dict.get("encounterLocationName"),
-			encounter_location_nihii = deserialized_dict.get("encounterLocationNihii"),
-			encounter_location_norm = deserialized_dict.get("encounterLocationNorm"),
-			long_delay_justification = deserialized_dict.get("longDelayJustification"),
-			corrective_invoice_id = deserialized_dict.get("correctiveInvoiceId"),
-			corrected_invoice_id = deserialized_dict.get("correctedInvoiceId"),
-			credit_note = deserialized_dict.get("creditNote"),
-			credit_note_related_invoice_id = deserialized_dict.get("creditNoteRelatedInvoiceId"),
-			id_document = IdentityDocumentReader._deserialize(deserialized_dict.get("idDocument")) if deserialized_dict.get("idDocument") is not None else None,
-			admission_date = deserialized_dict.get("admissionDate"),
-			location_nihii = deserialized_dict.get("locationNihii"),
-			location_service = deserialized_dict.get("locationService"),
-			cancel_reason = deserialized_dict.get("cancelReason"),
-			cancel_date = deserialized_dict.get("cancelDate"),
-			options = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["options"].items())),
-			secret_foreign_keys = [x0 for x0 in deserialized_dict["secretForeignKeys"]],
-			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
-			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
-			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
-			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
+			created=deserialized_dict.get("created"),
+			modified=deserialized_dict.get("modified"),
+			author=deserialized_dict.get("author"),
+			responsible=deserialized_dict.get("responsible"),
+			medical_location_id=deserialized_dict.get("medicalLocationId"),
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
+			end_of_life=deserialized_dict.get("endOfLife"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			invoice_date=deserialized_dict.get("invoiceDate"),
+			sent_date=deserialized_dict.get("sentDate"),
+			printed_date=deserialized_dict.get("printedDate"),
+			invoicing_codes=[DecryptedInvoicingCode._deserialize(x0) for x0 in deserialized_dict["invoicingCodes"]],
+			receipts=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["receipts"].items())),
+			recipient_type=deserialized_dict.get("recipientType"),
+			recipient_id=deserialized_dict.get("recipientId"),
+			invoice_reference=deserialized_dict.get("invoiceReference"),
+			third_party_reference=deserialized_dict.get("thirdPartyReference"),
+			third_party_payment_justification=deserialized_dict.get("thirdPartyPaymentJustification"),
+			third_party_payment_reason=deserialized_dict.get("thirdPartyPaymentReason"),
+			reason=deserialized_dict.get("reason"),
+			invoice_type=InvoiceType._deserialize(deserialized_dict.get("invoiceType")) if deserialized_dict.get("invoiceType") is not None else None,
+			sent_medium_type=MediumType._deserialize(deserialized_dict.get("sentMediumType")) if deserialized_dict.get("sentMediumType") is not None else None,
+			intervention_type=InvoiceInterventionType._deserialize(deserialized_dict.get("interventionType")) if deserialized_dict.get("interventionType") is not None else None,
+			group_id=deserialized_dict.get("groupId"),
+			payment_type=PaymentType._deserialize(deserialized_dict.get("paymentType")) if deserialized_dict.get("paymentType") is not None else None,
+			paid=deserialized_dict.get("paid"),
+			payments=[Payment._deserialize(x0) for x0 in deserialized_dict.get("payments")] if deserialized_dict.get("payments") is not None else None,
+			gnotion_nihii=deserialized_dict.get("gnotionNihii"),
+			gnotion_ssin=deserialized_dict.get("gnotionSsin"),
+			gnotion_last_name=deserialized_dict.get("gnotionLastName"),
+			gnotion_first_name=deserialized_dict.get("gnotionFirstName"),
+			gnotion_cd_hc_party=deserialized_dict.get("gnotionCdHcParty"),
+			invoice_period=deserialized_dict.get("invoicePeriod"),
+			care_provider_type=deserialized_dict.get("careProviderType"),
+			internship_nihii=deserialized_dict.get("internshipNihii"),
+			internship_ssin=deserialized_dict.get("internshipSsin"),
+			internship_last_name=deserialized_dict.get("internshipLastName"),
+			internship_first_name=deserialized_dict.get("internshipFirstName"),
+			internship_cd_hc_party=deserialized_dict.get("internshipCdHcParty"),
+			internship_cbe=deserialized_dict.get("internshipCbe"),
+			supervisor_nihii=deserialized_dict.get("supervisorNihii"),
+			supervisor_ssin=deserialized_dict.get("supervisorSsin"),
+			supervisor_last_name=deserialized_dict.get("supervisorLastName"),
+			supervisor_first_name=deserialized_dict.get("supervisorFirstName"),
+			supervisor_cd_hc_party=deserialized_dict.get("supervisorCdHcParty"),
+			supervisor_cbe=deserialized_dict.get("supervisorCbe"),
+			error=deserialized_dict.get("error"),
+			encounter_location_name=deserialized_dict.get("encounterLocationName"),
+			encounter_location_nihii=deserialized_dict.get("encounterLocationNihii"),
+			encounter_location_norm=deserialized_dict.get("encounterLocationNorm"),
+			long_delay_justification=deserialized_dict.get("longDelayJustification"),
+			corrective_invoice_id=deserialized_dict.get("correctiveInvoiceId"),
+			corrected_invoice_id=deserialized_dict.get("correctedInvoiceId"),
+			credit_note=deserialized_dict.get("creditNote"),
+			credit_note_related_invoice_id=deserialized_dict.get("creditNoteRelatedInvoiceId"),
+			id_document=IdentityDocumentReader._deserialize(deserialized_dict.get("idDocument")) if deserialized_dict.get("idDocument") is not None else None,
+			admission_date=deserialized_dict.get("admissionDate"),
+			location_nihii=deserialized_dict.get("locationNihii"),
+			location_service=deserialized_dict.get("locationService"),
+			cancel_reason=deserialized_dict.get("cancelReason"),
+			cancel_date=deserialized_dict.get("cancelDate"),
+			options=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["options"].items())),
+			secret_foreign_keys=[x0 for x0 in deserialized_dict["secretForeignKeys"]],
+			crypted_foreign_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
+			delegations=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
+			encryption_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
+			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
 @dataclass
@@ -8189,77 +8197,77 @@ class EncryptedInvoice:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			rev = deserialized_dict.get("rev"),
-			created = deserialized_dict.get("created"),
-			modified = deserialized_dict.get("modified"),
-			author = deserialized_dict.get("author"),
-			responsible = deserialized_dict.get("responsible"),
-			medical_location_id = deserialized_dict.get("medicalLocationId"),
-			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			codes = [CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
-			end_of_life = deserialized_dict.get("endOfLife"),
-			deletion_date = deserialized_dict.get("deletionDate"),
-			invoice_date = deserialized_dict.get("invoiceDate"),
-			sent_date = deserialized_dict.get("sentDate"),
-			printed_date = deserialized_dict.get("printedDate"),
-			invoicing_codes = [EncryptedInvoicingCode._deserialize(x0) for x0 in deserialized_dict["invoicingCodes"]],
-			receipts = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["receipts"].items())),
-			recipient_type = deserialized_dict.get("recipientType"),
-			recipient_id = deserialized_dict.get("recipientId"),
-			invoice_reference = deserialized_dict.get("invoiceReference"),
-			third_party_reference = deserialized_dict.get("thirdPartyReference"),
-			third_party_payment_justification = deserialized_dict.get("thirdPartyPaymentJustification"),
-			third_party_payment_reason = deserialized_dict.get("thirdPartyPaymentReason"),
-			reason = deserialized_dict.get("reason"),
-			invoice_type = InvoiceType._deserialize(deserialized_dict.get("invoiceType")) if deserialized_dict.get("invoiceType") is not None else None,
-			sent_medium_type = MediumType._deserialize(deserialized_dict.get("sentMediumType")) if deserialized_dict.get("sentMediumType") is not None else None,
-			intervention_type = InvoiceInterventionType._deserialize(deserialized_dict.get("interventionType")) if deserialized_dict.get("interventionType") is not None else None,
-			group_id = deserialized_dict.get("groupId"),
-			payment_type = PaymentType._deserialize(deserialized_dict.get("paymentType")) if deserialized_dict.get("paymentType") is not None else None,
-			paid = deserialized_dict.get("paid"),
-			payments = [Payment._deserialize(x0) for x0 in deserialized_dict.get("payments")] if deserialized_dict.get("payments") is not None else None,
-			gnotion_nihii = deserialized_dict.get("gnotionNihii"),
-			gnotion_ssin = deserialized_dict.get("gnotionSsin"),
-			gnotion_last_name = deserialized_dict.get("gnotionLastName"),
-			gnotion_first_name = deserialized_dict.get("gnotionFirstName"),
-			gnotion_cd_hc_party = deserialized_dict.get("gnotionCdHcParty"),
-			invoice_period = deserialized_dict.get("invoicePeriod"),
-			care_provider_type = deserialized_dict.get("careProviderType"),
-			internship_nihii = deserialized_dict.get("internshipNihii"),
-			internship_ssin = deserialized_dict.get("internshipSsin"),
-			internship_last_name = deserialized_dict.get("internshipLastName"),
-			internship_first_name = deserialized_dict.get("internshipFirstName"),
-			internship_cd_hc_party = deserialized_dict.get("internshipCdHcParty"),
-			internship_cbe = deserialized_dict.get("internshipCbe"),
-			supervisor_nihii = deserialized_dict.get("supervisorNihii"),
-			supervisor_ssin = deserialized_dict.get("supervisorSsin"),
-			supervisor_last_name = deserialized_dict.get("supervisorLastName"),
-			supervisor_first_name = deserialized_dict.get("supervisorFirstName"),
-			supervisor_cd_hc_party = deserialized_dict.get("supervisorCdHcParty"),
-			supervisor_cbe = deserialized_dict.get("supervisorCbe"),
-			error = deserialized_dict.get("error"),
-			encounter_location_name = deserialized_dict.get("encounterLocationName"),
-			encounter_location_nihii = deserialized_dict.get("encounterLocationNihii"),
-			encounter_location_norm = deserialized_dict.get("encounterLocationNorm"),
-			long_delay_justification = deserialized_dict.get("longDelayJustification"),
-			corrective_invoice_id = deserialized_dict.get("correctiveInvoiceId"),
-			corrected_invoice_id = deserialized_dict.get("correctedInvoiceId"),
-			credit_note = deserialized_dict.get("creditNote"),
-			credit_note_related_invoice_id = deserialized_dict.get("creditNoteRelatedInvoiceId"),
-			id_document = IdentityDocumentReader._deserialize(deserialized_dict.get("idDocument")) if deserialized_dict.get("idDocument") is not None else None,
-			admission_date = deserialized_dict.get("admissionDate"),
-			location_nihii = deserialized_dict.get("locationNihii"),
-			location_service = deserialized_dict.get("locationService"),
-			cancel_reason = deserialized_dict.get("cancelReason"),
-			cancel_date = deserialized_dict.get("cancelDate"),
-			options = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["options"].items())),
-			secret_foreign_keys = [x0 for x0 in deserialized_dict["secretForeignKeys"]],
-			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
-			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
-			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
-			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
+			created=deserialized_dict.get("created"),
+			modified=deserialized_dict.get("modified"),
+			author=deserialized_dict.get("author"),
+			responsible=deserialized_dict.get("responsible"),
+			medical_location_id=deserialized_dict.get("medicalLocationId"),
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
+			end_of_life=deserialized_dict.get("endOfLife"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			invoice_date=deserialized_dict.get("invoiceDate"),
+			sent_date=deserialized_dict.get("sentDate"),
+			printed_date=deserialized_dict.get("printedDate"),
+			invoicing_codes=[EncryptedInvoicingCode._deserialize(x0) for x0 in deserialized_dict["invoicingCodes"]],
+			receipts=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["receipts"].items())),
+			recipient_type=deserialized_dict.get("recipientType"),
+			recipient_id=deserialized_dict.get("recipientId"),
+			invoice_reference=deserialized_dict.get("invoiceReference"),
+			third_party_reference=deserialized_dict.get("thirdPartyReference"),
+			third_party_payment_justification=deserialized_dict.get("thirdPartyPaymentJustification"),
+			third_party_payment_reason=deserialized_dict.get("thirdPartyPaymentReason"),
+			reason=deserialized_dict.get("reason"),
+			invoice_type=InvoiceType._deserialize(deserialized_dict.get("invoiceType")) if deserialized_dict.get("invoiceType") is not None else None,
+			sent_medium_type=MediumType._deserialize(deserialized_dict.get("sentMediumType")) if deserialized_dict.get("sentMediumType") is not None else None,
+			intervention_type=InvoiceInterventionType._deserialize(deserialized_dict.get("interventionType")) if deserialized_dict.get("interventionType") is not None else None,
+			group_id=deserialized_dict.get("groupId"),
+			payment_type=PaymentType._deserialize(deserialized_dict.get("paymentType")) if deserialized_dict.get("paymentType") is not None else None,
+			paid=deserialized_dict.get("paid"),
+			payments=[Payment._deserialize(x0) for x0 in deserialized_dict.get("payments")] if deserialized_dict.get("payments") is not None else None,
+			gnotion_nihii=deserialized_dict.get("gnotionNihii"),
+			gnotion_ssin=deserialized_dict.get("gnotionSsin"),
+			gnotion_last_name=deserialized_dict.get("gnotionLastName"),
+			gnotion_first_name=deserialized_dict.get("gnotionFirstName"),
+			gnotion_cd_hc_party=deserialized_dict.get("gnotionCdHcParty"),
+			invoice_period=deserialized_dict.get("invoicePeriod"),
+			care_provider_type=deserialized_dict.get("careProviderType"),
+			internship_nihii=deserialized_dict.get("internshipNihii"),
+			internship_ssin=deserialized_dict.get("internshipSsin"),
+			internship_last_name=deserialized_dict.get("internshipLastName"),
+			internship_first_name=deserialized_dict.get("internshipFirstName"),
+			internship_cd_hc_party=deserialized_dict.get("internshipCdHcParty"),
+			internship_cbe=deserialized_dict.get("internshipCbe"),
+			supervisor_nihii=deserialized_dict.get("supervisorNihii"),
+			supervisor_ssin=deserialized_dict.get("supervisorSsin"),
+			supervisor_last_name=deserialized_dict.get("supervisorLastName"),
+			supervisor_first_name=deserialized_dict.get("supervisorFirstName"),
+			supervisor_cd_hc_party=deserialized_dict.get("supervisorCdHcParty"),
+			supervisor_cbe=deserialized_dict.get("supervisorCbe"),
+			error=deserialized_dict.get("error"),
+			encounter_location_name=deserialized_dict.get("encounterLocationName"),
+			encounter_location_nihii=deserialized_dict.get("encounterLocationNihii"),
+			encounter_location_norm=deserialized_dict.get("encounterLocationNorm"),
+			long_delay_justification=deserialized_dict.get("longDelayJustification"),
+			corrective_invoice_id=deserialized_dict.get("correctiveInvoiceId"),
+			corrected_invoice_id=deserialized_dict.get("correctedInvoiceId"),
+			credit_note=deserialized_dict.get("creditNote"),
+			credit_note_related_invoice_id=deserialized_dict.get("creditNoteRelatedInvoiceId"),
+			id_document=IdentityDocumentReader._deserialize(deserialized_dict.get("idDocument")) if deserialized_dict.get("idDocument") is not None else None,
+			admission_date=deserialized_dict.get("admissionDate"),
+			location_nihii=deserialized_dict.get("locationNihii"),
+			location_service=deserialized_dict.get("locationService"),
+			cancel_reason=deserialized_dict.get("cancelReason"),
+			cancel_date=deserialized_dict.get("cancelDate"),
+			options=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["options"].items())),
+			secret_foreign_keys=[x0 for x0 in deserialized_dict["secretForeignKeys"]],
+			crypted_foreign_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
+			delegations=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
+			encryption_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
+			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
 Invoice = Union['DecryptedInvoice', 'EncryptedInvoice']
@@ -8413,58 +8421,58 @@ class DecryptedInvoicingCode:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict.get("id"),
-			date_code = deserialized_dict.get("dateCode"),
-			logical_id = deserialized_dict.get("logicalId"),
-			label = deserialized_dict.get("label"),
-			user_id = deserialized_dict.get("userId"),
-			contact_id = deserialized_dict.get("contactId"),
-			service_id = deserialized_dict.get("serviceId"),
-			tarification_id = deserialized_dict.get("tarificationId"),
-			code = deserialized_dict.get("code"),
-			payment_type = PaymentType._deserialize(deserialized_dict.get("paymentType")) if deserialized_dict.get("paymentType") is not None else None,
-			paid = deserialized_dict.get("paid"),
-			total_amount = deserialized_dict.get("totalAmount"),
-			reimbursement = deserialized_dict.get("reimbursement"),
-			patient_intervention = deserialized_dict.get("patientIntervention"),
-			doctor_supplement = deserialized_dict.get("doctorSupplement"),
-			convention_amount = deserialized_dict.get("conventionAmount"),
-			vat = deserialized_dict.get("vat"),
-			error = deserialized_dict.get("error"),
-			contract = deserialized_dict.get("contract"),
-			contract_date = deserialized_dict.get("contractDate"),
-			units = deserialized_dict.get("units"),
-			side = deserialized_dict.get("side"),
-			time_of_day = deserialized_dict.get("timeOfDay"),
-			eid_reading_hour = deserialized_dict.get("eidReadingHour"),
-			eid_reading_value = deserialized_dict.get("eidReadingValue"),
-			override3rd_payer_code = deserialized_dict.get("override3rdPayerCode"),
-			override3rd_payer_reason = deserialized_dict.get("override3rdPayerReason"),
-			transplantation_code = deserialized_dict.get("transplantationCode"),
-			prescriber_norm = deserialized_dict.get("prescriberNorm"),
-			percent_norm = deserialized_dict.get("percentNorm"),
-			prescriber_nihii = deserialized_dict.get("prescriberNihii"),
-			related_code = deserialized_dict.get("relatedCode"),
-			prescription_date = deserialized_dict.get("prescriptionDate"),
-			derogation_max_number = deserialized_dict.get("derogationMaxNumber"),
-			prescriber_ssin = deserialized_dict.get("prescriberSsin"),
-			prescriber_last_name = deserialized_dict.get("prescriberLastName"),
-			prescriber_first_name = deserialized_dict.get("prescriberFirstName"),
-			prescriber_cd_hc_party = deserialized_dict.get("prescriberCdHcParty"),
-			location_nihii = deserialized_dict.get("locationNihii"),
-			location_cd_hc_party = deserialized_dict.get("locationCdHcParty"),
-			location_service = deserialized_dict.get("locationService"),
-			admission_date = deserialized_dict.get("admissionDate"),
-			canceled = deserialized_dict.get("canceled"),
-			accepted = deserialized_dict.get("accepted"),
-			pending = deserialized_dict.get("pending"),
-			resent = deserialized_dict.get("resent"),
-			archived = deserialized_dict.get("archived"),
-			lost = deserialized_dict.get("lost"),
-			insurance_justification = deserialized_dict.get("insuranceJustification"),
-			cancel_patient_intervention_reason = deserialized_dict.get("cancelPatientInterventionReason"),
-			status = deserialized_dict.get("status"),
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
+			id=deserialized_dict.get("id"),
+			date_code=deserialized_dict.get("dateCode"),
+			logical_id=deserialized_dict.get("logicalId"),
+			label=deserialized_dict.get("label"),
+			user_id=deserialized_dict.get("userId"),
+			contact_id=deserialized_dict.get("contactId"),
+			service_id=deserialized_dict.get("serviceId"),
+			tarification_id=deserialized_dict.get("tarificationId"),
+			code=deserialized_dict.get("code"),
+			payment_type=PaymentType._deserialize(deserialized_dict.get("paymentType")) if deserialized_dict.get("paymentType") is not None else None,
+			paid=deserialized_dict.get("paid"),
+			total_amount=deserialized_dict.get("totalAmount"),
+			reimbursement=deserialized_dict.get("reimbursement"),
+			patient_intervention=deserialized_dict.get("patientIntervention"),
+			doctor_supplement=deserialized_dict.get("doctorSupplement"),
+			convention_amount=deserialized_dict.get("conventionAmount"),
+			vat=deserialized_dict.get("vat"),
+			error=deserialized_dict.get("error"),
+			contract=deserialized_dict.get("contract"),
+			contract_date=deserialized_dict.get("contractDate"),
+			units=deserialized_dict.get("units"),
+			side=deserialized_dict.get("side"),
+			time_of_day=deserialized_dict.get("timeOfDay"),
+			eid_reading_hour=deserialized_dict.get("eidReadingHour"),
+			eid_reading_value=deserialized_dict.get("eidReadingValue"),
+			override3rd_payer_code=deserialized_dict.get("override3rdPayerCode"),
+			override3rd_payer_reason=deserialized_dict.get("override3rdPayerReason"),
+			transplantation_code=deserialized_dict.get("transplantationCode"),
+			prescriber_norm=deserialized_dict.get("prescriberNorm"),
+			percent_norm=deserialized_dict.get("percentNorm"),
+			prescriber_nihii=deserialized_dict.get("prescriberNihii"),
+			related_code=deserialized_dict.get("relatedCode"),
+			prescription_date=deserialized_dict.get("prescriptionDate"),
+			derogation_max_number=deserialized_dict.get("derogationMaxNumber"),
+			prescriber_ssin=deserialized_dict.get("prescriberSsin"),
+			prescriber_last_name=deserialized_dict.get("prescriberLastName"),
+			prescriber_first_name=deserialized_dict.get("prescriberFirstName"),
+			prescriber_cd_hc_party=deserialized_dict.get("prescriberCdHcParty"),
+			location_nihii=deserialized_dict.get("locationNihii"),
+			location_cd_hc_party=deserialized_dict.get("locationCdHcParty"),
+			location_service=deserialized_dict.get("locationService"),
+			admission_date=deserialized_dict.get("admissionDate"),
+			canceled=deserialized_dict.get("canceled"),
+			accepted=deserialized_dict.get("accepted"),
+			pending=deserialized_dict.get("pending"),
+			resent=deserialized_dict.get("resent"),
+			archived=deserialized_dict.get("archived"),
+			lost=deserialized_dict.get("lost"),
+			insurance_justification=deserialized_dict.get("insuranceJustification"),
+			cancel_patient_intervention_reason=deserialized_dict.get("cancelPatientInterventionReason"),
+			status=deserialized_dict.get("status"),
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
 @dataclass
@@ -8586,58 +8594,58 @@ class EncryptedInvoicingCode:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict.get("id"),
-			date_code = deserialized_dict.get("dateCode"),
-			logical_id = deserialized_dict.get("logicalId"),
-			label = deserialized_dict.get("label"),
-			user_id = deserialized_dict.get("userId"),
-			contact_id = deserialized_dict.get("contactId"),
-			service_id = deserialized_dict.get("serviceId"),
-			tarification_id = deserialized_dict.get("tarificationId"),
-			code = deserialized_dict.get("code"),
-			payment_type = PaymentType._deserialize(deserialized_dict.get("paymentType")) if deserialized_dict.get("paymentType") is not None else None,
-			paid = deserialized_dict.get("paid"),
-			total_amount = deserialized_dict.get("totalAmount"),
-			reimbursement = deserialized_dict.get("reimbursement"),
-			patient_intervention = deserialized_dict.get("patientIntervention"),
-			doctor_supplement = deserialized_dict.get("doctorSupplement"),
-			convention_amount = deserialized_dict.get("conventionAmount"),
-			vat = deserialized_dict.get("vat"),
-			error = deserialized_dict.get("error"),
-			contract = deserialized_dict.get("contract"),
-			contract_date = deserialized_dict.get("contractDate"),
-			units = deserialized_dict.get("units"),
-			side = deserialized_dict.get("side"),
-			time_of_day = deserialized_dict.get("timeOfDay"),
-			eid_reading_hour = deserialized_dict.get("eidReadingHour"),
-			eid_reading_value = deserialized_dict.get("eidReadingValue"),
-			override3rd_payer_code = deserialized_dict.get("override3rdPayerCode"),
-			override3rd_payer_reason = deserialized_dict.get("override3rdPayerReason"),
-			transplantation_code = deserialized_dict.get("transplantationCode"),
-			prescriber_norm = deserialized_dict.get("prescriberNorm"),
-			percent_norm = deserialized_dict.get("percentNorm"),
-			prescriber_nihii = deserialized_dict.get("prescriberNihii"),
-			related_code = deserialized_dict.get("relatedCode"),
-			prescription_date = deserialized_dict.get("prescriptionDate"),
-			derogation_max_number = deserialized_dict.get("derogationMaxNumber"),
-			prescriber_ssin = deserialized_dict.get("prescriberSsin"),
-			prescriber_last_name = deserialized_dict.get("prescriberLastName"),
-			prescriber_first_name = deserialized_dict.get("prescriberFirstName"),
-			prescriber_cd_hc_party = deserialized_dict.get("prescriberCdHcParty"),
-			location_nihii = deserialized_dict.get("locationNihii"),
-			location_cd_hc_party = deserialized_dict.get("locationCdHcParty"),
-			location_service = deserialized_dict.get("locationService"),
-			admission_date = deserialized_dict.get("admissionDate"),
-			canceled = deserialized_dict.get("canceled"),
-			accepted = deserialized_dict.get("accepted"),
-			pending = deserialized_dict.get("pending"),
-			resent = deserialized_dict.get("resent"),
-			archived = deserialized_dict.get("archived"),
-			lost = deserialized_dict.get("lost"),
-			insurance_justification = deserialized_dict.get("insuranceJustification"),
-			cancel_patient_intervention_reason = deserialized_dict.get("cancelPatientInterventionReason"),
-			status = deserialized_dict.get("status"),
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
+			id=deserialized_dict.get("id"),
+			date_code=deserialized_dict.get("dateCode"),
+			logical_id=deserialized_dict.get("logicalId"),
+			label=deserialized_dict.get("label"),
+			user_id=deserialized_dict.get("userId"),
+			contact_id=deserialized_dict.get("contactId"),
+			service_id=deserialized_dict.get("serviceId"),
+			tarification_id=deserialized_dict.get("tarificationId"),
+			code=deserialized_dict.get("code"),
+			payment_type=PaymentType._deserialize(deserialized_dict.get("paymentType")) if deserialized_dict.get("paymentType") is not None else None,
+			paid=deserialized_dict.get("paid"),
+			total_amount=deserialized_dict.get("totalAmount"),
+			reimbursement=deserialized_dict.get("reimbursement"),
+			patient_intervention=deserialized_dict.get("patientIntervention"),
+			doctor_supplement=deserialized_dict.get("doctorSupplement"),
+			convention_amount=deserialized_dict.get("conventionAmount"),
+			vat=deserialized_dict.get("vat"),
+			error=deserialized_dict.get("error"),
+			contract=deserialized_dict.get("contract"),
+			contract_date=deserialized_dict.get("contractDate"),
+			units=deserialized_dict.get("units"),
+			side=deserialized_dict.get("side"),
+			time_of_day=deserialized_dict.get("timeOfDay"),
+			eid_reading_hour=deserialized_dict.get("eidReadingHour"),
+			eid_reading_value=deserialized_dict.get("eidReadingValue"),
+			override3rd_payer_code=deserialized_dict.get("override3rdPayerCode"),
+			override3rd_payer_reason=deserialized_dict.get("override3rdPayerReason"),
+			transplantation_code=deserialized_dict.get("transplantationCode"),
+			prescriber_norm=deserialized_dict.get("prescriberNorm"),
+			percent_norm=deserialized_dict.get("percentNorm"),
+			prescriber_nihii=deserialized_dict.get("prescriberNihii"),
+			related_code=deserialized_dict.get("relatedCode"),
+			prescription_date=deserialized_dict.get("prescriptionDate"),
+			derogation_max_number=deserialized_dict.get("derogationMaxNumber"),
+			prescriber_ssin=deserialized_dict.get("prescriberSsin"),
+			prescriber_last_name=deserialized_dict.get("prescriberLastName"),
+			prescriber_first_name=deserialized_dict.get("prescriberFirstName"),
+			prescriber_cd_hc_party=deserialized_dict.get("prescriberCdHcParty"),
+			location_nihii=deserialized_dict.get("locationNihii"),
+			location_cd_hc_party=deserialized_dict.get("locationCdHcParty"),
+			location_service=deserialized_dict.get("locationService"),
+			admission_date=deserialized_dict.get("admissionDate"),
+			canceled=deserialized_dict.get("canceled"),
+			accepted=deserialized_dict.get("accepted"),
+			pending=deserialized_dict.get("pending"),
+			resent=deserialized_dict.get("resent"),
+			archived=deserialized_dict.get("archived"),
+			lost=deserialized_dict.get("lost"),
+			insurance_justification=deserialized_dict.get("insuranceJustification"),
+			cancel_patient_intervention_reason=deserialized_dict.get("cancelPatientInterventionReason"),
+			status=deserialized_dict.get("status"),
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
 InvoicingCode = Union['DecryptedInvoicingCode', 'EncryptedInvoicingCode']
@@ -8768,17 +8776,17 @@ class Insurance:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			rev = deserialized_dict.get("rev"),
-			deletion_date = deserialized_dict.get("deletionDate"),
-			name = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["name"].items())),
-			private_insurance = deserialized_dict["privateInsurance"],
-			hospitalisation_insurance = deserialized_dict["hospitalisationInsurance"],
-			ambulatory_insurance = deserialized_dict["ambulatoryInsurance"],
-			code = deserialized_dict.get("code"),
-			agreement_number = deserialized_dict.get("agreementNumber"),
-			parent = deserialized_dict.get("parent"),
-			address = DecryptedAddress._deserialize(deserialized_dict["address"]),
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			name=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["name"].items())),
+			private_insurance=deserialized_dict["privateInsurance"],
+			hospitalisation_insurance=deserialized_dict["hospitalisationInsurance"],
+			ambulatory_insurance=deserialized_dict["ambulatoryInsurance"],
+			code=deserialized_dict.get("code"),
+			agreement_number=deserialized_dict.get("agreementNumber"),
+			parent=deserialized_dict.get("parent"),
+			address=DecryptedAddress._deserialize(deserialized_dict["address"]),
 		)
 
 @dataclass
@@ -8826,21 +8834,21 @@ class Group:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			rev = deserialized_dict.get("rev"),
-			deletion_date = deserialized_dict.get("deletionDate"),
-			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			name = deserialized_dict.get("name"),
-			password = deserialized_dict.get("password"),
-			servers = [x0 for x0 in deserialized_dict.get("servers")] if deserialized_dict.get("servers") is not None else None,
-			super_admin = deserialized_dict["superAdmin"],
-			properties = [DecryptedPropertyStub._deserialize(x0) for x0 in deserialized_dict["properties"]],
-			default_user_roles = dict(map(lambda kv0: (UserType._deserialize(kv0[0]), [x1 for x1 in kv0[1]]), deserialized_dict["defaultUserRoles"].items())),
-			operation_tokens = dict(map(lambda kv0: (kv0[0], OperationToken._deserialize(kv0[1])), deserialized_dict["operationTokens"].items())),
-			shared_entities = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["sharedEntities"].items())),
-			minimum_kraken_version = deserialized_dict.get("minimumKrakenVersion"),
-			minimum_authentication_class_for_elevated_privileges = AuthenticationClass._deserialize(deserialized_dict["minimumAuthenticationClassForElevatedPrivileges"]),
-			super_group = deserialized_dict.get("superGroup"),
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			name=deserialized_dict.get("name"),
+			password=deserialized_dict.get("password"),
+			servers=[x0 for x0 in deserialized_dict.get("servers")] if deserialized_dict.get("servers") is not None else None,
+			super_admin=deserialized_dict["superAdmin"],
+			properties=[DecryptedPropertyStub._deserialize(x0) for x0 in deserialized_dict["properties"]],
+			default_user_roles=dict(map(lambda kv0: (UserType._deserialize(kv0[0]), [x1 for x1 in kv0[1]]), deserialized_dict["defaultUserRoles"].items())),
+			operation_tokens=dict(map(lambda kv0: (kv0[0], OperationToken._deserialize(kv0[1])), deserialized_dict["operationTokens"].items())),
+			shared_entities=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["sharedEntities"].items())),
+			minimum_kraken_version=deserialized_dict.get("minimumKrakenVersion"),
+			minimum_authentication_class_for_elevated_privileges=AuthenticationClass._deserialize(deserialized_dict["minimumAuthenticationClassForElevatedPrivileges"]),
+			super_group=deserialized_dict.get("superGroup"),
 		)
 
 class GroupType(Enum):
@@ -8885,10 +8893,10 @@ class DatabaseInitialisation:
 		else:
 			deserialized_dict = data
 		return cls(
-			users = [User._deserialize(x0) for x0 in deserialized_dict.get("users")] if deserialized_dict.get("users") is not None else None,
-			healthcare_parties = [HealthcareParty._deserialize(x0) for x0 in deserialized_dict.get("healthcareParties")] if deserialized_dict.get("healthcareParties") is not None else None,
-			replication = Replication._deserialize(deserialized_dict.get("replication")) if deserialized_dict.get("replication") is not None else None,
-			minimum_kraken_version = deserialized_dict.get("minimumKrakenVersion"),
+			users=[User._deserialize(x0) for x0 in deserialized_dict.get("users")] if deserialized_dict.get("users") is not None else None,
+			healthcare_parties=[HealthcareParty._deserialize(x0) for x0 in deserialized_dict.get("healthcareParties")] if deserialized_dict.get("healthcareParties") is not None else None,
+			replication=Replication._deserialize(deserialized_dict.get("replication")) if deserialized_dict.get("replication") is not None else None,
+			minimum_kraken_version=deserialized_dict.get("minimumKrakenVersion"),
 		)
 
 @dataclass
@@ -8912,9 +8920,9 @@ class RegistrationSuccess:
 		else:
 			deserialized_dict = data
 		return cls(
-			group_id = deserialized_dict["groupId"],
-			user_id = deserialized_dict["userId"],
-			token = deserialized_dict["token"],
+			group_id=deserialized_dict["groupId"],
+			user_id=deserialized_dict["userId"],
+			token=deserialized_dict["token"],
 		)
 
 class PermissionType(Enum):
@@ -8996,12 +9004,12 @@ class RegistrationInformation:
 		else:
 			deserialized_dict = data
 		return cls(
-			first_name = deserialized_dict["firstName"],
-			last_name = deserialized_dict["lastName"],
-			email_address = deserialized_dict["emailAddress"],
-			user_options = deserialized_dict.get("userOptions"),
-			user_roles = [x0 for x0 in deserialized_dict["userRoles"]],
-			minimum_kraken_version = deserialized_dict.get("minimumKrakenVersion"),
+			first_name=deserialized_dict["firstName"],
+			last_name=deserialized_dict["lastName"],
+			email_address=deserialized_dict["emailAddress"],
+			user_options=deserialized_dict.get("userOptions"),
+			user_roles=[x0 for x0 in deserialized_dict["userRoles"]],
+			minimum_kraken_version=deserialized_dict.get("minimumKrakenVersion"),
 		)
 
 class Operation(Enum):
@@ -9077,8 +9085,8 @@ class RoleConfiguration:
 		else:
 			deserialized_dict = data
 		return cls(
-			source = RoleConfiguration.Source._deserialize(deserialized_dict["source"]),
-			roles = [x0 for x0 in deserialized_dict["roles"]],
+			source=RoleConfiguration.Source._deserialize(deserialized_dict["source"]),
+			roles=[x0 for x0 in deserialized_dict["roles"]],
 		)
 
 @dataclass
@@ -9102,9 +9110,9 @@ class GroupDeletionReport:
 		else:
 			deserialized_dict = data
 		return cls(
-			type = deserialized_dict["type"],
-			id = deserialized_dict["id"],
-			server = deserialized_dict["server"],
+			type=deserialized_dict["type"],
+			id=deserialized_dict["id"],
+			server=deserialized_dict["server"],
 		)
 
 @dataclass
@@ -9124,7 +9132,7 @@ class ListOfProperties:
 		else:
 			deserialized_dict = data
 		return cls(
-			properties = [DecryptedPropertyStub._deserialize(x0) for x0 in deserialized_dict["properties"]],
+			properties=[DecryptedPropertyStub._deserialize(x0) for x0 in deserialized_dict["properties"]],
 		)
 
 @dataclass
@@ -9160,15 +9168,15 @@ class DesignDocument:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			rev = deserialized_dict.get("rev"),
-			rev_history = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["revHistory"].items())),
-			language = deserialized_dict.get("language"),
-			views = dict(map(lambda kv0: (kv0[0], View._deserialize(kv0[1])), deserialized_dict["views"].items())),
-			lists = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["lists"].items())),
-			shows = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["shows"].items())),
-			update_handlers = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("updateHandlers").items())) if deserialized_dict.get("updateHandlers") is not None else None,
-			filters = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["filters"].items())),
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
+			rev_history=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["revHistory"].items())),
+			language=deserialized_dict.get("language"),
+			views=dict(map(lambda kv0: (kv0[0], View._deserialize(kv0[1])), deserialized_dict["views"].items())),
+			lists=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["lists"].items())),
+			shows=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["shows"].items())),
+			update_handlers=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("updateHandlers").items())) if deserialized_dict.get("updateHandlers") is not None else None,
+			filters=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["filters"].items())),
 		)
 
 @dataclass
@@ -9192,9 +9200,9 @@ class GroupDatabasesInfo:
 		else:
 			deserialized_dict = data
 		return cls(
-			group_id = deserialized_dict["groupId"],
-			databases_info = [DatabaseInfo._deserialize(x0) for x0 in deserialized_dict["databasesInfo"]],
-			gcp_storage_size = deserialized_dict["gcpStorageSize"],
+			group_id=deserialized_dict["groupId"],
+			databases_info=[DatabaseInfo._deserialize(x0) for x0 in deserialized_dict["databasesInfo"]],
+			gcp_storage_size=deserialized_dict["gcpStorageSize"],
 		)
 
 @dataclass
@@ -9226,13 +9234,13 @@ class CodeStub:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict.get("id"),
-			context = deserialized_dict.get("context"),
-			type = deserialized_dict.get("type"),
-			code = deserialized_dict.get("code"),
-			version = deserialized_dict.get("version"),
-			context_label = deserialized_dict.get("contextLabel"),
-			label = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("label").items())) if deserialized_dict.get("label") is not None else None,
+			id=deserialized_dict.get("id"),
+			context=deserialized_dict.get("context"),
+			type=deserialized_dict.get("type"),
+			code=deserialized_dict.get("code"),
+			version=deserialized_dict.get("version"),
+			context_label=deserialized_dict.get("contextLabel"),
+			label=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("label").items())) if deserialized_dict.get("label") is not None else None,
 		)
 
 @dataclass
@@ -9254,8 +9262,8 @@ class KeywordSubword:
 		else:
 			deserialized_dict = data
 		return cls(
-			value = deserialized_dict.get("value"),
-			sub_words = [KeywordSubword._deserialize(x0) for x0 in deserialized_dict.get("subWords")] if deserialized_dict.get("subWords") is not None else None,
+			value=deserialized_dict.get("value"),
+			sub_words=[KeywordSubword._deserialize(x0) for x0 in deserialized_dict.get("subWords")] if deserialized_dict.get("subWords") is not None else None,
 		)
 
 @dataclass
@@ -9277,8 +9285,8 @@ class PaginatedDocumentKeyIdPair:
 		else:
 			deserialized_dict = data
 		return cls(
-			start_key = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("startKey").items())) if deserialized_dict.get("startKey") is not None else None,
-			start_key_doc_id = deserialized_dict.get("startKeyDocId"),
+			start_key=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("startKey").items())) if deserialized_dict.get("startKey") is not None else None,
+			start_key_doc_id=deserialized_dict.get("startKeyDocId"),
 		)
 
 @dataclass
@@ -9312,14 +9320,14 @@ class Identifier:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict.get("id"),
-			assigner = deserialized_dict.get("assigner"),
-			start = deserialized_dict.get("start"),
-			end = deserialized_dict.get("end"),
-			system = deserialized_dict.get("system"),
-			type = CodeStub._deserialize(deserialized_dict.get("type")) if deserialized_dict.get("type") is not None else None,
-			use = deserialized_dict.get("use"),
-			value = deserialized_dict.get("value"),
+			id=deserialized_dict.get("id"),
+			assigner=deserialized_dict.get("assigner"),
+			start=deserialized_dict.get("start"),
+			end=deserialized_dict.get("end"),
+			system=deserialized_dict.get("system"),
+			type=CodeStub._deserialize(deserialized_dict.get("type")) if deserialized_dict.get("type") is not None else None,
+			use=deserialized_dict.get("use"),
+			value=deserialized_dict.get("value"),
 		)
 
 @dataclass
@@ -9339,7 +9347,7 @@ class NotPredicate:
 		else:
 			deserialized_dict = data
 		return cls(
-			predicate = deserialize_predicate(deserialized_dict["predicate"]),
+			predicate=deserialize_predicate(deserialized_dict["predicate"]),
 		)
 
 @dataclass
@@ -9359,7 +9367,7 @@ class AndPredicate:
 		else:
 			deserialized_dict = data
 		return cls(
-			predicates = [deserialize_predicate(x0) for x0 in deserialized_dict["predicates"]],
+			predicates=[deserialize_predicate(x0) for x0 in deserialized_dict["predicates"]],
 		)
 
 @dataclass
@@ -9396,7 +9404,7 @@ class OrPredicate:
 		else:
 			deserialized_dict = data
 		return cls(
-			predicates = [deserialize_predicate(x0) for x0 in deserialized_dict["predicates"]],
+			predicates=[deserialize_predicate(x0) for x0 in deserialized_dict["predicates"]],
 		)
 
 @dataclass
@@ -9420,9 +9428,9 @@ class KeyValuePredicate:
 		else:
 			deserialized_dict = data
 		return cls(
-			key = deserialized_dict.get("key"),
-			operator = Operator._deserialize(deserialized_dict.get("operator")) if deserialized_dict.get("operator") is not None else None,
-			value = deserialized_dict.get("value"),
+			key=deserialized_dict.get("key"),
+			operator=Operator._deserialize(deserialized_dict.get("operator")) if deserialized_dict.get("operator") is not None else None,
+			value=deserialized_dict.get("value"),
 		)
 
 Predicate = Union['NotPredicate', 'AndPredicate', 'AlwaysPredicate', 'OrPredicate', 'KeyValuePredicate']
@@ -9461,15 +9469,15 @@ def deserialize_predicate(data: Union[str, Dict[str, object]]) -> 'Predicate':
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
 	if qualifier == "com.icure.sdk.model.filter.predicate.NotPredicate":
-		NotPredicate._deserialize(deserialized_dict)
+		return NotPredicate._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.sdk.model.filter.predicate.AndPredicate":
-		AndPredicate._deserialize(deserialized_dict)
+		return AndPredicate._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.sdk.model.filter.predicate.AlwaysPredicate":
-		AlwaysPredicate._deserialize(deserialized_dict)
+		return AlwaysPredicate._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.sdk.model.filter.predicate.OrPredicate":
-		OrPredicate._deserialize(deserialized_dict)
+		return OrPredicate._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.sdk.model.filter.predicate.KeyValuePredicate":
-		KeyValuePredicate._deserialize(deserialized_dict)
+		return KeyValuePredicate._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of Predicate")
 
@@ -9535,14 +9543,14 @@ class PersonName:
 		else:
 			deserialized_dict = data
 		return cls(
-			last_name = deserialized_dict.get("lastName"),
-			first_names = [x0 for x0 in deserialized_dict["firstNames"]],
-			start = deserialized_dict.get("start"),
-			end = deserialized_dict.get("end"),
-			prefix = [x0 for x0 in deserialized_dict["prefix"]],
-			suffix = [x0 for x0 in deserialized_dict["suffix"]],
-			text = deserialized_dict.get("text"),
-			use = PersonNameUse._deserialize(deserialized_dict.get("use")) if deserialized_dict.get("use") is not None else None,
+			last_name=deserialized_dict.get("lastName"),
+			first_names=[x0 for x0 in deserialized_dict["firstNames"]],
+			start=deserialized_dict.get("start"),
+			end=deserialized_dict.get("end"),
+			prefix=[x0 for x0 in deserialized_dict["prefix"]],
+			suffix=[x0 for x0 in deserialized_dict["suffix"]],
+			text=deserialized_dict.get("text"),
+			use=PersonNameUse._deserialize(deserialized_dict.get("use")) if deserialized_dict.get("use") is not None else None,
 		)
 
 @dataclass
@@ -9586,19 +9594,19 @@ class EncryptedAddress:
 		else:
 			deserialized_dict = data
 		return cls(
-			address_type = AddressType._deserialize(deserialized_dict.get("addressType")) if deserialized_dict.get("addressType") is not None else None,
-			descr = deserialized_dict.get("descr"),
-			street = deserialized_dict.get("street"),
-			house_number = deserialized_dict.get("houseNumber"),
-			postbox_number = deserialized_dict.get("postboxNumber"),
-			postal_code = deserialized_dict.get("postalCode"),
-			city = deserialized_dict.get("city"),
-			state = deserialized_dict.get("state"),
-			country = deserialized_dict.get("country"),
-			note = deserialized_dict.get("note"),
-			notes = [Annotation._deserialize(x0) for x0 in deserialized_dict["notes"]],
-			telecoms = [EncryptedTelecom._deserialize(x0) for x0 in deserialized_dict["telecoms"]],
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
+			address_type=AddressType._deserialize(deserialized_dict.get("addressType")) if deserialized_dict.get("addressType") is not None else None,
+			descr=deserialized_dict.get("descr"),
+			street=deserialized_dict.get("street"),
+			house_number=deserialized_dict.get("houseNumber"),
+			postbox_number=deserialized_dict.get("postboxNumber"),
+			postal_code=deserialized_dict.get("postalCode"),
+			city=deserialized_dict.get("city"),
+			state=deserialized_dict.get("state"),
+			country=deserialized_dict.get("country"),
+			note=deserialized_dict.get("note"),
+			notes=[Annotation._deserialize(x0) for x0 in deserialized_dict["notes"]],
+			telecoms=[EncryptedTelecom._deserialize(x0) for x0 in deserialized_dict["telecoms"]],
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
 @dataclass
@@ -9642,19 +9650,19 @@ class DecryptedAddress:
 		else:
 			deserialized_dict = data
 		return cls(
-			address_type = AddressType._deserialize(deserialized_dict.get("addressType")) if deserialized_dict.get("addressType") is not None else None,
-			descr = deserialized_dict.get("descr"),
-			street = deserialized_dict.get("street"),
-			house_number = deserialized_dict.get("houseNumber"),
-			postbox_number = deserialized_dict.get("postboxNumber"),
-			postal_code = deserialized_dict.get("postalCode"),
-			city = deserialized_dict.get("city"),
-			state = deserialized_dict.get("state"),
-			country = deserialized_dict.get("country"),
-			note = deserialized_dict.get("note"),
-			notes = [Annotation._deserialize(x0) for x0 in deserialized_dict["notes"]],
-			telecoms = [DecryptedTelecom._deserialize(x0) for x0 in deserialized_dict["telecoms"]],
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
+			address_type=AddressType._deserialize(deserialized_dict.get("addressType")) if deserialized_dict.get("addressType") is not None else None,
+			descr=deserialized_dict.get("descr"),
+			street=deserialized_dict.get("street"),
+			house_number=deserialized_dict.get("houseNumber"),
+			postbox_number=deserialized_dict.get("postboxNumber"),
+			postal_code=deserialized_dict.get("postalCode"),
+			city=deserialized_dict.get("city"),
+			state=deserialized_dict.get("state"),
+			country=deserialized_dict.get("country"),
+			note=deserialized_dict.get("note"),
+			notes=[Annotation._deserialize(x0) for x0 in deserialized_dict["notes"]],
+			telecoms=[DecryptedTelecom._deserialize(x0) for x0 in deserialized_dict["telecoms"]],
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
 Address = Union['EncryptedAddress', 'DecryptedAddress']
@@ -9807,16 +9815,16 @@ class Annotation:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			author = deserialized_dict.get("author"),
-			created = deserialized_dict.get("created"),
-			modified = deserialized_dict.get("modified"),
-			text = deserialized_dict.get("text"),
-			markdown = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["markdown"].items())),
-			location = deserialized_dict.get("location"),
-			confidential = deserialized_dict.get("confidential"),
-			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
+			id=deserialized_dict["id"],
+			author=deserialized_dict.get("author"),
+			created=deserialized_dict.get("created"),
+			modified=deserialized_dict.get("modified"),
+			text=deserialized_dict.get("text"),
+			markdown=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["markdown"].items())),
+			location=deserialized_dict.get("location"),
+			confidential=deserialized_dict.get("confidential"),
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
 @dataclass
@@ -9854,16 +9862,16 @@ class DecryptedInsurability:
 		else:
 			deserialized_dict = data
 		return cls(
-			parameters = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["parameters"].items())),
-			hospitalisation = deserialized_dict.get("hospitalisation"),
-			ambulatory = deserialized_dict.get("ambulatory"),
-			dental = deserialized_dict.get("dental"),
-			identification_number = deserialized_dict.get("identificationNumber"),
-			insurance_id = deserialized_dict.get("insuranceId"),
-			start_date = deserialized_dict.get("startDate"),
-			end_date = deserialized_dict.get("endDate"),
-			titulary_id = deserialized_dict.get("titularyId"),
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
+			parameters=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["parameters"].items())),
+			hospitalisation=deserialized_dict.get("hospitalisation"),
+			ambulatory=deserialized_dict.get("ambulatory"),
+			dental=deserialized_dict.get("dental"),
+			identification_number=deserialized_dict.get("identificationNumber"),
+			insurance_id=deserialized_dict.get("insuranceId"),
+			start_date=deserialized_dict.get("startDate"),
+			end_date=deserialized_dict.get("endDate"),
+			titulary_id=deserialized_dict.get("titularyId"),
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
 @dataclass
@@ -9901,16 +9909,16 @@ class EncryptedInsurability:
 		else:
 			deserialized_dict = data
 		return cls(
-			parameters = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["parameters"].items())),
-			hospitalisation = deserialized_dict.get("hospitalisation"),
-			ambulatory = deserialized_dict.get("ambulatory"),
-			dental = deserialized_dict.get("dental"),
-			identification_number = deserialized_dict.get("identificationNumber"),
-			insurance_id = deserialized_dict.get("insuranceId"),
-			start_date = deserialized_dict.get("startDate"),
-			end_date = deserialized_dict.get("endDate"),
-			titulary_id = deserialized_dict.get("titularyId"),
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
+			parameters=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["parameters"].items())),
+			hospitalisation=deserialized_dict.get("hospitalisation"),
+			ambulatory=deserialized_dict.get("ambulatory"),
+			dental=deserialized_dict.get("dental"),
+			identification_number=deserialized_dict.get("identificationNumber"),
+			insurance_id=deserialized_dict.get("insuranceId"),
+			start_date=deserialized_dict.get("startDate"),
+			end_date=deserialized_dict.get("endDate"),
+			titulary_id=deserialized_dict.get("titularyId"),
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
 Insurability = Union['DecryptedInsurability', 'EncryptedInsurability']
@@ -9970,11 +9978,11 @@ class Partnership:
 		else:
 			deserialized_dict = data
 		return cls(
-			type = PartnershipType._deserialize(deserialized_dict.get("type")) if deserialized_dict.get("type") is not None else None,
-			status = PartnershipStatus._deserialize(deserialized_dict.get("status")) if deserialized_dict.get("status") is not None else None,
-			partner_id = deserialized_dict.get("partnerId"),
-			me_to_other_relationship_description = deserialized_dict.get("meToOtherRelationshipDescription"),
-			other_to_me_relationship_description = deserialized_dict.get("otherToMeRelationshipDescription"),
+			type=PartnershipType._deserialize(deserialized_dict.get("type")) if deserialized_dict.get("type") is not None else None,
+			status=PartnershipStatus._deserialize(deserialized_dict.get("status")) if deserialized_dict.get("status") is not None else None,
+			partner_id=deserialized_dict.get("partnerId"),
+			me_to_other_relationship_description=deserialized_dict.get("meToOtherRelationshipDescription"),
+			other_to_me_relationship_description=deserialized_dict.get("otherToMeRelationshipDescription"),
 		)
 
 @dataclass
@@ -10004,12 +10012,12 @@ class EncryptedPatientHealthCareParty:
 		else:
 			deserialized_dict = data
 		return cls(
-			type = PatientHealthCarePartyType._deserialize(deserialized_dict.get("type")) if deserialized_dict.get("type") is not None else None,
-			healthcare_party_id = deserialized_dict.get("healthcarePartyId"),
-			send_formats = dict(map(lambda kv0: (TelecomType._deserialize(kv0[0]), kv0[1]), deserialized_dict["sendFormats"].items())),
-			referral_periods = [ReferralPeriod._deserialize(x0) for x0 in deserialized_dict["referralPeriods"]],
-			referral = deserialized_dict["referral"],
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
+			type=PatientHealthCarePartyType._deserialize(deserialized_dict.get("type")) if deserialized_dict.get("type") is not None else None,
+			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
+			send_formats=dict(map(lambda kv0: (TelecomType._deserialize(kv0[0]), kv0[1]), deserialized_dict["sendFormats"].items())),
+			referral_periods=[ReferralPeriod._deserialize(x0) for x0 in deserialized_dict["referralPeriods"]],
+			referral=deserialized_dict["referral"],
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
 @dataclass
@@ -10039,12 +10047,12 @@ class DecryptedPatientHealthCareParty:
 		else:
 			deserialized_dict = data
 		return cls(
-			type = PatientHealthCarePartyType._deserialize(deserialized_dict.get("type")) if deserialized_dict.get("type") is not None else None,
-			healthcare_party_id = deserialized_dict.get("healthcarePartyId"),
-			send_formats = dict(map(lambda kv0: (TelecomType._deserialize(kv0[0]), kv0[1]), deserialized_dict["sendFormats"].items())),
-			referral_periods = [ReferralPeriod._deserialize(x0) for x0 in deserialized_dict["referralPeriods"]],
-			referral = deserialized_dict["referral"],
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
+			type=PatientHealthCarePartyType._deserialize(deserialized_dict.get("type")) if deserialized_dict.get("type") is not None else None,
+			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
+			send_formats=dict(map(lambda kv0: (TelecomType._deserialize(kv0[0]), kv0[1]), deserialized_dict["sendFormats"].items())),
+			referral_periods=[ReferralPeriod._deserialize(x0) for x0 in deserialized_dict["referralPeriods"]],
+			referral=deserialized_dict["referral"],
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
 PatientHealthCareParty = Union['EncryptedPatientHealthCareParty', 'DecryptedPatientHealthCareParty']
@@ -10110,14 +10118,14 @@ class EncryptedFinancialInstitutionInformation:
 		else:
 			deserialized_dict = data
 		return cls(
-			name = deserialized_dict.get("name"),
-			key = deserialized_dict.get("key"),
-			bank_account = deserialized_dict.get("bankAccount"),
-			bic = deserialized_dict.get("bic"),
-			proxy_bank_account = deserialized_dict.get("proxyBankAccount"),
-			proxy_bic = deserialized_dict.get("proxyBic"),
-			preferred_fii_for_partners = [x0 for x0 in deserialized_dict["preferredFiiForPartners"]],
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
+			name=deserialized_dict.get("name"),
+			key=deserialized_dict.get("key"),
+			bank_account=deserialized_dict.get("bankAccount"),
+			bic=deserialized_dict.get("bic"),
+			proxy_bank_account=deserialized_dict.get("proxyBankAccount"),
+			proxy_bic=deserialized_dict.get("proxyBic"),
+			preferred_fii_for_partners=[x0 for x0 in deserialized_dict["preferredFiiForPartners"]],
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
 @dataclass
@@ -10151,14 +10159,14 @@ class DecryptedFinancialInstitutionInformation:
 		else:
 			deserialized_dict = data
 		return cls(
-			name = deserialized_dict.get("name"),
-			key = deserialized_dict.get("key"),
-			bank_account = deserialized_dict.get("bankAccount"),
-			bic = deserialized_dict.get("bic"),
-			proxy_bank_account = deserialized_dict.get("proxyBankAccount"),
-			proxy_bic = deserialized_dict.get("proxyBic"),
-			preferred_fii_for_partners = [x0 for x0 in deserialized_dict["preferredFiiForPartners"]],
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
+			name=deserialized_dict.get("name"),
+			key=deserialized_dict.get("key"),
+			bank_account=deserialized_dict.get("bankAccount"),
+			bic=deserialized_dict.get("bic"),
+			proxy_bank_account=deserialized_dict.get("proxyBankAccount"),
+			proxy_bic=deserialized_dict.get("proxyBic"),
+			preferred_fii_for_partners=[x0 for x0 in deserialized_dict["preferredFiiForPartners"]],
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
 FinancialInstitutionInformation = Union['EncryptedFinancialInstitutionInformation', 'DecryptedFinancialInstitutionInformation']
@@ -10274,39 +10282,39 @@ class DecryptedMedicalHouseContract:
 		else:
 			deserialized_dict = data
 		return cls(
-			contract_id = deserialized_dict.get("contractId"),
-			valid_from = deserialized_dict.get("validFrom"),
-			valid_to = deserialized_dict.get("validTo"),
-			mm_nihii = deserialized_dict.get("mmNihii"),
-			hcp_id = deserialized_dict.get("hcpId"),
-			change_type = ContractChangeType._deserialize(deserialized_dict.get("changeType")) if deserialized_dict.get("changeType") is not None else None,
-			parent_contract_id = deserialized_dict.get("parentContractId"),
-			changed_by = deserialized_dict.get("changedBy"),
-			start_of_contract = deserialized_dict.get("startOfContract"),
-			start_of_coverage = deserialized_dict.get("startOfCoverage"),
-			end_of_contract = deserialized_dict.get("endOfContract"),
-			end_of_coverage = deserialized_dict.get("endOfCoverage"),
-			kine = deserialized_dict["kine"],
-			gp = deserialized_dict["gp"],
-			ptd = deserialized_dict["ptd"],
-			nurse = deserialized_dict["nurse"],
-			no_kine = deserialized_dict["noKine"],
-			no_gp = deserialized_dict["noGp"],
-			no_nurse = deserialized_dict["noNurse"],
-			unsubscription_reason_id = deserialized_dict.get("unsubscriptionReasonId"),
-			ptd_start = deserialized_dict.get("ptdStart"),
-			ptd_end = deserialized_dict.get("ptdEnd"),
-			ptd_last_invoiced = deserialized_dict.get("ptdLastInvoiced"),
-			start_of_suspension = deserialized_dict.get("startOfSuspension"),
-			end_of_suspension = deserialized_dict.get("endOfSuspension"),
-			suspension_reason = SuspensionReason._deserialize(deserialized_dict.get("suspensionReason")) if deserialized_dict.get("suspensionReason") is not None else None,
-			suspension_source = deserialized_dict.get("suspensionSource"),
-			forced_suspension = deserialized_dict["forcedSuspension"],
-			signature_type = MhcSignatureType._deserialize(deserialized_dict.get("signatureType")) if deserialized_dict.get("signatureType") is not None else None,
-			status = deserialized_dict.get("status"),
-			options = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["options"].items())),
-			receipts = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["receipts"].items())),
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
+			contract_id=deserialized_dict.get("contractId"),
+			valid_from=deserialized_dict.get("validFrom"),
+			valid_to=deserialized_dict.get("validTo"),
+			mm_nihii=deserialized_dict.get("mmNihii"),
+			hcp_id=deserialized_dict.get("hcpId"),
+			change_type=ContractChangeType._deserialize(deserialized_dict.get("changeType")) if deserialized_dict.get("changeType") is not None else None,
+			parent_contract_id=deserialized_dict.get("parentContractId"),
+			changed_by=deserialized_dict.get("changedBy"),
+			start_of_contract=deserialized_dict.get("startOfContract"),
+			start_of_coverage=deserialized_dict.get("startOfCoverage"),
+			end_of_contract=deserialized_dict.get("endOfContract"),
+			end_of_coverage=deserialized_dict.get("endOfCoverage"),
+			kine=deserialized_dict["kine"],
+			gp=deserialized_dict["gp"],
+			ptd=deserialized_dict["ptd"],
+			nurse=deserialized_dict["nurse"],
+			no_kine=deserialized_dict["noKine"],
+			no_gp=deserialized_dict["noGp"],
+			no_nurse=deserialized_dict["noNurse"],
+			unsubscription_reason_id=deserialized_dict.get("unsubscriptionReasonId"),
+			ptd_start=deserialized_dict.get("ptdStart"),
+			ptd_end=deserialized_dict.get("ptdEnd"),
+			ptd_last_invoiced=deserialized_dict.get("ptdLastInvoiced"),
+			start_of_suspension=deserialized_dict.get("startOfSuspension"),
+			end_of_suspension=deserialized_dict.get("endOfSuspension"),
+			suspension_reason=SuspensionReason._deserialize(deserialized_dict.get("suspensionReason")) if deserialized_dict.get("suspensionReason") is not None else None,
+			suspension_source=deserialized_dict.get("suspensionSource"),
+			forced_suspension=deserialized_dict["forcedSuspension"],
+			signature_type=MhcSignatureType._deserialize(deserialized_dict.get("signatureType")) if deserialized_dict.get("signatureType") is not None else None,
+			status=deserialized_dict.get("status"),
+			options=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["options"].items())),
+			receipts=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["receipts"].items())),
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
 @dataclass
@@ -10390,39 +10398,39 @@ class EncryptedMedicalHouseContract:
 		else:
 			deserialized_dict = data
 		return cls(
-			contract_id = deserialized_dict.get("contractId"),
-			valid_from = deserialized_dict.get("validFrom"),
-			valid_to = deserialized_dict.get("validTo"),
-			mm_nihii = deserialized_dict.get("mmNihii"),
-			hcp_id = deserialized_dict.get("hcpId"),
-			change_type = ContractChangeType._deserialize(deserialized_dict.get("changeType")) if deserialized_dict.get("changeType") is not None else None,
-			parent_contract_id = deserialized_dict.get("parentContractId"),
-			changed_by = deserialized_dict.get("changedBy"),
-			start_of_contract = deserialized_dict.get("startOfContract"),
-			start_of_coverage = deserialized_dict.get("startOfCoverage"),
-			end_of_contract = deserialized_dict.get("endOfContract"),
-			end_of_coverage = deserialized_dict.get("endOfCoverage"),
-			kine = deserialized_dict["kine"],
-			gp = deserialized_dict["gp"],
-			ptd = deserialized_dict["ptd"],
-			nurse = deserialized_dict["nurse"],
-			no_kine = deserialized_dict["noKine"],
-			no_gp = deserialized_dict["noGp"],
-			no_nurse = deserialized_dict["noNurse"],
-			unsubscription_reason_id = deserialized_dict.get("unsubscriptionReasonId"),
-			ptd_start = deserialized_dict.get("ptdStart"),
-			ptd_end = deserialized_dict.get("ptdEnd"),
-			ptd_last_invoiced = deserialized_dict.get("ptdLastInvoiced"),
-			start_of_suspension = deserialized_dict.get("startOfSuspension"),
-			end_of_suspension = deserialized_dict.get("endOfSuspension"),
-			suspension_reason = SuspensionReason._deserialize(deserialized_dict.get("suspensionReason")) if deserialized_dict.get("suspensionReason") is not None else None,
-			suspension_source = deserialized_dict.get("suspensionSource"),
-			forced_suspension = deserialized_dict["forcedSuspension"],
-			signature_type = MhcSignatureType._deserialize(deserialized_dict.get("signatureType")) if deserialized_dict.get("signatureType") is not None else None,
-			status = deserialized_dict.get("status"),
-			options = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["options"].items())),
-			receipts = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["receipts"].items())),
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
+			contract_id=deserialized_dict.get("contractId"),
+			valid_from=deserialized_dict.get("validFrom"),
+			valid_to=deserialized_dict.get("validTo"),
+			mm_nihii=deserialized_dict.get("mmNihii"),
+			hcp_id=deserialized_dict.get("hcpId"),
+			change_type=ContractChangeType._deserialize(deserialized_dict.get("changeType")) if deserialized_dict.get("changeType") is not None else None,
+			parent_contract_id=deserialized_dict.get("parentContractId"),
+			changed_by=deserialized_dict.get("changedBy"),
+			start_of_contract=deserialized_dict.get("startOfContract"),
+			start_of_coverage=deserialized_dict.get("startOfCoverage"),
+			end_of_contract=deserialized_dict.get("endOfContract"),
+			end_of_coverage=deserialized_dict.get("endOfCoverage"),
+			kine=deserialized_dict["kine"],
+			gp=deserialized_dict["gp"],
+			ptd=deserialized_dict["ptd"],
+			nurse=deserialized_dict["nurse"],
+			no_kine=deserialized_dict["noKine"],
+			no_gp=deserialized_dict["noGp"],
+			no_nurse=deserialized_dict["noNurse"],
+			unsubscription_reason_id=deserialized_dict.get("unsubscriptionReasonId"),
+			ptd_start=deserialized_dict.get("ptdStart"),
+			ptd_end=deserialized_dict.get("ptdEnd"),
+			ptd_last_invoiced=deserialized_dict.get("ptdLastInvoiced"),
+			start_of_suspension=deserialized_dict.get("startOfSuspension"),
+			end_of_suspension=deserialized_dict.get("endOfSuspension"),
+			suspension_reason=SuspensionReason._deserialize(deserialized_dict.get("suspensionReason")) if deserialized_dict.get("suspensionReason") is not None else None,
+			suspension_source=deserialized_dict.get("suspensionSource"),
+			forced_suspension=deserialized_dict["forcedSuspension"],
+			signature_type=MhcSignatureType._deserialize(deserialized_dict.get("signatureType")) if deserialized_dict.get("signatureType") is not None else None,
+			status=deserialized_dict.get("status"),
+			options=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["options"].items())),
+			receipts=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["receipts"].items())),
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
 MedicalHouseContract = Union['DecryptedMedicalHouseContract', 'EncryptedMedicalHouseContract']
@@ -10480,10 +10488,10 @@ class Delegation:
 		else:
 			deserialized_dict = data
 		return cls(
-			owner = deserialized_dict.get("owner"),
-			delegated_to = deserialized_dict.get("delegatedTo"),
-			key = deserialized_dict.get("key"),
-			tags = [x0 for x0 in deserialized_dict["tags"]],
+			owner=deserialized_dict.get("owner"),
+			delegated_to=deserialized_dict.get("delegatedTo"),
+			key=deserialized_dict.get("key"),
+			tags=[x0 for x0 in deserialized_dict["tags"]],
 		)
 
 @dataclass
@@ -10505,8 +10513,8 @@ class SecurityMetadata:
 		else:
 			deserialized_dict = data
 		return cls(
-			secure_delegations = dict(map(lambda kv0: (kv0[0], SecureDelegation._deserialize(kv0[1])), deserialized_dict["secureDelegations"].items())),
-			keys_equivalences = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["keysEquivalences"].items())),
+			secure_delegations=dict(map(lambda kv0: (kv0[0], SecureDelegation._deserialize(kv0[1])), deserialized_dict["secureDelegations"].items())),
+			keys_equivalences=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["keysEquivalences"].items())),
 		)
 
 @dataclass
@@ -10532,10 +10540,10 @@ class SchoolingInfo:
 		else:
 			deserialized_dict = data
 		return cls(
-			start_date = deserialized_dict.get("startDate"),
-			end_date = deserialized_dict.get("endDate"),
-			school = deserialized_dict.get("school"),
-			type_of_education = CodeStub._deserialize(deserialized_dict.get("typeOfEducation")) if deserialized_dict.get("typeOfEducation") is not None else None,
+			start_date=deserialized_dict.get("startDate"),
+			end_date=deserialized_dict.get("endDate"),
+			school=deserialized_dict.get("school"),
+			type_of_education=CodeStub._deserialize(deserialized_dict.get("typeOfEducation")) if deserialized_dict.get("typeOfEducation") is not None else None,
 		)
 
 @dataclass
@@ -10561,10 +10569,10 @@ class EmploymentInfo:
 		else:
 			deserialized_dict = data
 		return cls(
-			start_date = deserialized_dict.get("startDate"),
-			end_date = deserialized_dict.get("endDate"),
-			profession_type = CodeStub._deserialize(deserialized_dict.get("professionType")) if deserialized_dict.get("professionType") is not None else None,
-			employer = Employer._deserialize(deserialized_dict.get("employer")) if deserialized_dict.get("employer") is not None else None,
+			start_date=deserialized_dict.get("startDate"),
+			end_date=deserialized_dict.get("endDate"),
+			profession_type=CodeStub._deserialize(deserialized_dict.get("professionType")) if deserialized_dict.get("professionType") is not None else None,
+			employer=Employer._deserialize(deserialized_dict.get("employer")) if deserialized_dict.get("employer") is not None else None,
 		)
 
 class HealthcarePartyStatus(Enum):
@@ -10609,10 +10617,10 @@ class HealthcarePartyHistoryStatus:
 		else:
 			deserialized_dict = data
 		return cls(
-			status = HealthcarePartyStatus._deserialize(deserialized_dict["status"]),
-			specialisation_code = deserialized_dict["specialisationCode"],
-			start_date = deserialized_dict["startDate"],
-			active = deserialized_dict["active"],
+			status=HealthcarePartyStatus._deserialize(deserialized_dict["status"]),
+			specialisation_code=deserialized_dict["specialisationCode"],
+			start_date=deserialized_dict["startDate"],
+			active=deserialized_dict["active"],
 		)
 
 class TelecomType(Enum):
@@ -10692,11 +10700,11 @@ class EncryptedFlatRateTarification:
 		else:
 			deserialized_dict = data
 		return cls(
-			code = deserialized_dict.get("code"),
-			flat_rate_type = FlatRateType._deserialize(deserialized_dict.get("flatRateType")) if deserialized_dict.get("flatRateType") is not None else None,
-			label = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("label").items())) if deserialized_dict.get("label") is not None else None,
-			valorisations = [EncryptedValorisation._deserialize(x0) for x0 in deserialized_dict["valorisations"]],
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
+			code=deserialized_dict.get("code"),
+			flat_rate_type=FlatRateType._deserialize(deserialized_dict.get("flatRateType")) if deserialized_dict.get("flatRateType") is not None else None,
+			label=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("label").items())) if deserialized_dict.get("label") is not None else None,
+			valorisations=[EncryptedValorisation._deserialize(x0) for x0 in deserialized_dict["valorisations"]],
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
 @dataclass
@@ -10724,11 +10732,11 @@ class DecryptedFlatRateTarification:
 		else:
 			deserialized_dict = data
 		return cls(
-			code = deserialized_dict.get("code"),
-			flat_rate_type = FlatRateType._deserialize(deserialized_dict.get("flatRateType")) if deserialized_dict.get("flatRateType") is not None else None,
-			label = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("label").items())) if deserialized_dict.get("label") is not None else None,
-			valorisations = [DecryptedValorisation._deserialize(x0) for x0 in deserialized_dict["valorisations"]],
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
+			code=deserialized_dict.get("code"),
+			flat_rate_type=FlatRateType._deserialize(deserialized_dict.get("flatRateType")) if deserialized_dict.get("flatRateType") is not None else None,
+			label=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("label").items())) if deserialized_dict.get("label") is not None else None,
+			valorisations=[DecryptedValorisation._deserialize(x0) for x0 in deserialized_dict["valorisations"]],
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
 FlatRateTarification = Union['EncryptedFlatRateTarification', 'DecryptedFlatRateTarification']
@@ -10782,8 +10790,8 @@ class Periodicity:
 		else:
 			deserialized_dict = data
 		return cls(
-			related_code = CodeStub._deserialize(deserialized_dict.get("relatedCode")) if deserialized_dict.get("relatedCode") is not None else None,
-			related_periodicity = CodeStub._deserialize(deserialized_dict.get("relatedPeriodicity")) if deserialized_dict.get("relatedPeriodicity") is not None else None,
+			related_code=CodeStub._deserialize(deserialized_dict.get("relatedCode")) if deserialized_dict.get("relatedCode") is not None else None,
+			related_periodicity=CodeStub._deserialize(deserialized_dict.get("relatedPeriodicity")) if deserialized_dict.get("relatedPeriodicity") is not None else None,
 		)
 
 class LinkQualification(Enum):
@@ -11168,17 +11176,17 @@ class EncryptedValorisation:
 		else:
 			deserialized_dict = data
 		return cls(
-			start_of_validity = deserialized_dict.get("startOfValidity"),
-			end_of_validity = deserialized_dict.get("endOfValidity"),
-			predicate = deserialized_dict.get("predicate"),
-			reference = [x0 for x0 in deserialized_dict.get("reference")] if deserialized_dict.get("reference") is not None else None,
-			total_amount = deserialized_dict.get("totalAmount"),
-			reimbursement = deserialized_dict.get("reimbursement"),
-			patient_intervention = deserialized_dict.get("patientIntervention"),
-			doctor_supplement = deserialized_dict.get("doctorSupplement"),
-			vat = deserialized_dict.get("vat"),
-			label = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("label").items())) if deserialized_dict.get("label") is not None else None,
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
+			start_of_validity=deserialized_dict.get("startOfValidity"),
+			end_of_validity=deserialized_dict.get("endOfValidity"),
+			predicate=deserialized_dict.get("predicate"),
+			reference=[x0 for x0 in deserialized_dict.get("reference")] if deserialized_dict.get("reference") is not None else None,
+			total_amount=deserialized_dict.get("totalAmount"),
+			reimbursement=deserialized_dict.get("reimbursement"),
+			patient_intervention=deserialized_dict.get("patientIntervention"),
+			doctor_supplement=deserialized_dict.get("doctorSupplement"),
+			vat=deserialized_dict.get("vat"),
+			label=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("label").items())) if deserialized_dict.get("label") is not None else None,
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
 @dataclass
@@ -11218,17 +11226,17 @@ class DecryptedValorisation:
 		else:
 			deserialized_dict = data
 		return cls(
-			start_of_validity = deserialized_dict.get("startOfValidity"),
-			end_of_validity = deserialized_dict.get("endOfValidity"),
-			predicate = deserialized_dict.get("predicate"),
-			reference = [x0 for x0 in deserialized_dict.get("reference")] if deserialized_dict.get("reference") is not None else None,
-			total_amount = deserialized_dict.get("totalAmount"),
-			reimbursement = deserialized_dict.get("reimbursement"),
-			patient_intervention = deserialized_dict.get("patientIntervention"),
-			doctor_supplement = deserialized_dict.get("doctorSupplement"),
-			vat = deserialized_dict.get("vat"),
-			label = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("label").items())) if deserialized_dict.get("label") is not None else None,
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
+			start_of_validity=deserialized_dict.get("startOfValidity"),
+			end_of_validity=deserialized_dict.get("endOfValidity"),
+			predicate=deserialized_dict.get("predicate"),
+			reference=[x0 for x0 in deserialized_dict.get("reference")] if deserialized_dict.get("reference") is not None else None,
+			total_amount=deserialized_dict.get("totalAmount"),
+			reimbursement=deserialized_dict.get("reimbursement"),
+			patient_intervention=deserialized_dict.get("patientIntervention"),
+			doctor_supplement=deserialized_dict.get("doctorSupplement"),
+			vat=deserialized_dict.get("vat"),
+			label=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("label").items())) if deserialized_dict.get("label") is not None else None,
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
 Valorisation = Union['EncryptedValorisation', 'DecryptedValorisation']
@@ -11286,10 +11294,10 @@ class LetterValue:
 		else:
 			deserialized_dict = data
 		return cls(
-			letter = deserialized_dict.get("letter"),
-			index = deserialized_dict.get("index"),
-			coefficient = deserialized_dict.get("coefficient"),
-			value = deserialized_dict.get("value"),
+			letter=deserialized_dict.get("letter"),
+			index=deserialized_dict.get("index"),
+			coefficient=deserialized_dict.get("coefficient"),
+			value=deserialized_dict.get("value"),
 		)
 
 @dataclass
@@ -11309,7 +11317,7 @@ class AlwaysPermissionItem:
 		else:
 			deserialized_dict = data
 		return cls(
-			type = PermissionType._deserialize(deserialized_dict["type"]),
+			type=PermissionType._deserialize(deserialized_dict["type"]),
 		)
 
 PermissionItem = Union['AlwaysPermissionItem']
@@ -11332,7 +11340,7 @@ def deserialize_permission_item(data: Union[str, Dict[str, object]]) -> 'Permiss
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
 	if qualifier == "com.icure.sdk.model.security.AlwaysPermissionItem":
-		AlwaysPermissionItem._deserialize(deserialized_dict)
+		return AlwaysPermissionItem._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of PermissionItem")
 
@@ -11517,8 +11525,8 @@ class DocumentGroup:
 		else:
 			deserialized_dict = data
 		return cls(
-			guid = deserialized_dict.get("guid"),
-			name = deserialized_dict.get("name"),
+			guid=deserialized_dict.get("guid"),
+			name=deserialized_dict.get("name"),
 		)
 
 class UsersType(Enum):
@@ -11652,10 +11660,10 @@ class AuthenticationToken:
 		else:
 			deserialized_dict = data
 		return cls(
-			token = deserialized_dict.get("token"),
-			creation_time = deserialized_dict["creationTime"],
-			validity = deserialized_dict["validity"],
-			deletion_date = deserialized_dict.get("deletionDate"),
+			token=deserialized_dict.get("token"),
+			creation_time=deserialized_dict["creationTime"],
+			validity=deserialized_dict["validity"],
+			deletion_date=deserialized_dict.get("deletionDate"),
 		)
 
 @dataclass
@@ -11677,8 +11685,8 @@ class PropertyTypeStub:
 		else:
 			deserialized_dict = data
 		return cls(
-			identifier = deserialized_dict.get("identifier"),
-			type = TypedValuesType._deserialize(deserialized_dict.get("type")) if deserialized_dict.get("type") is not None else None,
+			identifier=deserialized_dict.get("identifier"),
+			type=TypedValuesType._deserialize(deserialized_dict.get("type")) if deserialized_dict.get("type") is not None else None,
 		)
 
 @dataclass
@@ -11710,13 +11718,13 @@ class DecryptedTypedValue:
 		else:
 			deserialized_dict = data
 		return cls(
-			type = TypedValuesType._deserialize(deserialized_dict.get("type")) if deserialized_dict.get("type") is not None else None,
-			boolean_value = deserialized_dict.get("booleanValue"),
-			integer_value = deserialized_dict.get("integerValue"),
-			double_value = deserialized_dict.get("doubleValue"),
-			string_value = deserialized_dict.get("stringValue"),
-			date_value = deserialized_dict.get("dateValue"),
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
+			type=TypedValuesType._deserialize(deserialized_dict.get("type")) if deserialized_dict.get("type") is not None else None,
+			boolean_value=deserialized_dict.get("booleanValue"),
+			integer_value=deserialized_dict.get("integerValue"),
+			double_value=deserialized_dict.get("doubleValue"),
+			string_value=deserialized_dict.get("stringValue"),
+			date_value=deserialized_dict.get("dateValue"),
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
 @dataclass
@@ -11748,13 +11756,13 @@ class EncryptedTypedValue:
 		else:
 			deserialized_dict = data
 		return cls(
-			type = TypedValuesType._deserialize(deserialized_dict.get("type")) if deserialized_dict.get("type") is not None else None,
-			boolean_value = deserialized_dict.get("booleanValue"),
-			integer_value = deserialized_dict.get("integerValue"),
-			double_value = deserialized_dict.get("doubleValue"),
-			string_value = deserialized_dict.get("stringValue"),
-			date_value = deserialized_dict.get("dateValue"),
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
+			type=TypedValuesType._deserialize(deserialized_dict.get("type")) if deserialized_dict.get("type") is not None else None,
+			boolean_value=deserialized_dict.get("booleanValue"),
+			integer_value=deserialized_dict.get("integerValue"),
+			double_value=deserialized_dict.get("doubleValue"),
+			string_value=deserialized_dict.get("stringValue"),
+			date_value=deserialized_dict.get("dateValue"),
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
 TypedValue = Union['DecryptedTypedValue', 'EncryptedTypedValue']
@@ -11808,8 +11816,8 @@ class Remote:
 		else:
 			deserialized_dict = data
 		return cls(
-			url = deserialized_dict["url"],
-			auth = RemoteAuthentication._deserialize(deserialized_dict.get("auth")) if deserialized_dict.get("auth") is not None else None,
+			url=deserialized_dict["url"],
+			auth=RemoteAuthentication._deserialize(deserialized_dict.get("auth")) if deserialized_dict.get("auth") is not None else None,
 		)
 
 @dataclass
@@ -11845,15 +11853,15 @@ class ReplicationStats:
 		else:
 			deserialized_dict = data
 		return cls(
-			revisions_checked = deserialized_dict.get("revisionsChecked"),
-			missing_revisions_found = deserialized_dict.get("missingRevisionsFound"),
-			docs_read = deserialized_dict.get("docsRead"),
-			docs_written = deserialized_dict.get("docsWritten"),
-			changes_pending = deserialized_dict.get("changesPending"),
-			doc_write_failures = deserialized_dict.get("docWriteFailures"),
-			checkpointed_source_seq = deserialized_dict.get("checkpointedSourceSeq"),
-			start_time = deserialized_dict.get("startTime"),
-			error = deserialized_dict.get("error"),
+			revisions_checked=deserialized_dict.get("revisionsChecked"),
+			missing_revisions_found=deserialized_dict.get("missingRevisionsFound"),
+			docs_read=deserialized_dict.get("docsRead"),
+			docs_written=deserialized_dict.get("docsWritten"),
+			changes_pending=deserialized_dict.get("changesPending"),
+			doc_write_failures=deserialized_dict.get("docWriteFailures"),
+			checkpointed_source_seq=deserialized_dict.get("checkpointedSourceSeq"),
+			start_time=deserialized_dict.get("startTime"),
+			error=deserialized_dict.get("error"),
 		)
 
 @dataclass
@@ -11899,20 +11907,20 @@ class TimeTableItem:
 		else:
 			deserialized_dict = data
 		return cls(
-			rrule_start_date = deserialized_dict.get("rruleStartDate"),
-			rrule = deserialized_dict.get("rrule"),
-			not_before_in_minutes = deserialized_dict.get("notBeforeInMinutes"),
-			not_after_in_minutes = deserialized_dict.get("notAfterInMinutes"),
-			zone_id = deserialized_dict.get("zoneId"),
-			days = [x0 for x0 in deserialized_dict["days"]],
-			recurrence_types = [x0 for x0 in deserialized_dict["recurrenceTypes"]],
-			hours = [TimeTableHour._deserialize(x0) for x0 in deserialized_dict["hours"]],
-			calendar_item_type_id = deserialized_dict.get("calendarItemTypeId"),
-			home_visit = deserialized_dict["homeVisit"],
-			place_id = deserialized_dict.get("placeId"),
-			public_time_table_item = deserialized_dict["publicTimeTableItem"],
-			accepts_new_patient = deserialized_dict["acceptsNewPatient"],
-			unavailable = deserialized_dict["unavailable"],
+			rrule_start_date=deserialized_dict.get("rruleStartDate"),
+			rrule=deserialized_dict.get("rrule"),
+			not_before_in_minutes=deserialized_dict.get("notBeforeInMinutes"),
+			not_after_in_minutes=deserialized_dict.get("notAfterInMinutes"),
+			zone_id=deserialized_dict.get("zoneId"),
+			days=[x0 for x0 in deserialized_dict["days"]],
+			recurrence_types=[x0 for x0 in deserialized_dict["recurrenceTypes"]],
+			hours=[TimeTableHour._deserialize(x0) for x0 in deserialized_dict["hours"]],
+			calendar_item_type_id=deserialized_dict.get("calendarItemTypeId"),
+			home_visit=deserialized_dict["homeVisit"],
+			place_id=deserialized_dict.get("placeId"),
+			public_time_table_item=deserialized_dict["publicTimeTableItem"],
+			accepts_new_patient=deserialized_dict["acceptsNewPatient"],
+			unavailable=deserialized_dict["unavailable"],
 		)
 
 class DocumentLocation(Enum):
@@ -11989,9 +11997,9 @@ class DataAttachment:
 		else:
 			deserialized_dict = data
 		return cls(
-			couch_db_attachment_id = deserialized_dict.get("couchDbAttachmentId"),
-			object_store_attachment_id = deserialized_dict.get("objectStoreAttachmentId"),
-			utis = [x0 for x0 in deserialized_dict["utis"]],
+			couch_db_attachment_id=deserialized_dict.get("couchDbAttachmentId"),
+			object_store_attachment_id=deserialized_dict.get("objectStoreAttachmentId"),
+			utis=[x0 for x0 in deserialized_dict["utis"]],
 		)
 
 @dataclass
@@ -12017,10 +12025,10 @@ class DeletedAttachment:
 		else:
 			deserialized_dict = data
 		return cls(
-			couch_db_attachment_id = deserialized_dict.get("couchDbAttachmentId"),
-			object_store_attachment_id = deserialized_dict.get("objectStoreAttachmentId"),
-			key = deserialized_dict.get("key"),
-			deletion_time = deserialized_dict.get("deletionTime"),
+			couch_db_attachment_id=deserialized_dict.get("couchDbAttachmentId"),
+			object_store_attachment_id=deserialized_dict.get("objectStoreAttachmentId"),
+			key=deserialized_dict.get("key"),
+			deletion_time=deserialized_dict.get("deletionTime"),
 		)
 
 @dataclass
@@ -12060,17 +12068,17 @@ class Measure:
 		else:
 			deserialized_dict = data
 		return cls(
-			value = deserialized_dict.get("value"),
-			ref = deserialized_dict.get("ref"),
-			severity = deserialized_dict.get("severity"),
-			severity_code = deserialized_dict.get("severityCode"),
-			evolution = deserialized_dict.get("evolution"),
-			unit = deserialized_dict.get("unit"),
-			unit_codes = [CodeStub._deserialize(x0) for x0 in deserialized_dict.get("unitCodes")] if deserialized_dict.get("unitCodes") is not None else None,
-			comment = deserialized_dict.get("comment"),
-			comparator = deserialized_dict.get("comparator"),
-			sign = deserialized_dict.get("sign"),
-			reference_ranges = [ReferenceRange._deserialize(x0) for x0 in deserialized_dict["referenceRanges"]],
+			value=deserialized_dict.get("value"),
+			ref=deserialized_dict.get("ref"),
+			severity=deserialized_dict.get("severity"),
+			severity_code=deserialized_dict.get("severityCode"),
+			evolution=deserialized_dict.get("evolution"),
+			unit=deserialized_dict.get("unit"),
+			unit_codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict.get("unitCodes")] if deserialized_dict.get("unitCodes") is not None else None,
+			comment=deserialized_dict.get("comment"),
+			comparator=deserialized_dict.get("comparator"),
+			sign=deserialized_dict.get("sign"),
+			reference_ranges=[ReferenceRange._deserialize(x0) for x0 in deserialized_dict["referenceRanges"]],
 		)
 
 @dataclass
@@ -12172,48 +12180,48 @@ class Medication:
 		else:
 			deserialized_dict = data
 		return cls(
-			compound_prescription = deserialized_dict.get("compoundPrescription"),
-			substance_product = Substanceproduct._deserialize(deserialized_dict.get("substanceProduct")) if deserialized_dict.get("substanceProduct") is not None else None,
-			medicinal_product = Medicinalproduct._deserialize(deserialized_dict.get("medicinalProduct")) if deserialized_dict.get("medicinalProduct") is not None else None,
-			number_of_packages = deserialized_dict.get("numberOfPackages"),
-			batch = deserialized_dict.get("batch"),
-			expiration_date = deserialized_dict.get("expirationDate"),
-			instruction_for_patient = deserialized_dict.get("instructionForPatient"),
-			instruction_for_reimbursement = deserialized_dict.get("instructionForReimbursement"),
-			comment_for_delivery = deserialized_dict.get("commentForDelivery"),
-			drug_route = deserialized_dict.get("drugRoute"),
-			temporality = deserialized_dict.get("temporality"),
-			frequency = CodeStub._deserialize(deserialized_dict.get("frequency")) if deserialized_dict.get("frequency") is not None else None,
-			reimbursement_reason = CodeStub._deserialize(deserialized_dict.get("reimbursementReason")) if deserialized_dict.get("reimbursementReason") is not None else None,
-			substitution_allowed = deserialized_dict.get("substitutionAllowed"),
-			begin_moment = deserialized_dict.get("beginMoment"),
-			end_moment = deserialized_dict.get("endMoment"),
-			delivery_moment = deserialized_dict.get("deliveryMoment"),
-			end_execution_moment = deserialized_dict.get("endExecutionMoment"),
-			duration = Duration._deserialize(deserialized_dict.get("duration")) if deserialized_dict.get("duration") is not None else None,
-			renewal = Renewal._deserialize(deserialized_dict.get("renewal")) if deserialized_dict.get("renewal") is not None else None,
-			known_usage = deserialized_dict.get("knownUsage"),
-			regimen = [RegimenItem._deserialize(x0) for x0 in deserialized_dict.get("regimen")] if deserialized_dict.get("regimen") is not None else None,
-			posology = deserialized_dict.get("posology"),
-			agreements = dict(map(lambda kv0: (kv0[0], ParagraphAgreement._deserialize(kv0[1])), deserialized_dict.get("agreements").items())) if deserialized_dict.get("agreements") is not None else None,
-			medication_scheme_id_on_safe = deserialized_dict.get("medicationSchemeIdOnSafe"),
-			medication_scheme_safe_version = deserialized_dict.get("medicationSchemeSafeVersion"),
-			medication_scheme_time_stamp_on_safe = deserialized_dict.get("medicationSchemeTimeStampOnSafe"),
-			medication_scheme_document_id = deserialized_dict.get("medicationSchemeDocumentId"),
-			safe_id_name = deserialized_dict.get("safeIdName"),
-			id_on_safes = deserialized_dict.get("idOnSafes"),
-			timestamp_on_safe = deserialized_dict.get("timestampOnSafe"),
-			change_validated = deserialized_dict.get("changeValidated"),
-			new_safe_medication = deserialized_dict.get("newSafeMedication"),
-			medication_use = deserialized_dict.get("medicationUse"),
-			begin_condition = deserialized_dict.get("beginCondition"),
-			end_condition = deserialized_dict.get("endCondition"),
-			origin = deserialized_dict.get("origin"),
-			medication_changed = deserialized_dict.get("medicationChanged"),
-			posology_changed = deserialized_dict.get("posologyChanged"),
-			suspension = [Suspension._deserialize(x0) for x0 in deserialized_dict.get("suspension")] if deserialized_dict.get("suspension") is not None else None,
-			prescription_rid = deserialized_dict.get("prescriptionRID"),
-			status = deserialized_dict.get("status"),
+			compound_prescription=deserialized_dict.get("compoundPrescription"),
+			substance_product=Substanceproduct._deserialize(deserialized_dict.get("substanceProduct")) if deserialized_dict.get("substanceProduct") is not None else None,
+			medicinal_product=Medicinalproduct._deserialize(deserialized_dict.get("medicinalProduct")) if deserialized_dict.get("medicinalProduct") is not None else None,
+			number_of_packages=deserialized_dict.get("numberOfPackages"),
+			batch=deserialized_dict.get("batch"),
+			expiration_date=deserialized_dict.get("expirationDate"),
+			instruction_for_patient=deserialized_dict.get("instructionForPatient"),
+			instruction_for_reimbursement=deserialized_dict.get("instructionForReimbursement"),
+			comment_for_delivery=deserialized_dict.get("commentForDelivery"),
+			drug_route=deserialized_dict.get("drugRoute"),
+			temporality=deserialized_dict.get("temporality"),
+			frequency=CodeStub._deserialize(deserialized_dict.get("frequency")) if deserialized_dict.get("frequency") is not None else None,
+			reimbursement_reason=CodeStub._deserialize(deserialized_dict.get("reimbursementReason")) if deserialized_dict.get("reimbursementReason") is not None else None,
+			substitution_allowed=deserialized_dict.get("substitutionAllowed"),
+			begin_moment=deserialized_dict.get("beginMoment"),
+			end_moment=deserialized_dict.get("endMoment"),
+			delivery_moment=deserialized_dict.get("deliveryMoment"),
+			end_execution_moment=deserialized_dict.get("endExecutionMoment"),
+			duration=Duration._deserialize(deserialized_dict.get("duration")) if deserialized_dict.get("duration") is not None else None,
+			renewal=Renewal._deserialize(deserialized_dict.get("renewal")) if deserialized_dict.get("renewal") is not None else None,
+			known_usage=deserialized_dict.get("knownUsage"),
+			regimen=[RegimenItem._deserialize(x0) for x0 in deserialized_dict.get("regimen")] if deserialized_dict.get("regimen") is not None else None,
+			posology=deserialized_dict.get("posology"),
+			agreements=dict(map(lambda kv0: (kv0[0], ParagraphAgreement._deserialize(kv0[1])), deserialized_dict.get("agreements").items())) if deserialized_dict.get("agreements") is not None else None,
+			medication_scheme_id_on_safe=deserialized_dict.get("medicationSchemeIdOnSafe"),
+			medication_scheme_safe_version=deserialized_dict.get("medicationSchemeSafeVersion"),
+			medication_scheme_time_stamp_on_safe=deserialized_dict.get("medicationSchemeTimeStampOnSafe"),
+			medication_scheme_document_id=deserialized_dict.get("medicationSchemeDocumentId"),
+			safe_id_name=deserialized_dict.get("safeIdName"),
+			id_on_safes=deserialized_dict.get("idOnSafes"),
+			timestamp_on_safe=deserialized_dict.get("timestampOnSafe"),
+			change_validated=deserialized_dict.get("changeValidated"),
+			new_safe_medication=deserialized_dict.get("newSafeMedication"),
+			medication_use=deserialized_dict.get("medicationUse"),
+			begin_condition=deserialized_dict.get("beginCondition"),
+			end_condition=deserialized_dict.get("endCondition"),
+			origin=deserialized_dict.get("origin"),
+			medication_changed=deserialized_dict.get("medicationChanged"),
+			posology_changed=deserialized_dict.get("posologyChanged"),
+			suspension=[Suspension._deserialize(x0) for x0 in deserialized_dict.get("suspension")] if deserialized_dict.get("suspension") is not None else None,
+			prescription_rid=deserialized_dict.get("prescriptionRID"),
+			status=deserialized_dict.get("status"),
 		)
 
 @dataclass
@@ -12245,13 +12253,13 @@ class TimeSeries:
 		else:
 			deserialized_dict = data
 		return cls(
-			fields = [x0 for x0 in deserialized_dict["fields"]],
-			samples = [[x1 for x1 in x0] for x0 in deserialized_dict["samples"]],
-			min = [x0 for x0 in deserialized_dict["min"]],
-			max = [x0 for x0 in deserialized_dict["max"]],
-			mean = [x0 for x0 in deserialized_dict["mean"]],
-			median = [x0 for x0 in deserialized_dict["median"]],
-			variance = [x0 for x0 in deserialized_dict["variance"]],
+			fields=[x0 for x0 in deserialized_dict["fields"]],
+			samples=[[x1 for x1 in x0] for x0 in deserialized_dict["samples"]],
+			min=[x0 for x0 in deserialized_dict["min"]],
+			max=[x0 for x0 in deserialized_dict["max"]],
+			mean=[x0 for x0 in deserialized_dict["mean"]],
+			median=[x0 for x0 in deserialized_dict["median"]],
+			variance=[x0 for x0 in deserialized_dict["variance"]],
 		)
 
 class TaskStatus(Enum):
@@ -12301,11 +12309,11 @@ class FormTemplateLayout:
 		else:
 			deserialized_dict = data
 		return cls(
-			form = deserialized_dict["form"],
-			actions = [Action._deserialize(x0) for x0 in deserialized_dict["actions"]],
-			sections = [Section._deserialize(x0) for x0 in deserialized_dict["sections"]],
-			description = deserialized_dict.get("description"),
-			keywords = [x0 for x0 in deserialized_dict.get("keywords")] if deserialized_dict.get("keywords") is not None else None,
+			form=deserialized_dict["form"],
+			actions=[Action._deserialize(x0) for x0 in deserialized_dict["actions"]],
+			sections=[Section._deserialize(x0) for x0 in deserialized_dict["sections"]],
+			description=deserialized_dict.get("description"),
+			keywords=[x0 for x0 in deserialized_dict.get("keywords")] if deserialized_dict.get("keywords") is not None else None,
 		)
 
 class Laterality(Enum):
@@ -12389,31 +12397,31 @@ class EncryptedPlanOfAction:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			created = deserialized_dict.get("created"),
-			modified = deserialized_dict.get("modified"),
-			author = deserialized_dict.get("author"),
-			responsible = deserialized_dict.get("responsible"),
-			medical_location_id = deserialized_dict.get("medicalLocationId"),
-			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			codes = [CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
-			end_of_life = deserialized_dict.get("endOfLife"),
-			prescriber_id = deserialized_dict.get("prescriberId"),
-			value_date = deserialized_dict.get("valueDate"),
-			opening_date = deserialized_dict.get("openingDate"),
-			closing_date = deserialized_dict.get("closingDate"),
-			deadline_date = deserialized_dict.get("deadlineDate"),
-			name = deserialized_dict.get("name"),
-			descr = deserialized_dict.get("descr"),
-			note = deserialized_dict.get("note"),
-			id_opening_contact = deserialized_dict.get("idOpeningContact"),
-			id_closing_contact = deserialized_dict.get("idClosingContact"),
-			status = deserialized_dict["status"],
-			document_ids = [x0 for x0 in deserialized_dict["documentIds"]],
-			number_of_cares = deserialized_dict.get("numberOfCares"),
-			care_team_memberships = [EncryptedCareTeamMembership._deserialize(x0) if x0 is not None else None for x0 in deserialized_dict["careTeamMemberships"]],
-			relevant = deserialized_dict["relevant"],
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
+			id=deserialized_dict["id"],
+			created=deserialized_dict.get("created"),
+			modified=deserialized_dict.get("modified"),
+			author=deserialized_dict.get("author"),
+			responsible=deserialized_dict.get("responsible"),
+			medical_location_id=deserialized_dict.get("medicalLocationId"),
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
+			end_of_life=deserialized_dict.get("endOfLife"),
+			prescriber_id=deserialized_dict.get("prescriberId"),
+			value_date=deserialized_dict.get("valueDate"),
+			opening_date=deserialized_dict.get("openingDate"),
+			closing_date=deserialized_dict.get("closingDate"),
+			deadline_date=deserialized_dict.get("deadlineDate"),
+			name=deserialized_dict.get("name"),
+			descr=deserialized_dict.get("descr"),
+			note=deserialized_dict.get("note"),
+			id_opening_contact=deserialized_dict.get("idOpeningContact"),
+			id_closing_contact=deserialized_dict.get("idClosingContact"),
+			status=deserialized_dict["status"],
+			document_ids=[x0 for x0 in deserialized_dict["documentIds"]],
+			number_of_cares=deserialized_dict.get("numberOfCares"),
+			care_team_memberships=[EncryptedCareTeamMembership._deserialize(x0) if x0 is not None else None for x0 in deserialized_dict["careTeamMemberships"]],
+			relevant=deserialized_dict["relevant"],
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
 @dataclass
@@ -12481,31 +12489,31 @@ class DecryptedPlanOfAction:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			created = deserialized_dict.get("created"),
-			modified = deserialized_dict.get("modified"),
-			author = deserialized_dict.get("author"),
-			responsible = deserialized_dict.get("responsible"),
-			medical_location_id = deserialized_dict.get("medicalLocationId"),
-			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			codes = [CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
-			end_of_life = deserialized_dict.get("endOfLife"),
-			prescriber_id = deserialized_dict.get("prescriberId"),
-			value_date = deserialized_dict.get("valueDate"),
-			opening_date = deserialized_dict.get("openingDate"),
-			closing_date = deserialized_dict.get("closingDate"),
-			deadline_date = deserialized_dict.get("deadlineDate"),
-			name = deserialized_dict.get("name"),
-			descr = deserialized_dict.get("descr"),
-			note = deserialized_dict.get("note"),
-			id_opening_contact = deserialized_dict.get("idOpeningContact"),
-			id_closing_contact = deserialized_dict.get("idClosingContact"),
-			status = deserialized_dict["status"],
-			document_ids = [x0 for x0 in deserialized_dict["documentIds"]],
-			number_of_cares = deserialized_dict.get("numberOfCares"),
-			care_team_memberships = [DecryptedCareTeamMembership._deserialize(x0) if x0 is not None else None for x0 in deserialized_dict["careTeamMemberships"]],
-			relevant = deserialized_dict["relevant"],
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
+			id=deserialized_dict["id"],
+			created=deserialized_dict.get("created"),
+			modified=deserialized_dict.get("modified"),
+			author=deserialized_dict.get("author"),
+			responsible=deserialized_dict.get("responsible"),
+			medical_location_id=deserialized_dict.get("medicalLocationId"),
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
+			end_of_life=deserialized_dict.get("endOfLife"),
+			prescriber_id=deserialized_dict.get("prescriberId"),
+			value_date=deserialized_dict.get("valueDate"),
+			opening_date=deserialized_dict.get("openingDate"),
+			closing_date=deserialized_dict.get("closingDate"),
+			deadline_date=deserialized_dict.get("deadlineDate"),
+			name=deserialized_dict.get("name"),
+			descr=deserialized_dict.get("descr"),
+			note=deserialized_dict.get("note"),
+			id_opening_contact=deserialized_dict.get("idOpeningContact"),
+			id_closing_contact=deserialized_dict.get("idClosingContact"),
+			status=deserialized_dict["status"],
+			document_ids=[x0 for x0 in deserialized_dict["documentIds"]],
+			number_of_cares=deserialized_dict.get("numberOfCares"),
+			care_team_memberships=[DecryptedCareTeamMembership._deserialize(x0) if x0 is not None else None for x0 in deserialized_dict["careTeamMemberships"]],
+			relevant=deserialized_dict["relevant"],
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
 PlanOfAction = Union['EncryptedPlanOfAction', 'DecryptedPlanOfAction']
@@ -12567,12 +12575,12 @@ class DecryptedEpisode:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			name = deserialized_dict.get("name"),
-			comment = deserialized_dict.get("comment"),
-			start_date = deserialized_dict.get("startDate"),
-			end_date = deserialized_dict.get("endDate"),
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
+			id=deserialized_dict["id"],
+			name=deserialized_dict.get("name"),
+			comment=deserialized_dict.get("comment"),
+			start_date=deserialized_dict.get("startDate"),
+			end_date=deserialized_dict.get("endDate"),
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
 @dataclass
@@ -12602,12 +12610,12 @@ class EncryptedEpisode:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			name = deserialized_dict.get("name"),
-			comment = deserialized_dict.get("comment"),
-			start_date = deserialized_dict.get("startDate"),
-			end_date = deserialized_dict.get("endDate"),
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
+			id=deserialized_dict["id"],
+			name=deserialized_dict.get("name"),
+			comment=deserialized_dict.get("comment"),
+			start_date=deserialized_dict.get("startDate"),
+			end_date=deserialized_dict.get("endDate"),
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
 Episode = Union['DecryptedEpisode', 'EncryptedEpisode']
@@ -12667,11 +12675,11 @@ class EncryptedCareTeamMember:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			care_team_member_type = CareTeamMemberType._deserialize(deserialized_dict.get("careTeamMemberType")) if deserialized_dict.get("careTeamMemberType") is not None else None,
-			healthcare_party_id = deserialized_dict.get("healthcarePartyId"),
-			quality = CodeStub._deserialize(deserialized_dict.get("quality")) if deserialized_dict.get("quality") is not None else None,
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
+			id=deserialized_dict["id"],
+			care_team_member_type=CareTeamMemberType._deserialize(deserialized_dict.get("careTeamMemberType")) if deserialized_dict.get("careTeamMemberType") is not None else None,
+			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
+			quality=CodeStub._deserialize(deserialized_dict.get("quality")) if deserialized_dict.get("quality") is not None else None,
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
 @dataclass
@@ -12699,11 +12707,11 @@ class DecryptedCareTeamMember:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			care_team_member_type = CareTeamMemberType._deserialize(deserialized_dict.get("careTeamMemberType")) if deserialized_dict.get("careTeamMemberType") is not None else None,
-			healthcare_party_id = deserialized_dict.get("healthcarePartyId"),
-			quality = CodeStub._deserialize(deserialized_dict.get("quality")) if deserialized_dict.get("quality") is not None else None,
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
+			id=deserialized_dict["id"],
+			care_team_member_type=CareTeamMemberType._deserialize(deserialized_dict.get("careTeamMemberType")) if deserialized_dict.get("careTeamMemberType") is not None else None,
+			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
+			quality=CodeStub._deserialize(deserialized_dict.get("quality")) if deserialized_dict.get("quality") is not None else None,
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
 CareTeamMember = Union['EncryptedCareTeamMember', 'DecryptedCareTeamMember']
@@ -12789,24 +12797,24 @@ class EncryptedSubContact:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict.get("id"),
-			created = deserialized_dict.get("created"),
-			modified = deserialized_dict.get("modified"),
-			author = deserialized_dict.get("author"),
-			responsible = deserialized_dict.get("responsible"),
-			medical_location_id = deserialized_dict.get("medicalLocationId"),
-			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			codes = [CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
-			end_of_life = deserialized_dict.get("endOfLife"),
-			descr = deserialized_dict.get("descr"),
-			protocol = deserialized_dict.get("protocol"),
-			status = deserialized_dict.get("status"),
-			form_id = deserialized_dict.get("formId"),
-			plan_of_action_id = deserialized_dict.get("planOfActionId"),
-			health_element_id = deserialized_dict.get("healthElementId"),
-			classification_id = deserialized_dict.get("classificationId"),
-			services = [ServiceLink._deserialize(x0) for x0 in deserialized_dict["services"]],
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
+			id=deserialized_dict.get("id"),
+			created=deserialized_dict.get("created"),
+			modified=deserialized_dict.get("modified"),
+			author=deserialized_dict.get("author"),
+			responsible=deserialized_dict.get("responsible"),
+			medical_location_id=deserialized_dict.get("medicalLocationId"),
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
+			end_of_life=deserialized_dict.get("endOfLife"),
+			descr=deserialized_dict.get("descr"),
+			protocol=deserialized_dict.get("protocol"),
+			status=deserialized_dict.get("status"),
+			form_id=deserialized_dict.get("formId"),
+			plan_of_action_id=deserialized_dict.get("planOfActionId"),
+			health_element_id=deserialized_dict.get("healthElementId"),
+			classification_id=deserialized_dict.get("classificationId"),
+			services=[ServiceLink._deserialize(x0) for x0 in deserialized_dict["services"]],
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
 @dataclass
@@ -12860,24 +12868,24 @@ class DecryptedSubContact:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict.get("id"),
-			created = deserialized_dict.get("created"),
-			modified = deserialized_dict.get("modified"),
-			author = deserialized_dict.get("author"),
-			responsible = deserialized_dict.get("responsible"),
-			medical_location_id = deserialized_dict.get("medicalLocationId"),
-			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			codes = [CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
-			end_of_life = deserialized_dict.get("endOfLife"),
-			descr = deserialized_dict.get("descr"),
-			protocol = deserialized_dict.get("protocol"),
-			status = deserialized_dict.get("status"),
-			form_id = deserialized_dict.get("formId"),
-			plan_of_action_id = deserialized_dict.get("planOfActionId"),
-			health_element_id = deserialized_dict.get("healthElementId"),
-			classification_id = deserialized_dict.get("classificationId"),
-			services = [ServiceLink._deserialize(x0) for x0 in deserialized_dict["services"]],
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
+			id=deserialized_dict.get("id"),
+			created=deserialized_dict.get("created"),
+			modified=deserialized_dict.get("modified"),
+			author=deserialized_dict.get("author"),
+			responsible=deserialized_dict.get("responsible"),
+			medical_location_id=deserialized_dict.get("medicalLocationId"),
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
+			end_of_life=deserialized_dict.get("endOfLife"),
+			descr=deserialized_dict.get("descr"),
+			protocol=deserialized_dict.get("protocol"),
+			status=deserialized_dict.get("status"),
+			form_id=deserialized_dict.get("formId"),
+			plan_of_action_id=deserialized_dict.get("planOfActionId"),
+			health_element_id=deserialized_dict.get("healthElementId"),
+			classification_id=deserialized_dict.get("classificationId"),
+			services=[ServiceLink._deserialize(x0) for x0 in deserialized_dict["services"]],
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
 SubContact = Union['EncryptedSubContact', 'DecryptedSubContact']
@@ -12966,10 +12974,10 @@ class CalendarItemTag:
 		else:
 			deserialized_dict = data
 		return cls(
-			code = deserialized_dict.get("code"),
-			date = deserialized_dict.get("date"),
-			user_id = deserialized_dict.get("userId"),
-			user_name = deserialized_dict.get("userName"),
+			code=deserialized_dict.get("code"),
+			date=deserialized_dict.get("date"),
+			user_id=deserialized_dict.get("userId"),
+			user_name=deserialized_dict.get("userName"),
 		)
 
 @dataclass
@@ -13053,39 +13061,39 @@ class FlowItem:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict.get("id"),
-			title = deserialized_dict.get("title"),
-			comment = deserialized_dict.get("comment"),
-			reception_date = deserialized_dict.get("receptionDate"),
-			processing_date = deserialized_dict.get("processingDate"),
-			processer = deserialized_dict.get("processer"),
-			cancellation_date = deserialized_dict.get("cancellationDate"),
-			canceller = deserialized_dict.get("canceller"),
-			cancellation_reason = deserialized_dict.get("cancellationReason"),
-			cancellation_note = deserialized_dict.get("cancellationNote"),
-			status = deserialized_dict.get("status"),
-			home_visit = deserialized_dict.get("homeVisit"),
-			municipality = deserialized_dict.get("municipality"),
-			town = deserialized_dict.get("town"),
-			zip_code = deserialized_dict.get("zipCode"),
-			street = deserialized_dict.get("street"),
-			building = deserialized_dict.get("building"),
-			building_number = deserialized_dict.get("buildingNumber"),
-			doorbell_name = deserialized_dict.get("doorbellName"),
-			floor = deserialized_dict.get("floor"),
-			letter_box = deserialized_dict.get("letterBox"),
-			notes_ops = deserialized_dict.get("notesOps"),
-			notes_contact = deserialized_dict.get("notesContact"),
-			latitude = deserialized_dict.get("latitude"),
-			longitude = deserialized_dict.get("longitude"),
-			type = deserialized_dict.get("type"),
-			emergency = deserialized_dict.get("emergency"),
-			phone_number = deserialized_dict.get("phoneNumber"),
-			patient_id = deserialized_dict.get("patientId"),
-			patient_last_name = deserialized_dict.get("patientLastName"),
-			patient_first_name = deserialized_dict.get("patientFirstName"),
-			description = deserialized_dict.get("description"),
-			intervention_code = deserialized_dict.get("interventionCode"),
+			id=deserialized_dict.get("id"),
+			title=deserialized_dict.get("title"),
+			comment=deserialized_dict.get("comment"),
+			reception_date=deserialized_dict.get("receptionDate"),
+			processing_date=deserialized_dict.get("processingDate"),
+			processer=deserialized_dict.get("processer"),
+			cancellation_date=deserialized_dict.get("cancellationDate"),
+			canceller=deserialized_dict.get("canceller"),
+			cancellation_reason=deserialized_dict.get("cancellationReason"),
+			cancellation_note=deserialized_dict.get("cancellationNote"),
+			status=deserialized_dict.get("status"),
+			home_visit=deserialized_dict.get("homeVisit"),
+			municipality=deserialized_dict.get("municipality"),
+			town=deserialized_dict.get("town"),
+			zip_code=deserialized_dict.get("zipCode"),
+			street=deserialized_dict.get("street"),
+			building=deserialized_dict.get("building"),
+			building_number=deserialized_dict.get("buildingNumber"),
+			doorbell_name=deserialized_dict.get("doorbellName"),
+			floor=deserialized_dict.get("floor"),
+			letter_box=deserialized_dict.get("letterBox"),
+			notes_ops=deserialized_dict.get("notesOps"),
+			notes_contact=deserialized_dict.get("notesContact"),
+			latitude=deserialized_dict.get("latitude"),
+			longitude=deserialized_dict.get("longitude"),
+			type=deserialized_dict.get("type"),
+			emergency=deserialized_dict.get("emergency"),
+			phone_number=deserialized_dict.get("phoneNumber"),
+			patient_id=deserialized_dict.get("patientId"),
+			patient_last_name=deserialized_dict.get("patientLastName"),
+			patient_first_name=deserialized_dict.get("patientFirstName"),
+			description=deserialized_dict.get("description"),
+			intervention_code=deserialized_dict.get("interventionCode"),
 		)
 
 @dataclass
@@ -13107,8 +13115,8 @@ class MessageReadStatus:
 		else:
 			deserialized_dict = data
 		return cls(
-			time = deserialized_dict.get("time"),
-			read = deserialized_dict["read"],
+			time=deserialized_dict.get("time"),
+			read=deserialized_dict["read"],
 		)
 
 @dataclass
@@ -13130,8 +13138,8 @@ class MessageAttachment:
 		else:
 			deserialized_dict = data
 		return cls(
-			type = DocumentLocation._deserialize(deserialized_dict.get("type")) if deserialized_dict.get("type") is not None else None,
-			ids = [x0 for x0 in deserialized_dict["ids"]],
+			type=DocumentLocation._deserialize(deserialized_dict.get("type")) if deserialized_dict.get("type") is not None else None,
+			ids=[x0 for x0 in deserialized_dict["ids"]],
 		)
 
 class InvoiceInterventionType(Enum):
@@ -13205,9 +13213,9 @@ class Payment:
 		else:
 			deserialized_dict = data
 		return cls(
-			payment_date = deserialized_dict["paymentDate"],
-			payment_type = PaymentType._deserialize(deserialized_dict.get("paymentType")) if deserialized_dict.get("paymentType") is not None else None,
-			paid = deserialized_dict.get("paid"),
+			payment_date=deserialized_dict["paymentDate"],
+			payment_type=PaymentType._deserialize(deserialized_dict.get("paymentType")) if deserialized_dict.get("paymentType") is not None else None,
+			paid=deserialized_dict.get("paid"),
 		)
 
 @dataclass
@@ -13237,12 +13245,12 @@ class IdentityDocumentReader:
 		else:
 			deserialized_dict = data
 		return cls(
-			justificatif_document_number = deserialized_dict.get("justificatifDocumentNumber"),
-			support_serial_number = deserialized_dict.get("supportSerialNumber"),
-			time_reading_eid_document = deserialized_dict.get("timeReadingEIdDocument"),
-			eid_document_support_type = deserialized_dict["eidDocumentSupportType"],
-			reason_manual_encoding = deserialized_dict["reasonManualEncoding"],
-			reason_using_vignette = deserialized_dict["reasonUsingVignette"],
+			justificatif_document_number=deserialized_dict.get("justificatifDocumentNumber"),
+			support_serial_number=deserialized_dict.get("supportSerialNumber"),
+			time_reading_eid_document=deserialized_dict.get("timeReadingEIdDocument"),
+			eid_document_support_type=deserialized_dict["eidDocumentSupportType"],
+			reason_manual_encoding=deserialized_dict["reasonManualEncoding"],
+			reason_using_vignette=deserialized_dict["reasonUsingVignette"],
 		)
 
 @dataclass
@@ -13270,11 +13278,11 @@ class OperationToken:
 		else:
 			deserialized_dict = data
 		return cls(
-			token_hash = deserialized_dict["tokenHash"],
-			creation_time = deserialized_dict["creationTime"],
-			validity = deserialized_dict["validity"],
-			operation = Operation._deserialize(deserialized_dict["operation"]),
-			description = deserialized_dict.get("description"),
+			token_hash=deserialized_dict["tokenHash"],
+			creation_time=deserialized_dict["creationTime"],
+			validity=deserialized_dict["validity"],
+			operation=Operation._deserialize(deserialized_dict["operation"]),
+			description=deserialized_dict.get("description"),
 		)
 
 class AuthenticationClass(Enum):
@@ -13332,12 +13340,12 @@ class Replication:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			rev = deserialized_dict.get("rev"),
-			deletion_date = deserialized_dict.get("deletionDate"),
-			name = deserialized_dict.get("name"),
-			context = deserialized_dict.get("context"),
-			database_synchronizations = [DatabaseSynchronization._deserialize(x0) for x0 in deserialized_dict["databaseSynchronizations"]],
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			name=deserialized_dict.get("name"),
+			context=deserialized_dict.get("context"),
+			database_synchronizations=[DatabaseSynchronization._deserialize(x0) for x0 in deserialized_dict["databaseSynchronizations"]],
 		)
 
 @dataclass
@@ -13359,8 +13367,8 @@ class View:
 		else:
 			deserialized_dict = data
 		return cls(
-			map = deserialized_dict["map"],
-			reduce = deserialized_dict.get("reduce"),
+			map=deserialized_dict["map"],
+			reduce=deserialized_dict.get("reduce"),
 		)
 
 @dataclass
@@ -13398,16 +13406,16 @@ class DatabaseInfo:
 		else:
 			deserialized_dict = data
 		return cls(
-			id = deserialized_dict["id"],
-			update_seq = deserialized_dict.get("updateSeq"),
-			file_size = deserialized_dict.get("fileSize"),
-			external_size = deserialized_dict.get("externalSize"),
-			active_size = deserialized_dict.get("activeSize"),
-			docs = deserialized_dict.get("docs"),
-			q = deserialized_dict.get("q"),
-			n = deserialized_dict.get("n"),
-			w = deserialized_dict.get("w"),
-			r = deserialized_dict.get("r"),
+			id=deserialized_dict["id"],
+			update_seq=deserialized_dict.get("updateSeq"),
+			file_size=deserialized_dict.get("fileSize"),
+			external_size=deserialized_dict.get("externalSize"),
+			active_size=deserialized_dict.get("activeSize"),
+			docs=deserialized_dict.get("docs"),
+			q=deserialized_dict.get("q"),
+			n=deserialized_dict.get("n"),
+			w=deserialized_dict.get("w"),
+			r=deserialized_dict.get("r"),
 		)
 
 class Operator(Enum):
@@ -13547,10 +13555,10 @@ class EncryptedTelecom:
 		else:
 			deserialized_dict = data
 		return cls(
-			telecom_type = TelecomType._deserialize(deserialized_dict.get("telecomType")) if deserialized_dict.get("telecomType") is not None else None,
-			telecom_number = deserialized_dict.get("telecomNumber"),
-			telecom_description = deserialized_dict.get("telecomDescription"),
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
+			telecom_type=TelecomType._deserialize(deserialized_dict.get("telecomType")) if deserialized_dict.get("telecomType") is not None else None,
+			telecom_number=deserialized_dict.get("telecomNumber"),
+			telecom_description=deserialized_dict.get("telecomDescription"),
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
 @dataclass
@@ -13576,10 +13584,10 @@ class DecryptedTelecom:
 		else:
 			deserialized_dict = data
 		return cls(
-			telecom_type = TelecomType._deserialize(deserialized_dict.get("telecomType")) if deserialized_dict.get("telecomType") is not None else None,
-			telecom_number = deserialized_dict.get("telecomNumber"),
-			telecom_description = deserialized_dict.get("telecomDescription"),
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
+			telecom_type=TelecomType._deserialize(deserialized_dict.get("telecomType")) if deserialized_dict.get("telecomType") is not None else None,
+			telecom_number=deserialized_dict.get("telecomNumber"),
+			telecom_description=deserialized_dict.get("telecomDescription"),
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
 Telecom = Union['EncryptedTelecom', 'DecryptedTelecom']
@@ -13806,9 +13814,9 @@ class ReferralPeriod:
 		else:
 			deserialized_dict = data
 		return cls(
-			start_date = deserialized_dict.get("startDate"),
-			end_date = deserialized_dict.get("endDate"),
-			comment = deserialized_dict.get("comment"),
+			start_date=deserialized_dict.get("startDate"),
+			end_date=deserialized_dict.get("endDate"),
+			comment=deserialized_dict.get("comment"),
 		)
 
 class ContractChangeType(Enum):
@@ -13911,14 +13919,14 @@ class SecureDelegation:
 		else:
 			deserialized_dict = data
 		return cls(
-			delegator = deserialized_dict.get("delegator"),
-			delegate = deserialized_dict.get("delegate"),
-			secret_ids = [x0 for x0 in deserialized_dict["secretIds"]],
-			encryption_keys = [x0 for x0 in deserialized_dict["encryptionKeys"]],
-			owning_entity_ids = [x0 for x0 in deserialized_dict["owningEntityIds"]],
-			parent_delegations = [x0 for x0 in deserialized_dict["parentDelegations"]],
-			exchange_data_id = deserialized_dict.get("exchangeDataId"),
-			permissions = AccessLevel._deserialize(deserialized_dict["permissions"]),
+			delegator=deserialized_dict.get("delegator"),
+			delegate=deserialized_dict.get("delegate"),
+			secret_ids=[x0 for x0 in deserialized_dict["secretIds"]],
+			encryption_keys=[x0 for x0 in deserialized_dict["encryptionKeys"]],
+			owning_entity_ids=[x0 for x0 in deserialized_dict["owningEntityIds"]],
+			parent_delegations=[x0 for x0 in deserialized_dict["parentDelegations"]],
+			exchange_data_id=deserialized_dict.get("exchangeDataId"),
+			permissions=AccessLevel._deserialize(deserialized_dict["permissions"]),
 		)
 
 @dataclass
@@ -13940,8 +13948,8 @@ class Employer:
 		else:
 			deserialized_dict = data
 		return cls(
-			name = deserialized_dict.get("name"),
-			addresse = DecryptedAddress._deserialize(deserialized_dict.get("addresse")) if deserialized_dict.get("addresse") is not None else None,
+			name=deserialized_dict.get("name"),
+			addresse=DecryptedAddress._deserialize(deserialized_dict.get("addresse")) if deserialized_dict.get("addresse") is not None else None,
 		)
 
 class FlatRateType(Enum):
@@ -14014,7 +14022,7 @@ class RemoteAuthentication:
 		else:
 			deserialized_dict = data
 		return cls(
-			basic = Basic._deserialize(deserialized_dict.get("basic")) if deserialized_dict.get("basic") is not None else None,
+			basic=Basic._deserialize(deserialized_dict.get("basic")) if deserialized_dict.get("basic") is not None else None,
 		)
 
 @dataclass
@@ -14036,8 +14044,8 @@ class TimeTableHour:
 		else:
 			deserialized_dict = data
 		return cls(
-			start_hour = deserialized_dict.get("startHour"),
-			end_hour = deserialized_dict.get("endHour"),
+			start_hour=deserialized_dict.get("startHour"),
+			end_hour=deserialized_dict.get("endHour"),
 		)
 
 @dataclass
@@ -14069,13 +14077,13 @@ class ReferenceRange:
 		else:
 			deserialized_dict = data
 		return cls(
-			low = deserialized_dict.get("low"),
-			high = deserialized_dict.get("high"),
-			string_value = deserialized_dict.get("stringValue"),
-			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			codes = [CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
-			notes = [Annotation._deserialize(x0) for x0 in deserialized_dict["notes"]],
-			age = Range._deserialize(deserialized_dict.get("age")) if deserialized_dict.get("age") is not None else None,
+			low=deserialized_dict.get("low"),
+			high=deserialized_dict.get("high"),
+			string_value=deserialized_dict.get("stringValue"),
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
+			notes=[Annotation._deserialize(x0) for x0 in deserialized_dict["notes"]],
+			age=Range._deserialize(deserialized_dict.get("age")) if deserialized_dict.get("age") is not None else None,
 		)
 
 @dataclass
@@ -14103,11 +14111,11 @@ class Substanceproduct:
 		else:
 			deserialized_dict = data
 		return cls(
-			intendedcds = [CodeStub._deserialize(x0) for x0 in deserialized_dict["intendedcds"]],
-			deliveredcds = [CodeStub._deserialize(x0) for x0 in deserialized_dict["deliveredcds"]],
-			intendedname = deserialized_dict.get("intendedname"),
-			deliveredname = deserialized_dict.get("deliveredname"),
-			product_id = deserialized_dict.get("productId"),
+			intendedcds=[CodeStub._deserialize(x0) for x0 in deserialized_dict["intendedcds"]],
+			deliveredcds=[CodeStub._deserialize(x0) for x0 in deserialized_dict["deliveredcds"]],
+			intendedname=deserialized_dict.get("intendedname"),
+			deliveredname=deserialized_dict.get("deliveredname"),
+			product_id=deserialized_dict.get("productId"),
 		)
 
 @dataclass
@@ -14135,11 +14143,11 @@ class Medicinalproduct:
 		else:
 			deserialized_dict = data
 		return cls(
-			intendedcds = [CodeStub._deserialize(x0) for x0 in deserialized_dict["intendedcds"]],
-			deliveredcds = [CodeStub._deserialize(x0) for x0 in deserialized_dict["deliveredcds"]],
-			intendedname = deserialized_dict.get("intendedname"),
-			deliveredname = deserialized_dict.get("deliveredname"),
-			product_id = deserialized_dict.get("productId"),
+			intendedcds=[CodeStub._deserialize(x0) for x0 in deserialized_dict["intendedcds"]],
+			deliveredcds=[CodeStub._deserialize(x0) for x0 in deserialized_dict["deliveredcds"]],
+			intendedname=deserialized_dict.get("intendedname"),
+			deliveredname=deserialized_dict.get("deliveredname"),
+			product_id=deserialized_dict.get("productId"),
 		)
 
 @dataclass
@@ -14161,8 +14169,8 @@ class Duration:
 		else:
 			deserialized_dict = data
 		return cls(
-			value = deserialized_dict.get("value"),
-			unit = CodeStub._deserialize(deserialized_dict.get("unit")) if deserialized_dict.get("unit") is not None else None,
+			value=deserialized_dict.get("value"),
+			unit=CodeStub._deserialize(deserialized_dict.get("unit")) if deserialized_dict.get("unit") is not None else None,
 		)
 
 @dataclass
@@ -14184,8 +14192,8 @@ class Renewal:
 		else:
 			deserialized_dict = data
 		return cls(
-			decimal = deserialized_dict.get("decimal"),
-			duration = Duration._deserialize(deserialized_dict.get("duration")) if deserialized_dict.get("duration") is not None else None,
+			decimal=deserialized_dict.get("decimal"),
+			duration=Duration._deserialize(deserialized_dict.get("duration")) if deserialized_dict.get("duration") is not None else None,
 		)
 
 @dataclass
@@ -14215,12 +14223,12 @@ class RegimenItem:
 		else:
 			deserialized_dict = data
 		return cls(
-			date = deserialized_dict.get("date"),
-			day_number = deserialized_dict.get("dayNumber"),
-			weekday = Weekday._deserialize(deserialized_dict.get("weekday")) if deserialized_dict.get("weekday") is not None else None,
-			day_period = CodeStub._deserialize(deserialized_dict.get("dayPeriod")) if deserialized_dict.get("dayPeriod") is not None else None,
-			time_of_day = deserialized_dict.get("timeOfDay"),
-			administrated_quantity = AdministrationQuantity._deserialize(deserialized_dict.get("administratedQuantity")) if deserialized_dict.get("administratedQuantity") is not None else None,
+			date=deserialized_dict.get("date"),
+			day_number=deserialized_dict.get("dayNumber"),
+			weekday=Weekday._deserialize(deserialized_dict.get("weekday")) if deserialized_dict.get("weekday") is not None else None,
+			day_period=CodeStub._deserialize(deserialized_dict.get("dayPeriod")) if deserialized_dict.get("dayPeriod") is not None else None,
+			time_of_day=deserialized_dict.get("timeOfDay"),
+			administrated_quantity=AdministrationQuantity._deserialize(deserialized_dict.get("administratedQuantity")) if deserialized_dict.get("administratedQuantity") is not None else None,
 		)
 
 @dataclass
@@ -14282,28 +14290,28 @@ class ParagraphAgreement:
 		else:
 			deserialized_dict = data
 		return cls(
-			timestamp = deserialized_dict.get("timestamp"),
-			paragraph = deserialized_dict.get("paragraph"),
-			accepted = deserialized_dict.get("accepted"),
-			in_treatment = deserialized_dict.get("inTreatment"),
-			canceled = deserialized_dict.get("canceled"),
-			care_provider_reference = deserialized_dict.get("careProviderReference"),
-			decision_reference = deserialized_dict.get("decisionReference"),
-			start = deserialized_dict.get("start"),
-			end = deserialized_dict.get("end"),
-			cancelation_date = deserialized_dict.get("cancelationDate"),
-			quantity_value = deserialized_dict.get("quantityValue"),
-			quantity_unit = deserialized_dict.get("quantityUnit"),
-			io_request_reference = deserialized_dict.get("ioRequestReference"),
-			response_type = deserialized_dict.get("responseType"),
-			refusal_justification = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("refusalJustification").items())) if deserialized_dict.get("refusalJustification") is not None else None,
-			verses = [x0 for x0 in deserialized_dict.get("verses")] if deserialized_dict.get("verses") is not None else None,
-			coverage_type = deserialized_dict.get("coverageType"),
-			unit_number = deserialized_dict.get("unitNumber"),
-			strength = deserialized_dict.get("strength"),
-			strength_unit = deserialized_dict.get("strengthUnit"),
-			agreement_appendices = [AgreementAppendix._deserialize(x0) for x0 in deserialized_dict.get("agreementAppendices")] if deserialized_dict.get("agreementAppendices") is not None else None,
-			document_id = deserialized_dict.get("documentId"),
+			timestamp=deserialized_dict.get("timestamp"),
+			paragraph=deserialized_dict.get("paragraph"),
+			accepted=deserialized_dict.get("accepted"),
+			in_treatment=deserialized_dict.get("inTreatment"),
+			canceled=deserialized_dict.get("canceled"),
+			care_provider_reference=deserialized_dict.get("careProviderReference"),
+			decision_reference=deserialized_dict.get("decisionReference"),
+			start=deserialized_dict.get("start"),
+			end=deserialized_dict.get("end"),
+			cancelation_date=deserialized_dict.get("cancelationDate"),
+			quantity_value=deserialized_dict.get("quantityValue"),
+			quantity_unit=deserialized_dict.get("quantityUnit"),
+			io_request_reference=deserialized_dict.get("ioRequestReference"),
+			response_type=deserialized_dict.get("responseType"),
+			refusal_justification=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("refusalJustification").items())) if deserialized_dict.get("refusalJustification") is not None else None,
+			verses=[x0 for x0 in deserialized_dict.get("verses")] if deserialized_dict.get("verses") is not None else None,
+			coverage_type=deserialized_dict.get("coverageType"),
+			unit_number=deserialized_dict.get("unitNumber"),
+			strength=deserialized_dict.get("strength"),
+			strength_unit=deserialized_dict.get("strengthUnit"),
+			agreement_appendices=[AgreementAppendix._deserialize(x0) for x0 in deserialized_dict.get("agreementAppendices")] if deserialized_dict.get("agreementAppendices") is not None else None,
+			document_id=deserialized_dict.get("documentId"),
 		)
 
 @dataclass
@@ -14329,10 +14337,10 @@ class Suspension:
 		else:
 			deserialized_dict = data
 		return cls(
-			begin_moment = deserialized_dict.get("beginMoment"),
-			end_moment = deserialized_dict.get("endMoment"),
-			suspension_reason = deserialized_dict.get("suspensionReason"),
-			lifecycle = deserialized_dict.get("lifecycle"),
+			begin_moment=deserialized_dict.get("beginMoment"),
+			end_moment=deserialized_dict.get("endMoment"),
+			suspension_reason=deserialized_dict.get("suspensionReason"),
+			lifecycle=deserialized_dict.get("lifecycle"),
 		)
 
 @dataclass
@@ -14356,9 +14364,9 @@ class Action:
 		else:
 			deserialized_dict = data
 		return cls(
-			launchers = [Launcher._deserialize(x0) for x0 in deserialized_dict.get("launchers")] if deserialized_dict.get("launchers") is not None else None,
-			expression = deserialized_dict.get("expression"),
-			states = [State._deserialize(x0) for x0 in deserialized_dict.get("states")] if deserialized_dict.get("states") is not None else None,
+			launchers=[Launcher._deserialize(x0) for x0 in deserialized_dict.get("launchers")] if deserialized_dict.get("launchers") is not None else None,
+			expression=deserialized_dict.get("expression"),
+			states=[State._deserialize(x0) for x0 in deserialized_dict.get("states")] if deserialized_dict.get("states") is not None else None,
 		)
 
 @dataclass
@@ -14384,10 +14392,10 @@ class Section:
 		else:
 			deserialized_dict = data
 		return cls(
-			section = deserialized_dict["section"],
-			fields = [deserialize_structure_element(x0) for x0 in deserialized_dict["fields"]],
-			description = deserialized_dict.get("description"),
-			keywords = [x0 for x0 in deserialized_dict.get("keywords")] if deserialized_dict.get("keywords") is not None else None,
+			section=deserialized_dict["section"],
+			fields=[deserialize_structure_element(x0) for x0 in deserialized_dict["fields"]],
+			description=deserialized_dict.get("description"),
+			keywords=[x0 for x0 in deserialized_dict.get("keywords")] if deserialized_dict.get("keywords") is not None else None,
 		)
 
 @dataclass
@@ -14415,11 +14423,11 @@ class DecryptedCareTeamMembership:
 		else:
 			deserialized_dict = data
 		return cls(
-			start_date = deserialized_dict.get("startDate"),
-			end_date = deserialized_dict.get("endDate"),
-			care_team_member_id = deserialized_dict.get("careTeamMemberId"),
-			membership_type = MembershipType._deserialize(deserialized_dict.get("membershipType")) if deserialized_dict.get("membershipType") is not None else None,
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
+			start_date=deserialized_dict.get("startDate"),
+			end_date=deserialized_dict.get("endDate"),
+			care_team_member_id=deserialized_dict.get("careTeamMemberId"),
+			membership_type=MembershipType._deserialize(deserialized_dict.get("membershipType")) if deserialized_dict.get("membershipType") is not None else None,
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
 @dataclass
@@ -14447,11 +14455,11 @@ class EncryptedCareTeamMembership:
 		else:
 			deserialized_dict = data
 		return cls(
-			start_date = deserialized_dict.get("startDate"),
-			end_date = deserialized_dict.get("endDate"),
-			care_team_member_id = deserialized_dict.get("careTeamMemberId"),
-			membership_type = MembershipType._deserialize(deserialized_dict.get("membershipType")) if deserialized_dict.get("membershipType") is not None else None,
-			encrypted_self = deserialized_dict.get("encryptedSelf"),
+			start_date=deserialized_dict.get("startDate"),
+			end_date=deserialized_dict.get("endDate"),
+			care_team_member_id=deserialized_dict.get("careTeamMemberId"),
+			membership_type=MembershipType._deserialize(deserialized_dict.get("membershipType")) if deserialized_dict.get("membershipType") is not None else None,
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
 CareTeamMembership = Union['DecryptedCareTeamMembership', 'EncryptedCareTeamMembership']
@@ -14522,7 +14530,7 @@ class ServiceLink:
 		else:
 			deserialized_dict = data
 		return cls(
-			service_id = deserialized_dict.get("serviceId"),
+			service_id=deserialized_dict.get("serviceId"),
 		)
 
 @dataclass
@@ -14567,10 +14575,10 @@ class DatabaseSynchronization:
 		else:
 			deserialized_dict = data
 		return cls(
-			source = deserialized_dict.get("source"),
-			target = deserialized_dict.get("target"),
-			filter = deserialized_dict.get("filter"),
-			local_target = DatabaseSynchronization.Target._deserialize(deserialized_dict.get("localTarget")) if deserialized_dict.get("localTarget") is not None else None,
+			source=deserialized_dict.get("source"),
+			target=deserialized_dict.get("target"),
+			filter=deserialized_dict.get("filter"),
+			local_target=DatabaseSynchronization.Target._deserialize(deserialized_dict.get("localTarget")) if deserialized_dict.get("localTarget") is not None else None,
 		)
 
 @dataclass
@@ -14592,8 +14600,8 @@ class Basic:
 		else:
 			deserialized_dict = data
 		return cls(
-			username = deserialized_dict["username"],
-			password = deserialized_dict["password"],
+			username=deserialized_dict["username"],
+			password=deserialized_dict["password"],
 		)
 
 @dataclass
@@ -14615,8 +14623,8 @@ class Range:
 		else:
 			deserialized_dict = data
 		return cls(
-			low = deserialized_dict.get("low"),
-			high = deserialized_dict.get("high"),
+			low=deserialized_dict.get("low"),
+			high=deserialized_dict.get("high"),
 		)
 
 @dataclass
@@ -14638,8 +14646,8 @@ class Weekday:
 		else:
 			deserialized_dict = data
 		return cls(
-			weekday = CodeStub._deserialize(deserialized_dict.get("weekday")) if deserialized_dict.get("weekday") is not None else None,
-			week_number = deserialized_dict.get("weekNumber"),
+			weekday=CodeStub._deserialize(deserialized_dict.get("weekday")) if deserialized_dict.get("weekday") is not None else None,
+			week_number=deserialized_dict.get("weekNumber"),
 		)
 
 @dataclass
@@ -14663,9 +14671,9 @@ class AdministrationQuantity:
 		else:
 			deserialized_dict = data
 		return cls(
-			quantity = deserialized_dict.get("quantity"),
-			administration_unit = CodeStub._deserialize(deserialized_dict.get("administrationUnit")) if deserialized_dict.get("administrationUnit") is not None else None,
-			unit = deserialized_dict.get("unit"),
+			quantity=deserialized_dict.get("quantity"),
+			administration_unit=CodeStub._deserialize(deserialized_dict.get("administrationUnit")) if deserialized_dict.get("administrationUnit") is not None else None,
+			unit=deserialized_dict.get("unit"),
 		)
 
 @dataclass
@@ -14691,10 +14699,10 @@ class AgreementAppendix:
 		else:
 			deserialized_dict = data
 		return cls(
-			doc_seq = deserialized_dict.get("docSeq"),
-			verse_seq = deserialized_dict.get("verseSeq"),
-			document_id = deserialized_dict.get("documentId"),
-			path = deserialized_dict.get("path"),
+			doc_seq=deserialized_dict.get("docSeq"),
+			verse_seq=deserialized_dict.get("verseSeq"),
+			document_id=deserialized_dict.get("documentId"),
+			path=deserialized_dict.get("path"),
 		)
 
 @dataclass
@@ -14718,9 +14726,9 @@ class Launcher:
 		else:
 			deserialized_dict = data
 		return cls(
-			name = deserialized_dict["name"],
-			triggerer = Trigger._deserialize(deserialized_dict["triggerer"]),
-			should_pass_value = deserialized_dict["shouldPassValue"],
+			name=deserialized_dict["name"],
+			triggerer=Trigger._deserialize(deserialized_dict["triggerer"]),
+			should_pass_value=deserialized_dict["shouldPassValue"],
 		)
 
 @dataclass
@@ -14744,9 +14752,9 @@ class State:
 		else:
 			deserialized_dict = data
 		return cls(
-			name = deserialized_dict["name"],
-			state_to_update = StateToUpdate._deserialize(deserialized_dict["stateToUpdate"]),
-			can_launch_launcher = deserialized_dict["canLaunchLauncher"],
+			name=deserialized_dict["name"],
+			state_to_update=StateToUpdate._deserialize(deserialized_dict["stateToUpdate"]),
+			can_launch_launcher=deserialized_dict["canLaunchLauncher"],
 		)
 
 @dataclass
@@ -14798,23 +14806,23 @@ class DropdownField:
 		else:
 			deserialized_dict = data
 		return cls(
-			field = deserialized_dict["field"],
-			short_label = deserialized_dict.get("shortLabel"),
-			rows = deserialized_dict.get("rows"),
-			columns = deserialized_dict.get("columns"),
-			grows = deserialized_dict.get("grows"),
-			multiline = deserialized_dict.get("multiline"),
-			schema = deserialized_dict.get("schema"),
-			tags = [x0 for x0 in deserialized_dict.get("tags")] if deserialized_dict.get("tags") is not None else None,
-			codifications = [x0 for x0 in deserialized_dict.get("codifications")] if deserialized_dict.get("codifications") is not None else None,
-			options = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("options").items())) if deserialized_dict.get("options") is not None else None,
-			labels = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("labels").items())) if deserialized_dict.get("labels") is not None else None,
-			value = deserialized_dict.get("value"),
-			unit = deserialized_dict.get("unit"),
-			required = deserialized_dict.get("required"),
-			hide_condition = deserialized_dict.get("hideCondition"),
-			now = deserialized_dict.get("now"),
-			translate = deserialized_dict.get("translate"),
+			field=deserialized_dict["field"],
+			short_label=deserialized_dict.get("shortLabel"),
+			rows=deserialized_dict.get("rows"),
+			columns=deserialized_dict.get("columns"),
+			grows=deserialized_dict.get("grows"),
+			multiline=deserialized_dict.get("multiline"),
+			schema=deserialized_dict.get("schema"),
+			tags=[x0 for x0 in deserialized_dict.get("tags")] if deserialized_dict.get("tags") is not None else None,
+			codifications=[x0 for x0 in deserialized_dict.get("codifications")] if deserialized_dict.get("codifications") is not None else None,
+			options=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("options").items())) if deserialized_dict.get("options") is not None else None,
+			labels=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("labels").items())) if deserialized_dict.get("labels") is not None else None,
+			value=deserialized_dict.get("value"),
+			unit=deserialized_dict.get("unit"),
+			required=deserialized_dict.get("required"),
+			hide_condition=deserialized_dict.get("hideCondition"),
+			now=deserialized_dict.get("now"),
+			translate=deserialized_dict.get("translate"),
 		)
 
 @dataclass
@@ -14866,23 +14874,23 @@ class RadioButton:
 		else:
 			deserialized_dict = data
 		return cls(
-			field = deserialized_dict["field"],
-			short_label = deserialized_dict.get("shortLabel"),
-			rows = deserialized_dict.get("rows"),
-			columns = deserialized_dict.get("columns"),
-			grows = deserialized_dict.get("grows"),
-			multiline = deserialized_dict.get("multiline"),
-			schema = deserialized_dict.get("schema"),
-			tags = [x0 for x0 in deserialized_dict.get("tags")] if deserialized_dict.get("tags") is not None else None,
-			codifications = [x0 for x0 in deserialized_dict.get("codifications")] if deserialized_dict.get("codifications") is not None else None,
-			options = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("options").items())) if deserialized_dict.get("options") is not None else None,
-			labels = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("labels").items())) if deserialized_dict.get("labels") is not None else None,
-			value = deserialized_dict.get("value"),
-			unit = deserialized_dict.get("unit"),
-			required = deserialized_dict.get("required"),
-			hide_condition = deserialized_dict.get("hideCondition"),
-			now = deserialized_dict.get("now"),
-			translate = deserialized_dict.get("translate"),
+			field=deserialized_dict["field"],
+			short_label=deserialized_dict.get("shortLabel"),
+			rows=deserialized_dict.get("rows"),
+			columns=deserialized_dict.get("columns"),
+			grows=deserialized_dict.get("grows"),
+			multiline=deserialized_dict.get("multiline"),
+			schema=deserialized_dict.get("schema"),
+			tags=[x0 for x0 in deserialized_dict.get("tags")] if deserialized_dict.get("tags") is not None else None,
+			codifications=[x0 for x0 in deserialized_dict.get("codifications")] if deserialized_dict.get("codifications") is not None else None,
+			options=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("options").items())) if deserialized_dict.get("options") is not None else None,
+			labels=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("labels").items())) if deserialized_dict.get("labels") is not None else None,
+			value=deserialized_dict.get("value"),
+			unit=deserialized_dict.get("unit"),
+			required=deserialized_dict.get("required"),
+			hide_condition=deserialized_dict.get("hideCondition"),
+			now=deserialized_dict.get("now"),
+			translate=deserialized_dict.get("translate"),
 		)
 
 @dataclass
@@ -14934,23 +14942,23 @@ class DatePicker:
 		else:
 			deserialized_dict = data
 		return cls(
-			field = deserialized_dict["field"],
-			short_label = deserialized_dict.get("shortLabel"),
-			rows = deserialized_dict.get("rows"),
-			columns = deserialized_dict.get("columns"),
-			grows = deserialized_dict.get("grows"),
-			multiline = deserialized_dict.get("multiline"),
-			schema = deserialized_dict.get("schema"),
-			tags = [x0 for x0 in deserialized_dict.get("tags")] if deserialized_dict.get("tags") is not None else None,
-			codifications = [x0 for x0 in deserialized_dict.get("codifications")] if deserialized_dict.get("codifications") is not None else None,
-			options = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("options").items())) if deserialized_dict.get("options") is not None else None,
-			labels = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("labels").items())) if deserialized_dict.get("labels") is not None else None,
-			value = deserialized_dict.get("value"),
-			unit = deserialized_dict.get("unit"),
-			required = deserialized_dict.get("required"),
-			hide_condition = deserialized_dict.get("hideCondition"),
-			now = deserialized_dict.get("now"),
-			translate = deserialized_dict.get("translate"),
+			field=deserialized_dict["field"],
+			short_label=deserialized_dict.get("shortLabel"),
+			rows=deserialized_dict.get("rows"),
+			columns=deserialized_dict.get("columns"),
+			grows=deserialized_dict.get("grows"),
+			multiline=deserialized_dict.get("multiline"),
+			schema=deserialized_dict.get("schema"),
+			tags=[x0 for x0 in deserialized_dict.get("tags")] if deserialized_dict.get("tags") is not None else None,
+			codifications=[x0 for x0 in deserialized_dict.get("codifications")] if deserialized_dict.get("codifications") is not None else None,
+			options=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("options").items())) if deserialized_dict.get("options") is not None else None,
+			labels=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("labels").items())) if deserialized_dict.get("labels") is not None else None,
+			value=deserialized_dict.get("value"),
+			unit=deserialized_dict.get("unit"),
+			required=deserialized_dict.get("required"),
+			hide_condition=deserialized_dict.get("hideCondition"),
+			now=deserialized_dict.get("now"),
+			translate=deserialized_dict.get("translate"),
 		)
 
 @dataclass
@@ -15002,23 +15010,23 @@ class TimePicker:
 		else:
 			deserialized_dict = data
 		return cls(
-			field = deserialized_dict["field"],
-			short_label = deserialized_dict.get("shortLabel"),
-			rows = deserialized_dict.get("rows"),
-			columns = deserialized_dict.get("columns"),
-			grows = deserialized_dict.get("grows"),
-			multiline = deserialized_dict.get("multiline"),
-			schema = deserialized_dict.get("schema"),
-			tags = [x0 for x0 in deserialized_dict.get("tags")] if deserialized_dict.get("tags") is not None else None,
-			codifications = [x0 for x0 in deserialized_dict.get("codifications")] if deserialized_dict.get("codifications") is not None else None,
-			options = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("options").items())) if deserialized_dict.get("options") is not None else None,
-			labels = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("labels").items())) if deserialized_dict.get("labels") is not None else None,
-			value = deserialized_dict.get("value"),
-			unit = deserialized_dict.get("unit"),
-			required = deserialized_dict.get("required"),
-			hide_condition = deserialized_dict.get("hideCondition"),
-			now = deserialized_dict.get("now"),
-			translate = deserialized_dict.get("translate"),
+			field=deserialized_dict["field"],
+			short_label=deserialized_dict.get("shortLabel"),
+			rows=deserialized_dict.get("rows"),
+			columns=deserialized_dict.get("columns"),
+			grows=deserialized_dict.get("grows"),
+			multiline=deserialized_dict.get("multiline"),
+			schema=deserialized_dict.get("schema"),
+			tags=[x0 for x0 in deserialized_dict.get("tags")] if deserialized_dict.get("tags") is not None else None,
+			codifications=[x0 for x0 in deserialized_dict.get("codifications")] if deserialized_dict.get("codifications") is not None else None,
+			options=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("options").items())) if deserialized_dict.get("options") is not None else None,
+			labels=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("labels").items())) if deserialized_dict.get("labels") is not None else None,
+			value=deserialized_dict.get("value"),
+			unit=deserialized_dict.get("unit"),
+			required=deserialized_dict.get("required"),
+			hide_condition=deserialized_dict.get("hideCondition"),
+			now=deserialized_dict.get("now"),
+			translate=deserialized_dict.get("translate"),
 		)
 
 @dataclass
@@ -15070,23 +15078,23 @@ class DateTimePicker:
 		else:
 			deserialized_dict = data
 		return cls(
-			field = deserialized_dict["field"],
-			short_label = deserialized_dict.get("shortLabel"),
-			rows = deserialized_dict.get("rows"),
-			columns = deserialized_dict.get("columns"),
-			grows = deserialized_dict.get("grows"),
-			multiline = deserialized_dict.get("multiline"),
-			schema = deserialized_dict.get("schema"),
-			tags = [x0 for x0 in deserialized_dict.get("tags")] if deserialized_dict.get("tags") is not None else None,
-			codifications = [x0 for x0 in deserialized_dict.get("codifications")] if deserialized_dict.get("codifications") is not None else None,
-			options = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("options").items())) if deserialized_dict.get("options") is not None else None,
-			labels = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("labels").items())) if deserialized_dict.get("labels") is not None else None,
-			value = deserialized_dict.get("value"),
-			unit = deserialized_dict.get("unit"),
-			required = deserialized_dict.get("required"),
-			hide_condition = deserialized_dict.get("hideCondition"),
-			now = deserialized_dict.get("now"),
-			translate = deserialized_dict.get("translate"),
+			field=deserialized_dict["field"],
+			short_label=deserialized_dict.get("shortLabel"),
+			rows=deserialized_dict.get("rows"),
+			columns=deserialized_dict.get("columns"),
+			grows=deserialized_dict.get("grows"),
+			multiline=deserialized_dict.get("multiline"),
+			schema=deserialized_dict.get("schema"),
+			tags=[x0 for x0 in deserialized_dict.get("tags")] if deserialized_dict.get("tags") is not None else None,
+			codifications=[x0 for x0 in deserialized_dict.get("codifications")] if deserialized_dict.get("codifications") is not None else None,
+			options=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("options").items())) if deserialized_dict.get("options") is not None else None,
+			labels=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("labels").items())) if deserialized_dict.get("labels") is not None else None,
+			value=deserialized_dict.get("value"),
+			unit=deserialized_dict.get("unit"),
+			required=deserialized_dict.get("required"),
+			hide_condition=deserialized_dict.get("hideCondition"),
+			now=deserialized_dict.get("now"),
+			translate=deserialized_dict.get("translate"),
 		)
 
 @dataclass
@@ -15138,23 +15146,23 @@ class NumberField:
 		else:
 			deserialized_dict = data
 		return cls(
-			field = deserialized_dict["field"],
-			short_label = deserialized_dict.get("shortLabel"),
-			rows = deserialized_dict.get("rows"),
-			columns = deserialized_dict.get("columns"),
-			grows = deserialized_dict.get("grows"),
-			multiline = deserialized_dict.get("multiline"),
-			schema = deserialized_dict.get("schema"),
-			tags = [x0 for x0 in deserialized_dict.get("tags")] if deserialized_dict.get("tags") is not None else None,
-			codifications = [x0 for x0 in deserialized_dict.get("codifications")] if deserialized_dict.get("codifications") is not None else None,
-			options = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("options").items())) if deserialized_dict.get("options") is not None else None,
-			labels = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("labels").items())) if deserialized_dict.get("labels") is not None else None,
-			value = deserialized_dict.get("value"),
-			unit = deserialized_dict.get("unit"),
-			required = deserialized_dict.get("required"),
-			hide_condition = deserialized_dict.get("hideCondition"),
-			now = deserialized_dict.get("now"),
-			translate = deserialized_dict.get("translate"),
+			field=deserialized_dict["field"],
+			short_label=deserialized_dict.get("shortLabel"),
+			rows=deserialized_dict.get("rows"),
+			columns=deserialized_dict.get("columns"),
+			grows=deserialized_dict.get("grows"),
+			multiline=deserialized_dict.get("multiline"),
+			schema=deserialized_dict.get("schema"),
+			tags=[x0 for x0 in deserialized_dict.get("tags")] if deserialized_dict.get("tags") is not None else None,
+			codifications=[x0 for x0 in deserialized_dict.get("codifications")] if deserialized_dict.get("codifications") is not None else None,
+			options=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("options").items())) if deserialized_dict.get("options") is not None else None,
+			labels=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("labels").items())) if deserialized_dict.get("labels") is not None else None,
+			value=deserialized_dict.get("value"),
+			unit=deserialized_dict.get("unit"),
+			required=deserialized_dict.get("required"),
+			hide_condition=deserialized_dict.get("hideCondition"),
+			now=deserialized_dict.get("now"),
+			translate=deserialized_dict.get("translate"),
 		)
 
 @dataclass
@@ -15206,23 +15214,23 @@ class TextField:
 		else:
 			deserialized_dict = data
 		return cls(
-			field = deserialized_dict["field"],
-			short_label = deserialized_dict.get("shortLabel"),
-			rows = deserialized_dict.get("rows"),
-			columns = deserialized_dict.get("columns"),
-			grows = deserialized_dict.get("grows"),
-			multiline = deserialized_dict.get("multiline"),
-			schema = deserialized_dict.get("schema"),
-			tags = [x0 for x0 in deserialized_dict.get("tags")] if deserialized_dict.get("tags") is not None else None,
-			codifications = [x0 for x0 in deserialized_dict.get("codifications")] if deserialized_dict.get("codifications") is not None else None,
-			options = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("options").items())) if deserialized_dict.get("options") is not None else None,
-			labels = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("labels").items())) if deserialized_dict.get("labels") is not None else None,
-			value = deserialized_dict.get("value"),
-			unit = deserialized_dict.get("unit"),
-			required = deserialized_dict.get("required"),
-			hide_condition = deserialized_dict.get("hideCondition"),
-			now = deserialized_dict.get("now"),
-			translate = deserialized_dict.get("translate"),
+			field=deserialized_dict["field"],
+			short_label=deserialized_dict.get("shortLabel"),
+			rows=deserialized_dict.get("rows"),
+			columns=deserialized_dict.get("columns"),
+			grows=deserialized_dict.get("grows"),
+			multiline=deserialized_dict.get("multiline"),
+			schema=deserialized_dict.get("schema"),
+			tags=[x0 for x0 in deserialized_dict.get("tags")] if deserialized_dict.get("tags") is not None else None,
+			codifications=[x0 for x0 in deserialized_dict.get("codifications")] if deserialized_dict.get("codifications") is not None else None,
+			options=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("options").items())) if deserialized_dict.get("options") is not None else None,
+			labels=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("labels").items())) if deserialized_dict.get("labels") is not None else None,
+			value=deserialized_dict.get("value"),
+			unit=deserialized_dict.get("unit"),
+			required=deserialized_dict.get("required"),
+			hide_condition=deserialized_dict.get("hideCondition"),
+			now=deserialized_dict.get("now"),
+			translate=deserialized_dict.get("translate"),
 		)
 
 @dataclass
@@ -15274,23 +15282,23 @@ class CheckBox:
 		else:
 			deserialized_dict = data
 		return cls(
-			field = deserialized_dict["field"],
-			short_label = deserialized_dict.get("shortLabel"),
-			rows = deserialized_dict.get("rows"),
-			columns = deserialized_dict.get("columns"),
-			grows = deserialized_dict.get("grows"),
-			multiline = deserialized_dict.get("multiline"),
-			schema = deserialized_dict.get("schema"),
-			tags = [x0 for x0 in deserialized_dict.get("tags")] if deserialized_dict.get("tags") is not None else None,
-			codifications = [x0 for x0 in deserialized_dict.get("codifications")] if deserialized_dict.get("codifications") is not None else None,
-			options = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("options").items())) if deserialized_dict.get("options") is not None else None,
-			labels = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("labels").items())) if deserialized_dict.get("labels") is not None else None,
-			value = deserialized_dict.get("value"),
-			unit = deserialized_dict.get("unit"),
-			required = deserialized_dict.get("required"),
-			hide_condition = deserialized_dict.get("hideCondition"),
-			now = deserialized_dict.get("now"),
-			translate = deserialized_dict.get("translate"),
+			field=deserialized_dict["field"],
+			short_label=deserialized_dict.get("shortLabel"),
+			rows=deserialized_dict.get("rows"),
+			columns=deserialized_dict.get("columns"),
+			grows=deserialized_dict.get("grows"),
+			multiline=deserialized_dict.get("multiline"),
+			schema=deserialized_dict.get("schema"),
+			tags=[x0 for x0 in deserialized_dict.get("tags")] if deserialized_dict.get("tags") is not None else None,
+			codifications=[x0 for x0 in deserialized_dict.get("codifications")] if deserialized_dict.get("codifications") is not None else None,
+			options=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("options").items())) if deserialized_dict.get("options") is not None else None,
+			labels=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("labels").items())) if deserialized_dict.get("labels") is not None else None,
+			value=deserialized_dict.get("value"),
+			unit=deserialized_dict.get("unit"),
+			required=deserialized_dict.get("required"),
+			hide_condition=deserialized_dict.get("hideCondition"),
+			now=deserialized_dict.get("now"),
+			translate=deserialized_dict.get("translate"),
 		)
 
 @dataclass
@@ -15342,23 +15350,23 @@ class MultipleChoice:
 		else:
 			deserialized_dict = data
 		return cls(
-			field = deserialized_dict["field"],
-			short_label = deserialized_dict.get("shortLabel"),
-			rows = deserialized_dict.get("rows"),
-			columns = deserialized_dict.get("columns"),
-			grows = deserialized_dict.get("grows"),
-			multiline = deserialized_dict.get("multiline"),
-			schema = deserialized_dict.get("schema"),
-			tags = [x0 for x0 in deserialized_dict.get("tags")] if deserialized_dict.get("tags") is not None else None,
-			codifications = [x0 for x0 in deserialized_dict.get("codifications")] if deserialized_dict.get("codifications") is not None else None,
-			options = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("options").items())) if deserialized_dict.get("options") is not None else None,
-			labels = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("labels").items())) if deserialized_dict.get("labels") is not None else None,
-			value = deserialized_dict.get("value"),
-			unit = deserialized_dict.get("unit"),
-			required = deserialized_dict.get("required"),
-			hide_condition = deserialized_dict.get("hideCondition"),
-			now = deserialized_dict.get("now"),
-			translate = deserialized_dict.get("translate"),
+			field=deserialized_dict["field"],
+			short_label=deserialized_dict.get("shortLabel"),
+			rows=deserialized_dict.get("rows"),
+			columns=deserialized_dict.get("columns"),
+			grows=deserialized_dict.get("grows"),
+			multiline=deserialized_dict.get("multiline"),
+			schema=deserialized_dict.get("schema"),
+			tags=[x0 for x0 in deserialized_dict.get("tags")] if deserialized_dict.get("tags") is not None else None,
+			codifications=[x0 for x0 in deserialized_dict.get("codifications")] if deserialized_dict.get("codifications") is not None else None,
+			options=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("options").items())) if deserialized_dict.get("options") is not None else None,
+			labels=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("labels").items())) if deserialized_dict.get("labels") is not None else None,
+			value=deserialized_dict.get("value"),
+			unit=deserialized_dict.get("unit"),
+			required=deserialized_dict.get("required"),
+			hide_condition=deserialized_dict.get("hideCondition"),
+			now=deserialized_dict.get("now"),
+			translate=deserialized_dict.get("translate"),
 		)
 
 @dataclass
@@ -15410,23 +15418,23 @@ class MeasureField:
 		else:
 			deserialized_dict = data
 		return cls(
-			field = deserialized_dict["field"],
-			short_label = deserialized_dict.get("shortLabel"),
-			rows = deserialized_dict.get("rows"),
-			columns = deserialized_dict.get("columns"),
-			grows = deserialized_dict.get("grows"),
-			multiline = deserialized_dict.get("multiline"),
-			schema = deserialized_dict.get("schema"),
-			tags = [x0 for x0 in deserialized_dict.get("tags")] if deserialized_dict.get("tags") is not None else None,
-			codifications = [x0 for x0 in deserialized_dict.get("codifications")] if deserialized_dict.get("codifications") is not None else None,
-			options = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("options").items())) if deserialized_dict.get("options") is not None else None,
-			labels = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("labels").items())) if deserialized_dict.get("labels") is not None else None,
-			value = deserialized_dict.get("value"),
-			unit = deserialized_dict.get("unit"),
-			required = deserialized_dict.get("required"),
-			hide_condition = deserialized_dict.get("hideCondition"),
-			now = deserialized_dict.get("now"),
-			translate = deserialized_dict.get("translate"),
+			field=deserialized_dict["field"],
+			short_label=deserialized_dict.get("shortLabel"),
+			rows=deserialized_dict.get("rows"),
+			columns=deserialized_dict.get("columns"),
+			grows=deserialized_dict.get("grows"),
+			multiline=deserialized_dict.get("multiline"),
+			schema=deserialized_dict.get("schema"),
+			tags=[x0 for x0 in deserialized_dict.get("tags")] if deserialized_dict.get("tags") is not None else None,
+			codifications=[x0 for x0 in deserialized_dict.get("codifications")] if deserialized_dict.get("codifications") is not None else None,
+			options=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("options").items())) if deserialized_dict.get("options") is not None else None,
+			labels=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("labels").items())) if deserialized_dict.get("labels") is not None else None,
+			value=deserialized_dict.get("value"),
+			unit=deserialized_dict.get("unit"),
+			required=deserialized_dict.get("required"),
+			hide_condition=deserialized_dict.get("hideCondition"),
+			now=deserialized_dict.get("now"),
+			translate=deserialized_dict.get("translate"),
 		)
 
 @dataclass
@@ -15448,8 +15456,8 @@ class FieldsGroup:
 		else:
 			deserialized_dict = data
 		return cls(
-			group = deserialized_dict["group"],
-			fields = [deserialize_structure_element(x0) for x0 in deserialized_dict.get("fields")] if deserialized_dict.get("fields") is not None else None,
+			group=deserialized_dict["group"],
+			fields=[deserialize_structure_element(x0) for x0 in deserialized_dict.get("fields")] if deserialized_dict.get("fields") is not None else None,
 		)
 
 StructureElement = Union['DropdownField', 'RadioButton', 'DatePicker', 'TimePicker', 'DateTimePicker', 'NumberField', 'TextField', 'CheckBox', 'MultipleChoice', 'MeasureField', 'FieldsGroup']
@@ -15512,27 +15520,27 @@ def deserialize_structure_element(data: Union[str, Dict[str, object]]) -> 'Struc
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
 	if qualifier == "com.icure.sdk.model.embed.form.template.DropdownField":
-		DropdownField._deserialize(deserialized_dict)
+		return DropdownField._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.sdk.model.embed.form.template.RadioButton":
-		RadioButton._deserialize(deserialized_dict)
+		return RadioButton._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.sdk.model.embed.form.template.DatePicker":
-		DatePicker._deserialize(deserialized_dict)
+		return DatePicker._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.sdk.model.embed.form.template.TimePicker":
-		TimePicker._deserialize(deserialized_dict)
+		return TimePicker._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.sdk.model.embed.form.template.DateTimePicker":
-		DateTimePicker._deserialize(deserialized_dict)
+		return DateTimePicker._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.sdk.model.embed.form.template.NumberField":
-		NumberField._deserialize(deserialized_dict)
+		return NumberField._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.sdk.model.embed.form.template.TextField":
-		TextField._deserialize(deserialized_dict)
+		return TextField._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.sdk.model.embed.form.template.CheckBox":
-		CheckBox._deserialize(deserialized_dict)
+		return CheckBox._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.sdk.model.embed.form.template.MultipleChoice":
-		MultipleChoice._deserialize(deserialized_dict)
+		return MultipleChoice._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.sdk.model.embed.form.template.MeasureField":
-		MeasureField._deserialize(deserialized_dict)
+		return MeasureField._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.sdk.model.embed.form.template.FieldsGroup":
-		FieldsGroup._deserialize(deserialized_dict)
+		return FieldsGroup._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of StructureElement")
 

@@ -22,24 +22,18 @@ class ApplicationSettingsApi:
 				success = [ApplicationSettings._deserialize(x1) for x1 in success.decode('utf-8')]
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.ApplicationSettingsApi.getApplicationSettingsAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
 			callback
 		)
 		return await future
 
 	def get_application_settings_blocking(self) -> List[ApplicationSettings]:
-		payload = {
-		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ApplicationSettingsApi.getApplicationSettingsBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -68,7 +62,7 @@ class ApplicationSettingsApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.ApplicationSettingsApi.createApplicationSettingsAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
@@ -108,7 +102,7 @@ class ApplicationSettingsApi:
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.ApplicationSettingsApi.updateApplicationSettingsAsync,
 			self.icure_sdk._native,
-			json.dumps(payload),
+			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future

@@ -1,6 +1,4 @@
 
-RsaKeypair = str
-
 KeypairFingerprintV1String = str
 
 SpkiHexString = str
