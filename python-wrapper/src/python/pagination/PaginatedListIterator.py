@@ -24,13 +24,13 @@ class PaginatedListIterator(Generic[T]):
         raise "TODO"
 
     def next_blocking(self, limit: int) -> List[T]:
-        call_result = symbols.kotlin.root.icure.sdk.py.utils.PaginatedListIterator.nextBlocking(self.producer, limit)
+        call_result = symbols.kotlin.root.com.icure.sdk.py.utils.PaginatedListIterator.nextBlocking(self.producer, limit)
         result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
         symbols.DisposeString(call_result)
-        if "failure" in result_info and result_info.get("failure") is not None:
-            raise Exception(result_info["failure"])
+        if result_info.failure is not None:
+            raise Exception(result_info.failure)
         else:
-            return result_info["success"]  # TODO deserialize
+            return [self.deserializer(item) for item in result_info.success]
 
     def next_async(self, limit: int) -> List[T]:
         raise "TODO"
