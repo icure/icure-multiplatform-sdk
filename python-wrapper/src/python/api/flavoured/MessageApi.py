@@ -1,11 +1,11 @@
 import asyncio
 import json
-from model import DecryptedMessage, Patient, User, AccessLevel, serialize_patient, Message, serialize_message, AbstractFilter, serialize_abstract_filter, DocIdentifier, RequestedPermission, RequestedPermission.MaxWrite, FilterChain, PaginatedList, EncryptedMessage, deserialize_message
+from model import DecryptedMessage, Patient, User, AccessLevel, serialize_patient, Message, serialize_message, AbstractFilter, serialize_abstract_filter, DocIdentifier, RequestedPermission, FilterChain, PaginatedList, EncryptedMessage, deserialize_message
 from model.CallResult import CallResult, create_result_from_json
 from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from ctypes import cast, c_char_p, c_void_p
 from typing import Optional, Dict, List
-from crypto import SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_secret_id_option, ShareMetadataBehaviour, ShareMetadataBehaviour.IfAvailable, deserialize_simple_share_result, SimpleShareResult, MessageShareOptions
+from crypto import SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_secret_id_option, ShareMetadataBehaviour, deserialize_simple_share_result, SimpleShareResult, MessageShareOptions
 from model.specializations import HexString
 from pagination.PaginatedListIterator import PaginatedListIterator
 from KotlinTypes import PyResult

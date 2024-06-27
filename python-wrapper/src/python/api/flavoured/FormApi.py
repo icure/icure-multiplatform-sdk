@@ -1,12 +1,12 @@
 import asyncio
 import json
 import base64
-from model import DecryptedForm, Patient, User, AccessLevel, serialize_patient, Form, serialize_form, DocIdentifier, FormTemplate, RequestedPermission, RequestedPermission.MaxWrite, EncryptedForm, deserialize_form
+from model import DecryptedForm, Patient, User, AccessLevel, serialize_patient, Form, serialize_form, DocIdentifier, FormTemplate, RequestedPermission, EncryptedForm, deserialize_form
 from model.CallResult import CallResult, create_result_from_json
 from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from ctypes import cast, c_char_p, c_void_p
 from typing import List, Optional, Dict
-from crypto import SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_secret_id_option, ShareMetadataBehaviour, ShareMetadataBehaviour.IfAvailable, deserialize_simple_share_result, SimpleShareResult, FormShareOptions
+from crypto import SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_secret_id_option, ShareMetadataBehaviour, deserialize_simple_share_result, SimpleShareResult, FormShareOptions
 from model.specializations import HexString
 from pagination.PaginatedListIterator import PaginatedListIterator
 from KotlinTypes import PyResult

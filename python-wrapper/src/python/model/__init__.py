@@ -9,12 +9,8 @@ from dataclasses import dataclass
 from model.specializations import HexString
 from model.specializations import SpkiHexString
 from model.specializations import AesExchangeKeyEncryptionKeypairIdentifier
-from model import Gender.Unknown
-from model import DeactivationReason.Nothing
-from model import PersonalStatus.Unknown
 from model.specializations import Base64String
 from enum import Enum
-from model import TaskStatus.Pending
 from model.specializations import SecureDelegationKeyString
 from model.specializations import Sha256HexString
 

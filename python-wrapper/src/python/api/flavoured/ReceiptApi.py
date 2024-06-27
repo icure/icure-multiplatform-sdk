@@ -1,12 +1,12 @@
 import asyncio
 import json
 import base64
-from model import DecryptedReceipt, Patient, User, AccessLevel, serialize_patient, Receipt, serialize_receipt, EncryptedReceipt, deserialize_receipt, DocIdentifier, RequestedPermission, RequestedPermission.MaxWrite
+from model import DecryptedReceipt, Patient, User, AccessLevel, serialize_patient, Receipt, serialize_receipt, EncryptedReceipt, deserialize_receipt, DocIdentifier, RequestedPermission
 from model.CallResult import CallResult, create_result_from_json
 from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from ctypes import cast, c_char_p
 from typing import Optional, Dict, List
-from crypto import SecretIdOption, serialize_secret_id_option, ShareMetadataBehaviour, ShareMetadataBehaviour.IfAvailable, deserialize_simple_share_result, SimpleShareResult, ReceiptShareOptions
+from crypto import SecretIdOption, serialize_secret_id_option, ShareMetadataBehaviour, deserialize_simple_share_result, SimpleShareResult, ReceiptShareOptions
 from model.specializations import HexString
 
 class ReceiptApi:

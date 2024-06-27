@@ -1,11 +1,11 @@
 import asyncio
 import json
-from model import DecryptedTopic, Patient, User, AccessLevel, serialize_patient, Topic, serialize_topic, DocIdentifier, AbstractFilter, serialize_abstract_filter, RequestedPermission, RequestedPermission.MaxWrite, FilterChain, PaginatedList, TopicRole, EncryptedTopic, deserialize_topic
+from model import DecryptedTopic, Patient, User, AccessLevel, serialize_patient, Topic, serialize_topic, DocIdentifier, AbstractFilter, serialize_abstract_filter, RequestedPermission, FilterChain, PaginatedList, TopicRole, EncryptedTopic, deserialize_topic
 from model.CallResult import CallResult, create_result_from_json
 from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from ctypes import cast, c_char_p
 from typing import Optional, Dict, List
-from crypto import SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_secret_id_option, ShareMetadataBehaviour, ShareMetadataBehaviour.IfAvailable, deserialize_simple_share_result, SimpleShareResult, TopicShareOptions
+from crypto import SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_secret_id_option, ShareMetadataBehaviour, deserialize_simple_share_result, SimpleShareResult, TopicShareOptions
 from model.specializations import HexString
 
 class TopicApi:

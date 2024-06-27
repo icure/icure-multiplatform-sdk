@@ -1,11 +1,11 @@
 import asyncio
 import json
-from model import DecryptedInvoice, Patient, User, AccessLevel, serialize_patient, Invoice, serialize_invoice, DocIdentifier, IcureStub, LabelledOccurence, RequestedPermission, RequestedPermission.MaxWrite, FilterChain, EncryptedInvoicingCode, PaginatedList, MediumType, InvoiceType, EncryptedInvoice, deserialize_invoice
+from model import DecryptedInvoice, Patient, User, AccessLevel, serialize_patient, Invoice, serialize_invoice, DocIdentifier, IcureStub, LabelledOccurence, RequestedPermission, FilterChain, EncryptedInvoicingCode, PaginatedList, MediumType, InvoiceType, EncryptedInvoice, deserialize_invoice
 from typing import Optional, List, Dict
 from model.CallResult import CallResult, create_result_from_json
 from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from ctypes import cast, c_char_p, c_void_p
-from crypto import SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_secret_id_option, ShareMetadataBehaviour, ShareMetadataBehaviour.IfAvailable, deserialize_simple_share_result, SimpleShareResult, InvoiceShareOptions
+from crypto import SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_secret_id_option, ShareMetadataBehaviour, deserialize_simple_share_result, SimpleShareResult, InvoiceShareOptions
 from model.specializations import HexString
 from pagination.PaginatedListIterator import PaginatedListIterator
 from KotlinTypes import PyResult
