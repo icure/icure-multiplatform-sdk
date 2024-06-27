@@ -1,11 +1,11 @@
 import asyncio
 import json
-from model import DecryptedTimeTable, Patient, User, AccessLevel, serialize_patient, serialize_secret_id_option, TimeTable, serialize_time_table, DocIdentifier, RequestedPermission
+from model import DecryptedTimeTable, Patient, User, AccessLevel, serialize_patient, TimeTable, serialize_time_table, DocIdentifier, RequestedPermission, RequestedPermission.MaxWrite, EncryptedTimeTable
 from model.CallResult import CallResult, create_result_from_json
 from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from ctypes import cast, c_char_p
 from typing import Optional, Dict, List
-from crypto import SecretIdOption, ShareMetadataBehaviour, deserialize_simple_share_result, SimpleShareResult, TimeTableShareOptions
+from crypto import SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_secret_id_option, ShareMetadataBehaviour, ShareMetadataBehaviour.IfAvailable, deserialize_simple_share_result, SimpleShareResult, TimeTableShareOptions
 from model.specializations import HexString
 
 class TimeTableApi:
@@ -657,7 +657,7 @@ class TimeTableApi:
 			return_value = DecryptedTimeTable._deserialize(result_info.success)
 			return return_value
 
-	async def with_encryption_metadata_async(self, base: Optional[DecryptedTimeTable], patient: Optional[Patient], user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOption.UseAnySharedWithParent) -> DecryptedTimeTable:
+	async def with_encryption_metadata_async(self, base: Optional[DecryptedTimeTable], patient: Optional[Patient], user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOptionUseAnySharedWithParent) -> DecryptedTimeTable:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -685,7 +685,7 @@ class TimeTableApi:
 		)
 		return await future
 
-	def with_encryption_metadata_blocking(self, base: Optional[DecryptedTimeTable], patient: Optional[Patient], user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOption.UseAnySharedWithParent) -> DecryptedTimeTable:
+	def with_encryption_metadata_blocking(self, base: Optional[DecryptedTimeTable], patient: Optional[Patient], user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOptionUseAnySharedWithParent) -> DecryptedTimeTable:
 		payload = {
 			"base": base.__serialize__() if base is not None else None,
 			"patient": serialize_patient(patient) if patient is not None else None,

@@ -1,11 +1,11 @@
 import asyncio
 import json
-from model import DecryptedMessage, Patient, User, AccessLevel, serialize_patient, serialize_secret_id_option, Message, serialize_message, AbstractFilter, serialize_abstract_filter, DocIdentifier, RequestedPermission, FilterChain, PaginatedList
+from model import DecryptedMessage, Patient, User, AccessLevel, serialize_patient, Message, serialize_message, AbstractFilter, serialize_abstract_filter, DocIdentifier, RequestedPermission, RequestedPermission.MaxWrite, FilterChain, PaginatedList, EncryptedMessage, deserialize_message
 from model.CallResult import CallResult, create_result_from_json
 from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from ctypes import cast, c_char_p, c_void_p
 from typing import Optional, Dict, List
-from crypto import SecretIdOption, ShareMetadataBehaviour, deserialize_simple_share_result, SimpleShareResult, MessageShareOptions
+from crypto import SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_secret_id_option, ShareMetadataBehaviour, ShareMetadataBehaviour.IfAvailable, deserialize_simple_share_result, SimpleShareResult, MessageShareOptions
 from model.specializations import HexString
 from pagination.PaginatedListIterator import PaginatedListIterator
 from KotlinTypes import PyResult
@@ -1907,7 +1907,7 @@ class MessageApi:
 			return_value = DecryptedMessage._deserialize(result_info.success)
 			return return_value
 
-	async def with_encryption_metadata_async(self, base: Optional[DecryptedMessage], patient: Optional[Patient], user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOption.UseAnySharedWithParent) -> DecryptedMessage:
+	async def with_encryption_metadata_async(self, base: Optional[DecryptedMessage], patient: Optional[Patient], user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOptionUseAnySharedWithParent) -> DecryptedMessage:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1935,7 +1935,7 @@ class MessageApi:
 		)
 		return await future
 
-	def with_encryption_metadata_blocking(self, base: Optional[DecryptedMessage], patient: Optional[Patient], user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOption.UseAnySharedWithParent) -> DecryptedMessage:
+	def with_encryption_metadata_blocking(self, base: Optional[DecryptedMessage], patient: Optional[Patient], user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOptionUseAnySharedWithParent) -> DecryptedMessage:
 		payload = {
 			"base": base.__serialize__() if base is not None else None,
 			"patient": serialize_patient(patient) if patient is not None else None,

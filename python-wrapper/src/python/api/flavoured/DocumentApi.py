@@ -1,12 +1,12 @@
 import asyncio
 import json
 import base64
-from model import DecryptedDocument, Message, User, AccessLevel, serialize_message, serialize_secret_id_option, Document, EncryptedDocument, serialize_document, DocIdentifier, RequestedPermission, Patient, serialize_patient
+from model import DecryptedDocument, Message, User, AccessLevel, serialize_message, Document, EncryptedDocument, serialize_document, DocIdentifier, RequestedPermission, RequestedPermission.MaxWrite, Patient, serialize_patient, deserialize_document
 from model.CallResult import CallResult, create_result_from_json
 from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from ctypes import cast, c_char_p, c_void_p
 from typing import Optional, Dict, List
-from crypto import SecretIdOption, ShareMetadataBehaviour, deserialize_simple_share_result, SimpleShareResult, DocumentShareOptions
+from crypto import SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_secret_id_option, ShareMetadataBehaviour, ShareMetadataBehaviour.IfAvailable, deserialize_simple_share_result, SimpleShareResult, DocumentShareOptions
 from model.specializations import HexString
 from pagination.PaginatedListIterator import PaginatedListIterator
 from KotlinTypes import PyResult
@@ -1468,7 +1468,7 @@ class DocumentApi:
 			return_value = DecryptedDocument._deserialize(result_info.success)
 			return return_value
 
-	async def with_encryption_metadata_async(self, base: Optional[DecryptedDocument], message: Optional[Message], user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOption.UseAnySharedWithParent) -> DecryptedDocument:
+	async def with_encryption_metadata_async(self, base: Optional[DecryptedDocument], message: Optional[Message], user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOptionUseAnySharedWithParent) -> DecryptedDocument:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1496,7 +1496,7 @@ class DocumentApi:
 		)
 		return await future
 
-	def with_encryption_metadata_blocking(self, base: Optional[DecryptedDocument], message: Optional[Message], user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOption.UseAnySharedWithParent) -> DecryptedDocument:
+	def with_encryption_metadata_blocking(self, base: Optional[DecryptedDocument], message: Optional[Message], user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOptionUseAnySharedWithParent) -> DecryptedDocument:
 		payload = {
 			"base": base.__serialize__() if base is not None else None,
 			"message": serialize_message(message) if message is not None else None,

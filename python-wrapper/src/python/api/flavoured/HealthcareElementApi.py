@@ -1,11 +1,11 @@
 import asyncio
 import json
-from model import DecryptedHealthElement, Patient, User, AccessLevel, serialize_patient, serialize_secret_id_option, HealthElement, serialize_health_element, AbstractFilter, serialize_abstract_filter, DocIdentifier, IcureStub, RequestedPermission, FilterChain, PaginatedList
+from model import DecryptedHealthElement, Patient, User, AccessLevel, serialize_patient, HealthElement, serialize_health_element, AbstractFilter, serialize_abstract_filter, DocIdentifier, IcureStub, RequestedPermission, RequestedPermission.MaxWrite, FilterChain, PaginatedList, EncryptedHealthElement, deserialize_health_element
 from model.CallResult import CallResult, create_result_from_json
 from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from ctypes import cast, c_char_p, c_void_p
 from typing import List, Optional, Dict
-from crypto import SecretIdOption, ShareMetadataBehaviour, deserialize_simple_share_result, SimpleShareResult, HealthElementShareOptions
+from crypto import SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_secret_id_option, ShareMetadataBehaviour, ShareMetadataBehaviour.IfAvailable, deserialize_simple_share_result, SimpleShareResult, HealthElementShareOptions
 from model.specializations import HexString
 from pagination.PaginatedListIterator import PaginatedListIterator
 from KotlinTypes import PyResult
@@ -991,7 +991,7 @@ class HealthcareElementApi:
 			return_value = [DecryptedHealthElement._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def with_encryption_metadata_async(self, base: Optional[DecryptedHealthElement], patient: Patient, user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOption.UseAnySharedWithParent) -> DecryptedHealthElement:
+	async def with_encryption_metadata_async(self, base: Optional[DecryptedHealthElement], patient: Patient, user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOptionUseAnySharedWithParent) -> DecryptedHealthElement:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1019,7 +1019,7 @@ class HealthcareElementApi:
 		)
 		return await future
 
-	def with_encryption_metadata_blocking(self, base: Optional[DecryptedHealthElement], patient: Patient, user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOption.UseAnySharedWithParent) -> DecryptedHealthElement:
+	def with_encryption_metadata_blocking(self, base: Optional[DecryptedHealthElement], patient: Patient, user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOptionUseAnySharedWithParent) -> DecryptedHealthElement:
 		payload = {
 			"base": base.__serialize__() if base is not None else None,
 			"patient": serialize_patient(patient),

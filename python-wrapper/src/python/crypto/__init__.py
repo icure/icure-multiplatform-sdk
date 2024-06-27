@@ -5,7 +5,10 @@ from typing import Dict
 from dataclasses import dataclass
 from model.specializations import HexString
 from enum import Enum
+from model import RequestedPermission
+from model import AccessLevel
 from typing import Optional
+from model import Patient
 
 @dataclass
 class ShamirUpdateRequest:

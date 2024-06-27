@@ -1,12 +1,12 @@
 import asyncio
 import json
-from model import DecryptedMaintenanceTask, User, AccessLevel, MaintenanceTask, serialize_maintenance_task, DocIdentifier, RequestedPermission, FilterChain, PaginatedList
+from model import DecryptedMaintenanceTask, User, AccessLevel, MaintenanceTask, serialize_maintenance_task, DocIdentifier, RequestedPermission, RequestedPermission.MaxWrite, FilterChain, PaginatedList, EncryptedMaintenanceTask, deserialize_maintenance_task
 from model.CallResult import CallResult, create_result_from_json
 from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from ctypes import cast, c_char_p
 from typing import Optional, Dict, List
 from model.specializations import HexString
-from crypto import ShareMetadataBehaviour, deserialize_simple_share_result, SimpleShareResult, MaintenanceTaskShareOptions
+from crypto import ShareMetadataBehaviour, ShareMetadataBehaviour.IfAvailable, deserialize_simple_share_result, SimpleShareResult, MaintenanceTaskShareOptions
 
 class MaintenanceTaskApi:
 

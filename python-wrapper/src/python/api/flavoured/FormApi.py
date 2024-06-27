@@ -1,12 +1,12 @@
 import asyncio
 import json
 import base64
-from model import DecryptedForm, Patient, User, AccessLevel, serialize_patient, serialize_secret_id_option, Form, serialize_form, DocIdentifier, FormTemplate, RequestedPermission
+from model import DecryptedForm, Patient, User, AccessLevel, serialize_patient, Form, serialize_form, DocIdentifier, FormTemplate, RequestedPermission, RequestedPermission.MaxWrite, EncryptedForm, deserialize_form
 from model.CallResult import CallResult, create_result_from_json
 from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from ctypes import cast, c_char_p, c_void_p
 from typing import List, Optional, Dict
-from crypto import SecretIdOption, ShareMetadataBehaviour, deserialize_simple_share_result, SimpleShareResult, FormShareOptions
+from crypto import SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_secret_id_option, ShareMetadataBehaviour, ShareMetadataBehaviour.IfAvailable, deserialize_simple_share_result, SimpleShareResult, FormShareOptions
 from model.specializations import HexString
 from pagination.PaginatedListIterator import PaginatedListIterator
 from KotlinTypes import PyResult
@@ -1304,7 +1304,7 @@ class FormApi:
 			return_value = [DecryptedForm._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def with_encryption_metadata_async(self, base: Optional[DecryptedForm], patient: Patient, user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOption.UseAnySharedWithParent) -> DecryptedForm:
+	async def with_encryption_metadata_async(self, base: Optional[DecryptedForm], patient: Patient, user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOptionUseAnySharedWithParent) -> DecryptedForm:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1332,7 +1332,7 @@ class FormApi:
 		)
 		return await future
 
-	def with_encryption_metadata_blocking(self, base: Optional[DecryptedForm], patient: Patient, user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOption.UseAnySharedWithParent) -> DecryptedForm:
+	def with_encryption_metadata_blocking(self, base: Optional[DecryptedForm], patient: Patient, user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOptionUseAnySharedWithParent) -> DecryptedForm:
 		payload = {
 			"base": base.__serialize__() if base is not None else None,
 			"patient": serialize_patient(patient),

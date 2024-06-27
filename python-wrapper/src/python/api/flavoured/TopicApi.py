@@ -1,11 +1,11 @@
 import asyncio
 import json
-from model import DecryptedTopic, Patient, User, AccessLevel, serialize_patient, serialize_secret_id_option, Topic, serialize_topic, DocIdentifier, AbstractFilter, serialize_abstract_filter, RequestedPermission, FilterChain, PaginatedList, TopicRole
+from model import DecryptedTopic, Patient, User, AccessLevel, serialize_patient, Topic, serialize_topic, DocIdentifier, AbstractFilter, serialize_abstract_filter, RequestedPermission, RequestedPermission.MaxWrite, FilterChain, PaginatedList, TopicRole, EncryptedTopic, deserialize_topic
 from model.CallResult import CallResult, create_result_from_json
 from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from ctypes import cast, c_char_p
 from typing import Optional, Dict, List
-from crypto import SecretIdOption, ShareMetadataBehaviour, deserialize_simple_share_result, SimpleShareResult, TopicShareOptions
+from crypto import SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_secret_id_option, ShareMetadataBehaviour, ShareMetadataBehaviour.IfAvailable, deserialize_simple_share_result, SimpleShareResult, TopicShareOptions
 from model.specializations import HexString
 
 class TopicApi:
@@ -845,7 +845,7 @@ class TopicApi:
 			return_value = DecryptedTopic._deserialize(result_info.success)
 			return return_value
 
-	async def with_encryption_metadata_async(self, base: Optional[DecryptedTopic], patient: Optional[Patient], user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOption.UseAnySharedWithParent) -> DecryptedTopic:
+	async def with_encryption_metadata_async(self, base: Optional[DecryptedTopic], patient: Optional[Patient], user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOptionUseAnySharedWithParent) -> DecryptedTopic:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -873,7 +873,7 @@ class TopicApi:
 		)
 		return await future
 
-	def with_encryption_metadata_blocking(self, base: Optional[DecryptedTopic], patient: Optional[Patient], user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOption.UseAnySharedWithParent) -> DecryptedTopic:
+	def with_encryption_metadata_blocking(self, base: Optional[DecryptedTopic], patient: Optional[Patient], user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOptionUseAnySharedWithParent) -> DecryptedTopic:
 		payload = {
 			"base": base.__serialize__() if base is not None else None,
 			"patient": serialize_patient(patient) if patient is not None else None,

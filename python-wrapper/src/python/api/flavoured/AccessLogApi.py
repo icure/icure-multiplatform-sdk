@@ -1,11 +1,11 @@
 import asyncio
 import json
-from model import DecryptedAccessLog, Patient, User, AccessLevel, serialize_patient, serialize_secret_id_option, AccessLog, serialize_access_log, DocIdentifier, RequestedPermission, PaginatedList
+from model import DecryptedAccessLog, Patient, User, AccessLevel, serialize_patient, AccessLog, serialize_access_log, DocIdentifier, RequestedPermission, RequestedPermission.MaxWrite, PaginatedList, EncryptedAccessLog, deserialize_access_log
 from model.CallResult import CallResult, create_result_from_json
 from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from ctypes import cast, c_char_p, c_void_p
 from typing import Optional, Dict, List
-from crypto import SecretIdOption, ShareMetadataBehaviour, deserialize_simple_share_result, SimpleShareResult, AccessLogShareOptions
+from crypto import SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_secret_id_option, ShareMetadataBehaviour, ShareMetadataBehaviour.IfAvailable, deserialize_simple_share_result, SimpleShareResult, AccessLogShareOptions
 from model.specializations import HexString
 from pagination.PaginatedListIterator import PaginatedListIterator
 from KotlinTypes import PyResult
@@ -1031,7 +1031,7 @@ class AccessLogApi:
 			return_value = DecryptedAccessLog._deserialize(result_info.success)
 			return return_value
 
-	async def with_encryption_metadata_async(self, base: Optional[DecryptedAccessLog], patient: Patient, user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOption.UseAnySharedWithParent) -> DecryptedAccessLog:
+	async def with_encryption_metadata_async(self, base: Optional[DecryptedAccessLog], patient: Patient, user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOptionUseAnySharedWithParent) -> DecryptedAccessLog:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1059,7 +1059,7 @@ class AccessLogApi:
 		)
 		return await future
 
-	def with_encryption_metadata_blocking(self, base: Optional[DecryptedAccessLog], patient: Patient, user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOption.UseAnySharedWithParent) -> DecryptedAccessLog:
+	def with_encryption_metadata_blocking(self, base: Optional[DecryptedAccessLog], patient: Patient, user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOptionUseAnySharedWithParent) -> DecryptedAccessLog:
 		payload = {
 			"base": base.__serialize__() if base is not None else None,
 			"patient": serialize_patient(patient),
