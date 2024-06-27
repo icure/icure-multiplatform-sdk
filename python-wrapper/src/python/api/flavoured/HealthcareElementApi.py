@@ -198,7 +198,7 @@ class HealthcareElementApi:
 				raise Exception(error_msg)
 			else:
 				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
-				symbols.DisposeStablePointer(call_result)
+				symbols.DisposeStablePointer(call_result.pinned)
 				return PaginatedListIterator[EncryptedHealthElement](
 					producer = cast(class_pointer, c_void_p),
 					deserializer = lambda x: EncryptedHealthElement._deserialize(x)
@@ -645,7 +645,7 @@ class HealthcareElementApi:
 				raise Exception(error_msg)
 			else:
 				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
-				symbols.DisposeStablePointer(call_result)
+				symbols.DisposeStablePointer(call_result.pinned)
 				return PaginatedListIterator[HealthElement](
 					producer = cast(class_pointer, c_void_p),
 					deserializer = lambda x: deserialize_health_element(x)
@@ -1541,7 +1541,7 @@ class HealthcareElementApi:
 			raise Exception(error_msg)
 		else:
 			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
-			symbols.DisposeStablePointer(call_result)
+			symbols.DisposeStablePointer(call_result.pinned)
 			return PaginatedListIterator[DecryptedHealthElement](
 				producer = cast(class_pointer, c_void_p),
 				deserializer = lambda x: DecryptedHealthElement._deserialize(x)

@@ -200,7 +200,7 @@ class MessageApi:
 				raise Exception(error_msg)
 			else:
 				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
-				symbols.DisposeStablePointer(call_result)
+				symbols.DisposeStablePointer(call_result.pinned)
 				return PaginatedListIterator[EncryptedMessage](
 					producer = cast(class_pointer, c_void_p),
 					deserializer = lambda x: EncryptedMessage._deserialize(x)
@@ -1125,7 +1125,7 @@ class MessageApi:
 				raise Exception(error_msg)
 			else:
 				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
-				symbols.DisposeStablePointer(call_result)
+				symbols.DisposeStablePointer(call_result.pinned)
 				return PaginatedListIterator[Message](
 					producer = cast(class_pointer, c_void_p),
 					deserializer = lambda x: deserialize_message(x)
@@ -2457,7 +2457,7 @@ class MessageApi:
 			raise Exception(error_msg)
 		else:
 			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
-			symbols.DisposeStablePointer(call_result)
+			symbols.DisposeStablePointer(call_result.pinned)
 			return PaginatedListIterator[DecryptedMessage](
 				producer = cast(class_pointer, c_void_p),
 				deserializer = lambda x: DecryptedMessage._deserialize(x)

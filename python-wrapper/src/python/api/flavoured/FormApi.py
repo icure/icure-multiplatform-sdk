@@ -199,7 +199,7 @@ class FormApi:
 				raise Exception(error_msg)
 			else:
 				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
-				symbols.DisposeStablePointer(call_result)
+				symbols.DisposeStablePointer(call_result.pinned)
 				return PaginatedListIterator[EncryptedForm](
 					producer = cast(class_pointer, c_void_p),
 					deserializer = lambda x: EncryptedForm._deserialize(x)
@@ -802,7 +802,7 @@ class FormApi:
 				raise Exception(error_msg)
 			else:
 				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
-				symbols.DisposeStablePointer(call_result)
+				symbols.DisposeStablePointer(call_result.pinned)
 				return PaginatedListIterator[Form](
 					producer = cast(class_pointer, c_void_p),
 					deserializer = lambda x: deserialize_form(x)
@@ -2104,7 +2104,7 @@ class FormApi:
 			raise Exception(error_msg)
 		else:
 			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
-			symbols.DisposeStablePointer(call_result)
+			symbols.DisposeStablePointer(call_result.pinned)
 			return PaginatedListIterator[DecryptedForm](
 				producer = cast(class_pointer, c_void_p),
 				deserializer = lambda x: DecryptedForm._deserialize(x)

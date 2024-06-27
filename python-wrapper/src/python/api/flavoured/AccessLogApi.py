@@ -198,7 +198,7 @@ class AccessLogApi:
 				raise Exception(error_msg)
 			else:
 				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
-				symbols.DisposeStablePointer(call_result)
+				symbols.DisposeStablePointer(call_result.pinned)
 				return PaginatedListIterator[EncryptedAccessLog](
 					producer = cast(class_pointer, c_void_p),
 					deserializer = lambda x: EncryptedAccessLog._deserialize(x)
@@ -685,7 +685,7 @@ class AccessLogApi:
 				raise Exception(error_msg)
 			else:
 				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
-				symbols.DisposeStablePointer(call_result)
+				symbols.DisposeStablePointer(call_result.pinned)
 				return PaginatedListIterator[AccessLog](
 					producer = cast(class_pointer, c_void_p),
 					deserializer = lambda x: deserialize_access_log(x)
@@ -1499,7 +1499,7 @@ class AccessLogApi:
 			raise Exception(error_msg)
 		else:
 			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
-			symbols.DisposeStablePointer(call_result)
+			symbols.DisposeStablePointer(call_result.pinned)
 			return PaginatedListIterator[DecryptedAccessLog](
 				producer = cast(class_pointer, c_void_p),
 				deserializer = lambda x: DecryptedAccessLog._deserialize(x)

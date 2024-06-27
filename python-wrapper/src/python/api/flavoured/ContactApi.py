@@ -198,7 +198,7 @@ class ContactApi:
 				raise Exception(error_msg)
 			else:
 				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
-				symbols.DisposeStablePointer(call_result)
+				symbols.DisposeStablePointer(call_result.pinned)
 				return PaginatedListIterator[EncryptedContact](
 					producer = cast(class_pointer, c_void_p),
 					deserializer = lambda x: EncryptedContact._deserialize(x)
@@ -1171,7 +1171,7 @@ class ContactApi:
 				raise Exception(error_msg)
 			else:
 				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
-				symbols.DisposeStablePointer(call_result)
+				symbols.DisposeStablePointer(call_result.pinned)
 				return PaginatedListIterator[Contact](
 					producer = cast(class_pointer, c_void_p),
 					deserializer = lambda x: deserialize_contact(x)
@@ -2675,7 +2675,7 @@ class ContactApi:
 			raise Exception(error_msg)
 		else:
 			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
-			symbols.DisposeStablePointer(call_result)
+			symbols.DisposeStablePointer(call_result.pinned)
 			return PaginatedListIterator[DecryptedContact](
 				producer = cast(class_pointer, c_void_p),
 				deserializer = lambda x: DecryptedContact._deserialize(x)

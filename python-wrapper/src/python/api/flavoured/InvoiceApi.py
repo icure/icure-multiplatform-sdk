@@ -198,7 +198,7 @@ class InvoiceApi:
 				raise Exception(error_msg)
 			else:
 				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
-				symbols.DisposeStablePointer(call_result)
+				symbols.DisposeStablePointer(call_result.pinned)
 				return PaginatedListIterator[EncryptedInvoice](
 					producer = cast(class_pointer, c_void_p),
 					deserializer = lambda x: EncryptedInvoice._deserialize(x)
@@ -1465,7 +1465,7 @@ class InvoiceApi:
 				raise Exception(error_msg)
 			else:
 				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
-				symbols.DisposeStablePointer(call_result)
+				symbols.DisposeStablePointer(call_result.pinned)
 				return PaginatedListIterator[Invoice](
 					producer = cast(class_pointer, c_void_p),
 					deserializer = lambda x: deserialize_invoice(x)
@@ -3143,7 +3143,7 @@ class InvoiceApi:
 			raise Exception(error_msg)
 		else:
 			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
-			symbols.DisposeStablePointer(call_result)
+			symbols.DisposeStablePointer(call_result.pinned)
 			return PaginatedListIterator[DecryptedInvoice](
 				producer = cast(class_pointer, c_void_p),
 				deserializer = lambda x: DecryptedInvoice._deserialize(x)

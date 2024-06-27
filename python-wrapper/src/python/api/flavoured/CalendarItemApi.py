@@ -198,7 +198,7 @@ class CalendarItemApi:
 				raise Exception(error_msg)
 			else:
 				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
-				symbols.DisposeStablePointer(call_result)
+				symbols.DisposeStablePointer(call_result.pinned)
 				return PaginatedListIterator[EncryptedCalendarItem](
 					producer = cast(class_pointer, c_void_p),
 					deserializer = lambda x: EncryptedCalendarItem._deserialize(x)
@@ -737,7 +737,7 @@ class CalendarItemApi:
 				raise Exception(error_msg)
 			else:
 				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
-				symbols.DisposeStablePointer(call_result)
+				symbols.DisposeStablePointer(call_result.pinned)
 				return PaginatedListIterator[CalendarItem](
 					producer = cast(class_pointer, c_void_p),
 					deserializer = lambda x: deserialize_calendar_item(x)
@@ -1603,7 +1603,7 @@ class CalendarItemApi:
 			raise Exception(error_msg)
 		else:
 			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
-			symbols.DisposeStablePointer(call_result)
+			symbols.DisposeStablePointer(call_result.pinned)
 			return PaginatedListIterator[DecryptedCalendarItem](
 				producer = cast(class_pointer, c_void_p),
 				deserializer = lambda x: DecryptedCalendarItem._deserialize(x)

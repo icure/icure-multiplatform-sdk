@@ -198,7 +198,7 @@ class ClassificationApi:
 				raise Exception(error_msg)
 			else:
 				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
-				symbols.DisposeStablePointer(call_result)
+				symbols.DisposeStablePointer(call_result.pinned)
 				return PaginatedListIterator[EncryptedClassification](
 					producer = cast(class_pointer, c_void_p),
 					deserializer = lambda x: EncryptedClassification._deserialize(x)
@@ -511,7 +511,7 @@ class ClassificationApi:
 				raise Exception(error_msg)
 			else:
 				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
-				symbols.DisposeStablePointer(call_result)
+				symbols.DisposeStablePointer(call_result.pinned)
 				return PaginatedListIterator[Classification](
 					producer = cast(class_pointer, c_void_p),
 					deserializer = lambda x: deserialize_classification(x)
@@ -1151,7 +1151,7 @@ class ClassificationApi:
 			raise Exception(error_msg)
 		else:
 			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
-			symbols.DisposeStablePointer(call_result)
+			symbols.DisposeStablePointer(call_result.pinned)
 			return PaginatedListIterator[DecryptedClassification](
 				producer = cast(class_pointer, c_void_p),
 				deserializer = lambda x: DecryptedClassification._deserialize(x)
