@@ -35,9 +35,9 @@ class TimeTableApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk.executor,
+				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.encrypted.shareWithAsync,
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload),
 				callback
 			)
@@ -52,7 +52,7 @@ class TimeTableApi:
 				"requestedPermission": requested_permission.__serialize__(),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.encrypted.shareWithBlocking(
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8')
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -80,9 +80,9 @@ class TimeTableApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk.executor,
+				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.encrypted.tryShareWithManyAsync,
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload),
 				callback
 			)
@@ -94,7 +94,7 @@ class TimeTableApi:
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.encrypted.tryShareWithManyBlocking(
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8')
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -122,9 +122,9 @@ class TimeTableApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk.executor,
+				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.encrypted.shareWithManyAsync,
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload),
 				callback
 			)
@@ -136,7 +136,7 @@ class TimeTableApi:
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.encrypted.shareWithManyBlocking(
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8')
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -163,9 +163,9 @@ class TimeTableApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk.executor,
+				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.encrypted.modifyTimeTableAsync,
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload),
 				callback
 			)
@@ -176,7 +176,7 @@ class TimeTableApi:
 				"entity": entity.__serialize__(),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.encrypted.modifyTimeTableBlocking(
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8')
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -203,9 +203,9 @@ class TimeTableApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk.executor,
+				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.encrypted.getTimeTableAsync,
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload),
 				callback
 			)
@@ -216,7 +216,7 @@ class TimeTableApi:
 				"entityId": entity_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.encrypted.getTimeTableBlocking(
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8')
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -245,9 +245,9 @@ class TimeTableApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk.executor,
+				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.encrypted.getTimeTablesByPeriodAndAgendaIdAsync,
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload),
 				callback
 			)
@@ -260,7 +260,7 @@ class TimeTableApi:
 				"agendaId": agenda_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.encrypted.getTimeTablesByPeriodAndAgendaIdBlocking(
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8')
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -287,9 +287,9 @@ class TimeTableApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk.executor,
+				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.encrypted.getTimeTablesByAgendaIdAsync,
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload),
 				callback
 			)
@@ -300,7 +300,7 @@ class TimeTableApi:
 				"agendaId": agenda_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.encrypted.getTimeTablesByAgendaIdBlocking(
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8')
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -336,9 +336,9 @@ class TimeTableApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk.executor,
+				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.tryAndRecover.shareWithAsync,
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload),
 				callback
 			)
@@ -353,7 +353,7 @@ class TimeTableApi:
 				"requestedPermission": requested_permission.__serialize__(),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.tryAndRecover.shareWithBlocking(
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8')
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -381,9 +381,9 @@ class TimeTableApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk.executor,
+				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.tryAndRecover.tryShareWithManyAsync,
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload),
 				callback
 			)
@@ -395,7 +395,7 @@ class TimeTableApi:
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.tryAndRecover.tryShareWithManyBlocking(
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8')
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -423,9 +423,9 @@ class TimeTableApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk.executor,
+				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.tryAndRecover.shareWithManyAsync,
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload),
 				callback
 			)
@@ -437,7 +437,7 @@ class TimeTableApi:
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.tryAndRecover.shareWithManyBlocking(
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8')
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -464,9 +464,9 @@ class TimeTableApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk.executor,
+				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.tryAndRecover.modifyTimeTableAsync,
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload),
 				callback
 			)
@@ -477,7 +477,7 @@ class TimeTableApi:
 				"entity": entity.__serialize__(),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.tryAndRecover.modifyTimeTableBlocking(
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8')
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -504,9 +504,9 @@ class TimeTableApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk.executor,
+				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.tryAndRecover.getTimeTableAsync,
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload),
 				callback
 			)
@@ -517,7 +517,7 @@ class TimeTableApi:
 				"entityId": entity_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.tryAndRecover.getTimeTableBlocking(
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8')
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -546,9 +546,9 @@ class TimeTableApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk.executor,
+				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.tryAndRecover.getTimeTablesByPeriodAndAgendaIdAsync,
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload),
 				callback
 			)
@@ -561,7 +561,7 @@ class TimeTableApi:
 				"agendaId": agenda_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.tryAndRecover.getTimeTablesByPeriodAndAgendaIdBlocking(
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8')
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -588,9 +588,9 @@ class TimeTableApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk.executor,
+				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.tryAndRecover.getTimeTablesByAgendaIdAsync,
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload),
 				callback
 			)
@@ -601,7 +601,7 @@ class TimeTableApi:
 				"agendaId": agenda_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.tryAndRecover.getTimeTablesByAgendaIdBlocking(
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8')
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -633,9 +633,9 @@ class TimeTableApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.createTimeTableAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -646,7 +646,7 @@ class TimeTableApi:
 			"entity": entity.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.createTimeTableBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -677,9 +677,9 @@ class TimeTableApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.withEncryptionMetadataAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -694,7 +694,7 @@ class TimeTableApi:
 			"secretId": serialize_secret_id_option(secret_id),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.withEncryptionMetadataBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -721,9 +721,9 @@ class TimeTableApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.getEncryptionKeysOfAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -734,7 +734,7 @@ class TimeTableApi:
 			"timeTable": serialize_time_table(time_table),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.getEncryptionKeysOfBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -761,9 +761,9 @@ class TimeTableApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.hasWriteAccessAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -774,7 +774,7 @@ class TimeTableApi:
 			"timeTable": serialize_time_table(time_table),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.hasWriteAccessBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -801,9 +801,9 @@ class TimeTableApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.decryptPatientIdOfAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -814,7 +814,7 @@ class TimeTableApi:
 			"timeTable": serialize_time_table(time_table),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.decryptPatientIdOfBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -842,9 +842,9 @@ class TimeTableApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.createDelegationDeAnonymizationMetadataAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -856,7 +856,7 @@ class TimeTableApi:
 			"delegates": [x0 for x0 in delegates],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.createDelegationDeAnonymizationMetadataBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -880,9 +880,9 @@ class TimeTableApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.deleteTimeTableAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -893,7 +893,7 @@ class TimeTableApi:
 			"entityId": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.deleteTimeTableBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -920,9 +920,9 @@ class TimeTableApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.deleteTimeTablesAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -933,7 +933,7 @@ class TimeTableApi:
 			"entityIds": [x0 for x0 in entity_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.deleteTimeTablesBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -964,9 +964,9 @@ class TimeTableApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.shareWithAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -981,7 +981,7 @@ class TimeTableApi:
 			"requestedPermission": requested_permission.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.shareWithBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1009,9 +1009,9 @@ class TimeTableApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.tryShareWithManyAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -1023,7 +1023,7 @@ class TimeTableApi:
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.tryShareWithManyBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1051,9 +1051,9 @@ class TimeTableApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.shareWithManyAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -1065,7 +1065,7 @@ class TimeTableApi:
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.shareWithManyBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1092,9 +1092,9 @@ class TimeTableApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.modifyTimeTableAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -1105,7 +1105,7 @@ class TimeTableApi:
 			"entity": entity.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.modifyTimeTableBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1132,9 +1132,9 @@ class TimeTableApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.getTimeTableAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -1145,7 +1145,7 @@ class TimeTableApi:
 			"entityId": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.getTimeTableBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1174,9 +1174,9 @@ class TimeTableApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.getTimeTablesByPeriodAndAgendaIdAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -1189,7 +1189,7 @@ class TimeTableApi:
 			"agendaId": agenda_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.getTimeTablesByPeriodAndAgendaIdBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1216,9 +1216,9 @@ class TimeTableApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.getTimeTablesByAgendaIdAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -1229,7 +1229,7 @@ class TimeTableApi:
 			"agendaId": agenda_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.getTimeTablesByAgendaIdBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))

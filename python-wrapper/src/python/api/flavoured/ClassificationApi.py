@@ -36,9 +36,9 @@ class ClassificationApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk.executor,
+				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.encrypted.shareWithAsync,
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload),
 				callback
 			)
@@ -53,7 +53,7 @@ class ClassificationApi:
 				"requestedPermission": requested_permission.__serialize__(),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.encrypted.shareWithBlocking(
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8')
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -81,9 +81,9 @@ class ClassificationApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk.executor,
+				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.encrypted.tryShareWithManyAsync,
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload),
 				callback
 			)
@@ -95,7 +95,7 @@ class ClassificationApi:
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.encrypted.tryShareWithManyBlocking(
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8')
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -123,9 +123,9 @@ class ClassificationApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk.executor,
+				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.encrypted.shareWithManyAsync,
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload),
 				callback
 			)
@@ -137,7 +137,7 @@ class ClassificationApi:
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.encrypted.shareWithManyBlocking(
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8')
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -170,9 +170,9 @@ class ClassificationApi:
 			}
 			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk.executor,
+				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.encrypted.findClassificationsByHcPartyPatientAsync,
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload),
 				callback
 			)
@@ -187,7 +187,7 @@ class ClassificationApi:
 				"descending": descending,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.encrypted.findClassificationsByHcPartyPatientBlocking(
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8')
 			)
 			error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
@@ -220,9 +220,9 @@ class ClassificationApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk.executor,
+				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.encrypted.modifyClassificationAsync,
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload),
 				callback
 			)
@@ -233,7 +233,7 @@ class ClassificationApi:
 				"entity": entity.__serialize__(),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.encrypted.modifyClassificationBlocking(
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8')
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -260,9 +260,9 @@ class ClassificationApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk.executor,
+				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.encrypted.getClassificationAsync,
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload),
 				callback
 			)
@@ -273,7 +273,7 @@ class ClassificationApi:
 				"entityId": entity_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.encrypted.getClassificationBlocking(
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8')
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -300,9 +300,9 @@ class ClassificationApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk.executor,
+				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.encrypted.getClassificationsAsync,
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload),
 				callback
 			)
@@ -313,7 +313,7 @@ class ClassificationApi:
 				"entityIds": [x0 for x0 in entity_ids],
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.encrypted.getClassificationsBlocking(
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8')
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -349,9 +349,9 @@ class ClassificationApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk.executor,
+				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.tryAndRecover.shareWithAsync,
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload),
 				callback
 			)
@@ -366,7 +366,7 @@ class ClassificationApi:
 				"requestedPermission": requested_permission.__serialize__(),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.tryAndRecover.shareWithBlocking(
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8')
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -394,9 +394,9 @@ class ClassificationApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk.executor,
+				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.tryAndRecover.tryShareWithManyAsync,
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload),
 				callback
 			)
@@ -408,7 +408,7 @@ class ClassificationApi:
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.tryAndRecover.tryShareWithManyBlocking(
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8')
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -436,9 +436,9 @@ class ClassificationApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk.executor,
+				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.tryAndRecover.shareWithManyAsync,
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload),
 				callback
 			)
@@ -450,7 +450,7 @@ class ClassificationApi:
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.tryAndRecover.shareWithManyBlocking(
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8')
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -483,9 +483,9 @@ class ClassificationApi:
 			}
 			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk.executor,
+				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.tryAndRecover.findClassificationsByHcPartyPatientAsync,
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload),
 				callback
 			)
@@ -500,7 +500,7 @@ class ClassificationApi:
 				"descending": descending,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.tryAndRecover.findClassificationsByHcPartyPatientBlocking(
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8')
 			)
 			error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
@@ -533,9 +533,9 @@ class ClassificationApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk.executor,
+				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.tryAndRecover.modifyClassificationAsync,
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload),
 				callback
 			)
@@ -546,7 +546,7 @@ class ClassificationApi:
 				"entity": entity.__serialize__(),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.tryAndRecover.modifyClassificationBlocking(
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8')
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -573,9 +573,9 @@ class ClassificationApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk.executor,
+				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.tryAndRecover.getClassificationAsync,
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload),
 				callback
 			)
@@ -586,7 +586,7 @@ class ClassificationApi:
 				"entityId": entity_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.tryAndRecover.getClassificationBlocking(
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8')
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -613,9 +613,9 @@ class ClassificationApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk.executor,
+				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.tryAndRecover.getClassificationsAsync,
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload),
 				callback
 			)
@@ -626,7 +626,7 @@ class ClassificationApi:
 				"entityIds": [x0 for x0 in entity_ids],
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.tryAndRecover.getClassificationsBlocking(
-				self.icure_sdk.native,
+				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8')
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -658,9 +658,9 @@ class ClassificationApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.createClassificationAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -671,7 +671,7 @@ class ClassificationApi:
 			"entity": entity.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.createClassificationBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -702,9 +702,9 @@ class ClassificationApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.withEncryptionMetadataAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -719,7 +719,7 @@ class ClassificationApi:
 			"secretId": serialize_secret_id_option(secret_id),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.withEncryptionMetadataBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -746,9 +746,9 @@ class ClassificationApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.getEncryptionKeysOfAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -759,7 +759,7 @@ class ClassificationApi:
 			"classification": serialize_classification(classification),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.getEncryptionKeysOfBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -786,9 +786,9 @@ class ClassificationApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.hasWriteAccessAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -799,7 +799,7 @@ class ClassificationApi:
 			"classification": serialize_classification(classification),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.hasWriteAccessBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -826,9 +826,9 @@ class ClassificationApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.decryptPatientIdOfAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -839,7 +839,7 @@ class ClassificationApi:
 			"classification": serialize_classification(classification),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.decryptPatientIdOfBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -867,9 +867,9 @@ class ClassificationApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.createDelegationDeAnonymizationMetadataAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -881,7 +881,7 @@ class ClassificationApi:
 			"delegates": [x0 for x0 in delegates],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.createDelegationDeAnonymizationMetadataBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -905,9 +905,9 @@ class ClassificationApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.deleteClassificationAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -918,7 +918,7 @@ class ClassificationApi:
 			"entityId": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.deleteClassificationBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -945,9 +945,9 @@ class ClassificationApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.deleteClassificationsAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -958,7 +958,7 @@ class ClassificationApi:
 			"entityIds": [x0 for x0 in entity_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.deleteClassificationsBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -989,9 +989,9 @@ class ClassificationApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.shareWithAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -1006,7 +1006,7 @@ class ClassificationApi:
 			"requestedPermission": requested_permission.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.shareWithBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1034,9 +1034,9 @@ class ClassificationApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.tryShareWithManyAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -1048,7 +1048,7 @@ class ClassificationApi:
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.tryShareWithManyBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1076,9 +1076,9 @@ class ClassificationApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.shareWithManyAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -1090,7 +1090,7 @@ class ClassificationApi:
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.shareWithManyBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1123,9 +1123,9 @@ class ClassificationApi:
 		}
 		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.findClassificationsByHcPartyPatientAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -1140,7 +1140,7 @@ class ClassificationApi:
 			"descending": descending,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.findClassificationsByHcPartyPatientBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
@@ -1173,9 +1173,9 @@ class ClassificationApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.modifyClassificationAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -1186,7 +1186,7 @@ class ClassificationApi:
 			"entity": entity.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.modifyClassificationBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1213,9 +1213,9 @@ class ClassificationApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.getClassificationAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -1226,7 +1226,7 @@ class ClassificationApi:
 			"entityId": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.getClassificationBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1253,9 +1253,9 @@ class ClassificationApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.getClassificationsAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -1266,7 +1266,7 @@ class ClassificationApi:
 			"entityIds": [x0 for x0 in entity_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.getClassificationsBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))

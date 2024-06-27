@@ -27,9 +27,9 @@ class HealthcarePartyApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.getHealthcarePartyAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -40,7 +40,7 @@ class HealthcarePartyApi:
 			"deviceId": device_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.getHealthcarePartyBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -67,9 +67,9 @@ class HealthcarePartyApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.createHealthcarePartyAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -80,7 +80,7 @@ class HealthcarePartyApi:
 			"p": p.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.createHealthcarePartyBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -107,9 +107,9 @@ class HealthcarePartyApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.deleteHealthcarePartyAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -120,7 +120,7 @@ class HealthcarePartyApi:
 			"deviceId": device_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.deleteHealthcarePartyBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -148,9 +148,9 @@ class HealthcarePartyApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.modifyHealthcarePartyInGroupAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -162,7 +162,7 @@ class HealthcarePartyApi:
 			"device": device.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.modifyHealthcarePartyInGroupBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -190,9 +190,9 @@ class HealthcarePartyApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.createHealthcarePartyInGroupAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -204,7 +204,7 @@ class HealthcarePartyApi:
 			"device": device.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.createHealthcarePartyInGroupBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -230,9 +230,9 @@ class HealthcarePartyApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.getCurrentHealthcarePartyAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -242,7 +242,7 @@ class HealthcarePartyApi:
 		payload = {
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.getCurrentHealthcarePartyBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -276,9 +276,9 @@ class HealthcarePartyApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.findHealthcarePartiesByAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -292,7 +292,7 @@ class HealthcarePartyApi:
 			"desc": desc,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.findHealthcarePartiesByBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -331,9 +331,9 @@ class HealthcarePartyApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.findHealthcarePartiesByNameAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -348,7 +348,7 @@ class HealthcarePartyApi:
 			"desc": desc,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.findHealthcarePartiesByNameBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -387,9 +387,9 @@ class HealthcarePartyApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.findHealthcarePartiesBySsinOrNihiiAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -404,7 +404,7 @@ class HealthcarePartyApi:
 			"desc": desc,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.findHealthcarePartiesBySsinOrNihiiBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -435,9 +435,9 @@ class HealthcarePartyApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.listHealthcarePartiesByNameAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -448,7 +448,7 @@ class HealthcarePartyApi:
 			"name": name,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.listHealthcarePartiesByNameBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -485,9 +485,9 @@ class HealthcarePartyApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.findHealthcarePartiesBySpecialityAndPostCodeAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -504,7 +504,7 @@ class HealthcarePartyApi:
 			"limit": limit,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.findHealthcarePartiesBySpecialityAndPostCodeBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -535,9 +535,9 @@ class HealthcarePartyApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.getHealthcarePartiesAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -548,7 +548,7 @@ class HealthcarePartyApi:
 			"healthcarePartyIds": [x0 for x0 in healthcare_party_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.getHealthcarePartiesBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -575,9 +575,9 @@ class HealthcarePartyApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.listHealthcarePartiesByParentIdAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -588,7 +588,7 @@ class HealthcarePartyApi:
 			"parentId": parent_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.listHealthcarePartiesByParentIdBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -615,9 +615,9 @@ class HealthcarePartyApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.getPublicKeyAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -628,7 +628,7 @@ class HealthcarePartyApi:
 			"healthcarePartyId": healthcare_party_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.getPublicKeyBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -655,9 +655,9 @@ class HealthcarePartyApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.deleteHealthcarePartiesAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -668,7 +668,7 @@ class HealthcarePartyApi:
 			"healthcarePartyIds": [x0 for x0 in healthcare_party_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.deleteHealthcarePartiesBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -695,9 +695,9 @@ class HealthcarePartyApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.modifyHealthcarePartyAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -708,7 +708,7 @@ class HealthcarePartyApi:
 			"healthcarePartyDto": healthcare_party_dto.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.modifyHealthcarePartyBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -735,9 +735,9 @@ class HealthcarePartyApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.matchHealthcarePartiesByAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -748,7 +748,7 @@ class HealthcarePartyApi:
 			"filter": serialize_abstract_filter(filter),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.matchHealthcarePartiesByBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -781,9 +781,9 @@ class HealthcarePartyApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.filterHealthPartiesByAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -796,7 +796,7 @@ class HealthcarePartyApi:
 			"filterChain": filter_chain.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.filterHealthPartiesByBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -828,9 +828,9 @@ class HealthcarePartyApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.getHealthcarePartiesInGroupAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -842,7 +842,7 @@ class HealthcarePartyApi:
 			"healthcarePartyIds": [x0 for x0 in healthcare_party_ids] if healthcare_party_ids is not None else None,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.getHealthcarePartiesInGroupBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -870,9 +870,9 @@ class HealthcarePartyApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.deleteHealthcarePartiesInGroupAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -884,7 +884,7 @@ class HealthcarePartyApi:
 			"healthcarePartyIds": [x0 for x0 in healthcare_party_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.deleteHealthcarePartiesInGroupBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -912,9 +912,9 @@ class HealthcarePartyApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.deleteHealthcarePartyInGroupAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -926,7 +926,7 @@ class HealthcarePartyApi:
 			"groupId": group_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.deleteHealthcarePartyInGroupBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -957,9 +957,9 @@ class HealthcarePartyApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.registerPatientAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -974,7 +974,7 @@ class HealthcarePartyApi:
 			"hcp": hcp.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.registerPatientBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))

@@ -28,9 +28,9 @@ class IcureMaintenanceTaskApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.extended.IcureMaintenanceTaskApi.applyKeyPairUpdateAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -41,7 +41,7 @@ class IcureMaintenanceTaskApi:
 			"updateRequest": update_request.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.extended.IcureMaintenanceTaskApi.applyKeyPairUpdateBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -66,9 +66,9 @@ class IcureMaintenanceTaskApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.extended.IcureMaintenanceTaskApi.createKeyPairUpdateNotificationsToAllDelegationCounterpartsAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -80,7 +80,7 @@ class IcureMaintenanceTaskApi:
 			"requestToOwnerTypes": [x0.__serialize__() for x0 in request_to_owner_types] if request_to_owner_types is not None else None,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.extended.IcureMaintenanceTaskApi.createKeyPairUpdateNotificationsToAllDelegationCounterpartsBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -105,9 +105,9 @@ class IcureMaintenanceTaskApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.extended.IcureMaintenanceTaskApi.createKeyPairUpdateNotificationToAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -119,7 +119,7 @@ class IcureMaintenanceTaskApi:
 			"key": key,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.extended.IcureMaintenanceTaskApi.createKeyPairUpdateNotificationToBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))

@@ -26,9 +26,9 @@ class EntityReferenceApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.EntityReferenceApi.getLatestAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -39,7 +39,7 @@ class EntityReferenceApi:
 			"prefix": prefix,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.EntityReferenceApi.getLatestBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -66,9 +66,9 @@ class EntityReferenceApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.EntityReferenceApi.createEntityReferenceAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -79,7 +79,7 @@ class EntityReferenceApi:
 			"entityReference": entity_reference.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.EntityReferenceApi.createEntityReferenceBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))

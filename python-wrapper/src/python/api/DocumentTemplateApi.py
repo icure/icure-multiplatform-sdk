@@ -28,9 +28,9 @@ class DocumentTemplateApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.getDocumentTemplateAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -41,7 +41,7 @@ class DocumentTemplateApi:
 			"documentTemplateId": document_template_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.getDocumentTemplateBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -68,9 +68,9 @@ class DocumentTemplateApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.createDocumentTemplateAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -81,7 +81,7 @@ class DocumentTemplateApi:
 			"documentTemplate": document_template.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.createDocumentTemplateBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -108,9 +108,9 @@ class DocumentTemplateApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.modifyDocumentTemplateAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -121,7 +121,7 @@ class DocumentTemplateApi:
 			"documentTemplate": document_template.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.modifyDocumentTemplateBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -148,9 +148,9 @@ class DocumentTemplateApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.deleteDocumentTemplatesAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -161,7 +161,7 @@ class DocumentTemplateApi:
 			"documentTemplateIds": [x0 for x0 in document_template_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.deleteDocumentTemplatesBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -188,9 +188,9 @@ class DocumentTemplateApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.listDocumentTemplatesBySpecialityAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -201,7 +201,7 @@ class DocumentTemplateApi:
 			"specialityCode": speciality_code,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.listDocumentTemplatesBySpecialityBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -228,9 +228,9 @@ class DocumentTemplateApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.listDocumentTemplatesByDocumentTypeAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -241,7 +241,7 @@ class DocumentTemplateApi:
 			"documentTypeCode": document_type_code,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.listDocumentTemplatesByDocumentTypeBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -268,9 +268,9 @@ class DocumentTemplateApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.listDocumentTemplatesByDocumentTypeForCurrentUserAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -281,7 +281,7 @@ class DocumentTemplateApi:
 			"documentTypeCode": document_type_code,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.listDocumentTemplatesByDocumentTypeForCurrentUserBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -307,9 +307,9 @@ class DocumentTemplateApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.listDocumentTemplatesAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -319,7 +319,7 @@ class DocumentTemplateApi:
 		payload = {
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.listDocumentTemplatesBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -352,9 +352,9 @@ class DocumentTemplateApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.findAllDocumentTemplatesAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -367,7 +367,7 @@ class DocumentTemplateApi:
 			"limit": limit,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.findAllDocumentTemplatesBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -399,9 +399,9 @@ class DocumentTemplateApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.getDocumentTemplateAttachmentAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -413,7 +413,7 @@ class DocumentTemplateApi:
 			"attachmentId": attachment_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.getDocumentTemplateAttachmentBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -441,9 +441,9 @@ class DocumentTemplateApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.getAttachmentTextAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -455,7 +455,7 @@ class DocumentTemplateApi:
 			"attachmentId": attachment_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.getAttachmentTextBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -483,9 +483,9 @@ class DocumentTemplateApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.setDocumentTemplateAttachmentAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -497,7 +497,7 @@ class DocumentTemplateApi:
 			"payload": base64.b64encode(payload).decode('utf-8'),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.setDocumentTemplateAttachmentBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -514,7 +514,7 @@ class DocumentTemplateApi:
 			"attachmentId": attachment_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.getAttachmentUrl(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))

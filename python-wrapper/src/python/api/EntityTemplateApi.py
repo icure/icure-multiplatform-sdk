@@ -27,9 +27,9 @@ class EntityTemplateApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.EntityTemplateApi.getEntityTemplateAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -40,7 +40,7 @@ class EntityTemplateApi:
 			"documentTemplateId": document_template_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.EntityTemplateApi.getEntityTemplateBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -67,9 +67,9 @@ class EntityTemplateApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.EntityTemplateApi.createEntityTemplateAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -80,7 +80,7 @@ class EntityTemplateApi:
 			"applicationSettings": application_settings.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.EntityTemplateApi.createEntityTemplateBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -107,9 +107,9 @@ class EntityTemplateApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.EntityTemplateApi.modifyEntityTemplateAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -120,7 +120,7 @@ class EntityTemplateApi:
 			"documentTemplate": document_template.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.EntityTemplateApi.modifyEntityTemplateBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -150,9 +150,9 @@ class EntityTemplateApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.EntityTemplateApi.listEntityTemplatesByAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -166,7 +166,7 @@ class EntityTemplateApi:
 			"includeEntities": include_entities,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.EntityTemplateApi.listEntityTemplatesByBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -195,9 +195,9 @@ class EntityTemplateApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.EntityTemplateApi.listAllEntityTemplatesByAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -210,7 +210,7 @@ class EntityTemplateApi:
 			"includeEntities": include_entities,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.EntityTemplateApi.listAllEntityTemplatesByBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -240,9 +240,9 @@ class EntityTemplateApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.EntityTemplateApi.listEntityTemplatesByKeywordAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -256,7 +256,7 @@ class EntityTemplateApi:
 			"includeEntities": include_entities,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.EntityTemplateApi.listEntityTemplatesByKeywordBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -285,9 +285,9 @@ class EntityTemplateApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.EntityTemplateApi.findAllEntityTemplatesByKeywordAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -300,7 +300,7 @@ class EntityTemplateApi:
 			"includeEntities": include_entities,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.EntityTemplateApi.findAllEntityTemplatesByKeywordBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -327,9 +327,9 @@ class EntityTemplateApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.EntityTemplateApi.getEntityTemplatesAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -340,7 +340,7 @@ class EntityTemplateApi:
 			"entityTemplateIds": [x0 for x0 in entity_template_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.EntityTemplateApi.getEntityTemplatesBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -367,9 +367,9 @@ class EntityTemplateApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.EntityTemplateApi.modifyEntityTemplatesAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -380,7 +380,7 @@ class EntityTemplateApi:
 			"entityTemplates": [x0.__serialize__() for x0 in entity_templates],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.EntityTemplateApi.modifyEntityTemplatesBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -407,9 +407,9 @@ class EntityTemplateApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.EntityTemplateApi.createEntityTemplatesAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -420,7 +420,7 @@ class EntityTemplateApi:
 			"entityTemplates": [x0.__serialize__() for x0 in entity_templates],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.EntityTemplateApi.createEntityTemplatesBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -447,9 +447,9 @@ class EntityTemplateApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.EntityTemplateApi.deleteEntityTemplateAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -460,7 +460,7 @@ class EntityTemplateApi:
 			"entityTemplateIds": [x0 for x0 in entity_template_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.EntityTemplateApi.deleteEntityTemplateBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))

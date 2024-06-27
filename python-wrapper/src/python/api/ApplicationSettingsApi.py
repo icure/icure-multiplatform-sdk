@@ -26,9 +26,9 @@ class ApplicationSettingsApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.ApplicationSettingsApi.getApplicationSettingsAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -38,7 +38,7 @@ class ApplicationSettingsApi:
 		payload = {
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ApplicationSettingsApi.getApplicationSettingsBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -65,9 +65,9 @@ class ApplicationSettingsApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.ApplicationSettingsApi.createApplicationSettingsAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -78,7 +78,7 @@ class ApplicationSettingsApi:
 			"applicationSettings": application_settings.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ApplicationSettingsApi.createApplicationSettingsBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -105,9 +105,9 @@ class ApplicationSettingsApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.ApplicationSettingsApi.updateApplicationSettingsAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -118,7 +118,7 @@ class ApplicationSettingsApi:
 			"applicationSettings": application_settings.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ApplicationSettingsApi.updateApplicationSettingsBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))

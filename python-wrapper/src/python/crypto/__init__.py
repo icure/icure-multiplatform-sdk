@@ -399,11 +399,11 @@ class ShareAllPatientDataOptions(metaclass=SingletonMeta):
 		@classmethod
 		def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ShareAllPatientDataOptions.Tag':
 			if data == "All":
-				return Tag.All
+				return ShareAllPatientDataOptions.Tag.All
 			elif data == "MedicalInformation":
-				return Tag.MedicalInformation
+				return ShareAllPatientDataOptions.Tag.MedicalInformation
 			elif data == "FinancialInformation":
-				return Tag.FinancialInformation
+				return ShareAllPatientDataOptions.Tag.FinancialInformation
 			else:
 				raise Exception(f"{data} is not a valid value for Tag enum.")
 
@@ -423,21 +423,21 @@ class ShareAllPatientDataOptions(metaclass=SingletonMeta):
 		@classmethod
 		def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ShareAllPatientDataOptions.ShareableEntity':
 			if data == "CalendarItem":
-				return ShareableEntity.CalendarItem
+				return ShareAllPatientDataOptions.ShareableEntity.CalendarItem
 			elif data == "Contact":
-				return ShareableEntity.Contact
+				return ShareAllPatientDataOptions.ShareableEntity.Contact
 			elif data == "Classification":
-				return ShareableEntity.Classification
+				return ShareAllPatientDataOptions.ShareableEntity.Classification
 			elif data == "Document":
-				return ShareableEntity.Document
+				return ShareAllPatientDataOptions.ShareableEntity.Document
 			elif data == "Form":
-				return ShareableEntity.Form
+				return ShareAllPatientDataOptions.ShareableEntity.Form
 			elif data == "HealthElement":
-				return ShareableEntity.HealthElement
+				return ShareAllPatientDataOptions.ShareableEntity.HealthElement
 			elif data == "Invoice":
-				return ShareableEntity.Invoice
+				return ShareAllPatientDataOptions.ShareableEntity.Invoice
 			elif data == "Patient":
-				return ShareableEntity.Patient
+				return ShareAllPatientDataOptions.ShareableEntity.Patient
 			else:
 				raise Exception(f"{data} is not a valid value for ShareableEntity enum.")
 
@@ -450,7 +450,7 @@ class ShareAllPatientDataOptions(metaclass=SingletonMeta):
 		def __serialize__(self) -> object:
 			return {
 				"success": self.success,
-				"error": serialize_share_all_patient_data_options.share_patient_data_error(self.error) if self.error is not None else None,
+				"error": ShareAllPatientDataOptions.serialize_share_patient_data_error(self.error) if self.error is not None else None,
 				"modified": self.modified,
 			}
 
@@ -463,7 +463,7 @@ class ShareAllPatientDataOptions(metaclass=SingletonMeta):
 				deserialized_dict = data
 			return cls(
 				success = deserialized_dict.get("success"),
-				error = deserialize_share_all_patient_data_options.share_patient_data_error(deserialized_dict.get("error")) if deserialized_dict.get("error") is not None else None,
+				error = ShareAllPatientDataOptions.deserialize_share_patient_data_error(deserialized_dict.get("error")) if deserialized_dict.get("error") is not None else None,
 				modified = deserialized_dict["modified"],
 			)
 

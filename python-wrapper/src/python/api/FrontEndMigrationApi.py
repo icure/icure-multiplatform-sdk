@@ -27,9 +27,9 @@ class FrontEndMigrationApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.FrontEndMigrationApi.getFrontEndMigrationAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -40,7 +40,7 @@ class FrontEndMigrationApi:
 			"frontEndMigrationId": front_end_migration_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FrontEndMigrationApi.getFrontEndMigrationBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -67,9 +67,9 @@ class FrontEndMigrationApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.FrontEndMigrationApi.createFrontEndMigrationAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -80,7 +80,7 @@ class FrontEndMigrationApi:
 			"frontEndMigration": front_end_migration.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FrontEndMigrationApi.createFrontEndMigrationBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -106,9 +106,9 @@ class FrontEndMigrationApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.FrontEndMigrationApi.getFrontEndMigrationsAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -118,7 +118,7 @@ class FrontEndMigrationApi:
 		payload = {
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FrontEndMigrationApi.getFrontEndMigrationsBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -145,9 +145,9 @@ class FrontEndMigrationApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.FrontEndMigrationApi.deleteFrontEndMigrationAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -158,7 +158,7 @@ class FrontEndMigrationApi:
 			"frontEndMigrationId": front_end_migration_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FrontEndMigrationApi.deleteFrontEndMigrationBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -185,9 +185,9 @@ class FrontEndMigrationApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.FrontEndMigrationApi.getFrontEndMigrationByNameAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -198,7 +198,7 @@ class FrontEndMigrationApi:
 			"frontEndMigrationName": front_end_migration_name,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FrontEndMigrationApi.getFrontEndMigrationByNameBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -225,9 +225,9 @@ class FrontEndMigrationApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk.executor,
+			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.FrontEndMigrationApi.modifyFrontEndMigrationAsync,
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload),
 			callback
 		)
@@ -238,7 +238,7 @@ class FrontEndMigrationApi:
 			"frontEndMigration": front_end_migration.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FrontEndMigrationApi.modifyFrontEndMigrationBlocking(
-			self.icure_sdk.native,
+			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
