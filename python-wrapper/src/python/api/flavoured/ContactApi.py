@@ -190,14 +190,14 @@ class ContactApi:
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
-			error_str_pointer = symbols.kotlin.root.com.icure.sdk.utils.PyResult.get_failure(call_result)
+			error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
 			if error_str_pointer is not None:
 				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 				symbols.DisposeString(error_str_pointer)
 				symbols.DisposeStablePointer(call_result)
 				raise Exception(error_msg)
 			else:
-				class_pointer = symbols.kotlin.root.com.icure.sdk.utils.PyResult.get_success(call_result)
+				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
 				symbols.DisposeStablePointer(call_result)
 				return PaginatedListIterator[EncryptedContact](
 					producer = cast(class_pointer, c_void_p),
@@ -1163,14 +1163,14 @@ class ContactApi:
 				self.icure_sdk.native,
 				json.dumps(payload).encode('utf-8')
 			)
-			error_str_pointer = symbols.kotlin.root.com.icure.sdk.utils.PyResult.get_failure(call_result)
+			error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
 			if error_str_pointer is not None:
 				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 				symbols.DisposeString(error_str_pointer)
 				symbols.DisposeStablePointer(call_result)
 				raise Exception(error_msg)
 			else:
-				class_pointer = symbols.kotlin.root.com.icure.sdk.utils.PyResult.get_success(call_result)
+				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
 				symbols.DisposeStablePointer(call_result)
 				return PaginatedListIterator[Contact](
 					producer = cast(class_pointer, c_void_p),
@@ -2667,14 +2667,14 @@ class ContactApi:
 			self.icure_sdk.native,
 			json.dumps(payload).encode('utf-8')
 		)
-		error_str_pointer = symbols.kotlin.root.com.icure.sdk.utils.PyResult.get_failure(call_result)
+		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
 		if error_str_pointer is not None:
 			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 			symbols.DisposeString(error_str_pointer)
 			symbols.DisposeStablePointer(call_result)
 			raise Exception(error_msg)
 		else:
-			class_pointer = symbols.kotlin.root.com.icure.sdk.utils.PyResult.get_success(call_result)
+			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
 			symbols.DisposeStablePointer(call_result)
 			return PaginatedListIterator[DecryptedContact](
 				producer = cast(class_pointer, c_void_p),
