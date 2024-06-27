@@ -28,7 +28,7 @@ class AccessLogBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavourlessApi.deleteAccessLogAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicFlavourlessApi.deleteAccessLogAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -39,16 +39,16 @@ class AccessLogBasicApi:
 		payload = {
 			"entity_id": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavourlessApi.deleteAccessLogBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicFlavourlessApi.deleteAccessLogBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = DocIdentifier._deserialize(result_info["success"])
+			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
 	async def delete_access_logs_async(self, entity_ids: List[str]) -> List[DocIdentifier]:
@@ -68,7 +68,7 @@ class AccessLogBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavourlessApi.deleteAccessLogsAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicFlavourlessApi.deleteAccessLogsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -79,16 +79,16 @@ class AccessLogBasicApi:
 		payload = {
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavourlessApi.deleteAccessLogsBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicFlavourlessApi.deleteAccessLogsBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def modify_access_log_async(self, entity: EncryptedAccessLog) -> EncryptedAccessLog:
@@ -108,7 +108,7 @@ class AccessLogBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.modifyAccessLogAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicFlavouredApi.modifyAccessLogAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -119,16 +119,16 @@ class AccessLogBasicApi:
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.modifyAccessLogBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicFlavouredApi.modifyAccessLogBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = EncryptedAccessLog._deserialize(result_info["success"])
+			return_value = EncryptedAccessLog._deserialize(result_info.success)
 			return return_value
 
 	async def get_access_log_async(self, entity_id: str) -> EncryptedAccessLog:
@@ -148,7 +148,7 @@ class AccessLogBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.getAccessLogAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicFlavouredApi.getAccessLogAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -159,16 +159,16 @@ class AccessLogBasicApi:
 		payload = {
 			"entity_id": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.getAccessLogBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicFlavouredApi.getAccessLogBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = EncryptedAccessLog._deserialize(result_info["success"])
+			return_value = EncryptedAccessLog._deserialize(result_info.success)
 			return return_value
 
 	async def get_access_logs_async(self, entity_ids: List[str]) -> List[EncryptedAccessLog]:
@@ -188,7 +188,7 @@ class AccessLogBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.getAccessLogsAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicFlavouredApi.getAccessLogsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -199,16 +199,16 @@ class AccessLogBasicApi:
 		payload = {
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.getAccessLogsBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicFlavouredApi.getAccessLogsBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedAccessLog._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedAccessLog._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def find_access_logs_by_async(self, from_epoch: Optional[int], to_epoch: Optional[int], start_key: Optional[int], start_document_id: Optional[str], limit: Optional[int]) -> PaginatedList:
@@ -236,7 +236,7 @@ class AccessLogBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.findAccessLogsByAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicFlavouredApi.findAccessLogsByAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -251,16 +251,16 @@ class AccessLogBasicApi:
 			"start_document_id": start_document_id,
 			"limit": limit,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.findAccessLogsByBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicFlavouredApi.findAccessLogsByBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = PaginatedList._deserialize(result_info["success"])
+			return_value = PaginatedList._deserialize(result_info.success)
 			return_value = PaginatedList(
 				rows = [EncryptedAccessLog._deserialize(item) for item in return_value.rows],
 				next_key_pair = return_value.next_key_pair,
@@ -294,7 +294,7 @@ class AccessLogBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.findAccessLogsByUserAfterDateAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicFlavouredApi.findAccessLogsByUserAfterDateAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -311,16 +311,16 @@ class AccessLogBasicApi:
 			"limit": limit,
 			"descending": descending,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.findAccessLogsByUserAfterDateBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicFlavouredApi.findAccessLogsByUserAfterDateBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = PaginatedList._deserialize(result_info["success"])
+			return_value = PaginatedList._deserialize(result_info.success)
 			return_value = PaginatedList(
 				rows = [EncryptedAccessLog._deserialize(item) for item in return_value.rows],
 				next_key_pair = return_value.next_key_pair,
@@ -353,7 +353,7 @@ class AccessLogBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.findAccessLogsInGroupAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicFlavouredApi.findAccessLogsInGroupAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -369,16 +369,16 @@ class AccessLogBasicApi:
 			"start_document_id": start_document_id,
 			"limit": limit,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.AccessLogBasicFlavouredApi.findAccessLogsInGroupBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicFlavouredApi.findAccessLogsInGroupBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = PaginatedList._deserialize(result_info["success"])
+			return_value = PaginatedList._deserialize(result_info.success)
 			return_value = PaginatedList(
 				rows = [EncryptedAccessLog._deserialize(item) for item in return_value.rows],
 				next_key_pair = return_value.next_key_pair,

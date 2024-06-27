@@ -41,14 +41,14 @@ class PlaceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.PlaceApi.getPlaceBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = Place._deserialize(result_info["success"])
+			return_value = Place._deserialize(result_info.success)
 			return return_value
 
 	async def create_place_async(self, place: Place) -> Place:
@@ -81,14 +81,14 @@ class PlaceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.PlaceApi.createPlaceBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = Place._deserialize(result_info["success"])
+			return_value = Place._deserialize(result_info.success)
 			return return_value
 
 	async def modify_place_async(self, place: Place) -> Place:
@@ -121,14 +121,14 @@ class PlaceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.PlaceApi.modifyPlaceBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = Place._deserialize(result_info["success"])
+			return_value = Place._deserialize(result_info.success)
 			return return_value
 
 	async def delete_places_async(self, place_ids: List[str]) -> List[DocIdentifier]:
@@ -161,14 +161,14 @@ class PlaceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.PlaceApi.deletePlacesBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def get_places_async(self, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
@@ -207,14 +207,14 @@ class PlaceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.PlaceApi.getPlacesBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = PaginatedList._deserialize(result_info["success"])
+			return_value = PaginatedList._deserialize(result_info.success)
 			return_value = PaginatedList(
 				rows = [Place._deserialize(item) for item in return_value.rows],
 				next_key_pair = return_value.next_key_pair,

@@ -28,7 +28,7 @@ class ClassificationBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ClassificationBasicFlavourlessApi.deleteClassificationAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationBasicFlavourlessApi.deleteClassificationAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -39,16 +39,16 @@ class ClassificationBasicApi:
 		payload = {
 			"entity_id": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ClassificationBasicFlavourlessApi.deleteClassificationBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationBasicFlavourlessApi.deleteClassificationBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = DocIdentifier._deserialize(result_info["success"])
+			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
 	async def delete_classifications_async(self, entity_ids: List[str]) -> List[DocIdentifier]:
@@ -68,7 +68,7 @@ class ClassificationBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ClassificationBasicFlavourlessApi.deleteClassificationsAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationBasicFlavourlessApi.deleteClassificationsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -79,16 +79,16 @@ class ClassificationBasicApi:
 		payload = {
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ClassificationBasicFlavourlessApi.deleteClassificationsBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationBasicFlavourlessApi.deleteClassificationsBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def modify_classification_async(self, entity: EncryptedClassification) -> EncryptedClassification:
@@ -108,7 +108,7 @@ class ClassificationBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ClassificationBasicFlavouredApi.modifyClassificationAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationBasicFlavouredApi.modifyClassificationAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -119,16 +119,16 @@ class ClassificationBasicApi:
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ClassificationBasicFlavouredApi.modifyClassificationBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationBasicFlavouredApi.modifyClassificationBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = EncryptedClassification._deserialize(result_info["success"])
+			return_value = EncryptedClassification._deserialize(result_info.success)
 			return return_value
 
 	async def get_classification_async(self, entity_id: str) -> EncryptedClassification:
@@ -148,7 +148,7 @@ class ClassificationBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ClassificationBasicFlavouredApi.getClassificationAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationBasicFlavouredApi.getClassificationAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -159,16 +159,16 @@ class ClassificationBasicApi:
 		payload = {
 			"entity_id": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ClassificationBasicFlavouredApi.getClassificationBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationBasicFlavouredApi.getClassificationBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = EncryptedClassification._deserialize(result_info["success"])
+			return_value = EncryptedClassification._deserialize(result_info.success)
 			return return_value
 
 	async def get_classifications_async(self, entity_ids: List[str]) -> List[EncryptedClassification]:
@@ -188,7 +188,7 @@ class ClassificationBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ClassificationBasicFlavouredApi.getClassificationsAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationBasicFlavouredApi.getClassificationsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -199,14 +199,14 @@ class ClassificationBasicApi:
 		payload = {
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ClassificationBasicFlavouredApi.getClassificationsBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationBasicFlavouredApi.getClassificationsBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedClassification._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedClassification._deserialize(x1) for x1 in result_info.success]
 			return return_value

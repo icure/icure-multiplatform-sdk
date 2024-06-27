@@ -28,7 +28,7 @@ class HealthcareElementBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.HealthcareElementBasicFlavourlessApi.matchHealthcareElementsByAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavourlessApi.matchHealthcareElementsByAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -39,16 +39,16 @@ class HealthcareElementBasicApi:
 		payload = {
 			"filter": serialize_abstract_filter(filter),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcareElementBasicFlavourlessApi.matchHealthcareElementsByBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavourlessApi.matchHealthcareElementsByBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [x1 for x1 in result_info["success"]]
+			return_value = [x1 for x1 in result_info.success]
 			return return_value
 
 	async def delete_healthcare_element_async(self, entity_id: str) -> DocIdentifier:
@@ -68,7 +68,7 @@ class HealthcareElementBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.HealthcareElementBasicFlavourlessApi.deleteHealthcareElementAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavourlessApi.deleteHealthcareElementAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -79,16 +79,16 @@ class HealthcareElementBasicApi:
 		payload = {
 			"entity_id": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcareElementBasicFlavourlessApi.deleteHealthcareElementBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavourlessApi.deleteHealthcareElementBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = DocIdentifier._deserialize(result_info["success"])
+			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
 	async def delete_healthcare_elements_async(self, entity_ids: List[str]) -> List[DocIdentifier]:
@@ -108,7 +108,7 @@ class HealthcareElementBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.HealthcareElementBasicFlavourlessApi.deleteHealthcareElementsAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavourlessApi.deleteHealthcareElementsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -119,16 +119,16 @@ class HealthcareElementBasicApi:
 		payload = {
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcareElementBasicFlavourlessApi.deleteHealthcareElementsBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavourlessApi.deleteHealthcareElementsBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def find_healthcare_elements_delegations_stubs_by_hc_party_patient_foreign_keys_async(self, hc_party_id: str, secret_patient_keys: List[str]) -> List[IcureStub]:
@@ -149,7 +149,7 @@ class HealthcareElementBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.HealthcareElementBasicFlavourlessApi.findHealthcareElementsDelegationsStubsByHcPartyPatientForeignKeysAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavourlessApi.findHealthcareElementsDelegationsStubsByHcPartyPatientForeignKeysAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -161,16 +161,16 @@ class HealthcareElementBasicApi:
 			"hc_party_id": hc_party_id,
 			"secret_patient_keys": [x0 for x0 in secret_patient_keys],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcareElementBasicFlavourlessApi.findHealthcareElementsDelegationsStubsByHcPartyPatientForeignKeysBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavourlessApi.findHealthcareElementsDelegationsStubsByHcPartyPatientForeignKeysBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [IcureStub._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [IcureStub._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def modify_healthcare_element_async(self, entity: EncryptedHealthElement) -> EncryptedHealthElement:
@@ -190,7 +190,7 @@ class HealthcareElementBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.HealthcareElementBasicFlavouredApi.modifyHealthcareElementAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.modifyHealthcareElementAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -201,16 +201,16 @@ class HealthcareElementBasicApi:
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcareElementBasicFlavouredApi.modifyHealthcareElementBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.modifyHealthcareElementBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = EncryptedHealthElement._deserialize(result_info["success"])
+			return_value = EncryptedHealthElement._deserialize(result_info.success)
 			return return_value
 
 	async def modify_healthcare_elements_async(self, entities: List[EncryptedHealthElement]) -> List[EncryptedHealthElement]:
@@ -230,7 +230,7 @@ class HealthcareElementBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.HealthcareElementBasicFlavouredApi.modifyHealthcareElementsAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.modifyHealthcareElementsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -241,16 +241,16 @@ class HealthcareElementBasicApi:
 		payload = {
 			"entities": [x0.__serialize__() for x0 in entities],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcareElementBasicFlavouredApi.modifyHealthcareElementsBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.modifyHealthcareElementsBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedHealthElement._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedHealthElement._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def get_healthcare_element_async(self, entity_id: str) -> EncryptedHealthElement:
@@ -270,7 +270,7 @@ class HealthcareElementBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.HealthcareElementBasicFlavouredApi.getHealthcareElementAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.getHealthcareElementAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -281,16 +281,16 @@ class HealthcareElementBasicApi:
 		payload = {
 			"entity_id": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcareElementBasicFlavouredApi.getHealthcareElementBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.getHealthcareElementBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = EncryptedHealthElement._deserialize(result_info["success"])
+			return_value = EncryptedHealthElement._deserialize(result_info.success)
 			return return_value
 
 	async def get_healthcare_elements_async(self, entity_ids: List[str]) -> List[EncryptedHealthElement]:
@@ -310,7 +310,7 @@ class HealthcareElementBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.HealthcareElementBasicFlavouredApi.getHealthcareElementsAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.getHealthcareElementsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -321,16 +321,16 @@ class HealthcareElementBasicApi:
 		payload = {
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcareElementBasicFlavouredApi.getHealthcareElementsBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.getHealthcareElementsBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedHealthElement._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedHealthElement._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def filter_healthcare_elements_by_async(self, filter_chain: FilterChain, start_document_id: Optional[str], limit: Optional[int]) -> PaginatedList:
@@ -356,7 +356,7 @@ class HealthcareElementBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.HealthcareElementBasicFlavouredApi.filterHealthcareElementsByAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.filterHealthcareElementsByAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -369,16 +369,16 @@ class HealthcareElementBasicApi:
 			"start_document_id": start_document_id,
 			"limit": limit,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcareElementBasicFlavouredApi.filterHealthcareElementsByBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.filterHealthcareElementsByBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = PaginatedList._deserialize(result_info["success"])
+			return_value = PaginatedList._deserialize(result_info.success)
 			return_value = PaginatedList(
 				rows = [EncryptedHealthElement._deserialize(item) for item in return_value.rows],
 				next_key_pair = return_value.next_key_pair,
@@ -403,7 +403,7 @@ class HealthcareElementBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.HealthcareElementBasicFlavouredApi.findHealthcareElementsByHcPartyPatientForeignKeysAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.findHealthcareElementsByHcPartyPatientForeignKeysAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -415,14 +415,14 @@ class HealthcareElementBasicApi:
 			"hc_party_id": hc_party_id,
 			"secret_patient_keys": [x0 for x0 in secret_patient_keys],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcareElementBasicFlavouredApi.findHealthcareElementsByHcPartyPatientForeignKeysBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicFlavouredApi.findHealthcareElementsByHcPartyPatientForeignKeysBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedHealthElement._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedHealthElement._deserialize(x1) for x1 in result_info.success]
 			return return_value

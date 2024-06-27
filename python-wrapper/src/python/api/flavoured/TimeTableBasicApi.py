@@ -28,7 +28,7 @@ class TimeTableBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.TimeTableBasicFlavourlessApi.deleteTimeTableAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableBasicFlavourlessApi.deleteTimeTableAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -39,16 +39,16 @@ class TimeTableBasicApi:
 		payload = {
 			"entity_id": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.TimeTableBasicFlavourlessApi.deleteTimeTableBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableBasicFlavourlessApi.deleteTimeTableBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = DocIdentifier._deserialize(result_info["success"])
+			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
 	async def delete_time_tables_async(self, entity_ids: List[str]) -> List[DocIdentifier]:
@@ -68,7 +68,7 @@ class TimeTableBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.TimeTableBasicFlavourlessApi.deleteTimeTablesAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableBasicFlavourlessApi.deleteTimeTablesAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -79,16 +79,16 @@ class TimeTableBasicApi:
 		payload = {
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.TimeTableBasicFlavourlessApi.deleteTimeTablesBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableBasicFlavourlessApi.deleteTimeTablesBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def modify_time_table_async(self, entity: EncryptedTimeTable) -> EncryptedTimeTable:
@@ -108,7 +108,7 @@ class TimeTableBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.TimeTableBasicFlavouredApi.modifyTimeTableAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableBasicFlavouredApi.modifyTimeTableAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -119,16 +119,16 @@ class TimeTableBasicApi:
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.TimeTableBasicFlavouredApi.modifyTimeTableBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableBasicFlavouredApi.modifyTimeTableBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = EncryptedTimeTable._deserialize(result_info["success"])
+			return_value = EncryptedTimeTable._deserialize(result_info.success)
 			return return_value
 
 	async def get_time_table_async(self, entity_id: str) -> EncryptedTimeTable:
@@ -148,7 +148,7 @@ class TimeTableBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.TimeTableBasicFlavouredApi.getTimeTableAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableBasicFlavouredApi.getTimeTableAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -159,16 +159,16 @@ class TimeTableBasicApi:
 		payload = {
 			"entity_id": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.TimeTableBasicFlavouredApi.getTimeTableBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableBasicFlavouredApi.getTimeTableBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = EncryptedTimeTable._deserialize(result_info["success"])
+			return_value = EncryptedTimeTable._deserialize(result_info.success)
 			return return_value
 
 	async def get_time_tables_by_period_and_agenda_id_async(self, start_date: int, end_date: int, agenda_id: str) -> List[EncryptedTimeTable]:
@@ -190,7 +190,7 @@ class TimeTableBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.TimeTableBasicFlavouredApi.getTimeTablesByPeriodAndAgendaIdAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableBasicFlavouredApi.getTimeTablesByPeriodAndAgendaIdAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -203,16 +203,16 @@ class TimeTableBasicApi:
 			"end_date": end_date,
 			"agenda_id": agenda_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.TimeTableBasicFlavouredApi.getTimeTablesByPeriodAndAgendaIdBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableBasicFlavouredApi.getTimeTablesByPeriodAndAgendaIdBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedTimeTable._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedTimeTable._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def get_time_tables_by_agenda_id_async(self, agenda_id: str) -> List[EncryptedTimeTable]:
@@ -232,7 +232,7 @@ class TimeTableBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.TimeTableBasicFlavouredApi.getTimeTablesByAgendaIdAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableBasicFlavouredApi.getTimeTablesByAgendaIdAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -243,14 +243,14 @@ class TimeTableBasicApi:
 		payload = {
 			"agenda_id": agenda_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.TimeTableBasicFlavouredApi.getTimeTablesByAgendaIdBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableBasicFlavouredApi.getTimeTablesByAgendaIdBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedTimeTable._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedTimeTable._deserialize(x1) for x1 in result_info.success]
 			return return_value

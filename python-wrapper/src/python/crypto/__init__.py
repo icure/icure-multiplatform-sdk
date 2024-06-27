@@ -3,6 +3,7 @@ from typing import List
 from typing import Union
 from typing import Dict
 from dataclasses import dataclass
+from model.specializations import HexString
 from enum import Enum
 from typing import Optional
 
@@ -420,12 +421,12 @@ class ShareableEntity(Enum):
 class EntityResult:
 	modified: int
 	success: Optional[bool] = None
-	error: Optional['SharePatientDataError'] = None
+	error: Optional['ShareAllPatientDataOptions.SharePatientDataError'] = None
 
 	def __serialize__(self) -> object:
 		return {
 			"success": self.success,
-			"error": serialize_share_patient_data_error(self.error) if self.error is not None else None,
+			"error": serialize_share_all_patient_data_options.share_patient_data_error(self.error) if self.error is not None else None,
 			"modified": self.modified,
 		}
 
@@ -438,14 +439,14 @@ class EntityResult:
 			deserialized_dict = data
 		return cls(
 			success = deserialized_dict.get("success"),
-			error = deserialize_share_patient_data_error(deserialized_dict.get("error")) if deserialized_dict.get("error") is not None else None,
+			error = deserialize_share_all_patient_data_options.share_patient_data_error(deserialized_dict.get("error")) if deserialized_dict.get("error") is not None else None,
 			modified = deserialized_dict["modified"],
 		)
 
 @dataclass
 class Result:
 	patient: 'Patient'
-	statuses: Dict['ShareableEntity', 'EntityResult']
+	statuses: Dict['ShareAllPatientDataOptions.ShareableEntity', 'ShareAllPatientDataOptions.EntityResult']
 
 	def __serialize__(self) -> object:
 		return {
@@ -462,7 +463,7 @@ class Result:
 			deserialized_dict = data
 		return cls(
 			patient = deserialize_patient(deserialized_dict["patient"]),
-			statuses = dict(map(lambda kv0: (ShareableEntity._deserialize(kv0[0]), EntityResult._deserialize(kv0[1])), deserialized_dict["statuses"].items())),
+			statuses = dict(map(lambda kv0: (ShareAllPatientDataOptions.ShareableEntity._deserialize(kv0[0]), ShareAllPatientDataOptions.EntityResult._deserialize(kv0[1])), deserialized_dict["statuses"].items())),
 		)
 
 SharePatientDataError = Union['BulkShareFailure', 'FailedRequest']
@@ -950,7 +951,7 @@ class DelegateShareOptions:
 	def __serialize__(self) -> object:
 		return {
 			"shareSecretIds": [x0 for x0 in self.share_secret_ids],
-			"shareEncryptionKeys": [x0.__serialize__() for x0 in self.share_encryption_keys],
+			"shareEncryptionKeys": [x0 for x0 in self.share_encryption_keys],
 			"shareOwningEntityIds": [x0 for x0 in self.share_owning_entity_ids],
 			"requestedPermissions": self.requested_permissions.__serialize__(),
 		}
@@ -964,7 +965,7 @@ class DelegateShareOptions:
 			deserialized_dict = data
 		return cls(
 			share_secret_ids = [x0 for x0 in deserialized_dict["shareSecretIds"]],
-			share_encryption_keys = [HexString._deserialize(x0) for x0 in deserialized_dict["shareEncryptionKeys"]],
+			share_encryption_keys = [x0 for x0 in deserialized_dict["shareEncryptionKeys"]],
 			share_owning_entity_ids = [x0 for x0 in deserialized_dict["shareOwningEntityIds"]],
 			requested_permissions = RequestedPermission._deserialize(deserialized_dict["requestedPermissions"]),
 		)

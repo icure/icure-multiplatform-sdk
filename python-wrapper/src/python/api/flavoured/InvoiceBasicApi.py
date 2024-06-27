@@ -28,7 +28,7 @@ class InvoiceBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavourlessApi.deleteInvoiceAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavourlessApi.deleteInvoiceAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -39,16 +39,16 @@ class InvoiceBasicApi:
 		payload = {
 			"entity_id": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavourlessApi.deleteInvoiceBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavourlessApi.deleteInvoiceBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = DocIdentifier._deserialize(result_info["success"])
+			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
 	async def find_invoices_delegations_stubs_by_hc_party_patient_foreign_keys_async(self, hc_party_id: str, secret_patient_keys: List[str]) -> List[IcureStub]:
@@ -69,7 +69,7 @@ class InvoiceBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavourlessApi.findInvoicesDelegationsStubsByHcPartyPatientForeignKeysAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavourlessApi.findInvoicesDelegationsStubsByHcPartyPatientForeignKeysAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -81,16 +81,16 @@ class InvoiceBasicApi:
 			"hc_party_id": hc_party_id,
 			"secret_patient_keys": [x0 for x0 in secret_patient_keys],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavourlessApi.findInvoicesDelegationsStubsByHcPartyPatientForeignKeysBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavourlessApi.findInvoicesDelegationsStubsByHcPartyPatientForeignKeysBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [IcureStub._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [IcureStub._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def get_tarifications_codes_occurrences_async(self, min_occurrence: int) -> List[LabelledOccurence]:
@@ -110,7 +110,7 @@ class InvoiceBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavourlessApi.getTarificationsCodesOccurrencesAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavourlessApi.getTarificationsCodesOccurrencesAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -121,16 +121,16 @@ class InvoiceBasicApi:
 		payload = {
 			"min_occurrence": min_occurrence,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavourlessApi.getTarificationsCodesOccurrencesBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavourlessApi.getTarificationsCodesOccurrencesBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [LabelledOccurence._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [LabelledOccurence._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def modify_invoice_async(self, entity: EncryptedInvoice) -> EncryptedInvoice:
@@ -150,7 +150,7 @@ class InvoiceBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.modifyInvoiceAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.modifyInvoiceAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -161,16 +161,16 @@ class InvoiceBasicApi:
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.modifyInvoiceBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.modifyInvoiceBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = EncryptedInvoice._deserialize(result_info["success"])
+			return_value = EncryptedInvoice._deserialize(result_info.success)
 			return return_value
 
 	async def modify_invoices_async(self, entities: List[EncryptedInvoice]) -> List[EncryptedInvoice]:
@@ -190,7 +190,7 @@ class InvoiceBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.modifyInvoicesAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.modifyInvoicesAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -201,16 +201,16 @@ class InvoiceBasicApi:
 		payload = {
 			"entities": [x0.__serialize__() for x0 in entities],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.modifyInvoicesBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.modifyInvoicesBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def get_invoice_async(self, entity_id: str) -> EncryptedInvoice:
@@ -230,7 +230,7 @@ class InvoiceBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.getInvoiceAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.getInvoiceAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -241,16 +241,16 @@ class InvoiceBasicApi:
 		payload = {
 			"entity_id": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.getInvoiceBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.getInvoiceBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = EncryptedInvoice._deserialize(result_info["success"])
+			return_value = EncryptedInvoice._deserialize(result_info.success)
 			return return_value
 
 	async def get_invoices_async(self, entity_ids: List[str]) -> List[EncryptedInvoice]:
@@ -270,7 +270,7 @@ class InvoiceBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.getInvoicesAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.getInvoicesAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -281,16 +281,16 @@ class InvoiceBasicApi:
 		payload = {
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.getInvoicesBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.getInvoicesBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def filter_invoices_by_async(self, filter_chain: FilterChain) -> List[EncryptedInvoice]:
@@ -310,7 +310,7 @@ class InvoiceBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.filterInvoicesByAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.filterInvoicesByAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -321,16 +321,16 @@ class InvoiceBasicApi:
 		payload = {
 			"filter_chain": filter_chain.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.filterInvoicesByBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.filterInvoicesByBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def find_invoices_by_hc_party_patient_foreign_keys_async(self, hc_party_id: str, secret_patient_keys: List[str]) -> List[EncryptedInvoice]:
@@ -351,7 +351,7 @@ class InvoiceBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.findInvoicesByHcPartyPatientForeignKeysAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.findInvoicesByHcPartyPatientForeignKeysAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -363,16 +363,16 @@ class InvoiceBasicApi:
 			"hc_party_id": hc_party_id,
 			"secret_patient_keys": [x0 for x0 in secret_patient_keys],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.findInvoicesByHcPartyPatientForeignKeysBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.findInvoicesByHcPartyPatientForeignKeysBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def reassign_invoice_async(self, invoice: EncryptedInvoice) -> EncryptedInvoice:
@@ -392,7 +392,7 @@ class InvoiceBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.reassignInvoiceAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.reassignInvoiceAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -403,16 +403,16 @@ class InvoiceBasicApi:
 		payload = {
 			"invoice": invoice.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.reassignInvoiceBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.reassignInvoiceBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = EncryptedInvoice._deserialize(result_info["success"])
+			return_value = EncryptedInvoice._deserialize(result_info.success)
 			return return_value
 
 	async def merge_to_async(self, invoice_id: str, ids: List[str]) -> EncryptedInvoice:
@@ -433,7 +433,7 @@ class InvoiceBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.mergeToAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.mergeToAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -445,16 +445,16 @@ class InvoiceBasicApi:
 			"invoice_id": invoice_id,
 			"ids": [x0 for x0 in ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.mergeToBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.mergeToBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = EncryptedInvoice._deserialize(result_info["success"])
+			return_value = EncryptedInvoice._deserialize(result_info.success)
 			return return_value
 
 	async def validate_async(self, invoice_id: str, scheme: str, forced_value: str) -> EncryptedInvoice:
@@ -476,7 +476,7 @@ class InvoiceBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.validateAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.validateAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -489,16 +489,16 @@ class InvoiceBasicApi:
 			"scheme": scheme,
 			"forced_value": forced_value,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.validateBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.validateBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = EncryptedInvoice._deserialize(result_info["success"])
+			return_value = EncryptedInvoice._deserialize(result_info.success)
 			return return_value
 
 	async def append_codes_async(self, user_id: str, type: str, sent_medium_type: str, secret_fkeys: str, invoicing_codes: List[EncryptedInvoicingCode], insurance_id: Optional[str] = None, invoice_id: Optional[str] = None, grace_period: Optional[int] = None) -> List[EncryptedInvoice]:
@@ -525,7 +525,7 @@ class InvoiceBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.appendCodesAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.appendCodesAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -543,16 +543,16 @@ class InvoiceBasicApi:
 			"grace_period": grace_period,
 			"invoicing_codes": [x0.__serialize__() for x0 in invoicing_codes],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.appendCodesBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.appendCodesBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def remove_codes_async(self, user_id: str, service_id: str, secret_fkeys: str, tarification_ids: List[str]) -> List[EncryptedInvoice]:
@@ -575,7 +575,7 @@ class InvoiceBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.removeCodesAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.removeCodesAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -589,16 +589,16 @@ class InvoiceBasicApi:
 			"secret_fkeys": secret_fkeys,
 			"tarification_ids": [x0 for x0 in tarification_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.removeCodesBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.removeCodesBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def find_invoices_by_author_async(self, hc_party_id: str, from_date: Optional[int] = None, to_date: Optional[int] = None, start_key: Optional[Dict[str, object]] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
@@ -627,7 +627,7 @@ class InvoiceBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.findInvoicesByAuthorAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.findInvoicesByAuthorAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -643,16 +643,16 @@ class InvoiceBasicApi:
 			"start_document_id": start_document_id,
 			"limit": limit,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.findInvoicesByAuthorBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.findInvoicesByAuthorBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = PaginatedList._deserialize(result_info["success"])
+			return_value = PaginatedList._deserialize(result_info.success)
 			return_value = PaginatedList(
 				rows = [EncryptedInvoice._deserialize(item) for item in return_value.rows],
 				next_key_pair = return_value.next_key_pair,
@@ -677,7 +677,7 @@ class InvoiceBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listInvoicesByHCPartyAndPatientForeignKeysAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.listInvoicesByHCPartyAndPatientForeignKeysAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -689,16 +689,16 @@ class InvoiceBasicApi:
 			"hc_party_id": hc_party_id,
 			"secret_patient_keys": [x0 for x0 in secret_patient_keys],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listInvoicesByHCPartyAndPatientForeignKeysBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.listInvoicesByHCPartyAndPatientForeignKeysBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def list_invoices_by_hc_party_and_group_id_async(self, hc_party_id: str, group_id: str) -> List[EncryptedInvoice]:
@@ -719,7 +719,7 @@ class InvoiceBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listInvoicesByHcPartyAndGroupIdAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.listInvoicesByHcPartyAndGroupIdAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -731,16 +731,16 @@ class InvoiceBasicApi:
 			"hc_party_id": hc_party_id,
 			"group_id": group_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listInvoicesByHcPartyAndGroupIdBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.listInvoicesByHcPartyAndGroupIdBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def list_invoices_by_hc_party_sent_medium_type_invoice_type_sent_date_async(self, hc_party_id: str, sent_medium_type: MediumType, invoice_type: InvoiceType, sent: bool, from: Optional[int] = None, to: Optional[int] = None) -> List[EncryptedInvoice]:
@@ -765,7 +765,7 @@ class InvoiceBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDateAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDateAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -781,16 +781,16 @@ class InvoiceBasicApi:
 			"from": from,
 			"to": to,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDateBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDateBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def list_invoices_by_contact_ids_async(self, contact_ids: List[str]) -> List[EncryptedInvoice]:
@@ -810,7 +810,7 @@ class InvoiceBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listInvoicesByContactIdsAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.listInvoicesByContactIdsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -821,16 +821,16 @@ class InvoiceBasicApi:
 		payload = {
 			"contact_ids": [x0 for x0 in contact_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listInvoicesByContactIdsBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.listInvoicesByContactIdsBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def list_invoices_by_recipients_ids_async(self, recipients_ids: List[str]) -> List[EncryptedInvoice]:
@@ -850,7 +850,7 @@ class InvoiceBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listInvoicesByRecipientsIdsAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.listInvoicesByRecipientsIdsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -861,16 +861,16 @@ class InvoiceBasicApi:
 		payload = {
 			"recipients_ids": [x0 for x0 in recipients_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listInvoicesByRecipientsIdsBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.listInvoicesByRecipientsIdsBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def list_to_insurances_async(self, user_ids: List[str]) -> List[EncryptedInvoice]:
@@ -890,7 +890,7 @@ class InvoiceBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listToInsurancesAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.listToInsurancesAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -901,16 +901,16 @@ class InvoiceBasicApi:
 		payload = {
 			"user_ids": [x0 for x0 in user_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listToInsurancesBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.listToInsurancesBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def list_to_insurances_unsent_async(self, user_ids: List[str]) -> List[EncryptedInvoice]:
@@ -930,7 +930,7 @@ class InvoiceBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listToInsurancesUnsentAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.listToInsurancesUnsentAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -941,16 +941,16 @@ class InvoiceBasicApi:
 		payload = {
 			"user_ids": [x0 for x0 in user_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listToInsurancesUnsentBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.listToInsurancesUnsentBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def list_to_patients_async(self, hc_party_id: str) -> List[EncryptedInvoice]:
@@ -970,7 +970,7 @@ class InvoiceBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listToPatientsAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.listToPatientsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -981,16 +981,16 @@ class InvoiceBasicApi:
 		payload = {
 			"hc_party_id": hc_party_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listToPatientsBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.listToPatientsBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def list_to_patients_unsent_async(self, hc_party_id: Optional[str]) -> List[EncryptedInvoice]:
@@ -1010,7 +1010,7 @@ class InvoiceBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listToPatientsUnsentAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.listToPatientsUnsentAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -1021,16 +1021,16 @@ class InvoiceBasicApi:
 		payload = {
 			"hc_party_id": hc_party_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listToPatientsUnsentBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.listToPatientsUnsentBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def list_invoices_by_ids_async(self, ids: List[str]) -> List[EncryptedInvoice]:
@@ -1050,7 +1050,7 @@ class InvoiceBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listInvoicesByIdsAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.listInvoicesByIdsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -1061,16 +1061,16 @@ class InvoiceBasicApi:
 		payload = {
 			"ids": [x0 for x0 in ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listInvoicesByIdsBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.listInvoicesByIdsBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def list_invoices_by_hcparty_sending_mode_status_date_async(self, hc_party_id: str, sending_mode: str, status: str, from: int, to: int) -> List[EncryptedInvoice]:
@@ -1094,7 +1094,7 @@ class InvoiceBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listInvoicesByHcpartySendingModeStatusDateAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.listInvoicesByHcpartySendingModeStatusDateAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -1109,16 +1109,16 @@ class InvoiceBasicApi:
 			"from": from,
 			"to": to,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listInvoicesByHcpartySendingModeStatusDateBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.listInvoicesByHcpartySendingModeStatusDateBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def list_invoices_by_service_ids_async(self, service_ids: List[str]) -> List[EncryptedInvoice]:
@@ -1138,7 +1138,7 @@ class InvoiceBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listInvoicesByServiceIdsAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.listInvoicesByServiceIdsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -1149,16 +1149,16 @@ class InvoiceBasicApi:
 		payload = {
 			"service_ids": [x0 for x0 in service_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listInvoicesByServiceIdsBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.listInvoicesByServiceIdsBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def list_all_hcps_by_status_async(self, status: str, hcp_ids: List[str], from: Optional[int] = None, to: Optional[int] = None) -> List[EncryptedInvoice]:
@@ -1181,7 +1181,7 @@ class InvoiceBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listAllHcpsByStatusAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.listAllHcpsByStatusAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -1195,14 +1195,14 @@ class InvoiceBasicApi:
 			"to": to,
 			"hcp_ids": [x0 for x0 in hcp_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InvoiceBasicFlavouredApi.listAllHcpsByStatusBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.listAllHcpsByStatusBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value

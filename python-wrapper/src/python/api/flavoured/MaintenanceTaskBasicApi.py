@@ -28,7 +28,7 @@ class MaintenanceTaskBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskBasicFlavourlessApi.deleteMaintenanceTaskAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskBasicFlavourlessApi.deleteMaintenanceTaskAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -39,16 +39,16 @@ class MaintenanceTaskBasicApi:
 		payload = {
 			"entity_id": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskBasicFlavourlessApi.deleteMaintenanceTaskBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskBasicFlavourlessApi.deleteMaintenanceTaskBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = DocIdentifier._deserialize(result_info["success"])
+			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
 	async def delete_maintenance_tasks_async(self, entity_ids: List[str]) -> List[DocIdentifier]:
@@ -68,7 +68,7 @@ class MaintenanceTaskBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskBasicFlavourlessApi.deleteMaintenanceTasksAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskBasicFlavourlessApi.deleteMaintenanceTasksAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -79,16 +79,16 @@ class MaintenanceTaskBasicApi:
 		payload = {
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskBasicFlavourlessApi.deleteMaintenanceTasksBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskBasicFlavourlessApi.deleteMaintenanceTasksBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def modify_maintenance_task_async(self, entity: EncryptedMaintenanceTask) -> EncryptedMaintenanceTask:
@@ -108,7 +108,7 @@ class MaintenanceTaskBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskBasicFlavouredApi.modifyMaintenanceTaskAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskBasicFlavouredApi.modifyMaintenanceTaskAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -119,16 +119,16 @@ class MaintenanceTaskBasicApi:
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskBasicFlavouredApi.modifyMaintenanceTaskBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskBasicFlavouredApi.modifyMaintenanceTaskBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = EncryptedMaintenanceTask._deserialize(result_info["success"])
+			return_value = EncryptedMaintenanceTask._deserialize(result_info.success)
 			return return_value
 
 	async def get_maintenance_task_async(self, entity_id: str) -> EncryptedMaintenanceTask:
@@ -148,7 +148,7 @@ class MaintenanceTaskBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskBasicFlavouredApi.getMaintenanceTaskAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskBasicFlavouredApi.getMaintenanceTaskAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -159,16 +159,16 @@ class MaintenanceTaskBasicApi:
 		payload = {
 			"entity_id": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskBasicFlavouredApi.getMaintenanceTaskBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskBasicFlavouredApi.getMaintenanceTaskBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = EncryptedMaintenanceTask._deserialize(result_info["success"])
+			return_value = EncryptedMaintenanceTask._deserialize(result_info.success)
 			return return_value
 
 	async def filter_maintenance_tasks_by_async(self, filter_chain: FilterChain, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
@@ -194,7 +194,7 @@ class MaintenanceTaskBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskBasicFlavouredApi.filterMaintenanceTasksByAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskBasicFlavouredApi.filterMaintenanceTasksByAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -207,16 +207,16 @@ class MaintenanceTaskBasicApi:
 			"limit": limit,
 			"filter_chain": filter_chain.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskBasicFlavouredApi.filterMaintenanceTasksByBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskBasicFlavouredApi.filterMaintenanceTasksByBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = PaginatedList._deserialize(result_info["success"])
+			return_value = PaginatedList._deserialize(result_info.success)
 			return_value = PaginatedList(
 				rows = [EncryptedMaintenanceTask._deserialize(item) for item in return_value.rows],
 				next_key_pair = return_value.next_key_pair,

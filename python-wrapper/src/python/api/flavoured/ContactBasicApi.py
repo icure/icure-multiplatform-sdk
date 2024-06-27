@@ -28,7 +28,7 @@ class ContactBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavourlessApi.matchContactsByAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavourlessApi.matchContactsByAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -39,16 +39,16 @@ class ContactBasicApi:
 		payload = {
 			"filter": serialize_abstract_filter(filter),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavourlessApi.matchContactsByBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavourlessApi.matchContactsByBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [x1 for x1 in result_info["success"]]
+			return_value = [x1 for x1 in result_info.success]
 			return return_value
 
 	async def match_services_by_async(self, filter: AbstractFilter) -> List[str]:
@@ -68,7 +68,7 @@ class ContactBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavourlessApi.matchServicesByAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavourlessApi.matchServicesByAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -79,16 +79,16 @@ class ContactBasicApi:
 		payload = {
 			"filter": serialize_abstract_filter(filter),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavourlessApi.matchServicesByBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavourlessApi.matchServicesByBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [x1 for x1 in result_info["success"]]
+			return_value = [x1 for x1 in result_info.success]
 			return return_value
 
 	async def delete_contact_async(self, entity_id: str) -> DocIdentifier:
@@ -108,7 +108,7 @@ class ContactBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavourlessApi.deleteContactAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavourlessApi.deleteContactAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -119,16 +119,16 @@ class ContactBasicApi:
 		payload = {
 			"entity_id": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavourlessApi.deleteContactBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavourlessApi.deleteContactBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = DocIdentifier._deserialize(result_info["success"])
+			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
 	async def delete_contacts_async(self, entity_ids: List[str]) -> List[DocIdentifier]:
@@ -148,7 +148,7 @@ class ContactBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavourlessApi.deleteContactsAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavourlessApi.deleteContactsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -159,16 +159,16 @@ class ContactBasicApi:
 		payload = {
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavourlessApi.deleteContactsBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavourlessApi.deleteContactsBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def find_contacts_delegations_stubs_by_hc_party_patient_foreign_keys_async(self, hc_party_id: str, secret_patient_keys: List[str]) -> List[IcureStub]:
@@ -189,7 +189,7 @@ class ContactBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavourlessApi.findContactsDelegationsStubsByHcPartyPatientForeignKeysAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavourlessApi.findContactsDelegationsStubsByHcPartyPatientForeignKeysAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -201,16 +201,16 @@ class ContactBasicApi:
 			"hc_party_id": hc_party_id,
 			"secret_patient_keys": [x0 for x0 in secret_patient_keys],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavourlessApi.findContactsDelegationsStubsByHcPartyPatientForeignKeysBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavourlessApi.findContactsDelegationsStubsByHcPartyPatientForeignKeysBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [IcureStub._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [IcureStub._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def get_service_codes_occurrences_async(self, code_type: str, min_occurrences: int) -> List[LabelledOccurence]:
@@ -231,7 +231,7 @@ class ContactBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavourlessApi.getServiceCodesOccurrencesAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavourlessApi.getServiceCodesOccurrencesAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -243,16 +243,16 @@ class ContactBasicApi:
 			"code_type": code_type,
 			"min_occurrences": min_occurrences,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavourlessApi.getServiceCodesOccurrencesBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavourlessApi.getServiceCodesOccurrencesBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [LabelledOccurence._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [LabelledOccurence._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def modify_contact_async(self, entity: EncryptedContact) -> EncryptedContact:
@@ -272,7 +272,7 @@ class ContactBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.modifyContactAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavouredApi.modifyContactAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -283,16 +283,16 @@ class ContactBasicApi:
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.modifyContactBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavouredApi.modifyContactBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = EncryptedContact._deserialize(result_info["success"])
+			return_value = EncryptedContact._deserialize(result_info.success)
 			return return_value
 
 	async def modify_contacts_async(self, entities: List[EncryptedContact]) -> List[EncryptedContact]:
@@ -312,7 +312,7 @@ class ContactBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.modifyContactsAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavouredApi.modifyContactsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -323,16 +323,16 @@ class ContactBasicApi:
 		payload = {
 			"entities": [x0.__serialize__() for x0 in entities],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.modifyContactsBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavouredApi.modifyContactsBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedContact._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedContact._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def get_contact_async(self, entity_id: str) -> EncryptedContact:
@@ -352,7 +352,7 @@ class ContactBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.getContactAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavouredApi.getContactAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -363,16 +363,16 @@ class ContactBasicApi:
 		payload = {
 			"entity_id": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.getContactBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavouredApi.getContactBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = EncryptedContact._deserialize(result_info["success"])
+			return_value = EncryptedContact._deserialize(result_info.success)
 			return return_value
 
 	async def get_contacts_async(self, entity_ids: List[str]) -> List[EncryptedContact]:
@@ -392,7 +392,7 @@ class ContactBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.getContactsAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavouredApi.getContactsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -403,16 +403,16 @@ class ContactBasicApi:
 		payload = {
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.getContactsBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavouredApi.getContactsBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedContact._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedContact._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def filter_contacts_by_async(self, filter_chain: FilterChain, start_document_id: Optional[str], limit: Optional[int]) -> PaginatedList:
@@ -438,7 +438,7 @@ class ContactBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.filterContactsByAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavouredApi.filterContactsByAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -451,16 +451,16 @@ class ContactBasicApi:
 			"start_document_id": start_document_id,
 			"limit": limit,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.filterContactsByBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavouredApi.filterContactsByBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = PaginatedList._deserialize(result_info["success"])
+			return_value = PaginatedList._deserialize(result_info.success)
 			return_value = PaginatedList(
 				rows = [EncryptedContact._deserialize(item) for item in return_value.rows],
 				next_key_pair = return_value.next_key_pair,
@@ -485,7 +485,7 @@ class ContactBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.listContactByHCPartyServiceIdAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavouredApi.listContactByHCPartyServiceIdAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -497,16 +497,16 @@ class ContactBasicApi:
 			"hc_party_id": hc_party_id,
 			"service_id": service_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.listContactByHCPartyServiceIdBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavouredApi.listContactByHCPartyServiceIdBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedContact._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedContact._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def list_contacts_by_external_id_async(self, external_id: str) -> List[EncryptedContact]:
@@ -526,7 +526,7 @@ class ContactBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.listContactsByExternalIdAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavouredApi.listContactsByExternalIdAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -537,16 +537,16 @@ class ContactBasicApi:
 		payload = {
 			"external_id": external_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.listContactsByExternalIdBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavouredApi.listContactsByExternalIdBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedContact._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedContact._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def list_contacts_by_hcparty_and_form_id_async(self, hc_party_id: str, form_id: str) -> List[EncryptedContact]:
@@ -567,7 +567,7 @@ class ContactBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.listContactsByHCPartyAndFormIdAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavouredApi.listContactsByHCPartyAndFormIdAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -579,16 +579,16 @@ class ContactBasicApi:
 			"hc_party_id": hc_party_id,
 			"form_id": form_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.listContactsByHCPartyAndFormIdBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavouredApi.listContactsByHCPartyAndFormIdBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedContact._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedContact._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def list_contacts_by_hcparty_and_form_ids_async(self, hc_party_id: str, form_ids: List[str]) -> List[EncryptedContact]:
@@ -609,7 +609,7 @@ class ContactBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.listContactsByHCPartyAndFormIdsAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavouredApi.listContactsByHCPartyAndFormIdsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -621,16 +621,16 @@ class ContactBasicApi:
 			"hc_party_id": hc_party_id,
 			"form_ids": [x0 for x0 in form_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.listContactsByHCPartyAndFormIdsBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavouredApi.listContactsByHCPartyAndFormIdsBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedContact._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedContact._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def list_contacts_by_hcparty_and_patient_secret_fkeys_async(self, hc_party_id: str, secret_patient_keys: List[str], plan_of_actions_ids: Optional[str] = None, skip_closed_contacts: Optional[bool] = None) -> List[EncryptedContact]:
@@ -653,7 +653,7 @@ class ContactBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.listContactsByHCPartyAndPatientSecretFKeysAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavouredApi.listContactsByHCPartyAndPatientSecretFKeysAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -667,16 +667,16 @@ class ContactBasicApi:
 			"plan_of_actions_ids": plan_of_actions_ids,
 			"skip_closed_contacts": skip_closed_contacts,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.listContactsByHCPartyAndPatientSecretFKeysBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavouredApi.listContactsByHCPartyAndPatientSecretFKeysBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedContact._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedContact._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def close_for_hcparty_patient_foreign_keys_async(self, hc_party_id: str, secret_patient_keys: List[str]) -> List[EncryptedContact]:
@@ -697,7 +697,7 @@ class ContactBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.closeForHCPartyPatientForeignKeysAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavouredApi.closeForHCPartyPatientForeignKeysAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -709,16 +709,16 @@ class ContactBasicApi:
 			"hc_party_id": hc_party_id,
 			"secret_patient_keys": [x0 for x0 in secret_patient_keys],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.closeForHCPartyPatientForeignKeysBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavouredApi.closeForHCPartyPatientForeignKeysBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedContact._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedContact._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def get_service_async(self, service_id: str) -> EncryptedService:
@@ -738,7 +738,7 @@ class ContactBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.getServiceAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavouredApi.getServiceAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -749,16 +749,16 @@ class ContactBasicApi:
 		payload = {
 			"service_id": service_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.getServiceBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavouredApi.getServiceBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = EncryptedService._deserialize(result_info["success"])
+			return_value = EncryptedService._deserialize(result_info.success)
 			return return_value
 
 	async def get_services_async(self, entity_ids: List[str]) -> List[EncryptedService]:
@@ -778,7 +778,7 @@ class ContactBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.getServicesAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavouredApi.getServicesAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -789,16 +789,16 @@ class ContactBasicApi:
 		payload = {
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.getServicesBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavouredApi.getServicesBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedService._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedService._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def get_services_linked_to_async(self, link_type: str, ids: List[str]) -> List[EncryptedService]:
@@ -819,7 +819,7 @@ class ContactBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.getServicesLinkedToAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavouredApi.getServicesLinkedToAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -831,16 +831,16 @@ class ContactBasicApi:
 			"link_type": link_type,
 			"ids": [x0 for x0 in ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.getServicesLinkedToBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavouredApi.getServicesLinkedToBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedService._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedService._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def list_services_by_association_id_async(self, association_id: str) -> List[EncryptedService]:
@@ -860,7 +860,7 @@ class ContactBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.listServicesByAssociationIdAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavouredApi.listServicesByAssociationIdAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -871,16 +871,16 @@ class ContactBasicApi:
 		payload = {
 			"association_id": association_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.listServicesByAssociationIdBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavouredApi.listServicesByAssociationIdBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedService._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedService._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def list_services_by_health_element_id_async(self, hc_party_id: str, health_element_id: str) -> List[EncryptedService]:
@@ -901,7 +901,7 @@ class ContactBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.listServicesByHealthElementIdAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavouredApi.listServicesByHealthElementIdAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -913,16 +913,16 @@ class ContactBasicApi:
 			"hc_party_id": hc_party_id,
 			"health_element_id": health_element_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.listServicesByHealthElementIdBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavouredApi.listServicesByHealthElementIdBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedService._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedService._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def find_contacts_by_opening_date_async(self, start_date: int, end_date: int, hc_party_id: str, start_key: Optional[Dict[str, object]] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
@@ -951,7 +951,7 @@ class ContactBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.findContactsByOpeningDateAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavouredApi.findContactsByOpeningDateAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -967,16 +967,16 @@ class ContactBasicApi:
 			"start_document_id": start_document_id,
 			"limit": limit,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.findContactsByOpeningDateBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavouredApi.findContactsByOpeningDateBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = PaginatedList._deserialize(result_info["success"])
+			return_value = PaginatedList._deserialize(result_info.success)
 			return_value = PaginatedList(
 				rows = [EncryptedContact._deserialize(item) for item in return_value.rows],
 				next_key_pair = return_value.next_key_pair,
@@ -1006,7 +1006,7 @@ class ContactBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.filterServicesByAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavouredApi.filterServicesByAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -1019,16 +1019,16 @@ class ContactBasicApi:
 			"start_document_id": start_document_id,
 			"limit": limit,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicFlavouredApi.filterServicesByBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicFlavouredApi.filterServicesByBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = PaginatedList._deserialize(result_info["success"])
+			return_value = PaginatedList._deserialize(result_info.success)
 			return_value = PaginatedList(
 				rows = [EncryptedService._deserialize(item) for item in return_value.rows],
 				next_key_pair = return_value.next_key_pair,

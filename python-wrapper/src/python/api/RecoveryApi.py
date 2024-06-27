@@ -43,14 +43,14 @@ class RecoveryApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.createRecoveryInfoForAvailableKeyPairsBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = RecoveryDataKey._deserialize(result_info["success"])
+			return_value = RecoveryDataKey._deserialize(result_info.success)
 			return return_value
 
 	async def recover_key_pairs_async(self, recovery_key: RecoveryDataKey, auto_delete: bool) -> RecoveryResult:
@@ -85,14 +85,14 @@ class RecoveryApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.recoverKeyPairsBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = deserialize_recovery_result(result_info["success"])
+			return_value = deserialize_recovery_result(result_info.success)
 			return return_value
 
 	async def create_exchange_data_recovery_info_async(self, delegate_id: str, lifetime_seconds: Optional[int] = None) -> RecoveryDataKey:
@@ -127,14 +127,14 @@ class RecoveryApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.createExchangeDataRecoveryInfoBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = RecoveryDataKey._deserialize(result_info["success"])
+			return_value = RecoveryDataKey._deserialize(result_info.success)
 			return return_value
 
 	async def recover_exchange_data_async(self, recovery_key: RecoveryDataKey) -> Optional[RecoveryDataUseFailureReason]:
@@ -167,14 +167,14 @@ class RecoveryApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.recoverExchangeDataBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = RecoveryDataUseFailureReason._deserialize(result_info["success"]) if result_info["success"] is not None else None
+			return_value = RecoveryDataUseFailureReason._deserialize(result_info.success) if result_info.success is not None else None
 			return return_value
 
 	async def delete_recovery_info_async(self, recovery_key: RecoveryDataKey) -> None:
@@ -207,12 +207,12 @@ class RecoveryApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.deleteRecoveryInfoBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 
 	async def delete_all_recovery_info_for_async(self, data_owner_id: str) -> int:
 		loop = asyncio.get_running_loop()
@@ -244,14 +244,14 @@ class RecoveryApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.deleteAllRecoveryInfoForBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = result_info["success"]
+			return_value = result_info.success
 			return return_value
 
 	async def delete_all_key_pair_recovery_info_for_async(self, data_owner_id: str) -> int:
@@ -284,14 +284,14 @@ class RecoveryApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.deleteAllKeyPairRecoveryInfoForBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = result_info["success"]
+			return_value = result_info.success
 			return return_value
 
 	async def delete_all_exchange_data_recovery_info_for_async(self, data_owner_id: str) -> int:
@@ -324,12 +324,12 @@ class RecoveryApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.deleteAllExchangeDataRecoveryInfoForBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = result_info["success"]
+			return_value = result_info.success
 			return return_value

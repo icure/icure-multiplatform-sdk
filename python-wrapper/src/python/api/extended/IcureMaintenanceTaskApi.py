@@ -29,7 +29,7 @@ class IcureMaintenanceTaskApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.IcureMaintenanceTaskApi.applyKeyPairUpdateAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.extended.IcureMaintenanceTaskApi.applyKeyPairUpdateAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -40,14 +40,14 @@ class IcureMaintenanceTaskApi:
 		payload = {
 			"update_request": update_request.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.IcureMaintenanceTaskApi.applyKeyPairUpdateBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.extended.IcureMaintenanceTaskApi.applyKeyPairUpdateBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 
 	async def create_key_pair_update_notifications_to_all_delegation_counterparts_async(self, key: SpkiHexString, request_to_owner_types: Optional[List[DataOwnerType]] = None) -> None:
 		loop = asyncio.get_running_loop()
@@ -61,13 +61,13 @@ class IcureMaintenanceTaskApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"key": key.__serialize__(),
+			"key": key,
 			"request_to_owner_types": [x0.__serialize__() for x0 in request_to_owner_types] if request_to_owner_types is not None else None,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.IcureMaintenanceTaskApi.createKeyPairUpdateNotificationsToAllDelegationCounterpartsAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.extended.IcureMaintenanceTaskApi.createKeyPairUpdateNotificationsToAllDelegationCounterpartsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -76,17 +76,17 @@ class IcureMaintenanceTaskApi:
 
 	def create_key_pair_update_notifications_to_all_delegation_counterparts_blocking(self, key: SpkiHexString, request_to_owner_types: Optional[List[DataOwnerType]] = None) -> None:
 		payload = {
-			"key": key.__serialize__(),
+			"key": key,
 			"request_to_owner_types": [x0.__serialize__() for x0 in request_to_owner_types] if request_to_owner_types is not None else None,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.IcureMaintenanceTaskApi.createKeyPairUpdateNotificationsToAllDelegationCounterpartsBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.extended.IcureMaintenanceTaskApi.createKeyPairUpdateNotificationsToAllDelegationCounterpartsBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 
 	async def create_key_pair_update_notification_to_async(self, data_owner_id: str, key: SpkiHexString) -> None:
 		loop = asyncio.get_running_loop()
@@ -101,12 +101,12 @@ class IcureMaintenanceTaskApi:
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"data_owner_id": data_owner_id,
-			"key": key.__serialize__(),
+			"key": key,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.IcureMaintenanceTaskApi.createKeyPairUpdateNotificationToAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.extended.IcureMaintenanceTaskApi.createKeyPairUpdateNotificationToAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -116,13 +116,13 @@ class IcureMaintenanceTaskApi:
 	def create_key_pair_update_notification_to_blocking(self, data_owner_id: str, key: SpkiHexString) -> None:
 		payload = {
 			"data_owner_id": data_owner_id,
-			"key": key.__serialize__(),
+			"key": key,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.IcureMaintenanceTaskApi.createKeyPairUpdateNotificationToBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.extended.IcureMaintenanceTaskApi.createKeyPairUpdateNotificationToBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)

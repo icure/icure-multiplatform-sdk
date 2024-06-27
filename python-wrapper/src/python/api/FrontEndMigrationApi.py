@@ -41,14 +41,14 @@ class FrontEndMigrationApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FrontEndMigrationApi.getFrontEndMigrationBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = FrontEndMigration._deserialize(result_info["success"])
+			return_value = FrontEndMigration._deserialize(result_info.success)
 			return return_value
 
 	async def create_front_end_migration_async(self, front_end_migration: FrontEndMigration) -> FrontEndMigration:
@@ -81,14 +81,14 @@ class FrontEndMigrationApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FrontEndMigrationApi.createFrontEndMigrationBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = FrontEndMigration._deserialize(result_info["success"])
+			return_value = FrontEndMigration._deserialize(result_info.success)
 			return return_value
 
 	async def get_front_end_migrations_async(self) -> List[FrontEndMigration]:
@@ -119,14 +119,14 @@ class FrontEndMigrationApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FrontEndMigrationApi.getFrontEndMigrationsBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [FrontEndMigration._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [FrontEndMigration._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def delete_front_end_migration_async(self, front_end_migration_id: str) -> DocIdentifier:
@@ -159,14 +159,14 @@ class FrontEndMigrationApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FrontEndMigrationApi.deleteFrontEndMigrationBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = DocIdentifier._deserialize(result_info["success"])
+			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
 	async def get_front_end_migration_by_name_async(self, front_end_migration_name: str) -> List[FrontEndMigration]:
@@ -199,14 +199,14 @@ class FrontEndMigrationApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FrontEndMigrationApi.getFrontEndMigrationByNameBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [FrontEndMigration._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [FrontEndMigration._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def modify_front_end_migration_async(self, front_end_migration: FrontEndMigration) -> FrontEndMigration:
@@ -239,12 +239,12 @@ class FrontEndMigrationApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FrontEndMigrationApi.modifyFrontEndMigrationBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = FrontEndMigration._deserialize(result_info["success"])
+			return_value = FrontEndMigration._deserialize(result_info.success)
 			return return_value

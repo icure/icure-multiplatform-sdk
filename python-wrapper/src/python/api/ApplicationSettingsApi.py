@@ -39,14 +39,14 @@ class ApplicationSettingsApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ApplicationSettingsApi.getApplicationSettingsBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [ApplicationSettings._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [ApplicationSettings._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def create_application_settings_async(self, application_settings: ApplicationSettings) -> ApplicationSettings:
@@ -79,14 +79,14 @@ class ApplicationSettingsApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ApplicationSettingsApi.createApplicationSettingsBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = ApplicationSettings._deserialize(result_info["success"])
+			return_value = ApplicationSettings._deserialize(result_info.success)
 			return return_value
 
 	async def update_application_settings_async(self, application_settings: ApplicationSettings) -> ApplicationSettings:
@@ -119,12 +119,12 @@ class ApplicationSettingsApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ApplicationSettingsApi.updateApplicationSettingsBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = ApplicationSettings._deserialize(result_info["success"])
+			return_value = ApplicationSettings._deserialize(result_info.success)
 			return return_value

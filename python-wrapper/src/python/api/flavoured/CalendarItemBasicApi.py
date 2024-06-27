@@ -28,7 +28,7 @@ class CalendarItemBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavourlessApi.deleteCalendarItemAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemBasicFlavourlessApi.deleteCalendarItemAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -39,16 +39,16 @@ class CalendarItemBasicApi:
 		payload = {
 			"entity_id": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavourlessApi.deleteCalendarItemBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemBasicFlavourlessApi.deleteCalendarItemBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = DocIdentifier._deserialize(result_info["success"])
+			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
 	async def delete_calendar_items_async(self, entity_ids: List[str]) -> List[DocIdentifier]:
@@ -68,7 +68,7 @@ class CalendarItemBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavourlessApi.deleteCalendarItemsAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemBasicFlavourlessApi.deleteCalendarItemsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -79,16 +79,16 @@ class CalendarItemBasicApi:
 		payload = {
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavourlessApi.deleteCalendarItemsBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemBasicFlavourlessApi.deleteCalendarItemsBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def modify_calendar_item_async(self, entity: EncryptedCalendarItem) -> EncryptedCalendarItem:
@@ -108,7 +108,7 @@ class CalendarItemBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavouredApi.modifyCalendarItemAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemBasicFlavouredApi.modifyCalendarItemAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -119,16 +119,16 @@ class CalendarItemBasicApi:
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavouredApi.modifyCalendarItemBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemBasicFlavouredApi.modifyCalendarItemBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = EncryptedCalendarItem._deserialize(result_info["success"])
+			return_value = EncryptedCalendarItem._deserialize(result_info.success)
 			return return_value
 
 	async def get_calendar_item_async(self, entity_id: str) -> EncryptedCalendarItem:
@@ -148,7 +148,7 @@ class CalendarItemBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavouredApi.getCalendarItemAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemBasicFlavouredApi.getCalendarItemAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -159,16 +159,16 @@ class CalendarItemBasicApi:
 		payload = {
 			"entity_id": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavouredApi.getCalendarItemBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemBasicFlavouredApi.getCalendarItemBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = EncryptedCalendarItem._deserialize(result_info["success"])
+			return_value = EncryptedCalendarItem._deserialize(result_info.success)
 			return return_value
 
 	async def get_calendar_items_async(self, entity_ids: List[str]) -> List[EncryptedCalendarItem]:
@@ -188,7 +188,7 @@ class CalendarItemBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavouredApi.getCalendarItemsAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemBasicFlavouredApi.getCalendarItemsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -199,16 +199,16 @@ class CalendarItemBasicApi:
 		payload = {
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavouredApi.getCalendarItemsBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemBasicFlavouredApi.getCalendarItemsBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedCalendarItem._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedCalendarItem._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def get_calendar_items_by_period_and_hc_party_id_async(self, start_date: int, end_date: int, hc_party_id: str) -> List[EncryptedCalendarItem]:
@@ -230,7 +230,7 @@ class CalendarItemBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavouredApi.getCalendarItemsByPeriodAndHcPartyIdAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemBasicFlavouredApi.getCalendarItemsByPeriodAndHcPartyIdAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -243,16 +243,16 @@ class CalendarItemBasicApi:
 			"end_date": end_date,
 			"hc_party_id": hc_party_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavouredApi.getCalendarItemsByPeriodAndHcPartyIdBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemBasicFlavouredApi.getCalendarItemsByPeriodAndHcPartyIdBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedCalendarItem._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedCalendarItem._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def get_calendars_by_period_and_agenda_id_async(self, start_date: int, end_date: int, agenda_id: str) -> List[EncryptedCalendarItem]:
@@ -274,7 +274,7 @@ class CalendarItemBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavouredApi.getCalendarsByPeriodAndAgendaIdAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemBasicFlavouredApi.getCalendarsByPeriodAndAgendaIdAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -287,16 +287,16 @@ class CalendarItemBasicApi:
 			"end_date": end_date,
 			"agenda_id": agenda_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavouredApi.getCalendarsByPeriodAndAgendaIdBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemBasicFlavouredApi.getCalendarsByPeriodAndAgendaIdBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedCalendarItem._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedCalendarItem._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def get_calendar_items_with_ids_async(self, entity_ids: List[str]) -> List[EncryptedCalendarItem]:
@@ -316,7 +316,7 @@ class CalendarItemBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavouredApi.getCalendarItemsWithIdsAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemBasicFlavouredApi.getCalendarItemsWithIdsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -327,16 +327,16 @@ class CalendarItemBasicApi:
 		payload = {
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavouredApi.getCalendarItemsWithIdsBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemBasicFlavouredApi.getCalendarItemsWithIdsBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedCalendarItem._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedCalendarItem._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def find_calendar_items_by_recurrence_id_async(self, recurrence_id: str, start_key: Optional[str], start_document_id: Optional[str], limit: int) -> PaginatedList:
@@ -363,7 +363,7 @@ class CalendarItemBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavouredApi.findCalendarItemsByRecurrenceIdAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemBasicFlavouredApi.findCalendarItemsByRecurrenceIdAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -377,16 +377,16 @@ class CalendarItemBasicApi:
 			"start_document_id": start_document_id,
 			"limit": limit,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemBasicFlavouredApi.findCalendarItemsByRecurrenceIdBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemBasicFlavouredApi.findCalendarItemsByRecurrenceIdBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = PaginatedList._deserialize(result_info["success"])
+			return_value = PaginatedList._deserialize(result_info.success)
 			return_value = PaginatedList(
 				rows = [EncryptedCalendarItem._deserialize(item) for item in return_value.rows],
 				next_key_pair = return_value.next_key_pair,

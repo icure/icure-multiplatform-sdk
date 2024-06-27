@@ -41,14 +41,14 @@ class InsuranceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InsuranceApi.getInsuranceBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = Insurance._deserialize(result_info["success"])
+			return_value = Insurance._deserialize(result_info.success)
 			return return_value
 
 	async def get_insurances_async(self, insurance_ids: List[str]) -> List[Insurance]:
@@ -81,14 +81,14 @@ class InsuranceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InsuranceApi.getInsurancesBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [Insurance._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [Insurance._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def create_insurance_async(self, insurance: Insurance) -> Insurance:
@@ -121,14 +121,14 @@ class InsuranceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InsuranceApi.createInsuranceBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = Insurance._deserialize(result_info["success"])
+			return_value = Insurance._deserialize(result_info.success)
 			return return_value
 
 	async def delete_insurance_async(self, insurance_id: str) -> DocIdentifier:
@@ -161,14 +161,14 @@ class InsuranceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InsuranceApi.deleteInsuranceBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = DocIdentifier._deserialize(result_info["success"])
+			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
 	async def get_all_insurances_async(self, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
@@ -207,14 +207,14 @@ class InsuranceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InsuranceApi.getAllInsurancesBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = PaginatedList._deserialize(result_info["success"])
+			return_value = PaginatedList._deserialize(result_info.success)
 			return_value = PaginatedList(
 				rows = [Insurance._deserialize(item) for item in return_value.rows],
 				next_key_pair = return_value.next_key_pair,
@@ -251,14 +251,14 @@ class InsuranceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InsuranceApi.listInsurancesByCodeBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [Insurance._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [Insurance._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def list_insurances_by_name_async(self, insurance_name: str) -> List[Insurance]:
@@ -291,14 +291,14 @@ class InsuranceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InsuranceApi.listInsurancesByNameBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [Insurance._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [Insurance._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def modify_insurance_async(self, insurance: Insurance) -> Insurance:
@@ -331,12 +331,12 @@ class InsuranceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InsuranceApi.modifyInsuranceBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = Insurance._deserialize(result_info["success"])
+			return_value = Insurance._deserialize(result_info.success)
 			return return_value

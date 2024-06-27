@@ -29,7 +29,7 @@ class ReceiptBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ReceiptBasicFlavourlessApi.deleteReceiptAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptBasicFlavourlessApi.deleteReceiptAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -40,16 +40,16 @@ class ReceiptBasicApi:
 		payload = {
 			"entity_id": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ReceiptBasicFlavourlessApi.deleteReceiptBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptBasicFlavourlessApi.deleteReceiptBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = DocIdentifier._deserialize(result_info["success"])
+			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
 	async def delete_receipts_async(self, entity_ids: List[str]) -> List[DocIdentifier]:
@@ -69,7 +69,7 @@ class ReceiptBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ReceiptBasicFlavourlessApi.deleteReceiptsAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptBasicFlavourlessApi.deleteReceiptsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -80,16 +80,16 @@ class ReceiptBasicApi:
 		payload = {
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ReceiptBasicFlavourlessApi.deleteReceiptsBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptBasicFlavourlessApi.deleteReceiptsBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def get_raw_receipt_attachment_async(self, receipt_id: str, attachment_id: str) -> bytearray:
@@ -110,7 +110,7 @@ class ReceiptBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ReceiptBasicFlavourlessApi.getRawReceiptAttachmentAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptBasicFlavourlessApi.getRawReceiptAttachmentAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -122,16 +122,16 @@ class ReceiptBasicApi:
 			"receipt_id": receipt_id,
 			"attachment_id": attachment_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ReceiptBasicFlavourlessApi.getRawReceiptAttachmentBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptBasicFlavourlessApi.getRawReceiptAttachmentBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = bytearray(base64.b64decode(result_info["success"]))
+			return_value = bytearray(base64.b64decode(result_info.success))
 			return return_value
 
 	async def set_raw_receipt_attachment_async(self, receipt_id: str, rev: str, blob_type: str, attachment: bytearray) -> EncryptedReceipt:
@@ -154,7 +154,7 @@ class ReceiptBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ReceiptBasicFlavourlessApi.setRawReceiptAttachmentAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptBasicFlavourlessApi.setRawReceiptAttachmentAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -168,16 +168,16 @@ class ReceiptBasicApi:
 			"blob_type": blob_type,
 			"attachment": base64.b64encode(attachment).decode('utf-8'),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ReceiptBasicFlavourlessApi.setRawReceiptAttachmentBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptBasicFlavourlessApi.setRawReceiptAttachmentBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = EncryptedReceipt._deserialize(result_info["success"])
+			return_value = EncryptedReceipt._deserialize(result_info.success)
 			return return_value
 
 	async def modify_receipt_async(self, entity: EncryptedReceipt) -> EncryptedReceipt:
@@ -197,7 +197,7 @@ class ReceiptBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ReceiptBasicFlavouredApi.modifyReceiptAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptBasicFlavouredApi.modifyReceiptAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -208,16 +208,16 @@ class ReceiptBasicApi:
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ReceiptBasicFlavouredApi.modifyReceiptBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptBasicFlavouredApi.modifyReceiptBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = EncryptedReceipt._deserialize(result_info["success"])
+			return_value = EncryptedReceipt._deserialize(result_info.success)
 			return return_value
 
 	async def get_receipt_async(self, entity_id: str) -> EncryptedReceipt:
@@ -237,7 +237,7 @@ class ReceiptBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ReceiptBasicFlavouredApi.getReceiptAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptBasicFlavouredApi.getReceiptAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -248,16 +248,16 @@ class ReceiptBasicApi:
 		payload = {
 			"entity_id": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ReceiptBasicFlavouredApi.getReceiptBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptBasicFlavouredApi.getReceiptBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = EncryptedReceipt._deserialize(result_info["success"])
+			return_value = EncryptedReceipt._deserialize(result_info.success)
 			return return_value
 
 	async def list_by_reference_async(self, reference: str) -> List[EncryptedReceipt]:
@@ -277,7 +277,7 @@ class ReceiptBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ReceiptBasicFlavouredApi.listByReferenceAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptBasicFlavouredApi.listByReferenceAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -288,14 +288,14 @@ class ReceiptBasicApi:
 		payload = {
 			"reference": reference,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ReceiptBasicFlavouredApi.listByReferenceBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptBasicFlavouredApi.listByReferenceBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedReceipt._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedReceipt._deserialize(x1) for x1 in result_info.success]
 			return return_value

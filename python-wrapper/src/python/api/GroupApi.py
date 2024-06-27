@@ -39,14 +39,14 @@ class GroupApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.listGroupsBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [Group._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [Group._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def get_group_async(self, id: str) -> Group:
@@ -79,14 +79,14 @@ class GroupApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.getGroupBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = Group._deserialize(result_info["success"])
+			return_value = Group._deserialize(result_info.success)
 			return return_value
 
 	async def create_group_async(self, id: str, name: str, password: str, initialisation_data: DatabaseInitialisation, type: Optional[GroupType] = None, server: Optional[str] = None, q: Optional[int] = None, n: Optional[int] = None, super_group: Optional[str] = None) -> Group:
@@ -135,14 +135,14 @@ class GroupApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.createGroupBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = Group._deserialize(result_info["success"])
+			return_value = Group._deserialize(result_info.success)
 			return return_value
 
 	async def register_new_group_administrator_async(self, registration_information: RegistrationInformation, type: Optional[GroupType] = None, role: Optional[PermissionType] = None) -> RegistrationSuccess:
@@ -179,14 +179,14 @@ class GroupApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.registerNewGroupAdministratorBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = RegistrationSuccess._deserialize(result_info["success"])
+			return_value = RegistrationSuccess._deserialize(result_info.success)
 			return return_value
 
 	async def list_apps_async(self) -> List[Group]:
@@ -217,14 +217,14 @@ class GroupApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.listAppsBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [Group._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [Group._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def find_groups_async(self, id: str, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
@@ -265,14 +265,14 @@ class GroupApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.findGroupsBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = PaginatedList._deserialize(result_info["success"])
+			return_value = PaginatedList._deserialize(result_info.success)
 			return_value = PaginatedList(
 				rows = [Group._deserialize(item) for item in return_value.rows],
 				next_key_pair = return_value.next_key_pair,
@@ -321,14 +321,14 @@ class GroupApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.findGroupsWithContentBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = PaginatedList._deserialize(result_info["success"])
+			return_value = PaginatedList._deserialize(result_info.success)
 			return_value = PaginatedList(
 				rows = [Group._deserialize(item) for item in return_value.rows],
 				next_key_pair = return_value.next_key_pair,
@@ -365,14 +365,14 @@ class GroupApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.getNameOfGroupParentBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = result_info["success"]
+			return_value = result_info.success
 			return return_value
 
 	async def modify_group_name_async(self, id: str, name: str) -> Group:
@@ -407,14 +407,14 @@ class GroupApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.modifyGroupNameBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = Group._deserialize(result_info["success"])
+			return_value = Group._deserialize(result_info.success)
 			return return_value
 
 	async def get_operation_token_async(self, operation: Operation, duration: Optional[int], description: Optional[str] = None) -> str:
@@ -451,14 +451,14 @@ class GroupApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.getOperationTokenBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = result_info["success"]
+			return_value = result_info.success
 			return return_value
 
 	async def delete_operation_token_async(self, token_id: str) -> None:
@@ -491,12 +491,12 @@ class GroupApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.deleteOperationTokenBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 
 	async def set_default_roles_async(self, group_id: str, user_type: str, role_ids: List[str]) -> Group:
 		loop = asyncio.get_running_loop()
@@ -532,14 +532,14 @@ class GroupApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.setDefaultRolesBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = Group._deserialize(result_info["success"])
+			return_value = Group._deserialize(result_info.success)
 			return return_value
 
 	async def get_default_roles_async(self, group_id: str) -> Dict[UserType, List[RoleConfiguration]]:
@@ -572,14 +572,14 @@ class GroupApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.getDefaultRolesBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = dict(map(lambda kv1: (UserType._deserialize(kv1[0]), [RoleConfiguration._deserialize(x2) for x2 in kv1[1]]), result_info["success"].items()))
+			return_value = dict(map(lambda kv1: (UserType._deserialize(kv1[0]), [RoleConfiguration._deserialize(x2) for x2 in kv1[1]]), result_info.success.items()))
 			return return_value
 
 	async def delete_group_async(self, id: str) -> Group:
@@ -612,14 +612,14 @@ class GroupApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.deleteGroupBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = Group._deserialize(result_info["success"])
+			return_value = Group._deserialize(result_info.success)
 			return return_value
 
 	async def change_super_group_async(self, child_group_id: str, operation_token: str) -> Group:
@@ -654,14 +654,14 @@ class GroupApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.changeSuperGroupBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = Group._deserialize(result_info["success"])
+			return_value = Group._deserialize(result_info.success)
 			return return_value
 
 	async def hard_delete_group_async(self, id: str) -> List[GroupDeletionReport]:
@@ -694,14 +694,14 @@ class GroupApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.hardDeleteGroupBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [GroupDeletionReport._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [GroupDeletionReport._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def modify_group_properties_async(self, id: str, properties: ListOfProperties) -> Group:
@@ -736,14 +736,14 @@ class GroupApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.modifyGroupPropertiesBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = Group._deserialize(result_info["success"])
+			return_value = Group._deserialize(result_info.success)
 			return return_value
 
 	async def set_group_password_async(self, id: str, password: str) -> Group:
@@ -778,14 +778,14 @@ class GroupApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.setGroupPasswordBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = Group._deserialize(result_info["success"])
+			return_value = Group._deserialize(result_info.success)
 			return return_value
 
 	async def init_design_docs_async(self, id: str, warmup: Optional[bool], dry_run: Optional[bool], clazz: Optional[str] = None) -> List[DesignDocument]:
@@ -824,14 +824,14 @@ class GroupApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.initDesignDocsBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [DesignDocument._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [DesignDocument._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def solve_conflicts_async(self, id: str, limit: Optional[int], warmup: Optional[bool]) -> List[IdWithRev]:
@@ -868,14 +868,14 @@ class GroupApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.solveConflictsBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [IdWithRev._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [IdWithRev._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def reset_storage_async(self, id: str, databases: List[str], q: Optional[int] = None, n: Optional[int] = None) -> None:
@@ -914,12 +914,12 @@ class GroupApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.resetStorageBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 
 	async def get_groups_storage_infos_async(self, groups: List[str]) -> List[GroupDatabasesInfo]:
 		loop = asyncio.get_running_loop()
@@ -951,14 +951,14 @@ class GroupApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.getGroupsStorageInfosBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [GroupDatabasesInfo._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [GroupDatabasesInfo._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def get_replication_info_async(self, id: str) -> ReplicationInfo:
@@ -991,14 +991,14 @@ class GroupApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.getReplicationInfoBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = ReplicationInfo._deserialize(result_info["success"])
+			return_value = ReplicationInfo._deserialize(result_info.success)
 			return return_value
 
 	async def get_hierarchy_async(self, id: str) -> List[str]:
@@ -1031,14 +1031,14 @@ class GroupApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.getHierarchyBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [x1 for x1 in result_info["success"]]
+			return_value = [x1 for x1 in result_info.success]
 			return return_value
 
 	async def list_all_groups_ids_async(self) -> List[DocIdentifier]:
@@ -1069,12 +1069,12 @@ class GroupApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.listAllGroupsIdsBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value

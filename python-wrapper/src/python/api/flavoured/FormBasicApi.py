@@ -29,7 +29,7 @@ class FormBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavourlessApi.deleteFormAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavourlessApi.deleteFormAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -40,16 +40,16 @@ class FormBasicApi:
 		payload = {
 			"entity_id": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavourlessApi.deleteFormBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavourlessApi.deleteFormBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = DocIdentifier._deserialize(result_info["success"])
+			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
 	async def delete_forms_async(self, entity_ids: List[str]) -> List[DocIdentifier]:
@@ -69,7 +69,7 @@ class FormBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavourlessApi.deleteFormsAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavourlessApi.deleteFormsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -80,16 +80,16 @@ class FormBasicApi:
 		payload = {
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavourlessApi.deleteFormsBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavourlessApi.deleteFormsBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def get_form_template_async(self, form_template_id: str, raw: Optional[bool] = None) -> FormTemplate:
@@ -110,7 +110,7 @@ class FormBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavourlessApi.getFormTemplateAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavourlessApi.getFormTemplateAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -122,16 +122,16 @@ class FormBasicApi:
 			"form_template_id": form_template_id,
 			"raw": raw,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavourlessApi.getFormTemplateBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavourlessApi.getFormTemplateBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = FormTemplate._deserialize(result_info["success"])
+			return_value = FormTemplate._deserialize(result_info.success)
 			return return_value
 
 	async def get_form_templates_by_guid_async(self, form_template_guid: str, speciality_code: str, raw: Optional[bool]) -> List[FormTemplate]:
@@ -153,7 +153,7 @@ class FormBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavourlessApi.getFormTemplatesByGuidAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavourlessApi.getFormTemplatesByGuidAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -166,16 +166,16 @@ class FormBasicApi:
 			"speciality_code": speciality_code,
 			"raw": raw,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavourlessApi.getFormTemplatesByGuidBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavourlessApi.getFormTemplatesByGuidBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [FormTemplate._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [FormTemplate._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def list_form_templates_by_speciality_async(self, speciality_code: str, raw: Optional[bool] = None) -> List[FormTemplate]:
@@ -196,7 +196,7 @@ class FormBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavourlessApi.listFormTemplatesBySpecialityAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavourlessApi.listFormTemplatesBySpecialityAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -208,16 +208,16 @@ class FormBasicApi:
 			"speciality_code": speciality_code,
 			"raw": raw,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavourlessApi.listFormTemplatesBySpecialityBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavourlessApi.listFormTemplatesBySpecialityBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [FormTemplate._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [FormTemplate._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def get_form_templates_async(self, load_layout: Optional[bool] = None, raw: Optional[bool] = None) -> List[FormTemplate]:
@@ -238,7 +238,7 @@ class FormBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavourlessApi.getFormTemplatesAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavourlessApi.getFormTemplatesAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -250,16 +250,16 @@ class FormBasicApi:
 			"load_layout": load_layout,
 			"raw": raw,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavourlessApi.getFormTemplatesBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavourlessApi.getFormTemplatesBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [FormTemplate._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [FormTemplate._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def create_form_template_async(self, form_template: FormTemplate) -> FormTemplate:
@@ -279,7 +279,7 @@ class FormBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavourlessApi.createFormTemplateAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavourlessApi.createFormTemplateAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -290,16 +290,16 @@ class FormBasicApi:
 		payload = {
 			"form_template": form_template.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavourlessApi.createFormTemplateBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavourlessApi.createFormTemplateBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = FormTemplate._deserialize(result_info["success"])
+			return_value = FormTemplate._deserialize(result_info.success)
 			return return_value
 
 	async def delete_form_template_async(self, form_template_id: str) -> DocIdentifier:
@@ -319,7 +319,7 @@ class FormBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavourlessApi.deleteFormTemplateAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavourlessApi.deleteFormTemplateAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -330,16 +330,16 @@ class FormBasicApi:
 		payload = {
 			"form_template_id": form_template_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavourlessApi.deleteFormTemplateBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavourlessApi.deleteFormTemplateBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = DocIdentifier._deserialize(result_info["success"])
+			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
 	async def update_form_template_async(self, form_template: FormTemplate) -> FormTemplate:
@@ -359,7 +359,7 @@ class FormBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavourlessApi.updateFormTemplateAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavourlessApi.updateFormTemplateAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -370,16 +370,16 @@ class FormBasicApi:
 		payload = {
 			"form_template": form_template.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavourlessApi.updateFormTemplateBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavourlessApi.updateFormTemplateBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = FormTemplate._deserialize(result_info["success"])
+			return_value = FormTemplate._deserialize(result_info.success)
 			return return_value
 
 	async def set_template_attachment_async(self, form_template_id: str, payload: bytearray) -> str:
@@ -400,7 +400,7 @@ class FormBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavourlessApi.setTemplateAttachmentAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavourlessApi.setTemplateAttachmentAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -412,16 +412,16 @@ class FormBasicApi:
 			"form_template_id": form_template_id,
 			"payload": base64.b64encode(payload).decode('utf-8'),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavourlessApi.setTemplateAttachmentBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavourlessApi.setTemplateAttachmentBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = result_info["success"]
+			return_value = result_info.success
 			return return_value
 
 	async def modify_form_async(self, entity: EncryptedForm) -> EncryptedForm:
@@ -441,7 +441,7 @@ class FormBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavouredApi.modifyFormAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavouredApi.modifyFormAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -452,16 +452,16 @@ class FormBasicApi:
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavouredApi.modifyFormBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavouredApi.modifyFormBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = EncryptedForm._deserialize(result_info["success"])
+			return_value = EncryptedForm._deserialize(result_info.success)
 			return return_value
 
 	async def modify_forms_async(self, entities: List[EncryptedForm]) -> List[EncryptedForm]:
@@ -481,7 +481,7 @@ class FormBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavouredApi.modifyFormsAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavouredApi.modifyFormsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -492,16 +492,16 @@ class FormBasicApi:
 		payload = {
 			"entities": [x0.__serialize__() for x0 in entities],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavouredApi.modifyFormsBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavouredApi.modifyFormsBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedForm._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedForm._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def get_form_async(self, entity_id: str) -> EncryptedForm:
@@ -521,7 +521,7 @@ class FormBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavouredApi.getFormAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavouredApi.getFormAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -532,16 +532,16 @@ class FormBasicApi:
 		payload = {
 			"entity_id": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavouredApi.getFormBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavouredApi.getFormBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = EncryptedForm._deserialize(result_info["success"])
+			return_value = EncryptedForm._deserialize(result_info.success)
 			return return_value
 
 	async def get_forms_async(self, entity_ids: List[str]) -> List[EncryptedForm]:
@@ -561,7 +561,7 @@ class FormBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavouredApi.getFormsAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavouredApi.getFormsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -572,16 +572,16 @@ class FormBasicApi:
 		payload = {
 			"entity_ids": [x0 for x0 in entity_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavouredApi.getFormsBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavouredApi.getFormsBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedForm._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedForm._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def get_form_by_logical_uuid_async(self, logical_uuid: str) -> EncryptedForm:
@@ -601,7 +601,7 @@ class FormBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavouredApi.getFormByLogicalUuidAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavouredApi.getFormByLogicalUuidAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -612,16 +612,16 @@ class FormBasicApi:
 		payload = {
 			"logical_uuid": logical_uuid,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavouredApi.getFormByLogicalUuidBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavouredApi.getFormByLogicalUuidBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = EncryptedForm._deserialize(result_info["success"])
+			return_value = EncryptedForm._deserialize(result_info.success)
 			return return_value
 
 	async def get_forms_by_logical_uuid_async(self, logical_uuid: str) -> List[EncryptedForm]:
@@ -641,7 +641,7 @@ class FormBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavouredApi.getFormsByLogicalUuidAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavouredApi.getFormsByLogicalUuidAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -652,16 +652,16 @@ class FormBasicApi:
 		payload = {
 			"logical_uuid": logical_uuid,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavouredApi.getFormsByLogicalUuidBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavouredApi.getFormsByLogicalUuidBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedForm._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedForm._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def get_forms_by_unique_id_async(self, unique_id: str) -> List[EncryptedForm]:
@@ -681,7 +681,7 @@ class FormBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavouredApi.getFormsByUniqueIdAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavouredApi.getFormsByUniqueIdAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -692,16 +692,16 @@ class FormBasicApi:
 		payload = {
 			"unique_id": unique_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavouredApi.getFormsByUniqueIdBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavouredApi.getFormsByUniqueIdBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedForm._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedForm._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def get_form_by_unique_id_async(self, unique_id: str) -> EncryptedForm:
@@ -721,7 +721,7 @@ class FormBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavouredApi.getFormByUniqueIdAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavouredApi.getFormByUniqueIdAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -732,16 +732,16 @@ class FormBasicApi:
 		payload = {
 			"unique_id": unique_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavouredApi.getFormByUniqueIdBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavouredApi.getFormByUniqueIdBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = EncryptedForm._deserialize(result_info["success"])
+			return_value = EncryptedForm._deserialize(result_info.success)
 			return return_value
 
 	async def get_children_forms_async(self, hc_party_id: str, parent_id: str) -> List[EncryptedForm]:
@@ -762,7 +762,7 @@ class FormBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavouredApi.getChildrenFormsAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavouredApi.getChildrenFormsAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -774,16 +774,16 @@ class FormBasicApi:
 			"hc_party_id": hc_party_id,
 			"parent_id": parent_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavouredApi.getChildrenFormsBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavouredApi.getChildrenFormsBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedForm._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedForm._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def list_forms_by_hcparty_and_patient_foreign_keys_async(self, hc_party_id: str, secret_fkeys: str, health_element_id: Optional[str] = None, plan_of_action_id: Optional[str] = None, form_template_id: Optional[str] = None) -> List[EncryptedForm]:
@@ -807,7 +807,7 @@ class FormBasicApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk.executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavouredApi.listFormsByHCPartyAndPatientForeignKeysAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavouredApi.listFormsByHCPartyAndPatientForeignKeysAsync,
 			self.icure_sdk.native,
 			json.dumps(payload),
 			callback
@@ -822,14 +822,14 @@ class FormBasicApi:
 			"plan_of_action_id": plan_of_action_id,
 			"form_template_id": form_template_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormBasicFlavouredApi.listFormsByHCPartyAndPatientForeignKeysBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormBasicFlavouredApi.listFormsByHCPartyAndPatientForeignKeysBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [EncryptedForm._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [EncryptedForm._deserialize(x1) for x1 in result_info.success]
 			return return_value

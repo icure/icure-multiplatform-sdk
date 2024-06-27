@@ -6,7 +6,13 @@ from dataclasses import field
 from typing import Union
 from typing import Dict
 from dataclasses import dataclass
+from model.specializations import HexString
+from model.specializations import SpkiHexString
+from model.specializations import AesExchangeKeyEncryptionKeypairIdentifier
+from model.specializations import Base64String
 from enum import Enum
+from model.specializations import SecureDelegationKeyString
+from model.specializations import Sha256HexString
 
 @dataclass
 class Keyword:
@@ -166,12 +172,12 @@ class Device:
 			"parentId": self.parent_id,
 			"picture": base64.b64encode(self.picture).decode('utf-8') if self.picture is not None else None,
 			"properties": [x0.__serialize__() for x0 in self.properties],
-			"hcPartyKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.hc_party_keys.items()},
-			"aesExchangeKeys": {k0.__serialize__(): {k1: {k2.__serialize__(): v2.__serialize__() for k2, v2 in v1.items()} for k1, v1 in v0.items()} for k0, v0 in self.aes_exchange_keys.items()},
-			"transferKeys": {k0.__serialize__(): {k1.__serialize__(): v1.__serialize__() for k1, v1 in v0.items()} for k0, v0 in self.transfer_keys.items()},
-			"privateKeyShamirPartitions": {k0: v0.__serialize__() for k0, v0 in self.private_key_shamir_partitions.items()},
-			"publicKey": self.public_key.__serialize__() if self.public_key is not None else None,
-			"publicKeysForOaepWithSha256": [x0.__serialize__() for x0 in self.public_keys_for_oaep_with_sha256],
+			"hcPartyKeys": {k0: [x1 for x1 in v0] for k0, v0 in self.hc_party_keys.items()},
+			"aesExchangeKeys": {k0: {k1: {k2: v2 for k2, v2 in v1.items()} for k1, v1 in v0.items()} for k0, v0 in self.aes_exchange_keys.items()},
+			"transferKeys": {k0: {k1: v1 for k1, v1 in v0.items()} for k0, v0 in self.transfer_keys.items()},
+			"privateKeyShamirPartitions": {k0: v0 for k0, v0 in self.private_key_shamir_partitions.items()},
+			"publicKey": self.public_key,
+			"publicKeysForOaepWithSha256": [x0 for x0 in self.public_keys_for_oaep_with_sha256],
 		}
 
 	@classmethod
@@ -203,12 +209,12 @@ class Device:
 			parent_id = deserialized_dict.get("parentId"),
 			picture = bytearray(base64.b64decode(deserialized_dict.get("picture"))) if deserialized_dict.get("picture") is not None else None,
 			properties = [DecryptedPropertyStub._deserialize(x0) for x0 in deserialized_dict["properties"]],
-			hc_party_keys = dict(map(lambda kv0: (kv0[0], [HexString._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["hcPartyKeys"].items())),
-			aes_exchange_keys = dict(map(lambda kv0: (SpkiHexString._deserialize(kv0[0]), dict(map(lambda kv1: (kv1[0], dict(map(lambda kv2: (AesExchangeKeyEncryptionKeypairIdentifier._deserialize(kv2[0]), HexString._deserialize(kv2[1])), kv1[1].items()))), kv0[1].items()))), deserialized_dict["aesExchangeKeys"].items())),
-			transfer_keys = dict(map(lambda kv0: (AesExchangeKeyEncryptionKeypairIdentifier._deserialize(kv0[0]), dict(map(lambda kv1: (AesExchangeKeyEncryptionKeypairIdentifier._deserialize(kv1[0]), HexString._deserialize(kv1[1])), kv0[1].items()))), deserialized_dict["transferKeys"].items())),
-			private_key_shamir_partitions = dict(map(lambda kv0: (kv0[0], HexString._deserialize(kv0[1])), deserialized_dict["privateKeyShamirPartitions"].items())),
-			public_key = SpkiHexString._deserialize(deserialized_dict.get("publicKey")) if deserialized_dict.get("publicKey") is not None else None,
-			public_keys_for_oaep_with_sha256 = [SpkiHexString._deserialize(x0) for x0 in deserialized_dict["publicKeysForOaepWithSha256"]],
+			hc_party_keys = dict(map(lambda kv0: (kv0[0], [x1 for x1 in kv0[1]]), deserialized_dict["hcPartyKeys"].items())),
+			aes_exchange_keys = dict(map(lambda kv0: (kv0[0], dict(map(lambda kv1: (kv1[0], dict(map(lambda kv2: (kv2[0], kv2[1]), kv1[1].items()))), kv0[1].items()))), deserialized_dict["aesExchangeKeys"].items())),
+			transfer_keys = dict(map(lambda kv0: (kv0[0], dict(map(lambda kv1: (kv1[0], kv1[1]), kv0[1].items()))), deserialized_dict["transferKeys"].items())),
+			private_key_shamir_partitions = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["privateKeyShamirPartitions"].items())),
+			public_key = deserialized_dict.get("publicKey"),
+			public_keys_for_oaep_with_sha256 = [x0 for x0 in deserialized_dict["publicKeysForOaepWithSha256"]],
 		)
 
 @dataclass
@@ -2273,12 +2279,12 @@ class CryptoActorStub:
 		return {
 			"id": self.id,
 			"rev": self.rev,
-			"hcPartyKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.hc_party_keys.items()},
-			"aesExchangeKeys": {k0.__serialize__(): {k1: {k2.__serialize__(): v2.__serialize__() for k2, v2 in v1.items()} for k1, v1 in v0.items()} for k0, v0 in self.aes_exchange_keys.items()},
-			"transferKeys": {k0.__serialize__(): {k1.__serialize__(): v1.__serialize__() for k1, v1 in v0.items()} for k0, v0 in self.transfer_keys.items()},
-			"privateKeyShamirPartitions": {k0: v0.__serialize__() for k0, v0 in self.private_key_shamir_partitions.items()},
-			"publicKey": self.public_key.__serialize__() if self.public_key is not None else None,
-			"publicKeysForOaepWithSha256": [x0.__serialize__() for x0 in self.public_keys_for_oaep_with_sha256],
+			"hcPartyKeys": {k0: [x1 for x1 in v0] for k0, v0 in self.hc_party_keys.items()},
+			"aesExchangeKeys": {k0: {k1: {k2: v2 for k2, v2 in v1.items()} for k1, v1 in v0.items()} for k0, v0 in self.aes_exchange_keys.items()},
+			"transferKeys": {k0: {k1: v1 for k1, v1 in v0.items()} for k0, v0 in self.transfer_keys.items()},
+			"privateKeyShamirPartitions": {k0: v0 for k0, v0 in self.private_key_shamir_partitions.items()},
+			"publicKey": self.public_key,
+			"publicKeysForOaepWithSha256": [x0 for x0 in self.public_keys_for_oaep_with_sha256],
 			"tags": [x0.__serialize__() for x0 in self.tags],
 		}
 
@@ -2292,12 +2298,12 @@ class CryptoActorStub:
 		return cls(
 			id = deserialized_dict["id"],
 			rev = deserialized_dict["rev"],
-			hc_party_keys = dict(map(lambda kv0: (kv0[0], [HexString._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["hcPartyKeys"].items())),
-			aes_exchange_keys = dict(map(lambda kv0: (SpkiHexString._deserialize(kv0[0]), dict(map(lambda kv1: (kv1[0], dict(map(lambda kv2: (AesExchangeKeyEncryptionKeypairIdentifier._deserialize(kv2[0]), HexString._deserialize(kv2[1])), kv1[1].items()))), kv0[1].items()))), deserialized_dict["aesExchangeKeys"].items())),
-			transfer_keys = dict(map(lambda kv0: (AesExchangeKeyEncryptionKeypairIdentifier._deserialize(kv0[0]), dict(map(lambda kv1: (AesExchangeKeyEncryptionKeypairIdentifier._deserialize(kv1[0]), HexString._deserialize(kv1[1])), kv0[1].items()))), deserialized_dict["transferKeys"].items())),
-			private_key_shamir_partitions = dict(map(lambda kv0: (kv0[0], HexString._deserialize(kv0[1])), deserialized_dict["privateKeyShamirPartitions"].items())),
-			public_key = SpkiHexString._deserialize(deserialized_dict.get("publicKey")) if deserialized_dict.get("publicKey") is not None else None,
-			public_keys_for_oaep_with_sha256 = [SpkiHexString._deserialize(x0) for x0 in deserialized_dict["publicKeysForOaepWithSha256"]],
+			hc_party_keys = dict(map(lambda kv0: (kv0[0], [x1 for x1 in kv0[1]]), deserialized_dict["hcPartyKeys"].items())),
+			aes_exchange_keys = dict(map(lambda kv0: (kv0[0], dict(map(lambda kv1: (kv1[0], dict(map(lambda kv2: (kv2[0], kv2[1]), kv1[1].items()))), kv0[1].items()))), deserialized_dict["aesExchangeKeys"].items())),
+			transfer_keys = dict(map(lambda kv0: (kv0[0], dict(map(lambda kv1: (kv1[0], kv1[1]), kv0[1].items()))), deserialized_dict["transferKeys"].items())),
+			private_key_shamir_partitions = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["privateKeyShamirPartitions"].items())),
+			public_key = deserialized_dict.get("publicKey"),
+			public_keys_for_oaep_with_sha256 = [x0 for x0 in deserialized_dict["publicKeysForOaepWithSha256"]],
 			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
 		)
 
@@ -2442,17 +2448,17 @@ class EncryptedPatient:
 			"patientProfessions": [x0.__serialize__() for x0 in self.patient_professions],
 			"parameters": {k0: [x1 for x1 in v0] for k0, v0 in self.parameters.items()},
 			"properties": [x0.__serialize__() for x0 in self.properties],
-			"hcPartyKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.hc_party_keys.items()},
-			"aesExchangeKeys": {k0.__serialize__(): {k1: {k2.__serialize__(): v2.__serialize__() for k2, v2 in v1.items()} for k1, v1 in v0.items()} for k0, v0 in self.aes_exchange_keys.items()},
-			"transferKeys": {k0.__serialize__(): {k1.__serialize__(): v1.__serialize__() for k1, v1 in v0.items()} for k0, v0 in self.transfer_keys.items()},
-			"privateKeyShamirPartitions": {k0: v0.__serialize__() for k0, v0 in self.private_key_shamir_partitions.items()},
-			"publicKey": self.public_key.__serialize__() if self.public_key is not None else None,
-			"publicKeysForOaepWithSha256": [x0.__serialize__() for x0 in self.public_keys_for_oaep_with_sha256],
+			"hcPartyKeys": {k0: [x1 for x1 in v0] for k0, v0 in self.hc_party_keys.items()},
+			"aesExchangeKeys": {k0: {k1: {k2: v2 for k2, v2 in v1.items()} for k1, v1 in v0.items()} for k0, v0 in self.aes_exchange_keys.items()},
+			"transferKeys": {k0: {k1: v1 for k1, v1 in v0.items()} for k0, v0 in self.transfer_keys.items()},
+			"privateKeyShamirPartitions": {k0: v0 for k0, v0 in self.private_key_shamir_partitions.items()},
+			"publicKey": self.public_key,
+			"publicKeysForOaepWithSha256": [x0 for x0 in self.public_keys_for_oaep_with_sha256],
 			"secretForeignKeys": [x0 for x0 in self.secret_foreign_keys],
 			"cryptedForeignKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.crypted_foreign_keys.items()},
 			"delegations": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.delegations.items()},
 			"encryptionKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.encryption_keys.items()},
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 			"securityMetadata": self.security_metadata.__serialize__() if self.security_metadata is not None else None,
 			"medicalLocationId": self.medical_location_id,
 			"nonDuplicateIds": [x0 for x0 in self.non_duplicate_ids],
@@ -2532,17 +2538,17 @@ class EncryptedPatient:
 			patient_professions = [CodeStub._deserialize(x0) for x0 in deserialized_dict["patientProfessions"]],
 			parameters = dict(map(lambda kv0: (kv0[0], [x1 for x1 in kv0[1]]), deserialized_dict["parameters"].items())),
 			properties = [EncryptedPropertyStub._deserialize(x0) for x0 in deserialized_dict["properties"]],
-			hc_party_keys = dict(map(lambda kv0: (kv0[0], [HexString._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["hcPartyKeys"].items())),
-			aes_exchange_keys = dict(map(lambda kv0: (SpkiHexString._deserialize(kv0[0]), dict(map(lambda kv1: (kv1[0], dict(map(lambda kv2: (AesExchangeKeyEncryptionKeypairIdentifier._deserialize(kv2[0]), HexString._deserialize(kv2[1])), kv1[1].items()))), kv0[1].items()))), deserialized_dict["aesExchangeKeys"].items())),
-			transfer_keys = dict(map(lambda kv0: (AesExchangeKeyEncryptionKeypairIdentifier._deserialize(kv0[0]), dict(map(lambda kv1: (AesExchangeKeyEncryptionKeypairIdentifier._deserialize(kv1[0]), HexString._deserialize(kv1[1])), kv0[1].items()))), deserialized_dict["transferKeys"].items())),
-			private_key_shamir_partitions = dict(map(lambda kv0: (kv0[0], HexString._deserialize(kv0[1])), deserialized_dict["privateKeyShamirPartitions"].items())),
-			public_key = SpkiHexString._deserialize(deserialized_dict.get("publicKey")) if deserialized_dict.get("publicKey") is not None else None,
-			public_keys_for_oaep_with_sha256 = [SpkiHexString._deserialize(x0) for x0 in deserialized_dict["publicKeysForOaepWithSha256"]],
+			hc_party_keys = dict(map(lambda kv0: (kv0[0], [x1 for x1 in kv0[1]]), deserialized_dict["hcPartyKeys"].items())),
+			aes_exchange_keys = dict(map(lambda kv0: (kv0[0], dict(map(lambda kv1: (kv1[0], dict(map(lambda kv2: (kv2[0], kv2[1]), kv1[1].items()))), kv0[1].items()))), deserialized_dict["aesExchangeKeys"].items())),
+			transfer_keys = dict(map(lambda kv0: (kv0[0], dict(map(lambda kv1: (kv1[0], kv1[1]), kv0[1].items()))), deserialized_dict["transferKeys"].items())),
+			private_key_shamir_partitions = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["privateKeyShamirPartitions"].items())),
+			public_key = deserialized_dict.get("publicKey"),
+			public_keys_for_oaep_with_sha256 = [x0 for x0 in deserialized_dict["publicKeysForOaepWithSha256"]],
 			secret_foreign_keys = [x0 for x0 in deserialized_dict["secretForeignKeys"]],
 			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
 			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
 			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 			medical_location_id = deserialized_dict.get("medicalLocationId"),
 			non_duplicate_ids = [x0 for x0 in deserialized_dict["nonDuplicateIds"]],
@@ -2699,17 +2705,17 @@ class DecryptedPatient:
 			"patientProfessions": [x0.__serialize__() for x0 in self.patient_professions],
 			"parameters": {k0: [x1 for x1 in v0] for k0, v0 in self.parameters.items()},
 			"properties": [x0.__serialize__() for x0 in self.properties],
-			"hcPartyKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.hc_party_keys.items()},
-			"aesExchangeKeys": {k0.__serialize__(): {k1: {k2.__serialize__(): v2.__serialize__() for k2, v2 in v1.items()} for k1, v1 in v0.items()} for k0, v0 in self.aes_exchange_keys.items()},
-			"transferKeys": {k0.__serialize__(): {k1.__serialize__(): v1.__serialize__() for k1, v1 in v0.items()} for k0, v0 in self.transfer_keys.items()},
-			"privateKeyShamirPartitions": {k0: v0.__serialize__() for k0, v0 in self.private_key_shamir_partitions.items()},
-			"publicKey": self.public_key.__serialize__() if self.public_key is not None else None,
-			"publicKeysForOaepWithSha256": [x0.__serialize__() for x0 in self.public_keys_for_oaep_with_sha256],
+			"hcPartyKeys": {k0: [x1 for x1 in v0] for k0, v0 in self.hc_party_keys.items()},
+			"aesExchangeKeys": {k0: {k1: {k2: v2 for k2, v2 in v1.items()} for k1, v1 in v0.items()} for k0, v0 in self.aes_exchange_keys.items()},
+			"transferKeys": {k0: {k1: v1 for k1, v1 in v0.items()} for k0, v0 in self.transfer_keys.items()},
+			"privateKeyShamirPartitions": {k0: v0 for k0, v0 in self.private_key_shamir_partitions.items()},
+			"publicKey": self.public_key,
+			"publicKeysForOaepWithSha256": [x0 for x0 in self.public_keys_for_oaep_with_sha256],
 			"secretForeignKeys": [x0 for x0 in self.secret_foreign_keys],
 			"cryptedForeignKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.crypted_foreign_keys.items()},
 			"delegations": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.delegations.items()},
 			"encryptionKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.encryption_keys.items()},
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 			"securityMetadata": self.security_metadata.__serialize__() if self.security_metadata is not None else None,
 			"medicalLocationId": self.medical_location_id,
 			"nonDuplicateIds": [x0 for x0 in self.non_duplicate_ids],
@@ -2789,17 +2795,17 @@ class DecryptedPatient:
 			patient_professions = [CodeStub._deserialize(x0) for x0 in deserialized_dict["patientProfessions"]],
 			parameters = dict(map(lambda kv0: (kv0[0], [x1 for x1 in kv0[1]]), deserialized_dict["parameters"].items())),
 			properties = [DecryptedPropertyStub._deserialize(x0) for x0 in deserialized_dict["properties"]],
-			hc_party_keys = dict(map(lambda kv0: (kv0[0], [HexString._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["hcPartyKeys"].items())),
-			aes_exchange_keys = dict(map(lambda kv0: (SpkiHexString._deserialize(kv0[0]), dict(map(lambda kv1: (kv1[0], dict(map(lambda kv2: (AesExchangeKeyEncryptionKeypairIdentifier._deserialize(kv2[0]), HexString._deserialize(kv2[1])), kv1[1].items()))), kv0[1].items()))), deserialized_dict["aesExchangeKeys"].items())),
-			transfer_keys = dict(map(lambda kv0: (AesExchangeKeyEncryptionKeypairIdentifier._deserialize(kv0[0]), dict(map(lambda kv1: (AesExchangeKeyEncryptionKeypairIdentifier._deserialize(kv1[0]), HexString._deserialize(kv1[1])), kv0[1].items()))), deserialized_dict["transferKeys"].items())),
-			private_key_shamir_partitions = dict(map(lambda kv0: (kv0[0], HexString._deserialize(kv0[1])), deserialized_dict["privateKeyShamirPartitions"].items())),
-			public_key = SpkiHexString._deserialize(deserialized_dict.get("publicKey")) if deserialized_dict.get("publicKey") is not None else None,
-			public_keys_for_oaep_with_sha256 = [SpkiHexString._deserialize(x0) for x0 in deserialized_dict["publicKeysForOaepWithSha256"]],
+			hc_party_keys = dict(map(lambda kv0: (kv0[0], [x1 for x1 in kv0[1]]), deserialized_dict["hcPartyKeys"].items())),
+			aes_exchange_keys = dict(map(lambda kv0: (kv0[0], dict(map(lambda kv1: (kv1[0], dict(map(lambda kv2: (kv2[0], kv2[1]), kv1[1].items()))), kv0[1].items()))), deserialized_dict["aesExchangeKeys"].items())),
+			transfer_keys = dict(map(lambda kv0: (kv0[0], dict(map(lambda kv1: (kv1[0], kv1[1]), kv0[1].items()))), deserialized_dict["transferKeys"].items())),
+			private_key_shamir_partitions = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["privateKeyShamirPartitions"].items())),
+			public_key = deserialized_dict.get("publicKey"),
+			public_keys_for_oaep_with_sha256 = [x0 for x0 in deserialized_dict["publicKeysForOaepWithSha256"]],
 			secret_foreign_keys = [x0 for x0 in deserialized_dict["secretForeignKeys"]],
 			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
 			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
 			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 			medical_location_id = deserialized_dict.get("medicalLocationId"),
 			non_duplicate_ids = [x0 for x0 in deserialized_dict["nonDuplicateIds"]],
@@ -2954,12 +2960,12 @@ class HealthcareParty:
 			"importedData": {k0: v0 for k0, v0 in self.imported_data.items()},
 			"options": {k0: v0 for k0, v0 in self.options.items()},
 			"properties": [x0.__serialize__() for x0 in self.properties],
-			"hcPartyKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.hc_party_keys.items()},
-			"aesExchangeKeys": {k0.__serialize__(): {k1: {k2.__serialize__(): v2.__serialize__() for k2, v2 in v1.items()} for k1, v1 in v0.items()} for k0, v0 in self.aes_exchange_keys.items()},
-			"transferKeys": {k0.__serialize__(): {k1.__serialize__(): v1.__serialize__() for k1, v1 in v0.items()} for k0, v0 in self.transfer_keys.items()},
-			"privateKeyShamirPartitions": {k0: v0.__serialize__() for k0, v0 in self.private_key_shamir_partitions.items()},
-			"publicKey": self.public_key.__serialize__() if self.public_key is not None else None,
-			"publicKeysForOaepWithSha256": [x0.__serialize__() for x0 in self.public_keys_for_oaep_with_sha256],
+			"hcPartyKeys": {k0: [x1 for x1 in v0] for k0, v0 in self.hc_party_keys.items()},
+			"aesExchangeKeys": {k0: {k1: {k2: v2 for k2, v2 in v1.items()} for k1, v1 in v0.items()} for k0, v0 in self.aes_exchange_keys.items()},
+			"transferKeys": {k0: {k1: v1 for k1, v1 in v0.items()} for k0, v0 in self.transfer_keys.items()},
+			"privateKeyShamirPartitions": {k0: v0 for k0, v0 in self.private_key_shamir_partitions.items()},
+			"publicKey": self.public_key,
+			"publicKeysForOaepWithSha256": [x0 for x0 in self.public_keys_for_oaep_with_sha256],
 		}
 
 	@classmethod
@@ -3018,12 +3024,12 @@ class HealthcareParty:
 			imported_data = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["importedData"].items())),
 			options = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["options"].items())),
 			properties = [DecryptedPropertyStub._deserialize(x0) for x0 in deserialized_dict["properties"]],
-			hc_party_keys = dict(map(lambda kv0: (kv0[0], [HexString._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["hcPartyKeys"].items())),
-			aes_exchange_keys = dict(map(lambda kv0: (SpkiHexString._deserialize(kv0[0]), dict(map(lambda kv1: (kv1[0], dict(map(lambda kv2: (AesExchangeKeyEncryptionKeypairIdentifier._deserialize(kv2[0]), HexString._deserialize(kv2[1])), kv1[1].items()))), kv0[1].items()))), deserialized_dict["aesExchangeKeys"].items())),
-			transfer_keys = dict(map(lambda kv0: (AesExchangeKeyEncryptionKeypairIdentifier._deserialize(kv0[0]), dict(map(lambda kv1: (AesExchangeKeyEncryptionKeypairIdentifier._deserialize(kv1[0]), HexString._deserialize(kv1[1])), kv0[1].items()))), deserialized_dict["transferKeys"].items())),
-			private_key_shamir_partitions = dict(map(lambda kv0: (kv0[0], HexString._deserialize(kv0[1])), deserialized_dict["privateKeyShamirPartitions"].items())),
-			public_key = SpkiHexString._deserialize(deserialized_dict.get("publicKey")) if deserialized_dict.get("publicKey") is not None else None,
-			public_keys_for_oaep_with_sha256 = [SpkiHexString._deserialize(x0) for x0 in deserialized_dict["publicKeysForOaepWithSha256"]],
+			hc_party_keys = dict(map(lambda kv0: (kv0[0], [x1 for x1 in kv0[1]]), deserialized_dict["hcPartyKeys"].items())),
+			aes_exchange_keys = dict(map(lambda kv0: (kv0[0], dict(map(lambda kv1: (kv1[0], dict(map(lambda kv2: (kv2[0], kv2[1]), kv1[1].items()))), kv0[1].items()))), deserialized_dict["aesExchangeKeys"].items())),
+			transfer_keys = dict(map(lambda kv0: (kv0[0], dict(map(lambda kv1: (kv1[0], kv1[1]), kv0[1].items()))), deserialized_dict["transferKeys"].items())),
+			private_key_shamir_partitions = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["privateKeyShamirPartitions"].items())),
+			public_key = deserialized_dict.get("publicKey"),
+			public_keys_for_oaep_with_sha256 = [x0 for x0 in deserialized_dict["publicKeysForOaepWithSha256"]],
 		)
 
 CryptoActor = Union['CryptoActorStub', 'EncryptedPatient', 'DecryptedPatient', 'Device', 'HealthcareParty']
@@ -3693,7 +3699,33 @@ class User:
 	mobile_phone: Optional[str] = None
 	application_tokens: Dict[str, str] = field(default_factory=dict)
 	authentication_tokens: Dict[str, 'AuthenticationToken'] = field(default_factory=dict)
-	system_metadata: Optional['SystemMetadata'] = None
+	system_metadata: Optional['User.SystemMetadata'] = None
+
+	@dataclass
+	class SystemMetadata:
+		roles: List[str]
+		is_admin: bool
+		inherits_roles: bool
+
+		def __serialize__(self) -> object:
+			return {
+				"roles": [x0 for x0 in self.roles],
+				"isAdmin": self.is_admin,
+				"inheritsRoles": self.inherits_roles,
+			}
+
+		@classmethod
+		def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SystemMetadata':
+			deserialized_dict: dict[str, object]
+			if isinstance(data, str):
+				deserialized_dict = json.loads(data)
+			else:
+				deserialized_dict = data
+			return cls(
+				roles = [x0 for x0 in deserialized_dict["roles"]],
+				is_admin = deserialized_dict["isAdmin"],
+				inherits_roles = deserialized_dict["inheritsRoles"],
+			)
 
 	def __serialize__(self) -> object:
 		return {
@@ -3756,34 +3788,8 @@ class User:
 			mobile_phone = deserialized_dict.get("mobilePhone"),
 			application_tokens = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["applicationTokens"].items())),
 			authentication_tokens = dict(map(lambda kv0: (kv0[0], AuthenticationToken._deserialize(kv0[1])), deserialized_dict["authenticationTokens"].items())),
-			system_metadata = SystemMetadata._deserialize(deserialized_dict.get("systemMetadata")) if deserialized_dict.get("systemMetadata") is not None else None,
+			system_metadata = User.SystemMetadata._deserialize(deserialized_dict.get("systemMetadata")) if deserialized_dict.get("systemMetadata") is not None else None,
 		)
-
-	@dataclass
-	class SystemMetadata:
-		roles: List[str]
-		is_admin: bool
-		inherits_roles: bool
-
-		def __serialize__(self) -> object:
-			return {
-				"roles": [x0 for x0 in self.roles],
-				"isAdmin": self.is_admin,
-				"inheritsRoles": self.inherits_roles,
-			}
-
-		@classmethod
-		def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SystemMetadata':
-			deserialized_dict: dict[str, object]
-			if isinstance(data, str):
-				deserialized_dict = json.loads(data)
-			else:
-				deserialized_dict = data
-			return cls(
-				roles = [x0 for x0 in deserialized_dict["roles"]],
-				is_admin = deserialized_dict["isAdmin"],
-				inherits_roles = deserialized_dict["inheritsRoles"],
-			)
 
 @dataclass
 class EncryptedPropertyStub:
@@ -3799,7 +3805,7 @@ class EncryptedPropertyStub:
 			"type": self.type.__serialize__() if self.type is not None else None,
 			"typedValue": self.typed_value.__serialize__() if self.typed_value is not None else None,
 			"deletionDate": self.deletion_date,
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 		}
 
 	@classmethod
@@ -3814,7 +3820,7 @@ class EncryptedPropertyStub:
 			type = PropertyTypeStub._deserialize(deserialized_dict.get("type")) if deserialized_dict.get("type") is not None else None,
 			typed_value = EncryptedTypedValue._deserialize(deserialized_dict.get("typedValue")) if deserialized_dict.get("typedValue") is not None else None,
 			deletion_date = deserialized_dict.get("deletionDate"),
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 		)
 
 @dataclass
@@ -3831,7 +3837,7 @@ class DecryptedPropertyStub:
 			"type": self.type.__serialize__() if self.type is not None else None,
 			"typedValue": self.typed_value.__serialize__() if self.typed_value is not None else None,
 			"deletionDate": self.deletion_date,
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 		}
 
 	@classmethod
@@ -3846,7 +3852,7 @@ class DecryptedPropertyStub:
 			type = PropertyTypeStub._deserialize(deserialized_dict.get("type")) if deserialized_dict.get("type") is not None else None,
 			typed_value = DecryptedTypedValue._deserialize(deserialized_dict.get("typedValue")) if deserialized_dict.get("typedValue") is not None else None,
 			deletion_date = deserialized_dict.get("deletionDate"),
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 		)
 
 PropertyStub = Union['EncryptedPropertyStub', 'DecryptedPropertyStub']
@@ -4039,7 +4045,7 @@ class KeyPairUpdateNotification:
 
 	def __serialize__(self) -> object:
 		return {
-			"newPublicKey": self.new_public_key.__serialize__(),
+			"newPublicKey": self.new_public_key,
 			"concernedDataOwnerId": self.concerned_data_owner_id,
 		}
 
@@ -4051,7 +4057,7 @@ class KeyPairUpdateNotification:
 		else:
 			deserialized_dict = data
 		return cls(
-			new_public_key = SpkiHexString._deserialize(deserialized_dict["newPublicKey"]),
+			new_public_key = deserialized_dict["newPublicKey"],
 			concerned_data_owner_id = deserialized_dict["concernedDataOwnerId"],
 		)
 
@@ -4325,7 +4331,7 @@ class EncryptedTimeTable:
 			"cryptedForeignKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.crypted_foreign_keys.items()},
 			"delegations": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.delegations.items()},
 			"encryptionKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.encryption_keys.items()},
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 			"securityMetadata": self.security_metadata.__serialize__() if self.security_metadata is not None else None,
 		}
 
@@ -4357,7 +4363,7 @@ class EncryptedTimeTable:
 			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
 			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
 			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
@@ -4408,7 +4414,7 @@ class DecryptedTimeTable:
 			"cryptedForeignKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.crypted_foreign_keys.items()},
 			"delegations": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.delegations.items()},
 			"encryptionKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.encryption_keys.items()},
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 			"securityMetadata": self.security_metadata.__serialize__() if self.security_metadata is not None else None,
 		}
 
@@ -4440,7 +4446,7 @@ class DecryptedTimeTable:
 			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
 			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
 			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
@@ -4592,7 +4598,7 @@ class EncryptedDocument:
 			"cryptedForeignKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.crypted_foreign_keys.items()},
 			"delegations": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.delegations.items()},
 			"encryptionKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.encryption_keys.items()},
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 			"securityMetadata": self.security_metadata.__serialize__() if self.security_metadata is not None else None,
 		}
 
@@ -4638,7 +4644,7 @@ class EncryptedDocument:
 			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
 			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
 			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
@@ -4717,7 +4723,7 @@ class DecryptedDocument:
 			"cryptedForeignKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.crypted_foreign_keys.items()},
 			"delegations": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.delegations.items()},
 			"encryptionKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.encryption_keys.items()},
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 			"securityMetadata": self.security_metadata.__serialize__() if self.security_metadata is not None else None,
 		}
 
@@ -4763,7 +4769,7 @@ class DecryptedDocument:
 			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
 			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
 			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
@@ -5021,7 +5027,7 @@ class EncryptedClassification:
 			"cryptedForeignKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.crypted_foreign_keys.items()},
 			"delegations": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.delegations.items()},
 			"encryptionKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.encryption_keys.items()},
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 			"securityMetadata": self.security_metadata.__serialize__() if self.security_metadata is not None else None,
 		}
 
@@ -5051,7 +5057,7 @@ class EncryptedClassification:
 			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
 			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
 			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
@@ -5098,7 +5104,7 @@ class DecryptedClassification:
 			"cryptedForeignKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.crypted_foreign_keys.items()},
 			"delegations": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.delegations.items()},
 			"encryptionKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.encryption_keys.items()},
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 			"securityMetadata": self.security_metadata.__serialize__() if self.security_metadata is not None else None,
 		}
 
@@ -5128,7 +5134,7 @@ class DecryptedClassification:
 			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
 			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
 			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
@@ -5209,7 +5215,7 @@ class DecryptedMaintenanceTask:
 			"cryptedForeignKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.crypted_foreign_keys.items()},
 			"delegations": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.delegations.items()},
 			"encryptionKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.encryption_keys.items()},
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 			"securityMetadata": self.security_metadata.__serialize__() if self.security_metadata is not None else None,
 		}
 
@@ -5240,7 +5246,7 @@ class DecryptedMaintenanceTask:
 			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
 			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
 			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
@@ -5289,7 +5295,7 @@ class EncryptedMaintenanceTask:
 			"cryptedForeignKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.crypted_foreign_keys.items()},
 			"delegations": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.delegations.items()},
 			"encryptionKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.encryption_keys.items()},
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 			"securityMetadata": self.security_metadata.__serialize__() if self.security_metadata is not None else None,
 		}
 
@@ -5320,7 +5326,7 @@ class EncryptedMaintenanceTask:
 			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
 			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
 			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
@@ -5507,7 +5513,7 @@ class EncryptedHealthElement:
 			"cryptedForeignKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.crypted_foreign_keys.items()},
 			"delegations": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.delegations.items()},
 			"encryptionKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.encryption_keys.items()},
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 			"securityMetadata": self.security_metadata.__serialize__() if self.security_metadata is not None else None,
 		}
 
@@ -5551,7 +5557,7 @@ class EncryptedHealthElement:
 			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
 			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
 			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
@@ -5626,7 +5632,7 @@ class DecryptedHealthElement:
 			"cryptedForeignKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.crypted_foreign_keys.items()},
 			"delegations": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.delegations.items()},
 			"encryptionKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.encryption_keys.items()},
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 			"securityMetadata": self.security_metadata.__serialize__() if self.security_metadata is not None else None,
 		}
 
@@ -5670,7 +5676,7 @@ class DecryptedHealthElement:
 			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
 			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
 			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
@@ -5832,7 +5838,7 @@ class DecryptedContact:
 			"cryptedForeignKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.crypted_foreign_keys.items()},
 			"delegations": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.delegations.items()},
 			"encryptionKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.encryption_keys.items()},
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 			"securityMetadata": self.security_metadata.__serialize__() if self.security_metadata is not None else None,
 			"notes": [x0.__serialize__() for x0 in self.notes],
 		}
@@ -5873,7 +5879,7 @@ class DecryptedContact:
 			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
 			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
 			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 			notes = [Annotation._deserialize(x0) for x0 in deserialized_dict["notes"]],
 		)
@@ -5942,7 +5948,7 @@ class EncryptedContact:
 			"cryptedForeignKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.crypted_foreign_keys.items()},
 			"delegations": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.delegations.items()},
 			"encryptionKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.encryption_keys.items()},
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 			"securityMetadata": self.security_metadata.__serialize__() if self.security_metadata is not None else None,
 			"notes": [x0.__serialize__() for x0 in self.notes],
 		}
@@ -5983,7 +5989,7 @@ class EncryptedContact:
 			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
 			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
 			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 			notes = [Annotation._deserialize(x0) for x0 in deserialized_dict["notes"]],
 		)
@@ -6095,7 +6101,7 @@ class DecryptedService:
 			"qualifiedLinks": {k0.__serialize__(): {k1: v1 for k1, v1 in v0.items()} for k0, v0 in self.qualified_links.items()},
 			"codes": [x0.__serialize__() for x0 in self.codes],
 			"tags": [x0.__serialize__() for x0 in self.tags],
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 			"securityMetadata": self.security_metadata.__serialize__() if self.security_metadata is not None else None,
 		}
 
@@ -6141,7 +6147,7 @@ class DecryptedService:
 			qualified_links = dict(map(lambda kv0: (LinkQualification._deserialize(kv0[0]), dict(map(lambda kv1: (kv1[0], kv1[1]), kv0[1].items()))), deserialized_dict["qualifiedLinks"].items())),
 			codes = [CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
 			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
@@ -6220,7 +6226,7 @@ class EncryptedService:
 			"qualifiedLinks": {k0.__serialize__(): {k1: v1 for k1, v1 in v0.items()} for k0, v0 in self.qualified_links.items()},
 			"codes": [x0.__serialize__() for x0 in self.codes],
 			"tags": [x0.__serialize__() for x0 in self.tags],
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 			"securityMetadata": self.security_metadata.__serialize__() if self.security_metadata is not None else None,
 		}
 
@@ -6266,7 +6272,7 @@ class EncryptedService:
 			qualified_links = dict(map(lambda kv0: (LinkQualification._deserialize(kv0[0]), dict(map(lambda kv1: (kv1[0], kv1[1]), kv0[1].items()))), deserialized_dict["qualifiedLinks"].items())),
 			codes = [CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
 			tags = [CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
@@ -6372,7 +6378,7 @@ class DecryptedReceipt:
 			"cryptedForeignKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.crypted_foreign_keys.items()},
 			"delegations": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.delegations.items()},
 			"encryptionKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.encryption_keys.items()},
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 			"securityMetadata": self.security_metadata.__serialize__() if self.security_metadata is not None else None,
 		}
 
@@ -6404,7 +6410,7 @@ class DecryptedReceipt:
 			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
 			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
 			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
@@ -6455,7 +6461,7 @@ class EncryptedReceipt:
 			"cryptedForeignKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.crypted_foreign_keys.items()},
 			"delegations": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.delegations.items()},
 			"encryptionKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.encryption_keys.items()},
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 			"securityMetadata": self.security_metadata.__serialize__() if self.security_metadata is not None else None,
 		}
 
@@ -6487,7 +6493,7 @@ class EncryptedReceipt:
 			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
 			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
 			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
@@ -6572,7 +6578,7 @@ class DecryptedAccessLog:
 			"cryptedForeignKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.crypted_foreign_keys.items()},
 			"delegations": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.delegations.items()},
 			"encryptionKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.encryption_keys.items()},
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 			"securityMetadata": self.security_metadata.__serialize__() if self.security_metadata is not None else None,
 		}
 
@@ -6605,7 +6611,7 @@ class DecryptedAccessLog:
 			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
 			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
 			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
@@ -6658,7 +6664,7 @@ class EncryptedAccessLog:
 			"cryptedForeignKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.crypted_foreign_keys.items()},
 			"delegations": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.delegations.items()},
 			"encryptionKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.encryption_keys.items()},
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 			"securityMetadata": self.security_metadata.__serialize__() if self.security_metadata is not None else None,
 		}
 
@@ -6691,7 +6697,7 @@ class EncryptedAccessLog:
 			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
 			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
 			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
@@ -6775,7 +6781,7 @@ class DecryptedTopic:
 			"cryptedForeignKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.crypted_foreign_keys.items()},
 			"delegations": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.delegations.items()},
 			"encryptionKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.encryption_keys.items()},
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 			"linkedHealthElements": [x0 for x0 in self.linked_health_elements],
 			"linkedServices": [x0 for x0 in self.linked_services],
 		}
@@ -6808,7 +6814,7 @@ class DecryptedTopic:
 			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
 			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
 			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 			linked_health_elements = [x0 for x0 in deserialized_dict["linkedHealthElements"]],
 			linked_services = [x0 for x0 in deserialized_dict["linkedServices"]],
 		)
@@ -6861,7 +6867,7 @@ class EncryptedTopic:
 			"cryptedForeignKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.crypted_foreign_keys.items()},
 			"delegations": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.delegations.items()},
 			"encryptionKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.encryption_keys.items()},
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 			"linkedHealthElements": [x0 for x0 in self.linked_health_elements],
 			"linkedServices": [x0 for x0 in self.linked_services],
 		}
@@ -6894,7 +6900,7 @@ class EncryptedTopic:
 			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
 			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
 			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 			linked_health_elements = [x0 for x0 in deserialized_dict["linkedHealthElements"]],
 			linked_services = [x0 for x0 in deserialized_dict["linkedServices"]],
 		)
@@ -7035,7 +7041,7 @@ class DecryptedCalendarItem:
 			"cryptedForeignKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.crypted_foreign_keys.items()},
 			"delegations": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.delegations.items()},
 			"encryptionKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.encryption_keys.items()},
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 			"securityMetadata": self.security_metadata.__serialize__() if self.security_metadata is not None else None,
 		}
 
@@ -7086,7 +7092,7 @@ class DecryptedCalendarItem:
 			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
 			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
 			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
@@ -7175,7 +7181,7 @@ class EncryptedCalendarItem:
 			"cryptedForeignKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.crypted_foreign_keys.items()},
 			"delegations": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.delegations.items()},
 			"encryptionKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.encryption_keys.items()},
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 			"securityMetadata": self.security_metadata.__serialize__() if self.security_metadata is not None else None,
 		}
 
@@ -7226,7 +7232,7 @@ class EncryptedCalendarItem:
 			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
 			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
 			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
@@ -7343,7 +7349,7 @@ class DecryptedMessage:
 			"cryptedForeignKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.crypted_foreign_keys.items()},
 			"delegations": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.delegations.items()},
 			"encryptionKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.encryption_keys.items()},
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 			"securityMetadata": self.security_metadata.__serialize__() if self.security_metadata is not None else None,
 		}
 
@@ -7392,7 +7398,7 @@ class DecryptedMessage:
 			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
 			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
 			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
@@ -7477,7 +7483,7 @@ class EncryptedMessage:
 			"cryptedForeignKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.crypted_foreign_keys.items()},
 			"delegations": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.delegations.items()},
 			"encryptionKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.encryption_keys.items()},
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 			"securityMetadata": self.security_metadata.__serialize__() if self.security_metadata is not None else None,
 		}
 
@@ -7526,7 +7532,7 @@ class EncryptedMessage:
 			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
 			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
 			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
@@ -7621,7 +7627,7 @@ class EncryptedForm:
 			"cryptedForeignKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.crypted_foreign_keys.items()},
 			"delegations": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.delegations.items()},
 			"encryptionKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.encryption_keys.items()},
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 			"securityMetadata": self.security_metadata.__serialize__() if self.security_metadata is not None else None,
 		}
 
@@ -7659,7 +7665,7 @@ class EncryptedForm:
 			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
 			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
 			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
@@ -7722,7 +7728,7 @@ class DecryptedForm:
 			"cryptedForeignKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.crypted_foreign_keys.items()},
 			"delegations": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.delegations.items()},
 			"encryptionKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.encryption_keys.items()},
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 			"securityMetadata": self.security_metadata.__serialize__() if self.security_metadata is not None else None,
 		}
 
@@ -7760,7 +7766,7 @@ class DecryptedForm:
 			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
 			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
 			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
@@ -7941,7 +7947,7 @@ class DecryptedInvoice:
 			"cryptedForeignKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.crypted_foreign_keys.items()},
 			"delegations": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.delegations.items()},
 			"encryptionKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.encryption_keys.items()},
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 			"securityMetadata": self.security_metadata.__serialize__() if self.security_metadata is not None else None,
 		}
 
@@ -8022,7 +8028,7 @@ class DecryptedInvoice:
 			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
 			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
 			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
@@ -8171,7 +8177,7 @@ class EncryptedInvoice:
 			"cryptedForeignKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.crypted_foreign_keys.items()},
 			"delegations": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.delegations.items()},
 			"encryptionKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.encryption_keys.items()},
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 			"securityMetadata": self.security_metadata.__serialize__() if self.security_metadata is not None else None,
 		}
 
@@ -8252,7 +8258,7 @@ class EncryptedInvoice:
 			crypted_foreign_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
 			delegations = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
 			encryption_keys = dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 			security_metadata = SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
@@ -8396,7 +8402,7 @@ class DecryptedInvoicingCode:
 			"insuranceJustification": self.insurance_justification,
 			"cancelPatientInterventionReason": self.cancel_patient_intervention_reason,
 			"status": self.status,
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 		}
 
 	@classmethod
@@ -8458,7 +8464,7 @@ class DecryptedInvoicingCode:
 			insurance_justification = deserialized_dict.get("insuranceJustification"),
 			cancel_patient_intervention_reason = deserialized_dict.get("cancelPatientInterventionReason"),
 			status = deserialized_dict.get("status"),
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 		)
 
 @dataclass
@@ -8569,7 +8575,7 @@ class EncryptedInvoicingCode:
 			"insuranceJustification": self.insurance_justification,
 			"cancelPatientInterventionReason": self.cancel_patient_intervention_reason,
 			"status": self.status,
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 		}
 
 	@classmethod
@@ -8631,7 +8637,7 @@ class EncryptedInvoicingCode:
 			insurance_justification = deserialized_dict.get("insuranceJustification"),
 			cancel_patient_intervention_reason = deserialized_dict.get("cancelPatientInterventionReason"),
 			status = deserialized_dict.get("status"),
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 		)
 
 InvoicingCode = Union['DecryptedInvoicingCode', 'EncryptedInvoicingCode']
@@ -9035,26 +9041,8 @@ class UserType(Enum):
 
 @dataclass
 class RoleConfiguration:
-	source: 'Source'
+	source: 'RoleConfiguration.Source'
 	roles: List[str] = field(default_factory=list)
-
-	def __serialize__(self) -> object:
-		return {
-			"source": self.source.__serialize__(),
-			"roles": [x0 for x0 in self.roles],
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'RoleConfiguration':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			source = Source._deserialize(deserialized_dict["source"]),
-			roles = [x0 for x0 in deserialized_dict["roles"]],
-		)
 
 	class Source(Enum):
 		Configuration = "CONFIGURATION"
@@ -9074,6 +9062,24 @@ class RoleConfiguration:
 				return Source.Default
 			else:
 				raise Exception(f"{data} is not a valid value for Source enum.")
+
+	def __serialize__(self) -> object:
+		return {
+			"source": self.source.__serialize__(),
+			"roles": [x0 for x0 in self.roles],
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'RoleConfiguration':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			source = RoleConfiguration.Source._deserialize(deserialized_dict["source"]),
+			roles = [x0 for x0 in deserialized_dict["roles"]],
+		)
 
 @dataclass
 class GroupDeletionReport:
@@ -9569,7 +9575,7 @@ class EncryptedAddress:
 			"note": self.note,
 			"notes": [x0.__serialize__() for x0 in self.notes],
 			"telecoms": [x0.__serialize__() for x0 in self.telecoms],
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 		}
 
 	@classmethod
@@ -9592,7 +9598,7 @@ class EncryptedAddress:
 			note = deserialized_dict.get("note"),
 			notes = [Annotation._deserialize(x0) for x0 in deserialized_dict["notes"]],
 			telecoms = [EncryptedTelecom._deserialize(x0) for x0 in deserialized_dict["telecoms"]],
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 		)
 
 @dataclass
@@ -9625,7 +9631,7 @@ class DecryptedAddress:
 			"note": self.note,
 			"notes": [x0.__serialize__() for x0 in self.notes],
 			"telecoms": [x0.__serialize__() for x0 in self.telecoms],
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 		}
 
 	@classmethod
@@ -9648,7 +9654,7 @@ class DecryptedAddress:
 			note = deserialized_dict.get("note"),
 			notes = [Annotation._deserialize(x0) for x0 in deserialized_dict["notes"]],
 			telecoms = [DecryptedTelecom._deserialize(x0) for x0 in deserialized_dict["telecoms"]],
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 		)
 
 Address = Union['EncryptedAddress', 'DecryptedAddress']
@@ -9837,7 +9843,7 @@ class DecryptedInsurability:
 			"startDate": self.start_date,
 			"endDate": self.end_date,
 			"titularyId": self.titulary_id,
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 		}
 
 	@classmethod
@@ -9857,7 +9863,7 @@ class DecryptedInsurability:
 			start_date = deserialized_dict.get("startDate"),
 			end_date = deserialized_dict.get("endDate"),
 			titulary_id = deserialized_dict.get("titularyId"),
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 		)
 
 @dataclass
@@ -9884,7 +9890,7 @@ class EncryptedInsurability:
 			"startDate": self.start_date,
 			"endDate": self.end_date,
 			"titularyId": self.titulary_id,
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 		}
 
 	@classmethod
@@ -9904,7 +9910,7 @@ class EncryptedInsurability:
 			start_date = deserialized_dict.get("startDate"),
 			end_date = deserialized_dict.get("endDate"),
 			titulary_id = deserialized_dict.get("titularyId"),
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 		)
 
 Insurability = Union['DecryptedInsurability', 'EncryptedInsurability']
@@ -9987,7 +9993,7 @@ class EncryptedPatientHealthCareParty:
 			"sendFormats": {k0.__serialize__(): v0 for k0, v0 in self.send_formats.items()},
 			"referralPeriods": [x0.__serialize__() for x0 in self.referral_periods],
 			"referral": self.referral,
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 		}
 
 	@classmethod
@@ -10003,7 +10009,7 @@ class EncryptedPatientHealthCareParty:
 			send_formats = dict(map(lambda kv0: (TelecomType._deserialize(kv0[0]), kv0[1]), deserialized_dict["sendFormats"].items())),
 			referral_periods = [ReferralPeriod._deserialize(x0) for x0 in deserialized_dict["referralPeriods"]],
 			referral = deserialized_dict["referral"],
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 		)
 
 @dataclass
@@ -10022,7 +10028,7 @@ class DecryptedPatientHealthCareParty:
 			"sendFormats": {k0.__serialize__(): v0 for k0, v0 in self.send_formats.items()},
 			"referralPeriods": [x0.__serialize__() for x0 in self.referral_periods],
 			"referral": self.referral,
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 		}
 
 	@classmethod
@@ -10038,7 +10044,7 @@ class DecryptedPatientHealthCareParty:
 			send_formats = dict(map(lambda kv0: (TelecomType._deserialize(kv0[0]), kv0[1]), deserialized_dict["sendFormats"].items())),
 			referral_periods = [ReferralPeriod._deserialize(x0) for x0 in deserialized_dict["referralPeriods"]],
 			referral = deserialized_dict["referral"],
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 		)
 
 PatientHealthCareParty = Union['EncryptedPatientHealthCareParty', 'DecryptedPatientHealthCareParty']
@@ -10093,7 +10099,7 @@ class EncryptedFinancialInstitutionInformation:
 			"proxyBankAccount": self.proxy_bank_account,
 			"proxyBic": self.proxy_bic,
 			"preferredFiiForPartners": [x0 for x0 in self.preferred_fii_for_partners],
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 		}
 
 	@classmethod
@@ -10111,7 +10117,7 @@ class EncryptedFinancialInstitutionInformation:
 			proxy_bank_account = deserialized_dict.get("proxyBankAccount"),
 			proxy_bic = deserialized_dict.get("proxyBic"),
 			preferred_fii_for_partners = [x0 for x0 in deserialized_dict["preferredFiiForPartners"]],
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 		)
 
 @dataclass
@@ -10134,7 +10140,7 @@ class DecryptedFinancialInstitutionInformation:
 			"proxyBankAccount": self.proxy_bank_account,
 			"proxyBic": self.proxy_bic,
 			"preferredFiiForPartners": [x0 for x0 in self.preferred_fii_for_partners],
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 		}
 
 	@classmethod
@@ -10152,7 +10158,7 @@ class DecryptedFinancialInstitutionInformation:
 			proxy_bank_account = deserialized_dict.get("proxyBankAccount"),
 			proxy_bic = deserialized_dict.get("proxyBic"),
 			preferred_fii_for_partners = [x0 for x0 in deserialized_dict["preferredFiiForPartners"]],
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 		)
 
 FinancialInstitutionInformation = Union['EncryptedFinancialInstitutionInformation', 'DecryptedFinancialInstitutionInformation']
@@ -10257,7 +10263,7 @@ class DecryptedMedicalHouseContract:
 			"status": self.status,
 			"options": {k0: v0 for k0, v0 in self.options.items()},
 			"receipts": {k0: v0 for k0, v0 in self.receipts.items()},
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 		}
 
 	@classmethod
@@ -10300,7 +10306,7 @@ class DecryptedMedicalHouseContract:
 			status = deserialized_dict.get("status"),
 			options = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["options"].items())),
 			receipts = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["receipts"].items())),
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 		)
 
 @dataclass
@@ -10373,7 +10379,7 @@ class EncryptedMedicalHouseContract:
 			"status": self.status,
 			"options": {k0: v0 for k0, v0 in self.options.items()},
 			"receipts": {k0: v0 for k0, v0 in self.receipts.items()},
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 		}
 
 	@classmethod
@@ -10416,7 +10422,7 @@ class EncryptedMedicalHouseContract:
 			status = deserialized_dict.get("status"),
 			options = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["options"].items())),
 			receipts = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["receipts"].items())),
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 		)
 
 MedicalHouseContract = Union['DecryptedMedicalHouseContract', 'EncryptedMedicalHouseContract']
@@ -10462,7 +10468,7 @@ class Delegation:
 		return {
 			"owner": self.owner,
 			"delegatedTo": self.delegated_to,
-			"key": self.key.__serialize__() if self.key is not None else None,
+			"key": self.key,
 			"tags": [x0 for x0 in self.tags],
 		}
 
@@ -10476,7 +10482,7 @@ class Delegation:
 		return cls(
 			owner = deserialized_dict.get("owner"),
 			delegated_to = deserialized_dict.get("delegatedTo"),
-			key = HexString._deserialize(deserialized_dict.get("key")) if deserialized_dict.get("key") is not None else None,
+			key = deserialized_dict.get("key"),
 			tags = [x0 for x0 in deserialized_dict["tags"]],
 		)
 
@@ -10487,8 +10493,8 @@ class SecurityMetadata:
 
 	def __serialize__(self) -> object:
 		return {
-			"secureDelegations": {k0.__serialize__(): v0.__serialize__() for k0, v0 in self.secure_delegations.items()},
-			"keysEquivalences": {k0.__serialize__(): v0.__serialize__() for k0, v0 in self.keys_equivalences.items()},
+			"secureDelegations": {k0: v0.__serialize__() for k0, v0 in self.secure_delegations.items()},
+			"keysEquivalences": {k0: v0 for k0, v0 in self.keys_equivalences.items()},
 		}
 
 	@classmethod
@@ -10499,8 +10505,8 @@ class SecurityMetadata:
 		else:
 			deserialized_dict = data
 		return cls(
-			secure_delegations = dict(map(lambda kv0: (SecureDelegationKeyString._deserialize(kv0[0]), SecureDelegation._deserialize(kv0[1])), deserialized_dict["secureDelegations"].items())),
-			keys_equivalences = dict(map(lambda kv0: (Sha256HexString._deserialize(kv0[0]), Sha256HexString._deserialize(kv0[1])), deserialized_dict["keysEquivalences"].items())),
+			secure_delegations = dict(map(lambda kv0: (kv0[0], SecureDelegation._deserialize(kv0[1])), deserialized_dict["secureDelegations"].items())),
+			keys_equivalences = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["keysEquivalences"].items())),
 		)
 
 @dataclass
@@ -10675,7 +10681,7 @@ class EncryptedFlatRateTarification:
 			"flatRateType": self.flat_rate_type.__serialize__() if self.flat_rate_type is not None else None,
 			"label": {k0: v0 for k0, v0 in self.label.items()} if self.label is not None else None,
 			"valorisations": [x0.__serialize__() for x0 in self.valorisations],
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 		}
 
 	@classmethod
@@ -10690,7 +10696,7 @@ class EncryptedFlatRateTarification:
 			flat_rate_type = FlatRateType._deserialize(deserialized_dict.get("flatRateType")) if deserialized_dict.get("flatRateType") is not None else None,
 			label = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("label").items())) if deserialized_dict.get("label") is not None else None,
 			valorisations = [EncryptedValorisation._deserialize(x0) for x0 in deserialized_dict["valorisations"]],
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 		)
 
 @dataclass
@@ -10707,7 +10713,7 @@ class DecryptedFlatRateTarification:
 			"flatRateType": self.flat_rate_type.__serialize__() if self.flat_rate_type is not None else None,
 			"label": {k0: v0 for k0, v0 in self.label.items()} if self.label is not None else None,
 			"valorisations": [x0.__serialize__() for x0 in self.valorisations],
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 		}
 
 	@classmethod
@@ -10722,7 +10728,7 @@ class DecryptedFlatRateTarification:
 			flat_rate_type = FlatRateType._deserialize(deserialized_dict.get("flatRateType")) if deserialized_dict.get("flatRateType") is not None else None,
 			label = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("label").items())) if deserialized_dict.get("label") is not None else None,
 			valorisations = [DecryptedValorisation._deserialize(x0) for x0 in deserialized_dict["valorisations"]],
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 		)
 
 FlatRateTarification = Union['EncryptedFlatRateTarification', 'DecryptedFlatRateTarification']
@@ -11151,7 +11157,7 @@ class EncryptedValorisation:
 			"doctorSupplement": self.doctor_supplement,
 			"vat": self.vat,
 			"label": {k0: v0 for k0, v0 in self.label.items()} if self.label is not None else None,
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 		}
 
 	@classmethod
@@ -11172,7 +11178,7 @@ class EncryptedValorisation:
 			doctor_supplement = deserialized_dict.get("doctorSupplement"),
 			vat = deserialized_dict.get("vat"),
 			label = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("label").items())) if deserialized_dict.get("label") is not None else None,
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 		)
 
 @dataclass
@@ -11201,7 +11207,7 @@ class DecryptedValorisation:
 			"doctorSupplement": self.doctor_supplement,
 			"vat": self.vat,
 			"label": {k0: v0 for k0, v0 in self.label.items()} if self.label is not None else None,
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 		}
 
 	@classmethod
@@ -11222,7 +11228,7 @@ class DecryptedValorisation:
 			doctor_supplement = deserialized_dict.get("doctorSupplement"),
 			vat = deserialized_dict.get("vat"),
 			label = dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("label").items())) if deserialized_dict.get("label") is not None else None,
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 		)
 
 Valorisation = Union['EncryptedValorisation', 'DecryptedValorisation']
@@ -11693,7 +11699,7 @@ class DecryptedTypedValue:
 			"doubleValue": self.double_value,
 			"stringValue": self.string_value,
 			"dateValue": self.date_value,
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 		}
 
 	@classmethod
@@ -11710,7 +11716,7 @@ class DecryptedTypedValue:
 			double_value = deserialized_dict.get("doubleValue"),
 			string_value = deserialized_dict.get("stringValue"),
 			date_value = deserialized_dict.get("dateValue"),
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 		)
 
 @dataclass
@@ -11731,7 +11737,7 @@ class EncryptedTypedValue:
 			"doubleValue": self.double_value,
 			"stringValue": self.string_value,
 			"dateValue": self.date_value,
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 		}
 
 	@classmethod
@@ -11748,7 +11754,7 @@ class EncryptedTypedValue:
 			double_value = deserialized_dict.get("doubleValue"),
 			string_value = deserialized_dict.get("stringValue"),
 			date_value = deserialized_dict.get("dateValue"),
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 		)
 
 TypedValue = Union['DecryptedTypedValue', 'EncryptedTypedValue']
@@ -12372,7 +12378,7 @@ class EncryptedPlanOfAction:
 			"numberOfCares": self.number_of_cares,
 			"careTeamMemberships": [x0.__serialize__() if x0 is not None else None for x0 in self.care_team_memberships],
 			"relevant": self.relevant,
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 		}
 
 	@classmethod
@@ -12407,7 +12413,7 @@ class EncryptedPlanOfAction:
 			number_of_cares = deserialized_dict.get("numberOfCares"),
 			care_team_memberships = [EncryptedCareTeamMembership._deserialize(x0) if x0 is not None else None for x0 in deserialized_dict["careTeamMemberships"]],
 			relevant = deserialized_dict["relevant"],
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 		)
 
 @dataclass
@@ -12464,7 +12470,7 @@ class DecryptedPlanOfAction:
 			"numberOfCares": self.number_of_cares,
 			"careTeamMemberships": [x0.__serialize__() if x0 is not None else None for x0 in self.care_team_memberships],
 			"relevant": self.relevant,
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 		}
 
 	@classmethod
@@ -12499,7 +12505,7 @@ class DecryptedPlanOfAction:
 			number_of_cares = deserialized_dict.get("numberOfCares"),
 			care_team_memberships = [DecryptedCareTeamMembership._deserialize(x0) if x0 is not None else None for x0 in deserialized_dict["careTeamMemberships"]],
 			relevant = deserialized_dict["relevant"],
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 		)
 
 PlanOfAction = Union['EncryptedPlanOfAction', 'DecryptedPlanOfAction']
@@ -12550,7 +12556,7 @@ class DecryptedEpisode:
 			"comment": self.comment,
 			"startDate": self.start_date,
 			"endDate": self.end_date,
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 		}
 
 	@classmethod
@@ -12566,7 +12572,7 @@ class DecryptedEpisode:
 			comment = deserialized_dict.get("comment"),
 			start_date = deserialized_dict.get("startDate"),
 			end_date = deserialized_dict.get("endDate"),
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 		)
 
 @dataclass
@@ -12585,7 +12591,7 @@ class EncryptedEpisode:
 			"comment": self.comment,
 			"startDate": self.start_date,
 			"endDate": self.end_date,
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 		}
 
 	@classmethod
@@ -12601,7 +12607,7 @@ class EncryptedEpisode:
 			comment = deserialized_dict.get("comment"),
 			start_date = deserialized_dict.get("startDate"),
 			end_date = deserialized_dict.get("endDate"),
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 		)
 
 Episode = Union['DecryptedEpisode', 'EncryptedEpisode']
@@ -12650,7 +12656,7 @@ class EncryptedCareTeamMember:
 			"careTeamMemberType": self.care_team_member_type.__serialize__() if self.care_team_member_type is not None else None,
 			"healthcarePartyId": self.healthcare_party_id,
 			"quality": self.quality.__serialize__() if self.quality is not None else None,
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 		}
 
 	@classmethod
@@ -12665,7 +12671,7 @@ class EncryptedCareTeamMember:
 			care_team_member_type = CareTeamMemberType._deserialize(deserialized_dict.get("careTeamMemberType")) if deserialized_dict.get("careTeamMemberType") is not None else None,
 			healthcare_party_id = deserialized_dict.get("healthcarePartyId"),
 			quality = CodeStub._deserialize(deserialized_dict.get("quality")) if deserialized_dict.get("quality") is not None else None,
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 		)
 
 @dataclass
@@ -12682,7 +12688,7 @@ class DecryptedCareTeamMember:
 			"careTeamMemberType": self.care_team_member_type.__serialize__() if self.care_team_member_type is not None else None,
 			"healthcarePartyId": self.healthcare_party_id,
 			"quality": self.quality.__serialize__() if self.quality is not None else None,
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 		}
 
 	@classmethod
@@ -12697,7 +12703,7 @@ class DecryptedCareTeamMember:
 			care_team_member_type = CareTeamMemberType._deserialize(deserialized_dict.get("careTeamMemberType")) if deserialized_dict.get("careTeamMemberType") is not None else None,
 			healthcare_party_id = deserialized_dict.get("healthcarePartyId"),
 			quality = CodeStub._deserialize(deserialized_dict.get("quality")) if deserialized_dict.get("quality") is not None else None,
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 		)
 
 CareTeamMember = Union['EncryptedCareTeamMember', 'DecryptedCareTeamMember']
@@ -12772,7 +12778,7 @@ class EncryptedSubContact:
 			"healthElementId": self.health_element_id,
 			"classificationId": self.classification_id,
 			"services": [x0.__serialize__() for x0 in self.services],
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 		}
 
 	@classmethod
@@ -12800,7 +12806,7 @@ class EncryptedSubContact:
 			health_element_id = deserialized_dict.get("healthElementId"),
 			classification_id = deserialized_dict.get("classificationId"),
 			services = [ServiceLink._deserialize(x0) for x0 in deserialized_dict["services"]],
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 		)
 
 @dataclass
@@ -12843,7 +12849,7 @@ class DecryptedSubContact:
 			"healthElementId": self.health_element_id,
 			"classificationId": self.classification_id,
 			"services": [x0.__serialize__() for x0 in self.services],
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 		}
 
 	@classmethod
@@ -12871,7 +12877,7 @@ class DecryptedSubContact:
 			health_element_id = deserialized_dict.get("healthElementId"),
 			classification_id = deserialized_dict.get("classificationId"),
 			services = [ServiceLink._deserialize(x0) for x0 in deserialized_dict["services"]],
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 		)
 
 SubContact = Union['EncryptedSubContact', 'DecryptedSubContact']
@@ -13530,7 +13536,7 @@ class EncryptedTelecom:
 			"telecomType": self.telecom_type.__serialize__() if self.telecom_type is not None else None,
 			"telecomNumber": self.telecom_number,
 			"telecomDescription": self.telecom_description,
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 		}
 
 	@classmethod
@@ -13544,7 +13550,7 @@ class EncryptedTelecom:
 			telecom_type = TelecomType._deserialize(deserialized_dict.get("telecomType")) if deserialized_dict.get("telecomType") is not None else None,
 			telecom_number = deserialized_dict.get("telecomNumber"),
 			telecom_description = deserialized_dict.get("telecomDescription"),
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 		)
 
 @dataclass
@@ -13559,7 +13565,7 @@ class DecryptedTelecom:
 			"telecomType": self.telecom_type.__serialize__() if self.telecom_type is not None else None,
 			"telecomNumber": self.telecom_number,
 			"telecomDescription": self.telecom_description,
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 		}
 
 	@classmethod
@@ -13573,7 +13579,7 @@ class DecryptedTelecom:
 			telecom_type = TelecomType._deserialize(deserialized_dict.get("telecomType")) if deserialized_dict.get("telecomType") is not None else None,
 			telecom_number = deserialized_dict.get("telecomNumber"),
 			telecom_description = deserialized_dict.get("telecomDescription"),
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 		)
 
 Telecom = Union['EncryptedTelecom', 'DecryptedTelecom']
@@ -13889,10 +13895,10 @@ class SecureDelegation:
 		return {
 			"delegator": self.delegator,
 			"delegate": self.delegate,
-			"secretIds": [x0.__serialize__() for x0 in self.secret_ids],
-			"encryptionKeys": [x0.__serialize__() for x0 in self.encryption_keys],
-			"owningEntityIds": [x0.__serialize__() for x0 in self.owning_entity_ids],
-			"parentDelegations": [x0.__serialize__() for x0 in self.parent_delegations],
+			"secretIds": [x0 for x0 in self.secret_ids],
+			"encryptionKeys": [x0 for x0 in self.encryption_keys],
+			"owningEntityIds": [x0 for x0 in self.owning_entity_ids],
+			"parentDelegations": [x0 for x0 in self.parent_delegations],
 			"exchangeDataId": self.exchange_data_id,
 			"permissions": self.permissions.__serialize__(),
 		}
@@ -13907,10 +13913,10 @@ class SecureDelegation:
 		return cls(
 			delegator = deserialized_dict.get("delegator"),
 			delegate = deserialized_dict.get("delegate"),
-			secret_ids = [Base64String._deserialize(x0) for x0 in deserialized_dict["secretIds"]],
-			encryption_keys = [Base64String._deserialize(x0) for x0 in deserialized_dict["encryptionKeys"]],
-			owning_entity_ids = [Base64String._deserialize(x0) for x0 in deserialized_dict["owningEntityIds"]],
-			parent_delegations = [SecureDelegationKeyString._deserialize(x0) for x0 in deserialized_dict["parentDelegations"]],
+			secret_ids = [x0 for x0 in deserialized_dict["secretIds"]],
+			encryption_keys = [x0 for x0 in deserialized_dict["encryptionKeys"]],
+			owning_entity_ids = [x0 for x0 in deserialized_dict["owningEntityIds"]],
+			parent_delegations = [x0 for x0 in deserialized_dict["parentDelegations"]],
 			exchange_data_id = deserialized_dict.get("exchangeDataId"),
 			permissions = AccessLevel._deserialize(deserialized_dict["permissions"]),
 		)
@@ -14398,7 +14404,7 @@ class DecryptedCareTeamMembership:
 			"endDate": self.end_date,
 			"careTeamMemberId": self.care_team_member_id,
 			"membershipType": self.membership_type.__serialize__() if self.membership_type is not None else None,
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 		}
 
 	@classmethod
@@ -14413,7 +14419,7 @@ class DecryptedCareTeamMembership:
 			end_date = deserialized_dict.get("endDate"),
 			care_team_member_id = deserialized_dict.get("careTeamMemberId"),
 			membership_type = MembershipType._deserialize(deserialized_dict.get("membershipType")) if deserialized_dict.get("membershipType") is not None else None,
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 		)
 
 @dataclass
@@ -14430,7 +14436,7 @@ class EncryptedCareTeamMembership:
 			"endDate": self.end_date,
 			"careTeamMemberId": self.care_team_member_id,
 			"membershipType": self.membership_type.__serialize__() if self.membership_type is not None else None,
-			"encryptedSelf": self.encrypted_self.__serialize__() if self.encrypted_self is not None else None,
+			"encryptedSelf": self.encrypted_self,
 		}
 
 	@classmethod
@@ -14445,7 +14451,7 @@ class EncryptedCareTeamMembership:
 			end_date = deserialized_dict.get("endDate"),
 			care_team_member_id = deserialized_dict.get("careTeamMemberId"),
 			membership_type = MembershipType._deserialize(deserialized_dict.get("membershipType")) if deserialized_dict.get("membershipType") is not None else None,
-			encrypted_self = Base64String._deserialize(deserialized_dict.get("encryptedSelf")) if deserialized_dict.get("encryptedSelf") is not None else None,
+			encrypted_self = deserialized_dict.get("encryptedSelf"),
 		)
 
 CareTeamMembership = Union['DecryptedCareTeamMembership', 'EncryptedCareTeamMembership']
@@ -14524,7 +14530,26 @@ class DatabaseSynchronization:
 	source: Optional[str] = None
 	target: Optional[str] = None
 	filter: Optional[str] = None
-	local_target: Optional['Target'] = None
+	local_target: Optional['DatabaseSynchronization.Target'] = None
+
+	class Target(Enum):
+		Base = "base"
+		Healthdata = "healthdata"
+		Patient = "patient"
+
+		def __serialize__(self) -> object:
+			return self.value
+
+		@classmethod
+		def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Target':
+			if data == "base":
+				return Target.Base
+			elif data == "healthdata":
+				return Target.Healthdata
+			elif data == "patient":
+				return Target.Patient
+			else:
+				raise Exception(f"{data} is not a valid value for Target enum.")
 
 	def __serialize__(self) -> object:
 		return {
@@ -14545,27 +14570,8 @@ class DatabaseSynchronization:
 			source = deserialized_dict.get("source"),
 			target = deserialized_dict.get("target"),
 			filter = deserialized_dict.get("filter"),
-			local_target = Target._deserialize(deserialized_dict.get("localTarget")) if deserialized_dict.get("localTarget") is not None else None,
+			local_target = DatabaseSynchronization.Target._deserialize(deserialized_dict.get("localTarget")) if deserialized_dict.get("localTarget") is not None else None,
 		)
-
-	class Target(Enum):
-		Base = "base"
-		Healthdata = "healthdata"
-		Patient = "patient"
-
-		def __serialize__(self) -> object:
-			return self.value
-
-		@classmethod
-		def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Target':
-			if data == "base":
-				return Target.Base
-			elif data == "healthdata":
-				return Target.Healthdata
-			elif data == "patient":
-				return Target.Patient
-			else:
-				raise Exception(f"{data} is not a valid value for Target enum.")
 
 @dataclass
 class Basic:

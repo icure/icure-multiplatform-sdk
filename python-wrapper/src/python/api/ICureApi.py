@@ -39,14 +39,14 @@ class ICureApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ICureApi.getVersionBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = result_info["success"]
+			return_value = result_info.success
 			return return_value
 
 	async def is_ready_async(self) -> str:
@@ -77,14 +77,14 @@ class ICureApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ICureApi.isReadyBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = result_info["success"]
+			return_value = result_info.success
 			return return_value
 
 	async def get_process_info_async(self) -> str:
@@ -115,14 +115,14 @@ class ICureApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ICureApi.getProcessInfoBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = result_info["success"]
+			return_value = result_info.success
 			return return_value
 
 	async def get_indexing_info_async(self) -> IndexingInfo:
@@ -153,14 +153,14 @@ class ICureApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ICureApi.getIndexingInfoBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = IndexingInfo._deserialize(result_info["success"])
+			return_value = IndexingInfo._deserialize(result_info.success)
 			return return_value
 
 	async def get_replication_info_async(self) -> ReplicationInfo:
@@ -191,14 +191,14 @@ class ICureApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ICureApi.getReplicationInfoBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = ReplicationInfo._deserialize(result_info["success"])
+			return_value = ReplicationInfo._deserialize(result_info.success)
 			return return_value
 
 	async def update_design_doc_async(self, entity_name: str, warmup: Optional[bool] = None) -> bool:
@@ -233,14 +233,14 @@ class ICureApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ICureApi.updateDesignDocBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = result_info["success"]
+			return_value = result_info.success
 			return return_value
 
 	async def resolve_patients_conflicts_async(self, limit: Optional[int] = None) -> List[IdWithRev]:
@@ -273,14 +273,14 @@ class ICureApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ICureApi.resolvePatientsConflictsBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [IdWithRev._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [IdWithRev._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def resolve_contacts_conflicts_async(self, limit: Optional[int] = None) -> List[IdWithRev]:
@@ -313,14 +313,14 @@ class ICureApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ICureApi.resolveContactsConflictsBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [IdWithRev._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [IdWithRev._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def resolve_forms_conflicts_async(self, limit: Optional[int] = None) -> List[IdWithRev]:
@@ -353,14 +353,14 @@ class ICureApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ICureApi.resolveFormsConflictsBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [IdWithRev._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [IdWithRev._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def resolve_health_elements_conflicts_async(self, limit: Optional[int] = None) -> List[IdWithRev]:
@@ -393,14 +393,14 @@ class ICureApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ICureApi.resolveHealthElementsConflictsBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [IdWithRev._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [IdWithRev._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def resolve_invoices_conflicts_async(self, limit: Optional[int] = None) -> List[IdWithRev]:
@@ -433,14 +433,14 @@ class ICureApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ICureApi.resolveInvoicesConflictsBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [IdWithRev._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [IdWithRev._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def resolve_messages_conflicts_async(self, limit: Optional[int] = None) -> List[IdWithRev]:
@@ -473,14 +473,14 @@ class ICureApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ICureApi.resolveMessagesConflictsBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [IdWithRev._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [IdWithRev._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def resolve_documents_conflicts_async(self, ids: Optional[str] = None, limit: Optional[int] = None) -> List[IdWithRev]:
@@ -515,14 +515,14 @@ class ICureApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ICureApi.resolveDocumentsConflictsBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = [IdWithRev._deserialize(x1) for x1 in result_info["success"]]
+			return_value = [IdWithRev._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def get_indexing_info_by_group_async(self, group_id: str) -> IndexingInfo:
@@ -555,14 +555,14 @@ class ICureApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ICureApi.getIndexingInfoByGroupBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = IndexingInfo._deserialize(result_info["success"])
+			return_value = IndexingInfo._deserialize(result_info.success)
 			return return_value
 
 	async def get_replicator_info_async(self, id: str) -> ReplicatorDocument:
@@ -595,14 +595,14 @@ class ICureApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ICureApi.getReplicatorInfoBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = ReplicatorDocument._deserialize(result_info["success"])
+			return_value = ReplicatorDocument._deserialize(result_info.success)
 			return return_value
 
 	async def evict_all_from_map_async(self, map_name: str) -> str:
@@ -635,12 +635,12 @@ class ICureApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ICureApi.evictAllFromMapBlocking(
 			self.icure_sdk.native,
-			json.dumps(payload)
+			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
-		if "failure" in result_info and result_info.get("failure") is not None:
-			raise Exception(result_info["failure"])
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
 		else:
-			return_value = result_info["success"]
+			return_value = result_info.success
 			return return_value
