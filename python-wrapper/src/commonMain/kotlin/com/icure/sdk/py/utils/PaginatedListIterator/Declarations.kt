@@ -86,7 +86,7 @@ internal class PaginatedListIteratorAndSerializer<T : Any>(
 	suspend fun hasNext(): Boolean =
 		hasNext()
 	suspend fun nextAsJson(limit: Int): JsonElement =
-		Serialization.json.encodeToJsonElement(ListSerializer(serializer), iterator.next(limit))
+		Serialization.fullJson.encodeToJsonElement(ListSerializer(serializer), iterator.next(limit))
 }
 
 @OptIn(ExperimentalForeignApi::class)
