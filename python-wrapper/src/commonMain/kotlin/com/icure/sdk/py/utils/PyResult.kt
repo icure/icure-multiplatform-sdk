@@ -29,14 +29,9 @@ private fun Throwable.stringForPy() =
 internal fun <T : Any> Result<T?>.toPyString(
 	serializer: KSerializer<T>,
 ) =
-	fold(
-		onSuccess = { res ->
-			JsonObject(mapOf("success" to (res?.let { Serialization.fullJson.encodeToJsonElement(serializer, it) } ?: JsonNull)))
-		},
-		onFailure = { e ->
-			JsonObject(mapOf("failure" to JsonPrimitive(e.stringForPy())))
-		}
-	).toString()
+	map { res ->
+		res?.let { Serialization.fullJson.encodeToJsonElement(serializer, it) } ?: JsonNull
+	}.toPyJson()
 
 /**
  * Calls the python callback with the result as a string.
@@ -50,17 +45,9 @@ internal fun <T : Any> Result<T?>.toPyStringAsyncCallback(
 	serializer: KSerializer<T>,
 	callback: CPointer<CFunction<(result: CValues<ByteVarOf<Byte>>?, error: CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ) =
-	fold(
-		onSuccess = { res ->
-			callback.invoke(
-				res?.let { Serialization.fullJson.encodeToString(serializer, it).cstr } ?: "null".cstr,
-				null
-			)
-		},
-		onFailure = { e ->
-			callback.invoke(null, e.stringForPy().cstr)
-		}
-	).toString()
+	map { res ->
+		res?.let { Serialization.fullJson.encodeToJsonElement(serializer, it) } ?: JsonNull
+	}.toPyJsonAsyncCallback(callback)
 
 /**
  * Same as [toPyString] but the successful result is already encoded to json
