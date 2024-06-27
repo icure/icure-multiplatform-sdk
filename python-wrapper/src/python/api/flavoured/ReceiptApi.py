@@ -6,7 +6,7 @@ from model.CallResult import CallResult, create_result_from_json
 from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from ctypes import cast, c_char_p
 from typing import Optional, Dict, List
-from crypto import SecretIdOption, serialize_secret_id_option, ShareMetadataBehaviour, deserialize_simple_share_result, SimpleShareResult, ReceiptShareOptions
+from crypto import SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_secret_id_option, ShareMetadataBehaviour, deserialize_simple_share_result, SimpleShareResult, ReceiptShareOptions
 from model.specializations import HexString
 
 class ReceiptApi:
@@ -570,7 +570,7 @@ class ReceiptApi:
 			return_value = DecryptedReceipt._deserialize(result_info.success)
 			return return_value
 
-	async def with_encryption_metadata_async(self, base: Optional[DecryptedReceipt], patient: Optional[Patient], user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOption.UseAnySharedWithParent) -> DecryptedReceipt:
+	async def with_encryption_metadata_async(self, base: Optional[DecryptedReceipt], patient: Optional[Patient], user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOptionUseAnySharedWithParent) -> DecryptedReceipt:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -598,7 +598,7 @@ class ReceiptApi:
 		)
 		return await future
 
-	def with_encryption_metadata_blocking(self, base: Optional[DecryptedReceipt], patient: Optional[Patient], user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOption.UseAnySharedWithParent) -> DecryptedReceipt:
+	def with_encryption_metadata_blocking(self, base: Optional[DecryptedReceipt], patient: Optional[Patient], user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOptionUseAnySharedWithParent) -> DecryptedReceipt:
 		payload = {
 			"base": base.__serialize__() if base is not None else None,
 			"patient": serialize_patient(patient) if patient is not None else None,

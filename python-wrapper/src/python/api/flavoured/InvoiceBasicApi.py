@@ -743,7 +743,7 @@ class InvoiceBasicApi:
 			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def list_invoices_by_hc_party_sent_medium_type_invoice_type_sent_date_async(self, hc_party_id: str, sent_medium_type: MediumType, invoice_type: InvoiceType, sent: bool, from: Optional[int] = None, to: Optional[int] = None) -> List[EncryptedInvoice]:
+	async def list_invoices_by_hc_party_sent_medium_type_invoice_type_sent_date_async(self, hc_party_id: str, sent_medium_type: MediumType, invoice_type: InvoiceType, sent: bool, from_: Optional[int] = None, to: Optional[int] = None) -> List[EncryptedInvoice]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -759,7 +759,7 @@ class InvoiceBasicApi:
 			"sent_medium_type": sent_medium_type.__serialize__(),
 			"invoice_type": invoice_type.__serialize__(),
 			"sent": sent,
-			"from": from,
+			"from": from_,
 			"to": to,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -772,13 +772,13 @@ class InvoiceBasicApi:
 		)
 		return await future
 
-	def list_invoices_by_hc_party_sent_medium_type_invoice_type_sent_date_blocking(self, hc_party_id: str, sent_medium_type: MediumType, invoice_type: InvoiceType, sent: bool, from: Optional[int] = None, to: Optional[int] = None) -> List[EncryptedInvoice]:
+	def list_invoices_by_hc_party_sent_medium_type_invoice_type_sent_date_blocking(self, hc_party_id: str, sent_medium_type: MediumType, invoice_type: InvoiceType, sent: bool, from_: Optional[int] = None, to: Optional[int] = None) -> List[EncryptedInvoice]:
 		payload = {
 			"hc_party_id": hc_party_id,
 			"sent_medium_type": sent_medium_type.__serialize__(),
 			"invoice_type": invoice_type.__serialize__(),
 			"sent": sent,
-			"from": from,
+			"from": from_,
 			"to": to,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDateBlocking(
@@ -1073,7 +1073,7 @@ class InvoiceBasicApi:
 			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def list_invoices_by_hcparty_sending_mode_status_date_async(self, hc_party_id: str, sending_mode: str, status: str, from: int, to: int) -> List[EncryptedInvoice]:
+	async def list_invoices_by_hcparty_sending_mode_status_date_async(self, hc_party_id: str, sending_mode: str, status: str, from_: int, to: int) -> List[EncryptedInvoice]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1088,7 +1088,7 @@ class InvoiceBasicApi:
 			"hc_party_id": hc_party_id,
 			"sending_mode": sending_mode,
 			"status": status,
-			"from": from,
+			"from": from_,
 			"to": to,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -1101,12 +1101,12 @@ class InvoiceBasicApi:
 		)
 		return await future
 
-	def list_invoices_by_hcparty_sending_mode_status_date_blocking(self, hc_party_id: str, sending_mode: str, status: str, from: int, to: int) -> List[EncryptedInvoice]:
+	def list_invoices_by_hcparty_sending_mode_status_date_blocking(self, hc_party_id: str, sending_mode: str, status: str, from_: int, to: int) -> List[EncryptedInvoice]:
 		payload = {
 			"hc_party_id": hc_party_id,
 			"sending_mode": sending_mode,
 			"status": status,
-			"from": from,
+			"from": from_,
 			"to": to,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicFlavouredApi.listInvoicesByHcpartySendingModeStatusDateBlocking(
@@ -1161,7 +1161,7 @@ class InvoiceBasicApi:
 			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def list_all_hcps_by_status_async(self, status: str, hcp_ids: List[str], from: Optional[int] = None, to: Optional[int] = None) -> List[EncryptedInvoice]:
+	async def list_all_hcps_by_status_async(self, status: str, hcp_ids: List[str], from_: Optional[int] = None, to: Optional[int] = None) -> List[EncryptedInvoice]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1174,7 +1174,7 @@ class InvoiceBasicApi:
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"status": status,
-			"from": from,
+			"from": from_,
 			"to": to,
 			"hcp_ids": [x0 for x0 in hcp_ids],
 		}
@@ -1188,10 +1188,10 @@ class InvoiceBasicApi:
 		)
 		return await future
 
-	def list_all_hcps_by_status_blocking(self, status: str, hcp_ids: List[str], from: Optional[int] = None, to: Optional[int] = None) -> List[EncryptedInvoice]:
+	def list_all_hcps_by_status_blocking(self, status: str, hcp_ids: List[str], from_: Optional[int] = None, to: Optional[int] = None) -> List[EncryptedInvoice]:
 		payload = {
 			"status": status,
-			"from": from,
+			"from": from_,
 			"to": to,
 			"hcp_ids": [x0 for x0 in hcp_ids],
 		}

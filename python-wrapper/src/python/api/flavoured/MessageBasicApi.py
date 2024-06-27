@@ -605,7 +605,7 @@ class MessageBasicApi:
 			)
 			return return_value
 
-	async def find_messages_by_transport_guid_sent_date_async(self, transport_guid: str, from: int, to: int, start_key: Optional[Dict[str, object]] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, hcp_id: Optional[str] = None) -> PaginatedList:
+	async def find_messages_by_transport_guid_sent_date_async(self, transport_guid: str, from_: int, to: int, start_key: Optional[Dict[str, object]] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, hcp_id: Optional[str] = None) -> PaginatedList:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -622,7 +622,7 @@ class MessageBasicApi:
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"transport_guid": transport_guid,
-			"from": from,
+			"from": from_,
 			"to": to,
 			"start_key": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
 			"start_document_id": start_document_id,
@@ -639,10 +639,10 @@ class MessageBasicApi:
 		)
 		return await future
 
-	def find_messages_by_transport_guid_sent_date_blocking(self, transport_guid: str, from: int, to: int, start_key: Optional[Dict[str, object]] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, hcp_id: Optional[str] = None) -> PaginatedList:
+	def find_messages_by_transport_guid_sent_date_blocking(self, transport_guid: str, from_: int, to: int, start_key: Optional[Dict[str, object]] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, hcp_id: Optional[str] = None) -> PaginatedList:
 		payload = {
 			"transport_guid": transport_guid,
-			"from": from,
+			"from": from_,
 			"to": to,
 			"start_key": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
 			"start_document_id": start_document_id,

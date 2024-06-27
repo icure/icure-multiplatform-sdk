@@ -106,7 +106,7 @@ interface ReceiptApi : ReceiptBasicFlavourlessApi, ReceiptFlavouredApi<Decrypted
 		user: User? = null,
 		@DefaultValue("emptyMap()")
 		delegates: Map<String, AccessLevel> = emptyMap(),
-		@DefaultValue("SecretIdOption.UseAnySharedWithParent")
+		@DefaultValue("com.icure.sdk.crypto.entities.SecretIdOption.UseAnySharedWithParent")
 		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent,
 	): DecryptedReceipt
 	suspend fun getAndDecryptReceiptAttachment(receipt: Receipt, attachmentId: String): ByteArray
