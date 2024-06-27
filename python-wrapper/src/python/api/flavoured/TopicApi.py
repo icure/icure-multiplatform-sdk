@@ -845,7 +845,7 @@ class TopicApi:
 			return_value = DecryptedTopic._deserialize(result_info.success)
 			return return_value
 
-	async def with_encryption_metadata_async(self, base: Optional[DecryptedTopic], patient: Optional[Patient], user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOptionUseAnySharedWithParent) -> DecryptedTopic:
+	async def with_encryption_metadata_async(self, base: Optional[DecryptedTopic], patient: Optional[Patient], user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOptionUseAnySharedWithParent()) -> DecryptedTopic:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -873,7 +873,7 @@ class TopicApi:
 		)
 		return await future
 
-	def with_encryption_metadata_blocking(self, base: Optional[DecryptedTopic], patient: Optional[Patient], user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOptionUseAnySharedWithParent) -> DecryptedTopic:
+	def with_encryption_metadata_blocking(self, base: Optional[DecryptedTopic], patient: Optional[Patient], user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOptionUseAnySharedWithParent()) -> DecryptedTopic:
 		payload = {
 			"base": base.__serialize__() if base is not None else None,
 			"patient": serialize_patient(patient) if patient is not None else None,

@@ -1467,7 +1467,7 @@ class DocumentApi:
 			return_value = DecryptedDocument._deserialize(result_info.success)
 			return return_value
 
-	async def with_encryption_metadata_async(self, base: Optional[DecryptedDocument], message: Optional[Message], user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOptionUseAnySharedWithParent) -> DecryptedDocument:
+	async def with_encryption_metadata_async(self, base: Optional[DecryptedDocument], message: Optional[Message], user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOptionUseAnySharedWithParent()) -> DecryptedDocument:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1495,7 +1495,7 @@ class DocumentApi:
 		)
 		return await future
 
-	def with_encryption_metadata_blocking(self, base: Optional[DecryptedDocument], message: Optional[Message], user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOptionUseAnySharedWithParent) -> DecryptedDocument:
+	def with_encryption_metadata_blocking(self, base: Optional[DecryptedDocument], message: Optional[Message], user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOptionUseAnySharedWithParent()) -> DecryptedDocument:
 		payload = {
 			"base": base.__serialize__() if base is not None else None,
 			"message": serialize_message(message) if message is not None else None,
