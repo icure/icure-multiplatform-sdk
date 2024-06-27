@@ -48,7 +48,8 @@ public fun deleteDocumentBlocking(sdk: IcureBaseApis, params: String): String = 
 public fun deleteDocumentAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteDocumentParams>(params)
 	GlobalScope.launch {
@@ -79,7 +80,8 @@ public fun deleteDocumentsBlocking(sdk: IcureBaseApis, params: String): String =
 public fun deleteDocumentsAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteDocumentsParams>(params)
 	GlobalScope.launch {
@@ -112,7 +114,8 @@ public fun getRawMainAttachmentBlocking(sdk: IcureBaseApis, params: String): Str
 public fun getRawMainAttachmentAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetRawMainAttachmentParams>(params)
 	GlobalScope.launch {
@@ -146,7 +149,8 @@ public fun getMainAttachmentAsPlainTextBlocking(sdk: IcureBaseApis, params: Stri
 public fun getMainAttachmentAsPlainTextAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetMainAttachmentAsPlainTextParams>(params)
 	GlobalScope.launch {
@@ -180,7 +184,8 @@ public fun getMainAttachmentAsJsonBlocking(sdk: IcureBaseApis, params: String): 
 public fun getMainAttachmentAsJsonAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetMainAttachmentAsJsonParams>(params)
 	GlobalScope.launch {
@@ -216,7 +221,8 @@ public fun getRawSecondaryAttachmentBlocking(sdk: IcureBaseApis, params: String)
 public fun getRawSecondaryAttachmentAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetRawSecondaryAttachmentParams>(params)
 	GlobalScope.launch {
@@ -248,7 +254,8 @@ public fun modifyDocumentBlocking(sdk: IcureBaseApis, params: String): String = 
 public fun modifyDocumentAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyDocumentParams>(params)
 	GlobalScope.launch {
@@ -278,7 +285,8 @@ public fun getDocumentBlocking(sdk: IcureBaseApis, params: String): String = kot
 public fun getDocumentAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetDocumentParams>(params)
 	GlobalScope.launch {
@@ -309,7 +317,8 @@ public fun getDocumentByExternalUuidBlocking(sdk: IcureBaseApis, params: String)
 public fun getDocumentByExternalUuidAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetDocumentByExternalUuidParams>(params)
 	GlobalScope.launch {
@@ -340,7 +349,8 @@ public fun getDocumentsByExternalUuidBlocking(sdk: IcureBaseApis, params: String
 public fun getDocumentsByExternalUuidAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetDocumentsByExternalUuidParams>(params)
 	GlobalScope.launch {
@@ -370,7 +380,8 @@ public fun getDocumentsBlocking(sdk: IcureBaseApis, params: String): String = ko
 public fun getDocumentsAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetDocumentsParams>(params)
 	GlobalScope.launch {
@@ -401,7 +412,8 @@ public fun modifyDocumentsBlocking(sdk: IcureBaseApis, params: String): String =
 public fun modifyDocumentsAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyDocumentsParams>(params)
 	GlobalScope.launch {
@@ -436,7 +448,8 @@ public fun listDocumentsByHcPartyMessageForeignKeysBlocking(sdk: IcureBaseApis, 
 public fun listDocumentsByHcPartyMessageForeignKeysAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListDocumentsByHcPartyMessageForeignKeysParams>(params)
 	GlobalScope.launch {
@@ -469,7 +482,8 @@ public fun findWithoutDelegationBlocking(sdk: IcureBaseApis, params: String): St
 public fun findWithoutDelegationAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FindWithoutDelegationParams>(params)
 	GlobalScope.launch {
@@ -510,7 +524,8 @@ public fun setRawMainAttachmentBlocking(sdk: IcureBaseApis, params: String): Str
 public fun setRawMainAttachmentAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<SetRawMainAttachmentParams>(params)
 	GlobalScope.launch {
@@ -558,7 +573,8 @@ public fun setRawSecondaryAttachmentBlocking(sdk: IcureBaseApis, params: String)
 public fun setRawSecondaryAttachmentAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<SetRawSecondaryAttachmentParams>(params)
 	GlobalScope.launch {
@@ -597,7 +613,8 @@ public fun deleteMainAttachmentBlocking(sdk: IcureBaseApis, params: String): Str
 public fun deleteMainAttachmentAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteMainAttachmentParams>(params)
 	GlobalScope.launch {
@@ -633,7 +650,8 @@ public fun deleteSecondaryAttachmentBlocking(sdk: IcureBaseApis, params: String)
 public fun deleteSecondaryAttachmentAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteSecondaryAttachmentParams>(params)
 	GlobalScope.launch {

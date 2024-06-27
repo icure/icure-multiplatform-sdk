@@ -58,7 +58,8 @@ public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.ru
 public fun shareWithAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ShareWithParams>(params)
 	GlobalScope.launch {
@@ -94,7 +95,8 @@ public fun tryShareWithManyBlocking(sdk: IcureApis, params: String): String = ko
 public fun tryShareWithManyAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<TryShareWithManyParams>(params)
 	GlobalScope.launch {
@@ -127,7 +129,8 @@ public fun shareWithManyBlocking(sdk: IcureApis, params: String): String = kotli
 public fun shareWithManyAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ShareWithManyParams>(params)
 	GlobalScope.launch {
@@ -158,7 +161,8 @@ public fun modifyTimeTableBlocking(sdk: IcureApis, params: String): String = kot
 public fun modifyTimeTableAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyTimeTableParams>(params)
 	GlobalScope.launch {
@@ -188,7 +192,8 @@ public fun getTimeTableBlocking(sdk: IcureApis, params: String): String = kotlin
 public fun getTimeTableAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetTimeTableParams>(params)
 	GlobalScope.launch {
@@ -223,7 +228,8 @@ public fun getTimeTablesByPeriodAndAgendaIdBlocking(sdk: IcureApis, params: Stri
 public fun getTimeTablesByPeriodAndAgendaIdAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetTimeTablesByPeriodAndAgendaIdParams>(params)
 	GlobalScope.launch {
@@ -256,7 +262,8 @@ public fun getTimeTablesByAgendaIdBlocking(sdk: IcureApis, params: String): Stri
 public fun getTimeTablesByAgendaIdAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetTimeTablesByAgendaIdParams>(params)
 	GlobalScope.launch {

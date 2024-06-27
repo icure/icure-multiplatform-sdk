@@ -30,8 +30,8 @@ public fun getApplicationSettingsBlocking(sdk: IcureNonCryptoApis): String = kot
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getApplicationSettingsAsync(sdk: IcureNonCryptoApis,
-		resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>):
-		Unit = kotlin.runCatching {
+		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+		CValues<ByteVarOf<Byte>>?) -> Unit>>): Unit = kotlin.runCatching {
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.applicationSettings.getApplicationSettings()
@@ -58,7 +58,8 @@ public fun createApplicationSettingsBlocking(sdk: IcureNonCryptoApis, params: St
 public fun createApplicationSettingsAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CreateApplicationSettingsParams>(params)
 	GlobalScope.launch {
@@ -89,7 +90,8 @@ public fun updateApplicationSettingsBlocking(sdk: IcureNonCryptoApis, params: St
 public fun updateApplicationSettingsAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<UpdateApplicationSettingsParams>(params)
 	GlobalScope.launch {

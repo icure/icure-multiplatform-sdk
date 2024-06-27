@@ -67,7 +67,8 @@ public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.ru
 public fun shareWithAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ShareWithParams>(params)
 	GlobalScope.launch {
@@ -104,7 +105,8 @@ public fun tryShareWithManyBlocking(sdk: IcureApis, params: String): String = ko
 public fun tryShareWithManyAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<TryShareWithManyParams>(params)
 	GlobalScope.launch {
@@ -138,7 +140,8 @@ public fun shareWithManyBlocking(sdk: IcureApis, params: String): String = kotli
 public fun shareWithManyAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ShareWithManyParams>(params)
 	GlobalScope.launch {
@@ -180,7 +183,7 @@ public fun findFormsByHcPartyPatientBlocking(sdk: IcureApis, params: String): Py
 public fun findFormsByHcPartyPatientAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<COpaquePointer?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FindFormsByHcPartyPatientParams>(params)
 	GlobalScope.launch {
@@ -215,7 +218,8 @@ public fun modifyFormBlocking(sdk: IcureApis, params: String): String = kotlin.r
 public fun modifyFormAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyFormParams>(params)
 	GlobalScope.launch {
@@ -245,7 +249,8 @@ public fun modifyFormsBlocking(sdk: IcureApis, params: String): String = kotlin.
 public fun modifyFormsAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyFormsParams>(params)
 	GlobalScope.launch {
@@ -275,7 +280,8 @@ public fun getFormBlocking(sdk: IcureApis, params: String): String = kotlin.runC
 public fun getFormAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetFormParams>(params)
 	GlobalScope.launch {
@@ -305,7 +311,8 @@ public fun getFormsBlocking(sdk: IcureApis, params: String): String = kotlin.run
 public fun getFormsAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetFormsParams>(params)
 	GlobalScope.launch {
@@ -336,7 +343,8 @@ public fun getFormByLogicalUuidBlocking(sdk: IcureApis, params: String): String 
 public fun getFormByLogicalUuidAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetFormByLogicalUuidParams>(params)
 	GlobalScope.launch {
@@ -367,7 +375,8 @@ public fun getFormsByLogicalUuidBlocking(sdk: IcureApis, params: String): String
 public fun getFormsByLogicalUuidAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetFormsByLogicalUuidParams>(params)
 	GlobalScope.launch {
@@ -397,7 +406,8 @@ public fun getFormsByUniqueIdBlocking(sdk: IcureApis, params: String): String = 
 public fun getFormsByUniqueIdAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetFormsByUniqueIdParams>(params)
 	GlobalScope.launch {
@@ -427,7 +437,8 @@ public fun getFormByUniqueIdBlocking(sdk: IcureApis, params: String): String = k
 public fun getFormByUniqueIdAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetFormByUniqueIdParams>(params)
 	GlobalScope.launch {
@@ -459,7 +470,8 @@ public fun getChildrenFormsBlocking(sdk: IcureApis, params: String): String = ko
 public fun getChildrenFormsAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetChildrenFormsParams>(params)
 	GlobalScope.launch {
@@ -499,7 +511,8 @@ public fun listFormsByHCPartyAndPatientForeignKeysBlocking(sdk: IcureApis, param
 public fun listFormsByHCPartyAndPatientForeignKeysAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListFormsByHCPartyAndPatientForeignKeysParams>(params)
 	GlobalScope.launch {

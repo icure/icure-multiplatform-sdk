@@ -62,7 +62,8 @@ public fun updateSelfSplitsBlocking(sdk: IcureApis, params: String): String = ko
 public fun updateSelfSplitsAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<UpdateSelfSplitsParams>(params)
 	GlobalScope.launch {

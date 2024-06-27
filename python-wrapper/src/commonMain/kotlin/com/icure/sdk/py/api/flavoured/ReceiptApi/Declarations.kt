@@ -62,7 +62,8 @@ public fun createReceiptBlocking(sdk: IcureApis, params: String): String = kotli
 public fun createReceiptAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CreateReceiptParams>(params)
 	GlobalScope.launch {
@@ -102,7 +103,8 @@ public fun withEncryptionMetadataBlocking(sdk: IcureApis, params: String): Strin
 public fun withEncryptionMetadataAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<WithEncryptionMetadataParams>(params)
 	GlobalScope.launch {
@@ -140,7 +142,8 @@ public fun getAndDecryptReceiptAttachmentBlocking(sdk: IcureApis, params: String
 public fun getAndDecryptReceiptAttachmentAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetAndDecryptReceiptAttachmentParams>(params)
 	GlobalScope.launch {
@@ -177,7 +180,8 @@ public fun encryptAndSetReceiptAttachmentBlocking(sdk: IcureApis, params: String
 public fun encryptAndSetReceiptAttachmentAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<EncryptAndSetReceiptAttachmentParams>(params)
 	GlobalScope.launch {
@@ -211,7 +215,8 @@ public fun getEncryptionKeysOfBlocking(sdk: IcureApis, params: String): String =
 public fun getEncryptionKeysOfAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetEncryptionKeysOfParams>(params)
 	GlobalScope.launch {
@@ -242,7 +247,8 @@ public fun hasWriteAccessBlocking(sdk: IcureApis, params: String): String = kotl
 public fun hasWriteAccessAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<HasWriteAccessParams>(params)
 	GlobalScope.launch {
@@ -273,7 +279,8 @@ public fun decryptPatientIdOfBlocking(sdk: IcureApis, params: String): String = 
 public fun decryptPatientIdOfAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DecryptPatientIdOfParams>(params)
 	GlobalScope.launch {
@@ -307,7 +314,8 @@ public fun createDelegationDeAnonymizationMetadataBlocking(sdk: IcureApis, param
 public fun createDelegationDeAnonymizationMetadataAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CreateDelegationDeAnonymizationMetadataParams>(params)
 	GlobalScope.launch {
@@ -346,7 +354,8 @@ public fun logReceiptBlocking(sdk: IcureApis, params: String): String = kotlin.r
 public fun logReceiptAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<LogReceiptParams>(params)
 	GlobalScope.launch {
@@ -380,7 +389,8 @@ public fun deleteReceiptBlocking(sdk: IcureApis, params: String): String = kotli
 public fun deleteReceiptAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteReceiptParams>(params)
 	GlobalScope.launch {
@@ -410,7 +420,8 @@ public fun deleteReceiptsBlocking(sdk: IcureApis, params: String): String = kotl
 public fun deleteReceiptsAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteReceiptsParams>(params)
 	GlobalScope.launch {
@@ -443,7 +454,8 @@ public fun getRawReceiptAttachmentBlocking(sdk: IcureApis, params: String): Stri
 public fun getRawReceiptAttachmentAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetRawReceiptAttachmentParams>(params)
 	GlobalScope.launch {
@@ -481,7 +493,8 @@ public fun setRawReceiptAttachmentBlocking(sdk: IcureApis, params: String): Stri
 public fun setRawReceiptAttachmentAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<SetRawReceiptAttachmentParams>(params)
 	GlobalScope.launch {
@@ -525,7 +538,8 @@ public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.ru
 public fun shareWithAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ShareWithParams>(params)
 	GlobalScope.launch {
@@ -562,7 +576,8 @@ public fun tryShareWithManyBlocking(sdk: IcureApis, params: String): String = ko
 public fun tryShareWithManyAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<TryShareWithManyParams>(params)
 	GlobalScope.launch {
@@ -596,7 +611,8 @@ public fun shareWithManyBlocking(sdk: IcureApis, params: String): String = kotli
 public fun shareWithManyAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ShareWithManyParams>(params)
 	GlobalScope.launch {
@@ -627,7 +643,8 @@ public fun modifyReceiptBlocking(sdk: IcureApis, params: String): String = kotli
 public fun modifyReceiptAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyReceiptParams>(params)
 	GlobalScope.launch {
@@ -657,7 +674,8 @@ public fun getReceiptBlocking(sdk: IcureApis, params: String): String = kotlin.r
 public fun getReceiptAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetReceiptParams>(params)
 	GlobalScope.launch {
@@ -687,7 +705,8 @@ public fun listByReferenceBlocking(sdk: IcureApis, params: String): String = kot
 public fun listByReferenceAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListByReferenceParams>(params)
 	GlobalScope.launch {

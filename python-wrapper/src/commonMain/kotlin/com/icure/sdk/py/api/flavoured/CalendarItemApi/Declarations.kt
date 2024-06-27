@@ -68,7 +68,8 @@ public fun createCalendarItemBlocking(sdk: IcureApis, params: String): String = 
 public fun createCalendarItemAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CreateCalendarItemParams>(params)
 	GlobalScope.launch {
@@ -109,7 +110,8 @@ public fun withEncryptionMetadataBlocking(sdk: IcureApis, params: String): Strin
 public fun withEncryptionMetadataAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<WithEncryptionMetadataParams>(params)
 	GlobalScope.launch {
@@ -145,7 +147,8 @@ public fun getEncryptionKeysOfBlocking(sdk: IcureApis, params: String): String =
 public fun getEncryptionKeysOfAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetEncryptionKeysOfParams>(params)
 	GlobalScope.launch {
@@ -176,7 +179,8 @@ public fun hasWriteAccessBlocking(sdk: IcureApis, params: String): String = kotl
 public fun hasWriteAccessAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<HasWriteAccessParams>(params)
 	GlobalScope.launch {
@@ -207,7 +211,8 @@ public fun decryptPatientIdOfBlocking(sdk: IcureApis, params: String): String = 
 public fun decryptPatientIdOfAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DecryptPatientIdOfParams>(params)
 	GlobalScope.launch {
@@ -241,7 +246,8 @@ public fun createDelegationDeAnonymizationMetadataBlocking(sdk: IcureApis, param
 public fun createDelegationDeAnonymizationMetadataAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CreateDelegationDeAnonymizationMetadataParams>(params)
 	GlobalScope.launch {
@@ -272,7 +278,8 @@ public fun deleteCalendarItemBlocking(sdk: IcureApis, params: String): String = 
 public fun deleteCalendarItemAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteCalendarItemParams>(params)
 	GlobalScope.launch {
@@ -303,7 +310,8 @@ public fun deleteCalendarItemsBlocking(sdk: IcureApis, params: String): String =
 public fun deleteCalendarItemsAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteCalendarItemsParams>(params)
 	GlobalScope.launch {
@@ -344,7 +352,8 @@ public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.ru
 public fun shareWithAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ShareWithParams>(params)
 	GlobalScope.launch {
@@ -381,7 +390,8 @@ public fun tryShareWithManyBlocking(sdk: IcureApis, params: String): String = ko
 public fun tryShareWithManyAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<TryShareWithManyParams>(params)
 	GlobalScope.launch {
@@ -415,7 +425,8 @@ public fun shareWithManyBlocking(sdk: IcureApis, params: String): String = kotli
 public fun shareWithManyAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ShareWithManyParams>(params)
 	GlobalScope.launch {
@@ -457,7 +468,7 @@ public fun findCalendarItemsByHcPartyPatientBlocking(sdk: IcureApis, params: Str
 public fun findCalendarItemsByHcPartyPatientAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<COpaquePointer?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FindCalendarItemsByHcPartyPatientParams>(params)
 	GlobalScope.launch {
@@ -498,7 +509,8 @@ public fun linkToPatientBlocking(sdk: IcureApis, params: String): String = kotli
 public fun linkToPatientAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<LinkToPatientParams>(params)
 	GlobalScope.launch {
@@ -530,7 +542,8 @@ public fun modifyCalendarItemBlocking(sdk: IcureApis, params: String): String = 
 public fun modifyCalendarItemAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyCalendarItemParams>(params)
 	GlobalScope.launch {
@@ -560,7 +573,8 @@ public fun getCalendarItemBlocking(sdk: IcureApis, params: String): String = kot
 public fun getCalendarItemAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetCalendarItemParams>(params)
 	GlobalScope.launch {
@@ -590,7 +604,8 @@ public fun getCalendarItemsBlocking(sdk: IcureApis, params: String): String = ko
 public fun getCalendarItemsAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetCalendarItemsParams>(params)
 	GlobalScope.launch {
@@ -625,7 +640,8 @@ public fun getCalendarItemsByPeriodAndHcPartyIdBlocking(sdk: IcureApis, params: 
 public fun getCalendarItemsByPeriodAndHcPartyIdAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetCalendarItemsByPeriodAndHcPartyIdParams>(params)
 	GlobalScope.launch {
@@ -662,7 +678,8 @@ public fun getCalendarsByPeriodAndAgendaIdBlocking(sdk: IcureApis, params: Strin
 public fun getCalendarsByPeriodAndAgendaIdAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetCalendarsByPeriodAndAgendaIdParams>(params)
 	GlobalScope.launch {
@@ -695,7 +712,8 @@ public fun getCalendarItemsWithIdsBlocking(sdk: IcureApis, params: String): Stri
 public fun getCalendarItemsWithIdsAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetCalendarItemsWithIdsParams>(params)
 	GlobalScope.launch {
@@ -732,7 +750,8 @@ public fun findCalendarItemsByRecurrenceIdBlocking(sdk: IcureApis, params: Strin
 public fun findCalendarItemsByRecurrenceIdAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FindCalendarItemsByRecurrenceIdParams>(params)
 	GlobalScope.launch {

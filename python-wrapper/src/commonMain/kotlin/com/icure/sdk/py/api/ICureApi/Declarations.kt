@@ -36,8 +36,8 @@ public fun getVersionBlocking(sdk: IcureNonCryptoApis): String = kotlin.runCatch
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getVersionAsync(sdk: IcureNonCryptoApis,
-		resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>):
-		Unit = kotlin.runCatching {
+		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+		CValues<ByteVarOf<Byte>>?) -> Unit>>): Unit = kotlin.runCatching {
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.iCure.getVersion()
@@ -53,8 +53,8 @@ public fun isReadyBlocking(sdk: IcureNonCryptoApis): String = kotlin.runCatching
 
 @OptIn(ExperimentalForeignApi::class)
 public fun isReadyAsync(sdk: IcureNonCryptoApis,
-		resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>):
-		Unit = kotlin.runCatching {
+		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+		CValues<ByteVarOf<Byte>>?) -> Unit>>): Unit = kotlin.runCatching {
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.iCure.isReady()
@@ -70,8 +70,8 @@ public fun getProcessInfoBlocking(sdk: IcureNonCryptoApis): String = kotlin.runC
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getProcessInfoAsync(sdk: IcureNonCryptoApis,
-		resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>):
-		Unit = kotlin.runCatching {
+		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+		CValues<ByteVarOf<Byte>>?) -> Unit>>): Unit = kotlin.runCatching {
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.iCure.getProcessInfo()
@@ -87,8 +87,8 @@ public fun getIndexingInfoBlocking(sdk: IcureNonCryptoApis): String = kotlin.run
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getIndexingInfoAsync(sdk: IcureNonCryptoApis,
-		resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>):
-		Unit = kotlin.runCatching {
+		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+		CValues<ByteVarOf<Byte>>?) -> Unit>>): Unit = kotlin.runCatching {
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.iCure.getIndexingInfo()
@@ -104,8 +104,8 @@ public fun getReplicationInfoBlocking(sdk: IcureNonCryptoApis): String = kotlin.
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getReplicationInfoAsync(sdk: IcureNonCryptoApis,
-		resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>):
-		Unit = kotlin.runCatching {
+		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+		CValues<ByteVarOf<Byte>>?) -> Unit>>): Unit = kotlin.runCatching {
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.iCure.getReplicationInfo()
@@ -134,7 +134,8 @@ public fun updateDesignDocBlocking(sdk: IcureNonCryptoApis, params: String): Str
 public fun updateDesignDocAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<UpdateDesignDocParams>(params)
 	GlobalScope.launch {
@@ -166,7 +167,8 @@ public fun resolvePatientsConflictsBlocking(sdk: IcureNonCryptoApis, params: Str
 public fun resolvePatientsConflictsAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ResolvePatientsConflictsParams>(params)
 	GlobalScope.launch {
@@ -197,7 +199,8 @@ public fun resolveContactsConflictsBlocking(sdk: IcureNonCryptoApis, params: Str
 public fun resolveContactsConflictsAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ResolveContactsConflictsParams>(params)
 	GlobalScope.launch {
@@ -228,7 +231,8 @@ public fun resolveFormsConflictsBlocking(sdk: IcureNonCryptoApis, params: String
 public fun resolveFormsConflictsAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ResolveFormsConflictsParams>(params)
 	GlobalScope.launch {
@@ -259,7 +263,8 @@ public fun resolveHealthElementsConflictsBlocking(sdk: IcureNonCryptoApis, param
 public fun resolveHealthElementsConflictsAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ResolveHealthElementsConflictsParams>(params)
 	GlobalScope.launch {
@@ -290,7 +295,8 @@ public fun resolveInvoicesConflictsBlocking(sdk: IcureNonCryptoApis, params: Str
 public fun resolveInvoicesConflictsAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ResolveInvoicesConflictsParams>(params)
 	GlobalScope.launch {
@@ -321,7 +327,8 @@ public fun resolveMessagesConflictsBlocking(sdk: IcureNonCryptoApis, params: Str
 public fun resolveMessagesConflictsAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ResolveMessagesConflictsParams>(params)
 	GlobalScope.launch {
@@ -354,7 +361,8 @@ public fun resolveDocumentsConflictsBlocking(sdk: IcureNonCryptoApis, params: St
 public fun resolveDocumentsConflictsAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ResolveDocumentsConflictsParams>(params)
 	GlobalScope.launch {
@@ -386,7 +394,8 @@ public fun getIndexingInfoByGroupBlocking(sdk: IcureNonCryptoApis, params: Strin
 public fun getIndexingInfoByGroupAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetIndexingInfoByGroupParams>(params)
 	GlobalScope.launch {
@@ -417,7 +426,8 @@ public fun getReplicatorInfoBlocking(sdk: IcureNonCryptoApis, params: String): S
 public fun getReplicatorInfoAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetReplicatorInfoParams>(params)
 	GlobalScope.launch {
@@ -448,7 +458,8 @@ public fun evictAllFromMapBlocking(sdk: IcureNonCryptoApis, params: String): Str
 public fun evictAllFromMapAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<EvictAllFromMapParams>(params)
 	GlobalScope.launch {

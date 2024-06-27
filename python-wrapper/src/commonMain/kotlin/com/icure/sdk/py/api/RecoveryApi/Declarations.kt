@@ -51,7 +51,8 @@ public fun createRecoveryInfoForAvailableKeyPairsBlocking(sdk: IcureApis, params
 public fun createRecoveryInfoForAvailableKeyPairsAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CreateRecoveryInfoForAvailableKeyPairsParams>(params)
 	GlobalScope.launch {
@@ -86,7 +87,8 @@ public fun recoverKeyPairsBlocking(sdk: IcureApis, params: String): String = kot
 public fun recoverKeyPairsAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<RecoverKeyPairsParams>(params)
 	GlobalScope.launch {
@@ -122,7 +124,8 @@ public fun createExchangeDataRecoveryInfoBlocking(sdk: IcureApis, params: String
 public fun createExchangeDataRecoveryInfoAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CreateExchangeDataRecoveryInfoParams>(params)
 	GlobalScope.launch {
@@ -154,7 +157,8 @@ public fun recoverExchangeDataBlocking(sdk: IcureApis, params: String): String =
 public fun recoverExchangeDataAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<RecoverExchangeDataParams>(params)
 	GlobalScope.launch {
@@ -184,7 +188,8 @@ public fun deleteRecoveryInfoBlocking(sdk: IcureApis, params: String): String = 
 public fun deleteRecoveryInfoAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteRecoveryInfoParams>(params)
 	GlobalScope.launch {
@@ -215,7 +220,8 @@ public fun deleteAllRecoveryInfoForBlocking(sdk: IcureApis, params: String): Str
 public fun deleteAllRecoveryInfoForAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteAllRecoveryInfoForParams>(params)
 	GlobalScope.launch {
@@ -246,7 +252,8 @@ public fun deleteAllKeyPairRecoveryInfoForBlocking(sdk: IcureApis, params: Strin
 public fun deleteAllKeyPairRecoveryInfoForAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteAllKeyPairRecoveryInfoForParams>(params)
 	GlobalScope.launch {
@@ -277,7 +284,8 @@ public fun deleteAllExchangeDataRecoveryInfoForBlocking(sdk: IcureApis, params: 
 public fun deleteAllExchangeDataRecoveryInfoForAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteAllExchangeDataRecoveryInfoForParams>(params)
 	GlobalScope.launch {

@@ -43,7 +43,8 @@ public fun deleteClassificationBlocking(sdk: IcureBaseApis, params: String): Str
 public fun deleteClassificationAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteClassificationParams>(params)
 	GlobalScope.launch {
@@ -74,7 +75,8 @@ public fun deleteClassificationsBlocking(sdk: IcureBaseApis, params: String): St
 public fun deleteClassificationsAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteClassificationsParams>(params)
 	GlobalScope.launch {
@@ -105,7 +107,8 @@ public fun modifyClassificationBlocking(sdk: IcureBaseApis, params: String): Str
 public fun modifyClassificationAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyClassificationParams>(params)
 	GlobalScope.launch {
@@ -136,7 +139,8 @@ public fun getClassificationBlocking(sdk: IcureBaseApis, params: String): String
 public fun getClassificationAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetClassificationParams>(params)
 	GlobalScope.launch {
@@ -167,7 +171,8 @@ public fun getClassificationsBlocking(sdk: IcureBaseApis, params: String): Strin
 public fun getClassificationsAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetClassificationsParams>(params)
 	GlobalScope.launch {

@@ -43,7 +43,8 @@ public fun applyKeyPairUpdateBlocking(sdk: IcureApis, params: String): String = 
 public fun applyKeyPairUpdateAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ApplyKeyPairUpdateParams>(params)
 	GlobalScope.launch {
@@ -77,7 +78,8 @@ public fun createKeyPairUpdateNotificationsToAllDelegationCounterpartsBlocking(s
 public fun createKeyPairUpdateNotificationsToAllDelegationCounterpartsAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams =
 			json.decodeFromString<CreateKeyPairUpdateNotificationsToAllDelegationCounterpartsParams>(params)
@@ -112,7 +114,8 @@ public fun createKeyPairUpdateNotificationToBlocking(sdk: IcureApis, params: Str
 public fun createKeyPairUpdateNotificationToAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CreateKeyPairUpdateNotificationToParams>(params)
 	GlobalScope.launch {

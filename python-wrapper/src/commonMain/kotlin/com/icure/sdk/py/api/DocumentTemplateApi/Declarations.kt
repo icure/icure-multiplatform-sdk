@@ -48,7 +48,8 @@ public fun getDocumentTemplateBlocking(sdk: IcureNonCryptoApis, params: String):
 public fun getDocumentTemplateAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetDocumentTemplateParams>(params)
 	GlobalScope.launch {
@@ -79,7 +80,8 @@ public fun createDocumentTemplateBlocking(sdk: IcureNonCryptoApis, params: Strin
 public fun createDocumentTemplateAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CreateDocumentTemplateParams>(params)
 	GlobalScope.launch {
@@ -110,7 +112,8 @@ public fun modifyDocumentTemplateBlocking(sdk: IcureNonCryptoApis, params: Strin
 public fun modifyDocumentTemplateAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyDocumentTemplateParams>(params)
 	GlobalScope.launch {
@@ -141,7 +144,8 @@ public fun deleteDocumentTemplatesBlocking(sdk: IcureNonCryptoApis, params: Stri
 public fun deleteDocumentTemplatesAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteDocumentTemplatesParams>(params)
 	GlobalScope.launch {
@@ -172,7 +176,8 @@ public fun listDocumentTemplatesBySpecialityBlocking(sdk: IcureNonCryptoApis, pa
 public fun listDocumentTemplatesBySpecialityAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListDocumentTemplatesBySpecialityParams>(params)
 	GlobalScope.launch {
@@ -203,7 +208,8 @@ public fun listDocumentTemplatesByDocumentTypeBlocking(sdk: IcureNonCryptoApis, 
 public fun listDocumentTemplatesByDocumentTypeAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListDocumentTemplatesByDocumentTypeParams>(params)
 	GlobalScope.launch {
@@ -235,7 +241,8 @@ public fun listDocumentTemplatesByDocumentTypeForCurrentUserBlocking(sdk: IcureN
 public fun listDocumentTemplatesByDocumentTypeForCurrentUserAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams =
 			json.decodeFromString<ListDocumentTemplatesByDocumentTypeForCurrentUserParams>(params)
@@ -256,8 +263,8 @@ public fun listDocumentTemplatesBlocking(sdk: IcureNonCryptoApis): String = kotl
 
 @OptIn(ExperimentalForeignApi::class)
 public fun listDocumentTemplatesAsync(sdk: IcureNonCryptoApis,
-		resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>):
-		Unit = kotlin.runCatching {
+		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+		CValues<ByteVarOf<Byte>>?) -> Unit>>): Unit = kotlin.runCatching {
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.documentTemplate.listDocumentTemplates()
@@ -288,7 +295,8 @@ public fun findAllDocumentTemplatesBlocking(sdk: IcureNonCryptoApis, params: Str
 public fun findAllDocumentTemplatesAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FindAllDocumentTemplatesParams>(params)
 	GlobalScope.launch {
@@ -323,7 +331,8 @@ public fun getDocumentTemplateAttachmentBlocking(sdk: IcureNonCryptoApis, params
 public fun getDocumentTemplateAttachmentAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetDocumentTemplateAttachmentParams>(params)
 	GlobalScope.launch {
@@ -357,7 +366,8 @@ public fun getAttachmentTextBlocking(sdk: IcureNonCryptoApis, params: String): S
 public fun getAttachmentTextAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetAttachmentTextParams>(params)
 	GlobalScope.launch {
@@ -391,7 +401,8 @@ public fun setDocumentTemplateAttachmentBlocking(sdk: IcureNonCryptoApis, params
 public fun setDocumentTemplateAttachmentAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<SetDocumentTemplateAttachmentParams>(params)
 	GlobalScope.launch {

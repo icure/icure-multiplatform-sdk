@@ -46,7 +46,8 @@ public fun deleteFormBlocking(sdk: IcureBaseApis, params: String): String = kotl
 public fun deleteFormAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteFormParams>(params)
 	GlobalScope.launch {
@@ -76,7 +77,8 @@ public fun deleteFormsBlocking(sdk: IcureBaseApis, params: String): String = kot
 public fun deleteFormsAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteFormsParams>(params)
 	GlobalScope.launch {
@@ -109,7 +111,8 @@ public fun getFormTemplateBlocking(sdk: IcureBaseApis, params: String): String =
 public fun getFormTemplateAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetFormTemplateParams>(params)
 	GlobalScope.launch {
@@ -145,7 +148,8 @@ public fun getFormTemplatesByGuidBlocking(sdk: IcureBaseApis, params: String): S
 public fun getFormTemplatesByGuidAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetFormTemplatesByGuidParams>(params)
 	GlobalScope.launch {
@@ -180,7 +184,8 @@ public fun listFormTemplatesBySpecialityBlocking(sdk: IcureBaseApis, params: Str
 public fun listFormTemplatesBySpecialityAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListFormTemplatesBySpecialityParams>(params)
 	GlobalScope.launch {
@@ -214,7 +219,8 @@ public fun getFormTemplatesBlocking(sdk: IcureBaseApis, params: String): String 
 public fun getFormTemplatesAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetFormTemplatesParams>(params)
 	GlobalScope.launch {
@@ -246,7 +252,8 @@ public fun createFormTemplateBlocking(sdk: IcureBaseApis, params: String): Strin
 public fun createFormTemplateAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CreateFormTemplateParams>(params)
 	GlobalScope.launch {
@@ -277,7 +284,8 @@ public fun deleteFormTemplateBlocking(sdk: IcureBaseApis, params: String): Strin
 public fun deleteFormTemplateAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteFormTemplateParams>(params)
 	GlobalScope.launch {
@@ -308,7 +316,8 @@ public fun updateFormTemplateBlocking(sdk: IcureBaseApis, params: String): Strin
 public fun updateFormTemplateAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<UpdateFormTemplateParams>(params)
 	GlobalScope.launch {
@@ -341,7 +350,8 @@ public fun setTemplateAttachmentBlocking(sdk: IcureBaseApis, params: String): St
 public fun setTemplateAttachmentAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<SetTemplateAttachmentParams>(params)
 	GlobalScope.launch {
@@ -372,7 +382,8 @@ public fun modifyFormBlocking(sdk: IcureBaseApis, params: String): String = kotl
 public fun modifyFormAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyFormParams>(params)
 	GlobalScope.launch {
@@ -402,7 +413,8 @@ public fun modifyFormsBlocking(sdk: IcureBaseApis, params: String): String = kot
 public fun modifyFormsAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyFormsParams>(params)
 	GlobalScope.launch {
@@ -432,7 +444,8 @@ public fun getFormBlocking(sdk: IcureBaseApis, params: String): String = kotlin.
 public fun getFormAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetFormParams>(params)
 	GlobalScope.launch {
@@ -462,7 +475,8 @@ public fun getFormsBlocking(sdk: IcureBaseApis, params: String): String = kotlin
 public fun getFormsAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetFormsParams>(params)
 	GlobalScope.launch {
@@ -493,7 +507,8 @@ public fun getFormByLogicalUuidBlocking(sdk: IcureBaseApis, params: String): Str
 public fun getFormByLogicalUuidAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetFormByLogicalUuidParams>(params)
 	GlobalScope.launch {
@@ -524,7 +539,8 @@ public fun getFormsByLogicalUuidBlocking(sdk: IcureBaseApis, params: String): St
 public fun getFormsByLogicalUuidAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetFormsByLogicalUuidParams>(params)
 	GlobalScope.launch {
@@ -555,7 +571,8 @@ public fun getFormsByUniqueIdBlocking(sdk: IcureBaseApis, params: String): Strin
 public fun getFormsByUniqueIdAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetFormsByUniqueIdParams>(params)
 	GlobalScope.launch {
@@ -586,7 +603,8 @@ public fun getFormByUniqueIdBlocking(sdk: IcureBaseApis, params: String): String
 public fun getFormByUniqueIdAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetFormByUniqueIdParams>(params)
 	GlobalScope.launch {
@@ -619,7 +637,8 @@ public fun getChildrenFormsBlocking(sdk: IcureBaseApis, params: String): String 
 public fun getChildrenFormsAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetChildrenFormsParams>(params)
 	GlobalScope.launch {
@@ -659,7 +678,8 @@ public fun listFormsByHCPartyAndPatientForeignKeysBlocking(sdk: IcureBaseApis, p
 public fun listFormsByHCPartyAndPatientForeignKeysAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListFormsByHCPartyAndPatientForeignKeysParams>(params)
 	GlobalScope.launch {

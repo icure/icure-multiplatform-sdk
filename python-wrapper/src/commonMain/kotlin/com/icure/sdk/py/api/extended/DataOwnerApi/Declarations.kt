@@ -33,8 +33,8 @@ public fun getCurrentDataOwnerBlocking(sdk: IcureApis): String = kotlin.runCatch
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getCurrentDataOwnerAsync(sdk: IcureApis,
-		resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>):
-		Unit = kotlin.runCatching {
+		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+		CValues<ByteVarOf<Byte>>?) -> Unit>>): Unit = kotlin.runCatching {
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.dataOwner.getCurrentDataOwner()
@@ -50,8 +50,8 @@ public fun getCurrentDataOwnerStubBlocking(sdk: IcureApis): String = kotlin.runC
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getCurrentDataOwnerStubAsync(sdk: IcureApis,
-		resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>):
-		Unit = kotlin.runCatching {
+		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+		CValues<ByteVarOf<Byte>>?) -> Unit>>): Unit = kotlin.runCatching {
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.dataOwner.getCurrentDataOwnerStub()
@@ -67,8 +67,8 @@ public fun getCurrentDataOwnerIdBlocking(sdk: IcureApis): String = kotlin.runCat
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getCurrentDataOwnerIdAsync(sdk: IcureApis,
-		resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>):
-		Unit = kotlin.runCatching {
+		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+		CValues<ByteVarOf<Byte>>?) -> Unit>>): Unit = kotlin.runCatching {
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.dataOwner.getCurrentDataOwnerId()
@@ -84,8 +84,8 @@ public fun getCurrentDataOwnerHierarchyIdsBlocking(sdk: IcureApis): String = kot
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getCurrentDataOwnerHierarchyIdsAsync(sdk: IcureApis,
-		resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>):
-		Unit = kotlin.runCatching {
+		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+		CValues<ByteVarOf<Byte>>?) -> Unit>>): Unit = kotlin.runCatching {
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.dataOwner.getCurrentDataOwnerHierarchyIds()
@@ -111,7 +111,8 @@ public fun getDataOwnerBlocking(sdk: IcureApis, params: String): String = kotlin
 public fun getDataOwnerAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetDataOwnerParams>(params)
 	GlobalScope.launch {
@@ -141,7 +142,8 @@ public fun getDataOwnerStubBlocking(sdk: IcureApis, params: String): String = ko
 public fun getDataOwnerStubAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetDataOwnerStubParams>(params)
 	GlobalScope.launch {
@@ -172,7 +174,8 @@ public fun getCurrentDataOwnerHierarchyIdsFromBlocking(sdk: IcureApis, params: S
 public fun getCurrentDataOwnerHierarchyIdsFromAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetCurrentDataOwnerHierarchyIdsFromParams>(params)
 	GlobalScope.launch {
@@ -192,8 +195,8 @@ public fun getCurrentDataOwnerHierarchyBlocking(sdk: IcureApis): String = kotlin
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getCurrentDataOwnerHierarchyAsync(sdk: IcureApis,
-		resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>):
-		Unit = kotlin.runCatching {
+		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+		CValues<ByteVarOf<Byte>>?) -> Unit>>): Unit = kotlin.runCatching {
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.dataOwner.getCurrentDataOwnerHierarchy()
@@ -220,7 +223,8 @@ public fun modifyDataOwnerStubBlocking(sdk: IcureApis, params: String): String =
 public fun modifyDataOwnerStubAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyDataOwnerStubParams>(params)
 	GlobalScope.launch {
@@ -240,8 +244,8 @@ public fun getCurrentDataOwnerTypeBlocking(sdk: IcureApis): String = kotlin.runC
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getCurrentDataOwnerTypeAsync(sdk: IcureApis,
-		resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>):
-		Unit = kotlin.runCatching {
+		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+		CValues<ByteVarOf<Byte>>?) -> Unit>>): Unit = kotlin.runCatching {
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.dataOwner.getCurrentDataOwnerType()
@@ -267,7 +271,8 @@ public fun getCryptoActorStubBlocking(sdk: IcureApis, params: String): String = 
 public fun getCryptoActorStubAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetCryptoActorStubParams>(params)
 	GlobalScope.launch {

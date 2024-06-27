@@ -45,7 +45,8 @@ public fun getKeywordBlocking(sdk: IcureNonCryptoApis, params: String): String =
 public fun getKeywordAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetKeywordParams>(params)
 	GlobalScope.launch {
@@ -76,7 +77,8 @@ public fun createKeywordBlocking(sdk: IcureNonCryptoApis, params: String): Strin
 public fun createKeywordAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CreateKeywordParams>(params)
 	GlobalScope.launch {
@@ -109,7 +111,8 @@ public fun getKeywordsBlocking(sdk: IcureNonCryptoApis, params: String): String 
 public fun getKeywordsAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetKeywordsParams>(params)
 	GlobalScope.launch {
@@ -141,7 +144,8 @@ public fun modifyKeywordBlocking(sdk: IcureNonCryptoApis, params: String): Strin
 public fun modifyKeywordAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyKeywordParams>(params)
 	GlobalScope.launch {
@@ -172,7 +176,8 @@ public fun getKeywordsByUserBlocking(sdk: IcureNonCryptoApis, params: String): S
 public fun getKeywordsByUserAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetKeywordsByUserParams>(params)
 	GlobalScope.launch {
@@ -203,7 +208,8 @@ public fun deleteKeywordsBlocking(sdk: IcureNonCryptoApis, params: String): Stri
 public fun deleteKeywordsAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteKeywordsParams>(params)
 	GlobalScope.launch {

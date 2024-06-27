@@ -28,8 +28,8 @@ public fun getAllRolesBlocking(sdk: IcureNonCryptoApis): String = kotlin.runCatc
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getAllRolesAsync(sdk: IcureNonCryptoApis,
-		resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>):
-		Unit = kotlin.runCatching {
+		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+		CValues<ByteVarOf<Byte>>?) -> Unit>>): Unit = kotlin.runCatching {
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.role.getAllRoles()

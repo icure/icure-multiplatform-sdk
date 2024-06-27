@@ -44,7 +44,8 @@ public fun deleteTimeTableBlocking(sdk: IcureBaseApis, params: String): String =
 public fun deleteTimeTableAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteTimeTableParams>(params)
 	GlobalScope.launch {
@@ -75,7 +76,8 @@ public fun deleteTimeTablesBlocking(sdk: IcureBaseApis, params: String): String 
 public fun deleteTimeTablesAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteTimeTablesParams>(params)
 	GlobalScope.launch {
@@ -106,7 +108,8 @@ public fun modifyTimeTableBlocking(sdk: IcureBaseApis, params: String): String =
 public fun modifyTimeTableAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyTimeTableParams>(params)
 	GlobalScope.launch {
@@ -136,7 +139,8 @@ public fun getTimeTableBlocking(sdk: IcureBaseApis, params: String): String = ko
 public fun getTimeTableAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetTimeTableParams>(params)
 	GlobalScope.launch {
@@ -171,7 +175,8 @@ public fun getTimeTablesByPeriodAndAgendaIdBlocking(sdk: IcureBaseApis, params: 
 public fun getTimeTablesByPeriodAndAgendaIdAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetTimeTablesByPeriodAndAgendaIdParams>(params)
 	GlobalScope.launch {
@@ -204,7 +209,8 @@ public fun getTimeTablesByAgendaIdBlocking(sdk: IcureBaseApis, params: String): 
 public fun getTimeTablesByAgendaIdAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetTimeTablesByAgendaIdParams>(params)
 	GlobalScope.launch {

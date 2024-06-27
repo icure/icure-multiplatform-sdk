@@ -43,7 +43,8 @@ public fun modifyUserPermissionsBlocking(sdk: IcureNonCryptoApis, params: String
 public fun modifyUserPermissionsAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyUserPermissionsParams>(params)
 	GlobalScope.launch {

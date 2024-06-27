@@ -44,10 +44,11 @@ internal fun <T : Any> Result<T?>.toPyString(
 internal fun <T : Any> Result<T?>.toPyStringAsyncCallback(
 	serializer: KSerializer<T>,
 	callback: CPointer<CFunction<(result: CValues<ByteVarOf<Byte>>?, error: CValues<ByteVarOf<Byte>>?) -> Unit>>,
-) =
+) {
 	map { res ->
 		res?.let { Serialization.fullJson.encodeToJsonElement(serializer, it) } ?: JsonNull
 	}.toPyJsonAsyncCallback(callback)
+}
 
 /**
  * Same as [toPyString] but the successful result is already encoded to json
@@ -68,15 +69,13 @@ internal fun Result<JsonElement>.toPyJson() =
 @OptIn(ExperimentalForeignApi::class)
 internal fun Result<JsonElement>.toPyJsonAsyncCallback(
 	callback: CPointer<CFunction<(result: CValues<ByteVarOf<Byte>>?, error: CValues<ByteVarOf<Byte>>?) -> Unit>>,
-) =
-	fold(
-		onSuccess = { res ->
-			callback.invoke(res.toString().cstr, null)
-		},
-		onFailure = { e ->
-			callback.invoke(null, e.stringForPy().cstr)
-		}
-	).toString()
+) {
+	onSuccess { res ->
+		callback.invoke(res.toString().cstr, null)
+	}.onFailure { e ->
+		callback.invoke(null, e.stringForPy().cstr)
+	}
+}
 
 /**
  * If the result is a failure calls the callback providing the error.

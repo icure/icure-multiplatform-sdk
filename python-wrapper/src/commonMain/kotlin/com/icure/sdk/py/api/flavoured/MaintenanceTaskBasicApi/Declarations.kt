@@ -47,7 +47,8 @@ public fun deleteMaintenanceTaskBlocking(sdk: IcureBaseApis, params: String): St
 public fun deleteMaintenanceTaskAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteMaintenanceTaskParams>(params)
 	GlobalScope.launch {
@@ -78,7 +79,8 @@ public fun deleteMaintenanceTasksBlocking(sdk: IcureBaseApis, params: String): S
 public fun deleteMaintenanceTasksAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteMaintenanceTasksParams>(params)
 	GlobalScope.launch {
@@ -109,7 +111,8 @@ public fun modifyMaintenanceTaskBlocking(sdk: IcureBaseApis, params: String): St
 public fun modifyMaintenanceTaskAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyMaintenanceTaskParams>(params)
 	GlobalScope.launch {
@@ -140,7 +143,8 @@ public fun getMaintenanceTaskBlocking(sdk: IcureBaseApis, params: String): Strin
 public fun getMaintenanceTaskAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetMaintenanceTaskParams>(params)
 	GlobalScope.launch {
@@ -175,7 +179,8 @@ public fun filterMaintenanceTasksByBlocking(sdk: IcureBaseApis, params: String):
 public fun filterMaintenanceTasksByAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterMaintenanceTasksByParams>(params)
 	GlobalScope.launch {

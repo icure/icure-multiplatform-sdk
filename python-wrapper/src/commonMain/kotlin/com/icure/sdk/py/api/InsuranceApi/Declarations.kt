@@ -45,7 +45,8 @@ public fun getInsuranceBlocking(sdk: IcureNonCryptoApis, params: String): String
 public fun getInsuranceAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetInsuranceParams>(params)
 	GlobalScope.launch {
@@ -76,7 +77,8 @@ public fun getInsurancesBlocking(sdk: IcureNonCryptoApis, params: String): Strin
 public fun getInsurancesAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetInsurancesParams>(params)
 	GlobalScope.launch {
@@ -107,7 +109,8 @@ public fun createInsuranceBlocking(sdk: IcureNonCryptoApis, params: String): Str
 public fun createInsuranceAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CreateInsuranceParams>(params)
 	GlobalScope.launch {
@@ -138,7 +141,8 @@ public fun deleteInsuranceBlocking(sdk: IcureNonCryptoApis, params: String): Str
 public fun deleteInsuranceAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteInsuranceParams>(params)
 	GlobalScope.launch {
@@ -171,7 +175,8 @@ public fun getAllInsurancesBlocking(sdk: IcureNonCryptoApis, params: String): St
 public fun getAllInsurancesAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetAllInsurancesParams>(params)
 	GlobalScope.launch {
@@ -203,7 +208,8 @@ public fun listInsurancesByCodeBlocking(sdk: IcureNonCryptoApis, params: String)
 public fun listInsurancesByCodeAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListInsurancesByCodeParams>(params)
 	GlobalScope.launch {
@@ -234,7 +240,8 @@ public fun listInsurancesByNameBlocking(sdk: IcureNonCryptoApis, params: String)
 public fun listInsurancesByNameAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListInsurancesByNameParams>(params)
 	GlobalScope.launch {
@@ -265,7 +272,8 @@ public fun modifyInsuranceBlocking(sdk: IcureNonCryptoApis, params: String): Str
 public fun modifyInsuranceAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyInsuranceParams>(params)
 	GlobalScope.launch {

@@ -44,7 +44,8 @@ public fun getTarificationBlocking(sdk: IcureNonCryptoApis, params: String): Str
 public fun getTarificationAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetTarificationParams>(params)
 	GlobalScope.launch {
@@ -75,7 +76,8 @@ public fun createTarificationBlocking(sdk: IcureNonCryptoApis, params: String): 
 public fun createTarificationAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CreateTarificationParams>(params)
 	GlobalScope.launch {
@@ -106,7 +108,8 @@ public fun getTarificationsBlocking(sdk: IcureNonCryptoApis, params: String): St
 public fun getTarificationsAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetTarificationsParams>(params)
 	GlobalScope.launch {
@@ -137,7 +140,8 @@ public fun modifyTarificationBlocking(sdk: IcureNonCryptoApis, params: String): 
 public fun modifyTarificationAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyTarificationParams>(params)
 	GlobalScope.launch {
@@ -180,7 +184,8 @@ public fun findTarificationsByLabelBlocking(sdk: IcureNonCryptoApis, params: Str
 public fun findTarificationsByLabelAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FindTarificationsByLabelParams>(params)
 	GlobalScope.launch {
@@ -229,7 +234,8 @@ public fun findTarificationsByBlocking(sdk: IcureNonCryptoApis, params: String):
 public fun findTarificationsByAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FindTarificationsByParams>(params)
 	GlobalScope.launch {
@@ -270,7 +276,8 @@ public fun getTarificationWithPartsBlocking(sdk: IcureNonCryptoApis, params: Str
 public fun getTarificationWithPartsAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetTarificationWithPartsParams>(params)
 	GlobalScope.launch {

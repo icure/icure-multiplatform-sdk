@@ -56,7 +56,8 @@ public fun matchContactsByBlocking(sdk: IcureBaseApis, params: String): String =
 public fun matchContactsByAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<MatchContactsByParams>(params)
 	GlobalScope.launch {
@@ -87,7 +88,8 @@ public fun matchServicesByBlocking(sdk: IcureBaseApis, params: String): String =
 public fun matchServicesByAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<MatchServicesByParams>(params)
 	GlobalScope.launch {
@@ -117,7 +119,8 @@ public fun deleteContactBlocking(sdk: IcureBaseApis, params: String): String = k
 public fun deleteContactAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteContactParams>(params)
 	GlobalScope.launch {
@@ -147,7 +150,8 @@ public fun deleteContactsBlocking(sdk: IcureBaseApis, params: String): String = 
 public fun deleteContactsAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteContactsParams>(params)
 	GlobalScope.launch {
@@ -181,7 +185,8 @@ public fun findContactsDelegationsStubsByHcPartyPatientForeignKeysBlocking(sdk: 
 public fun findContactsDelegationsStubsByHcPartyPatientForeignKeysAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams =
 			json.decodeFromString<FindContactsDelegationsStubsByHcPartyPatientForeignKeysParams>(params)
@@ -216,7 +221,8 @@ public fun getServiceCodesOccurrencesBlocking(sdk: IcureBaseApis, params: String
 public fun getServiceCodesOccurrencesAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetServiceCodesOccurrencesParams>(params)
 	GlobalScope.launch {
@@ -247,7 +253,8 @@ public fun modifyContactBlocking(sdk: IcureBaseApis, params: String): String = k
 public fun modifyContactAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyContactParams>(params)
 	GlobalScope.launch {
@@ -277,7 +284,8 @@ public fun modifyContactsBlocking(sdk: IcureBaseApis, params: String): String = 
 public fun modifyContactsAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyContactsParams>(params)
 	GlobalScope.launch {
@@ -307,7 +315,8 @@ public fun getContactBlocking(sdk: IcureBaseApis, params: String): String = kotl
 public fun getContactAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetContactParams>(params)
 	GlobalScope.launch {
@@ -337,7 +346,8 @@ public fun getContactsBlocking(sdk: IcureBaseApis, params: String): String = kot
 public fun getContactsAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetContactsParams>(params)
 	GlobalScope.launch {
@@ -372,7 +382,8 @@ public fun filterContactsByBlocking(sdk: IcureBaseApis, params: String): String 
 public fun filterContactsByAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterContactsByParams>(params)
 	GlobalScope.launch {
@@ -407,7 +418,8 @@ public fun listContactByHCPartyServiceIdBlocking(sdk: IcureBaseApis, params: Str
 public fun listContactByHCPartyServiceIdAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListContactByHCPartyServiceIdParams>(params)
 	GlobalScope.launch {
@@ -439,7 +451,8 @@ public fun listContactsByExternalIdBlocking(sdk: IcureBaseApis, params: String):
 public fun listContactsByExternalIdAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListContactsByExternalIdParams>(params)
 	GlobalScope.launch {
@@ -472,7 +485,8 @@ public fun listContactsByHCPartyAndFormIdBlocking(sdk: IcureBaseApis, params: St
 public fun listContactsByHCPartyAndFormIdAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListContactsByHCPartyAndFormIdParams>(params)
 	GlobalScope.launch {
@@ -506,7 +520,8 @@ public fun listContactsByHCPartyAndFormIdsBlocking(sdk: IcureBaseApis, params: S
 public fun listContactsByHCPartyAndFormIdsAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListContactsByHCPartyAndFormIdsParams>(params)
 	GlobalScope.launch {
@@ -544,7 +559,8 @@ public fun listContactsByHCPartyAndPatientSecretFKeysBlocking(sdk: IcureBaseApis
 public fun listContactsByHCPartyAndPatientSecretFKeysAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListContactsByHCPartyAndPatientSecretFKeysParams>(params)
 	GlobalScope.launch {
@@ -580,7 +596,8 @@ public fun closeForHCPartyPatientForeignKeysBlocking(sdk: IcureBaseApis, params:
 public fun closeForHCPartyPatientForeignKeysAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CloseForHCPartyPatientForeignKeysParams>(params)
 	GlobalScope.launch {
@@ -611,7 +628,8 @@ public fun getServiceBlocking(sdk: IcureBaseApis, params: String): String = kotl
 public fun getServiceAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetServiceParams>(params)
 	GlobalScope.launch {
@@ -641,7 +659,8 @@ public fun getServicesBlocking(sdk: IcureBaseApis, params: String): String = kot
 public fun getServicesAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetServicesParams>(params)
 	GlobalScope.launch {
@@ -674,7 +693,8 @@ public fun getServicesLinkedToBlocking(sdk: IcureBaseApis, params: String): Stri
 public fun getServicesLinkedToAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetServicesLinkedToParams>(params)
 	GlobalScope.launch {
@@ -706,7 +726,8 @@ public fun listServicesByAssociationIdBlocking(sdk: IcureBaseApis, params: Strin
 public fun listServicesByAssociationIdAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListServicesByAssociationIdParams>(params)
 	GlobalScope.launch {
@@ -739,7 +760,8 @@ public fun listServicesByHealthElementIdBlocking(sdk: IcureBaseApis, params: Str
 public fun listServicesByHealthElementIdAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListServicesByHealthElementIdParams>(params)
 	GlobalScope.launch {
@@ -781,7 +803,8 @@ public fun findContactsByOpeningDateBlocking(sdk: IcureBaseApis, params: String)
 public fun findContactsByOpeningDateAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FindContactsByOpeningDateParams>(params)
 	GlobalScope.launch {
@@ -821,7 +844,8 @@ public fun filterServicesByBlocking(sdk: IcureBaseApis, params: String): String 
 public fun filterServicesByAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterServicesByParams>(params)
 	GlobalScope.launch {

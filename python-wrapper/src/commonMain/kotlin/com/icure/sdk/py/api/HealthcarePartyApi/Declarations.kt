@@ -51,7 +51,8 @@ public fun getHealthcarePartyBlocking(sdk: IcureNonCryptoApis, params: String): 
 public fun getHealthcarePartyAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetHealthcarePartyParams>(params)
 	GlobalScope.launch {
@@ -82,7 +83,8 @@ public fun createHealthcarePartyBlocking(sdk: IcureNonCryptoApis, params: String
 public fun createHealthcarePartyAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CreateHealthcarePartyParams>(params)
 	GlobalScope.launch {
@@ -113,7 +115,8 @@ public fun deleteHealthcarePartyBlocking(sdk: IcureNonCryptoApis, params: String
 public fun deleteHealthcarePartyAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteHealthcarePartyParams>(params)
 	GlobalScope.launch {
@@ -146,7 +149,8 @@ public fun modifyHealthcarePartyInGroupBlocking(sdk: IcureNonCryptoApis, params:
 public fun modifyHealthcarePartyInGroupAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyHealthcarePartyInGroupParams>(params)
 	GlobalScope.launch {
@@ -180,7 +184,8 @@ public fun createHealthcarePartyInGroupBlocking(sdk: IcureNonCryptoApis, params:
 public fun createHealthcarePartyInGroupAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CreateHealthcarePartyInGroupParams>(params)
 	GlobalScope.launch {
@@ -201,8 +206,8 @@ public fun getCurrentHealthcarePartyBlocking(sdk: IcureNonCryptoApis): String = 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getCurrentHealthcarePartyAsync(sdk: IcureNonCryptoApis,
-		resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>):
-		Unit = kotlin.runCatching {
+		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+		CValues<ByteVarOf<Byte>>?) -> Unit>>): Unit = kotlin.runCatching {
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.healthcareParty.getCurrentHealthcareParty()
@@ -235,7 +240,8 @@ public fun findHealthcarePartiesByBlocking(sdk: IcureNonCryptoApis, params: Stri
 public fun findHealthcarePartiesByAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FindHealthcarePartiesByParams>(params)
 	GlobalScope.launch {
@@ -277,7 +283,8 @@ public fun findHealthcarePartiesByNameBlocking(sdk: IcureNonCryptoApis, params: 
 public fun findHealthcarePartiesByNameAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FindHealthcarePartiesByNameParams>(params)
 	GlobalScope.launch {
@@ -320,7 +327,8 @@ public fun findHealthcarePartiesBySsinOrNihiiBlocking(sdk: IcureNonCryptoApis, p
 public fun findHealthcarePartiesBySsinOrNihiiAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FindHealthcarePartiesBySsinOrNihiiParams>(params)
 	GlobalScope.launch {
@@ -355,7 +363,8 @@ public fun listHealthcarePartiesByNameBlocking(sdk: IcureNonCryptoApis, params: 
 public fun listHealthcarePartiesByNameAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListHealthcarePartiesByNameParams>(params)
 	GlobalScope.launch {
@@ -399,7 +408,8 @@ public fun findHealthcarePartiesBySpecialityAndPostCodeBlocking(sdk: IcureNonCry
 public fun findHealthcarePartiesBySpecialityAndPostCodeAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams =
 			json.decodeFromString<FindHealthcarePartiesBySpecialityAndPostCodeParams>(params)
@@ -437,7 +447,8 @@ public fun getHealthcarePartiesBlocking(sdk: IcureNonCryptoApis, params: String)
 public fun getHealthcarePartiesAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetHealthcarePartiesParams>(params)
 	GlobalScope.launch {
@@ -468,7 +479,8 @@ public fun listHealthcarePartiesByParentIdBlocking(sdk: IcureNonCryptoApis, para
 public fun listHealthcarePartiesByParentIdAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListHealthcarePartiesByParentIdParams>(params)
 	GlobalScope.launch {
@@ -499,7 +511,8 @@ public fun getPublicKeyBlocking(sdk: IcureNonCryptoApis, params: String): String
 public fun getPublicKeyAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetPublicKeyParams>(params)
 	GlobalScope.launch {
@@ -530,7 +543,8 @@ public fun deleteHealthcarePartiesBlocking(sdk: IcureNonCryptoApis, params: Stri
 public fun deleteHealthcarePartiesAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteHealthcarePartiesParams>(params)
 	GlobalScope.launch {
@@ -561,7 +575,8 @@ public fun modifyHealthcarePartyBlocking(sdk: IcureNonCryptoApis, params: String
 public fun modifyHealthcarePartyAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyHealthcarePartyParams>(params)
 	GlobalScope.launch {
@@ -592,7 +607,8 @@ public fun matchHealthcarePartiesByBlocking(sdk: IcureNonCryptoApis, params: Str
 public fun matchHealthcarePartiesByAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<MatchHealthcarePartiesByParams>(params)
 	GlobalScope.launch {
@@ -627,7 +643,8 @@ public fun filterHealthPartiesByBlocking(sdk: IcureNonCryptoApis, params: String
 public fun filterHealthPartiesByAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterHealthPartiesByParams>(params)
 	GlobalScope.launch {
@@ -662,7 +679,8 @@ public fun getHealthcarePartiesInGroupBlocking(sdk: IcureNonCryptoApis, params: 
 public fun getHealthcarePartiesInGroupAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetHealthcarePartiesInGroupParams>(params)
 	GlobalScope.launch {
@@ -696,7 +714,8 @@ public fun deleteHealthcarePartiesInGroupBlocking(sdk: IcureNonCryptoApis, param
 public fun deleteHealthcarePartiesInGroupAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteHealthcarePartiesInGroupParams>(params)
 	GlobalScope.launch {
@@ -730,7 +749,8 @@ public fun deleteHealthcarePartyInGroupBlocking(sdk: IcureNonCryptoApis, params:
 public fun deleteHealthcarePartyInGroupAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteHealthcarePartyInGroupParams>(params)
 	GlobalScope.launch {
@@ -770,7 +790,8 @@ public fun registerPatientBlocking(sdk: IcureNonCryptoApis, params: String): Str
 public fun registerPatientAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<RegisterPatientParams>(params)
 	GlobalScope.launch {

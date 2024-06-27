@@ -27,8 +27,8 @@ public fun forceReloadBlocking(sdk: IcureApis): String = kotlin.runCatching {
 
 @OptIn(ExperimentalForeignApi::class)
 public fun forceReloadAsync(sdk: IcureApis,
-		resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>):
-		Unit = kotlin.runCatching {
+		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+		CValues<ByteVarOf<Byte>>?) -> Unit>>): Unit = kotlin.runCatching {
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.crypto.forceReload()

@@ -47,7 +47,8 @@ public fun deleteAccessLogBlocking(sdk: IcureBaseApis, params: String): String =
 public fun deleteAccessLogAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteAccessLogParams>(params)
 	GlobalScope.launch {
@@ -78,7 +79,8 @@ public fun deleteAccessLogsBlocking(sdk: IcureBaseApis, params: String): String 
 public fun deleteAccessLogsAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteAccessLogsParams>(params)
 	GlobalScope.launch {
@@ -109,7 +111,8 @@ public fun modifyAccessLogBlocking(sdk: IcureBaseApis, params: String): String =
 public fun modifyAccessLogAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyAccessLogParams>(params)
 	GlobalScope.launch {
@@ -139,7 +142,8 @@ public fun getAccessLogBlocking(sdk: IcureBaseApis, params: String): String = ko
 public fun getAccessLogAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetAccessLogParams>(params)
 	GlobalScope.launch {
@@ -169,7 +173,8 @@ public fun getAccessLogsBlocking(sdk: IcureBaseApis, params: String): String = k
 public fun getAccessLogsAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetAccessLogsParams>(params)
 	GlobalScope.launch {
@@ -208,7 +213,8 @@ public fun findAccessLogsByBlocking(sdk: IcureBaseApis, params: String): String 
 public fun findAccessLogsByAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FindAccessLogsByParams>(params)
 	GlobalScope.launch {
@@ -256,7 +262,8 @@ public fun findAccessLogsByUserAfterDateBlocking(sdk: IcureBaseApis, params: Str
 public fun findAccessLogsByUserAfterDateAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FindAccessLogsByUserAfterDateParams>(params)
 	GlobalScope.launch {
@@ -304,7 +311,8 @@ public fun findAccessLogsInGroupBlocking(sdk: IcureBaseApis, params: String): St
 public fun findAccessLogsInGroupAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<CValues<ByteVarOf<Byte>>?.(CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FindAccessLogsInGroupParams>(params)
 	GlobalScope.launch {
