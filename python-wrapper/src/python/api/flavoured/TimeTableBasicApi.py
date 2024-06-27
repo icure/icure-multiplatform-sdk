@@ -23,7 +23,7 @@ class TimeTableBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -37,7 +37,7 @@ class TimeTableBasicApi:
 
 	def delete_time_table_blocking(self, entity_id: str) -> DocIdentifier:
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableBasicApi.deleteTimeTableBlocking(
 			self.icure_sdk.native,
@@ -63,7 +63,7 @@ class TimeTableBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -77,7 +77,7 @@ class TimeTableBasicApi:
 
 	def delete_time_tables_blocking(self, entity_ids: List[str]) -> List[DocIdentifier]:
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableBasicApi.deleteTimeTablesBlocking(
 			self.icure_sdk.native,
@@ -143,7 +143,7 @@ class TimeTableBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -157,7 +157,7 @@ class TimeTableBasicApi:
 
 	def get_time_table_blocking(self, entity_id: str) -> EncryptedTimeTable:
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableBasicApi.getTimeTableBlocking(
 			self.icure_sdk.native,
@@ -183,9 +183,9 @@ class TimeTableBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"start_date": start_date,
-			"end_date": end_date,
-			"agenda_id": agenda_id,
+			"startDate": start_date,
+			"endDate": end_date,
+			"agendaId": agenda_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -199,9 +199,9 @@ class TimeTableBasicApi:
 
 	def get_time_tables_by_period_and_agenda_id_blocking(self, start_date: int, end_date: int, agenda_id: str) -> List[EncryptedTimeTable]:
 		payload = {
-			"start_date": start_date,
-			"end_date": end_date,
-			"agenda_id": agenda_id,
+			"startDate": start_date,
+			"endDate": end_date,
+			"agendaId": agenda_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableBasicApi.getTimeTablesByPeriodAndAgendaIdBlocking(
 			self.icure_sdk.native,
@@ -227,7 +227,7 @@ class TimeTableBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"agenda_id": agenda_id,
+			"agendaId": agenda_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -241,7 +241,7 @@ class TimeTableBasicApi:
 
 	def get_time_tables_by_agenda_id_blocking(self, agenda_id: str) -> List[EncryptedTimeTable]:
 		payload = {
-			"agenda_id": agenda_id,
+			"agendaId": agenda_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableBasicApi.getTimeTablesByAgendaIdBlocking(
 			self.icure_sdk.native,

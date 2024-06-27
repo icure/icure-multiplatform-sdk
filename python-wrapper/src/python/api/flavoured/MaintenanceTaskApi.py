@@ -27,11 +27,11 @@ class MaintenanceTaskApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"delegate_id": delegate_id,
-				"maintenance_task": maintenance_task.__serialize__(),
-				"share_encryption_keys": share_encryption_keys.__serialize__(),
-				"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-				"requested_permission": requested_permission.__serialize__(),
+				"delegateId": delegate_id,
+				"maintenanceTask": maintenance_task.__serialize__(),
+				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+				"requestedPermission": requested_permission.__serialize__(),
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -45,11 +45,11 @@ class MaintenanceTaskApi:
 
 		def share_with_blocking(self, delegate_id: str, maintenance_task: EncryptedMaintenanceTask, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
 			payload = {
-				"delegate_id": delegate_id,
-				"maintenance_task": maintenance_task.__serialize__(),
-				"share_encryption_keys": share_encryption_keys.__serialize__(),
-				"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-				"requested_permission": requested_permission.__serialize__(),
+				"delegateId": delegate_id,
+				"maintenanceTask": maintenance_task.__serialize__(),
+				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+				"requestedPermission": requested_permission.__serialize__(),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.encrypted.shareWithBlocking(
 				self.icure_sdk.native,
@@ -75,7 +75,7 @@ class MaintenanceTaskApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"maintenance_task": maintenance_task.__serialize__(),
+				"maintenanceTask": maintenance_task.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -90,7 +90,7 @@ class MaintenanceTaskApi:
 
 		def try_share_with_many_blocking(self, maintenance_task: EncryptedMaintenanceTask, delegates: Dict[str, MaintenanceTaskShareOptions]) -> SimpleShareResult:
 			payload = {
-				"maintenance_task": maintenance_task.__serialize__(),
+				"maintenanceTask": maintenance_task.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.encrypted.tryShareWithManyBlocking(
@@ -117,7 +117,7 @@ class MaintenanceTaskApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"maintenance_task": maintenance_task.__serialize__(),
+				"maintenanceTask": maintenance_task.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -132,7 +132,7 @@ class MaintenanceTaskApi:
 
 		def share_with_many_blocking(self, maintenance_task: EncryptedMaintenanceTask, delegates: Dict[str, MaintenanceTaskShareOptions]) -> EncryptedMaintenanceTask:
 			payload = {
-				"maintenance_task": maintenance_task.__serialize__(),
+				"maintenanceTask": maintenance_task.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.encrypted.shareWithManyBlocking(
@@ -199,7 +199,7 @@ class MaintenanceTaskApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity_id": entity_id,
+				"entityId": entity_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -213,7 +213,7 @@ class MaintenanceTaskApi:
 
 		def get_maintenance_task_blocking(self, entity_id: str) -> EncryptedMaintenanceTask:
 			payload = {
-				"entity_id": entity_id,
+				"entityId": entity_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.encrypted.getMaintenanceTaskBlocking(
 				self.icure_sdk.native,
@@ -243,9 +243,9 @@ class MaintenanceTaskApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"start_document_id": start_document_id,
+				"startDocumentId": start_document_id,
 				"limit": limit,
-				"filter_chain": filter_chain.__serialize__(),
+				"filterChain": filter_chain.__serialize__(),
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -259,9 +259,9 @@ class MaintenanceTaskApi:
 
 		def filter_maintenance_tasks_by_blocking(self, filter_chain: FilterChain, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
 			payload = {
-				"start_document_id": start_document_id,
+				"startDocumentId": start_document_id,
 				"limit": limit,
-				"filter_chain": filter_chain.__serialize__(),
+				"filterChain": filter_chain.__serialize__(),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.encrypted.filterMaintenanceTasksByBlocking(
 				self.icure_sdk.native,
@@ -296,11 +296,11 @@ class MaintenanceTaskApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"delegate_id": delegate_id,
-				"maintenance_task": maintenance_task.__serialize__(),
-				"share_encryption_keys": share_encryption_keys.__serialize__(),
-				"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-				"requested_permission": requested_permission.__serialize__(),
+				"delegateId": delegate_id,
+				"maintenanceTask": maintenance_task.__serialize__(),
+				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+				"requestedPermission": requested_permission.__serialize__(),
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -314,11 +314,11 @@ class MaintenanceTaskApi:
 
 		def share_with_blocking(self, delegate_id: str, maintenance_task: MaintenanceTask, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
 			payload = {
-				"delegate_id": delegate_id,
-				"maintenance_task": maintenance_task.__serialize__(),
-				"share_encryption_keys": share_encryption_keys.__serialize__(),
-				"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-				"requested_permission": requested_permission.__serialize__(),
+				"delegateId": delegate_id,
+				"maintenanceTask": maintenance_task.__serialize__(),
+				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+				"requestedPermission": requested_permission.__serialize__(),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.tryAndRecover.shareWithBlocking(
 				self.icure_sdk.native,
@@ -344,7 +344,7 @@ class MaintenanceTaskApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"maintenance_task": maintenance_task.__serialize__(),
+				"maintenanceTask": maintenance_task.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -359,7 +359,7 @@ class MaintenanceTaskApi:
 
 		def try_share_with_many_blocking(self, maintenance_task: MaintenanceTask, delegates: Dict[str, MaintenanceTaskShareOptions]) -> SimpleShareResult:
 			payload = {
-				"maintenance_task": maintenance_task.__serialize__(),
+				"maintenanceTask": maintenance_task.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.tryAndRecover.tryShareWithManyBlocking(
@@ -386,7 +386,7 @@ class MaintenanceTaskApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"maintenance_task": maintenance_task.__serialize__(),
+				"maintenanceTask": maintenance_task.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -401,7 +401,7 @@ class MaintenanceTaskApi:
 
 		def share_with_many_blocking(self, maintenance_task: MaintenanceTask, delegates: Dict[str, MaintenanceTaskShareOptions]) -> MaintenanceTask:
 			payload = {
-				"maintenance_task": maintenance_task.__serialize__(),
+				"maintenanceTask": maintenance_task.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.tryAndRecover.shareWithManyBlocking(
@@ -468,7 +468,7 @@ class MaintenanceTaskApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity_id": entity_id,
+				"entityId": entity_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -482,7 +482,7 @@ class MaintenanceTaskApi:
 
 		def get_maintenance_task_blocking(self, entity_id: str) -> MaintenanceTask:
 			payload = {
-				"entity_id": entity_id,
+				"entityId": entity_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.tryAndRecover.getMaintenanceTaskBlocking(
 				self.icure_sdk.native,
@@ -512,9 +512,9 @@ class MaintenanceTaskApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"start_document_id": start_document_id,
+				"startDocumentId": start_document_id,
 				"limit": limit,
-				"filter_chain": filter_chain.__serialize__(),
+				"filterChain": filter_chain.__serialize__(),
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -528,9 +528,9 @@ class MaintenanceTaskApi:
 
 		def filter_maintenance_tasks_by_blocking(self, filter_chain: FilterChain, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
 			payload = {
-				"start_document_id": start_document_id,
+				"startDocumentId": start_document_id,
 				"limit": limit,
-				"filter_chain": filter_chain.__serialize__(),
+				"filterChain": filter_chain.__serialize__(),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.tryAndRecover.filterMaintenanceTasksByBlocking(
 				self.icure_sdk.native,
@@ -605,7 +605,7 @@ class MaintenanceTaskApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"maintenance_task": maintenance_task.__serialize__() if maintenance_task is not None else None,
+			"maintenanceTask": maintenance_task.__serialize__() if maintenance_task is not None else None,
 			"user": user.__serialize__() if user is not None else None,
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 		}
@@ -621,7 +621,7 @@ class MaintenanceTaskApi:
 
 	def with_encryption_metadata_blocking(self, maintenance_task: Optional[DecryptedMaintenanceTask], user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}) -> DecryptedMaintenanceTask:
 		payload = {
-			"maintenance_task": maintenance_task.__serialize__() if maintenance_task is not None else None,
+			"maintenanceTask": maintenance_task.__serialize__() if maintenance_task is not None else None,
 			"user": user.__serialize__() if user is not None else None,
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 		}
@@ -649,7 +649,7 @@ class MaintenanceTaskApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"maintenance_task": serialize_maintenance_task(maintenance_task),
+			"maintenanceTask": serialize_maintenance_task(maintenance_task),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -663,7 +663,7 @@ class MaintenanceTaskApi:
 
 	def get_encryption_keys_of_blocking(self, maintenance_task: MaintenanceTask) -> List[HexString]:
 		payload = {
-			"maintenance_task": serialize_maintenance_task(maintenance_task),
+			"maintenanceTask": serialize_maintenance_task(maintenance_task),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.getEncryptionKeysOfBlocking(
 			self.icure_sdk.native,
@@ -689,7 +689,7 @@ class MaintenanceTaskApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"maintenance_task": serialize_maintenance_task(maintenance_task),
+			"maintenanceTask": serialize_maintenance_task(maintenance_task),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -703,7 +703,7 @@ class MaintenanceTaskApi:
 
 	def has_write_access_blocking(self, maintenance_task: MaintenanceTask) -> bool:
 		payload = {
-			"maintenance_task": serialize_maintenance_task(maintenance_task),
+			"maintenanceTask": serialize_maintenance_task(maintenance_task),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.hasWriteAccessBlocking(
 			self.icure_sdk.native,
@@ -729,7 +729,7 @@ class MaintenanceTaskApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"maintenance_task": serialize_maintenance_task(maintenance_task),
+			"maintenanceTask": serialize_maintenance_task(maintenance_task),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -743,7 +743,7 @@ class MaintenanceTaskApi:
 
 	def decrypt_patient_id_of_blocking(self, maintenance_task: MaintenanceTask) -> List[str]:
 		payload = {
-			"maintenance_task": serialize_maintenance_task(maintenance_task),
+			"maintenanceTask": serialize_maintenance_task(maintenance_task),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.decryptPatientIdOfBlocking(
 			self.icure_sdk.native,
@@ -808,7 +808,7 @@ class MaintenanceTaskApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -822,7 +822,7 @@ class MaintenanceTaskApi:
 
 	def delete_maintenance_task_blocking(self, entity_id: str) -> DocIdentifier:
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.deleteMaintenanceTaskBlocking(
 			self.icure_sdk.native,
@@ -848,7 +848,7 @@ class MaintenanceTaskApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -862,7 +862,7 @@ class MaintenanceTaskApi:
 
 	def delete_maintenance_tasks_blocking(self, entity_ids: List[str]) -> List[DocIdentifier]:
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.deleteMaintenanceTasksBlocking(
 			self.icure_sdk.native,
@@ -888,11 +888,11 @@ class MaintenanceTaskApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"delegate_id": delegate_id,
-			"maintenance_task": maintenance_task.__serialize__(),
-			"share_encryption_keys": share_encryption_keys.__serialize__(),
-			"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-			"requested_permission": requested_permission.__serialize__(),
+			"delegateId": delegate_id,
+			"maintenanceTask": maintenance_task.__serialize__(),
+			"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+			"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+			"requestedPermission": requested_permission.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -906,11 +906,11 @@ class MaintenanceTaskApi:
 
 	def share_with_blocking(self, delegate_id: str, maintenance_task: DecryptedMaintenanceTask, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
 		payload = {
-			"delegate_id": delegate_id,
-			"maintenance_task": maintenance_task.__serialize__(),
-			"share_encryption_keys": share_encryption_keys.__serialize__(),
-			"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-			"requested_permission": requested_permission.__serialize__(),
+			"delegateId": delegate_id,
+			"maintenanceTask": maintenance_task.__serialize__(),
+			"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+			"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+			"requestedPermission": requested_permission.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.shareWithBlocking(
 			self.icure_sdk.native,
@@ -936,7 +936,7 @@ class MaintenanceTaskApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"maintenance_task": maintenance_task.__serialize__(),
+			"maintenanceTask": maintenance_task.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -951,7 +951,7 @@ class MaintenanceTaskApi:
 
 	def try_share_with_many_blocking(self, maintenance_task: DecryptedMaintenanceTask, delegates: Dict[str, MaintenanceTaskShareOptions]) -> SimpleShareResult:
 		payload = {
-			"maintenance_task": maintenance_task.__serialize__(),
+			"maintenanceTask": maintenance_task.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.tryShareWithManyBlocking(
@@ -978,7 +978,7 @@ class MaintenanceTaskApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"maintenance_task": maintenance_task.__serialize__(),
+			"maintenanceTask": maintenance_task.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -993,7 +993,7 @@ class MaintenanceTaskApi:
 
 	def share_with_many_blocking(self, maintenance_task: DecryptedMaintenanceTask, delegates: Dict[str, MaintenanceTaskShareOptions]) -> DecryptedMaintenanceTask:
 		payload = {
-			"maintenance_task": maintenance_task.__serialize__(),
+			"maintenanceTask": maintenance_task.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.shareWithManyBlocking(
@@ -1060,7 +1060,7 @@ class MaintenanceTaskApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1074,7 +1074,7 @@ class MaintenanceTaskApi:
 
 	def get_maintenance_task_blocking(self, entity_id: str) -> DecryptedMaintenanceTask:
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.getMaintenanceTaskBlocking(
 			self.icure_sdk.native,
@@ -1104,9 +1104,9 @@ class MaintenanceTaskApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"start_document_id": start_document_id,
+			"startDocumentId": start_document_id,
 			"limit": limit,
-			"filter_chain": filter_chain.__serialize__(),
+			"filterChain": filter_chain.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1120,9 +1120,9 @@ class MaintenanceTaskApi:
 
 	def filter_maintenance_tasks_by_blocking(self, filter_chain: FilterChain, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
 		payload = {
-			"start_document_id": start_document_id,
+			"startDocumentId": start_document_id,
 			"limit": limit,
-			"filter_chain": filter_chain.__serialize__(),
+			"filterChain": filter_chain.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.filterMaintenanceTasksByBlocking(
 			self.icure_sdk.native,

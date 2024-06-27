@@ -23,7 +23,7 @@ class ClassificationBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -37,7 +37,7 @@ class ClassificationBasicApi:
 
 	def delete_classification_blocking(self, entity_id: str) -> DocIdentifier:
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationBasicApi.deleteClassificationBlocking(
 			self.icure_sdk.native,
@@ -63,7 +63,7 @@ class ClassificationBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -77,7 +77,7 @@ class ClassificationBasicApi:
 
 	def delete_classifications_blocking(self, entity_ids: List[str]) -> List[DocIdentifier]:
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationBasicApi.deleteClassificationsBlocking(
 			self.icure_sdk.native,
@@ -143,7 +143,7 @@ class ClassificationBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -157,7 +157,7 @@ class ClassificationBasicApi:
 
 	def get_classification_blocking(self, entity_id: str) -> EncryptedClassification:
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationBasicApi.getClassificationBlocking(
 			self.icure_sdk.native,
@@ -183,7 +183,7 @@ class ClassificationBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -197,7 +197,7 @@ class ClassificationBasicApi:
 
 	def get_classifications_blocking(self, entity_ids: List[str]) -> List[EncryptedClassification]:
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationBasicApi.getClassificationsBlocking(
 			self.icure_sdk.native,

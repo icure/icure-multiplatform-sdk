@@ -23,7 +23,7 @@ class PermissionApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"user_id": user_id,
+			"userId": user_id,
 			"permissions": permissions.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -38,7 +38,7 @@ class PermissionApi:
 
 	def modify_user_permissions_blocking(self, user_id: str, permissions: Permission) -> List[Permission]:
 		payload = {
-			"user_id": user_id,
+			"userId": user_id,
 			"permissions": permissions.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.PermissionApi.modifyUserPermissionsBlocking(

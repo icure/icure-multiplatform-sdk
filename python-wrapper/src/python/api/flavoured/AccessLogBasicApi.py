@@ -23,7 +23,7 @@ class AccessLogBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -37,7 +37,7 @@ class AccessLogBasicApi:
 
 	def delete_access_log_blocking(self, entity_id: str) -> DocIdentifier:
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicApi.deleteAccessLogBlocking(
 			self.icure_sdk.native,
@@ -63,7 +63,7 @@ class AccessLogBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -77,7 +77,7 @@ class AccessLogBasicApi:
 
 	def delete_access_logs_blocking(self, entity_ids: List[str]) -> List[DocIdentifier]:
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicApi.deleteAccessLogsBlocking(
 			self.icure_sdk.native,
@@ -143,7 +143,7 @@ class AccessLogBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -157,7 +157,7 @@ class AccessLogBasicApi:
 
 	def get_access_log_blocking(self, entity_id: str) -> EncryptedAccessLog:
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicApi.getAccessLogBlocking(
 			self.icure_sdk.native,
@@ -183,7 +183,7 @@ class AccessLogBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -197,7 +197,7 @@ class AccessLogBasicApi:
 
 	def get_access_logs_blocking(self, entity_ids: List[str]) -> List[EncryptedAccessLog]:
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicApi.getAccessLogsBlocking(
 			self.icure_sdk.native,
@@ -227,10 +227,10 @@ class AccessLogBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"from_epoch": from_epoch,
-			"to_epoch": to_epoch,
-			"start_key": start_key,
-			"start_document_id": start_document_id,
+			"fromEpoch": from_epoch,
+			"toEpoch": to_epoch,
+			"startKey": start_key,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -245,10 +245,10 @@ class AccessLogBasicApi:
 
 	def find_access_logs_by_blocking(self, from_epoch: Optional[int], to_epoch: Optional[int], start_key: Optional[int], start_document_id: Optional[str], limit: Optional[int]) -> PaginatedList:
 		payload = {
-			"from_epoch": from_epoch,
-			"to_epoch": to_epoch,
-			"start_key": start_key,
-			"start_document_id": start_document_id,
+			"fromEpoch": from_epoch,
+			"toEpoch": to_epoch,
+			"startKey": start_key,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicApi.findAccessLogsByBlocking(
@@ -283,11 +283,11 @@ class AccessLogBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"user_id": user_id,
-			"access_type": access_type,
-			"start_date": start_date,
-			"start_key": start_key,
-			"start_document_id": start_document_id,
+			"userId": user_id,
+			"accessType": access_type,
+			"startDate": start_date,
+			"startKey": start_key,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 			"descending": descending,
 		}
@@ -303,11 +303,11 @@ class AccessLogBasicApi:
 
 	def find_access_logs_by_user_after_date_blocking(self, user_id: str, access_type: Optional[str] = None, start_date: Optional[int] = None, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, descending: Optional[bool] = None) -> PaginatedList:
 		payload = {
-			"user_id": user_id,
-			"access_type": access_type,
-			"start_date": start_date,
-			"start_key": start_key,
-			"start_document_id": start_document_id,
+			"userId": user_id,
+			"accessType": access_type,
+			"startDate": start_date,
+			"startKey": start_key,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 			"descending": descending,
 		}
@@ -343,11 +343,11 @@ class AccessLogBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"group_id": group_id,
-			"from_epoch": from_epoch,
-			"to_epoch": to_epoch,
-			"start_key": start_key,
-			"start_document_id": start_document_id,
+			"groupId": group_id,
+			"fromEpoch": from_epoch,
+			"toEpoch": to_epoch,
+			"startKey": start_key,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -362,11 +362,11 @@ class AccessLogBasicApi:
 
 	def find_access_logs_in_group_blocking(self, group_id: str, from_epoch: Optional[int] = None, to_epoch: Optional[int] = None, start_key: Optional[int] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
 		payload = {
-			"group_id": group_id,
-			"from_epoch": from_epoch,
-			"to_epoch": to_epoch,
-			"start_key": start_key,
-			"start_document_id": start_document_id,
+			"groupId": group_id,
+			"fromEpoch": from_epoch,
+			"toEpoch": to_epoch,
+			"startKey": start_key,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogBasicApi.findAccessLogsInGroupBlocking(

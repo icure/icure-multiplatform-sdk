@@ -64,7 +64,7 @@ class PatientBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -78,7 +78,7 @@ class PatientBasicApi:
 
 	def delete_patient_blocking(self, entity_id: str) -> DocIdentifier:
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientBasicApi.deletePatientBlocking(
 			self.icure_sdk.native,
@@ -104,7 +104,7 @@ class PatientBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -118,7 +118,7 @@ class PatientBasicApi:
 
 	def delete_patients_blocking(self, entity_ids: List[str]) -> List[DocIdentifier]:
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientBasicApi.deletePatientsBlocking(
 			self.icure_sdk.native,
@@ -144,7 +144,7 @@ class PatientBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"patient_ids": patient_ids,
+			"patientIds": patient_ids,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -158,7 +158,7 @@ class PatientBasicApi:
 
 	def undelete_patient_blocking(self, patient_ids: str) -> List[DocIdentifier]:
 		payload = {
-			"patient_ids": patient_ids,
+			"patientIds": patient_ids,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientBasicApi.undeletePatientBlocking(
 			self.icure_sdk.native,
@@ -264,7 +264,7 @@ class PatientBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -278,7 +278,7 @@ class PatientBasicApi:
 
 	def get_patient_blocking(self, entity_id: str) -> EncryptedPatient:
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientBasicApi.getPatientBlocking(
 			self.icure_sdk.native,
@@ -308,9 +308,9 @@ class PatientBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"filter_chain": filter_chain.__serialize__(),
-			"start_key": start_key,
-			"start_document_id": start_document_id,
+			"filterChain": filter_chain.__serialize__(),
+			"startKey": start_key,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 			"skip": skip,
 			"sort": sort,
@@ -328,9 +328,9 @@ class PatientBasicApi:
 
 	def filter_patients_by_blocking(self, filter_chain: FilterChain, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, skip: Optional[int] = None, sort: Optional[str] = None, desc: Optional[bool] = None) -> PaginatedList:
 		payload = {
-			"filter_chain": filter_chain.__serialize__(),
-			"start_key": start_key,
-			"start_document_id": start_document_id,
+			"filterChain": filter_chain.__serialize__(),
+			"startKey": start_key,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 			"skip": skip,
 			"sort": sort,
@@ -368,12 +368,12 @@ class PatientBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"healthcare_party_id": healthcare_party_id,
-			"filter_value": filter_value,
-			"start_key": start_key,
-			"start_document_id": start_document_id,
+			"healthcarePartyId": healthcare_party_id,
+			"filterValue": filter_value,
+			"startKey": start_key,
+			"startDocumentId": start_document_id,
 			"limit": limit,
-			"sort_direction": sort_direction.__serialize__(),
+			"sortDirection": sort_direction.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -387,12 +387,12 @@ class PatientBasicApi:
 
 	def find_patients_by_name_birth_ssin_auto_blocking(self, filter_value: str, healthcare_party_id: Optional[str] = None, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, sort_direction: SortDirection = SortDirection.Asc) -> PaginatedList:
 		payload = {
-			"healthcare_party_id": healthcare_party_id,
-			"filter_value": filter_value,
-			"start_key": start_key,
-			"start_document_id": start_document_id,
+			"healthcarePartyId": healthcare_party_id,
+			"filterValue": filter_value,
+			"startKey": start_key,
+			"startDocumentId": start_document_id,
 			"limit": limit,
-			"sort_direction": sort_direction.__serialize__(),
+			"sortDirection": sort_direction.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientBasicApi.findPatientsByNameBirthSsinAutoBlocking(
 			self.icure_sdk.native,
@@ -426,12 +426,12 @@ class PatientBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"hc_party_id": hc_party_id,
-			"sort_field": sort_field,
-			"start_key": start_key,
-			"start_document_id": start_document_id,
+			"hcPartyId": hc_party_id,
+			"sortField": sort_field,
+			"startKey": start_key,
+			"startDocumentId": start_document_id,
 			"limit": limit,
-			"sort_direction": sort_direction.__serialize__(),
+			"sortDirection": sort_direction.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -445,12 +445,12 @@ class PatientBasicApi:
 
 	def list_patients_of_hc_party_blocking(self, hc_party_id: str, sort_field: str = "name", start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, sort_direction: SortDirection = SortDirection.Asc) -> PaginatedList:
 		payload = {
-			"hc_party_id": hc_party_id,
-			"sort_field": sort_field,
-			"start_key": start_key,
-			"start_document_id": start_document_id,
+			"hcPartyId": hc_party_id,
+			"sortField": sort_field,
+			"startKey": start_key,
+			"startDocumentId": start_document_id,
 			"limit": limit,
-			"sort_direction": sort_direction.__serialize__(),
+			"sortDirection": sort_direction.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientBasicApi.listPatientsOfHcPartyBlocking(
 			self.icure_sdk.native,
@@ -525,8 +525,8 @@ class PatientBasicApi:
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"date": date,
-			"start_key": start_key,
-			"start_document_id": start_document_id,
+			"startKey": start_key,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -542,8 +542,8 @@ class PatientBasicApi:
 	def find_patients_modified_after_blocking(self, date: int, start_key: Optional[int] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
 		payload = {
 			"date": date,
-			"start_key": start_key,
-			"start_document_id": start_document_id,
+			"startKey": start_key,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientBasicApi.findPatientsModifiedAfterBlocking(
@@ -578,12 +578,12 @@ class PatientBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"hc_party_id": hc_party_id,
-			"sort_field": sort_field,
-			"start_key": start_key,
-			"start_document_id": start_document_id,
+			"hcPartyId": hc_party_id,
+			"sortField": sort_field,
+			"startKey": start_key,
+			"startDocumentId": start_document_id,
 			"limit": limit,
-			"sort_direction": sort_direction.__serialize__(),
+			"sortDirection": sort_direction.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -597,12 +597,12 @@ class PatientBasicApi:
 
 	def list_patients_by_hc_party_blocking(self, hc_party_id: str, sort_field: str = "name", start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, sort_direction: SortDirection = SortDirection.Asc) -> PaginatedList:
 		payload = {
-			"hc_party_id": hc_party_id,
-			"sort_field": sort_field,
-			"start_key": start_key,
-			"start_document_id": start_document_id,
+			"hcPartyId": hc_party_id,
+			"sortField": sort_field,
+			"startKey": start_key,
+			"startDocumentId": start_document_id,
 			"limit": limit,
-			"sort_direction": sort_direction.__serialize__(),
+			"sortDirection": sort_direction.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientBasicApi.listPatientsByHcPartyBlocking(
 			self.icure_sdk.native,
@@ -632,7 +632,7 @@ class PatientBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"patient_id": patient_id,
+			"patientId": patient_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -646,7 +646,7 @@ class PatientBasicApi:
 
 	def get_patient_hc_party_keys_for_delegate_blocking(self, patient_id: str) -> Dict[str, str]:
 		payload = {
-			"patient_id": patient_id,
+			"patientId": patient_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientBasicApi.getPatientHcPartyKeysForDelegateBlocking(
 			self.icure_sdk.native,
@@ -672,7 +672,7 @@ class PatientBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"hc_party_id": hc_party_id,
+			"hcPartyId": hc_party_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -686,7 +686,7 @@ class PatientBasicApi:
 
 	def count_of_patients_blocking(self, hc_party_id: str) -> EncryptedContent:
 		payload = {
-			"hc_party_id": hc_party_id,
+			"hcPartyId": hc_party_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientBasicApi.countOfPatientsBlocking(
 			self.icure_sdk.native,
@@ -716,12 +716,12 @@ class PatientBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"hc_party_id": hc_party_id,
-			"sort_field": sort_field,
-			"start_key": start_key,
-			"start_document_id": start_document_id,
+			"hcPartyId": hc_party_id,
+			"sortField": sort_field,
+			"startKey": start_key,
+			"startDocumentId": start_document_id,
 			"limit": limit,
-			"sort_direction": sort_direction.__serialize__(),
+			"sortDirection": sort_direction.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -735,12 +735,12 @@ class PatientBasicApi:
 
 	def find_patients_by_healthcare_party_blocking(self, hc_party_id: Optional[str] = None, sort_field: str = "name", start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, sort_direction: SortDirection = SortDirection.Asc) -> PaginatedList:
 		payload = {
-			"hc_party_id": hc_party_id,
-			"sort_field": sort_field,
-			"start_key": start_key,
-			"start_document_id": start_document_id,
+			"hcPartyId": hc_party_id,
+			"sortField": sort_field,
+			"startKey": start_key,
+			"startDocumentId": start_document_id,
 			"limit": limit,
-			"sort_direction": sort_direction.__serialize__(),
+			"sortDirection": sort_direction.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientBasicApi.findPatientsByHealthcarePartyBlocking(
 			self.icure_sdk.native,
@@ -774,9 +774,9 @@ class PatientBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"hc_party_id": hc_party_id,
-			"start_key": start_key,
-			"start_document_id": start_document_id,
+			"hcPartyId": hc_party_id,
+			"startKey": start_key,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -791,9 +791,9 @@ class PatientBasicApi:
 
 	def find_patients_ids_by_healthcare_party_blocking(self, hc_party_id: str, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
 		payload = {
-			"hc_party_id": hc_party_id,
-			"start_key": start_key,
-			"start_document_id": start_document_id,
+			"hcPartyId": hc_party_id,
+			"startKey": start_key,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientBasicApi.findPatientsIdsByHealthcarePartyBlocking(
@@ -824,7 +824,7 @@ class PatientBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"external_id": external_id,
+			"externalId": external_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -838,7 +838,7 @@ class PatientBasicApi:
 
 	def get_patient_by_external_id_blocking(self, external_id: str) -> EncryptedPatient:
 		payload = {
-			"external_id": external_id,
+			"externalId": external_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientBasicApi.getPatientByExternalIdBlocking(
 			self.icure_sdk.native,
@@ -864,9 +864,9 @@ class PatientBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"first_name": first_name,
-			"last_name": last_name,
-			"date_of_birth": date_of_birth,
+			"firstName": first_name,
+			"lastName": last_name,
+			"dateOfBirth": date_of_birth,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -880,9 +880,9 @@ class PatientBasicApi:
 
 	def fuzzy_search_blocking(self, first_name: str, last_name: str, date_of_birth: Optional[int] = None) -> List[EncryptedPatient]:
 		payload = {
-			"first_name": first_name,
-			"last_name": last_name,
-			"date_of_birth": date_of_birth,
+			"firstName": first_name,
+			"lastName": last_name,
+			"dateOfBirth": date_of_birth,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientBasicApi.fuzzySearchBlocking(
 			self.icure_sdk.native,
@@ -912,11 +912,11 @@ class PatientBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"start_date": start_date,
-			"end_date": end_date,
+			"startDate": start_date,
+			"endDate": end_date,
 			"desc": desc,
-			"start_key": start_key,
-			"start_document_id": start_document_id,
+			"startKey": start_key,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -931,11 +931,11 @@ class PatientBasicApi:
 
 	def find_deleted_patients_blocking(self, start_date: int, end_date: Optional[int] = None, desc: Optional[bool] = None, start_key: Optional[int] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
 		payload = {
-			"start_date": start_date,
-			"end_date": end_date,
+			"startDate": start_date,
+			"endDate": end_date,
 			"desc": desc,
-			"start_key": start_key,
-			"start_document_id": start_document_id,
+			"startKey": start_key,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientBasicApi.findDeletedPatientsBlocking(
@@ -966,8 +966,8 @@ class PatientBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"first_name": first_name,
-			"last_name": last_name,
+			"firstName": first_name,
+			"lastName": last_name,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -981,8 +981,8 @@ class PatientBasicApi:
 
 	def list_deleted_patients_by_name_blocking(self, first_name: Optional[str] = None, last_name: Optional[str] = None) -> List[EncryptedPatient]:
 		payload = {
-			"first_name": first_name,
-			"last_name": last_name,
+			"firstName": first_name,
+			"lastName": last_name,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientBasicApi.listDeletedPatientsByNameBlocking(
 			self.icure_sdk.native,
@@ -1008,7 +1008,7 @@ class PatientBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"patient_ids": patient_ids.__serialize__(),
+			"patientIds": patient_ids.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1022,7 +1022,7 @@ class PatientBasicApi:
 
 	def get_patients_blocking(self, patient_ids: ListOfIds) -> List[EncryptedPatient]:
 		payload = {
-			"patient_ids": patient_ids.__serialize__(),
+			"patientIds": patient_ids.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientBasicApi.getPatientsBlocking(
 			self.icure_sdk.native,
@@ -1048,7 +1048,7 @@ class PatientBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"hc_party_id": hc_party_id,
+			"hcPartyId": hc_party_id,
 			"id": id,
 			"system": system,
 		}
@@ -1064,7 +1064,7 @@ class PatientBasicApi:
 
 	def get_patient_by_healthcare_party_and_identifier_blocking(self, hc_party_id: str, id: str, system: Optional[str] = None) -> EncryptedPatient:
 		payload = {
-			"hc_party_id": hc_party_id,
+			"hcPartyId": hc_party_id,
 			"id": id,
 			"system": system,
 		}
@@ -1092,7 +1092,7 @@ class PatientBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"patient_dtos": [x0.__serialize__() for x0 in patient_dtos],
+			"patientDtos": [x0.__serialize__() for x0 in patient_dtos],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1106,7 +1106,7 @@ class PatientBasicApi:
 
 	def modify_patients_blocking(self, patient_dtos: List[EncryptedPatient]) -> List[IdWithRev]:
 		payload = {
-			"patient_dtos": [x0.__serialize__() for x0 in patient_dtos],
+			"patientDtos": [x0.__serialize__() for x0 in patient_dtos],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientBasicApi.modifyPatientsBlocking(
 			self.icure_sdk.native,
@@ -1132,8 +1132,8 @@ class PatientBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"patient_id": patient_id,
-			"referral_id": referral_id,
+			"patientId": patient_id,
+			"referralId": referral_id,
 			"start": start,
 			"end": end,
 		}
@@ -1149,8 +1149,8 @@ class PatientBasicApi:
 
 	def modify_patient_referral_blocking(self, patient_id: str, referral_id: str, start: Optional[int] = None, end: Optional[int] = None) -> EncryptedPatient:
 		payload = {
-			"patient_id": patient_id,
-			"referral_id": referral_id,
+			"patientId": patient_id,
+			"referralId": referral_id,
 			"start": start,
 			"end": end,
 		}
@@ -1182,9 +1182,9 @@ class PatientBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"hc_party_id": hc_party_id,
-			"start_key": start_key,
-			"start_document_id": start_document_id,
+			"hcPartyId": hc_party_id,
+			"startKey": start_key,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -1199,9 +1199,9 @@ class PatientBasicApi:
 
 	def find_duplicates_by_ssin_blocking(self, hc_party_id: str, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
 		payload = {
-			"hc_party_id": hc_party_id,
-			"start_key": start_key,
-			"start_document_id": start_document_id,
+			"hcPartyId": hc_party_id,
+			"startKey": start_key,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientBasicApi.findDuplicatesBySsinBlocking(
@@ -1236,9 +1236,9 @@ class PatientBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"hc_party_id": hc_party_id,
-			"start_key": start_key,
-			"start_document_id": start_document_id,
+			"hcPartyId": hc_party_id,
+			"startKey": start_key,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -1253,9 +1253,9 @@ class PatientBasicApi:
 
 	def find_duplicates_by_name_blocking(self, hc_party_id: str, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
 		payload = {
-			"hc_party_id": hc_party_id,
-			"start_key": start_key,
-			"start_document_id": start_document_id,
+			"hcPartyId": hc_party_id,
+			"startKey": start_key,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientBasicApi.findDuplicatesByNameBlocking(
@@ -1286,10 +1286,10 @@ class PatientBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"into_id": into_id,
-			"from_id": from_id,
-			"expected_from_rev": expected_from_rev,
-			"updated_into": updated_into.__serialize__(),
+			"intoId": into_id,
+			"fromId": from_id,
+			"expectedFromRev": expected_from_rev,
+			"updatedInto": updated_into.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1303,10 +1303,10 @@ class PatientBasicApi:
 
 	def merge_patients_blocking(self, into_id: str, from_id: str, expected_from_rev: str, updated_into: EncryptedPatient) -> EncryptedPatient:
 		payload = {
-			"into_id": into_id,
-			"from_id": from_id,
-			"expected_from_rev": expected_from_rev,
-			"updated_into": updated_into.__serialize__(),
+			"intoId": into_id,
+			"fromId": from_id,
+			"expectedFromRev": expected_from_rev,
+			"updatedInto": updated_into.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientBasicApi.mergePatientsBlocking(
 			self.icure_sdk.native,

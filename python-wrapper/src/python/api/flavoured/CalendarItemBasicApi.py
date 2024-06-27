@@ -23,7 +23,7 @@ class CalendarItemBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -37,7 +37,7 @@ class CalendarItemBasicApi:
 
 	def delete_calendar_item_blocking(self, entity_id: str) -> DocIdentifier:
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemBasicApi.deleteCalendarItemBlocking(
 			self.icure_sdk.native,
@@ -63,7 +63,7 @@ class CalendarItemBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -77,7 +77,7 @@ class CalendarItemBasicApi:
 
 	def delete_calendar_items_blocking(self, entity_ids: List[str]) -> List[DocIdentifier]:
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemBasicApi.deleteCalendarItemsBlocking(
 			self.icure_sdk.native,
@@ -143,7 +143,7 @@ class CalendarItemBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -157,7 +157,7 @@ class CalendarItemBasicApi:
 
 	def get_calendar_item_blocking(self, entity_id: str) -> EncryptedCalendarItem:
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemBasicApi.getCalendarItemBlocking(
 			self.icure_sdk.native,
@@ -183,7 +183,7 @@ class CalendarItemBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -197,7 +197,7 @@ class CalendarItemBasicApi:
 
 	def get_calendar_items_blocking(self, entity_ids: List[str]) -> List[EncryptedCalendarItem]:
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemBasicApi.getCalendarItemsBlocking(
 			self.icure_sdk.native,
@@ -223,9 +223,9 @@ class CalendarItemBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"start_date": start_date,
-			"end_date": end_date,
-			"hc_party_id": hc_party_id,
+			"startDate": start_date,
+			"endDate": end_date,
+			"hcPartyId": hc_party_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -239,9 +239,9 @@ class CalendarItemBasicApi:
 
 	def get_calendar_items_by_period_and_hc_party_id_blocking(self, start_date: int, end_date: int, hc_party_id: str) -> List[EncryptedCalendarItem]:
 		payload = {
-			"start_date": start_date,
-			"end_date": end_date,
-			"hc_party_id": hc_party_id,
+			"startDate": start_date,
+			"endDate": end_date,
+			"hcPartyId": hc_party_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemBasicApi.getCalendarItemsByPeriodAndHcPartyIdBlocking(
 			self.icure_sdk.native,
@@ -267,9 +267,9 @@ class CalendarItemBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"start_date": start_date,
-			"end_date": end_date,
-			"agenda_id": agenda_id,
+			"startDate": start_date,
+			"endDate": end_date,
+			"agendaId": agenda_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -283,9 +283,9 @@ class CalendarItemBasicApi:
 
 	def get_calendars_by_period_and_agenda_id_blocking(self, start_date: int, end_date: int, agenda_id: str) -> List[EncryptedCalendarItem]:
 		payload = {
-			"start_date": start_date,
-			"end_date": end_date,
-			"agenda_id": agenda_id,
+			"startDate": start_date,
+			"endDate": end_date,
+			"agendaId": agenda_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemBasicApi.getCalendarsByPeriodAndAgendaIdBlocking(
 			self.icure_sdk.native,
@@ -311,7 +311,7 @@ class CalendarItemBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -325,7 +325,7 @@ class CalendarItemBasicApi:
 
 	def get_calendar_items_with_ids_blocking(self, entity_ids: List[str]) -> List[EncryptedCalendarItem]:
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemBasicApi.getCalendarItemsWithIdsBlocking(
 			self.icure_sdk.native,
@@ -355,9 +355,9 @@ class CalendarItemBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"recurrence_id": recurrence_id,
-			"start_key": start_key,
-			"start_document_id": start_document_id,
+			"recurrenceId": recurrence_id,
+			"startKey": start_key,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -372,9 +372,9 @@ class CalendarItemBasicApi:
 
 	def find_calendar_items_by_recurrence_id_blocking(self, recurrence_id: str, start_key: Optional[str], start_document_id: Optional[str], limit: int) -> PaginatedList:
 		payload = {
-			"recurrence_id": recurrence_id,
-			"start_key": start_key,
-			"start_document_id": start_document_id,
+			"recurrenceId": recurrence_id,
+			"startKey": start_key,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemBasicApi.findCalendarItemsByRecurrenceIdBlocking(

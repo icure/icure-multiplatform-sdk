@@ -32,8 +32,8 @@ class CodeApi:
 			"language": language,
 			"label": label,
 			"version": version,
-			"start_key": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
-			"start_document_id": start_document_id,
+			"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -53,8 +53,8 @@ class CodeApi:
 			"language": language,
 			"label": label,
 			"version": version,
-			"start_key": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
-			"start_document_id": start_document_id,
+			"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.findCodesByLabelBlocking(
@@ -93,8 +93,8 @@ class CodeApi:
 			"type": type,
 			"code": code,
 			"version": version,
-			"start_key": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
-			"start_document_id": start_document_id,
+			"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -113,8 +113,8 @@ class CodeApi:
 			"type": type,
 			"code": code,
 			"version": version,
-			"start_key": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
-			"start_document_id": start_document_id,
+			"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.findCodesByTypeBlocking(
@@ -149,10 +149,10 @@ class CodeApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"link_type": link_type,
-			"linked_id": linked_id,
-			"start_key": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
-			"start_document_id": start_document_id,
+			"linkType": link_type,
+			"linkedId": linked_id,
+			"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -167,10 +167,10 @@ class CodeApi:
 
 	def find_codes_by_link_blocking(self, link_type: str, linked_id: Optional[str] = None, start_key: Optional[Dict[str, object]] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
 		payload = {
-			"link_type": link_type,
-			"linked_id": linked_id,
-			"start_key": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
-			"start_document_id": start_document_id,
+			"linkType": link_type,
+			"linkedId": linked_id,
+			"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.findCodesByLinkBlocking(
@@ -371,7 +371,7 @@ class CodeApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"code_batch": [x0.__serialize__() for x0 in code_batch],
+			"codeBatch": [x0.__serialize__() for x0 in code_batch],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -385,7 +385,7 @@ class CodeApi:
 
 	def create_codes_blocking(self, code_batch: List[Code]) -> List[Code]:
 		payload = {
-			"code_batch": [x0.__serialize__() for x0 in code_batch],
+			"codeBatch": [x0.__serialize__() for x0 in code_batch],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.createCodesBlocking(
 			self.icure_sdk.native,
@@ -501,7 +501,7 @@ class CodeApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"code_ids": [x0 for x0 in code_ids],
+			"codeIds": [x0 for x0 in code_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -515,7 +515,7 @@ class CodeApi:
 
 	def get_codes_blocking(self, code_ids: List[str]) -> List[Code]:
 		payload = {
-			"code_ids": [x0 for x0 in code_ids],
+			"codeIds": [x0 for x0 in code_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.getCodesBlocking(
 			self.icure_sdk.native,
@@ -541,7 +541,7 @@ class CodeApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"code_id": code_id,
+			"codeId": code_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -555,7 +555,7 @@ class CodeApi:
 
 	def get_code_blocking(self, code_id: str) -> Code:
 		payload = {
-			"code_id": code_id,
+			"codeId": code_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.getCodeBlocking(
 			self.icure_sdk.native,
@@ -625,7 +625,7 @@ class CodeApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"code_dto": code_dto.__serialize__(),
+			"codeDto": code_dto.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -639,7 +639,7 @@ class CodeApi:
 
 	def modify_code_blocking(self, code_dto: Code) -> Code:
 		payload = {
-			"code_dto": code_dto.__serialize__(),
+			"codeDto": code_dto.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.modifyCodeBlocking(
 			self.icure_sdk.native,
@@ -665,7 +665,7 @@ class CodeApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"code_batch": [x0.__serialize__() for x0 in code_batch],
+			"codeBatch": [x0.__serialize__() for x0 in code_batch],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -679,7 +679,7 @@ class CodeApi:
 
 	def modify_codes_blocking(self, code_batch: List[Code]) -> List[Code]:
 		payload = {
-			"code_batch": [x0.__serialize__() for x0 in code_batch],
+			"codeBatch": [x0.__serialize__() for x0 in code_batch],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.modifyCodesBlocking(
 			self.icure_sdk.native,
@@ -709,13 +709,13 @@ class CodeApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"start_key": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
-			"start_document_id": start_document_id,
+			"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 			"skip": skip,
 			"sort": sort,
 			"desc": desc,
-			"filter_chain": filter_chain.__serialize__(),
+			"filterChain": filter_chain.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -729,13 +729,13 @@ class CodeApi:
 
 	def filter_codes_by_blocking(self, filter_chain: FilterChain, start_key: Optional[Dict[str, object]] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, skip: Optional[int] = None, sort: Optional[str] = None, desc: Optional[bool] = None) -> PaginatedList:
 		payload = {
-			"start_key": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
-			"start_document_id": start_document_id,
+			"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 			"skip": skip,
 			"sort": sort,
 			"desc": desc,
-			"filter_chain": filter_chain.__serialize__(),
+			"filterChain": filter_chain.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.filterCodesByBlocking(
 			self.icure_sdk.native,
@@ -805,7 +805,7 @@ class CodeApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"code_type": code_type,
+			"codeType": code_type,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -819,7 +819,7 @@ class CodeApi:
 
 	def import_codes_blocking(self, code_type: str) -> None:
 		payload = {
-			"code_type": code_type,
+			"codeType": code_type,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.importCodesBlocking(
 			self.icure_sdk.native,

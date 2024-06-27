@@ -27,11 +27,11 @@ class TimeTableApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"delegate_id": delegate_id,
-				"time_table": time_table.__serialize__(),
-				"share_encryption_keys": share_encryption_keys.__serialize__(),
-				"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-				"requested_permission": requested_permission.__serialize__(),
+				"delegateId": delegate_id,
+				"timeTable": time_table.__serialize__(),
+				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+				"requestedPermission": requested_permission.__serialize__(),
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -45,11 +45,11 @@ class TimeTableApi:
 
 		def share_with_blocking(self, delegate_id: str, time_table: EncryptedTimeTable, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
 			payload = {
-				"delegate_id": delegate_id,
-				"time_table": time_table.__serialize__(),
-				"share_encryption_keys": share_encryption_keys.__serialize__(),
-				"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-				"requested_permission": requested_permission.__serialize__(),
+				"delegateId": delegate_id,
+				"timeTable": time_table.__serialize__(),
+				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+				"requestedPermission": requested_permission.__serialize__(),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.encrypted.shareWithBlocking(
 				self.icure_sdk.native,
@@ -75,7 +75,7 @@ class TimeTableApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"time_table": time_table.__serialize__(),
+				"timeTable": time_table.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -90,7 +90,7 @@ class TimeTableApi:
 
 		def try_share_with_many_blocking(self, time_table: EncryptedTimeTable, delegates: Dict[str, TimeTableShareOptions]) -> SimpleShareResult:
 			payload = {
-				"time_table": time_table.__serialize__(),
+				"timeTable": time_table.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.encrypted.tryShareWithManyBlocking(
@@ -117,7 +117,7 @@ class TimeTableApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"time_table": time_table.__serialize__(),
+				"timeTable": time_table.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -132,7 +132,7 @@ class TimeTableApi:
 
 		def share_with_many_blocking(self, time_table: EncryptedTimeTable, delegates: Dict[str, TimeTableShareOptions]) -> EncryptedTimeTable:
 			payload = {
-				"time_table": time_table.__serialize__(),
+				"timeTable": time_table.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.encrypted.shareWithManyBlocking(
@@ -199,7 +199,7 @@ class TimeTableApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity_id": entity_id,
+				"entityId": entity_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -213,7 +213,7 @@ class TimeTableApi:
 
 		def get_time_table_blocking(self, entity_id: str) -> EncryptedTimeTable:
 			payload = {
-				"entity_id": entity_id,
+				"entityId": entity_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.encrypted.getTimeTableBlocking(
 				self.icure_sdk.native,
@@ -239,9 +239,9 @@ class TimeTableApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"start_date": start_date,
-				"end_date": end_date,
-				"agenda_id": agenda_id,
+				"startDate": start_date,
+				"endDate": end_date,
+				"agendaId": agenda_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -255,9 +255,9 @@ class TimeTableApi:
 
 		def get_time_tables_by_period_and_agenda_id_blocking(self, start_date: int, end_date: int, agenda_id: str) -> List[EncryptedTimeTable]:
 			payload = {
-				"start_date": start_date,
-				"end_date": end_date,
-				"agenda_id": agenda_id,
+				"startDate": start_date,
+				"endDate": end_date,
+				"agendaId": agenda_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.encrypted.getTimeTablesByPeriodAndAgendaIdBlocking(
 				self.icure_sdk.native,
@@ -283,7 +283,7 @@ class TimeTableApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"agenda_id": agenda_id,
+				"agendaId": agenda_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -297,7 +297,7 @@ class TimeTableApi:
 
 		def get_time_tables_by_agenda_id_blocking(self, agenda_id: str) -> List[EncryptedTimeTable]:
 			payload = {
-				"agenda_id": agenda_id,
+				"agendaId": agenda_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.encrypted.getTimeTablesByAgendaIdBlocking(
 				self.icure_sdk.native,
@@ -328,11 +328,11 @@ class TimeTableApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"delegate_id": delegate_id,
-				"time_table": time_table.__serialize__(),
-				"share_encryption_keys": share_encryption_keys.__serialize__(),
-				"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-				"requested_permission": requested_permission.__serialize__(),
+				"delegateId": delegate_id,
+				"timeTable": time_table.__serialize__(),
+				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+				"requestedPermission": requested_permission.__serialize__(),
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -346,11 +346,11 @@ class TimeTableApi:
 
 		def share_with_blocking(self, delegate_id: str, time_table: TimeTable, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
 			payload = {
-				"delegate_id": delegate_id,
-				"time_table": time_table.__serialize__(),
-				"share_encryption_keys": share_encryption_keys.__serialize__(),
-				"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-				"requested_permission": requested_permission.__serialize__(),
+				"delegateId": delegate_id,
+				"timeTable": time_table.__serialize__(),
+				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+				"requestedPermission": requested_permission.__serialize__(),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.tryAndRecover.shareWithBlocking(
 				self.icure_sdk.native,
@@ -376,7 +376,7 @@ class TimeTableApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"time_table": time_table.__serialize__(),
+				"timeTable": time_table.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -391,7 +391,7 @@ class TimeTableApi:
 
 		def try_share_with_many_blocking(self, time_table: TimeTable, delegates: Dict[str, TimeTableShareOptions]) -> SimpleShareResult:
 			payload = {
-				"time_table": time_table.__serialize__(),
+				"timeTable": time_table.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.tryAndRecover.tryShareWithManyBlocking(
@@ -418,7 +418,7 @@ class TimeTableApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"time_table": time_table.__serialize__(),
+				"timeTable": time_table.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -433,7 +433,7 @@ class TimeTableApi:
 
 		def share_with_many_blocking(self, time_table: TimeTable, delegates: Dict[str, TimeTableShareOptions]) -> TimeTable:
 			payload = {
-				"time_table": time_table.__serialize__(),
+				"timeTable": time_table.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.tryAndRecover.shareWithManyBlocking(
@@ -500,7 +500,7 @@ class TimeTableApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity_id": entity_id,
+				"entityId": entity_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -514,7 +514,7 @@ class TimeTableApi:
 
 		def get_time_table_blocking(self, entity_id: str) -> TimeTable:
 			payload = {
-				"entity_id": entity_id,
+				"entityId": entity_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.tryAndRecover.getTimeTableBlocking(
 				self.icure_sdk.native,
@@ -540,9 +540,9 @@ class TimeTableApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"start_date": start_date,
-				"end_date": end_date,
-				"agenda_id": agenda_id,
+				"startDate": start_date,
+				"endDate": end_date,
+				"agendaId": agenda_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -556,9 +556,9 @@ class TimeTableApi:
 
 		def get_time_tables_by_period_and_agenda_id_blocking(self, start_date: int, end_date: int, agenda_id: str) -> List[TimeTable]:
 			payload = {
-				"start_date": start_date,
-				"end_date": end_date,
-				"agenda_id": agenda_id,
+				"startDate": start_date,
+				"endDate": end_date,
+				"agendaId": agenda_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.tryAndRecover.getTimeTablesByPeriodAndAgendaIdBlocking(
 				self.icure_sdk.native,
@@ -584,7 +584,7 @@ class TimeTableApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"agenda_id": agenda_id,
+				"agendaId": agenda_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -598,7 +598,7 @@ class TimeTableApi:
 
 		def get_time_tables_by_agenda_id_blocking(self, agenda_id: str) -> List[TimeTable]:
 			payload = {
-				"agenda_id": agenda_id,
+				"agendaId": agenda_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.tryAndRecover.getTimeTablesByAgendaIdBlocking(
 				self.icure_sdk.native,
@@ -673,7 +673,7 @@ class TimeTableApi:
 			"patient": serialize_patient(patient) if patient is not None else None,
 			"user": user.__serialize__() if user is not None else None,
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			"secret_id": serialize_secret_id_option(secret_id),
+			"secretId": serialize_secret_id_option(secret_id),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -691,7 +691,7 @@ class TimeTableApi:
 			"patient": serialize_patient(patient) if patient is not None else None,
 			"user": user.__serialize__() if user is not None else None,
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			"secret_id": serialize_secret_id_option(secret_id),
+			"secretId": serialize_secret_id_option(secret_id),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.withEncryptionMetadataBlocking(
 			self.icure_sdk.native,
@@ -717,7 +717,7 @@ class TimeTableApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"time_table": serialize_time_table(time_table),
+			"timeTable": serialize_time_table(time_table),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -731,7 +731,7 @@ class TimeTableApi:
 
 	def get_encryption_keys_of_blocking(self, time_table: TimeTable) -> List[HexString]:
 		payload = {
-			"time_table": serialize_time_table(time_table),
+			"timeTable": serialize_time_table(time_table),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.getEncryptionKeysOfBlocking(
 			self.icure_sdk.native,
@@ -757,7 +757,7 @@ class TimeTableApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"time_table": serialize_time_table(time_table),
+			"timeTable": serialize_time_table(time_table),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -771,7 +771,7 @@ class TimeTableApi:
 
 	def has_write_access_blocking(self, time_table: TimeTable) -> bool:
 		payload = {
-			"time_table": serialize_time_table(time_table),
+			"timeTable": serialize_time_table(time_table),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.hasWriteAccessBlocking(
 			self.icure_sdk.native,
@@ -797,7 +797,7 @@ class TimeTableApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"time_table": serialize_time_table(time_table),
+			"timeTable": serialize_time_table(time_table),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -811,7 +811,7 @@ class TimeTableApi:
 
 	def decrypt_patient_id_of_blocking(self, time_table: TimeTable) -> List[str]:
 		payload = {
-			"time_table": serialize_time_table(time_table),
+			"timeTable": serialize_time_table(time_table),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.decryptPatientIdOfBlocking(
 			self.icure_sdk.native,
@@ -876,7 +876,7 @@ class TimeTableApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -890,7 +890,7 @@ class TimeTableApi:
 
 	def delete_time_table_blocking(self, entity_id: str) -> DocIdentifier:
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.deleteTimeTableBlocking(
 			self.icure_sdk.native,
@@ -916,7 +916,7 @@ class TimeTableApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -930,7 +930,7 @@ class TimeTableApi:
 
 	def delete_time_tables_blocking(self, entity_ids: List[str]) -> List[DocIdentifier]:
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.deleteTimeTablesBlocking(
 			self.icure_sdk.native,
@@ -956,11 +956,11 @@ class TimeTableApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"delegate_id": delegate_id,
-			"time_table": time_table.__serialize__(),
-			"share_encryption_keys": share_encryption_keys.__serialize__(),
-			"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-			"requested_permission": requested_permission.__serialize__(),
+			"delegateId": delegate_id,
+			"timeTable": time_table.__serialize__(),
+			"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+			"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+			"requestedPermission": requested_permission.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -974,11 +974,11 @@ class TimeTableApi:
 
 	def share_with_blocking(self, delegate_id: str, time_table: DecryptedTimeTable, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
 		payload = {
-			"delegate_id": delegate_id,
-			"time_table": time_table.__serialize__(),
-			"share_encryption_keys": share_encryption_keys.__serialize__(),
-			"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-			"requested_permission": requested_permission.__serialize__(),
+			"delegateId": delegate_id,
+			"timeTable": time_table.__serialize__(),
+			"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+			"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+			"requestedPermission": requested_permission.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.shareWithBlocking(
 			self.icure_sdk.native,
@@ -1004,7 +1004,7 @@ class TimeTableApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"time_table": time_table.__serialize__(),
+			"timeTable": time_table.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -1019,7 +1019,7 @@ class TimeTableApi:
 
 	def try_share_with_many_blocking(self, time_table: DecryptedTimeTable, delegates: Dict[str, TimeTableShareOptions]) -> SimpleShareResult:
 		payload = {
-			"time_table": time_table.__serialize__(),
+			"timeTable": time_table.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.tryShareWithManyBlocking(
@@ -1046,7 +1046,7 @@ class TimeTableApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"time_table": time_table.__serialize__(),
+			"timeTable": time_table.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -1061,7 +1061,7 @@ class TimeTableApi:
 
 	def share_with_many_blocking(self, time_table: DecryptedTimeTable, delegates: Dict[str, TimeTableShareOptions]) -> DecryptedTimeTable:
 		payload = {
-			"time_table": time_table.__serialize__(),
+			"timeTable": time_table.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.shareWithManyBlocking(
@@ -1128,7 +1128,7 @@ class TimeTableApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1142,7 +1142,7 @@ class TimeTableApi:
 
 	def get_time_table_blocking(self, entity_id: str) -> DecryptedTimeTable:
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.getTimeTableBlocking(
 			self.icure_sdk.native,
@@ -1168,9 +1168,9 @@ class TimeTableApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"start_date": start_date,
-			"end_date": end_date,
-			"agenda_id": agenda_id,
+			"startDate": start_date,
+			"endDate": end_date,
+			"agendaId": agenda_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1184,9 +1184,9 @@ class TimeTableApi:
 
 	def get_time_tables_by_period_and_agenda_id_blocking(self, start_date: int, end_date: int, agenda_id: str) -> List[DecryptedTimeTable]:
 		payload = {
-			"start_date": start_date,
-			"end_date": end_date,
-			"agenda_id": agenda_id,
+			"startDate": start_date,
+			"endDate": end_date,
+			"agendaId": agenda_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.getTimeTablesByPeriodAndAgendaIdBlocking(
 			self.icure_sdk.native,
@@ -1212,7 +1212,7 @@ class TimeTableApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"agenda_id": agenda_id,
+			"agendaId": agenda_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1226,7 +1226,7 @@ class TimeTableApi:
 
 	def get_time_tables_by_agenda_id_blocking(self, agenda_id: str) -> List[DecryptedTimeTable]:
 		payload = {
-			"agenda_id": agenda_id,
+			"agendaId": agenda_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.getTimeTablesByAgendaIdBlocking(
 			self.icure_sdk.native,

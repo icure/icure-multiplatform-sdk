@@ -108,8 +108,8 @@ class GroupApi:
 			"server": server,
 			"q": q,
 			"n": n,
-			"super_group": super_group,
-			"initialisation_data": initialisation_data.__serialize__(),
+			"superGroup": super_group,
+			"initialisationData": initialisation_data.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -130,8 +130,8 @@ class GroupApi:
 			"server": server,
 			"q": q,
 			"n": n,
-			"super_group": super_group,
-			"initialisation_data": initialisation_data.__serialize__(),
+			"superGroup": super_group,
+			"initialisationData": initialisation_data.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.createGroupBlocking(
 			self.icure_sdk.native,
@@ -159,7 +159,7 @@ class GroupApi:
 		payload = {
 			"type": type.__serialize__() if type is not None else None,
 			"role": role.__serialize__() if role is not None else None,
-			"registration_information": registration_information.__serialize__(),
+			"registrationInformation": registration_information.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -175,7 +175,7 @@ class GroupApi:
 		payload = {
 			"type": type.__serialize__() if type is not None else None,
 			"role": role.__serialize__() if role is not None else None,
-			"registration_information": registration_information.__serialize__(),
+			"registrationInformation": registration_information.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.registerNewGroupAdministratorBlocking(
 			self.icure_sdk.native,
@@ -244,7 +244,7 @@ class GroupApi:
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"id": id,
-			"start_document_id": start_document_id,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -260,7 +260,7 @@ class GroupApi:
 	def find_groups_blocking(self, id: str, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
 		payload = {
 			"id": id,
-			"start_document_id": start_document_id,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.findGroupsBlocking(
@@ -296,9 +296,9 @@ class GroupApi:
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"id": id,
-			"search_string": search_string,
-			"start_key": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
-			"start_document_id": start_document_id,
+			"searchString": search_string,
+			"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -314,9 +314,9 @@ class GroupApi:
 	def find_groups_with_content_blocking(self, id: str, search_string: str, start_key: Optional[Dict[str, object]] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
 		payload = {
 			"id": id,
-			"search_string": search_string,
-			"start_key": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
-			"start_document_id": start_document_id,
+			"searchString": search_string,
+			"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.findGroupsWithContentBlocking(
@@ -473,7 +473,7 @@ class GroupApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"token_id": token_id,
+			"tokenId": token_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -487,7 +487,7 @@ class GroupApi:
 
 	def delete_operation_token_blocking(self, token_id: str) -> None:
 		payload = {
-			"token_id": token_id,
+			"tokenId": token_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.deleteOperationTokenBlocking(
 			self.icure_sdk.native,
@@ -510,9 +510,9 @@ class GroupApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"group_id": group_id,
-			"user_type": user_type,
-			"role_ids": [x0 for x0 in role_ids],
+			"groupId": group_id,
+			"userType": user_type,
+			"roleIds": [x0 for x0 in role_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -526,9 +526,9 @@ class GroupApi:
 
 	def set_default_roles_blocking(self, group_id: str, user_type: str, role_ids: List[str]) -> Group:
 		payload = {
-			"group_id": group_id,
-			"user_type": user_type,
-			"role_ids": [x0 for x0 in role_ids],
+			"groupId": group_id,
+			"userType": user_type,
+			"roleIds": [x0 for x0 in role_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.setDefaultRolesBlocking(
 			self.icure_sdk.native,
@@ -554,7 +554,7 @@ class GroupApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"group_id": group_id,
+			"groupId": group_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -568,7 +568,7 @@ class GroupApi:
 
 	def get_default_roles_blocking(self, group_id: str) -> Dict[UserType, List[RoleConfiguration]]:
 		payload = {
-			"group_id": group_id,
+			"groupId": group_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.getDefaultRolesBlocking(
 			self.icure_sdk.native,
@@ -634,8 +634,8 @@ class GroupApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"child_group_id": child_group_id,
-			"operation_token": operation_token,
+			"childGroupId": child_group_id,
+			"operationToken": operation_token,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -649,8 +649,8 @@ class GroupApi:
 
 	def change_super_group_blocking(self, child_group_id: str, operation_token: str) -> Group:
 		payload = {
-			"child_group_id": child_group_id,
-			"operation_token": operation_token,
+			"childGroupId": child_group_id,
+			"operationToken": operation_token,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.changeSuperGroupBlocking(
 			self.icure_sdk.native,
@@ -803,7 +803,7 @@ class GroupApi:
 			"id": id,
 			"clazz": clazz,
 			"warmup": warmup,
-			"dry_run": dry_run,
+			"dryRun": dry_run,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -820,7 +820,7 @@ class GroupApi:
 			"id": id,
 			"clazz": clazz,
 			"warmup": warmup,
-			"dry_run": dry_run,
+			"dryRun": dry_run,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.initDesignDocsBlocking(
 			self.icure_sdk.native,

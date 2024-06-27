@@ -28,12 +28,12 @@ class MessageApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"delegate_id": delegate_id,
+				"delegateId": delegate_id,
 				"message": message.__serialize__(),
-				"share_secret_ids": [x0 for x0 in share_secret_ids],
-				"share_encryption_keys": share_encryption_keys.__serialize__(),
-				"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-				"requested_permission": requested_permission.__serialize__(),
+				"shareSecretIds": [x0 for x0 in share_secret_ids],
+				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+				"requestedPermission": requested_permission.__serialize__(),
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -47,12 +47,12 @@ class MessageApi:
 
 		def share_with_blocking(self, delegate_id: str, message: EncryptedMessage, share_secret_ids: List[str], share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
 			payload = {
-				"delegate_id": delegate_id,
+				"delegateId": delegate_id,
 				"message": message.__serialize__(),
-				"share_secret_ids": [x0 for x0 in share_secret_ids],
-				"share_encryption_keys": share_encryption_keys.__serialize__(),
-				"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-				"requested_permission": requested_permission.__serialize__(),
+				"shareSecretIds": [x0 for x0 in share_secret_ids],
+				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+				"requestedPermission": requested_permission.__serialize__(),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.encrypted.shareWithBlocking(
 				self.icure_sdk.native,
@@ -164,10 +164,10 @@ class MessageApi:
 					)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"hc_party_id": hc_party_id,
+				"hcPartyId": hc_party_id,
 				"patient": serialize_patient(patient),
-				"start_date": start_date,
-				"end_date": end_date,
+				"startDate": start_date,
+				"endDate": end_date,
 				"descending": descending,
 			}
 			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -182,10 +182,10 @@ class MessageApi:
 
 		def find_messages_by_hc_party_patient_blocking(self, hc_party_id: str, patient: Patient, start_date: Optional[int] = None, end_date: Optional[int] = None, descending: Optional[bool] = None) -> PaginatedListIterator[EncryptedMessage]:
 			payload = {
-				"hc_party_id": hc_party_id,
+				"hcPartyId": hc_party_id,
 				"patient": serialize_patient(patient),
-				"start_date": start_date,
-				"end_date": end_date,
+				"startDate": start_date,
+				"endDate": end_date,
 				"descending": descending,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.encrypted.findMessagesByHcPartyPatientBlocking(
@@ -258,7 +258,7 @@ class MessageApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity_id": entity_id,
+				"entityId": entity_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -272,7 +272,7 @@ class MessageApi:
 
 		def get_message_blocking(self, entity_id: str) -> EncryptedMessage:
 			payload = {
-				"entity_id": entity_id,
+				"entityId": entity_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.encrypted.getMessageBlocking(
 				self.icure_sdk.native,
@@ -298,7 +298,7 @@ class MessageApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity_ids": [x0 for x0 in entity_ids],
+				"entityIds": [x0 for x0 in entity_ids],
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -312,7 +312,7 @@ class MessageApi:
 
 		def get_messages_blocking(self, entity_ids: List[str]) -> List[EncryptedMessage]:
 			payload = {
-				"entity_ids": [x0 for x0 in entity_ids],
+				"entityIds": [x0 for x0 in entity_ids],
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.encrypted.getMessagesBlocking(
 				self.icure_sdk.native,
@@ -342,8 +342,8 @@ class MessageApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"filter_chain": filter_chain.__serialize__(),
-				"start_document_id": start_document_id,
+				"filterChain": filter_chain.__serialize__(),
+				"startDocumentId": start_document_id,
 				"limit": limit,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -358,8 +358,8 @@ class MessageApi:
 
 		def filter_messages_by_blocking(self, filter_chain: FilterChain, start_document_id: Optional[str], limit: Optional[int]) -> PaginatedList:
 			payload = {
-				"filter_chain": filter_chain.__serialize__(),
-				"start_document_id": start_document_id,
+				"filterChain": filter_chain.__serialize__(),
+				"startDocumentId": start_document_id,
 				"limit": limit,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.encrypted.filterMessagesByBlocking(
@@ -390,8 +390,8 @@ class MessageApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"hc_party_id": hc_party_id,
-				"transport_guids": [x0 for x0 in transport_guids],
+				"hcPartyId": hc_party_id,
+				"transportGuids": [x0 for x0 in transport_guids],
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -405,8 +405,8 @@ class MessageApi:
 
 		def list_messages_by_transport_guids_blocking(self, hc_party_id: str, transport_guids: List[str]) -> List[EncryptedMessage]:
 			payload = {
-				"hc_party_id": hc_party_id,
-				"transport_guids": [x0 for x0 in transport_guids],
+				"hcPartyId": hc_party_id,
+				"transportGuids": [x0 for x0 in transport_guids],
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.encrypted.listMessagesByTransportGuidsBlocking(
 				self.icure_sdk.native,
@@ -432,7 +432,7 @@ class MessageApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"secret_patient_keys": [x0 for x0 in secret_patient_keys],
+				"secretPatientKeys": [x0 for x0 in secret_patient_keys],
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -446,7 +446,7 @@ class MessageApi:
 
 		def find_messages_by_hcparty_patient_foreign_keys_blocking(self, secret_patient_keys: List[str]) -> List[EncryptedMessage]:
 			payload = {
-				"secret_patient_keys": [x0 for x0 in secret_patient_keys],
+				"secretPatientKeys": [x0 for x0 in secret_patient_keys],
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.encrypted.findMessagesByHCPartyPatientForeignKeysBlocking(
 				self.icure_sdk.native,
@@ -476,8 +476,8 @@ class MessageApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"start_key": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
-				"start_document_id": start_document_id,
+				"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
+				"startDocumentId": start_document_id,
 				"limit": limit,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -492,8 +492,8 @@ class MessageApi:
 
 		def find_messages_blocking(self, start_key: Optional[Dict[str, object]], start_document_id: Optional[str], limit: Optional[int]) -> PaginatedList:
 			payload = {
-				"start_key": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
-				"start_document_id": start_document_id,
+				"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
+				"startDocumentId": start_document_id,
 				"limit": limit,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.encrypted.findMessagesBlocking(
@@ -524,7 +524,7 @@ class MessageApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"message_id": message_id,
+				"messageId": message_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -538,7 +538,7 @@ class MessageApi:
 
 		def get_children_messages_blocking(self, message_id: str) -> List[EncryptedMessage]:
 			payload = {
-				"message_id": message_id,
+				"messageId": message_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.encrypted.getChildrenMessagesBlocking(
 				self.icure_sdk.native,
@@ -564,7 +564,7 @@ class MessageApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"message_ids": [x0 for x0 in message_ids],
+				"messageIds": [x0 for x0 in message_ids],
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -578,7 +578,7 @@ class MessageApi:
 
 		def get_messages_children_blocking(self, message_ids: List[str]) -> List[EncryptedMessage]:
 			payload = {
-				"message_ids": [x0 for x0 in message_ids],
+				"messageIds": [x0 for x0 in message_ids],
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.encrypted.getMessagesChildrenBlocking(
 				self.icure_sdk.native,
@@ -604,7 +604,7 @@ class MessageApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"invoice_ids": [x0 for x0 in invoice_ids],
+				"invoiceIds": [x0 for x0 in invoice_ids],
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -618,7 +618,7 @@ class MessageApi:
 
 		def list_messages_by_invoices_blocking(self, invoice_ids: List[str]) -> List[EncryptedMessage]:
 			payload = {
-				"invoice_ids": [x0 for x0 in invoice_ids],
+				"invoiceIds": [x0 for x0 in invoice_ids],
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.encrypted.listMessagesByInvoicesBlocking(
 				self.icure_sdk.native,
@@ -648,7 +648,7 @@ class MessageApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"transport_guid": transport_guid,
+				"transportGuid": transport_guid,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -662,7 +662,7 @@ class MessageApi:
 
 		def find_messages_by_transport_guid_blocking(self, transport_guid: str) -> PaginatedList:
 			payload = {
-				"transport_guid": transport_guid,
+				"transportGuid": transport_guid,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.encrypted.findMessagesByTransportGuidBlocking(
 				self.icure_sdk.native,
@@ -696,13 +696,13 @@ class MessageApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"transport_guid": transport_guid,
+				"transportGuid": transport_guid,
 				"from": from_,
 				"to": to,
-				"start_key": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
-				"start_document_id": start_document_id,
+				"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
+				"startDocumentId": start_document_id,
 				"limit": limit,
-				"hcp_id": hcp_id,
+				"hcpId": hcp_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -716,13 +716,13 @@ class MessageApi:
 
 		def find_messages_by_transport_guid_sent_date_blocking(self, transport_guid: str, from_: int, to: int, start_key: Optional[Dict[str, object]] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, hcp_id: Optional[str] = None) -> PaginatedList:
 			payload = {
-				"transport_guid": transport_guid,
+				"transportGuid": transport_guid,
 				"from": from_,
 				"to": to,
-				"start_key": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
-				"start_document_id": start_document_id,
+				"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
+				"startDocumentId": start_document_id,
 				"limit": limit,
-				"hcp_id": hcp_id,
+				"hcpId": hcp_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.encrypted.findMessagesByTransportGuidSentDateBlocking(
 				self.icure_sdk.native,
@@ -756,9 +756,9 @@ class MessageApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"to_address": to_address,
-				"start_key": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
-				"start_document_id": start_document_id,
+				"toAddress": to_address,
+				"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
+				"startDocumentId": start_document_id,
 				"limit": limit,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -773,9 +773,9 @@ class MessageApi:
 
 		def find_messages_by_to_address_blocking(self, to_address: str, start_key: Optional[Dict[str, object]], start_document_id: Optional[str], limit: Optional[int]) -> PaginatedList:
 			payload = {
-				"to_address": to_address,
-				"start_key": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
-				"start_document_id": start_document_id,
+				"toAddress": to_address,
+				"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
+				"startDocumentId": start_document_id,
 				"limit": limit,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.encrypted.findMessagesByToAddressBlocking(
@@ -810,9 +810,9 @@ class MessageApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"from_address": from_address,
-				"start_key": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
-				"start_document_id": start_document_id,
+				"fromAddress": from_address,
+				"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
+				"startDocumentId": start_document_id,
 				"limit": limit,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -827,9 +827,9 @@ class MessageApi:
 
 		def find_messages_by_from_address_blocking(self, from_address: str, start_key: Optional[Dict[str, object]], start_document_id: Optional[str], limit: Optional[int]) -> PaginatedList:
 			payload = {
-				"from_address": from_address,
-				"start_key": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
-				"start_document_id": start_document_id,
+				"fromAddress": from_address,
+				"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
+				"startDocumentId": start_document_id,
 				"limit": limit,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.encrypted.findMessagesByFromAddressBlocking(
@@ -860,8 +860,8 @@ class MessageApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity_ids": [x0 for x0 in entity_ids],
-				"status_bits": status_bits,
+				"entityIds": [x0 for x0 in entity_ids],
+				"statusBits": status_bits,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -875,8 +875,8 @@ class MessageApi:
 
 		def set_messages_status_bits_blocking(self, entity_ids: List[str], status_bits: int) -> List[EncryptedMessage]:
 			payload = {
-				"entity_ids": [x0 for x0 in entity_ids],
-				"status_bits": status_bits,
+				"entityIds": [x0 for x0 in entity_ids],
+				"statusBits": status_bits,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.encrypted.setMessagesStatusBitsBlocking(
 				self.icure_sdk.native,
@@ -902,10 +902,10 @@ class MessageApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity_ids": [x0 for x0 in entity_ids],
+				"entityIds": [x0 for x0 in entity_ids],
 				"time": time,
-				"read_status": read_status,
-				"user_id": user_id,
+				"readStatus": read_status,
+				"userId": user_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -919,10 +919,10 @@ class MessageApi:
 
 		def set_messages_read_status_blocking(self, entity_ids: List[str], time: Optional[int], read_status: bool, user_id: str) -> List[EncryptedMessage]:
 			payload = {
-				"entity_ids": [x0 for x0 in entity_ids],
+				"entityIds": [x0 for x0 in entity_ids],
 				"time": time,
-				"read_status": read_status,
-				"user_id": user_id,
+				"readStatus": read_status,
+				"userId": user_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.encrypted.setMessagesReadStatusBlocking(
 				self.icure_sdk.native,
@@ -953,12 +953,12 @@ class MessageApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"delegate_id": delegate_id,
+				"delegateId": delegate_id,
 				"message": message.__serialize__(),
-				"share_secret_ids": [x0 for x0 in share_secret_ids],
-				"share_encryption_keys": share_encryption_keys.__serialize__(),
-				"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-				"requested_permission": requested_permission.__serialize__(),
+				"shareSecretIds": [x0 for x0 in share_secret_ids],
+				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+				"requestedPermission": requested_permission.__serialize__(),
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -972,12 +972,12 @@ class MessageApi:
 
 		def share_with_blocking(self, delegate_id: str, message: Message, share_secret_ids: List[str], share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
 			payload = {
-				"delegate_id": delegate_id,
+				"delegateId": delegate_id,
 				"message": message.__serialize__(),
-				"share_secret_ids": [x0 for x0 in share_secret_ids],
-				"share_encryption_keys": share_encryption_keys.__serialize__(),
-				"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-				"requested_permission": requested_permission.__serialize__(),
+				"shareSecretIds": [x0 for x0 in share_secret_ids],
+				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+				"requestedPermission": requested_permission.__serialize__(),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.tryAndRecover.shareWithBlocking(
 				self.icure_sdk.native,
@@ -1089,10 +1089,10 @@ class MessageApi:
 					)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"hc_party_id": hc_party_id,
+				"hcPartyId": hc_party_id,
 				"patient": serialize_patient(patient),
-				"start_date": start_date,
-				"end_date": end_date,
+				"startDate": start_date,
+				"endDate": end_date,
 				"descending": descending,
 			}
 			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -1107,10 +1107,10 @@ class MessageApi:
 
 		def find_messages_by_hc_party_patient_blocking(self, hc_party_id: str, patient: Patient, start_date: Optional[int] = None, end_date: Optional[int] = None, descending: Optional[bool] = None) -> PaginatedListIterator[Message]:
 			payload = {
-				"hc_party_id": hc_party_id,
+				"hcPartyId": hc_party_id,
 				"patient": serialize_patient(patient),
-				"start_date": start_date,
-				"end_date": end_date,
+				"startDate": start_date,
+				"endDate": end_date,
 				"descending": descending,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.tryAndRecover.findMessagesByHcPartyPatientBlocking(
@@ -1183,7 +1183,7 @@ class MessageApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity_id": entity_id,
+				"entityId": entity_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -1197,7 +1197,7 @@ class MessageApi:
 
 		def get_message_blocking(self, entity_id: str) -> Message:
 			payload = {
-				"entity_id": entity_id,
+				"entityId": entity_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.tryAndRecover.getMessageBlocking(
 				self.icure_sdk.native,
@@ -1223,7 +1223,7 @@ class MessageApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity_ids": [x0 for x0 in entity_ids],
+				"entityIds": [x0 for x0 in entity_ids],
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -1237,7 +1237,7 @@ class MessageApi:
 
 		def get_messages_blocking(self, entity_ids: List[str]) -> List[Message]:
 			payload = {
-				"entity_ids": [x0 for x0 in entity_ids],
+				"entityIds": [x0 for x0 in entity_ids],
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.tryAndRecover.getMessagesBlocking(
 				self.icure_sdk.native,
@@ -1267,8 +1267,8 @@ class MessageApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"filter_chain": filter_chain.__serialize__(),
-				"start_document_id": start_document_id,
+				"filterChain": filter_chain.__serialize__(),
+				"startDocumentId": start_document_id,
 				"limit": limit,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -1283,8 +1283,8 @@ class MessageApi:
 
 		def filter_messages_by_blocking(self, filter_chain: FilterChain, start_document_id: Optional[str], limit: Optional[int]) -> PaginatedList:
 			payload = {
-				"filter_chain": filter_chain.__serialize__(),
-				"start_document_id": start_document_id,
+				"filterChain": filter_chain.__serialize__(),
+				"startDocumentId": start_document_id,
 				"limit": limit,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.tryAndRecover.filterMessagesByBlocking(
@@ -1315,8 +1315,8 @@ class MessageApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"hc_party_id": hc_party_id,
-				"transport_guids": [x0 for x0 in transport_guids],
+				"hcPartyId": hc_party_id,
+				"transportGuids": [x0 for x0 in transport_guids],
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -1330,8 +1330,8 @@ class MessageApi:
 
 		def list_messages_by_transport_guids_blocking(self, hc_party_id: str, transport_guids: List[str]) -> List[Message]:
 			payload = {
-				"hc_party_id": hc_party_id,
-				"transport_guids": [x0 for x0 in transport_guids],
+				"hcPartyId": hc_party_id,
+				"transportGuids": [x0 for x0 in transport_guids],
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.tryAndRecover.listMessagesByTransportGuidsBlocking(
 				self.icure_sdk.native,
@@ -1357,7 +1357,7 @@ class MessageApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"secret_patient_keys": [x0 for x0 in secret_patient_keys],
+				"secretPatientKeys": [x0 for x0 in secret_patient_keys],
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -1371,7 +1371,7 @@ class MessageApi:
 
 		def find_messages_by_hcparty_patient_foreign_keys_blocking(self, secret_patient_keys: List[str]) -> List[Message]:
 			payload = {
-				"secret_patient_keys": [x0 for x0 in secret_patient_keys],
+				"secretPatientKeys": [x0 for x0 in secret_patient_keys],
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.tryAndRecover.findMessagesByHCPartyPatientForeignKeysBlocking(
 				self.icure_sdk.native,
@@ -1401,8 +1401,8 @@ class MessageApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"start_key": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
-				"start_document_id": start_document_id,
+				"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
+				"startDocumentId": start_document_id,
 				"limit": limit,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -1417,8 +1417,8 @@ class MessageApi:
 
 		def find_messages_blocking(self, start_key: Optional[Dict[str, object]], start_document_id: Optional[str], limit: Optional[int]) -> PaginatedList:
 			payload = {
-				"start_key": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
-				"start_document_id": start_document_id,
+				"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
+				"startDocumentId": start_document_id,
 				"limit": limit,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.tryAndRecover.findMessagesBlocking(
@@ -1449,7 +1449,7 @@ class MessageApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"message_id": message_id,
+				"messageId": message_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -1463,7 +1463,7 @@ class MessageApi:
 
 		def get_children_messages_blocking(self, message_id: str) -> List[Message]:
 			payload = {
-				"message_id": message_id,
+				"messageId": message_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.tryAndRecover.getChildrenMessagesBlocking(
 				self.icure_sdk.native,
@@ -1489,7 +1489,7 @@ class MessageApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"message_ids": [x0 for x0 in message_ids],
+				"messageIds": [x0 for x0 in message_ids],
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -1503,7 +1503,7 @@ class MessageApi:
 
 		def get_messages_children_blocking(self, message_ids: List[str]) -> List[Message]:
 			payload = {
-				"message_ids": [x0 for x0 in message_ids],
+				"messageIds": [x0 for x0 in message_ids],
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.tryAndRecover.getMessagesChildrenBlocking(
 				self.icure_sdk.native,
@@ -1529,7 +1529,7 @@ class MessageApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"invoice_ids": [x0 for x0 in invoice_ids],
+				"invoiceIds": [x0 for x0 in invoice_ids],
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -1543,7 +1543,7 @@ class MessageApi:
 
 		def list_messages_by_invoices_blocking(self, invoice_ids: List[str]) -> List[Message]:
 			payload = {
-				"invoice_ids": [x0 for x0 in invoice_ids],
+				"invoiceIds": [x0 for x0 in invoice_ids],
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.tryAndRecover.listMessagesByInvoicesBlocking(
 				self.icure_sdk.native,
@@ -1573,7 +1573,7 @@ class MessageApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"transport_guid": transport_guid,
+				"transportGuid": transport_guid,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -1587,7 +1587,7 @@ class MessageApi:
 
 		def find_messages_by_transport_guid_blocking(self, transport_guid: str) -> PaginatedList:
 			payload = {
-				"transport_guid": transport_guid,
+				"transportGuid": transport_guid,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.tryAndRecover.findMessagesByTransportGuidBlocking(
 				self.icure_sdk.native,
@@ -1621,13 +1621,13 @@ class MessageApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"transport_guid": transport_guid,
+				"transportGuid": transport_guid,
 				"from": from_,
 				"to": to,
-				"start_key": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
-				"start_document_id": start_document_id,
+				"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
+				"startDocumentId": start_document_id,
 				"limit": limit,
-				"hcp_id": hcp_id,
+				"hcpId": hcp_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -1641,13 +1641,13 @@ class MessageApi:
 
 		def find_messages_by_transport_guid_sent_date_blocking(self, transport_guid: str, from_: int, to: int, start_key: Optional[Dict[str, object]] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, hcp_id: Optional[str] = None) -> PaginatedList:
 			payload = {
-				"transport_guid": transport_guid,
+				"transportGuid": transport_guid,
 				"from": from_,
 				"to": to,
-				"start_key": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
-				"start_document_id": start_document_id,
+				"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
+				"startDocumentId": start_document_id,
 				"limit": limit,
-				"hcp_id": hcp_id,
+				"hcpId": hcp_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.tryAndRecover.findMessagesByTransportGuidSentDateBlocking(
 				self.icure_sdk.native,
@@ -1681,9 +1681,9 @@ class MessageApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"to_address": to_address,
-				"start_key": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
-				"start_document_id": start_document_id,
+				"toAddress": to_address,
+				"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
+				"startDocumentId": start_document_id,
 				"limit": limit,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -1698,9 +1698,9 @@ class MessageApi:
 
 		def find_messages_by_to_address_blocking(self, to_address: str, start_key: Optional[Dict[str, object]], start_document_id: Optional[str], limit: Optional[int]) -> PaginatedList:
 			payload = {
-				"to_address": to_address,
-				"start_key": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
-				"start_document_id": start_document_id,
+				"toAddress": to_address,
+				"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
+				"startDocumentId": start_document_id,
 				"limit": limit,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.tryAndRecover.findMessagesByToAddressBlocking(
@@ -1735,9 +1735,9 @@ class MessageApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"from_address": from_address,
-				"start_key": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
-				"start_document_id": start_document_id,
+				"fromAddress": from_address,
+				"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
+				"startDocumentId": start_document_id,
 				"limit": limit,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -1752,9 +1752,9 @@ class MessageApi:
 
 		def find_messages_by_from_address_blocking(self, from_address: str, start_key: Optional[Dict[str, object]], start_document_id: Optional[str], limit: Optional[int]) -> PaginatedList:
 			payload = {
-				"from_address": from_address,
-				"start_key": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
-				"start_document_id": start_document_id,
+				"fromAddress": from_address,
+				"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
+				"startDocumentId": start_document_id,
 				"limit": limit,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.tryAndRecover.findMessagesByFromAddressBlocking(
@@ -1785,8 +1785,8 @@ class MessageApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity_ids": [x0 for x0 in entity_ids],
-				"status_bits": status_bits,
+				"entityIds": [x0 for x0 in entity_ids],
+				"statusBits": status_bits,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -1800,8 +1800,8 @@ class MessageApi:
 
 		def set_messages_status_bits_blocking(self, entity_ids: List[str], status_bits: int) -> List[Message]:
 			payload = {
-				"entity_ids": [x0 for x0 in entity_ids],
-				"status_bits": status_bits,
+				"entityIds": [x0 for x0 in entity_ids],
+				"statusBits": status_bits,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.tryAndRecover.setMessagesStatusBitsBlocking(
 				self.icure_sdk.native,
@@ -1827,10 +1827,10 @@ class MessageApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity_ids": [x0 for x0 in entity_ids],
+				"entityIds": [x0 for x0 in entity_ids],
 				"time": time,
-				"read_status": read_status,
-				"user_id": user_id,
+				"readStatus": read_status,
+				"userId": user_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -1844,10 +1844,10 @@ class MessageApi:
 
 		def set_messages_read_status_blocking(self, entity_ids: List[str], time: Optional[int], read_status: bool, user_id: str) -> List[Message]:
 			payload = {
-				"entity_ids": [x0 for x0 in entity_ids],
+				"entityIds": [x0 for x0 in entity_ids],
 				"time": time,
-				"read_status": read_status,
-				"user_id": user_id,
+				"readStatus": read_status,
+				"userId": user_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.tryAndRecover.setMessagesReadStatusBlocking(
 				self.icure_sdk.native,
@@ -1922,7 +1922,7 @@ class MessageApi:
 			"patient": serialize_patient(patient) if patient is not None else None,
 			"user": user.__serialize__() if user is not None else None,
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			"secret_id": serialize_secret_id_option(secret_id),
+			"secretId": serialize_secret_id_option(secret_id),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1940,7 +1940,7 @@ class MessageApi:
 			"patient": serialize_patient(patient) if patient is not None else None,
 			"user": user.__serialize__() if user is not None else None,
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			"secret_id": serialize_secret_id_option(secret_id),
+			"secretId": serialize_secret_id_option(secret_id),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.withEncryptionMetadataBlocking(
 			self.icure_sdk.native,
@@ -2205,7 +2205,7 @@ class MessageApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -2219,7 +2219,7 @@ class MessageApi:
 
 	def delete_message_blocking(self, entity_id: str) -> DocIdentifier:
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.deleteMessageBlocking(
 			self.icure_sdk.native,
@@ -2245,7 +2245,7 @@ class MessageApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -2259,7 +2259,7 @@ class MessageApi:
 
 	def delete_messages_blocking(self, entity_ids: List[str]) -> List[DocIdentifier]:
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.deleteMessagesBlocking(
 			self.icure_sdk.native,
@@ -2285,12 +2285,12 @@ class MessageApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"delegate_id": delegate_id,
+			"delegateId": delegate_id,
 			"message": message.__serialize__(),
-			"share_secret_ids": [x0 for x0 in share_secret_ids],
-			"share_encryption_keys": share_encryption_keys.__serialize__(),
-			"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-			"requested_permission": requested_permission.__serialize__(),
+			"shareSecretIds": [x0 for x0 in share_secret_ids],
+			"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+			"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+			"requestedPermission": requested_permission.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -2304,12 +2304,12 @@ class MessageApi:
 
 	def share_with_blocking(self, delegate_id: str, message: DecryptedMessage, share_secret_ids: List[str], share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
 		payload = {
-			"delegate_id": delegate_id,
+			"delegateId": delegate_id,
 			"message": message.__serialize__(),
-			"share_secret_ids": [x0 for x0 in share_secret_ids],
-			"share_encryption_keys": share_encryption_keys.__serialize__(),
-			"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-			"requested_permission": requested_permission.__serialize__(),
+			"shareSecretIds": [x0 for x0 in share_secret_ids],
+			"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+			"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+			"requestedPermission": requested_permission.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.shareWithBlocking(
 			self.icure_sdk.native,
@@ -2421,10 +2421,10 @@ class MessageApi:
 				)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"hc_party_id": hc_party_id,
+			"hcPartyId": hc_party_id,
 			"patient": serialize_patient(patient),
-			"start_date": start_date,
-			"end_date": end_date,
+			"startDate": start_date,
+			"endDate": end_date,
 			"descending": descending,
 		}
 		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -2439,10 +2439,10 @@ class MessageApi:
 
 	def find_messages_by_hc_party_patient_blocking(self, hc_party_id: str, patient: Patient, start_date: Optional[int] = None, end_date: Optional[int] = None, descending: Optional[bool] = None) -> PaginatedListIterator[DecryptedMessage]:
 		payload = {
-			"hc_party_id": hc_party_id,
+			"hcPartyId": hc_party_id,
 			"patient": serialize_patient(patient),
-			"start_date": start_date,
-			"end_date": end_date,
+			"startDate": start_date,
+			"endDate": end_date,
 			"descending": descending,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.findMessagesByHcPartyPatientBlocking(
@@ -2515,7 +2515,7 @@ class MessageApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -2529,7 +2529,7 @@ class MessageApi:
 
 	def get_message_blocking(self, entity_id: str) -> DecryptedMessage:
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.getMessageBlocking(
 			self.icure_sdk.native,
@@ -2555,7 +2555,7 @@ class MessageApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -2569,7 +2569,7 @@ class MessageApi:
 
 	def get_messages_blocking(self, entity_ids: List[str]) -> List[DecryptedMessage]:
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.getMessagesBlocking(
 			self.icure_sdk.native,
@@ -2599,8 +2599,8 @@ class MessageApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"filter_chain": filter_chain.__serialize__(),
-			"start_document_id": start_document_id,
+			"filterChain": filter_chain.__serialize__(),
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -2615,8 +2615,8 @@ class MessageApi:
 
 	def filter_messages_by_blocking(self, filter_chain: FilterChain, start_document_id: Optional[str], limit: Optional[int]) -> PaginatedList:
 		payload = {
-			"filter_chain": filter_chain.__serialize__(),
-			"start_document_id": start_document_id,
+			"filterChain": filter_chain.__serialize__(),
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.filterMessagesByBlocking(
@@ -2647,8 +2647,8 @@ class MessageApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"hc_party_id": hc_party_id,
-			"transport_guids": [x0 for x0 in transport_guids],
+			"hcPartyId": hc_party_id,
+			"transportGuids": [x0 for x0 in transport_guids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -2662,8 +2662,8 @@ class MessageApi:
 
 	def list_messages_by_transport_guids_blocking(self, hc_party_id: str, transport_guids: List[str]) -> List[DecryptedMessage]:
 		payload = {
-			"hc_party_id": hc_party_id,
-			"transport_guids": [x0 for x0 in transport_guids],
+			"hcPartyId": hc_party_id,
+			"transportGuids": [x0 for x0 in transport_guids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.listMessagesByTransportGuidsBlocking(
 			self.icure_sdk.native,
@@ -2689,7 +2689,7 @@ class MessageApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"secret_patient_keys": [x0 for x0 in secret_patient_keys],
+			"secretPatientKeys": [x0 for x0 in secret_patient_keys],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -2703,7 +2703,7 @@ class MessageApi:
 
 	def find_messages_by_hcparty_patient_foreign_keys_blocking(self, secret_patient_keys: List[str]) -> List[DecryptedMessage]:
 		payload = {
-			"secret_patient_keys": [x0 for x0 in secret_patient_keys],
+			"secretPatientKeys": [x0 for x0 in secret_patient_keys],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.findMessagesByHCPartyPatientForeignKeysBlocking(
 			self.icure_sdk.native,
@@ -2733,8 +2733,8 @@ class MessageApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"start_key": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
-			"start_document_id": start_document_id,
+			"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -2749,8 +2749,8 @@ class MessageApi:
 
 	def find_messages_blocking(self, start_key: Optional[Dict[str, object]], start_document_id: Optional[str], limit: Optional[int]) -> PaginatedList:
 		payload = {
-			"start_key": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
-			"start_document_id": start_document_id,
+			"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.findMessagesBlocking(
@@ -2781,7 +2781,7 @@ class MessageApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"message_id": message_id,
+			"messageId": message_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -2795,7 +2795,7 @@ class MessageApi:
 
 	def get_children_messages_blocking(self, message_id: str) -> List[DecryptedMessage]:
 		payload = {
-			"message_id": message_id,
+			"messageId": message_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.getChildrenMessagesBlocking(
 			self.icure_sdk.native,
@@ -2821,7 +2821,7 @@ class MessageApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"message_ids": [x0 for x0 in message_ids],
+			"messageIds": [x0 for x0 in message_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -2835,7 +2835,7 @@ class MessageApi:
 
 	def get_messages_children_blocking(self, message_ids: List[str]) -> List[DecryptedMessage]:
 		payload = {
-			"message_ids": [x0 for x0 in message_ids],
+			"messageIds": [x0 for x0 in message_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.getMessagesChildrenBlocking(
 			self.icure_sdk.native,
@@ -2861,7 +2861,7 @@ class MessageApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"invoice_ids": [x0 for x0 in invoice_ids],
+			"invoiceIds": [x0 for x0 in invoice_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -2875,7 +2875,7 @@ class MessageApi:
 
 	def list_messages_by_invoices_blocking(self, invoice_ids: List[str]) -> List[DecryptedMessage]:
 		payload = {
-			"invoice_ids": [x0 for x0 in invoice_ids],
+			"invoiceIds": [x0 for x0 in invoice_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.listMessagesByInvoicesBlocking(
 			self.icure_sdk.native,
@@ -2905,7 +2905,7 @@ class MessageApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"transport_guid": transport_guid,
+			"transportGuid": transport_guid,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -2919,7 +2919,7 @@ class MessageApi:
 
 	def find_messages_by_transport_guid_blocking(self, transport_guid: str) -> PaginatedList:
 		payload = {
-			"transport_guid": transport_guid,
+			"transportGuid": transport_guid,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.findMessagesByTransportGuidBlocking(
 			self.icure_sdk.native,
@@ -2953,13 +2953,13 @@ class MessageApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"transport_guid": transport_guid,
+			"transportGuid": transport_guid,
 			"from": from_,
 			"to": to,
-			"start_key": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
-			"start_document_id": start_document_id,
+			"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
+			"startDocumentId": start_document_id,
 			"limit": limit,
-			"hcp_id": hcp_id,
+			"hcpId": hcp_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -2973,13 +2973,13 @@ class MessageApi:
 
 	def find_messages_by_transport_guid_sent_date_blocking(self, transport_guid: str, from_: int, to: int, start_key: Optional[Dict[str, object]] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, hcp_id: Optional[str] = None) -> PaginatedList:
 		payload = {
-			"transport_guid": transport_guid,
+			"transportGuid": transport_guid,
 			"from": from_,
 			"to": to,
-			"start_key": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
-			"start_document_id": start_document_id,
+			"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
+			"startDocumentId": start_document_id,
 			"limit": limit,
-			"hcp_id": hcp_id,
+			"hcpId": hcp_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.findMessagesByTransportGuidSentDateBlocking(
 			self.icure_sdk.native,
@@ -3013,9 +3013,9 @@ class MessageApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"to_address": to_address,
-			"start_key": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
-			"start_document_id": start_document_id,
+			"toAddress": to_address,
+			"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -3030,9 +3030,9 @@ class MessageApi:
 
 	def find_messages_by_to_address_blocking(self, to_address: str, start_key: Optional[Dict[str, object]], start_document_id: Optional[str], limit: Optional[int]) -> PaginatedList:
 		payload = {
-			"to_address": to_address,
-			"start_key": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
-			"start_document_id": start_document_id,
+			"toAddress": to_address,
+			"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.findMessagesByToAddressBlocking(
@@ -3067,9 +3067,9 @@ class MessageApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"from_address": from_address,
-			"start_key": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
-			"start_document_id": start_document_id,
+			"fromAddress": from_address,
+			"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -3084,9 +3084,9 @@ class MessageApi:
 
 	def find_messages_by_from_address_blocking(self, from_address: str, start_key: Optional[Dict[str, object]], start_document_id: Optional[str], limit: Optional[int]) -> PaginatedList:
 		payload = {
-			"from_address": from_address,
-			"start_key": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
-			"start_document_id": start_document_id,
+			"fromAddress": from_address,
+			"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.findMessagesByFromAddressBlocking(
@@ -3117,8 +3117,8 @@ class MessageApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
-			"status_bits": status_bits,
+			"entityIds": [x0 for x0 in entity_ids],
+			"statusBits": status_bits,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -3132,8 +3132,8 @@ class MessageApi:
 
 	def set_messages_status_bits_blocking(self, entity_ids: List[str], status_bits: int) -> List[DecryptedMessage]:
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
-			"status_bits": status_bits,
+			"entityIds": [x0 for x0 in entity_ids],
+			"statusBits": status_bits,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.setMessagesStatusBitsBlocking(
 			self.icure_sdk.native,
@@ -3159,10 +3159,10 @@ class MessageApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 			"time": time,
-			"read_status": read_status,
-			"user_id": user_id,
+			"readStatus": read_status,
+			"userId": user_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -3176,10 +3176,10 @@ class MessageApi:
 
 	def set_messages_read_status_blocking(self, entity_ids: List[str], time: Optional[int], read_status: bool, user_id: str) -> List[DecryptedMessage]:
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 			"time": time,
-			"read_status": read_status,
-			"user_id": user_id,
+			"readStatus": read_status,
+			"userId": user_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.setMessagesReadStatusBlocking(
 			self.icure_sdk.native,

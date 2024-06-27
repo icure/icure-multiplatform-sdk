@@ -23,7 +23,7 @@ class HealthcarePartyApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"device_id": device_id,
+			"deviceId": device_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -37,7 +37,7 @@ class HealthcarePartyApi:
 
 	def get_healthcare_party_blocking(self, device_id: str) -> HealthcareParty:
 		payload = {
-			"device_id": device_id,
+			"deviceId": device_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.getHealthcarePartyBlocking(
 			self.icure_sdk.native,
@@ -103,7 +103,7 @@ class HealthcarePartyApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"device_id": device_id,
+			"deviceId": device_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -117,7 +117,7 @@ class HealthcarePartyApi:
 
 	def delete_healthcare_party_blocking(self, device_id: str) -> DocIdentifier:
 		payload = {
-			"device_id": device_id,
+			"deviceId": device_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.deleteHealthcarePartyBlocking(
 			self.icure_sdk.native,
@@ -143,7 +143,7 @@ class HealthcarePartyApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"group_id": group_id,
+			"groupId": group_id,
 			"device": device.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -158,7 +158,7 @@ class HealthcarePartyApi:
 
 	def modify_healthcare_party_in_group_blocking(self, group_id: str, device: HealthcareParty) -> HealthcareParty:
 		payload = {
-			"group_id": group_id,
+			"groupId": group_id,
 			"device": device.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.modifyHealthcarePartyInGroupBlocking(
@@ -185,7 +185,7 @@ class HealthcarePartyApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"group_id": group_id,
+			"groupId": group_id,
 			"device": device.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -200,7 +200,7 @@ class HealthcarePartyApi:
 
 	def create_healthcare_party_in_group_blocking(self, group_id: str, device: HealthcareParty) -> HealthcareParty:
 		payload = {
-			"group_id": group_id,
+			"groupId": group_id,
 			"device": device.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.createHealthcarePartyInGroupBlocking(
@@ -269,8 +269,8 @@ class HealthcarePartyApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"start_key": start_key,
-			"start_document_id": start_document_id,
+			"startKey": start_key,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 			"desc": desc,
 		}
@@ -286,8 +286,8 @@ class HealthcarePartyApi:
 
 	def find_healthcare_parties_by_blocking(self, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, desc: Optional[bool] = None) -> PaginatedList:
 		payload = {
-			"start_key": start_key,
-			"start_document_id": start_document_id,
+			"startKey": start_key,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 			"desc": desc,
 		}
@@ -324,8 +324,8 @@ class HealthcarePartyApi:
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"name": name,
-			"start_key": start_key,
-			"start_document_id": start_document_id,
+			"startKey": start_key,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 			"desc": desc,
 		}
@@ -342,8 +342,8 @@ class HealthcarePartyApi:
 	def find_healthcare_parties_by_name_blocking(self, name: Optional[str] = None, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, desc: Optional[bool] = None) -> PaginatedList:
 		payload = {
 			"name": name,
-			"start_key": start_key,
-			"start_document_id": start_document_id,
+			"startKey": start_key,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 			"desc": desc,
 		}
@@ -379,9 +379,9 @@ class HealthcarePartyApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"search_value": search_value,
-			"start_key": start_key,
-			"start_document_id": start_document_id,
+			"searchValue": search_value,
+			"startKey": start_key,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 			"desc": desc,
 		}
@@ -397,9 +397,9 @@ class HealthcarePartyApi:
 
 	def find_healthcare_parties_by_ssin_or_nihii_blocking(self, search_value: str, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, desc: bool = False) -> PaginatedList:
 		payload = {
-			"search_value": search_value,
-			"start_key": start_key,
-			"start_document_id": start_document_id,
+			"searchValue": search_value,
+			"startKey": start_key,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 			"desc": desc,
 		}
@@ -477,10 +477,10 @@ class HealthcarePartyApi:
 		payload = {
 			"type": type,
 			"spec": spec,
-			"first_code": first_code,
-			"last_code": last_code,
-			"start_key": start_key,
-			"start_document_id": start_document_id,
+			"firstCode": first_code,
+			"lastCode": last_code,
+			"startKey": start_key,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -497,10 +497,10 @@ class HealthcarePartyApi:
 		payload = {
 			"type": type,
 			"spec": spec,
-			"first_code": first_code,
-			"last_code": last_code,
-			"start_key": start_key,
-			"start_document_id": start_document_id,
+			"firstCode": first_code,
+			"lastCode": last_code,
+			"startKey": start_key,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.findHealthcarePartiesBySpecialityAndPostCodeBlocking(
@@ -531,7 +531,7 @@ class HealthcarePartyApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"healthcare_party_ids": [x0 for x0 in healthcare_party_ids],
+			"healthcarePartyIds": [x0 for x0 in healthcare_party_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -545,7 +545,7 @@ class HealthcarePartyApi:
 
 	def get_healthcare_parties_blocking(self, healthcare_party_ids: List[str]) -> List[HealthcareParty]:
 		payload = {
-			"healthcare_party_ids": [x0 for x0 in healthcare_party_ids],
+			"healthcarePartyIds": [x0 for x0 in healthcare_party_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.getHealthcarePartiesBlocking(
 			self.icure_sdk.native,
@@ -571,7 +571,7 @@ class HealthcarePartyApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"parent_id": parent_id,
+			"parentId": parent_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -585,7 +585,7 @@ class HealthcarePartyApi:
 
 	def list_healthcare_parties_by_parent_id_blocking(self, parent_id: str) -> List[HealthcareParty]:
 		payload = {
-			"parent_id": parent_id,
+			"parentId": parent_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.listHealthcarePartiesByParentIdBlocking(
 			self.icure_sdk.native,
@@ -611,7 +611,7 @@ class HealthcarePartyApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"healthcare_party_id": healthcare_party_id,
+			"healthcarePartyId": healthcare_party_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -625,7 +625,7 @@ class HealthcarePartyApi:
 
 	def get_public_key_blocking(self, healthcare_party_id: str) -> PublicKey:
 		payload = {
-			"healthcare_party_id": healthcare_party_id,
+			"healthcarePartyId": healthcare_party_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.getPublicKeyBlocking(
 			self.icure_sdk.native,
@@ -651,7 +651,7 @@ class HealthcarePartyApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"healthcare_party_ids": [x0 for x0 in healthcare_party_ids],
+			"healthcarePartyIds": [x0 for x0 in healthcare_party_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -665,7 +665,7 @@ class HealthcarePartyApi:
 
 	def delete_healthcare_parties_blocking(self, healthcare_party_ids: List[str]) -> List[DocIdentifier]:
 		payload = {
-			"healthcare_party_ids": [x0 for x0 in healthcare_party_ids],
+			"healthcarePartyIds": [x0 for x0 in healthcare_party_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.deleteHealthcarePartiesBlocking(
 			self.icure_sdk.native,
@@ -691,7 +691,7 @@ class HealthcarePartyApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"healthcare_party_dto": healthcare_party_dto.__serialize__(),
+			"healthcarePartyDto": healthcare_party_dto.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -705,7 +705,7 @@ class HealthcarePartyApi:
 
 	def modify_healthcare_party_blocking(self, healthcare_party_dto: HealthcareParty) -> HealthcareParty:
 		payload = {
-			"healthcare_party_dto": healthcare_party_dto.__serialize__(),
+			"healthcarePartyDto": healthcare_party_dto.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.modifyHealthcarePartyBlocking(
 			self.icure_sdk.native,
@@ -775,9 +775,9 @@ class HealthcarePartyApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"start_document_id": start_document_id,
+			"startDocumentId": start_document_id,
 			"limit": limit,
-			"filter_chain": filter_chain.__serialize__(),
+			"filterChain": filter_chain.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -791,9 +791,9 @@ class HealthcarePartyApi:
 
 	def filter_health_parties_by_blocking(self, filter_chain: FilterChain, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
 		payload = {
-			"start_document_id": start_document_id,
+			"startDocumentId": start_document_id,
 			"limit": limit,
-			"filter_chain": filter_chain.__serialize__(),
+			"filterChain": filter_chain.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.filterHealthPartiesByBlocking(
 			self.icure_sdk.native,
@@ -823,8 +823,8 @@ class HealthcarePartyApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"group_id": group_id,
-			"healthcare_party_ids": [x0 for x0 in healthcare_party_ids] if healthcare_party_ids is not None else None,
+			"groupId": group_id,
+			"healthcarePartyIds": [x0 for x0 in healthcare_party_ids] if healthcare_party_ids is not None else None,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -838,8 +838,8 @@ class HealthcarePartyApi:
 
 	def get_healthcare_parties_in_group_blocking(self, group_id: str, healthcare_party_ids: Optional[List[str]] = None) -> List[HealthcareParty]:
 		payload = {
-			"group_id": group_id,
-			"healthcare_party_ids": [x0 for x0 in healthcare_party_ids] if healthcare_party_ids is not None else None,
+			"groupId": group_id,
+			"healthcarePartyIds": [x0 for x0 in healthcare_party_ids] if healthcare_party_ids is not None else None,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.getHealthcarePartiesInGroupBlocking(
 			self.icure_sdk.native,
@@ -865,8 +865,8 @@ class HealthcarePartyApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"group_id": group_id,
-			"healthcare_party_ids": [x0 for x0 in healthcare_party_ids],
+			"groupId": group_id,
+			"healthcarePartyIds": [x0 for x0 in healthcare_party_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -880,8 +880,8 @@ class HealthcarePartyApi:
 
 	def delete_healthcare_parties_in_group_blocking(self, group_id: str, healthcare_party_ids: List[str]) -> List[DocIdentifier]:
 		payload = {
-			"group_id": group_id,
-			"healthcare_party_ids": [x0 for x0 in healthcare_party_ids],
+			"groupId": group_id,
+			"healthcarePartyIds": [x0 for x0 in healthcare_party_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.deleteHealthcarePartiesInGroupBlocking(
 			self.icure_sdk.native,
@@ -907,8 +907,8 @@ class HealthcarePartyApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"healthcare_party_id": healthcare_party_id,
-			"group_id": group_id,
+			"healthcarePartyId": healthcare_party_id,
+			"groupId": group_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -922,8 +922,8 @@ class HealthcarePartyApi:
 
 	def delete_healthcare_party_in_group_blocking(self, healthcare_party_id: str, group_id: str) -> DocIdentifier:
 		payload = {
-			"healthcare_party_id": healthcare_party_id,
-			"group_id": group_id,
+			"healthcarePartyId": healthcare_party_id,
+			"groupId": group_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.deleteHealthcarePartyInGroupBlocking(
 			self.icure_sdk.native,
@@ -949,10 +949,10 @@ class HealthcarePartyApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"group_id": group_id,
-			"parent_hc_party_id": parent_hc_party_id,
+			"groupId": group_id,
+			"parentHcPartyId": parent_hc_party_id,
 			"token": token,
-			"use_short_token": use_short_token,
+			"useShortToken": use_short_token,
 			"hcp": hcp.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -967,10 +967,10 @@ class HealthcarePartyApi:
 
 	def register_patient_blocking(self, group_id: str, hcp: HealthcareParty, parent_hc_party_id: Optional[str] = None, token: Optional[str] = None, use_short_token: Optional[bool] = None) -> DataOwnerRegistrationSuccess:
 		payload = {
-			"group_id": group_id,
-			"parent_hc_party_id": parent_hc_party_id,
+			"groupId": group_id,
+			"parentHcPartyId": parent_hc_party_id,
 			"token": token,
-			"use_short_token": use_short_token,
+			"useShortToken": use_short_token,
 			"hcp": hcp.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.HealthcarePartyApi.registerPatientBlocking(

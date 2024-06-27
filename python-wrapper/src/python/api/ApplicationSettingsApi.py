@@ -61,7 +61,7 @@ class ApplicationSettingsApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"application_settings": application_settings.__serialize__(),
+			"applicationSettings": application_settings.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -75,7 +75,7 @@ class ApplicationSettingsApi:
 
 	def create_application_settings_blocking(self, application_settings: ApplicationSettings) -> ApplicationSettings:
 		payload = {
-			"application_settings": application_settings.__serialize__(),
+			"applicationSettings": application_settings.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ApplicationSettingsApi.createApplicationSettingsBlocking(
 			self.icure_sdk.native,
@@ -101,7 +101,7 @@ class ApplicationSettingsApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"application_settings": application_settings.__serialize__(),
+			"applicationSettings": application_settings.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -115,7 +115,7 @@ class ApplicationSettingsApi:
 
 	def update_application_settings_blocking(self, application_settings: ApplicationSettings) -> ApplicationSettings:
 		payload = {
-			"application_settings": application_settings.__serialize__(),
+			"applicationSettings": application_settings.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ApplicationSettingsApi.updateApplicationSettingsBlocking(
 			self.icure_sdk.native,

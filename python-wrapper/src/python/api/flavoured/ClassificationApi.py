@@ -28,11 +28,11 @@ class ClassificationApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"delegate_id": delegate_id,
+				"delegateId": delegate_id,
 				"classification": classification.__serialize__(),
-				"share_encryption_keys": share_encryption_keys.__serialize__(),
-				"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-				"requested_permission": requested_permission.__serialize__(),
+				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+				"requestedPermission": requested_permission.__serialize__(),
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -46,11 +46,11 @@ class ClassificationApi:
 
 		def share_with_blocking(self, delegate_id: str, classification: EncryptedClassification, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
 			payload = {
-				"delegate_id": delegate_id,
+				"delegateId": delegate_id,
 				"classification": classification.__serialize__(),
-				"share_encryption_keys": share_encryption_keys.__serialize__(),
-				"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-				"requested_permission": requested_permission.__serialize__(),
+				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+				"requestedPermission": requested_permission.__serialize__(),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.encrypted.shareWithBlocking(
 				self.icure_sdk.native,
@@ -162,10 +162,10 @@ class ClassificationApi:
 					)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"hc_party_id": hc_party_id,
+				"hcPartyId": hc_party_id,
 				"patient": serialize_patient(patient),
-				"start_date": start_date,
-				"end_date": end_date,
+				"startDate": start_date,
+				"endDate": end_date,
 				"descending": descending,
 			}
 			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -180,10 +180,10 @@ class ClassificationApi:
 
 		def find_classifications_by_hc_party_patient_blocking(self, hc_party_id: str, patient: Patient, start_date: Optional[int] = None, end_date: Optional[int] = None, descending: Optional[bool] = None) -> PaginatedListIterator[EncryptedClassification]:
 			payload = {
-				"hc_party_id": hc_party_id,
+				"hcPartyId": hc_party_id,
 				"patient": serialize_patient(patient),
-				"start_date": start_date,
-				"end_date": end_date,
+				"startDate": start_date,
+				"endDate": end_date,
 				"descending": descending,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.encrypted.findClassificationsByHcPartyPatientBlocking(
@@ -256,7 +256,7 @@ class ClassificationApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity_id": entity_id,
+				"entityId": entity_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -270,7 +270,7 @@ class ClassificationApi:
 
 		def get_classification_blocking(self, entity_id: str) -> EncryptedClassification:
 			payload = {
-				"entity_id": entity_id,
+				"entityId": entity_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.encrypted.getClassificationBlocking(
 				self.icure_sdk.native,
@@ -296,7 +296,7 @@ class ClassificationApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity_ids": [x0 for x0 in entity_ids],
+				"entityIds": [x0 for x0 in entity_ids],
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -310,7 +310,7 @@ class ClassificationApi:
 
 		def get_classifications_blocking(self, entity_ids: List[str]) -> List[EncryptedClassification]:
 			payload = {
-				"entity_ids": [x0 for x0 in entity_ids],
+				"entityIds": [x0 for x0 in entity_ids],
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.encrypted.getClassificationsBlocking(
 				self.icure_sdk.native,
@@ -341,11 +341,11 @@ class ClassificationApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"delegate_id": delegate_id,
+				"delegateId": delegate_id,
 				"classification": classification.__serialize__(),
-				"share_encryption_keys": share_encryption_keys.__serialize__(),
-				"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-				"requested_permission": requested_permission.__serialize__(),
+				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+				"requestedPermission": requested_permission.__serialize__(),
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -359,11 +359,11 @@ class ClassificationApi:
 
 		def share_with_blocking(self, delegate_id: str, classification: Classification, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
 			payload = {
-				"delegate_id": delegate_id,
+				"delegateId": delegate_id,
 				"classification": classification.__serialize__(),
-				"share_encryption_keys": share_encryption_keys.__serialize__(),
-				"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-				"requested_permission": requested_permission.__serialize__(),
+				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+				"requestedPermission": requested_permission.__serialize__(),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.tryAndRecover.shareWithBlocking(
 				self.icure_sdk.native,
@@ -475,10 +475,10 @@ class ClassificationApi:
 					)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"hc_party_id": hc_party_id,
+				"hcPartyId": hc_party_id,
 				"patient": serialize_patient(patient),
-				"start_date": start_date,
-				"end_date": end_date,
+				"startDate": start_date,
+				"endDate": end_date,
 				"descending": descending,
 			}
 			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -493,10 +493,10 @@ class ClassificationApi:
 
 		def find_classifications_by_hc_party_patient_blocking(self, hc_party_id: str, patient: Patient, start_date: Optional[int] = None, end_date: Optional[int] = None, descending: Optional[bool] = None) -> PaginatedListIterator[Classification]:
 			payload = {
-				"hc_party_id": hc_party_id,
+				"hcPartyId": hc_party_id,
 				"patient": serialize_patient(patient),
-				"start_date": start_date,
-				"end_date": end_date,
+				"startDate": start_date,
+				"endDate": end_date,
 				"descending": descending,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.tryAndRecover.findClassificationsByHcPartyPatientBlocking(
@@ -569,7 +569,7 @@ class ClassificationApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity_id": entity_id,
+				"entityId": entity_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -583,7 +583,7 @@ class ClassificationApi:
 
 		def get_classification_blocking(self, entity_id: str) -> Classification:
 			payload = {
-				"entity_id": entity_id,
+				"entityId": entity_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.tryAndRecover.getClassificationBlocking(
 				self.icure_sdk.native,
@@ -609,7 +609,7 @@ class ClassificationApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity_ids": [x0 for x0 in entity_ids],
+				"entityIds": [x0 for x0 in entity_ids],
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -623,7 +623,7 @@ class ClassificationApi:
 
 		def get_classifications_blocking(self, entity_ids: List[str]) -> List[Classification]:
 			payload = {
-				"entity_ids": [x0 for x0 in entity_ids],
+				"entityIds": [x0 for x0 in entity_ids],
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.tryAndRecover.getClassificationsBlocking(
 				self.icure_sdk.native,
@@ -698,7 +698,7 @@ class ClassificationApi:
 			"patient": serialize_patient(patient),
 			"user": user.__serialize__() if user is not None else None,
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			"secret_id": serialize_secret_id_option(secret_id),
+			"secretId": serialize_secret_id_option(secret_id),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -716,7 +716,7 @@ class ClassificationApi:
 			"patient": serialize_patient(patient),
 			"user": user.__serialize__() if user is not None else None,
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			"secret_id": serialize_secret_id_option(secret_id),
+			"secretId": serialize_secret_id_option(secret_id),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.withEncryptionMetadataBlocking(
 			self.icure_sdk.native,
@@ -901,7 +901,7 @@ class ClassificationApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -915,7 +915,7 @@ class ClassificationApi:
 
 	def delete_classification_blocking(self, entity_id: str) -> DocIdentifier:
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.deleteClassificationBlocking(
 			self.icure_sdk.native,
@@ -941,7 +941,7 @@ class ClassificationApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -955,7 +955,7 @@ class ClassificationApi:
 
 	def delete_classifications_blocking(self, entity_ids: List[str]) -> List[DocIdentifier]:
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.deleteClassificationsBlocking(
 			self.icure_sdk.native,
@@ -981,11 +981,11 @@ class ClassificationApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"delegate_id": delegate_id,
+			"delegateId": delegate_id,
 			"classification": classification.__serialize__(),
-			"share_encryption_keys": share_encryption_keys.__serialize__(),
-			"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-			"requested_permission": requested_permission.__serialize__(),
+			"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+			"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+			"requestedPermission": requested_permission.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -999,11 +999,11 @@ class ClassificationApi:
 
 	def share_with_blocking(self, delegate_id: str, classification: DecryptedClassification, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
 		payload = {
-			"delegate_id": delegate_id,
+			"delegateId": delegate_id,
 			"classification": classification.__serialize__(),
-			"share_encryption_keys": share_encryption_keys.__serialize__(),
-			"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-			"requested_permission": requested_permission.__serialize__(),
+			"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+			"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+			"requestedPermission": requested_permission.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.shareWithBlocking(
 			self.icure_sdk.native,
@@ -1115,10 +1115,10 @@ class ClassificationApi:
 				)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"hc_party_id": hc_party_id,
+			"hcPartyId": hc_party_id,
 			"patient": serialize_patient(patient),
-			"start_date": start_date,
-			"end_date": end_date,
+			"startDate": start_date,
+			"endDate": end_date,
 			"descending": descending,
 		}
 		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -1133,10 +1133,10 @@ class ClassificationApi:
 
 	def find_classifications_by_hc_party_patient_blocking(self, hc_party_id: str, patient: Patient, start_date: Optional[int] = None, end_date: Optional[int] = None, descending: Optional[bool] = None) -> PaginatedListIterator[DecryptedClassification]:
 		payload = {
-			"hc_party_id": hc_party_id,
+			"hcPartyId": hc_party_id,
 			"patient": serialize_patient(patient),
-			"start_date": start_date,
-			"end_date": end_date,
+			"startDate": start_date,
+			"endDate": end_date,
 			"descending": descending,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.findClassificationsByHcPartyPatientBlocking(
@@ -1209,7 +1209,7 @@ class ClassificationApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1223,7 +1223,7 @@ class ClassificationApi:
 
 	def get_classification_blocking(self, entity_id: str) -> DecryptedClassification:
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.getClassificationBlocking(
 			self.icure_sdk.native,
@@ -1249,7 +1249,7 @@ class ClassificationApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1263,7 +1263,7 @@ class ClassificationApi:
 
 	def get_classifications_blocking(self, entity_ids: List[str]) -> List[DecryptedClassification]:
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.getClassificationsBlocking(
 			self.icure_sdk.native,

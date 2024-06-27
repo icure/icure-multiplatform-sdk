@@ -28,11 +28,11 @@ class ReceiptApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"delegate_id": delegate_id,
+				"delegateId": delegate_id,
 				"receipt": receipt.__serialize__(),
-				"share_encryption_keys": share_encryption_keys.__serialize__(),
-				"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-				"requested_permission": requested_permission.__serialize__(),
+				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+				"requestedPermission": requested_permission.__serialize__(),
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -46,11 +46,11 @@ class ReceiptApi:
 
 		def share_with_blocking(self, delegate_id: str, receipt: EncryptedReceipt, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
 			payload = {
-				"delegate_id": delegate_id,
+				"delegateId": delegate_id,
 				"receipt": receipt.__serialize__(),
-				"share_encryption_keys": share_encryption_keys.__serialize__(),
-				"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-				"requested_permission": requested_permission.__serialize__(),
+				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+				"requestedPermission": requested_permission.__serialize__(),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.encrypted.shareWithBlocking(
 				self.icure_sdk.native,
@@ -200,7 +200,7 @@ class ReceiptApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity_id": entity_id,
+				"entityId": entity_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -214,7 +214,7 @@ class ReceiptApi:
 
 		def get_receipt_blocking(self, entity_id: str) -> EncryptedReceipt:
 			payload = {
-				"entity_id": entity_id,
+				"entityId": entity_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.encrypted.getReceiptBlocking(
 				self.icure_sdk.native,
@@ -285,11 +285,11 @@ class ReceiptApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"delegate_id": delegate_id,
+				"delegateId": delegate_id,
 				"receipt": receipt.__serialize__(),
-				"share_encryption_keys": share_encryption_keys.__serialize__(),
-				"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-				"requested_permission": requested_permission.__serialize__(),
+				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+				"requestedPermission": requested_permission.__serialize__(),
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -303,11 +303,11 @@ class ReceiptApi:
 
 		def share_with_blocking(self, delegate_id: str, receipt: Receipt, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
 			payload = {
-				"delegate_id": delegate_id,
+				"delegateId": delegate_id,
 				"receipt": receipt.__serialize__(),
-				"share_encryption_keys": share_encryption_keys.__serialize__(),
-				"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-				"requested_permission": requested_permission.__serialize__(),
+				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+				"requestedPermission": requested_permission.__serialize__(),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.tryAndRecover.shareWithBlocking(
 				self.icure_sdk.native,
@@ -457,7 +457,7 @@ class ReceiptApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity_id": entity_id,
+				"entityId": entity_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -471,7 +471,7 @@ class ReceiptApi:
 
 		def get_receipt_blocking(self, entity_id: str) -> Receipt:
 			payload = {
-				"entity_id": entity_id,
+				"entityId": entity_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.tryAndRecover.getReceiptBlocking(
 				self.icure_sdk.native,
@@ -586,7 +586,7 @@ class ReceiptApi:
 			"patient": serialize_patient(patient) if patient is not None else None,
 			"user": user.__serialize__() if user is not None else None,
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			"secret_id": serialize_secret_id_option(secret_id),
+			"secretId": serialize_secret_id_option(secret_id),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -604,7 +604,7 @@ class ReceiptApi:
 			"patient": serialize_patient(patient) if patient is not None else None,
 			"user": user.__serialize__() if user is not None else None,
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			"secret_id": serialize_secret_id_option(secret_id),
+			"secretId": serialize_secret_id_option(secret_id),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.withEncryptionMetadataBlocking(
 			self.icure_sdk.native,
@@ -631,7 +631,7 @@ class ReceiptApi:
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"receipt": serialize_receipt(receipt),
-			"attachment_id": attachment_id,
+			"attachmentId": attachment_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -646,7 +646,7 @@ class ReceiptApi:
 	def get_and_decrypt_receipt_attachment_blocking(self, receipt: Receipt, attachment_id: str) -> bytearray:
 		payload = {
 			"receipt": serialize_receipt(receipt),
-			"attachment_id": attachment_id,
+			"attachmentId": attachment_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.getAndDecryptReceiptAttachmentBlocking(
 			self.icure_sdk.native,
@@ -673,7 +673,7 @@ class ReceiptApi:
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"receipt": serialize_receipt(receipt),
-			"blob_type": blob_type,
+			"blobType": blob_type,
 			"attachment": base64.b64encode(attachment).decode('utf-8'),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -689,7 +689,7 @@ class ReceiptApi:
 	def encrypt_and_set_receipt_attachment_blocking(self, receipt: Receipt, blob_type: str, attachment: bytearray) -> EncryptedReceipt:
 		payload = {
 			"receipt": serialize_receipt(receipt),
-			"blob_type": blob_type,
+			"blobType": blob_type,
 			"attachment": base64.b64encode(attachment).decode('utf-8'),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.encryptAndSetReceiptAttachmentBlocking(
@@ -876,9 +876,9 @@ class ReceiptApi:
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"user": user.__serialize__(),
-			"doc_id": doc_id,
+			"docId": doc_id,
 			"refs": [x0 for x0 in refs],
-			"blob_type": blob_type,
+			"blobType": blob_type,
 			"blob": base64.b64encode(blob).decode('utf-8'),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -894,9 +894,9 @@ class ReceiptApi:
 	def log_receipt_blocking(self, user: User, doc_id: str, refs: List[str], blob_type: str, blob: bytearray) -> Receipt:
 		payload = {
 			"user": user.__serialize__(),
-			"doc_id": doc_id,
+			"docId": doc_id,
 			"refs": [x0 for x0 in refs],
-			"blob_type": blob_type,
+			"blobType": blob_type,
 			"blob": base64.b64encode(blob).decode('utf-8'),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.logReceiptBlocking(
@@ -923,7 +923,7 @@ class ReceiptApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -937,7 +937,7 @@ class ReceiptApi:
 
 	def delete_receipt_blocking(self, entity_id: str) -> DocIdentifier:
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.deleteReceiptBlocking(
 			self.icure_sdk.native,
@@ -963,7 +963,7 @@ class ReceiptApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -977,7 +977,7 @@ class ReceiptApi:
 
 	def delete_receipts_blocking(self, entity_ids: List[str]) -> List[DocIdentifier]:
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.deleteReceiptsBlocking(
 			self.icure_sdk.native,
@@ -1003,8 +1003,8 @@ class ReceiptApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"receipt_id": receipt_id,
-			"attachment_id": attachment_id,
+			"receiptId": receipt_id,
+			"attachmentId": attachment_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1018,8 +1018,8 @@ class ReceiptApi:
 
 	def get_raw_receipt_attachment_blocking(self, receipt_id: str, attachment_id: str) -> bytearray:
 		payload = {
-			"receipt_id": receipt_id,
-			"attachment_id": attachment_id,
+			"receiptId": receipt_id,
+			"attachmentId": attachment_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.getRawReceiptAttachmentBlocking(
 			self.icure_sdk.native,
@@ -1045,9 +1045,9 @@ class ReceiptApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"receipt_id": receipt_id,
+			"receiptId": receipt_id,
 			"rev": rev,
-			"blob_type": blob_type,
+			"blobType": blob_type,
 			"attachment": base64.b64encode(attachment).decode('utf-8'),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -1062,9 +1062,9 @@ class ReceiptApi:
 
 	def set_raw_receipt_attachment_blocking(self, receipt_id: str, rev: str, blob_type: str, attachment: bytearray) -> EncryptedReceipt:
 		payload = {
-			"receipt_id": receipt_id,
+			"receiptId": receipt_id,
 			"rev": rev,
-			"blob_type": blob_type,
+			"blobType": blob_type,
 			"attachment": base64.b64encode(attachment).decode('utf-8'),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.setRawReceiptAttachmentBlocking(
@@ -1091,11 +1091,11 @@ class ReceiptApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"delegate_id": delegate_id,
+			"delegateId": delegate_id,
 			"receipt": receipt.__serialize__(),
-			"share_encryption_keys": share_encryption_keys.__serialize__(),
-			"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-			"requested_permission": requested_permission.__serialize__(),
+			"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+			"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+			"requestedPermission": requested_permission.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1109,11 +1109,11 @@ class ReceiptApi:
 
 	def share_with_blocking(self, delegate_id: str, receipt: DecryptedReceipt, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
 		payload = {
-			"delegate_id": delegate_id,
+			"delegateId": delegate_id,
 			"receipt": receipt.__serialize__(),
-			"share_encryption_keys": share_encryption_keys.__serialize__(),
-			"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-			"requested_permission": requested_permission.__serialize__(),
+			"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+			"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+			"requestedPermission": requested_permission.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.shareWithBlocking(
 			self.icure_sdk.native,
@@ -1263,7 +1263,7 @@ class ReceiptApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1277,7 +1277,7 @@ class ReceiptApi:
 
 	def get_receipt_blocking(self, entity_id: str) -> DecryptedReceipt:
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.getReceiptBlocking(
 			self.icure_sdk.native,

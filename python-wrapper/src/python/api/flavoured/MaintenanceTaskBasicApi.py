@@ -23,7 +23,7 @@ class MaintenanceTaskBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -37,7 +37,7 @@ class MaintenanceTaskBasicApi:
 
 	def delete_maintenance_task_blocking(self, entity_id: str) -> DocIdentifier:
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskBasicApi.deleteMaintenanceTaskBlocking(
 			self.icure_sdk.native,
@@ -63,7 +63,7 @@ class MaintenanceTaskBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -77,7 +77,7 @@ class MaintenanceTaskBasicApi:
 
 	def delete_maintenance_tasks_blocking(self, entity_ids: List[str]) -> List[DocIdentifier]:
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskBasicApi.deleteMaintenanceTasksBlocking(
 			self.icure_sdk.native,
@@ -143,7 +143,7 @@ class MaintenanceTaskBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -157,7 +157,7 @@ class MaintenanceTaskBasicApi:
 
 	def get_maintenance_task_blocking(self, entity_id: str) -> EncryptedMaintenanceTask:
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskBasicApi.getMaintenanceTaskBlocking(
 			self.icure_sdk.native,
@@ -187,9 +187,9 @@ class MaintenanceTaskBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"start_document_id": start_document_id,
+			"startDocumentId": start_document_id,
 			"limit": limit,
-			"filter_chain": filter_chain.__serialize__(),
+			"filterChain": filter_chain.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -203,9 +203,9 @@ class MaintenanceTaskBasicApi:
 
 	def filter_maintenance_tasks_by_blocking(self, filter_chain: FilterChain, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
 		payload = {
-			"start_document_id": start_document_id,
+			"startDocumentId": start_document_id,
 			"limit": limit,
-			"filter_chain": filter_chain.__serialize__(),
+			"filterChain": filter_chain.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskBasicApi.filterMaintenanceTasksByBlocking(
 			self.icure_sdk.native,

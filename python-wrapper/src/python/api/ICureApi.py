@@ -213,7 +213,7 @@ class ICureApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_name": entity_name,
+			"entityName": entity_name,
 			"warmup": warmup,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -228,7 +228,7 @@ class ICureApi:
 
 	def update_design_doc_blocking(self, entity_name: str, warmup: Optional[bool] = None) -> bool:
 		payload = {
-			"entity_name": entity_name,
+			"entityName": entity_name,
 			"warmup": warmup,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ICureApi.updateDesignDocBlocking(
@@ -537,7 +537,7 @@ class ICureApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"group_id": group_id,
+			"groupId": group_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -551,7 +551,7 @@ class ICureApi:
 
 	def get_indexing_info_by_group_blocking(self, group_id: str) -> IndexingInfo:
 		payload = {
-			"group_id": group_id,
+			"groupId": group_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ICureApi.getIndexingInfoByGroupBlocking(
 			self.icure_sdk.native,
@@ -617,7 +617,7 @@ class ICureApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"map_name": map_name,
+			"mapName": map_name,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -631,7 +631,7 @@ class ICureApi:
 
 	def evict_all_from_map_blocking(self, map_name: str) -> str:
 		payload = {
-			"map_name": map_name,
+			"mapName": map_name,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ICureApi.evictAllFromMapBlocking(
 			self.icure_sdk.native,

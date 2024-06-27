@@ -63,7 +63,7 @@ class HealthcareElementBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -77,7 +77,7 @@ class HealthcareElementBasicApi:
 
 	def delete_healthcare_element_blocking(self, entity_id: str) -> DocIdentifier:
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicApi.deleteHealthcareElementBlocking(
 			self.icure_sdk.native,
@@ -103,7 +103,7 @@ class HealthcareElementBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -117,7 +117,7 @@ class HealthcareElementBasicApi:
 
 	def delete_healthcare_elements_blocking(self, entity_ids: List[str]) -> List[DocIdentifier]:
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicApi.deleteHealthcareElementsBlocking(
 			self.icure_sdk.native,
@@ -143,8 +143,8 @@ class HealthcareElementBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"hc_party_id": hc_party_id,
-			"secret_patient_keys": [x0 for x0 in secret_patient_keys],
+			"hcPartyId": hc_party_id,
+			"secretPatientKeys": [x0 for x0 in secret_patient_keys],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -158,8 +158,8 @@ class HealthcareElementBasicApi:
 
 	def find_healthcare_elements_delegations_stubs_by_hc_party_patient_foreign_keys_blocking(self, hc_party_id: str, secret_patient_keys: List[str]) -> List[IcureStub]:
 		payload = {
-			"hc_party_id": hc_party_id,
-			"secret_patient_keys": [x0 for x0 in secret_patient_keys],
+			"hcPartyId": hc_party_id,
+			"secretPatientKeys": [x0 for x0 in secret_patient_keys],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicApi.findHealthcareElementsDelegationsStubsByHcPartyPatientForeignKeysBlocking(
 			self.icure_sdk.native,
@@ -265,7 +265,7 @@ class HealthcareElementBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -279,7 +279,7 @@ class HealthcareElementBasicApi:
 
 	def get_healthcare_element_blocking(self, entity_id: str) -> EncryptedHealthElement:
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicApi.getHealthcareElementBlocking(
 			self.icure_sdk.native,
@@ -305,7 +305,7 @@ class HealthcareElementBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -319,7 +319,7 @@ class HealthcareElementBasicApi:
 
 	def get_healthcare_elements_blocking(self, entity_ids: List[str]) -> List[EncryptedHealthElement]:
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicApi.getHealthcareElementsBlocking(
 			self.icure_sdk.native,
@@ -349,8 +349,8 @@ class HealthcareElementBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"filter_chain": filter_chain.__serialize__(),
-			"start_document_id": start_document_id,
+			"filterChain": filter_chain.__serialize__(),
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -365,8 +365,8 @@ class HealthcareElementBasicApi:
 
 	def filter_healthcare_elements_by_blocking(self, filter_chain: FilterChain, start_document_id: Optional[str], limit: Optional[int]) -> PaginatedList:
 		payload = {
-			"filter_chain": filter_chain.__serialize__(),
-			"start_document_id": start_document_id,
+			"filterChain": filter_chain.__serialize__(),
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicApi.filterHealthcareElementsByBlocking(
@@ -397,8 +397,8 @@ class HealthcareElementBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"hc_party_id": hc_party_id,
-			"secret_patient_keys": [x0 for x0 in secret_patient_keys],
+			"hcPartyId": hc_party_id,
+			"secretPatientKeys": [x0 for x0 in secret_patient_keys],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -412,8 +412,8 @@ class HealthcareElementBasicApi:
 
 	def find_healthcare_elements_by_hc_party_patient_foreign_keys_blocking(self, hc_party_id: str, secret_patient_keys: List[str]) -> List[EncryptedHealthElement]:
 		payload = {
-			"hc_party_id": hc_party_id,
-			"secret_patient_keys": [x0 for x0 in secret_patient_keys],
+			"hcPartyId": hc_party_id,
+			"secretPatientKeys": [x0 for x0 in secret_patient_keys],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicApi.findHealthcareElementsByHcPartyPatientForeignKeysBlocking(
 			self.icure_sdk.native,

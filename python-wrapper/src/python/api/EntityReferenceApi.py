@@ -62,7 +62,7 @@ class EntityReferenceApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_reference": entity_reference.__serialize__(),
+			"entityReference": entity_reference.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -76,7 +76,7 @@ class EntityReferenceApi:
 
 	def create_entity_reference_blocking(self, entity_reference: EntityReference) -> EntityReference:
 		payload = {
-			"entity_reference": entity_reference.__serialize__(),
+			"entityReference": entity_reference.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.EntityReferenceApi.createEntityReferenceBlocking(
 			self.icure_sdk.native,

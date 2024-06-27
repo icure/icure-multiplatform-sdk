@@ -27,11 +27,11 @@ class TopicApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"delegate_id": delegate_id,
+				"delegateId": delegate_id,
 				"topic": topic.__serialize__(),
-				"share_encryption_keys": share_encryption_keys.__serialize__(),
-				"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-				"requested_permission": requested_permission.__serialize__(),
+				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+				"requestedPermission": requested_permission.__serialize__(),
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -45,11 +45,11 @@ class TopicApi:
 
 		def share_with_blocking(self, delegate_id: str, topic: EncryptedTopic, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
 			payload = {
-				"delegate_id": delegate_id,
+				"delegateId": delegate_id,
 				"topic": topic.__serialize__(),
-				"share_encryption_keys": share_encryption_keys.__serialize__(),
-				"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-				"requested_permission": requested_permission.__serialize__(),
+				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+				"requestedPermission": requested_permission.__serialize__(),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.encrypted.shareWithBlocking(
 				self.icure_sdk.native,
@@ -199,7 +199,7 @@ class TopicApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity_id": entity_id,
+				"entityId": entity_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -213,7 +213,7 @@ class TopicApi:
 
 		def get_topic_blocking(self, entity_id: str) -> EncryptedTopic:
 			payload = {
-				"entity_id": entity_id,
+				"entityId": entity_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.encrypted.getTopicBlocking(
 				self.icure_sdk.native,
@@ -239,7 +239,7 @@ class TopicApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity_ids": [x0 for x0 in entity_ids],
+				"entityIds": [x0 for x0 in entity_ids],
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -253,7 +253,7 @@ class TopicApi:
 
 		def get_topics_blocking(self, entity_ids: List[str]) -> List[EncryptedTopic]:
 			payload = {
-				"entity_ids": [x0 for x0 in entity_ids],
+				"entityIds": [x0 for x0 in entity_ids],
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.encrypted.getTopicsBlocking(
 				self.icure_sdk.native,
@@ -283,9 +283,9 @@ class TopicApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"start_document_id": start_document_id,
+				"startDocumentId": start_document_id,
 				"limit": limit,
-				"filter_chain": filter_chain.__serialize__(),
+				"filterChain": filter_chain.__serialize__(),
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -299,9 +299,9 @@ class TopicApi:
 
 		def filter_topics_by_blocking(self, filter_chain: FilterChain, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
 			payload = {
-				"start_document_id": start_document_id,
+				"startDocumentId": start_document_id,
 				"limit": limit,
-				"filter_chain": filter_chain.__serialize__(),
+				"filterChain": filter_chain.__serialize__(),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.encrypted.filterTopicsByBlocking(
 				self.icure_sdk.native,
@@ -331,9 +331,9 @@ class TopicApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity_id": entity_id,
-				"data_owner_id": data_owner_id,
-				"topic_role": topic_role.__serialize__(),
+				"entityId": entity_id,
+				"dataOwnerId": data_owner_id,
+				"topicRole": topic_role.__serialize__(),
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -347,9 +347,9 @@ class TopicApi:
 
 		def add_participant_blocking(self, entity_id: str, data_owner_id: str, topic_role: TopicRole) -> EncryptedTopic:
 			payload = {
-				"entity_id": entity_id,
-				"data_owner_id": data_owner_id,
-				"topic_role": topic_role.__serialize__(),
+				"entityId": entity_id,
+				"dataOwnerId": data_owner_id,
+				"topicRole": topic_role.__serialize__(),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.encrypted.addParticipantBlocking(
 				self.icure_sdk.native,
@@ -375,8 +375,8 @@ class TopicApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity_id": entity_id,
-				"data_owner_id": data_owner_id,
+				"entityId": entity_id,
+				"dataOwnerId": data_owner_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -390,8 +390,8 @@ class TopicApi:
 
 		def remove_participant_blocking(self, entity_id: str, data_owner_id: str) -> EncryptedTopic:
 			payload = {
-				"entity_id": entity_id,
-				"data_owner_id": data_owner_id,
+				"entityId": entity_id,
+				"dataOwnerId": data_owner_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.encrypted.removeParticipantBlocking(
 				self.icure_sdk.native,
@@ -422,11 +422,11 @@ class TopicApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"delegate_id": delegate_id,
+				"delegateId": delegate_id,
 				"topic": topic.__serialize__(),
-				"share_encryption_keys": share_encryption_keys.__serialize__(),
-				"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-				"requested_permission": requested_permission.__serialize__(),
+				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+				"requestedPermission": requested_permission.__serialize__(),
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -440,11 +440,11 @@ class TopicApi:
 
 		def share_with_blocking(self, delegate_id: str, topic: Topic, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
 			payload = {
-				"delegate_id": delegate_id,
+				"delegateId": delegate_id,
 				"topic": topic.__serialize__(),
-				"share_encryption_keys": share_encryption_keys.__serialize__(),
-				"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-				"requested_permission": requested_permission.__serialize__(),
+				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+				"requestedPermission": requested_permission.__serialize__(),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.tryAndRecover.shareWithBlocking(
 				self.icure_sdk.native,
@@ -594,7 +594,7 @@ class TopicApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity_id": entity_id,
+				"entityId": entity_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -608,7 +608,7 @@ class TopicApi:
 
 		def get_topic_blocking(self, entity_id: str) -> Topic:
 			payload = {
-				"entity_id": entity_id,
+				"entityId": entity_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.tryAndRecover.getTopicBlocking(
 				self.icure_sdk.native,
@@ -634,7 +634,7 @@ class TopicApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity_ids": [x0 for x0 in entity_ids],
+				"entityIds": [x0 for x0 in entity_ids],
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -648,7 +648,7 @@ class TopicApi:
 
 		def get_topics_blocking(self, entity_ids: List[str]) -> List[Topic]:
 			payload = {
-				"entity_ids": [x0 for x0 in entity_ids],
+				"entityIds": [x0 for x0 in entity_ids],
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.tryAndRecover.getTopicsBlocking(
 				self.icure_sdk.native,
@@ -678,9 +678,9 @@ class TopicApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"start_document_id": start_document_id,
+				"startDocumentId": start_document_id,
 				"limit": limit,
-				"filter_chain": filter_chain.__serialize__(),
+				"filterChain": filter_chain.__serialize__(),
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -694,9 +694,9 @@ class TopicApi:
 
 		def filter_topics_by_blocking(self, filter_chain: FilterChain, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
 			payload = {
-				"start_document_id": start_document_id,
+				"startDocumentId": start_document_id,
 				"limit": limit,
-				"filter_chain": filter_chain.__serialize__(),
+				"filterChain": filter_chain.__serialize__(),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.tryAndRecover.filterTopicsByBlocking(
 				self.icure_sdk.native,
@@ -726,9 +726,9 @@ class TopicApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity_id": entity_id,
-				"data_owner_id": data_owner_id,
-				"topic_role": topic_role.__serialize__(),
+				"entityId": entity_id,
+				"dataOwnerId": data_owner_id,
+				"topicRole": topic_role.__serialize__(),
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -742,9 +742,9 @@ class TopicApi:
 
 		def add_participant_blocking(self, entity_id: str, data_owner_id: str, topic_role: TopicRole) -> Topic:
 			payload = {
-				"entity_id": entity_id,
-				"data_owner_id": data_owner_id,
-				"topic_role": topic_role.__serialize__(),
+				"entityId": entity_id,
+				"dataOwnerId": data_owner_id,
+				"topicRole": topic_role.__serialize__(),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.tryAndRecover.addParticipantBlocking(
 				self.icure_sdk.native,
@@ -770,8 +770,8 @@ class TopicApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity_id": entity_id,
-				"data_owner_id": data_owner_id,
+				"entityId": entity_id,
+				"dataOwnerId": data_owner_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -785,8 +785,8 @@ class TopicApi:
 
 		def remove_participant_blocking(self, entity_id: str, data_owner_id: str) -> Topic:
 			payload = {
-				"entity_id": entity_id,
-				"data_owner_id": data_owner_id,
+				"entityId": entity_id,
+				"dataOwnerId": data_owner_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.tryAndRecover.removeParticipantBlocking(
 				self.icure_sdk.native,
@@ -861,7 +861,7 @@ class TopicApi:
 			"patient": serialize_patient(patient) if patient is not None else None,
 			"user": user.__serialize__() if user is not None else None,
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			"secret_id": serialize_secret_id_option(secret_id),
+			"secretId": serialize_secret_id_option(secret_id),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -879,7 +879,7 @@ class TopicApi:
 			"patient": serialize_patient(patient) if patient is not None else None,
 			"user": user.__serialize__() if user is not None else None,
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			"secret_id": serialize_secret_id_option(secret_id),
+			"secretId": serialize_secret_id_option(secret_id),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.withEncryptionMetadataBlocking(
 			self.icure_sdk.native,
@@ -1064,7 +1064,7 @@ class TopicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1078,7 +1078,7 @@ class TopicApi:
 
 	def delete_topic_blocking(self, entity_id: str) -> DocIdentifier:
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.deleteTopicBlocking(
 			self.icure_sdk.native,
@@ -1104,7 +1104,7 @@ class TopicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1118,7 +1118,7 @@ class TopicApi:
 
 	def delete_topics_blocking(self, entity_ids: List[str]) -> List[DocIdentifier]:
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.deleteTopicsBlocking(
 			self.icure_sdk.native,
@@ -1184,11 +1184,11 @@ class TopicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"delegate_id": delegate_id,
+			"delegateId": delegate_id,
 			"topic": topic.__serialize__(),
-			"share_encryption_keys": share_encryption_keys.__serialize__(),
-			"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-			"requested_permission": requested_permission.__serialize__(),
+			"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+			"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+			"requestedPermission": requested_permission.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1202,11 +1202,11 @@ class TopicApi:
 
 	def share_with_blocking(self, delegate_id: str, topic: DecryptedTopic, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
 		payload = {
-			"delegate_id": delegate_id,
+			"delegateId": delegate_id,
 			"topic": topic.__serialize__(),
-			"share_encryption_keys": share_encryption_keys.__serialize__(),
-			"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-			"requested_permission": requested_permission.__serialize__(),
+			"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+			"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+			"requestedPermission": requested_permission.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.shareWithBlocking(
 			self.icure_sdk.native,
@@ -1356,7 +1356,7 @@ class TopicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1370,7 +1370,7 @@ class TopicApi:
 
 	def get_topic_blocking(self, entity_id: str) -> DecryptedTopic:
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.getTopicBlocking(
 			self.icure_sdk.native,
@@ -1396,7 +1396,7 @@ class TopicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1410,7 +1410,7 @@ class TopicApi:
 
 	def get_topics_blocking(self, entity_ids: List[str]) -> List[DecryptedTopic]:
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.getTopicsBlocking(
 			self.icure_sdk.native,
@@ -1440,9 +1440,9 @@ class TopicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"start_document_id": start_document_id,
+			"startDocumentId": start_document_id,
 			"limit": limit,
-			"filter_chain": filter_chain.__serialize__(),
+			"filterChain": filter_chain.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1456,9 +1456,9 @@ class TopicApi:
 
 	def filter_topics_by_blocking(self, filter_chain: FilterChain, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
 		payload = {
-			"start_document_id": start_document_id,
+			"startDocumentId": start_document_id,
 			"limit": limit,
-			"filter_chain": filter_chain.__serialize__(),
+			"filterChain": filter_chain.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.filterTopicsByBlocking(
 			self.icure_sdk.native,
@@ -1488,9 +1488,9 @@ class TopicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_id": entity_id,
-			"data_owner_id": data_owner_id,
-			"topic_role": topic_role.__serialize__(),
+			"entityId": entity_id,
+			"dataOwnerId": data_owner_id,
+			"topicRole": topic_role.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1504,9 +1504,9 @@ class TopicApi:
 
 	def add_participant_blocking(self, entity_id: str, data_owner_id: str, topic_role: TopicRole) -> DecryptedTopic:
 		payload = {
-			"entity_id": entity_id,
-			"data_owner_id": data_owner_id,
-			"topic_role": topic_role.__serialize__(),
+			"entityId": entity_id,
+			"dataOwnerId": data_owner_id,
+			"topicRole": topic_role.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.addParticipantBlocking(
 			self.icure_sdk.native,
@@ -1532,8 +1532,8 @@ class TopicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_id": entity_id,
-			"data_owner_id": data_owner_id,
+			"entityId": entity_id,
+			"dataOwnerId": data_owner_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1547,8 +1547,8 @@ class TopicApi:
 
 	def remove_participant_blocking(self, entity_id: str, data_owner_id: str) -> DecryptedTopic:
 		payload = {
-			"entity_id": entity_id,
-			"data_owner_id": data_owner_id,
+			"entityId": entity_id,
+			"dataOwnerId": data_owner_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.removeParticipantBlocking(
 			self.icure_sdk.native,

@@ -23,8 +23,8 @@ class RecoveryApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"include_parents_keys": include_parents_keys,
-			"lifetime_seconds": lifetime_seconds,
+			"includeParentsKeys": include_parents_keys,
+			"lifetimeSeconds": lifetime_seconds,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -38,8 +38,8 @@ class RecoveryApi:
 
 	def create_recovery_info_for_available_key_pairs_blocking(self, include_parents_keys: bool = False, lifetime_seconds: Optional[int] = None) -> RecoveryDataKey:
 		payload = {
-			"include_parents_keys": include_parents_keys,
-			"lifetime_seconds": lifetime_seconds,
+			"includeParentsKeys": include_parents_keys,
+			"lifetimeSeconds": lifetime_seconds,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.createRecoveryInfoForAvailableKeyPairsBlocking(
 			self.icure_sdk.native,
@@ -65,8 +65,8 @@ class RecoveryApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"recovery_key": recovery_key.__serialize__(),
-			"auto_delete": auto_delete,
+			"recoveryKey": recovery_key.__serialize__(),
+			"autoDelete": auto_delete,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -80,8 +80,8 @@ class RecoveryApi:
 
 	def recover_key_pairs_blocking(self, recovery_key: RecoveryDataKey, auto_delete: bool) -> RecoveryResult:
 		payload = {
-			"recovery_key": recovery_key.__serialize__(),
-			"auto_delete": auto_delete,
+			"recoveryKey": recovery_key.__serialize__(),
+			"autoDelete": auto_delete,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.recoverKeyPairsBlocking(
 			self.icure_sdk.native,
@@ -107,8 +107,8 @@ class RecoveryApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"delegate_id": delegate_id,
-			"lifetime_seconds": lifetime_seconds,
+			"delegateId": delegate_id,
+			"lifetimeSeconds": lifetime_seconds,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -122,8 +122,8 @@ class RecoveryApi:
 
 	def create_exchange_data_recovery_info_blocking(self, delegate_id: str, lifetime_seconds: Optional[int] = None) -> RecoveryDataKey:
 		payload = {
-			"delegate_id": delegate_id,
-			"lifetime_seconds": lifetime_seconds,
+			"delegateId": delegate_id,
+			"lifetimeSeconds": lifetime_seconds,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.createExchangeDataRecoveryInfoBlocking(
 			self.icure_sdk.native,
@@ -149,7 +149,7 @@ class RecoveryApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"recovery_key": recovery_key.__serialize__(),
+			"recoveryKey": recovery_key.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -163,7 +163,7 @@ class RecoveryApi:
 
 	def recover_exchange_data_blocking(self, recovery_key: RecoveryDataKey) -> Optional[RecoveryDataUseFailureReason]:
 		payload = {
-			"recovery_key": recovery_key.__serialize__(),
+			"recoveryKey": recovery_key.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.recoverExchangeDataBlocking(
 			self.icure_sdk.native,
@@ -189,7 +189,7 @@ class RecoveryApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"recovery_key": recovery_key.__serialize__(),
+			"recoveryKey": recovery_key.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -203,7 +203,7 @@ class RecoveryApi:
 
 	def delete_recovery_info_blocking(self, recovery_key: RecoveryDataKey) -> None:
 		payload = {
-			"recovery_key": recovery_key.__serialize__(),
+			"recoveryKey": recovery_key.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.deleteRecoveryInfoBlocking(
 			self.icure_sdk.native,
@@ -226,7 +226,7 @@ class RecoveryApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"data_owner_id": data_owner_id,
+			"dataOwnerId": data_owner_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -240,7 +240,7 @@ class RecoveryApi:
 
 	def delete_all_recovery_info_for_blocking(self, data_owner_id: str) -> int:
 		payload = {
-			"data_owner_id": data_owner_id,
+			"dataOwnerId": data_owner_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.deleteAllRecoveryInfoForBlocking(
 			self.icure_sdk.native,
@@ -266,7 +266,7 @@ class RecoveryApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"data_owner_id": data_owner_id,
+			"dataOwnerId": data_owner_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -280,7 +280,7 @@ class RecoveryApi:
 
 	def delete_all_key_pair_recovery_info_for_blocking(self, data_owner_id: str) -> int:
 		payload = {
-			"data_owner_id": data_owner_id,
+			"dataOwnerId": data_owner_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.deleteAllKeyPairRecoveryInfoForBlocking(
 			self.icure_sdk.native,
@@ -306,7 +306,7 @@ class RecoveryApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"data_owner_id": data_owner_id,
+			"dataOwnerId": data_owner_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -320,7 +320,7 @@ class RecoveryApi:
 
 	def delete_all_exchange_data_recovery_info_for_blocking(self, data_owner_id: str) -> int:
 		payload = {
-			"data_owner_id": data_owner_id,
+			"dataOwnerId": data_owner_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.deleteAllExchangeDataRecoveryInfoForBlocking(
 			self.icure_sdk.native,

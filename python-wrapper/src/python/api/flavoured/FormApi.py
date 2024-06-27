@@ -29,11 +29,11 @@ class FormApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"delegate_id": delegate_id,
+				"delegateId": delegate_id,
 				"form": form.__serialize__(),
-				"share_encryption_keys": share_encryption_keys.__serialize__(),
-				"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-				"requested_permission": requested_permission.__serialize__(),
+				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+				"requestedPermission": requested_permission.__serialize__(),
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -47,11 +47,11 @@ class FormApi:
 
 		def share_with_blocking(self, delegate_id: str, form: EncryptedForm, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
 			payload = {
-				"delegate_id": delegate_id,
+				"delegateId": delegate_id,
 				"form": form.__serialize__(),
-				"share_encryption_keys": share_encryption_keys.__serialize__(),
-				"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-				"requested_permission": requested_permission.__serialize__(),
+				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+				"requestedPermission": requested_permission.__serialize__(),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.encrypted.shareWithBlocking(
 				self.icure_sdk.native,
@@ -163,10 +163,10 @@ class FormApi:
 					)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"hc_party_id": hc_party_id,
+				"hcPartyId": hc_party_id,
 				"patient": serialize_patient(patient),
-				"start_date": start_date,
-				"end_date": end_date,
+				"startDate": start_date,
+				"endDate": end_date,
 				"descending": descending,
 			}
 			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -181,10 +181,10 @@ class FormApi:
 
 		def find_forms_by_hc_party_patient_blocking(self, hc_party_id: str, patient: Patient, start_date: Optional[int] = None, end_date: Optional[int] = None, descending: Optional[bool] = None) -> PaginatedListIterator[EncryptedForm]:
 			payload = {
-				"hc_party_id": hc_party_id,
+				"hcPartyId": hc_party_id,
 				"patient": serialize_patient(patient),
-				"start_date": start_date,
-				"end_date": end_date,
+				"startDate": start_date,
+				"endDate": end_date,
 				"descending": descending,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.encrypted.findFormsByHcPartyPatientBlocking(
@@ -297,7 +297,7 @@ class FormApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity_id": entity_id,
+				"entityId": entity_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -311,7 +311,7 @@ class FormApi:
 
 		def get_form_blocking(self, entity_id: str) -> EncryptedForm:
 			payload = {
-				"entity_id": entity_id,
+				"entityId": entity_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.encrypted.getFormBlocking(
 				self.icure_sdk.native,
@@ -337,7 +337,7 @@ class FormApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity_ids": [x0 for x0 in entity_ids],
+				"entityIds": [x0 for x0 in entity_ids],
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -351,7 +351,7 @@ class FormApi:
 
 		def get_forms_blocking(self, entity_ids: List[str]) -> List[EncryptedForm]:
 			payload = {
-				"entity_ids": [x0 for x0 in entity_ids],
+				"entityIds": [x0 for x0 in entity_ids],
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.encrypted.getFormsBlocking(
 				self.icure_sdk.native,
@@ -377,7 +377,7 @@ class FormApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"logical_uuid": logical_uuid,
+				"logicalUuid": logical_uuid,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -391,7 +391,7 @@ class FormApi:
 
 		def get_form_by_logical_uuid_blocking(self, logical_uuid: str) -> EncryptedForm:
 			payload = {
-				"logical_uuid": logical_uuid,
+				"logicalUuid": logical_uuid,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.encrypted.getFormByLogicalUuidBlocking(
 				self.icure_sdk.native,
@@ -417,7 +417,7 @@ class FormApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"logical_uuid": logical_uuid,
+				"logicalUuid": logical_uuid,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -431,7 +431,7 @@ class FormApi:
 
 		def get_forms_by_logical_uuid_blocking(self, logical_uuid: str) -> List[EncryptedForm]:
 			payload = {
-				"logical_uuid": logical_uuid,
+				"logicalUuid": logical_uuid,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.encrypted.getFormsByLogicalUuidBlocking(
 				self.icure_sdk.native,
@@ -457,7 +457,7 @@ class FormApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"unique_id": unique_id,
+				"uniqueId": unique_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -471,7 +471,7 @@ class FormApi:
 
 		def get_forms_by_unique_id_blocking(self, unique_id: str) -> List[EncryptedForm]:
 			payload = {
-				"unique_id": unique_id,
+				"uniqueId": unique_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.encrypted.getFormsByUniqueIdBlocking(
 				self.icure_sdk.native,
@@ -497,7 +497,7 @@ class FormApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"unique_id": unique_id,
+				"uniqueId": unique_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -511,7 +511,7 @@ class FormApi:
 
 		def get_form_by_unique_id_blocking(self, unique_id: str) -> EncryptedForm:
 			payload = {
-				"unique_id": unique_id,
+				"uniqueId": unique_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.encrypted.getFormByUniqueIdBlocking(
 				self.icure_sdk.native,
@@ -537,8 +537,8 @@ class FormApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"hc_party_id": hc_party_id,
-				"parent_id": parent_id,
+				"hcPartyId": hc_party_id,
+				"parentId": parent_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -552,8 +552,8 @@ class FormApi:
 
 		def get_children_forms_blocking(self, hc_party_id: str, parent_id: str) -> List[EncryptedForm]:
 			payload = {
-				"hc_party_id": hc_party_id,
-				"parent_id": parent_id,
+				"hcPartyId": hc_party_id,
+				"parentId": parent_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.encrypted.getChildrenFormsBlocking(
 				self.icure_sdk.native,
@@ -579,11 +579,11 @@ class FormApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"hc_party_id": hc_party_id,
-				"secret_fkeys": secret_fkeys,
-				"health_element_id": health_element_id,
-				"plan_of_action_id": plan_of_action_id,
-				"form_template_id": form_template_id,
+				"hcPartyId": hc_party_id,
+				"secretFKeys": secret_fkeys,
+				"healthElementId": health_element_id,
+				"planOfActionId": plan_of_action_id,
+				"formTemplateId": form_template_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -597,11 +597,11 @@ class FormApi:
 
 		def list_forms_by_hcparty_and_patient_foreign_keys_blocking(self, hc_party_id: str, secret_fkeys: str, health_element_id: Optional[str] = None, plan_of_action_id: Optional[str] = None, form_template_id: Optional[str] = None) -> List[EncryptedForm]:
 			payload = {
-				"hc_party_id": hc_party_id,
-				"secret_fkeys": secret_fkeys,
-				"health_element_id": health_element_id,
-				"plan_of_action_id": plan_of_action_id,
-				"form_template_id": form_template_id,
+				"hcPartyId": hc_party_id,
+				"secretFKeys": secret_fkeys,
+				"healthElementId": health_element_id,
+				"planOfActionId": plan_of_action_id,
+				"formTemplateId": form_template_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.encrypted.listFormsByHCPartyAndPatientForeignKeysBlocking(
 				self.icure_sdk.native,
@@ -632,11 +632,11 @@ class FormApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"delegate_id": delegate_id,
+				"delegateId": delegate_id,
 				"form": form.__serialize__(),
-				"share_encryption_keys": share_encryption_keys.__serialize__(),
-				"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-				"requested_permission": requested_permission.__serialize__(),
+				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+				"requestedPermission": requested_permission.__serialize__(),
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -650,11 +650,11 @@ class FormApi:
 
 		def share_with_blocking(self, delegate_id: str, form: Form, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
 			payload = {
-				"delegate_id": delegate_id,
+				"delegateId": delegate_id,
 				"form": form.__serialize__(),
-				"share_encryption_keys": share_encryption_keys.__serialize__(),
-				"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-				"requested_permission": requested_permission.__serialize__(),
+				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+				"requestedPermission": requested_permission.__serialize__(),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover.shareWithBlocking(
 				self.icure_sdk.native,
@@ -766,10 +766,10 @@ class FormApi:
 					)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"hc_party_id": hc_party_id,
+				"hcPartyId": hc_party_id,
 				"patient": serialize_patient(patient),
-				"start_date": start_date,
-				"end_date": end_date,
+				"startDate": start_date,
+				"endDate": end_date,
 				"descending": descending,
 			}
 			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -784,10 +784,10 @@ class FormApi:
 
 		def find_forms_by_hc_party_patient_blocking(self, hc_party_id: str, patient: Patient, start_date: Optional[int] = None, end_date: Optional[int] = None, descending: Optional[bool] = None) -> PaginatedListIterator[Form]:
 			payload = {
-				"hc_party_id": hc_party_id,
+				"hcPartyId": hc_party_id,
 				"patient": serialize_patient(patient),
-				"start_date": start_date,
-				"end_date": end_date,
+				"startDate": start_date,
+				"endDate": end_date,
 				"descending": descending,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover.findFormsByHcPartyPatientBlocking(
@@ -900,7 +900,7 @@ class FormApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity_id": entity_id,
+				"entityId": entity_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -914,7 +914,7 @@ class FormApi:
 
 		def get_form_blocking(self, entity_id: str) -> Form:
 			payload = {
-				"entity_id": entity_id,
+				"entityId": entity_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover.getFormBlocking(
 				self.icure_sdk.native,
@@ -940,7 +940,7 @@ class FormApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity_ids": [x0 for x0 in entity_ids],
+				"entityIds": [x0 for x0 in entity_ids],
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -954,7 +954,7 @@ class FormApi:
 
 		def get_forms_blocking(self, entity_ids: List[str]) -> List[Form]:
 			payload = {
-				"entity_ids": [x0 for x0 in entity_ids],
+				"entityIds": [x0 for x0 in entity_ids],
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover.getFormsBlocking(
 				self.icure_sdk.native,
@@ -980,7 +980,7 @@ class FormApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"logical_uuid": logical_uuid,
+				"logicalUuid": logical_uuid,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -994,7 +994,7 @@ class FormApi:
 
 		def get_form_by_logical_uuid_blocking(self, logical_uuid: str) -> Form:
 			payload = {
-				"logical_uuid": logical_uuid,
+				"logicalUuid": logical_uuid,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover.getFormByLogicalUuidBlocking(
 				self.icure_sdk.native,
@@ -1020,7 +1020,7 @@ class FormApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"logical_uuid": logical_uuid,
+				"logicalUuid": logical_uuid,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -1034,7 +1034,7 @@ class FormApi:
 
 		def get_forms_by_logical_uuid_blocking(self, logical_uuid: str) -> List[Form]:
 			payload = {
-				"logical_uuid": logical_uuid,
+				"logicalUuid": logical_uuid,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover.getFormsByLogicalUuidBlocking(
 				self.icure_sdk.native,
@@ -1060,7 +1060,7 @@ class FormApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"unique_id": unique_id,
+				"uniqueId": unique_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -1074,7 +1074,7 @@ class FormApi:
 
 		def get_forms_by_unique_id_blocking(self, unique_id: str) -> List[Form]:
 			payload = {
-				"unique_id": unique_id,
+				"uniqueId": unique_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover.getFormsByUniqueIdBlocking(
 				self.icure_sdk.native,
@@ -1100,7 +1100,7 @@ class FormApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"unique_id": unique_id,
+				"uniqueId": unique_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -1114,7 +1114,7 @@ class FormApi:
 
 		def get_form_by_unique_id_blocking(self, unique_id: str) -> Form:
 			payload = {
-				"unique_id": unique_id,
+				"uniqueId": unique_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover.getFormByUniqueIdBlocking(
 				self.icure_sdk.native,
@@ -1140,8 +1140,8 @@ class FormApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"hc_party_id": hc_party_id,
-				"parent_id": parent_id,
+				"hcPartyId": hc_party_id,
+				"parentId": parent_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -1155,8 +1155,8 @@ class FormApi:
 
 		def get_children_forms_blocking(self, hc_party_id: str, parent_id: str) -> List[Form]:
 			payload = {
-				"hc_party_id": hc_party_id,
-				"parent_id": parent_id,
+				"hcPartyId": hc_party_id,
+				"parentId": parent_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover.getChildrenFormsBlocking(
 				self.icure_sdk.native,
@@ -1182,11 +1182,11 @@ class FormApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"hc_party_id": hc_party_id,
-				"secret_fkeys": secret_fkeys,
-				"health_element_id": health_element_id,
-				"plan_of_action_id": plan_of_action_id,
-				"form_template_id": form_template_id,
+				"hcPartyId": hc_party_id,
+				"secretFKeys": secret_fkeys,
+				"healthElementId": health_element_id,
+				"planOfActionId": plan_of_action_id,
+				"formTemplateId": form_template_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -1200,11 +1200,11 @@ class FormApi:
 
 		def list_forms_by_hcparty_and_patient_foreign_keys_blocking(self, hc_party_id: str, secret_fkeys: str, health_element_id: Optional[str] = None, plan_of_action_id: Optional[str] = None, form_template_id: Optional[str] = None) -> List[Form]:
 			payload = {
-				"hc_party_id": hc_party_id,
-				"secret_fkeys": secret_fkeys,
-				"health_element_id": health_element_id,
-				"plan_of_action_id": plan_of_action_id,
-				"form_template_id": form_template_id,
+				"hcPartyId": hc_party_id,
+				"secretFKeys": secret_fkeys,
+				"healthElementId": health_element_id,
+				"planOfActionId": plan_of_action_id,
+				"formTemplateId": form_template_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover.listFormsByHCPartyAndPatientForeignKeysBlocking(
 				self.icure_sdk.native,
@@ -1319,7 +1319,7 @@ class FormApi:
 			"patient": serialize_patient(patient),
 			"user": user.__serialize__() if user is not None else None,
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			"secret_id": serialize_secret_id_option(secret_id),
+			"secretId": serialize_secret_id_option(secret_id),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1337,7 +1337,7 @@ class FormApi:
 			"patient": serialize_patient(patient),
 			"user": user.__serialize__() if user is not None else None,
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			"secret_id": serialize_secret_id_option(secret_id),
+			"secretId": serialize_secret_id_option(secret_id),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.withEncryptionMetadataBlocking(
 			self.icure_sdk.native,
@@ -1522,7 +1522,7 @@ class FormApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1536,7 +1536,7 @@ class FormApi:
 
 	def delete_form_blocking(self, entity_id: str) -> DocIdentifier:
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.deleteFormBlocking(
 			self.icure_sdk.native,
@@ -1562,7 +1562,7 @@ class FormApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1576,7 +1576,7 @@ class FormApi:
 
 	def delete_forms_blocking(self, entity_ids: List[str]) -> List[DocIdentifier]:
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.deleteFormsBlocking(
 			self.icure_sdk.native,
@@ -1602,7 +1602,7 @@ class FormApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"form_template_id": form_template_id,
+			"formTemplateId": form_template_id,
 			"raw": raw,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -1617,7 +1617,7 @@ class FormApi:
 
 	def get_form_template_blocking(self, form_template_id: str, raw: Optional[bool] = None) -> FormTemplate:
 		payload = {
-			"form_template_id": form_template_id,
+			"formTemplateId": form_template_id,
 			"raw": raw,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.getFormTemplateBlocking(
@@ -1644,8 +1644,8 @@ class FormApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"form_template_guid": form_template_guid,
-			"speciality_code": speciality_code,
+			"formTemplateGuid": form_template_guid,
+			"specialityCode": speciality_code,
 			"raw": raw,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -1660,8 +1660,8 @@ class FormApi:
 
 	def get_form_templates_by_guid_blocking(self, form_template_guid: str, speciality_code: str, raw: Optional[bool]) -> List[FormTemplate]:
 		payload = {
-			"form_template_guid": form_template_guid,
-			"speciality_code": speciality_code,
+			"formTemplateGuid": form_template_guid,
+			"specialityCode": speciality_code,
 			"raw": raw,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.getFormTemplatesByGuidBlocking(
@@ -1688,7 +1688,7 @@ class FormApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"speciality_code": speciality_code,
+			"specialityCode": speciality_code,
 			"raw": raw,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -1703,7 +1703,7 @@ class FormApi:
 
 	def list_form_templates_by_speciality_blocking(self, speciality_code: str, raw: Optional[bool] = None) -> List[FormTemplate]:
 		payload = {
-			"speciality_code": speciality_code,
+			"specialityCode": speciality_code,
 			"raw": raw,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.listFormTemplatesBySpecialityBlocking(
@@ -1730,7 +1730,7 @@ class FormApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"load_layout": load_layout,
+			"loadLayout": load_layout,
 			"raw": raw,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -1745,7 +1745,7 @@ class FormApi:
 
 	def get_form_templates_blocking(self, load_layout: Optional[bool] = None, raw: Optional[bool] = None) -> List[FormTemplate]:
 		payload = {
-			"load_layout": load_layout,
+			"loadLayout": load_layout,
 			"raw": raw,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.getFormTemplatesBlocking(
@@ -1772,7 +1772,7 @@ class FormApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"form_template": form_template.__serialize__(),
+			"formTemplate": form_template.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1786,7 +1786,7 @@ class FormApi:
 
 	def create_form_template_blocking(self, form_template: FormTemplate) -> FormTemplate:
 		payload = {
-			"form_template": form_template.__serialize__(),
+			"formTemplate": form_template.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.createFormTemplateBlocking(
 			self.icure_sdk.native,
@@ -1812,7 +1812,7 @@ class FormApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"form_template_id": form_template_id,
+			"formTemplateId": form_template_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1826,7 +1826,7 @@ class FormApi:
 
 	def delete_form_template_blocking(self, form_template_id: str) -> DocIdentifier:
 		payload = {
-			"form_template_id": form_template_id,
+			"formTemplateId": form_template_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.deleteFormTemplateBlocking(
 			self.icure_sdk.native,
@@ -1852,7 +1852,7 @@ class FormApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"form_template": form_template.__serialize__(),
+			"formTemplate": form_template.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1866,7 +1866,7 @@ class FormApi:
 
 	def update_form_template_blocking(self, form_template: FormTemplate) -> FormTemplate:
 		payload = {
-			"form_template": form_template.__serialize__(),
+			"formTemplate": form_template.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.updateFormTemplateBlocking(
 			self.icure_sdk.native,
@@ -1892,7 +1892,7 @@ class FormApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"form_template_id": form_template_id,
+			"formTemplateId": form_template_id,
 			"payload": base64.b64encode(payload).decode('utf-8'),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -1907,7 +1907,7 @@ class FormApi:
 
 	def set_template_attachment_blocking(self, form_template_id: str, payload: bytearray) -> str:
 		payload = {
-			"form_template_id": form_template_id,
+			"formTemplateId": form_template_id,
 			"payload": base64.b64encode(payload).decode('utf-8'),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.setTemplateAttachmentBlocking(
@@ -1934,11 +1934,11 @@ class FormApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"delegate_id": delegate_id,
+			"delegateId": delegate_id,
 			"form": form.__serialize__(),
-			"share_encryption_keys": share_encryption_keys.__serialize__(),
-			"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-			"requested_permission": requested_permission.__serialize__(),
+			"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+			"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+			"requestedPermission": requested_permission.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1952,11 +1952,11 @@ class FormApi:
 
 	def share_with_blocking(self, delegate_id: str, form: DecryptedForm, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
 		payload = {
-			"delegate_id": delegate_id,
+			"delegateId": delegate_id,
 			"form": form.__serialize__(),
-			"share_encryption_keys": share_encryption_keys.__serialize__(),
-			"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-			"requested_permission": requested_permission.__serialize__(),
+			"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+			"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+			"requestedPermission": requested_permission.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.shareWithBlocking(
 			self.icure_sdk.native,
@@ -2068,10 +2068,10 @@ class FormApi:
 				)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"hc_party_id": hc_party_id,
+			"hcPartyId": hc_party_id,
 			"patient": serialize_patient(patient),
-			"start_date": start_date,
-			"end_date": end_date,
+			"startDate": start_date,
+			"endDate": end_date,
 			"descending": descending,
 		}
 		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -2086,10 +2086,10 @@ class FormApi:
 
 	def find_forms_by_hc_party_patient_blocking(self, hc_party_id: str, patient: Patient, start_date: Optional[int] = None, end_date: Optional[int] = None, descending: Optional[bool] = None) -> PaginatedListIterator[DecryptedForm]:
 		payload = {
-			"hc_party_id": hc_party_id,
+			"hcPartyId": hc_party_id,
 			"patient": serialize_patient(patient),
-			"start_date": start_date,
-			"end_date": end_date,
+			"startDate": start_date,
+			"endDate": end_date,
 			"descending": descending,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.findFormsByHcPartyPatientBlocking(
@@ -2202,7 +2202,7 @@ class FormApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -2216,7 +2216,7 @@ class FormApi:
 
 	def get_form_blocking(self, entity_id: str) -> DecryptedForm:
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.getFormBlocking(
 			self.icure_sdk.native,
@@ -2242,7 +2242,7 @@ class FormApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -2256,7 +2256,7 @@ class FormApi:
 
 	def get_forms_blocking(self, entity_ids: List[str]) -> List[DecryptedForm]:
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.getFormsBlocking(
 			self.icure_sdk.native,
@@ -2282,7 +2282,7 @@ class FormApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"logical_uuid": logical_uuid,
+			"logicalUuid": logical_uuid,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -2296,7 +2296,7 @@ class FormApi:
 
 	def get_form_by_logical_uuid_blocking(self, logical_uuid: str) -> DecryptedForm:
 		payload = {
-			"logical_uuid": logical_uuid,
+			"logicalUuid": logical_uuid,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.getFormByLogicalUuidBlocking(
 			self.icure_sdk.native,
@@ -2322,7 +2322,7 @@ class FormApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"logical_uuid": logical_uuid,
+			"logicalUuid": logical_uuid,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -2336,7 +2336,7 @@ class FormApi:
 
 	def get_forms_by_logical_uuid_blocking(self, logical_uuid: str) -> List[DecryptedForm]:
 		payload = {
-			"logical_uuid": logical_uuid,
+			"logicalUuid": logical_uuid,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.getFormsByLogicalUuidBlocking(
 			self.icure_sdk.native,
@@ -2362,7 +2362,7 @@ class FormApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"unique_id": unique_id,
+			"uniqueId": unique_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -2376,7 +2376,7 @@ class FormApi:
 
 	def get_forms_by_unique_id_blocking(self, unique_id: str) -> List[DecryptedForm]:
 		payload = {
-			"unique_id": unique_id,
+			"uniqueId": unique_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.getFormsByUniqueIdBlocking(
 			self.icure_sdk.native,
@@ -2402,7 +2402,7 @@ class FormApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"unique_id": unique_id,
+			"uniqueId": unique_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -2416,7 +2416,7 @@ class FormApi:
 
 	def get_form_by_unique_id_blocking(self, unique_id: str) -> DecryptedForm:
 		payload = {
-			"unique_id": unique_id,
+			"uniqueId": unique_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.getFormByUniqueIdBlocking(
 			self.icure_sdk.native,
@@ -2442,8 +2442,8 @@ class FormApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"hc_party_id": hc_party_id,
-			"parent_id": parent_id,
+			"hcPartyId": hc_party_id,
+			"parentId": parent_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -2457,8 +2457,8 @@ class FormApi:
 
 	def get_children_forms_blocking(self, hc_party_id: str, parent_id: str) -> List[DecryptedForm]:
 		payload = {
-			"hc_party_id": hc_party_id,
-			"parent_id": parent_id,
+			"hcPartyId": hc_party_id,
+			"parentId": parent_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.getChildrenFormsBlocking(
 			self.icure_sdk.native,
@@ -2484,11 +2484,11 @@ class FormApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"hc_party_id": hc_party_id,
-			"secret_fkeys": secret_fkeys,
-			"health_element_id": health_element_id,
-			"plan_of_action_id": plan_of_action_id,
-			"form_template_id": form_template_id,
+			"hcPartyId": hc_party_id,
+			"secretFKeys": secret_fkeys,
+			"healthElementId": health_element_id,
+			"planOfActionId": plan_of_action_id,
+			"formTemplateId": form_template_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -2502,11 +2502,11 @@ class FormApi:
 
 	def list_forms_by_hcparty_and_patient_foreign_keys_blocking(self, hc_party_id: str, secret_fkeys: str, health_element_id: Optional[str] = None, plan_of_action_id: Optional[str] = None, form_template_id: Optional[str] = None) -> List[DecryptedForm]:
 		payload = {
-			"hc_party_id": hc_party_id,
-			"secret_fkeys": secret_fkeys,
-			"health_element_id": health_element_id,
-			"plan_of_action_id": plan_of_action_id,
-			"form_template_id": form_template_id,
+			"hcPartyId": hc_party_id,
+			"secretFKeys": secret_fkeys,
+			"healthElementId": health_element_id,
+			"planOfActionId": plan_of_action_id,
+			"formTemplateId": form_template_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.listFormsByHCPartyAndPatientForeignKeysBlocking(
 			self.icure_sdk.native,

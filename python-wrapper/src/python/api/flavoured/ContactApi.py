@@ -28,11 +28,11 @@ class ContactApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"delegate_id": delegate_id,
+				"delegateId": delegate_id,
 				"contact": contact.__serialize__(),
-				"share_encryption_keys": share_encryption_keys.__serialize__(),
-				"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-				"requested_permission": requested_permission.__serialize__(),
+				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+				"requestedPermission": requested_permission.__serialize__(),
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -46,11 +46,11 @@ class ContactApi:
 
 		def share_with_blocking(self, delegate_id: str, contact: EncryptedContact, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
 			payload = {
-				"delegate_id": delegate_id,
+				"delegateId": delegate_id,
 				"contact": contact.__serialize__(),
-				"share_encryption_keys": share_encryption_keys.__serialize__(),
-				"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-				"requested_permission": requested_permission.__serialize__(),
+				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+				"requestedPermission": requested_permission.__serialize__(),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.shareWithBlocking(
 				self.icure_sdk.native,
@@ -162,10 +162,10 @@ class ContactApi:
 					)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"hc_party_id": hc_party_id,
+				"hcPartyId": hc_party_id,
 				"patient": serialize_patient(patient),
-				"start_date": start_date,
-				"end_date": end_date,
+				"startDate": start_date,
+				"endDate": end_date,
 				"descending": descending,
 			}
 			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -180,10 +180,10 @@ class ContactApi:
 
 		def find_contacts_by_hc_party_patient_blocking(self, hc_party_id: str, patient: Patient, start_date: Optional[int] = None, end_date: Optional[int] = None, descending: Optional[bool] = None) -> PaginatedListIterator[EncryptedContact]:
 			payload = {
-				"hc_party_id": hc_party_id,
+				"hcPartyId": hc_party_id,
 				"patient": serialize_patient(patient),
-				"start_date": start_date,
-				"end_date": end_date,
+				"startDate": start_date,
+				"endDate": end_date,
 				"descending": descending,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.findContactsByHcPartyPatientBlocking(
@@ -296,7 +296,7 @@ class ContactApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity_id": entity_id,
+				"entityId": entity_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -310,7 +310,7 @@ class ContactApi:
 
 		def get_contact_blocking(self, entity_id: str) -> EncryptedContact:
 			payload = {
-				"entity_id": entity_id,
+				"entityId": entity_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.getContactBlocking(
 				self.icure_sdk.native,
@@ -336,7 +336,7 @@ class ContactApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity_ids": [x0 for x0 in entity_ids],
+				"entityIds": [x0 for x0 in entity_ids],
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -350,7 +350,7 @@ class ContactApi:
 
 		def get_contacts_blocking(self, entity_ids: List[str]) -> List[EncryptedContact]:
 			payload = {
-				"entity_ids": [x0 for x0 in entity_ids],
+				"entityIds": [x0 for x0 in entity_ids],
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.getContactsBlocking(
 				self.icure_sdk.native,
@@ -380,8 +380,8 @@ class ContactApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"filter_chain": filter_chain.__serialize__(),
-				"start_document_id": start_document_id,
+				"filterChain": filter_chain.__serialize__(),
+				"startDocumentId": start_document_id,
 				"limit": limit,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -396,8 +396,8 @@ class ContactApi:
 
 		def filter_contacts_by_blocking(self, filter_chain: FilterChain, start_document_id: Optional[str], limit: Optional[int]) -> PaginatedList:
 			payload = {
-				"filter_chain": filter_chain.__serialize__(),
-				"start_document_id": start_document_id,
+				"filterChain": filter_chain.__serialize__(),
+				"startDocumentId": start_document_id,
 				"limit": limit,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.filterContactsByBlocking(
@@ -428,8 +428,8 @@ class ContactApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"hc_party_id": hc_party_id,
-				"service_id": service_id,
+				"hcPartyId": hc_party_id,
+				"serviceId": service_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -443,8 +443,8 @@ class ContactApi:
 
 		def list_contact_by_hcparty_service_id_blocking(self, hc_party_id: str, service_id: str) -> List[EncryptedContact]:
 			payload = {
-				"hc_party_id": hc_party_id,
-				"service_id": service_id,
+				"hcPartyId": hc_party_id,
+				"serviceId": service_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.listContactByHCPartyServiceIdBlocking(
 				self.icure_sdk.native,
@@ -470,7 +470,7 @@ class ContactApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"external_id": external_id,
+				"externalId": external_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -484,7 +484,7 @@ class ContactApi:
 
 		def list_contacts_by_external_id_blocking(self, external_id: str) -> List[EncryptedContact]:
 			payload = {
-				"external_id": external_id,
+				"externalId": external_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.listContactsByExternalIdBlocking(
 				self.icure_sdk.native,
@@ -510,8 +510,8 @@ class ContactApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"hc_party_id": hc_party_id,
-				"form_id": form_id,
+				"hcPartyId": hc_party_id,
+				"formId": form_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -525,8 +525,8 @@ class ContactApi:
 
 		def list_contacts_by_hcparty_and_form_id_blocking(self, hc_party_id: str, form_id: str) -> List[EncryptedContact]:
 			payload = {
-				"hc_party_id": hc_party_id,
-				"form_id": form_id,
+				"hcPartyId": hc_party_id,
+				"formId": form_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.listContactsByHCPartyAndFormIdBlocking(
 				self.icure_sdk.native,
@@ -552,8 +552,8 @@ class ContactApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"hc_party_id": hc_party_id,
-				"form_ids": [x0 for x0 in form_ids],
+				"hcPartyId": hc_party_id,
+				"formIds": [x0 for x0 in form_ids],
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -567,8 +567,8 @@ class ContactApi:
 
 		def list_contacts_by_hcparty_and_form_ids_blocking(self, hc_party_id: str, form_ids: List[str]) -> List[EncryptedContact]:
 			payload = {
-				"hc_party_id": hc_party_id,
-				"form_ids": [x0 for x0 in form_ids],
+				"hcPartyId": hc_party_id,
+				"formIds": [x0 for x0 in form_ids],
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.listContactsByHCPartyAndFormIdsBlocking(
 				self.icure_sdk.native,
@@ -594,10 +594,10 @@ class ContactApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"hc_party_id": hc_party_id,
-				"secret_patient_keys": [x0 for x0 in secret_patient_keys],
-				"plan_of_actions_ids": plan_of_actions_ids,
-				"skip_closed_contacts": skip_closed_contacts,
+				"hcPartyId": hc_party_id,
+				"secretPatientKeys": [x0 for x0 in secret_patient_keys],
+				"planOfActionsIds": plan_of_actions_ids,
+				"skipClosedContacts": skip_closed_contacts,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -611,10 +611,10 @@ class ContactApi:
 
 		def list_contacts_by_hcparty_and_patient_secret_fkeys_blocking(self, hc_party_id: str, secret_patient_keys: List[str], plan_of_actions_ids: Optional[str] = None, skip_closed_contacts: Optional[bool] = None) -> List[EncryptedContact]:
 			payload = {
-				"hc_party_id": hc_party_id,
-				"secret_patient_keys": [x0 for x0 in secret_patient_keys],
-				"plan_of_actions_ids": plan_of_actions_ids,
-				"skip_closed_contacts": skip_closed_contacts,
+				"hcPartyId": hc_party_id,
+				"secretPatientKeys": [x0 for x0 in secret_patient_keys],
+				"planOfActionsIds": plan_of_actions_ids,
+				"skipClosedContacts": skip_closed_contacts,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.listContactsByHCPartyAndPatientSecretFKeysBlocking(
 				self.icure_sdk.native,
@@ -640,8 +640,8 @@ class ContactApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"hc_party_id": hc_party_id,
-				"secret_patient_keys": [x0 for x0 in secret_patient_keys],
+				"hcPartyId": hc_party_id,
+				"secretPatientKeys": [x0 for x0 in secret_patient_keys],
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -655,8 +655,8 @@ class ContactApi:
 
 		def close_for_hcparty_patient_foreign_keys_blocking(self, hc_party_id: str, secret_patient_keys: List[str]) -> List[EncryptedContact]:
 			payload = {
-				"hc_party_id": hc_party_id,
-				"secret_patient_keys": [x0 for x0 in secret_patient_keys],
+				"hcPartyId": hc_party_id,
+				"secretPatientKeys": [x0 for x0 in secret_patient_keys],
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.closeForHCPartyPatientForeignKeysBlocking(
 				self.icure_sdk.native,
@@ -682,7 +682,7 @@ class ContactApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"service_id": service_id,
+				"serviceId": service_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -696,7 +696,7 @@ class ContactApi:
 
 		def get_service_blocking(self, service_id: str) -> object:
 			payload = {
-				"service_id": service_id,
+				"serviceId": service_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.getServiceBlocking(
 				self.icure_sdk.native,
@@ -722,7 +722,7 @@ class ContactApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity_ids": [x0 for x0 in entity_ids],
+				"entityIds": [x0 for x0 in entity_ids],
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -736,7 +736,7 @@ class ContactApi:
 
 		def get_services_blocking(self, entity_ids: List[str]) -> List[object]:
 			payload = {
-				"entity_ids": [x0 for x0 in entity_ids],
+				"entityIds": [x0 for x0 in entity_ids],
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.getServicesBlocking(
 				self.icure_sdk.native,
@@ -762,7 +762,7 @@ class ContactApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"link_type": link_type,
+				"linkType": link_type,
 				"ids": [x0 for x0 in ids],
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -777,7 +777,7 @@ class ContactApi:
 
 		def get_services_linked_to_blocking(self, link_type: str, ids: List[str]) -> List[object]:
 			payload = {
-				"link_type": link_type,
+				"linkType": link_type,
 				"ids": [x0 for x0 in ids],
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.getServicesLinkedToBlocking(
@@ -804,7 +804,7 @@ class ContactApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"association_id": association_id,
+				"associationId": association_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -818,7 +818,7 @@ class ContactApi:
 
 		def list_services_by_association_id_blocking(self, association_id: str) -> List[object]:
 			payload = {
-				"association_id": association_id,
+				"associationId": association_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.listServicesByAssociationIdBlocking(
 				self.icure_sdk.native,
@@ -844,8 +844,8 @@ class ContactApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"hc_party_id": hc_party_id,
-				"health_element_id": health_element_id,
+				"hcPartyId": hc_party_id,
+				"healthElementId": health_element_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -859,8 +859,8 @@ class ContactApi:
 
 		def list_services_by_health_element_id_blocking(self, hc_party_id: str, health_element_id: str) -> List[object]:
 			payload = {
-				"hc_party_id": hc_party_id,
-				"health_element_id": health_element_id,
+				"hcPartyId": hc_party_id,
+				"healthElementId": health_element_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.listServicesByHealthElementIdBlocking(
 				self.icure_sdk.native,
@@ -890,11 +890,11 @@ class ContactApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"start_date": start_date,
-				"end_date": end_date,
-				"hc_party_id": hc_party_id,
-				"start_key": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
-				"start_document_id": start_document_id,
+				"startDate": start_date,
+				"endDate": end_date,
+				"hcPartyId": hc_party_id,
+				"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
+				"startDocumentId": start_document_id,
 				"limit": limit,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -909,11 +909,11 @@ class ContactApi:
 
 		def find_contacts_by_opening_date_blocking(self, start_date: int, end_date: int, hc_party_id: str, start_key: Optional[Dict[str, object]] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
 			payload = {
-				"start_date": start_date,
-				"end_date": end_date,
-				"hc_party_id": hc_party_id,
-				"start_key": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
-				"start_document_id": start_document_id,
+				"startDate": start_date,
+				"endDate": end_date,
+				"hcPartyId": hc_party_id,
+				"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
+				"startDocumentId": start_document_id,
 				"limit": limit,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.findContactsByOpeningDateBlocking(
@@ -948,8 +948,8 @@ class ContactApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"filter_chain": filter_chain.__serialize__(),
-				"start_document_id": start_document_id,
+				"filterChain": filter_chain.__serialize__(),
+				"startDocumentId": start_document_id,
 				"limit": limit,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -964,8 +964,8 @@ class ContactApi:
 
 		def filter_services_by_blocking(self, filter_chain: FilterChain, start_document_id: Optional[str], limit: Optional[int]) -> PaginatedList:
 			payload = {
-				"filter_chain": filter_chain.__serialize__(),
-				"start_document_id": start_document_id,
+				"filterChain": filter_chain.__serialize__(),
+				"startDocumentId": start_document_id,
 				"limit": limit,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.filterServicesByBlocking(
@@ -1001,11 +1001,11 @@ class ContactApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"delegate_id": delegate_id,
+				"delegateId": delegate_id,
 				"contact": contact.__serialize__(),
-				"share_encryption_keys": share_encryption_keys.__serialize__(),
-				"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-				"requested_permission": requested_permission.__serialize__(),
+				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+				"requestedPermission": requested_permission.__serialize__(),
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -1019,11 +1019,11 @@ class ContactApi:
 
 		def share_with_blocking(self, delegate_id: str, contact: Contact, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
 			payload = {
-				"delegate_id": delegate_id,
+				"delegateId": delegate_id,
 				"contact": contact.__serialize__(),
-				"share_encryption_keys": share_encryption_keys.__serialize__(),
-				"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-				"requested_permission": requested_permission.__serialize__(),
+				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+				"requestedPermission": requested_permission.__serialize__(),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.shareWithBlocking(
 				self.icure_sdk.native,
@@ -1135,10 +1135,10 @@ class ContactApi:
 					)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"hc_party_id": hc_party_id,
+				"hcPartyId": hc_party_id,
 				"patient": serialize_patient(patient),
-				"start_date": start_date,
-				"end_date": end_date,
+				"startDate": start_date,
+				"endDate": end_date,
 				"descending": descending,
 			}
 			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -1153,10 +1153,10 @@ class ContactApi:
 
 		def find_contacts_by_hc_party_patient_blocking(self, hc_party_id: str, patient: Patient, start_date: Optional[int] = None, end_date: Optional[int] = None, descending: Optional[bool] = None) -> PaginatedListIterator[Contact]:
 			payload = {
-				"hc_party_id": hc_party_id,
+				"hcPartyId": hc_party_id,
 				"patient": serialize_patient(patient),
-				"start_date": start_date,
-				"end_date": end_date,
+				"startDate": start_date,
+				"endDate": end_date,
 				"descending": descending,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.findContactsByHcPartyPatientBlocking(
@@ -1269,7 +1269,7 @@ class ContactApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity_id": entity_id,
+				"entityId": entity_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -1283,7 +1283,7 @@ class ContactApi:
 
 		def get_contact_blocking(self, entity_id: str) -> Contact:
 			payload = {
-				"entity_id": entity_id,
+				"entityId": entity_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.getContactBlocking(
 				self.icure_sdk.native,
@@ -1309,7 +1309,7 @@ class ContactApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity_ids": [x0 for x0 in entity_ids],
+				"entityIds": [x0 for x0 in entity_ids],
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -1323,7 +1323,7 @@ class ContactApi:
 
 		def get_contacts_blocking(self, entity_ids: List[str]) -> List[Contact]:
 			payload = {
-				"entity_ids": [x0 for x0 in entity_ids],
+				"entityIds": [x0 for x0 in entity_ids],
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.getContactsBlocking(
 				self.icure_sdk.native,
@@ -1353,8 +1353,8 @@ class ContactApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"filter_chain": filter_chain.__serialize__(),
-				"start_document_id": start_document_id,
+				"filterChain": filter_chain.__serialize__(),
+				"startDocumentId": start_document_id,
 				"limit": limit,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -1369,8 +1369,8 @@ class ContactApi:
 
 		def filter_contacts_by_blocking(self, filter_chain: FilterChain, start_document_id: Optional[str], limit: Optional[int]) -> PaginatedList:
 			payload = {
-				"filter_chain": filter_chain.__serialize__(),
-				"start_document_id": start_document_id,
+				"filterChain": filter_chain.__serialize__(),
+				"startDocumentId": start_document_id,
 				"limit": limit,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.filterContactsByBlocking(
@@ -1401,8 +1401,8 @@ class ContactApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"hc_party_id": hc_party_id,
-				"service_id": service_id,
+				"hcPartyId": hc_party_id,
+				"serviceId": service_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -1416,8 +1416,8 @@ class ContactApi:
 
 		def list_contact_by_hcparty_service_id_blocking(self, hc_party_id: str, service_id: str) -> List[Contact]:
 			payload = {
-				"hc_party_id": hc_party_id,
-				"service_id": service_id,
+				"hcPartyId": hc_party_id,
+				"serviceId": service_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.listContactByHCPartyServiceIdBlocking(
 				self.icure_sdk.native,
@@ -1443,7 +1443,7 @@ class ContactApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"external_id": external_id,
+				"externalId": external_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -1457,7 +1457,7 @@ class ContactApi:
 
 		def list_contacts_by_external_id_blocking(self, external_id: str) -> List[Contact]:
 			payload = {
-				"external_id": external_id,
+				"externalId": external_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.listContactsByExternalIdBlocking(
 				self.icure_sdk.native,
@@ -1483,8 +1483,8 @@ class ContactApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"hc_party_id": hc_party_id,
-				"form_id": form_id,
+				"hcPartyId": hc_party_id,
+				"formId": form_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -1498,8 +1498,8 @@ class ContactApi:
 
 		def list_contacts_by_hcparty_and_form_id_blocking(self, hc_party_id: str, form_id: str) -> List[Contact]:
 			payload = {
-				"hc_party_id": hc_party_id,
-				"form_id": form_id,
+				"hcPartyId": hc_party_id,
+				"formId": form_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.listContactsByHCPartyAndFormIdBlocking(
 				self.icure_sdk.native,
@@ -1525,8 +1525,8 @@ class ContactApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"hc_party_id": hc_party_id,
-				"form_ids": [x0 for x0 in form_ids],
+				"hcPartyId": hc_party_id,
+				"formIds": [x0 for x0 in form_ids],
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -1540,8 +1540,8 @@ class ContactApi:
 
 		def list_contacts_by_hcparty_and_form_ids_blocking(self, hc_party_id: str, form_ids: List[str]) -> List[Contact]:
 			payload = {
-				"hc_party_id": hc_party_id,
-				"form_ids": [x0 for x0 in form_ids],
+				"hcPartyId": hc_party_id,
+				"formIds": [x0 for x0 in form_ids],
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.listContactsByHCPartyAndFormIdsBlocking(
 				self.icure_sdk.native,
@@ -1567,10 +1567,10 @@ class ContactApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"hc_party_id": hc_party_id,
-				"secret_patient_keys": [x0 for x0 in secret_patient_keys],
-				"plan_of_actions_ids": plan_of_actions_ids,
-				"skip_closed_contacts": skip_closed_contacts,
+				"hcPartyId": hc_party_id,
+				"secretPatientKeys": [x0 for x0 in secret_patient_keys],
+				"planOfActionsIds": plan_of_actions_ids,
+				"skipClosedContacts": skip_closed_contacts,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -1584,10 +1584,10 @@ class ContactApi:
 
 		def list_contacts_by_hcparty_and_patient_secret_fkeys_blocking(self, hc_party_id: str, secret_patient_keys: List[str], plan_of_actions_ids: Optional[str] = None, skip_closed_contacts: Optional[bool] = None) -> List[Contact]:
 			payload = {
-				"hc_party_id": hc_party_id,
-				"secret_patient_keys": [x0 for x0 in secret_patient_keys],
-				"plan_of_actions_ids": plan_of_actions_ids,
-				"skip_closed_contacts": skip_closed_contacts,
+				"hcPartyId": hc_party_id,
+				"secretPatientKeys": [x0 for x0 in secret_patient_keys],
+				"planOfActionsIds": plan_of_actions_ids,
+				"skipClosedContacts": skip_closed_contacts,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.listContactsByHCPartyAndPatientSecretFKeysBlocking(
 				self.icure_sdk.native,
@@ -1613,8 +1613,8 @@ class ContactApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"hc_party_id": hc_party_id,
-				"secret_patient_keys": [x0 for x0 in secret_patient_keys],
+				"hcPartyId": hc_party_id,
+				"secretPatientKeys": [x0 for x0 in secret_patient_keys],
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -1628,8 +1628,8 @@ class ContactApi:
 
 		def close_for_hcparty_patient_foreign_keys_blocking(self, hc_party_id: str, secret_patient_keys: List[str]) -> List[Contact]:
 			payload = {
-				"hc_party_id": hc_party_id,
-				"secret_patient_keys": [x0 for x0 in secret_patient_keys],
+				"hcPartyId": hc_party_id,
+				"secretPatientKeys": [x0 for x0 in secret_patient_keys],
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.closeForHCPartyPatientForeignKeysBlocking(
 				self.icure_sdk.native,
@@ -1655,7 +1655,7 @@ class ContactApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"service_id": service_id,
+				"serviceId": service_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -1669,7 +1669,7 @@ class ContactApi:
 
 		def get_service_blocking(self, service_id: str) -> object:
 			payload = {
-				"service_id": service_id,
+				"serviceId": service_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.getServiceBlocking(
 				self.icure_sdk.native,
@@ -1695,7 +1695,7 @@ class ContactApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity_ids": [x0 for x0 in entity_ids],
+				"entityIds": [x0 for x0 in entity_ids],
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -1709,7 +1709,7 @@ class ContactApi:
 
 		def get_services_blocking(self, entity_ids: List[str]) -> List[object]:
 			payload = {
-				"entity_ids": [x0 for x0 in entity_ids],
+				"entityIds": [x0 for x0 in entity_ids],
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.getServicesBlocking(
 				self.icure_sdk.native,
@@ -1735,7 +1735,7 @@ class ContactApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"link_type": link_type,
+				"linkType": link_type,
 				"ids": [x0 for x0 in ids],
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -1750,7 +1750,7 @@ class ContactApi:
 
 		def get_services_linked_to_blocking(self, link_type: str, ids: List[str]) -> List[object]:
 			payload = {
-				"link_type": link_type,
+				"linkType": link_type,
 				"ids": [x0 for x0 in ids],
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.getServicesLinkedToBlocking(
@@ -1777,7 +1777,7 @@ class ContactApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"association_id": association_id,
+				"associationId": association_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -1791,7 +1791,7 @@ class ContactApi:
 
 		def list_services_by_association_id_blocking(self, association_id: str) -> List[object]:
 			payload = {
-				"association_id": association_id,
+				"associationId": association_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.listServicesByAssociationIdBlocking(
 				self.icure_sdk.native,
@@ -1817,8 +1817,8 @@ class ContactApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"hc_party_id": hc_party_id,
-				"health_element_id": health_element_id,
+				"hcPartyId": hc_party_id,
+				"healthElementId": health_element_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -1832,8 +1832,8 @@ class ContactApi:
 
 		def list_services_by_health_element_id_blocking(self, hc_party_id: str, health_element_id: str) -> List[object]:
 			payload = {
-				"hc_party_id": hc_party_id,
-				"health_element_id": health_element_id,
+				"hcPartyId": hc_party_id,
+				"healthElementId": health_element_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.listServicesByHealthElementIdBlocking(
 				self.icure_sdk.native,
@@ -1863,11 +1863,11 @@ class ContactApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"start_date": start_date,
-				"end_date": end_date,
-				"hc_party_id": hc_party_id,
-				"start_key": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
-				"start_document_id": start_document_id,
+				"startDate": start_date,
+				"endDate": end_date,
+				"hcPartyId": hc_party_id,
+				"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
+				"startDocumentId": start_document_id,
 				"limit": limit,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -1882,11 +1882,11 @@ class ContactApi:
 
 		def find_contacts_by_opening_date_blocking(self, start_date: int, end_date: int, hc_party_id: str, start_key: Optional[Dict[str, object]] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
 			payload = {
-				"start_date": start_date,
-				"end_date": end_date,
-				"hc_party_id": hc_party_id,
-				"start_key": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
-				"start_document_id": start_document_id,
+				"startDate": start_date,
+				"endDate": end_date,
+				"hcPartyId": hc_party_id,
+				"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
+				"startDocumentId": start_document_id,
 				"limit": limit,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.findContactsByOpeningDateBlocking(
@@ -1921,8 +1921,8 @@ class ContactApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"filter_chain": filter_chain.__serialize__(),
-				"start_document_id": start_document_id,
+				"filterChain": filter_chain.__serialize__(),
+				"startDocumentId": start_document_id,
 				"limit": limit,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -1937,8 +1937,8 @@ class ContactApi:
 
 		def filter_services_by_blocking(self, filter_chain: FilterChain, start_document_id: Optional[str], limit: Optional[int]) -> PaginatedList:
 			payload = {
-				"filter_chain": filter_chain.__serialize__(),
-				"start_document_id": start_document_id,
+				"filterChain": filter_chain.__serialize__(),
+				"startDocumentId": start_document_id,
 				"limit": limit,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.filterServicesByBlocking(
@@ -2058,7 +2058,7 @@ class ContactApi:
 			"patient": serialize_patient(patient),
 			"user": user.__serialize__() if user is not None else None,
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			"secret_id": serialize_secret_id_option(secret_id),
+			"secretId": serialize_secret_id_option(secret_id),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -2076,7 +2076,7 @@ class ContactApi:
 			"patient": serialize_patient(patient),
 			"user": user.__serialize__() if user is not None else None,
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			"secret_id": serialize_secret_id_option(secret_id),
+			"secretId": serialize_secret_id_option(secret_id),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.withEncryptionMetadataBlocking(
 			self.icure_sdk.native,
@@ -2341,7 +2341,7 @@ class ContactApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -2355,7 +2355,7 @@ class ContactApi:
 
 	def delete_contact_blocking(self, entity_id: str) -> DocIdentifier:
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.deleteContactBlocking(
 			self.icure_sdk.native,
@@ -2381,7 +2381,7 @@ class ContactApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -2395,7 +2395,7 @@ class ContactApi:
 
 	def delete_contacts_blocking(self, entity_ids: List[str]) -> List[DocIdentifier]:
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.deleteContactsBlocking(
 			self.icure_sdk.native,
@@ -2421,8 +2421,8 @@ class ContactApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"hc_party_id": hc_party_id,
-			"secret_patient_keys": [x0 for x0 in secret_patient_keys],
+			"hcPartyId": hc_party_id,
+			"secretPatientKeys": [x0 for x0 in secret_patient_keys],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -2436,8 +2436,8 @@ class ContactApi:
 
 	def find_contacts_delegations_stubs_by_hc_party_patient_foreign_keys_blocking(self, hc_party_id: str, secret_patient_keys: List[str]) -> List[IcureStub]:
 		payload = {
-			"hc_party_id": hc_party_id,
-			"secret_patient_keys": [x0 for x0 in secret_patient_keys],
+			"hcPartyId": hc_party_id,
+			"secretPatientKeys": [x0 for x0 in secret_patient_keys],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.findContactsDelegationsStubsByHcPartyPatientForeignKeysBlocking(
 			self.icure_sdk.native,
@@ -2463,8 +2463,8 @@ class ContactApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"code_type": code_type,
-			"min_occurrences": min_occurrences,
+			"codeType": code_type,
+			"minOccurrences": min_occurrences,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -2478,8 +2478,8 @@ class ContactApi:
 
 	def get_service_codes_occurrences_blocking(self, code_type: str, min_occurrences: int) -> List[LabelledOccurence]:
 		payload = {
-			"code_type": code_type,
-			"min_occurrences": min_occurrences,
+			"codeType": code_type,
+			"minOccurrences": min_occurrences,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.getServiceCodesOccurrencesBlocking(
 			self.icure_sdk.native,
@@ -2505,11 +2505,11 @@ class ContactApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"delegate_id": delegate_id,
+			"delegateId": delegate_id,
 			"contact": contact.__serialize__(),
-			"share_encryption_keys": share_encryption_keys.__serialize__(),
-			"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-			"requested_permission": requested_permission.__serialize__(),
+			"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+			"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+			"requestedPermission": requested_permission.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -2523,11 +2523,11 @@ class ContactApi:
 
 	def share_with_blocking(self, delegate_id: str, contact: DecryptedContact, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
 		payload = {
-			"delegate_id": delegate_id,
+			"delegateId": delegate_id,
 			"contact": contact.__serialize__(),
-			"share_encryption_keys": share_encryption_keys.__serialize__(),
-			"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-			"requested_permission": requested_permission.__serialize__(),
+			"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+			"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+			"requestedPermission": requested_permission.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.shareWithBlocking(
 			self.icure_sdk.native,
@@ -2639,10 +2639,10 @@ class ContactApi:
 				)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"hc_party_id": hc_party_id,
+			"hcPartyId": hc_party_id,
 			"patient": serialize_patient(patient),
-			"start_date": start_date,
-			"end_date": end_date,
+			"startDate": start_date,
+			"endDate": end_date,
 			"descending": descending,
 		}
 		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -2657,10 +2657,10 @@ class ContactApi:
 
 	def find_contacts_by_hc_party_patient_blocking(self, hc_party_id: str, patient: Patient, start_date: Optional[int] = None, end_date: Optional[int] = None, descending: Optional[bool] = None) -> PaginatedListIterator[DecryptedContact]:
 		payload = {
-			"hc_party_id": hc_party_id,
+			"hcPartyId": hc_party_id,
 			"patient": serialize_patient(patient),
-			"start_date": start_date,
-			"end_date": end_date,
+			"startDate": start_date,
+			"endDate": end_date,
 			"descending": descending,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.findContactsByHcPartyPatientBlocking(
@@ -2773,7 +2773,7 @@ class ContactApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -2787,7 +2787,7 @@ class ContactApi:
 
 	def get_contact_blocking(self, entity_id: str) -> DecryptedContact:
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.getContactBlocking(
 			self.icure_sdk.native,
@@ -2813,7 +2813,7 @@ class ContactApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -2827,7 +2827,7 @@ class ContactApi:
 
 	def get_contacts_blocking(self, entity_ids: List[str]) -> List[DecryptedContact]:
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.getContactsBlocking(
 			self.icure_sdk.native,
@@ -2857,8 +2857,8 @@ class ContactApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"filter_chain": filter_chain.__serialize__(),
-			"start_document_id": start_document_id,
+			"filterChain": filter_chain.__serialize__(),
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -2873,8 +2873,8 @@ class ContactApi:
 
 	def filter_contacts_by_blocking(self, filter_chain: FilterChain, start_document_id: Optional[str], limit: Optional[int]) -> PaginatedList:
 		payload = {
-			"filter_chain": filter_chain.__serialize__(),
-			"start_document_id": start_document_id,
+			"filterChain": filter_chain.__serialize__(),
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.filterContactsByBlocking(
@@ -2905,8 +2905,8 @@ class ContactApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"hc_party_id": hc_party_id,
-			"service_id": service_id,
+			"hcPartyId": hc_party_id,
+			"serviceId": service_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -2920,8 +2920,8 @@ class ContactApi:
 
 	def list_contact_by_hcparty_service_id_blocking(self, hc_party_id: str, service_id: str) -> List[DecryptedContact]:
 		payload = {
-			"hc_party_id": hc_party_id,
-			"service_id": service_id,
+			"hcPartyId": hc_party_id,
+			"serviceId": service_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.listContactByHCPartyServiceIdBlocking(
 			self.icure_sdk.native,
@@ -2947,7 +2947,7 @@ class ContactApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"external_id": external_id,
+			"externalId": external_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -2961,7 +2961,7 @@ class ContactApi:
 
 	def list_contacts_by_external_id_blocking(self, external_id: str) -> List[DecryptedContact]:
 		payload = {
-			"external_id": external_id,
+			"externalId": external_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.listContactsByExternalIdBlocking(
 			self.icure_sdk.native,
@@ -2987,8 +2987,8 @@ class ContactApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"hc_party_id": hc_party_id,
-			"form_id": form_id,
+			"hcPartyId": hc_party_id,
+			"formId": form_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -3002,8 +3002,8 @@ class ContactApi:
 
 	def list_contacts_by_hcparty_and_form_id_blocking(self, hc_party_id: str, form_id: str) -> List[DecryptedContact]:
 		payload = {
-			"hc_party_id": hc_party_id,
-			"form_id": form_id,
+			"hcPartyId": hc_party_id,
+			"formId": form_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.listContactsByHCPartyAndFormIdBlocking(
 			self.icure_sdk.native,
@@ -3029,8 +3029,8 @@ class ContactApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"hc_party_id": hc_party_id,
-			"form_ids": [x0 for x0 in form_ids],
+			"hcPartyId": hc_party_id,
+			"formIds": [x0 for x0 in form_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -3044,8 +3044,8 @@ class ContactApi:
 
 	def list_contacts_by_hcparty_and_form_ids_blocking(self, hc_party_id: str, form_ids: List[str]) -> List[DecryptedContact]:
 		payload = {
-			"hc_party_id": hc_party_id,
-			"form_ids": [x0 for x0 in form_ids],
+			"hcPartyId": hc_party_id,
+			"formIds": [x0 for x0 in form_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.listContactsByHCPartyAndFormIdsBlocking(
 			self.icure_sdk.native,
@@ -3071,10 +3071,10 @@ class ContactApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"hc_party_id": hc_party_id,
-			"secret_patient_keys": [x0 for x0 in secret_patient_keys],
-			"plan_of_actions_ids": plan_of_actions_ids,
-			"skip_closed_contacts": skip_closed_contacts,
+			"hcPartyId": hc_party_id,
+			"secretPatientKeys": [x0 for x0 in secret_patient_keys],
+			"planOfActionsIds": plan_of_actions_ids,
+			"skipClosedContacts": skip_closed_contacts,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -3088,10 +3088,10 @@ class ContactApi:
 
 	def list_contacts_by_hcparty_and_patient_secret_fkeys_blocking(self, hc_party_id: str, secret_patient_keys: List[str], plan_of_actions_ids: Optional[str] = None, skip_closed_contacts: Optional[bool] = None) -> List[DecryptedContact]:
 		payload = {
-			"hc_party_id": hc_party_id,
-			"secret_patient_keys": [x0 for x0 in secret_patient_keys],
-			"plan_of_actions_ids": plan_of_actions_ids,
-			"skip_closed_contacts": skip_closed_contacts,
+			"hcPartyId": hc_party_id,
+			"secretPatientKeys": [x0 for x0 in secret_patient_keys],
+			"planOfActionsIds": plan_of_actions_ids,
+			"skipClosedContacts": skip_closed_contacts,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.listContactsByHCPartyAndPatientSecretFKeysBlocking(
 			self.icure_sdk.native,
@@ -3117,8 +3117,8 @@ class ContactApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"hc_party_id": hc_party_id,
-			"secret_patient_keys": [x0 for x0 in secret_patient_keys],
+			"hcPartyId": hc_party_id,
+			"secretPatientKeys": [x0 for x0 in secret_patient_keys],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -3132,8 +3132,8 @@ class ContactApi:
 
 	def close_for_hcparty_patient_foreign_keys_blocking(self, hc_party_id: str, secret_patient_keys: List[str]) -> List[DecryptedContact]:
 		payload = {
-			"hc_party_id": hc_party_id,
-			"secret_patient_keys": [x0 for x0 in secret_patient_keys],
+			"hcPartyId": hc_party_id,
+			"secretPatientKeys": [x0 for x0 in secret_patient_keys],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.closeForHCPartyPatientForeignKeysBlocking(
 			self.icure_sdk.native,
@@ -3159,7 +3159,7 @@ class ContactApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"service_id": service_id,
+			"serviceId": service_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -3173,7 +3173,7 @@ class ContactApi:
 
 	def get_service_blocking(self, service_id: str) -> DecryptedService:
 		payload = {
-			"service_id": service_id,
+			"serviceId": service_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.getServiceBlocking(
 			self.icure_sdk.native,
@@ -3199,7 +3199,7 @@ class ContactApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -3213,7 +3213,7 @@ class ContactApi:
 
 	def get_services_blocking(self, entity_ids: List[str]) -> List[DecryptedService]:
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.getServicesBlocking(
 			self.icure_sdk.native,
@@ -3239,7 +3239,7 @@ class ContactApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"link_type": link_type,
+			"linkType": link_type,
 			"ids": [x0 for x0 in ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -3254,7 +3254,7 @@ class ContactApi:
 
 	def get_services_linked_to_blocking(self, link_type: str, ids: List[str]) -> List[DecryptedService]:
 		payload = {
-			"link_type": link_type,
+			"linkType": link_type,
 			"ids": [x0 for x0 in ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.getServicesLinkedToBlocking(
@@ -3281,7 +3281,7 @@ class ContactApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"association_id": association_id,
+			"associationId": association_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -3295,7 +3295,7 @@ class ContactApi:
 
 	def list_services_by_association_id_blocking(self, association_id: str) -> List[DecryptedService]:
 		payload = {
-			"association_id": association_id,
+			"associationId": association_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.listServicesByAssociationIdBlocking(
 			self.icure_sdk.native,
@@ -3321,8 +3321,8 @@ class ContactApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"hc_party_id": hc_party_id,
-			"health_element_id": health_element_id,
+			"hcPartyId": hc_party_id,
+			"healthElementId": health_element_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -3336,8 +3336,8 @@ class ContactApi:
 
 	def list_services_by_health_element_id_blocking(self, hc_party_id: str, health_element_id: str) -> List[DecryptedService]:
 		payload = {
-			"hc_party_id": hc_party_id,
-			"health_element_id": health_element_id,
+			"hcPartyId": hc_party_id,
+			"healthElementId": health_element_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.listServicesByHealthElementIdBlocking(
 			self.icure_sdk.native,
@@ -3367,11 +3367,11 @@ class ContactApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"start_date": start_date,
-			"end_date": end_date,
-			"hc_party_id": hc_party_id,
-			"start_key": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
-			"start_document_id": start_document_id,
+			"startDate": start_date,
+			"endDate": end_date,
+			"hcPartyId": hc_party_id,
+			"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -3386,11 +3386,11 @@ class ContactApi:
 
 	def find_contacts_by_opening_date_blocking(self, start_date: int, end_date: int, hc_party_id: str, start_key: Optional[Dict[str, object]] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
 		payload = {
-			"start_date": start_date,
-			"end_date": end_date,
-			"hc_party_id": hc_party_id,
-			"start_key": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
-			"start_document_id": start_document_id,
+			"startDate": start_date,
+			"endDate": end_date,
+			"hcPartyId": hc_party_id,
+			"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.findContactsByOpeningDateBlocking(
@@ -3425,8 +3425,8 @@ class ContactApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"filter_chain": filter_chain.__serialize__(),
-			"start_document_id": start_document_id,
+			"filterChain": filter_chain.__serialize__(),
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -3441,8 +3441,8 @@ class ContactApi:
 
 	def filter_services_by_blocking(self, filter_chain: FilterChain, start_document_id: Optional[str], limit: Optional[int]) -> PaginatedList:
 		payload = {
-			"filter_chain": filter_chain.__serialize__(),
-			"start_document_id": start_document_id,
+			"filterChain": filter_chain.__serialize__(),
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.filterServicesByBlocking(

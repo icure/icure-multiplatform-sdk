@@ -23,7 +23,7 @@ class FrontEndMigrationApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"front_end_migration_id": front_end_migration_id,
+			"frontEndMigrationId": front_end_migration_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -37,7 +37,7 @@ class FrontEndMigrationApi:
 
 	def get_front_end_migration_blocking(self, front_end_migration_id: str) -> FrontEndMigration:
 		payload = {
-			"front_end_migration_id": front_end_migration_id,
+			"frontEndMigrationId": front_end_migration_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FrontEndMigrationApi.getFrontEndMigrationBlocking(
 			self.icure_sdk.native,
@@ -63,7 +63,7 @@ class FrontEndMigrationApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"front_end_migration": front_end_migration.__serialize__(),
+			"frontEndMigration": front_end_migration.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -77,7 +77,7 @@ class FrontEndMigrationApi:
 
 	def create_front_end_migration_blocking(self, front_end_migration: FrontEndMigration) -> FrontEndMigration:
 		payload = {
-			"front_end_migration": front_end_migration.__serialize__(),
+			"frontEndMigration": front_end_migration.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FrontEndMigrationApi.createFrontEndMigrationBlocking(
 			self.icure_sdk.native,
@@ -141,7 +141,7 @@ class FrontEndMigrationApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"front_end_migration_id": front_end_migration_id,
+			"frontEndMigrationId": front_end_migration_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -155,7 +155,7 @@ class FrontEndMigrationApi:
 
 	def delete_front_end_migration_blocking(self, front_end_migration_id: str) -> DocIdentifier:
 		payload = {
-			"front_end_migration_id": front_end_migration_id,
+			"frontEndMigrationId": front_end_migration_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FrontEndMigrationApi.deleteFrontEndMigrationBlocking(
 			self.icure_sdk.native,
@@ -181,7 +181,7 @@ class FrontEndMigrationApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"front_end_migration_name": front_end_migration_name,
+			"frontEndMigrationName": front_end_migration_name,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -195,7 +195,7 @@ class FrontEndMigrationApi:
 
 	def get_front_end_migration_by_name_blocking(self, front_end_migration_name: str) -> List[FrontEndMigration]:
 		payload = {
-			"front_end_migration_name": front_end_migration_name,
+			"frontEndMigrationName": front_end_migration_name,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FrontEndMigrationApi.getFrontEndMigrationByNameBlocking(
 			self.icure_sdk.native,
@@ -221,7 +221,7 @@ class FrontEndMigrationApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"front_end_migration": front_end_migration.__serialize__(),
+			"frontEndMigration": front_end_migration.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -235,7 +235,7 @@ class FrontEndMigrationApi:
 
 	def modify_front_end_migration_blocking(self, front_end_migration: FrontEndMigration) -> FrontEndMigration:
 		payload = {
-			"front_end_migration": front_end_migration.__serialize__(),
+			"frontEndMigration": front_end_migration.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FrontEndMigrationApi.modifyFrontEndMigrationBlocking(
 			self.icure_sdk.native,

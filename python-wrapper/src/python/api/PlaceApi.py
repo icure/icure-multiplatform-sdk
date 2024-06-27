@@ -23,7 +23,7 @@ class PlaceApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"place_id": place_id,
+			"placeId": place_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -37,7 +37,7 @@ class PlaceApi:
 
 	def get_place_blocking(self, place_id: str) -> Place:
 		payload = {
-			"place_id": place_id,
+			"placeId": place_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.PlaceApi.getPlaceBlocking(
 			self.icure_sdk.native,
@@ -143,7 +143,7 @@ class PlaceApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"place_ids": [x0 for x0 in place_ids],
+			"placeIds": [x0 for x0 in place_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -157,7 +157,7 @@ class PlaceApi:
 
 	def delete_places_blocking(self, place_ids: List[str]) -> List[DocIdentifier]:
 		payload = {
-			"place_ids": [x0 for x0 in place_ids],
+			"placeIds": [x0 for x0 in place_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.PlaceApi.deletePlacesBlocking(
 			self.icure_sdk.native,
@@ -187,7 +187,7 @@ class PlaceApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"start_document_id": start_document_id,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -202,7 +202,7 @@ class PlaceApi:
 
 	def get_places_blocking(self, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
 		payload = {
-			"start_document_id": start_document_id,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.PlaceApi.getPlacesBlocking(

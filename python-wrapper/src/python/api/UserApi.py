@@ -65,10 +65,10 @@ class UserApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"start_key": start_key,
-			"start_document_id": start_document_id,
+			"startKey": start_key,
+			"startDocumentId": start_document_id,
 			"limit": limit,
-			"skip_patients": skip_patients,
+			"skipPatients": skip_patients,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -82,10 +82,10 @@ class UserApi:
 
 	def list_users_by_blocking(self, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, skip_patients: Optional[bool] = None) -> PaginatedList:
 		payload = {
-			"start_key": start_key,
-			"start_document_id": start_document_id,
+			"startKey": start_key,
+			"startDocumentId": start_document_id,
 			"limit": limit,
-			"skip_patients": skip_patients,
+			"skipPatients": skip_patients,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.listUsersByBlocking(
 			self.icure_sdk.native,
@@ -155,7 +155,7 @@ class UserApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"user_id": user_id,
+			"userId": user_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -169,7 +169,7 @@ class UserApi:
 
 	def get_user_blocking(self, user_id: str) -> User:
 		payload = {
-			"user_id": user_id,
+			"userId": user_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.getUserBlocking(
 			self.icure_sdk.native,
@@ -235,7 +235,7 @@ class UserApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"phone_number": phone_number,
+			"phoneNumber": phone_number,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -249,7 +249,7 @@ class UserApi:
 
 	def get_user_by_phone_number_blocking(self, phone_number: str) -> User:
 		payload = {
-			"phone_number": phone_number,
+			"phoneNumber": phone_number,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.getUserByPhoneNumberBlocking(
 			self.icure_sdk.native,
@@ -355,7 +355,7 @@ class UserApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"user_id": user_id,
+			"userId": user_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -369,7 +369,7 @@ class UserApi:
 
 	def delete_user_blocking(self, user_id: str) -> DocIdentifier:
 		payload = {
-			"user_id": user_id,
+			"userId": user_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.deleteUserBlocking(
 			self.icure_sdk.native,
@@ -435,7 +435,7 @@ class UserApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"healthcare_party_id": healthcare_party_id,
+			"healthcarePartyId": healthcare_party_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -449,7 +449,7 @@ class UserApi:
 
 	def assign_healthcare_party_blocking(self, healthcare_party_id: str) -> User:
 		payload = {
-			"healthcare_party_id": healthcare_party_id,
+			"healthcarePartyId": healthcare_party_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.assignHealthcarePartyBlocking(
 			self.icure_sdk.native,
@@ -475,7 +475,7 @@ class UserApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"user_id": user_id,
+			"userId": user_id,
 			"properties": [x0.__serialize__() for x0 in properties] if properties is not None else None,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -490,7 +490,7 @@ class UserApi:
 
 	def modify_properties_blocking(self, user_id: str, properties: Optional[List[EncryptedPropertyStub]]) -> User:
 		payload = {
-			"user_id": user_id,
+			"userId": user_id,
 			"properties": [x0.__serialize__() for x0 in properties] if properties is not None else None,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.modifyPropertiesBlocking(
@@ -517,9 +517,9 @@ class UserApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"user_id": user_id,
+			"userId": user_id,
 			"key": key,
-			"token_validity": token_validity,
+			"tokenValidity": token_validity,
 			"token": token,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -534,9 +534,9 @@ class UserApi:
 
 	def get_token_blocking(self, user_id: str, key: str, token_validity: Optional[int] = None, token: Optional[str] = None) -> str:
 		payload = {
-			"user_id": user_id,
+			"userId": user_id,
 			"key": key,
-			"token_validity": token_validity,
+			"tokenValidity": token_validity,
 			"token": token,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.getTokenBlocking(
@@ -567,9 +567,9 @@ class UserApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"start_document_id": start_document_id,
+			"startDocumentId": start_document_id,
 			"limit": limit,
-			"filter_chain": filter_chain.__serialize__(),
+			"filterChain": filter_chain.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -583,9 +583,9 @@ class UserApi:
 
 	def filter_users_by_blocking(self, filter_chain: FilterChain, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
 		payload = {
-			"start_document_id": start_document_id,
+			"startDocumentId": start_document_id,
 			"limit": limit,
-			"filter_chain": filter_chain.__serialize__(),
+			"filterChain": filter_chain.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.filterUsersByBlocking(
 			self.icure_sdk.native,
@@ -697,9 +697,9 @@ class UserApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"group_id": group_id,
-			"start_key": start_key,
-			"start_document_id": start_document_id,
+			"groupId": group_id,
+			"startKey": start_key,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -714,9 +714,9 @@ class UserApi:
 
 	def list_users_in_group_blocking(self, group_id: str, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
 		payload = {
-			"group_id": group_id,
-			"start_key": start_key,
-			"start_document_id": start_document_id,
+			"groupId": group_id,
+			"startKey": start_key,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.listUsersInGroupBlocking(
@@ -747,7 +747,7 @@ class UserApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"group_id": group_id,
+			"groupId": group_id,
 			"user": user.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -762,7 +762,7 @@ class UserApi:
 
 	def create_user_in_group_blocking(self, group_id: str, user: User) -> User:
 		payload = {
-			"group_id": group_id,
+			"groupId": group_id,
 			"user": user.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.createUserInGroupBlocking(
@@ -789,7 +789,7 @@ class UserApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"group_id": group_id,
+			"groupId": group_id,
 			"user": user.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -804,7 +804,7 @@ class UserApi:
 
 	def modify_user_in_group_blocking(self, group_id: str, user: User) -> User:
 		payload = {
-			"group_id": group_id,
+			"groupId": group_id,
 			"user": user.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.modifyUserInGroupBlocking(
@@ -831,8 +831,8 @@ class UserApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"group_id": group_id,
-			"user_id": user_id,
+			"groupId": group_id,
+			"userId": user_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -846,8 +846,8 @@ class UserApi:
 
 	def delete_user_in_group_blocking(self, group_id: str, user_id: str) -> DocIdentifier:
 		payload = {
-			"group_id": group_id,
-			"user_id": user_id,
+			"groupId": group_id,
+			"userId": user_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.deleteUserInGroupBlocking(
 			self.icure_sdk.native,
@@ -873,8 +873,8 @@ class UserApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"user_id": user_id,
-			"roles_id": roles_id.__serialize__(),
+			"userId": user_id,
+			"rolesId": roles_id.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -888,8 +888,8 @@ class UserApi:
 
 	def add_roles_to_user_blocking(self, user_id: str, roles_id: ListOfIds) -> User:
 		payload = {
-			"user_id": user_id,
-			"roles_id": roles_id.__serialize__(),
+			"userId": user_id,
+			"rolesId": roles_id.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.addRolesToUserBlocking(
 			self.icure_sdk.native,
@@ -915,9 +915,9 @@ class UserApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"user_id": user_id,
-			"group_id": group_id,
-			"roles_id": roles_id.__serialize__(),
+			"userId": user_id,
+			"groupId": group_id,
+			"rolesId": roles_id.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -931,9 +931,9 @@ class UserApi:
 
 	def add_roles_to_user_in_group_blocking(self, user_id: str, group_id: str, roles_id: ListOfIds) -> User:
 		payload = {
-			"user_id": user_id,
-			"group_id": group_id,
-			"roles_id": roles_id.__serialize__(),
+			"userId": user_id,
+			"groupId": group_id,
+			"rolesId": roles_id.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.addRolesToUserInGroupBlocking(
 			self.icure_sdk.native,
@@ -959,7 +959,7 @@ class UserApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"user_id": user_id,
+			"userId": user_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -973,7 +973,7 @@ class UserApi:
 
 	def remove_roles_from_user_blocking(self, user_id: str) -> User:
 		payload = {
-			"user_id": user_id,
+			"userId": user_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.removeRolesFromUserBlocking(
 			self.icure_sdk.native,
@@ -999,8 +999,8 @@ class UserApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"user_id": user_id,
-			"group_id": group_id,
+			"userId": user_id,
+			"groupId": group_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1014,8 +1014,8 @@ class UserApi:
 
 	def remove_roles_from_user_in_group_blocking(self, user_id: str, group_id: str) -> User:
 		payload = {
-			"user_id": user_id,
-			"group_id": group_id,
+			"userId": user_id,
+			"groupId": group_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.removeRolesFromUserInGroupBlocking(
 			self.icure_sdk.native,
@@ -1041,11 +1041,11 @@ class UserApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"group_id": group_id,
-			"user_id": user_id,
+			"groupId": group_id,
+			"userId": user_id,
 			"key": key,
 			"token": token,
-			"token_validity": token_validity,
+			"tokenValidity": token_validity,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1059,11 +1059,11 @@ class UserApi:
 
 	def get_token_in_group_blocking(self, group_id: str, user_id: str, key: str, token: Optional[str] = None, token_validity: Optional[int] = None) -> str:
 		payload = {
-			"group_id": group_id,
-			"user_id": user_id,
+			"groupId": group_id,
+			"userId": user_id,
 			"key": key,
 			"token": token,
-			"token_validity": token_validity,
+			"tokenValidity": token_validity,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.getTokenInGroupBlocking(
 			self.icure_sdk.native,
@@ -1089,10 +1089,10 @@ class UserApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"user_identifier": user_identifier,
+			"userIdentifier": user_identifier,
 			"key": key,
 			"token": token,
-			"token_validity": token_validity,
+			"tokenValidity": token_validity,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1106,10 +1106,10 @@ class UserApi:
 
 	def get_token_in_all_groups_blocking(self, user_identifier: str, key: str, token: Optional[str] = None, token_validity: Optional[int] = None) -> List[TokenWithGroup]:
 		payload = {
-			"user_identifier": user_identifier,
+			"userIdentifier": user_identifier,
 			"key": key,
 			"token": token,
-			"token_validity": token_validity,
+			"tokenValidity": token_validity,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.getTokenInAllGroupsBlocking(
 			self.icure_sdk.native,
@@ -1139,10 +1139,10 @@ class UserApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"group_id": group_id,
-			"start_document_id": start_document_id,
+			"groupId": group_id,
+			"startDocumentId": start_document_id,
 			"limit": limit,
-			"filter_chain": filter_chain.__serialize__(),
+			"filterChain": filter_chain.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1156,10 +1156,10 @@ class UserApi:
 
 	def filter_users_in_group_by_blocking(self, group_id: str, filter_chain: FilterChain, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
 		payload = {
-			"group_id": group_id,
-			"start_document_id": start_document_id,
+			"groupId": group_id,
+			"startDocumentId": start_document_id,
 			"limit": limit,
-			"filter_chain": filter_chain.__serialize__(),
+			"filterChain": filter_chain.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.filterUsersInGroupByBlocking(
 			self.icure_sdk.native,
@@ -1189,8 +1189,8 @@ class UserApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"user_id": user_id,
-			"group_id": group_id,
+			"userId": user_id,
+			"groupId": group_id,
 			"request": request.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -1205,8 +1205,8 @@ class UserApi:
 
 	def enable2fa_for_user_blocking(self, user_id: str, group_id: str, request: Enable2faRequest) -> None:
 		payload = {
-			"user_id": user_id,
-			"group_id": group_id,
+			"userId": user_id,
+			"groupId": group_id,
 			"request": request.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.enable2faForUserBlocking(
@@ -1230,7 +1230,7 @@ class UserApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"user_id": user_id,
+			"userId": user_id,
 			"request": request.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -1245,7 +1245,7 @@ class UserApi:
 
 	def enable2fa_for_user_blocking(self, user_id: str, request: Enable2faRequest) -> None:
 		payload = {
-			"user_id": user_id,
+			"userId": user_id,
 			"request": request.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.enable2faForUserBlocking(
@@ -1269,8 +1269,8 @@ class UserApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"user_id": user_id,
-			"group_id": group_id,
+			"userId": user_id,
+			"groupId": group_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1284,8 +1284,8 @@ class UserApi:
 
 	def disable2fa_for_user_blocking(self, user_id: str, group_id: str) -> None:
 		payload = {
-			"user_id": user_id,
-			"group_id": group_id,
+			"userId": user_id,
+			"groupId": group_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.disable2faForUserBlocking(
 			self.icure_sdk.native,
@@ -1308,7 +1308,7 @@ class UserApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"user_id": user_id,
+			"userId": user_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1322,7 +1322,7 @@ class UserApi:
 
 	def disable2fa_for_user_blocking(self, user_id: str) -> None:
 		payload = {
-			"user_id": user_id,
+			"userId": user_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.disable2faForUserBlocking(
 			self.icure_sdk.native,
@@ -1385,7 +1385,7 @@ class UserApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"group_id": group_id,
+			"groupId": group_id,
 			"user": user.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -1400,7 +1400,7 @@ class UserApi:
 
 	def create_admin_user_in_group_blocking(self, group_id: str, user: User) -> User:
 		payload = {
-			"group_id": group_id,
+			"groupId": group_id,
 			"user": user.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.createAdminUserInGroupBlocking(

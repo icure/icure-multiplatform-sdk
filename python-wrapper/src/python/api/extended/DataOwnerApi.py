@@ -175,7 +175,7 @@ class DataOwnerApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"owner_id": owner_id,
+			"ownerId": owner_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -189,7 +189,7 @@ class DataOwnerApi:
 
 	def get_data_owner_blocking(self, owner_id: str) -> DataOwnerWithType:
 		payload = {
-			"owner_id": owner_id,
+			"ownerId": owner_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.extended.DataOwnerApi.getDataOwnerBlocking(
 			self.icure_sdk.native,
@@ -215,7 +215,7 @@ class DataOwnerApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"owner_id": owner_id,
+			"ownerId": owner_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -229,7 +229,7 @@ class DataOwnerApi:
 
 	def get_data_owner_stub_blocking(self, owner_id: str) -> CryptoActorStubWithType:
 		payload = {
-			"owner_id": owner_id,
+			"ownerId": owner_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.extended.DataOwnerApi.getDataOwnerStubBlocking(
 			self.icure_sdk.native,
@@ -255,7 +255,7 @@ class DataOwnerApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"parent_id": parent_id,
+			"parentId": parent_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -269,7 +269,7 @@ class DataOwnerApi:
 
 	def get_current_data_owner_hierarchy_ids_from_blocking(self, parent_id: str) -> List[str]:
 		payload = {
-			"parent_id": parent_id,
+			"parentId": parent_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.extended.DataOwnerApi.getCurrentDataOwnerHierarchyIdsFromBlocking(
 			self.icure_sdk.native,
@@ -333,7 +333,7 @@ class DataOwnerApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"crypto_actor_stub_with_type_dto": crypto_actor_stub_with_type_dto.__serialize__(),
+			"cryptoActorStubWithTypeDto": crypto_actor_stub_with_type_dto.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -347,7 +347,7 @@ class DataOwnerApi:
 
 	def modify_data_owner_stub_blocking(self, crypto_actor_stub_with_type_dto: CryptoActorStubWithType) -> CryptoActorStubWithType:
 		payload = {
-			"crypto_actor_stub_with_type_dto": crypto_actor_stub_with_type_dto.__serialize__(),
+			"cryptoActorStubWithTypeDto": crypto_actor_stub_with_type_dto.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.extended.DataOwnerApi.modifyDataOwnerStubBlocking(
 			self.icure_sdk.native,
@@ -411,7 +411,7 @@ class DataOwnerApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"owner_id": owner_id,
+			"ownerId": owner_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -425,7 +425,7 @@ class DataOwnerApi:
 
 	def get_crypto_actor_stub_blocking(self, owner_id: str) -> CryptoActorStubWithType:
 		payload = {
-			"owner_id": owner_id,
+			"ownerId": owner_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.extended.DataOwnerApi.getCryptoActorStubBlocking(
 			self.icure_sdk.native,

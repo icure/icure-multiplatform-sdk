@@ -24,7 +24,7 @@ class IcureMaintenanceTaskApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"update_request": update_request.__serialize__(),
+			"updateRequest": update_request.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -38,7 +38,7 @@ class IcureMaintenanceTaskApi:
 
 	def apply_key_pair_update_blocking(self, update_request: KeyPairUpdateNotification) -> None:
 		payload = {
-			"update_request": update_request.__serialize__(),
+			"updateRequest": update_request.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.extended.IcureMaintenanceTaskApi.applyKeyPairUpdateBlocking(
 			self.icure_sdk.native,
@@ -62,7 +62,7 @@ class IcureMaintenanceTaskApi:
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"key": key,
-			"request_to_owner_types": [x0.__serialize__() for x0 in request_to_owner_types] if request_to_owner_types is not None else None,
+			"requestToOwnerTypes": [x0.__serialize__() for x0 in request_to_owner_types] if request_to_owner_types is not None else None,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -77,7 +77,7 @@ class IcureMaintenanceTaskApi:
 	def create_key_pair_update_notifications_to_all_delegation_counterparts_blocking(self, key: SpkiHexString, request_to_owner_types: Optional[List[DataOwnerType]] = None) -> None:
 		payload = {
 			"key": key,
-			"request_to_owner_types": [x0.__serialize__() for x0 in request_to_owner_types] if request_to_owner_types is not None else None,
+			"requestToOwnerTypes": [x0.__serialize__() for x0 in request_to_owner_types] if request_to_owner_types is not None else None,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.extended.IcureMaintenanceTaskApi.createKeyPairUpdateNotificationsToAllDelegationCounterpartsBlocking(
 			self.icure_sdk.native,
@@ -100,7 +100,7 @@ class IcureMaintenanceTaskApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"data_owner_id": data_owner_id,
+			"dataOwnerId": data_owner_id,
 			"key": key,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -115,7 +115,7 @@ class IcureMaintenanceTaskApi:
 
 	def create_key_pair_update_notification_to_blocking(self, data_owner_id: str, key: SpkiHexString) -> None:
 		payload = {
-			"data_owner_id": data_owner_id,
+			"dataOwnerId": data_owner_id,
 			"key": key,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.extended.IcureMaintenanceTaskApi.createKeyPairUpdateNotificationToBlocking(

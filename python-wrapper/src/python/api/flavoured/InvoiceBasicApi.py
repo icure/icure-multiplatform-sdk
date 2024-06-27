@@ -23,7 +23,7 @@ class InvoiceBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -37,7 +37,7 @@ class InvoiceBasicApi:
 
 	def delete_invoice_blocking(self, entity_id: str) -> DocIdentifier:
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicApi.deleteInvoiceBlocking(
 			self.icure_sdk.native,
@@ -63,8 +63,8 @@ class InvoiceBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"hc_party_id": hc_party_id,
-			"secret_patient_keys": [x0 for x0 in secret_patient_keys],
+			"hcPartyId": hc_party_id,
+			"secretPatientKeys": [x0 for x0 in secret_patient_keys],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -78,8 +78,8 @@ class InvoiceBasicApi:
 
 	def find_invoices_delegations_stubs_by_hc_party_patient_foreign_keys_blocking(self, hc_party_id: str, secret_patient_keys: List[str]) -> List[IcureStub]:
 		payload = {
-			"hc_party_id": hc_party_id,
-			"secret_patient_keys": [x0 for x0 in secret_patient_keys],
+			"hcPartyId": hc_party_id,
+			"secretPatientKeys": [x0 for x0 in secret_patient_keys],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicApi.findInvoicesDelegationsStubsByHcPartyPatientForeignKeysBlocking(
 			self.icure_sdk.native,
@@ -105,7 +105,7 @@ class InvoiceBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"min_occurrence": min_occurrence,
+			"minOccurrence": min_occurrence,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -119,7 +119,7 @@ class InvoiceBasicApi:
 
 	def get_tarifications_codes_occurrences_blocking(self, min_occurrence: int) -> List[LabelledOccurence]:
 		payload = {
-			"min_occurrence": min_occurrence,
+			"minOccurrence": min_occurrence,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicApi.getTarificationsCodesOccurrencesBlocking(
 			self.icure_sdk.native,
@@ -225,7 +225,7 @@ class InvoiceBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -239,7 +239,7 @@ class InvoiceBasicApi:
 
 	def get_invoice_blocking(self, entity_id: str) -> EncryptedInvoice:
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicApi.getInvoiceBlocking(
 			self.icure_sdk.native,
@@ -265,7 +265,7 @@ class InvoiceBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -279,7 +279,7 @@ class InvoiceBasicApi:
 
 	def get_invoices_blocking(self, entity_ids: List[str]) -> List[EncryptedInvoice]:
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicApi.getInvoicesBlocking(
 			self.icure_sdk.native,
@@ -305,7 +305,7 @@ class InvoiceBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"filter_chain": filter_chain.__serialize__(),
+			"filterChain": filter_chain.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -319,7 +319,7 @@ class InvoiceBasicApi:
 
 	def filter_invoices_by_blocking(self, filter_chain: FilterChain) -> List[EncryptedInvoice]:
 		payload = {
-			"filter_chain": filter_chain.__serialize__(),
+			"filterChain": filter_chain.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicApi.filterInvoicesByBlocking(
 			self.icure_sdk.native,
@@ -345,8 +345,8 @@ class InvoiceBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"hc_party_id": hc_party_id,
-			"secret_patient_keys": [x0 for x0 in secret_patient_keys],
+			"hcPartyId": hc_party_id,
+			"secretPatientKeys": [x0 for x0 in secret_patient_keys],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -360,8 +360,8 @@ class InvoiceBasicApi:
 
 	def find_invoices_by_hc_party_patient_foreign_keys_blocking(self, hc_party_id: str, secret_patient_keys: List[str]) -> List[EncryptedInvoice]:
 		payload = {
-			"hc_party_id": hc_party_id,
-			"secret_patient_keys": [x0 for x0 in secret_patient_keys],
+			"hcPartyId": hc_party_id,
+			"secretPatientKeys": [x0 for x0 in secret_patient_keys],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicApi.findInvoicesByHcPartyPatientForeignKeysBlocking(
 			self.icure_sdk.native,
@@ -427,7 +427,7 @@ class InvoiceBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"invoice_id": invoice_id,
+			"invoiceId": invoice_id,
 			"ids": [x0 for x0 in ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -442,7 +442,7 @@ class InvoiceBasicApi:
 
 	def merge_to_blocking(self, invoice_id: str, ids: List[str]) -> EncryptedInvoice:
 		payload = {
-			"invoice_id": invoice_id,
+			"invoiceId": invoice_id,
 			"ids": [x0 for x0 in ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicApi.mergeToBlocking(
@@ -469,9 +469,9 @@ class InvoiceBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"invoice_id": invoice_id,
+			"invoiceId": invoice_id,
 			"scheme": scheme,
-			"forced_value": forced_value,
+			"forcedValue": forced_value,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -485,9 +485,9 @@ class InvoiceBasicApi:
 
 	def validate_blocking(self, invoice_id: str, scheme: str, forced_value: str) -> EncryptedInvoice:
 		payload = {
-			"invoice_id": invoice_id,
+			"invoiceId": invoice_id,
 			"scheme": scheme,
-			"forced_value": forced_value,
+			"forcedValue": forced_value,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicApi.validateBlocking(
 			self.icure_sdk.native,
@@ -513,14 +513,14 @@ class InvoiceBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"user_id": user_id,
+			"userId": user_id,
 			"type": type,
-			"sent_medium_type": sent_medium_type,
-			"secret_fkeys": secret_fkeys,
-			"insurance_id": insurance_id,
-			"invoice_id": invoice_id,
-			"grace_period": grace_period,
-			"invoicing_codes": [x0.__serialize__() for x0 in invoicing_codes],
+			"sentMediumType": sent_medium_type,
+			"secretFKeys": secret_fkeys,
+			"insuranceId": insurance_id,
+			"invoiceId": invoice_id,
+			"gracePeriod": grace_period,
+			"invoicingCodes": [x0.__serialize__() for x0 in invoicing_codes],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -534,14 +534,14 @@ class InvoiceBasicApi:
 
 	def append_codes_blocking(self, user_id: str, type: str, sent_medium_type: str, secret_fkeys: str, invoicing_codes: List[EncryptedInvoicingCode], insurance_id: Optional[str] = None, invoice_id: Optional[str] = None, grace_period: Optional[int] = None) -> List[EncryptedInvoice]:
 		payload = {
-			"user_id": user_id,
+			"userId": user_id,
 			"type": type,
-			"sent_medium_type": sent_medium_type,
-			"secret_fkeys": secret_fkeys,
-			"insurance_id": insurance_id,
-			"invoice_id": invoice_id,
-			"grace_period": grace_period,
-			"invoicing_codes": [x0.__serialize__() for x0 in invoicing_codes],
+			"sentMediumType": sent_medium_type,
+			"secretFKeys": secret_fkeys,
+			"insuranceId": insurance_id,
+			"invoiceId": invoice_id,
+			"gracePeriod": grace_period,
+			"invoicingCodes": [x0.__serialize__() for x0 in invoicing_codes],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicApi.appendCodesBlocking(
 			self.icure_sdk.native,
@@ -567,10 +567,10 @@ class InvoiceBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"user_id": user_id,
-			"service_id": service_id,
-			"secret_fkeys": secret_fkeys,
-			"tarification_ids": [x0 for x0 in tarification_ids],
+			"userId": user_id,
+			"serviceId": service_id,
+			"secretFKeys": secret_fkeys,
+			"tarificationIds": [x0 for x0 in tarification_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -584,10 +584,10 @@ class InvoiceBasicApi:
 
 	def remove_codes_blocking(self, user_id: str, service_id: str, secret_fkeys: str, tarification_ids: List[str]) -> List[EncryptedInvoice]:
 		payload = {
-			"user_id": user_id,
-			"service_id": service_id,
-			"secret_fkeys": secret_fkeys,
-			"tarification_ids": [x0 for x0 in tarification_ids],
+			"userId": user_id,
+			"serviceId": service_id,
+			"secretFKeys": secret_fkeys,
+			"tarificationIds": [x0 for x0 in tarification_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicApi.removeCodesBlocking(
 			self.icure_sdk.native,
@@ -617,11 +617,11 @@ class InvoiceBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"hc_party_id": hc_party_id,
-			"from_date": from_date,
-			"to_date": to_date,
-			"start_key": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
-			"start_document_id": start_document_id,
+			"hcPartyId": hc_party_id,
+			"fromDate": from_date,
+			"toDate": to_date,
+			"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -636,11 +636,11 @@ class InvoiceBasicApi:
 
 	def find_invoices_by_author_blocking(self, hc_party_id: str, from_date: Optional[int] = None, to_date: Optional[int] = None, start_key: Optional[Dict[str, object]] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
 		payload = {
-			"hc_party_id": hc_party_id,
-			"from_date": from_date,
-			"to_date": to_date,
-			"start_key": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
-			"start_document_id": start_document_id,
+			"hcPartyId": hc_party_id,
+			"fromDate": from_date,
+			"toDate": to_date,
+			"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicApi.findInvoicesByAuthorBlocking(
@@ -671,8 +671,8 @@ class InvoiceBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"hc_party_id": hc_party_id,
-			"secret_patient_keys": [x0 for x0 in secret_patient_keys],
+			"hcPartyId": hc_party_id,
+			"secretPatientKeys": [x0 for x0 in secret_patient_keys],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -686,8 +686,8 @@ class InvoiceBasicApi:
 
 	def list_invoices_by_hcparty_and_patient_foreign_keys_blocking(self, hc_party_id: str, secret_patient_keys: List[str]) -> List[EncryptedInvoice]:
 		payload = {
-			"hc_party_id": hc_party_id,
-			"secret_patient_keys": [x0 for x0 in secret_patient_keys],
+			"hcPartyId": hc_party_id,
+			"secretPatientKeys": [x0 for x0 in secret_patient_keys],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicApi.listInvoicesByHCPartyAndPatientForeignKeysBlocking(
 			self.icure_sdk.native,
@@ -713,8 +713,8 @@ class InvoiceBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"hc_party_id": hc_party_id,
-			"group_id": group_id,
+			"hcPartyId": hc_party_id,
+			"groupId": group_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -728,8 +728,8 @@ class InvoiceBasicApi:
 
 	def list_invoices_by_hc_party_and_group_id_blocking(self, hc_party_id: str, group_id: str) -> List[EncryptedInvoice]:
 		payload = {
-			"hc_party_id": hc_party_id,
-			"group_id": group_id,
+			"hcPartyId": hc_party_id,
+			"groupId": group_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicApi.listInvoicesByHcPartyAndGroupIdBlocking(
 			self.icure_sdk.native,
@@ -755,9 +755,9 @@ class InvoiceBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"hc_party_id": hc_party_id,
-			"sent_medium_type": sent_medium_type.__serialize__(),
-			"invoice_type": invoice_type.__serialize__(),
+			"hcPartyId": hc_party_id,
+			"sentMediumType": sent_medium_type.__serialize__(),
+			"invoiceType": invoice_type.__serialize__(),
 			"sent": sent,
 			"from": from_,
 			"to": to,
@@ -774,9 +774,9 @@ class InvoiceBasicApi:
 
 	def list_invoices_by_hc_party_sent_medium_type_invoice_type_sent_date_blocking(self, hc_party_id: str, sent_medium_type: MediumType, invoice_type: InvoiceType, sent: bool, from_: Optional[int] = None, to: Optional[int] = None) -> List[EncryptedInvoice]:
 		payload = {
-			"hc_party_id": hc_party_id,
-			"sent_medium_type": sent_medium_type.__serialize__(),
-			"invoice_type": invoice_type.__serialize__(),
+			"hcPartyId": hc_party_id,
+			"sentMediumType": sent_medium_type.__serialize__(),
+			"invoiceType": invoice_type.__serialize__(),
 			"sent": sent,
 			"from": from_,
 			"to": to,
@@ -805,7 +805,7 @@ class InvoiceBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"contact_ids": [x0 for x0 in contact_ids],
+			"contactIds": [x0 for x0 in contact_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -819,7 +819,7 @@ class InvoiceBasicApi:
 
 	def list_invoices_by_contact_ids_blocking(self, contact_ids: List[str]) -> List[EncryptedInvoice]:
 		payload = {
-			"contact_ids": [x0 for x0 in contact_ids],
+			"contactIds": [x0 for x0 in contact_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicApi.listInvoicesByContactIdsBlocking(
 			self.icure_sdk.native,
@@ -845,7 +845,7 @@ class InvoiceBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"recipients_ids": [x0 for x0 in recipients_ids],
+			"recipientsIds": [x0 for x0 in recipients_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -859,7 +859,7 @@ class InvoiceBasicApi:
 
 	def list_invoices_by_recipients_ids_blocking(self, recipients_ids: List[str]) -> List[EncryptedInvoice]:
 		payload = {
-			"recipients_ids": [x0 for x0 in recipients_ids],
+			"recipientsIds": [x0 for x0 in recipients_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicApi.listInvoicesByRecipientsIdsBlocking(
 			self.icure_sdk.native,
@@ -885,7 +885,7 @@ class InvoiceBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"user_ids": [x0 for x0 in user_ids],
+			"userIds": [x0 for x0 in user_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -899,7 +899,7 @@ class InvoiceBasicApi:
 
 	def list_to_insurances_blocking(self, user_ids: List[str]) -> List[EncryptedInvoice]:
 		payload = {
-			"user_ids": [x0 for x0 in user_ids],
+			"userIds": [x0 for x0 in user_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicApi.listToInsurancesBlocking(
 			self.icure_sdk.native,
@@ -925,7 +925,7 @@ class InvoiceBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"user_ids": [x0 for x0 in user_ids],
+			"userIds": [x0 for x0 in user_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -939,7 +939,7 @@ class InvoiceBasicApi:
 
 	def list_to_insurances_unsent_blocking(self, user_ids: List[str]) -> List[EncryptedInvoice]:
 		payload = {
-			"user_ids": [x0 for x0 in user_ids],
+			"userIds": [x0 for x0 in user_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicApi.listToInsurancesUnsentBlocking(
 			self.icure_sdk.native,
@@ -965,7 +965,7 @@ class InvoiceBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"hc_party_id": hc_party_id,
+			"hcPartyId": hc_party_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -979,7 +979,7 @@ class InvoiceBasicApi:
 
 	def list_to_patients_blocking(self, hc_party_id: str) -> List[EncryptedInvoice]:
 		payload = {
-			"hc_party_id": hc_party_id,
+			"hcPartyId": hc_party_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicApi.listToPatientsBlocking(
 			self.icure_sdk.native,
@@ -1005,7 +1005,7 @@ class InvoiceBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"hc_party_id": hc_party_id,
+			"hcPartyId": hc_party_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1019,7 +1019,7 @@ class InvoiceBasicApi:
 
 	def list_to_patients_unsent_blocking(self, hc_party_id: Optional[str]) -> List[EncryptedInvoice]:
 		payload = {
-			"hc_party_id": hc_party_id,
+			"hcPartyId": hc_party_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicApi.listToPatientsUnsentBlocking(
 			self.icure_sdk.native,
@@ -1085,8 +1085,8 @@ class InvoiceBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"hc_party_id": hc_party_id,
-			"sending_mode": sending_mode,
+			"hcPartyId": hc_party_id,
+			"sendingMode": sending_mode,
 			"status": status,
 			"from": from_,
 			"to": to,
@@ -1103,8 +1103,8 @@ class InvoiceBasicApi:
 
 	def list_invoices_by_hcparty_sending_mode_status_date_blocking(self, hc_party_id: str, sending_mode: str, status: str, from_: int, to: int) -> List[EncryptedInvoice]:
 		payload = {
-			"hc_party_id": hc_party_id,
-			"sending_mode": sending_mode,
+			"hcPartyId": hc_party_id,
+			"sendingMode": sending_mode,
 			"status": status,
 			"from": from_,
 			"to": to,
@@ -1133,7 +1133,7 @@ class InvoiceBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"service_ids": [x0 for x0 in service_ids],
+			"serviceIds": [x0 for x0 in service_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1147,7 +1147,7 @@ class InvoiceBasicApi:
 
 	def list_invoices_by_service_ids_blocking(self, service_ids: List[str]) -> List[EncryptedInvoice]:
 		payload = {
-			"service_ids": [x0 for x0 in service_ids],
+			"serviceIds": [x0 for x0 in service_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicApi.listInvoicesByServiceIdsBlocking(
 			self.icure_sdk.native,
@@ -1176,7 +1176,7 @@ class InvoiceBasicApi:
 			"status": status,
 			"from": from_,
 			"to": to,
-			"hcp_ids": [x0 for x0 in hcp_ids],
+			"hcpIds": [x0 for x0 in hcp_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1193,7 +1193,7 @@ class InvoiceBasicApi:
 			"status": status,
 			"from": from_,
 			"to": to,
-			"hcp_ids": [x0 for x0 in hcp_ids],
+			"hcpIds": [x0 for x0 in hcp_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicApi.listAllHcpsByStatusBlocking(
 			self.icure_sdk.native,

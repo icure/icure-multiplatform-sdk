@@ -23,7 +23,7 @@ class InsuranceApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"insurance_id": insurance_id,
+			"insuranceId": insurance_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -37,7 +37,7 @@ class InsuranceApi:
 
 	def get_insurance_blocking(self, insurance_id: str) -> Insurance:
 		payload = {
-			"insurance_id": insurance_id,
+			"insuranceId": insurance_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InsuranceApi.getInsuranceBlocking(
 			self.icure_sdk.native,
@@ -63,7 +63,7 @@ class InsuranceApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"insurance_ids": [x0 for x0 in insurance_ids],
+			"insuranceIds": [x0 for x0 in insurance_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -77,7 +77,7 @@ class InsuranceApi:
 
 	def get_insurances_blocking(self, insurance_ids: List[str]) -> List[Insurance]:
 		payload = {
-			"insurance_ids": [x0 for x0 in insurance_ids],
+			"insuranceIds": [x0 for x0 in insurance_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InsuranceApi.getInsurancesBlocking(
 			self.icure_sdk.native,
@@ -143,7 +143,7 @@ class InsuranceApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"insurance_id": insurance_id,
+			"insuranceId": insurance_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -157,7 +157,7 @@ class InsuranceApi:
 
 	def delete_insurance_blocking(self, insurance_id: str) -> DocIdentifier:
 		payload = {
-			"insurance_id": insurance_id,
+			"insuranceId": insurance_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InsuranceApi.deleteInsuranceBlocking(
 			self.icure_sdk.native,
@@ -187,7 +187,7 @@ class InsuranceApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"start_document_id": start_document_id,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -202,7 +202,7 @@ class InsuranceApi:
 
 	def get_all_insurances_blocking(self, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
 		payload = {
-			"start_document_id": start_document_id,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InsuranceApi.getAllInsurancesBlocking(
@@ -233,7 +233,7 @@ class InsuranceApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"insurance_code": insurance_code,
+			"insuranceCode": insurance_code,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -247,7 +247,7 @@ class InsuranceApi:
 
 	def list_insurances_by_code_blocking(self, insurance_code: str) -> List[Insurance]:
 		payload = {
-			"insurance_code": insurance_code,
+			"insuranceCode": insurance_code,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InsuranceApi.listInsurancesByCodeBlocking(
 			self.icure_sdk.native,
@@ -273,7 +273,7 @@ class InsuranceApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"insurance_name": insurance_name,
+			"insuranceName": insurance_name,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -287,7 +287,7 @@ class InsuranceApi:
 
 	def list_insurances_by_name_blocking(self, insurance_name: str) -> List[Insurance]:
 		payload = {
-			"insurance_name": insurance_name,
+			"insuranceName": insurance_name,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.InsuranceApi.listInsurancesByNameBlocking(
 			self.icure_sdk.native,

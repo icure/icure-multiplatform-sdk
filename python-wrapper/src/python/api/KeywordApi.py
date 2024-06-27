@@ -23,7 +23,7 @@ class KeywordApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"front_end_migration_id": front_end_migration_id,
+			"frontEndMigrationId": front_end_migration_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -37,7 +37,7 @@ class KeywordApi:
 
 	def get_keyword_blocking(self, front_end_migration_id: str) -> Keyword:
 		payload = {
-			"front_end_migration_id": front_end_migration_id,
+			"frontEndMigrationId": front_end_migration_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.KeywordApi.getKeywordBlocking(
 			self.icure_sdk.native,
@@ -63,7 +63,7 @@ class KeywordApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"front_end_migration": front_end_migration.__serialize__(),
+			"frontEndMigration": front_end_migration.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -77,7 +77,7 @@ class KeywordApi:
 
 	def create_keyword_blocking(self, front_end_migration: Keyword) -> Keyword:
 		payload = {
-			"front_end_migration": front_end_migration.__serialize__(),
+			"frontEndMigration": front_end_migration.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.KeywordApi.createKeywordBlocking(
 			self.icure_sdk.native,
@@ -107,7 +107,7 @@ class KeywordApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"start_document_id": start_document_id,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -122,7 +122,7 @@ class KeywordApi:
 
 	def get_keywords_blocking(self, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
 		payload = {
-			"start_document_id": start_document_id,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.KeywordApi.getKeywordsBlocking(
@@ -193,7 +193,7 @@ class KeywordApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"user_id": user_id,
+			"userId": user_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -207,7 +207,7 @@ class KeywordApi:
 
 	def get_keywords_by_user_blocking(self, user_id: str) -> List[Keyword]:
 		payload = {
-			"user_id": user_id,
+			"userId": user_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.KeywordApi.getKeywordsByUserBlocking(
 			self.icure_sdk.native,
@@ -233,7 +233,7 @@ class KeywordApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"keyword_ids": [x0 for x0 in keyword_ids],
+			"keywordIds": [x0 for x0 in keyword_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -247,7 +247,7 @@ class KeywordApi:
 
 	def delete_keywords_blocking(self, keyword_ids: List[str]) -> List[DocIdentifier]:
 		payload = {
-			"keyword_ids": [x0 for x0 in keyword_ids],
+			"keywordIds": [x0 for x0 in keyword_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.KeywordApi.deleteKeywordsBlocking(
 			self.icure_sdk.native,

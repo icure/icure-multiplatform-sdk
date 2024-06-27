@@ -24,7 +24,7 @@ class ReceiptBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -38,7 +38,7 @@ class ReceiptBasicApi:
 
 	def delete_receipt_blocking(self, entity_id: str) -> DocIdentifier:
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptBasicApi.deleteReceiptBlocking(
 			self.icure_sdk.native,
@@ -64,7 +64,7 @@ class ReceiptBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -78,7 +78,7 @@ class ReceiptBasicApi:
 
 	def delete_receipts_blocking(self, entity_ids: List[str]) -> List[DocIdentifier]:
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptBasicApi.deleteReceiptsBlocking(
 			self.icure_sdk.native,
@@ -104,8 +104,8 @@ class ReceiptBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"receipt_id": receipt_id,
-			"attachment_id": attachment_id,
+			"receiptId": receipt_id,
+			"attachmentId": attachment_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -119,8 +119,8 @@ class ReceiptBasicApi:
 
 	def get_raw_receipt_attachment_blocking(self, receipt_id: str, attachment_id: str) -> bytearray:
 		payload = {
-			"receipt_id": receipt_id,
-			"attachment_id": attachment_id,
+			"receiptId": receipt_id,
+			"attachmentId": attachment_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptBasicApi.getRawReceiptAttachmentBlocking(
 			self.icure_sdk.native,
@@ -146,9 +146,9 @@ class ReceiptBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"receipt_id": receipt_id,
+			"receiptId": receipt_id,
 			"rev": rev,
-			"blob_type": blob_type,
+			"blobType": blob_type,
 			"attachment": base64.b64encode(attachment).decode('utf-8'),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -163,9 +163,9 @@ class ReceiptBasicApi:
 
 	def set_raw_receipt_attachment_blocking(self, receipt_id: str, rev: str, blob_type: str, attachment: bytearray) -> EncryptedReceipt:
 		payload = {
-			"receipt_id": receipt_id,
+			"receiptId": receipt_id,
 			"rev": rev,
-			"blob_type": blob_type,
+			"blobType": blob_type,
 			"attachment": base64.b64encode(attachment).decode('utf-8'),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptBasicApi.setRawReceiptAttachmentBlocking(
@@ -232,7 +232,7 @@ class ReceiptBasicApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -246,7 +246,7 @@ class ReceiptBasicApi:
 
 	def get_receipt_blocking(self, entity_id: str) -> EncryptedReceipt:
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptBasicApi.getReceiptBlocking(
 			self.icure_sdk.native,

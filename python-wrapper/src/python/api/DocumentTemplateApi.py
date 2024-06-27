@@ -24,7 +24,7 @@ class DocumentTemplateApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"document_template_id": document_template_id,
+			"documentTemplateId": document_template_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -38,7 +38,7 @@ class DocumentTemplateApi:
 
 	def get_document_template_blocking(self, document_template_id: str) -> DocumentTemplate:
 		payload = {
-			"document_template_id": document_template_id,
+			"documentTemplateId": document_template_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.getDocumentTemplateBlocking(
 			self.icure_sdk.native,
@@ -64,7 +64,7 @@ class DocumentTemplateApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"document_template": document_template.__serialize__(),
+			"documentTemplate": document_template.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -78,7 +78,7 @@ class DocumentTemplateApi:
 
 	def create_document_template_blocking(self, document_template: DocumentTemplate) -> DocumentTemplate:
 		payload = {
-			"document_template": document_template.__serialize__(),
+			"documentTemplate": document_template.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.createDocumentTemplateBlocking(
 			self.icure_sdk.native,
@@ -104,7 +104,7 @@ class DocumentTemplateApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"document_template": document_template.__serialize__(),
+			"documentTemplate": document_template.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -118,7 +118,7 @@ class DocumentTemplateApi:
 
 	def modify_document_template_blocking(self, document_template: DocumentTemplate) -> DocumentTemplate:
 		payload = {
-			"document_template": document_template.__serialize__(),
+			"documentTemplate": document_template.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.modifyDocumentTemplateBlocking(
 			self.icure_sdk.native,
@@ -144,7 +144,7 @@ class DocumentTemplateApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"document_template_ids": [x0 for x0 in document_template_ids],
+			"documentTemplateIds": [x0 for x0 in document_template_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -158,7 +158,7 @@ class DocumentTemplateApi:
 
 	def delete_document_templates_blocking(self, document_template_ids: List[str]) -> List[DocIdentifier]:
 		payload = {
-			"document_template_ids": [x0 for x0 in document_template_ids],
+			"documentTemplateIds": [x0 for x0 in document_template_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.deleteDocumentTemplatesBlocking(
 			self.icure_sdk.native,
@@ -184,7 +184,7 @@ class DocumentTemplateApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"speciality_code": speciality_code,
+			"specialityCode": speciality_code,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -198,7 +198,7 @@ class DocumentTemplateApi:
 
 	def list_document_templates_by_speciality_blocking(self, speciality_code: str) -> List[DocumentTemplate]:
 		payload = {
-			"speciality_code": speciality_code,
+			"specialityCode": speciality_code,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.listDocumentTemplatesBySpecialityBlocking(
 			self.icure_sdk.native,
@@ -224,7 +224,7 @@ class DocumentTemplateApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"document_type_code": document_type_code,
+			"documentTypeCode": document_type_code,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -238,7 +238,7 @@ class DocumentTemplateApi:
 
 	def list_document_templates_by_document_type_blocking(self, document_type_code: str) -> List[DocumentTemplate]:
 		payload = {
-			"document_type_code": document_type_code,
+			"documentTypeCode": document_type_code,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.listDocumentTemplatesByDocumentTypeBlocking(
 			self.icure_sdk.native,
@@ -264,7 +264,7 @@ class DocumentTemplateApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"document_type_code": document_type_code,
+			"documentTypeCode": document_type_code,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -278,7 +278,7 @@ class DocumentTemplateApi:
 
 	def list_document_templates_by_document_type_for_current_user_blocking(self, document_type_code: str) -> List[DocumentTemplate]:
 		payload = {
-			"document_type_code": document_type_code,
+			"documentTypeCode": document_type_code,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.listDocumentTemplatesByDocumentTypeForCurrentUserBlocking(
 			self.icure_sdk.native,
@@ -346,8 +346,8 @@ class DocumentTemplateApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"start_key": start_key,
-			"start_document_id": start_document_id,
+			"startKey": start_key,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -362,8 +362,8 @@ class DocumentTemplateApi:
 
 	def find_all_document_templates_blocking(self, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
 		payload = {
-			"start_key": start_key,
-			"start_document_id": start_document_id,
+			"startKey": start_key,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.findAllDocumentTemplatesBlocking(
@@ -394,8 +394,8 @@ class DocumentTemplateApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"document_template_id": document_template_id,
-			"attachment_id": attachment_id,
+			"documentTemplateId": document_template_id,
+			"attachmentId": attachment_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -409,8 +409,8 @@ class DocumentTemplateApi:
 
 	def get_document_template_attachment_blocking(self, document_template_id: str, attachment_id: str) -> bytearray:
 		payload = {
-			"document_template_id": document_template_id,
-			"attachment_id": attachment_id,
+			"documentTemplateId": document_template_id,
+			"attachmentId": attachment_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.getDocumentTemplateAttachmentBlocking(
 			self.icure_sdk.native,
@@ -436,8 +436,8 @@ class DocumentTemplateApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"document_template_id": document_template_id,
-			"attachment_id": attachment_id,
+			"documentTemplateId": document_template_id,
+			"attachmentId": attachment_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -451,8 +451,8 @@ class DocumentTemplateApi:
 
 	def get_attachment_text_blocking(self, document_template_id: str, attachment_id: str) -> bytearray:
 		payload = {
-			"document_template_id": document_template_id,
-			"attachment_id": attachment_id,
+			"documentTemplateId": document_template_id,
+			"attachmentId": attachment_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.getAttachmentTextBlocking(
 			self.icure_sdk.native,
@@ -478,7 +478,7 @@ class DocumentTemplateApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"document_template_id": document_template_id,
+			"documentTemplateId": document_template_id,
 			"payload": base64.b64encode(payload).decode('utf-8'),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -493,7 +493,7 @@ class DocumentTemplateApi:
 
 	def set_document_template_attachment_blocking(self, document_template_id: str, payload: bytearray) -> DocumentTemplate:
 		payload = {
-			"document_template_id": document_template_id,
+			"documentTemplateId": document_template_id,
 			"payload": base64.b64encode(payload).decode('utf-8'),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.setDocumentTemplateAttachmentBlocking(
@@ -510,8 +510,8 @@ class DocumentTemplateApi:
 
 	def get_attachment_url(self, document_id: str, attachment_id: str) -> str:
 		payload = {
-			"document_id": document_id,
-			"attachment_id": attachment_id,
+			"documentId": document_id,
+			"attachmentId": attachment_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentTemplateApi.getAttachmentUrl(
 			self.icure_sdk.native,

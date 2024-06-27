@@ -29,11 +29,11 @@ class DocumentApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"delegate_id": delegate_id,
+				"delegateId": delegate_id,
 				"document": document.__serialize__(),
-				"share_encryption_keys": share_encryption_keys.__serialize__(),
-				"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-				"requested_permission": requested_permission.__serialize__(),
+				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+				"requestedPermission": requested_permission.__serialize__(),
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -47,11 +47,11 @@ class DocumentApi:
 
 		def share_with_blocking(self, delegate_id: str, document: EncryptedDocument, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
 			payload = {
-				"delegate_id": delegate_id,
+				"delegateId": delegate_id,
 				"document": document.__serialize__(),
-				"share_encryption_keys": share_encryption_keys.__serialize__(),
-				"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-				"requested_permission": requested_permission.__serialize__(),
+				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+				"requestedPermission": requested_permission.__serialize__(),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.encrypted.shareWithBlocking(
 				self.icure_sdk.native,
@@ -163,10 +163,10 @@ class DocumentApi:
 					)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"hc_party_id": hc_party_id,
+				"hcPartyId": hc_party_id,
 				"patient": serialize_patient(patient),
-				"start_date": start_date,
-				"end_date": end_date,
+				"startDate": start_date,
+				"endDate": end_date,
 				"descending": descending,
 			}
 			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -181,10 +181,10 @@ class DocumentApi:
 
 		def find_documents_by_hc_party_patient_blocking(self, hc_party_id: str, patient: Patient, start_date: Optional[int] = None, end_date: Optional[int] = None, descending: Optional[bool] = None) -> PaginatedListIterator[EncryptedDocument]:
 			payload = {
-				"hc_party_id": hc_party_id,
+				"hcPartyId": hc_party_id,
 				"patient": serialize_patient(patient),
-				"start_date": start_date,
-				"end_date": end_date,
+				"startDate": start_date,
+				"endDate": end_date,
 				"descending": descending,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.encrypted.findDocumentsByHcPartyPatientBlocking(
@@ -257,7 +257,7 @@ class DocumentApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity_id": entity_id,
+				"entityId": entity_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -271,7 +271,7 @@ class DocumentApi:
 
 		def get_document_blocking(self, entity_id: str) -> EncryptedDocument:
 			payload = {
-				"entity_id": entity_id,
+				"entityId": entity_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.encrypted.getDocumentBlocking(
 				self.icure_sdk.native,
@@ -297,7 +297,7 @@ class DocumentApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"external_uuid": external_uuid,
+				"externalUuid": external_uuid,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -311,7 +311,7 @@ class DocumentApi:
 
 		def get_document_by_external_uuid_blocking(self, external_uuid: str) -> EncryptedDocument:
 			payload = {
-				"external_uuid": external_uuid,
+				"externalUuid": external_uuid,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.encrypted.getDocumentByExternalUuidBlocking(
 				self.icure_sdk.native,
@@ -337,7 +337,7 @@ class DocumentApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"external_uuid": external_uuid,
+				"externalUuid": external_uuid,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -351,7 +351,7 @@ class DocumentApi:
 
 		def get_documents_by_external_uuid_blocking(self, external_uuid: str) -> List[EncryptedDocument]:
 			payload = {
-				"external_uuid": external_uuid,
+				"externalUuid": external_uuid,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.encrypted.getDocumentsByExternalUuidBlocking(
 				self.icure_sdk.native,
@@ -377,7 +377,7 @@ class DocumentApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity_ids": [x0 for x0 in entity_ids],
+				"entityIds": [x0 for x0 in entity_ids],
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -391,7 +391,7 @@ class DocumentApi:
 
 		def get_documents_blocking(self, entity_ids: List[str]) -> List[EncryptedDocument]:
 			payload = {
-				"entity_ids": [x0 for x0 in entity_ids],
+				"entityIds": [x0 for x0 in entity_ids],
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.encrypted.getDocumentsBlocking(
 				self.icure_sdk.native,
@@ -457,9 +457,9 @@ class DocumentApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"hc_party_id": hc_party_id,
-				"document_type_code": document_type_code,
-				"secret_message_keys": [x0 for x0 in secret_message_keys],
+				"hcPartyId": hc_party_id,
+				"documentTypeCode": document_type_code,
+				"secretMessageKeys": [x0 for x0 in secret_message_keys],
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -473,9 +473,9 @@ class DocumentApi:
 
 		def list_documents_by_hc_party_message_foreign_keys_blocking(self, hc_party_id: str, document_type_code: Optional[str], secret_message_keys: List[str]) -> List[EncryptedDocument]:
 			payload = {
-				"hc_party_id": hc_party_id,
-				"document_type_code": document_type_code,
-				"secret_message_keys": [x0 for x0 in secret_message_keys],
+				"hcPartyId": hc_party_id,
+				"documentTypeCode": document_type_code,
+				"secretMessageKeys": [x0 for x0 in secret_message_keys],
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.encrypted.listDocumentsByHcPartyMessageForeignKeysBlocking(
 				self.icure_sdk.native,
@@ -541,10 +541,10 @@ class DocumentApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"document_id": document_id,
+				"documentId": document_id,
 				"rev": rev,
 				"utis": [x0 for x0 in utis],
-				"blob_type": blob_type,
+				"blobType": blob_type,
 				"attachment": base64.b64encode(attachment).decode('utf-8'),
 				"encrypted": encrypted,
 			}
@@ -560,10 +560,10 @@ class DocumentApi:
 
 		def set_raw_main_attachment_blocking(self, document_id: str, rev: str, utis: List[str], blob_type: str, attachment: bytearray, encrypted: bool) -> EncryptedDocument:
 			payload = {
-				"document_id": document_id,
+				"documentId": document_id,
 				"rev": rev,
 				"utis": [x0 for x0 in utis],
-				"blob_type": blob_type,
+				"blobType": blob_type,
 				"attachment": base64.b64encode(attachment).decode('utf-8'),
 				"encrypted": encrypted,
 			}
@@ -591,11 +591,11 @@ class DocumentApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"document_id": document_id,
+				"documentId": document_id,
 				"key": key,
 				"rev": rev,
 				"utis": [x0 for x0 in utis],
-				"blob_type": blob_type,
+				"blobType": blob_type,
 				"attachment": base64.b64encode(attachment).decode('utf-8'),
 				"encrypted": encrypted,
 			}
@@ -611,11 +611,11 @@ class DocumentApi:
 
 		def set_raw_secondary_attachment_blocking(self, document_id: str, key: str, rev: str, utis: List[str], blob_type: str, attachment: bytearray, encrypted: bool) -> EncryptedDocument:
 			payload = {
-				"document_id": document_id,
+				"documentId": document_id,
 				"key": key,
 				"rev": rev,
 				"utis": [x0 for x0 in utis],
-				"blob_type": blob_type,
+				"blobType": blob_type,
 				"attachment": base64.b64encode(attachment).decode('utf-8'),
 				"encrypted": encrypted,
 			}
@@ -643,7 +643,7 @@ class DocumentApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity_id": entity_id,
+				"entityId": entity_id,
 				"rev": rev,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -658,7 +658,7 @@ class DocumentApi:
 
 		def delete_main_attachment_blocking(self, entity_id: str, rev: str) -> EncryptedDocument:
 			payload = {
-				"entity_id": entity_id,
+				"entityId": entity_id,
 				"rev": rev,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.encrypted.deleteMainAttachmentBlocking(
@@ -685,9 +685,9 @@ class DocumentApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"document_id": document_id,
+				"documentId": document_id,
 				"key": key,
-				"attachment_id": attachment_id,
+				"attachmentId": attachment_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -701,9 +701,9 @@ class DocumentApi:
 
 		def delete_secondary_attachment_blocking(self, document_id: str, key: str, attachment_id: str) -> EncryptedDocument:
 			payload = {
-				"document_id": document_id,
+				"documentId": document_id,
 				"key": key,
-				"attachment_id": attachment_id,
+				"attachmentId": attachment_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.encrypted.deleteSecondaryAttachmentBlocking(
 				self.icure_sdk.native,
@@ -734,11 +734,11 @@ class DocumentApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"delegate_id": delegate_id,
+				"delegateId": delegate_id,
 				"document": document.__serialize__(),
-				"share_encryption_keys": share_encryption_keys.__serialize__(),
-				"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-				"requested_permission": requested_permission.__serialize__(),
+				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+				"requestedPermission": requested_permission.__serialize__(),
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -752,11 +752,11 @@ class DocumentApi:
 
 		def share_with_blocking(self, delegate_id: str, document: Document, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
 			payload = {
-				"delegate_id": delegate_id,
+				"delegateId": delegate_id,
 				"document": document.__serialize__(),
-				"share_encryption_keys": share_encryption_keys.__serialize__(),
-				"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-				"requested_permission": requested_permission.__serialize__(),
+				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+				"requestedPermission": requested_permission.__serialize__(),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.tryAndRecover.shareWithBlocking(
 				self.icure_sdk.native,
@@ -868,10 +868,10 @@ class DocumentApi:
 					)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"hc_party_id": hc_party_id,
+				"hcPartyId": hc_party_id,
 				"patient": serialize_patient(patient),
-				"start_date": start_date,
-				"end_date": end_date,
+				"startDate": start_date,
+				"endDate": end_date,
 				"descending": descending,
 			}
 			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -886,10 +886,10 @@ class DocumentApi:
 
 		def find_documents_by_hc_party_patient_blocking(self, hc_party_id: str, patient: Patient, start_date: Optional[int] = None, end_date: Optional[int] = None, descending: Optional[bool] = None) -> PaginatedListIterator[Document]:
 			payload = {
-				"hc_party_id": hc_party_id,
+				"hcPartyId": hc_party_id,
 				"patient": serialize_patient(patient),
-				"start_date": start_date,
-				"end_date": end_date,
+				"startDate": start_date,
+				"endDate": end_date,
 				"descending": descending,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.tryAndRecover.findDocumentsByHcPartyPatientBlocking(
@@ -962,7 +962,7 @@ class DocumentApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity_id": entity_id,
+				"entityId": entity_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -976,7 +976,7 @@ class DocumentApi:
 
 		def get_document_blocking(self, entity_id: str) -> Document:
 			payload = {
-				"entity_id": entity_id,
+				"entityId": entity_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.tryAndRecover.getDocumentBlocking(
 				self.icure_sdk.native,
@@ -1002,7 +1002,7 @@ class DocumentApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"external_uuid": external_uuid,
+				"externalUuid": external_uuid,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -1016,7 +1016,7 @@ class DocumentApi:
 
 		def get_document_by_external_uuid_blocking(self, external_uuid: str) -> Document:
 			payload = {
-				"external_uuid": external_uuid,
+				"externalUuid": external_uuid,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.tryAndRecover.getDocumentByExternalUuidBlocking(
 				self.icure_sdk.native,
@@ -1042,7 +1042,7 @@ class DocumentApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"external_uuid": external_uuid,
+				"externalUuid": external_uuid,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -1056,7 +1056,7 @@ class DocumentApi:
 
 		def get_documents_by_external_uuid_blocking(self, external_uuid: str) -> List[Document]:
 			payload = {
-				"external_uuid": external_uuid,
+				"externalUuid": external_uuid,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.tryAndRecover.getDocumentsByExternalUuidBlocking(
 				self.icure_sdk.native,
@@ -1082,7 +1082,7 @@ class DocumentApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity_ids": [x0 for x0 in entity_ids],
+				"entityIds": [x0 for x0 in entity_ids],
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -1096,7 +1096,7 @@ class DocumentApi:
 
 		def get_documents_blocking(self, entity_ids: List[str]) -> List[Document]:
 			payload = {
-				"entity_ids": [x0 for x0 in entity_ids],
+				"entityIds": [x0 for x0 in entity_ids],
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.tryAndRecover.getDocumentsBlocking(
 				self.icure_sdk.native,
@@ -1162,9 +1162,9 @@ class DocumentApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"hc_party_id": hc_party_id,
-				"document_type_code": document_type_code,
-				"secret_message_keys": [x0 for x0 in secret_message_keys],
+				"hcPartyId": hc_party_id,
+				"documentTypeCode": document_type_code,
+				"secretMessageKeys": [x0 for x0 in secret_message_keys],
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -1178,9 +1178,9 @@ class DocumentApi:
 
 		def list_documents_by_hc_party_message_foreign_keys_blocking(self, hc_party_id: str, document_type_code: Optional[str], secret_message_keys: List[str]) -> List[Document]:
 			payload = {
-				"hc_party_id": hc_party_id,
-				"document_type_code": document_type_code,
-				"secret_message_keys": [x0 for x0 in secret_message_keys],
+				"hcPartyId": hc_party_id,
+				"documentTypeCode": document_type_code,
+				"secretMessageKeys": [x0 for x0 in secret_message_keys],
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.tryAndRecover.listDocumentsByHcPartyMessageForeignKeysBlocking(
 				self.icure_sdk.native,
@@ -1246,10 +1246,10 @@ class DocumentApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"document_id": document_id,
+				"documentId": document_id,
 				"rev": rev,
 				"utis": [x0 for x0 in utis],
-				"blob_type": blob_type,
+				"blobType": blob_type,
 				"attachment": base64.b64encode(attachment).decode('utf-8'),
 				"encrypted": encrypted,
 			}
@@ -1265,10 +1265,10 @@ class DocumentApi:
 
 		def set_raw_main_attachment_blocking(self, document_id: str, rev: str, utis: List[str], blob_type: str, attachment: bytearray, encrypted: bool) -> EncryptedDocument:
 			payload = {
-				"document_id": document_id,
+				"documentId": document_id,
 				"rev": rev,
 				"utis": [x0 for x0 in utis],
-				"blob_type": blob_type,
+				"blobType": blob_type,
 				"attachment": base64.b64encode(attachment).decode('utf-8'),
 				"encrypted": encrypted,
 			}
@@ -1296,11 +1296,11 @@ class DocumentApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"document_id": document_id,
+				"documentId": document_id,
 				"key": key,
 				"rev": rev,
 				"utis": [x0 for x0 in utis],
-				"blob_type": blob_type,
+				"blobType": blob_type,
 				"attachment": base64.b64encode(attachment).decode('utf-8'),
 				"encrypted": encrypted,
 			}
@@ -1316,11 +1316,11 @@ class DocumentApi:
 
 		def set_raw_secondary_attachment_blocking(self, document_id: str, key: str, rev: str, utis: List[str], blob_type: str, attachment: bytearray, encrypted: bool) -> EncryptedDocument:
 			payload = {
-				"document_id": document_id,
+				"documentId": document_id,
 				"key": key,
 				"rev": rev,
 				"utis": [x0 for x0 in utis],
-				"blob_type": blob_type,
+				"blobType": blob_type,
 				"attachment": base64.b64encode(attachment).decode('utf-8'),
 				"encrypted": encrypted,
 			}
@@ -1348,7 +1348,7 @@ class DocumentApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity_id": entity_id,
+				"entityId": entity_id,
 				"rev": rev,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -1363,7 +1363,7 @@ class DocumentApi:
 
 		def delete_main_attachment_blocking(self, entity_id: str, rev: str) -> Document:
 			payload = {
-				"entity_id": entity_id,
+				"entityId": entity_id,
 				"rev": rev,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.tryAndRecover.deleteMainAttachmentBlocking(
@@ -1390,9 +1390,9 @@ class DocumentApi:
 					result = CallResult(success=success)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"document_id": document_id,
+				"documentId": document_id,
 				"key": key,
-				"attachment_id": attachment_id,
+				"attachmentId": attachment_id,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -1406,9 +1406,9 @@ class DocumentApi:
 
 		def delete_secondary_attachment_blocking(self, document_id: str, key: str, attachment_id: str) -> Document:
 			payload = {
-				"document_id": document_id,
+				"documentId": document_id,
 				"key": key,
-				"attachment_id": attachment_id,
+				"attachmentId": attachment_id,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.tryAndRecover.deleteSecondaryAttachmentBlocking(
 				self.icure_sdk.native,
@@ -1483,7 +1483,7 @@ class DocumentApi:
 			"message": serialize_message(message) if message is not None else None,
 			"user": user.__serialize__() if user is not None else None,
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			"secret_id": serialize_secret_id_option(secret_id),
+			"secretId": serialize_secret_id_option(secret_id),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1501,7 +1501,7 @@ class DocumentApi:
 			"message": serialize_message(message) if message is not None else None,
 			"user": user.__serialize__() if user is not None else None,
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			"secret_id": serialize_secret_id_option(secret_id),
+			"secretId": serialize_secret_id_option(secret_id),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.withEncryptionMetadataBlocking(
 			self.icure_sdk.native,
@@ -1776,7 +1776,7 @@ class DocumentApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1790,7 +1790,7 @@ class DocumentApi:
 
 	def delete_document_blocking(self, entity_id: str) -> DocIdentifier:
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.deleteDocumentBlocking(
 			self.icure_sdk.native,
@@ -1816,7 +1816,7 @@ class DocumentApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1830,7 +1830,7 @@ class DocumentApi:
 
 	def delete_documents_blocking(self, entity_ids: List[str]) -> List[DocIdentifier]:
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.deleteDocumentsBlocking(
 			self.icure_sdk.native,
@@ -1856,8 +1856,8 @@ class DocumentApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"document_id": document_id,
-			"attachment_id": attachment_id,
+			"documentId": document_id,
+			"attachmentId": attachment_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1871,8 +1871,8 @@ class DocumentApi:
 
 	def get_raw_main_attachment_blocking(self, document_id: str, attachment_id: str) -> bytearray:
 		payload = {
-			"document_id": document_id,
-			"attachment_id": attachment_id,
+			"documentId": document_id,
+			"attachmentId": attachment_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.getRawMainAttachmentBlocking(
 			self.icure_sdk.native,
@@ -1898,8 +1898,8 @@ class DocumentApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"document_id": document_id,
-			"attachment_id": attachment_id,
+			"documentId": document_id,
+			"attachmentId": attachment_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1913,8 +1913,8 @@ class DocumentApi:
 
 	def get_main_attachment_as_plain_text_blocking(self, document_id: str, attachment_id: str) -> str:
 		payload = {
-			"document_id": document_id,
-			"attachment_id": attachment_id,
+			"documentId": document_id,
+			"attachmentId": attachment_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.getMainAttachmentAsPlainTextBlocking(
 			self.icure_sdk.native,
@@ -1940,8 +1940,8 @@ class DocumentApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"document_id": document_id,
-			"attachment_id": attachment_id,
+			"documentId": document_id,
+			"attachmentId": attachment_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1955,8 +1955,8 @@ class DocumentApi:
 
 	def get_main_attachment_as_json_blocking(self, document_id: str, attachment_id: str) -> Dict[str, object]:
 		payload = {
-			"document_id": document_id,
-			"attachment_id": attachment_id,
+			"documentId": document_id,
+			"attachmentId": attachment_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.getMainAttachmentAsJsonBlocking(
 			self.icure_sdk.native,
@@ -1982,9 +1982,9 @@ class DocumentApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"document_id": document_id,
+			"documentId": document_id,
 			"key": key,
-			"attachment_id": attachment_id,
+			"attachmentId": attachment_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1998,9 +1998,9 @@ class DocumentApi:
 
 	def get_raw_secondary_attachment_blocking(self, document_id: str, key: str, attachment_id: str) -> bytearray:
 		payload = {
-			"document_id": document_id,
+			"documentId": document_id,
 			"key": key,
-			"attachment_id": attachment_id,
+			"attachmentId": attachment_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.getRawSecondaryAttachmentBlocking(
 			self.icure_sdk.native,
@@ -2026,11 +2026,11 @@ class DocumentApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"delegate_id": delegate_id,
+			"delegateId": delegate_id,
 			"document": document.__serialize__(),
-			"share_encryption_keys": share_encryption_keys.__serialize__(),
-			"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-			"requested_permission": requested_permission.__serialize__(),
+			"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+			"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+			"requestedPermission": requested_permission.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -2044,11 +2044,11 @@ class DocumentApi:
 
 	def share_with_blocking(self, delegate_id: str, document: DecryptedDocument, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
 		payload = {
-			"delegate_id": delegate_id,
+			"delegateId": delegate_id,
 			"document": document.__serialize__(),
-			"share_encryption_keys": share_encryption_keys.__serialize__(),
-			"share_owning_entity_ids": share_owning_entity_ids.__serialize__(),
-			"requested_permission": requested_permission.__serialize__(),
+			"shareEncryptionKeys": share_encryption_keys.__serialize__(),
+			"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
+			"requestedPermission": requested_permission.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.shareWithBlocking(
 			self.icure_sdk.native,
@@ -2160,10 +2160,10 @@ class DocumentApi:
 				)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"hc_party_id": hc_party_id,
+			"hcPartyId": hc_party_id,
 			"patient": serialize_patient(patient),
-			"start_date": start_date,
-			"end_date": end_date,
+			"startDate": start_date,
+			"endDate": end_date,
 			"descending": descending,
 		}
 		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -2178,10 +2178,10 @@ class DocumentApi:
 
 	def find_documents_by_hc_party_patient_blocking(self, hc_party_id: str, patient: Patient, start_date: Optional[int] = None, end_date: Optional[int] = None, descending: Optional[bool] = None) -> PaginatedListIterator[DecryptedDocument]:
 		payload = {
-			"hc_party_id": hc_party_id,
+			"hcPartyId": hc_party_id,
 			"patient": serialize_patient(patient),
-			"start_date": start_date,
-			"end_date": end_date,
+			"startDate": start_date,
+			"endDate": end_date,
 			"descending": descending,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.findDocumentsByHcPartyPatientBlocking(
@@ -2254,7 +2254,7 @@ class DocumentApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -2268,7 +2268,7 @@ class DocumentApi:
 
 	def get_document_blocking(self, entity_id: str) -> DecryptedDocument:
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.getDocumentBlocking(
 			self.icure_sdk.native,
@@ -2294,7 +2294,7 @@ class DocumentApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"external_uuid": external_uuid,
+			"externalUuid": external_uuid,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -2308,7 +2308,7 @@ class DocumentApi:
 
 	def get_document_by_external_uuid_blocking(self, external_uuid: str) -> DecryptedDocument:
 		payload = {
-			"external_uuid": external_uuid,
+			"externalUuid": external_uuid,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.getDocumentByExternalUuidBlocking(
 			self.icure_sdk.native,
@@ -2334,7 +2334,7 @@ class DocumentApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"external_uuid": external_uuid,
+			"externalUuid": external_uuid,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -2348,7 +2348,7 @@ class DocumentApi:
 
 	def get_documents_by_external_uuid_blocking(self, external_uuid: str) -> List[DecryptedDocument]:
 		payload = {
-			"external_uuid": external_uuid,
+			"externalUuid": external_uuid,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.getDocumentsByExternalUuidBlocking(
 			self.icure_sdk.native,
@@ -2374,7 +2374,7 @@ class DocumentApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -2388,7 +2388,7 @@ class DocumentApi:
 
 	def get_documents_blocking(self, entity_ids: List[str]) -> List[DecryptedDocument]:
 		payload = {
-			"entity_ids": [x0 for x0 in entity_ids],
+			"entityIds": [x0 for x0 in entity_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.getDocumentsBlocking(
 			self.icure_sdk.native,
@@ -2454,9 +2454,9 @@ class DocumentApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"hc_party_id": hc_party_id,
-			"document_type_code": document_type_code,
-			"secret_message_keys": [x0 for x0 in secret_message_keys],
+			"hcPartyId": hc_party_id,
+			"documentTypeCode": document_type_code,
+			"secretMessageKeys": [x0 for x0 in secret_message_keys],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -2470,9 +2470,9 @@ class DocumentApi:
 
 	def list_documents_by_hc_party_message_foreign_keys_blocking(self, hc_party_id: str, document_type_code: Optional[str], secret_message_keys: List[str]) -> List[DecryptedDocument]:
 		payload = {
-			"hc_party_id": hc_party_id,
-			"document_type_code": document_type_code,
-			"secret_message_keys": [x0 for x0 in secret_message_keys],
+			"hcPartyId": hc_party_id,
+			"documentTypeCode": document_type_code,
+			"secretMessageKeys": [x0 for x0 in secret_message_keys],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.listDocumentsByHcPartyMessageForeignKeysBlocking(
 			self.icure_sdk.native,
@@ -2538,10 +2538,10 @@ class DocumentApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"document_id": document_id,
+			"documentId": document_id,
 			"rev": rev,
 			"utis": [x0 for x0 in utis],
-			"blob_type": blob_type,
+			"blobType": blob_type,
 			"attachment": base64.b64encode(attachment).decode('utf-8'),
 			"encrypted": encrypted,
 		}
@@ -2557,10 +2557,10 @@ class DocumentApi:
 
 	def set_raw_main_attachment_blocking(self, document_id: str, rev: str, utis: List[str], blob_type: str, attachment: bytearray, encrypted: bool) -> EncryptedDocument:
 		payload = {
-			"document_id": document_id,
+			"documentId": document_id,
 			"rev": rev,
 			"utis": [x0 for x0 in utis],
-			"blob_type": blob_type,
+			"blobType": blob_type,
 			"attachment": base64.b64encode(attachment).decode('utf-8'),
 			"encrypted": encrypted,
 		}
@@ -2588,11 +2588,11 @@ class DocumentApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"document_id": document_id,
+			"documentId": document_id,
 			"key": key,
 			"rev": rev,
 			"utis": [x0 for x0 in utis],
-			"blob_type": blob_type,
+			"blobType": blob_type,
 			"attachment": base64.b64encode(attachment).decode('utf-8'),
 			"encrypted": encrypted,
 		}
@@ -2608,11 +2608,11 @@ class DocumentApi:
 
 	def set_raw_secondary_attachment_blocking(self, document_id: str, key: str, rev: str, utis: List[str], blob_type: str, attachment: bytearray, encrypted: bool) -> EncryptedDocument:
 		payload = {
-			"document_id": document_id,
+			"documentId": document_id,
 			"key": key,
 			"rev": rev,
 			"utis": [x0 for x0 in utis],
-			"blob_type": blob_type,
+			"blobType": blob_type,
 			"attachment": base64.b64encode(attachment).decode('utf-8'),
 			"encrypted": encrypted,
 		}
@@ -2640,7 +2640,7 @@ class DocumentApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 			"rev": rev,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -2655,7 +2655,7 @@ class DocumentApi:
 
 	def delete_main_attachment_blocking(self, entity_id: str, rev: str) -> DecryptedDocument:
 		payload = {
-			"entity_id": entity_id,
+			"entityId": entity_id,
 			"rev": rev,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.deleteMainAttachmentBlocking(
@@ -2682,9 +2682,9 @@ class DocumentApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"document_id": document_id,
+			"documentId": document_id,
 			"key": key,
-			"attachment_id": attachment_id,
+			"attachmentId": attachment_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -2698,9 +2698,9 @@ class DocumentApi:
 
 	def delete_secondary_attachment_blocking(self, document_id: str, key: str, attachment_id: str) -> DecryptedDocument:
 		payload = {
-			"document_id": document_id,
+			"documentId": document_id,
 			"key": key,
-			"attachment_id": attachment_id,
+			"attachmentId": attachment_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.deleteSecondaryAttachmentBlocking(
 			self.icure_sdk.native,

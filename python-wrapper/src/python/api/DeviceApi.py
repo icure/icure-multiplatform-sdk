@@ -23,7 +23,7 @@ class DeviceApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"device_id": device_id,
+			"deviceId": device_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -37,7 +37,7 @@ class DeviceApi:
 
 	def get_device_blocking(self, device_id: str) -> Device:
 		payload = {
-			"device_id": device_id,
+			"deviceId": device_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.getDeviceBlocking(
 			self.icure_sdk.native,
@@ -63,7 +63,7 @@ class DeviceApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"device_ids": [x0 for x0 in device_ids],
+			"deviceIds": [x0 for x0 in device_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -77,7 +77,7 @@ class DeviceApi:
 
 	def get_devices_blocking(self, device_ids: List[str]) -> List[Device]:
 		payload = {
-			"device_ids": [x0 for x0 in device_ids],
+			"deviceIds": [x0 for x0 in device_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.getDevicesBlocking(
 			self.icure_sdk.native,
@@ -267,9 +267,9 @@ class DeviceApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"start_document_id": start_document_id,
+			"startDocumentId": start_document_id,
 			"limit": limit,
-			"filter_chain": filter_chain.__serialize__(),
+			"filterChain": filter_chain.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -283,9 +283,9 @@ class DeviceApi:
 
 	def filter_devices_by_blocking(self, filter_chain: FilterChain, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
 		payload = {
-			"start_document_id": start_document_id,
+			"startDocumentId": start_document_id,
 			"limit": limit,
-			"filter_chain": filter_chain.__serialize__(),
+			"filterChain": filter_chain.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.filterDevicesByBlocking(
 			self.icure_sdk.native,
@@ -355,7 +355,7 @@ class DeviceApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"device_id": device_id,
+			"deviceId": device_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -369,7 +369,7 @@ class DeviceApi:
 
 	def delete_device_blocking(self, device_id: str) -> DocIdentifier:
 		payload = {
-			"device_id": device_id,
+			"deviceId": device_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.deleteDeviceBlocking(
 			self.icure_sdk.native,
@@ -395,7 +395,7 @@ class DeviceApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"device_ids": [x0 for x0 in device_ids],
+			"deviceIds": [x0 for x0 in device_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -409,7 +409,7 @@ class DeviceApi:
 
 	def delete_devices_blocking(self, device_ids: List[str]) -> List[DocIdentifier]:
 		payload = {
-			"device_ids": [x0 for x0 in device_ids],
+			"deviceIds": [x0 for x0 in device_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.deleteDevicesBlocking(
 			self.icure_sdk.native,
@@ -435,8 +435,8 @@ class DeviceApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"group_id": group_id,
-			"device_ids": [x0 for x0 in device_ids] if device_ids is not None else None,
+			"groupId": group_id,
+			"deviceIds": [x0 for x0 in device_ids] if device_ids is not None else None,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -450,8 +450,8 @@ class DeviceApi:
 
 	def get_devices_in_group_blocking(self, group_id: str, device_ids: Optional[List[str]] = None) -> List[Device]:
 		payload = {
-			"group_id": group_id,
-			"device_ids": [x0 for x0 in device_ids] if device_ids is not None else None,
+			"groupId": group_id,
+			"deviceIds": [x0 for x0 in device_ids] if device_ids is not None else None,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.getDevicesInGroupBlocking(
 			self.icure_sdk.native,
@@ -477,7 +477,7 @@ class DeviceApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"group_id": group_id,
+			"groupId": group_id,
 			"device": device.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -492,7 +492,7 @@ class DeviceApi:
 
 	def modify_device_in_group_blocking(self, group_id: str, device: Device) -> Device:
 		payload = {
-			"group_id": group_id,
+			"groupId": group_id,
 			"device": device.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.modifyDeviceInGroupBlocking(
@@ -519,7 +519,7 @@ class DeviceApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"group_id": group_id,
+			"groupId": group_id,
 			"device": device.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -534,7 +534,7 @@ class DeviceApi:
 
 	def create_device_in_group_blocking(self, group_id: str, device: Device) -> Device:
 		payload = {
-			"group_id": group_id,
+			"groupId": group_id,
 			"device": device.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.createDeviceInGroupBlocking(
@@ -561,8 +561,8 @@ class DeviceApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"group_id": group_id,
-			"device_ids": device_ids,
+			"groupId": group_id,
+			"deviceIds": device_ids,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -576,8 +576,8 @@ class DeviceApi:
 
 	def delete_devices_in_group_blocking(self, group_id: str, device_ids: str) -> List[DocIdentifier]:
 		payload = {
-			"group_id": group_id,
-			"device_ids": device_ids,
+			"groupId": group_id,
+			"deviceIds": device_ids,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DeviceApi.deleteDevicesInGroupBlocking(
 			self.icure_sdk.native,

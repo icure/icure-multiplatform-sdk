@@ -23,7 +23,7 @@ class TarificationApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"tarification_id": tarification_id,
+			"tarificationId": tarification_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -37,7 +37,7 @@ class TarificationApi:
 
 	def get_tarification_blocking(self, tarification_id: str) -> Tarification:
 		payload = {
-			"tarification_id": tarification_id,
+			"tarificationId": tarification_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.TarificationApi.getTarificationBlocking(
 			self.icure_sdk.native,
@@ -103,7 +103,7 @@ class TarificationApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"tarification_ids": [x0 for x0 in tarification_ids],
+			"tarificationIds": [x0 for x0 in tarification_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -117,7 +117,7 @@ class TarificationApi:
 
 	def get_tarifications_blocking(self, tarification_ids: List[str]) -> List[Tarification]:
 		payload = {
-			"tarification_ids": [x0 for x0 in tarification_ids],
+			"tarificationIds": [x0 for x0 in tarification_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.TarificationApi.getTarificationsBlocking(
 			self.icure_sdk.native,
@@ -191,8 +191,8 @@ class TarificationApi:
 			"types": types,
 			"language": language,
 			"label": label,
-			"start_key": start_key,
-			"start_document_id": start_document_id,
+			"startKey": start_key,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -211,8 +211,8 @@ class TarificationApi:
 			"types": types,
 			"language": language,
 			"label": label,
-			"start_key": start_key,
-			"start_document_id": start_document_id,
+			"startKey": start_key,
+			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.TarificationApi.findTarificationsByLabelBlocking(
@@ -251,8 +251,8 @@ class TarificationApi:
 			"type": type,
 			"tarification": tarification,
 			"version": version,
-			"start_document_id": start_document_id,
-			"start_key": start_key,
+			"startDocumentId": start_document_id,
+			"startKey": start_key,
 			"limit": limit,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -271,8 +271,8 @@ class TarificationApi:
 			"type": type,
 			"tarification": tarification,
 			"version": version,
-			"start_document_id": start_document_id,
-			"start_key": start_key,
+			"startDocumentId": start_document_id,
+			"startKey": start_key,
 			"limit": limit,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.TarificationApi.findTarificationsByBlocking(

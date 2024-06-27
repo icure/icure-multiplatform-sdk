@@ -15,7 +15,7 @@ class ShamirKeysManagerApi:
 
 	def get_existing_splits_info(self, data_owner: CryptoActor) -> Dict[KeypairFingerprintV1String, List[str]]:
 		payload = {
-			"data_owner": serialize_crypto_actor(data_owner),
+			"dataOwner": serialize_crypto_actor(data_owner),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.crypto.ShamirKeysManagerApi.getExistingSplitsInfo(
 			self.icure_sdk.native,
@@ -41,8 +41,8 @@ class ShamirKeysManagerApi:
 				result = CallResult(success=success)
 			loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"key_splits_to_update": {k0: v0.__serialize__() for k0, v0 in key_splits_to_update.items()},
-			"key_splits_to_delete": [x0 for x0 in key_splits_to_delete],
+			"keySplitsToUpdate": {k0: v0.__serialize__() for k0, v0 in key_splits_to_update.items()},
+			"keySplitsToDelete": [x0 for x0 in key_splits_to_delete],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -56,8 +56,8 @@ class ShamirKeysManagerApi:
 
 	def update_self_splits_blocking(self, key_splits_to_update: Dict[KeypairFingerprintV1String, ShamirUpdateRequest], key_splits_to_delete: List[KeypairFingerprintV1String]) -> CryptoActorStubWithType:
 		payload = {
-			"key_splits_to_update": {k0: v0.__serialize__() for k0, v0 in key_splits_to_update.items()},
-			"key_splits_to_delete": [x0 for x0 in key_splits_to_delete],
+			"keySplitsToUpdate": {k0: v0.__serialize__() for k0, v0 in key_splits_to_update.items()},
+			"keySplitsToDelete": [x0 for x0 in key_splits_to_delete],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.crypto.ShamirKeysManagerApi.updateSelfSplitsBlocking(
 			self.icure_sdk.native,
