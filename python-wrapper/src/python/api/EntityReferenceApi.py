@@ -1,8 +1,8 @@
 import asyncio
 import json
-from model.CallResult import CallResult, create_result_from_json
 from model import EntityReference
 from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
+from model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
 
 class EntityReferenceApi:
@@ -14,13 +14,12 @@ class EntityReferenceApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = EntityReference._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = EntityReference._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"prefix": prefix,
 		}
@@ -54,13 +53,12 @@ class EntityReferenceApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = EntityReference._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = EntityReference._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityReference": entity_reference.__serialize__(),
 		}

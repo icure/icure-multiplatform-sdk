@@ -1,8 +1,8 @@
 import asyncio
 import json
-from model.CallResult import CallResult, create_result_from_json
 from model import EntityTemplate, DocIdentifier
 from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
+from model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
 from typing import Optional, List
 
@@ -15,13 +15,12 @@ class EntityTemplateApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = EntityTemplate._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = EntityTemplate._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"documentTemplateId": document_template_id,
 		}
@@ -55,13 +54,12 @@ class EntityTemplateApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = EntityTemplate._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = EntityTemplate._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"applicationSettings": application_settings.__serialize__(),
 		}
@@ -95,13 +93,12 @@ class EntityTemplateApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = EntityTemplate._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = EntityTemplate._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"documentTemplate": document_template.__serialize__(),
 		}
@@ -135,13 +132,12 @@ class EntityTemplateApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [EntityTemplate._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [EntityTemplate._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"userId": user_id,
 			"type": type,
@@ -181,13 +177,12 @@ class EntityTemplateApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [EntityTemplate._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [EntityTemplate._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"type": type,
 			"searchString": search_string,
@@ -225,13 +220,12 @@ class EntityTemplateApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [EntityTemplate._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [EntityTemplate._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"userId": user_id,
 			"type": type,
@@ -271,13 +265,12 @@ class EntityTemplateApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [EntityTemplate._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [EntityTemplate._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"type": type,
 			"keyword": keyword,
@@ -315,13 +308,12 @@ class EntityTemplateApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [EntityTemplate._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [EntityTemplate._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityTemplateIds": [x0 for x0 in entity_template_ids],
 		}
@@ -355,13 +347,12 @@ class EntityTemplateApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [EntityTemplate._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [EntityTemplate._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityTemplates": [x0.__serialize__() for x0 in entity_templates],
 		}
@@ -395,13 +386,12 @@ class EntityTemplateApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [EntityTemplate._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [EntityTemplate._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityTemplates": [x0.__serialize__() for x0 in entity_templates],
 		}
@@ -435,13 +425,12 @@ class EntityTemplateApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [DocIdentifier._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [DocIdentifier._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityTemplateIds": [x0 for x0 in entity_template_ids],
 		}

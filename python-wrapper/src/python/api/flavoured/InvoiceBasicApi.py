@@ -1,8 +1,8 @@
 import asyncio
 import json
-from model.CallResult import CallResult, create_result_from_json
 from model import DocIdentifier, IcureStub, LabelledOccurence, EncryptedInvoice, FilterChain, EncryptedInvoicingCode, PaginatedList, MediumType, InvoiceType
 from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
+from model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
 from typing import List, Optional, Dict
 
@@ -15,13 +15,12 @@ class InvoiceBasicApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = DocIdentifier._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = DocIdentifier._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityId": entity_id,
 		}
@@ -55,13 +54,12 @@ class InvoiceBasicApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [IcureStub._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [IcureStub._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"hcPartyId": hc_party_id,
 			"secretPatientKeys": [x0 for x0 in secret_patient_keys],
@@ -97,13 +95,12 @@ class InvoiceBasicApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [LabelledOccurence._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [LabelledOccurence._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"minOccurrence": min_occurrence,
 		}
@@ -137,13 +134,12 @@ class InvoiceBasicApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = EncryptedInvoice._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = EncryptedInvoice._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entity": entity.__serialize__(),
 		}
@@ -177,13 +173,12 @@ class InvoiceBasicApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [EncryptedInvoice._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [EncryptedInvoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entities": [x0.__serialize__() for x0 in entities],
 		}
@@ -217,13 +212,12 @@ class InvoiceBasicApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = EncryptedInvoice._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = EncryptedInvoice._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityId": entity_id,
 		}
@@ -257,13 +251,12 @@ class InvoiceBasicApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [EncryptedInvoice._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [EncryptedInvoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 		}
@@ -297,13 +290,12 @@ class InvoiceBasicApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [EncryptedInvoice._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [EncryptedInvoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"filterChain": filter_chain.__serialize__(),
 		}
@@ -337,13 +329,12 @@ class InvoiceBasicApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [EncryptedInvoice._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [EncryptedInvoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"hcPartyId": hc_party_id,
 			"secretPatientKeys": [x0 for x0 in secret_patient_keys],
@@ -379,13 +370,12 @@ class InvoiceBasicApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = EncryptedInvoice._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = EncryptedInvoice._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"invoice": invoice.__serialize__(),
 		}
@@ -419,13 +409,12 @@ class InvoiceBasicApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = EncryptedInvoice._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = EncryptedInvoice._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"invoiceId": invoice_id,
 			"ids": [x0 for x0 in ids],
@@ -461,13 +450,12 @@ class InvoiceBasicApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = EncryptedInvoice._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = EncryptedInvoice._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"invoiceId": invoice_id,
 			"scheme": scheme,
@@ -505,13 +493,12 @@ class InvoiceBasicApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [EncryptedInvoice._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [EncryptedInvoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"userId": user_id,
 			"type": type,
@@ -559,13 +546,12 @@ class InvoiceBasicApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [EncryptedInvoice._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [EncryptedInvoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"userId": user_id,
 			"serviceId": service_id,
@@ -605,17 +591,16 @@ class InvoiceBasicApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = PaginatedList._deserialize(success.decode('utf-8'))
-				success = PaginatedList(
-					rows = [EncryptedInvoice._deserialize(item) for item in success.rows],
-					next_key_pair = success.next_key_pair,
+				result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
+				result = PaginatedList(
+					rows = [EncryptedInvoice._deserialize(item) for item in result.rows],
+					next_key_pair = result.next_key_pair,
 				)
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"hcPartyId": hc_party_id,
 			"fromDate": from_date,
@@ -663,13 +648,12 @@ class InvoiceBasicApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [EncryptedInvoice._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [EncryptedInvoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"hcPartyId": hc_party_id,
 			"secretPatientKeys": [x0 for x0 in secret_patient_keys],
@@ -705,13 +689,12 @@ class InvoiceBasicApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [EncryptedInvoice._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [EncryptedInvoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"hcPartyId": hc_party_id,
 			"groupId": group_id,
@@ -747,13 +730,12 @@ class InvoiceBasicApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [EncryptedInvoice._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [EncryptedInvoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"hcPartyId": hc_party_id,
 			"sentMediumType": sent_medium_type.__serialize__(),
@@ -797,13 +779,12 @@ class InvoiceBasicApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [EncryptedInvoice._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [EncryptedInvoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"contactIds": [x0 for x0 in contact_ids],
 		}
@@ -837,13 +818,12 @@ class InvoiceBasicApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [EncryptedInvoice._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [EncryptedInvoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"recipientsIds": [x0 for x0 in recipients_ids],
 		}
@@ -877,13 +857,12 @@ class InvoiceBasicApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [EncryptedInvoice._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [EncryptedInvoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"userIds": [x0 for x0 in user_ids],
 		}
@@ -917,13 +896,12 @@ class InvoiceBasicApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [EncryptedInvoice._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [EncryptedInvoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"userIds": [x0 for x0 in user_ids],
 		}
@@ -957,13 +935,12 @@ class InvoiceBasicApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [EncryptedInvoice._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [EncryptedInvoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"hcPartyId": hc_party_id,
 		}
@@ -997,13 +974,12 @@ class InvoiceBasicApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [EncryptedInvoice._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [EncryptedInvoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"hcPartyId": hc_party_id,
 		}
@@ -1037,13 +1013,12 @@ class InvoiceBasicApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [EncryptedInvoice._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [EncryptedInvoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"ids": [x0 for x0 in ids],
 		}
@@ -1077,13 +1052,12 @@ class InvoiceBasicApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [EncryptedInvoice._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [EncryptedInvoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"hcPartyId": hc_party_id,
 			"sendingMode": sending_mode,
@@ -1125,13 +1099,12 @@ class InvoiceBasicApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [EncryptedInvoice._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [EncryptedInvoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"serviceIds": [x0 for x0 in service_ids],
 		}
@@ -1165,13 +1138,12 @@ class InvoiceBasicApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [EncryptedInvoice._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [EncryptedInvoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"status": status,
 			"from": from_,

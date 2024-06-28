@@ -2,8 +2,8 @@ import asyncio
 import json
 import base64
 from model import DecryptedForm, Patient, User, AccessLevel, serialize_patient, Form, serialize_form, DocIdentifier, FormTemplate, RequestedPermission, EncryptedForm, deserialize_form
-from model.CallResult import CallResult, create_result_from_json
 from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
+from model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p, c_void_p
 from typing import List, Optional, Dict
 from crypto import SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_secret_id_option, ShareMetadataBehaviour, deserialize_simple_share_result, SimpleShareResult, FormShareOptions
@@ -21,13 +21,12 @@ class FormApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = deserialize_simple_share_result(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
 				"form": form.__serialize__(),
@@ -69,13 +68,12 @@ class FormApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = deserialize_simple_share_result(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"form": form.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -111,13 +109,12 @@ class FormApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = EncryptedForm._deserialize(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = EncryptedForm._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"form": form.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -153,15 +150,16 @@ class FormApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
 					result = PaginatedListIterator[EncryptedForm](
-						producer = cast(class_pointer, c_void_p),
-						deserializer = lambda x: EncryptedForm._deserialize(x)
+						producer = success,
+						deserializer = lambda x: EncryptedForm._deserialize(x),
+						executor = self.icure_sdk._executor
 					)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"hcPartyId": hc_party_id,
 				"patient": serialize_patient(patient),
@@ -202,20 +200,20 @@ class FormApi:
 				symbols.DisposeStablePointer(call_result.pinned)
 				return PaginatedListIterator[EncryptedForm](
 					producer = cast(class_pointer, c_void_p),
-					deserializer = lambda x: EncryptedForm._deserialize(x)
+					deserializer = lambda x: EncryptedForm._deserialize(x),
+					executor = self.icure_sdk._executor
 				)
 
 		async def modify_form_async(self, entity: EncryptedForm) -> EncryptedForm:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = EncryptedForm._deserialize(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = EncryptedForm._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entity": entity.__serialize__(),
 			}
@@ -249,13 +247,12 @@ class FormApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = [EncryptedForm._deserialize(x1) for x1 in success.decode('utf-8')]
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = [EncryptedForm._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entities": [x0.__serialize__() for x0 in entities],
 			}
@@ -289,13 +286,12 @@ class FormApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = EncryptedForm._deserialize(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = EncryptedForm._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityId": entity_id,
 			}
@@ -329,13 +325,12 @@ class FormApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = [EncryptedForm._deserialize(x1) for x1 in success.decode('utf-8')]
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = [EncryptedForm._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
 			}
@@ -369,13 +364,12 @@ class FormApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = EncryptedForm._deserialize(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = EncryptedForm._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"logicalUuid": logical_uuid,
 			}
@@ -409,13 +403,12 @@ class FormApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = [EncryptedForm._deserialize(x1) for x1 in success.decode('utf-8')]
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = [EncryptedForm._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"logicalUuid": logical_uuid,
 			}
@@ -449,13 +442,12 @@ class FormApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = [EncryptedForm._deserialize(x1) for x1 in success.decode('utf-8')]
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = [EncryptedForm._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"uniqueId": unique_id,
 			}
@@ -489,13 +481,12 @@ class FormApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = EncryptedForm._deserialize(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = EncryptedForm._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"uniqueId": unique_id,
 			}
@@ -529,13 +520,12 @@ class FormApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = [EncryptedForm._deserialize(x1) for x1 in success.decode('utf-8')]
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = [EncryptedForm._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"hcPartyId": hc_party_id,
 				"parentId": parent_id,
@@ -571,13 +561,12 @@ class FormApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = [EncryptedForm._deserialize(x1) for x1 in success.decode('utf-8')]
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = [EncryptedForm._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"hcPartyId": hc_party_id,
 				"secretFKeys": secret_fkeys,
@@ -624,13 +613,12 @@ class FormApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = deserialize_simple_share_result(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
 				"form": form.__serialize__(),
@@ -672,13 +660,12 @@ class FormApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = deserialize_simple_share_result(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"form": form.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -714,13 +701,12 @@ class FormApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = Form._deserialize(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = Form._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"form": form.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -756,15 +742,16 @@ class FormApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
 					result = PaginatedListIterator[Form](
-						producer = cast(class_pointer, c_void_p),
-						deserializer = lambda x: deserialize_form(x)
+						producer = success,
+						deserializer = lambda x: deserialize_form(x),
+						executor = self.icure_sdk._executor
 					)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"hcPartyId": hc_party_id,
 				"patient": serialize_patient(patient),
@@ -805,20 +792,20 @@ class FormApi:
 				symbols.DisposeStablePointer(call_result.pinned)
 				return PaginatedListIterator[Form](
 					producer = cast(class_pointer, c_void_p),
-					deserializer = lambda x: deserialize_form(x)
+					deserializer = lambda x: deserialize_form(x),
+					executor = self.icure_sdk._executor
 				)
 
 		async def modify_form_async(self, entity: Form) -> Form:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = Form._deserialize(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = Form._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entity": entity.__serialize__(),
 			}
@@ -852,13 +839,12 @@ class FormApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = [Form._deserialize(x1) for x1 in success.decode('utf-8')]
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = [Form._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entities": [x0.__serialize__() for x0 in entities],
 			}
@@ -892,13 +878,12 @@ class FormApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = Form._deserialize(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = Form._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityId": entity_id,
 			}
@@ -932,13 +917,12 @@ class FormApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = [Form._deserialize(x1) for x1 in success.decode('utf-8')]
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = [Form._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
 			}
@@ -972,13 +956,12 @@ class FormApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = Form._deserialize(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = Form._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"logicalUuid": logical_uuid,
 			}
@@ -1012,13 +995,12 @@ class FormApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = [Form._deserialize(x1) for x1 in success.decode('utf-8')]
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = [Form._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"logicalUuid": logical_uuid,
 			}
@@ -1052,13 +1034,12 @@ class FormApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = [Form._deserialize(x1) for x1 in success.decode('utf-8')]
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = [Form._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"uniqueId": unique_id,
 			}
@@ -1092,13 +1073,12 @@ class FormApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = Form._deserialize(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = Form._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"uniqueId": unique_id,
 			}
@@ -1132,13 +1112,12 @@ class FormApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = [Form._deserialize(x1) for x1 in success.decode('utf-8')]
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = [Form._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"hcPartyId": hc_party_id,
 				"parentId": parent_id,
@@ -1174,13 +1153,12 @@ class FormApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = [Form._deserialize(x1) for x1 in success.decode('utf-8')]
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = [Form._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"hcPartyId": hc_party_id,
 				"secretFKeys": secret_fkeys,
@@ -1227,13 +1205,12 @@ class FormApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = DecryptedForm._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = DecryptedForm._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entity": entity.__serialize__(),
 		}
@@ -1267,13 +1244,12 @@ class FormApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [DecryptedForm._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [DecryptedForm._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entities": [x0.__serialize__() for x0 in entities],
 		}
@@ -1307,13 +1283,12 @@ class FormApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = DecryptedForm._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = DecryptedForm._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"base": base.__serialize__() if base is not None else None,
 			"patient": serialize_patient(patient),
@@ -1355,13 +1330,12 @@ class FormApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [x1 for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [x1 for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"form": serialize_form(form),
 		}
@@ -1395,13 +1369,12 @@ class FormApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = success.decode('utf-8')
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = json.loads(success.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"form": serialize_form(form),
 		}
@@ -1435,13 +1408,12 @@ class FormApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [x1 for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [x1 for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"form": serialize_form(form),
 		}
@@ -1475,13 +1447,12 @@ class FormApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = success.decode('utf-8')
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = json.loads(success.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entity": serialize_form(entity),
 			"delegates": [x0 for x0 in delegates],
@@ -1514,13 +1485,12 @@ class FormApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = DocIdentifier._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = DocIdentifier._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityId": entity_id,
 		}
@@ -1554,13 +1524,12 @@ class FormApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [DocIdentifier._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [DocIdentifier._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 		}
@@ -1594,13 +1563,12 @@ class FormApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = FormTemplate._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = FormTemplate._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"formTemplateId": form_template_id,
 			"raw": raw,
@@ -1636,13 +1604,12 @@ class FormApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [FormTemplate._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [FormTemplate._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"formTemplateGuid": form_template_guid,
 			"specialityCode": speciality_code,
@@ -1680,13 +1647,12 @@ class FormApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [FormTemplate._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [FormTemplate._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"specialityCode": speciality_code,
 			"raw": raw,
@@ -1722,13 +1688,12 @@ class FormApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [FormTemplate._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [FormTemplate._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"loadLayout": load_layout,
 			"raw": raw,
@@ -1764,13 +1729,12 @@ class FormApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = FormTemplate._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = FormTemplate._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"formTemplate": form_template.__serialize__(),
 		}
@@ -1804,13 +1768,12 @@ class FormApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = DocIdentifier._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = DocIdentifier._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"formTemplateId": form_template_id,
 		}
@@ -1844,13 +1807,12 @@ class FormApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = FormTemplate._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = FormTemplate._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"formTemplate": form_template.__serialize__(),
 		}
@@ -1884,13 +1846,12 @@ class FormApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = success.decode('utf-8')
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = json.loads(success.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"formTemplateId": form_template_id,
 			"payload": base64.b64encode(payload).decode('utf-8'),
@@ -1926,13 +1887,12 @@ class FormApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = deserialize_simple_share_result(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"delegateId": delegate_id,
 			"form": form.__serialize__(),
@@ -1974,13 +1934,12 @@ class FormApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = deserialize_simple_share_result(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"form": form.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -2016,13 +1975,12 @@ class FormApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = DecryptedForm._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = DecryptedForm._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"form": form.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -2058,15 +2016,16 @@ class FormApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
 				result = PaginatedListIterator[DecryptedForm](
-					producer = cast(class_pointer, c_void_p),
-					deserializer = lambda x: DecryptedForm._deserialize(x)
+					producer = success,
+					deserializer = lambda x: DecryptedForm._deserialize(x),
+					executor = self.icure_sdk._executor
 				)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"hcPartyId": hc_party_id,
 			"patient": serialize_patient(patient),
@@ -2107,20 +2066,20 @@ class FormApi:
 			symbols.DisposeStablePointer(call_result.pinned)
 			return PaginatedListIterator[DecryptedForm](
 				producer = cast(class_pointer, c_void_p),
-				deserializer = lambda x: DecryptedForm._deserialize(x)
+				deserializer = lambda x: DecryptedForm._deserialize(x),
+				executor = self.icure_sdk._executor
 			)
 
 	async def modify_form_async(self, entity: DecryptedForm) -> DecryptedForm:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = DecryptedForm._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = DecryptedForm._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entity": entity.__serialize__(),
 		}
@@ -2154,13 +2113,12 @@ class FormApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [DecryptedForm._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [DecryptedForm._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entities": [x0.__serialize__() for x0 in entities],
 		}
@@ -2194,13 +2152,12 @@ class FormApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = DecryptedForm._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = DecryptedForm._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityId": entity_id,
 		}
@@ -2234,13 +2191,12 @@ class FormApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [DecryptedForm._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [DecryptedForm._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 		}
@@ -2274,13 +2230,12 @@ class FormApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = DecryptedForm._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = DecryptedForm._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"logicalUuid": logical_uuid,
 		}
@@ -2314,13 +2269,12 @@ class FormApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [DecryptedForm._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [DecryptedForm._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"logicalUuid": logical_uuid,
 		}
@@ -2354,13 +2308,12 @@ class FormApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [DecryptedForm._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [DecryptedForm._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"uniqueId": unique_id,
 		}
@@ -2394,13 +2347,12 @@ class FormApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = DecryptedForm._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = DecryptedForm._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"uniqueId": unique_id,
 		}
@@ -2434,13 +2386,12 @@ class FormApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [DecryptedForm._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [DecryptedForm._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"hcPartyId": hc_party_id,
 			"parentId": parent_id,
@@ -2476,13 +2427,12 @@ class FormApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [DecryptedForm._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [DecryptedForm._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"hcPartyId": hc_party_id,
 			"secretFKeys": secret_fkeys,

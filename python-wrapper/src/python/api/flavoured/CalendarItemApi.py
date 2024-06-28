@@ -1,8 +1,8 @@
 import asyncio
 import json
 from model import DecryptedCalendarItem, Patient, User, AccessLevel, serialize_patient, CalendarItem, serialize_calendar_item, DocIdentifier, RequestedPermission, PaginatedList, EncryptedCalendarItem, deserialize_calendar_item
-from model.CallResult import CallResult, create_result_from_json
 from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
+from model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p, c_void_p
 from typing import Optional, Dict, List
 from crypto import SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_secret_id_option, ShareMetadataBehaviour, deserialize_simple_share_result, SimpleShareResult, CalendarItemShareOptions
@@ -20,13 +20,12 @@ class CalendarItemApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = deserialize_simple_share_result(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
 				"calendarItem": calendar_item.__serialize__(),
@@ -68,13 +67,12 @@ class CalendarItemApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = deserialize_simple_share_result(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"calendarItem": calendar_item.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -110,13 +108,12 @@ class CalendarItemApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = EncryptedCalendarItem._deserialize(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = EncryptedCalendarItem._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"calendarItem": calendar_item.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -152,15 +149,16 @@ class CalendarItemApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
 					result = PaginatedListIterator[EncryptedCalendarItem](
-						producer = cast(class_pointer, c_void_p),
-						deserializer = lambda x: EncryptedCalendarItem._deserialize(x)
+						producer = success,
+						deserializer = lambda x: EncryptedCalendarItem._deserialize(x),
+						executor = self.icure_sdk._executor
 					)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"hcPartyId": hc_party_id,
 				"patient": serialize_patient(patient),
@@ -201,20 +199,20 @@ class CalendarItemApi:
 				symbols.DisposeStablePointer(call_result.pinned)
 				return PaginatedListIterator[EncryptedCalendarItem](
 					producer = cast(class_pointer, c_void_p),
-					deserializer = lambda x: EncryptedCalendarItem._deserialize(x)
+					deserializer = lambda x: EncryptedCalendarItem._deserialize(x),
+					executor = self.icure_sdk._executor
 				)
 
 		async def link_to_patient_async(self, calendar_item: CalendarItem, patient: Patient, share_link_with_delegates: List[str]) -> EncryptedCalendarItem:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = EncryptedCalendarItem._deserialize(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = EncryptedCalendarItem._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"calendarItem": serialize_calendar_item(calendar_item),
 				"patient": serialize_patient(patient),
@@ -252,13 +250,12 @@ class CalendarItemApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = EncryptedCalendarItem._deserialize(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = EncryptedCalendarItem._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entity": entity.__serialize__(),
 			}
@@ -292,13 +289,12 @@ class CalendarItemApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = EncryptedCalendarItem._deserialize(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = EncryptedCalendarItem._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityId": entity_id,
 			}
@@ -332,13 +328,12 @@ class CalendarItemApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = [EncryptedCalendarItem._deserialize(x1) for x1 in success.decode('utf-8')]
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = [EncryptedCalendarItem._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
 			}
@@ -372,13 +367,12 @@ class CalendarItemApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = [EncryptedCalendarItem._deserialize(x1) for x1 in success.decode('utf-8')]
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = [EncryptedCalendarItem._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"startDate": start_date,
 				"endDate": end_date,
@@ -416,13 +410,12 @@ class CalendarItemApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = [EncryptedCalendarItem._deserialize(x1) for x1 in success.decode('utf-8')]
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = [EncryptedCalendarItem._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"startDate": start_date,
 				"endDate": end_date,
@@ -460,13 +453,12 @@ class CalendarItemApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = [EncryptedCalendarItem._deserialize(x1) for x1 in success.decode('utf-8')]
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = [EncryptedCalendarItem._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
 			}
@@ -500,17 +492,16 @@ class CalendarItemApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = PaginatedList._deserialize(success.decode('utf-8'))
-					success = PaginatedList(
-						rows = [EncryptedCalendarItem._deserialize(item) for item in success.rows],
-						next_key_pair = success.next_key_pair,
+					result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
+					result = PaginatedList(
+						rows = [EncryptedCalendarItem._deserialize(item) for item in result.rows],
+						next_key_pair = result.next_key_pair,
 					)
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"recurrenceId": recurrence_id,
 				"startKey": start_key,
@@ -559,13 +550,12 @@ class CalendarItemApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = deserialize_simple_share_result(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
 				"calendarItem": calendar_item.__serialize__(),
@@ -607,13 +597,12 @@ class CalendarItemApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = deserialize_simple_share_result(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"calendarItem": calendar_item.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -649,13 +638,12 @@ class CalendarItemApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = CalendarItem._deserialize(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = CalendarItem._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"calendarItem": calendar_item.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -691,15 +679,16 @@ class CalendarItemApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
 					result = PaginatedListIterator[CalendarItem](
-						producer = cast(class_pointer, c_void_p),
-						deserializer = lambda x: deserialize_calendar_item(x)
+						producer = success,
+						deserializer = lambda x: deserialize_calendar_item(x),
+						executor = self.icure_sdk._executor
 					)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"hcPartyId": hc_party_id,
 				"patient": serialize_patient(patient),
@@ -740,20 +729,20 @@ class CalendarItemApi:
 				symbols.DisposeStablePointer(call_result.pinned)
 				return PaginatedListIterator[CalendarItem](
 					producer = cast(class_pointer, c_void_p),
-					deserializer = lambda x: deserialize_calendar_item(x)
+					deserializer = lambda x: deserialize_calendar_item(x),
+					executor = self.icure_sdk._executor
 				)
 
 		async def link_to_patient_async(self, calendar_item: CalendarItem, patient: Patient, share_link_with_delegates: List[str]) -> CalendarItem:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = CalendarItem._deserialize(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = CalendarItem._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"calendarItem": serialize_calendar_item(calendar_item),
 				"patient": serialize_patient(patient),
@@ -791,13 +780,12 @@ class CalendarItemApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = CalendarItem._deserialize(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = CalendarItem._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entity": entity.__serialize__(),
 			}
@@ -831,13 +819,12 @@ class CalendarItemApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = CalendarItem._deserialize(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = CalendarItem._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityId": entity_id,
 			}
@@ -871,13 +858,12 @@ class CalendarItemApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = [CalendarItem._deserialize(x1) for x1 in success.decode('utf-8')]
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = [CalendarItem._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
 			}
@@ -911,13 +897,12 @@ class CalendarItemApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = [CalendarItem._deserialize(x1) for x1 in success.decode('utf-8')]
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = [CalendarItem._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"startDate": start_date,
 				"endDate": end_date,
@@ -955,13 +940,12 @@ class CalendarItemApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = [CalendarItem._deserialize(x1) for x1 in success.decode('utf-8')]
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = [CalendarItem._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"startDate": start_date,
 				"endDate": end_date,
@@ -999,13 +983,12 @@ class CalendarItemApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = [CalendarItem._deserialize(x1) for x1 in success.decode('utf-8')]
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = [CalendarItem._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
 			}
@@ -1039,17 +1022,16 @@ class CalendarItemApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = PaginatedList._deserialize(success.decode('utf-8'))
-					success = PaginatedList(
-						rows = [deserialize_calendar_item(item) for item in success.rows],
-						next_key_pair = success.next_key_pair,
+					result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
+					result = PaginatedList(
+						rows = [deserialize_calendar_item(item) for item in result.rows],
+						next_key_pair = result.next_key_pair,
 					)
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"recurrenceId": recurrence_id,
 				"startKey": start_key,
@@ -1098,13 +1080,12 @@ class CalendarItemApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = DecryptedCalendarItem._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = DecryptedCalendarItem._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entity": entity.__serialize__(),
 		}
@@ -1138,13 +1119,12 @@ class CalendarItemApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = DecryptedCalendarItem._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = DecryptedCalendarItem._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"base": base.__serialize__() if base is not None else None,
 			"patient": serialize_patient(patient),
@@ -1186,13 +1166,12 @@ class CalendarItemApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [x1 for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [x1 for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"calendarItem": serialize_calendar_item(calendar_item),
 		}
@@ -1226,13 +1205,12 @@ class CalendarItemApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = success.decode('utf-8')
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = json.loads(success.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"calendarItem": serialize_calendar_item(calendar_item),
 		}
@@ -1266,13 +1244,12 @@ class CalendarItemApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [x1 for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [x1 for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"calendarItem": serialize_calendar_item(calendar_item),
 		}
@@ -1306,13 +1283,12 @@ class CalendarItemApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = success.decode('utf-8')
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = json.loads(success.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entity": serialize_calendar_item(entity),
 			"delegates": [x0 for x0 in delegates],
@@ -1345,13 +1321,12 @@ class CalendarItemApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = DocIdentifier._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = DocIdentifier._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityId": entity_id,
 		}
@@ -1385,13 +1360,12 @@ class CalendarItemApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [DocIdentifier._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [DocIdentifier._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 		}
@@ -1425,13 +1399,12 @@ class CalendarItemApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = deserialize_simple_share_result(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"delegateId": delegate_id,
 			"calendarItem": calendar_item.__serialize__(),
@@ -1473,13 +1446,12 @@ class CalendarItemApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = deserialize_simple_share_result(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"calendarItem": calendar_item.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -1515,13 +1487,12 @@ class CalendarItemApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = DecryptedCalendarItem._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = DecryptedCalendarItem._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"calendarItem": calendar_item.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -1557,15 +1528,16 @@ class CalendarItemApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
 				result = PaginatedListIterator[DecryptedCalendarItem](
-					producer = cast(class_pointer, c_void_p),
-					deserializer = lambda x: DecryptedCalendarItem._deserialize(x)
+					producer = success,
+					deserializer = lambda x: DecryptedCalendarItem._deserialize(x),
+					executor = self.icure_sdk._executor
 				)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"hcPartyId": hc_party_id,
 			"patient": serialize_patient(patient),
@@ -1606,20 +1578,20 @@ class CalendarItemApi:
 			symbols.DisposeStablePointer(call_result.pinned)
 			return PaginatedListIterator[DecryptedCalendarItem](
 				producer = cast(class_pointer, c_void_p),
-				deserializer = lambda x: DecryptedCalendarItem._deserialize(x)
+				deserializer = lambda x: DecryptedCalendarItem._deserialize(x),
+				executor = self.icure_sdk._executor
 			)
 
 	async def link_to_patient_async(self, calendar_item: CalendarItem, patient: Patient, share_link_with_delegates: List[str]) -> DecryptedCalendarItem:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = DecryptedCalendarItem._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = DecryptedCalendarItem._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"calendarItem": serialize_calendar_item(calendar_item),
 			"patient": serialize_patient(patient),
@@ -1657,13 +1629,12 @@ class CalendarItemApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = DecryptedCalendarItem._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = DecryptedCalendarItem._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entity": entity.__serialize__(),
 		}
@@ -1697,13 +1668,12 @@ class CalendarItemApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = DecryptedCalendarItem._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = DecryptedCalendarItem._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityId": entity_id,
 		}
@@ -1737,13 +1707,12 @@ class CalendarItemApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [DecryptedCalendarItem._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [DecryptedCalendarItem._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 		}
@@ -1777,13 +1746,12 @@ class CalendarItemApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [DecryptedCalendarItem._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [DecryptedCalendarItem._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"startDate": start_date,
 			"endDate": end_date,
@@ -1821,13 +1789,12 @@ class CalendarItemApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [DecryptedCalendarItem._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [DecryptedCalendarItem._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"startDate": start_date,
 			"endDate": end_date,
@@ -1865,13 +1832,12 @@ class CalendarItemApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [DecryptedCalendarItem._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [DecryptedCalendarItem._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 		}
@@ -1905,17 +1871,16 @@ class CalendarItemApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = PaginatedList._deserialize(success.decode('utf-8'))
-				success = PaginatedList(
-					rows = [DecryptedCalendarItem._deserialize(item) for item in success.rows],
-					next_key_pair = success.next_key_pair,
+				result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
+				result = PaginatedList(
+					rows = [DecryptedCalendarItem._deserialize(item) for item in result.rows],
+					next_key_pair = result.next_key_pair,
 				)
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"recurrenceId": recurrence_id,
 			"startKey": start_key,

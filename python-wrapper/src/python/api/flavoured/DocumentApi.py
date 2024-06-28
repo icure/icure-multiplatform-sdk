@@ -2,8 +2,8 @@ import asyncio
 import json
 import base64
 from model import DecryptedDocument, Message, User, AccessLevel, serialize_message, Document, EncryptedDocument, serialize_document, DocIdentifier, RequestedPermission, Patient, serialize_patient, deserialize_document
-from model.CallResult import CallResult, create_result_from_json
 from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
+from model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p, c_void_p
 from typing import Optional, Dict, List
 from crypto import SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_secret_id_option, ShareMetadataBehaviour, deserialize_simple_share_result, SimpleShareResult, DocumentShareOptions
@@ -21,13 +21,12 @@ class DocumentApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = deserialize_simple_share_result(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
 				"document": document.__serialize__(),
@@ -69,13 +68,12 @@ class DocumentApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = deserialize_simple_share_result(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"document": document.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -111,13 +109,12 @@ class DocumentApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = EncryptedDocument._deserialize(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = EncryptedDocument._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"document": document.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -153,15 +150,16 @@ class DocumentApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
 					result = PaginatedListIterator[EncryptedDocument](
-						producer = cast(class_pointer, c_void_p),
-						deserializer = lambda x: EncryptedDocument._deserialize(x)
+						producer = success,
+						deserializer = lambda x: EncryptedDocument._deserialize(x),
+						executor = self.icure_sdk._executor
 					)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"hcPartyId": hc_party_id,
 				"patient": serialize_patient(patient),
@@ -202,20 +200,20 @@ class DocumentApi:
 				symbols.DisposeStablePointer(call_result.pinned)
 				return PaginatedListIterator[EncryptedDocument](
 					producer = cast(class_pointer, c_void_p),
-					deserializer = lambda x: EncryptedDocument._deserialize(x)
+					deserializer = lambda x: EncryptedDocument._deserialize(x),
+					executor = self.icure_sdk._executor
 				)
 
 		async def modify_document_async(self, entity: EncryptedDocument) -> EncryptedDocument:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = EncryptedDocument._deserialize(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = EncryptedDocument._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entity": entity.__serialize__(),
 			}
@@ -249,13 +247,12 @@ class DocumentApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = EncryptedDocument._deserialize(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = EncryptedDocument._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityId": entity_id,
 			}
@@ -289,13 +286,12 @@ class DocumentApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = EncryptedDocument._deserialize(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = EncryptedDocument._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"externalUuid": external_uuid,
 			}
@@ -329,13 +325,12 @@ class DocumentApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = [EncryptedDocument._deserialize(x1) for x1 in success.decode('utf-8')]
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = [EncryptedDocument._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"externalUuid": external_uuid,
 			}
@@ -369,13 +364,12 @@ class DocumentApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = [EncryptedDocument._deserialize(x1) for x1 in success.decode('utf-8')]
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = [EncryptedDocument._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
 			}
@@ -409,13 +403,12 @@ class DocumentApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = [EncryptedDocument._deserialize(x1) for x1 in success.decode('utf-8')]
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = [EncryptedDocument._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entities": [x0.__serialize__() for x0 in entities],
 			}
@@ -449,13 +442,12 @@ class DocumentApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = [EncryptedDocument._deserialize(x1) for x1 in success.decode('utf-8')]
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = [EncryptedDocument._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"hcPartyId": hc_party_id,
 				"documentTypeCode": document_type_code,
@@ -493,13 +485,12 @@ class DocumentApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = [EncryptedDocument._deserialize(x1) for x1 in success.decode('utf-8')]
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = [EncryptedDocument._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"limit": limit,
 			}
@@ -533,13 +524,12 @@ class DocumentApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = EncryptedDocument._deserialize(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = EncryptedDocument._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"documentId": document_id,
 				"rev": rev,
@@ -583,13 +573,12 @@ class DocumentApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = EncryptedDocument._deserialize(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = EncryptedDocument._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"documentId": document_id,
 				"key": key,
@@ -635,13 +624,12 @@ class DocumentApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = EncryptedDocument._deserialize(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = EncryptedDocument._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityId": entity_id,
 				"rev": rev,
@@ -677,13 +665,12 @@ class DocumentApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = EncryptedDocument._deserialize(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = EncryptedDocument._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"documentId": document_id,
 				"key": key,
@@ -726,13 +713,12 @@ class DocumentApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = deserialize_simple_share_result(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
 				"document": document.__serialize__(),
@@ -774,13 +760,12 @@ class DocumentApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = deserialize_simple_share_result(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"document": document.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -816,13 +801,12 @@ class DocumentApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = Document._deserialize(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = Document._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"document": document.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -858,15 +842,16 @@ class DocumentApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
 					result = PaginatedListIterator[Document](
-						producer = cast(class_pointer, c_void_p),
-						deserializer = lambda x: deserialize_document(x)
+						producer = success,
+						deserializer = lambda x: deserialize_document(x),
+						executor = self.icure_sdk._executor
 					)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"hcPartyId": hc_party_id,
 				"patient": serialize_patient(patient),
@@ -907,20 +892,20 @@ class DocumentApi:
 				symbols.DisposeStablePointer(call_result.pinned)
 				return PaginatedListIterator[Document](
 					producer = cast(class_pointer, c_void_p),
-					deserializer = lambda x: deserialize_document(x)
+					deserializer = lambda x: deserialize_document(x),
+					executor = self.icure_sdk._executor
 				)
 
 		async def modify_document_async(self, entity: Document) -> Document:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = Document._deserialize(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = Document._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entity": entity.__serialize__(),
 			}
@@ -954,13 +939,12 @@ class DocumentApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = Document._deserialize(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = Document._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityId": entity_id,
 			}
@@ -994,13 +978,12 @@ class DocumentApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = Document._deserialize(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = Document._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"externalUuid": external_uuid,
 			}
@@ -1034,13 +1017,12 @@ class DocumentApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = [Document._deserialize(x1) for x1 in success.decode('utf-8')]
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = [Document._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"externalUuid": external_uuid,
 			}
@@ -1074,13 +1056,12 @@ class DocumentApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = [Document._deserialize(x1) for x1 in success.decode('utf-8')]
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = [Document._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
 			}
@@ -1114,13 +1095,12 @@ class DocumentApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = [Document._deserialize(x1) for x1 in success.decode('utf-8')]
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = [Document._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entities": [x0.__serialize__() for x0 in entities],
 			}
@@ -1154,13 +1134,12 @@ class DocumentApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = [Document._deserialize(x1) for x1 in success.decode('utf-8')]
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = [Document._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"hcPartyId": hc_party_id,
 				"documentTypeCode": document_type_code,
@@ -1198,13 +1177,12 @@ class DocumentApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = [Document._deserialize(x1) for x1 in success.decode('utf-8')]
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = [Document._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"limit": limit,
 			}
@@ -1238,13 +1216,12 @@ class DocumentApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = EncryptedDocument._deserialize(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = EncryptedDocument._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"documentId": document_id,
 				"rev": rev,
@@ -1288,13 +1265,12 @@ class DocumentApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = EncryptedDocument._deserialize(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = EncryptedDocument._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"documentId": document_id,
 				"key": key,
@@ -1340,13 +1316,12 @@ class DocumentApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = Document._deserialize(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = Document._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityId": entity_id,
 				"rev": rev,
@@ -1382,13 +1357,12 @@ class DocumentApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = Document._deserialize(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = Document._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"documentId": document_id,
 				"key": key,
@@ -1431,13 +1405,12 @@ class DocumentApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = DecryptedDocument._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = DecryptedDocument._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entity": entity.__serialize__(),
 		}
@@ -1471,13 +1444,12 @@ class DocumentApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = DecryptedDocument._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = DecryptedDocument._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"base": base.__serialize__() if base is not None else None,
 			"message": serialize_message(message) if message is not None else None,
@@ -1519,13 +1491,12 @@ class DocumentApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = EncryptedDocument._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = EncryptedDocument._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"document": serialize_document(document),
 			"utis": [x0 for x0 in utis],
@@ -1563,13 +1534,12 @@ class DocumentApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = EncryptedDocument._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = EncryptedDocument._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"document": serialize_document(document),
 			"key": key,
@@ -1609,13 +1579,12 @@ class DocumentApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [x1 for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [x1 for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"document": serialize_document(document),
 		}
@@ -1649,13 +1618,12 @@ class DocumentApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = success.decode('utf-8')
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = json.loads(success.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"document": serialize_document(document),
 		}
@@ -1689,13 +1657,12 @@ class DocumentApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [x1 for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [x1 for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"document": serialize_document(document),
 		}
@@ -1729,13 +1696,12 @@ class DocumentApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = success.decode('utf-8')
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = json.loads(success.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entity": serialize_document(entity),
 			"delegates": [x0 for x0 in delegates],
@@ -1768,13 +1734,12 @@ class DocumentApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = DocIdentifier._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = DocIdentifier._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityId": entity_id,
 		}
@@ -1808,13 +1773,12 @@ class DocumentApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [DocIdentifier._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [DocIdentifier._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 		}
@@ -1848,13 +1812,12 @@ class DocumentApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = bytearray(base64.b64decode(success.decode('utf-8')))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = bytearray(base64.b64decode(json.loads(success.decode('utf-8'))))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"documentId": document_id,
 			"attachmentId": attachment_id,
@@ -1890,13 +1853,12 @@ class DocumentApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = success.decode('utf-8')
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = json.loads(success.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"documentId": document_id,
 			"attachmentId": attachment_id,
@@ -1932,13 +1894,12 @@ class DocumentApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = dict(map(lambda kv1: (kv1[0], kv1[1]), success.decode('utf-8').items()))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = dict(map(lambda kv1: (kv1[0], kv1[1]), json.loads(success.decode('utf-8')).items()))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"documentId": document_id,
 			"attachmentId": attachment_id,
@@ -1974,13 +1935,12 @@ class DocumentApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = bytearray(base64.b64decode(success.decode('utf-8')))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = bytearray(base64.b64decode(json.loads(success.decode('utf-8'))))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"documentId": document_id,
 			"key": key,
@@ -2018,13 +1978,12 @@ class DocumentApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = deserialize_simple_share_result(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"delegateId": delegate_id,
 			"document": document.__serialize__(),
@@ -2066,13 +2025,12 @@ class DocumentApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = deserialize_simple_share_result(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"document": document.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -2108,13 +2066,12 @@ class DocumentApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = DecryptedDocument._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = DecryptedDocument._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"document": document.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -2150,15 +2107,16 @@ class DocumentApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
 				result = PaginatedListIterator[DecryptedDocument](
-					producer = cast(class_pointer, c_void_p),
-					deserializer = lambda x: DecryptedDocument._deserialize(x)
+					producer = success,
+					deserializer = lambda x: DecryptedDocument._deserialize(x),
+					executor = self.icure_sdk._executor
 				)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"hcPartyId": hc_party_id,
 			"patient": serialize_patient(patient),
@@ -2199,20 +2157,20 @@ class DocumentApi:
 			symbols.DisposeStablePointer(call_result.pinned)
 			return PaginatedListIterator[DecryptedDocument](
 				producer = cast(class_pointer, c_void_p),
-				deserializer = lambda x: DecryptedDocument._deserialize(x)
+				deserializer = lambda x: DecryptedDocument._deserialize(x),
+				executor = self.icure_sdk._executor
 			)
 
 	async def modify_document_async(self, entity: DecryptedDocument) -> DecryptedDocument:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = DecryptedDocument._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = DecryptedDocument._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entity": entity.__serialize__(),
 		}
@@ -2246,13 +2204,12 @@ class DocumentApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = DecryptedDocument._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = DecryptedDocument._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityId": entity_id,
 		}
@@ -2286,13 +2243,12 @@ class DocumentApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = DecryptedDocument._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = DecryptedDocument._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"externalUuid": external_uuid,
 		}
@@ -2326,13 +2282,12 @@ class DocumentApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [DecryptedDocument._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [DecryptedDocument._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"externalUuid": external_uuid,
 		}
@@ -2366,13 +2321,12 @@ class DocumentApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [DecryptedDocument._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [DecryptedDocument._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 		}
@@ -2406,13 +2360,12 @@ class DocumentApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [DecryptedDocument._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [DecryptedDocument._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entities": [x0.__serialize__() for x0 in entities],
 		}
@@ -2446,13 +2399,12 @@ class DocumentApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [DecryptedDocument._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [DecryptedDocument._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"hcPartyId": hc_party_id,
 			"documentTypeCode": document_type_code,
@@ -2490,13 +2442,12 @@ class DocumentApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [DecryptedDocument._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [DecryptedDocument._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"limit": limit,
 		}
@@ -2530,13 +2481,12 @@ class DocumentApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = EncryptedDocument._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = EncryptedDocument._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"documentId": document_id,
 			"rev": rev,
@@ -2580,13 +2530,12 @@ class DocumentApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = EncryptedDocument._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = EncryptedDocument._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"documentId": document_id,
 			"key": key,
@@ -2632,13 +2581,12 @@ class DocumentApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = DecryptedDocument._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = DecryptedDocument._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityId": entity_id,
 			"rev": rev,
@@ -2674,13 +2622,12 @@ class DocumentApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = DecryptedDocument._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = DecryptedDocument._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"documentId": document_id,
 			"key": key,

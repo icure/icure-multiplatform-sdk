@@ -1,8 +1,8 @@
 import asyncio
-from model.CallResult import CallResult, create_result_from_json
 from model import Role
 from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from typing import List
+from model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
 
 class RoleApi:
@@ -14,13 +14,12 @@ class RoleApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [Role._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [Role._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk._executor,

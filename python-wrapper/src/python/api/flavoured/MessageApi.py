@@ -1,8 +1,8 @@
 import asyncio
 import json
 from model import DecryptedMessage, Patient, User, AccessLevel, serialize_patient, Message, serialize_message, AbstractFilter, serialize_abstract_filter, DocIdentifier, RequestedPermission, FilterChain, PaginatedList, EncryptedMessage, deserialize_message
-from model.CallResult import CallResult, create_result_from_json
 from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
+from model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p, c_void_p
 from typing import Optional, Dict, List
 from crypto import SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_secret_id_option, ShareMetadataBehaviour, deserialize_simple_share_result, SimpleShareResult, MessageShareOptions
@@ -20,13 +20,12 @@ class MessageApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = deserialize_simple_share_result(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
 				"message": message.__serialize__(),
@@ -70,13 +69,12 @@ class MessageApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = deserialize_simple_share_result(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"message": message.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -112,13 +110,12 @@ class MessageApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = EncryptedMessage._deserialize(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = EncryptedMessage._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"message": message.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -154,15 +151,16 @@ class MessageApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
 					result = PaginatedListIterator[EncryptedMessage](
-						producer = cast(class_pointer, c_void_p),
-						deserializer = lambda x: EncryptedMessage._deserialize(x)
+						producer = success,
+						deserializer = lambda x: EncryptedMessage._deserialize(x),
+						executor = self.icure_sdk._executor
 					)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"hcPartyId": hc_party_id,
 				"patient": serialize_patient(patient),
@@ -203,20 +201,20 @@ class MessageApi:
 				symbols.DisposeStablePointer(call_result.pinned)
 				return PaginatedListIterator[EncryptedMessage](
 					producer = cast(class_pointer, c_void_p),
-					deserializer = lambda x: EncryptedMessage._deserialize(x)
+					deserializer = lambda x: EncryptedMessage._deserialize(x),
+					executor = self.icure_sdk._executor
 				)
 
 		async def modify_message_async(self, entity: EncryptedMessage) -> EncryptedMessage:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = EncryptedMessage._deserialize(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = EncryptedMessage._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entity": entity.__serialize__(),
 			}
@@ -250,13 +248,12 @@ class MessageApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = EncryptedMessage._deserialize(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = EncryptedMessage._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityId": entity_id,
 			}
@@ -290,13 +287,12 @@ class MessageApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = [EncryptedMessage._deserialize(x1) for x1 in success.decode('utf-8')]
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = [EncryptedMessage._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
 			}
@@ -330,17 +326,16 @@ class MessageApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = PaginatedList._deserialize(success.decode('utf-8'))
-					success = PaginatedList(
-						rows = [EncryptedMessage._deserialize(item) for item in success.rows],
-						next_key_pair = success.next_key_pair,
+					result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
+					result = PaginatedList(
+						rows = [EncryptedMessage._deserialize(item) for item in result.rows],
+						next_key_pair = result.next_key_pair,
 					)
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"filterChain": filter_chain.__serialize__(),
 				"startDocumentId": start_document_id,
@@ -382,13 +377,12 @@ class MessageApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = [EncryptedMessage._deserialize(x1) for x1 in success.decode('utf-8')]
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = [EncryptedMessage._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"hcPartyId": hc_party_id,
 				"transportGuids": [x0 for x0 in transport_guids],
@@ -424,13 +418,12 @@ class MessageApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = [EncryptedMessage._deserialize(x1) for x1 in success.decode('utf-8')]
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = [EncryptedMessage._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"secretPatientKeys": [x0 for x0 in secret_patient_keys],
 			}
@@ -464,17 +457,16 @@ class MessageApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = PaginatedList._deserialize(success.decode('utf-8'))
-					success = PaginatedList(
-						rows = [EncryptedMessage._deserialize(item) for item in success.rows],
-						next_key_pair = success.next_key_pair,
+					result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
+					result = PaginatedList(
+						rows = [EncryptedMessage._deserialize(item) for item in result.rows],
+						next_key_pair = result.next_key_pair,
 					)
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
 				"startDocumentId": start_document_id,
@@ -516,13 +508,12 @@ class MessageApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = [EncryptedMessage._deserialize(x1) for x1 in success.decode('utf-8')]
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = [EncryptedMessage._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"messageId": message_id,
 			}
@@ -556,13 +547,12 @@ class MessageApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = [EncryptedMessage._deserialize(x1) for x1 in success.decode('utf-8')]
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = [EncryptedMessage._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"messageIds": [x0 for x0 in message_ids],
 			}
@@ -596,13 +586,12 @@ class MessageApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = [EncryptedMessage._deserialize(x1) for x1 in success.decode('utf-8')]
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = [EncryptedMessage._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"invoiceIds": [x0 for x0 in invoice_ids],
 			}
@@ -636,17 +625,16 @@ class MessageApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = PaginatedList._deserialize(success.decode('utf-8'))
-					success = PaginatedList(
-						rows = [EncryptedMessage._deserialize(item) for item in success.rows],
-						next_key_pair = success.next_key_pair,
+					result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
+					result = PaginatedList(
+						rows = [EncryptedMessage._deserialize(item) for item in result.rows],
+						next_key_pair = result.next_key_pair,
 					)
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"transportGuid": transport_guid,
 			}
@@ -684,17 +672,16 @@ class MessageApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = PaginatedList._deserialize(success.decode('utf-8'))
-					success = PaginatedList(
-						rows = [EncryptedMessage._deserialize(item) for item in success.rows],
-						next_key_pair = success.next_key_pair,
+					result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
+					result = PaginatedList(
+						rows = [EncryptedMessage._deserialize(item) for item in result.rows],
+						next_key_pair = result.next_key_pair,
 					)
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"transportGuid": transport_guid,
 				"from": from_,
@@ -744,17 +731,16 @@ class MessageApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = PaginatedList._deserialize(success.decode('utf-8'))
-					success = PaginatedList(
-						rows = [EncryptedMessage._deserialize(item) for item in success.rows],
-						next_key_pair = success.next_key_pair,
+					result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
+					result = PaginatedList(
+						rows = [EncryptedMessage._deserialize(item) for item in result.rows],
+						next_key_pair = result.next_key_pair,
 					)
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"toAddress": to_address,
 				"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
@@ -798,17 +784,16 @@ class MessageApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = PaginatedList._deserialize(success.decode('utf-8'))
-					success = PaginatedList(
-						rows = [EncryptedMessage._deserialize(item) for item in success.rows],
-						next_key_pair = success.next_key_pair,
+					result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
+					result = PaginatedList(
+						rows = [EncryptedMessage._deserialize(item) for item in result.rows],
+						next_key_pair = result.next_key_pair,
 					)
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"fromAddress": from_address,
 				"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
@@ -852,13 +837,12 @@ class MessageApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = [EncryptedMessage._deserialize(x1) for x1 in success.decode('utf-8')]
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = [EncryptedMessage._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
 				"statusBits": status_bits,
@@ -894,13 +878,12 @@ class MessageApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = [EncryptedMessage._deserialize(x1) for x1 in success.decode('utf-8')]
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = [EncryptedMessage._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
 				"time": time,
@@ -945,13 +928,12 @@ class MessageApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = deserialize_simple_share_result(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
 				"message": message.__serialize__(),
@@ -995,13 +977,12 @@ class MessageApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = deserialize_simple_share_result(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"message": message.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -1037,13 +1018,12 @@ class MessageApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = Message._deserialize(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = Message._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"message": message.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -1079,15 +1059,16 @@ class MessageApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
 					result = PaginatedListIterator[Message](
-						producer = cast(class_pointer, c_void_p),
-						deserializer = lambda x: deserialize_message(x)
+						producer = success,
+						deserializer = lambda x: deserialize_message(x),
+						executor = self.icure_sdk._executor
 					)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"hcPartyId": hc_party_id,
 				"patient": serialize_patient(patient),
@@ -1128,20 +1109,20 @@ class MessageApi:
 				symbols.DisposeStablePointer(call_result.pinned)
 				return PaginatedListIterator[Message](
 					producer = cast(class_pointer, c_void_p),
-					deserializer = lambda x: deserialize_message(x)
+					deserializer = lambda x: deserialize_message(x),
+					executor = self.icure_sdk._executor
 				)
 
 		async def modify_message_async(self, entity: Message) -> Message:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = Message._deserialize(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = Message._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entity": entity.__serialize__(),
 			}
@@ -1175,13 +1156,12 @@ class MessageApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = Message._deserialize(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = Message._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityId": entity_id,
 			}
@@ -1215,13 +1195,12 @@ class MessageApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = [Message._deserialize(x1) for x1 in success.decode('utf-8')]
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = [Message._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
 			}
@@ -1255,17 +1234,16 @@ class MessageApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = PaginatedList._deserialize(success.decode('utf-8'))
-					success = PaginatedList(
-						rows = [deserialize_message(item) for item in success.rows],
-						next_key_pair = success.next_key_pair,
+					result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
+					result = PaginatedList(
+						rows = [deserialize_message(item) for item in result.rows],
+						next_key_pair = result.next_key_pair,
 					)
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"filterChain": filter_chain.__serialize__(),
 				"startDocumentId": start_document_id,
@@ -1307,13 +1285,12 @@ class MessageApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = [Message._deserialize(x1) for x1 in success.decode('utf-8')]
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = [Message._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"hcPartyId": hc_party_id,
 				"transportGuids": [x0 for x0 in transport_guids],
@@ -1349,13 +1326,12 @@ class MessageApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = [Message._deserialize(x1) for x1 in success.decode('utf-8')]
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = [Message._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"secretPatientKeys": [x0 for x0 in secret_patient_keys],
 			}
@@ -1389,17 +1365,16 @@ class MessageApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = PaginatedList._deserialize(success.decode('utf-8'))
-					success = PaginatedList(
-						rows = [deserialize_message(item) for item in success.rows],
-						next_key_pair = success.next_key_pair,
+					result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
+					result = PaginatedList(
+						rows = [deserialize_message(item) for item in result.rows],
+						next_key_pair = result.next_key_pair,
 					)
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
 				"startDocumentId": start_document_id,
@@ -1441,13 +1416,12 @@ class MessageApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = [Message._deserialize(x1) for x1 in success.decode('utf-8')]
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = [Message._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"messageId": message_id,
 			}
@@ -1481,13 +1455,12 @@ class MessageApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = [Message._deserialize(x1) for x1 in success.decode('utf-8')]
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = [Message._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"messageIds": [x0 for x0 in message_ids],
 			}
@@ -1521,13 +1494,12 @@ class MessageApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = [Message._deserialize(x1) for x1 in success.decode('utf-8')]
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = [Message._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"invoiceIds": [x0 for x0 in invoice_ids],
 			}
@@ -1561,17 +1533,16 @@ class MessageApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = PaginatedList._deserialize(success.decode('utf-8'))
-					success = PaginatedList(
-						rows = [deserialize_message(item) for item in success.rows],
-						next_key_pair = success.next_key_pair,
+					result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
+					result = PaginatedList(
+						rows = [deserialize_message(item) for item in result.rows],
+						next_key_pair = result.next_key_pair,
 					)
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"transportGuid": transport_guid,
 			}
@@ -1609,17 +1580,16 @@ class MessageApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = PaginatedList._deserialize(success.decode('utf-8'))
-					success = PaginatedList(
-						rows = [deserialize_message(item) for item in success.rows],
-						next_key_pair = success.next_key_pair,
+					result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
+					result = PaginatedList(
+						rows = [deserialize_message(item) for item in result.rows],
+						next_key_pair = result.next_key_pair,
 					)
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"transportGuid": transport_guid,
 				"from": from_,
@@ -1669,17 +1639,16 @@ class MessageApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = PaginatedList._deserialize(success.decode('utf-8'))
-					success = PaginatedList(
-						rows = [deserialize_message(item) for item in success.rows],
-						next_key_pair = success.next_key_pair,
+					result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
+					result = PaginatedList(
+						rows = [deserialize_message(item) for item in result.rows],
+						next_key_pair = result.next_key_pair,
 					)
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"toAddress": to_address,
 				"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
@@ -1723,17 +1692,16 @@ class MessageApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = PaginatedList._deserialize(success.decode('utf-8'))
-					success = PaginatedList(
-						rows = [deserialize_message(item) for item in success.rows],
-						next_key_pair = success.next_key_pair,
+					result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
+					result = PaginatedList(
+						rows = [deserialize_message(item) for item in result.rows],
+						next_key_pair = result.next_key_pair,
 					)
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"fromAddress": from_address,
 				"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
@@ -1777,13 +1745,12 @@ class MessageApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = [Message._deserialize(x1) for x1 in success.decode('utf-8')]
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = [Message._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
 				"statusBits": status_bits,
@@ -1819,13 +1786,12 @@ class MessageApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = [Message._deserialize(x1) for x1 in success.decode('utf-8')]
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = [Message._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
 				"time": time,
@@ -1870,13 +1836,12 @@ class MessageApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = DecryptedMessage._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = DecryptedMessage._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entity": entity.__serialize__(),
 		}
@@ -1910,13 +1875,12 @@ class MessageApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = DecryptedMessage._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = DecryptedMessage._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"base": base.__serialize__() if base is not None else None,
 			"patient": serialize_patient(patient) if patient is not None else None,
@@ -1958,13 +1922,12 @@ class MessageApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [x1 for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [x1 for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"message": serialize_message(message),
 		}
@@ -1998,13 +1961,12 @@ class MessageApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = success.decode('utf-8')
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = json.loads(success.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"message": serialize_message(message),
 		}
@@ -2038,13 +2000,12 @@ class MessageApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [x1 for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [x1 for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"message": serialize_message(message),
 		}
@@ -2078,13 +2039,12 @@ class MessageApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = success.decode('utf-8')
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = json.loads(success.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entity": serialize_message(entity),
 			"delegates": [x0 for x0 in delegates],
@@ -2117,13 +2077,12 @@ class MessageApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = DecryptedMessage._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = DecryptedMessage._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entity": entity.__serialize__(),
 		}
@@ -2157,13 +2116,12 @@ class MessageApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [x1 for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [x1 for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"filter": serialize_abstract_filter(filter),
 		}
@@ -2197,13 +2155,12 @@ class MessageApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = DocIdentifier._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = DocIdentifier._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityId": entity_id,
 		}
@@ -2237,13 +2194,12 @@ class MessageApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [DocIdentifier._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [DocIdentifier._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 		}
@@ -2277,13 +2233,12 @@ class MessageApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = deserialize_simple_share_result(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"delegateId": delegate_id,
 			"message": message.__serialize__(),
@@ -2327,13 +2282,12 @@ class MessageApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = deserialize_simple_share_result(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"message": message.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -2369,13 +2323,12 @@ class MessageApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = DecryptedMessage._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = DecryptedMessage._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"message": message.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -2411,15 +2364,16 @@ class MessageApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
 				result = PaginatedListIterator[DecryptedMessage](
-					producer = cast(class_pointer, c_void_p),
-					deserializer = lambda x: DecryptedMessage._deserialize(x)
+					producer = success,
+					deserializer = lambda x: DecryptedMessage._deserialize(x),
+					executor = self.icure_sdk._executor
 				)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"hcPartyId": hc_party_id,
 			"patient": serialize_patient(patient),
@@ -2460,20 +2414,20 @@ class MessageApi:
 			symbols.DisposeStablePointer(call_result.pinned)
 			return PaginatedListIterator[DecryptedMessage](
 				producer = cast(class_pointer, c_void_p),
-				deserializer = lambda x: DecryptedMessage._deserialize(x)
+				deserializer = lambda x: DecryptedMessage._deserialize(x),
+				executor = self.icure_sdk._executor
 			)
 
 	async def modify_message_async(self, entity: DecryptedMessage) -> DecryptedMessage:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = DecryptedMessage._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = DecryptedMessage._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entity": entity.__serialize__(),
 		}
@@ -2507,13 +2461,12 @@ class MessageApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = DecryptedMessage._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = DecryptedMessage._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityId": entity_id,
 		}
@@ -2547,13 +2500,12 @@ class MessageApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [DecryptedMessage._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [DecryptedMessage._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 		}
@@ -2587,17 +2539,16 @@ class MessageApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = PaginatedList._deserialize(success.decode('utf-8'))
-				success = PaginatedList(
-					rows = [DecryptedMessage._deserialize(item) for item in success.rows],
-					next_key_pair = success.next_key_pair,
+				result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
+				result = PaginatedList(
+					rows = [DecryptedMessage._deserialize(item) for item in result.rows],
+					next_key_pair = result.next_key_pair,
 				)
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"filterChain": filter_chain.__serialize__(),
 			"startDocumentId": start_document_id,
@@ -2639,13 +2590,12 @@ class MessageApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [DecryptedMessage._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [DecryptedMessage._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"hcPartyId": hc_party_id,
 			"transportGuids": [x0 for x0 in transport_guids],
@@ -2681,13 +2631,12 @@ class MessageApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [DecryptedMessage._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [DecryptedMessage._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"secretPatientKeys": [x0 for x0 in secret_patient_keys],
 		}
@@ -2721,17 +2670,16 @@ class MessageApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = PaginatedList._deserialize(success.decode('utf-8'))
-				success = PaginatedList(
-					rows = [DecryptedMessage._deserialize(item) for item in success.rows],
-					next_key_pair = success.next_key_pair,
+				result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
+				result = PaginatedList(
+					rows = [DecryptedMessage._deserialize(item) for item in result.rows],
+					next_key_pair = result.next_key_pair,
 				)
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
 			"startDocumentId": start_document_id,
@@ -2773,13 +2721,12 @@ class MessageApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [DecryptedMessage._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [DecryptedMessage._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"messageId": message_id,
 		}
@@ -2813,13 +2760,12 @@ class MessageApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [DecryptedMessage._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [DecryptedMessage._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"messageIds": [x0 for x0 in message_ids],
 		}
@@ -2853,13 +2799,12 @@ class MessageApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [DecryptedMessage._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [DecryptedMessage._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"invoiceIds": [x0 for x0 in invoice_ids],
 		}
@@ -2893,17 +2838,16 @@ class MessageApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = PaginatedList._deserialize(success.decode('utf-8'))
-				success = PaginatedList(
-					rows = [DecryptedMessage._deserialize(item) for item in success.rows],
-					next_key_pair = success.next_key_pair,
+				result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
+				result = PaginatedList(
+					rows = [DecryptedMessage._deserialize(item) for item in result.rows],
+					next_key_pair = result.next_key_pair,
 				)
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"transportGuid": transport_guid,
 		}
@@ -2941,17 +2885,16 @@ class MessageApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = PaginatedList._deserialize(success.decode('utf-8'))
-				success = PaginatedList(
-					rows = [DecryptedMessage._deserialize(item) for item in success.rows],
-					next_key_pair = success.next_key_pair,
+				result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
+				result = PaginatedList(
+					rows = [DecryptedMessage._deserialize(item) for item in result.rows],
+					next_key_pair = result.next_key_pair,
 				)
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"transportGuid": transport_guid,
 			"from": from_,
@@ -3001,17 +2944,16 @@ class MessageApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = PaginatedList._deserialize(success.decode('utf-8'))
-				success = PaginatedList(
-					rows = [DecryptedMessage._deserialize(item) for item in success.rows],
-					next_key_pair = success.next_key_pair,
+				result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
+				result = PaginatedList(
+					rows = [DecryptedMessage._deserialize(item) for item in result.rows],
+					next_key_pair = result.next_key_pair,
 				)
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"toAddress": to_address,
 			"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
@@ -3055,17 +2997,16 @@ class MessageApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = PaginatedList._deserialize(success.decode('utf-8'))
-				success = PaginatedList(
-					rows = [DecryptedMessage._deserialize(item) for item in success.rows],
-					next_key_pair = success.next_key_pair,
+				result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
+				result = PaginatedList(
+					rows = [DecryptedMessage._deserialize(item) for item in result.rows],
+					next_key_pair = result.next_key_pair,
 				)
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"fromAddress": from_address,
 			"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
@@ -3109,13 +3050,12 @@ class MessageApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [DecryptedMessage._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [DecryptedMessage._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 			"statusBits": status_bits,
@@ -3151,13 +3091,12 @@ class MessageApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [DecryptedMessage._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [DecryptedMessage._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 			"time": time,

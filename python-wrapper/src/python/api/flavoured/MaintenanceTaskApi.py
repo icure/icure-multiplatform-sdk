@@ -1,8 +1,8 @@
 import asyncio
 import json
 from model import DecryptedMaintenanceTask, User, AccessLevel, MaintenanceTask, serialize_maintenance_task, DocIdentifier, RequestedPermission, FilterChain, PaginatedList, EncryptedMaintenanceTask, deserialize_maintenance_task
-from model.CallResult import CallResult, create_result_from_json
 from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
+from model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
 from typing import Optional, Dict, List
 from model.specializations import HexString
@@ -19,13 +19,12 @@ class MaintenanceTaskApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = deserialize_simple_share_result(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
 				"maintenanceTask": maintenance_task.__serialize__(),
@@ -67,13 +66,12 @@ class MaintenanceTaskApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = deserialize_simple_share_result(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"maintenanceTask": maintenance_task.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -109,13 +107,12 @@ class MaintenanceTaskApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = EncryptedMaintenanceTask._deserialize(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = EncryptedMaintenanceTask._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"maintenanceTask": maintenance_task.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -151,13 +148,12 @@ class MaintenanceTaskApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = EncryptedMaintenanceTask._deserialize(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = EncryptedMaintenanceTask._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entity": entity.__serialize__(),
 			}
@@ -191,13 +187,12 @@ class MaintenanceTaskApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = EncryptedMaintenanceTask._deserialize(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = EncryptedMaintenanceTask._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityId": entity_id,
 			}
@@ -231,17 +226,16 @@ class MaintenanceTaskApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = PaginatedList._deserialize(success.decode('utf-8'))
-					success = PaginatedList(
-						rows = [EncryptedMaintenanceTask._deserialize(item) for item in success.rows],
-						next_key_pair = success.next_key_pair,
+					result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
+					result = PaginatedList(
+						rows = [EncryptedMaintenanceTask._deserialize(item) for item in result.rows],
+						next_key_pair = result.next_key_pair,
 					)
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"startDocumentId": start_document_id,
 				"limit": limit,
@@ -288,13 +282,12 @@ class MaintenanceTaskApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = deserialize_simple_share_result(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
 				"maintenanceTask": maintenance_task.__serialize__(),
@@ -336,13 +329,12 @@ class MaintenanceTaskApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = deserialize_simple_share_result(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"maintenanceTask": maintenance_task.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -378,13 +370,12 @@ class MaintenanceTaskApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = MaintenanceTask._deserialize(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = MaintenanceTask._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"maintenanceTask": maintenance_task.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -420,13 +411,12 @@ class MaintenanceTaskApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = MaintenanceTask._deserialize(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = MaintenanceTask._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entity": entity.__serialize__(),
 			}
@@ -460,13 +450,12 @@ class MaintenanceTaskApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = MaintenanceTask._deserialize(success.decode('utf-8'))
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					result = MaintenanceTask._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityId": entity_id,
 			}
@@ -500,17 +489,16 @@ class MaintenanceTaskApi:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
-				result = None
 				if failure is not None:
-					result = CallResult(failure=failure.decode('utf-8'))
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					success = PaginatedList._deserialize(success.decode('utf-8'))
-					success = PaginatedList(
-						rows = [deserialize_maintenance_task(item) for item in success.rows],
-						next_key_pair = success.next_key_pair,
+					result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
+					result = PaginatedList(
+						rows = [deserialize_maintenance_task(item) for item in result.rows],
+						next_key_pair = result.next_key_pair,
 					)
-					result = CallResult(success=success)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"startDocumentId": start_document_id,
 				"limit": limit,
@@ -557,13 +545,12 @@ class MaintenanceTaskApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = DecryptedMaintenanceTask._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = DecryptedMaintenanceTask._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entity": entity.__serialize__(),
 		}
@@ -597,13 +584,12 @@ class MaintenanceTaskApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = DecryptedMaintenanceTask._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = DecryptedMaintenanceTask._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"maintenanceTask": maintenance_task.__serialize__() if maintenance_task is not None else None,
 			"user": user.__serialize__() if user is not None else None,
@@ -641,13 +627,12 @@ class MaintenanceTaskApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [x1 for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [x1 for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"maintenanceTask": serialize_maintenance_task(maintenance_task),
 		}
@@ -681,13 +666,12 @@ class MaintenanceTaskApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = success.decode('utf-8')
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = json.loads(success.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"maintenanceTask": serialize_maintenance_task(maintenance_task),
 		}
@@ -721,13 +705,12 @@ class MaintenanceTaskApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [x1 for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [x1 for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"maintenanceTask": serialize_maintenance_task(maintenance_task),
 		}
@@ -761,13 +744,12 @@ class MaintenanceTaskApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = success.decode('utf-8')
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = json.loads(success.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entity": serialize_maintenance_task(entity),
 			"delegates": [x0 for x0 in delegates],
@@ -800,13 +782,12 @@ class MaintenanceTaskApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = DocIdentifier._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = DocIdentifier._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityId": entity_id,
 		}
@@ -840,13 +821,12 @@ class MaintenanceTaskApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = [DocIdentifier._deserialize(x1) for x1 in success.decode('utf-8')]
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = [DocIdentifier._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 		}
@@ -880,13 +860,12 @@ class MaintenanceTaskApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = deserialize_simple_share_result(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"delegateId": delegate_id,
 			"maintenanceTask": maintenance_task.__serialize__(),
@@ -928,13 +907,12 @@ class MaintenanceTaskApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = deserialize_simple_share_result(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"maintenanceTask": maintenance_task.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -970,13 +948,12 @@ class MaintenanceTaskApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = DecryptedMaintenanceTask._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = DecryptedMaintenanceTask._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"maintenanceTask": maintenance_task.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -1012,13 +989,12 @@ class MaintenanceTaskApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = DecryptedMaintenanceTask._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = DecryptedMaintenanceTask._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entity": entity.__serialize__(),
 		}
@@ -1052,13 +1028,12 @@ class MaintenanceTaskApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = DecryptedMaintenanceTask._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = DecryptedMaintenanceTask._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityId": entity_id,
 		}
@@ -1092,17 +1067,16 @@ class MaintenanceTaskApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = PaginatedList._deserialize(success.decode('utf-8'))
-				success = PaginatedList(
-					rows = [DecryptedMaintenanceTask._deserialize(item) for item in success.rows],
-					next_key_pair = success.next_key_pair,
+				result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
+				result = PaginatedList(
+					rows = [DecryptedMaintenanceTask._deserialize(item) for item in result.rows],
+					next_key_pair = result.next_key_pair,
 				)
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"startDocumentId": start_document_id,
 			"limit": limit,

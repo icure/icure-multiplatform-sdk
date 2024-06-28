@@ -2,7 +2,7 @@ import json
 import asyncio
 from model import CryptoActor, serialize_crypto_actor, CryptoActorStubWithType
 from kotlin_types import symbols, DATA_RESULT_CALLBACK_FUNC
-from model.CallResult import create_result_from_json, CallResult
+from model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
 from typing import Dict, List
 from model.specializations import KeypairFingerprintV1String
@@ -33,13 +33,12 @@ class ShamirKeysManagerApi:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
-			result = None
 			if failure is not None:
-				result = CallResult(failure=failure.decode('utf-8'))
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				success = CryptoActorStubWithType._deserialize(success.decode('utf-8'))
-				result = CallResult(success=success)
-			loop.call_soon_threadsafe(lambda: future.set_result(result))
+				result = CryptoActorStubWithType._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"keySplitsToUpdate": {k0: v0.__serialize__() for k0, v0 in key_splits_to_update.items()},
 			"keySplitsToDelete": [x0 for x0 in key_splits_to_delete],
