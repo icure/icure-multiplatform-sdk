@@ -84,7 +84,7 @@ internal class PaginatedListIteratorAndSerializer<T : Any>(
 	private val serializer: KSerializer<T>
 ) {
 	suspend fun hasNext(): Boolean =
-		hasNext()
+		iterator.hasNext()
 	suspend fun nextAsJson(limit: Int): JsonElement =
 		Serialization.fullJson.encodeToJsonElement(ListSerializer(serializer), iterator.next(limit))
 }
