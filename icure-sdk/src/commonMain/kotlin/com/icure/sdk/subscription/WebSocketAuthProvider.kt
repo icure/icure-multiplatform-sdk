@@ -1,4 +1,4 @@
-package com.icure.sdk.websocket
+package com.icure.sdk.subscription
 
 import com.icure.sdk.auth.Jwt
 import com.icure.sdk.auth.services.AuthService

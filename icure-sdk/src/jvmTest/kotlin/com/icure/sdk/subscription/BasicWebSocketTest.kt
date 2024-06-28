@@ -1,4 +1,4 @@
-package com.icure.sdk.websocket
+package com.icure.sdk.subscription
 
 import com.icure.sdk.model.DecryptedHealthElement
 import com.icure.sdk.model.filter.healthelement.HealthElementByHcPartyFilter

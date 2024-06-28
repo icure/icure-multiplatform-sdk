@@ -1,28 +1,37 @@
-package com.icure.sdk.websocket
+package com.icure.sdk.subscription
 
-import com.icure.sdk.utils.InternalIcureApi
+import com.icure.sdk.model.base.Identifiable
+import com.icure.sdk.model.filter.AbstractFilter
+import com.icure.sdk.model.filter.chain.FilterChain
+import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.utils.InternalIcureException
-import com.icure.sdk.utils.ensure
-import io.ktor.util.InternalAPI
+import io.ktor.client.HttpClient
+import io.ktor.client.plugins.websocket.DefaultClientWebSocketSession
+import io.ktor.client.plugins.websocket.webSocketSession
+import io.ktor.http.HttpMethod
+import io.ktor.util.PlatformUtils
 import io.ktor.websocket.CloseReason
 import io.ktor.websocket.DefaultWebSocketSession
 import io.ktor.websocket.Frame
 import io.ktor.websocket.close
 import io.ktor.websocket.readText
 import io.ktor.websocket.send
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.channels.onFailure
+import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.serialization.SerializationException
 import kotlin.math.pow
-import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Duration.Companion.seconds
 
 /**
  * WebSocket wrapper that handles the connection and reconnection logic for a WebSocket connection
@@ -42,45 +51,97 @@ import kotlin.time.Duration.Companion.minutes
  * @param channelSize The size of the queue to store messages that are sent while processing them
  * @param channelMessageCallback The callback to be called when a message is sent
  * */
-@InternalAPI
-class WebSocketWrapper(
-	private val onOpenListeners: List<suspend (WebSocketWrapper) -> Unit>,
-	private val sessionProvider: suspend () -> DefaultWebSocketSession,
-	private val retryDelay: Duration,
-	private val retryDelayExponentFactor: Double,
-	private val maxRetries: Int,
-	private val durationBetweenPings: Duration,
-	channelSize: Int,
-	private val channelMessageCallback: suspend (message: String, onEvent: suspend (EmittedEvent) -> Unit) -> Unit,
-) {
+internal class WebSocketSubscription<E : Identifiable<String>> private constructor (
+	private val hostname: String,
+	private val path: String,
+	private val webSocketAuthProvider: WebSocketAuthProvider,
+	private val client: HttpClient,
+	private val config: Subscription.Configuration,
+	private val deserializeEntity: (String) -> E,
+	private val subscriptionRequest: String
+): Subscription<E> {
+	companion object {
+		// Should be same as on backend
+		private val DURATION_BETWEEN_PINGS = 20.seconds
+
+		suspend fun <BaseType : Identifiable<String>, NotificationEntity : BaseType> initialize(
+			hostname: String,
+			path: String,
+			webSocketAuthProvider: WebSocketAuthProvider,
+			client: HttpClient,
+			config: Subscription.Configuration,
+			deserializeEntity: (String) -> NotificationEntity,
+			events: Set<SubscriptionEventType>,
+			filter: AbstractFilter<BaseType>,
+			qualifiedName: String,
+			subscriptionRequestSerializer: (com.icure.sdk.model.notification.Subscription<BaseType>) -> String,
+		): WebSocketSubscription<NotificationEntity> {
+			val subscriptionRequest = subscriptionRequestSerializer(
+				com.icure.sdk.model.notification.Subscription(
+					eventTypes = events.toList(),
+					filter = FilterChain(
+						filter = filter,
+					),
+					entityClass = qualifiedName,
+					accessControlKeys = null,
+				),
+			)
+			val subscription = WebSocketSubscription(
+				hostname,
+				path,
+				webSocketAuthProvider,
+				client,
+				config,
+				deserializeEntity,
+				subscriptionRequest
+			)
+			subscription.startConnection()
+			return subscription
+		}
+	}
+
 	private val wrapperScope = CoroutineScope(Dispatchers.Default)
-	private val queue = Channel<String>(
-		capacity = channelSize,
+	private val _eventChannel = Channel<Subscription.Event<E>>(
+		capacity = config.channelBufferCapacity,
+		onBufferOverflow = when (config.onBufferFull) {
+			Subscription.Configuration.FullBufferBehaviour.FAIL -> BufferOverflow.SUSPEND
+			Subscription.Configuration.FullBufferBehaviour.DROP_OLDEST -> BufferOverflow.DROP_OLDEST
+			Subscription.Configuration.FullBufferBehaviour.IGNORE -> BufferOverflow.SUSPEND
+		}
 	)
 
 	private lateinit var session: DefaultWebSocketSession
-	private var state: WebSocketState = WebSocketState.CONNECTING
 	private var intentionallyClosed = false
 	private var retriesAttempt = 0
 	private var lastPingJob: Job? = null
 
-	private val onReconnectedListeners = WebSocketEventListener<Unit>()
-	private val onCloseListeners = WebSocketEventListener<Pair<Short?, String?>>()
-	private val onErrorListeners = WebSocketEventListener<Pair<String?, Boolean>>()
-
-	@OptIn(InternalIcureApi::class)
-	internal suspend fun send(data: String) {
-		ensure(state == WebSocketState.OPEN) { "WebSocket is not open" }
+	private suspend fun send(data: String) {
 		session.send(data)
 	}
+
+	override val eventChannel: ReceiveChannel<Subscription.Event<E>>
+		get() = _eventChannel
+
+	override suspend fun close() {
+		closeDefinitely(null)
+	}
+
+	private suspend fun closeDefinitely(eventChannelReason: Throwable?) {
+		closeWebsocket(
+			code = CloseReason.Codes.NORMAL.code,
+			reason = "Closed by the client",
+		)
+		wrapperScope.cancel()
+		_eventChannel.close(eventChannelReason)
+	}
+
 
 	/**
 	 * Close the connection definitively
 	 *
 	 * This will bypass the retry mechanism and close the connection
 	 */
-	suspend fun close(code: Short, reason: String) {
-		check(state != WebSocketState.CLOSED) { "WebSocket is already closed" }
+	private suspend fun closeWebsocket(code: Short, reason: String) {
 		intentionallyClosed = true
 		session.close(
 			reason = CloseReason(
@@ -90,8 +151,6 @@ class WebSocketWrapper(
 		)
 		session.incoming.cancel()
 		session.cancel()
-		onEvent(EmittedEvent.Close(code, reason))
-		wrapperScope.cancel()
 	}
 
 	/**
@@ -102,9 +161,9 @@ class WebSocketWrapper(
 	 * @return The job that has been launched
 	 */
 	private suspend fun DefaultWebSocketSession.launchPingTimeoutChecker(): Job = launch {
-		delay(durationBetweenPings)
+		delay(DURATION_BETWEEN_PINGS)
 		if (isActive) {
-			onEvent(EmittedEvent.Error("Ping timeout: no ping received in the last ${durationBetweenPings.inWholeMilliseconds} ms", false))
+			sendEvent(Subscription.Event.ConnectionError.MissedPing)
 			session.close(
 				reason = CloseReason(
 					code = CloseReason.Codes.NORMAL.code,
@@ -124,6 +183,7 @@ class WebSocketWrapper(
 	 */
 	private suspend fun incomingMessagesLoop() = kotlin.runCatching {
 		for (frame in session.incoming) {
+			retriesAttempt = 0
 			when (frame) {
 				is Frame.Text -> {
 					val content = frame.readText()
@@ -132,10 +192,13 @@ class WebSocketWrapper(
 						send("pong")
 						lastPingJob = session.launchPingTimeoutChecker()
 					} else {
-						onEvent(EmittedEvent.Message(frame.readText()))
+						sendEvent(try {
+							Subscription.Event.EntityNotification(deserializeEntity(content))
+						} catch (e: SerializationException) {
+							Subscription.Event.EntityError.DeserializationError
+						})
 					}
 				}
-
 				is Frame.Binary -> throw InternalIcureException("Binary frames are not supported in incoming messages loop")
 				is Frame.Close -> throw InternalIcureException("Close frames are not supported in incoming messages loop")
 				is Frame.Ping -> throw InternalIcureException("Ping frames are not supported in incoming messages loop")
@@ -144,19 +207,7 @@ class WebSocketWrapper(
 			}
 		}
 	}.onFailure {
-		onEvent(EmittedEvent.Error(it.message, false))
-	}
-
-	/**
-	 * Launch the queue consumer that will consume the messages from the queue and call the callback
-	 */
-	private fun launchQueueConsumer() {
-		val onEventCallback: suspend (EmittedEvent) -> Unit = { event: EmittedEvent -> onEvent(event) }
-		wrapperScope.launch {
-			for (message in queue) {
-				channelMessageCallback(message, onEventCallback)
-			}
-		}
+		if (it !is CancellationException) sendEvent(Subscription.Event.UnexpectedError(it))
 	}
 
 	/**
@@ -164,15 +215,27 @@ class WebSocketWrapper(
 	 */
 	private suspend fun waitForClose() {
 		val closeReason = session.closeReason.await()
-		onEvent(EmittedEvent.Close(closeReason?.code, closeReason?.message))
+		// TODO event if closed by the server?
 	}
 
-	suspend fun startConnection() {
-		session = sessionProvider()
+	private suspend fun startSession(): DefaultClientWebSocketSession {
+		val jwtToken = webSocketAuthProvider.getBearerToken()
+		return client.webSocketSession(
+			method = HttpMethod.Get,
+			host = hostname,
+			path = path.takeIf { PlatformUtils.IS_BROWSER }?.let { "$it?jwt=${jwtToken}" } ?: path,
+		) {
+			if (!PlatformUtils.IS_BROWSER) {
+				headers["Authorization"] = "Bearer $jwtToken"
+			}
+		}
+	}
 
-		onEvent(EmittedEvent.Connect)
+	private suspend fun startConnection() {
+		session = startSession()
 
-		launchQueueConsumer()
+		send(subscriptionRequest)
+		sendEvent(Subscription.Event.Connected)
 
 		session.launch {
 			incomingMessagesLoop()
@@ -199,19 +262,19 @@ class WebSocketWrapper(
 		session.incoming.cancel()
 		session.cancel()
 
-		if (retriesAttempt >= maxRetries) {
-			onEvent(EmittedEvent.Error("Max retries reached", true))
+		if (retriesAttempt >= config.connectionMaxRetries) {
+			closeDefinitely(Subscription.ConnectionException())
 		} else {
 			delay(
 				exponentialRetry(
 					attempt = retriesAttempt++,
-					baseDelay = retryDelay.inWholeMilliseconds,
-					factor = retryDelayExponentFactor,
+					baseDelay = config.reconnectionDelay.inWholeMilliseconds,
+					factor = config.retryDelayExponentFactor,
 				).milliseconds,
 			)
-			session = sessionProvider()
+			session = startSession()
 
-			onEvent(EmittedEvent.Reconnect)
+			sendEvent(Subscription.Event.Reconnected)
 
 			session.launch {
 				incomingMessagesLoop()
@@ -223,63 +286,15 @@ class WebSocketWrapper(
 	}
 
 	/**
-	 * Allows to listen to the open event
-	 */
-	fun onReconnect(callback: suspend (Unit) -> Unit) {
-		onReconnectedListeners.addListener(callback)
-	}
-
-	/**
-	 * Allows to listen to the close event
-	 */
-	fun onClose(callback: suspend (Short?, String?) -> Unit) {
-		onCloseListeners.addListener { (code, reason) ->
-			callback(code, reason)
-		}
-	}
-
-	/**
-	 * Allows to listen to the error event
-	 */
-	fun onError(callback: suspend (String?, Boolean) -> Unit) {
-		onErrorListeners.addListener { (data, fatal) ->
-			callback(data, fatal)
-		}
-	}
-
-
-	/**
 	 * Emit an event to the listeners
 	 *
 	 * @param event The event to be emitted
 	 *
 	 */
-	private suspend fun onEvent(event: EmittedEvent) {
-		when (event) {
-			is EmittedEvent.Connect -> {
-				state = WebSocketState.OPEN
-				onOpenListeners.forEach { it(this) }
-			}
-
-			is EmittedEvent.Reconnect -> {
-				state = WebSocketState.OPEN
-				onReconnectedListeners.onEvent(Unit)
-			}
-
-			is EmittedEvent.Close -> {
-				state = WebSocketState.CLOSED
-				onCloseListeners.onEvent(event.code to event.reason)
-			}
-
-			is EmittedEvent.Error -> onErrorListeners.onEvent(event.data to event.fatal)
-			is EmittedEvent.Message -> {
-				queue.trySend(event.message).onFailure {
-					onEvent(EmittedEvent.Error(it?.message, true))
-					close(CloseReason.Codes.INTERNAL_ERROR.code, "Queue is full")
-				}
-
-				retriesAttempt = 0
-			}
+	private suspend fun sendEvent(event: Subscription.Event<E>) {
+		val sendResult = _eventChannel.trySend(event)
+		if (sendResult.isFailure && config.onBufferFull == Subscription.Configuration.FullBufferBehaviour.FAIL) {
+			closeDefinitely(Subscription.ChannelFullException())
 		}
 	}
 }

@@ -27,6 +27,9 @@ import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.options.ApiConfiguration
 import com.icure.sdk.options.BasicApiConfiguration
+import com.icure.sdk.subscription.Subscribable
+import com.icure.sdk.subscription.Subscription
+import com.icure.sdk.subscription.WebSocketSubscription
 import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
@@ -34,17 +37,11 @@ import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.currentEpochMs
 import com.icure.sdk.utils.pagination.IdsPageIterator
 import com.icure.sdk.utils.pagination.PaginatedListIterator
-import com.icure.sdk.websocket.Connection
-import com.icure.sdk.websocket.ConnectionImpl
-import com.icure.sdk.websocket.EmittedEvent
-import com.icure.sdk.websocket.Subscribable
-import io.ktor.util.InternalAPI
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.decodeFromJsonElement
-import kotlin.time.Duration
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
-interface HealthcareElementBasicFlavourlessApi {
+interface HealthcareElementBasicFlavourlessApi : Subscribable<HealthElement, EncryptedHealthElement>  {
 	suspend fun matchHealthcareElementsBy(filter: AbstractFilter<HealthElement>): List<String>
 	suspend fun deleteHealthcareElement(entityId: String): DocIdentifier
 	suspend fun deleteHealthcareElements(entityIds: List<String>): List<DocIdentifier>
@@ -55,7 +52,7 @@ interface HealthcareElementBasicFlavourlessApi {
 }
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
-interface HealthcareElementBasicFlavouredApi<E : HealthElement> : Subscribable<HealthElement, E> {
+interface HealthcareElementBasicFlavouredApi<E : HealthElement> {
 	suspend fun modifyHealthcareElement(entity: E): E
 	suspend fun modifyHealthcareElements(entities: List<E>): List<E>
 	suspend fun getHealthcareElement(entityId: String): E
@@ -186,41 +183,6 @@ private abstract class AbstractHealthcareElementBasicFlavouredApi<E : HealthElem
 
 	abstract suspend fun validateAndMaybeEncrypt(entity: E): EncryptedHealthElement
 	abstract suspend fun maybeDecrypt(entity: EncryptedHealthElement): E
-
-	@OptIn(InternalAPI::class)
-	override suspend fun subscribeToEvents(
-		events: Set<SubscriptionEventType>,
-		filter: AbstractFilter<HealthElement>,
-		onConnected: suspend () -> Unit,
-		channelCapacity: Int,
-		retryDelay: Duration,
-		retryDelayExponentFactor: Double,
-		maxRetries: Int,
-		eventFired: suspend (E) -> Unit,
-	): Connection {
-		return ConnectionImpl.initialize(
-			client = config.httpClient,
-			hostname = config.apiUrl.replace("https://", "").replace("http://", ""),
-			path = "/ws/v2/notification/subscribe",
-			serializer = EncryptedHealthElement.serializer(),
-			events = events,
-			filter = filter,
-			qualifiedName = HealthElement.KRAKEN_QUALIFIED_NAME,
-			subscriptionSerializer = { Serialization.json.encodeToString(it) },
-			webSocketAuthProvider = config.requireWebSocketAuthProvider(),
-			onOpenListener = onConnected,
-			retryDelay = retryDelay,
-			retryDelayExponentFactor = retryDelayExponentFactor,
-			maxRetries = maxRetries,
-			eventCallback = { entity, onEvent ->
-				try {
-					eventFired(maybeDecrypt(entity))
-				} catch (e: EntityEncryptionException) {
-					onEvent(EmittedEvent.Error(e.message, false))
-				}
-			}
-		)
-	}
 }
 
 @InternalIcureApi
@@ -286,7 +248,10 @@ private abstract class AbstractHealthcareElementFlavouredApi<E : HealthElement>(
 }
 
 @InternalIcureApi
-private class AbstractHealthcareElementBasicFlavourlessApi(val rawApi: RawHealthElementApi) : HealthcareElementBasicFlavourlessApi {
+private class AbstractHealthcareElementBasicFlavourlessApi(
+	val rawApi: RawHealthElementApi,
+	private val config: BasicApiConfiguration
+) : HealthcareElementBasicFlavourlessApi {
 	override suspend fun matchHealthcareElementsBy(filter: AbstractFilter<HealthElement>) =
 		rawApi.matchHealthElementsBy(filter).successBody()
 	override suspend fun deleteHealthcareElement(entityId: String) = rawApi.deleteHealthElement(entityId).successBody()
@@ -295,6 +260,24 @@ private class AbstractHealthcareElementBasicFlavourlessApi(val rawApi: RawHealth
 		hcPartyId: String,
 		secretPatientKeys: List<String>,
 	) = rawApi.findHealthElementsDelegationsStubsByHCPartyPatientForeignKeys(hcPartyId, secretPatientKeys).successBody()
+	override suspend fun subscribeToEvents(
+		events: Set<SubscriptionEventType>,
+		filter: AbstractFilter<HealthElement>,
+		subscriptionConfig: Subscription.Configuration
+	): Subscription<EncryptedHealthElement> {
+		return WebSocketSubscription.initialize(
+			client = config.httpClient,
+			hostname = config.apiUrl.replace("https://", "").replace("http://", ""),
+			path = "/ws/v2/notification/subscribe",
+			deserializeEntity = { Serialization.json.decodeFromString(it) },
+			events = events,
+			filter = filter,
+			qualifiedName = HealthElement.KRAKEN_QUALIFIED_NAME,
+			subscriptionRequestSerializer = { Serialization.json.encodeToString(it) },
+			webSocketAuthProvider = config.requireWebSocketAuthProvider(),
+			config = subscriptionConfig
+		)
+	}
 }
 
 @InternalIcureApi
@@ -317,7 +300,7 @@ internal class HealthcareElementApiImpl(
 		) { Serialization.json.decodeFromJsonElement<DecryptedHealthElement>(it) }
 			?: throw EntityEncryptionException("Entity ${entity.id} cannot be decrypted")
 	}
-}, HealthcareElementBasicFlavourlessApi by AbstractHealthcareElementBasicFlavourlessApi(rawApi) {
+}, HealthcareElementBasicFlavourlessApi by AbstractHealthcareElementBasicFlavourlessApi(rawApi, config) {
 
 	override val encrypted: HealthcareElementFlavouredApi<EncryptedHealthElement> =
 		object : AbstractHealthcareElementFlavouredApi<EncryptedHealthElement>(rawApi, config) {
@@ -431,4 +414,4 @@ internal class HealthcareElementBasicApiImpl(
 		config.crypto.validationService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedHealthElement.serializer(), config.encryption.healthElement)
 
 	override suspend fun maybeDecrypt(entity: EncryptedHealthElement): EncryptedHealthElement = entity
-}, HealthcareElementBasicFlavourlessApi by AbstractHealthcareElementBasicFlavourlessApi(rawApi)
+}, HealthcareElementBasicFlavourlessApi by AbstractHealthcareElementBasicFlavourlessApi(rawApi, config)

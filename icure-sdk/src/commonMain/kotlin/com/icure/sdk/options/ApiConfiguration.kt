@@ -3,7 +3,7 @@ package com.icure.sdk.options
 import com.icure.sdk.crypto.BasicInternalCryptoApi
 import com.icure.sdk.crypto.InternalCryptoServices
 import com.icure.sdk.utils.InternalIcureApi
-import com.icure.sdk.websocket.WebSocketAuthProvider
+import com.icure.sdk.subscription.WebSocketAuthProvider
 import io.ktor.client.HttpClient
 
 /**

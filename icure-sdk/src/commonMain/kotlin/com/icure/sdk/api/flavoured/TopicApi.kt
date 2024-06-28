@@ -34,10 +34,10 @@ import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.currentEpochMs
-import com.icure.sdk.websocket.Connection
-import com.icure.sdk.websocket.ConnectionImpl
-import com.icure.sdk.websocket.EmittedEvent
-import com.icure.sdk.websocket.Subscribable
+import com.icure.sdk.subscription.Connection
+import com.icure.sdk.subscription.ConnectionImpl
+import com.icure.sdk.subscription.EmittedEvent
+import com.icure.sdk.subscription.Subscribable
 import io.ktor.util.InternalAPI
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.decodeFromJsonElement

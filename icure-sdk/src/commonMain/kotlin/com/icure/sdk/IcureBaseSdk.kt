@@ -76,7 +76,7 @@ import com.icure.sdk.options.BasicApiOptions
 import com.icure.sdk.options.EntitiesEncryptedFieldsManifests
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
-import com.icure.sdk.websocket.WebSocketAuthProvider
+import com.icure.sdk.subscription.WebSocketAuthProvider
 import kotlinx.serialization.json.Json
 
 interface IcureBaseSdk {
