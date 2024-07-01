@@ -24,6 +24,7 @@ dependencyResolutionManagement {
 }
 include("sdk-codegen:ksp-json-processor")
 include("sdk-codegen:sdk-codegen")
+include("sdk-codegen:python-poet")
 
 findProject(":sdk-codegen:ksp-json-processor")?.name = "ksp-json-processor"
 findProject(":sdk-codegen:sdk-codegen")?.name = "sdk-codegen"
