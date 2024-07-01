@@ -27,6 +27,9 @@ import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.options.ApiConfiguration
 import com.icure.sdk.options.BasicApiConfiguration
+import com.icure.sdk.subscription.Subscribable
+import com.icure.sdk.subscription.EntityEventSubscription
+import com.icure.sdk.subscription.WebSocketSubscription
 import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
@@ -34,25 +37,19 @@ import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.currentEpochMs
 import com.icure.sdk.utils.pagination.IdsPageIterator
 import com.icure.sdk.utils.pagination.PaginatedListIterator
-import com.icure.sdk.websocket.Connection
-import com.icure.sdk.websocket.ConnectionImpl
-import com.icure.sdk.websocket.EmittedEvent
-import com.icure.sdk.websocket.Subscribable
-import io.ktor.util.InternalAPI
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.decodeFromJsonElement
-import kotlin.time.Duration
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
-interface MessageBasicFlavourlessApi {
+interface MessageBasicFlavourlessApi: Subscribable<Message, EncryptedMessage> {
 	suspend fun matchMessagesBy(filter: AbstractFilter<Message>): List<String>
 	suspend fun deleteMessage(entityId: String): DocIdentifier
 	suspend fun deleteMessages(entityIds: List<String>): List<DocIdentifier>
 }
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
-interface MessageBasicFlavouredApi<E : Message>: Subscribable<Message, E> {
+interface MessageBasicFlavouredApi<E : Message> {
 	suspend fun modifyMessage(entity: E): E
 	suspend fun getMessage(entityId: String): E
 	suspend fun getMessages(entityIds: List<String>): List<E>
@@ -264,41 +261,6 @@ private abstract class AbstractMessageBasicFlavouredApi<E : Message>(
 		userId: String,
 	) = rawApi.setMessagesReadStatus(MessagesReadStatusUpdate(entityIds, time, readStatus, userId)).successBody().map { maybeDecrypt(it) }
 
-	@OptIn(InternalAPI::class)
-	override suspend fun subscribeToEvents(
-		events: Set<SubscriptionEventType>,
-		filter: AbstractFilter<Message>,
-		onConnected: suspend () -> Unit,
-		channelCapacity: Int,
-		retryDelay: Duration,
-		retryDelayExponentFactor: Double,
-		maxRetries: Int,
-		eventFired: suspend (E) -> Unit
-	): Connection {
-		return ConnectionImpl.initialize(
-			client = config.httpClient,
-			hostname = config.apiUrl.replace("https://", "").replace("http://", ""),
-			path = "/ws/v2/notification/subscribe",
-			serializer = EncryptedMessage.serializer(),
-			events = events,
-			filter = filter,
-			qualifiedName = Message.KRAKEN_QUALIFIED_NAME,
-			subscriptionSerializer = { Serialization.json.encodeToString(it) },
-			webSocketAuthProvider = config.requireWebSocketAuthProvider(),
-			onOpenListener = onConnected,
-			retryDelay = retryDelay,
-			retryDelayExponentFactor = retryDelayExponentFactor,
-			maxRetries = maxRetries,
-			eventCallback = { entity, onEvent ->
-				try {
-					eventFired(maybeDecrypt(entity))
-				} catch (e: EntityEncryptionException) {
-					onEvent(EmittedEvent.Error(e.message, false))
-				}
-			}
-		)
-	}
-
 	abstract suspend fun validateAndMaybeEncrypt(entity: E): EncryptedMessage
 	abstract suspend fun maybeDecrypt(entity: EncryptedMessage): E
 }
@@ -366,10 +328,29 @@ private abstract class AbstractMessageFlavouredApi<E : Message>(
 }
 
 @InternalIcureApi
-private class AbstractMessageBasicFlavourlessApi(val rawApi: RawMessageApi) : MessageBasicFlavourlessApi {
+private class AbstractMessageBasicFlavourlessApi(val rawApi: RawMessageApi, private val config: BasicApiConfiguration) : MessageBasicFlavourlessApi {
 	override suspend fun matchMessagesBy(filter: AbstractFilter<Message>) = rawApi.matchMessagesBy(filter).successBody()
 	override suspend fun deleteMessage(entityId: String) = rawApi.deleteMessage(entityId).successBody()
 	override suspend fun deleteMessages(entityIds: List<String>) = rawApi.deleteMessages(ListOfIds(entityIds)).successBody()
+
+	override suspend fun subscribeToEvents(
+		events: Set<SubscriptionEventType>,
+		filter: AbstractFilter<Message>,
+		subscriptionConfig: EntityEventSubscription.Configuration?
+	): EntityEventSubscription<EncryptedMessage> {
+		return WebSocketSubscription.initialize(
+			client = config.httpClient,
+			hostname = config.apiUrl.replace("https://", "").replace("http://", ""),
+			path = "/ws/v2/notification/subscribe",
+			deserializeEntity = { Serialization.json.decodeFromString(it) },
+			events = events,
+			filter = filter,
+			qualifiedName = Message.KRAKEN_QUALIFIED_NAME,
+			subscriptionRequestSerializer = { Serialization.json.encodeToString(it) },
+			webSocketAuthProvider = config.requireWebSocketAuthProvider(),
+			config = subscriptionConfig
+		)
+	}
 }
 
 @InternalIcureApi
@@ -392,7 +373,7 @@ internal class MessageApiImpl(
 		) { Serialization.json.decodeFromJsonElement<DecryptedMessage>(it) }
 			?: throw EntityEncryptionException("Entity ${entity.id} cannot be created")
 	}
-}, MessageBasicFlavourlessApi by AbstractMessageBasicFlavourlessApi(rawApi) {
+}, MessageBasicFlavourlessApi by AbstractMessageBasicFlavourlessApi(rawApi, config) {
 	override val encrypted: MessageFlavouredApi<EncryptedMessage> =
 		object : AbstractMessageFlavouredApi<EncryptedMessage>(rawApi, config) {
 			override suspend fun validateAndMaybeEncrypt(entity: EncryptedMessage): EncryptedMessage =
@@ -496,4 +477,4 @@ internal class MessageBasicApiImpl(
 		config.crypto.validationService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedMessage.serializer(), config.encryption.message)
 
 	override suspend fun maybeDecrypt(entity: EncryptedMessage): EncryptedMessage = entity
-}, MessageBasicFlavourlessApi by AbstractMessageBasicFlavourlessApi(rawApi)
+}, MessageBasicFlavourlessApi by AbstractMessageBasicFlavourlessApi(rawApi, config)

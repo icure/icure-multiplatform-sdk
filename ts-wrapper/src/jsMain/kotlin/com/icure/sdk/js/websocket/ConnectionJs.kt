@@ -1,6 +1,6 @@
 package com.icure.sdk.js.websocket
 
-import com.icure.sdk.websocket.Connection
+import com.icure.sdk.subscription.Connection
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.await
 import kotlinx.coroutines.promise
