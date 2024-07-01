@@ -56,10 +56,10 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 	private val path: String,
 	private val webSocketAuthProvider: WebSocketAuthProvider,
 	private val client: HttpClient,
-	private val config: EntityEventSubscription.Configuration,
+	private val config: EntitySubscriptionConfiguration,
 	private val deserializeEntity: (String) -> E,
 	private val subscriptionRequest: String
-): EntityEventSubscription<E> {
+): EntitySubscription<E> {
 	companion object {
 		// Should be same as on backend
 		private val DURATION_BETWEEN_PINGS = 20.seconds
@@ -73,7 +73,7 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 			path: String,
 			webSocketAuthProvider: WebSocketAuthProvider,
 			client: HttpClient,
-			config: EntityEventSubscription.Configuration?,
+			config: EntitySubscriptionConfiguration?,
 			deserializeEntity: (String) -> NotificationEntity,
 			events: Set<SubscriptionEventType>,
 			filter: AbstractFilter<BaseType>,
@@ -95,7 +95,7 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 				path,
 				webSocketAuthProvider,
 				client,
-				config ?: EntityEventSubscription.Configuration(),
+				config ?: EntitySubscriptionConfiguration(),
 				deserializeEntity,
 				subscriptionRequest
 			)
@@ -105,17 +105,17 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 	}
 
 	private val wrapperScope = CoroutineScope(Dispatchers.Default)
-	private val _eventChannel = Channel<EntityEventSubscription.Event<E>>(
+	private val _eventChannel = Channel<EntitySubscriptionEvent<E>>(
 		capacity = config.channelBufferCapacity,
 		onBufferOverflow = when (config.onBufferFull) {
-			EntityEventSubscription.Configuration.FullBufferBehaviour.CLOSE -> BufferOverflow.SUSPEND
-			EntityEventSubscription.Configuration.FullBufferBehaviour.DROP_OLDEST -> BufferOverflow.DROP_OLDEST
-			EntityEventSubscription.Configuration.FullBufferBehaviour.IGNORE -> BufferOverflow.SUSPEND
+			EntitySubscriptionConfiguration.FullBufferBehaviour.Close -> BufferOverflow.SUSPEND
+			EntitySubscriptionConfiguration.FullBufferBehaviour.DropOldest -> BufferOverflow.DROP_OLDEST
+			EntitySubscriptionConfiguration.FullBufferBehaviour.Ignore -> BufferOverflow.SUSPEND
 		}
 	)
 
 	private lateinit var session: DefaultWebSocketSession
-	private var _closeReason: EntityEventSubscription.CloseReason? = null
+	private var _closeReason: EntitySubscriptionCloseReason? = null
 	private var retriesAttempt = 0
 	private var lastPingJob: Job? = null
 
@@ -123,17 +123,17 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 		session.send(data)
 	}
 
-	override val eventChannel: ReceiveChannel<EntityEventSubscription.Event<E>>
+	override val eventChannel: ReceiveChannel<EntitySubscriptionEvent<E>>
 		get() = _eventChannel
 
 	override suspend fun close() {
-		closeDefinitely(EntityEventSubscription.CloseReason.IntentionallyClosed)
+		closeDefinitely(EntitySubscriptionCloseReason.IntentionallyClosed)
 	}
 
-	override val closeReason: EntityEventSubscription.CloseReason?
+	override val closeReason: EntitySubscriptionCloseReason?
 		get() = _closeReason
 
-	private suspend fun closeDefinitely(closeReason: EntityEventSubscription.CloseReason) {
+	private suspend fun closeDefinitely(closeReason: EntitySubscriptionCloseReason) {
 		_closeReason = closeReason
 		session.close(CloseReason(CloseReason.Codes.NORMAL, "Closed by the client"))
 		session.incoming.cancel()
@@ -152,7 +152,7 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 	private suspend fun DefaultWebSocketSession.launchPingTimeoutChecker(): Job = launch {
 		delay(DURATION_BETWEEN_PINGS)
 		if (isActive) {
-			sendEvent(EntityEventSubscription.Event.ConnectionError.MissedPing)
+			sendEvent(EntitySubscriptionEvent.ConnectionError.MissedPing)
 			session.close(NO_PING_FROM_SERVER)
 			session.incoming.cancel()
 		}
@@ -177,9 +177,9 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 						lastPingJob = session.launchPingTimeoutChecker()
 					} else {
 						sendEvent(try {
-							EntityEventSubscription.Event.EntityNotification(deserializeEntity(content))
+							EntitySubscriptionEvent.EntityNotification(deserializeEntity(content))
 						} catch (e: SerializationException) {
-							EntityEventSubscription.Event.EntityError.DeserializationError
+							EntitySubscriptionEvent.EntityError.DeserializationError
 						})
 					}
 				}
@@ -191,7 +191,7 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 			}
 		}
 	}.onFailure {
-		if (it !is CancellationException) sendEvent(EntityEventSubscription.Event.UnexpectedError(it))
+		if (it !is CancellationException) sendEvent(EntitySubscriptionEvent.UnexpectedError("${it::class.simpleName} - ${it.message}"))
 	}
 
 	/**
@@ -199,7 +199,7 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 	 */
 	private suspend fun waitForClose() {
 		val wsCloseReason = session.closeReason.await()
-	 	if (_closeReason == null && wsCloseReason != NO_PING_FROM_SERVER) _eventChannel.send(EntityEventSubscription.Event.ConnectionError.ClosedByServer)
+	 	if (_closeReason == null && wsCloseReason != NO_PING_FROM_SERVER) _eventChannel.send(EntitySubscriptionEvent.ConnectionError.ClosedByServer)
 	}
 
 	private suspend fun startSession(): DefaultClientWebSocketSession {
@@ -219,7 +219,7 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 		session = startSession()
 
 		send(subscriptionRequest)
-		sendEvent(EntityEventSubscription.Event.Connected)
+		sendEvent(EntitySubscriptionEvent.Connected)
 
 		session.launch {
 			incomingMessagesLoop()
@@ -247,7 +247,7 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 		session.cancel()
 
 		if (retriesAttempt >= config.connectionMaxRetries) {
-			closeDefinitely(EntityEventSubscription.CloseReason.ConnectionLost)
+			closeDefinitely(EntitySubscriptionCloseReason.ConnectionLost)
 		} else {
 			delay(
 				exponentialRetry(
@@ -258,7 +258,7 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 			)
 			session = startSession()
 
-			sendEvent(EntityEventSubscription.Event.Reconnected)
+			sendEvent(EntitySubscriptionEvent.Reconnected)
 
 			session.launch {
 				incomingMessagesLoop()
@@ -275,10 +275,10 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 	 * @param event The event to be emitted
 	 *
 	 */
-	private suspend fun sendEvent(event: EntityEventSubscription.Event<E>) {
+	private suspend fun sendEvent(event: EntitySubscriptionEvent<E>) {
 		val sendResult = _eventChannel.trySend(event)
-		if (sendResult.isFailure && config.onBufferFull == EntityEventSubscription.Configuration.FullBufferBehaviour.CLOSE) {
-			closeDefinitely(EntityEventSubscription.CloseReason.ChannelFullException)
+		if (sendResult.isFailure && config.onBufferFull == EntitySubscriptionConfiguration.FullBufferBehaviour.Close) {
+			closeDefinitely(EntitySubscriptionCloseReason.ChannelFullException)
 		}
 	}
 }
