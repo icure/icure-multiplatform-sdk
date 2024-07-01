@@ -9,7 +9,7 @@ import kotlin.time.Duration.Companion.seconds
  * A subscription allows to get realtime updates on entities of type [E].
  * Note that subscriptions need to be closed explicitly.
  */
-interface Subscription<E : Identifiable<String>> {
+interface EntityEventSubscription<E : Identifiable<String>> {
 	/**
 	 * Closes the subscription. A closed subscription will not receive any new events, but any existing event may still
 	 * be consumed after closing.
@@ -98,7 +98,7 @@ interface Subscription<E : Identifiable<String>> {
 	sealed interface CloseReason {
 		/**
 		 * A new event was produced but the event channel was at maximum capacity and the
-		 * [Subscription.Configuration.onBufferFull] is [Subscription.Configuration.FullBufferBehaviour.CLOSE].
+		 * [EntityEventSubscription.Configuration.onBufferFull] is [EntityEventSubscription.Configuration.FullBufferBehaviour.CLOSE].
 		 */
 		data object ChannelFullException : CloseReason
 
@@ -136,22 +136,22 @@ interface Subscription<E : Identifiable<String>> {
 		 */
 		val retryDelayExponentFactor: Double = 2.0,
 		/**
-		 * How many times should the subscription attempt to (re)connect before closing with a [Subscription.ConnectionException]
+		 * How many times should the subscription attempt to (re)connect before closing with a [EntityEventSubscription.ConnectionException]
 		 */
 		val connectionMaxRetries: Int = 5,
 	) {
 		enum class FullBufferBehaviour {
 			/**
-			 * The subscription will be closed, and the [Subscription.eventChannel] will fail with a [Subscription.ChannelFullException]
+			 * The subscription will be closed, and the [EntityEventSubscription.eventChannel] will fail with a [EntityEventSubscription.ChannelFullException]
 			 */
 			CLOSE,
 			/**
-			 * The oldest event will be dropped (i.e. the next element in the [Subscription.eventChannel]), and the new
+			 * The oldest event will be dropped (i.e. the next element in the [EntityEventSubscription.eventChannel]), and the new
 			 * event will be added.
 			 */
 			DROP_OLDEST,
 			/**
-			 * The event will simply be ignored, the [Subscription.eventChannel] will not be changed.
+			 * The event will simply be ignored, the [EntityEventSubscription.eventChannel] will not be changed.
 			 */
 			IGNORE
 		}

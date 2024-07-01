@@ -49,7 +49,7 @@ import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.options.ApiConfiguration
 import com.icure.sdk.options.BasicApiConfiguration
 import com.icure.sdk.subscription.Subscribable
-import com.icure.sdk.subscription.Subscription
+import com.icure.sdk.subscription.EntityEventSubscription
 import com.icure.sdk.subscription.WebSocketSubscription
 import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.EntityEncryptionException
@@ -595,8 +595,8 @@ private class AbstractPatientBasicFlavourlessApi(val rawApi: RawPatientApi, val 
 	override suspend fun subscribeToEvents(
 		events: Set<SubscriptionEventType>,
 		filter: AbstractFilter<Patient>,
-		subscriptionConfig: Subscription.Configuration?
-	): Subscription<EncryptedPatient> {
+		subscriptionConfig: EntityEventSubscription.Configuration?
+	): EntityEventSubscription<EncryptedPatient> {
 		return WebSocketSubscription.initialize(
 			client = config.httpClient,
 			hostname = config.apiUrl.replace("https://", "").replace("http://", ""),

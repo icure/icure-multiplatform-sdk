@@ -44,14 +44,14 @@ fun <BaseType : Identifiable<String>, MaybeDecryptedType : BaseType> subscribabl
 				)
 
 			withTimeoutOrNull(5.seconds) {
-				subscription.eventChannel.receive() shouldBe Subscription.Event.Connected
+				subscription.eventChannel.receive() shouldBe EntityEventSubscription.Event.Connected
 			} ?: fail("Didn't received OPEN event within 5 seconds")
 
 			val created = createEntity()
 
 			withTimeoutOrNull(5.seconds) {
 				subscription.eventChannel.receive()
-					.shouldBeInstanceOf<Subscription.Event.EntityNotification<*>>()
+					.shouldBeInstanceOf<EntityEventSubscription.Event.EntityNotification<*>>()
 					.entity.id shouldBe created.id
 			} ?: fail("Didn't received ENTITY event within 5 seconds")
 		}

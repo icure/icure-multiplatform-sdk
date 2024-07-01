@@ -38,7 +38,7 @@ import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.options.ApiConfiguration
 import com.icure.sdk.options.BasicApiConfiguration
 import com.icure.sdk.subscription.Subscribable
-import com.icure.sdk.subscription.Subscription
+import com.icure.sdk.subscription.EntityEventSubscription
 import com.icure.sdk.subscription.WebSocketSubscription
 import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.EntityEncryptionException
@@ -77,8 +77,8 @@ interface ContactBasicFlavourlessApi : Subscribable<Contact, EncryptedContact> {
 	suspend fun subscribeToServiceEvents(
 		events: Set<SubscriptionEventType>,
 		filter: AbstractFilter<Service>,
-		subscriptionConfig: Subscription.Configuration
-	): Subscription<EncryptedService>
+		subscriptionConfig: EntityEventSubscription.Configuration
+	): EntityEventSubscription<EncryptedService>
 }
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
@@ -447,8 +447,8 @@ private class AbstractContactBasicFlavourlessApi(
 	override suspend fun subscribeToServiceEvents(
 		events: Set<SubscriptionEventType>,
 		filter: AbstractFilter<Service>,
-		subscriptionConfig: Subscription.Configuration
-	): Subscription<EncryptedService> {
+		subscriptionConfig: EntityEventSubscription.Configuration
+	): EntityEventSubscription<EncryptedService> {
 		return WebSocketSubscription.initialize(
 			client = config.httpClient,
 			hostname = config.apiUrl.replace("https://", "").replace("http://", ""),
@@ -466,8 +466,8 @@ private class AbstractContactBasicFlavourlessApi(
 	override suspend fun subscribeToEvents(
 		events: Set<SubscriptionEventType>,
 		filter: AbstractFilter<Contact>,
-		subscriptionConfig: Subscription.Configuration?
-	): Subscription<EncryptedContact> {
+		subscriptionConfig: EntityEventSubscription.Configuration?
+	): EntityEventSubscription<EncryptedContact> {
 		return WebSocketSubscription.initialize(
 			client = config.httpClient,
 			hostname = config.apiUrl.replace("https://", "").replace("http://", ""),

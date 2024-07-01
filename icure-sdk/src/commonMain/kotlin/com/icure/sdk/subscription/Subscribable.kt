@@ -10,6 +10,6 @@ interface Subscribable<EntityBaseType : Identifiable<String>, EntityEventType : 
 		events: Set<SubscriptionEventType>,
 		filter: AbstractFilter<EntityBaseType>,
 		@DefaultValue("null")
-		subscriptionConfig: Subscription.Configuration? = null
-	): Subscription<EntityEventType>
+		subscriptionConfig: EntityEventSubscription.Configuration? = null
+	): EntityEventSubscription<EntityEventType>
 }
