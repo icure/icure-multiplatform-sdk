@@ -103,13 +103,13 @@ class BasicWebSocketTest : StringSpec({
 			config = null
 		)
 
-		val events = mutableListOf<EntityEventSubscription.Event<*>>()
+		val events = mutableListOf<EntitySubscriptionEvent<*>>()
 		withTimeoutOrNull(10.seconds) {
 			do {
 				events.add(connection.eventChannel.receive().also { println("Client received: $it") })
-			} while (events.last() != EntityEventSubscription.Event.Reconnected)
+			} while (events.last() != EntitySubscriptionEvent.Reconnected)
 		} ?: fail("Didn't reconnected within 10 seconds")
-		events shouldContain EntityEventSubscription.Event.ConnectionError.ClosedByServer
+		events shouldContain EntitySubscriptionEvent.ConnectionError.ClosedByServer
 	}
 
 	"Should close the connection if the queue is full" {
@@ -133,7 +133,7 @@ class BasicWebSocketTest : StringSpec({
 			qualifiedName = HealthElement.KRAKEN_QUALIFIED_NAME,
 			subscriptionRequestSerializer = { Serialization.json.encodeToString(it) },
 			webSocketAuthProvider = authProvider,
-			config = EntityEventSubscription.Configuration(channelBufferCapacity = 10)
+			config = EntitySubscriptionConfiguration(channelBufferCapacity = 10)
 		)
 
 		withTimeoutOrNull(10.seconds) {
@@ -141,8 +141,8 @@ class BasicWebSocketTest : StringSpec({
 				delay(100.milliseconds)
 			}
 		} ?: fail("Subscription was not closed within 10 seconds")
-		connection.closeReason shouldBe EntityEventSubscription.CloseReason.ChannelFullException
-		val received = mutableListOf<ChannelResult<EntityEventSubscription.Event<*>>>()
+		connection.closeReason shouldBe EntitySubscriptionCloseReason.ChannelFullException
+		val received = mutableListOf<ChannelResult<EntitySubscriptionEvent<*>>>()
 		do {
 			received.add(connection.eventChannel.receiveCatching())
 		} while (received.last().isSuccess)

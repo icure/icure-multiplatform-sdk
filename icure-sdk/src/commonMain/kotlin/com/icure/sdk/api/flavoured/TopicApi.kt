@@ -30,7 +30,8 @@ import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.options.ApiConfiguration
 import com.icure.sdk.options.BasicApiConfiguration
 import com.icure.sdk.subscription.Subscribable
-import com.icure.sdk.subscription.EntityEventSubscription
+import com.icure.sdk.subscription.EntitySubscription
+import com.icure.sdk.subscription.EntitySubscriptionConfiguration
 import com.icure.sdk.subscription.WebSocketSubscription
 import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.EntityEncryptionException
@@ -219,8 +220,8 @@ private class AbstractTopicBasicFlavourlessApi(val rawApi: RawTopicApi, private 
 	override suspend fun subscribeToEvents(
 		events: Set<SubscriptionEventType>,
 		filter: AbstractFilter<Topic>,
-		subscriptionConfig: EntityEventSubscription.Configuration?
-	): EntityEventSubscription<EncryptedTopic> {
+		subscriptionConfig: EntitySubscriptionConfiguration?
+	): EntitySubscription<EncryptedTopic> {
 		return WebSocketSubscription.initialize(
 			client = config.httpClient,
 			hostname = config.apiUrl.replace("https://", "").replace("http://", ""),
