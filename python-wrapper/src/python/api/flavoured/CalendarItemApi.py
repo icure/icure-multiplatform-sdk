@@ -3,7 +3,7 @@ import json
 from model import DecryptedCalendarItem, Patient, User, AccessLevel, serialize_patient, CalendarItem, serialize_calendar_item, DocIdentifier, RequestedPermission, PaginatedList, EncryptedCalendarItem, deserialize_calendar_item
 from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from model.CallResult import create_result_from_json
-from ctypes import cast, c_char_p, c_void_p
+from ctypes import cast, c_char_p
 from typing import Optional, Dict, List
 from crypto import SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_secret_id_option, ShareMetadataBehaviour, deserialize_simple_share_result, SimpleShareResult, CalendarItemShareOptions
 from model.specializations import HexString
@@ -198,7 +198,7 @@ class CalendarItemApi:
 				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
 				symbols.DisposeStablePointer(call_result.pinned)
 				return PaginatedListIterator[EncryptedCalendarItem](
-					producer = cast(class_pointer, c_void_p),
+					producer = class_pointer,
 					deserializer = lambda x: EncryptedCalendarItem._deserialize(x),
 					executor = self.icure_sdk._executor
 				)
@@ -728,7 +728,7 @@ class CalendarItemApi:
 				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
 				symbols.DisposeStablePointer(call_result.pinned)
 				return PaginatedListIterator[CalendarItem](
-					producer = cast(class_pointer, c_void_p),
+					producer = class_pointer,
 					deserializer = lambda x: deserialize_calendar_item(x),
 					executor = self.icure_sdk._executor
 				)
@@ -1577,7 +1577,7 @@ class CalendarItemApi:
 			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
 			symbols.DisposeStablePointer(call_result.pinned)
 			return PaginatedListIterator[DecryptedCalendarItem](
-				producer = cast(class_pointer, c_void_p),
+				producer = class_pointer,
 				deserializer = lambda x: DecryptedCalendarItem._deserialize(x),
 				executor = self.icure_sdk._executor
 			)

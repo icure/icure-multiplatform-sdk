@@ -1,12 +1,13 @@
 import asyncio
 import json
-from model import DecryptedContact, Patient, User, AccessLevel, serialize_patient, Contact, serialize_contact, AbstractFilter, serialize_abstract_filter, DocIdentifier, IcureStub, LabelledOccurence, RequestedPermission, FilterChain, PaginatedList, DecryptedService, EncryptedContact, deserialize_contact
+from model import DecryptedContact, Patient, User, AccessLevel, serialize_patient, Contact, serialize_contact, AbstractFilter, serialize_abstract_filter, DocIdentifier, IcureStub, LabelledOccurence, SubscriptionEventType, EntitySubscriptionConfiguration, EncryptedService, EncryptedContact, RequestedPermission, FilterChain, PaginatedList, DecryptedService, deserialize_contact
 from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from model.CallResult import create_result_from_json
-from ctypes import cast, c_char_p, c_void_p
+from ctypes import cast, c_char_p
 from typing import List, Optional, Dict
 from crypto import SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_secret_id_option, ShareMetadataBehaviour, deserialize_simple_share_result, SimpleShareResult, ContactShareOptions
 from model.specializations import HexString
+from subscription.EntitySubscription import EntitySubscription
 from pagination.PaginatedListIterator import PaginatedListIterator
 
 class ContactApi:
@@ -198,7 +199,7 @@ class ContactApi:
 				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
 				symbols.DisposeStablePointer(call_result.pinned)
 				return PaginatedListIterator[EncryptedContact](
-					producer = cast(class_pointer, c_void_p),
+					producer = class_pointer,
 					deserializer = lambda x: EncryptedContact._deserialize(x),
 					executor = self.icure_sdk._executor
 				)
@@ -1152,7 +1153,7 @@ class ContactApi:
 				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
 				symbols.DisposeStablePointer(call_result.pinned)
 				return PaginatedListIterator[Contact](
-					producer = cast(class_pointer, c_void_p),
+					producer = class_pointer,
 					deserializer = lambda x: deserialize_contact(x),
 					executor = self.icure_sdk._executor
 				)
@@ -2442,6 +2443,114 @@ class ContactApi:
 			return_value = [LabelledOccurence._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
+	async def subscribe_to_service_events_async(self, events: List[SubscriptionEventType], filter: AbstractFilter, subscription_config: EntitySubscriptionConfiguration) -> EntitySubscription[EncryptedService]:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = EntitySubscription[EncryptedService](
+					producer = success,
+					deserializer = lambda x: EncryptedService._deserialize(x),
+					executor = self.icure_sdk._executor
+				)
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"events": [x0.__serialize__() for x0 in events],
+			"filter": serialize_abstract_filter(filter),
+			"subscriptionConfig": subscription_config.__serialize__(),
+		}
+		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.icure_sdk._executor,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.subscribeToServiceEventsAsync,
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def subscribe_to_service_events_blocking(self, events: List[SubscriptionEventType], filter: AbstractFilter, subscription_config: EntitySubscriptionConfiguration) -> EntitySubscription[EncryptedService]:
+		payload = {
+			"events": [x0.__serialize__() for x0 in events],
+			"filter": serialize_abstract_filter(filter),
+			"subscriptionConfig": subscription_config.__serialize__(),
+		}
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.subscribeToServiceEventsBlocking(
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8')
+		)
+		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+		if error_str_pointer is not None:
+			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+			symbols.DisposeString(error_str_pointer)
+			symbols.DisposeStablePointer(call_result)
+			raise Exception(error_msg)
+		else:
+			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+			symbols.DisposeStablePointer(call_result.pinned)
+			return EntitySubscription[EncryptedService](
+				producer = class_pointer,
+				deserializer = lambda x: EncryptedService._deserialize(x),
+				executor = self.icure_sdk._executor
+			)
+
+	async def subscribe_to_events_async(self, events: List[SubscriptionEventType], filter: AbstractFilter, subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedContact]:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = EntitySubscription[EncryptedContact](
+					producer = success,
+					deserializer = lambda x: EncryptedContact._deserialize(x),
+					executor = self.icure_sdk._executor
+				)
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"events": [x0.__serialize__() for x0 in events],
+			"filter": serialize_abstract_filter(filter),
+			"subscriptionConfig": subscription_config.__serialize__() if subscription_config is not None else None,
+		}
+		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.icure_sdk._executor,
+			symbols.kotlin.root.com.icure.sdk.py.subscription.ContactApi.subscribeToEventsAsync,
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def subscribe_to_events_blocking(self, events: List[SubscriptionEventType], filter: AbstractFilter, subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedContact]:
+		payload = {
+			"events": [x0.__serialize__() for x0 in events],
+			"filter": serialize_abstract_filter(filter),
+			"subscriptionConfig": subscription_config.__serialize__() if subscription_config is not None else None,
+		}
+		call_result = symbols.kotlin.root.com.icure.sdk.py.subscription.ContactApi.subscribeToEventsBlocking(
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8')
+		)
+		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+		if error_str_pointer is not None:
+			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+			symbols.DisposeString(error_str_pointer)
+			symbols.DisposeStablePointer(call_result)
+			raise Exception(error_msg)
+		else:
+			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+			symbols.DisposeStablePointer(call_result.pinned)
+			return EntitySubscription[EncryptedContact](
+				producer = class_pointer,
+				deserializer = lambda x: EncryptedContact._deserialize(x),
+				executor = self.icure_sdk._executor
+			)
+
 	async def share_with_async(self, delegate_id: str, contact: DecryptedContact, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
@@ -2624,7 +2733,7 @@ class ContactApi:
 			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
 			symbols.DisposeStablePointer(call_result.pinned)
 			return PaginatedListIterator[DecryptedContact](
-				producer = cast(class_pointer, c_void_p),
+				producer = class_pointer,
 				deserializer = lambda x: DecryptedContact._deserialize(x),
 				executor = self.icure_sdk._executor
 			)

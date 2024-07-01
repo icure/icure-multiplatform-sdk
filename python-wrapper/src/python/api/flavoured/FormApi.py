@@ -4,7 +4,7 @@ import base64
 from model import DecryptedForm, Patient, User, AccessLevel, serialize_patient, Form, serialize_form, DocIdentifier, FormTemplate, RequestedPermission, EncryptedForm, deserialize_form
 from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from model.CallResult import create_result_from_json
-from ctypes import cast, c_char_p, c_void_p
+from ctypes import cast, c_char_p
 from typing import List, Optional, Dict
 from crypto import SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_secret_id_option, ShareMetadataBehaviour, deserialize_simple_share_result, SimpleShareResult, FormShareOptions
 from model.specializations import HexString
@@ -199,7 +199,7 @@ class FormApi:
 				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
 				symbols.DisposeStablePointer(call_result.pinned)
 				return PaginatedListIterator[EncryptedForm](
-					producer = cast(class_pointer, c_void_p),
+					producer = class_pointer,
 					deserializer = lambda x: EncryptedForm._deserialize(x),
 					executor = self.icure_sdk._executor
 				)
@@ -791,7 +791,7 @@ class FormApi:
 				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
 				symbols.DisposeStablePointer(call_result.pinned)
 				return PaginatedListIterator[Form](
-					producer = cast(class_pointer, c_void_p),
+					producer = class_pointer,
 					deserializer = lambda x: deserialize_form(x),
 					executor = self.icure_sdk._executor
 				)
@@ -2065,7 +2065,7 @@ class FormApi:
 			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
 			symbols.DisposeStablePointer(call_result.pinned)
 			return PaginatedListIterator[DecryptedForm](
-				producer = cast(class_pointer, c_void_p),
+				producer = class_pointer,
 				deserializer = lambda x: DecryptedForm._deserialize(x),
 				executor = self.icure_sdk._executor
 			)

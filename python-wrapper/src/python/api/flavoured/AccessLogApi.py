@@ -3,7 +3,7 @@ import json
 from model import DecryptedAccessLog, Patient, User, AccessLevel, serialize_patient, AccessLog, serialize_access_log, DocIdentifier, RequestedPermission, PaginatedList, EncryptedAccessLog, deserialize_access_log
 from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from model.CallResult import create_result_from_json
-from ctypes import cast, c_char_p, c_void_p
+from ctypes import cast, c_char_p
 from typing import Optional, Dict, List
 from crypto import SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_secret_id_option, ShareMetadataBehaviour, deserialize_simple_share_result, SimpleShareResult, AccessLogShareOptions
 from model.specializations import HexString
@@ -198,7 +198,7 @@ class AccessLogApi:
 				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
 				symbols.DisposeStablePointer(call_result.pinned)
 				return PaginatedListIterator[EncryptedAccessLog](
-					producer = cast(class_pointer, c_void_p),
+					producer = class_pointer,
 					deserializer = lambda x: EncryptedAccessLog._deserialize(x),
 					executor = self.icure_sdk._executor
 				)
@@ -678,7 +678,7 @@ class AccessLogApi:
 				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
 				symbols.DisposeStablePointer(call_result.pinned)
 				return PaginatedListIterator[AccessLog](
-					producer = cast(class_pointer, c_void_p),
+					producer = class_pointer,
 					deserializer = lambda x: deserialize_access_log(x),
 					executor = self.icure_sdk._executor
 				)
@@ -1477,7 +1477,7 @@ class AccessLogApi:
 			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
 			symbols.DisposeStablePointer(call_result.pinned)
 			return PaginatedListIterator[DecryptedAccessLog](
-				producer = cast(class_pointer, c_void_p),
+				producer = class_pointer,
 				deserializer = lambda x: DecryptedAccessLog._deserialize(x),
 				executor = self.icure_sdk._executor
 			)

@@ -1,12 +1,13 @@
 import asyncio
 import json
-from model import DecryptedMessage, Patient, User, AccessLevel, serialize_patient, Message, serialize_message, AbstractFilter, serialize_abstract_filter, DocIdentifier, RequestedPermission, FilterChain, PaginatedList, EncryptedMessage, deserialize_message
+from model import DecryptedMessage, Patient, User, AccessLevel, serialize_patient, Message, serialize_message, AbstractFilter, serialize_abstract_filter, DocIdentifier, SubscriptionEventType, EntitySubscriptionConfiguration, EncryptedMessage, RequestedPermission, FilterChain, PaginatedList, deserialize_message
 from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from model.CallResult import create_result_from_json
-from ctypes import cast, c_char_p, c_void_p
+from ctypes import cast, c_char_p
 from typing import Optional, Dict, List
 from crypto import SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_secret_id_option, ShareMetadataBehaviour, deserialize_simple_share_result, SimpleShareResult, MessageShareOptions
 from model.specializations import HexString
+from subscription.EntitySubscription import EntitySubscription
 from pagination.PaginatedListIterator import PaginatedListIterator
 
 class MessageApi:
@@ -200,7 +201,7 @@ class MessageApi:
 				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
 				symbols.DisposeStablePointer(call_result.pinned)
 				return PaginatedListIterator[EncryptedMessage](
-					producer = cast(class_pointer, c_void_p),
+					producer = class_pointer,
 					deserializer = lambda x: EncryptedMessage._deserialize(x),
 					executor = self.icure_sdk._executor
 				)
@@ -1108,7 +1109,7 @@ class MessageApi:
 				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
 				symbols.DisposeStablePointer(call_result.pinned)
 				return PaginatedListIterator[Message](
-					producer = cast(class_pointer, c_void_p),
+					producer = class_pointer,
 					deserializer = lambda x: deserialize_message(x),
 					executor = self.icure_sdk._executor
 				)
@@ -2229,6 +2230,60 @@ class MessageApi:
 			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
+	async def subscribe_to_events_async(self, events: List[SubscriptionEventType], filter: AbstractFilter, subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedMessage]:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = EntitySubscription[EncryptedMessage](
+					producer = success,
+					deserializer = lambda x: EncryptedMessage._deserialize(x),
+					executor = self.icure_sdk._executor
+				)
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"events": [x0.__serialize__() for x0 in events],
+			"filter": serialize_abstract_filter(filter),
+			"subscriptionConfig": subscription_config.__serialize__() if subscription_config is not None else None,
+		}
+		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.icure_sdk._executor,
+			symbols.kotlin.root.com.icure.sdk.py.subscription.MessageApi.subscribeToEventsAsync,
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def subscribe_to_events_blocking(self, events: List[SubscriptionEventType], filter: AbstractFilter, subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedMessage]:
+		payload = {
+			"events": [x0.__serialize__() for x0 in events],
+			"filter": serialize_abstract_filter(filter),
+			"subscriptionConfig": subscription_config.__serialize__() if subscription_config is not None else None,
+		}
+		call_result = symbols.kotlin.root.com.icure.sdk.py.subscription.MessageApi.subscribeToEventsBlocking(
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8')
+		)
+		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+		if error_str_pointer is not None:
+			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+			symbols.DisposeString(error_str_pointer)
+			symbols.DisposeStablePointer(call_result)
+			raise Exception(error_msg)
+		else:
+			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+			symbols.DisposeStablePointer(call_result.pinned)
+			return EntitySubscription[EncryptedMessage](
+				producer = class_pointer,
+				deserializer = lambda x: EncryptedMessage._deserialize(x),
+				executor = self.icure_sdk._executor
+			)
+
 	async def share_with_async(self, delegate_id: str, message: DecryptedMessage, share_secret_ids: List[str], share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
@@ -2413,7 +2468,7 @@ class MessageApi:
 			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
 			symbols.DisposeStablePointer(call_result.pinned)
 			return PaginatedListIterator[DecryptedMessage](
-				producer = cast(class_pointer, c_void_p),
+				producer = class_pointer,
 				deserializer = lambda x: DecryptedMessage._deserialize(x),
 				executor = self.icure_sdk._executor
 			)

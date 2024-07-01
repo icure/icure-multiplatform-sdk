@@ -11,6 +11,8 @@ from model.specializations import SpkiHexString
 from model.specializations import AesExchangeKeyEncryptionKeypairIdentifier
 from model.specializations import Base64String
 from enum import Enum
+from datetime import timedelta
+from model.SingletonMeta import SingletonMeta
 from model.specializations import SecureDelegationKeyString
 from model.specializations import Sha256HexString
 
@@ -4805,6 +4807,76 @@ def deserialize_document(data: Union[str, Dict[str, object]]) -> 'Document':
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of Document")
 
+class SubscriptionEventType(Enum):
+	Create = "CREATE"
+	Update = "UPDATE"
+	Delete = "DELETE"
+
+	def __serialize__(self) -> object:
+		return self.value
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SubscriptionEventType':
+		if data == "CREATE":
+			return SubscriptionEventType.Create
+		elif data == "UPDATE":
+			return SubscriptionEventType.Update
+		elif data == "DELETE":
+			return SubscriptionEventType.Delete
+		else:
+			raise Exception(f"{data} is not a valid value for SubscriptionEventType enum.")
+
+@dataclass
+class EntitySubscriptionConfiguration:
+	channel_buffer_capacity: int = 100
+	on_buffer_full: 'EntitySubscriptionConfiguration.FullBufferBehaviour' = field(default_factory=lambda: EntitySubscriptionConfiguration.FullBufferBehaviour.Close)
+	reconnection_delay: timedelta = timedelta(seconds=2)
+	retry_delay_exponent_factor: float = 2.0
+	connection_max_retries: int = 5
+
+	class FullBufferBehaviour(Enum):
+		Close = "Close"
+		DropOldest = "DropOldest"
+		Ignore = "Ignore"
+
+		def __serialize__(self) -> object:
+			return self.value
+
+		@classmethod
+		def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'FullBufferBehaviour':
+			if data == "Close":
+				return FullBufferBehaviour.Close
+			elif data == "DropOldest":
+				return FullBufferBehaviour.DropOldest
+			elif data == "Ignore":
+				return FullBufferBehaviour.Ignore
+			else:
+				raise Exception(f"{data} is not a valid value for FullBufferBehaviour enum.")
+
+	def __serialize__(self) -> object:
+		return {
+			"channelBufferCapacity": self.channel_buffer_capacity,
+			"onBufferFull": self.on_buffer_full.__serialize__(),
+			"reconnectionDelay": self.reconnection_delay.__serialize__(),
+			"retryDelayExponentFactor": self.retry_delay_exponent_factor,
+			"connectionMaxRetries": self.connection_max_retries,
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EntitySubscriptionConfiguration':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			channel_buffer_capacity=deserialized_dict["channelBufferCapacity"],
+			on_buffer_full=EntitySubscriptionConfiguration.FullBufferBehaviour._deserialize(deserialized_dict["onBufferFull"]),
+			reconnection_delay=timedelta._deserialize(deserialized_dict["reconnectionDelay"]),
+			retry_delay_exponent_factor=deserialized_dict["retryDelayExponentFactor"],
+			connection_max_retries=deserialized_dict["connectionMaxRetries"],
+		)
+
 class SortDirection(Enum):
 	Asc = "asc"
 	Desc = "desc"
@@ -4964,25 +5036,6 @@ def deserialize_content(data: Union[str, Dict[str, object]]) -> 'Content':
 		DecryptedContent._deserialize(deserialized_dict["entity"])
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of Content")
-
-class SubscriptionEventType(Enum):
-	Create = "CREATE"
-	Update = "UPDATE"
-	Delete = "DELETE"
-
-	def __serialize__(self) -> object:
-		return self.value
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SubscriptionEventType':
-		if data == "CREATE":
-			return SubscriptionEventType.Create
-		elif data == "UPDATE":
-			return SubscriptionEventType.Update
-		elif data == "DELETE":
-			return SubscriptionEventType.Delete
-		else:
-			raise Exception(f"{data} is not a valid value for SubscriptionEventType enum.")
 
 @dataclass
 class EncryptedClassification:
@@ -9196,6 +9249,226 @@ class GroupDatabasesInfo:
 			databases_info=[DatabaseInfo._deserialize(x0) for x0 in deserialized_dict["databasesInfo"]],
 			gcp_storage_size=deserialized_dict["gcpStorageSize"],
 		)
+
+EntitySubscriptionEvent = Union['EntitySubscriptionEventConnected', 'EntitySubscriptionEventReconnected', 'EntitySubscriptionEventUnexpectedError', 'EntitySubscriptionEventMissedPing', 'EntitySubscriptionEventClosedByServer', 'EntitySubscriptionEventEntityNotification', 'EntitySubscriptionEventDeserializationError']
+
+class EntitySubscriptionEventConnected(metaclass=SingletonMeta):
+
+	def __serialize__(self) -> object:
+		return {}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Connected':
+		return cls()
+
+class EntitySubscriptionEventReconnected(metaclass=SingletonMeta):
+
+	def __serialize__(self) -> object:
+		return {}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Reconnected':
+		return cls()
+
+@dataclass
+class EntitySubscriptionEventUnexpectedError:
+	message: str
+
+	def __serialize__(self) -> object:
+		return {
+			"message": self.message,
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EntitySubscriptionEventUnexpectedError':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			message=deserialized_dict["message"],
+		)
+
+ConnectionError = Union['EntitySubscriptionEvent.ConnectionErrorMissedPing', 'EntitySubscriptionEvent.ConnectionErrorClosedByServer']
+
+class ConnectionErrorMissedPing(metaclass=SingletonMeta):
+
+	def __serialize__(self) -> object:
+		return {}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'MissedPing':
+		return cls()
+
+class ConnectionErrorClosedByServer(metaclass=SingletonMeta):
+
+	def __serialize__(self) -> object:
+		return {}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ClosedByServer':
+		return cls()
+
+@classmethod
+def serialize_connection_error(cls, connection_error: ConnectionError) -> object:
+	if isinstance(connection_error, EntitySubscriptionEvent.ConnectionErrorMissedPing):
+		serialized_entity = connection_error.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.subscription.EntitySubscriptionEvent.ConnectionError.MissedPing"})
+		return serialized_entity
+	elif isinstance(connection_error, EntitySubscriptionEvent.ConnectionErrorClosedByServer):
+		serialized_entity = connection_error.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.subscription.EntitySubscriptionEvent.ConnectionError.ClosedByServer"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(connection_error)} is not a known subclass of ConnectionError")
+
+def deserialize_connection_error(data: Union[str, Dict[str, object]]) -> 'EntitySubscriptionEvent.ConnectionError':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("type")
+	if qualifier is None:
+		raise Exception("Missing qualifier: type")
+	if qualifier == "com.icure.sdk.subscription.EntitySubscriptionEvent.ConnectionError.MissedPing":
+		return EntitySubscriptionEvent.ConnectionErrorMissedPing._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.subscription.EntitySubscriptionEvent.ConnectionError.ClosedByServer":
+		return EntitySubscriptionEvent.ConnectionErrorClosedByServer._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of ConnectionError")
+
+@dataclass
+class EntitySubscriptionEventEntityNotification:
+	entity: object
+
+	def __serialize__(self) -> object:
+		return {
+			"entity": self.entity.__serialize__(),
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EntitySubscriptionEventEntityNotification':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			entity=deserialized_dict["entity"],
+		)
+
+EntityError = Union['EntitySubscriptionEvent.EntityErrorDeserializationError']
+
+class EntityErrorDeserializationError(metaclass=SingletonMeta):
+
+	def __serialize__(self) -> object:
+		return {}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DeserializationError':
+		return cls()
+
+@classmethod
+def serialize_entity_error(cls, entity_error: EntityError) -> object:
+	if isinstance(entity_error, EntitySubscriptionEvent.EntityErrorDeserializationError):
+		serialized_entity = entity_error.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.subscription.EntitySubscriptionEvent.EntityError.DeserializationError"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(entity_error)} is not a known subclass of EntityError")
+
+def deserialize_entity_error(data: Union[str, Dict[str, object]]) -> 'EntitySubscriptionEvent.EntityError':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("type")
+	if qualifier is None:
+		raise Exception("Missing qualifier: type")
+	if qualifier == "com.icure.sdk.subscription.EntitySubscriptionEvent.EntityError.DeserializationError":
+		return EntitySubscriptionEvent.EntityErrorDeserializationError._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of EntityError")
+
+def serialize_entity_subscription_event(entity_subscription_event: EntitySubscriptionEvent) -> object:
+	if isinstance(entity_subscription_event, EntitySubscriptionEventConnected):
+		serialized_entity = entity_subscription_event.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.subscription.EntitySubscriptionEvent.Connected"})
+		return serialized_entity
+	elif isinstance(entity_subscription_event, EntitySubscriptionEventReconnected):
+		serialized_entity = entity_subscription_event.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.subscription.EntitySubscriptionEvent.Reconnected"})
+		return serialized_entity
+	elif isinstance(entity_subscription_event, EntitySubscriptionEventUnexpectedError):
+		serialized_entity = entity_subscription_event.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.subscription.EntitySubscriptionEvent.UnexpectedError"})
+		return serialized_entity
+	elif isinstance(entity_subscription_event, EntitySubscriptionEventMissedPing):
+		serialized_entity = entity_subscription_event.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.subscription.EntitySubscriptionEvent.ConnectionError.MissedPing"})
+		return serialized_entity
+	elif isinstance(entity_subscription_event, EntitySubscriptionEventClosedByServer):
+		serialized_entity = entity_subscription_event.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.subscription.EntitySubscriptionEvent.ConnectionError.ClosedByServer"})
+		return serialized_entity
+	elif isinstance(entity_subscription_event, EntitySubscriptionEventEntityNotification):
+		serialized_entity = entity_subscription_event.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.subscription.EntitySubscriptionEvent.EntityNotification"})
+		return serialized_entity
+	elif isinstance(entity_subscription_event, EntitySubscriptionEventDeserializationError):
+		serialized_entity = entity_subscription_event.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.subscription.EntitySubscriptionEvent.EntityError.DeserializationError"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(entity_subscription_event)} is not a known subclass of EntitySubscriptionEvent")
+
+def deserialize_entity_subscription_event(data: Union[str, Dict[str, object]]) -> 'EntitySubscriptionEvent':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("type")
+	if qualifier is None:
+		raise Exception("Missing qualifier: type")
+	if qualifier == "com.icure.sdk.subscription.EntitySubscriptionEvent.Connected":
+		return EntitySubscriptionEventConnected._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.subscription.EntitySubscriptionEvent.Reconnected":
+		return EntitySubscriptionEventReconnected._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.subscription.EntitySubscriptionEvent.UnexpectedError":
+		return EntitySubscriptionEventUnexpectedError._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.subscription.EntitySubscriptionEvent.ConnectionError.MissedPing":
+		return EntitySubscriptionEventMissedPing._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.subscription.EntitySubscriptionEvent.ConnectionError.ClosedByServer":
+		return EntitySubscriptionEventClosedByServer._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.subscription.EntitySubscriptionEvent.EntityNotification":
+		return EntitySubscriptionEventEntityNotification._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.subscription.EntitySubscriptionEvent.EntityError.DeserializationError":
+		return EntitySubscriptionEventDeserializationError._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of EntitySubscriptionEvent")
+
+class EntitySubscriptionCloseReason(Enum):
+	ChannelFullException = "ChannelFullException"
+	ConnectionLost = "ConnectionLost"
+	IntentionallyClosed = "IntentionallyClosed"
+
+	def __serialize__(self) -> object:
+		return self.value
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EntitySubscriptionCloseReason':
+		if data == "ChannelFullException":
+			return EntitySubscriptionCloseReason.ChannelFullException
+		elif data == "ConnectionLost":
+			return EntitySubscriptionCloseReason.ConnectionLost
+		elif data == "IntentionallyClosed":
+			return EntitySubscriptionCloseReason.IntentionallyClosed
+		else:
+			raise Exception(f"{data} is not a valid value for EntitySubscriptionCloseReason enum.")
 
 @dataclass
 class CodeStub:
