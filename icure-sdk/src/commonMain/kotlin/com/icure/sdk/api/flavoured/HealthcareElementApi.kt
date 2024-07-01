@@ -263,7 +263,7 @@ private class AbstractHealthcareElementBasicFlavourlessApi(
 	override suspend fun subscribeToEvents(
 		events: Set<SubscriptionEventType>,
 		filter: AbstractFilter<HealthElement>,
-		subscriptionConfig: Subscription.Configuration
+		subscriptionConfig: Subscription.Configuration?
 	): Subscription<EncryptedHealthElement> {
 		return WebSocketSubscription.initialize(
 			client = config.httpClient,

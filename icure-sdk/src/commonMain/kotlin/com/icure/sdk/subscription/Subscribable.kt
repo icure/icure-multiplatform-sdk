@@ -3,11 +3,13 @@ package com.icure.sdk.subscription
 import com.icure.sdk.model.base.Identifiable
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.notification.SubscriptionEventType
+import com.icure.sdk.utils.DefaultValue
 
 interface Subscribable<EntityBaseType : Identifiable<String>, EntityEventType : EntityBaseType> {
 	suspend fun subscribeToEvents(
 		events: Set<SubscriptionEventType>,
 		filter: AbstractFilter<EntityBaseType>,
-		subscriptionConfig: Subscription.Configuration
+		@DefaultValue("null")
+		subscriptionConfig: Subscription.Configuration? = null
 	): Subscription<EntityEventType>
 }

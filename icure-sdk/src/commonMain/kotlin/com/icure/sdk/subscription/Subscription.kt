@@ -3,6 +3,7 @@ package com.icure.sdk.subscription
 import com.icure.sdk.model.base.Identifiable
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 /**
  * A subscription allows to get realtime updates on entities of type [E].
@@ -14,6 +15,17 @@ interface Subscription<E : Identifiable<String>> {
 	 * be consumed after closing.
 	 */
 	suspend fun close()
+
+	/**
+	 * If the subscription is permanently closed. Even if this is true there may still be some unconsumed events
+	 */
+	val isClosed: Boolean get() = closeReason != null
+
+	/**
+	 * If the subscription is closed the reason for closure, null otherwise. Even if this is not null there may still be
+	 * some unconsumed events
+	 */
+	val closeReason: CloseReason?
 
 	/**
 	 * The events observed by this subscription.
@@ -54,7 +66,13 @@ interface Subscription<E : Identifiable<String>> {
 			 */
 			data object MissedPing : ConnectionError
 
-			// TODO what does actually happen if internet dies?
+			/**
+			 * The server has closed the connection.
+			 *
+			 * The subscription will try to reconnect, according to the configuration, but until the reconnection is
+			 * successful the subscription may miss some entity notifications.
+			 */
+			data object ClosedByServer : ConnectionError
 		}
 
 		/**
@@ -77,17 +95,24 @@ interface Subscription<E : Identifiable<String>> {
 		}
 	}
 
-	/**
-	 * An exception used to close the [Subscription.eventChannel] if a new event is produced but the channel is at
-	 * maximum capacity and the [Subscription.Configuration.onBufferFull] is [Subscription.Configuration.FullBufferBehaviour.FAIL].
-	 */
-	class ChannelFullException : Exception("Subscription events are produced faster than they are consumed")
+	sealed interface CloseReason {
+		/**
+		 * A new event was produced but the event channel was at maximum capacity and the
+		 * [Subscription.Configuration.onBufferFull] is [Subscription.Configuration.FullBufferBehaviour.CLOSE].
+		 */
+		data object ChannelFullException : CloseReason
 
-	/**
-	 * An exception used to close the [Subscription.eventChannel] if the subscription can't connect or lost the connection
-	 * to the backend.
-	 */
-	class ConnectionException : Exception("The subscription could not connect to the backend within the configured amount of retries")
+		/**
+		 * The subscription can't connect or lost the connection to the backend (and could not reconnect within the
+		 * configured amount of retries).
+		 */
+		data object ConnectionLost : CloseReason
+
+		/**
+		 * The subscription was closed by invoking the [close] method.
+		 */
+		data object IntentionallyClosed : CloseReason
+	}
 
 
 	/**
@@ -101,25 +126,25 @@ interface Subscription<E : Identifiable<String>> {
 		/**
 		 * How the subscription should behave if a new event is received but it does not fit in the buffer
 		 */
-		val onBufferFull: FullBufferBehaviour = FullBufferBehaviour.FAIL,
+		val onBufferFull: FullBufferBehaviour = FullBufferBehaviour.CLOSE,
 		/**
 		 * If the (re)connection fails how long to wait before another attempt.
 		 */
-		val reconnectionDelay: Duration,
+		val reconnectionDelay: Duration = 2.seconds,
 		/**
 		 * Factor for increasing the delay between (re)connection attempts in case of repeated failures.
 		 */
-		val retryDelayExponentFactor: Double,
+		val retryDelayExponentFactor: Double = 2.0,
 		/**
 		 * How many times should the subscription attempt to (re)connect before closing with a [Subscription.ConnectionException]
 		 */
-		val connectionMaxRetries: Int,
+		val connectionMaxRetries: Int = 5,
 	) {
 		enum class FullBufferBehaviour {
 			/**
 			 * The subscription will be closed, and the [Subscription.eventChannel] will fail with a [Subscription.ChannelFullException]
 			 */
-			FAIL,
+			CLOSE,
 			/**
 			 * The oldest event will be dropped (i.e. the next element in the [Subscription.eventChannel]), and the new
 			 * event will be added.

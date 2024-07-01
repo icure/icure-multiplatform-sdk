@@ -63,13 +63,17 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 	companion object {
 		// Should be same as on backend
 		private val DURATION_BETWEEN_PINGS = 20.seconds
+		private val NO_PING_FROM_SERVER = CloseReason(
+			code = CloseReason.Codes.NORMAL.code,
+			message = "Server ping timeout",
+		)
 
 		suspend fun <BaseType : Identifiable<String>, NotificationEntity : BaseType> initialize(
 			hostname: String,
 			path: String,
 			webSocketAuthProvider: WebSocketAuthProvider,
 			client: HttpClient,
-			config: Subscription.Configuration,
+			config: Subscription.Configuration?,
 			deserializeEntity: (String) -> NotificationEntity,
 			events: Set<SubscriptionEventType>,
 			filter: AbstractFilter<BaseType>,
@@ -91,7 +95,7 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 				path,
 				webSocketAuthProvider,
 				client,
-				config,
+				config ?: Subscription.Configuration(),
 				deserializeEntity,
 				subscriptionRequest
 			)
@@ -104,14 +108,14 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 	private val _eventChannel = Channel<Subscription.Event<E>>(
 		capacity = config.channelBufferCapacity,
 		onBufferOverflow = when (config.onBufferFull) {
-			Subscription.Configuration.FullBufferBehaviour.FAIL -> BufferOverflow.SUSPEND
+			Subscription.Configuration.FullBufferBehaviour.CLOSE -> BufferOverflow.SUSPEND
 			Subscription.Configuration.FullBufferBehaviour.DROP_OLDEST -> BufferOverflow.DROP_OLDEST
 			Subscription.Configuration.FullBufferBehaviour.IGNORE -> BufferOverflow.SUSPEND
 		}
 	)
 
 	private lateinit var session: DefaultWebSocketSession
-	private var intentionallyClosed = false
+	private var _closeReason: Subscription.CloseReason? = null
 	private var retriesAttempt = 0
 	private var lastPingJob: Job? = null
 
@@ -123,34 +127,19 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 		get() = _eventChannel
 
 	override suspend fun close() {
-		closeDefinitely(null)
+		closeDefinitely(Subscription.CloseReason.IntentionallyClosed)
 	}
 
-	private suspend fun closeDefinitely(eventChannelReason: Throwable?) {
-		closeWebsocket(
-			code = CloseReason.Codes.NORMAL.code,
-			reason = "Closed by the client",
-		)
-		wrapperScope.cancel()
-		_eventChannel.close(eventChannelReason)
-	}
+	override val closeReason: Subscription.CloseReason?
+		get() = _closeReason
 
-
-	/**
-	 * Close the connection definitively
-	 *
-	 * This will bypass the retry mechanism and close the connection
-	 */
-	private suspend fun closeWebsocket(code: Short, reason: String) {
-		intentionallyClosed = true
-		session.close(
-			reason = CloseReason(
-				code = code,
-				message = reason,
-			),
-		)
+	private suspend fun closeDefinitely(closeReason: Subscription.CloseReason) {
+		_closeReason = closeReason
+		session.close(CloseReason(CloseReason.Codes.NORMAL, "Closed by the client"))
 		session.incoming.cancel()
 		session.cancel()
+		wrapperScope.cancel()
+		_eventChannel.close(null)
 	}
 
 	/**
@@ -164,12 +153,7 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 		delay(DURATION_BETWEEN_PINGS)
 		if (isActive) {
 			sendEvent(Subscription.Event.ConnectionError.MissedPing)
-			session.close(
-				reason = CloseReason(
-					code = CloseReason.Codes.NORMAL.code,
-					message = "Ping timeout",
-				),
-			)
+			session.close(NO_PING_FROM_SERVER)
 			session.incoming.cancel()
 		}
 	}
@@ -214,8 +198,8 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 	 * Suspends until the connection is closed and emits the close event
 	 */
 	private suspend fun waitForClose() {
-		val closeReason = session.closeReason.await()
-		// TODO event if closed by the server?
+		val wsCloseReason = session.closeReason.await()
+	 	if (_closeReason == null && wsCloseReason != NO_PING_FROM_SERVER) _eventChannel.send(Subscription.Event.ConnectionError.ClosedByServer)
 	}
 
 	private suspend fun startSession(): DefaultClientWebSocketSession {
@@ -258,12 +242,12 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 	}
 
 	private tailrec suspend fun reconnect() {
-		if (intentionallyClosed) return
+		if (_closeReason != null) return
 		session.incoming.cancel()
 		session.cancel()
 
 		if (retriesAttempt >= config.connectionMaxRetries) {
-			closeDefinitely(Subscription.ConnectionException())
+			closeDefinitely(Subscription.CloseReason.ConnectionLost)
 		} else {
 			delay(
 				exponentialRetry(
@@ -293,8 +277,8 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 	 */
 	private suspend fun sendEvent(event: Subscription.Event<E>) {
 		val sendResult = _eventChannel.trySend(event)
-		if (sendResult.isFailure && config.onBufferFull == Subscription.Configuration.FullBufferBehaviour.FAIL) {
-			closeDefinitely(Subscription.ChannelFullException())
+		if (sendResult.isFailure && config.onBufferFull == Subscription.Configuration.FullBufferBehaviour.CLOSE) {
+			closeDefinitely(Subscription.CloseReason.ChannelFullException)
 		}
 	}
 }

@@ -29,29 +29,26 @@ import com.icure.sdk.model.requests.topic.RemoveParticipant
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.options.ApiConfiguration
 import com.icure.sdk.options.BasicApiConfiguration
+import com.icure.sdk.subscription.Subscribable
+import com.icure.sdk.subscription.Subscription
+import com.icure.sdk.subscription.WebSocketSubscription
 import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.currentEpochMs
-import com.icure.sdk.subscription.Connection
-import com.icure.sdk.subscription.ConnectionImpl
-import com.icure.sdk.subscription.EmittedEvent
-import com.icure.sdk.subscription.Subscribable
-import io.ktor.util.InternalAPI
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.decodeFromJsonElement
-import kotlin.time.Duration
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
-interface TopicBasicFlavourlessApi {
+interface TopicBasicFlavourlessApi : Subscribable<Topic, EncryptedTopic> {
 	suspend fun deleteTopic(entityId: String): DocIdentifier
 	suspend fun deleteTopics(entityIds: List<String>): List<DocIdentifier>
 	suspend fun matchTopicsBy(filter: AbstractFilter<Topic>): List<String>
 }
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
-interface TopicBasicFlavouredApi<E : Topic>: Subscribable<Topic, E> {
+interface TopicBasicFlavouredApi<E : Topic> {
 	suspend fun modifyTopic(entity: E): E
 	suspend fun getTopic(entityId: String): E
 	suspend fun getTopics(entityIds: List<String>): List<E>
@@ -166,42 +163,6 @@ private abstract class AbstractTopicBasicFlavouredApi<E : Topic>(
 	override suspend fun removeParticipant(entityId: String, dataOwnerId: String) =
 		rawApi.removeParticipant(entityId, RemoveParticipant(dataOwnerId)).successBody().let { maybeDecrypt(it) }
 
-	@OptIn(InternalAPI::class)
-	override suspend fun subscribeToEvents(
-		events: Set<SubscriptionEventType>,
-		filter: AbstractFilter<Topic>,
-		onConnected: suspend () -> Unit,
-		channelCapacity: Int,
-		retryDelay: Duration,
-		retryDelayExponentFactor: Double,
-		maxRetries: Int,
-		eventFired: suspend (E) -> Unit
-	): Connection {
-		return ConnectionImpl.initialize(
-			client = config.httpClient,
-			hostname = config.apiUrl.replace("https://", "").replace("http://", ""),
-			path = "/ws/v2/notification/subscribe",
-			serializer = EncryptedTopic.serializer(),
-			events = events,
-			filter = filter,
-			qualifiedName = Topic.KRAKEN_QUALIFIED_NAME,
-			subscriptionSerializer = { Serialization.json.encodeToString(it) },
-			webSocketAuthProvider = config.requireWebSocketAuthProvider(),
-			onOpenListener = onConnected,
-			retryDelay = retryDelay,
-			retryDelayExponentFactor = retryDelayExponentFactor,
-			maxRetries = maxRetries,
-			eventCallback = { entity, onEvent ->
-				try {
-					eventFired(maybeDecrypt(entity))
-				} catch (e: EntityEncryptionException) {
-					onEvent(EmittedEvent.Error(e.message, false))
-				}
-			}
-		)
-	}
-
-
 	abstract suspend fun validateAndMaybeEncrypt(entity: E): EncryptedTopic
 	abstract suspend fun maybeDecrypt(entity: EncryptedTopic): E
 }
@@ -250,10 +211,29 @@ private abstract class AbstractTopicFlavouredApi<E : Topic>(
 }
 
 @InternalIcureApi
-private class AbstractTopicBasicFlavourlessApi(val rawApi: RawTopicApi) : TopicBasicFlavourlessApi {
+private class AbstractTopicBasicFlavourlessApi(val rawApi: RawTopicApi, private val config: BasicApiConfiguration) : TopicBasicFlavourlessApi {
 	override suspend fun deleteTopic(entityId: String) = rawApi.deleteTopic(entityId).successBody()
 	override suspend fun deleteTopics(entityIds: List<String>) = rawApi.deleteTopics(ListOfIds(entityIds)).successBody()
 	override suspend fun matchTopicsBy(filter: AbstractFilter<Topic>) = rawApi.matchTopicsBy(filter).successBody()
+
+	override suspend fun subscribeToEvents(
+		events: Set<SubscriptionEventType>,
+		filter: AbstractFilter<Topic>,
+		subscriptionConfig: Subscription.Configuration?
+	): Subscription<EncryptedTopic> {
+		return WebSocketSubscription.initialize(
+			client = config.httpClient,
+			hostname = config.apiUrl.replace("https://", "").replace("http://", ""),
+			path = "/ws/v2/notification/subscribe",
+			deserializeEntity = { Serialization.json.decodeFromString(it) },
+			events = events,
+			filter = filter,
+			qualifiedName = Topic.KRAKEN_QUALIFIED_NAME,
+			subscriptionRequestSerializer = { Serialization.json.encodeToString(it) },
+			webSocketAuthProvider = config.requireWebSocketAuthProvider(),
+			config = subscriptionConfig
+		)
+	}
 }
 
 @InternalIcureApi
@@ -278,7 +258,7 @@ internal class TopicApiImpl(
 		) { Serialization.json.decodeFromJsonElement<DecryptedTopic>(it) }
 			?: throw EntityEncryptionException("Entity ${entity.id} cannot be created")
 	}
-}, TopicBasicFlavourlessApi by AbstractTopicBasicFlavourlessApi(rawApi) {
+}, TopicBasicFlavourlessApi by AbstractTopicBasicFlavourlessApi(rawApi, config) {
 	override val encrypted: TopicFlavouredApi<EncryptedTopic> =
 		object : AbstractTopicFlavouredApi<EncryptedTopic>(rawApi, config) {
 			override suspend fun validateAndMaybeEncrypt(entity: EncryptedTopic): EncryptedTopic =
@@ -383,4 +363,4 @@ internal class TopicBasicApiImpl(
 		)
 
 	override suspend fun maybeDecrypt(entity: EncryptedTopic): EncryptedTopic = entity
-}, TopicBasicFlavourlessApi by AbstractTopicBasicFlavourlessApi(rawApi)
+}, TopicBasicFlavourlessApi by AbstractTopicBasicFlavourlessApi(rawApi, config)

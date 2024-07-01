@@ -22,7 +22,8 @@ import io.kotest.assertions.fail
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.core.spec.style.stringSpec
 import io.kotest.matchers.should
-import kotlinx.coroutines.CompletableDeferred
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeInstanceOf
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeoutOrNull
 import java.util.UUID
@@ -31,54 +32,28 @@ import kotlin.time.Duration.Companion.seconds
 fun <BaseType : Identifiable<String>, MaybeDecryptedType : BaseType> subscribableTests(
 	name: String,
 	subscribableApi: Subscribable<BaseType, MaybeDecryptedType>,
-	createEntity: suspend () -> Any,
+	createEntity: suspend () -> Identifiable<String>,
 	filter: AbstractFilter<BaseType>,
 ) = stringSpec {
 	name should {
 		"Should subscribe to $name updates" {
-			val completable = CompletableDeferred<Unit>()
-
-			val connection = subscribableApi
+			val subscription = subscribableApi
 				.subscribeToEvents(
 					events = setOf(SubscriptionEventType.Create),
-					filter = filter,
-					onConnected = {
-						println("Connected")
-						completable.complete(Unit)
-					},
-				) {
-					println(it.id)
-				}
+					filter = filter
+				)
 
 			withTimeoutOrNull(5.seconds) {
-				completable.await()
-				connection.close()
-
+				subscription.eventChannel.receive() shouldBe Subscription.Event.Connected
 			} ?: fail("Didn't received OPEN event within 5 seconds")
-		}
 
-		"Should be able to listen to $name creation updates" {
-			val completable = CompletableDeferred<Unit>()
-
-			val connection = subscribableApi
-				.subscribeToEvents(
-					setOf(SubscriptionEventType.Create),
-					filter,
-				) {
-					println("Received $name creation event for ${it.id}")
-					completable.complete(Unit)
-				}.also { connection ->
-					connection.onReconnected {
-						println("Connected")
-					}
-				}
-
-			createEntity()
+			val created = createEntity()
 
 			withTimeoutOrNull(5.seconds) {
-				completable.await()
-				connection.close()
-			} ?: fail("Didn't received MESSAGE event within 5 seconds")
+				subscription.eventChannel.receive()
+					.shouldBeInstanceOf<Subscription.Event.EntityNotification<*>>()
+					.entity.id shouldBe created.id
+			} ?: fail("Didn't received ENTITY event within 5 seconds")
 		}
 	}
 }
@@ -92,7 +67,7 @@ class SubscriptionsTests : StringSpec(
 			include(
 				subscribableTests(
 					name = "HealthElement",
-					subscribableApi = hcpUser.api().healthcareElement.encrypted,
+					subscribableApi = hcpUser.api().healthcareElement,
 					filter = HealthElementByHcPartyFilter(hcpId = hcpUser.dataOwnerId),
 					createEntity =  {
 						val patient = hcpUser
@@ -125,7 +100,7 @@ class SubscriptionsTests : StringSpec(
 			include(
 				subscribableTests(
 					name = "Patient",
-					subscribableApi = hcpUser.api().patient.encrypted,
+					subscribableApi = hcpUser.api().patient,
 					filter = PatientByHcPartyFilter(healthcarePartyId = hcpUser.dataOwnerId),
 					createEntity =  {
 						hcpUser
@@ -142,7 +117,7 @@ class SubscriptionsTests : StringSpec(
 			include(
 				subscribableTests(
 					name = "Contact",
-					subscribableApi = hcpUser.api().contact.encrypted,
+					subscribableApi = hcpUser.api().contact,
 					filter = ContactByHcPartyFilter(hcpId = hcpUser.dataOwnerId),
 					createEntity =  {
 						val patient = hcpUser
@@ -176,7 +151,7 @@ class SubscriptionsTests : StringSpec(
 			include(
 				subscribableTests(
 					name = "MaintenanceTask",
-					subscribableApi = hcpUser.api().maintenanceTask.encrypted,
+					subscribableApi = hcpUser.api().maintenanceTask,
 					filter = MaintenanceTaskByHcPartyAndIdentifiersFilter(healthcarePartyId = hcpUser.dataOwnerId, identifiers = listOf(identifier)),
 					createEntity =  {
 						val currentUser = hcpUser.api().user.getCurrentUser()
@@ -197,7 +172,7 @@ class SubscriptionsTests : StringSpec(
 			include(
 				subscribableTests(
 					name = "Message",
-					subscribableApi = hcpUser.api().message.encrypted,
+					subscribableApi = hcpUser.api().message,
 					filter = MessageByHcPartyFilter(hcpId = hcpUser.dataOwnerId),
 					createEntity =  {
 						val patient = hcpUser
@@ -228,7 +203,7 @@ class SubscriptionsTests : StringSpec(
 			include(
 				subscribableTests(
 					name = "Topic",
-					subscribableApi = hcpUser.api().topic.encrypted,
+					subscribableApi = hcpUser.api().topic,
 					filter = TopicByHcPartyFilter(hcpId = hcpUser.dataOwnerId),
 					createEntity =  {
 						val patient = hcpUser

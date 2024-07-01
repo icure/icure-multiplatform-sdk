@@ -37,6 +37,9 @@ import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.options.ApiConfiguration
 import com.icure.sdk.options.BasicApiConfiguration
+import com.icure.sdk.subscription.Subscribable
+import com.icure.sdk.subscription.Subscription
+import com.icure.sdk.subscription.WebSocketSubscription
 import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
@@ -47,12 +50,6 @@ import com.icure.sdk.utils.currentFuzzyDateTime
 import com.icure.sdk.utils.ensure
 import com.icure.sdk.utils.pagination.IdsPageIterator
 import com.icure.sdk.utils.pagination.PaginatedListIterator
-import com.icure.sdk.subscription.Connection
-import com.icure.sdk.subscription.ConnectionImpl
-import com.icure.sdk.subscription.EmittedEvent
-import com.icure.sdk.subscription.Subscribable
-import io.ktor.util.InternalAPI
-import kotlinx.coroutines.channels.Channel
 import kotlinx.datetime.TimeZone
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.JsonArray
@@ -63,11 +60,9 @@ import kotlinx.serialization.json.decodeFromJsonElement
 import kotlinx.serialization.json.encodeToJsonElement
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
-import kotlin.time.Duration
-import kotlin.time.Duration.Companion.seconds
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
-interface ContactBasicFlavourlessApi {
+interface ContactBasicFlavourlessApi : Subscribable<Contact, EncryptedContact> {
 	suspend fun matchContactsBy(filter: AbstractFilter<Contact>): List<String>
 	suspend fun matchServicesBy(filter: AbstractFilter<Service>): List<String>
 	suspend fun deleteContact(entityId: String): DocIdentifier
@@ -78,10 +73,16 @@ interface ContactBasicFlavourlessApi {
 	): List<IcureStub>
 
 	suspend fun getServiceCodesOccurrences(codeType: String, minOccurrences: Long): List<LabelledOccurence>
+
+	suspend fun subscribeToServiceEvents(
+		events: Set<SubscriptionEventType>,
+		filter: AbstractFilter<Service>,
+		subscriptionConfig: Subscription.Configuration
+	): Subscription<EncryptedService>
 }
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
-interface ContactBasicFlavouredApi<E : Contact, S : Service> : Subscribable<Contact, E> {
+interface ContactBasicFlavouredApi<E : Contact, S : Service> {
 	suspend fun modifyContact(entity: E): E
 	suspend fun modifyContacts(entities: List<E>): List<E>
 	suspend fun getContact(entityId: String): E
@@ -120,22 +121,6 @@ interface ContactBasicFlavouredApi<E : Contact, S : Service> : Subscribable<Cont
 	): PaginatedList<E>
 
 	suspend fun filterServicesBy(filterChain: FilterChain<Service>, startDocumentId: String?, limit: Int?): PaginatedList<S>
-
-	suspend fun subscribeToServiceEvents(
-		events: Set<SubscriptionEventType>,
-		filter: AbstractFilter<Service>,
-		@DefaultValue("{}")
-		onConnected: suspend () -> Unit = {},
-		@DefaultValue("kotlinx.coroutines.channels.Channel.BUFFERED")
-		channelCapacity: Int = Channel.BUFFERED,
-		@DefaultValue("2.seconds")
-		retryDelay: Duration = 2.seconds,
-		@DefaultValue("2.0")
-		retryDelayExponentFactor: Double = 2.0,
-		@DefaultValue("5")
-		maxRetries: Int = 5,
-		eventFired: suspend (S) -> Unit,
-	): Connection
 }
 
 /* The extra API calls declared in this interface are the ones that can be used on encrypted or decrypted items but only when the user is a data owner */
@@ -304,76 +289,6 @@ private abstract class AbstractContactBasicFlavouredApi<E : Contact, S : Service
 	): PaginatedList<E> = rawApi.findContactsByOpeningDate(startDate, endDate, hcPartyId, startKey.encodeStartKey(), startDocumentId, limit).successBody()
 		.map { maybeDecrypt(it) }
 
-	@OptIn(InternalAPI::class)
-	override suspend fun subscribeToServiceEvents(
-		events: Set<SubscriptionEventType>,
-		filter: AbstractFilter<Service>,
-		onConnected: suspend () -> Unit,
-		channelCapacity: Int,
-		retryDelay: Duration,
-		retryDelayExponentFactor: Double,
-		maxRetries: Int,
-		eventFired: suspend (S) -> Unit
-	): Connection {
-		return ConnectionImpl.initialize(
-			client = config.httpClient,
-			hostname = config.apiUrl.replace("https://", "").replace("http://", ""),
-			path = "/ws/v2/notification/subscribe",
-			serializer = EncryptedService.serializer(),
-			events = events,
-			filter = filter,
-			qualifiedName = Service.KRAKEN_QUALIFIED_NAME,
-			subscriptionSerializer = { Serialization.json.encodeToString(it) },
-			webSocketAuthProvider = config.requireWebSocketAuthProvider(),
-			onOpenListener = onConnected,
-			retryDelay = retryDelay,
-			retryDelayExponentFactor = retryDelayExponentFactor,
-			maxRetries = maxRetries,
-			eventCallback = { entity, onEvent ->
-				try {
-					eventFired(maybeDecryptService(entity))
-				} catch (e: EntityEncryptionException) {
-					onEvent(EmittedEvent.Error(e.message, false))
-				}
-			}
-		)
-	}
-
-	@OptIn(InternalAPI::class)
-	override suspend fun subscribeToEvents(
-		events: Set<SubscriptionEventType>,
-		filter: AbstractFilter<Contact>,
-		onConnected: suspend () -> Unit,
-		channelCapacity: Int,
-		retryDelay: Duration,
-		retryDelayExponentFactor: Double,
-		maxRetries: Int,
-		eventFired: suspend (E) -> Unit
-	): Connection {
-		return ConnectionImpl.initialize(
-			client = config.httpClient,
-			hostname = config.apiUrl.replace("https://", "").replace("http://", ""),
-			path = "/ws/v2/notification/subscribe",
-			serializer = EncryptedContact.serializer(),
-			events = events,
-			filter = filter,
-			qualifiedName = Contact.KRAKEN_QUALIFIED_NAME,
-			subscriptionSerializer = { Serialization.json.encodeToString(it) },
-			webSocketAuthProvider = config.requireWebSocketAuthProvider(),
-			onOpenListener = onConnected,
-			retryDelay = retryDelay,
-			retryDelayExponentFactor = retryDelayExponentFactor,
-			maxRetries = maxRetries,
-			eventCallback = { entity, onEvent ->
-				try {
-					eventFired(maybeDecrypt(entity))
-				} catch (e: EntityEncryptionException) {
-					onEvent(EmittedEvent.Error(e.message, false))
-				}
-			}
-		)
-	}
-
 	abstract suspend fun validateAndMaybeEncrypt(entity: E): EncryptedContact
 	abstract suspend fun maybeDecrypt(entity: EncryptedContact): E
 	abstract suspend fun maybeDecryptService(entity: EncryptedService): S
@@ -513,7 +428,10 @@ internal fun Service.asIcureStubWithTypeInfo(): EntityWithTypeInfo<IcureStub> {
 }
 
 @InternalIcureApi
-private class AbstractContactBasicFlavourlessApi(val rawApi: RawContactApi) : ContactBasicFlavourlessApi {
+private class AbstractContactBasicFlavourlessApi(
+	val rawApi: RawContactApi,
+	private val config: BasicApiConfiguration
+) : ContactBasicFlavourlessApi {
 	override suspend fun matchContactsBy(filter: AbstractFilter<Contact>) = rawApi.matchContactsBy(filter).successBody()
 	override suspend fun matchServicesBy(filter: AbstractFilter<Service>): List<String> = rawApi.matchServicesBy(filter).successBody()
 	override suspend fun deleteContact(entityId: String) = rawApi.deleteContact(entityId).successBody()
@@ -525,6 +443,44 @@ private class AbstractContactBasicFlavourlessApi(val rawApi: RawContactApi) : Co
 
 	override suspend fun getServiceCodesOccurrences(codeType: String, minOccurrences: Long) =
 		rawApi.getServiceCodesOccurrences(codeType, minOccurrences).successBody()
+
+	override suspend fun subscribeToServiceEvents(
+		events: Set<SubscriptionEventType>,
+		filter: AbstractFilter<Service>,
+		subscriptionConfig: Subscription.Configuration
+	): Subscription<EncryptedService> {
+		return WebSocketSubscription.initialize(
+			client = config.httpClient,
+			hostname = config.apiUrl.replace("https://", "").replace("http://", ""),
+			path = "/ws/v2/notification/subscribe",
+			deserializeEntity = { Serialization.json.decodeFromString(it) },
+			events = events,
+			filter = filter,
+			qualifiedName = Service.KRAKEN_QUALIFIED_NAME,
+			subscriptionRequestSerializer = { Serialization.json.encodeToString(it) },
+			webSocketAuthProvider = config.requireWebSocketAuthProvider(),
+			config = subscriptionConfig
+		)
+	}
+
+	override suspend fun subscribeToEvents(
+		events: Set<SubscriptionEventType>,
+		filter: AbstractFilter<Contact>,
+		subscriptionConfig: Subscription.Configuration?
+	): Subscription<EncryptedContact> {
+		return WebSocketSubscription.initialize(
+			client = config.httpClient,
+			hostname = config.apiUrl.replace("https://", "").replace("http://", ""),
+			path = "/ws/v2/notification/subscribe",
+			deserializeEntity = { Serialization.json.decodeFromString(it) },
+			events = events,
+			filter = filter,
+			qualifiedName = Contact.KRAKEN_QUALIFIED_NAME,
+			subscriptionRequestSerializer = { Serialization.json.encodeToString(it) },
+			webSocketAuthProvider = config.requireWebSocketAuthProvider(),
+			config = subscriptionConfig
+		)
+	}
 }
 
 @InternalIcureApi
@@ -570,7 +526,7 @@ internal class ContactApiImpl(
 				}
 		} ?: throw EntityEncryptionException("Service ${entity.id} cannot be decrypted")
 
-}, ContactBasicFlavourlessApi by AbstractContactBasicFlavourlessApi(rawApi) {
+}, ContactBasicFlavourlessApi by AbstractContactBasicFlavourlessApi(rawApi, config) {
 	private val crypto get() = config.crypto
 
 	override val encrypted: ContactFlavouredApi<EncryptedContact, EncryptedService> =
@@ -726,4 +682,4 @@ internal class ContactBasicApiImpl(
 
 	override suspend fun maybeDecrypt(entity: EncryptedContact): EncryptedContact = entity
 	override suspend fun maybeDecryptService(entity: EncryptedService): EncryptedService = entity
-}, ContactBasicFlavourlessApi by AbstractContactBasicFlavourlessApi(rawApi)
+}, ContactBasicFlavourlessApi by AbstractContactBasicFlavourlessApi(rawApi, config)
