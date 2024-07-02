@@ -1,12 +1,14 @@
 from typing import Generic, TypeVar, List, Optional, Callable
 from ctypes import c_void_p, cast, c_char_p
 from concurrent.futures import Executor
-from kotlin_types import symbols
+from kotlin_types import symbols, DATA_RESULT_CALLBACK_FUNC
 from model import EntitySubscriptionCloseReason
 from model.CallResult import create_result_from_json
 from datetime import timedelta
 from subscription.EntitySubscriptionEvent import EntitySubscriptionEvent
 import math
+import asyncio
+import json
 
 
 T = TypeVar('T')
@@ -60,8 +62,25 @@ class EntitySubscription(Generic[T]):
         else:
             return self.__decode_event(result_info.success)
 
-    def wait_for_event_async(self, timeout: timedelta) -> Optional[EntitySubscriptionEvent[T]]:
-        raise "TODO"
+    async def wait_for_event_async(self, timeout: timedelta) -> Optional[EntitySubscriptionEvent[T]]:
+        loop = asyncio.get_running_loop()
+        future = loop.create_future()
+        def make_result_and_complete(success, failure):
+            if failure is not None:
+                result = Exception(failure.decode('utf-8'))
+                loop.call_soon_threadsafe(lambda: future.set_exception(result))
+            else:
+                result = self.__decode_event(json.loads(success.decode('utf-8')))
+                loop.call_soon_threadsafe(lambda: future.set_result(result))
+        callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+        loop.run_in_executor(
+            self.__executor,
+            symbols.kotlin.root.com.icure.sdk.py.subscription.EntitySubscription.waitForEventAsync,
+            self.__producer,
+            EntitySubscription.__time_delta_ms(timeout),
+            callback
+        )
+        return await future
 
     def __decode_event(self, encoded_event) -> Optional[EntitySubscriptionEvent[T]]:
         if encoded_event is not None:
