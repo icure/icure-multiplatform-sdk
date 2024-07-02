@@ -32,14 +32,16 @@ import com.icure.sdk.model.extensions.autoDelegationsFor
 import com.icure.sdk.model.extensions.dataOwnerId
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
+import com.icure.sdk.model.notification.Subscription
 import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.options.ApiConfiguration
 import com.icure.sdk.options.BasicApiConfiguration
-import com.icure.sdk.subscription.Subscribable
+import com.icure.sdk.serialization.NoSerializer
 import com.icure.sdk.subscription.EntitySubscription
 import com.icure.sdk.subscription.EntitySubscriptionConfiguration
+import com.icure.sdk.subscription.Subscribable
 import com.icure.sdk.subscription.WebSocketSubscription
 import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.EntityEncryptionException
@@ -52,7 +54,6 @@ import com.icure.sdk.utils.ensure
 import com.icure.sdk.utils.pagination.IdsPageIterator
 import com.icure.sdk.utils.pagination.PaginatedListIterator
 import kotlinx.datetime.TimeZone
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonNull
@@ -454,11 +455,15 @@ private class AbstractContactBasicFlavourlessApi(
 			client = config.httpClient,
 			hostname = config.apiUrl.replace("https://", "").replace("http://", ""),
 			path = "/ws/v2/notification/subscribe",
-			deserializeEntity = { Serialization.json.decodeFromString(it) },
+			deserializeEntity = {
+				Serialization.json.decodeFromString(EncryptedService.serializer(), it)
+			},
 			events = events,
 			filter = filter,
 			qualifiedName = Service.KRAKEN_QUALIFIED_NAME,
-			subscriptionRequestSerializer = { Serialization.json.encodeToString(it) },
+			subscriptionRequestSerializer = {
+				Serialization.json.encodeToString(Subscription.serializer(NoSerializer.get()), it)
+			},
 			webSocketAuthProvider = config.requireWebSocketAuthProvider(),
 			config = subscriptionConfig
 		)
@@ -473,11 +478,15 @@ private class AbstractContactBasicFlavourlessApi(
 			client = config.httpClient,
 			hostname = config.apiUrl.replace("https://", "").replace("http://", ""),
 			path = "/ws/v2/notification/subscribe",
-			deserializeEntity = { Serialization.json.decodeFromString(it) },
+			deserializeEntity = {
+				Serialization.json.decodeFromString(EncryptedContact.serializer(), it)
+			},
 			events = events,
 			filter = filter,
 			qualifiedName = Contact.KRAKEN_QUALIFIED_NAME,
-			subscriptionRequestSerializer = { Serialization.json.encodeToString(it) },
+			subscriptionRequestSerializer = {
+				Serialization.json.encodeToString(Subscription.serializer(NoSerializer.get()), it)
+			},
 			webSocketAuthProvider = config.requireWebSocketAuthProvider(),
 			config = subscriptionConfig
 		)

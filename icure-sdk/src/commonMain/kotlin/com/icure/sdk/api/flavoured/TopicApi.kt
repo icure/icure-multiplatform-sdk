@@ -22,6 +22,7 @@ import com.icure.sdk.model.extensions.autoDelegationsFor
 import com.icure.sdk.model.extensions.dataOwnerId
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
+import com.icure.sdk.model.notification.Subscription
 import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.requests.topic.AddParticipant
@@ -29,16 +30,16 @@ import com.icure.sdk.model.requests.topic.RemoveParticipant
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.options.ApiConfiguration
 import com.icure.sdk.options.BasicApiConfiguration
-import com.icure.sdk.subscription.Subscribable
+import com.icure.sdk.serialization.NoSerializer
 import com.icure.sdk.subscription.EntitySubscription
 import com.icure.sdk.subscription.EntitySubscriptionConfiguration
+import com.icure.sdk.subscription.Subscribable
 import com.icure.sdk.subscription.WebSocketSubscription
 import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.currentEpochMs
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.decodeFromJsonElement
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
@@ -226,11 +227,13 @@ private class AbstractTopicBasicFlavourlessApi(val rawApi: RawTopicApi, private 
 			client = config.httpClient,
 			hostname = config.apiUrl.replace("https://", "").replace("http://", ""),
 			path = "/ws/v2/notification/subscribe",
-			deserializeEntity = { Serialization.json.decodeFromString(it) },
+			deserializeEntity = { Serialization.json.decodeFromString(EncryptedTopic.serializer(), it) },
 			events = events,
 			filter = filter,
 			qualifiedName = Topic.KRAKEN_QUALIFIED_NAME,
-			subscriptionRequestSerializer = { Serialization.json.encodeToString(it) },
+			subscriptionRequestSerializer = {
+				Serialization.json.encodeToString(Subscription.serializer(NoSerializer.get()), it)
+			},
 			webSocketAuthProvider = config.requireWebSocketAuthProvider(),
 			config = subscriptionConfig
 		)
