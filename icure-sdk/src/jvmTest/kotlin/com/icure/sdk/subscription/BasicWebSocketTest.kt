@@ -5,7 +5,7 @@ import com.icure.sdk.model.HealthElement
 import com.icure.sdk.model.filter.healthelement.HealthElementByHcPartyFilter
 import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.utils.Serialization
-import com.icure.sdk.utils.newPlatformHttpClient
+import com.icure.sdk.utils.newPlatformWebsocketClient
 import io.kotest.assertions.fail
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldContain
@@ -38,7 +38,7 @@ import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
 class BasicWebSocketTest : StringSpec({
-	val client = newPlatformHttpClient {
+	val client = newPlatformWebsocketClient {
 		install(ContentNegotiation) {
 			json(json = Serialization.json)
 		}
@@ -92,7 +92,8 @@ class BasicWebSocketTest : StringSpec({
 			client = client,
 			hostname = "localhost:25565",
 			path = "/",
-			deserializeEntity = { Serialization.json.decodeFromString<EncryptedHealthElement>(it) },
+			clientJson = Serialization.json,
+			entitySerializer = EncryptedHealthElement.serializer(),
 			events = setOf(SubscriptionEventType.Create),
 			filter = HealthElementByHcPartyFilter(
 				hcpId = "fake-uuid",
@@ -125,7 +126,8 @@ class BasicWebSocketTest : StringSpec({
 			client = client,
 			hostname = "localhost:25565",
 			path = "/load",
-			deserializeEntity = { Serialization.json.decodeFromString<EncryptedHealthElement>(it) },
+			clientJson = Serialization.json,
+			entitySerializer = EncryptedHealthElement.serializer(),
 			events = setOf(SubscriptionEventType.Create),
 			filter = HealthElementByHcPartyFilter(
 				hcpId = "fake-uuid",

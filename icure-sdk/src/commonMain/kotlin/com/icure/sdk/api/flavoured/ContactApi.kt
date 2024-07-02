@@ -452,12 +452,11 @@ private class AbstractContactBasicFlavourlessApi(
 		subscriptionConfig: EntitySubscriptionConfiguration
 	): EntitySubscription<EncryptedService> {
 		return WebSocketSubscription.initialize(
-			client = config.httpClient,
+			client = config.websocketClient,
 			hostname = config.apiUrl.replace("https://", "").replace("http://", ""),
 			path = "/ws/v2/notification/subscribe",
-			deserializeEntity = {
-				Serialization.json.decodeFromString(EncryptedService.serializer(), it)
-			},
+			clientJson = config.clientJson,
+			entitySerializer = EncryptedService.serializer(),
 			events = events,
 			filter = filter,
 			qualifiedName = Service.KRAKEN_QUALIFIED_NAME,
@@ -475,12 +474,11 @@ private class AbstractContactBasicFlavourlessApi(
 		subscriptionConfig: EntitySubscriptionConfiguration?
 	): EntitySubscription<EncryptedContact> {
 		return WebSocketSubscription.initialize(
-			client = config.httpClient,
+			client = config.websocketClient,
 			hostname = config.apiUrl.replace("https://", "").replace("http://", ""),
 			path = "/ws/v2/notification/subscribe",
-			deserializeEntity = {
-				Serialization.json.decodeFromString(EncryptedContact.serializer(), it)
-			},
+			clientJson = config.clientJson,
+			entitySerializer = EncryptedContact.serializer(),
 			events = events,
 			filter = filter,
 			qualifiedName = Contact.KRAKEN_QUALIFIED_NAME,

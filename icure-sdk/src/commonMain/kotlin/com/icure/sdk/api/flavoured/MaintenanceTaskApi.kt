@@ -216,10 +216,11 @@ private class AbstractMaintenanceTaskBasicFlavourlessApi(val rawApi: RawMaintena
 		subscriptionConfig: EntitySubscriptionConfiguration?
 	): EntitySubscription<EncryptedMaintenanceTask> {
 		return WebSocketSubscription.initialize(
-			client = config.httpClient,
+			client = config.websocketClient,
 			hostname = config.apiUrl.replace("https://", "").replace("http://", ""),
 			path = "/ws/v2/notification/subscribe",
-			deserializeEntity = { Serialization.json.decodeFromString(EncryptedMaintenanceTask.serializer(), it) },
+			clientJson = config.clientJson,
+			entitySerializer = EncryptedMaintenanceTask.serializer(),
 			events = events,
 			filter = filter,
 			qualifiedName = MaintenanceTask.KRAKEN_QUALIFIED_NAME,

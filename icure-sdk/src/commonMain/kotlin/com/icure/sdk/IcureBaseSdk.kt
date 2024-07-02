@@ -1,6 +1,7 @@
 package com.icure.sdk
 
 import com.icure.sdk.IcureSdk.Companion.sharedHttpClient
+import com.icure.sdk.IcureSdk.Companion.sharedWebsocketClient
 import com.icure.sdk.api.ApplicationSettingsApi
 import com.icure.sdk.api.ApplicationSettingsApiImpl
 import com.icure.sdk.api.CodeApiImpl
@@ -89,9 +90,9 @@ import com.icure.sdk.options.BasicApiConfigurationImpl
 import com.icure.sdk.options.BasicApiOptions
 import com.icure.sdk.options.EntitiesEncryptedFieldsManifests
 import com.icure.sdk.options.getAuthService
+import com.icure.sdk.subscription.WebSocketAuthProvider
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
-import com.icure.sdk.subscription.WebSocketAuthProvider
 import kotlinx.serialization.json.Json
 
 interface IcureBaseSdk : IcureBaseApis {
@@ -103,6 +104,7 @@ interface IcureBaseSdk : IcureBaseApis {
 			options: BasicApiOptions = BasicApiOptions()
 		): IcureBaseSdk {
 			val client = options.httpClient ?: sharedHttpClient
+			val websocketClient = options.websocketClient ?: options.httpClient ?: sharedWebsocketClient
 			val json = options.httpClientJson ?: Serialization.json
 			val apiUrl = baseUrl
 			val authApi = RawAnonymousAuthApiImpl(apiUrl = apiUrl, httpClient = client, json = json)
@@ -116,6 +118,8 @@ interface IcureBaseSdk : IcureBaseApis {
 			val config = BasicApiConfigurationImpl(
 				apiUrl,
 				client,
+				websocketClient,
+				json,
 				webSocketAuthProvider,
 				BasicInternalCryptoApiImpl(jsonEncryptionService, EntityValidationServiceImpl(jsonEncryptionService)),
 				manifests

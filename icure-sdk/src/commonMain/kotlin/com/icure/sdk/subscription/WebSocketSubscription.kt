@@ -27,7 +27,9 @@ import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
+import kotlinx.serialization.json.Json
 import kotlin.math.pow
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.minutes
@@ -56,8 +58,9 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 	private val path: String,
 	private val webSocketAuthProvider: WebSocketAuthProvider,
 	private val client: HttpClient,
+	private val clientJson: Json,
 	private val config: EntitySubscriptionConfiguration,
-	private val deserializeEntity: (String) -> E,
+	private val entitySerializer: KSerializer<E>,
 	private val subscriptionRequest: String
 ): EntitySubscription<E> {
 	companion object {
@@ -73,8 +76,9 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 			path: String,
 			webSocketAuthProvider: WebSocketAuthProvider,
 			client: HttpClient,
+			clientJson: Json,
 			config: EntitySubscriptionConfiguration?,
-			deserializeEntity: (String) -> NotificationEntity,
+			entitySerializer: KSerializer<NotificationEntity>,
 			events: Set<SubscriptionEventType>,
 			filter: AbstractFilter<BaseType>,
 			qualifiedName: String,
@@ -95,8 +99,9 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 				path,
 				webSocketAuthProvider,
 				client,
+				clientJson,
 				config ?: EntitySubscriptionConfiguration(),
-				deserializeEntity,
+				entitySerializer,
 				subscriptionRequest
 			)
 			subscription.startConnection()
@@ -177,7 +182,7 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 						lastPingJob = session.launchPingTimeoutChecker()
 					} else {
 						sendEvent(try {
-							EntitySubscriptionEvent.EntityNotification(deserializeEntity(content))
+							EntitySubscriptionEvent.EntityNotification(clientJson.decodeFromString(entitySerializer, content))
 						} catch (e: SerializationException) {
 							EntitySubscriptionEvent.EntityError.DeserializationError
 						})

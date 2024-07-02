@@ -9,3 +9,7 @@ actual fun newPlatformHttpClient(
 ): HttpClient = HttpClient(Darwin) {
 	sharedConfig()
 }
+
+actual fun newPlatformWebsocketClient(
+	sharedConfig: HttpClientConfig<*>.() -> Unit
+): HttpClient = newPlatformHttpClient(sharedConfig)

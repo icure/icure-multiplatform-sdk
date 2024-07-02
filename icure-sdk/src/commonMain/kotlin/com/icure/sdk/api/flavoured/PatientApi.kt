@@ -600,10 +600,11 @@ private class AbstractPatientBasicFlavourlessApi(val rawApi: RawPatientApi, val 
 		subscriptionConfig: EntitySubscriptionConfiguration?
 	): EntitySubscription<EncryptedPatient> {
 		return WebSocketSubscription.initialize(
-			client = config.httpClient,
+			client = config.websocketClient,
 			hostname = config.apiUrl.replace("https://", "").replace("http://", ""),
 			path = "/ws/v2/notification/subscribe",
-			deserializeEntity = { Serialization.json.decodeFromString(EncryptedPatient.serializer(), it) },
+			clientJson = config.clientJson,
+			entitySerializer = EncryptedPatient.serializer(),
 			events = events,
 			filter = filter,
 			qualifiedName = Patient.KRAKEN_QUALIFIED_NAME,

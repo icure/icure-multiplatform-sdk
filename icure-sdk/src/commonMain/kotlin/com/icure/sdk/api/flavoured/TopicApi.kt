@@ -224,10 +224,11 @@ private class AbstractTopicBasicFlavourlessApi(val rawApi: RawTopicApi, private 
 		subscriptionConfig: EntitySubscriptionConfiguration?
 	): EntitySubscription<EncryptedTopic> {
 		return WebSocketSubscription.initialize(
-			client = config.httpClient,
+			client = config.websocketClient,
 			hostname = config.apiUrl.replace("https://", "").replace("http://", ""),
 			path = "/ws/v2/notification/subscribe",
-			deserializeEntity = { Serialization.json.decodeFromString(EncryptedTopic.serializer(), it) },
+			clientJson = config.clientJson,
+			entitySerializer = EncryptedTopic.serializer(),
 			events = events,
 			filter = filter,
 			qualifiedName = Topic.KRAKEN_QUALIFIED_NAME,

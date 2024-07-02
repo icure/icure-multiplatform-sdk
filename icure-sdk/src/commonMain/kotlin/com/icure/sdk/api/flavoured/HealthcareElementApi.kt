@@ -268,10 +268,11 @@ private class AbstractHealthcareElementBasicFlavourlessApi(
 		subscriptionConfig: EntitySubscriptionConfiguration?
 	): EntitySubscription<EncryptedHealthElement> {
 		return WebSocketSubscription.initialize(
-			client = config.httpClient,
+			client = config.websocketClient,
 			hostname = config.apiUrl.replace("https://", "").replace("http://", ""),
 			path = "/ws/v2/notification/subscribe",
-			deserializeEntity = { Serialization.json.decodeFromString(EncryptedHealthElement.serializer(), it) },
+			clientJson = config.clientJson,
+			entitySerializer = EncryptedHealthElement.serializer(),
 			events = events,
 			filter = filter,
 			qualifiedName = HealthElement.KRAKEN_QUALIFIED_NAME,

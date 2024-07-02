@@ -341,10 +341,11 @@ private class AbstractMessageBasicFlavourlessApi(val rawApi: RawMessageApi, priv
 		subscriptionConfig: EntitySubscriptionConfiguration?
 	): EntitySubscription<EncryptedMessage> {
 		return WebSocketSubscription.initialize(
-			client = config.httpClient,
+			client = config.websocketClient,
 			hostname = config.apiUrl.replace("https://", "").replace("http://", ""),
 			path = "/ws/v2/notification/subscribe",
-			deserializeEntity = { Serialization.json.decodeFromString(EncryptedMessage.serializer(), it) },
+			clientJson = config.clientJson,
+			entitySerializer = EncryptedMessage.serializer(),
 			events = events,
 			filter = filter,
 			qualifiedName = Message.KRAKEN_QUALIFIED_NAME,
