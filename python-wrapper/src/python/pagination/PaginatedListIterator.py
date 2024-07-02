@@ -15,6 +15,9 @@ class PaginatedListIterator(Generic[T]):
         self.__deserializer = deserializer
         self.__executor = executor
 
+    def __del__(self):
+        symbols.kotlin.root.com.icure.sdk.py.utils.disposeStablePtr(self.__producer)
+
     def has_next_blocking(self) -> bool:
         call_result = symbols.kotlin.root.com.icure.sdk.py.utils.PaginatedListIterator.hasNextBlocking(self.__producer)
         result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
