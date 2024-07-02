@@ -1,7 +1,7 @@
 import asyncio
 import json
 from typing import Optional, Dict, List
-from model import PaginatedList, Code, BooleanResponse, FilterChain, AbstractFilter, serialize_abstract_filter
+from model import PaginatedList, Code, BooleanResponse, FilterChain, CodeAbstractFilter, serialize_abstract_filter
 from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
@@ -737,7 +737,7 @@ class CodeApi:
 			)
 			return return_value
 
-	async def match_codes_by_async(self, filter: AbstractFilter) -> List[str]:
+	async def match_codes_by_async(self, filter: CodeAbstractFilter) -> List[str]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -760,7 +760,7 @@ class CodeApi:
 		)
 		return await future
 
-	def match_codes_by_blocking(self, filter: AbstractFilter) -> List[str]:
+	def match_codes_by_blocking(self, filter: CodeAbstractFilter) -> List[str]:
 		payload = {
 			"filter": serialize_abstract_filter(filter),
 		}

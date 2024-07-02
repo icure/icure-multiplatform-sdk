@@ -193,7 +193,7 @@ class DocumentApi:
 			if error_str_pointer is not None:
 				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 				symbols.DisposeString(error_str_pointer)
-				symbols.DisposeStablePointer(call_result)
+				symbols.DisposeStablePointer(call_result.pinned)
 				raise Exception(error_msg)
 			else:
 				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
@@ -885,7 +885,7 @@ class DocumentApi:
 			if error_str_pointer is not None:
 				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 				symbols.DisposeString(error_str_pointer)
-				symbols.DisposeStablePointer(call_result)
+				symbols.DisposeStablePointer(call_result.pinned)
 				raise Exception(error_msg)
 			else:
 				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
@@ -2150,7 +2150,7 @@ class DocumentApi:
 		if error_str_pointer is not None:
 			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 			symbols.DisposeString(error_str_pointer)
-			symbols.DisposeStablePointer(call_result)
+			symbols.DisposeStablePointer(call_result.pinned)
 			raise Exception(error_msg)
 		else:
 			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)

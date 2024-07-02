@@ -1,6 +1,6 @@
 import asyncio
 import json
-from model import DecryptedContact, Patient, User, AccessLevel, serialize_patient, Contact, serialize_contact, AbstractFilter, serialize_abstract_filter, DocIdentifier, IcureStub, LabelledOccurence, SubscriptionEventType, EntitySubscriptionConfiguration, EncryptedService, EncryptedContact, RequestedPermission, FilterChain, PaginatedList, DecryptedService, deserialize_contact
+from model import DecryptedContact, Patient, User, AccessLevel, serialize_patient, Contact, serialize_contact, ContactAbstractFilter, serialize_abstract_filter, ServiceAbstractFilter, DocIdentifier, IcureStub, LabelledOccurence, SubscriptionEventType, EntitySubscriptionConfiguration, EncryptedService, EncryptedContact, RequestedPermission, FilterChain, PaginatedList, DecryptedService, deserialize_contact
 from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
@@ -193,7 +193,7 @@ class ContactApi:
 			if error_str_pointer is not None:
 				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 				symbols.DisposeString(error_str_pointer)
-				symbols.DisposeStablePointer(call_result)
+				symbols.DisposeStablePointer(call_result.pinned)
 				raise Exception(error_msg)
 			else:
 				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
@@ -1147,7 +1147,7 @@ class ContactApi:
 			if error_str_pointer is not None:
 				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 				symbols.DisposeString(error_str_pointer)
-				symbols.DisposeStablePointer(call_result)
+				symbols.DisposeStablePointer(call_result.pinned)
 				raise Exception(error_msg)
 			else:
 				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
@@ -2205,7 +2205,7 @@ class ContactApi:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 
-	async def match_contacts_by_async(self, filter: AbstractFilter) -> List[str]:
+	async def match_contacts_by_async(self, filter: ContactAbstractFilter) -> List[str]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -2228,7 +2228,7 @@ class ContactApi:
 		)
 		return await future
 
-	def match_contacts_by_blocking(self, filter: AbstractFilter) -> List[str]:
+	def match_contacts_by_blocking(self, filter: ContactAbstractFilter) -> List[str]:
 		payload = {
 			"filter": serialize_abstract_filter(filter),
 		}
@@ -2244,7 +2244,7 @@ class ContactApi:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
 
-	async def match_services_by_async(self, filter: AbstractFilter) -> List[str]:
+	async def match_services_by_async(self, filter: ServiceAbstractFilter) -> List[str]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -2267,7 +2267,7 @@ class ContactApi:
 		)
 		return await future
 
-	def match_services_by_blocking(self, filter: AbstractFilter) -> List[str]:
+	def match_services_by_blocking(self, filter: ServiceAbstractFilter) -> List[str]:
 		payload = {
 			"filter": serialize_abstract_filter(filter),
 		}
@@ -2443,7 +2443,7 @@ class ContactApi:
 			return_value = [LabelledOccurence._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def subscribe_to_service_events_async(self, events: List[SubscriptionEventType], filter: AbstractFilter, subscription_config: EntitySubscriptionConfiguration) -> EntitySubscription[EncryptedService]:
+	async def subscribe_to_service_events_async(self, events: List[SubscriptionEventType], filter: ServiceAbstractFilter, subscription_config: EntitySubscriptionConfiguration) -> EntitySubscription[EncryptedService]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -2472,7 +2472,7 @@ class ContactApi:
 		)
 		return await future
 
-	def subscribe_to_service_events_blocking(self, events: List[SubscriptionEventType], filter: AbstractFilter, subscription_config: EntitySubscriptionConfiguration) -> EntitySubscription[EncryptedService]:
+	def subscribe_to_service_events_blocking(self, events: List[SubscriptionEventType], filter: ServiceAbstractFilter, subscription_config: EntitySubscriptionConfiguration) -> EntitySubscription[EncryptedService]:
 		payload = {
 			"events": [x0.__serialize__() for x0 in events],
 			"filter": serialize_abstract_filter(filter),
@@ -2486,7 +2486,7 @@ class ContactApi:
 		if error_str_pointer is not None:
 			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 			symbols.DisposeString(error_str_pointer)
-			symbols.DisposeStablePointer(call_result)
+			symbols.DisposeStablePointer(call_result.pinned)
 			raise Exception(error_msg)
 		else:
 			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
@@ -2497,7 +2497,7 @@ class ContactApi:
 				executor = self.icure_sdk._executor
 			)
 
-	async def subscribe_to_events_async(self, events: List[SubscriptionEventType], filter: AbstractFilter, subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedContact]:
+	async def subscribe_to_events_async(self, events: List[SubscriptionEventType], filter: ContactAbstractFilter, subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedContact]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -2519,20 +2519,20 @@ class ContactApi:
 		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.subscription.ContactApi.subscribeToEventsAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.subscribeToEventsAsync,
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def subscribe_to_events_blocking(self, events: List[SubscriptionEventType], filter: AbstractFilter, subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedContact]:
+	def subscribe_to_events_blocking(self, events: List[SubscriptionEventType], filter: ContactAbstractFilter, subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedContact]:
 		payload = {
 			"events": [x0.__serialize__() for x0 in events],
 			"filter": serialize_abstract_filter(filter),
 			"subscriptionConfig": subscription_config.__serialize__() if subscription_config is not None else None,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.subscription.ContactApi.subscribeToEventsBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.subscribeToEventsBlocking(
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -2540,7 +2540,7 @@ class ContactApi:
 		if error_str_pointer is not None:
 			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 			symbols.DisposeString(error_str_pointer)
-			symbols.DisposeStablePointer(call_result)
+			symbols.DisposeStablePointer(call_result.pinned)
 			raise Exception(error_msg)
 		else:
 			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
@@ -2727,7 +2727,7 @@ class ContactApi:
 		if error_str_pointer is not None:
 			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 			symbols.DisposeString(error_str_pointer)
-			symbols.DisposeStablePointer(call_result)
+			symbols.DisposeStablePointer(call_result.pinned)
 			raise Exception(error_msg)
 		else:
 			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)

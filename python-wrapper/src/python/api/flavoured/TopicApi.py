@@ -1,6 +1,6 @@
 import asyncio
 import json
-from model import DecryptedTopic, Patient, User, AccessLevel, serialize_patient, Topic, serialize_topic, DocIdentifier, AbstractFilter, serialize_abstract_filter, SubscriptionEventType, EntitySubscriptionConfiguration, EncryptedTopic, RequestedPermission, FilterChain, PaginatedList, TopicRole, deserialize_topic
+from model import DecryptedTopic, Patient, User, AccessLevel, serialize_patient, Topic, serialize_topic, DocIdentifier, TopicAbstractFilter, serialize_abstract_filter, SubscriptionEventType, EntitySubscriptionConfiguration, EncryptedTopic, RequestedPermission, FilterChain, PaginatedList, TopicRole, deserialize_topic
 from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
@@ -1107,7 +1107,7 @@ class TopicApi:
 			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def match_topics_by_async(self, filter: AbstractFilter) -> List[str]:
+	async def match_topics_by_async(self, filter: TopicAbstractFilter) -> List[str]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1130,7 +1130,7 @@ class TopicApi:
 		)
 		return await future
 
-	def match_topics_by_blocking(self, filter: AbstractFilter) -> List[str]:
+	def match_topics_by_blocking(self, filter: TopicAbstractFilter) -> List[str]:
 		payload = {
 			"filter": serialize_abstract_filter(filter),
 		}
@@ -1146,7 +1146,7 @@ class TopicApi:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
 
-	async def subscribe_to_events_async(self, events: List[SubscriptionEventType], filter: AbstractFilter, subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedTopic]:
+	async def subscribe_to_events_async(self, events: List[SubscriptionEventType], filter: TopicAbstractFilter, subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedTopic]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1168,20 +1168,20 @@ class TopicApi:
 		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.subscription.TopicApi.subscribeToEventsAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.subscribeToEventsAsync,
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def subscribe_to_events_blocking(self, events: List[SubscriptionEventType], filter: AbstractFilter, subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedTopic]:
+	def subscribe_to_events_blocking(self, events: List[SubscriptionEventType], filter: TopicAbstractFilter, subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedTopic]:
 		payload = {
 			"events": [x0.__serialize__() for x0 in events],
 			"filter": serialize_abstract_filter(filter),
 			"subscriptionConfig": subscription_config.__serialize__() if subscription_config is not None else None,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.subscription.TopicApi.subscribeToEventsBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.subscribeToEventsBlocking(
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -1189,7 +1189,7 @@ class TopicApi:
 		if error_str_pointer is not None:
 			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 			symbols.DisposeString(error_str_pointer)
-			symbols.DisposeStablePointer(call_result)
+			symbols.DisposeStablePointer(call_result.pinned)
 			raise Exception(error_msg)
 		else:
 			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)

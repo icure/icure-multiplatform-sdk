@@ -1,6 +1,6 @@
 import asyncio
 import json
-from model import Device, IdWithRev, FilterChain, PaginatedList, AbstractFilter, serialize_abstract_filter, DocIdentifier
+from model import Device, IdWithRev, FilterChain, PaginatedList, DeviceAbstractFilter, serialize_abstract_filter, DocIdentifier
 from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
@@ -296,7 +296,7 @@ class DeviceApi:
 			)
 			return return_value
 
-	async def match_devices_by_async(self, filter: AbstractFilter) -> List[str]:
+	async def match_devices_by_async(self, filter: DeviceAbstractFilter) -> List[str]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -319,7 +319,7 @@ class DeviceApi:
 		)
 		return await future
 
-	def match_devices_by_blocking(self, filter: AbstractFilter) -> List[str]:
+	def match_devices_by_blocking(self, filter: DeviceAbstractFilter) -> List[str]:
 		payload = {
 			"filter": serialize_abstract_filter(filter),
 		}

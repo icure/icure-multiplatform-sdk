@@ -1,6 +1,6 @@
 import asyncio
 import json
-from model import AbstractFilter, serialize_abstract_filter, DocIdentifier, IcureStub, SubscriptionEventType, EntitySubscriptionConfiguration, EncryptedHealthElement, FilterChain, PaginatedList
+from model import HealthElementAbstractFilter, serialize_abstract_filter, DocIdentifier, IcureStub, SubscriptionEventType, EntitySubscriptionConfiguration, EncryptedHealthElement, FilterChain, PaginatedList
 from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from typing import List, Optional
 from model.CallResult import create_result_from_json
@@ -12,7 +12,7 @@ class HealthcareElementBasicApi:
 	def __init__(self, icure_sdk):
 		self.icure_sdk = icure_sdk
 
-	async def match_healthcare_elements_by_async(self, filter: AbstractFilter) -> List[str]:
+	async def match_healthcare_elements_by_async(self, filter: HealthElementAbstractFilter) -> List[str]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -35,7 +35,7 @@ class HealthcareElementBasicApi:
 		)
 		return await future
 
-	def match_healthcare_elements_by_blocking(self, filter: AbstractFilter) -> List[str]:
+	def match_healthcare_elements_by_blocking(self, filter: HealthElementAbstractFilter) -> List[str]:
 		payload = {
 			"filter": serialize_abstract_filter(filter),
 		}
@@ -170,7 +170,7 @@ class HealthcareElementBasicApi:
 			return_value = [IcureStub._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def subscribe_to_events_async(self, events: List[SubscriptionEventType], filter: AbstractFilter, subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedHealthElement]:
+	async def subscribe_to_events_async(self, events: List[SubscriptionEventType], filter: HealthElementAbstractFilter, subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedHealthElement]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -192,20 +192,20 @@ class HealthcareElementBasicApi:
 		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.subscription.HealthcareElementBasicApi.subscribeToEventsAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicApi.subscribeToEventsAsync,
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def subscribe_to_events_blocking(self, events: List[SubscriptionEventType], filter: AbstractFilter, subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedHealthElement]:
+	def subscribe_to_events_blocking(self, events: List[SubscriptionEventType], filter: HealthElementAbstractFilter, subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedHealthElement]:
 		payload = {
 			"events": [x0.__serialize__() for x0 in events],
 			"filter": serialize_abstract_filter(filter),
 			"subscriptionConfig": subscription_config.__serialize__() if subscription_config is not None else None,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.subscription.HealthcareElementBasicApi.subscribeToEventsBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementBasicApi.subscribeToEventsBlocking(
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -213,7 +213,7 @@ class HealthcareElementBasicApi:
 		if error_str_pointer is not None:
 			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 			symbols.DisposeString(error_str_pointer)
-			symbols.DisposeStablePointer(call_result)
+			symbols.DisposeStablePointer(call_result.pinned)
 			raise Exception(error_msg)
 		else:
 			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)

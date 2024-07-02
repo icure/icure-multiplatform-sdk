@@ -1,6 +1,6 @@
 import asyncio
 import json
-from model import AbstractFilter, serialize_abstract_filter, DocIdentifier, Patient, serialize_patient, SubscriptionEventType, EntitySubscriptionConfiguration, EncryptedPatient, FilterChain, PaginatedList, SortDirection, EncryptedContent, ListOfIds, IdWithRev
+from model import PatientAbstractFilter, serialize_abstract_filter, DocIdentifier, Patient, serialize_patient, SubscriptionEventType, EntitySubscriptionConfiguration, EncryptedPatient, FilterChain, PaginatedList, SortDirection, EncryptedContent, ListOfIds, IdWithRev
 from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from typing import List, Optional, Dict
 from model.CallResult import create_result_from_json
@@ -13,7 +13,7 @@ class PatientBasicApi:
 	def __init__(self, icure_sdk):
 		self.icure_sdk = icure_sdk
 
-	async def match_patients_by_async(self, filter: AbstractFilter) -> List[str]:
+	async def match_patients_by_async(self, filter: PatientAbstractFilter) -> List[str]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -36,7 +36,7 @@ class PatientBasicApi:
 		)
 		return await future
 
-	def match_patients_by_blocking(self, filter: AbstractFilter) -> List[str]:
+	def match_patients_by_blocking(self, filter: PatientAbstractFilter) -> List[str]:
 		payload = {
 			"filter": serialize_abstract_filter(filter),
 		}
@@ -208,7 +208,7 @@ class PatientBasicApi:
 			return_value = EntityAccessInformation._deserialize(result_info.success)
 			return return_value
 
-	async def subscribe_to_events_async(self, events: List[SubscriptionEventType], filter: AbstractFilter, subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedPatient]:
+	async def subscribe_to_events_async(self, events: List[SubscriptionEventType], filter: PatientAbstractFilter, subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedPatient]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -230,20 +230,20 @@ class PatientBasicApi:
 		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.subscription.PatientBasicApi.subscribeToEventsAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientBasicApi.subscribeToEventsAsync,
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def subscribe_to_events_blocking(self, events: List[SubscriptionEventType], filter: AbstractFilter, subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedPatient]:
+	def subscribe_to_events_blocking(self, events: List[SubscriptionEventType], filter: PatientAbstractFilter, subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedPatient]:
 		payload = {
 			"events": [x0.__serialize__() for x0 in events],
 			"filter": serialize_abstract_filter(filter),
 			"subscriptionConfig": subscription_config.__serialize__() if subscription_config is not None else None,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.subscription.PatientBasicApi.subscribeToEventsBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientBasicApi.subscribeToEventsBlocking(
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8')
 		)
@@ -251,7 +251,7 @@ class PatientBasicApi:
 		if error_str_pointer is not None:
 			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 			symbols.DisposeString(error_str_pointer)
-			symbols.DisposeStablePointer(call_result)
+			symbols.DisposeStablePointer(call_result.pinned)
 			raise Exception(error_msg)
 		else:
 			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)

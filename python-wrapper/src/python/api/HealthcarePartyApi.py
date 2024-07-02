@@ -1,6 +1,6 @@
 import asyncio
 import json
-from model import HealthcareParty, DocIdentifier, PaginatedList, PublicKey, AbstractFilter, serialize_abstract_filter, FilterChain, DataOwnerRegistrationSuccess
+from model import HealthcareParty, DocIdentifier, PaginatedList, PublicKey, HealthcarePartyAbstractFilter, serialize_abstract_filter, FilterChain, DataOwnerRegistrationSuccess
 from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
@@ -697,7 +697,7 @@ class HealthcarePartyApi:
 			return_value = HealthcareParty._deserialize(result_info.success)
 			return return_value
 
-	async def match_healthcare_parties_by_async(self, filter: AbstractFilter) -> List[str]:
+	async def match_healthcare_parties_by_async(self, filter: HealthcarePartyAbstractFilter) -> List[str]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -720,7 +720,7 @@ class HealthcarePartyApi:
 		)
 		return await future
 
-	def match_healthcare_parties_by_blocking(self, filter: AbstractFilter) -> List[str]:
+	def match_healthcare_parties_by_blocking(self, filter: HealthcarePartyAbstractFilter) -> List[str]:
 		payload = {
 			"filter": serialize_abstract_filter(filter),
 		}

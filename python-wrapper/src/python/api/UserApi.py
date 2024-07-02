@@ -1,6 +1,6 @@
 import asyncio
 import json
-from model import User, PaginatedList, DocIdentifier, EncryptedPropertyStub, FilterChain, AbstractFilter, serialize_abstract_filter, UserGroup, ListOfIds, TokenWithGroup, Enable2faRequest
+from model import User, PaginatedList, DocIdentifier, EncryptedPropertyStub, FilterChain, UserAbstractFilter, serialize_abstract_filter, UserGroup, ListOfIds, TokenWithGroup, Enable2faRequest
 from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
@@ -583,7 +583,7 @@ class UserApi:
 			)
 			return return_value
 
-	async def match_users_by_async(self, filter: AbstractFilter) -> List[str]:
+	async def match_users_by_async(self, filter: UserAbstractFilter) -> List[str]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -606,7 +606,7 @@ class UserApi:
 		)
 		return await future
 
-	def match_users_by_blocking(self, filter: AbstractFilter) -> List[str]:
+	def match_users_by_blocking(self, filter: UserAbstractFilter) -> List[str]:
 		payload = {
 			"filter": serialize_abstract_filter(filter),
 		}

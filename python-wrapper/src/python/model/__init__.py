@@ -12,7 +12,8 @@ from model.specializations import AesExchangeKeyEncryptionKeypairIdentifier
 from model.specializations import Base64String
 from enum import Enum
 from datetime import timedelta
-from model.SingletonMeta import SingletonMeta
+from model.serialization import serialize_timedelta
+from model.serialization import deserialize_timedelta
 from model.specializations import SecureDelegationKeyString
 from model.specializations import Sha256HexString
 
@@ -244,7 +245,7 @@ class IdWithRev:
 
 @dataclass
 class FilterChain:
-	filter: 'AbstractFilter'
+	filter: 'objectAbstractFilter'
 	predicate: Optional['Predicate'] = None
 
 	def __serialize__(self) -> object:
@@ -1011,7 +1012,7 @@ class TopicByHcPartyFilter:
 @dataclass
 class UnionFilter:
 	desc: Optional[str] = None
-	filters: List['AbstractFilter'] = field(default_factory=list)
+	filters: List['objectAbstractFilter'] = field(default_factory=list)
 
 	def __serialize__(self) -> object:
 		return {
@@ -1472,8 +1473,8 @@ class AllDevicesFilter:
 
 @dataclass
 class ComplementFilter:
-	super_set: 'AbstractFilter'
-	sub_set: 'AbstractFilter'
+	super_set: 'objectAbstractFilter'
+	sub_set: 'objectAbstractFilter'
 	desc: Optional[str] = None
 
 	def __serialize__(self) -> object:
@@ -1499,7 +1500,7 @@ class ComplementFilter:
 @dataclass
 class IntersectionFilter:
 	desc: Optional[str] = None
-	filters: List['AbstractFilter'] = field(default_factory=list)
+	filters: List['objectAbstractFilter'] = field(default_factory=list)
 
 	def __serialize__(self) -> object:
 		return {
@@ -2264,6 +2265,30 @@ def deserialize_abstract_filter(data: Union[str, Dict[str, object]]) -> 'Abstrac
 		return InvoiceByHcPartyCodeDateFilter._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of AbstractFilter")
+
+ContactAbstractFilter = Union['ContactByHcPartyPatientTagCodeDateFilter', 'ContactByHcPartyTagCodeDateFilter', 'ContactByHcPartyFilter', 'ContactByServiceIdsFilter', 'ContactByHcPartyIdentifiersFilter', 'UnionFilter', 'ComplementFilter', 'IntersectionFilter', 'IdsFilter']
+
+HealthcarePartyAbstractFilter = Union['HealthcarePartyByIdsFilter', 'HealthcarePartyByTagCodeFilter', 'AllHealthcarePartiesFilter', 'HealthcarePartyByIdentifiersFilter', 'HealthcarePartyByNameFilter', 'UnionFilter', 'ComplementFilter', 'IntersectionFilter', 'IdsFilter']
+
+HealthElementAbstractFilter = Union['HealthElementByHcPartySecretForeignKeysFilter', 'HealthElementByHcPartyTagCodeFilter', 'HealthElementByIdsFilter', 'HealthElementByHcPartyIdentifiersFilter', 'HealthElementByHcPartyFilter', 'UnionFilter', 'ComplementFilter', 'IntersectionFilter', 'IdsFilter']
+
+CodeAbstractFilter = Union['CodeIdsByTypeCodeVersionIntervalFilter', 'AllCodesFilter', 'CodeByIdsFilter', 'CodeByRegionTypeLabelLanguageFilter', 'UnionFilter', 'ComplementFilter', 'IntersectionFilter', 'IdsFilter']
+
+MessageAbstractFilter = Union['MessageByHcPartyTransportGuidFilter', 'MessageByHcPartyFilter', 'LatestMessageByHcPartyTransportGuidFilter', 'UnionFilter', 'ComplementFilter', 'IntersectionFilter', 'IdsFilter']
+
+UserAbstractFilter = Union['UserByIdsFilter', 'AllUsersFilter', 'UserByNameEmailPhoneFilter', 'UsersByPatientIdFilter', 'UnionFilter', 'ComplementFilter', 'IntersectionFilter', 'IdsFilter']
+
+TopicAbstractFilter = Union['TopicByParticipantFilter', 'TopicByHcPartyFilter', 'UnionFilter', 'ComplementFilter', 'IntersectionFilter', 'IdsFilter']
+
+PatientAbstractFilter = Union['PatientByHcPartyGenderEducationProfession', 'PatientByHcPartyDateOfBirthFilter', 'PatientByHcPartyAndExternalIdFilter', 'PatientByHcPartyAndSsinsFilter', 'PatientByHcPartyAndActiveFilter', 'PatientByHcPartyAndAddressFilter', 'PatientByHcPartyNameFilter', 'PatientByHcPartyAndSsinFilter', 'PatientByHcPartyNameContainsFuzzyFilter', 'PatientByIdsFilter', 'PatientByHcPartyAndIdentifiersFilter', 'PatientByHcPartyDateOfBirthBetweenFilter', 'PatientByHcPartyAndTelecomFilter', 'PatientByHcPartyFilter', 'UnionFilter', 'ComplementFilter', 'IntersectionFilter', 'IdsFilter']
+
+DeviceAbstractFilter = Union['DeviceByIdsFilter', 'DeviceByHcPartyFilter', 'AllDevicesFilter', 'UnionFilter', 'ComplementFilter', 'IntersectionFilter', 'IdsFilter']
+
+ServiceAbstractFilter = Union['ServiceBySecretForeignKeys', 'ServiceByContactsAndSubcontactsFilter', 'ServiceByHcPartyTagCodeDateFilter', 'ServiceByHcPartyHealthElementIdsFilter', 'ServiceByHcPartyIdentifiersFilter', 'ServiceByHcPartyFilter', 'ServiceByIdsFilter', 'UnionFilter', 'ComplementFilter', 'IntersectionFilter', 'IdsFilter']
+
+MaintenanceTaskAbstractFilter = Union['MaintenanceTaskByHcPartyAndTypeFilter', 'MaintenanceTaskByHcPartyAndIdentifiersFilter', 'MaintenanceTaskByIdsFilter', 'MaintenanceTaskAfterDateFilter', 'UnionFilter', 'ComplementFilter', 'IntersectionFilter', 'IdsFilter']
+
+InvoiceAbstractFilter = Union['InvoiceByHcPartyCodeDateFilter', 'UnionFilter', 'ComplementFilter', 'IntersectionFilter', 'IdsFilter']
 
 @dataclass
 class CryptoActorStub:
@@ -3717,7 +3742,7 @@ class User:
 			}
 
 		@classmethod
-		def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SystemMetadata':
+		def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'UserSystemMetadata':
 			deserialized_dict: dict[str, object]
 			if isinstance(data, str):
 				deserialized_dict = json.loads(data)
@@ -4085,7 +4110,7 @@ class DataOwnerType(Enum):
 DataOwnerWithType = Union['DataOwnerWithTypeHcpDataOwner', 'DataOwnerWithTypePatientDataOwner', 'DataOwnerWithTypeDeviceDataOwner']
 
 @dataclass
-class DataOwnerWithTypeHcpDataOwner:
+class HcpDataOwner:
 	data_owner: 'HealthcareParty'
 
 	def __serialize__(self) -> object:
@@ -4105,7 +4130,7 @@ class DataOwnerWithTypeHcpDataOwner:
 		)
 
 @dataclass
-class DataOwnerWithTypePatientDataOwner:
+class PatientDataOwner:
 	data_owner: 'EncryptedPatient'
 
 	def __serialize__(self) -> object:
@@ -4125,7 +4150,7 @@ class DataOwnerWithTypePatientDataOwner:
 		)
 
 @dataclass
-class DataOwnerWithTypeDeviceDataOwner:
+class DeviceDataOwner:
 	data_owner: 'Device'
 
 	def __serialize__(self) -> object:
@@ -4843,13 +4868,13 @@ class EntitySubscriptionConfiguration:
 			return self.value
 
 		@classmethod
-		def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'FullBufferBehaviour':
+		def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EntitySubscriptionConfiguration.FullBufferBehaviour':
 			if data == "Close":
-				return FullBufferBehaviour.Close
+				return EntitySubscriptionConfiguration.FullBufferBehaviour.Close
 			elif data == "DropOldest":
-				return FullBufferBehaviour.DropOldest
+				return EntitySubscriptionConfiguration.FullBufferBehaviour.DropOldest
 			elif data == "Ignore":
-				return FullBufferBehaviour.Ignore
+				return EntitySubscriptionConfiguration.FullBufferBehaviour.Ignore
 			else:
 				raise Exception(f"{data} is not a valid value for FullBufferBehaviour enum.")
 
@@ -4857,7 +4882,7 @@ class EntitySubscriptionConfiguration:
 		return {
 			"channelBufferCapacity": self.channel_buffer_capacity,
 			"onBufferFull": self.on_buffer_full.__serialize__(),
-			"reconnectionDelay": self.reconnection_delay.__serialize__(),
+			"reconnectionDelay": serialize_timedelta(self.reconnection_delay),
 			"retryDelayExponentFactor": self.retry_delay_exponent_factor,
 			"connectionMaxRetries": self.connection_max_retries,
 		}
@@ -4872,7 +4897,7 @@ class EntitySubscriptionConfiguration:
 		return cls(
 			channel_buffer_capacity=deserialized_dict["channelBufferCapacity"],
 			on_buffer_full=EntitySubscriptionConfiguration.FullBufferBehaviour._deserialize(deserialized_dict["onBufferFull"]),
-			reconnection_delay=timedelta._deserialize(deserialized_dict["reconnectionDelay"]),
+			reconnection_delay=deserialize_timedelta(deserialized_dict["reconnectionDelay"]),
 			retry_delay_exponent_factor=deserialized_dict["retryDelayExponentFactor"],
 			connection_max_retries=deserialized_dict["connectionMaxRetries"],
 		)
@@ -9106,13 +9131,13 @@ class RoleConfiguration:
 			return self.value
 
 		@classmethod
-		def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Source':
+		def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'RoleConfiguration.Source':
 			if data == "CONFIGURATION":
-				return Source.Configuration
+				return RoleConfiguration.Source.Configuration
 			elif data == "INHERITED":
-				return Source.Inherited
+				return RoleConfiguration.Source.Inherited
 			elif data == "DEFAULT":
-				return Source.Default
+				return RoleConfiguration.Source.Default
 			else:
 				raise Exception(f"{data} is not a valid value for Source enum.")
 
@@ -9249,207 +9274,6 @@ class GroupDatabasesInfo:
 			databases_info=[DatabaseInfo._deserialize(x0) for x0 in deserialized_dict["databasesInfo"]],
 			gcp_storage_size=deserialized_dict["gcpStorageSize"],
 		)
-
-EntitySubscriptionEvent = Union['EntitySubscriptionEventConnected', 'EntitySubscriptionEventReconnected', 'EntitySubscriptionEventUnexpectedError', 'EntitySubscriptionEventMissedPing', 'EntitySubscriptionEventClosedByServer', 'EntitySubscriptionEventEntityNotification', 'EntitySubscriptionEventDeserializationError']
-
-class EntitySubscriptionEventConnected(metaclass=SingletonMeta):
-
-	def __serialize__(self) -> object:
-		return {}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Connected':
-		return cls()
-
-class EntitySubscriptionEventReconnected(metaclass=SingletonMeta):
-
-	def __serialize__(self) -> object:
-		return {}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Reconnected':
-		return cls()
-
-@dataclass
-class EntitySubscriptionEventUnexpectedError:
-	message: str
-
-	def __serialize__(self) -> object:
-		return {
-			"message": self.message,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EntitySubscriptionEventUnexpectedError':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			message=deserialized_dict["message"],
-		)
-
-ConnectionError = Union['EntitySubscriptionEvent.ConnectionErrorMissedPing', 'EntitySubscriptionEvent.ConnectionErrorClosedByServer']
-
-class ConnectionErrorMissedPing(metaclass=SingletonMeta):
-
-	def __serialize__(self) -> object:
-		return {}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'MissedPing':
-		return cls()
-
-class ConnectionErrorClosedByServer(metaclass=SingletonMeta):
-
-	def __serialize__(self) -> object:
-		return {}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ClosedByServer':
-		return cls()
-
-@classmethod
-def serialize_connection_error(cls, connection_error: ConnectionError) -> object:
-	if isinstance(connection_error, EntitySubscriptionEvent.ConnectionErrorMissedPing):
-		serialized_entity = connection_error.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.subscription.EntitySubscriptionEvent.ConnectionError.MissedPing"})
-		return serialized_entity
-	elif isinstance(connection_error, EntitySubscriptionEvent.ConnectionErrorClosedByServer):
-		serialized_entity = connection_error.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.subscription.EntitySubscriptionEvent.ConnectionError.ClosedByServer"})
-		return serialized_entity
-	else:
-		raise Exception(f"{type(connection_error)} is not a known subclass of ConnectionError")
-
-def deserialize_connection_error(data: Union[str, Dict[str, object]]) -> 'EntitySubscriptionEvent.ConnectionError':
-	deserialized_dict: dict[str, object]
-	if isinstance(data, str):
-		deserialized_dict = json.loads(data)
-	else:
-		deserialized_dict = data
-	qualifier = deserialized_dict.get("type")
-	if qualifier is None:
-		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.subscription.EntitySubscriptionEvent.ConnectionError.MissedPing":
-		return EntitySubscriptionEvent.ConnectionErrorMissedPing._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.subscription.EntitySubscriptionEvent.ConnectionError.ClosedByServer":
-		return EntitySubscriptionEvent.ConnectionErrorClosedByServer._deserialize(deserialized_dict)
-	else:
-		raise Exception(f"{qualifier} is not a known subclass of ConnectionError")
-
-@dataclass
-class EntitySubscriptionEventEntityNotification:
-	entity: object
-
-	def __serialize__(self) -> object:
-		return {
-			"entity": self.entity.__serialize__(),
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EntitySubscriptionEventEntityNotification':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			entity=deserialized_dict["entity"],
-		)
-
-EntityError = Union['EntitySubscriptionEvent.EntityErrorDeserializationError']
-
-class EntityErrorDeserializationError(metaclass=SingletonMeta):
-
-	def __serialize__(self) -> object:
-		return {}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DeserializationError':
-		return cls()
-
-@classmethod
-def serialize_entity_error(cls, entity_error: EntityError) -> object:
-	if isinstance(entity_error, EntitySubscriptionEvent.EntityErrorDeserializationError):
-		serialized_entity = entity_error.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.subscription.EntitySubscriptionEvent.EntityError.DeserializationError"})
-		return serialized_entity
-	else:
-		raise Exception(f"{type(entity_error)} is not a known subclass of EntityError")
-
-def deserialize_entity_error(data: Union[str, Dict[str, object]]) -> 'EntitySubscriptionEvent.EntityError':
-	deserialized_dict: dict[str, object]
-	if isinstance(data, str):
-		deserialized_dict = json.loads(data)
-	else:
-		deserialized_dict = data
-	qualifier = deserialized_dict.get("type")
-	if qualifier is None:
-		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.subscription.EntitySubscriptionEvent.EntityError.DeserializationError":
-		return EntitySubscriptionEvent.EntityErrorDeserializationError._deserialize(deserialized_dict)
-	else:
-		raise Exception(f"{qualifier} is not a known subclass of EntityError")
-
-def serialize_entity_subscription_event(entity_subscription_event: EntitySubscriptionEvent) -> object:
-	if isinstance(entity_subscription_event, EntitySubscriptionEventConnected):
-		serialized_entity = entity_subscription_event.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.subscription.EntitySubscriptionEvent.Connected"})
-		return serialized_entity
-	elif isinstance(entity_subscription_event, EntitySubscriptionEventReconnected):
-		serialized_entity = entity_subscription_event.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.subscription.EntitySubscriptionEvent.Reconnected"})
-		return serialized_entity
-	elif isinstance(entity_subscription_event, EntitySubscriptionEventUnexpectedError):
-		serialized_entity = entity_subscription_event.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.subscription.EntitySubscriptionEvent.UnexpectedError"})
-		return serialized_entity
-	elif isinstance(entity_subscription_event, EntitySubscriptionEventMissedPing):
-		serialized_entity = entity_subscription_event.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.subscription.EntitySubscriptionEvent.ConnectionError.MissedPing"})
-		return serialized_entity
-	elif isinstance(entity_subscription_event, EntitySubscriptionEventClosedByServer):
-		serialized_entity = entity_subscription_event.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.subscription.EntitySubscriptionEvent.ConnectionError.ClosedByServer"})
-		return serialized_entity
-	elif isinstance(entity_subscription_event, EntitySubscriptionEventEntityNotification):
-		serialized_entity = entity_subscription_event.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.subscription.EntitySubscriptionEvent.EntityNotification"})
-		return serialized_entity
-	elif isinstance(entity_subscription_event, EntitySubscriptionEventDeserializationError):
-		serialized_entity = entity_subscription_event.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.subscription.EntitySubscriptionEvent.EntityError.DeserializationError"})
-		return serialized_entity
-	else:
-		raise Exception(f"{type(entity_subscription_event)} is not a known subclass of EntitySubscriptionEvent")
-
-def deserialize_entity_subscription_event(data: Union[str, Dict[str, object]]) -> 'EntitySubscriptionEvent':
-	deserialized_dict: dict[str, object]
-	if isinstance(data, str):
-		deserialized_dict = json.loads(data)
-	else:
-		deserialized_dict = data
-	qualifier = deserialized_dict.get("type")
-	if qualifier is None:
-		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.subscription.EntitySubscriptionEvent.Connected":
-		return EntitySubscriptionEventConnected._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.subscription.EntitySubscriptionEvent.Reconnected":
-		return EntitySubscriptionEventReconnected._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.subscription.EntitySubscriptionEvent.UnexpectedError":
-		return EntitySubscriptionEventUnexpectedError._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.subscription.EntitySubscriptionEvent.ConnectionError.MissedPing":
-		return EntitySubscriptionEventMissedPing._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.subscription.EntitySubscriptionEvent.ConnectionError.ClosedByServer":
-		return EntitySubscriptionEventClosedByServer._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.subscription.EntitySubscriptionEvent.EntityNotification":
-		return EntitySubscriptionEventEntityNotification._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.subscription.EntitySubscriptionEvent.EntityError.DeserializationError":
-		return EntitySubscriptionEventDeserializationError._deserialize(deserialized_dict)
-	else:
-		raise Exception(f"{qualifier} is not a known subclass of EntitySubscriptionEvent")
 
 class EntitySubscriptionCloseReason(Enum):
 	ChannelFullException = "ChannelFullException"
@@ -14814,13 +14638,13 @@ class DatabaseSynchronization:
 			return self.value
 
 		@classmethod
-		def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Target':
+		def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DatabaseSynchronization.Target':
 			if data == "base":
-				return Target.Base
+				return DatabaseSynchronization.Target.Base
 			elif data == "healthdata":
-				return Target.Healthdata
+				return DatabaseSynchronization.Target.Healthdata
 			elif data == "patient":
-				return Target.Patient
+				return DatabaseSynchronization.Target.Patient
 			else:
 				raise Exception(f"{data} is not a valid value for Target enum.")
 
