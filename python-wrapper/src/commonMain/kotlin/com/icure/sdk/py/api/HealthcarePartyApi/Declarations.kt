@@ -28,6 +28,7 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
@@ -590,6 +591,7 @@ public fun modifyHealthcarePartyAsync(
 
 @Serializable
 private class MatchHealthcarePartiesByParams(
+	@Contextual
 	public val filter: AbstractFilter<HealthcareParty>,
 )
 

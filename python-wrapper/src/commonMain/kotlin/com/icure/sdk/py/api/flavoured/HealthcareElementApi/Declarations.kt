@@ -7,6 +7,7 @@ import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.model.DecryptedHealthElement
+import com.icure.sdk.model.EncryptedHealthElement
 import com.icure.sdk.model.HealthElement
 import com.icure.sdk.model.IcureStub
 import com.icure.sdk.model.PaginatedList
@@ -16,10 +17,12 @@ import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
+import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.py.serialization.HealthElementSerializer
 import com.icure.sdk.py.serialization.PatientSerializer
+import com.icure.sdk.py.subscription.EntitySubscription.EntitySubscriptionWithSerializer
 import com.icure.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
 import com.icure.sdk.py.utils.PyResult
 import com.icure.sdk.py.utils.failureToPyResultAsyncCallback
@@ -28,6 +31,7 @@ import com.icure.sdk.py.utils.toPyResult
 import com.icure.sdk.py.utils.toPyResultAsyncCallback
 import com.icure.sdk.py.utils.toPyString
 import com.icure.sdk.py.utils.toPyStringAsyncCallback
+import com.icure.sdk.subscription.EntitySubscriptionConfiguration
 import com.icure.sdk.utils.Serialization.json
 import kotlin.Boolean
 import kotlin.Byte
@@ -48,6 +52,7 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.SetSerializer
@@ -298,6 +303,7 @@ public fun createDelegationDeAnonymizationMetadataAsync(
 
 @Serializable
 private class MatchHealthcareElementsByParams(
+	@Contextual
 	public val filter: AbstractFilter<HealthElement>,
 )
 
@@ -428,6 +434,46 @@ public fun findHealthcareElementsDelegationsStubsByHcPartyPatientForeignKeysAsyn
 		}.toPyStringAsyncCallback(ListSerializer(IcureStub.serializer()), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class SubscribeToEventsParams(
+	public val events: Set<SubscriptionEventType>,
+	@Contextual
+	public val filter: AbstractFilter<HealthElement>,
+	public val subscriptionConfig: EntitySubscriptionConfiguration? = null,
+)
+
+public fun subscribeToEventsBlocking(sdk: IcureApis, params: String): PyResult =
+		kotlin.runCatching {
+	val decodedParams = json.decodeFromString<SubscribeToEventsParams>(params)
+	runBlocking {
+		sdk.healthcareElement.subscribeToEvents(
+			decodedParams.events,
+			decodedParams.filter,
+			decodedParams.subscriptionConfig,
+		)
+	}
+}.toPyResult {
+	EntitySubscriptionWithSerializer(it, EncryptedHealthElement.serializer())}
+
+@OptIn(ExperimentalForeignApi::class)
+public fun subscribeToEventsAsync(
+	sdk: IcureApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<SubscribeToEventsParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.healthcareElement.subscribeToEvents(
+				decodedParams.events,
+				decodedParams.filter,
+				decodedParams.subscriptionConfig,
+			)
+		}.toPyResultAsyncCallback(resultCallback) {
+			EntitySubscriptionWithSerializer(it, EncryptedHealthElement.serializer())}
+	}
+}.failureToPyResultAsyncCallback(resultCallback)
 
 @Serializable
 private class ShareWithParams(

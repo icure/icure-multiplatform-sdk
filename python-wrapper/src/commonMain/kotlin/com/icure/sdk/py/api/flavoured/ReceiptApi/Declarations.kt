@@ -82,7 +82,8 @@ private class WithEncryptionMetadataParams(
 	public val patient: Patient?,
 	public val user: User? = null,
 	public val delegates: Map<String, AccessLevel> = emptyMap(),
-	public val secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent,
+	public val secretId: SecretIdOption =
+			com.icure.sdk.crypto.entities.SecretIdOption.UseAnySharedWithParent,
 )
 
 public fun withEncryptionMetadataBlocking(sdk: IcureApis, params: String): String =

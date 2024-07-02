@@ -12,9 +12,16 @@ import com.icure.sdk.model.embed.EncryptedService
 import com.icure.sdk.model.embed.Service
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
+import com.icure.sdk.model.notification.SubscriptionEventType
+import com.icure.sdk.py.subscription.EntitySubscription.EntitySubscriptionWithSerializer
+import com.icure.sdk.py.utils.PyResult
+import com.icure.sdk.py.utils.failureToPyResultAsyncCallback
 import com.icure.sdk.py.utils.failureToPyStringAsyncCallback
+import com.icure.sdk.py.utils.toPyResult
+import com.icure.sdk.py.utils.toPyResultAsyncCallback
 import com.icure.sdk.py.utils.toPyString
 import com.icure.sdk.py.utils.toPyStringAsyncCallback
+import com.icure.sdk.subscription.EntitySubscriptionConfiguration
 import com.icure.sdk.utils.Serialization.json
 import kotlin.Boolean
 import kotlin.Byte
@@ -24,14 +31,17 @@ import kotlin.OptIn
 import kotlin.String
 import kotlin.Unit
 import kotlin.collections.List
+import kotlin.collections.Set
 import kotlinx.cinterop.ByteVarOf
 import kotlinx.cinterop.CFunction
+import kotlinx.cinterop.COpaquePointer
 import kotlinx.cinterop.CPointer
 import kotlinx.cinterop.CValues
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
@@ -39,6 +49,7 @@ import kotlinx.serialization.json.JsonElement
 
 @Serializable
 private class MatchContactsByParams(
+	@Contextual
 	public val filter: AbstractFilter<Contact>,
 )
 
@@ -71,6 +82,7 @@ public fun matchContactsByAsync(
 
 @Serializable
 private class MatchServicesByParams(
+	@Contextual
 	public val filter: AbstractFilter<Service>,
 )
 
@@ -234,6 +246,86 @@ public fun getServiceCodesOccurrencesAsync(
 		}.toPyStringAsyncCallback(ListSerializer(LabelledOccurence.serializer()), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class SubscribeToServiceEventsParams(
+	public val events: Set<SubscriptionEventType>,
+	@Contextual
+	public val filter: AbstractFilter<Service>,
+	public val subscriptionConfig: EntitySubscriptionConfiguration,
+)
+
+public fun subscribeToServiceEventsBlocking(sdk: IcureBaseApis, params: String): PyResult =
+		kotlin.runCatching {
+	val decodedParams = json.decodeFromString<SubscribeToServiceEventsParams>(params)
+	runBlocking {
+		sdk.contact.subscribeToServiceEvents(
+			decodedParams.events,
+			decodedParams.filter,
+			decodedParams.subscriptionConfig,
+		)
+	}
+}.toPyResult {
+	EntitySubscriptionWithSerializer(it, EncryptedService.serializer())}
+
+@OptIn(ExperimentalForeignApi::class)
+public fun subscribeToServiceEventsAsync(
+	sdk: IcureBaseApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<SubscribeToServiceEventsParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.contact.subscribeToServiceEvents(
+				decodedParams.events,
+				decodedParams.filter,
+				decodedParams.subscriptionConfig,
+			)
+		}.toPyResultAsyncCallback(resultCallback) {
+			EntitySubscriptionWithSerializer(it, EncryptedService.serializer())}
+	}
+}.failureToPyResultAsyncCallback(resultCallback)
+
+@Serializable
+private class SubscribeToEventsParams(
+	public val events: Set<SubscriptionEventType>,
+	@Contextual
+	public val filter: AbstractFilter<Contact>,
+	public val subscriptionConfig: EntitySubscriptionConfiguration? = null,
+)
+
+public fun subscribeToEventsBlocking(sdk: IcureBaseApis, params: String): PyResult =
+		kotlin.runCatching {
+	val decodedParams = json.decodeFromString<SubscribeToEventsParams>(params)
+	runBlocking {
+		sdk.contact.subscribeToEvents(
+			decodedParams.events,
+			decodedParams.filter,
+			decodedParams.subscriptionConfig,
+		)
+	}
+}.toPyResult {
+	EntitySubscriptionWithSerializer(it, EncryptedContact.serializer())}
+
+@OptIn(ExperimentalForeignApi::class)
+public fun subscribeToEventsAsync(
+	sdk: IcureBaseApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<SubscribeToEventsParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.contact.subscribeToEvents(
+				decodedParams.events,
+				decodedParams.filter,
+				decodedParams.subscriptionConfig,
+			)
+		}.toPyResultAsyncCallback(resultCallback) {
+			EntitySubscriptionWithSerializer(it, EncryptedContact.serializer())}
+	}
+}.failureToPyResultAsyncCallback(resultCallback)
 
 @Serializable
 private class ModifyContactParams(

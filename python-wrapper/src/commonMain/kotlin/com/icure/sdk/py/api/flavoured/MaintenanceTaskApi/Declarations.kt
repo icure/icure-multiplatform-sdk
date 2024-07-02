@@ -6,18 +6,27 @@ import com.icure.sdk.crypto.entities.MaintenanceTaskShareOptions
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.model.DecryptedMaintenanceTask
+import com.icure.sdk.model.EncryptedMaintenanceTask
 import com.icure.sdk.model.MaintenanceTask
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.User
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.embed.AccessLevel
+import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
+import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.py.serialization.MaintenanceTaskSerializer
+import com.icure.sdk.py.subscription.EntitySubscription.EntitySubscriptionWithSerializer
+import com.icure.sdk.py.utils.PyResult
+import com.icure.sdk.py.utils.failureToPyResultAsyncCallback
 import com.icure.sdk.py.utils.failureToPyStringAsyncCallback
+import com.icure.sdk.py.utils.toPyResult
+import com.icure.sdk.py.utils.toPyResultAsyncCallback
 import com.icure.sdk.py.utils.toPyString
 import com.icure.sdk.py.utils.toPyStringAsyncCallback
+import com.icure.sdk.subscription.EntitySubscriptionConfiguration
 import com.icure.sdk.utils.Serialization.json
 import kotlin.Boolean
 import kotlin.Byte
@@ -30,12 +39,14 @@ import kotlin.collections.Map
 import kotlin.collections.Set
 import kotlinx.cinterop.ByteVarOf
 import kotlinx.cinterop.CFunction
+import kotlinx.cinterop.COpaquePointer
 import kotlinx.cinterop.CPointer
 import kotlinx.cinterop.CValues
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.SetSerializer
@@ -307,6 +318,46 @@ public fun deleteMaintenanceTasksAsync(
 		}.toPyStringAsyncCallback(ListSerializer(DocIdentifier.serializer()), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class SubscribeToEventsParams(
+	public val events: Set<SubscriptionEventType>,
+	@Contextual
+	public val filter: AbstractFilter<MaintenanceTask>,
+	public val subscriptionConfig: EntitySubscriptionConfiguration? = null,
+)
+
+public fun subscribeToEventsBlocking(sdk: IcureApis, params: String): PyResult =
+		kotlin.runCatching {
+	val decodedParams = json.decodeFromString<SubscribeToEventsParams>(params)
+	runBlocking {
+		sdk.maintenanceTask.subscribeToEvents(
+			decodedParams.events,
+			decodedParams.filter,
+			decodedParams.subscriptionConfig,
+		)
+	}
+}.toPyResult {
+	EntitySubscriptionWithSerializer(it, EncryptedMaintenanceTask.serializer())}
+
+@OptIn(ExperimentalForeignApi::class)
+public fun subscribeToEventsAsync(
+	sdk: IcureApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<SubscribeToEventsParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.maintenanceTask.subscribeToEvents(
+				decodedParams.events,
+				decodedParams.filter,
+				decodedParams.subscriptionConfig,
+			)
+		}.toPyResultAsyncCallback(resultCallback) {
+			EntitySubscriptionWithSerializer(it, EncryptedMaintenanceTask.serializer())}
+	}
+}.failureToPyResultAsyncCallback(resultCallback)
 
 @Serializable
 private class ShareWithParams(

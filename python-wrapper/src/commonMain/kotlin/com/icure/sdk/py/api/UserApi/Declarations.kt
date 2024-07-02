@@ -16,6 +16,14 @@ import com.icure.sdk.py.utils.failureToPyStringAsyncCallback
 import com.icure.sdk.py.utils.toPyString
 import com.icure.sdk.py.utils.toPyStringAsyncCallback
 import com.icure.sdk.utils.Serialization.json
+import kotlin.Boolean
+import kotlin.Byte
+import kotlin.Int
+import kotlin.Long
+import kotlin.OptIn
+import kotlin.String
+import kotlin.Unit
+import kotlin.collections.List
 import kotlinx.cinterop.ByteVarOf
 import kotlinx.cinterop.CFunction
 import kotlinx.cinterop.CPointer
@@ -24,6 +32,7 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
@@ -488,6 +497,7 @@ public fun filterUsersByAsync(
 
 @Serializable
 private class MatchUsersByParams(
+	@Contextual
 	public val filter: AbstractFilter<User>,
 )
 
