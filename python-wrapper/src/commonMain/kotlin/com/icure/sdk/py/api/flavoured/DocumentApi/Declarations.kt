@@ -20,6 +20,7 @@ import com.icure.sdk.py.serialization.DocumentSerializer
 import com.icure.sdk.py.serialization.MessageSerializer
 import com.icure.sdk.py.serialization.PatientSerializer
 import com.icure.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
+import com.icure.sdk.py.utils.PyCallbackResultHolder
 import com.icure.sdk.py.utils.PyResult
 import com.icure.sdk.py.utils.failureToPyResultAsyncCallback
 import com.icure.sdk.py.utils.failureToPyStringAsyncCallback
@@ -28,24 +29,17 @@ import com.icure.sdk.py.utils.toPyResultAsyncCallback
 import com.icure.sdk.py.utils.toPyString
 import com.icure.sdk.py.utils.toPyStringAsyncCallback
 import com.icure.sdk.serialization.ByteArraySerializer
+import com.icure.sdk.utils.Serialization.fullJson
 import com.icure.sdk.utils.Serialization.json
-import kotlin.Boolean
-import kotlin.Byte
-import kotlin.ByteArray
-import kotlin.Int
-import kotlin.Long
-import kotlin.OptIn
-import kotlin.String
-import kotlin.Unit
-import kotlin.collections.List
-import kotlin.collections.Map
-import kotlin.collections.Set
 import kotlinx.cinterop.ByteVarOf
 import kotlinx.cinterop.CFunction
 import kotlinx.cinterop.COpaquePointer
 import kotlinx.cinterop.CPointer
 import kotlinx.cinterop.CValues
 import kotlinx.cinterop.ExperimentalForeignApi
+import kotlinx.cinterop.StableRef
+import kotlinx.cinterop.cstr
+import kotlinx.cinterop.invoke
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -53,6 +47,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.SetSerializer
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 
 @Serializable
@@ -133,6 +128,266 @@ public fun withEncryptionMetadataAsync(
 }.failureToPyStringAsyncCallback(resultCallback)
 
 @Serializable
+private class GetAndTryDecryptMainAttachmentParams(
+	@Serializable(DocumentSerializer::class)
+	public val document: Document,
+	public val attachmentId: String,
+)
+
+@OptIn(ExperimentalForeignApi::class)
+public fun getAndTryDecryptMainAttachmentBlocking(
+	sdk: IcureApis,
+	params: String,
+	decryptedDocumentValidator: CPointer<CFunction<(COpaquePointer,
+			CValues<ByteVarOf<Byte>>) -> Unit>>,
+): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<GetAndTryDecryptMainAttachmentParams>(params)
+	val decryptedDocumentValidatorConverted: suspend (ByteArray) -> Boolean = { x0 ->
+		val jsonParams = JsonArray(listOf(
+			fullJson.encodeToJsonElement(ByteArraySerializer, x0),
+		))
+		val resultHolder = PyCallbackResultHolder(Boolean.serializer())
+		val resultHolderRef = StableRef.create(resultHolder)
+		decryptedDocumentValidator.invoke(resultHolderRef.asCPointer(), jsonParams.toString().cstr)
+		resultHolderRef.dispose()
+		resultHolder.getOrThrow()
+	}
+	runBlocking {
+		sdk.document.getAndTryDecryptMainAttachment(
+			decodedParams.document,
+			decodedParams.attachmentId,
+			decryptedDocumentValidatorConverted,
+		)
+	}
+}.toPyString(ByteArraySerializer)
+
+@OptIn(ExperimentalForeignApi::class)
+public fun getAndTryDecryptMainAttachmentAsync(
+	sdk: IcureApis,
+	params: String,
+	decryptedDocumentValidator: CPointer<CFunction<(COpaquePointer,
+			CValues<ByteVarOf<Byte>>) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<GetAndTryDecryptMainAttachmentParams>(params)
+	val decryptedDocumentValidatorConverted: suspend (ByteArray) -> Boolean = { x0 ->
+		val jsonParams = JsonArray(listOf(
+			fullJson.encodeToJsonElement(ByteArraySerializer, x0),
+		))
+		val resultHolder = PyCallbackResultHolder(Boolean.serializer())
+		val resultHolderRef = StableRef.create(resultHolder)
+		decryptedDocumentValidator.invoke(resultHolderRef.asCPointer(), jsonParams.toString().cstr)
+		resultHolderRef.dispose()
+		resultHolder.getOrThrow()
+	}
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.document.getAndTryDecryptMainAttachment(
+				decodedParams.document,
+				decodedParams.attachmentId,
+				decryptedDocumentValidatorConverted,
+			)
+		}.toPyStringAsyncCallback(ByteArraySerializer, resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class GetAndTryDecryptMainAttachmentAsPlainTextParams(
+	@Serializable(DocumentSerializer::class)
+	public val document: Document,
+	public val attachmentId: String,
+)
+
+@OptIn(ExperimentalForeignApi::class)
+public fun getAndTryDecryptMainAttachmentAsPlainTextBlocking(
+	sdk: IcureApis,
+	params: String,
+	decryptedDocumentValidator: CPointer<CFunction<(COpaquePointer,
+			CValues<ByteVarOf<Byte>>) -> Unit>>,
+): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<GetAndTryDecryptMainAttachmentAsPlainTextParams>(params)
+	val decryptedDocumentValidatorConverted: suspend (ByteArray) -> Boolean = { x0 ->
+		val jsonParams = JsonArray(listOf(
+			fullJson.encodeToJsonElement(ByteArraySerializer, x0),
+		))
+		val resultHolder = PyCallbackResultHolder(Boolean.serializer())
+		val resultHolderRef = StableRef.create(resultHolder)
+		decryptedDocumentValidator.invoke(resultHolderRef.asCPointer(), jsonParams.toString().cstr)
+		resultHolderRef.dispose()
+		resultHolder.getOrThrow()
+	}
+	runBlocking {
+		sdk.document.getAndTryDecryptMainAttachmentAsPlainText(
+			decodedParams.document,
+			decodedParams.attachmentId,
+			decryptedDocumentValidatorConverted,
+		)
+	}
+}.toPyString(String.serializer())
+
+@OptIn(ExperimentalForeignApi::class)
+public fun getAndTryDecryptMainAttachmentAsPlainTextAsync(
+	sdk: IcureApis,
+	params: String,
+	decryptedDocumentValidator: CPointer<CFunction<(COpaquePointer,
+			CValues<ByteVarOf<Byte>>) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<GetAndTryDecryptMainAttachmentAsPlainTextParams>(params)
+	val decryptedDocumentValidatorConverted: suspend (ByteArray) -> Boolean = { x0 ->
+		val jsonParams = JsonArray(listOf(
+			fullJson.encodeToJsonElement(ByteArraySerializer, x0),
+		))
+		val resultHolder = PyCallbackResultHolder(Boolean.serializer())
+		val resultHolderRef = StableRef.create(resultHolder)
+		decryptedDocumentValidator.invoke(resultHolderRef.asCPointer(), jsonParams.toString().cstr)
+		resultHolderRef.dispose()
+		resultHolder.getOrThrow()
+	}
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.document.getAndTryDecryptMainAttachmentAsPlainText(
+				decodedParams.document,
+				decodedParams.attachmentId,
+				decryptedDocumentValidatorConverted,
+			)
+		}.toPyStringAsyncCallback(String.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class GetAndTryDecryptMainAttachmentAsJsonParams(
+	@Serializable(DocumentSerializer::class)
+	public val document: Document,
+	public val attachmentId: String,
+)
+
+@OptIn(ExperimentalForeignApi::class)
+public fun getAndTryDecryptMainAttachmentAsJsonBlocking(
+	sdk: IcureApis,
+	params: String,
+	decryptedDocumentValidator: CPointer<CFunction<(COpaquePointer,
+			CValues<ByteVarOf<Byte>>) -> Unit>>,
+): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<GetAndTryDecryptMainAttachmentAsJsonParams>(params)
+	val decryptedDocumentValidatorConverted: suspend (ByteArray) -> Boolean = { x0 ->
+		val jsonParams = JsonArray(listOf(
+			fullJson.encodeToJsonElement(ByteArraySerializer, x0),
+		))
+		val resultHolder = PyCallbackResultHolder(Boolean.serializer())
+		val resultHolderRef = StableRef.create(resultHolder)
+		decryptedDocumentValidator.invoke(resultHolderRef.asCPointer(), jsonParams.toString().cstr)
+		resultHolderRef.dispose()
+		resultHolder.getOrThrow()
+	}
+	runBlocking {
+		sdk.document.getAndTryDecryptMainAttachmentAsJson(
+			decodedParams.document,
+			decodedParams.attachmentId,
+			decryptedDocumentValidatorConverted,
+		)
+	}
+}.toPyString(JsonElement.serializer())
+
+@OptIn(ExperimentalForeignApi::class)
+public fun getAndTryDecryptMainAttachmentAsJsonAsync(
+	sdk: IcureApis,
+	params: String,
+	decryptedDocumentValidator: CPointer<CFunction<(COpaquePointer,
+			CValues<ByteVarOf<Byte>>) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<GetAndTryDecryptMainAttachmentAsJsonParams>(params)
+	val decryptedDocumentValidatorConverted: suspend (ByteArray) -> Boolean = { x0 ->
+		val jsonParams = JsonArray(listOf(
+			fullJson.encodeToJsonElement(ByteArraySerializer, x0),
+		))
+		val resultHolder = PyCallbackResultHolder(Boolean.serializer())
+		val resultHolderRef = StableRef.create(resultHolder)
+		decryptedDocumentValidator.invoke(resultHolderRef.asCPointer(), jsonParams.toString().cstr)
+		resultHolderRef.dispose()
+		resultHolder.getOrThrow()
+	}
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.document.getAndTryDecryptMainAttachmentAsJson(
+				decodedParams.document,
+				decodedParams.attachmentId,
+				decryptedDocumentValidatorConverted,
+			)
+		}.toPyStringAsyncCallback(JsonElement.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class GetAndDecryptMainAttachmentParams(
+	@Serializable(DocumentSerializer::class)
+	public val document: Document,
+	public val attachmentId: String,
+)
+
+@OptIn(ExperimentalForeignApi::class)
+public fun getAndDecryptMainAttachmentBlocking(
+	sdk: IcureApis,
+	params: String,
+	decryptedDocumentValidator: CPointer<CFunction<(COpaquePointer,
+			CValues<ByteVarOf<Byte>>) -> Unit>>,
+): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<GetAndDecryptMainAttachmentParams>(params)
+	val decryptedDocumentValidatorConverted: suspend (ByteArray) -> Boolean = { x0 ->
+		val jsonParams = JsonArray(listOf(
+			fullJson.encodeToJsonElement(ByteArraySerializer, x0),
+		))
+		val resultHolder = PyCallbackResultHolder(Boolean.serializer())
+		val resultHolderRef = StableRef.create(resultHolder)
+		decryptedDocumentValidator.invoke(resultHolderRef.asCPointer(), jsonParams.toString().cstr)
+		resultHolderRef.dispose()
+		resultHolder.getOrThrow()
+	}
+	runBlocking {
+		sdk.document.getAndDecryptMainAttachment(
+			decodedParams.document,
+			decodedParams.attachmentId,
+			decryptedDocumentValidatorConverted,
+		)
+	}
+}.toPyString(ByteArraySerializer)
+
+@OptIn(ExperimentalForeignApi::class)
+public fun getAndDecryptMainAttachmentAsync(
+	sdk: IcureApis,
+	params: String,
+	decryptedDocumentValidator: CPointer<CFunction<(COpaquePointer,
+			CValues<ByteVarOf<Byte>>) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<GetAndDecryptMainAttachmentParams>(params)
+	val decryptedDocumentValidatorConverted: suspend (ByteArray) -> Boolean = { x0 ->
+		val jsonParams = JsonArray(listOf(
+			fullJson.encodeToJsonElement(ByteArraySerializer, x0),
+		))
+		val resultHolder = PyCallbackResultHolder(Boolean.serializer())
+		val resultHolderRef = StableRef.create(resultHolder)
+		decryptedDocumentValidator.invoke(resultHolderRef.asCPointer(), jsonParams.toString().cstr)
+		resultHolderRef.dispose()
+		resultHolder.getOrThrow()
+	}
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.document.getAndDecryptMainAttachment(
+				decodedParams.document,
+				decodedParams.attachmentId,
+				decryptedDocumentValidatorConverted,
+			)
+		}.toPyStringAsyncCallback(ByteArraySerializer, resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
 private class EncryptAndSetMainAttachmentParams(
 	@Serializable(DocumentSerializer::class)
 	public val document: Document,
@@ -168,6 +423,74 @@ public fun encryptAndSetMainAttachmentAsync(
 				decodedParams.attachment,
 			)
 		}.toPyStringAsyncCallback(EncryptedDocument.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class GetAndDecryptSecondaryAttachmentParams(
+	@Serializable(DocumentSerializer::class)
+	public val document: Document,
+	public val key: String,
+	public val attachmentId: String,
+)
+
+@OptIn(ExperimentalForeignApi::class)
+public fun getAndDecryptSecondaryAttachmentBlocking(
+	sdk: IcureApis,
+	params: String,
+	decryptedDocumentValidator: CPointer<CFunction<(COpaquePointer,
+			CValues<ByteVarOf<Byte>>) -> Unit>>,
+): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<GetAndDecryptSecondaryAttachmentParams>(params)
+	val decryptedDocumentValidatorConverted: suspend (ByteArray) -> Boolean = { x0 ->
+		val jsonParams = JsonArray(listOf(
+			fullJson.encodeToJsonElement(ByteArraySerializer, x0),
+		))
+		val resultHolder = PyCallbackResultHolder(Boolean.serializer())
+		val resultHolderRef = StableRef.create(resultHolder)
+		decryptedDocumentValidator.invoke(resultHolderRef.asCPointer(), jsonParams.toString().cstr)
+		resultHolderRef.dispose()
+		resultHolder.getOrThrow()
+	}
+	runBlocking {
+		sdk.document.getAndDecryptSecondaryAttachment(
+			decodedParams.document,
+			decodedParams.key,
+			decodedParams.attachmentId,
+			decryptedDocumentValidatorConverted,
+		)
+	}
+}.toPyString(ByteArraySerializer)
+
+@OptIn(ExperimentalForeignApi::class)
+public fun getAndDecryptSecondaryAttachmentAsync(
+	sdk: IcureApis,
+	params: String,
+	decryptedDocumentValidator: CPointer<CFunction<(COpaquePointer,
+			CValues<ByteVarOf<Byte>>) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<GetAndDecryptSecondaryAttachmentParams>(params)
+	val decryptedDocumentValidatorConverted: suspend (ByteArray) -> Boolean = { x0 ->
+		val jsonParams = JsonArray(listOf(
+			fullJson.encodeToJsonElement(ByteArraySerializer, x0),
+		))
+		val resultHolder = PyCallbackResultHolder(Boolean.serializer())
+		val resultHolderRef = StableRef.create(resultHolder)
+		decryptedDocumentValidator.invoke(resultHolderRef.asCPointer(), jsonParams.toString().cstr)
+		resultHolderRef.dispose()
+		resultHolder.getOrThrow()
+	}
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.document.getAndDecryptSecondaryAttachment(
+				decodedParams.document,
+				decodedParams.key,
+				decodedParams.attachmentId,
+				decryptedDocumentValidatorConverted,
+			)
+		}.toPyStringAsyncCallback(ByteArraySerializer, resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
