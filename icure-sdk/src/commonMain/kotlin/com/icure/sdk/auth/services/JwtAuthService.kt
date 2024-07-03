@@ -1,22 +1,20 @@
 package com.icure.sdk.auth.services
 
-import com.icure.kryptom.utils.base64Decode
 import com.icure.sdk.api.raw.RawAnonymousAuthApi
-import com.icure.sdk.auth.AuthenticationClass
 import com.icure.sdk.auth.Credentials
 import com.icure.sdk.auth.Jwt
+import com.icure.sdk.auth.ServerAuthenticationClass
 import com.icure.sdk.auth.ThirdPartyProvider
 import com.icure.sdk.auth.ThirdPartyTokens
 import com.icure.sdk.auth.UsernamePassword
 import com.icure.sdk.model.LoginCredentials
 import com.icure.sdk.model.security.jwt.JwtResponse
 import com.icure.sdk.utils.InternalIcureApi
-import com.icure.sdk.utils.Serialization
+import com.icure.sdk.utils.RequestStatusException
+import com.icure.sdk.utils.isJwtExpiredOrInvalid
 import io.ktor.client.request.*
-import io.ktor.util.date.GMTDate
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import kotlinx.serialization.Serializable
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
@@ -24,7 +22,7 @@ import kotlin.time.Duration.Companion.seconds
  * This auth service can generate and provide a valid copy of an authentication and refresh JWTs, refreshing them if
  * needed.
  *
- * @param authApi an instance of [AnonymousAuthApi].
+ * @param authApi an instance of [RawAnonymousAuthApi].
  * @param credentials the [Credentials] to obtain the JWT. Note: if a [Jwt] is passed as credentials, then it will not
  * be refreshed when the refresh token expires.
  * @param refreshPadding a [Duration]. Both the authentication and refresh will be refreshed before their actual expiration
@@ -35,15 +33,13 @@ class JwtAuthService(
 	private val authApi: RawAnonymousAuthApi,
 	private val credentials: Credentials,
 	private val refreshPadding: Duration = 30L.seconds
-) : TokenBasedAuthService<Jwt> {
+) : TokenBasedAuthService<Jwt>, AuthProvider {
 
 	private lateinit var jwt: Jwt
 	private val jwtMutex = Mutex()
 
-	companion object {
-		@Serializable
-		private data class JwtPayload(val exp: Long)
-	}
+	private var lastRecordedError: RequestStatusException? = null
+	private val errorMutex = Mutex()
 
 	/**
 	 * Generates a new [Jwt] using the provided credentials.
@@ -72,23 +68,46 @@ class JwtAuthService(
 
 	override suspend fun setAuthorizationInRequest(
 		builder: HttpRequestBuilder,
-		authenticationClass: AuthenticationClass?
+		authenticationClass: ServerAuthenticationClass?
 	) {
 		if(authenticationClass != null) {
 			throw AuthService.UnavailableAuthenticationClassException(authenticationClass)
 		}
-		builder.bearerAuth(getOrRefreshToken().jwt)
+		val currentJwt = getOrRefreshToken().jwt
+
+		errorMutex.withLock {
+			lastRecordedError?.also {
+				throw it
+			}
+		}
+
+		builder.bearerAuth(currentJwt)
 	}
 
 	override suspend fun getToken(): Jwt = getOrRefreshToken()
 
+	override fun getAuthService() = this
+
+	override suspend fun invalidateCurrentHeader(error: RequestStatusException) = errorMutex.withLock {
+		lastRecordedError = error
+	}
+
 	/**
+	 * Retrieves the current [Jwt], automatically refreshing it if it is expired of never initialized.
+	 * This function has 2 side effects:
+	 * - sets the [jwt] internal state.
+	 * - resets the [lastRecordedError] if the jwt was refreshed successfully, the rationale being that [lastRecordedError] is set when
+	 * a request fails with a 401, the new token may reset this state.
+	 *
 	 * @return the current [Jwt]. It automatically refreshes it if it is expired or if it was never initialized.
 	 */
 	private suspend fun getOrRefreshToken(): Jwt {
 		jwtMutex.withLock {
-			if(!::jwt.isInitialized || isJwtExpiredOrInvalid(jwt.jwt)) {
+			if(!::jwt.isInitialized || isJwtExpiredOrInvalid(jwt.jwt, refreshPadding)) {
 				refreshAuthenticationJwt()
+				errorMutex.withLock {
+					lastRecordedError = null
+				}
 			}
 		}
 		return jwt
@@ -99,22 +118,11 @@ class JwtAuthService(
 	 * expired, then generated a new jwt.
 	 */
 	private suspend fun refreshAuthenticationJwt() {
-		jwt = if(!::jwt.isInitialized || isJwtExpiredOrInvalid(jwt.refreshJwt)) {
+		jwt = if(!::jwt.isInitialized || isJwtExpiredOrInvalid(jwt.refreshJwt, refreshPadding)) {
 			generateJwt()
 		} else {
 			authApi.refresh(jwt.refreshJwt).successBody().toJwt()
 		}
-	}
-
-	/**
-	 * Checks if a base-64 encoded JWT has an invalid format or is expired.
-	 */
-	private fun isJwtExpiredOrInvalid(jwt: String): Boolean {
-		val parts = jwt.split(".")
-		return parts.size == 3 && runCatching {
-			val payload = Serialization.lenientJson.decodeFromString<JwtPayload>(base64Decode(parts[1]).toString())
-			(payload.exp * 1000) < (GMTDate().timestamp - refreshPadding.inWholeMilliseconds)
-		}.getOrDefault(false)
 	}
 
 	private fun JwtResponse.toJwt() = Jwt(requireNotNull(token), requireNotNull(refreshToken))
