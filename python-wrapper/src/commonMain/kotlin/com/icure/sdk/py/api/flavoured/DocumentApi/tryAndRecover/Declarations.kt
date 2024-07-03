@@ -19,6 +19,7 @@ import com.icure.sdk.py.utils.toPyResult
 import com.icure.sdk.py.utils.toPyResultAsyncCallback
 import com.icure.sdk.py.utils.toPyString
 import com.icure.sdk.py.utils.toPyStringAsyncCallback
+import com.icure.sdk.serialization.ByteArraySerializer
 import com.icure.sdk.utils.Serialization.json
 import kotlin.Boolean
 import kotlin.Byte
@@ -466,6 +467,7 @@ private class SetRawMainAttachmentParams(
 	public val rev: String,
 	public val utis: List<String>,
 	public val blobType: String,
+	@Serializable(ByteArraySerializer::class)
 	public val attachment: ByteArray,
 	public val encrypted: Boolean,
 )
@@ -514,6 +516,7 @@ private class SetRawSecondaryAttachmentParams(
 	public val rev: String,
 	public val utis: List<String>,
 	public val blobType: String,
+	@Serializable(ByteArraySerializer::class)
 	public val attachment: ByteArray,
 	public val encrypted: Boolean,
 )

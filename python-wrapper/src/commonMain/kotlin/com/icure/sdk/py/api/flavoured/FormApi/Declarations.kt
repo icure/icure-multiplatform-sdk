@@ -25,6 +25,7 @@ import com.icure.sdk.py.utils.toPyResult
 import com.icure.sdk.py.utils.toPyResultAsyncCallback
 import com.icure.sdk.py.utils.toPyString
 import com.icure.sdk.py.utils.toPyStringAsyncCallback
+import com.icure.sdk.serialization.ByteArraySerializer
 import com.icure.sdk.utils.Serialization.json
 import kotlin.Boolean
 import kotlin.Byte
@@ -590,6 +591,7 @@ public fun updateFormTemplateAsync(
 @Serializable
 private class SetTemplateAttachmentParams(
 	public val formTemplateId: String,
+	@Serializable(ByteArraySerializer::class)
 	public val payload: ByteArray,
 )
 

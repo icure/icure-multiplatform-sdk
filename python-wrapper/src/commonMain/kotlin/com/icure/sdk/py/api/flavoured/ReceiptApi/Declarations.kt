@@ -162,6 +162,7 @@ private class EncryptAndSetReceiptAttachmentParams(
 	@Serializable(ReceiptSerializer::class)
 	public val receipt: Receipt,
 	public val blobType: String,
+	@Serializable(ByteArraySerializer::class)
 	public val attachment: ByteArray,
 )
 
@@ -335,6 +336,7 @@ private class LogReceiptParams(
 	public val docId: String,
 	public val refs: List<String>,
 	public val blobType: String,
+	@Serializable(ByteArraySerializer::class)
 	public val blob: ByteArray,
 )
 
@@ -474,6 +476,7 @@ private class SetRawReceiptAttachmentParams(
 	public val receiptId: String,
 	public val rev: String,
 	public val blobType: String,
+	@Serializable(ByteArraySerializer::class)
 	public val attachment: ByteArray,
 )
 

@@ -128,6 +128,7 @@ private class SetRawReceiptAttachmentParams(
 	public val receiptId: String,
 	public val rev: String,
 	public val blobType: String,
+	@Serializable(ByteArraySerializer::class)
 	public val attachment: ByteArray,
 )
 

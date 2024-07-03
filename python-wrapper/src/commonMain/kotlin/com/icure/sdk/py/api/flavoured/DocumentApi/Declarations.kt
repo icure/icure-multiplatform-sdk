@@ -408,6 +408,7 @@ private class EncryptAndSetMainAttachmentParams(
 	@Serializable(DocumentSerializer::class)
 	public val document: Document,
 	public val utis: List<String>,
+	@Serializable(ByteArraySerializer::class)
 	public val attachment: ByteArray,
 )
 
@@ -520,6 +521,7 @@ private class EncryptAndSetSecondaryAttachmentParams(
 	public val document: Document,
 	public val key: String,
 	public val utis: List<String>,
+	@Serializable(ByteArraySerializer::class)
 	public val attachment: ByteArray,
 )
 
@@ -1320,6 +1322,7 @@ private class SetRawMainAttachmentParams(
 	public val rev: String,
 	public val utis: List<String>,
 	public val blobType: String,
+	@Serializable(ByteArraySerializer::class)
 	public val attachment: ByteArray,
 	public val encrypted: Boolean,
 )
@@ -1368,6 +1371,7 @@ private class SetRawSecondaryAttachmentParams(
 	public val rev: String,
 	public val utis: List<String>,
 	public val blobType: String,
+	@Serializable(ByteArraySerializer::class)
 	public val attachment: ByteArray,
 	public val encrypted: Boolean,
 )

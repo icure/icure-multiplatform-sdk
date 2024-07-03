@@ -383,6 +383,7 @@ public fun getAttachmentTextAsync(
 @Serializable
 private class SetDocumentTemplateAttachmentParams(
 	public val documentTemplateId: String,
+	@Serializable(ByteArraySerializer::class)
 	public val payload: ByteArray,
 )
 
