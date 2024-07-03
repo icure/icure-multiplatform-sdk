@@ -55,7 +55,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.shareWithBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -96,7 +96,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.tryShareWithManyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -137,7 +137,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.shareWithManyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -176,7 +176,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.initialiseConfidentialSecretIdBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -215,7 +215,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.modifyPatientBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -254,7 +254,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.getPatientBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -309,7 +309,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.filterPatientsByBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -366,7 +366,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.findPatientsByNameBirthSsinAutoBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -423,7 +423,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.listPatientsOfHcPartyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -466,7 +466,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.listOfMergesAfterBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -515,7 +515,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.findPatientsModifiedAfterBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -572,7 +572,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.listPatientsByHcPartyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -615,7 +615,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.getPatientHcPartyKeysForDelegateBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -654,7 +654,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.countOfPatientsBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -707,7 +707,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.findPatientsByHealthcarePartyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -760,7 +760,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.findPatientsIdsByHealthcarePartyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -803,7 +803,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.getPatientByExternalIdBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -846,7 +846,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.fuzzySearchBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -899,7 +899,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.findDeletedPatientsBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -944,7 +944,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.listDeletedPatientsByNameBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -983,7 +983,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.getPatientsBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1026,7 +1026,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.getPatientByHealthcarePartyAndIdentifierBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1065,7 +1065,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.modifyPatientsBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1110,7 +1110,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.modifyPatientReferralBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1159,7 +1159,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.findDuplicatesBySsinBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1212,7 +1212,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.findDuplicatesByNameBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1261,7 +1261,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.mergePatientsBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1315,7 +1315,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.shareWithBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1356,7 +1356,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.tryShareWithManyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1397,7 +1397,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.shareWithManyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1436,7 +1436,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.initialiseConfidentialSecretIdBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1475,7 +1475,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.modifyPatientBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1514,7 +1514,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.getPatientBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1569,7 +1569,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.filterPatientsByBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1626,7 +1626,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.findPatientsByNameBirthSsinAutoBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1683,7 +1683,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.listPatientsOfHcPartyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1726,7 +1726,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.listOfMergesAfterBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1775,7 +1775,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.findPatientsModifiedAfterBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1832,7 +1832,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.listPatientsByHcPartyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1875,7 +1875,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.getPatientHcPartyKeysForDelegateBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1914,7 +1914,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.countOfPatientsBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1967,7 +1967,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.findPatientsByHealthcarePartyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -2020,7 +2020,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.findPatientsIdsByHealthcarePartyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -2063,7 +2063,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.getPatientByExternalIdBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -2106,7 +2106,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.fuzzySearchBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -2159,7 +2159,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.findDeletedPatientsBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -2204,7 +2204,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.listDeletedPatientsByNameBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -2243,7 +2243,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.getPatientsBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -2286,7 +2286,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.getPatientByHealthcarePartyAndIdentifierBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -2325,7 +2325,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.modifyPatientsBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -2370,7 +2370,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.modifyPatientReferralBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -2419,7 +2419,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.findDuplicatesBySsinBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -2472,7 +2472,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.findDuplicatesByNameBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -2521,7 +2521,7 @@ class PatientApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.mergePatientsBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -2565,7 +2565,7 @@ class PatientApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.getSecretIdsOfBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -2604,7 +2604,7 @@ class PatientApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.getEncryptionKeysOfBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -2643,7 +2643,7 @@ class PatientApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.createPatientBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -2686,7 +2686,7 @@ class PatientApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.withEncryptionMetadataBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -2727,7 +2727,7 @@ class PatientApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.createDelegationsDeAnonymizationMetadataBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -2763,7 +2763,7 @@ class PatientApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.hasWriteAccessBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -2802,7 +2802,7 @@ class PatientApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.decryptPatientIdOfBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -2843,7 +2843,7 @@ class PatientApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.createDelegationDeAnonymizationMetadataBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -2879,7 +2879,7 @@ class PatientApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.createPatientsBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -2928,7 +2928,7 @@ class PatientApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.registerPatientBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -2973,7 +2973,7 @@ class PatientApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.shareAllDataOfPatientBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -3014,7 +3014,7 @@ class PatientApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.getPatientIdOfChildDocumentForHcpAndHcpParentsBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -3053,7 +3053,7 @@ class PatientApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.getConfidentialSecretIdsOfBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -3092,7 +3092,7 @@ class PatientApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.forceInitialiseExchangeDataToNewlyInvitedPatientBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -3131,7 +3131,7 @@ class PatientApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.matchPatientsByBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -3170,7 +3170,7 @@ class PatientApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.deletePatientBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -3209,7 +3209,7 @@ class PatientApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.deletePatientsBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -3248,7 +3248,7 @@ class PatientApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.undeletePatientBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -3287,7 +3287,7 @@ class PatientApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.getDataOwnersWithAccessToBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -3334,7 +3334,7 @@ class PatientApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.subscribeToEventsBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
 		if error_str_pointer is not None:
@@ -3390,7 +3390,7 @@ class PatientApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.shareWithBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -3431,7 +3431,7 @@ class PatientApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryShareWithManyBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -3472,7 +3472,7 @@ class PatientApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.shareWithManyBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -3511,7 +3511,7 @@ class PatientApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.initialiseConfidentialSecretIdBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -3550,7 +3550,7 @@ class PatientApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.modifyPatientBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -3589,7 +3589,7 @@ class PatientApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.getPatientBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -3644,7 +3644,7 @@ class PatientApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.filterPatientsByBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -3701,7 +3701,7 @@ class PatientApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.findPatientsByNameBirthSsinAutoBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -3758,7 +3758,7 @@ class PatientApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.listPatientsOfHcPartyBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -3801,7 +3801,7 @@ class PatientApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.listOfMergesAfterBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -3850,7 +3850,7 @@ class PatientApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.findPatientsModifiedAfterBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -3907,7 +3907,7 @@ class PatientApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.listPatientsByHcPartyBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -3950,7 +3950,7 @@ class PatientApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.getPatientHcPartyKeysForDelegateBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -3989,7 +3989,7 @@ class PatientApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.countOfPatientsBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -4042,7 +4042,7 @@ class PatientApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.findPatientsByHealthcarePartyBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -4095,7 +4095,7 @@ class PatientApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.findPatientsIdsByHealthcarePartyBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -4138,7 +4138,7 @@ class PatientApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.getPatientByExternalIdBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -4181,7 +4181,7 @@ class PatientApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.fuzzySearchBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -4234,7 +4234,7 @@ class PatientApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.findDeletedPatientsBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -4279,7 +4279,7 @@ class PatientApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.listDeletedPatientsByNameBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -4318,7 +4318,7 @@ class PatientApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.getPatientsBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -4361,7 +4361,7 @@ class PatientApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.getPatientByHealthcarePartyAndIdentifierBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -4400,7 +4400,7 @@ class PatientApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.modifyPatientsBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -4445,7 +4445,7 @@ class PatientApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.modifyPatientReferralBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -4494,7 +4494,7 @@ class PatientApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.findDuplicatesBySsinBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -4547,7 +4547,7 @@ class PatientApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.findDuplicatesByNameBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -4596,7 +4596,7 @@ class PatientApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.mergePatientsBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)

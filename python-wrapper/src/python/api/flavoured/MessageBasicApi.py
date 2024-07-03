@@ -41,7 +41,7 @@ class MessageBasicApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.matchMessagesByBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -80,7 +80,7 @@ class MessageBasicApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.deleteMessageBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -119,7 +119,7 @@ class MessageBasicApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.deleteMessagesBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -166,7 +166,7 @@ class MessageBasicApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.subscribeToEventsBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
 		if error_str_pointer is not None:
@@ -212,7 +212,7 @@ class MessageBasicApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.modifyMessageBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -251,7 +251,7 @@ class MessageBasicApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.getMessageBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -290,7 +290,7 @@ class MessageBasicApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.getMessagesBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -337,7 +337,7 @@ class MessageBasicApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.filterMessagesByBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -382,7 +382,7 @@ class MessageBasicApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.listMessagesByTransportGuidsBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -421,7 +421,7 @@ class MessageBasicApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.findMessagesByHCPartyPatientForeignKeysBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -468,7 +468,7 @@ class MessageBasicApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.findMessagesBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -511,7 +511,7 @@ class MessageBasicApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.getChildrenMessagesBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -550,7 +550,7 @@ class MessageBasicApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.getMessagesChildrenBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -589,7 +589,7 @@ class MessageBasicApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.listMessagesByInvoicesBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -632,7 +632,7 @@ class MessageBasicApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.findMessagesByTransportGuidBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -691,7 +691,7 @@ class MessageBasicApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.findMessagesByTransportGuidSentDateBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -744,7 +744,7 @@ class MessageBasicApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.findMessagesByToAddressBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -797,7 +797,7 @@ class MessageBasicApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.findMessagesByFromAddressBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -842,7 +842,7 @@ class MessageBasicApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.setMessagesStatusBitsBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -887,7 +887,7 @@ class MessageBasicApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageBasicApi.setMessagesReadStatusBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)

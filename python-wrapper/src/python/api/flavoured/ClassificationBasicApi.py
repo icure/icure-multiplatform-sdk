@@ -40,7 +40,7 @@ class ClassificationBasicApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationBasicApi.deleteClassificationBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -79,7 +79,7 @@ class ClassificationBasicApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationBasicApi.deleteClassificationsBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -118,7 +118,7 @@ class ClassificationBasicApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationBasicApi.modifyClassificationBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -157,7 +157,7 @@ class ClassificationBasicApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationBasicApi.getClassificationBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -196,7 +196,7 @@ class ClassificationBasicApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationBasicApi.getClassificationsBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)

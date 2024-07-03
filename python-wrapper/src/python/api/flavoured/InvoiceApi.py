@@ -53,7 +53,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.encrypted.shareWithBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -94,7 +94,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.encrypted.tryShareWithManyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -135,7 +135,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.encrypted.shareWithManyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -186,7 +186,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.encrypted.findInvoicesByHcPartyPatientBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
 			if error_str_pointer is not None:
@@ -232,7 +232,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.encrypted.modifyInvoiceBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -271,7 +271,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.encrypted.modifyInvoicesBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -310,7 +310,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.encrypted.getInvoiceBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -349,7 +349,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.encrypted.getInvoicesBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -388,7 +388,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.encrypted.filterInvoicesByBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -429,7 +429,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.encrypted.findInvoicesByHcPartyPatientForeignKeysBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -468,7 +468,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.encrypted.reassignInvoiceBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -509,7 +509,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.encrypted.mergeToBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -552,7 +552,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.encrypted.validateBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -605,7 +605,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.encrypted.appendCodesBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -650,7 +650,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.encrypted.removeCodesBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -703,7 +703,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.encrypted.findInvoicesByAuthorBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -748,7 +748,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.encrypted.listInvoicesByHCPartyAndPatientForeignKeysBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -789,7 +789,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.encrypted.listInvoicesByHcPartyAndGroupIdBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -838,7 +838,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.encrypted.listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDateBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -877,7 +877,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.encrypted.listInvoicesByContactIdsBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -916,7 +916,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.encrypted.listInvoicesByRecipientsIdsBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -955,7 +955,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.encrypted.listToInsurancesBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -994,7 +994,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.encrypted.listToInsurancesUnsentBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1033,7 +1033,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.encrypted.listToPatientsBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1072,7 +1072,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.encrypted.listToPatientsUnsentBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1111,7 +1111,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.encrypted.listInvoicesByIdsBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1158,7 +1158,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.encrypted.listInvoicesByHcpartySendingModeStatusDateBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1197,7 +1197,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.encrypted.listInvoicesByServiceIdsBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1242,7 +1242,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.encrypted.listAllHcpsByStatusBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1294,7 +1294,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.tryAndRecover.shareWithBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1335,7 +1335,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.tryAndRecover.tryShareWithManyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1376,7 +1376,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.tryAndRecover.shareWithManyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1427,7 +1427,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.tryAndRecover.findInvoicesByHcPartyPatientBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
 			if error_str_pointer is not None:
@@ -1473,7 +1473,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.tryAndRecover.modifyInvoiceBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1512,7 +1512,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.tryAndRecover.modifyInvoicesBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1551,7 +1551,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.tryAndRecover.getInvoiceBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1590,7 +1590,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.tryAndRecover.getInvoicesBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1629,7 +1629,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.tryAndRecover.filterInvoicesByBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1670,7 +1670,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.tryAndRecover.findInvoicesByHcPartyPatientForeignKeysBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1709,7 +1709,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.tryAndRecover.reassignInvoiceBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1750,7 +1750,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.tryAndRecover.mergeToBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1793,7 +1793,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.tryAndRecover.validateBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1846,7 +1846,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.tryAndRecover.appendCodesBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1891,7 +1891,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.tryAndRecover.removeCodesBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1944,7 +1944,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.tryAndRecover.findInvoicesByAuthorBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1989,7 +1989,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.tryAndRecover.listInvoicesByHCPartyAndPatientForeignKeysBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -2030,7 +2030,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.tryAndRecover.listInvoicesByHcPartyAndGroupIdBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -2079,7 +2079,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.tryAndRecover.listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDateBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -2118,7 +2118,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.tryAndRecover.listInvoicesByContactIdsBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -2157,7 +2157,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.tryAndRecover.listInvoicesByRecipientsIdsBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -2196,7 +2196,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.tryAndRecover.listToInsurancesBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -2235,7 +2235,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.tryAndRecover.listToInsurancesUnsentBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -2274,7 +2274,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.tryAndRecover.listToPatientsBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -2313,7 +2313,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.tryAndRecover.listToPatientsUnsentBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -2352,7 +2352,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.tryAndRecover.listInvoicesByIdsBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -2399,7 +2399,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.tryAndRecover.listInvoicesByHcpartySendingModeStatusDateBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -2438,7 +2438,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.tryAndRecover.listInvoicesByServiceIdsBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -2483,7 +2483,7 @@ class InvoiceApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.tryAndRecover.listAllHcpsByStatusBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -2529,7 +2529,7 @@ class InvoiceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.createInvoiceBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -2568,7 +2568,7 @@ class InvoiceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.createInvoicesBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -2615,7 +2615,7 @@ class InvoiceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.withEncryptionMetadataBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -2654,7 +2654,7 @@ class InvoiceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.getEncryptionKeysOfBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -2693,7 +2693,7 @@ class InvoiceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.hasWriteAccessBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -2732,7 +2732,7 @@ class InvoiceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.decryptPatientIdOfBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -2773,7 +2773,7 @@ class InvoiceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.createDelegationDeAnonymizationMetadataBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -2809,7 +2809,7 @@ class InvoiceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.deleteInvoiceBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -2850,7 +2850,7 @@ class InvoiceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.findInvoicesDelegationsStubsByHcPartyPatientForeignKeysBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -2889,7 +2889,7 @@ class InvoiceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.getTarificationsCodesOccurrencesBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -2936,7 +2936,7 @@ class InvoiceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.shareWithBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -2977,7 +2977,7 @@ class InvoiceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.tryShareWithManyBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -3018,7 +3018,7 @@ class InvoiceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.shareWithManyBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -3069,7 +3069,7 @@ class InvoiceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.findInvoicesByHcPartyPatientBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
 		if error_str_pointer is not None:
@@ -3115,7 +3115,7 @@ class InvoiceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.modifyInvoiceBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -3154,7 +3154,7 @@ class InvoiceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.modifyInvoicesBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -3193,7 +3193,7 @@ class InvoiceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.getInvoiceBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -3232,7 +3232,7 @@ class InvoiceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.getInvoicesBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -3271,7 +3271,7 @@ class InvoiceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.filterInvoicesByBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -3312,7 +3312,7 @@ class InvoiceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.findInvoicesByHcPartyPatientForeignKeysBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -3351,7 +3351,7 @@ class InvoiceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.reassignInvoiceBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -3392,7 +3392,7 @@ class InvoiceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.mergeToBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -3435,7 +3435,7 @@ class InvoiceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.validateBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -3488,7 +3488,7 @@ class InvoiceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.appendCodesBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -3533,7 +3533,7 @@ class InvoiceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.removeCodesBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -3586,7 +3586,7 @@ class InvoiceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.findInvoicesByAuthorBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -3631,7 +3631,7 @@ class InvoiceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.listInvoicesByHCPartyAndPatientForeignKeysBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -3672,7 +3672,7 @@ class InvoiceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.listInvoicesByHcPartyAndGroupIdBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -3721,7 +3721,7 @@ class InvoiceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDateBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -3760,7 +3760,7 @@ class InvoiceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.listInvoicesByContactIdsBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -3799,7 +3799,7 @@ class InvoiceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.listInvoicesByRecipientsIdsBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -3838,7 +3838,7 @@ class InvoiceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.listToInsurancesBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -3877,7 +3877,7 @@ class InvoiceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.listToInsurancesUnsentBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -3916,7 +3916,7 @@ class InvoiceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.listToPatientsBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -3955,7 +3955,7 @@ class InvoiceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.listToPatientsUnsentBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -3994,7 +3994,7 @@ class InvoiceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.listInvoicesByIdsBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -4041,7 +4041,7 @@ class InvoiceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.listInvoicesByHcpartySendingModeStatusDateBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -4080,7 +4080,7 @@ class InvoiceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.listInvoicesByServiceIdsBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -4125,7 +4125,7 @@ class InvoiceApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.listAllHcpsByStatusBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)

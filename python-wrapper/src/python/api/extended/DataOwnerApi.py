@@ -164,7 +164,7 @@ class DataOwnerApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.extended.DataOwnerApi.getDataOwnerBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -203,7 +203,7 @@ class DataOwnerApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.extended.DataOwnerApi.getDataOwnerStubBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -242,7 +242,7 @@ class DataOwnerApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.extended.DataOwnerApi.getCurrentDataOwnerHierarchyIdsFromBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -312,7 +312,7 @@ class DataOwnerApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.extended.DataOwnerApi.modifyDataOwnerStubBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -382,7 +382,7 @@ class DataOwnerApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.extended.DataOwnerApi.getCryptoActorStubBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)

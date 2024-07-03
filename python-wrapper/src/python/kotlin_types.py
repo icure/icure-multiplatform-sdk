@@ -9,6 +9,8 @@ class AnyKtRef(Structure):
 UNUSED_C_FUNC = CFUNCTYPE(None)
 DATA_RESULT_CALLBACK_FUNC = CFUNCTYPE(None, c_char_p, c_char_p)
 PTR_RESULT_CALLBACK_FUNC = CFUNCTYPE(None, c_void_p, c_char_p)
+CALLBACK_PARAM_NO_INPUT = CFUNCTYPE(None, c_void_p)
+CALLBACK_PARAM_DATA_INPUT = CFUNCTYPE(None, c_void_p, c_char_p)
 class ApplicationSettingsApi(Structure):
     _fields_ = [
         ("createApplicationSettingsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -1185,6 +1187,16 @@ class DocumentApi(Structure):
         ("findDocumentsByHcPartyPatientBlocking", CFUNCTYPE(AnyKtRef, AnyKtRef, c_char_p)),
         ("findWithoutDelegationAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
         ("findWithoutDelegationBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
+        ("getAndDecryptMainAttachmentAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, CALLBACK_PARAM_DATA_INPUT, DATA_RESULT_CALLBACK_FUNC)),
+        ("getAndDecryptMainAttachmentBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p, CALLBACK_PARAM_DATA_INPUT)),
+        ("getAndDecryptSecondaryAttachmentAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, CALLBACK_PARAM_DATA_INPUT, DATA_RESULT_CALLBACK_FUNC)),
+        ("getAndDecryptSecondaryAttachmentBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p, CALLBACK_PARAM_DATA_INPUT)),
+        ("getAndTryDecryptMainAttachmentAsJsonAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, CALLBACK_PARAM_DATA_INPUT, DATA_RESULT_CALLBACK_FUNC)),
+        ("getAndTryDecryptMainAttachmentAsJsonBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p, CALLBACK_PARAM_DATA_INPUT)),
+        ("getAndTryDecryptMainAttachmentAsPlainTextAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, CALLBACK_PARAM_DATA_INPUT, DATA_RESULT_CALLBACK_FUNC)),
+        ("getAndTryDecryptMainAttachmentAsPlainTextBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p, CALLBACK_PARAM_DATA_INPUT)),
+        ("getAndTryDecryptMainAttachmentAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, CALLBACK_PARAM_DATA_INPUT, DATA_RESULT_CALLBACK_FUNC)),
+        ("getAndTryDecryptMainAttachmentBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p, CALLBACK_PARAM_DATA_INPUT)),
         ("getDocumentAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
         ("getDocumentBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
         ("getDocumentByExternalUuidAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -2794,6 +2806,8 @@ class utils(Structure):
         ("PyResult", PyResult),
         ("PaginatedListIterator", PaginatedListIterator),
         ("disposeStablePtr", CFUNCTYPE(None, c_void_p)),
+        ("setCallbackFailure", CFUNCTYPE(None, c_void_p, c_char_p)),
+        ("setCallbackResult", CFUNCTYPE(None, c_void_p, c_char_p)),
     ]
 
 class py(Structure):

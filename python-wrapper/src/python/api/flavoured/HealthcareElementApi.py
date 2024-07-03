@@ -54,7 +54,7 @@ class HealthcareElementApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.encrypted.shareWithBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -95,7 +95,7 @@ class HealthcareElementApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.encrypted.tryShareWithManyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -136,7 +136,7 @@ class HealthcareElementApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.encrypted.shareWithManyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -187,7 +187,7 @@ class HealthcareElementApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.encrypted.findHealthcareElementsByHcPartyPatientBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
 			if error_str_pointer is not None:
@@ -233,7 +233,7 @@ class HealthcareElementApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.encrypted.modifyHealthcareElementBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -272,7 +272,7 @@ class HealthcareElementApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.encrypted.modifyHealthcareElementsBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -311,7 +311,7 @@ class HealthcareElementApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.encrypted.getHealthcareElementBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -350,7 +350,7 @@ class HealthcareElementApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.encrypted.getHealthcareElementsBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -397,7 +397,7 @@ class HealthcareElementApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.encrypted.filterHealthcareElementsByBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -442,7 +442,7 @@ class HealthcareElementApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.encrypted.findHealthcareElementsByHcPartyPatientForeignKeysBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -494,7 +494,7 @@ class HealthcareElementApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.tryAndRecover.shareWithBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -535,7 +535,7 @@ class HealthcareElementApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.tryAndRecover.tryShareWithManyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -576,7 +576,7 @@ class HealthcareElementApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.tryAndRecover.shareWithManyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -627,7 +627,7 @@ class HealthcareElementApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.tryAndRecover.findHealthcareElementsByHcPartyPatientBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
 			if error_str_pointer is not None:
@@ -673,7 +673,7 @@ class HealthcareElementApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.tryAndRecover.modifyHealthcareElementBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -712,7 +712,7 @@ class HealthcareElementApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.tryAndRecover.modifyHealthcareElementsBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -751,7 +751,7 @@ class HealthcareElementApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.tryAndRecover.getHealthcareElementBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -790,7 +790,7 @@ class HealthcareElementApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.tryAndRecover.getHealthcareElementsBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -837,7 +837,7 @@ class HealthcareElementApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.tryAndRecover.filterHealthcareElementsByBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -882,7 +882,7 @@ class HealthcareElementApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.tryAndRecover.findHealthcareElementsByHcPartyPatientForeignKeysBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -926,7 +926,7 @@ class HealthcareElementApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.createHealthcareElementBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -965,7 +965,7 @@ class HealthcareElementApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.createHealthcareElementsBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1012,7 +1012,7 @@ class HealthcareElementApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.withEncryptionMetadataBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1051,7 +1051,7 @@ class HealthcareElementApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.getEncryptionKeysOfBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1090,7 +1090,7 @@ class HealthcareElementApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.hasWriteAccessBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1129,7 +1129,7 @@ class HealthcareElementApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.decryptPatientIdOfBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1170,7 +1170,7 @@ class HealthcareElementApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.createDelegationDeAnonymizationMetadataBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1206,7 +1206,7 @@ class HealthcareElementApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.matchHealthcareElementsByBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1245,7 +1245,7 @@ class HealthcareElementApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.deleteHealthcareElementBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1284,7 +1284,7 @@ class HealthcareElementApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.deleteHealthcareElementsBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1325,7 +1325,7 @@ class HealthcareElementApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.findHealthcareElementsDelegationsStubsByHcPartyPatientForeignKeysBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1372,7 +1372,7 @@ class HealthcareElementApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.subscribeToEventsBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
 		if error_str_pointer is not None:
@@ -1426,7 +1426,7 @@ class HealthcareElementApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.shareWithBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1467,7 +1467,7 @@ class HealthcareElementApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.tryShareWithManyBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1508,7 +1508,7 @@ class HealthcareElementApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.shareWithManyBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1559,7 +1559,7 @@ class HealthcareElementApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.findHealthcareElementsByHcPartyPatientBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
 		if error_str_pointer is not None:
@@ -1605,7 +1605,7 @@ class HealthcareElementApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.modifyHealthcareElementBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1644,7 +1644,7 @@ class HealthcareElementApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.modifyHealthcareElementsBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1683,7 +1683,7 @@ class HealthcareElementApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.getHealthcareElementBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1722,7 +1722,7 @@ class HealthcareElementApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.getHealthcareElementsBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1769,7 +1769,7 @@ class HealthcareElementApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.filterHealthcareElementsByBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1814,7 +1814,7 @@ class HealthcareElementApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthcareElementApi.findHealthcareElementsByHcPartyPatientForeignKeysBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)

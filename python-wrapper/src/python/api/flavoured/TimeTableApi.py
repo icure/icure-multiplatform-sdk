@@ -52,7 +52,7 @@ class TimeTableApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.encrypted.shareWithBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -93,7 +93,7 @@ class TimeTableApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.encrypted.tryShareWithManyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -134,7 +134,7 @@ class TimeTableApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.encrypted.shareWithManyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -173,7 +173,7 @@ class TimeTableApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.encrypted.modifyTimeTableBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -212,7 +212,7 @@ class TimeTableApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.encrypted.getTimeTableBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -255,7 +255,7 @@ class TimeTableApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.encrypted.getTimeTablesByPeriodAndAgendaIdBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -294,7 +294,7 @@ class TimeTableApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.encrypted.getTimeTablesByAgendaIdBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -346,7 +346,7 @@ class TimeTableApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.tryAndRecover.shareWithBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -387,7 +387,7 @@ class TimeTableApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.tryAndRecover.tryShareWithManyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -428,7 +428,7 @@ class TimeTableApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.tryAndRecover.shareWithManyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -467,7 +467,7 @@ class TimeTableApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.tryAndRecover.modifyTimeTableBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -506,7 +506,7 @@ class TimeTableApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.tryAndRecover.getTimeTableBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -549,7 +549,7 @@ class TimeTableApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.tryAndRecover.getTimeTablesByPeriodAndAgendaIdBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -588,7 +588,7 @@ class TimeTableApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.tryAndRecover.getTimeTablesByAgendaIdBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -632,7 +632,7 @@ class TimeTableApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.createTimeTableBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -679,7 +679,7 @@ class TimeTableApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.withEncryptionMetadataBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -718,7 +718,7 @@ class TimeTableApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.getEncryptionKeysOfBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -757,7 +757,7 @@ class TimeTableApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.hasWriteAccessBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -796,7 +796,7 @@ class TimeTableApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.decryptPatientIdOfBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -837,7 +837,7 @@ class TimeTableApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.createDelegationDeAnonymizationMetadataBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -873,7 +873,7 @@ class TimeTableApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.deleteTimeTableBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -912,7 +912,7 @@ class TimeTableApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.deleteTimeTablesBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -959,7 +959,7 @@ class TimeTableApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.shareWithBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1000,7 +1000,7 @@ class TimeTableApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.tryShareWithManyBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1041,7 +1041,7 @@ class TimeTableApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.shareWithManyBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1080,7 +1080,7 @@ class TimeTableApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.modifyTimeTableBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1119,7 +1119,7 @@ class TimeTableApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.getTimeTableBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1162,7 +1162,7 @@ class TimeTableApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.getTimeTablesByPeriodAndAgendaIdBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1201,7 +1201,7 @@ class TimeTableApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.getTimeTablesByAgendaIdBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)

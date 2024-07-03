@@ -53,7 +53,7 @@ class TopicApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.encrypted.shareWithBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -94,7 +94,7 @@ class TopicApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.encrypted.tryShareWithManyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -135,7 +135,7 @@ class TopicApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.encrypted.shareWithManyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -174,7 +174,7 @@ class TopicApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.encrypted.modifyTopicBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -213,7 +213,7 @@ class TopicApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.encrypted.getTopicBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -252,7 +252,7 @@ class TopicApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.encrypted.getTopicsBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -299,7 +299,7 @@ class TopicApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.encrypted.filterTopicsByBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -346,7 +346,7 @@ class TopicApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.encrypted.addParticipantBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -387,7 +387,7 @@ class TopicApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.encrypted.removeParticipantBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -439,7 +439,7 @@ class TopicApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.tryAndRecover.shareWithBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -480,7 +480,7 @@ class TopicApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.tryAndRecover.tryShareWithManyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -521,7 +521,7 @@ class TopicApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.tryAndRecover.shareWithManyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -560,7 +560,7 @@ class TopicApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.tryAndRecover.modifyTopicBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -599,7 +599,7 @@ class TopicApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.tryAndRecover.getTopicBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -638,7 +638,7 @@ class TopicApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.tryAndRecover.getTopicsBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -685,7 +685,7 @@ class TopicApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.tryAndRecover.filterTopicsByBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -732,7 +732,7 @@ class TopicApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.tryAndRecover.addParticipantBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -773,7 +773,7 @@ class TopicApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.tryAndRecover.removeParticipantBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -817,7 +817,7 @@ class TopicApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.createTopicBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -864,7 +864,7 @@ class TopicApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.withEncryptionMetadataBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -903,7 +903,7 @@ class TopicApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.getEncryptionKeysOfBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -942,7 +942,7 @@ class TopicApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.hasWriteAccessBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -981,7 +981,7 @@ class TopicApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.decryptPatientIdOfBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1022,7 +1022,7 @@ class TopicApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.createDelegationDeAnonymizationMetadataBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1058,7 +1058,7 @@ class TopicApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.deleteTopicBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1097,7 +1097,7 @@ class TopicApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.deleteTopicsBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1136,7 +1136,7 @@ class TopicApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.matchTopicsByBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1183,7 +1183,7 @@ class TopicApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.subscribeToEventsBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
 		if error_str_pointer is not None:
@@ -1237,7 +1237,7 @@ class TopicApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.shareWithBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1278,7 +1278,7 @@ class TopicApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.tryShareWithManyBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1319,7 +1319,7 @@ class TopicApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.shareWithManyBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1358,7 +1358,7 @@ class TopicApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.modifyTopicBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1397,7 +1397,7 @@ class TopicApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.getTopicBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1436,7 +1436,7 @@ class TopicApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.getTopicsBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1483,7 +1483,7 @@ class TopicApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.filterTopicsByBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1530,7 +1530,7 @@ class TopicApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.addParticipantBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1571,7 +1571,7 @@ class TopicApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.removeParticipantBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)

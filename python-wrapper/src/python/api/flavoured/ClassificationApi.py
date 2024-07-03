@@ -53,7 +53,7 @@ class ClassificationApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.encrypted.shareWithBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -94,7 +94,7 @@ class ClassificationApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.encrypted.tryShareWithManyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -135,7 +135,7 @@ class ClassificationApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.encrypted.shareWithManyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -186,7 +186,7 @@ class ClassificationApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.encrypted.findClassificationsByHcPartyPatientBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
 			if error_str_pointer is not None:
@@ -232,7 +232,7 @@ class ClassificationApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.encrypted.modifyClassificationBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -271,7 +271,7 @@ class ClassificationApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.encrypted.getClassificationBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -310,7 +310,7 @@ class ClassificationApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.encrypted.getClassificationsBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -362,7 +362,7 @@ class ClassificationApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.tryAndRecover.shareWithBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -403,7 +403,7 @@ class ClassificationApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.tryAndRecover.tryShareWithManyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -444,7 +444,7 @@ class ClassificationApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.tryAndRecover.shareWithManyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -495,7 +495,7 @@ class ClassificationApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.tryAndRecover.findClassificationsByHcPartyPatientBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
 			if error_str_pointer is not None:
@@ -541,7 +541,7 @@ class ClassificationApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.tryAndRecover.modifyClassificationBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -580,7 +580,7 @@ class ClassificationApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.tryAndRecover.getClassificationBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -619,7 +619,7 @@ class ClassificationApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.tryAndRecover.getClassificationsBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -663,7 +663,7 @@ class ClassificationApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.createClassificationBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -710,7 +710,7 @@ class ClassificationApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.withEncryptionMetadataBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -749,7 +749,7 @@ class ClassificationApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.getEncryptionKeysOfBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -788,7 +788,7 @@ class ClassificationApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.hasWriteAccessBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -827,7 +827,7 @@ class ClassificationApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.decryptPatientIdOfBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -868,7 +868,7 @@ class ClassificationApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.createDelegationDeAnonymizationMetadataBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -904,7 +904,7 @@ class ClassificationApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.deleteClassificationBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -943,7 +943,7 @@ class ClassificationApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.deleteClassificationsBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -990,7 +990,7 @@ class ClassificationApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.shareWithBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1031,7 +1031,7 @@ class ClassificationApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.tryShareWithManyBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1072,7 +1072,7 @@ class ClassificationApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.shareWithManyBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1123,7 +1123,7 @@ class ClassificationApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.findClassificationsByHcPartyPatientBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
 		if error_str_pointer is not None:
@@ -1169,7 +1169,7 @@ class ClassificationApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.modifyClassificationBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1208,7 +1208,7 @@ class ClassificationApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.getClassificationBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1247,7 +1247,7 @@ class ClassificationApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.getClassificationsBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)

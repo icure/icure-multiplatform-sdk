@@ -54,7 +54,7 @@ class FormApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.encrypted.shareWithBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -95,7 +95,7 @@ class FormApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.encrypted.tryShareWithManyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -136,7 +136,7 @@ class FormApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.encrypted.shareWithManyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -187,7 +187,7 @@ class FormApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.encrypted.findFormsByHcPartyPatientBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
 			if error_str_pointer is not None:
@@ -233,7 +233,7 @@ class FormApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.encrypted.modifyFormBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -272,7 +272,7 @@ class FormApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.encrypted.modifyFormsBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -311,7 +311,7 @@ class FormApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.encrypted.getFormBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -350,7 +350,7 @@ class FormApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.encrypted.getFormsBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -389,7 +389,7 @@ class FormApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.encrypted.getFormByLogicalUuidBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -428,7 +428,7 @@ class FormApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.encrypted.getFormsByLogicalUuidBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -467,7 +467,7 @@ class FormApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.encrypted.getFormsByUniqueIdBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -506,7 +506,7 @@ class FormApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.encrypted.getFormByUniqueIdBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -547,7 +547,7 @@ class FormApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.encrypted.getChildrenFormsBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -594,7 +594,7 @@ class FormApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.encrypted.listFormsByHCPartyAndPatientForeignKeysBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -646,7 +646,7 @@ class FormApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover.shareWithBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -687,7 +687,7 @@ class FormApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover.tryShareWithManyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -728,7 +728,7 @@ class FormApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover.shareWithManyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -779,7 +779,7 @@ class FormApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover.findFormsByHcPartyPatientBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
 			if error_str_pointer is not None:
@@ -825,7 +825,7 @@ class FormApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover.modifyFormBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -864,7 +864,7 @@ class FormApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover.modifyFormsBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -903,7 +903,7 @@ class FormApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover.getFormBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -942,7 +942,7 @@ class FormApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover.getFormsBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -981,7 +981,7 @@ class FormApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover.getFormByLogicalUuidBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1020,7 +1020,7 @@ class FormApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover.getFormsByLogicalUuidBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1059,7 +1059,7 @@ class FormApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover.getFormsByUniqueIdBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1098,7 +1098,7 @@ class FormApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover.getFormByUniqueIdBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1139,7 +1139,7 @@ class FormApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover.getChildrenFormsBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1186,7 +1186,7 @@ class FormApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover.listFormsByHCPartyAndPatientForeignKeysBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1230,7 +1230,7 @@ class FormApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.createFormBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1269,7 +1269,7 @@ class FormApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.createFormsBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1316,7 +1316,7 @@ class FormApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.withEncryptionMetadataBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1355,7 +1355,7 @@ class FormApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.getEncryptionKeysOfBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1394,7 +1394,7 @@ class FormApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.hasWriteAccessBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1433,7 +1433,7 @@ class FormApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.decryptPatientIdOfBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1474,7 +1474,7 @@ class FormApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.createDelegationDeAnonymizationMetadataBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1510,7 +1510,7 @@ class FormApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.deleteFormBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1549,7 +1549,7 @@ class FormApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.deleteFormsBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1590,7 +1590,7 @@ class FormApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.getFormTemplateBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1633,7 +1633,7 @@ class FormApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.getFormTemplatesByGuidBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1674,7 +1674,7 @@ class FormApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.listFormTemplatesBySpecialityBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1715,7 +1715,7 @@ class FormApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.getFormTemplatesBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1754,7 +1754,7 @@ class FormApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.createFormTemplateBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1793,7 +1793,7 @@ class FormApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.deleteFormTemplateBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1832,7 +1832,7 @@ class FormApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.updateFormTemplateBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1873,7 +1873,7 @@ class FormApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.setTemplateAttachmentBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1920,7 +1920,7 @@ class FormApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.shareWithBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1961,7 +1961,7 @@ class FormApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryShareWithManyBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -2002,7 +2002,7 @@ class FormApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.shareWithManyBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -2053,7 +2053,7 @@ class FormApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.findFormsByHcPartyPatientBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
 		if error_str_pointer is not None:
@@ -2099,7 +2099,7 @@ class FormApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.modifyFormBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -2138,7 +2138,7 @@ class FormApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.modifyFormsBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -2177,7 +2177,7 @@ class FormApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.getFormBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -2216,7 +2216,7 @@ class FormApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.getFormsBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -2255,7 +2255,7 @@ class FormApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.getFormByLogicalUuidBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -2294,7 +2294,7 @@ class FormApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.getFormsByLogicalUuidBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -2333,7 +2333,7 @@ class FormApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.getFormsByUniqueIdBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -2372,7 +2372,7 @@ class FormApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.getFormByUniqueIdBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -2413,7 +2413,7 @@ class FormApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.getChildrenFormsBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -2460,7 +2460,7 @@ class FormApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.listFormsByHCPartyAndPatientForeignKeysBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)

@@ -53,7 +53,7 @@ class CalendarItemApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.encrypted.shareWithBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -94,7 +94,7 @@ class CalendarItemApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.encrypted.tryShareWithManyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -135,7 +135,7 @@ class CalendarItemApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.encrypted.shareWithManyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -186,7 +186,7 @@ class CalendarItemApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.encrypted.findCalendarItemsByHcPartyPatientBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
 			if error_str_pointer is not None:
@@ -236,7 +236,7 @@ class CalendarItemApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.encrypted.linkToPatientBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -275,7 +275,7 @@ class CalendarItemApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.encrypted.modifyCalendarItemBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -314,7 +314,7 @@ class CalendarItemApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.encrypted.getCalendarItemBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -353,7 +353,7 @@ class CalendarItemApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.encrypted.getCalendarItemsBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -396,7 +396,7 @@ class CalendarItemApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.encrypted.getCalendarItemsByPeriodAndHcPartyIdBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -439,7 +439,7 @@ class CalendarItemApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.encrypted.getCalendarsByPeriodAndAgendaIdBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -478,7 +478,7 @@ class CalendarItemApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.encrypted.getCalendarItemsWithIdsBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -527,7 +527,7 @@ class CalendarItemApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.encrypted.findCalendarItemsByRecurrenceIdBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -583,7 +583,7 @@ class CalendarItemApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.tryAndRecover.shareWithBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -624,7 +624,7 @@ class CalendarItemApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.tryAndRecover.tryShareWithManyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -665,7 +665,7 @@ class CalendarItemApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.tryAndRecover.shareWithManyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -716,7 +716,7 @@ class CalendarItemApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.tryAndRecover.findCalendarItemsByHcPartyPatientBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
 			if error_str_pointer is not None:
@@ -766,7 +766,7 @@ class CalendarItemApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.tryAndRecover.linkToPatientBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -805,7 +805,7 @@ class CalendarItemApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.tryAndRecover.modifyCalendarItemBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -844,7 +844,7 @@ class CalendarItemApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.tryAndRecover.getCalendarItemBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -883,7 +883,7 @@ class CalendarItemApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.tryAndRecover.getCalendarItemsBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -926,7 +926,7 @@ class CalendarItemApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.tryAndRecover.getCalendarItemsByPeriodAndHcPartyIdBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -969,7 +969,7 @@ class CalendarItemApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.tryAndRecover.getCalendarsByPeriodAndAgendaIdBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1008,7 +1008,7 @@ class CalendarItemApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.tryAndRecover.getCalendarItemsWithIdsBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1057,7 +1057,7 @@ class CalendarItemApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.tryAndRecover.findCalendarItemsByRecurrenceIdBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -1105,7 +1105,7 @@ class CalendarItemApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.createCalendarItemBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1152,7 +1152,7 @@ class CalendarItemApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.withEncryptionMetadataBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1191,7 +1191,7 @@ class CalendarItemApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.getEncryptionKeysOfBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1230,7 +1230,7 @@ class CalendarItemApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.hasWriteAccessBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1269,7 +1269,7 @@ class CalendarItemApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.decryptPatientIdOfBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1310,7 +1310,7 @@ class CalendarItemApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.createDelegationDeAnonymizationMetadataBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1346,7 +1346,7 @@ class CalendarItemApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.deleteCalendarItemBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1385,7 +1385,7 @@ class CalendarItemApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.deleteCalendarItemsBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1432,7 +1432,7 @@ class CalendarItemApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.shareWithBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1473,7 +1473,7 @@ class CalendarItemApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.tryShareWithManyBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1514,7 +1514,7 @@ class CalendarItemApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.shareWithManyBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1565,7 +1565,7 @@ class CalendarItemApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.findCalendarItemsByHcPartyPatientBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
 		if error_str_pointer is not None:
@@ -1615,7 +1615,7 @@ class CalendarItemApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.linkToPatientBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1654,7 +1654,7 @@ class CalendarItemApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.modifyCalendarItemBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1693,7 +1693,7 @@ class CalendarItemApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.getCalendarItemBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1732,7 +1732,7 @@ class CalendarItemApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.getCalendarItemsBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1775,7 +1775,7 @@ class CalendarItemApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.getCalendarItemsByPeriodAndHcPartyIdBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1818,7 +1818,7 @@ class CalendarItemApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.getCalendarsByPeriodAndAgendaIdBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1857,7 +1857,7 @@ class CalendarItemApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.getCalendarItemsWithIdsBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1906,7 +1906,7 @@ class CalendarItemApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.findCalendarItemsByRecurrenceIdBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)

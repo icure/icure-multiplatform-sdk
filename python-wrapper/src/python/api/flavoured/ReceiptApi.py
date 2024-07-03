@@ -53,7 +53,7 @@ class ReceiptApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.encrypted.shareWithBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -94,7 +94,7 @@ class ReceiptApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.encrypted.tryShareWithManyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -135,7 +135,7 @@ class ReceiptApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.encrypted.shareWithManyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -174,7 +174,7 @@ class ReceiptApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.encrypted.modifyReceiptBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -213,7 +213,7 @@ class ReceiptApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.encrypted.getReceiptBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -252,7 +252,7 @@ class ReceiptApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.encrypted.listByReferenceBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -304,7 +304,7 @@ class ReceiptApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.tryAndRecover.shareWithBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -345,7 +345,7 @@ class ReceiptApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.tryAndRecover.tryShareWithManyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -386,7 +386,7 @@ class ReceiptApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.tryAndRecover.shareWithManyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -425,7 +425,7 @@ class ReceiptApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.tryAndRecover.modifyReceiptBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -464,7 +464,7 @@ class ReceiptApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.tryAndRecover.getReceiptBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -503,7 +503,7 @@ class ReceiptApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.tryAndRecover.listByReferenceBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -547,7 +547,7 @@ class ReceiptApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.createReceiptBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -594,7 +594,7 @@ class ReceiptApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.withEncryptionMetadataBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -635,7 +635,7 @@ class ReceiptApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.getAndDecryptReceiptAttachmentBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -678,7 +678,7 @@ class ReceiptApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.encryptAndSetReceiptAttachmentBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -717,7 +717,7 @@ class ReceiptApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.getEncryptionKeysOfBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -756,7 +756,7 @@ class ReceiptApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.hasWriteAccessBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -795,7 +795,7 @@ class ReceiptApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.decryptPatientIdOfBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -836,7 +836,7 @@ class ReceiptApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.createDelegationDeAnonymizationMetadataBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -880,7 +880,7 @@ class ReceiptApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.logReceiptBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -919,7 +919,7 @@ class ReceiptApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.deleteReceiptBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -958,7 +958,7 @@ class ReceiptApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.deleteReceiptsBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -999,7 +999,7 @@ class ReceiptApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.getRawReceiptAttachmentBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1044,7 +1044,7 @@ class ReceiptApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.setRawReceiptAttachmentBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1091,7 +1091,7 @@ class ReceiptApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.shareWithBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1132,7 +1132,7 @@ class ReceiptApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.tryShareWithManyBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1173,7 +1173,7 @@ class ReceiptApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.shareWithManyBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1212,7 +1212,7 @@ class ReceiptApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.modifyReceiptBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1251,7 +1251,7 @@ class ReceiptApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.getReceiptBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1290,7 +1290,7 @@ class ReceiptApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.listByReferenceBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)

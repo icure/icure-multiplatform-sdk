@@ -53,7 +53,7 @@ class MaintenanceTaskApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.encrypted.shareWithBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -94,7 +94,7 @@ class MaintenanceTaskApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.encrypted.tryShareWithManyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -135,7 +135,7 @@ class MaintenanceTaskApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.encrypted.shareWithManyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -174,7 +174,7 @@ class MaintenanceTaskApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.encrypted.modifyMaintenanceTaskBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -213,7 +213,7 @@ class MaintenanceTaskApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.encrypted.getMaintenanceTaskBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -260,7 +260,7 @@ class MaintenanceTaskApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.encrypted.filterMaintenanceTasksByBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -316,7 +316,7 @@ class MaintenanceTaskApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.tryAndRecover.shareWithBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -357,7 +357,7 @@ class MaintenanceTaskApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.tryAndRecover.tryShareWithManyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -398,7 +398,7 @@ class MaintenanceTaskApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.tryAndRecover.shareWithManyBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -437,7 +437,7 @@ class MaintenanceTaskApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.tryAndRecover.modifyMaintenanceTaskBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -476,7 +476,7 @@ class MaintenanceTaskApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.tryAndRecover.getMaintenanceTaskBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -523,7 +523,7 @@ class MaintenanceTaskApi:
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.tryAndRecover.filterMaintenanceTasksByBlocking(
 				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8')
+				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
@@ -571,7 +571,7 @@ class MaintenanceTaskApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.createMaintenanceTaskBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -614,7 +614,7 @@ class MaintenanceTaskApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.withEncryptionMetadataBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -653,7 +653,7 @@ class MaintenanceTaskApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.getEncryptionKeysOfBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -692,7 +692,7 @@ class MaintenanceTaskApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.hasWriteAccessBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -731,7 +731,7 @@ class MaintenanceTaskApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.decryptPatientIdOfBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -772,7 +772,7 @@ class MaintenanceTaskApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.createDelegationDeAnonymizationMetadataBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -808,7 +808,7 @@ class MaintenanceTaskApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.deleteMaintenanceTaskBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -847,7 +847,7 @@ class MaintenanceTaskApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.deleteMaintenanceTasksBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -894,7 +894,7 @@ class MaintenanceTaskApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.subscribeToEventsBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
 		if error_str_pointer is not None:
@@ -948,7 +948,7 @@ class MaintenanceTaskApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.shareWithBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -989,7 +989,7 @@ class MaintenanceTaskApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.tryShareWithManyBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1030,7 +1030,7 @@ class MaintenanceTaskApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.shareWithManyBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1069,7 +1069,7 @@ class MaintenanceTaskApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.modifyMaintenanceTaskBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1108,7 +1108,7 @@ class MaintenanceTaskApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.getMaintenanceTaskBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1155,7 +1155,7 @@ class MaintenanceTaskApi:
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.filterMaintenanceTasksByBlocking(
 			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8')
+			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
