@@ -96,7 +96,6 @@ public fun deleteDocumentsAsync(
 @Serializable
 private class GetRawMainAttachmentParams(
 	public val documentId: String,
-	public val attachmentId: String,
 )
 
 public fun getRawMainAttachmentBlocking(sdk: IcureBaseApis, params: String): String =
@@ -105,7 +104,6 @@ public fun getRawMainAttachmentBlocking(sdk: IcureBaseApis, params: String): Str
 	runBlocking {
 		sdk.document.getRawMainAttachment(
 			decodedParams.documentId,
-			decodedParams.attachmentId,
 		)
 	}
 }.toPyString(ByteArraySerializer)
@@ -122,7 +120,6 @@ public fun getRawMainAttachmentAsync(
 		kotlin.runCatching {
 			sdk.document.getRawMainAttachment(
 				decodedParams.documentId,
-				decodedParams.attachmentId,
 			)
 		}.toPyStringAsyncCallback(ByteArraySerializer, resultCallback)
 	}
@@ -131,7 +128,6 @@ public fun getRawMainAttachmentAsync(
 @Serializable
 private class GetMainAttachmentAsPlainTextParams(
 	public val documentId: String,
-	public val attachmentId: String,
 )
 
 public fun getMainAttachmentAsPlainTextBlocking(sdk: IcureBaseApis, params: String): String =
@@ -140,7 +136,6 @@ public fun getMainAttachmentAsPlainTextBlocking(sdk: IcureBaseApis, params: Stri
 	runBlocking {
 		sdk.document.getMainAttachmentAsPlainText(
 			decodedParams.documentId,
-			decodedParams.attachmentId,
 		)
 	}
 }.toPyString(String.serializer())
@@ -157,7 +152,6 @@ public fun getMainAttachmentAsPlainTextAsync(
 		kotlin.runCatching {
 			sdk.document.getMainAttachmentAsPlainText(
 				decodedParams.documentId,
-				decodedParams.attachmentId,
 			)
 		}.toPyStringAsyncCallback(String.serializer(), resultCallback)
 	}
@@ -166,7 +160,6 @@ public fun getMainAttachmentAsPlainTextAsync(
 @Serializable
 private class GetMainAttachmentAsJsonParams(
 	public val documentId: String,
-	public val attachmentId: String,
 )
 
 public fun getMainAttachmentAsJsonBlocking(sdk: IcureBaseApis, params: String): String =
@@ -175,7 +168,6 @@ public fun getMainAttachmentAsJsonBlocking(sdk: IcureBaseApis, params: String): 
 	runBlocking {
 		sdk.document.getMainAttachmentAsJson(
 			decodedParams.documentId,
-			decodedParams.attachmentId,
 		)
 	}
 }.toPyString(JsonElement.serializer())
@@ -192,7 +184,6 @@ public fun getMainAttachmentAsJsonAsync(
 		kotlin.runCatching {
 			sdk.document.getMainAttachmentAsJson(
 				decodedParams.documentId,
-				decodedParams.attachmentId,
 			)
 		}.toPyStringAsyncCallback(JsonElement.serializer(), resultCallback)
 	}
@@ -202,7 +193,6 @@ public fun getMainAttachmentAsJsonAsync(
 private class GetRawSecondaryAttachmentParams(
 	public val documentId: String,
 	public val key: String,
-	public val attachmentId: String,
 )
 
 public fun getRawSecondaryAttachmentBlocking(sdk: IcureBaseApis, params: String): String =
@@ -212,7 +202,6 @@ public fun getRawSecondaryAttachmentBlocking(sdk: IcureBaseApis, params: String)
 		sdk.document.getRawSecondaryAttachment(
 			decodedParams.documentId,
 			decodedParams.key,
-			decodedParams.attachmentId,
 		)
 	}
 }.toPyString(ByteArraySerializer)
@@ -230,7 +219,6 @@ public fun getRawSecondaryAttachmentAsync(
 			sdk.document.getRawSecondaryAttachment(
 				decodedParams.documentId,
 				decodedParams.key,
-				decodedParams.attachmentId,
 			)
 		}.toPyStringAsyncCallback(ByteArraySerializer, resultCallback)
 	}
@@ -633,7 +621,7 @@ public fun deleteMainAttachmentAsync(
 private class DeleteSecondaryAttachmentParams(
 	public val documentId: String,
 	public val key: String,
-	public val attachmentId: String,
+	public val rev: String,
 )
 
 public fun deleteSecondaryAttachmentBlocking(sdk: IcureBaseApis, params: String): String =
@@ -643,7 +631,7 @@ public fun deleteSecondaryAttachmentBlocking(sdk: IcureBaseApis, params: String)
 		sdk.document.deleteSecondaryAttachment(
 			decodedParams.documentId,
 			decodedParams.key,
-			decodedParams.attachmentId,
+			decodedParams.rev,
 		)
 	}
 }.toPyString(EncryptedDocument.serializer())
@@ -661,7 +649,7 @@ public fun deleteSecondaryAttachmentAsync(
 			sdk.document.deleteSecondaryAttachment(
 				decodedParams.documentId,
 				decodedParams.key,
-				decodedParams.attachmentId,
+				decodedParams.rev,
 			)
 		}.toPyStringAsyncCallback(EncryptedDocument.serializer(), resultCallback)
 	}

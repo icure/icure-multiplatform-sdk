@@ -599,7 +599,7 @@ public fun deleteMainAttachmentAsync(
 private class DeleteSecondaryAttachmentParams(
 	public val documentId: String,
 	public val key: String,
-	public val attachmentId: String,
+	public val rev: String,
 )
 
 public fun deleteSecondaryAttachmentBlocking(sdk: IcureApis, params: String): String =
@@ -609,7 +609,7 @@ public fun deleteSecondaryAttachmentBlocking(sdk: IcureApis, params: String): St
 		sdk.document.encrypted.deleteSecondaryAttachment(
 			decodedParams.documentId,
 			decodedParams.key,
-			decodedParams.attachmentId,
+			decodedParams.rev,
 		)
 	}
 }.toPyString(EncryptedDocument.serializer())
@@ -627,7 +627,7 @@ public fun deleteSecondaryAttachmentAsync(
 			sdk.document.encrypted.deleteSecondaryAttachment(
 				decodedParams.documentId,
 				decodedParams.key,
-				decodedParams.attachmentId,
+				decodedParams.rev,
 			)
 		}.toPyStringAsyncCallback(EncryptedDocument.serializer(), resultCallback)
 	}
