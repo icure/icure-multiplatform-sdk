@@ -1,11 +1,10 @@
 import asyncio
 import json
-from model import DecryptedTimeTable, Patient, User, AccessLevel, serialize_patient, TimeTable, serialize_time_table, DocIdentifier, RequestedPermission, EncryptedTimeTable
+from model import DecryptedTimeTable, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, TimeTable, serialize_time_table, DocIdentifier, ShareMetadataBehaviour, RequestedPermission, deserialize_simple_share_result, SimpleShareResult, TimeTableShareOptions, EncryptedTimeTable
 from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
 from typing import Optional, Dict, List
-from crypto import SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_secret_id_option, ShareMetadataBehaviour, deserialize_simple_share_result, SimpleShareResult, TimeTableShareOptions
 from model.specializations import HexString
 
 class TimeTableApi:

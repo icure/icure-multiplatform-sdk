@@ -2,12 +2,11 @@ import asyncio
 import json
 import base64
 import traceback
-from model import DecryptedDocument, Message, User, AccessLevel, serialize_message, Document, serialize_document, EncryptedDocument, DocIdentifier, RequestedPermission, Patient, serialize_patient, deserialize_document
+from model import DecryptedDocument, Message, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_message, serialize_secret_id_option, Document, serialize_document, EncryptedDocument, DocIdentifier, ShareMetadataBehaviour, RequestedPermission, deserialize_simple_share_result, SimpleShareResult, DocumentShareOptions, Patient, serialize_patient, deserialize_document
 from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, CALLBACK_PARAM_DATA_INPUT, PTR_RESULT_CALLBACK_FUNC
 from model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
 from typing import Optional, Dict, List
-from crypto import SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_secret_id_option, ShareMetadataBehaviour, deserialize_simple_share_result, SimpleShareResult, DocumentShareOptions
 from collections.abc import Callable
 from model.specializations import HexString
 from pagination.PaginatedListIterator import PaginatedListIterator
@@ -663,7 +662,7 @@ class DocumentApi:
 				return_value = EncryptedDocument._deserialize(result_info.success)
 				return return_value
 
-		async def delete_secondary_attachment_async(self, document_id: str, key: str, attachment_id: str) -> EncryptedDocument:
+		async def delete_secondary_attachment_async(self, document_id: str, key: str, rev: str) -> EncryptedDocument:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -676,7 +675,7 @@ class DocumentApi:
 			payload = {
 				"documentId": document_id,
 				"key": key,
-				"attachmentId": attachment_id,
+				"rev": rev,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -688,11 +687,11 @@ class DocumentApi:
 			)
 			return await future
 
-		def delete_secondary_attachment_blocking(self, document_id: str, key: str, attachment_id: str) -> EncryptedDocument:
+		def delete_secondary_attachment_blocking(self, document_id: str, key: str, rev: str) -> EncryptedDocument:
 			payload = {
 				"documentId": document_id,
 				"key": key,
-				"attachmentId": attachment_id,
+				"rev": rev,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.encrypted.deleteSecondaryAttachmentBlocking(
 				self.icure_sdk._native,
@@ -1355,7 +1354,7 @@ class DocumentApi:
 				return_value = Document._deserialize(result_info.success)
 				return return_value
 
-		async def delete_secondary_attachment_async(self, document_id: str, key: str, attachment_id: str) -> Document:
+		async def delete_secondary_attachment_async(self, document_id: str, key: str, rev: str) -> Document:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -1368,7 +1367,7 @@ class DocumentApi:
 			payload = {
 				"documentId": document_id,
 				"key": key,
-				"attachmentId": attachment_id,
+				"rev": rev,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -1380,11 +1379,11 @@ class DocumentApi:
 			)
 			return await future
 
-		def delete_secondary_attachment_blocking(self, document_id: str, key: str, attachment_id: str) -> Document:
+		def delete_secondary_attachment_blocking(self, document_id: str, key: str, rev: str) -> Document:
 			payload = {
 				"documentId": document_id,
 				"key": key,
-				"attachmentId": attachment_id,
+				"rev": rev,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.tryAndRecover.deleteSecondaryAttachmentBlocking(
 				self.icure_sdk._native,
@@ -1489,7 +1488,7 @@ class DocumentApi:
 			return_value = DecryptedDocument._deserialize(result_info.success)
 			return return_value
 
-	async def get_and_try_decrypt_main_attachment_async(self, document: Document, attachment_id: str, decrypted_document_validator: Optional[Callable[[bytearray], bool]] = None) -> Optional[bytearray]:
+	async def get_and_try_decrypt_main_attachment_async(self, document: Document, decrypted_attachment_validator: Optional[Callable[[bytearray], bool]] = None) -> Optional[bytearray]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1501,48 +1500,46 @@ class DocumentApi:
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"document": serialize_document(document),
-			"attachmentId": attachment_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		def decryptedDocumentValidator_fun(resultHolder, encodedInput):
+		def decryptedAttachmentValidator_fun(resultHolder, encodedInput):
 			try:
 				jsonInput = json.loads(encodedInput)
-				result = decrypted_document_validator(
+				result = decrypted_attachment_validator(
 					bytearray(base64.b64decode(jsonInput[0])),
 				)
 				symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(resultHolder, json.dumps(result).encode('utf-8'))
 			except Exception:
 				symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(resultHolder, traceback.format_exc())
-		decryptedDocumentValidator_callback = CALLBACK_PARAM_DATA_INPUT(decryptedDocumentValidator_fun) if decrypted_document_validator is not None else None
+		decryptedAttachmentValidator_callback = CALLBACK_PARAM_DATA_INPUT(decryptedAttachmentValidator_fun) if decrypted_attachment_validator is not None else None
 		loop.run_in_executor(
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.getAndTryDecryptMainAttachmentAsync,
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			decryptedDocumentValidator_callback,
+			decryptedAttachmentValidator_callback,
 			callback
 		)
 		return await future
 
-	def get_and_try_decrypt_main_attachment_blocking(self, document: Document, attachment_id: str, decrypted_document_validator: Optional[Callable[[bytearray], bool]] = None) -> Optional[bytearray]:
+	def get_and_try_decrypt_main_attachment_blocking(self, document: Document, decrypted_attachment_validator: Optional[Callable[[bytearray], bool]] = None) -> Optional[bytearray]:
 		payload = {
 			"document": serialize_document(document),
-			"attachmentId": attachment_id,
 		}
-		def decryptedDocumentValidator_fun(resultHolder, encodedInput):
+		def decryptedAttachmentValidator_fun(resultHolder, encodedInput):
 			try:
 				jsonInput = json.loads(encodedInput)
-				result = decrypted_document_validator(
+				result = decrypted_attachment_validator(
 					bytearray(base64.b64decode(jsonInput[0])),
 				)
 				symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(resultHolder, json.dumps(result).encode('utf-8'))
 			except Exception:
 				symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(resultHolder, traceback.format_exc())
-		decryptedDocumentValidator_callback = CALLBACK_PARAM_DATA_INPUT(decryptedDocumentValidator_fun) if decrypted_document_validator is not None else None
+		decryptedAttachmentValidator_callback = CALLBACK_PARAM_DATA_INPUT(decryptedAttachmentValidator_fun) if decrypted_attachment_validator is not None else None
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.getAndTryDecryptMainAttachmentBlocking(
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			decryptedDocumentValidator_callback,
+			decryptedAttachmentValidator_callback,
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1552,7 +1549,7 @@ class DocumentApi:
 			return_value = bytearray(base64.b64decode(result_info.success)) if result_info.success is not None else None
 			return return_value
 
-	async def get_and_try_decrypt_main_attachment_as_plain_text_async(self, document: Document, attachment_id: str, decrypted_document_validator: Optional[Callable[[bytearray], bool]] = None) -> Optional[str]:
+	async def get_and_try_decrypt_main_attachment_as_plain_text_async(self, document: Document, decrypted_attachment_validator: Optional[Callable[[bytearray], bool]] = None) -> Optional[str]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1564,48 +1561,46 @@ class DocumentApi:
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"document": serialize_document(document),
-			"attachmentId": attachment_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		def decryptedDocumentValidator_fun(resultHolder, encodedInput):
+		def decryptedAttachmentValidator_fun(resultHolder, encodedInput):
 			try:
 				jsonInput = json.loads(encodedInput)
-				result = decrypted_document_validator(
+				result = decrypted_attachment_validator(
 					bytearray(base64.b64decode(jsonInput[0])),
 				)
 				symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(resultHolder, json.dumps(result).encode('utf-8'))
 			except Exception:
 				symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(resultHolder, traceback.format_exc())
-		decryptedDocumentValidator_callback = CALLBACK_PARAM_DATA_INPUT(decryptedDocumentValidator_fun) if decrypted_document_validator is not None else None
+		decryptedAttachmentValidator_callback = CALLBACK_PARAM_DATA_INPUT(decryptedAttachmentValidator_fun) if decrypted_attachment_validator is not None else None
 		loop.run_in_executor(
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.getAndTryDecryptMainAttachmentAsPlainTextAsync,
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			decryptedDocumentValidator_callback,
+			decryptedAttachmentValidator_callback,
 			callback
 		)
 		return await future
 
-	def get_and_try_decrypt_main_attachment_as_plain_text_blocking(self, document: Document, attachment_id: str, decrypted_document_validator: Optional[Callable[[bytearray], bool]] = None) -> Optional[str]:
+	def get_and_try_decrypt_main_attachment_as_plain_text_blocking(self, document: Document, decrypted_attachment_validator: Optional[Callable[[bytearray], bool]] = None) -> Optional[str]:
 		payload = {
 			"document": serialize_document(document),
-			"attachmentId": attachment_id,
 		}
-		def decryptedDocumentValidator_fun(resultHolder, encodedInput):
+		def decryptedAttachmentValidator_fun(resultHolder, encodedInput):
 			try:
 				jsonInput = json.loads(encodedInput)
-				result = decrypted_document_validator(
+				result = decrypted_attachment_validator(
 					bytearray(base64.b64decode(jsonInput[0])),
 				)
 				symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(resultHolder, json.dumps(result).encode('utf-8'))
 			except Exception:
 				symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(resultHolder, traceback.format_exc())
-		decryptedDocumentValidator_callback = CALLBACK_PARAM_DATA_INPUT(decryptedDocumentValidator_fun) if decrypted_document_validator is not None else None
+		decryptedAttachmentValidator_callback = CALLBACK_PARAM_DATA_INPUT(decryptedAttachmentValidator_fun) if decrypted_attachment_validator is not None else None
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.getAndTryDecryptMainAttachmentAsPlainTextBlocking(
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			decryptedDocumentValidator_callback,
+			decryptedAttachmentValidator_callback,
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1615,7 +1610,7 @@ class DocumentApi:
 			return_value = result_info.success
 			return return_value
 
-	async def get_and_try_decrypt_main_attachment_as_json_async(self, document: Document, attachment_id: str, decrypted_document_validator: Optional[Callable[[bytearray], bool]] = None) -> Optional[Dict[str, object]]:
+	async def get_and_try_decrypt_main_attachment_as_json_async(self, document: Document, decrypted_attachment_validator: Optional[Callable[[bytearray], bool]] = None) -> Optional[Dict[str, object]]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1627,48 +1622,46 @@ class DocumentApi:
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"document": serialize_document(document),
-			"attachmentId": attachment_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		def decryptedDocumentValidator_fun(resultHolder, encodedInput):
+		def decryptedAttachmentValidator_fun(resultHolder, encodedInput):
 			try:
 				jsonInput = json.loads(encodedInput)
-				result = decrypted_document_validator(
+				result = decrypted_attachment_validator(
 					bytearray(base64.b64decode(jsonInput[0])),
 				)
 				symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(resultHolder, json.dumps(result).encode('utf-8'))
 			except Exception:
 				symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(resultHolder, traceback.format_exc())
-		decryptedDocumentValidator_callback = CALLBACK_PARAM_DATA_INPUT(decryptedDocumentValidator_fun) if decrypted_document_validator is not None else None
+		decryptedAttachmentValidator_callback = CALLBACK_PARAM_DATA_INPUT(decryptedAttachmentValidator_fun) if decrypted_attachment_validator is not None else None
 		loop.run_in_executor(
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.getAndTryDecryptMainAttachmentAsJsonAsync,
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			decryptedDocumentValidator_callback,
+			decryptedAttachmentValidator_callback,
 			callback
 		)
 		return await future
 
-	def get_and_try_decrypt_main_attachment_as_json_blocking(self, document: Document, attachment_id: str, decrypted_document_validator: Optional[Callable[[bytearray], bool]] = None) -> Optional[Dict[str, object]]:
+	def get_and_try_decrypt_main_attachment_as_json_blocking(self, document: Document, decrypted_attachment_validator: Optional[Callable[[bytearray], bool]] = None) -> Optional[Dict[str, object]]:
 		payload = {
 			"document": serialize_document(document),
-			"attachmentId": attachment_id,
 		}
-		def decryptedDocumentValidator_fun(resultHolder, encodedInput):
+		def decryptedAttachmentValidator_fun(resultHolder, encodedInput):
 			try:
 				jsonInput = json.loads(encodedInput)
-				result = decrypted_document_validator(
+				result = decrypted_attachment_validator(
 					bytearray(base64.b64decode(jsonInput[0])),
 				)
 				symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(resultHolder, json.dumps(result).encode('utf-8'))
 			except Exception:
 				symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(resultHolder, traceback.format_exc())
-		decryptedDocumentValidator_callback = CALLBACK_PARAM_DATA_INPUT(decryptedDocumentValidator_fun) if decrypted_document_validator is not None else None
+		decryptedAttachmentValidator_callback = CALLBACK_PARAM_DATA_INPUT(decryptedAttachmentValidator_fun) if decrypted_attachment_validator is not None else None
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.getAndTryDecryptMainAttachmentAsJsonBlocking(
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			decryptedDocumentValidator_callback,
+			decryptedAttachmentValidator_callback,
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1678,7 +1671,7 @@ class DocumentApi:
 			return_value = dict(map(lambda kv1: (kv1[0], kv1[1]), result_info.success.items())) if result_info.success is not None else None
 			return return_value
 
-	async def get_and_decrypt_main_attachment_async(self, document: Document, attachment_id: str, decrypted_document_validator: Optional[Callable[[bytearray], bool]] = None) -> bytearray:
+	async def get_and_decrypt_main_attachment_async(self, document: Document, decrypted_attachment_validator: Optional[Callable[[bytearray], bool]] = None) -> bytearray:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1690,48 +1683,46 @@ class DocumentApi:
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"document": serialize_document(document),
-			"attachmentId": attachment_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		def decryptedDocumentValidator_fun(resultHolder, encodedInput):
+		def decryptedAttachmentValidator_fun(resultHolder, encodedInput):
 			try:
 				jsonInput = json.loads(encodedInput)
-				result = decrypted_document_validator(
+				result = decrypted_attachment_validator(
 					bytearray(base64.b64decode(jsonInput[0])),
 				)
 				symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(resultHolder, json.dumps(result).encode('utf-8'))
 			except Exception:
 				symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(resultHolder, traceback.format_exc())
-		decryptedDocumentValidator_callback = CALLBACK_PARAM_DATA_INPUT(decryptedDocumentValidator_fun) if decrypted_document_validator is not None else None
+		decryptedAttachmentValidator_callback = CALLBACK_PARAM_DATA_INPUT(decryptedAttachmentValidator_fun) if decrypted_attachment_validator is not None else None
 		loop.run_in_executor(
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.getAndDecryptMainAttachmentAsync,
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			decryptedDocumentValidator_callback,
+			decryptedAttachmentValidator_callback,
 			callback
 		)
 		return await future
 
-	def get_and_decrypt_main_attachment_blocking(self, document: Document, attachment_id: str, decrypted_document_validator: Optional[Callable[[bytearray], bool]] = None) -> bytearray:
+	def get_and_decrypt_main_attachment_blocking(self, document: Document, decrypted_attachment_validator: Optional[Callable[[bytearray], bool]] = None) -> bytearray:
 		payload = {
 			"document": serialize_document(document),
-			"attachmentId": attachment_id,
 		}
-		def decryptedDocumentValidator_fun(resultHolder, encodedInput):
+		def decryptedAttachmentValidator_fun(resultHolder, encodedInput):
 			try:
 				jsonInput = json.loads(encodedInput)
-				result = decrypted_document_validator(
+				result = decrypted_attachment_validator(
 					bytearray(base64.b64decode(jsonInput[0])),
 				)
 				symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(resultHolder, json.dumps(result).encode('utf-8'))
 			except Exception:
 				symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(resultHolder, traceback.format_exc())
-		decryptedDocumentValidator_callback = CALLBACK_PARAM_DATA_INPUT(decryptedDocumentValidator_fun) if decrypted_document_validator is not None else None
+		decryptedAttachmentValidator_callback = CALLBACK_PARAM_DATA_INPUT(decryptedAttachmentValidator_fun) if decrypted_attachment_validator is not None else None
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.getAndDecryptMainAttachmentBlocking(
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			decryptedDocumentValidator_callback,
+			decryptedAttachmentValidator_callback,
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -1784,7 +1775,7 @@ class DocumentApi:
 			return_value = EncryptedDocument._deserialize(result_info.success)
 			return return_value
 
-	async def get_and_decrypt_secondary_attachment_async(self, document: Document, key: str, attachment_id: str, decrypted_document_validator: Optional[Callable[[bytearray], bool]] = None) -> bytearray:
+	async def get_and_decrypt_secondary_attachment_async(self, document: Document, key: str, decrypted_attachment_validator: Optional[Callable[[bytearray], bool]] = None) -> bytearray:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1797,49 +1788,47 @@ class DocumentApi:
 		payload = {
 			"document": serialize_document(document),
 			"key": key,
-			"attachmentId": attachment_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		def decryptedDocumentValidator_fun(resultHolder, encodedInput):
+		def decryptedAttachmentValidator_fun(resultHolder, encodedInput):
 			try:
 				jsonInput = json.loads(encodedInput)
-				result = decrypted_document_validator(
+				result = decrypted_attachment_validator(
 					bytearray(base64.b64decode(jsonInput[0])),
 				)
 				symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(resultHolder, json.dumps(result).encode('utf-8'))
 			except Exception:
 				symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(resultHolder, traceback.format_exc())
-		decryptedDocumentValidator_callback = CALLBACK_PARAM_DATA_INPUT(decryptedDocumentValidator_fun) if decrypted_document_validator is not None else None
+		decryptedAttachmentValidator_callback = CALLBACK_PARAM_DATA_INPUT(decryptedAttachmentValidator_fun) if decrypted_attachment_validator is not None else None
 		loop.run_in_executor(
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.getAndDecryptSecondaryAttachmentAsync,
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			decryptedDocumentValidator_callback,
+			decryptedAttachmentValidator_callback,
 			callback
 		)
 		return await future
 
-	def get_and_decrypt_secondary_attachment_blocking(self, document: Document, key: str, attachment_id: str, decrypted_document_validator: Optional[Callable[[bytearray], bool]] = None) -> bytearray:
+	def get_and_decrypt_secondary_attachment_blocking(self, document: Document, key: str, decrypted_attachment_validator: Optional[Callable[[bytearray], bool]] = None) -> bytearray:
 		payload = {
 			"document": serialize_document(document),
 			"key": key,
-			"attachmentId": attachment_id,
 		}
-		def decryptedDocumentValidator_fun(resultHolder, encodedInput):
+		def decryptedAttachmentValidator_fun(resultHolder, encodedInput):
 			try:
 				jsonInput = json.loads(encodedInput)
-				result = decrypted_document_validator(
+				result = decrypted_attachment_validator(
 					bytearray(base64.b64decode(jsonInput[0])),
 				)
 				symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(resultHolder, json.dumps(result).encode('utf-8'))
 			except Exception:
 				symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(resultHolder, traceback.format_exc())
-		decryptedDocumentValidator_callback = CALLBACK_PARAM_DATA_INPUT(decryptedDocumentValidator_fun) if decrypted_document_validator is not None else None
+		decryptedAttachmentValidator_callback = CALLBACK_PARAM_DATA_INPUT(decryptedAttachmentValidator_fun) if decrypted_attachment_validator is not None else None
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.getAndDecryptSecondaryAttachmentBlocking(
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			decryptedDocumentValidator_callback,
+			decryptedAttachmentValidator_callback,
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -2127,7 +2116,7 @@ class DocumentApi:
 			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def get_raw_main_attachment_async(self, document_id: str, attachment_id: str) -> bytearray:
+	async def get_raw_main_attachment_async(self, document_id: str) -> bytearray:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -2139,7 +2128,6 @@ class DocumentApi:
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"documentId": document_id,
-			"attachmentId": attachment_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -2151,10 +2139,9 @@ class DocumentApi:
 		)
 		return await future
 
-	def get_raw_main_attachment_blocking(self, document_id: str, attachment_id: str) -> bytearray:
+	def get_raw_main_attachment_blocking(self, document_id: str) -> bytearray:
 		payload = {
 			"documentId": document_id,
-			"attachmentId": attachment_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.getRawMainAttachmentBlocking(
 			self.icure_sdk._native,
@@ -2168,7 +2155,7 @@ class DocumentApi:
 			return_value = bytearray(base64.b64decode(result_info.success))
 			return return_value
 
-	async def get_main_attachment_as_plain_text_async(self, document_id: str, attachment_id: str) -> str:
+	async def get_main_attachment_as_plain_text_async(self, document_id: str) -> str:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -2180,7 +2167,6 @@ class DocumentApi:
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"documentId": document_id,
-			"attachmentId": attachment_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -2192,10 +2178,9 @@ class DocumentApi:
 		)
 		return await future
 
-	def get_main_attachment_as_plain_text_blocking(self, document_id: str, attachment_id: str) -> str:
+	def get_main_attachment_as_plain_text_blocking(self, document_id: str) -> str:
 		payload = {
 			"documentId": document_id,
-			"attachmentId": attachment_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.getMainAttachmentAsPlainTextBlocking(
 			self.icure_sdk._native,
@@ -2209,7 +2194,7 @@ class DocumentApi:
 			return_value = result_info.success
 			return return_value
 
-	async def get_main_attachment_as_json_async(self, document_id: str, attachment_id: str) -> Dict[str, object]:
+	async def get_main_attachment_as_json_async(self, document_id: str) -> Dict[str, object]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -2221,7 +2206,6 @@ class DocumentApi:
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"documentId": document_id,
-			"attachmentId": attachment_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -2233,10 +2217,9 @@ class DocumentApi:
 		)
 		return await future
 
-	def get_main_attachment_as_json_blocking(self, document_id: str, attachment_id: str) -> Dict[str, object]:
+	def get_main_attachment_as_json_blocking(self, document_id: str) -> Dict[str, object]:
 		payload = {
 			"documentId": document_id,
-			"attachmentId": attachment_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.getMainAttachmentAsJsonBlocking(
 			self.icure_sdk._native,
@@ -2250,7 +2233,7 @@ class DocumentApi:
 			return_value = dict(map(lambda kv1: (kv1[0], kv1[1]), result_info.success.items()))
 			return return_value
 
-	async def get_raw_secondary_attachment_async(self, document_id: str, key: str, attachment_id: str) -> bytearray:
+	async def get_raw_secondary_attachment_async(self, document_id: str, key: str) -> bytearray:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -2263,7 +2246,6 @@ class DocumentApi:
 		payload = {
 			"documentId": document_id,
 			"key": key,
-			"attachmentId": attachment_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -2275,11 +2257,10 @@ class DocumentApi:
 		)
 		return await future
 
-	def get_raw_secondary_attachment_blocking(self, document_id: str, key: str, attachment_id: str) -> bytearray:
+	def get_raw_secondary_attachment_blocking(self, document_id: str, key: str) -> bytearray:
 		payload = {
 			"documentId": document_id,
 			"key": key,
-			"attachmentId": attachment_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.getRawSecondaryAttachmentBlocking(
 			self.icure_sdk._native,
@@ -2937,7 +2918,7 @@ class DocumentApi:
 			return_value = DecryptedDocument._deserialize(result_info.success)
 			return return_value
 
-	async def delete_secondary_attachment_async(self, document_id: str, key: str, attachment_id: str) -> DecryptedDocument:
+	async def delete_secondary_attachment_async(self, document_id: str, key: str, rev: str) -> DecryptedDocument:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -2950,7 +2931,7 @@ class DocumentApi:
 		payload = {
 			"documentId": document_id,
 			"key": key,
-			"attachmentId": attachment_id,
+			"rev": rev,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -2962,11 +2943,11 @@ class DocumentApi:
 		)
 		return await future
 
-	def delete_secondary_attachment_blocking(self, document_id: str, key: str, attachment_id: str) -> DecryptedDocument:
+	def delete_secondary_attachment_blocking(self, document_id: str, key: str, rev: str) -> DecryptedDocument:
 		payload = {
 			"documentId": document_id,
 			"key": key,
-			"attachmentId": attachment_id,
+			"rev": rev,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.deleteSecondaryAttachmentBlocking(
 			self.icure_sdk._native,

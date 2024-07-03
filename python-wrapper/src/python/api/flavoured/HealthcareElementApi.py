@@ -1,11 +1,10 @@
 import asyncio
 import json
-from model import DecryptedHealthElement, Patient, User, AccessLevel, serialize_patient, HealthElement, serialize_health_element, HealthElementAbstractFilter, serialize_abstract_filter, DocIdentifier, IcureStub, SubscriptionEventType, EntitySubscriptionConfiguration, EncryptedHealthElement, RequestedPermission, FilterChain, PaginatedList, deserialize_health_element
+from model import DecryptedHealthElement, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, HealthElement, serialize_health_element, HealthElementAbstractFilter, serialize_abstract_filter, DocIdentifier, IcureStub, SubscriptionEventType, EntitySubscriptionConfiguration, EncryptedHealthElement, ShareMetadataBehaviour, RequestedPermission, deserialize_simple_share_result, SimpleShareResult, HealthElementShareOptions, FilterChain, PaginatedList, deserialize_health_element
 from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
 from typing import List, Optional, Dict
-from crypto import SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_secret_id_option, ShareMetadataBehaviour, deserialize_simple_share_result, SimpleShareResult, HealthElementShareOptions
 from model.specializations import HexString
 from subscription.EntitySubscription import EntitySubscription
 from pagination.PaginatedListIterator import PaginatedListIterator

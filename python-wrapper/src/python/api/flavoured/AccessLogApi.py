@@ -1,11 +1,10 @@
 import asyncio
 import json
-from model import DecryptedAccessLog, Patient, User, AccessLevel, serialize_patient, AccessLog, serialize_access_log, DocIdentifier, RequestedPermission, PaginatedList, EncryptedAccessLog, deserialize_access_log
+from model import DecryptedAccessLog, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, AccessLog, serialize_access_log, DocIdentifier, ShareMetadataBehaviour, RequestedPermission, deserialize_simple_share_result, SimpleShareResult, AccessLogShareOptions, PaginatedList, EncryptedAccessLog, deserialize_access_log
 from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
 from typing import Optional, Dict, List
-from crypto import SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_secret_id_option, ShareMetadataBehaviour, deserialize_simple_share_result, SimpleShareResult, AccessLogShareOptions
 from model.specializations import HexString
 from pagination.PaginatedListIterator import PaginatedListIterator
 

@@ -90,7 +90,7 @@ class DocumentBasicApi:
 			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def get_raw_main_attachment_async(self, document_id: str, attachment_id: str) -> bytearray:
+	async def get_raw_main_attachment_async(self, document_id: str) -> bytearray:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -102,7 +102,6 @@ class DocumentBasicApi:
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"documentId": document_id,
-			"attachmentId": attachment_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -114,10 +113,9 @@ class DocumentBasicApi:
 		)
 		return await future
 
-	def get_raw_main_attachment_blocking(self, document_id: str, attachment_id: str) -> bytearray:
+	def get_raw_main_attachment_blocking(self, document_id: str) -> bytearray:
 		payload = {
 			"documentId": document_id,
-			"attachmentId": attachment_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentBasicApi.getRawMainAttachmentBlocking(
 			self.icure_sdk._native,
@@ -131,7 +129,7 @@ class DocumentBasicApi:
 			return_value = bytearray(base64.b64decode(result_info.success))
 			return return_value
 
-	async def get_main_attachment_as_plain_text_async(self, document_id: str, attachment_id: str) -> str:
+	async def get_main_attachment_as_plain_text_async(self, document_id: str) -> str:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -143,7 +141,6 @@ class DocumentBasicApi:
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"documentId": document_id,
-			"attachmentId": attachment_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -155,10 +152,9 @@ class DocumentBasicApi:
 		)
 		return await future
 
-	def get_main_attachment_as_plain_text_blocking(self, document_id: str, attachment_id: str) -> str:
+	def get_main_attachment_as_plain_text_blocking(self, document_id: str) -> str:
 		payload = {
 			"documentId": document_id,
-			"attachmentId": attachment_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentBasicApi.getMainAttachmentAsPlainTextBlocking(
 			self.icure_sdk._native,
@@ -172,7 +168,7 @@ class DocumentBasicApi:
 			return_value = result_info.success
 			return return_value
 
-	async def get_main_attachment_as_json_async(self, document_id: str, attachment_id: str) -> Dict[str, object]:
+	async def get_main_attachment_as_json_async(self, document_id: str) -> Dict[str, object]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -184,7 +180,6 @@ class DocumentBasicApi:
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"documentId": document_id,
-			"attachmentId": attachment_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -196,10 +191,9 @@ class DocumentBasicApi:
 		)
 		return await future
 
-	def get_main_attachment_as_json_blocking(self, document_id: str, attachment_id: str) -> Dict[str, object]:
+	def get_main_attachment_as_json_blocking(self, document_id: str) -> Dict[str, object]:
 		payload = {
 			"documentId": document_id,
-			"attachmentId": attachment_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentBasicApi.getMainAttachmentAsJsonBlocking(
 			self.icure_sdk._native,
@@ -213,7 +207,7 @@ class DocumentBasicApi:
 			return_value = dict(map(lambda kv1: (kv1[0], kv1[1]), result_info.success.items()))
 			return return_value
 
-	async def get_raw_secondary_attachment_async(self, document_id: str, key: str, attachment_id: str) -> bytearray:
+	async def get_raw_secondary_attachment_async(self, document_id: str, key: str) -> bytearray:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -226,7 +220,6 @@ class DocumentBasicApi:
 		payload = {
 			"documentId": document_id,
 			"key": key,
-			"attachmentId": attachment_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -238,11 +231,10 @@ class DocumentBasicApi:
 		)
 		return await future
 
-	def get_raw_secondary_attachment_blocking(self, document_id: str, key: str, attachment_id: str) -> bytearray:
+	def get_raw_secondary_attachment_blocking(self, document_id: str, key: str) -> bytearray:
 		payload = {
 			"documentId": document_id,
 			"key": key,
-			"attachmentId": attachment_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentBasicApi.getRawSecondaryAttachmentBlocking(
 			self.icure_sdk._native,
@@ -713,7 +705,7 @@ class DocumentBasicApi:
 			return_value = EncryptedDocument._deserialize(result_info.success)
 			return return_value
 
-	async def delete_secondary_attachment_async(self, document_id: str, key: str, attachment_id: str) -> EncryptedDocument:
+	async def delete_secondary_attachment_async(self, document_id: str, key: str, rev: str) -> EncryptedDocument:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -726,7 +718,7 @@ class DocumentBasicApi:
 		payload = {
 			"documentId": document_id,
 			"key": key,
-			"attachmentId": attachment_id,
+			"rev": rev,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -738,11 +730,11 @@ class DocumentBasicApi:
 		)
 		return await future
 
-	def delete_secondary_attachment_blocking(self, document_id: str, key: str, attachment_id: str) -> EncryptedDocument:
+	def delete_secondary_attachment_blocking(self, document_id: str, key: str, rev: str) -> EncryptedDocument:
 		payload = {
 			"documentId": document_id,
 			"key": key,
-			"attachmentId": attachment_id,
+			"rev": rev,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentBasicApi.deleteSecondaryAttachmentBlocking(
 			self.icure_sdk._native,
