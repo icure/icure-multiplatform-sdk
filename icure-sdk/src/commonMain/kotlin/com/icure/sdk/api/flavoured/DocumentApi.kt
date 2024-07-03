@@ -158,14 +158,35 @@ interface DocumentApi : DocumentBasicFlavourlessApi, DocumentFlavouredApi<Decryp
 		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent,
 	): DecryptedDocument
 
-	suspend fun getAndTryDecryptMainAttachment(document: Document, decryptedAttachmentValidator: suspend (document: ByteArray) -> Boolean = { true }): ByteArray?
-	suspend fun getAndTryDecryptMainAttachmentAsPlainText(document: Document, decryptedAttachmentValidator: suspend (document: ByteArray) -> Boolean = { true }): String?
-	suspend fun getAndTryDecryptMainAttachmentAsJson(document: Document, decryptedAttachmentValidator: suspend (document: ByteArray) -> Boolean = { true }): JsonElement?
+	suspend fun getAndTryDecryptMainAttachment(
+		document: Document,
+		@DefaultValue("null")
+		decryptedAttachmentValidator: (suspend (document: ByteArray) -> Boolean)? = null
+	): ByteArray?
+	suspend fun getAndTryDecryptMainAttachmentAsPlainText(
+		document: Document,
+		@DefaultValue("null")
+		decryptedAttachmentValidator: (suspend (document: ByteArray) -> Boolean)? = null
+	): String?
+	suspend fun getAndTryDecryptMainAttachmentAsJson(
+		document: Document,
+		@DefaultValue("null")
+		decryptedAttachmentValidator: (suspend (document: ByteArray) -> Boolean)? = null
+	): JsonElement?
 
-	suspend fun getAndDecryptMainAttachment(document: Document, decryptedAttachmentValidator: suspend (document: ByteArray) -> Boolean = { true }): ByteArray
+	suspend fun getAndDecryptMainAttachment(
+		document: Document,
+		@DefaultValue("null")
+		decryptedAttachmentValidator: (suspend (document: ByteArray) -> Boolean)? = null
+	): ByteArray
 	suspend fun encryptAndSetMainAttachment(document: Document, utis: List<String>, attachment: ByteArray): EncryptedDocument
 
-	suspend fun getAndDecryptSecondaryAttachment(document: Document, key: String, decryptedAttachmentValidator: suspend (document: ByteArray) -> Boolean = { true }): ByteArray
+	suspend fun getAndDecryptSecondaryAttachment(
+		document: Document,
+		key: String,
+		@DefaultValue("null")
+		decryptedAttachmentValidator: (suspend (document: ByteArray) -> Boolean)? = null
+	): ByteArray
 	suspend fun encryptAndSetSecondaryAttachment(
 		document: Document,
 		key: String,
@@ -416,26 +437,26 @@ internal class DocumentApiImpl(
 
 	override suspend fun getAndTryDecryptMainAttachment(
 		document: Document,
-		decryptedAttachmentValidator: suspend (document: ByteArray) -> Boolean
+		decryptedAttachmentValidator: (suspend (document: ByteArray) -> Boolean)?
 	): ByteArray? = getRawMainAttachment(document.id).let {
 			crypto.entity.tryDecryptAttachmentOf(document.withTypeInfo(), it, decryptedAttachmentValidator)
 		}
 
 	override suspend fun getAndTryDecryptMainAttachmentAsPlainText(
 		document: Document,
-		decryptedAttachmentValidator: suspend (document: ByteArray) -> Boolean
+		decryptedAttachmentValidator: (suspend (document: ByteArray) -> Boolean)?
 	): String? = getAndTryDecryptMainAttachment(document, decryptedAttachmentValidator)?.decodeToString()
 
 	override suspend fun getAndTryDecryptMainAttachmentAsJson(
 		document: Document,
-		decryptedAttachmentValidator: suspend (document: ByteArray) -> Boolean
+		decryptedAttachmentValidator: (suspend (document: ByteArray) -> Boolean)?
 	): JsonElement? = getAndTryDecryptMainAttachmentAsPlainText(document, decryptedAttachmentValidator)?.let {
 		Serialization.json.decodeFromString<JsonElement>(it)
 	}
 
 	override suspend fun getAndDecryptMainAttachment(
 		document: Document,
-		decryptedAttachmentValidator: suspend (document: ByteArray) -> Boolean
+		decryptedAttachmentValidator: (suspend (document: ByteArray) -> Boolean)?
 	) =
 		rawApi.getMainAttachment(document.id).successBody().let {
 			crypto.entity.decryptAttachmentOf(document.withTypeInfo(), it, decryptedAttachmentValidator)
@@ -458,7 +479,7 @@ internal class DocumentApiImpl(
 	override suspend fun getAndDecryptSecondaryAttachment(
 		document: Document,
 		key: String,
-		decryptedAttachmentValidator: suspend (document: ByteArray) -> Boolean
+		decryptedAttachmentValidator: (suspend (document: ByteArray) -> Boolean)?
 	) =
 		rawApi.getSecondaryAttachment(document.id, key).successBody().let {
 			crypto.entity.decryptAttachmentOf(document.withTypeInfo(), it, decryptedAttachmentValidator)
