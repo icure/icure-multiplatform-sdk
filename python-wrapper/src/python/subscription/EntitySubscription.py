@@ -23,6 +23,11 @@ class EntitySubscription(Generic[T]):
     def __del__(self):
         symbols.kotlin.root.com.icure.sdk.py.utils.disposeStablePtr(self.__producer)
 
+    """
+    Closes the subscription, no new event will be created.
+    Note: you should always close a subscription when not using it anymore, in order to properly release the associated
+    resources.
+    """
     def close(self):
         call_result = symbols.kotlin.root.com.icure.sdk.py.subscription.EntitySubscription.close(self.__producer)
         result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -30,6 +35,9 @@ class EntitySubscription(Generic[T]):
         if result_info.failure is not None:
             raise Exception(result_info.failure)
 
+    """
+    Returns the reason why the subscription is closed, or None if the subscription is not yet closed.
+    """
     def get_close_reason(self) -> Optional[EntitySubscriptionCloseReason]:
         call_result = symbols.kotlin.root.com.icure.sdk.py.subscription.EntitySubscription.getCloseReason(self.__producer)
         result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -41,6 +49,10 @@ class EntitySubscription(Generic[T]):
         else:
             return None
 
+    """
+    Consume the next event in the subscription event queue or None if there is currently no event. If the subscription is
+    closed you can still retrieved any unconsumed event, but no new event will be added to the queue.
+    """
     def get_event(self) -> Optional[EntitySubscriptionEvent[T]]:
         call_result = symbols.kotlin.root.com.icure.sdk.py.subscription.EntitySubscription.getEvent(self.__producer)
         result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -50,6 +62,10 @@ class EntitySubscription(Generic[T]):
         else:
             return self.__decode_event(result_info.success)
 
+    """
+    Waits for the next event in the subscription event queue and consumes it, or return None if no new event is produced
+    within the provided timeout.
+    """
     def wait_for_event_blocking(self, timeout: timedelta) -> Optional[EntitySubscriptionEvent[T]]:
         call_result = symbols.kotlin.root.com.icure.sdk.py.subscription.EntitySubscription.waitForEventBlocking(
             self.__producer,
@@ -62,7 +78,11 @@ class EntitySubscription(Generic[T]):
         else:
             return self.__decode_event(result_info.success)
 
-    async def wait_for_event_async(self, timeout: timedelta) -> Optional[EntitySubscriptionEvent[T]]:
+    """
+    Waits for the next event in the subscription event queue and consumes it, or return None if no new event is produced
+    within the provided timeout.
+    """
+    async def wait_for_event_async(self, timeout: timedelta, x) -> Optional[EntitySubscriptionEvent[T]]:
         loop = asyncio.get_running_loop()
         future = loop.create_future()
         def make_result_and_complete(success, failure):

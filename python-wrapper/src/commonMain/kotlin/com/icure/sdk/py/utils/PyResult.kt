@@ -8,6 +8,7 @@ import kotlinx.cinterop.CPointer
 import kotlinx.cinterop.CValues
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.StableRef
+import kotlinx.cinterop.asStableRef
 import kotlinx.cinterop.cstr
 import kotlinx.cinterop.invoke
 import kotlinx.serialization.KSerializer
@@ -15,7 +16,6 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
-
 
 private fun Throwable.stringForPy() =
 	stackTraceToString()
@@ -157,3 +157,65 @@ internal fun Result<*>.failureToPyResultAsyncCallback(
 		callback.invoke(null, e.stringForPy().cstr)
 	}
 }
+
+@OptIn(ExperimentalForeignApi::class)
+fun setCallbackResult(
+	resultHolder: COpaquePointer,
+	encodedSuccess: String
+) {
+	resultHolder.asStableRef<PyCallbackResultHolder<*>>().get().setSuccess(encodedSuccess)
+}
+
+@OptIn(ExperimentalForeignApi::class)
+fun setCallbackFailure(
+	resultHolder: COpaquePointer,
+	pyStackTrace: String
+) {
+	resultHolder.asStableRef<PyCallbackResultHolder<*>>().get().setFailure(pyStackTrace)
+}
+
+internal class PyCallbackResultHolder<T>(
+	private val serializer: KSerializer<T>
+) {
+	private var isSet: Boolean = false
+	private var success: T? = null
+	private var failure: Throwable? = null
+
+	fun setSuccess(encodedSuccess: String) {
+		if (markSet()) {
+			try {
+				success = Serialization.json.decodeFromString(serializer, encodedSuccess)
+			} catch (e: Throwable) {
+				failure = e
+			}
+		}
+	}
+
+	fun setFailure(pyStackTrace: String) {
+		if (markSet()) {
+			failure = PythonInvocationException(pyStackTrace)
+		}
+	}
+
+	private fun markSet(): Boolean =
+		if (isSet) {
+			success = null
+			failure = IllegalStateException("Result was set multiple times")
+			false
+		} else {
+			isSet = true
+			true
+		}
+
+	@Suppress("UNCHECKED_CAST")
+	fun getOrThrow(): T {
+		if (!isSet) {
+			throw IllegalStateException("Result was not set")
+		}
+		return failure?.let {
+			throw it
+		} ?: (success as T)
+	}
+}
+
+private class PythonInvocationException(pyStackTrace: String) : Exception(pyStackTrace)
