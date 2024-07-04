@@ -8,6 +8,7 @@ kotest = "5.9.0"
 androidLibrary = "8.2.2"
 kryptom = "1.0.6"
 kermit = "2.0.3"
+okio = "3.9.0"
 
 [libraries]
 
@@ -48,11 +49,15 @@ kotestRunnerJunit = { group = "io.kotest", name = "kotest-runner-junit5", versio
 
 # Mockk
 mockk = { group = "io.mockk", name = "mockk", version = "1.13.10" }
+
 # Logging
 kermit = { group = "co.touchlab", name = "kermit", version.ref = "kermit" }
 
 # Kryptom
 kryptom = { group = "com.icure.kryptom", name = "kryptom", version.ref = "kryptom" }
+
+# Okio
+okio = { group = "com.squareup.okio", name = "okio", version.ref = "okio" }
 
 [bundles]
 ktorServer = ["ktorServerCore", "ktorServerNetty", "ktorServerWebsockets"]

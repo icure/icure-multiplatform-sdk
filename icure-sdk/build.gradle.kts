@@ -29,6 +29,7 @@ kotlin {
 				implementation(libs.kermit)
 				api(libs.kryptom)
 				implementation(libs.coroutinesCore)
+				implementation(libs.okio)
 				implementation(kotlin("reflect"))
 			}
 		}

@@ -1,6 +1,9 @@
+import json
 from icure.kotlin_types import symbols
-from typing import Optional
+from typing import Optional, Union
 from concurrent.futures import Executor
+from icure.storage import FileSystemStorage
+from icure.credentials import UsernamePassword
 from icure.api import DataOwnerApi, IcureMaintenanceTaskApi, AccessLogApi, CalendarItemApi, ClassificationApi, ContactApi, \
     DocumentApi, FormApi, HealthcareElementApi, InvoiceApi, MaintenanceTaskApi, MessageApi, PatientApi, ReceiptApi, \
     TimeTableApi, TopicApi, ApplicationSettingsApi, CodeApi, CryptoApi, DeviceApi, DocumentTemplateApi, \
@@ -48,14 +51,20 @@ class IcureSdk:
     def __init__(
         self,
         baseurl: str,
-        username: str,
-        password: str,
+        authentication_method: Union[UsernamePassword],
+        storage: Union[FileSystemStorage] = FileSystemStorage(),
         executor: Optional[Executor] = None
     ):
+        if not isinstance(authentication_method, UsernamePassword):
+            raise Exception(f"Invalid authentication method, expected `icure.authentication.UsernamePassword`, found {type(authentication_method)}")
+        if not isinstance(storage, FileSystemStorage):
+            raise Exception(f"Invalid storage type, expected `icure.storage.FileSystemStorage`, found {type(storage)}")
+
         self._native = symbols.kotlin.root.com.icure.sdk.py.initializeSdk(
             baseurl.encode('utf-8'),
-            username.encode('utf-8'),
-            password.encode('utf-8'),
+            authentication_method.username.encode('utf-8'),
+            authentication_method.password.encode('utf-8'),
+            json.dumps(storage.__serialize__()).encode('utf-8')
         )
         self._executor = executor
 
@@ -271,4 +280,3 @@ class IcureSdk:
         if self.__user is None:
             self.__user = UserApi(self)
         return self.__user
-
