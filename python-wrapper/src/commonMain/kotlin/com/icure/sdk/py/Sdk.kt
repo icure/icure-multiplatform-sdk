@@ -3,13 +3,16 @@ package com.icure.sdk.py
 import com.icure.sdk.IcureBaseSdk
 import com.icure.sdk.IcureSdk
 import com.icure.sdk.auth.UsernamePassword
-import com.icure.sdk.crypto.impl.BasicCryptoStrategies
+import com.icure.sdk.crypto.CryptoStrategies
 import com.icure.sdk.options.ApiOptions
 import com.icure.sdk.options.AuthenticationMethod
 import com.icure.sdk.options.BasicApiOptions
 import com.icure.sdk.options.EncryptedFieldsConfiguration
-import com.icure.sdk.storage.impl.VolatileStorageFacade
+import com.icure.sdk.storage.impl.FileStorageFacade
 import com.icure.sdk.utils.Serialization
+import kotlinx.cinterop.COpaquePointer
+import kotlinx.cinterop.ExperimentalForeignApi
+import kotlinx.cinterop.asStableRef
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Serializable
 
@@ -30,21 +33,33 @@ private data class PySdkParams(
 	)
 }
 
+class SdkInitializationResult internal constructor(
+	val success: IcureSdk?,
+	val failure: String?
+)
+
+@OptIn(ExperimentalForeignApi::class)
 fun initializeSdk(
 	dataParams: String,
-): IcureSdk = runBlocking {
-	val decodedParams = Serialization.json.decodeFromString<PySdkParams>(dataParams)
-	IcureSdk.initialise(
-		decodedParams.baseUrl,
-		AuthenticationMethod.UsingCredentials(
-			UsernamePassword(
-				decodedParams.username,
-				decodedParams.password
-			)
-		),
-		VolatileStorageFacade(),
-		BasicCryptoStrategies,
-		decodedParams.asApiOptions()
+	cryptoStrategies: COpaquePointer
+): SdkInitializationResult = runBlocking {
+	kotlin.runCatching {
+		val decodedParams = Serialization.json.decodeFromString<PySdkParams>(dataParams)
+		IcureSdk.initialise(
+			decodedParams.baseUrl,
+			AuthenticationMethod.UsingCredentials(
+				UsernamePassword(
+					decodedParams.username,
+					decodedParams.password
+				)
+			),
+			FileStorageFacade(decodedParams.storagePath),
+			cryptoStrategies.asStableRef<CryptoStrategies>().get(),
+			decodedParams.asApiOptions()
+		)
+	}.fold(
+		onSuccess = { SdkInitializationResult(it, null) },
+		onFailure = { SdkInitializationResult(null, it.stackTraceToString()) }
 	)
 }
 

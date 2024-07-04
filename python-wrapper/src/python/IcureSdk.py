@@ -1,6 +1,7 @@
 import json
 from icure.kotlin_types import symbols
-from typing import Optional, Union
+from typing import Optional, Union, List
+from ctypes import CFUNCTYPE, c_void_p, c_char_p
 from concurrent.futures import Executor
 from icure.storage import FileSystemStorage
 from icure.credentials import UsernamePassword
@@ -9,6 +10,61 @@ from icure.api import DataOwnerApi, IcureMaintenanceTaskApi, AccessLogApi, Calen
     TimeTableApi, TopicApi, ApplicationSettingsApi, CodeApi, CryptoApi, DeviceApi, DocumentTemplateApi, \
     EntityReferenceApi, EntityTemplateApi, FrontEndMigrationApi, GroupApi, HealthcarePartyApi, ICureApi, InsuranceApi, \
     KeywordApi, PermissionApi, PlaceApi, RecoveryApi, RoleApi, TarificationApi, UserApi
+from dataclasses import dataclass, field
+# TODO add icure.
+from CryptoStrategies import CryptoStrategies
+import traceback
+
+@dataclass
+class EncryptedFieldsConfiguration:
+    accessLog: List[str] = field(default_factory=lambda: ["detail", "objectId"])
+    calendarItem: List[str] = field(default_factory=lambda: ["details", "title", "patientId"])
+    contact: List[str] = field(default_factory=lambda: ["descr", "notes[].markdown"])
+    service: List[str] = field(default_factory=lambda: ["notes[].markdown"])
+    healthElement: List[str] = field(default_factory=lambda: ["descr", "note", "notes[].markdown"])
+    maintenanceTask: List[str] = field(default_factory=lambda: ["properties"])
+    patient: List[str] = field(default_factory=lambda: ["note", "notes[].markdown"])
+    message: List[str] = field(default_factory=lambda: [])
+    topic: List[str] = field(default_factory=lambda: ["description", "linkedServices", "linkedHealthElements"])
+    document: List[str] = field(default_factory=lambda: [])
+    form: List[str] = field(default_factory=lambda: [])
+    receipt: List[str] = field(default_factory=lambda: [])
+    classification: List[str] = field(default_factory=lambda: [])
+    timeTable: List[str] = field(default_factory=lambda: [])
+    invoice: List[str] = field(default_factory=lambda: [])
+
+
+@dataclass
+class SdkOptions:
+    encryptedFields: EncryptedFieldsConfiguration = EncryptedFieldsConfiguration()
+    disableParentKeysInitialisation: bool = False
+    createTransferKeys: bool = True
+
+
+class _CryptoStrategiesBridge:
+    __py_strategies: CryptoStrategies
+
+    def __init__(self, py_strategies: CryptoStrategies):
+        self.__py_strategies = py_strategies
+
+    def recover_and_verify_self_hierarchy_keys(self, result_holder, keys_data, key_pair_recoverer):
+        pass
+
+    def generate_new_key_for_data_owner(self, result_holder, self_data_owner):
+        pass
+
+    def verify_delegate_public_keys(self, result_holder, delegate, public_keys):
+        pass
+
+    def data_owner_requires_anonymous_delegation(self, result_holder, data_owner):
+        pass
+
+
+_C_RecoverAndVerifySelfHierarchyKeys = CFUNCTYPE(None, c_void_p, c_char_p, c_void_p)
+_C_GenerateNewKeyForDataOwner = CFUNCTYPE(None, c_void_p, c_char_p)
+_C_VerifyDelegatePublicKeys = CFUNCTYPE(None, c_void_p, c_char_p, c_char_p)
+_C_DataOwnerRequiresAnonymousDelegation = CFUNCTYPE(None, c_void_p, c_char_p)
+
 
 
 class IcureSdk:
@@ -47,12 +103,19 @@ class IcureSdk:
     __role: Optional[RoleApi] = None
     __tarification: Optional[TarificationApi] = None
     __user: Optional[UserApi] = None
+    __CALLBACK_RecoverAndVerifySelfHierarchyKeys: _C_RecoverAndVerifySelfHierarchyKeys
+    __CALLBACK_GenerateNewKeyForDataOwner: _C_GenerateNewKeyForDataOwner
+    __CALLBACK_VerifyDelegatePublicKeys: _C_VerifyDelegatePublicKeys
+    __CALLBACK_DataOwnerRequiresAnonymousDelegation: _C_DataOwnerRequiresAnonymousDelegation
+    __kt_crypto_strategies: c_void_p
 
     def __init__(
         self,
         baseurl: str,
         authentication_method: Union[UsernamePassword],
-        storage: Union[FileSystemStorage] = FileSystemStorage(),
+        storage: Union[FileSystemStorage],
+        crypto_strategies: CryptoStrategies,
+        options: SdkOptions = SdkOptions,
         executor: Optional[Executor] = None
     ):
         if not isinstance(authentication_method, UsernamePassword):
@@ -60,16 +123,47 @@ class IcureSdk:
         if not isinstance(storage, FileSystemStorage):
             raise Exception(f"Invalid storage type, expected `icure.storage.FileSystemStorage`, found {type(storage)}")
 
-        self._native = symbols.kotlin.root.com.icure.sdk.py.initializeSdk(
-            baseurl.encode('utf-8'),
-            authentication_method.username.encode('utf-8'),
-            authentication_method.password.encode('utf-8'),
-            json.dumps(storage.__serialize__()).encode('utf-8')
+        data_params = {
+            'baseUrl': baseurl,
+            'username': authentication_method.username,
+            'password': authentication_method.password,
+            'storagePath': storage.directory,
+            'encryptedFields': options.encryptedFields.__dict__,
+            'disableParentKeysInitialisation': options.disableParentKeysInitialisation,
+            'createTransferKeys': options.createTransferKeys
+        }
+
+        strategies_bridge = _CryptoStrategiesBridge(crypto_strategies)
+        self.__CALLBACK_RecoverAndVerifySelfHierarchyKeys = _C_RecoverAndVerifySelfHierarchyKeys(strategies_bridge.recover_and_verify_self_hierarchy_keys)
+        self.__CALLBACK_GenerateNewKeyForDataOwner = _C_GenerateNewKeyForDataOwner(strategies_bridge.generate_new_key_for_data_owner)
+        self.__CALLBACK_VerifyDelegatePublicKeys = _C_VerifyDelegatePublicKeys(strategies_bridge.verify_delegate_public_keys)
+        self.__CALLBACK_DataOwnerRequiresAnonymousDelegation = _C_DataOwnerRequiresAnonymousDelegation(strategies_bridge.data_owner_requires_anonymous_delegation)
+        self.__kt_crypto_strategies = symbols.kotlin.root.com.icure.sdk.py.PyCryptoStrategies.create(
+            self.__CALLBACK_RecoverAndVerifySelfHierarchyKeys,
+            self.__CALLBACK_GenerateNewKeyForDataOwner,
+            self.__CALLBACK_VerifyDelegatePublicKeys,
+            self.__CALLBACK_DataOwnerRequiresAnonymousDelegation,
         )
+
+        sdkInitializationResult = symbols.kotlin.root.com.icure.sdk.py.initializeSdk(
+            json.dumps(data_params).encode('utf-8'),
+            self.__kt_crypto_strategies
+        )
+        failure = symbols.kotlin.root.com.icure.sdk.py.SdkInitializationResult.get_failure(sdkInitializationResult)
+        if failure is not None:
+            symbols.DisposeStablePointer(sdkInitializationResult.pinned)
+            trace = failure.decode('utf-8')
+            symbols.DisposeString(failure)
+            raise Exception(trace)
+        self._native = symbols.kotlin.root.com.icure.sdk.py.SdkInitializationResult.get_success(sdkInitializationResult)
+        symbols.DisposeStablePointer(sdkInitializationResult.pinned)
         self._executor = executor
 
     def __del__(self):
-        symbols.DisposeStablePointer(self._native.pinned)
+        if self._native is not None:
+            symbols.DisposeStablePointer(self._native.pinned)
+        if self.__kt_crypto_strategies is not None:
+            symbols.kotlin.root.com.icure.sdk.py.utils.disposeStablePtr(self.__kt_crypto_strategies)
 
     @property
     def healthcare_element(self):

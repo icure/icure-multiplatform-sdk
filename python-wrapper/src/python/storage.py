@@ -1,7 +1,6 @@
-from icure.model.SingletonMeta import SingletonMeta
+from dataclasses import dataclass
 
 
-class FileSystemStorage(metaclass=SingletonMeta):
-
-    def __serialize__(self) -> object:
-        return {"type": "FileSystemStorage"}
+@dataclass
+class FileSystemStorage:
+    directory: str
