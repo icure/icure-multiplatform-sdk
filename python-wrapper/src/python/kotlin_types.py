@@ -1,5 +1,5 @@
 from ctypes import c_void_p, Structure, CFUNCTYPE, c_char_p, c_int32, POINTER
-from kotlin_dll_loader import kdll
+from icure.kotlin_dll_loader import kdll
 
 class AnyKtRef(Structure):
     _fields_ = [
