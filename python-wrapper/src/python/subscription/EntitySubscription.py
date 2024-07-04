@@ -1,11 +1,11 @@
 from typing import Generic, TypeVar, List, Optional, Callable
 from ctypes import c_void_p, cast, c_char_p
 from concurrent.futures import Executor
-from kotlin_types import symbols, DATA_RESULT_CALLBACK_FUNC
-from model import EntitySubscriptionCloseReason
-from model.CallResult import create_result_from_json
+from icure.kotlin_types import symbols, DATA_RESULT_CALLBACK_FUNC
+from icure.model import EntitySubscriptionCloseReason
+from icure.model.CallResult import create_result_from_json
 from datetime import timedelta
-from subscription.EntitySubscriptionEvent import EntitySubscriptionEvent
+from icure.subscription.EntitySubscriptionEvent import EntitySubscriptionEvent
 import math
 import asyncio
 import json
