@@ -144,6 +144,10 @@ def deserialize_key_generation_request_result(data: Union[str, Dict[str, object]
 
 
 class RsaEncryptionAlgorithm(Enum):
+    """
+    Represents the encryption algorith used to generate the ExportedKeyData.
+    """
+
     OaepWithSha1 = "OaepWithSha1"
     OaepWithSha256 = "OaepWithSha256"
 
@@ -162,6 +166,9 @@ class RsaEncryptionAlgorithm(Enum):
 
 @dataclass
 class ExportedKeyData:
+    """
+    Represents a private key with the algorithm used to generate it.
+    """
     private_key_pkcs8: bytearray
     algorithm: RsaEncryptionAlgorithm
 
@@ -186,6 +193,17 @@ class ExportedKeyData:
 
 @dataclass
 class RecoveredKeyData:
+    """
+    Data recovered for a data owner.
+
+    Args:
+        recovered_keys (Dict[KeypairFingerprintV1String, RsaKeyPair]): All keys recovered for the data owner (will be
+            automatically considered as verified), by fingerprint.
+        key_authenticity (Dict[KeypairFingerprintV1String, bool]): associates each public key fingerprint its
+            authenticity. Note that if any of the keys from `unknownKeys` is completely missing from this object the
+            key will be considered as unverified in this api instance (same as if associated to false), but this value
+            won't be cached (will be again part of `unknownKeys` in future instances.
+    """
     recovered_keys: Dict[KeypairFingerprintV1String, RsaKeyPair]
     key_authenticity: Dict[KeypairFingerprintV1String, bool]
 
