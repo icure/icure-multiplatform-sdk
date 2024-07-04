@@ -1,9 +1,9 @@
 import asyncio
 import json
 from typing import Optional
-from model import RecoveryDataKey, deserialize_recovery_result, RecoveryResult, RecoveryDataUseFailureReason
-from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
-from model.CallResult import create_result_from_json
+from icure.model import RecoveryDataKey, deserialize_recovery_result, RecoveryResult, RecoveryDataUseFailureReason
+from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
+from icure.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
 
 class RecoveryApi:

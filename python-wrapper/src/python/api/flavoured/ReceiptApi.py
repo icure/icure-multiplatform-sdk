@@ -1,12 +1,12 @@
 import asyncio
 import json
 import base64
-from model import DecryptedReceipt, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, Receipt, serialize_receipt, EncryptedReceipt, deserialize_receipt, DocIdentifier, ShareMetadataBehaviour, RequestedPermission, deserialize_simple_share_result, SimpleShareResult, ReceiptShareOptions
-from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
-from model.CallResult import create_result_from_json
+from icure.model import DecryptedReceipt, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, Receipt, serialize_receipt, EncryptedReceipt, deserialize_receipt, DocIdentifier, ShareMetadataBehaviour, RequestedPermission, deserialize_simple_share_result, SimpleShareResult, ReceiptShareOptions
+from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
+from icure.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
 from typing import Optional, Dict, List
-from model.specializations import HexString
+from icure.model.specializations import HexString
 
 class ReceiptApi:
 

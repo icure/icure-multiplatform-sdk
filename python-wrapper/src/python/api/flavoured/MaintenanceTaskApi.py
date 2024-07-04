@@ -1,12 +1,12 @@
 import asyncio
 import json
-from model import DecryptedMaintenanceTask, User, AccessLevel, MaintenanceTask, serialize_maintenance_task, DocIdentifier, SubscriptionEventType, MaintenanceTaskAbstractFilter, EntitySubscriptionConfiguration, EncryptedMaintenanceTask, serialize_abstract_filter, ShareMetadataBehaviour, RequestedPermission, deserialize_simple_share_result, SimpleShareResult, MaintenanceTaskShareOptions, FilterChain, PaginatedList, deserialize_maintenance_task
-from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
-from model.CallResult import create_result_from_json
+from icure.model import DecryptedMaintenanceTask, User, AccessLevel, MaintenanceTask, serialize_maintenance_task, DocIdentifier, SubscriptionEventType, MaintenanceTaskAbstractFilter, EntitySubscriptionConfiguration, EncryptedMaintenanceTask, serialize_abstract_filter, ShareMetadataBehaviour, RequestedPermission, deserialize_simple_share_result, SimpleShareResult, MaintenanceTaskShareOptions, FilterChain, PaginatedList, deserialize_maintenance_task
+from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
+from icure.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
 from typing import Optional, Dict, List
-from model.specializations import HexString
-from subscription.EntitySubscription import EntitySubscription
+from icure.model.specializations import HexString
+from icure.subscription.EntitySubscription import EntitySubscription
 
 class MaintenanceTaskApi:
 

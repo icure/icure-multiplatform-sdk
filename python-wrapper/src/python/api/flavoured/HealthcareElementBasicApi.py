@@ -1,11 +1,11 @@
 import asyncio
 import json
-from model import HealthElementAbstractFilter, serialize_abstract_filter, DocIdentifier, IcureStub, SubscriptionEventType, EntitySubscriptionConfiguration, EncryptedHealthElement, FilterChain, PaginatedList
-from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
+from icure.model import HealthElementAbstractFilter, serialize_abstract_filter, DocIdentifier, IcureStub, SubscriptionEventType, EntitySubscriptionConfiguration, EncryptedHealthElement, FilterChain, PaginatedList
+from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from typing import List, Optional
-from model.CallResult import create_result_from_json
+from icure.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
-from subscription.EntitySubscription import EntitySubscription
+from icure.subscription.EntitySubscription import EntitySubscription
 
 class HealthcareElementBasicApi:
 

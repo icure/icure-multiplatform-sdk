@@ -1,13 +1,13 @@
 import asyncio
 import json
-from model import DecryptedMessage, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, Message, serialize_message, MessageAbstractFilter, serialize_abstract_filter, DocIdentifier, SubscriptionEventType, EntitySubscriptionConfiguration, EncryptedMessage, ShareMetadataBehaviour, RequestedPermission, deserialize_simple_share_result, SimpleShareResult, MessageShareOptions, FilterChain, PaginatedList, deserialize_message
-from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
-from model.CallResult import create_result_from_json
+from icure.model import DecryptedMessage, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, Message, serialize_message, MessageAbstractFilter, serialize_abstract_filter, DocIdentifier, SubscriptionEventType, EntitySubscriptionConfiguration, EncryptedMessage, ShareMetadataBehaviour, RequestedPermission, deserialize_simple_share_result, SimpleShareResult, MessageShareOptions, FilterChain, PaginatedList, deserialize_message
+from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
+from icure.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
 from typing import Optional, Dict, List
-from model.specializations import HexString
-from subscription.EntitySubscription import EntitySubscription
-from pagination.PaginatedListIterator import PaginatedListIterator
+from icure.model.specializations import HexString
+from icure.subscription.EntitySubscription import EntitySubscription
+from icure.pagination.PaginatedListIterator import PaginatedListIterator
 
 class MessageApi:
 

@@ -1,11 +1,11 @@
 import asyncio
 import json
-from model import DocIdentifier, SubscriptionEventType, MaintenanceTaskAbstractFilter, EntitySubscriptionConfiguration, EncryptedMaintenanceTask, serialize_abstract_filter, FilterChain, PaginatedList
-from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
-from model.CallResult import create_result_from_json
+from icure.model import DocIdentifier, SubscriptionEventType, MaintenanceTaskAbstractFilter, EntitySubscriptionConfiguration, EncryptedMaintenanceTask, serialize_abstract_filter, FilterChain, PaginatedList
+from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
+from icure.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
 from typing import List, Optional
-from subscription.EntitySubscription import EntitySubscription
+from icure.subscription.EntitySubscription import EntitySubscription
 
 class MaintenanceTaskBasicApi:
 

@@ -1,9 +1,9 @@
 import asyncio
 import json
-from model import ApplicationSettings
-from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
+from icure.model import ApplicationSettings
+from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from typing import List
-from model.CallResult import create_result_from_json
+from icure.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
 
 class ApplicationSettingsApi:

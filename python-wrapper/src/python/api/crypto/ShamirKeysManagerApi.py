@@ -1,11 +1,11 @@
 import json
 import asyncio
-from model import CryptoActor, serialize_crypto_actor, ShamirUpdateRequest, CryptoActorStubWithType
-from kotlin_types import symbols, DATA_RESULT_CALLBACK_FUNC
-from model.CallResult import create_result_from_json
+from icure.model import CryptoActor, serialize_crypto_actor, ShamirUpdateRequest, CryptoActorStubWithType
+from icure.kotlin_types import symbols, DATA_RESULT_CALLBACK_FUNC
+from icure.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
 from typing import Dict, List
-from model.specializations import KeypairFingerprintV1String
+from icure.model.specializations import KeypairFingerprintV1String
 
 class ShamirKeysManagerApi:
 

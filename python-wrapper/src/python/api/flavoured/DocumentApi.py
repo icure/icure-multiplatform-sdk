@@ -2,14 +2,14 @@ import asyncio
 import json
 import base64
 import traceback
-from model import DecryptedDocument, Message, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_message, serialize_secret_id_option, Document, serialize_document, EncryptedDocument, DocIdentifier, ShareMetadataBehaviour, RequestedPermission, deserialize_simple_share_result, SimpleShareResult, DocumentShareOptions, Patient, serialize_patient, deserialize_document
-from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, CALLBACK_PARAM_DATA_INPUT, PTR_RESULT_CALLBACK_FUNC
-from model.CallResult import create_result_from_json
+from icure.model import DecryptedDocument, Message, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_message, serialize_secret_id_option, Document, serialize_document, EncryptedDocument, DocIdentifier, ShareMetadataBehaviour, RequestedPermission, deserialize_simple_share_result, SimpleShareResult, DocumentShareOptions, Patient, serialize_patient, deserialize_document
+from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, CALLBACK_PARAM_DATA_INPUT, PTR_RESULT_CALLBACK_FUNC
+from icure.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
 from typing import Optional, Dict, List
 from collections.abc import Callable
-from model.specializations import HexString
-from pagination.PaginatedListIterator import PaginatedListIterator
+from icure.model.specializations import HexString
+from icure.pagination.PaginatedListIterator import PaginatedListIterator
 
 class DocumentApi:
 

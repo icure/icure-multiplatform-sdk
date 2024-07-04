@@ -1,7 +1,7 @@
-from kotlin_types import symbols
+from icure.kotlin_types import symbols
 from typing import Optional
 from concurrent.futures import Executor
-from api import DataOwnerApi, IcureMaintenanceTaskApi, AccessLogApi, CalendarItemApi, ClassificationApi, ContactApi, \
+from icure.api import DataOwnerApi, IcureMaintenanceTaskApi, AccessLogApi, CalendarItemApi, ClassificationApi, ContactApi, \
     DocumentApi, FormApi, HealthcareElementApi, InvoiceApi, MaintenanceTaskApi, MessageApi, PatientApi, ReceiptApi, \
     TimeTableApi, TopicApi, ApplicationSettingsApi, CodeApi, CryptoApi, DeviceApi, DocumentTemplateApi, \
     EntityReferenceApi, EntityTemplateApi, FrontEndMigrationApi, GroupApi, HealthcarePartyApi, ICureApi, InsuranceApi, \

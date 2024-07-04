@@ -1,11 +1,11 @@
 import asyncio
 import json
-from model import MessageAbstractFilter, serialize_abstract_filter, DocIdentifier, SubscriptionEventType, EntitySubscriptionConfiguration, EncryptedMessage, FilterChain, PaginatedList
-from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
+from icure.model import MessageAbstractFilter, serialize_abstract_filter, DocIdentifier, SubscriptionEventType, EntitySubscriptionConfiguration, EncryptedMessage, FilterChain, PaginatedList
+from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from typing import List, Optional, Dict
-from model.CallResult import create_result_from_json
+from icure.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
-from subscription.EntitySubscription import EntitySubscription
+from icure.subscription.EntitySubscription import EntitySubscription
 
 class MessageBasicApi:
 

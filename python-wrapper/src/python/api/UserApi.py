@@ -1,8 +1,8 @@
 import asyncio
 import json
-from model import User, PaginatedList, DocIdentifier, EncryptedPropertyStub, FilterChain, UserAbstractFilter, serialize_abstract_filter, UserGroup, ListOfIds, TokenWithGroup, Enable2faRequest
-from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
-from model.CallResult import create_result_from_json
+from icure.model import User, PaginatedList, DocIdentifier, EncryptedPropertyStub, FilterChain, UserAbstractFilter, serialize_abstract_filter, UserGroup, ListOfIds, TokenWithGroup, Enable2faRequest
+from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
+from icure.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
 from typing import Optional, List
 

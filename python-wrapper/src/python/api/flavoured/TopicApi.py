@@ -1,12 +1,12 @@
 import asyncio
 import json
-from model import DecryptedTopic, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, Topic, serialize_topic, DocIdentifier, TopicAbstractFilter, serialize_abstract_filter, SubscriptionEventType, EntitySubscriptionConfiguration, EncryptedTopic, ShareMetadataBehaviour, RequestedPermission, deserialize_simple_share_result, SimpleShareResult, TopicShareOptions, FilterChain, PaginatedList, TopicRole, deserialize_topic
-from kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
-from model.CallResult import create_result_from_json
+from icure.model import DecryptedTopic, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, Topic, serialize_topic, DocIdentifier, TopicAbstractFilter, serialize_abstract_filter, SubscriptionEventType, EntitySubscriptionConfiguration, EncryptedTopic, ShareMetadataBehaviour, RequestedPermission, deserialize_simple_share_result, SimpleShareResult, TopicShareOptions, FilterChain, PaginatedList, TopicRole, deserialize_topic
+from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
+from icure.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
 from typing import Optional, Dict, List
-from model.specializations import HexString
-from subscription.EntitySubscription import EntitySubscription
+from icure.model.specializations import HexString
+from icure.subscription.EntitySubscription import EntitySubscription
 
 class TopicApi:
 

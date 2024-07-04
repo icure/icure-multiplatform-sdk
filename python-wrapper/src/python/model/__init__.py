@@ -6,17 +6,17 @@ from dataclasses import field
 from typing import Union
 from typing import Dict
 from dataclasses import dataclass
-from model.specializations import HexString
-from model.specializations import SpkiHexString
-from model.specializations import AesExchangeKeyEncryptionKeypairIdentifier
-from model.specializations import Base64String
+from icure.model.specializations import HexString
+from icure.model.specializations import SpkiHexString
+from icure.model.specializations import AesExchangeKeyEncryptionKeypairIdentifier
+from icure.model.specializations import Base64String
 from enum import Enum
-from model.SingletonMeta import SingletonMeta
+from icure.model.SingletonMeta import SingletonMeta
 from datetime import timedelta
-from model.serialization import serialize_timedelta
-from model.serialization import deserialize_timedelta
-from model.specializations import SecureDelegationKeyString
-from model.specializations import Sha256HexString
+from icure.model.serialization import serialize_timedelta
+from icure.model.serialization import deserialize_timedelta
+from icure.model.specializations import SecureDelegationKeyString
+from icure.model.specializations import Sha256HexString
 
 @dataclass
 class Keyword:
