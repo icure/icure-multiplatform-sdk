@@ -50,7 +50,7 @@ class KeyDataRecoveryRequest:
 """
 Specifies how the SDK should behave when a new key pair is required for a data owner.
 """
-KeyGenerationRequestResult = Union['KeyGenerationRequestResult', 'KeyGenerationRequestResultDeny', 'KeyGenerationRequestResultUse']
+KeyGenerationRequestResult = Union['KeyGenerationRequestResultAllow', 'KeyGenerationRequestResultDeny', 'KeyGenerationRequestResultUse']
 
 
 class KeyGenerationRequestResultAllow(metaclass=SingletonMeta):
