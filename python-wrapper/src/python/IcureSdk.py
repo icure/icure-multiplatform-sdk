@@ -4,7 +4,7 @@ from typing import Optional, Union, List
 from ctypes import CFUNCTYPE, c_void_p, c_char_p
 from concurrent.futures import Executor
 from icure.storage import FileSystemStorage
-from icure.credentials import UsernamePassword
+from icure.authentication import UsernamePassword
 from icure.api import DataOwnerApi, IcureMaintenanceTaskApi, AccessLogApi, CalendarItemApi, ClassificationApi, ContactApi, \
     DocumentApi, FormApi, HealthcareElementApi, InvoiceApi, MaintenanceTaskApi, MessageApi, PatientApi, ReceiptApi, \
     TimeTableApi, TopicApi, ApplicationSettingsApi, CodeApi, CryptoApi, DeviceApi, DocumentTemplateApi, \

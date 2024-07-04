@@ -1,4 +1,4 @@
-from ctypes import c_void_p, Structure, CFUNCTYPE, c_char_p, c_int32, POINTER
+from ctypes import c_void_p, Structure, CFUNCTYPE, c_char_p, c_bool, c_int32, POINTER
 from icure.kotlin_dll_loader import kdll
 
 class AnyKtRef(Structure):
@@ -11,6 +11,19 @@ DATA_RESULT_CALLBACK_FUNC = CFUNCTYPE(None, c_char_p, c_char_p)
 PTR_RESULT_CALLBACK_FUNC = CFUNCTYPE(None, c_void_p, c_char_p)
 CALLBACK_PARAM_NO_INPUT = CFUNCTYPE(None, c_void_p)
 CALLBACK_PARAM_DATA_INPUT = CFUNCTYPE(None, c_void_p, c_char_p)
+class SdkInitializationResult(Structure):
+    _fields_ = [
+        ("_type", CFUNCTYPE(c_void_p)),
+        ("get_failure", CFUNCTYPE(c_void_p, AnyKtRef)),
+        ("get_success", CFUNCTYPE(AnyKtRef, AnyKtRef)),
+    ]
+
+class PyCryptoStrategies(Structure):
+    _fields_ = [
+        ("create", CFUNCTYPE(c_void_p, c_void_p, c_void_p, c_void_p, c_void_p)),
+        ("recoverWithRecoveryKey", CFUNCTYPE(c_void_p, c_void_p, c_char_p, c_bool)),
+    ]
+
 class ApplicationSettingsApi(Structure):
     _fields_ = [
         ("createApplicationSettingsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -2812,11 +2825,14 @@ class utils(Structure):
 
 class py(Structure):
     _fields_ = [
+        ("SdkInitializationResult", SdkInitializationResult),
+        ("PyCryptoStrategies", PyCryptoStrategies),
         ("api", api),
         ("serialization", serialization),
         ("subscription", subscription),
         ("utils", utils),
-        ("initializeSdk", CFUNCTYPE(AnyKtRef, c_char_p, c_char_p, c_char_p)),
+        ("initializeBaseSdk", CFUNCTYPE(AnyKtRef, c_char_p)),
+        ("initializeSdk", CFUNCTYPE(AnyKtRef, c_char_p, c_void_p)),
     ]
 
 class sdk(Structure):
