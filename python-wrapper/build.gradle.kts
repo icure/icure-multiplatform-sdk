@@ -23,6 +23,13 @@ kotlin {
 			}
 		}
 	}
+	macosX64 {
+		binaries {
+			sharedLib {
+				baseName = "icure-sdk-native-pylib"
+			}
+		}
+	}
 
 	sourceSets {
 		commonMain {
