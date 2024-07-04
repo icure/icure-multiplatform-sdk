@@ -3191,7 +3191,7 @@ RecoveryDataKey = 'HexString'
 RecoveryResult = Union['RecoveryResultSuccess', 'RecoveryResultFailure']
 
 @dataclass
-class Success:
+class RecoveryResultSuccess:
 	data: object
 
 	def __serialize__(self) -> object:
@@ -3211,7 +3211,7 @@ class Success:
 		)
 
 @dataclass
-class Failure:
+class RecoveryResultFailure:
 	reason: 'RecoveryDataUseFailureReason'
 
 	def __serialize__(self) -> object:
@@ -3860,7 +3860,7 @@ class User:
 			}
 
 		@classmethod
-		def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'UserSystemMetadata':
+		def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'User.SystemMetadata':
 			deserialized_dict: dict[str, object]
 			if isinstance(data, str):
 				deserialized_dict = json.loads(data)
@@ -4228,7 +4228,7 @@ class DataOwnerType(Enum):
 DataOwnerWithType = Union['DataOwnerWithTypeHcpDataOwner', 'DataOwnerWithTypePatientDataOwner', 'DataOwnerWithTypeDeviceDataOwner']
 
 @dataclass
-class HcpDataOwner:
+class DataOwnerWithTypeHcpDataOwner:
 	data_owner: 'HealthcareParty'
 
 	def __serialize__(self) -> object:
@@ -4248,7 +4248,7 @@ class HcpDataOwner:
 		)
 
 @dataclass
-class PatientDataOwner:
+class DataOwnerWithTypePatientDataOwner:
 	data_owner: 'EncryptedPatient'
 
 	def __serialize__(self) -> object:
@@ -4268,7 +4268,7 @@ class PatientDataOwner:
 		)
 
 @dataclass
-class DeviceDataOwner:
+class DataOwnerWithTypeDeviceDataOwner:
 	data_owner: 'Device'
 
 	def __serialize__(self) -> object:
@@ -4664,7 +4664,7 @@ class SecretIdOptionUseAnySharedWithParent(metaclass=SingletonMeta):
 		return cls()
 
 @dataclass
-class Use:
+class SecretIdOptionUse:
 	secret_ids: List[str]
 
 	def __serialize__(self) -> object:
@@ -4720,7 +4720,7 @@ def deserialize_secret_id_option(data: Union[str, Dict[str, object]]) -> 'Secret
 SimpleShareResult = Union['SimpleShareResultSuccess', 'SimpleShareResultFailure']
 
 @dataclass
-class Success:
+class SimpleShareResultSuccess:
 	updated_entity: object
 
 	def __serialize__(self) -> object:
@@ -4740,7 +4740,7 @@ class Success:
 		)
 
 @dataclass
-class Failure:
+class SimpleShareResultFailure:
 	errors_details: List['FailedRequestDetails']
 
 	def __serialize__(self) -> object:

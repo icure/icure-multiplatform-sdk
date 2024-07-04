@@ -1,0 +1,5 @@
+from dataclasses import dataclass
+from icure.model import DataOwnerWithTypeHcpDataOwner, DataOwnerWithTypePatientDataOwner, DataOwnerWithTypeDeviceDataOwner
+
+@dataclass
+class KeyDataRecoveryRequest:
