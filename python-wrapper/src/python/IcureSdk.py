@@ -11,9 +11,10 @@ from icure.api import DataOwnerApi, IcureMaintenanceTaskApi, AccessLogApi, Calen
     EntityReferenceApi, EntityTemplateApi, FrontEndMigrationApi, GroupApi, HealthcarePartyApi, ICureApi, InsuranceApi, \
     KeywordApi, PermissionApi, PlaceApi, RecoveryApi, RoleApi, TarificationApi, UserApi
 from dataclasses import dataclass, field
-# TODO add icure.
-from CryptoStrategies import CryptoStrategies
 import traceback
+from icure.model.CallResult import create_result_from_json
+from icure.model import deserialize_recovery_result, RecoveryResultFailure, deserialize_data_owner_with_type, CryptoActorStubWithType
+from icure.CryptoStrategies import CryptoStrategies, ExportedKeyData, KeyDataRecoveryRequest, RecoveredKeyData, serialize_key_generation_request_result
 
 @dataclass
 class EncryptedFieldsConfiguration:
@@ -48,16 +49,65 @@ class _CryptoStrategiesBridge:
         self.__py_strategies = py_strategies
 
     def recover_and_verify_self_hierarchy_keys(self, result_holder, keys_data, key_pair_recoverer):
-        pass
+        try:
+            keys_data_json = json.loads(keys_data)
+            def use_key_pair_recover(recovery_key, auto_delete):
+                result_string = symbols.kotlin.root.com.icure.sdk.py.PyCryptoStrategies.recoverWithRecoveryKey(
+                    key_pair_recoverer,
+                    recovery_key.encode('utf-8'),
+                    auto_delete
+                ).decode('utf-8')
+                result = create_result_from_json(result_string)
+                symbols.DisposeString(result_string)
+                if result.failure is not None:
+                    raise Exception(result.failure)
+                recovery_result = deserialize_recovery_result(result.success)
+                if isinstance(recovery_result, RecoveryResultFailure):
+                    return recovery_result.reason
+                return {
+                    k: {
+                        k1: ExportedKeyData._deserialize(v1) for k1, v1 in v.items()
+                    } for k, v in recovery_result.data.items()
+                }
+            result = self.__py_strategies.recover_and_verify_self_hierarchy_keys(
+                [KeyDataRecoveryRequest._deserialize(x) for x in keys_data_json],
+                use_key_pair_recover
+            )
+            result_json = {
+                k: v.__serialize__() for k, v in result.items()
+            }
+            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result_json).encode('utf-8'))
+        except:
+            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc())
 
     def generate_new_key_for_data_owner(self, result_holder, self_data_owner):
-        pass
+        try:
+            result = self.__py_strategies.generate_new_key_for_data_owner(
+                deserialize_data_owner_with_type(self_data_owner)
+            )
+            result_json = serialize_key_generation_request_result(result)
+            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result_json).encode('utf-8'))
+        except:
+            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc())
 
     def verify_delegate_public_keys(self, result_holder, delegate, public_keys):
-        pass
+        try:
+            result = self.__py_strategies.verify_delegate_public_keys(
+                CryptoActorStubWithType._deserialize(delegate),
+                json.loads(public_keys)
+            )
+            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result).encode('utf-8'))
+        except:
+            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc())
 
     def data_owner_requires_anonymous_delegation(self, result_holder, data_owner):
-        pass
+        try:
+            result = self.__py_strategies.data_owner_requires_anonymous_delegation(
+                CryptoActorStubWithType._deserialize(data_owner)
+            )
+            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result).encode('utf-8'))
+        except:
+            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc())
 
 
 _C_RecoverAndVerifySelfHierarchyKeys = CFUNCTYPE(None, c_void_p, c_char_p, c_void_p)

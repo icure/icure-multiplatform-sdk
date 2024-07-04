@@ -204,7 +204,7 @@ class RecoveredKeyData:
             key will be considered as unverified in this api instance (same as if associated to false), but this value
             won't be cached (will be again part of `unknownKeys` in future instances.
     """
-    recovered_keys: Dict[KeypairFingerprintV1String, RsaKeyPair]
+    recovered_keys: Dict[KeypairFingerprintV1String, ExportedKeyData]
     key_authenticity: Dict[KeypairFingerprintV1String, bool]
 
     def __serialize__(self) -> object:
@@ -221,7 +221,7 @@ class RecoveredKeyData:
         else:
             deserialized_dict = data
         return cls(
-            recovered_keys={k: RsaKeyPair._deserialize(v) for k, v in deserialized_dict["recoveredKeys"].items()},
+            recovered_keys={k: ExportedKeyData._deserialize(v) for k, v in deserialized_dict["recoveredKeys"].items()},
             key_authenticity=deserialized_dict["keyAuthenticity"]
         )
 
@@ -234,7 +234,7 @@ class CryptoStrategies(ABC):
     def recover_and_verify_self_hierarchy_keys(
             self,
             keys_data: List[KeyDataRecoveryRequest],
-            recover_with_icure_recovery_key: Callable[[str, bool], Union[Dict[str, Dict[str, ExportedRsaKeyPair]], RecoveryDataUseFailureReason]]
+            recover_with_icure_recovery_key: Callable[[str, bool], Union[Dict[str, Dict[str, ExportedKeyData]], RecoveryDataUseFailureReason]]
     ) -> Dict[str, RecoveredKeyData]:
         """
         Method called during initialisation of the crypto API to validate keys recovered through iCure's recovery methods and/or to allow recovery of
