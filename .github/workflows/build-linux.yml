@@ -29,6 +29,8 @@ jobs:
                     ORG_GRADLE_PROJECT_mavenRepository: https://maven.taktik.be/content/groups/public
                     ORG_GRADLE_PROJECT_mavenReleasesRepository: mavenReleasesRepository=https://maven.taktik.be/content/repositories/releases/
                     ORG_GRADLE_PROJECT_mavenSnapshotsRepository: mavenSnapshotsRepository=https://maven.taktik.be/content/repositories/snapshots/
+                    ORG_GRADLE_PROJECT_repoUsername: username
+                    ORG_GRADLE_PROJECT_repoPassword: password
                 run: ./gradlew linkReleaseSharedLinuxX64
 
             -   uses: actions/upload-artifact@v4
