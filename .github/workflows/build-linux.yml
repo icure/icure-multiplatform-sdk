@@ -1,0 +1,35 @@
+name: Build Linux
+
+on:
+    push:
+        branches:
+            - feature/python-wrapper
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            -   uses: actions/checkout@v4
+                with:
+                    submodules: 'recursive'
+                    token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+
+            -   name: Set up JDK 21
+                uses: actions/setup-java@v4
+                with:
+                    java-version: '21'
+                    distribution: 'temurin'
+
+            -   name: Install required libraries
+                run: sudo apt-get install -y libcurl4-openssl-dev libssl-dev
+
+            -   name: Build
+                run: ./gradlew linkReleaseSharedLinuxX64
+
+            -   uses: actions/upload-artifact@v4
+                with:
+                    name: libicure-native-linux
+                    path: python-wrapper/build/bin/linuxX64/releaseShared/libicure_sdk_native_pylib.so
+                    if-no-files-found: error
+
