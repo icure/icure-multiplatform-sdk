@@ -7,6 +7,7 @@ import com.icure.sdk.model.CryptoActorStubWithType
 import com.icure.sdk.model.DataOwnerWithType
 import com.icure.sdk.model.specializations.KeypairFingerprintV1String
 import com.icure.sdk.model.specializations.SpkiHexString
+import kotlinx.serialization.Serializable
 
 /**
  * Allows to customise the behaviour of the crypto api to better suit your needs.
@@ -21,6 +22,7 @@ interface CryptoStrategies {
 	/**
 	 * A request to recover key data that was not found for a user.
 	 */
+	@Serializable
 	data class KeyDataRecoveryRequest(
 		/**
 		 * The data owner for which the key data should be recovered.

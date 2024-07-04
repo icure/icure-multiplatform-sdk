@@ -3,6 +3,7 @@ package com.icure.sdk.options
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.crypto.defaultCryptoService
 import io.ktor.client.HttpClient
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
 interface CommonOptions {
@@ -53,6 +54,7 @@ data class BasicApiOptions(
 	override val cryptoService: CryptoService = defaultCryptoService,
 ): CommonOptions
 
+@Serializable
 data class EncryptedFieldsConfiguration(
 	val accessLog: Set<String> = setOf("detail", "objectId"),
 	val calendarItem: Set<String> = setOf("details", "title", "patientId"),
