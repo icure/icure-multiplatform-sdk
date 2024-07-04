@@ -39,8 +39,10 @@ fun Project.configureKotlinLinux(
 		target.binaries {
 			all {
 				freeCompilerArgs += listOf("-linker-option", "--allow-shlib-undefined")
-				localProperties["cinteropsLibsDir"]?.also {
-					linkerOpts.add(0, "-L$it")
+				localProperties["cinteropsLibsDir"]?.also { allDirs ->
+					(allDirs as String).split(";").forEach {
+						linkerOpts.add(0, "-L$it")
+					}
 				}
 			}
 		}
