@@ -1,7 +1,7 @@
 import json
 from icure.kotlin_types import symbols
 from typing import Optional, Union, List
-from ctypes import CFUNCTYPE, c_void_p, c_char_p
+from ctypes import CFUNCTYPE, c_void_p, c_char_p, cast
 from concurrent.futures import Executor
 from icure.storage import FileSystemStorage
 from icure.authentication import UsernamePassword
@@ -37,7 +37,7 @@ class EncryptedFieldsConfiguration:
 
 @dataclass
 class SdkOptions:
-    encryptedFields: EncryptedFieldsConfiguration = EncryptedFieldsConfiguration()
+    encryptedFields: EncryptedFieldsConfiguration = field(default_factory=EncryptedFieldsConfiguration)
     disableParentKeysInitialisation: bool = False
     createTransferKeys: bool = True
 
@@ -50,15 +50,15 @@ class _CryptoStrategiesBridge:
 
     def recover_and_verify_self_hierarchy_keys(self, result_holder, keys_data, key_pair_recoverer):
         try:
-            keys_data_json = json.loads(keys_data)
+            keys_data_json = json.loads(cast(keys_data, c_char_p).value.decode('utf-8'))
             def use_key_pair_recover(recovery_key, auto_delete):
-                result_string = symbols.kotlin.root.com.icure.sdk.py.PyCryptoStrategies.recoverWithRecoveryKey(
+                result_bytes = symbols.kotlin.root.com.icure.sdk.py.PyCryptoStrategies.recoverWithRecoveryKey(
                     key_pair_recoverer,
                     recovery_key.encode('utf-8'),
                     auto_delete
-                ).decode('utf-8')
-                result = create_result_from_json(result_string)
-                symbols.DisposeString(result_string)
+                )
+                result = create_result_from_json(cast(result_bytes, c_char_p).value.decode('utf-8'))
+                symbols.DisposeString(result_bytes)
                 if result.failure is not None:
                     raise Exception(result.failure)
                 recovery_result = deserialize_recovery_result(result.success)
@@ -78,23 +78,23 @@ class _CryptoStrategiesBridge:
             }
             symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result_json).encode('utf-8'))
         except:
-            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc())
+            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
 
     def generate_new_key_for_data_owner(self, result_holder, self_data_owner):
         try:
             result = self.__py_strategies.generate_new_key_for_data_owner(
-                deserialize_data_owner_with_type(self_data_owner)
+                deserialize_data_owner_with_type(cast(self_data_owner, c_char_p).value.decode('utf-8'))
             )
             result_json = serialize_key_generation_request_result(result)
             symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result_json).encode('utf-8'))
         except:
-            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc())
+            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
 
     def verify_delegate_public_keys(self, result_holder, delegate, public_keys):
         try:
             result = self.__py_strategies.verify_delegate_public_keys(
-                CryptoActorStubWithType._deserialize(delegate),
-                json.loads(public_keys)
+                CryptoActorStubWithType._deserialize(cast(delegate, c_char_p).value.decode('utf-8')),
+                json.loads(cast(public_keys, c_char_p).value.decode('utf-8'))
             )
             symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result).encode('utf-8'))
         except:
@@ -103,11 +103,11 @@ class _CryptoStrategiesBridge:
     def data_owner_requires_anonymous_delegation(self, result_holder, data_owner):
         try:
             result = self.__py_strategies.data_owner_requires_anonymous_delegation(
-                CryptoActorStubWithType._deserialize(data_owner)
+                CryptoActorStubWithType._deserialize(cast(data_owner, c_char_p).value.decode('utf-8'))
             )
             symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result).encode('utf-8'))
         except:
-            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc())
+            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
 
 
 _C_RecoverAndVerifySelfHierarchyKeys = CFUNCTYPE(None, c_void_p, c_char_p, c_void_p)
@@ -165,7 +165,7 @@ class IcureSdk:
         authentication_method: Union[UsernamePassword],
         storage: Union[FileSystemStorage],
         crypto_strategies: CryptoStrategies,
-        options: SdkOptions = SdkOptions,
+        options: SdkOptions = SdkOptions(),
         executor: Optional[Executor] = None
     ):
         if not isinstance(authentication_method, UsernamePassword):
@@ -202,7 +202,7 @@ class IcureSdk:
         failure = symbols.kotlin.root.com.icure.sdk.py.SdkInitializationResult.get_failure(sdkInitializationResult)
         if failure is not None:
             symbols.DisposeStablePointer(sdkInitializationResult.pinned)
-            trace = failure.decode('utf-8')
+            trace = cast(failure, c_char_p).value.decode('utf-8')
             symbols.DisposeString(failure)
             raise Exception(trace)
         self._native = symbols.kotlin.root.com.icure.sdk.py.SdkInitializationResult.get_success(sdkInitializationResult)
@@ -210,9 +210,9 @@ class IcureSdk:
         self._executor = executor
 
     def __del__(self):
-        if self._native is not None:
+        if self.__dict__.get("_native") is not None:
             symbols.DisposeStablePointer(self._native.pinned)
-        if self.__kt_crypto_strategies is not None:
+        if self.__dict__.get("__kt_crypto_strategies") is not None:
             symbols.kotlin.root.com.icure.sdk.py.utils.disposeStablePtr(self.__kt_crypto_strategies)
 
     @property
