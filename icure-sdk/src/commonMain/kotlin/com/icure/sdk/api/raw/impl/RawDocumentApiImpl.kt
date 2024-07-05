@@ -25,7 +25,6 @@ import io.ktor.http.content.ByteArrayContent
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
-import io.ktor.utils.io.ByteReadChannel
 import kotlinx.serialization.json.Json
 import kotlin.time.Duration
 
@@ -274,10 +273,9 @@ class RawDocumentApiImpl(
 				parameter("encrypted", encrypted)
 			}
 			setAuthorizationWith(authService)
-			contentType(Application.OctetStream)
 			accept(Application.Json)
 			header("Content-Length", lengthHeader)
-			setBody(ByteReadChannel(payload))
+			setBody(ByteArrayContent(payload, Application.OctetStream))
 		}.wrap()
 
 	override suspend fun getSecondaryAttachment(
