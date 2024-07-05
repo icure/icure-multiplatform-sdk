@@ -9,6 +9,7 @@ from typing import Dict, List, Union, Callable
 from abc import ABC, abstractmethod
 
 
+@dataclass
 class KeyDataRecoveryRequest:
     """
     A request to recover key data that was not found for a user.
@@ -110,15 +111,15 @@ class KeyGenerationRequestResultUse:
 def serialize_key_generation_request_result(key_generation_request_result: KeyGenerationRequestResult) -> object:
     if isinstance(key_generation_request_result, KeyGenerationRequestResultAllow):
         serialized_entity = key_generation_request_result.__serialize__()
-        serialized_entity.update({"type": "com.icure.sdk.py.PyCryptoStrategies.KeyGenerationRequestResult.Allow"})
+        serialized_entity.update({"type": "com.icure.sdk.py.PyCryptoStrategies.PyKeyGenerationRequestResult.Allow"})
         return serialized_entity
     elif isinstance(key_generation_request_result, KeyGenerationRequestResultDeny):
         serialized_entity = key_generation_request_result.__serialize__()
-        serialized_entity.update({"type": "com.icure.sdk.py.PyCryptoStrategies.KeyGenerationRequestResult.Deny"})
+        serialized_entity.update({"type": "com.icure.sdk.py.PyCryptoStrategies.PyKeyGenerationRequestResult.Deny"})
         return serialized_entity
     elif isinstance(key_generation_request_result, KeyGenerationRequestResultUse):
         serialized_entity = key_generation_request_result.__serialize__()
-        serialized_entity.update({"type": "com.icure.sdk.py.PyCryptoStrategies.KeyGenerationRequestResult.Use"})
+        serialized_entity.update({"type": "com.icure.sdk.py.PyCryptoStrategies.PyKeyGenerationRequestResult.Use"})
         return serialized_entity
     else:
         raise Exception(f"{type(key_generation_request_result)} is not a known subclass of KeyGenerationRequestResult")
@@ -133,11 +134,11 @@ def deserialize_key_generation_request_result(data: Union[str, Dict[str, object]
     qualifier = deserialized_dict.get("type")
     if qualifier is None:
         raise Exception("Missing qualifier: type")
-    if qualifier == "com.icure.sdk.py.PyCryptoStrategies.KeyGenerationRequestResult.Allow":
+    if qualifier == "com.icure.sdk.py.PyCryptoStrategies.PyKeyGenerationRequestResult.Allow":
         return KeyGenerationRequestResultAllow._deserialize(deserialized_dict)
-    elif qualifier == "com.icure.sdk.py.PyCryptoStrategies.KeyGenerationRequestResult.Deny":
+    elif qualifier == "com.icure.sdk.py.PyCryptoStrategies.PyKeyGenerationRequestResult.Deny":
         return KeyGenerationRequestResultDeny._deserialize(deserialized_dict)
-    elif qualifier == "com.icure.sdk.py.PyCryptoStrategies.KeyGenerationRequestResult.Use":
+    elif qualifier == "com.icure.sdk.py.PyCryptoStrategies.PyKeyGenerationRequestResult.Use":
         return KeyGenerationRequestResultUse._deserialize(deserialized_dict)
     else:
         raise Exception(f"{qualifier} is not a known subclass of DataOwnerWithType")
