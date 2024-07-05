@@ -13,7 +13,6 @@ class NativeFileStorageTest : StringSpec({
 	"Can perform initialization and basic storage operations" {
 		val storageFacade = NativeFileStorageFacade(storageDir)
 		FileSystem.SYSTEM.exists(storageDir.toPath()) shouldBe true
-		FileSystem.SYSTEM.exists("$storageDir/icure.store".toPath()) shouldBe true
 
 		val key = "some-key"
 		val value = "some-value"
@@ -24,10 +23,11 @@ class NativeFileStorageTest : StringSpec({
 
 		storageFacade.removeItem(key)
 		storageFacade.getItem(key) shouldBe null
+
+		storageFacade.removeItem(key)
 	}
 
 	afterTest {
-		FileSystem.SYSTEM.delete("$storageDir/icure.store".toPath())
 		FileSystem.SYSTEM.delete(storageDir.toPath())
 	}
 

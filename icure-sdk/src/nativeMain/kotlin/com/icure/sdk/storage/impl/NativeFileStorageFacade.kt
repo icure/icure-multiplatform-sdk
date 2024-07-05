@@ -1,20 +1,13 @@
 package com.icure.sdk.storage.impl
 
 import com.icure.sdk.storage.StorageFacade
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import okio.FileSystem
 import okio.IOException
 import okio.Path.Companion.toPath
 
 class NativeFileStorageFacade(
-	directory: String
+	private val directory: String
 ) : StorageFacade {
-
-	private val filePath = "$directory/icure.store".toPath()
-	private val storageMutex = Mutex()
 
 	init {
 		if(!FileSystem.SYSTEM.exists(directory.toPath())) {
@@ -23,39 +16,30 @@ class NativeFileStorageFacade(
 			} catch(e: IOException) {
 				throw IllegalStateException("Unable to create iCure local storage directory: $directory", e)
 			}
-
-		}
-		if(!FileSystem.SYSTEM.exists(filePath)) {
-			try {
-				FileSystem.SYSTEM.write(filePath) {
-					writeUtf8(Json.encodeToString(emptyMap<String, String>()))
-				}
-			} catch(e: IOException) {
-				throw IllegalStateException("Unable to create iCure local storage file at $directory", e)
-			}
-
 		}
 	}
 
-	private fun retrieveData() =
-		Json.decodeFromString<Map<String, String>>(FileSystem.SYSTEM.read(filePath) { readUtf8() })
+	private fun toFilePath(filename: String) = "$directory/$filename".toPath()
 
-	private fun writeData(items: Map<String, String>) =
-		FileSystem.SYSTEM.write(filePath) { writeUtf8(Json.encodeToString(items)) }
-
-	override suspend fun getItem(key: String): String? = storageMutex.withLock { retrieveData()[key] }
+	override suspend fun getItem(key: String): String? = runCatching {
+		FileSystem.SYSTEM.read(toFilePath(key)) { readUtf8() }
+	}.getOrNull()
 
 	override suspend fun setItem(key: String, value: String) {
-		storageMutex.withLock {
-			val currentData = retrieveData()
-			writeData(currentData + (key to value))
+		try {
+			FileSystem.SYSTEM.write(toFilePath(key)) { writeUtf8(value) }
+		} catch(e: IOException) {
+			throw IllegalStateException("Unable to write iCure storage file $directory/$key", e)
 		}
 	}
 
 	override suspend fun removeItem(key: String) {
-		storageMutex.withLock {
-			val currentData = retrieveData()
-			writeData(currentData - key)
+		try {
+			if(FileSystem.SYSTEM.exists(toFilePath(key))) {
+				FileSystem.SYSTEM.delete(toFilePath(key))
+			}
+		} catch(e: IOException) {
+			throw IllegalStateException("Unable to delete iCure storage file $directory/$key", e)
 		}
 	}
 }
