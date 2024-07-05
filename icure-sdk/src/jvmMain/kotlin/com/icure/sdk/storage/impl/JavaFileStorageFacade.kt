@@ -6,6 +6,7 @@ import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import okio.FileSystem
+import okio.IOException
 import okio.Path.Companion.toPath
 
 class JavaFileStorageFacade(
@@ -17,11 +18,19 @@ class JavaFileStorageFacade(
 
 	init {
 		if(!FileSystem.SYSTEM.exists(directory.toPath())) {
-			FileSystem.SYSTEM.createDirectories(directory.toPath())
+			try {
+				FileSystem.SYSTEM.createDirectories(directory.toPath())
+			} catch(e: IOException) {
+				throw IllegalStateException("Unable to create iCure local storage directory: $directory", e)
+			}
 		}
 		if(!FileSystem.SYSTEM.exists(filePath)) {
-			FileSystem.SYSTEM.write(filePath) {
-				writeUtf8(Json.encodeToString(emptyMap<String, String>()))
+			try {
+				FileSystem.SYSTEM.write(filePath) {
+					writeUtf8(Json.encodeToString(emptyMap<String, String>()))
+				}
+			} catch(e: IOException) {
+				throw IllegalStateException("Unable to create iCure local storage file at $directory", e)
 			}
 		}
 	}
