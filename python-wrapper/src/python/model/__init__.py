@@ -4290,15 +4290,15 @@ class DataOwnerWithTypeDeviceDataOwner:
 def serialize_data_owner_with_type(data_owner_with_type: DataOwnerWithType) -> object:
 	if isinstance(data_owner_with_type, DataOwnerWithTypeHcpDataOwner):
 		serialized_entity = data_owner_with_type.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.model.DataOwnerWithType.HcpDataOwner"})
+		serialized_entity.update({"type": "hcp"})
 		return serialized_entity
 	elif isinstance(data_owner_with_type, DataOwnerWithTypePatientDataOwner):
 		serialized_entity = data_owner_with_type.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.model.DataOwnerWithType.PatientDataOwner"})
+		serialized_entity.update({"type": "patient"})
 		return serialized_entity
 	elif isinstance(data_owner_with_type, DataOwnerWithTypeDeviceDataOwner):
 		serialized_entity = data_owner_with_type.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.model.DataOwnerWithType.DeviceDataOwner"})
+		serialized_entity.update({"type": "device"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(data_owner_with_type)} is not a known subclass of DataOwnerWithType")
@@ -4312,11 +4312,11 @@ def deserialize_data_owner_with_type(data: Union[str, Dict[str, object]]) -> 'Da
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.model.DataOwnerWithType.HcpDataOwner":
+	if qualifier == "hcp":
 		return DataOwnerWithTypeHcpDataOwner._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.model.DataOwnerWithType.PatientDataOwner":
+	elif qualifier == "patient":
 		return DataOwnerWithTypePatientDataOwner._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.model.DataOwnerWithType.DeviceDataOwner":
+	elif qualifier == "device":
 		return DataOwnerWithTypeDeviceDataOwner._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of DataOwnerWithType")
