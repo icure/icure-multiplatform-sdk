@@ -30,7 +30,7 @@ Documentation = "https://docs.icure.com/"
 include-package-data = true
 
 [tool.setuptools.packages.find]
-where = ["icure"]
+where = ["src"]
 
 [tool.setuptools.package-data]
-icure.lib = ["*.so", "*.dylib"]
+'*' = ["*.so", "*.dylib"]

@@ -1,8 +1,8 @@
 import asyncio
 import json
 from typing import Optional
-from icure.model import RecoveryDataKey, deserialize_recovery_result, RecoveryResult, RecoveryDataUseFailureReason
 from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
+from icure.model import RecoveryDataKey, deserialize_recovery_result, RecoveryResult, RecoveryDataUseFailureReason
 from icure.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
 
@@ -19,7 +19,7 @@ class RecoveryApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = RecoveryDataKey._deserialize(json.loads(success.decode('utf-8')))
+				result = json.loads(success.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"includeParentsKeys": include_parents_keys,
@@ -49,7 +49,7 @@ class RecoveryApi:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 		else:
-			return_value = RecoveryDataKey._deserialize(result_info.success)
+			return_value = result_info.success
 			return return_value
 
 	async def recover_key_pairs_async(self, recovery_key: RecoveryDataKey, auto_delete: bool) -> RecoveryResult:
@@ -63,7 +63,7 @@ class RecoveryApi:
 				result = deserialize_recovery_result(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"recoveryKey": recovery_key.__serialize__(),
+			"recoveryKey": recovery_key,
 			"autoDelete": auto_delete,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -78,7 +78,7 @@ class RecoveryApi:
 
 	def recover_key_pairs_blocking(self, recovery_key: RecoveryDataKey, auto_delete: bool) -> RecoveryResult:
 		payload = {
-			"recoveryKey": recovery_key.__serialize__(),
+			"recoveryKey": recovery_key,
 			"autoDelete": auto_delete,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.recoverKeyPairsBlocking(
@@ -101,7 +101,7 @@ class RecoveryApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = RecoveryDataKey._deserialize(json.loads(success.decode('utf-8')))
+				result = json.loads(success.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"delegateId": delegate_id,
@@ -131,7 +131,7 @@ class RecoveryApi:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 		else:
-			return_value = RecoveryDataKey._deserialize(result_info.success)
+			return_value = result_info.success
 			return return_value
 
 	async def recover_exchange_data_async(self, recovery_key: RecoveryDataKey) -> Optional[RecoveryDataUseFailureReason]:
@@ -145,7 +145,7 @@ class RecoveryApi:
 				result = RecoveryDataUseFailureReason._deserialize(json.loads(success.decode('utf-8'))) if json.loads(success.decode('utf-8')) is not None else None
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"recoveryKey": recovery_key.__serialize__(),
+			"recoveryKey": recovery_key,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -159,7 +159,7 @@ class RecoveryApi:
 
 	def recover_exchange_data_blocking(self, recovery_key: RecoveryDataKey) -> Optional[RecoveryDataUseFailureReason]:
 		payload = {
-			"recoveryKey": recovery_key.__serialize__(),
+			"recoveryKey": recovery_key,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.recoverExchangeDataBlocking(
 			self.icure_sdk._native,
@@ -184,7 +184,7 @@ class RecoveryApi:
 				result = json.loads(success.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"recoveryKey": recovery_key.__serialize__(),
+			"recoveryKey": recovery_key,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -198,7 +198,7 @@ class RecoveryApi:
 
 	def delete_recovery_info_blocking(self, recovery_key: RecoveryDataKey) -> None:
 		payload = {
-			"recoveryKey": recovery_key.__serialize__(),
+			"recoveryKey": recovery_key,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.deleteRecoveryInfoBlocking(
 			self.icure_sdk._native,
