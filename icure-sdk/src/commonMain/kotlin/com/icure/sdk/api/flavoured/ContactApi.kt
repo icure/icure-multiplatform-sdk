@@ -453,7 +453,7 @@ private class AbstractContactBasicFlavourlessApi(
 	): EntitySubscription<EncryptedService> {
 		return WebSocketSubscription.initialize(
 			client = config.websocketClient,
-			hostname = config.apiUrl.replace("https://", "").replace("http://", ""),
+			hostname = config.apiUrl,
 			path = "/ws/v2/notification/subscribe",
 			clientJson = config.clientJson,
 			entitySerializer = EncryptedService.serializer(),
@@ -475,7 +475,7 @@ private class AbstractContactBasicFlavourlessApi(
 	): EntitySubscription<EncryptedContact> {
 		return WebSocketSubscription.initialize(
 			client = config.websocketClient,
-			hostname = config.apiUrl.replace("https://", "").replace("http://", ""),
+			hostname = config.apiUrl,
 			path = "/ws/v2/notification/subscribe",
 			clientJson = config.clientJson,
 			entitySerializer = EncryptedContact.serializer(),

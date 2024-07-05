@@ -601,7 +601,7 @@ private class AbstractPatientBasicFlavourlessApi(val rawApi: RawPatientApi, val 
 	): EntitySubscription<EncryptedPatient> {
 		return WebSocketSubscription.initialize(
 			client = config.websocketClient,
-			hostname = config.apiUrl.replace("https://", "").replace("http://", ""),
+			hostname = config.apiUrl,
 			path = "/ws/v2/notification/subscribe",
 			clientJson = config.clientJson,
 			entitySerializer = EncryptedPatient.serializer(),

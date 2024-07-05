@@ -9,6 +9,7 @@ androidLibrary = "8.2.2"
 kryptom = "1.0.6"
 kermit = "2.0.3"
 okio = "3.9.0"
+bouncyCastle = "1.70"
 
 [libraries]
 
@@ -58,6 +59,8 @@ kryptom = { group = "com.icure.kryptom", name = "kryptom", version.ref = "krypto
 
 # Okio
 okio = { group = "com.squareup.okio", name = "okio", version.ref = "okio" }
+
+bouncyCastle = { group = "org.bouncycastle", name = "bcprov-jdk15on", version.ref = "bouncyCastle" }
 
 [bundles]
 ktorServer = ["ktorServerCore", "ktorServerNetty", "ktorServerWebsockets"]

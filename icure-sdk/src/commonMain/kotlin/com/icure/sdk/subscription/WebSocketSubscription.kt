@@ -6,8 +6,12 @@ import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.utils.InternalIcureException
 import io.ktor.client.HttpClient
+import io.ktor.client.plugins.plugin
 import io.ktor.client.plugins.websocket.DefaultClientWebSocketSession
-import io.ktor.client.plugins.websocket.webSocketSession
+import io.ktor.client.plugins.websocket.WebSockets
+import io.ktor.client.request.HttpRequestBuilder
+import io.ktor.client.request.prepareRequest
+import io.ktor.client.request.url
 import io.ktor.http.HttpMethod
 import io.ktor.util.PlatformUtils
 import io.ktor.websocket.CloseReason
@@ -17,6 +21,7 @@ import io.ktor.websocket.close
 import io.ktor.websocket.readText
 import io.ktor.websocket.send
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -207,12 +212,58 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 	 	if (_closeReason == null && wsCloseReason != NO_PING_FROM_SERVER) _eventChannel.send(EntitySubscriptionEvent.ConnectionError.ClosedByServer)
 	}
 
+	// same as webSocketSession but allows to specify if wss or ws should be used
+	private suspend fun HttpClient.initWsOrWssSession(
+		unsecure: Boolean,
+		method: HttpMethod = HttpMethod.Get,
+		host: String,
+		path: String,
+		block: HttpRequestBuilder.() -> Unit = {}
+	): DefaultClientWebSocketSession {
+		println("Unsecure $unsecure")
+		plugin(WebSockets)
+		val sessionDeferred = CompletableDeferred<DefaultClientWebSocketSession>()
+		val statement = prepareRequest {
+			this.method = method
+			url(
+				if (unsecure) "ws" else "wss",
+				host,
+				null,
+				path
+			)
+			block()
+		}
+		@Suppress("SuspendFunctionOnCoroutineScope")
+		launch {
+			try {
+				statement.body<DefaultClientWebSocketSession, Unit> { session ->
+					val sessionCompleted = CompletableDeferred<Unit>()
+					sessionDeferred.complete(session)
+					session.outgoing.invokeOnClose {
+						if (it != null) {
+							sessionCompleted.completeExceptionally(it)
+						} else sessionCompleted.complete(Unit)
+					}
+					sessionCompleted.await()
+				}
+			} catch (cause: Throwable) {
+				sessionDeferred.completeExceptionally(cause)
+			}
+		}
+		return sessionDeferred.await()
+	}
+
 	private suspend fun startSession(): DefaultClientWebSocketSession {
 		val jwtToken = webSocketAuthProvider.getBearerToken()
-		return client.webSocketSession(
+		return client.initWsOrWssSession(
+			unsecure = hostname.startsWith("http://"),
 			method = HttpMethod.Get,
-			host = hostname,
-			path = path.takeIf { PlatformUtils.IS_BROWSER }?.let { "$it?jwt=${jwtToken}" } ?: path,
+			host = hostname
+				.removePrefix("http://")
+				.removePrefix("https://"),
+			path = path
+				.takeIf { PlatformUtils.IS_BROWSER }
+				?.let { "$it?jwt=${jwtToken}" } ?: path,
 		) {
 			if (!PlatformUtils.IS_BROWSER) {
 				headers["Authorization"] = "Bearer $jwtToken"

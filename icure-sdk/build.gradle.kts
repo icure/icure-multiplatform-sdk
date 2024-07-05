@@ -45,6 +45,7 @@ kotlin {
 		val jvmMain by getting {
 			dependencies {
 				implementation(libs.ktorClientEngineOkhttp)
+				implementation(libs.bouncyCastle)
 			}
 		}
 		val jvmTest by getting {
