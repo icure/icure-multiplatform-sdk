@@ -7,3 +7,4 @@ local.properties
 .kotlin
 **/__pycache__
 python.iml
+python-wrapper/src/python/lib
