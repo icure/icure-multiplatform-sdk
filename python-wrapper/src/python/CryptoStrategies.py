@@ -210,7 +210,7 @@ class RecoveredKeyData:
 
     def __serialize__(self) -> object:
         return {
-            "recoveredKeys": {k: v.__serialize() for k, v in self.recovered_keys.items()},
+            "recoveredKeys": {k: v.__serialize__() for k, v in self.recovered_keys.items()},
             "keyAuthenticity": self.key_authenticity
         }
 
