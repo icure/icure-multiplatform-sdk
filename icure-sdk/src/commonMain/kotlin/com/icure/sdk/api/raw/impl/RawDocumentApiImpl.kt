@@ -16,24 +16,17 @@ import com.icure.sdk.model.requests.EntityBulkShareResult
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
 import io.ktor.client.request.accept
-import io.ktor.client.request.`header`
+import io.ktor.client.request.header
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType.Application
 import io.ktor.http.appendPathSegments
+import io.ktor.http.content.ByteArrayContent
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import io.ktor.utils.io.ByteReadChannel
 import kotlinx.serialization.json.Json
-import kotlin.Boolean
-import kotlin.ByteArray
-import kotlin.Int
-import kotlin.Long
-import kotlin.Nothing
-import kotlin.String
-import kotlin.collections.List
-import kotlin.collections.Map
 import kotlin.time.Duration
 
 // WARNING: This class is auto-generated. If you change it manually, your changes will be lost.
@@ -137,10 +130,9 @@ class RawDocumentApiImpl(
 				parameter("encrypted", encrypted)
 			}
 			setAuthorizationWith(authService)
-			contentType(Application.OctetStream)
 			accept(Application.Json)
 			header("Content-Length", lengthHeader)
-			setBody(ByteReadChannel(payload))
+			setBody(ByteArrayContent(payload, Application.OctetStream))
 		}.wrap()
 
 	override suspend fun getDocument(documentId: String): HttpResponse<EncryptedDocument> =

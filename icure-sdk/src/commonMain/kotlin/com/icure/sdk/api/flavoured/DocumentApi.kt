@@ -179,7 +179,7 @@ interface DocumentApi : DocumentBasicFlavourlessApi, DocumentFlavouredApi<Decryp
 		@DefaultValue("null")
 		decryptedAttachmentValidator: (suspend (document: ByteArray) -> Boolean)? = null
 	): ByteArray
-	suspend fun encryptAndSetMainAttachment(document: Document, utis: List<String>, attachment: ByteArray): EncryptedDocument
+	suspend fun encryptAndSetMainAttachment(document: Document, utis: List<String>?, attachment: ByteArray): EncryptedDocument
 
 	suspend fun getAndDecryptSecondaryAttachment(
 		document: Document,
@@ -190,7 +190,7 @@ interface DocumentApi : DocumentBasicFlavourlessApi, DocumentFlavouredApi<Decryp
 	suspend fun encryptAndSetSecondaryAttachment(
 		document: Document,
 		key: String,
-		utis: List<String>,
+		utis: List<String>?,
 		attachment: ByteArray,
 	): EncryptedDocument
 	suspend fun getEncryptionKeysOf(document: Document): Set<HexString>
@@ -462,7 +462,7 @@ internal class DocumentApiImpl(
 			crypto.entity.decryptAttachmentOf(document.withTypeInfo(), it, decryptedAttachmentValidator)
 		}
 
-	override suspend fun encryptAndSetMainAttachment(document: Document, utis: List<String>, attachment: ByteArray): EncryptedDocument {
+	override suspend fun encryptAndSetMainAttachment(document: Document, utis: List<String>?, attachment: ByteArray): EncryptedDocument {
 		val aesKey = crypto.entity.tryDecryptAndImportAnyEncryptionKey(document.withTypeInfo())?.key
 			?: throw EntityEncryptionException("Cannot extract encryption key from document")
 		val payload = crypto.primitives.aes.encrypt(attachment, aesKey)
@@ -488,7 +488,7 @@ internal class DocumentApiImpl(
 	override suspend fun encryptAndSetSecondaryAttachment(
 		document: Document,
 		key: String,
-		utis: List<String>,
+		utis: List<String>?,
 		attachment: ByteArray,
 	): EncryptedDocument {
 		val aesKey = crypto.entity.tryDecryptAndImportAnyEncryptionKey(document.withTypeInfo())?.key

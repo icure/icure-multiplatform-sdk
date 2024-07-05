@@ -1,7 +1,6 @@
 package com.icure.sdk
 
 import com.icure.kryptom.crypto.CryptoService
-import com.icure.kryptom.utils.toHexString
 import com.icure.sdk.api.ApplicationSettingsApi
 import com.icure.sdk.api.ApplicationSettingsApiImpl
 import com.icure.sdk.api.CodeApi
@@ -269,10 +268,7 @@ interface IcureSdk : IcureApis {
 				KeyPairRecovererImpl(recoveryDataEncryption),
 				!options.disableParentKeysInitialisation,
 			).initialise().also { initInfo ->
-				initInfo.newKey?.let {
-					println("GOT NEW KEY")
-					println(cryptoService.rsa.exportPrivateKeyPkcs8(it.key.private).toHexString())
-				}
+				initInfo.newKey
 			}.manager
 			val userSignatureKeysManager = UserSignatureKeysManagerImpl(
 				iCureStorage,
