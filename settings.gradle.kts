@@ -4,6 +4,7 @@ include("icure-sdk")
 include("ts-wrapper")
 include("python-wrapper")
 include("sdk-codegen")
+include("ktor-curl")
 
 pluginManagement {
 	repositories {

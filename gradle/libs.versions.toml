@@ -1,6 +1,6 @@
 [versions]
-kotlin = "1.9.24"
-ktor = "2.3.8"
+kotlin = "2.0.20-Beta1"
+ktor = "3.0.0-beta-1"
 coroutines = "1.8.0"
 kotlinSerialization = "1.6.1"
 kotlinDateTime = "0.6.0-RC.2"
@@ -21,6 +21,7 @@ androidLibraryPlugin = { group = "com.android.library", name = "com.android.libr
 
 # Ktor
 ktorUtils = { group = "io.ktor", name = "ktor-utils", version.ref = "ktor" }
+ktorHttpCio = { group = "io.ktor", name = "ktor-http-cio", version.ref = "ktor" }
 ktorClientCore = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
 ktorClientLogging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor" }
 ktorClientEngineOkhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor" }

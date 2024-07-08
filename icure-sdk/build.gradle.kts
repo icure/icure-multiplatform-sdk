@@ -79,8 +79,7 @@ kotlin {
 		}
 		linuxMain {
 			dependencies {
-				implementation(libs.ktorClientEngineCurl)
-				implementation(libs.ktorClientEngineCio)
+				implementation(project(":ktor-curl"))
 			}
 		}
 	}
