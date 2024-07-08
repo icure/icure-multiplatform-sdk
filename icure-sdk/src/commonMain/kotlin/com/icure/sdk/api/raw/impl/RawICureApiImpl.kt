@@ -199,6 +199,22 @@ class RawICureApiImpl(
 			accept(Application.Json)
 		}.wrap()
 
+	override suspend fun resolveCodesConflicts(
+		ids: String?,
+		limit: Int?,
+	): HttpResponse<List<IdWithRev>> =
+		post {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "icure", "conflicts", "code")
+				parameter("ids", ids)
+				parameter("limit", limit)
+			}
+			setAuthorizationWith(authService)
+			contentType(Application.Json)
+			accept(Application.Json)
+		}.wrap()
+
 	// endregion
 
 	// region cloud endpoints
