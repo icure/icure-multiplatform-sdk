@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "icure-sdk"
 version = "0.0.1.rc1" # TODO: this can be retrieved from GitHub by setuptools
-requires-python = ">=3.10"
+# requires-python = ">=3.10" TODO: this needs to be defined
 authors = [
     { name = "iCure" }
 ]
