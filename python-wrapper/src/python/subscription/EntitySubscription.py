@@ -82,7 +82,7 @@ class EntitySubscription(Generic[T]):
     Waits for the next event in the subscription event queue and consumes it, or return None if no new event is produced
     within the provided timeout.
     """
-    async def wait_for_event_async(self, timeout: timedelta, x) -> Optional[EntitySubscriptionEvent[T]]:
+    async def wait_for_event_async(self, timeout: timedelta) -> Optional[EntitySubscriptionEvent[T]]:
         loop = asyncio.get_running_loop()
         future = loop.create_future()
         def make_result_and_complete(success, failure):
