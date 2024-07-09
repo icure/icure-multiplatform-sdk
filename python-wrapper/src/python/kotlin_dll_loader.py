@@ -1,19 +1,26 @@
 import platform
 from ctypes import CDLL
 from importlib.resources import path
+import os
 
 arch = platform.machine()
 system = platform.system().lower()
-lib_file_name = None
+dependencies = []
+package = None
 
 if system == 'linux' and arch == 'x86_64':
-    lib_file_name = 'icure-sdk-linuxX64.so'
+    dependencies = ["libcurl.so.4.8.0"]
+    package = 'icure.lib.linuxX64'
 elif system == 'darwin' and arch == 'x86_64':
-    lib_file_name = 'icure-sdk-macosX64.dylib'
+    package = 'icure.lib.macosX64'
 elif system == 'darwin' and arch == 'arm64':
-    lib_file_name = 'icure-sdk-macosArm64.dylib'
+    package = 'icure.lib.macosArm64'
 else:
     raise Exception(f"Your system ({system} {arch}) is not compatible with this version of the iCure SDK")
 
-with path('icure.lib', lib_file_name) as lib_path:
+for d in dependencies:
+    with path(package, d) as d_path:
+        CDLL(str(d_path))
+
+with path(package, 'icure-sdk.so') as lib_path:
     kdll = CDLL(str(lib_path))

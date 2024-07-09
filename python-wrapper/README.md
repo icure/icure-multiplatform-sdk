@@ -17,6 +17,8 @@ curl ([it should become stable in september 2024](https://github.com/curl/curl/b
 Experimental features are not enabled in the standard distributions of curl, therefore if you want to use websockets you
 will need to find a distribution that has the websocket feature enabled, or you need to build the library yourself.
 
+In the distributed version of the python sdk we include the prebuilt libcurl with experimental websockets support.
+
 ### Building libcurl with websocket support
 
 ```bash
