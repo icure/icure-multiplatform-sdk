@@ -605,6 +605,7 @@ private class FilterCodesByParams(
 	public val skip: Int? = null,
 	public val sort: String? = null,
 	public val desc: Boolean? = null,
+	@Contextual
 	public val filterChain: FilterChain<Code>,
 )
 

@@ -30,6 +30,7 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 
@@ -244,6 +245,7 @@ public fun getTopicsAsync(
 private class FilterTopicsByParams(
 	public val startDocumentId: String? = null,
 	public val limit: Int? = null,
+	@Contextual
 	public val filterChain: FilterChain<Topic>,
 )
 

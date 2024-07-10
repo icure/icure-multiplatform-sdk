@@ -461,6 +461,7 @@ public fun getTokenAsync(
 private class FilterUsersByParams(
 	public val startDocumentId: String? = null,
 	public val limit: Int? = null,
+	@Contextual
 	public val filterChain: FilterChain<User>,
 )
 
@@ -921,6 +922,7 @@ private class FilterUsersInGroupByParams(
 	public val groupId: String,
 	public val startDocumentId: String? = null,
 	public val limit: Int? = null,
+	@Contextual
 	public val filterChain: FilterChain<User>,
 )
 

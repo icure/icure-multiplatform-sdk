@@ -226,6 +226,7 @@ public fun updateDevicesAsync(
 private class FilterDevicesByParams(
 	public val startDocumentId: String? = null,
 	public val limit: Int? = null,
+	@Contextual
 	public val filterChain: FilterChain<Device>,
 )
 

@@ -41,7 +41,6 @@ import com.icure.sdk.model.extensions.dataOwnerId
 import com.icure.sdk.model.extensions.publicKeysSpki
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
-import com.icure.sdk.model.notification.Subscription
 import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
@@ -49,7 +48,8 @@ import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.options.ApiConfiguration
 import com.icure.sdk.options.BasicApiConfiguration
-import com.icure.sdk.serialization.NoSerializer
+import com.icure.sdk.serialization.PatientAbstractFilterSerializer
+import com.icure.sdk.serialization.SubscriptionSerializer
 import com.icure.sdk.subscription.EntitySubscription
 import com.icure.sdk.subscription.EntitySubscriptionConfiguration
 import com.icure.sdk.subscription.Subscribable
@@ -609,7 +609,7 @@ private class AbstractPatientBasicFlavourlessApi(val rawApi: RawPatientApi, val 
 			filter = filter,
 			qualifiedName = Patient.KRAKEN_QUALIFIED_NAME,
 			subscriptionRequestSerializer = {
-				Serialization.json.encodeToString(Subscription.serializer(NoSerializer.get()), it)
+				Serialization.json.encodeToString(SubscriptionSerializer(PatientAbstractFilterSerializer), it)
 			},
 			webSocketAuthProvider = config.requireWebSocketAuthProvider(),
 			config = subscriptionConfig

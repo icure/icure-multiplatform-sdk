@@ -22,13 +22,13 @@ import com.icure.sdk.model.extensions.autoDelegationsFor
 import com.icure.sdk.model.extensions.dataOwnerId
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
-import com.icure.sdk.model.notification.Subscription
 import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.options.ApiConfiguration
 import com.icure.sdk.options.BasicApiConfiguration
-import com.icure.sdk.serialization.NoSerializer
+import com.icure.sdk.serialization.MessageAbstractFilterSerializer
+import com.icure.sdk.serialization.SubscriptionSerializer
 import com.icure.sdk.subscription.EntitySubscription
 import com.icure.sdk.subscription.EntitySubscriptionConfiguration
 import com.icure.sdk.subscription.Subscribable
@@ -350,7 +350,7 @@ private class AbstractMessageBasicFlavourlessApi(val rawApi: RawMessageApi, priv
 			filter = filter,
 			qualifiedName = Message.KRAKEN_QUALIFIED_NAME,
 			subscriptionRequestSerializer = {
-				Serialization.json.encodeToString(Subscription.serializer(NoSerializer.get()), it)
+				Serialization.json.encodeToString(SubscriptionSerializer(MessageAbstractFilterSerializer), it)
 			},
 			webSocketAuthProvider = config.requireWebSocketAuthProvider(),
 			config = subscriptionConfig

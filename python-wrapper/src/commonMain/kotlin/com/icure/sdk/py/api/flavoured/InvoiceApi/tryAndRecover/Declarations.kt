@@ -42,6 +42,7 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.JsonElement
@@ -332,6 +333,7 @@ public fun getInvoicesAsync(
 
 @Serializable
 private class FilterInvoicesByParams(
+	@Contextual
 	public val filterChain: FilterChain<Invoice>,
 )
 

@@ -346,6 +346,7 @@ public fun getHealthcareElementsAsync(
 
 @Serializable
 private class FilterHealthcareElementsByParams(
+	@Contextual
 	public val filterChain: FilterChain<HealthElement>,
 	public val startDocumentId: String?,
 	public val limit: Int?,

@@ -13,6 +13,7 @@ import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.serialization.CodeAbstractFilterSerializer
+import com.icure.sdk.serialization.FilterChainSerializer
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
 import io.ktor.client.request.accept
@@ -319,7 +320,7 @@ class RawCodeApiImpl(
 			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
-			setBody(filterChain)
+			setBodyWithSerializer(FilterChainSerializer(CodeAbstractFilterSerializer), filterChain)
 		}.wrap()
 
 	override suspend fun matchCodesBy(filter: AbstractFilter<Code>): HttpResponse<List<String>> =

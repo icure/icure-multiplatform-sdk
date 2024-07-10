@@ -28,6 +28,7 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -211,6 +212,7 @@ public fun getMaintenanceTaskAsync(
 private class FilterMaintenanceTasksByParams(
 	public val startDocumentId: String? = null,
 	public val limit: Int? = null,
+	@Contextual
 	public val filterChain: FilterChain<MaintenanceTask>,
 )
 

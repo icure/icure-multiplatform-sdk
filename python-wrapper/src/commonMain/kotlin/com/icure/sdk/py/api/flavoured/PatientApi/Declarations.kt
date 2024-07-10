@@ -969,6 +969,7 @@ public fun getPatientAsync(
 
 @Serializable
 private class FilterPatientsByParams(
+	@Contextual
 	public val filterChain: FilterChain<Patient>,
 	public val startKey: String? = null,
 	public val startDocumentId: String? = null,

@@ -626,6 +626,7 @@ public fun matchHealthcarePartiesByAsync(
 private class FilterHealthPartiesByParams(
 	public val startDocumentId: String? = null,
 	public val limit: Int? = null,
+	@Contextual
 	public val filterChain: FilterChain<HealthcareParty>,
 )
 

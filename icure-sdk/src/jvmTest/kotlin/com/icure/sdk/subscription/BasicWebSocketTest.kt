@@ -4,6 +4,8 @@ import com.icure.sdk.model.EncryptedHealthElement
 import com.icure.sdk.model.HealthElement
 import com.icure.sdk.model.filter.healthelement.HealthElementByHcPartyFilter
 import com.icure.sdk.model.notification.SubscriptionEventType
+import com.icure.sdk.serialization.HealthElementAbstractFilterSerializer
+import com.icure.sdk.serialization.SubscriptionSerializer
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.newPlatformWebsocketClient
 import io.kotest.assertions.fail
@@ -99,7 +101,7 @@ class BasicWebSocketTest : StringSpec({
 				hcpId = "fake-uuid",
 			),
 			qualifiedName = HealthElement.KRAKEN_QUALIFIED_NAME,
-			subscriptionRequestSerializer = { Serialization.json.encodeToString(it) },
+			subscriptionRequestSerializer = { Serialization.json.encodeToString(SubscriptionSerializer(HealthElementAbstractFilterSerializer), it) },
 			webSocketAuthProvider = authProvider,
 			config = null
 		)

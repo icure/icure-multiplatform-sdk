@@ -273,6 +273,7 @@ public fun getMessagesAsync(
 
 @Serializable
 private class FilterMessagesByParams(
+	@Contextual
 	public val filterChain: FilterChain<Message>,
 	public val startDocumentId: String?,
 	public val limit: Int?,

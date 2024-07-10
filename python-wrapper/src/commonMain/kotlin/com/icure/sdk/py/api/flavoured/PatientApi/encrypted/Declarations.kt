@@ -36,6 +36,7 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.MapSerializer
@@ -256,6 +257,7 @@ public fun getPatientAsync(
 
 @Serializable
 private class FilterPatientsByParams(
+	@Contextual
 	public val filterChain: FilterChain<Patient>,
 	public val startKey: String? = null,
 	public val startDocumentId: String? = null,

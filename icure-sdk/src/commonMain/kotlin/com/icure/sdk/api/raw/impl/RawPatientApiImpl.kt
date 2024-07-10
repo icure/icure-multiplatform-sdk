@@ -23,6 +23,7 @@ import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
 import com.icure.sdk.model.specializations.AesExchangeKeyEncryptionKeypairIdentifier
 import com.icure.sdk.model.specializations.HexString
+import com.icure.sdk.serialization.FilterChainSerializer
 import com.icure.sdk.serialization.PatientAbstractFilterSerializer
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
@@ -297,7 +298,7 @@ class RawPatientApiImpl(
 			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
-			setBody(filterChain)
+			setBodyWithSerializer(FilterChainSerializer(PatientAbstractFilterSerializer), filterChain)
 		}.wrap()
 
 	override suspend fun matchPatientsBy(filter: AbstractFilter<Patient>): HttpResponse<List<String>> =

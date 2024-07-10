@@ -1,65 +1,84 @@
 package com.icure.sdk.model
 
-import com.icure.sdk.model.base.Identifiable
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.UnionFilter
 import com.icure.sdk.model.filter.chain.FilterChain
-import com.icure.sdk.model.filter.hcparty.HealthcarePartyByIdsFilter
+import com.icure.sdk.model.filter.patient.PatientByIdsFilter
+import com.icure.sdk.model.notification.Subscription
+import com.icure.sdk.model.notification.SubscriptionEventType
+import com.icure.sdk.serialization.FilterChainSerializer
+import com.icure.sdk.serialization.PatientAbstractFilterSerializer
+import com.icure.sdk.serialization.SubscriptionSerializer
+import com.icure.sdk.serialization.UnionFilterSerializer
 import com.icure.sdk.utils.Serialization
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
-import kotlinx.serialization.Contextual
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
-import kotlinx.serialization.json.encodeToJsonElement
 
 class AbstractFilterSerializationTest: StringSpec({
 
-	"Should be able to serialize filter" {
-		val filterSpecific: AbstractFilter<HealthcareParty> = HealthcarePartyByIdsFilter(setOf("whatever"))
-		val filterGeneric: AbstractFilter<out Identifiable<String>> = filterSpecific
+	"Should be able to serialize Filters and Subscriptions" {
+		val filterSpecific: AbstractFilter<Patient> = PatientByIdsFilter(setOf("whatever"))
 		val filterJson = JsonObject(
             mapOf(
-                "\$type" to JsonPrimitive("HealthcarePartyByIdsFilter"),
-                "ids" to JsonArray(listOf(JsonPrimitive("whatever"))),
+                "\$type" to JsonPrimitive("PatientByIdsFilter"),
+                "ids" to JsonArray(listOf(JsonPrimitive("whatever")))
             )
         )
-		val unionFilterSpecific: UnionFilter<HealthcareParty> = UnionFilter(filters = listOf(filterSpecific))
-		val unionFilterGeneric: UnionFilter<out Identifiable<String>> = unionFilterSpecific
+		val unionFilterSpecific: UnionFilter<Patient> = UnionFilter(filters = listOf(filterSpecific))
 		val unionFilterJson = JsonObject(
             mapOf(
                 "\$type" to JsonPrimitive("UnionFilter"),
                 "filters" to JsonArray(listOf(filterJson)),
+	            "desc" to JsonNull
             )
         )
 		val unionFilterNoTypeJson = JsonObject(
             mapOf(
                 "filters" to JsonArray(listOf(filterJson)),
+	            "desc" to JsonNull
             )
         )
 		val filterChainUnionSpecific = FilterChain(unionFilterSpecific)
-		val filterChainUnionGeneric = FilterChain(unionFilterGeneric)
 		val filterChainUnionJson = JsonObject(
             mapOf(
                 "filter" to unionFilterJson,
+				"predicate" to JsonNull
             )
         )
 		val filterChainByIdsJson = JsonObject(
             mapOf(
                 "filter" to filterJson,
+	            "predicate" to JsonNull
             )
         )
-		Serialization.json.encodeToJsonElement(FilterChain(unionFilterSpecific)) shouldBe filterChainUnionJson
-		Serialization.json.encodeToJsonElement(FilterChain(unionFilterGeneric)) shouldBe filterChainUnionJson
-		Serialization.json.encodeToJsonElement(FilterChain(filterSpecific)) shouldBe filterChainByIdsJson
-		Serialization.json.encodeToJsonElement(FilterChain(filterGeneric)) shouldBe filterChainByIdsJson
-		Serialization.json.encodeToJsonElement(unionFilterSpecific) shouldBe unionFilterNoTypeJson
-		Serialization.json.encodeToJsonElement(unionFilterGeneric) shouldBe unionFilterNoTypeJson
+
+		val subscription = Subscription(
+			eventTypes = listOf(SubscriptionEventType.Create),
+			entityClass = "Patient",
+			filter = FilterChain(filterSpecific),
+			accessControlKeys = emptyList()
+		)
+		val subscriptionJson = JsonObject(
+			mapOf(
+				"eventTypes" to JsonArray(listOf(JsonPrimitive("CREATE"))),
+				"entityClass" to JsonPrimitive("Patient"),
+				"filter" to filterChainByIdsJson,
+				"accessControlKeys" to JsonArray(listOf()),
+			)
+		)
+
+		Serialization.json.encodeToJsonElement(FilterChainSerializer(PatientAbstractFilterSerializer), filterChainUnionSpecific) shouldBe filterChainUnionJson
+		Serialization.json.encodeToJsonElement(FilterChainSerializer(PatientAbstractFilterSerializer), FilterChain(filterSpecific)) shouldBe filterChainByIdsJson
+		Serialization.json.encodeToJsonElement(UnionFilterSerializer(PatientAbstractFilterSerializer), unionFilterSpecific) shouldBe unionFilterNoTypeJson
 		// Currently there is a bug with `encodeToJsonElement` https://github.com/Kotlin/kotlinx.serialization/issues/2535
-		Serialization.json.encodeToString<@Contextual AbstractFilter<HealthcareParty>>(filterSpecific) shouldBe filterJson.toString()
-		Serialization.json.encodeToString<@Contextual AbstractFilter<out Identifiable<String>>>(filterGeneric) shouldBe filterJson.toString()
+		Serialization.json.encodeToString(PatientAbstractFilterSerializer, filterSpecific) shouldBe filterJson.toString()
+		Serialization.json.encodeToJsonElement(SubscriptionSerializer(PatientAbstractFilterSerializer), subscription) shouldBe subscriptionJson
+
 	}
+
 
 })

@@ -41,6 +41,7 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.JsonElement
@@ -331,6 +332,7 @@ public fun getContactsAsync(
 
 @Serializable
 private class FilterContactsByParams(
+	@Contextual
 	public val filterChain: FilterChain<Contact>,
 	public val startDocumentId: String?,
 	public val limit: Int?,
@@ -792,6 +794,7 @@ public fun findContactsByOpeningDateAsync(
 
 @Serializable
 private class FilterServicesByParams(
+	@Contextual
 	public val filterChain: FilterChain<Service>,
 	public val startDocumentId: String?,
 	public val limit: Int?,

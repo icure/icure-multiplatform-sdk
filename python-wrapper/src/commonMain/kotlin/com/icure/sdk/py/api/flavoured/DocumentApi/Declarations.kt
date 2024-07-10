@@ -31,6 +31,17 @@ import com.icure.sdk.py.utils.toPyStringAsyncCallback
 import com.icure.sdk.serialization.ByteArraySerializer
 import com.icure.sdk.utils.Serialization.fullJson
 import com.icure.sdk.utils.Serialization.json
+import kotlin.Boolean
+import kotlin.Byte
+import kotlin.ByteArray
+import kotlin.Int
+import kotlin.Long
+import kotlin.OptIn
+import kotlin.String
+import kotlin.Unit
+import kotlin.collections.List
+import kotlin.collections.Map
+import kotlin.collections.Set
 import kotlinx.cinterop.ByteVarOf
 import kotlinx.cinterop.CFunction
 import kotlinx.cinterop.COpaquePointer
@@ -395,7 +406,7 @@ public fun getAndDecryptMainAttachmentAsync(
 private class EncryptAndSetMainAttachmentParams(
 	@Serializable(DocumentSerializer::class)
 	public val document: Document,
-	public val utis: List<String>,
+	public val utis: List<String>?,
 	@Serializable(ByteArraySerializer::class)
 	public val attachment: ByteArray,
 )
@@ -505,7 +516,7 @@ private class EncryptAndSetSecondaryAttachmentParams(
 	@Serializable(DocumentSerializer::class)
 	public val document: Document,
 	public val key: String,
-	public val utis: List<String>,
+	public val utis: List<String>?,
 	@Serializable(ByteArraySerializer::class)
 	public val attachment: ByteArray,
 )

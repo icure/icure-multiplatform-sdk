@@ -39,6 +39,7 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 
@@ -334,6 +335,7 @@ public fun getHealthcareElementsAsync(
 
 @Serializable
 private class FilterHealthcareElementsByParams(
+	@Contextual
 	public val filterChain: FilterChain<HealthElement>,
 	public val startDocumentId: String?,
 	public val limit: Int?,

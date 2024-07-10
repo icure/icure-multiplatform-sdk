@@ -11,6 +11,7 @@ import com.icure.sdk.model.Message
 import com.icure.sdk.model.Patient
 import com.icure.sdk.model.Topic
 import com.icure.sdk.model.User
+import com.icure.sdk.model.base.Identifiable
 import com.icure.sdk.model.embed.Service
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.ComplementFilter
@@ -71,14 +72,26 @@ import com.icure.sdk.model.filter.user.UserByIdsFilter
 import com.icure.sdk.model.filter.user.UserByNameEmailPhoneFilter
 import com.icure.sdk.model.filter.user.UsersByPatientIdFilter
 import com.icure.sdk.utils.CustomJsonPolymorphicSerializer
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.element
+import kotlinx.serialization.encoding.CompositeDecoder
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
+import kotlinx.serialization.encoding.decodeStructure
+import kotlinx.serialization.encoding.encodeStructure
 import kotlin.reflect.KClass
 
 internal object AnyAbstractFilterSerializer : CustomJsonPolymorphicSerializer<AbstractFilter<*>>("\$type", "AbstractFilter<Identifiable>") {
+	@Suppress("UNCHECKED_CAST")
 	override fun getSerializerBySerialName(serialName: String): KSerializer<out AbstractFilter<*>>? = when (serialName) {
-		"UnionFilter" -> UnionFilter.serializer(this)
-		"IntersectionFilter" -> IntersectionFilter.serializer(this)
-		"ComplementFilter" -> ComplementFilter.serializer(this)
+		"UnionFilter" -> UnionFilterSerializer(this as KSerializer<AbstractFilter<Identifiable<String>>>)
+		"IntersectionFilter" -> IntersectionFilterSerializer(this as KSerializer<AbstractFilter<Identifiable<String>>>)
+		"ComplementFilter" -> ComplementFilterSerializer(this as KSerializer<AbstractFilter<Identifiable<String>>>)
 		else -> CodeAbstractFilterSerializer.getSerializerBySerialName(serialName)
 			?: ContactAbstractFilterSerializer.getSerializerBySerialName(serialName)
 			?: DeviceAbstractFilterSerializer.getSerializerBySerialName(serialName)
@@ -93,11 +106,12 @@ internal object AnyAbstractFilterSerializer : CustomJsonPolymorphicSerializer<Ab
 			?: UserAbstractFilterSerializer.getSerializerBySerialName(serialName)
 	}
 
+	@Suppress("UNCHECKED_CAST")
 	override fun getSerializerByClass(kclass: KClass<out AbstractFilter<*>>): KSerializer<out AbstractFilter<*>>? {
 		return when (kclass) {
-			UnionFilter::class -> UnionFilter.serializer(this)
-			IntersectionFilter::class -> IntersectionFilter.serializer(this)
-			ComplementFilter::class -> ComplementFilter.serializer(this)
+			UnionFilter::class -> UnionFilterSerializer(this as KSerializer<AbstractFilter<Identifiable<String>>>)
+			IntersectionFilter::class -> IntersectionFilterSerializer(this as KSerializer<AbstractFilter<Identifiable<String>>>)
+			ComplementFilter::class -> ComplementFilterSerializer(this as KSerializer<AbstractFilter<Identifiable<String>>>)
 			else -> CodeAbstractFilterSerializer.getSerializerByClass(kclass as KClass<out AbstractFilter<Code>>)
 				?: ContactAbstractFilterSerializer.getSerializerByClass(kclass as KClass<out AbstractFilter<Contact>>)
 				?: DeviceAbstractFilterSerializer.getSerializerByClass(kclass as KClass<out AbstractFilter<Device>>)
@@ -114,11 +128,117 @@ internal object AnyAbstractFilterSerializer : CustomJsonPolymorphicSerializer<Ab
 	}
 }
 
+@OptIn(ExperimentalSerializationApi::class)
+internal class UnionFilterSerializer<O : Identifiable<String>>(
+	private val abstractFilterSerializer: KSerializer<AbstractFilter<O>>
+): KSerializer<UnionFilter<O>> {
+	override val descriptor: SerialDescriptor = buildClassSerialDescriptor("UnionFilter") {
+		element("filters", ListSerializer(abstractFilterSerializer).descriptor)
+		element<String?>("desc")
+	}
+
+	override fun deserialize(decoder: Decoder): UnionFilter<O> =
+		decoder.decodeStructure(descriptor) {
+			var filters: List<AbstractFilter<O>> = emptyList()
+			var desc: String? = null
+			while (true) {
+				when (val index = decodeElementIndex(descriptor)) {
+					0 -> filters = decodeSerializableElement(descriptor, 0, ListSerializer(abstractFilterSerializer))
+					1 -> desc = decodeNullableSerializableElement(descriptor, 1, String.serializer())
+					CompositeDecoder.DECODE_DONE -> break
+					else -> error("Unexpected index: $index")
+				}
+			}
+			UnionFilter(
+				filters = filters,
+				desc = desc,
+			)
+		}
+
+	override fun serialize(encoder: Encoder, value: UnionFilter<O>) = encoder.encodeStructure(descriptor) {
+		encodeSerializableElement(descriptor, 0, ListSerializer(abstractFilterSerializer), value.filters)
+		encodeNullableSerializableElement(descriptor, 1, String.serializer(), value.desc)
+	}
+}
+
+@OptIn(ExperimentalSerializationApi::class)
+internal class IntersectionFilterSerializer<O : Identifiable<String>>(
+	private val abstractFilterSerializer: KSerializer<AbstractFilter<O>>
+): KSerializer<IntersectionFilter<O>> {
+
+	override val descriptor: SerialDescriptor = buildClassSerialDescriptor("IntersectionFilter") {
+		element("filters", ListSerializer(abstractFilterSerializer).descriptor)
+		element<String?>("desc")
+	}
+
+	override fun deserialize(decoder: Decoder): IntersectionFilter<O> =
+		decoder.decodeStructure(descriptor) {
+			var filters: List<AbstractFilter<O>> = emptyList()
+			var desc: String? = null
+			while (true) {
+				when (val index = decodeElementIndex(descriptor)) {
+					0 -> filters = decodeSerializableElement(descriptor, 0, ListSerializer(abstractFilterSerializer))
+					1 -> desc = decodeNullableSerializableElement(descriptor, 1, String.serializer())
+					CompositeDecoder.DECODE_DONE -> break
+					else -> error("Unexpected index: $index")
+				}
+			}
+			IntersectionFilter(
+				filters = filters,
+				desc = desc,
+			)
+		}
+
+	override fun serialize(encoder: Encoder, value: IntersectionFilter<O>) = encoder.encodeStructure(descriptor) {
+		encodeSerializableElement(descriptor, 0, ListSerializer(abstractFilterSerializer), value.filters)
+		encodeNullableSerializableElement(descriptor, 1, String.serializer(), value.desc)
+	}
+}
+
+@OptIn(ExperimentalSerializationApi::class)
+internal class ComplementFilterSerializer<O : Identifiable<String>>(
+	private val abstractFilterSerializer: KSerializer<AbstractFilter<O>>
+): KSerializer<ComplementFilter<O>> {
+
+	override val descriptor: SerialDescriptor = buildClassSerialDescriptor("ComplementFilter") {
+		element("superSet", abstractFilterSerializer.descriptor)
+		element("subSet", abstractFilterSerializer.descriptor)
+		element<String?>("desc")
+	}
+
+	override fun deserialize(decoder: Decoder): ComplementFilter<O> =
+		decoder.decodeStructure(descriptor) {
+			var superSet: AbstractFilter<O>? = null
+			var subSet: AbstractFilter<O>? = null
+			var desc: String? = null
+			while (true) {
+				when (val index = decodeElementIndex(descriptor)) {
+					0 -> superSet = decodeSerializableElement(descriptor, 0, abstractFilterSerializer)
+					1 -> subSet = decodeSerializableElement(descriptor, 0, abstractFilterSerializer)
+					2 -> desc = decodeNullableSerializableElement(descriptor, 1, String.serializer())
+					CompositeDecoder.DECODE_DONE -> break
+					else -> error("Unexpected index: $index")
+				}
+			}
+			ComplementFilter(
+				superSet = checkNotNull(superSet) { "Cannot deserialize a ComplementFilter with a null superSet" },
+				subSet = checkNotNull(subSet) { "Cannot deserialize a ComplementFilter with a null subSet" },
+				desc = desc,
+			)
+		}
+
+	override fun serialize(encoder: Encoder, value: ComplementFilter<O>) = encoder.encodeStructure(descriptor) {
+		encodeSerializableElement(descriptor, 0, abstractFilterSerializer, value.superSet)
+		encodeSerializableElement(descriptor, 1, abstractFilterSerializer, value.subSet)
+		encodeNullableSerializableElement(descriptor, 2, String.serializer(), value.desc)
+	}
+}
+
 internal object CodeAbstractFilterSerializer : CustomJsonPolymorphicSerializer<AbstractFilter<Code>>("\$type", "AbstractFilter<Code>") {
 	override fun getSerializerBySerialName(serialName: String): KSerializer<out AbstractFilter<Code>>? = when (serialName) {
-		"UnionFilter" -> UnionFilter.serializer(this) as KSerializer<out AbstractFilter<Code>>
-		"IntersectionFilter" -> IntersectionFilter.serializer(this) as KSerializer<out AbstractFilter<Code>>
-		"ComplementFilter" -> ComplementFilter.serializer(this) as KSerializer<out AbstractFilter<Code>>
+		"UnionFilter" -> UnionFilterSerializer(this)
+		"IntersectionFilter" -> IntersectionFilterSerializer(this)
+		"ComplementFilter" -> ComplementFilterSerializer(this)
 		"AllCodesFilter" -> AllCodesFilter.serializer()
 		"CodeByIdsFilter" -> CodeByIdsFilter.serializer()
 		"CodeByRegionTypeLabelLanguageFilter" -> CodeByRegionTypeLabelLanguageFilter.serializer()
@@ -128,9 +248,9 @@ internal object CodeAbstractFilterSerializer : CustomJsonPolymorphicSerializer<A
 
 	override fun getSerializerByClass(kclass: KClass<out AbstractFilter<Code>>): KSerializer<out AbstractFilter<Code>>? {
 		return when (kclass) {
-			UnionFilter::class -> UnionFilter.serializer(this) as KSerializer<out AbstractFilter<Code>>
-			IntersectionFilter::class -> IntersectionFilter.serializer(this) as KSerializer<out AbstractFilter<Code>>
-			ComplementFilter::class -> ComplementFilter.serializer(this) as KSerializer<out AbstractFilter<Code>>
+			UnionFilter::class -> UnionFilterSerializer(this)
+			IntersectionFilter::class -> IntersectionFilterSerializer(this)
+			ComplementFilter::class -> ComplementFilterSerializer(this)
 			AllCodesFilter::class -> AllCodesFilter.serializer()
 			CodeByIdsFilter::class -> CodeByIdsFilter.serializer()
 			CodeByRegionTypeLabelLanguageFilter::class -> CodeByRegionTypeLabelLanguageFilter.serializer()
@@ -142,9 +262,9 @@ internal object CodeAbstractFilterSerializer : CustomJsonPolymorphicSerializer<A
 
 internal object ContactAbstractFilterSerializer : CustomJsonPolymorphicSerializer<AbstractFilter<Contact>>("\$type", "AbstractFilter<Contact>") {
 	override fun getSerializerBySerialName(serialName: String): KSerializer<out AbstractFilter<Contact>>? = when (serialName) {
-		"UnionFilter" -> UnionFilter.serializer(this) as KSerializer<out AbstractFilter<Contact>>
-		"IntersectionFilter" -> IntersectionFilter.serializer(this) as KSerializer<out AbstractFilter<Contact>>
-		"ComplementFilter" -> ComplementFilter.serializer(this) as KSerializer<out AbstractFilter<Contact>>
+		"UnionFilter" -> UnionFilterSerializer(this)
+		"IntersectionFilter" -> IntersectionFilterSerializer(this)
+		"ComplementFilter" -> ComplementFilterSerializer(this)
 		"ContactByHcPartyFilter" -> ContactByHcPartyFilter.serializer()
 		"ContactByHcPartyIdentifiersFilter" -> ContactByHcPartyIdentifiersFilter.serializer()
 		"ContactByHcPartyPatientTagCodeDateFilter" -> ContactByHcPartyPatientTagCodeDateFilter.serializer()
@@ -154,9 +274,9 @@ internal object ContactAbstractFilterSerializer : CustomJsonPolymorphicSerialize
 
 	override fun getSerializerByClass(kclass: KClass<out AbstractFilter<Contact>>): KSerializer<out AbstractFilter<Contact>>? {
 		return when (kclass) {
-			UnionFilter::class -> UnionFilter.serializer(this) as KSerializer<out AbstractFilter<Contact>>
-			IntersectionFilter::class -> IntersectionFilter.serializer(this) as KSerializer<out AbstractFilter<Contact>>
-			ComplementFilter::class -> ComplementFilter.serializer(this) as KSerializer<out AbstractFilter<Contact>>
+			UnionFilter::class -> UnionFilterSerializer(this)
+			IntersectionFilter::class -> IntersectionFilterSerializer(this)
+			ComplementFilter::class -> ComplementFilterSerializer(this)
 			ContactByHcPartyFilter::class -> ContactByHcPartyFilter.serializer()
 			ContactByHcPartyIdentifiersFilter::class -> ContactByHcPartyIdentifiersFilter.serializer()
 			ContactByHcPartyPatientTagCodeDateFilter::class -> ContactByHcPartyPatientTagCodeDateFilter.serializer()
@@ -168,9 +288,9 @@ internal object ContactAbstractFilterSerializer : CustomJsonPolymorphicSerialize
 
 internal object DeviceAbstractFilterSerializer : CustomJsonPolymorphicSerializer<AbstractFilter<Device>>("\$type", "AbstractFilter<Device>") {
 	override fun getSerializerBySerialName(serialName: String): KSerializer<out AbstractFilter<Device>>? = when (serialName) {
-		"UnionFilter" -> UnionFilter.serializer(this) as KSerializer<out AbstractFilter<Device>>
-		"IntersectionFilter" -> IntersectionFilter.serializer(this) as KSerializer<out AbstractFilter<Device>>
-		"ComplementFilter" -> ComplementFilter.serializer(this) as KSerializer<out AbstractFilter<Device>>
+		"UnionFilter" -> UnionFilterSerializer(this)
+		"IntersectionFilter" -> IntersectionFilterSerializer(this)
+		"ComplementFilter" -> ComplementFilterSerializer(this)
 		"DeviceByHcPartyFilter" -> DeviceByHcPartyFilter.serializer()
 		"DeviceByIdsFilter" -> DeviceByIdsFilter.serializer()
 		else -> null
@@ -178,9 +298,9 @@ internal object DeviceAbstractFilterSerializer : CustomJsonPolymorphicSerializer
 
 	override fun getSerializerByClass(kclass: KClass<out AbstractFilter<Device>>): KSerializer<out AbstractFilter<Device>>? {
 		return when (kclass) {
-			UnionFilter::class -> UnionFilter.serializer(this) as KSerializer<out AbstractFilter<Device>>
-			IntersectionFilter::class -> IntersectionFilter.serializer(this) as KSerializer<out AbstractFilter<Device>>
-			ComplementFilter::class -> ComplementFilter.serializer(this) as KSerializer<out AbstractFilter<Device>>
+			UnionFilter::class -> UnionFilterSerializer(this)
+			IntersectionFilter::class -> IntersectionFilterSerializer(this)
+			ComplementFilter::class -> ComplementFilterSerializer(this)
 			DeviceByHcPartyFilter::class -> DeviceByHcPartyFilter.serializer()
 			DeviceByIdsFilter::class -> DeviceByIdsFilter.serializer()
 			else -> null
@@ -190,9 +310,9 @@ internal object DeviceAbstractFilterSerializer : CustomJsonPolymorphicSerializer
 
 internal object HealthcarePartyAbstractFilterSerializer : CustomJsonPolymorphicSerializer<AbstractFilter<HealthcareParty>>("\$type", "AbstractFilter<HealthcareParty>") {
 	override fun getSerializerBySerialName(serialName: String): KSerializer<out AbstractFilter<HealthcareParty>>? = when (serialName) {
-		"UnionFilter" -> UnionFilter.serializer(this) as KSerializer<out AbstractFilter<HealthcareParty>>
-		"IntersectionFilter" -> IntersectionFilter.serializer(this) as KSerializer<out AbstractFilter<HealthcareParty>>
-		"ComplementFilter" -> ComplementFilter.serializer(this) as KSerializer<out AbstractFilter<HealthcareParty>>
+		"UnionFilter" -> UnionFilterSerializer(this)
+		"IntersectionFilter" -> IntersectionFilterSerializer(this)
+		"ComplementFilter" -> ComplementFilterSerializer(this)
 		"AllHealthcarePartiesFilter" -> AllHealthcarePartiesFilter.serializer()
 		"HealthcarePartyByIdentifiersFilter" -> HealthcarePartyByIdentifiersFilter.serializer()
 		"HealthcarePartyByIdsFilter" -> HealthcarePartyByIdsFilter.serializer()
@@ -203,9 +323,9 @@ internal object HealthcarePartyAbstractFilterSerializer : CustomJsonPolymorphicS
 
 	override fun getSerializerByClass(kclass: KClass<out AbstractFilter<HealthcareParty>>): KSerializer<out AbstractFilter<HealthcareParty>>? {
 		return when (kclass) {
-			UnionFilter::class -> UnionFilter.serializer(this) as KSerializer<out AbstractFilter<HealthcareParty>>
-			IntersectionFilter::class -> IntersectionFilter.serializer(this) as KSerializer<out AbstractFilter<HealthcareParty>>
-			ComplementFilter::class -> ComplementFilter.serializer(this) as KSerializer<out AbstractFilter<HealthcareParty>>
+			UnionFilter::class -> UnionFilterSerializer(this)
+			IntersectionFilter::class -> IntersectionFilterSerializer(this)
+			ComplementFilter::class -> ComplementFilterSerializer(this)
 			AllHealthcarePartiesFilter::class -> AllHealthcarePartiesFilter.serializer()
 			HealthcarePartyByIdentifiersFilter::class -> HealthcarePartyByIdentifiersFilter.serializer()
 			HealthcarePartyByIdsFilter::class -> HealthcarePartyByIdsFilter.serializer()
@@ -218,9 +338,9 @@ internal object HealthcarePartyAbstractFilterSerializer : CustomJsonPolymorphicS
 
 internal object HealthElementAbstractFilterSerializer : CustomJsonPolymorphicSerializer<AbstractFilter<HealthElement>>("\$type", "AbstractFilter<HealthElement>") {
 	override fun getSerializerBySerialName(serialName: String): KSerializer<out AbstractFilter<HealthElement>>? = when (serialName) {
-		"UnionFilter" -> UnionFilter.serializer(this) as KSerializer<out AbstractFilter<HealthElement>>
-		"IntersectionFilter" -> IntersectionFilter.serializer(this) as KSerializer<out AbstractFilter<HealthElement>>
-		"ComplementFilter" -> ComplementFilter.serializer(this) as KSerializer<out AbstractFilter<HealthElement>>
+		"UnionFilter" -> UnionFilterSerializer(this)
+		"IntersectionFilter" -> IntersectionFilterSerializer(this)
+		"ComplementFilter" -> ComplementFilterSerializer(this)
 		"HealthElementByHcPartyFilter" -> HealthElementByHcPartyFilter.serializer()
 		"HealthElementByHcPartyIdentifiersFilter" -> HealthElementByHcPartyIdentifiersFilter.serializer()
 		"HealthElementByIdsFilter" -> HealthElementByIdsFilter.serializer()
@@ -231,9 +351,9 @@ internal object HealthElementAbstractFilterSerializer : CustomJsonPolymorphicSer
 
 	override fun getSerializerByClass(kclass: KClass<out AbstractFilter<HealthElement>>): KSerializer<out AbstractFilter<HealthElement>>? {
 		return when (kclass) {
-			UnionFilter::class -> UnionFilter.serializer(this) as KSerializer<out AbstractFilter<HealthElement>>
-			IntersectionFilter::class -> IntersectionFilter.serializer(this) as KSerializer<out AbstractFilter<HealthElement>>
-			ComplementFilter::class -> ComplementFilter.serializer(this) as KSerializer<out AbstractFilter<HealthElement>>
+			UnionFilter::class -> UnionFilterSerializer(this)
+			IntersectionFilter::class -> IntersectionFilterSerializer(this)
+			ComplementFilter::class -> ComplementFilterSerializer(this)
 			HealthElementByHcPartyFilter::class -> HealthElementByHcPartyFilter.serializer()
 			HealthElementByHcPartyIdentifiersFilter::class -> HealthElementByHcPartyIdentifiersFilter.serializer()
 			HealthElementByIdsFilter::class -> HealthElementByIdsFilter.serializer()
@@ -246,18 +366,18 @@ internal object HealthElementAbstractFilterSerializer : CustomJsonPolymorphicSer
 
 internal object InvoiceAbstractFilterSerializer : CustomJsonPolymorphicSerializer<AbstractFilter<Invoice>>("\$type", "AbstractFilter<Invoice>") {
 	override fun getSerializerBySerialName(serialName: String): KSerializer<out AbstractFilter<Invoice>>? = when (serialName) {
-		"UnionFilter" -> UnionFilter.serializer(this) as KSerializer<out AbstractFilter<Invoice>>
-		"IntersectionFilter" -> IntersectionFilter.serializer(this) as KSerializer<out AbstractFilter<Invoice>>
-		"ComplementFilter" -> ComplementFilter.serializer(this) as KSerializer<out AbstractFilter<Invoice>>
+		"UnionFilter" -> UnionFilterSerializer(this)
+		"IntersectionFilter" -> IntersectionFilterSerializer(this)
+		"ComplementFilter" -> ComplementFilterSerializer(this)
 		"InvoiceByHcPartyCodeDateFilter" -> InvoiceByHcPartyCodeDateFilter.serializer()
 		else -> null
 	}
 
 	override fun getSerializerByClass(kclass: KClass<out AbstractFilter<Invoice>>): KSerializer<out AbstractFilter<Invoice>>? {
 		return when (kclass) {
-			UnionFilter::class -> UnionFilter.serializer(this) as KSerializer<out AbstractFilter<Invoice>>
-			IntersectionFilter::class -> IntersectionFilter.serializer(this) as KSerializer<out AbstractFilter<Invoice>>
-			ComplementFilter::class -> ComplementFilter.serializer(this) as KSerializer<out AbstractFilter<Invoice>>
+			UnionFilter::class -> UnionFilterSerializer(this)
+			IntersectionFilter::class -> IntersectionFilterSerializer(this)
+			ComplementFilter::class -> ComplementFilterSerializer(this)
 			InvoiceByHcPartyCodeDateFilter::class -> InvoiceByHcPartyCodeDateFilter.serializer()
 			else -> null
 		}
@@ -266,9 +386,9 @@ internal object InvoiceAbstractFilterSerializer : CustomJsonPolymorphicSerialize
 
 internal object MaintenanceTaskAbstractFilterSerializer : CustomJsonPolymorphicSerializer<AbstractFilter<MaintenanceTask>>("\$type", "AbstractFilter<MaintenanceTask>") {
 	override fun getSerializerBySerialName(serialName: String): KSerializer<out AbstractFilter<MaintenanceTask>>? = when (serialName) {
-		"UnionFilter" -> UnionFilter.serializer(this) as KSerializer<out AbstractFilter<MaintenanceTask>>
-		"IntersectionFilter" -> IntersectionFilter.serializer(this) as KSerializer<out AbstractFilter<MaintenanceTask>>
-		"ComplementFilter" -> ComplementFilter.serializer(this) as KSerializer<out AbstractFilter<MaintenanceTask>>
+		"UnionFilter" -> UnionFilterSerializer(this)
+		"IntersectionFilter" -> IntersectionFilterSerializer(this)
+		"ComplementFilter" -> ComplementFilterSerializer(this)
 		"MaintenanceTaskAfterDateFilter" -> MaintenanceTaskAfterDateFilter.serializer()
 		"MaintenanceTaskByHcPartyAndIdentifiersFilter" -> MaintenanceTaskByHcPartyAndIdentifiersFilter.serializer()
 		"MaintenanceTaskByHcPartyAndTypeFilter" -> MaintenanceTaskByHcPartyAndTypeFilter.serializer()
@@ -278,9 +398,9 @@ internal object MaintenanceTaskAbstractFilterSerializer : CustomJsonPolymorphicS
 
 	override fun getSerializerByClass(kclass: KClass<out AbstractFilter<MaintenanceTask>>): KSerializer<out AbstractFilter<MaintenanceTask>>? {
 		return when (kclass) {
-			UnionFilter::class -> UnionFilter.serializer(this) as KSerializer<out AbstractFilter<MaintenanceTask>>
-			IntersectionFilter::class -> IntersectionFilter.serializer(this) as KSerializer<out AbstractFilter<MaintenanceTask>>
-			ComplementFilter::class -> ComplementFilter.serializer(this) as KSerializer<out AbstractFilter<MaintenanceTask>>
+			UnionFilter::class -> UnionFilterSerializer(this)
+			IntersectionFilter::class -> IntersectionFilterSerializer(this)
+			ComplementFilter::class -> ComplementFilterSerializer(this)
 			MaintenanceTaskAfterDateFilter::class -> MaintenanceTaskAfterDateFilter.serializer()
 			MaintenanceTaskByHcPartyAndIdentifiersFilter::class -> MaintenanceTaskByHcPartyAndIdentifiersFilter.serializer()
 			MaintenanceTaskByHcPartyAndTypeFilter::class -> MaintenanceTaskByHcPartyAndTypeFilter.serializer()
@@ -292,9 +412,9 @@ internal object MaintenanceTaskAbstractFilterSerializer : CustomJsonPolymorphicS
 
 internal object MessageAbstractFilterSerializer : CustomJsonPolymorphicSerializer<AbstractFilter<Message>>("\$type", "AbstractFilter<Message>") {
 	override fun getSerializerBySerialName(serialName: String): KSerializer<out AbstractFilter<Message>>? = when (serialName) {
-		"UnionFilter" -> UnionFilter.serializer(this) as KSerializer<out AbstractFilter<Message>>
-		"IntersectionFilter" -> IntersectionFilter.serializer(this) as KSerializer<out AbstractFilter<Message>>
-		"ComplementFilter" -> ComplementFilter.serializer(this) as KSerializer<out AbstractFilter<Message>>
+		"UnionFilter" -> UnionFilterSerializer(this)
+		"IntersectionFilter" -> IntersectionFilterSerializer(this)
+		"ComplementFilter" -> ComplementFilterSerializer(this)
 		"LatestMessageByHcPartyTransportGuidFilter" -> LatestMessageByHcPartyTransportGuidFilter.serializer()
 		"MessageByHcPartyFilter" -> MessageByHcPartyFilter.serializer()
 		"MessageByHcPartyTransportGuidFilter" -> MessageByHcPartyTransportGuidFilter.serializer()
@@ -303,9 +423,9 @@ internal object MessageAbstractFilterSerializer : CustomJsonPolymorphicSerialize
 
 	override fun getSerializerByClass(kclass: KClass<out AbstractFilter<Message>>): KSerializer<out AbstractFilter<Message>>? {
 		return when (kclass) {
-			UnionFilter::class -> UnionFilter.serializer(this) as KSerializer<out AbstractFilter<Message>>
-			IntersectionFilter::class -> IntersectionFilter.serializer(this) as KSerializer<out AbstractFilter<Message>>
-			ComplementFilter::class -> ComplementFilter.serializer(this) as KSerializer<out AbstractFilter<Message>>
+			UnionFilter::class -> UnionFilterSerializer(this)
+			IntersectionFilter::class -> IntersectionFilterSerializer(this)
+			ComplementFilter::class -> ComplementFilterSerializer(this)
 			LatestMessageByHcPartyTransportGuidFilter::class -> LatestMessageByHcPartyTransportGuidFilter.serializer()
 			MessageByHcPartyFilter::class -> MessageByHcPartyFilter.serializer()
 			MessageByHcPartyTransportGuidFilter::class -> MessageByHcPartyTransportGuidFilter.serializer()
@@ -316,9 +436,9 @@ internal object MessageAbstractFilterSerializer : CustomJsonPolymorphicSerialize
 
 internal object PatientAbstractFilterSerializer : CustomJsonPolymorphicSerializer<AbstractFilter<Patient>>("\$type", "AbstractFilter<Patient>") {
 	override fun getSerializerBySerialName(serialName: String): KSerializer<out AbstractFilter<Patient>>? = when (serialName) {
-		"UnionFilter" -> UnionFilter.serializer(this) as KSerializer<out AbstractFilter<Patient>>
-		"IntersectionFilter" -> IntersectionFilter.serializer(this) as KSerializer<out AbstractFilter<Patient>>
-		"ComplementFilter" -> ComplementFilter.serializer(this) as KSerializer<out AbstractFilter<Patient>>
+		"UnionFilter" -> UnionFilterSerializer(this)
+		"IntersectionFilter" -> IntersectionFilterSerializer(this)
+		"ComplementFilter" -> ComplementFilterSerializer(this)
 		"PatientByHcPartyAndActiveFilter" -> PatientByHcPartyAndActiveFilter.serializer()
 		"PatientByHcPartyAndAddressFilter" -> PatientByHcPartyAndAddressFilter.serializer()
 		"PatientByHcPartyAndExternalIdFilter" -> PatientByHcPartyAndExternalIdFilter.serializer()
@@ -338,9 +458,9 @@ internal object PatientAbstractFilterSerializer : CustomJsonPolymorphicSerialize
 
 	override fun getSerializerByClass(kclass: KClass<out AbstractFilter<Patient>>): KSerializer<out AbstractFilter<Patient>>? {
 		return when (kclass) {
-			UnionFilter::class -> UnionFilter.serializer(this) as KSerializer<out AbstractFilter<Patient>>
-			IntersectionFilter::class -> IntersectionFilter.serializer(this) as KSerializer<out AbstractFilter<Patient>>
-			ComplementFilter::class -> ComplementFilter.serializer(this) as KSerializer<out AbstractFilter<Patient>>
+			UnionFilter::class -> UnionFilterSerializer(this)
+			IntersectionFilter::class -> IntersectionFilterSerializer(this)
+			ComplementFilter::class -> ComplementFilterSerializer(this)
 			PatientByHcPartyAndActiveFilter::class -> PatientByHcPartyAndActiveFilter.serializer()
 			PatientByHcPartyAndAddressFilter::class -> PatientByHcPartyAndAddressFilter.serializer()
 			PatientByHcPartyAndExternalIdFilter::class -> PatientByHcPartyAndExternalIdFilter.serializer()
@@ -362,9 +482,9 @@ internal object PatientAbstractFilterSerializer : CustomJsonPolymorphicSerialize
 
 internal object ServiceAbstractFilterSerializer : CustomJsonPolymorphicSerializer<AbstractFilter<Service>>("\$type", "AbstractFilter<Service>") {
 	override fun getSerializerBySerialName(serialName: String): KSerializer<out AbstractFilter<Service>>? = when (serialName) {
-		"UnionFilter" -> UnionFilter.serializer(this) as KSerializer<out AbstractFilter<Service>>
-		"IntersectionFilter" -> IntersectionFilter.serializer(this) as KSerializer<out AbstractFilter<Service>>
-		"ComplementFilter" -> ComplementFilter.serializer(this) as KSerializer<out AbstractFilter<Service>>
+		"UnionFilter" -> UnionFilterSerializer(this)
+		"IntersectionFilter" -> IntersectionFilterSerializer(this)
+		"ComplementFilter" -> ComplementFilterSerializer(this)
 		"ServiceByContactsAndSubcontactsFilter" -> ServiceByContactsAndSubcontactsFilter.serializer()
 		"ServiceByHcPartyFilter" -> ServiceByHcPartyFilter.serializer()
 		"ServiceByHcPartyHealthElementIdsFilter" -> ServiceByHcPartyHealthElementIdsFilter.serializer()
@@ -377,9 +497,9 @@ internal object ServiceAbstractFilterSerializer : CustomJsonPolymorphicSerialize
 
 	override fun getSerializerByClass(kclass: KClass<out AbstractFilter<Service>>): KSerializer<out AbstractFilter<Service>>? {
 		return when (kclass) {
-			UnionFilter::class -> UnionFilter.serializer(this) as KSerializer<out AbstractFilter<Service>>
-			IntersectionFilter::class -> IntersectionFilter.serializer(this) as KSerializer<out AbstractFilter<Service>>
-			ComplementFilter::class -> ComplementFilter.serializer(this) as KSerializer<out AbstractFilter<Service>>
+			UnionFilter::class -> UnionFilterSerializer(this)
+			IntersectionFilter::class -> IntersectionFilterSerializer(this)
+			ComplementFilter::class -> ComplementFilterSerializer(this)
 			ServiceByContactsAndSubcontactsFilter::class -> ServiceByContactsAndSubcontactsFilter.serializer()
 			ServiceByHcPartyFilter::class -> ServiceByHcPartyFilter.serializer()
 			ServiceByHcPartyHealthElementIdsFilter::class -> ServiceByHcPartyHealthElementIdsFilter.serializer()
@@ -394,9 +514,9 @@ internal object ServiceAbstractFilterSerializer : CustomJsonPolymorphicSerialize
 
 internal object TopicAbstractFilterSerializer : CustomJsonPolymorphicSerializer<AbstractFilter<Topic>>("\$type", "AbstractFilter<Topic>") {
 	override fun getSerializerBySerialName(serialName: String): KSerializer<out AbstractFilter<Topic>>? = when (serialName) {
-		"UnionFilter" -> UnionFilter.serializer(this) as KSerializer<out AbstractFilter<Topic>>
-		"IntersectionFilter" -> IntersectionFilter.serializer(this) as KSerializer<out AbstractFilter<Topic>>
-		"ComplementFilter" -> ComplementFilter.serializer(this) as KSerializer<out AbstractFilter<Topic>>
+		"UnionFilter" -> UnionFilterSerializer(this)
+		"IntersectionFilter" -> IntersectionFilterSerializer(this)
+		"ComplementFilter" -> ComplementFilterSerializer(this)
 		"TopicByHcPartyFilter" -> TopicByHcPartyFilter.serializer()
 		"TopicByParticipantFilter" -> TopicByParticipantFilter.serializer()
 		else -> null
@@ -404,9 +524,9 @@ internal object TopicAbstractFilterSerializer : CustomJsonPolymorphicSerializer<
 
 	override fun getSerializerByClass(kclass: KClass<out AbstractFilter<Topic>>): KSerializer<out AbstractFilter<Topic>>? {
 		return when (kclass) {
-			UnionFilter::class -> UnionFilter.serializer(this) as KSerializer<out AbstractFilter<Topic>>
-			IntersectionFilter::class -> IntersectionFilter.serializer(this) as KSerializer<out AbstractFilter<Topic>>
-			ComplementFilter::class -> ComplementFilter.serializer(this) as KSerializer<out AbstractFilter<Topic>>
+			UnionFilter::class -> UnionFilterSerializer(this)
+			IntersectionFilter::class -> IntersectionFilterSerializer(this)
+			ComplementFilter::class -> ComplementFilterSerializer(this)
 			TopicByHcPartyFilter::class -> TopicByHcPartyFilter.serializer()
 			TopicByParticipantFilter::class -> TopicByParticipantFilter.serializer()
 			else -> null
@@ -416,9 +536,9 @@ internal object TopicAbstractFilterSerializer : CustomJsonPolymorphicSerializer<
 
 internal object UserAbstractFilterSerializer : CustomJsonPolymorphicSerializer<AbstractFilter<User>>("\$type", "AbstractFilter<User>") {
 	override fun getSerializerBySerialName(serialName: String): KSerializer<out AbstractFilter<User>>? = when (serialName) {
-		"UnionFilter" -> UnionFilter.serializer(this) as KSerializer<out AbstractFilter<User>>
-		"IntersectionFilter" -> IntersectionFilter.serializer(this) as KSerializer<out AbstractFilter<User>>
-		"ComplementFilter" -> ComplementFilter.serializer(this) as KSerializer<out AbstractFilter<User>>
+		"UnionFilter" -> UnionFilterSerializer(this)
+		"IntersectionFilter" -> IntersectionFilterSerializer(this)
+		"ComplementFilter" -> ComplementFilterSerializer(this)
 		"UserByIdsFilter" -> UserByIdsFilter.serializer()
 		"UserByNameEmailPhoneFilter" -> UserByNameEmailPhoneFilter.serializer()
 		"UsersByPatientIdFilter" -> UsersByPatientIdFilter.serializer()
@@ -427,9 +547,9 @@ internal object UserAbstractFilterSerializer : CustomJsonPolymorphicSerializer<A
 
 	override fun getSerializerByClass(kclass: KClass<out AbstractFilter<User>>): KSerializer<out AbstractFilter<User>>? {
 		return when (kclass) {
-			UnionFilter::class -> UnionFilter.serializer(this) as KSerializer<out AbstractFilter<User>>
-			IntersectionFilter::class -> IntersectionFilter.serializer(this) as KSerializer<out AbstractFilter<User>>
-			ComplementFilter::class -> ComplementFilter.serializer(this) as KSerializer<out AbstractFilter<User>>
+			UnionFilter::class -> UnionFilterSerializer(this)
+			IntersectionFilter::class -> IntersectionFilterSerializer(this)
+			ComplementFilter::class -> ComplementFilterSerializer(this)
 			UserByIdsFilter::class -> UserByIdsFilter.serializer()
 			UserByNameEmailPhoneFilter::class -> UserByNameEmailPhoneFilter.serializer()
 			UsersByPatientIdFilter::class -> UsersByPatientIdFilter.serializer()
