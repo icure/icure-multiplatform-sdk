@@ -121,7 +121,7 @@ public interface RawGroupApi {
 	): HttpResponse<List<DesignDocument>>
 
 	suspend fun solveConflicts(
-		id: String,
+		groupId: String,
 		limit: Int?,
 		warmup: Boolean?,
 	): HttpResponse<List<IdWithRev>>
