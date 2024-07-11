@@ -346,4 +346,52 @@ class RawCodeApiImpl(
 		}.wrap()
 
 	// endregion
+
+	// region cloud endpoints
+
+	override suspend fun createCodesInGroup(
+		groupId: String,
+		codeBatch: List<Code>,
+	): HttpResponse<List<Code>> =
+		post {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "code", "inGroup", groupId, "batch")
+			}
+			setAuthorizationWith(authService)
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(codeBatch)
+		}.wrap()
+
+	override suspend fun getCodesInGroup(
+		groupId: String,
+		codeIds: String,
+	): HttpResponse<List<Code>> =
+		get {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "code", "inGroup", groupId, "byIds", codeIds)
+				parameter("ts", GMTDate().timestamp)
+			}
+			setAuthorizationWith(authService)
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun modifyCodesInGroup(
+		groupId: String,
+		codeBatch: List<Code>,
+	): HttpResponse<List<Code>> =
+		put {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "code", "inGroup", groupId, "batch")
+			}
+			setAuthorizationWith(authService)
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(codeBatch)
+		}.wrap()
+
+	// endregion
 }
