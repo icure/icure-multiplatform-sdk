@@ -600,7 +600,7 @@ private class AbstractPatientBasicFlavourlessApi(val rawApi: RawPatientApi, val 
 		subscriptionConfig: EntitySubscriptionConfiguration?
 	): EntitySubscription<EncryptedPatient> {
 		return WebSocketSubscription.initialize(
-			client = config.websocketClient,
+			client = config.httpClient,
 			hostname = config.apiUrl,
 			path = "/ws/v2/notification/subscribe",
 			clientJson = config.clientJson,

@@ -157,7 +157,6 @@ import com.icure.sdk.subscription.WebSocketAuthProvider
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.newPlatformHttpClient
-import com.icure.sdk.utils.newPlatformWebsocketClient
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.websocket.WebSockets
@@ -184,15 +183,6 @@ interface IcureSdk : IcureApis {
 		}
 
 		/**
-		 * Same as [sharedHttpClient] but this client is for websockets.
-		 */
-		internal val sharedWebsocketClient by lazy {
-			newPlatformWebsocketClient {
-				install(WebSockets)
-			}
-		}
-
-		/**
 		 * Close the default http client used for api instances. You should call this method if you want to gracefully
 		 * shut down your application, and you have created at least one instance of the iCure API without providing
 		 * your own instance of http client.
@@ -204,7 +194,6 @@ interface IcureSdk : IcureApis {
 		 */
 		fun closeSharedClient() {
 			sharedHttpClient.close()
-			sharedWebsocketClient.close()
 		}
 
 		@OptIn(InternalIcureApi::class)
@@ -216,7 +205,6 @@ interface IcureSdk : IcureApis {
 			options: ApiOptions = ApiOptions()
 		): IcureSdk {
 			val client = options.httpClient ?: sharedHttpClient
-			val websocketClient = options.websocketClient ?: options.httpClient ?: sharedWebsocketClient
 			val json = options.httpClientJson ?: Serialization.json
 			val cryptoService = options.cryptoService
 			val apiUrl = baseUrl
@@ -377,7 +365,6 @@ interface IcureSdk : IcureApis {
 			val config = ApiConfigurationImpl(
 				apiUrl,
 				client,
-				websocketClient,
 				json,
 				webSocketAuthProvider,
 				!selfIsAnonymous,

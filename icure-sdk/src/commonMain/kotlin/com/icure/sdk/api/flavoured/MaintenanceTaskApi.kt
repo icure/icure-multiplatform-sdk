@@ -216,7 +216,7 @@ private class AbstractMaintenanceTaskBasicFlavourlessApi(val rawApi: RawMaintena
 		subscriptionConfig: EntitySubscriptionConfiguration?
 	): EntitySubscription<EncryptedMaintenanceTask> {
 		return WebSocketSubscription.initialize(
-			client = config.websocketClient,
+			client = config.httpClient,
 			hostname = config.apiUrl,
 			path = "/ws/v2/notification/subscribe",
 			clientJson = config.clientJson,

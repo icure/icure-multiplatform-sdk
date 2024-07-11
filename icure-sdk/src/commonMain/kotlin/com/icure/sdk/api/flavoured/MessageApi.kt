@@ -341,7 +341,7 @@ private class AbstractMessageBasicFlavourlessApi(val rawApi: RawMessageApi, priv
 		subscriptionConfig: EntitySubscriptionConfiguration?
 	): EntitySubscription<EncryptedMessage> {
 		return WebSocketSubscription.initialize(
-			client = config.websocketClient,
+			client = config.httpClient,
 			hostname = config.apiUrl,
 			path = "/ws/v2/notification/subscribe",
 			clientJson = config.clientJson,

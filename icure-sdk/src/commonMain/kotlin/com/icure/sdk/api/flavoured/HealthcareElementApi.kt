@@ -268,7 +268,7 @@ private class AbstractHealthcareElementBasicFlavourlessApi(
 		subscriptionConfig: EntitySubscriptionConfiguration?
 	): EntitySubscription<EncryptedHealthElement> {
 		return WebSocketSubscription.initialize(
-			client = config.websocketClient,
+			client = config.httpClient,
 			hostname = config.apiUrl,
 			path = "/ws/v2/notification/subscribe",
 			clientJson = config.clientJson,

@@ -7,7 +7,7 @@ import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.serialization.HealthElementAbstractFilterSerializer
 import com.icure.sdk.serialization.SubscriptionSerializer
 import com.icure.sdk.utils.Serialization
-import com.icure.sdk.utils.newPlatformWebsocketClient
+import com.icure.sdk.utils.newPlatformHttpClient
 import io.kotest.assertions.fail
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldContain
@@ -40,7 +40,7 @@ import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
 class BasicWebSocketTest : StringSpec({
-	val client = newPlatformWebsocketClient {
+	val client = newPlatformHttpClient {
 		install(ContentNegotiation) {
 			json(json = Serialization.json)
 		}

@@ -10,8 +10,3 @@ actual fun newPlatformHttpClient(
 	sharedConfig()
 }
 
-actual fun newPlatformWebsocketClient(
-	sharedConfig: HttpClientConfig<*>.() -> Unit
-): HttpClient = HttpClient(Curl) {
-	sharedConfig()
-}

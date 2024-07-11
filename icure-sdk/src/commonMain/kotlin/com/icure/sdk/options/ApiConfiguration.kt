@@ -14,7 +14,6 @@ import kotlinx.serialization.json.Json
 internal interface BasicApiConfiguration {
 	val apiUrl: String
 	val httpClient: HttpClient
-	val websocketClient: HttpClient
 	val clientJson: Json
 	val webSocketAuthProvider: WebSocketAuthProvider?
 	val crypto: BasicInternalCryptoApi
@@ -34,7 +33,6 @@ internal interface ApiConfiguration : BasicApiConfiguration {
 internal data class ApiConfigurationImpl(
 	override val apiUrl: String,
 	override val httpClient: HttpClient,
-	override val websocketClient: HttpClient,
 	override val clientJson: Json,
 	override val webSocketAuthProvider: WebSocketAuthProvider?,
 	override val autofillAuthor: Boolean,
@@ -46,7 +44,6 @@ internal data class ApiConfigurationImpl(
 internal data class BasicApiConfigurationImpl(
 	override val apiUrl: String,
 	override val httpClient: HttpClient,
-	override val websocketClient: HttpClient,
 	override val clientJson: Json,
 	override val webSocketAuthProvider: WebSocketAuthProvider?,
 	override val crypto: BasicInternalCryptoApi,
