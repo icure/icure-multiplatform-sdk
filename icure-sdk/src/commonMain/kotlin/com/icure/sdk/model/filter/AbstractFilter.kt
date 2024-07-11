@@ -1,9 +1,6 @@
 package com.icure.sdk.model.filter
 
 import com.icure.sdk.model.base.Identifiable
-import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.json.JsonClassDiscriminator
-import kotlin.OptIn
 import kotlin.String
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.

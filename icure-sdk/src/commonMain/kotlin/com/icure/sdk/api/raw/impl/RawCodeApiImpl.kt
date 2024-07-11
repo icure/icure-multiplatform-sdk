@@ -364,18 +364,19 @@ class RawCodeApiImpl(
 			setBody(codeBatch)
 		}.wrap()
 
-	override suspend fun getCodesInGroup(
+	override suspend fun getCodes(
 		groupId: String,
-		codeIds: String,
+		codeIds: ListOfIds,
 	): HttpResponse<List<Code>> =
-		get {
+		post {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "code", "inGroup", groupId, "byIds", codeIds)
-				parameter("ts", GMTDate().timestamp)
+				appendPathSegments("rest", "v2", "code", "inGroup", groupId, "byIds")
 			}
 			setAuthorizationWith(authService)
+			contentType(Application.Json)
 			accept(Application.Json)
+			setBody(codeIds)
 		}.wrap()
 
 	override suspend fun modifyCodesInGroup(

@@ -1,10 +1,10 @@
 package com.icure.sdk.model.filter
 
-import com.icure.sdk.model.base.Identifiable
 import com.icure.sdk.model.utils.ExternalFilterKey
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlin.String
+import com.icure.sdk.model.base.Identifiable
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
@@ -20,5 +20,6 @@ data class ExternalViewFilter(
 	public val endKey: ExternalFilterKey?,
 ) : AbstractFilter<Identifiable<String>> {
 	// region ExternalViewFilter-ExternalViewFilter
+
 	// endregion
 }
