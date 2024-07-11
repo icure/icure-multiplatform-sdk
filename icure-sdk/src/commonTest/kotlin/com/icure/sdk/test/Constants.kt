@@ -10,8 +10,8 @@ import com.icure.sdk.utils.Serialization
 val baseUrl = "http://localhost:16044"
 val testGroupName = "testgroup"
 val testGroupId = testGroupName
-val testGroupAdmin = "admin-${uuid()}@icure.com"
-val testGroupAdminPassword = "admin-${uuid()}"
+val testGroupAdmin = "admin-12345@icure.com"
+val testGroupAdminPassword = "admin-12345"
 
 @OptIn(InternalIcureApi::class)
 val testGroupAdminAuth = JwtAuthService(

@@ -65,6 +65,7 @@ import com.icure.sdk.api.raw.impl.RawReceiptApiImpl
 import com.icure.sdk.api.raw.impl.RawTimeTableApiImpl
 import com.icure.sdk.api.raw.impl.RawTopicApiImpl
 import com.icure.sdk.api.raw.impl.RawUserApiImpl
+import com.icure.sdk.auth.services.AuthProvider
 import com.icure.sdk.auth.services.AuthService
 import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.crypto.impl.BasicInternalCryptoApiImpl
@@ -74,6 +75,7 @@ import com.icure.sdk.crypto.impl.NoAccessControlKeysHeadersProvider
 import com.icure.sdk.options.AuthenticationMethod
 import com.icure.sdk.options.BasicApiOptions
 import com.icure.sdk.options.EntitiesEncryptedFieldsManifests
+import com.icure.sdk.options.getAuthProvider
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.websocket.WebSocketAuthProvider
@@ -113,6 +115,7 @@ interface IcureBaseSdk {
 			val apiUrl = baseUrl
 			val authApi = RawAnonymousAuthApiImpl(apiUrl = apiUrl, httpClient = client, json = json)
 			val authService = authenticationMethod.getAuthService(authApi)
+			val authProvider = authenticationMethod.getAuthProvider(authApi)
 
 			val manifests = EntitiesEncryptedFieldsManifests.fromEncryptedFields(options.encryptedFields)
 
@@ -128,6 +131,7 @@ interface IcureBaseSdk {
 			)
 			return IcureBaseApiImpl(
 				authService,
+				authProvider,
 				NoAccessControlKeysHeadersProvider,
 				json,
 				config
@@ -139,6 +143,7 @@ interface IcureBaseSdk {
 @OptIn(InternalIcureApi::class)
 private class IcureBaseApiImpl(
 	private val authService: AuthService,
+	private val authProvider: AuthProvider,
 	private val headersProvider: AccessControlKeysHeadersProvider,
 	private val httpClientJson: Json,
 	private val config: BasicApiConfiguration
@@ -334,7 +339,7 @@ private class IcureBaseApiImpl(
 	}
 	override val user: UserApi by lazy {
 		UserApiImpl(
-			RawUserApiImpl(apiUrl, authService, client, json = httpClientJson),
+			RawUserApiImpl(apiUrl, authProvider, client, json = httpClientJson),
 			RawPermissionApiImpl(apiUrl, authService, client, json = httpClientJson)
 		)
 	}

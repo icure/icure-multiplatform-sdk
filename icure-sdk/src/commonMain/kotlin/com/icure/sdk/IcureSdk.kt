@@ -73,6 +73,7 @@ import com.icure.sdk.api.raw.impl.RawSecureDelegationKeyMapApiImpl
 import com.icure.sdk.api.raw.impl.RawTimeTableApiImpl
 import com.icure.sdk.api.raw.impl.RawTopicApiImpl
 import com.icure.sdk.api.raw.impl.RawUserApiImpl
+import com.icure.sdk.auth.services.AuthProvider
 import com.icure.sdk.auth.services.AuthService
 import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.crypto.CryptoStrategies
@@ -109,6 +110,7 @@ import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.options.ApiOptions
 import com.icure.sdk.options.AuthenticationMethod
 import com.icure.sdk.options.EntitiesEncryptedFieldsManifests
+import com.icure.sdk.options.getAuthProvider
 import com.icure.sdk.options.getAuthService
 import com.icure.sdk.storage.IcureStorageFacade
 import com.icure.sdk.storage.StorageFacade
@@ -196,6 +198,7 @@ interface IcureSdk {
 				IcureStorageFacade(keysStorage, baseStorage, DefaultStorageEntryKeysFactory, cryptoService, false)
 			val authApi = RawAnonymousAuthApiImpl(apiUrl, client, json = json)
 			val authService = authenticationMethod.getAuthService(authApi)
+			val authProvider = authenticationMethod.getAuthProvider(authApi)
 			val dataOwnerApi = DataOwnerApiImpl(RawDataOwnerApiImpl(apiUrl, authService, client, json = json))
 			val self = dataOwnerApi.getCurrentDataOwner()
 			val selfIsAnonymous = cryptoStrategies.dataOwnerRequiresAnonymousDelegation(self.toStub())
@@ -358,6 +361,7 @@ interface IcureSdk {
 			)
 			return IcureApiImpl(
 				authService,
+				authProvider,
 				headersProvider,
 				json,
 				config
@@ -369,6 +373,7 @@ interface IcureSdk {
 @OptIn(InternalIcureApi::class)
 private class IcureApiImpl(
 	private val authService: AuthService,
+	private val authProvider: AuthProvider,
 	private val headersProvider: AccessControlKeysHeadersProvider,
 	private val json: Json,
 	private val config: ApiConfiguration,
@@ -426,7 +431,7 @@ private class IcureApiImpl(
 
 	override val user: UserApi by lazy {
 		UserApiImpl(
-			RawUserApiImpl(apiUrl, authService, client, json = json),
+			RawUserApiImpl(apiUrl, authProvider, client, json = json),
 			RawPermissionApiImpl(apiUrl, authService, client, json = json)
 		)
 	}

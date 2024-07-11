@@ -181,7 +181,7 @@ class TokenProvider(
 				DoGetTokenResult.Failure(DoGetTokenResult.DoGetTokenResultFailureReason.InvalidAuthClassLevel)
 			}
 		}.onFailure { error ->
-			when (error) {
+			return when (error) {
 				is SerializationException -> throw IllegalStateException("Internal error: authClassLevel is not a number. Unsupported backend version?")
 				is RequestStatusException -> when(error.statusCode) {
 					// Password is wrong (401) or unacceptable (e.g. too short, 412)

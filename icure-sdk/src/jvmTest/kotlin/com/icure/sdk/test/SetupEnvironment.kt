@@ -22,9 +22,9 @@ suspend fun initialiseTestEnvironment() {
 	initialised = true
 	println("Starting kraken")
 	ICureTestSetup.startKrakenEnvironment(
-		"file:///Users/trema/icure-typescript-sdk/test/scratch/docker-compose-cloud-debuggable.yaml",
+		"file:///Users/vincenzoclaudiopierro/Documents/GitHub/icure-typescript-sdk/test/scratch/docker-compose-cloud-debuggable.yaml",
 		listOf("mock"),
-		"/Users/trema/icure-typescript-sdk/test/scratch"
+		"/Users/vincenzoclaudiopierro/Documents/GitHub/icure-typescript-sdk/test/scratch"
 	)
 	println("Bootstrap cloud")
 	ICureTestSetup.bootstrapCloud(

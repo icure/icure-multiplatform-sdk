@@ -17,7 +17,7 @@ fun decodeClaims(jwt: String): JwtPayload {
 	val parts = jwt.split(".").also {
 		check(it.size == 3) { "Invalid JWT token" }
 	}
-	return Serialization.lenientJson.decodeFromString<JwtPayload>(base64Decode(parts[1]).toString())
+	return Serialization.lenientJson.decodeFromString<JwtPayload>(base64Decode(parts[1]).decodeToString())
 }
 
 /**
