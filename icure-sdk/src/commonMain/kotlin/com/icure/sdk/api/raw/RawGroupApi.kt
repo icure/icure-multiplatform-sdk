@@ -3,7 +3,6 @@ package com.icure.sdk.api.raw
 import com.icure.sdk.model.DatabaseInitialisation
 import com.icure.sdk.model.Group
 import com.icure.sdk.model.GroupDeletionReport
-import com.icure.sdk.model.IdWithRev
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.ListOfProperties
 import com.icure.sdk.model.PaginatedList
@@ -19,6 +18,7 @@ import com.icure.sdk.model.embed.UserType
 import com.icure.sdk.model.security.Operation
 import com.icure.sdk.model.security.PermissionType
 import com.icure.sdk.utils.InternalIcureApi
+import org.taktik.icure.services.`external`.rest.v1.dto.IdWithRevDto
 import kotlin.Boolean
 import kotlin.Int
 import kotlin.Long
@@ -124,7 +124,7 @@ public interface RawGroupApi {
 		groupId: String,
 		limit: Int?,
 		warmup: Boolean?,
-	): HttpResponse<List<IdWithRev>>
+	): HttpResponse<List<IdWithRevDto>>
 
 	suspend fun resetStorage(
 		id: String,
