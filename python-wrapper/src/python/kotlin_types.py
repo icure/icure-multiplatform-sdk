@@ -2818,9 +2818,9 @@ class utils(Structure):
     _fields_ = [
         ("PyResult", PyResult),
         ("PaginatedListIterator", PaginatedListIterator),
-        ("disposeStablePtr", CFUNCTYPE(None, c_void_p)),
         ("setCallbackFailure", CFUNCTYPE(None, c_void_p, c_char_p)),
         ("setCallbackResult", CFUNCTYPE(None, c_void_p, c_char_p)),
+        ("disposeStablePtr", CFUNCTYPE(None, c_void_p)),
     ]
 
 class py(Structure):
