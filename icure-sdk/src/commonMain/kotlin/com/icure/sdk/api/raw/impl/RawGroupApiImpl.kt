@@ -342,14 +342,14 @@ class RawGroupApiImpl(
 		}.wrap()
 
 	override suspend fun solveConflicts(
-		id: String,
+		groupId: String,
 		limit: Int?,
 		warmup: Boolean?,
 	): HttpResponse<List<IdWithRev>> =
 		post {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "group", id, "conflicts")
+				appendPathSegments("rest", "v2", "group", groupId, "conflicts")
 				parameter("limit", limit)
 				parameter("warmup", warmup)
 			}

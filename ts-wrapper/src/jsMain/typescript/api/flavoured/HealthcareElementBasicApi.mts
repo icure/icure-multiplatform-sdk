@@ -6,8 +6,8 @@ import {DocIdentifier} from '../../model/couchdb/DocIdentifier.mjs';
 import {AbstractFilter} from '../../model/filter/AbstractFilter.mjs';
 import {FilterChain} from '../../model/filter/chain/FilterChain.mjs';
 import {SubscriptionEventType} from '../../model/notification/SubscriptionEventType.mjs';
-import {DurationMs} from '../../utils/DurationMs.mjs';
-import {Connection} from '../../websocket/Connection.mjs';
+import {EntitySubscription} from '../../subscription/EntitySubscription.mjs';
+import {EntitySubscriptionConfiguration} from '../../subscription/EntitySubscriptionConfiguration.mjs';
 
 
 export interface HealthcareElementBasicApi {
@@ -20,6 +20,9 @@ export interface HealthcareElementBasicApi {
 
 	findHealthcareElementsDelegationsStubsByHcPartyPatientForeignKeys(hcPartyId: string,
 			secretPatientKeys: Array<string>): Promise<Array<IcureStub>>;
+
+	subscribeToEvents(events: Array<SubscriptionEventType>, filter: AbstractFilter<HealthElement>,
+			options?: { subscriptionConfig?: EntitySubscriptionConfiguration | undefined }): Promise<EntitySubscription<EncryptedHealthElement>>;
 
 	modifyHealthcareElement(entity: EncryptedHealthElement): Promise<EncryptedHealthElement>;
 
@@ -35,9 +38,5 @@ export interface HealthcareElementBasicApi {
 
 	findHealthcareElementsByHcPartyPatientForeignKeys(hcPartyId: string,
 			secretPatientKeys: Array<string>): Promise<Array<EncryptedHealthElement>>;
-
-	subscribeToEvents(events: Array<SubscriptionEventType>, filter: AbstractFilter<HealthElement>,
-			eventFired: (x1: EncryptedHealthElement) => Promise<void>,
-			options?: { onConnected?: () => Promise<void>, channelCapacity?: number, retryDelay?: DurationMs, retryDelayExponentFactor?: number, maxRetries?: number }): Promise<Connection>;
 
 }

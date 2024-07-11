@@ -15,8 +15,8 @@ import {FilterChain} from '../../model/filter/chain/FilterChain.mjs';
 import {SubscriptionEventType} from '../../model/notification/SubscriptionEventType.mjs';
 import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs';
 import {HexString} from '../../model/specializations/HexString.mjs';
-import {DurationMs} from '../../utils/DurationMs.mjs';
-import {Connection} from '../../websocket/Connection.mjs';
+import {EntitySubscription} from '../../subscription/EntitySubscription.mjs';
+import {EntitySubscriptionConfiguration} from '../../subscription/EntitySubscriptionConfiguration.mjs';
 import {TopicFlavouredApi} from './TopicFlavouredApi.mjs';
 
 
@@ -45,6 +45,9 @@ export interface TopicApi {
 
 	matchTopicsBy(filter: AbstractFilter<Topic>): Promise<Array<string>>;
 
+	subscribeToEvents(events: Array<SubscriptionEventType>, filter: AbstractFilter<Topic>,
+			options?: { subscriptionConfig?: EntitySubscriptionConfiguration | undefined }): Promise<EntitySubscription<EncryptedTopic>>;
+
 	shareWith(delegateId: string, topic: DecryptedTopic,
 			options?: { shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<DecryptedTopic>>;
 
@@ -67,9 +70,5 @@ export interface TopicApi {
 			topicRole: TopicRole): Promise<DecryptedTopic>;
 
 	removeParticipant(entityId: string, dataOwnerId: string): Promise<DecryptedTopic>;
-
-	subscribeToEvents(events: Array<SubscriptionEventType>, filter: AbstractFilter<Topic>,
-			eventFired: (x1: DecryptedTopic) => Promise<void>,
-			options?: { onConnected?: () => Promise<void>, channelCapacity?: number, retryDelay?: DurationMs, retryDelayExponentFactor?: number, maxRetries?: number }): Promise<Connection>;
 
 }

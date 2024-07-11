@@ -1,6 +1,5 @@
 package com.icure.sdk.model.embed.form.template
 
-import kotlinx.serialization.Serializable
 import kotlin.Boolean
 import kotlin.Int
 import kotlin.String

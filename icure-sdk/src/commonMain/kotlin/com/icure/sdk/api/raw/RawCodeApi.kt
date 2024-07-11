@@ -110,4 +110,22 @@ public interface RawCodeApi {
 
 	suspend fun importCodes(codeType: String): HttpResponse<Unit>
 	// endregion
+
+	// region cloud endpoints
+
+	suspend fun createCodesInGroup(
+		groupId: String,
+		codeBatch: List<Code>,
+	): HttpResponse<List<Code>>
+
+	suspend fun getCodes(
+		groupId: String,
+		codeIds: ListOfIds,
+	): HttpResponse<List<Code>>
+
+	suspend fun modifyCodesInGroup(
+		groupId: String,
+		codeBatch: List<Code>,
+	): HttpResponse<List<Code>>
+	// endregion
 }

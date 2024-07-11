@@ -20,8 +20,8 @@ import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.embed.EncryptedContentJs
 import com.icure.sdk.js.model.filter.AbstractFilterJs
 import com.icure.sdk.js.model.filter.chain.FilterChainJs
+import com.icure.sdk.js.subscription.EntitySubscriptionJs
 import com.icure.sdk.js.utils.Record
-import com.icure.sdk.js.websocket.ConnectionJs
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
@@ -90,6 +90,12 @@ public external interface PatientApiJs {
 	public fun undeletePatient(patientIds: String): Promise<Array<DocIdentifierJs>>
 
 	public fun getDataOwnersWithAccessTo(patient: PatientJs): Promise<EntityAccessInformationJs>
+
+	public fun subscribeToEvents(
+		events: Array<String>,
+		filter: AbstractFilterJs<PatientJs>,
+		options: dynamic,
+	): Promise<EntitySubscriptionJs<EncryptedPatientJs>>
 
 	public fun shareWith(
 		delegateId: String,
@@ -179,11 +185,4 @@ public external interface PatientApiJs {
 		expectedFromRev: String,
 		updatedInto: EncryptedPatientJs,
 	): Promise<DecryptedPatientJs>
-
-	public fun subscribeToEvents(
-		events: Array<String>,
-		filter: AbstractFilterJs<PatientJs>,
-		eventFired: (DecryptedPatientJs) -> Promise<Unit>,
-		options: dynamic,
-	): Promise<ConnectionJs>
 }

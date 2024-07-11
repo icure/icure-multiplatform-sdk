@@ -2,14 +2,12 @@
 package com.icure.sdk.js.api.flavoured.`impl`
 
 import com.icure.sdk.api.flavoured.ContactBasicApi
-import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNonNull
 import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.sdk.js.api.flavoured.ContactBasicApiJs
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.dynamicToJsonNullsafe
 import com.icure.sdk.js.model.CheckedConverters.listToArray
-import com.icure.sdk.js.model.CheckedConverters.numberToDuration
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
@@ -33,8 +31,10 @@ import com.icure.sdk.js.model.filter.chain.FilterChainJs
 import com.icure.sdk.js.model.filter.chain.filterChain_fromJs
 import com.icure.sdk.js.model.icureStub_toJs
 import com.icure.sdk.js.model.paginatedList_toJs
-import com.icure.sdk.js.websocket.ConnectionJs
-import com.icure.sdk.js.websocket.connection_toJs
+import com.icure.sdk.js.subscription.EntitySubscriptionConfigurationJs
+import com.icure.sdk.js.subscription.EntitySubscriptionJs
+import com.icure.sdk.js.subscription.entitySubscriptionConfiguration_fromJs
+import com.icure.sdk.js.subscription.entitySubscription_toJs
 import com.icure.sdk.model.Contact
 import com.icure.sdk.model.EncryptedContact
 import com.icure.sdk.model.IcureStub
@@ -45,6 +45,7 @@ import com.icure.sdk.model.embed.Service
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.notification.SubscriptionEventType
+import com.icure.sdk.subscription.EntitySubscriptionConfiguration
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
@@ -52,15 +53,11 @@ import kotlin.Int
 import kotlin.Long
 import kotlin.OptIn
 import kotlin.String
-import kotlin.Unit
 import kotlin.collections.List
 import kotlin.collections.Set
 import kotlin.js.Promise
-import kotlin.time.Duration
-import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.await
 import kotlinx.coroutines.promise
 import kotlinx.serialization.json.JsonElement
 
@@ -170,6 +167,83 @@ internal class ContactBasicApiImplJs(
 				labelledOccurence_toJs(x1)
 			},
 		)
+	}
+
+	override fun subscribeToServiceEvents(
+		events: Array<String>,
+		filter: AbstractFilterJs<ServiceJs>,
+		subscriptionConfig: EntitySubscriptionConfigurationJs,
+	): Promise<EntitySubscriptionJs<EncryptedServiceJs>> = GlobalScope.promise {
+		val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
+			events,
+			"events",
+			{ x1: String ->
+				SubscriptionEventType.valueOf(x1)
+			},
+		)
+		val filterConverted: AbstractFilter<Service> = abstractFilter_fromJs(
+			filter,
+			{ x1: ServiceJs ->
+				service_fromJs(x1)
+			},
+		)
+		val subscriptionConfigConverted: EntitySubscriptionConfiguration =
+				entitySubscriptionConfiguration_fromJs(subscriptionConfig)
+		val result = contactBasicApi.subscribeToServiceEvents(
+			eventsConverted,
+			filterConverted,
+			subscriptionConfigConverted,
+		)
+		entitySubscription_toJs(
+			result,
+			{ x1: EncryptedService ->
+				service_toJs(x1)
+			},
+		)
+	}
+
+	override fun subscribeToEvents(
+		events: Array<String>,
+		filter: AbstractFilterJs<ContactJs>,
+		options: dynamic,
+	): Promise<EntitySubscriptionJs<EncryptedContactJs>> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
+				events,
+				"events",
+				{ x1: String ->
+					SubscriptionEventType.valueOf(x1)
+				},
+			)
+			val filterConverted: AbstractFilter<Contact> = abstractFilter_fromJs(
+				filter,
+				{ x1: ContactJs ->
+					contact_fromJs(x1)
+				},
+			)
+			val subscriptionConfigConverted: EntitySubscriptionConfiguration? =
+					convertingOptionOrDefaultNullable(
+				_options,
+				"subscriptionConfig",
+				null
+			) { subscriptionConfig: EntitySubscriptionConfigurationJs? ->
+				subscriptionConfig?.let { nonNull1 ->
+					entitySubscriptionConfiguration_fromJs(nonNull1)
+				}
+			}
+			val result = contactBasicApi.subscribeToEvents(
+				eventsConverted,
+				filterConverted,
+				subscriptionConfigConverted,
+			)
+			entitySubscription_toJs(
+				result,
+				{ x1: EncryptedContact ->
+					contact_toJs(x1)
+				},
+			)
+		}
 	}
 
 	override fun modifyContact(entity: EncryptedContactJs): Promise<EncryptedContactJs> =
@@ -542,159 +616,5 @@ internal class ContactBasicApiImplJs(
 				service_toJs(x1)
 			},
 		)
-	}
-
-	override fun subscribeToServiceEvents(
-		events: Array<String>,
-		filter: AbstractFilterJs<ServiceJs>,
-		eventFired: (EncryptedServiceJs) -> Promise<Unit>,
-		options: dynamic,
-	): Promise<ConnectionJs> {
-		val _options = options ?: js("{}")
-		return GlobalScope.promise {
-			val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
-				events,
-				"events",
-				{ x1: String ->
-					SubscriptionEventType.valueOf(x1)
-				},
-			)
-			val filterConverted: AbstractFilter<Service> = abstractFilter_fromJs(
-				filter,
-				{ x1: ServiceJs ->
-					service_fromJs(x1)
-				},
-			)
-			val onConnectedConverted: suspend () -> Unit = convertingOptionOrDefaultNonNull(
-				_options,
-				"onConnected",
-				{}
-			) { onConnected: () -> Promise<Unit> ->
-				{  ->
-					onConnected().await()
-				}
-			}
-			val channelCapacityConverted: Int = convertingOptionOrDefaultNonNull(
-				_options,
-				"channelCapacity",
-				kotlinx.coroutines.channels.Channel.BUFFERED
-			) { channelCapacity: Double ->
-				numberToInt(channelCapacity, "channelCapacity")
-			}
-			val retryDelayConverted: Duration = convertingOptionOrDefaultNonNull(
-				_options,
-				"retryDelay",
-				2.seconds
-			) { retryDelay: Double ->
-				numberToDuration(retryDelay, "retryDelay")
-			}
-			val retryDelayExponentFactorConverted: Double = convertingOptionOrDefaultNonNull(
-				_options,
-				"retryDelayExponentFactor",
-				2.0
-			) { retryDelayExponentFactor: Double ->
-				retryDelayExponentFactor
-			}
-			val maxRetriesConverted: Int = convertingOptionOrDefaultNonNull(
-				_options,
-				"maxRetries",
-				5
-			) { maxRetries: Double ->
-				numberToInt(maxRetries, "maxRetries")
-			}
-			val eventFiredConverted: suspend (EncryptedService) -> Unit = { arg0 ->
-				eventFired(
-					service_toJs(arg0),
-				).await()
-			}
-			val result = contactBasicApi.subscribeToServiceEvents(
-				eventsConverted,
-				filterConverted,
-				onConnectedConverted,
-				channelCapacityConverted,
-				retryDelayConverted,
-				retryDelayExponentFactorConverted,
-				maxRetriesConverted,
-				eventFiredConverted,
-			)
-			connection_toJs(result)
-		}
-	}
-
-	override fun subscribeToEvents(
-		events: Array<String>,
-		filter: AbstractFilterJs<ContactJs>,
-		eventFired: (EncryptedContactJs) -> Promise<Unit>,
-		options: dynamic,
-	): Promise<ConnectionJs> {
-		val _options = options ?: js("{}")
-		return GlobalScope.promise {
-			val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
-				events,
-				"events",
-				{ x1: String ->
-					SubscriptionEventType.valueOf(x1)
-				},
-			)
-			val filterConverted: AbstractFilter<Contact> = abstractFilter_fromJs(
-				filter,
-				{ x1: ContactJs ->
-					contact_fromJs(x1)
-				},
-			)
-			val onConnectedConverted: suspend () -> Unit = convertingOptionOrDefaultNonNull(
-				_options,
-				"onConnected",
-				{}
-			) { onConnected: () -> Promise<Unit> ->
-				{  ->
-					onConnected().await()
-				}
-			}
-			val channelCapacityConverted: Int = convertingOptionOrDefaultNonNull(
-				_options,
-				"channelCapacity",
-				kotlinx.coroutines.channels.Channel.BUFFERED
-			) { channelCapacity: Double ->
-				numberToInt(channelCapacity, "channelCapacity")
-			}
-			val retryDelayConverted: Duration = convertingOptionOrDefaultNonNull(
-				_options,
-				"retryDelay",
-				2.seconds
-			) { retryDelay: Double ->
-				numberToDuration(retryDelay, "retryDelay")
-			}
-			val retryDelayExponentFactorConverted: Double = convertingOptionOrDefaultNonNull(
-				_options,
-				"retryDelayExponentFactor",
-				2.0
-			) { retryDelayExponentFactor: Double ->
-				retryDelayExponentFactor
-			}
-			val maxRetriesConverted: Int = convertingOptionOrDefaultNonNull(
-				_options,
-				"maxRetries",
-				5
-			) { maxRetries: Double ->
-				numberToInt(maxRetries, "maxRetries")
-			}
-			val eventFiredConverted: suspend (EncryptedContact) -> Unit = { arg0 ->
-				eventFired(
-					contact_toJs(arg0),
-				).await()
-			}
-			val result = contactBasicApi.subscribeToEvents(
-				eventsConverted,
-				filterConverted,
-				onConnectedConverted,
-				channelCapacityConverted,
-				retryDelayConverted,
-				retryDelayExponentFactorConverted,
-				maxRetriesConverted,
-				eventFiredConverted,
-			)
-			connection_toJs(result)
-		}
 	}
 }

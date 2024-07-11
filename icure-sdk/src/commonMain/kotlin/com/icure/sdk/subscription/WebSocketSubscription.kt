@@ -334,7 +334,7 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 	private suspend fun sendEvent(event: EntitySubscriptionEvent<E>) {
 		val sendResult = _eventChannel.trySend(event)
 		if (sendResult.isFailure && config.onBufferFull == EntitySubscriptionConfiguration.FullBufferBehaviour.Close) {
-			closeDefinitely(EntitySubscriptionCloseReason.ChannelFullException)
+			closeDefinitely(EntitySubscriptionCloseReason.ChannelFull)
 		}
 	}
 }

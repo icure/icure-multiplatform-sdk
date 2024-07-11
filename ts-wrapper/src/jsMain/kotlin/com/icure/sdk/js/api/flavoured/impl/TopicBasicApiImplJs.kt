@@ -2,13 +2,11 @@
 package com.icure.sdk.js.api.flavoured.`impl`
 
 import com.icure.sdk.api.flavoured.TopicBasicApi
-import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNonNull
 import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.sdk.js.api.flavoured.TopicBasicApiJs
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.listToArray
-import com.icure.sdk.js.model.CheckedConverters.numberToDuration
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.EncryptedTopicJs
@@ -23,8 +21,10 @@ import com.icure.sdk.js.model.filter.chain.filterChain_fromJs
 import com.icure.sdk.js.model.paginatedList_toJs
 import com.icure.sdk.js.model.topic_fromJs
 import com.icure.sdk.js.model.topic_toJs
-import com.icure.sdk.js.websocket.ConnectionJs
-import com.icure.sdk.js.websocket.connection_toJs
+import com.icure.sdk.js.subscription.EntitySubscriptionConfigurationJs
+import com.icure.sdk.js.subscription.EntitySubscriptionJs
+import com.icure.sdk.js.subscription.entitySubscriptionConfiguration_fromJs
+import com.icure.sdk.js.subscription.entitySubscription_toJs
 import com.icure.sdk.model.EncryptedTopic
 import com.icure.sdk.model.Topic
 import com.icure.sdk.model.TopicRole
@@ -32,20 +32,17 @@ import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.notification.SubscriptionEventType
+import com.icure.sdk.subscription.EntitySubscriptionConfiguration
 import kotlin.Array
 import kotlin.Double
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String
-import kotlin.Unit
 import kotlin.collections.List
 import kotlin.collections.Set
 import kotlin.js.Promise
-import kotlin.time.Duration
-import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.await
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
@@ -97,6 +94,50 @@ internal class TopicBasicApiImplJs(
 				x1
 			},
 		)
+	}
+
+	override fun subscribeToEvents(
+		events: Array<String>,
+		filter: AbstractFilterJs<TopicJs>,
+		options: dynamic,
+	): Promise<EntitySubscriptionJs<EncryptedTopicJs>> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
+				events,
+				"events",
+				{ x1: String ->
+					SubscriptionEventType.valueOf(x1)
+				},
+			)
+			val filterConverted: AbstractFilter<Topic> = abstractFilter_fromJs(
+				filter,
+				{ x1: TopicJs ->
+					topic_fromJs(x1)
+				},
+			)
+			val subscriptionConfigConverted: EntitySubscriptionConfiguration? =
+					convertingOptionOrDefaultNullable(
+				_options,
+				"subscriptionConfig",
+				null
+			) { subscriptionConfig: EntitySubscriptionConfigurationJs? ->
+				subscriptionConfig?.let { nonNull1 ->
+					entitySubscriptionConfiguration_fromJs(nonNull1)
+				}
+			}
+			val result = topicBasicApi.subscribeToEvents(
+				eventsConverted,
+				filterConverted,
+				subscriptionConfigConverted,
+			)
+			entitySubscription_toJs(
+				result,
+				{ x1: EncryptedTopic ->
+					topic_toJs(x1)
+				},
+			)
+		}
 	}
 
 	override fun modifyTopic(entity: EncryptedTopicJs): Promise<EncryptedTopicJs> =
@@ -199,82 +240,5 @@ internal class TopicBasicApiImplJs(
 			dataOwnerIdConverted,
 		)
 		topic_toJs(result)
-	}
-
-	override fun subscribeToEvents(
-		events: Array<String>,
-		filter: AbstractFilterJs<TopicJs>,
-		eventFired: (EncryptedTopicJs) -> Promise<Unit>,
-		options: dynamic,
-	): Promise<ConnectionJs> {
-		val _options = options ?: js("{}")
-		return GlobalScope.promise {
-			val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
-				events,
-				"events",
-				{ x1: String ->
-					SubscriptionEventType.valueOf(x1)
-				},
-			)
-			val filterConverted: AbstractFilter<Topic> = abstractFilter_fromJs(
-				filter,
-				{ x1: TopicJs ->
-					topic_fromJs(x1)
-				},
-			)
-			val onConnectedConverted: suspend () -> Unit = convertingOptionOrDefaultNonNull(
-				_options,
-				"onConnected",
-				{}
-			) { onConnected: () -> Promise<Unit> ->
-				{  ->
-					onConnected().await()
-				}
-			}
-			val channelCapacityConverted: Int = convertingOptionOrDefaultNonNull(
-				_options,
-				"channelCapacity",
-				kotlinx.coroutines.channels.Channel.BUFFERED
-			) { channelCapacity: Double ->
-				numberToInt(channelCapacity, "channelCapacity")
-			}
-			val retryDelayConverted: Duration = convertingOptionOrDefaultNonNull(
-				_options,
-				"retryDelay",
-				2.seconds
-			) { retryDelay: Double ->
-				numberToDuration(retryDelay, "retryDelay")
-			}
-			val retryDelayExponentFactorConverted: Double = convertingOptionOrDefaultNonNull(
-				_options,
-				"retryDelayExponentFactor",
-				2.0
-			) { retryDelayExponentFactor: Double ->
-				retryDelayExponentFactor
-			}
-			val maxRetriesConverted: Int = convertingOptionOrDefaultNonNull(
-				_options,
-				"maxRetries",
-				5
-			) { maxRetries: Double ->
-				numberToInt(maxRetries, "maxRetries")
-			}
-			val eventFiredConverted: suspend (EncryptedTopic) -> Unit = { arg0 ->
-				eventFired(
-					topic_toJs(arg0),
-				).await()
-			}
-			val result = topicBasicApi.subscribeToEvents(
-				eventsConverted,
-				filterConverted,
-				onConnectedConverted,
-				channelCapacityConverted,
-				retryDelayConverted,
-				retryDelayExponentFactorConverted,
-				maxRetriesConverted,
-				eventFiredConverted,
-			)
-			connection_toJs(result)
-		}
 	}
 }
