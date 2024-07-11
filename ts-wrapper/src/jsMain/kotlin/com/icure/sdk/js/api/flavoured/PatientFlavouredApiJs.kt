@@ -11,14 +11,11 @@ import com.icure.sdk.js.model.ListOfIdsJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.PatientJs
 import com.icure.sdk.js.model.embed.EncryptedContentJs
-import com.icure.sdk.js.model.filter.AbstractFilterJs
 import com.icure.sdk.js.model.filter.chain.FilterChainJs
 import com.icure.sdk.js.utils.Record
-import com.icure.sdk.js.websocket.ConnectionJs
 import kotlin.Array
 import kotlin.Double
 import kotlin.String
-import kotlin.Unit
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
 import kotlin.js.Promise
@@ -104,11 +101,4 @@ public external interface PatientFlavouredApiJs<E : PatientJs> {
 		expectedFromRev: String,
 		updatedInto: EncryptedPatientJs,
 	): Promise<E>
-
-	public fun subscribeToEvents(
-		events: Array<String>,
-		filter: AbstractFilterJs<PatientJs>,
-		eventFired: (E) -> Promise<Unit>,
-		options: dynamic,
-	): Promise<ConnectionJs>
 }

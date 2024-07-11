@@ -12,8 +12,8 @@ import {FilterChain} from '../../model/filter/chain/FilterChain.mjs';
 import {SubscriptionEventType} from '../../model/notification/SubscriptionEventType.mjs';
 import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs';
 import {HexString} from '../../model/specializations/HexString.mjs';
-import {DurationMs} from '../../utils/DurationMs.mjs';
-import {Connection} from '../../websocket/Connection.mjs';
+import {EntitySubscription} from '../../subscription/EntitySubscription.mjs';
+import {EntitySubscriptionConfiguration} from '../../subscription/EntitySubscriptionConfiguration.mjs';
 import {MaintenanceTaskFlavouredApi} from './MaintenanceTaskFlavouredApi.mjs';
 
 
@@ -41,6 +41,9 @@ export interface MaintenanceTaskApi {
 
 	deleteMaintenanceTasks(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
+	subscribeToEvents(events: Array<SubscriptionEventType>, filter: AbstractFilter<MaintenanceTask>,
+			options?: { subscriptionConfig?: EntitySubscriptionConfiguration | undefined }): Promise<EntitySubscription<EncryptedMaintenanceTask>>;
+
 	shareWith(delegateId: string, maintenanceTask: DecryptedMaintenanceTask,
 			options?: { shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<DecryptedMaintenanceTask>>;
 
@@ -56,9 +59,5 @@ export interface MaintenanceTaskApi {
 
 	filterMaintenanceTasksBy(filterChain: FilterChain<MaintenanceTask>,
 			options?: { startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<DecryptedMaintenanceTask>>;
-
-	subscribeToEvents(events: Array<SubscriptionEventType>, filter: AbstractFilter<MaintenanceTask>,
-			eventFired: (x1: DecryptedMaintenanceTask) => Promise<void>,
-			options?: { onConnected?: () => Promise<void>, channelCapacity?: number, retryDelay?: DurationMs, retryDelayExponentFactor?: number, maxRetries?: number }): Promise<Connection>;
 
 }

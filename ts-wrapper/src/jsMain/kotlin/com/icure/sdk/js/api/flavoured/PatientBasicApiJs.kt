@@ -13,12 +13,11 @@ import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.embed.EncryptedContentJs
 import com.icure.sdk.js.model.filter.AbstractFilterJs
 import com.icure.sdk.js.model.filter.chain.FilterChainJs
+import com.icure.sdk.js.subscription.EntitySubscriptionJs
 import com.icure.sdk.js.utils.Record
-import com.icure.sdk.js.websocket.ConnectionJs
 import kotlin.Array
 import kotlin.Double
 import kotlin.String
-import kotlin.Unit
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
 import kotlin.js.Promise
@@ -34,6 +33,12 @@ public external interface PatientBasicApiJs {
 	public fun undeletePatient(patientIds: String): Promise<Array<DocIdentifierJs>>
 
 	public fun getDataOwnersWithAccessTo(patient: PatientJs): Promise<EntityAccessInformationJs>
+
+	public fun subscribeToEvents(
+		events: Array<String>,
+		filter: AbstractFilterJs<PatientJs>,
+		options: dynamic,
+	): Promise<EntitySubscriptionJs<EncryptedPatientJs>>
 
 	public fun modifyPatient(entity: EncryptedPatientJs): Promise<EncryptedPatientJs>
 
@@ -107,11 +112,4 @@ public external interface PatientBasicApiJs {
 		expectedFromRev: String,
 		updatedInto: EncryptedPatientJs,
 	): Promise<EncryptedPatientJs>
-
-	public fun subscribeToEvents(
-		events: Array<String>,
-		filter: AbstractFilterJs<PatientJs>,
-		eventFired: (EncryptedPatientJs) -> Promise<Unit>,
-		options: dynamic,
-	): Promise<ConnectionJs>
 }

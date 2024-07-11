@@ -1,12 +1,14 @@
-package com.icure.sdk.websocket
+package com.icure.sdk.subscription
 
-import com.icure.sdk.model.DecryptedHealthElement
+import com.icure.sdk.model.EncryptedHealthElement
+import com.icure.sdk.model.HealthElement
 import com.icure.sdk.model.filter.healthelement.HealthElementByHcPartyFilter
 import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.newPlatformHttpClient
 import io.kotest.assertions.fail
 import io.kotest.core.spec.style.StringSpec
+import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.shouldBe
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -17,24 +19,25 @@ import io.ktor.server.netty.Netty
 import io.ktor.server.routing.routing
 import io.ktor.server.websocket.WebSockets
 import io.ktor.server.websocket.webSocket
-import io.ktor.util.InternalAPI
+import io.ktor.websocket.CloseReason
 import io.ktor.websocket.Frame
+import io.ktor.websocket.close
 import io.ktor.websocket.readText
 import io.mockk.coEvery
 import io.mockk.mockk
-import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.channels.ChannelResult
+import kotlinx.coroutines.channels.onClosed
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.util.UUID
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
-@OptIn(InternalAPI::class)
 class BasicWebSocketTest : StringSpec({
-
 	val client = newPlatformHttpClient {
 		install(ContentNegotiation) {
 			json(json = Serialization.json)
@@ -47,20 +50,10 @@ class BasicWebSocketTest : StringSpec({
 		install(WebSockets)
 		routing {
 			webSocket {
-				launch {
-					for (frame in incoming) {
-						when (frame) {
-							is Frame.Text -> {
-								val content = frame.readText()
-								println("SERVER: Received message: $content")
-							}
-							else -> println("SERVER: Received frame: $frame")
-						}
-					}
-				}
 				println("SERVER: Sending ping")
 				send(Frame.Text("ping"))
-				send(Frame.Text(Json.encodeToString(DecryptedHealthElement.serializer(), DecryptedHealthElement(id = UUID.randomUUID().toString()))))
+				send(Frame.Text(Json.encodeToString(EncryptedHealthElement.serializer(), EncryptedHealthElement(id = UUID.randomUUID().toString()))))
+				close(CloseReason(CloseReason.Codes.NORMAL, "Closed by server"))
 			}
 			webSocket("/load") {
 				launch {
@@ -75,7 +68,7 @@ class BasicWebSocketTest : StringSpec({
 					}
 				}
 				repeat(100) {
-					send(Frame.Text(Json.encodeToString(DecryptedHealthElement.serializer(), DecryptedHealthElement(id = UUID.randomUUID().toString()))))
+					send(Frame.Text(Json.encodeToString(EncryptedHealthElement.serializer(), EncryptedHealthElement(id = UUID.randomUUID().toString()))))
 				}
 			}
 		}
@@ -87,8 +80,6 @@ class BasicWebSocketTest : StringSpec({
 	}
 
 	"Should be able to reconnect if didn't received a ping within the configured delay" {
-		val completable = CompletableDeferred<Unit>()
-
 		val authProvider = mockk<WebSocketAuthProvider>() {
 			coEvery { getBearerToken() } returns "token"
 		}
@@ -97,45 +88,31 @@ class BasicWebSocketTest : StringSpec({
 			delay(1.seconds)
 		}
 
-		val connection = ConnectionImpl.initialize(
+		val connection = WebSocketSubscription.initialize(
 			client = client,
 			hostname = "localhost:25565",
 			path = "/",
+			deserializeEntity = { Serialization.json.decodeFromString<EncryptedHealthElement>(it) },
 			events = setOf(SubscriptionEventType.Create),
 			filter = HealthElementByHcPartyFilter(
 				hcpId = "fake-uuid",
 			),
-			qualifiedName = "com.icure.sdk.model.health.HealthElement",
-			subscriptionSerializer = { "" },
-			serializer = DecryptedHealthElement.serializer(),
+			qualifiedName = HealthElement.KRAKEN_QUALIFIED_NAME,
+			subscriptionRequestSerializer = { Serialization.json.encodeToString(it) },
 			webSocketAuthProvider = authProvider,
-			onOpenListener = {
-				println("CLIENT: Connected")
-			},
-			retryDelay = 500.milliseconds,
-			retryDelayExponentFactor = 2.0,
-			maxRetries = 5,
-			durationBetweenPings = 1.seconds,
-			eventCallback = { entity, _ ->
-				println("CLIENT: Received HealthElement event for ${entity.id}")
-			},
+			config = null
 		)
 
-		connection.onReconnected {
-			println("CLIENT: Reconnected")
-			connection.close()
-			completable.complete(Unit)
-		}
-
+		val events = mutableListOf<EntitySubscriptionEvent<*>>()
 		withTimeoutOrNull(10.seconds) {
-			completable.await()
+			do {
+				events.add(connection.eventChannel.receive().also { println("Client received: $it") })
+			} while (events.last() != EntitySubscriptionEvent.Reconnected)
 		} ?: fail("Didn't reconnected within 10 seconds")
+		events shouldContain EntitySubscriptionEvent.ConnectionError.ClosedByServer
 	}
 
 	"Should close the connection if the queue is full" {
-		val completableDisconnected = CompletableDeferred<Unit>()
-		val completableFatal = CompletableDeferred<Boolean>()
-
 		val authProvider = mockk<WebSocketAuthProvider>() {
 			coEvery { getBearerToken() } returns "token"
 		}
@@ -144,46 +121,36 @@ class BasicWebSocketTest : StringSpec({
 			delay(1.seconds)
 		}
 
-		val connection = ConnectionImpl.initialize(
+		val connection = WebSocketSubscription.initialize(
 			client = client,
 			hostname = "localhost:25565",
 			path = "/load",
+			deserializeEntity = { Serialization.json.decodeFromString<EncryptedHealthElement>(it) },
 			events = setOf(SubscriptionEventType.Create),
 			filter = HealthElementByHcPartyFilter(
 				hcpId = "fake-uuid",
 			),
-			qualifiedName = "com.icure.sdk.model.health.HealthElement",
-			subscriptionSerializer = { "" },
-			serializer = DecryptedHealthElement.serializer(),
+			qualifiedName = HealthElement.KRAKEN_QUALIFIED_NAME,
+			subscriptionRequestSerializer = { Serialization.json.encodeToString(it) },
 			webSocketAuthProvider = authProvider,
-			onOpenListener = {
-				println("CLIENT: Connected")
-			},
-			retryDelay = 1.seconds,
-			retryDelayExponentFactor = 2.0,
-			maxRetries = 5,
-			durationBetweenPings = 5.seconds,
-			eventCallback = { entity, _ ->
-				println("CLIENT: Received HealthElement event for ${entity.id}")
-				delay(1.seconds) // Simulate processing time
-			},
+			config = EntitySubscriptionConfiguration(channelBufferCapacity = 10)
 		)
 
-		connection.onError { errorMessage, fatal ->
-			println("CLIENT: Error $errorMessage")
-			if (fatal) {
-				completableFatal.complete(fatal)
+		withTimeoutOrNull(10.seconds) {
+			while (connection.closeReason == null) {
+				delay(100.milliseconds)
 			}
+		} ?: fail("Subscription was not closed within 10 seconds")
+		connection.closeReason shouldBe EntitySubscriptionCloseReason.ChannelFull
+		val received = mutableListOf<ChannelResult<EntitySubscriptionEvent<*>>>()
+		do {
+			received.add(connection.eventChannel.receiveCatching())
+		} while (received.last().isSuccess)
+		received.last().isClosed shouldBe true
+		received.last().onClosed {
+			println("Channel was closed")
+			it shouldBe null
 		}
 
-		connection.onDisconnected { code, reason ->
-			println("CLIENT: Disconnected with code $code and reason $reason")
-			completableDisconnected.complete(Unit)
-		}
-
-		withTimeoutOrNull(20.seconds) {
-			completableFatal.await() shouldBe true
-			completableDisconnected.await()
-		} ?: fail("Didn't reconnected within 10 seconds")
 	}
 })

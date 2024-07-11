@@ -9,15 +9,12 @@ import com.icure.sdk.js.model.ContactJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.PatientJs
 import com.icure.sdk.js.model.embed.ServiceJs
-import com.icure.sdk.js.model.filter.AbstractFilterJs
 import com.icure.sdk.js.model.filter.chain.FilterChainJs
 import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
-import com.icure.sdk.js.websocket.ConnectionJs
 import kotlin.Array
 import kotlin.Double
 import kotlin.String
-import kotlin.Unit
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
 import kotlin.js.Promise
@@ -96,18 +93,4 @@ public external interface ContactFlavouredApiJs<E : ContactJs, S : ServiceJs> {
 		startDocumentId: String?,
 		limit: Double?,
 	): Promise<PaginatedListJs<S>>
-
-	public fun subscribeToServiceEvents(
-		events: Array<String>,
-		filter: AbstractFilterJs<ServiceJs>,
-		eventFired: (S) -> Promise<Unit>,
-		options: dynamic,
-	): Promise<ConnectionJs>
-
-	public fun subscribeToEvents(
-		events: Array<String>,
-		filter: AbstractFilterJs<ContactJs>,
-		eventFired: (E) -> Promise<Unit>,
-		options: dynamic,
-	): Promise<ConnectionJs>
 }
