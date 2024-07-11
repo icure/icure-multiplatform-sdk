@@ -141,7 +141,7 @@ class BasicWebSocketTest : StringSpec({
 				delay(100.milliseconds)
 			}
 		} ?: fail("Subscription was not closed within 10 seconds")
-		connection.closeReason shouldBe EntitySubscriptionCloseReason.ChannelFullException
+		connection.closeReason shouldBe EntitySubscriptionCloseReason.ChannelFull
 		val received = mutableListOf<ChannelResult<EntitySubscriptionEvent<*>>>()
 		do {
 			received.add(connection.eventChannel.receiveCatching())

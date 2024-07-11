@@ -13,11 +13,11 @@ import com.icure.sdk.js.model.embed.EncryptedServiceJs
 import com.icure.sdk.js.model.embed.ServiceJs
 import com.icure.sdk.js.model.filter.AbstractFilterJs
 import com.icure.sdk.js.model.filter.chain.FilterChainJs
-import com.icure.sdk.js.websocket.ConnectionJs
+import com.icure.sdk.js.subscription.EntitySubscriptionConfigurationJs
+import com.icure.sdk.js.subscription.EntitySubscriptionJs
 import kotlin.Array
 import kotlin.Double
 import kotlin.String
-import kotlin.Unit
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
 import kotlin.js.Promise
@@ -37,6 +37,18 @@ public external interface ContactBasicApiJs {
 
 	public fun getServiceCodesOccurrences(codeType: String, minOccurrences: Double):
 			Promise<Array<LabelledOccurenceJs>>
+
+	public fun subscribeToServiceEvents(
+		events: Array<String>,
+		filter: AbstractFilterJs<ServiceJs>,
+		subscriptionConfig: EntitySubscriptionConfigurationJs,
+	): Promise<EntitySubscriptionJs<EncryptedServiceJs>>
+
+	public fun subscribeToEvents(
+		events: Array<String>,
+		filter: AbstractFilterJs<ContactJs>,
+		options: dynamic,
+	): Promise<EntitySubscriptionJs<EncryptedContactJs>>
 
 	public fun modifyContact(entity: EncryptedContactJs): Promise<EncryptedContactJs>
 
@@ -96,18 +108,4 @@ public external interface ContactBasicApiJs {
 		startDocumentId: String?,
 		limit: Double?,
 	): Promise<PaginatedListJs<EncryptedServiceJs>>
-
-	public fun subscribeToServiceEvents(
-		events: Array<String>,
-		filter: AbstractFilterJs<ServiceJs>,
-		eventFired: (EncryptedServiceJs) -> Promise<Unit>,
-		options: dynamic,
-	): Promise<ConnectionJs>
-
-	public fun subscribeToEvents(
-		events: Array<String>,
-		filter: AbstractFilterJs<ContactJs>,
-		eventFired: (EncryptedContactJs) -> Promise<Unit>,
-		options: dynamic,
-	): Promise<ConnectionJs>
 }

@@ -18,8 +18,8 @@ import {FilterChain} from '../../model/filter/chain/FilterChain.mjs';
 import {SubscriptionEventType} from '../../model/notification/SubscriptionEventType.mjs';
 import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs';
 import {HexString} from '../../model/specializations/HexString.mjs';
-import {DurationMs} from '../../utils/DurationMs.mjs';
-import {Connection} from '../../websocket/Connection.mjs';
+import {EntitySubscription} from '../../subscription/EntitySubscription.mjs';
+import {EntitySubscriptionConfiguration} from '../../subscription/EntitySubscriptionConfiguration.mjs';
 import {ContactFlavouredApi} from './ContactFlavouredApi.mjs';
 
 
@@ -57,6 +57,12 @@ export interface ContactApi {
 
 	getServiceCodesOccurrences(codeType: string,
 			minOccurrences: number): Promise<Array<LabelledOccurence>>;
+
+	subscribeToServiceEvents(events: Array<SubscriptionEventType>, filter: AbstractFilter<Service>,
+			subscriptionConfig: EntitySubscriptionConfiguration): Promise<EntitySubscription<EncryptedService>>;
+
+	subscribeToEvents(events: Array<SubscriptionEventType>, filter: AbstractFilter<Contact>,
+			options?: { subscriptionConfig?: EntitySubscriptionConfiguration | undefined }): Promise<EntitySubscription<EncryptedContact>>;
 
 	shareWith(delegateId: string, contact: DecryptedContact,
 			options?: { shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<DecryptedContact>>;
@@ -114,13 +120,5 @@ export interface ContactApi {
 
 	filterServicesBy(filterChain: FilterChain<Service>, startDocumentId: string | undefined,
 			limit: number | undefined): Promise<PaginatedList<DecryptedService>>;
-
-	subscribeToServiceEvents(events: Array<SubscriptionEventType>, filter: AbstractFilter<Service>,
-			eventFired: (x1: DecryptedService) => Promise<void>,
-			options?: { onConnected?: () => Promise<void>, channelCapacity?: number, retryDelay?: DurationMs, retryDelayExponentFactor?: number, maxRetries?: number }): Promise<Connection>;
-
-	subscribeToEvents(events: Array<SubscriptionEventType>, filter: AbstractFilter<Contact>,
-			eventFired: (x1: DecryptedContact) => Promise<void>,
-			options?: { onConnected?: () => Promise<void>, channelCapacity?: number, retryDelay?: DurationMs, retryDelayExponentFactor?: number, maxRetries?: number }): Promise<Connection>;
 
 }

@@ -24,7 +24,6 @@ import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.mapToObject
-import com.icure.sdk.js.model.CheckedConverters.numberToDuration
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.js.model.CheckedConverters.objectToMap
@@ -54,9 +53,11 @@ import com.icure.sdk.js.model.patient_fromJs
 import com.icure.sdk.js.model.patient_toJs
 import com.icure.sdk.js.model.specializations.hexString_toJs
 import com.icure.sdk.js.model.user_fromJs
+import com.icure.sdk.js.subscription.EntitySubscriptionConfigurationJs
+import com.icure.sdk.js.subscription.EntitySubscriptionJs
+import com.icure.sdk.js.subscription.entitySubscriptionConfiguration_fromJs
+import com.icure.sdk.js.subscription.entitySubscription_toJs
 import com.icure.sdk.js.utils.Record
-import com.icure.sdk.js.websocket.ConnectionJs
-import com.icure.sdk.js.websocket.connection_toJs
 import com.icure.sdk.model.DecryptedPatient
 import com.icure.sdk.model.EncryptedPatient
 import com.icure.sdk.model.IdWithRev
@@ -71,6 +72,7 @@ import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
+import com.icure.sdk.subscription.EntitySubscriptionConfiguration
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
@@ -83,11 +85,8 @@ import kotlin.collections.List
 import kotlin.collections.Map
 import kotlin.collections.Set
 import kotlin.js.Promise
-import kotlin.time.Duration
-import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.await
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
@@ -968,83 +967,6 @@ internal class PatientApiImplJs(
 			)
 			patient_toJs(result)
 		}
-
-		override fun subscribeToEvents(
-			events: Array<String>,
-			filter: AbstractFilterJs<PatientJs>,
-			eventFired: (EncryptedPatientJs) -> Promise<Unit>,
-			options: dynamic,
-		): Promise<ConnectionJs> {
-			val _options = options ?: js("{}")
-			return GlobalScope.promise {
-				val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
-					events,
-					"events",
-					{ x1: String ->
-						SubscriptionEventType.valueOf(x1)
-					},
-				)
-				val filterConverted: AbstractFilter<Patient> = abstractFilter_fromJs(
-					filter,
-					{ x1: PatientJs ->
-						patient_fromJs(x1)
-					},
-				)
-				val onConnectedConverted: suspend () -> Unit = convertingOptionOrDefaultNonNull(
-					_options,
-					"onConnected",
-					{}
-				) { onConnected: () -> Promise<Unit> ->
-					{  ->
-						onConnected().await()
-					}
-				}
-				val channelCapacityConverted: Int = convertingOptionOrDefaultNonNull(
-					_options,
-					"channelCapacity",
-					kotlinx.coroutines.channels.Channel.BUFFERED
-				) { channelCapacity: Double ->
-					numberToInt(channelCapacity, "channelCapacity")
-				}
-				val retryDelayConverted: Duration = convertingOptionOrDefaultNonNull(
-					_options,
-					"retryDelay",
-					2.seconds
-				) { retryDelay: Double ->
-					numberToDuration(retryDelay, "retryDelay")
-				}
-				val retryDelayExponentFactorConverted: Double = convertingOptionOrDefaultNonNull(
-					_options,
-					"retryDelayExponentFactor",
-					2.0
-				) { retryDelayExponentFactor: Double ->
-					retryDelayExponentFactor
-				}
-				val maxRetriesConverted: Int = convertingOptionOrDefaultNonNull(
-					_options,
-					"maxRetries",
-					5
-				) { maxRetries: Double ->
-					numberToInt(maxRetries, "maxRetries")
-				}
-				val eventFiredConverted: suspend (EncryptedPatient) -> Unit = { arg0 ->
-					eventFired(
-						patient_toJs(arg0),
-					).await()
-				}
-				val result = patientApi.encrypted.subscribeToEvents(
-					eventsConverted,
-					filterConverted,
-					onConnectedConverted,
-					channelCapacityConverted,
-					retryDelayConverted,
-					retryDelayExponentFactorConverted,
-					maxRetriesConverted,
-					eventFiredConverted,
-				)
-				connection_toJs(result)
-			}
-		}
 	}
 
 	override val tryAndRecover: PatientFlavouredApiJs<PatientJs> = object :
@@ -1918,83 +1840,6 @@ internal class PatientApiImplJs(
 			)
 			patient_toJs(result)
 		}
-
-		override fun subscribeToEvents(
-			events: Array<String>,
-			filter: AbstractFilterJs<PatientJs>,
-			eventFired: (PatientJs) -> Promise<Unit>,
-			options: dynamic,
-		): Promise<ConnectionJs> {
-			val _options = options ?: js("{}")
-			return GlobalScope.promise {
-				val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
-					events,
-					"events",
-					{ x1: String ->
-						SubscriptionEventType.valueOf(x1)
-					},
-				)
-				val filterConverted: AbstractFilter<Patient> = abstractFilter_fromJs(
-					filter,
-					{ x1: PatientJs ->
-						patient_fromJs(x1)
-					},
-				)
-				val onConnectedConverted: suspend () -> Unit = convertingOptionOrDefaultNonNull(
-					_options,
-					"onConnected",
-					{}
-				) { onConnected: () -> Promise<Unit> ->
-					{  ->
-						onConnected().await()
-					}
-				}
-				val channelCapacityConverted: Int = convertingOptionOrDefaultNonNull(
-					_options,
-					"channelCapacity",
-					kotlinx.coroutines.channels.Channel.BUFFERED
-				) { channelCapacity: Double ->
-					numberToInt(channelCapacity, "channelCapacity")
-				}
-				val retryDelayConverted: Duration = convertingOptionOrDefaultNonNull(
-					_options,
-					"retryDelay",
-					2.seconds
-				) { retryDelay: Double ->
-					numberToDuration(retryDelay, "retryDelay")
-				}
-				val retryDelayExponentFactorConverted: Double = convertingOptionOrDefaultNonNull(
-					_options,
-					"retryDelayExponentFactor",
-					2.0
-				) { retryDelayExponentFactor: Double ->
-					retryDelayExponentFactor
-				}
-				val maxRetriesConverted: Int = convertingOptionOrDefaultNonNull(
-					_options,
-					"maxRetries",
-					5
-				) { maxRetries: Double ->
-					numberToInt(maxRetries, "maxRetries")
-				}
-				val eventFiredConverted: suspend (Patient) -> Unit = { arg0 ->
-					eventFired(
-						patient_toJs(arg0),
-					).await()
-				}
-				val result = patientApi.tryAndRecover.subscribeToEvents(
-					eventsConverted,
-					filterConverted,
-					onConnectedConverted,
-					channelCapacityConverted,
-					retryDelayConverted,
-					retryDelayExponentFactorConverted,
-					maxRetriesConverted,
-					eventFiredConverted,
-				)
-				connection_toJs(result)
-			}
-		}
 	}
 
 	override fun getSecretIdsOf(patient: PatientJs): Promise<Array<String>> = GlobalScope.promise {
@@ -2311,6 +2156,50 @@ internal class PatientApiImplJs(
 			patientConverted,
 		)
 		entityAccessInformation_toJs(result)
+	}
+
+	override fun subscribeToEvents(
+		events: Array<String>,
+		filter: AbstractFilterJs<PatientJs>,
+		options: dynamic,
+	): Promise<EntitySubscriptionJs<EncryptedPatientJs>> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
+				events,
+				"events",
+				{ x1: String ->
+					SubscriptionEventType.valueOf(x1)
+				},
+			)
+			val filterConverted: AbstractFilter<Patient> = abstractFilter_fromJs(
+				filter,
+				{ x1: PatientJs ->
+					patient_fromJs(x1)
+				},
+			)
+			val subscriptionConfigConverted: EntitySubscriptionConfiguration? =
+					convertingOptionOrDefaultNullable(
+				_options,
+				"subscriptionConfig",
+				null
+			) { subscriptionConfig: EntitySubscriptionConfigurationJs? ->
+				subscriptionConfig?.let { nonNull1 ->
+					entitySubscriptionConfiguration_fromJs(nonNull1)
+				}
+			}
+			val result = patientApi.subscribeToEvents(
+				eventsConverted,
+				filterConverted,
+				subscriptionConfigConverted,
+			)
+			entitySubscription_toJs(
+				result,
+				{ x1: EncryptedPatient ->
+					patient_toJs(x1)
+				},
+			)
+		}
 	}
 
 	override fun shareWith(
@@ -3184,82 +3073,5 @@ internal class PatientApiImplJs(
 			updatedIntoConverted,
 		)
 		patient_toJs(result)
-	}
-
-	override fun subscribeToEvents(
-		events: Array<String>,
-		filter: AbstractFilterJs<PatientJs>,
-		eventFired: (DecryptedPatientJs) -> Promise<Unit>,
-		options: dynamic,
-	): Promise<ConnectionJs> {
-		val _options = options ?: js("{}")
-		return GlobalScope.promise {
-			val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
-				events,
-				"events",
-				{ x1: String ->
-					SubscriptionEventType.valueOf(x1)
-				},
-			)
-			val filterConverted: AbstractFilter<Patient> = abstractFilter_fromJs(
-				filter,
-				{ x1: PatientJs ->
-					patient_fromJs(x1)
-				},
-			)
-			val onConnectedConverted: suspend () -> Unit = convertingOptionOrDefaultNonNull(
-				_options,
-				"onConnected",
-				{}
-			) { onConnected: () -> Promise<Unit> ->
-				{  ->
-					onConnected().await()
-				}
-			}
-			val channelCapacityConverted: Int = convertingOptionOrDefaultNonNull(
-				_options,
-				"channelCapacity",
-				kotlinx.coroutines.channels.Channel.BUFFERED
-			) { channelCapacity: Double ->
-				numberToInt(channelCapacity, "channelCapacity")
-			}
-			val retryDelayConverted: Duration = convertingOptionOrDefaultNonNull(
-				_options,
-				"retryDelay",
-				2.seconds
-			) { retryDelay: Double ->
-				numberToDuration(retryDelay, "retryDelay")
-			}
-			val retryDelayExponentFactorConverted: Double = convertingOptionOrDefaultNonNull(
-				_options,
-				"retryDelayExponentFactor",
-				2.0
-			) { retryDelayExponentFactor: Double ->
-				retryDelayExponentFactor
-			}
-			val maxRetriesConverted: Int = convertingOptionOrDefaultNonNull(
-				_options,
-				"maxRetries",
-				5
-			) { maxRetries: Double ->
-				numberToInt(maxRetries, "maxRetries")
-			}
-			val eventFiredConverted: suspend (DecryptedPatient) -> Unit = { arg0 ->
-				eventFired(
-					patient_toJs(arg0),
-				).await()
-			}
-			val result = patientApi.subscribeToEvents(
-				eventsConverted,
-				filterConverted,
-				onConnectedConverted,
-				channelCapacityConverted,
-				retryDelayConverted,
-				retryDelayExponentFactorConverted,
-				maxRetriesConverted,
-				eventFiredConverted,
-			)
-			connection_toJs(result)
-		}
 	}
 }

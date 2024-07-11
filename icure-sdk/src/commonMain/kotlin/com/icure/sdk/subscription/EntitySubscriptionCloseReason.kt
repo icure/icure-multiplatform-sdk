@@ -8,7 +8,7 @@ enum class EntitySubscriptionCloseReason {
 	 * A new event was produced but the event channel was at maximum capacity and the
 	 * [EntitySubscription.Configuration.onBufferFull] is [EntitySubscription.Configuration.FullBufferBehaviour.Close].
 	 */
-	ChannelFullException,
+	ChannelFull,
 
 	/**
 	 * The subscription can't connect or lost the connection to the backend (and could not reconnect within the

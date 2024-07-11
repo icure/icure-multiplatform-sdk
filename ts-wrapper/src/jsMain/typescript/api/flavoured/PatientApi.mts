@@ -20,8 +20,8 @@ import {FilterChain} from '../../model/filter/chain/FilterChain.mjs';
 import {SubscriptionEventType} from '../../model/notification/SubscriptionEventType.mjs';
 import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs';
 import {HexString} from '../../model/specializations/HexString.mjs';
-import {DurationMs} from '../../utils/DurationMs.mjs';
-import {Connection} from '../../websocket/Connection.mjs';
+import {EntitySubscription} from '../../subscription/EntitySubscription.mjs';
+import {EntitySubscriptionConfiguration} from '../../subscription/EntitySubscriptionConfiguration.mjs';
 import {PatientFlavouredApi} from './PatientFlavouredApi.mjs';
 
 
@@ -79,6 +79,9 @@ export interface PatientApi {
 	undeletePatient(patientIds: string): Promise<Array<DocIdentifier>>;
 
 	getDataOwnersWithAccessTo(patient: Patient): Promise<EntityAccessInformation>;
+
+	subscribeToEvents(events: Array<SubscriptionEventType>, filter: AbstractFilter<Patient>,
+			options?: { subscriptionConfig?: EntitySubscriptionConfiguration | undefined }): Promise<EntitySubscription<EncryptedPatient>>;
 
 	shareWith(delegateId: string, patient: DecryptedPatient, shareSecretIds: Array<string>,
 			options?: { shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<DecryptedPatient>>;
@@ -149,9 +152,5 @@ export interface PatientApi {
 
 	mergePatients(intoId: string, fromId: string, expectedFromRev: string,
 			updatedInto: EncryptedPatient): Promise<DecryptedPatient>;
-
-	subscribeToEvents(events: Array<SubscriptionEventType>, filter: AbstractFilter<Patient>,
-			eventFired: (x1: DecryptedPatient) => Promise<void>,
-			options?: { onConnected?: () => Promise<void>, channelCapacity?: number, retryDelay?: DurationMs, retryDelayExponentFactor?: number, maxRetries?: number }): Promise<Connection>;
 
 }

@@ -14,9 +14,9 @@ import com.icure.sdk.js.model.PatientJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.filter.AbstractFilterJs
 import com.icure.sdk.js.model.filter.chain.FilterChainJs
+import com.icure.sdk.js.subscription.EntitySubscriptionJs
 import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
-import com.icure.sdk.js.websocket.ConnectionJs
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
@@ -63,6 +63,12 @@ public external interface HealthcareElementApiJs {
 	public fun findHealthcareElementsDelegationsStubsByHcPartyPatientForeignKeys(hcPartyId: String,
 			secretPatientKeys: Array<String>): Promise<Array<IcureStubJs>>
 
+	public fun subscribeToEvents(
+		events: Array<String>,
+		filter: AbstractFilterJs<HealthElementJs>,
+		options: dynamic,
+	): Promise<EntitySubscriptionJs<EncryptedHealthElementJs>>
+
 	public fun shareWith(
 		delegateId: String,
 		healthcareElement: DecryptedHealthElementJs,
@@ -101,11 +107,4 @@ public external interface HealthcareElementApiJs {
 
 	public fun findHealthcareElementsByHcPartyPatientForeignKeys(hcPartyId: String,
 			secretPatientKeys: Array<String>): Promise<Array<DecryptedHealthElementJs>>
-
-	public fun subscribeToEvents(
-		events: Array<String>,
-		filter: AbstractFilterJs<HealthElementJs>,
-		eventFired: (DecryptedHealthElementJs) -> Promise<Unit>,
-		options: dynamic,
-	): Promise<ConnectionJs>
 }
