@@ -12,7 +12,7 @@ import kotlin.collections.Map
 
 @Serializable
 data class EntityBulkShareResult<T>(
-	public val updatedEntity: T = null,
+	public val updatedEntity: T? = null,
 	public val entityId: String,
 	public val entityRev: String? = null,
 	@DefaultValue("emptyMap()")

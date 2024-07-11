@@ -80,6 +80,7 @@ interface CodeApi {
 	): List<String>
 	suspend fun createCode(c: Code): Code
 	suspend fun createCodes(codeBatch: List<Code>): List<Code>
+	suspend fun createCodes(groupId: String, codeBatch: List<Code>): List<Code>
 	suspend fun isCodeValid(
 		type: String,
 		code: String,
@@ -94,6 +95,7 @@ interface CodeApi {
 	): Code
 
 	suspend fun getCodes(codeIds: List<String>): List<Code>
+	suspend fun getCodes(groupId: String, codeIds: List<String>): List<Code>
 	suspend fun getCode(codeId: String): Code
 	suspend fun getCodeWithParts(
 		type: String,
@@ -103,6 +105,7 @@ interface CodeApi {
 
 	suspend fun modifyCode(codeDto: Code): Code
 	suspend fun modifyCodes(codeBatch: List<Code>): List<Code>
+	suspend fun modifyCodes(groupId: String, codeBatch: List<Code>): List<Code>
 	suspend fun filterCodesBy(
 		@DefaultValue("null")
 		startKey: JsonElement? = null,
@@ -120,7 +123,7 @@ interface CodeApi {
 	): PaginatedList<Code>
 
 	suspend fun matchCodesBy(filter: AbstractFilter<Code>): List<String>
-	suspend fun importCodes(codeType: String): Unit
+	suspend fun importCodes(codeType: String)
 
 }
 
@@ -213,5 +216,11 @@ internal class CodeApiImpl(
     override suspend fun matchCodesBy(filter: AbstractFilter<Code>): List<String> = rawApi.matchCodesBy(filter).successBody()
 
     override suspend fun importCodes(codeType: String): Unit = rawApi.importCodes(codeType).successBody()
+
+	override suspend fun createCodes(groupId: String, codeBatch: List<Code>): List<Code> = rawApi.createCodesInGroup(groupId, codeBatch).successBody()
+
+	override suspend fun getCodes(groupId: String, codeIds: List<String>): List<Code> = rawApi.getCodes(groupId, ListOfIds(ids = codeIds)).successBody()
+
+	override suspend fun modifyCodes(groupId: String, codeBatch: List<Code>): List<Code> = rawApi.modifyCodesInGroup(groupId, codeBatch).successBody()
 }
 
