@@ -2,6 +2,7 @@ package com.icure.sdk.crypto.entities
 
 import com.icure.sdk.crypto.entities.RecoveryResult.Failure
 import com.icure.sdk.crypto.entities.RecoveryResult.Success
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
@@ -37,6 +38,7 @@ sealed interface RecoveryResult<out T : Any> {
 // https://github.com/Kotlin/kotlinx.serialization/issues/1784 - issue
 // https://github.com/Kotlin/kotlinx.serialization/issues/1252#issuecomment-1780935921 - another possible serializer implementation, simpler but uses arrays
 // https://github.com/Kotlin/kotlinx.serialization/issues/2555 - feature request
+@OptIn(ExperimentalSerializationApi::class)
 internal class RecoveryResultSerializer<T : Any>(private val valueSerializer: KSerializer<T>): KSerializer<RecoveryResult<T>> {
 	private val failureReasonSerializer = RecoveryDataUseFailureReason.serializer()
 	override val descriptor: SerialDescriptor = buildClassSerialDescriptor("RecoveryResult<${valueSerializer.descriptor.serialName}>") {
