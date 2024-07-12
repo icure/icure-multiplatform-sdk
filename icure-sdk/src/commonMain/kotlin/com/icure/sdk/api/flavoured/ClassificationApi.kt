@@ -126,6 +126,8 @@ interface ClassificationApi : ClassificationBasicFlavourlessApi, ClassificationF
 	suspend fun hasWriteAccess(classification: Classification): Boolean
 	suspend fun decryptPatientIdOf(classification: Classification): Set<String>
 	suspend fun createDelegationDeAnonymizationMetadata(entity: Classification, delegates: Set<String>)
+	suspend fun decrypt(classification: EncryptedClassification): DecryptedClassification
+	suspend fun tryDecrypt(classification: EncryptedClassification): Classification
 
 	val encrypted: ClassificationFlavouredApi<EncryptedClassification>
 	val tryAndRecover: ClassificationFlavouredApi<Classification>
@@ -325,6 +327,12 @@ internal class ClassificationApiImpl(
 		) { Serialization.json.decodeFromJsonElement<DecryptedClassification>(it) }
 			?: throw EntityEncryptionException(errorMessage())
 
+	override suspend fun decrypt(classification: EncryptedClassification): DecryptedClassification =
+		decrypt(classification) { "Classification cannot be decrypted" }
+
+	override suspend fun tryDecrypt(classification: EncryptedClassification): Classification = runCatching {
+		decrypt(classification)
+	}.getOrDefault(classification)
 }
 
 @InternalIcureApi

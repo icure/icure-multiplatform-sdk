@@ -210,6 +210,8 @@ interface InvoiceApi : InvoiceBasicFlavourlessApi, InvoiceFlavouredApi<Decrypted
 	suspend fun hasWriteAccess(invoice: Invoice): Boolean
 	suspend fun decryptPatientIdOf(invoice: Invoice): Set<String>
 	suspend fun createDelegationDeAnonymizationMetadata(entity: Invoice, delegates: Set<String>)
+	suspend fun decrypt(invoice: EncryptedInvoice): DecryptedInvoice
+	suspend fun tryDecrypt(invoice: EncryptedInvoice): Invoice
 
 	val encrypted: InvoiceFlavouredApi<EncryptedInvoice>
 	val tryAndRecover: InvoiceFlavouredApi<Invoice>
@@ -571,6 +573,12 @@ internal class InvoiceApiImpl(
 	) { Serialization.json.decodeFromJsonElement<DecryptedInvoice>(it) }
 		?: throw EntityEncryptionException(errorMessage())
 
+	override suspend fun decrypt(invoice: EncryptedInvoice): DecryptedInvoice =
+		decrypt(invoice) { "Invoice cannot be decrypted" }
+
+	override suspend fun tryDecrypt(invoice: EncryptedInvoice): Invoice = runCatching {
+		decrypt(invoice)
+	}.getOrDefault(invoice)
 }
 
 @InternalIcureApi

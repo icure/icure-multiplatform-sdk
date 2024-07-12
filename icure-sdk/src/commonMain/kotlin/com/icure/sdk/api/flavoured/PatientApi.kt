@@ -316,6 +316,8 @@ interface PatientApi : PatientBasicFlavourlessApi, PatientFlavouredApi<Decrypted
 	suspend fun hasWriteAccess(patient: Patient): Boolean
 	suspend fun decryptPatientIdOf(patient: Patient): Set<String>
 	suspend fun createDelegationDeAnonymizationMetadata(entity: Patient, delegates: Set<String>)
+	suspend fun decrypt(patient: EncryptedPatient): DecryptedPatient
+	suspend fun tryDecrypt(patient: EncryptedPatient): Patient
 
 	val encrypted: PatientFlavouredApi<EncryptedPatient>
 	val tryAndRecover: PatientFlavouredApi<Patient>
@@ -960,6 +962,13 @@ internal class PatientApiImpl(
 		crypto.exchangeDataManager.getOrCreateEncryptionDataTo(patientId, true)
 		return true
 	}
+
+	override suspend fun decrypt(patient: EncryptedPatient): DecryptedPatient =
+		decrypt(patient) { "Patient cannot be decrypted" }
+
+	override suspend fun tryDecrypt(patient: EncryptedPatient): Patient = runCatching {
+		decrypt(patient)
+	}.getOrDefault(patient)
 }
 
 @InternalIcureApi

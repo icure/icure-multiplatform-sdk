@@ -148,6 +148,8 @@ interface HealthcareElementApi : HealthcareElementBasicFlavourlessApi, Healthcar
 	suspend fun hasWriteAccess(healthElement: HealthElement): Boolean
 	suspend fun decryptPatientIdOf(healthElement: HealthElement): Set<String>
 	suspend fun createDelegationDeAnonymizationMetadata(entity: HealthElement, delegates: Set<String>)
+	suspend fun decrypt(healthElement: EncryptedHealthElement): DecryptedHealthElement
+	suspend fun tryDecrypt(healthElement: EncryptedHealthElement): HealthElement
 
 	val encrypted: HealthcareElementFlavouredApi<EncryptedHealthElement>
 	val tryAndRecover: HealthcareElementFlavouredApi<HealthElement>
@@ -403,6 +405,12 @@ internal class HealthcareElementApiImpl(
 		) { Serialization.json.decodeFromJsonElement<DecryptedHealthElement>(it) }
 			?: throw EntityEncryptionException(errorMessage())
 
+	override suspend fun decrypt(healthElement: EncryptedHealthElement): DecryptedHealthElement =
+		decrypt(healthElement) { "HealthElement cannot be decrypted" }
+
+	override suspend fun tryDecrypt(healthElement: EncryptedHealthElement): HealthElement = runCatching {
+		decrypt(healthElement)
+	}.getOrDefault(healthElement)
 }
 
 @InternalIcureApi

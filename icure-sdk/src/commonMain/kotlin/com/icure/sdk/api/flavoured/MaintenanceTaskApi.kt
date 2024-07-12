@@ -132,6 +132,8 @@ interface MaintenanceTaskApi : MaintenanceTaskBasicFlavourlessApi, MaintenanceTa
 	suspend fun hasWriteAccess(maintenanceTask: MaintenanceTask): Boolean
 	suspend fun decryptPatientIdOf(maintenanceTask: MaintenanceTask): Set<String>
 	suspend fun createDelegationDeAnonymizationMetadata(entity: MaintenanceTask, delegates: Set<String>)
+	suspend fun decrypt(maintenanceTask: EncryptedMaintenanceTask): DecryptedMaintenanceTask
+	suspend fun tryDecrypt(maintenanceTask: EncryptedMaintenanceTask): MaintenanceTask
 
 	val encrypted: MaintenanceTaskFlavouredApi<EncryptedMaintenanceTask>
 	val tryAndRecover: MaintenanceTaskFlavouredApi<MaintenanceTask>
@@ -336,6 +338,12 @@ internal class MaintenanceTaskApiImpl(
 	) { Serialization.json.decodeFromJsonElement<DecryptedMaintenanceTask>(it) }
 		?: throw EntityEncryptionException(errorMessage())
 
+	override suspend fun decrypt(maintenanceTask: EncryptedMaintenanceTask): DecryptedMaintenanceTask =
+		decrypt(maintenanceTask) { "MaintenanceTask cannot be decrypted" }
+
+	override suspend fun tryDecrypt(maintenanceTask: EncryptedMaintenanceTask): MaintenanceTask = runCatching {
+		decrypt(maintenanceTask)
+	}.getOrDefault(maintenanceTask)
 }
 
 @InternalIcureApi

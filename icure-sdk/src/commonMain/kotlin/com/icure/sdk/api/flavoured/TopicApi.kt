@@ -134,6 +134,8 @@ interface TopicApi : TopicBasicFlavourlessApi, TopicFlavouredApi<DecryptedTopic>
 	suspend fun hasWriteAccess(topic: Topic): Boolean
 	suspend fun decryptPatientIdOf(topic: Topic): Set<String>
 	suspend fun createDelegationDeAnonymizationMetadata(entity: Topic, delegates: Set<String>)
+	suspend fun decrypt(topic: EncryptedTopic): DecryptedTopic
+	suspend fun tryDecrypt(topic: EncryptedTopic): Topic
 
 	val encrypted: TopicFlavouredApi<EncryptedTopic>
 	val tryAndRecover: TopicFlavouredApi<Topic>
@@ -348,6 +350,12 @@ internal class TopicApiImpl(
 	) { Serialization.json.decodeFromJsonElement<DecryptedTopic>(it) }
 		?: throw EntityEncryptionException(errorMessage())
 
+	override suspend fun decrypt(topic: EncryptedTopic): DecryptedTopic =
+		decrypt(topic) { "Topic cannot be decrypted" }
+
+	override suspend fun tryDecrypt(topic: EncryptedTopic): Topic = runCatching {
+		decrypt(topic)
+	}.getOrDefault(topic)
 }
 
 @InternalIcureApi

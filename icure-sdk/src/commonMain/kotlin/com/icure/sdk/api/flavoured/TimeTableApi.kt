@@ -113,6 +113,8 @@ interface TimeTableApi : TimeTableBasicFlavourlessApi, TimeTableFlavouredApi<Dec
 	suspend fun hasWriteAccess(timeTable: TimeTable): Boolean
 	suspend fun decryptPatientIdOf(timeTable: TimeTable): Set<String>
 	suspend fun createDelegationDeAnonymizationMetadata(entity: TimeTable, delegates: Set<String>)
+	suspend fun decrypt(timeTable: EncryptedTimeTable): DecryptedTimeTable
+	suspend fun tryDecrypt(timeTable: EncryptedTimeTable): TimeTable
 
 	val encrypted: TimeTableFlavouredApi<EncryptedTimeTable>
 	val tryAndRecover: TimeTableFlavouredApi<TimeTable>
@@ -295,6 +297,12 @@ internal class TimeTableApiImpl(
 	) { Serialization.json.decodeFromJsonElement<DecryptedTimeTable>(it) }
 		?: throw EntityEncryptionException(errorMessage())
 
+	override suspend fun decrypt(timeTable: EncryptedTimeTable): DecryptedTimeTable =
+		decrypt(timeTable) { "TimeTable cannot be decrypted" }
+
+	override suspend fun tryDecrypt(timeTable: EncryptedTimeTable): TimeTable = runCatching {
+		decrypt(timeTable)
+	}.getOrDefault(timeTable)
 }
 
 @InternalIcureApi

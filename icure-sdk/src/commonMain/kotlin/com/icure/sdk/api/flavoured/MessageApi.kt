@@ -170,6 +170,8 @@ interface MessageApi : MessageBasicFlavourlessApi, MessageFlavouredApi<Decrypted
 	suspend fun hasWriteAccess(message: Message): Boolean
 	suspend fun decryptPatientIdOf(message: Message): Set<String>
 	suspend fun createDelegationDeAnonymizationMetadata(entity: Message, delegates: Set<String>)
+	suspend fun decrypt(message: EncryptedMessage): DecryptedMessage
+	suspend fun tryDecrypt(message: EncryptedMessage): Message
 
 	val encrypted: MessageFlavouredApi<EncryptedMessage>
 	val tryAndRecover: MessageFlavouredApi<Message>
@@ -466,6 +468,12 @@ internal class MessageApiImpl(
 	) { Serialization.json.decodeFromJsonElement<DecryptedMessage>(it) }
 		?: throw EntityEncryptionException(errorMessage())
 
+	override suspend fun decrypt(message: EncryptedMessage): DecryptedMessage =
+		decrypt(message) { "Message cannot be decrypted" }
+
+	override suspend fun tryDecrypt(message: EncryptedMessage): Message = runCatching {
+		decrypt(message)
+	}.getOrDefault(message)
 }
 
 @InternalIcureApi

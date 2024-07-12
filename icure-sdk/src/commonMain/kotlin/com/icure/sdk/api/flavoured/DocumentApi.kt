@@ -176,6 +176,8 @@ interface DocumentApi : DocumentBasicFlavourlessApi, DocumentFlavouredApi<Decryp
 	suspend fun hasWriteAccess(document: Document): Boolean
 	suspend fun decryptPatientIdOf(document: Document): Set<String>
 	suspend fun createDelegationDeAnonymizationMetadata(entity: Document, delegates: Set<String>)
+	suspend fun decrypt(document: EncryptedDocument): DecryptedDocument
+	suspend fun tryDecrypt(document: EncryptedDocument): Document
 
 	val encrypted: DocumentFlavouredApi<EncryptedDocument>
 	val tryAndRecover: DocumentFlavouredApi<Document>
@@ -511,6 +513,12 @@ internal class DocumentApiImpl(
 	) { Serialization.json.decodeFromJsonElement<DecryptedDocument>(it) }
 		?: throw EntityEncryptionException(errorMessage())
 
+	override suspend fun decrypt(document: EncryptedDocument): DecryptedDocument =
+		decrypt(document) { "Document cannot be decrypted" }
+
+	override suspend fun tryDecrypt(document: EncryptedDocument): Document = runCatching {
+		decrypt(document)
+	}.getOrDefault(document)
 }
 
 @InternalIcureApi

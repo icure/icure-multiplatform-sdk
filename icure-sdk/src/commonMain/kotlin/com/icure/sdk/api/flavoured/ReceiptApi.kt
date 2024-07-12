@@ -116,6 +116,8 @@ interface ReceiptApi : ReceiptBasicFlavourlessApi, ReceiptFlavouredApi<Decrypted
 	suspend fun decryptPatientIdOf(receipt: Receipt): Set<String>
 	suspend fun createDelegationDeAnonymizationMetadata(entity: Receipt, delegates: Set<String>)
 	suspend fun logReceipt(user: User, docId: String, refs: List<String>, blobType: String, blob: ByteArray): Receipt
+	suspend fun decrypt(receipt: EncryptedReceipt): DecryptedReceipt
+	suspend fun tryDecrypt(receipt: EncryptedReceipt): Receipt
 
 	val encrypted: ReceiptFlavouredApi<EncryptedReceipt>
 	val tryAndRecover: ReceiptFlavouredApi<Receipt>
@@ -339,6 +341,12 @@ internal class ReceiptApiImpl(
 	) { Serialization.json.decodeFromJsonElement<DecryptedReceipt>(it) }
 		?: throw EntityEncryptionException(errorMessage())
 
+	override suspend fun decrypt(receipt: EncryptedReceipt): DecryptedReceipt =
+		decrypt(receipt) { "Receipt cannot be decrypted" }
+
+	override suspend fun tryDecrypt(receipt: EncryptedReceipt): Receipt = runCatching {
+		decrypt(receipt)
+	}.getOrDefault(receipt)
 }
 
 @InternalIcureApi
