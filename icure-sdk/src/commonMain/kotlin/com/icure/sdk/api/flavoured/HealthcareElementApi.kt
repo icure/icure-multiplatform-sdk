@@ -149,6 +149,8 @@ interface HealthcareElementApi : HealthcareElementBasicFlavourlessApi, Healthcar
 	suspend fun hasWriteAccess(healthElement: HealthElement): Boolean
 	suspend fun decryptPatientIdOf(healthElement: HealthElement): Set<String>
 	suspend fun createDelegationDeAnonymizationMetadata(entity: HealthElement, delegates: Set<String>)
+	suspend fun decrypt(healthElement: EncryptedHealthElement): DecryptedHealthElement
+	suspend fun tryDecrypt(healthElement: EncryptedHealthElement): HealthElement
 
 	val encrypted: HealthcareElementFlavouredApi<EncryptedHealthElement>
 	val tryAndRecover: HealthcareElementFlavouredApi<HealthElement>
@@ -344,7 +346,7 @@ internal class HealthcareElementApiImpl(
 		return rawApi.createHealthElement(
 			encrypt(entity),
 		).successBody().let {
-			decrypt(it) { "Created entity cannot be decrypted" }
+			decrypt(it)
 		}
 	}
 
@@ -355,7 +357,7 @@ internal class HealthcareElementApiImpl(
 				encrypt(it)
 			},
 		).successBody().map {
-			decrypt(it) { "Created entity cannot be decrypted" }
+			decrypt(it)
 		}
 	}
 
@@ -400,13 +402,17 @@ internal class HealthcareElementApiImpl(
 		fieldsToEncrypt,
 	) { Serialization.json.decodeFromJsonElement<EncryptedHealthElement>(it) }
 
-	suspend fun decrypt(entity: EncryptedHealthElement, errorMessage: () -> String): DecryptedHealthElement =
+	private suspend fun decryptOrNull(entity: EncryptedHealthElement): DecryptedHealthElement? =
 		crypto.entity.tryDecryptEntity(
 			entity.withTypeInfo(),
 			EncryptedHealthElement.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedHealthElement>(it) }
-			?: throw EntityEncryptionException(errorMessage())
 
+	override suspend fun decrypt(healthElement: EncryptedHealthElement): DecryptedHealthElement =
+		decryptOrNull(healthElement) ?: throw EntityEncryptionException("HealthElement cannot be decrypted")
+
+	override suspend fun tryDecrypt(healthElement: EncryptedHealthElement): HealthElement =
+		decryptOrNull(healthElement) ?: healthElement
 }
 
 @InternalIcureApi

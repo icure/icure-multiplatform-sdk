@@ -134,6 +134,8 @@ interface MaintenanceTaskApi : MaintenanceTaskBasicFlavourlessApi, MaintenanceTa
 	suspend fun hasWriteAccess(maintenanceTask: MaintenanceTask): Boolean
 	suspend fun decryptPatientIdOf(maintenanceTask: MaintenanceTask): Set<String>
 	suspend fun createDelegationDeAnonymizationMetadata(entity: MaintenanceTask, delegates: Set<String>)
+	suspend fun decrypt(maintenanceTask: EncryptedMaintenanceTask): DecryptedMaintenanceTask
+	suspend fun tryDecrypt(maintenanceTask: EncryptedMaintenanceTask): MaintenanceTask
 
 	val encrypted: MaintenanceTaskFlavouredApi<EncryptedMaintenanceTask>
 	val tryAndRecover: MaintenanceTaskFlavouredApi<MaintenanceTask>
@@ -292,7 +294,7 @@ internal class MaintenanceTaskApiImpl(
 		return rawApi.createMaintenanceTask(
 			encrypt(entity),
 		).successBody().let {
-			decrypt(it) { "Created entity cannot be decrypted" }
+			decrypt(it)
 		}
 	}
 
@@ -335,12 +337,16 @@ internal class MaintenanceTaskApiImpl(
 		fieldsToEncrypt,
 	) { Serialization.json.decodeFromJsonElement<EncryptedMaintenanceTask>(it) }
 
-	suspend fun decrypt(entity: EncryptedMaintenanceTask, errorMessage: () -> String): DecryptedMaintenanceTask = crypto.entity.tryDecryptEntity(
+	private suspend fun decryptOrNull(entity: EncryptedMaintenanceTask): DecryptedMaintenanceTask? = crypto.entity.tryDecryptEntity(
 		entity.withTypeInfo(),
 		EncryptedMaintenanceTask.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedMaintenanceTask>(it) }
-		?: throw EntityEncryptionException(errorMessage())
 
+	override suspend fun decrypt(maintenanceTask: EncryptedMaintenanceTask): DecryptedMaintenanceTask =
+		decryptOrNull(maintenanceTask) ?: throw EntityEncryptionException("MaintenanceTask cannot be decrypted")
+
+	override suspend fun tryDecrypt(maintenanceTask: EncryptedMaintenanceTask): MaintenanceTask =
+		decryptOrNull(maintenanceTask) ?: maintenanceTask
 }
 
 @InternalIcureApi

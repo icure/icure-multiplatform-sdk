@@ -136,6 +136,8 @@ interface TopicApi : TopicBasicFlavourlessApi, TopicFlavouredApi<DecryptedTopic>
 	suspend fun hasWriteAccess(topic: Topic): Boolean
 	suspend fun decryptPatientIdOf(topic: Topic): Set<String>
 	suspend fun createDelegationDeAnonymizationMetadata(entity: Topic, delegates: Set<String>)
+	suspend fun decrypt(topic: EncryptedTopic): DecryptedTopic
+	suspend fun tryDecrypt(topic: EncryptedTopic): Topic
 
 	val encrypted: TopicFlavouredApi<EncryptedTopic>
 	val tryAndRecover: TopicFlavouredApi<Topic>
@@ -301,9 +303,7 @@ internal class TopicApiImpl(
 		require(entity.securityMetadata != null) { "Entity must have security metadata initialised. You can use the withEncryptionMetadata for that very purpose." }
 		return rawApi.createTopic(
 			encrypt(entity),
-		).successBody().let {
-			decrypt(it) { "Created entity cannot be decrypted" }
-		}
+		).successBody().let { decrypt(it) }
 	}
 
 	private val crypto get() = config.crypto
@@ -347,12 +347,16 @@ internal class TopicApiImpl(
 		fieldsToEncrypt,
 	) { Serialization.json.decodeFromJsonElement<EncryptedTopic>(it) }
 
-	suspend fun decrypt(entity: EncryptedTopic, errorMessage: () -> String): DecryptedTopic = crypto.entity.tryDecryptEntity(
+	private suspend fun decryptOrNull(entity: EncryptedTopic): DecryptedTopic? = crypto.entity.tryDecryptEntity(
 		entity.withTypeInfo(),
 		EncryptedTopic.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedTopic>(it) }
-		?: throw EntityEncryptionException(errorMessage())
 
+	override suspend fun decrypt(topic: EncryptedTopic): DecryptedTopic =
+		decryptOrNull(topic) ?: throw EntityEncryptionException("Topic cannot be decrypted")
+
+	override suspend fun tryDecrypt(topic: EncryptedTopic): Topic =
+		decryptOrNull(topic) ?: topic
 }
 
 @InternalIcureApi

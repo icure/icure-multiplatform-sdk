@@ -171,6 +171,8 @@ interface MessageApi : MessageBasicFlavourlessApi, MessageFlavouredApi<Decrypted
 	suspend fun hasWriteAccess(message: Message): Boolean
 	suspend fun decryptPatientIdOf(message: Message): Set<String>
 	suspend fun createDelegationDeAnonymizationMetadata(entity: Message, delegates: Set<String>)
+	suspend fun decrypt(message: EncryptedMessage): DecryptedMessage
+	suspend fun tryDecrypt(message: EncryptedMessage): Message
 
 	val encrypted: MessageFlavouredApi<EncryptedMessage>
 	val tryAndRecover: MessageFlavouredApi<Message>
@@ -415,13 +417,11 @@ internal class MessageApiImpl(
 		require(entity.securityMetadata != null) { "Entity must have security metadata initialised. You can use the withEncryptionMetadata for that very purpose." }
 		return rawApi.createMessage(
 			encrypt(entity),
-		).successBody().let {
-			decrypt(it) { "Created entity cannot be decrypted" }
-		}
+		).successBody().let { decrypt(it) }
 	}
 
 	override suspend fun createMessageInTopic(entity: DecryptedMessage): DecryptedMessage =
-		rawApi.createMessageInTopic(encrypt(entity)).successBody().let { decrypt(it) { "Created entity cannot be decrypted" } }
+		rawApi.createMessageInTopic(encrypt(entity)).successBody().let { decrypt(it) }
 
 	private val crypto get() = config.crypto
 	private val fieldsToEncrypt get() = config.encryption.message
@@ -464,12 +464,16 @@ internal class MessageApiImpl(
 		fieldsToEncrypt,
 	) { Serialization.json.decodeFromJsonElement<EncryptedMessage>(it) }
 
-	suspend fun decrypt(entity: EncryptedMessage, errorMessage: () -> String): DecryptedMessage = crypto.entity.tryDecryptEntity(
+	private suspend fun decryptOrNull(entity: EncryptedMessage): DecryptedMessage? = crypto.entity.tryDecryptEntity(
 		entity.withTypeInfo(),
 		EncryptedMessage.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedMessage>(it) }
-		?: throw EntityEncryptionException(errorMessage())
 
+	override suspend fun decrypt(message: EncryptedMessage): DecryptedMessage =
+		decryptOrNull(message) ?: throw EntityEncryptionException("Message cannot be decrypted")
+
+	override suspend fun tryDecrypt(message: EncryptedMessage): Message =
+		decryptOrNull(message) ?: message
 }
 
 @InternalIcureApi
