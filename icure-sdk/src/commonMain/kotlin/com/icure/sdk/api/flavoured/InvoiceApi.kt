@@ -210,6 +210,8 @@ interface InvoiceApi : InvoiceBasicFlavourlessApi, InvoiceFlavouredApi<Decrypted
 	suspend fun hasWriteAccess(invoice: Invoice): Boolean
 	suspend fun decryptPatientIdOf(invoice: Invoice): Set<String>
 	suspend fun createDelegationDeAnonymizationMetadata(entity: Invoice, delegates: Set<String>)
+	suspend fun decrypt(invoice: EncryptedInvoice): DecryptedInvoice
+	suspend fun tryDecrypt(invoice: EncryptedInvoice): Invoice
 
 	val encrypted: InvoiceFlavouredApi<EncryptedInvoice>
 	val tryAndRecover: InvoiceFlavouredApi<Invoice>
@@ -477,7 +479,7 @@ internal class InvoiceApiImpl(
 		return rawApi.createInvoice(
 			encrypt(entity),
 		).successBody().let {
-			decrypt(it) { "Created entity cannot be decrypted" }
+			decrypt(it)
 		}
 	}
 
@@ -518,7 +520,7 @@ internal class InvoiceApiImpl(
 				encrypt(it)
 			},
 		).successBody().map {
-			decrypt(it) { "Created entity cannot be decrypted" }
+			decrypt(it)
 		}
 	}
 
@@ -565,12 +567,16 @@ internal class InvoiceApiImpl(
 		fieldsToEncrypt,
 	) { Serialization.json.decodeFromJsonElement<EncryptedInvoice>(it) }
 
-	suspend fun decrypt(entity: EncryptedInvoice, errorMessage: () -> String): DecryptedInvoice = crypto.entity.tryDecryptEntity(
+	private suspend fun decryptOrNull(entity: EncryptedInvoice): DecryptedInvoice? = crypto.entity.tryDecryptEntity(
 		entity.withTypeInfo(),
 		EncryptedInvoice.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedInvoice>(it) }
-		?: throw EntityEncryptionException(errorMessage())
 
+	override suspend fun decrypt(invoice: EncryptedInvoice): DecryptedInvoice =
+		decryptOrNull(invoice) ?: throw EntityEncryptionException("Invoice cannot be decrypted")
+
+	override suspend fun tryDecrypt(invoice: EncryptedInvoice): Invoice =
+		decryptOrNull(invoice) ?: invoice
 }
 
 @InternalIcureApi

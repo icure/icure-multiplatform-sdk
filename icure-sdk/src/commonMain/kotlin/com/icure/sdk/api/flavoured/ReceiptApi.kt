@@ -116,6 +116,8 @@ interface ReceiptApi : ReceiptBasicFlavourlessApi, ReceiptFlavouredApi<Decrypted
 	suspend fun decryptPatientIdOf(receipt: Receipt): Set<String>
 	suspend fun createDelegationDeAnonymizationMetadata(entity: Receipt, delegates: Set<String>)
 	suspend fun logReceipt(user: User, docId: String, refs: List<String>, blobType: String, blob: ByteArray): Receipt
+	suspend fun decrypt(receipt: EncryptedReceipt): DecryptedReceipt
+	suspend fun tryDecrypt(receipt: EncryptedReceipt): Receipt
 
 	val encrypted: ReceiptFlavouredApi<EncryptedReceipt>
 	val tryAndRecover: ReceiptFlavouredApi<Receipt>
@@ -248,9 +250,7 @@ internal class ReceiptApiImpl(
 		require(entity.securityMetadata != null) { "Entity must have security metadata initialised. You can use the withEncryptionMetadata for that very purpose." }
 		return rawApi.createReceipt(
 			encrypt(entity),
-		).successBody().let {
-			decrypt(it) { "Created entity cannot be decrypted" }
-		}
+		).successBody().let { decrypt(it) }
 	}
 
 	private val crypto get() = config.crypto
@@ -333,12 +333,17 @@ internal class ReceiptApiImpl(
 		fieldsToEncrypt,
 	) { Serialization.json.decodeFromJsonElement<EncryptedReceipt>(it) }
 
-	suspend fun decrypt(entity: EncryptedReceipt, errorMessage: () -> String): DecryptedReceipt = crypto.entity.tryDecryptEntity(
+	private suspend fun decryptOrNull(entity: EncryptedReceipt): DecryptedReceipt? = crypto.entity.tryDecryptEntity(
 		entity.withTypeInfo(),
 		EncryptedReceipt.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedReceipt>(it) }
-		?: throw EntityEncryptionException(errorMessage())
 
+	override suspend fun decrypt(receipt: EncryptedReceipt): DecryptedReceipt =
+		decryptOrNull(receipt) ?: throw EntityEncryptionException("Receipt cannot be decrypted")
+
+	override suspend fun tryDecrypt(receipt: EncryptedReceipt): Receipt = runCatching {
+		decrypt(receipt)
+	}.getOrDefault(receipt)
 }
 
 @InternalIcureApi

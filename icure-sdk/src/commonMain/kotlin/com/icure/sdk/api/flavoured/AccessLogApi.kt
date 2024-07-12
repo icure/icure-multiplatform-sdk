@@ -167,6 +167,8 @@ interface AccessLogApi : AccessLogBasicFlavourlessApi, AccessLogFlavouredApi<Dec
 	suspend fun hasWriteAccess(accessLog: AccessLog): Boolean
 	suspend fun decryptPatientIdOf(accessLog: AccessLog): Set<String>
 	suspend fun createDelegationDeAnonymizationMetadata(entity: AccessLog, delegates: Set<String>)
+	suspend fun decrypt(accessLog: EncryptedAccessLog): DecryptedAccessLog
+	suspend fun tryDecrypt(accessLog: EncryptedAccessLog): AccessLog
 
 
 	val encrypted: AccessLogFlavouredApi<EncryptedAccessLog>
@@ -366,7 +368,7 @@ internal class AccessLogApiImpl(
 		return rawApi.createAccessLog(
 			encrypt(entity),
 		).successBody().let {
-			decrypt(it) { "Created entity cannot be decrypted" }
+			decrypt(it)
 		}
 	}
 
@@ -398,12 +400,16 @@ internal class AccessLogApiImpl(
 		config.encryption.accessLog,
 	) { Serialization.json.decodeFromJsonElement<EncryptedAccessLog>(it) }
 
-	suspend fun decrypt(entity: EncryptedAccessLog, errorMessage: () -> String): DecryptedAccessLog = crypto.entity.tryDecryptEntity(
+	private suspend fun decryptOrNull(entity: EncryptedAccessLog): DecryptedAccessLog? = crypto.entity.tryDecryptEntity(
 		entity.withTypeInfo(),
 		EncryptedAccessLog.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedAccessLog>(it) }
-		?: throw EntityEncryptionException(errorMessage())
 
+	override suspend fun decrypt(accessLog: EncryptedAccessLog): DecryptedAccessLog =
+		decryptOrNull(accessLog) ?: throw EntityEncryptionException("AccessLog cannot be decrypted")
+
+	override suspend fun tryDecrypt(accessLog: EncryptedAccessLog): AccessLog =
+		decryptOrNull(accessLog) ?: accessLog
 }
 
 @InternalIcureApi

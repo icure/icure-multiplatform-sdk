@@ -164,6 +164,8 @@ interface FormApi : FormBasicFlavourlessApi, FormFlavouredApi<DecryptedForm> {
 	suspend fun hasWriteAccess(form: Form): Boolean
 	suspend fun decryptPatientIdOf(form: Form): Set<String>
 	suspend fun createDelegationDeAnonymizationMetadata(entity: Form, delegates: Set<String>)
+	suspend fun decrypt(form: EncryptedForm): DecryptedForm
+	suspend fun tryDecrypt(form: EncryptedForm): Form
 
 	val encrypted: FormFlavouredApi<EncryptedForm>
 	val tryAndRecover: FormFlavouredApi<Form>
@@ -368,7 +370,7 @@ internal class FormApiImpl(
 		return rawApi.createForm(
 			encrypt(entity),
 		).successBody().let {
-			decrypt(it) { "Created entity cannot be decrypted" }
+			decrypt(it)
 		}
 	}
 
@@ -379,7 +381,7 @@ internal class FormApiImpl(
 				encrypt(it)
 			},
 		).successBody().map {
-			decrypt(it) { "Created entity cannot be decrypted" }
+			decrypt(it)
 		}
 	}
 
@@ -423,11 +425,16 @@ internal class FormApiImpl(
 		fieldsToEncrypt,
 	) { Serialization.json.decodeFromJsonElement<EncryptedForm>(it) }
 
-	suspend fun decrypt(entity: EncryptedForm, errorMessage: () -> String): DecryptedForm = crypto.entity.tryDecryptEntity(
+	private suspend fun decryptOrNull(entity: EncryptedForm): DecryptedForm? = crypto.entity.tryDecryptEntity(
 		entity.withTypeInfo(),
 		EncryptedForm.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedForm>(it) }
-		?: throw EntityEncryptionException(errorMessage())
+
+	override suspend fun decrypt(form: EncryptedForm): DecryptedForm =
+		decryptOrNull(form) ?: throw EntityEncryptionException("Form cannot be decrypted")
+
+	override suspend fun tryDecrypt(form: EncryptedForm): Form =
+		decryptOrNull(form) ?: form
 
 }
 
