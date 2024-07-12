@@ -207,8 +207,27 @@ interface ContactApi : ContactBasicFlavourlessApi, ContactFlavouredApi<Decrypted
 	suspend fun createDelegationDeAnonymizationMetadata(entity: Contact, delegates: Set<String>)
 	suspend fun decrypt(contact: EncryptedContact): DecryptedContact
 	suspend fun tryDecrypt(contact: EncryptedContact): Contact
-	suspend fun decrypt(service: EncryptedService): DecryptedService
-	suspend fun tryDecrypt(service: EncryptedService): Service
+
+	/**
+	 * Decrypts a single [EncryptedService].
+	 * Note: you should use this function only when you retrieve [Service]s as single entity. If you are retrieving them as part of a
+	 * [Contact], use [decrypt] instead.
+	 *
+	 * @param service the [EncryptedService] to decrypt.
+	 * @return the [DecryptedService].
+	 * @throws EntityEncryptionException if [service] could not be decrypted.
+	 */
+	suspend fun decryptService(service: EncryptedService): DecryptedService
+
+	/**
+	 * Tries to decrypt a single [EncryptedService].
+	 * Note: you should use this function only when you retrieve [Service]s as single entity. If you are retrieving them as part of a
+	 * [Contact], use [tryDecrypt] instead.
+	 *
+	 * @param service the [EncryptedService] to decrypt.
+	 * @return the [DecryptedService] if the decryption was successful, the original [service] otherwise.
+	 */
+	suspend fun tryDecryptService(service: EncryptedService): Service
 
 	val encrypted: ContactFlavouredApi<EncryptedContact, EncryptedService>
 	val tryAndRecover: ContactFlavouredApi<Contact, Service>
@@ -612,7 +631,7 @@ internal class ContactApiImpl(
 		return rawApi.createContact(
 			encrypt(entity),
 		).successBody().let {
-			decrypt(it) { "Created entity cannot be decrypted" }
+			decrypt(it)
 		}
 	}
 
@@ -623,7 +642,7 @@ internal class ContactApiImpl(
 				encrypt(it)
 			},
 		).successBody().map {
-			decrypt(it) { "Created entity cannot be decrypted" }
+			decrypt(it)
 		}
 	}
 
@@ -676,25 +695,22 @@ internal class ContactApiImpl(
 		}.toSet(),
 	)
 
-	suspend fun decrypt(entity: EncryptedContact, errorMessage: () -> String): DecryptedContact = crypto.entity.tryDecryptEntity(
+	private suspend fun decryptOrNull(entity: EncryptedContact): DecryptedContact? = crypto.entity.tryDecryptEntity(
 		entity.withTypeInfo(),
 		EncryptedContact.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedContact>(it) }
-		?: throw EntityEncryptionException(errorMessage())
 
 	override suspend fun decrypt(contact: EncryptedContact): DecryptedContact =
-		decrypt(contact) { "Contact cannot be decrypted" }
+		decryptOrNull(contact) ?: throw EntityEncryptionException("Contact cannot be decrypted")
 
-	override suspend fun tryDecrypt(contact: EncryptedContact): Contact = runCatching {
-		decrypt(contact)
-	}.getOrDefault(contact)
+	override suspend fun tryDecrypt(contact: EncryptedContact): Contact =
+		decryptOrNull(contact) ?: contact
 
-	override suspend fun decrypt(service: EncryptedService): DecryptedService =
+	override suspend fun decryptService(service: EncryptedService): DecryptedService =
 		decryptServiceOrNull(service, crypto) ?: throw EntityEncryptionException("Service cannot be decrypted")
 
-	override suspend fun tryDecrypt(service: EncryptedService): Service = runCatching {
-		decrypt(service)
-	}.getOrDefault(service)
+	override suspend fun tryDecryptService(service: EncryptedService): Service =
+		decryptServiceOrNull(service, crypto) ?: service
 }
 
 @InternalIcureApi

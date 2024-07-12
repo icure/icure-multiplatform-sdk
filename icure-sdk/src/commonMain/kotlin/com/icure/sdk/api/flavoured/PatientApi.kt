@@ -680,9 +680,7 @@ internal class PatientApiImpl(
 		require(patient.securityMetadata != null) { "Entity must have security metadata initialised. You can use the withEncryptionMetadata for that very purpose." }
 		return rawApi.createPatient(
 			encrypt(patient),
-		).successBody().let {
-			decrypt(it) { "Created entity cannot be decrypted" }
-		}
+		).successBody().let { decrypt(it) }
 	}
 
 	override suspend fun createPatients(patientDtos: List<DecryptedPatient>) = rawApi.createPatients(patientDtos.map { encrypt(it) }).successBody()
@@ -950,11 +948,10 @@ internal class PatientApiImpl(
 		fieldsToEncrypt,
 	) { Serialization.json.decodeFromJsonElement<EncryptedPatient>(it) }
 
-	suspend fun decrypt(entity: EncryptedPatient, errorPatient: () -> String): DecryptedPatient = crypto.entity.tryDecryptEntity(
+	private suspend fun decryptOrNull(entity: EncryptedPatient): DecryptedPatient? = crypto.entity.tryDecryptEntity(
 		entity.withTypeInfo(),
 		EncryptedPatient.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedPatient>(it) }
-		?: throw EntityEncryptionException(errorPatient())
 
 	override suspend fun forceInitialiseExchangeDataToNewlyInvitedPatient(patientId: String): Boolean {
 		val patient = encrypted.getPatient(patientId)
@@ -964,11 +961,10 @@ internal class PatientApiImpl(
 	}
 
 	override suspend fun decrypt(patient: EncryptedPatient): DecryptedPatient =
-		decrypt(patient) { "Patient cannot be decrypted" }
+		decryptOrNull(patient) ?: throw EntityEncryptionException("Patient cannot be decrypted")
 
-	override suspend fun tryDecrypt(patient: EncryptedPatient): Patient = runCatching {
-		decrypt(patient)
-	}.getOrDefault(patient)
+	override suspend fun tryDecrypt(patient: EncryptedPatient): Patient =
+		decryptOrNull(patient) ?: patient
 }
 
 @InternalIcureApi

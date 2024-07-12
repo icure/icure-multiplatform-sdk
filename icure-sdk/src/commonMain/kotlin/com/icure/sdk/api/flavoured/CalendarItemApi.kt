@@ -358,7 +358,7 @@ internal class CalendarItemApiImpl(
 		return rawApi.createCalendarItem(
 			encrypt(entity),
 		).successBody().let {
-			decrypt(it) { "Created entity cannot be decrypted" }
+			decrypt(it)
 		}
 	}
 
@@ -397,22 +397,21 @@ internal class CalendarItemApiImpl(
 		config.encryption.calendarItem,
 	) { Serialization.json.decodeFromJsonElement<EncryptedCalendarItem>(it) }
 
-	suspend fun decrypt(entity: EncryptedCalendarItem, errorMessage: () -> String): DecryptedCalendarItem = crypto.entity.tryDecryptEntity(
+	private suspend fun decryptOrNull(entity: EncryptedCalendarItem): DecryptedCalendarItem? = crypto.entity.tryDecryptEntity(
 		entity.withTypeInfo(),
 		EncryptedCalendarItem.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedCalendarItem>(it) }
-		?: throw EntityEncryptionException(errorMessage())
+
 
 	override suspend fun createDelegationDeAnonymizationMetadata(entity: CalendarItem, delegates: Set<String>) {
 		crypto.delegationsDeAnonymization.createOrUpdateDeAnonymizationInfo(entity.withTypeInfo(), delegates)
 	}
 
 	override suspend fun decrypt(calendarItem: EncryptedCalendarItem): DecryptedCalendarItem =
-		decrypt(calendarItem) { "Calendar item cannot be decrypted" }
+		decryptOrNull(calendarItem) ?: throw EntityEncryptionException("CalendarItem cannot be decrypted")
 
-	override suspend fun tryDecrypt(calendarItem: EncryptedCalendarItem): CalendarItem = runCatching {
-		decrypt(calendarItem)
-	}.getOrDefault(calendarItem)
+	override suspend fun tryDecrypt(calendarItem: EncryptedCalendarItem): CalendarItem =
+		decryptOrNull(calendarItem) ?: calendarItem
 
 }
 

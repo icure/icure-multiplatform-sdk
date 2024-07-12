@@ -277,7 +277,7 @@ internal class ClassificationApiImpl(
 		return rawApi.createClassification(
 			encrypt(entity),
 		).successBody().let {
-			decrypt(it) { "Created entity cannot be decrypted" }
+			decrypt(it)
 		}
 	}
 
@@ -320,19 +320,17 @@ internal class ClassificationApiImpl(
 		config.encryption.classification
 	) { Serialization.json.decodeFromJsonElement<EncryptedClassification>(it) }
 
-	suspend fun decrypt(entity: EncryptedClassification, errorMessage: () -> String): DecryptedClassification =
+	private suspend fun decryptOrNull(entity: EncryptedClassification): DecryptedClassification? =
 		crypto.entity.tryDecryptEntity(
 			entity.withTypeInfo(),
 			EncryptedClassification.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedClassification>(it) }
-			?: throw EntityEncryptionException(errorMessage())
 
 	override suspend fun decrypt(classification: EncryptedClassification): DecryptedClassification =
-		decrypt(classification) { "Classification cannot be decrypted" }
+		decryptOrNull(classification) ?: throw EntityEncryptionException("Classification cannot be decrypted")
 
-	override suspend fun tryDecrypt(classification: EncryptedClassification): Classification = runCatching {
-		decrypt(classification)
-	}.getOrDefault(classification)
+	override suspend fun tryDecrypt(classification: EncryptedClassification): Classification =
+		decryptOrNull(classification) ?: classification
 }
 
 @InternalIcureApi

@@ -370,7 +370,7 @@ internal class FormApiImpl(
 		return rawApi.createForm(
 			encrypt(entity),
 		).successBody().let {
-			decrypt(it) { "Created entity cannot be decrypted" }
+			decrypt(it)
 		}
 	}
 
@@ -381,7 +381,7 @@ internal class FormApiImpl(
 				encrypt(it)
 			},
 		).successBody().map {
-			decrypt(it) { "Created entity cannot be decrypted" }
+			decrypt(it)
 		}
 	}
 
@@ -425,18 +425,16 @@ internal class FormApiImpl(
 		fieldsToEncrypt,
 	) { Serialization.json.decodeFromJsonElement<EncryptedForm>(it) }
 
-	suspend fun decrypt(entity: EncryptedForm, errorMessage: () -> String): DecryptedForm = crypto.entity.tryDecryptEntity(
+	private suspend fun decryptOrNull(entity: EncryptedForm): DecryptedForm? = crypto.entity.tryDecryptEntity(
 		entity.withTypeInfo(),
 		EncryptedForm.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedForm>(it) }
-		?: throw EntityEncryptionException(errorMessage())
 
 	override suspend fun decrypt(form: EncryptedForm): DecryptedForm =
-		decrypt(form) { "Form cannot be decrypted" }
+		decryptOrNull(form) ?: throw EntityEncryptionException("Form cannot be decrypted")
 
-	override suspend fun tryDecrypt(form: EncryptedForm): Form = runCatching {
-		decrypt(form)
-	}.getOrDefault(form)
+	override suspend fun tryDecrypt(form: EncryptedForm): Form =
+		decryptOrNull(form) ?: form
 
 }
 

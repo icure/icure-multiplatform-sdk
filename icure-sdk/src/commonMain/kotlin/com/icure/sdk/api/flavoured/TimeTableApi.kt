@@ -246,9 +246,7 @@ internal class TimeTableApiImpl(
 		require(entity.securityMetadata != null) { "Entity must have security metadata initialised. You can use the withEncryptionMetadata for that very purpose." }
 		return rawApi.createTimeTable(
 			encrypt(entity),
-		).successBody().let {
-			decrypt(it) { "Created entity cannot be decrypted" }
-		}
+		).successBody().let { decrypt(it) }
 	}
 
 	private val crypto get() = config.crypto
@@ -291,18 +289,16 @@ internal class TimeTableApiImpl(
 		fieldsToEncrypt,
 	) { Serialization.json.decodeFromJsonElement<EncryptedTimeTable>(it) }
 
-	suspend fun decrypt(entity: EncryptedTimeTable, errorMessage: () -> String): DecryptedTimeTable = crypto.entity.tryDecryptEntity(
+	private suspend fun decryptOrNull(entity: EncryptedTimeTable): DecryptedTimeTable? = crypto.entity.tryDecryptEntity(
 		entity.withTypeInfo(),
 		EncryptedTimeTable.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedTimeTable>(it) }
-		?: throw EntityEncryptionException(errorMessage())
 
 	override suspend fun decrypt(timeTable: EncryptedTimeTable): DecryptedTimeTable =
-		decrypt(timeTable) { "TimeTable cannot be decrypted" }
+		decryptOrNull(timeTable) ?: throw EntityEncryptionException("TimeTable cannot be decrypted")
 
-	override suspend fun tryDecrypt(timeTable: EncryptedTimeTable): TimeTable = runCatching {
-		decrypt(timeTable)
-	}.getOrDefault(timeTable)
+	override suspend fun tryDecrypt(timeTable: EncryptedTimeTable): TimeTable =
+		decryptOrNull(timeTable) ?: timeTable
 }
 
 @InternalIcureApi

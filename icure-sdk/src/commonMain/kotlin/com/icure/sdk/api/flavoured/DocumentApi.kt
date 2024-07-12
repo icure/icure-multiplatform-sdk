@@ -387,7 +387,7 @@ internal class DocumentApiImpl(
 		return rawApi.createDocument(
 			encrypt(entity),
 		).successBody().let {
-			decrypt(it) { "Created entity cannot be decrypted" }
+			decrypt(it)
 		}
 	}
 
@@ -507,18 +507,16 @@ internal class DocumentApiImpl(
 		fieldsToEncrypt,
 	) { Serialization.json.decodeFromJsonElement<EncryptedDocument>(it) }
 
-	suspend fun decrypt(entity: EncryptedDocument, errorMessage: () -> String): DecryptedDocument = crypto.entity.tryDecryptEntity(
+	private suspend fun decryptOrNull(entity: EncryptedDocument): DecryptedDocument? = crypto.entity.tryDecryptEntity(
 		entity.withTypeInfo(),
 		EncryptedDocument.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedDocument>(it) }
-		?: throw EntityEncryptionException(errorMessage())
 
 	override suspend fun decrypt(document: EncryptedDocument): DecryptedDocument =
-		decrypt(document) { "Document cannot be decrypted" }
+		decryptOrNull(document) ?: throw EntityEncryptionException("Document cannot be decrypted")
 
-	override suspend fun tryDecrypt(document: EncryptedDocument): Document = runCatching {
-		decrypt(document)
-	}.getOrDefault(document)
+	override suspend fun tryDecrypt(document: EncryptedDocument): Document =
+		decryptOrNull(document) ?: document
 }
 
 @InternalIcureApi

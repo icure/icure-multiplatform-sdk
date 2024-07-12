@@ -342,7 +342,7 @@ internal class HealthcareElementApiImpl(
 		return rawApi.createHealthElement(
 			encrypt(entity),
 		).successBody().let {
-			decrypt(it) { "Created entity cannot be decrypted" }
+			decrypt(it)
 		}
 	}
 
@@ -353,7 +353,7 @@ internal class HealthcareElementApiImpl(
 				encrypt(it)
 			},
 		).successBody().map {
-			decrypt(it) { "Created entity cannot be decrypted" }
+			decrypt(it)
 		}
 	}
 
@@ -398,19 +398,17 @@ internal class HealthcareElementApiImpl(
 		fieldsToEncrypt,
 	) { Serialization.json.decodeFromJsonElement<EncryptedHealthElement>(it) }
 
-	suspend fun decrypt(entity: EncryptedHealthElement, errorMessage: () -> String): DecryptedHealthElement =
+	private suspend fun decryptOrNull(entity: EncryptedHealthElement): DecryptedHealthElement? =
 		crypto.entity.tryDecryptEntity(
 			entity.withTypeInfo(),
 			EncryptedHealthElement.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedHealthElement>(it) }
-			?: throw EntityEncryptionException(errorMessage())
 
 	override suspend fun decrypt(healthElement: EncryptedHealthElement): DecryptedHealthElement =
-		decrypt(healthElement) { "HealthElement cannot be decrypted" }
+		decryptOrNull(healthElement) ?: throw EntityEncryptionException("HealthElement cannot be decrypted")
 
-	override suspend fun tryDecrypt(healthElement: EncryptedHealthElement): HealthElement = runCatching {
-		decrypt(healthElement)
-	}.getOrDefault(healthElement)
+	override suspend fun tryDecrypt(healthElement: EncryptedHealthElement): HealthElement =
+		decryptOrNull(healthElement) ?: healthElement
 }
 
 @InternalIcureApi
