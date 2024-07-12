@@ -40,12 +40,17 @@ sealed interface RecoveryResult<out T : Any> {
 // https://github.com/Kotlin/kotlinx.serialization/issues/2555 - feature request
 @OptIn(ExperimentalSerializationApi::class)
 internal class RecoveryResultSerializer<T : Any>(private val valueSerializer: KSerializer<T>): KSerializer<RecoveryResult<T>> {
+	companion object {
+		private val SUCCESS_QUALIFIED_NAME = "com.icure.sdk.crypto.entities.RecoveryResult.Success"
+		private val FAILURE_QUALIFIED_NAME = "com.icure.sdk.crypto.entities.RecoveryResult.Failure"
+	}
 	private val failureReasonSerializer = RecoveryDataUseFailureReason.serializer()
 	override val descriptor: SerialDescriptor = buildClassSerialDescriptor("RecoveryResult<${valueSerializer.descriptor.serialName}>") {
 		element<String>("type")
 		element("data", valueSerializer.descriptor, isOptional = true)
 		element("reason", failureReasonSerializer.descriptor, isOptional = true)
 	}
+
 	override fun deserialize(decoder: Decoder): RecoveryResult<T> = decoder.decodeStructure(descriptor) {
 		var type: String? = null
 		var data: T? = null
@@ -61,11 +66,11 @@ internal class RecoveryResultSerializer<T : Any>(private val valueSerializer: KS
 		}
 
 		when (type) {
-			Success::class.qualifiedName -> {
+			SUCCESS_QUALIFIED_NAME -> {
 				if (data == null) throw SerializationException("Missing data for success recovery result")
 				Success(data)
 			}
-			Failure::class.qualifiedName -> {
+			FAILURE_QUALIFIED_NAME -> {
 				if (reason == null) throw SerializationException("Missing reason for failure recovery result")
 				Failure(reason)
 			}
@@ -76,10 +81,16 @@ internal class RecoveryResultSerializer<T : Any>(private val valueSerializer: KS
 	}
 	override fun serialize(encoder: Encoder, value: RecoveryResult<T>) {
 		encoder.encodeStructure(descriptor) {
-			encodeStringElement(descriptor, 0,  value::class.qualifiedName!!)
+
 			when (value) {
-				is Success -> encodeSerializableElement(descriptor, 1, valueSerializer, value.data)
-				is Failure -> encodeSerializableElement(descriptor, 2, failureReasonSerializer, value.reason)
+				is Success -> {
+					encodeStringElement(descriptor, 0,  SUCCESS_QUALIFIED_NAME)
+					encodeSerializableElement(descriptor, 1, valueSerializer, value.data)
+				}
+				is Failure -> {
+					encodeStringElement(descriptor, 0, FAILURE_QUALIFIED_NAME)
+					encodeSerializableElement(descriptor, 2, failureReasonSerializer, value.reason)
+				}
 			}
 		}
 	}
