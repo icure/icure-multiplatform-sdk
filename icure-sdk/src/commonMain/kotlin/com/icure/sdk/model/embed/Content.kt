@@ -4,12 +4,6 @@ import com.icure.sdk.serialization.ByteArraySerializer
 import com.icure.sdk.serialization.InstantSerializer
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
-import kotlin.Boolean
-import kotlin.ByteArray
-import kotlin.Double
-import kotlin.Long
-import kotlin.String
-import kotlin.collections.List
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
@@ -40,7 +34,21 @@ sealed interface Content {
 
 	public val range: List<Measure>?
 	// region Content-Content
-
+	// Update when new fields are added
+	fun isCompound() =
+		stringValue == null &&
+			numberValue == null &&
+			booleanValue == null &&
+			instantValue == null &&
+			fuzzyDateValue == null &&
+			binaryValue == null &&
+			documentId == null &&
+			measureValue == null &&
+			medicationValue == null &&
+			timeSeries == null &&
+			ratio.isNullOrEmpty() &&
+			range.isNullOrEmpty() &&
+			!compoundValue.isNullOrEmpty()
 	// endregion
 }
 

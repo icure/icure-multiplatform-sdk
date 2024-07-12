@@ -8,6 +8,7 @@ kotest = "5.9.0"
 androidLibrary = "8.2.2"
 kryptom = "1.0.4"
 kermit = "2.0.3"
+bouncyCastle = "1.70"
 
 [libraries]
 
@@ -53,6 +54,8 @@ kermit = { group = "co.touchlab", name = "kermit", version.ref = "kermit" }
 
 # Kryptom
 kryptom = { group = "com.icure.kryptom", name = "kryptom", version.ref = "kryptom" }
+
+bouncyCastle = { group = "org.bouncycastle", name = "bcprov-jdk15on", version.ref = "bouncyCastle" }
 
 [bundles]
 ktorServer = ["ktorServerCore", "ktorServerNetty", "ktorServerWebsockets"]
