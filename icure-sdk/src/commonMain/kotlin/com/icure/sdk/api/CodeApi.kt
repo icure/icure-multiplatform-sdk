@@ -11,6 +11,7 @@ import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.InternalIcureApi
 import kotlinx.serialization.json.JsonElement
+import kotlin.js.JsName
 
 interface CodeApi {
 	suspend fun findCodesByLabel(
@@ -80,6 +81,7 @@ interface CodeApi {
 	): List<String>
 	suspend fun createCode(c: Code): Code
 	suspend fun createCodes(codeBatch: List<Code>): List<Code>
+	@JsName("createCodesInGroup")
 	suspend fun createCodes(groupId: String, codeBatch: List<Code>): List<Code>
 	suspend fun isCodeValid(
 		type: String,
@@ -95,6 +97,7 @@ interface CodeApi {
 	): Code
 
 	suspend fun getCodes(codeIds: List<String>): List<Code>
+	@JsName("getCodesInGroup")
 	suspend fun getCodes(groupId: String, codeIds: List<String>): List<Code>
 	suspend fun getCode(codeId: String): Code
 	suspend fun getCodeWithParts(
@@ -105,6 +108,7 @@ interface CodeApi {
 
 	suspend fun modifyCode(codeDto: Code): Code
 	suspend fun modifyCodes(codeBatch: List<Code>): List<Code>
+	@JsName("modifyCodesInGroup")
 	suspend fun modifyCodes(groupId: String, codeBatch: List<Code>): List<Code>
 	suspend fun filterCodesBy(
 		@DefaultValue("null")
