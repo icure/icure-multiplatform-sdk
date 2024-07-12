@@ -302,6 +302,68 @@ public fun createDelegationDeAnonymizationMetadataAsync(
 }.failureToPyStringAsyncCallback(resultCallback)
 
 @Serializable
+private class DecryptParams(
+	public val healthElement: EncryptedHealthElement,
+)
+
+public fun decryptBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<DecryptParams>(params)
+	runBlocking {
+		sdk.healthcareElement.decrypt(
+			decodedParams.healthElement,
+		)
+	}
+}.toPyString(DecryptedHealthElement.serializer())
+
+@OptIn(ExperimentalForeignApi::class)
+public fun decryptAsync(
+	sdk: IcureApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<DecryptParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.healthcareElement.decrypt(
+				decodedParams.healthElement,
+			)
+		}.toPyStringAsyncCallback(DecryptedHealthElement.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class TryDecryptParams(
+	public val healthElement: EncryptedHealthElement,
+)
+
+public fun tryDecryptBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<TryDecryptParams>(params)
+	runBlocking {
+		sdk.healthcareElement.tryDecrypt(
+			decodedParams.healthElement,
+		)
+	}
+}.toPyString(HealthElementSerializer)
+
+@OptIn(ExperimentalForeignApi::class)
+public fun tryDecryptAsync(
+	sdk: IcureApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<TryDecryptParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.healthcareElement.tryDecrypt(
+				decodedParams.healthElement,
+			)
+		}.toPyStringAsyncCallback(HealthElementSerializer, resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
 private class MatchHealthcareElementsByParams(
 	@Contextual
 	public val filter: AbstractFilter<HealthElement>,

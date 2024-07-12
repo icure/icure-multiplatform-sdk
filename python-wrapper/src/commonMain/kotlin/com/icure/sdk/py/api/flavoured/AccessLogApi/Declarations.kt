@@ -8,6 +8,7 @@ import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.model.AccessLog
 import com.icure.sdk.model.DecryptedAccessLog
+import com.icure.sdk.model.EncryptedAccessLog
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.Patient
 import com.icure.sdk.model.User
@@ -257,6 +258,68 @@ public fun createDelegationDeAnonymizationMetadataAsync(
 				decodedParams.delegates,
 			)
 		}.toPyStringAsyncCallback(Unit.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class DecryptParams(
+	public val accessLog: EncryptedAccessLog,
+)
+
+public fun decryptBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<DecryptParams>(params)
+	runBlocking {
+		sdk.accessLog.decrypt(
+			decodedParams.accessLog,
+		)
+	}
+}.toPyString(DecryptedAccessLog.serializer())
+
+@OptIn(ExperimentalForeignApi::class)
+public fun decryptAsync(
+	sdk: IcureApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<DecryptParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.accessLog.decrypt(
+				decodedParams.accessLog,
+			)
+		}.toPyStringAsyncCallback(DecryptedAccessLog.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class TryDecryptParams(
+	public val accessLog: EncryptedAccessLog,
+)
+
+public fun tryDecryptBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<TryDecryptParams>(params)
+	runBlocking {
+		sdk.accessLog.tryDecrypt(
+			decodedParams.accessLog,
+		)
+	}
+}.toPyString(AccessLogSerializer)
+
+@OptIn(ExperimentalForeignApi::class)
+public fun tryDecryptAsync(
+	sdk: IcureApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<TryDecryptParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.accessLog.tryDecrypt(
+				decodedParams.accessLog,
+			)
+		}.toPyStringAsyncCallback(AccessLogSerializer, resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 

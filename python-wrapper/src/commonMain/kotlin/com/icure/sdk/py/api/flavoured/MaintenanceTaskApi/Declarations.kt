@@ -256,6 +256,68 @@ public fun createDelegationDeAnonymizationMetadataAsync(
 }.failureToPyStringAsyncCallback(resultCallback)
 
 @Serializable
+private class DecryptParams(
+	public val maintenanceTask: EncryptedMaintenanceTask,
+)
+
+public fun decryptBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<DecryptParams>(params)
+	runBlocking {
+		sdk.maintenanceTask.decrypt(
+			decodedParams.maintenanceTask,
+		)
+	}
+}.toPyString(DecryptedMaintenanceTask.serializer())
+
+@OptIn(ExperimentalForeignApi::class)
+public fun decryptAsync(
+	sdk: IcureApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<DecryptParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.maintenanceTask.decrypt(
+				decodedParams.maintenanceTask,
+			)
+		}.toPyStringAsyncCallback(DecryptedMaintenanceTask.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class TryDecryptParams(
+	public val maintenanceTask: EncryptedMaintenanceTask,
+)
+
+public fun tryDecryptBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<TryDecryptParams>(params)
+	runBlocking {
+		sdk.maintenanceTask.tryDecrypt(
+			decodedParams.maintenanceTask,
+		)
+	}
+}.toPyString(MaintenanceTaskSerializer)
+
+@OptIn(ExperimentalForeignApi::class)
+public fun tryDecryptAsync(
+	sdk: IcureApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<TryDecryptParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.maintenanceTask.tryDecrypt(
+				decodedParams.maintenanceTask,
+			)
+		}.toPyStringAsyncCallback(MaintenanceTaskSerializer, resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
 private class DeleteMaintenanceTaskParams(
 	public val entityId: String,
 )

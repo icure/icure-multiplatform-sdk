@@ -8,6 +8,7 @@ import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.model.Classification
 import com.icure.sdk.model.DecryptedClassification
+import com.icure.sdk.model.EncryptedClassification
 import com.icure.sdk.model.Patient
 import com.icure.sdk.model.User
 import com.icure.sdk.model.couchdb.DocIdentifier
@@ -256,6 +257,68 @@ public fun createDelegationDeAnonymizationMetadataAsync(
 				decodedParams.delegates,
 			)
 		}.toPyStringAsyncCallback(Unit.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class DecryptParams(
+	public val classification: EncryptedClassification,
+)
+
+public fun decryptBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<DecryptParams>(params)
+	runBlocking {
+		sdk.classification.decrypt(
+			decodedParams.classification,
+		)
+	}
+}.toPyString(DecryptedClassification.serializer())
+
+@OptIn(ExperimentalForeignApi::class)
+public fun decryptAsync(
+	sdk: IcureApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<DecryptParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.classification.decrypt(
+				decodedParams.classification,
+			)
+		}.toPyStringAsyncCallback(DecryptedClassification.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class TryDecryptParams(
+	public val classification: EncryptedClassification,
+)
+
+public fun tryDecryptBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<TryDecryptParams>(params)
+	runBlocking {
+		sdk.classification.tryDecrypt(
+			decodedParams.classification,
+		)
+	}
+}.toPyString(ClassificationSerializer)
+
+@OptIn(ExperimentalForeignApi::class)
+public fun tryDecryptAsync(
+	sdk: IcureApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<TryDecryptParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.classification.tryDecrypt(
+				decodedParams.classification,
+			)
+		}.toPyStringAsyncCallback(ClassificationSerializer, resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 

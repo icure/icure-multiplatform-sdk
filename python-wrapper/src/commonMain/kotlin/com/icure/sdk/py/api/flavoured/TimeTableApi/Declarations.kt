@@ -7,6 +7,7 @@ import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.TimeTableShareOptions
 import com.icure.sdk.model.DecryptedTimeTable
+import com.icure.sdk.model.EncryptedTimeTable
 import com.icure.sdk.model.Patient
 import com.icure.sdk.model.TimeTable
 import com.icure.sdk.model.User
@@ -249,6 +250,68 @@ public fun createDelegationDeAnonymizationMetadataAsync(
 				decodedParams.delegates,
 			)
 		}.toPyStringAsyncCallback(Unit.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class DecryptParams(
+	public val timeTable: EncryptedTimeTable,
+)
+
+public fun decryptBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<DecryptParams>(params)
+	runBlocking {
+		sdk.timeTable.decrypt(
+			decodedParams.timeTable,
+		)
+	}
+}.toPyString(DecryptedTimeTable.serializer())
+
+@OptIn(ExperimentalForeignApi::class)
+public fun decryptAsync(
+	sdk: IcureApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<DecryptParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.timeTable.decrypt(
+				decodedParams.timeTable,
+			)
+		}.toPyStringAsyncCallback(DecryptedTimeTable.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class TryDecryptParams(
+	public val timeTable: EncryptedTimeTable,
+)
+
+public fun tryDecryptBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<TryDecryptParams>(params)
+	runBlocking {
+		sdk.timeTable.tryDecrypt(
+			decodedParams.timeTable,
+		)
+	}
+}.toPyString(TimeTableSerializer)
+
+@OptIn(ExperimentalForeignApi::class)
+public fun tryDecryptAsync(
+	sdk: IcureApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<TryDecryptParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.timeTable.tryDecrypt(
+				decodedParams.timeTable,
+			)
+		}.toPyStringAsyncCallback(TimeTableSerializer, resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 

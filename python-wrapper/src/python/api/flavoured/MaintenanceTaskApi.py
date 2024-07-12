@@ -1,6 +1,6 @@
 import asyncio
 import json
-from icure.model import DecryptedMaintenanceTask, User, AccessLevel, MaintenanceTask, serialize_maintenance_task, DocIdentifier, SubscriptionEventType, MaintenanceTaskAbstractFilter, EntitySubscriptionConfiguration, EncryptedMaintenanceTask, serialize_abstract_filter, ShareMetadataBehaviour, RequestedPermission, deserialize_simple_share_result, SimpleShareResult, MaintenanceTaskShareOptions, FilterChain, PaginatedList, deserialize_maintenance_task
+from icure.model import DecryptedMaintenanceTask, User, AccessLevel, MaintenanceTask, serialize_maintenance_task, EncryptedMaintenanceTask, deserialize_maintenance_task, DocIdentifier, SubscriptionEventType, MaintenanceTaskAbstractFilter, EntitySubscriptionConfiguration, serialize_abstract_filter, ShareMetadataBehaviour, RequestedPermission, deserialize_simple_share_result, SimpleShareResult, MaintenanceTaskShareOptions, FilterChain, PaginatedList
 from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from icure.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
@@ -777,6 +777,84 @@ class MaintenanceTaskApi:
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
+
+	async def decrypt_async(self, maintenance_task: EncryptedMaintenanceTask) -> DecryptedMaintenanceTask:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = DecryptedMaintenanceTask._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"maintenanceTask": maintenance_task.__serialize__(),
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.icure_sdk._executor,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.decryptAsync,
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def decrypt_blocking(self, maintenance_task: EncryptedMaintenanceTask) -> DecryptedMaintenanceTask:
+		payload = {
+			"maintenanceTask": maintenance_task.__serialize__(),
+		}
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.decryptBlocking(
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
+		else:
+			return_value = DecryptedMaintenanceTask._deserialize(result_info.success)
+			return return_value
+
+	async def try_decrypt_async(self, maintenance_task: EncryptedMaintenanceTask) -> MaintenanceTask:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = deserialize_maintenance_task(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"maintenanceTask": maintenance_task.__serialize__(),
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.icure_sdk._executor,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.tryDecryptAsync,
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def try_decrypt_blocking(self, maintenance_task: EncryptedMaintenanceTask) -> MaintenanceTask:
+		payload = {
+			"maintenanceTask": maintenance_task.__serialize__(),
+		}
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.tryDecryptBlocking(
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
+		else:
+			return_value = deserialize_maintenance_task(result_info.success)
+			return return_value
 
 	async def delete_maintenance_task_async(self, entity_id: str) -> DocIdentifier:
 		loop = asyncio.get_running_loop()

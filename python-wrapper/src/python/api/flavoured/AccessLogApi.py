@@ -1,6 +1,6 @@
 import asyncio
 import json
-from icure.model import DecryptedAccessLog, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, AccessLog, serialize_access_log, DocIdentifier, ShareMetadataBehaviour, RequestedPermission, deserialize_simple_share_result, SimpleShareResult, AccessLogShareOptions, PaginatedList, EncryptedAccessLog, deserialize_access_log
+from icure.model import DecryptedAccessLog, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, AccessLog, serialize_access_log, EncryptedAccessLog, deserialize_access_log, DocIdentifier, ShareMetadataBehaviour, RequestedPermission, deserialize_simple_share_result, SimpleShareResult, AccessLogShareOptions, PaginatedList
 from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from icure.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
@@ -1215,6 +1215,84 @@ class AccessLogApi:
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
+
+	async def decrypt_async(self, access_log: EncryptedAccessLog) -> DecryptedAccessLog:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = DecryptedAccessLog._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"accessLog": access_log.__serialize__(),
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.icure_sdk._executor,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.decryptAsync,
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def decrypt_blocking(self, access_log: EncryptedAccessLog) -> DecryptedAccessLog:
+		payload = {
+			"accessLog": access_log.__serialize__(),
+		}
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.decryptBlocking(
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
+		else:
+			return_value = DecryptedAccessLog._deserialize(result_info.success)
+			return return_value
+
+	async def try_decrypt_async(self, access_log: EncryptedAccessLog) -> AccessLog:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = deserialize_access_log(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"accessLog": access_log.__serialize__(),
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.icure_sdk._executor,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.tryDecryptAsync,
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def try_decrypt_blocking(self, access_log: EncryptedAccessLog) -> AccessLog:
+		payload = {
+			"accessLog": access_log.__serialize__(),
+		}
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.tryDecryptBlocking(
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
+		else:
+			return_value = deserialize_access_log(result_info.success)
+			return return_value
 
 	async def delete_access_log_async(self, entity_id: str) -> DocIdentifier:
 		loop = asyncio.get_running_loop()

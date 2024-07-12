@@ -269,6 +269,68 @@ public fun createDelegationDeAnonymizationMetadataAsync(
 }.failureToPyStringAsyncCallback(resultCallback)
 
 @Serializable
+private class DecryptParams(
+	public val message: EncryptedMessage,
+)
+
+public fun decryptBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<DecryptParams>(params)
+	runBlocking {
+		sdk.message.decrypt(
+			decodedParams.message,
+		)
+	}
+}.toPyString(DecryptedMessage.serializer())
+
+@OptIn(ExperimentalForeignApi::class)
+public fun decryptAsync(
+	sdk: IcureApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<DecryptParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.message.decrypt(
+				decodedParams.message,
+			)
+		}.toPyStringAsyncCallback(DecryptedMessage.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class TryDecryptParams(
+	public val message: EncryptedMessage,
+)
+
+public fun tryDecryptBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<TryDecryptParams>(params)
+	runBlocking {
+		sdk.message.tryDecrypt(
+			decodedParams.message,
+		)
+	}
+}.toPyString(MessageSerializer)
+
+@OptIn(ExperimentalForeignApi::class)
+public fun tryDecryptAsync(
+	sdk: IcureApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<TryDecryptParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.message.tryDecrypt(
+				decodedParams.message,
+			)
+		}.toPyStringAsyncCallback(MessageSerializer, resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
 private class CreateMessageInTopicParams(
 	public val entity: DecryptedMessage,
 )

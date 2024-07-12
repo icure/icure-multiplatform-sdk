@@ -391,6 +391,47 @@ class CodeApi:
 			return_value = [Code._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
+	async def create_codes_async(self, group_id: str, code_batch: List[Code]) -> List[Code]:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = [Code._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"groupId": group_id,
+			"codeBatch": [x0.__serialize__() for x0 in code_batch],
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.icure_sdk._executor,
+			symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.createCodesAsync,
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def create_codes_blocking(self, group_id: str, code_batch: List[Code]) -> List[Code]:
+		payload = {
+			"groupId": group_id,
+			"codeBatch": [x0.__serialize__() for x0 in code_batch],
+		}
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.createCodesBlocking(
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
+		else:
+			return_value = [Code._deserialize(x1) for x1 in result_info.success]
+			return return_value
+
 	async def is_code_valid_async(self, type: str, code: str, version: Optional[str]) -> BooleanResponse:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
@@ -504,6 +545,47 @@ class CodeApi:
 
 	def get_codes_blocking(self, code_ids: List[str]) -> List[Code]:
 		payload = {
+			"codeIds": [x0 for x0 in code_ids],
+		}
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.getCodesBlocking(
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
+		else:
+			return_value = [Code._deserialize(x1) for x1 in result_info.success]
+			return return_value
+
+	async def get_codes_async(self, group_id: str, code_ids: List[str]) -> List[Code]:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = [Code._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"groupId": group_id,
+			"codeIds": [x0 for x0 in code_ids],
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.icure_sdk._executor,
+			symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.getCodesAsync,
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def get_codes_blocking(self, group_id: str, code_ids: List[str]) -> List[Code]:
+		payload = {
+			"groupId": group_id,
 			"codeIds": [x0 for x0 in code_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.getCodesBlocking(
@@ -664,6 +746,47 @@ class CodeApi:
 
 	def modify_codes_blocking(self, code_batch: List[Code]) -> List[Code]:
 		payload = {
+			"codeBatch": [x0.__serialize__() for x0 in code_batch],
+		}
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.modifyCodesBlocking(
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
+		else:
+			return_value = [Code._deserialize(x1) for x1 in result_info.success]
+			return return_value
+
+	async def modify_codes_async(self, group_id: str, code_batch: List[Code]) -> List[Code]:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = [Code._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"groupId": group_id,
+			"codeBatch": [x0.__serialize__() for x0 in code_batch],
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.icure_sdk._executor,
+			symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.modifyCodesAsync,
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def modify_codes_blocking(self, group_id: str, code_batch: List[Code]) -> List[Code]:
+		payload = {
+			"groupId": group_id,
 			"codeBatch": [x0.__serialize__() for x0 in code_batch],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.modifyCodesBlocking(

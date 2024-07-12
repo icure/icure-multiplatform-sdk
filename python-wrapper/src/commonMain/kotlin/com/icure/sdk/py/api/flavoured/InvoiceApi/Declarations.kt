@@ -7,6 +7,7 @@ import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.model.DecryptedInvoice
+import com.icure.sdk.model.EncryptedInvoice
 import com.icure.sdk.model.IcureStub
 import com.icure.sdk.model.Invoice
 import com.icure.sdk.model.PaginatedList
@@ -299,6 +300,68 @@ public fun createDelegationDeAnonymizationMetadataAsync(
 				decodedParams.delegates,
 			)
 		}.toPyStringAsyncCallback(Unit.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class DecryptParams(
+	public val invoice: EncryptedInvoice,
+)
+
+public fun decryptBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<DecryptParams>(params)
+	runBlocking {
+		sdk.invoice.decrypt(
+			decodedParams.invoice,
+		)
+	}
+}.toPyString(DecryptedInvoice.serializer())
+
+@OptIn(ExperimentalForeignApi::class)
+public fun decryptAsync(
+	sdk: IcureApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<DecryptParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.invoice.decrypt(
+				decodedParams.invoice,
+			)
+		}.toPyStringAsyncCallback(DecryptedInvoice.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class TryDecryptParams(
+	public val invoice: EncryptedInvoice,
+)
+
+public fun tryDecryptBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<TryDecryptParams>(params)
+	runBlocking {
+		sdk.invoice.tryDecrypt(
+			decodedParams.invoice,
+		)
+	}
+}.toPyString(InvoiceSerializer)
+
+@OptIn(ExperimentalForeignApi::class)
+public fun tryDecryptAsync(
+	sdk: IcureApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<TryDecryptParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.invoice.tryDecrypt(
+				decodedParams.invoice,
+			)
+		}.toPyStringAsyncCallback(InvoiceSerializer, resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 

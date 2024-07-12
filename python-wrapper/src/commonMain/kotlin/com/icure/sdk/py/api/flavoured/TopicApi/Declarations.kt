@@ -267,6 +267,68 @@ public fun createDelegationDeAnonymizationMetadataAsync(
 }.failureToPyStringAsyncCallback(resultCallback)
 
 @Serializable
+private class DecryptParams(
+	public val topic: EncryptedTopic,
+)
+
+public fun decryptBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<DecryptParams>(params)
+	runBlocking {
+		sdk.topic.decrypt(
+			decodedParams.topic,
+		)
+	}
+}.toPyString(DecryptedTopic.serializer())
+
+@OptIn(ExperimentalForeignApi::class)
+public fun decryptAsync(
+	sdk: IcureApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<DecryptParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.topic.decrypt(
+				decodedParams.topic,
+			)
+		}.toPyStringAsyncCallback(DecryptedTopic.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class TryDecryptParams(
+	public val topic: EncryptedTopic,
+)
+
+public fun tryDecryptBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<TryDecryptParams>(params)
+	runBlocking {
+		sdk.topic.tryDecrypt(
+			decodedParams.topic,
+		)
+	}
+}.toPyString(TopicSerializer)
+
+@OptIn(ExperimentalForeignApi::class)
+public fun tryDecryptAsync(
+	sdk: IcureApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<TryDecryptParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.topic.tryDecrypt(
+				decodedParams.topic,
+			)
+		}.toPyStringAsyncCallback(TopicSerializer, resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
 private class DeleteTopicParams(
 	public val entityId: String,
 )

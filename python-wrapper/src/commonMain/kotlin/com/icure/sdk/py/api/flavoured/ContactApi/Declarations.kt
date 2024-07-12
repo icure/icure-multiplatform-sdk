@@ -26,6 +26,7 @@ import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.py.serialization.ContactSerializer
 import com.icure.sdk.py.serialization.PatientSerializer
+import com.icure.sdk.py.serialization.ServiceSerializer
 import com.icure.sdk.py.subscription.EntitySubscription.EntitySubscriptionWithSerializer
 import com.icure.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
 import com.icure.sdk.py.utils.PyResult
@@ -301,6 +302,130 @@ public fun createDelegationDeAnonymizationMetadataAsync(
 				decodedParams.delegates,
 			)
 		}.toPyStringAsyncCallback(Unit.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class DecryptParams(
+	public val contact: EncryptedContact,
+)
+
+public fun decryptBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<DecryptParams>(params)
+	runBlocking {
+		sdk.contact.decrypt(
+			decodedParams.contact,
+		)
+	}
+}.toPyString(DecryptedContact.serializer())
+
+@OptIn(ExperimentalForeignApi::class)
+public fun decryptAsync(
+	sdk: IcureApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<DecryptParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.contact.decrypt(
+				decodedParams.contact,
+			)
+		}.toPyStringAsyncCallback(DecryptedContact.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class TryDecryptParams(
+	public val contact: EncryptedContact,
+)
+
+public fun tryDecryptBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<TryDecryptParams>(params)
+	runBlocking {
+		sdk.contact.tryDecrypt(
+			decodedParams.contact,
+		)
+	}
+}.toPyString(ContactSerializer)
+
+@OptIn(ExperimentalForeignApi::class)
+public fun tryDecryptAsync(
+	sdk: IcureApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<TryDecryptParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.contact.tryDecrypt(
+				decodedParams.contact,
+			)
+		}.toPyStringAsyncCallback(ContactSerializer, resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class DecryptServiceParams(
+	public val service: EncryptedService,
+)
+
+public fun decryptServiceBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<DecryptServiceParams>(params)
+	runBlocking {
+		sdk.contact.decryptService(
+			decodedParams.service,
+		)
+	}
+}.toPyString(DecryptedService.serializer())
+
+@OptIn(ExperimentalForeignApi::class)
+public fun decryptServiceAsync(
+	sdk: IcureApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<DecryptServiceParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.contact.decryptService(
+				decodedParams.service,
+			)
+		}.toPyStringAsyncCallback(DecryptedService.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class TryDecryptServiceParams(
+	public val service: EncryptedService,
+)
+
+public fun tryDecryptServiceBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<TryDecryptServiceParams>(params)
+	runBlocking {
+		sdk.contact.tryDecryptService(
+			decodedParams.service,
+		)
+	}
+}.toPyString(ServiceSerializer)
+
+@OptIn(ExperimentalForeignApi::class)
+public fun tryDecryptServiceAsync(
+	sdk: IcureApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<TryDecryptServiceParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.contact.tryDecryptService(
+				decodedParams.service,
+			)
+		}.toPyStringAsyncCallback(ServiceSerializer, resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 

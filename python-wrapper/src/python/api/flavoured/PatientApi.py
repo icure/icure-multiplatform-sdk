@@ -1,6 +1,6 @@
 import asyncio
 import json
-from icure.model import Patient, serialize_patient, DecryptedPatient, User, AccessLevel, IdWithRev, DataOwnerRegistrationSuccess, ShareAllPatientDataOptions, EntityWithTypeInfo, PatientAbstractFilter, serialize_abstract_filter, DocIdentifier, EntityAccessInformation, SubscriptionEventType, EntitySubscriptionConfiguration, EncryptedPatient, ShareMetadataBehaviour, RequestedPermission, deserialize_simple_share_result, SimpleShareResult, PatientShareOptions, FilterChain, PaginatedList, SortDirection, EncryptedContent, ListOfIds, deserialize_patient
+from icure.model import Patient, serialize_patient, DecryptedPatient, User, AccessLevel, EncryptedPatient, deserialize_patient, IdWithRev, DataOwnerRegistrationSuccess, ShareAllPatientDataOptions, EntityWithTypeInfo, PatientAbstractFilter, serialize_abstract_filter, DocIdentifier, EntityAccessInformation, SubscriptionEventType, EntitySubscriptionConfiguration, ShareMetadataBehaviour, RequestedPermission, deserialize_simple_share_result, SimpleShareResult, PatientShareOptions, FilterChain, PaginatedList, SortDirection, EncryptedContent, ListOfIds
 from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from typing import List, Optional, Dict
 from icure.model.CallResult import create_result_from_json
@@ -2848,6 +2848,84 @@ class PatientApi:
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
+
+	async def decrypt_async(self, patient: EncryptedPatient) -> DecryptedPatient:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = DecryptedPatient._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"patient": patient.__serialize__(),
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.icure_sdk._executor,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.decryptAsync,
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def decrypt_blocking(self, patient: EncryptedPatient) -> DecryptedPatient:
+		payload = {
+			"patient": patient.__serialize__(),
+		}
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.decryptBlocking(
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
+		else:
+			return_value = DecryptedPatient._deserialize(result_info.success)
+			return return_value
+
+	async def try_decrypt_async(self, patient: EncryptedPatient) -> Patient:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = deserialize_patient(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"patient": patient.__serialize__(),
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.icure_sdk._executor,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryDecryptAsync,
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def try_decrypt_blocking(self, patient: EncryptedPatient) -> Patient:
+		payload = {
+			"patient": patient.__serialize__(),
+		}
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryDecryptBlocking(
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
+		else:
+			return_value = deserialize_patient(result_info.success)
+			return return_value
 
 	async def create_patients_async(self, patient_dtos: List[DecryptedPatient]) -> List[IdWithRev]:
 		loop = asyncio.get_running_loop()

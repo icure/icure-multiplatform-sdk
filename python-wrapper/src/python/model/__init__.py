@@ -1499,6 +1499,41 @@ class ComplementFilter:
 		)
 
 @dataclass
+class ExternalViewFilter:
+	view: str
+	partition: str
+	entity_qualified_name: str
+	start_key: Optional['ExternalFilterKey']
+	end_key: Optional['ExternalFilterKey']
+	desc: Optional[str] = None
+
+	def __serialize__(self) -> object:
+		return {
+			"desc": self.desc,
+			"view": self.view,
+			"partition": self.partition,
+			"entityQualifiedName": self.entity_qualified_name,
+			"startKey": serialize_external_filter_key(self.start_key) if self.start_key is not None else None,
+			"endKey": serialize_external_filter_key(self.end_key) if self.end_key is not None else None,
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ExternalViewFilter':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			desc=deserialized_dict.get("desc"),
+			view=deserialized_dict["view"],
+			partition=deserialized_dict["partition"],
+			entity_qualified_name=deserialized_dict["entityQualifiedName"],
+			start_key=deserialize_external_filter_key(deserialized_dict.get("startKey")) if deserialized_dict.get("startKey") is not None else None,
+			end_key=deserialize_external_filter_key(deserialized_dict.get("endKey")) if deserialized_dict.get("endKey") is not None else None,
+		)
+
+@dataclass
 class IntersectionFilter:
 	desc: Optional[str] = None
 	filters: List['objectAbstractFilter'] = field(default_factory=list)
@@ -1883,7 +1918,7 @@ class InvoiceByHcPartyCodeDateFilter:
 			end_invoice_date=deserialized_dict.get("endInvoiceDate"),
 		)
 
-AbstractFilter = Union['ContactByHcPartyPatientTagCodeDateFilter', 'ContactByHcPartyTagCodeDateFilter', 'ContactByHcPartyFilter', 'ContactByServiceIdsFilter', 'ContactByHcPartyIdentifiersFilter', 'HealthcarePartyByIdsFilter', 'HealthcarePartyByTagCodeFilter', 'AllHealthcarePartiesFilter', 'HealthcarePartyByIdentifiersFilter', 'HealthcarePartyByNameFilter', 'HealthElementByHcPartySecretForeignKeysFilter', 'HealthElementByHcPartyTagCodeFilter', 'HealthElementByIdsFilter', 'HealthElementByHcPartyIdentifiersFilter', 'HealthElementByHcPartyFilter', 'CodeIdsByTypeCodeVersionIntervalFilter', 'AllCodesFilter', 'CodeByIdsFilter', 'CodeByRegionTypeLabelLanguageFilter', 'MessageByHcPartyTransportGuidFilter', 'MessageByHcPartyFilter', 'LatestMessageByHcPartyTransportGuidFilter', 'UserByIdsFilter', 'AllUsersFilter', 'UserByNameEmailPhoneFilter', 'UsersByPatientIdFilter', 'TopicByParticipantFilter', 'TopicByHcPartyFilter', 'UnionFilter', 'PatientByHcPartyGenderEducationProfession', 'PatientByHcPartyDateOfBirthFilter', 'PatientByHcPartyAndExternalIdFilter', 'PatientByHcPartyAndSsinsFilter', 'PatientByHcPartyAndActiveFilter', 'PatientByHcPartyAndAddressFilter', 'PatientByHcPartyNameFilter', 'PatientByHcPartyAndSsinFilter', 'PatientByHcPartyNameContainsFuzzyFilter', 'PatientByIdsFilter', 'PatientByHcPartyAndIdentifiersFilter', 'PatientByHcPartyDateOfBirthBetweenFilter', 'PatientByHcPartyAndTelecomFilter', 'PatientByHcPartyFilter', 'DeviceByIdsFilter', 'DeviceByHcPartyFilter', 'AllDevicesFilter', 'ComplementFilter', 'IntersectionFilter', 'IdsFilter', 'ServiceBySecretForeignKeys', 'ServiceByContactsAndSubcontactsFilter', 'ServiceByHcPartyTagCodeDateFilter', 'ServiceByHcPartyHealthElementIdsFilter', 'ServiceByHcPartyIdentifiersFilter', 'ServiceByHcPartyFilter', 'ServiceByIdsFilter', 'MaintenanceTaskByHcPartyAndTypeFilter', 'MaintenanceTaskByHcPartyAndIdentifiersFilter', 'MaintenanceTaskByIdsFilter', 'MaintenanceTaskAfterDateFilter', 'InvoiceByHcPartyCodeDateFilter']
+AbstractFilter = Union['ContactByHcPartyPatientTagCodeDateFilter', 'ContactByHcPartyTagCodeDateFilter', 'ContactByHcPartyFilter', 'ContactByServiceIdsFilter', 'ContactByHcPartyIdentifiersFilter', 'HealthcarePartyByIdsFilter', 'HealthcarePartyByTagCodeFilter', 'AllHealthcarePartiesFilter', 'HealthcarePartyByIdentifiersFilter', 'HealthcarePartyByNameFilter', 'HealthElementByHcPartySecretForeignKeysFilter', 'HealthElementByHcPartyTagCodeFilter', 'HealthElementByIdsFilter', 'HealthElementByHcPartyIdentifiersFilter', 'HealthElementByHcPartyFilter', 'CodeIdsByTypeCodeVersionIntervalFilter', 'AllCodesFilter', 'CodeByIdsFilter', 'CodeByRegionTypeLabelLanguageFilter', 'MessageByHcPartyTransportGuidFilter', 'MessageByHcPartyFilter', 'LatestMessageByHcPartyTransportGuidFilter', 'UserByIdsFilter', 'AllUsersFilter', 'UserByNameEmailPhoneFilter', 'UsersByPatientIdFilter', 'TopicByParticipantFilter', 'TopicByHcPartyFilter', 'UnionFilter', 'PatientByHcPartyGenderEducationProfession', 'PatientByHcPartyDateOfBirthFilter', 'PatientByHcPartyAndExternalIdFilter', 'PatientByHcPartyAndSsinsFilter', 'PatientByHcPartyAndActiveFilter', 'PatientByHcPartyAndAddressFilter', 'PatientByHcPartyNameFilter', 'PatientByHcPartyAndSsinFilter', 'PatientByHcPartyNameContainsFuzzyFilter', 'PatientByIdsFilter', 'PatientByHcPartyAndIdentifiersFilter', 'PatientByHcPartyDateOfBirthBetweenFilter', 'PatientByHcPartyAndTelecomFilter', 'PatientByHcPartyFilter', 'DeviceByIdsFilter', 'DeviceByHcPartyFilter', 'AllDevicesFilter', 'ComplementFilter', 'ExternalViewFilter', 'IntersectionFilter', 'IdsFilter', 'ServiceBySecretForeignKeys', 'ServiceByContactsAndSubcontactsFilter', 'ServiceByHcPartyTagCodeDateFilter', 'ServiceByHcPartyHealthElementIdsFilter', 'ServiceByHcPartyIdentifiersFilter', 'ServiceByHcPartyFilter', 'ServiceByIdsFilter', 'MaintenanceTaskByHcPartyAndTypeFilter', 'MaintenanceTaskByHcPartyAndIdentifiersFilter', 'MaintenanceTaskByIdsFilter', 'MaintenanceTaskAfterDateFilter', 'InvoiceByHcPartyCodeDateFilter']
 
 def serialize_abstract_filter(abstract_filter: AbstractFilter) -> object:
 	if isinstance(abstract_filter, ContactByHcPartyPatientTagCodeDateFilter):
@@ -2074,6 +2109,10 @@ def serialize_abstract_filter(abstract_filter: AbstractFilter) -> object:
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "ComplementFilter"})
 		return serialized_entity
+	elif isinstance(abstract_filter, ExternalViewFilter):
+		serialized_entity = abstract_filter.__serialize__()
+		serialized_entity.update({"$type": "ExternalViewFilter"})
+		return serialized_entity
 	elif isinstance(abstract_filter, IntersectionFilter):
 		serialized_entity = abstract_filter.__serialize__()
 		serialized_entity.update({"$type": "IntersectionFilter"})
@@ -2236,6 +2275,8 @@ def deserialize_abstract_filter(data: Union[str, Dict[str, object]]) -> 'Abstrac
 		return AllDevicesFilter._deserialize(deserialized_dict)
 	elif qualifier == "ComplementFilter":
 		return ComplementFilter._deserialize(deserialized_dict)
+	elif qualifier == "ExternalViewFilter":
+		return ExternalViewFilter._deserialize(deserialized_dict)
 	elif qualifier == "IntersectionFilter":
 		return IntersectionFilter._deserialize(deserialized_dict)
 	elif qualifier == "IdsFilter":
@@ -2284,6 +2325,8 @@ TopicAbstractFilter = Union['TopicByParticipantFilter', 'TopicByHcPartyFilter', 
 PatientAbstractFilter = Union['PatientByHcPartyGenderEducationProfession', 'PatientByHcPartyDateOfBirthFilter', 'PatientByHcPartyAndExternalIdFilter', 'PatientByHcPartyAndSsinsFilter', 'PatientByHcPartyAndActiveFilter', 'PatientByHcPartyAndAddressFilter', 'PatientByHcPartyNameFilter', 'PatientByHcPartyAndSsinFilter', 'PatientByHcPartyNameContainsFuzzyFilter', 'PatientByIdsFilter', 'PatientByHcPartyAndIdentifiersFilter', 'PatientByHcPartyDateOfBirthBetweenFilter', 'PatientByHcPartyAndTelecomFilter', 'PatientByHcPartyFilter', 'UnionFilter', 'ComplementFilter', 'IntersectionFilter', 'IdsFilter']
 
 DeviceAbstractFilter = Union['DeviceByIdsFilter', 'DeviceByHcPartyFilter', 'AllDevicesFilter', 'UnionFilter', 'ComplementFilter', 'IntersectionFilter', 'IdsFilter']
+
+IdentifiableAbstractFilter = Union['ExternalViewFilter', 'UnionFilter', 'ComplementFilter', 'IntersectionFilter', 'IdsFilter']
 
 ServiceAbstractFilter = Union['ServiceBySecretForeignKeys', 'ServiceByContactsAndSubcontactsFilter', 'ServiceByHcPartyTagCodeDateFilter', 'ServiceByHcPartyHealthElementIdsFilter', 'ServiceByHcPartyIdentifiersFilter', 'ServiceByHcPartyFilter', 'ServiceByIdsFilter', 'UnionFilter', 'ComplementFilter', 'IntersectionFilter', 'IdsFilter']
 
@@ -6479,6 +6522,7 @@ class DecryptedContact:
 	encounter_location: Optional['DecryptedAddress'] = None
 	sub_contacts: List['DecryptedSubContact'] = field(default_factory=list)
 	services: List['DecryptedService'] = field(default_factory=list)
+	participants: Dict['ParticipantType', str] = field(default_factory=dict)
 	healthcare_party_id: Optional[str] = None
 	modified_contact_id: Optional[str] = None
 	secret_foreign_keys: List[str] = field(default_factory=list)
@@ -6513,6 +6557,7 @@ class DecryptedContact:
 			"encounterLocation": self.encounter_location.__serialize__() if self.encounter_location is not None else None,
 			"subContacts": [x0.__serialize__() for x0 in self.sub_contacts],
 			"services": [x0.__serialize__() for x0 in self.services],
+			"participants": {k0.__serialize__(): v0 for k0, v0 in self.participants.items()},
 			"healthcarePartyId": self.healthcare_party_id,
 			"modifiedContactId": self.modified_contact_id,
 			"secretForeignKeys": [x0 for x0 in self.secret_foreign_keys],
@@ -6554,6 +6599,7 @@ class DecryptedContact:
 			encounter_location=DecryptedAddress._deserialize(deserialized_dict.get("encounterLocation")) if deserialized_dict.get("encounterLocation") is not None else None,
 			sub_contacts=[DecryptedSubContact._deserialize(x0) for x0 in deserialized_dict["subContacts"]],
 			services=[DecryptedService._deserialize(x0) for x0 in deserialized_dict["services"]],
+			participants=dict(map(lambda kv0: (ParticipantType._deserialize(kv0[0]), kv0[1]), deserialized_dict["participants"].items())),
 			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
 			modified_contact_id=deserialized_dict.get("modifiedContactId"),
 			secret_foreign_keys=[x0 for x0 in deserialized_dict["secretForeignKeys"]],
@@ -6589,6 +6635,7 @@ class EncryptedContact:
 	encounter_location: Optional['EncryptedAddress'] = None
 	sub_contacts: List['EncryptedSubContact'] = field(default_factory=list)
 	services: List['EncryptedService'] = field(default_factory=list)
+	participants: Dict['ParticipantType', str] = field(default_factory=dict)
 	healthcare_party_id: Optional[str] = None
 	modified_contact_id: Optional[str] = None
 	secret_foreign_keys: List[str] = field(default_factory=list)
@@ -6623,6 +6670,7 @@ class EncryptedContact:
 			"encounterLocation": self.encounter_location.__serialize__() if self.encounter_location is not None else None,
 			"subContacts": [x0.__serialize__() for x0 in self.sub_contacts],
 			"services": [x0.__serialize__() for x0 in self.services],
+			"participants": {k0.__serialize__(): v0 for k0, v0 in self.participants.items()},
 			"healthcarePartyId": self.healthcare_party_id,
 			"modifiedContactId": self.modified_contact_id,
 			"secretForeignKeys": [x0 for x0 in self.secret_foreign_keys],
@@ -6664,6 +6712,7 @@ class EncryptedContact:
 			encounter_location=EncryptedAddress._deserialize(deserialized_dict.get("encounterLocation")) if deserialized_dict.get("encounterLocation") is not None else None,
 			sub_contacts=[EncryptedSubContact._deserialize(x0) for x0 in deserialized_dict["subContacts"]],
 			services=[EncryptedService._deserialize(x0) for x0 in deserialized_dict["services"]],
+			participants=dict(map(lambda kv0: (ParticipantType._deserialize(kv0[0]), kv0[1]), deserialized_dict["participants"].items())),
 			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
 			modified_contact_id=deserialized_dict.get("modifiedContactId"),
 			secret_foreign_keys=[x0 for x0 in deserialized_dict["secretForeignKeys"]],
@@ -10136,7 +10185,7 @@ class GroupDatabasesInfo:
 		)
 
 class EntitySubscriptionCloseReason(Enum):
-	ChannelFullException = "ChannelFullException"
+	ChannelFull = "ChannelFull"
 	ConnectionLost = "ConnectionLost"
 	IntentionallyClosed = "IntentionallyClosed"
 
@@ -10145,8 +10194,8 @@ class EntitySubscriptionCloseReason(Enum):
 
 	@classmethod
 	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EntitySubscriptionCloseReason':
-		if data == "ChannelFullException":
-			return EntitySubscriptionCloseReason.ChannelFullException
+		if data == "ChannelFull":
+			return EntitySubscriptionCloseReason.ChannelFull
 		elif data == "ConnectionLost":
 			return EntitySubscriptionCloseReason.ConnectionLost
 		elif data == "IntentionallyClosed":
@@ -10460,6 +10509,102 @@ class Gender(Enum):
 			return Gender.Unknown
 		else:
 			raise Exception(f"{data} is not a valid value for Gender enum.")
+
+ExternalFilterKey = Union['ExternalFilterKeyExternalFilterStringKey', 'ExternalFilterKeyExternalFilterLongKey', 'ExternalFilterKeyExternalFilterComplexKey']
+
+@dataclass
+class ExternalFilterKeyExternalFilterStringKey:
+	key: str
+
+	def __serialize__(self) -> object:
+		return {
+			"key": self.key,
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ExternalFilterKeyExternalFilterStringKey':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			key=deserialized_dict["key"],
+		)
+
+@dataclass
+class ExternalFilterKeyExternalFilterLongKey:
+	key: int
+
+	def __serialize__(self) -> object:
+		return {
+			"key": self.key,
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ExternalFilterKeyExternalFilterLongKey':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			key=deserialized_dict["key"],
+		)
+
+@dataclass
+class ExternalFilterKeyExternalFilterComplexKey:
+	key: Dict[str, object]
+
+	def __serialize__(self) -> object:
+		return {
+			"key": {k0: v0 for k0, v0 in self.key.items()},
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ExternalFilterKeyExternalFilterComplexKey':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			key=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["key"].items())),
+		)
+
+def serialize_external_filter_key(external_filter_key: ExternalFilterKey) -> object:
+	if isinstance(external_filter_key, ExternalFilterKeyExternalFilterStringKey):
+		serialized_entity = external_filter_key.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.model.utils.ExternalFilterKey.ExternalFilterStringKey"})
+		return serialized_entity
+	elif isinstance(external_filter_key, ExternalFilterKeyExternalFilterLongKey):
+		serialized_entity = external_filter_key.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.model.utils.ExternalFilterKey.ExternalFilterLongKey"})
+		return serialized_entity
+	elif isinstance(external_filter_key, ExternalFilterKeyExternalFilterComplexKey):
+		serialized_entity = external_filter_key.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.model.utils.ExternalFilterKey.ExternalFilterComplexKey"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(external_filter_key)} is not a known subclass of ExternalFilterKey")
+
+def deserialize_external_filter_key(data: Union[str, Dict[str, object]]) -> 'ExternalFilterKey':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("type")
+	if qualifier is None:
+		raise Exception("Missing qualifier: type")
+	if qualifier == "com.icure.sdk.model.utils.ExternalFilterKey.ExternalFilterStringKey":
+		return ExternalFilterKeyExternalFilterStringKey._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.model.utils.ExternalFilterKey.ExternalFilterLongKey":
+		return ExternalFilterKeyExternalFilterLongKey._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.model.utils.ExternalFilterKey.ExternalFilterComplexKey":
+		return ExternalFilterKeyExternalFilterComplexKey._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of ExternalFilterKey")
 
 @dataclass
 class PersonName:
@@ -13964,6 +14109,55 @@ def deserialize_sub_contact(data: Union[str, Dict[str, object]]) -> 'SubContact'
 		DecryptedSubContact._deserialize(deserialized_dict["entity"])
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SubContact")
+
+class ParticipantType(Enum):
+	Admitter = "Admitter"
+	Attender = "Attender"
+	CallbackContact = "CallbackContact"
+	Consultant = "Consultant"
+	Discharger = "Discharger"
+	Escort = "Escort"
+	Referrer = "Referrer"
+	SecondaryPerformer = "SecondaryPerformer"
+	PrimaryPerformer = "PrimaryPerformer"
+	Participation = "Participation"
+	Translator = "Translator"
+	Emergency = "Emergency"
+	Location = "Location"
+
+	def __serialize__(self) -> object:
+		return self.value
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ParticipantType':
+		if data == "Admitter":
+			return ParticipantType.Admitter
+		elif data == "Attender":
+			return ParticipantType.Attender
+		elif data == "CallbackContact":
+			return ParticipantType.CallbackContact
+		elif data == "Consultant":
+			return ParticipantType.Consultant
+		elif data == "Discharger":
+			return ParticipantType.Discharger
+		elif data == "Escort":
+			return ParticipantType.Escort
+		elif data == "Referrer":
+			return ParticipantType.Referrer
+		elif data == "SecondaryPerformer":
+			return ParticipantType.SecondaryPerformer
+		elif data == "PrimaryPerformer":
+			return ParticipantType.PrimaryPerformer
+		elif data == "Participation":
+			return ParticipantType.Participation
+		elif data == "Translator":
+			return ParticipantType.Translator
+		elif data == "Emergency":
+			return ParticipantType.Emergency
+		elif data == "Location":
+			return ParticipantType.Location
+		else:
+			raise Exception(f"{data} is not a valid value for ParticipantType enum.")
 
 class ReceiptBlobType(Enum):
 	Xades = "xades"

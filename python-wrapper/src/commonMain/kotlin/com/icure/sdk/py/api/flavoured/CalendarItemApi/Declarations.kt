@@ -8,6 +8,7 @@ import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.model.CalendarItem
 import com.icure.sdk.model.DecryptedCalendarItem
+import com.icure.sdk.model.EncryptedCalendarItem
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.Patient
 import com.icure.sdk.model.User
@@ -257,6 +258,68 @@ public fun createDelegationDeAnonymizationMetadataAsync(
 				decodedParams.delegates,
 			)
 		}.toPyStringAsyncCallback(Unit.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class DecryptParams(
+	public val calendarItem: EncryptedCalendarItem,
+)
+
+public fun decryptBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<DecryptParams>(params)
+	runBlocking {
+		sdk.calendarItem.decrypt(
+			decodedParams.calendarItem,
+		)
+	}
+}.toPyString(DecryptedCalendarItem.serializer())
+
+@OptIn(ExperimentalForeignApi::class)
+public fun decryptAsync(
+	sdk: IcureApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<DecryptParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.calendarItem.decrypt(
+				decodedParams.calendarItem,
+			)
+		}.toPyStringAsyncCallback(DecryptedCalendarItem.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class TryDecryptParams(
+	public val calendarItem: EncryptedCalendarItem,
+)
+
+public fun tryDecryptBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<TryDecryptParams>(params)
+	runBlocking {
+		sdk.calendarItem.tryDecrypt(
+			decodedParams.calendarItem,
+		)
+	}
+}.toPyString(CalendarItemSerializer)
+
+@OptIn(ExperimentalForeignApi::class)
+public fun tryDecryptAsync(
+	sdk: IcureApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<TryDecryptParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.calendarItem.tryDecrypt(
+				decodedParams.calendarItem,
+			)
+		}.toPyStringAsyncCallback(CalendarItemSerializer, resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 

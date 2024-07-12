@@ -355,6 +355,41 @@ public fun createCodesAsync(
 }.failureToPyStringAsyncCallback(resultCallback)
 
 @Serializable
+private class CreateCodesParams(
+	public val groupId: String,
+	public val codeBatch: List<Code>,
+)
+
+public fun createCodesBlocking(sdk: IcureNonCryptoApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = json.decodeFromString<CreateCodesParams>(params)
+	runBlocking {
+		sdk.code.createCodes(
+			decodedParams.groupId,
+			decodedParams.codeBatch,
+		)
+	}
+}.toPyString(ListSerializer(Code.serializer()))
+
+@OptIn(ExperimentalForeignApi::class)
+public fun createCodesAsync(
+	sdk: IcureNonCryptoApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<CreateCodesParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.code.createCodes(
+				decodedParams.groupId,
+				decodedParams.codeBatch,
+			)
+		}.toPyStringAsyncCallback(ListSerializer(Code.serializer()), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
 private class IsCodeValidParams(
 	public val type: String,
 	public val code: String,
@@ -458,6 +493,40 @@ public fun getCodesAsync(
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.code.getCodes(
+				decodedParams.codeIds,
+			)
+		}.toPyStringAsyncCallback(ListSerializer(Code.serializer()), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class GetCodesParams(
+	public val groupId: String,
+	public val codeIds: List<String>,
+)
+
+public fun getCodesBlocking(sdk: IcureNonCryptoApis, params: String): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<GetCodesParams>(params)
+	runBlocking {
+		sdk.code.getCodes(
+			decodedParams.groupId,
+			decodedParams.codeIds,
+		)
+	}
+}.toPyString(ListSerializer(Code.serializer()))
+
+@OptIn(ExperimentalForeignApi::class)
+public fun getCodesAsync(
+	sdk: IcureNonCryptoApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<GetCodesParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.code.getCodes(
+				decodedParams.groupId,
 				decodedParams.codeIds,
 			)
 		}.toPyStringAsyncCallback(ListSerializer(Code.serializer()), resultCallback)
@@ -591,6 +660,41 @@ public fun modifyCodesAsync(
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.code.modifyCodes(
+				decodedParams.codeBatch,
+			)
+		}.toPyStringAsyncCallback(ListSerializer(Code.serializer()), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class ModifyCodesParams(
+	public val groupId: String,
+	public val codeBatch: List<Code>,
+)
+
+public fun modifyCodesBlocking(sdk: IcureNonCryptoApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = json.decodeFromString<ModifyCodesParams>(params)
+	runBlocking {
+		sdk.code.modifyCodes(
+			decodedParams.groupId,
+			decodedParams.codeBatch,
+		)
+	}
+}.toPyString(ListSerializer(Code.serializer()))
+
+@OptIn(ExperimentalForeignApi::class)
+public fun modifyCodesAsync(
+	sdk: IcureNonCryptoApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<ModifyCodesParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.code.modifyCodes(
+				decodedParams.groupId,
 				decodedParams.codeBatch,
 			)
 		}.toPyStringAsyncCallback(ListSerializer(Code.serializer()), resultCallback)
