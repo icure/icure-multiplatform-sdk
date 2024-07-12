@@ -220,7 +220,6 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 		path: String,
 		block: HttpRequestBuilder.() -> Unit = {}
 	): DefaultClientWebSocketSession {
-		println("Unsecure $unsecure")
 		plugin(WebSockets)
 		val sessionDeferred = CompletableDeferred<DefaultClientWebSocketSession>()
 		val statement = prepareRequest {
