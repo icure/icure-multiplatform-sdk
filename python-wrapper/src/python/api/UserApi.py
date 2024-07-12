@@ -1138,7 +1138,7 @@ class UserApi:
 			)
 			return return_value
 
-	async def enable2fa_for_user_async(self, user_id: str, group_id: str, request: Enable2faRequest) -> None:
+	async def enable2fa_for_user_with_group_async(self, user_id: str, group_id: str, request: Enable2faRequest) -> None:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1156,20 +1156,20 @@ class UserApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.enable2faForUserAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.enable2faForUserWithGroupAsync,
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def enable2fa_for_user_blocking(self, user_id: str, group_id: str, request: Enable2faRequest) -> None:
+	def enable2fa_for_user_with_group_blocking(self, user_id: str, group_id: str, request: Enable2faRequest) -> None:
 		payload = {
 			"userId": user_id,
 			"groupId": group_id,
 			"request": request.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.enable2faForUserBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.enable2faForUserWithGroupBlocking(
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
@@ -1216,7 +1216,7 @@ class UserApi:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 
-	async def disable2fa_for_user_async(self, user_id: str, group_id: str) -> None:
+	async def disable2fa_for_user_with_group_async(self, user_id: str, group_id: str) -> None:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1233,19 +1233,19 @@ class UserApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.disable2faForUserAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.disable2faForUserWithGroupAsync,
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def disable2fa_for_user_blocking(self, user_id: str, group_id: str) -> None:
+	def disable2fa_for_user_with_group_blocking(self, user_id: str, group_id: str) -> None:
 		payload = {
 			"userId": user_id,
 			"groupId": group_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.disable2faForUserBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.disable2faForUserWithGroupBlocking(
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)

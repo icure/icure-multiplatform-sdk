@@ -391,7 +391,7 @@ class CodeApi:
 			return_value = [Code._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def create_codes_async(self, group_id: str, code_batch: List[Code]) -> List[Code]:
+	async def create_codes_in_group_async(self, group_id: str, code_batch: List[Code]) -> List[Code]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -408,19 +408,19 @@ class CodeApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.createCodesAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.createCodesInGroupAsync,
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def create_codes_blocking(self, group_id: str, code_batch: List[Code]) -> List[Code]:
+	def create_codes_in_group_blocking(self, group_id: str, code_batch: List[Code]) -> List[Code]:
 		payload = {
 			"groupId": group_id,
 			"codeBatch": [x0.__serialize__() for x0 in code_batch],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.createCodesBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.createCodesInGroupBlocking(
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
@@ -559,7 +559,7 @@ class CodeApi:
 			return_value = [Code._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def get_codes_async(self, group_id: str, code_ids: List[str]) -> List[Code]:
+	async def get_codes_in_group_async(self, group_id: str, code_ids: List[str]) -> List[Code]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -576,19 +576,19 @@ class CodeApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.getCodesAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.getCodesInGroupAsync,
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def get_codes_blocking(self, group_id: str, code_ids: List[str]) -> List[Code]:
+	def get_codes_in_group_blocking(self, group_id: str, code_ids: List[str]) -> List[Code]:
 		payload = {
 			"groupId": group_id,
 			"codeIds": [x0 for x0 in code_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.getCodesBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.getCodesInGroupBlocking(
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
@@ -760,7 +760,7 @@ class CodeApi:
 			return_value = [Code._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def modify_codes_async(self, group_id: str, code_batch: List[Code]) -> List[Code]:
+	async def modify_codes_in_group_async(self, group_id: str, code_batch: List[Code]) -> List[Code]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -777,19 +777,19 @@ class CodeApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.modifyCodesAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.modifyCodesInGroupAsync,
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def modify_codes_blocking(self, group_id: str, code_batch: List[Code]) -> List[Code]:
+	def modify_codes_in_group_blocking(self, group_id: str, code_batch: List[Code]) -> List[Code]:
 		payload = {
 			"groupId": group_id,
 			"codeBatch": [x0.__serialize__() for x0 in code_batch],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.modifyCodesBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CodeApi.modifyCodesInGroupBlocking(
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
