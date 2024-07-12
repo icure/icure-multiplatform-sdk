@@ -90,6 +90,7 @@ fun Project.configureMultiplatform(
 	macosX64()
 	macosArm64()
 	configureKotlinLinux(kotlinMultiplatformExtension)
+	mingwX64()
 
 	applyDefaultHierarchyTemplate()
 

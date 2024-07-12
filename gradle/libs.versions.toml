@@ -6,7 +6,7 @@ kotlinSerialization = "1.6.1"
 kotlinDateTime = "0.6.0-RC.2"
 kotest = "5.9.0"
 androidLibrary = "8.2.2"
-kryptom = "1.0.6"
+kryptom = "1.0.7"
 kermit = "2.0.3"
 okio = "3.9.0"
 bouncyCastle = "1.70"
@@ -25,6 +25,7 @@ ktorHttpCio = { group = "io.ktor", name = "ktor-http-cio", version.ref = "ktor" 
 ktorClientCore = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
 ktorClientLogging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor" }
 ktorClientEngineOkhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor" }
+ktorClientEngineWinhttp = { group = "io.ktor", name = "ktor-client-winhttp", version.ref = "ktor" }
 ktorClientEngineDarwin = { group = "io.ktor", name = "ktor-client-darwin", version.ref = "ktor" }
 ktorClientEngineJs = { group = "io.ktor", name = "ktor-client-js", version.ref = "ktor" }
 ktorClientEngineJava = { group = "io.ktor", name = "ktor-client-java", version.ref = "ktor" }

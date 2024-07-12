@@ -9,24 +9,32 @@ project.version = version ?: "0.0.0-snapshot"
 val moduleName = "icure-sdk-ts"
 
 kotlin {
+	val sharedLibBaseName = "icure-sdk-native-pylib"
 	configureKotlinLinux(this).forEach {
 		it.binaries {
 			sharedLib {
-				baseName = "icure-sdk-native-pylib"
+				baseName = sharedLibBaseName
 			}
 		}
 	}
 	macosArm64 {
 		binaries {
 			sharedLib {
-				baseName = "icure-sdk-native-pylib"
+				baseName = sharedLibBaseName
 			}
 		}
 	}
 	macosX64 {
 		binaries {
 			sharedLib {
-				baseName = "icure-sdk-native-pylib"
+				baseName = sharedLibBaseName
+			}
+		}
+	}
+	mingwX64 {
+		binaries {
+			sharedLib {
+				baseName = sharedLibBaseName
 			}
 		}
 	}

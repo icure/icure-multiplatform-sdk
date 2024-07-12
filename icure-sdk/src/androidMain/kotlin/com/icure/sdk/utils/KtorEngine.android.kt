@@ -9,7 +9,3 @@ actual fun newPlatformHttpClient(
 ): HttpClient = HttpClient(OkHttp) {
 	sharedConfig()
 }
-
-fun newPlatformWebsocketClient(
-	sharedConfig: HttpClientConfig<*>.() -> Unit
-): HttpClient = newPlatformHttpClient(sharedConfig)

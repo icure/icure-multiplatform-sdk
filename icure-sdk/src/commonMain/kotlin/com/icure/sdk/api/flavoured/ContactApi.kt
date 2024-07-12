@@ -57,8 +57,6 @@ import com.icure.sdk.utils.ensureNonNull
 import com.icure.sdk.utils.pagination.IdsPageIterator
 import com.icure.sdk.utils.pagination.PaginatedListIterator
 import kotlinx.datetime.TimeZone
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.decodeFromJsonElement
 import kotlinx.serialization.json.encodeToJsonElement

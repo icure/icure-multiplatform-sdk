@@ -82,6 +82,11 @@ kotlin {
 				implementation(project(":ktor-curl"))
 			}
 		}
+		mingwMain {
+			dependencies {
+				implementation(libs.ktorClientEngineWinhttp)
+			}
+		}
 	}
 }
 
