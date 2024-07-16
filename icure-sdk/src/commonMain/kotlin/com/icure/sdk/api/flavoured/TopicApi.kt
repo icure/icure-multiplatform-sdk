@@ -29,9 +29,11 @@ import com.icure.sdk.model.requests.topic.RemoveParticipant
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.options.ApiConfiguration
 import com.icure.sdk.options.BasicApiConfiguration
-import com.icure.sdk.subscription.Subscribable
+import com.icure.sdk.serialization.SubscriptionSerializer
+import com.icure.sdk.serialization.TopicAbstractFilterSerializer
 import com.icure.sdk.subscription.EntitySubscription
 import com.icure.sdk.subscription.EntitySubscriptionConfiguration
+import com.icure.sdk.subscription.Subscribable
 import com.icure.sdk.subscription.WebSocketSubscription
 import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.EntityEncryptionException
@@ -226,13 +228,16 @@ private class AbstractTopicBasicFlavourlessApi(val rawApi: RawTopicApi, private 
 	): EntitySubscription<EncryptedTopic> {
 		return WebSocketSubscription.initialize(
 			client = config.httpClient,
-			hostname = config.apiUrl.replace("https://", "").replace("http://", ""),
+			hostname = config.apiUrl,
 			path = "/ws/v2/notification/subscribe",
-			deserializeEntity = { Serialization.json.decodeFromString(it) },
+			clientJson = config.clientJson,
+			entitySerializer = EncryptedTopic.serializer(),
 			events = events,
 			filter = filter,
 			qualifiedName = Topic.KRAKEN_QUALIFIED_NAME,
-			subscriptionRequestSerializer = { Serialization.json.encodeToString(it) },
+			subscriptionRequestSerializer = {
+				Serialization.json.encodeToString(SubscriptionSerializer(TopicAbstractFilterSerializer), it)
+			},
 			webSocketAuthProvider = config.requireWebSocketAuthProvider(),
 			config = subscriptionConfig
 		)

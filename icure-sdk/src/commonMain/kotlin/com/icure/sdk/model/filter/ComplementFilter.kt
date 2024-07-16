@@ -11,9 +11,7 @@ import kotlin.String
 @Serializable
 data class ComplementFilter<O : Identifiable<String>>(
 	override val desc: String? = null,
-	@Contextual
 	override val superSet: AbstractFilter<O>,
-	@Contextual
 	override val subSet: AbstractFilter<O>,
 ) : AbstractFilter<O>, Filter.ComplementFilter<O> {
 	// region ComplementFilter-ComplementFilter

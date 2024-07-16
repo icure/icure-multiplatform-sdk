@@ -2,9 +2,10 @@ package com.icure.sdk.options
 
 import com.icure.sdk.crypto.BasicInternalCryptoApi
 import com.icure.sdk.crypto.InternalCryptoServices
-import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.subscription.WebSocketAuthProvider
+import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
+import kotlinx.serialization.json.Json
 
 /**
  * Provides access to general APIs configuration.
@@ -13,6 +14,7 @@ import io.ktor.client.HttpClient
 internal interface BasicApiConfiguration {
 	val apiUrl: String
 	val httpClient: HttpClient
+	val clientJson: Json
 	val webSocketAuthProvider: WebSocketAuthProvider?
 	val crypto: BasicInternalCryptoApi
 	val encryption: EntitiesEncryptedFieldsManifests
@@ -31,6 +33,7 @@ internal interface ApiConfiguration : BasicApiConfiguration {
 internal data class ApiConfigurationImpl(
 	override val apiUrl: String,
 	override val httpClient: HttpClient,
+	override val clientJson: Json,
 	override val webSocketAuthProvider: WebSocketAuthProvider?,
 	override val autofillAuthor: Boolean,
 	override val crypto: InternalCryptoServices,
@@ -41,6 +44,7 @@ internal data class ApiConfigurationImpl(
 internal data class BasicApiConfigurationImpl(
 	override val apiUrl: String,
 	override val httpClient: HttpClient,
+	override val clientJson: Json,
 	override val webSocketAuthProvider: WebSocketAuthProvider?,
 	override val crypto: BasicInternalCryptoApi,
 	override val encryption: EntitiesEncryptedFieldsManifests

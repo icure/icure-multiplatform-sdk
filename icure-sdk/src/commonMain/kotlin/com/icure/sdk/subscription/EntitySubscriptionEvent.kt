@@ -6,7 +6,6 @@ import kotlinx.serialization.Serializable
 /**
  * Events that a subscription observes.
  */
-@Serializable
 sealed interface EntitySubscriptionEvent<out E : Identifiable<String>> {
 	/**
 	 * The subscription could connect successfully to the backend and can start to receive entity notifications.

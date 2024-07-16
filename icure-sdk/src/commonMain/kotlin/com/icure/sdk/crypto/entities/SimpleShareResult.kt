@@ -1,7 +1,9 @@
 package com.icure.sdk.crypto.entities
 
 import com.icure.sdk.model.base.HasEncryptionMetadata
+import kotlinx.serialization.Serializable
 
+@Serializable
 sealed interface SimpleShareResult<out T : HasEncryptionMetadata> {
 	val isSuccess: Boolean
 

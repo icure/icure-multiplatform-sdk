@@ -109,14 +109,14 @@ class EntityEncryptionServiceImpl(
 	override suspend fun tryDecryptAttachmentOf(
 		entity: EntityWithTypeInfo<*>,
 		content: ByteArray,
-		validator: suspend (decryptedData: ByteArray) -> Boolean
+		validator: (suspend (decryptedData: ByteArray) -> Boolean)?
 	): ByteArray? {
 		return allDecryptors.decryptEncryptionKeysOf(entity, dataOwnersForDecryption(null).toSet()).mapNotNull { decryptedKeyInfo ->
 			kotlin.runCatching {
 				cryptoService.aes.decrypt(
 					content,
 					cryptoService.aes.loadKey(AesAlgorithm.CbcWithPkcs7Padding, decryptedKeyInfo.value.decodedBytes())
-				).takeIf { validator(it) }
+				).takeIf { validator == null || validator(it) }
 			}.getOrNull()
 		}.firstOrNull()
 	}
@@ -124,7 +124,7 @@ class EntityEncryptionServiceImpl(
 	override suspend fun decryptAttachmentOf(
 		entity: EntityWithTypeInfo<*>,
 		content: ByteArray,
-		validator: suspend (decryptedData: ByteArray) -> Boolean
+		validator: (suspend (decryptedData: ByteArray) -> Boolean)?
 	): ByteArray {
 		val triedKeys = mutableSetOf<HexString>()
 		return allDecryptors.decryptEncryptionKeysOf(entity, dataOwnersForDecryption(null).toSet()).mapNotNull { decryptedKeyInfo ->
@@ -133,7 +133,7 @@ class EntityEncryptionServiceImpl(
 					cryptoService.aes.decrypt(
 						content,
 						cryptoService.aes.loadKey(AesAlgorithm.CbcWithPkcs7Padding, decryptedKeyInfo.value.decodedBytes())
-					).takeIf { validator(it) }
+					).takeIf { validator == null || validator(it) }
 				}.getOrNull()
 			} else {
 				null
@@ -611,6 +611,6 @@ class EntityEncryptionServiceImpl(
 			listOf(self)
 		}
 
-	private inline fun <T : Any> Iterable<DecryptedMetadataDetails<T>>.valuesAvailableToDataOwners(dataOwners: Set<String>): Set<T> =
+	private fun <T : Any> Iterable<DecryptedMetadataDetails<T>>.valuesAvailableToDataOwners(dataOwners: Set<String>): Set<T> =
 		mapNotNullTo(mutableSetOf()) { decryptedDataDetails -> if (dataOwners.any { it in decryptedDataDetails.dataOwnersWithAccess }) decryptedDataDetails.value else null }
 }

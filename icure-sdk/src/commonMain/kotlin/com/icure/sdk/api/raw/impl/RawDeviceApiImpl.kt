@@ -16,6 +16,7 @@ import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.specializations.AesExchangeKeyEncryptionKeypairIdentifier
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.serialization.DeviceAbstractFilterSerializer
+import com.icure.sdk.serialization.FilterChainSerializer
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
 import io.ktor.client.request.accept
@@ -132,7 +133,7 @@ class RawDeviceApiImpl(
 			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
-			setBody(filterChain)
+			setBodyWithSerializer(FilterChainSerializer(DeviceAbstractFilterSerializer), filterChain)
 		}.wrap()
 
 	override suspend fun getDeviceAesExchangeKeysForDelegate(

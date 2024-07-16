@@ -12,7 +12,7 @@ import kotlin.contracts.contract
 @OptIn(ExperimentalContracts::class)
 inline fun <T : Any> Mutex.tryWithLock(owner: Any? = null, action: () -> T): T? {
 	contract {
-		callsInPlace(action, InvocationKind.EXACTLY_ONCE)
+		callsInPlace(action, InvocationKind.AT_MOST_ONCE)
 	}
 
 	val locked = tryLock(owner)

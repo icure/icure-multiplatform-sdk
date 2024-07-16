@@ -9,3 +9,4 @@ actual fun newPlatformHttpClient(
 ): HttpClient = HttpClient(Js) {
 	sharedConfig()
 }
+

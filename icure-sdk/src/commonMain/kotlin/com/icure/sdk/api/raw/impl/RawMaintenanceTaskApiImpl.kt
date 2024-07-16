@@ -16,6 +16,8 @@ import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
+import com.icure.sdk.serialization.FilterChainSerializer
+import com.icure.sdk.serialization.MaintenanceTaskAbstractFilterSerializer
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
 import io.ktor.client.request.accept
@@ -122,7 +124,7 @@ class RawMaintenanceTaskApiImpl(
 			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
-			setBody(filterChain)
+			setBodyWithSerializer(FilterChainSerializer(MaintenanceTaskAbstractFilterSerializer), filterChain)
 		}.wrap()
 
 	override suspend fun bulkShare(

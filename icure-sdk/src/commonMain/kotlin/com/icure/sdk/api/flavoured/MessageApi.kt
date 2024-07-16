@@ -27,9 +27,11 @@ import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.options.ApiConfiguration
 import com.icure.sdk.options.BasicApiConfiguration
-import com.icure.sdk.subscription.Subscribable
+import com.icure.sdk.serialization.MessageAbstractFilterSerializer
+import com.icure.sdk.serialization.SubscriptionSerializer
 import com.icure.sdk.subscription.EntitySubscription
 import com.icure.sdk.subscription.EntitySubscriptionConfiguration
+import com.icure.sdk.subscription.Subscribable
 import com.icure.sdk.subscription.WebSocketSubscription
 import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.EntityEncryptionException
@@ -38,7 +40,6 @@ import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.currentEpochMs
 import com.icure.sdk.utils.pagination.IdsPageIterator
 import com.icure.sdk.utils.pagination.PaginatedListIterator
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.decodeFromJsonElement
 
@@ -343,13 +344,16 @@ private class AbstractMessageBasicFlavourlessApi(val rawApi: RawMessageApi, priv
 	): EntitySubscription<EncryptedMessage> {
 		return WebSocketSubscription.initialize(
 			client = config.httpClient,
-			hostname = config.apiUrl.replace("https://", "").replace("http://", ""),
+			hostname = config.apiUrl,
 			path = "/ws/v2/notification/subscribe",
-			deserializeEntity = { Serialization.json.decodeFromString(it) },
+			clientJson = config.clientJson,
+			entitySerializer = EncryptedMessage.serializer(),
 			events = events,
 			filter = filter,
 			qualifiedName = Message.KRAKEN_QUALIFIED_NAME,
-			subscriptionRequestSerializer = { Serialization.json.encodeToString(it) },
+			subscriptionRequestSerializer = {
+				Serialization.json.encodeToString(SubscriptionSerializer(MessageAbstractFilterSerializer), it)
+			},
 			webSocketAuthProvider = config.requireWebSocketAuthProvider(),
 			config = subscriptionConfig
 		)

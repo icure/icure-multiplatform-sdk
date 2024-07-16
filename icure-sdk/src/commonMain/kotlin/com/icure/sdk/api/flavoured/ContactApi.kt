@@ -38,6 +38,9 @@ import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.options.ApiConfiguration
 import com.icure.sdk.options.BasicApiConfiguration
+import com.icure.sdk.serialization.ContactAbstractFilterSerializer
+import com.icure.sdk.serialization.ServiceAbstractFilterSerializer
+import com.icure.sdk.serialization.SubscriptionSerializer
 import com.icure.sdk.subscription.EntitySubscription
 import com.icure.sdk.subscription.EntitySubscriptionConfiguration
 import com.icure.sdk.subscription.Subscribable
@@ -54,7 +57,6 @@ import com.icure.sdk.utils.ensureNonNull
 import com.icure.sdk.utils.pagination.IdsPageIterator
 import com.icure.sdk.utils.pagination.PaginatedListIterator
 import kotlinx.datetime.TimeZone
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.decodeFromJsonElement
 import kotlinx.serialization.json.encodeToJsonElement
@@ -529,13 +531,16 @@ private class AbstractContactBasicFlavourlessApi(
 	): EntitySubscription<EncryptedService> {
 		return WebSocketSubscription.initialize(
 			client = config.httpClient,
-			hostname = config.apiUrl.replace("https://", "").replace("http://", ""),
+			hostname = config.apiUrl,
 			path = "/ws/v2/notification/subscribe",
-			deserializeEntity = { Serialization.json.decodeFromString(it) },
+			clientJson = config.clientJson,
+			entitySerializer = EncryptedService.serializer(),
 			events = events,
 			filter = filter,
 			qualifiedName = Service.KRAKEN_QUALIFIED_NAME,
-			subscriptionRequestSerializer = { Serialization.json.encodeToString(it) },
+			subscriptionRequestSerializer = {
+				Serialization.json.encodeToString(SubscriptionSerializer(ServiceAbstractFilterSerializer), it)
+			},
 			webSocketAuthProvider = config.requireWebSocketAuthProvider(),
 			config = subscriptionConfig
 		)
@@ -548,13 +553,16 @@ private class AbstractContactBasicFlavourlessApi(
 	): EntitySubscription<EncryptedContact> {
 		return WebSocketSubscription.initialize(
 			client = config.httpClient,
-			hostname = config.apiUrl.replace("https://", "").replace("http://", ""),
+			hostname = config.apiUrl,
 			path = "/ws/v2/notification/subscribe",
-			deserializeEntity = { Serialization.json.decodeFromString(it) },
+			clientJson = config.clientJson,
+			entitySerializer = EncryptedContact.serializer(),
 			events = events,
 			filter = filter,
 			qualifiedName = Contact.KRAKEN_QUALIFIED_NAME,
-			subscriptionRequestSerializer = { Serialization.json.encodeToString(it) },
+			subscriptionRequestSerializer = {
+				Serialization.json.encodeToString(SubscriptionSerializer(ContactAbstractFilterSerializer), it)
+			},
 			webSocketAuthProvider = config.requireWebSocketAuthProvider(),
 			config = subscriptionConfig
 		)

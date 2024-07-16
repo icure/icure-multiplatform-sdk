@@ -6,8 +6,8 @@ import com.icure.kryptom.crypto.RsaAlgorithm
 import com.icure.kryptom.crypto.RsaKeypair
 import com.icure.kryptom.crypto.RsaService
 import com.icure.sdk.api.extended.DataOwnerApi
-import com.icure.sdk.crypto.entities.IcureKeyInfo
 import com.icure.sdk.crypto.UserSignatureKeysManager
+import com.icure.sdk.crypto.entities.IcureKeyInfo
 import com.icure.sdk.model.specializations.KeypairFingerprintV1String
 import com.icure.sdk.model.specializations.KeypairFingerprintV2String
 import com.icure.sdk.storage.IcureStorageFacade
@@ -34,7 +34,9 @@ class UserSignatureKeysManagerImpl(
 				iCureStorage.loadSignatureKey(dataOwnerApi.getCurrentDataOwnerId()) ?: cryptoService.rsa.generateKeyPair(
 					RsaAlgorithm.RsaSignatureAlgorithm.PssWithSha256,
 					RsaService.KeySize.Rsa2048
-				)
+				).also {
+					iCureStorage.saveSignatureKeyPair(dataOwnerApi.getCurrentDataOwnerId(), it)
+				}
 			).let {
 				IcureKeyInfo(cryptoService.rsa.exportSpkiHex(it.public), it) to Unit
 			}

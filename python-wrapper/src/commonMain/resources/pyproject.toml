@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "icure-sdk"
+version = "0.0.1.rc2" # TODO: this can be retrieved from GitHub by setuptools
+requires-python = ">=3.9"
+authors = [
+    { name = "iCure" }
+]
+# TODO: add readme
+license = {text = "MIT License"}
+keywords = ["iCure", "medical data", "encryption"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: MacOS :: MacOS X",
+    "Operating System :: POSIX :: Linux",
+    "Topic :: Scientific/Engineering :: Medical Science Apps.",
+    "Typing :: Typed"
+]
+
+[project.urls]
+Homepage = "https://icure.com/en/"
+Documentation = "https://docs.icure.com/"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+'*' = ["*.so", "*.dylib", "*.dll", "libcurl.so.4.8.0"]

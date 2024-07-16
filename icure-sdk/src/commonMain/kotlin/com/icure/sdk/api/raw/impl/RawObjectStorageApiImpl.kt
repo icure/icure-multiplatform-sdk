@@ -14,16 +14,10 @@ import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType.Application
 import io.ktor.http.appendPathSegments
-import io.ktor.http.contentType
+import io.ktor.http.content.ByteArrayContent
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
-import io.ktor.utils.io.ByteReadChannel
 import kotlinx.serialization.json.Json
-import kotlin.ByteArray
-import kotlin.Long
-import kotlin.String
-import kotlin.Unit
-import kotlin.collections.Map
 import kotlin.time.Duration
 
 // WARNING: This class is auto-generated. If you change it manually, your changes will be lost.
@@ -57,9 +51,8 @@ class RawObjectStorageApiImpl(
 				parameter("startByte", startByte)
 			}
 			setAuthorizationWith(authService)
-			contentType(Application.OctetStream)
 			accept(Application.Json)
-			setBody(ByteReadChannel(content))
+			setBody(ByteArrayContent(content, Application.OctetStream))
 		}.wrap()
 
 	override suspend fun getAttachment(

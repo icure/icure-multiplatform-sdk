@@ -23,6 +23,7 @@ import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
 import com.icure.sdk.serialization.ContactAbstractFilterSerializer
+import com.icure.sdk.serialization.FilterChainSerializer
 import com.icure.sdk.serialization.ServiceAbstractFilterSerializer
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
@@ -380,7 +381,7 @@ class RawContactApiImpl(
 			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
-			setBody(filterChain)
+			setBodyWithSerializer(FilterChainSerializer(ContactAbstractFilterSerializer), filterChain)
 		}.wrap()
 
 	override suspend fun matchContactsBy(filter: AbstractFilter<Contact>): HttpResponse<List<String>> =
@@ -421,7 +422,7 @@ class RawContactApiImpl(
 			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
-			setBody(filterChain)
+			setBodyWithSerializer(FilterChainSerializer(ServiceAbstractFilterSerializer), filterChain)
 		}.wrap()
 
 	override suspend fun matchServicesBy(filter: AbstractFilter<Service>): HttpResponse<List<String>> =

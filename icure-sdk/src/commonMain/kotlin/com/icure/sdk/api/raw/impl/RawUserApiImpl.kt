@@ -16,6 +16,7 @@ import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.security.Enable2faRequest
 import com.icure.sdk.model.security.TokenWithGroup
+import com.icure.sdk.serialization.FilterChainSerializer
 import com.icure.sdk.serialization.UserAbstractFilterSerializer
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
@@ -230,7 +231,7 @@ class RawUserApiImpl(
 			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
-			setBody(filterChain)
+			setBodyWithSerializer(FilterChainSerializer(UserAbstractFilterSerializer), filterChain)
 		}.wrap()
 
 	override suspend fun matchUsersBy(filter: AbstractFilter<User>): HttpResponse<List<String>> =

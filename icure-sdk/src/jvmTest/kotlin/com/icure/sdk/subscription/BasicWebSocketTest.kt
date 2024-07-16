@@ -4,6 +4,8 @@ import com.icure.sdk.model.EncryptedHealthElement
 import com.icure.sdk.model.HealthElement
 import com.icure.sdk.model.filter.healthelement.HealthElementByHcPartyFilter
 import com.icure.sdk.model.notification.SubscriptionEventType
+import com.icure.sdk.serialization.HealthElementAbstractFilterSerializer
+import com.icure.sdk.serialization.SubscriptionSerializer
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.newPlatformHttpClient
 import io.kotest.assertions.fail
@@ -92,13 +94,14 @@ class BasicWebSocketTest : StringSpec({
 			client = client,
 			hostname = "localhost:25565",
 			path = "/",
-			deserializeEntity = { Serialization.json.decodeFromString<EncryptedHealthElement>(it) },
+			clientJson = Serialization.json,
+			entitySerializer = EncryptedHealthElement.serializer(),
 			events = setOf(SubscriptionEventType.Create),
 			filter = HealthElementByHcPartyFilter(
 				hcpId = "fake-uuid",
 			),
 			qualifiedName = HealthElement.KRAKEN_QUALIFIED_NAME,
-			subscriptionRequestSerializer = { Serialization.json.encodeToString(it) },
+			subscriptionRequestSerializer = { Serialization.json.encodeToString(SubscriptionSerializer(HealthElementAbstractFilterSerializer), it) },
 			webSocketAuthProvider = authProvider,
 			config = null
 		)
@@ -125,7 +128,8 @@ class BasicWebSocketTest : StringSpec({
 			client = client,
 			hostname = "localhost:25565",
 			path = "/load",
-			deserializeEntity = { Serialization.json.decodeFromString<EncryptedHealthElement>(it) },
+			clientJson = Serialization.json,
+			entitySerializer = EncryptedHealthElement.serializer(),
 			events = setOf(SubscriptionEventType.Create),
 			filter = HealthElementByHcPartyFilter(
 				hcpId = "fake-uuid",
@@ -151,6 +155,5 @@ class BasicWebSocketTest : StringSpec({
 			println("Channel was closed")
 			it shouldBe null
 		}
-
 	}
 })

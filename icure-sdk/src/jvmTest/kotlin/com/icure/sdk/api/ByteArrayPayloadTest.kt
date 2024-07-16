@@ -2,8 +2,6 @@ package com.icure.sdk.api
 
 import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.sdk.model.DecryptedDocument
-import com.icure.sdk.model.DecryptedMessage
-import com.icure.sdk.model.Message
 import com.icure.sdk.test.createHcpUser
 import com.icure.sdk.test.initialiseTestEnvironment
 import com.icure.sdk.test.uuid
@@ -43,7 +41,6 @@ class ByteArrayPayloadTest : StringSpec({
 
 		val retrievedRawPayload = api.document.getRawMainAttachment(
 			documentId = updatedDocument.id,
-			attachmentId = updatedDocument.attachmentId.shouldNotBeNull()
 		)
 
 		retrievedRawPayload.toList() shouldBe payload.toList()
