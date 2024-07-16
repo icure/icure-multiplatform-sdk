@@ -6022,12 +6022,12 @@ class ShareAllPatientDataOptions(metaclass=SingletonMeta):
 
 	@dataclass
 	class Result:
-		patient: 'Patient'
+		patient: 'EncryptedPatient'
 		statuses: Dict['ShareAllPatientDataOptions.ShareableEntity', 'ShareAllPatientDataOptions.EntityResult']
 
 		def __serialize__(self) -> object:
 			return {
-				"patient": serialize_patient(self.patient),
+				"patient": self.patient.__serialize__(),
 				"statuses": {k0.__serialize__(): v0.__serialize__() for k0, v0 in self.statuses.items()},
 			}
 
@@ -6039,7 +6039,7 @@ class ShareAllPatientDataOptions(metaclass=SingletonMeta):
 			else:
 				deserialized_dict = data
 			return cls(
-				patient=deserialize_patient(deserialized_dict["patient"]),
+				patient=EncryptedPatient._deserialize(deserialized_dict["patient"]),
 				statuses=dict(map(lambda kv0: (ShareAllPatientDataOptions.ShareableEntity._deserialize(kv0[0]), ShareAllPatientDataOptions.EntityResult._deserialize(kv0[1])), deserialized_dict["statuses"].items())),
 			)
 
