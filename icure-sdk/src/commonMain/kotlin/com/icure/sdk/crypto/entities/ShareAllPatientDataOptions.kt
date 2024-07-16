@@ -1,6 +1,7 @@
 package com.icure.sdk.crypto.entities
 
 import com.icure.sdk.api.flavoured.PatientApi
+import com.icure.sdk.model.DecryptedPatient
 import com.icure.sdk.model.Patient
 import kotlinx.serialization.Serializable
 
@@ -35,7 +36,7 @@ object ShareAllPatientDataOptions {
 
 	@Serializable
 	data class Result(
-		val patient: Patient,
+		val patient: DecryptedPatient,
 		val statuses: Map<ShareableEntity, EntityResult>
 	)
 
