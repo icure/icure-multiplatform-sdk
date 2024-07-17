@@ -6,8 +6,9 @@ kotlinSerialization = "1.6.1"
 kotlinDateTime = "0.6.0-RC.2"
 kotest = "5.9.0"
 androidLibrary = "8.2.2"
-kryptom = "1.0.4"
+kryptom = "1.0.7"
 kermit = "2.0.3"
+kotp = "1.0.0"
 
 [libraries]
 
@@ -53,6 +54,7 @@ kermit = { group = "co.touchlab", name = "kermit", version.ref = "kermit" }
 
 # Kryptom
 kryptom = { group = "com.icure.kryptom", name = "kryptom", version.ref = "kryptom" }
+kotp = { group = "com.icure.kotp", name = "kotp", version.ref = "kotp" }
 
 [bundles]
 ktorServer = ["ktorServerCore", "ktorServerNetty", "ktorServerWebsockets"]

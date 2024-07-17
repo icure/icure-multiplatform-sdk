@@ -7,7 +7,7 @@ import com.icure.sdk.auth.services.JwtAuthService
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 
-val baseUrl = "http://localhost:16044"
+val baseUrl = "http://localhost:16043"
 val testGroupName = "testgroup"
 val testGroupId = testGroupName
 val testGroupAdmin = "admin-12345@icure.com"
