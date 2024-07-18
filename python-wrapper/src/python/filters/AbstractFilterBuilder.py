@@ -26,9 +26,15 @@ class AbstractFilterBuilder(ABC, Generic[F, B]):
         if as_union:
             if self._uses_sorting:
                 raise ValueError("Union filters can't be sorted")
-            return UnionFilter(filters=self._filters.copy())
+            if len(self._filters) == 1:
+                return self._filters[0]
+            else:
+                return UnionFilter(filters=self._filters.copy())
         else:
-            return IntersectionFilter(filters=self._filters.copy())
+            if len(self._filters) == 1:
+                return self._filters[0]
+            else:
+                return IntersectionFilter(filters=self._filters.copy())
 
     def by_filter(self, filter: F) -> B:
         """
