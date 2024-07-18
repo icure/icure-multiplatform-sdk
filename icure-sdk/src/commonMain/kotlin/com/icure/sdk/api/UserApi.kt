@@ -41,6 +41,7 @@ interface UserApi {
 
 	suspend fun createUser(user: User): User
 	suspend fun getUser(userId: String): User
+	suspend fun getUsers(userIds: List<String>): List<User>
 	suspend fun getUserByEmail(email: String): User
 	suspend fun getUserByPhoneNumber(phoneNumber: String): User
 	suspend fun findByHcpartyId(id: String): List<String>
@@ -66,6 +67,8 @@ interface UserApi {
 
 	suspend fun matchUsersBy(filter: AbstractFilter<User>): List<String>
 	suspend fun getMatchingUsers(): List<UserGroup>
+
+	suspend fun getUsersInGroup(groupId: String, userIds: List<String>): List<User>
 
 	@Deprecated(
 		"List methods are deprecated",
@@ -140,6 +143,8 @@ interface UserApi {
 		filter: AbstractFilter<User>,
 	): PaginatedListIterator<User>
 
+	suspend fun matchUsersInGroupBy(groupId: String, filter: AbstractFilter<User>): List<String>
+
 	@JsName("enable2faForUserWithGroup")
 	suspend fun enable2faForUser(
 		userId: String,
@@ -201,6 +206,7 @@ internal class UserApiImpl(
 
 	override suspend fun getUser(userId: String) = raw.getUser(userId).successBody()
 
+	override suspend fun getUsers(userIds: List<String>) = raw.getUsers(ListOfIds(userIds)).successBody()
 
 	override suspend fun getUserByEmail(email: String) = raw.getUserByEmail(email).successBody()
 
@@ -232,11 +238,15 @@ internal class UserApiImpl(
 	) = raw.getToken(userId, key, tokenValidity, token).successBody()
 
 	override suspend fun filterUsersBy(filter: AbstractFilter<User>): PaginatedListIterator<User> =
-		IdsPageIterator(matchUsersBy(filter), TODO())
+		IdsPageIterator(matchUsersBy(filter), this::getUsers)
 
 	override suspend fun matchUsersBy(filter: AbstractFilter<User>) = raw.matchUsersBy(filter).successBody()
 
 	override suspend fun getMatchingUsers() = raw.getMatchingUsers().successBody()
+
+	override suspend fun getUsersInGroup(groupId: String, userIds: List<String>): List<User> = raw.getUsersInGroup(groupId, ListOfIds(userIds)).successBody()
+
+	override suspend fun matchUsersInGroupBy(groupId: String, filter: AbstractFilter<User>): List<String> = raw.matchUsersInGroupBy(groupId, filter).successBody()
 
 	@Deprecated(
 		"List methods are deprecated",
@@ -298,7 +308,7 @@ internal class UserApiImpl(
 	) = raw.getTokenInAllGroups(userIdentifier, key, token, tokenValidity).successBody()
 
 	override suspend fun filterUsersInGroupBy(groupId: String, filter: AbstractFilter<User>): PaginatedListIterator<User> =
-		IdsPageIterator(TODO(), TODO())
+		IdsPageIterator(matchUsersInGroupBy(groupId, filter), this::getUsers)
 
 	override suspend fun enable2faForUser(
 		userId: String,

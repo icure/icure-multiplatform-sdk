@@ -48,6 +48,7 @@ interface InvoiceBasicFlavourlessApi {
 	suspend fun deleteInvoice(entityId: String): DocIdentifier
 	suspend fun findInvoicesDelegationsStubsByHcPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<IcureStub>
 	suspend fun getTarificationsCodesOccurrences(minOccurrence: Int): List<LabelledOccurence>
+
 }
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
