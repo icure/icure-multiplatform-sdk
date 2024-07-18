@@ -28,6 +28,8 @@ public interface RawMaintenanceTaskApi {
 
 	suspend fun getMaintenanceTask(maintenanceTaskId: String): HttpResponse<EncryptedMaintenanceTask>
 
+	suspend fun getMaintenanceTasks(ids: ListOfIds): HttpResponse<List<EncryptedMaintenanceTask>>
+
 	suspend fun modifyMaintenanceTask(maintenanceTaskDto: EncryptedMaintenanceTask): HttpResponse<EncryptedMaintenanceTask>
 
 	suspend fun filterMaintenanceTasksBy(
