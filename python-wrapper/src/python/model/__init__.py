@@ -245,29 +245,6 @@ class IdWithRev:
 		)
 
 @dataclass
-class FilterChain:
-	filter: 'objectAbstractFilter'
-	predicate: Optional['Predicate'] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"filter": serialize_abstract_filter(self.filter),
-			"predicate": serialize_predicate(self.predicate) if self.predicate is not None else None,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'FilterChain':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			filter=deserialize_abstract_filter(deserialized_dict["filter"]),
-			predicate=deserialize_predicate(deserialized_dict.get("predicate")) if deserialized_dict.get("predicate") is not None else None,
-		)
-
-@dataclass
 class ContactByHcPartyPatientTagCodeDateFilter:
 	desc: Optional[str] = None
 	healthcare_party_id: Optional[str] = None
@@ -1013,7 +990,7 @@ class TopicByHcPartyFilter:
 @dataclass
 class UnionFilter:
 	desc: Optional[str] = None
-	filters: List['objectAbstractFilter'] = field(default_factory=list)
+	filters: List['AbstractFilter'] = field(default_factory=list)
 
 	def __serialize__(self) -> object:
 		return {
@@ -1474,8 +1451,8 @@ class AllDevicesFilter:
 
 @dataclass
 class ComplementFilter:
-	super_set: 'objectAbstractFilter'
-	sub_set: 'objectAbstractFilter'
+	super_set: 'AbstractFilter'
+	sub_set: 'AbstractFilter'
 	desc: Optional[str] = None
 
 	def __serialize__(self) -> object:
@@ -1503,7 +1480,7 @@ class ExternalViewFilter:
 	view: str
 	partition: str
 	entity_qualified_name: str
-	start_key: Optional['ExternalFilterKey']
+	start_key: 'ExternalFilterKey'
 	end_key: Optional['ExternalFilterKey']
 	desc: Optional[str] = None
 
@@ -1513,7 +1490,7 @@ class ExternalViewFilter:
 			"view": self.view,
 			"partition": self.partition,
 			"entityQualifiedName": self.entity_qualified_name,
-			"startKey": serialize_external_filter_key(self.start_key) if self.start_key is not None else None,
+			"startKey": serialize_external_filter_key(self.start_key),
 			"endKey": serialize_external_filter_key(self.end_key) if self.end_key is not None else None,
 		}
 
@@ -1529,14 +1506,14 @@ class ExternalViewFilter:
 			view=deserialized_dict["view"],
 			partition=deserialized_dict["partition"],
 			entity_qualified_name=deserialized_dict["entityQualifiedName"],
-			start_key=deserialize_external_filter_key(deserialized_dict.get("startKey")) if deserialized_dict.get("startKey") is not None else None,
+			start_key=deserialize_external_filter_key(deserialized_dict["startKey"]),
 			end_key=deserialize_external_filter_key(deserialized_dict.get("endKey")) if deserialized_dict.get("endKey") is not None else None,
 		)
 
 @dataclass
 class IntersectionFilter:
 	desc: Optional[str] = None
-	filters: List['objectAbstractFilter'] = field(default_factory=list)
+	filters: List['AbstractFilter'] = field(default_factory=list)
 
 	def __serialize__(self) -> object:
 		return {
@@ -10328,157 +10305,6 @@ class Identifier:
 			value=deserialized_dict.get("value"),
 		)
 
-@dataclass
-class NotPredicate:
-	predicate: 'Predicate'
-
-	def __serialize__(self) -> object:
-		return {
-			"predicate": serialize_predicate(self.predicate),
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'NotPredicate':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			predicate=deserialize_predicate(deserialized_dict["predicate"]),
-		)
-
-@dataclass
-class AndPredicate:
-	predicates: List['Predicate'] = field(default_factory=list)
-
-	def __serialize__(self) -> object:
-		return {
-			"predicates": [serialize_predicate(x0) for x0 in self.predicates],
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'AndPredicate':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			predicates=[deserialize_predicate(x0) for x0 in deserialized_dict["predicates"]],
-		)
-
-@dataclass
-class AlwaysPredicate:
-
-	def __serialize__(self) -> object:
-		return {
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'AlwaysPredicate':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-		)
-
-@dataclass
-class OrPredicate:
-	predicates: List['Predicate'] = field(default_factory=list)
-
-	def __serialize__(self) -> object:
-		return {
-			"predicates": [serialize_predicate(x0) for x0 in self.predicates],
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'OrPredicate':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			predicates=[deserialize_predicate(x0) for x0 in deserialized_dict["predicates"]],
-		)
-
-@dataclass
-class KeyValuePredicate:
-	key: Optional[str] = None
-	operator: Optional['Operator'] = None
-	value: Optional[object] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"key": self.key,
-			"operator": self.operator.__serialize__() if self.operator is not None else None,
-			"value": self.value,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'KeyValuePredicate':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			key=deserialized_dict.get("key"),
-			operator=Operator._deserialize(deserialized_dict.get("operator")) if deserialized_dict.get("operator") is not None else None,
-			value=deserialized_dict.get("value"),
-		)
-
-Predicate = Union['NotPredicate', 'AndPredicate', 'AlwaysPredicate', 'OrPredicate', 'KeyValuePredicate']
-
-def serialize_predicate(predicate: Predicate) -> object:
-	if isinstance(predicate, NotPredicate):
-		serialized_entity = predicate.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.model.filter.predicate.NotPredicate"})
-		return serialized_entity
-	elif isinstance(predicate, AndPredicate):
-		serialized_entity = predicate.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.model.filter.predicate.AndPredicate"})
-		return serialized_entity
-	elif isinstance(predicate, AlwaysPredicate):
-		serialized_entity = predicate.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.model.filter.predicate.AlwaysPredicate"})
-		return serialized_entity
-	elif isinstance(predicate, OrPredicate):
-		serialized_entity = predicate.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.model.filter.predicate.OrPredicate"})
-		return serialized_entity
-	elif isinstance(predicate, KeyValuePredicate):
-		serialized_entity = predicate.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.model.filter.predicate.KeyValuePredicate"})
-		return serialized_entity
-	else:
-		raise Exception(f"{type(predicate)} is not a known subclass of Predicate")
-
-def deserialize_predicate(data: Union[str, Dict[str, object]]) -> 'Predicate':
-	deserialized_dict: dict[str, object]
-	if isinstance(data, str):
-		deserialized_dict = json.loads(data)
-	else:
-		deserialized_dict = data
-	qualifier = deserialized_dict.get("type")
-	if qualifier is None:
-		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.model.filter.predicate.NotPredicate":
-		return NotPredicate._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.model.filter.predicate.AndPredicate":
-		return AndPredicate._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.model.filter.predicate.AlwaysPredicate":
-		return AlwaysPredicate._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.model.filter.predicate.OrPredicate":
-		return OrPredicate._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.model.filter.predicate.KeyValuePredicate":
-		return KeyValuePredicate._deserialize(deserialized_dict)
-	else:
-		raise Exception(f"{qualifier} is not a known subclass of Predicate")
-
 class Gender(Enum):
 	Male = "male"
 	Female = "female"
@@ -14657,40 +14483,6 @@ class DatabaseInfo:
 			r=deserialized_dict.get("r"),
 		)
 
-class Operator(Enum):
-	Equal = "EQUAL"
-	Notequal = "NOTEQUAL"
-	Greaterthan = "GREATERTHAN"
-	Smallerthan = "SMALLERTHAN"
-	Greaterthanorequal = "GREATERTHANOREQUAL"
-	Smallerthanorequal = "SMALLERTHANOREQUAL"
-	Like = "LIKE"
-	Ilike = "ILIKE"
-
-	def __serialize__(self) -> object:
-		return self.value
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Operator':
-		if data == "EQUAL":
-			return Operator.Equal
-		elif data == "NOTEQUAL":
-			return Operator.Notequal
-		elif data == "GREATERTHAN":
-			return Operator.Greaterthan
-		elif data == "SMALLERTHAN":
-			return Operator.Smallerthan
-		elif data == "GREATERTHANOREQUAL":
-			return Operator.Greaterthanorequal
-		elif data == "SMALLERTHANOREQUAL":
-			return Operator.Smallerthanorequal
-		elif data == "LIKE":
-			return Operator.Like
-		elif data == "ILIKE":
-			return Operator.Ilike
-		else:
-			raise Exception(f"{data} is not a valid value for Operator enum.")
-
 class PersonNameUse(Enum):
 	Usual = "usual"
 	Official = "official"
@@ -15212,6 +15004,23 @@ class FlatRateType(Enum):
 			return FlatRateType.Ptd
 		else:
 			raise Exception(f"{data} is not a valid value for FlatRateType enum.")
+
+@dataclass
+class AlwaysPredicate:
+
+	def __serialize__(self) -> object:
+		return {
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'AlwaysPredicate':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+		)
 
 class TypedValuesType(Enum):
 	Boolean = "BOOLEAN"

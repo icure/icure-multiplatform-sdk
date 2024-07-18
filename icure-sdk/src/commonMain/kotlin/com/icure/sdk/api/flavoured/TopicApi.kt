@@ -10,7 +10,6 @@ import com.icure.sdk.crypto.entities.withTypeInfo
 import com.icure.sdk.model.DecryptedTopic
 import com.icure.sdk.model.EncryptedTopic
 import com.icure.sdk.model.ListOfIds
-import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.Patient
 import com.icure.sdk.model.Topic
 import com.icure.sdk.model.TopicRole
@@ -21,7 +20,6 @@ import com.icure.sdk.model.embed.DelegationTag
 import com.icure.sdk.model.extensions.autoDelegationsFor
 import com.icure.sdk.model.extensions.dataOwnerId
 import com.icure.sdk.model.filter.AbstractFilter
-import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.requests.topic.AddParticipant
@@ -40,7 +38,8 @@ import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.currentEpochMs
-import kotlinx.serialization.encodeToString
+import com.icure.sdk.utils.pagination.IdsPageIterator
+import com.icure.sdk.utils.pagination.PaginatedListIterator
 import kotlinx.serialization.json.decodeFromJsonElement
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
@@ -55,13 +54,7 @@ interface TopicBasicFlavouredApi<E : Topic> {
 	suspend fun modifyTopic(entity: E): E
 	suspend fun getTopic(entityId: String): E
 	suspend fun getTopics(entityIds: List<String>): List<E>
-	suspend fun filterTopicsBy(
-		@DefaultValue("null")
-		startDocumentId: String? = null,
-		@DefaultValue("null")
-		limit: Int? = null,
-		filterChain: FilterChain<Topic>
-	): PaginatedList<E>
+	suspend fun filterTopicsBy(filter: AbstractFilter<Topic>): PaginatedListIterator<E>
 
 	suspend fun addParticipant(entityId: String, dataOwnerId: String, topicRole: TopicRole): E
 	suspend fun removeParticipant(entityId: String, dataOwnerId: String): E
@@ -158,11 +151,11 @@ private abstract class AbstractTopicBasicFlavouredApi<E : Topic>(
 
 	override suspend fun getTopics(entityIds: List<String>): List<E> =
 		rawApi.getTopics(ListOfIds(entityIds)).successBody().map { maybeDecrypt(it) }
-	override suspend fun filterTopicsBy(
-		startDocumentId: String?,
-		limit: Int?,
-		filterChain: FilterChain<Topic>,
-		) = rawApi.filterTopicsBy(startDocumentId, limit, filterChain).successBody().map { maybeDecrypt(it) }
+	override suspend fun filterTopicsBy(filter: AbstractFilter<Topic>): PaginatedListIterator<E> =
+		IdsPageIterator(
+			rawApi.matchTopicsBy(filter).successBody(),
+			this::getTopics
+		)
 	override suspend fun addParticipant(entityId: String, dataOwnerId: String, topicRole: TopicRole) =
 		rawApi.addParticipant(entityId, AddParticipant(dataOwnerId, topicRole)).successBody().let { maybeDecrypt(it) }
 	override suspend fun removeParticipant(entityId: String, dataOwnerId: String) =

@@ -18,6 +18,7 @@ import com.icure.sdk.model.`data`.LabelledOccurence
 import com.icure.sdk.model.embed.EncryptedInvoicingCode
 import com.icure.sdk.model.embed.InvoiceType
 import com.icure.sdk.model.embed.MediumType
+import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
@@ -513,6 +514,18 @@ class RawInvoiceApiImpl(
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBodyWithSerializer(FilterChainSerializer(InvoiceAbstractFilterSerializer), filterChain)
+		}.wrap()
+
+	override suspend fun matchInvoicesBy(filter: AbstractFilter<Invoice>): HttpResponse<List<String>> =
+		post {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "invoice", "match")
+			}
+			setAuthorizationWith(authService)
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBodyWithSerializer(InvoiceAbstractFilterSerializer, filter)
 		}.wrap()
 
 	override suspend fun modifyInvoices(invoiceDtos: List<EncryptedInvoice>): HttpResponse<List<EncryptedInvoice>> =

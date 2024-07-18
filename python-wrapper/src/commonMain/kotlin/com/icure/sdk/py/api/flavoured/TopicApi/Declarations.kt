@@ -8,7 +8,6 @@ import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.TopicShareOptions
 import com.icure.sdk.model.DecryptedTopic
 import com.icure.sdk.model.EncryptedTopic
-import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.Patient
 import com.icure.sdk.model.Topic
 import com.icure.sdk.model.TopicRole
@@ -16,13 +15,13 @@ import com.icure.sdk.model.User
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.filter.AbstractFilter
-import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.py.serialization.PatientSerializer
 import com.icure.sdk.py.serialization.TopicSerializer
 import com.icure.sdk.py.subscription.EntitySubscription.EntitySubscriptionWithSerializer
+import com.icure.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
 import com.icure.sdk.py.utils.PyResult
 import com.icure.sdk.py.utils.failureToPyResultAsyncCallback
 import com.icure.sdk.py.utils.failureToPyStringAsyncCallback
@@ -34,7 +33,6 @@ import com.icure.sdk.subscription.EntitySubscriptionConfiguration
 import com.icure.sdk.utils.Serialization.json
 import kotlin.Boolean
 import kotlin.Byte
-import kotlin.Int
 import kotlin.OptIn
 import kotlin.String
 import kotlin.Unit
@@ -673,41 +671,36 @@ public fun getTopicsAsync(
 
 @Serializable
 private class FilterTopicsByParams(
-	public val startDocumentId: String? = null,
-	public val limit: Int? = null,
 	@Contextual
-	public val filterChain: FilterChain<Topic>,
+	public val filter: AbstractFilter<Topic>,
 )
 
-public fun filterTopicsByBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun filterTopicsByBlocking(sdk: IcureApis, params: String): PyResult = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterTopicsByParams>(params)
 	runBlocking {
 		sdk.topic.filterTopicsBy(
-			decodedParams.startDocumentId,
-			decodedParams.limit,
-			decodedParams.filterChain,
+			decodedParams.filter,
 		)
 	}
-}.toPyString(PaginatedList.serializer(DecryptedTopic.serializer()))
+}.toPyResult {
+	PaginatedListIteratorAndSerializer(it, DecryptedTopic.serializer())}
 
 @OptIn(ExperimentalForeignApi::class)
 public fun filterTopicsByAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterTopicsByParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.topic.filterTopicsBy(
-				decodedParams.startDocumentId,
-				decodedParams.limit,
-				decodedParams.filterChain,
+				decodedParams.filter,
 			)
-		}.toPyStringAsyncCallback(PaginatedList.serializer(DecryptedTopic.serializer()), resultCallback)
+		}.toPyResultAsyncCallback(resultCallback) {
+			PaginatedListIteratorAndSerializer(it, DecryptedTopic.serializer())}
 	}
-}.failureToPyStringAsyncCallback(resultCallback)
+}.failureToPyResultAsyncCallback(resultCallback)
 
 @Serializable
 private class AddParticipantParams(

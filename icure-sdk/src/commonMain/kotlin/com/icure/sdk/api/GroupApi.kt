@@ -81,7 +81,7 @@ interface GroupApi {
 		description: String? = null,
 	): String
 
-	suspend fun deleteOperationToken(tokenId: String): Unit
+	suspend fun deleteOperationToken(tokenId: String)
 	suspend fun setDefaultRoles(
 		groupId: String,
 		userType: String,
@@ -110,7 +110,7 @@ interface GroupApi {
 		@DefaultValue("null")
 		n: Int? = null,
 		databases: List<String>
-	): Unit
+	)
 	suspend fun getGroupsStorageInfos(groups: List<String>): List<GroupDatabasesInfo>
 	suspend fun getReplicationInfo(id: String): ReplicationInfo
 	suspend fun getHierarchy(id: String): List<String>

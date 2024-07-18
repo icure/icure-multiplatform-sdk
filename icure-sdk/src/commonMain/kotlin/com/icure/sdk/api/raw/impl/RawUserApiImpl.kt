@@ -106,6 +106,17 @@ class RawUserApiImpl(
 			accept(Application.Json)
 		}.wrap()
 
+	override suspend fun getUsers(userIds: ListOfIds): HttpResponse<List<User>> =
+		get {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "user", "byIds")
+				parameter("ts", GMTDate().timestamp)
+			}
+			setAuthorizationWith(authService)
+			accept(Application.Json)
+		}.wrap()
+
 	override suspend fun getUserByEmail(email: String): HttpResponse<User> =
 		get {
 			url {
@@ -213,7 +224,7 @@ class RawUserApiImpl(
 			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
-			header("token", token)
+			`header`("token", token)
 		}.wrap()
 
 	override suspend fun filterUsersBy(
@@ -413,7 +424,7 @@ class RawUserApiImpl(
 			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
-			header("token", token)
+			`header`("token", token)
 		}.wrap()
 
 	override suspend fun getTokenInAllGroups(
@@ -431,7 +442,7 @@ class RawUserApiImpl(
 			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
-			header("token", token)
+			`header`("token", token)
 		}.wrap()
 
 	override suspend fun filterUsersInGroupBy(
@@ -450,7 +461,36 @@ class RawUserApiImpl(
 			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
-			setBody(filterChain)
+			setBodyWithSerializer(FilterChainSerializer(UserAbstractFilterSerializer), filterChain)
+		}.wrap()
+
+	override suspend fun getUsersInGroup(
+		groupId: String,
+		userIds: ListOfIds,
+	): HttpResponse<List<User>> =
+		get {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "user", "inGroup", groupId, "byIds")
+				parameter("ts", GMTDate().timestamp)
+			}
+			setAuthorizationWith(authService)
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun matchUsersInGroupBy(
+		groupId: String,
+		filter: AbstractFilter<User>,
+	): HttpResponse<List<String>> =
+		post {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "user", "match", "inGroup", groupId)
+			}
+			setAuthorizationWith(authService)
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBodyWithSerializer(UserAbstractFilterSerializer, filter)
 		}.wrap()
 
 	override suspend fun enable2faForUser(

@@ -64,7 +64,7 @@ class RawAnonymousAuthApiImpl(
 			}
 			contentType(Application.Json)
 			accept(Application.Json)
-			header("Refresh-Token", refreshToken)
+			`header`("Refresh-Token", refreshToken)
 		}.wrap()
 
 	override suspend fun check(loginCredentials: LoginCredentials): HttpResponse<Unit> =
@@ -93,7 +93,7 @@ class RawAnonymousAuthApiImpl(
 			}
 			contentType(Application.Json)
 			accept(Application.Json)
-			header("Refresh-Token", refreshToken)
+			`header`("Refresh-Token", refreshToken)
 		}.wrap()
 
 	override suspend fun loginGoogle(
@@ -108,7 +108,7 @@ class RawAnonymousAuthApiImpl(
 			}
 			contentType(Application.Json)
 			accept(Application.Json)
-			header("token", token)
+			`header`("token", token)
 		}.wrap()
 
 	override suspend fun loginFas(
@@ -123,7 +123,7 @@ class RawAnonymousAuthApiImpl(
 			}
 			contentType(Application.Json)
 			accept(Application.Json)
-			header("token", token)
+			`header`("token", token)
 		}.wrap()
 
 	override suspend fun invalidateRefreshJWT(refreshToken: String): HttpResponse<Unit> =
@@ -134,7 +134,7 @@ class RawAnonymousAuthApiImpl(
 			}
 			contentType(Application.Json)
 			accept(Application.Json)
-			header("Refresh-Token", refreshToken)
+			`header`("Refresh-Token", refreshToken)
 		}.wrap()
 
 	// endregion

@@ -8,8 +8,12 @@ import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.PublicKey
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.filter.AbstractFilter
-import com.icure.sdk.model.filter.chain.FilterChain
+import com.icure.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
+import com.icure.sdk.py.utils.PyResult
+import com.icure.sdk.py.utils.failureToPyResultAsyncCallback
 import com.icure.sdk.py.utils.failureToPyStringAsyncCallback
+import com.icure.sdk.py.utils.toPyResult
+import com.icure.sdk.py.utils.toPyResultAsyncCallback
 import com.icure.sdk.py.utils.toPyString
 import com.icure.sdk.py.utils.toPyStringAsyncCallback
 import com.icure.sdk.utils.Serialization.json
@@ -22,6 +26,7 @@ import kotlin.Unit
 import kotlin.collections.List
 import kotlinx.cinterop.ByteVarOf
 import kotlinx.cinterop.CFunction
+import kotlinx.cinterop.COpaquePointer
 import kotlinx.cinterop.CPointer
 import kotlinx.cinterop.CValues
 import kotlinx.cinterop.ExperimentalForeignApi
@@ -624,42 +629,37 @@ public fun matchHealthcarePartiesByAsync(
 
 @Serializable
 private class FilterHealthPartiesByParams(
-	public val startDocumentId: String? = null,
-	public val limit: Int? = null,
 	@Contextual
-	public val filterChain: FilterChain<HealthcareParty>,
+	public val filter: AbstractFilter<HealthcareParty>,
 )
 
-public fun filterHealthPartiesByBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun filterHealthPartiesByBlocking(sdk: IcureNonCryptoApis, params: String): PyResult =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterHealthPartiesByParams>(params)
 	runBlocking {
 		sdk.healthcareParty.filterHealthPartiesBy(
-			decodedParams.startDocumentId,
-			decodedParams.limit,
-			decodedParams.filterChain,
+			decodedParams.filter,
 		)
 	}
-}.toPyString(PaginatedList.serializer(HealthcareParty.serializer()))
+}.toPyResult {
+	PaginatedListIteratorAndSerializer(it, HealthcareParty.serializer())}
 
 @OptIn(ExperimentalForeignApi::class)
 public fun filterHealthPartiesByAsync(
 	sdk: IcureNonCryptoApis,
 	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterHealthPartiesByParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.healthcareParty.filterHealthPartiesBy(
-				decodedParams.startDocumentId,
-				decodedParams.limit,
-				decodedParams.filterChain,
+				decodedParams.filter,
 			)
-		}.toPyStringAsyncCallback(PaginatedList.serializer(HealthcareParty.serializer()), resultCallback)
+		}.toPyResultAsyncCallback(resultCallback) {
+			PaginatedListIteratorAndSerializer(it, HealthcareParty.serializer())}
 	}
-}.failureToPyStringAsyncCallback(resultCallback)
+}.failureToPyResultAsyncCallback(resultCallback)
 
 @Serializable
 private class GetHealthcarePartiesInGroupParams(

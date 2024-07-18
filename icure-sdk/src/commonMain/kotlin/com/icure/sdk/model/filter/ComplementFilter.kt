@@ -1,7 +1,6 @@
 package com.icure.sdk.model.filter
 
 import com.icure.sdk.model.base.Identifiable
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import kotlin.String
 

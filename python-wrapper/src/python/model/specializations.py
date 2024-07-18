@@ -9,8 +9,6 @@ AesExchangeKeyEncryptionKeypairIdentifier = str
 
 Base64String = str
 
-AnyPrimitive = object
-
 SecureDelegationKeyString = str
 
 Sha256HexString = str

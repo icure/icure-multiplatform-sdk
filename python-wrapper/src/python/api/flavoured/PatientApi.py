@@ -1,12 +1,13 @@
 import asyncio
 import json
-from icure.model import Patient, serialize_patient, DecryptedPatient, User, AccessLevel, EncryptedPatient, deserialize_patient, IdWithRev, DataOwnerRegistrationSuccess, ShareAllPatientDataOptions, EntityWithTypeInfo, PatientAbstractFilter, serialize_abstract_filter, DocIdentifier, EntityAccessInformation, SubscriptionEventType, EntitySubscriptionConfiguration, ShareMetadataBehaviour, RequestedPermission, deserialize_simple_share_result, SimpleShareResult, PatientShareOptions, FilterChain, PaginatedList, SortDirection, EncryptedContent, ListOfIds
+from icure.model import Patient, serialize_patient, DecryptedPatient, User, AccessLevel, EncryptedPatient, deserialize_patient, IdWithRev, DataOwnerRegistrationSuccess, ShareAllPatientDataOptions, EntityWithTypeInfo, PatientAbstractFilter, serialize_abstract_filter, DocIdentifier, EntityAccessInformation, SubscriptionEventType, EntitySubscriptionConfiguration, ShareMetadataBehaviour, RequestedPermission, deserialize_simple_share_result, SimpleShareResult, PatientShareOptions, EncryptedContent
 from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from typing import List, Optional, Dict
 from icure.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
 from icure.model.specializations import HexString
 from icure.subscription.EntitySubscription import EntitySubscription
+from icure.pagination.PaginatedListIterator import PaginatedListIterator
 
 class PatientApi:
 
@@ -263,7 +264,7 @@ class PatientApi:
 				return_value = EncryptedPatient._deserialize(result_info.success)
 				return return_value
 
-		async def filter_patients_by_async(self, filter_chain: FilterChain, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, skip: Optional[int] = None, sort: Optional[str] = None, desc: Optional[bool] = None) -> PaginatedList:
+		async def filter_patients_by_async(self, filter: PatientAbstractFilter) -> PaginatedListIterator[EncryptedPatient]:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -271,22 +272,16 @@ class PatientApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
-					result = PaginatedList(
-						rows = [EncryptedPatient._deserialize(item) for item in result.rows],
-						next_key_pair = result.next_key_pair,
+					result = PaginatedListIterator[EncryptedPatient](
+						producer = success,
+						deserializer = lambda x: EncryptedPatient._deserialize(x),
+						executor = self.icure_sdk._executor
 					)
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"filterChain": filter_chain.__serialize__(),
-				"startKey": start_key,
-				"startDocumentId": start_document_id,
-				"limit": limit,
-				"skip": skip,
-				"sort": sort,
-				"desc": desc,
+				"filter": serialize_abstract_filter(filter),
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.filterPatientsByAsync,
@@ -296,145 +291,28 @@ class PatientApi:
 			)
 			return await future
 
-		def filter_patients_by_blocking(self, filter_chain: FilterChain, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, skip: Optional[int] = None, sort: Optional[str] = None, desc: Optional[bool] = None) -> PaginatedList:
+		def filter_patients_by_blocking(self, filter: PatientAbstractFilter) -> PaginatedListIterator[EncryptedPatient]:
 			payload = {
-				"filterChain": filter_chain.__serialize__(),
-				"startKey": start_key,
-				"startDocumentId": start_document_id,
-				"limit": limit,
-				"skip": skip,
-				"sort": sort,
-				"desc": desc,
+				"filter": serialize_abstract_filter(filter),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.filterPatientsByBlocking(
 				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+			error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+			if error_str_pointer is not None:
+				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+				symbols.DisposeString(error_str_pointer)
+				symbols.DisposeStablePointer(call_result.pinned)
+				raise Exception(error_msg)
 			else:
-				return_value = PaginatedList._deserialize(result_info.success)
-				return_value = PaginatedList(
-					rows = [EncryptedPatient._deserialize(item) for item in return_value.rows],
-					next_key_pair = return_value.next_key_pair,
+				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+				symbols.DisposeStablePointer(call_result.pinned)
+				return PaginatedListIterator[EncryptedPatient](
+					producer = class_pointer,
+					deserializer = lambda x: EncryptedPatient._deserialize(x),
+					executor = self.icure_sdk._executor
 				)
-				return return_value
-
-		async def find_patients_by_name_birth_ssin_auto_async(self, filter_value: str, healthcare_party_id: Optional[str] = None, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, sort_direction: SortDirection = SortDirection.Asc) -> PaginatedList:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
-					result = PaginatedList(
-						rows = [EncryptedPatient._deserialize(item) for item in result.rows],
-						next_key_pair = result.next_key_pair,
-					)
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"healthcarePartyId": healthcare_party_id,
-				"filterValue": filter_value,
-				"startKey": start_key,
-				"startDocumentId": start_document_id,
-				"limit": limit,
-				"sortDirection": sort_direction.__serialize__(),
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.findPatientsByNameBirthSsinAutoAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def find_patients_by_name_birth_ssin_auto_blocking(self, filter_value: str, healthcare_party_id: Optional[str] = None, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, sort_direction: SortDirection = SortDirection.Asc) -> PaginatedList:
-			payload = {
-				"healthcarePartyId": healthcare_party_id,
-				"filterValue": filter_value,
-				"startKey": start_key,
-				"startDocumentId": start_document_id,
-				"limit": limit,
-				"sortDirection": sort_direction.__serialize__(),
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.findPatientsByNameBirthSsinAutoBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = PaginatedList._deserialize(result_info.success)
-				return_value = PaginatedList(
-					rows = [EncryptedPatient._deserialize(item) for item in return_value.rows],
-					next_key_pair = return_value.next_key_pair,
-				)
-				return return_value
-
-		async def list_patients_of_hc_party_async(self, hc_party_id: str, sort_field: str = "name", start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, sort_direction: SortDirection = SortDirection.Asc) -> PaginatedList:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
-					result = PaginatedList(
-						rows = [EncryptedPatient._deserialize(item) for item in result.rows],
-						next_key_pair = result.next_key_pair,
-					)
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"hcPartyId": hc_party_id,
-				"sortField": sort_field,
-				"startKey": start_key,
-				"startDocumentId": start_document_id,
-				"limit": limit,
-				"sortDirection": sort_direction.__serialize__(),
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.listPatientsOfHcPartyAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def list_patients_of_hc_party_blocking(self, hc_party_id: str, sort_field: str = "name", start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, sort_direction: SortDirection = SortDirection.Asc) -> PaginatedList:
-			payload = {
-				"hcPartyId": hc_party_id,
-				"sortField": sort_field,
-				"startKey": start_key,
-				"startDocumentId": start_document_id,
-				"limit": limit,
-				"sortDirection": sort_direction.__serialize__(),
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.listPatientsOfHcPartyBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = PaginatedList._deserialize(result_info.success)
-				return_value = PaginatedList(
-					rows = [EncryptedPatient._deserialize(item) for item in return_value.rows],
-					next_key_pair = return_value.next_key_pair,
-				)
-				return return_value
 
 		async def list_of_merges_after_async(self, date: int) -> List[EncryptedPatient]:
 			loop = asyncio.get_running_loop()
@@ -473,116 +351,6 @@ class PatientApi:
 				raise Exception(result_info.failure)
 			else:
 				return_value = [EncryptedPatient._deserialize(x1) for x1 in result_info.success]
-				return return_value
-
-		async def find_patients_modified_after_async(self, date: int, start_key: Optional[int] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
-					result = PaginatedList(
-						rows = [EncryptedPatient._deserialize(item) for item in result.rows],
-						next_key_pair = result.next_key_pair,
-					)
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"date": date,
-				"startKey": start_key,
-				"startDocumentId": start_document_id,
-				"limit": limit,
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.findPatientsModifiedAfterAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def find_patients_modified_after_blocking(self, date: int, start_key: Optional[int] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
-			payload = {
-				"date": date,
-				"startKey": start_key,
-				"startDocumentId": start_document_id,
-				"limit": limit,
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.findPatientsModifiedAfterBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = PaginatedList._deserialize(result_info.success)
-				return_value = PaginatedList(
-					rows = [EncryptedPatient._deserialize(item) for item in return_value.rows],
-					next_key_pair = return_value.next_key_pair,
-				)
-				return return_value
-
-		async def list_patients_by_hc_party_async(self, hc_party_id: str, sort_field: str = "name", start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, sort_direction: SortDirection = SortDirection.Asc) -> PaginatedList:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
-					result = PaginatedList(
-						rows = [EncryptedPatient._deserialize(item) for item in result.rows],
-						next_key_pair = result.next_key_pair,
-					)
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"hcPartyId": hc_party_id,
-				"sortField": sort_field,
-				"startKey": start_key,
-				"startDocumentId": start_document_id,
-				"limit": limit,
-				"sortDirection": sort_direction.__serialize__(),
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.listPatientsByHcPartyAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def list_patients_by_hc_party_blocking(self, hc_party_id: str, sort_field: str = "name", start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, sort_direction: SortDirection = SortDirection.Asc) -> PaginatedList:
-			payload = {
-				"hcPartyId": hc_party_id,
-				"sortField": sort_field,
-				"startKey": start_key,
-				"startDocumentId": start_document_id,
-				"limit": limit,
-				"sortDirection": sort_direction.__serialize__(),
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.listPatientsByHcPartyBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = PaginatedList._deserialize(result_info.success)
-				return_value = PaginatedList(
-					rows = [EncryptedPatient._deserialize(item) for item in return_value.rows],
-					next_key_pair = return_value.next_key_pair,
-				)
 				return return_value
 
 		async def get_patient_hc_party_keys_for_delegate_async(self, patient_id: str) -> Dict[str, str]:
@@ -661,116 +429,6 @@ class PatientApi:
 				raise Exception(result_info.failure)
 			else:
 				return_value = EncryptedContent._deserialize(result_info.success)
-				return return_value
-
-		async def find_patients_by_healthcare_party_async(self, hc_party_id: Optional[str] = None, sort_field: str = "name", start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, sort_direction: SortDirection = SortDirection.Asc) -> PaginatedList:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
-					result = PaginatedList(
-						rows = [EncryptedPatient._deserialize(item) for item in result.rows],
-						next_key_pair = result.next_key_pair,
-					)
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"hcPartyId": hc_party_id,
-				"sortField": sort_field,
-				"startKey": start_key,
-				"startDocumentId": start_document_id,
-				"limit": limit,
-				"sortDirection": sort_direction.__serialize__(),
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.findPatientsByHealthcarePartyAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def find_patients_by_healthcare_party_blocking(self, hc_party_id: Optional[str] = None, sort_field: str = "name", start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, sort_direction: SortDirection = SortDirection.Asc) -> PaginatedList:
-			payload = {
-				"hcPartyId": hc_party_id,
-				"sortField": sort_field,
-				"startKey": start_key,
-				"startDocumentId": start_document_id,
-				"limit": limit,
-				"sortDirection": sort_direction.__serialize__(),
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.findPatientsByHealthcarePartyBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = PaginatedList._deserialize(result_info.success)
-				return_value = PaginatedList(
-					rows = [EncryptedPatient._deserialize(item) for item in return_value.rows],
-					next_key_pair = return_value.next_key_pair,
-				)
-				return return_value
-
-		async def find_patients_ids_by_healthcare_party_async(self, hc_party_id: str, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
-					result = PaginatedList(
-						rows = [item for item in result.rows],
-						next_key_pair = result.next_key_pair,
-					)
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"hcPartyId": hc_party_id,
-				"startKey": start_key,
-				"startDocumentId": start_document_id,
-				"limit": limit,
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.findPatientsIdsByHealthcarePartyAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def find_patients_ids_by_healthcare_party_blocking(self, hc_party_id: str, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
-			payload = {
-				"hcPartyId": hc_party_id,
-				"startKey": start_key,
-				"startDocumentId": start_document_id,
-				"limit": limit,
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.findPatientsIdsByHealthcarePartyBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = PaginatedList._deserialize(result_info.success)
-				return_value = PaginatedList(
-					rows = [item for item in return_value.rows],
-					next_key_pair = return_value.next_key_pair,
-				)
 				return return_value
 
 		async def get_patient_by_external_id_async(self, external_id: str) -> EncryptedPatient:
@@ -855,63 +513,6 @@ class PatientApi:
 				return_value = [EncryptedPatient._deserialize(x1) for x1 in result_info.success]
 				return return_value
 
-		async def find_deleted_patients_async(self, start_date: int, end_date: Optional[int] = None, desc: Optional[bool] = None, start_key: Optional[int] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
-					result = PaginatedList(
-						rows = [EncryptedPatient._deserialize(item) for item in result.rows],
-						next_key_pair = result.next_key_pair,
-					)
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"startDate": start_date,
-				"endDate": end_date,
-				"desc": desc,
-				"startKey": start_key,
-				"startDocumentId": start_document_id,
-				"limit": limit,
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.findDeletedPatientsAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def find_deleted_patients_blocking(self, start_date: int, end_date: Optional[int] = None, desc: Optional[bool] = None, start_key: Optional[int] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
-			payload = {
-				"startDate": start_date,
-				"endDate": end_date,
-				"desc": desc,
-				"startKey": start_key,
-				"startDocumentId": start_document_id,
-				"limit": limit,
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.findDeletedPatientsBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = PaginatedList._deserialize(result_info.success)
-				return_value = PaginatedList(
-					rows = [EncryptedPatient._deserialize(item) for item in return_value.rows],
-					next_key_pair = return_value.next_key_pair,
-				)
-				return return_value
-
 		async def list_deleted_patients_by_name_async(self, first_name: Optional[str] = None, last_name: Optional[str] = None) -> List[EncryptedPatient]:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
@@ -953,7 +554,7 @@ class PatientApi:
 				return_value = [EncryptedPatient._deserialize(x1) for x1 in result_info.success]
 				return return_value
 
-		async def get_patients_async(self, patient_ids: ListOfIds) -> List[EncryptedPatient]:
+		async def get_patients_async(self, patient_ids: List[str]) -> List[EncryptedPatient]:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -964,7 +565,7 @@ class PatientApi:
 					result = [EncryptedPatient._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"patientIds": patient_ids.__serialize__(),
+				"patientIds": [x0 for x0 in patient_ids],
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -976,9 +577,9 @@ class PatientApi:
 			)
 			return await future
 
-		def get_patients_blocking(self, patient_ids: ListOfIds) -> List[EncryptedPatient]:
+		def get_patients_blocking(self, patient_ids: List[str]) -> List[EncryptedPatient]:
 			payload = {
-				"patientIds": patient_ids.__serialize__(),
+				"patientIds": [x0 for x0 in patient_ids],
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.getPatientsBlocking(
 				self.icure_sdk._native,
@@ -1117,112 +718,6 @@ class PatientApi:
 				raise Exception(result_info.failure)
 			else:
 				return_value = EncryptedPatient._deserialize(result_info.success)
-				return return_value
-
-		async def find_duplicates_by_ssin_async(self, hc_party_id: str, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
-					result = PaginatedList(
-						rows = [EncryptedPatient._deserialize(item) for item in result.rows],
-						next_key_pair = result.next_key_pair,
-					)
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"hcPartyId": hc_party_id,
-				"startKey": start_key,
-				"startDocumentId": start_document_id,
-				"limit": limit,
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.findDuplicatesBySsinAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def find_duplicates_by_ssin_blocking(self, hc_party_id: str, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
-			payload = {
-				"hcPartyId": hc_party_id,
-				"startKey": start_key,
-				"startDocumentId": start_document_id,
-				"limit": limit,
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.findDuplicatesBySsinBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = PaginatedList._deserialize(result_info.success)
-				return_value = PaginatedList(
-					rows = [EncryptedPatient._deserialize(item) for item in return_value.rows],
-					next_key_pair = return_value.next_key_pair,
-				)
-				return return_value
-
-		async def find_duplicates_by_name_async(self, hc_party_id: str, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
-					result = PaginatedList(
-						rows = [EncryptedPatient._deserialize(item) for item in result.rows],
-						next_key_pair = result.next_key_pair,
-					)
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"hcPartyId": hc_party_id,
-				"startKey": start_key,
-				"startDocumentId": start_document_id,
-				"limit": limit,
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.findDuplicatesByNameAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def find_duplicates_by_name_blocking(self, hc_party_id: str, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
-			payload = {
-				"hcPartyId": hc_party_id,
-				"startKey": start_key,
-				"startDocumentId": start_document_id,
-				"limit": limit,
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.findDuplicatesByNameBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = PaginatedList._deserialize(result_info.success)
-				return_value = PaginatedList(
-					rows = [EncryptedPatient._deserialize(item) for item in return_value.rows],
-					next_key_pair = return_value.next_key_pair,
-				)
 				return return_value
 
 		async def merge_patients_async(self, into_id: str, from_id: str, expected_from_rev: str, updated_into: EncryptedPatient) -> EncryptedPatient:
@@ -1523,7 +1018,7 @@ class PatientApi:
 				return_value = Patient._deserialize(result_info.success)
 				return return_value
 
-		async def filter_patients_by_async(self, filter_chain: FilterChain, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, skip: Optional[int] = None, sort: Optional[str] = None, desc: Optional[bool] = None) -> PaginatedList:
+		async def filter_patients_by_async(self, filter: PatientAbstractFilter) -> PaginatedListIterator[Patient]:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -1531,22 +1026,16 @@ class PatientApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
-					result = PaginatedList(
-						rows = [deserialize_patient(item) for item in result.rows],
-						next_key_pair = result.next_key_pair,
+					result = PaginatedListIterator[Patient](
+						producer = success,
+						deserializer = lambda x: deserialize_patient(x),
+						executor = self.icure_sdk._executor
 					)
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"filterChain": filter_chain.__serialize__(),
-				"startKey": start_key,
-				"startDocumentId": start_document_id,
-				"limit": limit,
-				"skip": skip,
-				"sort": sort,
-				"desc": desc,
+				"filter": serialize_abstract_filter(filter),
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.filterPatientsByAsync,
@@ -1556,145 +1045,28 @@ class PatientApi:
 			)
 			return await future
 
-		def filter_patients_by_blocking(self, filter_chain: FilterChain, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, skip: Optional[int] = None, sort: Optional[str] = None, desc: Optional[bool] = None) -> PaginatedList:
+		def filter_patients_by_blocking(self, filter: PatientAbstractFilter) -> PaginatedListIterator[Patient]:
 			payload = {
-				"filterChain": filter_chain.__serialize__(),
-				"startKey": start_key,
-				"startDocumentId": start_document_id,
-				"limit": limit,
-				"skip": skip,
-				"sort": sort,
-				"desc": desc,
+				"filter": serialize_abstract_filter(filter),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.filterPatientsByBlocking(
 				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+			error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+			if error_str_pointer is not None:
+				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+				symbols.DisposeString(error_str_pointer)
+				symbols.DisposeStablePointer(call_result.pinned)
+				raise Exception(error_msg)
 			else:
-				return_value = PaginatedList._deserialize(result_info.success)
-				return_value = PaginatedList(
-					rows = [deserialize_patient(item) for item in return_value.rows],
-					next_key_pair = return_value.next_key_pair,
+				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+				symbols.DisposeStablePointer(call_result.pinned)
+				return PaginatedListIterator[Patient](
+					producer = class_pointer,
+					deserializer = lambda x: deserialize_patient(x),
+					executor = self.icure_sdk._executor
 				)
-				return return_value
-
-		async def find_patients_by_name_birth_ssin_auto_async(self, filter_value: str, healthcare_party_id: Optional[str] = None, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, sort_direction: SortDirection = SortDirection.Asc) -> PaginatedList:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
-					result = PaginatedList(
-						rows = [deserialize_patient(item) for item in result.rows],
-						next_key_pair = result.next_key_pair,
-					)
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"healthcarePartyId": healthcare_party_id,
-				"filterValue": filter_value,
-				"startKey": start_key,
-				"startDocumentId": start_document_id,
-				"limit": limit,
-				"sortDirection": sort_direction.__serialize__(),
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.findPatientsByNameBirthSsinAutoAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def find_patients_by_name_birth_ssin_auto_blocking(self, filter_value: str, healthcare_party_id: Optional[str] = None, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, sort_direction: SortDirection = SortDirection.Asc) -> PaginatedList:
-			payload = {
-				"healthcarePartyId": healthcare_party_id,
-				"filterValue": filter_value,
-				"startKey": start_key,
-				"startDocumentId": start_document_id,
-				"limit": limit,
-				"sortDirection": sort_direction.__serialize__(),
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.findPatientsByNameBirthSsinAutoBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = PaginatedList._deserialize(result_info.success)
-				return_value = PaginatedList(
-					rows = [deserialize_patient(item) for item in return_value.rows],
-					next_key_pair = return_value.next_key_pair,
-				)
-				return return_value
-
-		async def list_patients_of_hc_party_async(self, hc_party_id: str, sort_field: str = "name", start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, sort_direction: SortDirection = SortDirection.Asc) -> PaginatedList:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
-					result = PaginatedList(
-						rows = [deserialize_patient(item) for item in result.rows],
-						next_key_pair = result.next_key_pair,
-					)
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"hcPartyId": hc_party_id,
-				"sortField": sort_field,
-				"startKey": start_key,
-				"startDocumentId": start_document_id,
-				"limit": limit,
-				"sortDirection": sort_direction.__serialize__(),
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.listPatientsOfHcPartyAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def list_patients_of_hc_party_blocking(self, hc_party_id: str, sort_field: str = "name", start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, sort_direction: SortDirection = SortDirection.Asc) -> PaginatedList:
-			payload = {
-				"hcPartyId": hc_party_id,
-				"sortField": sort_field,
-				"startKey": start_key,
-				"startDocumentId": start_document_id,
-				"limit": limit,
-				"sortDirection": sort_direction.__serialize__(),
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.listPatientsOfHcPartyBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = PaginatedList._deserialize(result_info.success)
-				return_value = PaginatedList(
-					rows = [deserialize_patient(item) for item in return_value.rows],
-					next_key_pair = return_value.next_key_pair,
-				)
-				return return_value
 
 		async def list_of_merges_after_async(self, date: int) -> List[Patient]:
 			loop = asyncio.get_running_loop()
@@ -1733,116 +1105,6 @@ class PatientApi:
 				raise Exception(result_info.failure)
 			else:
 				return_value = [Patient._deserialize(x1) for x1 in result_info.success]
-				return return_value
-
-		async def find_patients_modified_after_async(self, date: int, start_key: Optional[int] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
-					result = PaginatedList(
-						rows = [deserialize_patient(item) for item in result.rows],
-						next_key_pair = result.next_key_pair,
-					)
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"date": date,
-				"startKey": start_key,
-				"startDocumentId": start_document_id,
-				"limit": limit,
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.findPatientsModifiedAfterAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def find_patients_modified_after_blocking(self, date: int, start_key: Optional[int] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
-			payload = {
-				"date": date,
-				"startKey": start_key,
-				"startDocumentId": start_document_id,
-				"limit": limit,
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.findPatientsModifiedAfterBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = PaginatedList._deserialize(result_info.success)
-				return_value = PaginatedList(
-					rows = [deserialize_patient(item) for item in return_value.rows],
-					next_key_pair = return_value.next_key_pair,
-				)
-				return return_value
-
-		async def list_patients_by_hc_party_async(self, hc_party_id: str, sort_field: str = "name", start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, sort_direction: SortDirection = SortDirection.Asc) -> PaginatedList:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
-					result = PaginatedList(
-						rows = [deserialize_patient(item) for item in result.rows],
-						next_key_pair = result.next_key_pair,
-					)
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"hcPartyId": hc_party_id,
-				"sortField": sort_field,
-				"startKey": start_key,
-				"startDocumentId": start_document_id,
-				"limit": limit,
-				"sortDirection": sort_direction.__serialize__(),
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.listPatientsByHcPartyAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def list_patients_by_hc_party_blocking(self, hc_party_id: str, sort_field: str = "name", start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, sort_direction: SortDirection = SortDirection.Asc) -> PaginatedList:
-			payload = {
-				"hcPartyId": hc_party_id,
-				"sortField": sort_field,
-				"startKey": start_key,
-				"startDocumentId": start_document_id,
-				"limit": limit,
-				"sortDirection": sort_direction.__serialize__(),
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.listPatientsByHcPartyBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = PaginatedList._deserialize(result_info.success)
-				return_value = PaginatedList(
-					rows = [deserialize_patient(item) for item in return_value.rows],
-					next_key_pair = return_value.next_key_pair,
-				)
 				return return_value
 
 		async def get_patient_hc_party_keys_for_delegate_async(self, patient_id: str) -> Dict[str, str]:
@@ -1921,116 +1183,6 @@ class PatientApi:
 				raise Exception(result_info.failure)
 			else:
 				return_value = EncryptedContent._deserialize(result_info.success)
-				return return_value
-
-		async def find_patients_by_healthcare_party_async(self, hc_party_id: Optional[str] = None, sort_field: str = "name", start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, sort_direction: SortDirection = SortDirection.Asc) -> PaginatedList:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
-					result = PaginatedList(
-						rows = [deserialize_patient(item) for item in result.rows],
-						next_key_pair = result.next_key_pair,
-					)
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"hcPartyId": hc_party_id,
-				"sortField": sort_field,
-				"startKey": start_key,
-				"startDocumentId": start_document_id,
-				"limit": limit,
-				"sortDirection": sort_direction.__serialize__(),
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.findPatientsByHealthcarePartyAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def find_patients_by_healthcare_party_blocking(self, hc_party_id: Optional[str] = None, sort_field: str = "name", start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, sort_direction: SortDirection = SortDirection.Asc) -> PaginatedList:
-			payload = {
-				"hcPartyId": hc_party_id,
-				"sortField": sort_field,
-				"startKey": start_key,
-				"startDocumentId": start_document_id,
-				"limit": limit,
-				"sortDirection": sort_direction.__serialize__(),
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.findPatientsByHealthcarePartyBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = PaginatedList._deserialize(result_info.success)
-				return_value = PaginatedList(
-					rows = [deserialize_patient(item) for item in return_value.rows],
-					next_key_pair = return_value.next_key_pair,
-				)
-				return return_value
-
-		async def find_patients_ids_by_healthcare_party_async(self, hc_party_id: str, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
-					result = PaginatedList(
-						rows = [item for item in result.rows],
-						next_key_pair = result.next_key_pair,
-					)
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"hcPartyId": hc_party_id,
-				"startKey": start_key,
-				"startDocumentId": start_document_id,
-				"limit": limit,
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.findPatientsIdsByHealthcarePartyAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def find_patients_ids_by_healthcare_party_blocking(self, hc_party_id: str, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
-			payload = {
-				"hcPartyId": hc_party_id,
-				"startKey": start_key,
-				"startDocumentId": start_document_id,
-				"limit": limit,
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.findPatientsIdsByHealthcarePartyBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = PaginatedList._deserialize(result_info.success)
-				return_value = PaginatedList(
-					rows = [item for item in return_value.rows],
-					next_key_pair = return_value.next_key_pair,
-				)
 				return return_value
 
 		async def get_patient_by_external_id_async(self, external_id: str) -> Patient:
@@ -2115,63 +1267,6 @@ class PatientApi:
 				return_value = [Patient._deserialize(x1) for x1 in result_info.success]
 				return return_value
 
-		async def find_deleted_patients_async(self, start_date: int, end_date: Optional[int] = None, desc: Optional[bool] = None, start_key: Optional[int] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
-					result = PaginatedList(
-						rows = [deserialize_patient(item) for item in result.rows],
-						next_key_pair = result.next_key_pair,
-					)
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"startDate": start_date,
-				"endDate": end_date,
-				"desc": desc,
-				"startKey": start_key,
-				"startDocumentId": start_document_id,
-				"limit": limit,
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.findDeletedPatientsAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def find_deleted_patients_blocking(self, start_date: int, end_date: Optional[int] = None, desc: Optional[bool] = None, start_key: Optional[int] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
-			payload = {
-				"startDate": start_date,
-				"endDate": end_date,
-				"desc": desc,
-				"startKey": start_key,
-				"startDocumentId": start_document_id,
-				"limit": limit,
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.findDeletedPatientsBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = PaginatedList._deserialize(result_info.success)
-				return_value = PaginatedList(
-					rows = [deserialize_patient(item) for item in return_value.rows],
-					next_key_pair = return_value.next_key_pair,
-				)
-				return return_value
-
 		async def list_deleted_patients_by_name_async(self, first_name: Optional[str] = None, last_name: Optional[str] = None) -> List[Patient]:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
@@ -2213,7 +1308,7 @@ class PatientApi:
 				return_value = [Patient._deserialize(x1) for x1 in result_info.success]
 				return return_value
 
-		async def get_patients_async(self, patient_ids: ListOfIds) -> List[Patient]:
+		async def get_patients_async(self, patient_ids: List[str]) -> List[Patient]:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -2224,7 +1319,7 @@ class PatientApi:
 					result = [Patient._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"patientIds": patient_ids.__serialize__(),
+				"patientIds": [x0 for x0 in patient_ids],
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -2236,9 +1331,9 @@ class PatientApi:
 			)
 			return await future
 
-		def get_patients_blocking(self, patient_ids: ListOfIds) -> List[Patient]:
+		def get_patients_blocking(self, patient_ids: List[str]) -> List[Patient]:
 			payload = {
-				"patientIds": patient_ids.__serialize__(),
+				"patientIds": [x0 for x0 in patient_ids],
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.getPatientsBlocking(
 				self.icure_sdk._native,
@@ -2377,112 +1472,6 @@ class PatientApi:
 				raise Exception(result_info.failure)
 			else:
 				return_value = Patient._deserialize(result_info.success)
-				return return_value
-
-		async def find_duplicates_by_ssin_async(self, hc_party_id: str, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
-					result = PaginatedList(
-						rows = [deserialize_patient(item) for item in result.rows],
-						next_key_pair = result.next_key_pair,
-					)
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"hcPartyId": hc_party_id,
-				"startKey": start_key,
-				"startDocumentId": start_document_id,
-				"limit": limit,
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.findDuplicatesBySsinAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def find_duplicates_by_ssin_blocking(self, hc_party_id: str, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
-			payload = {
-				"hcPartyId": hc_party_id,
-				"startKey": start_key,
-				"startDocumentId": start_document_id,
-				"limit": limit,
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.findDuplicatesBySsinBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = PaginatedList._deserialize(result_info.success)
-				return_value = PaginatedList(
-					rows = [deserialize_patient(item) for item in return_value.rows],
-					next_key_pair = return_value.next_key_pair,
-				)
-				return return_value
-
-		async def find_duplicates_by_name_async(self, hc_party_id: str, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
-					result = PaginatedList(
-						rows = [deserialize_patient(item) for item in result.rows],
-						next_key_pair = result.next_key_pair,
-					)
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"hcPartyId": hc_party_id,
-				"startKey": start_key,
-				"startDocumentId": start_document_id,
-				"limit": limit,
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.findDuplicatesByNameAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def find_duplicates_by_name_blocking(self, hc_party_id: str, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
-			payload = {
-				"hcPartyId": hc_party_id,
-				"startKey": start_key,
-				"startDocumentId": start_document_id,
-				"limit": limit,
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.findDuplicatesByNameBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = PaginatedList._deserialize(result_info.success)
-				return_value = PaginatedList(
-					rows = [deserialize_patient(item) for item in return_value.rows],
-					next_key_pair = return_value.next_key_pair,
-				)
 				return return_value
 
 		async def merge_patients_async(self, into_id: str, from_id: str, expected_from_rev: str, updated_into: EncryptedPatient) -> Patient:
@@ -3676,7 +2665,7 @@ class PatientApi:
 			return_value = DecryptedPatient._deserialize(result_info.success)
 			return return_value
 
-	async def filter_patients_by_async(self, filter_chain: FilterChain, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, skip: Optional[int] = None, sort: Optional[str] = None, desc: Optional[bool] = None) -> PaginatedList:
+	async def filter_patients_by_async(self, filter: PatientAbstractFilter) -> PaginatedListIterator[DecryptedPatient]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -3684,22 +2673,16 @@ class PatientApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
-				result = PaginatedList(
-					rows = [DecryptedPatient._deserialize(item) for item in result.rows],
-					next_key_pair = result.next_key_pair,
+				result = PaginatedListIterator[DecryptedPatient](
+					producer = success,
+					deserializer = lambda x: DecryptedPatient._deserialize(x),
+					executor = self.icure_sdk._executor
 				)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"filterChain": filter_chain.__serialize__(),
-			"startKey": start_key,
-			"startDocumentId": start_document_id,
-			"limit": limit,
-			"skip": skip,
-			"sort": sort,
-			"desc": desc,
+			"filter": serialize_abstract_filter(filter),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.filterPatientsByAsync,
@@ -3709,145 +2692,28 @@ class PatientApi:
 		)
 		return await future
 
-	def filter_patients_by_blocking(self, filter_chain: FilterChain, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, skip: Optional[int] = None, sort: Optional[str] = None, desc: Optional[bool] = None) -> PaginatedList:
+	def filter_patients_by_blocking(self, filter: PatientAbstractFilter) -> PaginatedListIterator[DecryptedPatient]:
 		payload = {
-			"filterChain": filter_chain.__serialize__(),
-			"startKey": start_key,
-			"startDocumentId": start_document_id,
-			"limit": limit,
-			"skip": skip,
-			"sort": sort,
-			"desc": desc,
+			"filter": serialize_abstract_filter(filter),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.filterPatientsByBlocking(
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+		if error_str_pointer is not None:
+			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+			symbols.DisposeString(error_str_pointer)
+			symbols.DisposeStablePointer(call_result.pinned)
+			raise Exception(error_msg)
 		else:
-			return_value = PaginatedList._deserialize(result_info.success)
-			return_value = PaginatedList(
-				rows = [DecryptedPatient._deserialize(item) for item in return_value.rows],
-				next_key_pair = return_value.next_key_pair,
+			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+			symbols.DisposeStablePointer(call_result.pinned)
+			return PaginatedListIterator[DecryptedPatient](
+				producer = class_pointer,
+				deserializer = lambda x: DecryptedPatient._deserialize(x),
+				executor = self.icure_sdk._executor
 			)
-			return return_value
-
-	async def find_patients_by_name_birth_ssin_auto_async(self, filter_value: str, healthcare_party_id: Optional[str] = None, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, sort_direction: SortDirection = SortDirection.Asc) -> PaginatedList:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
-				result = PaginatedList(
-					rows = [DecryptedPatient._deserialize(item) for item in result.rows],
-					next_key_pair = result.next_key_pair,
-				)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"healthcarePartyId": healthcare_party_id,
-			"filterValue": filter_value,
-			"startKey": start_key,
-			"startDocumentId": start_document_id,
-			"limit": limit,
-			"sortDirection": sort_direction.__serialize__(),
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.findPatientsByNameBirthSsinAutoAsync,
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def find_patients_by_name_birth_ssin_auto_blocking(self, filter_value: str, healthcare_party_id: Optional[str] = None, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, sort_direction: SortDirection = SortDirection.Asc) -> PaginatedList:
-		payload = {
-			"healthcarePartyId": healthcare_party_id,
-			"filterValue": filter_value,
-			"startKey": start_key,
-			"startDocumentId": start_document_id,
-			"limit": limit,
-			"sortDirection": sort_direction.__serialize__(),
-		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.findPatientsByNameBirthSsinAutoBlocking(
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise Exception(result_info.failure)
-		else:
-			return_value = PaginatedList._deserialize(result_info.success)
-			return_value = PaginatedList(
-				rows = [DecryptedPatient._deserialize(item) for item in return_value.rows],
-				next_key_pair = return_value.next_key_pair,
-			)
-			return return_value
-
-	async def list_patients_of_hc_party_async(self, hc_party_id: str, sort_field: str = "name", start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, sort_direction: SortDirection = SortDirection.Asc) -> PaginatedList:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
-				result = PaginatedList(
-					rows = [DecryptedPatient._deserialize(item) for item in result.rows],
-					next_key_pair = result.next_key_pair,
-				)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"hcPartyId": hc_party_id,
-			"sortField": sort_field,
-			"startKey": start_key,
-			"startDocumentId": start_document_id,
-			"limit": limit,
-			"sortDirection": sort_direction.__serialize__(),
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.listPatientsOfHcPartyAsync,
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def list_patients_of_hc_party_blocking(self, hc_party_id: str, sort_field: str = "name", start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, sort_direction: SortDirection = SortDirection.Asc) -> PaginatedList:
-		payload = {
-			"hcPartyId": hc_party_id,
-			"sortField": sort_field,
-			"startKey": start_key,
-			"startDocumentId": start_document_id,
-			"limit": limit,
-			"sortDirection": sort_direction.__serialize__(),
-		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.listPatientsOfHcPartyBlocking(
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise Exception(result_info.failure)
-		else:
-			return_value = PaginatedList._deserialize(result_info.success)
-			return_value = PaginatedList(
-				rows = [DecryptedPatient._deserialize(item) for item in return_value.rows],
-				next_key_pair = return_value.next_key_pair,
-			)
-			return return_value
 
 	async def list_of_merges_after_async(self, date: int) -> List[DecryptedPatient]:
 		loop = asyncio.get_running_loop()
@@ -3886,116 +2752,6 @@ class PatientApi:
 			raise Exception(result_info.failure)
 		else:
 			return_value = [DecryptedPatient._deserialize(x1) for x1 in result_info.success]
-			return return_value
-
-	async def find_patients_modified_after_async(self, date: int, start_key: Optional[int] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
-				result = PaginatedList(
-					rows = [DecryptedPatient._deserialize(item) for item in result.rows],
-					next_key_pair = result.next_key_pair,
-				)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"date": date,
-			"startKey": start_key,
-			"startDocumentId": start_document_id,
-			"limit": limit,
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.findPatientsModifiedAfterAsync,
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def find_patients_modified_after_blocking(self, date: int, start_key: Optional[int] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
-		payload = {
-			"date": date,
-			"startKey": start_key,
-			"startDocumentId": start_document_id,
-			"limit": limit,
-		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.findPatientsModifiedAfterBlocking(
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise Exception(result_info.failure)
-		else:
-			return_value = PaginatedList._deserialize(result_info.success)
-			return_value = PaginatedList(
-				rows = [DecryptedPatient._deserialize(item) for item in return_value.rows],
-				next_key_pair = return_value.next_key_pair,
-			)
-			return return_value
-
-	async def list_patients_by_hc_party_async(self, hc_party_id: str, sort_field: str = "name", start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, sort_direction: SortDirection = SortDirection.Asc) -> PaginatedList:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
-				result = PaginatedList(
-					rows = [DecryptedPatient._deserialize(item) for item in result.rows],
-					next_key_pair = result.next_key_pair,
-				)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"hcPartyId": hc_party_id,
-			"sortField": sort_field,
-			"startKey": start_key,
-			"startDocumentId": start_document_id,
-			"limit": limit,
-			"sortDirection": sort_direction.__serialize__(),
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.listPatientsByHcPartyAsync,
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def list_patients_by_hc_party_blocking(self, hc_party_id: str, sort_field: str = "name", start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, sort_direction: SortDirection = SortDirection.Asc) -> PaginatedList:
-		payload = {
-			"hcPartyId": hc_party_id,
-			"sortField": sort_field,
-			"startKey": start_key,
-			"startDocumentId": start_document_id,
-			"limit": limit,
-			"sortDirection": sort_direction.__serialize__(),
-		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.listPatientsByHcPartyBlocking(
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise Exception(result_info.failure)
-		else:
-			return_value = PaginatedList._deserialize(result_info.success)
-			return_value = PaginatedList(
-				rows = [DecryptedPatient._deserialize(item) for item in return_value.rows],
-				next_key_pair = return_value.next_key_pair,
-			)
 			return return_value
 
 	async def get_patient_hc_party_keys_for_delegate_async(self, patient_id: str) -> Dict[str, str]:
@@ -4074,116 +2830,6 @@ class PatientApi:
 			raise Exception(result_info.failure)
 		else:
 			return_value = EncryptedContent._deserialize(result_info.success)
-			return return_value
-
-	async def find_patients_by_healthcare_party_async(self, hc_party_id: Optional[str] = None, sort_field: str = "name", start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, sort_direction: SortDirection = SortDirection.Asc) -> PaginatedList:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
-				result = PaginatedList(
-					rows = [DecryptedPatient._deserialize(item) for item in result.rows],
-					next_key_pair = result.next_key_pair,
-				)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"hcPartyId": hc_party_id,
-			"sortField": sort_field,
-			"startKey": start_key,
-			"startDocumentId": start_document_id,
-			"limit": limit,
-			"sortDirection": sort_direction.__serialize__(),
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.findPatientsByHealthcarePartyAsync,
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def find_patients_by_healthcare_party_blocking(self, hc_party_id: Optional[str] = None, sort_field: str = "name", start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, sort_direction: SortDirection = SortDirection.Asc) -> PaginatedList:
-		payload = {
-			"hcPartyId": hc_party_id,
-			"sortField": sort_field,
-			"startKey": start_key,
-			"startDocumentId": start_document_id,
-			"limit": limit,
-			"sortDirection": sort_direction.__serialize__(),
-		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.findPatientsByHealthcarePartyBlocking(
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise Exception(result_info.failure)
-		else:
-			return_value = PaginatedList._deserialize(result_info.success)
-			return_value = PaginatedList(
-				rows = [DecryptedPatient._deserialize(item) for item in return_value.rows],
-				next_key_pair = return_value.next_key_pair,
-			)
-			return return_value
-
-	async def find_patients_ids_by_healthcare_party_async(self, hc_party_id: str, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
-				result = PaginatedList(
-					rows = [item for item in result.rows],
-					next_key_pair = result.next_key_pair,
-				)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"hcPartyId": hc_party_id,
-			"startKey": start_key,
-			"startDocumentId": start_document_id,
-			"limit": limit,
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.findPatientsIdsByHealthcarePartyAsync,
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def find_patients_ids_by_healthcare_party_blocking(self, hc_party_id: str, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
-		payload = {
-			"hcPartyId": hc_party_id,
-			"startKey": start_key,
-			"startDocumentId": start_document_id,
-			"limit": limit,
-		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.findPatientsIdsByHealthcarePartyBlocking(
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise Exception(result_info.failure)
-		else:
-			return_value = PaginatedList._deserialize(result_info.success)
-			return_value = PaginatedList(
-				rows = [item for item in return_value.rows],
-				next_key_pair = return_value.next_key_pair,
-			)
 			return return_value
 
 	async def get_patient_by_external_id_async(self, external_id: str) -> DecryptedPatient:
@@ -4268,63 +2914,6 @@ class PatientApi:
 			return_value = [DecryptedPatient._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def find_deleted_patients_async(self, start_date: int, end_date: Optional[int] = None, desc: Optional[bool] = None, start_key: Optional[int] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
-				result = PaginatedList(
-					rows = [DecryptedPatient._deserialize(item) for item in result.rows],
-					next_key_pair = result.next_key_pair,
-				)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"startDate": start_date,
-			"endDate": end_date,
-			"desc": desc,
-			"startKey": start_key,
-			"startDocumentId": start_document_id,
-			"limit": limit,
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.findDeletedPatientsAsync,
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def find_deleted_patients_blocking(self, start_date: int, end_date: Optional[int] = None, desc: Optional[bool] = None, start_key: Optional[int] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
-		payload = {
-			"startDate": start_date,
-			"endDate": end_date,
-			"desc": desc,
-			"startKey": start_key,
-			"startDocumentId": start_document_id,
-			"limit": limit,
-		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.findDeletedPatientsBlocking(
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise Exception(result_info.failure)
-		else:
-			return_value = PaginatedList._deserialize(result_info.success)
-			return_value = PaginatedList(
-				rows = [DecryptedPatient._deserialize(item) for item in return_value.rows],
-				next_key_pair = return_value.next_key_pair,
-			)
-			return return_value
-
 	async def list_deleted_patients_by_name_async(self, first_name: Optional[str] = None, last_name: Optional[str] = None) -> List[DecryptedPatient]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
@@ -4366,7 +2955,7 @@ class PatientApi:
 			return_value = [DecryptedPatient._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def get_patients_async(self, patient_ids: ListOfIds) -> List[DecryptedPatient]:
+	async def get_patients_async(self, patient_ids: List[str]) -> List[DecryptedPatient]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -4377,7 +2966,7 @@ class PatientApi:
 				result = [DecryptedPatient._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"patientIds": patient_ids.__serialize__(),
+			"patientIds": [x0 for x0 in patient_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -4389,9 +2978,9 @@ class PatientApi:
 		)
 		return await future
 
-	def get_patients_blocking(self, patient_ids: ListOfIds) -> List[DecryptedPatient]:
+	def get_patients_blocking(self, patient_ids: List[str]) -> List[DecryptedPatient]:
 		payload = {
-			"patientIds": patient_ids.__serialize__(),
+			"patientIds": [x0 for x0 in patient_ids],
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.getPatientsBlocking(
 			self.icure_sdk._native,
@@ -4530,112 +3119,6 @@ class PatientApi:
 			raise Exception(result_info.failure)
 		else:
 			return_value = DecryptedPatient._deserialize(result_info.success)
-			return return_value
-
-	async def find_duplicates_by_ssin_async(self, hc_party_id: str, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
-				result = PaginatedList(
-					rows = [DecryptedPatient._deserialize(item) for item in result.rows],
-					next_key_pair = result.next_key_pair,
-				)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"hcPartyId": hc_party_id,
-			"startKey": start_key,
-			"startDocumentId": start_document_id,
-			"limit": limit,
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.findDuplicatesBySsinAsync,
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def find_duplicates_by_ssin_blocking(self, hc_party_id: str, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
-		payload = {
-			"hcPartyId": hc_party_id,
-			"startKey": start_key,
-			"startDocumentId": start_document_id,
-			"limit": limit,
-		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.findDuplicatesBySsinBlocking(
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise Exception(result_info.failure)
-		else:
-			return_value = PaginatedList._deserialize(result_info.success)
-			return_value = PaginatedList(
-				rows = [DecryptedPatient._deserialize(item) for item in return_value.rows],
-				next_key_pair = return_value.next_key_pair,
-			)
-			return return_value
-
-	async def find_duplicates_by_name_async(self, hc_party_id: str, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
-				result = PaginatedList(
-					rows = [DecryptedPatient._deserialize(item) for item in result.rows],
-					next_key_pair = result.next_key_pair,
-				)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"hcPartyId": hc_party_id,
-			"startKey": start_key,
-			"startDocumentId": start_document_id,
-			"limit": limit,
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.findDuplicatesByNameAsync,
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def find_duplicates_by_name_blocking(self, hc_party_id: str, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
-		payload = {
-			"hcPartyId": hc_party_id,
-			"startKey": start_key,
-			"startDocumentId": start_document_id,
-			"limit": limit,
-		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.findDuplicatesByNameBlocking(
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise Exception(result_info.failure)
-		else:
-			return_value = PaginatedList._deserialize(result_info.success)
-			return_value = PaginatedList(
-				rows = [DecryptedPatient._deserialize(item) for item in return_value.rows],
-				next_key_pair = return_value.next_key_pair,
-			)
 			return return_value
 
 	async def merge_patients_async(self, into_id: str, from_id: str, expected_from_rev: str, updated_into: EncryptedPatient) -> DecryptedPatient:

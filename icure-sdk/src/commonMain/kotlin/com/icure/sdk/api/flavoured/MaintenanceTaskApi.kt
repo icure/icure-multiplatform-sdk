@@ -10,7 +10,6 @@ import com.icure.sdk.model.DecryptedMaintenanceTask
 import com.icure.sdk.model.EncryptedMaintenanceTask
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.MaintenanceTask
-import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.User
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.embed.AccessLevel
@@ -18,7 +17,6 @@ import com.icure.sdk.model.embed.DelegationTag
 import com.icure.sdk.model.extensions.autoDelegationsFor
 import com.icure.sdk.model.extensions.dataOwnerId
 import com.icure.sdk.model.filter.AbstractFilter
-import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
@@ -35,26 +33,25 @@ import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.currentEpochMs
-import kotlinx.serialization.encodeToString
+import com.icure.sdk.utils.pagination.IdsPageIterator
+import com.icure.sdk.utils.pagination.PaginatedListIterator
 import kotlinx.serialization.json.decodeFromJsonElement
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface MaintenanceTaskBasicFlavourlessApi: Subscribable<MaintenanceTask, EncryptedMaintenanceTask> {
 	suspend fun deleteMaintenanceTask(entityId: String): DocIdentifier
 	suspend fun deleteMaintenanceTasks(entityIds: List<String>): List<DocIdentifier>
+	suspend fun matchMaintenanceTasksBy(filter: AbstractFilter<MaintenanceTask>): List<String>
 }
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
 interface MaintenanceTaskBasicFlavouredApi<E : MaintenanceTask> {
 	suspend fun modifyMaintenanceTask(entity: E): E
 	suspend fun getMaintenanceTask(entityId: String): E
+	suspend fun getMaintenanceTasks(entityIds: List<String>): List<E>
 	suspend fun filterMaintenanceTasksBy(
-		@DefaultValue("null")
-		startDocumentId: String? = null,
-		@DefaultValue("null")
-		limit: Int? = null,
-		filterChain: FilterChain<MaintenanceTask>
-	): PaginatedList<E>
+		filter: AbstractFilter<MaintenanceTask>
+	): PaginatedListIterator<E>
 }
 
 /* The extra API calls declared in this interface are the ones that can be used on encrypted or decrypted items but only when the user is a data owner */
@@ -155,12 +152,13 @@ private abstract class AbstractMaintenanceTaskBasicFlavouredApi<E : MaintenanceT
 
 	override suspend fun getMaintenanceTask(entityId: String): E = rawApi.getMaintenanceTask(entityId).successBody().let { maybeDecrypt(it) }
 
-	override suspend fun filterMaintenanceTasksBy(
-		startDocumentId: String?,
-		limit: Int?,
-		filterChain: FilterChain<MaintenanceTask>,
-	): PaginatedList<E> =
-		rawApi.filterMaintenanceTasksBy(startDocumentId, limit, filterChain).successBody().map { maybeDecrypt(it) }
+	override suspend fun getMaintenanceTasks(entityIds: List<String>): List<E> = rawApi.getMaintenanceTasks(ListOfIds(entityIds)).successBody().map { maybeDecrypt(it) }
+
+	override suspend fun filterMaintenanceTasksBy(filter: AbstractFilter<MaintenanceTask>): PaginatedListIterator<E> =
+		IdsPageIterator(
+			rawApi.matchMaintenanceTasksBy(filter).successBody(),
+			this::getMaintenanceTasks
+		)
 
 	abstract suspend fun validateAndMaybeEncrypt(entity: E): EncryptedMaintenanceTask
 	abstract suspend fun maybeDecrypt(entity: EncryptedMaintenanceTask): E
@@ -213,6 +211,7 @@ private abstract class AbstractMaintenanceTaskFlavouredApi<E : MaintenanceTask>(
 private class AbstractMaintenanceTaskBasicFlavourlessApi(val rawApi: RawMaintenanceTaskApi, private val config: BasicApiConfiguration) : MaintenanceTaskBasicFlavourlessApi {
 	override suspend fun deleteMaintenanceTask(entityId: String) = rawApi.deleteMaintenanceTask(entityId).successBody()
 	override suspend fun deleteMaintenanceTasks(entityIds: List<String>) = rawApi.deleteMaintenanceTasks(ListOfIds(entityIds)).successBody()
+	override suspend fun matchMaintenanceTasksBy(filter: AbstractFilter<MaintenanceTask>): List<String> = rawApi.matchMaintenanceTasksBy(filter).successBody()
 	override suspend fun subscribeToEvents(
 		events: Set<SubscriptionEventType>,
 		filter: AbstractFilter<MaintenanceTask>,

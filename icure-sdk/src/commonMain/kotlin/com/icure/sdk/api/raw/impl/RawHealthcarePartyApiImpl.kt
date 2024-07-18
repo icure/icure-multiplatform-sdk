@@ -287,7 +287,10 @@ class RawHealthcarePartyApiImpl(
 			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
-			setBodyWithSerializer(FilterChainSerializer(HealthcarePartyAbstractFilterSerializer), filterChain)
+			setBodyWithSerializer(
+				FilterChainSerializer(HealthcarePartyAbstractFilterSerializer),
+				filterChain,
+			)
 		}.wrap()
 
 	// endregion

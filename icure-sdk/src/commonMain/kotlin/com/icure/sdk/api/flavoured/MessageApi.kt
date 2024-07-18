@@ -21,7 +21,6 @@ import com.icure.sdk.model.embed.DelegationTag
 import com.icure.sdk.model.extensions.autoDelegationsFor
 import com.icure.sdk.model.extensions.dataOwnerId
 import com.icure.sdk.model.filter.AbstractFilter
-import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
@@ -55,7 +54,7 @@ interface MessageBasicFlavouredApi<E : Message> {
 	suspend fun modifyMessage(entity: E): E
 	suspend fun getMessage(entityId: String): E
 	suspend fun getMessages(entityIds: List<String>): List<E>
-	suspend fun filterMessagesBy(filterChain: FilterChain<Message>, startDocumentId: String?, limit: Int?): PaginatedList<E>
+	suspend fun filterMessagesBy(filter: AbstractFilter<Message>): PaginatedListIterator<E>
 
 	suspend fun listMessagesByTransportGuids(hcPartyId: String, transportGuids: List<String>): List<E>
 	suspend fun findMessagesByHCPartyPatientForeignKeys(secretPatientKeys: List<String>): List<E>
@@ -64,6 +63,9 @@ interface MessageBasicFlavouredApi<E : Message> {
 	suspend fun getMessagesChildren(messageIds: List<String>): List<E>
 	suspend fun listMessagesByInvoices(invoiceIds: List<String>): List<E>
 	suspend fun findMessagesByTransportGuid(transportGuid: String): PaginatedList<E>
+
+	// TODO: Implement filter for this method
+	@Deprecated("Find methods are deprecated", ReplaceWith("filterMessagesBy()"))
 	suspend fun findMessagesByTransportGuidSentDate(
 		transportGuid: String,
 		from: Long,
@@ -78,7 +80,12 @@ interface MessageBasicFlavouredApi<E : Message> {
 		hcpId: String? = null,
 	): PaginatedList<E>
 
+	// TODO: Implement filter for this method
+	@Deprecated("Find methods are deprecated", ReplaceWith("filterMessagesBy()"))
 	suspend fun findMessagesByToAddress(toAddress: String, startKey: JsonElement?, startDocumentId: String?, limit: Int?): PaginatedList<E>
+
+	// TODO: Implement filter for this method
+	@Deprecated("Find methods are deprecated", ReplaceWith("filterMessagesBy()"))
 	suspend fun findMessagesByFromAddress(
 		fromAddress: String,
 		startKey: JsonElement?,
@@ -195,12 +202,11 @@ private abstract class AbstractMessageBasicFlavouredApi<E : Message>(
 	override suspend fun getMessages(entityIds: List<String>): List<E> =
 		rawApi.getMessages(ListOfIds(entityIds)).successBody().map { maybeDecrypt(it) }
 
-	override suspend fun filterMessagesBy(
-		filterChain: FilterChain<Message>,
-		startDocumentId: String?,
-		limit: Int?,
-	): PaginatedList<E> =
-		rawApi.filterMessagesBy(startDocumentId, limit, filterChain).successBody().map { maybeDecrypt(it) }
+	override suspend fun filterMessagesBy(filter: AbstractFilter<Message>): PaginatedListIterator<E> =
+		IdsPageIterator(
+			rawApi.matchMessagesBy(filter).successBody(),
+			this::getMessages
+		)
 
 	override suspend fun listMessagesByTransportGuids(hcPartyId: String, transportGuids: List<String>) =
 		rawApi.listMessagesByTransportGuids(hcPartyId, ListOfIds(transportGuids)).successBody().map { maybeDecrypt(it) }

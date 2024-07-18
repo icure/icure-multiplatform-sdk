@@ -6,22 +6,27 @@ import com.icure.sdk.crypto.entities.MaintenanceTaskShareOptions
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.model.MaintenanceTask
-import com.icure.sdk.model.PaginatedList
-import com.icure.sdk.model.filter.chain.FilterChain
+import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.py.serialization.MaintenanceTaskSerializer
+import com.icure.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
+import com.icure.sdk.py.utils.PyResult
+import com.icure.sdk.py.utils.failureToPyResultAsyncCallback
 import com.icure.sdk.py.utils.failureToPyStringAsyncCallback
+import com.icure.sdk.py.utils.toPyResult
+import com.icure.sdk.py.utils.toPyResultAsyncCallback
 import com.icure.sdk.py.utils.toPyString
 import com.icure.sdk.py.utils.toPyStringAsyncCallback
 import com.icure.sdk.utils.Serialization.json
 import kotlin.Byte
-import kotlin.Int
 import kotlin.OptIn
 import kotlin.String
 import kotlin.Unit
+import kotlin.collections.List
 import kotlin.collections.Map
 import kotlinx.cinterop.ByteVarOf
 import kotlinx.cinterop.CFunction
+import kotlinx.cinterop.COpaquePointer
 import kotlinx.cinterop.CPointer
 import kotlinx.cinterop.CValues
 import kotlinx.cinterop.ExperimentalForeignApi
@@ -30,6 +35,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.ListSerializer
 
 @Serializable
 private class ShareWithParams(
@@ -209,40 +215,67 @@ public fun getMaintenanceTaskAsync(
 }.failureToPyStringAsyncCallback(resultCallback)
 
 @Serializable
-private class FilterMaintenanceTasksByParams(
-	public val startDocumentId: String? = null,
-	public val limit: Int? = null,
-	@Contextual
-	public val filterChain: FilterChain<MaintenanceTask>,
+private class GetMaintenanceTasksParams(
+	public val entityIds: List<String>,
 )
 
-public fun filterMaintenanceTasksByBlocking(sdk: IcureApis, params: String): String =
+public fun getMaintenanceTasksBlocking(sdk: IcureApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterMaintenanceTasksByParams>(params)
+	val decodedParams = json.decodeFromString<GetMaintenanceTasksParams>(params)
 	runBlocking {
-		sdk.maintenanceTask.tryAndRecover.filterMaintenanceTasksBy(
-			decodedParams.startDocumentId,
-			decodedParams.limit,
-			decodedParams.filterChain,
+		sdk.maintenanceTask.tryAndRecover.getMaintenanceTasks(
+			decodedParams.entityIds,
 		)
 	}
-}.toPyString(PaginatedList.serializer(MaintenanceTaskSerializer))
+}.toPyString(ListSerializer(MaintenanceTaskSerializer))
 
 @OptIn(ExperimentalForeignApi::class)
-public fun filterMaintenanceTasksByAsync(
+public fun getMaintenanceTasksAsync(
 	sdk: IcureApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<GetMaintenanceTasksParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.maintenanceTask.tryAndRecover.getMaintenanceTasks(
+				decodedParams.entityIds,
+			)
+		}.toPyStringAsyncCallback(ListSerializer(MaintenanceTaskSerializer), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class FilterMaintenanceTasksByParams(
+	@Contextual
+	public val filter: AbstractFilter<MaintenanceTask>,
+)
+
+public fun filterMaintenanceTasksByBlocking(sdk: IcureApis, params: String): PyResult =
+		kotlin.runCatching {
+	val decodedParams = json.decodeFromString<FilterMaintenanceTasksByParams>(params)
+	runBlocking {
+		sdk.maintenanceTask.tryAndRecover.filterMaintenanceTasksBy(
+			decodedParams.filter,
+		)
+	}
+}.toPyResult {
+	PaginatedListIteratorAndSerializer(it, MaintenanceTaskSerializer)}
+
+@OptIn(ExperimentalForeignApi::class)
+public fun filterMaintenanceTasksByAsync(
+	sdk: IcureApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterMaintenanceTasksByParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.maintenanceTask.tryAndRecover.filterMaintenanceTasksBy(
-				decodedParams.startDocumentId,
-				decodedParams.limit,
-				decodedParams.filterChain,
+				decodedParams.filter,
 			)
-		}.toPyStringAsyncCallback(PaginatedList.serializer(MaintenanceTaskSerializer), resultCallback)
+		}.toPyResultAsyncCallback(resultCallback) {
+			PaginatedListIteratorAndSerializer(it, MaintenanceTaskSerializer)}
 	}
-}.failureToPyStringAsyncCallback(resultCallback)
+}.failureToPyResultAsyncCallback(resultCallback)

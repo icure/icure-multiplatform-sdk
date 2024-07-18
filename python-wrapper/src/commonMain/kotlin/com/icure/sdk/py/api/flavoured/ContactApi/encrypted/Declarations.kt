@@ -11,7 +11,7 @@ import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.Patient
 import com.icure.sdk.model.embed.EncryptedService
 import com.icure.sdk.model.embed.Service
-import com.icure.sdk.model.filter.chain.FilterChain
+import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.py.serialization.PatientSerializer
 import com.icure.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
@@ -335,40 +335,35 @@ public fun getContactsAsync(
 @Serializable
 private class FilterContactsByParams(
 	@Contextual
-	public val filterChain: FilterChain<Contact>,
-	public val startDocumentId: String?,
-	public val limit: Int?,
+	public val filter: AbstractFilter<Contact>,
 )
 
-public fun filterContactsByBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun filterContactsByBlocking(sdk: IcureApis, params: String): PyResult = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterContactsByParams>(params)
 	runBlocking {
 		sdk.contact.encrypted.filterContactsBy(
-			decodedParams.filterChain,
-			decodedParams.startDocumentId,
-			decodedParams.limit,
+			decodedParams.filter,
 		)
 	}
-}.toPyString(PaginatedList.serializer(EncryptedContact.serializer()))
+}.toPyResult {
+	PaginatedListIteratorAndSerializer(it, EncryptedContact.serializer())}
 
 @OptIn(ExperimentalForeignApi::class)
 public fun filterContactsByAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterContactsByParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.contact.encrypted.filterContactsBy(
-				decodedParams.filterChain,
-				decodedParams.startDocumentId,
-				decodedParams.limit,
+				decodedParams.filter,
 			)
-		}.toPyStringAsyncCallback(PaginatedList.serializer(EncryptedContact.serializer()), resultCallback)
+		}.toPyResultAsyncCallback(resultCallback) {
+			PaginatedListIteratorAndSerializer(it, EncryptedContact.serializer())}
 	}
-}.failureToPyStringAsyncCallback(resultCallback)
+}.failureToPyResultAsyncCallback(resultCallback)
 
 @Serializable
 private class ListContactByHCPartyServiceIdParams(
@@ -797,37 +792,32 @@ public fun findContactsByOpeningDateAsync(
 @Serializable
 private class FilterServicesByParams(
 	@Contextual
-	public val filterChain: FilterChain<Service>,
-	public val startDocumentId: String?,
-	public val limit: Int?,
+	public val filter: AbstractFilter<Service>,
 )
 
-public fun filterServicesByBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun filterServicesByBlocking(sdk: IcureApis, params: String): PyResult = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterServicesByParams>(params)
 	runBlocking {
 		sdk.contact.encrypted.filterServicesBy(
-			decodedParams.filterChain,
-			decodedParams.startDocumentId,
-			decodedParams.limit,
+			decodedParams.filter,
 		)
 	}
-}.toPyString(PaginatedList.serializer(EncryptedService.serializer()))
+}.toPyResult {
+	PaginatedListIteratorAndSerializer(it, EncryptedService.serializer())}
 
 @OptIn(ExperimentalForeignApi::class)
 public fun filterServicesByAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterServicesByParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.contact.encrypted.filterServicesBy(
-				decodedParams.filterChain,
-				decodedParams.startDocumentId,
-				decodedParams.limit,
+				decodedParams.filter,
 			)
-		}.toPyStringAsyncCallback(PaginatedList.serializer(EncryptedService.serializer()), resultCallback)
+		}.toPyResultAsyncCallback(resultCallback) {
+			PaginatedListIteratorAndSerializer(it, EncryptedService.serializer())}
 	}
-}.failureToPyStringAsyncCallback(resultCallback)
+}.failureToPyResultAsyncCallback(resultCallback)
