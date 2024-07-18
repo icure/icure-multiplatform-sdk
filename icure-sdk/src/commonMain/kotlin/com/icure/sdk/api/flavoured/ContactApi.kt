@@ -32,7 +32,6 @@ import com.icure.sdk.model.embed.Service
 import com.icure.sdk.model.extensions.autoDelegationsFor
 import com.icure.sdk.model.extensions.dataOwnerId
 import com.icure.sdk.model.filter.AbstractFilter
-import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
@@ -88,7 +87,7 @@ interface ContactBasicFlavouredApi<E : Contact, S : Service> {
 	suspend fun modifyContacts(entities: List<E>): List<E>
 	suspend fun getContact(entityId: String): E
 	suspend fun getContacts(entityIds: List<String>): List<E>
-	suspend fun filterContactsBy(filterChain: FilterChain<Contact>, startDocumentId: String?, limit: Int?): PaginatedList<E>
+	suspend fun filterContactsBy(filter: AbstractFilter<Contact>): PaginatedListIterator<E>
 
 	suspend fun listContactByHCPartyServiceId(hcPartyId: String, serviceId: String): List<E>
 	suspend fun listContactsByExternalId(externalId: String): List<E>
@@ -109,6 +108,14 @@ interface ContactBasicFlavouredApi<E : Contact, S : Service> {
 	suspend fun getServicesLinkedTo(linkType: String, ids: List<String>): List<S>
 	suspend fun listServicesByAssociationId(associationId: String): List<S>
 	suspend fun listServicesByHealthElementId(hcPartyId: String, healthElementId: String): List<S>
+
+	@Deprecated(
+		"Find methods are deprecated",
+		ReplaceWith(
+			expression = "filterContactsBy(ContactByHcPartyTagCodeDateFilter(healthcarePartyId = hcPartyId, startOfContactOpeningDate = startDate, endOfContactOpeningDate = endDate))",
+			imports = arrayOf("com.icure.sdk.model.filter.contact.ContactByHcPartyTagCodeDateFilter")
+		)
+	)
 	suspend fun findContactsByOpeningDate(
 		startDate: Long,
 		endDate: Long,
@@ -121,7 +128,7 @@ interface ContactBasicFlavouredApi<E : Contact, S : Service> {
 		limit: Int? = null,
 	): PaginatedList<E>
 
-	suspend fun filterServicesBy(filterChain: FilterChain<Service>, startDocumentId: String?, limit: Int?): PaginatedList<S>
+	suspend fun filterServicesBy(filter: AbstractFilter<Service>): PaginatedListIterator<S>
 }
 
 /* The extra API calls declared in this interface are the ones that can be used on encrypted or decrypted items but only when the user is a data owner */
@@ -252,12 +259,8 @@ private abstract class AbstractContactBasicFlavouredApi<E : Contact, S : Service
 	override suspend fun getContacts(entityIds: List<String>): List<E> =
 		rawApi.getContacts(ListOfIds(entityIds)).successBody().map { maybeDecrypt(it) }
 
-	override suspend fun filterContactsBy(
-		filterChain: FilterChain<Contact>,
-		startDocumentId: String?,
-		limit: Int?,
-	): PaginatedList<E> =
-		rawApi.filterContactsBy(startDocumentId, limit, filterChain).successBody().map { maybeDecrypt(it) }
+	override suspend fun filterContactsBy(filter: AbstractFilter<Contact>): PaginatedListIterator<E> =
+		IdsPageIterator(rawApi.matchContactsBy(filter).successBody(), this::getContacts)
 
 	override suspend fun listContactByHCPartyServiceId(hcPartyId: String, serviceId: String): List<E> =
 		rawApi.listContactByHCPartyServiceId(hcPartyId, serviceId).successBody().map { maybeDecrypt(it) }
@@ -284,12 +287,6 @@ private abstract class AbstractContactBasicFlavouredApi<E : Contact, S : Service
 		rawApi.closeForHCPartyPatientForeignKeys(hcPartyId, secretPatientKeys.joinToString(",")).successBody().map { maybeDecrypt(it) }
 
 	override suspend fun getService(serviceId: String): S = rawApi.getService(serviceId).successBody().let { maybeDecryptService(it) }
-	override suspend fun filterServicesBy(
-		filterChain: FilterChain<Service>,
-		startDocumentId: String?,
-		limit: Int?,
-	): PaginatedList<S> =
-		rawApi.filterServicesBy(startDocumentId, limit, filterChain).successBody().map { maybeDecryptService(it) }
 
 	override suspend fun getServices(entityIds: List<String>): List<S> =
 		rawApi.getServices(ListOfIds(entityIds)).successBody().map { maybeDecryptService(it) }
@@ -303,6 +300,13 @@ private abstract class AbstractContactBasicFlavouredApi<E : Contact, S : Service
 	override suspend fun listServicesByHealthElementId(hcPartyId: String, healthElementId: String): List<S> =
 		rawApi.listServicesByHealthElementId(healthElementId, hcPartyId).successBody().map { maybeDecryptService(it) }
 
+	@Deprecated(
+		"Find methods are deprecated",
+		replaceWith = ReplaceWith(
+			"filterContactsBy(ContactByHcPartyTagCodeDateFilter(healthcarePartyId = hcPartyId, startOfContactOpeningDate = startDate, endOfContactOpeningDate = endDate))",
+			"com.icure.sdk.model.filter.contact.ContactByHcPartyTagCodeDateFilter"
+		)
+	)
 	override suspend fun findContactsByOpeningDate(
 		startDate: Long,
 		endDate: Long,
@@ -312,6 +316,12 @@ private abstract class AbstractContactBasicFlavouredApi<E : Contact, S : Service
 		limit: Int?,
 	): PaginatedList<E> = rawApi.findContactsByOpeningDate(startDate, endDate, hcPartyId, startKey.encodeStartKey(), startDocumentId, limit).successBody()
 		.map { maybeDecrypt(it) }
+
+	override suspend fun filterServicesBy(filter: AbstractFilter<Service>): PaginatedListIterator<S> =
+		IdsPageIterator(
+			rawApi.matchServicesBy(filter).successBody(),
+			this::getServices
+		)
 
 	abstract suspend fun validateAndMaybeEncrypt(entity: E): EncryptedContact
 	abstract suspend fun maybeDecrypt(entity: EncryptedContact): E

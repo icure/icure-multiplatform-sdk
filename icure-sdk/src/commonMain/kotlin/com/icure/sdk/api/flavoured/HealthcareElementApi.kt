@@ -12,7 +12,6 @@ import com.icure.sdk.model.EncryptedHealthElement
 import com.icure.sdk.model.HealthElement
 import com.icure.sdk.model.IcureStub
 import com.icure.sdk.model.ListOfIds
-import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.Patient
 import com.icure.sdk.model.User
 import com.icure.sdk.model.couchdb.DocIdentifier
@@ -21,7 +20,6 @@ import com.icure.sdk.model.embed.DelegationTag
 import com.icure.sdk.model.extensions.autoDelegationsFor
 import com.icure.sdk.model.extensions.dataOwnerId
 import com.icure.sdk.model.filter.AbstractFilter
-import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
@@ -59,11 +57,7 @@ interface HealthcareElementBasicFlavouredApi<E : HealthElement> {
 	suspend fun modifyHealthcareElements(entities: List<E>): List<E>
 	suspend fun getHealthcareElement(entityId: String): E
 	suspend fun getHealthcareElements(entityIds: List<String>): List<E>
-	suspend fun filterHealthcareElementsBy(
-		filterChain: FilterChain<HealthElement>,
-		startDocumentId: String?,
-		limit: Int?,
-	): PaginatedList<E>
+	suspend fun filterHealthcareElementsBy(filter: AbstractFilter<HealthElement>): PaginatedListIterator<E>
 	suspend fun findHealthcareElementsByHcPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<E>
 }
 
@@ -175,12 +169,11 @@ private abstract class AbstractHealthcareElementBasicFlavouredApi<E : HealthElem
 	override suspend fun getHealthcareElements(entityIds: List<String>): List<E> =
 		rawApi.getHealthElements(ListOfIds(entityIds)).successBody().map { maybeDecrypt(it) }
 
-	override suspend fun filterHealthcareElementsBy(
-		filterChain: FilterChain<HealthElement>,
-		startDocumentId: String?,
-		limit: Int?,
-	): PaginatedList<E> =
-		rawApi.filterHealthElementsBy(startDocumentId, limit, filterChain).successBody().map { maybeDecrypt(it) }
+	override suspend fun filterHealthcareElementsBy(filter: AbstractFilter<HealthElement>): PaginatedListIterator<E> =
+		IdsPageIterator(
+			rawApi.matchHealthElementsBy(filter).successBody(),
+			this::getHealthcareElements
+		)
 
 	override suspend fun findHealthcareElementsByHcPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<E> =
 		rawApi.findHealthElementsByHCPartyPatientForeignKeys(hcPartyId, secretPatientKeys).successBody().map { maybeDecrypt(it) }
