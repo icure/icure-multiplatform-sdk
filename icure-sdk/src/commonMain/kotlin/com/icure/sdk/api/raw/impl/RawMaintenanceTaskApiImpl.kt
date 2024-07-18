@@ -13,6 +13,7 @@ import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.MaintenanceTask
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
+import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
@@ -124,7 +125,22 @@ class RawMaintenanceTaskApiImpl(
 			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
-			setBodyWithSerializer(FilterChainSerializer(MaintenanceTaskAbstractFilterSerializer), filterChain)
+			setBodyWithSerializer(
+				FilterChainSerializer(MaintenanceTaskAbstractFilterSerializer),
+				filterChain,
+			)
+		}.wrap()
+
+	override suspend fun matchMaintenanceTasksBy(filter: AbstractFilter<MaintenanceTask>): HttpResponse<List<String>> =
+		post {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "maintenancetask", "match")
+			}
+			setAuthorizationWith(authService)
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBodyWithSerializer(MaintenanceTaskAbstractFilterSerializer, filter)
 		}.wrap()
 
 	override suspend fun bulkShare(

@@ -37,6 +37,8 @@ public interface RawUserApi {
 
 	suspend fun getUser(userId: String): HttpResponse<User>
 
+	suspend fun getUsers(userIds: ListOfIds): HttpResponse<List<User>>
+
 	suspend fun getUserByEmail(email: String): HttpResponse<User>
 
 	suspend fun getUserByPhoneNumber(phoneNumber: String): HttpResponse<User>
@@ -143,6 +145,16 @@ public interface RawUserApi {
 		limit: Int? = null,
 		filterChain: FilterChain<User>,
 	): HttpResponse<PaginatedList<User>>
+
+	suspend fun getUsersInGroup(
+		groupId: String,
+		userIds: ListOfIds,
+	): HttpResponse<List<User>>
+
+	suspend fun matchUsersInGroupBy(
+		groupId: String,
+		filter: AbstractFilter<User>,
+	): HttpResponse<List<String>>
 
 	suspend fun enable2faForUser(
 		userId: String,
