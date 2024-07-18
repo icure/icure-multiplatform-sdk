@@ -7,9 +7,9 @@ import com.icure.sdk.model.Message
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.filter.AbstractFilter
-import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.py.subscription.EntitySubscription.EntitySubscriptionWithSerializer
+import com.icure.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
 import com.icure.sdk.py.utils.PyResult
 import com.icure.sdk.py.utils.failureToPyResultAsyncCallback
 import com.icure.sdk.py.utils.failureToPyStringAsyncCallback
@@ -274,41 +274,36 @@ public fun getMessagesAsync(
 @Serializable
 private class FilterMessagesByParams(
 	@Contextual
-	public val filterChain: FilterChain<Message>,
-	public val startDocumentId: String?,
-	public val limit: Int?,
+	public val filter: AbstractFilter<Message>,
 )
 
-public fun filterMessagesByBlocking(sdk: IcureBaseApis, params: String): String =
+public fun filterMessagesByBlocking(sdk: IcureBaseApis, params: String): PyResult =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterMessagesByParams>(params)
 	runBlocking {
 		sdk.message.filterMessagesBy(
-			decodedParams.filterChain,
-			decodedParams.startDocumentId,
-			decodedParams.limit,
+			decodedParams.filter,
 		)
 	}
-}.toPyString(PaginatedList.serializer(EncryptedMessage.serializer()))
+}.toPyResult {
+	PaginatedListIteratorAndSerializer(it, EncryptedMessage.serializer())}
 
 @OptIn(ExperimentalForeignApi::class)
 public fun filterMessagesByAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterMessagesByParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.message.filterMessagesBy(
-				decodedParams.filterChain,
-				decodedParams.startDocumentId,
-				decodedParams.limit,
+				decodedParams.filter,
 			)
-		}.toPyStringAsyncCallback(PaginatedList.serializer(EncryptedMessage.serializer()), resultCallback)
+		}.toPyResultAsyncCallback(resultCallback) {
+			PaginatedListIteratorAndSerializer(it, EncryptedMessage.serializer())}
 	}
-}.failureToPyStringAsyncCallback(resultCallback)
+}.failureToPyResultAsyncCallback(resultCallback)
 
 @Serializable
 private class ListMessagesByTransportGuidsParams(

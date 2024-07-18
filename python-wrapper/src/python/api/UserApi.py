@@ -1,10 +1,11 @@
 import asyncio
 import json
-from icure.model import User, PaginatedList, DocIdentifier, EncryptedPropertyStub, FilterChain, UserAbstractFilter, serialize_abstract_filter, UserGroup, ListOfIds, TokenWithGroup, Enable2faRequest
-from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
+from icure.model import User, DocIdentifier, EncryptedPropertyStub, UserAbstractFilter, serialize_abstract_filter, UserGroup, ListOfIds, TokenWithGroup, Enable2faRequest
+from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from icure.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
-from typing import Optional, List
+from typing import List, Optional
+from icure.pagination.PaginatedListIterator import PaginatedListIterator
 
 class UserApi:
 
@@ -40,59 +41,6 @@ class UserApi:
 			raise Exception(result_info.failure)
 		else:
 			return_value = User._deserialize(result_info.success)
-			return return_value
-
-	async def list_users_by_async(self, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, skip_patients: Optional[bool] = None) -> PaginatedList:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
-				result = PaginatedList(
-					rows = [User._deserialize(item) for item in result.rows],
-					next_key_pair = result.next_key_pair,
-				)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"startKey": start_key,
-			"startDocumentId": start_document_id,
-			"limit": limit,
-			"skipPatients": skip_patients,
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.listUsersByAsync,
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def list_users_by_blocking(self, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None, skip_patients: Optional[bool] = None) -> PaginatedList:
-		payload = {
-			"startKey": start_key,
-			"startDocumentId": start_document_id,
-			"limit": limit,
-			"skipPatients": skip_patients,
-		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.listUsersByBlocking(
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise Exception(result_info.failure)
-		else:
-			return_value = PaginatedList._deserialize(result_info.success)
-			return_value = PaginatedList(
-				rows = [User._deserialize(item) for item in return_value.rows],
-				next_key_pair = return_value.next_key_pair,
-			)
 			return return_value
 
 	async def create_user_async(self, user: User) -> User:
@@ -171,6 +119,45 @@ class UserApi:
 			raise Exception(result_info.failure)
 		else:
 			return_value = User._deserialize(result_info.success)
+			return return_value
+
+	async def get_users_async(self, user_ids: List[str]) -> List[User]:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = [User._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"userIds": [x0 for x0 in user_ids],
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.icure_sdk._executor,
+			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.getUsersAsync,
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def get_users_blocking(self, user_ids: List[str]) -> List[User]:
+		payload = {
+			"userIds": [x0 for x0 in user_ids],
+		}
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.getUsersBlocking(
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
+		else:
+			return_value = [User._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def get_user_by_email_async(self, email: str) -> User:
@@ -532,7 +519,7 @@ class UserApi:
 			return_value = result_info.success
 			return return_value
 
-	async def filter_users_by_async(self, filter_chain: FilterChain, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
+	async def filter_users_by_async(self, filter: UserAbstractFilter) -> PaginatedListIterator[User]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -540,18 +527,16 @@ class UserApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
-				result = PaginatedList(
-					rows = [User._deserialize(item) for item in result.rows],
-					next_key_pair = result.next_key_pair,
+				result = PaginatedListIterator[User](
+					producer = success,
+					deserializer = lambda x: User._deserialize(x),
+					executor = self.icure_sdk._executor
 				)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"startDocumentId": start_document_id,
-			"limit": limit,
-			"filterChain": filter_chain.__serialize__(),
+			"filter": serialize_abstract_filter(filter),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.filterUsersByAsync,
@@ -561,27 +546,28 @@ class UserApi:
 		)
 		return await future
 
-	def filter_users_by_blocking(self, filter_chain: FilterChain, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
+	def filter_users_by_blocking(self, filter: UserAbstractFilter) -> PaginatedListIterator[User]:
 		payload = {
-			"startDocumentId": start_document_id,
-			"limit": limit,
-			"filterChain": filter_chain.__serialize__(),
+			"filter": serialize_abstract_filter(filter),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.filterUsersByBlocking(
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+		if error_str_pointer is not None:
+			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+			symbols.DisposeString(error_str_pointer)
+			symbols.DisposeStablePointer(call_result.pinned)
+			raise Exception(error_msg)
 		else:
-			return_value = PaginatedList._deserialize(result_info.success)
-			return_value = PaginatedList(
-				rows = [User._deserialize(item) for item in return_value.rows],
-				next_key_pair = return_value.next_key_pair,
+			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+			symbols.DisposeStablePointer(call_result.pinned)
+			return PaginatedListIterator[User](
+				producer = class_pointer,
+				deserializer = lambda x: User._deserialize(x),
+				executor = self.icure_sdk._executor
 			)
-			return return_value
 
 	async def match_users_by_async(self, filter: UserAbstractFilter) -> List[str]:
 		loop = asyncio.get_running_loop()
@@ -653,7 +639,7 @@ class UserApi:
 			return_value = [UserGroup._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def list_users_in_group_async(self, group_id: str, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
+	async def get_users_in_group_async(self, group_id: str, user_ids: List[str]) -> List[User]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -661,36 +647,28 @@ class UserApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
-				result = PaginatedList(
-					rows = [User._deserialize(item) for item in result.rows],
-					next_key_pair = result.next_key_pair,
-				)
+				result = [User._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"groupId": group_id,
-			"startKey": start_key,
-			"startDocumentId": start_document_id,
-			"limit": limit,
+			"userIds": [x0 for x0 in user_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.listUsersInGroupAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.getUsersInGroupAsync,
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def list_users_in_group_blocking(self, group_id: str, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
+	def get_users_in_group_blocking(self, group_id: str, user_ids: List[str]) -> List[User]:
 		payload = {
 			"groupId": group_id,
-			"startKey": start_key,
-			"startDocumentId": start_document_id,
-			"limit": limit,
+			"userIds": [x0 for x0 in user_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.listUsersInGroupBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.getUsersInGroupBlocking(
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
@@ -699,11 +677,7 @@ class UserApi:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 		else:
-			return_value = PaginatedList._deserialize(result_info.success)
-			return_value = PaginatedList(
-				rows = [User._deserialize(item) for item in return_value.rows],
-				next_key_pair = return_value.next_key_pair,
-			)
+			return_value = [User._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def create_user_in_group_async(self, group_id: str, user: User) -> User:
@@ -1085,7 +1059,7 @@ class UserApi:
 			return_value = [TokenWithGroup._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def filter_users_in_group_by_async(self, group_id: str, filter_chain: FilterChain, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
+	async def filter_users_in_group_by_async(self, group_id: str, filter: UserAbstractFilter) -> PaginatedListIterator[User]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1093,19 +1067,17 @@ class UserApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
-				result = PaginatedList(
-					rows = [User._deserialize(item) for item in result.rows],
-					next_key_pair = result.next_key_pair,
+				result = PaginatedListIterator[User](
+					producer = success,
+					deserializer = lambda x: User._deserialize(x),
+					executor = self.icure_sdk._executor
 				)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"groupId": group_id,
-			"startDocumentId": start_document_id,
-			"limit": limit,
-			"filterChain": filter_chain.__serialize__(),
+			"filter": serialize_abstract_filter(filter),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.filterUsersInGroupByAsync,
@@ -1115,14 +1087,60 @@ class UserApi:
 		)
 		return await future
 
-	def filter_users_in_group_by_blocking(self, group_id: str, filter_chain: FilterChain, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
+	def filter_users_in_group_by_blocking(self, group_id: str, filter: UserAbstractFilter) -> PaginatedListIterator[User]:
 		payload = {
 			"groupId": group_id,
-			"startDocumentId": start_document_id,
-			"limit": limit,
-			"filterChain": filter_chain.__serialize__(),
+			"filter": serialize_abstract_filter(filter),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.filterUsersInGroupByBlocking(
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+		if error_str_pointer is not None:
+			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+			symbols.DisposeString(error_str_pointer)
+			symbols.DisposeStablePointer(call_result.pinned)
+			raise Exception(error_msg)
+		else:
+			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+			symbols.DisposeStablePointer(call_result.pinned)
+			return PaginatedListIterator[User](
+				producer = class_pointer,
+				deserializer = lambda x: User._deserialize(x),
+				executor = self.icure_sdk._executor
+			)
+
+	async def match_users_in_group_by_async(self, group_id: str, filter: UserAbstractFilter) -> List[str]:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = [x1 for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"groupId": group_id,
+			"filter": serialize_abstract_filter(filter),
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.icure_sdk._executor,
+			symbols.kotlin.root.com.icure.sdk.py.api.UserApi.matchUsersInGroupByAsync,
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def match_users_in_group_by_blocking(self, group_id: str, filter: UserAbstractFilter) -> List[str]:
+		payload = {
+			"groupId": group_id,
+			"filter": serialize_abstract_filter(filter),
+		}
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.UserApi.matchUsersInGroupByBlocking(
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
@@ -1131,11 +1149,7 @@ class UserApi:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 		else:
-			return_value = PaginatedList._deserialize(result_info.success)
-			return_value = PaginatedList(
-				rows = [User._deserialize(item) for item in return_value.rows],
-				next_key_pair = return_value.next_key_pair,
-			)
+			return_value = [x1 for x1 in result_info.success]
 			return return_value
 
 	async def enable2fa_for_user_with_group_async(self, user_id: str, group_id: str, request: Enable2faRequest) -> None:

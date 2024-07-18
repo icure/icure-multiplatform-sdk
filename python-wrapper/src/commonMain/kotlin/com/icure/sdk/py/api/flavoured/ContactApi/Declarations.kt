@@ -20,7 +20,6 @@ import com.icure.sdk.model.embed.DecryptedService
 import com.icure.sdk.model.embed.EncryptedService
 import com.icure.sdk.model.embed.Service
 import com.icure.sdk.model.filter.AbstractFilter
-import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
@@ -996,40 +995,35 @@ public fun getContactsAsync(
 @Serializable
 private class FilterContactsByParams(
 	@Contextual
-	public val filterChain: FilterChain<Contact>,
-	public val startDocumentId: String?,
-	public val limit: Int?,
+	public val filter: AbstractFilter<Contact>,
 )
 
-public fun filterContactsByBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun filterContactsByBlocking(sdk: IcureApis, params: String): PyResult = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterContactsByParams>(params)
 	runBlocking {
 		sdk.contact.filterContactsBy(
-			decodedParams.filterChain,
-			decodedParams.startDocumentId,
-			decodedParams.limit,
+			decodedParams.filter,
 		)
 	}
-}.toPyString(PaginatedList.serializer(DecryptedContact.serializer()))
+}.toPyResult {
+	PaginatedListIteratorAndSerializer(it, DecryptedContact.serializer())}
 
 @OptIn(ExperimentalForeignApi::class)
 public fun filterContactsByAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterContactsByParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.contact.filterContactsBy(
-				decodedParams.filterChain,
-				decodedParams.startDocumentId,
-				decodedParams.limit,
+				decodedParams.filter,
 			)
-		}.toPyStringAsyncCallback(PaginatedList.serializer(DecryptedContact.serializer()), resultCallback)
+		}.toPyResultAsyncCallback(resultCallback) {
+			PaginatedListIteratorAndSerializer(it, DecryptedContact.serializer())}
 	}
-}.failureToPyStringAsyncCallback(resultCallback)
+}.failureToPyResultAsyncCallback(resultCallback)
 
 @Serializable
 private class ListContactByHCPartyServiceIdParams(
@@ -1458,37 +1452,32 @@ public fun findContactsByOpeningDateAsync(
 @Serializable
 private class FilterServicesByParams(
 	@Contextual
-	public val filterChain: FilterChain<Service>,
-	public val startDocumentId: String?,
-	public val limit: Int?,
+	public val filter: AbstractFilter<Service>,
 )
 
-public fun filterServicesByBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun filterServicesByBlocking(sdk: IcureApis, params: String): PyResult = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterServicesByParams>(params)
 	runBlocking {
 		sdk.contact.filterServicesBy(
-			decodedParams.filterChain,
-			decodedParams.startDocumentId,
-			decodedParams.limit,
+			decodedParams.filter,
 		)
 	}
-}.toPyString(PaginatedList.serializer(DecryptedService.serializer()))
+}.toPyResult {
+	PaginatedListIteratorAndSerializer(it, DecryptedService.serializer())}
 
 @OptIn(ExperimentalForeignApi::class)
 public fun filterServicesByAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterServicesByParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.contact.filterServicesBy(
-				decodedParams.filterChain,
-				decodedParams.startDocumentId,
-				decodedParams.limit,
+				decodedParams.filter,
 			)
-		}.toPyStringAsyncCallback(PaginatedList.serializer(DecryptedService.serializer()), resultCallback)
+		}.toPyResultAsyncCallback(resultCallback) {
+			PaginatedListIteratorAndSerializer(it, DecryptedService.serializer())}
 	}
-}.failureToPyStringAsyncCallback(resultCallback)
+}.failureToPyResultAsyncCallback(resultCallback)

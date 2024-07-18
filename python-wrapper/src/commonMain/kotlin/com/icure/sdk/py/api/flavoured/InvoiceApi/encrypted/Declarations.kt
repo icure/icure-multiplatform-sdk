@@ -12,7 +12,7 @@ import com.icure.sdk.model.Patient
 import com.icure.sdk.model.embed.EncryptedInvoicingCode
 import com.icure.sdk.model.embed.InvoiceType
 import com.icure.sdk.model.embed.MediumType
-import com.icure.sdk.model.filter.chain.FilterChain
+import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.py.serialization.PatientSerializer
 import com.icure.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
@@ -336,34 +336,35 @@ public fun getInvoicesAsync(
 @Serializable
 private class FilterInvoicesByParams(
 	@Contextual
-	public val filterChain: FilterChain<Invoice>,
+	public val filter: AbstractFilter<Invoice>,
 )
 
-public fun filterInvoicesByBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun filterInvoicesByBlocking(sdk: IcureApis, params: String): PyResult = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterInvoicesByParams>(params)
 	runBlocking {
 		sdk.invoice.encrypted.filterInvoicesBy(
-			decodedParams.filterChain,
+			decodedParams.filter,
 		)
 	}
-}.toPyString(ListSerializer(EncryptedInvoice.serializer()))
+}.toPyResult {
+	PaginatedListIteratorAndSerializer(it, EncryptedInvoice.serializer())}
 
 @OptIn(ExperimentalForeignApi::class)
 public fun filterInvoicesByAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterInvoicesByParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.invoice.encrypted.filterInvoicesBy(
-				decodedParams.filterChain,
+				decodedParams.filter,
 			)
-		}.toPyStringAsyncCallback(ListSerializer(EncryptedInvoice.serializer()), resultCallback)
+		}.toPyResultAsyncCallback(resultCallback) {
+			PaginatedListIteratorAndSerializer(it, EncryptedInvoice.serializer())}
 	}
-}.failureToPyStringAsyncCallback(resultCallback)
+}.failureToPyResultAsyncCallback(resultCallback)
 
 @Serializable
 private class FindInvoicesByHcPartyPatientForeignKeysParams(

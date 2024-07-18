@@ -48,6 +48,7 @@ interface MaintenanceTaskBasicFlavourlessApi: Subscribable<MaintenanceTask, Encr
 interface MaintenanceTaskBasicFlavouredApi<E : MaintenanceTask> {
 	suspend fun modifyMaintenanceTask(entity: E): E
 	suspend fun getMaintenanceTask(entityId: String): E
+	suspend fun getMaintenanceTasks(entityIds: List<String>): List<E>
 	suspend fun filterMaintenanceTasksBy(
 		filter: AbstractFilter<MaintenanceTask>
 	): PaginatedListIterator<E>
@@ -151,10 +152,12 @@ private abstract class AbstractMaintenanceTaskBasicFlavouredApi<E : MaintenanceT
 
 	override suspend fun getMaintenanceTask(entityId: String): E = rawApi.getMaintenanceTask(entityId).successBody().let { maybeDecrypt(it) }
 
+	override suspend fun getMaintenanceTasks(entityIds: List<String>): List<E> = rawApi.getMaintenanceTasks(ListOfIds(entityIds)).successBody().map { maybeDecrypt(it) }
+
 	override suspend fun filterMaintenanceTasksBy(filter: AbstractFilter<MaintenanceTask>): PaginatedListIterator<E> =
 		IdsPageIterator(
 			rawApi.matchMaintenanceTasksBy(filter).successBody(),
-			TODO()
+			this::getMaintenanceTasks
 		)
 
 	abstract suspend fun validateAndMaybeEncrypt(entity: E): EncryptedMaintenanceTask

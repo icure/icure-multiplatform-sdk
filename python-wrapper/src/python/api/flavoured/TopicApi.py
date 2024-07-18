@@ -1,12 +1,13 @@
 import asyncio
 import json
-from icure.model import DecryptedTopic, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, Topic, serialize_topic, EncryptedTopic, deserialize_topic, DocIdentifier, TopicAbstractFilter, serialize_abstract_filter, SubscriptionEventType, EntitySubscriptionConfiguration, ShareMetadataBehaviour, RequestedPermission, deserialize_simple_share_result, SimpleShareResult, TopicShareOptions, FilterChain, PaginatedList, TopicRole
+from icure.model import DecryptedTopic, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, Topic, serialize_topic, EncryptedTopic, deserialize_topic, DocIdentifier, TopicAbstractFilter, serialize_abstract_filter, SubscriptionEventType, EntitySubscriptionConfiguration, ShareMetadataBehaviour, RequestedPermission, deserialize_simple_share_result, SimpleShareResult, TopicShareOptions, TopicRole
 from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from icure.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
 from typing import Optional, Dict, List
 from icure.model.specializations import HexString
 from icure.subscription.EntitySubscription import EntitySubscription
+from icure.pagination.PaginatedListIterator import PaginatedListIterator
 
 class TopicApi:
 
@@ -261,7 +262,7 @@ class TopicApi:
 				return_value = [EncryptedTopic._deserialize(x1) for x1 in result_info.success]
 				return return_value
 
-		async def filter_topics_by_async(self, filter_chain: FilterChain, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
+		async def filter_topics_by_async(self, filter: TopicAbstractFilter) -> PaginatedListIterator[EncryptedTopic]:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -269,18 +270,16 @@ class TopicApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
-					result = PaginatedList(
-						rows = [EncryptedTopic._deserialize(item) for item in result.rows],
-						next_key_pair = result.next_key_pair,
+					result = PaginatedListIterator[EncryptedTopic](
+						producer = success,
+						deserializer = lambda x: EncryptedTopic._deserialize(x),
+						executor = self.icure_sdk._executor
 					)
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"startDocumentId": start_document_id,
-				"limit": limit,
-				"filterChain": filter_chain.__serialize__(),
+				"filter": serialize_abstract_filter(filter),
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.encrypted.filterTopicsByAsync,
@@ -290,27 +289,28 @@ class TopicApi:
 			)
 			return await future
 
-		def filter_topics_by_blocking(self, filter_chain: FilterChain, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
+		def filter_topics_by_blocking(self, filter: TopicAbstractFilter) -> PaginatedListIterator[EncryptedTopic]:
 			payload = {
-				"startDocumentId": start_document_id,
-				"limit": limit,
-				"filterChain": filter_chain.__serialize__(),
+				"filter": serialize_abstract_filter(filter),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.encrypted.filterTopicsByBlocking(
 				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+			error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+			if error_str_pointer is not None:
+				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+				symbols.DisposeString(error_str_pointer)
+				symbols.DisposeStablePointer(call_result.pinned)
+				raise Exception(error_msg)
 			else:
-				return_value = PaginatedList._deserialize(result_info.success)
-				return_value = PaginatedList(
-					rows = [EncryptedTopic._deserialize(item) for item in return_value.rows],
-					next_key_pair = return_value.next_key_pair,
+				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+				symbols.DisposeStablePointer(call_result.pinned)
+				return PaginatedListIterator[EncryptedTopic](
+					producer = class_pointer,
+					deserializer = lambda x: EncryptedTopic._deserialize(x),
+					executor = self.icure_sdk._executor
 				)
-				return return_value
 
 		async def add_participant_async(self, entity_id: str, data_owner_id: str, topic_role: TopicRole) -> EncryptedTopic:
 			loop = asyncio.get_running_loop()
@@ -647,7 +647,7 @@ class TopicApi:
 				return_value = [Topic._deserialize(x1) for x1 in result_info.success]
 				return return_value
 
-		async def filter_topics_by_async(self, filter_chain: FilterChain, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
+		async def filter_topics_by_async(self, filter: TopicAbstractFilter) -> PaginatedListIterator[Topic]:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -655,18 +655,16 @@ class TopicApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
-					result = PaginatedList(
-						rows = [deserialize_topic(item) for item in result.rows],
-						next_key_pair = result.next_key_pair,
+					result = PaginatedListIterator[Topic](
+						producer = success,
+						deserializer = lambda x: deserialize_topic(x),
+						executor = self.icure_sdk._executor
 					)
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"startDocumentId": start_document_id,
-				"limit": limit,
-				"filterChain": filter_chain.__serialize__(),
+				"filter": serialize_abstract_filter(filter),
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk._executor,
 				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.tryAndRecover.filterTopicsByAsync,
@@ -676,27 +674,28 @@ class TopicApi:
 			)
 			return await future
 
-		def filter_topics_by_blocking(self, filter_chain: FilterChain, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
+		def filter_topics_by_blocking(self, filter: TopicAbstractFilter) -> PaginatedListIterator[Topic]:
 			payload = {
-				"startDocumentId": start_document_id,
-				"limit": limit,
-				"filterChain": filter_chain.__serialize__(),
+				"filter": serialize_abstract_filter(filter),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.tryAndRecover.filterTopicsByBlocking(
 				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+			error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+			if error_str_pointer is not None:
+				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+				symbols.DisposeString(error_str_pointer)
+				symbols.DisposeStablePointer(call_result.pinned)
+				raise Exception(error_msg)
 			else:
-				return_value = PaginatedList._deserialize(result_info.success)
-				return_value = PaginatedList(
-					rows = [deserialize_topic(item) for item in return_value.rows],
-					next_key_pair = return_value.next_key_pair,
+				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+				symbols.DisposeStablePointer(call_result.pinned)
+				return PaginatedListIterator[Topic](
+					producer = class_pointer,
+					deserializer = lambda x: deserialize_topic(x),
+					executor = self.icure_sdk._executor
 				)
-				return return_value
 
 		async def add_participant_async(self, entity_id: str, data_owner_id: str, topic_role: TopicRole) -> Topic:
 			loop = asyncio.get_running_loop()
@@ -1523,7 +1522,7 @@ class TopicApi:
 			return_value = [DecryptedTopic._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def filter_topics_by_async(self, filter_chain: FilterChain, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
+	async def filter_topics_by_async(self, filter: TopicAbstractFilter) -> PaginatedListIterator[DecryptedTopic]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1531,18 +1530,16 @@ class TopicApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
-				result = PaginatedList(
-					rows = [DecryptedTopic._deserialize(item) for item in result.rows],
-					next_key_pair = result.next_key_pair,
+				result = PaginatedListIterator[DecryptedTopic](
+					producer = success,
+					deserializer = lambda x: DecryptedTopic._deserialize(x),
+					executor = self.icure_sdk._executor
 				)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"startDocumentId": start_document_id,
-			"limit": limit,
-			"filterChain": filter_chain.__serialize__(),
+			"filter": serialize_abstract_filter(filter),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.filterTopicsByAsync,
@@ -1552,27 +1549,28 @@ class TopicApi:
 		)
 		return await future
 
-	def filter_topics_by_blocking(self, filter_chain: FilterChain, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
+	def filter_topics_by_blocking(self, filter: TopicAbstractFilter) -> PaginatedListIterator[DecryptedTopic]:
 		payload = {
-			"startDocumentId": start_document_id,
-			"limit": limit,
-			"filterChain": filter_chain.__serialize__(),
+			"filter": serialize_abstract_filter(filter),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.filterTopicsByBlocking(
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+		if error_str_pointer is not None:
+			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+			symbols.DisposeString(error_str_pointer)
+			symbols.DisposeStablePointer(call_result.pinned)
+			raise Exception(error_msg)
 		else:
-			return_value = PaginatedList._deserialize(result_info.success)
-			return_value = PaginatedList(
-				rows = [DecryptedTopic._deserialize(item) for item in return_value.rows],
-				next_key_pair = return_value.next_key_pair,
+			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+			symbols.DisposeStablePointer(call_result.pinned)
+			return PaginatedListIterator[DecryptedTopic](
+				producer = class_pointer,
+				deserializer = lambda x: DecryptedTopic._deserialize(x),
+				executor = self.icure_sdk._executor
 			)
-			return return_value
 
 	async def add_participant_async(self, entity_id: str, data_owner_id: str, topic_role: TopicRole) -> DecryptedTopic:
 		loop = asyncio.get_running_loop()

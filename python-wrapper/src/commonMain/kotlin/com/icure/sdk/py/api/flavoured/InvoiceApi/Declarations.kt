@@ -19,7 +19,7 @@ import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.embed.EncryptedInvoicingCode
 import com.icure.sdk.model.embed.InvoiceType
 import com.icure.sdk.model.embed.MediumType
-import com.icure.sdk.model.filter.chain.FilterChain
+import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.py.serialization.InvoiceSerializer
@@ -754,34 +754,35 @@ public fun getInvoicesAsync(
 @Serializable
 private class FilterInvoicesByParams(
 	@Contextual
-	public val filterChain: FilterChain<Invoice>,
+	public val filter: AbstractFilter<Invoice>,
 )
 
-public fun filterInvoicesByBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun filterInvoicesByBlocking(sdk: IcureApis, params: String): PyResult = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterInvoicesByParams>(params)
 	runBlocking {
 		sdk.invoice.filterInvoicesBy(
-			decodedParams.filterChain,
+			decodedParams.filter,
 		)
 	}
-}.toPyString(ListSerializer(DecryptedInvoice.serializer()))
+}.toPyResult {
+	PaginatedListIteratorAndSerializer(it, DecryptedInvoice.serializer())}
 
 @OptIn(ExperimentalForeignApi::class)
 public fun filterInvoicesByAsync(
 	sdk: IcureApis,
 	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterInvoicesByParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.invoice.filterInvoicesBy(
-				decodedParams.filterChain,
+				decodedParams.filter,
 			)
-		}.toPyStringAsyncCallback(ListSerializer(DecryptedInvoice.serializer()), resultCallback)
+		}.toPyResultAsyncCallback(resultCallback) {
+			PaginatedListIteratorAndSerializer(it, DecryptedInvoice.serializer())}
 	}
-}.failureToPyStringAsyncCallback(resultCallback)
+}.failureToPyResultAsyncCallback(resultCallback)
 
 @Serializable
 private class FindInvoicesByHcPartyPatientForeignKeysParams(

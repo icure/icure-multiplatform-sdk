@@ -1,11 +1,12 @@
 import asyncio
 import json
-from icure.model import ContactAbstractFilter, serialize_abstract_filter, ServiceAbstractFilter, DocIdentifier, IcureStub, LabelledOccurence, SubscriptionEventType, EntitySubscriptionConfiguration, EncryptedService, EncryptedContact, FilterChain, PaginatedList
+from icure.model import ContactAbstractFilter, serialize_abstract_filter, ServiceAbstractFilter, DocIdentifier, IcureStub, LabelledOccurence, SubscriptionEventType, EntitySubscriptionConfiguration, EncryptedService, EncryptedContact
 from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
-from typing import List, Optional, Dict
+from typing import List, Optional
 from icure.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
 from icure.subscription.EntitySubscription import EntitySubscription
+from icure.pagination.PaginatedListIterator import PaginatedListIterator
 
 class ContactBasicApi:
 
@@ -514,7 +515,7 @@ class ContactBasicApi:
 			return_value = [EncryptedContact._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def filter_contacts_by_async(self, filter_chain: FilterChain, start_document_id: Optional[str], limit: Optional[int]) -> PaginatedList:
+	async def filter_contacts_by_async(self, filter: ContactAbstractFilter) -> PaginatedListIterator[EncryptedContact]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -522,18 +523,16 @@ class ContactBasicApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
-				result = PaginatedList(
-					rows = [EncryptedContact._deserialize(item) for item in result.rows],
-					next_key_pair = result.next_key_pair,
+				result = PaginatedListIterator[EncryptedContact](
+					producer = success,
+					deserializer = lambda x: EncryptedContact._deserialize(x),
+					executor = self.icure_sdk._executor
 				)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"filterChain": filter_chain.__serialize__(),
-			"startDocumentId": start_document_id,
-			"limit": limit,
+			"filter": serialize_abstract_filter(filter),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicApi.filterContactsByAsync,
@@ -543,27 +542,28 @@ class ContactBasicApi:
 		)
 		return await future
 
-	def filter_contacts_by_blocking(self, filter_chain: FilterChain, start_document_id: Optional[str], limit: Optional[int]) -> PaginatedList:
+	def filter_contacts_by_blocking(self, filter: ContactAbstractFilter) -> PaginatedListIterator[EncryptedContact]:
 		payload = {
-			"filterChain": filter_chain.__serialize__(),
-			"startDocumentId": start_document_id,
-			"limit": limit,
+			"filter": serialize_abstract_filter(filter),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicApi.filterContactsByBlocking(
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+		if error_str_pointer is not None:
+			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+			symbols.DisposeString(error_str_pointer)
+			symbols.DisposeStablePointer(call_result.pinned)
+			raise Exception(error_msg)
 		else:
-			return_value = PaginatedList._deserialize(result_info.success)
-			return_value = PaginatedList(
-				rows = [EncryptedContact._deserialize(item) for item in return_value.rows],
-				next_key_pair = return_value.next_key_pair,
+			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+			symbols.DisposeStablePointer(call_result.pinned)
+			return PaginatedListIterator[EncryptedContact](
+				producer = class_pointer,
+				deserializer = lambda x: EncryptedContact._deserialize(x),
+				executor = self.icure_sdk._executor
 			)
-			return return_value
 
 	async def list_contact_by_hcparty_service_id_async(self, hc_party_id: str, service_id: str) -> List[EncryptedContact]:
 		loop = asyncio.get_running_loop()
@@ -1012,7 +1012,7 @@ class ContactBasicApi:
 			return_value = [EncryptedService._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def find_contacts_by_opening_date_async(self, start_date: int, end_date: int, hc_party_id: str, start_key: Optional[Dict[str, object]] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
+	async def filter_services_by_async(self, filter: ServiceAbstractFilter) -> PaginatedListIterator[EncryptedService]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1020,75 +1020,16 @@ class ContactBasicApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
-				result = PaginatedList(
-					rows = [EncryptedContact._deserialize(item) for item in result.rows],
-					next_key_pair = result.next_key_pair,
+				result = PaginatedListIterator[EncryptedService](
+					producer = success,
+					deserializer = lambda x: EncryptedService._deserialize(x),
+					executor = self.icure_sdk._executor
 				)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"startDate": start_date,
-			"endDate": end_date,
-			"hcPartyId": hc_party_id,
-			"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
-			"startDocumentId": start_document_id,
-			"limit": limit,
+			"filter": serialize_abstract_filter(filter),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicApi.findContactsByOpeningDateAsync,
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def find_contacts_by_opening_date_blocking(self, start_date: int, end_date: int, hc_party_id: str, start_key: Optional[Dict[str, object]] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
-		payload = {
-			"startDate": start_date,
-			"endDate": end_date,
-			"hcPartyId": hc_party_id,
-			"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
-			"startDocumentId": start_document_id,
-			"limit": limit,
-		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicApi.findContactsByOpeningDateBlocking(
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise Exception(result_info.failure)
-		else:
-			return_value = PaginatedList._deserialize(result_info.success)
-			return_value = PaginatedList(
-				rows = [EncryptedContact._deserialize(item) for item in return_value.rows],
-				next_key_pair = return_value.next_key_pair,
-			)
-			return return_value
-
-	async def filter_services_by_async(self, filter_chain: FilterChain, start_document_id: Optional[str], limit: Optional[int]) -> PaginatedList:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
-				result = PaginatedList(
-					rows = [EncryptedService._deserialize(item) for item in result.rows],
-					next_key_pair = result.next_key_pair,
-				)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"filterChain": filter_chain.__serialize__(),
-			"startDocumentId": start_document_id,
-			"limit": limit,
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk._executor,
 			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicApi.filterServicesByAsync,
@@ -1098,24 +1039,25 @@ class ContactBasicApi:
 		)
 		return await future
 
-	def filter_services_by_blocking(self, filter_chain: FilterChain, start_document_id: Optional[str], limit: Optional[int]) -> PaginatedList:
+	def filter_services_by_blocking(self, filter: ServiceAbstractFilter) -> PaginatedListIterator[EncryptedService]:
 		payload = {
-			"filterChain": filter_chain.__serialize__(),
-			"startDocumentId": start_document_id,
-			"limit": limit,
+			"filter": serialize_abstract_filter(filter),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactBasicApi.filterServicesByBlocking(
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+		if error_str_pointer is not None:
+			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+			symbols.DisposeString(error_str_pointer)
+			symbols.DisposeStablePointer(call_result.pinned)
+			raise Exception(error_msg)
 		else:
-			return_value = PaginatedList._deserialize(result_info.success)
-			return_value = PaginatedList(
-				rows = [EncryptedService._deserialize(item) for item in return_value.rows],
-				next_key_pair = return_value.next_key_pair,
+			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+			symbols.DisposeStablePointer(call_result.pinned)
+			return PaginatedListIterator[EncryptedService](
+				producer = class_pointer,
+				deserializer = lambda x: EncryptedService._deserialize(x),
+				executor = self.icure_sdk._executor
 			)
-			return return_value
