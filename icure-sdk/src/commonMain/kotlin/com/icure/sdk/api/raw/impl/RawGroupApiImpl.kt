@@ -83,7 +83,7 @@ class RawGroupApiImpl(
 			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
-			header("password", password)
+			`header`("password", password)
 			setBody(initialisationData)
 		}.wrap()
 
@@ -269,7 +269,7 @@ class RawGroupApiImpl(
 			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
-			header("Operation-Token", operationToken)
+			`header`("Operation-Token", operationToken)
 		}.wrap()
 
 	override suspend fun deleteGroup(id: String): HttpResponse<Group> =
@@ -319,7 +319,7 @@ class RawGroupApiImpl(
 			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
-			header("password", password)
+			`header`("password", password)
 		}.wrap()
 
 	override suspend fun initDesignDocs(

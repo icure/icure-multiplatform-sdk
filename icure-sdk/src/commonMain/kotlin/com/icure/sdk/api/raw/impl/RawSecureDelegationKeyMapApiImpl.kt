@@ -52,7 +52,7 @@ class RawSecureDelegationKeyMapApiImpl(
 			accept(Application.Json)
 			setBody(secureDelegationKeyMap)
 			accessControlKeysHeaderValues.forEach {
-				header(ACCESS_CONTROL_KEYS_HEADER, it)
+				`header`(ACCESS_CONTROL_KEYS_HEADER, it)
 			}
 		}.wrap()
 
@@ -70,7 +70,7 @@ class RawSecureDelegationKeyMapApiImpl(
 			accept(Application.Json)
 			setBody(delegationKeys)
 			accessControlKeysHeaderValues.forEach {
-				header(ACCESS_CONTROL_KEYS_HEADER, it)
+				`header`(ACCESS_CONTROL_KEYS_HEADER, it)
 			}
 		}.wrap()
 
@@ -88,7 +88,7 @@ class RawSecureDelegationKeyMapApiImpl(
 			accept(Application.Json)
 			setBody(request)
 			accessControlKeysHeaderValues.forEach {
-				header(ACCESS_CONTROL_KEYS_HEADER, it)
+				`header`(ACCESS_CONTROL_KEYS_HEADER, it)
 			}
 		}.wrap()
 
