@@ -3,7 +3,6 @@ package com.icure.sdk.model.filter
 import com.icure.sdk.model.base.Identifiable
 import kotlinx.serialization.Serializable
 import kotlin.String
-import kotlinx.serialization.Contextual
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
