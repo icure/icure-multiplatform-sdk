@@ -40,7 +40,6 @@ import com.icure.sdk.model.extensions.autoDelegationsFor
 import com.icure.sdk.model.extensions.dataOwnerId
 import com.icure.sdk.model.extensions.publicKeysSpki
 import com.icure.sdk.model.filter.AbstractFilter
-import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
@@ -59,7 +58,8 @@ import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.currentEpochMs
-import kotlinx.serialization.encodeToString
+import com.icure.sdk.utils.pagination.IdsPageIterator
+import com.icure.sdk.utils.pagination.PaginatedListIterator
 import kotlinx.serialization.json.decodeFromJsonElement
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
@@ -75,22 +75,10 @@ interface PatientBasicFlavourlessApi : Subscribable<Patient, EncryptedPatient> {
 interface PatientBasicFlavouredApi<E : Patient> {
 	suspend fun modifyPatient(entity: E): E
 	suspend fun getPatient(entityId: String): E
-	suspend fun filterPatientsBy(
-		filterChain: FilterChain<Patient>,
-		@DefaultValue("null")
-		startKey: String? = null,
-		@DefaultValue("null")
-		startDocumentId: String? = null,
-		@DefaultValue("null")
-		limit: Int? = null,
-		@DefaultValue("null")
-		skip: Int? = null,
-		@DefaultValue("null")
-		sort: String? = null,
-		@DefaultValue("null")
-		desc: Boolean? = null
-	): PaginatedList<E>
+	suspend fun filterPatientsBy(filter: AbstractFilter<Patient>): PaginatedListIterator<E>
 
+	// TODO: Implement filter for this method
+	@Deprecated("Find methods are deprecated", ReplaceWith("filterPatientsBy()"))
 	suspend fun findPatientsByNameBirthSsinAuto(
 		@DefaultValue("null")
 		healthcarePartyId: String? = null,
@@ -105,6 +93,8 @@ interface PatientBasicFlavouredApi<E : Patient> {
 		sortDirection: SortDirection = SortDirection.Asc,
 	): PaginatedList<E>
 
+	// TODO: Implement filter for this method
+	@Deprecated("List methods are deprecated", ReplaceWith("filterPatientsBy()"))
 	suspend fun listPatientsOfHcParty(
 		hcPartyId: String,
 		@DefaultValue("\"name\"")
@@ -120,6 +110,9 @@ interface PatientBasicFlavouredApi<E : Patient> {
 	): PaginatedList<E>
 
 	suspend fun listOfMergesAfter(date: Long): List<E>
+
+	// TODO: Implement filter for this method
+	@Deprecated("List methods are deprecated", ReplaceWith("filterPatientsBy()"))
 	suspend fun findPatientsModifiedAfter(
 		date: Long,
 		@DefaultValue("null")
@@ -130,6 +123,8 @@ interface PatientBasicFlavouredApi<E : Patient> {
 		limit: Int? = null,
 	): PaginatedList<E>
 
+	// TODO: Implement filter for this method
+	@Deprecated("List methods are deprecated", ReplaceWith("filterPatientsBy()"))
 	suspend fun listPatientsByHcParty(
 		hcPartyId: String,
 		@DefaultValue("\"name\"")
@@ -146,6 +141,9 @@ interface PatientBasicFlavouredApi<E : Patient> {
 
 	suspend fun getPatientHcPartyKeysForDelegate(patientId: String): Map<String, String>
 	suspend fun countOfPatients(hcPartyId: String): EncryptedContent
+
+	// TODO: Implement filter for this method
+	@Deprecated("List methods are deprecated", ReplaceWith("filterPatientsBy()"))
 	suspend fun findPatientsByHealthcareParty(
 		@DefaultValue("null")
 		hcPartyId: String? = null,
@@ -161,6 +159,8 @@ interface PatientBasicFlavouredApi<E : Patient> {
 		sortDirection: SortDirection = SortDirection.Asc,
 	): PaginatedList<E>
 
+	// TODO: Implement filter for this method
+	@Deprecated("List methods are deprecated", ReplaceWith("filterPatientsBy()"))
 	suspend fun findPatientsIdsByHealthcareParty(
 		hcPartyId: String,
 		@DefaultValue("null")
@@ -180,6 +180,8 @@ interface PatientBasicFlavouredApi<E : Patient> {
 		dateOfBirth: Int? = null,
 	): List<E>
 
+	// TODO: Implement filter for this method
+	@Deprecated("List methods are deprecated", ReplaceWith("filterPatientsBy()"))
 	suspend fun findDeletedPatients(
 		startDate: Long,
 		@DefaultValue("null")
@@ -201,7 +203,7 @@ interface PatientBasicFlavouredApi<E : Patient> {
 		lastName: String? = null,
 	): List<E>
 
-	suspend fun getPatients(patientIds: ListOfIds): List<E>
+	suspend fun getPatients(patientIds: List<String>): List<E>
 	suspend fun getPatientByHealthcarePartyAndIdentifier(
 		hcPartyId: String,
 		id: String,
@@ -219,6 +221,8 @@ interface PatientBasicFlavouredApi<E : Patient> {
 		end: Long? = null,
 	): E
 
+	// TODO: Implement filter for this method
+	@Deprecated("List methods are deprecated", ReplaceWith("filterPatientsBy()"))
 	suspend fun findDuplicatesBySsin(
 		hcPartyId: String,
 		@DefaultValue("null")
@@ -229,6 +233,8 @@ interface PatientBasicFlavouredApi<E : Patient> {
 		limit: Int? = null,
 	): PaginatedList<E>
 
+	// TODO: Implement filter for this method
+	@Deprecated("List methods are deprecated", ReplaceWith("filterPatientsBy()"))
 	suspend fun findDuplicatesByName(
 		hcPartyId: String,
 		@DefaultValue("null")
@@ -379,23 +385,11 @@ private abstract class AbstractPatientBasicFlavouredApi<E : Patient>(
 
 	override suspend fun getPatient(entityId: String): E = rawApi.getPatient(entityId).successBody().let { maybeDecrypt(it) }
 
-	override suspend fun filterPatientsBy(
-		filterChain: FilterChain<Patient>,
-		startKey: String?,
-		startDocumentId: String?,
-		limit: Int?,
-		skip: Int?,
-		sort: String?,
-		desc: Boolean?,
-	): PaginatedList<E> =
-		rawApi.filterPatientsBy(
-            startKey,
-            startDocumentId,
-            limit,
-            skip,
-            sort,
-            desc, filterChain,
-        ).successBody().map { maybeDecrypt(it) }
+	override suspend fun filterPatientsBy(filter: AbstractFilter<Patient>): PaginatedListIterator<E> =
+		IdsPageIterator(
+			rawApi.matchPatientsBy(filter).successBody(),
+			this::getPatients
+		)
 
 	override suspend fun findPatientsByNameBirthSsinAuto(
 		healthcarePartyId: String?,
@@ -496,7 +490,7 @@ private abstract class AbstractPatientBasicFlavouredApi<E : Patient>(
 		lastName: String?,
 	) = rawApi.listDeletedPatientsByName(firstName, lastName).successBody().map { maybeDecrypt(it) }
 
-	override suspend fun getPatients(patientIds: ListOfIds) = rawApi.getPatients(patientIds).successBody().map { maybeDecrypt(it) }
+	override suspend fun getPatients(patientIds: List<String>) = rawApi.getPatients(ListOfIds(patientIds)).successBody().map { maybeDecrypt(it) }
 	override suspend fun getPatientByHealthcarePartyAndIdentifier(
 		hcPartyId: String,
 		id: String,

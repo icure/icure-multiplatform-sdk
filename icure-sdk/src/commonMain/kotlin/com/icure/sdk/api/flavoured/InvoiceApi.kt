@@ -26,7 +26,7 @@ import com.icure.sdk.model.embed.InvoiceType
 import com.icure.sdk.model.embed.MediumType
 import com.icure.sdk.model.extensions.autoDelegationsFor
 import com.icure.sdk.model.extensions.dataOwnerId
-import com.icure.sdk.model.filter.chain.FilterChain
+import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.options.ApiConfiguration
@@ -48,6 +48,7 @@ interface InvoiceBasicFlavourlessApi {
 	suspend fun deleteInvoice(entityId: String): DocIdentifier
 	suspend fun findInvoicesDelegationsStubsByHcPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<IcureStub>
 	suspend fun getTarificationsCodesOccurrences(minOccurrence: Int): List<LabelledOccurence>
+
 }
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
@@ -56,7 +57,7 @@ interface InvoiceBasicFlavouredApi<E : Invoice> {
 	suspend fun modifyInvoices(entities: List<E>): List<E>
 	suspend fun getInvoice(entityId: String): E
 	suspend fun getInvoices(entityIds: List<String>): List<E>
-	suspend fun filterInvoicesBy(filterChain: FilterChain<Invoice>): List<E>
+	suspend fun filterInvoicesBy(filter: AbstractFilter<Invoice>): PaginatedListIterator<E>
 	suspend fun findInvoicesByHcPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<E>
 	suspend fun reassignInvoice(invoice: E): E
 	suspend fun mergeTo(invoiceId: String, ids: List<String>): E
@@ -76,6 +77,9 @@ interface InvoiceBasicFlavouredApi<E : Invoice> {
 	): List<E>
 
 	suspend fun removeCodes(userId: String, serviceId: String, secretFKeys: String, tarificationIds: List<String>): List<E>
+
+	// TODO: Implement filter for this method
+	@Deprecated("Find methods are deprecated", ReplaceWith("filterInvoicesBy()"))
 	suspend fun findInvoicesByAuthor(
 		hcPartyId: String,
 		@DefaultValue("null")
@@ -232,8 +236,8 @@ private abstract class AbstractInvoiceBasicFlavouredApi<E : Invoice>(protected v
 	override suspend fun getInvoices(entityIds: List<String>): List<E> =
 		rawApi.getInvoices(ListOfIds(entityIds)).successBody().map { maybeDecrypt(it) }
 
-	override suspend fun filterInvoicesBy(filterChain: FilterChain<Invoice>): List<E> =
-		rawApi.filterInvoicesBy(filterChain).successBody().map { maybeDecrypt(it) }
+	override suspend fun filterInvoicesBy(filter: AbstractFilter<Invoice>): PaginatedListIterator<E> =
+		TODO()
 
 	override suspend fun findInvoicesByHcPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<E> =
 		rawApi.findInvoicesByHCPartyPatientForeignKeys(hcPartyId, secretPatientKeys).successBody().map { maybeDecrypt(it) }

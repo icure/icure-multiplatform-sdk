@@ -7,13 +7,16 @@ import com.icure.sdk.model.Code
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.filter.AbstractFilter
-import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.InternalIcureApi
+import com.icure.sdk.utils.pagination.IdsPageIterator
+import com.icure.sdk.utils.pagination.PaginatedListIterator
 import kotlinx.serialization.json.JsonElement
 import kotlin.js.JsName
 
 interface CodeApi {
+	// TODO: Implement filter for this method
+	@Deprecated("Find methods are deprecated", ReplaceWith("filterCodesBy()"))
 	suspend fun findCodesByLabel(
 		region: String?,
 		types: String,
@@ -29,6 +32,8 @@ interface CodeApi {
 		limit: Int? = null,
 ): PaginatedList<Code>
 
+	// TODO: Implement filter for this method
+	@Deprecated("Find methods are deprecated", ReplaceWith("filterCodesBy(filter)"))
 	suspend fun findCodesByType(
 		region: String,
 		@DefaultValue("null")
@@ -43,8 +48,10 @@ interface CodeApi {
 		startDocumentId: String? = null,
 		@DefaultValue("null")
 		limit: Int? = null,
-): PaginatedList<Code>
+	): PaginatedList<Code>
 
+	// TODO: Implement filter for this method
+	@Deprecated("Find methods are deprecated", ReplaceWith("filterCodesBy(filter)"))
 	suspend fun findCodesByLink(
 		linkType: String,
 		@DefaultValue("null")
@@ -55,7 +62,7 @@ interface CodeApi {
 		startDocumentId: String? = null,
 		@DefaultValue("null")
 		limit: Int? = null,
-): PaginatedList<Code>
+	): PaginatedList<Code>
 
 	suspend fun listCodesByRegionTypeCodeVersion(
 		region: String,
@@ -65,7 +72,7 @@ interface CodeApi {
 		code: String? = null,
 		@DefaultValue("null")
 		version: String? = null,
-): List<Code>
+	): List<Code>
 
 	suspend fun listCodeTypesBy(
 		@DefaultValue("null")
@@ -73,6 +80,7 @@ interface CodeApi {
 		@DefaultValue("null")
 		type: String? = null
 	): List<String>
+
 	suspend fun listTagTypesBy(
 		@DefaultValue("null")
 		region: String? = null,
@@ -110,21 +118,10 @@ interface CodeApi {
 	suspend fun modifyCodes(codeBatch: List<Code>): List<Code>
 	@JsName("modifyCodesInGroup")
 	suspend fun modifyCodes(groupId: String, codeBatch: List<Code>): List<Code>
+
 	suspend fun filterCodesBy(
-		@DefaultValue("null")
-		startKey: JsonElement? = null,
-		@DefaultValue("null")
-		startDocumentId: String? = null,
-		@DefaultValue("null")
-		limit: Int? = null,
-		@DefaultValue("null")
-		skip: Int? = null,
-		@DefaultValue("null")
-		sort: String? = null,
-		@DefaultValue("null")
-		desc: Boolean? = null,
-		filterChain: FilterChain<Code>,
-	): PaginatedList<Code>
+		filter: AbstractFilter<Code>
+	): PaginatedListIterator<Code>
 
 	suspend fun matchCodesBy(filter: AbstractFilter<Code>): List<String>
 	suspend fun importCodes(codeType: String)
@@ -135,6 +132,7 @@ interface CodeApi {
 internal class CodeApiImpl(
     private val rawApi: RawCodeApi,
 ) : CodeApi {
+    @Deprecated("Find methods with are deprecated", replaceWith = ReplaceWith("filterCodesBy(filter)"))
     override suspend fun findCodesByLabel(
 		region: String?,
 		types: String,
@@ -146,6 +144,7 @@ internal class CodeApiImpl(
 		limit: Int?,
     ): PaginatedList<Code> = rawApi.findCodesByLabel(region, types, language, label, version, startKey.encodeStartKey(), startDocumentId, limit).successBody()
 
+    @Deprecated("Find methods with are deprecated", replaceWith = ReplaceWith("filterCodesBy(filter)"))
     override suspend fun findCodesByType(
 		region: String,
 		type: String?,
@@ -156,6 +155,7 @@ internal class CodeApiImpl(
 		limit: Int?,
     ): PaginatedList<Code> = rawApi.findCodesByType(region, type, code, version, startKey.encodeStartKey(), startDocumentId, limit).successBody()
 
+    @Deprecated("Find methods with are deprecated", replaceWith = ReplaceWith("filterCodesBy(filter)"))
     override suspend fun findCodesByLink(
 		linkType: String,
 		linkedId: String?,
@@ -207,19 +207,13 @@ internal class CodeApiImpl(
 
     override suspend fun modifyCodes(codeBatch: List<Code>): List<Code> = rawApi.modifyCodes(codeBatch).successBody()
 
-    override suspend fun filterCodesBy(
-		startKey: JsonElement?,
-		startDocumentId: String?,
-		limit: Int?,
-		skip: Int?,
-		sort: String?,
-		desc: Boolean?,
-		filterChain: FilterChain<Code>,
-    ): PaginatedList<Code> = rawApi.filterCodesBy(startKey.encodeStartKey(), startDocumentId, limit, skip, sort, desc, filterChain).successBody()
+	override suspend fun filterCodesBy(
+		filter: AbstractFilter<Code>
+	): PaginatedListIterator<Code> = IdsPageIterator(matchCodesBy(filter), this::getCodes)
 
-    override suspend fun matchCodesBy(filter: AbstractFilter<Code>): List<String> = rawApi.matchCodesBy(filter).successBody()
+	override suspend fun matchCodesBy(filter: AbstractFilter<Code>): List<String> = rawApi.matchCodesBy(filter).successBody()
 
-    override suspend fun importCodes(codeType: String): Unit = rawApi.importCodes(codeType).successBody()
+	override suspend fun importCodes(codeType: String): Unit = rawApi.importCodes(codeType).successBody()
 
 	override suspend fun createCodes(groupId: String, codeBatch: List<Code>): List<Code> = rawApi.createCodesInGroup(groupId, codeBatch).successBody()
 
