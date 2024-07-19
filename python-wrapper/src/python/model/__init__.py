@@ -4807,54 +4807,10 @@ def deserialize_simple_share_result(data: Union[str, Dict[str, object]]) -> 'Sim
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
 
-class ShareMetadataBehaviour(Enum):
-	Required = "REQUIRED"
-	IfAvailable = "IF_AVAILABLE"
-	Never = "NEVER"
-
-	def __serialize__(self) -> object:
-		return self.value
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ShareMetadataBehaviour':
-		if data == "REQUIRED":
-			return ShareMetadataBehaviour.Required
-		elif data == "IF_AVAILABLE":
-			return ShareMetadataBehaviour.IfAvailable
-		elif data == "NEVER":
-			return ShareMetadataBehaviour.Never
-		else:
-			raise Exception(f"{data} is not a valid value for ShareMetadataBehaviour enum.")
-
-class RequestedPermission(Enum):
-	MaxRead = "MAX_READ"
-	FullRead = "FULL_READ"
-	MaxWrite = "MAX_WRITE"
-	FullWrite = "FULL_WRITE"
-	Root = "ROOT"
-
-	def __serialize__(self) -> object:
-		return self.value
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'RequestedPermission':
-		if data == "MAX_READ":
-			return RequestedPermission.MaxRead
-		elif data == "FULL_READ":
-			return RequestedPermission.FullRead
-		elif data == "MAX_WRITE":
-			return RequestedPermission.MaxWrite
-		elif data == "FULL_WRITE":
-			return RequestedPermission.FullWrite
-		elif data == "ROOT":
-			return RequestedPermission.Root
-		else:
-			raise Exception(f"{data} is not a valid value for RequestedPermission enum.")
-
 @dataclass
 class TimeTableShareOptions:
-	requested_permissions: 'RequestedPermission'
-	share_encryption_key: 'ShareMetadataBehaviour'
+	requested_permissions: 'RequestedPermission' = field(default_factory=lambda: RequestedPermission.MaxWrite)
+	share_encryption_key: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
 
 	def __serialize__(self) -> object:
 		return {
@@ -5597,9 +5553,9 @@ def deserialize_classification(data: Union[str, Dict[str, object]]) -> 'Classifi
 
 @dataclass
 class ClassificationShareOptions:
-	requested_permissions: 'RequestedPermission'
-	share_encryption_key: 'ShareMetadataBehaviour'
-	share_patient_id: 'ShareMetadataBehaviour'
+	requested_permissions: 'RequestedPermission' = field(default_factory=lambda: RequestedPermission.MaxWrite)
+	share_encryption_key: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
+	share_patient_id: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
 
 	def __serialize__(self) -> object:
 		return {
@@ -5815,8 +5771,8 @@ def deserialize_maintenance_task(data: Union[str, Dict[str, object]]) -> 'Mainte
 
 @dataclass
 class MaintenanceTaskShareOptions:
-	requested_permissions: 'RequestedPermission'
-	share_encryption_key: 'ShareMetadataBehaviour'
+	requested_permissions: 'RequestedPermission' = field(default_factory=lambda: RequestedPermission.MaxWrite)
+	share_encryption_key: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
 
 	def __serialize__(self) -> object:
 		return {
@@ -6119,15 +6075,15 @@ class EntityWithTypeInfo:
 
 @dataclass
 class PatientShareOptions:
-	requested_permissions: 'RequestedPermission'
-	share_encryption_key: 'ShareMetadataBehaviour'
 	share_secret_ids: List[str]
+	requested_permissions: 'RequestedPermission' = field(default_factory=lambda: RequestedPermission.MaxWrite)
+	share_encryption_key: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
 
 	def __serialize__(self) -> object:
 		return {
+			"shareSecretIds": [x0 for x0 in self.share_secret_ids],
 			"requestedPermissions": self.requested_permissions.__serialize__(),
 			"shareEncryptionKey": self.share_encryption_key.__serialize__(),
-			"shareSecretIds": [x0 for x0 in self.share_secret_ids],
 		}
 
 	@classmethod
@@ -6138,9 +6094,9 @@ class PatientShareOptions:
 		else:
 			deserialized_dict = data
 		return cls(
+			share_secret_ids=[x0 for x0 in deserialized_dict["shareSecretIds"]],
 			requested_permissions=RequestedPermission._deserialize(deserialized_dict["requestedPermissions"]),
 			share_encryption_key=ShareMetadataBehaviour._deserialize(deserialized_dict["shareEncryptionKey"]),
-			share_secret_ids=[x0 for x0 in deserialized_dict["shareSecretIds"]],
 		)
 
 @dataclass
@@ -7040,9 +6996,9 @@ class LabelledOccurence:
 
 @dataclass
 class ContactShareOptions:
-	requested_permissions: 'RequestedPermission'
-	share_encryption_key: 'ShareMetadataBehaviour'
-	share_patient_id: 'ShareMetadataBehaviour'
+	requested_permissions: 'RequestedPermission' = field(default_factory=lambda: RequestedPermission.MaxWrite)
+	share_encryption_key: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
+	share_patient_id: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
 
 	def __serialize__(self) -> object:
 		return {
@@ -7264,8 +7220,8 @@ def deserialize_receipt(data: Union[str, Dict[str, object]]) -> 'Receipt':
 
 @dataclass
 class ReceiptShareOptions:
-	requested_permissions: 'RequestedPermission'
-	share_encryption_key: 'ShareMetadataBehaviour'
+	requested_permissions: 'RequestedPermission' = field(default_factory=lambda: RequestedPermission.MaxWrite)
+	share_encryption_key: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
 
 	def __serialize__(self) -> object:
 		return {
@@ -7287,9 +7243,9 @@ class ReceiptShareOptions:
 
 @dataclass
 class HealthElementShareOptions:
-	requested_permissions: 'RequestedPermission'
-	share_encryption_key: 'ShareMetadataBehaviour'
-	share_patient_id: 'ShareMetadataBehaviour'
+	requested_permissions: 'RequestedPermission' = field(default_factory=lambda: RequestedPermission.MaxWrite)
+	share_encryption_key: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
+	share_patient_id: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
 
 	def __serialize__(self) -> object:
 		return {
@@ -7517,9 +7473,9 @@ def deserialize_access_log(data: Union[str, Dict[str, object]]) -> 'AccessLog':
 
 @dataclass
 class AccessLogShareOptions:
-	requested_permissions: 'RequestedPermission'
-	share_encryption_key: 'ShareMetadataBehaviour'
-	share_patient_id: 'ShareMetadataBehaviour'
+	requested_permissions: 'RequestedPermission' = field(default_factory=lambda: RequestedPermission.MaxWrite)
+	share_encryption_key: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
+	share_patient_id: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
 
 	def __serialize__(self) -> object:
 		return {
@@ -7747,9 +7703,9 @@ def deserialize_topic(data: Union[str, Dict[str, object]]) -> 'Topic':
 
 @dataclass
 class TopicShareOptions:
-	requested_permissions: 'RequestedPermission'
-	share_encryption_key: 'ShareMetadataBehaviour'
-	share_patient_id: 'ShareMetadataBehaviour'
+	requested_permissions: 'RequestedPermission' = field(default_factory=lambda: RequestedPermission.MaxWrite)
+	share_encryption_key: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
+	share_patient_id: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
 
 	def __serialize__(self) -> object:
 		return {
@@ -8104,9 +8060,9 @@ def deserialize_calendar_item(data: Union[str, Dict[str, object]]) -> 'CalendarI
 
 @dataclass
 class CalendarItemShareOptions:
-	requested_permissions: 'RequestedPermission'
-	share_encryption_key: 'ShareMetadataBehaviour'
-	share_patient_id: 'ShareMetadataBehaviour'
+	requested_permissions: 'RequestedPermission' = field(default_factory=lambda: RequestedPermission.MaxWrite)
+	share_encryption_key: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
+	share_patient_id: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
 
 	def __serialize__(self) -> object:
 		return {
@@ -8430,9 +8386,9 @@ def deserialize_message(data: Union[str, Dict[str, object]]) -> 'Message':
 
 @dataclass
 class DocumentShareOptions:
-	requested_permissions: 'RequestedPermission'
-	share_encryption_key: 'ShareMetadataBehaviour'
-	share_message_id: 'ShareMetadataBehaviour'
+	requested_permissions: 'RequestedPermission' = field(default_factory=lambda: RequestedPermission.MaxWrite)
+	share_encryption_key: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
+	share_message_id: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
 
 	def __serialize__(self) -> object:
 		return {
@@ -8690,9 +8646,9 @@ def deserialize_form(data: Union[str, Dict[str, object]]) -> 'Form':
 
 @dataclass
 class FormShareOptions:
-	requested_permissions: 'RequestedPermission'
-	share_encryption_key: 'ShareMetadataBehaviour'
-	share_patient_id: 'ShareMetadataBehaviour'
+	requested_permissions: 'RequestedPermission' = field(default_factory=lambda: RequestedPermission.MaxWrite)
+	share_encryption_key: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
+	share_patient_id: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
 
 	def __serialize__(self) -> object:
 		return {
@@ -9208,9 +9164,9 @@ def deserialize_invoice(data: Union[str, Dict[str, object]]) -> 'Invoice':
 
 @dataclass
 class InvoiceShareOptions:
-	requested_permissions: 'RequestedPermission'
-	share_encryption_key: 'ShareMetadataBehaviour'
-	share_patient_id: 'ShareMetadataBehaviour'
+	requested_permissions: 'RequestedPermission' = field(default_factory=lambda: RequestedPermission.MaxWrite)
+	share_encryption_key: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
+	share_patient_id: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
 
 	def __serialize__(self) -> object:
 		return {
@@ -9671,12 +9627,14 @@ class InvoiceType(Enum):
 
 @dataclass
 class MessageShareOptions:
-	requested_permissions: 'RequestedPermission'
-	share_encryption_key: 'ShareMetadataBehaviour'
-	share_patient_id: 'ShareMetadataBehaviour'
+	share_secret_ids: List[str]
+	requested_permissions: 'RequestedPermission' = field(default_factory=lambda: RequestedPermission.MaxWrite)
+	share_encryption_key: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
+	share_patient_id: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
 
 	def __serialize__(self) -> object:
 		return {
+			"shareSecretIds": [x0 for x0 in self.share_secret_ids],
 			"requestedPermissions": self.requested_permissions.__serialize__(),
 			"shareEncryptionKey": self.share_encryption_key.__serialize__(),
 			"sharePatientId": self.share_patient_id.__serialize__(),
@@ -9690,6 +9648,7 @@ class MessageShareOptions:
 		else:
 			deserialized_dict = data
 		return cls(
+			share_secret_ids=[x0 for x0 in deserialized_dict["shareSecretIds"]],
 			requested_permissions=RequestedPermission._deserialize(deserialized_dict["requestedPermissions"]),
 			share_encryption_key=ShareMetadataBehaviour._deserialize(deserialized_dict["shareEncryptionKey"]),
 			share_patient_id=ShareMetadataBehaviour._deserialize(deserialized_dict["sharePatientId"]),
@@ -12877,6 +12836,50 @@ class FailedRequestDetails:
 			reason=deserialized_dict.get("reason"),
 			request=DelegateShareOptions._deserialize(deserialized_dict.get("request")) if deserialized_dict.get("request") is not None else None,
 		)
+
+class RequestedPermission(Enum):
+	MaxRead = "MAX_READ"
+	FullRead = "FULL_READ"
+	MaxWrite = "MAX_WRITE"
+	FullWrite = "FULL_WRITE"
+	Root = "ROOT"
+
+	def __serialize__(self) -> object:
+		return self.value
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'RequestedPermission':
+		if data == "MAX_READ":
+			return RequestedPermission.MaxRead
+		elif data == "FULL_READ":
+			return RequestedPermission.FullRead
+		elif data == "MAX_WRITE":
+			return RequestedPermission.MaxWrite
+		elif data == "FULL_WRITE":
+			return RequestedPermission.FullWrite
+		elif data == "ROOT":
+			return RequestedPermission.Root
+		else:
+			raise Exception(f"{data} is not a valid value for RequestedPermission enum.")
+
+class ShareMetadataBehaviour(Enum):
+	Required = "REQUIRED"
+	IfAvailable = "IF_AVAILABLE"
+	Never = "NEVER"
+
+	def __serialize__(self) -> object:
+		return self.value
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ShareMetadataBehaviour':
+		if data == "REQUIRED":
+			return ShareMetadataBehaviour.Required
+		elif data == "IF_AVAILABLE":
+			return ShareMetadataBehaviour.IfAvailable
+		elif data == "NEVER":
+			return ShareMetadataBehaviour.Never
+		else:
+			raise Exception(f"{data} is not a valid value for ShareMetadataBehaviour enum.")
 
 class DocumentLocation(Enum):
 	Annex = "annex"

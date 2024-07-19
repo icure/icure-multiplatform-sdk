@@ -3,7 +3,6 @@ package com.icure.sdk.py.api.flavoured.MaintenanceTaskApi
 
 import com.icure.sdk.IcureApis
 import com.icure.sdk.crypto.entities.MaintenanceTaskShareOptions
-import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.model.DecryptedMaintenanceTask
 import com.icure.sdk.model.EncryptedMaintenanceTask
@@ -13,7 +12,6 @@ import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.notification.SubscriptionEventType
-import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.py.serialization.MaintenanceTaskSerializer
 import com.icure.sdk.py.subscription.EntitySubscription.EntitySubscriptionWithSerializer
@@ -456,12 +454,7 @@ public fun subscribeToEventsAsync(
 private class ShareWithParams(
 	public val delegateId: String,
 	public val maintenanceTask: DecryptedMaintenanceTask,
-	public val shareEncryptionKeys: ShareMetadataBehaviour =
-			com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable,
-	public val shareOwningEntityIds: ShareMetadataBehaviour =
-			com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable,
-	public val requestedPermission: RequestedPermission =
-			com.icure.sdk.model.requests.RequestedPermission.MaxWrite,
+	public val options: MaintenanceTaskShareOptions? = null,
 )
 
 public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
@@ -470,6 +463,7 @@ public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.ru
 		sdk.maintenanceTask.shareWith(
 			decodedParams.delegateId,
 			decodedParams.maintenanceTask,
+			decodedParams.options,
 		)
 	}
 }.toPyString(SimpleShareResult.serializer(DecryptedMaintenanceTask.serializer()))
@@ -487,6 +481,7 @@ public fun shareWithAsync(
 			sdk.maintenanceTask.shareWith(
 				decodedParams.delegateId,
 				decodedParams.maintenanceTask,
+				decodedParams.options,
 			)
 		}.toPyStringAsyncCallback(SimpleShareResult.serializer(DecryptedMaintenanceTask.serializer()),
 				resultCallback)

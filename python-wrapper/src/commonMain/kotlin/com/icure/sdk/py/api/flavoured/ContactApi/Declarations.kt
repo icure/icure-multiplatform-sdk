@@ -4,7 +4,6 @@ package com.icure.sdk.py.api.flavoured.ContactApi
 import com.icure.sdk.IcureApis
 import com.icure.sdk.crypto.entities.ContactShareOptions
 import com.icure.sdk.crypto.entities.SecretIdOption
-import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.model.Contact
 import com.icure.sdk.model.DecryptedContact
@@ -21,7 +20,6 @@ import com.icure.sdk.model.embed.EncryptedService
 import com.icure.sdk.model.embed.Service
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.notification.SubscriptionEventType
-import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.py.serialization.ContactSerializer
 import com.icure.sdk.py.serialization.PatientSerializer
@@ -710,12 +708,7 @@ public fun subscribeToEventsAsync(
 private class ShareWithParams(
 	public val delegateId: String,
 	public val contact: DecryptedContact,
-	public val shareEncryptionKeys: ShareMetadataBehaviour =
-			com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable,
-	public val shareOwningEntityIds: ShareMetadataBehaviour =
-			com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable,
-	public val requestedPermission: RequestedPermission =
-			com.icure.sdk.model.requests.RequestedPermission.MaxWrite,
+	public val options: ContactShareOptions? = null,
 )
 
 public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
@@ -724,6 +717,7 @@ public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.ru
 		sdk.contact.shareWith(
 			decodedParams.delegateId,
 			decodedParams.contact,
+			decodedParams.options,
 		)
 	}
 }.toPyString(SimpleShareResult.serializer(DecryptedContact.serializer()))
@@ -741,6 +735,7 @@ public fun shareWithAsync(
 			sdk.contact.shareWith(
 				decodedParams.delegateId,
 				decodedParams.contact,
+				decodedParams.options,
 			)
 		}.toPyStringAsyncCallback(SimpleShareResult.serializer(DecryptedContact.serializer()),
 				resultCallback)

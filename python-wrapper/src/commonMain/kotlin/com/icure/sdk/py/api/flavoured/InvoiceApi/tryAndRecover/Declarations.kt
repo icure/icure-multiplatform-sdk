@@ -3,7 +3,6 @@ package com.icure.sdk.py.api.flavoured.InvoiceApi.tryAndRecover
 
 import com.icure.sdk.IcureApis
 import com.icure.sdk.crypto.entities.InvoiceShareOptions
-import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.model.Invoice
 import com.icure.sdk.model.PaginatedList
@@ -12,7 +11,6 @@ import com.icure.sdk.model.embed.EncryptedInvoicingCode
 import com.icure.sdk.model.embed.InvoiceType
 import com.icure.sdk.model.embed.MediumType
 import com.icure.sdk.model.filter.AbstractFilter
-import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.py.serialization.InvoiceSerializer
 import com.icure.sdk.py.serialization.PatientSerializer
 import com.icure.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
@@ -51,12 +49,7 @@ import kotlinx.serialization.json.JsonElement
 private class ShareWithParams(
 	public val delegateId: String,
 	public val invoice: Invoice,
-	public val shareEncryptionKeys: ShareMetadataBehaviour =
-			com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable,
-	public val shareOwningEntityIds: ShareMetadataBehaviour =
-			com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable,
-	public val requestedPermission: RequestedPermission =
-			com.icure.sdk.model.requests.RequestedPermission.MaxWrite,
+	public val options: InvoiceShareOptions? = null,
 )
 
 public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
@@ -65,6 +58,7 @@ public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.ru
 		sdk.invoice.tryAndRecover.shareWith(
 			decodedParams.delegateId,
 			decodedParams.invoice,
+			decodedParams.options,
 		)
 	}
 }.toPyString(SimpleShareResult.serializer(InvoiceSerializer))
@@ -82,6 +76,7 @@ public fun shareWithAsync(
 			sdk.invoice.tryAndRecover.shareWith(
 				decodedParams.delegateId,
 				decodedParams.invoice,
+				decodedParams.options,
 			)
 		}.toPyStringAsyncCallback(SimpleShareResult.serializer(InvoiceSerializer), resultCallback)
 	}

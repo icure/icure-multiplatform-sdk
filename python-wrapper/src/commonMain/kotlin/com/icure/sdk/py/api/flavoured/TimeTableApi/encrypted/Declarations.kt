@@ -2,11 +2,9 @@
 package com.icure.sdk.py.api.flavoured.TimeTableApi.encrypted
 
 import com.icure.sdk.IcureApis
-import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.TimeTableShareOptions
 import com.icure.sdk.model.EncryptedTimeTable
-import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.py.utils.failureToPyStringAsyncCallback
 import com.icure.sdk.py.utils.toPyString
 import com.icure.sdk.py.utils.toPyStringAsyncCallback
@@ -32,12 +30,7 @@ import kotlinx.serialization.builtins.ListSerializer
 private class ShareWithParams(
 	public val delegateId: String,
 	public val timeTable: EncryptedTimeTable,
-	public val shareEncryptionKeys: ShareMetadataBehaviour =
-			com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable,
-	public val shareOwningEntityIds: ShareMetadataBehaviour =
-			com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable,
-	public val requestedPermission: RequestedPermission =
-			com.icure.sdk.model.requests.RequestedPermission.MaxWrite,
+	public val options: TimeTableShareOptions? = null,
 )
 
 public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
@@ -46,6 +39,7 @@ public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.ru
 		sdk.timeTable.encrypted.shareWith(
 			decodedParams.delegateId,
 			decodedParams.timeTable,
+			decodedParams.options,
 		)
 	}
 }.toPyString(SimpleShareResult.serializer(EncryptedTimeTable.serializer()))
@@ -63,6 +57,7 @@ public fun shareWithAsync(
 			sdk.timeTable.encrypted.shareWith(
 				decodedParams.delegateId,
 				decodedParams.timeTable,
+				decodedParams.options,
 			)
 		}.toPyStringAsyncCallback(SimpleShareResult.serializer(EncryptedTimeTable.serializer()),
 				resultCallback)

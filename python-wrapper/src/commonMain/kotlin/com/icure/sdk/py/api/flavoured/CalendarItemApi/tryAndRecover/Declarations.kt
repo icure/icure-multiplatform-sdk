@@ -3,12 +3,10 @@ package com.icure.sdk.py.api.flavoured.CalendarItemApi.tryAndRecover
 
 import com.icure.sdk.IcureApis
 import com.icure.sdk.crypto.entities.CalendarItemShareOptions
-import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.model.CalendarItem
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.Patient
-import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.py.serialization.CalendarItemSerializer
 import com.icure.sdk.py.serialization.PatientSerializer
 import com.icure.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
@@ -46,12 +44,7 @@ import kotlinx.serialization.builtins.ListSerializer
 private class ShareWithParams(
 	public val delegateId: String,
 	public val calendarItem: CalendarItem,
-	public val shareEncryptionKeys: ShareMetadataBehaviour =
-			com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable,
-	public val shareOwningEntityIds: ShareMetadataBehaviour =
-			com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable,
-	public val requestedPermission: RequestedPermission =
-			com.icure.sdk.model.requests.RequestedPermission.MaxWrite,
+	public val options: CalendarItemShareOptions? = null,
 )
 
 public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
@@ -60,6 +53,7 @@ public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.ru
 		sdk.calendarItem.tryAndRecover.shareWith(
 			decodedParams.delegateId,
 			decodedParams.calendarItem,
+			decodedParams.options,
 		)
 	}
 }.toPyString(SimpleShareResult.serializer(CalendarItemSerializer))
@@ -77,6 +71,7 @@ public fun shareWithAsync(
 			sdk.calendarItem.tryAndRecover.shareWith(
 				decodedParams.delegateId,
 				decodedParams.calendarItem,
+				decodedParams.options,
 			)
 		}.toPyStringAsyncCallback(SimpleShareResult.serializer(CalendarItemSerializer), resultCallback)
 	}

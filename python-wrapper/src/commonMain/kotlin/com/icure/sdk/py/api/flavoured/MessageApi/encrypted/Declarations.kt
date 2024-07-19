@@ -3,14 +3,12 @@ package com.icure.sdk.py.api.flavoured.MessageApi.encrypted
 
 import com.icure.sdk.IcureApis
 import com.icure.sdk.crypto.entities.MessageShareOptions
-import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.model.EncryptedMessage
 import com.icure.sdk.model.Message
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.Patient
 import com.icure.sdk.model.filter.AbstractFilter
-import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.py.serialization.PatientSerializer
 import com.icure.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
 import com.icure.sdk.py.utils.PyResult
@@ -30,7 +28,6 @@ import kotlin.String
 import kotlin.Unit
 import kotlin.collections.List
 import kotlin.collections.Map
-import kotlin.collections.Set
 import kotlinx.cinterop.ByteVarOf
 import kotlinx.cinterop.CFunction
 import kotlinx.cinterop.COpaquePointer
@@ -49,13 +46,7 @@ import kotlinx.serialization.json.JsonElement
 private class ShareWithParams(
 	public val delegateId: String,
 	public val message: EncryptedMessage,
-	public val shareSecretIds: Set<String>,
-	public val shareEncryptionKeys: ShareMetadataBehaviour =
-			com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable,
-	public val shareOwningEntityIds: ShareMetadataBehaviour =
-			com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable,
-	public val requestedPermission: RequestedPermission =
-			com.icure.sdk.model.requests.RequestedPermission.MaxWrite,
+	public val options: MessageShareOptions,
 )
 
 public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
@@ -64,7 +55,7 @@ public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.ru
 		sdk.message.encrypted.shareWith(
 			decodedParams.delegateId,
 			decodedParams.message,
-			TODO,
+			decodedParams.options,
 		)
 	}
 }.toPyString(SimpleShareResult.serializer(EncryptedMessage.serializer()))
@@ -82,7 +73,7 @@ public fun shareWithAsync(
 			sdk.message.encrypted.shareWith(
 				decodedParams.delegateId,
 				decodedParams.message,
-				TODO,
+				decodedParams.options,
 			)
 		}.toPyStringAsyncCallback(SimpleShareResult.serializer(EncryptedMessage.serializer()),
 				resultCallback)

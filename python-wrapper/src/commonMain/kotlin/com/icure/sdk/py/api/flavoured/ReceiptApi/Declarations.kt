@@ -4,7 +4,6 @@ package com.icure.sdk.py.api.flavoured.ReceiptApi
 import com.icure.sdk.IcureApis
 import com.icure.sdk.crypto.entities.ReceiptShareOptions
 import com.icure.sdk.crypto.entities.SecretIdOption
-import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.model.DecryptedReceipt
 import com.icure.sdk.model.EncryptedReceipt
@@ -13,7 +12,6 @@ import com.icure.sdk.model.Receipt
 import com.icure.sdk.model.User
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.embed.AccessLevel
-import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.py.serialization.PatientSerializer
 import com.icure.sdk.py.serialization.ReceiptSerializer
@@ -579,12 +577,7 @@ public fun setRawReceiptAttachmentAsync(
 private class ShareWithParams(
 	public val delegateId: String,
 	public val receipt: DecryptedReceipt,
-	public val shareEncryptionKeys: ShareMetadataBehaviour =
-			com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable,
-	public val shareOwningEntityIds: ShareMetadataBehaviour =
-			com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable,
-	public val requestedPermission: RequestedPermission =
-			com.icure.sdk.model.requests.RequestedPermission.MaxWrite,
+	public val options: ReceiptShareOptions? = null,
 )
 
 public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
@@ -593,6 +586,7 @@ public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.ru
 		sdk.receipt.shareWith(
 			decodedParams.delegateId,
 			decodedParams.receipt,
+			decodedParams.options,
 		)
 	}
 }.toPyString(SimpleShareResult.serializer(DecryptedReceipt.serializer()))
@@ -610,6 +604,7 @@ public fun shareWithAsync(
 			sdk.receipt.shareWith(
 				decodedParams.delegateId,
 				decodedParams.receipt,
+				decodedParams.options,
 			)
 		}.toPyStringAsyncCallback(SimpleShareResult.serializer(DecryptedReceipt.serializer()),
 				resultCallback)

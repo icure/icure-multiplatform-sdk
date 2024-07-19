@@ -3,7 +3,6 @@ package com.icure.sdk.py.api.flavoured.TimeTableApi
 
 import com.icure.sdk.IcureApis
 import com.icure.sdk.crypto.entities.SecretIdOption
-import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.TimeTableShareOptions
 import com.icure.sdk.model.DecryptedTimeTable
@@ -13,7 +12,6 @@ import com.icure.sdk.model.TimeTable
 import com.icure.sdk.model.User
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.embed.AccessLevel
-import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.py.serialization.PatientSerializer
 import com.icure.sdk.py.serialization.TimeTableSerializer
@@ -381,12 +379,7 @@ public fun deleteTimeTablesAsync(
 private class ShareWithParams(
 	public val delegateId: String,
 	public val timeTable: DecryptedTimeTable,
-	public val shareEncryptionKeys: ShareMetadataBehaviour =
-			com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable,
-	public val shareOwningEntityIds: ShareMetadataBehaviour =
-			com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable,
-	public val requestedPermission: RequestedPermission =
-			com.icure.sdk.model.requests.RequestedPermission.MaxWrite,
+	public val options: TimeTableShareOptions? = null,
 )
 
 public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
@@ -395,6 +388,7 @@ public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.ru
 		sdk.timeTable.shareWith(
 			decodedParams.delegateId,
 			decodedParams.timeTable,
+			decodedParams.options,
 		)
 	}
 }.toPyString(SimpleShareResult.serializer(DecryptedTimeTable.serializer()))
@@ -412,6 +406,7 @@ public fun shareWithAsync(
 			sdk.timeTable.shareWith(
 				decodedParams.delegateId,
 				decodedParams.timeTable,
+				decodedParams.options,
 			)
 		}.toPyStringAsyncCallback(SimpleShareResult.serializer(DecryptedTimeTable.serializer()),
 				resultCallback)

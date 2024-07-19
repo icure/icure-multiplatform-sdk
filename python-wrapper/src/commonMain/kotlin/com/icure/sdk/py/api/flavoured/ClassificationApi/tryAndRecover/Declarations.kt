@@ -3,11 +3,9 @@ package com.icure.sdk.py.api.flavoured.ClassificationApi.tryAndRecover
 
 import com.icure.sdk.IcureApis
 import com.icure.sdk.crypto.entities.ClassificationShareOptions
-import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.model.Classification
 import com.icure.sdk.model.Patient
-import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.py.serialization.ClassificationSerializer
 import com.icure.sdk.py.serialization.PatientSerializer
 import com.icure.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
@@ -43,12 +41,7 @@ import kotlinx.serialization.builtins.ListSerializer
 private class ShareWithParams(
 	public val delegateId: String,
 	public val classification: Classification,
-	public val shareEncryptionKeys: ShareMetadataBehaviour =
-			com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable,
-	public val shareOwningEntityIds: ShareMetadataBehaviour =
-			com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable,
-	public val requestedPermission: RequestedPermission =
-			com.icure.sdk.model.requests.RequestedPermission.MaxWrite,
+	public val options: ClassificationShareOptions? = null,
 )
 
 public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
@@ -57,6 +50,7 @@ public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.ru
 		sdk.classification.tryAndRecover.shareWith(
 			decodedParams.delegateId,
 			decodedParams.classification,
+			decodedParams.options,
 		)
 	}
 }.toPyString(SimpleShareResult.serializer(ClassificationSerializer))
@@ -74,6 +68,7 @@ public fun shareWithAsync(
 			sdk.classification.tryAndRecover.shareWith(
 				decodedParams.delegateId,
 				decodedParams.classification,
+				decodedParams.options,
 			)
 		}.toPyStringAsyncCallback(SimpleShareResult.serializer(ClassificationSerializer), resultCallback)
 	}
