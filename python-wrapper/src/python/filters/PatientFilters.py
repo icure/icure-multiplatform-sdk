@@ -167,7 +167,7 @@ class PatientFilters:
                 sort
             )
 
-        def by_gender_education_profession(self, gender: Patient.GenderEnum, education: Optional[str], profession: Optional[str], sort: bool = False) -> 'PatientFilters.Builder':
+        def by_gender_education_profession(self, gender: 'Patient.GenderEnum', education: Optional[str], profession: Optional[str], sort: bool = False) -> 'PatientFilters.Builder':
             """
             Includes all the patients which gender, education, and profession are the ones specified.
             :param gender: the gender of the patients to include.
