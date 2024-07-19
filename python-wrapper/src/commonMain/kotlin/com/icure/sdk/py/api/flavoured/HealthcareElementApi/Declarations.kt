@@ -552,9 +552,6 @@ public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.ru
 		sdk.healthcareElement.shareWith(
 			decodedParams.delegateId,
 			decodedParams.healthcareElement,
-			decodedParams.shareEncryptionKeys,
-			decodedParams.shareOwningEntityIds,
-			decodedParams.requestedPermission,
 		)
 	}
 }.toPyString(SimpleShareResult.serializer(DecryptedHealthElement.serializer()))
@@ -572,9 +569,6 @@ public fun shareWithAsync(
 			sdk.healthcareElement.shareWith(
 				decodedParams.delegateId,
 				decodedParams.healthcareElement,
-				decodedParams.shareEncryptionKeys,
-				decodedParams.shareOwningEntityIds,
-				decodedParams.requestedPermission,
 			)
 		}.toPyStringAsyncCallback(SimpleShareResult.serializer(DecryptedHealthElement.serializer()),
 				resultCallback)

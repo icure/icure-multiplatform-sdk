@@ -57,9 +57,6 @@ public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.ru
 		sdk.classification.tryAndRecover.shareWith(
 			decodedParams.delegateId,
 			decodedParams.classification,
-			decodedParams.shareEncryptionKeys,
-			decodedParams.shareOwningEntityIds,
-			decodedParams.requestedPermission,
 		)
 	}
 }.toPyString(SimpleShareResult.serializer(ClassificationSerializer))
@@ -77,9 +74,6 @@ public fun shareWithAsync(
 			sdk.classification.tryAndRecover.shareWith(
 				decodedParams.delegateId,
 				decodedParams.classification,
-				decodedParams.shareEncryptionKeys,
-				decodedParams.shareOwningEntityIds,
-				decodedParams.requestedPermission,
 			)
 		}.toPyStringAsyncCallback(SimpleShareResult.serializer(ClassificationSerializer), resultCallback)
 	}

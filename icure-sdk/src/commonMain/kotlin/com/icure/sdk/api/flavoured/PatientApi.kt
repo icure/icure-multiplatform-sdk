@@ -18,7 +18,6 @@ import com.icure.sdk.crypto.entities.ShareAllPatientDataOptions
 import com.icure.sdk.crypto.entities.ShareAllPatientDataOptions.BulkShareFailure
 import com.icure.sdk.crypto.entities.ShareAllPatientDataOptions.FailedRequest
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
-import com.icure.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.withTypeInfo
 import com.icure.sdk.model.DataOwnerRegistrationSuccess
@@ -258,13 +257,7 @@ interface PatientFlavouredApi<E : Patient> : PatientBasicFlavouredApi<E> {
 	suspend fun shareWith(
 		delegateId: String,
 		patient: E,
-		shareSecretIds: Set<String>,
-		@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
-		shareEncryptionKeys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
-		@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
-		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
-		@DefaultValue("com.icure.sdk.model.requests.RequestedPermission.MaxWrite")
-		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
+		options: PatientShareOptions
 	): SimpleShareResult<E>
 
 	/**
@@ -538,22 +531,12 @@ private abstract class AbstractPatientFlavouredApi<E : Patient>(
 	override suspend fun shareWith(
 		delegateId: String,
 		patient: E,
-		shareSecretIds: Set<String>,
-		shareEncryptionKeys: ShareMetadataBehaviour,
-		shareOwningEntityIds: ShareMetadataBehaviour,
-		requestedPermission: RequestedPermission,
+		options: PatientShareOptions,
 	): SimpleShareResult<E> =
 		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			patient.withTypeInfo(),
 			false,
-			mapOf(
-				delegateId to SimpleDelegateShareOptionsImpl(
-					shareSecretIds = shareSecretIds,
-					shareEncryptionKey = shareEncryptionKeys,
-					shareOwningEntityIds = shareOwningEntityIds,
-					requestedPermissions = requestedPermission,
-				),
-			),
+			mapOf(delegateId to options),
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
 		}

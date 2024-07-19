@@ -45,9 +45,6 @@ public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.ru
 		sdk.receipt.encrypted.shareWith(
 			decodedParams.delegateId,
 			decodedParams.receipt,
-			decodedParams.shareEncryptionKeys,
-			decodedParams.shareOwningEntityIds,
-			decodedParams.requestedPermission,
 		)
 	}
 }.toPyString(SimpleShareResult.serializer(EncryptedReceipt.serializer()))
@@ -65,9 +62,6 @@ public fun shareWithAsync(
 			sdk.receipt.encrypted.shareWith(
 				decodedParams.delegateId,
 				decodedParams.receipt,
-				decodedParams.shareEncryptionKeys,
-				decodedParams.shareOwningEntityIds,
-				decodedParams.requestedPermission,
 			)
 		}.toPyStringAsyncCallback(SimpleShareResult.serializer(EncryptedReceipt.serializer()),
 				resultCallback)

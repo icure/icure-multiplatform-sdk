@@ -22,6 +22,7 @@ public fun messageShareOptions_fromJs(obj: MessageShareOptionsJs): MessageShareO
 	val shareEncryptionKey = ShareMetadataBehaviour.valueOf(obj.shareEncryptionKey)
 	val sharePatientId = ShareMetadataBehaviour.valueOf(obj.sharePatientId)
 	return MessageShareOptions(
+		shareSecretIds = TODO,
 		requestedPermissions = requestedPermissions,
 		shareEncryptionKey = shareEncryptionKey,
 		sharePatientId = sharePatientId,

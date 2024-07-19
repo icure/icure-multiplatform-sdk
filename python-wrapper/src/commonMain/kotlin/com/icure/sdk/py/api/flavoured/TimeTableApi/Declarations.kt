@@ -395,9 +395,6 @@ public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.ru
 		sdk.timeTable.shareWith(
 			decodedParams.delegateId,
 			decodedParams.timeTable,
-			decodedParams.shareEncryptionKeys,
-			decodedParams.shareOwningEntityIds,
-			decodedParams.requestedPermission,
 		)
 	}
 }.toPyString(SimpleShareResult.serializer(DecryptedTimeTable.serializer()))
@@ -415,9 +412,6 @@ public fun shareWithAsync(
 			sdk.timeTable.shareWith(
 				decodedParams.delegateId,
 				decodedParams.timeTable,
-				decodedParams.shareEncryptionKeys,
-				decodedParams.shareOwningEntityIds,
-				decodedParams.requestedPermission,
 			)
 		}.toPyStringAsyncCallback(SimpleShareResult.serializer(DecryptedTimeTable.serializer()),
 				resultCallback)

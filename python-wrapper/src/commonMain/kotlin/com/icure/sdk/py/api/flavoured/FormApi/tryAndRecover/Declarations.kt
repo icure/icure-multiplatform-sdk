@@ -57,9 +57,6 @@ public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.ru
 		sdk.form.tryAndRecover.shareWith(
 			decodedParams.delegateId,
 			decodedParams.form,
-			decodedParams.shareEncryptionKeys,
-			decodedParams.shareOwningEntityIds,
-			decodedParams.requestedPermission,
 		)
 	}
 }.toPyString(SimpleShareResult.serializer(FormSerializer))
@@ -77,9 +74,6 @@ public fun shareWithAsync(
 			sdk.form.tryAndRecover.shareWith(
 				decodedParams.delegateId,
 				decodedParams.form,
-				decodedParams.shareEncryptionKeys,
-				decodedParams.shareOwningEntityIds,
-				decodedParams.requestedPermission,
 			)
 		}.toPyStringAsyncCallback(SimpleShareResult.serializer(FormSerializer), resultCallback)
 	}

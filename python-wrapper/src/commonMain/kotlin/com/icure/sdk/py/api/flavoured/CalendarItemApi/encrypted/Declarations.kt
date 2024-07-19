@@ -61,9 +61,6 @@ public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.ru
 		sdk.calendarItem.encrypted.shareWith(
 			decodedParams.delegateId,
 			decodedParams.calendarItem,
-			decodedParams.shareEncryptionKeys,
-			decodedParams.shareOwningEntityIds,
-			decodedParams.requestedPermission,
 		)
 	}
 }.toPyString(SimpleShareResult.serializer(EncryptedCalendarItem.serializer()))
@@ -81,9 +78,6 @@ public fun shareWithAsync(
 			sdk.calendarItem.encrypted.shareWith(
 				decodedParams.delegateId,
 				decodedParams.calendarItem,
-				decodedParams.shareEncryptionKeys,
-				decodedParams.shareOwningEntityIds,
-				decodedParams.requestedPermission,
 			)
 		}.toPyStringAsyncCallback(SimpleShareResult.serializer(EncryptedCalendarItem.serializer()),
 				resultCallback)

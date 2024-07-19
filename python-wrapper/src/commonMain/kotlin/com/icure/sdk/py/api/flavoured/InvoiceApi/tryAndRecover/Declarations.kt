@@ -65,9 +65,6 @@ public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.ru
 		sdk.invoice.tryAndRecover.shareWith(
 			decodedParams.delegateId,
 			decodedParams.invoice,
-			decodedParams.shareEncryptionKeys,
-			decodedParams.shareOwningEntityIds,
-			decodedParams.requestedPermission,
 		)
 	}
 }.toPyString(SimpleShareResult.serializer(InvoiceSerializer))
@@ -85,9 +82,6 @@ public fun shareWithAsync(
 			sdk.invoice.tryAndRecover.shareWith(
 				decodedParams.delegateId,
 				decodedParams.invoice,
-				decodedParams.shareEncryptionKeys,
-				decodedParams.shareOwningEntityIds,
-				decodedParams.requestedPermission,
 			)
 		}.toPyStringAsyncCallback(SimpleShareResult.serializer(InvoiceSerializer), resultCallback)
 	}

@@ -100,9 +100,6 @@ internal class ClassificationApiImplJs(
 				val result = classificationApi.encrypted.shareWith(
 					delegateIdConverted,
 					classificationConverted,
-					shareEncryptionKeysConverted,
-					shareOwningEntityIdsConverted,
-					requestedPermissionConverted,
 				)
 				simpleShareResult_toJs(
 					result,
@@ -280,9 +277,6 @@ internal class ClassificationApiImplJs(
 				val result = classificationApi.tryAndRecover.shareWith(
 					delegateIdConverted,
 					classificationConverted,
-					shareEncryptionKeysConverted,
-					shareOwningEntityIdsConverted,
-					requestedPermissionConverted,
 				)
 				simpleShareResult_toJs(
 					result,
@@ -604,9 +598,6 @@ internal class ClassificationApiImplJs(
 			val result = classificationApi.shareWith(
 				delegateIdConverted,
 				classificationConverted,
-				shareEncryptionKeysConverted,
-				shareOwningEntityIdsConverted,
-				requestedPermissionConverted,
 			)
 			simpleShareResult_toJs(
 				result,

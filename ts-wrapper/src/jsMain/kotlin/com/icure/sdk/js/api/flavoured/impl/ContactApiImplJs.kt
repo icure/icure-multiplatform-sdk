@@ -132,9 +132,6 @@ internal class ContactApiImplJs(
 				val result = contactApi.encrypted.shareWith(
 					delegateIdConverted,
 					contactConverted,
-					shareEncryptionKeysConverted,
-					shareOwningEntityIdsConverted,
-					requestedPermissionConverted,
 				)
 				simpleShareResult_toJs(
 					result,
@@ -646,9 +643,6 @@ internal class ContactApiImplJs(
 				val result = contactApi.tryAndRecover.shareWith(
 					delegateIdConverted,
 					contactConverted,
-					shareEncryptionKeysConverted,
-					shareOwningEntityIdsConverted,
-					requestedPermissionConverted,
 				)
 				simpleShareResult_toJs(
 					result,
@@ -1472,9 +1466,6 @@ internal class ContactApiImplJs(
 			val result = contactApi.shareWith(
 				delegateIdConverted,
 				contactConverted,
-				shareEncryptionKeysConverted,
-				shareOwningEntityIdsConverted,
-				requestedPermissionConverted,
 			)
 			simpleShareResult_toJs(
 				result,

@@ -126,10 +126,7 @@ internal class MessageApiImplJs(
 				val result = messageApi.encrypted.shareWith(
 					delegateIdConverted,
 					messageConverted,
-					shareSecretIdsConverted,
-					shareEncryptionKeysConverted,
-					shareOwningEntityIdsConverted,
-					requestedPermissionConverted,
+					TODO,
 				)
 				simpleShareResult_toJs(
 					result,
@@ -628,10 +625,7 @@ internal class MessageApiImplJs(
 				val result = messageApi.tryAndRecover.shareWith(
 					delegateIdConverted,
 					messageConverted,
-					shareSecretIdsConverted,
-					shareEncryptionKeysConverted,
-					shareOwningEntityIdsConverted,
-					requestedPermissionConverted,
+					TODO,
 				)
 				simpleShareResult_toJs(
 					result,
@@ -1343,10 +1337,7 @@ internal class MessageApiImplJs(
 			val result = messageApi.shareWith(
 				delegateIdConverted,
 				messageConverted,
-				shareSecretIdsConverted,
-				shareEncryptionKeysConverted,
-				shareOwningEntityIdsConverted,
-				requestedPermissionConverted,
+				TODO,
 			)
 			simpleShareResult_toJs(
 				result,

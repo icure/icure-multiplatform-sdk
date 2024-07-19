@@ -95,9 +95,6 @@ internal class ReceiptApiImplJs(
 				val result = receiptApi.encrypted.shareWith(
 					delegateIdConverted,
 					receiptConverted,
-					shareEncryptionKeysConverted,
-					shareOwningEntityIdsConverted,
-					requestedPermissionConverted,
 				)
 				simpleShareResult_toJs(
 					result,
@@ -222,9 +219,6 @@ internal class ReceiptApiImplJs(
 				val result = receiptApi.tryAndRecover.shareWith(
 					delegateIdConverted,
 					receiptConverted,
-					shareEncryptionKeysConverted,
-					shareOwningEntityIdsConverted,
-					requestedPermissionConverted,
 				)
 				simpleShareResult_toJs(
 					result,
@@ -574,9 +568,6 @@ internal class ReceiptApiImplJs(
 			val result = receiptApi.shareWith(
 				delegateIdConverted,
 				receiptConverted,
-				shareEncryptionKeysConverted,
-				shareOwningEntityIdsConverted,
-				requestedPermissionConverted,
 			)
 			simpleShareResult_toJs(
 				result,
