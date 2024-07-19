@@ -1,6 +1,9 @@
-from icure.model import ComplementFilter, DeviceAbstractFilter, AllDevicesFilter, DeviceByIdsFilter, DeviceByHcPartyFilter
 from typing import List
+
 from icure.filters.AbstractFilterBuilder import AbstractFilterBuilder
+from icure.model import ComplementFilter, DeviceAbstractFilter, AllDevicesFilter, DeviceByIdsFilter, \
+    DeviceByHcPartyFilter
+
 
 class DeviceFilters:
     """

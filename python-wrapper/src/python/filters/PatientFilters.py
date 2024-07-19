@@ -1,13 +1,13 @@
 from typing import List, Optional
 
 from icure import IcureSdk
+from icure.filters.AbstractFilterBuilder import AbstractFilterBuilder
 from icure.model import PatientAbstractFilter, ComplementFilter, PatientByIdsFilter, \
     PatientByHcPartyAndIdentifiersFilter, PatientByHcPartyAndSsinsFilter, PatientByHcPartyAndSsinFilter, Identifier, \
     PatientByHcPartyDateOfBirthBetweenFilter, Patient, PatientByHcPartyNameContainsFuzzyFilter, \
     PatientByHcPartyGenderEducationProfession, PatientByHcPartyFilter, PatientByHcPartyAndActiveFilter, \
     PatientByHcPartyAndAddressFilter, PatientByHcPartyAndExternalIdFilter, \
     PatientByHcPartyAndTelecomFilter, PatientByHcPartyDateOfBirthFilter
-from icure.filters.AbstractFilterBuilder import AbstractFilterBuilder
 
 
 class PatientFilters:

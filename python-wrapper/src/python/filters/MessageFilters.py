@@ -1,7 +1,10 @@
 from typing import Optional
-from icure.filters.AbstractFilterBuilder import AbstractFilterBuilder
-from icure.model import MessageAbstractFilter, ComplementFilter, MessageByHcPartyFilter, LatestMessageByHcPartyTransportGuidFilter
+
 from icure import IcureSdk
+from icure.filters.AbstractFilterBuilder import AbstractFilterBuilder
+from icure.model import MessageAbstractFilter, ComplementFilter, MessageByHcPartyFilter, \
+    LatestMessageByHcPartyTransportGuidFilter
+
 
 class MessageFilters:
     @classmethod

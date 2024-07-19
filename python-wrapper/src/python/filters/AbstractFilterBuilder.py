@@ -1,7 +1,7 @@
-from abc import ABC, abstractmethod
+from abc import ABC
 from typing import Generic, TypeVar, List
-from icure.model import UnionFilter, IntersectionFilter
 
+from icure.model import UnionFilter, IntersectionFilter
 
 F = TypeVar('F')
 B = TypeVar('B')

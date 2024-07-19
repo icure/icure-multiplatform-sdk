@@ -1,9 +1,10 @@
+from typing import List, Optional, Union
+
+from icure import IcureSdk
+from icure.filters.AbstractFilterBuilder import AbstractFilterBuilder
 from icure.model import ContactAbstractFilter, ContactByHcPartyFilter, ContactByHcPartyIdentifiersFilter, \
     ContactByServiceIdsFilter, ContactByHcPartyTagCodeDateFilter, ContactByHcPartyPatientTagCodeDateFilter, \
     ComplementFilter, Identifier, Patient
-from icure import IcureSdk
-from icure.filters.AbstractFilterBuilder import AbstractFilterBuilder
-from typing import List, Optional, Union
 
 
 class ContactFilters:
@@ -80,12 +81,12 @@ class ContactFilters:
             )
 
         def by_code(
-            self,
-            code_type: str,
-            code_code: Optional[str],
-            start_of_contact_opening_date: Optional[int],
-            end_of_contact_opening_date: Optional[int],
-            sort: bool = False
+                self,
+                code_type: str,
+                code_code: Optional[str],
+                start_of_contact_opening_date: Optional[int],
+                end_of_contact_opening_date: Optional[int],
+                sort: bool = False
         ) -> 'ContactFilters.Builder':
             """
             Get all contacts that have a certain code. If you specify only the code type you will get all entities that
@@ -98,10 +99,10 @@ class ContactFilters:
             that is after this value (inclusive).
             :param end_of_contact_opening_date: if provided the filters accepts only contacts with an opening date
             that is before this value (inclusive).
-            :param sort: if True the data obtained through this filter will be sorted by code type, code code, and then
+            :param sort: if True the data obtained through this filter will be sorted by code_code, and then
             opening date
             raises ValueError: if sort is True and another filter was previously set as the sort key, or if you provide
-            a range for the opening date but no code code.
+            a range for the opening date but no code_code.
             :return: self
             """
             if (start_of_contact_opening_date is not None or end_of_contact_opening_date is not None) and code_code is None:
@@ -120,12 +121,12 @@ class ContactFilters:
             )
 
         def by_tag(
-            self,
-            tag_type: str,
-            tag_code: Optional[str],
-            start_of_contact_opening_date: Optional[int],
-            end_of_contact_opening_date: Optional[int],
-            sort: bool = False
+                self,
+                tag_type: str,
+                tag_code: Optional[str],
+                start_of_contact_opening_date: Optional[int],
+                end_of_contact_opening_date: Optional[int],
+                sort: bool = False
         ) -> 'ContactFilters.Builder':
             """
             Get all contacts that have a certain tag. If you specify only the tag type you will get all entities that
@@ -138,13 +139,13 @@ class ContactFilters:
             that is after this value (inclusive).
             :param end_of_contact_opening_date: if provided the filters accepts only contacts with an opening date
             that is before this value (inclusive).
-            :param sort: if True the data obtained through this filter will be sorted by tag type, tag code, and then
-            opening date
+            :param sort: if True the data obtained through this filter will be sorted by tag_code, and then
+            opening_date
             raises ValueError: if sort is True and another filter was previously set as the sort key, or if you provide
-            a range for the opening date but no tag code.
+            a range for the opening date but no tag_code.
             :return: self
             """
-            if (start_of_contact_opening_date is not None or end_of_contact_opening_date is not None) and code_code is None:
+            if (start_of_contact_opening_date is not None or end_of_contact_opening_date is not None) and tag_code is None:
                 raise ValueError("To filter on opening date you need to provide either tag code or code code")
             return self._add_filter(
                 ContactByHcPartyTagCodeDateFilter(
@@ -160,12 +161,12 @@ class ContactFilters:
             )
 
         def by_patients(
-            self,
-            patients_or_secret_ids: List[Union[Patient, str]],
-            sort: bool = False
+                self,
+                patients_or_secret_ids: List[Union[Patient, str]],
+                sort: bool = False
         ) -> 'ContactFilters.Builder':
             """
-            Get all contacts linked to a group of patients.
+            Get all contacts linked to a patient within the provided group.
             :param patients_or_secret_ids: a list of patients or they secret ids. If you pass patients their secret ids
             will be extracted automatically by this method.
             :param sort: if true the data will be sorted by the patients, more specifically by the secret id of the

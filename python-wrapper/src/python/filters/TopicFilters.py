@@ -1,7 +1,9 @@
+from typing import Optional
+
 from icure import IcureSdk
 from icure.filters.AbstractFilterBuilder import AbstractFilterBuilder
 from icure.model import TopicAbstractFilter, ComplementFilter, TopicByHcPartyFilter, TopicByParticipantFilter
-from typing import Optional
+
 
 class TopicFilters:
     """

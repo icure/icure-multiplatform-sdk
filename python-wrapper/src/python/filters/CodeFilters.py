@@ -1,7 +1,8 @@
+from typing import List, Optional
+
 from icure.filters.AbstractFilterBuilder import AbstractFilterBuilder
 from icure.model import ComplementFilter, CodeAbstractFilter, AllCodesFilter, CodeByIdsFilter, \
     CodeByRegionTypeLabelLanguageFilter, CodeIdsByTypeCodeVersionIntervalFilter
-from typing import List, Optional
 
 
 class CodeFilters:
