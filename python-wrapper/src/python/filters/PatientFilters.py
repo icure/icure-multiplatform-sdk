@@ -134,17 +134,17 @@ class PatientFilters:
             """
             if from_date == to_date:
                 return self._add_filter(
-                    PatientByHcPartyDateOfBirthBetweenFilter(
-                        min_date_of_birth=from_date,
-                        max_date_of_birth=to_date,
+                    PatientByHcPartyDateOfBirthFilter(
+                        date_of_birth=from_date,
                         healthcare_party_id=self.__data_owner_id
                     ),
                     sort
                 )
             else:
                 return self._add_filter(
-                    PatientByHcPartyDateOfBirthFilter(
-                        date_of_birth=from_date,
+                    PatientByHcPartyDateOfBirthBetweenFilter(
+                        min_date_of_birth=from_date,
+                        max_date_of_birth=to_date,
                         healthcare_party_id=self.__data_owner_id
                     ),
                     sort
