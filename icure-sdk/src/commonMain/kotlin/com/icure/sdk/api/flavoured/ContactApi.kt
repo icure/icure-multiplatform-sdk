@@ -10,7 +10,6 @@ import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.crypto.entities.EntityWithTypeInfo
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
-import com.icure.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.withTypeInfo
 import com.icure.sdk.model.Contact
@@ -33,7 +32,6 @@ import com.icure.sdk.model.extensions.autoDelegationsFor
 import com.icure.sdk.model.extensions.dataOwnerId
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.notification.SubscriptionEventType
-import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.options.ApiConfiguration
 import com.icure.sdk.options.BasicApiConfiguration
@@ -136,12 +134,8 @@ interface ContactFlavouredApi<E : Contact, S : Service> : ContactBasicFlavouredA
 	suspend fun shareWith(
 		delegateId: String,
 		contact: E,
-		@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
-		shareEncryptionKeys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
-		@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
-		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
-		@DefaultValue("com.icure.sdk.model.requests.RequestedPermission.MaxWrite")
-		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
+		@DefaultValue("null")
+		options: ContactShareOptions? = null
 	): SimpleShareResult<E>
 
 	/**
@@ -340,20 +334,13 @@ private abstract class AbstractContactFlavouredApi<E : Contact, S : Service>(
 	override suspend fun shareWith(
 		delegateId: String,
 		contact: E,
-		shareEncryptionKeys: ShareMetadataBehaviour,
-		shareOwningEntityIds: ShareMetadataBehaviour,
-		requestedPermission: RequestedPermission,
+		options: ContactShareOptions?,
 	): SimpleShareResult<E> =
 		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			contact.withTypeInfo(),
 			true,
 			mapOf(
-				delegateId to SimpleDelegateShareOptionsImpl(
-					shareSecretIds = null,
-					shareEncryptionKey = shareEncryptionKeys,
-					shareOwningEntityIds = shareOwningEntityIds,
-					requestedPermissions = requestedPermission,
-				),
+				delegateId to (options ?: ContactShareOptions()),
 			),
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }

@@ -1,6 +1,6 @@
 import asyncio
 import json
-from icure.model import DecryptedMessage, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, Message, serialize_message, EncryptedMessage, deserialize_message, MessageAbstractFilter, serialize_abstract_filter, DocIdentifier, SubscriptionEventType, EntitySubscriptionConfiguration, ShareMetadataBehaviour, RequestedPermission, deserialize_simple_share_result, SimpleShareResult, MessageShareOptions, PaginatedList
+from icure.model import DecryptedMessage, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, Message, serialize_message, EncryptedMessage, deserialize_message, MessageAbstractFilter, serialize_abstract_filter, DocIdentifier, SubscriptionEventType, EntitySubscriptionConfiguration, MessageShareOptions, deserialize_simple_share_result, SimpleShareResult, PaginatedList
 from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from icure.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
@@ -16,7 +16,7 @@ class MessageApi:
 		def __init__(self, icure_sdk):
 			self.icure_sdk = icure_sdk
 
-		async def share_with_async(self, delegate_id: str, message: EncryptedMessage, share_secret_ids: List[str], share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
+		async def share_with_async(self, delegate_id: str, message: EncryptedMessage, options: MessageShareOptions) -> SimpleShareResult:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -29,10 +29,7 @@ class MessageApi:
 			payload = {
 				"delegateId": delegate_id,
 				"message": message.__serialize__(),
-				"shareSecretIds": [x0 for x0 in share_secret_ids],
-				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
-				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
-				"requestedPermission": requested_permission.__serialize__(),
+				"options": options.__serialize__(),
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -44,14 +41,11 @@ class MessageApi:
 			)
 			return await future
 
-		def share_with_blocking(self, delegate_id: str, message: EncryptedMessage, share_secret_ids: List[str], share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
+		def share_with_blocking(self, delegate_id: str, message: EncryptedMessage, options: MessageShareOptions) -> SimpleShareResult:
 			payload = {
 				"delegateId": delegate_id,
 				"message": message.__serialize__(),
-				"shareSecretIds": [x0 for x0 in share_secret_ids],
-				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
-				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
-				"requestedPermission": requested_permission.__serialize__(),
+				"options": options.__serialize__(),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.encrypted.shareWithBlocking(
 				self.icure_sdk._native,
@@ -758,7 +752,7 @@ class MessageApi:
 		def __init__(self, icure_sdk):
 			self.icure_sdk = icure_sdk
 
-		async def share_with_async(self, delegate_id: str, message: Message, share_secret_ids: List[str], share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
+		async def share_with_async(self, delegate_id: str, message: Message, options: MessageShareOptions) -> SimpleShareResult:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -771,10 +765,7 @@ class MessageApi:
 			payload = {
 				"delegateId": delegate_id,
 				"message": message.__serialize__(),
-				"shareSecretIds": [x0 for x0 in share_secret_ids],
-				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
-				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
-				"requestedPermission": requested_permission.__serialize__(),
+				"options": options.__serialize__(),
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -786,14 +777,11 @@ class MessageApi:
 			)
 			return await future
 
-		def share_with_blocking(self, delegate_id: str, message: Message, share_secret_ids: List[str], share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
+		def share_with_blocking(self, delegate_id: str, message: Message, options: MessageShareOptions) -> SimpleShareResult:
 			payload = {
 				"delegateId": delegate_id,
 				"message": message.__serialize__(),
-				"shareSecretIds": [x0 for x0 in share_secret_ids],
-				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
-				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
-				"requestedPermission": requested_permission.__serialize__(),
+				"options": options.__serialize__(),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.tryAndRecover.shareWithBlocking(
 				self.icure_sdk._native,
@@ -2029,7 +2017,7 @@ class MessageApi:
 				executor = self.icure_sdk._executor
 			)
 
-	async def share_with_async(self, delegate_id: str, message: DecryptedMessage, share_secret_ids: List[str], share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
+	async def share_with_async(self, delegate_id: str, message: DecryptedMessage, options: MessageShareOptions) -> SimpleShareResult:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -2042,10 +2030,7 @@ class MessageApi:
 		payload = {
 			"delegateId": delegate_id,
 			"message": message.__serialize__(),
-			"shareSecretIds": [x0 for x0 in share_secret_ids],
-			"shareEncryptionKeys": share_encryption_keys.__serialize__(),
-			"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
-			"requestedPermission": requested_permission.__serialize__(),
+			"options": options.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -2057,14 +2042,11 @@ class MessageApi:
 		)
 		return await future
 
-	def share_with_blocking(self, delegate_id: str, message: DecryptedMessage, share_secret_ids: List[str], share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
+	def share_with_blocking(self, delegate_id: str, message: DecryptedMessage, options: MessageShareOptions) -> SimpleShareResult:
 		payload = {
 			"delegateId": delegate_id,
 			"message": message.__serialize__(),
-			"shareSecretIds": [x0 for x0 in share_secret_ids],
-			"shareEncryptionKeys": share_encryption_keys.__serialize__(),
-			"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
-			"requestedPermission": requested_permission.__serialize__(),
+			"options": options.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.shareWithBlocking(
 			self.icure_sdk._native,

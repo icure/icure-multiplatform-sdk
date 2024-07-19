@@ -2,11 +2,9 @@
 package com.icure.sdk.py.api.flavoured.TimeTableApi.tryAndRecover
 
 import com.icure.sdk.IcureApis
-import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.TimeTableShareOptions
 import com.icure.sdk.model.TimeTable
-import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.py.serialization.TimeTableSerializer
 import com.icure.sdk.py.utils.failureToPyStringAsyncCallback
 import com.icure.sdk.py.utils.toPyString
@@ -33,12 +31,7 @@ import kotlinx.serialization.builtins.ListSerializer
 private class ShareWithParams(
 	public val delegateId: String,
 	public val timeTable: TimeTable,
-	public val shareEncryptionKeys: ShareMetadataBehaviour =
-			com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable,
-	public val shareOwningEntityIds: ShareMetadataBehaviour =
-			com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable,
-	public val requestedPermission: RequestedPermission =
-			com.icure.sdk.model.requests.RequestedPermission.MaxWrite,
+	public val options: TimeTableShareOptions? = null,
 )
 
 public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
@@ -47,9 +40,7 @@ public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.ru
 		sdk.timeTable.tryAndRecover.shareWith(
 			decodedParams.delegateId,
 			decodedParams.timeTable,
-			decodedParams.shareEncryptionKeys,
-			decodedParams.shareOwningEntityIds,
-			decodedParams.requestedPermission,
+			decodedParams.options,
 		)
 	}
 }.toPyString(SimpleShareResult.serializer(TimeTableSerializer))
@@ -67,9 +58,7 @@ public fun shareWithAsync(
 			sdk.timeTable.tryAndRecover.shareWith(
 				decodedParams.delegateId,
 				decodedParams.timeTable,
-				decodedParams.shareEncryptionKeys,
-				decodedParams.shareOwningEntityIds,
-				decodedParams.requestedPermission,
+				decodedParams.options,
 			)
 		}.toPyStringAsyncCallback(SimpleShareResult.serializer(TimeTableSerializer), resultCallback)
 	}

@@ -1,6 +1,7 @@
 package com.icure.sdk.crypto
 
 import com.icure.sdk.IcureSdk
+import com.icure.sdk.crypto.entities.PatientShareOptions
 import com.icure.sdk.model.DecryptedHealthElement
 import com.icure.sdk.model.DecryptedPatient
 import com.icure.sdk.model.embed.AccessLevel
@@ -85,7 +86,7 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 		delegatorApi.patient.shareWith(
 			delegate.dataOwnerId,
 			patient,
-			sfk
+			PatientShareOptions(shareSecretIds = sfk)
 		).shouldNotBeNull()
 		delegatorApi.healthcareElement.shareWith(
 			delegate.dataOwnerId,

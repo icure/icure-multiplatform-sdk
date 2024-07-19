@@ -4,7 +4,6 @@ package com.icure.sdk.py.api.flavoured.DocumentApi
 import com.icure.sdk.IcureApis
 import com.icure.sdk.crypto.entities.DocumentShareOptions
 import com.icure.sdk.crypto.entities.SecretIdOption
-import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.model.DecryptedDocument
 import com.icure.sdk.model.Document
@@ -14,7 +13,6 @@ import com.icure.sdk.model.Patient
 import com.icure.sdk.model.User
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.embed.AccessLevel
-import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.py.serialization.DocumentSerializer
 import com.icure.sdk.py.serialization.MessageSerializer
@@ -946,12 +944,7 @@ public fun getRawSecondaryAttachmentAsync(
 private class ShareWithParams(
 	public val delegateId: String,
 	public val document: DecryptedDocument,
-	public val shareEncryptionKeys: ShareMetadataBehaviour =
-			com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable,
-	public val shareOwningEntityIds: ShareMetadataBehaviour =
-			com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable,
-	public val requestedPermission: RequestedPermission =
-			com.icure.sdk.model.requests.RequestedPermission.MaxWrite,
+	public val options: DocumentShareOptions? = null,
 )
 
 public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
@@ -960,9 +953,7 @@ public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.ru
 		sdk.document.shareWith(
 			decodedParams.delegateId,
 			decodedParams.document,
-			decodedParams.shareEncryptionKeys,
-			decodedParams.shareOwningEntityIds,
-			decodedParams.requestedPermission,
+			decodedParams.options,
 		)
 	}
 }.toPyString(SimpleShareResult.serializer(DecryptedDocument.serializer()))
@@ -980,9 +971,7 @@ public fun shareWithAsync(
 			sdk.document.shareWith(
 				decodedParams.delegateId,
 				decodedParams.document,
-				decodedParams.shareEncryptionKeys,
-				decodedParams.shareOwningEntityIds,
-				decodedParams.requestedPermission,
+				decodedParams.options,
 			)
 		}.toPyStringAsyncCallback(SimpleShareResult.serializer(DecryptedDocument.serializer()),
 				resultCallback)

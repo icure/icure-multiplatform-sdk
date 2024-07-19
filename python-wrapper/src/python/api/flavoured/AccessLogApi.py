@@ -1,6 +1,6 @@
 import asyncio
 import json
-from icure.model import DecryptedAccessLog, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, AccessLog, serialize_access_log, EncryptedAccessLog, deserialize_access_log, DocIdentifier, ShareMetadataBehaviour, RequestedPermission, deserialize_simple_share_result, SimpleShareResult, AccessLogShareOptions, PaginatedList
+from icure.model import DecryptedAccessLog, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, AccessLog, serialize_access_log, EncryptedAccessLog, deserialize_access_log, DocIdentifier, AccessLogShareOptions, deserialize_simple_share_result, SimpleShareResult, PaginatedList
 from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from icure.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
@@ -15,7 +15,7 @@ class AccessLogApi:
 		def __init__(self, icure_sdk):
 			self.icure_sdk = icure_sdk
 
-		async def share_with_async(self, delegate_id: str, access_log: EncryptedAccessLog, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
+		async def share_with_async(self, delegate_id: str, access_log: EncryptedAccessLog, options: Optional[AccessLogShareOptions] = None) -> SimpleShareResult:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -28,9 +28,7 @@ class AccessLogApi:
 			payload = {
 				"delegateId": delegate_id,
 				"accessLog": access_log.__serialize__(),
-				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
-				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
-				"requestedPermission": requested_permission.__serialize__(),
+				"options": options.__serialize__() if options is not None else None,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -42,13 +40,11 @@ class AccessLogApi:
 			)
 			return await future
 
-		def share_with_blocking(self, delegate_id: str, access_log: EncryptedAccessLog, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
+		def share_with_blocking(self, delegate_id: str, access_log: EncryptedAccessLog, options: Optional[AccessLogShareOptions] = None) -> SimpleShareResult:
 			payload = {
 				"delegateId": delegate_id,
 				"accessLog": access_log.__serialize__(),
-				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
-				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
-				"requestedPermission": requested_permission.__serialize__(),
+				"options": options.__serialize__() if options is not None else None,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.encrypted.shareWithBlocking(
 				self.icure_sdk._native,
@@ -495,7 +491,7 @@ class AccessLogApi:
 		def __init__(self, icure_sdk):
 			self.icure_sdk = icure_sdk
 
-		async def share_with_async(self, delegate_id: str, access_log: AccessLog, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
+		async def share_with_async(self, delegate_id: str, access_log: AccessLog, options: Optional[AccessLogShareOptions] = None) -> SimpleShareResult:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -508,9 +504,7 @@ class AccessLogApi:
 			payload = {
 				"delegateId": delegate_id,
 				"accessLog": access_log.__serialize__(),
-				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
-				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
-				"requestedPermission": requested_permission.__serialize__(),
+				"options": options.__serialize__() if options is not None else None,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -522,13 +516,11 @@ class AccessLogApi:
 			)
 			return await future
 
-		def share_with_blocking(self, delegate_id: str, access_log: AccessLog, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
+		def share_with_blocking(self, delegate_id: str, access_log: AccessLog, options: Optional[AccessLogShareOptions] = None) -> SimpleShareResult:
 			payload = {
 				"delegateId": delegate_id,
 				"accessLog": access_log.__serialize__(),
-				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
-				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
-				"requestedPermission": requested_permission.__serialize__(),
+				"options": options.__serialize__() if options is not None else None,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.tryAndRecover.shareWithBlocking(
 				self.icure_sdk._native,
@@ -1372,7 +1364,7 @@ class AccessLogApi:
 			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def share_with_async(self, delegate_id: str, access_log: DecryptedAccessLog, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
+	async def share_with_async(self, delegate_id: str, access_log: DecryptedAccessLog, options: Optional[AccessLogShareOptions] = None) -> SimpleShareResult:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1385,9 +1377,7 @@ class AccessLogApi:
 		payload = {
 			"delegateId": delegate_id,
 			"accessLog": access_log.__serialize__(),
-			"shareEncryptionKeys": share_encryption_keys.__serialize__(),
-			"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
-			"requestedPermission": requested_permission.__serialize__(),
+			"options": options.__serialize__() if options is not None else None,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1399,13 +1389,11 @@ class AccessLogApi:
 		)
 		return await future
 
-	def share_with_blocking(self, delegate_id: str, access_log: DecryptedAccessLog, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
+	def share_with_blocking(self, delegate_id: str, access_log: DecryptedAccessLog, options: Optional[AccessLogShareOptions] = None) -> SimpleShareResult:
 		payload = {
 			"delegateId": delegate_id,
 			"accessLog": access_log.__serialize__(),
-			"shareEncryptionKeys": share_encryption_keys.__serialize__(),
-			"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
-			"requestedPermission": requested_permission.__serialize__(),
+			"options": options.__serialize__() if options is not None else None,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.shareWithBlocking(
 			self.icure_sdk._native,

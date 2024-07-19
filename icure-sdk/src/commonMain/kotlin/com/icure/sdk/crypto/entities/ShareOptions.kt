@@ -1,6 +1,7 @@
 package com.icure.sdk.crypto.entities
 
 import com.icure.sdk.model.requests.RequestedPermission
+import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.InternalIcureApi
 import kotlinx.serialization.Serializable
 
@@ -23,8 +24,11 @@ internal data class SimpleDelegateShareOptionsImpl(
 @OptIn(InternalIcureApi::class)
 @Serializable
 data class AccessLogShareOptions(
+	@DefaultValue("com.icure.sdk.model.requests.RequestedPermission.MaxWrite")
 	override val requestedPermissions: RequestedPermission = RequestedPermission.MaxWrite,
+	@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
 	override val shareEncryptionKey: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
+	@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
 	val sharePatientId: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable
 ) : SimpleDelegateShareOptions {
 
@@ -35,8 +39,11 @@ data class AccessLogShareOptions(
 @OptIn(InternalIcureApi::class)
 @Serializable
 data class CalendarItemShareOptions(
+	@DefaultValue("com.icure.sdk.model.requests.RequestedPermission.MaxWrite")
 	override val requestedPermissions: RequestedPermission = RequestedPermission.MaxWrite,
+	@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
 	override val shareEncryptionKey: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
+	@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
 	val sharePatientId: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable
 ) : SimpleDelegateShareOptions {
 
@@ -47,8 +54,11 @@ data class CalendarItemShareOptions(
 @OptIn(InternalIcureApi::class)
 @Serializable
 data class ClassificationShareOptions(
+	@DefaultValue("com.icure.sdk.model.requests.RequestedPermission.MaxWrite")
 	override val requestedPermissions: RequestedPermission = RequestedPermission.MaxWrite,
+	@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
 	override val shareEncryptionKey: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
+	@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
 	val sharePatientId: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable
 ) : SimpleDelegateShareOptions {
 
@@ -59,9 +69,12 @@ data class ClassificationShareOptions(
 @OptIn(InternalIcureApi::class)
 @Serializable
 data class ContactShareOptions(
-	override val requestedPermissions: RequestedPermission,
-	override val shareEncryptionKey: ShareMetadataBehaviour,
-	val sharePatientId: ShareMetadataBehaviour
+	@DefaultValue("com.icure.sdk.model.requests.RequestedPermission.MaxWrite")
+	override val requestedPermissions:  RequestedPermission = RequestedPermission.MaxWrite,
+	@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
+	override val shareEncryptionKey: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
+	@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
+	val sharePatientId: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable
 ) : SimpleDelegateShareOptions {
 
 	override val shareOwningEntityIds get() = sharePatientId
@@ -71,9 +84,12 @@ data class ContactShareOptions(
 @OptIn(InternalIcureApi::class)
 @Serializable
 data class DocumentShareOptions(
-	override val requestedPermissions: RequestedPermission,
-	override val shareEncryptionKey: ShareMetadataBehaviour,
-	val shareMessageId: ShareMetadataBehaviour
+	@DefaultValue("com.icure.sdk.model.requests.RequestedPermission.MaxWrite")
+	override val requestedPermissions:  RequestedPermission = RequestedPermission.MaxWrite,
+	@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
+	override val shareEncryptionKey: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
+	@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
+	val shareMessageId: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable
 ) : SimpleDelegateShareOptions {
 
 	override val shareOwningEntityIds get() = shareMessageId
@@ -83,9 +99,12 @@ data class DocumentShareOptions(
 @OptIn(InternalIcureApi::class)
 @Serializable
 data class FormShareOptions(
-	override val requestedPermissions: RequestedPermission,
-	override val shareEncryptionKey: ShareMetadataBehaviour,
-	val sharePatientId: ShareMetadataBehaviour
+	@DefaultValue("com.icure.sdk.model.requests.RequestedPermission.MaxWrite")
+	override val requestedPermissions:  RequestedPermission = RequestedPermission.MaxWrite,
+	@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
+	override val shareEncryptionKey: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
+	@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
+	val sharePatientId: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable
 ) : SimpleDelegateShareOptions {
 
 	override val shareOwningEntityIds get() = sharePatientId
@@ -95,9 +114,12 @@ data class FormShareOptions(
 @OptIn(InternalIcureApi::class)
 @Serializable
 data class HealthElementShareOptions(
-	override val requestedPermissions: RequestedPermission,
-	override val shareEncryptionKey: ShareMetadataBehaviour,
-	val sharePatientId: ShareMetadataBehaviour
+	@DefaultValue("com.icure.sdk.model.requests.RequestedPermission.MaxWrite")
+	override val requestedPermissions:  RequestedPermission = RequestedPermission.MaxWrite,
+	@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
+	override val shareEncryptionKey: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
+	@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
+	val sharePatientId: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable
 ) : SimpleDelegateShareOptions {
 
 	override val shareOwningEntityIds get() = sharePatientId
@@ -107,9 +129,12 @@ data class HealthElementShareOptions(
 @OptIn(InternalIcureApi::class)
 @Serializable
 data class InvoiceShareOptions(
-	override val requestedPermissions: RequestedPermission,
-	override val shareEncryptionKey: ShareMetadataBehaviour,
-	val sharePatientId: ShareMetadataBehaviour
+	@DefaultValue("com.icure.sdk.model.requests.RequestedPermission.MaxWrite")
+	override val requestedPermissions:  RequestedPermission = RequestedPermission.MaxWrite,
+	@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
+	override val shareEncryptionKey: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
+	@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
+	val sharePatientId: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable
 ) : SimpleDelegateShareOptions {
 
 	override val shareOwningEntityIds get() = sharePatientId
@@ -119,8 +144,10 @@ data class InvoiceShareOptions(
 @OptIn(InternalIcureApi::class)
 @Serializable
 data class MaintenanceTaskShareOptions(
-	override val requestedPermissions: RequestedPermission,
-	override val shareEncryptionKey: ShareMetadataBehaviour,
+	@DefaultValue("com.icure.sdk.model.requests.RequestedPermission.MaxWrite")
+	override val requestedPermissions:  RequestedPermission = RequestedPermission.MaxWrite,
+	@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
+	override val shareEncryptionKey: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
 ) : SimpleDelegateShareOptions {
 
 	override val shareOwningEntityIds get() = ShareMetadataBehaviour.Never
@@ -130,21 +157,26 @@ data class MaintenanceTaskShareOptions(
 @OptIn(InternalIcureApi::class)
 @Serializable
 data class MessageShareOptions(
-	override val requestedPermissions: RequestedPermission,
-	override val shareEncryptionKey: ShareMetadataBehaviour,
-	val sharePatientId: ShareMetadataBehaviour
+	override val shareSecretIds: Set<String>,
+	@DefaultValue("com.icure.sdk.model.requests.RequestedPermission.MaxWrite")
+	override val requestedPermissions:  RequestedPermission = RequestedPermission.MaxWrite,
+	@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
+	override val shareEncryptionKey: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
+	@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
+	val sharePatientId: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
 ) : SimpleDelegateShareOptions {
 
 	override val shareOwningEntityIds get() = sharePatientId
-	override val shareSecretIds get() = null
 }
 
 @OptIn(InternalIcureApi::class)
 @Serializable
 data class PatientShareOptions(
-	override val requestedPermissions: RequestedPermission,
-	override val shareEncryptionKey: ShareMetadataBehaviour,
 	override val shareSecretIds: Set<String>,
+	@DefaultValue("com.icure.sdk.model.requests.RequestedPermission.MaxWrite")
+	override val requestedPermissions:  RequestedPermission = RequestedPermission.MaxWrite,
+	@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
+	override val shareEncryptionKey: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
 ) : SimpleDelegateShareOptions {
 
 	override val shareOwningEntityIds get() = ShareMetadataBehaviour.Never
@@ -153,8 +185,10 @@ data class PatientShareOptions(
 @OptIn(InternalIcureApi::class)
 @Serializable
 data class ReceiptShareOptions(
-	override val requestedPermissions: RequestedPermission,
-	override val shareEncryptionKey: ShareMetadataBehaviour,
+	@DefaultValue("com.icure.sdk.model.requests.RequestedPermission.MaxWrite")
+	override val requestedPermissions:  RequestedPermission = RequestedPermission.MaxWrite,
+	@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
+	override val shareEncryptionKey: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
 ) : SimpleDelegateShareOptions {
 
 	override val shareOwningEntityIds get() = ShareMetadataBehaviour.Never
@@ -164,8 +198,10 @@ data class ReceiptShareOptions(
 @OptIn(InternalIcureApi::class)
 @Serializable
 data class TimeTableShareOptions(
-	override val requestedPermissions: RequestedPermission,
-	override val shareEncryptionKey: ShareMetadataBehaviour,
+	@DefaultValue("com.icure.sdk.model.requests.RequestedPermission.MaxWrite")
+	override val requestedPermissions:  RequestedPermission = RequestedPermission.MaxWrite,
+	@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
+	override val shareEncryptionKey: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
 ) : SimpleDelegateShareOptions {
 
 	override val shareOwningEntityIds get() = ShareMetadataBehaviour.Never
@@ -175,9 +211,12 @@ data class TimeTableShareOptions(
 @OptIn(InternalIcureApi::class)
 @Serializable
 data class TopicShareOptions(
-	override val requestedPermissions: RequestedPermission,
-	override val shareEncryptionKey: ShareMetadataBehaviour,
-	val sharePatientId: ShareMetadataBehaviour
+	@DefaultValue("com.icure.sdk.model.requests.RequestedPermission.MaxWrite")
+	override val requestedPermissions:  RequestedPermission = RequestedPermission.MaxWrite,
+	@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
+	override val shareEncryptionKey: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
+	@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
+	val sharePatientId: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable
 ) : SimpleDelegateShareOptions {
 
 	override val shareOwningEntityIds get() = sharePatientId

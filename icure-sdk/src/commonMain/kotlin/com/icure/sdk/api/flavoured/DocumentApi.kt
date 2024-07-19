@@ -4,7 +4,6 @@ import com.icure.sdk.api.raw.RawDocumentApi
 import com.icure.sdk.crypto.entities.DocumentShareOptions
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
-import com.icure.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.withTypeInfo
 import com.icure.sdk.model.DecryptedDocument
@@ -19,7 +18,6 @@ import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.embed.DelegationTag
 import com.icure.sdk.model.extensions.autoDelegationsFor
 import com.icure.sdk.model.extensions.dataOwnerId
-import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.options.ApiConfiguration
 import com.icure.sdk.options.BasicApiConfiguration
@@ -86,12 +84,8 @@ interface DocumentFlavouredApi<E : Document> : DocumentBasicFlavouredApi<E> {
 	suspend fun shareWith(
 		delegateId: String,
 		document: E,
-		@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
-		shareEncryptionKeys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
-		@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
-		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
-		@DefaultValue("com.icure.sdk.model.requests.RequestedPermission.MaxWrite")
-		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
+		@DefaultValue("null")
+		options: DocumentShareOptions? = null
 	): SimpleShareResult<E>
 
 	/**
@@ -281,20 +275,13 @@ private abstract class AbstractDocumentFlavouredApi<E : Document>(
 	override suspend fun shareWith(
 		delegateId: String,
 		document: E,
-		shareEncryptionKeys: ShareMetadataBehaviour,
-		shareOwningEntityIds: ShareMetadataBehaviour,
-		requestedPermission: RequestedPermission,
+		options: DocumentShareOptions?,
 	): SimpleShareResult<E> =
 		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			document.withTypeInfo(),
 			true,
 			mapOf(
-				delegateId to SimpleDelegateShareOptionsImpl(
-					shareSecretIds = null,
-					shareEncryptionKey = shareEncryptionKeys,
-					shareOwningEntityIds = shareOwningEntityIds,
-					requestedPermissions = requestedPermission,
-				),
+				delegateId to (options ?: DocumentShareOptions()),
 			),
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }

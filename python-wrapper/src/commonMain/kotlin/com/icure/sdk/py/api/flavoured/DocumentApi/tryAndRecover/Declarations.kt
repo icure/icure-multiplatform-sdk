@@ -3,12 +3,10 @@ package com.icure.sdk.py.api.flavoured.DocumentApi.tryAndRecover
 
 import com.icure.sdk.IcureApis
 import com.icure.sdk.crypto.entities.DocumentShareOptions
-import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.model.Document
 import com.icure.sdk.model.EncryptedDocument
 import com.icure.sdk.model.Patient
-import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.py.serialization.DocumentSerializer
 import com.icure.sdk.py.serialization.PatientSerializer
 import com.icure.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
@@ -47,12 +45,7 @@ import kotlinx.serialization.builtins.ListSerializer
 private class ShareWithParams(
 	public val delegateId: String,
 	public val document: Document,
-	public val shareEncryptionKeys: ShareMetadataBehaviour =
-			com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable,
-	public val shareOwningEntityIds: ShareMetadataBehaviour =
-			com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable,
-	public val requestedPermission: RequestedPermission =
-			com.icure.sdk.model.requests.RequestedPermission.MaxWrite,
+	public val options: DocumentShareOptions? = null,
 )
 
 public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
@@ -61,9 +54,7 @@ public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.ru
 		sdk.document.tryAndRecover.shareWith(
 			decodedParams.delegateId,
 			decodedParams.document,
-			decodedParams.shareEncryptionKeys,
-			decodedParams.shareOwningEntityIds,
-			decodedParams.requestedPermission,
+			decodedParams.options,
 		)
 	}
 }.toPyString(SimpleShareResult.serializer(DocumentSerializer))
@@ -81,9 +72,7 @@ public fun shareWithAsync(
 			sdk.document.tryAndRecover.shareWith(
 				decodedParams.delegateId,
 				decodedParams.document,
-				decodedParams.shareEncryptionKeys,
-				decodedParams.shareOwningEntityIds,
-				decodedParams.requestedPermission,
+				decodedParams.options,
 			)
 		}.toPyStringAsyncCallback(SimpleShareResult.serializer(DocumentSerializer), resultCallback)
 	}

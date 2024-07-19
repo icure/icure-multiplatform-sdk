@@ -3,11 +3,9 @@ package com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover
 
 import com.icure.sdk.IcureApis
 import com.icure.sdk.crypto.entities.FormShareOptions
-import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.model.Form
 import com.icure.sdk.model.Patient
-import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.py.serialization.FormSerializer
 import com.icure.sdk.py.serialization.PatientSerializer
 import com.icure.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
@@ -43,12 +41,7 @@ import kotlinx.serialization.builtins.ListSerializer
 private class ShareWithParams(
 	public val delegateId: String,
 	public val form: Form,
-	public val shareEncryptionKeys: ShareMetadataBehaviour =
-			com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable,
-	public val shareOwningEntityIds: ShareMetadataBehaviour =
-			com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable,
-	public val requestedPermission: RequestedPermission =
-			com.icure.sdk.model.requests.RequestedPermission.MaxWrite,
+	public val options: FormShareOptions? = null,
 )
 
 public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
@@ -57,9 +50,7 @@ public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.ru
 		sdk.form.tryAndRecover.shareWith(
 			decodedParams.delegateId,
 			decodedParams.form,
-			decodedParams.shareEncryptionKeys,
-			decodedParams.shareOwningEntityIds,
-			decodedParams.requestedPermission,
+			decodedParams.options,
 		)
 	}
 }.toPyString(SimpleShareResult.serializer(FormSerializer))
@@ -77,9 +68,7 @@ public fun shareWithAsync(
 			sdk.form.tryAndRecover.shareWith(
 				decodedParams.delegateId,
 				decodedParams.form,
-				decodedParams.shareEncryptionKeys,
-				decodedParams.shareOwningEntityIds,
-				decodedParams.requestedPermission,
+				decodedParams.options,
 			)
 		}.toPyStringAsyncCallback(SimpleShareResult.serializer(FormSerializer), resultCallback)
 	}

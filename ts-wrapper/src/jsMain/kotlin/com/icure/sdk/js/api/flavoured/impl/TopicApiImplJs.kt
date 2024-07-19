@@ -113,9 +113,6 @@ internal class TopicApiImplJs(
 				val result = topicApi.encrypted.shareWith(
 					delegateIdConverted,
 					topicConverted,
-					shareEncryptionKeysConverted,
-					shareOwningEntityIdsConverted,
-					requestedPermissionConverted,
 				)
 				simpleShareResult_toJs(
 					result,
@@ -310,9 +307,6 @@ internal class TopicApiImplJs(
 				val result = topicApi.tryAndRecover.shareWith(
 					delegateIdConverted,
 					topicConverted,
-					shareEncryptionKeysConverted,
-					shareOwningEntityIdsConverted,
-					requestedPermissionConverted,
 				)
 				simpleShareResult_toJs(
 					result,
@@ -709,9 +703,6 @@ internal class TopicApiImplJs(
 			val result = topicApi.shareWith(
 				delegateIdConverted,
 				topicConverted,
-				shareEncryptionKeysConverted,
-				shareOwningEntityIdsConverted,
-				requestedPermissionConverted,
 			)
 			simpleShareResult_toJs(
 				result,

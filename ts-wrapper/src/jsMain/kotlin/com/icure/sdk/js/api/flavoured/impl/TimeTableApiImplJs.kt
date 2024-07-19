@@ -97,9 +97,6 @@ internal class TimeTableApiImplJs(
 				val result = timeTableApi.encrypted.shareWith(
 					delegateIdConverted,
 					timeTableConverted,
-					shareEncryptionKeysConverted,
-					shareOwningEntityIdsConverted,
-					requestedPermissionConverted,
 				)
 				simpleShareResult_toJs(
 					result,
@@ -245,9 +242,6 @@ internal class TimeTableApiImplJs(
 				val result = timeTableApi.tryAndRecover.shareWith(
 					delegateIdConverted,
 					timeTableConverted,
-					shareEncryptionKeysConverted,
-					shareOwningEntityIdsConverted,
-					requestedPermissionConverted,
 				)
 				simpleShareResult_toJs(
 					result,
@@ -536,9 +530,6 @@ internal class TimeTableApiImplJs(
 			val result = timeTableApi.shareWith(
 				delegateIdConverted,
 				timeTableConverted,
-				shareEncryptionKeysConverted,
-				shareOwningEntityIdsConverted,
-				requestedPermissionConverted,
 			)
 			simpleShareResult_toJs(
 				result,

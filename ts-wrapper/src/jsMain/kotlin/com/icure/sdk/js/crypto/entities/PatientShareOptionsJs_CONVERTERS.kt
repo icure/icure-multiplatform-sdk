@@ -36,8 +36,8 @@ public fun patientShareOptions_fromJs(obj: PatientShareOptionsJs): PatientShareO
 		},
 	)
 	return PatientShareOptions(
+		shareSecretIds = shareSecretIds,
 		requestedPermissions = requestedPermissions,
 		shareEncryptionKey = shareEncryptionKey,
-		shareSecretIds = shareSecretIds,
 	)
 }

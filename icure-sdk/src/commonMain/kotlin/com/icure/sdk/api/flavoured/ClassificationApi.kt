@@ -4,7 +4,6 @@ import com.icure.sdk.api.raw.RawClassificationApi
 import com.icure.sdk.crypto.entities.ClassificationShareOptions
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
-import com.icure.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.withTypeInfo
 import com.icure.sdk.model.Classification
@@ -18,7 +17,6 @@ import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.embed.DelegationTag
 import com.icure.sdk.model.extensions.autoDelegationsFor
 import com.icure.sdk.model.extensions.dataOwnerId
-import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.options.ApiConfiguration
 import com.icure.sdk.options.BasicApiConfiguration
@@ -49,12 +47,8 @@ interface ClassificationFlavouredApi<E : Classification> : ClassificationBasicFl
 	suspend fun shareWith(
 		delegateId: String,
 		classification: E,
-		@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
-		shareEncryptionKeys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
-		@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
-		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
-		@DefaultValue("com.icure.sdk.model.requests.RequestedPermission.MaxWrite")
-		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
+		@DefaultValue("null")
+		options: ClassificationShareOptions? = null
 	): SimpleShareResult<E>
 
 	/**
@@ -162,20 +156,13 @@ private abstract class AbstractClassificationFlavouredApi<E : Classification>(
 	override suspend fun shareWith(
 		delegateId: String,
 		classification: E,
-		shareEncryptionKeys: ShareMetadataBehaviour,
-		shareOwningEntityIds: ShareMetadataBehaviour,
-		requestedPermission: RequestedPermission,
+		options: ClassificationShareOptions?,
 	): SimpleShareResult<E> =
 		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			classification.withTypeInfo(),
 			true,
 			mapOf(
-				delegateId to SimpleDelegateShareOptionsImpl(
-					shareSecretIds = null,
-					shareEncryptionKey = shareEncryptionKeys,
-					shareOwningEntityIds = shareOwningEntityIds,
-					requestedPermissions = requestedPermission,
-				),
+				delegateId to (options ?: ClassificationShareOptions()),
 			),
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }

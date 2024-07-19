@@ -4,7 +4,6 @@ package com.icure.sdk.py.api.flavoured.ClassificationApi
 import com.icure.sdk.IcureApis
 import com.icure.sdk.crypto.entities.ClassificationShareOptions
 import com.icure.sdk.crypto.entities.SecretIdOption
-import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.model.Classification
 import com.icure.sdk.model.DecryptedClassification
@@ -13,7 +12,6 @@ import com.icure.sdk.model.Patient
 import com.icure.sdk.model.User
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.embed.AccessLevel
-import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.py.serialization.ClassificationSerializer
 import com.icure.sdk.py.serialization.PatientSerializer
@@ -390,12 +388,7 @@ public fun deleteClassificationsAsync(
 private class ShareWithParams(
 	public val delegateId: String,
 	public val classification: DecryptedClassification,
-	public val shareEncryptionKeys: ShareMetadataBehaviour =
-			com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable,
-	public val shareOwningEntityIds: ShareMetadataBehaviour =
-			com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable,
-	public val requestedPermission: RequestedPermission =
-			com.icure.sdk.model.requests.RequestedPermission.MaxWrite,
+	public val options: ClassificationShareOptions? = null,
 )
 
 public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
@@ -404,9 +397,7 @@ public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.ru
 		sdk.classification.shareWith(
 			decodedParams.delegateId,
 			decodedParams.classification,
-			decodedParams.shareEncryptionKeys,
-			decodedParams.shareOwningEntityIds,
-			decodedParams.requestedPermission,
+			decodedParams.options,
 		)
 	}
 }.toPyString(SimpleShareResult.serializer(DecryptedClassification.serializer()))
@@ -424,9 +415,7 @@ public fun shareWithAsync(
 			sdk.classification.shareWith(
 				decodedParams.delegateId,
 				decodedParams.classification,
-				decodedParams.shareEncryptionKeys,
-				decodedParams.shareOwningEntityIds,
-				decodedParams.requestedPermission,
+				decodedParams.options,
 			)
 		}.toPyStringAsyncCallback(SimpleShareResult.serializer(DecryptedClassification.serializer()),
 				resultCallback)

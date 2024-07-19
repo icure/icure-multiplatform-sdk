@@ -3,7 +3,6 @@ package com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover
 
 import com.icure.sdk.IcureApis
 import com.icure.sdk.crypto.entities.PatientShareOptions
-import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.model.EncryptedPatient
 import com.icure.sdk.model.IdWithRev
@@ -12,7 +11,6 @@ import com.icure.sdk.model.Patient
 import com.icure.sdk.model.couchdb.SortDirection
 import com.icure.sdk.model.embed.EncryptedContent
 import com.icure.sdk.model.filter.AbstractFilter
-import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.py.serialization.PatientSerializer
 import com.icure.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
 import com.icure.sdk.py.utils.PyResult
@@ -32,7 +30,6 @@ import kotlin.String
 import kotlin.Unit
 import kotlin.collections.List
 import kotlin.collections.Map
-import kotlin.collections.Set
 import kotlinx.cinterop.ByteVarOf
 import kotlinx.cinterop.CFunction
 import kotlinx.cinterop.COpaquePointer
@@ -52,13 +49,7 @@ import kotlinx.serialization.builtins.serializer
 private class ShareWithParams(
 	public val delegateId: String,
 	public val patient: Patient,
-	public val shareSecretIds: Set<String>,
-	public val shareEncryptionKeys: ShareMetadataBehaviour =
-			com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable,
-	public val shareOwningEntityIds: ShareMetadataBehaviour =
-			com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable,
-	public val requestedPermission: RequestedPermission =
-			com.icure.sdk.model.requests.RequestedPermission.MaxWrite,
+	public val options: PatientShareOptions,
 )
 
 public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
@@ -67,10 +58,7 @@ public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.ru
 		sdk.patient.tryAndRecover.shareWith(
 			decodedParams.delegateId,
 			decodedParams.patient,
-			decodedParams.shareSecretIds,
-			decodedParams.shareEncryptionKeys,
-			decodedParams.shareOwningEntityIds,
-			decodedParams.requestedPermission,
+			decodedParams.options,
 		)
 	}
 }.toPyString(SimpleShareResult.serializer(PatientSerializer))
@@ -88,10 +76,7 @@ public fun shareWithAsync(
 			sdk.patient.tryAndRecover.shareWith(
 				decodedParams.delegateId,
 				decodedParams.patient,
-				decodedParams.shareSecretIds,
-				decodedParams.shareEncryptionKeys,
-				decodedParams.shareOwningEntityIds,
-				decodedParams.requestedPermission,
+				decodedParams.options,
 			)
 		}.toPyStringAsyncCallback(SimpleShareResult.serializer(PatientSerializer), resultCallback)
 	}

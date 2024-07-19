@@ -104,9 +104,6 @@ internal class CalendarItemApiImplJs(
 				val result = calendarItemApi.encrypted.shareWith(
 					delegateIdConverted,
 					calendarItemConverted,
-					shareEncryptionKeysConverted,
-					shareOwningEntityIdsConverted,
-					requestedPermissionConverted,
 				)
 				simpleShareResult_toJs(
 					result,
@@ -392,9 +389,6 @@ internal class CalendarItemApiImplJs(
 				val result = calendarItemApi.tryAndRecover.shareWith(
 					delegateIdConverted,
 					calendarItemConverted,
-					shareEncryptionKeysConverted,
-					shareOwningEntityIdsConverted,
-					requestedPermissionConverted,
 				)
 				simpleShareResult_toJs(
 					result,
@@ -821,9 +815,6 @@ internal class CalendarItemApiImplJs(
 			val result = calendarItemApi.shareWith(
 				delegateIdConverted,
 				calendarItemConverted,
-				shareEncryptionKeysConverted,
-				shareOwningEntityIdsConverted,
-				requestedPermissionConverted,
 			)
 			simpleShareResult_toJs(
 				result,

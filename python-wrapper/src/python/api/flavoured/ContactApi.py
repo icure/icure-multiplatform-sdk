@@ -1,6 +1,6 @@
 import asyncio
 import json
-from icure.model import DecryptedContact, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, Contact, serialize_contact, EncryptedContact, deserialize_contact, EncryptedService, DecryptedService, deserialize_service, Service, ContactAbstractFilter, serialize_abstract_filter, ServiceAbstractFilter, DocIdentifier, IcureStub, LabelledOccurence, SubscriptionEventType, EntitySubscriptionConfiguration, ShareMetadataBehaviour, RequestedPermission, deserialize_simple_share_result, SimpleShareResult, ContactShareOptions
+from icure.model import DecryptedContact, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, Contact, serialize_contact, EncryptedContact, deserialize_contact, EncryptedService, DecryptedService, deserialize_service, Service, ContactAbstractFilter, serialize_abstract_filter, ServiceAbstractFilter, DocIdentifier, IcureStub, LabelledOccurence, SubscriptionEventType, EntitySubscriptionConfiguration, ContactShareOptions, deserialize_simple_share_result, SimpleShareResult
 from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from icure.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
@@ -16,7 +16,7 @@ class ContactApi:
 		def __init__(self, icure_sdk):
 			self.icure_sdk = icure_sdk
 
-		async def share_with_async(self, delegate_id: str, contact: EncryptedContact, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
+		async def share_with_async(self, delegate_id: str, contact: EncryptedContact, options: Optional[ContactShareOptions] = None) -> SimpleShareResult:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -29,9 +29,7 @@ class ContactApi:
 			payload = {
 				"delegateId": delegate_id,
 				"contact": contact.__serialize__(),
-				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
-				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
-				"requestedPermission": requested_permission.__serialize__(),
+				"options": options.__serialize__() if options is not None else None,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -43,13 +41,11 @@ class ContactApi:
 			)
 			return await future
 
-		def share_with_blocking(self, delegate_id: str, contact: EncryptedContact, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
+		def share_with_blocking(self, delegate_id: str, contact: EncryptedContact, options: Optional[ContactShareOptions] = None) -> SimpleShareResult:
 			payload = {
 				"delegateId": delegate_id,
 				"contact": contact.__serialize__(),
-				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
-				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
-				"requestedPermission": requested_permission.__serialize__(),
+				"options": options.__serialize__() if options is not None else None,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.shareWithBlocking(
 				self.icure_sdk._native,
@@ -911,7 +907,7 @@ class ContactApi:
 		def __init__(self, icure_sdk):
 			self.icure_sdk = icure_sdk
 
-		async def share_with_async(self, delegate_id: str, contact: Contact, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
+		async def share_with_async(self, delegate_id: str, contact: Contact, options: Optional[ContactShareOptions] = None) -> SimpleShareResult:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -924,9 +920,7 @@ class ContactApi:
 			payload = {
 				"delegateId": delegate_id,
 				"contact": contact.__serialize__(),
-				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
-				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
-				"requestedPermission": requested_permission.__serialize__(),
+				"options": options.__serialize__() if options is not None else None,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -938,13 +932,11 @@ class ContactApi:
 			)
 			return await future
 
-		def share_with_blocking(self, delegate_id: str, contact: Contact, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
+		def share_with_blocking(self, delegate_id: str, contact: Contact, options: Optional[ContactShareOptions] = None) -> SimpleShareResult:
 			payload = {
 				"delegateId": delegate_id,
 				"contact": contact.__serialize__(),
-				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
-				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
-				"requestedPermission": requested_permission.__serialize__(),
+				"options": options.__serialize__() if options is not None else None,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.shareWithBlocking(
 				self.icure_sdk._native,
@@ -2588,7 +2580,7 @@ class ContactApi:
 				executor = self.icure_sdk._executor
 			)
 
-	async def share_with_async(self, delegate_id: str, contact: DecryptedContact, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
+	async def share_with_async(self, delegate_id: str, contact: DecryptedContact, options: Optional[ContactShareOptions] = None) -> SimpleShareResult:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -2601,9 +2593,7 @@ class ContactApi:
 		payload = {
 			"delegateId": delegate_id,
 			"contact": contact.__serialize__(),
-			"shareEncryptionKeys": share_encryption_keys.__serialize__(),
-			"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
-			"requestedPermission": requested_permission.__serialize__(),
+			"options": options.__serialize__() if options is not None else None,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -2615,13 +2605,11 @@ class ContactApi:
 		)
 		return await future
 
-	def share_with_blocking(self, delegate_id: str, contact: DecryptedContact, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
+	def share_with_blocking(self, delegate_id: str, contact: DecryptedContact, options: Optional[ContactShareOptions] = None) -> SimpleShareResult:
 		payload = {
 			"delegateId": delegate_id,
 			"contact": contact.__serialize__(),
-			"shareEncryptionKeys": share_encryption_keys.__serialize__(),
-			"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
-			"requestedPermission": requested_permission.__serialize__(),
+			"options": options.__serialize__() if options is not None else None,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.shareWithBlocking(
 			self.icure_sdk._native,

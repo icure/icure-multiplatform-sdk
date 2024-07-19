@@ -106,9 +106,6 @@ internal class MaintenanceTaskApiImplJs(
 				val result = maintenanceTaskApi.encrypted.shareWith(
 					delegateIdConverted,
 					maintenanceTaskConverted,
-					shareEncryptionKeysConverted,
-					shareOwningEntityIdsConverted,
-					requestedPermissionConverted,
 				)
 				simpleShareResult_toJs(
 					result,
@@ -258,9 +255,6 @@ internal class MaintenanceTaskApiImplJs(
 				val result = maintenanceTaskApi.tryAndRecover.shareWith(
 					delegateIdConverted,
 					maintenanceTaskConverted,
-					shareEncryptionKeysConverted,
-					shareOwningEntityIdsConverted,
-					requestedPermissionConverted,
 				)
 				simpleShareResult_toJs(
 					result,
@@ -585,9 +579,6 @@ internal class MaintenanceTaskApiImplJs(
 			val result = maintenanceTaskApi.shareWith(
 				delegateIdConverted,
 				maintenanceTaskConverted,
-				shareEncryptionKeysConverted,
-				shareOwningEntityIdsConverted,
-				requestedPermissionConverted,
 			)
 			simpleShareResult_toJs(
 				result,

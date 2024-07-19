@@ -4,7 +4,6 @@ package com.icure.sdk.py.api.flavoured.FormApi
 import com.icure.sdk.IcureApis
 import com.icure.sdk.crypto.entities.FormShareOptions
 import com.icure.sdk.crypto.entities.SecretIdOption
-import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.model.DecryptedForm
 import com.icure.sdk.model.EncryptedForm
@@ -14,7 +13,6 @@ import com.icure.sdk.model.Patient
 import com.icure.sdk.model.User
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.embed.AccessLevel
-import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.py.serialization.FormSerializer
 import com.icure.sdk.py.serialization.PatientSerializer
@@ -691,12 +689,7 @@ public fun setTemplateAttachmentAsync(
 private class ShareWithParams(
 	public val delegateId: String,
 	public val form: DecryptedForm,
-	public val shareEncryptionKeys: ShareMetadataBehaviour =
-			com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable,
-	public val shareOwningEntityIds: ShareMetadataBehaviour =
-			com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable,
-	public val requestedPermission: RequestedPermission =
-			com.icure.sdk.model.requests.RequestedPermission.MaxWrite,
+	public val options: FormShareOptions? = null,
 )
 
 public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
@@ -705,9 +698,7 @@ public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.ru
 		sdk.form.shareWith(
 			decodedParams.delegateId,
 			decodedParams.form,
-			decodedParams.shareEncryptionKeys,
-			decodedParams.shareOwningEntityIds,
-			decodedParams.requestedPermission,
+			decodedParams.options,
 		)
 	}
 }.toPyString(SimpleShareResult.serializer(DecryptedForm.serializer()))
@@ -725,9 +716,7 @@ public fun shareWithAsync(
 			sdk.form.shareWith(
 				decodedParams.delegateId,
 				decodedParams.form,
-				decodedParams.shareEncryptionKeys,
-				decodedParams.shareOwningEntityIds,
-				decodedParams.requestedPermission,
+				decodedParams.options,
 			)
 		}.toPyStringAsyncCallback(SimpleShareResult.serializer(DecryptedForm.serializer()),
 				resultCallback)

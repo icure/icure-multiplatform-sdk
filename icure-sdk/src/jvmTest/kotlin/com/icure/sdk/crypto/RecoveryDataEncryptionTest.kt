@@ -8,6 +8,7 @@ import com.icure.kryptom.crypto.RsaKeypair
 import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.kryptom.utils.toHexString
 import com.icure.sdk.crypto.entities.ExchangeDataRecoveryDetails
+import com.icure.sdk.crypto.entities.PatientShareOptions
 import com.icure.sdk.crypto.entities.RecoveryDataKey
 import com.icure.sdk.crypto.entities.RecoveryResult
 import com.icure.sdk.crypto.impl.BasicCryptoStrategies
@@ -91,10 +92,10 @@ class RecoveryDataEncryptionTest : StringSpec({
 		)
 		val secretIds = api.patient.getSecretIdsOf(patient)
 		shouldThrow<IllegalArgumentException> {
-			api.patient.shareWith(patient.id, patient, secretIds)
+			api.patient.shareWith(patient.id, patient, PatientShareOptions(shareSecretIds=secretIds))
 		}
 		api.patient.forceInitialiseExchangeDataToNewlyInvitedPatient(patient.id) shouldBe true
-		api.patient.shareWith(patient.id, patient, secretIds)
+		api.patient.shareWith(patient.id, patient, PatientShareOptions(shareSecretIds =secretIds))
 		val recoveryKey = api.recovery.createExchangeDataRecoveryInfo(patient.id)
 		val patientUser = createPatientUser(existingPatientId = patient.id)
 		val apiPatient = patientUser.api()

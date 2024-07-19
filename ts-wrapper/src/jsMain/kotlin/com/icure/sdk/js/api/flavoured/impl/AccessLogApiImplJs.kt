@@ -104,9 +104,6 @@ internal class AccessLogApiImplJs(
 				val result = accessLogApi.encrypted.shareWith(
 					delegateIdConverted,
 					accessLogConverted,
-					shareEncryptionKeysConverted,
-					shareOwningEntityIdsConverted,
-					requestedPermissionConverted,
 				)
 				simpleShareResult_toJs(
 					result,
@@ -432,9 +429,6 @@ internal class AccessLogApiImplJs(
 				val result = accessLogApi.tryAndRecover.shareWith(
 					delegateIdConverted,
 					accessLogConverted,
-					shareEncryptionKeysConverted,
-					shareOwningEntityIdsConverted,
-					requestedPermissionConverted,
 				)
 				simpleShareResult_toJs(
 					result,
@@ -901,9 +895,6 @@ internal class AccessLogApiImplJs(
 			val result = accessLogApi.shareWith(
 				delegateIdConverted,
 				accessLogConverted,
-				shareEncryptionKeysConverted,
-				shareOwningEntityIdsConverted,
-				requestedPermissionConverted,
 			)
 			simpleShareResult_toJs(
 				result,

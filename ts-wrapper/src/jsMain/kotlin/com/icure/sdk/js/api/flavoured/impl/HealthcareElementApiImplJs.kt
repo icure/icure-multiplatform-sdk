@@ -119,9 +119,6 @@ internal class HealthcareElementApiImplJs(
 				val result = healthcareElementApi.encrypted.shareWith(
 					delegateIdConverted,
 					healthcareElementConverted,
-					shareEncryptionKeysConverted,
-					shareOwningEntityIdsConverted,
-					requestedPermissionConverted,
 				)
 				simpleShareResult_toJs(
 					result,
@@ -368,9 +365,6 @@ internal class HealthcareElementApiImplJs(
 				val result = healthcareElementApi.tryAndRecover.shareWith(
 					delegateIdConverted,
 					healthcareElementConverted,
-					shareEncryptionKeysConverted,
-					shareOwningEntityIdsConverted,
-					requestedPermissionConverted,
 				)
 				simpleShareResult_toJs(
 					result,
@@ -867,9 +861,6 @@ internal class HealthcareElementApiImplJs(
 			val result = healthcareElementApi.shareWith(
 				delegateIdConverted,
 				healthcareElementConverted,
-				shareEncryptionKeysConverted,
-				shareOwningEntityIdsConverted,
-				requestedPermissionConverted,
 			)
 			simpleShareResult_toJs(
 				result,

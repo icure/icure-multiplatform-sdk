@@ -1,6 +1,6 @@
 import asyncio
 import json
-from icure.model import Patient, serialize_patient, DecryptedPatient, User, AccessLevel, EncryptedPatient, deserialize_patient, IdWithRev, DataOwnerRegistrationSuccess, ShareAllPatientDataOptions, EntityWithTypeInfo, PatientAbstractFilter, serialize_abstract_filter, DocIdentifier, EntityAccessInformation, SubscriptionEventType, EntitySubscriptionConfiguration, ShareMetadataBehaviour, RequestedPermission, deserialize_simple_share_result, SimpleShareResult, PatientShareOptions, EncryptedContent
+from icure.model import Patient, serialize_patient, DecryptedPatient, User, AccessLevel, EncryptedPatient, deserialize_patient, IdWithRev, DataOwnerRegistrationSuccess, ShareAllPatientDataOptions, EntityWithTypeInfo, PatientAbstractFilter, serialize_abstract_filter, DocIdentifier, EntityAccessInformation, SubscriptionEventType, EntitySubscriptionConfiguration, PatientShareOptions, deserialize_simple_share_result, SimpleShareResult, EncryptedContent
 from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from typing import List, Optional, Dict
 from icure.model.CallResult import create_result_from_json
@@ -16,7 +16,7 @@ class PatientApi:
 		def __init__(self, icure_sdk):
 			self.icure_sdk = icure_sdk
 
-		async def share_with_async(self, delegate_id: str, patient: EncryptedPatient, share_secret_ids: List[str], share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
+		async def share_with_async(self, delegate_id: str, patient: EncryptedPatient, options: PatientShareOptions) -> SimpleShareResult:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -29,10 +29,7 @@ class PatientApi:
 			payload = {
 				"delegateId": delegate_id,
 				"patient": patient.__serialize__(),
-				"shareSecretIds": [x0 for x0 in share_secret_ids],
-				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
-				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
-				"requestedPermission": requested_permission.__serialize__(),
+				"options": options.__serialize__(),
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -44,14 +41,11 @@ class PatientApi:
 			)
 			return await future
 
-		def share_with_blocking(self, delegate_id: str, patient: EncryptedPatient, share_secret_ids: List[str], share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
+		def share_with_blocking(self, delegate_id: str, patient: EncryptedPatient, options: PatientShareOptions) -> SimpleShareResult:
 			payload = {
 				"delegateId": delegate_id,
 				"patient": patient.__serialize__(),
-				"shareSecretIds": [x0 for x0 in share_secret_ids],
-				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
-				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
-				"requestedPermission": requested_permission.__serialize__(),
+				"options": options.__serialize__(),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.shareWithBlocking(
 				self.icure_sdk._native,
@@ -770,7 +764,7 @@ class PatientApi:
 		def __init__(self, icure_sdk):
 			self.icure_sdk = icure_sdk
 
-		async def share_with_async(self, delegate_id: str, patient: Patient, share_secret_ids: List[str], share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
+		async def share_with_async(self, delegate_id: str, patient: Patient, options: PatientShareOptions) -> SimpleShareResult:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -783,10 +777,7 @@ class PatientApi:
 			payload = {
 				"delegateId": delegate_id,
 				"patient": patient.__serialize__(),
-				"shareSecretIds": [x0 for x0 in share_secret_ids],
-				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
-				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
-				"requestedPermission": requested_permission.__serialize__(),
+				"options": options.__serialize__(),
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -798,14 +789,11 @@ class PatientApi:
 			)
 			return await future
 
-		def share_with_blocking(self, delegate_id: str, patient: Patient, share_secret_ids: List[str], share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
+		def share_with_blocking(self, delegate_id: str, patient: Patient, options: PatientShareOptions) -> SimpleShareResult:
 			payload = {
 				"delegateId": delegate_id,
 				"patient": patient.__serialize__(),
-				"shareSecretIds": [x0 for x0 in share_secret_ids],
-				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
-				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
-				"requestedPermission": requested_permission.__serialize__(),
+				"options": options.__serialize__(),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.shareWithBlocking(
 				self.icure_sdk._native,
@@ -2417,7 +2405,7 @@ class PatientApi:
 				executor = self.icure_sdk._executor
 			)
 
-	async def share_with_async(self, delegate_id: str, patient: DecryptedPatient, share_secret_ids: List[str], share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
+	async def share_with_async(self, delegate_id: str, patient: DecryptedPatient, options: PatientShareOptions) -> SimpleShareResult:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -2430,10 +2418,7 @@ class PatientApi:
 		payload = {
 			"delegateId": delegate_id,
 			"patient": patient.__serialize__(),
-			"shareSecretIds": [x0 for x0 in share_secret_ids],
-			"shareEncryptionKeys": share_encryption_keys.__serialize__(),
-			"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
-			"requestedPermission": requested_permission.__serialize__(),
+			"options": options.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -2445,14 +2430,11 @@ class PatientApi:
 		)
 		return await future
 
-	def share_with_blocking(self, delegate_id: str, patient: DecryptedPatient, share_secret_ids: List[str], share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
+	def share_with_blocking(self, delegate_id: str, patient: DecryptedPatient, options: PatientShareOptions) -> SimpleShareResult:
 		payload = {
 			"delegateId": delegate_id,
 			"patient": patient.__serialize__(),
-			"shareSecretIds": [x0 for x0 in share_secret_ids],
-			"shareEncryptionKeys": share_encryption_keys.__serialize__(),
-			"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
-			"requestedPermission": requested_permission.__serialize__(),
+			"options": options.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.shareWithBlocking(
 			self.icure_sdk._native,

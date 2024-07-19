@@ -1,6 +1,6 @@
 import asyncio
 import json
-from icure.model import DecryptedTopic, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, Topic, serialize_topic, EncryptedTopic, deserialize_topic, DocIdentifier, TopicAbstractFilter, serialize_abstract_filter, SubscriptionEventType, EntitySubscriptionConfiguration, ShareMetadataBehaviour, RequestedPermission, deserialize_simple_share_result, SimpleShareResult, TopicShareOptions, TopicRole
+from icure.model import DecryptedTopic, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, Topic, serialize_topic, EncryptedTopic, deserialize_topic, DocIdentifier, TopicAbstractFilter, serialize_abstract_filter, SubscriptionEventType, EntitySubscriptionConfiguration, TopicShareOptions, deserialize_simple_share_result, SimpleShareResult, TopicRole
 from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from icure.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
@@ -16,7 +16,7 @@ class TopicApi:
 		def __init__(self, icure_sdk):
 			self.icure_sdk = icure_sdk
 
-		async def share_with_async(self, delegate_id: str, topic: EncryptedTopic, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
+		async def share_with_async(self, delegate_id: str, topic: EncryptedTopic, options: Optional[TopicShareOptions] = None) -> SimpleShareResult:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -29,9 +29,7 @@ class TopicApi:
 			payload = {
 				"delegateId": delegate_id,
 				"topic": topic.__serialize__(),
-				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
-				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
-				"requestedPermission": requested_permission.__serialize__(),
+				"options": options.__serialize__() if options is not None else None,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -43,13 +41,11 @@ class TopicApi:
 			)
 			return await future
 
-		def share_with_blocking(self, delegate_id: str, topic: EncryptedTopic, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
+		def share_with_blocking(self, delegate_id: str, topic: EncryptedTopic, options: Optional[TopicShareOptions] = None) -> SimpleShareResult:
 			payload = {
 				"delegateId": delegate_id,
 				"topic": topic.__serialize__(),
-				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
-				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
-				"requestedPermission": requested_permission.__serialize__(),
+				"options": options.__serialize__() if options is not None else None,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.encrypted.shareWithBlocking(
 				self.icure_sdk._native,
@@ -401,7 +397,7 @@ class TopicApi:
 		def __init__(self, icure_sdk):
 			self.icure_sdk = icure_sdk
 
-		async def share_with_async(self, delegate_id: str, topic: Topic, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
+		async def share_with_async(self, delegate_id: str, topic: Topic, options: Optional[TopicShareOptions] = None) -> SimpleShareResult:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -414,9 +410,7 @@ class TopicApi:
 			payload = {
 				"delegateId": delegate_id,
 				"topic": topic.__serialize__(),
-				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
-				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
-				"requestedPermission": requested_permission.__serialize__(),
+				"options": options.__serialize__() if options is not None else None,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -428,13 +422,11 @@ class TopicApi:
 			)
 			return await future
 
-		def share_with_blocking(self, delegate_id: str, topic: Topic, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
+		def share_with_blocking(self, delegate_id: str, topic: Topic, options: Optional[TopicShareOptions] = None) -> SimpleShareResult:
 			payload = {
 				"delegateId": delegate_id,
 				"topic": topic.__serialize__(),
-				"shareEncryptionKeys": share_encryption_keys.__serialize__(),
-				"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
-				"requestedPermission": requested_permission.__serialize__(),
+				"options": options.__serialize__() if options is not None else None,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.tryAndRecover.shareWithBlocking(
 				self.icure_sdk._native,
@@ -1276,7 +1268,7 @@ class TopicApi:
 				executor = self.icure_sdk._executor
 			)
 
-	async def share_with_async(self, delegate_id: str, topic: DecryptedTopic, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
+	async def share_with_async(self, delegate_id: str, topic: DecryptedTopic, options: Optional[TopicShareOptions] = None) -> SimpleShareResult:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1289,9 +1281,7 @@ class TopicApi:
 		payload = {
 			"delegateId": delegate_id,
 			"topic": topic.__serialize__(),
-			"shareEncryptionKeys": share_encryption_keys.__serialize__(),
-			"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
-			"requestedPermission": requested_permission.__serialize__(),
+			"options": options.__serialize__() if options is not None else None,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1303,13 +1293,11 @@ class TopicApi:
 		)
 		return await future
 
-	def share_with_blocking(self, delegate_id: str, topic: DecryptedTopic, share_encryption_keys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, share_owning_entity_ids: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable, requested_permission: RequestedPermission = RequestedPermission.MaxWrite) -> SimpleShareResult:
+	def share_with_blocking(self, delegate_id: str, topic: DecryptedTopic, options: Optional[TopicShareOptions] = None) -> SimpleShareResult:
 		payload = {
 			"delegateId": delegate_id,
 			"topic": topic.__serialize__(),
-			"shareEncryptionKeys": share_encryption_keys.__serialize__(),
-			"shareOwningEntityIds": share_owning_entity_ids.__serialize__(),
-			"requestedPermission": requested_permission.__serialize__(),
+			"options": options.__serialize__() if options is not None else None,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.shareWithBlocking(
 			self.icure_sdk._native,

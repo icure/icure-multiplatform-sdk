@@ -6,7 +6,6 @@ import com.icure.sdk.crypto.entities.EntityAccessInformation
 import com.icure.sdk.crypto.entities.EntityWithTypeInfo
 import com.icure.sdk.crypto.entities.PatientShareOptions
 import com.icure.sdk.crypto.entities.ShareAllPatientDataOptions
-import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.model.DataOwnerRegistrationSuccess
 import com.icure.sdk.model.DecryptedPatient
@@ -21,7 +20,6 @@ import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.embed.EncryptedContent
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.notification.SubscriptionEventType
-import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.py.serialization.EntityWithTypeInfoAsStubDeserializer
 import com.icure.sdk.py.serialization.PatientSerializer
@@ -819,13 +817,7 @@ public fun subscribeToEventsAsync(
 private class ShareWithParams(
 	public val delegateId: String,
 	public val patient: DecryptedPatient,
-	public val shareSecretIds: Set<String>,
-	public val shareEncryptionKeys: ShareMetadataBehaviour =
-			com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable,
-	public val shareOwningEntityIds: ShareMetadataBehaviour =
-			com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable,
-	public val requestedPermission: RequestedPermission =
-			com.icure.sdk.model.requests.RequestedPermission.MaxWrite,
+	public val options: PatientShareOptions,
 )
 
 public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
@@ -834,10 +826,7 @@ public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.ru
 		sdk.patient.shareWith(
 			decodedParams.delegateId,
 			decodedParams.patient,
-			decodedParams.shareSecretIds,
-			decodedParams.shareEncryptionKeys,
-			decodedParams.shareOwningEntityIds,
-			decodedParams.requestedPermission,
+			decodedParams.options,
 		)
 	}
 }.toPyString(SimpleShareResult.serializer(DecryptedPatient.serializer()))
@@ -855,10 +844,7 @@ public fun shareWithAsync(
 			sdk.patient.shareWith(
 				decodedParams.delegateId,
 				decodedParams.patient,
-				decodedParams.shareSecretIds,
-				decodedParams.shareEncryptionKeys,
-				decodedParams.shareOwningEntityIds,
-				decodedParams.requestedPermission,
+				decodedParams.options,
 			)
 		}.toPyStringAsyncCallback(SimpleShareResult.serializer(DecryptedPatient.serializer()),
 				resultCallback)

@@ -3,7 +3,6 @@ package com.icure.sdk.py.api.flavoured.InvoiceApi.encrypted
 
 import com.icure.sdk.IcureApis
 import com.icure.sdk.crypto.entities.InvoiceShareOptions
-import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.model.EncryptedInvoice
 import com.icure.sdk.model.Invoice
@@ -13,7 +12,6 @@ import com.icure.sdk.model.embed.EncryptedInvoicingCode
 import com.icure.sdk.model.embed.InvoiceType
 import com.icure.sdk.model.embed.MediumType
 import com.icure.sdk.model.filter.AbstractFilter
-import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.py.serialization.PatientSerializer
 import com.icure.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
 import com.icure.sdk.py.utils.PyResult
@@ -51,12 +49,7 @@ import kotlinx.serialization.json.JsonElement
 private class ShareWithParams(
 	public val delegateId: String,
 	public val invoice: EncryptedInvoice,
-	public val shareEncryptionKeys: ShareMetadataBehaviour =
-			com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable,
-	public val shareOwningEntityIds: ShareMetadataBehaviour =
-			com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable,
-	public val requestedPermission: RequestedPermission =
-			com.icure.sdk.model.requests.RequestedPermission.MaxWrite,
+	public val options: InvoiceShareOptions? = null,
 )
 
 public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
@@ -65,9 +58,7 @@ public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.ru
 		sdk.invoice.encrypted.shareWith(
 			decodedParams.delegateId,
 			decodedParams.invoice,
-			decodedParams.shareEncryptionKeys,
-			decodedParams.shareOwningEntityIds,
-			decodedParams.requestedPermission,
+			decodedParams.options,
 		)
 	}
 }.toPyString(SimpleShareResult.serializer(EncryptedInvoice.serializer()))
@@ -85,9 +76,7 @@ public fun shareWithAsync(
 			sdk.invoice.encrypted.shareWith(
 				decodedParams.delegateId,
 				decodedParams.invoice,
-				decodedParams.shareEncryptionKeys,
-				decodedParams.shareOwningEntityIds,
-				decodedParams.requestedPermission,
+				decodedParams.options,
 			)
 		}.toPyStringAsyncCallback(SimpleShareResult.serializer(EncryptedInvoice.serializer()),
 				resultCallback)

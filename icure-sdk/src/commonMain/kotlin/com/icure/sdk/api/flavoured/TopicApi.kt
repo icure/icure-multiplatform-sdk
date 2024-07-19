@@ -1,6 +1,7 @@
 package com.icure.sdk.api.flavoured
 
 import com.icure.sdk.api.raw.RawTopicApi
+import com.icure.sdk.crypto.entities.MaintenanceTaskShareOptions
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
@@ -65,12 +66,8 @@ interface TopicFlavouredApi<E : Topic> : TopicBasicFlavouredApi<E> {
 	suspend fun shareWith(
 		delegateId: String,
 		topic: E,
-		@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
-		shareEncryptionKeys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
-		@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
-		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
-		@DefaultValue("com.icure.sdk.model.requests.RequestedPermission.MaxWrite")
-		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
+		@DefaultValue("null")
+		options: TopicShareOptions? = null
 	): SimpleShareResult<E>
 
 	/**
@@ -176,20 +173,13 @@ private abstract class AbstractTopicFlavouredApi<E : Topic>(
 	override suspend fun shareWith(
 		delegateId: String,
 		topic: E,
-		shareEncryptionKeys: ShareMetadataBehaviour,
-		shareOwningEntityIds: ShareMetadataBehaviour,
-		requestedPermission: RequestedPermission,
+		options: TopicShareOptions?,
 	): SimpleShareResult<E> =
 		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			topic.withTypeInfo(),
 			true,
 			mapOf(
-				delegateId to SimpleDelegateShareOptionsImpl(
-					shareSecretIds = null,
-					shareEncryptionKey = shareEncryptionKeys,
-					shareOwningEntityIds = shareOwningEntityIds,
-					requestedPermissions = requestedPermission,
-				),
+				delegateId to (options ?: TopicShareOptions()),
 			),
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
