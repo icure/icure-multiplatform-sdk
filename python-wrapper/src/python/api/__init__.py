@@ -29,12 +29,11 @@ from icure.api.flavoured.MaintenanceTaskApi import MaintenanceTaskApi
 from icure.api.flavoured.FormBasicApi import FormBasicApi
 from icure.api.flavoured.PatientApi import PatientApi
 from icure.api.flavoured.MaintenanceTaskBasicApi import MaintenanceTaskBasicApi
-from icure.api.flavoured.HealthcareElementBasicApi import HealthcareElementBasicApi
 from icure.api.flavoured.ContactApi import ContactApi
 from icure.api.flavoured.ReceiptApi import ReceiptApi
-from icure.api.flavoured.HealthcareElementApi import HealthcareElementApi
 from icure.api.flavoured.AccessLogApi import AccessLogApi
 from icure.api.flavoured.TopicApi import TopicApi
+from icure.api.flavoured.HealthElementBasicApi import HealthElementBasicApi
 from icure.api.flavoured.ContactBasicApi import ContactBasicApi
 from icure.api.flavoured.CalendarItemApi import CalendarItemApi
 from icure.api.flavoured.ReceiptBasicApi import ReceiptBasicApi
@@ -44,6 +43,7 @@ from icure.api.flavoured.MessageBasicApi import MessageBasicApi
 from icure.api.flavoured.FormApi import FormApi
 from icure.api.flavoured.InvoiceApi import InvoiceApi
 from icure.api.flavoured.MessageApi import MessageApi
+from icure.api.flavoured.HealthElementApi import HealthElementApi
 from icure.api.flavoured.InvoiceBasicApi import InvoiceBasicApi
 from icure.api.flavoured.TopicBasicApi import TopicBasicApi
 from icure.api.InsuranceApi import InsuranceApi

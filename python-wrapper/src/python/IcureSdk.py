@@ -6,7 +6,7 @@ from concurrent.futures import Executor
 from icure.storage import FileSystemStorage
 from icure.authentication import UsernamePassword
 from icure.api import DataOwnerApi, IcureMaintenanceTaskApi, AccessLogApi, CalendarItemApi, ClassificationApi, ContactApi, \
-    DocumentApi, FormApi, HealthcareElementApi, InvoiceApi, MaintenanceTaskApi, MessageApi, PatientApi, ReceiptApi, \
+    DocumentApi, FormApi, HealthElementApi, InvoiceApi, MaintenanceTaskApi, MessageApi, PatientApi, ReceiptApi, \
     TimeTableApi, TopicApi, ApplicationSettingsApi, CodeApi, CryptoApi, DeviceApi, DocumentTemplateApi, \
     EntityReferenceApi, EntityTemplateApi, FrontEndMigrationApi, GroupApi, HealthcarePartyApi, ICureApi, InsuranceApi, \
     KeywordApi, PermissionApi, PlaceApi, RecoveryApi, RoleApi, TarificationApi, UserApi
@@ -118,7 +118,7 @@ _C_DataOwnerRequiresAnonymousDelegation = CFUNCTYPE(None, c_void_p, c_char_p)
 
 
 class IcureSdk:
-    __healthcareElement: Optional[HealthcareElementApi] = None
+    __health_element: Optional[HealthElementApi] = None
     __dataOwner: Optional[DataOwnerApi] = None
     __icureMaintenanceTask: Optional[IcureMaintenanceTaskApi] = None
     __accessLog: Optional[AccessLogApi] = None
@@ -216,10 +216,10 @@ class IcureSdk:
             symbols.kotlin.root.com.icure.sdk.py.utils.disposeStablePtr(self.__kt_crypto_strategies)
 
     @property
-    def healthcare_element(self):
-        if self.__healthcareElement is None:
-            self.__healthcareElement = HealthcareElementApi(self)
-        return self.__healthcareElement
+    def health_element(self):
+        if self.__health_element is None:
+            self.__health_element = HealthElementApi(self)
+        return self.__health_element
 
     @property
     def data_owner(self):
