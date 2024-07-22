@@ -67,7 +67,7 @@ class SubscriptionsTests : StringSpec(
 			include(
 				subscribableTests(
 					name = "HealthElement",
-					subscribableApi = hcpUser.api().healthcareElement,
+					subscribableApi = hcpUser.api().healthElement,
 					filter = HealthElementByHcPartyFilter(hcpId = hcpUser.dataOwnerId),
 					createEntity =  {
 						val patient = hcpUser
@@ -83,7 +83,7 @@ class SubscriptionsTests : StringSpec(
 
 						hcpUser
 							.api()
-							.healthcareElement
+							.healthElement
 							.withEncryptionMetadata(
 								DecryptedHealthElement(id = UUID.randomUUID().toString()),
 								patient,
@@ -91,8 +91,8 @@ class SubscriptionsTests : StringSpec(
 							).let {
 								hcpUser
 									.api()
-									.healthcareElement
-									.createHealthcareElement(it)
+									.healthElement
+									.createHealthElement(it)
 							}
 					}
 				),

@@ -119,7 +119,7 @@ interface EntityEncryptionService : EntityValidationService {
 	 * @param initialiseEncryptionKey if false this method will not initialize an encryption key for the entity. Use only for entities which use
 	 * delegations for access control but don't actually have any encrypted content.
 	 * @param initialiseSecretId if false this method will not initialize any secret id, use it for entities which can not be 'owning entities' (e.g.
-	 * HealthcareElement).
+	 * HealthElement).
 	 * @param autoDelegations automatically shares the metadata with the provided data owners, with the provided access level.
 	 * @throws if the entity already has non-empty values for encryption metadata.
 	 * @return an updated copy of the entity.

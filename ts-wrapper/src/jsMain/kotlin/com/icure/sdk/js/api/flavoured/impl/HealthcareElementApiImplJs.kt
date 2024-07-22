@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.js.api.flavoured.`impl`
 
-import com.icure.sdk.api.flavoured.HealthcareElementApi
+import com.icure.sdk.api.flavoured.HealthElementApi
 import com.icure.sdk.crypto.entities.HealthElementShareOptions
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
@@ -82,7 +82,7 @@ import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
 internal class HealthcareElementApiImplJs(
-	private val healthcareElementApi: HealthcareElementApi,
+	private val healthcareElementApi: HealthElementApi,
 ) : HealthcareElementApiJs {
 	override val encrypted: HealthcareElementFlavouredApiJs<EncryptedHealthElementJs> = object :
 			HealthcareElementFlavouredApiJs<EncryptedHealthElementJs> {
@@ -206,7 +206,7 @@ internal class HealthcareElementApiImplJs(
 				) { descending: Boolean? ->
 					undefinedToNull(descending)
 				}
-				val result = healthcareElementApi.encrypted.findHealthcareElementsByHcPartyPatient(
+				val result = healthcareElementApi.encrypted.findHealthElementsByHcPartyPatient(
 					hcPartyIdConverted,
 					patientConverted,
 					startDateConverted,
@@ -225,7 +225,7 @@ internal class HealthcareElementApiImplJs(
 		override fun modifyHealthcareElement(entity: EncryptedHealthElementJs):
 				Promise<EncryptedHealthElementJs> = GlobalScope.promise {
 			val entityConverted: EncryptedHealthElement = healthElement_fromJs(entity)
-			val result = healthcareElementApi.encrypted.modifyHealthcareElement(
+			val result = healthcareElementApi.encrypted.modifyHealthElement(
 				entityConverted,
 			)
 			healthElement_toJs(result)
@@ -240,7 +240,7 @@ internal class HealthcareElementApiImplJs(
 					healthElement_fromJs(x1)
 				},
 			)
-			val result = healthcareElementApi.encrypted.modifyHealthcareElements(
+			val result = healthcareElementApi.encrypted.modifyHealthElements(
 				entitiesConverted,
 			)
 			listToArray(
@@ -254,7 +254,7 @@ internal class HealthcareElementApiImplJs(
 		override fun getHealthcareElement(entityId: String): Promise<EncryptedHealthElementJs> =
 				GlobalScope.promise {
 			val entityIdConverted: String = entityId
-			val result = healthcareElementApi.encrypted.getHealthcareElement(
+			val result = healthcareElementApi.encrypted.getHealthElement(
 				entityIdConverted,
 			)
 			healthElement_toJs(result)
@@ -269,7 +269,7 @@ internal class HealthcareElementApiImplJs(
 					x1
 				},
 			)
-			val result = healthcareElementApi.encrypted.getHealthcareElements(
+			val result = healthcareElementApi.encrypted.getHealthElements(
 				entityIdsConverted,
 			)
 			listToArray(
@@ -293,7 +293,7 @@ internal class HealthcareElementApiImplJs(
 			)
 			val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
 			val limitConverted: Int? = numberToInt(limit, "limit")
-			val result = healthcareElementApi.encrypted.filterHealthcareElementsBy(
+			val result = healthcareElementApi.encrypted.filterHealthElementsBy(
 				filterChainConverted,
 				startDocumentIdConverted,
 				limitConverted,
@@ -317,7 +317,7 @@ internal class HealthcareElementApiImplJs(
 					x1
 				},
 			)
-			val result = healthcareElementApi.encrypted.findHealthcareElementsByHcPartyPatientForeignKeys(
+			val result = healthcareElementApi.encrypted.findHealthElementsByHcPartyPatientForeignKeys(
 				hcPartyIdConverted,
 				secretPatientKeysConverted,
 			)
@@ -452,7 +452,7 @@ internal class HealthcareElementApiImplJs(
 				) { descending: Boolean? ->
 					undefinedToNull(descending)
 				}
-				val result = healthcareElementApi.tryAndRecover.findHealthcareElementsByHcPartyPatient(
+				val result = healthcareElementApi.tryAndRecover.findHealthElementsByHcPartyPatient(
 					hcPartyIdConverted,
 					patientConverted,
 					startDateConverted,
@@ -471,7 +471,7 @@ internal class HealthcareElementApiImplJs(
 		override fun modifyHealthcareElement(entity: HealthElementJs): Promise<HealthElementJs> =
 				GlobalScope.promise {
 			val entityConverted: HealthElement = healthElement_fromJs(entity)
-			val result = healthcareElementApi.tryAndRecover.modifyHealthcareElement(
+			val result = healthcareElementApi.tryAndRecover.modifyHealthElement(
 				entityConverted,
 			)
 			healthElement_toJs(result)
@@ -486,7 +486,7 @@ internal class HealthcareElementApiImplJs(
 					healthElement_fromJs(x1)
 				},
 			)
-			val result = healthcareElementApi.tryAndRecover.modifyHealthcareElements(
+			val result = healthcareElementApi.tryAndRecover.modifyHealthElements(
 				entitiesConverted,
 			)
 			listToArray(
@@ -500,7 +500,7 @@ internal class HealthcareElementApiImplJs(
 		override fun getHealthcareElement(entityId: String): Promise<HealthElementJs> =
 				GlobalScope.promise {
 			val entityIdConverted: String = entityId
-			val result = healthcareElementApi.tryAndRecover.getHealthcareElement(
+			val result = healthcareElementApi.tryAndRecover.getHealthElement(
 				entityIdConverted,
 			)
 			healthElement_toJs(result)
@@ -515,7 +515,7 @@ internal class HealthcareElementApiImplJs(
 					x1
 				},
 			)
-			val result = healthcareElementApi.tryAndRecover.getHealthcareElements(
+			val result = healthcareElementApi.tryAndRecover.getHealthElements(
 				entityIdsConverted,
 			)
 			listToArray(
@@ -539,7 +539,7 @@ internal class HealthcareElementApiImplJs(
 			)
 			val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
 			val limitConverted: Int? = numberToInt(limit, "limit")
-			val result = healthcareElementApi.tryAndRecover.filterHealthcareElementsBy(
+			val result = healthcareElementApi.tryAndRecover.filterHealthElementsBy(
 				filterChainConverted,
 				startDocumentIdConverted,
 				limitConverted,
@@ -563,7 +563,7 @@ internal class HealthcareElementApiImplJs(
 				},
 			)
 			val result =
-					healthcareElementApi.tryAndRecover.findHealthcareElementsByHcPartyPatientForeignKeys(
+					healthcareElementApi.tryAndRecover.findHealthElementsByHcPartyPatientForeignKeys(
 				hcPartyIdConverted,
 				secretPatientKeysConverted,
 			)
@@ -579,7 +579,7 @@ internal class HealthcareElementApiImplJs(
 	override fun createHealthcareElement(entity: DecryptedHealthElementJs):
 			Promise<DecryptedHealthElementJs> = GlobalScope.promise {
 		val entityConverted: DecryptedHealthElement = healthElement_fromJs(entity)
-		val result = healthcareElementApi.createHealthcareElement(
+		val result = healthcareElementApi.createHealthElement(
 			entityConverted,
 		)
 		healthElement_toJs(result)
@@ -594,7 +594,7 @@ internal class HealthcareElementApiImplJs(
 				healthElement_fromJs(x1)
 			},
 		)
-		val result = healthcareElementApi.createHealthcareElements(
+		val result = healthcareElementApi.createHealthElements(
 			entitiesConverted,
 		)
 		listToArray(
@@ -721,7 +721,7 @@ internal class HealthcareElementApiImplJs(
 				healthElement_fromJs(x1)
 			},
 		)
-		val result = healthcareElementApi.matchHealthcareElementsBy(
+		val result = healthcareElementApi.matchHealthElementsBy(
 			filterConverted,
 		)
 		listToArray(
@@ -735,7 +735,7 @@ internal class HealthcareElementApiImplJs(
 	override fun deleteHealthcareElement(entityId: String): Promise<DocIdentifierJs> =
 			GlobalScope.promise {
 		val entityIdConverted: String = entityId
-		val result = healthcareElementApi.deleteHealthcareElement(
+		val result = healthcareElementApi.deleteHealthElement(
 			entityIdConverted,
 		)
 		docIdentifier_toJs(result)
@@ -750,7 +750,7 @@ internal class HealthcareElementApiImplJs(
 				x1
 			},
 		)
-		val result = healthcareElementApi.deleteHealthcareElements(
+		val result = healthcareElementApi.deleteHealthElements(
 			entityIdsConverted,
 		)
 		listToArray(
@@ -772,7 +772,7 @@ internal class HealthcareElementApiImplJs(
 			},
 		)
 		val result =
-				healthcareElementApi.findHealthcareElementsDelegationsStubsByHcPartyPatientForeignKeys(
+				healthcareElementApi.findHealthElementsDelegationsStubsByHcPartyPatientForeignKeys(
 			hcPartyIdConverted,
 			secretPatientKeysConverted,
 		)
@@ -948,7 +948,7 @@ internal class HealthcareElementApiImplJs(
 			) { descending: Boolean? ->
 				undefinedToNull(descending)
 			}
-			val result = healthcareElementApi.findHealthcareElementsByHcPartyPatient(
+			val result = healthcareElementApi.findHealthElementsByHcPartyPatient(
 				hcPartyIdConverted,
 				patientConverted,
 				startDateConverted,
@@ -967,7 +967,7 @@ internal class HealthcareElementApiImplJs(
 	override fun modifyHealthcareElement(entity: DecryptedHealthElementJs):
 			Promise<DecryptedHealthElementJs> = GlobalScope.promise {
 		val entityConverted: DecryptedHealthElement = healthElement_fromJs(entity)
-		val result = healthcareElementApi.modifyHealthcareElement(
+		val result = healthcareElementApi.modifyHealthElement(
 			entityConverted,
 		)
 		healthElement_toJs(result)
@@ -982,7 +982,7 @@ internal class HealthcareElementApiImplJs(
 				healthElement_fromJs(x1)
 			},
 		)
-		val result = healthcareElementApi.modifyHealthcareElements(
+		val result = healthcareElementApi.modifyHealthElements(
 			entitiesConverted,
 		)
 		listToArray(
@@ -996,7 +996,7 @@ internal class HealthcareElementApiImplJs(
 	override fun getHealthcareElement(entityId: String): Promise<DecryptedHealthElementJs> =
 			GlobalScope.promise {
 		val entityIdConverted: String = entityId
-		val result = healthcareElementApi.getHealthcareElement(
+		val result = healthcareElementApi.getHealthElement(
 			entityIdConverted,
 		)
 		healthElement_toJs(result)
@@ -1011,7 +1011,7 @@ internal class HealthcareElementApiImplJs(
 				x1
 			},
 		)
-		val result = healthcareElementApi.getHealthcareElements(
+		val result = healthcareElementApi.getHealthElements(
 			entityIdsConverted,
 		)
 		listToArray(
@@ -1035,7 +1035,7 @@ internal class HealthcareElementApiImplJs(
 		)
 		val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
 		val limitConverted: Int? = numberToInt(limit, "limit")
-		val result = healthcareElementApi.filterHealthcareElementsBy(
+		val result = healthcareElementApi.filterHealthElementsBy(
 			filterChainConverted,
 			startDocumentIdConverted,
 			limitConverted,
@@ -1059,7 +1059,7 @@ internal class HealthcareElementApiImplJs(
 				x1
 			},
 		)
-		val result = healthcareElementApi.findHealthcareElementsByHcPartyPatientForeignKeys(
+		val result = healthcareElementApi.findHealthElementsByHcPartyPatientForeignKeys(
 			hcPartyIdConverted,
 			secretPatientKeysConverted,
 		)

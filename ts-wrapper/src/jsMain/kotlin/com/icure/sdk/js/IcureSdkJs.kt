@@ -49,7 +49,6 @@ import com.icure.sdk.js.options.ApiOptionsJs
 import com.icure.sdk.js.options.toKt
 import com.icure.sdk.options.AuthenticationMethod
 import com.icure.sdk.storage.impl.VolatileStorageFacade
-import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 import kotlin.js.Promise
@@ -112,7 +111,7 @@ private class IcureSdkJsImpl(
 	override val device by lazy { DeviceApiImplJs(sdk.device) }
 	override val document by lazy { DocumentApiImplJs(sdk.document) }
 	override val form by lazy { FormApiImplJs(sdk.form) }
-	override val healthcareElement by lazy { HealthcareElementApiImplJs(sdk.healthcareElement) }
+	override val healthcareElement by lazy { HealthcareElementApiImplJs(sdk.healthElement) }
 	override val invoice by lazy { InvoiceApiImplJs(sdk.invoice) }
 	override val maintenanceTask by lazy { MaintenanceTaskApiImplJs(sdk.maintenanceTask) }
 	override val message by lazy { MessageApiImplJs(sdk.message) }

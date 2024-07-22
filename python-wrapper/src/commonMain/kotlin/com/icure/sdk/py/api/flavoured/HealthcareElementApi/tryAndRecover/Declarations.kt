@@ -49,7 +49,7 @@ private class ShareWithParams(
 public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ShareWithParams>(params)
 	runBlocking {
-		sdk.healthcareElement.tryAndRecover.shareWith(
+		sdk.healthElement.tryAndRecover.shareWith(
 			decodedParams.delegateId,
 			decodedParams.healthcareElement,
 			decodedParams.options,
@@ -67,7 +67,7 @@ public fun shareWithAsync(
 	val decodedParams = json.decodeFromString<ShareWithParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.healthcareElement.tryAndRecover.shareWith(
+			sdk.healthElement.tryAndRecover.shareWith(
 				decodedParams.delegateId,
 				decodedParams.healthcareElement,
 				decodedParams.options,
@@ -85,7 +85,7 @@ private class TryShareWithManyParams(
 public fun tryShareWithManyBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<TryShareWithManyParams>(params)
 	runBlocking {
-		sdk.healthcareElement.tryAndRecover.tryShareWithMany(
+		sdk.healthElement.tryAndRecover.tryShareWithMany(
 			decodedParams.healthElement,
 			decodedParams.delegates,
 		)
@@ -102,7 +102,7 @@ public fun tryShareWithManyAsync(
 	val decodedParams = json.decodeFromString<TryShareWithManyParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.healthcareElement.tryAndRecover.tryShareWithMany(
+			sdk.healthElement.tryAndRecover.tryShareWithMany(
 				decodedParams.healthElement,
 				decodedParams.delegates,
 			)
@@ -119,7 +119,7 @@ private class ShareWithManyParams(
 public fun shareWithManyBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ShareWithManyParams>(params)
 	runBlocking {
-		sdk.healthcareElement.tryAndRecover.shareWithMany(
+		sdk.healthElement.tryAndRecover.shareWithMany(
 			decodedParams.healthElement,
 			decodedParams.delegates,
 		)
@@ -136,7 +136,7 @@ public fun shareWithManyAsync(
 	val decodedParams = json.decodeFromString<ShareWithManyParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.healthcareElement.tryAndRecover.shareWithMany(
+			sdk.healthElement.tryAndRecover.shareWithMany(
 				decodedParams.healthElement,
 				decodedParams.delegates,
 			)
@@ -158,7 +158,7 @@ public fun findHealthcareElementsByHcPartyPatientBlocking(sdk: IcureApis, params
 		= kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FindHealthcareElementsByHcPartyPatientParams>(params)
 	runBlocking {
-		sdk.healthcareElement.tryAndRecover.findHealthcareElementsByHcPartyPatient(
+		sdk.healthElement.tryAndRecover.findHealthElementsByHcPartyPatient(
 			decodedParams.hcPartyId,
 			decodedParams.patient,
 			decodedParams.startDate,
@@ -178,7 +178,7 @@ public fun findHealthcareElementsByHcPartyPatientAsync(
 	val decodedParams = json.decodeFromString<FindHealthcareElementsByHcPartyPatientParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.healthcareElement.tryAndRecover.findHealthcareElementsByHcPartyPatient(
+			sdk.healthElement.tryAndRecover.findHealthElementsByHcPartyPatient(
 				decodedParams.hcPartyId,
 				decodedParams.patient,
 				decodedParams.startDate,
@@ -199,7 +199,7 @@ public fun modifyHealthcareElementBlocking(sdk: IcureApis, params: String): Stri
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyHealthcareElementParams>(params)
 	runBlocking {
-		sdk.healthcareElement.tryAndRecover.modifyHealthcareElement(
+		sdk.healthElement.tryAndRecover.modifyHealthElement(
 			decodedParams.entity,
 		)
 	}
@@ -215,7 +215,7 @@ public fun modifyHealthcareElementAsync(
 	val decodedParams = json.decodeFromString<ModifyHealthcareElementParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.healthcareElement.tryAndRecover.modifyHealthcareElement(
+			sdk.healthElement.tryAndRecover.modifyHealthElement(
 				decodedParams.entity,
 			)
 		}.toPyStringAsyncCallback(HealthElementSerializer, resultCallback)
@@ -231,7 +231,7 @@ public fun modifyHealthcareElementsBlocking(sdk: IcureApis, params: String): Str
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyHealthcareElementsParams>(params)
 	runBlocking {
-		sdk.healthcareElement.tryAndRecover.modifyHealthcareElements(
+		sdk.healthElement.tryAndRecover.modifyHealthElements(
 			decodedParams.entities,
 		)
 	}
@@ -247,7 +247,7 @@ public fun modifyHealthcareElementsAsync(
 	val decodedParams = json.decodeFromString<ModifyHealthcareElementsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.healthcareElement.tryAndRecover.modifyHealthcareElements(
+			sdk.healthElement.tryAndRecover.modifyHealthElements(
 				decodedParams.entities,
 			)
 		}.toPyStringAsyncCallback(ListSerializer(HealthElementSerializer), resultCallback)
@@ -263,7 +263,7 @@ public fun getHealthcareElementBlocking(sdk: IcureApis, params: String): String 
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetHealthcareElementParams>(params)
 	runBlocking {
-		sdk.healthcareElement.tryAndRecover.getHealthcareElement(
+		sdk.healthElement.tryAndRecover.getHealthElement(
 			decodedParams.entityId,
 		)
 	}
@@ -279,7 +279,7 @@ public fun getHealthcareElementAsync(
 	val decodedParams = json.decodeFromString<GetHealthcareElementParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.healthcareElement.tryAndRecover.getHealthcareElement(
+			sdk.healthElement.tryAndRecover.getHealthElement(
 				decodedParams.entityId,
 			)
 		}.toPyStringAsyncCallback(HealthElementSerializer, resultCallback)
@@ -295,7 +295,7 @@ public fun getHealthcareElementsBlocking(sdk: IcureApis, params: String): String
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetHealthcareElementsParams>(params)
 	runBlocking {
-		sdk.healthcareElement.tryAndRecover.getHealthcareElements(
+		sdk.healthElement.tryAndRecover.getHealthElements(
 			decodedParams.entityIds,
 		)
 	}
@@ -311,7 +311,7 @@ public fun getHealthcareElementsAsync(
 	val decodedParams = json.decodeFromString<GetHealthcareElementsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.healthcareElement.tryAndRecover.getHealthcareElements(
+			sdk.healthElement.tryAndRecover.getHealthElements(
 				decodedParams.entityIds,
 			)
 		}.toPyStringAsyncCallback(ListSerializer(HealthElementSerializer), resultCallback)
@@ -328,7 +328,7 @@ public fun filterHealthcareElementsByBlocking(sdk: IcureApis, params: String): P
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterHealthcareElementsByParams>(params)
 	runBlocking {
-		sdk.healthcareElement.tryAndRecover.filterHealthcareElementsBy(
+		sdk.healthElement.tryAndRecover.filterHealthElementsBy(
 			decodedParams.filter,
 		)
 	}
@@ -344,7 +344,7 @@ public fun filterHealthcareElementsByAsync(
 	val decodedParams = json.decodeFromString<FilterHealthcareElementsByParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.healthcareElement.tryAndRecover.filterHealthcareElementsBy(
+			sdk.healthElement.tryAndRecover.filterHealthElementsBy(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
@@ -363,7 +363,7 @@ public fun findHealthcareElementsByHcPartyPatientForeignKeysBlocking(sdk: IcureA
 	val decodedParams =
 			json.decodeFromString<FindHealthcareElementsByHcPartyPatientForeignKeysParams>(params)
 	runBlocking {
-		sdk.healthcareElement.tryAndRecover.findHealthcareElementsByHcPartyPatientForeignKeys(
+		sdk.healthElement.tryAndRecover.findHealthElementsByHcPartyPatientForeignKeys(
 			decodedParams.hcPartyId,
 			decodedParams.secretPatientKeys,
 		)
@@ -381,7 +381,7 @@ public fun findHealthcareElementsByHcPartyPatientForeignKeysAsync(
 			json.decodeFromString<FindHealthcareElementsByHcPartyPatientForeignKeysParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.healthcareElement.tryAndRecover.findHealthcareElementsByHcPartyPatientForeignKeys(
+			sdk.healthElement.tryAndRecover.findHealthElementsByHcPartyPatientForeignKeys(
 				decodedParams.hcPartyId,
 				decodedParams.secretPatientKeys,
 			)

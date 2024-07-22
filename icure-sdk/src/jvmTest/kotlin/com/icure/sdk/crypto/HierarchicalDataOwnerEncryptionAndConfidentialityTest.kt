@@ -4,7 +4,6 @@ import com.icure.sdk.IcureSdk
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.model.DecryptedHealthElement
 import com.icure.sdk.model.DecryptedPatient
-import com.icure.sdk.model.HealthElement
 import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.test.createHcpUser
 import com.icure.sdk.test.initialiseTestEnvironment
@@ -70,8 +69,8 @@ class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec ({
 		confidentialSecretIds shouldHaveSize 1
 		allSecretIds shouldContain confidentialSecretIds.single()
 		val nonConfidentialNote = "Encrypted - non confidential he"
-		val nonConfidentialHe = hcpApi.healthcareElement.createHealthcareElement(
-			hcpApi.healthcareElement.withEncryptionMetadata(
+		val nonConfidentialHe = hcpApi.healthElement.createHealthElement(
+			hcpApi.healthElement.withEncryptionMetadata(
 				DecryptedHealthElement(
 					id = UUID.randomUUID().toString(),
 					note = nonConfidentialNote
@@ -82,8 +81,8 @@ class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec ({
 			)
 		).shouldNotBeNull()
 		val confidentialNote = "Encrypted - confidential he"
-		val confidentialHe = hcpApi.healthcareElement.createHealthcareElement(
-			hcpApi.healthcareElement.withEncryptionMetadata(
+		val confidentialHe = hcpApi.healthElement.createHealthElement(
+			hcpApi.healthElement.withEncryptionMetadata(
 				DecryptedHealthElement(
 					id = UUID.randomUUID().toString(),
 					note = confidentialNote
@@ -102,7 +101,7 @@ class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec ({
 			val hes = mutableListOf<DecryptedHealthElement>()
 
 			hcpIds.forEach { hcpId ->
-				val iterator = api.healthcareElement.findHealthcareElementsByHcPartyPatient(hcpId, patient)
+				val iterator = api.healthElement.findHealthElementsByHcPartyPatient(hcpId, patient)
 				while (iterator.hasNext()) {
 					val element = iterator.next()
 					if (hes.all { it.id != element.id }) {
@@ -133,7 +132,7 @@ class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec ({
 				retrievedHes.single().note shouldBe nonConfidentialNote
 			}
 			// Entity was still shared, so it can still be retrieved by id (not a real use case, would not make sense to share an entity that is confidential)
-			relativeApi.healthcareElement.getHealthcareElement(confidentialHe.id).shouldNotBeNull().note shouldBe confidentialNote
+			relativeApi.healthElement.getHealthElement(confidentialHe.id).shouldNotBeNull().note shouldBe confidentialNote
 		}
 	}
 })

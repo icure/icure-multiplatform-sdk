@@ -49,7 +49,7 @@ public fun matchHealthcareElementsByBlocking(sdk: IcureBaseApis, params: String)
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<MatchHealthcareElementsByParams>(params)
 	runBlocking {
-		sdk.healthcareElement.matchHealthcareElementsBy(
+		sdk.healthElement.matchHealthElementsBy(
 			decodedParams.filter,
 		)
 	}
@@ -65,7 +65,7 @@ public fun matchHealthcareElementsByAsync(
 	val decodedParams = json.decodeFromString<MatchHealthcareElementsByParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.healthcareElement.matchHealthcareElementsBy(
+			sdk.healthElement.matchHealthElementsBy(
 				decodedParams.filter,
 			)
 		}.toPyStringAsyncCallback(ListSerializer(String.serializer()), resultCallback)
@@ -81,7 +81,7 @@ public fun deleteHealthcareElementBlocking(sdk: IcureBaseApis, params: String): 
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteHealthcareElementParams>(params)
 	runBlocking {
-		sdk.healthcareElement.deleteHealthcareElement(
+		sdk.healthElement.deleteHealthElement(
 			decodedParams.entityId,
 		)
 	}
@@ -97,7 +97,7 @@ public fun deleteHealthcareElementAsync(
 	val decodedParams = json.decodeFromString<DeleteHealthcareElementParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.healthcareElement.deleteHealthcareElement(
+			sdk.healthElement.deleteHealthElement(
 				decodedParams.entityId,
 			)
 		}.toPyStringAsyncCallback(DocIdentifier.serializer(), resultCallback)
@@ -113,7 +113,7 @@ public fun deleteHealthcareElementsBlocking(sdk: IcureBaseApis, params: String):
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteHealthcareElementsParams>(params)
 	runBlocking {
-		sdk.healthcareElement.deleteHealthcareElements(
+		sdk.healthElement.deleteHealthElements(
 			decodedParams.entityIds,
 		)
 	}
@@ -129,7 +129,7 @@ public fun deleteHealthcareElementsAsync(
 	val decodedParams = json.decodeFromString<DeleteHealthcareElementsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.healthcareElement.deleteHealthcareElements(
+			sdk.healthElement.deleteHealthElements(
 				decodedParams.entityIds,
 			)
 		}.toPyStringAsyncCallback(ListSerializer(DocIdentifier.serializer()), resultCallback)
@@ -148,7 +148,7 @@ public
 	val decodedParams =
 			json.decodeFromString<FindHealthcareElementsDelegationsStubsByHcPartyPatientForeignKeysParams>(params)
 	runBlocking {
-		sdk.healthcareElement.findHealthcareElementsDelegationsStubsByHcPartyPatientForeignKeys(
+		sdk.healthElement.findHealthElementsDelegationsStubsByHcPartyPatientForeignKeys(
 			decodedParams.hcPartyId,
 			decodedParams.secretPatientKeys,
 		)
@@ -166,7 +166,7 @@ public fun findHealthcareElementsDelegationsStubsByHcPartyPatientForeignKeysAsyn
 			json.decodeFromString<FindHealthcareElementsDelegationsStubsByHcPartyPatientForeignKeysParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.healthcareElement.findHealthcareElementsDelegationsStubsByHcPartyPatientForeignKeys(
+			sdk.healthElement.findHealthElementsDelegationsStubsByHcPartyPatientForeignKeys(
 				decodedParams.hcPartyId,
 				decodedParams.secretPatientKeys,
 			)
@@ -186,7 +186,7 @@ public fun subscribeToEventsBlocking(sdk: IcureBaseApis, params: String): PyResu
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<SubscribeToEventsParams>(params)
 	runBlocking {
-		sdk.healthcareElement.subscribeToEvents(
+		sdk.healthElement.subscribeToEvents(
 			decodedParams.events,
 			decodedParams.filter,
 			decodedParams.subscriptionConfig,
@@ -204,7 +204,7 @@ public fun subscribeToEventsAsync(
 	val decodedParams = json.decodeFromString<SubscribeToEventsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.healthcareElement.subscribeToEvents(
+			sdk.healthElement.subscribeToEvents(
 				decodedParams.events,
 				decodedParams.filter,
 				decodedParams.subscriptionConfig,
@@ -223,7 +223,7 @@ public fun modifyHealthcareElementBlocking(sdk: IcureBaseApis, params: String): 
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyHealthcareElementParams>(params)
 	runBlocking {
-		sdk.healthcareElement.modifyHealthcareElement(
+		sdk.healthElement.modifyHealthElement(
 			decodedParams.entity,
 		)
 	}
@@ -239,7 +239,7 @@ public fun modifyHealthcareElementAsync(
 	val decodedParams = json.decodeFromString<ModifyHealthcareElementParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.healthcareElement.modifyHealthcareElement(
+			sdk.healthElement.modifyHealthElement(
 				decodedParams.entity,
 			)
 		}.toPyStringAsyncCallback(EncryptedHealthElement.serializer(), resultCallback)
@@ -255,7 +255,7 @@ public fun modifyHealthcareElementsBlocking(sdk: IcureBaseApis, params: String):
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyHealthcareElementsParams>(params)
 	runBlocking {
-		sdk.healthcareElement.modifyHealthcareElements(
+		sdk.healthElement.modifyHealthElements(
 			decodedParams.entities,
 		)
 	}
@@ -271,7 +271,7 @@ public fun modifyHealthcareElementsAsync(
 	val decodedParams = json.decodeFromString<ModifyHealthcareElementsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.healthcareElement.modifyHealthcareElements(
+			sdk.healthElement.modifyHealthElements(
 				decodedParams.entities,
 			)
 		}.toPyStringAsyncCallback(ListSerializer(EncryptedHealthElement.serializer()), resultCallback)
@@ -287,7 +287,7 @@ public fun getHealthcareElementBlocking(sdk: IcureBaseApis, params: String): Str
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetHealthcareElementParams>(params)
 	runBlocking {
-		sdk.healthcareElement.getHealthcareElement(
+		sdk.healthElement.getHealthElement(
 			decodedParams.entityId,
 		)
 	}
@@ -303,7 +303,7 @@ public fun getHealthcareElementAsync(
 	val decodedParams = json.decodeFromString<GetHealthcareElementParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.healthcareElement.getHealthcareElement(
+			sdk.healthElement.getHealthElement(
 				decodedParams.entityId,
 			)
 		}.toPyStringAsyncCallback(EncryptedHealthElement.serializer(), resultCallback)
@@ -319,7 +319,7 @@ public fun getHealthcareElementsBlocking(sdk: IcureBaseApis, params: String): St
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetHealthcareElementsParams>(params)
 	runBlocking {
-		sdk.healthcareElement.getHealthcareElements(
+		sdk.healthElement.getHealthElements(
 			decodedParams.entityIds,
 		)
 	}
@@ -335,7 +335,7 @@ public fun getHealthcareElementsAsync(
 	val decodedParams = json.decodeFromString<GetHealthcareElementsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.healthcareElement.getHealthcareElements(
+			sdk.healthElement.getHealthElements(
 				decodedParams.entityIds,
 			)
 		}.toPyStringAsyncCallback(ListSerializer(EncryptedHealthElement.serializer()), resultCallback)
@@ -352,7 +352,7 @@ public fun filterHealthcareElementsByBlocking(sdk: IcureBaseApis, params: String
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterHealthcareElementsByParams>(params)
 	runBlocking {
-		sdk.healthcareElement.filterHealthcareElementsBy(
+		sdk.healthElement.filterHealthElementsBy(
 			decodedParams.filter,
 		)
 	}
@@ -368,7 +368,7 @@ public fun filterHealthcareElementsByAsync(
 	val decodedParams = json.decodeFromString<FilterHealthcareElementsByParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.healthcareElement.filterHealthcareElementsBy(
+			sdk.healthElement.filterHealthElementsBy(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
@@ -387,7 +387,7 @@ public fun findHealthcareElementsByHcPartyPatientForeignKeysBlocking(sdk: IcureB
 	val decodedParams =
 			json.decodeFromString<FindHealthcareElementsByHcPartyPatientForeignKeysParams>(params)
 	runBlocking {
-		sdk.healthcareElement.findHealthcareElementsByHcPartyPatientForeignKeys(
+		sdk.healthElement.findHealthElementsByHcPartyPatientForeignKeys(
 			decodedParams.hcPartyId,
 			decodedParams.secretPatientKeys,
 		)
@@ -405,7 +405,7 @@ public fun findHealthcareElementsByHcPartyPatientForeignKeysAsync(
 			json.decodeFromString<FindHealthcareElementsByHcPartyPatientForeignKeysParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.healthcareElement.findHealthcareElementsByHcPartyPatientForeignKeys(
+			sdk.healthElement.findHealthElementsByHcPartyPatientForeignKeys(
 				decodedParams.hcPartyId,
 				decodedParams.secretPatientKeys,
 			)

@@ -33,8 +33,8 @@ import com.icure.sdk.api.flavoured.DocumentApi
 import com.icure.sdk.api.flavoured.DocumentBasicApi
 import com.icure.sdk.api.flavoured.FormApi
 import com.icure.sdk.api.flavoured.FormBasicApi
-import com.icure.sdk.api.flavoured.HealthcareElementApi
-import com.icure.sdk.api.flavoured.HealthcareElementBasicApi
+import com.icure.sdk.api.flavoured.HealthElementApi
+import com.icure.sdk.api.flavoured.HealthElementBasicApi
 import com.icure.sdk.api.flavoured.InvoiceApi
 import com.icure.sdk.api.flavoured.InvoiceBasicApi
 import com.icure.sdk.api.flavoured.MaintenanceTaskApi
@@ -86,7 +86,7 @@ interface IcureApis : IcureNonCryptoApis {
 	val contact: ContactApi
 	val document: DocumentApi
 	val form: FormApi
-	val healthcareElement: HealthcareElementApi
+	val healthElement: HealthElementApi
 	val invoice: InvoiceApi
 	val maintenanceTask: MaintenanceTaskApi
 	val message: MessageApi
@@ -115,7 +115,7 @@ interface IcureBaseApis : IcureNonCryptoApis {
 	val contact: ContactBasicApi
 	val document: DocumentBasicApi
 	val form: FormBasicApi
-	val healthcareElement: HealthcareElementBasicApi
+	val healthElement: HealthElementBasicApi
 	val invoice: InvoiceBasicApi
 	val maintenanceTask: MaintenanceTaskBasicApi
 	val message: MessageBasicApi

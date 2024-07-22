@@ -56,8 +56,8 @@ import com.icure.sdk.api.flavoured.DocumentApi
 import com.icure.sdk.api.flavoured.DocumentApiImpl
 import com.icure.sdk.api.flavoured.FormApi
 import com.icure.sdk.api.flavoured.FormApiImpl
-import com.icure.sdk.api.flavoured.HealthcareElementApi
-import com.icure.sdk.api.flavoured.HealthcareElementApiImpl
+import com.icure.sdk.api.flavoured.HealthElementApi
+import com.icure.sdk.api.flavoured.HealthElementApiImpl
 import com.icure.sdk.api.flavoured.InvoiceApi
 import com.icure.sdk.api.flavoured.InvoiceApiImpl
 import com.icure.sdk.api.flavoured.MaintenanceTaskApi
@@ -418,7 +418,7 @@ private class IcureApiImpl(
 		PatientApiImpl(
 			rawPatientApi,
 			rawHealthcarePartyApi,
-			rawHealthcareElementApi,
+			rawHealthElementApi,
 			rawFormApi,
 			rawContactApi,
 			rawInvoiceApi,
@@ -428,11 +428,11 @@ private class IcureApiImpl(
 		)
 	}
 
-	private val rawHealthcareElementApi by lazy { RawHealthElementApiImpl(apiUrl, authService, headersProvider, client, json = httpClientJson) }
+	private val rawHealthElementApi by lazy { RawHealthElementApiImpl(apiUrl, authService, headersProvider, client, json = httpClientJson) }
 
-	override val healthcareElement: HealthcareElementApi by lazy {
-		HealthcareElementApiImpl(
-			rawHealthcareElementApi,
+	override val healthElement: HealthElementApi by lazy {
+		HealthElementApiImpl(
+			rawHealthElementApi,
 			config
 		)
 	}

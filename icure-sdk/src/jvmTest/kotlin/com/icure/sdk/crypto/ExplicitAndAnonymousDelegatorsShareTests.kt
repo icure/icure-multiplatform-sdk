@@ -36,8 +36,8 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 				delegates = mapOf(delegate.dataOwnerId to AccessLevel.Write)
 			)
 		).shouldNotBeNull()
-		val he = delegatorApi.healthcareElement.createHealthcareElement(
-			delegatorApi.healthcareElement.withEncryptionMetadata(
+		val he = delegatorApi.healthElement.createHealthElement(
+			delegatorApi.healthElement.withEncryptionMetadata(
 				base = DecryptedHealthElement(
 					id = UUID.randomUUID().toString(),
 					note = heNote,
@@ -51,13 +51,13 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 		delegateApi.patient.getPatient(patient.id).run {
 			note shouldBe patientNote
 		}
-		delegateApi.healthcareElement.getHealthcareElement(he.id).run {
+		delegateApi.healthElement.getHealthElement(he.id).run {
 			note shouldBe heNote
 		}
 		delegatorApi.patient.getPatient(patient.id).run {
 			note shouldBe patientNote
 		}
-		delegatorApi.healthcareElement.getHealthcareElement(he.id).run {
+		delegatorApi.healthElement.getHealthElement(he.id).run {
 			note shouldBe heNote
 		}
 	}
@@ -73,8 +73,8 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 			))
 		).shouldNotBeNull()
 		val sfk = delegatorApi.patient.getSecretIdsOf(patient).also { it shouldHaveSize 1 }
-		val he = delegatorApi.healthcareElement.createHealthcareElement(
-			delegatorApi.healthcareElement.withEncryptionMetadata(
+		val he = delegatorApi.healthElement.createHealthElement(
+			delegatorApi.healthElement.withEncryptionMetadata(
 				base = DecryptedHealthElement(
 					id = UUID.randomUUID().toString(),
 					note = heNote,
@@ -88,7 +88,7 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 			patient,
 			PatientShareOptions(shareSecretIds = sfk)
 		).shouldNotBeNull()
-		delegatorApi.healthcareElement.shareWith(
+		delegatorApi.healthElement.shareWith(
 			delegate.dataOwnerId,
 			he
 		).shouldNotBeNull()
@@ -96,13 +96,13 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 		delegateApi.patient.getPatient(patient.id).run {
 			note shouldBe patientNote
 		}
-		delegateApi.healthcareElement.getHealthcareElement(he.id).run {
+		delegateApi.healthElement.getHealthElement(he.id).run {
 			note shouldBe heNote
 		}
 		delegatorApi.patient.getPatient(patient.id).run {
 			note shouldBe patientNote
 		}
-		delegatorApi.healthcareElement.getHealthcareElement(he.id).run {
+		delegatorApi.healthElement.getHealthElement(he.id).run {
 			note shouldBe heNote
 		}
 	}

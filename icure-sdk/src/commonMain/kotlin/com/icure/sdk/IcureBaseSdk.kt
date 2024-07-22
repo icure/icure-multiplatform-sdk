@@ -37,7 +37,7 @@ import com.icure.sdk.api.flavoured.ClassificationBasicApiImpl
 import com.icure.sdk.api.flavoured.ContactBasicApiImpl
 import com.icure.sdk.api.flavoured.DocumentBasicApiImpl
 import com.icure.sdk.api.flavoured.FormBasicApiImpl
-import com.icure.sdk.api.flavoured.HealthcareElementBasicApiImpl
+import com.icure.sdk.api.flavoured.HealthElementBasicApiImpl
 import com.icure.sdk.api.flavoured.InvoiceBasicApiImpl
 import com.icure.sdk.api.flavoured.MaintenanceTaskBasicApiImpl
 import com.icure.sdk.api.flavoured.MessageBasicApiImpl
@@ -219,8 +219,8 @@ private class IcureBaseApiImpl(
 			)
 		)
 	}
-	override val healthcareElement by lazy {
-		HealthcareElementBasicApiImpl(
+	override val healthElement by lazy {
+		HealthElementBasicApiImpl(
 			RawHealthElementApiImpl(
 				apiUrl,
 				authService,
