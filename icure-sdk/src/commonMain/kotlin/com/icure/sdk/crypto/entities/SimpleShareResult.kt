@@ -15,11 +15,13 @@ sealed interface SimpleShareResult<out T : HasEncryptionMetadata> {
 	/**
 	 * Represents the result of a successful share operation.
 	 */
+	@Serializable
 	data class Success<T : HasEncryptionMetadata>(val updatedEntity: T) : SimpleShareResult<T> {
 		override val isSuccess: Boolean get() = true
 		override fun updatedEntityOrThrow(): T = updatedEntity
 	}
 
+	@Serializable
 	data class Failure(val errorsDetails: List<FailedRequestDetails>) : SimpleShareResult<Nothing> {
 		override val isSuccess: Boolean get() = false
 
